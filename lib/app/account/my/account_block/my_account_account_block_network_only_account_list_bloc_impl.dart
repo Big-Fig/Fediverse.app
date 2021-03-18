@@ -10,7 +10,6 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
@@ -108,10 +107,10 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
           context,
           listen: false,
         ),
-        pleromaAuthAccountService: IPleromaAccountService.of(
+        pleromaAuthAccountService: IPleromaAuthAccountService.of(
           context,
           listen: false,
-        ) as IPleromaAuthAccountService,
+        ),
       );
 
   static Widget provideToContext(

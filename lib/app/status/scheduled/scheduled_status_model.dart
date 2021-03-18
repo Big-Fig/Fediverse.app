@@ -95,7 +95,7 @@ class DbScheduledStatusWrapper implements IScheduledStatus {
           id: localId,
           remoteId: remoteId,
           scheduledAt: scheduledAt,
-          params: params as PleromaScheduledStatusParams?,
+          params: params?.toPleromaScheduledStatusParams(),
           canceled: canceled,
           mediaAttachments: mediaAttachments,
         ),

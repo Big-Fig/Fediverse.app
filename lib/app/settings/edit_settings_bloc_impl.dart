@@ -2,7 +2,6 @@ import 'package:fedi/app/settings/edit_settings_bloc.dart';
 import 'package:fedi/app/settings/settings_bloc.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
-import 'package:fedi/stream/stream_extension.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class EditSettingsBloc<T extends ISettings?> extends FormBloc
@@ -11,7 +10,7 @@ abstract class EditSettingsBloc<T extends ISettings?> extends FormBloc
   bool get isEnabled => isEnabledSubject.value!;
 
   @override
-  Stream<bool> get isEnabledStream => isEnabledSubject.stream.mapToNotNull();
+  Stream<bool> get isEnabledStream => isEnabledSubject.stream;
 
   final BehaviorSubject<bool> isEnabledSubject;
 
@@ -22,7 +21,7 @@ abstract class EditSettingsBloc<T extends ISettings?> extends FormBloc
     required bool isEnabled,
     required this.settingsBloc,
     required bool isAllItemsInitialized,
-  })  : isEnabledSubject = BehaviorSubject.seeded(isEnabled),
+  })   : isEnabledSubject = BehaviorSubject.seeded(isEnabled),
         super(
           isAllItemsInitialized: isAllItemsInitialized,
         ) {

@@ -1,5 +1,4 @@
 import 'package:fedi/app/filter/repository/filter_repository.dart';
-import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -54,7 +53,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
 
   final IPleromaNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
-  final FilterRepository filterRepository;
+  final IFilterRepository filterRepository;
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   NotificationsTabsBloc({
@@ -92,7 +91,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
         filterRepository: IFilterRepository.of(
           context,
           listen: false,
-        ) as FilterRepository,
+        ),
         paginationSettingsBloc: IPaginationSettingsBloc.of(
           context,
           listen: false,

@@ -18,6 +18,22 @@ abstract class IPleromaCaptcha {
   String? get url;
 }
 
+extension IPleromaCaptchaExtension on IPleromaCaptcha {
+  PleromaCaptcha toPleromaCaptcha() {
+    if (this is PleromaCaptcha) {
+      return this as PleromaCaptcha;
+    } else {
+      return PleromaCaptcha(
+        answerData: answerData,
+        secondsValid: secondsValid,
+        token: token,
+        type: type,
+        url: url,
+      );
+    }
+  }
+}
+
 @JsonSerializable()
 class PleromaCaptcha implements IPleromaCaptcha {
   @override
@@ -61,9 +77,13 @@ class PleromaCaptcha implements IPleromaCaptcha {
 
   @override
   String toString() {
-    return 'PleromaCaptcha{answerData: $answerData,'
-        ' secondsValid: $secondsValid, token: $token,'
-        ' type: $type, url: $url}';
+    return 'PleromaCaptcha{'
+        'answerData: $answerData, '
+        'secondsValid: $secondsValid, '
+        'token: $token,'
+        'type: $type, '
+        'url: $url'
+        '}';
   }
 
   @override

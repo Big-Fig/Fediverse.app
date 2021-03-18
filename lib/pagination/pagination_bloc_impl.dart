@@ -239,7 +239,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
     // todo: improve
     for (var index in loadedPageIndexesSortedByIndex) {
-      if (minIndex == null || index > minIndex) {
+      if (minIndex == null || index < minIndex) {
         minIndex = index;
       }
     }

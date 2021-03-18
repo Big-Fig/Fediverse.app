@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 abstract class IStatusRepository
     implements
         IReadIdListRepository<IStatus, int>,
-        IWriteIdListRepository<DbStatus?, int?>,
+        IWriteIdListRepository<DbStatus, int>,
         IDisposable {
   static IStatusRepository of(
     BuildContext context, {

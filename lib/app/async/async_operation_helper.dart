@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
@@ -16,7 +17,7 @@ class AsyncOperationHelper {
 
   static Future<AsyncDialogResult<T?>> performAsyncOperation<T>({
     required BuildContext context,
-    required Future<T> asyncCode(),
+    required AsyncButtonAction<T> asyncCode,
     String? contentMessage,
     List<ErrorDataBuilder> errorDataBuilders = defaultErrorDataBuilders,
     bool createDefaultErrorDataUnhandledError = true,

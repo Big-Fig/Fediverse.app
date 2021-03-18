@@ -26,7 +26,7 @@ class PleromaRestService extends DisposableOwner
       BehaviorSubject.seeded(PleromaApiState.validAuth);
 
   @override
-  PleromaApiState? get pleromaApiState => _pleromaApiStateSubject.value;
+  PleromaApiState get pleromaApiState => _pleromaApiStateSubject.value!;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>

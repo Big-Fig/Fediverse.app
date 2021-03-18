@@ -35,13 +35,13 @@ class AccountFollowingsDao extends DatabaseAccessor<AppDatabase>
           {InsertMode? mode}) async =>
       into(dbAccountFollowings).insert(entity, mode: mode);
 
-  Future insertAll(Iterable<Insertable<DbAccountFollowing>> entities,
+  Future insertAll(List<Insertable<DbAccountFollowing>> entities,
           InsertMode mode) async =>
       await batch(
         (batch) {
           batch.insertAll(
             dbAccountFollowings,
-            entities as List<Insertable<DbAccountFollowing>>,
+            entities,
             mode: mode,
           );
         },

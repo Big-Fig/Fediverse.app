@@ -1,5 +1,4 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -13,7 +12,7 @@ final _dateFormat = DateFormat("yyyy-MM-dd HH:mm");
 class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   final IMyAccountBloc myAccountBloc;
 
-  BehaviorSubject<List<IChatMessage?>> currentChatMessagesSelectionSubject =
+  BehaviorSubject<List<IChatMessage>> currentChatMessagesSelectionSubject =
       BehaviorSubject.seeded([]);
 
   ChatSelectionBloc({
@@ -24,21 +23,21 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
 
   @override
   bool get isAllSelectedItemsFromMe => _calculateIsAllSelectedItemsFromMe(
-        currentSelection: currentSelection!,
-        myAccountBloc: myAccountBloc as MyAccountBloc,
+        currentSelection: currentSelection,
+        myAccountBloc: myAccountBloc,
       );
 
   @override
   Stream<bool> get isAllSelectedItemsFromMeStream => currentSelectionStream.map(
         (currentSelection) => _calculateIsAllSelectedItemsFromMe(
           currentSelection: currentSelection,
-          myAccountBloc: myAccountBloc as MyAccountBloc,
+          myAccountBloc: myAccountBloc,
         ),
       );
 
   static bool _calculateIsAllSelectedItemsFromMe({
-    required List<IChatMessage?> currentSelection,
-    required MyAccountBloc myAccountBloc,
+    required List<IChatMessage> currentSelection,
+    required IMyAccountBloc myAccountBloc,
   }) {
     return currentSelection.fold(
       true,
@@ -48,11 +47,11 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   }
 
   @override
-  List<IChatMessage>? get currentSelection =>
-      currentChatMessagesSelectionSubject.value as List<IChatMessage>?;
+  List<IChatMessage> get currentSelection =>
+      currentChatMessagesSelectionSubject.value!;
 
   @override
-  Stream<List<IChatMessage?>> get currentSelectionStream =>
+  Stream<List<IChatMessage>> get currentSelectionStream =>
       currentChatMessagesSelectionSubject.stream;
 
   @override
@@ -91,7 +90,7 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
 
   @override
   String calculateSelectionAsRawText() {
-    var rawText = currentSelection!.map((chatMessage) {
+    var rawText = currentSelection.map((chatMessage) {
       var chatMessageText = "";
       chatMessageText += chatMessage.account.acct;
       chatMessageText += " ";
@@ -125,27 +124,27 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   }
 
   @override
-  void addItemToSelection(IChatMessage? chatMessage) {
+  void addItemToSelection(IChatMessage chatMessage) {
     currentChatMessagesSelectionSubject.add(
       [
-        ...currentSelection!,
+        ...currentSelection,
         chatMessage,
       ],
     );
   }
 
   @override
-  void removeItemFromSelection(IChatMessage? chatMessage) {
+  void removeItemFromSelection(IChatMessage chatMessage) {
     currentChatMessagesSelectionSubject.add(
-      currentSelection!
+      currentSelection
           .where((currentChatMessage) =>
-              currentChatMessage.remoteId != chatMessage!.remoteId)
+              currentChatMessage.remoteId != chatMessage.remoteId)
           .toList(),
     );
   }
 
   @override
-  void toggleItemSelected(IChatMessage? chatMessage) {
+  void toggleItemSelected(IChatMessage chatMessage) {
     var chatMessageSelected = isItemSelected(chatMessage);
 
     if (chatMessageSelected) {
@@ -158,7 +157,7 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   @override
   bool isItemSelected(IChatMessage? chatMessage) =>
       _calculateIsChatMessageSelected(
-          currentChatMessagesSelection: currentSelection!,
+          currentChatMessagesSelection: currentSelection,
           chatMessageRemoteId: chatMessage!.remoteId);
 
   @override

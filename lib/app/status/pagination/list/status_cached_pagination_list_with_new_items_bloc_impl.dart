@@ -7,7 +7,6 @@ import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
-import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
@@ -26,11 +25,11 @@ class StatusCachedPaginationListWithNewItemsBloc<
     required this.statusCachedListBloc,
     required this.myAccountBloc,
     required this.mergeOwnStatusesImmediately,
-    required IPaginationBloc<TPage, IStatus>? paginationBloc,
+    required ICachedPaginationBloc<TPage, IStatus> paginationBloc,
   }) : super(
-            mergeNewItemsImmediately: mergeNewItemsImmediately,
-            paginationBloc:
-                paginationBloc as ICachedPaginationBloc<TPage, IStatus>) {
+          mergeNewItemsImmediately: mergeNewItemsImmediately,
+          paginationBloc: paginationBloc,
+        ) {
     addDisposable(
       streamSubscription: statusCachedListBloc.settingsChangedStream.listen(
         (changed) async {
@@ -115,11 +114,17 @@ class StatusCachedPaginationListWithNewItemsBloc<
     required bool mergeOwnStatusesImmediately,
   }) {
     return StatusCachedPaginationListWithNewItemsBloc<TPage>(
-        mergeOwnStatusesImmediately: mergeOwnStatusesImmediately,
-        mergeNewItemsImmediately: mergeNewItemsImmediately,
-        myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        paginationBloc: Provider.of<IPaginationBloc<TPage, IStatus>>(context,
-            listen: false),
-        statusCachedListBloc: IStatusCachedListBloc.of(context, listen: false));
+      mergeOwnStatusesImmediately: mergeOwnStatusesImmediately,
+      mergeNewItemsImmediately: mergeNewItemsImmediately,
+      myAccountBloc: IMyAccountBloc.of(context, listen: false),
+      paginationBloc: Provider.of<ICachedPaginationBloc<TPage, IStatus>>(
+        context,
+        listen: false,
+      ),
+      statusCachedListBloc: IStatusCachedListBloc.of(
+        context,
+        listen: false,
+      ),
+    );
   }
 }

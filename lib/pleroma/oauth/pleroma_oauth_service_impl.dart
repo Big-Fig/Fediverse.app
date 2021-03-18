@@ -27,7 +27,7 @@ class PleromaOAuthService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -48,7 +48,7 @@ class PleromaOAuthService extends DisposableOwner
     return super.dispose();
   }
 
-  PleromaOAuthToken? parseTokenResponse(Response httpResponse) {
+  PleromaOAuthToken parseTokenResponse(Response httpResponse) {
     RestResponse<PleromaOAuthToken> restResponse = RestResponse.fromResponse(
       response: httpResponse,
       resultParser: (body) =>
@@ -56,7 +56,7 @@ class PleromaOAuthService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaOAuthException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
@@ -112,7 +112,7 @@ class PleromaOAuthService extends DisposableOwner
       uri.queryParameters['code'].toString();
 
   @override
-  Future<PleromaOAuthToken?> retrieveAccountAccessToken({
+  Future<PleromaOAuthToken> retrieveAccountAccessToken({
     required PleromaOAuthAccountTokenRequest tokenRequest,
   }) async {
     var queryArgs = tokenRequest

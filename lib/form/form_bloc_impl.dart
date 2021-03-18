@@ -1,7 +1,6 @@
 import 'package:fedi/form/form_bloc.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/form_group_bloc_impl.dart';
-import 'package:fedi/stream/stream_extension.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class FormBloc extends FormGroupBloc implements IFormBloc {
@@ -29,8 +28,7 @@ abstract class FormBloc extends FormGroupBloc implements IFormBloc {
   }
 
   @override
-  Stream<List<IFormItemBloc>> get itemsStream =>
-      itemsSubject.stream.mapToNotNull();
+  Stream<List<IFormItemBloc>> get itemsStream => itemsSubject.stream;
 
   @override
   List<IFormItemBloc> get items => itemsSubject.value!;

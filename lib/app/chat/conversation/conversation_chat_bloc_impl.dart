@@ -22,7 +22,6 @@ import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/pleroma/id/pleroma_fake_id_helper.dart';
 import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/stream/stream_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -33,7 +32,7 @@ final _logger = Logger("conversation_chat_bloc_impl.dart");
 
 class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   // ignore: close_sinks
-  final BehaviorSubject<IConversationChat?> _chatSubject;
+  final BehaviorSubject<IConversationChat> _chatSubject;
 
   // ignore: close_sinks
   final BehaviorSubject<IConversationChatMessage?> _lastMessageSubject;
@@ -55,8 +54,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   IConversationChat get chat => _chatSubject.value!;
 
   @override
-  Stream<IConversationChat> get chatStream =>
-      _chatSubject.stream.mapToNotNull();
+  Stream<IConversationChat> get chatStream => _chatSubject.stream;
 
   @override
   IConversationChatMessage? get lastChatMessage => _lastMessageSubject.value;
@@ -234,9 +232,9 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Future refreshFromNetwork() async {
-    var remoteConversation = await (pleromaConversationService
-            .getConversation(conversationRemoteId: chat.remoteId)
-        as FutureOr<IPleromaConversation>);
+    var remoteConversation = await pleromaConversationService.getConversation(
+      conversationRemoteId: chat.remoteId,
+    );
 
     if (remoteConversation.accounts.isNotEmpty) {
       for (var account in remoteConversation.accounts) {
@@ -363,7 +361,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
 
       await statusRepository.updateById(
-        localStatusId,
+        localStatusId!,
         dbStatus.copyWith(
           pendingState: PendingState.pending,
         ),

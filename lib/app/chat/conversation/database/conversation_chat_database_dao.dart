@@ -45,12 +45,10 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
   Future<int> upsert(Insertable<DbConversation> entity) async =>
       into(db.dbConversations).insert(entity, mode: InsertMode.insertOrReplace);
 
-  Future insertAll(Iterable<Insertable<DbConversation>> entities,
-          InsertMode mode) async =>
+  Future insertAll(
+          List<Insertable<DbConversation>> entities, InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(
-            db.dbConversations, entities as List<Insertable<DbConversation>>,
-            mode: mode);
+        batch.insertAll(db.dbConversations, entities, mode: mode);
       });
 
   Future<bool> replace(Insertable<DbConversation> entity) async =>

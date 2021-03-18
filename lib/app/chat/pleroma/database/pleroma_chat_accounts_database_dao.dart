@@ -37,13 +37,13 @@ class ChatAccountsDao extends DatabaseAccessor<AppDatabase>
         mode: mode,
       );
 
-  Future insertAll(Iterable<Insertable<DbChatAccount>> entities,
+  Future insertAll(List<Insertable<DbChatAccount>> entities,
           InsertMode mode) async =>
       await batch(
         (batch) {
           batch.insertAll(
             dbChatAccounts,
-            entities as List<Insertable<DbChatAccount>>,
+            entities,
           );
         },
       );

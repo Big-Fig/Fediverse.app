@@ -17,7 +17,7 @@ final _logger = Logger("pleroma_form_captcha_string_field_bloc_impl.dart");
 
 class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
     implements IPleromaFormCaptchaStringFieldBloc {
-  final IPleromaCaptchaService? pleromaCaptchaService;
+  final IPleromaCaptchaService pleromaCaptchaService;
 
   final BehaviorSubject<PleromaCaptcha?> captchaSubject;
   final BehaviorSubject<dynamic> errorSubject;
@@ -144,8 +144,8 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
     captchaLoadedDateTimeSubject.add(DateTime.now());
     errorSubject.add(null);
     try {
-      var captcha = await pleromaCaptchaService!.getCaptcha();
-      captchaSubject.add(captcha as PleromaCaptcha?);
+      var captcha = await pleromaCaptchaService.getCaptcha();
+      captchaSubject.add(captcha.toPleromaCaptcha());
       _logger.finest(() => "reloadCaptcha FINISH $captcha");
     } catch (e, stackTrace) {
       _logger.warning(() => "reloadCaptcha ERROR", e, stackTrace);

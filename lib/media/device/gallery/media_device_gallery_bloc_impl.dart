@@ -64,6 +64,7 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
 
     var folderBloc = PhotoManagerMediaDeviceFolderBloc(
       storagePermissionBloc: storagePermissionBloc,
+      // todo: rework cast
       folder: folder as PhotoManagerMediaDeviceFolder,
     );
     var listBloc = MediaDeviceFileLocalOnlyListBloc(

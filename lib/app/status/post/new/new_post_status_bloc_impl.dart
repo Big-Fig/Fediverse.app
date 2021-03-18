@@ -137,7 +137,7 @@ class NewPostStatusBloc extends PostStatusBloc {
 
   static NewPostStatusBloc createFromContext(
     BuildContext context, {
-    required PostStatusData initialData,
+    required IPostStatusData initialData,
   }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance!
@@ -180,7 +180,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     return DisposableProvider<IPostStatusBloc>(
       create: (context) => NewPostStatusBloc.createFromContext(
         context,
-        initialData: initialData as PostStatusData,
+        initialData: initialData,
       ),
       child: PostStatusMessageBlocProxyProvider(child: child),
     );

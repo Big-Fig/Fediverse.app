@@ -7,7 +7,6 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
-import 'package:fedi/stream/stream_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
@@ -21,7 +20,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
 
   @override
   Stream<INotification> get notificationStream =>
-      _notificationSubject.stream.mapToNotNull().distinct();
+      _notificationSubject.stream.distinct();
 
   static NotificationBloc createFromContext(
     BuildContext context,

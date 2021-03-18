@@ -83,15 +83,15 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   @override
-  Stream<List<TItem>> get itemsStream => sortedPagesStream
-      .map(mapToItemsList as List<TItem> Function(List<TPage>));
+  Stream<List<TItem>> get itemsStream =>
+      sortedPagesStream.map((sortedPages) => mapToItemsList(sortedPages));
 
   @override
   Stream<List<TItem>> get itemsDistinctStream =>
       itemsStream.distinct((a, b) => eq(a, b));
 
   @override
-  List<TItem>? get items => mapToItemsList(sortedPages);
+  List<TItem> get items => mapToItemsList(sortedPages);
 
   @override
   int? get itemsCountPerPage => paginationBloc.itemsCountPerPage;
@@ -118,7 +118,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   @override
-  List<TPage>? get sortedPages => paginationBloc.loadedPagesSortedByIndex;
+  List<TPage> get sortedPages => paginationBloc.loadedPagesSortedByIndex;
 
   @override
   Stream<List<TPage>> get sortedPagesStream =>
@@ -132,8 +132,8 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     try {
       FediListSmartRefresherLoadingState state;
       var nextPageIndex = paginationBloc.loadedPagesMaximumIndex! + 1;
-      var nextPage = await paginationBloc
-          .requestPage(pageIndex: nextPageIndex, forceToSkipCache: true);
+      var nextPage = await paginationBloc.requestPage(
+          pageIndex: nextPageIndex, forceToSkipCache: true);
 
       if (nextPage.items.isNotEmpty == true) {
         state = FediListSmartRefresherLoadingState.loaded;
@@ -193,15 +193,11 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     }
   }
 
-  static List<TItem>?
+  static List<TItem>
       mapToItemsList<TPage extends PaginationPage<TItem>, TItem>(
-          List<TPage>? sortedPages) {
-    if (sortedPages?.isNotEmpty != true) {
-      // null items and empty items is different states
-      return null;
-    }
+          List<TPage> sortedPages) {
     List<TItem> items = [];
-    sortedPages!.forEach((page) {
+    sortedPages.forEach((page) {
       items.addAll(page.items);
     });
     return items;

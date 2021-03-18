@@ -31,7 +31,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
   final bool? approvalRequired;
 
   RegisterAuthInstanceFormBloc({
-    required IPleromaCaptchaService? pleromaCaptchaService,
+    required IPleromaCaptchaService pleromaCaptchaService,
     required this.instanceBaseUri,
     required this.approvalRequired,
     required this.localizationSettingsBloc,

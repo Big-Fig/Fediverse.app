@@ -51,15 +51,16 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   Stream<bool> get isSomethingChangedStream => Rx.combineLatest2(
         addedItemsStream,
         removedItemsStream,
-        (dynamic addedItems, dynamic removedItems) => _calculateIsSomethingChanged(
+        (dynamic addedItems, dynamic removedItems) =>
+            _calculateIsSomethingChanged(
           addedItems: addedItems,
           removedItems: removedItems,
         ),
       );
 
-  List<TItem>? get originalItems => paginationListBloc.items;
+  List<TItem> get originalItems => paginationListBloc.items;
 
-  Stream<List<TItem>?> get originalItemsStream => paginationListBloc.itemsStream;
+  Stream<List<TItem>> get originalItemsStream => paginationListBloc.itemsStream;
 
   final BehaviorSubject<List<TItem>> addedItemsSubject =
       BehaviorSubject.seeded([]);
@@ -85,7 +86,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       );
 
   @override
-  List<TItem>? get items {
+  List<TItem> get items {
     return _calculateCurrentItems(
       originalItems: originalItems,
       addedItems: addedItems,
@@ -94,50 +95,51 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     );
   }
 
-  static List<TItem>? _calculateCurrentItems<TItem>({
-    required List<TItem>? originalItems,
+  static List<TItem> _calculateCurrentItems<TItem>({
+    required List<TItem> originalItems,
     required List<TItem> addedItems,
     required List<TItem> removedItems,
     required ItemEquality<TItem> itemEquality,
   }) {
-    List<TItem>? result;
+    List<TItem> result;
 
     _logger.finest(() => "_calculateCurrentItems \n"
-        "originalItems ${originalItems?.length} \n"
+        "originalItems ${originalItems.length} \n"
         "addedItems ${addedItems.length} \n"
         "removedItems ${removedItems.length}");
-    if (originalItems == null) {
-      result = null;
-    } else {
-      result = <TItem>[
-        ...originalItems,
-        ...addedItems,
-      ];
+    result = <TItem>[
+      ...originalItems,
+      ...addedItems,
+    ];
 
-      result.removeWhere(
-        (item) => _calculateIsItemAdded(
-          items: removedItems,
-          item: item,
-          itemEquality: itemEquality,
-        ),
-      );
-    }
+    result.removeWhere(
+      (item) => _calculateIsItemAdded(
+        items: removedItems,
+        item: item,
+        itemEquality: itemEquality,
+      ),
+    );
 
     _logger.finest(() => "_calculateCurrentItems \n"
-        "originalItems ${originalItems?.length}"
+        "originalItems ${originalItems.length}"
         "addedItems ${addedItems.length}"
         "removedItems ${removedItems.length}"
-        "result ${result?.length}");
+        "result ${result.length}");
 
     return result;
   }
 
   @override
-  Stream<List<TItem>?> get itemsStream => Rx.combineLatest3(
+  Stream<List<TItem>> get itemsStream => Rx.combineLatest3(
         originalItemsStream,
         addedItemsStream,
         removedItemsStream,
-        (dynamic originalItems, dynamic addedItems, dynamic removedItems) => _calculateCurrentItems(
+        (
+          List<TItem> originalItems,
+          List<TItem> addedItems,
+          List<TItem> removedItems,
+        ) =>
+            _calculateCurrentItems(
           originalItems: originalItems,
           addedItems: addedItems,
           removedItems: removedItems,
@@ -269,7 +271,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   int? get itemsCountPerPage => paginationListBloc.itemsCountPerPage;
 
   @override
-  Stream<List<TItem>?> get itemsDistinctStream => itemsStream.distinct();
+  Stream<List<TItem>> get itemsDistinctStream => itemsStream.distinct();
 
   @override
   Stream<PaginationListLoadingError> get loadMoreErrorStream =>
@@ -317,7 +319,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       paginationListBloc.refreshWithoutController();
 
   @override
-  List<TPage>? get sortedPages => paginationListBloc.sortedPages;
+  List<TPage> get sortedPages => paginationListBloc.sortedPages;
 
   @override
   Stream<List<TPage>> get sortedPagesStream =>

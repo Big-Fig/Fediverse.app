@@ -5,7 +5,7 @@ typedef T RestResultParser<T>(dynamic body);
 
 class RestResponse<K> {
   final K? body;
-  final RestHttpError? error;
+  final RestError? error;
 
   static RestResponse<T> fromResponse<T>({
     required Response response,
@@ -36,7 +36,7 @@ class RestResponse<K> {
       : this.name(body: response, error: null);
 
   RestResponse.fail({required RestError error})
-      : this.name(body: null, error: error as RestHttpError?);
+      : this.name(body: null, error: error);
 
   @override
   String toString() {

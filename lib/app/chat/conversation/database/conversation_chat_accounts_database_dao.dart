@@ -32,11 +32,13 @@ class ConversationAccountsDao extends DatabaseAccessor<AppDatabase>
           {InsertMode? mode}) async =>
       into(dbConversationAccounts).insert(entity, mode: mode);
 
-  Future insertAll(Iterable<Insertable<DbConversationAccount>> entities,
+  Future insertAll(List<Insertable<DbConversationAccount>> entities,
           InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(dbConversationAccounts,
-            entities as List<Insertable<DbConversationAccount>>);
+        batch.insertAll(
+          dbConversationAccounts,
+          entities,
+        );
       });
 
   Future<bool> replace(Insertable<DbConversationAccount> entity) async =>

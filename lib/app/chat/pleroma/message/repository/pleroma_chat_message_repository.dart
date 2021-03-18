@@ -27,7 +27,7 @@ abstract class IPleromaChatMessageRepository
   );
 
   Stream<IPleromaChatMessage?> watchByRemoteId(
-    String? remoteId,
+    String remoteId,
   );
 
   Future<IPleromaChatMessage?> findByOldPendingRemoteId(
@@ -61,7 +61,7 @@ abstract class IPleromaChatMessageRepository
         PleromaChatMessageOrderingTermData.createdAtDesc,
   });
 
-  Future<IPleromaChatMessage> getChatMessage({
+  Future<IPleromaChatMessage?> getChatMessage({
     required PleromaChatMessageRepositoryFilters? filters,
     PleromaChatMessageOrderingTermData? orderingTermData =
         PleromaChatMessageOrderingTermData.createdAtDesc,

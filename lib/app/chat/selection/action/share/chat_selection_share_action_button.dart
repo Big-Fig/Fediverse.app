@@ -32,7 +32,7 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
         // need rework to separate page for simple raw text share
         var status = ChatSelectionShareActionStatusAdapter(
           content: rawText,
-          account: chatSelectionBloc.currentSelection!.first.account,
+          account: chatSelectionBloc.currentSelection.first.account,
           visibility: PleromaVisibility.public,
         );
 

@@ -6,13 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-typedef Future AsyncButtonAction();
+typedef Future<T> AsyncButtonAction<T>();
 typedef Widget ButtonBuilder(BuildContext context, VoidCallback? onPressed);
 
 var _logger = Logger("async_button_widget.dart");
 
-class AsyncOperationButtonBuilderWidget extends StatefulWidget {
-  final AsyncButtonAction asyncButtonAction;
+class AsyncOperationButtonBuilderWidget<T> extends StatefulWidget {
+  final AsyncButtonAction<T> asyncButtonAction;
   final ButtonBuilder builder;
   final bool showProgressDialog;
   final String? progressContentMessage;
@@ -35,16 +35,17 @@ class AsyncOperationButtonBuilderWidget extends StatefulWidget {
   _AsyncOperationButtonBuilderWidgetState createState() =>
       _AsyncOperationButtonBuilderWidgetState();
 
-  Future<AsyncDialogResult<T?>> performAsyncOperation<T>({
+  Future<AsyncDialogResult<T?>> performAsyncOperation({
     required BuildContext context,
   }) {
     return AsyncOperationHelper.performAsyncOperation(
-        context: context,
-        errorCallback: errorCallback,
-        contentMessage: progressContentMessage,
-        errorDataBuilders: errorDataBuilders,
-        showProgressDialog: showProgressDialog,
-        asyncCode: asyncButtonAction as Future<T> Function());
+      context: context,
+      errorCallback: errorCallback,
+      contentMessage: progressContentMessage,
+      errorDataBuilders: errorDataBuilders,
+      showProgressDialog: showProgressDialog,
+      asyncCode: asyncButtonAction,
+    );
   }
 }
 

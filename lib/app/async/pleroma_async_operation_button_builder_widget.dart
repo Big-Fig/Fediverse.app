@@ -4,11 +4,11 @@ import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:flutter/widgets.dart';
 
-class PleromaAsyncOperationButtonBuilderWidget
-    extends AsyncOperationButtonBuilderWidget {
+class PleromaAsyncOperationButtonBuilderWidget<T>
+    extends AsyncOperationButtonBuilderWidget<T> {
   PleromaAsyncOperationButtonBuilderWidget({
     required ButtonBuilder builder,
-    required AsyncButtonAction asyncButtonAction,
+    required AsyncButtonAction<T> asyncButtonAction,
     String? progressContentMessage,
     String? successToastMessage,
     bool showProgressDialog = true,
@@ -29,15 +29,16 @@ class PleromaAsyncOperationButtonBuilderWidget
             ]);
 
   @override
-  Future<AsyncDialogResult<T?>> performAsyncOperation<T>({
+  Future<AsyncDialogResult<T?>> performAsyncOperation({
     required BuildContext context,
   }) {
     return PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-        context: context,
-        errorCallback: errorCallback,
-        contentMessage: progressContentMessage,
-        errorDataBuilders: errorDataBuilders,
-        showProgressDialog: showProgressDialog,
-        asyncCode: asyncButtonAction as Future<T> Function());
+      context: context,
+      errorCallback: errorCallback,
+      contentMessage: progressContentMessage,
+      errorDataBuilders: errorDataBuilders,
+      showProgressDialog: showProgressDialog,
+      asyncCode: asyncButtonAction,
+    );
   }
 }

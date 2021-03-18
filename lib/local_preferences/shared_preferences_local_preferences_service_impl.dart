@@ -88,13 +88,13 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   bool? getBoolPreference(
     String key,
   ) =>
-      preferences.get(key) as bool?;
+      preferences.getBool(key);
 
   @override
-  String? getStringPreference(String key) => preferences.get(key) as String?;
+  String? getStringPreference(String key) => preferences.getString(key);
 
   @override
-  int? getIntPreference(String key) => preferences.get(key) as int?;
+  int? getIntPreference(String key) => preferences.getInt(key);
 
   @override
   T? getObjectPreference<T>(

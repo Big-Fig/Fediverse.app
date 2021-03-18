@@ -180,7 +180,7 @@ class LocalStatusBloc extends StatusBloc {
     var updatedLocalStatus = await super.onPollUpdated(poll);
 
     await statusRepository.updateById(
-      status.localId,
+      status.localId!,
       updatedLocalStatus.toDbStatus(),
     );
 

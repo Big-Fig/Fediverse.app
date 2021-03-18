@@ -99,12 +99,12 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
   Future<int> upsert(Insertable<DbNotification> entity) async =>
       into(db.dbNotifications).insert(entity, mode: InsertMode.insertOrReplace);
 
-  Future insertAll(Iterable<Insertable<DbNotification>> entities,
+  Future insertAll(List<Insertable<DbNotification>> entities,
           InsertMode mode) async =>
       await batch((batch) {
         batch.insertAll(
           db.dbNotifications,
-          entities as List<Insertable<DbNotification>>,
+          entities,
           mode: mode,
         );
       });

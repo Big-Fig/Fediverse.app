@@ -210,14 +210,14 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   @override
   Future<AuthInstance> loginWithAuthCode(String authCode) async {
-    var token = await (pleromaOAuthService.retrieveAccountAccessToken(
+    var token = await pleromaOAuthService.retrieveAccountAccessToken(
         tokenRequest: PleromaOAuthAccountTokenRequest(
       redirectUri: await _calculateRedirectUri(),
       scope: scopes,
       code: authCode,
       clientSecret: hostApplication!.clientSecret,
       clientId: hostApplication!.clientId,
-    )) as FutureOr<PleromaOAuthToken>);
+    ));
 
     return await _createInstanceFromToken(
       token: token,
@@ -270,7 +270,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       token: token,
       acct: myAccount.acct,
       application: hostApplication,
-      info: hostInstance as PleromaInstance?,
+      info: hostInstance.toPleromaInstance(),
       isPleroma: myAccount.pleroma != null,
     );
     await pleromaMyAccountService.dispose();

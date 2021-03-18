@@ -9,24 +9,26 @@ import 'package:rxdart/rxdart.dart';
 class CustomEmojiPickerBloc extends DisposableOwner
     implements ICustomEmojiPickerBloc {
   @override
-  List<ICustomEmojiPickerCategoryBloc>? get availableCategories =>
-      availableCategoriesSubject.value as List<ICustomEmojiPickerCategoryBloc>?;
+  List<ICustomEmojiPickerCategoryBloc> get availableCategories =>
+      availableCategoriesSubject.value!;
 
   @override
-  Stream<List<ICustomEmojiPickerCategoryBloc?>> get availableCategoriesStream =>
+  Stream<List<ICustomEmojiPickerCategoryBloc>> get availableCategoriesStream =>
       availableCategoriesSubject.stream;
 
-  final BehaviorSubject<List<ICustomEmojiPickerCategoryBloc?>>
+  final BehaviorSubject<List<ICustomEmojiPickerCategoryBloc>>
       availableCategoriesSubject;
 
   @override
   ICustomEmojiPickerCategoryBloc? get selectedCategoryBloc =>
       selectedCategorySubject.value;
+
   @override
   Stream<ICustomEmojiPickerCategoryBloc?> get selectedCategoryBlocStream =>
       selectedCategorySubject.stream;
 
-  final BehaviorSubject<ICustomEmojiPickerCategoryBloc?> selectedCategorySubject;
+  final BehaviorSubject<ICustomEmojiPickerCategoryBloc?>
+      selectedCategorySubject;
 
   @override
   void selectCategory(ICustomEmojiPickerCategoryBloc category) {
@@ -35,8 +37,8 @@ class CustomEmojiPickerBloc extends DisposableOwner
 
   CustomEmojiPickerBloc({
     required ICustomEmojiPickerCategoryBloc? selectedCategory,
-    required List<ICustomEmojiPickerCategoryBloc?> availableCategories,
-  })  : availableCategoriesSubject =
+    required List<ICustomEmojiPickerCategoryBloc> availableCategories,
+  })   : availableCategoriesSubject =
             BehaviorSubject.seeded(availableCategories),
         selectedCategorySubject = BehaviorSubject.seeded(
             selectedCategory ?? availableCategories.first) {
@@ -47,6 +49,7 @@ class CustomEmojiPickerBloc extends DisposableOwner
 
   StreamController<CustomEmojiPickerItem> selectedEmojiStreamController =
       StreamController.broadcast();
+
   @override
   Stream<CustomEmojiPickerItem> get selectedEmojiStream =>
       selectedEmojiStreamController.stream;

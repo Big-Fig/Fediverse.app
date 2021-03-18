@@ -11,7 +11,6 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -102,8 +101,7 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
       StatusFavouriteAccountCachedListBloc(
         accountRepository: IAccountRepository.of(context, listen: false),
         pleromaAuthStatusService:
-            IPleromaStatusService.of(context, listen: false)
-                as IPleromaAuthStatusService,
+            IPleromaAuthStatusService.of(context, listen: false),
         status: status,
       );
 

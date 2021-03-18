@@ -6,7 +6,6 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_service.dart';
-import 'package:fedi/stream/stream_extension.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PollBloc extends DisposableOwner implements IPollBloc {
@@ -138,7 +137,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
 
   @override
   Stream<List<IPleromaPollOption>> get selectedVotesStream =>
-      selectedVotesSubject.stream.mapToNotNull();
+      selectedVotesSubject.stream;
 
   @override
   bool get isVoted => selectedVotes.isNotEmpty;

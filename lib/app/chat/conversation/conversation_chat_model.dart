@@ -5,6 +5,7 @@ import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 
 abstract class IConversationChat implements IChat {
   IPleromaConversationPleromaPart? get pleroma;
+
   @override
   IConversationChat copyWith({
     int? id,
@@ -20,7 +21,7 @@ class DbConversationChatWrapper implements IConversationChat {
 
   DbConversationChatWrapper({
     required this.dbConversation,
-});
+  });
 
   @override
   int? get localId => dbConversation.id;
@@ -47,14 +48,16 @@ class DbConversationChatWrapper implements IConversationChat {
     List<IAccount>? accounts,
   }) {
     return DbConversationChatWrapper(
-      dbConversation:dbConversation.copyWith(
+      dbConversation: dbConversation.copyWith(
         id: id ?? localId,
         remoteId: remoteId ?? this.remoteId,
         unread: unread != null
             ? unread > 0
                 ? true
                 : false
-            : this.unread as bool?,
+            : this.unread > 0
+                ? true
+                : false,
         updatedAt: updatedAt ?? this.updatedAt,
       ),
     );

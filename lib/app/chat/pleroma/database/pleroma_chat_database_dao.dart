@@ -79,12 +79,12 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
       into(db.dbChats).insert(entity, mode: InsertMode.insertOrReplace);
 
   Future insertAll(
-          Iterable<Insertable<DbChat>> entities, InsertMode mode) async =>
+          List<Insertable<DbChat>> entities, InsertMode mode) async =>
       await batch(
         (batch) {
           batch.insertAll(
             db.dbChats,
-            entities as List<Insertable<DbChat>>,
+            entities,
             mode: mode,
           );
         },

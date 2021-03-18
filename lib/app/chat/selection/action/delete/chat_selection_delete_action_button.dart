@@ -47,7 +47,7 @@ class ChatSelectionDeleteActionButtonWidget extends StatelessWidget {
                         context: context,
                         asyncCode: () async {
                           await chatBloc.deleteMessages(
-                            chatSelectionBloc.currentSelection!,
+                            chatSelectionBloc.currentSelection,
                           );
                         },
                       );
