@@ -13,7 +13,6 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/stream/stream_extension.dart';
 
 class MyAccountBloc extends IMyAccountBloc {
   static final selfActionError = const SelfActionNotPossibleException();
@@ -57,7 +56,9 @@ class MyAccountBloc extends IMyAccountBloc {
   IMyAccount? get myAccount => myAccountLocalPreferenceBloc.value!;
 
   @override
-  Stream<IAccount> get accountStream => myAccountStream.mapToNotNull();
+  // todo: fix
+  Stream<IAccount> get accountStream =>
+      myAccountStream.map((myAccount) => myAccount!);
 
   @override
   IAccount get account => myAccount!;
@@ -128,7 +129,7 @@ class MyAccountBloc extends IMyAccountBloc {
     await myAccountLocalPreferenceBloc.setValue(
       myAccountLocalPreferenceBloc.value!.copyWith(
         followRequestsCount: followRequestsCount! - 1,
-      ) as PleromaMyAccountWrapper?,
+      ).toPleromaMyAccountWrapper(),
     );
   }
 

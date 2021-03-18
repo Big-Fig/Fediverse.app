@@ -40,7 +40,7 @@ class DraftEditPostStatusPage extends StatelessWidget {
   void handleBackPressed(BuildContext context) async {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
     await onBackPressed(
-      postStatusBloc.calculateCurrentPostStatusData() as PostStatusData,
+      postStatusBloc.calculateCurrentPostStatusData(),
     );
   }
 }
@@ -55,13 +55,17 @@ void goToDraftEditPostStatusPage(
     MaterialPageRoute(
       builder: (context) => EditPostStatusBloc.provideToContext(
         context,
-        postStatusDataCallback: (postStatusData) async {
-          await draftStatusBloc.postDraft(postStatusData);
+        postStatusDataCallback: (IPostStatusData postStatusData) async {
+          await draftStatusBloc.postDraft(
+            postStatusData.toPostStatusData(),
+          );
           return true;
         },
         child: DraftEditPostStatusPage(
-          onBackPressed: (postStatusData) async {
-            await draftStatusBloc.updatePostStatusData(postStatusData);
+          onBackPressed: (IPostStatusData postStatusData) async {
+            await draftStatusBloc.updatePostStatusData(
+              postStatusData.toPostStatusData(),
+            );
             Navigator.of(context).pop();
             return true;
           },

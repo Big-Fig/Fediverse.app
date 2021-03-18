@@ -70,10 +70,15 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
       into(db.dbFilters).insert(entity, mode: InsertMode.insertOrReplace);
 
   Future insertAll(
-          Iterable<Insertable<DbFilter>> entities, InsertMode mode) async =>
+    List<Insertable<DbFilter>> entities,
+    InsertMode mode,
+  ) async =>
       await batch((batch) {
-        batch.insertAll(db.dbFilters, entities as List<Insertable<DbFilter>>,
-            mode: mode);
+        batch.insertAll(
+          db.dbFilters,
+          entities,
+          mode: mode,
+        );
       });
 
   Future<bool> replace(Insertable<DbFilter> entity) async =>

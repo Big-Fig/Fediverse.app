@@ -40,7 +40,7 @@ class ScheduledEditPostStatusPage extends StatelessWidget {
   void handleBackPressed(BuildContext context) async {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
     await onBackPressed(
-      postStatusBloc.calculateCurrentPostStatusData() as PostStatusData,
+      postStatusBloc.calculateCurrentPostStatusData(),
     );
   }
 }
@@ -56,16 +56,17 @@ void goToScheduledEditPostStatusPage(
     MaterialPageRoute(
       builder: (context) => EditPostStatusBloc.provideToContext(
         context,
-        postStatusDataCallback: (PostStatusData postStatusData) async {
-          var success =
-              await scheduledStatusBloc.postScheduledPost(postStatusData);
+        postStatusDataCallback: (IPostStatusData postStatusData) async {
+          var success = await scheduledStatusBloc.postScheduledPost(
+            postStatusData.toPostStatusData(),
+          );
           if (success) {
             successCallback();
           }
           return success;
         },
         child: ScheduledEditPostStatusPage(
-          onBackPressed: (PostStatusData postStatusData) async {
+          onBackPressed: (IPostStatusData postStatusData) async {
             Navigator.of(context).pop();
             return true;
           },

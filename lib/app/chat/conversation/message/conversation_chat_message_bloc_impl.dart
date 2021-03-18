@@ -11,7 +11,6 @@ import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
-import 'package:fedi/stream/stream_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -29,7 +28,8 @@ class ConversationChatMessageBloc extends ChatMessageBloc
         pleromaInstancePollLimits: ICurrentAuthInstanceBloc.of(
               context,
               listen: false,
-            ).currentInstance?.info?.pollLimits ?? PleromaInstancePollLimits.defaultLimits,
+            ).currentInstance?.info?.pollLimits ??
+            PleromaInstancePollLimits.defaultLimits,
         conversationChatService:
             IPleromaConversationService.of(context, listen: false),
         authStatusService: IPleromaAuthStatusService.of(context, listen: false),
@@ -120,7 +120,7 @@ class ConversationChatMessageBloc extends ChatMessageBloc
 
   @override
   Stream<IConversationChatMessage> get chatMessageStream =>
-      _chatMessageSubject.stream.mapToNotNull().distinct();
+      _chatMessageSubject.stream.distinct();
 
   @override
   IAccount get account => chatMessage.account;

@@ -7,7 +7,6 @@ import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
-import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
@@ -120,12 +119,11 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
         listen: false,
       ),
       cachedPaginationBloc: Provider.of<
-          IPaginationBloc<CachedPaginationPage<IPleromaChatMessage>,
+          ICachedPaginationBloc<CachedPaginationPage<IPleromaChatMessage>,
               IPleromaChatMessage>>(
         context,
         listen: false,
-      ) as ICachedPaginationBloc<CachedPaginationPage<IPleromaChatMessage>,
-          IPleromaChatMessage>,
+      ),
       pleromaChatBloc: IPleromaChatBloc.of(
         context,
         listen: false,

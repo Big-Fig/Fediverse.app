@@ -100,7 +100,7 @@ class ChatMessageListWidget<T extends IChatMessage>
   @override
   ScrollView buildItemsCollectionView({
     required BuildContext context,
-    required List<IChatMessage> items,
+    required List<T> items,
     required Widget? header,
     required Widget? footer,
   }) {
@@ -111,9 +111,9 @@ class ChatMessageListWidget<T extends IChatMessage>
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       itemCount: items.length,
       itemBuilder: (BuildContext context, int index) {
-        var item = _calculateChatMessageListItem<T>(
+        var item = _calculateChatMessageListItem(
           index: index,
-          items: items as List<T>,
+          items: items,
         );
 
         return Provider<ChatMessageListItem<T>>.value(

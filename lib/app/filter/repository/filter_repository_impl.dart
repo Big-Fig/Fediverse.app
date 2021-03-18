@@ -159,7 +159,7 @@ class FilterRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future upsertAll(Iterable<DbFilter> items) async {
+  Future upsertAll(List<DbFilter> items) async {
     // insertOrReplace
     // if a row with the same primary or unique key already
     // exists, it will be deleted and re-created with the row being inserted.
@@ -171,7 +171,7 @@ class FilterRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future insertAll(Iterable<DbFilter> items) async {
+  Future insertAll(List<DbFilter> items) async {
     // if item already exist rollback changes
     // call this only if you sure that items not exist instead user upsertAll
     return await dao.insertAll(

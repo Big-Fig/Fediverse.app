@@ -343,7 +343,7 @@ class PleromaMyAccountWrapper extends IMyAccount {
           lastStatusAt: lastStatusAt,
           fields: fields,
           emojis: emojis,
-          source: source as PleromaMyAccountSource?,
+          source: source?.toPleromaMyAccountSource(),
           fqn: fqn,
           discoverable: discoverable,
           followRequestsCount: followRequestsCount,

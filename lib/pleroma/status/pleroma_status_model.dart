@@ -831,8 +831,8 @@ extension IPleromaStatusEmojiReactionListExtension
             me: alreadyExistEmojiReaction.me || emojiReaction.me,
             count: alreadyExistEmojiReaction.count + emojiReaction.count,
             accounts: [
-              ...alreadyExistEmojiReaction.accounts as Iterable<PleromaAccount>,
-              ...emojiReaction.accounts as Iterable<PleromaAccount>,
+              ...alreadyExistEmojiReaction.accounts?.toPleromaAccounts() ?? [],
+              ...emojiReaction.accounts?.toPleromaAccounts() ?? [],
             ]);
         mergedList.add(mergedEmojiReaction);
       } else {
@@ -888,15 +888,12 @@ class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
     required this.accounts,
   });
 
-
   PleromaStatusEmojiReaction.only({
     required this.name,
     required this.count,
     required this.me,
     this.accounts,
   });
-
-
 
   PleromaStatusEmojiReaction copyWith({
     String? name,

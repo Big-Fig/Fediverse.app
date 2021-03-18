@@ -155,7 +155,7 @@ class PostStatusData implements IPostStatusData {
         language: language ?? this.language,
         to: to ?? this.to,
         mediaAttachments: mediaAttachments?.toPleromaMediaAttachments(),
-        poll: poll as PostStatusPoll? ?? this.poll,
+        poll: poll?.toPostStatusPoll() ?? this.poll,
         inReplyToPleromaStatus:
             inReplyToPleromaStatus ?? this.inReplyToPleromaStatus,
         inReplyToConversationId:

@@ -13,12 +13,12 @@ abstract class IPleromaConversationService implements IPleromaApi {
         listen: listen,
       );
 
-  Future<List<IPleromaStatus>?> getConversationStatuses({
+  Future<List<IPleromaStatus>> getConversationStatuses({
     required String conversationRemoteId,
     IPleromaPaginationRequest? pagination,
   });
 
-  Future<IPleromaConversation?> getConversation({
+  Future<IPleromaConversation> getConversation({
     required String conversationRemoteId,
   });
 

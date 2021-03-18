@@ -7,7 +7,6 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/stream/stream_extension.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class ChatMessageBloc extends DisposableOwner
@@ -70,7 +69,7 @@ abstract class ChatMessageBloc extends DisposableOwner
 
   @override
   Stream<IChatMessage> get chatMessageStream =>
-      _chatMessageSubject.stream.mapToNotNull().distinct();
+      _chatMessageSubject.stream..distinct();
 
   @override
   IAccount get account => chatMessage.account;

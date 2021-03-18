@@ -27,7 +27,6 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:fedi/stream/stream_extension.dart';
 
 class MediaAttachmentDetailsPage extends StatefulWidget {
   final List<IPleromaMediaAttachment?>? mediaAttachments;
@@ -60,8 +59,8 @@ class _MediaAttachmentDetailsPageState
 
   BehaviorSubject<IPleromaMediaAttachment?> selectedMediaAttachmentSubject;
 
-  Stream<IPleromaMediaAttachment> get selectedMediaAttachmentStream =>
-      selectedMediaAttachmentSubject.stream.mapToNotNull();
+  Stream<IPleromaMediaAttachment?> get selectedMediaAttachmentStream =>
+      selectedMediaAttachmentSubject.stream;
 
   IPleromaMediaAttachment? get selectedMediaAttachment =>
       selectedMediaAttachmentSubject.value;

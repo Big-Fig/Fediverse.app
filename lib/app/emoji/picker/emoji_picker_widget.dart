@@ -57,14 +57,14 @@ class EmojiPickerWidget extends StatelessWidget {
               listen: false),
         );
 
-        var allCategoriesBlocs = <ICustomEmojiPickerCategoryBloc?>[
+        var allCategoriesBlocs = <ICustomEmojiPickerCategoryBloc>[
           emojiPickerRecentCategoryBloc,
-          if (useImageEmoji) customCategoryBloc,
+          if (useImageEmoji) customCategoryBloc!,
           ...CustomEmojiPickerCodeCategoryBloc.allCategories,
         ];
 
         allCategoriesBlocs.forEach((bloc) {
-          bloc!.performAsyncInit();
+          bloc.performAsyncInit();
         });
         var customEmojiPickerBloc = CustomEmojiPickerBloc(
             selectedCategory: allCategoriesBlocs.first,
@@ -76,7 +76,7 @@ class EmojiPickerWidget extends StatelessWidget {
         }));
 
         customEmojiPickerBloc.addDisposable(custom: () {
-          allCategoriesBlocs.forEach((categoryBloc) => categoryBloc!.dispose());
+          allCategoriesBlocs.forEach((categoryBloc) => categoryBloc.dispose());
         });
         return customEmojiPickerBloc;
       },

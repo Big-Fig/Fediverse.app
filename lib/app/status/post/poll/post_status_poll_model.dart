@@ -114,7 +114,7 @@ extension IPostStatusPollExtension on IPostStatusPoll {
   }
 }
 
-extension PleromaPostStatusPollExtension on PleromaPostStatusPoll {
+extension PleromaPostStatusPollExtension on IPleromaPostStatusPoll {
   PostStatusPoll toPostStatusPoll() {
     return PostStatusPoll(
       durationLength: expiresInSeconds.toDuration(),

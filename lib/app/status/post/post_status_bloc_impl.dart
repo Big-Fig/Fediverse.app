@@ -747,7 +747,7 @@ abstract class PostStatusBloc extends PostMessageBloc
               ),
             )
             .toList(),
-        poll: _calculatePostStatusPoll() as PostStatusPoll?,
+        poll: _calculatePostStatusPoll()?.toPostStatusPoll(),
         inReplyToPleromaStatus:
             calculateInReplyToStatusField()?.toPleromaStatus(),
         inReplyToConversationId: initialData.inReplyToConversationId,

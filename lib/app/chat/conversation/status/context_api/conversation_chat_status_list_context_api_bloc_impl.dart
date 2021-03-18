@@ -54,9 +54,9 @@ class ConversationChatStatusListContextApiBloc
       statusRemoteId: statusToFetchContext!.remoteId,
     );
 
-    var remoteStatuses = <PleromaStatus>[
-      ...remoteContext.descendants as Iterable<PleromaStatus>,
-      ...remoteContext.ancestors as Iterable<PleromaStatus>,
+    var remoteStatuses = <IPleromaStatus>[
+      ...remoteContext.descendants,
+      ...remoteContext.ancestors,
     ];
 
     await statusRepository.upsertRemoteStatuses(

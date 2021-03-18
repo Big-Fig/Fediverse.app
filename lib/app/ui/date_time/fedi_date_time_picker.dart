@@ -356,6 +356,7 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
               child: CupertinoPicker.builder(
                   key: key,
                   scrollController:
+                      // todo : check
                       scrollController as FixedExtentScrollController?,
                   itemExtent: theme.itemHeight,
                   onSelectedItemChanged: (int index) {

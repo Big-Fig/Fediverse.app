@@ -20,7 +20,7 @@ class PleromaSearchService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;

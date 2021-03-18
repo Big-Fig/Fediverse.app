@@ -10,7 +10,6 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
@@ -196,8 +195,7 @@ class ScheduledStatusBloc extends DisposableOwner
   }) =>
       ScheduledStatusBloc(
         pleromaAuthStatusService:
-            IPleromaStatusService.of(context, listen: false)
-                as IPleromaAuthStatusService,
+            IPleromaAuthStatusService.of(context, listen: false),
         pleromaScheduledStatusService:
             IPleromaScheduledStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),

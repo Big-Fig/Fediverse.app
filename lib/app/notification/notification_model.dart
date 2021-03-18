@@ -161,7 +161,7 @@ class DbNotificationPopulatedWrapper implements INotification {
             remoteId: remoteId ?? this.remoteId,
             unread: unread ?? this.unread,
             createdAt: createdAt ?? this.createdAt,
-            type: type as String? ?? this.type,
+            type: type?.toJsonValue() ?? this.type,
             pleroma: pleroma ?? this.pleroma,
             emoji: emoji ?? this.emoji,
             dismissed: dismissed ?? this.dismissed,

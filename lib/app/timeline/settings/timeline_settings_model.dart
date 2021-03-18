@@ -246,7 +246,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           excludeVisibilitiesStrings: excludeVisibilities
               .map((excludeVisibility) => excludeVisibility.toJsonValue())
               .toList(),
-          onlyInRemoteList: onlyInRemoteList as PleromaList?,
+          onlyInRemoteList: onlyInRemoteList?.toPleromaList(),
           withRemoteHashtag: null,
           replyVisibilityFilterString: null,
           onlyFromRemoteAccount: null,
@@ -274,7 +274,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyInRemoteList: null,
           withRemoteHashtag: null,
           replyVisibilityFilterString: null,
-          onlyFromRemoteAccount: onlyFromRemoteAccount as PleromaAccount?,
+          onlyFromRemoteAccount: onlyFromRemoteAccount?.toPleromaAccount(),
           onlyPinned: onlyPinned,
           excludeReblogs: excludeReblogs,
           webSocketsUpdates: websocketsUpdates,

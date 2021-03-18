@@ -4,7 +4,6 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/stream/stream_extension.dart';
 import 'package:rxdart/rxdart.dart';
 
 class StatusEmojiReactionBloc extends DisposableOwner
@@ -17,7 +16,7 @@ class StatusEmojiReactionBloc extends DisposableOwner
 
   @override
   Stream<IPleromaStatusEmojiReaction> get emojiReactionStream =>
-      emojiReactionSubject.stream.mapToNotNull();
+      emojiReactionSubject.stream;
 
   @override
   IPleromaStatusEmojiReaction get emojiReaction => emojiReactionSubject.value!;

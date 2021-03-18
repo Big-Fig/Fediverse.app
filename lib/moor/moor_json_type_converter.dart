@@ -14,6 +14,7 @@ abstract class JsonDatabaseConverter<T> extends TypeConverter<T, String> {
     if (fromDb == null) {
       return null;
     }
+    // todo: check
     return fromJson(json.decode(fromDb) as Map<String, dynamic>?);
   }
 
@@ -64,6 +65,7 @@ class StringListDatabaseConverter extends TypeConverter<List<String>, String> {
       return null;
     }
     var list = json.decode(fromDb) as List;
+    // todo: rework
     return list.map((i) => i as String).toList();
   }
 

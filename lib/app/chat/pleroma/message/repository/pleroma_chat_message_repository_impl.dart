@@ -75,13 +75,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       remoteId,
     );
 
-    if (dbChatMessagePopulated != null) {
-      return mapDataClassToItem(
-        dbChatMessagePopulated,
-      );
-    } else {
-      return null;
-    }
+    return dbChatMessagePopulated?.toDbChatMessagePopulatedWrapper();
   }
 
   @override
@@ -100,12 +94,13 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    return dao
-        .typedResultListToPopulated(
-          await query.get(),
+    var typedResultList = await query.get();
+
+    return typedResultList
+        .toDbChatMessagePopulatedList(
+          dao: dao,
         )
-        .map(mapDataClassToItem)
-        .toList();
+        .toDbChatMessagePopulatedWrappers();
   }
 
   @override
@@ -122,13 +117,17 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
     );
 
     Stream<List<DbChatMessagePopulated>> stream = query.watch().map(
-          dao.typedResultListToPopulated,
+          (typedResultList) => typedResultList.toDbChatMessagePopulatedList(
+            dao: dao,
+          ),
         );
-    return stream.map((list) => list
-        .map(
-          mapDataClassToItem,
-        )
-        .toList());
+    return stream.map(
+      (list) => list
+          .map(
+            (list) => list.toDbChatMessagePopulatedWrapper(),
+          )
+          .toList(),
+    );
   }
 
   JoinedSelectStatement createQuery({
@@ -210,7 +209,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future upsertAll(Iterable<DbChatMessage> items) async {
+  Future upsertAll(List<DbChatMessage> items) async {
     // insertOrReplace
     // if a row with the same primary or unique key already
     // exists, it will be deleted and re-created with the row being inserted.
@@ -222,7 +221,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future insertAll(Iterable<DbChatMessage> items) async {
+  Future insertAll(List<DbChatMessage> items) async {
     // if item already exist rollback changes
     // call this only if you sure that items not exist instead user upsertAll
     return await dao.insertAll(
@@ -242,35 +241,40 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<IPleromaChatMessage> findById(int id) async =>
-      mapDataClassToItem(await dao.findById(id));
+  Future<IPleromaChatMessage?> findById(int id) async =>
+      (await dao.findById(id))?.toDbChatMessagePopulatedWrapper();
 
   @override
-  Stream<DbChatMessagePopulatedWrapper> watchById(int id) =>
-      (dao.watchById(id)).map(mapDataClassToItem);
+  Stream<DbChatMessagePopulatedWrapper?> watchById(int id) =>
+      (dao.watchById(id)).map(
+        (item) => item?.toDbChatMessagePopulatedWrapper(),
+      );
 
   @override
-  Stream<IPleromaChatMessage> watchByRemoteId(String? remoteId) {
+  Stream<IPleromaChatMessage?> watchByRemoteId(String remoteId) {
     _logger.finest(() => "watchByRemoteId $remoteId");
-    return (dao.watchByRemoteId(remoteId)).map(mapDataClassToItem);
+    return (dao.watchByRemoteId(remoteId)).map(
+      (item) => item?.toDbChatMessagePopulatedWrapper(),
+    );
   }
 
   @override
-  Future<IPleromaChatMessage> findByOldPendingRemoteId(
+  Future<IPleromaChatMessage?> findByOldPendingRemoteId(
     String oldPendingRemoteId,
   ) async {
     _logger.finest(() => "findByOldPendingRemoteId $oldPendingRemoteId");
-    return mapDataClassToItem(
-        await dao.findByOldPendingRemoteId(oldPendingRemoteId));
+    return (await dao.findByOldPendingRemoteId(oldPendingRemoteId))
+        ?.toDbChatMessagePopulatedWrapper();
   }
 
   @override
-  Stream<IPleromaChatMessage> watchByOldPendingRemoteId(
+  Stream<IPleromaChatMessage?> watchByOldPendingRemoteId(
     String? oldPendingRemoteId,
   ) {
     _logger.finest(() => "watchByOldPendingRemoteId $oldPendingRemoteId");
-    return (dao.watchByOldPendingRemoteId(oldPendingRemoteId))
-        .map(mapDataClassToItem);
+    return dao.watchByOldPendingRemoteId(oldPendingRemoteId).map(
+          (item) => item?.toDbChatMessagePopulatedWrapper(),
+        );
   }
 
   @override
@@ -279,14 +283,16 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<DbChatMessagePopulatedWrapper>> getAll() async =>
-      (await dao.findAll()).map(mapDataClassToItem).toList();
+      (await dao.findAll()).toDbChatMessagePopulatedWrappers();
 
   @override
   Future<int> countAll() => dao.countAll().getSingle();
 
   @override
   Stream<List<DbChatMessagePopulatedWrapper>> watchAll() =>
-      (dao.watchAll()).map((list) => list.map(mapDataClassToItem).toList());
+      (dao.watchAll()).map(
+        (items) => items.toDbChatMessagePopulatedWrappers(),
+      );
 
   @override
   Future<int> insert(DbChatMessage item) => dao.insert(item);
@@ -300,13 +306,6 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       dbChatMessage = dbChatMessage.copyWith(id: id);
     }
     return dao.replace(dbChatMessage);
-  }
-
-  DbChatMessagePopulatedWrapper mapDataClassToItem(
-      DbChatMessagePopulated dataClass) {
-    return DbChatMessagePopulatedWrapper(
-      dbChatMessagePopulated: dataClass,
-    );
   }
 
   Insertable<DbChatMessage>? mapItemToDataClass(
@@ -330,7 +329,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbChatMessagePopulatedWrapper> getChatMessage({
+  Future<DbChatMessagePopulatedWrapper?> getChatMessage({
     required PleromaChatMessageRepositoryFilters? filters,
     PleromaChatMessageOrderingTermData? orderingTermData =
         PleromaChatMessageOrderingTermData.createdAtDesc,
@@ -341,15 +340,13 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    return mapDataClassToItem(
-      dao.typedResultToPopulated(
-        await query.getSingle(),
-      ),
-    );
+    return (await query.getSingleOrNull())
+        ?.toDbChatMessagePopulated(dao: dao)
+        .toDbChatMessagePopulatedWrapper();
   }
 
   @override
-  Stream<DbChatMessagePopulatedWrapper> watchChatMessage({
+  Stream<DbChatMessagePopulatedWrapper?> watchChatMessage({
     required PleromaChatMessageRepositoryFilters? filters,
     PleromaChatMessageOrderingTermData? orderingTermData =
         PleromaChatMessageOrderingTermData.createdAtDesc,
@@ -360,20 +357,16 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    Stream<DbChatMessagePopulated> stream = query.watchSingle().map(
-          (typedResult) => dao.typedResultToPopulated(
-            typedResult,
-          ),
+    Stream<DbChatMessagePopulated?> stream = query.watchSingleOrNull().map(
+          (typedResult) => typedResult?.toDbChatMessagePopulated(dao: dao),
         );
     return stream.map(
-      (dbChatMessage) => mapDataClassToItem(
-        dbChatMessage,
-      ),
+      (item) => item?.toDbChatMessagePopulatedWrapper(),
     );
   }
 
   @override
-  Future<IPleromaChatMessage> getChatLastChatMessage({
+  Future<IPleromaChatMessage?> getChatLastChatMessage({
     required IPleromaChat chat,
     bool onlyPendingStatePublishedOrNull = false,
   }) =>
@@ -390,7 +383,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       );
 
   @override
-  Stream<IPleromaChatMessage> watchChatLastChatMessage({
+  Stream<IPleromaChatMessage?> watchChatLastChatMessage({
     required IPleromaChat chat,
     bool onlyPendingStatePublishedOrNull = false,
   }) =>
@@ -422,10 +415,9 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
     );
     dao.addGroupByChatId(query);
 
-    var chatMessages = dao
-        .typedResultListToPopulated(await query.get())
-        .map(mapDataClassToItem)
-        .toList();
+    var chatMessages = (await query.get())
+        .toDbChatMessagePopulatedList(dao: dao)
+        .toDbChatMessagePopulatedWrappers();
 
     Map<IPleromaChat, IPleromaChatMessage?> result = {};
 
@@ -473,5 +465,19 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }) =>
       dao.markAsHiddenLocallyOnDevice(
         localId: chatMessageLocalId,
+      );
+}
+
+extension DbChatMessagePopulatedListExtension on List<DbChatMessagePopulated> {
+  List<DbChatMessagePopulatedWrapper> toDbChatMessagePopulatedWrappers() => map(
+        (dbChatMessagePopulated) =>
+            dbChatMessagePopulated.toDbChatMessagePopulatedWrapper(),
+      ).toList();
+}
+
+extension DbChatMessagePopulatedExtension on DbChatMessagePopulated {
+  DbChatMessagePopulatedWrapper toDbChatMessagePopulatedWrapper() =>
+      DbChatMessagePopulatedWrapper(
+        dbChatMessagePopulated: this,
       );
 }

@@ -16,7 +16,6 @@ import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/id/pleroma_fake_id_helper.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/stream/stream_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -25,7 +24,7 @@ final _logger = Logger("pleroma_chat_bloc_impl.dart");
 
 class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   // ignore: close_sinks
-  final BehaviorSubject<IPleromaChat?> _chatSubject;
+  final BehaviorSubject<IPleromaChat> _chatSubject;
 
   // ignore: close_sinks
   final BehaviorSubject<IPleromaChatMessage?> _lastMessageSubject;
@@ -38,8 +37,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   IPleromaChat get chat => _chatSubject.value!;
 
   @override
-  Stream<IPleromaChat> get chatStream =>
-      _chatSubject.stream.mapToNotNull().distinct();
+  Stream<IPleromaChat> get chatStream => _chatSubject.stream.distinct();
 
   @override
   IPleromaChatMessage? get lastChatMessage => _lastMessageSubject.value;
@@ -96,8 +94,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   void watchLocalRepositoryForUpdates() {
     addDisposable(
-      streamSubscription:
-          chatRepository.watchByRemoteId(chat.remoteId).listen(
+      streamSubscription: chatRepository.watchByRemoteId(chat.remoteId).listen(
         (updatedChat) {
           if (updatedChat != null) {
             _chatSubject.add(updatedChat);
@@ -305,8 +302,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         createdAt: createdAt,
         content: pleromaChatMessageSendData.content,
         emojis: null,
-        mediaAttachment: pleromaChatMessageSendDataMediaAttachment
-            as PleromaMediaAttachment?,
+        mediaAttachment: pleromaChatMessageSendDataMediaAttachment?.toPleromaMediaAttachment(),
         card: null,
         pendingState: PendingState.pending,
         oldPendingRemoteId: fakeUniqueRemoteRemoteId,

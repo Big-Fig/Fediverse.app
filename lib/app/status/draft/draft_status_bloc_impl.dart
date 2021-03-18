@@ -9,7 +9,6 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -87,8 +86,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   }) =>
       DraftStatusBloc(
         pleromaAuthStatusService:
-            IPleromaStatusService.of(context, listen: false)
-                as IPleromaAuthStatusService,
+            IPleromaAuthStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         draftStatusRepository:
             IDraftStatusRepository.of(context, listen: false),

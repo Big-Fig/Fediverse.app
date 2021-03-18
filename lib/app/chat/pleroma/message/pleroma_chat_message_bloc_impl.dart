@@ -9,7 +9,6 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
-import 'package:fedi/stream/stream_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -39,7 +38,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
         ),
       );
 
-  final BehaviorSubject<IPleromaChatMessage?> _chatMessageSubject;
+  final BehaviorSubject<IPleromaChatMessage> _chatMessageSubject;
 
   final IPleromaChatService pleromaChatService;
   final IPleromaAccountService pleromaAccountService;
@@ -105,7 +104,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
 
   @override
   Stream<IPleromaChatMessage> get chatMessageStream =>
-      _chatMessageSubject.stream.mapToNotNull().distinct();
+      _chatMessageSubject.stream.distinct();
 
   @override
   IAccount get account => chatMessage.account;

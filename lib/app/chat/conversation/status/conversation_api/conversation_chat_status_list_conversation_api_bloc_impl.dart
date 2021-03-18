@@ -26,10 +26,11 @@ class ConversationChatStatusListConversationApiBloc
   IPleromaApi get pleromaApi => pleromaConversationService;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {required int? limit,
-      required IStatus? newerThan,
-      required IStatus? olderThan}) async {
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IStatus? newerThan,
+    required IStatus? olderThan,
+  }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t conversation = $conversation"
         "\t newerThan = $newerThan"
@@ -45,16 +46,11 @@ class ConversationChatStatusListConversationApiBloc
       ),
     );
 
-    if (remoteStatuses != null) {
-      await statusRepository.upsertRemoteStatuses(remoteStatuses,
-          listRemoteId: null, conversationRemoteId: conversation!.remoteId);
-
-      return true;
-    } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "statuses is null");
-      return false;
-    }
+    await statusRepository.upsertRemoteStatuses(
+      remoteStatuses,
+      listRemoteId: null,
+      conversationRemoteId: conversation!.remoteId,
+    );
   }
 
   static ConversationChatStatusListConversationApiBloc createFromContext(

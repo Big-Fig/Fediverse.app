@@ -13,7 +13,6 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
@@ -96,7 +95,7 @@ class SelectAccountListBloc extends DisposableOwner
       if (following) {
         await accountRepository.addAccountFollowings(
           accountRemoteId: myAccountBloc.account.remoteId,
-          followings: remoteAccounts as List<PleromaAccount>,
+          followings: remoteAccounts.toPleromaAccounts(),
         );
       }
     } else {
@@ -114,7 +113,7 @@ class SelectAccountListBloc extends DisposableOwner
         );
         await accountRepository.addAccountFollowings(
           accountRemoteId: myAccountBloc.account.remoteId,
-          followings: remoteAccounts as List<PleromaAccount>,
+          followings: remoteAccounts.toPleromaAccounts(),
         );
       }
     }
@@ -124,7 +123,6 @@ class SelectAccountListBloc extends DisposableOwner
       conversationRemoteId: null,
       chatRemoteId: null,
     );
-
   }
 
   Future<List<IPleromaAccount>> defaultEmptySearchRemoteAccountListLoader({
@@ -238,8 +236,7 @@ class SelectAccountListBloc extends DisposableOwner
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         pleromaAuthAccountService:
-            IPleromaAccountService.of(context, listen: false)
-                as IPleromaAuthAccountService,
+            IPleromaAuthAccountService.of(context, listen: false),
         customEmptySearchRemoteAccountListLoader: customRemoteAccountListLoader,
         customEmptySearchLocalAccountListLoader: customLocalAccountListLoader,
         followingsOnly: followingsOnly,

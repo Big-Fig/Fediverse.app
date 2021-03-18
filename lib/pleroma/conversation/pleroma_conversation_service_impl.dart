@@ -23,7 +23,7 @@ class PleromaConversationService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -40,7 +40,7 @@ class PleromaConversationService extends DisposableOwner
   PleromaConversationService({required this.restService});
 
   @override
-  Future<List<IPleromaStatus>?> getConversationStatuses({
+  Future<List<IPleromaStatus>> getConversationStatuses({
     required String? conversationRemoteId,
     IPleromaPaginationRequest? pagination,
   }) async {
@@ -61,7 +61,7 @@ class PleromaConversationService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaConversationException(
         statusCode: httpResponse.statusCode,
@@ -71,7 +71,7 @@ class PleromaConversationService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaConversation?> getConversation({
+  Future<IPleromaConversation> getConversation({
     required String? conversationRemoteId,
   }) async {
     var request = RestRequest.get(
@@ -90,7 +90,7 @@ class PleromaConversationService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaConversationException(
         statusCode: httpResponse.statusCode,

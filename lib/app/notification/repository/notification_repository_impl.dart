@@ -271,7 +271,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future upsertAll(Iterable<DbNotification> items) async {
+  Future upsertAll(List<DbNotification> items) async {
     // insertOrReplace
     // if a row with the same primary or unique key already
     // exists, it will be deleted and re-created with the row being inserted.
@@ -280,7 +280,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future insertAll(Iterable<DbNotification> items) async {
+  Future insertAll(List<DbNotification> items) async {
     // if item already exist rollback changes
     // call this only if you sure that items not exist instead user upsertAll
     return await dao.insertAll(items, InsertMode.insertOrRollback);

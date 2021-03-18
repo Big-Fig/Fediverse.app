@@ -111,6 +111,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
       listeners[key] = [];
     }
 
+    // todo: rework
     listeners[key]!.add(onChanged as dynamic Function(dynamic));
 
     return CustomDisposable(() async {

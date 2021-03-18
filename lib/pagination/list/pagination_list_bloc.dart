@@ -14,15 +14,15 @@ abstract class IPaginationListBloc<TPage extends PaginationPage<TItem?>?, TItem>
 
   int? get itemsCountPerPage;
 
-  List<TPage>? get sortedPages;
+  List<TPage> get sortedPages;
 
   Stream<List<TPage>> get sortedPagesStream;
 
-  List<TItem>? get items;
+  List<TItem> get items;
 
-  Stream<List<TItem>?> get itemsStream;
+  Stream<List<TItem>> get itemsStream;
 
-  Stream<List<TItem>?> get itemsDistinctStream;
+  Stream<List<TItem>> get itemsDistinctStream;
 
   Future<FediListSmartRefresherLoadingState> refreshWithoutController();
 

@@ -9,7 +9,7 @@ import 'package:rxdart/rxdart.dart';
 class ChatSelectionItemBloc extends DisposableOwner
     implements IChatSelectionItemBloc {
   final IChatSelectionBloc chatSelectionBloc;
-  final IChatMessage? chatMessage;
+  final IChatMessage chatMessage;
 
   final BehaviorSubject<bool> isSelectionPossibleSubject;
 
