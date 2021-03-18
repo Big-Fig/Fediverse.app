@@ -158,11 +158,11 @@ class ThreadPostStatusBloc extends PostStatusBloc
     IStatus? result;
     if (originInReplyToStatus != null && originInReplyToStatusCanceled!) {
       var statuses = statusThreadBloc.statuses;
-      if (mentionedAccts?.isNotEmpty == true) {
+      if (mentionedAccts.isNotEmpty == true) {
         IStatus? statusToReply;
-        for (var acct in mentionedAccts!) {
+        for (var acct in mentionedAccts) {
           statusToReply = statuses!.reversed.firstWhere(
-              (status) => status!.account!.acct == acct,
+              (status) => status!.account.acct == acct,
               orElse: () => null);
           if (statusToReply != null) {
             _logger.finest(() => "calculateInReplyToStatusRemoteId "

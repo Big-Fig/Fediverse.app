@@ -67,7 +67,7 @@ class _PostMessageMediaAttachmentsWidget extends StatelessWidget {
           postMessageBloc.mediaAttachmentsBloc.mediaAttachmentBlocsStream,
           (bool isAnySelectedActionVisible,
               List<IUploadMediaAttachmentBloc>? mediaAttachmentBlocs) {
-        isAnySelectedActionVisible = isAnySelectedActionVisible ?? false;
+        isAnySelectedActionVisible = isAnySelectedActionVisible;
         var mediaBlocs = mediaAttachmentBlocs!.where((bloc) => bloc.isMedia);
 
         var nonMediaBlocs = mediaAttachmentBlocs.where((bloc) => !bloc.isMedia);

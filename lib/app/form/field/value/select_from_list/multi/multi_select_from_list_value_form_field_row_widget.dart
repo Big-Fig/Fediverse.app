@@ -205,7 +205,7 @@ class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
                           ),
                         ),
                       )
-                      ?.toList() ??
+                      .toList() ??
                   [],
             );
           },

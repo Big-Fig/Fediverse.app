@@ -99,7 +99,7 @@ class _HashtagPageOpenInBrowserAction extends StatelessWidget {
       onPressed: () {
         UrlHelper.handleUrlClickOnLocalInstanceLocation(
           context: context,
-          url: hashtag.url!,
+          url: hashtag.url,
         );
       },
     );

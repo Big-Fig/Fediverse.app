@@ -40,7 +40,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
     addDisposable(
       disposable: webSocketsHandlerManagerBloc.listenAccountChannel(
         listenType: WebSocketsListenType.foreground,
-        accountId: account!.remoteId,
+        accountId: account.remoteId,
         notification: false,
       ),
     );
@@ -54,7 +54,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    var isAccountIsMe = myAccountBloc.checkAccountIsMe(account!);
+    var isAccountIsMe = myAccountBloc.checkAccountIsMe(account);
     if (isAccountIsMe) {
       filters = [];
     } else {

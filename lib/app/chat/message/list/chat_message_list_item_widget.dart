@@ -224,7 +224,7 @@ class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
         myAccountBloc.checkIsChatMessageFromMe(messageBloc.chatMessage);
 
     var isLastInMinuteGroup = chatMessageListItem.isLastInMinuteGroup;
-    var isHaveTextContent = messageBloc?.content?.isNotEmpty == true;
+    var isHaveTextContent = messageBloc.content?.isNotEmpty == true;
     return Container(
       decoration: BoxDecoration(
         color: isHaveTextContent
@@ -284,7 +284,7 @@ class _ChatMessageListItemMetadataCreatedAtWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2.0),
       child: Text(
-        TimeOfDay.fromDateTime(messageBloc.createdAt!).format(context),
+        TimeOfDay.fromDateTime(messageBloc.createdAt).format(context),
         style: IFediUiTextTheme.of(context).smallShortGrey,
       ),
     );
@@ -401,7 +401,7 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var contentWithEmojis = snapshot.data;
 
-        if (contentWithEmojis?.text?.isNotEmpty == true) {
+        if (contentWithEmojis?.text.isNotEmpty == true) {
           var fediUiColorTheme = IFediUiColorTheme.of(context);
           var textScaleFactor = MediaQuery.of(context).textScaleFactor;
           return Provider<EmojiText?>.value(
@@ -435,7 +435,7 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
                     (url) {
                       UrlHelper.handleUrlClickOnLocalInstanceLocation(
                         context: context,
-                        url: url!,
+                        url: url,
                       );
                     },
                   ),

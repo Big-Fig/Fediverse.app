@@ -30,9 +30,8 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
     required bool mergeNewItemsImmediately,
     required this.chatMessageCachedListService,
     required this.conversationChatBloc,
-    required
-        ICachedPaginationBloc<TPage, IConversationChatMessage>
-            cachedPaginationBloc,
+    required ICachedPaginationBloc<TPage, IConversationChatMessage>
+        cachedPaginationBloc,
   }) : super(
           mergeNewItemsImmediately: mergeNewItemsImmediately,
           paginationBloc: cachedPaginationBloc,
@@ -70,27 +69,26 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
 
   @override
   Stream<List<IConversationChatMessage>> get itemsStream => Rx.combineLatest2(
-    super.itemsStream,
-    hiddenItemsStream,
-    excludeHiddenItems,
-  );
+        super.itemsStream,
+        hiddenItemsStream,
+        excludeHiddenItems,
+      );
 
   List<IConversationChatMessage> excludeHiddenItems(
-      List<IConversationChatMessage> superItems,
-      List<IConversationChatMessage?>? hiddenItems,
-      ) {
+    List<IConversationChatMessage> superItems,
+    List<IConversationChatMessage?>? hiddenItems,
+  ) {
     if (hiddenItems!.isEmpty) {
       return superItems;
     }
     superItems.removeWhere((currentItem) =>
-    hiddenItems.firstWhere(
+        hiddenItems.firstWhere(
             (hiddenItem) => isItemsEqual(hiddenItem!, currentItem),
-        orElse: () => null) !=
+            orElse: () => null) !=
         null);
 
     return superItems;
   }
-  
 
   @override
   Stream<List<IConversationChatMessage>> watchItemsNewerThanItem(
@@ -102,20 +100,18 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
 
   @override
   int compareItemsToSort(
-    IConversationChatMessage a,
-    IConversationChatMessage b,
+    IConversationChatMessage? a,
+    IConversationChatMessage? b,
   ) {
     if (a?.createdAt == null && b?.createdAt == null) {
       return 0;
-    }
-
-    if (a?.createdAt != null && b?.createdAt == null) {
+    } else if (a?.createdAt != null && b?.createdAt == null) {
       return 1;
-    }
-    if (a?.createdAt == null && b?.createdAt != null) {
+    } else if (a?.createdAt == null && b?.createdAt != null) {
       return -1;
+    } else {
+      return a!.createdAt.compareTo(b!.createdAt);
     }
-    return a.createdAt!.compareTo(b.createdAt!);
   }
 
   @override
@@ -141,7 +137,8 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
               IConversationChatMessage>>(
         context,
         listen: false,
-      ) as ICachedPaginationBloc<CachedPaginationPage<IConversationChatMessage>, IConversationChatMessage>,
+      ) as ICachedPaginationBloc<CachedPaginationPage<IConversationChatMessage>,
+          IConversationChatMessage>,
       conversationChatBloc: IConversationChatBloc.of(
         context,
         listen: false,

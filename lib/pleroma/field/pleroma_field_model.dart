@@ -88,7 +88,7 @@ class PleromaField implements IPleromaField {
       try {
         var parsed = HtmlParser.parseHTML(value!);
         var allLinkElements = parsed.getElementsByTagName("a");
-        if (allLinkElements?.isNotEmpty == true) {
+        if (allLinkElements.isNotEmpty == true) {
           return allLinkElements.first.attributes["href"];
         } else {
           return value;

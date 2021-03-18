@@ -70,7 +70,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   }
 
   Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
-    PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body!;
+    PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
 
     var isForCurrentInstance = currentInstance.isInstanceWithHostAndAcct(
       host: pleromaPushMessage.server,

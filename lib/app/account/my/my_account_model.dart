@@ -155,7 +155,7 @@ class PleromaMyAccountWrapper extends IMyAccount {
 
   @override
   bool get discoverable =>
-      pleromaAccount?.discoverable ?? source?.pleroma?.discoverable ?? false;
+      pleromaAccount.discoverable ?? source?.pleroma?.discoverable ?? false;
 
   @override
   String get acct => pleromaAccount.acct;

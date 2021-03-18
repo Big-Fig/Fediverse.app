@@ -11,7 +11,7 @@ PleromaMention _$PleromaMentionFromJson(Map<String, dynamic> json) {
     acct: json['acct'] as String,
     id: json['id'] as String,
     url: json['url'] as String,
-    username: json['username'] as String,
+    username: json['username'] as String?,
   );
 }
 

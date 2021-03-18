@@ -75,7 +75,7 @@ class PleromaFilterService extends DisposableOwner
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],
       ),
-    )!;
+    );
 
     return parseFilterListResponse(httpResponse);
   }
@@ -91,7 +91,7 @@ class PleromaFilterService extends DisposableOwner
           filterRemoteId,
         ),
       ),
-    )!;
+    );
 
     return parseFilterResponse(httpResponse);
   }
@@ -123,7 +123,7 @@ class PleromaFilterService extends DisposableOwner
           postPleromaFilter,
         ),
       ),
-    )!;
+    );
 
     return parseFilterResponse(httpResponse);
   }
@@ -143,7 +143,7 @@ class PleromaFilterService extends DisposableOwner
           postPleromaFilter,
         ),
       ),
-    )!;
+    );
 
     return parseFilterResponse(httpResponse);
   }

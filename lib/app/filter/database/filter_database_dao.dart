@@ -122,7 +122,7 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
   SimpleSelectStatement<$DbFiltersTable, DbFilter> addContextTypesWhere(
       SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
       List<MastodonFilterContextType> contextTypes) {
-    assert(contextTypes?.isNotEmpty == true);
+    assert(contextTypes.isNotEmpty == true);
 
     List<String> contextTypesStrings = contextTypes
         .map(

@@ -20,35 +20,37 @@ class PleromaAccountPublicService extends DisposableOwner
     implements IPleromaAccountPublicService {
   final accountRelativeUrlPath = "/api/v1/accounts/";
   @override
-  final IPleromaRestService? restService;
+  final IPleromaRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
-      restService!.pleromaApiStateStream;
+      restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState? get pleromaApiState => restService!.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
-  Stream<bool> get isApiReadyToUseStream => restService!.isApiReadyToUseStream;
+  Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
 
   @override
-  bool get isApiReadyToUse => restService!.isApiReadyToUse;
+  bool get isApiReadyToUse => restService.isApiReadyToUse;
 
   @override
-  bool get isConnected => restService!.isConnected;
+  bool get isConnected => restService.isConnected;
 
   @override
-  Stream<bool> get isConnectedStream => restService!.isConnectedStream;
+  Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaAccountPublicService({required this.restService});
+  PleromaAccountPublicService({
+    required this.restService,
+  });
 
   @override
   Future<PleromaOAuthToken> registerAccount({
     required IPleromaAccountRegisterRequest request,
     required String? appAccessToken,
   }) async {
-    var httpResponse = await restService!.sendHttpRequest(
+    var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: urlPath.join(accountRelativeUrlPath),
         headers: {

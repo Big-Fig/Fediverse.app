@@ -241,7 +241,7 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
   void _onNotificationClick(BuildContext context) async {
     var notificationBloc = INotificationBloc.of(context, listen: false);
 
-    await notificationBloc.notification!.goToRelatedPage(context);
+    await notificationBloc.notification.goToRelatedPage(context);
   }
 
   void _onNotificationLongPress(BuildContext context) {
@@ -314,7 +314,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
       case PleromaNotificationType.pleromaEmojiReaction:
         rawText = S.of(context).app_notification_header_pleromaEmojiReaction(
-              notificationBloc.notification!.emoji!,
+              notificationBloc.notification.emoji!,
             );
         break;
       case PleromaNotificationType.pleromaChatMention:
@@ -336,10 +336,10 @@ class _NotificationListItemContentWidget extends StatelessWidget {
           statusText = "";
         }
 
-        var isHaveEmoji = notificationBloc.notification!.emoji != null;
+        var isHaveEmoji = notificationBloc.notification.emoji != null;
         String? emojiText;
         if (isHaveEmoji) {
-          emojiText = notificationBloc.notification!.emoji;
+          emojiText = notificationBloc.notification.emoji;
         } else {
           emojiText = "";
         }

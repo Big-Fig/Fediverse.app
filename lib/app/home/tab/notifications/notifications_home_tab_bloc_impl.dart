@@ -23,7 +23,7 @@ class NotificationsHomeTabBloc extends HomeTabBloc
   Future markAllAsRead() async {
     await notificationRepository.markAllAsRead();
 
-    if (pleromaNotificationService.isPleroma!) {
+    if (pleromaNotificationService.isPleroma) {
       var newestNotification = await notificationRepository.getNewest();
       if (newestNotification != null) {
         await pleromaNotificationService.markAsReadList(

@@ -26,8 +26,8 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
     required bool mergeNewItemsImmediately,
     required this.chatMessageCachedListService,
     required this.pleromaChatBloc,
-    required
-        ICachedPaginationBloc<TPage, IPleromaChatMessage> cachedPaginationBloc,
+    required ICachedPaginationBloc<TPage, IPleromaChatMessage>
+        cachedPaginationBloc,
   }) : super(
           mergeNewItemsImmediately: mergeNewItemsImmediately,
           paginationBloc: cachedPaginationBloc,
@@ -92,18 +92,16 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
   }
 
   @override
-  int compareItemsToSort(IPleromaChatMessage a, IPleromaChatMessage b) {
+  int compareItemsToSort(IPleromaChatMessage? a, IPleromaChatMessage? b) {
     if (a?.createdAt == null && b?.createdAt == null) {
       return 0;
-    }
-
-    if (a?.createdAt != null && b?.createdAt == null) {
+    } else if (a?.createdAt != null && b?.createdAt == null) {
       return 1;
-    }
-    if (a?.createdAt == null && b?.createdAt != null) {
+    } else if (a?.createdAt == null && b?.createdAt != null) {
       return -1;
+    } else {
+      return a!.createdAt.compareTo(b!.createdAt);
     }
-    return a.createdAt!.compareTo(b.createdAt!);
   }
 
   @override
@@ -126,7 +124,8 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
               IPleromaChatMessage>>(
         context,
         listen: false,
-      ) as ICachedPaginationBloc<CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage>,
+      ) as ICachedPaginationBloc<CachedPaginationPage<IPleromaChatMessage>,
+          IPleromaChatMessage>,
       pleromaChatBloc: IPleromaChatBloc.of(
         context,
         listen: false,

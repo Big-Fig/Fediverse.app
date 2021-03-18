@@ -25,7 +25,7 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
         );
 
   @override
-  IPleromaApi get pleromaApi => statusListService!.pleromaApi;
+  IPleromaApi get pleromaApi => statusListService.pleromaApi;
 
   @override
   Future<List<IStatus>> loadLocalItems({

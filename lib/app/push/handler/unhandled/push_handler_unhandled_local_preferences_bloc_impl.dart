@@ -28,10 +28,10 @@ class PushHandlerUnhandledLocalPreferencesBloc
   Future addUnhandledMessage(PushHandlerMessage pushHandlerMessage) async {
     var pleromaUnhandledList = value!;
 
-    pleromaUnhandledList.messages!.add(pushHandlerMessage);
+    pleromaUnhandledList.messages.add(pushHandlerMessage);
     _logger.finest(() => "loadUnhandledMessagesForInstance \n"
         "\t pushHandlerMessage = $pushHandlerMessage"
-        "\t pleromaUnhandledList.messages = ${pleromaUnhandledList.messages!.length}");
+        "\t pleromaUnhandledList.messages = ${pleromaUnhandledList.messages.length}");
 
     await setValue(pleromaUnhandledList);
   }
@@ -41,9 +41,13 @@ class PushHandlerUnhandledLocalPreferencesBloc
       AuthInstance instance) {
     var pleromaUnhandledList = value!;
 
-    var messagesForInstances = pleromaUnhandledList.messages!
-        .where((message) => instance.isInstanceWithHostAndAcct(
-            host: message.body!.server, acct: message.body!.account))
+    var messagesForInstances = pleromaUnhandledList.messages
+        .where(
+          (message) => instance.isInstanceWithHostAndAcct(
+            host: message.body.server,
+            acct: message.body.account,
+          ),
+        )
         .toList();
 
     _logger.finest(() => "loadUnhandledMessagesForInstance \n"
@@ -57,8 +61,11 @@ class PushHandlerUnhandledLocalPreferencesBloc
   Future<bool> markAsHandled(List<PushHandlerMessage> messages) async {
     var pleromaUnhandledList = value!;
 
-    pleromaUnhandledList.messages!
-        .removeWhere((message) => messages.contains(message));
+    pleromaUnhandledList.messages.removeWhere(
+      (message) => messages.contains(
+        message,
+      ),
+    );
 
     _logger.finest(() => "markAsHandled \n"
         "\t messages = ${messages.length}");

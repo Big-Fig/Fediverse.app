@@ -48,10 +48,10 @@ class MediaDeviceGallerySelectedFolderData extends DisposableOwner implements ID
   @override
   Future dispose() async {
     await super.dispose();
-    await folderBloc?.dispose();
-    await filesListBloc?.dispose();
-    await filesPaginationBloc?.dispose();
-    await filesPaginationListBloc?.dispose();
+    await folderBloc.dispose();
+    await filesListBloc.dispose();
+    await filesPaginationBloc.dispose();
+    await filesPaginationListBloc.dispose();
   }
 }
 

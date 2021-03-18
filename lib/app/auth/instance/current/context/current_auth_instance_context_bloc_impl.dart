@@ -594,13 +594,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
             onlyLocal: false,
           ),
         ),
-        if (remoteLists?.isNotEmpty == true)
-          ...remoteLists.map((remoteList) => Timeline.customList(
-                remoteList: remoteList,
-                settings: TimelineSettings.createDefaultCustomListSettings(
-                  onlyInRemoteList: remoteList,
-                ),
-              )),
+        if (remoteLists.isNotEmpty == true)
+          ...remoteLists.map(
+            (remoteList) => Timeline.customList(
+              remoteList: remoteList,
+              settings: TimelineSettings.createDefaultCustomListSettings(
+                onlyInRemoteList: remoteList,
+              ),
+            ),
+          ),
       ];
       var storage = TimelinesHomeTabStorage(
         timelineIds: timelines

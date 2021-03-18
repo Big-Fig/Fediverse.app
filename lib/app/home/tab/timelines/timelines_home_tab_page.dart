@@ -97,10 +97,12 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
             }
 
             listener = mainTimelineTabBloc
-                .paginationListWithNewItemsBloc!.unmergedNewItemsCountStream
-                .listen((unreadCount) {
-              homeBloc.updateTimelinesUnread(unreadCount > 0);
-            });
+                .paginationListWithNewItemsBloc.unmergedNewItemsCountStream
+                .listen(
+              (unreadCount) {
+                homeBloc.updateTimelinesUnread(unreadCount > 0);
+              },
+            );
             timelineTabListBloc.addDisposable(streamSubscription: listener);
           }
         },
@@ -298,11 +300,10 @@ class _TimelinesHomeTabIndicatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return Padding(
-        padding: EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
-        child: TimelineTabListTextTabIndicatorItemWidget(),
-      );
-
+    return Padding(
+      padding: EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
+      child: TimelineTabListTextTabIndicatorItemWidget(),
+    );
   }
 }
 

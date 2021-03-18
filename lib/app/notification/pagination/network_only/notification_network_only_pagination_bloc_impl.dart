@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/pagination/network_only/notification_network_only_pagination_bloc.dart';
@@ -47,11 +48,13 @@ class NotificationNetworkOnlyPaginationBloc
     required int? itemsCountPerPage,
     required PaginationPage<INotification>? olderPage,
     required PaginationPage<INotification>? newerPage,
-  }) =>
-      listService.loadItemsFromRemoteForPage(
+  }) {
+
+    return listService.loadItemsFromRemoteForPage(
         itemsCountPerPage: itemsCountPerPage,
         pageIndex: pageIndex,
-        minId: newerPage?.items?.last?.remoteId,
-        maxId: olderPage?.items?.first?.remoteId,
+        minId: newerPage?.items.lastOrNull?.remoteId,
+        maxId: olderPage?.items.firstOrNull?.remoteId,
       );
+  }
 }

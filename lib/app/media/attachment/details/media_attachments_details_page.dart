@@ -153,7 +153,7 @@ class _MediaAttachmentDetailsPageState
         return Center(
           child: Text(
             S.of(context).app_media_attachment_details_notSupported_type(
-                mediaAttachment.type!),
+                mediaAttachment.type),
           ),
         );
     }
@@ -161,7 +161,7 @@ class _MediaAttachmentDetailsPageState
 
   Widget buildBody(BuildContext context) {
     if (widget.mediaAttachments!.length == 1) {
-      return buildMediaAttachmentBody(context, mediaAttachment!);
+      return buildMediaAttachmentBody(context, mediaAttachment);
     } else {
       return Stack(
         children: <Widget>[
@@ -200,7 +200,7 @@ class _MediaAttachmentDetailsPageState
 
   Widget buildDetails() =>
       IFilesCacheService.of(context).createCachedNetworkImageWidget(
-        imageUrl: mediaAttachment!.url,
+        imageUrl: mediaAttachment.url,
         imageBuilder: (context, imageProvider) {
           return Container(
             child: PhotoView(

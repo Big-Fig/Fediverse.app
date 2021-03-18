@@ -132,7 +132,7 @@ class _TimelinesHomeTabStorageListAddTimelineItemWidget
       stream: timelinesHomeTabStorageBloc.uiStateStream,
       initialData: timelinesHomeTabStorageBloc.uiState,
       builder: (context, snapshot) {
-        var uiState = snapshot.data;
+        var uiState = snapshot.data ?? TimelinesHomeTabStorageUiState.view;
 
         late Widget child;
         switch (uiState) {
@@ -190,7 +190,7 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
       },
       child: FediSelectionItemRowWidget(
         key: Key(
-          timeline.id!,
+          timeline.id,
         ),
         leading: const _TimelinesHomeTabStorageListItemLeadingWidget(),
         title: const _TimelinesHomeTabStorageListItemTitleWidget(),
@@ -241,7 +241,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
       stream: timelinesHomeTabStorageBloc.uiStateStream,
       initialData: timelinesHomeTabStorageBloc.uiState,
       builder: (context, snapshot) {
-        var uiState = snapshot.data;
+        var uiState = snapshot.data ?? TimelinesHomeTabStorageUiState.view;
 
         late Widget child;
         switch (uiState) {
@@ -287,7 +287,7 @@ class _TimelinesHomeTabStorageListItemLeadingWidget extends StatelessWidget {
         stream: timelinesHomeTabStorageBloc.uiStateStream,
         initialData: timelinesHomeTabStorageBloc.uiState,
         builder: (context, snapshot) {
-          var uiState = snapshot.data;
+          var uiState = snapshot.data ?? TimelinesHomeTabStorageUiState.view;
 
           var child;
 

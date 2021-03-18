@@ -20,7 +20,6 @@ class PleromaRestService extends DisposableOwner
     implements IPleromaRestService {
   final IConnectionService connectionService;
 
-
   // TODO: rework seed state
   // ignore: close_sinks
   final BehaviorSubject<PleromaApiState> _pleromaApiStateSubject =
@@ -40,18 +39,20 @@ class PleromaRestService extends DisposableOwner
   Stream<bool> get isConnectedStream => connectionService.isConnectedStream;
 
   @override
-  Stream<bool> get isApiReadyToUseStream =>
-      Rx.combineLatest2(pleromaApiStateStream, isConnectedStream, mapIsReady)
-          .distinct();
+  Stream<bool> get isApiReadyToUseStream => Rx.combineLatest2(
+        pleromaApiStateStream,
+        isConnectedStream,
+        mapIsReady,
+      ).distinct();
 
   @override
   bool get isApiReadyToUse => mapIsReady(pleromaApiState, isConnected);
 
   @override
-  final IRestService? restService;
+  final IRestService restService;
 
   @override
-  Uri get baseUri => restService!.baseUri;
+  Uri get baseUri => restService.baseUri;
 
   PleromaRestService({
     required this.restService,
@@ -62,7 +63,7 @@ class PleromaRestService extends DisposableOwner
 
   @override
   Future<Response> sendHttpRequest<T extends RestRequest, K>(T request) async {
-    var response = await restService!.sendHttpRequest(request)!;
+    var response = await restService.sendHttpRequest(request);
 
     var statusCode = response.statusCode;
     // todo: refactor pleroma errors handling
@@ -118,6 +119,6 @@ class PleromaRestService extends DisposableOwner
   Future<Response>
       uploadFileMultipartRequest<T extends UploadMultipartRestRequest, K>(
           T request) {
-    return restService!.uploadFileMultipartRequest(request);
+    return restService.uploadFileMultipartRequest(request);
   }
 }

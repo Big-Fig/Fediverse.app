@@ -132,10 +132,10 @@ class RegisterAuthInstanceFormBloc extends FormBloc
     final validEmail = emailFieldBloc.currentValue;
     final validPassword = passwordFieldBloc.currentValue;
 
-    final captcha = captchaFieldBloc?.captcha;
-    final captchaSolution = captchaFieldBloc?.currentValue;
-    final agreeTermsOfService = agreeTermsOfServiceFieldBloc?.currentValue;
-    LocalizationLocale? locale = localeFieldBloc?.currentValue;
+    final captcha = captchaFieldBloc.captcha;
+    final captchaSolution = captchaFieldBloc.currentValue;
+    final agreeTermsOfService = agreeTermsOfServiceFieldBloc.currentValue;
+    LocalizationLocale? locale = localeFieldBloc.currentValue;
 
     final reason = reasonFieldBloc.currentValue;
 

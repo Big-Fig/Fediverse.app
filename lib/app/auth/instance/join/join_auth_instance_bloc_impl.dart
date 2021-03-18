@@ -11,7 +11,9 @@ class JoinAuthInstanceBloc extends DisposableOwner
   @override
   final TextEditingController hostTextController = TextEditingController();
 
-  JoinAuthInstanceBloc({required this.isFromScratch}) {
+  JoinAuthInstanceBloc({
+    required this.isFromScratch,
+  }) {
     addDisposable(textEditingController: hostTextController);
   }
 
@@ -19,7 +21,7 @@ class JoinAuthInstanceBloc extends DisposableOwner
   Uri extractCurrentUri() {
     var uriText = hostTextController.text;
 
-    if (uriText?.isNotEmpty != true) {
+    if (uriText.isNotEmpty != true) {
       uriText = _defaultInstanceDomain;
     }
 
@@ -27,7 +29,7 @@ class JoinAuthInstanceBloc extends DisposableOwner
 
     Uri uri;
     var scheme = parsedUri.scheme;
-    if (scheme?.isNotEmpty != true) {
+    if (scheme.isNotEmpty != true) {
       uri = Uri.parse("https://$uriText");
     } else {
       uri = parsedUri;

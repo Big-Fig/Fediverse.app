@@ -177,7 +177,7 @@ class _CustomEmojiPickerSelectedCategoryItemsWidget extends StatelessWidget {
     return GridView.count(
       crossAxisCount: rowsCount,
       scrollDirection: Axis.horizontal,
-      children: items?.map((item) {
+      children: items.map((item) {
             Widget child;
 
             if (item is CustomEmojiPickerCodeItem) {
@@ -204,8 +204,7 @@ class _CustomEmojiPickerSelectedCategoryItemsWidget extends StatelessWidget {
                 child: Center(child: child),
               ),
             );
-          })?.toList() ??
-          [],
+          }).toList(),
     );
   }
 }

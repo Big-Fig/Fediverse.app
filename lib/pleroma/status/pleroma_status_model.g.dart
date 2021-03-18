@@ -41,7 +41,7 @@ PleromaScheduledStatusParams _$PleromaScheduledStatusParamsFromJson(
     poll: json['poll'] == null
         ? null
         : PleromaPostStatusPoll.fromJson(json['poll'] as Map<String, dynamic>),
-    idempotency: json['idempotency'] as String,
+    idempotency: json['idempotency'] as String?,
     inReplyToId: json['in_reply_to_id'] as String?,
     applicationId: json['application_id'],
     language: json['language'] as String?,

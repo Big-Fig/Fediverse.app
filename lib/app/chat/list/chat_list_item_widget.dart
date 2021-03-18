@@ -143,11 +143,11 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
         if (content?.isNotEmpty != true) {
           content = lastMessage.mediaAttachments!.map(
             (mediaAttachment) {
-              var description = mediaAttachment!.description;
+              var description = mediaAttachment.description;
               if (description?.isNotEmpty == true) {
                 return description;
               } else {
-                return path.basename(mediaAttachment.url!);
+                return path.basename(mediaAttachment.url);
               }
             },
           ).join(", ");
@@ -176,7 +176,7 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
               ),
             Flexible(
               child: Provider<EmojiText>.value(
-                value: EmojiText(text: content, emojis: lastMessage.emojis),
+                value: EmojiText(text: content!, emojis: lastMessage.emojis),
                 child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
                   update: (context, emojiText, _) {
                     return HtmlTextBloc(

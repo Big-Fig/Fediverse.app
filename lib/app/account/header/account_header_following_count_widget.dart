@@ -19,7 +19,7 @@ class AccountHeaderFollowingCountWidget extends StatelessWidget {
           ? () {
               goToAccountFollowingAccountListPage(
                 context: context,
-                account: accountBloc.account!,
+                account: accountBloc.account,
               );
             }
           : null,

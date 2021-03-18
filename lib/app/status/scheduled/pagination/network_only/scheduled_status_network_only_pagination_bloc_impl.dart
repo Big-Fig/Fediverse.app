@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
@@ -47,11 +48,12 @@ class ScheduledStatusNetworkOnlyPaginationBloc
     required int? itemsCountPerPage,
     required PaginationPage<IScheduledStatus>? olderPage,
     required PaginationPage<IScheduledStatus>? newerPage,
-  }) =>
-      listService.loadItemsFromRemoteForPage(
+  }) {
+    return listService.loadItemsFromRemoteForPage(
         itemsCountPerPage: itemsCountPerPage,
         pageIndex: pageIndex,
-        minId: newerPage?.items?.last?.remoteId,
-        maxId: olderPage?.items?.first?.remoteId,
+        minId: newerPage?.items.lastOrNull?.remoteId,
+        maxId: olderPage?.items.firstOrNull?.remoteId,
       );
+  }
 }

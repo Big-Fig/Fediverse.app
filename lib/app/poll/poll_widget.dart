@@ -48,14 +48,14 @@ class _PollBodyWidget extends StatelessWidget {
 
     return Column(
       children: [
-        ...poll.options!
+        ...poll.options
             .map((pollOption) => Provider<IPleromaPollOption>.value(
                   value: pollOption,
                   child: const _PollBodyOptionWidget(),
                 ))
             .toList(),
         const FediSmallVerticalSpacer(),
-        if (pollBloc.multiple!) const _PollBodyVoteButtonBuilderWidget(),
+        if (pollBloc.multiple) const _PollBodyVoteButtonBuilderWidget(),
         const PollMetadataWidget(),
       ],
     );
@@ -119,7 +119,7 @@ class _PollBodyOptionWidget extends StatelessWidget {
         onTap: poll.isPossibleToVote
             ? () {
                 pollBloc.onPollOptionSelected(pollOption);
-                if (!poll.multiple!) {
+                if (!poll.multiple) {
                   AsyncOperationHelper.performAsyncOperation(
                     context: context,
                     asyncCode: () async {
@@ -175,7 +175,7 @@ class PollMetadataTotalVotesCountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var poll = Provider.of<IPleromaPoll>(context);
     return Text(
-      S.of(context).app_poll_metadata_totalVotes(poll.votesCount!),
+      S.of(context).app_poll_metadata_totalVotes(poll.votesCount),
       style: IFediUiTextTheme.of(context).mediumShortGrey,
     );
   }
@@ -217,7 +217,7 @@ class PollMetadataExpiresAtWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var poll = Provider.of<IPleromaPoll>(context);
-    return poll.expired!
+    return poll.expired
         ? const _PollMetadataExpiresAtExpiredWidget()
         : const _PollMetadataExpiresAtNotExpiredWidget();
   }
@@ -268,7 +268,7 @@ class PollOptionWidget extends StatelessWidget {
         Expanded(
           child: const _PollOptionBodyWidget(),
         ),
-        if (pollBloc.multiple!) const _PollOptionSelectionWidget(),
+        if (pollBloc.multiple) const _PollOptionSelectionWidget(),
         _PollOptionResultsWidget(),
       ],
     );
@@ -389,7 +389,7 @@ class _PollOptionSelectionWidget extends StatelessWidget {
                 initialData: pollBloc.selectedVotes,
                 builder: (context, snapshot) {
                   var selectedVotes = snapshot.data!;
-                  var multiple = poll.multiple!;
+                  var multiple = poll.multiple;
 
                   var isSelected = selectedVotes.contains(pollOption);
                   var borderColor = isSelected
@@ -445,7 +445,7 @@ class _PollOptionContentWidget extends StatelessWidget {
         horizontal: FediSizes.mediumPadding,
       ),
       child: Row(
-        mainAxisAlignment: poll.isPossibleToVote && !poll.multiple!
+        mainAxisAlignment: poll.isPossibleToVote && !poll.multiple
             ? MainAxisAlignment.center
             : MainAxisAlignment.start,
         children: <Widget>[
@@ -508,7 +508,7 @@ class PollOptionTitleWidget extends StatelessWidget {
 
     var votesPercent = poll.votesPercent(pollOption);
     return Text(
-      pollOption.title!,
+      pollOption.title,
       style: poll.isPossibleToVote
           ? IFediUiTextTheme.of(context).bigTallPrimaryDark
           : isOwnVote && votesPercent > 0

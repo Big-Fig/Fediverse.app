@@ -52,8 +52,9 @@ class AccountStatusesWithoutRepliesListBloc
   IPleromaApi get pleromaApi => pleromaAccountService;
 
   static AccountStatusesWithoutRepliesListBloc createFromContext(
-      BuildContext context,
-      {required IAccount? account}) {
+    BuildContext context, {
+    required IAccount account,
+  }) {
     return AccountStatusesWithoutRepliesListBloc(
       account: account,
       pleromaAccountService: IPleromaAccountService.of(context, listen: false),
@@ -117,7 +118,7 @@ class AccountStatusesWithoutRepliesListBloc
 
     var remoteStatuses = await pleromaAccountService.getAccountStatuses(
       excludeReplies: true,
-      accountRemoteId: account!.remoteId,
+      accountRemoteId: account.remoteId,
       pagination: PleromaPaginationRequest(
         limit: limit,
         sinceId: newerThan?.remoteId,

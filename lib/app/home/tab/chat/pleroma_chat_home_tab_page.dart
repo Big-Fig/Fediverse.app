@@ -101,7 +101,7 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
 
     var currentInstance = currentAuthInstanceBloc.currentInstance!;
-    var isPleromaInstance = currentInstance.isPleroma!;
+    var isPleromaInstance = currentInstance.isPleroma;
 
     var isSupportChats = currentInstance.isSupportChats;
 
@@ -159,7 +159,7 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
 
     var currentInstance = currentAuthInstanceBloc.currentInstance!;
-    var isPleromaInstance = currentInstance.isPleroma!;
+    var isPleromaInstance = currentInstance.isPleroma;
 
     var isSupportChats = currentInstance.isSupportChats;
     return FediTabMainHeaderBarWidget(

@@ -39,7 +39,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
             visibility: PleromaVisibility.private.toJsonValue(),
             language: language,
             inReplyToConversationId:
-                conversationChatBloc.conversation!.remoteId,
+                conversationChatBloc.conversation.remoteId,
           ),
           // we don't need mentions if we have inReplyToConversationId
           initialAccountsToMention: null,

@@ -78,7 +78,7 @@ class _StatusEmojiReactionListItemContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var emojiReaction = Provider.of<IPleromaStatusEmojiReaction>(context);
-    var color = emojiReaction.me!
+    var color = emojiReaction.me
         ? IFediUiColorTheme.of(context).primary
         : IFediUiColorTheme.of(context).lightGrey;
     return Container(
@@ -99,7 +99,7 @@ class _StatusEmojiReactionListItemContentWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              emojiReaction.name!,
+              emojiReaction.name,
               style: TextStyle(fontSize: 16, height: 14 / 16),
             ),
             const FediSmallHorizontalSpacer(),

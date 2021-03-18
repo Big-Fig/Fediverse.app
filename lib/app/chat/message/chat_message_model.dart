@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
@@ -57,10 +58,23 @@ extension IChatMessageExtension on IChatMessage {
 
   bool get isPublishedAndNotDeletedAndNotLocallyHidden =>
       deleted != true &&
-      hiddenLocallyOnDevice != true &&
-      isPendingStatePublishedOrNull;
+          hiddenLocallyOnDevice != true &&
+          isPendingStatePublishedOrNull;
 
   bool get isPendingStateNotPublishedOrNull => !isPendingStatePublishedOrNull;
 
   bool get isNotPending => pendingState != PendingState.pending;
+
+
+  EmojiText? toContentEmojiText() {
+    if (content?.isNotEmpty == true) {
+      return EmojiText(
+        text: content!,
+        emojis: emojis,
+      );
+    } else {
+      return null;
+    }
+  }
+
 }

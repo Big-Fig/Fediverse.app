@@ -82,7 +82,7 @@ class StatusHeaderWidget extends StatelessWidget {
         ),
         const FediSmallHorizontalSpacer(),
         Text(
-          account.acct!,
+          account.acct,
           style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
         ),
         const FediMediumHorizontalSpacer(),

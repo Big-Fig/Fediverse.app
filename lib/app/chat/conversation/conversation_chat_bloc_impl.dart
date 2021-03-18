@@ -120,7 +120,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   void listenForAccounts(IConversationChat? conversation) {
     addDisposable(
-      streamSubscription: accountRepository!
+      streamSubscription: accountRepository
           .watchAccounts(
         filters: AccountRepositoryFilters.createForOnlyInConversation(
           conversation: conversation,
@@ -134,7 +134,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
             (account) => !myAccountBloc.checkAccountIsMe(account),
           );
           accountsWithoutMe.sort(
-            (a, b) => a.remoteId!.compareTo(b.remoteId!),
+            (a, b) => a.remoteId.compareTo(b.remoteId),
           );
           _accountsSubject.add(accountsWithoutMe);
         },
@@ -146,7 +146,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   void watchLocalRepositoryForUpdates() {
     addDisposable(
       streamSubscription:
-          conversationRepository.watchByRemoteId(chat!.remoteId).listen(
+          conversationRepository.watchByRemoteId(chat.remoteId).listen(
         (updatedChat) {
           if (updatedChat != null) {
             _chatSubject.add(updatedChat);
@@ -234,13 +234,13 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Future refreshFromNetwork() async {
-    var remoteConversation = await (pleromaConversationService!
-            .getConversation(conversationRemoteId: chat!.remoteId)
+    var remoteConversation = await (pleromaConversationService
+            .getConversation(conversationRemoteId: chat.remoteId)
         as FutureOr<IPleromaConversation>);
 
-    if (remoteConversation.accounts?.isNotEmpty == true) {
-      for (var account in remoteConversation.accounts!) {
-        await accountRepository!.upsertRemoteAccount(
+    if (remoteConversation.accounts.isNotEmpty) {
+      for (var account in remoteConversation.accounts) {
+        await accountRepository.upsertRemoteAccount(
           account,
           chatRemoteId: null,
           conversationRemoteId: remoteConversation.id,
@@ -322,7 +322,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     // create queue instead of parallel requests to avoid throttle limit on server
     for (var chatMessage in chatMessages!) {
       if (chatMessage.isPendingStatePublishedOrNull) {
-        await pleromaAuthStatusService!.deleteStatus(
+        await pleromaAuthStatusService.deleteStatus(
           statusRemoteId: chatMessage.remoteId,
         );
       }
@@ -334,8 +334,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Future performActualDelete() async {
-    var remoteId = conversation!.remoteId;
-    await pleromaConversationService!.deleteConversation(
+    var remoteId = conversation.remoteId;
+    await pleromaConversationService.deleteConversation(
       conversationRemoteId: remoteId,
     );
 
@@ -353,8 +353,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     PleromaPostStatus pleromaPostStatus;
     var oldMessageExist = oldPendingFailedConversationChatMessage != null;
     if (oldMessageExist) {
-      localStatusId = oldPendingFailedConversationChatMessage!.status!.localId;
-      dbStatus = oldPendingFailedConversationChatMessage.status!
+      localStatusId = oldPendingFailedConversationChatMessage!.status.localId;
+      dbStatus = oldPendingFailedConversationChatMessage.status
           .toDbStatus()
           .copyWith(id: localStatusId);
 
@@ -391,7 +391,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
       await statusRepository.addStatusToConversation(
         statusRemoteId: fakeUniqueRemoteRemoteId,
-        conversationRemoteId: chat!.remoteId,
+        conversationRemoteId: chat.remoteId,
       );
 
       pleromaPostStatus = postStatusData.toPleromaPostStatus(
@@ -418,7 +418,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       await statusRepository.upsertRemoteStatus(
         pleromaStatus,
         listRemoteId: null,
-        conversationRemoteId: chat!.remoteId,
+        conversationRemoteId: chat.remoteId,
       );
     } catch (e, stackTrace) {
       _logger.warning(() => "postMessage error", e, stackTrace);

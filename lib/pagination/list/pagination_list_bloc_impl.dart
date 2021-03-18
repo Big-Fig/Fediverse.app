@@ -118,7 +118,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   @override
-  List<TPage>? get sortedPages => paginationBloc!.loadedPagesSortedByIndex;
+  List<TPage>? get sortedPages => paginationBloc.loadedPagesSortedByIndex;
 
   @override
   Stream<List<TPage>> get sortedPagesStream =>

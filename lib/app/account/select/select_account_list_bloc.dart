@@ -13,5 +13,5 @@ abstract class ISelectAccountListBloc extends IAccountCachedListBloc {
 
   Stream<IAccount?> get accountSelectedStream;
 
-  void onAccountSelected(IAccount? account);
+  void onAccountSelected(IAccount account);
 }

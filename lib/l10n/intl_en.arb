@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-03-11T19:33:39+00:00",
+    "@@last_modified": "2021-03-17T09:27:48+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -723,5 +723,6 @@
     "app_notification_all_dialog_title": "Notifications",
     "app_notification_all_dialog_action_pushNotifications": "Push notifications settings",
     "app_notification_all_dialog_action_markAllAsRead": "Mark ALL as read",
-    "app_notification_all_dialog_action_dismissAll": "Dismiss ALL"
+    "app_notification_all_dialog_action_dismissAll": "Dismiss ALL",
+    "app_cache_files_settings_sizeLimit_value_size10000": "10000"
 }

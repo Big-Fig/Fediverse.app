@@ -18,7 +18,7 @@ class HtmlTextWidget extends StatelessWidget {
     var htmlData = htmlTextBloc.htmlData;
     _logger.finest(() => "htmlData $htmlData");
 
-    if (htmlData?.text?.isNotEmpty != true) {
+    if (htmlData.text?.isNotEmpty != true) {
       return const SizedBox.shrink();
     }
 

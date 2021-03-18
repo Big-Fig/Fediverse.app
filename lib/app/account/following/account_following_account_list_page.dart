@@ -18,7 +18,7 @@ class AccountFollowingAccountListPage extends StatelessWidget {
     return Scaffold(
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_account_following_title(
-              account.acct!,
+              account.acct,
             ),
       ),
       body: SafeArea(

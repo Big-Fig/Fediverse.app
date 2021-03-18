@@ -65,7 +65,7 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
       );
 
       await accountRepository.addAccountFollowers(
-        accountRemoteId: account!.remoteId,
+        accountRemoteId: account.remoteId,
         followers: remoteAccounts,
       );
 

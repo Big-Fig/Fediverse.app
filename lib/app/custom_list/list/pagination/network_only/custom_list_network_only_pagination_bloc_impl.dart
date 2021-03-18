@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/custom_list/list/pagination/custom_list_pagination_bloc.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
@@ -45,20 +46,24 @@ class CustomListNetworkOnlyPaginationBloc
       );
 
   @override
-  Future<List<ICustomList>> loadItemsFromRemoteForPage(
-          {required int pageIndex,
-          required int? itemsCountPerPage,
-          required PaginationPage<ICustomList>? olderPage,
-          required PaginationPage<ICustomList>? newerPage}) =>
-      listService.loadItemsFromRemoteForPage(
-        itemsCountPerPage: itemsCountPerPage,
-        pageIndex: pageIndex,
-        minId: newerPage?.items?.last?.remoteId,
-        maxId: olderPage?.items?.first?.remoteId,
-      );
+  Future<List<ICustomList>> loadItemsFromRemoteForPage({
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required PaginationPage<ICustomList>? olderPage,
+    required PaginationPage<ICustomList>? newerPage,
+  }) {
+    return listService.loadItemsFromRemoteForPage(
+      itemsCountPerPage: itemsCountPerPage,
+      pageIndex: pageIndex,
+      minId: newerPage?.items.lastOrNull?.remoteId,
+      maxId: olderPage?.items.firstOrNull?.remoteId,
+    );
+  }
 
-  static Widget provideToContext(BuildContext context,
-          {required Widget child}) =>
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) =>
       DisposableProvider<ICustomListNetworkOnlyPaginationBloc>(
         create: (context) =>
             CustomListNetworkOnlyPaginationBloc.createFromContext(context),

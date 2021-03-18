@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
@@ -33,12 +34,14 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
     required int? itemsCountPerPage,
     required CachedPaginationPage<IAccount>? olderPage,
     required CachedPaginationPage<IAccount>? newerPage,
-  }) =>
-      listService.loadLocalItems(
+  }) {
+
+    return listService.loadLocalItems(
         limit: itemsCountPerPage,
-        newerThan: olderPage?.items?.first,
-        olderThan: newerPage?.items?.last,
+        newerThan: olderPage?.items.firstOrNull,
+        olderThan: newerPage?.items.lastOrNull,
       );
+  }
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -52,8 +55,8 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
 
     return listService.refreshItemsFromRemoteForPage(
       limit: itemsCountPerPage,
-      newerThan: olderPage?.items?.first,
-      olderThan: newerPage?.items?.last,
+      newerThan: olderPage?.items.firstOrNull,
+      olderThan: newerPage?.items.lastOrNull,
     );
   }
 

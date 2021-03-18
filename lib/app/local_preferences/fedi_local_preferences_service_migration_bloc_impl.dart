@@ -72,7 +72,7 @@ class FediLocalPreferencesServiceMigrationBloc
       await timelinesHomeTabStorageLocalPreferencesBloc.performAsyncInit();
 
       authInstancesBlocCreators.addAll(
-        timelinesHomeTabStorageLocalPreferencesBloc.value?.timelineIds?.map(
+        timelinesHomeTabStorageLocalPreferencesBloc.value?.timelineIds.map(
               (timelineId) => (lps) => TimelineLocalPreferencesBloc.byId(
                     lps,
                     userAtHost: userAtHost,

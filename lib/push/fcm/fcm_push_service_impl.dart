@@ -192,8 +192,8 @@ PushMessage _parsePushMessageOnIos(
   _logger.finest(() => "_parseChatCloudMessageOnIos  messageData $messageData");
   return PushMessage(
     notification:
-        data?.isNotEmpty == true ? PushNotification.fromJson(data) : null,
-    data: data ?? {},
+        data.isNotEmpty == true ? PushNotification.fromJson(data) : null,
+    data: data,
     typeString: pushMessageType.toJsonValue(),
   );
 }

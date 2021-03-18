@@ -299,7 +299,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
     var foundPleromaHashtag = tagsToSearch?.firstWhereOrNull(
       (pleromaHashtag) {
         // todo: ask user open on local instance or remote
-        var pleromaHashtagUrl = pleromaHashtag.url!.toLowerCase();
+        var pleromaHashtagUrl = pleromaHashtag.url.toLowerCase();
         var success = url.toLowerCase().contains(pleromaHashtagUrl);
         return success;
       },

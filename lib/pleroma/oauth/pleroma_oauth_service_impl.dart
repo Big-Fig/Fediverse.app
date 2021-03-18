@@ -20,26 +20,26 @@ class PleromaOAuthService extends DisposableOwner
     implements IPleromaOAuthService {
   final oauthRelativeUrlPath = "/oauth/";
   @override
-  final IPleromaRestService? restService;
+  final IPleromaRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
-      restService!.pleromaApiStateStream;
+      restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState? get pleromaApiState => restService!.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
-  Stream<bool> get isApiReadyToUseStream => restService!.isApiReadyToUseStream;
+  Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
 
   @override
-  bool get isApiReadyToUse => restService!.isApiReadyToUse;
+  bool get isApiReadyToUse => restService.isApiReadyToUse;
 
   @override
-  bool get isConnected => restService!.isConnected;
+  bool get isConnected => restService.isConnected;
 
   @override
-  Stream<bool> get isConnectedStream => restService!.isConnectedStream;
+  Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
   PleromaOAuthService({required this.restService});
 
@@ -68,7 +68,7 @@ class PleromaOAuthService extends DisposableOwner
     required PleromaOAuthAuthorizeRequest authorizeRequest,
   }) async {
     _logger.finest(() => "launchAuthorizeFormAndExtractAuthorizationCode");
-    var host = restService!.baseUri;
+    var host = restService.baseUri;
     var baseUrl = join(oauthRelativeUrlPath, "authorize");
 
     var keyValueMap = authorizeRequest.toJson();
@@ -130,18 +130,20 @@ class PleromaOAuthService extends DisposableOwner
       relativePath: join(oauthRelativeUrlPath, "token"), queryArgs: queryArgs,
 //        bodyJson: tokenRequest.toJson()
     );
-    var httpResponse = await restService!.sendHttpRequest(request)!;
+    var httpResponse = await restService.sendHttpRequest(request);
 
     return parseTokenResponse(httpResponse);
   }
 
   @override
-  Future<PleromaOAuthToken?> retrieveAppAccessToken(
-      {required PleromaOAuthAppTokenRequest tokenRequest}) async {
+  Future<PleromaOAuthToken?> retrieveAppAccessToken({
+    required PleromaOAuthAppTokenRequest tokenRequest,
+  }) async {
     var request = RestRequest.post(
-        relativePath: join(oauthRelativeUrlPath, "token"),
-        bodyJson: tokenRequest.toJson());
-    var httpResponse = await restService!.sendHttpRequest(request)!;
+      relativePath: join(oauthRelativeUrlPath, "token"),
+      bodyJson: tokenRequest.toJson(),
+    );
+    var httpResponse = await restService.sendHttpRequest(request);
 
     return parseTokenResponse(httpResponse);
   }
@@ -150,9 +152,10 @@ class PleromaOAuthService extends DisposableOwner
   Future<bool> revokeToken(
       {required PleromaOAuthAppTokenRevokeRequest revokeRequest}) async {
     var request = RestRequest.post(
-        relativePath: join(oauthRelativeUrlPath, "revoke"),
-        bodyJson: revokeRequest.toJson());
-    var httpResponse = await restService!.sendHttpRequest(request)!;
+      relativePath: join(oauthRelativeUrlPath, "revoke"),
+      bodyJson: revokeRequest.toJson(),
+    );
+    var httpResponse = await restService.sendHttpRequest(request);
 
     return httpResponse.statusCode == 200;
   }

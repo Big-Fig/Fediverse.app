@@ -113,20 +113,20 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           maxLength: noteMaxLength,
         ),
         lockedField = BoolValueFormFieldBloc(
-          originValue: myAccountBloc.account!.locked,
+          originValue: myAccountBloc.account.locked,
         ),
         avatarField = ImageFilePickerOrUrlFormFieldBloc(
-          originalUrl: myAccountBloc.account!.avatar,
+          originalUrl: myAccountBloc.account.avatar,
           maxFileSizeInBytes: avatarUploadSizeInBytes,
           isPossibleToDeleteOriginal: false,
         ),
         headerField = ImageFilePickerOrUrlFormFieldBloc(
-          originalUrl: myAccountBloc.account!.header,
+          originalUrl: myAccountBloc.account.header,
           maxFileSizeInBytes: headerUploadSizeInBytes,
           isPossibleToDeleteOriginal: false,
         ),
         backgroundField = ImageFilePickerOrUrlFormFieldBloc(
-          originalUrl: myAccountBloc.account!.pleromaBackgroundImage,
+          originalUrl: myAccountBloc.account.pleromaBackgroundImage,
           maxFileSizeInBytes: backgroundUploadSizeInBytes,
           isPossibleToDeleteOriginal: true,
         ),
@@ -151,48 +151,48 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           minimumFieldsCount: null,
         ),
         discoverableField = BoolValueFormFieldBloc(
-          originValue: myAccountBloc?.myAccount?.discoverable ?? false,
+          originValue: myAccountBloc.myAccount?.discoverable ?? false,
         ),
         hideFavouritesField = BoolValueFormFieldBloc(
-          originValue: myAccountBloc?.myAccount?.pleroma?.hideFavorites ?? true,
+          originValue: myAccountBloc.myAccount?.pleroma?.hideFavorites ?? true,
         ),
         hideFollowersCountField = BoolValueFormFieldBloc(
           originValue:
-              myAccountBloc?.myAccount?.pleroma?.hideFollowersCount ?? false,
+              myAccountBloc.myAccount?.pleroma?.hideFollowersCount ?? false,
         ),
         hideFollowersField = BoolValueFormFieldBloc(
           originValue:
-              myAccountBloc?.myAccount?.pleroma?.hideFollowers ?? false,
+              myAccountBloc.myAccount?.pleroma?.hideFollowers ?? false,
         ),
         hideFollowsCountField = BoolValueFormFieldBloc(
           originValue:
-              myAccountBloc?.myAccount?.pleroma?.hideFollowsCount ?? false,
+              myAccountBloc.myAccount?.pleroma?.hideFollowsCount ?? false,
         ),
         hideFollowsField = BoolValueFormFieldBloc(
-          originValue: myAccountBloc?.myAccount?.pleroma?.hideFollows ?? false,
+          originValue: myAccountBloc.myAccount?.pleroma?.hideFollows ?? false,
         ),
         noRichTextField = BoolValueFormFieldBloc(
           originValue:
-              myAccountBloc?.myAccount?.source?.pleroma?.noRichText ?? false,
+              myAccountBloc.myAccount?.source?.pleroma?.noRichText ?? false,
         ),
         showRoleField = BoolValueFormFieldBloc(
           originValue:
-              myAccountBloc?.myAccount?.source?.pleroma?.showRole ?? false,
+              myAccountBloc.myAccount?.source?.pleroma?.showRole ?? false,
         ),
         allowFollowingMoveField = BoolValueFormFieldBloc(
           originValue:
-              myAccountBloc?.myAccount?.pleroma?.allowFollowingMove ?? true,
+              myAccountBloc.myAccount?.pleroma?.allowFollowingMove ?? true,
         ),
         skipThreadContainmentField = BoolValueFormFieldBloc(
           originValue:
-              myAccountBloc?.myAccount?.pleroma?.skipThreadContainment ?? false,
+              myAccountBloc.myAccount?.pleroma?.skipThreadContainment ?? false,
         ),
         acceptsChatMessagesField = BoolValueFormFieldBloc(
           originValue:
-              myAccountBloc?.myAccount?.pleroma?.acceptsChatMessages ?? true,
+              myAccountBloc.myAccount?.pleroma?.acceptsChatMessages ?? true,
         ),
         botField = BoolValueFormFieldBloc(
-          originValue: myAccountBloc?.myAccount?.bot ?? false,
+          originValue: myAccountBloc.myAccount?.bot ?? false,
         ),
         super(isAllItemsInitialized: true) {
     addDisposable(disposable: displayNameField);
@@ -258,14 +258,14 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   }
 
   Future _updateFiles() async {
-    var avatarPickedFile = avatarField.isSomethingChanged!
+    var avatarPickedFile = avatarField.isSomethingChanged
         ? avatarField.currentMediaDeviceFile
         : null;
 
-    var headerPickedFile = headerField.isSomethingChanged!
+    var headerPickedFile = headerField.isSomethingChanged
         ? headerField.currentMediaDeviceFile
         : null;
-    var backgroundPickedFile = backgroundField.isSomethingChanged!
+    var backgroundPickedFile = backgroundField.isSomethingChanged
         ? backgroundField.currentMediaDeviceFile
         : null;
     var isAnyFileExist = avatarPickedFile != null ||
@@ -295,10 +295,10 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   PleromaMyAccountEdit _calculatePleromaMyAccountEdit() {
     Map<int, PleromaField> fieldsAttributes = {};
 
-    customFieldsGroupBloc.items!.asMap().entries.forEach(
+    customFieldsGroupBloc.items.asMap().entries.forEach(
       (entry) {
         var index = entry.key;
-        var field = entry.value!;
+        var field = entry.value;
         fieldsAttributes[index] = PleromaField(
           name: field.keyField.currentValue,
           value: field.valueField.currentValue,

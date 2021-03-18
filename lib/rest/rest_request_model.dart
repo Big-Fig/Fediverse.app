@@ -7,21 +7,19 @@ class RestRequest<T> {
 
   final String relativeUrlPath;
 
-  List<RestRequestQueryArg>? queryArgs;
-  Map<String, dynamic>? bodyJson;
-  Map<String, String?>? headers;
+  final List<RestRequestQueryArg> queryArgs;
+  final Map<String, dynamic> bodyJson;
+  final Map<String, String> headers;
 
   RestRequest._private({
     required this.type,
     required this.relativeUrlPath,
-    required this.queryArgs,
-    required this.bodyJson,
-    required this.headers,
-  }) {
-    queryArgs = queryArgs ?? [];
-    bodyJson = bodyJson ?? {};
-    headers = headers ?? {};
-  }
+    required List<RestRequestQueryArg>? queryArgs,
+    required Map<String, dynamic>? bodyJson,
+    required Map<String, String>? headers,
+  })   : queryArgs = queryArgs ?? [],
+        bodyJson = bodyJson ?? {},
+        headers = headers ?? {};
 
   RestRequest.get({
     required String relativePath,
@@ -63,7 +61,7 @@ class RestRequest<T> {
   RestRequest.post({
     required String relativePath,
     List<RestRequestQueryArg>? queryArgs,
-    Map<String, String?>? headers,
+    Map<String, String>? headers,
     Map<String, dynamic>? bodyJson,
   }) : this._private(
           type: RestRequestType.post,
@@ -108,7 +106,7 @@ class RestRequest<T> {
 }
 
 class UploadMultipartRestRequest<T> extends RestRequest<T> {
-  final Map<String, File?> files;
+  final Map<String, File> files;
 
   UploadMultipartRestRequest.get({
     required String relativePath,

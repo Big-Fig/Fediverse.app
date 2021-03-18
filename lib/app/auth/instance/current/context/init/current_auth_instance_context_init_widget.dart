@@ -129,10 +129,11 @@ class _CurrentAuthInstanceContextInitWidgetState
           case CurrentAuthInstanceContextInitState.invalidCredentials:
             return const _CurrentAuthInstanceContextInitSessionExpiredWidget();
           case CurrentAuthInstanceContextInitState.loading:
+          case null:
             return const SplashPage();
         }
 
-        throw "invalid state $state";
+
       },
     );
   }

@@ -67,7 +67,7 @@ class StatusSubHeaderWidget extends StatelessWidget {
         ),
         Flexible(
           child: Text(
-            account.acct!,
+            account.acct,
             overflow: TextOverflow.ellipsis,
             style: IFediUiTextTheme.of(context)
                 .mediumShortDarkGrey

@@ -17,7 +17,7 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
     required IPleromaInstance? initialInstance,
     required this.pleromaInstanceService,
   }) : super(
-          instanceUri: pleromaInstanceService.restService!.baseUri,
+          instanceUri: pleromaInstanceService.restService.baseUri,
           initialInstance: initialInstance,
         );
 

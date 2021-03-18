@@ -88,7 +88,7 @@ class PleromaListService extends DisposableOwner
           listRelativeUrlPath,
         ),
       ),
-    )!;
+    );
 
     return parseListListResponse(httpResponse);
   }
@@ -104,7 +104,7 @@ class PleromaListService extends DisposableOwner
           listRemoteId,
         ),
       ),
-    )!;
+    );
 
     return parseListResponse(httpResponse);
   }
@@ -136,7 +136,7 @@ class PleromaListService extends DisposableOwner
           "title": title,
         },
       ),
-    )!;
+    );
 
     return parseListResponse(httpResponse);
   }
@@ -156,7 +156,7 @@ class PleromaListService extends DisposableOwner
           "title": title,
         },
       ),
-    )!;
+    );
 
     return parseListResponse(httpResponse);
   }
@@ -174,7 +174,7 @@ class PleromaListService extends DisposableOwner
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],
       ),
-    )!;
+    );
 
     return parseAccountListResponse(httpResponse);
   }

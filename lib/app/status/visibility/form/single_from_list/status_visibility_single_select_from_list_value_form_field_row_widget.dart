@@ -22,7 +22,7 @@ class StatusVisibilitySelectSingleFromListValueFormFieldRowWidget
           displayIconInRow: false,
           displayIconInDialog: true,
           valueIconMapper: (_, value) =>
-              StatusVisibilityIconWidget.mapVisibilityToIconData(value),
+              StatusVisibilityIconWidget.mapVisibilityToIconData(value!),
         ),
       );
 

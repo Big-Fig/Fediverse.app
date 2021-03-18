@@ -126,7 +126,7 @@ class _CustomListPageAppBarTitleWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var customList = snapshot.data!;
         return Text(
-          customList.title!,
+          customList.title,
           style: fediUiTextTheme.giantTitleShortBoldDarkGrey,
         );
       },
@@ -168,7 +168,7 @@ class _CustomListPageAppBarEditActionWidget extends StatelessWidget {
 
 void goToCustomListPage({
   required BuildContext context,
-  required ICustomList? customList,
+  required ICustomList customList,
   required Function(ICustomList? customList) onChanged,
   required VoidCallback onDeleted,
 }) {
@@ -199,7 +199,7 @@ MaterialPageRoute createCustomListPageRoute({
           var bloc = TimelineLocalPreferencesBloc.customList(
             ILocalPreferencesService.of(context, listen: false),
             userAtHost: currentAuthInstanceBloc.currentInstance!.userAtHost,
-            customList: customList!,
+            customList: customList,
           );
 
           bloc.performAsyncInit();

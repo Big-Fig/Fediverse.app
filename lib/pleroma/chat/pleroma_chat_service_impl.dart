@@ -102,7 +102,7 @@ class PleromaChatService extends DisposableOwner
         // https://git.pleroma.social/pleroma/pleroma/-/issues/2140
         // queryArgs: pagination?.toQueryArgs(),
       ),
-    )!;
+    );
 
     return parseChatListResponse(httpResponse);
   }
@@ -124,7 +124,7 @@ class PleromaChatService extends DisposableOwner
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],
       ),
-    )!;
+    );
 
     return parseChatMessageListResponse(httpResponse);
   }
@@ -147,7 +147,7 @@ class PleromaChatService extends DisposableOwner
           "last_read_id": lastReadChatMessageId,
         },
       ),
-    )!;
+    );
 
     return parseChatResponse(httpResponse);
   }
@@ -165,7 +165,7 @@ class PleromaChatService extends DisposableOwner
           accountId,
         ),
       ),
-    )!;
+    );
 
     return parseChatResponse(httpResponse);
   }
@@ -182,7 +182,7 @@ class PleromaChatService extends DisposableOwner
           id,
         ),
       ),
-    )!;
+    );
 
     return parseChatResponse(httpResponse);
   }
@@ -202,11 +202,11 @@ class PleromaChatService extends DisposableOwner
         ),
         headers: {
           if (data.idempotencyKey?.isNotEmpty == true)
-            "Idempotency-Key": data.idempotencyKey,
+            "Idempotency-Key": data.idempotencyKey!,
         },
         bodyJson: data.toJson(),
       ),
-    )!;
+    );
 
     return parseChatMessageResponse(httpResponse);
   }

@@ -57,9 +57,9 @@ class RestService extends DisposableOwner implements IRestService {
 
     late Future<http.Response> responseFuture;
     var requestType = request.type;
-    var bodyJson = request.bodyJson;
-    bodyJson?.removeWhere((key, value) => value == null);
-    if (bodyJson?.isEmpty == true) {
+    Map<String, dynamic>? bodyJson = request.bodyJson;
+    bodyJson.removeWhere((key, value) => value == null);
+    if (bodyJson.isEmpty == true) {
       bodyJson = null;
     }
     String? requestBodyJson;
@@ -67,10 +67,10 @@ class RestService extends DisposableOwner implements IRestService {
       requestBodyJson = json.encode(bodyJson);
     }
 
-    var requestHeaders = <String, String?>{};
-    requestHeaders.addAll(request.headers!);
+    var requestHeaders = <String, String>{};
+    requestHeaders.addAll(request.headers);
     Encoding? encoding;
-    if (request.bodyJson?.isNotEmpty == true) {
+    if (request.bodyJson.isNotEmpty == true) {
       requestHeaders["Content-Type"] = "application/json";
       encoding = _defaultEncoding;
     }
@@ -83,20 +83,26 @@ class RestService extends DisposableOwner implements IRestService {
     switch (request.type) {
       case RestRequestType.get:
         assert(body?.isNotEmpty != true);
-        responseFuture =
-            http.get(url, headers: requestHeaders as Map<String, String>?);
+        responseFuture = http.get(
+          url,
+          headers: requestHeaders,
+        );
         break;
       case RestRequestType.post:
-        responseFuture = http.post(url,
-            headers: requestHeaders as Map<String, String>?,
-            body: requestBodyJson,
-            encoding: encoding);
+        responseFuture = http.post(
+          url,
+          headers: requestHeaders,
+          body: requestBodyJson,
+          encoding: encoding,
+        );
         break;
       case RestRequestType.patch:
-        responseFuture = http.patch(url,
-            headers: requestHeaders as Map<String, String>?,
-            body: requestBodyJson,
-            encoding: encoding);
+        responseFuture = http.patch(
+          url,
+          headers: requestHeaders,
+          body: requestBodyJson,
+          encoding: encoding,
+        );
         break;
       case RestRequestType.delete:
         var rq = http.Request('DELETE', url);
@@ -104,8 +110,8 @@ class RestService extends DisposableOwner implements IRestService {
         if (requestBodyJson?.isNotEmpty == true) {
           rq.body = requestBodyJson!;
         }
-        if (requestHeaders?.isNotEmpty == true) {
-          rq.headers.addAll(requestHeaders as Map<String, String>);
+        if (requestHeaders.isNotEmpty == true) {
+          rq.headers.addAll(requestHeaders);
         }
         responseFuture = http.Client().send(rq).then(http.Response.fromStream);
 
@@ -115,14 +121,14 @@ class RestService extends DisposableOwner implements IRestService {
         break;
       case RestRequestType.put:
         responseFuture = http.put(url,
-            headers: requestHeaders as Map<String, String>?,
-            body: requestBodyJson,
-            encoding: encoding);
+            headers: requestHeaders, body: requestBodyJson, encoding: encoding);
         break;
       case RestRequestType.head:
         assert(body?.isNotEmpty != true);
-        responseFuture =
-            http.head(url, headers: requestHeaders as Map<String, String>?);
+        responseFuture = http.head(
+          url,
+          headers: requestHeaders,
+        );
         break;
     }
 
@@ -207,16 +213,18 @@ class RestService extends DisposableOwner implements IRestService {
       httpMethodString,
       url,
     );
-    multipartRequest.headers.addAll(request.headers as Map<String, String>);
+    multipartRequest.headers.addAll(request.headers);
 
     for (var fileEntry in request.files.entries) {
-      if (fileEntry.value != null) {
-        multipartRequest.files.add(
-            await createMultipartFile(fileEntry.value!.path, fileEntry.key));
-      }
+      multipartRequest.files.add(
+        await createMultipartFile(
+          fileEntry.value.path,
+          fileEntry.key,
+        ),
+      );
     }
 
-    for (var field in request.bodyJson!.entries) {
+    for (var field in request.bodyJson.entries) {
       assert(field.value is String);
       if (field.value != null) {
         multipartRequest.fields[field.key] = field.value;

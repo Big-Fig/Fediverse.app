@@ -75,7 +75,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   void watchLocalRepositoryChanges() {
     addDisposable(
       streamSubscription:
-          chatMessageRepository!.watchByRemoteId(chatMessage!.remoteId).listen(
+          chatMessageRepository.watchByRemoteId(chatMessage.remoteId).listen(
         (updatedChatMessage) {
           if (updatedChatMessage != null) {
             _chatMessageSubject.add(updatedChatMessage);
@@ -116,7 +116,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   }
 
   @override
-  Future delete() => pleromaChatBloc!.deleteMessage(
+  Future delete() => pleromaChatBloc.deleteMessage(
         pleromaChatMessage: chatMessage,
       );
 

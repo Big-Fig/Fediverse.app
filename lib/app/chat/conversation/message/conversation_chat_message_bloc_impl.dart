@@ -102,7 +102,7 @@ class ConversationChatMessageBloc extends ChatMessageBloc
     if (chatMessage.oldPendingRemoteId != null) {
       addDisposable(
         streamSubscription: statusRepository
-            .watchByOldPendingRemoteId(chatMessage!.oldPendingRemoteId)
+            .watchByOldPendingRemoteId(chatMessage.oldPendingRemoteId)
             .listen(
           (updatedChatMessage) {
             if (updatedChatMessage != null) {

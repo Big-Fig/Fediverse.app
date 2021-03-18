@@ -45,9 +45,9 @@ abstract class IConversationChatBloc
 }
 
 extension IConversationChatBlocExtension on IConversationChatBloc {
-  IConversationChat? get conversation => chat;
+  IConversationChat get conversation => chat;
 
-  Stream<IConversationChat?> get conversationStream => chatStream;
+  Stream<IConversationChat> get conversationStream => chatStream;
 
   IStatus? get lastStatus => lastChatMessage?.status;
 

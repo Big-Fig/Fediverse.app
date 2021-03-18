@@ -35,11 +35,11 @@ class MyAccountAccountBlockActionButtonWidget extends StatelessWidget {
           asyncButtonAction: () async {
             if (relationshipBlocking) {
               await listBloc.removeAccountBlock(
-                account: accountBloc.account!,
+                account: accountBloc.account,
               );
             } else {
               await listBloc.addAccountBlock(
-                account: accountBloc.account!,
+                account: accountBloc.account,
               );
             }
             await paginationListBloc.refreshWithController();

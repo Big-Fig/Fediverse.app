@@ -23,7 +23,7 @@ class PleromaAsyncOperationButtonBuilderWidget
             errorCallback: errorCallback,
             errorDataBuilders: [
               // top priority for passed to constructor handlers
-              ...(errorAlertDialogBuilders ?? []),
+              ...(errorAlertDialogBuilders),
               // low priority for base Pleroma handler
               ...PleromaAsyncOperationHelper.pleromaErrorDataBuilders
             ]);

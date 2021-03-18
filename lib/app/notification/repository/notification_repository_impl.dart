@@ -247,13 +247,13 @@ class NotificationRepository extends AsyncInitLoadingBloc
       for (var condition in excludeStatusTextConditions) {
         dao.addExcludeContentWhere(
           joinQuery,
-          phrase: condition.phrase!,
-          wholeWord: condition.wholeWord!,
+          phrase: condition.phrase,
+          wholeWord: condition.wholeWord,
         );
         dao.addExcludeSpoilerTextWhere(
           joinQuery,
-          phrase: condition.phrase!,
-          wholeWord: condition.wholeWord!,
+          phrase: condition.phrase,
+          wholeWord: condition.wholeWord,
         );
       }
     }
@@ -457,16 +457,20 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future markAsRead({required INotification notification}) {
+  Future markAsRead({
+    required INotification notification,
+  }) {
     return dao.markAsRead(
-      remoteId: notification!.remoteId,
+      remoteId: notification.remoteId,
     );
   }
 
   @override
-  Future dismiss({required INotification notification}) {
+  Future dismiss({
+    required INotification notification,
+  }) {
     return dao.markAsDismissed(
-      remoteId: notification!.remoteId,
+      remoteId: notification.remoteId,
     );
   }
 

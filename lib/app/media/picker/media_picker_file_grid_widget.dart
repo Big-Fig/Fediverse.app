@@ -63,7 +63,7 @@ class MediaPickerFileGridWidget
       itemBuilder: (context, index) {
         if (headerItemBuilder != null) {
           if (index == 0) {
-            return headerItemBuilder(context);
+            return headerItemBuilder!(context);
           } else {
             index--;
           }

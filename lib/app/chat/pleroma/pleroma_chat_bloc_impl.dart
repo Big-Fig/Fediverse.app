@@ -108,10 +108,10 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
     addDisposable(
       streamSubscription:
-          chatMessageRepository!.watchChatLastChatMessage(chat: chat).listen(
+          chatMessageRepository.watchChatLastChatMessage(chat: chat).listen(
         (lastMessage) {
           _logger.finest(() => "watchChatLastChatMessage \n"
-              " chat ${chat!.remoteId} \n"
+              " chat ${chat.remoteId} \n"
               " lastMessage $lastMessage");
           if (lastMessage != null) {
             _lastMessageSubject.add(lastMessage);
@@ -121,7 +121,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     );
 
     addDisposable(
-      streamSubscription: chatMessageRepository!
+      streamSubscription: chatMessageRepository
           .watchChatLastChatMessage(
         chat: chat,
         onlyPendingStatePublishedOrNull: true,
@@ -130,7 +130,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         (lastMessage) {
           _logger.finest(() => "watchChatLastChatMessage \n"
               "onlyPendingStatePublishedOrNull: true, \n"
-              " chat ${chat!.remoteId} \n"
+              " chat ${chat.remoteId} \n"
               " lastMessage $lastMessage");
           if (lastMessage != null) {
             _lastPublishedMessageSubject.add(lastMessage);
@@ -191,7 +191,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   Future _updateByRemoteChat(
     pleroma_lib.IPleromaChat remoteChat,
   ) =>
-      chatRepository!.updateLocalChatByRemoteChat(
+      chatRepository.updateLocalChatByRemoteChat(
         oldLocalChat: chat,
         newRemoteChat: remoteChat,
       );
@@ -246,7 +246,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   Future deleteMessages(List<IChatMessage> chatMessages) async {
     // create queue instead of parallel requests to avoid throttle limit on server
-    for (var chatMessage in chatMessages!) {
+    for (var chatMessage in chatMessages) {
       var remoteId = chatMessage.remoteId;
       if (chatMessage.isPendingStatePublishedOrNull) {
         await pleromaChatService.deleteChatMessage(
@@ -301,7 +301,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         id: null,
         remoteId: fakeUniqueRemoteRemoteId,
         chatRemoteId: chat.remoteId,
-        accountRemoteId: myAccountBloc.account!.remoteId,
+        accountRemoteId: myAccountBloc.account.remoteId,
         createdAt: createdAt,
         content: pleromaChatMessageSendData.content,
         emojis: null,

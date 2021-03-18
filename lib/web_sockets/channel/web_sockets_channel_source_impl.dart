@@ -71,7 +71,7 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
   Future _disconnect() async {
     _logger.finest(() => "_disconnect $url");
     await _channelSubscription?.cancel();
-    await _channel?.sink?.close();
+    await _channel?.sink.close();
     _channel = null;
   }
 

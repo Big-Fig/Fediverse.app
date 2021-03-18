@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_model.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/list/cached/conversation_chat_with_last_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/pagination/conversation_chat_with_last_message_pagination_bloc.dart';
@@ -29,12 +30,14 @@ class ConversationChatWithLastMessagePaginationBloc
     required int? itemsCountPerPage,
     required CachedPaginationPage<IConversationChatWithLastMessage?>? olderPage,
     required CachedPaginationPage<IConversationChatWithLastMessage?>? newerPage,
-  }) =>
-      listService.loadLocalItems(
+  }) {
+
+    return listService.loadLocalItems(
         limit: itemsCountPerPage,
-        newerThan: olderPage?.items?.first,
-        olderThan: newerPage?.items?.last,
+        newerThan: olderPage?.items.firstOrNull,
+        olderThan: newerPage?.items.lastOrNull,
       );
+  }
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -48,8 +51,8 @@ class ConversationChatWithLastMessagePaginationBloc
 
     return listService.refreshItemsFromRemoteForPage(
       limit: itemsCountPerPage,
-      newerThan: olderPage?.items?.first,
-      olderThan: newerPage?.items?.last,
+      newerThan: olderPage?.items.firstOrNull,
+      olderThan: newerPage?.items.lastOrNull,
     );
   }
 }

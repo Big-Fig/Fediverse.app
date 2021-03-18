@@ -34,7 +34,7 @@ class _EditPushSettingsWidgetState extends State<EditPushSettingsWidget> {
         IToastService.of(context, listen: false).showErrorToast(
           context: context,
           title: S.of(context).app_push_settings_update_fail_dialog_title,
-          content: error?.toString(),
+          content: error.toString(),
         );
       },
     );

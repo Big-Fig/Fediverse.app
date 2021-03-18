@@ -57,9 +57,9 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
         ),
       );
 
-  List<TItem>? get originalItems => paginationListBloc!.items;
+  List<TItem>? get originalItems => paginationListBloc.items;
 
-  Stream<List<TItem>?> get originalItemsStream => paginationListBloc!.itemsStream;
+  Stream<List<TItem>?> get originalItemsStream => paginationListBloc.itemsStream;
 
   final BehaviorSubject<List<TItem>> addedItemsSubject =
       BehaviorSubject.seeded([]);
@@ -104,8 +104,8 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
     _logger.finest(() => "_calculateCurrentItems \n"
         "originalItems ${originalItems?.length} \n"
-        "addedItems ${addedItems?.length} \n"
-        "removedItems ${removedItems?.length}");
+        "addedItems ${addedItems.length} \n"
+        "removedItems ${removedItems.length}");
     if (originalItems == null) {
       result = null;
     } else {
@@ -125,8 +125,8 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
     _logger.finest(() => "_calculateCurrentItems \n"
         "originalItems ${originalItems?.length}"
-        "addedItems ${addedItems?.length}"
-        "removedItems ${removedItems?.length}"
+        "addedItems ${addedItems.length}"
+        "removedItems ${removedItems.length}"
         "result ${result?.length}");
 
     return result;
@@ -253,76 +253,76 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   AsyncInitLoadingState? get initLoadingState =>
-      paginationListBloc!.initLoadingState;
+      paginationListBloc.initLoadingState;
 
   @override
   Stream<AsyncInitLoadingState> get initLoadingStateStream =>
-      paginationListBloc!.initLoadingStateStream;
+      paginationListBloc.initLoadingStateStream;
 
   @override
-  bool? get isLoading => paginationListBloc!.isLoading;
+  bool? get isLoading => paginationListBloc.isLoading;
 
   @override
-  Stream<bool> get isLoadingStream => paginationListBloc!.isLoadingStream;
+  Stream<bool> get isLoadingStream => paginationListBloc.isLoadingStream;
 
   @override
-  int? get itemsCountPerPage => paginationListBloc!.itemsCountPerPage;
+  int? get itemsCountPerPage => paginationListBloc.itemsCountPerPage;
 
   @override
   Stream<List<TItem>?> get itemsDistinctStream => itemsStream.distinct();
 
   @override
   Stream<PaginationListLoadingError> get loadMoreErrorStream =>
-      paginationListBloc!.loadMoreErrorStream;
+      paginationListBloc.loadMoreErrorStream;
 
   @override
   FediListSmartRefresherLoadingState? get loadMoreState =>
-      paginationListBloc!.loadMoreState;
+      paginationListBloc.loadMoreState;
 
   @override
   // TODO: implement loadMoreStateStream
   Stream<FediListSmartRefresherLoadingState> get loadMoreStateStream =>
-      paginationListBloc!.loadMoreStateStream;
+      paginationListBloc.loadMoreStateStream;
 
   @override
   Future<FediListSmartRefresherLoadingState> loadMoreWithoutController() =>
-      paginationListBloc!.loadMoreWithoutController();
+      paginationListBloc.loadMoreWithoutController();
 
   @override
-  Future performAsyncInit() => paginationListBloc!.performAsyncInit();
+  Future performAsyncInit() => paginationListBloc.performAsyncInit();
 
   @override
   RefreshController get refreshController =>
-      paginationListBloc!.refreshController;
+      paginationListBloc.refreshController;
 
   @override
   Stream<PaginationListLoadingError> get refreshErrorStream =>
-      paginationListBloc!.refreshErrorStream;
+      paginationListBloc.refreshErrorStream;
 
   @override
   FediListSmartRefresherLoadingState? get refreshState =>
-      paginationListBloc!.refreshState;
+      paginationListBloc.refreshState;
 
   @override
   Stream<FediListSmartRefresherLoadingState> get refreshStateStream =>
-      paginationListBloc!.refreshStateStream;
+      paginationListBloc.refreshStateStream;
 
   @override
   Future refreshWithController() {
-    return paginationListBloc!.refreshWithController();
+    return paginationListBloc.refreshWithController();
   }
 
   @override
   Future<FediListSmartRefresherLoadingState> refreshWithoutController() =>
-      paginationListBloc!.refreshWithoutController();
+      paginationListBloc.refreshWithoutController();
 
   @override
-  List<TPage>? get sortedPages => paginationListBloc!.sortedPages;
+  List<TPage>? get sortedPages => paginationListBloc.sortedPages;
 
   @override
   Stream<List<TPage>> get sortedPagesStream =>
-      paginationListBloc!.sortedPagesStream;
+      paginationListBloc.sortedPagesStream;
 
   @override
-  dynamic get initLoadingException => paginationListBloc!.initLoadingException;
+  dynamic get initLoadingException => paginationListBloc.initLoadingException;
 }

@@ -54,7 +54,7 @@ class EditMyAccountPleromaBackgroundFieldImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imageSource?.url != null) {
+    if (imageSource.url != null) {
       var url = imageSource.url;
       return IFilesCacheService.of(context).createCachedNetworkImageWidget(
         imageUrl: url,
@@ -67,7 +67,7 @@ class EditMyAccountPleromaBackgroundFieldImageWidget extends StatelessWidget {
           color: IFediUiColorTheme.of(context).error,
         ),
       );
-    } else if (imageSource?.file != null) {
+    } else if (imageSource.file != null) {
       return Image.file(
         imageSource.file!,
         fit: BoxFit.cover,

@@ -47,7 +47,7 @@ class RecentSelectAccountWidget extends StatelessWidget {
             ?.map(
               (remoteAccount) => remoteAccount.toDbAccountWrapper(),
             )
-            ?.toList();
+            .toList();
 
         return Provider<List<IAccount>?>.value(
           value: recentItems,
@@ -123,7 +123,7 @@ class _RecentSelectAccountListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var recentItems = Provider.of<List<IAccount>>(context);
 
-    var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
+    var recentItemsIsNotEmpty = recentItems.isNotEmpty == true;
 
     if (recentItemsIsNotEmpty) {
       return ListView(

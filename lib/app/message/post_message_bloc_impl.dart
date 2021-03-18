@@ -141,7 +141,7 @@ abstract class PostMessageBloc extends DisposableOwner
     required List<IUploadMediaAttachmentBloc>? mediaAttachmentBlocs,
     required bool? isAllAttachedMediaUploaded,
   }) {
-    var textIsNotEmpty = inputText?.trim()?.isEmpty != true;
+    var textIsNotEmpty = inputText?.trim().isEmpty != true;
     var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
 
     return (textIsNotEmpty || mediaAttached) && isAllAttachedMediaUploaded!;

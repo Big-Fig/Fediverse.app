@@ -116,7 +116,7 @@ abstract class FediDialog extends BaseDialog {
               context: context,
               isLast: actions?.isNotEmpty != true,
             )),
-          ...actions?.asMap()?.entries?.map((entry) {
+          ...actions?.asMap().entries.map((entry) {
                 var index = entry.key;
                 var action = entry.value;
                 var isLast = actions!.length - 1 == index;
@@ -129,7 +129,7 @@ abstract class FediDialog extends BaseDialog {
                     notAddRightPadding: isLast,
                   ),
                 );
-              })?.toList() ??
+              }).toList() ??
               []
         ],
       );
@@ -138,7 +138,7 @@ abstract class FediDialog extends BaseDialog {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          ...actions?.asMap()?.entries?.map((entry) {
+          ...actions?.asMap().entries.map((entry) {
                 var action = entry.value;
                 return Padding(
                   padding: FediPadding.verticalSmallPadding,
@@ -150,7 +150,7 @@ abstract class FediDialog extends BaseDialog {
                     notAddRightPadding: true,
                   ),
                 );
-              })?.toList() ??
+              }).toList() ??
               [],
           if (cancelable)
             Padding(

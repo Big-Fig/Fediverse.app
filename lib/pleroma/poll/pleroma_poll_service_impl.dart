@@ -51,7 +51,7 @@ class PleromaPollService extends DisposableOwner
         pollRemoteId,
       ),
     );
-    var httpResponse = await restService.sendHttpRequest(request)!;
+    var httpResponse = await restService.sendHttpRequest(request);
 
     return parsePollResponse(httpResponse);
   }
@@ -62,8 +62,9 @@ class PleromaPollService extends DisposableOwner
     required List<int> voteIndexes,
   }) async {
     var request = RestRequest.post(
-        relativePath: join(pollRelativeUrlPath, pollRemoteId, "votes"),
-        bodyJson: {"choices": voteIndexes});
+      relativePath: join(pollRelativeUrlPath, pollRemoteId, "votes"),
+      bodyJson: {"choices": voteIndexes},
+    );
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parsePollResponse(httpResponse);

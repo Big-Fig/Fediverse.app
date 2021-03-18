@@ -58,7 +58,7 @@ class UrlHelper {
 
     var host = uri.host;
     // check relative links
-    if (host?.isNotEmpty != true) {
+    if (host.isNotEmpty != true) {
       if (isLocal) {
         url = _calculateLocalInstanceAbsoluteUrl(context, url);
       } else {
@@ -154,7 +154,7 @@ class UrlHelper {
 
     var host = uri.host;
     // check relative links
-    if (host?.isNotEmpty != true) {
+    if (host.isNotEmpty != true) {
       url = _calculateLocalInstanceAbsoluteUrl(context, url);
     }
 

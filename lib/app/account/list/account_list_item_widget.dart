@@ -33,7 +33,7 @@ class AccountListItemWidget extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: () {
         if (accountSelectedCallback != null) {
-          accountSelectedCallback!(context, accountBloc.account!);
+          accountSelectedCallback!(context, accountBloc.account);
         }
       },
       child: Padding(

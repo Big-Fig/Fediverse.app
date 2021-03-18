@@ -35,7 +35,7 @@ class PleromaChatCurrentBloc extends DisposableOwner
     if (indexToRemove >= 0) {
       openedChats.removeAt(indexToRemove);
     }
-    if (openedChats?.isNotEmpty == true) {
+    if (openedChats.isNotEmpty == true) {
       currentChatSubject.add(openedChats.last);
     } else {
       currentChatSubject.add(null);

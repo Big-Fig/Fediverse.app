@@ -519,8 +519,8 @@ class FediDatePickerTheme {
   final double titleHeight;
   final double itemHeight;
   final String customTitle;
-  final String customDone;
-  final String customCancel;
+  final String? customDone;
+  final String? customCancel;
 
   const FediDatePickerTheme({
     this.cancelStyle = const TextStyle(color: Colors.black54, fontSize: 16),

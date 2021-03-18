@@ -85,7 +85,7 @@ class _FormCaptchaStringFormFieldRowContentWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var errors = snapshot.data ?? [];
 
-          var error = errors?.isNotEmpty == true ? errors.first : null;
+          var error = errors.isNotEmpty == true ? errors.first : null;
 
           return _FormCaptchaStringFormFieldRowBodyWidget(
             hint: hint,

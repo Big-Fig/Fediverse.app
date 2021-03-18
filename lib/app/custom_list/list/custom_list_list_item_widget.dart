@@ -17,7 +17,7 @@ class CustomListListItemWidget extends StatelessWidget {
       onTap: () {
         goToCustomListPage(
           context: context,
-          customList: customListBloc.customList,
+          customList: customListBloc.customList!,
           onChanged: (ICustomList? customList) {
             _refresh(context);
           },

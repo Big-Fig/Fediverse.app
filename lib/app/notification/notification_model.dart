@@ -139,7 +139,7 @@ class DbNotificationPopulatedWrapper implements INotification {
       dbNotificationPopulated.dbStatusPopulated?.toDbStatusPopulatedWrapper();
 
   @override
-  bool get unread => dbNotificationPopulated!.dbNotification!.unread == true;
+  bool get unread => dbNotificationPopulated.dbNotification.unread == true;
 
   @override
   DbNotificationPopulatedWrapper copyWith({

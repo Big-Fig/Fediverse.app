@@ -112,7 +112,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       accounts.addAll(
         conversationAccounts.where(
           (account) {
-            var notOwn = account.remoteId != myAccountBloc.account!.remoteId;
+            var notOwn = account.remoteId != myAccountBloc.account.remoteId;
             var alreadyExist = accounts.firstWhereOrNull((accountsItem) =>
                     accountsItem.remoteId == account.remoteId) !=
                 null;
@@ -148,11 +148,11 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     var pleromaAccounts = <IPleromaAccount>[];
 
     for (var pleromaConversation in pleromaConversations) {
-      var pleromaConversationAccounts = pleromaConversation.accounts!;
+      var pleromaConversationAccounts = pleromaConversation.accounts;
       pleromaAccounts.addAll(
         pleromaConversationAccounts.where(
           (pleromaAccount) {
-            var notOwn = pleromaAccount.id != myAccountBloc.account!.remoteId;
+            var notOwn = pleromaAccount.id != myAccountBloc.account.remoteId;
             var alreadyAdded = pleromaAccounts.firstWhereOrNull(
                     (pleromaAccountsItem) =>
                         pleromaAccountsItem.id == pleromaAccount.id) !=

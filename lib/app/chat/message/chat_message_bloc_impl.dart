@@ -5,6 +5,7 @@ import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
+import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/stream/stream_extension.dart';
 import 'package:rxdart/rxdart.dart';
@@ -115,19 +116,11 @@ abstract class ChatMessageBloc extends DisposableOwner
       .distinct();
 
   @override
-  EmojiText get contentWithEmojis => EmojiText(
-        text: chatMessage.content,
-        emojis: chatMessage.emojis,
-      );
+  EmojiText? get contentWithEmojis => chatMessage.toContentEmojiText();
 
   @override
-  Stream<EmojiText> get contentWithEmojisStream => chatMessageStream
-      .map(
-        (chatMessage) => EmojiText(
-          text: chatMessage.content,
-          emojis: chatMessage.emojis,
-        ),
-      )
+  Stream<EmojiText?> get contentWithEmojisStream => chatMessageStream
+      .map((chatMessage) => chatMessage.toContentEmojiText())
       .distinct();
 
   void watchLocalRepositoryChanges();
@@ -180,4 +173,7 @@ abstract class ChatMessageBloc extends DisposableOwner
         (chatMessage) =>
             chatMessage.isPublishedAndNotDeletedAndNotLocallyHidden,
       );
+
+  @override
+  List<IPleromaEmoji>? get emojis => chatMessage.emojis;
 }
