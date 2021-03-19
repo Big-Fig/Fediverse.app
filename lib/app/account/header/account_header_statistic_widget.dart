@@ -59,7 +59,7 @@ class AccountHeaderStatisticBodyWidget extends StatelessWidget {
           style: accountHeaderBloc.brightness == Brightness.dark
               ? fediUiTextTheme.mediumTallDarkGrey
               : fediUiTextTheme.mediumTallWhite,
-        )
+        ),
       ],
     );
   }

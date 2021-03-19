@@ -29,7 +29,8 @@ class FilesCacheSettingsBloc
 
   @override
   Future changeFilesCacheSizeLimitCountType(
-          FilesCacheSizeLimitCountType value) =>
+    FilesCacheSizeLimitCountType value,
+  ) =>
       updateSettings(
         FilesCacheSettings(
           filesCacheSizeLimitCountTypeString: value.toJsonValue(),

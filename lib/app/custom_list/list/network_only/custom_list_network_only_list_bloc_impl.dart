@@ -23,8 +23,10 @@ class CustomListNetworkOnlyListBloc extends INetworkOnlyListBloc<ICustomList> {
     );
   }
 
-  static Widget provideToContext(BuildContext context,
-      {required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) {
     return DisposableProvider<INetworkOnlyListBloc<ICustomList>>(
       create: (context) =>
           CustomListNetworkOnlyListBloc.createFromContext(context),

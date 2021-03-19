@@ -6,10 +6,14 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
-  static IUploadMediaAttachmentsCollectionBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IUploadMediaAttachmentsCollectionBloc>(context,
-          listen: listen);
+  static IUploadMediaAttachmentsCollectionBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IUploadMediaAttachmentsCollectionBloc>(
+        context,
+        listen: listen,
+      );
 
   List<IUploadMediaAttachmentBloc>? get onlyMediaAttachmentBlocs;
 
@@ -49,7 +53,8 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
   Future attachMedias(List<IMediaDeviceFile>? mediaDeviceFiles);
 
   void detachMediaAttachmentBloc(
-      IUploadMediaAttachmentBloc mediaAttachmentBloc);
+    IUploadMediaAttachmentBloc mediaAttachmentBloc,
+  );
 
   Future clear();
 

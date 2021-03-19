@@ -10,7 +10,9 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 void showPostStatusUnsavedDialog(
-    BuildContext context, IPostStatusBloc postStatusBloc) {
+  BuildContext context,
+  IPostStatusBloc postStatusBloc,
+) {
   var fediUiTextTheme = IFediUiTextTheme.of(context, listen: false);
 
   FediBaseAlertDialog(

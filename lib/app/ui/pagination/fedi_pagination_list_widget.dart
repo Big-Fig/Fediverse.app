@@ -44,7 +44,8 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
 
   @override
   Widget buildPaginationListBody(
-      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) {
+    IPaginationListBloc<PaginationPage<T>, T> paginationListBloc,
+  ) {
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc: paginationListBloc,
       loadingFinishedBuilder: (BuildContext context) {
@@ -55,12 +56,13 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
 
   @override
   Widget buildSmartRefresher(
-      IPaginationListBloc paginationListBloc,
-      BuildContext context,
-      List<T>? items,
-      RefreshController refreshController,
-      ScrollController? scrollController,
-      Widget Function(BuildContext context) smartRefresherBodyBuilder) {
+    IPaginationListBloc paginationListBloc,
+    BuildContext context,
+    List<T>? items,
+    RefreshController refreshController,
+    ScrollController? scrollController,
+    Widget Function(BuildContext context) smartRefresherBodyBuilder,
+  ) {
     _logger.finest(() => "buildSmartRefresher items ${items?.length}");
 
     return FediListSmartRefresherWidget(
@@ -83,20 +85,25 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
             } catch (e, stackTrace) {
               success = false;
               _logger.severe(
-                  () => "additionalPreRefreshAction()", e, stackTrace);
+                () => "additionalPreRefreshAction()",
+                e,
+                stackTrace,
+              );
             }
 
             _logger.finest(() => "additionalPreRefreshAction() $success");
             var state = await paginationListBloc.refreshWithoutController();
             _logger.finest(
-                () => "paginationListBloc.refreshWithoutController() $state");
+              () => "paginationListBloc.refreshWithoutController() $state",
+            );
             return state;
           },
         );
       },
       onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
-          controller: refreshController,
-          action: paginationListBloc.loadMoreWithoutController),
+        controller: refreshController,
+        action: paginationListBloc.loadMoreWithoutController,
+      ),
       child: smartRefresherBodyBuilder(context),
     );
   }

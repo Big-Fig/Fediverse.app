@@ -5,8 +5,11 @@ import 'package:provider/provider.dart';
 abstract class IInstanceFilesCacheSettingsLocalPreferencesBloc
     implements IFilesCacheSettingsLocalPreferencesBloc {
   static IInstanceFilesCacheSettingsLocalPreferencesBloc of(
-          BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IInstanceFilesCacheSettingsLocalPreferencesBloc>(context,
-          listen: listen);
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IInstanceFilesCacheSettingsLocalPreferencesBloc>(
+        context,
+        listen: listen,
+      );
 }

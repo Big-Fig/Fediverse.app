@@ -14,5 +14,6 @@ abstract class IRestService extends IDisposable {
 
   Future<Response>
       uploadFileMultipartRequest<T extends UploadMultipartRestRequest, K>(
-          T request);
+    T request,
+  );
 }

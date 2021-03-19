@@ -96,11 +96,18 @@ class FediBaseEditTextField extends StatelessWidget {
         maxLines: maxLines,
         expands: expanded,
         keyboardType: keyboardType,
-        buildCounter: ((BuildContext context,
-                    {int? currentLength, int? maxLength, bool? isFocused}) =>
-                null)
-            as Widget Function(BuildContext,
-                {int currentLength, bool isFocused, int? maxLength})?,
+        buildCounter: ((
+          BuildContext context, {
+          int? currentLength,
+          int? maxLength,
+          bool? isFocused,
+        }) =>
+            null) as Widget Function(
+          BuildContext, {
+          int currentLength,
+          bool isFocused,
+          int? maxLength,
+        })?,
       );
     } else {
       child = TextField(
@@ -134,8 +141,12 @@ class FediBaseEditTextField extends StatelessWidget {
         maxLines: maxLines,
         expands: expanded,
         keyboardType: keyboardType,
-        buildCounter: (BuildContext context,
-                {int? currentLength, int? maxLength, bool? isFocused}) =>
+        buildCounter: (
+          BuildContext context, {
+          int? currentLength,
+          int? maxLength,
+          bool? isFocused,
+        }) =>
             null,
       );
     }
@@ -188,7 +199,6 @@ class _SpecialTextSpanBuilder extends SpecialTextSpanBuilder {
     SpecialTextGestureTapCallback? onTap,
     required int index,
   }) {
-
     // index is end index of start flag, so text start index should be index-(flag.length-1)
     if (flag.isNotEmpty == true && isStart(flag, _MentionSpecialText.flag)) {
       return _MentionSpecialText(

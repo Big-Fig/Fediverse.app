@@ -41,7 +41,8 @@ class CustomEmojiPickerBloc extends DisposableOwner
   })   : availableCategoriesSubject =
             BehaviorSubject.seeded(availableCategories),
         selectedCategorySubject = BehaviorSubject.seeded(
-            selectedCategory ?? availableCategories.first) {
+          selectedCategory ?? availableCategories.first,
+        ) {
     addDisposable(subject: availableCategoriesSubject);
     addDisposable(subject: selectedCategorySubject);
     addDisposable(streamController: selectedEmojiStreamController);

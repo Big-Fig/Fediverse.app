@@ -51,11 +51,14 @@ void main() {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
     chatMessageRepository = PleromaChatMessageRepository(
-        appDatabase: database, accountRepository: accountRepository);
+      appDatabase: database,
+      accountRepository: accountRepository,
+    );
     chatRepository = PleromaChatRepository(
-        appDatabase: database,
-        accountRepository: accountRepository,
-        chatMessageRepository: chatMessageRepository);
+      appDatabase: database,
+      accountRepository: accountRepository,
+      chatMessageRepository: chatMessageRepository,
+    );
 
     pleromaChatServiceMock = PleromaChatServiceMock();
     pleromaMyAccountServiceMock = PleromaMyAccountServiceMock();
@@ -86,10 +89,11 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
 
     myAccountBloc = MyAccountBloc(
-        pleromaMyAccountService: pleromaMyAccountServiceMock,
-        accountRepository: accountRepository,
-        myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
-        instance: authInstance);
+      pleromaMyAccountService: pleromaMyAccountServiceMock,
+      accountRepository: accountRepository,
+      myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
+      instance: authInstance,
+    );
 
     when(pleromaChatServiceMock.isApiReadyToUse).thenReturn(true);
 
@@ -117,9 +121,11 @@ void main() {
     await preferencesService.dispose();
   });
 
-  Future _update(IPleromaChat chat,
-      {IPleromaChatMessage? lastChatMessage,
-      required List<IAccount> accounts}) async {
+  Future _update(
+    IPleromaChat chat, {
+    IPleromaChatMessage? lastChatMessage,
+    required List<IAccount> accounts,
+  }) async {
     await chatRepository.upsertRemoteChat(chat.toPleromaChat(
       lastChatMessage: lastChatMessage,
       accounts: accounts,
@@ -131,8 +137,7 @@ void main() {
   test('chat', () async {
     expectChat(chatBloc.chat, chat);
 
-    var newValue =
-        await createTestChat(seed: "seed2", remoteId: chat.remoteId);
+    var newValue = await createTestChat(seed: "seed2", remoteId: chat.remoteId);
 
     var listenedValue;
 
@@ -166,8 +171,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listenedValue, chat.updatedAt);
 
-    await _update(chat.copyWith(updatedAt: newValue),
-        accounts: chat.accounts);
+    await _update(chat.copyWith(updatedAt: newValue), accounts: chat.accounts);
 
     expect(chatBloc.updatedAt, newValue);
     expect(listenedValue, newValue);
@@ -176,16 +180,17 @@ void main() {
 
   test('lastChatMessage', () async {
     var chatMessage1 = await createTestChatMessage(
-        seed: "chatMessage1",
-        chatRemoteId: chat.remoteId,
-        createdAt: DateTime(2001));
+      seed: "chatMessage1",
+      chatRemoteId: chat.remoteId,
+      createdAt: DateTime(2001),
+    );
     var chatMessage2 = await createTestChatMessage(
-        seed: "chatMessage2",
-        chatRemoteId: chat.remoteId,
-        createdAt: DateTime(2002));
+      seed: "chatMessage2",
+      chatRemoteId: chat.remoteId,
+      createdAt: DateTime(2002),
+    );
 
-    var newValue =
-        await createTestChat(seed: "seed2", remoteId: chat.remoteId);
+    var newValue = await createTestChat(seed: "seed2", remoteId: chat.remoteId);
 
     var listenedValue;
 
@@ -195,8 +200,11 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    await _update(newValue,
-        accounts: [chatMessage1.account], lastChatMessage: chatMessage1);
+    await _update(
+      newValue,
+      accounts: [chatMessage1.account],
+      lastChatMessage: chatMessage1,
+    );
 
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -208,8 +216,11 @@ void main() {
       chatMessage2.toPleromaChatMessage(),
     );
 
-    await _update(newValue,
-        accounts: [chatMessage2.account], lastChatMessage: chatMessage1);
+    await _update(
+      newValue,
+      accounts: [chatMessage2.account],
+      lastChatMessage: chatMessage1,
+    );
 
 // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -225,8 +236,7 @@ void main() {
     var account1 = await createTestAccount(seed: "account1");
     var account2 = await createTestAccount(seed: "account2");
 
-    var newValue =
-        await createTestChat(seed: "seed2", remoteId: chat.remoteId);
+    var newValue = await createTestChat(seed: "seed2", remoteId: chat.remoteId);
 
     late var listenedValue;
 

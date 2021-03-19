@@ -159,7 +159,8 @@ class PleromaAccountReport implements IPleromaAccountReport {
 
   static List<PleromaAccountReport> listFromJsonString(String str) =>
       List<PleromaAccountReport>.from(
-          json.decode(str).map((x) => PleromaAccountReport.fromJson(x)));
+        json.decode(str).map((x) => PleromaAccountReport.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaAccountReportToJson(this);
 
@@ -278,7 +279,8 @@ class PleromaAccount implements IPleromaAccount {
 
   static List<PleromaAccount> listFromJsonString(String str) =>
       List<PleromaAccount>.from(
-          json.decode(str).map((x) => PleromaAccount.fromJson(x)));
+        json.decode(str).map((x) => PleromaAccount.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaAccountToJson(this);
 
@@ -977,7 +979,8 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
 
   static List<PleromaAccountRelationship> listFromJsonString(String str) =>
       List<PleromaAccountRelationship>.from(
-          json.decode(str).map((x) => PleromaAccountRelationship.fromJson(x)));
+        json.decode(str).map((x) => PleromaAccountRelationship.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaAccountRelationshipToJson(this);
 
@@ -1004,12 +1007,13 @@ class PleromaAccountIdentityProof extends IPleromaAccountIdentityProof {
   @override
   final DateTime? updatedAt;
 
-  PleromaAccountIdentityProof(
-      {this.profileUrl,
-      this.proofUrl,
-      this.provider,
-      this.providerUsername,
-      this.updatedAt});
+  PleromaAccountIdentityProof({
+    this.profileUrl,
+    this.proofUrl,
+    this.provider,
+    this.providerUsername,
+    this.updatedAt,
+  });
 
   @override
   String toString() {
@@ -1026,6 +1030,7 @@ class PleromaAccountIdentityProof extends IPleromaAccountIdentityProof {
 
   static List<PleromaAccountIdentityProof> listFromJsonString(String str) =>
       List<PleromaAccountIdentityProof>.from(
+          // ignore: prefer-trailing-comma
           json.decode(str).map((x) => PleromaAccountIdentityProof.fromJson(x)));
 
   Map<String, dynamic> toJson() => _$PleromaAccountIdentityProofToJson(this);

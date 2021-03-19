@@ -9,18 +9,21 @@ part 'pleroma_chat_database_dao.g.dart';
 var _accountAliasId = "account";
 var _chatAccountsAliasId = "chatAccounts";
 
-@UseDao(tables: [
-  DbChats
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_chats;",
-  "countById": "SELECT COUNT(*) FROM db_chats WHERE id = :id;",
-  "deleteById": "DELETE FROM db_chats WHERE id = :id;",
-  "oldest": "SELECT * FROM db_chats ORDER BY updated_at ASC LIMIT 1;",
-  "clear": "DELETE FROM db_chats",
-  "getAll": "SELECT * FROM db_chats",
-  "findLocalIdByRemoteId": "SELECT id FROM db_chats WHERE remote_id = "
-      ":remoteId;",
-})
+@UseDao(
+  tables: [
+    DbChats,
+  ],
+  queries: {
+    "countAll": "SELECT Count(*) FROM db_chats;",
+    "countById": "SELECT COUNT(*) FROM db_chats WHERE id = :id;",
+    "deleteById": "DELETE FROM db_chats WHERE id = :id;",
+    "oldest": "SELECT * FROM db_chats ORDER BY updated_at ASC LIMIT 1;",
+    "clear": "DELETE FROM db_chats",
+    "getAll": "SELECT * FROM db_chats",
+    "findLocalIdByRemoteId": "SELECT id FROM db_chats WHERE remote_id = "
+        ":remoteId;",
+  },
+)
 class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
@@ -78,8 +81,7 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   Future<int> upsert(Insertable<DbChat> entity) async =>
       into(db.dbChats).insert(entity, mode: InsertMode.insertOrReplace);
 
-  Future insertAll(
-          List<Insertable<DbChat>> entities, InsertMode mode) async =>
+  Future insertAll(List<Insertable<DbChat>> entities, InsertMode mode) async =>
       await batch(
         (batch) {
           batch.insertAll(
@@ -168,8 +170,9 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   }
 
   SimpleSelectStatement<$DbChatsTable, DbChat> orderBy(
-          SimpleSelectStatement<$DbChatsTable, DbChat> query,
-          List<PleromaChatOrderingTermData> orderTerms) =>
+    SimpleSelectStatement<$DbChatsTable, DbChat> query,
+    List<PleromaChatOrderingTermData> orderTerms,
+  ) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
@@ -183,19 +186,23 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
                       break;
                   }
                   return OrderingTerm(
-                      expression: expression, mode: orderTerm.orderingMode);
+                    expression: expression,
+                    mode: orderTerm.orderingMode,
+                  );
                 })
             .toList());
 
   List<DbPleromaChatPopulated> typedResultListToPopulated(
-      List<TypedResult> typedResult) {
+    List<TypedResult> typedResult,
+  ) {
     return typedResult.map(typedResultToPopulated).toList();
   }
 
   DbPleromaChatPopulated typedResultToPopulated(TypedResult typedResult) {
     return DbPleromaChatPopulated(
-        dbChat: typedResult.readTable(db.dbChats),
-        dbAccount: typedResult.readTable(accountAlias));
+      dbChat: typedResult.readTable(db.dbChats),
+      dbAccount: typedResult.readTable(accountAlias),
+    );
   }
 
   List<Join<Table, DataClass>> populateChatJoin() {

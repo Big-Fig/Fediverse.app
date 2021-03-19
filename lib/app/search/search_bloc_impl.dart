@@ -19,7 +19,7 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
   SearchBloc({
     required this.pleromaSearchService,
     required SearchTab startTab,
-  })  : searchInputBloc = SearchInputBloc(),
+  })   : searchInputBloc = SearchInputBloc(),
         _selectedTabSubject = BehaviorSubject.seeded(startTab) {
     addDisposable(disposable: searchInputBloc);
     _logger.finest(() => "constructor");
@@ -40,8 +40,10 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
     _selectedTabSubject.add(tab);
   }
 
-  static SearchBloc createFromContext(BuildContext context,
-          {required SearchTab startTab}) =>
+  static SearchBloc createFromContext(
+    BuildContext context, {
+    required SearchTab startTab,
+  }) =>
       SearchBloc(
         startTab: startTab,
         pleromaSearchService: IPleromaSearchService.of(

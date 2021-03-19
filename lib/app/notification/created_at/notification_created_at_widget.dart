@@ -18,15 +18,16 @@ class NotificationCreatedAtWidget extends StatelessWidget {
     var notificationBloc = INotificationBloc.of(context);
 
     return StreamBuilder<DateTime?>(
-        stream: notificationBloc.createdAtStream,
-        initialData: notificationBloc.createdAt,
-        builder: (context, snapshot) {
-          var createdAt = snapshot.data;
+      stream: notificationBloc.createdAtStream,
+      initialData: notificationBloc.createdAt,
+      builder: (context, snapshot) {
+        var createdAt = snapshot.data;
 
-          return DateTimeDynamicTimeAgoWidget(
-            dateTime: createdAt,
-            textStyle: textStyle,
-          );
-        });
+        return DateTimeDynamicTimeAgoWidget(
+          dateTime: createdAt,
+          textStyle: textStyle,
+        );
+      },
+    );
   }
 }

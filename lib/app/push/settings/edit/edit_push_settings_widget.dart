@@ -73,11 +73,11 @@ class _EditPushSettingsPleromaEmojiReactionFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.pleromaEmojiReactionFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label:
-              S.of(context).app_push_settings_field_pleroma_emojiReaction_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label:
+            S.of(context).app_push_settings_field_pleroma_emojiReaction_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }
@@ -92,10 +92,10 @@ class _EditPushSettingsPleromaChatMentionFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.pleromaChatMentionFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_push_settings_field_pleroma_chat_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label: S.of(context).app_push_settings_field_pleroma_chat_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }
@@ -110,10 +110,10 @@ class _EditPushSettingsPollFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.pollFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_push_settings_field_polls_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label: S.of(context).app_push_settings_field_polls_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }
@@ -128,10 +128,10 @@ class _EditPushSettingsReblogFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.reblogFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_push_settings_field_reblogs_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label: S.of(context).app_push_settings_field_reblogs_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }
@@ -146,10 +146,10 @@ class _EditPushSettingsMentionFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.mentionFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_push_settings_field_mentions_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label: S.of(context).app_push_settings_field_mentions_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }
@@ -164,10 +164,10 @@ class _EditPushSettingsFollowFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.followFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_push_settings_field_follows_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label: S.of(context).app_push_settings_field_follows_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }
@@ -182,10 +182,10 @@ class _EditPushSettingsFavouriteFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.favouriteFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_push_settings_field_favourites_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label: S.of(context).app_push_settings_field_favourites_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }

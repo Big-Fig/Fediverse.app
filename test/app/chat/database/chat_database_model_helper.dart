@@ -19,7 +19,9 @@ Future<DbChat> createTestDbChat({
     );
 
 Future<DbPleromaChatPopulated> createTestDbChatPopulated(
-    DbChat dbChat, AccountRepository accountRepository) async {
+  DbChat dbChat,
+  AccountRepository accountRepository,
+) async {
   DbPleromaChatPopulated dbChatPopulated = DbPleromaChatPopulated(
     dbChat: dbChat,
     dbAccount: (await accountRepository.findByRemoteId(dbChat.accountRemoteId))

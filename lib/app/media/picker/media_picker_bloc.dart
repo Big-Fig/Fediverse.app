@@ -8,10 +8,12 @@ abstract class IMediaPickerBloc extends IDisposable {
       Provider.of<IMediaPickerBloc>(context, listen: listen);
 
   Future toggleFileMetadataSelection(
-      IMediaDeviceFileMetadata mediaDeviceFileMetadata);
+    IMediaDeviceFileMetadata mediaDeviceFileMetadata,
+  );
 
   Stream<bool> isFileMetadataSelectedStream(
-      IMediaDeviceFileMetadata mediaDeviceFileMetadata);
+    IMediaDeviceFileMetadata mediaDeviceFileMetadata,
+  );
 
   bool isFileMetadataSelected(IMediaDeviceFileMetadata mediaDeviceFileMetadata);
 }

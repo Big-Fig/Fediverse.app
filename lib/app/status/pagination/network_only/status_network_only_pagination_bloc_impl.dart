@@ -17,13 +17,14 @@ class StatusNetworkOnlyPaginationBloc
     implements IStatusNetworkOnlyPaginationBloc {
   final INetworkOnlyListBloc<IStatus> listService;
 
-  StatusNetworkOnlyPaginationBloc(
-      {required this.listService,
-      required IPaginationSettingsBloc paginationSettingsBloc,
-      required int? maximumCachedPagesCount})
-      : super(
-            maximumCachedPagesCount: maximumCachedPagesCount,
-            paginationSettingsBloc: paginationSettingsBloc);
+  StatusNetworkOnlyPaginationBloc({
+    required this.listService,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
+  }) : super(
+          maximumCachedPagesCount: maximumCachedPagesCount,
+          paginationSettingsBloc: paginationSettingsBloc,
+        );
 
   @override
   IPleromaApi get pleromaApi => listService.pleromaApi;

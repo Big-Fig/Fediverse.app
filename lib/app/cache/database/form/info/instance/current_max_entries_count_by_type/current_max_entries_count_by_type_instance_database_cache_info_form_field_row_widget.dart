@@ -17,7 +17,8 @@ class CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldRowWidget
           valueToTextMapper: (context, value) => S
               .of(context)
               .app_cache_database_settings_currentEntriesCountByType_value(
-                  value),
+                value,
+              ),
         ),
       );
 

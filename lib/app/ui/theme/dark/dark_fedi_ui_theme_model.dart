@@ -478,21 +478,23 @@ class DarkFediUiTheme implements IFediUiTheme {
           secondarySelectedColor: Color(0x3d212121),
           selectedColor: Color(0x3dffffff),
           shape: StadiumBorder(
-              side: BorderSide(
-            color: Color(0xff000000),
-            width: 0,
-            style: BorderStyle.none,
-          )),
+            side: BorderSide(
+              color: Color(0xff000000),
+              width: 0,
+              style: BorderStyle.none,
+            ),
+          ),
         ),
         dialogTheme: DialogTheme(
-            shape: RoundedRectangleBorder(
-          side: BorderSide(
-            color: Color(0xff000000),
-            width: 0,
-            style: BorderStyle.none,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Color(0xff000000),
+              width: 0,
+              style: BorderStyle.none,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(0.0)),
           ),
-          borderRadius: BorderRadius.all(Radius.circular(0.0)),
-        )),
+        ),
         cupertinoOverrideTheme: CupertinoThemeData(
           primaryColor: _darkFediUiColorTheme.primary,
 //      textTheme: CupertinoTextThemeData(

@@ -38,7 +38,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
   })   : phraseField = StringValueFormFieldBloc(
           originValue: initialValue?.phrase,
           validators: [
-            StringValueFormFieldNonEmptyValidationError.createValidator()
+            StringValueFormFieldNonEmptyValidationError.createValidator(),
           ],
           maxLength: null,
         ),
@@ -114,7 +114,8 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
               .map(
                 (contextType) => contextType!.toJsonValue(),
               )
-              .toList() ?? [],
+              .toList() ??
+          [],
     );
   }
 }

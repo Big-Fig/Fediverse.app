@@ -7,17 +7,20 @@ import 'package:moor/moor.dart';
 
 part 'filter_database_dao.g.dart';
 
-@UseDao(tables: [
-  DbFilters
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_filters;",
-  "deleteById": "DELETE FROM db_filters WHERE id = :id;",
-  "countById": "SELECT COUNT(*) FROM db_filters WHERE id = :id;",
-  "clear": "DELETE FROM db_filters",
-  "getAll": "SELECT * FROM db_filters",
-  "findLocalIdByRemoteId": "SELECT id FROM db_filters WHERE remote_id = "
-      ":remoteId;",
-})
+@UseDao(
+  tables: [
+    DbFilters,
+  ],
+  queries: {
+    "countAll": "SELECT Count(*) FROM db_filters;",
+    "deleteById": "DELETE FROM db_filters WHERE id = :id;",
+    "countById": "SELECT COUNT(*) FROM db_filters WHERE id = :id;",
+    "clear": "DELETE FROM db_filters",
+    "getAll": "SELECT * FROM db_filters",
+    "findLocalIdByRemoteId": "SELECT id FROM db_filters WHERE remote_id = "
+        ":remoteId;",
+  },
+)
 class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
   final AppDatabase db;
 
@@ -85,7 +88,9 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
       await update(db.dbFilters).replace(entity);
 
   Future<int> updateByRemoteId(
-      String remoteId, Insertable<DbFilter> entity) async {
+    String remoteId,
+    Insertable<DbFilter> entity,
+  ) async {
     var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
@@ -112,12 +117,14 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
 
     if (minimumExist) {
       var biggerExp = CustomExpression<bool>(
-          "db_filters.remote_id > '$minimumRemoteIdExcluding'");
+        "db_filters.remote_id > '$minimumRemoteIdExcluding'",
+      );
       query = query..where((filter) => biggerExp);
     }
     if (maximumExist) {
       var smallerExp = CustomExpression<bool>(
-          "db_filters.remote_id < '$maximumRemoteIdExcluding'");
+        "db_filters.remote_id < '$maximumRemoteIdExcluding'",
+      );
       query = query..where((filter) => smallerExp);
     }
 
@@ -125,8 +132,9 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
   }
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> addContextTypesWhere(
-      SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
-      List<MastodonFilterContextType> contextTypes) {
+    SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
+    List<MastodonFilterContextType> contextTypes,
+  ) {
     assert(contextTypes.isNotEmpty == true);
 
     List<String> contextTypesStrings = contextTypes
@@ -145,7 +153,8 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
   }
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> addNotExpiredWhere(
-          SimpleSelectStatement<$DbFiltersTable, DbFilter> query) =>
+    SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
+  ) =>
       query
         ..where(
           (filter) =>
@@ -156,8 +165,9 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
         );
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> orderBy(
-          SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
-          List<FilterOrderingTermData> orderTerms) =>
+    SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
+    List<FilterOrderingTermData> orderTerms,
+  ) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
@@ -168,12 +178,15 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
                       break;
                   }
                   return OrderingTerm(
-                      expression: expression, mode: orderTerm.orderingMode);
+                    expression: expression,
+                    mode: orderTerm.orderingMode,
+                  );
                 })
             .toList());
 
   List<DbFilterPopulated> typedResultListToPopulated(
-      List<TypedResult> typedResult) {
+    List<TypedResult> typedResult,
+  ) {
     return typedResult.map(typedResultToPopulated).toList();
   }
 

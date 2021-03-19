@@ -33,12 +33,15 @@ abstract class AccountStatusesWidget extends FediPaginationListWidget<IStatus> {
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
-      retrievePaginationListBloc(BuildContext context,
-          {required bool listen}) {
+      retrievePaginationListBloc(
+    BuildContext context, {
+    required bool listen,
+  }) {
     var paginationListBloc =
         Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
-            context,
-            listen: listen);
+      context,
+      listen: listen,
+    );
     return paginationListBloc;
   }
 }

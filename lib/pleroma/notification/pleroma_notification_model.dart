@@ -66,7 +66,8 @@ extension PleromaNotificationTypeListExtension
       ).toList();
 
   List<PleromaNotificationType> valuesWithoutSelected(
-          List<PleromaNotificationType> valuesToExclude) =>
+    List<PleromaNotificationType> valuesToExclude,
+  ) =>
       where(
         (value) => !valuesToExclude.contains(
           value,
@@ -279,7 +280,8 @@ class PleromaNotification extends IPleromaNotification {
 
   static List<PleromaNotification> listFromJsonString(String str) =>
       List<PleromaNotification>.from(
-          json.decode(str).map((x) => PleromaNotification.fromJson(x)));
+        json.decode(str).map((x) => PleromaNotification.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaNotificationToJson(this);
 

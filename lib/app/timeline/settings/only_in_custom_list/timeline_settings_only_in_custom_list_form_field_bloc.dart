@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class ITimelineSettingsOnlyInCustomListFormFieldBloc
     implements IValueFormFieldBloc<IPleromaList?> {
-  static ITimelineSettingsOnlyInCustomListFormFieldBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<ITimelineSettingsOnlyInCustomListFormFieldBloc>(context,
-          listen: listen);
+  static ITimelineSettingsOnlyInCustomListFormFieldBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<ITimelineSettingsOnlyInCustomListFormFieldBloc>(
+        context,
+        listen: listen,
+      );
 }

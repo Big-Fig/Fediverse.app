@@ -117,7 +117,9 @@ void main() {
     expect((await conversationRepository.getAll()).length, 1);
 
     expectDbConversation(
-        (await conversationRepository.getAll()).first, dbConversation2);
+      (await conversationRepository.getAll()).first,
+      dbConversation2,
+    );
   });
 
   test('updateById', () async {
@@ -125,7 +127,9 @@ void main() {
     assert(id > 0, true);
 
     await conversationRepository.updateById(
-        id, dbConversation.copyWith(remoteId: "newRemoteId"));
+      id,
+      dbConversation.copyWith(remoteId: "newRemoteId"),
+    );
 
     expect((await conversationRepository.findById(id)).remoteId, "newRemoteId");
   });
@@ -145,10 +149,11 @@ void main() {
     var newAcct = "newAcct";
     var newContent = "newContent";
     var newRemoteConversation = DbConversationChatWrapper(
-        dbConversation: dbConversation.copyWith(
-      id: id,
-      remoteId: newRemoteId,
-    )).toPleromaConversation(
+      dbConversation: dbConversation.copyWith(
+        id: id,
+        remoteId: newRemoteId,
+      ),
+    ).toPleromaConversation(
       lastStatus: DbStatusPopulatedWrapper(
         dbStatusPopulated: DbStatusPopulated(
           dbStatus: dbStatus.copyWith(content: newContent),
@@ -175,17 +180,22 @@ void main() {
     );
 
     expect((await conversationRepository.findById(id)).remoteId, newRemoteId);
-    expect((await accountRepository.findByRemoteId(dbAccount.remoteId)).acct,
-        newAcct);
-    expect((await statusRepository.findByRemoteId(dbStatus.remoteId)).content,
-        newContent);
+    expect(
+      (await accountRepository.findByRemoteId(dbAccount.remoteId)).acct,
+      newAcct,
+    );
+    expect(
+      (await statusRepository.findByRemoteId(dbStatus.remoteId)).content,
+      newContent,
+    );
   });
 
   test('findByRemoteId', () async {
     await conversationRepository.insert(dbConversation);
     expectDbConversation(
-        await conversationRepository.findByRemoteId(dbConversation.remoteId),
-        dbConversation);
+      await conversationRepository.findByRemoteId(dbConversation.remoteId),
+      dbConversation,
+    );
   });
 
   test('upsertRemoteConversation', () async {
@@ -210,12 +220,17 @@ void main() {
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
     expectDbConversation(
-        await conversationRepository.findByRemoteId(dbConversation.remoteId),
-        dbConversation);
+      await conversationRepository.findByRemoteId(dbConversation.remoteId),
+      dbConversation,
+    );
     expectDbAccount(
-        await accountRepository.findByRemoteId(dbAccount.remoteId), dbAccount);
+      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      dbAccount,
+    );
     expectDbStatus(
-        await statusRepository.findByRemoteId(dbStatus.remoteId), dbStatus);
+      await statusRepository.findByRemoteId(dbStatus.remoteId),
+      dbStatus,
+    );
 
     // item with same id updated
 
@@ -382,35 +397,41 @@ void main() {
         filters: null,
         pagination: RepositoryPagination<IConversationChat>(
           newerThanItem: await createTestConversation(
-              seed: "remoteId5", remoteId: "remoteId5"),
+            seed: "remoteId5",
+            remoteId: "remoteId5",
+          ),
         ),
         orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
       );
 
       await insertDbConversation(
-          conversationRepository,
-          (await createTestDbConversation(seed: "seed2"))
-              .copyWith(remoteId: "remoteId4"));
+        conversationRepository,
+        (await createTestDbConversation(seed: "seed2"))
+            .copyWith(remoteId: "remoteId4"),
+      );
 
       expect((await query.get()).length, 0);
 
       await insertDbConversation(
-          conversationRepository,
-          (await createTestDbConversation(seed: "seed2"))
-              .copyWith(remoteId: "remoteId5"));
+        conversationRepository,
+        (await createTestDbConversation(seed: "seed2"))
+            .copyWith(remoteId: "remoteId5"),
+      );
 
       expect((await query.get()).length, 0);
 
       await insertDbConversation(
-          conversationRepository,
-          (await createTestDbConversation(seed: "seed1"))
-              .copyWith(remoteId: "remoteId6"));
+        conversationRepository,
+        (await createTestDbConversation(seed: "seed1"))
+            .copyWith(remoteId: "remoteId6"),
+      );
 
       expect((await query.get()).length, 1);
       await insertDbConversation(
-          conversationRepository,
-          (await createTestDbConversation(seed: "seed1"))
-              .copyWith(remoteId: "remoteId7"));
+        conversationRepository,
+        (await createTestDbConversation(seed: "seed1"))
+            .copyWith(remoteId: "remoteId7"),
+      );
 
       expect((await query.get()).length, 2);
     },
@@ -421,35 +442,41 @@ void main() {
       filters: null,
       pagination: RepositoryPagination<IConversationChat>(
         olderThanItem: await createTestConversation(
-            seed: "remoteId5", remoteId: "remoteId5"),
+          seed: "remoteId5",
+          remoteId: "remoteId5",
+        ),
       ),
       orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
     );
 
     await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed2"))
-            .copyWith(remoteId: "remoteId3"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed2"))
+          .copyWith(remoteId: "remoteId3"),
+    );
 
     expect((await query.get()).length, 1);
     await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed2"))
-            .copyWith(remoteId: "remoteId4"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed2"))
+          .copyWith(remoteId: "remoteId4"),
+    );
 
     expect((await query.get()).length, 2);
 
     await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed2"))
-            .copyWith(remoteId: "remoteId5"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed2"))
+          .copyWith(remoteId: "remoteId5"),
+    );
 
     expect((await query.get()).length, 2);
 
     await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed1"))
-            .copyWith(remoteId: "remoteId6"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed1"))
+          .copyWith(remoteId: "remoteId6"),
+    );
 
     expect((await query.get()).length, 2);
   });
@@ -459,51 +486,61 @@ void main() {
       filters: null,
       pagination: RepositoryPagination<IConversationChat>(
         newerThanItem: await createTestConversation(
-            seed: "remoteId2", remoteId: "remoteId2"),
+          seed: "remoteId2",
+          remoteId: "remoteId2",
+        ),
         olderThanItem: await createTestConversation(
-            seed: "remoteId5", remoteId: "remoteId5"),
+          seed: "remoteId5",
+          remoteId: "remoteId5",
+        ),
       ),
       orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
     );
 
     await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed1"))
-            .copyWith(remoteId: "remoteId1"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed1"))
+          .copyWith(remoteId: "remoteId1"),
+    );
 
     expect((await query.get()).length, 0);
 
     await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed2"))
-            .copyWith(remoteId: "remoteId2"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed2"))
+          .copyWith(remoteId: "remoteId2"),
+    );
 
     expect((await query.get()).length, 0);
     await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed3"))
-            .copyWith(remoteId: "remoteId3"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed3"))
+          .copyWith(remoteId: "remoteId3"),
+    );
 
     expect((await query.get()).length, 1);
 
     await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed4"))
-            .copyWith(remoteId: "remoteId4"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed4"))
+          .copyWith(remoteId: "remoteId4"),
+    );
 
     expect((await query.get()).length, 2);
 
     await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed5"))
-            .copyWith(remoteId: "remoteId5"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed5"))
+          .copyWith(remoteId: "remoteId5"),
+    );
 
     expect((await query.get()).length, 2);
 
     await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed6"))
-            .copyWith(remoteId: "remoteId6"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed6"))
+          .copyWith(remoteId: "remoteId6"),
+    );
 
     expect((await query.get()).length, 2);
   });
@@ -516,17 +553,20 @@ void main() {
     );
 
     var conversation2 = await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed2"))
-            .copyWith(remoteId: "remoteId2"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed2"))
+          .copyWith(remoteId: "remoteId2"),
+    );
     var conversation1 = await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed1"))
-            .copyWith(remoteId: "remoteId1"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed1"))
+          .copyWith(remoteId: "remoteId1"),
+    );
     var conversation3 = await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed3"))
-            .copyWith(remoteId: "remoteId3"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed3"))
+          .copyWith(remoteId: "remoteId3"),
+    );
 
     var dbConversations = await query.get();
     var actualList = dbConversations
@@ -548,17 +588,20 @@ void main() {
     );
 
     var conversation2 = await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed2"))
-            .copyWith(remoteId: "remoteId2"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed2"))
+          .copyWith(remoteId: "remoteId2"),
+    );
     var conversation1 = await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed1"))
-            .copyWith(remoteId: "remoteId1"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed1"))
+          .copyWith(remoteId: "remoteId1"),
+    );
     var conversation3 = await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed3"))
-            .copyWith(remoteId: "remoteId3"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed3"))
+          .copyWith(remoteId: "remoteId3"),
+    );
 
     var dbConversations = await query.get();
     var actualList = dbConversations
@@ -583,17 +626,20 @@ void main() {
     );
 
     var conversation2 = await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed2"))
-            .copyWith(remoteId: "remoteId2"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed2"))
+          .copyWith(remoteId: "remoteId2"),
+    );
     await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed1"))
-            .copyWith(remoteId: "remoteId1"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed1"))
+          .copyWith(remoteId: "remoteId1"),
+    );
     await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed3"))
-            .copyWith(remoteId: "remoteId3"));
+      conversationRepository,
+      (await createTestDbConversation(seed: "seed3"))
+          .copyWith(remoteId: "remoteId3"),
+    );
 
     var dbConversations = await query.get();
     var actualList = dbConversations

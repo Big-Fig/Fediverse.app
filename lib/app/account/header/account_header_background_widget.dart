@@ -26,7 +26,8 @@ class AccountHeaderBackgroundWidget extends StatelessWidget {
         return Provider<String>.value(
           value: header,
           child: RepaintBoundary(
-              child: const _AccountHeaderBackgroundImageWidget()),
+            child: const _AccountHeaderBackgroundImageWidget(),
+          ),
         );
       },
     );
@@ -78,12 +79,13 @@ class _AccountHeaderBackgroundErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _AccountHeaderBackgroundDarkOverlayWidget(
-        child: Center(
-      child: Icon(
-        FediIcons.warning,
-        color: IFediUiColorTheme.of(context).error,
+      child: Center(
+        child: Icon(
+          FediIcons.warning,
+          color: IFediUiColorTheme.of(context).error,
+        ),
       ),
-    ));
+    );
   }
 }
 
@@ -95,9 +97,10 @@ class _AccountHeaderBackgroundProgressWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       const _AccountHeaderBackgroundDarkOverlayWidget(
-          child: Center(
-        child: FediCircularProgressIndicator(),
-      ));
+        child: Center(
+          child: FediCircularProgressIndicator(),
+        ),
+      );
 }
 
 class _AccountHeaderBackgroundDarkOverlayWidget extends StatelessWidget {
@@ -112,6 +115,7 @@ class _AccountHeaderBackgroundDarkOverlayWidget extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         child: child,
         decoration: BoxDecoration(
-            color: IFediUiColorTheme.of(context).imageDarkOverlay),
+          color: IFediUiColorTheme.of(context).imageDarkOverlay,
+        ),
       );
 }

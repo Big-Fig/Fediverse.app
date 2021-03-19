@@ -15,9 +15,7 @@ part 'emoji_picker_recent_category_model.g.dart';
 //@HiveType()
 @HiveType(typeId: -32 + 70)
 @JsonSerializable(explicitToJson: true)
-class EmojiPickerRecentCategoryItemsList
-    implements IJsonObject {
-
+class EmojiPickerRecentCategoryItemsList implements IJsonObject {
   List<CustomEmojiPickerItem> get recentItems {
     var result = <CustomEmojiPickerItem>[];
     result.addAll(recentCodeItems!);
@@ -32,23 +30,27 @@ class EmojiPickerRecentCategoryItemsList
   @JsonKey(name: "recent_image_items")
   final List<CustomEmojiPickerImageUrlItem>? recentImageItems;
 
-  EmojiPickerRecentCategoryItemsList(
-      {this.recentCodeItems, this.recentImageItems});
-
+  EmojiPickerRecentCategoryItemsList({
+    this.recentCodeItems,
+    this.recentImageItems,
+  });
 
   factory EmojiPickerRecentCategoryItemsList.fromJson(
-      Map<String, dynamic> json) =>
+    Map<String, dynamic> json,
+  ) =>
       _$EmojiPickerRecentCategoryItemsListFromJson(json);
 
   factory EmojiPickerRecentCategoryItemsList.fromJsonString(
-      String jsonString) =>
+    String jsonString,
+  ) =>
       _$EmojiPickerRecentCategoryItemsListFromJson(jsonDecode(jsonString));
 
   static List<EmojiPickerRecentCategoryItemsList> listFromJsonString(
-      String str) =>
-      List<EmojiPickerRecentCategoryItemsList>.from(
-          json.decode(str).map((x) =>
-              EmojiPickerRecentCategoryItemsList.fromJson(x)));
+    String str,
+  ) =>
+      List<EmojiPickerRecentCategoryItemsList>.from(json
+          .decode(str)
+          .map((x) => EmojiPickerRecentCategoryItemsList.fromJson(x)));
 
   @override
   Map<String, dynamic> toJson() =>
@@ -60,9 +62,9 @@ class EmojiPickerRecentCategoryItemsList
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is EmojiPickerRecentCategoryItemsList &&
-              runtimeType == other.runtimeType &&
-              recentItems == other.recentItems;
+      other is EmojiPickerRecentCategoryItemsList &&
+          runtimeType == other.runtimeType &&
+          recentItems == other.recentItems;
 
   @override
   int get hashCode => recentItems.hashCode;

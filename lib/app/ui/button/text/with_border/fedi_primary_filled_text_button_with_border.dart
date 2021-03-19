@@ -60,29 +60,29 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
           minWidth: limitMinWidth == true ? 120.0 : 0.0,
         ),
         child: Container(
-            height: calculatedHeight,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: onPressed != null
-                  ? enabledBackgroundColor
-                  : disabledBackgroundColor,
-              borderRadius: borderRadius,
-              border: Border.all(
-                color: onPressed != null
-                    ? enabledBorderColor
-                    : disabledBorderColor,
-                width: borderWidth,
+          height: calculatedHeight,
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: onPressed != null
+                ? enabledBackgroundColor
+                : disabledBackgroundColor,
+            borderRadius: borderRadius,
+            border: Border.all(
+              color:
+                  onPressed != null ? enabledBorderColor : disabledBorderColor,
+              width: borderWidth,
+            ),
+          ),
+          child: Padding(
+            padding: FediPadding.buttonHorizontalPadding,
+            child: Center(
+              child: Text(
+                text!, textAlign: TextAlign.center, // 80% transparency
+                style: textStyle,
               ),
             ),
-            child: Padding(
-              padding: FediPadding.buttonHorizontalPadding,
-              child: Center(
-                child: Text(
-                  text!, textAlign: TextAlign.center, // 80% transparency
-                  style: textStyle,
-                ),
-              ),
-            )),
+          ),
+        ),
       ),
     );
 

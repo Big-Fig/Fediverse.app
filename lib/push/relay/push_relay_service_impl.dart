@@ -28,10 +28,11 @@ class PushRelayService extends DisposableOwner implements IPushRelayService {
     String host = baseServerUrl.host;
 
     String endpoint = urlPath.join(
-        pushRelayBaseUrl,
-        "$fcmDeviceToken"
-        "?account=$account"
-        "&server=$host");
+      pushRelayBaseUrl,
+      "$fcmDeviceToken"
+      "?account=$account"
+      "&server=$host",
+    );
 
     if (Platform.isIOS) {
       endpoint += "&device=iOS";

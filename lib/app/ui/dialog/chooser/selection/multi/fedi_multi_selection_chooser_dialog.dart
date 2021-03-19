@@ -101,11 +101,12 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
                       child: Text(
                         action.label!,
                         style: action.customTextStyle?.copyWith(
-                                color: isSelected
-                                    ? fediUiColorTheme.primary
-                                    : actionExist && enabled
-                                        ? fediUiColorTheme.darkGrey
-                                        : fediUiColorTheme.lightGrey) ??
+                              color: isSelected
+                                  ? fediUiColorTheme.primary
+                                  : actionExist && enabled
+                                      ? fediUiColorTheme.darkGrey
+                                      : fediUiColorTheme.lightGrey,
+                            ) ??
                             (isSelected
                                 ? fediUiTextTheme.bigTallPrimary
                                 : actionExist && enabled
@@ -148,31 +149,32 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: StreamBuilder<List<SelectionDialogAction>?>(
-              stream: isNeedRebuildActionsStream,
-              initialData: [],
-              builder: (context, snapshot) {
-                var actions = snapshot.data;
-                if (actions == null) {
-                  return const SizedBox.shrink();
-                }
+            stream: isNeedRebuildActionsStream,
+            initialData: [],
+            builder: (context, snapshot) {
+              var actions = snapshot.data;
+              if (actions == null) {
+                return const SizedBox.shrink();
+              }
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    ...actions
-                        .map(
-                          (action) => _buildAction(
-                            context: context,
-                            action: action,
-                            isSelected: action.isSelected,
-                            isCancelAction: false,
-                          ),
-                        )
-                        .toList()
-                  ],
-                );
-              }),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  ...actions
+                      .map(
+                        (action) => _buildAction(
+                          context: context,
+                          action: action,
+                          isSelected: action.isSelected,
+                          isCancelAction: false,
+                        ),
+                      )
+                      .toList(),
+                ],
+              );
+            },
+          ),
         ),
         if (cancelable)
           _buildAction(

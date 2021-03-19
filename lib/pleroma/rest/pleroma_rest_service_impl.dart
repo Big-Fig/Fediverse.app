@@ -118,7 +118,8 @@ class PleromaRestService extends DisposableOwner
   @override
   Future<Response>
       uploadFileMultipartRequest<T extends UploadMultipartRestRequest, K>(
-          T request) {
+    T request,
+  ) {
     return restService.uploadFileMultipartRequest(request);
   }
 }

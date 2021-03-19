@@ -15,6 +15,7 @@ part 'recent_search_model.g.dart';
 class RecentSearchList implements IJsonObject {
   @HiveField(0)
   final List<String>? recentItems;
+
   RecentSearchList({this.recentItems});
 
   @override
@@ -28,9 +29,9 @@ class RecentSearchList implements IJsonObject {
       other is RecentSearchList &&
           runtimeType == other.runtimeType &&
           recentItems == other.recentItems;
+
   @override
   int get hashCode => recentItems.hashCode;
-
 
   factory RecentSearchList.fromJson(Map<String, dynamic> json) =>
       _$RecentSearchListFromJson(json);
@@ -40,7 +41,8 @@ class RecentSearchList implements IJsonObject {
 
   static List<RecentSearchList> listFromJsonString(String str) =>
       List<RecentSearchList>.from(
-          json.decode(str).map((x) => RecentSearchList.fromJson(x)));
+        json.decode(str).map((x) => RecentSearchList.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$RecentSearchListToJson(this);

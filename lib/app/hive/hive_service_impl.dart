@@ -57,7 +57,8 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PleromaEmojiAdapter());
     Hive.registerAdapter(PleromaMyAccountPleromaPartAdapter());
     Hive.registerAdapter(
-        PleromaMyAccountPleromaPartNotificationsSettingsAdapter());
+      PleromaMyAccountPleromaPartNotificationsSettingsAdapter(),
+    );
     Hive.registerAdapter(PleromaAccountRelationshipAdapter());
     Hive.registerAdapter(PleromaMyAccountSourceAdapter());
     Hive.registerAdapter(PleromaMyAccountSourcePleromaPartAdapter());
@@ -85,7 +86,8 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(EmojiPickerRecentCategoryItemsListAdapter());
     Hive.registerAdapter(CustomEmojiPickerCodeItemAdapter());
     Hive.registerAdapter(
-        PleromaInstancePleromaPartMetadataFieldLimitsAdapter());
+      PleromaInstancePleromaPartMetadataFieldLimitsAdapter(),
+    );
     Hive.registerAdapter(PushNotificationAdapter());
     Hive.registerAdapter(PleromaTagAdapter());
     Hive.registerAdapter(PleromaAccountPleromaPartAdapter());
@@ -110,6 +112,8 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(DatabaseCacheSettingsAdapter());
     Hive.registerAdapter(FilesCacheSettingsAdapter());
     Hive.registerAdapter(PleromaInstancePleromaPartMetadataFederationAdapter());
-    Hive.registerAdapter(PleromaInstancePleromaPartMetadataFederationMfrObjectAgeAdapter());
+    Hive.registerAdapter(
+      PleromaInstancePleromaPartMetadataFederationMfrObjectAgeAdapter(),
+    );
   }
 }

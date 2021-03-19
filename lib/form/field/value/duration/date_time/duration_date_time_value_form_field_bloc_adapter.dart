@@ -10,7 +10,8 @@ class DurationDateTimeValueFormFieldBlocAdapter extends DisposableOwner
   final IDurationDateTimeValueFormFieldBloc durationDateTimeValueFormFieldBloc;
 
   DurationDateTimeValueFormFieldBlocAdapter(
-      this.durationDateTimeValueFormFieldBloc);
+    this.durationDateTimeValueFormFieldBloc,
+  );
 
   @override
   Duration? get currentValue =>

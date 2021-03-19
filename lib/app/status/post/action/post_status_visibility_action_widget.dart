@@ -28,10 +28,11 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var visibility = snapshot.data;
         var icon = StatusVisibilityIconWidget.buildVisibilityIcon(
-            context: context,
-            visibility: visibility!,
-            isSelectedVisibility: false,
-            isPossibleToChangeVisibility: true);
+          context: context,
+          visibility: visibility!,
+          isSelectedVisibility: false,
+          isPossibleToChangeVisibility: true,
+        );
 
         return FediIconButton(
           icon: icon,

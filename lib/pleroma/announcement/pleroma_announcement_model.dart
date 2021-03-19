@@ -116,7 +116,8 @@ class PleromaAnnouncement implements IPleromaAnnouncement {
 
   static List<PleromaAnnouncement> listFromJsonString(String str) =>
       List<PleromaAnnouncement>.from(
-          json.decode(str).map((x) => PleromaAnnouncement.fromJson(x)));
+        json.decode(str).map((x) => PleromaAnnouncement.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaAnnouncementToJson(this);
 
@@ -183,7 +184,8 @@ class PleromaAnnouncementReaction implements IPleromaAnnouncementReaction {
 
   static List<PleromaAnnouncementReaction> listFromJsonString(String str) =>
       List<PleromaAnnouncementReaction>.from(
-          json.decode(str).map((x) => PleromaAnnouncementReaction.fromJson(x)));
+        json.decode(str).map((x) => PleromaAnnouncementReaction.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaAnnouncementReactionToJson(this);
 

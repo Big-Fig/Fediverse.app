@@ -159,7 +159,10 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
       this.error = error;
       this.stackTrace = stackTrace;
       _logger.warning(
-          () => "failed to init videoPlayerController", error, stackTrace);
+        () => "failed to init videoPlayerController",
+        error,
+        stackTrace,
+      );
 
       playerStateSubject.add(MediaPlayerState.error);
     }
@@ -251,7 +254,10 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
       this.error = error;
       this.stackTrace = stackTrace;
       _logger.warning(
-          () => "failed to init videoPlayerController", error, stackTrace);
+        () => "failed to init videoPlayerController",
+        error,
+        stackTrace,
+      );
 
       playerStateSubject.add(MediaPlayerState.error);
     }
@@ -271,7 +277,10 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
       this.error = error;
       this.stackTrace = stackTrace;
       _logger.warning(
-          () => "failed to init videoPlayerController", error, stackTrace);
+        () => "failed to init videoPlayerController",
+        error,
+        stackTrace,
+      );
 
       playerStateSubject.add(MediaPlayerState.error);
     }

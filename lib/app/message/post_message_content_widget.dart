@@ -25,46 +25,48 @@ class PostMessageContentWidget extends StatelessWidget {
     IPostMessageBloc postMessageBloc = IPostMessageBloc.of(context);
 
     return StreamBuilder<List<FormItemValidationError>>(
-        stream: postMessageBloc.inputTextErrorsStream,
-        builder: (context, snapshot) {
-          var inputTextErrors = snapshot.data;
+      stream: postMessageBloc.inputTextErrorsStream,
+      builder: (context, snapshot) {
+        var inputTextErrors = snapshot.data;
 
-          String? errorText;
+        String? errorText;
 
-          if (inputTextErrors?.isNotEmpty == true) {
-            errorText = inputTextErrors!.first.createErrorDescription(context);
-          }
+        if (inputTextErrors?.isNotEmpty == true) {
+          errorText = inputTextErrors!.first.createErrorDescription(context);
+        }
 
-          return FediFilledEditTextField(
-            filled: filled,
-            leading: null,
-            hintText: hintText,
-            textEditingController: postMessageBloc.inputTextController,
-            focusNode: postMessageBloc.inputFocusNode,
-            expanded: expanded,
-            ending: ending,
-            autofocus: false,
-            textInputAction: TextInputAction.send,
-            onSubmitted: (String value) async {
-              if (postMessageBloc.isReadyToPost) {
-                await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-                    context: context,
-                    asyncCode: () {
-                      return postMessageBloc.post();
-                    });
-              } else {
-                await FediSimpleAlertDialog(
-                  context: context,
-                  title: S.of(context).app_chat_post_error_empty_dialog_title,
-                ).show(context);
-              }
-            },
-            maxLines: null,
-            // maxLines: 1,
-            errorText: errorText,
-            highlightMentions: true,
-            maxLength: postMessageBloc.maximumMessageLength,
-          );
-        });
+        return FediFilledEditTextField(
+          filled: filled,
+          leading: null,
+          hintText: hintText,
+          textEditingController: postMessageBloc.inputTextController,
+          focusNode: postMessageBloc.inputFocusNode,
+          expanded: expanded,
+          ending: ending,
+          autofocus: false,
+          textInputAction: TextInputAction.send,
+          onSubmitted: (String value) async {
+            if (postMessageBloc.isReadyToPost) {
+              await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context,
+                asyncCode: () {
+                  return postMessageBloc.post();
+                },
+              );
+            } else {
+              await FediSimpleAlertDialog(
+                context: context,
+                title: S.of(context).app_chat_post_error_empty_dialog_title,
+              ).show(context);
+            }
+          },
+          maxLines: null,
+          // maxLines: 1,
+          errorText: errorText,
+          highlightMentions: true,
+          maxLength: postMessageBloc.maximumMessageLength,
+        );
+      },
+    );
   }
 }

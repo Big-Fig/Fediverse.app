@@ -45,13 +45,16 @@ class NotificationPaginationListWidget
             value: items[index],
             child: DisposableProxyProvider<INotification, INotificationBloc>(
               update: (context, notification, oldValue) =>
-                  NotificationBloc.createFromContext(context, notification,
-                      isNeedWatchLocalRepositoryForUpdates:
-                          needWatchLocalRepositoryForUpdates),
+                  NotificationBloc.createFromContext(
+                context,
+                notification,
+                isNeedWatchLocalRepositoryForUpdates:
+                    needWatchLocalRepositoryForUpdates,
+              ),
               child: Column(
                 children: <Widget>[
                   const NotificationListItemWidget(),
-                  const FediUltraLightGreyDivider()
+                  const FediUltraLightGreyDivider(),
                 ],
               ),
             ),
@@ -61,8 +64,7 @@ class NotificationPaginationListWidget
 
   @override
   IPaginationListBloc<PaginationPage<INotification>, INotification>
-      retrievePaginationListBloc(BuildContext context,
-          {required bool listen}) {
+      retrievePaginationListBloc(BuildContext context, {required bool listen}) {
     var paginationListBloc = Provider.of<
         IPaginationListBloc<CachedPaginationPage<INotification>,
             INotification>>(context, listen: listen);

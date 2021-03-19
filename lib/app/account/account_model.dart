@@ -7,7 +7,9 @@ import 'package:flutter/widgets.dart';
 
 typedef AccountCallback = Function(BuildContext context, IAccount account);
 typedef AccountsListCallback = Function(
-    BuildContext context, List<IAccount>? accounts);
+  BuildContext context,
+  List<IAccount>? accounts,
+);
 
 abstract class IAccount {
   String? get fqn;

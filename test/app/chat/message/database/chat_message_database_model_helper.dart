@@ -8,7 +8,9 @@ import 'package:flutter_test/flutter_test.dart';
 Function eq = const ListEquality().equals;
 
 Future<DbChatMessagePopulated> createTestDbChatMessagePopulated(
-    DbChatMessage dbChatMessage, AccountRepository accountRepository) async {
+  DbChatMessage dbChatMessage,
+  AccountRepository accountRepository,
+) async {
   DbChatMessagePopulated dbChatMessagePopulated = DbChatMessagePopulated(
     dbChatMessage: dbChatMessage,
     dbAccount:
@@ -41,7 +43,9 @@ Future<DbChatMessage> createTestDbChatMessage({
 }
 
 void expectDbChatMessagePopulated(
-    IPleromaChatMessage? actual, DbChatMessagePopulated? expected) {
+  IPleromaChatMessage? actual,
+  DbChatMessagePopulated? expected,
+) {
   if (actual == null && expected == null) {
     return;
   }

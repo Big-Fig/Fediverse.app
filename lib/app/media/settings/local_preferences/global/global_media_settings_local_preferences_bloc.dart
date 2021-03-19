@@ -4,8 +4,12 @@ import 'package:provider/provider.dart';
 
 abstract class IGlobalMediaSettingsLocalPreferencesBloc
     implements IMediaSettingsLocalPreferencesBloc {
-  static IGlobalMediaSettingsLocalPreferencesBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IGlobalMediaSettingsLocalPreferencesBloc>(context,
-          listen: listen);
+  static IGlobalMediaSettingsLocalPreferencesBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IGlobalMediaSettingsLocalPreferencesBloc>(
+        context,
+        listen: listen,
+      );
 }

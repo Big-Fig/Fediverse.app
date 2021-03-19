@@ -22,7 +22,8 @@ abstract class IDatabaseCacheSettingsBloc
       get entriesCountByTypeLimitStream;
 
   Future changeEntriesCountByTypeLimit(
-      DatabaseCacheEntriesCountByTypeLimitType value);
+    DatabaseCacheEntriesCountByTypeLimitType value,
+  );
 
   DatabaseCacheAgeLimitType? get ageLimit;
 

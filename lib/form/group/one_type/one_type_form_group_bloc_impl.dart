@@ -29,9 +29,10 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     addDisposable(subject: _isChangedSubject);
     originalItems.forEach((field) {
       addDisposable(
-          streamSubscription: field.isSomethingChangedStream.listen((_) {
-        checkIsSomethingChanged();
-      }));
+        streamSubscription: field.isSomethingChangedStream.listen((_) {
+          checkIsSomethingChanged();
+        }),
+      );
     });
   }
 

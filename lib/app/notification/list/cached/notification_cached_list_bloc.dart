@@ -11,8 +11,10 @@ abstract class INotificationCachedListBloc
         IPleromaCachedListBloc<INotification>,
         DisposableOwner,
         IAsyncInitLoadingBloc {
-  static INotificationCachedListBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static INotificationCachedListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<INotificationCachedListBloc>(context, listen: listen);
 
   @override

@@ -4,11 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class ISuggestionSelectAccountBloc implements IDisposable {
-
-  static ISuggestionSelectAccountBloc of(BuildContext context,
-      {bool listen = true}) =>
+  static ISuggestionSelectAccountBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<ISuggestionSelectAccountBloc>(context, listen: listen);
-
 
   IAccountCachedListBloc get accountCachedListBloc;
 }

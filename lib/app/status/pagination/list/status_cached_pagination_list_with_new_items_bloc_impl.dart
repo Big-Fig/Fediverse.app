@@ -102,7 +102,8 @@ class StatusCachedPaginationListWithNewItemsBloc<
         update: (context, value, previous) => value,
         child:
             CachedPaginationListWithNewItemsBlocProxyProvider<TPage, IStatus>(
-                child: child),
+          child: child,
+        ),
       ),
     );
   }

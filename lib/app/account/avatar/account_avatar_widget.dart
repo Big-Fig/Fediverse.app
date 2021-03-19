@@ -17,18 +17,19 @@ class AccountAvatarWidget extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context, listen: true);
 
     return StreamBuilder<String?>(
-        stream: accountBloc.avatarStream,
-        builder: (context, snapshot) {
-          var avatar = snapshot.data;
+      stream: accountBloc.avatarStream,
+      builder: (context, snapshot) {
+        var avatar = snapshot.data;
 
-          return Provider<String?>.value(
-            value: avatar,
-            child: AccountAvatarUrlWidget(
-              progressSize: progressSize,
-              imageSize: imageSize,
-            ),
-          );
-        });
+        return Provider<String?>.value(
+          value: avatar,
+          child: AccountAvatarUrlWidget(
+            progressSize: progressSize,
+            imageSize: imageSize,
+          ),
+        );
+      },
+    );
   }
 }
 

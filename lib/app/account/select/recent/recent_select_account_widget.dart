@@ -68,7 +68,7 @@ class RecentSelectAccountWidget extends StatelessWidget {
                       const FediUltraLightGreyDivider(),
                     ],
                   ),
-                )
+                ),
               ],
             ),
             footer: footer,

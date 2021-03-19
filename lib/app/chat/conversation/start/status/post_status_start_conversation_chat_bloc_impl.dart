@@ -120,26 +120,27 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest6(
-      inputWithoutMentionedAcctsTextStream,
-      mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-      mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
-      pollBloc.isHaveAtLeastOneErrorStream,
-      pollBloc.isSomethingChangedStream,
-      mentionedAcctsStream,
-      (
-        dynamic inputWithoutMentionedAcctsText,
-        dynamic mediaAttachmentBlocs,
-        dynamic isAllAttachedMediaUploaded,
-        dynamic isHaveAtLeastOneError,
-        dynamic isPollBlocChanged,
-        dynamic mentionedAccts,
-      ) =>
-          calculateStatusBlocIsReadyToPost(
-            inputText: inputWithoutMentionedAcctsText,
-            mediaAttachmentBlocs: mediaAttachmentBlocs,
-            isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
-            isPollBlocHaveErrors: isHaveAtLeastOneError,
-            isPollBlocChanged: isPollBlocChanged,
-          ) &&
-          mentionedAccts?.isNotEmpty == true);
+        inputWithoutMentionedAcctsTextStream,
+        mediaAttachmentsBloc.mediaAttachmentBlocsStream,
+        mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
+        pollBloc.isHaveAtLeastOneErrorStream,
+        pollBloc.isSomethingChangedStream,
+        mentionedAcctsStream,
+        (
+          dynamic inputWithoutMentionedAcctsText,
+          dynamic mediaAttachmentBlocs,
+          dynamic isAllAttachedMediaUploaded,
+          dynamic isHaveAtLeastOneError,
+          dynamic isPollBlocChanged,
+          dynamic mentionedAccts,
+        ) =>
+            calculateStatusBlocIsReadyToPost(
+              inputText: inputWithoutMentionedAcctsText,
+              mediaAttachmentBlocs: mediaAttachmentBlocs,
+              isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
+              isPollBlocHaveErrors: isHaveAtLeastOneError,
+              isPollBlocChanged: isPollBlocChanged,
+            ) &&
+            mentionedAccts?.isNotEmpty == true,
+      );
 }

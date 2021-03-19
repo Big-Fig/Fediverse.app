@@ -23,9 +23,11 @@ abstract class HomeTabBloc extends DisposableOwner implements IHomeTabBloc {
     nestedScrollController = NestedScrollController(centerScroll: false);
 
     nestedScrollControllerBloc = NestedScrollControllerBloc(
-        nestedScrollController: nestedScrollController);
+      nestedScrollController: nestedScrollController,
+    );
     fediNestedScrollViewBloc = FediNestedScrollViewBloc(
-        nestedScrollControllerBloc: nestedScrollControllerBloc);
+      nestedScrollControllerBloc: nestedScrollControllerBloc,
+    );
 
     addDisposable(disposable: fediNestedScrollViewBloc);
     addDisposable(disposable: nestedScrollControllerBloc);

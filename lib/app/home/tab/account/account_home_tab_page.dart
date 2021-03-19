@@ -357,8 +357,9 @@ class _AccountHomeTabProviderPinnedTabProviderWidget extends StatelessWidget {
               PaginationListBloc<PaginationPage<IStatus>, IStatus>(
             paginationBloc:
                 Provider.of<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-                    context,
-                    listen: false),
+              context,
+              listen: false,
+            ),
           ),
           child: child,
         ),

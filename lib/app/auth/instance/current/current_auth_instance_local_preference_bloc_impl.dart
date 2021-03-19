@@ -7,8 +7,8 @@ class CurrentAuthInstanceLocalPreferenceBloc
     extends ObjectLocalPreferenceBloc<AuthInstance>
     implements ICurrentAuthInstanceLocalPreferenceBloc {
   CurrentAuthInstanceLocalPreferenceBloc(
-      ILocalPreferencesService preferencesService)
-      : super(
+    ILocalPreferencesService preferencesService,
+  ) : super(
           preferencesService,
           "instance.current",
           1,

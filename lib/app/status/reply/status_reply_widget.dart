@@ -45,8 +45,6 @@ class StatusReplyWidget extends StatelessWidget {
           case AsyncInitLoadingState.failed:
             return _StatusReplyFailedWidget();
         }
-
-
       },
     );
   }
@@ -101,7 +99,7 @@ class _StatusReplyLoadingWidget extends StatelessWidget {
           const Padding(
             padding: FediPadding.allSmallPadding,
             child: FediCircularProgressIndicator(),
-          )
+          ),
         ],
       ),
     );

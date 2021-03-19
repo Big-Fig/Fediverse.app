@@ -18,7 +18,9 @@ import 'package:logging/logging.dart';
 final _logger = Logger("status_model.dart");
 
 typedef StatusAndContextCallback = Function(
-    BuildContext context, IStatus status);
+  BuildContext context,
+  IStatus status,
+);
 typedef StatusCallback = Function(IStatus? status);
 
 abstract class IStatus {
@@ -769,11 +771,13 @@ class DbStatusPopulated {
         dbStatus: dbStatus ?? this.dbStatus,
         dbAccount: dbAccount ?? this.dbAccount,
         reblogDbStatus: reblogDbStatus ?? this.reblogDbStatus,
-        reblogDbStatusAccount: reblogDbStatusAccount ?? this.reblogDbStatusAccount,
+        reblogDbStatusAccount:
+            reblogDbStatusAccount ?? this.reblogDbStatusAccount,
         replyDbStatus: replyDbStatus ?? this.replyDbStatus,
         replyDbStatusAccount: replyDbStatusAccount ?? this.replyDbStatusAccount,
         replyReblogDbStatus: replyReblogDbStatus ?? this.replyReblogDbStatus,
-        replyReblogDbStatusAccount: replyReblogDbStatusAccount ?? this.replyReblogDbStatusAccount,
+        replyReblogDbStatusAccount:
+            replyReblogDbStatusAccount ?? this.replyReblogDbStatusAccount,
       );
 }
 

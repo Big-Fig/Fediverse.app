@@ -47,9 +47,11 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
     return messageSendData;
   }
 
-  static Widget provideToContext(BuildContext context,
-      {required IPleromaMediaAttachment? mediaAttachment,
-      required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required IPleromaMediaAttachment? mediaAttachment,
+    required Widget child,
+  }) {
     return DisposableProvider<PleromaChatShareMediaBloc>(
       create: (context) => createFromContext(context, mediaAttachment),
       child: ProxyProvider<PleromaChatShareMediaBloc, IPleromaChatShareBloc>(
@@ -66,7 +68,9 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
   }
 
   static PleromaChatShareMediaBloc createFromContext(
-          BuildContext context, IPleromaMediaAttachment? mediaAttachment) =>
+    BuildContext context,
+    IPleromaMediaAttachment? mediaAttachment,
+  ) =>
       PleromaChatShareMediaBloc(
         mediaAttachment: mediaAttachment,
         chatRepository: IPleromaChatRepository.of(

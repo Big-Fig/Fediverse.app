@@ -36,7 +36,8 @@ class MediaFilePathWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: FediBorderRadius.allSmallBorderRadius,
                     border: Border.all(
-                        color: IFediUiColorTheme.of(context).ultraLightGrey),
+                      color: IFediUiColorTheme.of(context).ultraLightGrey,
+                    ),
                   ),
                   child: Row(
                     children: [
@@ -57,7 +58,7 @@ class MediaFilePathWidget extends StatelessWidget {
                       actionsWidget!,
                     ],
                   ),
-                )
+                ),
             ],
           ),
         ),
@@ -118,27 +119,30 @@ class _MediaFilePathIconWidget extends StatelessWidget {
         ),
       ),
       child: Center(
-          child: Padding(
-        padding: FediPadding.allMediumPadding,
-        child: Container(
-          decoration: BoxDecoration(
+        child: Padding(
+          padding: FediPadding.allMediumPadding,
+          child: Container(
+            decoration: BoxDecoration(
               border: Border.all(
-            width: 1,
-            color: IFediUiColorTheme.of(context).darkGrey,
-          )),
-          child: Padding(
-            padding: const EdgeInsets.all(1.0),
-            child: Align(
+                width: 1,
+                color: IFediUiColorTheme.of(context).darkGrey,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Align(
                 alignment: Alignment.bottomCenter,
                 child: AutoSizeText(
                   mediaFilePathBloc.extension.toUpperCase(),
                   maxLines: 1,
                   minFontSize: 8.0,
                   style: IFediUiTextTheme.of(context).smallShortDarkGrey,
-                )),
+                ),
+              ),
+            ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

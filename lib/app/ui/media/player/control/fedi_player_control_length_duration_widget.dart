@@ -9,14 +9,15 @@ class FediPlayerControlLengthDurationWidget extends StatelessWidget {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context, listen: false);
 
     return StreamBuilder<Duration>(
-        stream: mediaPlayerBloc.lengthDurationStream,
-        builder: (context, snapshot) {
-          var duration = snapshot.data;
-          return Provider<Duration?>.value(
-            value: duration,
-            child: const FediPlayerControlDurationWidget(),
-          );
-        });
+      stream: mediaPlayerBloc.lengthDurationStream,
+      builder: (context, snapshot) {
+        var duration = snapshot.data;
+        return Provider<Duration?>.value(
+          value: duration,
+          child: const FediPlayerControlDurationWidget(),
+        );
+      },
+    );
   }
 
   const FediPlayerControlLengthDurationWidget();

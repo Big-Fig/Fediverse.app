@@ -35,8 +35,9 @@ class FediNestedScrollViewBloc extends DisposableOwner
   @override
   Stream<bool> get isNestedScrollViewBodyNotStartedScrollStream =>
       isNestedScrollViewBodyStartedScrollStream.map(
-          (isNestedScrollViewBodyStartedScroll) =>
-              isNestedScrollViewBodyStartedScroll != true);
+        (isNestedScrollViewBodyStartedScroll) =>
+            isNestedScrollViewBodyStartedScroll != true,
+      );
 
   @override
   int? get scrollOffset => scrollOffsetSubject.value;
@@ -82,7 +83,7 @@ class FediNestedScrollViewBloc extends DisposableOwner
     // scrolls but actually it is a little smaller (0.00001 difference)
     maxScrollExtent = maxScrollExtent - 1;
     var isAtLeastStartExpand = pixels <= maxScrollExtent;
-    if(!isNestedScrollViewBodyStartedScrollSubject.isClosed) {
+    if (!isNestedScrollViewBodyStartedScrollSubject.isClosed) {
       isNestedScrollViewBodyStartedScrollSubject.add(isAtLeastStartExpand);
     }
   }

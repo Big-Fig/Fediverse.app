@@ -34,27 +34,36 @@ class ExternalShareMediaBloc extends ExternalShareBloc
     var asLink = asLinkBoolField.currentValue == true;
     if (message?.isNotEmpty == true || asLink) {
       text = message ?? "";
-      if(asLink) {
+      if (asLink) {
         text += " ${mediaAttachment!.url}";
       }
     }
     return externalShareService.share(
       popupTitle: popupTitle,
       text: text,
-      urlFiles: asLink ? null :[
-        ShareUrlFile(
-            url: mediaAttachment!.url, filename: mediaAttachment!.description)
-      ],
+      urlFiles: asLink
+          ? null
+          : [
+              ShareUrlFile(
+                url: mediaAttachment!.url,
+                filename: mediaAttachment!.description,
+              ),
+            ],
     );
   }
 
-  static Widget provideToContext(BuildContext context,
-      {required IPleromaMediaAttachment? mediaAttachment,
-      required String popupTitle,
-      required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required IPleromaMediaAttachment? mediaAttachment,
+    required String popupTitle,
+    required Widget child,
+  }) {
     return DisposableProvider<ExternalShareMediaBloc>(
-      create: (context) => createFromContext(context,
-          mediaAttachment: mediaAttachment, popupTitle: popupTitle),
+      create: (context) => createFromContext(
+        context,
+        mediaAttachment: mediaAttachment,
+        popupTitle: popupTitle,
+      ),
       child: ProxyProvider<ExternalShareMediaBloc, IExternalShareBloc>(
         update: (context, value, previous) => value,
         child: ProxyProvider<ExternalShareMediaBloc, IShareMediaBloc>(

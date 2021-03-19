@@ -14,24 +14,28 @@ var _statusAccountAliasId = "status_account";
 var _statusReblogAliasId = "status_reblog";
 var _statusReblogAccountAliasId = "status_reblog_account";
 
-@UseDao(tables: [
-  DbNotifications
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_notifications;",
-  "countById": "SELECT COUNT(*) FROM db_notifications WHERE id = :id;",
-  "oldest": "SELECT * FROM db_notifications ORDER BY created_at ASC LIMIT 1;",
-  "deleteById": "DELETE FROM db_notifications WHERE id = :id;",
-  "clear": "DELETE FROM db_notifications",
-  "getAll": "SELECT * FROM db_notifications",
-  "findLocalIdByRemoteId": "SELECT id FROM db_notifications WHERE remote_id = "
-      ":remoteId;",
-  "deleteOlderThanDate":
-      "DELETE FROM db_notifications WHERE created_at < :createdAt",
-  "deleteOlderThanLocalId": "DELETE FROM db_notifications WHERE id = "
-      ":id;",
-  "getNewestByLocalIdWithOffset":
-      "SELECT * FROM db_notifications ORDER BY id DESC LIMIT 1 OFFSET :offset",
-})
+@UseDao(
+  tables: [
+    DbNotifications,
+  ],
+  queries: {
+    "countAll": "SELECT Count(*) FROM db_notifications;",
+    "countById": "SELECT COUNT(*) FROM db_notifications WHERE id = :id;",
+    "oldest": "SELECT * FROM db_notifications ORDER BY created_at ASC LIMIT 1;",
+    "deleteById": "DELETE FROM db_notifications WHERE id = :id;",
+    "clear": "DELETE FROM db_notifications",
+    "getAll": "SELECT * FROM db_notifications",
+    "findLocalIdByRemoteId":
+        "SELECT id FROM db_notifications WHERE remote_id = "
+            ":remoteId;",
+    "deleteOlderThanDate":
+        "DELETE FROM db_notifications WHERE created_at < :createdAt",
+    "deleteOlderThanLocalId": "DELETE FROM db_notifications WHERE id = "
+        ":id;",
+    "getNewestByLocalIdWithOffset":
+        "SELECT * FROM db_notifications ORDER BY id DESC LIMIT 1 OFFSET :offset",
+  },
+)
 class NotificationDao extends DatabaseAccessor<AppDatabase>
     with _$NotificationDaoMixin {
   final AppDatabase db;
@@ -92,15 +96,19 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
             ..where((notification) => notification.remoteId.like(remoteId!)))
           .join(populateNotificationJoin());
 
-  Future<int> insert(Insertable<DbNotification> entity,
-          {InsertMode? mode}) async =>
+  Future<int> insert(
+    Insertable<DbNotification> entity, {
+    InsertMode? mode,
+  }) async =>
       into(db.dbNotifications).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbNotification> entity) async =>
       into(db.dbNotifications).insert(entity, mode: InsertMode.insertOrReplace);
 
-  Future insertAll(List<Insertable<DbNotification>> entities,
-          InsertMode mode) async =>
+  Future insertAll(
+    List<Insertable<DbNotification>> entities,
+    InsertMode mode,
+  ) async =>
       await batch((batch) {
         batch.insertAll(
           db.dbNotifications,
@@ -113,7 +121,9 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
       await update(db.dbNotifications).replace(entity);
 
   Future<int> updateByRemoteId(
-      String remoteId, Insertable<DbNotification> entity) async {
+    String remoteId,
+    Insertable<DbNotification> entity,
+  ) async {
     var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
@@ -128,9 +138,9 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       addExcludeTypeWhere(
-              SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-                  query,
-              List<PleromaNotificationType>? excludeTypes) =>
+    SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+    List<PleromaNotificationType>? excludeTypes,
+  ) =>
           query
             ..where(
               (notification) => notification.type.isNotIn(
@@ -144,9 +154,9 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       addOnlyWithTypeWhere(
-              SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-                  query,
-              PleromaNotificationType onlyWithType) =>
+    SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+    PleromaNotificationType onlyWithType,
+  ) =>
           query
             ..where(
               (notification) => notification.type.equals(
@@ -245,8 +255,9 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
   }
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification> orderBy(
-          SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
-          List<NotificationOrderingTermData> orderTerms) =>
+    SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+    List<NotificationOrderingTermData> orderTerms,
+  ) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
@@ -260,12 +271,15 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
                       break;
                   }
                   return OrderingTerm(
-                      expression: expression, mode: orderTerm.orderingMode);
+                    expression: expression,
+                    mode: orderTerm.orderingMode,
+                  );
                 })
             .toList());
 
   List<DbNotificationPopulated> typedResultListToPopulated(
-      List<TypedResult> typedResult) {
+    List<TypedResult> typedResult,
+  ) {
     return typedResult.map(typedResultToPopulated).toList();
   }
 
@@ -370,16 +384,18 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     ];
   }
 
-  SimpleSelectStatement<$DbNotificationsTable,
-      DbNotification> addOnlyNotDismissedWhere(
-          SimpleSelectStatement<$DbNotificationsTable, DbNotification> query) =>
-      query
-        ..where(
-          (status) => status.dismissed.isNull(),
-        );
+  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
+      addOnlyNotDismissedWhere(
+    SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+  ) =>
+          query
+            ..where(
+              (status) => status.dismissed.isNull(),
+            );
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification> addOnlyUnread(
-          SimpleSelectStatement<$DbNotificationsTable, DbNotification> query) =>
+    SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+  ) =>
       query
         ..where(
           (status) => status.unread.equals(true),

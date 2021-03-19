@@ -8,9 +8,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 typedef SingleSelectFromListValueIconMapper<T> = IconData Function(
-    BuildContext context, T value);
+  BuildContext context,
+  T value,
+);
 typedef SingleSelectFromListValueTitleMapper<T> = String Function(
-    BuildContext context, T value);
+  BuildContext context,
+  T value,
+);
 
 class SingleSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
   final String label;
@@ -73,8 +77,10 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        var fieldBloc = ISingleSelectFromListValueFormFieldBloc.of<T>(context,
-            listen: false);
+        var fieldBloc = ISingleSelectFromListValueFormFieldBloc.of<T>(
+          context,
+          listen: false,
+        );
         if (fieldBloc.isEnabled!) {
           _showDialog(
             context: context,
@@ -91,10 +97,11 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
         children: [
           if (displayIconInRow)
             _SingleSelectFromListValueFormFieldRowValueIconWidget<T>(
-                label: label,
-                valueIconMapper: valueIconMapper,
-                valueTitleMapper: valueTitleMapper,
-                displayIconInDialog: displayIconInDialog),
+              label: label,
+              valueIconMapper: valueIconMapper,
+              valueTitleMapper: valueTitleMapper,
+              displayIconInDialog: displayIconInDialog,
+            ),
           _SingleSelectFromListValueFormFieldRowValueTitleWidget<T>(
             valueTitleMapper: valueTitleMapper,
           ),
@@ -162,35 +169,37 @@ class _SingleSelectFromListValueFormFieldRowValueIconWidget<T>
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     return StreamBuilder<bool?>(
-        stream: fieldBloc.isEnabledStream,
-        initialData: fieldBloc.isEnabled,
-        builder: (context, snapshot) {
-          var isEnabled = snapshot.data;
-          return StreamBuilder<T?>(
-              stream: fieldBloc.currentValueStream,
-              initialData: fieldBloc.currentValue,
-              builder: (context, snapshot) {
-                var currentValue = snapshot.data;
-                return FediIconButton(
-                  color: isEnabled!
-                      ? fediUiColorTheme.darkGrey
-                      : fediUiColorTheme.lightGrey,
-                  onPressed: () {
-                    _showDialog(
-                      context: context,
-                      fieldBloc: fieldBloc,
-                      label: label,
-                      valueIconMapper: valueIconMapper,
-                      valueTitleMapper: valueTitleMapper,
-                      displayIconInDialog: displayIconInDialog,
-                    );
-                  },
-                  icon: Icon(
-                    valueIconMapper!(context, currentValue),
-                  ),
+      stream: fieldBloc.isEnabledStream,
+      initialData: fieldBloc.isEnabled,
+      builder: (context, snapshot) {
+        var isEnabled = snapshot.data;
+        return StreamBuilder<T?>(
+          stream: fieldBloc.currentValueStream,
+          initialData: fieldBloc.currentValue,
+          builder: (context, snapshot) {
+            var currentValue = snapshot.data;
+            return FediIconButton(
+              color: isEnabled!
+                  ? fediUiColorTheme.darkGrey
+                  : fediUiColorTheme.lightGrey,
+              onPressed: () {
+                _showDialog(
+                  context: context,
+                  fieldBloc: fieldBloc,
+                  label: label,
+                  valueIconMapper: valueIconMapper,
+                  valueTitleMapper: valueTitleMapper,
+                  displayIconInDialog: displayIconInDialog,
                 );
-              });
-        });
+              },
+              icon: Icon(
+                valueIconMapper!(context, currentValue),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }
 

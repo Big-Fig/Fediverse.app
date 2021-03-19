@@ -45,6 +45,7 @@ class FediIconInCircleTransparentButton extends StatelessWidget {
           icon: Icon(iconData, size: iconSize, color: color),
           onPressed: onPressed,
         ),
-      ));
+      ),
+    );
   }
 }

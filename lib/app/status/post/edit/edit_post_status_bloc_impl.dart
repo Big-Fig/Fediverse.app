@@ -13,7 +13,8 @@ import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:flutter/widgets.dart';
 
 typedef PostStatusDataCallback = Future<bool> Function(
-    IPostStatusData postStatusData);
+  IPostStatusData postStatusData,
+);
 
 class EditPostStatusBloc extends PostStatusBloc {
   final PostStatusDataCallback postStatusDataCallback;

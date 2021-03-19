@@ -72,11 +72,14 @@ class ConversationChatHomeTabPage extends StatelessWidget {
             Provider.value(value: chatsListBloc.paginationBloc),
             Provider.value(value: chatsListBloc.chatPaginationListBloc),
             Provider.value(
-                value: chatsListBloc.paginationListWithNewItemsBloc),
+              value: chatsListBloc.paginationListWithNewItemsBloc,
+            ),
             Provider<ICachedPaginationListWithNewItemsBloc?>.value(
-                value: chatsListBloc.paginationListWithNewItemsBloc),
+              value: chatsListBloc.paginationListWithNewItemsBloc,
+            ),
             Provider<IPaginationListBloc?>.value(
-                value: chatsListBloc.paginationListWithNewItemsBloc),
+              value: chatsListBloc.paginationListWithNewItemsBloc,
+            ),
           ],
           child: child,
         );
@@ -118,13 +121,13 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
       leadingWidgets: [
         FediHeaderText(
           S.of(context).app_home_tab_chat_conversation_title,
-        )
+        ),
       ],
       content: null,
       endingWidgets: [
         buildSwitchToChatsActionButton(context),
         const FediBigHorizontalSpacer(),
-        buildStartConversationActionButton(context)
+        buildStartConversationActionButton(context),
       ],
     );
   }

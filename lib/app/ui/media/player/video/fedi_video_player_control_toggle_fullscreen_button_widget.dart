@@ -61,11 +61,16 @@ class _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget
 }
 
 Future<dynamic> pushFullScreenPage(
-    BuildContext context, IVideoMediaPlayerBloc videoMediaPlayerBloc) async {
+  BuildContext context,
+  IVideoMediaPlayerBloc videoMediaPlayerBloc,
+) async {
   final isAndroid = Theme.of(context).platform == TargetPlatform.android;
   final TransitionRoute<Null> route = PageRouteBuilder<Null>(
-    pageBuilder: (BuildContext context, Animation<double> animation,
-        Animation<double> secondaryAnimation) {
+    pageBuilder: (
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+    ) {
       return AnimatedBuilder(
         animation: animation,
         builder: (BuildContext context, Widget? child) {
@@ -107,9 +112,11 @@ Future<dynamic> pushFullScreenPage(
   await Wakelock.disable();
 
   await SystemChrome.setEnabledSystemUIOverlays(
-      videoMediaPlayerBloc.systemOverlaysAfterFullScreen);
+    videoMediaPlayerBloc.systemOverlaysAfterFullScreen,
+  );
   await SystemChrome.setPreferredOrientations(
-      videoMediaPlayerBloc.deviceOrientationsAfterFullScreen);
+    videoMediaPlayerBloc.deviceOrientationsAfterFullScreen,
+  );
 }
 
 class _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget

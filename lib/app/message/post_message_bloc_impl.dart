@@ -84,22 +84,28 @@ abstract class PostMessageBloc extends DisposableOwner
 
   @override
   bool get isReadyToPost => calculateIsReadyToPost(
-      inputText: inputText,
-      mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs,
-      isAllAttachedMediaUploaded:
-          mediaAttachmentsBloc.isAllAttachedMediaUploaded);
+        inputText: inputText,
+        mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs,
+        isAllAttachedMediaUploaded:
+            mediaAttachmentsBloc.isAllAttachedMediaUploaded,
+      );
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest3(
-      inputTextStream,
-      mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-      mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
-      (dynamic inputWithoutMentionedAcctsText, dynamic mediaAttachmentBlocs,
-              dynamic isAllAttachedMediaUploaded) =>
-          calculateIsReadyToPost(
-              inputText: inputWithoutMentionedAcctsText,
-              mediaAttachmentBlocs: mediaAttachmentBlocs,
-              isAllAttachedMediaUploaded: isAllAttachedMediaUploaded));
+        inputTextStream,
+        mediaAttachmentsBloc.mediaAttachmentBlocsStream,
+        mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
+        (
+          dynamic inputWithoutMentionedAcctsText,
+          dynamic mediaAttachmentBlocs,
+          dynamic isAllAttachedMediaUploaded,
+        ) =>
+            calculateIsReadyToPost(
+          inputText: inputWithoutMentionedAcctsText,
+          mediaAttachmentBlocs: mediaAttachmentBlocs,
+          isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
+        ),
+      );
 
   // ignore: close_sinks
   BehaviorSubject<String?> inputTextSubject = BehaviorSubject.seeded("");
@@ -171,7 +177,8 @@ abstract class PostMessageBloc extends DisposableOwner
       selectedAction == PostMessageSelectedAction.attach;
 
   Stream<bool> get isAttachActionSelectedStream => selectedActionStream.map(
-      (selectedAction) => selectedAction == PostMessageSelectedAction.attach);
+        (selectedAction) => selectedAction == PostMessageSelectedAction.attach,
+      );
 
   bool get isEmojiActionSelected =>
       selectedAction == PostMessageSelectedAction.emoji;
@@ -180,7 +187,8 @@ abstract class PostMessageBloc extends DisposableOwner
       selectedAction == PostMessageSelectedAction.poll;
 
   Stream<bool> get isEmojiActionSelectedStream => selectedActionStream.map(
-      (selectedAction) => selectedAction == PostMessageSelectedAction.emoji);
+        (selectedAction) => selectedAction == PostMessageSelectedAction.emoji,
+      );
 
   @override
   void toggleAttachActionSelection() {
@@ -210,8 +218,8 @@ abstract class PostMessageBloc extends DisposableOwner
   }
 
   @override
-  Stream<bool> get isAnySelectedActionVisibleStream => selectedActionStream
-      .map((selectedAction) => selectedAction != null);
+  Stream<bool> get isAnySelectedActionVisibleStream =>
+      selectedActionStream.map((selectedAction) => selectedAction != null);
 
   @override
   bool get isAnySelectedActionVisible => selectedAction != null;

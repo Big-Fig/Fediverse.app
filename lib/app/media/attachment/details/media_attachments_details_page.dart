@@ -39,11 +39,12 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
     required this.initialMediaAttachment,
   });
 
-  MediaAttachmentDetailsPage.single(
-      {required IPleromaMediaAttachment mediaAttachment})
-      : this.multi(
-            mediaAttachments: [mediaAttachment],
-            initialMediaAttachment: mediaAttachment);
+  MediaAttachmentDetailsPage.single({
+    required IPleromaMediaAttachment mediaAttachment,
+  }) : this.multi(
+          mediaAttachments: [mediaAttachment],
+          initialMediaAttachment: mediaAttachment,
+        );
 
   @override
   _MediaAttachmentDetailsPageState createState() =>
@@ -67,8 +68,9 @@ class _MediaAttachmentDetailsPageState
   late VoidCallback listener;
 
   _MediaAttachmentDetailsPageState(
-      IPleromaMediaAttachment? initialMediaAttachment, int initialIndex)
-      : _controller = PageController(
+    IPleromaMediaAttachment? initialMediaAttachment,
+    int initialIndex,
+  )   : _controller = PageController(
           initialPage: initialIndex,
         ),
         selectedMediaAttachmentSubject =
@@ -98,7 +100,8 @@ class _MediaAttachmentDetailsPageState
             mediaAttachment: mediaAttachment,
           ),
           _MediaAttachmentDetailsPageShareAction(
-              mediaAttachment: mediaAttachment),
+            mediaAttachment: mediaAttachment,
+          ),
         ],
       ),
       body: buildBody(context),
@@ -106,7 +109,9 @@ class _MediaAttachmentDetailsPageState
   }
 
   Widget buildMediaAttachmentBody(
-      BuildContext context, IPleromaMediaAttachment mediaAttachment) {
+    BuildContext context,
+    IPleromaMediaAttachment mediaAttachment,
+  ) {
     switch (mediaAttachment.typeMastodon) {
       case MastodonMediaAttachmentType.image:
       case MastodonMediaAttachmentType.gifv:
@@ -115,7 +120,8 @@ class _MediaAttachmentDetailsPageState
             return Container(
               child: PhotoView(
                 backgroundDecoration: BoxDecoration(
-                    color: IFediUiColorTheme.of(context).ultraLightGrey),
+                  color: IFediUiColorTheme.of(context).ultraLightGrey,
+                ),
                 imageProvider: imageProvider,
               ),
             );
@@ -152,7 +158,8 @@ class _MediaAttachmentDetailsPageState
         return Center(
           child: Text(
             S.of(context).app_media_attachment_details_notSupported_type(
-                mediaAttachment.type),
+                  mediaAttachment.type,
+                ),
           ),
         );
     }
@@ -176,22 +183,24 @@ class _MediaAttachmentDetailsPageState
             right: 0.0,
             bottom: 12.0,
             child: StreamBuilder<IPleromaMediaAttachment?>(
-                stream: selectedMediaAttachmentStream,
-                initialData: selectedMediaAttachment,
-                builder: (context, snapshot) {
-                  var selectedMediaAttachment = snapshot.data;
+              stream: selectedMediaAttachmentStream,
+              initialData: selectedMediaAttachment,
+              builder: (context, snapshot) {
+                var selectedMediaAttachment = snapshot.data;
 
-                  return Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: widget.mediaAttachments!
-                        .map((mediaAttachment) => FediIndicatorWidget(
-                            active: selectedMediaAttachment == mediaAttachment))
-                        .toList(),
-                  );
-                }),
-          )
+                return Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: widget.mediaAttachments!
+                      .map((mediaAttachment) => FediIndicatorWidget(
+                            active: selectedMediaAttachment == mediaAttachment,
+                          ))
+                      .toList(),
+                );
+              },
+            ),
+          ),
         ],
       );
     }
@@ -204,7 +213,8 @@ class _MediaAttachmentDetailsPageState
           return Container(
             child: PhotoView(
               backgroundDecoration: BoxDecoration(
-                  color: IFediUiColorTheme.of(context).ultraLightGrey),
+                color: IFediUiColorTheme.of(context).ultraLightGrey,
+              ),
               imageProvider: imageProvider,
             ),
           );
@@ -322,14 +332,16 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
                 .of(context)
                 .app_media_attachment_addToGallery_error_dialog_content,
           );
-        }
+        },
       ],
     );
   }
 }
 
-void goToSingleMediaAttachmentDetailsPage(BuildContext context,
-    {required IPleromaMediaAttachment mediaAttachment}) {
+void goToSingleMediaAttachmentDetailsPage(
+  BuildContext context, {
+  required IPleromaMediaAttachment mediaAttachment,
+}) {
   Navigator.push(
     context,
     MaterialPageRoute(
@@ -340,9 +352,11 @@ void goToSingleMediaAttachmentDetailsPage(BuildContext context,
   );
 }
 
-void goToMultiMediaAttachmentDetailsPage(BuildContext context,
-    {required List<IPleromaMediaAttachment?>? mediaAttachments,
-    required IPleromaMediaAttachment? initialMediaAttachment}) {
+void goToMultiMediaAttachmentDetailsPage(
+  BuildContext context, {
+  required List<IPleromaMediaAttachment?>? mediaAttachments,
+  required IPleromaMediaAttachment? initialMediaAttachment,
+}) {
   Navigator.push(
     context,
     MaterialPageRoute(

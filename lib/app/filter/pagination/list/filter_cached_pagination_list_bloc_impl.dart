@@ -20,8 +20,9 @@ class FilterCachedPaginationListBloc<
   }) : super(cachedPaginationBloc: cachedPaginationBloc);
 
   static Widget provideToContext<TPage extends CachedPaginationPage<IFilter>>(
-      BuildContext context,
-      {required Widget child}) {
+    BuildContext context, {
+    required Widget child,
+  }) {
     return DisposableProvider<ICachedPaginationListBloc<TPage, IFilter>>(
       create: (context) =>
           FilterCachedPaginationListBloc.createFromContext<TPage>(context),
@@ -40,8 +41,9 @@ class FilterCachedPaginationListBloc<
   ) {
     return FilterCachedPaginationListBloc<TPage>(
       cachedPaginationBloc: Provider.of<ICachedPaginationBloc<TPage, IFilter>>(
-          context,
-          listen: false),
+        context,
+        listen: false,
+      ),
       cachedListBloc: IFilterCachedListBloc.of(context, listen: false),
     );
   }

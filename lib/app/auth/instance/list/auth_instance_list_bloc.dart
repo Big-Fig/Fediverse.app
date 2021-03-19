@@ -21,6 +21,8 @@ abstract class IAuthInstanceListBloc implements IDisposable {
 
   Future removeInstance(AuthInstance? instance);
 
-  AuthInstance? findInstanceByCredentials(
-      {required String? host, required String? acct});
+  AuthInstance? findInstanceByCredentials({
+    required String? host,
+    required String? acct,
+  });
 }

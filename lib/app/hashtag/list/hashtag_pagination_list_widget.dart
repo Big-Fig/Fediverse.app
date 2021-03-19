@@ -41,6 +41,7 @@ class HashtagPaginationListWidget extends FediPaginationListWidget<IHashtag> {
   IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>
       retrievePaginationListBloc(BuildContext context, {bool? listen}) =>
           Provider.of<IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>>(
-              context,
-              listen: false);
+            context,
+            listen: false,
+          );
 }

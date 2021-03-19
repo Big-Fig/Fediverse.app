@@ -77,7 +77,7 @@ class PostStatusComposeWidget extends StatelessWidget {
           ),
           if (!displayAccountAvatar && expanded) const FediLightGreyDivider(),
           _buildActions(showPostAction),
-          const PostMessageSelectedActionWidget()
+          const PostMessageSelectedActionWidget(),
         ],
       ),
     );
@@ -122,15 +122,16 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   children: [
                     StreamBuilder<String?>(
-                        stream: postStatusBloc.inputTextStream,
-                        builder: (context, snapshot) {
-                          var inputText = snapshot.data;
-                          if (inputText?.trim().isNotEmpty == true) {
-                            return const PostMessageEmojiActionWidget();
-                          } else {
-                            return const PostMessageAttachActionWidget();
-                          }
-                        }),
+                      stream: postStatusBloc.inputTextStream,
+                      builder: (context, snapshot) {
+                        var inputText = snapshot.data;
+                        if (inputText?.trim().isNotEmpty == true) {
+                          return const PostMessageEmojiActionWidget();
+                        } else {
+                          return const PostMessageAttachActionWidget();
+                        }
+                      },
+                    ),
                     const PostStatusVisibilityActionWidget(),
                     const PostStatusScheduleActionWidget(),
                     const PostStatusMentionActionWidget(),
@@ -187,7 +188,7 @@ class _PostStatusComposeInputWithAvatarWidget extends StatelessWidget {
             hintText: hintText,
             maxLines: maxLines,
           ),
-        )
+        ),
       ],
     );
   }

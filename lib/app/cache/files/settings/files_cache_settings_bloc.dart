@@ -7,8 +7,10 @@ import 'package:provider/provider.dart';
 
 abstract class IFilesCacheSettingsBloc
     implements IGlobalOrInstanceSettingsBloc<FilesCacheSettings?> {
-  static IFilesCacheSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IFilesCacheSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IFilesCacheSettingsBloc>(context, listen: listen);
 
   FilesCacheSizeLimitCountType? get filesCacheSizeLimitCountType;

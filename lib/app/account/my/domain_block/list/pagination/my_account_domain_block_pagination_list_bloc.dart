@@ -6,8 +6,12 @@ import 'package:provider/provider.dart';
 
 abstract class IMyAccountDomainBlockPaginationListBloc
     implements IPaginationListBloc<PaginationPage<DomainBlock>, DomainBlock> {
-  static IMyAccountDomainBlockPaginationListBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IMyAccountDomainBlockPaginationListBloc>(context,
-          listen: listen);
+  static IMyAccountDomainBlockPaginationListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IMyAccountDomainBlockPaginationListBloc>(
+        context,
+        listen: listen,
+      );
 }

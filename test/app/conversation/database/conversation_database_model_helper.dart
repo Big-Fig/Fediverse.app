@@ -2,8 +2,10 @@ import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Future<DbConversation> createTestDbConversation(
-        {required String seed, String? remoteId}) async =>
+Future<DbConversation> createTestDbConversation({
+  required String seed,
+  String? remoteId,
+}) async =>
     DbConversation(
       id: null,
       remoteId: remoteId ?? seed + "remoteId1",

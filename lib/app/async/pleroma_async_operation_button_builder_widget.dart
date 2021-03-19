@@ -15,18 +15,19 @@ class PleromaAsyncOperationButtonBuilderWidget<T>
     List<ErrorDataBuilder> errorAlertDialogBuilders = const [],
     ErrorCallback? errorCallback,
   }) : super(
-            builder: builder,
-            asyncButtonAction: asyncButtonAction,
-            showProgressDialog: showProgressDialog,
-            progressContentMessage: progressContentMessage,
-            successToastMessage: successToastMessage,
-            errorCallback: errorCallback,
-            errorDataBuilders: [
-              // top priority for passed to constructor handlers
-              ...(errorAlertDialogBuilders),
-              // low priority for base Pleroma handler
-              ...PleromaAsyncOperationHelper.pleromaErrorDataBuilders
-            ]);
+          builder: builder,
+          asyncButtonAction: asyncButtonAction,
+          showProgressDialog: showProgressDialog,
+          progressContentMessage: progressContentMessage,
+          successToastMessage: successToastMessage,
+          errorCallback: errorCallback,
+          errorDataBuilders: [
+            // top priority for passed to constructor handlers
+            ...(errorAlertDialogBuilders),
+            // low priority for base Pleroma handler
+            ...PleromaAsyncOperationHelper.pleromaErrorDataBuilders,
+          ],
+        );
 
   @override
   Future<AsyncDialogResult<T?>> performAsyncOperation({

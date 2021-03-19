@@ -17,47 +17,48 @@ class PostStatusPollActionWidget extends StatelessWidget {
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
 
     return StreamBuilder<PostMessageSelectedAction?>(
-        stream: postMessageBloc.selectedActionStream,
-        initialData: postMessageBloc.selectedAction,
-        builder: (context, snapshot) {
-          var selectedAction = snapshot.data;
+      stream: postMessageBloc.selectedActionStream,
+      initialData: postMessageBloc.selectedAction,
+      builder: (context, snapshot) {
+        var selectedAction = snapshot.data;
 
-          var button = FediIconButton(
-            icon: Icon(
-              FediIcons.poll,
-              color: selectedAction == PostMessageSelectedAction.poll
-                  ? IFediUiColorTheme.of(context).primary
-                  : IFediUiColorTheme.of(context).darkGrey,
-            ),
-            onPressed: () {
-              postMessageBloc.togglePollActionSelection();
-            },
-          );
-          var postStatusPollBloc =
-              IPostStatusPollBloc.of(context, listen: false);
+        var button = FediIconButton(
+          icon: Icon(
+            FediIcons.poll,
+            color: selectedAction == PostMessageSelectedAction.poll
+                ? IFediUiColorTheme.of(context).primary
+                : IFediUiColorTheme.of(context).darkGrey,
+          ),
+          onPressed: () {
+            postMessageBloc.togglePollActionSelection();
+          },
+        );
+        var postStatusPollBloc = IPostStatusPollBloc.of(context, listen: false);
 
-          return StreamBuilder<bool>(
-              stream: postStatusPollBloc.isSomethingChangedStream,
-              initialData: postStatusPollBloc.isSomethingChanged,
-              builder: (context, snapshot) {
-                var isSomethingChanged = snapshot.data!;
-                if (isSomethingChanged) {
-                  return DisposableProxyProvider<IPostStatusPollBloc,
-                      IFediBoolBadgeBloc>(
-                    update: (context, postStatusPollBloc, _) =>
-                        PostStatusPollActionBadgeBloc(
-                      postStatusPollBloc: postStatusPollBloc,
-                    ),
-                    child: FediBoolBadgeWidget(
-                      offset: 8.0,
-                      child: button,
-                    ),
-                  );
-                } else {
-                  return button;
-                }
-              });
-        });
+        return StreamBuilder<bool>(
+          stream: postStatusPollBloc.isSomethingChangedStream,
+          initialData: postStatusPollBloc.isSomethingChanged,
+          builder: (context, snapshot) {
+            var isSomethingChanged = snapshot.data!;
+            if (isSomethingChanged) {
+              return DisposableProxyProvider<IPostStatusPollBloc,
+                  IFediBoolBadgeBloc>(
+                update: (context, postStatusPollBloc, _) =>
+                    PostStatusPollActionBadgeBloc(
+                  postStatusPollBloc: postStatusPollBloc,
+                ),
+                child: FediBoolBadgeWidget(
+                  offset: 8.0,
+                  child: button,
+                ),
+              );
+            } else {
+              return button;
+            }
+          },
+        );
+      },
+    );
   }
 
   const PostStatusPollActionWidget();

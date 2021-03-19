@@ -21,9 +21,10 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget
       TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBlocProxyProvider(
         child: SingleSelectFromListValueFormFieldRowWidget<
             PleromaReplyVisibilityFilter>(
-          label: label ?? S
-              .of(context)
-              .app_timeline_settings_replyVisibilityFilter_field_label,
+          label: label ??
+              S
+                  .of(context)
+                  .app_timeline_settings_replyVisibilityFilter_field_label,
           valueTitleMapper: (context, value) =>
               mapTimelineTypeToLabel(context, value),
           description: description,
@@ -35,8 +36,10 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget
       );
 }
 
-String mapTimelineTypeToLabel(BuildContext context,
-    PleromaReplyVisibilityFilter? pleromaReplyVisibilityFilter) {
+String mapTimelineTypeToLabel(
+  BuildContext context,
+  PleromaReplyVisibilityFilter? pleromaReplyVisibilityFilter,
+) {
   if (pleromaReplyVisibilityFilter == null) {
     return S.of(context).app_timeline_settings_replyVisibilityFilter_field_null;
   }

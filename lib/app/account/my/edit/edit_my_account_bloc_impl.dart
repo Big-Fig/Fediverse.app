@@ -103,7 +103,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   })   : displayNameField = StringValueFormFieldBloc(
           originValue: myAccountBloc.displayNameEmojiText!.text,
           validators: [
-            StringValueFormFieldNonEmptyValidationError.createValidator()
+            StringValueFormFieldNonEmptyValidationError.createValidator(),
           ],
           maxLength: null,
         ),
@@ -161,8 +161,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
               myAccountBloc.myAccount?.pleroma?.hideFollowersCount ?? false,
         ),
         hideFollowersField = BoolValueFormFieldBloc(
-          originValue:
-              myAccountBloc.myAccount?.pleroma?.hideFollowers ?? false,
+          originValue: myAccountBloc.myAccount?.pleroma?.hideFollowers ?? false,
         ),
         hideFollowsCountField = BoolValueFormFieldBloc(
           originValue:

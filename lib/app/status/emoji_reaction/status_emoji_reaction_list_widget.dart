@@ -25,35 +25,36 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
           return Padding(
             padding: FediPadding.allSmallPadding,
             child: Container(
-                alignment: Alignment.topLeft,
-                child: Wrap(
-                  runSpacing: FediSizes.smallPadding,
-                  alignment: WrapAlignment.start,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  children: emojiReactions!
-                      .map((emojiReaction) =>
-                          Provider<IPleromaStatusEmojiReaction?>.value(
-                            value: emojiReaction,
-                            child: DisposableProxyProvider<
-                                IPleromaStatusEmojiReaction,
-                                IStatusEmojiReactionBloc>(
-                              update: (context, value, previous) =>
-                                  StatusEmojiReactionBloc(
-                                status: statusBloc.status,
-                                statusRepository: IStatusRepository.of(context,
-                                    listen: false),
-                                emojiReaction: value,
-                                pleromaStatusEmojiReactionService:
-                                    IPleromaStatusEmojiReactionService.of(
-                                  context,
-                                  listen: false,
-                                ),
+              alignment: Alignment.topLeft,
+              child: Wrap(
+                runSpacing: FediSizes.smallPadding,
+                alignment: WrapAlignment.start,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: emojiReactions!
+                    .map((emojiReaction) =>
+                        Provider<IPleromaStatusEmojiReaction?>.value(
+                          value: emojiReaction,
+                          child: DisposableProxyProvider<
+                              IPleromaStatusEmojiReaction,
+                              IStatusEmojiReactionBloc>(
+                            update: (context, value, previous) =>
+                                StatusEmojiReactionBloc(
+                              status: statusBloc.status,
+                              statusRepository:
+                                  IStatusRepository.of(context, listen: false),
+                              emojiReaction: value,
+                              pleromaStatusEmojiReactionService:
+                                  IPleromaStatusEmojiReactionService.of(
+                                context,
+                                listen: false,
                               ),
-                              child: const StatusEmojiReactionListItemWidget(),
                             ),
-                          ))
-                      .toList(),
-                )),
+                            child: const StatusEmojiReactionListItemWidget(),
+                          ),
+                        ))
+                    .toList(),
+              ),
+            ),
           );
         } else {
           return const SizedBox.shrink();

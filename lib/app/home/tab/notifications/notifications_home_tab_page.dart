@@ -153,7 +153,10 @@ class _NotificationsHomeTabPageBodyState
   }
 
   Widget _buildTabBodyProvider(
-      BuildContext context, NotificationTab tab, Widget child) {
+    BuildContext context,
+    NotificationTab tab,
+    Widget child,
+  ) {
     _logger.finest(() => "_buildTabBodyProvider tab $tab");
 
     var timelineTabPaginationListBloc =
@@ -258,7 +261,7 @@ class _NotificationsHomeTabPageBodyHeaderWidget extends StatelessWidget {
               ],
             ).show(context);
           },
-        )
+        ),
       ],
     );
   }

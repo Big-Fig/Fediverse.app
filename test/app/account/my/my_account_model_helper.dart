@@ -1,8 +1,10 @@
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 
-Future<PleromaMyAccountWrapper> createTestMyAccount(
-    {required String seed, String? remoteId}) async {
+Future<PleromaMyAccountWrapper> createTestMyAccount({
+  required String seed,
+  String? remoteId,
+}) async {
   return PleromaMyAccountWrapper(
     pleromaAccount: PleromaMyAccount(
       id: remoteId ?? seed + "remoteId1",

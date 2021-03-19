@@ -9,8 +9,8 @@ class GlobalFilesCacheSettingsLocalPreferencesBloc
     extends FilesCacheSettingsLocalPreferencesBloc
     implements IGlobalFilesCacheSettingsLocalPreferencesBloc {
   GlobalFilesCacheSettingsLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService)
-      : super(preferencesService, "cache.files.settings.global");
+    ILocalPreferencesService preferencesService,
+  ) : super(preferencesService, "cache.files.settings.global");
 
   @override
   FilesCacheSettings get defaultValue => FilesCacheSettings(

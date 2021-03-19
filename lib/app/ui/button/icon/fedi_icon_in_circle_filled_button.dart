@@ -36,7 +36,6 @@ class FediIconInCircleFilledButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     var enabledBackgroundColor =
         this.enabledBackgroundColor ?? fediUiColorTheme.primary;
@@ -55,25 +54,26 @@ class FediIconInCircleFilledButton extends StatelessWidget {
         onPressed != null ? enabledBorderColor : disabledBorderColor;
     var iconColor = onPressed != null ? enabledIconColor : disabledIconColor;
     return Container(
-        width: size + borderWidth * 2,
-        height: size + borderWidth * 2,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: backgroundColor,
-          border: Border.all(
-            color: borderColor,
-            width: borderWidth,
-          ),
+      width: size + borderWidth * 2,
+      height: size + borderWidth * 2,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: backgroundColor,
+        border: Border.all(
+          color: borderColor,
+          width: borderWidth,
         ),
-        child: FediIconButton(
-          padding: EdgeInsets.zero,
+      ),
+      child: FediIconButton(
+        padding: EdgeInsets.zero,
+        color: iconColor,
+        icon: Icon(
+          iconData,
+          size: iconSize,
           color: iconColor,
-          icon: Icon(
-            iconData,
-            size: iconSize,
-            color: iconColor,
-          ),
-          onPressed: onPressed,
-        ));
+        ),
+        onPressed: onPressed,
+      ),
+    );
   }
 }

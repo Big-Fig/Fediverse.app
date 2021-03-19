@@ -19,6 +19,7 @@ class CustomEmojiPickerCodeItem extends CustomEmojiPickerItem {
   @override
   @HiveField(1)
   final String code;
+
   CustomEmojiPickerCodeItem({
     required this.code,
     required this.name,
@@ -32,27 +33,22 @@ class CustomEmojiPickerCodeItem extends CustomEmojiPickerItem {
         '}';
   }
 
-
   factory CustomEmojiPickerCodeItem.fromJson(
-      Map<String, dynamic> json) =>
+    Map<String, dynamic> json,
+  ) =>
       _$CustomEmojiPickerCodeItemFromJson(json);
 
-  factory CustomEmojiPickerCodeItem.fromJsonString(
-      String jsonString) =>
+  factory CustomEmojiPickerCodeItem.fromJsonString(String jsonString) =>
       _$CustomEmojiPickerCodeItemFromJson(jsonDecode(jsonString));
 
-  static List<CustomEmojiPickerCodeItem> listFromJsonString(
-      String str) =>
+  static List<CustomEmojiPickerCodeItem> listFromJsonString(String str) =>
       List<CustomEmojiPickerCodeItem>.from(
-          json.decode(str).map((x) =>
-              CustomEmojiPickerCodeItem.fromJson(x)));
+        json.decode(str).map((x) => CustomEmojiPickerCodeItem.fromJson(x)),
+      );
 
-  Map<String, dynamic> toJson() =>
-      _$CustomEmojiPickerCodeItemToJson(this);
+  Map<String, dynamic> toJson() => _$CustomEmojiPickerCodeItemToJson(this);
 
-  String toJsonString() =>
-      jsonEncode(_$CustomEmojiPickerCodeItemToJson(this));
-
+  String toJsonString() => jsonEncode(_$CustomEmojiPickerCodeItemToJson(this));
 
   @override
   bool operator ==(Object other) =>

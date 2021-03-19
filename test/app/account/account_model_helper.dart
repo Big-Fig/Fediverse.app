@@ -15,8 +15,9 @@ Future<DbAccountWrapper> createTestAccount({
       ),
     );
 
-PleromaAccountRelationship createTestAccountRelationship(
-        {required String seed}) =>
+PleromaAccountRelationship createTestAccountRelationship({
+  required String seed,
+}) =>
     PleromaAccountRelationship(
       blocking: seed.hashCode % 2 == 0,
       domainBlocking: seed.hashCode % 3 == 0,
@@ -65,7 +66,9 @@ void expectAccount(IAccount? actual, IAccount? expected) {
   expect(actual.pleromaIsAdmin, expected.pleromaIsAdmin);
   expect(actual.pleromaIsModerator, expected.pleromaIsModerator);
   expect(
-      actual.pleromaConfirmationPending, expected.pleromaConfirmationPending);
+    actual.pleromaConfirmationPending,
+    expected.pleromaConfirmationPending,
+  );
   expect(actual.pleromaHideFavorites, expected.pleromaHideFavorites);
   expect(actual.pleromaHideFollowers, expected.pleromaHideFollowers);
   expect(actual.pleromaHideFollows, expected.pleromaHideFollows);
@@ -73,6 +76,8 @@ void expectAccount(IAccount? actual, IAccount? expected) {
   expect(actual.pleromaHideFollowsCount, expected.pleromaHideFollowsCount);
   expect(actual.pleromaDeactivated, expected.pleromaDeactivated);
   expect(actual.pleromaAllowFollowingMove, expected.pleromaAllowFollowingMove);
-  expect(actual.pleromaSkipThreadContainment,
-      expected.pleromaSkipThreadContainment);
+  expect(
+    actual.pleromaSkipThreadContainment,
+    expected.pleromaSkipThreadContainment,
+  );
 }

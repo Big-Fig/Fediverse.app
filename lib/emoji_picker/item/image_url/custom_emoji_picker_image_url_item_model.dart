@@ -19,6 +19,7 @@ class CustomEmojiPickerImageUrlItem extends CustomEmojiPickerItem {
   @HiveField(1)
   @JsonKey(name: "image_url")
   final String imageUrl;
+
   CustomEmojiPickerImageUrlItem({
     required this.imageUrl,
     required this.name,
@@ -26,7 +27,6 @@ class CustomEmojiPickerImageUrlItem extends CustomEmojiPickerItem {
 
   @override
   String get code => ":$name:";
-
 
   @override
   bool operator ==(Object other) =>
@@ -38,7 +38,6 @@ class CustomEmojiPickerImageUrlItem extends CustomEmojiPickerItem {
 
   @override
   int get hashCode => name.hashCode ^ imageUrl.hashCode;
-
 
   @override
   String toString() {
@@ -53,9 +52,11 @@ class CustomEmojiPickerImageUrlItem extends CustomEmojiPickerItem {
 
   static List<CustomEmojiPickerImageUrlItem> listFromJsonString(String str) =>
       List<CustomEmojiPickerImageUrlItem>.from(
-          json.decode(str).map((x) => CustomEmojiPickerImageUrlItem.fromJson(x)));
+        json.decode(str).map((x) => CustomEmojiPickerImageUrlItem.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$CustomEmojiPickerImageUrlItemToJson(this);
 
-  String toJsonString() => jsonEncode(_$CustomEmojiPickerImageUrlItemToJson(this));
+  String toJsonString() =>
+      jsonEncode(_$CustomEmojiPickerImageUrlItemToJson(this));
 }

@@ -76,19 +76,23 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     var remoteAccount = remoteStatus!.account;
 
-    await accountRepository!.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: conversationRemoteId, chatRemoteId: null);
+    await accountRepository!.upsertRemoteAccount(
+      remoteAccount,
+      conversationRemoteId: conversationRemoteId,
+      chatRemoteId: null,
+    );
 
     await upsert(remoteStatus.toDbStatus());
 
     if (isFromHomeTimeline == true) {
       await homeTimelineStatusesDao.insert(
-          DbHomeTimelineStatus(
-            statusRemoteId: remoteStatus.id,
-            id: null,
-            accountRemoteId: remoteStatus.account.id,
-          ),
-          mode: InsertMode.insertOrReplace);
+        DbHomeTimelineStatus(
+          statusRemoteId: remoteStatus.id,
+          id: null,
+          accountRemoteId: remoteStatus.account.id,
+        ),
+        mode: InsertMode.insertOrReplace,
+      );
     }
 
     var statusRemoteId = remoteStatus.id;
@@ -289,14 +293,16 @@ class StatusRepository extends AsyncInitLoadingBloc
   }) async {
     await hashtagsDao.deleteByStatusRemoteId(statusRemoteId);
     await hashtagsDao.insertAll(
-      tags?.map(
-            (remoteTag) => DbStatusHashtag(
-              id: null,
-              statusRemoteId: statusRemoteId,
-              hashtag: remoteTag.name,
-            ),
-          )
-          .toList() ?? [],
+      tags
+              ?.map(
+                (remoteTag) => DbStatusHashtag(
+                  id: null,
+                  statusRemoteId: statusRemoteId,
+                  hashtag: remoteTag.name,
+                ),
+              )
+              .toList() ??
+          [],
       InsertMode.insertOrReplace,
     );
   }
@@ -884,7 +890,8 @@ class StatusRepository extends AsyncInitLoadingBloc
   ) async {
     _logger.finest(() => "findByOldPendingRemoteId $oldPendingRemoteId");
     return mapDataClassToItem(
-        await dao.findByOldPendingRemoteId(oldPendingRemoteId));
+      await dao.findByOldPendingRemoteId(oldPendingRemoteId),
+    );
   }
 
   @override

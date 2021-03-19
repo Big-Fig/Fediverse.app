@@ -61,7 +61,9 @@ abstract class ShareToAccountBloc extends DisposableOwner
   Stream<bool> isAlreadySharedToAccountStream(IAccount account) =>
       alreadySharedToAccountsStream.map(
         (alreadySharedToAccounts) => _calculateIsAlreadySharedToAccount(
-            alreadySharedToAccounts!, account),
+          alreadySharedToAccounts!,
+          account,
+        ),
       );
 
   static bool _calculateIsAlreadySharedToAccount(
@@ -69,7 +71,8 @@ abstract class ShareToAccountBloc extends DisposableOwner
     IAccount account,
   ) {
     var alreadySharedAccount = alreadySharedToAccounts.firstWhereOrNull(
-        (currentAccount) => currentAccount.remoteId == account.remoteId);
+      (currentAccount) => currentAccount.remoteId == account.remoteId,
+    );
 
     return alreadySharedAccount != null;
   }

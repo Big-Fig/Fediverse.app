@@ -4,8 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaAnnouncementService implements IPleromaApi {
-  static IPleromaAnnouncementService of(BuildContext context,
-          {bool listen = true}) =>
+  static IPleromaAnnouncementService of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IPleromaAnnouncementService>(context, listen: listen);
 
   Future<List<IPleromaAnnouncement>> getAnnouncements({

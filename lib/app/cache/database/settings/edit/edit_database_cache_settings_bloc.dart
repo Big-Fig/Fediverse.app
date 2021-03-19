@@ -9,8 +9,10 @@ import 'package:provider/provider.dart';
 
 abstract class IEditDatabaseCacheSettingsBloc
     implements IEditGlobalOrInstanceSettingsBloc<DatabaseCacheSettings?> {
-  static IEditDatabaseCacheSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IEditDatabaseCacheSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IEditDatabaseCacheSettingsBloc>(context, listen: listen);
 
   IAgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc?

@@ -6,8 +6,12 @@ import 'package:provider/provider.dart';
 abstract class IConversationChatNewMessagesHandlerBloc extends IDisposable {
   Future handleChatUpdate(IPleromaConversation conversation);
 
-  static IConversationChatNewMessagesHandlerBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IConversationChatNewMessagesHandlerBloc>(context,
-          listen: listen);
+  static IConversationChatNewMessagesHandlerBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IConversationChatNewMessagesHandlerBloc>(
+        context,
+        listen: listen,
+      );
 }

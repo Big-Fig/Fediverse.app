@@ -4,8 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IConversationChatCurrentBloc implements IDisposable {
-  static IConversationChatCurrentBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IConversationChatCurrentBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IConversationChatCurrentBloc>(context, listen: listen);
 
   IConversationChat? get currentChat;

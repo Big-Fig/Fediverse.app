@@ -9,11 +9,12 @@ class DisposableProvider<T extends IDisposable> extends Provider<T> {
     bool? lazy,
     Widget? child,
   }) : super(
-            key: key,
-            create: create,
-            lazy: lazy,
-            child: child,
-            dispose: (_, disposable) => disposable.dispose());
+          key: key,
+          create: create,
+          lazy: lazy,
+          child: child,
+          dispose: (_, disposable) => disposable.dispose(),
+        );
 }
 
 class DisposableProxyProvider<T, R extends IDisposable>
@@ -27,13 +28,14 @@ class DisposableProxyProvider<T, R extends IDisposable>
     bool? lazy,
     Widget? child,
   }) : super(
-            key: key,
-            create: create,
-            update: update,
-            updateShouldNotify: updateShouldNotify,
-            lazy: lazy,
-            child: child,
-            dispose: (_, disposable) => disposable.dispose());
+          key: key,
+          create: create,
+          update: update,
+          updateShouldNotify: updateShouldNotify,
+          lazy: lazy,
+          child: child,
+          dispose: (_, disposable) => disposable.dispose(),
+        );
 }
 
 class DisposableProxyProvider2<T, K, R extends IDisposable>
@@ -47,11 +49,12 @@ class DisposableProxyProvider2<T, K, R extends IDisposable>
     bool? lazy,
     Widget? child,
   }) : super(
-            key: key,
-            create: create,
-            update: update,
-            updateShouldNotify: updateShouldNotify,
-            lazy: lazy,
-            child: child,
-            dispose: (_, disposable) => disposable.dispose());
+          key: key,
+          create: create,
+          update: update,
+          updateShouldNotify: updateShouldNotify,
+          lazy: lazy,
+          child: child,
+          dispose: (_, disposable) => disposable.dispose(),
+        );
 }

@@ -46,7 +46,9 @@ class _MyAccountDetailsWidgetState extends State<MyAccountDetailsWidget> {
       );
 
   static Widget buildAccountDetailsProviders(
-      BuildContext context, Widget child) {
+    BuildContext context,
+    Widget child,
+  ) {
     var accountBloc = IAccountBloc.of(context, listen: true);
 
     return AccountStatusesWithRepliesCachedListBloc.provideToContext(
@@ -69,7 +71,7 @@ class _MyAccountDetailsWidgetState extends State<MyAccountDetailsWidget> {
   Widget buildListWithNewItemsOverlayContainer(BuildContext context) => Stack(
         children: [
           MyAccountDetailsBodyWidget(scrollController: scrollController),
-          const StatusListTapToLoadOverlayWidget()
+          const StatusListTapToLoadOverlayWidget(),
         ],
       );
 }

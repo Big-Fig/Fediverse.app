@@ -155,7 +155,9 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
       _calculateIsControlsVisible(lastIterationDateTime!, isPlaying);
 
   bool _calculateIsControlsVisible(
-      DateTime lastIterationDateTime, bool isPlaying) {
+    DateTime lastIterationDateTime,
+    bool isPlaying,
+  ) {
     var diff = lastIterationDateTime.difference(DateTime.now()).abs();
 
     if (isPlaying && diff > _durationToHideControlsDuringPlaying) {
@@ -170,7 +172,11 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
         lastIterationDateTimeStream, isPlayingStream, videoPlayerValueStream,
         // use videoPlayerValueStream just for regular updates
         // hack to avoid using Timer to update isControlsVisibleStream
-        (dynamic lastIterationDateTime, dynamic isPlaying, dynamic videoPlayerValue) =>
+        (
+          dynamic lastIterationDateTime,
+          dynamic isPlaying,
+          dynamic videoPlayerValue,
+        ) =>
             _calculateIsControlsVisible(lastIterationDateTime, isPlaying),
       );
 

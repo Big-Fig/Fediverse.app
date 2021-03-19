@@ -82,7 +82,7 @@ class _MultiMediaPickerPageBodyWidget extends StatelessWidget {
               return const SizedBox.shrink();
             }
           },
-        )
+        ),
       ],
     );
   }
@@ -180,7 +180,7 @@ Future<List<IMediaDeviceFile>?> goToMultiMediaPickerPage(
   BuildContext context, {
   List<MediaDeviceFileType> typesToPick = const [
     MediaDeviceFileType.image,
-    MediaDeviceFileType.video
+    MediaDeviceFileType.video,
   ],
   required int? selectionCountLimit,
 }) async {

@@ -39,7 +39,7 @@ class PostMessageWidget extends StatelessWidget {
               const PostMessagePostActionWidget(),
             ],
           ),
-          const PostMessageSelectedActionWidget()
+          const PostMessageSelectedActionWidget(),
         ],
       ),
     );
@@ -63,54 +63,58 @@ class _PostMessageMediaAttachmentsWidget extends StatelessWidget {
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
     return StreamBuilder<double>(
       stream: Rx.combineLatest2(
-          postMessageBloc.isAnySelectedActionVisibleStream,
-          postMessageBloc.mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-          (bool isAnySelectedActionVisible,
-              List<IUploadMediaAttachmentBloc>? mediaAttachmentBlocs) {
-        isAnySelectedActionVisible = isAnySelectedActionVisible;
-        var mediaBlocs = mediaAttachmentBlocs!.where((bloc) => bloc.isMedia);
+        postMessageBloc.isAnySelectedActionVisibleStream,
+        postMessageBloc.mediaAttachmentsBloc.mediaAttachmentBlocsStream,
+        (
+          bool isAnySelectedActionVisible,
+          List<IUploadMediaAttachmentBloc>? mediaAttachmentBlocs,
+        ) {
+          isAnySelectedActionVisible = isAnySelectedActionVisible;
+          var mediaBlocs = mediaAttachmentBlocs!.where((bloc) => bloc.isMedia);
 
-        var nonMediaBlocs = mediaAttachmentBlocs.where((bloc) => !bloc.isMedia);
+          var nonMediaBlocs =
+              mediaAttachmentBlocs.where((bloc) => !bloc.isMedia);
 
-        var isSingleMediaVisible = mediaBlocs.length == 1;
+          var isSingleMediaVisible = mediaBlocs.length == 1;
 
-        var isListMediaVisible = mediaBlocs.length > 1;
+          var isListMediaVisible = mediaBlocs.length > 1;
 
-        var isListNonMediaVisible = nonMediaBlocs.isNotEmpty;
+          var isListNonMediaVisible = nonMediaBlocs.isNotEmpty;
 
-        var mediaQueryData = MediaQuery.of(context);
-        var height = mediaQueryData.size.height;
+          var mediaQueryData = MediaQuery.of(context);
+          var height = mediaQueryData.size.height;
 
-        // status bar
-        height -= mediaQueryData.padding.top;
-        // nav system bar
-        height -= mediaQueryData.padding.bottom;
-        height -= kToolbarHeight;
-        // input bar
-        height -= 70;
-        height -= 90;
-        if (isAnySelectedActionVisible) {
-          height -= 120;
-        }
-        if (isListMediaVisible) {
+          // status bar
+          height -= mediaQueryData.padding.top;
+          // nav system bar
+          height -= mediaQueryData.padding.bottom;
+          height -= kToolbarHeight;
+          // input bar
+          height -= 70;
+          height -= 90;
+          if (isAnySelectedActionVisible) {
+            height -= 120;
+          }
+          if (isListMediaVisible) {
+            height -= 100;
+          }
+          if (isListNonMediaVisible) {
+            height -= 50;
+          }
+          if (isSingleMediaVisible) {
+            height -= 230;
+          }
+
+          // i am not sure, but overflow ~ 100 px so I added it here
           height -= 100;
-        }
-        if (isListNonMediaVisible) {
-          height -= 50;
-        }
-        if (isSingleMediaVisible) {
-          height -= 230;
-        }
 
-        // i am not sure, but overflow ~ 100 px so I added it here
-        height -= 100;
+          if (height < 100) {
+            height = 100;
+          }
 
-        if (height < 100) {
-          height = 100;
-        }
-
-        return height;
-      }),
+          return height;
+        },
+      ),
       builder: (context, snapshot) {
         var heightOnKeyboardOpen = snapshot.data;
         return UploadMediaAttachmentListAllWidget(

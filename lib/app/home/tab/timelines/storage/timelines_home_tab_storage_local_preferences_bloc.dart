@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class ITimelinesHomeTabStorageLocalPreferencesBloc
     implements ILocalPreferenceBloc<TimelinesHomeTabStorage?> {
-  static ITimelinesHomeTabStorageLocalPreferencesBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<ITimelinesHomeTabStorageLocalPreferencesBloc>(context,
-          listen: listen);
+  static ITimelinesHomeTabStorageLocalPreferencesBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<ITimelinesHomeTabStorageLocalPreferencesBloc>(
+        context,
+        listen: listen,
+      );
 }

@@ -107,18 +107,13 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
   int? get maxTootChars {
     var maxTootChars = instance?.maxTootChars;
 
-    return maxTootChars != null
-      ? int.parse(maxTootChars.toString())
-      : null;
+    return maxTootChars != null ? int.parse(maxTootChars.toString()) : null;
   }
 
-  Stream<int?> get maxTootCharsStream =>
-      instanceStream.map((instance) {
+  Stream<int?> get maxTootCharsStream => instanceStream.map((instance) {
         var maxTootChars = instance?.maxTootChars;
 
-        return maxTootChars != null
-            ? int.parse(maxTootChars.toString())
-            : null;
+        return maxTootChars != null ? int.parse(maxTootChars.toString()) : null;
       });
 
   PleromaInstancePollLimits? get pollLimits => instance?.pollLimits;
@@ -191,7 +186,8 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
 
   Stream<bool?> get pleromaMetadataAccountActivationRequiredStream =>
       instanceStream.map(
-          (instance) => instance?.pleroma?.metadata?.accountActivationRequired);
+        (instance) => instance?.pleroma?.metadata?.accountActivationRequired,
+      );
 
   PleromaInstancePleromaPartMetadataFieldLimits?
       get pleromaMetadataFieldsLimits =>

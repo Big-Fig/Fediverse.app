@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 
 abstract class IMediaSettingsLocalPreferencesBloc
     implements ILocalPreferenceBloc<MediaSettings?> {
-  static IMediaSettingsLocalPreferencesBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IMediaSettingsLocalPreferencesBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IMediaSettingsLocalPreferencesBloc>(context, listen: listen);
 }

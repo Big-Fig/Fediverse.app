@@ -33,12 +33,16 @@ class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
             update: (context, value, previous) {
               var timelineTabBlocsList = value.timelineTabBlocsList!;
               return FediTabIndicatorBloc<ITimelineTabBloc>(
-                  items: timelineTabBlocsList.timelineTabBlocs,
-                  tabController: timelineTabBlocsList.tabController);
+                items: timelineTabBlocsList.timelineTabBlocs,
+                tabController: timelineTabBlocsList.tabController,
+              );
             },
             child: FediTextTabIndicatorWidget<ITimelineTabBloc>(
-              customTabBuilder: (BuildContext context, Widget child,
-                  ITimelineTabBloc timelineTabBloc) {
+              customTabBuilder: (
+                BuildContext context,
+                Widget child,
+                ITimelineTabBloc timelineTabBloc,
+              ) {
                 var tabPaginationListBloc =
                     timelineTabBloc.paginationListWithNewItemsBloc;
 

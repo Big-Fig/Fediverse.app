@@ -69,8 +69,9 @@ class StatusCollapsibleItemBloc extends DisposableOwner
 
   @override
   Stream<bool> get isNeedShowFullContentStream => Rx.combineLatest2(
-      isPossibleToCollapseStream,
-      isCollapsedStream,
-      (dynamic isPossibleToCollapse, dynamic isCollapsed) =>
-          !(isPossibleToCollapse && isCollapsed));
+        isPossibleToCollapseStream,
+        isCollapsedStream,
+        (dynamic isPossibleToCollapse, dynamic isCollapsed) =>
+            !(isPossibleToCollapse && isCollapsed),
+      );
 }

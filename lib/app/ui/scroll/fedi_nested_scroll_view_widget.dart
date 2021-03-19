@@ -36,7 +36,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
     return Stack(
       children: [
         child,
-        buildTopSliverOffsetWhiteStatusBar(fediNestedScrollViewBloc)
+        buildTopSliverOffsetWhiteStatusBar(fediNestedScrollViewBloc),
       ],
     );
   }
@@ -87,7 +87,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
               ),
             ],
           ),
-        )
+        ),
       ];
 
   Widget buildNestedScrollView(BuildContext context);
@@ -101,12 +101,14 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
     var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
 
     return StreamBuilder<bool>(
-      stream: Rx.combineLatest2(scrollControllerBloc.longScrollDirectionStream,
-          fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
-          (dynamic scrollDirection, dynamic isAtLeastStartExpand) {
-        return scrollDirection == ScrollDirection.forward &&
-            isAtLeastStartExpand == false;
-      }).distinct(),
+      stream: Rx.combineLatest2(
+        scrollControllerBloc.longScrollDirectionStream,
+        fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
+        (dynamic scrollDirection, dynamic isAtLeastStartExpand) {
+          return scrollDirection == ScrollDirection.forward &&
+              isAtLeastStartExpand == false;
+        },
+      ).distinct(),
       builder: (context, snapshot) {
         var show = snapshot.data;
 
@@ -120,8 +122,10 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
     );
   }
 
-  static Widget buildOverlay(BuildContext context,
-      NestedScrollViewOverlayBuilder tabBodyOverlayBuilder) {
+  static Widget buildOverlay(
+    BuildContext context,
+    NestedScrollViewOverlayBuilder tabBodyOverlayBuilder,
+  ) {
     var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
     var fediNestedScrollViewBloc =
         IFediNestedScrollViewBloc.of(context, listen: false);

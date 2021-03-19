@@ -56,27 +56,33 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
   }
 
   Widget buildNewMessageNavBarItem(BuildContext context) => InkWell(
-      onTap: () {
-        goToNewPostStatusPageWithInitial(context);
-      },
-      child: Padding(
-        padding: FediPadding.allBigPadding,
-        child: const FediTransparentIcon(FediIcons.plus),
-      ));
+        onTap: () {
+          goToNewPostStatusPageWithInitial(context);
+        },
+        child: Padding(
+          padding: FediPadding.allBigPadding,
+          child: const FediTransparentIcon(FediIcons.plus),
+        ),
+      );
 
   Widget buildTabNavBarItem(
-          BuildContext context, IHomeBloc homeBloc, HomeTab tab) =>
+    BuildContext context,
+    IHomeBloc homeBloc,
+    HomeTab tab,
+  ) =>
       StreamBuilder<HomeTab?>(
-          stream: homeBloc.selectedTabStream,
-          builder: (context, snapshot) {
-            var selectedTab = snapshot.data;
+        stream: homeBloc.selectedTabStream,
+        builder: (context, snapshot) {
+          var selectedTab = snapshot.data;
 
-            return InkWell(
-                onTap: () {
-                  IHomeBloc.of(context, listen: false).selectTab(tab);
-                },
-                child: mapTabToIcon(context, tab, selectedTab == tab));
-          });
+          return InkWell(
+            onTap: () {
+              IHomeBloc.of(context, listen: false).selectTab(tab);
+            },
+            child: mapTabToIcon(context, tab, selectedTab == tab),
+          );
+        },
+      );
 
   Widget mapTabToIcon(BuildContext context, HomeTab tab, bool isSelected) {
     var fediUiColorTheme = IFediUiColorTheme.of(context, listen: true);
@@ -116,7 +122,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
               listen: false,
             ),
             excludeTypes: <PleromaNotificationType>[
-              PleromaNotificationType.pleromaChatMention
+              PleromaNotificationType.pleromaChatMention,
             ],
           ),
           child: FediBoolBadgeWidget(
@@ -173,6 +179,5 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
           ),
         );
     }
-
   }
 }

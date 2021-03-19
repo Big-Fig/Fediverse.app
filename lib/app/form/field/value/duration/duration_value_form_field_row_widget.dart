@@ -87,22 +87,23 @@ class DurationValueFormFieldRowValueTextWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isEnabled = snapshot.data;
         return StreamBuilder<Duration?>(
-            stream: fieldBloc.currentValueStream,
-            initialData: fieldBloc.currentValue,
-            builder: (context, snapshot) {
-              var currentValue = snapshot.data;
-              return Text(
-                currentValue != null
-                    ? formatDuration(
-                        context: context,
-                        duration: currentValue,
-                      )
-                    : S.of(context).app_duration_value_null,
-                style: isEnabled!
-                    ? fediUiTextTheme.bigTallBoldMediumGrey
-                    : fediUiTextTheme.bigTallBoldLightGrey,
-              );
-            });
+          stream: fieldBloc.currentValueStream,
+          initialData: fieldBloc.currentValue,
+          builder: (context, snapshot) {
+            var currentValue = snapshot.data;
+            return Text(
+              currentValue != null
+                  ? formatDuration(
+                      context: context,
+                      duration: currentValue,
+                    )
+                  : S.of(context).app_duration_value_null,
+              style: isEnabled!
+                  ? fediUiTextTheme.bigTallBoldMediumGrey
+                  : fediUiTextTheme.bigTallBoldLightGrey,
+            );
+          },
+        );
       },
     );
   }

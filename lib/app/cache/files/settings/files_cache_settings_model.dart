@@ -39,7 +39,8 @@ class FilesCacheSettings implements IJsonObject, ISettings<FilesCacheSettings> {
 
   static List<FilesCacheSettings> listFromJsonString(String str) =>
       List<FilesCacheSettings>.from(
-          json.decode(str).map((x) => FilesCacheSettings.fromJson(x)));
+        json.decode(str).map((x) => FilesCacheSettings.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$FilesCacheSettingsToJson(this);

@@ -35,7 +35,7 @@ class ChatBodyWrapperWidget extends StatelessWidget {
                 ),
               ),
               const FediUltraLightGreyDivider(),
-              postMessageWidget
+              postMessageWidget,
             ],
           );
         }

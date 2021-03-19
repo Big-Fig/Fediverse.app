@@ -61,9 +61,10 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
             var isChanged = this.poll == poll;
             if (!isChanged) {
               _logger.finest(
-                  () => "update status poll data isChanged $isChanged \n"
-                      "old ${this.poll} \n"
-                      "new $poll");
+                () => "update status poll data isChanged $isChanged \n"
+                    "old ${this.poll} \n"
+                    "new $poll",
+              );
               onPollUpdated(poll);
             }
           },
@@ -75,10 +76,9 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
             // update pollBloc after status poll data changed
             var isSame = pollBloc.poll == poll;
             if (!isSame) {
-              _logger.finest(
-                  () => "update pollBloc poll data isSame $isSame \n"
-                      "old ${pollBloc.poll} \n"
-                      "new $poll");
+              _logger.finest(() => "update pollBloc poll data isSame $isSame \n"
+                  "old ${pollBloc.poll} \n"
+                  "new $poll");
               pollBloc.onPollUpdated(poll);
             }
           },
@@ -215,9 +215,11 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<IPleromaCard?> get reblogOrOriginalCardStream => Rx.combineLatest2(
-      cardStream,
-      reblogCardStream,
-      (dynamic originalCard, dynamic reblogCard) => reblogCard ?? originalCard);
+        cardStream,
+        reblogCardStream,
+        (dynamic originalCard, dynamic reblogCard) =>
+            reblogCard ?? originalCard,
+      );
 
   @override
   List<IPleromaMediaAttachment>? get mediaAttachments =>
@@ -509,4 +511,3 @@ extension StatusEmojiTextExtension on IStatus {
     }
   }
 }
-

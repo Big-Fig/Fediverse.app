@@ -149,6 +149,7 @@ class PleromaFilterService extends DisposableOwner
   }
 
   Map<String, dynamic> _mapFilterToFromBody(
-          IPostPleromaFilter postPleromaFilter) =>
+    IPostPleromaFilter postPleromaFilter,
+  ) =>
       postPleromaFilter.toJson();
 }

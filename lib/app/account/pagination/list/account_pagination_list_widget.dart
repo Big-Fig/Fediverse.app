@@ -61,11 +61,12 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
         );
 
   @override
-  ScrollView buildItemsCollectionView(
-      {required BuildContext context,
-      required List<IAccount> items,
-      required Widget? header,
-      required Widget? footer}) {
+  ScrollView buildItemsCollectionView({
+    required BuildContext context,
+    required List<IAccount> items,
+    required Widget? header,
+    required Widget? footer,
+  }) {
     var accountListBloc = IAccountListBloc.of(context, listen: false);
 
     var instanceLocation = accountListBloc.instanceLocation;

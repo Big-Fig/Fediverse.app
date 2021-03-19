@@ -110,7 +110,8 @@ abstract class StatusThreadBloc extends DisposableOwner
           updatedStartRemoteStatus.toDbStatusPopulatedWrapper();
 
       _logger.finest(
-          () => "refresh getStatus startStatus $initialStatusToFetchThread ");
+        () => "refresh getStatus startStatus $initialStatusToFetchThread ",
+      );
 
       // update context
       var remoteStatusContext = await pleromaStatusService.getStatusContext(
@@ -142,7 +143,8 @@ abstract class StatusThreadBloc extends DisposableOwner
         ),
       );
       _logger.finest(
-          () => "refresh getStatusContext newStatuses ${newStatuses.length} ");
+        () => "refresh getStatusContext newStatuses ${newStatuses.length} ",
+      );
       statusesSubject.add(newStatuses);
       firstStatusInThreadSubject.add(true);
       return true;

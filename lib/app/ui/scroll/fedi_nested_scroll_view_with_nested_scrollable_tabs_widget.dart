@@ -13,14 +13,23 @@ var _logger =
     Logger("fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart");
 
 typedef TabBarViewContainerBuilder = Widget Function(
-    BuildContext context, Widget child);
+  BuildContext context,
+  Widget child,
+);
 
 typedef TabBodyProviderBuilder = Widget Function(
-    BuildContext context, int index, Widget child);
+  BuildContext context,
+  int index,
+  Widget child,
+);
 typedef TabBodyContentBuilder = Widget Function(
-    BuildContext context, int index);
+  BuildContext context,
+  int index,
+);
 typedef TabBodyOverlayBuilder = Widget Function(
-    BuildContext context, int index);
+  BuildContext context,
+  int index,
+);
 
 typedef TabsEmptyBuilder = Widget Function(BuildContext context);
 
@@ -53,8 +62,10 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
 
   Key _innerScrollPositionKeyBuilder(BuildContext context) {
     var fediNestedScrollViewWithNestedScrollableTabsBloc =
-        IFediNestedScrollViewWithNestedScrollableTabsBloc.of(context,
-            listen: false);
+        IFediNestedScrollViewWithNestedScrollableTabsBloc.of(
+      context,
+      listen: false,
+    );
 
     return _calculateTabKey(
       tabKeyPrefix,
@@ -147,14 +158,17 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
 
   Widget _buildTabBarView(BuildContext context) {
     var fediNestedScrollViewWithNestedScrollableTabsBloc =
-        IFediNestedScrollViewWithNestedScrollableTabsBloc.of(context,
-            listen: false);
+        IFediNestedScrollViewWithNestedScrollableTabsBloc.of(
+      context,
+      listen: false,
+    );
 
     var tabController =
         fediNestedScrollViewWithNestedScrollableTabsBloc.tabController;
 
     _logger.finest(
-        () => "_buildTabBarView tabController ${tabController.hashCode}");
+      () => "_buildTabBarView tabController ${tabController.hashCode}",
+    );
 
     if (tabController.length == 0) {
       var tabsEmptyBuilder = widget.tabsEmptyBuilder;

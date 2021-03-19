@@ -7,10 +7,13 @@ import 'package:provider/provider.dart';
 
 abstract class IScheduledStatusCachedListBloc extends DisposableOwner
     implements IPleromaCachedListBloc<IScheduledStatus>, IStatusListBloc {
-  static IScheduledStatusCachedListBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IScheduledStatusCachedListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IScheduledStatusCachedListBloc>(context, listen: listen);
 
   Stream<List<IScheduledStatus>> watchLocalItemsNewerThanItem(
-      IScheduledStatus item);
+    IScheduledStatus item,
+  );
 }

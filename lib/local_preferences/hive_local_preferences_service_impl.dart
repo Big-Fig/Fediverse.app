@@ -67,7 +67,9 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   Future<bool> setObjectPreference(
-      String key, IJsonObject? preferencesObject) async {
+    String key,
+    IJsonObject? preferencesObject,
+  ) async {
     await _box.put(key, preferencesObject);
     return true;
   }
@@ -82,8 +84,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   String? getStringPreference(String key) => _box.get(key);
 
   @override
-  int? getIntPreference(String key) =>
-      _box.get(key);
+  int? getIntPreference(String key) => _box.get(key);
 
   @override
   T? getObjectPreference<T>(
@@ -104,11 +105,14 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> isStorageExist() async => _box.length > 0;
 
   @override
-  IDisposable listenKeyPreferenceChanged<T>(String key, ValueCallback<T> onChanged) =>
+  IDisposable listenKeyPreferenceChanged<T>(
+    String key,
+    ValueCallback<T> onChanged,
+  ) =>
       StreamSubscriptionDisposable(
         _box.watch().listen(
           (boxEvent) {
-            if(boxEvent.key == key) {
+            if (boxEvent.key == key) {
               onChanged(boxEvent.value);
             }
           },

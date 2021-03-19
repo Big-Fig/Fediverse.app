@@ -124,14 +124,17 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                   style: IFediUiTextTheme.of(context).smallShortMediumGrey,
                 ),
               ),
-            )
+            ),
         ],
       ),
     );
   }
 
   Widget buildContent(
-      BuildContext context, IStatusBloc statusBloc, bool isStatusFromMe) {
+    BuildContext context,
+    IStatusBloc statusBloc,
+    bool isStatusFromMe,
+  ) {
     return Column(
       children: <Widget>[
         buildTextContent(statusBloc, isStatusFromMe),
@@ -142,22 +145,23 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
 
   Widget buildMediaContent(IStatusBloc statusBloc) =>
       StreamBuilder<List<IPleromaMediaAttachment>?>(
-          stream: statusBloc.mediaAttachmentsStream,
-          builder: (context, snapshot) {
-            var mediaAttachments = snapshot.data;
+        stream: statusBloc.mediaAttachmentsStream,
+        builder: (context, snapshot) {
+          var mediaAttachments = snapshot.data;
 
-            if (mediaAttachments == null) {
-              return SizedBox.shrink();
-            }
+          if (mediaAttachments == null) {
+            return SizedBox.shrink();
+          }
 
-            return DisposableProvider<IMediaAttachmentListBloc>(
-              create: (context) => MediaAttachmentListBloc(
-                mediaAttachments: mediaAttachments,
-                initialMediaAttachment: null,
-              ),
-              child: const MediaAttachmentListCarouselWidget(),
-            );
-          });
+          return DisposableProvider<IMediaAttachmentListBloc>(
+            create: (context) => MediaAttachmentListBloc(
+              mediaAttachments: mediaAttachments,
+              initialMediaAttachment: null,
+            ),
+            child: const MediaAttachmentListCarouselWidget(),
+          );
+        },
+      );
 
   Widget buildTextContent(IStatusBloc statusBloc, bool isStatusFromMe) =>
       StreamBuilder<EmojiText?>(

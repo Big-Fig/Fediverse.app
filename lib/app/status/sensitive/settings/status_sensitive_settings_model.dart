@@ -65,7 +65,8 @@ class StatusSensitiveSettings
 
   static List<StatusSensitiveSettings> listFromJsonString(String str) =>
       List<StatusSensitiveSettings>.from(
-          json.decode(str).map((x) => StatusSensitiveSettings.fromJson(x)));
+        json.decode(str).map((x) => StatusSensitiveSettings.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$StatusSensitiveSettingsToJson(this);

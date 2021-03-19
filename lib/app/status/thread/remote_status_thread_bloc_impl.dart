@@ -69,7 +69,8 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
 
   @override
   Future<void> onInitialStatusUpdated(
-      IPleromaStatus updatedStartRemoteStatus) async {
+    IPleromaStatus updatedStartRemoteStatus,
+  ) async {
     // nothing
   }
 

@@ -20,29 +20,28 @@ class MultiSelectAccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var multiSelectAccountBloc =
-        IMultiSelectAccountBloc.of(context);
+    var multiSelectAccountBloc = IMultiSelectAccountBloc.of(context);
     return Scaffold(
       appBar: FediPageCustomAppBar(
         leading: const FediBackIconButton(),
         child: const SearchInputWidget(),
         actions: [
           StreamBuilder<bool>(
-              stream: multiSelectAccountBloc.isSomethingSelectedStream,
-              builder: (context, snapshot) {
-                var isSomethingSelected = snapshot.data ?? false;
-                return FediIconButton(
-                  icon: Icon(FediIcons.check),
-                  onPressed: isSomethingSelected
-                      ? () {
-                          var selectedAccounts =
-                              multiSelectAccountBloc.selectedAccounts;
-                          accountsListSelectedCallback(
-                              context, selectedAccounts);
-                        }
-                      : null,
-                );
-              })
+            stream: multiSelectAccountBloc.isSomethingSelectedStream,
+            builder: (context, snapshot) {
+              var isSomethingSelected = snapshot.data ?? false;
+              return FediIconButton(
+                icon: Icon(FediIcons.check),
+                onPressed: isSomethingSelected
+                    ? () {
+                        var selectedAccounts =
+                            multiSelectAccountBloc.selectedAccounts;
+                        accountsListSelectedCallback(context, selectedAccounts);
+                      }
+                    : null,
+              );
+            },
+          ),
         ],
       ),
       body: const SafeArea(

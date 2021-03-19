@@ -30,7 +30,8 @@ class MediaSettings implements IJsonObject, ISettings<MediaSettings> {
 
   static List<MediaSettings> listFromJsonString(String str) =>
       List<MediaSettings>.from(
-          json.decode(str).map((x) => MediaSettings.fromJson(x)));
+        json.decode(str).map((x) => MediaSettings.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$MediaSettingsToJson(this);
@@ -45,10 +46,8 @@ class MediaSettings implements IJsonObject, ISettings<MediaSettings> {
     bool? autoPlay,
   }) =>
       MediaSettings(
-        autoInit:
-        autoInit ?? this.autoInit,
-        autoPlay:
-        autoPlay ?? this.autoPlay,
+        autoInit: autoInit ?? this.autoInit,
+        autoPlay: autoPlay ?? this.autoPlay,
       );
 
   @override

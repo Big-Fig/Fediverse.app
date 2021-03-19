@@ -4,8 +4,12 @@ import 'package:provider/provider.dart';
 
 abstract class IGlobalPaginationSettingsLocalPreferencesBloc
     implements IPaginationSettingsLocalPreferencesBloc {
-  static IGlobalPaginationSettingsLocalPreferencesBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IGlobalPaginationSettingsLocalPreferencesBloc>(context,
-          listen: listen);
+  static IGlobalPaginationSettingsLocalPreferencesBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IGlobalPaginationSettingsLocalPreferencesBloc>(
+        context,
+        listen: listen,
+      );
 }

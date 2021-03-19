@@ -279,9 +279,10 @@ class _AccountDetailsPageBodyTabWithRepliesProvider extends StatelessWidget {
             create: (context) =>
                 PaginationListBloc<PaginationPage<IStatus>, IStatus>(
               paginationBloc: Provider.of<
-                      IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-                  context,
-                  listen: false),
+                  IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+                context,
+                listen: false,
+              ),
             ),
             child: child,
           ),
@@ -336,9 +337,10 @@ class _AccountDetailsPageBodyTabWithoutRepliesProvider extends StatelessWidget {
             create: (context) =>
                 PaginationListBloc<PaginationPage<IStatus>, IStatus>(
               paginationBloc: Provider.of<
-                      IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-                  context,
-                  listen: false),
+                  IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+                context,
+                listen: false,
+              ),
             ),
             child: child,
           ),
@@ -392,9 +394,10 @@ class _AccountDetailsPageBodyTabMediaProvider extends StatelessWidget {
             create: (context) =>
                 PaginationListBloc<PaginationPage<IStatus>, IStatus>(
               paginationBloc: Provider.of<
-                      IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-                  context,
-                  listen: false),
+                  IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+                context,
+                listen: false,
+              ),
             ),
             child: child,
           ),
@@ -429,8 +432,9 @@ class _AccountDetailsPageBodyTabPinnedProvider extends StatelessWidget {
             PaginationListBloc<PaginationPage<IStatus>, IStatus>(
           paginationBloc:
               Provider.of<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-                  context,
-                  listen: false),
+            context,
+            listen: false,
+          ),
         ),
         child: child,
       ),
@@ -482,8 +486,9 @@ class _AccountDetailsPageBodyTabFavouritesProvider extends StatelessWidget {
               PaginationListBloc<PaginationPage<IStatus>, IStatus>(
             paginationBloc:
                 Provider.of<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-                    context,
-                    listen: false),
+              context,
+              listen: false,
+            ),
           ),
           child: child,
         ),

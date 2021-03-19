@@ -53,8 +53,9 @@ class EmojiPickerWidget extends StatelessWidget {
 
         var emojiPickerRecentCategoryBloc = EmojiPickerRecentCategoryBloc(
           preferenceBloc: IEmojiPickerRecentCategoryLocalPreferenceBloc.of(
-              context,
-              listen: false),
+            context,
+            listen: false,
+          ),
         );
 
         var allCategoriesBlocs = <ICustomEmojiPickerCategoryBloc>[
@@ -67,8 +68,9 @@ class EmojiPickerWidget extends StatelessWidget {
           bloc.performAsyncInit();
         });
         var customEmojiPickerBloc = CustomEmojiPickerBloc(
-            selectedCategory: allCategoriesBlocs.first,
-            availableCategories: allCategoriesBlocs);
+          selectedCategory: allCategoriesBlocs.first,
+          availableCategories: allCategoriesBlocs,
+        );
 
         customEmojiPickerBloc.addDisposable(streamSubscription:
             customEmojiPickerBloc.selectedEmojiStream.listen((emojiItem) {

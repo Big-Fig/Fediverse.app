@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class ICurrentAuthInstanceLocalPreferenceBloc
     implements LocalPreferenceBloc<AuthInstance?> {
-  static ICurrentAuthInstanceLocalPreferenceBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<ICurrentAuthInstanceLocalPreferenceBloc>(context,
-          listen: listen);
+  static ICurrentAuthInstanceLocalPreferenceBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<ICurrentAuthInstanceLocalPreferenceBloc>(
+        context,
+        listen: listen,
+      );
 }

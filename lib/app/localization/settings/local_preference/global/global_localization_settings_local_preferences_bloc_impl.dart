@@ -7,8 +7,8 @@ class GlobalLocalizationSettingsLocalPreferencesBloc
     extends LocalizationSettingsLocalPreferencesBloc
     implements IGlobalLocalizationSettingsLocalPreferencesBloc {
   GlobalLocalizationSettingsLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService)
-      : super(preferencesService, "localization.settings.global");
+    ILocalPreferencesService preferencesService,
+  ) : super(preferencesService, "localization.settings.global");
 
   @override
   LocalizationSettings get defaultValue => LocalizationSettings(

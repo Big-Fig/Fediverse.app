@@ -32,7 +32,8 @@ class RemoteAccountStatusesMediaOnlyNetworkOnlyListBloc
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
     var pleromaAccountService = PleromaAccountService(
-        restService: remoteInstanceBloc.pleromaRestService);
+      restService: remoteInstanceBloc.pleromaRestService,
+    );
 
     var bloc = RemoteAccountStatusesMediaOnlyNetworkOnlyListBloc(
       account: account,

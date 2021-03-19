@@ -12,8 +12,7 @@ class SearchHashtagsPaginationListBloc
 
   SearchHashtagsPaginationListBloc({
     required this.searchInputBloc,
-    required
-        IPaginationBloc<PaginationPage<IHashtag>, IHashtag> paginationBloc,
+    required IPaginationBloc<PaginationPage<IHashtag>, IHashtag> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
     addDisposable(streamSubscription:
         searchInputBloc.confirmedSearchTermStream.listen((newText) {
@@ -22,11 +21,14 @@ class SearchHashtagsPaginationListBloc
   }
 
   static SearchHashtagsPaginationListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       SearchHashtagsPaginationListBloc(
-          paginationBloc:
-              Provider.of<IPaginationBloc<PaginationPage<IHashtag>, IHashtag>>(
-                  context,
-                  listen: false),
-          searchInputBloc: ISearchInputBloc.of(context, listen: false));
+        paginationBloc:
+            Provider.of<IPaginationBloc<PaginationPage<IHashtag>, IHashtag>>(
+          context,
+          listen: false,
+        ),
+        searchInputBloc: ISearchInputBloc.of(context, listen: false),
+      );
 }

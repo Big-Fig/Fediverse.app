@@ -29,12 +29,15 @@ abstract class DraftStatusPaginationListBaseWidget
 
   @override
   IPaginationListBloc<PaginationPage<IDraftStatus>, IDraftStatus>
-      retrievePaginationListBloc(BuildContext context,
-          {required bool listen}) {
+      retrievePaginationListBloc(
+    BuildContext context, {
+    required bool listen,
+  }) {
     var paginationListBloc = Provider.of<
-            IPaginationListBloc<PaginationPage<IDraftStatus>, IDraftStatus>>(
-        context,
-        listen: listen);
+        IPaginationListBloc<PaginationPage<IDraftStatus>, IDraftStatus>>(
+      context,
+      listen: listen,
+    );
     return paginationListBloc;
   }
 }

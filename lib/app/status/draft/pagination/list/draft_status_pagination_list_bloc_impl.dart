@@ -12,22 +12,25 @@ class DraftStatusPaginationListBloc<TPage extends PaginationPage<IDraftStatus>>
     extends PaginationListBloc<TPage, IDraftStatus> {
   final IDraftStatusLocalOnlyListBloc draftStatusLocalListService;
 
-  DraftStatusPaginationListBloc(
-      {required this.draftStatusLocalListService,
-      required IPaginationBloc<TPage, IDraftStatus> paginationBloc})
-      : super(paginationBloc: paginationBloc);
+  DraftStatusPaginationListBloc({
+    required this.draftStatusLocalListService,
+    required IPaginationBloc<TPage, IDraftStatus> paginationBloc,
+  }) : super(paginationBloc: paginationBloc);
 
-  static Widget provideToContext(BuildContext context,
-      {required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) {
     return DisposableProvider<
         IPaginationListBloc<PaginationPage<IDraftStatus>, IDraftStatus>>(
       create: (context) => DraftStatusPaginationListBloc(
         draftStatusLocalListService:
             IDraftStatusLocalOnlyListBloc.of(context, listen: false),
         paginationBloc: Provider.of<
-                IPaginationBloc<PaginationPage<IDraftStatus>, IDraftStatus>>(
-            context,
-            listen: false),
+            IPaginationBloc<PaginationPage<IDraftStatus>, IDraftStatus>>(
+          context,
+          listen: false,
+        ),
       ),
       child: child,
     );

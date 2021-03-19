@@ -18,7 +18,8 @@ class MediaDeviceFilePaginationListBloc extends PaginationListBloc<
         );
 
   static MediaDeviceFilePaginationListBloc createFromContext(
-      BuildContext context) {
+    BuildContext context,
+  ) {
     return MediaDeviceFilePaginationListBloc(
       paginationBloc: Provider.of<IMediaDeviceFilePaginationBloc>(context),
     );

@@ -40,7 +40,7 @@ class ChatAccountsWidget extends StatelessWidget {
                 const AccountListItemWidget(
                   accountSelectedCallback: _accountSelectedCallback,
                 ),
-                const FediUltraLightGreyDivider()
+                const FediUltraLightGreyDivider(),
               ],
             ),
           ),

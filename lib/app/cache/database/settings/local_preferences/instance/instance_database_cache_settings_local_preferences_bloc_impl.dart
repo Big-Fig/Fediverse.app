@@ -9,5 +9,7 @@ class InstanceDatabaseCacheSettingsLocalPreferencesBloc
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
   }) : super(
-            preferencesService, "cache.database.settings.instance.$userAtHost");
+          preferencesService,
+          "cache.database.settings.instance.$userAtHost",
+        );
 }

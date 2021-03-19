@@ -347,7 +347,8 @@ class TimelineSettings extends ISettings<TimelineSettings> {
 
   static List<TimelineSettings> listFromJsonString(String str) =>
       List<TimelineSettings>.from(
-          json.decode(str).map((x) => TimelineSettings.fromJson(x)));
+        json.decode(str).map((x) => TimelineSettings.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$TimelineSettingsToJson(this);

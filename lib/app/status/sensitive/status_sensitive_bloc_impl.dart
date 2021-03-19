@@ -78,14 +78,17 @@ class StatusSensitiveBloc extends DisposableOwner
 
   @override
   Stream<bool> get containsSpoilerAndDisplaySpoilerContentEnabledStream =>
-      Rx.combineLatest2(containsSpoilerStream, displayEnabledStream,
-          (dynamic containsSpoiler, dynamic displayEnabled) {
-        if (containsSpoiler) {
-          return displayEnabled;
-        } else {
-          return true;
-        }
-      });
+      Rx.combineLatest2(
+        containsSpoilerStream,
+        displayEnabledStream,
+        (dynamic containsSpoiler, dynamic displayEnabled) {
+          if (containsSpoiler) {
+            return displayEnabled;
+          } else {
+            return true;
+          }
+        },
+      );
 
   @override
   bool? get nsfwSensitiveAndDisplayNsfwContentEnabled {
@@ -99,14 +102,17 @@ class StatusSensitiveBloc extends DisposableOwner
   @override
   @override
   Stream<bool> get nsfwSensitiveAndDisplayNsfwContentEnabledStream =>
-      Rx.combineLatest2(nsfwSensitiveStream, displayEnabledStream,
-          (dynamic nsfwSensitive, dynamic displayEnabled) {
-        if (nsfwSensitive) {
-          return displayEnabled;
-        } else {
-          return true;
-        }
-      });
+      Rx.combineLatest2(
+        nsfwSensitiveStream,
+        displayEnabledStream,
+        (dynamic nsfwSensitive, dynamic displayEnabled) {
+          if (nsfwSensitive) {
+            return displayEnabled;
+          } else {
+            return true;
+          }
+        },
+      );
 
   @override
   StatusSensitiveWarningState get statusWarningState =>

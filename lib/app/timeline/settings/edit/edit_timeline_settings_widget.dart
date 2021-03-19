@@ -46,9 +46,15 @@ class EditTimelineSettingsWidget extends StatelessWidget {
           buildOnlyMediaField(context, editSettingsBloc, authInstance),
           buildWithMutedField(context, editSettingsBloc, authInstance),
           buildReplyVisibilityFilterField(
-              context, editSettingsBloc, authInstance),
+            context,
+            editSettingsBloc,
+            authInstance,
+          ),
           buildExcludeVisibilitiesField(
-              context, editSettingsBloc, authInstance),
+            context,
+            editSettingsBloc,
+            authInstance,
+          ),
         ];
         break;
       case TimelineType.public:
@@ -60,9 +66,15 @@ class EditTimelineSettingsWidget extends StatelessWidget {
           buildOnlyMediaField(context, editSettingsBloc, authInstance),
           buildWithMutedField(context, editSettingsBloc, authInstance),
           buildReplyVisibilityFilterField(
-              context, editSettingsBloc, authInstance),
+            context,
+            editSettingsBloc,
+            authInstance,
+          ),
           buildExcludeVisibilitiesField(
-              context, editSettingsBloc, authInstance),
+            context,
+            editSettingsBloc,
+            authInstance,
+          ),
         ];
         break;
       case TimelineType.customList:
@@ -74,7 +86,10 @@ class EditTimelineSettingsWidget extends StatelessWidget {
           buildOnlyMediaField(context, editSettingsBloc, authInstance),
           buildWithMutedField(context, editSettingsBloc, authInstance),
           buildExcludeVisibilitiesField(
-              context, editSettingsBloc, authInstance),
+            context,
+            editSettingsBloc,
+            authInstance,
+          ),
         ];
         break;
 
@@ -87,7 +102,10 @@ class EditTimelineSettingsWidget extends StatelessWidget {
           buildOnlyMediaField(context, editSettingsBloc, authInstance),
           buildWithMutedField(context, editSettingsBloc, authInstance),
           buildExcludeVisibilitiesField(
-              context, editSettingsBloc, authInstance),
+            context,
+            editSettingsBloc,
+            authInstance,
+          ),
         ];
         break;
       case TimelineType.account:
@@ -100,7 +118,10 @@ class EditTimelineSettingsWidget extends StatelessWidget {
           buildExcludeRepliesField(context, editSettingsBloc, authInstance),
           buildOnlyPinnedField(context, editSettingsBloc, authInstance),
           buildExcludeVisibilitiesField(
-              context, editSettingsBloc, authInstance),
+            context,
+            editSettingsBloc,
+            authInstance,
+          ),
         ];
         break;
 

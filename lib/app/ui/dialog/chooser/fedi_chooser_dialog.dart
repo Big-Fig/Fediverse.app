@@ -82,7 +82,7 @@ class FediChooserDialogBody extends StatelessWidget {
                         action: action,
                       ),
                     )
-                    .toList()
+                    .toList(),
               ],
             ),
           ),
@@ -97,8 +97,10 @@ class FediChooserDialogBody extends StatelessWidget {
     );
   }
 
-  Widget _buildAction(
-      {required BuildContext context, required DialogAction action}) {
+  Widget _buildAction({
+    required BuildContext context,
+    required DialogAction action,
+  }) {
     var enabled = action.onAction != null;
     return Padding(
       padding: FediPadding.horizontalBigPadding,

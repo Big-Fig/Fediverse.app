@@ -13,8 +13,10 @@ abstract class IConversationChatRepository
         IReadIdListRepository<DbConversationChatWrapper, int>,
         IWriteIdListRepository<DbConversation, int>,
         IDisposable {
-  static IConversationChatRepository of(BuildContext context,
-          {bool listen = true}) =>
+  static IConversationChatRepository of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IConversationChatRepository>(
         context,
         listen: listen,

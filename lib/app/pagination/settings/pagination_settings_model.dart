@@ -30,7 +30,8 @@ class PaginationSettings implements IJsonObject, ISettings<PaginationSettings> {
 
   static List<PaginationSettings> listFromJsonString(String str) =>
       List<PaginationSettings>.from(
-          json.decode(str).map((x) => PaginationSettings.fromJson(x)));
+        json.decode(str).map((x) => PaginationSettings.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$PaginationSettingsToJson(this);

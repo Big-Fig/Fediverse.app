@@ -97,12 +97,13 @@ class PleromaOAuthAuthorizeRequest {
   /// app registration. If not provided, defaults to read.
   final String? scope;
 
-  PleromaOAuthAuthorizeRequest(
-      {required this.forceLogin,
-      required this.clientId,
-      required this.redirectUri,
-      required this.scope,
-      this.responseType = "code"});
+  PleromaOAuthAuthorizeRequest({
+    required this.forceLogin,
+    required this.clientId,
+    required this.redirectUri,
+    required this.scope,
+    this.responseType = "code",
+  });
 
   factory PleromaOAuthAuthorizeRequest.fromJsonString(String jsonString) =>
       _$PleromaOAuthAuthorizeRequestFromJson(jsonDecode(jsonString));
@@ -131,13 +132,14 @@ class PleromaOAuthAccountTokenRequest {
   @JsonKey(name: "client_secret")
   String? clientSecret;
 
-  PleromaOAuthAccountTokenRequest(
-      {required this.code,
-      required this.scope,
-      required this.redirectUri,
-      required this.clientId,
-      required this.clientSecret,
-      this.grantType = "authorization_code"});
+  PleromaOAuthAccountTokenRequest({
+    required this.code,
+    required this.scope,
+    required this.redirectUri,
+    required this.clientId,
+    required this.clientSecret,
+    this.grantType = "authorization_code",
+  });
 
   @override
   String toString() {
@@ -171,12 +173,13 @@ class PleromaOAuthAppTokenRequest {
   @JsonKey(name: "client_secret")
   String? clientSecret;
 
-  PleromaOAuthAppTokenRequest(
-      {this.scope,
-      this.redirectUri,
-      this.clientId,
-      this.clientSecret,
-      this.grantType = "client_credentials"});
+  PleromaOAuthAppTokenRequest({
+    this.scope,
+    this.redirectUri,
+    this.clientId,
+    this.clientSecret,
+    this.grantType = "client_credentials",
+  });
 
   @override
   String toString() {
@@ -203,10 +206,11 @@ class PleromaOAuthAppTokenRevokeRequest {
 
   String? token;
 
-  PleromaOAuthAppTokenRevokeRequest(
-      {required this.clientId,
-      required this.clientSecret,
-      required this.token});
+  PleromaOAuthAppTokenRevokeRequest({
+    required this.clientId,
+    required this.clientSecret,
+    required this.token,
+  });
 
   @override
   String toString() {
@@ -218,7 +222,8 @@ class PleromaOAuthAppTokenRevokeRequest {
       _$PleromaOAuthAppTokenRevokeRequestFromJson(jsonDecode(jsonString));
 
   factory PleromaOAuthAppTokenRevokeRequest.fromJson(
-          Map<String, dynamic> json) =>
+    Map<String, dynamic> json,
+  ) =>
       _$PleromaOAuthAppTokenRevokeRequestFromJson(json);
 
   Map<String, dynamic> toJson() =>

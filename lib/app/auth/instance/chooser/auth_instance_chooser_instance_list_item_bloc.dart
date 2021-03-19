@@ -4,10 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IAuthInstanceChooserInstanceListItemBloc implements IDisposable {
-  static IAuthInstanceChooserInstanceListItemBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IAuthInstanceChooserInstanceListItemBloc>(context,
-          listen: listen);
+  static IAuthInstanceChooserInstanceListItemBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IAuthInstanceChooserInstanceListItemBloc>(
+        context,
+        listen: listen,
+      );
 
   bool get isSelected;
 

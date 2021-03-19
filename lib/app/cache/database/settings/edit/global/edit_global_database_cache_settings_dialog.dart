@@ -22,11 +22,15 @@ void showEditGlobalDatabaseCacheSettingsDialog({
     child: DisposableProvider<IDatabaseCacheSettingsBloc>(
       create: (context) => DatabaseCacheSettingsBloc(
         instanceLocalPreferencesBloc:
-            IInstanceDatabaseCacheSettingsLocalPreferencesBloc.of(context,
-                listen: false),
+            IInstanceDatabaseCacheSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
         globalLocalPreferencesBloc:
-            IGlobalDatabaseCacheSettingsLocalPreferencesBloc.of(context,
-                listen: false),
+            IGlobalDatabaseCacheSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
       ),
       child: DisposableProxyProvider<IDatabaseCacheSettingsBloc,
           IEditDatabaseCacheSettingsBloc>(

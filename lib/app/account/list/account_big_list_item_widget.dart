@@ -70,7 +70,7 @@ class AccountBigListItemWidget extends StatelessWidget {
                             children: [
                               ...accountActions!,
                             ],
-                          )
+                          ),
                       ],
                     ),
                   ),

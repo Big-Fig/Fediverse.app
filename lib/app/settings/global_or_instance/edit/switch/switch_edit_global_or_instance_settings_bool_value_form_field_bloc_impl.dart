@@ -8,7 +8,8 @@ import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 final _logger = Logger(
-    "switch_edit_global_or_instance_settings_form_bool_field_bloc_impl.dart");
+  "switch_edit_global_or_instance_settings_form_bool_field_bloc_impl.dart",
+);
 
 class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
     extends FormFieldBloc
@@ -25,8 +26,9 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
       globalOrInstanceSettingsTypeSubject.value;
 
   @override
-  Stream<GlobalOrInstanceSettingsType?> get globalOrInstanceSettingsTypeStream =>
-      globalOrInstanceSettingsTypeSubject.stream;
+  Stream<GlobalOrInstanceSettingsType?>
+      get globalOrInstanceSettingsTypeStream =>
+          globalOrInstanceSettingsTypeSubject.stream;
 
   SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc({
     required this.globalOrInstanceSettingsBloc,
@@ -34,9 +36,10 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
   })  : currentValueSubject =
             BehaviorSubject.seeded(globalOrInstanceSettingsBloc.isGlobal),
         globalOrInstanceSettingsTypeSubject = BehaviorSubject.seeded(
-            globalOrInstanceSettingsBloc.isGlobal
-                ? GlobalOrInstanceSettingsType.global
-                : GlobalOrInstanceSettingsType.instance),
+          globalOrInstanceSettingsBloc.isGlobal
+              ? GlobalOrInstanceSettingsType.global
+              : GlobalOrInstanceSettingsType.instance,
+        ),
         super(isEnabled: isEnabled) {
     addDisposable(subject: currentValueSubject);
     addDisposable(subject: globalOrInstanceSettingsTypeSubject);
@@ -52,14 +55,14 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
         globalOrInstanceSettingsTypeSubject.add(null);
         await globalOrInstanceSettingsBloc.cloneGlobalToInstanceSettings();
         await globalOrInstanceSettingsBloc.clearInstanceSettings();
-        globalOrInstanceSettingsTypeSubject.add(GlobalOrInstanceSettingsType.global);
+        globalOrInstanceSettingsTypeSubject
+            .add(GlobalOrInstanceSettingsType.global);
         currentValueSubject.add(newValue);
-
       } else {
-
         globalOrInstanceSettingsTypeSubject.add(null);
         await globalOrInstanceSettingsBloc.cloneGlobalToInstanceSettings();
-        globalOrInstanceSettingsTypeSubject.add(GlobalOrInstanceSettingsType.instance);
+        globalOrInstanceSettingsTypeSubject
+            .add(GlobalOrInstanceSettingsType.instance);
         currentValueSubject.add(newValue);
 
         // updateInProgress = true;
@@ -110,7 +113,8 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
   @override
   void updateValidators(List<FormValueFieldValidation<bool>> validators) {
     throw UnsupportedError(
-        "updateValidators not supported in IsUseGlobalSettingsFormBoolFieldBloc");
+      "updateValidators not supported in IsUseGlobalSettingsFormBoolFieldBloc",
+    );
   }
 
   @override

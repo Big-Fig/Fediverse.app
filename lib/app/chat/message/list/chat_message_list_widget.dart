@@ -48,20 +48,23 @@ class ChatMessageListWidget<T extends IChatMessage>
     required bool listen,
   }) {
     var timelinePaginationListBloc =
-        Provider.of<IPaginationListBloc<PaginationPage<T>, T>>(context,
-            listen: listen);
+        Provider.of<IPaginationListBloc<PaginationPage<T>, T>>(
+      context,
+      listen: listen,
+    );
     return timelinePaginationListBloc;
   }
 
 // override to move refresh/update features from top/bottom to bottom/top
   @override
   Widget buildSmartRefresher(
-          IPaginationListBloc paginationListBloc,
-          BuildContext context,
-          List<T>? items,
-          RefreshController refreshController,
-          ScrollController? scrollController,
-          Widget Function(BuildContext context) smartRefresherBodyBuilder) =>
+    IPaginationListBloc paginationListBloc,
+    BuildContext context,
+    List<T>? items,
+    RefreshController refreshController,
+    ScrollController? scrollController,
+    Widget Function(BuildContext context) smartRefresherBodyBuilder,
+  ) =>
       FediListSmartRefresherWidget(
         key: key,
         enablePullDown: true,
@@ -75,25 +78,30 @@ class ChatMessageListWidget<T extends IChatMessage>
         primary: scrollController == null,
         onRefresh: () {
           return AsyncSmartRefresherHelper.doAsyncRefresh(
-              controller: refreshController,
-              action: () async {
-                var success;
-                try {
-                  success = await additionalPreRefreshAction(context);
-                } catch (e, stackTrace) {
-                  success = false;
-                  _logger.severe(
-                      () => "additionalPreRefreshAction()", e, stackTrace);
-                }
-                _logger.finest(() => "additionalRefreshAction $success");
-                var state = await paginationListBloc.refreshWithoutController();
-                _logger.finest(() => "paginationListBloc.refresh() $state");
-                return state;
-              });
+            controller: refreshController,
+            action: () async {
+              var success;
+              try {
+                success = await additionalPreRefreshAction(context);
+              } catch (e, stackTrace) {
+                success = false;
+                _logger.severe(
+                  () => "additionalPreRefreshAction()",
+                  e,
+                  stackTrace,
+                );
+              }
+              _logger.finest(() => "additionalRefreshAction $success");
+              var state = await paginationListBloc.refreshWithoutController();
+              _logger.finest(() => "paginationListBloc.refresh() $state");
+              return state;
+            },
+          );
         },
         onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
-            controller: refreshController,
-            action: paginationListBloc.loadMoreWithoutController),
+          controller: refreshController,
+          action: paginationListBloc.loadMoreWithoutController,
+        ),
         child: smartRefresherBodyBuilder(context),
       );
 
@@ -206,10 +214,11 @@ class _ChatMessageListDaySeparatorWidget extends StatelessWidget {
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: Center(
-          child: Text(
-        _daySeparatorDateFormat.format(message.createdAt),
-        style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
-      )),
+        child: Text(
+          _daySeparatorDateFormat.format(message.createdAt),
+          style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
+        ),
+      ),
     );
   }
 }

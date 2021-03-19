@@ -25,7 +25,9 @@ class PaginationPageSizeSingleFromListValueFormFieldRowWidget
 }
 
 String mapPaginationPageSizeToLabel(
-    BuildContext context, PaginationPageSize type) {
+  BuildContext context,
+  PaginationPageSize type,
+) {
   switch (type) {
     case PaginationPageSize.size5:
       return "5";

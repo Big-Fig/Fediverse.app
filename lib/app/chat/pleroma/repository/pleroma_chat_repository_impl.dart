@@ -48,7 +48,8 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbPleromaChatPopulatedWrapper> findByRemoteId(
-          String? remoteId) async =>
+    String? remoteId,
+  ) async =>
       mapDataClassToItem(
         await dao.findByRemoteId(
           remoteId,
@@ -191,7 +192,8 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
   }
 
   DbPleromaChatPopulatedWrapper mapDataClassToItem(
-          DbPleromaChatPopulated dataClass) =>
+    DbPleromaChatPopulated dataClass,
+  ) =>
       DbPleromaChatPopulatedWrapper(
         dbChatPopulated: dataClass,
       );
@@ -240,9 +242,10 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
         PleromaChatOrderingTermData.updatedAtDesc,
   }) async {
     var query = createQuery(
-        filters: filters,
-        pagination: pagination,
-        orderingTermData: orderingTermData);
+      filters: filters,
+      pagination: pagination,
+      orderingTermData: orderingTermData,
+    );
 
     return dao
         .typedResultListToPopulated(await query.get())

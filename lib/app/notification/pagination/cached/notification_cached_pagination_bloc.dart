@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 
 abstract class INotificationCachedPaginationBloc
     implements ICachedPleromaPaginationBloc<INotification> {
-  static INotificationCachedPaginationBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static INotificationCachedPaginationBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<INotificationCachedPaginationBloc>(context, listen: listen);
 }

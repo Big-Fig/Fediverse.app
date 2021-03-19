@@ -82,6 +82,7 @@ void _goToAccountDetailsPage(BuildContext context, IAccount account) {
     );
   } else {
     throw UnsupportedError(
-        "Account following list supported only for local accounts");
+      "Account following list supported only for local accounts",
+    );
   }
 }

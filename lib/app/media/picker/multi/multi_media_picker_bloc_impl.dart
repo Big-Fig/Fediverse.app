@@ -58,7 +58,8 @@ class MultiMediaPickerBloc extends MediaPickerBloc
 
   @override
   Future toggleFileMetadataSelection(
-      IMediaDeviceFileMetadata mediaDeviceFileMetadata) async {
+    IMediaDeviceFileMetadata mediaDeviceFileMetadata,
+  ) async {
     var fileMetadataSelected = isFileMetadataSelected(mediaDeviceFileMetadata);
     _logger.fine(() => "toggleFileMetadataSelection $mediaDeviceFileMetadata "
         "selected $fileMetadataSelected");
@@ -90,7 +91,8 @@ class MultiMediaPickerBloc extends MediaPickerBloc
   Future acceptSelectedFilesMetadata() async {
     assert(isSomethingSelected);
     _logger.fine(
-        () => "acceptSelectedFiles ${currentFilesMetadataSelection!.length}");
+      () => "acceptSelectedFiles ${currentFilesMetadataSelection!.length}",
+    );
     var futures = currentFilesMetadataSelection!
         .map((fileMetadata) => fileMetadata.loadMediaDeviceFile());
 
@@ -121,7 +123,8 @@ class MultiMediaPickerBloc extends MediaPickerBloc
 
   @override
   bool isFileMetadataSelected(
-      IMediaDeviceFileMetadata mediaDeviceFileMetadata) {
+    IMediaDeviceFileMetadata mediaDeviceFileMetadata,
+  ) {
     var selected = _calculateIsFileSelected(
       selectedFilesMetadata: currentFilesMetadataSelection!,
       mediaDeviceFileMetadata: mediaDeviceFileMetadata,
@@ -143,7 +146,8 @@ class MultiMediaPickerBloc extends MediaPickerBloc
 
   @override
   Stream<bool> isFileMetadataSelectedStream(
-          IMediaDeviceFileMetadata mediaDeviceFileMetadata) =>
+    IMediaDeviceFileMetadata mediaDeviceFileMetadata,
+  ) =>
       currentFilesMetadataSelectionStream.map(
         (selectedFiles) => _calculateIsFileSelected(
           selectedFilesMetadata: selectedFiles,

@@ -49,7 +49,7 @@ class PleromaTimelineService extends DisposableOwner
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility>? excludeVisibilities = const [
-      PleromaVisibility.direct
+      PleromaVisibility.direct,
     ],
   }) {
     assert(hashtag != null);
@@ -72,7 +72,7 @@ class PleromaTimelineService extends DisposableOwner
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility>? excludeVisibilities = const [
-      PleromaVisibility.direct
+      PleromaVisibility.direct,
     ],
     PleromaReplyVisibilityFilter? pleromaReplyVisibilityFilter,
   }) {
@@ -96,7 +96,7 @@ class PleromaTimelineService extends DisposableOwner
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility>? excludeVisibilities = const [
-      PleromaVisibility.direct
+      PleromaVisibility.direct,
     ],
   }) {
     assert(listId != null);
@@ -122,7 +122,7 @@ class PleromaTimelineService extends DisposableOwner
     bool withMuted = false,
     String? onlyFromInstance,
     List<PleromaVisibility>? excludeVisibilities = const [
-      PleromaVisibility.direct
+      PleromaVisibility.direct,
     ],
     PleromaReplyVisibilityFilter? pleromaReplyVisibilityFilter,
   }) {
@@ -162,13 +162,17 @@ class PleromaTimelineService extends DisposableOwner
           RestRequestQueryArg("instance", onlyFromInstance),
         if (pleromaReplyVisibilityFilter != null)
           RestRequestQueryArg(
-              "reply_visibility", pleromaReplyVisibilityFilter.toJsonValue()),
+            "reply_visibility",
+            pleromaReplyVisibilityFilter.toJsonValue(),
+          ),
         // array
         ...(excludeVisibilities?.map((visibility) {
               return RestRequestQueryArg(
-                  "exclude_visibilities[]", visibility.toJsonValue());
+                "exclude_visibilities[]",
+                visibility.toJsonValue(),
+              );
             }) ??
-            [])
+            []),
       ],
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -183,7 +187,9 @@ class PleromaTimelineService extends DisposableOwner
       return restResponse.body;
     } else {
       throw PleromaTimelineException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 }

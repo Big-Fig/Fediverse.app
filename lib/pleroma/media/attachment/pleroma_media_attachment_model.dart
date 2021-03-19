@@ -169,7 +169,8 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
   }
 
   static PleromaMediaAttachment fromIPleromaMediaAttachment(
-          IPleromaMediaAttachment mediaAttachment) =>
+    IPleromaMediaAttachment mediaAttachment,
+  ) =>
       PleromaMediaAttachment(
         description: mediaAttachment.description,
         id: mediaAttachment.id,
@@ -192,7 +193,8 @@ class PleromaMediaAttachmentPleromaPart {
   });
 
   factory PleromaMediaAttachmentPleromaPart.fromJson(
-          Map<String, dynamic> json) =>
+    Map<String, dynamic> json,
+  ) =>
       _$PleromaMediaAttachmentPleromaPartFromJson(json);
 
   factory PleromaMediaAttachmentPleromaPart.fromJsonString(String jsonString) =>

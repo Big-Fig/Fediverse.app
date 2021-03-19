@@ -65,9 +65,11 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
     return messageSendData;
   }
 
-  static Widget provideToContext(BuildContext context,
-      {required IPleromaMediaAttachment? mediaAttachment,
-      required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required IPleromaMediaAttachment? mediaAttachment,
+    required Widget child,
+  }) {
     return DisposableProvider<ConversationChatShareMediaBloc>(
       create: (context) => createFromContext(context, mediaAttachment),
       child: ProxyProvider<ConversationChatShareMediaBloc,
@@ -88,7 +90,9 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
   }
 
   static ConversationChatShareMediaBloc createFromContext(
-          BuildContext context, IPleromaMediaAttachment? mediaAttachment) =>
+    BuildContext context,
+    IPleromaMediaAttachment? mediaAttachment,
+  ) =>
       ConversationChatShareMediaBloc(
         mediaAttachment: mediaAttachment,
         conversationRepository: IConversationChatRepository.of(

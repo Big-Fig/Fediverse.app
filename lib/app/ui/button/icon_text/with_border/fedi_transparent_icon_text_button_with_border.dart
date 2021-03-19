@@ -36,47 +36,47 @@ class FediTransparentIconTextButtonWithBorder extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-          height: calculatedHeight,
-          child: ClipRRect(
-            borderRadius: borderRadius,
-            child: BackdropFilter(
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color:
-                      IFediUiColorTheme.of(context).darkGrey.withOpacity(0.3),
-                  borderRadius: borderRadius,
-                  border: Border.all(
-                    color: IFediUiColorTheme.of(context).white,
-                    width: borderWidth,
-                  ),
+        height: calculatedHeight,
+        child: ClipRRect(
+          borderRadius: borderRadius,
+          child: BackdropFilter(
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.3),
+                borderRadius: borderRadius,
+                border: Border.all(
+                  color: IFediUiColorTheme.of(context).white,
+                  width: borderWidth,
                 ),
-                child: Center(
-                  child: Padding(
-                    padding: FediPadding.buttonHorizontalPadding,
-                    child: Row(
-                      children: [
-                        Icon(
-                          icon,
-                          color: IFediUiColorTheme.of(context).white,
-                          size: 18.0,
+              ),
+              child: Center(
+                child: Padding(
+                  padding: FediPadding.buttonHorizontalPadding,
+                  child: Row(
+                    children: [
+                      Icon(
+                        icon,
+                        color: IFediUiColorTheme.of(context).white,
+                        size: 18.0,
+                      ),
+                      FediMediumHorizontalSpacer(),
+                      Text(
+                        text,
+                        textAlign: TextAlign.center,
+                        style: textStyle.copyWith(
+                          color: textStyle.color!.withOpacity(0.8),
                         ),
-                        FediMediumHorizontalSpacer(),
-                        Text(
-                          text,
-                          textAlign: TextAlign.center,
-                          style: textStyle.copyWith(
-                            color: textStyle.color!.withOpacity(0.8),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
             ),
-          )),
+            filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+          ),
+        ),
+      ),
     );
   }
 }

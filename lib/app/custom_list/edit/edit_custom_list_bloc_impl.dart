@@ -193,12 +193,13 @@ class EditCustomListBloc extends DisposableOwner
 
   @override
   bool get isReadyToSubmit => _calculateIsReadyToSubmit(
-      customListFormBlocIsHaveAtLeastOneError:
-          customListFormBloc.isHaveAtLeastOneError,
-      customListFormBlocIsSomethingChanged:
-          customListFormBloc.isSomethingChanged,
-      editCustomListAccountListPaginationListBlocIsSomethingChanged:
-          editCustomListAccountListPaginationListBloc!.isSomethingChanged);
+        customListFormBlocIsHaveAtLeastOneError:
+            customListFormBloc.isHaveAtLeastOneError,
+        customListFormBlocIsSomethingChanged:
+            customListFormBloc.isSomethingChanged,
+        editCustomListAccountListPaginationListBlocIsSomethingChanged:
+            editCustomListAccountListPaginationListBloc!.isSomethingChanged,
+      );
 
   @override
   Stream<bool> get isReadyToSubmitStream => Rx.combineLatest3(
@@ -234,8 +235,9 @@ class EditCustomListBloc extends DisposableOwner
   Future<ICustomList> submit() async {
     var listRemoteId = customList!.remoteId;
     var pleromaList = await pleromaListService.updateList(
-        listRemoteId: listRemoteId,
-        title: customListFormBloc.titleField.currentValue);
+      listRemoteId: listRemoteId,
+      title: customListFormBloc.titleField.currentValue,
+    );
 
     if (editCustomListAccountListPaginationListBloc!.isSomethingChanged) {
       var addedAccounts =
@@ -322,7 +324,8 @@ class EditCustomListBloc extends DisposableOwner
 
   bool _calculateIsListContainsAccounts(List<IAccount>? items) {
     _logger.finest(
-        () => "_calculateIsListContainsAccounts items size ${items?.length}");
+      () => "_calculateIsListContainsAccounts items size ${items?.length}",
+    );
 
     return items?.isNotEmpty == true;
   }

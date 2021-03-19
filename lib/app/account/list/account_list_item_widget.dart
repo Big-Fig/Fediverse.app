@@ -21,7 +21,6 @@ class AccountListItemWidget extends StatelessWidget {
     required this.accountSelectedCallback,
     this.accountActions,
     this.padding = FediPadding.allMediumPadding,
-
   });
 
   @override
@@ -44,7 +43,7 @@ class AccountListItemWidget extends StatelessWidget {
             const Expanded(
               child: _AccountListItemBodyWidget(),
             ),
-            if (accountActions?.isNotEmpty == true) ...accountActions!
+            if (accountActions?.isNotEmpty == true) ...accountActions!,
           ],
         ),
       ),

@@ -42,8 +42,8 @@ void showEditTimelineSettingsDialog({
                 ITimelineLocalPreferencesBloc, ITimelineSettingsBloc>(
               update: (context, timelineLocalPreferencesBloc, _) =>
                   TimelineSettingsBloc(
-                      timelineLocalPreferencesBloc:
-                          timelineLocalPreferencesBloc),
+                timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
+              ),
               child: DisposableProxyProvider<ITimelineSettingsBloc,
                   IEditTimelineSettingsBloc>(
                 update: (context, timelineSettingsBloc, _) =>
@@ -74,7 +74,9 @@ void showEditTimelineSettingsDialog({
 }
 
 TimelineLocalPreferencesBloc _createTimelinePreferencesBloc(
-    BuildContext context, Timeline timeline) {
+  BuildContext context,
+  Timeline timeline,
+) {
   var localPreferencesService = ILocalPreferencesService.of(context);
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);

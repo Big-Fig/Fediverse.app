@@ -31,8 +31,9 @@ void showEditGlobalOrInstanceWebSocketsSettingsDialog({
       update: (context, globalOrInstanceType, previous) {
         var isUseGlobalSettingsFormBoolFieldBloc =
             ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(
-                context,
-                listen: false);
+          context,
+          listen: false,
+        );
 
         var enabled =
             globalOrInstanceType == GlobalOrInstanceSettingsType.instance;

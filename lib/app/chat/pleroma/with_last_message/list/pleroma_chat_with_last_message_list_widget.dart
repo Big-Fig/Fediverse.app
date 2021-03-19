@@ -42,39 +42,39 @@ class PleromaChatWithLastMessageListWidget
     required Widget? footer,
   }) =>
       PaginationListWidget.buildItemsListView(
-          context: context,
-          keyboardDismissBehavior: keyboardDismissBehavior,
-          items: items,
-          header: header,
-          footer: footer,
-          itemBuilder: (context, index) =>
-              Provider<IPleromaChatWithLastMessage>.value(
-                value: items[index],
-                child: DisposableProxyProvider<IPleromaChatWithLastMessage,
-                    IPleromaChatBloc>(
-                  update: (context, chatWithLastMessage, oldValue) =>
-                      PleromaChatBloc.createFromContext(
-                    context,
-                    chat: chatWithLastMessage.chat,
-                    lastChatMessage: chatWithLastMessage.lastChatMessage,
-                  ),
-                  child: ProxyProvider<IPleromaChatBloc, IChatBloc>(
-                    update: (context, value, _) => value,
-                    child: FediListTile(
-                      isFirstInList: index == 0 && header == null,
-                      child: const ChatListItemWidget(
-                        onClick: _goToChatPage,
-                      ),
-                    ),
-                  ),
+        context: context,
+        keyboardDismissBehavior: keyboardDismissBehavior,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) =>
+            Provider<IPleromaChatWithLastMessage>.value(
+          value: items[index],
+          child: DisposableProxyProvider<IPleromaChatWithLastMessage,
+              IPleromaChatBloc>(
+            update: (context, chatWithLastMessage, oldValue) =>
+                PleromaChatBloc.createFromContext(
+              context,
+              chat: chatWithLastMessage.chat,
+              lastChatMessage: chatWithLastMessage.lastChatMessage,
+            ),
+            child: ProxyProvider<IPleromaChatBloc, IChatBloc>(
+              update: (context, value, _) => value,
+              child: FediListTile(
+                isFirstInList: index == 0 && header == null,
+                child: const ChatListItemWidget(
+                  onClick: _goToChatPage,
                 ),
-              ));
+              ),
+            ),
+          ),
+        ),
+      );
 
   @override
   IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
           IPleromaChatWithLastMessage>
-      retrievePaginationListBloc(BuildContext context,
-          {required bool listen}) {
+      retrievePaginationListBloc(BuildContext context, {required bool listen}) {
     var paginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
             IPleromaChatWithLastMessage>>(context, listen: listen);

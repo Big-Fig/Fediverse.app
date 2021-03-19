@@ -29,9 +29,10 @@ class StatusCachedPaginationListTimelineWidget
     required bool listen,
   }) {
     var timelinePaginationListBloc = Provider.of<
-            IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
-        context,
-        listen: listen);
+        IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
+      context,
+      listen: listen,
+    );
     return timelinePaginationListBloc;
   }
 
@@ -70,7 +71,7 @@ class StatusCachedPaginationListTimelineWidget
     var isLocal = instanceLocation == InstanceLocation.local;
     return PaginationListWidget.buildItemsListView(
       context: context,
-      keyboardDismissBehavior:keyboardDismissBehavior,
+      keyboardDismissBehavior: keyboardDismissBehavior,
       items: items,
       header: header,
       footer: footer,

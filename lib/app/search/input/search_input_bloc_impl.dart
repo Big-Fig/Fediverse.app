@@ -26,8 +26,8 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   bool get currentInputIsNotEmpty => currentInput?.isNotEmpty == true;
 
   @override
-  Stream<bool> get currentInputIsNotEmptyStream => currentInputStream
-      .map((currentInput) => currentInput.isNotEmpty == true);
+  Stream<bool> get currentInputIsNotEmptyStream =>
+      currentInputStream.map((currentInput) => currentInput.isNotEmpty == true);
 
   @override
   bool get confirmedSearchTermIsNotEmpty =>
@@ -36,7 +36,8 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   @override
   Stream<bool> get confirmedSearchTermIsNotEmptyStream =>
       confirmedSearchTermStream.map(
-          (confirmedSearchTerm) => confirmedSearchTerm.isNotEmpty == true);
+        (confirmedSearchTerm) => confirmedSearchTerm.isNotEmpty == true,
+      );
 
   @override
   bool get confirmedSearchTermIsEmpty => !confirmedSearchTermIsNotEmpty;
@@ -44,7 +45,8 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   @override
   Stream<bool> get confirmedSearchTermIsEmptyStream =>
       confirmedSearchTermIsNotEmptyStream.map(
-          (confirmedSearchTermIsNotEmpty) => !confirmedSearchTermIsNotEmpty);
+        (confirmedSearchTermIsNotEmpty) => !confirmedSearchTermIsNotEmpty,
+      );
 
   @override
   void customSearch(String search) {

@@ -7,9 +7,10 @@ typedef Future<FediListSmartRefresherLoadingState> AsyncAction();
 var _logger = Logger("async_smart_refresher_helper.dart");
 
 class AsyncSmartRefresherHelper {
-  static Future<FediListSmartRefresherLoadingState> doAsyncRefresh(
-      {required RefreshController controller,
-      required AsyncAction action}) async {
+  static Future<FediListSmartRefresherLoadingState> doAsyncRefresh({
+    required RefreshController controller,
+    required AsyncAction action,
+  }) async {
     _logger.finest(() => "doAsyncRefresh");
     FediListSmartRefresherLoadingState state;
     try {

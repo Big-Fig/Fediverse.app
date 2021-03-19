@@ -41,12 +41,14 @@ class LocalizationLocale implements IJsonObject {
 
   static List<LocalizationLocale> listFromJsonString(String str) =>
       List<LocalizationLocale>.from(
-          json.decode(str).map((x) => LocalizationLocale.fromJson(x)));
+        json.decode(str).map((x) => LocalizationLocale.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$LocalizationLocaleToJson(this);
 
   String toJsonString() => jsonEncode(_$LocalizationLocaleToJson(this));
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -55,9 +57,11 @@ class LocalizationLocale implements IJsonObject {
           languageCode == other.languageCode &&
           scriptCode == other.scriptCode &&
           countryCode == other.countryCode;
+
   @override
   int get hashCode =>
       languageCode.hashCode ^ scriptCode.hashCode ^ countryCode.hashCode;
+
   @override
   String toString() {
     return 'LocalizationLocale{'

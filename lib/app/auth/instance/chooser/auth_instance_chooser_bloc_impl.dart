@@ -14,11 +14,14 @@ class AuthInstanceChooserBloc extends DisposableOwner
 
   final ICurrentAuthInstanceBloc currentInstanceBloc;
 
-  AuthInstanceChooserBloc(
-      {required this.instanceListBloc, required this.currentInstanceBloc});
+  AuthInstanceChooserBloc({
+    required this.instanceListBloc,
+    required this.currentInstanceBloc,
+  });
 
   @override
-  Future chooseInstance(AuthInstance instance) => currentInstanceBloc.changeCurrentInstance(instance);
+  Future chooseInstance(AuthInstance instance) =>
+      currentInstanceBloc.changeCurrentInstance(instance);
 
   @override
   List<AuthInstance?> get instancesAvailableToChoose =>
@@ -29,7 +32,9 @@ class AuthInstanceChooserBloc extends DisposableOwner
       instanceListBloc.availableInstancesStream
           .map((availableInstances) => filterNotSelected(availableInstances));
 
-  List<AuthInstance?> filterNotSelected(List<AuthInstance?> availableInstances) {
+  List<AuthInstance?> filterNotSelected(
+    List<AuthInstance?> availableInstances,
+  ) {
     var selectedInstance = this.selectedInstance;
     var filtered = availableInstances.where((instance) {
       return instance!.userAtHost != selectedInstance!.userAtHost;
@@ -53,7 +58,8 @@ class AuthInstanceChooserBloc extends DisposableOwner
 
   static AuthInstanceChooserBloc createFromContext(BuildContext context) =>
       AuthInstanceChooserBloc(
-          instanceListBloc: IAuthInstanceListBloc.of(context, listen: false),
-          currentInstanceBloc:
-              ICurrentAuthInstanceBloc.of(context, listen: false));
+        instanceListBloc: IAuthInstanceListBloc.of(context, listen: false),
+        currentInstanceBloc:
+            ICurrentAuthInstanceBloc.of(context, listen: false),
+      );
 }

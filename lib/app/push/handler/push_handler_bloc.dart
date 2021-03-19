@@ -5,14 +5,16 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 typedef Future<bool> IPushRealTimeHandler(
-    PushHandlerMessage pushHandlerMessage);
+  PushHandlerMessage pushHandlerMessage,
+);
 
 abstract class IPushHandlerBloc extends IDisposable {
   static IPushHandlerBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPushHandlerBloc>(context, listen: listen);
 
   List<PushHandlerMessage> loadUnhandledMessagesForInstance(
-      AuthInstance instance);
+    AuthInstance instance,
+  );
 
   Future<bool> markAsHandled(List<PushHandlerMessage> messages);
 

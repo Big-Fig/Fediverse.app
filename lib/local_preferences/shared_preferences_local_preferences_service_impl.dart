@@ -25,7 +25,9 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
 
   Future putStorageCreatedKey() async {
     await preferences.setString(
-        _specialStorageKeyCreatedKey, _specialStorageKeyCreatedKey);
+      _specialStorageKeyCreatedKey,
+      _specialStorageKeyCreatedKey,
+    );
   }
 
   @override
@@ -78,7 +80,9 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   Future<bool> setObjectPreference(
-      String key, IJsonObject? preferencesObject) async {
+    String key,
+    IJsonObject? preferencesObject,
+  ) async {
     var result = await setJsonObjectAsString(key, preferencesObject?.toJson());
     notifyKeyValueChanged(key, preferencesObject);
     return result;
@@ -132,7 +136,9 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   IDisposable listenKeyPreferenceChanged<T>(
-      String key, ValueCallback<T> onChanged) {
+    String key,
+    ValueCallback<T> onChanged,
+  ) {
     if (!listeners.containsKey(key)) {
       listeners[key] = [];
     }

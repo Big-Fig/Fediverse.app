@@ -12,7 +12,7 @@ import 'package:flutter/widgets.dart';
 class AsyncOperationHelper {
   static const List<ErrorDataBuilder> defaultErrorDataBuilders = [
     socketErrorAlertDialogBuilder,
-    timeoutErrorAlertDialogBuilder
+    timeoutErrorAlertDialogBuilder,
   ];
 
   static Future<AsyncDialogResult<T?>> performAsyncOperation<T>({

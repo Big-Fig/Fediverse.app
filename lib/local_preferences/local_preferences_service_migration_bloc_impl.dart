@@ -20,7 +20,8 @@ abstract class LocalPreferencesServiceMigrationBloc
         await calculateAllMigrationLocalPreferencesBlocCreators(inputService);
 
     _logger.finest(
-        () => "migrateData ${migrationLocalPreferencesBlocCreators.length}");
+      () => "migrateData ${migrationLocalPreferencesBlocCreators.length}",
+    );
 
     for (var creator in migrationLocalPreferencesBlocCreators) {
       await migrateLocalPreferenceBloc(creator);
@@ -28,7 +29,8 @@ abstract class LocalPreferencesServiceMigrationBloc
   }
 
   Future migrateLocalPreferenceBloc(
-      LocalPreferencesBlocCreator migrationBlocCreator) async {
+    LocalPreferencesBlocCreator migrationBlocCreator,
+  ) async {
     var inputBloc = migrationBlocCreator(inputService);
     var outputBloc = migrationBlocCreator(outputService);
 
@@ -37,9 +39,7 @@ abstract class LocalPreferencesServiceMigrationBloc
 
     var currentValue = inputBloc.value;
     if (currentValue != null) {
-
-      _logger.finest(
-              () => "migrateData currentValue ${currentValue}");
+      _logger.finest(() => "migrateData currentValue ${currentValue}");
       await outputBloc.setValue(currentValue);
     }
 

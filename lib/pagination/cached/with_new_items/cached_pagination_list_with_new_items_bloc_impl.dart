@@ -19,8 +19,8 @@ abstract class CachedPaginationListWithNewItemsBloc<
   TItem? get newerItem => items.isNotEmpty == true ? items.first : null;
 
   @override
-  Stream<TItem?> get newerItemStream => itemsStream
-      .map((items) => items.isNotEmpty == true ? items.first : null);
+  Stream<TItem?> get newerItemStream =>
+      itemsStream.map((items) => items.isNotEmpty == true ? items.first : null);
 
   Stream<List<TItem>> watchItemsNewerThanItem(TItem item);
 
@@ -52,7 +52,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
       streamSubscription: newerItemStream.distinct().listen(
         (newerItem) {
 //          clearNewItems();
-        // todo: remove hack actually we should listen even with newerItem == null
+          // todo: remove hack actually we should listen even with newerItem == null
           // but it is hack to avoid duplicated data
           if (newerItem != null) {
             _logger.finest(() => "newerItem $newerItem");
@@ -66,7 +66,8 @@ abstract class CachedPaginationListWithNewItemsBloc<
                 // changed during sql request execute time
                 List<TItem> actuallyNew = newItems
                     .where(
-                        (newItem) => compareItemsToSort(newItem, newerItem) > 0)
+                      (newItem) => compareItemsToSort(newItem, newerItem) > 0,
+                    )
                     .toList();
 
                 var currentItems = items;
@@ -201,8 +202,8 @@ abstract class CachedPaginationListWithNewItemsBloc<
   int get unmergedNewItemsCount => unmergedNewItems.length;
 
   @override
-  Stream<int> get unmergedNewItemsCountStream => unmergedNewItemsStream
-      .map((unmergedNewItems) => unmergedNewItems.length);
+  Stream<int> get unmergedNewItemsCountStream =>
+      unmergedNewItemsStream.map((unmergedNewItems) => unmergedNewItems.length);
 
   bool get isHaveMergedNewItems => mergedNewItemsCount > 0;
 

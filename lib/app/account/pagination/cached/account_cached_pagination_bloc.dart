@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 
 abstract class IAccountCachedPaginationBloc
     implements ICachedPleromaPaginationBloc<IAccount> {
-  static IAccountCachedPaginationBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IAccountCachedPaginationBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IAccountCachedPaginationBloc>(context, listen: listen);
 }

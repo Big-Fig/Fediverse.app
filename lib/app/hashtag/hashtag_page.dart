@@ -121,7 +121,8 @@ Future showRemoteInstanceHashtagActionsDialog({
           label: S
               .of(context)
               .app_hashtag_remoteInstance_dialog_action_openOnLocal(
-                  localInstanceDomain),
+                localInstanceDomain,
+              ),
           onAction: (context) {
             Navigator.of(context).pop();
             goToHashtagPage(
@@ -137,7 +138,9 @@ Future showRemoteInstanceHashtagActionsDialog({
         DialogAction(
           label: S
               .of(context)
-              .app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser(remoteInstanceDomain),
+              .app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser(
+                remoteInstanceDomain,
+              ),
           onAction: (context) {
             Navigator.of(context).pop();
             UrlHelper.handleUrlClick(
@@ -201,8 +204,10 @@ MaterialPageRoute createHashtagPageRoute({
                       listen: false,
                     ),
                     timelineLocalPreferencesBloc:
-                        ITimelineLocalPreferencesBloc.of(context,
-                            listen: false),
+                        ITimelineLocalPreferencesBloc.of(
+                      context,
+                      listen: false,
+                    ),
                     currentInstanceBloc: ICurrentAuthInstanceBloc.of(
                       context,
                       listen: false,

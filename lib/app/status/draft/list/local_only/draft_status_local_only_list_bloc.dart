@@ -7,7 +7,9 @@ import 'package:provider/provider.dart';
 
 abstract class IDraftStatusLocalOnlyListBloc extends DisposableOwner
     implements ILocalOnlyListBloc<IDraftStatus>, IStatusListBloc {
-  static IDraftStatusLocalOnlyListBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IDraftStatusLocalOnlyListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IDraftStatusLocalOnlyListBloc>(context, listen: listen);
 }

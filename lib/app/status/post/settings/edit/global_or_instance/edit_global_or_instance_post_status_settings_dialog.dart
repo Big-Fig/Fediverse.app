@@ -38,8 +38,9 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
       update: (context, globalOrInstanceType, previous) {
         var isUseGlobalSettingsFormBoolFieldBloc =
             ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(
-                context,
-                listen: false);
+          context,
+          listen: false,
+        );
 
         var isEnabled =
             globalOrInstanceType == GlobalOrInstanceSettingsType.instance;

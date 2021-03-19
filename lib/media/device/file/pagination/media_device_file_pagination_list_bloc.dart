@@ -8,9 +8,9 @@ abstract class IMediaDeviceFilePaginationListBloc
     implements
         IPaginationListBloc<PaginationPage<IMediaDeviceFileMetadata>,
             IMediaDeviceFileMetadata> {
-  static IMediaDeviceFilePaginationListBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IMediaDeviceFilePaginationListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IMediaDeviceFilePaginationListBloc>(context, listen: listen);
-
-
 }

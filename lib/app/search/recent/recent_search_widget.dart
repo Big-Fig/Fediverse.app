@@ -16,36 +16,37 @@ class RecentSearchWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var recentSearchBloc = IRecentSearchBloc.of(context);
     return StreamBuilder<RecentSearchList?>(
-        stream: recentSearchBloc.recentSearchListStream,
-        initialData: recentSearchBloc.recentSearchList,
-        builder: (context, snapshot) {
-          var recentSearchList = snapshot.data;
+      stream: recentSearchBloc.recentSearchListStream,
+      initialData: recentSearchBloc.recentSearchList,
+      builder: (context, snapshot) {
+        var recentSearchList = snapshot.data;
 
-          var recentItems = recentSearchList?.recentItems
-              ?.where((item) => item.isNotEmpty == true)
-              .toList();
+        var recentItems = recentSearchList?.recentItems
+            ?.where((item) => item.isNotEmpty == true)
+            .toList();
 
-          var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
-          return Provider<List<String>?>.value(
-            value: recentItems,
-            child: Padding(
-              padding: FediPadding.allBigPadding,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const _RecentSearchHeaderWidget(),
-                  const FediSmallVerticalSpacer(),
-                  const FediUltraLightGreyDivider(),
-                  Expanded(
-                    child: recentItemsIsNotEmpty
-                        ? _RecentSearchListWidget()
-                        : const _RecentSearchEmptyWidget(),
-                  ),
-                ],
-              ),
+        var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
+        return Provider<List<String>?>.value(
+          value: recentItems,
+          child: Padding(
+            padding: FediPadding.allBigPadding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _RecentSearchHeaderWidget(),
+                const FediSmallVerticalSpacer(),
+                const FediUltraLightGreyDivider(),
+                Expanded(
+                  child: recentItemsIsNotEmpty
+                      ? _RecentSearchListWidget()
+                      : const _RecentSearchEmptyWidget(),
+                ),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   const RecentSearchWidget();

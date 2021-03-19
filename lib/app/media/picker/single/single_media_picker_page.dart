@@ -68,7 +68,7 @@ Future<IMediaDeviceFile?> goToSingleMediaPickerPage(
   BuildContext context, {
   List<MediaDeviceFileType> typesToPick = const [
     MediaDeviceFileType.image,
-    MediaDeviceFileType.video
+    MediaDeviceFileType.video,
   ],
 }) =>
     Navigator.push(

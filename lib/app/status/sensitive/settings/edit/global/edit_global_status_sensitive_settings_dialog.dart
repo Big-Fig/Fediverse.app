@@ -21,11 +21,15 @@ void showEditGlobalStatusSensitiveSettingsDialog({
     child: DisposableProvider<IStatusSensitiveSettingsBloc>(
       create: (context) => StatusSensitiveSettingsBloc(
         instanceLocalPreferencesBloc:
-            IInstanceStatusSensitiveSettingsLocalPreferencesBloc.of(context,
-                listen: false),
+            IInstanceStatusSensitiveSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
         globalLocalPreferencesBloc:
-            IGlobalStatusSensitiveSettingsLocalPreferencesBloc.of(context,
-                listen: false),
+            IGlobalStatusSensitiveSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
       ),
       child: DisposableProxyProvider<IStatusSensitiveSettingsBloc,
           IEditStatusSensitiveSettingsBloc>(

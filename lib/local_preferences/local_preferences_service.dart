@@ -48,9 +48,13 @@ abstract class ILocalPreferencesService extends DisposableOwner
   );
 
   IDisposable listenKeyPreferenceChanged<T>(
-      String key, ValueCallback onChanged);
+    String key,
+    ValueCallback onChanged,
+  );
 
-  static ILocalPreferencesService of(BuildContext context,
-          {bool listen = true}) =>
+  static ILocalPreferencesService of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<ILocalPreferencesService>(context, listen: listen);
 }

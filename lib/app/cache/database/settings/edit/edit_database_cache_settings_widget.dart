@@ -57,7 +57,8 @@ class _EditDatabaseCacheSettingsDescriptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FediNoteDescriptionWidget(
-        S.of(context).app_cache_database_settings_description);
+      S.of(context).app_cache_database_settings_description,
+    );
   }
 }
 

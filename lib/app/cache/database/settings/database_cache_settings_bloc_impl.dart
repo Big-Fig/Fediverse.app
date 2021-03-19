@@ -48,7 +48,8 @@ class DatabaseCacheSettingsBloc
 
   @override
   Future changeEntriesCountByTypeLimit(
-          DatabaseCacheEntriesCountByTypeLimitType value) =>
+    DatabaseCacheEntriesCountByTypeLimitType value,
+  ) =>
       updateSettings(
         DatabaseCacheSettings(
           ageLimitTypeString: ageLimit?.toJsonValue(),

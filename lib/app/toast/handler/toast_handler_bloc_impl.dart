@@ -103,7 +103,9 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
     PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
     var isForCurrentInstance = currentInstance!.isInstanceWithHostAndAcct(
-        host: pleromaPushMessage.server, acct: pleromaPushMessage.account);
+      host: pleromaPushMessage.server,
+      acct: pleromaPushMessage.account,
+    );
 
     if (!isForCurrentInstance) {
       await _handleNonCurrentInstancePushMessage(pushHandlerMessage);
@@ -117,7 +119,8 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   }
 
   void _handleCurrentInstanceNotification(
-      NotificationPushLoaderNotification handledNotification) {
+    NotificationPushLoaderNotification handledNotification,
+  ) {
     var pushHandlerMessage = handledNotification.pushHandlerMessage;
     PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
 
@@ -189,7 +192,8 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   }
 
   Future _handleNonCurrentInstancePushMessage(
-      PushHandlerMessage pushHandlerMessage) async {
+    PushHandlerMessage pushHandlerMessage,
+  ) async {
     PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
 
     var notificationType = pleromaPushMessage.notificationType;
@@ -197,9 +201,10 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     var pleromaNotificationType = notificationType.toPleromaNotificationType();
 
     var instanceLocalPreferencesBloc =
-        InstanceToastSettingsLocalPreferencesBloc(localPreferencesService,
-            userAtHost:
-                "${pleromaPushMessage.account}@${pleromaPushMessage.server}");
+        InstanceToastSettingsLocalPreferencesBloc(
+      localPreferencesService,
+      userAtHost: "${pleromaPushMessage.account}@${pleromaPushMessage.server}",
+    );
 
     await instanceLocalPreferencesBloc.performAsyncInit();
 

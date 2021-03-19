@@ -61,7 +61,8 @@ class PushHandlerMessage {
 
   static List<PushHandlerMessage> listFromJsonString(String str) =>
       List<PushHandlerMessage>.from(
-          json.decode(str).map((x) => PushHandlerMessage.fromJson(x)));
+        json.decode(str).map((x) => PushHandlerMessage.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PushHandlerMessageToJson(this);
 

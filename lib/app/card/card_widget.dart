@@ -66,8 +66,9 @@ class _CardContentWidget extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-              topRight: Radius.circular(_cardBorderRadius),
-              bottomRight: Radius.circular(_cardBorderRadius)),
+            topRight: Radius.circular(_cardBorderRadius),
+            bottomRight: Radius.circular(_cardBorderRadius),
+          ),
           border:
               Border.all(color: IFediUiColorTheme.of(context).ultraLightGrey),
         ),

@@ -4,8 +4,10 @@ import 'package:provider/provider.dart';
 
 abstract class IDurationValueFormFieldBloc
     extends IValueFormFieldBloc<Duration?> {
-  static IDurationValueFormFieldBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IDurationValueFormFieldBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IDurationValueFormFieldBloc>(context, listen: listen);
 
   Duration? get maxDuration;

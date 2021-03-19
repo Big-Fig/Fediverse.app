@@ -41,7 +41,8 @@ class DatabaseCacheSettings
 
   static List<DatabaseCacheSettings> listFromJsonString(String str) =>
       List<DatabaseCacheSettings>.from(
-          json.decode(str).map((x) => DatabaseCacheSettings.fromJson(x)));
+        json.decode(str).map((x) => DatabaseCacheSettings.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$DatabaseCacheSettingsToJson(this);

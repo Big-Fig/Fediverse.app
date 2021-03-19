@@ -39,14 +39,19 @@ void main() {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
-        appDatabase: database, accountRepository: accountRepository);
+      appDatabase: database,
+      accountRepository: accountRepository,
+    );
     chatMessageRepository = PleromaChatMessageRepository(
-        appDatabase: database, accountRepository: accountRepository);
+      appDatabase: database,
+      accountRepository: accountRepository,
+    );
     notificationRepository = NotificationRepository(
-        appDatabase: database,
-        accountRepository: accountRepository,
-        statusRepository: statusRepository,
-        chatMessageRepository: chatMessageRepository);
+      appDatabase: database,
+      accountRepository: accountRepository,
+      statusRepository: statusRepository,
+      chatMessageRepository: chatMessageRepository,
+    );
 
     dbAccount = await createTestDbAccount(seed: "seed1");
     var accountId = await accountRepository.insert(dbAccount);
@@ -93,9 +98,10 @@ void main() {
     );
 
     dbNotificationPopulated = DbNotificationPopulated(
-        dbNotification: dbNotification,
-        dbAccount: dbAccount,
-        dbStatusPopulated: dbStatusPopulated);
+      dbNotification: dbNotification,
+      dbAccount: dbAccount,
+      dbStatusPopulated: dbStatusPopulated,
+    );
   });
 
   tearDown(() async {
@@ -135,11 +141,12 @@ void main() {
     expect((await notificationRepository.getAll()).length, 1);
 
     expectDbNotificationPopulated(
-        (await notificationRepository.getAll()).first,
-        await createTestNotificationPopulated(
-          dbNotification2,
-          accountRepository,
-        ));
+      (await notificationRepository.getAll()).first,
+      await createTestNotificationPopulated(
+        dbNotification2,
+        accountRepository,
+      ),
+    );
   });
 
   test('updateById', () async {
@@ -220,10 +227,11 @@ void main() {
     expect(await notificationRepository.countAll(), 0);
 
     await notificationRepository.upsertRemoteNotification(
-        DbNotificationPopulatedWrapper(
-                dbNotificationPopulated: dbNotificationPopulated)
-            .toPleromaNotification(),
-        unread: false);
+      DbNotificationPopulatedWrapper(
+        dbNotificationPopulated: dbNotificationPopulated,
+      ).toPleromaNotification(),
+      unread: false,
+    );
 
     expect(await notificationRepository.countAll(), 1);
     // with reblog
@@ -245,8 +253,8 @@ void main() {
     // item with same id updated
     await notificationRepository.upsertRemoteNotification(
       DbNotificationPopulatedWrapper(
-              dbNotificationPopulated: dbNotificationPopulated)
-          .toPleromaNotification(),
+        dbNotificationPopulated: dbNotificationPopulated,
+      ).toPleromaNotification(),
       unread: false,
     );
     expect(await notificationRepository.countAll(), 1);
@@ -269,11 +277,14 @@ void main() {
 
   test('upsertRemoteNotifications', () async {
     expect(await notificationRepository.countAll(), 0);
-    await notificationRepository.upsertRemoteNotifications([
-      DbNotificationPopulatedWrapper(
-              dbNotificationPopulated: dbNotificationPopulated)
-          .toPleromaNotification(),
-    ], unread: false);
+    await notificationRepository.upsertRemoteNotifications(
+      [
+        DbNotificationPopulatedWrapper(
+          dbNotificationPopulated: dbNotificationPopulated,
+        ).toPleromaNotification(),
+      ],
+      unread: false,
+    );
 
     expect(await notificationRepository.countAll(), 1);
     // with reblog
@@ -292,11 +303,14 @@ void main() {
       dbStatus,
     );
 
-    await notificationRepository.upsertRemoteNotifications([
-      DbNotificationPopulatedWrapper(
-              dbNotificationPopulated: dbNotificationPopulated)
-          .toPleromaNotification(),
-    ], unread: false);
+    await notificationRepository.upsertRemoteNotifications(
+      [
+        DbNotificationPopulatedWrapper(
+          dbNotificationPopulated: dbNotificationPopulated,
+        ).toPleromaNotification(),
+      ],
+      unread: false,
+    );
 
     // update item with same id
     expect(await notificationRepository.countAll(), 1);
@@ -325,22 +339,24 @@ void main() {
     );
 
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed1",
-          dbAccount: dbAccount,
-        ))
-            .copyWith());
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed1",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(),
+    );
 
     expect((await query.get()).length, 1);
 
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed2",
-          dbAccount: dbAccount,
-        ))
-            .copyWith());
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed2",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(),
+    );
     expect((await query.get()).length, 2);
   });
 
@@ -395,53 +411,57 @@ void main() {
     );
 
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed2",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(
-          remoteId: "remoteId4",
-          createdAt: DateTime(4),
-        ));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed2",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(
+        remoteId: "remoteId4",
+        createdAt: DateTime(4),
+      ),
+    );
 
     expect((await query.get()).length, 0);
 
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed2",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(
-          remoteId: "remoteId5",
-          createdAt: DateTime(5),
-        ));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed2",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(
+        remoteId: "remoteId5",
+        createdAt: DateTime(5),
+      ),
+    );
 
     expect((await query.get()).length, 0);
 
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed1",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(
-          remoteId: "remoteId6",
-          createdAt: DateTime(6),
-        ));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed1",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(
+        remoteId: "remoteId6",
+        createdAt: DateTime(6),
+      ),
+    );
 
     expect((await query.get()).length, 1);
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed1",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(
-          remoteId: "remoteId7",
-          createdAt: DateTime(7),
-        ));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed1",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(
+        remoteId: "remoteId7",
+        createdAt: DateTime(7),
+      ),
+    );
 
     expect((await query.get()).length, 2);
   });
@@ -460,77 +480,82 @@ void main() {
     );
 
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed2",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(
-          remoteId: "remoteId3",
-          createdAt: DateTime(3),
-        ));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed2",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(
+        remoteId: "remoteId3",
+        createdAt: DateTime(3),
+      ),
+    );
 
     expect((await query.get()).length, 1);
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed2",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(
-          remoteId: "remoteId4",
-          createdAt: DateTime(4),
-        ));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed2",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(
+        remoteId: "remoteId4",
+        createdAt: DateTime(4),
+      ),
+    );
 
     expect((await query.get()).length, 2);
 
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed2",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(
-          remoteId: "remoteId5",
-          createdAt: DateTime(5),
-        ));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed2",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(
+        remoteId: "remoteId5",
+        createdAt: DateTime(5),
+      ),
+    );
 
     expect((await query.get()).length, 2);
 
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed1",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(
-          remoteId: "remoteId6",
-          createdAt: DateTime(6),
-        ));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed1",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(
+        remoteId: "remoteId6",
+        createdAt: DateTime(6),
+      ),
+    );
 
     expect((await query.get()).length, 2);
   });
 
-  test('createQuery notNewerThanNotification & newerThanNotification',
-      () async {
-    var query = notificationRepository.createQuery(
-      filters: null,
-      pagination: RepositoryPagination<INotification>(
-        newerThanItem: await createTestNotification(
-          seed: "remoteId2",
-          remoteId: "remoteId2",
-          createdAt: DateTime(2),
+  test(
+    'createQuery notNewerThanNotification & newerThanNotification',
+    () async {
+      var query = notificationRepository.createQuery(
+        filters: null,
+        pagination: RepositoryPagination<INotification>(
+          newerThanItem: await createTestNotification(
+            seed: "remoteId2",
+            remoteId: "remoteId2",
+            createdAt: DateTime(2),
+          ),
+          olderThanItem: await createTestNotification(
+            seed: "remoteId5",
+            remoteId: "remoteId5",
+            createdAt: DateTime(5),
+          ),
         ),
-        olderThanItem: await createTestNotification(
-          seed: "remoteId5",
-          remoteId: "remoteId5",
-          createdAt: DateTime(5),
-        ),
-      ),
-      orderingTermData: NotificationOrderingTermData.createdAtDesc,
-    );
+        orderingTermData: NotificationOrderingTermData.createdAtDesc,
+      );
 
-    await insertDbNotification(
+      await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(
           seed: "seed1",
@@ -539,20 +564,22 @@ void main() {
             .copyWith(
           remoteId: "remoteId1",
           createdAt: DateTime(1),
-        ));
+        ),
+      );
 
-    expect((await query.get()).length, 0);
+      expect((await query.get()).length, 0);
 
-    await insertDbNotification(
+      await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
             .copyWith(
           remoteId: "remoteId2",
           createdAt: DateTime(2),
-        ));
+        ),
+      );
 
-    expect((await query.get()).length, 0);
-    await insertDbNotification(
+      expect((await query.get()).length, 0);
+      await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(
           seed: "seed3",
@@ -561,11 +588,12 @@ void main() {
             .copyWith(
           remoteId: "remoteId3",
           createdAt: DateTime(3),
-        ));
+        ),
+      );
 
-    expect((await query.get()).length, 1);
+      expect((await query.get()).length, 1);
 
-    await insertDbNotification(
+      await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(
           seed: "seed4",
@@ -574,11 +602,12 @@ void main() {
             .copyWith(
           remoteId: "remoteId4",
           createdAt: DateTime(4),
-        ));
+        ),
+      );
 
-    expect((await query.get()).length, 2);
+      expect((await query.get()).length, 2);
 
-    await insertDbNotification(
+      await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(
           seed: "seed5",
@@ -587,11 +616,12 @@ void main() {
             .copyWith(
           remoteId: "remoteId5",
           createdAt: DateTime(5),
-        ));
+        ),
+      );
 
-    expect((await query.get()).length, 2);
+      expect((await query.get()).length, 2);
 
-    await insertDbNotification(
+      await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(
           seed: "seed6",
@@ -600,10 +630,12 @@ void main() {
             .copyWith(
           remoteId: "remoteId6",
           createdAt: DateTime(6),
-        ));
+        ),
+      );
 
-    expect((await query.get()).length, 2);
-  });
+      expect((await query.get()).length, 2);
+    },
+  );
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = notificationRepository.createQuery(
@@ -613,26 +645,29 @@ void main() {
     );
 
     var notification2 = await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed2",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(remoteId: "remoteId2"));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed2",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(remoteId: "remoteId2"),
+    );
     var notification1 = await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed1",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(remoteId: "remoteId1"));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed1",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(remoteId: "remoteId1"),
+    );
     var notification3 = await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed3",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(remoteId: "remoteId3"));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed3",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(remoteId: "remoteId3"),
+    );
 
     List<DbNotificationPopulated> actualList = (await query
         .map(notificationRepository.dao.typedResultToPopulated)
@@ -661,26 +696,29 @@ void main() {
     );
 
     var notification2 = await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed2",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(remoteId: "remoteId2"));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed2",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(remoteId: "remoteId2"),
+    );
     var notification1 = await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed1",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(remoteId: "remoteId1"));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed1",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(remoteId: "remoteId1"),
+    );
     var notification3 = await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed3",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(remoteId: "remoteId3"));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed3",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(remoteId: "remoteId3"),
+    );
 
     List<DbNotificationPopulated> actualList = (await query
         .map(notificationRepository.dao.typedResultToPopulated)
@@ -712,26 +750,29 @@ void main() {
     );
 
     var notification2 = await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed2",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(remoteId: "remoteId2"));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed2",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(remoteId: "remoteId2"),
+    );
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed1",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(remoteId: "remoteId1"));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed1",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(remoteId: "remoteId1"),
+    );
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed3",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(remoteId: "remoteId3"));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed3",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(remoteId: "remoteId3"),
+    );
 
     List<DbNotificationPopulated> actualList = (await query
         .map(notificationRepository.dao.typedResultToPopulated)
@@ -744,58 +785,64 @@ void main() {
     );
   });
 
-  test('createQuery orderingTermData createdAt desc & limit & offset',
-      () async {
-    var query = notificationRepository.createQuery(
-      filters: null,
-      pagination: RepositoryPagination<INotification>(
-        limit: 1,
-        offset: 1,
-      ),
-      orderingTermData: NotificationOrderingTermData.createdAtDesc,
-    );
+  test(
+    'createQuery orderingTermData createdAt desc & limit & offset',
+    () async {
+      var query = notificationRepository.createQuery(
+        filters: null,
+        pagination: RepositoryPagination<INotification>(
+          limit: 1,
+          offset: 1,
+        ),
+        orderingTermData: NotificationOrderingTermData.createdAtDesc,
+      );
 
-    var notification2 = await insertDbNotification(
+      var notification2 = await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(
           seed: "seed2",
           dbAccount: dbAccount,
         ))
-            .copyWith(createdAt: DateTime(2)));
-    await insertDbNotification(
+            .copyWith(createdAt: DateTime(2)),
+      );
+      await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(
           seed: "seed1",
           dbAccount: dbAccount,
         ))
-            .copyWith(createdAt: DateTime(1)));
-    await insertDbNotification(
+            .copyWith(createdAt: DateTime(1)),
+      );
+      await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(
           seed: "seed3",
           dbAccount: dbAccount,
         ))
-            .copyWith(createdAt: DateTime(3)));
+            .copyWith(createdAt: DateTime(3)),
+      );
 
-    List<DbNotificationPopulated> actualList = (await query
-        .map(notificationRepository.dao.typedResultToPopulated)
-        .get());
-    expect(actualList.length, 1);
+      List<DbNotificationPopulated> actualList = (await query
+          .map(notificationRepository.dao.typedResultToPopulated)
+          .get());
+      expect(actualList.length, 1);
 
-    expect(
-      actualList[0].dbNotification,
-      notification2,
-    );
-  });
+      expect(
+        actualList[0].dbNotification,
+        notification2,
+      );
+    },
+  );
 
   test('countUnread', () async {
     expect(
-        (await notificationRepository.getCount(
-          filters: NotificationRepositoryFilters(
-            onlyUnread: true,
-          ),
-        )),
-        0);
+      (await notificationRepository.getCount(
+        filters: NotificationRepositoryFilters(
+          onlyUnread: true,
+        ),
+      )),
+      0,
+    );
     await insertDbNotification(
       notificationRepository,
       (await createTestDbNotification(
@@ -809,98 +856,109 @@ void main() {
     );
 
     expect(
-        (await notificationRepository.getCount(
-          filters: NotificationRepositoryFilters(
-            onlyWithType: PleromaNotificationType.reblog,
-            onlyUnread: true,
-          ),
-        )),
-        0);
+      (await notificationRepository.getCount(
+        filters: NotificationRepositoryFilters(
+          onlyWithType: PleromaNotificationType.reblog,
+          onlyUnread: true,
+        ),
+      )),
+      0,
+    );
     expect(
-        (await notificationRepository.getCount(
-          filters: NotificationRepositoryFilters(
-            onlyWithType: PleromaNotificationType.follow,
-            onlyUnread: true,
-          ),
-        )),
-        1);
+      (await notificationRepository.getCount(
+        filters: NotificationRepositoryFilters(
+          onlyWithType: PleromaNotificationType.follow,
+          onlyUnread: true,
+        ),
+      )),
+      1,
+    );
     expect(
-        (await notificationRepository.getCount(
-          filters: NotificationRepositoryFilters(
-            onlyUnread: true,
-          ),
-        )),
-        1);
+      (await notificationRepository.getCount(
+        filters: NotificationRepositoryFilters(
+          onlyUnread: true,
+        ),
+      )),
+      1,
+    );
 
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed2",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(
-          type: PleromaNotificationType.follow.toJsonValue(),
-          unread: false,
-        ));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed2",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(
+        type: PleromaNotificationType.follow.toJsonValue(),
+        unread: false,
+      ),
+    );
 
     expect(
-        (await notificationRepository.getCount(
-          filters: NotificationRepositoryFilters(
-            onlyWithType: PleromaNotificationType.reblog,
-            onlyUnread: true,
-          ),
-        )),
-        0);
+      (await notificationRepository.getCount(
+        filters: NotificationRepositoryFilters(
+          onlyWithType: PleromaNotificationType.reblog,
+          onlyUnread: true,
+        ),
+      )),
+      0,
+    );
     expect(
-        (await notificationRepository.getCount(
-          filters: NotificationRepositoryFilters(
-            onlyWithType: PleromaNotificationType.follow,
-            onlyUnread: true,
-          ),
-        )),
-        1);
+      (await notificationRepository.getCount(
+        filters: NotificationRepositoryFilters(
+          onlyWithType: PleromaNotificationType.follow,
+          onlyUnread: true,
+        ),
+      )),
+      1,
+    );
     expect(
-        (await notificationRepository.getCount(
-          filters: NotificationRepositoryFilters(
-            onlyUnread: true,
-          ),
-        )),
-        1);
+      (await notificationRepository.getCount(
+        filters: NotificationRepositoryFilters(
+          onlyUnread: true,
+        ),
+      )),
+      1,
+    );
 
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(
-          seed: "seed3",
-          dbAccount: dbAccount,
-        ))
-            .copyWith(
-          type: PleromaNotificationType.reblog.toJsonValue(),
-          unread: true,
-        ));
+      notificationRepository,
+      (await createTestDbNotification(
+        seed: "seed3",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(
+        type: PleromaNotificationType.reblog.toJsonValue(),
+        unread: true,
+      ),
+    );
 
     expect(
-        (await notificationRepository.getCount(
-          filters: NotificationRepositoryFilters(
-            onlyWithType: PleromaNotificationType.reblog,
-            onlyUnread: true,
-          ),
-        )),
-        1);
+      (await notificationRepository.getCount(
+        filters: NotificationRepositoryFilters(
+          onlyWithType: PleromaNotificationType.reblog,
+          onlyUnread: true,
+        ),
+      )),
+      1,
+    );
     expect(
-        (await notificationRepository.getCount(
-          filters: NotificationRepositoryFilters(
-            onlyWithType: PleromaNotificationType.follow,
-            onlyUnread: true,
-          ),
-        )),
-        1);
+      (await notificationRepository.getCount(
+        filters: NotificationRepositoryFilters(
+          onlyWithType: PleromaNotificationType.follow,
+          onlyUnread: true,
+        ),
+      )),
+      1,
+    );
     expect(
-        (await notificationRepository.getCount(
-          filters: NotificationRepositoryFilters(
-            onlyUnread: true,
-          ),
-        )),
-        2);
+      (await notificationRepository.getCount(
+        filters: NotificationRepositoryFilters(
+          onlyUnread: true,
+        ),
+      )),
+      2,
+    );
   });
 
   //

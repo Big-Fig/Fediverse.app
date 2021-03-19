@@ -7,8 +7,10 @@ import 'package:provider/provider.dart';
 
 abstract class IEditToastSettingsBloc
     implements IEditGlobalOrInstanceSettingsBloc<ToastSettings?> {
-  static IEditToastSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IEditToastSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IEditToastSettingsBloc>(context, listen: listen);
 
   IBoolValueFormFieldBloc? get favouriteFieldBloc;

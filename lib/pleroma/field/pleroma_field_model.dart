@@ -110,7 +110,10 @@ class PleromaField implements IPleromaField {
       return "${uri.host}${uri.path}";
     } catch (e, stackTrace) {
       _logger.warning(
-          () => "valueAsRawUrlWithoutSchema $rawUrl", e, stackTrace);
+        () => "valueAsRawUrlWithoutSchema $rawUrl",
+        e,
+        stackTrace,
+      );
       return rawUrl;
     }
   }

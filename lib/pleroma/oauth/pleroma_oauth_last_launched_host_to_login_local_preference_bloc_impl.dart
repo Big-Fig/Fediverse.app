@@ -6,6 +6,9 @@ class PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
     extends StringLocalPreferenceBloc
     implements IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc {
   PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc(
-      ILocalPreferencesService preferencesService)
-      : super(preferencesService, "PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc");
+    ILocalPreferencesService preferencesService,
+  ) : super(
+          preferencesService,
+          "PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc",
+        );
 }

@@ -71,20 +71,21 @@ class _UploadMediaAttachmentListMediaItemWidgetState
         children: <Widget>[
           Positioned.fill(
             child: StreamBuilder<UploadMediaAttachmentState>(
-                stream: bloc.uploadStateStream,
-                builder: (context, snapshot) {
-                  var uploadState = snapshot.data;
+              stream: bloc.uploadStateStream,
+              builder: (context, snapshot) {
+                var uploadState = snapshot.data;
 
-                  if (uploadState?.type ==
-                      UploadMediaAttachmentStateType.uploaded) {
-                    return previewWidget;
-                  } else {
-                    return Opacity(
-                      opacity: 0.7,
-                      child: previewWidget,
-                    );
-                  }
-                }),
+                if (uploadState?.type ==
+                    UploadMediaAttachmentStateType.uploaded) {
+                  return previewWidget;
+                } else {
+                  return Opacity(
+                    opacity: 0.7,
+                    child: previewWidget,
+                  );
+                }
+              },
+            ),
           ),
           Align(
             alignment: Alignment.topRight,
@@ -101,7 +102,7 @@ class _UploadMediaAttachmentListMediaItemWidgetState
               child:
                   const _UploadMediaAttachmentListMediaItemTopLeftActionWidget(),
             ),
-          )
+          ),
         ],
       ),
     );

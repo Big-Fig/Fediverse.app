@@ -7,10 +7,11 @@ import 'package:provider/provider.dart';
 
 abstract class IPostStatusSettingsBloc
     implements IGlobalOrInstanceSettingsBloc<PostStatusSettings?> {
-  static IPostStatusSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IPostStatusSettingsBloc>(context,
-          listen: listen);
+  static IPostStatusSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPostStatusSettingsBloc>(context, listen: listen);
 
   bool? get markMediaAsNsfwOnAttach;
 

@@ -8,8 +8,8 @@ class GlobalPostStatusSettingsLocalPreferencesBloc
     extends PostStatusSettingsLocalPreferencesBloc
     implements IGlobalPostStatusSettingsLocalPreferencesBloc {
   GlobalPostStatusSettingsLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService)
-      : super(preferencesService, "postStatus.settings.global");
+    ILocalPreferencesService preferencesService,
+  ) : super(preferencesService, "postStatus.settings.global");
 
   @override
   PostStatusSettings get defaultValue => PostStatusSettings(

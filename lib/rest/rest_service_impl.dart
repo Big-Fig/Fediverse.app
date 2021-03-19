@@ -45,11 +45,13 @@ class RestService extends DisposableOwner implements IRestService {
 
   @override
   Future<http.Response> sendHttpRequest<T extends RestRequest, K>(
-      T request) async {
+    T request,
+  ) async {
     var url = createUrl(
-        baseUri: baseUri,
-        relativeUrlPath: request.relativeUrlPath,
-        queryArgs: request.queryArgs);
+      baseUri: baseUri,
+      relativeUrlPath: request.relativeUrlPath,
+      queryArgs: request.queryArgs,
+    );
 
     _logger.fine(() => "start send $url request $request");
 
@@ -120,8 +122,12 @@ class RestService extends DisposableOwner implements IRestService {
 //            body: requestBodyJson, headers: requestHeaders);
         break;
       case RestRequestType.put:
-        responseFuture = http.put(url,
-            headers: requestHeaders, body: requestBodyJson, encoding: encoding);
+        responseFuture = http.put(
+          url,
+          headers: requestHeaders,
+          body: requestBodyJson,
+          encoding: encoding,
+        );
         break;
       case RestRequestType.head:
         assert(body?.isNotEmpty != true);
@@ -185,9 +191,14 @@ class RestService extends DisposableOwner implements IRestService {
   }
 
   Future<http.MultipartFile> createMultipartFile(
-      String path, String fileParamKey) async {
-    return await http.MultipartFile.fromPath(fileParamKey, path,
-        filename: p.basename(path));
+    String path,
+    String fileParamKey,
+  ) async {
+    return await http.MultipartFile.fromPath(
+      fileParamKey,
+      path,
+      filename: p.basename(path),
+    );
   }
 
   static Map<String, String> buildJsonTypeHeaders() {
@@ -200,11 +211,13 @@ class RestService extends DisposableOwner implements IRestService {
   @override
   Future<http.Response>
       uploadFileMultipartRequest<T extends UploadMultipartRestRequest, K>(
-          T request) async {
+    T request,
+  ) async {
     var url = createUrl(
-        baseUri: baseUri,
-        relativeUrlPath: request.relativeUrlPath,
-        queryArgs: request.queryArgs);
+      baseUri: baseUri,
+      relativeUrlPath: request.relativeUrlPath,
+      queryArgs: request.queryArgs,
+    );
 
     _logger.fine(() => "start send $url request $request");
     var requestType = request.type;

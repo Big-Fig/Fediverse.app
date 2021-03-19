@@ -119,18 +119,20 @@ class _TimelinesHomeTabPageBlocsListProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<TimelineTabBlocsList?>(
-        stream: ITimelineTabListBloc.of(context, listen: false)
-            .timelineTabBlocsListStream,
-        builder: (context, snapshot) {
-          var timelineTabBlocsList = snapshot.data;
+      stream: ITimelineTabListBloc.of(context, listen: false)
+          .timelineTabBlocsListStream,
+      builder: (context, snapshot) {
+        var timelineTabBlocsList = snapshot.data;
 
-          _logger.finest(
-              () => "StreamBuilder timelineTabBlocsList $timelineTabBlocsList");
-          return Provider<TimelineTabBlocsList?>.value(
-            value: timelineTabBlocsList,
-            child: _TimelinesHomeTabPageBody(),
-          );
-        });
+        _logger.finest(
+          () => "StreamBuilder timelineTabBlocsList $timelineTabBlocsList",
+        );
+        return Provider<TimelineTabBlocsList?>.value(
+          value: timelineTabBlocsList,
+          child: _TimelinesHomeTabPageBody(),
+        );
+      },
+    );
   }
 }
 
@@ -149,7 +151,8 @@ class _TimelinesHomeTabPageBody extends StatelessWidget {
           var timelinesHomeTabBloc = ITimelinesHomeTabBloc.of(context);
 
           _logger.finest(
-              () => "IFediNestedScrollViewWithNestedScrollableTabsBloc update");
+            () => "IFediNestedScrollViewWithNestedScrollableTabsBloc update",
+          );
 
           return FediNestedScrollViewWithNestedScrollableTabsBloc(
             nestedScrollControllerBloc:
@@ -189,7 +192,10 @@ class _TimelinesHomeTabPageBody extends StatelessWidget {
   }
 
   Provider<ITimelineTabBloc> _provideTabBodyContext(
-      BuildContext context, int index, Widget child) {
+    BuildContext context,
+    int index,
+    Widget child,
+  ) {
     var timelineTabListBloc = ITimelineTabListBloc.of(context, listen: false);
     var tabBloc =
         timelineTabListBloc.timelineTabBlocsList!.timelineTabBlocs[index];
@@ -326,7 +332,7 @@ class _TimelinesHomeTabPageTabLoadingWidget extends StatelessWidget {
           Text(
             S.of(context).app_timeline_loading,
             style: IFediUiTextTheme.of(context).bigShortBoldDarkGrey,
-          )
+          ),
         ],
       ),
     );

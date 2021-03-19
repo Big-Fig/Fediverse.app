@@ -55,19 +55,20 @@ class _FediVideoPlayerPlayPauseButtonInitializedWidget extends StatelessWidget {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
 
     return StreamBuilder<bool>(
-        stream: videoMediaPlayerBloc.isControlsVisibleStream,
-        builder: (context, snapshot) {
-          var isControlsVisible = snapshot.data ?? false;
+      stream: videoMediaPlayerBloc.isControlsVisibleStream,
+      builder: (context, snapshot) {
+        var isControlsVisible = snapshot.data ?? false;
 
-          if (isControlsVisible) {
-            return _FediVideoPlayerPlayPauseControlsWidget(
-              size: size,
-              iconSize: iconSize,
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+        if (isControlsVisible) {
+          return _FediVideoPlayerPlayPauseControlsWidget(
+            size: size,
+            iconSize: iconSize,
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 

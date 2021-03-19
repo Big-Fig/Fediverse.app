@@ -6,8 +6,12 @@ abstract class ISingleSelectFromListValueFormFieldBloc<T>
     implements ISelectFromListValueFormFieldBloc<T> {
   List<T> get possibleValues;
 
-  static ISingleSelectFromListValueFormFieldBloc<T> of<T>(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<ISingleSelectFromListValueFormFieldBloc<T>>(context,
-          listen: listen);
+  static ISingleSelectFromListValueFormFieldBloc<T> of<T>(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<ISingleSelectFromListValueFormFieldBloc<T>>(
+        context,
+        listen: listen,
+      );
 }

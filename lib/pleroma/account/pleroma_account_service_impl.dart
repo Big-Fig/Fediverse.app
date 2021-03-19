@@ -58,7 +58,8 @@ class PleromaAccountService extends DisposableOwner
   }
 
   List<IPleromaAccountIdentityProof> parseAccountAccountIdentityProofList(
-      Response httpResponse) {
+    Response httpResponse,
+  ) {
     if (httpResponse.statusCode == 200) {
       return PleromaAccountIdentityProof.listFromJsonString(httpResponse.body);
     } else {
@@ -74,7 +75,9 @@ class PleromaAccountService extends DisposableOwner
       return PleromaList.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaAccountException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -83,27 +86,35 @@ class PleromaAccountService extends DisposableOwner
       return PleromaStatus.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaAccountException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
   IPleromaAccountRelationship parseAccountRelationshipResponse(
-      Response httpResponse) {
+    Response httpResponse,
+  ) {
     if (httpResponse.statusCode == 200) {
       return PleromaAccountRelationship.fromJsonString(httpResponse.body);
     } else {
       throw PleromaAccountException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
   List<IPleromaAccountRelationship> parseAccountRelationshipResponseList(
-      Response httpResponse) {
+    Response httpResponse,
+  ) {
     if (httpResponse.statusCode == 200) {
       return PleromaAccountRelationship.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaAccountException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -112,7 +123,9 @@ class PleromaAccountService extends DisposableOwner
       return PleromaAccount.fromJsonString(httpResponse.body);
     } else {
       throw PleromaAccountException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -213,7 +226,10 @@ class PleromaAccountService extends DisposableOwner
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: urlPath.join(
-            pleromaAccountRelativeUrlPath, accountRemoteId, "favourites"),
+          pleromaAccountRelativeUrlPath,
+          accountRemoteId,
+          "favourites",
+        ),
         queryArgs: [
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],

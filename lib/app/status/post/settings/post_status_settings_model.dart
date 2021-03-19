@@ -63,7 +63,8 @@ class PostStatusSettings implements IJsonObject, ISettings<PostStatusSettings> {
 
   static List<PostStatusSettings> listFromJsonString(String str) =>
       List<PostStatusSettings>.from(
-          json.decode(str).map((x) => PostStatusSettings.fromJson(x)));
+        json.decode(str).map((x) => PostStatusSettings.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$PostStatusSettingsToJson(this);

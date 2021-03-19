@@ -99,8 +99,10 @@ class AuthInstance extends IJsonObject {
         ' authCode: $authCode, isPleromaInstance: $isPleroma}';
   }
 
-  bool isInstanceWithHostAndAcct(
-          {required String? host, required String? acct}) =>
+  bool isInstanceWithHostAndAcct({
+    required String? host,
+    required String? acct,
+  }) =>
       this.acct == acct && urlHost == host;
 
   AuthInstance copyWith({
@@ -133,7 +135,8 @@ class AuthInstance extends IJsonObject {
 
   static List<AuthInstance> listFromJsonString(String str) =>
       List<AuthInstance>.from(
-          json.decode(str).map((x) => AuthInstance.fromJson(x)));
+        json.decode(str).map((x) => AuthInstance.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$AuthInstanceToJson(this);

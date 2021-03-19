@@ -21,11 +21,15 @@ void showEditGlobalPaginationSettingsDialog({
     child: DisposableProvider<IPaginationSettingsBloc>(
       create: (context) => PaginationSettingsBloc(
         instanceLocalPreferencesBloc:
-            IInstancePaginationSettingsLocalPreferencesBloc.of(context,
-                listen: false),
+            IInstancePaginationSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
         globalLocalPreferencesBloc:
-            IGlobalPaginationSettingsLocalPreferencesBloc.of(context,
-                listen: false),
+            IGlobalPaginationSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
       ),
       child: DisposableProxyProvider<IPaginationSettingsBloc,
           IEditPaginationSettingsBloc>(

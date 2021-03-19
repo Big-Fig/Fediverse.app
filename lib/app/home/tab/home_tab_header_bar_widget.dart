@@ -36,7 +36,7 @@ class FediTabMainHeaderBarWidget extends StatelessWidget {
           if (endingWidgets != null)
             Row(
               children: endingWidgets!,
-            )
+            ),
         ],
       ),
     );

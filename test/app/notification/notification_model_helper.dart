@@ -16,15 +16,18 @@ Future<DbNotificationPopulatedWrapper> createTestNotification({
 }) async {
   account = account ?? await createTestAccount(seed: seed);
   var dbAccount = account.dbAccount;
-  return DbNotificationPopulatedWrapper(dbNotificationPopulated:DbNotificationPopulated(
-    dbNotification: await createTestDbNotification(
+  return DbNotificationPopulatedWrapper(
+    dbNotificationPopulated: DbNotificationPopulated(
+      dbNotification: await createTestDbNotification(
         seed: seed,
         remoteId: remoteId,
         dbAccount: dbAccount,
-        createdAt: createdAt),
-    dbAccount: dbAccount,
-    dbStatusPopulated: status,
-  ));
+        createdAt: createdAt,
+      ),
+      dbAccount: dbAccount,
+      dbStatusPopulated: status,
+    ),
+  );
 }
 
 void expectNotification(INotification? actual, INotification? expected) {

@@ -119,7 +119,8 @@ class RemoteStatusBloc extends StatusBloc {
     var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
     if (inReplyToAccountRemoteId != null) {
       var remoteAccount = await pleromaAccountService.getAccount(
-          accountRemoteId: inReplyToAccountRemoteId);
+        accountRemoteId: inReplyToAccountRemoteId,
+      );
 
       inReplyToAccountSubject.add(
         remoteAccount.toDbAccountWrapper(),
@@ -131,7 +132,8 @@ class RemoteStatusBloc extends StatusBloc {
     var inReplyToRemoteId = status.inReplyToRemoteId;
     if (inReplyToRemoteId != null) {
       var remoteStatus = await pleromaStatusService.getStatus(
-          statusRemoteId: inReplyToRemoteId);
+        statusRemoteId: inReplyToRemoteId,
+      );
 
       inReplyToStatusSubject.add(
         remoteStatus.toDbStatusPopulatedWrapper(),
@@ -241,6 +243,5 @@ class RemoteStatusBloc extends StatusBloc {
 
   @override
   // todo: should be implemented
-  bool get isPleroma =>
-      throw UnsupportedOnRemoteInstanceLocationException();
+  bool get isPleroma => throw UnsupportedOnRemoteInstanceLocationException();
 }

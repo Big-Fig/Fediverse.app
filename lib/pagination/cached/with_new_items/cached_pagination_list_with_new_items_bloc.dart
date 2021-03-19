@@ -6,10 +6,14 @@ import 'package:provider/provider.dart';
 abstract class ICachedPaginationListWithNewItemsBloc<
     TPage extends CachedPaginationPage<TItem>,
     TItem> implements ICachedPaginationListBloc<TPage, TItem> {
-  static ICachedPaginationListWithNewItemsBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<ICachedPaginationListWithNewItemsBloc>(context,
-          listen: listen);
+  static ICachedPaginationListWithNewItemsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<ICachedPaginationListWithNewItemsBloc>(
+        context,
+        listen: listen,
+      );
 
   TItem? get newerItem;
 

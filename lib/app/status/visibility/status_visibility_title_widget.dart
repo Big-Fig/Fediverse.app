@@ -1,6 +1,6 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/status/visibility/status_visibility_ui.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,17 +30,21 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
     required isPossibleToChangeVisibility,
     required isSelectedVisibility,
   }) =>
-      Text(mapVisibilityToTitle(context, visibility),
-          style: IFediUiTextTheme.of(context).mediumShortDarkGrey.copyWith(
-                color: calculateVisibilityColor(
-                  context: context,
-                  isSelectedVisibility: isSelectedVisibility,
-                  isPossibleToChangeVisibility: isPossibleToChangeVisibility,
-                ),
-              ));
+      Text(
+        mapVisibilityToTitle(context, visibility),
+        style: IFediUiTextTheme.of(context).mediumShortDarkGrey.copyWith(
+              color: calculateVisibilityColor(
+                context: context,
+                isSelectedVisibility: isSelectedVisibility,
+                isPossibleToChangeVisibility: isPossibleToChangeVisibility,
+              ),
+            ),
+      );
 
   static String mapVisibilityToTitle(
-      BuildContext context, PleromaVisibility visibility) {
+    BuildContext context,
+    PleromaVisibility visibility,
+  ) {
     switch (visibility) {
       case PleromaVisibility.public:
         return S.of(context).app_status_post_visibility_state_public;

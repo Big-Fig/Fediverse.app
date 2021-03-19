@@ -34,21 +34,22 @@ class _StatusReblogActionCounterWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context);
 
     return StreamBuilder<int?>(
-        stream: statusBloc.reblogPlusOriginalReblogsCountStream,
-        builder: (context, snapshot) {
-          var reblogsCount = snapshot.data;
+      stream: statusBloc.reblogPlusOriginalReblogsCountStream,
+      builder: (context, snapshot) {
+        var reblogsCount = snapshot.data;
 
-          if (reblogsCount == null) {
-            return const SizedBox.shrink();
-          }
+        if (reblogsCount == null) {
+          return const SizedBox.shrink();
+        }
 
-          return Provider.value(
-            value: reblogsCount,
-            child: StatusActionCounterWidget(
-              onClick: _onCounterClick,
-            ),
-          );
-        });
+        return Provider.value(
+          value: reblogsCount,
+          child: StatusActionCounterWidget(
+            onClick: _onCounterClick,
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -67,22 +68,24 @@ class _StatusReblogActionButtonWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context);
 
     return StreamBuilder<bool?>(
-        stream: statusBloc.rebloggedStream,
-        initialData: statusBloc.reblogged,
-        builder: (context, snapshot) {
-          var reblogged = snapshot.data;
+      stream: statusBloc.rebloggedStream,
+      initialData: statusBloc.reblogged,
+      builder: (context, snapshot) {
+        var reblogged = snapshot.data;
 
-          return PleromaAsyncOperationButtonBuilderWidget(
-              showProgressDialog: false,
-              builder: (context, onPressed) => FediIconButton(
-                    iconSize: FediSizes.bigIconSize,
-                    color: reblogged!
-                        ? IFediUiColorTheme.of(context).primary
-                        : IFediUiColorTheme.of(context).darkGrey,
-                    icon: Icon(FediIcons.reply),
-                    onPressed: onPressed,
-                  ),
-              asyncButtonAction: statusBloc.toggleReblog);
-        });
+        return PleromaAsyncOperationButtonBuilderWidget(
+          showProgressDialog: false,
+          builder: (context, onPressed) => FediIconButton(
+            iconSize: FediSizes.bigIconSize,
+            color: reblogged!
+                ? IFediUiColorTheme.of(context).primary
+                : IFediUiColorTheme.of(context).darkGrey,
+            icon: Icon(FediIcons.reply),
+            onPressed: onPressed,
+          ),
+          asyncButtonAction: statusBloc.toggleReblog,
+        );
+      },
+    );
   }
 }

@@ -94,8 +94,10 @@ class _UploadMediaAttachmentListNonMediaItemWidgetState
     );
   }
 
-  Widget buildActionsWidget(IUploadMediaAttachmentBloc mediaItemBloc,
-      IUploadMediaAttachmentsCollectionBloc mediaAttachmentsCollectionBloc) {
+  Widget buildActionsWidget(
+    IUploadMediaAttachmentBloc mediaItemBloc,
+    IUploadMediaAttachmentsCollectionBloc mediaAttachmentsCollectionBloc,
+  ) {
     return _UploadMediaAttachmentListNonMediaItemActionsWidget();
   }
 }

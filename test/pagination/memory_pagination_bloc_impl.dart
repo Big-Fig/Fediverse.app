@@ -19,10 +19,11 @@ class MemoryPaginationBloc<TItem>
           paginationSettingsBloc: paginationSettingsBloc,
         );
 
-  static MemoryPaginationBloc<TestPaginationItem> createTestWithSize(
-      {required int size,
-      required int maximumCachedPagesCount,
-      required PaginationPageSize paginationPageSize}) {
+  static MemoryPaginationBloc<TestPaginationItem> createTestWithSize({
+    required int size,
+    required int maximumCachedPagesCount,
+    required PaginationPageSize paginationPageSize,
+  }) {
     return MemoryPaginationBloc(
       maximumCachedPagesCount: maximumCachedPagesCount,
       paginationSettingsBloc: MemoryPaginationSettingsBloc(
@@ -59,9 +60,10 @@ class MemoryPaginationBloc<TItem>
     }
 
     return CachedPaginationPage<TItem>(
-        isActuallyRefreshedFromRemote: forceToSkipCache,
-        requestedLimitPerPage: itemsCountPerPage,
-        values: values,
-        pageIndex: pageIndex);
+      isActuallyRefreshedFromRemote: forceToSkipCache,
+      requestedLimitPerPage: itemsCountPerPage,
+      values: values,
+      pageIndex: pageIndex,
+    );
   }
 }

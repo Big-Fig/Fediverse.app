@@ -8,8 +8,10 @@ import 'package:provider/provider.dart';
 
 abstract class IAccountNetworkOnlyListBloc extends DisposableOwner
     implements INetworkOnlyListBloc<IAccount>, IAccountListBloc {
-  static IAccountNetworkOnlyListBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IAccountNetworkOnlyListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IAccountNetworkOnlyListBloc>(context, listen: listen);
 
   @override

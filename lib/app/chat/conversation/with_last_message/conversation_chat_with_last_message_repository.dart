@@ -8,10 +8,14 @@ import 'package:provider/provider.dart';
 
 abstract class IConversationChatWithLastMessageRepository
     implements IDisposable {
-  static IConversationChatWithLastMessageRepository of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IConversationChatWithLastMessageRepository>(context,
-          listen: listen);
+  static IConversationChatWithLastMessageRepository of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IConversationChatWithLastMessageRepository>(
+        context,
+        listen: listen,
+      );
 
   Future<List<IConversationChatWithLastMessage>>
       getConversationsWithLastMessage({

@@ -167,9 +167,10 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       try {
         subscription = await pleromaPushService.subscribe(
           endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
-              account: currentInstance.acct,
-              baseServerUrl: currentInstance.uri,
-              fcmDeviceToken: deviceToken),
+            account: currentInstance.acct,
+            baseServerUrl: currentInstance.uri,
+            fcmDeviceToken: deviceToken,
+          ),
           data: PleromaPushSubscribeData(
             alerts: PleromaPushSettingsDataAlerts(
               favourite: newSettings!.favourite,
@@ -187,7 +188,10 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       } catch (error, stackTrace) {
         success = false;
         _logger.warning(
-            () => "failed to update subscription ", error, stackTrace);
+          () => "failed to update subscription ",
+          error,
+          stackTrace,
+        );
       }
 
       if (success) {
@@ -198,7 +202,8 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
             mention: subscription.alerts!.mention ?? false,
             reblog: subscription.alerts!.reblog ?? false,
             poll: subscription.alerts!.poll ?? false,
-            pleromaChatMention: subscription.alerts!.pleromaChatMention ?? false,
+            pleromaChatMention:
+                subscription.alerts!.pleromaChatMention ?? false,
             pleromaEmojiReaction:
                 subscription.alerts!.pleromaEmojiReaction ?? false,
           ),

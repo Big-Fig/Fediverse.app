@@ -7,27 +7,30 @@ import 'package:overlay_support/overlay_support.dart';
 
 class OverlayNotificationService extends DisposableOwner
     implements IOverlayNotificationService {
-  OverlaySupportEntry showFediNotificationOverlay(Widget content,
-      {Widget? leading,
-      Widget? subtitle,
-      Widget? trailing,
-      EdgeInsetsGeometry? contentPadding,
-      Color? background,
-      Color? foreground,
-      double elevation = 16,
-      Key? key,
-      bool autoDismiss = true,
-      bool slideDismiss = false,
-      NotificationPosition position = NotificationPosition.top}) {
-    return showOverlayNotification((context) {
-      return SlideDismissible(
-        enable: slideDismiss,
-        key: ValueKey(key),
-        child: FediLightStatusBarStyleArea(
-          child: Material(
-            color: background ?? Theme.of(context).accentColor,
-            elevation: elevation,
-            child: SafeArea(
+  OverlaySupportEntry showFediNotificationOverlay(
+    Widget content, {
+    Widget? leading,
+    Widget? subtitle,
+    Widget? trailing,
+    EdgeInsetsGeometry? contentPadding,
+    Color? background,
+    Color? foreground,
+    double elevation = 16,
+    Key? key,
+    bool autoDismiss = true,
+    bool slideDismiss = false,
+    NotificationPosition position = NotificationPosition.top,
+  }) {
+    return showOverlayNotification(
+      (context) {
+        return SlideDismissible(
+          enable: slideDismiss,
+          key: ValueKey(key),
+          child: FediLightStatusBarStyleArea(
+            child: Material(
+              color: background ?? Theme.of(context).accentColor,
+              elevation: elevation,
+              child: SafeArea(
                 bottom: position == NotificationPosition.bottom,
                 top: position == NotificationPosition.top,
                 child: ListTileTheme(
@@ -42,14 +45,16 @@ class OverlayNotificationService extends DisposableOwner
                     trailing: trailing,
                     contentPadding: contentPadding,
                   ),
-                )),
+                ),
+              ),
+            ),
           ),
-        ),
-      );
-    },
-        duration: autoDismiss ? null : Duration.zero,
-        key: key,
-        position: position);
+        );
+      },
+      duration: autoDismiss ? null : Duration.zero,
+      key: key,
+      position: position,
+    );
   }
 
   @override

@@ -24,11 +24,14 @@ class SearchStatusesPaginationListBloc
   }
 
   static SearchStatusesPaginationListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       SearchStatusesPaginationListBloc(
-          paginationBloc:
-              Provider.of<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-                  context,
-                  listen: false),
-          searchInputBloc: ISearchInputBloc.of(context, listen: false));
+        paginationBloc:
+            Provider.of<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+          context,
+          listen: false,
+        ),
+        searchInputBloc: ISearchInputBloc.of(context, listen: false),
+      );
 }

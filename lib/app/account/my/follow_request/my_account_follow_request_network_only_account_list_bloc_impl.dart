@@ -73,7 +73,8 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     required IAccount account,
   }) async {
     var accountRelationship = await pleromaMyAccountService.rejectFollowRequest(
-        accountRemoteId: account.remoteId);
+      accountRemoteId: account.remoteId,
+    );
 
     await _processFollowRequestAction(
       account,
@@ -112,7 +113,8 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
   IPleromaApi get pleromaApi => pleromaMyAccountService;
 
   static MyAccountFollowRequestNetworkOnlyAccountListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       MyAccountFollowRequestNetworkOnlyAccountListBloc(
         pleromaMyAccountService: IPleromaMyAccountService.of(
           context,

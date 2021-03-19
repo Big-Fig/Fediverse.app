@@ -224,8 +224,10 @@ MaterialPageRoute createCustomListPageRoute({
                         listen: false,
                       ),
                       timelineLocalPreferencesBloc:
-                          ITimelineLocalPreferencesBloc.of(context,
-                              listen: false),
+                          ITimelineLocalPreferencesBloc.of(
+                        context,
+                        listen: false,
+                      ),
                       currentInstanceBloc: ICurrentAuthInstanceBloc.of(
                         context,
                         listen: false,

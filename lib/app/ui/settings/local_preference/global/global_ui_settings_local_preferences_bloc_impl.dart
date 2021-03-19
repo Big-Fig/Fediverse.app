@@ -9,8 +9,8 @@ class GlobalUiSettingsLocalPreferencesBloc
     extends UiSettingsLocalPreferencesBloc
     implements IGlobalUiSettingsLocalPreferencesBloc {
   GlobalUiSettingsLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService)
-      : super(preferencesService, "ui.settings.global");
+    ILocalPreferencesService preferencesService,
+  ) : super(preferencesService, "ui.settings.global");
 
   @override
   UiSettings get defaultValue => UiSettings(

@@ -18,18 +18,23 @@ class SingleMediaPickerBloc extends MediaPickerBloc
   }
 
   @override
-  Future toggleFileMetadataSelection(IMediaDeviceFileMetadata mediaDeviceFileMetadata) async {
+  Future toggleFileMetadataSelection(
+    IMediaDeviceFileMetadata mediaDeviceFileMetadata,
+  ) async {
     var mediaDeviceFile = await mediaDeviceFileMetadata.loadMediaDeviceFile();
     fileSelectionStreamController.add(mediaDeviceFile);
   }
 
   @override
-  bool isFileMetadataSelected(IMediaDeviceFileMetadata mediaDeviceFileMetadata) =>
+  bool isFileMetadataSelected(
+    IMediaDeviceFileMetadata mediaDeviceFileMetadata,
+  ) =>
       false;
 
   @override
   Stream<bool> isFileMetadataSelectedStream(
-          IMediaDeviceFileMetadata mediaDeviceFileMetadata) =>
+    IMediaDeviceFileMetadata mediaDeviceFileMetadata,
+  ) =>
       Stream.value(
         isFileMetadataSelected(mediaDeviceFileMetadata),
       );

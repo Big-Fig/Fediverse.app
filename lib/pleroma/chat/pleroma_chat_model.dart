@@ -69,7 +69,8 @@ class PleromaChat implements IPleromaChat {
 
   static List<PleromaChat> listFromJsonString(String str) =>
       List<PleromaChat>.from(
-          json.decode(str).map((x) => PleromaChat.fromJson(x)));
+        json.decode(str).map((x) => PleromaChat.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaChatToJson(this);
 
@@ -197,7 +198,8 @@ class PleromaChatMessage extends IPleromaChatMessage {
 
   static List<PleromaChatMessage> listFromJsonString(String str) =>
       List<PleromaChatMessage>.from(
-          json.decode(str).map((x) => PleromaChatMessage.fromJson(x)));
+        json.decode(str).map((x) => PleromaChatMessage.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaChatMessageToJson(this);
 
@@ -274,7 +276,8 @@ class PleromaChatMessageSendData implements IPleromaChatMessageSendData {
 
   static List<PleromaChatMessageSendData> listFromJsonString(String str) =>
       List<PleromaChatMessageSendData>.from(
-          json.decode(str).map((x) => PleromaChatMessageSendData.fromJson(x)));
+        json.decode(str).map((x) => PleromaChatMessageSendData.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$PleromaChatMessageSendDataToJson(this);

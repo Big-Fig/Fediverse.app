@@ -9,16 +9,17 @@ class StatusCreatedAtWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context);
 
     return StreamBuilder<DateTime?>(
-        stream: statusBloc.createdAtStream,
-        initialData: statusBloc.createdAt,
-        builder: (context, snapshot) {
-          var createdAt = snapshot.data;
+      stream: statusBloc.createdAtStream,
+      initialData: statusBloc.createdAt,
+      builder: (context, snapshot) {
+        var createdAt = snapshot.data;
 
-          return DateTimeDynamicTimeAgoWidget(
-            dateTime: createdAt,
-            textStyle: IFediUiTextTheme.of(context).smallShortGrey,
-          );
-        });
+        return DateTimeDynamicTimeAgoWidget(
+          dateTime: createdAt,
+          textStyle: IFediUiTextTheme.of(context).smallShortGrey,
+        );
+      },
+    );
   }
 
   const StatusCreatedAtWidget();

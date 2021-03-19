@@ -3,8 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../../log_test_utils.dart';
 
-
-
 void main() {
   initTestLog();
   test('findAcctMentionsInText', () {
@@ -14,13 +12,16 @@ void main() {
       "test1",
       "test2",
     ]);
-    expect(PostStatusBloc.findAcctMentionsInText("@ @test@pleroma.com"),
-        ["test@pleroma.com"]);
+    expect(
+      PostStatusBloc.findAcctMentionsInText("@ @test@pleroma.com"),
+      ["test@pleroma.com"],
+    );
   });
 
   test('prependAccts', () {
     expect(
-        PostStatusBloc.prependAccts("text", ["test1", "test2"]),
-        "@test1, @test2 text");
+      PostStatusBloc.prependAccts("text", ["test1", "test2"]),
+      "@test1, @test2 text",
+    );
   });
 }

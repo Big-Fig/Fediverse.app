@@ -16,14 +16,15 @@ class SearchStatusPaginationListTimelineWidget
     bool? alwaysShowFooter,
     required bool needWatchLocalRepositoryForUpdates,
   }) : super(
-            key: key,
-            header: header,
-            footer: footer,
-            needWatchLocalRepositoryForUpdates:
-                needWatchLocalRepositoryForUpdates,
-            forceFirstItemPadding: forceFirstItemPadding,
-            alwaysShowFooter: alwaysShowFooter,
-            alwaysShowHeader: alwaysShowHeader);
+          key: key,
+          header: header,
+          footer: footer,
+          needWatchLocalRepositoryForUpdates:
+              needWatchLocalRepositoryForUpdates,
+          forceFirstItemPadding: forceFirstItemPadding,
+          alwaysShowFooter: alwaysShowFooter,
+          alwaysShowHeader: alwaysShowHeader,
+        );
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
@@ -33,8 +34,9 @@ class SearchStatusPaginationListTimelineWidget
   }) {
     var timelinePaginationListBloc =
         Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
-            context,
-            listen: listen);
+      context,
+      listen: listen,
+    );
     return timelinePaginationListBloc;
   }
 }

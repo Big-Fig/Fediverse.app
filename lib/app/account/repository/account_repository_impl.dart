@@ -190,8 +190,9 @@ class AccountRepository extends AsyncInitLoadingBloc
       var accountsToInsert = pleromaAccounts.where(
         (remoteAccount) {
           var found = existConversationAccount.firstWhereOrNull(
-              (conversationAccount) =>
-                  conversationAccount.accountRemoteId == remoteAccount.id);
+            (conversationAccount) =>
+                conversationAccount.accountRemoteId == remoteAccount.id,
+          );
           var exist = found != null;
           return !exist;
         },
@@ -199,16 +200,17 @@ class AccountRepository extends AsyncInitLoadingBloc
 
       if (accountsToInsert.isNotEmpty == true) {
         await conversationAccountsDao.insertAll(
-            accountsToInsert
-                .map(
-                  (accountToInsert) => DbConversationAccount(
-                    id: null,
-                    conversationRemoteId: conversationRemoteId,
-                    accountRemoteId: accountToInsert.id,
-                  ),
-                )
-                .toList(),
-            InsertMode.insertOrReplace);
+          accountsToInsert
+              .map(
+                (accountToInsert) => DbConversationAccount(
+                  id: null,
+                  conversationRemoteId: conversationRemoteId,
+                  accountRemoteId: accountToInsert.id,
+                ),
+              )
+              .toList(),
+          InsertMode.insertOrReplace,
+        );
       }
     }
 
@@ -218,8 +220,9 @@ class AccountRepository extends AsyncInitLoadingBloc
 
       var accountsToInsert = pleromaAccounts.where(
         (remoteAccount) {
-          var found = existChatAccounts.firstWhereOrNull((chatAccount) =>
-              chatAccount.accountRemoteId == remoteAccount.id);
+          var found = existChatAccounts.firstWhereOrNull(
+            (chatAccount) => chatAccount.accountRemoteId == remoteAccount.id,
+          );
           var exist = found != null;
           return !exist;
         },

@@ -52,7 +52,8 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
         }
 
         _logger.finest(
-            () => "backgroundImageAbsolutePath $backgroundImageAbsolutePath");
+          () => "backgroundImageAbsolutePath $backgroundImageAbsolutePath",
+        );
 
         return Provider<String?>.value(
           value: backgroundImageAbsolutePath,
@@ -75,25 +76,26 @@ class _FediInstanceImageBackgroundCachedNetworkImageWidget
 
     if (backgroundImageAbsolutePath.isNotEmpty == true) {
       return LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-        return IFilesCacheService.of(context).createCachedNetworkImageWidget(
-          imageUrl: backgroundImageAbsolutePath,
-          width: constraints.maxWidth,
-          memCacheWidth: constraints.maxWidth.toInt(),
-          errorWidget: (BuildContext context, String url, Object? error) =>
-              buildDefault(
-            context: context,
-          ),
-          placeholder: (_, __) =>
-              const _FediInstanceImageBackgroundPlaceholderWidget(),
-          imageBuilder: (BuildContext context, ImageProvider imageProvider) {
-            return Provider<ImageProvider>.value(
-              value: imageProvider,
-              child: const _FediInstanceImageBackgroundImageProviderWidget(),
-            );
-          },
-        );
-      });
+        builder: (BuildContext context, BoxConstraints constraints) {
+          return IFilesCacheService.of(context).createCachedNetworkImageWidget(
+            imageUrl: backgroundImageAbsolutePath,
+            width: constraints.maxWidth,
+            memCacheWidth: constraints.maxWidth.toInt(),
+            errorWidget: (BuildContext context, String url, Object? error) =>
+                buildDefault(
+              context: context,
+            ),
+            placeholder: (_, __) =>
+                const _FediInstanceImageBackgroundPlaceholderWidget(),
+            imageBuilder: (BuildContext context, ImageProvider imageProvider) {
+              return Provider<ImageProvider>.value(
+                value: imageProvider,
+                child: const _FediInstanceImageBackgroundImageProviderWidget(),
+              );
+            },
+          );
+        },
+      );
     } else {
       return buildDefault(
         context: context,
@@ -162,6 +164,7 @@ class _FediInstanceImageBackgroundDarkOverlayWidget extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         child: child,
         decoration: BoxDecoration(
-            color: IFediUiColorTheme.of(context).imageDarkOverlay),
+          color: IFediUiColorTheme.of(context).imageDarkOverlay,
+        ),
       );
 }

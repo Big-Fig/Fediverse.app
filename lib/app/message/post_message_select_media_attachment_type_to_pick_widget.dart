@@ -243,12 +243,13 @@ class _PostMessageSelectMediaAttachmentTypeToPickActionWidget
             width: _typeContainerSize,
             height: _typeContainerSize,
             decoration: BoxDecoration(
-                border:
-                    Border.all(color: IFediUiColorTheme.of(context).darkGrey),
-                borderRadius: BorderRadius.circular(_typeContainerSize)),
+              border: Border.all(color: IFediUiColorTheme.of(context).darkGrey),
+              borderRadius: BorderRadius.circular(_typeContainerSize),
+            ),
             child: Center(
-                child: Icon(iconData,
-                    color: IFediUiColorTheme.of(context).darkGrey)),
+              child:
+                  Icon(iconData, color: IFediUiColorTheme.of(context).darkGrey),
+            ),
           ),
           const SizedBox(
             height: 6,
@@ -256,7 +257,7 @@ class _PostMessageSelectMediaAttachmentTypeToPickActionWidget
           Text(
             label,
             style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
-          )
+          ),
         ],
       ),
     );

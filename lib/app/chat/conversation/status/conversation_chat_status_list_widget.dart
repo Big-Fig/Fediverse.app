@@ -27,24 +27,28 @@ class ConversationChatStatusListWidget
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
-      retrievePaginationListBloc(BuildContext context,
-          {required bool listen}) {
+      retrievePaginationListBloc(
+    BuildContext context, {
+    required bool listen,
+  }) {
     var timelinePaginationListBloc =
         Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
-            context,
-            listen: listen);
+      context,
+      listen: listen,
+    );
     return timelinePaginationListBloc;
   }
 
   // override to move refresh/update features from top/bottom to bottom/top
   @override
   Widget buildSmartRefresher(
-          IPaginationListBloc paginationListBloc,
-          BuildContext context,
-          List<IStatus>? items,
-          RefreshController refreshController,
-          ScrollController? scrollController,
-          Widget Function(BuildContext context) smartRefresherBodyBuilder) =>
+    IPaginationListBloc paginationListBloc,
+    BuildContext context,
+    List<IStatus>? items,
+    RefreshController refreshController,
+    ScrollController? scrollController,
+    Widget Function(BuildContext context) smartRefresherBodyBuilder,
+  ) =>
       FediListSmartRefresherWidget(
         key: key,
         enablePullDown: true,
@@ -58,35 +62,42 @@ class ConversationChatStatusListWidget
         primary: scrollController == null,
         onRefresh: () {
           return AsyncSmartRefresherHelper.doAsyncRefresh(
-              controller: refreshController,
-              action: () async {
-                var success;
-                try {
-                  success = await additionalPreRefreshAction(context);
-                } catch (e, stackTrace) {
-                  success = false;
-                  _logger.severe(
-                      () => "additionalPreRefreshAction()", e, stackTrace);
-                }
-                _logger.finest(() => "additionalPreRefreshAction() $success");
-                var state = await paginationListBloc.refreshWithoutController();
-                _logger.finest(() =>
-                    "paginationListBloc.refreshWithoutController() $state");
-                return state;
-              });
+            controller: refreshController,
+            action: () async {
+              var success;
+              try {
+                success = await additionalPreRefreshAction(context);
+              } catch (e, stackTrace) {
+                success = false;
+                _logger.severe(
+                  () => "additionalPreRefreshAction()",
+                  e,
+                  stackTrace,
+                );
+              }
+              _logger.finest(() => "additionalPreRefreshAction() $success");
+              var state = await paginationListBloc.refreshWithoutController();
+              _logger.finest(
+                () => "paginationListBloc.refreshWithoutController() $state",
+              );
+              return state;
+            },
+          );
         },
         onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
-            controller: refreshController,
-            action: paginationListBloc.loadMoreWithoutController),
+          controller: refreshController,
+          action: paginationListBloc.loadMoreWithoutController,
+        ),
         child: smartRefresherBodyBuilder(context),
       );
 
   @override
-  ScrollView buildItemsCollectionView(
-      {required BuildContext context,
-      required List<IStatus> items,
-      required Widget? header,
-      required Widget? footer}) {
+  ScrollView buildItemsCollectionView({
+    required BuildContext context,
+    required List<IStatus> items,
+    required Widget? header,
+    required Widget? footer,
+  }) {
     assert(header == null, "header not supported");
     assert(footer == null, "footer not supported");
 
@@ -124,9 +135,11 @@ class ConversationChatStatusListWidget
               !CustomDateUtils.isSameDay(currentCreatedAt, previousCreatedAt);
           var isSameAccount = currentMessage.account.remoteId ==
               previousMessage!.account.remoteId;
-          isFirstInMinuteGroup =
-              !(CustomDateUtils.isSameMinute(currentCreatedAt, previousCreatedAt) &&
-                  isSameAccount);
+          isFirstInMinuteGroup = !(CustomDateUtils.isSameMinute(
+                currentCreatedAt,
+                previousCreatedAt,
+              ) &&
+              isSameAccount);
         } else {
           isFirstInDayGroup = true;
           isFirstInMinuteGroup = true;
@@ -146,15 +159,16 @@ class ConversationChatStatusListWidget
         var statusWidget = Provider.value(
           value: currentMessage,
           child: DisposableProxyProvider<IStatus, IStatusBloc>(
-              update: (context, value, previous) =>
-                  LocalStatusBloc.createFromContext(
-                    context,
-                    status: value,
-                  ),
-              child: ConversationChatStatusListItemWidget(
-                isLastInMinuteGroup: isLastInMinuteGroup,
-                isFirstInMinuteGroup: isFirstInMinuteGroup,
-              )),
+            update: (context, value, previous) =>
+                LocalStatusBloc.createFromContext(
+              context,
+              status: value,
+            ),
+            child: ConversationChatStatusListItemWidget(
+              isLastInMinuteGroup: isLastInMinuteGroup,
+              isFirstInMinuteGroup: isFirstInMinuteGroup,
+            ),
+          ),
         );
 
         if (isFirstInDayGroup) {
@@ -164,10 +178,11 @@ class ConversationChatStatusListWidget
               Padding(
                 padding: FediPadding.allSmallPadding,
                 child: Center(
-                    child: Text(
-                  _dateSeparatorDateFormat.format(currentCreatedAt),
-                  style: IFediUiTextTheme.of(context).smallShortBoldGrey,
-                )),
+                  child: Text(
+                    _dateSeparatorDateFormat.format(currentCreatedAt),
+                    style: IFediUiTextTheme.of(context).smallShortBoldGrey,
+                  ),
+                ),
               ),
             ],
           );

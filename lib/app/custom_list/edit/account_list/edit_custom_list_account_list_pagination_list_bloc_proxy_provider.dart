@@ -11,8 +11,9 @@ class EditCustomListAccountListPaginationListBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  EditCustomListAccountListPaginationListBlocProxyProvider(
-      {required this.child});
+  EditCustomListAccountListPaginationListBlocProxyProvider({
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

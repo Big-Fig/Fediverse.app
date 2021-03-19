@@ -259,27 +259,28 @@ class _InstanceDetailsBodyDetailsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
     return StreamBuilder<bool>(
-        stream: instanceDetailsBloc.isHaveDetailsFieldsStream,
-        initialData: instanceDetailsBloc.isHaveDetailsFields,
-        builder: (context, snapshot) {
-          var isHaveDetailsFields = snapshot.data!;
-          if (isHaveDetailsFields) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _InstanceDetailsGroupTitleWidget(
-                  title: S.of(context).app_instance_details_field_details_title,
-                ),
-                const _InstanceDetailsEmailWidget(),
-                const _InstanceDetailsVersionWidget(),
-                const _InstanceDetailsLanguagesWidget(),
-                const _InstanceDetailsVapidPublicKeyWidget(),
-              ],
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+      stream: instanceDetailsBloc.isHaveDetailsFieldsStream,
+      initialData: instanceDetailsBloc.isHaveDetailsFields,
+      builder: (context, snapshot) {
+        var isHaveDetailsFields = snapshot.data!;
+        if (isHaveDetailsFields) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _InstanceDetailsGroupTitleWidget(
+                title: S.of(context).app_instance_details_field_details_title,
+              ),
+              const _InstanceDetailsEmailWidget(),
+              const _InstanceDetailsVersionWidget(),
+              const _InstanceDetailsLanguagesWidget(),
+              const _InstanceDetailsVapidPublicKeyWidget(),
+            ],
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
@@ -591,42 +592,42 @@ class _InstanceDetailsStatsWidget extends StatelessWidget {
         var isHaveStatsFields = snapshot.data!;
         if (isHaveStatsFields) {
           return StreamBuilder<MastodonInstanceStats?>(
-              stream: instanceDetailsBloc.statsStream,
-              initialData: instanceDetailsBloc.stats,
-              builder: (context, snapshot) {
-                var stats = snapshot.data!;
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _InstanceDetailsGroupTitleWidget(
-                      title:
-                          S.of(context).app_instance_details_field_stats_title,
+            stream: instanceDetailsBloc.statsStream,
+            initialData: instanceDetailsBloc.stats,
+            builder: (context, snapshot) {
+              var stats = snapshot.data!;
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _InstanceDetailsGroupTitleWidget(
+                    title: S.of(context).app_instance_details_field_stats_title,
+                  ),
+                  if (stats.domainCount != null)
+                    _InstanceDetailsRowWidget(
+                      label: S
+                          .of(context)
+                          .app_instance_details_field_stats_domainCount_label,
+                      value: stats.domainCount?.toString(),
                     ),
-                    if (stats.domainCount != null)
-                      _InstanceDetailsRowWidget(
-                        label: S
-                            .of(context)
-                            .app_instance_details_field_stats_domainCount_label,
-                        value: stats.domainCount?.toString(),
-                      ),
-                    if (stats.statusCount != null)
-                      _InstanceDetailsRowWidget(
-                        label: S
-                            .of(context)
-                            .app_instance_details_field_stats_statusCount_label,
-                        value: stats.statusCount?.toString(),
-                      ),
-                    if (stats.userCount != null)
-                      _InstanceDetailsRowWidget(
-                        label: S
-                            .of(context)
-                            .app_instance_details_field_stats_userCount_label,
-                        value: stats.userCount?.toString(),
-                      ),
-                  ],
-                );
-              });
+                  if (stats.statusCount != null)
+                    _InstanceDetailsRowWidget(
+                      label: S
+                          .of(context)
+                          .app_instance_details_field_stats_statusCount_label,
+                      value: stats.statusCount?.toString(),
+                    ),
+                  if (stats.userCount != null)
+                    _InstanceDetailsRowWidget(
+                      label: S
+                          .of(context)
+                          .app_instance_details_field_stats_userCount_label,
+                      value: stats.userCount?.toString(),
+                    ),
+                ],
+              );
+            },
+          );
         } else {
           return const SizedBox.shrink();
         }
@@ -1034,73 +1035,74 @@ class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
     return StreamBuilder<bool>(
-        stream: instanceDetailsBloc.isHaveMessagesLimitsFieldsStream,
-        initialData: instanceDetailsBloc.isHaveMessagesLimitsFields,
-        builder: (context, snapshot) {
-          var isHaveMessagesLimitsFields = snapshot.data!;
-          if (isHaveMessagesLimitsFields) {
-            return StreamBuilder<PleromaInstancePollLimits?>(
-              stream: instanceDetailsBloc.pollLimitsStream,
-              initialData: instanceDetailsBloc.pollLimits,
-              builder: (context, snapshot) {
-                var pollLimits = snapshot.data;
+      stream: instanceDetailsBloc.isHaveMessagesLimitsFieldsStream,
+      initialData: instanceDetailsBloc.isHaveMessagesLimitsFields,
+      builder: (context, snapshot) {
+        var isHaveMessagesLimitsFields = snapshot.data!;
+        if (isHaveMessagesLimitsFields) {
+          return StreamBuilder<PleromaInstancePollLimits?>(
+            stream: instanceDetailsBloc.pollLimitsStream,
+            initialData: instanceDetailsBloc.pollLimits,
+            builder: (context, snapshot) {
+              var pollLimits = snapshot.data;
 
-                if (pollLimits != null) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _InstanceDetailsGroupTitleWidget(
-                        title: S
+              if (pollLimits != null) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _InstanceDetailsGroupTitleWidget(
+                      title: S
+                          .of(context)
+                          .app_instance_details_field_pollLimit_title,
+                    ),
+                    if (pollLimits.minExpiration != null)
+                      _InstanceDetailsRowWidget(
+                        label: S
                             .of(context)
-                            .app_instance_details_field_pollLimit_title,
+                            .app_instance_details_field_pollLimit_minExpiration_label,
+                        value: formatDuration(
+                          context: context,
+                          duration:
+                              Duration(seconds: pollLimits.minExpiration!),
+                        ),
                       ),
-                      if (pollLimits.minExpiration != null)
-                        _InstanceDetailsRowWidget(
-                          label: S
-                              .of(context)
-                              .app_instance_details_field_pollLimit_minExpiration_label,
-                          value: formatDuration(
-                            context: context,
-                            duration:
-                                Duration(seconds: pollLimits.minExpiration!),
-                          ),
+                    if (pollLimits.maxExpiration != null)
+                      _InstanceDetailsRowWidget(
+                        label: S
+                            .of(context)
+                            .app_instance_details_field_pollLimit_maxExpiration_label,
+                        value: formatDuration(
+                          context: context,
+                          duration:
+                              Duration(seconds: pollLimits.maxExpiration!),
                         ),
-                      if (pollLimits.maxExpiration != null)
-                        _InstanceDetailsRowWidget(
-                          label: S
-                              .of(context)
-                              .app_instance_details_field_pollLimit_maxExpiration_label,
-                          value: formatDuration(
-                            context: context,
-                            duration:
-                                Duration(seconds: pollLimits.maxExpiration!),
-                          ),
-                        ),
-                      if (pollLimits.maxOptionChars != null)
-                        _InstanceDetailsRowWidget(
-                          label: S
-                              .of(context)
-                              .app_instance_details_field_pollLimit_maxOptionsChars_label,
-                          value: pollLimits.maxOptionChars?.toString(),
-                        ),
-                      if (pollLimits.maxOptions != null)
-                        _InstanceDetailsRowWidget(
-                          label: S
-                              .of(context)
-                              .app_instance_details_field_pollLimit_maxOptions_label,
-                          value: pollLimits.maxOptions?.toString(),
-                        ),
-                    ],
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              },
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+                      ),
+                    if (pollLimits.maxOptionChars != null)
+                      _InstanceDetailsRowWidget(
+                        label: S
+                            .of(context)
+                            .app_instance_details_field_pollLimit_maxOptionsChars_label,
+                        value: pollLimits.maxOptionChars?.toString(),
+                      ),
+                    if (pollLimits.maxOptions != null)
+                      _InstanceDetailsRowWidget(
+                        label: S
+                            .of(context)
+                            .app_instance_details_field_pollLimit_maxOptions_label,
+                        value: pollLimits.maxOptions?.toString(),
+                      ),
+                  ],
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 

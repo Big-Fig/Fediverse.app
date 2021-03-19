@@ -70,8 +70,10 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
         .map(
           (item) => flutter_reorderable_list.ReorderableItem(
             key: item.key,
-            childBuilder: (BuildContext context,
-                    flutter_reorderable_list.ReorderableItemState state) =>
+            childBuilder: (
+              BuildContext context,
+              flutter_reorderable_list.ReorderableItemState state,
+            ) =>
                 Provider<Timeline>.value(
               value: item.timeline,
               child: Opacity(
@@ -100,8 +102,11 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
     );
   }
 
-  bool _onReorder(ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
-      Key item, Key newPosition) {
+  bool _onReorder(
+    ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
+    Key item,
+    Key newPosition,
+  ) {
     int oldIndex = timelinesHomeTabStorageBloc.indexOfKey(item);
     int newIndex = timelinesHomeTabStorageBloc.indexOfKey(newPosition);
 
@@ -112,7 +117,9 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
   }
 
   void _onReorderDone(
-      ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc, Key item) {
+    ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
+    Key item,
+  ) {
     final draggedItem = timelinesHomeTabStorageBloc.timelineOfKey(item);
     debugPrint("Reordering finished for ${draggedItem}}");
   }
@@ -284,45 +291,46 @@ class _TimelinesHomeTabStorageListItemLeadingWidget extends StatelessWidget {
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
     var timeline = Provider.of<Timeline>(context);
     return StreamBuilder<TimelinesHomeTabStorageUiState>(
-        stream: timelinesHomeTabStorageBloc.uiStateStream,
-        initialData: timelinesHomeTabStorageBloc.uiState,
-        builder: (context, snapshot) {
-          var uiState = snapshot.data ?? TimelinesHomeTabStorageUiState.view;
+      stream: timelinesHomeTabStorageBloc.uiStateStream,
+      initialData: timelinesHomeTabStorageBloc.uiState,
+      builder: (context, snapshot) {
+        var uiState = snapshot.data ?? TimelinesHomeTabStorageUiState.view;
 
-          var child;
+        var child;
 
-          switch (uiState) {
-            case TimelinesHomeTabStorageUiState.edit:
-              child = _TimelinesHomeTabStorageListItemRemoveButtonWidget(
-                key: ValueKey("${timeline.id}.remove_body"),
-              );
-              break;
-            case TimelinesHomeTabStorageUiState.view:
-              child = SizedBox.shrink(
-                key: ValueKey("${timeline.id}.remove_empty"),
-              );
-              break;
-          }
+        switch (uiState) {
+          case TimelinesHomeTabStorageUiState.edit:
+            child = _TimelinesHomeTabStorageListItemRemoveButtonWidget(
+              key: ValueKey("${timeline.id}.remove_body"),
+            );
+            break;
+          case TimelinesHomeTabStorageUiState.view:
+            child = SizedBox.shrink(
+              key: ValueKey("${timeline.id}.remove_empty"),
+            );
+            break;
+        }
 
-          return AnimatedSwitcher(
-            duration: FediAnimations.defaultAnimationSwitcherDuration,
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              final offsetAnimation = Tween<Offset>(
-                begin: Offset(-1.0, 0.0),
-                end: Offset(0.0, 0.0),
-              ).animate(animation);
-              return SizeTransition(
-                axis: Axis.horizontal,
-                sizeFactor: animation,
-                child: SlideTransition(
-                  position: offsetAnimation,
-                  child: child,
-                ),
-              );
-            },
-            child: child,
-          );
-        });
+        return AnimatedSwitcher(
+          duration: FediAnimations.defaultAnimationSwitcherDuration,
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            final offsetAnimation = Tween<Offset>(
+              begin: Offset(-1.0, 0.0),
+              end: Offset(0.0, 0.0),
+            ).animate(animation);
+            return SizeTransition(
+              axis: Axis.horizontal,
+              sizeFactor: animation,
+              child: SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              ),
+            );
+          },
+          child: child,
+        );
+      },
+    );
   }
 }
 
@@ -349,10 +357,10 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
                 FediConfirmAlertDialog(
                   context: context,
                   title: S.of(context).app_timeline_storage_delete_dialog_title,
-                  contentText: S
-                      .of(context)
-                      .app_timeline_storage_delete_dialog_content(
-                          timeline.calculateLabel(context)!),
+                  contentText:
+                      S.of(context).app_timeline_storage_delete_dialog_content(
+                            timeline.calculateLabel(context)!,
+                          ),
                   okActionLabel: S
                       .of(context)
                       .app_timeline_storage_delete_dialog_action_delete,

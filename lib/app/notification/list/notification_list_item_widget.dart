@@ -185,8 +185,9 @@ class _NotificationListItemBodySlidableChildContentWidget
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: FediSizes.bigPadding,
-          vertical: FediSizes.bigPadding + FediSizes.smallPadding),
+        horizontal: FediSizes.bigPadding,
+        vertical: FediSizes.bigPadding + FediSizes.smallPadding,
+      ),
       child: Column(
         children: <Widget>[
           Row(
@@ -232,7 +233,7 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
                 child: _NotificationListItemContentWidget(),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -269,7 +270,7 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
                 notificationBloc.dismiss();
                 Navigator.of(context).pop();
               },
-            )
+            ),
         ],
         cancelable: true,
       ),
@@ -516,15 +517,16 @@ class _NotificationListItemCreatedAtWidget extends StatelessWidget {
     var notificationBloc = INotificationBloc.of(context);
     var fediUiTextTheme = IFediUiTextTheme.of(context);
     return StreamBuilder<bool?>(
-        stream: notificationBloc.unreadStream,
-        initialData: notificationBloc.unread,
-        builder: (context, snapshot) {
-          var unread = snapshot.data!;
-          return NotificationCreatedAtWidget(
-            textStyle: unread
-                ? fediUiTextTheme.smallShortPrimaryDark
-                : fediUiTextTheme.smallShortGrey,
-          );
-        });
+      stream: notificationBloc.unreadStream,
+      initialData: notificationBloc.unread,
+      builder: (context, snapshot) {
+        var unread = snapshot.data!;
+        return NotificationCreatedAtWidget(
+          textStyle: unread
+              ? fediUiTextTheme.smallShortPrimaryDark
+              : fediUiTextTheme.smallShortGrey,
+        );
+      },
+    );
   }
 }

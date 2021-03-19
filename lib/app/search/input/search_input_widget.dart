@@ -76,24 +76,25 @@ class _SearchInputClearButtonWidget extends StatelessWidget {
     );
 
     return StreamBuilder<bool>(
-        stream: searchInputBloc.currentInputIsNotEmptyStream,
-        initialData: searchInputBloc.currentInputIsNotEmpty,
-        builder: (context, snapshot) {
-          var currentInputIsNotEmpty = snapshot.data!;
+      stream: searchInputBloc.currentInputIsNotEmptyStream,
+      initialData: searchInputBloc.currentInputIsNotEmpty,
+      builder: (context, snapshot) {
+        var currentInputIsNotEmpty = snapshot.data!;
 
-          if (currentInputIsNotEmpty) {
-            return Padding(
-              padding: const EdgeInsets.only(right: FediSizes.bigPadding),
-              child: FediRemoveIconInCircleButton(
-                onPressed: () {
-                  searchInputBloc.clearSearch();
-                },
-                size: 20.0,
-              ),
-            );
-          } else {
-            return SizedBox.shrink();
-          }
-        });
+        if (currentInputIsNotEmpty) {
+          return Padding(
+            padding: const EdgeInsets.only(right: FediSizes.bigPadding),
+            child: FediRemoveIconInCircleButton(
+              onPressed: () {
+                searchInputBloc.clearSearch();
+              },
+              size: 20.0,
+            ),
+          );
+        } else {
+          return SizedBox.shrink();
+        }
+      },
+    );
   }
 }

@@ -103,7 +103,6 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     var hiveService = HiveService();
     await globalProviderService.asyncInitAndRegister<IHiveService>(hiveService);
 
-
     var externalShareService = ExternalShareService();
 
     await globalProviderService
@@ -152,7 +151,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     }
 
     await globalProviderService.asyncInitAndRegister<ILocalPreferencesService>(
-        hiveLocalPreferencesService);
+      hiveLocalPreferencesService,
+    );
 
     var cameraPermissionBloc =
         CameraPermissionBloc(globalProviderService.get<IPermissionsService>());
@@ -172,10 +172,12 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc =
         PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc(
-            hiveLocalPreferencesService);
+      hiveLocalPreferencesService,
+    );
     await globalProviderService.asyncInitAndRegister<
-            IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
-        pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc);
+        IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
+      pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
+    );
 
     var instanceListLocalPreferenceBloc =
         AuthInstanceListLocalPreferenceBloc(hiveLocalPreferencesService);
@@ -183,7 +185,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         IAuthInstanceListLocalPreferenceBloc>(instanceListLocalPreferenceBloc);
 
     var instanceListBloc = AuthInstanceListBloc(
-        instanceListLocalPreferenceBloc: instanceListLocalPreferenceBloc);
+      instanceListLocalPreferenceBloc: instanceListLocalPreferenceBloc,
+    );
     await globalProviderService
         .asyncInitAndRegister<IAuthInstanceListBloc>(instanceListBloc);
 
@@ -202,13 +205,15 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
               );
               var file = File(databaseFilePath);
               _logger.finest(
-                  () => "removedInstance delete database $databaseFilePath");
+                () => "removedInstance delete database $databaseFilePath",
+              );
               await file.delete();
 
               var localPreferencesBlocCreators =
                   FediLocalPreferencesServiceMigrationBloc
                       .calculateUserAtHostLocalPreferencesBlocCreators(
-                          userAtHost);
+                userAtHost,
+              );
 
               for (var blocCreator in localPreferencesBlocCreators) {
                 var localPreferencesBloc =
@@ -228,11 +233,13 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         CurrentAuthInstanceLocalPreferenceBloc(hiveLocalPreferencesService);
     await globalProviderService
         .asyncInitAndRegister<ICurrentAuthInstanceLocalPreferenceBloc>(
-            currentInstanceLocalPreferenceBloc);
+      currentInstanceLocalPreferenceBloc,
+    );
 
     var currentInstanceBloc = CurrentAuthInstanceBloc(
-        instanceListBloc: instanceListBloc,
-        currentLocalPreferenceBloc: currentInstanceLocalPreferenceBloc);
+      instanceListBloc: instanceListBloc,
+      currentLocalPreferenceBloc: currentInstanceLocalPreferenceBloc,
+    );
     await globalProviderService
         .asyncInitAndRegister<ICurrentAuthInstanceBloc>(currentInstanceBloc);
 
@@ -260,13 +267,15 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     await globalProviderService
         .asyncInitAndRegister<IPushHandlerUnhandledLocalPreferencesBloc>(
-            pushHandlerUnhandledLocalPreferencesBloc);
+      pushHandlerUnhandledLocalPreferencesBloc,
+    );
     addDisposable(disposable: pushHandlerUnhandledLocalPreferencesBloc);
     var pushHandlerBloc = PushHandlerBloc(
-        currentInstanceBloc: currentInstanceBloc,
-        instanceListBloc: instanceListBloc,
-        unhandledLocalPreferencesBloc: pushHandlerUnhandledLocalPreferencesBloc,
-        fcmPushService: fcmPushService);
+      currentInstanceBloc: currentInstanceBloc,
+      instanceListBloc: instanceListBloc,
+      unhandledLocalPreferencesBloc: pushHandlerUnhandledLocalPreferencesBloc,
+      fcmPushService: fcmPushService,
+    );
     await globalProviderService
         .asyncInitAndRegister<IPushHandlerBloc>(pushHandlerBloc);
     addDisposable(disposable: pushHandlerBloc);
@@ -276,7 +285,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     await globalProviderService
         .asyncInitAndRegister<IGlobalUiSettingsLocalPreferencesBloc>(
-            globalUiSettingsLocalPreferencesBloc);
+      globalUiSettingsLocalPreferencesBloc,
+    );
     await globalProviderService.asyncInitAndRegister<
         IUiSettingsLocalPreferencesBloc>(globalUiSettingsLocalPreferencesBloc);
     addDisposable(disposable: globalUiSettingsLocalPreferencesBloc);
@@ -318,10 +328,12 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     await globalProviderService
         .asyncInitAndRegister<ILocalizationSettingsLocalPreferencesBloc>(
-            globalLocalizationSettingsLocalPreferencesBloc);
+      globalLocalizationSettingsLocalPreferencesBloc,
+    );
     await globalProviderService
         .asyncInitAndRegister<IGlobalLocalizationSettingsLocalPreferencesBloc>(
-            globalLocalizationSettingsLocalPreferencesBloc);
+      globalLocalizationSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: globalLocalizationSettingsLocalPreferencesBloc);
 
     var localizationSettingsBloc = LocalizationSettingsBloc(
@@ -330,7 +342,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     );
 
     await globalProviderService.asyncInitAndRegister<ILocalizationSettingsBloc>(
-        localizationSettingsBloc);
+      localizationSettingsBloc,
+    );
     addDisposable(disposable: localizationSettingsBloc);
 
     var globalChatSettingsLocalPreferencesBloc =
@@ -340,7 +353,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     await globalProviderService
         .asyncInitAndRegister<IGlobalChatSettingsLocalPreferencesBloc>(
-            globalChatSettingsLocalPreferencesBloc);
+      globalChatSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: globalChatSettingsLocalPreferencesBloc);
 
     var globalMediaSettingsLocalPreferencesBloc =
@@ -349,7 +363,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     );
     await globalProviderService
         .asyncInitAndRegister<IGlobalMediaSettingsLocalPreferencesBloc>(
-            globalMediaSettingsLocalPreferencesBloc);
+      globalMediaSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: globalMediaSettingsLocalPreferencesBloc);
 
     var globalToastSettingsLocalPreferencesBloc =
@@ -359,7 +374,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     await globalProviderService
         .asyncInitAndRegister<IGlobalToastSettingsLocalPreferencesBloc>(
-            globalToastSettingsLocalPreferencesBloc);
+      globalToastSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: globalToastSettingsLocalPreferencesBloc);
 
     var globalPostStatusSettingsLocalPreferencesBloc =
@@ -369,7 +385,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     await globalProviderService
         .asyncInitAndRegister<IGlobalPostStatusSettingsLocalPreferencesBloc>(
-            globalPostStatusSettingsLocalPreferencesBloc);
+      globalPostStatusSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: globalPostStatusSettingsLocalPreferencesBloc);
 
     var globalStatusSensitiveSettingsLocalPreferencesBloc =
@@ -378,10 +395,12 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     );
 
     await globalProviderService.asyncInitAndRegister<
-            IGlobalStatusSensitiveSettingsLocalPreferencesBloc>(
-        globalStatusSensitiveSettingsLocalPreferencesBloc);
+        IGlobalStatusSensitiveSettingsLocalPreferencesBloc>(
+      globalStatusSensitiveSettingsLocalPreferencesBloc,
+    );
     addDisposable(
-        disposable: globalStatusSensitiveSettingsLocalPreferencesBloc);
+      disposable: globalStatusSensitiveSettingsLocalPreferencesBloc,
+    );
 
     var globalWebSocketsSettingsLocalPreferencesBloc =
         GlobalWebSocketsSettingsLocalPreferencesBloc(
@@ -390,7 +409,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     await globalProviderService
         .asyncInitAndRegister<IGlobalWebSocketsSettingsLocalPreferencesBloc>(
-            globalWebSocketsSettingsLocalPreferencesBloc);
+      globalWebSocketsSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: globalWebSocketsSettingsLocalPreferencesBloc);
 
     var globalPaginationSettingsLocalPreferencesBloc =
@@ -400,7 +420,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     await globalProviderService
         .asyncInitAndRegister<IGlobalPaginationSettingsLocalPreferencesBloc>(
-            globalPaginationSettingsLocalPreferencesBloc);
+      globalPaginationSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: globalPaginationSettingsLocalPreferencesBloc);
 
     var globalDatabaseCacheSettingsLocalPreferencesBloc =
@@ -410,7 +431,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     await globalProviderService
         .asyncInitAndRegister<IGlobalDatabaseCacheSettingsLocalPreferencesBloc>(
-            globalDatabaseCacheSettingsLocalPreferencesBloc);
+      globalDatabaseCacheSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: globalDatabaseCacheSettingsLocalPreferencesBloc);
 
     var globalFilesCacheSettingsLocalPreferencesBloc =
@@ -420,7 +442,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     await globalProviderService
         .asyncInitAndRegister<IGlobalFilesCacheSettingsLocalPreferencesBloc>(
-            globalFilesCacheSettingsLocalPreferencesBloc);
+      globalFilesCacheSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: globalFilesCacheSettingsLocalPreferencesBloc);
 
     var appAnalyticsLocalPreferenceBloc = AppAnalyticsLocalPreferenceBloc(
@@ -466,11 +489,12 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         (!isAppRated && appOpenedCount! >= appOpenedCountToShowAppReview) &&
             isProdPackageId;
     _logger.finest(
-        () => " appOpenedCountToShowAppReview $appOpenedCountToShowAppReview \n"
-            " isAppRated $isAppRated \n"
-            " appOpenedCount $appOpenedCount \n"
-            " isProdPackageId $isProdPackageId \n"
-            " isNeedRequestReview $isNeedRequestReview");
+      () => " appOpenedCountToShowAppReview $appOpenedCountToShowAppReview \n"
+          " isAppRated $isAppRated \n"
+          " appOpenedCount $appOpenedCount \n"
+          " isProdPackageId $isProdPackageId \n"
+          " isNeedRequestReview $isNeedRequestReview",
+    );
     if (isNeedRequestReview) {
       var inAppReviewBlocAvailable = await inAppReviewBloc.isAvailable();
       if (inAppReviewBlocAvailable) {

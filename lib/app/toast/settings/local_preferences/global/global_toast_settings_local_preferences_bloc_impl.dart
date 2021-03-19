@@ -9,8 +9,8 @@ class GlobalToastSettingsLocalPreferencesBloc
     extends ToastSettingsLocalPreferencesBloc
     implements IGlobalToastSettingsLocalPreferencesBloc {
   GlobalToastSettingsLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService)
-      : super(preferencesService, "toast.settings.global");
+    ILocalPreferencesService preferencesService,
+  ) : super(preferencesService, "toast.settings.global");
 
   @override
   ToastSettings get defaultValue => ToastSettings(

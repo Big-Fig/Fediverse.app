@@ -30,9 +30,10 @@ class PleromaRestException implements Exception {
 }
 
 class PleromaThrottledRestException extends PleromaRestException {
-  PleromaThrottledRestException(
-      {required int statusCode, required String body})
-      : super(statusCode: statusCode, body: body);
+  PleromaThrottledRestException({
+    required int statusCode,
+    required String body,
+  }) : super(statusCode: statusCode, body: body);
 
   @override
   String toString() {
@@ -41,8 +42,7 @@ class PleromaThrottledRestException extends PleromaRestException {
 }
 
 class PleromaForbiddenRestException extends PleromaRestException {
-  PleromaForbiddenRestException(
-      {required int statusCode, required String body})
+  PleromaForbiddenRestException({required int statusCode, required String body})
       : super(statusCode: statusCode, body: body);
 }
 
@@ -55,9 +55,10 @@ class PleromaInvalidCredentialsForbiddenRestException
   static const mastodonInvalidCredentialsErrorValue =
       "The access token was revoked";
 
-  PleromaInvalidCredentialsForbiddenRestException(
-      {required int statusCode, required String body})
-      : super(statusCode: statusCode, body: body);
+  PleromaInvalidCredentialsForbiddenRestException({
+    required int statusCode,
+    required String body,
+  }) : super(statusCode: statusCode, body: body);
 
   @override
   String toString() {

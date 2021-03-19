@@ -38,7 +38,7 @@ extension IPleromaEmojiListExtension on List<IPleromaEmoji> {
       return this as List<PleromaEmoji>;
     } else {
       return map(
-            (emoji) => emoji.toPleromaEmoji(),
+        (emoji) => emoji.toPleromaEmoji(),
       ).toList();
     }
   }
@@ -156,7 +156,8 @@ class PleromaCustomEmoji implements IPleromaCustomEmoji {
 
   static List<PleromaCustomEmoji> listFromJsonString(String str) =>
       List<PleromaCustomEmoji>.from(
-          json.decode(str).map((x) => PleromaCustomEmoji.fromJson(x)));
+        json.decode(str).map((x) => PleromaCustomEmoji.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaCustomEmojiToJson(this);
 }

@@ -21,16 +21,20 @@ class LocalAccountStatusesFavouritesNetworkOnlyListBloc
         );
 
   static LocalAccountStatusesFavouritesNetworkOnlyListBloc createFromContext(
-      BuildContext context,
-      {required IAccount? account}) {
+    BuildContext context, {
+    required IAccount? account,
+  }) {
     return LocalAccountStatusesFavouritesNetworkOnlyListBloc(
       account: account,
       pleromaAccountService: IPleromaAccountService.of(context, listen: false),
     );
   }
 
-  static Widget provideToContext(BuildContext context,
-      {required IAccount? account, required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required IAccount? account,
+    required Widget child,
+  }) {
     return DisposableProvider<IStatusNetworkOnlyListBloc>(
       create: (context) =>
           LocalAccountStatusesFavouritesNetworkOnlyListBloc.createFromContext(

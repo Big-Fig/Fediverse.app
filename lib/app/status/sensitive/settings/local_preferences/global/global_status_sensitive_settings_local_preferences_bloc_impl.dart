@@ -7,8 +7,8 @@ class GlobalStatusSensitiveSettingsLocalPreferencesBloc
     extends StatusSensitiveSettingsLocalPreferencesBloc
     implements IGlobalStatusSensitiveSettingsLocalPreferencesBloc {
   GlobalStatusSensitiveSettingsLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService)
-      : super(preferencesService, "statusSensitive.settings.global");
+    ILocalPreferencesService preferencesService,
+  ) : super(preferencesService, "statusSensitive.settings.global");
 
   @override
   StatusSensitiveSettings get defaultValue => StatusSensitiveSettings(

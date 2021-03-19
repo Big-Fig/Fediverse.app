@@ -361,10 +361,11 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   @override
   Stream<String?> get inputWithoutMentionedAcctsTextStream => Rx.combineLatest2(
-      inputTextStream,
-      mentionedAcctsStream,
-      (dynamic inputText, dynamic mentionedAccts) =>
-          removeAcctsFromText(inputText, mentionedAccts));
+        inputTextStream,
+        mentionedAcctsStream,
+        (dynamic inputText, dynamic mentionedAccts) =>
+            removeAcctsFromText(inputText, mentionedAccts),
+      );
 
   void onMentionedAccountsChanged() {
     var mentionedAccts = this.mentionedAccts;
@@ -471,9 +472,10 @@ abstract class PostStatusBloc extends PostMessageBloc
     nsfwSensitiveSubject.add(nsfwSensitive);
   }
 
-  bool isMaximumAttachmentReached(
-      {required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
-      required int maximumMediaAttachmentCount}) {
+  bool isMaximumAttachmentReached({
+    required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+    required int maximumMediaAttachmentCount,
+  }) {
     return mediaAttachmentBlocs.length >= maximumMediaAttachmentCount;
   }
 
@@ -537,7 +539,9 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   String? removeAcctsFromText(
-      String? inputText, List<String?>? mentionedAccts) {
+    String? inputText,
+    List<String?>? mentionedAccts,
+  ) {
     var newText = inputText;
     // todo: better performance via Regex
     mentionedAccts?.forEach(

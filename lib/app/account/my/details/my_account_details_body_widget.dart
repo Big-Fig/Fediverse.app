@@ -15,7 +15,8 @@ class MyAccountDetailsBodyWidget extends StatelessWidget {
       );
 
   AccountStatusesTimelineWidget buildAccountStatusesWidget(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       AccountStatusesTimelineWidget(
         scrollController: scrollController,
         header: const FediListTile(

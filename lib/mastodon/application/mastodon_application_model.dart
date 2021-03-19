@@ -23,18 +23,21 @@ class MastodonApplicationRegistrationRequest {
   /// A URL to the homepage of your app
   final String? website;
 
-  MastodonApplicationRegistrationRequest(
-      {required this.clientName,
-      required this.redirectUris,
-      this.scopes,
-      this.website});
+  MastodonApplicationRegistrationRequest({
+    required this.clientName,
+    required this.redirectUris,
+    this.scopes,
+    this.website,
+  });
 
   factory MastodonApplicationRegistrationRequest.fromJson(
-          Map<String, dynamic> json) =>
+    Map<String, dynamic> json,
+  ) =>
       _$MastodonApplicationRegistrationRequestFromJson(json);
 
   factory MastodonApplicationRegistrationRequest.fromJsonString(
-          String jsonString) =>
+    String jsonString,
+  ) =>
       _$MastodonApplicationRegistrationRequestFromJson(jsonDecode(jsonString));
 
   Map<String, dynamic> toJson() =>

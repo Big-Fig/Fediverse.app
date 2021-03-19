@@ -68,7 +68,7 @@ class StatusThreadWidget extends StatelessWidget {
                   ),
                   child: const _StatusThreadPostStatusWidget(),
                 ),
-              ]
+              ],
             ],
           );
         }
@@ -118,42 +118,44 @@ class _StatusThreadInReplyToStatusWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var postStatusBloc = IThreadPostStatusBloc.of(context);
     return StreamBuilder<IStatus?>(
-        stream: postStatusBloc.notCanceledOriginInReplyToStatusStream,
-        builder: (context, snapshot) {
-          var notCanceledOriginInReplyToStatus = snapshot.data;
+      stream: postStatusBloc.notCanceledOriginInReplyToStatusStream,
+      builder: (context, snapshot) {
+        var notCanceledOriginInReplyToStatus = snapshot.data;
 
-          if (notCanceledOriginInReplyToStatus != null) {
-            return Container(
-              color: IFediUiColorTheme.of(context).ultraLightGrey,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: FediSizes.mediumPadding,
-                  horizontal: FediSizes.bigPadding,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      S.of(context).app_status_reply_replyingTo(
-                          notCanceledOriginInReplyToStatus.account.acct),
-                      style: IFediUiTextTheme.of(context)
-                          .mediumShortGrey
-                          .copyWith(height: 1),
-                    ),
-                    InkWell(
-                      child: Icon(Icons.cancel),
-                      onTap: () {
-                        postStatusBloc.cancelOriginInReplyToStatus();
-                      },
-                    ),
-                  ],
-                ),
+        if (notCanceledOriginInReplyToStatus != null) {
+          return Container(
+            color: IFediUiColorTheme.of(context).ultraLightGrey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: FediSizes.mediumPadding,
+                horizontal: FediSizes.bigPadding,
               ),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    S.of(context).app_status_reply_replyingTo(
+                          notCanceledOriginInReplyToStatus.account.acct,
+                        ),
+                    style: IFediUiTextTheme.of(context)
+                        .mediumShortGrey
+                        .copyWith(height: 1),
+                  ),
+                  InkWell(
+                    child: Icon(Icons.cancel),
+                    onTap: () {
+                      postStatusBloc.cancelOriginInReplyToStatus();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 

@@ -11,7 +11,8 @@ import 'package:fedi/permission/permission_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class MediaDeviceGallerySelectedFolderData extends DisposableOwner implements IDisposable {
+class MediaDeviceGallerySelectedFolderData extends DisposableOwner
+    implements IDisposable {
   final IMediaDeviceFolder folder;
 
   final IMediaDeviceFolderBloc folderBloc;
@@ -57,8 +58,10 @@ class MediaDeviceGallerySelectedFolderData extends DisposableOwner implements ID
 
 abstract class IMediaDeviceGalleryBloc
     implements IDisposable, IPermissionBloc, IAsyncInitLoadingBloc {
-  static IMediaDeviceGalleryBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IMediaDeviceGalleryBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IMediaDeviceGalleryBloc>(context, listen: listen);
 
   Stream<MediaDeviceGalleryState> get galleryStateStream;

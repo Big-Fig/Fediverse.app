@@ -136,9 +136,11 @@ class AccountActionMoreDialog extends StatelessWidget {
           : FediIcons.domain_unblock,
       label: accountBloc.relationship!.domainBlocking == true
           ? S.of(context).app_account_action_unblockDomain(
-              accountBloc.acctRemoteDomainOrNull!)
+                accountBloc.acctRemoteDomainOrNull!,
+              )
           : S.of(context).app_account_action_blockDomain(
-              accountBloc.acctRemoteDomainOrNull!),
+                accountBloc.acctRemoteDomainOrNull!,
+              ),
       onAction: (context) async {
         await accountBloc.toggleBlockDomain();
         Navigator.of(context).pop();
@@ -221,7 +223,9 @@ class AccountActionMoreDialog extends StatelessWidget {
           : S.of(context).app_account_action_subscribe,
       onAction: (context) async {
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-            context: context, asyncCode: () => accountBloc.toggleSubscribe());
+          context: context,
+          asyncCode: () => accountBloc.toggleSubscribe(),
+        );
 
         Navigator.of(context).pop();
       },
@@ -239,7 +243,9 @@ class AccountActionMoreDialog extends StatelessWidget {
           : S.of(context).app_account_action_follow,
       onAction: (context) async {
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-            context: context, asyncCode: () => accountBloc.toggleFollow());
+          context: context,
+          asyncCode: () => accountBloc.toggleFollow(),
+        );
 
         Navigator.of(context).pop();
       },
@@ -278,7 +284,8 @@ class AccountActionMoreDialog extends StatelessWidget {
     return DialogAction(
       icon: FediIcons.instance,
       label: S.of(context).app_account_action_openOnRemoteInstance(
-          accountBloc.acctRemoteDomainOrNull!),
+            accountBloc.acctRemoteDomainOrNull!,
+          ),
       onAction: (context) async {
         await goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           context,

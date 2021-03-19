@@ -66,7 +66,8 @@ class _EditFilesCacheSettingsDescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediNoteDescriptionWidget(
-      S.of(context).app_cache_files_settings_description);
+        S.of(context).app_cache_files_settings_description,
+      );
 }
 
 class _EditFilesCacheSettingsMaxSizeLimitFieldWidget extends StatelessWidget {

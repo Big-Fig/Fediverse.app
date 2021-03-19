@@ -44,7 +44,9 @@ class CurrentFediUiThemeBloc extends DisposableOwner
   }
 
   IFediUiTheme? _calculateAdaptiveBrightnessCurrentThemeStream(
-      IFediUiTheme? currentTheme, Brightness? systemBrightness) {
+    IFediUiTheme? currentTheme,
+    Brightness? systemBrightness,
+  ) {
     if (currentTheme != null) {
       return currentTheme;
     } else {

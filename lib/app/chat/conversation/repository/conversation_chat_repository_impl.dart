@@ -79,7 +79,8 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
     List<IPleromaConversation>? remoteConversations,
   ) async {
     _logger.finer(
-        () => "upsertRemoteConversations ${remoteConversations!.length}");
+      () => "upsertRemoteConversations ${remoteConversations!.length}",
+    );
 
     for (var remoteConversation in remoteConversations!) {
       var lastStatus = remoteConversation.lastStatus;
@@ -206,15 +207,19 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
 
     var remoteAccounts = newRemoteConversation.accounts;
 
-    await accountRepository!.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: oldLocalConversation!.remoteId,
-        chatRemoteId: null);
+    await accountRepository!.upsertRemoteAccounts(
+      remoteAccounts,
+      conversationRemoteId: oldLocalConversation!.remoteId,
+      chatRemoteId: null,
+    );
 
     var lastStatus = newRemoteConversation.lastStatus;
     if (lastStatus != null) {
-      await statusRepository!.upsertRemoteStatus(lastStatus,
-          listRemoteId: null,
-          conversationRemoteId: oldLocalConversation.remoteId);
+      await statusRepository!.upsertRemoteStatus(
+        lastStatus,
+        listRemoteId: null,
+        conversationRemoteId: oldLocalConversation.remoteId,
+      );
     }
     if (oldLocalConversation.localId != null) {
       await updateById(

@@ -25,9 +25,10 @@ abstract class PleromaChatPaginationListBaseWidget
 
   @override
   IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
-          IPleromaChatWithLastMessage>
-      retrievePaginationListBloc(BuildContext context,
-          {required bool listen}) {
+      IPleromaChatWithLastMessage> retrievePaginationListBloc(
+    BuildContext context, {
+    required bool listen,
+  }) {
     var chatPaginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
             IPleromaChatWithLastMessage>>(context, listen: listen);

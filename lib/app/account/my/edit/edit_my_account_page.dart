@@ -38,7 +38,9 @@ class EditMyAccountPage extends StatelessWidget {
   }
 
   void handleBackPressed(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
+    BuildContext context,
+    IEditMyAccountBloc editMyAccountBloc,
+  ) {
     var isSomethingChanged = editMyAccountBloc.isSomethingChanged;
     if (isSomethingChanged) {
       alertUnsaved(context);
@@ -110,8 +112,10 @@ void goToEditMyAccountPage(BuildContext context) {
   Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) => DisposableProvider<IEditMyAccountBloc>(
-            create: (context) => EditMyAccountBloc.createFromContext(context),
-            child: const EditMyAccountPage())),
+      builder: (context) => DisposableProvider<IEditMyAccountBloc>(
+        create: (context) => EditMyAccountBloc.createFromContext(context),
+        child: const EditMyAccountPage(),
+      ),
+    ),
   );
 }

@@ -4,8 +4,12 @@ import 'package:provider/provider.dart';
 
 abstract class IInstancePostStatusSettingsLocalPreferencesBloc
     implements IPostStatusSettingsLocalPreferencesBloc {
-  static IInstancePostStatusSettingsLocalPreferencesBloc of(BuildContext context,
-      {bool listen = true}) =>
-      Provider.of<IInstancePostStatusSettingsLocalPreferencesBloc>(context,
-          listen: listen);
+  static IInstancePostStatusSettingsLocalPreferencesBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IInstancePostStatusSettingsLocalPreferencesBloc>(
+        context,
+        listen: listen,
+      );
 }

@@ -35,20 +35,21 @@ class _StatusEmojiActionCounterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
     return StreamBuilder<int?>(
-        stream: statusBloc.reblogPlusOriginalEmojiReactionsCountStream,
-        builder: (context, snapshot) {
-          var emojiCount = snapshot.data;
-          if (emojiCount == null) {
-            return const SizedBox.shrink();
-          }
+      stream: statusBloc.reblogPlusOriginalEmojiReactionsCountStream,
+      builder: (context, snapshot) {
+        var emojiCount = snapshot.data;
+        if (emojiCount == null) {
+          return const SizedBox.shrink();
+        }
 
-          return Provider<int>.value(
-            value: emojiCount,
-            child: StatusActionCounterWidget(
-              onClick: _showEmojiPicker,
-            ),
-          );
-        });
+        return Provider<int>.value(
+          value: emojiCount,
+          child: StatusActionCounterWidget(
+            onClick: _showEmojiPicker,
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -72,9 +73,10 @@ class _StatusEmojiActionButtonWidget extends StatelessWidget {
 
 void _showEmojiPicker(BuildContext context) {
   var statusBloc = IStatusBloc.of(context, listen: false);
-  showEmojiPickerModalPopup(context,
-      emojiReactionSelectedCallback: (String emojiName, String emoji) {
-    PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+  showEmojiPickerModalPopup(
+    context,
+    emojiReactionSelectedCallback: (String emojiName, String emoji) {
+      PleromaAsyncOperationHelper.performPleromaAsyncOperation(
         context: context,
         asyncCode: () => statusBloc.toggleEmojiReaction(emoji: emoji),
         errorDataBuilders: [
@@ -88,7 +90,9 @@ void _showEmojiPicker(BuildContext context) {
                     S.of(context).app_status_emoji_error_cantAdd_dialog_content(
                           error.toString(),
                         ),
-              )
-        ]);
-  });
+              ),
+        ],
+      );
+    },
+  );
 }

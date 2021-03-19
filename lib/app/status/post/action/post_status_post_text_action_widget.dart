@@ -19,55 +19,54 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
     var postStatusBloc = IPostStatusBloc.of(context, listen: true);
 
     return StreamBuilder<bool>(
-        stream: postStatusBloc.isReadyToPostStream,
-        initialData: postStatusBloc.isReadyToPost,
-        builder: (context, snapshot) {
-          var isReadyToPost = snapshot.data;
+      stream: postStatusBloc.isReadyToPostStream,
+      initialData: postStatusBloc.isReadyToPost,
+      builder: (context, snapshot) {
+        var isReadyToPost = snapshot.data;
 
-          return PleromaAsyncOperationButtonBuilderWidget(
-            showProgressDialog: true,
-            progressContentMessage:
-                S.of(context).app_status_post_dialog_async_content,
-            asyncButtonAction: () async {
+        return PleromaAsyncOperationButtonBuilderWidget(
+          showProgressDialog: true,
+          progressContentMessage:
+              S.of(context).app_status_post_dialog_async_content,
+          asyncButtonAction: () async {
+            var isScheduled = postStatusBloc.isScheduledAtExist;
+            var success = await postStatusBloc.post();
+            if (success == true) {
+              showPostStatusPostOverlayNotification(
+                context: context,
+                postStatusBloc: postStatusBloc,
+                isScheduled: isScheduled,
+              );
+            }
+            FocusScope.of(context).requestFocus(FocusNode()); //remove focus
+            if (success && successCallback != null) {
+              successCallback!(context);
+            }
+          },
+          errorAlertDialogBuilders: [
+            (context, error, stackTrace) {
               var isScheduled = postStatusBloc.isScheduledAtExist;
-              var success = await postStatusBloc.post();
-              if (success == true) {
-                showPostStatusPostOverlayNotification(
-                  context: context,
-                  postStatusBloc: postStatusBloc,
-                  isScheduled: isScheduled,
-                );
-              }
-              FocusScope.of(context).requestFocus(FocusNode()); //remove focus
-              if (success && successCallback != null) {
-                successCallback!(context);
-              }
-            },
-            errorAlertDialogBuilders: [
-              (context, error, stackTrace) {
-                var isScheduled = postStatusBloc.isScheduledAtExist;
-                return ErrorData(
-                    error: error,
-                    stackTrace: stackTrace,
-                    titleCreator: (context) => isScheduled
-                        ? S
-                            .of(context)
-                            .app_status_post_dialog_error_title_schedule
-                        : S.of(context).app_status_post_dialog_error_title_post,
-                    contentCreator: (context) => S
-                        .of(context)
-                        .app_status_post_dialog_error_content(
-                            error.toString()));
-              }
-            ],
-            builder: (BuildContext context, onPressed) {
-              return FediPrimaryFilledTextButtonWithBorder(
-                S.of(context).app_status_post_action_post,
-                onPressed: isReadyToPost! ? onPressed : null,
-                expanded: false,
+              return ErrorData(
+                error: error,
+                stackTrace: stackTrace,
+                titleCreator: (context) => isScheduled
+                    ? S.of(context).app_status_post_dialog_error_title_schedule
+                    : S.of(context).app_status_post_dialog_error_title_post,
+                contentCreator: (context) => S
+                    .of(context)
+                    .app_status_post_dialog_error_content(error.toString()),
               );
             },
-          );
-        });
+          ],
+          builder: (BuildContext context, onPressed) {
+            return FediPrimaryFilledTextButtonWithBorder(
+              S.of(context).app_status_post_action_post,
+              onPressed: isReadyToPost! ? onPressed : null,
+              expanded: false,
+            );
+          },
+        );
+      },
+    );
   }
 }

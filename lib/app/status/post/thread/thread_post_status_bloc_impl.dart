@@ -162,8 +162,9 @@ class ThreadPostStatusBloc extends PostStatusBloc
         IStatus? statusToReply;
         for (var acct in mentionedAccts) {
           statusToReply = statuses!.reversed.firstWhere(
-              (status) => status!.account.acct == acct,
-              orElse: () => null);
+            (status) => status!.account.acct == acct,
+            orElse: () => null,
+          );
           if (statusToReply != null) {
             _logger.finest(() => "calculateInReplyToStatusRemoteId "
                 "statusToReply by acct $acct =>$result");

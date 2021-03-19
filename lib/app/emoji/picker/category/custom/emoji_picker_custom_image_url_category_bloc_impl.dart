@@ -51,10 +51,11 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
         ).catchError(
           (e, stackTrace) {
             _logger.warning(
-                () => "internalAsyncInit error: fetch remote emoji "
-                    "list",
-                e,
-                stackTrace);
+              () => "internalAsyncInit error: fetch remote emoji "
+                  "list",
+              e,
+              stackTrace,
+            );
           },
         ),
       );

@@ -84,7 +84,8 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
   }
 
   static ConversationChatWithLastMessageListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       ConversationChatWithLastMessageListBloc(
         conversationRepository: IConversationChatRepository.of(
           context,

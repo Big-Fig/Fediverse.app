@@ -23,12 +23,14 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
     required this.scheduledStatusCachedListService,
     required ICachedPaginationBloc<TPage, IScheduledStatus> paginationBloc,
   }) : super(
-            mergeNewItemsImmediately: mergeNewItemsImmediately,
-            paginationBloc: paginationBloc);
+          mergeNewItemsImmediately: mergeNewItemsImmediately,
+          paginationBloc: paginationBloc,
+        );
 
   @override
   Stream<List<IScheduledStatus>> watchItemsNewerThanItem(
-      IScheduledStatus item) {
+    IScheduledStatus item,
+  ) {
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
     return scheduledStatusCachedListService.watchLocalItemsNewerThanItem(item);
   }
@@ -50,8 +52,10 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
   bool isItemsEqual(IScheduledStatus a, IScheduledStatus b) =>
       a.remoteId == b.remoteId;
 
-  static Widget provideToContext(BuildContext context,
-      {required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) {
     return DisposableProvider<
         ICachedPaginationListWithNewItemsBloc<
             CachedPaginationPage<IScheduledStatus>, IScheduledStatus?>>(

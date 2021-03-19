@@ -33,7 +33,10 @@ class ExternalShareService extends DisposableOwner
           await shareSingleUrlFileAsBytesWithoutText(urlFiles[0], popupTitle);
         } else {
           await shareSeveralUrlFilesAsBytesWithoutText(
-              urlFiles, text, popupTitle);
+            urlFiles,
+            text,
+            popupTitle,
+          );
         }
       }
     } else {
@@ -42,7 +45,10 @@ class ExternalShareService extends DisposableOwner
   }
 
   Future<String?> shareSeveralUrlFilesAsBytesWithoutText(
-      List<ShareUrlFile> urlFiles, String? text, String popupTitle) async {
+    List<ShareUrlFile> urlFiles,
+    String? text,
+    String popupTitle,
+  ) async {
     var urlFilesPossibleToShareAsBytes =
         urlFiles.where((urlFile) => isPossibleToShareAsBytes(urlFile.url));
 
@@ -80,7 +86,9 @@ class ExternalShareService extends DisposableOwner
   }
 
   Future shareSingleUrlFileAsBytesWithoutText(
-      ShareUrlFile urlFile, String popupTitle) async {
+    ShareUrlFile urlFile,
+    String popupTitle,
+  ) async {
     var url = urlFile.url;
     var filename = urlFile.filename;
     // other types too big, for example video
@@ -94,7 +102,10 @@ class ExternalShareService extends DisposableOwner
   }
 
   void shareSeveralUrlFilesAsLinksWithText(
-      String popupTitle, String? text, List<ShareUrlFile>? urlFiles) {
+    String popupTitle,
+    String? text,
+    List<ShareUrlFile>? urlFiles,
+  ) {
     // Share.text(
     //   popupTitle,
     //   "$text  [${urlFiles.map((urlFile) => urlFile.url).join(", ")}]",

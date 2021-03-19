@@ -9,7 +9,9 @@ import 'package:intl/intl.dart';
 final _numberFormat = NumberFormat("#.#");
 
 void showMediaAttachmentFailedNotificationOverlay(
-    BuildContext context, dynamic e) {
+  BuildContext context,
+  dynamic e,
+) {
   String contentText;
   if (e is UploadMediaExceedFileSizeLimitException) {
     // todo: todo rework copy-pasted code

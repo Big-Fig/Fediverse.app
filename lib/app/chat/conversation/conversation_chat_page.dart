@@ -80,18 +80,19 @@ class _ConversationChatPageAppBarDeleteActionWidget extends StatelessWidget {
       color: IFediUiColorTheme.of(context).darkGrey,
       onPressed: () async {
         var success = await FediConfirmAlertDialog(
-            context: context,
-            title: S.of(context).app_chat_action_delete_dialog_title,
-            contentText: S.of(context).app_chat_action_delete_dialog_content,
-            onAction: (context) async {
-              var dialogResult = await PleromaAsyncOperationHelper
-                  .performPleromaAsyncOperation(
-                context: context,
-                asyncCode: () => conversationChatBloc.delete(),
-              );
+          context: context,
+          title: S.of(context).app_chat_action_delete_dialog_title,
+          contentText: S.of(context).app_chat_action_delete_dialog_content,
+          onAction: (context) async {
+            var dialogResult =
+                await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+              context: context,
+              asyncCode: () => conversationChatBloc.delete(),
+            );
 
-              Navigator.of(context).pop(dialogResult.success);
-            }).show(context);
+            Navigator.of(context).pop(dialogResult.success);
+          },
+        ).show(context);
 
         if (success) {
           Navigator.of(context).pop();

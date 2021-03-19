@@ -54,10 +54,11 @@ class _EditFilterDeleteButton extends StatelessWidget {
         Navigator.of(context).pop();
       },
       builder: (context, onPressed) => FediTransparentTextButtonWithBorder(
-          S.of(context).app_filter_edit_action_delete,
-          expanded: false,
-          onPressed: onPressed,
-          color: IFediUiColorTheme.of(context).error),
+        S.of(context).app_filter_edit_action_delete,
+        expanded: false,
+        onPressed: onPressed,
+        color: IFediUiColorTheme.of(context).error,
+      ),
     );
   }
 }

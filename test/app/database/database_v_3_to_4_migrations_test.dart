@@ -30,7 +30,9 @@ void main() {
     expect((await statusDao.getAll().get()).isNotEmpty, false);
 
     var testDbStatus = await createTestDbStatus(
-        seed: "seed1", dbAccount: await createTestDbAccount(seed: "seed2"));
+      seed: "seed1",
+      dbAccount: await createTestDbAccount(seed: "seed2"),
+    );
     await statusDao.insert(testDbStatus);
 
     expect((await statusDao.getAll().get()).isNotEmpty, true);

@@ -25,7 +25,9 @@ class ToastHandlingTypeSingleFromListValueFormFieldRowWidget
 }
 
 String mapToastHandlingTypeToLabel(
-    BuildContext context, ToastHandlingType type) {
+  BuildContext context,
+  ToastHandlingType type,
+) {
   switch (type) {
     case ToastHandlingType.always:
       return S.of(context).app_toast_handling_type_always;

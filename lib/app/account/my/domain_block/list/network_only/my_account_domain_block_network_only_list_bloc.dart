@@ -7,10 +7,13 @@ import 'package:provider/provider.dart';
 abstract class IMyAccountDomainBlockNetworkOnlyListBloc
     implements IDisposable, INetworkOnlyListBloc<DomainBlock> {
   static IMyAccountDomainBlockNetworkOnlyListBloc of(
-          BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IMyAccountDomainBlockNetworkOnlyListBloc>(context,
-          listen: listen);
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IMyAccountDomainBlockNetworkOnlyListBloc>(
+        context,
+        listen: listen,
+      );
 
   Future removeDomainBlock({required String domain});
 }

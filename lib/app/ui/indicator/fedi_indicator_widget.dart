@@ -15,7 +15,9 @@ class FediIndicatorWidget extends StatelessWidget {
       width: 12.0,
       height: 12.0,
       margin: EdgeInsets.symmetric(
-          vertical: FediSizes.mediumPadding, horizontal: 2.0),
+        vertical: FediSizes.mediumPadding,
+        horizontal: 2.0,
+      ),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: active

@@ -32,8 +32,11 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
                 tabController: tabController,
               ),
               child: FediTextTabIndicatorWidget<AccountStatusesTab>(
-                customTabBuilder: (BuildContext context, Widget child,
-                    AccountStatusesTab tab) {
+                customTabBuilder: (
+                  BuildContext context,
+                  Widget child,
+                  AccountStatusesTab tab,
+                ) {
                   return child;
                 },
                 isTransparent: true,

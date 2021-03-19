@@ -11,9 +11,13 @@ import 'package:rxdart/rxdart.dart';
 
 // todo: refactor with single selection
 typedef MultiSelectFromListValueIconMapper<T> = IconData Function(
-    BuildContext context, T value);
+  BuildContext context,
+  T value,
+);
 typedef MultiSelectFromListValueTitleMapper<T> = String Function(
-    BuildContext context, T value);
+  BuildContext context,
+  T value,
+);
 
 class MultiSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
   final String label;
@@ -76,8 +80,10 @@ class _MultiSelectFromListValueFormFieldRowValueWidget<T>
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        var fieldBloc = IMultiSelectFromListValueFormFieldBloc.of<T>(context,
-            listen: false);
+        var fieldBloc = IMultiSelectFromListValueFormFieldBloc.of<T>(
+          context,
+          listen: false,
+        );
         if (fieldBloc.isEnabled!) {
           _showDialog(
             context: context,

@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 
 abstract class IAppAnalyticsLocalPreferenceBloc
     implements LocalPreferenceBloc<AppAnalyticsData?> {
-  static IAppAnalyticsLocalPreferenceBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IAppAnalyticsLocalPreferenceBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IAppAnalyticsLocalPreferenceBloc>(context, listen: listen);
 }

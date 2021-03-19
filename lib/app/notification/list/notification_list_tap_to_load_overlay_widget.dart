@@ -5,10 +5,11 @@ import 'package:flutter/cupertino.dart';
 class NotificationListTapToLoadOverlayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => FediListTapToLoadOverlayWidget(
-        textBuilder: (context, updateItemsCount) => S
-            .of(context)
-            .app_notification_list_newItems_action_tapToLoadNew(
-                updateItemsCount),
+        textBuilder: (context, updateItemsCount) =>
+            S.of(context).app_notification_list_newItems_action_tapToLoadNew(
+                  updateItemsCount,
+                ),
       );
+
   const NotificationListTapToLoadOverlayWidget();
 }

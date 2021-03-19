@@ -184,10 +184,11 @@ class _StatusListItemTimelineOriginalBodyWidget extends StatelessWidget {
               if (statusListItemTimelineBloc.isReply)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(
-                      FediSizes.bigPadding + 52.0,
-                      FediSizes.smallPadding,
-                      FediSizes.bigPadding,
-                      0.0),
+                    FediSizes.bigPadding + 52.0,
+                    FediSizes.smallPadding,
+                    FediSizes.bigPadding,
+                    0.0,
+                  ),
                   child:
                       const _StatusListItemTimelineOriginalBodyReplySubHeaderWidget(),
                 ),
@@ -266,8 +267,12 @@ class _StatusListItemTimelineStatusHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var status = Provider.of<IStatus>(context);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(FediSizes.bigPadding,
-          FediSizes.bigPadding, FediSizes.bigPadding, 0.0),
+      padding: const EdgeInsets.fromLTRB(
+        FediSizes.bigPadding,
+        FediSizes.bigPadding,
+        FediSizes.bigPadding,
+        0.0,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -300,8 +305,12 @@ Widget buildBody(BuildContext context) {
   var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
   if (statusListItemTimelineBloc.isReplyAndNotDisplayReplyOrFirstReply) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(68.0 - FediSizes.bigPadding,
-          FediSizes.smallPadding, 0.0, FediSizes.bigPadding),
+      padding: EdgeInsets.fromLTRB(
+        68.0 - FediSizes.bigPadding,
+        FediSizes.smallPadding,
+        0.0,
+        FediSizes.bigPadding,
+      ),
       child: const _StatusListItemTimelineOriginalBodyContentWidget(),
     );
   } else {
@@ -334,6 +343,8 @@ void _onStatusListItemClick(BuildContext context) {
 
   if (statusListItemTimelineBloc.statusCallback != null) {
     statusListItemTimelineBloc.statusCallback!(
-        context, statusListItemTimelineBloc.status);
+      context,
+      statusListItemTimelineBloc.status,
+    );
   }
 }

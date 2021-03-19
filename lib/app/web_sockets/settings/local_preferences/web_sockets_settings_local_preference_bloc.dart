@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class IWebSocketsSettingsLocalPreferencesBloc
     implements ILocalPreferenceBloc<WebSocketsSettings?> {
-  static IWebSocketsSettingsLocalPreferencesBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IWebSocketsSettingsLocalPreferencesBloc>(context,
-          listen: listen);
+  static IWebSocketsSettingsLocalPreferencesBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IWebSocketsSettingsLocalPreferencesBloc>(
+        context,
+        listen: listen,
+      );
 }

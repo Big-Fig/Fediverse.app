@@ -157,8 +157,9 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   @override
   bool isItemSelected(IChatMessage? chatMessage) =>
       _calculateIsChatMessageSelected(
-          currentChatMessagesSelection: currentSelection,
-          chatMessageRemoteId: chatMessage!.remoteId);
+        currentChatMessagesSelection: currentSelection,
+        chatMessageRemoteId: chatMessage!.remoteId,
+      );
 
   @override
   Stream<bool> isItemSelectedStream(IChatMessage? chatMessage) =>

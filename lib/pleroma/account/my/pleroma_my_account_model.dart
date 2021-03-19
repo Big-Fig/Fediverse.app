@@ -499,7 +499,8 @@ class PleromaMyAccountSourcePleromaPart {
   });
 
   factory PleromaMyAccountSourcePleromaPart.fromJson(
-          Map<String, dynamic> json) =>
+    Map<String, dynamic> json,
+  ) =>
       _$PleromaMyAccountSourcePleromaPartFromJson(json);
 
   factory PleromaMyAccountSourcePleromaPart.fromJsonString(String jsonString) =>
@@ -733,7 +734,8 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
 
   static List<PleromaMyAccount> listFromJsonString(String str) =>
       List<PleromaMyAccount>.from(
-          json.decode(str).map((x) => PleromaMyAccount.fromJson(x)));
+        json.decode(str).map((x) => PleromaMyAccount.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$PleromaMyAccountToJson(this);
@@ -789,7 +791,8 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
       lastStatusAt: lastStatusAt ?? this.lastStatusAt,
       fields: fields?.toPleromaFields() ?? this.fields,
       emojis: emojis?.toPleromaEmojis() ?? this.emojis,
-      pleroma: myAccountPleroma?.toPleromaMyAccountPleromaPart() ?? this.pleroma,
+      pleroma:
+          myAccountPleroma?.toPleromaMyAccountPleromaPart() ?? this.pleroma,
       discoverable: discoverable ?? this.discoverable,
       followRequestsCount: followRequestsCount ?? this.followRequestsCount,
       fqn: fqn ?? this.fqn,
@@ -904,13 +907,16 @@ class PleromaMyAccountPleromaPartNotificationsSettings {
   });
 
   factory PleromaMyAccountPleromaPartNotificationsSettings.fromJson(
-          Map<String, dynamic> json) =>
+    Map<String, dynamic> json,
+  ) =>
       _$PleromaMyAccountPleromaPartNotificationsSettingsFromJson(json);
 
   factory PleromaMyAccountPleromaPartNotificationsSettings.fromJsonString(
-          String jsonString) =>
+    String jsonString,
+  ) =>
       _$PleromaMyAccountPleromaPartNotificationsSettingsFromJson(
-          jsonDecode(jsonString));
+        jsonDecode(jsonString),
+      );
 
   static List<PleromaMyAccountPleromaPartNotificationsSettings>
       listFromJsonString(String str) =>
@@ -918,13 +924,15 @@ class PleromaMyAccountPleromaPartNotificationsSettings {
               .decode(str)
               .map((x) =>
                   PleromaMyAccountPleromaPartNotificationsSettings.fromJson(
-                      x)));
+                    x,
+                  )));
 
   Map<String, dynamic> toJson() =>
       _$PleromaMyAccountPleromaPartNotificationsSettingsToJson(this);
 
   String toJsonString() => jsonEncode(
-      _$PleromaMyAccountPleromaPartNotificationsSettingsToJson(this));
+        _$PleromaMyAccountPleromaPartNotificationsSettingsToJson(this),
+      );
 
   @override
   bool operator ==(Object other) =>
@@ -1150,7 +1158,8 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
       PleromaMyAccountPleromaPart(
         backgroundImage: backgroundImage ?? this.backgroundImage,
         tags: tags?.toPleromaTags() ?? this.tags,
-        relationship: relationship?.toPleromaAccountRelationship() ?? this.relationship,
+        relationship:
+            relationship?.toPleromaAccountRelationship() ?? this.relationship,
         isAdmin: isAdmin ?? this.isAdmin,
         isModerator: isModerator ?? this.isModerator,
         confirmationPending: confirmationPending ?? this.confirmationPending,

@@ -31,33 +31,34 @@ class DraftStatusListItemWidget extends StatelessWidget {
         const _DraftStatusListItemHeaderWidget(),
         const FediUltraLightGreyDivider(),
         StreamBuilder<IDraftStatus>(
-            stream: draftStatusBloc.draftStatusStream,
-            initialData: draftStatusBloc.draftStatus,
-            builder: (context, snapshot) {
-              var draftStatus = snapshot.data;
-              return Provider.value(
-                value: draftStatus,
-                child: ProxyProvider<IDraftStatus, IStatus>(
-                    update: (context, value, previous) =>
-                        DraftStatusAdapterToStatus(
-                          draftStatus: value,
-                          account:
-                              IMyAccountBloc.of(context, listen: false).account,
-                        ),
-                    child: DisposableProxyProvider<IStatus,
-                        IStatusListItemTimelineBloc>(
-                      update: (context, status, _) =>
-                          StatusListItemTimelineBloc.list(
-                        status: status,
-                        displayActions: false,
-                        statusCallback: null,
-                        collapsible: false,
-                        initialMediaAttachment: null,
-                      ),
-                      child: const StatusListItemTimelineWidget(),
-                    )),
-              );
-            }),
+          stream: draftStatusBloc.draftStatusStream,
+          initialData: draftStatusBloc.draftStatus,
+          builder: (context, snapshot) {
+            var draftStatus = snapshot.data;
+            return Provider.value(
+              value: draftStatus,
+              child: ProxyProvider<IDraftStatus, IStatus>(
+                update: (context, value, previous) =>
+                    DraftStatusAdapterToStatus(
+                  draftStatus: value,
+                  account: IMyAccountBloc.of(context, listen: false).account,
+                ),
+                child: DisposableProxyProvider<IStatus,
+                    IStatusListItemTimelineBloc>(
+                  update: (context, status, _) =>
+                      StatusListItemTimelineBloc.list(
+                    status: status,
+                    displayActions: false,
+                    statusCallback: null,
+                    collapsible: false,
+                    initialMediaAttachment: null,
+                  ),
+                  child: const StatusListItemTimelineWidget(),
+                ),
+              ),
+            );
+          },
+        ),
         const FediSmallVerticalSpacer(),
       ],
     );
@@ -92,7 +93,7 @@ class _DraftStatusListItemHeaderWidget extends StatelessWidget {
                       const _DraftStatusListItemEditButtonWidget(),
                       const _DraftStatusListItemCancelButtonWidget(),
                     ],
-                  )
+                  ),
                 ],
               ),
             );
@@ -114,19 +115,20 @@ class _DraftStatusListItemAlreadyPostedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: FediPadding.horizontalSmallPadding,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: FediPadding.allSmallPadding,
-              child: Text(
-                S.of(context).app_status_draft_state_alreadyPosted,
-                style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
-              ),
-            )
-          ],
-        ));
+      padding: FediPadding.horizontalSmallPadding,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: FediPadding.allSmallPadding,
+            child: Text(
+              S.of(context).app_status_draft_state_alreadyPosted,
+              style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -138,19 +140,20 @@ class _DraftStatusListItemCanceledWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: FediPadding.horizontalSmallPadding,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: FediPadding.allSmallPadding,
-              child: Text(
-                S.of(context).app_status_draft_state_canceled,
-                style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
-              ),
-            )
-          ],
-        ));
+      padding: FediPadding.horizontalSmallPadding,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: FediPadding.allSmallPadding,
+            child: Text(
+              S.of(context).app_status_draft_state_canceled,
+              style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -206,14 +209,15 @@ class _DraftStatusListItemDraftAtWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var draftStatusBloc = IDraftStatusBloc.of(context);
     return StreamBuilder<DateTime?>(
-        stream: draftStatusBloc.updatedAtStream,
-        initialData: draftStatusBloc.updatedAt,
-        builder: (context, snapshot) {
-          var draftAt = snapshot.data!;
-          return Text(
-            dateFormat.format(draftAt),
-            style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
-          );
-        });
+      stream: draftStatusBloc.updatedAtStream,
+      initialData: draftStatusBloc.updatedAt,
+      builder: (context, snapshot) {
+        var draftAt = snapshot.data!;
+        return Text(
+          dateFormat.format(draftAt),
+          style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+        );
+      },
+    );
   }
 }

@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class IRecentSelectAccountLocalPreferenceBloc
     implements LocalPreferenceBloc<RecentSelectAccountList?> {
-  static IRecentSelectAccountLocalPreferenceBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IRecentSelectAccountLocalPreferenceBloc>(context,
-          listen: listen);
+  static IRecentSelectAccountLocalPreferenceBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IRecentSelectAccountLocalPreferenceBloc>(
+        context,
+        listen: listen,
+      );
 }

@@ -32,8 +32,10 @@ void goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
 
   if (isAcctRemoteDomainExist) {
     // jumping from instance to instance
-    goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(context,
-        localInstanceRemoteAccount: remoteInstanceAccount);
+    goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
+      context,
+      localInstanceRemoteAccount: remoteInstanceAccount,
+    );
   } else {
     Navigator.push(
       context,
@@ -111,9 +113,10 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
 }
 
 Future<IAccount?> loadRemoteInstanceAccountViaAccountInStatus(
-    BuildContext context,
-    IAccount localInstanceRemoteAccount,
-    PleromaStatusService pleromaStatusService) async {
+  BuildContext context,
+  IAccount localInstanceRemoteAccount,
+  PleromaStatusService pleromaStatusService,
+) async {
   var remoteAccountAnyStatusOnLocalInstance =
       await loadRemoteAccountAnyStatusOnLocalInstance(
     context,

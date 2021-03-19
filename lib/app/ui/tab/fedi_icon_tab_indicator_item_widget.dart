@@ -23,27 +23,28 @@ class FediIconTabIndicatorItemWidget<T> extends StatelessWidget {
     };
 
     return StreamBuilder<bool>(
-        stream: fediTabIndicatorItemBloc.isSelectedStream,
-        initialData: fediTabIndicatorItemBloc.isSelected,
-        builder: (context, snapshot) {
-          var isSelected = snapshot.data!;
+      stream: fediTabIndicatorItemBloc.isSelectedStream,
+      initialData: fediTabIndicatorItemBloc.isSelected,
+      builder: (context, snapshot) {
+        var isSelected = snapshot.data!;
 
-          Widget button;
-          var iconData = tabToIconMapper(context, fediTabIndicatorItemBloc.item);
-          if (isSelected) {
-            button = FediIconInCircleFilledButton(
-              iconData,
-              onPressed: onPressed,
-              enabledBackgroundColor: fediUiColorTheme.transparent,
-            );
-          } else {
-            button = FediIconInCircleBlurredButton(
-              iconData,
-              onPressed: onPressed,
-            );
-          }
+        Widget button;
+        var iconData = tabToIconMapper(context, fediTabIndicatorItemBloc.item);
+        if (isSelected) {
+          button = FediIconInCircleFilledButton(
+            iconData,
+            onPressed: onPressed,
+            enabledBackgroundColor: fediUiColorTheme.transparent,
+          );
+        } else {
+          button = FediIconInCircleBlurredButton(
+            iconData,
+            onPressed: onPressed,
+          );
+        }
 
-          return button;
-        });
+        return button;
+      },
+    );
   }
 }

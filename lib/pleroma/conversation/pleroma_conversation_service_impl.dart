@@ -45,8 +45,11 @@ class PleromaConversationService extends DisposableOwner
     IPleromaPaginationRequest? pagination,
   }) async {
     var request = RestRequest.get(
-      relativePath: join(pleromaConversationRelativeUrlPath,
-          conversationRemoteId, conversationStatusesRelativeUrlPath),
+      relativePath: join(
+        pleromaConversationRelativeUrlPath,
+        conversationRemoteId,
+        conversationStatusesRelativeUrlPath,
+      ),
       queryArgs: [
         ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
       ],

@@ -19,7 +19,9 @@ class StatusListItemMediaWidget extends StatelessWidget {
   const StatusListItemMediaWidget() : super();
 
   Container mediaAttachmentPreviewUrlWidget(
-      String? previewUrl, BuildContext context) {
+    String? previewUrl,
+    BuildContext context,
+  ) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     return Container(
       color: fediUiColorTheme.black.withOpacity(0.2),

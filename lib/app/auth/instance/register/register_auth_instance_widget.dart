@@ -68,7 +68,7 @@ class _RegisterAuthInstanceSubmitButtonWidget extends StatelessWidget {
                       context: context,
                       error: error,
                       stackTrace: stackTrace,
-                    )
+                    ),
               ],
             );
           };

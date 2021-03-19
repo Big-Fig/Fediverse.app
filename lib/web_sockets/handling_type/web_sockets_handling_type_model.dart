@@ -4,7 +4,7 @@ import 'package:moor/moor.dart' as moor;
 enum WebSocketsHandlingType {
   disabled,
   onlyForeground,
-  foregroundAndBackground
+  foregroundAndBackground,
 }
 
 const _disabledWebSocketsHandlingTypeJsonValue = "disabled";

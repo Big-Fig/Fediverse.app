@@ -39,7 +39,8 @@ class PleromaAuthRestService extends PleromaRestService
   @override
   Future<Response>
       uploadFileMultipartRequest<T extends UploadMultipartRestRequest, K>(
-          T request) {
+    T request,
+  ) {
     request.headers.addAll(createAuthHeaders());
     return super.uploadFileMultipartRequest(request);
   }

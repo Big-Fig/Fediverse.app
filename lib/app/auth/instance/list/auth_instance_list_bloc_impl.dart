@@ -74,12 +74,15 @@ class AuthInstanceListBloc extends DisposableOwner
   }
 
   @override
-  AuthInstance? findInstanceByCredentials(
-      {required String? host, required String? acct}) {
+  AuthInstance? findInstanceByCredentials({
+    required String? host,
+    required String? acct,
+  }) {
     var instanceList = instanceListLocalPreferenceBloc.value!;
     var foundInstance = instanceList.instances!.firstWhere(
-        (instance) => instance!.urlHost == host && instance.acct == acct,
-        orElse: () => null);
+      (instance) => instance!.urlHost == host && instance.acct == acct,
+      orElse: () => null,
+    );
 
     return foundInstance;
   }

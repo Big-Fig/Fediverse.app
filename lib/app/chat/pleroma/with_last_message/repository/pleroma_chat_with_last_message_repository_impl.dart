@@ -40,7 +40,8 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
 
   Future<List<PleromaChatWithLastMessageWrapper>>
       _createChatWithLastMessageList(
-          List<DbPleromaChatPopulatedWrapper> chats) async {
+    List<DbPleromaChatPopulatedWrapper> chats,
+  ) async {
     var chatLastMessagesMap =
         await chatMessageRepository.getChatsLastChatMessage(chats: chats);
     return chatLastMessagesMap.entries.map(
