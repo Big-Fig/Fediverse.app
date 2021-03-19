@@ -18,47 +18,47 @@ class ChatSelectionItemWidget extends StatelessWidget {
     var chatSelectionItemBloc = IChatSelectionItemBloc.of(context);
 
     return StreamBuilder<bool>(
-        stream: chatSelectionItemBloc.isSelectionPossibleStream,
-        builder: (context, snapshot) {
-          var isSelectionPossible = snapshot.data ?? false;
+      stream: chatSelectionItemBloc.isSelectionPossibleStream,
+      builder: (context, snapshot) {
+        var isSelectionPossible = snapshot.data ?? false;
 
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: InkWell(
-                  onLongPress: isSelectionPossible
-                      ? () {
-                          var isSomethingSelected =
-                              chatSelectionBloc.isSomethingSelected;
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: InkWell(
+                onLongPress: isSelectionPossible
+                    ? () {
+                        var isSomethingSelected =
+                            chatSelectionBloc.isSomethingSelected;
 
-                          if (!isSomethingSelected) {
-                            var chatSelectionItemBloc =
-                                IChatSelectionItemBloc.of(
-                              context,
-                              listen: false,
-                            );
-                            chatSelectionItemBloc.select();
-                          }
+                        if (!isSomethingSelected) {
+                          var chatSelectionItemBloc = IChatSelectionItemBloc.of(
+                            context,
+                            listen: false,
+                          );
+                          chatSelectionItemBloc.select();
                         }
-                      : null,
-                  child: child,
-                ),
+                      }
+                    : null,
+                child: child,
               ),
-              StreamBuilder<bool>(
-                stream: chatSelectionBloc.isSomethingSelectedStream,
-                builder: (context, snapshot) {
-                  var isSomethingSelected = snapshot.data ?? false;
+            ),
+            StreamBuilder<bool>(
+              stream: chatSelectionBloc.isSomethingSelectedStream,
+              builder: (context, snapshot) {
+                var isSomethingSelected = snapshot.data ?? false;
 
-                  if (isSomethingSelected) {
-                    return const ChatSelectionItemToggleButtonWidget();
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                },
-              ),
-            ],
-          );
-        });
+                if (isSomethingSelected) {
+                  return const ChatSelectionItemToggleButtonWidget();
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -40,13 +40,13 @@ class WebSocketsService extends DisposableOwner implements IWebSocketsService {
       urlToChannel[url] = createChannel<T>(config);
     }
 
-
     // todo: think about cast
     return urlToChannel[url]! as IWebSocketsChannel<T>;
   }
 
   IWebSocketsChannel createChannel<T extends WebSocketsEvent>(
-      IWebSocketsChannelConfig<T> config) {
+    IWebSocketsChannelConfig<T> config,
+  ) {
     _logger.finest(() => "createChannel $config");
 
     return WebSocketsChannel<T>(

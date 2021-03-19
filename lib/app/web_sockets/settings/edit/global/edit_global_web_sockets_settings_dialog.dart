@@ -21,13 +21,18 @@ void showEditGlobalWebSocketsSettingsDialog({
     child: DisposableProvider<IWebSocketsSettingsBloc>(
       create: (context) => WebSocketsSettingsBloc(
         instanceLocalPreferencesBloc:
-            IInstanceWebSocketsSettingsLocalPreferencesBloc.of(context,
-                listen: false),
+            IInstanceWebSocketsSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
         globalLocalPreferencesBloc:
-            IGlobalWebSocketsSettingsLocalPreferencesBloc.of(context, listen: false),
+            IGlobalWebSocketsSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
       ),
-      child:
-          DisposableProxyProvider<IWebSocketsSettingsBloc, IEditWebSocketsSettingsBloc>(
+      child: DisposableProxyProvider<IWebSocketsSettingsBloc,
+          IEditWebSocketsSettingsBloc>(
         update: (context, value, previous) => EditWebSocketsSettingsBloc(
           webSocketsSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,

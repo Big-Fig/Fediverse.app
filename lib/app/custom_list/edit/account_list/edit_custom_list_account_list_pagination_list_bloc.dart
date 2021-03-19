@@ -9,8 +9,12 @@ abstract class IEditCustomListAccountListPaginationListBloc
     implements
         IEditPaginationListBloc<PaginationPage<IAccount>, IAccount>,
         IAccountPaginationListBloc {
-  static IEditCustomListAccountListPaginationListBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IEditCustomListAccountListPaginationListBloc>(context,
-          listen: listen);
+  static IEditCustomListAccountListPaginationListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IEditCustomListAccountListPaginationListBloc>(
+        context,
+        listen: listen,
+      );
 }

@@ -133,7 +133,9 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       FediListSmartRefresherLoadingState state;
       var nextPageIndex = paginationBloc.loadedPagesMaximumIndex! + 1;
       var nextPage = await paginationBloc.requestPage(
-          pageIndex: nextPageIndex, forceToSkipCache: true);
+        pageIndex: nextPageIndex,
+        forceToSkipCache: true,
+      );
 
       if (nextPage.items.isNotEmpty == true) {
         state = FediListSmartRefresherLoadingState.loaded;
@@ -155,7 +157,10 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       }
 
       _logger.warning(
-          () => "error during loadMoreWithoutController", e, stackTrace);
+        () => "error during loadMoreWithoutController",
+        e,
+        stackTrace,
+      );
       rethrow;
     }
   }
@@ -188,14 +193,17 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
             .add(PaginationListLoadingError(error: e, stackTrace: stackTrace));
       }
       _logger.warning(
-          () => "error during refreshWithoutController", e, stackTrace);
+        () => "error during refreshWithoutController",
+        e,
+        stackTrace,
+      );
       rethrow;
     }
   }
 
-  static List<TItem>
-      mapToItemsList<TPage extends PaginationPage<TItem>, TItem>(
-          List<TPage> sortedPages) {
+  static List<TItem> mapToItemsList<TPage extends PaginationPage<TItem>, TItem>(
+    List<TPage> sortedPages,
+  ) {
     List<TItem> items = [];
     sortedPages.forEach((page) {
       items.addAll(page.items);
@@ -214,10 +222,11 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
         // ignore error, because it is related to refresh controller
         // internal wrong logic
         _logger.warning(
-            () =>
-                "error during refreshController.requestRefresh(needMove:false);",
-            e,
-            stackTrace);
+          () =>
+              "error during refreshController.requestRefresh(needMove:false);",
+          e,
+          stackTrace,
+        );
       }
     } else {
       //otherwise refresh only bloc

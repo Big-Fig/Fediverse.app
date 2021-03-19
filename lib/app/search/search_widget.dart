@@ -41,20 +41,23 @@ class SearchWidget extends StatelessWidget {
     var searchBloc = ISearchBloc.of(context, listen: false);
 
     return StreamBuilder<bool>(
-        stream: searchBloc.searchInputBloc.confirmedSearchTermIsNotEmptyStream,
-        initialData: searchBloc.searchInputBloc.confirmedSearchTermIsNotEmpty,
-        builder: (context, snapshot) {
-          var confirmedSearchTermIsNotEmpty = snapshot.data!;
-          if (confirmedSearchTermIsNotEmpty) {
-            return buildNonEmptyInputBody(searchBloc, context);
-          } else {
-            return const RecentSearchWidget();
-          }
-        });
+      stream: searchBloc.searchInputBloc.confirmedSearchTermIsNotEmptyStream,
+      initialData: searchBloc.searchInputBloc.confirmedSearchTermIsNotEmpty,
+      builder: (context, snapshot) {
+        var confirmedSearchTermIsNotEmpty = snapshot.data!;
+        if (confirmedSearchTermIsNotEmpty) {
+          return buildNonEmptyInputBody(searchBloc, context);
+        } else {
+          return const RecentSearchWidget();
+        }
+      },
+    );
   }
 
   DefaultTabController buildNonEmptyInputBody(
-      ISearchBloc searchBloc, BuildContext context) {
+    ISearchBloc searchBloc,
+    BuildContext context,
+  ) {
     return DefaultTabController(
       length: tabs.length,
       initialIndex: tabs.indexOf(searchBloc.selectedTab),
@@ -65,7 +68,7 @@ class SearchWidget extends StatelessWidget {
           const FediUltraLightGreyDivider(),
           Expanded(
             child: const _SearchBodyWidget(),
-          )
+          ),
         ],
       ),
     );

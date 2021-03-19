@@ -5,8 +5,11 @@ import 'package:provider/provider.dart';
 abstract class IGlobalLocalizationSettingsLocalPreferencesBloc
     implements ILocalizationSettingsLocalPreferencesBloc {
   static IGlobalLocalizationSettingsLocalPreferencesBloc of(
-          BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IGlobalLocalizationSettingsLocalPreferencesBloc>(context,
-          listen: listen);
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IGlobalLocalizationSettingsLocalPreferencesBloc>(
+        context,
+        listen: listen,
+      );
 }

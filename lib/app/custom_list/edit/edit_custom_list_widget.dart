@@ -81,10 +81,11 @@ class _EditCustomListDeleteButton extends StatelessWidget {
         Navigator.of(context).pop();
       },
       builder: (context, onPressed) => FediTransparentTextButtonWithBorder(
-          S.of(context).app_acccount_my_customList_edit_action_delete_list,
-          expanded: false,
-          onPressed: onPressed,
-          color: IFediUiColorTheme.of(context).error),
+        S.of(context).app_acccount_my_customList_edit_action_delete_list,
+        expanded: false,
+        onPressed: onPressed,
+        color: IFediUiColorTheme.of(context).error,
+      ),
     );
   }
 }
@@ -159,8 +160,8 @@ class _EditCustomListBodyAlreadyAddedAccountsWidget extends StatelessWidget {
         ICustomListAccountListNetworkOnlyListBloc?>(
       update: (context, editCustomListBloc, previous) =>
           editCustomListBloc.customListAccountListNetworkOnlyListBloc,
-      child:
-          ProxyProvider<IEditCustomListBloc, IAccountNetworkOnlyPaginationBloc?>(
+      child: ProxyProvider<IEditCustomListBloc,
+          IAccountNetworkOnlyPaginationBloc?>(
         update: (context, editCustomListBloc, previous) =>
             editCustomListBloc.customListAccountListNetworkOnlyPaginationBloc,
         child: ProxyProvider<IEditCustomListBloc,

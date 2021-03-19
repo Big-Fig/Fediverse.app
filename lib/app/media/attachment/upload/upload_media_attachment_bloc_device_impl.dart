@@ -26,7 +26,8 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
   BehaviorSubject<UploadMediaAttachmentState> uploadStateSubject =
       BehaviorSubject.seeded(
     UploadMediaAttachmentState(
-        type: UploadMediaAttachmentStateType.notUploaded),
+      type: UploadMediaAttachmentStateType.notUploaded,
+    ),
   );
 
   @override
@@ -101,7 +102,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
   }
 
   @override
-  Future<String>  calculateFilePath() => mediaDeviceFile.calculateFilePath();
+  Future<String> calculateFilePath() => mediaDeviceFile.calculateFilePath();
 
   @override
   bool get isMedia => mediaDeviceFile.metadata.isMedia;

@@ -12,8 +12,10 @@ abstract class IDraftStatusRepository
         IDisposable,
         IReadIdListRepository<IDraftStatus, int?>,
         IWriteIdListRepository<DbDraftStatus, int?> {
-  static IDraftStatusRepository of(BuildContext context,
-          {bool listen = true}) =>
+  static IDraftStatusRepository of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IDraftStatusRepository>(context, listen: listen);
 
   Future addDraftStatus({

@@ -19,33 +19,34 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
     required BuildContext context,
     required VoidCallback successCallback,
   }) : super(
-            actionsBorderVisible: true,
-            title: S.of(context).app_account_my_domainBlock_add_dialog_title,
-            actions: [
-              BaseDialog.createDefaultOkAction(
-                context: context,
-                action: (context) async {
-                  var addMyAccountDomainBlockBloc =
-                      IAddMyAccountDomainBlockBloc.of(context, listen: false);
-                  await PleromaAsyncOperationHelper
-                      .performPleromaAsyncOperation(
-                          context: context,
-                          asyncCode: () async {
-                            await addMyAccountDomainBlockBloc.submit();
-                          });
+          actionsBorderVisible: true,
+          title: S.of(context).app_account_my_domainBlock_add_dialog_title,
+          actions: [
+            BaseDialog.createDefaultOkAction(
+              context: context,
+              action: (context) async {
+                var addMyAccountDomainBlockBloc =
+                    IAddMyAccountDomainBlockBloc.of(context, listen: false);
+                await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                  context: context,
+                  asyncCode: () async {
+                    await addMyAccountDomainBlockBloc.submit();
+                  },
+                );
 
-                  successCallback();
-                },
-                isActionEnabledFetcher: (context) =>
-                    IAddMyAccountDomainBlockBloc.of(context, listen: false)
-                        .isHaveChangesAndNoErrors,
-                isActionEnabledStreamFetcher: (context) =>
-                    IAddMyAccountDomainBlockBloc.of(context, listen: false)
-                        .isHaveChangesAndNoErrorsStream,
-              ),
-            ],
-            actionsAxis: Axis.horizontal,
-            cancelable: true) {
+                successCallback();
+              },
+              isActionEnabledFetcher: (context) =>
+                  IAddMyAccountDomainBlockBloc.of(context, listen: false)
+                      .isHaveChangesAndNoErrors,
+              isActionEnabledStreamFetcher: (context) =>
+                  IAddMyAccountDomainBlockBloc.of(context, listen: false)
+                      .isHaveChangesAndNoErrorsStream,
+            ),
+          ],
+          actionsAxis: Axis.horizontal,
+          cancelable: true,
+        ) {
     addMyAccountDomainBlockBloc = AddMyAccountDomainBlockBloc(
       pleromaAuthAccountService: IPleromaAuthAccountService.of(
         context,

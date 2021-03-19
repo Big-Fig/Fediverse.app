@@ -28,7 +28,7 @@ class PleromaChatPage extends StatelessWidget {
               const _PleromaChatPageAppBarWidget(),
               const Expanded(
                 child: PleromaChatWidget(),
-              )
+              ),
             ],
           ),
         ),

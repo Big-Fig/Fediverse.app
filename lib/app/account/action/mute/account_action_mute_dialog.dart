@@ -16,29 +16,30 @@ import 'package:provider/provider.dart';
 Future<T?> showAccountActionMuteDialog<T>({
   required BuildContext context,
   required IAccountBloc accountBloc,
-}) => AccountActionMuteDialog(
-    accountBloc: accountBloc,
-    actionsBorderVisible: false,
-    title: S.of(context).app_account_mute_dialog_title,
-    actionsAxis: Axis.vertical,
-    cancelable: true,
-    actions: [
-      DialogAction(
-        label: S.of(context).app_account_mute_dialog_action_mute,
-        onAction: (context) async {
-          var accountActionMuteBloc =
-              IAccountActionMuteBloc.of(context, listen: false);
+}) =>
+    AccountActionMuteDialog(
+      accountBloc: accountBloc,
+      actionsBorderVisible: false,
+      title: S.of(context).app_account_mute_dialog_title,
+      actionsAxis: Axis.vertical,
+      cancelable: true,
+      actions: [
+        DialogAction(
+          label: S.of(context).app_account_mute_dialog_action_mute,
+          onAction: (context) async {
+            var accountActionMuteBloc =
+                IAccountActionMuteBloc.of(context, listen: false);
 
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-            context: context,
-            asyncCode: () => accountActionMuteBloc.mute(),
-          );
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+              context: context,
+              asyncCode: () => accountActionMuteBloc.mute(),
+            );
 
-          Navigator.pop(context);
-        },
-      ),
-    ],
-  ).show(context);
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    ).show(context);
 
 class AccountActionMuteDialog extends FediDialog {
   final IAccountActionMuteBloc accountActionMuteBloc;
@@ -78,7 +79,7 @@ class AccountActionMuteDialog extends FediDialog {
       children: [
         const _AccountActionMuteDialogDescriptionWidget(),
         const _AccountActionMuteDialogNotificationsField(),
-        const _AccountActionMuteDialogExpireField()
+        const _AccountActionMuteDialogExpireField(),
       ],
     );
   }

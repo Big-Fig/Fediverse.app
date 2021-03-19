@@ -46,7 +46,8 @@ class FediLocalPreferencesServiceMigrationBloc
   @override
   Future<List<LocalPreferencesBlocCreator>>
       calculateAllMigrationLocalPreferencesBlocCreators(
-          ILocalPreferencesService inputService) async {
+    ILocalPreferencesService inputService,
+  ) async {
     var instanceListLocalPreferenceBloc =
         AuthInstanceListLocalPreferenceBloc(inputService);
     await instanceListLocalPreferenceBloc.performAsyncInit();
@@ -62,7 +63,8 @@ class FediLocalPreferencesServiceMigrationBloc
         (lps) => AuthHostAccessTokenLocalPreferenceBloc(lps, host: host),
         (lps) => AuthHostApplicationLocalPreferenceBloc(lps, host: host),
       ]);
-      authInstancesBlocCreators.addAll(calculateUserAtHostLocalPreferencesBlocCreators(userAtHost));
+      authInstancesBlocCreators
+          .addAll(calculateUserAtHostLocalPreferencesBlocCreators(userAtHost));
 
       var timelinesHomeTabStorageLocalPreferencesBloc =
           TimelinesHomeTabStorageLocalPreferencesBloc(
@@ -101,36 +103,62 @@ class FediLocalPreferencesServiceMigrationBloc
       (lps) => GlobalUiSettingsLocalPreferencesBloc(lps),
       (lps) => GlobalPaginationSettingsLocalPreferencesBloc(lps),
       (lps) => AppAnalyticsLocalPreferenceBloc(lps),
-      ...authInstancesBlocCreators
+      ...authInstancesBlocCreators,
     ];
   }
 
-  static List<LocalPreferencesBlocCreator> calculateUserAtHostLocalPreferencesBlocCreators(String userAtHost) => [
-      (lps) => EmojiPickerRecentCategoryLocalPreferenceBloc(lps,
-          userAtHost: userAtHost),
-      (lps) => EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc(lps,
-          userAtHost: userAtHost),
-      (lps) => MyAccountLocalPreferenceBloc(lps, userAtHost: userAtHost),
-      (lps) => RecentSearchLocalPreferenceBloc(lps, userAtHost: userAtHost),
-      (lps) => FcmPushPermissionAskedLocalPreferencesBloc(lps,
-          userAtHost: userAtHost),
-      (lps) => TimelinesHomeTabStorageLocalPreferencesBloc(lps,
-          userAtHost: userAtHost),
-      (lps) => InstancePushSettingsLocalPreferencesBloc(lps,
-          userAtHost: userAtHost),
-      (lps) => InstanceChatSettingsLocalPreferencesBloc(lps,
-          userAtHost: userAtHost),
-      (lps) => InstanceMediaSettingsLocalPreferencesBloc(lps,
-          userAtHost: userAtHost),
-      (lps) => InstanceToastSettingsLocalPreferencesBloc(lps,
-          userAtHost: userAtHost),
-      (lps) => InstancePostStatusSettingsLocalPreferencesBloc(lps,
-          userAtHost: userAtHost),
-      (lps) => InstanceStatusSensitiveSettingsLocalPreferencesBloc(lps,
-          userAtHost: userAtHost),
-      (lps) => InstanceWebSocketsSettingsLocalPreferencesBloc(lps,
-          userAtHost: userAtHost),
-      (lps) => InstancePaginationSettingsLocalPreferencesBloc(lps,
-          userAtHost: userAtHost),
-    ];
+  static List<LocalPreferencesBlocCreator>
+      calculateUserAtHostLocalPreferencesBlocCreators(String userAtHost) => [
+            (lps) => EmojiPickerRecentCategoryLocalPreferenceBloc(
+                  lps,
+                  userAtHost: userAtHost,
+                ),
+            (lps) => EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc(
+                  lps,
+                  userAtHost: userAtHost,
+                ),
+            (lps) => MyAccountLocalPreferenceBloc(lps, userAtHost: userAtHost),
+            (lps) =>
+                RecentSearchLocalPreferenceBloc(lps, userAtHost: userAtHost),
+            (lps) => FcmPushPermissionAskedLocalPreferencesBloc(
+                  lps,
+                  userAtHost: userAtHost,
+                ),
+            (lps) => TimelinesHomeTabStorageLocalPreferencesBloc(
+                  lps,
+                  userAtHost: userAtHost,
+                ),
+            (lps) => InstancePushSettingsLocalPreferencesBloc(
+                  lps,
+                  userAtHost: userAtHost,
+                ),
+            (lps) => InstanceChatSettingsLocalPreferencesBloc(
+                  lps,
+                  userAtHost: userAtHost,
+                ),
+            (lps) => InstanceMediaSettingsLocalPreferencesBloc(
+                  lps,
+                  userAtHost: userAtHost,
+                ),
+            (lps) => InstanceToastSettingsLocalPreferencesBloc(
+                  lps,
+                  userAtHost: userAtHost,
+                ),
+            (lps) => InstancePostStatusSettingsLocalPreferencesBloc(
+                  lps,
+                  userAtHost: userAtHost,
+                ),
+            (lps) => InstanceStatusSensitiveSettingsLocalPreferencesBloc(
+                  lps,
+                  userAtHost: userAtHost,
+                ),
+            (lps) => InstanceWebSocketsSettingsLocalPreferencesBloc(
+                  lps,
+                  userAtHost: userAtHost,
+                ),
+            (lps) => InstancePaginationSettingsLocalPreferencesBloc(
+                  lps,
+                  userAtHost: userAtHost,
+                ),
+          ];
 }

@@ -11,7 +11,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void _newPostStatusPageHandleBackPressed(
-    BuildContext context, IPostStatusBloc postStatusBloc) {
+  BuildContext context,
+  IPostStatusBloc postStatusBloc,
+) {
   var isSomethingChanged = postStatusBloc.isAnyDataEntered;
   if (isSomethingChanged) {
     showPostStatusUnsavedDialog(context, postStatusBloc);

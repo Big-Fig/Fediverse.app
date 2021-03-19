@@ -22,16 +22,20 @@ class StatusAccountWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: true);
 
     return StreamBuilder<IAccount?>(
-        stream: statusBloc.reblogOrOriginalAccountStream,
-        initialData: statusBloc.reblogOrOriginalAccount,
-        builder: (context, snapshot) {
-          var reblogOrOriginalAccount = snapshot.data;
-          return buildBody(context, reblogOrOriginalAccount, statusBloc);
-        });
+      stream: statusBloc.reblogOrOriginalAccountStream,
+      initialData: statusBloc.reblogOrOriginalAccount,
+      builder: (context, snapshot) {
+        var reblogOrOriginalAccount = snapshot.data;
+        return buildBody(context, reblogOrOriginalAccount, statusBloc);
+      },
+    );
   }
 
-  Widget buildBody(BuildContext context, IAccount? reblogOrOriginalAccount,
-      IStatusBloc statusBloc) {
+  Widget buildBody(
+    BuildContext context,
+    IAccount? reblogOrOriginalAccount,
+    IStatusBloc statusBloc,
+  ) {
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
     return Provider<IAccount?>.value(
       value: reblogOrOriginalAccount,
@@ -88,7 +92,7 @@ class StatusAccountWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const AccountDisplayNameWidget(),
-                    const AccountAcctWidget()
+                    const AccountAcctWidget(),
                   ],
                 ),
               ),

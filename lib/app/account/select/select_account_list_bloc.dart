@@ -5,8 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 abstract class ISelectAccountListBloc extends IAccountCachedListBloc {
-  static ISelectAccountListBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static ISelectAccountListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<ISelectAccountListBloc>(context, listen: listen);
 
   ISearchInputBloc get searchInputBloc;

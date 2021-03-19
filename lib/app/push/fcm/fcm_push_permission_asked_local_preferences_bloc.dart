@@ -4,8 +4,12 @@ import 'package:provider/provider.dart';
 
 abstract class IFcmPushPermissionAskedLocalPreferencesBloc
     implements ILocalPreferenceBloc<bool?> {
-  static IFcmPushPermissionAskedLocalPreferencesBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IFcmPushPermissionAskedLocalPreferencesBloc>(context,
-          listen: listen);
+  static IFcmPushPermissionAskedLocalPreferencesBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IFcmPushPermissionAskedLocalPreferencesBloc>(
+        context,
+        listen: listen,
+      );
 }

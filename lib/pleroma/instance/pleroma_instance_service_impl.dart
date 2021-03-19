@@ -46,7 +46,9 @@ class PleromaInstanceService extends DisposableOwner
       return jsonDecode(httpResponse.body);
     } else {
       throw PleromaInstanceException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -55,17 +57,22 @@ class PleromaInstanceService extends DisposableOwner
       return PleromaInstance.fromJsonString(httpResponse.body);
     } else {
       throw PleromaInstanceException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
   List<IPleromaInstanceHistory> parseInstanceHistoryListResponse(
-      Response httpResponse) {
+    Response httpResponse,
+  ) {
     if (httpResponse.statusCode == 200) {
       return PleromaInstanceHistory.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaInstanceException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 

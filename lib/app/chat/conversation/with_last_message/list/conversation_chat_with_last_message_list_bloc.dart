@@ -10,10 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 abstract class IConversationChatWithLastMessageListBloc extends IDisposable {
-  static IConversationChatWithLastMessageListBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IConversationChatWithLastMessageListBloc>(context,
-          listen: listen);
+  static IConversationChatWithLastMessageListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IConversationChatWithLastMessageListBloc>(
+        context,
+        listen: listen,
+      );
 
   IConversationChatWithLastMessageCachedListBloc? get cachedListBloc;
 

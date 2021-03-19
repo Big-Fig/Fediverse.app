@@ -46,9 +46,12 @@ class ScheduledStatusPaginationListTimelineWidget
           child:
               DisposableProxyProvider<IScheduledStatus, IScheduledStatusBloc>(
             update: (context, scheduledStatus, oldValue) =>
-                ScheduledStatusBloc.createFromContext(context, scheduledStatus,
-                    isNeedWatchLocalRepositoryForUpdates:
-                        needWatchLocalRepositoryForUpdates),
+                ScheduledStatusBloc.createFromContext(
+              context,
+              scheduledStatus,
+              isNeedWatchLocalRepositoryForUpdates:
+                  needWatchLocalRepositoryForUpdates,
+            ),
             child: FediListTile(
               isFirstInList: index == 0,
               child: ScheduledStatusListItemWidget(

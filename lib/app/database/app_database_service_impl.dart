@@ -140,7 +140,8 @@ class AppDatabaseService extends AsyncInitLoadingBloc
     var oldestDateTime;
     if (dateTimes.isNotEmpty) {
       oldestDateTime = dateTimes.reduce(
-          (value, element) => value!.isBefore(element!) ? value : element);
+        (value, element) => value!.isBefore(element!) ? value : element,
+      );
     }
 
     return oldestDateTime;

@@ -8,8 +8,10 @@ import 'package:provider/provider.dart';
 
 abstract class IEditPostStatusSettingsBloc
     implements IEditGlobalOrInstanceSettingsBloc<PostStatusSettings?> {
-  static IEditPostStatusSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IEditPostStatusSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IEditPostStatusSettingsBloc>(context, listen: listen);
 
   IBoolValueFormFieldBloc? get markMediaAsNsfwOnAttachFormFieldBloc;
@@ -17,6 +19,6 @@ abstract class IEditPostStatusSettingsBloc
   IStatusVisibilitySelectSingleFromListValueFormFieldBloc?
       get defaultVisibilityFormFieldBloc;
 
-  ILocalizationLocaleSingleFromListValueFormFieldBloc? get
-  defaultStatusLocaleFormFieldBloc;
+  ILocalizationLocaleSingleFromListValueFormFieldBloc?
+      get defaultStatusLocaleFormFieldBloc;
 }

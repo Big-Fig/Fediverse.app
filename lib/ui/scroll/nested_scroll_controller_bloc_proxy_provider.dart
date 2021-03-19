@@ -11,6 +11,8 @@ class NestedScrollControllerBlocProxyProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<INestedScrollControllerBloc, IScrollControllerBloc>(
-        update: (context, value, previous) => value, child: child);
+      update: (context, value, previous) => value,
+      child: child,
+    );
   }
 }

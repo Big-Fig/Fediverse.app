@@ -38,7 +38,8 @@ class RecentSelectAccountBloc extends DisposableOwner
 
           if (selectedAccount != null) {
             recentItems.removeWhere(
-                (account) => account.id == selectedAccount.remoteId);
+              (account) => account.id == selectedAccount.remoteId,
+            );
 
             recentItems.add(selectedAccount.toPleromaAccount());
           }
@@ -65,7 +66,8 @@ class RecentSelectAccountBloc extends DisposableOwner
       );
 
   static bool _calculateIsRecentSelectAccountListEmpty(
-      RecentSelectAccountList? list) {
+    RecentSelectAccountList? list,
+  ) {
     var recentItems = list?.recentItems;
     var isEmpty = !(recentItems?.isNotEmpty == true);
     return isEmpty;

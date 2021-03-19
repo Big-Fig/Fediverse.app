@@ -15,7 +15,9 @@ Future<DbConversationChatWrapper> createTestConversation({
     );
 
 void expectConversation(
-    IConversationChat? actual, IConversationChat? expected) {
+  IConversationChat? actual,
+  IConversationChat? expected,
+) {
   if (actual == null && expected == null) {
     return;
   }

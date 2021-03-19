@@ -111,11 +111,14 @@ void main() {
     expectChatMessage(chatMessageBloc.chatMessage, chatMessage);
 
     var newValue = await createTestChatMessage(
-        seed: "seed2", remoteId: chatMessage.remoteId);
+      seed: "seed2",
+      remoteId: chatMessage.remoteId,
+    );
     await accountRepository.upsertRemoteAccount(
-        newValue.account.toPleromaAccount(),
-        conversationRemoteId: null,
-        chatRemoteId: newValue.chatRemoteId);
+      newValue.account.toPleromaAccount(),
+      conversationRemoteId: null,
+      chatRemoteId: newValue.chatRemoteId,
+    );
 
     var listenedValue;
 
@@ -168,7 +171,8 @@ void main() {
 
     // same if emojis is empty or null
     await _update(
-        chatMessage.copyWith(content: newValue, emojis: <PleromaEmoji>[]));
+      chatMessage.copyWith(content: newValue, emojis: <PleromaEmoji>[]),
+    );
 
     expect(
       chatMessageBloc.contentWithEmojis,

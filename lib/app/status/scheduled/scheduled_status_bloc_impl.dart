@@ -87,7 +87,9 @@ class ScheduledStatusBloc extends DisposableOwner
   }
 
   void _init(
-      IScheduledStatus scheduledStatus, bool needRefreshFromNetworkOnInit) {
+    IScheduledStatus scheduledStatus,
+    bool needRefreshFromNetworkOnInit,
+  ) {
     if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(

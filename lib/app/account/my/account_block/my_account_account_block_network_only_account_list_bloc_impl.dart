@@ -84,8 +84,11 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
       ),
     );
 
-    await accountRepository.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: null, chatRemoteId: null);
+    await accountRepository.upsertRemoteAccounts(
+      remoteAccounts,
+      conversationRemoteId: null,
+      chatRemoteId: null,
+    );
     return remoteAccounts
         .map(
           (remoteAccount) => remoteAccount.toDbAccountWrapper(),
@@ -97,7 +100,8 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
   IPleromaApi get pleromaApi => pleromaMyAccountService;
 
   static MyAccountAccountBlockNetworkOnlyAccountListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       MyAccountAccountBlockNetworkOnlyAccountListBloc(
         pleromaMyAccountService: IPleromaMyAccountService.of(
           context,

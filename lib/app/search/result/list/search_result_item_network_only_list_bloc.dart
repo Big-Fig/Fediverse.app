@@ -12,10 +12,14 @@ abstract class ISearchResultItemNetworkOnlyListBloc extends DisposableOwner
         INetworkOnlyListBloc<ISearchResultItem>,
         IStatusListBloc,
         IAccountListBloc {
-  static ISearchResultItemNetworkOnlyListBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<ISearchResultItemNetworkOnlyListBloc>(context,
-          listen: listen);
+  static ISearchResultItemNetworkOnlyListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<ISearchResultItemNetworkOnlyListBloc>(
+        context,
+        listen: listen,
+      );
 
   @override
   IPleromaApi get pleromaApi;

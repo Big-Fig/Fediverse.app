@@ -97,8 +97,9 @@ abstract class ObjectLocalPreferenceBloc<T extends IJsonObject?>
 
 abstract class SimpleLocalPreferencesBloc<T> extends LocalPreferenceBloc<T> {
   SimpleLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService, String key)
-      : super(preferencesService, key);
+    ILocalPreferencesService preferencesService,
+    String key,
+  ) : super(preferencesService, key);
 }
 
 abstract class IntPreferenceBloc extends SimpleLocalPreferencesBloc<int?> {
@@ -118,8 +119,9 @@ abstract class IntPreferenceBloc extends SimpleLocalPreferencesBloc<int?> {
 abstract class BoolLocalPreferenceBloc
     extends SimpleLocalPreferencesBloc<bool?> {
   BoolLocalPreferenceBloc(
-      ILocalPreferencesService preferencesService, String key)
-      : super(preferencesService, key);
+    ILocalPreferencesService preferencesService,
+    String key,
+  ) : super(preferencesService, key);
 
   @override
   Future<bool> setValueInternal(bool? newValue) async =>
@@ -135,8 +137,9 @@ abstract class BoolLocalPreferenceBloc
 abstract class StringLocalPreferenceBloc
     extends SimpleLocalPreferencesBloc<String?> {
   StringLocalPreferenceBloc(
-      ILocalPreferencesService preferencesService, String key)
-      : super(preferencesService, key);
+    ILocalPreferencesService preferencesService,
+    String key,
+  ) : super(preferencesService, key);
 
   @override
   Future<bool> setValueInternal(String? newValue) async =>

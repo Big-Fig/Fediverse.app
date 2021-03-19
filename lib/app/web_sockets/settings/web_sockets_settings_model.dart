@@ -38,7 +38,8 @@ class WebSocketsSettings implements ISettings<WebSocketsSettings> {
 
   static List<WebSocketsSettings> listFromJsonString(String str) =>
       List<WebSocketsSettings>.from(
-          json.decode(str).map((x) => WebSocketsSettings.fromJson(x)));
+        json.decode(str).map((x) => WebSocketsSettings.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$WebSocketsSettingsToJson(this);

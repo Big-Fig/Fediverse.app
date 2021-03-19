@@ -35,24 +35,26 @@ class _StatusFavouriteActionButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
     return StreamBuilder<bool?>(
-        stream: statusBloc.favouritedStream,
-        initialData: statusBloc.favourited,
-        builder: (context, snapshot) {
-          var favourited = snapshot.data;
-          return PleromaAsyncOperationButtonBuilderWidget(
-              showProgressDialog: false,
-              builder: (context, onPressed) => FediIconButton(
-                    iconSize: FediSizes.bigIconSize,
-                    color: favourited!
-                        ? IFediUiColorTheme.of(context).secondary
-                        : IFediUiColorTheme.of(context).darkGrey,
-                    icon: favourited
-                        ? Icon(FediIcons.heart_active)
-                        : Icon(FediIcons.heart),
-                    onPressed: onPressed,
-                  ),
-              asyncButtonAction: statusBloc.toggleFavourite);
-        });
+      stream: statusBloc.favouritedStream,
+      initialData: statusBloc.favourited,
+      builder: (context, snapshot) {
+        var favourited = snapshot.data;
+        return PleromaAsyncOperationButtonBuilderWidget(
+          showProgressDialog: false,
+          builder: (context, onPressed) => FediIconButton(
+            iconSize: FediSizes.bigIconSize,
+            color: favourited!
+                ? IFediUiColorTheme.of(context).secondary
+                : IFediUiColorTheme.of(context).darkGrey,
+            icon: favourited
+                ? Icon(FediIcons.heart_active)
+                : Icon(FediIcons.heart),
+            onPressed: onPressed,
+          ),
+          asyncButtonAction: statusBloc.toggleFavourite,
+        );
+      },
+    );
   }
 }
 

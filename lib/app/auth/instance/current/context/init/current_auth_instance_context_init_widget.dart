@@ -56,21 +56,25 @@ class _CurrentAuthInstanceContextInitWidgetState
     });
   }
 
-  void showProgressDialog(BuildContext context,
-      ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc) {
+  void showProgressDialog(
+    BuildContext context,
+    ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc,
+  ) {
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     var isAlreadyShown = loadingInstanceProgressDialog?.isShowing == true;
     _logger.finest(() => "showProgressDialog isAlreadyShown = $isAlreadyShown");
     if (!isAlreadyShown) {
       loadingInstanceProgressDialog = FediIndeterminateProgressDialog(
-          cancelableOperation: null,
-          titleMessage: S
-              .of(context)
-              .app_auth_instance_current_context_loading_loading_title,
-          contentMessage: S
-              .of(context)
-              .app_auth_instance_current_context_loading_loading_content(
-                  myAccountBloc.instance.userAtHost));
+        cancelableOperation: null,
+        titleMessage: S
+            .of(context)
+            .app_auth_instance_current_context_loading_loading_title,
+        contentMessage: S
+            .of(context)
+            .app_auth_instance_current_context_loading_loading_content(
+              myAccountBloc.instance.userAtHost,
+            ),
+      );
 
       loadingInstanceProgressDialog!.show(context);
 
@@ -82,7 +86,8 @@ class _CurrentAuthInstanceContextInitWidgetState
   }
 
   void onStateChanged(
-      ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc) {
+    ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc,
+  ) {
     var state = CurrentAuthInstanceContextInitState.loading;
     var isNotLoading = currentInstanceContextLoadingBloc.state != state;
     _logger.finest(() => "onStateChanged $state isNotLoading $isNotLoading");
@@ -132,8 +137,6 @@ class _CurrentAuthInstanceContextInitWidgetState
           case null:
             return const SplashPage();
         }
-
-
       },
     );
   }
@@ -256,7 +259,8 @@ class _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
     return Text(
       S.of(context).app_auth_instance_current_context_loading_cantLoad_content(
-          currentAuthInstanceBloc.currentInstance!.userAtHost),
+            currentAuthInstanceBloc.currentInstance!.userAtHost,
+          ),
       textAlign: TextAlign.center,
       style: IFediUiTextTheme.of(context).mediumShortBoldWhite,
     );

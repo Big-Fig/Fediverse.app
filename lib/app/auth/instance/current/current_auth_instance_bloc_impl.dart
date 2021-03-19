@@ -29,8 +29,9 @@ class CurrentAuthInstanceBloc extends DisposableOwner
     _logger.finest(() => "changeCurrentInstance $instance");
 
     var found = instanceListBloc.availableInstances.firstWhere(
-        (existInstance) => existInstance!.userAtHost == instance!.userAtHost,
-        orElse: () => null);
+      (existInstance) => existInstance!.userAtHost == instance!.userAtHost,
+      orElse: () => null,
+    );
 
     if (found == null) {
       await instanceListBloc.addInstance(instance);

@@ -14,11 +14,9 @@ class StatusActionsListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context);
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
 
-    var isPleromaInstance =
-        currentAuthInstanceBloc.currentInstance!.isPleroma;
+    var isPleromaInstance = currentAuthInstanceBloc.currentInstance!.isPleroma;
 
     var statusBloc = IStatusBloc.of(context);
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
@@ -35,11 +33,9 @@ class StatusActionsListWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               const StatusCommentActionWidget(),
-              if(isLocal)
-              const StatusFavouriteActionWidget(),
+              if (isLocal) const StatusFavouriteActionWidget(),
               if (isPleromaInstance && isLocal) const StatusEmojiActionWidget(),
-              if(isLocal)
-              const StatusReblogActionWidget()
+              if (isLocal) const StatusReblogActionWidget(),
             ],
           ),
           const StatusMoreActionWidget(),

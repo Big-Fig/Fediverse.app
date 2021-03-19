@@ -4,25 +4,28 @@ import 'package:moor/moor.dart';
 
 part 'conversation_chat_statuses_database_dao.g.dart';
 
-@UseDao(tables: [
-  DbConversationStatuses
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_conversation_statuses;",
-  "findById": "SELECT * FROM db_conversation_statuses WHERE id = :id;",
-  "findByConversationRemoteId":
-      "SELECT * FROM db_conversation_statuses WHERE conversation_remote_id = :conversationRemoteId;",
-  "countById": "SELECT COUNT(*) FROM db_conversation_statuses WHERE id = :id;",
-  "deleteById": "DELETE FROM db_conversation_statuses WHERE id = :id;",
-  "deleteByConversationRemoteId": "DELETE FROM db_conversation_statuses WHERE "
-      "conversation_remote_id = :conversationRemoteId;",
-  "deleteByConversationRemoteIdAndStatusRemoteId":
-      "DELETE FROM db_conversation_statuses WHERE "
-          "conversation_remote_id = :conversationRemoteId "
-          "AND "
-          "status_remote_id = :statusRemoteId;",
-  "clear": "DELETE FROM db_conversation_statuses",
-  "getAll": "SELECT * FROM db_conversation_statuses"
-})
+@UseDao(
+  tables: [DbConversationStatuses],
+  queries: {
+    "countAll": "SELECT Count(*) FROM db_conversation_statuses;",
+    "findById": "SELECT * FROM db_conversation_statuses WHERE id = :id;",
+    "findByConversationRemoteId":
+        "SELECT * FROM db_conversation_statuses WHERE conversation_remote_id = :conversationRemoteId;",
+    "countById":
+        "SELECT COUNT(*) FROM db_conversation_statuses WHERE id = :id;",
+    "deleteById": "DELETE FROM db_conversation_statuses WHERE id = :id;",
+    "deleteByConversationRemoteId":
+        "DELETE FROM db_conversation_statuses WHERE "
+            "conversation_remote_id = :conversationRemoteId;",
+    "deleteByConversationRemoteIdAndStatusRemoteId":
+        "DELETE FROM db_conversation_statuses WHERE "
+            "conversation_remote_id = :conversationRemoteId "
+            "AND "
+            "status_remote_id = :statusRemoteId;",
+    "clear": "DELETE FROM db_conversation_statuses",
+    "getAll": "SELECT * FROM db_conversation_statuses",
+  },
+)
 class ConversationStatusesDao extends DatabaseAccessor<AppDatabase>
     with _$ConversationStatusesDaoMixin {
   final AppDatabase db;
@@ -30,12 +33,16 @@ class ConversationStatusesDao extends DatabaseAccessor<AppDatabase>
   // Called by the AppDatabase class
   ConversationStatusesDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbConversationStatus> entity,
-          {InsertMode? mode}) async =>
+  Future<int> insert(
+    Insertable<DbConversationStatus> entity, {
+    InsertMode? mode,
+  }) async =>
       into(dbConversationStatuses).insert(entity, mode: mode);
 
-  Future insertAll(List<Insertable<DbConversationStatus>> entities,
-      InsertMode mode) async {
+  Future insertAll(
+    List<Insertable<DbConversationStatus>> entities,
+    InsertMode mode,
+  ) async {
     await batch(
       (batch) {
         batch.insertAll(

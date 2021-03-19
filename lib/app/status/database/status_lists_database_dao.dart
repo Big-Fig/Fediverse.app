@@ -4,20 +4,23 @@ import 'package:moor/moor.dart';
 
 part 'status_lists_database_dao.g.dart';
 
-@UseDao(tables: [
-  DbStatusLists
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_status_lists;",
-  "findById": "SELECT * FROM db_status_lists WHERE id = :id;",
-  "countById": "SELECT COUNT(*) FROM db_status_lists WHERE id = :id;",
-  "deleteById": "DELETE FROM db_status_lists WHERE id = :id;",
-  "deleteByRemoteId":
-      "DELETE FROM db_status_lists WHERE list_remote_id = :listRemoteId;",
-  "clear": "DELETE FROM db_status_lists",
-  "getAll": "SELECT * FROM db_status_lists",
-  "findByListRemoteId":
-      "SELECT * FROM db_status_lists WHERE list_remote_id = :listRemoteId;",
-})
+@UseDao(
+  tables: [
+    DbStatusLists,
+  ],
+  queries: {
+    "countAll": "SELECT Count(*) FROM db_status_lists;",
+    "findById": "SELECT * FROM db_status_lists WHERE id = :id;",
+    "countById": "SELECT COUNT(*) FROM db_status_lists WHERE id = :id;",
+    "deleteById": "DELETE FROM db_status_lists WHERE id = :id;",
+    "deleteByRemoteId":
+        "DELETE FROM db_status_lists WHERE list_remote_id = :listRemoteId;",
+    "clear": "DELETE FROM db_status_lists",
+    "getAll": "SELECT * FROM db_status_lists",
+    "findByListRemoteId":
+        "SELECT * FROM db_status_lists WHERE list_remote_id = :listRemoteId;",
+  },
+)
 class StatusListsDao extends DatabaseAccessor<AppDatabase>
     with _$StatusListsDaoMixin {
   final AppDatabase db;
@@ -25,15 +28,19 @@ class StatusListsDao extends DatabaseAccessor<AppDatabase>
   // Called by the AppDatabase class
   StatusListsDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbStatusList> entity,
-          {InsertMode? mode}) async =>
+  Future<int> insert(
+    Insertable<DbStatusList> entity, {
+    InsertMode? mode,
+  }) async =>
       into(dbStatusLists).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbStatusList> entity) async =>
       into(db.dbStatusLists).insert(entity, mode: InsertMode.insertOrReplace);
 
   Future insertAll(
-          List<Insertable<DbStatusList>> entities, InsertMode mode) async =>
+    List<Insertable<DbStatusList>> entities,
+    InsertMode mode,
+  ) async =>
       await batch(
         (batch) {
           batch.insertAll(

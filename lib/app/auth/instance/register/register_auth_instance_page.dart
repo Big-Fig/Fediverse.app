@@ -132,9 +132,9 @@ void _showCantLoginToast(
     context: context,
     title:
         S.of(context).app_auth_instance_register_cantLogin_notification_title,
-    content: S
-        .of(context)
-        .app_auth_instance_register_cantLogin_notification_content(
-            errorDescription ?? ""),
+    content:
+        S.of(context).app_auth_instance_register_cantLogin_notification_content(
+              errorDescription ?? "",
+            ),
   );
 }

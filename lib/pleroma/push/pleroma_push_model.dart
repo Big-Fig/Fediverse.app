@@ -10,8 +10,10 @@ class PleromaPushSubscribeRequest {
   PleromaPushSubscribeData? data;
   PleromaPushSubscribeRequestSubscription? subscription;
 
-  PleromaPushSubscribeRequest(
-      {required this.data, required this.subscription});
+  PleromaPushSubscribeRequest({
+    required this.data,
+    required this.subscription,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -51,12 +53,13 @@ class PleromaPushSubscription {
   final String? serverKey;
   PleromaPushSubscribeRequestSubscription? subscription;
 
-  PleromaPushSubscription(
-      {required this.id,
-      required this.endpoint,
-      required this.alerts,
-      required this.serverKey,
-      required this.subscription});
+  PleromaPushSubscription({
+    required this.id,
+    required this.endpoint,
+    required this.alerts,
+    required this.serverKey,
+    required this.subscription,
+  });
 
   @override
   String toString() {
@@ -216,8 +219,10 @@ class PleromaPushSubscribeRequestSubscription {
   String? endpoint;
   PleromaPushSubscriptionKeys? keys;
 
-  PleromaPushSubscribeRequestSubscription(
-      {required this.endpoint, required this.keys});
+  PleromaPushSubscribeRequestSubscription({
+    required this.endpoint,
+    required this.keys,
+  });
 
   @override
   String toString() {
@@ -237,11 +242,13 @@ class PleromaPushSubscribeRequestSubscription {
   int get hashCode => endpoint.hashCode ^ keys.hashCode;
 
   factory PleromaPushSubscribeRequestSubscription.fromJson(
-          Map<String, dynamic> json) =>
+    Map<String, dynamic> json,
+  ) =>
       _$PleromaPushSubscribeRequestSubscriptionFromJson(json);
 
   factory PleromaPushSubscribeRequestSubscription.fromJsonString(
-          String jsonString) =>
+    String jsonString,
+  ) =>
       _$PleromaPushSubscribeRequestSubscriptionFromJson(jsonDecode(jsonString));
 
   Map<String, dynamic> toJson() =>

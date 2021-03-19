@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
@@ -24,27 +24,32 @@ class FediIconInCircleBlurredButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-      width: size + borderWidth * 2,
-      height: size + borderWidth * 2,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(size),
-        child: BackdropFilter(
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.3),
-              border: Border.all(
-                color: IFediUiColorTheme.of(context).white,
-                width: borderWidth,
+        width: size + borderWidth * 2,
+        height: size + borderWidth * 2,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(size),
+          child: BackdropFilter(
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.3),
+                border: Border.all(
+                  color: IFediUiColorTheme.of(context).white,
+                  width: borderWidth,
+                ),
+              ),
+              child: FediIconButton(
+                padding: EdgeInsets.zero,
+                icon: Icon(
+                  iconData,
+                  size: iconSize,
+                  color: IFediUiColorTheme.of(context).white,
+                ),
+                onPressed: onPressed,
               ),
             ),
-            child: FediIconButton(
-              padding: EdgeInsets.zero,
-              icon: Icon(iconData, size: iconSize, color: IFediUiColorTheme.of(context).white),
-              onPressed: onPressed,
-            ),
+            filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           ),
-          filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
         ),
-      ));
+      );
 }

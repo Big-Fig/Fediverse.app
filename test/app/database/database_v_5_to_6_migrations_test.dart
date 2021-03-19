@@ -30,13 +30,16 @@ void main() {
     expect((await notificationDao.getAll().get()).isNotEmpty, false);
 
     var testDbNotification = await createTestDbNotification(
-        seed: "seed1", dbAccount: await createTestDbAccount(seed: "seed2"));
+      seed: "seed1",
+      dbAccount: await createTestDbAccount(seed: "seed2"),
+    );
     await notificationDao.insert(testDbNotification);
 
     expect((await notificationDao.getAll().get()).isNotEmpty, true);
 
     await notificationDao.markAsDismissed(
-        remoteId: testDbNotification.remoteId);
+      remoteId: testDbNotification.remoteId,
+    );
 
     expect((await notificationDao.getAll().get()).isNotEmpty, true);
 

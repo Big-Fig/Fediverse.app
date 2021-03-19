@@ -103,7 +103,9 @@ class _JoinAuthInstanceLoginButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          left: FediSizes.smallPadding, right: FediSizes.smallPadding),
+        left: FediSizes.smallPadding,
+        right: FediSizes.smallPadding,
+      ),
       child: FediTransparentTextButtonWithBorder(
         S.of(context).app_auth_instance_join_action_login,
         onPressed: () {
@@ -125,7 +127,9 @@ class _JoinAuthInstanceSignUpButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          left: FediSizes.smallPadding, right: FediSizes.smallPadding),
+        left: FediSizes.smallPadding,
+        right: FediSizes.smallPadding,
+      ),
       child: FediTransparentTextButtonWithBorder(
         S.of(context).app_auth_instance_join_action_signUp,
         onPressed: () {
@@ -174,8 +178,9 @@ class _JoinAuthInstanceHostTextFieldWidget extends StatelessWidget {
         Text(
           S.of(context).app_auth_instance_join_field_host_helper,
           style: IFediUiTextTheme.of(context).mediumShortWhite.copyWith(
-              color: IFediUiColorTheme.of(context).white.withOpacity(0.5)),
-        )
+                color: IFediUiColorTheme.of(context).white.withOpacity(0.5),
+              ),
+        ),
       ],
     );
   }
@@ -297,7 +302,7 @@ Future signUpToInstance(BuildContext context) async {
           error,
           stackTrace,
         );
-      }
+      },
     ],
   );
   if (asyncDialogResult.success) {
@@ -315,7 +320,10 @@ Future signUpToInstance(BuildContext context) async {
 }
 
 ErrorData createInstanceDeadErrorData(
-        BuildContext? context, error, StackTrace stackTrace) =>
+  BuildContext? context,
+  error,
+  StackTrace stackTrace,
+) =>
     AuthInstancePleromaRestErrorData.createFromContext(
       context: context,
       error: error,
@@ -323,7 +331,10 @@ ErrorData createInstanceDeadErrorData(
     );
 
 ErrorData createRegistrationDisabledErrorData(
-        BuildContext? context, error, StackTrace stackTrace) =>
+  BuildContext? context,
+  error,
+  StackTrace stackTrace,
+) =>
     ErrorData(
       error: error,
       stackTrace: stackTrace,
@@ -336,7 +347,10 @@ ErrorData createRegistrationDisabledErrorData(
     );
 
 ErrorData createRegistrationInvitesOnlyErrorData(
-        BuildContext? context, error, StackTrace stackTrace) =>
+  BuildContext? context,
+  error,
+  StackTrace stackTrace,
+) =>
     ErrorData(
       error: error,
       stackTrace: stackTrace,
@@ -377,7 +391,7 @@ Future logInToInstance(BuildContext context) async {
           error,
           stackTrace,
         );
-      }
+      },
     ],
   );
 

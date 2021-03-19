@@ -39,9 +39,10 @@ class StatusCachedPaginationListMediaWidget
     required bool listen,
   }) {
     var timelinePaginationListBloc = Provider.of<
-            IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
-        context,
-        listen: listen);
+        IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
+      context,
+      listen: listen,
+    );
     return timelinePaginationListBloc;
   }
 
@@ -181,11 +182,12 @@ class StatusCachedPaginationListMediaWidget
   }
 
   @override
-  ScrollView buildItemsCollectionView(
-          {required BuildContext context,
-          required List<IStatus> items,
-          required Widget? header,
-          required Widget? footer}) =>
+  ScrollView buildItemsCollectionView({
+    required BuildContext context,
+    required List<IStatus> items,
+    required Widget? header,
+    required Widget? footer,
+  }) =>
       buildStaggeredMediaGridView(
         context: context,
         items: items,

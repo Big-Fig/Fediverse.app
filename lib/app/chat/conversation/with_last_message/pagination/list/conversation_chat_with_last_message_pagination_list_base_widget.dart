@@ -25,9 +25,10 @@ abstract class ConversationChatPaginationListBaseWidget
 
   @override
   IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
-          IConversationChatWithLastMessage>
-      retrievePaginationListBloc(BuildContext context,
-          {required bool listen}) {
+      IConversationChatWithLastMessage> retrievePaginationListBloc(
+    BuildContext context, {
+    required bool listen,
+  }) {
     var chatPaginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
             IConversationChatWithLastMessage>>(context, listen: listen);

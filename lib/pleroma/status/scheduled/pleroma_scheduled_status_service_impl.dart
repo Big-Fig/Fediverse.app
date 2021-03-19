@@ -119,7 +119,8 @@ class PleromaScheduledStatusService extends DisposableOwner
   }
 
   List<PleromaScheduledStatus> parseScheduledStatusesResponse(
-      Response httpResponse) {
+    Response httpResponse,
+  ) {
     RestResponse<List<PleromaScheduledStatus>> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,

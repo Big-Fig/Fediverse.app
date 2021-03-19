@@ -20,7 +20,9 @@ PleromaMediaAttachment createTestPleromaMediaAttachment() {
 }
 
 Future<DbStatusPopulated> createTestDbStatusPopulated(
-    DbStatus dbStatus, AccountRepository accountRepository) async {
+  DbStatus dbStatus,
+  AccountRepository accountRepository,
+) async {
   DbStatusPopulated dbStatusPopulated = DbStatusPopulated(
     dbStatus: dbStatus,
     dbAccount:
@@ -45,44 +47,45 @@ Future<DbStatus> createTestDbStatus({
   String? inReplyToAccountRemoteId = "inReplyToAccountRemoteId",
 }) async {
   DbStatus dbStatus = DbStatus(
-      id: null,
-      remoteId: remoteId ?? seed + "remoteId",
-      createdAt: createdAt ?? DateTime(1),
-      inReplyToRemoteId: seed + "inReplyToRemoteId",
-      inReplyToAccountRemoteId: inReplyToAccountRemoteId,
-      sensitive: true,
-      spoilerText: seed + "spoilerText",
-      visibility: PleromaVisibility.public,
-      uri: seed + "uri",
-      url: seed + "url",
-      repliesCount: 3,
-      reblogsCount: 4,
-      favouritesCount: 5,
-      favourited: true,
-      reblogged: false,
-      pinned: false,
-      muted: false,
-      bookmarked: false,
-      content: seed + "content",
-      reblogStatusRemoteId: null,
-      application: createTestPleromaApplication(seed),
-      accountRemoteId: dbAccount.remoteId,
-      mediaAttachments: null,
-      mentions: null,
-      tags: null,
-      emojis: null,
-      poll: null,
-      card: null,
-      language: seed + "language",
-      pleromaContent: null,
-      pleromaConversationId: null,
-      pleromaDirectConversationId: null,
-      pleromaInReplyToAccountAcct: null,
-      pleromaLocal: true,
-      pleromaSpoilerText: null,
-      pleromaExpiresAt: DateTime(6),
-      pleromaThreadMuted: pleromaThreadMuted,
-      pleromaEmojiReactions: null);
+    id: null,
+    remoteId: remoteId ?? seed + "remoteId",
+    createdAt: createdAt ?? DateTime(1),
+    inReplyToRemoteId: seed + "inReplyToRemoteId",
+    inReplyToAccountRemoteId: inReplyToAccountRemoteId,
+    sensitive: true,
+    spoilerText: seed + "spoilerText",
+    visibility: PleromaVisibility.public,
+    uri: seed + "uri",
+    url: seed + "url",
+    repliesCount: 3,
+    reblogsCount: 4,
+    favouritesCount: 5,
+    favourited: true,
+    reblogged: false,
+    pinned: false,
+    muted: false,
+    bookmarked: false,
+    content: seed + "content",
+    reblogStatusRemoteId: null,
+    application: createTestPleromaApplication(seed),
+    accountRemoteId: dbAccount.remoteId,
+    mediaAttachments: null,
+    mentions: null,
+    tags: null,
+    emojis: null,
+    poll: null,
+    card: null,
+    language: seed + "language",
+    pleromaContent: null,
+    pleromaConversationId: null,
+    pleromaDirectConversationId: null,
+    pleromaInReplyToAccountAcct: null,
+    pleromaLocal: true,
+    pleromaSpoilerText: null,
+    pleromaExpiresAt: DateTime(6),
+    pleromaThreadMuted: pleromaThreadMuted,
+    pleromaEmojiReactions: null,
+  );
   return dbStatus;
 }
 
@@ -159,9 +162,13 @@ void expectDbStatus(IStatus? actual, DbStatus? expected) {
   expect(actual.pleromaContent, expected.pleromaContent);
   expect(actual.pleromaConversationId, expected.pleromaConversationId);
   expect(
-      actual.pleromaDirectConversationId, expected.pleromaDirectConversationId);
+    actual.pleromaDirectConversationId,
+    expected.pleromaDirectConversationId,
+  );
   expect(
-      actual.pleromaInReplyToAccountAcct, expected.pleromaInReplyToAccountAcct);
+    actual.pleromaInReplyToAccountAcct,
+    expected.pleromaInReplyToAccountAcct,
+  );
   expect(actual.pleromaLocal, expected.pleromaLocal);
   expect(actual.pleromaSpoilerText, expected.pleromaSpoilerText);
   expect(actual.pleromaExpiresAt, expected.pleromaExpiresAt);

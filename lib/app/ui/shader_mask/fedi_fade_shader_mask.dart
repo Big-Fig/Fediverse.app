@@ -17,20 +17,21 @@ class FediFadeShaderMask extends StatelessWidget {
     return ShaderMask(
       shaderCallback: (rect) {
         return LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              fadingColor.withOpacity(0.0),
-              Colors.white,
-              Colors.white,
-              fadingColor.withOpacity(0.0),
-            ],
-            stops: [
-              0.0,
-              fadingPercent,
-              1 - fadingPercent,
-              1.0,
-            ]).createShader(rect);
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [
+            fadingColor.withOpacity(0.0),
+            Colors.white,
+            Colors.white,
+            fadingColor.withOpacity(0.0),
+          ],
+          stops: [
+            0.0,
+            fadingPercent,
+            1 - fadingPercent,
+            1.0,
+          ],
+        ).createShader(rect);
       },
       child: child,
     );

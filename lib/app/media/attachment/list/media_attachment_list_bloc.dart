@@ -4,8 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IMediaAttachmentListBloc implements IDisposable {
-  static IMediaAttachmentListBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IMediaAttachmentListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IMediaAttachmentListBloc>(context, listen: listen);
 
   int get currentIndex;

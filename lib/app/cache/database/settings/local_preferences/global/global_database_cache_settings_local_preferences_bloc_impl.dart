@@ -9,8 +9,8 @@ class GlobalDatabaseCacheSettingsLocalPreferencesBloc
     extends DatabaseCacheSettingsLocalPreferencesBloc
     implements IGlobalDatabaseCacheSettingsLocalPreferencesBloc {
   GlobalDatabaseCacheSettingsLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService)
-      : super(
+    ILocalPreferencesService preferencesService,
+  ) : super(
           preferencesService,
           "cache.database.settings.global",
         );

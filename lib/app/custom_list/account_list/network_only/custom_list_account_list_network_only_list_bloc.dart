@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class ICustomListAccountListNetworkOnlyListBloc
     extends INetworkOnlyListBloc<IAccount> {
-  static ICustomListAccountListNetworkOnlyListBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<ICustomListAccountListNetworkOnlyListBloc>(context,
-          listen: listen);
+  static ICustomListAccountListNetworkOnlyListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<ICustomListAccountListNetworkOnlyListBloc>(
+        context,
+        listen: listen,
+      );
 }

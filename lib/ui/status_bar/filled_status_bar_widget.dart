@@ -7,10 +7,7 @@ class FilledStatusBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        height: MediaQuery
-            .of(context)
-            .padding
-            .top,
-        color: color);
-
+        height: MediaQuery.of(context).padding.top,
+        color: color,
+      );
 }

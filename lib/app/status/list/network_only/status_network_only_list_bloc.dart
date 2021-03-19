@@ -8,8 +8,10 @@ import 'package:provider/provider.dart';
 
 abstract class IStatusNetworkOnlyListBloc extends DisposableOwner
     implements INetworkOnlyListBloc<IStatus?>, IStatusListBloc {
-  static IStatusNetworkOnlyListBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IStatusNetworkOnlyListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IStatusNetworkOnlyListBloc>(context, listen: listen);
 
   @override

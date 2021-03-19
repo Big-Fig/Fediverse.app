@@ -11,10 +11,11 @@ abstract class FormBloc extends FormGroupBloc implements IFormBloc {
   @override
 //  Stream<bool> get isReadyToSubmitStream => isSomethingChangedStream;
   Stream<bool> get isHaveChangesAndNoErrorsStream => Rx.combineLatest2(
-      isHaveAtLeastOneErrorStream,
-      isSomethingChangedStream,
-      (bool isHaveAtLeastOneError, bool isSomethingChanged) =>
-          !isHaveAtLeastOneError && isSomethingChanged).asBroadcastStream();
+        isHaveAtLeastOneErrorStream,
+        isSomethingChangedStream,
+        (bool isHaveAtLeastOneError, bool isSomethingChanged) =>
+            !isHaveAtLeastOneError && isSomethingChanged,
+      ).asBroadcastStream();
 
   BehaviorSubject<List<IFormItemBloc>> itemsSubject = BehaviorSubject();
 

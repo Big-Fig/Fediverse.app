@@ -27,10 +27,11 @@ abstract class CachedPaginationBloc<TPage extends CachedPaginationPage<TItem>,
     if (forceToSkipCache) {
       if (isPossibleToLoadFromNetwork) {
         isActuallyRefreshed = await refreshItemsFromRemoteForPage(
-            pageIndex: pageIndex,
-            olderPage: nextPage,
-            newerPage: previousPage,
-            itemsCountPerPage: itemsCountPerPage);
+          pageIndex: pageIndex,
+          olderPage: nextPage,
+          newerPage: previousPage,
+          itemsCountPerPage: itemsCountPerPage,
+        );
       } else {
         isActuallyRefreshed = false;
       }

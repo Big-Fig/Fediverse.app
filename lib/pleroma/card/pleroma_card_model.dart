@@ -117,7 +117,8 @@ class PleromaCard implements IPleromaCard {
 
   static List<PleromaCard> listFromJsonString(String str) =>
       List<PleromaCard>.from(
-          json.decode(str).map((x) => PleromaCard.fromJson(x)));
+        json.decode(str).map((x) => PleromaCard.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaCardToJson(this);
 

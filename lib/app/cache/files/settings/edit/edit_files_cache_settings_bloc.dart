@@ -7,8 +7,10 @@ import 'package:provider/provider.dart';
 
 abstract class IEditFilesCacheSettingsBloc
     implements IEditGlobalOrInstanceSettingsBloc<FilesCacheSettings?> {
-  static IEditFilesCacheSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IEditFilesCacheSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IEditFilesCacheSettingsBloc>(context, listen: listen);
 
   ISizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc?

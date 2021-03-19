@@ -148,7 +148,8 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
   }
 
   List<PleromaStatusEmojiReaction> parseEmojiReactionListResponse(
-      Response httpResponse) {
+    Response httpResponse,
+  ) {
     RestResponse<List<PleromaStatusEmojiReaction>> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,

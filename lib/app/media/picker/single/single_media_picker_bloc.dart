@@ -4,8 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class ISingleMediaPickerBloc implements IMediaPickerBloc {
-  static ISingleMediaPickerBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static ISingleMediaPickerBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<ISingleMediaPickerBloc>(context, listen: listen);
 
   Stream<IMediaDeviceFile> get fileSelectionStream;

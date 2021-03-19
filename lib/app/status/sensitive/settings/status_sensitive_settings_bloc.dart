@@ -5,10 +5,11 @@ import 'package:provider/provider.dart';
 
 abstract class IStatusSensitiveSettingsBloc
     implements IGlobalOrInstanceSettingsBloc<StatusSensitiveSettings> {
-  static IStatusSensitiveSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IStatusSensitiveSettingsBloc>(context,
-          listen: listen);
+  static IStatusSensitiveSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IStatusSensitiveSettingsBloc>(context, listen: listen);
 
   bool? get isAlwaysShowSpoiler;
 

@@ -15,23 +15,24 @@ class PostMessagePostActionWidget extends StatelessWidget {
     var postChatMessageBloc = IPostMessageBloc.of(context, listen: true);
 
     return StreamBuilder<bool>(
-        stream: postChatMessageBloc.isReadyToPostStream,
-        initialData: postChatMessageBloc.isReadyToPost,
-        builder: (context, snapshot) {
-          var isReadyToPost = snapshot.data;
+      stream: postChatMessageBloc.isReadyToPostStream,
+      initialData: postChatMessageBloc.isReadyToPost,
+      builder: (context, snapshot) {
+        var isReadyToPost = snapshot.data;
 
-          return PleromaAsyncOperationButtonBuilderWidget(
-            showProgressDialog: false,
-            asyncButtonAction: () async {
-              await postChatMessageBloc.post();
-            },
-            builder: (BuildContext context, onPressed) {
-              return FediIconButton(
-                icon: Icon(FediIcons.send),
-                onPressed: isReadyToPost! ? onPressed : null,
-              );
-            },
-          );
-        });
+        return PleromaAsyncOperationButtonBuilderWidget(
+          showProgressDialog: false,
+          asyncButtonAction: () async {
+            await postChatMessageBloc.post();
+          },
+          builder: (BuildContext context, onPressed) {
+            return FediIconButton(
+              icon: Icon(FediIcons.send),
+              onPressed: isReadyToPost! ? onPressed : null,
+            );
+          },
+        );
+      },
+    );
   }
 }

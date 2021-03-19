@@ -15,7 +15,8 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger(
-    "conversation_chat_message_cached_pagination_list_with_new_items_bloc_impl.dart");
+  "conversation_chat_message_cached_pagination_list_with_new_items_bloc_impl.dart",
+);
 
 class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IConversationChatMessage>>
@@ -82,8 +83,9 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
     }
     superItems.removeWhere((currentItem) =>
         hiddenItems.firstWhere(
-            (hiddenItem) => isItemsEqual(hiddenItem!, currentItem),
-            orElse: () => null) !=
+          (hiddenItem) => isItemsEqual(hiddenItem!, currentItem),
+          orElse: () => null,
+        ) !=
         null);
 
     return superItems;

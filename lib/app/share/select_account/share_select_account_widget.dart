@@ -90,52 +90,53 @@ class _ShareSelectAccountBodyWidget extends StatelessWidget {
           var recentSelectAccountBloc = IRecentSelectAccountBloc.of(context);
 
           return StreamBuilder<bool>(
-              stream: recentSelectAccountBloc
-                  .isRecentSelectAccountListEmptyStream
-                  .distinct(),
-              builder: (context, snapshot) {
-                var isRecentSelectAccountListEmpty = snapshot.data;
+            stream: recentSelectAccountBloc.isRecentSelectAccountListEmptyStream
+                .distinct(),
+            builder: (context, snapshot) {
+              var isRecentSelectAccountListEmpty = snapshot.data;
 
-                if (isRecentSelectAccountListEmpty == null) {
-                  return const SizedBox.shrink();
-                }
-                if (isRecentSelectAccountListEmpty) {
-                  return DisposableProvider<ISuggestionSelectAccountBloc>(
-                    create: (context) => SuggestionSelectAccountBloc(
-                      accountCachedListBloc: ISelectAccountListBloc.of(
-                        context,
-                        listen: false,
-                      ),
+              if (isRecentSelectAccountListEmpty == null) {
+                return const SizedBox.shrink();
+              }
+              if (isRecentSelectAccountListEmpty) {
+                return DisposableProvider<ISuggestionSelectAccountBloc>(
+                  create: (context) => SuggestionSelectAccountBloc(
+                    accountCachedListBloc: ISelectAccountListBloc.of(
+                      context,
+                      listen: false,
                     ),
-                    child: SuggestionSelectAccountWidget(
-                      headerPadding: FediPadding.horizontalMediumPadding,
-                      itemPadding: FediPadding.allMediumPadding,
-                      header:
-                          _ShareSelectAccountSearchHeaderWithSearchInputWidget(
-                              header: header),
-                      footer: footer,
-                      alwaysShowHeader: alwaysShowHeader,
-                      alwaysShowFooter: alwaysShowFooter,
-                      itemActions: [
-                        const ShareSelectAccountItemSendActionWidget(),
-                      ],
-                      accountSelectedCallback: null,
-                    ),
-                  );
-                } else {
-                  return RecentShareSelectAccountWidget(
+                  ),
+                  child: SuggestionSelectAccountWidget(
+                    headerPadding: FediPadding.horizontalMediumPadding,
+                    itemPadding: FediPadding.allMediumPadding,
                     header:
                         _ShareSelectAccountSearchHeaderWithSearchInputWidget(
-                            header: header),
+                      header: header,
+                    ),
                     footer: footer,
                     alwaysShowHeader: alwaysShowHeader,
                     alwaysShowFooter: alwaysShowFooter,
                     itemActions: [
                       const ShareSelectAccountItemSendActionWidget(),
                     ],
-                  );
-                }
-              });
+                    accountSelectedCallback: null,
+                  ),
+                );
+              } else {
+                return RecentShareSelectAccountWidget(
+                  header: _ShareSelectAccountSearchHeaderWithSearchInputWidget(
+                    header: header,
+                  ),
+                  footer: footer,
+                  alwaysShowHeader: alwaysShowHeader,
+                  alwaysShowFooter: alwaysShowFooter,
+                  itemActions: [
+                    const ShareSelectAccountItemSendActionWidget(),
+                  ],
+                );
+              }
+            },
+          );
         } else {
           return _ShareSelectAccountSearchResultsWidget(
             header: header,
@@ -173,7 +174,8 @@ class _ShareSelectAccountSearchResultsWidget extends StatelessWidget {
             const ShareSelectAccountItemSendActionWidget(),
           ],
           header: _ShareSelectAccountSearchHeaderWithSearchInputWidget(
-              header: header),
+            header: header,
+          ),
           footer: footer,
           alwaysShowHeader: alwaysShowHeader,
           alwaysShowFooter: alwaysShowFooter,

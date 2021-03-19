@@ -237,11 +237,13 @@ class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
                 ? BorderRadius.only(
                     topLeft: _borderRadius,
                     topRight: isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                    bottomLeft: _borderRadius)
+                    bottomLeft: _borderRadius,
+                  )
                 : BorderRadius.only(
                     topLeft: isLastInMinuteGroup ? _borderRadius : Radius.zero,
                     topRight: _borderRadius,
-                    bottomRight: _borderRadius)
+                    bottomRight: _borderRadius,
+                  )
             : BorderRadius.zero,
       ),
       child: Padding(
@@ -259,7 +261,8 @@ class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
                         topLeft: _borderRadius,
                         topRight:
                             isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                        bottomLeft: _borderRadius)
+                        bottomLeft: _borderRadius,
+                      )
                     : BorderRadius.only(
                         topLeft:
                             isLastInMinuteGroup ? _borderRadius : Radius.zero,

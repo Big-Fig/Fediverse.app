@@ -71,16 +71,18 @@ class _MyAccountAccountMuteActionNotificationsButtonBodyWidget
             var toastService = IToastService.of(context, listen: false);
             if (newMutingNotifications) {
               toastService.showInfoToast(
-                  context: context,
-                  title: S
-                      .of(context)
-                      .app_account_mute_toast_mute_with_notifications);
+                context: context,
+                title: S
+                    .of(context)
+                    .app_account_mute_toast_mute_with_notifications,
+              );
             } else {
               toastService.showInfoToast(
-                  context: context,
-                  title: S
-                      .of(context)
-                      .app_account_mute_toast_mute_without_notifications);
+                context: context,
+                title: S
+                    .of(context)
+                    .app_account_mute_toast_mute_without_notifications,
+              );
             }
           },
           builder: (context, onPressed) => FediIconButton(

@@ -437,7 +437,8 @@ class PleromaMyAccountWrapper extends IMyAccount {
 
   static List<PleromaMyAccountWrapper> listFromJsonString(String str) =>
       List<PleromaMyAccountWrapper>.from(
-          json.decode(str).map((x) => PleromaMyAccountWrapper.fromJson(x)));
+        json.decode(str).map((x) => PleromaMyAccountWrapper.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$PleromaMyAccountWrapperToJson(this);

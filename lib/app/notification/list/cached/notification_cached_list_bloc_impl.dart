@@ -59,10 +59,11 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<List<INotification>> loadLocalItems(
-      {required int? limit,
-      required INotification? newerThan,
-      required INotification? olderThan}) {
+  Future<List<INotification>> loadLocalItems({
+    required int? limit,
+    required INotification? newerThan,
+    required INotification? olderThan,
+  }) {
     return notificationRepository.getNotifications(
       filters: _notificationRepositoryFilters,
       pagination: RepositoryPagination<INotification>(
@@ -90,11 +91,10 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
       excludeTypes: excludeTypes,
     );
 
-      await notificationRepository.upsertRemoteNotifications(
-        remoteNotifications,
-        unread: null,
-      );
-
+    await notificationRepository.upsertRemoteNotifications(
+      remoteNotifications,
+      unread: null,
+    );
   }
 
   static NotificationCachedListBloc createFromContext(
@@ -133,7 +133,8 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Stream<List<INotification>> watchLocalItemsNewerThanItem(
-          INotification item) =>
+    INotification item,
+  ) =>
       notificationRepository.watchNotifications(
         filters: _notificationRepositoryFilters,
         pagination: RepositoryPagination<INotification>(

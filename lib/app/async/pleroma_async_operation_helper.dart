@@ -71,13 +71,12 @@ class PleromaAsyncOperationHelper {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleCreator: (context) => S
-            .of(context)
-            .app_async_pleroma_error_forbidden_dialog_title,
-        contentCreator: (context) => S
-            .of(context)
-            .app_async_pleroma_error_forbidden_dialog_content(
-                error.decodedErrorDescriptionOrBody),
+        titleCreator: (context) =>
+            S.of(context).app_async_pleroma_error_forbidden_dialog_title,
+        contentCreator: (context) =>
+            S.of(context).app_async_pleroma_error_forbidden_dialog_content(
+                  error.decodedErrorDescriptionOrBody,
+                ),
       );
     } else {
       return null;

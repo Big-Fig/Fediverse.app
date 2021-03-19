@@ -4,8 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IWebSocketsHandlerManagerBloc implements IDisposable {
-  static IWebSocketsHandlerManagerBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IWebSocketsHandlerManagerBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IWebSocketsHandlerManagerBloc>(context, listen: listen);
 
   IDisposable listenMyAccountChannel({

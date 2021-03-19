@@ -49,8 +49,10 @@ class _PostStatusStartConversationChatPageBodyWidget extends StatelessWidget {
   }
 }
 
-void goToPostStatusStartConversationPage(BuildContext context,
-    {required List<IAccount> conversationAccountsWithoutMe}) async {
+void goToPostStatusStartConversationPage(
+  BuildContext context, {
+  required List<IAccount> conversationAccountsWithoutMe,
+}) async {
   await Navigator.push(
     context,
     MaterialPageRoute(builder: (context) {

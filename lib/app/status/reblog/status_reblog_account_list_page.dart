@@ -81,15 +81,17 @@ void goToStatusReblogAccountListPage(BuildContext context, IStatus? status) {
   Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) =>
-            StatusReblogAccountCachedListBloc.provideToContext(
-              context,
-              status: status!.reblog ?? status,
-              child: AccountCachedPaginationBloc.provideToContext(
-                context,
-                child: AccountPaginationListBloc.provideToContext(context,
-                    child: const StatusReblogAccountListPage()),
-              ),
-            )),
+      builder: (context) => StatusReblogAccountCachedListBloc.provideToContext(
+        context,
+        status: status!.reblog ?? status,
+        child: AccountCachedPaginationBloc.provideToContext(
+          context,
+          child: AccountPaginationListBloc.provideToContext(
+            context,
+            child: const StatusReblogAccountListPage(),
+          ),
+        ),
+      ),
+    ),
   );
 }

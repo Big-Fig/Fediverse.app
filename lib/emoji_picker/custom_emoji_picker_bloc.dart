@@ -5,8 +5,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class ICustomEmojiPickerBloc implements IDisposable {
-  static ICustomEmojiPickerBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static ICustomEmojiPickerBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<ICustomEmojiPickerBloc>(context, listen: listen);
 
   List<ICustomEmojiPickerCategoryBloc>? get availableCategories;
@@ -20,5 +22,6 @@ abstract class ICustomEmojiPickerBloc implements IDisposable {
   Stream<CustomEmojiPickerItem> get selectedEmojiStream;
 
   void selectCategory(ICustomEmojiPickerCategoryBloc category);
+
   void onEmojiSelected(CustomEmojiPickerItem emojiItem);
 }

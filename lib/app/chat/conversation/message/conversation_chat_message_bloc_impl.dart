@@ -107,7 +107,8 @@ class ConversationChatMessageBloc extends ChatMessageBloc
           (updatedChatMessage) {
             if (updatedChatMessage != null) {
               _chatMessageSubject.add(
-                  updatedChatMessage.toConversationChatMessageStatusAdapter());
+                updatedChatMessage.toConversationChatMessageStatusAdapter(),
+              );
             }
           },
         ),

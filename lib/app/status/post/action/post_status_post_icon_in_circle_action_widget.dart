@@ -14,31 +14,32 @@ class PostStatusPostIconInCircleActionWidget extends StatelessWidget {
     var postStatusBloc = IPostStatusBloc.of(context, listen: true);
 
     return StreamBuilder<bool>(
-        stream: postStatusBloc.isReadyToPostStream,
-        initialData: postStatusBloc.isReadyToPost,
-        builder: (context, snapshot) {
-          var isReadyToPost = snapshot.data;
+      stream: postStatusBloc.isReadyToPostStream,
+      initialData: postStatusBloc.isReadyToPost,
+      builder: (context, snapshot) {
+        var isReadyToPost = snapshot.data;
 
-          return PleromaAsyncOperationButtonBuilderWidget(
-            showProgressDialog: false,
-            asyncButtonAction: () async {
-              var isScheduled = postStatusBloc.isScheduledAtExist;
-              var success = await postStatusBloc.post();
-              if (success) {
-                showPostStatusPostOverlayNotification(
-                  context: context,
-                  postStatusBloc: postStatusBloc,
-                  isScheduled: isScheduled,
-                );
-              }
-            },
-            builder: (BuildContext context, onPressed) {
-              return FediIconInCircleFilledButton(
-                FediIcons.send,
-                onPressed: isReadyToPost! ? onPressed : null,
+        return PleromaAsyncOperationButtonBuilderWidget(
+          showProgressDialog: false,
+          asyncButtonAction: () async {
+            var isScheduled = postStatusBloc.isScheduledAtExist;
+            var success = await postStatusBloc.post();
+            if (success) {
+              showPostStatusPostOverlayNotification(
+                context: context,
+                postStatusBloc: postStatusBloc,
+                isScheduled: isScheduled,
               );
-            },
-          );
-        });
+            }
+          },
+          builder: (BuildContext context, onPressed) {
+            return FediIconInCircleFilledButton(
+              FediIcons.send,
+              onPressed: isReadyToPost! ? onPressed : null,
+            );
+          },
+        );
+      },
+    );
   }
 }

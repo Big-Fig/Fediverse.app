@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 
 abstract class ICurrentAuthInstanceContextInitBloc
     implements IAsyncInitLoadingBloc, IDisposable {
-  static ICurrentAuthInstanceContextInitBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static ICurrentAuthInstanceContextInitBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<ICurrentAuthInstanceContextInitBloc>(context, listen: listen);
 
   CurrentAuthInstanceContextInitState? get state;

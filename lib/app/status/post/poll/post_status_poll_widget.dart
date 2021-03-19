@@ -16,8 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-final _logger =
-    Logger("post_status_poll_widget.dart");
+final _logger = Logger("post_status_poll_widget.dart");
 
 class PostStatusPollWidget extends StatelessWidget {
   const PostStatusPollWidget();
@@ -125,7 +124,7 @@ class _PostStatusPollOptionsFieldItemWidget extends StatelessWidget {
                   return const _PostStatusPollOptionsAddItemButtonWidget();
                 }
               },
-            )
+            ),
         ],
       ),
     );
@@ -173,26 +172,27 @@ class _PostStatusPollOptionRemoteItemButtonWidget extends StatelessWidget {
     var pollOptionsGroupBloc =
         IOneTypeFormGroupBloc.of<IStringValueFormFieldBloc>(context);
     return StreamBuilder<bool>(
-        stream: pollOptionsGroupBloc.isPossibleToRemoveFieldsStream,
-        builder: (context, snapshot) {
-          var isPossibleToRemoveFields = snapshot.data ?? false;
-          return FediIconButton(
-            icon: Icon(FediIcons.remove),
-            color: isPossibleToRemoveFields
-                ? IFediUiColorTheme.of(context).darkGrey
-                : IFediUiColorTheme.of(context).lightGrey,
-            onPressed: isPossibleToRemoveFields
-                ? () {
-                    var pollItemBloc = IStringValueFormFieldBloc.of(
-                      context,
-                      listen: false,
-                    );
+      stream: pollOptionsGroupBloc.isPossibleToRemoveFieldsStream,
+      builder: (context, snapshot) {
+        var isPossibleToRemoveFields = snapshot.data ?? false;
+        return FediIconButton(
+          icon: Icon(FediIcons.remove),
+          color: isPossibleToRemoveFields
+              ? IFediUiColorTheme.of(context).darkGrey
+              : IFediUiColorTheme.of(context).lightGrey,
+          onPressed: isPossibleToRemoveFields
+              ? () {
+                  var pollItemBloc = IStringValueFormFieldBloc.of(
+                    context,
+                    listen: false,
+                  );
 
-                    pollOptionsGroupBloc.removeField(pollItemBloc);
-                  }
-                : null,
-          );
-        });
+                  pollOptionsGroupBloc.removeField(pollItemBloc);
+                }
+              : null,
+        );
+      },
+    );
   }
 }
 

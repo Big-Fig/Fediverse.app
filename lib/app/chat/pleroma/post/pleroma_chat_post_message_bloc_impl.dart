@@ -65,8 +65,9 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
 
   IPleromaMediaAttachment? calculateMediaAttachment() {
     var mediaAttachmentBlocs = mediaAttachmentsBloc.mediaAttachmentBlocs?.where(
-        (bloc) =>
-            bloc.uploadState!.type == UploadMediaAttachmentStateType.uploaded);
+      (bloc) =>
+          bloc.uploadState!.type == UploadMediaAttachmentStateType.uploaded,
+    );
     IPleromaMediaAttachment? mediaAttachment;
     if (mediaAttachmentBlocs?.isNotEmpty == true) {
       mediaAttachment = mediaAttachmentBlocs!.first.pleromaMediaAttachment;
@@ -101,8 +102,10 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     required Widget child,
   }) {
     return DisposableProvider<IPleromaChatPostMessageBloc>(
-      create: (context) => PleromaChatPostMessageBloc.createFromContext(context,
-          chatRemoteId: chatRemoteId),
+      create: (context) => PleromaChatPostMessageBloc.createFromContext(
+        context,
+        chatRemoteId: chatRemoteId,
+      ),
       child: PleromaChatPostMessageBlocProxyProvider(child: child),
     );
   }

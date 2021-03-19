@@ -28,7 +28,8 @@ class LocalizationSettings
 
   static List<LocalizationSettings> listFromJsonString(String str) =>
       List<LocalizationSettings>.from(
-          json.decode(str).map((x) => LocalizationSettings.fromJson(x)));
+        json.decode(str).map((x) => LocalizationSettings.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$LocalizationSettingsToJson(this);

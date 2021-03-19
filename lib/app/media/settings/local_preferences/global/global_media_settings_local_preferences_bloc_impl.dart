@@ -7,8 +7,8 @@ class GlobalMediaSettingsLocalPreferencesBloc
     extends MediaSettingsLocalPreferencesBloc
     implements IGlobalMediaSettingsLocalPreferencesBloc {
   GlobalMediaSettingsLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService)
-      : super(preferencesService, "media.settings.global");
+    ILocalPreferencesService preferencesService,
+  ) : super(preferencesService, "media.settings.global");
 
   @override
   MediaSettings get defaultValue => MediaSettings(

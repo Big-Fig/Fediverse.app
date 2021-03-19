@@ -61,7 +61,6 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
 
     await oldFolderData?.dispose();
 
-
     var folderBloc = PhotoManagerMediaDeviceFolderBloc(
       storagePermissionBloc: storagePermissionBloc,
       // todo: rework cast
@@ -117,13 +116,14 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
       await _initAfterPermissionGranted();
     } else {
       addDisposable(
-          streamSubscription: storagePermissionBloc.permissionGrantedStream
-              .distinct()
-              .listen((granted) {
-        if (granted! && folders?.isNotEmpty != true) {
-          _initAfterPermissionGranted();
-        }
-      }));
+        streamSubscription: storagePermissionBloc.permissionGrantedStream
+            .distinct()
+            .listen((granted) {
+          if (granted! && folders?.isNotEmpty != true) {
+            _initAfterPermissionGranted();
+          }
+        }),
+      );
     }
   }
 

@@ -24,8 +24,9 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
     return Container(
       height: 45,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          border: Border.all(color: IFediUiColorTheme.of(context).lightGrey)),
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: IFediUiColorTheme.of(context).lightGrey),
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: FediSizes.mediumPadding),
         child: Stack(
@@ -67,7 +68,8 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
               right: 8.0,
               child:
                   _PostStatusPollOptionFormStringFieldFormRowErrorBuilderWidget(
-                      formStringFieldBloc: formStringFieldBloc),
+                formStringFieldBloc: formStringFieldBloc,
+              ),
             ),
           ],
         ),
@@ -88,16 +90,17 @@ class _PostStatusPollOptionFormStringFieldFormRowErrorBuilderWidget
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
-        stream: formStringFieldBloc.isHaveAtLeastOneErrorStream,
-        initialData: formStringFieldBloc.isHaveAtLeastOneError,
-        builder: (context, snapshot) {
-          var isHaveAtLeastOneError = snapshot.data!;
-          if (isHaveAtLeastOneError) {
-            return _PostStatusPollOptionFormStringFieldFormRowErrorWidget();
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+      stream: formStringFieldBloc.isHaveAtLeastOneErrorStream,
+      initialData: formStringFieldBloc.isHaveAtLeastOneError,
+      builder: (context, snapshot) {
+        var isHaveAtLeastOneError = snapshot.data!;
+        if (isHaveAtLeastOneError) {
+          return _PostStatusPollOptionFormStringFieldFormRowErrorWidget();
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 

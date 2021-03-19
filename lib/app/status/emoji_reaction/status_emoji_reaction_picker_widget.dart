@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 typedef EmojiReactionSelectedCallback = Function(
-    String emojiName, String emoji);
+  String emojiName,
+  String emoji,
+);
 
 class StatusEmojiReactionPickerWidget extends StatelessWidget {
   final EmojiReactionSelectedCallback emojiReactionSelectedCallback;

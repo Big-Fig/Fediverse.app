@@ -46,8 +46,10 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
             children: [
               if (onLongScrollUpTopOverlayWidget != null)
                 FediNestedScrollViewWidget.buildOnLongScrollUpTopOverlayWidget(
-                    context, onLongScrollUpTopOverlayWidget),
-              Expanded(child: _buildBody(context))
+                  context,
+                  onLongScrollUpTopOverlayWidget,
+                ),
+              Expanded(child: _buildBody(context)),
             ],
           );
         },

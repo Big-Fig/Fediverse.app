@@ -81,13 +81,16 @@ class EditDatabaseCacheSettingsBloc
     currentMaxAgeDatabaseCacheInfoFormFieldBloc.performAsyncInit();
 
     addDisposable(
-        disposable: ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc);
+      disposable: ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc,
+    );
     addDisposable(
-        disposable:
-            entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc);
+      disposable:
+          entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc,
+    );
 
     addDisposable(
-        disposable: currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc);
+      disposable: currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc,
+    );
     addDisposable(disposable: currentMaxAgeDatabaseCacheInfoFormFieldBloc);
 
     onFormItemsChanged();

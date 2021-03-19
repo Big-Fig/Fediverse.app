@@ -20,30 +20,32 @@ class FediBoolBadgeWidget extends StatelessWidget {
     var fediBoolBadgeBloc = IFediBoolBadgeBloc.of(context);
 
     return StreamBuilder<bool?>(
-        stream: fediBoolBadgeBloc.badgeStream.distinct(),
-        builder: (context, snapshot) {
-          var unread = snapshot.data;
+      stream: fediBoolBadgeBloc.badgeStream.distinct(),
+      builder: (context, snapshot) {
+        var unread = snapshot.data;
 
-          if (unread == true) {
-            return Stack(
-              children: [
-                child,
-                Positioned(
-                  right: offset,
-                  top: offset,
-                  child: Container(
-                    width: badgeSize,
-                    height: badgeSize,
-                    decoration: BoxDecoration(
-                        color: IFediUiColorTheme.of(context).secondary,
-                        shape: BoxShape.circle),
+        if (unread == true) {
+          return Stack(
+            children: [
+              child,
+              Positioned(
+                right: offset,
+                top: offset,
+                child: Container(
+                  width: badgeSize,
+                  height: badgeSize,
+                  decoration: BoxDecoration(
+                    color: IFediUiColorTheme.of(context).secondary,
+                    shape: BoxShape.circle,
                   ),
                 ),
-              ],
-            );
-          } else {
-            return child;
-          }
-        });
+              ),
+            ],
+          );
+        } else {
+          return child;
+        }
+      },
+    );
   }
 }

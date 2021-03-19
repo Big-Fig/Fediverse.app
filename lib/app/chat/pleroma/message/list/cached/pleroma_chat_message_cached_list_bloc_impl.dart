@@ -84,13 +84,15 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
     );
 
     _logger.finer(
-        () => "finish loadLocalItems for $chat messages ${messages.length}");
+      () => "finish loadLocalItems for $chat messages ${messages.length}",
+    );
     return messages;
   }
 
   @override
   Stream<List<IPleromaChatMessage>> watchLocalItemsNewerThanItem(
-      IPleromaChatMessage item) {
+    IPleromaChatMessage item,
+  ) {
     return chatMessageRepository.watchChatMessages(
       filters: _pleromaChatMessageRepositoryFilters,
       pagination: RepositoryPagination(
@@ -118,8 +120,9 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   }) {
     return DisposableProvider<IPleromaChatMessageCachedListBloc>(
       create: (context) => PleromaChatMessageCachedListBloc.createFromContext(
-          context,
-          chat: chat),
+        context,
+        chat: chat,
+      ),
       child: child,
     );
   }

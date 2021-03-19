@@ -181,7 +181,7 @@ class _StatusThreadStarterAccountBodyWidget extends StatelessWidget {
         const Padding(
           padding: FediPadding.horizontalBigPadding,
           child: StatusCreatedAtWidget(),
-        )
+        ),
       ],
     );
   }

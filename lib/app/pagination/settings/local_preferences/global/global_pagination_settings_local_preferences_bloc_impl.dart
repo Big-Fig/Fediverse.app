@@ -9,8 +9,8 @@ class GlobalPaginationSettingsLocalPreferencesBloc
     extends PaginationSettingsLocalPreferencesBloc
     implements IGlobalPaginationSettingsLocalPreferencesBloc {
   GlobalPaginationSettingsLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService)
-      : super(preferencesService, "pagination.settings.global");
+    ILocalPreferencesService preferencesService,
+  ) : super(preferencesService, "pagination.settings.global");
 
   @override
   PaginationSettings get defaultValue => PaginationSettings(

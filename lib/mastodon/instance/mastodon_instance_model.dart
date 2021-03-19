@@ -92,7 +92,8 @@ class MastodonInstanceStats {
 
   static List<MastodonInstanceStats> listFromJsonString(String str) =>
       List<MastodonInstanceStats>.from(
-          json.decode(str).map((x) => MastodonInstanceStats.fromJson(x)));
+        json.decode(str).map((x) => MastodonInstanceStats.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$MastodonInstanceStatsToJson(this);
 
@@ -135,7 +136,8 @@ class MastodonUrls {
 
   static List<MastodonUrls> listFromJsonString(String str) =>
       List<MastodonUrls>.from(
-          json.decode(str).map((x) => MastodonUrls.fromJson(x)));
+        json.decode(str).map((x) => MastodonUrls.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$MastodonUrlsToJson(this);
 

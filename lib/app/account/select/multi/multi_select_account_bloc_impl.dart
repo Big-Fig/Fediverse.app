@@ -82,7 +82,8 @@ class MultiSelectAccountBloc extends DisposableOwner
     IAccount account,
   ) =>
       selectedAccounts?.firstWhereOrNull(
-          (currentAccount) => account.remoteId == currentAccount.remoteId) !=
+        (currentAccount) => account.remoteId == currentAccount.remoteId,
+      ) !=
       null;
 
   @override

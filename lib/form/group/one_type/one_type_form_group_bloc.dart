@@ -6,8 +6,9 @@ import 'package:provider/provider.dart';
 abstract class IOneTypeFormGroupBloc<T extends IFormItemBloc>
     extends IFormGroupBloc<T> {
   static IOneTypeFormGroupBloc<T> of<T extends IFormItemBloc>(
-          BuildContext context,
-          {bool listen = true}) =>
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IOneTypeFormGroupBloc<T>>(context, listen: listen);
 
   T addNewEmptyField();

@@ -33,14 +33,16 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isExcludeNsfwSensitiveFilterSupportedOnInstance(
-      AuthInstance authInstance) {
+    AuthInstance authInstance,
+  ) {
     // actually we can filter on client-side but this will
     // require additional pagination handling
     return false;
   }
 
   bool isWebSocketsUpdatesFilterSupportedOnInstance(
-      AuthInstance? authInstance) {
+    AuthInstance? authInstance,
+  ) {
     // actually we can filter on client-side but this will
     // require additional pagination handling
     return true;
@@ -96,7 +98,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isExcludeVisibilitiesFilterSupportedOnInstance(
-      AuthInstance authInstance) {
+    AuthInstance authInstance,
+  ) {
     switch (this) {
       case TimelineType.public:
         return authInstance.isPleroma;
@@ -112,7 +115,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isOnlyInListWithRemoteIdFilterSupportedOnInstance(
-      AuthInstance? authInstance) {
+    AuthInstance? authInstance,
+  ) {
     switch (this) {
       case TimelineType.public:
         return false;
@@ -128,7 +132,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isOnlyFromAccountWithRemoteIdFilterSupportedOnInstance(
-      AuthInstance authInstance) {
+    AuthInstance authInstance,
+  ) {
     switch (this) {
       case TimelineType.public:
         return false;

@@ -5,8 +5,10 @@ import 'package:provider/provider.dart';
 
 abstract class ICaptchaStringValueFormFieldBloc
     extends IStringValueFormFieldBloc {
-  static ICaptchaStringValueFormFieldBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static ICaptchaStringValueFormFieldBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<ICaptchaStringValueFormFieldBloc>(context, listen: listen);
 
   bool get isExist;

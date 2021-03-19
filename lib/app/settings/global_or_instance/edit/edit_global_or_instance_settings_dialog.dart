@@ -50,7 +50,8 @@ void showEditGlobalOrInstanceSettingsDialog({
         builder: (context) {
           var isUseGlobalSettingsFormBoolFieldBloc =
               ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(
-                  context);
+            context,
+          );
           return StreamBuilder<GlobalOrInstanceSettingsType?>(
             stream: isUseGlobalSettingsFormBoolFieldBloc
                 .globalOrInstanceSettingsTypeStream,

@@ -243,7 +243,8 @@ Future runInitializedCurrentInstanceApp({
           currentInstanceContextBloc.get();
 
       _logger.finest(
-          () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage");
+        () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage",
+      );
       runApp(
         appContextBloc.provideContextToChild(
           child: currentInstanceContextBloc.provideContextToChild(
@@ -391,8 +392,10 @@ Widget buildAuthInstanceContextInitWidget({
       child: DisposableProvider<IHomeBloc>(
         create: (context) {
           var homeBloc = HomeBloc(
-              startTab: calculateHomeTabForNotification(
-                  pushLoaderBloc.launchOrResumePushLoaderNotification));
+            startTab: calculateHomeTabForNotification(
+              pushLoaderBloc.launchOrResumePushLoaderNotification,
+            ),
+          );
 
           homeBloc.addDisposable(
             streamSubscription: pushLoaderBloc
@@ -401,7 +404,8 @@ Widget buildAuthInstanceContextInitWidget({
               (launchOrResumePushLoaderNotification) {
                 homeBloc.selectTab(
                   calculateHomeTabForNotification(
-                      launchOrResumePushLoaderNotification),
+                    launchOrResumePushLoaderNotification,
+                  ),
                 );
               },
             ),
@@ -435,7 +439,8 @@ void runInitializedLoginApp(IAppContextBloc appContextBloc, String appTitle) {
 }
 
 HomeTab? calculateHomeTabForNotification(
-    NotificationPushLoaderNotification? launchOrResumePushLoaderNotification) {
+  NotificationPushLoaderNotification? launchOrResumePushLoaderNotification,
+) {
   HomeTab? homeTab;
   if (launchOrResumePushLoaderNotification != null) {
     var notification = launchOrResumePushLoaderNotification.notification;
@@ -475,80 +480,81 @@ class FediApp extends StatelessWidget {
 
     return UiThemeSystemBrightnessHandlerWidget(
       child: StreamBuilder<IFediUiTheme?>(
-          stream: currentFediUiThemeBloc.adaptiveBrightnessCurrentThemeStream,
-          builder: (context, snapshot) {
-            var currentTheme = snapshot.data;
+        stream: currentFediUiThemeBloc.adaptiveBrightnessCurrentThemeStream,
+        builder: (context, snapshot) {
+          var currentTheme = snapshot.data;
 
-            var themeMode = currentTheme == null
-                ? ThemeMode.system
-                : currentTheme == darkFediUiTheme
-                    ? ThemeMode.dark
-                    : ThemeMode.light;
+          var themeMode = currentTheme == null
+              ? ThemeMode.system
+              : currentTheme == darkFediUiTheme
+                  ? ThemeMode.dark
+                  : ThemeMode.light;
 
-            _logger.finest(() => "currentTheme $currentTheme "
-                "themeMode $themeMode");
+          _logger.finest(() => "currentTheme $currentTheme "
+              "themeMode $themeMode");
 
-            return provideCurrentTheme(
-              currentTheme: currentTheme ?? lightFediUiTheme,
-              child: StreamBuilder<LocalizationLocale?>(
-                stream: localizationSettingsBloc.localizationLocaleStream,
-                builder: (context, snapshot) {
-                  var localizationLocale = snapshot.data;
+          return provideCurrentTheme(
+            currentTheme: currentTheme ?? lightFediUiTheme,
+            child: StreamBuilder<LocalizationLocale?>(
+              stream: localizationSettingsBloc.localizationLocaleStream,
+              builder: (context, snapshot) {
+                var localizationLocale = snapshot.data;
 
-                  Locale? locale;
-                  if (localizationLocale != null) {
-                    locale = Locale.fromSubtags(
-                      languageCode: localizationLocale.languageCode!,
-                      countryCode: localizationLocale.countryCode,
-                      scriptCode: localizationLocale.scriptCode,
-                    );
-                  }
-                  _logger.finest(() => "locale $locale");
-                  return OverlayNotificationServiceProvider(
-                    child: ToastServiceProvider(
-                      child: MaterialApp(
-                        // checkerboardRasterCacheImages: true,
-                        // checkerboardOffscreenLayers: true,
-                        debugShowCheckedModeBanner: false,
-                        title: appTitle,
-                        localizationsDelegates: [
-                          S.delegate,
-                          GlobalMaterialLocalizations.delegate,
-                          GlobalWidgetsLocalizations.delegate,
-                        ],
-                        supportedLocales: S.delegate.supportedLocales,
-                        locale: locale,
-                        theme: lightFediUiTheme.themeData,
-                        darkTheme: darkFediUiTheme.themeData,
-                        themeMode: themeMode,
-                        initialRoute: "/",
-                        home: Builder(builder: (context) {
-                          // it is important to init ToastHandlerBloc
-                          // as MaterialApp child
-                          // to have access to context suitable for Navigator
-                          if (instanceInitialized == true) {
-                            return DisposableProxyProvider<IToastService,
-                                IToastHandlerBloc>(
-                              lazy: false,
-                              update: (context, toastService, _) =>
-                                  ToastHandlerBloc.createFromContext(
-                                context,
-                                toastService,
-                              ),
-                              child: child,
-                            );
-                          } else {
-                            return child;
-                          }
-                        }),
-                        navigatorKey: navigatorKey,
-                      ),
-                    ),
+                Locale? locale;
+                if (localizationLocale != null) {
+                  locale = Locale.fromSubtags(
+                    languageCode: localizationLocale.languageCode!,
+                    countryCode: localizationLocale.countryCode,
+                    scriptCode: localizationLocale.scriptCode,
                   );
-                },
-              ),
-            );
-          }),
+                }
+                _logger.finest(() => "locale $locale");
+                return OverlayNotificationServiceProvider(
+                  child: ToastServiceProvider(
+                    child: MaterialApp(
+                      // checkerboardRasterCacheImages: true,
+                      // checkerboardOffscreenLayers: true,
+                      debugShowCheckedModeBanner: false,
+                      title: appTitle,
+                      localizationsDelegates: [
+                        S.delegate,
+                        GlobalMaterialLocalizations.delegate,
+                        GlobalWidgetsLocalizations.delegate,
+                      ],
+                      supportedLocales: S.delegate.supportedLocales,
+                      locale: locale,
+                      theme: lightFediUiTheme.themeData,
+                      darkTheme: darkFediUiTheme.themeData,
+                      themeMode: themeMode,
+                      initialRoute: "/",
+                      home: Builder(builder: (context) {
+                        // it is important to init ToastHandlerBloc
+                        // as MaterialApp child
+                        // to have access to context suitable for Navigator
+                        if (instanceInitialized == true) {
+                          return DisposableProxyProvider<IToastService,
+                              IToastHandlerBloc>(
+                            lazy: false,
+                            update: (context, toastService, _) =>
+                                ToastHandlerBloc.createFromContext(
+                              context,
+                              toastService,
+                            ),
+                            child: child,
+                          );
+                        } else {
+                          return child;
+                        }
+                      }),
+                      navigatorKey: navigatorKey,
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 

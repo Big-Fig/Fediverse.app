@@ -79,7 +79,9 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
 
   @override
   Future<IPleromaFilter> actuallySubmitFilter(
-      String? listRemoteId, IPostPleromaFilter postPleromaFilter) async {
+    String? listRemoteId,
+    IPostPleromaFilter postPleromaFilter,
+  ) async {
     var remoteFilter = await pleromaFilterService.createFilter(
       postPleromaFilter: postPleromaFilter,
     );

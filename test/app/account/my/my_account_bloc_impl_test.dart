@@ -66,10 +66,11 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
 
     myAccountBloc = MyAccountBloc(
-        pleromaMyAccountService: pleromaMyAccountServiceMock,
-        accountRepository: accountRepository,
-        myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
-        instance: authInstance);
+      pleromaMyAccountService: pleromaMyAccountServiceMock,
+      accountRepository: accountRepository,
+      myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
+      instance: authInstance,
+    );
   });
 
   tearDown(() async {
@@ -376,7 +377,7 @@ void main() {
         visibleInPicker: null,
         shortcode: null,
         category: null,
-      )
+      ),
     ];
 
     subscription = myAccountBloc.displayNameEmojiTextStream.listen((newValue) {
@@ -384,24 +385,36 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue,
-        EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis));
+    expect(
+      listenedValue,
+      EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis),
+    );
 
     await _update(myAccount.copyWith(
-        displayName: newDisplayNameValue, emojis: newEmojis));
+      displayName: newDisplayNameValue,
+      emojis: newEmojis,
+    ));
 
-    expect(myAccountBloc.displayNameEmojiText,
-        equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)));
-    expect(listenedValue,
-        equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)));
+    expect(
+      myAccountBloc.displayNameEmojiText,
+      equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)),
+    );
+    expect(
+      listenedValue,
+      equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)),
+    );
     await subscription.cancel();
   });
 
   test('accountRelationship', () async {
-    expect(() => myAccountBloc.relationship,
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
-    expect(() => myAccountBloc.relationshipStream,
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
+    expect(
+      () => myAccountBloc.relationship,
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
+    expect(
+      () => myAccountBloc.relationshipStream,
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
   });
 
   test('refreshFromNetwork', () async {
@@ -432,28 +445,37 @@ void main() {
   });
 
   test('toggleBlock', () async {
-    expect(() => myAccountBloc.toggleBlock(),
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
+    expect(
+      () => myAccountBloc.toggleBlock(),
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
   });
   test('toggleFollow', () async {
-    expect(() => myAccountBloc.toggleFollow(),
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
+    expect(
+      () => myAccountBloc.toggleFollow(),
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
   });
   test('mute', () async {
     expect(
-        () => myAccountBloc.mute(
-              notifications: false,
-              duration: null,
-            ),
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
+      () => myAccountBloc.mute(
+        notifications: false,
+        duration: null,
+      ),
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
   });
   test('unMute', () async {
-    expect(() => myAccountBloc.unMute(),
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
+    expect(
+      () => myAccountBloc.unMute(),
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
   });
   test('togglePin', () async {
-    expect(() => myAccountBloc.togglePin(),
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
+    expect(
+      () => myAccountBloc.togglePin(),
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
   });
 
   test('isLocalCacheExist', () async {
@@ -479,13 +501,17 @@ void main() {
   test('checkAccountIsMe', () async {
     expect(myAccountBloc.checkAccountIsMe(myAccount), true);
     expect(
-        myAccountBloc
-            .checkAccountIsMe(myAccount.copyWith(remoteId: "invalidRemoteId")),
-        false);
+      myAccountBloc
+          .checkAccountIsMe(myAccount.copyWith(remoteId: "invalidRemoteId")),
+      false,
+    );
     expect(
-        myAccountBloc.checkAccountIsMe((await createTestAccount(
-            seed: "seed3", remoteId: myAccount.remoteId))),
-        true);
+      myAccountBloc.checkAccountIsMe((await createTestAccount(
+        seed: "seed3",
+        remoteId: myAccount.remoteId,
+      ))),
+      true,
+    );
   });
 
   test('checkIsStatusFromMe', () async {
@@ -512,8 +538,8 @@ void main() {
     );
 
     expect(
-        myAccountBloc.checkIsStatusFromMe(DbStatusPopulatedWrapper(
-            dbStatusPopulated: DbStatusPopulated(
+      myAccountBloc.checkIsStatusFromMe(DbStatusPopulatedWrapper(
+        dbStatusPopulated: DbStatusPopulated(
           dbStatus: dbStatus,
           dbAccount: dbAccount.copyWith(remoteId: "invalidRemoteId"),
           reblogDbStatus: null,
@@ -522,7 +548,9 @@ void main() {
           replyDbStatusAccount: null,
           replyDbStatus: null,
           replyReblogDbStatus: null,
-        ))),
-        false);
+        ),
+      )),
+      false,
+    );
   });
 }

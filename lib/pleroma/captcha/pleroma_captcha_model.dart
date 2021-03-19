@@ -113,7 +113,8 @@ class PleromaCaptcha implements IPleromaCaptcha {
 
   static List<PleromaCaptcha> listFromJsonString(String str) =>
       List<PleromaCaptcha>.from(
-          json.decode(str).map((x) => PleromaCaptcha.fromJson(x)));
+        json.decode(str).map((x) => PleromaCaptcha.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaCaptchaToJson(this);
 

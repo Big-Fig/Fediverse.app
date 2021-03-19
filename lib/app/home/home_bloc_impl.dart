@@ -29,8 +29,10 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
 
   final BehaviorSubject<bool> _isTimelinesUnreadSubject =
       BehaviorSubject.seeded(false);
+
   @override
   bool? get isTimelinesUnread => _isTimelinesUnreadSubject.value;
+
   @override
   Stream<bool> get isTimelinesUnreadStream => _isTimelinesUnreadSubject.stream;
 
@@ -44,7 +46,6 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
 
   @override
   void selectTab(HomeTab? tab) {
-
     _logger.finest(() => "selectTab $tab");
     if (selectedTab == tab) {
       _reselectedTabStreamController.add(tab);
@@ -67,7 +68,9 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
 
   @override
   Stream<bool> get selectedTabReselectedStream => Rx.combineLatest2(
-      selectedTabStream,
-      reselectedTabStream,
-      (dynamic selectedTab, dynamic reselectedTab) => selectedTab == reselectedTab);
+        selectedTabStream,
+        reselectedTabStream,
+        (dynamic selectedTab, dynamic reselectedTab) =>
+            selectedTab == reselectedTab,
+      );
 }

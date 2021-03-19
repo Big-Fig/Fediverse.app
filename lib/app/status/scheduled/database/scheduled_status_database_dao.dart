@@ -5,21 +5,24 @@ import 'package:moor/moor.dart';
 
 part 'scheduled_status_database_dao.g.dart';
 
-@UseDao(tables: [
-  DbScheduledStatuses
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_scheduled_statuses;",
-  "findById": "SELECT * FROM db_scheduled_statuses WHERE id = :id;",
-  "findByRemoteId":
-      "SELECT * FROM db_scheduled_statuses WHERE remote_id LIKE :remoteId;",
-  "countById": "SELECT COUNT(*) FROM db_scheduled_statuses WHERE id = :id;",
-  "deleteById": "DELETE FROM db_scheduled_statuses WHERE id = :id;",
-  "clear": "DELETE FROM db_scheduled_statuses",
-  "getAll": "SELECT * FROM db_scheduled_statuses",
-  "findLocalIdByRemoteId":
-      "SELECT id FROM db_scheduled_statuses WHERE remote_id = "
-          ":remoteId;",
-})
+@UseDao(
+  tables: [
+    DbScheduledStatuses,
+  ],
+  queries: {
+    "countAll": "SELECT Count(*) FROM db_scheduled_statuses;",
+    "findById": "SELECT * FROM db_scheduled_statuses WHERE id = :id;",
+    "findByRemoteId":
+        "SELECT * FROM db_scheduled_statuses WHERE remote_id LIKE :remoteId;",
+    "countById": "SELECT COUNT(*) FROM db_scheduled_statuses WHERE id = :id;",
+    "deleteById": "DELETE FROM db_scheduled_statuses WHERE id = :id;",
+    "clear": "DELETE FROM db_scheduled_statuses",
+    "getAll": "SELECT * FROM db_scheduled_statuses",
+    "findLocalIdByRemoteId":
+        "SELECT id FROM db_scheduled_statuses WHERE remote_id = "
+            ":remoteId;",
+  },
+)
 class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
     with _$ScheduledStatusDaoMixin {
   final AppDatabase db;
@@ -52,7 +55,9 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
       await update(dbScheduledStatuses).replace(entity);
 
   Future<int> updateByRemoteId(
-      String remoteId, Insertable<DbScheduledStatus> entity) async {
+    String remoteId,
+    Insertable<DbScheduledStatus> entity,
+  ) async {
     var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
@@ -82,38 +87,40 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
 
     if (minimumExist) {
       var biggerExp = CustomExpression<bool>(
-          "db_scheduled_statuses.remote_id > '$minimumRemoteIdExcluding'");
+        "db_scheduled_statuses.remote_id > '$minimumRemoteIdExcluding'",
+      );
       query = query..where((scheduledStatus) => biggerExp);
     }
     if (maximumExist) {
       var smallerExp = CustomExpression<bool>(
-          "db_scheduled_statuses.remote_id < '$maximumRemoteIdExcluding'");
+        "db_scheduled_statuses.remote_id < '$maximumRemoteIdExcluding'",
+      );
       query = query..where((scheduledStatus) => smallerExp);
     }
 
     return query;
   }
 
-  SimpleSelectStatement<$DbScheduledStatusesTable,
-      DbScheduledStatus> addExcludeCanceledWhere(
-          SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
-              query) =>
-      query
-        ..where(
-            (scheduledStatus) => scheduledStatus.canceled.equals(true).not());
+  SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
+      addExcludeCanceledWhere(
+    SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query,
+  ) =>
+          query
+            ..where((scheduledStatus) =>
+                scheduledStatus.canceled.equals(true).not());
 
-  SimpleSelectStatement<$DbScheduledStatusesTable,
-      DbScheduledStatus> addExcludeScheduleAtExpiredWhere(
-          SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
-              query) =>
-      query
-        ..where((scheduledStatus) => scheduledStatus.scheduledAt
-            .isBiggerThanValue(DateTime.now().toUtc()));
+  SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
+      addExcludeScheduleAtExpiredWhere(
+    SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query,
+  ) =>
+          query
+            ..where((scheduledStatus) => scheduledStatus.scheduledAt
+                .isBiggerThanValue(DateTime.now().toUtc()));
 
   SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> orderBy(
-          SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
-              query,
-          List<ScheduledStatusOrderingTermData> orderTerms) =>
+    SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query,
+    List<ScheduledStatusOrderingTermData> orderTerms,
+  ) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
@@ -124,17 +131,19 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
                       break;
                   }
                   return OrderingTerm(
-                      expression: expression, mode: orderTerm.orderingMode);
+                    expression: expression,
+                    mode: orderTerm.orderingMode,
+                  );
                 })
             .toList());
 
   List<DbScheduledStatus> typedResultListToPopulated(
-      List<TypedResult> typedResult) {
+    List<TypedResult> typedResult,
+  ) {
     return typedResult.map(typedResultToPopulated).toList();
   }
 
   DbScheduledStatus typedResultToPopulated(TypedResult typedResult) {
-
     return typedResult.readTable(db.dbScheduledStatuses);
   }
 }

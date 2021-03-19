@@ -90,7 +90,8 @@ class PleromaConversation implements IPleromaConversation {
 
   static List<PleromaConversation> listFromJsonString(String str) =>
       List<PleromaConversation>.from(
-          json.decode(str).map((x) => PleromaConversation.fromJson(x)));
+        json.decode(str).map((x) => PleromaConversation.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaConversationToJson(this);
 

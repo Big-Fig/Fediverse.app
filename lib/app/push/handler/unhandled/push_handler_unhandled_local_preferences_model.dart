@@ -44,7 +44,8 @@ class PushHandlerUnhandledList implements IJsonObject {
 
   static List<PushHandlerUnhandledList> listFromJsonString(String str) =>
       List<PushHandlerUnhandledList>.from(
-          json.decode(str).map((x) => PushHandlerUnhandledList.fromJson(x)));
+        json.decode(str).map((x) => PushHandlerUnhandledList.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$PushHandlerUnhandledListToJson(this);

@@ -33,7 +33,9 @@ void main() {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
-        appDatabase: database, accountRepository: accountRepository);
+      appDatabase: database,
+      accountRepository: accountRepository,
+    );
 
     pleromaAuthAccountServiceMock = PleromaAuthAccountServiceMock();
 
@@ -217,7 +219,7 @@ void main() {
         name: "newName",
         value: "newValue",
         verifiedAt: null,
-      )
+      ),
     ];
 
     var listenedValue;
@@ -373,7 +375,7 @@ void main() {
         visibleInPicker: null,
         shortcode: null,
         category: null,
-      )
+      ),
     ];
 
     subscription = accountBloc.displayNameEmojiTextStream.listen((newValue) {
@@ -381,8 +383,10 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue,
-        EmojiText(text: newDisplayNameValue, emojis: account.emojis));
+    expect(
+      listenedValue,
+      EmojiText(text: newDisplayNameValue, emojis: account.emojis),
+    );
 
     await _update(
       account.copyWith(
@@ -447,8 +451,8 @@ void main() {
 
     var newRelationship = createTestAccountRelationship(seed: "seed11");
     when(pleromaAuthAccountServiceMock.getAccount(
-            accountRemoteId: account.remoteId))
-        .thenAnswer((_) async => newValue.toPleromaAccount());
+      accountRemoteId: account.remoteId,
+    )).thenAnswer((_) async => newValue.toPleromaAccount());
 
     when(pleromaAuthAccountServiceMock
             .getRelationshipWithAccounts(remoteAccountIds: [account.remoteId]))
@@ -458,10 +462,14 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expectAccount(accountBloc.account,
-        newValue.copyWith(pleromaRelationship: newRelationship));
     expectAccount(
-        listenedValue, newValue.copyWith(pleromaRelationship: newRelationship));
+      accountBloc.account,
+      newValue.copyWith(pleromaRelationship: newRelationship),
+    );
+    expectAccount(
+      listenedValue,
+      newValue.copyWith(pleromaRelationship: newRelationship),
+    );
     await subscription.cancel();
   });
 
@@ -528,16 +536,17 @@ void main() {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
     when(pleromaAuthAccountServiceMock.followAccount(
-            accountRemoteId: account.remoteId))
-        .thenAnswer((_) async =>
-            account.pleromaRelationship!.copyWith(following: true));
+      accountRemoteId: account.remoteId,
+    )).thenAnswer(
+      (_) async => account.pleromaRelationship!.copyWith(following: true),
+    );
 
     when(pleromaAuthAccountServiceMock.unFollowAccount(
-            accountRemoteId: account.remoteId))
-        .thenAnswer((_) async => account.pleromaRelationship!.copyWith(
-              following: false,
-              requested: false,
-            ));
+      accountRemoteId: account.remoteId,
+    )).thenAnswer((_) async => account.pleromaRelationship!.copyWith(
+          following: false,
+          requested: false,
+        ));
 
     var initialValue = account.pleromaRelationship!.following!;
 
@@ -588,9 +597,10 @@ void main() {
         ));
 
     when(pleromaAuthAccountServiceMock.unMuteAccount(
-            accountRemoteId: account.remoteId))
-        .thenAnswer(
-            (_) async => account.pleromaRelationship!.copyWith(muting: false));
+      accountRemoteId: account.remoteId,
+    )).thenAnswer(
+      (_) async => account.pleromaRelationship!.copyWith(muting: false),
+    );
 
     await accountBloc.mute(
       notifications: false,
@@ -633,14 +643,16 @@ void main() {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
     when(pleromaAuthAccountServiceMock.pinAccount(
-            accountRemoteId: account.remoteId))
-        .thenAnswer(
-            (_) async => account.pleromaRelationship!.copyWith(muting: true));
+      accountRemoteId: account.remoteId,
+    )).thenAnswer(
+      (_) async => account.pleromaRelationship!.copyWith(muting: true),
+    );
 
     when(pleromaAuthAccountServiceMock.unPinAccount(
-            accountRemoteId: account.remoteId))
-        .thenAnswer(
-            (_) async => account.pleromaRelationship!.copyWith(muting: false));
+      accountRemoteId: account.remoteId,
+    )).thenAnswer(
+      (_) async => account.pleromaRelationship!.copyWith(muting: false),
+    );
 
     var initialValue = account.pleromaRelationship!.muting!;
 

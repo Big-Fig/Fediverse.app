@@ -45,25 +45,26 @@ class AuthInstanceChooserWidget extends StatelessWidget {
           children: [
             const _AuthInstanceChooserSelectedInstanceRowWidget(),
             StreamBuilder<List<AuthInstance?>>(
-                stream: instanceChooserBloc.instancesAvailableToChooseStream,
-                builder: (context, snapshot) {
-                  var instancesAvailableToChoose = snapshot.data;
+              stream: instanceChooserBloc.instancesAvailableToChooseStream,
+              builder: (context, snapshot) {
+                var instancesAvailableToChoose = snapshot.data;
 
-                  if (instancesAvailableToChoose == null) {
-                    return const SizedBox.shrink();
-                  }
-                  _logger.finest(() => "build instancesAvailableToChoose "
-                      "${instancesAvailableToChoose.length}");
+                if (instancesAvailableToChoose == null) {
+                  return const SizedBox.shrink();
+                }
+                _logger.finest(() => "build instancesAvailableToChoose "
+                    "${instancesAvailableToChoose.length}");
 
-                  return Provider<List<AuthInstance?>>.value(
-                    value: instancesAvailableToChoose,
-                    child: const _AuthInstanceChooserItemsToChooseWidget(),
-                  );
-                }),
+                return Provider<List<AuthInstance?>>.value(
+                  value: instancesAvailableToChoose,
+                  child: const _AuthInstanceChooserItemsToChooseWidget(),
+                );
+              },
+            ),
             const Padding(
               padding: FediPadding.allSmallPadding,
               child: _AuthInstanceChooserInstanceListItemAddAccountRowWidget(),
-            )
+            ),
           ],
         );
       },
@@ -99,8 +100,9 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
           child: DisposableProxyProvider<AuthInstance,
               IMyAccountLocalPreferenceBloc>(
             update: (context, value, previous) => MyAccountLocalPreferenceBloc(
-                ILocalPreferencesService.of(context, listen: false),
-                userAtHost: value.userAtHost),
+              ILocalPreferencesService.of(context, listen: false),
+              userAtHost: value.userAtHost,
+            ),
             child: Builder(
               builder: (context) => FediAsyncInitLoadingWidget(
                 asyncInitLoadingBloc:
@@ -117,8 +119,10 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
                       accountRepository:
                           IAccountRepository.of(context, listen: false),
                       myAccountLocalPreferenceBloc:
-                          IMyAccountLocalPreferenceBloc.of(context,
-                              listen: false),
+                          IMyAccountLocalPreferenceBloc.of(
+                        context,
+                        listen: false,
+                      ),
                     ),
                     child: DisposableProxyProvider<AuthInstance,
                         IAuthInstanceChooserInstanceListItemBloc>(
@@ -166,22 +170,23 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
     return ProxyProvider<IMyAccountBloc, IAccountBloc>(
       update: (BuildContext context, value, previous) => value,
       child: StreamBuilder<AuthInstance?>(
-          stream: instanceChooserBloc.selectedInstanceStream,
-          builder: (context, snapshot) {
-            var authInstance = snapshot.data;
-            return Provider.value(
-              value: authInstance,
-              child: DisposableProxyProvider<AuthInstance,
-                  IAuthInstanceChooserInstanceListItemBloc>(
-                update: (context, authInstance, _) =>
-                    AuthInstanceChooserInstanceListItemBloc(
-                  instance: authInstance,
-                  isSelected: true,
-                ),
-                child: const AuthInstanceChooserInstanceListItemWidget(),
+        stream: instanceChooserBloc.selectedInstanceStream,
+        builder: (context, snapshot) {
+          var authInstance = snapshot.data;
+          return Provider.value(
+            value: authInstance,
+            child: DisposableProxyProvider<AuthInstance,
+                IAuthInstanceChooserInstanceListItemBloc>(
+              update: (context, authInstance, _) =>
+                  AuthInstanceChooserInstanceListItemBloc(
+                instance: authInstance,
+                isSelected: true,
               ),
-            );
-          }),
+              child: const AuthInstanceChooserInstanceListItemWidget(),
+            ),
+          );
+        },
+      ),
     );
   }
 }

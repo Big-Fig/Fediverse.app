@@ -7,10 +7,14 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaChatWithLastMessageRepository implements IDisposable {
-  static IPleromaChatWithLastMessageRepository of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IPleromaChatWithLastMessageRepository>(context,
-          listen: listen);
+  static IPleromaChatWithLastMessageRepository of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPleromaChatWithLastMessageRepository>(
+        context,
+        listen: listen,
+      );
 
   Future<List<IPleromaChatWithLastMessage>> getChatsWithLastMessage({
     required PleromaChatRepositoryFilters? filters,

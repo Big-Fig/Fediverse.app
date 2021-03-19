@@ -8,8 +8,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IRegisterAuthInstanceFormBloc implements IFormBloc {
-  static IRegisterAuthInstanceFormBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IRegisterAuthInstanceFormBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IRegisterAuthInstanceFormBloc>(context, listen: listen);
 
   Uri get instanceBaseUri;

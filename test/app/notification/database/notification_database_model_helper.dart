@@ -28,7 +28,9 @@ Future<DbNotification> createTestDbNotification({
 }
 
 void expectDbNotificationPopulated(
-    INotification actual, DbNotificationPopulated expected) {
+  INotification actual,
+  DbNotificationPopulated expected,
+) {
   expect(actual.localId != null, true);
   var dbNotification = expected.dbNotification;
   expectDbNotification(actual, dbNotification);
@@ -77,7 +79,9 @@ void expectDbNotification(INotification actual, DbNotification dbNotification) {
 }
 
 Future<DbNotificationPopulated> createTestNotificationPopulated(
-    DbNotification dbNotification, AccountRepository accountRepository) async {
+  DbNotification dbNotification,
+  AccountRepository accountRepository,
+) async {
   DbNotificationPopulated dbNotificationPopulated = DbNotificationPopulated(
     dbNotification: dbNotification,
     dbAccount:

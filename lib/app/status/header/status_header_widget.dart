@@ -48,11 +48,12 @@ class StatusHeaderWidget extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(
-                  vertical: FediSizes.smallPadding,
-                  horizontal: FediSizes.bigPadding),
+                vertical: FediSizes.smallPadding,
+                horizontal: FediSizes.bigPadding,
+              ),
               child: buildHeader(account, context),
             ),
-            const FediUltraLightGreyDivider()
+            const FediUltraLightGreyDivider(),
           ],
         ),
       ),
@@ -98,7 +99,7 @@ class StatusHeaderWidget extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: IFediUiTextTheme.of(context).smallShortDarkGrey,
           ),
-        )
+        ),
       ],
     );
   }

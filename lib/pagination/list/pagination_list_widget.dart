@@ -116,14 +116,18 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   }
 
   Widget buildPaginationListBody(
-      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) => AsyncInitLoadingWidget(
-      asyncInitLoadingBloc: paginationListBloc,
-      loadingFinishedBuilder: (BuildContext context) =>
-          buildPaginationInitializedBody(context, paginationListBloc),
-    );
+    IPaginationListBloc<PaginationPage<T>, T> paginationListBloc,
+  ) =>
+      AsyncInitLoadingWidget(
+        asyncInitLoadingBloc: paginationListBloc,
+        loadingFinishedBuilder: (BuildContext context) =>
+            buildPaginationInitializedBody(context, paginationListBloc),
+      );
 
-  Widget buildPaginationInitializedBody(BuildContext context,
-      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) {
+  Widget buildPaginationInitializedBody(
+    BuildContext context,
+    IPaginationListBloc<PaginationPage<T>, T> paginationListBloc,
+  ) {
     // Stream builder outside SmartRefresher because
     // SmartRefresher require ScrollView as child
     // If child is StreamBuilder SmartRefresher builds all items widget

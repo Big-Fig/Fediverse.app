@@ -48,8 +48,9 @@ class MediaAttachmentListCarouselBodyWidget extends StatelessWidget {
       return DisposableProxyProvider<IMediaAttachmentListBloc,
           IFediMediaCarouselBloc>(
         update: (context, listBloc, _) => FediMediaCarouselBloc(
-            items: listBloc.mediaAttachments,
-            currentIndex: listBloc.currentIndex),
+          items: listBloc.mediaAttachments,
+          currentIndex: listBloc.currentIndex,
+        ),
         child: const FediMediaCarouselWidget(
           builder: _carouselWidgetBuilder,
         ),

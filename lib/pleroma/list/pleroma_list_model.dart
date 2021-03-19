@@ -61,7 +61,8 @@ class PleromaList extends IPleromaList {
 
   static List<PleromaList> listFromJsonString(String str) =>
       List<PleromaList>.from(
-          json.decode(str).map((x) => PleromaList.fromJson(x)));
+        json.decode(str).map((x) => PleromaList.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaListToJson(this);
 

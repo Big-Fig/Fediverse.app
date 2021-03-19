@@ -23,15 +23,16 @@ class PollWidget extends StatelessWidget {
     return Padding(
       padding: FediPadding.horizontalBigPadding,
       child: StreamBuilder<IPleromaPoll?>(
-          initialData: pollBloc.poll,
-          stream: pollBloc.pollStream,
-          builder: (context, snapshot) {
-            var poll = snapshot.data;
-            return Provider<IPleromaPoll?>.value(
-              value: poll,
-              child: const _PollBodyWidget(),
-            );
-          }),
+        initialData: pollBloc.poll,
+        stream: pollBloc.pollStream,
+        builder: (context, snapshot) {
+          var poll = snapshot.data;
+          return Provider<IPleromaPoll?>.value(
+            value: poll,
+            child: const _PollBodyWidget(),
+          );
+        },
+      ),
     );
   }
 }
@@ -72,33 +73,35 @@ class _PollBodyVoteButtonBuilderWidget extends StatelessWidget {
     var pollBloc = IPollBloc.of(context);
 
     return StreamBuilder<bool>(
-        stream: pollBloc.isPossibleToVoteStream,
-        builder: (context, snapshot) {
-          var isPossibleToVote = snapshot.data ?? false;
+      stream: pollBloc.isPossibleToVoteStream,
+      builder: (context, snapshot) {
+        var isPossibleToVote = snapshot.data ?? false;
 
-          if (isPossibleToVote) {
-            return StreamBuilder<bool>(
-                stream: pollBloc.isVotedStream,
-                builder: (context, snapshot) {
-                  var isSelectedVotesNotEmpty = snapshot.data ?? false;
-                  return Padding(
-                    padding: FediPadding.allSmallPadding,
-                    child: AsyncOperationButtonBuilderWidget(
-                      builder: (context, onPressed) =>
-                          FediPrimaryFilledTextButtonWithBorder(
-                        S.of(context).app_poll_vote,
-                        expanded: false,
-                        limitMinWidth: true,
-                        onPressed: isSelectedVotesNotEmpty ? onPressed : null,
-                      ),
-                      asyncButtonAction: () => pollBloc.vote(),
-                    ),
-                  );
-                });
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+        if (isPossibleToVote) {
+          return StreamBuilder<bool>(
+            stream: pollBloc.isVotedStream,
+            builder: (context, snapshot) {
+              var isSelectedVotesNotEmpty = snapshot.data ?? false;
+              return Padding(
+                padding: FediPadding.allSmallPadding,
+                child: AsyncOperationButtonBuilderWidget(
+                  builder: (context, onPressed) =>
+                      FediPrimaryFilledTextButtonWithBorder(
+                    S.of(context).app_poll_vote,
+                    expanded: false,
+                    limitMinWidth: true,
+                    onPressed: isSelectedVotesNotEmpty ? onPressed : null,
+                  ),
+                  asyncButtonAction: () => pollBloc.vote(),
+                ),
+              );
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
@@ -148,7 +151,7 @@ class PollMetadataWidget extends StatelessWidget {
         const _PollMetadataDotSeparatorWidget(),
         const PollMetadataExpiresAtWidget(),
         if (poll.isPossibleToVote) const _PollMetadataDotSeparatorWidget(),
-        if (poll.isPossibleToVote) const PollMetadataShowHideResultsWidget()
+        if (poll.isPossibleToVote) const PollMetadataShowHideResultsWidget(),
       ],
     );
   }
@@ -188,26 +191,27 @@ class PollMetadataShowHideResultsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
     return StreamBuilder<bool>(
-        stream: pollBloc.isNeedShowResultsWithoutVoteStream,
-        initialData: pollBloc.isNeedShowResultsWithoutVote,
-        builder: (context, snapshot) {
-          var isNeedShowResultsWithoutVote = snapshot.data!;
-          return InkWell(
-            onTap: () {
-              if (isNeedShowResultsWithoutVote) {
-                pollBloc.hideResultsWithoutVote();
-              } else {
-                pollBloc.showResultsWithoutVote();
-              }
-            },
-            child: Text(
-              isNeedShowResultsWithoutVote
-                  ? S.of(context).app_poll_metadata_hideResults
-                  : S.of(context).app_poll_metadata_showResults,
-              style: IFediUiTextTheme.of(context).mediumShortPrimary,
-            ),
-          );
-        });
+      stream: pollBloc.isNeedShowResultsWithoutVoteStream,
+      initialData: pollBloc.isNeedShowResultsWithoutVote,
+      builder: (context, snapshot) {
+        var isNeedShowResultsWithoutVote = snapshot.data!;
+        return InkWell(
+          onTap: () {
+            if (isNeedShowResultsWithoutVote) {
+              pollBloc.hideResultsWithoutVote();
+            } else {
+              pollBloc.showResultsWithoutVote();
+            }
+          },
+          child: Text(
+            isNeedShowResultsWithoutVote
+                ? S.of(context).app_poll_metadata_hideResults
+                : S.of(context).app_poll_metadata_showResults,
+            style: IFediUiTextTheme.of(context).mediumShortPrimary,
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -294,11 +298,12 @@ class _PollOptionBodyWidget extends StatelessWidget {
         borderRadius: borderRadius,
         color: backgroundColor,
         border: Border.all(
-            color: poll.isPossibleToVote
-                ? IFediUiColorTheme.of(context).primaryDark
-                : isOwnVote
-                    ? IFediUiColorTheme.of(context).primaryDark
-                    : IFediUiColorTheme.of(context).ultraLightGrey),
+          color: poll.isPossibleToVote
+              ? IFediUiColorTheme.of(context).primaryDark
+              : isOwnVote
+                  ? IFediUiColorTheme.of(context).primaryDark
+                  : IFediUiColorTheme.of(context).ultraLightGrey,
+        ),
       ),
       child: Stack(
         alignment: Alignment.centerLeft,
@@ -379,56 +384,58 @@ class _PollOptionSelectionWidget extends StatelessWidget {
     var poll = Provider.of<IPleromaPoll>(context);
     var pollOption = Provider.of<IPleromaPollOption>(context);
     return StreamBuilder<bool>(
-        stream: pollBloc.isPossibleToVoteStream,
-        initialData: pollBloc.isPossibleToVote,
-        builder: (context, snapshot) {
-          var isPossibleToVote = snapshot.data!;
-          if (isPossibleToVote) {
-            return StreamBuilder<List<IPleromaPollOption>?>(
-                stream: pollBloc.selectedVotesStream,
-                initialData: pollBloc.selectedVotes,
-                builder: (context, snapshot) {
-                  var selectedVotes = snapshot.data!;
-                  var multiple = poll.multiple;
+      stream: pollBloc.isPossibleToVoteStream,
+      initialData: pollBloc.isPossibleToVote,
+      builder: (context, snapshot) {
+        var isPossibleToVote = snapshot.data!;
+        if (isPossibleToVote) {
+          return StreamBuilder<List<IPleromaPollOption>?>(
+            stream: pollBloc.selectedVotesStream,
+            initialData: pollBloc.selectedVotes,
+            builder: (context, snapshot) {
+              var selectedVotes = snapshot.data!;
+              var multiple = poll.multiple;
 
-                  var isSelected = selectedVotes.contains(pollOption);
-                  var borderColor = isSelected
-                      ? IFediUiColorTheme.of(context).primary
-                      : IFediUiColorTheme.of(context).grey;
-                  var backgroundColor = isSelected
-                      ? IFediUiColorTheme.of(context).primary
-                      : IFediUiColorTheme.of(context).white;
-                  var size = 28.0;
-                  return Padding(
-                    padding: const EdgeInsets.only(left: FediSizes.bigPadding),
-                    child: Container(
-                      width: size,
-                      height: size,
-                      decoration: BoxDecoration(
-                        color: backgroundColor,
-                        border: Border.all(
-                          color: borderColor,
-                        ),
-                        borderRadius: multiple
-                            ? borderRadius
-                            : BorderRadius.circular(size / 2),
-                      ),
-                      child: isSelected
-                          ? Center(
-                              child: Icon(
-                                FediIcons.check,
-                                color: IFediUiColorTheme.of(context).white,
-                                size: 16.0,
-                              ),
-                            )
-                          : const SizedBox.shrink(),
+              var isSelected = selectedVotes.contains(pollOption);
+              var borderColor = isSelected
+                  ? IFediUiColorTheme.of(context).primary
+                  : IFediUiColorTheme.of(context).grey;
+              var backgroundColor = isSelected
+                  ? IFediUiColorTheme.of(context).primary
+                  : IFediUiColorTheme.of(context).white;
+              var size = 28.0;
+              return Padding(
+                padding: const EdgeInsets.only(left: FediSizes.bigPadding),
+                child: Container(
+                  width: size,
+                  height: size,
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    border: Border.all(
+                      color: borderColor,
                     ),
-                  );
-                });
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+                    borderRadius: multiple
+                        ? borderRadius
+                        : BorderRadius.circular(size / 2),
+                  ),
+                  child: isSelected
+                      ? Center(
+                          child: Icon(
+                            FediIcons.check,
+                            color: IFediUiColorTheme.of(context).white,
+                            size: 16.0,
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ),
+              );
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 

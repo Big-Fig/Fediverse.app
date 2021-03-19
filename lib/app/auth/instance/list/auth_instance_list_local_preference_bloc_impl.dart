@@ -7,8 +7,8 @@ class AuthInstanceListLocalPreferenceBloc
     extends ObjectLocalPreferenceBloc<AuthInstanceList?>
     implements IAuthInstanceListLocalPreferenceBloc {
   AuthInstanceListLocalPreferenceBloc(
-      ILocalPreferencesService preferencesService)
-      : super(
+    ILocalPreferencesService preferencesService,
+  ) : super(
           preferencesService,
           "instance.list",
           1,

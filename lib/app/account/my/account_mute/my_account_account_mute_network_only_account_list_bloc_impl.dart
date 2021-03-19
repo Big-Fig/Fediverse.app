@@ -95,7 +95,8 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
   IPleromaApi get pleromaApi => pleromaMyAccountService;
 
   static MyAccountAccountMuteNetworkOnlyAccountListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       MyAccountAccountMuteNetworkOnlyAccountListBloc(
         pleromaMyAccountService: IPleromaMyAccountService.of(
           context,

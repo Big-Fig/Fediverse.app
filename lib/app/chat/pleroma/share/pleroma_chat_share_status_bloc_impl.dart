@@ -96,7 +96,9 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
   }
 
   static PleromaChatShareStatusBloc createFromContext(
-          BuildContext context, IStatus status) =>
+    BuildContext context,
+    IStatus status,
+  ) =>
       PleromaChatShareStatusBloc(
         status: status,
         chatRepository: IPleromaChatRepository.of(

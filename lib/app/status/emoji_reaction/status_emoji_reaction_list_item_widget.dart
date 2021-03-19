@@ -15,20 +15,21 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusEmojiReactionBloc = IStatusEmojiReactionBloc.of(context);
     return StreamBuilder<IPleromaStatusEmojiReaction>(
-        stream: statusEmojiReactionBloc.emojiReactionStream,
-        builder: (context, snapshot) {
-          var emojiReaction = snapshot.data;
+      stream: statusEmojiReactionBloc.emojiReactionStream,
+      builder: (context, snapshot) {
+        var emojiReaction = snapshot.data;
 
-          if (emojiReaction == null) {
-            // may occurs when user delete own reaction when new count is 0
-            return const SizedBox.shrink();
-          }
+        if (emojiReaction == null) {
+          // may occurs when user delete own reaction when new count is 0
+          return const SizedBox.shrink();
+        }
 
-          return Provider.value(
-            value: emojiReaction,
-            child: const _StatusEmojiReactionListItemBodyWidget(),
-          );
-        });
+        return Provider.value(
+          value: emojiReaction,
+          child: const _StatusEmojiReactionListItemBodyWidget(),
+        );
+      },
+    );
   }
 
   const StatusEmojiReactionListItemWidget();

@@ -22,8 +22,10 @@ class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
             IDraftStatusRepository.of(context, listen: false),
       );
 
-  static Widget provideToContext(BuildContext context,
-      {required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) {
     return DisposableProvider<IDraftStatusLocalOnlyListBloc>(
       create: (context) =>
           DraftStatusLocalOnlyListBloc.createFromContext(context),

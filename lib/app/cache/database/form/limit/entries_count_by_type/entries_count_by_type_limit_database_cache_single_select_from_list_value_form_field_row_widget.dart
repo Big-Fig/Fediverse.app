@@ -17,8 +17,10 @@ class EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldRowWidget
               .app_cache_database_settings_limitEntriesCountByType_label,
           descriptionOnDisabled: null,
           valueIconMapper: null,
-          valueTitleMapper: (BuildContext context,
-              DatabaseCacheEntriesCountByTypeLimitType? value) {
+          valueTitleMapper: (
+            BuildContext context,
+            DatabaseCacheEntriesCountByTypeLimitType? value,
+          ) {
             if (value == null) {
               return S
                   .of(context)
@@ -46,7 +48,6 @@ class EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldRowWidget
                 return S
                     .of(context)
                     .app_cache_database_settings_limitEntriesCountByType_value_limit100000;
-
             }
           },
           description: null,

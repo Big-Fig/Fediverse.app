@@ -5,7 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class IDatabaseCacheSettingsLocalPreferencesBloc
     implements ILocalPreferenceBloc<DatabaseCacheSettings?> {
-  static IDatabaseCacheSettingsLocalPreferencesBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IDatabaseCacheSettingsLocalPreferencesBloc>(context, listen: listen);
+  static IDatabaseCacheSettingsLocalPreferencesBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IDatabaseCacheSettingsLocalPreferencesBloc>(
+        context,
+        listen: listen,
+      );
 }

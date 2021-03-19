@@ -68,8 +68,10 @@ void main() {
     await filterRepository.upsertAll([dbFilter2]);
     expect((await filterRepository.getAll()).length, 1);
 
-    expectDbFilterPopulated((await filterRepository.getAll()).first,
-        await createTestFilterPopulated(dbFilter2));
+    expectDbFilterPopulated(
+      (await filterRepository.getAll()).first,
+      await createTestFilterPopulated(dbFilter2),
+    );
   });
 
   test('updateById', () async {
@@ -94,9 +96,10 @@ void main() {
     assert(id > 0, true);
 
     var oldLocalFilter = DbFilterPopulatedWrapper(
-        dbFilterPopulated: DbFilterPopulated(
-      dbFilter: dbFilter.copyWith(id: id),
-    ));
+      dbFilterPopulated: DbFilterPopulated(
+        dbFilter: dbFilter.copyWith(id: id),
+      ),
+    );
     var newRemoteFilter = DbFilterPopulatedWrapper(
       dbFilterPopulated: DbFilterPopulated(
         dbFilter: dbFilter.copyWith(id: id, phrase: "phrase3"),
@@ -210,35 +213,38 @@ void main() {
     );
 
     await insertDbFilter(
-        filterRepository,
-        (await createTestDbFilter(seed: "seed1")).copyWith(
-          context: [],
-        ));
+      filterRepository,
+      (await createTestDbFilter(seed: "seed1")).copyWith(
+        context: [],
+      ),
+    );
 
     expect((await query.get()).length, 0);
 
     await insertDbFilter(
-        filterRepository,
-        (await createTestDbFilter(seed: "seed2"))
-            .copyWith(context: ["home", "notifications"]));
+      filterRepository,
+      (await createTestDbFilter(seed: "seed2"))
+          .copyWith(context: ["home", "notifications"]),
+    );
     expect((await query.get()).length, 1);
 
     await insertDbFilter(
-        filterRepository,
-        (await createTestDbFilter(seed: "seed3"))
-            .copyWith(context: ["public"]));
+      filterRepository,
+      (await createTestDbFilter(seed: "seed3")).copyWith(context: ["public"]),
+    );
     expect((await query.get()).length, 1);
 
     await insertDbFilter(
-        filterRepository,
-        (await createTestDbFilter(seed: "seed4"))
-            .copyWith(context: ["public", "home", "unknown"]));
+      filterRepository,
+      (await createTestDbFilter(seed: "seed4"))
+          .copyWith(context: ["public", "home", "unknown"]),
+    );
     expect((await query.get()).length, 2);
 
     await insertDbFilter(
-        filterRepository,
-        (await createTestDbFilter(seed: "seed5"))
-            .copyWith(context: ["unknown"]));
+      filterRepository,
+      (await createTestDbFilter(seed: "seed5")).copyWith(context: ["unknown"]),
+    );
     expect((await query.get()).length, 2);
   });
 
@@ -255,35 +261,38 @@ void main() {
     );
 
     await insertDbFilter(
-        filterRepository,
-        (await createTestDbFilter(seed: "seed1")).copyWith(
-          context: [],
-        ));
+      filterRepository,
+      (await createTestDbFilter(seed: "seed1")).copyWith(
+        context: [],
+      ),
+    );
 
     expect((await query.get()).length, 0);
 
     await insertDbFilter(
-        filterRepository,
-        (await createTestDbFilter(seed: "seed2"))
-            .copyWith(context: ["home", "notifications"]));
+      filterRepository,
+      (await createTestDbFilter(seed: "seed2"))
+          .copyWith(context: ["home", "notifications"]),
+    );
     expect((await query.get()).length, 1);
 
     await insertDbFilter(
-        filterRepository,
-        (await createTestDbFilter(seed: "seed3"))
-            .copyWith(context: ["public"]));
+      filterRepository,
+      (await createTestDbFilter(seed: "seed3")).copyWith(context: ["public"]),
+    );
     expect((await query.get()).length, 2);
 
     await insertDbFilter(
-        filterRepository,
-        (await createTestDbFilter(seed: "seed4"))
-            .copyWith(context: ["public", "home", "unknown"]));
+      filterRepository,
+      (await createTestDbFilter(seed: "seed4"))
+          .copyWith(context: ["public", "home", "unknown"]),
+    );
     expect((await query.get()).length, 3);
 
     await insertDbFilter(
-        filterRepository,
-        (await createTestDbFilter(seed: "seed5"))
-            .copyWith(context: ["unknown"]));
+      filterRepository,
+      (await createTestDbFilter(seed: "seed5")).copyWith(context: ["unknown"]),
+    );
     expect((await query.get()).length, 3);
   });
 
@@ -609,17 +618,17 @@ void main() {
     );
 
     var filter2 = await insertDbFilter(
-        filterRepository,
-        (await createTestDbFilter(seed: "seed2"))
-            .copyWith(remoteId: "remoteId2"));
+      filterRepository,
+      (await createTestDbFilter(seed: "seed2")).copyWith(remoteId: "remoteId2"),
+    );
     await insertDbFilter(
-        filterRepository,
-        (await createTestDbFilter(seed: "seed1"))
-            .copyWith(remoteId: "remoteId1"));
+      filterRepository,
+      (await createTestDbFilter(seed: "seed1")).copyWith(remoteId: "remoteId1"),
+    );
     await insertDbFilter(
-        filterRepository,
-        (await createTestDbFilter(seed: "seed3"))
-            .copyWith(remoteId: "remoteId3"));
+      filterRepository,
+      (await createTestDbFilter(seed: "seed3")).copyWith(remoteId: "remoteId3"),
+    );
 
     List<DbFilterPopulated> actualList =
         (await query.map(filterRepository.dao.typedResultToPopulated).get());

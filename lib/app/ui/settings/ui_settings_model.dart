@@ -35,7 +35,8 @@ class UiSettings implements IJsonObject, ISettings<UiSettings> {
 
   static List<UiSettings> listFromJsonString(String str) =>
       List<UiSettings>.from(
-          json.decode(str).map((x) => UiSettings.fromJson(x)));
+        json.decode(str).map((x) => UiSettings.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$UiSettingsToJson(this);

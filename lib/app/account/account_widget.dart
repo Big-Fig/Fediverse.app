@@ -37,12 +37,13 @@ class AccountWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
                 child: AccountInfoWidget(
-                    onStatusesTapCallback: onStatusesTapCallback),
+                  onStatusesTapCallback: onStatusesTapCallback,
+                ),
               ),
               const AccountActionListWidget(),
               const _AccountNoteWidget(),
               const _AccountFieldListWidget(),
-              footer
+              footer,
             ],
           ),
         ),

@@ -154,7 +154,8 @@ class PleromaScheduledStatus extends IPleromaScheduledStatus {
 
   static List<PleromaScheduledStatus> listFromJsonString(String str) =>
       List<PleromaScheduledStatus>.from(
-          json.decode(str).map((x) => PleromaScheduledStatus.fromJson(x)));
+        json.decode(str).map((x) => PleromaScheduledStatus.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaScheduledStatusToJson(this);
 
@@ -429,7 +430,8 @@ class PleromaStatus extends IPleromaStatus {
 
   static List<PleromaStatus> listFromJsonString(String str) =>
       List<PleromaStatus>.from(
-          json.decode(str).map((x) => PleromaStatus.fromJson(x)));
+        json.decode(str).map((x) => PleromaStatus.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PleromaStatusToJson(this);
 
@@ -810,7 +812,8 @@ extension IPleromaStatusEmojiReactionListExtension
       );
 
   List<IPleromaStatusEmojiReaction> mergeEmojiReactionsLists(
-      List<IPleromaStatusEmojiReaction>? emojiReactionsListToMerge) {
+    List<IPleromaStatusEmojiReaction>? emojiReactionsListToMerge,
+  ) {
     if (emojiReactionsListToMerge?.isNotEmpty != true) {
       return this;
     }
@@ -827,13 +830,14 @@ extension IPleromaStatusEmojiReactionListExtension
       if (alreadyExistEmojiReaction != null) {
         mergedList.remove(alreadyExistEmojiReaction);
         var mergedEmojiReaction = PleromaStatusEmojiReaction(
-            name: alreadyExistEmojiReaction.name,
-            me: alreadyExistEmojiReaction.me || emojiReaction.me,
-            count: alreadyExistEmojiReaction.count + emojiReaction.count,
-            accounts: [
-              ...alreadyExistEmojiReaction.accounts?.toPleromaAccounts() ?? [],
-              ...emojiReaction.accounts?.toPleromaAccounts() ?? [],
-            ]);
+          name: alreadyExistEmojiReaction.name,
+          me: alreadyExistEmojiReaction.me || emojiReaction.me,
+          count: alreadyExistEmojiReaction.count + emojiReaction.count,
+          accounts: [
+            ...alreadyExistEmojiReaction.accounts?.toPleromaAccounts() ?? [],
+            ...emojiReaction.accounts?.toPleromaAccounts() ?? [],
+          ],
+        );
         mergedList.add(mergedEmojiReaction);
       } else {
         mergedList.add(emojiReaction);
@@ -915,7 +919,8 @@ class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
 
   static List<PleromaStatusEmojiReaction> listFromJsonString(String str) =>
       List<PleromaStatusEmojiReaction>.from(
-          json.decode(str).map((x) => PleromaStatusEmojiReaction.fromJson(x)));
+        json.decode(str).map((x) => PleromaStatusEmojiReaction.fromJson(x)),
+      );
 
   factory PleromaStatusEmojiReaction.fromJsonString(String jsonString) =>
       _$PleromaStatusEmojiReactionFromJson(jsonDecode(jsonString));

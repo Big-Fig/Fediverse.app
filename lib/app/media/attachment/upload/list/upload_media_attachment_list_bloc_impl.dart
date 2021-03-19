@@ -78,9 +78,10 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       mediaAttachmentBlocs?.where((bloc) => bloc.isMedia).toList();
 
   @override
-  Stream<List<IUploadMediaAttachmentBloc>?> get onlyMediaAttachmentBlocsStream =>
-      mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
-          mediaAttachmentBlocs?.where((bloc) => bloc.isMedia).toList());
+  Stream<List<IUploadMediaAttachmentBloc>?>
+      get onlyMediaAttachmentBlocsStream =>
+          mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
+              mediaAttachmentBlocs?.where((bloc) => bloc.isMedia).toList());
 
   @override
   List<IUploadMediaAttachmentBloc>? get onlyNonMediaAttachmentBlocs =>
@@ -157,23 +158,24 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   @override
   Future attachMedias(List<IMediaDeviceFile>? mediaDeviceFiles) async {
-    var futures =
-        mediaDeviceFiles!.map((mediaDeviceFile) => attachMedia(mediaDeviceFile));
+    var futures = mediaDeviceFiles!
+        .map((mediaDeviceFile) => attachMedia(mediaDeviceFile));
 
     await Future.wait(futures);
   }
 
   @override
   void detachMediaAttachmentBloc(
-      IUploadMediaAttachmentBloc mediaAttachmentBloc) {
-      mediaAttachmentBloc.dispose();
-      mediaAttachmentBlocs!.remove(mediaAttachmentBloc);
-      mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
-
+    IUploadMediaAttachmentBloc mediaAttachmentBloc,
+  ) {
+    mediaAttachmentBloc.dispose();
+    mediaAttachmentBlocs!.remove(mediaAttachmentBloc);
+    mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
   }
 
   IUploadMediaAttachmentBloc? findMediaAttachmentBlocByFilePickerFile(
-          IMediaDeviceFile mediaDeviceFile) =>
+    IMediaDeviceFile mediaDeviceFile,
+  ) =>
       mediaAttachmentBlocs!.firstWhereOrNull((bloc) {
         if (bloc is UploadMediaAttachmentBlocDevice) {
           return bloc.mediaDeviceFile == mediaDeviceFile;
@@ -223,11 +225,11 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   void _recalculateIsAllAttachedMediaUploaded() {
     var allUploaded = mediaAttachmentBlocs!.fold(
-        true,
-        (dynamic previousValue, element) =>
-            previousValue &&
-            element.uploadState!.type ==
-                UploadMediaAttachmentStateType.uploaded);
+      true,
+      (dynamic previousValue, element) =>
+          previousValue &&
+          element.uploadState!.type == UploadMediaAttachmentStateType.uploaded,
+    );
 
     isAllAttachedMediaUploadedSubject.add(allUploaded);
   }

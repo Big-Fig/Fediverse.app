@@ -59,7 +59,7 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
               ),
             );
           },
-        )
+        ),
       ],
     );
   }
@@ -75,18 +75,19 @@ class _CreateItemTimelinesHomeTabStorageSettingsWidget extends StatelessWidget {
     var createTimelineBloc = ICreateTimelineBloc.of(context);
 
     return StreamBuilder<IEditTimelineSettingsBloc>(
-        stream: createTimelineBloc.editTimelineSettingsBlocStream,
-        builder: (context, snapshot) {
-          var editBloc = snapshot.data;
-          if (editBloc == null) {
-            return const SizedBox.shrink();
-          }
-          return Provider<IEditTimelineSettingsBloc>.value(
-            value: editBloc,
-            child: const EditTimelineSettingsWidget(
-              shrinkWrap: false,
-            ),
-          );
-        });
+      stream: createTimelineBloc.editTimelineSettingsBlocStream,
+      builder: (context, snapshot) {
+        var editBloc = snapshot.data;
+        if (editBloc == null) {
+          return const SizedBox.shrink();
+        }
+        return Provider<IEditTimelineSettingsBloc>.value(
+          value: editBloc,
+          child: const EditTimelineSettingsWidget(
+            shrinkWrap: false,
+          ),
+        );
+      },
+    );
   }
 }

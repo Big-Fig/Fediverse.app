@@ -29,7 +29,7 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings?>
     required this.uiSettingBloc,
     required bool isEnabled,
     required this.availableThemes,
-  })  : fediThemeFieldBloc = FediUiThemeSingleFromListValueFormFieldBloc(
+  })   : fediThemeFieldBloc = FediUiThemeSingleFromListValueFormFieldBloc(
           originValue: _findThemeById(availableThemes, uiSettingBloc.themeId),
           possibleValues: availableThemes,
         ),
@@ -67,7 +67,9 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings?>
 }
 
 IFediUiTheme? _findThemeById(
-    List<IFediUiTheme> availableThemes, String? themeId) {
+  List<IFediUiTheme> availableThemes,
+  String? themeId,
+) {
   if (themeId == null) {
     return null;
   }

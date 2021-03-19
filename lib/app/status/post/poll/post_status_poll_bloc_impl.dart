@@ -76,7 +76,8 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   final IOneTypeFormGroupBloc<IStringValueFormFieldBloc> pollOptionsGroupBloc;
 
   static List<IStringValueFormFieldBloc> createDefaultPollOptions(
-      int? maximumOptionLength) {
+    int? maximumOptionLength,
+  ) {
     return <IStringValueFormFieldBloc>[
       createPollOptionBloc(maximumOptionLength),
       createPollOptionBloc(maximumOptionLength),
@@ -84,7 +85,8 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   }
 
   static StringValueFormFieldBloc createPollOptionBloc(
-          int? maximumOptionLength) =>
+    int? maximumOptionLength,
+  ) =>
       createPollOptionFieldBloc(null, maximumOptionLength);
 
   static StringValueFormFieldBloc createPollOptionFieldBloc(

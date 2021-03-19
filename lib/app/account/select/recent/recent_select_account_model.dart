@@ -16,6 +16,7 @@ part 'recent_select_account_model.g.dart';
 class RecentSelectAccountList implements IJsonObject {
   @HiveField(0)
   final List<PleromaAccount>? recentItems;
+
   RecentSelectAccountList({this.recentItems});
 
   @override
@@ -29,9 +30,9 @@ class RecentSelectAccountList implements IJsonObject {
       other is RecentSelectAccountList &&
           runtimeType == other.runtimeType &&
           recentItems == other.recentItems;
+
   @override
   int get hashCode => recentItems.hashCode;
-
 
   factory RecentSelectAccountList.fromJson(Map<String, dynamic> json) =>
       _$RecentSelectAccountListFromJson(json);
@@ -41,7 +42,8 @@ class RecentSelectAccountList implements IJsonObject {
 
   static List<RecentSelectAccountList> listFromJsonString(String str) =>
       List<RecentSelectAccountList>.from(
-          json.decode(str).map((x) => RecentSelectAccountList.fromJson(x)));
+        json.decode(str).map((x) => RecentSelectAccountList.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$RecentSelectAccountListToJson(this);

@@ -216,7 +216,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: fcmPushPermissionAskedLocalPreferencesBloc);
     await globalProviderService
         .asyncInitAndRegister<IFcmPushPermissionAskedLocalPreferencesBloc>(
-            fcmPushPermissionAskedLocalPreferencesBloc);
+      fcmPushPermissionAskedLocalPreferencesBloc,
+    );
 
     var recentSearchLocalPreferenceBloc = RecentSearchLocalPreferenceBloc(
       preferencesService,
@@ -241,8 +242,9 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IAccountRepository>(accountRepository);
 
     var statusRepository = StatusRepository(
-        appDatabase: moorDatabaseService.appDatabase,
-        accountRepository: accountRepository);
+      appDatabase: moorDatabaseService.appDatabase,
+      accountRepository: accountRepository,
+    );
     addDisposable(disposable: statusRepository);
     await globalProviderService
         .asyncInitAndRegister<IStatusRepository>(statusRepository);
@@ -260,33 +262,37 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IDraftStatusRepository>(draftStatusRepository);
 
     var conversationRepository = ConversationChatRepository(
-        appDatabase: moorDatabaseService.appDatabase,
-        accountRepository: accountRepository,
-        statusRepository: statusRepository);
+      appDatabase: moorDatabaseService.appDatabase,
+      accountRepository: accountRepository,
+      statusRepository: statusRepository,
+    );
     addDisposable(disposable: conversationRepository);
     await globalProviderService.asyncInitAndRegister<
         IConversationChatRepository>(conversationRepository);
 
     var chatMessageRepository = PleromaChatMessageRepository(
-        appDatabase: moorDatabaseService.appDatabase,
-        accountRepository: accountRepository);
+      appDatabase: moorDatabaseService.appDatabase,
+      accountRepository: accountRepository,
+    );
     addDisposable(disposable: chatMessageRepository);
     await globalProviderService.asyncInitAndRegister<
         IPleromaChatMessageRepository>(chatMessageRepository);
 
     var chatRepository = PleromaChatRepository(
-        appDatabase: moorDatabaseService.appDatabase,
-        accountRepository: accountRepository,
-        chatMessageRepository: chatMessageRepository);
+      appDatabase: moorDatabaseService.appDatabase,
+      accountRepository: accountRepository,
+      chatMessageRepository: chatMessageRepository,
+    );
     addDisposable(disposable: chatRepository);
     await globalProviderService
         .asyncInitAndRegister<IPleromaChatRepository>(chatRepository);
 
     var notificationRepository = NotificationRepository(
-        appDatabase: moorDatabaseService.appDatabase,
-        accountRepository: accountRepository,
-        statusRepository: statusRepository,
-        chatMessageRepository: chatMessageRepository);
+      appDatabase: moorDatabaseService.appDatabase,
+      accountRepository: accountRepository,
+      statusRepository: statusRepository,
+      chatMessageRepository: chatMessageRepository,
+    );
     addDisposable(disposable: notificationRepository);
     await globalProviderService
         .asyncInitAndRegister<INotificationRepository>(notificationRepository);
@@ -299,7 +305,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: pleromaChatWithLastMessageRepository);
     await globalProviderService
         .asyncInitAndRegister<IPleromaChatWithLastMessageRepository>(
-            pleromaChatWithLastMessageRepository);
+      pleromaChatWithLastMessageRepository,
+    );
 
     var conversationChatWithLastMessageRepository =
         ConversationChatWithLastMessageRepository(
@@ -309,7 +316,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: conversationChatWithLastMessageRepository);
     await globalProviderService
         .asyncInitAndRegister<IConversationChatWithLastMessageRepository>(
-            conversationChatWithLastMessageRepository);
+      conversationChatWithLastMessageRepository,
+    );
 
     var restService = RestService(baseUri: currentInstance.uri);
     addDisposable(disposable: restService);
@@ -360,7 +368,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var pleromaMyAccountService =
         PleromaMyAccountService(restService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<IPleromaMyAccountService>(
-        pleromaMyAccountService);
+      pleromaMyAccountService,
+    );
     addDisposable(disposable: pleromaMyAccountService);
     var pleromaAccountPublicService =
         PleromaAccountPublicService(restService: pleromaAuthRestService);
@@ -442,11 +451,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: pleromaEmojiService);
 
     var pleromaPushService = PleromaPushService(
-        keys: PleromaPushSubscriptionKeys(
-            p256dh:
-                "BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8quUowlrPyfXlMa6tABLqqcSpOpMnC1-o_UB_s4R8NQsqMLbASjnqSbqw=",
-            auth: "T5bhIIyre5TDC1LyX4mFAQ=="),
-        restService: pleromaAuthRestService);
+      keys: PleromaPushSubscriptionKeys(
+        p256dh:
+            "BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8quUowlrPyfXlMa6tABLqqcSpOpMnC1-o_UB_s4R8NQsqMLbASjnqSbqw=",
+        auth: "T5bhIIyre5TDC1LyX4mFAQ==",
+      ),
+      restService: pleromaAuthRestService,
+    );
     await globalProviderService
         .asyncInitAndRegister<IPleromaPushService>(pleromaPushService);
     addDisposable(disposable: pleromaPushService);
@@ -465,10 +476,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       userAtHost: userAtHost,
     );
     addDisposable(
-        disposable: emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc);
+      disposable: emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc,
+    );
     await globalProviderService.asyncInitAndRegister<
-            IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc>(
-        emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc);
+        IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc>(
+      emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc,
+    );
 
     var customEmojiPickerRecentCategoryLocalPreferenceBloc =
         EmojiPickerRecentCategoryLocalPreferenceBloc(
@@ -476,10 +489,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       userAtHost: userAtHost,
     );
     addDisposable(
-        disposable: customEmojiPickerRecentCategoryLocalPreferenceBloc);
+      disposable: customEmojiPickerRecentCategoryLocalPreferenceBloc,
+    );
     await globalProviderService
         .asyncInitAndRegister<IEmojiPickerRecentCategoryLocalPreferenceBloc>(
-            customEmojiPickerRecentCategoryLocalPreferenceBloc);
+      customEmojiPickerRecentCategoryLocalPreferenceBloc,
+    );
 
     var timelinesHomeTabStorageLocalPreferencesBloc =
         TimelinesHomeTabStorageLocalPreferencesBloc(
@@ -489,7 +504,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: timelinesHomeTabStorageLocalPreferencesBloc);
     await globalProviderService
         .asyncInitAndRegister<ITimelinesHomeTabStorageLocalPreferencesBloc>(
-            timelinesHomeTabStorageLocalPreferencesBloc);
+      timelinesHomeTabStorageLocalPreferencesBloc,
+    );
 
     var instancePushSettingsLocalPreferenceBloc =
         InstancePushSettingsLocalPreferencesBloc(
@@ -499,13 +515,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: instancePushSettingsLocalPreferenceBloc);
     await globalProviderService
         .asyncInitAndRegister<IPushSettingsLocalPreferencesBloc>(
-            instancePushSettingsLocalPreferenceBloc);
+      instancePushSettingsLocalPreferenceBloc,
+    );
 
     var myAccountBloc = MyAccountBloc(
-        pleromaMyAccountService: pleromaMyAccountService,
-        myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
-        accountRepository: accountRepository,
-        instance: currentInstance);
+      pleromaMyAccountService: pleromaMyAccountService,
+      myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
+      accountRepository: accountRepository,
+      instance: currentInstance,
+    );
 
     addDisposable(disposable: myAccountBloc);
     await globalProviderService
@@ -537,22 +555,25 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: currentConversationChatBloc);
 
     var chatNewMessagesHandlerBloc = PleromaChatNewMessagesHandlerBloc(
-        chatRepository: chatRepository,
-        currentChatBloc: currentPleromaChatBloc,
-        pleromaChatService: pleromaChatService);
+      chatRepository: chatRepository,
+      currentChatBloc: currentPleromaChatBloc,
+      pleromaChatService: pleromaChatService,
+    );
 
     await globalProviderService.asyncInitAndRegister<
         IPleromaChatNewMessagesHandlerBloc>(chatNewMessagesHandlerBloc);
     addDisposable(disposable: chatNewMessagesHandlerBloc);
     var conversationChatNewMessagesHandlerBloc =
         ConversationChatNewMessagesHandlerBloc(
-            conversationRepository: conversationRepository,
-            currentChatBloc: currentConversationChatBloc,
-            conversationChatService: pleromaConversationService);
+      conversationRepository: conversationRepository,
+      currentChatBloc: currentConversationChatBloc,
+      conversationChatService: pleromaConversationService,
+    );
 
     await globalProviderService
         .asyncInitAndRegister<IConversationChatNewMessagesHandlerBloc>(
-            conversationChatNewMessagesHandlerBloc);
+      conversationChatNewMessagesHandlerBloc,
+    );
     addDisposable(disposable: conversationChatNewMessagesHandlerBloc);
 
     var notificationPushLoaderBloc = NotificationPushLoaderBloc(
@@ -646,7 +667,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     await globalProviderService
         .asyncInitAndRegister<IInstanceChatSettingsLocalPreferencesBloc>(
-            instanceChatSettingsLocalPreferencesBloc);
+      instanceChatSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: instanceChatSettingsLocalPreferencesBloc);
 
     var instanceMediaSettingsLocalPreferencesBloc =
@@ -656,7 +678,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     );
     await globalProviderService
         .asyncInitAndRegister<IInstanceMediaSettingsLocalPreferencesBloc>(
-            instanceMediaSettingsLocalPreferencesBloc);
+      instanceMediaSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: instanceMediaSettingsLocalPreferencesBloc);
 
     var instanceToastSettingsLocalPreferencesBloc =
@@ -667,7 +690,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     await globalProviderService
         .asyncInitAndRegister<IInstanceToastSettingsLocalPreferencesBloc>(
-            instanceToastSettingsLocalPreferencesBloc);
+      instanceToastSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: instanceToastSettingsLocalPreferencesBloc);
 
     var instancePostStatusSettingsLocalPreferencesBloc =
@@ -678,7 +702,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     await globalProviderService
         .asyncInitAndRegister<IInstancePostStatusSettingsLocalPreferencesBloc>(
-            instancePostStatusSettingsLocalPreferencesBloc);
+      instancePostStatusSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: instancePostStatusSettingsLocalPreferencesBloc);
 
     var instanceStatusSensitiveSettingsLocalPreferencesBloc =
@@ -688,10 +713,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     );
 
     await globalProviderService.asyncInitAndRegister<
-            IInstanceStatusSensitiveSettingsLocalPreferencesBloc>(
-        instanceStatusSensitiveSettingsLocalPreferencesBloc);
+        IInstanceStatusSensitiveSettingsLocalPreferencesBloc>(
+      instanceStatusSensitiveSettingsLocalPreferencesBloc,
+    );
     addDisposable(
-        disposable: instanceStatusSensitiveSettingsLocalPreferencesBloc);
+      disposable: instanceStatusSensitiveSettingsLocalPreferencesBloc,
+    );
 
     var instanceWebSocketsSettingsLocalPreferencesBloc =
         InstanceWebSocketsSettingsLocalPreferencesBloc(
@@ -701,7 +728,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     await globalProviderService
         .asyncInitAndRegister<IInstanceWebSocketsSettingsLocalPreferencesBloc>(
-            instanceWebSocketsSettingsLocalPreferencesBloc);
+      instanceWebSocketsSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: instanceWebSocketsSettingsLocalPreferencesBloc);
 
     var instancePaginationSettingsLocalPreferencesBloc =
@@ -712,7 +740,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     await globalProviderService
         .asyncInitAndRegister<IInstancePaginationSettingsLocalPreferencesBloc>(
-            instancePaginationSettingsLocalPreferencesBloc);
+      instancePaginationSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: instancePaginationSettingsLocalPreferencesBloc);
 
     var instanceFilesCacheSettingsLocalPreferencesBloc =
@@ -723,7 +752,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     await globalProviderService
         .asyncInitAndRegister<IInstanceFilesCacheSettingsLocalPreferencesBloc>(
-            instanceFilesCacheSettingsLocalPreferencesBloc);
+      instanceFilesCacheSettingsLocalPreferencesBloc,
+    );
     addDisposable(disposable: instanceFilesCacheSettingsLocalPreferencesBloc);
 
     var instanceDatabaseCacheSettingsLocalPreferencesBloc =
@@ -733,10 +763,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     );
 
     await globalProviderService.asyncInitAndRegister<
-            IInstanceDatabaseCacheSettingsLocalPreferencesBloc>(
-        instanceDatabaseCacheSettingsLocalPreferencesBloc);
+        IInstanceDatabaseCacheSettingsLocalPreferencesBloc>(
+      instanceDatabaseCacheSettingsLocalPreferencesBloc,
+    );
     addDisposable(
-        disposable: instanceDatabaseCacheSettingsLocalPreferencesBloc);
+      disposable: instanceDatabaseCacheSettingsLocalPreferencesBloc,
+    );
 
     var chatSettingsBloc = ChatSettingsBloc(
       instanceLocalPreferencesBloc: instanceChatSettingsLocalPreferencesBloc,
@@ -838,7 +870,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     await globalProviderService
         .asyncInitAndRegister<IStatusSensitiveDisplayTimeStorageBloc>(
-            statusSensitiveDisplayTimeStorageBloc);
+      statusSensitiveDisplayTimeStorageBloc,
+    );
     addDisposable(disposable: statusSensitiveDisplayTimeStorageBloc);
 
     var webSocketsService =
@@ -848,14 +881,16 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: webSocketsService);
 
     var pleromaWebSocketsService = PleromaWebSocketsService(
-        webSocketsService: webSocketsService,
-        accessToken: currentInstance.token!.accessToken,
-        baseUri: currentInstance.uri,
-        connectionService: connectionService);
+      webSocketsService: webSocketsService,
+      accessToken: currentInstance.token!.accessToken,
+      baseUri: currentInstance.uri,
+      connectionService: connectionService,
+    );
 
     addDisposable(disposable: pleromaWebSocketsService);
     await globalProviderService.asyncInitAndRegister<IPleromaWebSocketsService>(
-        pleromaWebSocketsService);
+      pleromaWebSocketsService,
+    );
 
     var webSocketsHandlerManagerBloc = WebSocketsHandlerManagerBloc(
       pleromaWebSocketsService: pleromaWebSocketsService,
@@ -891,7 +926,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: recentShareSelectAccountLocalPreferenceBloc);
     await globalProviderService
         .asyncInitAndRegister<IRecentShareSelectAccountLocalPreferenceBloc>(
-            recentShareSelectAccountLocalPreferenceBloc);
+      recentShareSelectAccountLocalPreferenceBloc,
+    );
 
     var pleromaFilterService = PleromaFilterService(
       restService: pleromaAuthRestService,

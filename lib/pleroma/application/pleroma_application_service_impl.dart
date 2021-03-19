@@ -55,12 +55,15 @@ class PleromaApplicationService extends DisposableOwner
       return restResponse.body;
     } else {
       throw PleromaApplicationException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
   PleromaClientApplication? parseClientApplicationResponse(
-      Response httpResponse) {
+    Response httpResponse,
+  ) {
     RestResponse<PleromaClientApplication> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
@@ -72,17 +75,20 @@ class PleromaApplicationService extends DisposableOwner
       return restResponse.body;
     } else {
       throw PleromaApplicationException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
   @override
-  Future<IPleromaClientApplication?> registerApp(
-      {required MastodonApplicationRegistrationRequest
-          registrationRequest}) async {
+  Future<IPleromaClientApplication?> registerApp({
+    required MastodonApplicationRegistrationRequest registrationRequest,
+  }) async {
     var request = RestRequest.post(
-        relativePath: appsRelativeUrlPath,
-        bodyJson: registrationRequest.toJson());
+      relativePath: appsRelativeUrlPath,
+      bodyJson: registrationRequest.toJson(),
+    );
     var httpResponse = await restService.sendHttpRequest(
       request,
     );
@@ -91,11 +97,13 @@ class PleromaApplicationService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaApplication?> verifyCredentials(
-      {required String appToken}) async {
+  Future<IPleromaApplication?> verifyCredentials({
+    required String appToken,
+  }) async {
     var request = RestRequest.get(
-        relativePath: join(appsRelativeUrlPath, "verify_credentials"),
-        headers: {HttpHeaders.authorizationHeader: "Bearer $appToken"});
+      relativePath: join(appsRelativeUrlPath, "verify_credentials"),
+      headers: {HttpHeaders.authorizationHeader: "Bearer $appToken"},
+    );
     var httpResponse = await restService.sendHttpRequest(
       request,
     );

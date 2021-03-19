@@ -39,7 +39,8 @@ class PleromaRestServiceMock extends DisposableOwner
   @override
   Future<Response>
       uploadFileMultipartRequest<T extends UploadMultipartRestRequest, K>(
-          T request) {
+    T request,
+  ) {
     var response;
     if (uploadFileMultipartRequestMock != null) {
       response = uploadFileMultipartRequestMock!(request);

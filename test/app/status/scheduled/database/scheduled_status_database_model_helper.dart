@@ -6,11 +6,12 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Future<DbScheduledStatus> createTestDbScheduledStatus(
-        {required String seed,
-        String? remoteId,
-        bool? canceled,
-        DateTime? scheduledAt}) async =>
+Future<DbScheduledStatus> createTestDbScheduledStatus({
+  required String seed,
+  String? remoteId,
+  bool? canceled,
+  DateTime? scheduledAt,
+}) async =>
     DbScheduledStatus(
       id: null,
       canceled: canceled ?? seed.hashCode % 2 == 0,
@@ -22,7 +23,7 @@ Future<DbScheduledStatus> createTestDbScheduledStatus(
           type: MastodonMediaAttachmentType.audio.toJsonValue(),
           url: seed + "url",
           id: seed + "id",
-        )
+        ),
       ],
       params: PleromaScheduledStatusParams(
         text: seed + "text1",
@@ -43,7 +44,9 @@ Future<DbScheduledStatus> createTestDbScheduledStatus(
     );
 
 void expectDbScheduledStatus(
-    IScheduledStatus? actual, DbScheduledStatus? expected) {
+  IScheduledStatus? actual,
+  DbScheduledStatus? expected,
+) {
   if (actual == null && expected == null) {
     return;
   } else {

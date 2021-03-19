@@ -24,62 +24,67 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
         ICachedPaginationListWithNewItemsBloc.of(context);
 
     return StreamBuilder<int>(
-        stream: paginationWithUpdatesListBloc.unmergedNewItemsCountStream
-            .distinct(),
-        initialData: paginationWithUpdatesListBloc.unmergedNewItemsCount,
-        builder: (context, snapshot) {
-          var updateItemsCount = snapshot.data ?? 0;
+      stream:
+          paginationWithUpdatesListBloc.unmergedNewItemsCountStream.distinct(),
+      initialData: paginationWithUpdatesListBloc.unmergedNewItemsCount,
+      builder: (context, snapshot) {
+        var updateItemsCount = snapshot.data ?? 0;
 
-          _logger.finest(() => "updateItemsCount $updateItemsCount");
+        _logger.finest(() => "updateItemsCount $updateItemsCount");
 
-          if (updateItemsCount > 0) {
-            var scrollControllerBloc =
-                IScrollControllerBloc.of(context, listen: false);
+        if (updateItemsCount > 0) {
+          var scrollControllerBloc =
+              IScrollControllerBloc.of(context, listen: false);
 
-            return StreamBuilder<bool>(
-                stream: Rx.combineLatest2(
-                    scrollControllerBloc.scrollDirectionStream.distinct(),
-                    scrollControllerBloc.scrolledToTopStream,
-                    (dynamic scrollDirection, dynamic scrolledToTop) =>
-                        isNeedShowMergeItems(scrollDirection, scrolledToTop)),
-                initialData: isNeedShowMergeItems(
-                    scrollControllerBloc.scrollDirection,
-                    scrollControllerBloc.scrolledToTop),
-                builder: (context, snapshot) {
-                  var isNeedShowMergeItems = snapshot.data!;
+          return StreamBuilder<bool>(
+            stream: Rx.combineLatest2(
+              scrollControllerBloc.scrollDirectionStream.distinct(),
+              scrollControllerBloc.scrolledToTopStream,
+              (dynamic scrollDirection, dynamic scrolledToTop) =>
+                  isNeedShowMergeItems(scrollDirection, scrolledToTop),
+            ),
+            initialData: isNeedShowMergeItems(
+              scrollControllerBloc.scrollDirection,
+              scrollControllerBloc.scrolledToTop,
+            ),
+            builder: (context, snapshot) {
+              var isNeedShowMergeItems = snapshot.data!;
 
-                  _logger.finest(
-                      () => "isNeedShowMergeItems $isNeedShowMergeItems");
+              _logger
+                  .finest(() => "isNeedShowMergeItems $isNeedShowMergeItems");
 
-                  if (isNeedShowMergeItems) {
-                    return buildMergeNewItemsButton(
-                        context: context,
-                        paginationWithUpdatesListBloc:
-                            paginationWithUpdatesListBloc,
-                        updateItemsCount: updateItemsCount);
-                  } else {
-                    return SizedBox.shrink();
-                  }
-                });
-          } else {
-            return SizedBox.shrink();
-          }
-        });
+              if (isNeedShowMergeItems) {
+                return buildMergeNewItemsButton(
+                  context: context,
+                  paginationWithUpdatesListBloc: paginationWithUpdatesListBloc,
+                  updateItemsCount: updateItemsCount,
+                );
+              } else {
+                return SizedBox.shrink();
+              }
+            },
+          );
+        } else {
+          return SizedBox.shrink();
+        }
+      },
+    );
   }
 
   bool isNeedShowMergeItems(
-          ScrollDirection? scrollDirection, bool? scrolledToTop) =>
+    ScrollDirection? scrollDirection,
+    bool? scrolledToTop,
+  ) =>
       scrollDirection == ScrollDirection.forward ||
       scrollDirection == null ||
       scrolledToTop!;
 
-  Widget buildMergeNewItemsButton(
-      {required
-          BuildContext context,
-      required
-          ICachedPaginationListWithNewItemsBloc paginationWithUpdatesListBloc,
-      required
-          int updateItemsCount}) {
+  Widget buildMergeNewItemsButton({
+    required BuildContext context,
+    required ICachedPaginationListWithNewItemsBloc
+        paginationWithUpdatesListBloc,
+    required int updateItemsCount,
+  }) {
     return FediPrimaryFilledTextButtonWithBorder(
       textBuilder(context, updateItemsCount),
       onPressed: () {

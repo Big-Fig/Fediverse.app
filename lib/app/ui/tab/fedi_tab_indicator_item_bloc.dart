@@ -3,13 +3,15 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IFediTabIndicatorItemBloc<T> implements IDisposable {
-  static IFediTabIndicatorItemBloc of<T>(BuildContext context,
-          {bool listen = true}) =>
+  static IFediTabIndicatorItemBloc of<T>(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IFediTabIndicatorItemBloc<T>>(context, listen: listen);
 
   int get index;
 
-  T  get item;
+  T get item;
 
   bool get isSelected;
 

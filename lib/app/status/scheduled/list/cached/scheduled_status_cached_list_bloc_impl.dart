@@ -37,15 +37,19 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   IPleromaApi get pleromaApi => pleromaScheduledStatusService;
 
   static ScheduledStatusCachedListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       ScheduledStatusCachedListBloc(
-          pleromaScheduledStatusService:
-              IPleromaScheduledStatusService.of(context, listen: false),
-          scheduledStatusRepository:
-              IScheduledStatusRepository.of(context, listen: false));
+        pleromaScheduledStatusService:
+            IPleromaScheduledStatusService.of(context, listen: false),
+        scheduledStatusRepository:
+            IScheduledStatusRepository.of(context, listen: false),
+      );
 
-  static Widget provideToContext(BuildContext context,
-      {required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) {
     return DisposableProvider<IScheduledStatusCachedListBloc>(
       create: (context) =>
           ScheduledStatusCachedListBloc.createFromContext(context),

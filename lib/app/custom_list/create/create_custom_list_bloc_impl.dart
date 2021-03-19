@@ -81,7 +81,8 @@ class CreateCustomListBloc extends EditCustomListBloc
   @override
   Future<ICustomList> submit() async {
     var pleromaList = await pleromaListService.createList(
-        title: customListFormBloc.titleField.currentValue);
+      title: customListFormBloc.titleField.currentValue,
+    );
     var localCustomList = pleromaList.toCustomList();
     submittedStreamController.add(localCustomList);
     return localCustomList;

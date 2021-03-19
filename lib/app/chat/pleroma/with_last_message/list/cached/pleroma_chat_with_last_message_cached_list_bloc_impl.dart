@@ -34,10 +34,11 @@ class PleromaChatWithLastMessageCachedListBloc
       PleromaChatOrderingTermData.updatedAtDesc;
 
   @override
-  Future refreshItemsFromRemoteForPage(
-      {required int? limit,
-      required IPleromaChatWithLastMessage? newerThan,
-      required IPleromaChatWithLastMessage? olderThan}) async {
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IPleromaChatWithLastMessage? newerThan,
+    required IPleromaChatWithLastMessage? olderThan,
+  }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
@@ -56,10 +57,11 @@ class PleromaChatWithLastMessageCachedListBloc
   }
 
   @override
-  Future<List<IPleromaChatWithLastMessage>> loadLocalItems(
-      {required int? limit,
-      required IPleromaChatWithLastMessage? newerThan,
-      required IPleromaChatWithLastMessage? olderThan}) async {
+  Future<List<IPleromaChatWithLastMessage>> loadLocalItems({
+    required int? limit,
+    required IPleromaChatWithLastMessage? newerThan,
+    required IPleromaChatWithLastMessage? olderThan,
+  }) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
@@ -80,7 +82,8 @@ class PleromaChatWithLastMessageCachedListBloc
 
   @override
   Stream<List<IPleromaChatWithLastMessage>> watchLocalItemsNewerThanItem(
-          IPleromaChatWithLastMessage item) =>
+    IPleromaChatWithLastMessage item,
+  ) =>
       chatWithLastMessageRepository.watchChatsWithLastMessage(
         filters: filters,
         pagination: RepositoryPagination(

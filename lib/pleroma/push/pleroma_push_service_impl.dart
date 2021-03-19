@@ -42,7 +42,8 @@ class PleromaPushService extends DisposableOwner
   }
 
   PleromaPushSubscription? parsePushSubscriptionResponse(
-      Response httpResponse) {
+    Response httpResponse,
+  ) {
     RestResponse<PleromaPushSubscription> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
@@ -54,7 +55,9 @@ class PleromaPushService extends DisposableOwner
       return restResponse.body;
     } else {
       throw PleromaPushException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -67,12 +70,12 @@ class PleromaPushService extends DisposableOwner
       RestRequest.post(
         relativePath: subscriptionRelativeUrlPath,
         bodyJson: PleromaPushSubscribeRequest(
-                subscription: PleromaPushSubscribeRequestSubscription(
-                  endpoint: endpointCallbackUrl,
-                  keys: keys,
-                ),
-                data: data)
-            .toJson(),
+          subscription: PleromaPushSubscribeRequestSubscription(
+            endpoint: endpointCallbackUrl,
+            keys: keys,
+          ),
+          data: data,
+        ).toJson(),
       ),
     );
 

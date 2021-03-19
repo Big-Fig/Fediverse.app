@@ -84,7 +84,7 @@ class PleromaSearchService extends DisposableOwner
               "account_id",
               accountId,
             ),
-          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
+          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],
       ),
     );
@@ -93,7 +93,9 @@ class PleromaSearchService extends DisposableOwner
       return PleromaSearchResult.fromJsonString(httpResponse.body);
     } else {
       throw PleromaSearchException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 }

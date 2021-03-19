@@ -29,8 +29,7 @@ class MediaDeviceFileLocalOnlyListBloc extends DisposableOwner
     required IMediaDeviceFolderBloc folderBloc,
   }) {
     return DisposableProvider<IMediaDeviceFileLocalOnlyListBloc>(
-      create: (context) =>
-          MediaDeviceFileLocalOnlyListBloc.createFromContext(
+      create: (context) => MediaDeviceFileLocalOnlyListBloc.createFromContext(
         context,
         folderBloc: folderBloc,
       ),
@@ -50,8 +49,9 @@ class MediaDeviceFileLocalOnlyListBloc extends DisposableOwner
     required IMediaDeviceFileMetadata? newerThan,
   }) =>
       folderBloc.loadPagedFiles(
-          pageIndex: pageIndex,
-          itemsCountPerPage: itemsCountPerPage,
-          olderThan: olderThan,
-          newerThan: newerThan);
+        pageIndex: pageIndex,
+        itemsCountPerPage: itemsCountPerPage,
+        olderThan: olderThan,
+        newerThan: newerThan,
+      );
 }

@@ -42,7 +42,9 @@ class MediaPickerPageAppBarTitle extends StatelessWidget {
               return InkWell(
                 onTap: () {
                   _showFolderChooserModalBottomSheet(
-                      context, mediaDeviceGalleryBloc);
+                    context,
+                    mediaDeviceGalleryBloc,
+                  );
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -57,7 +59,7 @@ class MediaPickerPageAppBarTitle extends StatelessWidget {
                       FediIcons.chevron_down,
                       color: IFediUiColorTheme.of(context).darkGrey,
                       size: 14.0,
-                    )
+                    ),
                   ],
                 ),
               );

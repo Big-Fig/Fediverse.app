@@ -7,10 +7,13 @@ import 'package:provider/provider.dart';
 abstract class IMyAccountAccountBlockNetworkOnlyAccountListBloc
     implements IDisposable, IAccountNetworkOnlyListBloc {
   static IMyAccountAccountBlockNetworkOnlyAccountListBloc of(
-          BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IMyAccountAccountBlockNetworkOnlyAccountListBloc>(context,
-          listen: listen);
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IMyAccountAccountBlockNetworkOnlyAccountListBloc>(
+        context,
+        listen: listen,
+      );
 
   Future addAccountBlock({
     required IAccount account,

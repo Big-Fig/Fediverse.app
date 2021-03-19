@@ -25,7 +25,9 @@ class UiSettingsFontSizeSingleFromListValueFormFieldRowWidget
 }
 
 String mapUiSettingsFontSizeToLabel(
-    BuildContext context, UiSettingsFontSize type) {
+  BuildContext context,
+  UiSettingsFontSize type,
+) {
   switch (type) {
     case UiSettingsFontSize.smallest:
       return S.of(context).app_ui_fontSize_type_smallest;

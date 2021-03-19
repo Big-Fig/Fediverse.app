@@ -57,13 +57,16 @@ void main() {
     status = await createTestStatus(seed: "seed4");
 
     notification = await createTestNotification(
-        seed: "seed1", status: status.dbStatusPopulated);
+      seed: "seed1",
+      status: status.dbStatusPopulated,
+    );
 
     notificationBloc = NotificationBloc(
-        notification: notification,
-        pleromaNotificationService: pleromaNotificationServiceMock,
-        notificationRepository: notificationRepository,
-        delayInit: false);
+      notification: notification,
+      pleromaNotificationService: pleromaNotificationServiceMock,
+      notificationRepository: notificationRepository,
+      delayInit: false,
+    );
   });
 
   tearDown(() async {

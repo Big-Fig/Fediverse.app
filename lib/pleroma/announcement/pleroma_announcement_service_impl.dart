@@ -38,12 +38,15 @@ class PleromaAnnouncementService extends DisposableOwner
   PleromaAnnouncementService({required this.restService});
 
   List<IPleromaAnnouncement> parseAnnouncementListResponse(
-      Response httpResponse) {
+    Response httpResponse,
+  ) {
     if (httpResponse.statusCode == 200) {
       return PleromaAnnouncement.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaAnnouncementException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -55,7 +58,7 @@ class PleromaAnnouncementService extends DisposableOwner
       RestRequest.get(
         relativePath: announcementRelativeUrlPath,
         queryArgs: [
-          RestRequestQueryArg("with_dismissed", withDismissed.toString())
+          RestRequestQueryArg("with_dismissed", withDismissed.toString()),
         ],
       ),
     );
@@ -70,13 +73,18 @@ class PleromaAnnouncementService extends DisposableOwner
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: urlPath.join(
-            announcementRelativeUrlPath, announcementId, "dismiss"),
+          announcementRelativeUrlPath,
+          announcementId,
+          "dismiss",
+        ),
       ),
     );
 
     if (httpResponse.statusCode != 200) {
       throw PleromaAnnouncementException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -88,7 +96,11 @@ class PleromaAnnouncementService extends DisposableOwner
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.put(
         relativePath: urlPath.join(
-            announcementRelativeUrlPath, announcementId, "reactions", name),
+          announcementRelativeUrlPath,
+          announcementId,
+          "reactions",
+          name,
+        ),
       ),
     );
 
@@ -122,7 +134,9 @@ class PleromaAnnouncementService extends DisposableOwner
       // todo: handle 422: Unprocessable Entity
       // {"error":"Validation failed: Name is not a recognized emoji"}
       throw PleromaAnnouncementException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 

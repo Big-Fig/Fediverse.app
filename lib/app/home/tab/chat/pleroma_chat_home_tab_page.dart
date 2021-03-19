@@ -62,7 +62,8 @@ class PleromaChatHomeTabPage extends StatelessWidget {
   }
 
   DisposableProvider<IPleromaChatWithLastMessageListBloc> provideContentContext(
-      Widget child) {
+    Widget child,
+  ) {
     return DisposableProvider<IPleromaChatWithLastMessageListBloc>(
       create: (context) => PleromaChatWithLastMessageListBloc.createFromContext(
         context,
@@ -78,11 +79,14 @@ class PleromaChatHomeTabPage extends StatelessWidget {
             Provider.value(value: chatsListBloc.chatPaginationBloc),
             Provider.value(value: chatsListBloc.chatPaginationListBloc),
             Provider.value(
-                value: chatsListBloc.chatPaginationListWithNewItemsBloc),
+              value: chatsListBloc.chatPaginationListWithNewItemsBloc,
+            ),
             Provider<ICachedPaginationListWithNewItemsBloc?>.value(
-                value: chatsListBloc.chatPaginationListWithNewItemsBloc),
+              value: chatsListBloc.chatPaginationListWithNewItemsBloc,
+            ),
             Provider<IPaginationListBloc?>.value(
-                value: chatsListBloc.chatPaginationListWithNewItemsBloc),
+              value: chatsListBloc.chatPaginationListWithNewItemsBloc,
+            ),
           ],
           child: child,
         );

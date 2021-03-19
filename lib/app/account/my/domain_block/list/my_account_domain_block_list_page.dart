@@ -167,7 +167,8 @@ MaterialPageRoute createMyAccountDomainBlockListPage() {
       child: DisposableProvider<IMyAccountDomainBlockNetworkOnlyPaginationBloc>(
         create: (context) =>
             MyAccountDomainBlockNetworkOnlyPaginationBloc.createFromContext(
-                context),
+          context,
+        ),
         child: ProxyProvider<IMyAccountDomainBlockNetworkOnlyPaginationBloc,
             INetworkOnlyPleromaPaginationBloc<DomainBlock>>(
           update: (context, value, previous) => value,

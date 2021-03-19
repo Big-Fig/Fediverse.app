@@ -5,12 +5,16 @@ import 'package:provider/provider.dart';
 
 abstract class ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
     implements IBoolValueFormFieldBloc {
-  static ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc>(context,
-          listen: listen);
+  static ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc>(
+        context,
+        listen: listen,
+      );
 
   GlobalOrInstanceSettingsType? get globalOrInstanceSettingsType;
-  Stream<GlobalOrInstanceSettingsType?> get globalOrInstanceSettingsTypeStream;
 
+  Stream<GlobalOrInstanceSettingsType?> get globalOrInstanceSettingsTypeStream;
 }

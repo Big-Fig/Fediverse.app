@@ -15,12 +15,16 @@ import 'package:provider/provider.dart';
 
 typedef EmojiSelectedCallback = Function(CustomEmojiPickerItem item);
 typedef EmptyCategoryBuilder = Function(
-    BuildContext context, ICustomEmojiPickerCategoryBloc categoryBloc);
+  BuildContext context,
+  ICustomEmojiPickerCategoryBloc categoryBloc,
+);
 
 typedef CustomCategoryIconBuilder = IconData? Function(
-    ICustomEmojiPickerCategoryBloc);
+  ICustomEmojiPickerCategoryBloc,
+);
 typedef CustomCategoryBodyBuilder = Widget Function(
-    ICustomEmojiPickerCategoryBloc);
+  ICustomEmojiPickerCategoryBloc,
+);
 
 class CustomEmojiPickerWidget extends StatelessWidget {
   final int rowsCount;
@@ -101,60 +105,64 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var customEmojiPickerBloc = ICustomEmojiPickerBloc.of(context);
     return StreamBuilder<ICustomEmojiPickerCategoryBloc?>(
-        stream: customEmojiPickerBloc.selectedCategoryBlocStream,
-        builder: (context, snapshot) {
-          var selectedCategoryBloc = snapshot.data;
+      stream: customEmojiPickerBloc.selectedCategoryBlocStream,
+      builder: (context, snapshot) {
+        var selectedCategoryBloc = snapshot.data;
 
-          if (selectedCategoryBloc == null) {
-            return const SizedBox.shrink();
-          }
-          return Provider<ICustomEmojiPickerCategoryBloc>.value(
-            value: selectedCategoryBloc,
-            child: Container(
-              height: selectedCategoryItemsGridHeight,
-              child: AsyncInitLoadingWidget(
-                loadingWidget: loadingWidget,
-                asyncInitLoadingBloc: selectedCategoryBloc,
-                loadingFinishedBuilder: (BuildContext context) {
-                  return StreamBuilder<List<CustomEmojiPickerItem>?>(
-                      stream: selectedCategoryBloc.itemsStream,
-                      builder: (context, snapshot) {
-                        var items = snapshot.data;
+        if (selectedCategoryBloc == null) {
+          return const SizedBox.shrink();
+        }
+        return Provider<ICustomEmojiPickerCategoryBloc>.value(
+          value: selectedCategoryBloc,
+          child: Container(
+            height: selectedCategoryItemsGridHeight,
+            child: AsyncInitLoadingWidget(
+              loadingWidget: loadingWidget,
+              asyncInitLoadingBloc: selectedCategoryBloc,
+              loadingFinishedBuilder: (BuildContext context) {
+                return StreamBuilder<List<CustomEmojiPickerItem>?>(
+                  stream: selectedCategoryBloc.itemsStream,
+                  builder: (context, snapshot) {
+                    var items = snapshot.data;
 
-                        if (items == null) {
-                          return loadingWidget!;
-                        }
+                    if (items == null) {
+                      return loadingWidget!;
+                    }
 
-                        if (!useImageEmoji) {
-                          items = items.where((item) {
-                            if (!(item is CustomEmojiPickerImageUrlItem)) {
-                              return true;
-                            } else {
-                              return false;
-                            }
-                          }).toList();
+                    if (!useImageEmoji) {
+                      items = items.where((item) {
+                        if (!(item is CustomEmojiPickerImageUrlItem)) {
+                          return true;
+                        } else {
+                          return false;
                         }
-                        if (items.isEmpty) {
-                          return Center(
-                            child: emptyCategoryBuilder!(
-                                context, selectedCategoryBloc),
-                          );
-                        }
-                        return Provider<List<CustomEmojiPickerItem>?>.value(
-                          value: items,
-                          child: _CustomEmojiPickerSelectedCategoryItemsWidget(
-                            rowsCount: rowsCount,
-                            selectedCategoryItemsGridHeight:
-                                selectedCategoryItemsGridHeight,
-                            onEmojiSelected: onEmojiSelected,
-                          ),
-                        );
-                      });
-                },
-              ),
+                      }).toList();
+                    }
+                    if (items.isEmpty) {
+                      return Center(
+                        child: emptyCategoryBuilder!(
+                          context,
+                          selectedCategoryBloc,
+                        ),
+                      );
+                    }
+                    return Provider<List<CustomEmojiPickerItem>?>.value(
+                      value: items,
+                      child: _CustomEmojiPickerSelectedCategoryItemsWidget(
+                        rowsCount: rowsCount,
+                        selectedCategoryItemsGridHeight:
+                            selectedCategoryItemsGridHeight,
+                        onEmojiSelected: onEmojiSelected,
+                      ),
+                    );
+                  },
+                );
+              },
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -178,33 +186,33 @@ class _CustomEmojiPickerSelectedCategoryItemsWidget extends StatelessWidget {
       crossAxisCount: rowsCount,
       scrollDirection: Axis.horizontal,
       children: items.map((item) {
-            Widget child;
+        Widget child;
 
-            if (item is CustomEmojiPickerCodeItem) {
-              child = CustomEmojiPickerCodeItemWidget(
-                item: item,
-              );
-            } else if (item is CustomEmojiPickerImageUrlItem) {
-              child = CustomEmojiPickerImageUrlItemWidget(
-                item: item,
-              );
-            } else {
-              throw "Unsupported $item";
-            }
+        if (item is CustomEmojiPickerCodeItem) {
+          child = CustomEmojiPickerCodeItemWidget(
+            item: item,
+          );
+        } else if (item is CustomEmojiPickerImageUrlItem) {
+          child = CustomEmojiPickerImageUrlItemWidget(
+            item: item,
+          );
+        } else {
+          throw "Unsupported $item";
+        }
 
-            var size = selectedCategoryItemsGridHeight / rowsCount;
-            return InkWell(
-              onTap: () {
-                customEmojiPickerBloc.onEmojiSelected(item);
-                onEmojiSelected(item);
-              },
-              child: Container(
-                width: size,
-                height: size,
-                child: Center(child: child),
-              ),
-            );
-          }).toList(),
+        var size = selectedCategoryItemsGridHeight / rowsCount;
+        return InkWell(
+          onTap: () {
+            customEmojiPickerBloc.onEmojiSelected(item);
+            onEmojiSelected(item);
+          },
+          child: Container(
+            width: size,
+            height: size,
+            child: Center(child: child),
+          ),
+        );
+      }).toList(),
     );
   }
 }

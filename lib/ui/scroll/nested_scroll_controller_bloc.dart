@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 abstract class INestedScrollControllerBloc extends IScrollControllerBloc {
   NestedScrollController? get nestedScrollController;
 
-  static INestedScrollControllerBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static INestedScrollControllerBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<INestedScrollControllerBloc>(context, listen: listen);
 }

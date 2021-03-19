@@ -7,10 +7,11 @@ import 'package:provider/provider.dart';
 
 abstract class IScheduledStatusNetworkOnlyListBloc extends DisposableOwner
     implements INetworkOnlyListBloc<IScheduledStatus> {
-  static IScheduledStatusNetworkOnlyListBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IScheduledStatusNetworkOnlyListBloc>(context,
-          listen: listen);
+  static IScheduledStatusNetworkOnlyListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IScheduledStatusNetworkOnlyListBloc>(context, listen: listen);
 
   @override
   IPleromaApi get pleromaApi;

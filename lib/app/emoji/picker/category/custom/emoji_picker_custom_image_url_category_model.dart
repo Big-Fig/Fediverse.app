@@ -34,19 +34,29 @@ class EmojiPickerCustomImageUrlCategoryItems implements IJsonObject {
   @override
   int get hashCode => items.hashCode;
 
-
-  factory EmojiPickerCustomImageUrlCategoryItems.fromJson(Map<String, dynamic> json) =>
+  factory EmojiPickerCustomImageUrlCategoryItems.fromJson(
+    Map<String, dynamic> json,
+  ) =>
       _$EmojiPickerCustomImageUrlCategoryItemsFromJson(json);
 
-  factory EmojiPickerCustomImageUrlCategoryItems.fromJsonString(String jsonString) =>
+  factory EmojiPickerCustomImageUrlCategoryItems.fromJsonString(
+    String jsonString,
+  ) =>
       _$EmojiPickerCustomImageUrlCategoryItemsFromJson(jsonDecode(jsonString));
 
-  static List<EmojiPickerCustomImageUrlCategoryItems> listFromJsonString(String str) =>
+  static List<EmojiPickerCustomImageUrlCategoryItems> listFromJsonString(
+    String str,
+  ) =>
       List<EmojiPickerCustomImageUrlCategoryItems>.from(
-          json.decode(str).map((x) => EmojiPickerCustomImageUrlCategoryItems.fromJson(x)));
+        json
+            .decode(str)
+            .map((x) => EmojiPickerCustomImageUrlCategoryItems.fromJson(x)),
+      );
 
   @override
-  Map<String, dynamic> toJson() => _$EmojiPickerCustomImageUrlCategoryItemsToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$EmojiPickerCustomImageUrlCategoryItemsToJson(this);
 
-  String toJsonString() => jsonEncode(_$EmojiPickerCustomImageUrlCategoryItemsToJson(this));
+  String toJsonString() =>
+      jsonEncode(_$EmojiPickerCustomImageUrlCategoryItemsToJson(this));
 }

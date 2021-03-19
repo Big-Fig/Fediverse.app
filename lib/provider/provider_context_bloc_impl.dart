@@ -68,8 +68,10 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<IDisposable> asyncInitAndRegister<T extends IDisposable>(T obj,
-      {Future Function(T obj)? additionalAsyncInit}) async {
+  Future<IDisposable> asyncInitAndRegister<T extends IDisposable>(
+    T obj, {
+    Future Function(T obj)? additionalAsyncInit,
+  }) async {
     if (obj is AsyncInitLoadingBloc) {
       await obj.performAsyncInit();
     }

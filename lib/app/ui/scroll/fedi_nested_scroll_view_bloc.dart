@@ -5,8 +5,10 @@ import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 import 'package:provider/provider.dart';
 
 abstract class IFediNestedScrollViewBloc extends IDisposable {
-  static IFediNestedScrollViewBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IFediNestedScrollViewBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IFediNestedScrollViewBloc>(context, listen: listen);
 
   INestedScrollControllerBloc? get nestedScrollControllerBloc;

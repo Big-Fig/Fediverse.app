@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class FediIndeterminateProgressDialog extends FediProgressDialog {
-  FediIndeterminateProgressDialog(
-      {String? titleMessage,
-      String? contentMessage,
-      bool cancelable = false,
-      required CancelableOperation? cancelableOperation})
-      : super(
-            titleMessage: titleMessage,
-            contentMessage: contentMessage,
-            cancelable: cancelable,
-            cancelableOperation: cancelableOperation);
+  FediIndeterminateProgressDialog({
+    String? titleMessage,
+    String? contentMessage,
+    bool cancelable = false,
+    required CancelableOperation? cancelableOperation,
+  }) : super(
+          titleMessage: titleMessage,
+          contentMessage: contentMessage,
+          cancelable: cancelable,
+          cancelableOperation: cancelableOperation,
+        );
 
   @override
   Widget buildDialogTitle(BuildContext context) =>

@@ -72,7 +72,8 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     );
 
     _logger.finer(
-        () => "finish loadLocalItems for $chat messages ${statuses.length}");
+      () => "finish loadLocalItems for $chat messages ${statuses.length}",
+    );
     return statuses
         .map(
           (status) => status.toConversationChatMessageStatusAdapter(),

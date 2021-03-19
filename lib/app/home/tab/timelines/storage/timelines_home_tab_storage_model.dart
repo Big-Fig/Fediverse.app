@@ -79,7 +79,8 @@ class TimelinesHomeTabStorage implements IJsonObject {
 
   static List<TimelinesHomeTabStorage> listFromJsonString(String str) =>
       List<TimelinesHomeTabStorage>.from(
-          json.decode(str).map((x) => TimelinesHomeTabStorage.fromJson(x)));
+        json.decode(str).map((x) => TimelinesHomeTabStorage.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$TimelinesHomeTabStorageToJson(this);

@@ -86,9 +86,10 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
           return event;
         } catch (e) {
           _logger.severe(
-              () => "$url: failed to parse event from String($e): "
-                  "$data, ",
-              e);
+            () => "$url: failed to parse event from String($e): "
+                "$data, ",
+            e,
+          );
           return null;
         }
       } else {

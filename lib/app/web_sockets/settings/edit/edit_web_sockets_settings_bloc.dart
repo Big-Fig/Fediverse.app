@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 
 abstract class IEditWebSocketsSettingsBloc
     implements IEditGlobalOrInstanceSettingsBloc<WebSocketsSettings> {
-  static IEditWebSocketsSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IEditWebSocketsSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IEditWebSocketsSettingsBloc>(context, listen: listen);
 
   IWebSocketsHandlingTypeSingleFromListValueFormFieldBloc? get typeFieldBloc;

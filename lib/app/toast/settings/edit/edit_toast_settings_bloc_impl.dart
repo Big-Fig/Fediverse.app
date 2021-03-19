@@ -83,14 +83,15 @@ class EditToastSettingsBloc
       isEnabled: isEnabled,
     );
     pollFieldBloc = BoolValueFormFieldBloc(
-        originValue: currentPushSettings!.poll! &&
-            (currentInstance!.isMastodon ||
-                globalOrInstanceSettingsType ==
-                    GlobalOrInstanceSettingsType.global),
-        isEnabled: isEnabled &&
-            (currentInstance!.isMastodon ||
-                globalOrInstanceSettingsType ==
-                    GlobalOrInstanceSettingsType.global));
+      originValue: currentPushSettings!.poll! &&
+          (currentInstance!.isMastodon ||
+              globalOrInstanceSettingsType ==
+                  GlobalOrInstanceSettingsType.global),
+      isEnabled: isEnabled &&
+          (currentInstance!.isMastodon ||
+              globalOrInstanceSettingsType ==
+                  GlobalOrInstanceSettingsType.global),
+    );
     pleromaChatMentionFieldBloc = BoolValueFormFieldBloc(
       originValue: currentPushSettings!.pleromaChatMention! &&
           (currentInstance!.isPleroma ||
@@ -128,7 +129,8 @@ class EditToastSettingsBloc
     addDisposable(disposable: pleromaChatMentionFieldBloc);
     addDisposable(disposable: pleromaEmojiReactionFieldBloc);
     addDisposable(
-        disposable: toastHandlingTypeSingleFromListValueFormFieldBloc);
+      disposable: toastHandlingTypeSingleFromListValueFormFieldBloc,
+    );
   }
 
   @override

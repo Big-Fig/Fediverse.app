@@ -20,41 +20,42 @@ class TimelineWidget extends StatelessWidget {
     return Container(
       color: IFediUiColorTheme.of(context).offWhite,
       child: StreamBuilder<bool>(
-          stream: timelineLocalPreferencesBloc.stream
-              .map((timeline) => timeline?.onlyWithMedia == true),
-          builder: (context, snapshot) {
-            var onlyWithMedia = snapshot.data;
+        stream: timelineLocalPreferencesBloc.stream
+            .map((timeline) => timeline?.onlyWithMedia == true),
+        builder: (context, snapshot) {
+          var onlyWithMedia = snapshot.data;
 
-            if (onlyWithMedia == null) {
-              return const Center(
-                child: FediCircularProgressIndicator(),
-              );
-            }
+          if (onlyWithMedia == null) {
+            return const Center(
+              child: FediCircularProgressIndicator(),
+            );
+          }
 
-            var timeline = timelineLocalPreferencesBloc.value;
-            // var onlyWithMedia = timeline?.onlyWithMedia == true;
+          var timeline = timelineLocalPreferencesBloc.value;
+          // var onlyWithMedia = timeline?.onlyWithMedia == true;
 
-            _logger.finest(() => "timeline $timeline");
-            _logger.finest(() => "onlyWithMedia $onlyWithMedia");
-            // _logger.finest(() => "onlyWithMedia timeline $timeline");
+          _logger.finest(() => "timeline $timeline");
+          _logger.finest(() => "onlyWithMedia $onlyWithMedia");
+          // _logger.finest(() => "onlyWithMedia timeline $timeline");
 
-            Widget bodyWidget;
+          Widget bodyWidget;
 
-            if (onlyWithMedia == true) {
-              bodyWidget = const StatusCachedPaginationListMediaWidget();
-            } else {
-              bodyWidget = const CollapsibleOwnerWidget(
-                child: StatusCachedPaginationListTimelineWidget(
-                  forceFirstItemPadding: true,
-                  needWatchLocalRepositoryForUpdates: true,
-                ),
-              );
-            }
+          if (onlyWithMedia == true) {
+            bodyWidget = const StatusCachedPaginationListMediaWidget();
+          } else {
+            bodyWidget = const CollapsibleOwnerWidget(
+              child: StatusCachedPaginationListTimelineWidget(
+                forceFirstItemPadding: true,
+                needWatchLocalRepositoryForUpdates: true,
+              ),
+            );
+          }
 
-            _logger.fine(() => "build onlyWithMedia=$onlyWithMedia");
+          _logger.fine(() => "build onlyWithMedia=$onlyWithMedia");
 
-            return bodyWidget;
-          }),
+          return bodyWidget;
+        },
+      ),
     );
   }
 }

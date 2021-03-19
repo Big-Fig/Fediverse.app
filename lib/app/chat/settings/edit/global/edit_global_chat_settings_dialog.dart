@@ -21,8 +21,10 @@ void showEditGlobalChatSettingsDialog({
     child: DisposableProvider<IChatSettingsBloc>(
       create: (context) => ChatSettingsBloc(
         instanceLocalPreferencesBloc:
-            IInstanceChatSettingsLocalPreferencesBloc.of(context,
-                listen: false),
+            IInstanceChatSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
         globalLocalPreferencesBloc:
             IGlobalChatSettingsLocalPreferencesBloc.of(context, listen: false),
       ),

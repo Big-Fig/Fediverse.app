@@ -59,7 +59,9 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
 
     if (!handled) {
       var instanceForMessage = instanceListBloc.findInstanceByCredentials(
-          host: body.server, acct: body.account);
+        host: body.server,
+        acct: body.account,
+      );
 
       if (instanceForMessage != null) {
         _logger.finest(() => "body = $body by \n"
@@ -96,7 +98,8 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
 
   @override
   List<PushHandlerMessage> loadUnhandledMessagesForInstance(
-          AuthInstance instance) =>
+    AuthInstance instance,
+  ) =>
       unhandledLocalPreferencesBloc.loadUnhandledMessagesForInstance(instance);
 
   @override

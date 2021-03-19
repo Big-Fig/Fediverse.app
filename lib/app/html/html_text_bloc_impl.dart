@@ -25,7 +25,7 @@ class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
   HtmlTextBloc({
     required this.inputData,
     required this.settings,
-  })  : htmlData = _calculateHtmlData(
+  })   : htmlData = _calculateHtmlData(
           inputData: inputData,
           settings: settings,
         ),
@@ -80,18 +80,18 @@ HtmlTextResultData _calculateHtmlData({
         String? url = emoji.url;
 
         text = text.replaceAll(
-            ":$shortcode:",
-            '<img src="$url" '
-                'width="${settings.customEmojiImageSize}"'
-                'height="${settings.customEmojiImageSize}"'
-                '>');
+          ":$shortcode:",
+          '<img src="$url" '
+              'width="${settings.customEmojiImageSize}"'
+              'height="${settings.customEmojiImageSize}"'
+              '>',
+        );
         alreadyHaveHtmlInText = true;
       }
     }
 
     var hasHtmlMatch = findHtmlFragmentsRegex.hasMatch(text);
-    var isActuallyHaveHtmlInData =
-        alreadyHaveHtmlInText || hasHtmlMatch;
+    var isActuallyHaveHtmlInData = alreadyHaveHtmlInText || hasHtmlMatch;
 
     if (settings.drawNewLines) {
       if (isActuallyHaveHtmlInData) {

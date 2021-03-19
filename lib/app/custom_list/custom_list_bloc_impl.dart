@@ -18,7 +18,6 @@ class CustomListBloc extends DisposableOwner implements ICustomListBloc {
     addDisposable(subject: customListSubject);
   }
 
-
   // todo: rework this logic
   @override
   Stream get deletedStream =>
@@ -42,8 +41,10 @@ class CustomListBloc extends DisposableOwner implements ICustomListBloc {
   Stream<String?> get titleStream =>
       customListStream.map((customList) => customList!.title);
 
-  static CustomListBloc createFromContext(BuildContext context,
-          {required ICustomList customList}) =>
+  static CustomListBloc createFromContext(
+    BuildContext context, {
+    required ICustomList customList,
+  }) =>
       CustomListBloc(
         customList: customList,
         pleromaListService: IPleromaListService.of(
@@ -52,8 +53,11 @@ class CustomListBloc extends DisposableOwner implements ICustomListBloc {
         ),
       );
 
-  static Widget provideToContext(BuildContext context,
-      {required Widget child, required ICustomList customList}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+    required ICustomList customList,
+  }) {
     return DisposableProvider<ICustomListBloc>(
       create: (context) => CustomListBloc.createFromContext(
         context,

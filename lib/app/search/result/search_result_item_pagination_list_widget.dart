@@ -26,8 +26,8 @@ import 'package:provider/provider.dart';
 
 class SearchResultItemPaginationListWidget
     extends FediPaginationListWidget<ISearchResultItem> {
-
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
   const SearchResultItemPaginationListWidget({
     Key? key,
     Widget? header,
@@ -54,7 +54,8 @@ class SearchResultItemPaginationListWidget
   }) {
     SearchResultItemType? previousType;
 
-    List<_ItemOrSeparator<ISearchResultItem?>> itemWithSeparators = <_ItemOrSeparator<ISearchResultItem>>[];
+    List<_ItemOrSeparator<ISearchResultItem?>> itemWithSeparators =
+        <_ItemOrSeparator<ISearchResultItem>>[];
     items.forEach((item) {
       if (item.type != previousType) {
         switch (item.type) {
@@ -92,7 +93,7 @@ class SearchResultItemPaginationListWidget
     return PaginationListWidget.buildItemsListView<
         _ItemOrSeparator<ISearchResultItem?>>(
       context: context,
-      keyboardDismissBehavior:keyboardDismissBehavior,
+      keyboardDismissBehavior: keyboardDismissBehavior,
       items: itemWithSeparators,
       header: header,
       footer: footer,
@@ -155,27 +156,33 @@ class SearchResultItemPaginationListWidget
     return Provider<IAccount?>.value(
       value: account,
       child: DisposableProxyProvider<IAccount, IAccountBloc>(
-          update: (context, account, oldValue) =>
-              LocalAccountBloc.createFromContext(context,
-                  isNeedWatchLocalRepositoryForUpdates: false,
-                  account: account,
-                  isNeedRefreshFromNetworkOnInit: false,
-                  isNeedWatchWebSocketsEvents: false,
-                  isNeedPreFetchRelationship: false),
-          child: Column(
-            children: [
-              const AccountListItemWidget(
-                accountSelectedCallback: _accountSelectedCallback,
-              ),
-              const FediUltraLightGreyDivider()
-            ],
-          )),
+        update: (context, account, oldValue) =>
+            LocalAccountBloc.createFromContext(
+          context,
+          isNeedWatchLocalRepositoryForUpdates: false,
+          account: account,
+          isNeedRefreshFromNetworkOnInit: false,
+          isNeedWatchWebSocketsEvents: false,
+          isNeedPreFetchRelationship: false,
+        ),
+        child: Column(
+          children: [
+            const AccountListItemWidget(
+              accountSelectedCallback: _accountSelectedCallback,
+            ),
+            const FediUltraLightGreyDivider(),
+          ],
+        ),
+      ),
     );
   }
 
   @override
   IPaginationListBloc<PaginationPage<ISearchResultItem>, ISearchResultItem>
-      retrievePaginationListBloc(BuildContext context, {required bool listen}) =>
+      retrievePaginationListBloc(
+    BuildContext context, {
+    required bool listen,
+  }) =>
           Provider.of<
               IPaginationListBloc<PaginationPage<ISearchResultItem>,
                   ISearchResultItem>>(context, listen: listen);
@@ -199,6 +206,9 @@ class _ItemOrSeparator<T> {
 }
 
 void _onStatusClick(BuildContext context, IStatus status) {
-  goToLocalStatusThreadPage(context,
-      status: status, initialMediaAttachment: null);
+  goToLocalStatusThreadPage(
+    context,
+    status: status,
+    initialMediaAttachment: null,
+  );
 }

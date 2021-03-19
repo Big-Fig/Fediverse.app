@@ -28,6 +28,7 @@ class SearchPage extends StatelessWidget {
         ),
         body: const SearchWidget(),
       );
+
   const SearchPage();
 }
 
@@ -42,8 +43,11 @@ void goToSearchPage(
         create: (context) =>
             SearchBloc.createFromContext(context, startTab: startTab),
         child: ProxyProvider<ISearchBloc, ISearchInputBloc>(
-          update: (BuildContext context, ISearchBloc value,
-                  ISearchInputBloc? previous) =>
+          update: (
+            BuildContext context,
+            ISearchBloc value,
+            ISearchInputBloc? previous,
+          ) =>
               value.searchInputBloc,
           child: DisposableProvider<IRecentSearchBloc>(
             create: (context) => RecentSearchBloc(

@@ -16,12 +16,14 @@ class ConversationChatWithLastMessagePaginationListWithNewItemsBloc<
     required ICachedPaginationBloc<TPage, IConversationChatWithLastMessage>
         paginationBloc,
   }) : super(
-            mergeNewItemsImmediately: mergeNewItemsImmediately,
-            paginationBloc: paginationBloc);
+          mergeNewItemsImmediately: mergeNewItemsImmediately,
+          paginationBloc: paginationBloc,
+        );
 
   @override
   Stream<List<IConversationChatWithLastMessage>> watchItemsNewerThanItem(
-          IConversationChatWithLastMessage item) =>
+    IConversationChatWithLastMessage item,
+  ) =>
       cachedListBloc.watchLocalItemsNewerThanItem(item);
 
   @override
@@ -41,7 +43,9 @@ class ConversationChatWithLastMessagePaginationListWithNewItemsBloc<
   }
 
   @override
-  bool isItemsEqual(IConversationChatWithLastMessage a,
-          IConversationChatWithLastMessage b) =>
+  bool isItemsEqual(
+    IConversationChatWithLastMessage a,
+    IConversationChatWithLastMessage b,
+  ) =>
       a.chat.remoteId == b.chat.remoteId;
 }

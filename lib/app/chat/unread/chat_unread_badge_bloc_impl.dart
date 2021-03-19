@@ -24,8 +24,11 @@ class ChatUnreadBadgeBloc extends DisposableOwner
             .watchTotalUnreadCount()
             .map((count) => count > 0),
         chatSettingsBloc.countConversationsInChatsUnreadBadgesStream,
-        (dynamic pleromaUnread, dynamic conversationUnread,
-                dynamic countConversationsUnread) =>
+        (
+          dynamic pleromaUnread,
+          dynamic conversationUnread,
+          dynamic countConversationsUnread,
+        ) =>
             pleromaUnread || (conversationUnread && countConversationsUnread),
       );
 }

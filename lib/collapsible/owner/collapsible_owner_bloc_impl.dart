@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:fedi/collapsible/owner/collapsible_owner_bloc.dart';
 import 'package:fedi/collapsible/item/collapsible_item_bloc.dart';
+import 'package:fedi/collapsible/owner/collapsible_owner_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
@@ -10,7 +10,8 @@ import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("collapsible_owner_bloc_impl.dart");
 
-class CollapsibleOwnerBloc extends DisposableOwner implements ICollapsibleOwnerBloc {
+class CollapsibleOwnerBloc extends DisposableOwner
+    implements ICollapsibleOwnerBloc {
   // ignore: close_sinks
   BehaviorSubject<List<ICollapsibleItemBloc>?> visibleItemsSubject =
       BehaviorSubject.seeded([]);
@@ -22,7 +23,8 @@ class CollapsibleOwnerBloc extends DisposableOwner implements ICollapsibleOwnerB
   Stream<List<ICollapsibleItemBloc>?> get visibleItemsStream =>
       visibleItemsSubject.stream;
 
-  Map<ICollapsibleItemBloc, StreamSubscription> itemCollapsibleSubscriptionMap = {};
+  Map<ICollapsibleItemBloc, StreamSubscription> itemCollapsibleSubscriptionMap =
+      {};
 
   // ignore: close_sinks
   BehaviorSubject<bool> isAtLeastOneVisibleItemExpandedSubject =
@@ -78,9 +80,12 @@ class CollapsibleOwnerBloc extends DisposableOwner implements ICollapsibleOwnerB
       CollapsibleOwnerBloc();
 
   static bool calculateIsAtLeastOneVisibleItemExpanded(
-          List<ICollapsibleItemBloc> visibleItems) =>
-      visibleItems.fold(false,
-          (previousValue, element) => previousValue || !element.isCollapsed!);
+    List<ICollapsibleItemBloc> visibleItems,
+  ) =>
+      visibleItems.fold(
+        false,
+        (previousValue, element) => previousValue || !element.isCollapsed!,
+      );
 
   void checkIsAtLeastOneVisibleItemExpanded() {
     isAtLeastOneVisibleItemExpandedSubject

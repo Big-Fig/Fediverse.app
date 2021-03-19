@@ -4,8 +4,12 @@ import 'package:provider/provider.dart';
 
 abstract class IRecentShareSelectAccountLocalPreferenceBloc
     implements IRecentSelectAccountLocalPreferenceBloc {
-  static IRecentShareSelectAccountLocalPreferenceBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IRecentShareSelectAccountLocalPreferenceBloc>(context,
-          listen: listen);
+  static IRecentShareSelectAccountLocalPreferenceBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IRecentShareSelectAccountLocalPreferenceBloc>(
+        context,
+        listen: listen,
+      );
 }

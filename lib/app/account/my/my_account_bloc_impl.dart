@@ -106,7 +106,8 @@ class MyAccountBloc extends IMyAccountBloc {
 
   @override
   Future updateMyAccountByMyPleromaAccount(
-      IPleromaMyAccount pleromaMyAccount) async {
+    IPleromaMyAccount pleromaMyAccount,
+  ) async {
     await myAccountLocalPreferenceBloc.setValue(
       PleromaMyAccountWrapper(
         pleromaAccount: pleromaMyAccount.toPleromaMyAccount(),
@@ -127,9 +128,11 @@ class MyAccountBloc extends IMyAccountBloc {
   Future decreaseFollowingRequestCount() async {
     assert(followRequestsCount! > 0);
     await myAccountLocalPreferenceBloc.setValue(
-      myAccountLocalPreferenceBloc.value!.copyWith(
-        followRequestsCount: followRequestsCount! - 1,
-      ).toPleromaMyAccountWrapper(),
+      myAccountLocalPreferenceBloc.value!
+          .copyWith(
+            followRequestsCount: followRequestsCount! - 1,
+          )
+          .toPleromaMyAccountWrapper(),
     );
   }
 

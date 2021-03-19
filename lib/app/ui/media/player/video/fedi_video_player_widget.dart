@@ -45,15 +45,16 @@ class _FediVideoPlayerErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
     return StreamBuilder<bool>(
-        stream: mediaPlayerBloc.isHaveErrorStream,
-        builder: (context, snapshot) {
-          var isHaveError = snapshot.data ?? false;
-          if (isHaveError) {
-            return const _FediVideoPlayerErrorBodyWidget();
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+      stream: mediaPlayerBloc.isHaveErrorStream,
+      builder: (context, snapshot) {
+        var isHaveError = snapshot.data ?? false;
+        if (isHaveError) {
+          return const _FediVideoPlayerErrorBodyWidget();
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
@@ -204,26 +205,27 @@ class _FediVideoPlayerNotInitializedWidget extends StatelessWidget {
           color: IFediUiColorTheme.of(context).mediumGrey,
         ),
         StreamBuilder<bool>(
-            stream: mediaPlayerBloc.isInitializingStream,
-            initialData: mediaPlayerBloc.isInitializing,
-            builder: (context, snapshot) {
-              var isInitializing = snapshot.data!;
+          stream: mediaPlayerBloc.isInitializingStream,
+          initialData: mediaPlayerBloc.isInitializing,
+          builder: (context, snapshot) {
+            var isInitializing = snapshot.data!;
 
-              if (isInitializing) {
-                return const SizedBox.shrink();
-              }
-              return Center(
-                child: FediIconInCircleTransparentButton(
-                  FediIcons.play,
-                  size: FediSizes.bigIconInCircleDefaultSize,
-                  iconSize: FediSizes.bigIconInCircleDefaultIconSize,
-                  color: IFediUiColorTheme.of(context).white,
-                  onPressed: () {
-                    mediaPlayerBloc.performAsyncInit();
-                  },
-                ),
-              );
-            }),
+            if (isInitializing) {
+              return const SizedBox.shrink();
+            }
+            return Center(
+              child: FediIconInCircleTransparentButton(
+                FediIcons.play,
+                size: FediSizes.bigIconInCircleDefaultSize,
+                iconSize: FediSizes.bigIconInCircleDefaultIconSize,
+                color: IFediUiColorTheme.of(context).white,
+                onPressed: () {
+                  mediaPlayerBloc.performAsyncInit();
+                },
+              ),
+            );
+          },
+        ),
       ],
     );
   }
@@ -239,21 +241,22 @@ class _FediVideoPlayerControlsWidget extends StatelessWidget {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
 
     return StreamBuilder<bool>(
-        stream: videoMediaPlayerBloc.isControlsVisibleStream,
-        initialData: videoMediaPlayerBloc.isControlsVisible,
-        builder: (context, snapshot) {
-          var isControlsVisible = snapshot.data!;
-          if (isControlsVisible) {
-            return const Positioned(
-              bottom: 0.0,
-              left: 0.0,
-              right: 0.0,
-              child: _FediVideoPlayerControlsBodyWidget(),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+      stream: videoMediaPlayerBloc.isControlsVisibleStream,
+      initialData: videoMediaPlayerBloc.isControlsVisible,
+      builder: (context, snapshot) {
+        var isControlsVisible = snapshot.data!;
+        if (isControlsVisible) {
+          return const Positioned(
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: _FediVideoPlayerControlsBodyWidget(),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 

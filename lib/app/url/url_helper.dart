@@ -72,7 +72,8 @@ class UrlHelper {
       var currentAuthInstanceBloc =
           ICurrentAuthInstanceBloc.of(context, listen: false);
 
-      var localInstanceDomain = currentAuthInstanceBloc.currentInstance!.urlHost;
+      var localInstanceDomain =
+          currentAuthInstanceBloc.currentInstance!.urlHost;
 
       if (isLocal) {
         // status or account note with hashtag fetched from local instance
@@ -115,8 +116,6 @@ class UrlHelper {
       }
     }
 
-
-
     return handleUrlClick(
       context: context,
       url: url,
@@ -124,7 +123,9 @@ class UrlHelper {
   }
 
   static String _calculateRemoteInstanceAbsoluteUrl(
-      IInstanceLocationBloc instanceLocationBloc, String url) {
+    IInstanceLocationBloc instanceLocationBloc,
+    String url,
+  ) {
     var remoteInstanceUriOrNull = instanceLocationBloc.remoteInstanceUriOrNull!;
 
     var urlHost = remoteInstanceUriOrNull.host;
@@ -135,7 +136,9 @@ class UrlHelper {
   }
 
   static String _calculateLocalInstanceAbsoluteUrl(
-      BuildContext context, String url) {
+    BuildContext context,
+    String url,
+  ) {
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 

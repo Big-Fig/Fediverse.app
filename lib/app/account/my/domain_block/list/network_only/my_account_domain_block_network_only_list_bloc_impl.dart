@@ -50,7 +50,8 @@ class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
   IPleromaApi get pleromaApi => pleromaMyAccountService;
 
   static MyAccountDomainBlockNetworkOnlyDomainListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       MyAccountDomainBlockNetworkOnlyDomainListBloc(
         pleromaMyAccountService: IPleromaMyAccountService.of(
           context,
@@ -72,8 +73,10 @@ class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
         context,
       ),
       child: ProxyProvider<IMyAccountDomainBlockNetworkOnlyListBloc,
-              INetworkOnlyListBloc<DomainBlock>>(
-          update: (context, value, previous) => value, child: child),
+          INetworkOnlyListBloc<DomainBlock>>(
+        update: (context, value, previous) => value,
+        child: child,
+      ),
     );
   }
 }

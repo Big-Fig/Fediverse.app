@@ -11,17 +11,18 @@ class FediPlayerControlPositionDurationWidget extends StatelessWidget {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context);
 
     return StreamBuilder<bool>(
-        stream: mediaPlayerBloc.isBufferingStream,
-        initialData: mediaPlayerBloc.isBuffering,
-        builder: (context, snapshot) {
-          var isBuffering = snapshot.data!;
+      stream: mediaPlayerBloc.isBufferingStream,
+      initialData: mediaPlayerBloc.isBuffering,
+      builder: (context, snapshot) {
+        var isBuffering = snapshot.data!;
 
-          if (isBuffering) {
-            return _FediPlayerControlPositionDurationLoadingWidget();
-          } else {
-            return _FediPlayerControlPositionDurationBodyWidget();
-          }
-        });
+        if (isBuffering) {
+          return _FediPlayerControlPositionDurationLoadingWidget();
+        } else {
+          return _FediPlayerControlPositionDurationBodyWidget();
+        }
+      },
+    );
   }
 
   const FediPlayerControlPositionDurationWidget();

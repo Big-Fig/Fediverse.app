@@ -21,8 +21,10 @@ void showEditGlobalMediaSettingsDialog({
     child: DisposableProvider<IMediaSettingsBloc>(
       create: (context) => MediaSettingsBloc(
         instanceLocalPreferencesBloc:
-            IInstanceMediaSettingsLocalPreferencesBloc.of(context,
-                listen: false),
+            IInstanceMediaSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
         globalLocalPreferencesBloc:
             IGlobalMediaSettingsLocalPreferencesBloc.of(context, listen: false),
       ),

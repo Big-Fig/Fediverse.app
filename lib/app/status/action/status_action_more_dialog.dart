@@ -103,7 +103,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               showReportAction: true,
             ),
           ),
-        ]
+        ],
       ],
     );
   }
@@ -130,7 +130,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
     return DialogAction(
       icon: FediIcons.instance,
       label: S.of(context).app_status_action_openOnRemoteInstance(
-          statusBloc.account.acctRemoteDomainOrNull!),
+            statusBloc.account.acctRemoteDomainOrNull!,
+          ),
       onAction: (context) async {
         await goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
           context,
@@ -185,7 +186,9 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           : S.of(context).app_status_action_pin,
       onAction: (context) async {
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-            context: context, asyncCode: () => statusBloc.togglePin());
+          context: context,
+          asyncCode: () => statusBloc.togglePin(),
+        );
 
         Navigator.of(context).pop();
       },
@@ -232,7 +235,9 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           : S.of(context).app_status_action_bookmark,
       onAction: (context) async {
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-            context: context, asyncCode: () => statusBloc.toggleBookmark());
+          context: context,
+          asyncCode: () => statusBloc.toggleBookmark(),
+        );
 
         Navigator.of(context).pop();
       },
@@ -312,22 +317,24 @@ class _StatusActionMoreDialogBodyStatusActionsWidget extends StatelessWidget {
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(status);
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
     return FediChooserDialogBody(
-        title: S.of(context).app_status_action_popup_title,
-        actions: [
-          if (isLocal && isStatusFromMe)
-            StatusActionMoreDialogBody.buildDeleteAction(context),
-          if (isLocal && isStatusFromMe)
-            StatusActionMoreDialogBody.buildPinAction(context),
-          if (isLocal && isStatusFromMe)
-            StatusActionMoreDialogBody.buildMuteConversationAction(context),
-          if (isLocal) StatusActionMoreDialogBody.buildBookmarkAction(context),
-          StatusActionMoreDialogBody.buildCopyAction(context),
-          StatusActionMoreDialogBody.buildOpenInBrowserAction(context),
-          if (isLocal && statusBloc.account.isAcctRemoteDomainExist)
-            StatusActionMoreDialogBody.buildAccountOpenOnRemoteInstance(
-                context),
-          StatusActionMoreDialogBody.buildShareAction(context),
-        ],
-        cancelable: false);
+      title: S.of(context).app_status_action_popup_title,
+      actions: [
+        if (isLocal && isStatusFromMe)
+          StatusActionMoreDialogBody.buildDeleteAction(context),
+        if (isLocal && isStatusFromMe)
+          StatusActionMoreDialogBody.buildPinAction(context),
+        if (isLocal && isStatusFromMe)
+          StatusActionMoreDialogBody.buildMuteConversationAction(context),
+        if (isLocal) StatusActionMoreDialogBody.buildBookmarkAction(context),
+        StatusActionMoreDialogBody.buildCopyAction(context),
+        StatusActionMoreDialogBody.buildOpenInBrowserAction(context),
+        if (isLocal && statusBloc.account.isAcctRemoteDomainExist)
+          StatusActionMoreDialogBody.buildAccountOpenOnRemoteInstance(
+            context,
+          ),
+        StatusActionMoreDialogBody.buildShareAction(context),
+      ],
+      cancelable: false,
+    );
   }
 }

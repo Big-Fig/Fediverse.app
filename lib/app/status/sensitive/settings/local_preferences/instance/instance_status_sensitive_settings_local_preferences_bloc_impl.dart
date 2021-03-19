@@ -8,6 +8,8 @@ class InstanceStatusSensitiveSettingsLocalPreferencesBloc
   InstanceStatusSensitiveSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
-  }) : super(preferencesService,
-            "statusSensitive.settings.instance.$userAtHost");
+  }) : super(
+          preferencesService,
+          "statusSensitive.settings.instance.$userAtHost",
+        );
 }

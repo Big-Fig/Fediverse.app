@@ -25,7 +25,8 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
   @override
   Future<List<IMediaDeviceFolder>> loadFoldersInformation() async {
     var assetPathEntities = await PhotoManager.getAssetPathList(
-        type: mapFileTypesToPickToRequestType(typesToPick));
+      type: mapFileTypesToPickToRequestType(typesToPick),
+    );
     assetPathEntities.sort(PhotoManagerMediaDeviceGalleryBloc
         .compareAlbumsAlphabeticallyAndFeatured);
     return assetPathEntities
@@ -38,7 +39,9 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
   }
 
   static int compareAlbumsAlphabeticallyAndFeatured(
-      AssetPathEntity a, AssetPathEntity b) {
+    AssetPathEntity a,
+    AssetPathEntity b,
+  ) {
     var aName = a.name;
     var bName = b.name;
 
@@ -48,7 +51,9 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
   }
 
   static int compareAlbumTitlesAlphabeticallyAndFeatured(
-      String aName, String bName) {
+    String aName,
+    String bName,
+  ) {
     // TODO: refactor for different languages
     // or wait until photo_manager lib will return album type
     const List<String> iosLatestEnNames = ["Recently Added", "Recents"];
@@ -69,7 +74,8 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
   }
 
   static RequestType mapFileTypesToPickToRequestType(
-      List<MediaDeviceFileType> fileTypesToPick) {
+    List<MediaDeviceFileType> fileTypesToPick,
+  ) {
     var isNeedImage = fileTypesToPick.contains(MediaDeviceFileType.image);
     var isNeedVideo = fileTypesToPick.contains(MediaDeviceFileType.video);
     var isNeedAudio = fileTypesToPick.contains(MediaDeviceFileType.audio);

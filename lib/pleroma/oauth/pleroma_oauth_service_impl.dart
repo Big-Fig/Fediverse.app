@@ -59,7 +59,9 @@ class PleromaOAuthService extends DisposableOwner
       return restResponse.body!;
     } else {
       throw PleromaOAuthException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -89,16 +91,19 @@ class PleromaOAuthService extends DisposableOwner
     var completer = Completer<String>();
     if (isCanLaunch) {
       late StreamSubscription<Uri?> subscription;
-      subscription = uriLinkStream.listen((Uri? uri) {
-        subscription.cancel();
-        closeWebView();
-        var code = extractAuthCodeFromUri(uri!);
-        completer.complete(code);
-      }, onError: (e) {
-        subscription.cancel();
-        closeWebView();
-        completer.completeError(e);
-      });
+      subscription = uriLinkStream.listen(
+        (Uri? uri) {
+          subscription.cancel();
+          closeWebView();
+          var code = extractAuthCodeFromUri(uri!);
+          completer.complete(code);
+        },
+        onError: (e) {
+          subscription.cancel();
+          closeWebView();
+          completer.completeError(e);
+        },
+      );
       _logger.finest(() => "launch url=$url");
       await launch(url);
     } else {
@@ -149,8 +154,9 @@ class PleromaOAuthService extends DisposableOwner
   }
 
   @override
-  Future<bool> revokeToken(
-      {required PleromaOAuthAppTokenRevokeRequest revokeRequest}) async {
+  Future<bool> revokeToken({
+    required PleromaOAuthAppTokenRevokeRequest revokeRequest,
+  }) async {
     var request = RestRequest.post(
       relativePath: join(oauthRelativeUrlPath, "revoke"),
       bodyJson: revokeRequest.toJson(),

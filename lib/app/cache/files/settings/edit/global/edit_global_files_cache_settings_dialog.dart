@@ -21,11 +21,15 @@ void showEditGlobalFilesCacheSettingsDialog({
     child: DisposableProvider<IFilesCacheSettingsBloc>(
       create: (context) => FilesCacheSettingsBloc(
         instanceLocalPreferencesBloc:
-            IInstanceFilesCacheSettingsLocalPreferencesBloc.of(context,
-                listen: false),
+            IInstanceFilesCacheSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
         globalLocalPreferencesBloc:
-            IGlobalFilesCacheSettingsLocalPreferencesBloc.of(context,
-                listen: false),
+            IGlobalFilesCacheSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
       ),
       child: DisposableProxyProvider<IFilesCacheSettingsBloc,
           IEditFilesCacheSettingsBloc>(

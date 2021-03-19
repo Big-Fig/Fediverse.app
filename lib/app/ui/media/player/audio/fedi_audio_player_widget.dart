@@ -45,23 +45,24 @@ class _FediAudioPlayerErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context);
     return StreamBuilder<bool>(
-        stream: mediaPlayerBloc.isHaveErrorStream,
-        builder: (context, snapshot) {
-          var isHaveError = snapshot.data ?? false;
-          if (isHaveError) {
-            return Positioned.fill(
-              child: Container(
-                color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
-                child: Padding(
-                  padding: FediPadding.horizontalBigPadding,
-                  child: const _FediAudioPlayerErrorBodyWidget(),
-                ),
+      stream: mediaPlayerBloc.isHaveErrorStream,
+      builder: (context, snapshot) {
+        var isHaveError = snapshot.data ?? false;
+        if (isHaveError) {
+          return Positioned.fill(
+            child: Container(
+              color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
+              child: Padding(
+                padding: FediPadding.horizontalBigPadding,
+                child: const _FediAudioPlayerErrorBodyWidget(),
               ),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 

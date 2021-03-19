@@ -32,13 +32,15 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: <Widget>[
           _ScheduledStatusListItemHeaderWidget(
-              successCallback: successCallback),
+            successCallback: successCallback,
+          ),
           const FediUltraLightGreyDivider(),
           ProxyProvider<IScheduledStatusBloc, IStatus>(
             update: (context, value, previous) =>
                 ScheduledStatusAdapterToStatus(
-                    scheduledStatus: value.scheduledStatus!,
-                    account: IMyAccountBloc.of(context, listen: false).account),
+              scheduledStatus: value.scheduledStatus!,
+              account: IMyAccountBloc.of(context, listen: false).account,
+            ),
             child:
                 DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
               update: (context, status, _) => StatusListItemTimelineBloc.list(
@@ -106,10 +108,11 @@ class _ScheduledStatusListItemScheduledHeaderWidget extends StatelessWidget {
           Row(
             children: [
               _ScheduledStatusListItemEditButtonWidget(
-                  successCallback: successCallback),
+                successCallback: successCallback,
+              ),
               const _ScheduledStatusListItemCancelButtonWidget(),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -125,15 +128,16 @@ class _ScheduledStatusListItemScheduledAtWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var scheduledStatusBloc = IScheduledStatusBloc.of(context);
     return StreamBuilder<DateTime?>(
-        stream: scheduledStatusBloc.scheduledAtStream,
-        initialData: scheduledStatusBloc.scheduledAt,
-        builder: (context, snapshot) {
-          var scheduledAt = snapshot.data!;
-          return Text(
-            dateFormat.format(scheduledAt),
-            style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
-          );
-        });
+      stream: scheduledStatusBloc.scheduledAtStream,
+      initialData: scheduledStatusBloc.scheduledAt,
+      builder: (context, snapshot) {
+        var scheduledAt = snapshot.data!;
+        return Text(
+          dateFormat.format(scheduledAt),
+          style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+        );
+      },
+    );
   }
 }
 
@@ -146,19 +150,20 @@ class _ScheduledStatusListItemAlreadyPostedHeaderWidget
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: FediPadding.horizontalSmallPadding,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: FediPadding.allSmallPadding,
-              child: Text(
-                S.of(context).app_status_scheduled_state_alreadyPosted,
-                style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
-              ),
-            )
-          ],
-        ));
+      padding: FediPadding.horizontalSmallPadding,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: FediPadding.allSmallPadding,
+            child: Text(
+              S.of(context).app_status_scheduled_state_alreadyPosted,
+              style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -180,7 +185,7 @@ class _ScheduledStatusListItemCanceledHeaderWidget extends StatelessWidget {
               S.of(context).app_status_scheduled_state_canceled,
               style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
             ),
-          )
+          ),
         ],
       ),
     );

@@ -10,24 +10,27 @@ class PleromaChatWithLastMessagePaginationListWithNewItemsBloc<
         IPleromaChatWithLastMessage> {
   final IPleromaChatWithLastMessageCachedListBloc cachedListBloc;
 
-  PleromaChatWithLastMessagePaginationListWithNewItemsBloc(
-      {required bool mergeNewItemsImmediately,
-      required this.cachedListBloc,
-      required ICachedPaginationBloc<TPage, IPleromaChatWithLastMessage>
-          paginationBloc})
-      : super(
+  PleromaChatWithLastMessagePaginationListWithNewItemsBloc({
+    required bool mergeNewItemsImmediately,
+    required this.cachedListBloc,
+    required ICachedPaginationBloc<TPage, IPleromaChatWithLastMessage>
+        paginationBloc,
+  }) : super(
           mergeNewItemsImmediately: mergeNewItemsImmediately,
           paginationBloc: paginationBloc,
         );
 
   @override
   Stream<List<IPleromaChatWithLastMessage>> watchItemsNewerThanItem(
-          IPleromaChatWithLastMessage item) =>
+    IPleromaChatWithLastMessage item,
+  ) =>
       cachedListBloc.watchLocalItemsNewerThanItem(item);
 
   @override
   int compareItemsToSort(
-      IPleromaChatWithLastMessage? a, IPleromaChatWithLastMessage? b) {
+    IPleromaChatWithLastMessage? a,
+    IPleromaChatWithLastMessage? b,
+  ) {
     if (a?.chat.updatedAt == null && b?.chat.updatedAt == null) {
       return 0;
     } else if (a?.chat.updatedAt != null && b?.chat.updatedAt == null) {
@@ -41,6 +44,8 @@ class PleromaChatWithLastMessagePaginationListWithNewItemsBloc<
 
   @override
   bool isItemsEqual(
-          IPleromaChatWithLastMessage a, IPleromaChatWithLastMessage b) =>
+    IPleromaChatWithLastMessage a,
+    IPleromaChatWithLastMessage b,
+  ) =>
       a.chat.remoteId == b.chat.remoteId;
 }

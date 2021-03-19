@@ -34,9 +34,10 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
   late var progressDialog;
   if (showProgressDialog) {
     progressDialog = FediIndeterminateProgressDialog(
-        cancelable: cancelable,
-        contentMessage: contentMessage ?? S.of(context).dialog_progress_content,
-        cancelableOperation: cancelableOperation);
+      cancelable: cancelable,
+      contentMessage: contentMessage ?? S.of(context).dialog_progress_content,
+      cancelableOperation: cancelableOperation,
+    );
     progressDialog.show(context);
   }
 
@@ -70,25 +71,25 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
 
     if (needRethrow) {
       _logger.severe(
-          () => "rethrow error during "
-              "doAsyncOperationWithFediDialog",
-          error,
-          stackTrace);
+        () => "rethrow error during "
+            "doAsyncOperationWithFediDialog",
+        error,
+        stackTrace,
+      );
     } else {
       _logger.warning(
-          () => "handled error during "
-              "doAsyncOperationWithFediDialog",
-          error,
-          stackTrace);
+        () => "handled error during "
+            "doAsyncOperationWithFediDialog",
+        error,
+        stackTrace,
+      );
     }
   } finally {
     progressDialog?.hide(context);
   }
 
   // wait until progress dialog actually hides
-  await Future.delayed(Duration(milliseconds: 100), () {
-
-  });
+  await Future.delayed(Duration(milliseconds: 100), () {});
 
   AsyncDialogResult<T> dialogResult;
   if (progressDialog?.isCanceled == true) {

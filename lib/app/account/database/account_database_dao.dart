@@ -13,24 +13,26 @@ var _statusFavouritedAccounts = "statusFavouritedAccounts";
 var _conversationAccountsAliasId = "conversationAccounts";
 var _chatAccountsAliasId = "chatAccountsAliasId";
 
-@UseDao(tables: [
-  DbAccounts
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_accounts;",
-  "findById": "SELECT * FROM db_accounts WHERE id = :id;",
-  "findByRemoteId": "SELECT * FROM db_accounts WHERE remote_id LIKE :remoteId;",
-  "oldest": "SELECT * FROM db_accounts ORDER BY last_status_at ASC LIMIT 1;",
-  "countById": "SELECT COUNT(*) FROM db_accounts WHERE id = :id;",
-  "deleteById": "DELETE FROM db_accounts WHERE id = :id;",
-  "clear": "DELETE FROM db_accounts",
-  "getAll": "SELECT * FROM db_accounts",
-  "findLocalIdByRemoteId": "SELECT id FROM db_accounts WHERE remote_id = "
-      ":remoteId;",
-  "deleteOlderThanLocalId": "DELETE FROM db_accounts WHERE id = "
-      ":id;",
-  "getNewestByLocalIdWithOffset":
-      "SELECT * FROM db_accounts ORDER BY id DESC LIMIT 1 OFFSET :offset",
-})
+@UseDao(
+  tables: [DbAccounts],
+  queries: {
+    "countAll": "SELECT Count(*) FROM db_accounts;",
+    "findById": "SELECT * FROM db_accounts WHERE id = :id;",
+    "findByRemoteId":
+        "SELECT * FROM db_accounts WHERE remote_id LIKE :remoteId;",
+    "oldest": "SELECT * FROM db_accounts ORDER BY last_status_at ASC LIMIT 1;",
+    "countById": "SELECT COUNT(*) FROM db_accounts WHERE id = :id;",
+    "deleteById": "DELETE FROM db_accounts WHERE id = :id;",
+    "clear": "DELETE FROM db_accounts",
+    "getAll": "SELECT * FROM db_accounts",
+    "findLocalIdByRemoteId": "SELECT id FROM db_accounts WHERE remote_id = "
+        ":remoteId;",
+    "deleteOlderThanLocalId": "DELETE FROM db_accounts WHERE id = "
+        ":id;",
+    "getNewestByLocalIdWithOffset":
+        "SELECT * FROM db_accounts ORDER BY id DESC LIMIT 1 OFFSET :offset",
+  },
+)
 class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
   final AppDatabase db;
   $DbAccountsTable? accountAlias;
@@ -64,7 +66,9 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
       into(dbAccounts).insert(entity, mode: InsertMode.insertOrReplace);
 
   Future insertAll(
-          List<Insertable<DbAccount>> entities, InsertMode mode) async =>
+    List<Insertable<DbAccount>> entities,
+    InsertMode mode,
+  ) async =>
       await batch(
         (batch) {
           batch.insertAll(
@@ -79,7 +83,9 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
       await update(dbAccounts).replace(entity);
 
   Future<int> updateByRemoteId(
-      String remoteId, Insertable<DbAccount> entity) async {
+    String remoteId,
+    Insertable<DbAccount> entity,
+  ) async {
     var localId = await findLocalIdByRemoteId(remoteId).getSingleOrNull();
 
     if (localId != null && localId >= 0) {
@@ -111,12 +117,14 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
 
     if (minimumExist) {
       var biggerExp = CustomExpression<bool>(
-          "db_accounts.remote_id > '$minimumRemoteIdExcluding'");
+        "db_accounts.remote_id > '$minimumRemoteIdExcluding'",
+      );
       query = query..where((account) => biggerExp);
     }
     if (maximumExist) {
       var smallerExp = CustomExpression<bool>(
-          "db_accounts.remote_id < '$maximumRemoteIdExcluding'");
+        "db_accounts.remote_id < '$maximumRemoteIdExcluding'",
+      );
       query = query..where((account) => smallerExp);
     }
 
@@ -124,8 +132,9 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
   }
 
   SimpleSelectStatement<$DbAccountsTable, DbAccount> orderBy(
-          SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
-          List<AccountRepositoryOrderingTermData> orderTerms) =>
+    SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
+    List<AccountRepositoryOrderingTermData> orderTerms,
+  ) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
@@ -136,7 +145,9 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
                       break;
                   }
                   return OrderingTerm(
-                      expression: expression, mode: orderTerm.orderingMode);
+                    expression: expression,
+                    mode: orderTerm.orderingMode,
+                  );
                 })
             .toList());
 
@@ -152,102 +163,126 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
       ...(includeAccountFollowings
           ? [
               innerJoin(
-                  accountFollowingsAlias,
-                  accountFollowingsAlias.followingAccountRemoteId
-                      .equalsExp(dbAccounts.remoteId))
+                accountFollowingsAlias,
+                accountFollowingsAlias.followingAccountRemoteId
+                    .equalsExp(dbAccounts.remoteId),
+              ),
             ]
           : []),
       ...(includeAccountFollowers
           ? [
               innerJoin(
-                  accountFollowersAlias,
-                  accountFollowersAlias.followerAccountRemoteId
-                      .equalsExp(dbAccounts.remoteId))
+                accountFollowersAlias,
+                accountFollowersAlias.followerAccountRemoteId
+                    .equalsExp(dbAccounts.remoteId),
+              ),
             ]
           : []),
       ...(includeStatusFavouritedAccounts
           ? [
               innerJoin(
-                  statusFavouritedAccountsAlias,
-                  statusFavouritedAccountsAlias.accountRemoteId
-                      .equalsExp(dbAccounts.remoteId))
+                statusFavouritedAccountsAlias,
+                statusFavouritedAccountsAlias.accountRemoteId
+                    .equalsExp(dbAccounts.remoteId),
+              ),
             ]
           : []),
       ...(includeStatusRebloggedAccounts
           ? [
               innerJoin(
-                  statusRebloggedAccountsAlias,
-                  statusRebloggedAccountsAlias.accountRemoteId
-                      .equalsExp(dbAccounts.remoteId))
+                statusRebloggedAccountsAlias,
+                statusRebloggedAccountsAlias.accountRemoteId
+                    .equalsExp(dbAccounts.remoteId),
+              ),
             ]
           : []),
       ...(includeConversationAccounts
           ? [
               leftOuterJoin(
-                  conversationAccountsAlias,
-                  conversationAccountsAlias.accountRemoteId
-                      .equalsExp(dbAccounts.remoteId))
+                conversationAccountsAlias,
+                conversationAccountsAlias.accountRemoteId
+                    .equalsExp(dbAccounts.remoteId),
+              ),
             ]
           : []),
       ...(includeChatAccounts
           ? [
               leftOuterJoin(
-                  chatAccountsAlias,
-                  chatAccountsAlias.accountRemoteId
-                      .equalsExp(dbAccounts.remoteId))
+                chatAccountsAlias,
+                chatAccountsAlias.accountRemoteId
+                    .equalsExp(dbAccounts.remoteId),
+              ),
             ]
-          : [])
+          : []),
     ];
     return allJoins;
   }
 
   SimpleSelectStatement<$DbAccountsTable, DbAccount> addSearchWhere(
-          SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
-          String? searchQuery) =>
+    SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
+    String? searchQuery,
+  ) =>
       query..where((account) => account.acct.like("%$searchQuery%"));
 
   JoinedSelectStatement addConversationWhere(
-          JoinedSelectStatement query, String? conversationRemoteId) =>
+    JoinedSelectStatement query,
+    String? conversationRemoteId,
+  ) =>
       query
         ..where(CustomExpression<bool>(
-            "$_conversationAccountsAliasId.conversation_remote_id"
-            " = '$conversationRemoteId'"));
+          "$_conversationAccountsAliasId.conversation_remote_id"
+          " = '$conversationRemoteId'",
+        ));
 
   JoinedSelectStatement addChatWhere(
-          JoinedSelectStatement query, String? chatRemoteId) =>
+    JoinedSelectStatement query,
+    String? chatRemoteId,
+  ) =>
       query
         ..where(CustomExpression<bool>("$_chatAccountsAliasId.chat_remote_id"
             " = '$chatRemoteId'"));
 
   JoinedSelectStatement addStatusFavouritedByWhere(
-          JoinedSelectStatement query, String? statusRemoteId) =>
+    JoinedSelectStatement query,
+    String? statusRemoteId,
+  ) =>
       query
         ..where(
-            CustomExpression<bool>("$_statusFavouritedAccounts.status_remote_id"
-                " = '$statusRemoteId'"));
+          CustomExpression<bool>("$_statusFavouritedAccounts.status_remote_id"
+              " = '$statusRemoteId'"),
+        );
 
   JoinedSelectStatement addStatusRebloggedByWhere(
-          JoinedSelectStatement query, String? statusRemoteId) =>
+    JoinedSelectStatement query,
+    String? statusRemoteId,
+  ) =>
       query
         ..where(
-            CustomExpression<bool>("$_statusRebloggedAccounts.status_remote_id"
-                " = '$statusRemoteId'"));
+          CustomExpression<bool>("$_statusRebloggedAccounts.status_remote_id"
+              " = '$statusRemoteId'"),
+        );
 
   // todo: rework with single relationship table
   JoinedSelectStatement addFollowingsWhere(
-          JoinedSelectStatement query, String? followingAccountRemoteId) =>
+    JoinedSelectStatement query,
+    String? followingAccountRemoteId,
+  ) =>
       query
         ..where(CustomExpression<bool>(
-            "$_accountFollowingsAliasId.account_remote_id"
-            " = '$followingAccountRemoteId'"));
+          "$_accountFollowingsAliasId.account_remote_id"
+          " = '$followingAccountRemoteId'",
+        ));
 
   // todo: rework with single relationship table
   JoinedSelectStatement addFollowersWhere(
-          JoinedSelectStatement query, String? followerAccountRemoteId) =>
+    JoinedSelectStatement query,
+    String? followerAccountRemoteId,
+  ) =>
       query
         ..where(
-            CustomExpression<bool>("$_accountFollowersAliasId.account_remote_id"
-                " = '$followerAccountRemoteId'"));
+          CustomExpression<bool>("$_accountFollowersAliasId.account_remote_id"
+              " = '$followerAccountRemoteId'"),
+        );
 
   List<DbAccount> typedResultListToPopulated(List<TypedResult> typedResult) {
     return typedResult.map(typedResultToPopulated).toList();

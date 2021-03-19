@@ -91,7 +91,8 @@ class NotificationRepository extends AsyncInitLoadingBloc
     required bool? unread,
   }) async {
     _logger.finer(
-        () => "upsertRemoteNotifications ${remoteNotifications!.length} ");
+      () => "upsertRemoteNotifications ${remoteNotifications!.length} ",
+    );
     if (remoteNotifications!.isEmpty) {
       return;
     }
@@ -343,14 +344,16 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   DbNotificationPopulatedWrapper mapDataClassToItem(
-      DbNotificationPopulated dataClass) {
+    DbNotificationPopulated dataClass,
+  ) {
     return DbNotificationPopulatedWrapper(
       dbNotificationPopulated: dataClass,
     );
   }
 
   Insertable<DbNotification> mapItemToDataClass(
-      DbNotificationPopulatedWrapper item) {
+    DbNotificationPopulatedWrapper item,
+  ) {
     return item.dbNotificationPopulated.dbNotification;
   }
 

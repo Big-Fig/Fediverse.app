@@ -92,7 +92,8 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     );
 
     timelineSettingsBloc = TimelineSettingsBloc(
-        timelineLocalPreferencesBloc: timelineLocalPreferencesBloc);
+      timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
+    );
 
     editTimelineSettingsBlocSubject = BehaviorSubject.seeded(
       EditTimelineSettingsBloc(

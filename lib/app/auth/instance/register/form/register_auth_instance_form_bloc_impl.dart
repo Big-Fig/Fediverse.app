@@ -46,7 +46,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
       pleromaCaptchaService: pleromaCaptchaService,
       originValue: null,
       validators: [
-        StringValueFormFieldNonEmptyValidationError.createValidator()
+        StringValueFormFieldNonEmptyValidationError.createValidator(),
       ],
     );
 
@@ -78,7 +78,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
   @override
   final BoolValueFormFieldBloc agreeTermsOfServiceFieldBloc =
       BoolValueFormFieldBloc(originValue: false, validators: [
-    BoolValueFormFieldOnlyTrueValidationError.createValidator()
+    BoolValueFormFieldOnlyTrueValidationError.createValidator(),
   ]);
 
   @override
@@ -103,7 +103,9 @@ class RegisterAuthInstanceFormBloc extends FormBloc
     originValue: "",
     validators: [
       StringValueFormFieldLengthValidationError.createValidator(
-          minLength: 4, maxLength: null)
+        minLength: 4,
+        maxLength: null,
+      ),
     ],
     maxLength: null,
   );

@@ -197,7 +197,10 @@ class EditMyAccountPleromaBackgroundFieldEditButtonWidget
                   .pickNewFile(filePickerFile);
             } catch (e, stackTrace) {
               _logger.warning(
-                  "startChoosingFileToUploadBackground error", e, stackTrace);
+                "startChoosingFileToUploadBackground error",
+                e,
+                stackTrace,
+              );
               showMediaAttachmentFailedNotificationOverlay(context, e);
             }
           }
@@ -228,7 +231,9 @@ class EditMyAccountPleromaBackgroundFieldDeleteButtonWidget
 }
 
 void startChoosingFileToUploadBackground(
-    BuildContext context, IEditMyAccountBloc editMyAccountBloc) async {
+  BuildContext context,
+  IEditMyAccountBloc editMyAccountBloc,
+) async {
   var mediaDeviceFile = await goToSingleMediaPickerPage(
     context,
     typesToPick: [
@@ -247,7 +252,10 @@ void startChoosingFileToUploadBackground(
         await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
       } catch (e, stackTrace) {
         _logger.warning(
-            "startChoosingFileToUploadBackground error", e, stackTrace);
+          "startChoosingFileToUploadBackground error",
+          e,
+          stackTrace,
+        );
         showMediaAttachmentFailedNotificationOverlay(context, e);
       }
     }

@@ -44,10 +44,11 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
 
             var dialogResult =
                 await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-                    context: context,
-                    asyncCode: () async {
-                      return await pleromaListService.getLists();
-                    });
+              context: context,
+              asyncCode: () async {
+                return await pleromaListService.getLists();
+              },
+            );
 
             if (dialogResult.success) {
               var remoteLists = dialogResult.result!;
@@ -60,8 +61,7 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
                 actions: remoteLists
                     .map(
                       (remoteList) => SelectionDialogAction(
-                        isSelected:
-                            remoteList.id == fieldBloc.currentValue?.id,
+                        isSelected: remoteList.id == fieldBloc.currentValue?.id,
                         label: remoteList.title,
                         onAction: (context) {
                           fieldBloc.changeCurrentValue(remoteList);

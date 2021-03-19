@@ -32,7 +32,8 @@ class RemoteAccountStatusesWithRepliesNetworkOnlyListBloc
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
     var pleromaAccountService = PleromaAccountService(
-        restService: remoteInstanceBloc.pleromaRestService);
+      restService: remoteInstanceBloc.pleromaRestService,
+    );
 
     var bloc = RemoteAccountStatusesWithRepliesNetworkOnlyListBloc(
       account: account,

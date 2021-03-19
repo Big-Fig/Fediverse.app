@@ -4,8 +4,12 @@ import 'package:provider/provider.dart';
 
 abstract class IInstanceToastSettingsLocalPreferencesBloc
     implements IToastSettingsLocalPreferencesBloc {
-  static IInstanceToastSettingsLocalPreferencesBloc of(BuildContext context,
-      {bool listen = true}) =>
-      Provider.of<IInstanceToastSettingsLocalPreferencesBloc>(context,
-          listen: listen);
+  static IInstanceToastSettingsLocalPreferencesBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IInstanceToastSettingsLocalPreferencesBloc>(
+        context,
+        listen: listen,
+      );
 }

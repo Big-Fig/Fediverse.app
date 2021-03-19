@@ -27,9 +27,10 @@ class ConversationChatShareMediaPage extends StatelessWidget {
   }
 }
 
-void goToConversationShareMediaPage(
-    {required BuildContext context,
-    required IPleromaMediaAttachment? mediaAttachment}) {
+void goToConversationShareMediaPage({
+  required BuildContext context,
+  required IPleromaMediaAttachment? mediaAttachment,
+}) {
   Navigator.push(
     context,
     createConversationShareMediaPageRoute(
@@ -44,12 +45,13 @@ MaterialPageRoute createConversationShareMediaPageRoute({
   required IPleromaMediaAttachment? mediaAttachment,
 }) {
   return MaterialPageRoute(
-    builder: (context) =>
-        ConversationChatShareMediaBloc.provideToContext(context,
-            mediaAttachment: mediaAttachment,
-            child: Provider<IPleromaMediaAttachment?>.value(
-              value: mediaAttachment,
-              child: const ConversationChatShareMediaPage(),
-            )),
+    builder: (context) => ConversationChatShareMediaBloc.provideToContext(
+      context,
+      mediaAttachment: mediaAttachment,
+      child: Provider<IPleromaMediaAttachment?>.value(
+        value: mediaAttachment,
+        child: const ConversationChatShareMediaPage(),
+      ),
+    ),
   );
 }

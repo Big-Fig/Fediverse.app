@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 
 abstract class IEditChatSettingsBloc
     implements IEditGlobalOrInstanceSettingsBloc<ChatSettings?> {
-  static IEditChatSettingsBloc of(BuildContext context,
-      {bool listen = true}) =>
+  static IEditChatSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IEditChatSettingsBloc>(context, listen: listen);
 
   IBoolValueFormFieldBloc get countConversationsInChatsUnreadBadgesFieldBloc;

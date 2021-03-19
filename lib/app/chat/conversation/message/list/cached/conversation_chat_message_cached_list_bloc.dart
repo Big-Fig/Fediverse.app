@@ -6,10 +6,14 @@ import 'package:provider/provider.dart';
 
 abstract class IConversationChatMessageCachedListBloc
     implements IDisposable, IPleromaCachedListBloc<IConversationChatMessage> {
-  static IConversationChatMessageCachedListBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IConversationChatMessageCachedListBloc>(context,
-          listen: listen);
+  static IConversationChatMessageCachedListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IConversationChatMessageCachedListBloc>(
+        context,
+        listen: listen,
+      );
 
   Stream<List<IConversationChatMessage>> watchLocalItemsNewerThanItem(
     IConversationChatMessage item,

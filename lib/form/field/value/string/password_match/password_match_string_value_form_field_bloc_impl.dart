@@ -19,7 +19,7 @@ class PasswordMatchStringValueFormFieldBloc extends StringValueFormFieldBloc {
           } else {
             return PasswordMatchStringValueFormFieldValidationError();
           }
-        }
+        },
       ];
 
   PasswordMatchStringValueFormFieldBloc({

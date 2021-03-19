@@ -5,8 +5,11 @@ import 'package:provider/provider.dart';
 abstract class IInstanceStatusSensitiveSettingsLocalPreferencesBloc
     implements IStatusSensitiveSettingsLocalPreferencesBloc {
   static IInstanceStatusSensitiveSettingsLocalPreferencesBloc of(
-          BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IInstanceStatusSensitiveSettingsLocalPreferencesBloc>(context,
-          listen: listen);
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IInstanceStatusSensitiveSettingsLocalPreferencesBloc>(
+        context,
+        listen: listen,
+      );
 }

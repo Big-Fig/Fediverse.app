@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 class GroupPermissionBloc extends AsyncInitLoadingBloc
     implements IPermissionBloc {
   final List<IPermissionBloc> permissionBlocs;
+
   GroupPermissionBloc(this.permissionBlocs);
 
   @override
@@ -37,10 +38,12 @@ class GroupPermissionBloc extends AsyncInitLoadingBloc
   }
 
   PermissionStatus _onPermissionStatusesChanged(
-      List<PermissionStatus?> permissionStatuses) {
+    List<PermissionStatus?> permissionStatuses,
+  ) {
     var allGranted = true;
     for (var permissionStatus in permissionStatuses) {
-      allGranted &= IPermissionBloc.mapPermissionStatusToBool(permissionStatus)!;
+      allGranted &=
+          IPermissionBloc.mapPermissionStatusToBool(permissionStatus)!;
       if (!allGranted) {
         break;
       }

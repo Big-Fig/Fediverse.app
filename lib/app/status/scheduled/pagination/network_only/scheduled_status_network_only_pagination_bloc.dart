@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class IScheduledStatusNetworkOnlyPaginationBloc
     implements INetworkOnlyPleromaPaginationBloc<IScheduledStatus> {
-  static IScheduledStatusNetworkOnlyPaginationBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IScheduledStatusNetworkOnlyPaginationBloc>(context,
-          listen: listen);
+  static IScheduledStatusNetworkOnlyPaginationBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IScheduledStatusNetworkOnlyPaginationBloc>(
+        context,
+        listen: listen,
+      );
 }

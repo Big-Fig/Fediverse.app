@@ -4,8 +4,12 @@ import 'package:provider/provider.dart';
 
 abstract class IInstanceChatSettingsLocalPreferencesBloc
     implements IChatSettingsLocalPreferencesBloc {
-  static IInstanceChatSettingsLocalPreferencesBloc of(BuildContext context,
-      {bool listen = true}) =>
-      Provider.of<IInstanceChatSettingsLocalPreferencesBloc>(context,
-          listen: listen);
+  static IInstanceChatSettingsLocalPreferencesBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IInstanceChatSettingsLocalPreferencesBloc>(
+        context,
+        listen: listen,
+      );
 }

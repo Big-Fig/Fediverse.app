@@ -26,11 +26,12 @@ class SearchResultItemNetworkOnlyListBloc
   });
 
   @override
-  Future<List<ISearchResultItem>> loadItemsFromRemoteForPage(
-      {required int? itemsCountPerPage,
-      required int pageIndex,
-      required String? minId,
-      required String? maxId}) async {
+  Future<List<ISearchResultItem>> loadItemsFromRemoteForPage({
+    required int? itemsCountPerPage,
+    required int pageIndex,
+    required String? minId,
+    required String? maxId,
+  }) async {
     var query = searchInputBloc.confirmedSearchTerm;
     List<ISearchResultItem> resultItems = [];
 
@@ -101,8 +102,10 @@ class SearchResultItemNetworkOnlyListBloc
         ),
       );
 
-  static Widget provideToContext(BuildContext context,
-      {required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) {
     return DisposableProvider<ISearchResultItemNetworkOnlyListBloc>(
       create: (context) =>
           SearchResultItemNetworkOnlyListBloc.createFromContext(context),

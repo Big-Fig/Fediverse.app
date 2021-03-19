@@ -9,26 +9,28 @@ part 'pleroma_chat_message_database_dao.g.dart';
 
 var _accountAliasId = "account";
 
-@UseDao(tables: [
-  DbChatMessages
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_chat_messages;",
-  "countById": "SELECT COUNT(*) FROM db_chat_messages WHERE id = :id;",
-  "deleteById": "DELETE FROM db_chat_messages WHERE id = :id;",
-  "deleteByRemoteId": "DELETE FROM db_chat_messages WHERE remote_id = "
-      ":remoteId;",
-  "clear": "DELETE FROM db_chat_messages",
-  "getAll": "SELECT * FROM db_chat_messages",
-  "oldest": "SELECT * FROM db_chat_messages ORDER BY created_at ASC LIMIT 1;",
-  "findLocalIdByRemoteId": "SELECT id FROM db_chat_messages WHERE remote_id = "
-      ":remoteId;",
-  "deleteOlderThanDate":
-      "DELETE FROM db_chat_messages WHERE created_at < :createdAt",
-  "deleteOlderThanLocalId": "DELETE FROM db_chat_messages WHERE id = "
-      ":localId;",
-  "getNewestByLocalIdWithOffset":
-      "SELECT * FROM db_chat_messages ORDER BY id DESC LIMIT 1 OFFSET :offset",
-})
+@UseDao(
+  tables: [DbChatMessages],
+  queries: {
+    "countAll": "SELECT Count(*) FROM db_chat_messages;",
+    "countById": "SELECT COUNT(*) FROM db_chat_messages WHERE id = :id;",
+    "deleteById": "DELETE FROM db_chat_messages WHERE id = :id;",
+    "deleteByRemoteId": "DELETE FROM db_chat_messages WHERE remote_id = "
+        ":remoteId;",
+    "clear": "DELETE FROM db_chat_messages",
+    "getAll": "SELECT * FROM db_chat_messages",
+    "oldest": "SELECT * FROM db_chat_messages ORDER BY created_at ASC LIMIT 1;",
+    "findLocalIdByRemoteId":
+        "SELECT id FROM db_chat_messages WHERE remote_id = "
+            ":remoteId;",
+    "deleteOlderThanDate":
+        "DELETE FROM db_chat_messages WHERE created_at < :createdAt",
+    "deleteOlderThanLocalId": "DELETE FROM db_chat_messages WHERE id = "
+        ":localId;",
+    "getNewestByLocalIdWithOffset":
+        "SELECT * FROM db_chat_messages ORDER BY id DESC LIMIT 1 OFFSET :offset",
+  },
+)
 class ChatMessageDao extends DatabaseAccessor<AppDatabase>
     with _$ChatMessageDaoMixin {
   final AppDatabase db;
@@ -97,7 +99,8 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
   }
 
   Stream<DbChatMessagePopulated?> watchByOldPendingRemoteId(
-          String? oldPendingRemoteId) =>
+    String? oldPendingRemoteId,
+  ) =>
       _findByOldPendingRemoteIdQuery(oldPendingRemoteId)
           .watchSingleOrNull()
           .map((typedResult) {
@@ -134,7 +137,8 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
       );
 
   JoinedSelectStatement<Table, DataClass> _findByRemoteIdQuery(
-          String remoteId) =>
+    String remoteId,
+  ) =>
       (select(db.dbChatMessages)
             ..where(
               (chatMessage) => chatMessage.remoteId.like(
@@ -146,7 +150,8 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
       );
 
   JoinedSelectStatement<Table, DataClass> _findByOldPendingRemoteIdQuery(
-          String? oldPendingRemoteId) =>
+    String? oldPendingRemoteId,
+  ) =>
       (select(db.dbChatMessages)
             ..where(
               (chatMessage) => chatMessage.oldPendingRemoteId.like(
@@ -190,7 +195,9 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
       await update(db.dbChatMessages).replace(entity);
 
   Future<int> updateByRemoteId(
-      String remoteId, Insertable<DbChatMessage> entity) async {
+    String remoteId,
+    Insertable<DbChatMessage> entity,
+  ) async {
     var localId = await findLocalIdByRemoteId(remoteId).getSingleOrNull();
 
     if (localId != null && localId >= 0) {
@@ -216,7 +223,8 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
       query
         ..where(
           CustomExpression<bool>(
-              "db_chat_messages.chat_remote_id = '$chatRemoteId'"),
+            "db_chat_messages.chat_remote_id = '$chatRemoteId'",
+          ),
         );
 
   JoinedSelectStatement addChatsWhere(

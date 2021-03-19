@@ -34,7 +34,7 @@ class MyAccountDomainBlockListItemWidget extends StatelessWidget {
             const Expanded(
               child: _MyAccountDomainBlockListItemBodyWidget(),
             ),
-            if (domainBlockActions?.isNotEmpty == true) ...domainBlockActions!
+            if (domainBlockActions?.isNotEmpty == true) ...domainBlockActions!,
           ],
         ),
       ),
@@ -57,7 +57,7 @@ class _MyAccountDomainBlockListItemBodyWidget extends StatelessWidget {
         Text(
           domain.domain,
           style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
-        )
+        ),
       ],
     );
   }

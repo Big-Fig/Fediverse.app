@@ -309,7 +309,8 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   Insertable<DbChatMessage>? mapItemToDataClass(
-      DbChatMessagePopulatedWrapper item) {
+    DbChatMessagePopulatedWrapper item,
+  ) {
     return item.dbChatMessagePopulated.dbChatMessage;
   }
 

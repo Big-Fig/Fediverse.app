@@ -22,7 +22,6 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
     FediListSmartRefresherLoadingState state;
 
     try {
-
       var nextPageIndex = paginationBloc.loadedPagesMaximumIndex! + 1;
       CachedPaginationPage nextPage = await paginationBloc.requestPage(
         pageIndex: nextPageIndex,
@@ -62,7 +61,10 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
       }
 
       _logger.warning(
-          () => "error during loadMoreWithoutController", e, stackTrace);
+        () => "error during loadMoreWithoutController",
+        e,
+        stackTrace,
+      );
       rethrow;
     }
   }
@@ -126,7 +128,10 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
         );
       }
       _logger.warning(
-          () => "error during refreshWithoutController", e, stackTrace);
+        () => "error during refreshWithoutController",
+        e,
+        stackTrace,
+      );
       rethrow;
     }
   }

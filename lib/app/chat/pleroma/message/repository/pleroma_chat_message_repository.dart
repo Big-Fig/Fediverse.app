@@ -14,8 +14,10 @@ abstract class IPleromaChatMessageRepository
         IReadIdListRepository<IPleromaChatMessage, int>,
         IWriteIdListRepository<DbChatMessage, int>,
         IDisposable {
-  static IPleromaChatMessageRepository of(BuildContext context,
-          {bool listen = true}) =>
+  static IPleromaChatMessageRepository of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IPleromaChatMessageRepository>(context, listen: listen);
 
   Future<IPleromaChatMessage?> findByRemoteId(String remoteId);

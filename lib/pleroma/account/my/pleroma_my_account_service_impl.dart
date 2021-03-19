@@ -60,12 +60,15 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   IPleromaAccountRelationship parseAccountRelationshipResponse(
-      Response httpResponse) {
+    Response httpResponse,
+  ) {
     if (httpResponse.statusCode == 200) {
       return PleromaAccountRelationship.fromJsonString(httpResponse.body);
     } else {
       throw PleromaMyAccountException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -74,7 +77,9 @@ class PleromaMyAccountService extends DisposableOwner
       return PleromaStatus.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaMyAccountException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -83,7 +88,9 @@ class PleromaMyAccountService extends DisposableOwner
       return PleromaAccount.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaMyAccountException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -101,13 +108,16 @@ class PleromaMyAccountService extends DisposableOwner
       return result;
     } else {
       throw PleromaMyAccountException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
   @override
   Future<IPleromaMyAccount> updateCredentials(
-      IPleromaMyAccountEdit data) async {
+    IPleromaMyAccountEdit data,
+  ) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.patch(
         relativePath: editProfileRelativeUrlPath,

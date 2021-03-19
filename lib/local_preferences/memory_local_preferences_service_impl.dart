@@ -17,7 +17,6 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     _logger.fine(() => "internalAsyncInit");
   }
 
-
   @override
   Future<bool> delete() => clearAllValues();
 
@@ -71,7 +70,9 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   Future<bool> setObjectPreference(
-      String key, IJsonObject? preferencesObject) async {
+    String key,
+    IJsonObject? preferencesObject,
+  ) async {
     preferences[key] = preferencesObject;
     notifyKeyValueChanged(key, preferencesObject);
     return true;
@@ -87,8 +88,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   String? getStringPreference(String key) => preferences[key];
 
   @override
-  int? getIntPreference(String key) =>
-      preferences[key];
+  int? getIntPreference(String key) => preferences[key];
 
   @override
   T? getObjectPreference<T>(
@@ -106,7 +106,9 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   IDisposable listenKeyPreferenceChanged<T>(
-      String key, ValueCallback<T> onChanged) {
+    String key,
+    ValueCallback<T> onChanged,
+  ) {
     if (!listeners.containsKey(key)) {
       listeners[key] = [];
     }
@@ -126,5 +128,4 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
       });
     }
   }
-
 }

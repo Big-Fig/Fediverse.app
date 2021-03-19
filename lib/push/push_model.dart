@@ -25,8 +25,7 @@ class PushMessage {
   @HiveField(3)
   final String typeString;
 
-  bool get isLaunch =>
-      type == PushMessageType.launch;
+  bool get isLaunch => type == PushMessageType.launch;
 
   PushMessage({
     required this.typeString,
@@ -62,7 +61,8 @@ class PushMessage {
 
   static List<PushMessage> listFromJsonString(String str) =>
       List<PushMessage>.from(
-          json.decode(str).map((x) => PushMessage.fromJson(x)));
+        json.decode(str).map((x) => PushMessage.fromJson(x)),
+      );
 
   Map<String, dynamic> toJson() => _$PushMessageToJson(this);
 
@@ -110,8 +110,6 @@ class PushNotification {
       _$PushNotificationFromJson(json as Map<String, dynamic>);
 }
 
-
-
 enum PushMessageType {
   foreground,
   launch,
@@ -120,15 +118,13 @@ enum PushMessageType {
 const _foregroundPushMessageTypeJsonValue = "foreground";
 const _launchPushMessageTypeJsonValue = "launch";
 
-extension PushMessageTypeListExtension
-on List<PushMessageType> {
+extension PushMessageTypeListExtension on List<PushMessageType> {
   List<String> toPushMessageTypeStrings() => map(
         (visibility) => visibility.toJsonValue(),
-  ).toList();
+      ).toList();
 }
 
-extension PushMessageTypeExtension
-on PushMessageType {
+extension PushMessageTypeExtension on PushMessageType {
   String toJsonValue() {
     String result;
 
@@ -167,7 +163,7 @@ extension PushMessageTypeStringExtension on String {
 extension PushMessageTypeStringListExtension on List<String> {
   List<PushMessageType> toPleromaVisibilities() => map(
         (visibilityString) => visibilityString.toPushMessageType(),
-  ).toList();
+      ).toList();
 }
 
 class PushMessageTypeTypeConverter
@@ -177,8 +173,7 @@ class PushMessageTypeTypeConverter
   const PushMessageTypeTypeConverter();
 
   @override
-  PushMessageType fromJson(String? value) =>
-      value!.toPushMessageType();
+  PushMessageType fromJson(String? value) => value!.toPushMessageType();
 
   @override
   String? toJson(PushMessageType? value) => value?.toJsonValue();

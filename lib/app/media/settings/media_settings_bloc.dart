@@ -5,8 +5,10 @@ import 'package:provider/provider.dart';
 
 abstract class IMediaSettingsBloc
     implements IGlobalOrInstanceSettingsBloc<MediaSettings?> {
-  static IMediaSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IMediaSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IMediaSettingsBloc>(context, listen: listen);
 
   bool? get autoInit;

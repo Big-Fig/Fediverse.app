@@ -79,7 +79,9 @@ void expectDbAccount(IAccount? actual, DbAccount? expected) {
   expect(actual.pleromaIsAdmin, expected.pleromaIsAdmin);
   expect(actual.pleromaIsModerator, expected.pleromaIsModerator);
   expect(
-      actual.pleromaConfirmationPending, expected.pleromaConfirmationPending);
+    actual.pleromaConfirmationPending,
+    expected.pleromaConfirmationPending,
+  );
   expect(actual.pleromaHideFavorites, expected.pleromaHideFavorites);
   expect(actual.pleromaHideFollowers, expected.pleromaHideFollowers);
   expect(actual.pleromaHideFollows, expected.pleromaHideFollows);
@@ -87,6 +89,8 @@ void expectDbAccount(IAccount? actual, DbAccount? expected) {
   expect(actual.pleromaHideFollowsCount, expected.pleromaHideFollowsCount);
   expect(actual.pleromaDeactivated, expected.pleromaDeactivated);
   expect(actual.pleromaAllowFollowingMove, expected.pleromaAllowFollowingMove);
-  expect(actual.pleromaSkipThreadContainment,
-      expected.pleromaSkipThreadContainment);
+  expect(
+    actual.pleromaSkipThreadContainment,
+    expected.pleromaSkipThreadContainment,
+  );
 }

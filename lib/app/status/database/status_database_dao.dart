@@ -23,26 +23,29 @@ var _statusListsAliasId = "statusLists";
 var _conversationStatusesAliasId = "conversationStatuses";
 var _homeTimelineStatusesAliasId = "homeTimelineStatuses";
 
-@UseDao(tables: [
-  DbStatuses
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_statuses;",
-  "countById": "SELECT COUNT(*) FROM db_statuses WHERE id = :id;",
-  "oldest": "SELECT * FROM db_statuses ORDER BY created_at ASC LIMIT 1;",
-  "deleteById": "DELETE FROM db_statuses WHERE id = :id;",
-  "deleteByRemoteId": "DELETE FROM db_statuses WHERE remote_id = "
-      ":remoteId;",
-  "clear": "DELETE FROM db_statuses",
-  "getAll": "SELECT * FROM db_statuses",
-  "findLocalIdByRemoteId": "SELECT id FROM db_statuses WHERE remote_id = "
-      ":remoteId;",
-  "deleteOlderThanDate":
-      "DELETE FROM db_statuses WHERE created_at < :createdAt",
-  "deleteOlderThanLocalId": "DELETE FROM db_statuses WHERE id = "
-      ":localId;",
-  "getNewestByLocalIdWithOffset":
-      "SELECT * FROM db_statuses ORDER BY id DESC LIMIT 1 OFFSET :offset",
-})
+@UseDao(
+  tables: [
+    DbStatuses,
+  ],
+  queries: {
+    "countAll": "SELECT Count(*) FROM db_statuses;",
+    "countById": "SELECT COUNT(*) FROM db_statuses WHERE id = :id;",
+    "oldest": "SELECT * FROM db_statuses ORDER BY created_at ASC LIMIT 1;",
+    "deleteById": "DELETE FROM db_statuses WHERE id = :id;",
+    "deleteByRemoteId": "DELETE FROM db_statuses WHERE remote_id = "
+        ":remoteId;",
+    "clear": "DELETE FROM db_statuses",
+    "getAll": "SELECT * FROM db_statuses",
+    "findLocalIdByRemoteId": "SELECT id FROM db_statuses WHERE remote_id = "
+        ":remoteId;",
+    "deleteOlderThanDate":
+        "DELETE FROM db_statuses WHERE created_at < :createdAt",
+    "deleteOlderThanLocalId": "DELETE FROM db_statuses WHERE id = "
+        ":localId;",
+    "getNewestByLocalIdWithOffset":
+        "SELECT * FROM db_statuses ORDER BY id DESC LIMIT 1 OFFSET :offset",
+  },
+)
 class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
@@ -107,12 +110,15 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
 
   Future<DbStatusPopulated> findByOldPendingRemoteId(
-          String oldPendingRemoteId) async =>
+    String oldPendingRemoteId,
+  ) async =>
       typedResultToPopulated(
-          await _findByOldPendingRemoteId(oldPendingRemoteId).getSingle());
+        await _findByOldPendingRemoteId(oldPendingRemoteId).getSingle(),
+      );
 
   Stream<DbStatusPopulated> watchByOldPendingRemoteId(
-          String? oldPendingRemoteId) =>
+    String? oldPendingRemoteId,
+  ) =>
       (_findByOldPendingRemoteId(oldPendingRemoteId)
           .watchSingle()
           .map(typedResultToPopulated));
@@ -168,7 +174,8 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       );
 
   JoinedSelectStatement<Table, DataClass> _findByOldPendingRemoteId(
-          String? oldPendingRemoteId) =>
+    String? oldPendingRemoteId,
+  ) =>
       (select(db.dbStatuses)
             ..where(
               (status) => status.oldPendingRemoteId.equals(
@@ -193,7 +200,9 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       into(db.dbStatuses).insert(entity, mode: InsertMode.insertOrReplace);
 
   Future insertAll(
-          List<Insertable<DbStatus>> entities, InsertMode mode) async =>
+    List<Insertable<DbStatus>> entities,
+    InsertMode mode,
+  ) async =>
       await batch(
         (batch) {
           batch.insertAll(
@@ -208,7 +217,9 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       await update(db.dbStatuses).replace(entity);
 
   Future<int> updateByRemoteId(
-      String remoteId, Insertable<DbStatus> entity) async {
+    String remoteId,
+    Insertable<DbStatus> entity,
+  ) async {
     var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
@@ -231,17 +242,20 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   // TODO: separate media in own table & use join
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
       query
-        ..where((status) => status.mediaAttachments.isNotNull()
+        ..where(
+          (status) => status.mediaAttachments.isNotNull(),
 //            |
 //            status.mediaAttachments.equals("").not()
-            );
+        );
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyLocalWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          String? localDomain) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    String? localDomain,
+  ) =>
       query
         ..where((status) =>
             status.pleromaLocal.equals(true) |
@@ -249,16 +263,18 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyRemoteWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          String? localDomain) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    String? localDomain,
+  ) =>
       query
         ..where((status) => (status.pleromaLocal.equals(true).not() &
             status.url.like("%$localDomain%").not()));
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromInstanceWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          String? instance) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    String? instance,
+  ) =>
       query..where((status) => status.url.like("%$instance%"));
 
   void addExcludeTextWhere(
@@ -321,42 +337,59 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   }
 
   JoinedSelectStatement addFollowingWhere(
-          JoinedSelectStatement query, String? accountRemoteId) =>
+    JoinedSelectStatement query,
+    String? accountRemoteId,
+  ) =>
       query
         ..where(CustomExpression<bool>(
-            "$_accountFollowingsAliasId.account_remote_id = '$accountRemoteId'"));
+          "$_accountFollowingsAliasId.account_remote_id = '$accountRemoteId'",
+        ));
 
   JoinedSelectStatement addHashtagWhere(
-          JoinedSelectStatement query, String? hashtag) =>
+    JoinedSelectStatement query,
+    String? hashtag,
+  ) =>
       query
         ..where(CustomExpression<bool>(
-            "$_statusHashtagsAliasId.hashtag = '$hashtag'"));
+          "$_statusHashtagsAliasId.hashtag = '$hashtag'",
+        ));
 
   JoinedSelectStatement addListWhere(
-          JoinedSelectStatement query, String? listRemoteId) =>
+    JoinedSelectStatement query,
+    String? listRemoteId,
+  ) =>
       query
         ..where(CustomExpression<bool>(
-            "$_statusListsAliasId.list_remote_id = '$listRemoteId'"));
+          "$_statusListsAliasId.list_remote_id = '$listRemoteId'",
+        ));
 
   JoinedSelectStatement addConversationWhere(
-          JoinedSelectStatement query, String? conversationRemoteId) =>
+    JoinedSelectStatement query,
+    String? conversationRemoteId,
+  ) =>
       query
         ..where(CustomExpression<bool>(
-            "$_conversationStatusesAliasId.conversation_remote_id"
-            " = '$conversationRemoteId'"));
+          "$_conversationStatusesAliasId.conversation_remote_id"
+          " = '$conversationRemoteId'",
+        ));
 
   JoinedSelectStatement addReplyToAccountSelfOrFollowingWhere(
-          JoinedSelectStatement query, String? myAccountRemoteId) =>
+    JoinedSelectStatement query,
+    String? myAccountRemoteId,
+  ) =>
       query
         ..where(
           CustomExpression<bool>(
-                  "db_statuses.in_reply_to_account_remote_id IS NULL") |
+                "db_statuses.in_reply_to_account_remote_id IS NULL",
+              ) |
               CustomExpression<bool>(
-                  "db_statuses.in_reply_to_account_remote_id = '$myAccountRemoteId'") |
+                "db_statuses.in_reply_to_account_remote_id = '$myAccountRemoteId'",
+              ) |
               CustomExpression<bool>(
-                  "$_replyToAccountFollowingsAliasId.account_remote_id = "
-                  // "$_replyToAccountFollowingsAliasId.following_account_remote_id = "
-                  "'$myAccountRemoteId'"),
+                "$_replyToAccountFollowingsAliasId.account_remote_id = "
+                // "$_replyToAccountFollowingsAliasId.following_account_remote_id = "
+                "'$myAccountRemoteId'",
+              ),
         );
 
   //
@@ -366,33 +399,40 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   // status.inReplyToAccountRemoteId.equals(accountRemoteId));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNotMutedWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
       query
-        ..where((status) => status.muted.equals(false)
-            // (status.muted.equals(false)) &
-            // (status.pleromaThreadMuted.equals(false) |
-            //     isNull(status.pleromaThreadMuted))
-            );
+        ..where(
+          (status) => status.muted.equals(false),
+          // (status.muted.equals(false)) &
+          // (status.pleromaThreadMuted.equals(false) |
+          //     isNull(status.pleromaThreadMuted))
+        );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromAccountWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          String? accountRemoteId) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    String? accountRemoteId,
+  ) =>
       query..where((status) => status.accountRemoteId.equals(accountRemoteId));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoNsfwSensitiveWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
       query..where((status) => status.sensitive.equals(true).not());
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFavouritedWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
       query..where((status) => status.favourited.equals(true));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyBookmarkedWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
       query..where((status) => status.bookmarked.equals(true));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNotDeletedWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
       query
         ..where(
           (status) =>
@@ -404,7 +444,8 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus>
       addOnlyNotHiddenLocallyOnDeviceWhere(
-              SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
           query
             ..where(
               (status) =>
@@ -416,7 +457,8 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus>
       addOnlyPendingStatePublishedOrNull(
-              SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
           query
             ..where(
               (status) =>
@@ -437,7 +479,8 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
                 status.inReplyToAccountRemoteId.equals(accountRemoteId));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoRepliesWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
       query
         ..where(
           (status) => status.inReplyToRemoteId.isNull(),
@@ -456,12 +499,14 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
     if (minimumExist) {
       var biggerExp = CustomExpression<bool>(
-          "db_statuses.remote_id > '$minimumRemoteIdExcluding'");
+        "db_statuses.remote_id > '$minimumRemoteIdExcluding'",
+      );
       query = query..where((status) => biggerExp);
     }
     if (maximumExist) {
       var smallerExp = CustomExpression<bool>(
-          "db_statuses.remote_id < '$maximumRemoteIdExcluding'");
+        "db_statuses.remote_id < '$maximumRemoteIdExcluding'",
+      );
       query = query..where((status) => smallerExp);
     }
 
@@ -492,8 +537,9 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   }
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addExcludeVisibilitiesWhere(
-      SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-      List<PleromaVisibility> excludeVisibilities) {
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    List<PleromaVisibility> excludeVisibilities,
+  ) {
     assert(excludeVisibilities.isNotEmpty == true);
 
     List<String?> excludeVisibilityStrings = excludeVisibilities
@@ -505,8 +551,9 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   }
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> orderBy(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          List<StatusRepositoryOrderingTermData> orderTerms) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    List<StatusRepositoryOrderingTermData> orderTerms,
+  ) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
@@ -520,7 +567,9 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
                       break;
                   }
                   return OrderingTerm(
-                      expression: expression, mode: orderTerm.orderingMode);
+                    expression: expression,
+                    mode: orderTerm.orderingMode,
+                  );
                 })
             .toList());
 
@@ -560,9 +609,10 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       ...(includeHomeTimeline
           ? [
               innerJoin(
-                  homeTimelineStatusesAlias,
-                  homeTimelineStatusesAlias.statusRemoteId
-                      .equalsExp(dbStatuses.remoteId))
+                homeTimelineStatusesAlias,
+                homeTimelineStatusesAlias.statusRemoteId
+                    .equalsExp(dbStatuses.remoteId),
+              ),
             ]
           : []),
       innerJoin(
@@ -597,41 +647,45 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       ...(includeAccountFollowing
           ? [
               innerJoin(
-                  accountFollowingsAlias,
-                  accountFollowingsAlias.followingAccountRemoteId
-                      .equalsExp(dbStatuses.accountRemoteId))
+                accountFollowingsAlias,
+                accountFollowingsAlias.followingAccountRemoteId
+                    .equalsExp(dbStatuses.accountRemoteId),
+              ),
             ]
           : []),
       ...(includeReplyToAccountFollowing
           ? [
               leftOuterJoin(
-                  replyToAccountFollowingsAlias,
-                  replyToAccountFollowingsAlias.followingAccountRemoteId
-                      .equalsExp(dbStatuses.inReplyToAccountRemoteId))
+                replyToAccountFollowingsAlias,
+                replyToAccountFollowingsAlias.followingAccountRemoteId
+                    .equalsExp(dbStatuses.inReplyToAccountRemoteId),
+              ),
             ]
           : []),
       ...(includeStatusHashtags
           ? [
               innerJoin(
-                  statusHashtagsAlias,
-                  statusHashtagsAlias.statusRemoteId
-                      .equalsExp(dbStatuses.remoteId))
+                statusHashtagsAlias,
+                statusHashtagsAlias.statusRemoteId
+                    .equalsExp(dbStatuses.remoteId),
+              ),
             ]
           : []),
       ...(includeStatusLists
           ? [
               innerJoin(
-                  statusListsAlias,
-                  statusListsAlias.statusRemoteId
-                      .equalsExp(dbStatuses.remoteId))
+                statusListsAlias,
+                statusListsAlias.statusRemoteId.equalsExp(dbStatuses.remoteId),
+              ),
             ]
           : []),
       ...(includeConversations
           ? [
               innerJoin(
-                  conversationStatusesAlias,
-                  conversationStatusesAlias.statusRemoteId
-                      .equalsExp(dbStatuses.remoteId))
+                conversationStatusesAlias,
+                conversationStatusesAlias.statusRemoteId
+                    .equalsExp(dbStatuses.remoteId),
+              ),
             ]
           : []),
     ];

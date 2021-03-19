@@ -30,12 +30,14 @@ void main() {
 
     var pleromaBackgroundImage = "pleromaBackgroundImage11";
     var testDbAccount = await createTestDbAccount(seed: "seed1");
-    testDbAccount = testDbAccount.copyWith(pleromaBackgroundImage: pleromaBackgroundImage);
+    testDbAccount =
+        testDbAccount.copyWith(pleromaBackgroundImage: pleromaBackgroundImage);
     await accountDao.insert(testDbAccount);
 
     expect(
-        (await accountDao.findByRemoteId(testDbAccount.remoteId).getSingle())
-            .pleromaBackgroundImage,
-        pleromaBackgroundImage);
+      (await accountDao.findByRemoteId(testDbAccount.remoteId).getSingle())
+          .pleromaBackgroundImage,
+      pleromaBackgroundImage,
+    );
   });
 }

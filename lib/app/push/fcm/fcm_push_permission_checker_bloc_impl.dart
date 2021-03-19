@@ -36,7 +36,10 @@ class FcmPushPermissionCheckerBloc extends DisposableOwner
         result = true;
       } catch (e, stackTrace) {
         _logger.warning(
-            () => "failed to subscribeWithDefaultPreferences", e, stackTrace);
+          () => "failed to subscribeWithDefaultPreferences",
+          e,
+          stackTrace,
+        );
         result = false;
       }
     } else {

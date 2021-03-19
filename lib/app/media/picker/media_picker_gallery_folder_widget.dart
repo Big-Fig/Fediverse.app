@@ -9,7 +9,9 @@ import 'package:logging/logging.dart';
 final _logger = Logger("media_picker_gallery_folder_widget.dart");
 
 typedef PermissionButtonBuilder = Widget Function(
-    BuildContext context, WidgetBuilder grantedBuilder);
+  BuildContext context,
+  WidgetBuilder grantedBuilder,
+);
 
 class FileGalleryFolderWidget extends StatelessWidget {
   final WidgetBuilder headerItemBuilder;

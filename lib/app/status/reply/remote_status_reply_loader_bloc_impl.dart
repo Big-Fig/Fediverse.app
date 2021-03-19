@@ -22,7 +22,8 @@ class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
     var pleromaStatusService = PleromaStatusService(
-        restService: remoteInstanceBloc.pleromaRestService);
+      restService: remoteInstanceBloc.pleromaRestService,
+    );
     var bloc = RemoteStatusReplyLoaderBloc(
       pleromaStatusService: pleromaStatusService,
       originalStatus: originalStatus,

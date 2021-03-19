@@ -103,12 +103,14 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
 
       var unread = alreadyExistNotification?.unread ?? true;
 
-      await notificationRepository.upsertRemoteNotification(remoteNotification,
-          unread: unread);
+      await notificationRepository.upsertRemoteNotification(
+        remoteNotification,
+        unread: unread,
+      );
 
-        var notification = await notificationRepository.findByRemoteId(
-          remoteNotification.id,
-        );
+      var notification = await notificationRepository.findByRemoteId(
+        remoteNotification.id,
+      );
       if (pushHandlerMessage.pushMessage.isLaunch) {
         if (notification != null) {
           launchOrResumePushLoaderNotificationSubject.add(
@@ -146,7 +148,6 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
           ),
         );
       }
-
     } else {
       handled = false;
     }

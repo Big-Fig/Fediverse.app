@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class ISearchResultItemNetworkOnlyPaginationBloc
     implements INetworkOnlyPleromaPaginationBloc<ISearchResultItem> {
-  static ISearchResultItemNetworkOnlyPaginationBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<ISearchResultItemNetworkOnlyPaginationBloc>(context,
-          listen: listen);
+  static ISearchResultItemNetworkOnlyPaginationBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<ISearchResultItemNetworkOnlyPaginationBloc>(
+        context,
+        listen: listen,
+      );
 }

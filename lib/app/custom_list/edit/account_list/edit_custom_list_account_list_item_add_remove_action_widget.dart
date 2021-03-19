@@ -24,40 +24,40 @@ class CustomListAccountListItemAddRemoveActionWidget extends StatelessWidget {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
     return StreamBuilder<bool>(
-        stream: editCustomListAccountListBloc.isItemAddedStream(account),
-        builder: (context, snapshot) {
-          var isItemAddedStream = snapshot.data;
+      stream: editCustomListAccountListBloc.isItemAddedStream(account),
+      builder: (context, snapshot) {
+        var isItemAddedStream = snapshot.data;
 
-          if (isItemAddedStream == null) {
-            return const SizedBox.shrink();
-          }
+        if (isItemAddedStream == null) {
+          return const SizedBox.shrink();
+        }
 
-          return PleromaAsyncOperationButtonBuilderWidget(
-            asyncButtonAction: () async {
-              if (isItemAddedStream) {
-                await editCustomListAccountListBloc.removeItem(account);
-              } else {
-                await editCustomListAccountListBloc.addItem(account);
-              }
+        return PleromaAsyncOperationButtonBuilderWidget(
+          asyncButtonAction: () async {
+            if (isItemAddedStream) {
+              await editCustomListAccountListBloc.removeItem(account);
+            } else {
+              await editCustomListAccountListBloc.addItem(account);
+            }
 
-              await paginationListBloc.refreshWithController();
-            },
-            builder: (context, onPressed) =>
-                FediTransparentTextButtonWithBorder(
-              isItemAddedStream
-                  ? S
-                      .of(context)
-                      .app_acccount_my_customList_edit_account_action_remove
-                  : S
-                      .of(context)
-                      .app_acccount_my_customList_edit_account_action_add,
-              onPressed: onPressed,
-              color: isItemAddedStream
-                  ? fediUiColorTheme.error
-                  : fediUiColorTheme.primary,
-              expanded: false,
-            ),
-          );
-        });
+            await paginationListBloc.refreshWithController();
+          },
+          builder: (context, onPressed) => FediTransparentTextButtonWithBorder(
+            isItemAddedStream
+                ? S
+                    .of(context)
+                    .app_acccount_my_customList_edit_account_action_remove
+                : S
+                    .of(context)
+                    .app_acccount_my_customList_edit_account_action_add,
+            onPressed: onPressed,
+            color: isItemAddedStream
+                ? fediUiColorTheme.error
+                : fediUiColorTheme.primary,
+            expanded: false,
+          ),
+        );
+      },
+    );
   }
 }

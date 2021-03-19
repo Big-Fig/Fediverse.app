@@ -33,67 +33,68 @@ class StatusSpoilerWidget extends StatelessWidget {
         return Provider<EmojiText?>.value(
           value: spoilerEmojiText,
           child: StreamBuilder<UiSettingsFontSize?>(
-              stream: uiSettingsBloc.statusFontSizeStream,
-              builder: (context, snapshot) {
-                var statusFontSize = snapshot.data;
+            stream: uiSettingsBloc.statusFontSizeStream,
+            builder: (context, snapshot) {
+              var statusFontSize = snapshot.data;
 
-                if(statusFontSize == null) {
-                  return const SizedBox.shrink();
-                }
+              if (statusFontSize == null) {
+                return const SizedBox.shrink();
+              }
 
-                TextStyle textStyle = fediUiTextTheme.bigTallDarkGrey;
+              TextStyle textStyle = fediUiTextTheme.bigTallDarkGrey;
 
-                switch (statusFontSize) {
-                  case UiSettingsFontSize.smallest:
-                    textStyle = fediUiTextTheme.smallTallDarkGrey;
-                    break;
-                  case UiSettingsFontSize.small:
-                    textStyle = fediUiTextTheme.mediumTallDarkGrey;
-                    break;
-                  case UiSettingsFontSize.medium:
-                    textStyle = fediUiTextTheme.bigTallDarkGrey;
-                    break;
-                  case UiSettingsFontSize.large:
-                    textStyle = fediUiTextTheme.subHeaderTallDarkGrey;
-                    break;
-                  case UiSettingsFontSize.largest:
-                    textStyle = fediUiTextTheme.headerDarkGrey;
-                    break;
-                }
+              switch (statusFontSize) {
+                case UiSettingsFontSize.smallest:
+                  textStyle = fediUiTextTheme.smallTallDarkGrey;
+                  break;
+                case UiSettingsFontSize.small:
+                  textStyle = fediUiTextTheme.mediumTallDarkGrey;
+                  break;
+                case UiSettingsFontSize.medium:
+                  textStyle = fediUiTextTheme.bigTallDarkGrey;
+                  break;
+                case UiSettingsFontSize.large:
+                  textStyle = fediUiTextTheme.subHeaderTallDarkGrey;
+                  break;
+                case UiSettingsFontSize.largest:
+                  textStyle = fediUiTextTheme.headerDarkGrey;
+                  break;
+              }
 
-                return DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
-                  update: (context, spoilerWithEmojis, _) {
-                    var htmlTextBloc = HtmlTextBloc(
-                      inputData: HtmlTextInputData(
-                        input: spoilerWithEmojis?.text ?? "",
-                        emojis: spoilerWithEmojis?.emojis,
-                      ),
-                      settings: HtmlTextSettings(
-                        color: textStyle.color,
-                        lineHeight: textStyle.height,
-                        fontSize: textStyle.fontSize,
-                        // todo: 1000 is hack, actually it should be null, but don't
-                        //  work as expected
-                        textMaxLines: 1000,
-                        textOverflow: TextOverflow.ellipsis,
-                        linkColor: fediUiColorTheme.primary,
-                        textScaleFactor: textScaleFactor,
-                        fontWeight: FontWeight.normal,
-                        drawNewLines: false,
-                      ),
-                    );
-                    htmlTextBloc.addDisposable(
-                      streamSubscription: htmlTextBloc.linkClickedStream.listen(
-                        (url) {
-                          _handleLinkTap(context, url);
-                        },
-                      ),
-                    );
-                    return htmlTextBloc;
-                  },
-                  child: const HtmlTextWidget(),
-                );
-              }),
+              return DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
+                update: (context, spoilerWithEmojis, _) {
+                  var htmlTextBloc = HtmlTextBloc(
+                    inputData: HtmlTextInputData(
+                      input: spoilerWithEmojis?.text ?? "",
+                      emojis: spoilerWithEmojis?.emojis,
+                    ),
+                    settings: HtmlTextSettings(
+                      color: textStyle.color,
+                      lineHeight: textStyle.height,
+                      fontSize: textStyle.fontSize,
+                      // todo: 1000 is hack, actually it should be null, but don't
+                      //  work as expected
+                      textMaxLines: 1000,
+                      textOverflow: TextOverflow.ellipsis,
+                      linkColor: fediUiColorTheme.primary,
+                      textScaleFactor: textScaleFactor,
+                      fontWeight: FontWeight.normal,
+                      drawNewLines: false,
+                    ),
+                  );
+                  htmlTextBloc.addDisposable(
+                    streamSubscription: htmlTextBloc.linkClickedStream.listen(
+                      (url) {
+                        _handleLinkTap(context, url);
+                      },
+                    ),
+                  );
+                  return htmlTextBloc;
+                },
+                child: const HtmlTextWidget(),
+              );
+            },
+          ),
         );
       },
     );

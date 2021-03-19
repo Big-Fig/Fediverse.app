@@ -15,8 +15,9 @@ class FediConfirmAlertDialog extends FediBaseAlertDialog {
           contentText: contentText,
           actions: [
             DialogAction(
-                label: okActionLabel ?? S.of(context).dialog_action_ok,
-                onAction: onAction)
+              label: okActionLabel ?? S.of(context).dialog_action_ok,
+              onAction: onAction,
+            ),
           ],
           cancelable: true,
         );

@@ -5,8 +5,9 @@ import 'package:provider/provider.dart';
 
 abstract class IPushSettingsLocalPreferencesBloc
     implements LocalPreferenceBloc<PushSettings?> {
-  static IPushSettingsLocalPreferencesBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IPushSettingsLocalPreferencesBloc>(context,
-          listen: listen);
+  static IPushSettingsLocalPreferencesBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPushSettingsLocalPreferencesBloc>(context, listen: listen);
 }

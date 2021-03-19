@@ -53,7 +53,7 @@ class AppAnalyticsData implements IJsonObject {
 
   static List<AppAnalyticsData> listFromJsonString(String str) =>
       List<AppAnalyticsData>.from(
-          json.decode(str).map((x) => AppAnalyticsData.fromJson(x)));
+          json.decode(str).map((x) => AppAnalyticsData.fromJson(x)),);
 
   @override
   Map<String, dynamic> toJson() => _$AppAnalyticsDataToJson(this);

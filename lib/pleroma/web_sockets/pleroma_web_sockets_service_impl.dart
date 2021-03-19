@@ -41,7 +41,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
         queryArgs: {
           "access_token": accessToken,
           "stream": stream,
-          ...(queryArgs ?? {})
+          ...(queryArgs ?? {}),
         },
       ),
     );
@@ -63,8 +63,9 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
     required bool? local,
   }) =>
       getOrCreateNewChannel(
-          stream: local! ? "hashtag:local" : "hashtag",
-          queryArgs: {"tag": hashtag});
+        stream: local! ? "hashtag:local" : "hashtag",
+        queryArgs: {"tag": hashtag},
+      );
 
   @override
   IWebSocketsChannel<PleromaWebSocketsEvent> getListChannel({
@@ -120,8 +121,9 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
   }) {
     assert(accountId != null);
     return getOrCreateNewChannel(
-        stream: notification ? "user:notification" : "user",
-        queryArgs: {"accountId": accountId});
+      stream: notification ? "user:notification" : "user",
+      queryArgs: {"accountId": accountId},
+    );
   }
 
   @override
@@ -131,11 +133,12 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
   }) {
     assert(!(notification == true && chat == true));
     return getOrCreateNewChannel(
-        stream: notification
-            ? "user:notification"
-            : chat
-                ? "user:pleroma_chat"
-                : "user");
+      stream: notification
+          ? "user:notification"
+          : chat
+              ? "user:pleroma_chat"
+              : "user",
+    );
   }
 
   @override

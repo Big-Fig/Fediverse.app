@@ -7,8 +7,10 @@ import 'package:provider/provider.dart';
 
 abstract class IEditStatusSensitiveSettingsBloc
     implements IEditGlobalOrInstanceSettingsBloc<StatusSensitiveSettings> {
-  static IEditStatusSensitiveSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IEditStatusSensitiveSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IEditStatusSensitiveSettingsBloc>(context, listen: listen);
 
   IDurationValueFormFieldBloc? get nsfwDisplayDelayDurationFieldBloc;

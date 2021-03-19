@@ -28,7 +28,7 @@ class HashtagListItemWidget extends StatelessWidget {
               style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
             ),
           ),
-          const FediLightGreyDivider()
+          const FediLightGreyDivider(),
         ],
       ),
     );

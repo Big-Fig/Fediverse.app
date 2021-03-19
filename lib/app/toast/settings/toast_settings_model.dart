@@ -36,7 +36,8 @@ class ToastSettings implements IJsonObject, ISettings<ToastSettings> {
 
   static List<ToastSettings> listFromJsonString(String str) =>
       List<ToastSettings>.from(
-          json.decode(str).map((x) => ToastSettings.fromJson(x)));
+        json.decode(str).map((x) => ToastSettings.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$ToastSettingsToJson(this);

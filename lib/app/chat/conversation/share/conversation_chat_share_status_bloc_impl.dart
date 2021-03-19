@@ -67,8 +67,11 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
     return messageSendData;
   }
 
-  static Widget provideToContext(BuildContext context,
-      {required IStatus? status, required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required IStatus? status,
+    required Widget child,
+  }) {
     return DisposableProvider<ConversationChatShareStatusBloc>(
       create: (context) => createFromContext(context, status),
       child: ProxyProvider<ConversationChatShareStatusBloc,
@@ -89,7 +92,9 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
   }
 
   static ConversationChatShareStatusBloc createFromContext(
-          BuildContext context, IStatus? status) =>
+    BuildContext context,
+    IStatus? status,
+  ) =>
       ConversationChatShareStatusBloc(
         status: status,
         conversationRepository: IConversationChatRepository.of(

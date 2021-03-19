@@ -72,27 +72,30 @@ class FediSingleSelectionChooserDialogBody extends StatelessWidget {
                 child: Row(
                   children: [
                     if (action.icon != null)
-                      Icon(action.icon,
-                          color: isSelected
-                              ? fediUiColorTheme.primary
-                              : actionExist && enabled
-                                  ? IFediUiColorTheme.of(context).darkGrey
-                                  : IFediUiColorTheme.of(context).lightGrey),
+                      Icon(
+                        action.icon,
+                        color: isSelected
+                            ? fediUiColorTheme.primary
+                            : actionExist && enabled
+                                ? IFediUiColorTheme.of(context).darkGrey
+                                : IFediUiColorTheme.of(context).lightGrey,
+                      ),
                     Padding(
                       padding: FediPadding.allMediumPadding,
                       child: Text(
                         action.label!,
                         style: action.customTextStyle?.copyWith(
-                            color: isSelected
-                                ? fediUiColorTheme.primary
-                                : actionExist && enabled
-                                ? fediUiColorTheme.darkGrey
-                                : fediUiColorTheme.lightGrey) ??
+                              color: isSelected
+                                  ? fediUiColorTheme.primary
+                                  : actionExist && enabled
+                                      ? fediUiColorTheme.darkGrey
+                                      : fediUiColorTheme.lightGrey,
+                            ) ??
                             (isSelected
                                 ? fediUiTextTheme.bigTallPrimary
                                 : actionExist && enabled
-                                ? fediUiTextTheme.bigTallDarkGrey
-                                : fediUiTextTheme.bigTallLightGrey),
+                                    ? fediUiTextTheme.bigTallDarkGrey
+                                    : fediUiTextTheme.bigTallLightGrey),
                       ),
                     ),
                   ],
@@ -139,7 +142,7 @@ class FediSingleSelectionChooserDialogBody extends StatelessWidget {
                         action: action,
                         isSelected: action.isSelected,
                       ))
-                  .toList()
+                  .toList(),
             ],
           ),
         ),

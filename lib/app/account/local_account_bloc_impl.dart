@@ -201,8 +201,9 @@ class LocalAccountBloc extends AccountBloc {
     assert(relationship != null);
     var newRelationship;
     if (relationship!.muting!) {
-      newRelationship = await pleromaAuthAccountService
-          .unMuteAccount(accountRemoteId: account.remoteId);
+      newRelationship = await pleromaAuthAccountService.unMuteAccount(
+        accountRemoteId: account.remoteId,
+      );
     } else {
       newRelationship = await pleromaAuthAccountService.muteAccount(
         accountRemoteId: account.remoteId,
@@ -249,8 +250,9 @@ class LocalAccountBloc extends AccountBloc {
         accountRemoteId: account.remoteId,
       );
     } else {
-      newRelationship = await pleromaAuthAccountService
-          .followAccount(accountRemoteId: account.remoteId);
+      newRelationship = await pleromaAuthAccountService.followAccount(
+        accountRemoteId: account.remoteId,
+      );
       await accountRepository.updateLocalAccountByRemoteAccount(
         oldLocalAccount: account,
         newRemoteAccount: account
@@ -289,8 +291,9 @@ class LocalAccountBloc extends AccountBloc {
     assert(relationship != null);
     assert(relationship!.muting == true);
 
-    var newRelationship = await pleromaAuthAccountService
-        .unMuteAccount(accountRemoteId: account.remoteId);
+    var newRelationship = await pleromaAuthAccountService.unMuteAccount(
+      accountRemoteId: account.remoteId,
+    );
 
     await _updateRelationship(account, newRelationship);
 
@@ -337,11 +340,13 @@ class LocalAccountBloc extends AccountBloc {
     var newRelationship;
     // todo: fix
     if (relationship!.muting == true) {
-      newRelationship = await pleromaAuthAccountService
-          .unPinAccount(accountRemoteId: account.remoteId);
+      newRelationship = await pleromaAuthAccountService.unPinAccount(
+        accountRemoteId: account.remoteId,
+      );
     } else {
-      newRelationship = await pleromaAuthAccountService
-          .pinAccount(accountRemoteId: account.remoteId);
+      newRelationship = await pleromaAuthAccountService.pinAccount(
+        accountRemoteId: account.remoteId,
+      );
     }
     await _updateRelationship(
       account,
@@ -437,7 +442,8 @@ class LocalAccountBloc extends AccountBloc {
       );
     } else {
       _logger.finest(
-          () => "requestRefreshFromNetwork remoteAccount  $remoteAccount");
+        () => "requestRefreshFromNetwork remoteAccount  $remoteAccount",
+      );
 
       remoteAccount = remoteAccount.copyWith(
         pleroma: remoteAccount.pleroma

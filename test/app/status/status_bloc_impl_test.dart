@@ -44,7 +44,9 @@ void main() {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
-        appDatabase: database, accountRepository: accountRepository);
+      appDatabase: database,
+      accountRepository: accountRepository,
+    );
 
     pleromaAuthStatusServiceMock = PleromaAuthStatusServiceMock();
     pleromaAccountServiceMock = PleromaAuthAccountServiceMock();
@@ -280,7 +282,7 @@ void main() {
           visibleInPicker: null,
           category: null,
           staticUrl: null,
-        )
+        ),
       ],
     ));
     expect(
@@ -482,7 +484,8 @@ void main() {
     expectAccount(listenedValue, status.account);
 
     await _update(
-        status.copyWith(reblog: reblog.copyWith(account: reblogValue)));
+      status.copyWith(reblog: reblog.copyWith(account: reblogValue)),
+    );
 
     expectAccount(
       statusBloc.reblogOrOriginalAccount,
@@ -663,8 +666,10 @@ void main() {
   });
 
   test('isReply', () async {
-    expect(statusBloc.isReply,
-        status.inReplyToAccountRemoteId?.isNotEmpty == true);
+    expect(
+      statusBloc.isReply,
+      status.inReplyToAccountRemoteId?.isNotEmpty == true,
+    );
 
     var newValue = "inReplyToRemoteId";
 
@@ -736,7 +741,7 @@ void main() {
         name: "newName",
         count: 1,
         me: true,
-      )
+      ),
     ];
 
     var listenedValue;
@@ -792,7 +797,7 @@ void main() {
         count: 1,
         me: true,
         accounts: [],
-      )
+      ),
     ];
     var newValue = [
       PleromaStatusEmojiReaction(
@@ -808,7 +813,7 @@ void main() {
         count: 1,
         me: true,
         accounts: [],
-      )
+      ),
     ];
 
     var listenedValue;
@@ -844,8 +849,9 @@ void main() {
     );
 
     await _update(status.copyWith(
-        pleromaEmojiReactions: newValue,
-        reblog: reblog.copyWith(pleromaEmojiReactions: reblogValue)));
+      pleromaEmojiReactions: newValue,
+      reblog: reblog.copyWith(pleromaEmojiReactions: reblogValue),
+    ));
 
     var expected = [
       PleromaStatusEmojiReaction(
@@ -953,7 +959,7 @@ void main() {
         url: 'url',
         id: 'id',
         acct: 'acct',
-      )
+      ),
     ];
 
     var listenedValue;
@@ -1386,8 +1392,11 @@ void main() {
       status,
     );
 
-    var id = await statusRepository.upsertRemoteStatus(status.toPleromaStatus(),
-        listRemoteId: null, conversationRemoteId: null);
+    var id = await statusRepository.upsertRemoteStatus(
+      status.toPleromaStatus(),
+      listRemoteId: null,
+      conversationRemoteId: null,
+    );
     status = status.copyWith(id: id);
 
     var newValue = await createTestStatus(
@@ -1438,7 +1447,7 @@ void main() {
         url: "url2",
         acct: "acct2",
         username: "name2",
-      )
+      ),
     ]));
 
     var account = await createTestAccount(
@@ -1519,14 +1528,14 @@ void main() {
     );
 
     when(pleromaAuthStatusServiceMock.reblogStatus(
-            statusRemoteId: status.remoteId))
-        .thenAnswer(
+      statusRemoteId: status.remoteId,
+    )).thenAnswer(
       (_) async => status.copyWith(reblogged: true).toPleromaStatus(),
     );
 
     when(pleromaAuthStatusServiceMock.unReblogStatus(
-            statusRemoteId: status.remoteId))
-        .thenAnswer(
+      statusRemoteId: status.remoteId,
+    )).thenAnswer(
       (_) async => status.copyWith(reblogged: false).toPleromaStatus(),
     );
 
@@ -1562,8 +1571,11 @@ void main() {
   });
 
   test('requestToggleFavourite', () async {
-    var id = await statusRepository.upsertRemoteStatus(status.toPleromaStatus(),
-        listRemoteId: null, conversationRemoteId: null);
+    var id = await statusRepository.upsertRemoteStatus(
+      status.toPleromaStatus(),
+      listRemoteId: null,
+      conversationRemoteId: null,
+    );
     status = status.copyWith(id: id);
 
     expect(
@@ -1584,14 +1596,14 @@ void main() {
     );
 
     when(pleromaAuthStatusServiceMock.favouriteStatus(
-            statusRemoteId: status.remoteId))
-        .thenAnswer(
+      statusRemoteId: status.remoteId,
+    )).thenAnswer(
       (_) async => status.copyWith(favourited: true).toPleromaStatus(),
     );
 
     when(pleromaAuthStatusServiceMock.unFavouriteStatus(
-            statusRemoteId: status.remoteId))
-        .thenAnswer(
+      statusRemoteId: status.remoteId,
+    )).thenAnswer(
       (_) async => status.copyWith(favourited: false).toPleromaStatus(),
     );
 
@@ -1624,8 +1636,11 @@ void main() {
   });
 
   test('requestToggleMute', () async {
-    var id = await statusRepository.upsertRemoteStatus(status.toPleromaStatus(),
-        listRemoteId: null, conversationRemoteId: null);
+    var id = await statusRepository.upsertRemoteStatus(
+      status.toPleromaStatus(),
+      listRemoteId: null,
+      conversationRemoteId: null,
+    );
     status = status.copyWith(id: id);
 
     expect(
@@ -1653,8 +1668,8 @@ void main() {
     );
 
     when(pleromaAuthStatusServiceMock.unMuteStatus(
-            statusRemoteId: status.remoteId))
-        .thenAnswer(
+      statusRemoteId: status.remoteId,
+    )).thenAnswer(
       (_) async => status.copyWith(muted: false).toPleromaStatus(),
     );
 
@@ -1690,8 +1705,11 @@ void main() {
   });
 
   test('requestToggleBookmark', () async {
-    var id = await statusRepository.upsertRemoteStatus(status.toPleromaStatus(),
-        listRemoteId: null, conversationRemoteId: null);
+    var id = await statusRepository.upsertRemoteStatus(
+      status.toPleromaStatus(),
+      listRemoteId: null,
+      conversationRemoteId: null,
+    );
     status = status.copyWith(id: id);
 
     expect(
@@ -1712,14 +1730,14 @@ void main() {
     );
 
     when(pleromaAuthStatusServiceMock.bookmarkStatus(
-            statusRemoteId: status.remoteId))
-        .thenAnswer(
+      statusRemoteId: status.remoteId,
+    )).thenAnswer(
       (_) async => status.copyWith(bookmarked: true).toPleromaStatus(),
     );
 
     when(pleromaAuthStatusServiceMock.unBookmarkStatus(
-            statusRemoteId: status.remoteId))
-        .thenAnswer(
+      statusRemoteId: status.remoteId,
+    )).thenAnswer(
       (_) async => status.copyWith(bookmarked: false).toPleromaStatus(),
     );
 
@@ -1755,8 +1773,11 @@ void main() {
   });
 
   test('requestTogglePin', () async {
-    var id = await statusRepository.upsertRemoteStatus(status.toPleromaStatus(),
-        listRemoteId: null, conversationRemoteId: null);
+    var id = await statusRepository.upsertRemoteStatus(
+      status.toPleromaStatus(),
+      listRemoteId: null,
+      conversationRemoteId: null,
+    );
     status = status.copyWith(id: id);
 
     expect(
@@ -1777,14 +1798,14 @@ void main() {
     );
 
     when(pleromaAuthStatusServiceMock.pinStatus(
-            statusRemoteId: status.remoteId))
-        .thenAnswer(
+      statusRemoteId: status.remoteId,
+    )).thenAnswer(
       (_) async => status.copyWith(pinned: true).toPleromaStatus(),
     );
 
     when(pleromaAuthStatusServiceMock.unPinStatus(
-            statusRemoteId: status.remoteId))
-        .thenAnswer(
+      statusRemoteId: status.remoteId,
+    )).thenAnswer(
       (_) async => status.copyWith(pinned: false).toPleromaStatus(),
     );
 
@@ -1885,7 +1906,10 @@ void main() {
           account1.toPleromaAccount(),
         );
         reaction = reaction.copyWith(
-            count: reaction.count + 1, me: true, accounts: accounts);
+          count: reaction.count + 1,
+          me: true,
+          accounts: accounts,
+        );
         reactions.add(reaction);
       }
 
@@ -1895,8 +1919,9 @@ void main() {
     });
 
     when(pleromaStatusEmojiReactionServiceMock.removeReaction(
-            emoji: emoji1, statusRemoteId: status.remoteId))
-        .thenAnswer((_) async {
+      emoji: emoji1,
+      statusRemoteId: status.remoteId,
+    )).thenAnswer((_) async {
       List<PleromaStatusEmojiReaction> reactions =
           status.pleromaEmojiReactions ?? [];
 
@@ -1910,7 +1935,8 @@ void main() {
         reactions.remove(reaction);
         var accounts = reaction.accounts!;
         accounts.remove(
-            accounts.firstWhere((account) => account.id == account1.remoteId));
+          accounts.firstWhere((account) => account.id == account1.remoteId),
+        );
         reaction = reaction.copyWith(
           count: reaction.count - 1,
           me: false,
@@ -1953,7 +1979,7 @@ void main() {
         accounts: [
           account1.toPleromaAccount(),
         ],
-      )
+      ),
     ];
     expect(
       statusBloc.pleromaEmojiReactions,

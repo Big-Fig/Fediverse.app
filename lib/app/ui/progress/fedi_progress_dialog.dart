@@ -1,9 +1,9 @@
 import 'package:async/async.dart';
-import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/base_dialog.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -51,20 +51,22 @@ abstract class FediProgressDialog extends BaseDialog {
         contentMessage!,
         textAlign: TextAlign.center,
         style: IFediUiTextTheme.of(context).bigShortDarkGrey.copyWith(
-          height: 1,
-        ),
+              height: 1,
+            ),
       ),
     );
   }
 
   @override
   Widget buildDialogBody(BuildContext context) => Dialog(
-      insetAnimationCurve: Curves.easeInOut,
-      insetAnimationDuration: Duration(milliseconds: 100),
-      elevation: 10.0,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10.0))),
-      child: buildDialogContainer(context));
+        insetAnimationCurve: Curves.easeInOut,
+        insetAnimationDuration: Duration(milliseconds: 100),
+        elevation: 10.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        ),
+        child: buildDialogContainer(context),
+      );
 
   Widget buildDialogContainer(BuildContext context) {
     return Padding(
@@ -84,29 +86,30 @@ abstract class FediProgressDialog extends BaseDialog {
           if (contentMessage != null) buildDialogContent(context),
           if (cancelable)
             StreamBuilder<bool>(
-                stream: isCanceledStream,
-                initialData: isCanceled,
-                builder: (context, snapshot) {
-                  var canceled = snapshot.data!;
-                  Future<Null> Function()? onPressed;
+              stream: isCanceledStream,
+              initialData: isCanceled,
+              builder: (context, snapshot) {
+                var canceled = snapshot.data!;
+                Future<Null> Function()? onPressed;
 
-                  if (!canceled) {
-                    onPressed = () async {
-                      _isCanceledSubject.add(true);
-                      await cancelableOperation!.cancel();
-                      if(isShowing) {
-                        await hide(context);
-                      }
-                    };
-                  }
-                  return InkWell(
-                    child: Text(
-                      S.of(context).dialog_progress_action_cancel,
-                      style: IFediUiTextTheme.of(context).mediumShortPrimary,
-                    ),
-                    onTap: onPressed,
-                  );
-                })
+                if (!canceled) {
+                  onPressed = () async {
+                    _isCanceledSubject.add(true);
+                    await cancelableOperation!.cancel();
+                    if (isShowing) {
+                      await hide(context);
+                    }
+                  };
+                }
+                return InkWell(
+                  child: Text(
+                    S.of(context).dialog_progress_action_cancel,
+                    style: IFediUiTextTheme.of(context).mediumShortPrimary,
+                  ),
+                  onTap: onPressed,
+                );
+              },
+            ),
         ],
       ),
     );

@@ -7,8 +7,10 @@ import 'package:provider/provider.dart';
 
 abstract class INotificationNetworkOnlyListBloc extends DisposableOwner
     implements INetworkOnlyListBloc<INotification> {
-  static INotificationNetworkOnlyListBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static INotificationNetworkOnlyListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<INotificationNetworkOnlyListBloc>(context, listen: listen);
 
   @override

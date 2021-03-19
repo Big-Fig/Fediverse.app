@@ -149,7 +149,8 @@ class _AuthInstanceChooserInstanceListItemLogoutButtonWidget
           context: context,
           title: S.of(context).app_auth_instance_logout_dialog_title,
           contentText: S.of(context).app_auth_instance_logout_dialog_content(
-              instanceListItemBloc.instance.userAtHost),
+                instanceListItemBloc.instance.userAtHost,
+              ),
           onAction: (context) async {
             if (instanceListItemBloc.isSelected) {
               Navigator.of(context).pop();

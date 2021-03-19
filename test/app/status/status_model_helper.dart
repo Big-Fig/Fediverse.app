@@ -18,10 +18,11 @@ Future<DbStatusPopulatedWrapper> createTestStatus({
   return DbStatusPopulatedWrapper(
     dbStatusPopulated: DbStatusPopulated(
       dbStatus: await createTestDbStatus(
-          createdAt: createdAt,
-          seed: seed,
-          remoteId: remoteId,
-          dbAccount: dbAccount),
+        createdAt: createdAt,
+        seed: seed,
+        remoteId: remoteId,
+        dbAccount: dbAccount,
+      ),
       dbAccount: dbAccount,
       reblogDbStatus: reblog?.dbStatusPopulated.dbStatus,
       reblogDbStatusAccount: reblog?.dbStatusPopulated.dbAccount,

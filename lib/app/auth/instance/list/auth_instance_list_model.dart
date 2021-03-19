@@ -42,7 +42,8 @@ class AuthInstanceList extends IJsonObject {
 
   static List<AuthInstanceList> listFromJsonString(String str) =>
       List<AuthInstanceList>.from(
-          json.decode(str).map((x) => AuthInstanceList.fromJson(x)));
+        json.decode(str).map((x) => AuthInstanceList.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$AuthInstanceListToJson(this);

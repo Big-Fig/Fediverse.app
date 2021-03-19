@@ -45,14 +45,16 @@ class PleromaEmojiService extends DisposableOwner
   @override
   Future<List<IPleromaCustomEmoji>> getCustomEmojis() async {
     var request = RestRequest.get(
-        relativePath: emojiRelativeUrlPath);
+      relativePath: emojiRelativeUrlPath,
+    );
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parsePleromaCustomEmojiListResponse(httpResponse);
   }
 
   List<IPleromaCustomEmoji> parsePleromaCustomEmojiListResponse(
-      Response httpResponse) {
+    Response httpResponse,
+  ) {
     RestResponse<List<IPleromaCustomEmoji>> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
@@ -81,7 +83,9 @@ class PleromaEmojiService extends DisposableOwner
       return restResponse.body!;
     } else {
       throw PleromaEmojiException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 }

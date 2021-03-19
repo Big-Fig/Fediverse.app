@@ -30,7 +30,8 @@ class ChatSettings implements IJsonObject, ISettings<ChatSettings> {
 
   static List<ChatSettings> listFromJsonString(String str) =>
       List<ChatSettings>.from(
-          json.decode(str).map((x) => ChatSettings.fromJson(x)));
+        json.decode(str).map((x) => ChatSettings.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$ChatSettingsToJson(this);

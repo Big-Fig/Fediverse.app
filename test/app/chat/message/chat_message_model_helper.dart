@@ -20,18 +20,21 @@ Future<DbChatMessagePopulatedWrapper> createTestChatMessage({
   return DbChatMessagePopulatedWrapper(
     dbChatMessagePopulated: DbChatMessagePopulated(
       dbChatMessage: await createTestDbChatMessage(
-          createdAt: createdAt,
-          seed: seed,
-          remoteId: remoteId,
-          chatRemoteId: chatRemoteId,
-          dbAccount: dbAccount),
+        createdAt: createdAt,
+        seed: seed,
+        remoteId: remoteId,
+        chatRemoteId: chatRemoteId,
+        dbAccount: dbAccount,
+      ),
       dbAccount: dbAccount,
     ),
   );
 }
 
 void expectChatMessage(
-    IPleromaChatMessage? actual, IPleromaChatMessage? expected) {
+  IPleromaChatMessage? actual,
+  IPleromaChatMessage? expected,
+) {
   if (actual == null && expected == null) {
     return;
   }

@@ -17,5 +17,6 @@ abstract class IConversationChatWithLastMessageCachedListBloc
       );
 
   Stream<List<IConversationChatWithLastMessage>> watchLocalItemsNewerThanItem(
-      IConversationChatWithLastMessage item);
+    IConversationChatWithLastMessage item,
+  );
 }

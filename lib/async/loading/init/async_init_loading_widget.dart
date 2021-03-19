@@ -60,17 +60,16 @@ class AsyncInitLoadingWidget extends StatelessWidget {
             return loadingFinishedBuilder(context);
           case AsyncInitLoadingState.failed:
             return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Text(
-                    S.of(context).async_init_state_failed(
-                          asyncInitLoadingBloc.initLoadingException.toString(),
-                        ),
-                  ),
-                ));
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  S.of(context).async_init_state_failed(
+                        asyncInitLoadingBloc.initLoadingException.toString(),
+                      ),
+                ),
+              ),
+            );
         }
-
-
       },
     );
   }

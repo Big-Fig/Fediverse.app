@@ -50,8 +50,9 @@ abstract class LocalOnlyPaginationBloc<TPage extends PaginationPage<TItem>,
     required TPage? newerPage,
   });
 
-  TPage createPage(
-      {required int pageIndex,
-      required List<TItem> loadedItems,
-      required int? itemsCountPerPage});
+  TPage createPage({
+    required int pageIndex,
+    required List<TItem> loadedItems,
+    required int? itemsCountPerPage,
+  });
 }

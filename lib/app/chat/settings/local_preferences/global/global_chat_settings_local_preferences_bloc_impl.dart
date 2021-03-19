@@ -7,8 +7,8 @@ class GlobalChatSettingsLocalPreferencesBloc
     extends ChatSettingsLocalPreferencesBloc
     implements IGlobalChatSettingsLocalPreferencesBloc {
   GlobalChatSettingsLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService)
-      : super(preferencesService, "chat.settings.global");
+    ILocalPreferencesService preferencesService,
+  ) : super(preferencesService, "chat.settings.global");
 
   @override
   ChatSettings get defaultValue => ChatSettings(

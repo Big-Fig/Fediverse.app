@@ -112,10 +112,11 @@ abstract class FediDialog extends BaseDialog {
         children: <Widget>[
           if (cancelable)
             Expanded(
-                child: buildDismissAction(
-              context: context,
-              isLast: actions?.isNotEmpty != true,
-            )),
+              child: buildDismissAction(
+                context: context,
+                isLast: actions?.isNotEmpty != true,
+              ),
+            ),
           ...actions?.asMap().entries.map((entry) {
                 var index = entry.key;
                 var action = entry.value;
@@ -130,7 +131,7 @@ abstract class FediDialog extends BaseDialog {
                   ),
                 );
               }).toList() ??
-              []
+              [],
         ],
       );
     } else {

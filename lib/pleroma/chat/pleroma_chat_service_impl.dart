@@ -65,7 +65,8 @@ class PleromaChatService extends DisposableOwner
   }
 
   List<IPleromaChatMessage> parseChatMessageListResponse(
-      Response httpResponse) {
+    Response httpResponse,
+  ) {
     if (httpResponse.statusCode == 200) {
       return PleromaChatMessage.listFromJsonString(
         httpResponse.body,

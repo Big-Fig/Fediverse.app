@@ -34,7 +34,8 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
   @override
   ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<INotification>,
       INotification?>? retrieveTimelineTabPaginationListBloc(
-          NotificationTab tab) =>
+    NotificationTab tab,
+  ) =>
       tabsMap[tab]!.paginationListWithNewItemsBloc;
 
   @override

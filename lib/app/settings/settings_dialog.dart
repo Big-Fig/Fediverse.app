@@ -20,39 +20,40 @@ void showSettingsDialog({
   showFediModalBottomSheetDialog(
     context: context,
     child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: FediSizes.smallPadding,
-          horizontal: FediSizes.bigPadding,
-        ),
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Center(
-              child: Builder(
-                builder: (context) {
-                  return _SettingsDialogTitle(
-                    title: titleBuilder != null ? titleBuilder(context) : title,
-                  );
-                },
-              ),
+      padding: const EdgeInsets.symmetric(
+        vertical: FediSizes.smallPadding,
+        horizontal: FediSizes.bigPadding,
+      ),
+      child: ListView(
+        shrinkWrap: true,
+        children: [
+          Center(
+            child: Builder(
+              builder: (context) {
+                return _SettingsDialogTitle(
+                  title: titleBuilder != null ? titleBuilder(context) : title,
+                );
+              },
             ),
-            Center(
-              child: Builder(
-                builder: (context) {
-                  return _SettingsDialogSubTitle(
-                    subTitle: subTitleBuilder != null
-                        ? subTitleBuilder(context)
-                        : subTitle,
-                  );
-                },
-              ),
+          ),
+          Center(
+            child: Builder(
+              builder: (context) {
+                return _SettingsDialogSubTitle(
+                  subTitle: subTitleBuilder != null
+                      ? subTitleBuilder(context)
+                      : subTitle,
+                );
+              },
             ),
-            const FediBigVerticalSpacer(),
-            const FediUltraLightGreyDivider(),
-            const FediSmallVerticalSpacer(),
-            child,
-          ],
-        )),
+          ),
+          const FediBigVerticalSpacer(),
+          const FediUltraLightGreyDivider(),
+          const FediSmallVerticalSpacer(),
+          child,
+        ],
+      ),
+    ),
   );
 }
 

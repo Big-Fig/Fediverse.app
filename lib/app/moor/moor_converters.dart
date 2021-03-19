@@ -121,12 +121,14 @@ class PleromaMyAccountPleromaPartNotificationsSettingsDatabaseConverter
 
   @override
   PleromaMyAccountPleromaPartNotificationsSettings fromJson(
-          Map<String, dynamic>? json) =>
+    Map<String, dynamic>? json,
+  ) =>
       PleromaMyAccountPleromaPartNotificationsSettings.fromJson(json!);
 
   @override
   Map<String, dynamic> toJson(
-          PleromaMyAccountPleromaPartNotificationsSettings obj) =>
+    PleromaMyAccountPleromaPartNotificationsSettings obj,
+  ) =>
       obj.toJson();
 }
 

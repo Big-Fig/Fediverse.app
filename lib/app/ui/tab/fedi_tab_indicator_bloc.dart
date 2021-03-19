@@ -4,8 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IFediTabIndicatorBloc<T> implements IDisposable {
-  static IFediTabIndicatorBloc of<T>(BuildContext context,
-          {bool listen = true}) =>
+  static IFediTabIndicatorBloc of<T>(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IFediTabIndicatorBloc<T>>(context, listen: listen);
 
   TabController get tabController;

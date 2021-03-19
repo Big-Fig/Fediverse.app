@@ -8,10 +8,11 @@ class FediUltraLightGreyDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-      height: height,
-      width: double.infinity,
-      color: IFediUiColorTheme.of(
-        context,
-        listen: true,
-      ).ultraLightGrey);
+        height: height,
+        width: double.infinity,
+        color: IFediUiColorTheme.of(
+          context,
+          listen: true,
+        ).ultraLightGrey,
+      );
 }

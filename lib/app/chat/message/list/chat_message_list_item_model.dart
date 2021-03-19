@@ -3,8 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class ChatMessageListItem<T extends IChatMessage> {
-  static ChatMessageListItem<T> of<T extends IChatMessage>(BuildContext context,
-          {bool listen = true}) =>
+  static ChatMessageListItem<T> of<T extends IChatMessage>(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<ChatMessageListItem<T>>(context, listen: listen);
 
   final T message;
@@ -32,6 +34,7 @@ class ChatMessageListItem<T extends IChatMessage> {
           isLastInMinuteGroup == other.isLastInMinuteGroup &&
           isFirstInDayGroup == other.isFirstInDayGroup &&
           isLastInDayGroup == other.isLastInDayGroup;
+
   @override
   int get hashCode =>
       message.hashCode ^
@@ -39,6 +42,7 @@ class ChatMessageListItem<T extends IChatMessage> {
       isLastInMinuteGroup.hashCode ^
       isFirstInDayGroup.hashCode ^
       isLastInDayGroup.hashCode;
+
   @override
   String toString() {
     return 'ChatMessageListItem{message: $message,'

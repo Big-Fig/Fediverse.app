@@ -137,7 +137,8 @@ class EditTimelineSettingsBloc
               isNullableValuesPossible || timelineType != TimelineType.account,
           isEnabled: timelineType
               .isOnlyFromAccountWithRemoteIdFilterSupportedOnInstance(
-                  authInstance),
+            authInstance,
+          ),
           validators: [
             if (timelineType == TimelineType.account)
               ValueFormFieldNonNullValidationError.createValidator(),
@@ -230,7 +231,7 @@ class EditTimelineSettingsBloc
         onlyInCustomListFieldBloc,
         replyVisibilityFilterFieldBloc,
         excludeVisibilitiesFieldBloc,
-        onlyFromInstanceFieldBloc
+        onlyFromInstanceFieldBloc,
       ];
 
   @override

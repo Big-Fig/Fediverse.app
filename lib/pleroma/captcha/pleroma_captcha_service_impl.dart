@@ -44,7 +44,9 @@ class PleromaCaptchaService extends DisposableOwner
       return PleromaCaptcha.fromJsonString(httpResponse.body);
     } else {
       throw PleromaCaptchaException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 

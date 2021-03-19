@@ -126,7 +126,8 @@ class PleromaFilter extends IPleromaFilter {
 
   static List<PleromaFilter> listFromJsonString(String str) =>
       List<PleromaFilter>.from(
-          json.decode(str).map((x) => PleromaFilter.fromJson(x)));
+        json.decode(str).map((x) => PleromaFilter.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$PleromaFilterToJson(this);
@@ -225,7 +226,8 @@ class PostPleromaFilter extends IPostPleromaFilter {
 
   static List<PostPleromaFilter> listFromJsonString(String str) =>
       List<PostPleromaFilter>.from(
-          json.decode(str).map((x) => PleromaFilter.fromJson(x)));
+        json.decode(str).map((x) => PleromaFilter.fromJson(x)),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$PostPleromaFilterToJson(this);

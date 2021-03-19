@@ -6,5 +6,5 @@ enum CustomEmojiPickerCodeCategoryType {
   activities,
   objects,
   symbols,
-  flags
+  flags,
 }
