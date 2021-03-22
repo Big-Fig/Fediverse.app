@@ -22,7 +22,7 @@ class ConversationChatWithLastMessagePaginationListWithNewItemsBloc<
 
   @override
   Stream<List<IConversationChatWithLastMessage>> watchItemsNewerThanItem(
-    IConversationChatWithLastMessage item,
+    IConversationChatWithLastMessage? item,
   ) =>
       cachedListBloc.watchLocalItemsNewerThanItem(item);
 

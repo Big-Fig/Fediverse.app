@@ -22,7 +22,7 @@ class PleromaChatWithLastMessagePaginationListWithNewItemsBloc<
 
   @override
   Stream<List<IPleromaChatWithLastMessage>> watchItemsNewerThanItem(
-    IPleromaChatWithLastMessage item,
+    IPleromaChatWithLastMessage? item,
   ) =>
       cachedListBloc.watchLocalItemsNewerThanItem(item);
 

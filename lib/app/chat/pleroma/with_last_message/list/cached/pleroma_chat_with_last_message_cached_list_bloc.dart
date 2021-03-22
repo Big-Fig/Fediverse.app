@@ -16,6 +16,6 @@ abstract class IPleromaChatWithLastMessageCachedListBloc extends DisposableOwner
       );
 
   Stream<List<IPleromaChatWithLastMessage>> watchLocalItemsNewerThanItem(
-    IPleromaChatWithLastMessage item,
+    IPleromaChatWithLastMessage? item,
   );
 }

@@ -91,7 +91,7 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
 
   @override
   Stream<List<IPleromaChatMessage>> watchLocalItemsNewerThanItem(
-    IPleromaChatMessage item,
+    IPleromaChatMessage? item,
   ) {
     return chatMessageRepository.watchChatMessages(
       filters: _pleromaChatMessageRepositoryFilters,

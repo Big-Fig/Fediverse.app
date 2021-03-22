@@ -14,6 +14,6 @@ abstract class IScheduledStatusCachedListBloc extends DisposableOwner
       Provider.of<IScheduledStatusCachedListBloc>(context, listen: listen);
 
   Stream<List<IScheduledStatus>> watchLocalItemsNewerThanItem(
-    IScheduledStatus item,
+    IScheduledStatus? item,
   );
 }

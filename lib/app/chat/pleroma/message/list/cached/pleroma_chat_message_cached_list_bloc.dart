@@ -16,6 +16,6 @@ abstract class IPleromaChatMessageCachedListBloc
       );
 
   Stream<List<IPleromaChatMessage>> watchLocalItemsNewerThanItem(
-    IPleromaChatMessage item,
+    IPleromaChatMessage? item,
   );
 }

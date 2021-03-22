@@ -34,7 +34,7 @@ abstract class INotificationCachedListBloc
     required INotification? olderThan,
   });
 
-  Stream<List<INotification>> watchLocalItemsNewerThanItem(INotification item);
+  Stream<List<INotification>> watchLocalItemsNewerThanItem(INotification? item);
 
   Future dismissAll();
 }

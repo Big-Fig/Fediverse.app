@@ -47,7 +47,7 @@ class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(
-    IStatus item,
+    IStatus? item,
   ) {
     return statusRepository.watchStatuses(
       filters: _statusRepositoryFilters,

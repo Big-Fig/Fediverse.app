@@ -33,7 +33,7 @@ class MemoryCachedPaginationListWithNewItemsBloc<
   }
 
   @override
-  Stream<List<TItem>> watchItemsNewerThanItem(TItem item) =>
+  Stream<List<TItem>> watchItemsNewerThanItem(TItem? item) =>
       newItemsStreamController.stream;
 
   @override

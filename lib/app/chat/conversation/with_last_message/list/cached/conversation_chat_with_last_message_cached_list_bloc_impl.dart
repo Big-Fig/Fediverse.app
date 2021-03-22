@@ -82,12 +82,12 @@ class ConversationChatWithLastMessageCachedListBloc
 
   @override
   Stream<List<IConversationChatWithLastMessage>> watchLocalItemsNewerThanItem(
-    IConversationChatWithLastMessage item,
+    IConversationChatWithLastMessage? item,
   ) =>
       chatWithLastMessageRepository.watchConversationsWithLastMessage(
         filters: null,
         pagination: RepositoryPagination<IConversationChat>(
-          newerThanItem: item.chat,
+          newerThanItem: item?.chat,
         ),
         orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
       );
