@@ -11,23 +11,24 @@ analyzer:
     - test/resources/**
     - test/**/examples/**
     - lib/generated/*
-  plugins:
-    - dart_code_metrics
+#  plugins:
+#    - dart_code_metrics
 #  strong-mode:
 #    implicit-casts: false
 #    implicit-dynamic: false
 
-dart_code_metrics:
-  anti-patterns:
-    - long-method
-    - long-parameter-list
-  metrics:
-    cyclomatic-complexity: 20
-    number-of-arguments: 4
-    maximum-nesting: 5
-  metrics-exclude:
-    - test/**
-  rules:
+#dart_code_metrics:
+#  anti-patterns:
+##    - long-method
+##    - long-parameter-list
+#  metrics:
+#    cyclomatic-complexity: 20
+#    number-of-arguments: 4
+#    maximum-nesting: 5
+#  metrics-exclude:
+#    - test/**
+#    - lib/generated/*
+#  rules:
 #    - binary-expression-operand-order
 #    - double-literal-format
 #    - newline-before-return
@@ -36,7 +37,7 @@ dart_code_metrics:
 #    - no-equal-then-else
 #    - no-object-declaration
 #    - prefer-conditional-expressions
-    - prefer-trailing-comma
+#    - prefer-trailing-comma
 
 linter:
   rules:
