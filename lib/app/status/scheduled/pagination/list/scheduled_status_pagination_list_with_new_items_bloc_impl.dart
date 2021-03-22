@@ -29,7 +29,7 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
 
   @override
   Stream<List<IScheduledStatus>> watchItemsNewerThanItem(
-    IScheduledStatus item,
+    IScheduledStatus? item,
   ) {
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
     return scheduledStatusCachedListService.watchLocalItemsNewerThanItem(item);

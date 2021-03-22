@@ -87,7 +87,7 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
 
   @override
   Stream<List<IPleromaChatMessage>> watchItemsNewerThanItem(
-    IPleromaChatMessage item,
+    IPleromaChatMessage? item,
   ) {
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
     return chatMessageCachedListService.watchLocalItemsNewerThanItem(item);

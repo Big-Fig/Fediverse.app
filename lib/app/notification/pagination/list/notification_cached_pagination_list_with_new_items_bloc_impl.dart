@@ -24,7 +24,7 @@ class NotificationCachedPaginationListWithNewItemsBloc<
         );
 
   @override
-  Stream<List<INotification>> watchItemsNewerThanItem(INotification item) =>
+  Stream<List<INotification>> watchItemsNewerThanItem(INotification? item) =>
       cachedListBloc.watchLocalItemsNewerThanItem(item);
 
   @override

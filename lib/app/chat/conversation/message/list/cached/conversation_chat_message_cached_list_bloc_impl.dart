@@ -83,10 +83,10 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
 
   @override
   Stream<List<IConversationChatMessage>> watchLocalItemsNewerThanItem(
-    IConversationChatMessage item,
+    IConversationChatMessage? item,
   ) =>
       conversationChatStatusListBloc
-          .watchLocalItemsNewerThanItem(item.status)
+          .watchLocalItemsNewerThanItem(item?.status)
           .map(
             (statuses) => statuses
                 .map(

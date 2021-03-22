@@ -81,7 +81,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
 
   @override
   Stream<List<IScheduledStatus>> watchLocalItemsNewerThanItem(
-    IScheduledStatus item,
+    IScheduledStatus? item,
   ) =>
       scheduledStatusRepository.watchScheduledStatuses(
         filters: _scheduledStatusRepositoryFilters,

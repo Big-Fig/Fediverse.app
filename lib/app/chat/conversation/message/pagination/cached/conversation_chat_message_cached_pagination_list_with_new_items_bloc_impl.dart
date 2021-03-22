@@ -93,7 +93,7 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
 
   @override
   Stream<List<IConversationChatMessage>> watchItemsNewerThanItem(
-    IConversationChatMessage item,
+    IConversationChatMessage? item,
   ) {
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
     return chatMessageCachedListService.watchLocalItemsNewerThanItem(item);

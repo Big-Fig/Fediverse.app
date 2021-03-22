@@ -82,12 +82,12 @@ class PleromaChatWithLastMessageCachedListBloc
 
   @override
   Stream<List<IPleromaChatWithLastMessage>> watchLocalItemsNewerThanItem(
-    IPleromaChatWithLastMessage item,
+    IPleromaChatWithLastMessage? item,
   ) =>
       chatWithLastMessageRepository.watchChatsWithLastMessage(
         filters: filters,
         pagination: RepositoryPagination(
-          newerThanItem: item.chat,
+          newerThanItem: item?.chat,
         ),
         orderingTermData: orderingTermData,
       );

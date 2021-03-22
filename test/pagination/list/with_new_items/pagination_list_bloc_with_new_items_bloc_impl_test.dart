@@ -14,10 +14,10 @@ void main() {
       TestPaginationItem> paginationBloc;
 
   late IPaginationListBloc<CachedPaginationPage<TestPaginationItem>,
-      TestPaginationItem?> paginationListBloc;
+      TestPaginationItem> paginationListBloc;
   late ICachedPaginationListWithNewItemsBloc<
       CachedPaginationPage<TestPaginationItem>,
-      TestPaginationItem?> paginationListWithNewItemsBloc;
+      TestPaginationItem> paginationListWithNewItemsBloc;
   late MemoryCachedPaginationListWithNewItemsBloc<
       CachedPaginationPage<TestPaginationItem>,
       TestPaginationItem> memoryPaginationListWithNewItemsBloc;
@@ -79,11 +79,11 @@ void main() {
       itemsCountPerPage,
     );
     expect(
-      paginationListBloc.items.first!.index,
+      paginationListBloc.items.first.index,
       0,
     );
     expect(
-      paginationListBloc.items.last!.index,
+      paginationListBloc.items.last.index,
       itemsCountPerPage - 1,
     );
     await Future.delayed(Duration(milliseconds: 1));
@@ -107,11 +107,11 @@ void main() {
       itemsCountPerPage * 2,
     );
     expect(
-      paginationListBloc.items.first!.index,
+      paginationListBloc.items.first.index,
       0,
     );
     expect(
-      paginationListBloc.items.last!.index,
+      paginationListBloc.items.last.index,
       itemsCountPerPage * 2 - 1,
     );
     await Future.delayed(Duration(milliseconds: 1));
@@ -135,11 +135,11 @@ void main() {
       itemsCountPerPage * 3,
     );
     expect(
-      paginationListBloc.items.first!.index,
+      paginationListBloc.items.first.index,
       0,
     );
     expect(
-      paginationListBloc.items.last!.index,
+      paginationListBloc.items.last.index,
       itemsCountPerPage * 3 - 1,
     );
     await Future.delayed(Duration(milliseconds: 1));
@@ -163,11 +163,11 @@ void main() {
       itemsCountPerPage,
     );
     expect(
-      paginationListBloc.items.first!.index,
+      paginationListBloc.items.first.index,
       0,
     );
     expect(
-      paginationListBloc.items.last!.index,
+      paginationListBloc.items.last.index,
       itemsCountPerPage - 1,
     );
     await Future.delayed(Duration(milliseconds: 1));
@@ -195,11 +195,11 @@ void main() {
       storageSize,
     );
     expect(
-      paginationListBloc.items.first!.index,
+      paginationListBloc.items.first.index,
       0,
     );
     expect(
-      paginationListBloc.items.last!.index,
+      paginationListBloc.items.last.index,
       storageSize - 1,
     );
     await Future.delayed(Duration(milliseconds: 1));
@@ -223,11 +223,11 @@ void main() {
       storageSize,
     );
     expect(
-      paginationListBloc.items.first!.index,
+      paginationListBloc.items.first.index,
       0,
     );
     expect(
-      paginationListBloc.items.last!.index,
+      paginationListBloc.items.last.index,
       storageSize - 1,
     );
     await Future.delayed(Duration(milliseconds: 1));
@@ -340,7 +340,7 @@ void main() {
 
     expect(
       paginationListWithNewItemsBloc.items,
-      null,
+      [],
     );
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems.length,
@@ -417,7 +417,7 @@ void main() {
 
     expect(
       paginationListWithNewItemsBloc.items,
-      null,
+      [],
     );
     expect(
       paginationListWithNewItemsBloc.unmergedNewItemsCount,
@@ -479,7 +479,7 @@ void main() {
 
     expect(
       paginationListWithNewItemsBloc.items,
-      null,
+      [],
     );
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems.length,

@@ -22,7 +22,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
   Stream<TItem?> get newerItemStream =>
       itemsStream.map((items) => items.isNotEmpty == true ? items.first : null);
 
-  Stream<List<TItem>> watchItemsNewerThanItem(TItem item);
+  Stream<List<TItem>> watchItemsNewerThanItem(TItem? item);
 
   @override
   final bool mergeNewItemsImmediately;
@@ -54,52 +54,54 @@ abstract class CachedPaginationListWithNewItemsBloc<
 //          clearNewItems();
           // todo: remove hack actually we should listen even with newerItem == null
           // but it is hack to avoid duplicated data
-          if (newerItem != null) {
-            _logger.finest(() => "newerItem $newerItem");
-            newItemsSubscription?.cancel();
+          _logger.finest(() => "newerItem $newerItem");
+          newItemsSubscription?.cancel();
 
-            newItemsSubscription = watchItemsNewerThanItem(newerItem)
-                .skipWhile((newItems) => newItems.isNotEmpty != true)
-                .listen(
-              (newItems) {
-                // we need to filter again to be sure that newerItem is no
-                // changed during sql request execute time
-                List<TItem> actuallyNew = newItems
-                    .where(
-                      (newItem) => compareItemsToSort(newItem, newerItem) > 0,
-                    )
-                    .toList();
-
-                var currentItems = items;
-
-                // remove duplicates
-                // sometimes local storage sqlite returns duplicated items
-                // sometimes item is newer but already exist
-                // for example chat updateAt updated
-                actuallyNew = removeDuplicatesAndUpdate(
-                  actuallyNew: actuallyNew,
-                  currentItems: currentItems,
-                );
-
-                _logger.finest(() => "watchItemsNewerThanItem "
-                    "\n"
-                    "\t newItems ${newItems.length} \n"
-                    "\t actuallyNew = ${actuallyNew.length}");
-
-                if (actuallyNew.isNotEmpty == true) {
-                  if (currentItems.isNotEmpty != true &&
-                      mergeNewItemsImmediatelyWhenItemsIsEmpty) {
-                    // merge immediately
-                    mergedNewItemsSubject.add(actuallyNew);
+          newItemsSubscription = watchItemsNewerThanItem(newerItem)
+              .skipWhile((newItems) => newItems.isNotEmpty != true)
+              .listen(
+            (newItems) {
+              // we need to filter again to be sure that newerItem is no
+              // changed during sql request execute time
+              List<TItem> actuallyNew = newItems.where(
+                (newItem) {
+                  if (newerItem != null) {
+                    return compareItemsToSort(newItem, newerItem) > 0;
                   } else {
-                    unmergedNewItemsSubject.add(actuallyNew);
+                    return true;
                   }
-                }
-              },
-            );
+                },
+              ).toList();
 
-            addDisposable(streamSubscription: newItemsSubscription);
-          }
+              var currentItems = items;
+
+              // remove duplicates
+              // sometimes local storage sqlite returns duplicated items
+              // sometimes item is newer but already exist
+              // for example chat updateAt updated
+              actuallyNew = removeDuplicatesAndUpdate(
+                actuallyNew: actuallyNew,
+                currentItems: currentItems,
+              );
+
+              _logger.finest(() => "watchItemsNewerThanItem "
+                  "\n"
+                  "\t newItems ${newItems.length} \n"
+                  "\t actuallyNew = ${actuallyNew.length}");
+
+              if (actuallyNew.isNotEmpty == true) {
+                if (currentItems.isNotEmpty != true &&
+                    mergeNewItemsImmediatelyWhenItemsIsEmpty) {
+                  // merge immediately
+                  mergedNewItemsSubject.add(actuallyNew);
+                } else {
+                  unmergedNewItemsSubject.add(actuallyNew);
+                }
+              }
+            },
+          );
+
+          addDisposable(streamSubscription: newItemsSubscription);
         },
       ),
     );

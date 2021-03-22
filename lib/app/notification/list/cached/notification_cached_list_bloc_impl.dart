@@ -133,7 +133,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Stream<List<INotification>> watchLocalItemsNewerThanItem(
-    INotification item,
+    INotification? item,
   ) =>
       notificationRepository.watchNotifications(
         filters: _notificationRepositoryFilters,
