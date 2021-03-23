@@ -579,21 +579,17 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       typedResult.map(typedResultToPopulated).toList();
 
   DbStatusPopulated typedResultToPopulated(TypedResult typedResult) {
-    DbStatus rebloggedStatus;
-    DbAccount rebloggedStatusAccount;
-    rebloggedStatus = typedResult.readTable(reblogAlias);
-    rebloggedStatusAccount = typedResult.readTable(reblogAccountAlias);
 
     return DbStatusPopulated(
-      reblogDbStatus: rebloggedStatus,
-      reblogDbStatusAccount: rebloggedStatusAccount,
+      reblogDbStatus: typedResult.readTableOrNull(reblogAlias),
+      reblogDbStatusAccount: typedResult.readTableOrNull(reblogAccountAlias),
       dbStatus: typedResult.readTable(db.dbStatuses),
       dbAccount: typedResult.readTable(accountAlias),
-      replyDbStatus: typedResult.readTable(replyAlias),
-      replyDbStatusAccount: typedResult.readTable(replyAccountAlias),
-      replyReblogDbStatus: typedResult.readTable(replyReblogAlias),
+      replyDbStatus: typedResult.readTableOrNull(replyAlias),
+      replyDbStatusAccount: typedResult.readTableOrNull(replyAccountAlias),
+      replyReblogDbStatus: typedResult.readTableOrNull(replyReblogAlias),
       replyReblogDbStatusAccount:
-          typedResult.readTable(replyReblogAccountAlias),
+          typedResult.readTableOrNull(replyReblogAccountAlias),
     );
   }
 

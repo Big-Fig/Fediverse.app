@@ -84,7 +84,7 @@ class _MultiSelectFromListValueFormFieldRowValueWidget<T>
           context,
           listen: false,
         );
-        if (fieldBloc.isEnabled!) {
+        if (fieldBloc.isEnabled) {
           _showDialog(
             context: context,
             fieldBloc: fieldBloc,

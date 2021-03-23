@@ -11,6 +11,6 @@ class FediNestedScrollViewWithNestedScrollableTabsBloc
 
   FediNestedScrollViewWithNestedScrollableTabsBloc({
     required this.tabController,
-    required INestedScrollControllerBloc? nestedScrollControllerBloc,
+    required INestedScrollControllerBloc nestedScrollControllerBloc,
   }) : super(nestedScrollControllerBloc: nestedScrollControllerBloc);
 }

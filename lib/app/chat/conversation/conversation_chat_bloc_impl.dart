@@ -83,39 +83,6 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   @override
   Stream<List<IAccount>> get accountsWithoutMeStream => accountsStream;
 
-  ConversationChatBloc({
-    required this.pleromaConversationService,
-    required this.myAccountBloc,
-    required this.conversationRepository,
-    required this.pleromaAuthStatusService,
-    required this.statusRepository,
-    required this.accountRepository,
-    required IConversationChat conversation,
-    required IConversationChatMessage? lastChatMessage,
-    bool needRefreshFromNetworkOnInit = false,
-    bool isNeedWatchLocalRepositoryForUpdates =
-        true, // todo: remove hack. Don't init when bloc quickly disposed. Help
-    //  improve performance in timeline unnecessary recreations
-    bool delayInit = true,
-  })  : _accountsSubject = BehaviorSubject.seeded(conversation.accounts),
-        _chatSubject = BehaviorSubject.seeded(conversation),
-        _lastMessageSubject = BehaviorSubject.seeded(lastChatMessage),
-        super(
-          needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
-          isNeedWatchLocalRepositoryForUpdates:
-              isNeedWatchLocalRepositoryForUpdates,
-          delayInit: delayInit,
-        ) {
-    addDisposable(subject: _chatSubject);
-    addDisposable(subject: _lastMessageSubject);
-    addDisposable(subject: _lastPublishedMessageSubject);
-    addDisposable(subject: _accountsSubject);
-
-    addDisposable(streamController: onMessageLocallyHiddenStreamController);
-
-    listenForAccounts(conversation);
-  }
-
   void listenForAccounts(IConversationChat? conversation) {
     addDisposable(
       streamSubscription: accountRepository
@@ -138,6 +105,39 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         },
       ),
     );
+  }
+
+  ConversationChatBloc({
+    required this.pleromaConversationService,
+    required this.myAccountBloc,
+    required this.conversationRepository,
+    required this.pleromaAuthStatusService,
+    required this.statusRepository,
+    required this.accountRepository,
+    required IConversationChat conversation,
+    required IConversationChatMessage? lastChatMessage,
+    bool needRefreshFromNetworkOnInit = false,
+    bool isNeedWatchLocalRepositoryForUpdates =
+        true, // todo: remove hack. Don't init when bloc quickly disposed. Help
+    //  improve performance in timeline unnecessary recreations
+    bool delayInit = true,
+  })  : _accountsSubject = BehaviorSubject.seeded([]),
+        _chatSubject = BehaviorSubject.seeded(conversation),
+        _lastMessageSubject = BehaviorSubject.seeded(lastChatMessage),
+        super(
+          needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
+          isNeedWatchLocalRepositoryForUpdates:
+              isNeedWatchLocalRepositoryForUpdates,
+          delayInit: delayInit,
+        ) {
+    addDisposable(subject: _chatSubject);
+    addDisposable(subject: _lastMessageSubject);
+    addDisposable(subject: _lastPublishedMessageSubject);
+    addDisposable(subject: _accountsSubject);
+
+    addDisposable(streamController: onMessageLocallyHiddenStreamController);
+
+    listenForAccounts(conversation);
   }
 
   @override

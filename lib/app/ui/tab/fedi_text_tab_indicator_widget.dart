@@ -50,9 +50,9 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
             var tab = entry.value;
 
             Widget tabWidget = DisposableProxyProvider<IFediTabIndicatorBloc<T>,
-                IFediTabIndicatorItemBloc<T?>>(
+                IFediTabIndicatorItemBloc<T>>(
               // create: (BuildContext context) =>
-              update: (context, value, previous) => FediTabIndicatorItemBloc<T?>(
+              update: (context, value, previous) => FediTabIndicatorItemBloc<T>(
                 fediTabIndicatorBloc: value,
                 index: index,
                 item: tab,

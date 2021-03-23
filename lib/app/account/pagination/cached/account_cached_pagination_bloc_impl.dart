@@ -82,7 +82,7 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
     int? maximumCachedPagesCount,
   }) {
     return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<IAccount?>, IAccount?>>(
+        ICachedPaginationBloc<CachedPaginationPage<IAccount>, IAccount>>(
       create: (context) => AccountCachedPaginationBloc.createFromContext(
         context,
         maximumCachedPagesCount: maximumCachedPagesCount,

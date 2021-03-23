@@ -15,7 +15,7 @@ class MultiSelectFromListValueFormFieldBlocProxyProvider<T>
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IMultiSelectFromListValueFormFieldBloc<T>,
-          ISelectFromListValueFormFieldBloc<List<T>?>>(
+          ISelectFromListValueFormFieldBloc<List<T>>>(
         update: (context, value, previous) => value,
         child: SelectFromListValueFormFieldBlocProxyProvider<List<T>>(
           child: child,

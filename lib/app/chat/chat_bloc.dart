@@ -16,9 +16,9 @@ abstract class IChatBloc implements IDisposable, IAsyncInitLoadingBloc {
         listen: listen,
       );
 
-  IChat? get chat;
+  IChat get chat;
 
-  Stream<IChat?> get chatStream;
+  Stream<IChat> get chatStream;
 
   int? get unreadCount;
 
@@ -36,7 +36,7 @@ abstract class IChatBloc implements IDisposable, IAsyncInitLoadingBloc {
 
   Stream<IChatMessage?> get lastChatMessageStream;
 
-  List<IAccount>? get accounts;
+  List<IAccount> get accounts;
 
   Stream<List<IAccount>> get accountsStream;
 

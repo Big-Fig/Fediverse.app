@@ -19,13 +19,23 @@ abstract class IPleromaApi implements IDisposable {
         mapIsReady,
       ).distinct();
 
-  bool get isApiReadyToUse => mapIsReady(pleromaApiState, isConnected);
+  bool get isApiReadyToUse => mapIsReady(
+      pleromaApiState,
+      isConnected,
+    );
 }
 
-bool mapIsReady(PleromaApiState? pleromaState, bool isConnected) =>
-    pleromaState == PleromaApiState.validAuth && isConnected == true;
+bool mapIsReady(
+  PleromaApiState pleromaState,
+  bool isConnected,
+) =>
+    pleromaState == PleromaApiState.validAuth;
 
-enum PleromaApiState { validAuth, brokenAuth, loggedOut }
+enum PleromaApiState {
+  validAuth,
+  brokenAuth,
+  loggedOut,
+}
 
 abstract class IPleromaAuthApi implements IPleromaApi {
   bool get isPleroma;

@@ -127,10 +127,14 @@ class _TimelinesHomeTabPageBlocsListProvider extends StatelessWidget {
         _logger.finest(
           () => "StreamBuilder timelineTabBlocsList $timelineTabBlocsList",
         );
-        return Provider<TimelineTabBlocsList?>.value(
-          value: timelineTabBlocsList,
-          child: _TimelinesHomeTabPageBody(),
-        );
+        if (timelineTabBlocsList != null) {
+          return Provider<TimelineTabBlocsList>.value(
+            value: timelineTabBlocsList,
+            child: _TimelinesHomeTabPageBody(),
+          );
+        } else {
+          return SizedBox.shrink();
+        }
       },
     );
   }
@@ -147,7 +151,7 @@ class _TimelinesHomeTabPageBody extends StatelessWidget {
       backgroundColor: fediUiColorTheme.transparent,
       body: DisposableProxyProvider<TimelineTabBlocsList,
           IFediNestedScrollViewWithNestedScrollableTabsBloc>(
-        update: (context, value, previous) {
+        update: (context, TimelineTabBlocsList? value, previous) {
           var timelinesHomeTabBloc = ITimelinesHomeTabBloc.of(context);
 
           _logger.finest(
@@ -157,7 +161,7 @@ class _TimelinesHomeTabPageBody extends StatelessWidget {
           return FediNestedScrollViewWithNestedScrollableTabsBloc(
             nestedScrollControllerBloc:
                 timelinesHomeTabBloc.nestedScrollControllerBloc,
-            tabController: value.tabController,
+            tabController: value!.tabController,
           );
         },
         child: FediNestedScrollViewWithNestedScrollableTabsWidget(

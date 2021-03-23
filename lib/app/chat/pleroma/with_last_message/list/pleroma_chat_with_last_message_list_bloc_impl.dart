@@ -32,13 +32,13 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
 
   @override
   IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
-          IPleromaChatWithLastMessage?>
+          IPleromaChatWithLastMessage>
       get chatPaginationListBloc => chatPaginationListWithNewItemsBloc;
 
   @override
   late ICachedPaginationListWithNewItemsBloc<
       CachedPaginationPage<IPleromaChatWithLastMessage>,
-      IPleromaChatWithLastMessage?> chatPaginationListWithNewItemsBloc;
+      IPleromaChatWithLastMessage> chatPaginationListWithNewItemsBloc;
 
   final IPleromaChatMessageRepository chatMessageRepository;
   final IPleromaChatRepository chatRepository;

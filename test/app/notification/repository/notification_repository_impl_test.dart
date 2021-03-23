@@ -97,7 +97,7 @@ void main() {
       dbStatus: dbStatus,
     );
 
-    dbNotificationPopulated = DbNotificationPopulated(
+    dbNotificationPopulated = DbNotificationPopulated.statusPopulated(
       dbNotification: dbNotification,
       dbAccount: dbAccount,
       dbStatusPopulated: dbStatusPopulated,
@@ -173,7 +173,7 @@ void main() {
     assert(id > 0, true);
 
     var oldLocalNotification = DbNotificationPopulatedWrapper(
-      dbNotificationPopulated: DbNotificationPopulated(
+      dbNotificationPopulated: DbNotificationPopulated.statusPopulated(
         dbNotification: dbNotification.copyWith(id: id),
         dbAccount: dbAccount,
         dbStatusPopulated: dbStatusPopulated,
@@ -183,7 +183,7 @@ void main() {
     var newAcct = "newAcct";
     var newType = PleromaNotificationType.reblog;
     var newRemoteNotification = DbNotificationPopulatedWrapper(
-      dbNotificationPopulated: DbNotificationPopulated(
+      dbNotificationPopulated: DbNotificationPopulated.statusPopulated(
         dbNotification: dbNotification.copyWith(id: id),
         dbAccount: dbAccount.copyWith(acct: newAcct),
         dbStatusPopulated: DbStatusPopulated(

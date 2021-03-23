@@ -62,15 +62,19 @@ class PushHandlerUnhandledLocalPreferencesBloc
   Future<bool> markAsHandled(List<PushHandlerMessage> messages) async {
     var pleromaUnhandledList = value!;
 
-    pleromaUnhandledList.messages.removeWhere(
-      (message) => messages.contains(
+    var cleanedMessages = pleromaUnhandledList.messages.where(
+      (message) => !messages.contains(
         message,
       ),
-    );
+    ).toList();
 
     _logger.finest(() => "markAsHandled \n"
         "\t messages = ${messages.length}");
 
-    return setValue(pleromaUnhandledList);
+    return setValue(
+      PushHandlerUnhandledList(
+        messages: cleanedMessages,
+      ),
+    );
   }
 }

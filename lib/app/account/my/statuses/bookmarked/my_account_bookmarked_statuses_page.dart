@@ -80,7 +80,7 @@ MaterialPageRoute createMyAccountBookmarkedStatusesPage() {
         update: (context, value, previous) => value,
         child: StatusCachedListBlocProxyProvider(
           child: ProxyProvider<IMyAccountBookmarkedStatusesCachedListBloc,
-              IPleromaCachedListBloc<IStatus?>>(
+              IPleromaCachedListBloc<IStatus>>(
             update: (context, value, previous) => value,
             child: StatusCachedListBlocLoadingWidget(
               child: StatusCachedPaginationBloc.provideToContext(

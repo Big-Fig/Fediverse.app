@@ -11,14 +11,14 @@ var _logger = Logger("fedi_nested_scroll_view_bloc_impl.dart");
 class FediNestedScrollViewBloc extends DisposableOwner
     implements IFediNestedScrollViewBloc {
   @override
-  final INestedScrollControllerBloc? nestedScrollControllerBloc;
+  final INestedScrollControllerBloc nestedScrollControllerBloc;
 
   BehaviorSubject<bool> isNestedScrollViewBodyStartedScrollSubject =
       BehaviorSubject();
   BehaviorSubject<int> scrollOffsetSubject = BehaviorSubject();
 
   ScrollController? get scrollController =>
-      nestedScrollControllerBloc!.nestedScrollController;
+      nestedScrollControllerBloc.nestedScrollController;
 
   @override
   bool? get isNestedScrollViewBodyStartedScroll =>
@@ -90,5 +90,5 @@ class FediNestedScrollViewBloc extends DisposableOwner
 
   @override
   NestedScrollController? get nestedScrollController =>
-      nestedScrollControllerBloc!.nestedScrollController;
+      nestedScrollControllerBloc.nestedScrollController;
 }

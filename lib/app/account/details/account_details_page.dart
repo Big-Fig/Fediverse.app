@@ -119,7 +119,7 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
           IFediNestedScrollViewBloc>(
         update: (context, value, previous) => value,
         child: ProxyProvider<IFediNestedScrollViewWithNestedScrollableTabsBloc,
-            IScrollControllerBloc?>(
+            IScrollControllerBloc>(
           update: (context, value, previous) =>
               value.nestedScrollControllerBloc,
           child: FediNestedScrollViewWithNestedScrollableTabsWidget(

@@ -2,7 +2,6 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/database/notification_database_model.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
-import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:moor/moor.dart';
 
@@ -285,29 +284,25 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 
   DbNotificationPopulated typedResultToPopulated(TypedResult typedResult) {
     var notificationAccount = typedResult.readTable(accountAlias);
-    var notificationStatus = typedResult.readTable(statusAlias);
+    var notificationStatus = typedResult.readTableOrNull(statusAlias);
 
-    DbStatusPopulated? statusPopulated;
-    var notificationStatusAccount = typedResult.readTable(statusAccountAlias);
-    var rebloggedStatus = typedResult.readTable(statusReblogAlias);
+    var notificationStatusAccount = typedResult.readTableOrNull(statusAccountAlias);
+    var rebloggedStatus = typedResult.readTableOrNull(statusReblogAlias);
     var rebloggedStatusAccount =
-        typedResult.readTable(statusReblogAccountAlias);
+        typedResult.readTableOrNull(statusReblogAccountAlias);
 
-    statusPopulated = DbStatusPopulated(
-      reblogDbStatus: rebloggedStatus,
-      reblogDbStatusAccount: rebloggedStatusAccount,
-      dbStatus: notificationStatus,
-      dbAccount: notificationStatusAccount,
-      replyDbStatus: null,
-      replyDbStatusAccount: null,
-      replyReblogDbStatus: null,
-      replyReblogDbStatusAccount: null,
-    );
 
     return DbNotificationPopulated(
       dbNotification: typedResult.readTable(db.dbNotifications),
       dbAccount: notificationAccount,
-      dbStatusPopulated: statusPopulated,
+      reblogDbStatus: rebloggedStatus,
+      reblogDbStatusAccount: rebloggedStatusAccount,
+      dbStatus: notificationStatus,
+      dbStatusAccount: notificationStatusAccount,
+      replyDbStatus: null,
+      replyDbStatusAccount: null,
+      replyReblogDbStatus: null,
+      replyReblogDbStatusAccount: null,
     );
   }
 

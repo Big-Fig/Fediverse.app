@@ -248,7 +248,7 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expectAccount(chatBloc.accounts![0], account1);
+    expectAccount(chatBloc.accounts[0], account1);
     expectAccount(listenedValue[0], account1);
 
     await _update(newValue, accounts: [
@@ -258,7 +258,7 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expectAccount(chatBloc.accounts![0], account2);
+    expectAccount(chatBloc.accounts[0], account2);
 //    expectAccount(chatBloc.accounts[2], account3);
     expectAccount(listenedValue[0], account2);
 //    expectAccount(listenedValue[2], account3);

@@ -56,10 +56,10 @@ class DurationDateTimeValueFormFieldBlocAdapter extends DisposableOwner
       durationDateTimeValueFormFieldBloc.errorsStream;
 
   @override
-  bool? get isEnabled => durationDateTimeValueFormFieldBloc.isEnabled;
+  bool get isEnabled => durationDateTimeValueFormFieldBloc.isEnabled;
 
   @override
-  Stream<bool?> get isEnabledStream =>
+  Stream<bool> get isEnabledStream =>
       durationDateTimeValueFormFieldBloc.isEnabledStream;
 
   @override

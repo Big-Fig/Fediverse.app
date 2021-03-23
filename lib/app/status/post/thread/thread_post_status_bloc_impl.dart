@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc_impl.dart';
@@ -161,9 +162,9 @@ class ThreadPostStatusBloc extends PostStatusBloc
       if (mentionedAccts.isNotEmpty == true) {
         IStatus? statusToReply;
         for (var acct in mentionedAccts) {
-          statusToReply = statuses!.reversed.firstWhere(
-            (status) => status!.account.acct == acct,
-            orElse: () => null,
+
+          statusToReply = statuses.reversed.firstWhereOrNull(
+            (status) => status.account.acct == acct,
           );
           if (statusToReply != null) {
             _logger.finest(() => "calculateInReplyToStatusRemoteId "
@@ -176,12 +177,12 @@ class ThreadPostStatusBloc extends PostStatusBloc
         } else {
           _logger.finest(() => "calculateInReplyToStatusRemoteId "
               "statusToReply by acct not found => $result");
-          result = statuses!.last;
+          result = statuses.last;
         }
       } else {
         _logger.finest(() => "calculateInReplyToStatusRemoteId "
             "statusToReply last => $result");
-        result = statuses!.last;
+        result = statuses.last;
       }
     } else {
       _logger.finest(() => "calculateInReplyToStatusRemoteId "

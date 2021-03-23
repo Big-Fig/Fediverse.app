@@ -84,7 +84,7 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   IStatus? get originInReplyToStatus;
 
-  IPostStatusPollBloc? get pollBloc;
+  IPostStatusPollBloc get pollBloc;
 
   IPostStatusData calculateCurrentPostStatusData();
 }

@@ -87,7 +87,14 @@ Future<DbNotificationPopulated> createTestNotificationPopulated(
     dbAccount:
         (await accountRepository.findByRemoteId(dbNotification.accountRemoteId))
             .dbAccount,
-    dbStatusPopulated: null,
+    reblogDbStatus: null,
+    replyReblogDbStatus: null,
+    replyDbStatus: null,
+    replyReblogDbStatusAccount: null,
+    dbStatusAccount: null,
+    reblogDbStatusAccount: null,
+    dbStatus: null,
+    replyDbStatusAccount: null,
   );
   return dbNotificationPopulated;
 }

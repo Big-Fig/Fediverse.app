@@ -70,7 +70,7 @@ abstract class StatusThreadBloc extends DisposableOwner
   Stream<List<IStatus>> get statusesStream => statusesSubject.stream;
 
   @override
-  Stream<List<IStatus?>> get statusesDistinctStream => statusesStream.distinct(
+  Stream<List<IStatus>> get statusesDistinctStream => statusesStream.distinct(
         (a, b) => eq(a, b),
       );
 

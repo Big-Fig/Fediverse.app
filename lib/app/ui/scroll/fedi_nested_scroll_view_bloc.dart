@@ -11,7 +11,7 @@ abstract class IFediNestedScrollViewBloc extends IDisposable {
   }) =>
       Provider.of<IFediNestedScrollViewBloc>(context, listen: listen);
 
-  INestedScrollControllerBloc? get nestedScrollControllerBloc;
+  INestedScrollControllerBloc get nestedScrollControllerBloc;
 
   NestedScrollController? get nestedScrollController;
 

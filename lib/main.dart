@@ -67,7 +67,7 @@ import 'generated/l10n.dart';
 
 var _logger = Logger("main.dart");
 
-late CurrentAuthInstanceContextBloc currentInstanceContextBloc;
+CurrentAuthInstanceContextBloc? currentInstanceContextBloc;
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -231,23 +231,25 @@ Future runInitializedCurrentInstanceApp({
         appContextBloc: appContextBloc,
         appTitle: appTitle,
       );
-      await currentInstanceContextBloc.dispose();
+      if(currentInstanceContextBloc != null) {
+        await currentInstanceContextBloc!.dispose();
+      }
 
       currentInstanceContextBloc = CurrentAuthInstanceContextBloc(
         currentInstance: currentInstance,
         appContextBloc: appContextBloc,
       );
-      await currentInstanceContextBloc.performAsyncInit();
+      await currentInstanceContextBloc!.performAsyncInit();
 
       INotificationPushLoaderBloc pushLoaderBloc =
-          currentInstanceContextBloc.get();
+          currentInstanceContextBloc!.get();
 
       _logger.finest(
         () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage",
       );
       runApp(
         appContextBloc.provideContextToChild(
-          child: currentInstanceContextBloc.provideContextToChild(
+          child: currentInstanceContextBloc!.provideContextToChild(
             child: DisposableProvider<ICurrentAuthInstanceContextInitBloc>(
               lazy: false,
               create: (context) => createCurrentInstanceContextBloc(
@@ -336,7 +338,7 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
                 CurrentAuthInstanceContextInitState
                     .cantFetchAndLocalCacheNotExist ||
             state == CurrentAuthInstanceContextInitState.localCacheExist) {
-          currentInstanceContextBloc.addDisposable(
+          currentInstanceContextBloc!.addDisposable(
             streamSubscription: pushLoaderBloc
                 .launchOrResumePushLoaderNotificationStream
                 .listen(
@@ -350,7 +352,7 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
                       if (notification.isContainsChat) {
                         await navigatorKey.currentState!.push(
                           createPleromaChatPageRoute(
-                            (await currentInstanceContextBloc
+                            (await currentInstanceContextBloc!
                                 .get<IPleromaChatRepository>()
                                 .findByRemoteId(
                                   notification.chatRemoteId!,

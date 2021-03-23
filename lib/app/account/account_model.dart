@@ -201,7 +201,7 @@ class DbAccountWrapper implements IAccount {
   String get headerStatic => dbAccount.headerStatic;
 
   @override
-  DateTime? get lastStatusAt => dbAccount.lastStatusAt!;
+  DateTime? get lastStatusAt => dbAccount.lastStatusAt;
 
   @override
   int? get localId => dbAccount.id;
@@ -271,20 +271,21 @@ class DbAccountWrapper implements IAccount {
   @override
   String? get pleromaBackgroundImage => dbAccount.pleromaBackgroundImage;
 
+  // todo: implement
   @override
-  List<String>? get pleromaAlsoKnownAs => throw UnimplementedError();
+  List<String>? get pleromaAlsoKnownAs => null;
 
   @override
-  String? get pleromaApId => throw UnimplementedError();
+  String? get pleromaApId => null;
 
   @override
-  String? get pleromaFavicon => throw UnimplementedError();
+  String? get pleromaFavicon => null;
 
   @override
-  bool? get pleromaIsConfirmed => throw UnimplementedError();
+  bool? get pleromaIsConfirmed => null;
 
   @override
-  String? get fqn => throw UnimplementedError();
+  String? get fqn => null;
 
   @override
   String toString() {

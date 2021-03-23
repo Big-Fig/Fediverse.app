@@ -12,5 +12,5 @@ abstract class INotificationTabBloc
       Provider.of<INotificationTabBloc>(context, listen: listen);
 
   ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<INotification>,
-      INotification?>? paginationListWithNewItemsBloc;
+      INotification> get paginationListWithNewItemsBloc;
 }

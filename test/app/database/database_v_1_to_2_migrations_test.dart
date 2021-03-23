@@ -24,13 +24,8 @@ void main() {
   test('test updated chat message schema', () async {
     var pleromaCardTitle = "pleromaCardTitle";
     var chatMessageDao = database.chatMessageDao;
-    var updatedRemoteId = "updatedRemoteId";
+    var updatedRemoteId = "updatedRemoteId1";
 
-    var alreadyExist = await chatMessageDao.findByRemoteId(updatedRemoteId);
-
-    if (alreadyExist != null) {
-      await chatMessageDao.deleteById(alreadyExist.dbChatMessage.id!);
-    }
     await chatMessageDao.insert(
       DbChatMessage(
         id: null,

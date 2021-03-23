@@ -17,7 +17,7 @@ Future<DbNotificationPopulatedWrapper> createTestNotification({
   account = account ?? await createTestAccount(seed: seed);
   var dbAccount = account.dbAccount;
   return DbNotificationPopulatedWrapper(
-    dbNotificationPopulated: DbNotificationPopulated(
+    dbNotificationPopulated: DbNotificationPopulated.statusPopulated(
       dbNotification: await createTestDbNotification(
         seed: seed,
         remoteId: remoteId,

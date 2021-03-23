@@ -38,8 +38,8 @@ class StatusReplyWidget extends StatelessWidget {
           case AsyncInitLoadingState.loading:
             return const _StatusReplyLoadingWidget();
           case AsyncInitLoadingState.finished:
-            return Provider<IStatus?>.value(
-              value: statusReplyLoaderBloc.inReplyToStatus,
+            return Provider<IStatus>.value(
+              value: statusReplyLoaderBloc.inReplyToStatus!,
               child: _buildStatusListItemTimelineWidget(),
             );
           case AsyncInitLoadingState.failed:

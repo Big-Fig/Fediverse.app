@@ -53,7 +53,7 @@ class MyAccountBloc extends IMyAccountBloc {
       myAccountLocalPreferenceBloc.stream;
 
   @override
-  IMyAccount? get myAccount => myAccountLocalPreferenceBloc.value!;
+  IMyAccount? get myAccount => myAccountLocalPreferenceBloc.value;
 
   @override
   // todo: fix

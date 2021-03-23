@@ -46,7 +46,7 @@ class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
                 var tabPaginationListBloc =
                     timelineTabBloc.paginationListWithNewItemsBloc;
 
-                return Provider<ICachedPaginationListWithNewItemsBloc?>.value(
+                return Provider<ICachedPaginationListWithNewItemsBloc>.value(
                   value: tabPaginationListBloc,
                   child: DisposableProxyProvider<
                       ICachedPaginationListWithNewItemsBloc,

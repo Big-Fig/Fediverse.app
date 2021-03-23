@@ -5,7 +5,7 @@ import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 class NestedScrollControllerBloc extends ScrollControllerBloc
     implements INestedScrollControllerBloc {
   @override
-  final NestedScrollController? nestedScrollController;
+  final NestedScrollController nestedScrollController;
 
   NestedScrollControllerBloc({required this.nestedScrollController})
       : super(scrollController: nestedScrollController);

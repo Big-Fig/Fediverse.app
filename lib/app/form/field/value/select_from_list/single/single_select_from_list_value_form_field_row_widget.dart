@@ -81,7 +81,7 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
           context,
           listen: false,
         );
-        if (fieldBloc.isEnabled!) {
+        if (fieldBloc.isEnabled) {
           _showDialog(
             context: context,
             fieldBloc: fieldBloc,

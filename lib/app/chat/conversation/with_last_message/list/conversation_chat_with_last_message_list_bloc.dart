@@ -24,9 +24,9 @@ abstract class IConversationChatWithLastMessageListBloc extends IDisposable {
   IConversationChatWithLastMessagePaginationBloc? get paginationBloc;
 
   IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
-      IConversationChatWithLastMessage?>? get chatPaginationListBloc;
+      IConversationChatWithLastMessage> get chatPaginationListBloc;
 
   ICachedPaginationListWithNewItemsBloc<
       CachedPaginationPage<IConversationChatWithLastMessage>,
-      IConversationChatWithLastMessage?>? get paginationListWithNewItemsBloc;
+      IConversationChatWithLastMessage> get paginationListWithNewItemsBloc;
 }

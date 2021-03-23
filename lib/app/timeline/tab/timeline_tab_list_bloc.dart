@@ -14,5 +14,6 @@ abstract class ITimelineTabListBloc
   Stream<TimelineTabBlocsList?> get timelineTabBlocsListStream;
 
   TimelineTabBlocsList? get timelineTabBlocsList;
+
   Stream<ITimelineTabBloc?> get mainTimelineTabBlocStream;
 }

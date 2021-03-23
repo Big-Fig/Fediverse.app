@@ -34,11 +34,11 @@ abstract class IStatusThreadBloc implements IDisposable, IStatusListBloc {
 
   Stream<IAccount?> get firstStatusAccountInThreadStream;
 
-  List<IStatus?>? get statuses;
+  List<IStatus> get statuses;
 
-  Stream<List<IStatus?>> get statusesStream;
+  Stream<List<IStatus>> get statusesStream;
 
-  Stream<List<IStatus?>> get statusesDistinctStream;
+  Stream<List<IStatus>> get statusesDistinctStream;
 
   List<String?> get mentionAccts;
 

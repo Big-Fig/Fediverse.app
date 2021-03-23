@@ -7,5 +7,5 @@ abstract class IFediIntBadgeBloc implements IDisposable {
   static IFediIntBadgeBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFediIntBadgeBloc>(context, listen: listen);
   
-  Stream<int?> get badgeStream;
+  Stream<int> get badgeStream;
 }

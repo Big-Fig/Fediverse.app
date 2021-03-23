@@ -21,5 +21,5 @@ abstract class INotificationTabsBloc
   void selectTab(NotificationTab tab);
 
   ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<INotification>,
-      INotification?>? retrieveTimelineTabPaginationListBloc(NotificationTab tab);
+      INotification> retrieveTimelineTabPaginationListBloc(NotificationTab tab);
 }

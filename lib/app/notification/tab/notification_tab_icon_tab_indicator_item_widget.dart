@@ -66,7 +66,7 @@ class _NotificationTabTextTabIndicatorItemBodyWidget extends StatelessWidget {
         var paginationListBloc =
             notificationTabsBloc.retrieveTimelineTabPaginationListBloc(tab);
 
-        return Provider<ICachedPaginationListWithNewItemsBloc?>.value(
+        return Provider<ICachedPaginationListWithNewItemsBloc>.value(
           value: paginationListBloc,
           child: DisposableProxyProvider<ICachedPaginationListWithNewItemsBloc,
               IFediBoolBadgeBloc>(
