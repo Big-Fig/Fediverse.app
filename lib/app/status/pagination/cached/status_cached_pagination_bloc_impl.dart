@@ -44,8 +44,8 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
   Future refreshItemsFromRemoteForPage({
     required int pageIndex,
     required int? itemsCountPerPage,
-    required CachedPaginationPage<IStatus?>? olderPage,
-    required CachedPaginationPage<IStatus?>? newerPage,
+    required CachedPaginationPage<IStatus>? olderPage,
+    required CachedPaginationPage<IStatus>? newerPage,
   }) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));

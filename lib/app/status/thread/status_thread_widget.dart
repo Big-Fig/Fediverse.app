@@ -88,7 +88,7 @@ class _StatusThreadStatusesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusThreadBloc = IStatusThreadBloc.of(context);
 
-    return StreamBuilder<List<IStatus?>>(
+    return StreamBuilder<List<IStatus>>(
       stream: statusThreadBloc.statusesDistinctStream,
       builder: (context, snapshot) {
         var statuses = snapshot.data;
@@ -97,7 +97,7 @@ class _StatusThreadStatusesWidget extends StatelessWidget {
             child: FediCircularProgressIndicator(),
           );
         }
-        return Provider<List<IStatus?>>.value(
+        return Provider<List<IStatus>>.value(
           value: statuses,
           child: material.RefreshIndicator(
             onRefresh: () => statusThreadBloc.refresh(),
@@ -195,7 +195,7 @@ class _StatusThreadStatusesListWidgetState
 
     newItemsJumpSubscription = statusThreadBloc.onNewStatusAddedStream.listen(
       (newItem) {
-        var index = statusThreadBloc.statuses!.indexOf(newItem);
+        var index = statusThreadBloc.statuses.indexOf(newItem);
 
         if (index > 0) {
           statusThreadBloc.jumpToIndex(index);

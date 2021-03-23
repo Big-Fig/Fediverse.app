@@ -12,9 +12,9 @@ class HomeTabBlocProxyProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IHomeTabBloc, INestedScrollControllerBloc?>(
+    return ProxyProvider<IHomeTabBloc, INestedScrollControllerBloc>(
       update: (context, value, previous) => value.nestedScrollControllerBloc,
-      child: ProxyProvider<IHomeTabBloc, IFediNestedScrollViewBloc?>(
+      child: ProxyProvider<IHomeTabBloc, IFediNestedScrollViewBloc>(
         update: (context, value, previous) => value.fediNestedScrollViewBloc,
         child: NestedScrollControllerBlocProxyProvider(child: child),
       ),

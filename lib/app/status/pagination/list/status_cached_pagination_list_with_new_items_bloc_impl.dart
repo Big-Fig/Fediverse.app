@@ -89,7 +89,7 @@ class StatusCachedPaginationListWithNewItemsBloc<
     required Widget child,
   }) {
     return DisposableProvider<
-        ICachedPaginationListWithNewItemsBloc<TPage, IStatus?>>(
+        ICachedPaginationListWithNewItemsBloc<TPage, IStatus>>(
       create: (context) =>
           StatusCachedPaginationListWithNewItemsBloc.createFromContext<TPage>(
         context,

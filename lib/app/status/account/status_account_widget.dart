@@ -21,23 +21,27 @@ class StatusAccountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
 
-    return StreamBuilder<IAccount?>(
+    return StreamBuilder<IAccount>(
       stream: statusBloc.reblogOrOriginalAccountStream,
       initialData: statusBloc.reblogOrOriginalAccount,
       builder: (context, snapshot) {
-        var reblogOrOriginalAccount = snapshot.data;
-        return buildBody(context, reblogOrOriginalAccount, statusBloc);
+        var reblogOrOriginalAccount = snapshot.data!;
+        return buildBody(
+          context: context,
+          reblogOrOriginalAccount: reblogOrOriginalAccount,
+          statusBloc: statusBloc,
+        );
       },
     );
   }
 
-  Widget buildBody(
-    BuildContext context,
-    IAccount? reblogOrOriginalAccount,
-    IStatusBloc statusBloc,
-  ) {
+  Widget buildBody({
+    required BuildContext context,
+    required IAccount reblogOrOriginalAccount,
+    required IStatusBloc statusBloc,
+  }) {
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
-    return Provider<IAccount?>.value(
+    return Provider<IAccount>.value(
       value: reblogOrOriginalAccount,
       child: DisposableProxyProvider<IAccount, IAccountBloc>(
         update: (context, account, oldValue) {
@@ -74,7 +78,7 @@ class StatusAccountWidget extends StatelessWidget {
             } else {
               goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
                 context,
-                remoteInstanceAccount: reblogOrOriginalAccount!,
+                remoteInstanceAccount: reblogOrOriginalAccount,
               );
             }
           },

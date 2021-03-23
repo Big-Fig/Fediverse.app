@@ -6,9 +6,9 @@ abstract class IFormFieldBloc extends IFormItemBloc {
   static IFormFieldBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFormFieldBloc>(context, listen: listen);
 
-  bool? get isEnabled;
+  bool get isEnabled;
 
-  Stream<bool?> get isEnabledStream;
+  Stream<bool> get isEnabledStream;
 
   void changeIsEnabled(bool enabled);
 }

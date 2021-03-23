@@ -181,7 +181,7 @@ dependencies:
   nested_scroll_controller:
     git:
       url: https://github.com/xal/nested_scroll_controller.git
-      ref: fc5261bf33e5f1c7c1a5a0f12be4951cab759d98
+      ref: 36de920ca5841bfacefa75ee246a757f6ea9e18c
 
 
   # media attachments carousel

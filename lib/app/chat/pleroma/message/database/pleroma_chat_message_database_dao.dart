@@ -82,11 +82,11 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
   }
 
   Stream<DbChatMessagePopulated?> watchByRemoteId(String remoteId) =>
-      _findByRemoteIdQuery(remoteId).watchSingleOrNull().map((typedResult) {
-        return typedResult?.toDbChatMessagePopulated(
-          dao: this,
-        );
-      });
+      _findByRemoteIdQuery(remoteId).watchSingleOrNull().map(
+        (typedResult) => typedResult?.toDbChatMessagePopulated(
+            dao: this,
+          ),
+      );
 
   Future<DbChatMessagePopulated?> findByOldPendingRemoteId(
     String oldPendingRemoteId,

@@ -14,7 +14,7 @@ class PostStatusMessageBlocProxyProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProxyProvider<IPostStatusBloc, IPostMessageBloc>(
       update: (context, value, previous) => value,
-      child: ProxyProvider<IPostStatusBloc, IPostStatusPollBloc?>(
+      child: ProxyProvider<IPostStatusBloc, IPostStatusPollBloc>(
         update: (context, value, previous) => value.pollBloc,
         child: PostMessageBlocProxyProvider(child: child),
       ),

@@ -96,18 +96,7 @@ class FediBaseEditTextField extends StatelessWidget {
         maxLines: maxLines,
         expands: expanded,
         keyboardType: keyboardType,
-        buildCounter: ((
-          BuildContext context, {
-          int? currentLength,
-          int? maxLength,
-          bool? isFocused,
-        }) =>
-            null) as Widget Function(
-          BuildContext, {
-          int currentLength,
-          bool isFocused,
-          int? maxLength,
-        })?,
+        buildCounter: null,
       );
     } else {
       child = TextField(

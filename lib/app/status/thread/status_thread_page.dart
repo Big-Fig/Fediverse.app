@@ -68,7 +68,7 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
           );
         }
 
-        return Provider.value(
+        return Provider<IStatus>.value(
           value: status,
           child: DisposableProxyProvider<IStatus, IStatusBloc>(
             update: (context, value, previous) {

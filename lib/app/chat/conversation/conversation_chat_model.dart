@@ -47,6 +47,9 @@ class DbConversationChatWrapper implements IConversationChat {
     DateTime? updatedAt,
     List<IAccount>? accounts,
   }) {
+    if(accounts != null) {
+      throw UnimplementedError();
+    }
     return DbConversationChatWrapper(
       dbConversation: dbConversation.copyWith(
         id: id ?? localId,
@@ -74,13 +77,12 @@ class DbConversationChatWrapper implements IConversationChat {
   int get hashCode => dbConversation.hashCode;
 
   @override
-  // TODO: implement accounts
-  List<IAccount> get accounts => throw UnimplementedError();
-
-  @override
   DateTime? get updatedAt => dbConversation.updatedAt;
 
   @override
   // TODO: implement pleroma
   IPleromaConversationPleromaPart? get pleroma => throw UnimplementedError();
+
+  @override
+  List<IAccount> get accounts => throw UnimplementedError();
 }

@@ -20,8 +20,8 @@ class ChatAvatarWidget extends StatelessWidget {
     return StreamBuilder<List<IAccount>>(
       stream: chatBloc.accountsStream,
       builder: (context, snapshot) {
-        var accounts = snapshot.data;
-        return Provider<List<IAccount>?>.value(
+        var accounts = snapshot.data ?? chatBloc.accounts;
+        return Provider<List<IAccount>>.value(
           value: accounts,
           child: AccountListAvatarWidget(
             baseAvatarSize: baseAvatarSize,

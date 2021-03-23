@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IMultiSelectFromListValueFormFieldBloc<T>
-    implements ISelectFromListValueFormFieldBloc<List<T>?> {
+    implements ISelectFromListValueFormFieldBloc<List<T>> {
   static IMultiSelectFromListValueFormFieldBloc<T> of<T>(
     BuildContext context, {
     bool listen = true,

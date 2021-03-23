@@ -24,9 +24,9 @@ abstract class IPleromaChatWithLastMessageListBloc extends IDisposable {
   IPleromaChatWithLastMessagePaginationBloc get chatPaginationBloc;
 
   IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
-      IPleromaChatWithLastMessage?> get chatPaginationListBloc;
+      IPleromaChatWithLastMessage> get chatPaginationListBloc;
 
   ICachedPaginationListWithNewItemsBloc<
       CachedPaginationPage<IPleromaChatWithLastMessage>,
-      IPleromaChatWithLastMessage?> get chatPaginationListWithNewItemsBloc;
+      IPleromaChatWithLastMessage> get chatPaginationListWithNewItemsBloc;
 }

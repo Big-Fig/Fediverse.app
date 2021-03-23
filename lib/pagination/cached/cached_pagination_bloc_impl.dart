@@ -23,15 +23,16 @@ abstract class CachedPaginationBloc<TPage extends CachedPaginationPage<TItem>,
     required TPage? previousPage,
     required TPage? nextPage,
   }) async {
-    var isActuallyRefreshed;
+    bool isActuallyRefreshed;
     if (forceToSkipCache) {
       if (isPossibleToLoadFromNetwork) {
-        isActuallyRefreshed = await refreshItemsFromRemoteForPage(
+        await refreshItemsFromRemoteForPage(
           pageIndex: pageIndex,
           olderPage: nextPage,
           newerPage: previousPage,
           itemsCountPerPage: itemsCountPerPage,
         );
+        isActuallyRefreshed = true;
       } else {
         isActuallyRefreshed = false;
       }

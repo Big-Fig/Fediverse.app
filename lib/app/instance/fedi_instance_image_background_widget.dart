@@ -55,7 +55,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
           () => "backgroundImageAbsolutePath $backgroundImageAbsolutePath",
         );
 
-        return Provider<String?>.value(
+        return Provider<String>.value(
           value: backgroundImageAbsolutePath,
           child: const _FediInstanceImageBackgroundCachedNetworkImageWidget(),
         );

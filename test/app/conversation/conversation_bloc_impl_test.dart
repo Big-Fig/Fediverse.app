@@ -250,7 +250,7 @@ void main() {
     );
 
     expectAccount(
-      conversationBloc.accounts![0],
+      conversationBloc.accounts[0],
       account1,
     );
     expectAccount(
@@ -264,15 +264,15 @@ void main() {
     );
 
     expectAccount(
-      conversationBloc.accounts![0],
+      conversationBloc.accounts[0],
       account1,
     );
     expectAccount(
-      conversationBloc.accounts![1],
+      conversationBloc.accounts[1],
       account2,
     );
     expectAccount(
-      conversationBloc.accounts![2],
+      conversationBloc.accounts[2],
       account3,
     );
     expectAccount(

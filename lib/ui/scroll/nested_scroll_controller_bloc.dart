@@ -4,7 +4,7 @@ import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 import 'package:provider/provider.dart';
 
 abstract class INestedScrollControllerBloc extends IScrollControllerBloc {
-  NestedScrollController? get nestedScrollController;
+  NestedScrollController get nestedScrollController;
 
   static INestedScrollControllerBloc of(
     BuildContext context, {

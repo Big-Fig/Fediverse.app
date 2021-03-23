@@ -134,9 +134,9 @@ class SearchResultItemPaginationListWidget
     );
   }
 
-  Provider<IStatus?> buildStatusListItem(ISearchResultItem item, int index) {
-    return Provider<IStatus?>.value(
-      value: item.status,
+  Provider<IStatus> buildStatusListItem(ISearchResultItem item, int index) {
+    return Provider<IStatus>.value(
+      value: item.status!,
       child: FediListTile(
         isFirstInList: index == 0, //                isFirstInList: false,
         child: DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(

@@ -19,7 +19,7 @@ class FediBoolBadgeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var fediBoolBadgeBloc = IFediBoolBadgeBloc.of(context);
 
-    return StreamBuilder<bool?>(
+    return StreamBuilder<bool>(
       stream: fediBoolBadgeBloc.badgeStream.distinct(),
       builder: (context, snapshot) {
         var unread = snapshot.data;

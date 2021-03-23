@@ -8,11 +8,11 @@ abstract class IHomeTabBloc extends DisposableOwner {
   static IHomeTabBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IHomeTabBloc>(context, listen: listen);
 
-  ScrollController? get nestedScrollController;
+  ScrollController get nestedScrollController;
 
-  INestedScrollControllerBloc? get nestedScrollControllerBloc;
+  INestedScrollControllerBloc get nestedScrollControllerBloc;
 
-  IFediNestedScrollViewBloc? get fediNestedScrollViewBloc;
+  IFediNestedScrollViewBloc get fediNestedScrollViewBloc;
 
   void scrollToTop();
 }

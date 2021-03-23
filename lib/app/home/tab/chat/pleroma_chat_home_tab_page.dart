@@ -81,10 +81,10 @@ class PleromaChatHomeTabPage extends StatelessWidget {
             Provider.value(
               value: chatsListBloc.chatPaginationListWithNewItemsBloc,
             ),
-            Provider<ICachedPaginationListWithNewItemsBloc?>.value(
+            Provider<ICachedPaginationListWithNewItemsBloc>.value(
               value: chatsListBloc.chatPaginationListWithNewItemsBloc,
             ),
-            Provider<IPaginationListBloc?>.value(
+            Provider<IPaginationListBloc>.value(
               value: chatsListBloc.chatPaginationListWithNewItemsBloc,
             ),
           ],

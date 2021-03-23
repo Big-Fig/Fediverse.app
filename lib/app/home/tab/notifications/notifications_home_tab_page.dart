@@ -83,7 +83,7 @@ class _NotificationsHomeTabPageBodyState
       var notificationTabsBloc =
           INotificationTabsBloc.of(context, listen: false);
       var paginationListBloc =
-          notificationTabsBloc.retrieveTimelineTabPaginationListBloc(tab)!;
+          notificationTabsBloc.retrieveTimelineTabPaginationListBloc(tab);
       if (paginationListBloc.unmergedNewItemsCount > 0) {
         paginationListBloc.mergeNewItems();
       }
@@ -165,7 +165,7 @@ class _NotificationsHomeTabPageBodyState
 
     return Provider<
         ICachedPaginationListWithNewItemsBloc<
-            CachedPaginationPage<INotification>, INotification?>?>.value(
+            CachedPaginationPage<INotification>, INotification>>.value(
       value: timelineTabPaginationListBloc,
       child: ProxyProvider<
           ICachedPaginationListWithNewItemsBloc<

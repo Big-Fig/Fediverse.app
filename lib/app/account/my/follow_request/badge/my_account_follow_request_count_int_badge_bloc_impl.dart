@@ -13,7 +13,8 @@ class MyAccountFollowRequestCountIntBadgeBloc extends DisposableOwner
   });
 
   @override
-  Stream<int?> get badgeStream => myAccountBloc.followRequestsCountStream;
+  Stream<int> get badgeStream =>
+      myAccountBloc.followRequestsCountStream.map((count) => count ?? 0);
 
   static MyAccountFollowRequestCountIntBadgeBloc createFromContext(
     BuildContext context,

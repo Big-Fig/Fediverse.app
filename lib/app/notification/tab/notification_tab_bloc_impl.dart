@@ -27,8 +27,8 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   @override
-  ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<INotification>,
-      INotification?>? paginationListWithNewItemsBloc;
+  late ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<INotification>,
+      INotification> paginationListWithNewItemsBloc;
 
   NotificationTabBloc({
     required this.tab,

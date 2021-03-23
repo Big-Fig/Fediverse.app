@@ -74,10 +74,10 @@ class ConversationChatHomeTabPage extends StatelessWidget {
             Provider.value(
               value: chatsListBloc.paginationListWithNewItemsBloc,
             ),
-            Provider<ICachedPaginationListWithNewItemsBloc?>.value(
+            Provider<ICachedPaginationListWithNewItemsBloc>.value(
               value: chatsListBloc.paginationListWithNewItemsBloc,
             ),
-            Provider<IPaginationListBloc?>.value(
+            Provider<IPaginationListBloc>.value(
               value: chatsListBloc.paginationListWithNewItemsBloc,
             ),
           ],

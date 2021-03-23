@@ -7,7 +7,7 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class SearchStatusPaginationBloc extends SearchAdapterPaginationBloc<IStatus?> {
+class SearchStatusPaginationBloc extends SearchAdapterPaginationBloc<IStatus> {
   SearchStatusPaginationBloc({
     required IPaginationBloc<PaginationPage<ISearchResultItem>,
             ISearchResultItem>
@@ -15,11 +15,11 @@ class SearchStatusPaginationBloc extends SearchAdapterPaginationBloc<IStatus?> {
   }) : super(searchResultItemPaginationBloc: searchResultItemPaginationBloc);
 
   @override
-  PaginationPage<IStatus?> mapPage(PaginationPage<ISearchResultItem> page) {
-    List<IStatus?> items = page.items
+  PaginationPage<IStatus> mapPage(PaginationPage<ISearchResultItem> page) {
+    List<IStatus> items = page.items
         .where((searchResultItem) =>
             searchResultItem.type == SearchResultItemType.status)
-        .map((searchResultItem) => searchResultItem.status)
+        .map((searchResultItem) => searchResultItem.status!)
         .toList();
     return PaginationPage(
       requestedLimitPerPage: page.requestedLimitPerPage,
@@ -40,7 +40,7 @@ class SearchStatusPaginationBloc extends SearchAdapterPaginationBloc<IStatus?> {
     required Widget child,
   }) {
     return DisposableProvider<
-        IPaginationBloc<PaginationPage<IStatus?>, IStatus?>>(
+        IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
       create: (context) =>
           SearchStatusPaginationBloc.createFromContext(context),
       child: child,
