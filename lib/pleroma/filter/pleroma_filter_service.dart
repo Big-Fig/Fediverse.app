@@ -4,7 +4,7 @@ import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaFilterService implements IPleromaApi {
+abstract class IPleromaFilterService extends IPleromaApi {
   static IPleromaFilterService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPleromaFilterService>(context, listen: listen);
 

@@ -12,6 +12,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/id/pleroma_fake_id_helper.dart';
@@ -215,6 +216,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   Future markAsRead() async {
     if (chat.unread > 0) {
+
       if (pleromaChatService.isApiReadyToUse) {
         var lastReadChatMessageId = lastChatMessage?.remoteId;
         if (lastReadChatMessageId == null) {

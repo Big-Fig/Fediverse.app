@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/notification/database/notification_database_dao.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/notification_model_adapter.dart';
 import 'package:fedi/app/notification/repository/notification_repository_impl.dart';
@@ -115,7 +116,7 @@ void main() {
     var id = await notificationRepository.insert(dbNotification);
     assert(id > 0, true);
     expectDbNotificationPopulated(
-      await notificationRepository.findById(id),
+      (await notificationRepository.findById(id))!,
       dbNotificationPopulated,
     );
   });
@@ -159,7 +160,7 @@ void main() {
     );
 
     expect(
-      (await notificationRepository.findById(id)).remoteId,
+      (await notificationRepository.findById(id))!.remoteId,
       "newRemoteId",
     );
   });
@@ -205,14 +206,14 @@ void main() {
     );
 
     expect(
-      (await notificationRepository.findById(id)).status!.content,
+      (await notificationRepository.findById(id))!.status!.content,
       newContent,
     );
     expect(
-      (await notificationRepository.findById(id)).type,
+      (await notificationRepository.findById(id))!.type,
       newType.toJsonValue(),
     );
-    expect((await notificationRepository.findById(id)).account!.acct, newAcct);
+    expect((await notificationRepository.findById(id))!.account!.acct, newAcct);
   });
 
   test('findByRemoteId', () async {
@@ -669,9 +670,10 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbNotificationPopulated> actualList = (await query
-        .map(notificationRepository.dao.typedResultToPopulated)
-        .get());
+    List<DbNotificationPopulated> actualList =
+    (await query.get()).toDbNotificationPopulatedList(
+      dao: notificationRepository.dao,
+    );
     expect(actualList.length, 3);
 
     expect(
@@ -720,9 +722,10 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbNotificationPopulated> actualList = (await query
-        .map(notificationRepository.dao.typedResultToPopulated)
-        .get());
+    List<DbNotificationPopulated> actualList =
+    (await query.get()).toDbNotificationPopulatedList(
+      dao: notificationRepository.dao,
+    );
     expect(actualList.length, 3);
 
     expect(
@@ -774,9 +777,10 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbNotificationPopulated> actualList = (await query
-        .map(notificationRepository.dao.typedResultToPopulated)
-        .get());
+    List<DbNotificationPopulated> actualList =
+    (await query.get()).toDbNotificationPopulatedList(
+      dao: notificationRepository.dao,
+    );
     expect(actualList.length, 1);
 
     expect(
@@ -822,9 +826,10 @@ void main() {
             .copyWith(createdAt: DateTime(3)),
       );
 
-      List<DbNotificationPopulated> actualList = (await query
-          .map(notificationRepository.dao.typedResultToPopulated)
-          .get());
+      List<DbNotificationPopulated> actualList =
+          (await query.get()).toDbNotificationPopulatedList(
+        dao: notificationRepository.dao,
+      );
       expect(actualList.length, 1);
 
       expect(

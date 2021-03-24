@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_local_preference_bloc.dart';
@@ -20,22 +21,29 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.da
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
+import 'package:fedi/pleroma/account/my/pleroma_my_account_service_impl.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
-import '../../pleroma/account/my/pleroma_my_account_service_mock.dart';
-import '../../pleroma/chat/pleroma_chat_service_mock.dart';
 import '../account/account_model_helper.dart';
 import '../account/my/my_account_model_helper.dart';
+import 'chat_bloc_impl_test.mocks.dart';
 import 'chat_model_helper.dart';
 import 'message/chat_message_model_helper.dart';
 
+@GenerateMocks([
+  PleromaChatService,
+  PleromaMyAccountService,
+])
 void main() {
   late IPleromaChat chat;
   late IPleromaChatBloc chatBloc;
-  late PleromaChatServiceMock pleromaChatServiceMock;
-  late PleromaMyAccountServiceMock pleromaMyAccountServiceMock;
+  late MockPleromaChatService pleromaChatServiceMock;
+  late MockPleromaMyAccountService pleromaMyAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IPleromaChatMessageRepository chatMessageRepository;
@@ -60,8 +68,8 @@ void main() {
       chatMessageRepository: chatMessageRepository,
     );
 
-    pleromaChatServiceMock = PleromaChatServiceMock();
-    pleromaMyAccountServiceMock = PleromaMyAccountServiceMock();
+    pleromaChatServiceMock = MockPleromaChatService();
+    pleromaMyAccountServiceMock = MockPleromaMyAccountService();
 
     preferencesService = MemoryLocalPreferencesService();
 
@@ -95,7 +103,10 @@ void main() {
       instance: authInstance,
     );
 
-    when(pleromaChatServiceMock.isApiReadyToUse).thenReturn(true);
+    when(pleromaChatServiceMock.isConnected).thenReturn(true);
+    when(pleromaChatServiceMock.pleromaApiState).thenReturn(
+      PleromaApiState.validAuth,
+    );
 
     chat = await createTestChat(seed: "seed1");
 
@@ -126,6 +137,15 @@ void main() {
     IPleromaChatMessage? lastChatMessage,
     required List<IAccount> accounts,
   }) async {
+    await accountRepository.upsertRemoteAccounts(
+      accounts
+          .map(
+            (account) => account.toPleromaAccount(),
+          )
+          .toList(),
+      conversationRemoteId: null,
+      chatRemoteId: chat.remoteId,
+    );
     await chatRepository.upsertRemoteChat(chat.toPleromaChat(
       lastChatMessage: lastChatMessage,
       accounts: accounts,
@@ -137,7 +157,10 @@ void main() {
   test('chat', () async {
     expectChat(chatBloc.chat, chat);
 
-    var newValue = await createTestChat(seed: "seed2", remoteId: chat.remoteId);
+    var newValue = await createTestChat(
+      seed: "seed2",
+      remoteId: chat.remoteId,
+    );
 
     var listenedValue;
 
@@ -179,18 +202,31 @@ void main() {
   });
 
   test('lastChatMessage', () async {
+    var account1 = await createTestAccount(
+      seed: "chatMessage1",
+    );
+    var account2 = await createTestAccount(
+      seed: "chatMessage1",
+    );
+
     var chatMessage1 = await createTestChatMessage(
       seed: "chatMessage1",
       chatRemoteId: chat.remoteId,
       createdAt: DateTime(2001),
+      account: account1,
     );
     var chatMessage2 = await createTestChatMessage(
       seed: "chatMessage2",
       chatRemoteId: chat.remoteId,
       createdAt: DateTime(2002),
+      account: account2,
     );
 
-    var newValue = await createTestChat(seed: "seed2", remoteId: chat.remoteId);
+    var newValue = await createTestChat(
+      seed: "seed2",
+      remoteId: chat.remoteId,
+      account: account2,
+    );
 
     var listenedValue;
 

@@ -8,26 +8,32 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
+import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service_impl.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
-import '../../pleroma/account/pleroma_account_service_mock.dart';
-import '../../pleroma/websockets/pleroma_websockets_service_mock.dart';
+import 'account_bloc_impl_test.mocks.dart';
 import 'account_model_helper.dart';
 
+@GenerateMocks([
+  PleromaAuthAccountService,
+  PleromaWebSocketsService,
+])
 void main() {
   late IAccount account;
   late IAccountBloc accountBloc;
-  late PleromaAuthAccountServiceMock pleromaAuthAccountServiceMock;
+  late MockPleromaAuthAccountService pleromaAuthAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
-  late IPleromaWebSocketsService pleromaWebSocketsService;
+  late MockPleromaWebSocketsService pleromaWebSocketsService;
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
@@ -37,13 +43,15 @@ void main() {
       accountRepository: accountRepository,
     );
 
-    pleromaAuthAccountServiceMock = PleromaAuthAccountServiceMock();
+    pleromaAuthAccountServiceMock = MockPleromaAuthAccountService();
 
-    when(pleromaAuthAccountServiceMock.isApiReadyToUse).thenReturn(true);
+    when(pleromaAuthAccountServiceMock.isConnected).thenReturn(true);
+    when(pleromaAuthAccountServiceMock.pleromaApiState)
+        .thenReturn(PleromaApiState.validAuth);
 
     account = await createTestAccount(seed: "seed1");
 
-    pleromaWebSocketsService = PleromaWebSocketsServiceMock();
+    pleromaWebSocketsService = MockPleromaWebSocketsService();
 
     await accountRepository.upsertRemoteAccount(
       account.toPleromaAccount(),

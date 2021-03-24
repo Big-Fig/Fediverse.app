@@ -9,6 +9,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_service.dart';
 import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
@@ -144,35 +145,56 @@ class LocalStatusBloc extends StatusBloc {
   }
 
   @override
-  Future<IAccount?> getInReplyToAccount() {
-    return accountRepository.findByRemoteId(
-      status.inReplyToAccountRemoteId!,
-    );
+  Future<IAccount?> getInReplyToAccount() async {
+    var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
+    if (inReplyToAccountRemoteId != null) {
+      return await accountRepository.findByRemoteId(
+        inReplyToAccountRemoteId,
+      );
+    } else {
+      return null;
+    }
   }
 
   @override
   Stream<IAccount?> watchInReplyToAccount() {
-    return accountRepository.watchByRemoteId(
-      status.inReplyToAccountRemoteId!,
-    );
+    var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
+    if (inReplyToAccountRemoteId != null) {
+      return accountRepository.watchByRemoteId(
+        inReplyToAccountRemoteId,
+      );
+    } else {
+      return Stream.value(null);
+    }
   }
 
   @override
   Future<IStatus?> getInReplyToStatus() async {
-    if (status.inReplyToStatus != null) {
-      return status.inReplyToStatus;
+    var inReplyToStatus = status.inReplyToStatus;
+    if (inReplyToStatus != null) {
+      return inReplyToStatus;
+    } else {
+      var inReplyToRemoteId = status.inReplyToRemoteId;
+      if (inReplyToRemoteId != null) {
+        return await statusRepository.findByRemoteId(
+          inReplyToRemoteId,
+        );
+      } else {
+        return null;
+      }
     }
-    return await statusRepository.findByRemoteId(
-      status.inReplyToRemoteId!,
-    );
   }
 
   @override
   Stream<IStatus?> watchInReplyToStatus() {
-    assert(status.inReplyToRemoteId != null);
-    return statusRepository.watchByRemoteId(
-      status.inReplyToRemoteId!,
-    );
+    var inReplyToRemoteId = status.inReplyToRemoteId;
+    if (inReplyToRemoteId != null) {
+      return statusRepository.watchByRemoteId(
+        status.inReplyToRemoteId!,
+      );
+    } else {
+      return Stream.value(null);
+    }
   }
 
   @override
@@ -308,7 +330,6 @@ class LocalStatusBloc extends StatusBloc {
       newRemoteStatus: remoteStatus,
     );
 
-    
     var result = await statusRepository.findByRemoteId(
       reblogOrOriginal.remoteId,
     );
@@ -387,7 +408,7 @@ class LocalStatusBloc extends StatusBloc {
   }) async {
     var alreadyAdded;
     var foundEmojiReaction = pleromaEmojiReactions?.firstWhereOrNull(
-        (emojiReaction) => emojiReaction.name == emoji,
+      (emojiReaction) => emojiReaction.name == emoji,
     );
 
     if (foundEmojiReaction != null) {

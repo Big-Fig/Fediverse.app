@@ -19,24 +19,32 @@ import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
+import 'package:fedi/pleroma/account/my/pleroma_my_account_service_impl.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/conversation/pleroma_conversation_service_impl.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
-import '../../pleroma/account/my/pleroma_my_account_service_mock.dart';
-import '../../pleroma/conversation/pleroma_conversation_service_mock.dart';
-import '../../pleroma/status/pleroma_status_service_mock.dart';
 import '../account/account_model_helper.dart';
 import '../account/my/my_account_model_helper.dart';
 import '../status/status_model_helper.dart';
+import 'conversation_bloc_impl_test.mocks.dart';
 import 'conversation_model_helper.dart';
 
+@GenerateMocks([
+  PleromaConversationService,
+  PleromaAuthStatusService,
+  PleromaMyAccountService,
+])
 void main() {
   late IConversationChat conversation;
   late IConversationChatBloc conversationBloc;
-  late PleromaConversationServiceMock pleromaConversationServiceMock;
-  late PleromaAuthStatusServiceMock pleromaAuthStatusServiceMock;
-  late PleromaMyAccountServiceMock pleromaMyAccountServiceMock;
+  late MockPleromaConversationService pleromaConversationServiceMock;
+  late MockPleromaAuthStatusService pleromaAuthStatusServiceMock;
+  late MockPleromaMyAccountService pleromaMyAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
@@ -62,9 +70,9 @@ void main() {
         statusRepository: statusRepository,
       );
 
-      pleromaConversationServiceMock = PleromaConversationServiceMock();
-      pleromaMyAccountServiceMock = PleromaMyAccountServiceMock();
-      pleromaAuthStatusServiceMock = PleromaAuthStatusServiceMock();
+      pleromaConversationServiceMock = MockPleromaConversationService();
+      pleromaMyAccountServiceMock = MockPleromaMyAccountService();
+      pleromaAuthStatusServiceMock = MockPleromaAuthStatusService();
       preferencesService = MemoryLocalPreferencesService();
 
       myAccount = await createTestMyAccount(seed: "myAccount");
@@ -97,7 +105,10 @@ void main() {
         instance: authInstance,
       );
 
-      when(pleromaConversationServiceMock.isApiReadyToUse).thenReturn(true);
+      when(pleromaConversationServiceMock.isConnected).thenReturn(true);
+      when(pleromaConversationServiceMock.pleromaApiState).thenReturn(
+        PleromaApiState.validAuth,
+      );
 
       conversation = await createTestConversation(seed: "seed1");
 
@@ -177,8 +188,14 @@ void main() {
   });
 
   test('lastStatus', () async {
-    var status1 = await createTestStatus(seed: "status1");
-    var status2 = await createTestStatus(seed: "status2");
+    var status1 = await createTestStatus(
+      seed: "status1",
+      createdAt: DateTime(2001),
+    );
+    var status2 = await createTestStatus(
+      seed: "status2",
+      createdAt: DateTime(2002),
+    );
 
     var newValue = await createTestConversation(
       seed: "seed2",
@@ -375,8 +392,8 @@ void main() {
       conversation,
     );
 
-    when(pleromaConversationServiceMock
-            .getConversation(conversationRemoteId: conversation.remoteId))
+    when(pleromaConversationServiceMock.getConversation(
+            conversationRemoteId: conversation.remoteId))
         .thenAnswer(
       (_) async => newValue.toPleromaConversation(
         accounts: [],

@@ -38,15 +38,6 @@ class PleromaRestService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => connectionService.isConnectedStream;
 
-  @override
-  Stream<bool> get isApiReadyToUseStream => Rx.combineLatest2(
-        pleromaApiStateStream,
-        isConnectedStream,
-        mapIsReady,
-      ).distinct();
-
-  @override
-  bool get isApiReadyToUse => mapIsReady(pleromaApiState, isConnected);
 
   @override
   final IRestService restService;

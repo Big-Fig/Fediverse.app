@@ -146,12 +146,8 @@ class NotificationRepository extends AsyncInitLoadingBloc
   Future<DbNotificationPopulatedWrapper?> findByRemoteId(
     String remoteId,
   ) async {
-    var found = await dao.findByRemoteId(remoteId);
-    if (found != null) {
-      return mapDataClassToItem(found);
-    } else {
-      return null;
-    }
+    return (await dao.findByRemoteId(remoteId))
+        ?.toDbNotificationPopulatedWrapper();
   }
 
   @override
@@ -167,10 +163,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    return dao
-        .typedResultListToPopulated(await query.get())
-        .map(mapDataClassToItem)
-        .toList();
+    return (await query.get())
+        .toDbNotificationPopulatedList(dao: dao)
+        .toDbNotificationPopulatedWrapperList();
   }
 
   @override
@@ -186,11 +181,11 @@ class NotificationRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    Stream<List<DbNotificationPopulated>> stream =
-        query.watch().map(dao.typedResultListToPopulated);
-    return stream.map(
-      (list) => list.map(mapDataClassToItem).toList(),
-    );
+    return query.watch().map(
+          (item) => item
+              .toDbNotificationPopulatedList(dao: dao)
+              .toDbNotificationPopulatedWrapperList(),
+        );
   }
 
   JoinedSelectStatement createQuery({
@@ -298,18 +293,21 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<INotification> findById(int id) async => mapDataClassToItem(
-        await dao.findById(id),
+  Future<INotification?> findById(int id) async =>
+      (await dao.findById(id))?.toDbNotificationPopulatedWrapper();
+
+  @override
+  Stream<DbNotificationPopulatedWrapper?> watchById(int id) =>
+      (dao.watchById(id)).map(
+        (value) => value?.toDbNotificationPopulatedWrapper(),
       );
 
   @override
-  Stream<DbNotificationPopulatedWrapper> watchById(int id) =>
-      (dao.watchById(id)).map(mapDataClassToItem);
-
-  @override
-  Stream<INotification> watchByRemoteId(String? remoteId) {
+  Stream<INotification?> watchByRemoteId(String remoteId) {
     _logger.finest(() => "watchByRemoteId $remoteId");
-    return (dao.watchByRemoteId(remoteId)).map(mapDataClassToItem);
+    return (dao.watchByRemoteId(remoteId)).map(
+      (value) => value?.toDbNotificationPopulatedWrapper(),
+    );
   }
 
   @override
@@ -318,7 +316,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<DbNotificationPopulatedWrapper>> getAll() async =>
-      (await dao.findAll()).map(mapDataClassToItem).toList();
+      (await dao.findAll()).toDbNotificationPopulatedWrapperList();
 
   @override
   Future<int> countAll() => dao.countAll().getSingle();
@@ -326,7 +324,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
   @override
   Stream<List<DbNotificationPopulatedWrapper>> watchAll() =>
       (dao.watchAll()).map(
-        (list) => list.map(mapDataClassToItem).toList(),
+        (list) => list.toDbNotificationPopulatedWrapperList(),
       );
 
   @override
@@ -336,25 +334,11 @@ class NotificationRepository extends AsyncInitLoadingBloc
   Future<int> upsert(DbNotification item) => dao.upsert(item);
 
   @override
-  Future<bool> updateById(int? id, DbNotification dbNotification) {
+  Future<bool> updateById(int id, DbNotification dbNotification) {
     if (dbNotification.id != id) {
       dbNotification = dbNotification.copyWith(id: id);
     }
     return dao.replace(dbNotification);
-  }
-
-  DbNotificationPopulatedWrapper mapDataClassToItem(
-    DbNotificationPopulated dataClass,
-  ) {
-    return DbNotificationPopulatedWrapper(
-      dbNotificationPopulated: dataClass,
-    );
-  }
-
-  Insertable<DbNotification> mapItemToDataClass(
-    DbNotificationPopulatedWrapper item,
-  ) {
-    return item.dbNotificationPopulated.dbNotification;
   }
 
   @override
@@ -388,7 +372,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
     }
 
     await updateById(
-      oldLocalNotification.localId,
+      oldLocalNotification.localId!,
       newRemoteNotification.toDbNotification(
         unread: unread,
       ),
@@ -396,7 +380,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbNotificationPopulatedWrapper> getNotification({
+  Future<DbNotificationPopulatedWrapper?> getNotification({
     required NotificationRepositoryFilters? filters,
     NotificationOrderingTermData? orderingTermData =
         NotificationOrderingTermData.createdAtDesc,
@@ -407,11 +391,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    return mapDataClassToItem(
-      dao.typedResultToPopulated(
-        await query.getSingle(),
-      ),
-    );
+    return (await query.getSingleOrNull())
+        ?.toDbNotificationPopulated(dao: dao)
+        .toDbNotificationPopulatedWrapper();
   }
 
   @override
@@ -426,16 +408,11 @@ class NotificationRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    Stream<DbNotificationPopulated> stream = query.watchSingle().map(
-          (typedResult) => dao.typedResultToPopulated(
-            typedResult,
-          ),
+    return query.watchSingleOrNull().map(
+          (typedResult) => typedResult
+              ?.toDbNotificationPopulated(dao: dao)
+              .toDbNotificationPopulatedWrapper(),
         );
-    return stream.map(
-      (dbNotification) => mapDataClassToItem(
-        dbNotification,
-      ),
-    );
   }
 
   Selectable<int> createCountQuery({
@@ -510,4 +487,17 @@ class NotificationRepository extends AsyncInitLoadingBloc
         accountRemoteId: account.remoteId,
         type: PleromaNotificationType.followRequest,
       );
+}
+
+extension DbNotificationPopulatedListExtension
+    on List<DbNotificationPopulated> {
+  List<DbNotificationPopulatedWrapper> toDbNotificationPopulatedWrapperList() =>
+      map(
+        (item) => item.toDbNotificationPopulatedWrapper(),
+      ).toList();
+}
+
+extension DbNotificationPopulatedWrapperExtension
+    on DbNotificationPopulatedWrapper {
+  DbNotification toDbNotification() => dbNotificationPopulated.dbNotification;
 }

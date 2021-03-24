@@ -106,12 +106,12 @@ abstract class IStatusRepository
   });
 
   Stream<IStatus?> watchConversationLastStatus({
-    required IConversationChat? conversation,
+    required IConversationChat conversation,
     bool onlyPendingStatePublishedOrNull = false,
   });
 
   Future<IStatus?> getConversationLastStatus({
-    required IConversationChat? conversation,
+    required IConversationChat conversation,
     bool onlyPendingStatePublishedOrNull = false,
   });
 
@@ -120,7 +120,7 @@ abstract class IStatusRepository
   );
 
   Stream<IStatus?> watchByOldPendingRemoteId(
-    String? oldPendingRemoteId,
+    String oldPendingRemoteId,
   );
 
   Future addStatusToConversation({

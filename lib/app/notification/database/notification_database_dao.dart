@@ -57,26 +57,41 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
   Future<List<DbNotificationPopulated>> findAll() async {
     JoinedSelectStatement<Table, DataClass> notificationQuery = _findAll();
 
-    return typedResultListToPopulated(await notificationQuery.get());
+    return (await notificationQuery.get()).toDbNotificationPopulatedList(
+      dao: this,
+    );
   }
 
   Stream<List<DbNotificationPopulated>> watchAll() {
     JoinedSelectStatement<Table, DataClass> notificationQuery = _findAll();
 
-    return notificationQuery.watch().map(typedResultListToPopulated);
+    return notificationQuery.watch().map(
+          (item) => item.toDbNotificationPopulatedList(
+            dao: this,
+          ),
+        );
   }
 
-  Future<DbNotificationPopulated> findById(int id) async =>
-      typedResultToPopulated(await _findById(id).getSingle());
+  Future<DbNotificationPopulated?> findById(int id) async =>
+      (await _findById(id).getSingleOrNull())?.toDbNotificationPopulated(
+        dao: this,
+      );
 
-  Future<DbNotificationPopulated?> findByRemoteId(String? remoteId) async =>
-      typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
+  Future<DbNotificationPopulated?> findByRemoteId(String remoteId) async =>
+      (await _findByRemoteId(remoteId).getSingleOrNull())
+          ?.toDbNotificationPopulated(
+        dao: this,
+      );
 
-  Stream<DbNotificationPopulated> watchById(int id) =>
-      (_findById(id).watchSingle().map(typedResultToPopulated));
+  Stream<DbNotificationPopulated?> watchById(int id) =>
+      _findById(id).watchSingleOrNull().map(
+            (value) => value?.toDbNotificationPopulated(dao: this),
+          );
 
-  Stream<DbNotificationPopulated> watchByRemoteId(String? remoteId) =>
-      (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
+  Stream<DbNotificationPopulated?> watchByRemoteId(String remoteId) =>
+      _findByRemoteId(remoteId).watchSingleOrNull().map(
+            (value) => value?.toDbNotificationPopulated(dao: this),
+          );
 
   JoinedSelectStatement<Table, DataClass> _findAll() {
     var sqlQuery = (select(db.dbNotifications).join(
@@ -90,9 +105,11 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
             ..where((notification) => notification.id.equals(id)))
           .join(populateNotificationJoin());
 
-  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String? remoteId) =>
+  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
       (select(db.dbNotifications)
-            ..where((notification) => notification.remoteId.like(remoteId!)))
+            ..where(
+              (notification) => notification.remoteId.like(remoteId),
+            ))
           .join(populateNotificationJoin());
 
   Future<int> insert(
@@ -276,36 +293,6 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
                 })
             .toList());
 
-  List<DbNotificationPopulated> typedResultListToPopulated(
-    List<TypedResult> typedResult,
-  ) {
-    return typedResult.map(typedResultToPopulated).toList();
-  }
-
-  DbNotificationPopulated typedResultToPopulated(TypedResult typedResult) {
-    var notificationAccount = typedResult.readTable(accountAlias);
-    var notificationStatus = typedResult.readTableOrNull(statusAlias);
-
-    var notificationStatusAccount = typedResult.readTableOrNull(statusAccountAlias);
-    var rebloggedStatus = typedResult.readTableOrNull(statusReblogAlias);
-    var rebloggedStatusAccount =
-        typedResult.readTableOrNull(statusReblogAccountAlias);
-
-
-    return DbNotificationPopulated(
-      dbNotification: typedResult.readTable(db.dbNotifications),
-      dbAccount: notificationAccount,
-      reblogDbStatus: rebloggedStatus,
-      reblogDbStatusAccount: rebloggedStatusAccount,
-      dbStatus: notificationStatus,
-      dbStatusAccount: notificationStatusAccount,
-      replyDbStatus: null,
-      replyDbStatusAccount: null,
-      replyReblogDbStatus: null,
-      replyReblogDbStatusAccount: null,
-    );
-  }
-
   Future markAsRead({required String? remoteId}) {
     var update = "UPDATE db_notifications "
         "SET unread = 0 "
@@ -395,4 +382,45 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
         ..where(
           (status) => status.unread.equals(true),
         );
+}
+
+extension DbNotificationPopulatedTypedResultListExtension on List<TypedResult> {
+  List<DbNotificationPopulated> toDbNotificationPopulatedList({
+    required NotificationDao dao,
+  }) {
+    return map(
+      (item) => item.toDbNotificationPopulated(
+        dao: dao,
+      ),
+    ).toList();
+  }
+}
+
+extension DbNotificationPopulatedTypedResultExtension on TypedResult {
+  DbNotificationPopulated toDbNotificationPopulated({
+    required NotificationDao dao,
+  }) {
+    TypedResult typedResult = this;
+    var notificationAccount = typedResult.readTable(dao.accountAlias);
+    var notificationStatus = typedResult.readTableOrNull(dao.statusAlias);
+
+    var notificationStatusAccount =
+        typedResult.readTableOrNull(dao.statusAccountAlias);
+    var rebloggedStatus = typedResult.readTableOrNull(dao.statusReblogAlias);
+    var rebloggedStatusAccount =
+        typedResult.readTableOrNull(dao.statusReblogAccountAlias);
+
+    return DbNotificationPopulated(
+      dbNotification: typedResult.readTable(dao.db.dbNotifications),
+      dbAccount: notificationAccount,
+      reblogDbStatus: rebloggedStatus,
+      reblogDbStatusAccount: rebloggedStatusAccount,
+      dbStatus: notificationStatus,
+      dbStatusAccount: notificationStatusAccount,
+      replyDbStatus: null,
+      replyDbStatusAccount: null,
+      replyReblogDbStatus: null,
+      replyReblogDbStatusAccount: null,
+    );
+  }
 }

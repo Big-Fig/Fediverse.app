@@ -5,7 +5,7 @@ import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaNotificationService implements IPleromaAuthApi {
+abstract class IPleromaNotificationService extends IPleromaAuthApi {
   static IPleromaNotificationService of(
     BuildContext context, {
     bool listen = true,

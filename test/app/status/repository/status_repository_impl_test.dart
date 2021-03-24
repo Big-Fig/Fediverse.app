@@ -3,6 +3,7 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/status/database/status_database_dao.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -225,7 +226,7 @@ void main() {
     );
 
     expect(
-      (await statusRepository.findById(id)).remoteId,
+      (await statusRepository.findById(id))?.remoteId,
       "newRemoteId",
     );
   });
@@ -273,11 +274,11 @@ void main() {
     );
 
     expect(
-      (await statusRepository.findById(id)).content,
+      (await statusRepository.findById(id))?.content,
       newContent,
     );
     expect(
-      (await statusRepository.findById(id)).account.acct,
+      (await statusRepository.findById(id))?.account.acct,
       newAcct,
     );
   });
@@ -789,7 +790,7 @@ void main() {
     );
 
     List<DbStatusPopulated> actualList =
-        (await query.map(statusRepository.dao.typedResultToPopulated).get());
+        (await query.get()).toDbStatusPopulatedList(dao: statusRepository.dao);
     expect(actualList.length, 3);
 
     expect(
@@ -842,7 +843,7 @@ void main() {
     );
 
     List<DbStatusPopulated> actualList =
-        (await query.map(statusRepository.dao.typedResultToPopulated).get());
+        (await query.get()).toDbStatusPopulatedList(dao: statusRepository.dao);
     expect(actualList.length, 3);
 
     expect(
@@ -898,7 +899,7 @@ void main() {
     );
 
     List<DbStatusPopulated> actualList =
-        (await query.map(statusRepository.dao.typedResultToPopulated).get());
+        (await query.get()).toDbStatusPopulatedList(dao: statusRepository.dao);
     expect(actualList.length, 1);
 
     expect(
@@ -1360,7 +1361,10 @@ void main() {
     await statusRepository.upsertRemoteStatus(
       DbStatusPopulatedWrapper(
         dbStatusPopulated: await createTestDbStatusPopulated(
-          dbStatus.copyWith(remoteId: "status2"),
+          dbStatus.copyWith(
+            remoteId: "status2",
+            createdAt: DateTime(2002),
+          ),
           accountRepository,
         ),
       ).toPleromaStatus(),
@@ -1371,7 +1375,7 @@ void main() {
     expect(
       (await statusRepository.getConversationLastStatus(
         conversation: conversation,
-      ))
+      ))!
           .remoteId,
       "status2",
     );
@@ -1380,7 +1384,10 @@ void main() {
     await statusRepository.upsertRemoteStatus(
       DbStatusPopulatedWrapper(
         dbStatusPopulated: await createTestDbStatusPopulated(
-          dbStatus.copyWith(remoteId: "status4"),
+          dbStatus.copyWith(
+            remoteId: "status4",
+            createdAt: DateTime(2004),
+          ),
           accountRepository,
         ),
       ).toPleromaStatus(),
@@ -1390,7 +1397,7 @@ void main() {
     expect(
       (await statusRepository.getConversationLastStatus(
         conversation: conversation,
-      ))
+      ))!
           .remoteId,
       "status4",
     );
@@ -1399,7 +1406,10 @@ void main() {
     await statusRepository.upsertRemoteStatus(
       DbStatusPopulatedWrapper(
         dbStatusPopulated: await createTestDbStatusPopulated(
-          dbStatus.copyWith(remoteId: "status3"),
+          dbStatus.copyWith(
+            remoteId: "status3",
+            createdAt: DateTime(2003),
+          ),
           accountRepository,
         ),
       ).toPleromaStatus(),
@@ -1410,7 +1420,7 @@ void main() {
     expect(
       (await statusRepository.getConversationLastStatus(
         conversation: conversation,
-      ))
+      ))!
           .remoteId,
       "status4",
     );
@@ -1853,7 +1863,7 @@ void main() {
     );
 
     await statusRepository.updateById(
-      dbStatus3.id,
+      dbStatus3.id!,
       dbStatus3,
     );
 

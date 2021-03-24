@@ -47,7 +47,7 @@ class DbConversationChatWrapper implements IConversationChat {
     DateTime? updatedAt,
     List<IAccount>? accounts,
   }) {
-    if(accounts != null) {
+    if (accounts != null) {
       throw UnimplementedError();
     }
     return DbConversationChatWrapper(
@@ -80,9 +80,12 @@ class DbConversationChatWrapper implements IConversationChat {
   DateTime? get updatedAt => dbConversation.updatedAt;
 
   @override
-  // TODO: implement pleroma
-  IPleromaConversationPleromaPart? get pleroma => throw UnimplementedError();
+  // todo: implement
+  IPleromaConversationPleromaPart? get pleroma => null;
 
   @override
-  List<IAccount> get accounts => throw UnimplementedError();
+  List<IAccount> get accounts => throw Exception(
+        "accounts not included in ConversationChat "
+        "and should be manually fetched from repository",
+      );
 }

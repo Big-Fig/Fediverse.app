@@ -30,26 +30,33 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
   Future<List<DbFilterPopulated>> findAll() async {
     JoinedSelectStatement<Table, DataClass> filterQuery = _findAll();
 
-    return typedResultListToPopulated(await filterQuery.get());
+    return (await filterQuery.get()).toDbFilterPopulatedList(dao: this);
   }
 
   Stream<List<DbFilterPopulated>> watchAll() {
     JoinedSelectStatement<Table, DataClass> filterQuery = _findAll();
 
-    return filterQuery.watch().map(typedResultListToPopulated);
+    return filterQuery.watch().map(
+          (list) => list.toDbFilterPopulatedList(dao: this),
+        );
   }
 
-  Future<DbFilterPopulated> findById(int id) async =>
-      typedResultToPopulated(await _findById(id).getSingle());
+  Future<DbFilterPopulated?> findById(int id) async =>
+      (await _findById(id).getSingleOrNull())?.toDbFilterPopulated(dao: this);
 
-  Future<DbFilterPopulated> findByRemoteId(String? remoteId) async =>
-      typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
+  Future<DbFilterPopulated?> findByRemoteId(String remoteId) async =>
+      (await _findByRemoteId(remoteId).getSingleOrNull())
+          ?.toDbFilterPopulated(dao: this);
 
-  Stream<DbFilterPopulated> watchById(int id) =>
-      (_findById(id).watchSingle().map(typedResultToPopulated));
+  Stream<DbFilterPopulated?> watchById(int id) =>
+      (_findById(id).watchSingleOrNull().map(
+            (value) => value?.toDbFilterPopulated(dao: this),
+          ));
 
-  Stream<DbFilterPopulated> watchByRemoteId(String? remoteId) =>
-      (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
+  Stream<DbFilterPopulated?> watchByRemoteId(String? remoteId) =>
+      (_findByRemoteId(remoteId).watchSingleOrNull().map(
+            (value) => value?.toDbFilterPopulated(dao: this),
+          ));
 
   JoinedSelectStatement<Table, DataClass> _findAll() {
     var sqlQuery = (select(db.dbFilters).join(
@@ -184,19 +191,27 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
                 })
             .toList());
 
-  List<DbFilterPopulated> typedResultListToPopulated(
-    List<TypedResult> typedResult,
-  ) {
-    return typedResult.map(typedResultToPopulated).toList();
-  }
-
-  DbFilterPopulated typedResultToPopulated(TypedResult typedResult) {
-    return DbFilterPopulated(
-      dbFilter: typedResult.readTable(db.dbFilters),
-    );
-  }
-
   List<Join<Table, DataClass>> populateFilterJoin() {
     return [];
+  }
+}
+
+extension DbFilterPopulatedTypedResultListExtension on List<TypedResult> {
+  List<DbFilterPopulated> toDbFilterPopulatedList({
+    required FilterDao dao,
+  }) {
+    return map(
+      (item) => item.toDbFilterPopulated(dao: dao),
+    ).toList();
+  }
+}
+
+extension DbFilterPopulatedTypedResultExtension on TypedResult {
+  DbFilterPopulated toDbFilterPopulated({
+    required FilterDao dao,
+  }) {
+    return DbFilterPopulated(
+      dbFilter: readTable(dao.db.dbFilters),
+    );
   }
 }

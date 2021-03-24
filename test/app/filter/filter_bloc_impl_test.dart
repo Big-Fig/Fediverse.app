@@ -5,17 +5,23 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/filter/pleroma_filter_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
-import '../../pleroma/filter/pleroma_filter_service_mock.dart';
+import 'filter_bloc_impl_test.mocks.dart';
 import 'filter_model_helper.dart';
 
+@GenerateMocks([
+  PleromaFilterService,
+])
 void main() {
   late IFilter filter;
   late IFilterBloc filterBloc;
-  late PleromaFilterServiceMock pleromaFilterServiceMock;
+  late MockPleromaFilterService pleromaFilterServiceMock;
   late AppDatabase database;
   late IFilterRepository filterRepository;
 
@@ -25,9 +31,11 @@ void main() {
       appDatabase: database,
     );
 
-    pleromaFilterServiceMock = PleromaFilterServiceMock();
+    pleromaFilterServiceMock = MockPleromaFilterService();
 
-    when(pleromaFilterServiceMock.isApiReadyToUse).thenReturn(true);
+    when(pleromaFilterServiceMock.isConnected).thenReturn(true);
+    when(pleromaFilterServiceMock.pleromaApiState)
+        .thenReturn(PleromaApiState.validAuth);
 
     filter = await createTestFilter(
       seed: "seed1",

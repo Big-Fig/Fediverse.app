@@ -2,7 +2,7 @@ import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_model.dart';
 import 'package:fedi/web_sockets/web_sockets_model.dart';
 
-class TestWebSocketsChannelConfig extends WebSocketsChannelConfig {
+class TestWebSocketsChannelConfig extends WebSocketsChannelConfig<TestWebSocketEvent> {
   TestWebSocketsChannelConfig({
     required Uri baseUrl,
     required Map<String, String> queryArgs,
@@ -14,7 +14,7 @@ class TestWebSocketsChannelConfig extends WebSocketsChannelConfig {
         );
 
   @override
-  WebSocketsEvent eventParser(Map<String, dynamic> json) =>
+  TestWebSocketEvent eventParser(Map<String, dynamic> json) =>
       TestWebSocketEvent("seed");
 }
 

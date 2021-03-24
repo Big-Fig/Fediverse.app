@@ -25,11 +25,11 @@ abstract class IFilterRepository
   );
 
   Stream<IFilter?> watchByRemoteId(
-    String? remoteId,
+    String remoteId,
   );
 
   Future updateLocalFilterByRemoteFilter({
-    required IFilter? oldLocalFilter,
+    required IFilter oldLocalFilter,
     required IPleromaFilter newRemoteFilter,
   });
 
@@ -51,13 +51,13 @@ abstract class IFilterRepository
         FilterOrderingTermData.remoteIdDesc,
   });
 
-  Future<DbFilterPopulatedWrapper> getFilter({
+  Future<DbFilterPopulatedWrapper?> getFilter({
     required FilterRepositoryFilters filters,
     FilterOrderingTermData orderingTermData =
         FilterOrderingTermData.remoteIdDesc,
   });
 
-  Stream<DbFilterPopulatedWrapper> watchFilter({
+  Stream<DbFilterPopulatedWrapper?> watchFilter({
     required FilterRepositoryFilters filters,
     FilterOrderingTermData orderingTermData =
         FilterOrderingTermData.remoteIdDesc,

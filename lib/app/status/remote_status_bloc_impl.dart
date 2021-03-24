@@ -11,6 +11,7 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service_impl.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service_impl.dart';
@@ -180,6 +181,7 @@ class RemoteStatusBloc extends StatusBloc {
     var account;
     if (foundMention != null) {
       var accountRemoteId = foundMention.id;
+
       if (pleromaAccountService.isApiReadyToUse) {
         var remoteAccount = await pleromaAccountService.getAccount(
           accountRemoteId: accountRemoteId,

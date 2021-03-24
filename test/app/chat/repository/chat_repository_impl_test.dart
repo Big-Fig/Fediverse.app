@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/database/pleroma_chat_database_dao.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
@@ -101,8 +102,7 @@ void main() {
       dbAccount: dbAccount,
     ))
         .copyWith(
-      remoteId: "remot"
-          "eId1",
+      remoteId: "remoteId1",
     );
     // same remote id
     var dbChat2 = (await createTestDbChat(
@@ -134,7 +134,7 @@ void main() {
     );
 
     expect(
-      (await chatRepository.findById(id)).remoteId,
+      (await chatRepository.findById(id))!.remoteId,
       "newRemoteId",
     );
   });
@@ -179,11 +179,11 @@ void main() {
     );
 
     expect(
-      (await chatRepository.findById(id)).remoteId,
+      (await chatRepository.findById(id))!.remoteId,
       newRemoteId,
     );
     expect(
-      (await accountRepository.findByRemoteId(dbAccount.remoteId)).acct,
+      (await accountRepository.findByRemoteId(dbAccount.remoteId))!.acct,
       newAcct,
     );
     expect(
@@ -610,8 +610,11 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
+
     List<DbPleromaChatPopulated> actualList =
-        (await query.map(chatRepository.dao.typedResultToPopulated).get());
+    (await query.get()).toDbPleromaChatPopulatedList(
+      dao: chatRepository.dao,
+    );
     expect(actualList.length, 3);
 
     expect(actualList[0].dbChat, chat1);
@@ -651,8 +654,11 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
+
     List<DbPleromaChatPopulated> actualList =
-        (await query.map(chatRepository.dao.typedResultToPopulated).get());
+    (await query.get()).toDbPleromaChatPopulatedList(
+      dao: chatRepository.dao,
+    );
     expect(actualList.length, 3);
 
     expect(actualList[0].dbChat, chat3);
@@ -696,7 +702,9 @@ void main() {
     );
 
     List<DbPleromaChatPopulated> actualList =
-        (await query.map(chatRepository.dao.typedResultToPopulated).get());
+        (await query.get()).toDbPleromaChatPopulatedList(
+      dao: chatRepository.dao,
+    );
     expect(actualList.length, 1);
 
     expect(actualList[0].dbChat, chat2);
@@ -725,8 +733,8 @@ void main() {
       updatedAt: DateTime.now(),
     );
 
-    expect((await chatRepository.findByRemoteId(chat2.remoteId)).unread, 2);
-    expect((await chatRepository.findByRemoteId(chat3.remoteId)).unread, 1);
+    expect((await chatRepository.findByRemoteId(chat2.remoteId))!.unread, 2);
+    expect((await chatRepository.findByRemoteId(chat3.remoteId))!.unread, 1);
   });
 
   test('incrementUnreadCount', () async {
@@ -757,11 +765,11 @@ void main() {
     );
 
     expect(
-      (await chatRepository.findByRemoteId(chat2.remoteId)).unread,
+      (await chatRepository.findByRemoteId(chat2.remoteId))!.unread,
       0,
     );
     expect(
-      (await chatRepository.findByRemoteId(chat3.remoteId)).unread,
+      (await chatRepository.findByRemoteId(chat3.remoteId))!.unread,
       1,
     );
   });

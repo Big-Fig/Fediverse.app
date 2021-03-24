@@ -131,7 +131,7 @@ void main() {
       dbConversation.copyWith(remoteId: "newRemoteId"),
     );
 
-    expect((await conversationRepository.findById(id)).remoteId, "newRemoteId");
+    expect((await conversationRepository.findById(id))!.remoteId, "newRemoteId");
   });
 
   test('updateLocalConversationByRemoteConversation', () async {
@@ -179,13 +179,13 @@ void main() {
       newRemoteConversation: newRemoteConversation,
     );
 
-    expect((await conversationRepository.findById(id)).remoteId, newRemoteId);
+    expect((await conversationRepository.findById(id))!.remoteId, newRemoteId);
     expect(
-      (await accountRepository.findByRemoteId(dbAccount.remoteId)).acct,
+      (await accountRepository.findByRemoteId(dbAccount.remoteId))!.acct,
       newAcct,
     );
     expect(
-      (await statusRepository.findByRemoteId(dbStatus.remoteId)).content,
+      (await statusRepository.findByRemoteId(dbStatus.remoteId))?.content,
       newContent,
     );
   });
@@ -569,10 +569,7 @@ void main() {
     );
 
     var dbConversations = await query.get();
-    var actualList = dbConversations
-        .map((dbConversation) => conversationRepository
-            .mapDataClassToItem(dbConversation as DbConversation))
-        .toList();
+    var actualList = dbConversations.toDbConversationChatWrapperList();
     expect(actualList.length, 3);
 
     expectDbConversation(actualList[0], conversation1);
@@ -604,10 +601,7 @@ void main() {
     );
 
     var dbConversations = await query.get();
-    var actualList = dbConversations
-        .map((dbConversation) => conversationRepository
-            .mapDataClassToItem(dbConversation as DbConversation))
-        .toList();
+    var actualList = dbConversations.toDbConversationChatWrapperList();
     expect(actualList.length, 3);
 
     expectDbConversation(actualList[0], conversation3);
@@ -642,10 +636,7 @@ void main() {
     );
 
     var dbConversations = await query.get();
-    var actualList = dbConversations
-        .map((dbConversation) => conversationRepository
-            .mapDataClassToItem(dbConversation as DbConversation))
-        .toList();
+    var actualList = dbConversations.toDbConversationChatWrapperList();
     expect(actualList.length, 1);
 
     expectDbConversation(actualList[0], conversation2);

@@ -99,10 +99,11 @@ class ConversationChatMessageBloc extends ChatMessageBloc
       ),
     );
 
-    if (chatMessage.oldPendingRemoteId != null) {
+    var  oldPendingRemoteId = chatMessage.oldPendingRemoteId;
+    if (oldPendingRemoteId != null) {
       addDisposable(
         streamSubscription: statusRepository
-            .watchByOldPendingRemoteId(chatMessage.oldPendingRemoteId)
+            .watchByOldPendingRemoteId(oldPendingRemoteId)
             .listen(
           (updatedChatMessage) {
             if (updatedChatMessage != null) {
