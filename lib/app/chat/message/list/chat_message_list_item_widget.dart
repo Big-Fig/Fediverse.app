@@ -353,7 +353,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var messageBloc = IChatMessageBloc.of(context);
-    return StreamBuilder<List<IPleromaMediaAttachment?>?>(
+    return StreamBuilder<List<IPleromaMediaAttachment>?>(
       stream: messageBloc.mediaAttachmentsStream,
       builder: (context, snapshot) {
         var mediaAttachments = snapshot.data;
@@ -361,8 +361,8 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Provider<List<IPleromaMediaAttachment?>?>.value(
-          value: mediaAttachments,
+        return Provider<List<IPleromaMediaAttachment>?>.value(
+          value: mediaAttachments!,
           child: InkWell(
             onTap: () {
               goToMultiMediaAttachmentDetailsPage(
@@ -371,7 +371,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
                 initialMediaAttachment: null,
               );
             },
-            child: ProxyProvider<List<IPleromaMediaAttachment>,
+            child: ProxyProvider<List<IPleromaMediaAttachment>?,
                 IMediaAttachmentListBloc>(
               update: (context, mediaAttachments, _) => MediaAttachmentListBloc(
                 initialMediaAttachment: null,
@@ -407,8 +407,8 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
         if (contentWithEmojis?.text.isNotEmpty == true) {
           var fediUiColorTheme = IFediUiColorTheme.of(context);
           var textScaleFactor = MediaQuery.of(context).textScaleFactor;
-          return Provider<EmojiText?>.value(
-            value: contentWithEmojis,
+          return Provider<EmojiText>.value(
+            value: contentWithEmojis!,
             child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
               update: (context, emojiText, _) {
                 var htmlTextBloc = HtmlTextBloc(

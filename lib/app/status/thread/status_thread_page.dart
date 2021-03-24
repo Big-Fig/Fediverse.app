@@ -59,88 +59,90 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
       stream: statusThreadBloc.firstStatusInThreadStream,
       builder: (context, snapshot) {
         var status = snapshot.data;
-        var account = status?.reblog?.account ?? status?.account;
 
-        if (status == null) {
+        if (status != null) {
+          IAccount account = status.reblog?.account ?? status.account;
+
+          return Provider<IStatus>.value(
+            value: status,
+            child: DisposableProxyProvider<IStatus, IStatusBloc>(
+              update: (context, value, previous) {
+                if (isLocal) {
+                  return LocalStatusBloc.createFromContext(
+                    context,
+                    status: status,
+                    isNeedWatchLocalRepositoryForUpdates: false,
+                  );
+                } else {
+                  return RemoteStatusBloc.createFromContext(
+                    context,
+                    status: status,
+                  );
+                }
+              },
+              child: DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
+                update: (context, statusBloc, _) =>
+                    StatusSensitiveBloc.createFromContext(
+                  context: context,
+                  statusBloc: statusBloc,
+                ),
+                child: Provider<IAccount>.value(
+                  value: account,
+                  child: DisposableProxyProvider<IAccount, IAccountBloc>(
+                    update: (context, value, previous) {
+                      var isNeedWatchWebSocketsEvents = false;
+                      var isNeedRefreshFromNetworkOnInit = false;
+                      var isNeedWatchLocalRepositoryForUpdates = false;
+                      var isNeedPreFetchRelationship = false;
+                      if (isLocal) {
+                        return LocalAccountBloc.createFromContext(
+                          context,
+                          account: account,
+                          isNeedWatchWebSocketsEvents:
+                              isNeedWatchWebSocketsEvents,
+                          isNeedRefreshFromNetworkOnInit:
+                              isNeedRefreshFromNetworkOnInit,
+                          isNeedWatchLocalRepositoryForUpdates:
+                              isNeedWatchLocalRepositoryForUpdates,
+                          isNeedPreFetchRelationship:
+                              isNeedPreFetchRelationship,
+                        );
+                      } else {
+                        return RemoteAccountBloc.createFromContext(
+                          context,
+                          account: account,
+                          isNeedRefreshFromNetworkOnInit:
+                              isNeedRefreshFromNetworkOnInit,
+                        );
+                      }
+                    },
+                    child: InkWell(
+                      onTap: () {
+                        if (isLocal) {
+                          goToLocalAccountDetailsPage(
+                            context,
+                            account: account,
+                          );
+                        } else {
+                          goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
+                            context,
+                            remoteInstanceAccount: account,
+                          );
+                        }
+                      },
+                      child: const _StatusThreadStarterAccountBodyWidget(),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        } else {
           return Text(
             S.of(context).app_status_thread_start_loading,
             style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
           );
         }
-
-        return Provider<IStatus>.value(
-          value: status,
-          child: DisposableProxyProvider<IStatus, IStatusBloc>(
-            update: (context, value, previous) {
-              if (isLocal) {
-                return LocalStatusBloc.createFromContext(
-                  context,
-                  status: status,
-                  isNeedWatchLocalRepositoryForUpdates: false,
-                );
-              } else {
-                return RemoteStatusBloc.createFromContext(
-                  context,
-                  status: status,
-                );
-              }
-            },
-            child: DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
-              update: (context, statusBloc, _) =>
-                  StatusSensitiveBloc.createFromContext(
-                context: context,
-                statusBloc: statusBloc,
-              ),
-              child: Provider.value(
-                value: account,
-                child: DisposableProxyProvider<IAccount, IAccountBloc>(
-                  update: (context, value, previous) {
-                    var isNeedWatchWebSocketsEvents = false;
-                    var isNeedRefreshFromNetworkOnInit = false;
-                    var isNeedWatchLocalRepositoryForUpdates = false;
-                    var isNeedPreFetchRelationship = false;
-                    if (isLocal) {
-                      return LocalAccountBloc.createFromContext(
-                        context,
-                        account: account!,
-                        isNeedWatchWebSocketsEvents:
-                            isNeedWatchWebSocketsEvents,
-                        isNeedRefreshFromNetworkOnInit:
-                            isNeedRefreshFromNetworkOnInit,
-                        isNeedWatchLocalRepositoryForUpdates:
-                            isNeedWatchLocalRepositoryForUpdates,
-                        isNeedPreFetchRelationship: isNeedPreFetchRelationship,
-                      );
-                    } else {
-                      return RemoteAccountBloc.createFromContext(
-                        context,
-                        account: account!,
-                        isNeedRefreshFromNetworkOnInit:
-                            isNeedRefreshFromNetworkOnInit,
-                      );
-                    }
-                  },
-                  child: InkWell(
-                    onTap: () {
-                      if (isLocal) {
-                        goToLocalAccountDetailsPage(
-                          context,
-                          account: account,
-                        );
-                      } else {
-                        goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
-                          context,
-                          remoteInstanceAccount: account!,
-                        );
-                      }
-                    },
-                    child: const _StatusThreadStarterAccountBodyWidget(),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
       },
     );
   }

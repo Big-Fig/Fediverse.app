@@ -28,6 +28,7 @@ class FediBaseEditTextField extends StatelessWidget {
   final bool highlightMentions;
   final int? maxLength;
   final bool? enabled;
+  final bool hideCounter;
 
   FediBaseEditTextField({
     required this.textEditingController,
@@ -41,6 +42,7 @@ class FediBaseEditTextField extends StatelessWidget {
     required this.autofocus,
     required this.focusNode,
     this.autocorrect = true,
+    this.hideCounter = true,
     this.obscureText = false,
     required this.keyboardType,
     required this.textStyle,
@@ -84,6 +86,7 @@ class FediBaseEditTextField extends StatelessWidget {
           errorStyle: textStyle.copyWith(
             color: IFediUiColorTheme.of(context).error,
           ),
+          counterText: hideCounter ? "" : null,
           hintText: hintText,
           errorText: errorText,
           contentPadding: contentPadding,

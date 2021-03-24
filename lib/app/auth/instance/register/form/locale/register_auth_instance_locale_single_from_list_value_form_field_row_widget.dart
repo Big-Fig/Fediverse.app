@@ -10,7 +10,7 @@ class RegisterAuthInstanceLocaleSingleFromListValueFormFieldRowWidget
   @override
   Widget build(BuildContext context) =>
       LocalizationLocaleSingleFromListValueFormFieldBlocProxyProvider(
-        child: SingleSelectFromListValueFormFieldRowWidget<LocalizationLocale>(
+        child: SingleSelectFromListValueFormFieldRowWidget<LocalizationLocale?>(
           label: S
               .of(context)
               .app_auth_instance_register_field_locale_label,

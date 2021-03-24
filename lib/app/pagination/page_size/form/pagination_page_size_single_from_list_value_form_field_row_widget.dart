@@ -9,7 +9,7 @@ class PaginationPageSizeSingleFromListValueFormFieldRowWidget
   @override
   Widget build(BuildContext context) =>
       PaginationPageSizeSingleFromListValueFormFieldBlocProxyProvider(
-        child: SingleSelectFromListValueFormFieldRowWidget<PaginationPageSize>(
+        child: SingleSelectFromListValueFormFieldRowWidget<PaginationPageSize?>(
           label: S.of(context).app_pagination_settings_pageSize_label,
           valueTitleMapper: (context, value) =>
               mapPaginationPageSizeToLabel(context, value!),

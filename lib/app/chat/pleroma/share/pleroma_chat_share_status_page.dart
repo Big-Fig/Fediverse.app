@@ -58,7 +58,7 @@ MaterialPageRoute createPleromaChatShareStatusPageRoute({
     builder: (context) => PleromaChatShareStatusBloc.provideToContext(
       context,
       status: status,
-      child: Provider.value(
+      child: Provider<IStatus>.value(
         value: status,
         child: DisposableProxyProvider<IStatus, IStatusBloc>(
           update: (context, value, previous) {

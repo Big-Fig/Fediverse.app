@@ -26,7 +26,7 @@ abstract class IPleromaChatBloc implements IChatBloc, IAsyncInitLoadingBloc {
   @override
   Stream<IPleromaChatMessage?> get lastChatMessageStream;
 
-  Stream<IPleromaChatMessage?> get onMessageLocallyHiddenStream;
+  Stream<IPleromaChatMessage> get onMessageLocallyHiddenStream;
 
   Future postMessage({
     required

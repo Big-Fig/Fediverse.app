@@ -36,7 +36,7 @@ class ConversationChatShareStatusPage extends StatelessWidget {
 
 void goToConversationShareStatusPage({
   required BuildContext context,
-  required IStatus? status,
+  required IStatus status,
   required InstanceLocation instanceLocation,
 }) {
   Navigator.push(
@@ -51,14 +51,14 @@ void goToConversationShareStatusPage({
 
 MaterialPageRoute createConversationShareStatusPageRoute({
   required BuildContext context,
-  required IStatus? status,
+  required IStatus status,
   required InstanceLocation instanceLocation,
 }) {
   return MaterialPageRoute(
     builder: (context) => ConversationChatShareStatusBloc.provideToContext(
       context,
       status: status,
-      child: Provider.value(
+      child: Provider<IStatus>.value(
         value: status,
         child: DisposableProxyProvider<IStatus, IStatusBloc>(
           update: (context, value, previous) {

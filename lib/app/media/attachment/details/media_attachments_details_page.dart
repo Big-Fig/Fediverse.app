@@ -29,10 +29,12 @@ import 'package:photo_view/photo_view.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MediaAttachmentDetailsPage extends StatefulWidget {
-  final List<IPleromaMediaAttachment?>? mediaAttachments;
+  final List<IPleromaMediaAttachment> mediaAttachments;
   final IPleromaMediaAttachment? initialMediaAttachment;
 
-  int get initialIndex => mediaAttachments!.indexOf(initialMediaAttachment);
+  int get initialIndex => initialMediaAttachment != null
+      ? mediaAttachments.indexOf(initialMediaAttachment!)
+      : 0;
 
   MediaAttachmentDetailsPage.multi({
     required this.mediaAttachments,
@@ -48,7 +50,10 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
 
   @override
   _MediaAttachmentDetailsPageState createState() =>
-      _MediaAttachmentDetailsPageState(initialMediaAttachment, initialIndex);
+      _MediaAttachmentDetailsPageState(
+        initialMediaAttachment,
+        initialIndex,
+      );
 }
 
 class _MediaAttachmentDetailsPageState
@@ -76,8 +81,9 @@ class _MediaAttachmentDetailsPageState
         selectedMediaAttachmentSubject =
             BehaviorSubject.seeded(initialMediaAttachment) {
     listener = () {
-      selectedMediaAttachmentSubject
-          .add(widget.mediaAttachments![_controller.page!.toInt()]);
+      selectedMediaAttachmentSubject.add(
+        widget.mediaAttachments[_controller.page!.toInt()],
+      );
     };
     _controller.addListener(listener);
   }
@@ -166,16 +172,18 @@ class _MediaAttachmentDetailsPageState
   }
 
   Widget buildBody(BuildContext context) {
-    if (widget.mediaAttachments!.length == 1) {
+    if (widget.mediaAttachments.length == 1) {
       return buildMediaAttachmentBody(context, mediaAttachment);
     } else {
       return Stack(
         children: <Widget>[
           PageView(
             controller: _controller,
-            children: widget.mediaAttachments!
-                .map((mediaAttachment) =>
-                    buildMediaAttachmentBody(context, mediaAttachment!))
+            children: widget.mediaAttachments
+                .map(
+                  (mediaAttachment) =>
+                      buildMediaAttachmentBody(context, mediaAttachment),
+                )
                 .toList(),
           ),
           Positioned(
@@ -192,10 +200,12 @@ class _MediaAttachmentDetailsPageState
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: widget.mediaAttachments!
-                      .map((mediaAttachment) => FediIndicatorWidget(
-                            active: selectedMediaAttachment == mediaAttachment,
-                          ))
+                  children: widget.mediaAttachments
+                      .map(
+                        (mediaAttachment) => FediIndicatorWidget(
+                          active: selectedMediaAttachment == mediaAttachment,
+                        ),
+                      )
                       .toList(),
                 );
               },
@@ -354,7 +364,7 @@ void goToSingleMediaAttachmentDetailsPage(
 
 void goToMultiMediaAttachmentDetailsPage(
   BuildContext context, {
-  required List<IPleromaMediaAttachment?>? mediaAttachments,
+  required List<IPleromaMediaAttachment> mediaAttachments,
   required IPleromaMediaAttachment? initialMediaAttachment,
 }) {
   Navigator.push(

@@ -8,14 +8,14 @@ Function eq = const ListEquality().equals;
 class MediaAttachmentListBloc extends DisposableOwner
     implements IMediaAttachmentListBloc {
   @override
-  final List<IPleromaMediaAttachment?> mediaAttachments;
+  final List<IPleromaMediaAttachment> mediaAttachments;
   @override
   final IPleromaMediaAttachment? initialMediaAttachment;
 
   MediaAttachmentListBloc({
-    required this.mediaAttachments,
+    required  List<IPleromaMediaAttachment>? mediaAttachments,
     required this.initialMediaAttachment,
-  });
+  }): mediaAttachments = mediaAttachments ?? [];
 
   @override
   bool operator ==(Object other) =>
@@ -31,15 +31,17 @@ class MediaAttachmentListBloc extends DisposableOwner
 
   @override
   String toString() {
-    return 'MediaAttachmentListBloc{mediaAttachments: $mediaAttachments,'
-        ' initialMediaAttachment: $initialMediaAttachment}';
+    return 'MediaAttachmentListBloc{'
+        'mediaAttachments: $mediaAttachments,'
+        'initialMediaAttachment: $initialMediaAttachment'
+        '}';
   }
 
   @override
   int get currentIndex {
     var initialPageIndex = 0;
     if (initialMediaAttachment != null) {
-      initialPageIndex = mediaAttachments.indexOf(initialMediaAttachment);
+      initialPageIndex = mediaAttachments.indexOf(initialMediaAttachment!);
       if (initialPageIndex == -1) {
         initialPageIndex = 0;
       }

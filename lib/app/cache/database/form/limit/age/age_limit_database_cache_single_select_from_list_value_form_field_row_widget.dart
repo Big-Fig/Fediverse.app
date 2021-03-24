@@ -11,7 +11,7 @@ class AgeLimitDatabaseCacheSingleSelectFromListValueFormFieldRowWidget
   Widget build(BuildContext context) {
     return AgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBlocProxyProvider(
       child: SingleSelectFromListValueFormFieldRowWidget<
-          DatabaseCacheAgeLimitType>(
+          DatabaseCacheAgeLimitType?>(
         label: S.of(context).app_cache_database_settings_limitAge_label,
         description: null,
         descriptionOnDisabled: null,

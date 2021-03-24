@@ -37,7 +37,7 @@ class _AccountReportPageAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     var accountReportBloc = IAccountReportBloc.of(context);
-    var account = accountReportBloc.account!;
+    var account = accountReportBloc.account;
     return FediPageTitleAppBar(
       title: S.of(context).app_account_report_title(account.acct),
       actions: [

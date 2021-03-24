@@ -330,8 +330,8 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
         var fediUiColorTheme = IFediUiColorTheme.of(context);
         var textScaleFactor = MediaQuery.of(context).textScaleFactor;
         if (descriptionOrShortDescription?.isNotEmpty == true) {
-          return Provider<String?>.value(
-            value: descriptionOrShortDescription,
+          return Provider<String>.value(
+            value: descriptionOrShortDescription!,
             child: DisposableProxyProvider<String, IHtmlTextBloc>(
               update: (context, descriptionOrShortDescription, _) {
                 var htmlTextBloc = HtmlTextBloc(

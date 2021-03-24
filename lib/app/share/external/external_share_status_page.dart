@@ -70,7 +70,7 @@ MaterialPageRoute createExternalShareStatusPageRoute({
     builder: (context) => ExternalShareStatusBloc.provideToContext(
       context,
       status: status,
-      child: Provider.value(
+      child: Provider<IStatus>.value(
         value: status,
         child: DisposableProxyProvider<IStatus, IStatusBloc>(
           update: (context, value, previous) {

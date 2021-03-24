@@ -53,7 +53,7 @@ class _FediFormFieldRowErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var formFieldBloc = IFormFieldBloc.of(context);
     var fediUiTextTheme = IFediUiTextTheme.of(context);
-    return StreamBuilder<List<FormItemValidationError?>?>(
+    return StreamBuilder<List<FormItemValidationError>>(
       stream: formFieldBloc.errorsStream,
       initialData: formFieldBloc.errors,
       builder: (context, snapshot) {

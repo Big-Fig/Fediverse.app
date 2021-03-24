@@ -17,9 +17,9 @@ abstract class IAccountReportBloc implements IFormBloc, IStatusListBloc {
   @override
   InstanceLocation get instanceLocation;
 
-  IAccount? get account;
+  IAccount get account;
 
-  List<IStatus?> get statuses;
+  List<IStatus> get statuses;
 
   IStringValueFormFieldBloc get messageStringValueFormFieldBloc;
 

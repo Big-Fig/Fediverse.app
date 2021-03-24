@@ -53,11 +53,11 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   final IPleromaChatMessageRepository chatMessageRepository;
   final IAccountRepository accountRepository;
 
-  final StreamController<IPleromaChatMessage?>
+  final StreamController<IPleromaChatMessage>
       onMessageLocallyHiddenStreamController = StreamController.broadcast();
 
   @override
-  Stream<IPleromaChatMessage?> get onMessageLocallyHiddenStream =>
+  Stream<IPleromaChatMessage> get onMessageLocallyHiddenStream =>
       onMessageLocallyHiddenStreamController.stream;
 
   PleromaChatBloc({

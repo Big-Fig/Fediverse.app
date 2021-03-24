@@ -60,8 +60,8 @@ MaterialPageRoute createExternalShareMediaPageRoute({
     builder: (context) => ExternalShareMediaBloc.provideToContext(
       context,
       mediaAttachment: mediaAttachment,
-      child: Provider<IPleromaMediaAttachment?>.value(
-        value: mediaAttachment,
+      child: Provider<IPleromaMediaAttachment>.value(
+        value: mediaAttachment!,
         child: ExternalShareMediaPage(
           isShareAsLinkPossible: isShareAsLinkPossible,
         ),

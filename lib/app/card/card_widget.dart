@@ -22,27 +22,30 @@ class CardWidget extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
-      child: Container(
-        height: _cardImageSize,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(_cardBorderRadius),
-          child: InkWell(
-            onTap: () async {
-              var url = card.url!;
-              await UrlHelper.handleUrlClick(
-                context: context,
-                url: url,
-              );
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                if (card.image != null) const _CardImageWidget(),
-                const _CardContentWidget(),
-              ],
+    return ProxyProvider<IPleromaCard?, IPleromaCard>(
+      update: (context, value, previous) => value!,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
+        child: Container(
+          height: _cardImageSize,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(_cardBorderRadius),
+            child: InkWell(
+              onTap: () async {
+                var url = card.url!;
+                await UrlHelper.handleUrlClick(
+                  context: context,
+                  url: url,
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  if (card.image != null) const _CardImageWidget(),
+                  const _CardContentWidget(),
+                ],
+              ),
             ),
           ),
         ),

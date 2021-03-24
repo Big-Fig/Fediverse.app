@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/chat/pleroma/message/list/cached/pleroma_chat_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
@@ -43,16 +44,16 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
     addDisposable(subject: hiddenItemsSubject);
   }
 
-  final BehaviorSubject<List<IPleromaChatMessage?>?> hiddenItemsSubject =
+  final BehaviorSubject<List<IPleromaChatMessage>> hiddenItemsSubject =
       BehaviorSubject.seeded([]);
 
-  List<IPleromaChatMessage?>? get hiddenItems => hiddenItemsSubject.value;
+  List<IPleromaChatMessage> get hiddenItems => hiddenItemsSubject.value!;
 
-  Stream<List<IPleromaChatMessage?>?> get hiddenItemsStream =>
+  Stream<List<IPleromaChatMessage>> get hiddenItemsStream =>
       hiddenItemsSubject.stream;
 
-  void hideItem(IPleromaChatMessage? itemToHide) {
-    hiddenItems!.add(itemToHide);
+  void hideItem(IPleromaChatMessage itemToHide) {
+    hiddenItems.add(itemToHide);
     hiddenItemsSubject.add(hiddenItems);
   }
 
@@ -70,15 +71,15 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
 
   List<IPleromaChatMessage> excludeHiddenItems(
     List<IPleromaChatMessage> superItems,
-    List<IPleromaChatMessage?>? hiddenItems,
+    List<IPleromaChatMessage> hiddenItems,
   ) {
-    if (hiddenItems!.isEmpty) {
+    if (hiddenItems.isEmpty) {
       return superItems;
     }
+
     superItems.removeWhere((currentItem) =>
-        hiddenItems.firstWhere(
-          (hiddenItem) => isItemsEqual(hiddenItem!, currentItem),
-          orElse: () => null,
+        hiddenItems.firstWhereOrNull(
+          (hiddenItem) => isItemsEqual(hiddenItem, currentItem),
         ) !=
         null);
 
@@ -141,7 +142,7 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
   }) {
     return DisposableProvider<
         ICachedPaginationListWithNewItemsBloc<
-            CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage?>>(
+            CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage>>(
       create: (context) =>
           PleromaChatMessageCachedPaginationListWithNewItemsBloc
               .createFromContext(

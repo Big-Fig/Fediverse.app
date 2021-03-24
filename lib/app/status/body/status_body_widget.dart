@@ -173,8 +173,8 @@ class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
         var mediaAttachments = snapshot.data;
 
         if (mediaAttachments?.isNotEmpty == true) {
-          return Provider<List<IPleromaMediaAttachment>?>.value(
-            value: mediaAttachments,
+          return Provider<List<IPleromaMediaAttachment>>.value(
+            value: mediaAttachments!,
             child: DisposableProxyProvider<List<IPleromaMediaAttachment>,
                 IMediaAttachmentListBloc>(
               update: (context, value, _) => MediaAttachmentListBloc(
@@ -220,7 +220,7 @@ class _StatusBodyCardWidget extends StatelessWidget {
         if (card == null) {
           return const SizedBox.shrink();
         }
-        return Provider.value(
+        return Provider<IPleromaCard>.value(
           value: card,
           child: const CardWidget(),
         );

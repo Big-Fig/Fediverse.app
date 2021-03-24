@@ -10,7 +10,7 @@ class LocalizationLocaleSingleFromListValueFormFieldRowWidget
   @override
   Widget build(BuildContext context) =>
       LocalizationLocaleSingleFromListValueFormFieldBlocProxyProvider(
-        child: SingleSelectFromListValueFormFieldRowWidget<LocalizationLocale>(
+        child: SingleSelectFromListValueFormFieldRowWidget<LocalizationLocale?>(
           label: S
               .of(context)
               .app_localization_settings_field_localizationLocale_label,
