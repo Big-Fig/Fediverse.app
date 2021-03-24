@@ -496,16 +496,16 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
 
 extension StatusEmojiTextExtension on IStatus {
   EmojiText? toContentEmojiText() {
-    if (content?.isNotEmpty == true && emojis?.isNotEmpty == true) {
-      return EmojiText(text: content!, emojis: emojis!);
+    if (content?.isNotEmpty == true) {
+      return EmojiText(text: content!, emojis: emojis);
     } else {
       return null;
     }
   }
 
   EmojiText? toSpoilerEmojiText() {
-    if (spoilerText?.isNotEmpty == true && emojis?.isNotEmpty == true) {
-      return EmojiText(text: spoilerText!, emojis: emojis!);
+    if (spoilerText?.isNotEmpty == true) {
+      return EmojiText(text: spoilerText!, emojis: emojis);
     } else {
       return null;
     }

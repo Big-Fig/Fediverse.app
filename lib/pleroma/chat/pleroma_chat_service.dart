@@ -4,7 +4,7 @@ import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaChatService implements IPleromaApi {
+abstract class IPleromaChatService extends IPleromaApi {
   static IPleromaChatService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPleromaChatService>(context, listen: listen);
 

@@ -12,20 +12,22 @@ abstract class IPleromaApi implements IDisposable {
   Stream<bool> get isConnectedStream;
 
   bool get isConnected;
+}
 
+extension IPleromaApiExtension on IPleromaApi {
   Stream<bool> get isApiReadyToUseStream => Rx.combineLatest2(
         pleromaApiStateStream,
         isConnectedStream,
-        mapIsReady,
+        _mapIsReady,
       ).distinct();
 
-  bool get isApiReadyToUse => mapIsReady(
-      pleromaApiState,
-      isConnected,
-    );
+  bool get isApiReadyToUse => _mapIsReady(
+        pleromaApiState,
+        isConnected,
+      );
 }
 
-bool mapIsReady(
+bool _mapIsReady(
   PleromaApiState pleromaState,
   bool isConnected,
 ) =>
@@ -37,7 +39,7 @@ enum PleromaApiState {
   loggedOut,
 }
 
-abstract class IPleromaAuthApi implements IPleromaApi {
+abstract class IPleromaAuthApi extends IPleromaApi {
   bool get isPleroma;
 
   bool get isMastodon;

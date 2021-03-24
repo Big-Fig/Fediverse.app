@@ -1,12 +1,15 @@
+import 'package:fedi/connection/connection_service_impl.dart';
 import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service_impl.dart';
 import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 import 'package:fedi/web_sockets/service/config/web_sockets_service_config_bloc_impl.dart';
 import 'package:fedi/web_sockets/service/web_sockets_service.dart';
 import 'package:fedi/web_sockets/service/web_sockets_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 
-import '../../connection/connection_service_mock.dart';
+import 'pleroma_websockets_service_impl_test.mocks.dart';
 
+@GenerateMocks([ConnectionService])
 void main() {
   var host = "https://fedi.app";
   var wssHost = "wss://fedi.app/api/v1/streaming";
@@ -14,7 +17,7 @@ void main() {
 
   late IWebSocketsService webSocketsService;
   late PleromaWebSocketsService pleromaWebSocketsService;
-  late ConnectionServiceMock connectionServiceMock;
+  late MockConnectionService connectionServiceMock;
 
   setUp(() async {
     webSocketsService = WebSocketsService(
@@ -23,7 +26,7 @@ void main() {
       ),
     );
 
-    connectionServiceMock = ConnectionServiceMock();
+    connectionServiceMock = MockConnectionService();
 
     pleromaWebSocketsService = PleromaWebSocketsService(
       webSocketsService: webSocketsService,

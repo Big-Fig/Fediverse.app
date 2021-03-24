@@ -816,6 +816,12 @@ extension DbStatusPopulatedExtension on DbStatusPopulated {
       DbStatusPopulatedWrapper(dbStatusPopulated: this);
 }
 
+extension DbStatusPopulatedListExtension on List<DbStatusPopulated> {
+  List<DbStatusPopulatedWrapper> toDbStatusPopulatedWrappers() => map(
+        (item) => item.toDbStatusPopulatedWrapper(),
+      ).toList();
+}
+
 class CantExtractStatusRemoteIdFromStatusUrlException implements Exception {
   final IStatus status;
   final Object? e;

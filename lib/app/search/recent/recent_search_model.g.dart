@@ -46,8 +46,9 @@ class RecentSearchListAdapter extends TypeAdapter<RecentSearchList> {
 
 RecentSearchList _$RecentSearchListFromJson(Map<String, dynamic> json) {
   return RecentSearchList(
-    recentItems:
-        (json['recentItems'] as List?)?.map((e) => e as String).toList(),
+    recentItems: (json['recentItems'] as List<dynamic>?)
+        ?.map((e) => e as String)
+        .toList(),
   );
 }
 

@@ -5,7 +5,7 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaConversationService implements IPleromaApi {
+abstract class IPleromaConversationService extends IPleromaApi {
   static IPleromaConversationService of(
     BuildContext context, {
     bool listen = true,

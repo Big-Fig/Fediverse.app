@@ -770,7 +770,7 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
     int? followRequestsCount,
     IPleromaMyAccountSource? source,
   }) {
-    assert(pleroma == null, "use myAccountPleroma");
+    assert(pleroma != null, "use myAccountPleroma");
     return PleromaMyAccount(
       id: id ?? this.id,
       username: username ?? this.username,

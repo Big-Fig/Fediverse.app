@@ -1,4 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/filter/database/filter_database_dao.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
@@ -49,7 +50,7 @@ void main() {
     var id = await filterRepository.insert(dbFilter);
     assert(id > 0, true);
     expectDbFilterPopulated(
-      await filterRepository.findById(id),
+      (await filterRepository.findById(id))!,
       dbFilterPopulated,
     );
   });
@@ -84,7 +85,7 @@ void main() {
     );
 
     expect(
-      (await filterRepository.findById(id)).remoteId,
+      (await filterRepository.findById(id))!.remoteId,
       "newRemoteId",
     );
   });
@@ -110,13 +111,13 @@ void main() {
       newRemoteFilter: newRemoteFilter,
     );
 
-    expect((await filterRepository.findById(id)).phrase, "phrase3");
+    expect((await filterRepository.findById(id))!.phrase, "phrase3");
   });
 
   test('findByRemoteId', () async {
     await filterRepository.insert(dbFilter);
     expectDbFilterPopulated(
-      await filterRepository.findByRemoteId(dbFilter.remoteId),
+      (await filterRepository.findByRemoteId(dbFilter.remoteId))!,
       dbFilterPopulated,
     );
   });
@@ -132,7 +133,7 @@ void main() {
     expect(await filterRepository.countAll(), 1);
 
     expectDbFilter(
-      await filterRepository.findByRemoteId(dbFilter.remoteId),
+      (await filterRepository.findByRemoteId(dbFilter.remoteId))!,
       dbFilter,
     );
 
@@ -144,7 +145,7 @@ void main() {
     expect(await filterRepository.countAll(), 1);
 
     expectDbFilter(
-      await filterRepository.findByRemoteId(dbFilter.remoteId),
+      (await filterRepository.findByRemoteId(dbFilter.remoteId))!,
       dbFilter,
     );
   });
@@ -161,7 +162,7 @@ void main() {
     expect(await filterRepository.countAll(), 1);
 
     expectDbFilter(
-      await filterRepository.findByRemoteId(dbFilter.remoteId),
+      (await filterRepository.findByRemoteId(dbFilter.remoteId))!,
       dbFilter,
     );
 
@@ -175,7 +176,7 @@ void main() {
     // update item with same id
     expect(await filterRepository.countAll(), 1);
     expectDbFilter(
-      await filterRepository.findByRemoteId(dbFilter.remoteId),
+      (await filterRepository.findByRemoteId(dbFilter.remoteId))!,
       dbFilter,
     );
   });
@@ -527,8 +528,9 @@ void main() {
       (await createTestDbFilter(seed: "seed3")).copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbFilterPopulated> actualList =
-        (await query.map(filterRepository.dao.typedResultToPopulated).get());
+    List<DbFilterPopulated> actualList = (await query.get())
+        .toDbFilterPopulatedList(dao: filterRepository.dao);
+
     expect(actualList.length, 3);
 
     expectDbFilter(
@@ -577,8 +579,8 @@ void main() {
       (await createTestDbFilter(seed: "seed3")).copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbFilterPopulated> actualList =
-        (await query.map(filterRepository.dao.typedResultToPopulated).get());
+    List<DbFilterPopulated> actualList = (await query.get())
+        .toDbFilterPopulatedList(dao: filterRepository.dao);
     expect(actualList.length, 3);
 
     expectDbFilter(
@@ -630,8 +632,8 @@ void main() {
       (await createTestDbFilter(seed: "seed3")).copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbFilterPopulated> actualList =
-        (await query.map(filterRepository.dao.typedResultToPopulated).get());
+    List<DbFilterPopulated> actualList = (await query.get())
+        .toDbFilterPopulatedList(dao: filterRepository.dao);
     expect(actualList.length, 1);
 
     expectDbFilter(

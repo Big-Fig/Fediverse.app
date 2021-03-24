@@ -10,32 +10,41 @@ import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
+import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service_impl.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
+import 'package:fedi/pleroma/poll/pleroma_poll_service_impl.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service_impl.dart';
+import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service_impl.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
-import '../../pleroma/account/pleroma_account_service_mock.dart';
-import '../../pleroma/poll/pleroma_poll_service_mock.dart';
-import '../../pleroma/status/pleroma_status_emoji_reaction_service_mock.dart';
-import '../../pleroma/status/pleroma_status_service_mock.dart';
 import '../account/account_model_helper.dart';
 import 'database/status_database_model_helper.dart';
+import 'status_bloc_impl_test.mocks.dart';
 import 'status_model_helper.dart';
 
 Function eq = const ListEquality().equals;
 
-void main() {
+@GenerateMocks([
+  PleromaAuthStatusService,
+  PleromaAuthAccountService,
+  PleromaStatusEmojiReactionService,
+  PleromaPollService,
+])
+Future<void> main() async {
   late IStatus status;
   late IStatusBloc statusBloc;
-  late PleromaAuthStatusServiceMock pleromaAuthStatusServiceMock;
-  late PleromaAuthAccountServiceMock pleromaAccountServiceMock;
-  late PleromaStatusEmojiReactionServiceMock
+  late MockPleromaAuthStatusService pleromaAuthStatusServiceMock;
+  late MockPleromaAuthAccountService pleromaAccountServiceMock;
+  late MockPleromaStatusEmojiReactionService
       pleromaStatusEmojiReactionServiceMock;
-  late PleromaPollServiceMock pleromaPollServiceMock;
+  late MockPleromaPollService pleromaPollServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
@@ -48,16 +57,23 @@ void main() {
       accountRepository: accountRepository,
     );
 
-    pleromaAuthStatusServiceMock = PleromaAuthStatusServiceMock();
-    pleromaAccountServiceMock = PleromaAuthAccountServiceMock();
-    pleromaPollServiceMock = PleromaPollServiceMock();
+    pleromaAuthStatusServiceMock = MockPleromaAuthStatusService();
+    pleromaAccountServiceMock = MockPleromaAuthAccountService();
+    pleromaPollServiceMock = MockPleromaPollService();
     pleromaStatusEmojiReactionServiceMock =
-        PleromaStatusEmojiReactionServiceMock();
+        MockPleromaStatusEmojiReactionService();
 
-    when(pleromaAuthStatusServiceMock.isApiReadyToUse).thenReturn(true);
-    when(pleromaAccountServiceMock.isApiReadyToUse).thenReturn(true);
-    when(pleromaStatusEmojiReactionServiceMock.isApiReadyToUse)
-        .thenReturn(true);
+    when(pleromaAuthStatusServiceMock.isConnected).thenReturn(true);
+    when(pleromaAuthStatusServiceMock.pleromaApiState)
+        .thenReturn(PleromaApiState.validAuth);
+
+    when(pleromaAccountServiceMock.isConnected).thenReturn(true);
+    when(pleromaAccountServiceMock.pleromaApiState)
+        .thenReturn(PleromaApiState.validAuth);
+
+    when(pleromaStatusEmojiReactionServiceMock.isConnected).thenReturn(true);
+    when(pleromaStatusEmojiReactionServiceMock.pleromaApiState)
+        .thenReturn(PleromaApiState.validAuth);
 
     status = await createTestStatus(seed: "seed1");
 

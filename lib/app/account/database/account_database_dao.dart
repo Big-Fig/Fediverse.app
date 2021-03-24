@@ -283,12 +283,20 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
           CustomExpression<bool>("$_accountFollowersAliasId.account_remote_id"
               " = '$followerAccountRemoteId'"),
         );
+}
 
-  List<DbAccount> typedResultListToPopulated(List<TypedResult> typedResult) {
-    return typedResult.map(typedResultToPopulated).toList();
-  }
+extension DbAccountTypedResultExtension on TypedResult {
+  DbAccount toDbAccount({
+    required AccountDao dao,
+  }) =>
+      readTable(dao.db.dbAccounts);
+}
 
-  DbAccount typedResultToPopulated(TypedResult typedResult) {
-    return typedResult.readTable(db.dbAccounts);
-  }
+extension DbAccountTypedResultListExtension on List<TypedResult> {
+  List<DbAccount> toDbAccountList({
+    required AccountDao dao,
+  }) =>
+      map(
+        (item) => item.toDbAccount(dao: dao),
+      ).toList();
 }

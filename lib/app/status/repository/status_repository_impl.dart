@@ -60,21 +60,21 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   @override
   Future upsertRemoteStatus(
-    IPleromaStatus? remoteStatus, {
+    IPleromaStatus remoteStatus, {
     required String? listRemoteId,
     required String? conversationRemoteId,
     bool isFromHomeTimeline = false,
   }) async {
     // if conversation not specified we try to fetch it from status
     conversationRemoteId = conversationRemoteId ??
-        remoteStatus?.pleroma?.conversationId?.toString();
+        remoteStatus.pleroma?.conversationId?.toString();
 
     _logger.finer(() => "upsertRemoteStatus $remoteStatus "
         "listRemoteId => $listRemoteId "
         "conversationRemoteId => $conversationRemoteId "
         "isFromHomeTimeline => $isFromHomeTimeline ");
 
-    var remoteAccount = remoteStatus!.account;
+    var remoteAccount = remoteStatus.account;
 
     await accountRepository!.upsertRemoteAccount(
       remoteAccount,
@@ -292,28 +292,24 @@ class StatusRepository extends AsyncInitLoadingBloc
     required List<IPleromaTag>? tags,
   }) async {
     await hashtagsDao.deleteByStatusRemoteId(statusRemoteId);
+    tags ??= [];
     await hashtagsDao.insertAll(
       tags
-              ?.map(
-                (remoteTag) => DbStatusHashtag(
-                  id: null,
-                  statusRemoteId: statusRemoteId,
-                  hashtag: remoteTag.name,
-                ),
-              )
-              .toList() ??
-          [],
+          .map(
+            (remoteTag) => DbStatusHashtag(
+              id: null,
+              statusRemoteId: statusRemoteId,
+              hashtag: remoteTag.name,
+            ),
+          )
+          .toList(),
       InsertMode.insertOrReplace,
     );
   }
 
   @override
-  Future<DbStatusPopulatedWrapper> findByRemoteId(String? remoteId) async =>
-      mapDataClassToItem(
-        await dao.findByRemoteId(
-          remoteId,
-        ),
-      );
+  Future<DbStatusPopulatedWrapper?> findByRemoteId(String remoteId) async =>
+      (await dao.findByRemoteId(remoteId))?.toDbStatusPopulatedWrapper();
 
   @override
   Future<List<DbStatusPopulatedWrapper>> getStatuses({
@@ -328,12 +324,11 @@ class StatusRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    return dao
-        .typedResultListToPopulated(
-          await query.get(),
-        )
-        .map(mapDataClassToItem)
-        .toList();
+    var typedResultList = await query.get();
+
+    return typedResultList
+        .toDbStatusPopulatedList(dao: dao)
+        .toDbStatusPopulatedWrappers();
   }
 
   @override
@@ -349,13 +344,11 @@ class StatusRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    Stream<List<DbStatusPopulated>> stream =
-        query.watch().map(dao.typedResultListToPopulated);
+    Stream<List<DbStatusPopulated>> stream = query.watch().map(
+          (list) => list.toDbStatusPopulatedList(dao: dao),
+        );
     return stream.map(
-      (list) {
-        var statuses = list.map(mapDataClassToItem).toList();
-        return statuses;
-      },
+      (list) => list.toDbStatusPopulatedWrappers(),
     );
   }
 
@@ -379,30 +372,31 @@ class StatusRepository extends AsyncInitLoadingBloc
   Future clear() => dao.clear();
 
   @override
-  Future<bool> deleteById(int? id) async {
-    var affectedRows = await dao.deleteById(id!);
+  Future<bool> deleteById(int id) async {
+    var affectedRows = await dao.deleteById(id);
     assert(affectedRows == 0 || affectedRows == 1);
     return (affectedRows) == 1;
   }
 
   @override
-  Future<IStatus> findById(int id) async => mapDataClassToItem(
-        await dao.findById(
-          id,
-        ),
-      );
+  Future<IStatus?> findById(int id) async =>
+      (await dao.findById(id))?.toDbStatusPopulatedWrapper();
 
   @override
-  Stream<DbStatusPopulatedWrapper> watchById(int id) => dao
+  Stream<DbStatusPopulatedWrapper?> watchById(int id) => dao
       .watchById(
         id,
       )
-      .map(mapDataClassToItem);
+      .map(
+        (value) => value?.toDbStatusPopulatedWrapper(),
+      );
 
   @override
-  Stream<IStatus> watchByRemoteId(String? remoteId) {
+  Stream<IStatus?> watchByRemoteId(String remoteId) {
     _logger.finest(() => "watchByRemoteId $remoteId");
-    return dao.watchByRemoteId(remoteId).map(mapDataClassToItem);
+    return dao.watchByRemoteId(remoteId).map(
+          (value) => value?.toDbStatusPopulatedWrapper(),
+        );
   }
 
   @override
@@ -411,37 +405,28 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<DbStatusPopulatedWrapper>> getAll() async =>
-      (await dao.findAll()).map(mapDataClassToItem).toList();
+      (await dao.findAll()).toDbStatusPopulatedWrappers();
 
   @override
   Future<int> countAll() => dao.countAll().getSingle();
 
   @override
-  Stream<List<DbStatusPopulatedWrapper>> watchAll() =>
-      (dao.watchAll()).map((list) => list.map(mapDataClassToItem).toList());
+  Stream<List<DbStatusPopulatedWrapper>> watchAll() => (dao.watchAll()).map(
+        (list) => list.toDbStatusPopulatedWrappers(),
+      );
 
   @override
-  Future<int> insert(DbStatus? item) => dao.insert(item!);
+  Future<int> insert(DbStatus item) => dao.insert(item);
 
   @override
-  Future<int> upsert(DbStatus? item) => dao.upsert(item!);
+  Future<int> upsert(DbStatus item) => dao.upsert(item);
 
   @override
-  Future<bool> updateById(int? id, DbStatus? dbStatus) {
-    if (dbStatus!.id != id) {
+  Future<bool> updateById(int id, DbStatus dbStatus) {
+    if (dbStatus.id != id) {
       dbStatus = dbStatus.copyWith(id: id);
     }
     return dao.replace(dbStatus);
-  }
-
-  DbStatusPopulatedWrapper mapDataClassToItem(DbStatusPopulated dataClass) {
-    return DbStatusPopulatedWrapper(
-      dbStatusPopulated: dataClass,
-    );
-  }
-
-  Insertable<DbStatus> mapItemToDataClass(DbStatusPopulatedWrapper item) {
-    return item.dbStatusPopulated.dbStatus;
   }
 
   @override
@@ -463,7 +448,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     );
 
     await updateById(
-      oldLocalStatus.localId,
+      oldLocalStatus.localId!,
       newRemoteStatus.toDbStatus(),
     );
 
@@ -499,7 +484,7 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbStatusPopulatedWrapper> getStatus({
+  Future<DbStatusPopulatedWrapper?> getStatus({
     required StatusRepositoryFilters? filters,
     StatusRepositoryOrderingTermData? orderingTermData =
         StatusRepositoryOrderingTermData.remoteIdDesc,
@@ -510,15 +495,15 @@ class StatusRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    return mapDataClassToItem(
-      dao.typedResultToPopulated(
-        await query.getSingle(),
-      ),
-    );
+    var typedResult = await query.getSingleOrNull();
+
+    var dbStatusPopulated = typedResult?.toDbStatusPopulated(dao: dao);
+
+    return dbStatusPopulated?.toDbStatusPopulatedWrapper();
   }
 
   @override
-  Stream<DbStatusPopulatedWrapper> watchStatus({
+  Stream<DbStatusPopulatedWrapper?> watchStatus({
     required StatusRepositoryFilters? filters,
     StatusRepositoryOrderingTermData? orderingTermData =
         StatusRepositoryOrderingTermData.remoteIdDesc,
@@ -529,22 +514,16 @@ class StatusRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    Stream<DbStatusPopulated> stream = query.watchSingle().map(
-          (typedResult) => dao.typedResultToPopulated(
-            typedResult,
-          ),
+    return query.watchSingleOrNull().map(
+          (typedResult) => typedResult
+              ?.toDbStatusPopulated(dao: dao)
+              .toDbStatusPopulatedWrapper(),
         );
-
-    return stream.map(
-      (dbStatus) => mapDataClassToItem(
-        dbStatus,
-      ),
-    );
   }
 
   @override
   Future incrementRepliesCount({
-    required String? remoteId,
+    required String remoteId,
   }) =>
       dao.incrementRepliesCount(
         remoteId: remoteId,
@@ -552,15 +531,15 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   @override
   Future removeAccountStatusesFromHome({
-    required String? accountRemoteId,
+    required String accountRemoteId,
   }) =>
       homeTimelineStatusesDao.deleteByAccountRemoteId(
-        accountRemoteId!,
+        accountRemoteId,
       );
 
   @override
   Future markStatusAsDeleted({
-    required String? statusRemoteId,
+    required String statusRemoteId,
   }) =>
       dao.markAsDeleted(
         remoteId: statusRemoteId,
@@ -568,7 +547,7 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   @override
   Future markStatusAsHiddenLocallyOnDevice({
-    required int? localId,
+    required int localId,
   }) =>
       dao.markAsHiddenLocallyOnDevice(
         localId: localId,
@@ -584,8 +563,8 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<IStatus> getConversationLastStatus({
-    required IConversationChat? conversation,
+  Future<IStatus?> getConversationLastStatus({
+    required IConversationChat conversation,
     bool onlyPendingStatePublishedOrNull = false,
   }) =>
       getStatus(
@@ -597,8 +576,8 @@ class StatusRepository extends AsyncInitLoadingBloc
       );
 
   @override
-  Stream<IStatus> watchConversationLastStatus({
-    required IConversationChat? conversation,
+  Stream<IStatus?> watchConversationLastStatus({
+    required IConversationChat conversation,
     bool onlyPendingStatePublishedOrNull = false,
   }) =>
       watchStatus(
@@ -638,15 +617,9 @@ class StatusRepository extends AsyncInitLoadingBloc
           },
         );
 
-        IStatus? status;
-
-        if (typedResult != null) {
-          status = mapDataClassToItem(
-            dao.typedResultToPopulated(
-              typedResult,
-            ),
-          );
-        }
+        IStatus? status = typedResult
+            ?.toDbStatusPopulated(dao: dao)
+            .toDbStatusPopulatedWrapper();
 
         result[conversation] = status;
       },
@@ -885,22 +858,23 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<IStatus> findByOldPendingRemoteId(
+  Future<IStatus?> findByOldPendingRemoteId(
     String oldPendingRemoteId,
   ) async {
     _logger.finest(() => "findByOldPendingRemoteId $oldPendingRemoteId");
-    return mapDataClassToItem(
-      await dao.findByOldPendingRemoteId(oldPendingRemoteId),
-    );
+    return (await dao.findByOldPendingRemoteId(oldPendingRemoteId))
+        ?.toDbStatusPopulatedWrapper();
   }
 
   @override
-  Stream<IStatus> watchByOldPendingRemoteId(
-    String? oldPendingRemoteId,
+  Stream<IStatus?> watchByOldPendingRemoteId(
+    String oldPendingRemoteId,
   ) {
     _logger.finest(() => "watchByOldPendingRemoteId $oldPendingRemoteId");
-    return (dao.watchByOldPendingRemoteId(oldPendingRemoteId))
-        .map(mapDataClassToItem);
+
+    return dao.watchByOldPendingRemoteId(oldPendingRemoteId).map(
+          (value) => value?.toDbStatusPopulatedWrapper(),
+        );
   }
 
   @override

@@ -3,7 +3,7 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaStatusEmojiReactionService implements IPleromaApi {
+abstract class IPleromaStatusEmojiReactionService extends IPleromaApi {
   static IPleromaStatusEmojiReactionService of(
     BuildContext context, {
     bool listen = true,

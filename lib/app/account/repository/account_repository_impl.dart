@@ -55,14 +55,15 @@ class AccountRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbAccountWrapper> findByRemoteId(String? remoteId) async =>
-      mapDataClassToItem(
-        await dao.findByRemoteId(remoteId!).getSingle(),
-      );
+  Future<DbAccountWrapper?> findByRemoteId(String remoteId) async =>
+      (await dao.findByRemoteId(remoteId).getSingleOrNull())
+          ?.toDbAccountWrapper();
 
   @override
-  Stream<DbAccountWrapper> watchByRemoteId(String? remoteId) =>
-      dao.findByRemoteId(remoteId!).watchSingle().map(mapDataClassToItem);
+  Stream<DbAccountWrapper?> watchByRemoteId(String remoteId) =>
+      dao.findByRemoteId(remoteId).watchSingleOrNull().map(
+            (value) => value?.toDbAccountWrapper(),
+          );
 
   @override
   Future upsertAll(List<DbAccount> items) async {
@@ -97,27 +98,30 @@ class AccountRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbAccountWrapper> findById(int id) =>
-      dao.findById(id).map(mapDataClassToItem).getSingle();
+  Future<DbAccountWrapper?> findById(int id) async =>
+      (await dao.findById(id).getSingleOrNull())?.toDbAccountWrapper();
 
   @override
-  Stream<DbAccountWrapper> watchById(int id) =>
-      dao.findById(id).map(mapDataClassToItem).watchSingle();
+  Stream<DbAccountWrapper?> watchById(int id) =>
+      dao.findById(id).watchSingleOrNull().map(
+            (value) => value?.toDbAccountWrapper(),
+          );
 
   @override
   Future<bool> isExistWithId(int id) =>
       dao.countById(id).map((count) => count > 0).getSingle();
 
   @override
-  Future<List<DbAccountWrapper>> getAll() =>
-      dao.getAll().map(mapDataClassToItem).get();
+  Future<List<DbAccountWrapper>> getAll() async =>
+      (await dao.getAll().get()).toDbAccountWrapperList();
 
   @override
   Future<int> countAll() => dao.countAll().getSingle();
 
   @override
-  Stream<List<DbAccountWrapper>> watchAll() =>
-      dao.getAll().map(mapDataClassToItem).watch();
+  Stream<List<DbAccountWrapper>> watchAll() => dao.getAll().watch().map(
+        (list) => list.toDbAccountWrapperList(),
+      );
 
   @override
   Future<int> insert(DbAccount item) => dao.insert(item);
@@ -126,19 +130,12 @@ class AccountRepository extends AsyncInitLoadingBloc
   Future<int> upsert(DbAccount item) => dao.upsert(item);
 
   @override
-  Future<bool> updateById(int? id, DbAccount dbAccount) {
+  Future<bool> updateById(int id, DbAccount dbAccount) {
     if (dbAccount.id != id) {
       dbAccount = dbAccount.copyWith(id: id);
     }
     return dao.replace(dbAccount);
   }
-
-  DbAccountWrapper mapDataClassToItem(DbAccount dataClass) {
-    return DbAccountWrapper(dbAccount: dataClass);
-  }
-
-  Insertable<DbAccount>? mapItemToDataClass(DbAccountWrapper item) =>
-      item.dbAccount;
 
   @override
   Future upsertRemoteAccount(
@@ -271,7 +268,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       );
     }
     await updateById(
-      oldLocalAccount.localId,
+      oldLocalAccount.localId!,
       newLocalDbAccount,
     );
   }
@@ -289,14 +286,9 @@ class AccountRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    var typedAccountsList = await query.get();
-
-    return dao
-        .typedResultListToPopulated(typedAccountsList)
-        .map(
-          (dbAccount) => mapDataClassToItem(dbAccount),
-        )
-        .toList();
+    return (await query.get())
+        .toDbAccountList(dao: dao)
+        .toDbAccountWrapperList();
   }
 
   @override
@@ -312,12 +304,9 @@ class AccountRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    Stream<List<TypedResult>> stream = query.watch();
-
-    return stream.map((typedList) => dao
-        .typedResultListToPopulated(typedList)
-        .map(mapDataClassToItem)
-        .toList());
+    return query.watch().map(
+          (list) => list.toDbAccountList(dao: dao).toDbAccountWrapperList(),
+        );
   }
 
   @override
@@ -403,7 +392,7 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future updateStatusFavouritedBy({
-    required String? statusRemoteId,
+    required String statusRemoteId,
     required List<IPleromaAccount> favouritedByAccounts,
   }) async {
     await upsertRemoteAccounts(
@@ -411,7 +400,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       conversationRemoteId: null,
       chatRemoteId: null,
     );
-    await statusFavouritedAccountsDao.deleteByStatusRemoteId(statusRemoteId!);
+    await statusFavouritedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
     await statusFavouritedAccountsDao.insertAll(
       favouritedByAccounts
           .map(
@@ -428,7 +417,7 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future updateStatusRebloggedBy({
-    required String? statusRemoteId,
+    required String statusRemoteId,
     required List<IPleromaAccount> rebloggedByAccounts,
   }) async {
     await upsertRemoteAccounts(
@@ -436,7 +425,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       conversationRemoteId: null,
       chatRemoteId: null,
     );
-    await statusRebloggedAccountsDao.deleteByStatusRemoteId(statusRemoteId!);
+    await statusRebloggedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
     await statusRebloggedAccountsDao.insertAll(
       rebloggedByAccounts
           .map(
@@ -503,12 +492,12 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future removeAccountFollower({
-    required String? accountRemoteId,
-    required String? followerAccountId,
+    required String accountRemoteId,
+    required String followerAccountId,
   }) =>
       accountFollowersDao.deleteByAccountRemoteIdAndFollowerAccountRemoteId(
-        followerAccountId!,
-        accountRemoteId!,
+        followerAccountId,
+        accountRemoteId,
       );
 
   JoinedSelectStatement createQuery({
@@ -615,4 +604,14 @@ class AccountRepository extends AsyncInitLoadingBloc
 
     return joinQuery;
   }
+}
+
+extension DbAccountListExtension on List<DbAccount> {
+  List<DbAccountWrapper> toDbAccountWrapperList() => map(
+        (item) => item.toDbAccountWrapper(),
+      ).toList();
+}
+
+extension DbAccountWrapperExtension on DbAccountWrapper {
+  DbAccount toDbAccount() => dbAccount;
 }

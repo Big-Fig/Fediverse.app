@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
+import 'package:fedi/app/account/database/account_database_dao.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
@@ -69,7 +70,7 @@ void main() {
       newRemoteAccount: newRemoteAccount,
     );
 
-    expect((await accountRepository.findById(id)).acct, newAcct);
+    expect((await accountRepository.findById(id))!.acct, newAcct);
   });
 
   test('findByRemoteId', () async {
@@ -569,10 +570,10 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    var actualList = (await query
-        .map(accountRepository.dao.typedResultToPopulated)
-        .map((dbAccount) => DbAccountWrapper(dbAccount: dbAccount))
-        .get());
+    var actualList = (await query.get())
+        .toDbAccountList(dao: accountRepository.dao)
+        .toDbAccountWrapperList();
+
     expect(actualList.length, 3);
 
     expectDbAccount(actualList[0], account1);
@@ -603,10 +604,10 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    var actualList = (await query
-        .map(accountRepository.dao.typedResultToPopulated)
-        .map((dbAccount) => DbAccountWrapper(dbAccount: dbAccount))
-        .get());
+
+    var actualList = (await query.get())
+        .toDbAccountList(dao: accountRepository.dao)
+        .toDbAccountWrapperList();
     expect(actualList.length, 3);
 
     expectDbAccount(actualList[0], account3);
@@ -640,10 +641,10 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    var actualList = (await query
-        .map(accountRepository.dao.typedResultToPopulated)
-        .map((dbAccount) => DbAccountWrapper(dbAccount: dbAccount))
-        .get());
+
+    var actualList = (await query.get())
+        .toDbAccountList(dao: accountRepository.dao)
+        .toDbAccountWrapperList();
     expect(actualList.length, 1);
 
     expectDbAccount(actualList[0], account2);

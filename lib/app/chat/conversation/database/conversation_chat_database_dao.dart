@@ -32,8 +32,8 @@ var _conversationAccountsAliasId = "conversationAccounts";
 class ConversationDao extends DatabaseAccessor<AppDatabase>
     with _$ConversationDaoMixin {
   final AppDatabase db;
-  $DbAccountsTable? accountAlias;
-  $DbConversationAccountsTable? conversationAccountsAlias;
+  late $DbAccountsTable accountAlias;
+  late $DbConversationAccountsTable conversationAccountsAlias;
 
   // Called by the AppDatabase class
   ConversationDao(this.db) : super(db) {

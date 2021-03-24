@@ -1,18 +1,22 @@
+import 'package:fedi/connection/connection_service_impl.dart';
 import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 import 'package:fedi/web_sockets/service/config/web_sockets_service_config_bloc_impl.dart';
 import 'package:fedi/web_sockets/service/web_sockets_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 
-import '../connection/connection_service_mock.dart';
+import '../pleroma/websockets/pleroma_websockets_service_impl_test.mocks.dart';
 import 'websockets_model_helper.dart';
 
+@GenerateMocks([
+  ConnectionService,
+])
 void main() {
   late WebSocketsService webSocketsService;
 
-  late ConnectionServiceMock connectionServiceMock;
+  late MockConnectionService connectionServiceMock;
   setUp(() {
-
-    connectionServiceMock = ConnectionServiceMock();
+    connectionServiceMock = MockConnectionService();
 
     webSocketsService = WebSocketsService(
       configBloc: WebSocketsServiceConfigBloc(

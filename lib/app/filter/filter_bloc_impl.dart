@@ -66,12 +66,12 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
     }
   }
 
-  void _init(IFilter? filter, bool needRefreshFromNetworkOnInit) {
+  void _init(IFilter filter, bool needRefreshFromNetworkOnInit) {
     if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
           streamSubscription:
-              filterRepository.watchByRemoteId(filter!.remoteId).listen(
+              filterRepository.watchByRemoteId(filter.remoteId).listen(
             (updatedFilter) {
               if (updatedFilter != null) {
                 _filterSubject.add(updatedFilter);

@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaAuthAccountService
-    implements IPleromaAccountService, IPleromaAuthApi {
+    extends IPleromaAuthApi implements IPleromaAccountService {
   static IPleromaAuthAccountService of(
     BuildContext context, {
     bool listen = true,

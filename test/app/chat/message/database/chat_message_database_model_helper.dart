@@ -14,7 +14,7 @@ Future<DbChatMessagePopulated> createTestDbChatMessagePopulated(
   DbChatMessagePopulated dbChatMessagePopulated = DbChatMessagePopulated(
     dbChatMessage: dbChatMessage,
     dbAccount:
-        (await accountRepository.findByRemoteId(dbChatMessage.accountRemoteId))
+        (await accountRepository.findByRemoteId(dbChatMessage.accountRemoteId))!
             .dbAccount,
   );
   return dbChatMessagePopulated;

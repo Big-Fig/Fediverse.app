@@ -59,12 +59,10 @@ class FilterRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbFilterPopulatedWrapper> findByRemoteId(
-    String? remoteId,
+  Future<DbFilterPopulatedWrapper?> findByRemoteId(
+    String remoteId,
   ) async =>
-      mapDataClassToItem(
-        await dao.findByRemoteId(remoteId),
-      );
+      (await dao.findByRemoteId(remoteId))?.toDbFilterPopulatedWrapper();
 
   @override
   Future<List<DbFilterPopulatedWrapper>> getFilters({
@@ -79,11 +77,11 @@ class FilterRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    var typedResult = await query.get();
-    return dao
-        .typedResultListToPopulated(typedResult)
-        .map(mapDataClassToItem)
-        .toList();
+    return (await query.get())
+        .toDbFilterPopulatedList(
+          dao: dao,
+        )
+        .toDbFilterPopulatedWrapperList();
   }
 
   @override
@@ -99,9 +97,13 @@ class FilterRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    Stream<List<DbFilterPopulated>> stream =
-        query.watch().map(dao.typedResultListToPopulated);
-    return stream.map((list) => list.map(mapDataClassToItem).toList());
+    return query.watch().map(
+          (value) => value
+              .toDbFilterPopulatedList(
+                dao: dao,
+              )
+              .toDbFilterPopulatedWrapperList(),
+        );
   }
 
   JoinedSelectStatement createQuery({
@@ -191,17 +193,21 @@ class FilterRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<IFilter> findById(int id) async =>
-      mapDataClassToItem(await dao.findById(id));
+  Future<IFilter?> findById(int id) async =>
+      (await dao.findById(id))?.toDbFilterPopulatedWrapper();
 
   @override
-  Stream<DbFilterPopulatedWrapper> watchById(int id) =>
-      (dao.watchById(id)).map(mapDataClassToItem);
+  Stream<DbFilterPopulatedWrapper?> watchById(int id) =>
+      (dao.watchById(id)).map(
+        (value) => value?.toDbFilterPopulatedWrapper(),
+      );
 
   @override
-  Stream<IFilter> watchByRemoteId(String? remoteId) {
+  Stream<IFilter?> watchByRemoteId(String? remoteId) {
     _logger.finest(() => "watchByRemoteId $remoteId");
-    return (dao.watchByRemoteId(remoteId)).map(mapDataClassToItem);
+    return (dao.watchByRemoteId(remoteId)).map(
+      (value) => value?.toDbFilterPopulatedWrapper(),
+    );
   }
 
   @override
@@ -210,14 +216,15 @@ class FilterRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<DbFilterPopulatedWrapper>> getAll() async =>
-      (await dao.findAll()).map(mapDataClassToItem).toList();
+      (await dao.findAll()).toDbFilterPopulatedWrapperList();
 
   @override
   Future<int> countAll() => dao.countAll().getSingle();
 
   @override
-  Stream<List<DbFilterPopulatedWrapper>> watchAll() =>
-      (dao.watchAll()).map((list) => list.map(mapDataClassToItem).toList());
+  Stream<List<DbFilterPopulatedWrapper>> watchAll() => (dao.watchAll()).map(
+        (list) => list.toDbFilterPopulatedWrapperList(),
+      );
 
   @override
   Future<int> insert(DbFilter item) => dao.insert(item);
@@ -233,17 +240,9 @@ class FilterRepository extends AsyncInitLoadingBloc
     return dao.replace(dbFilter);
   }
 
-  DbFilterPopulatedWrapper mapDataClassToItem(DbFilterPopulated dataClass) {
-    return DbFilterPopulatedWrapper(dbFilterPopulated: dataClass);
-  }
-
-  Insertable<DbFilter>? mapItemToDataClass(DbFilterPopulatedWrapper item) {
-    return item.dbFilterPopulated.dbFilter;
-  }
-
   @override
   Future updateLocalFilterByRemoteFilter({
-    required IFilter? oldLocalFilter,
+    required IFilter oldLocalFilter,
     required IPleromaFilter newRemoteFilter,
   }) async {
     _logger.finer(() => "updateLocalFilterByRemoteFilter \n"
@@ -251,13 +250,13 @@ class FilterRepository extends AsyncInitLoadingBloc
         "\t newRemoteFilter: $newRemoteFilter");
 
     await updateById(
-      oldLocalFilter!.localId,
+      oldLocalFilter.localId,
       newRemoteFilter.toDbFilter(),
     );
   }
 
   @override
-  Future<DbFilterPopulatedWrapper> getFilter({
+  Future<DbFilterPopulatedWrapper?> getFilter({
     required FilterRepositoryFilters filters,
     FilterOrderingTermData orderingTermData =
         FilterOrderingTermData.remoteIdDesc,
@@ -268,15 +267,13 @@ class FilterRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    return mapDataClassToItem(
-      dao.typedResultToPopulated(
-        await query.getSingle(),
-      ),
-    );
+    return (await query.getSingleOrNull())
+        ?.toDbFilterPopulated(dao: dao)
+        .toDbFilterPopulatedWrapper();
   }
 
   @override
-  Stream<DbFilterPopulatedWrapper> watchFilter({
+  Stream<DbFilterPopulatedWrapper?> watchFilter({
     required FilterRepositoryFilters filters,
     FilterOrderingTermData orderingTermData =
         FilterOrderingTermData.remoteIdDesc,
@@ -287,11 +284,27 @@ class FilterRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    Stream<DbFilterPopulated> stream = query.watchSingle().map(
-          (typedResult) => dao.typedResultToPopulated(typedResult),
+    return query.watchSingleOrNull().map(
+          (typedResult) => typedResult
+              ?.toDbFilterPopulated(dao: dao)
+              .toDbFilterPopulatedWrapper(),
         );
-    return stream.map(
-      (dbFilter) => mapDataClassToItem(dbFilter),
-    );
   }
+}
+
+extension DbFilterPopulatedListExtension on List<DbFilterPopulated> {
+  List<DbFilterPopulatedWrapper> toDbFilterPopulatedWrapperList() => map(
+        (value) => value.toDbFilterPopulatedWrapper(),
+      ).toList();
+}
+
+extension DbFilterPopulatedExtension on DbFilterPopulated {
+  DbFilterPopulatedWrapper toDbFilterPopulatedWrapper() =>
+      DbFilterPopulatedWrapper(
+        dbFilterPopulated: this,
+      );
+}
+
+extension DbFilterPopulatedWrapperExtension on DbFilterPopulatedWrapper {
+  DbFilter toDbFilter() => dbFilterPopulated.dbFilter;
 }

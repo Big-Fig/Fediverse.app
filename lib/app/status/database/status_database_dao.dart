@@ -65,6 +65,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   // Called by the AppDatabase class
   StatusDao(this.db) : super(db) {
+
     accountAlias = alias(db.dbAccounts, _accountAliasId);
     reblogAlias = alias(db.dbStatuses, _reblogAliasId);
     reblogAccountAlias = alias(db.dbAccounts, _reblogAccountAliasId);
@@ -88,40 +89,46 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   Future<List<DbStatusPopulated>> findAll() async {
     JoinedSelectStatement<Table, DataClass> statusQuery = _findAll();
 
-    return typedResultListToPopulated(await statusQuery.get());
+    return (await statusQuery.get()).toDbStatusPopulatedList(dao: this);
   }
 
   Stream<List<DbStatusPopulated>> watchAll() {
     JoinedSelectStatement<Table, DataClass> statusQuery = _findAll();
 
-    return statusQuery.watch().map(typedResultListToPopulated);
+    return statusQuery.watch().map(
+          (list) => list.toDbStatusPopulatedList(dao: this),
+        );
   }
 
-  Future<DbStatusPopulated> findById(int id) async =>
-      typedResultToPopulated(await _findById(id).getSingle());
+  Future<DbStatusPopulated?> findById(int id) async =>
+      (await _findById(id).getSingleOrNull())?.toDbStatusPopulated(dao: this);
 
-  Stream<DbStatusPopulated> watchById(int id) =>
-      (_findById(id).watchSingle().map(typedResultToPopulated));
+  Stream<DbStatusPopulated?> watchById(int id) =>
+      (_findById(id).watchSingleOrNull().map(
+            (typedResult) => typedResult?.toDbStatusPopulated(dao: this),
+          ));
 
-  Future<DbStatusPopulated> findByRemoteId(String? remoteId) async =>
-      typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
+  Future<DbStatusPopulated?> findByRemoteId(String remoteId) async =>
+      (await _findByRemoteId(remoteId).getSingleOrNull())
+          ?.toDbStatusPopulated(dao: this);
 
-  Stream<DbStatusPopulated> watchByRemoteId(String? remoteId) =>
-      (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
+  Stream<DbStatusPopulated?> watchByRemoteId(String remoteId) =>
+      (_findByRemoteId(remoteId).watchSingleOrNull().map(
+            (typedResult) => typedResult?.toDbStatusPopulated(dao: this),
+          ));
 
-  Future<DbStatusPopulated> findByOldPendingRemoteId(
+  Future<DbStatusPopulated?> findByOldPendingRemoteId(
     String oldPendingRemoteId,
   ) async =>
-      typedResultToPopulated(
-        await _findByOldPendingRemoteId(oldPendingRemoteId).getSingle(),
-      );
+      (await _findByOldPendingRemoteId(oldPendingRemoteId).getSingleOrNull())
+          ?.toDbStatusPopulated(dao: this);
 
-  Stream<DbStatusPopulated> watchByOldPendingRemoteId(
-    String? oldPendingRemoteId,
+  Stream<DbStatusPopulated?> watchByOldPendingRemoteId(
+    String oldPendingRemoteId,
   ) =>
-      (_findByOldPendingRemoteId(oldPendingRemoteId)
-          .watchSingle()
-          .map(typedResultToPopulated));
+      (_findByOldPendingRemoteId(oldPendingRemoteId).watchSingleOrNull().map(
+            (typedResult) => typedResult?.toDbStatusPopulated(dao: this),
+          ));
 
   JoinedSelectStatement<Table, DataClass> _findAll() {
     var sqlQuery = (select(db.dbStatuses).join(
@@ -573,26 +580,6 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
                 })
             .toList());
 
-  List<DbStatusPopulated> typedResultListToPopulated(
-    List<TypedResult> typedResult,
-  ) =>
-      typedResult.map(typedResultToPopulated).toList();
-
-  DbStatusPopulated typedResultToPopulated(TypedResult typedResult) {
-
-    return DbStatusPopulated(
-      reblogDbStatus: typedResult.readTableOrNull(reblogAlias),
-      reblogDbStatusAccount: typedResult.readTableOrNull(reblogAccountAlias),
-      dbStatus: typedResult.readTable(db.dbStatuses),
-      dbAccount: typedResult.readTable(accountAlias),
-      replyDbStatus: typedResult.readTableOrNull(replyAlias),
-      replyDbStatusAccount: typedResult.readTableOrNull(replyAccountAlias),
-      replyReblogDbStatus: typedResult.readTableOrNull(replyReblogAlias),
-      replyReblogDbStatusAccount:
-          typedResult.readTableOrNull(replyReblogAccountAlias),
-    );
-  }
-
   List<Join<Table, DataClass>> populateStatusJoin({
     required includeAccountFollowing,
     required includeReplyToAccountFollowing,
@@ -712,5 +699,35 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     var query = db.customUpdate(update, updates: {dbStatuses});
 
     return query;
+  }
+}
+
+extension TypedResultDbStatusPopulatedExtension on TypedResult {
+  DbStatusPopulated toDbStatusPopulated({
+    required StatusDao dao,
+  }) {
+    TypedResult typedResult = this;
+    return DbStatusPopulated(
+      reblogDbStatus: typedResult.readTableOrNull(dao.reblogAlias),
+      reblogDbStatusAccount:
+          typedResult.readTableOrNull(dao.reblogAccountAlias),
+      dbStatus: typedResult.readTable(dao.db.dbStatuses),
+      dbAccount: typedResult.readTable(dao.accountAlias),
+      replyDbStatus: typedResult.readTableOrNull(dao.replyAlias),
+      replyDbStatusAccount: typedResult.readTableOrNull(dao.replyAccountAlias),
+      replyReblogDbStatus: typedResult.readTableOrNull(dao.replyReblogAlias),
+      replyReblogDbStatusAccount:
+          typedResult.readTableOrNull(dao.replyReblogAccountAlias),
+    );
+  }
+}
+
+extension TypedResultListDbStatusPopulatedExtension on List<TypedResult> {
+  List<DbStatusPopulated> toDbStatusPopulatedList({
+    required StatusDao dao,
+  }) {
+    return map(
+      (typedResult) => typedResult.toDbStatusPopulated(dao: dao),
+    ).toList();
   }
 }

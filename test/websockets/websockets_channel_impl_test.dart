@@ -1,22 +1,37 @@
+import 'package:fedi/connection/connection_service_impl.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_impl.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_model.dart';
 import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:fedi/web_sockets/service/config/web_sockets_service_config_bloc_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'websockets_channel_config_mock.dart';
+import 'websockets_channel_impl_test.mocks.dart';
 import 'websockets_channel_source_mock.dart';
 import 'websockets_model_helper.dart';
 
+@GenerateMocks([ConnectionService])
 void main() {
-  late WebSocketsChannelConfigMock<TestWebSocketEvent> config;
+  late TestWebSocketsChannelConfig config;
   late WebSocketsChannel<TestWebSocketEvent> channel;
   late WebSocketsChannelSourceMock<TestWebSocketEvent> source;
+  late MockConnectionService connectionService;
 
   setUp(() {
-    config = WebSocketsChannelConfigMock();
+    connectionService = MockConnectionService();
+
+    when(connectionService.isConnected).thenReturn(true);
+    when(connectionService.isConnectedStream).thenAnswer(
+          (_) => Stream<bool>.value(true),
+    );
+
+    config = TestWebSocketsChannelConfig(
+      connectionService: connectionService,
+      queryArgs: {"test": "test"},
+      baseUrl: Uri.parse("wss://fedi.app/"),
+    );
 
     source = WebSocketsChannelSourceMock<TestWebSocketEvent>(
       url: Uri.parse(
@@ -25,6 +40,10 @@ void main() {
     );
 
     when(config.createChannelSource()).thenReturn(source);
+
+    when(connectionService.isConnectedStream).thenAnswer(
+          (_) => Stream<bool>.value(true),
+    );
 
     channel = WebSocketsChannel<TestWebSocketEvent>(
       config: config,

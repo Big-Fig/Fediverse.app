@@ -11,22 +11,26 @@ import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
+import 'package:fedi/pleroma/account/my/pleroma_my_account_service_impl.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
-import '../../../pleroma/account/my/pleroma_my_account_service_mock.dart';
 import '../../status/database/status_database_model_helper.dart';
 import '../account_model_helper.dart';
 import '../database/account_database_model_helper.dart';
+import 'my_account_bloc_impl_test.mocks.dart';
 import 'my_account_model_helper.dart';
 
+@GenerateMocks([PleromaMyAccountService])
 void main() {
   late IMyAccount myAccount;
   late IMyAccountBloc myAccountBloc;
-  late PleromaMyAccountServiceMock pleromaMyAccountServiceMock;
+  late MockPleromaMyAccountService pleromaMyAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late MyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
@@ -38,9 +42,12 @@ void main() {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
 
-    pleromaMyAccountServiceMock = PleromaMyAccountServiceMock();
+    pleromaMyAccountServiceMock = MockPleromaMyAccountService();
 
-    when(pleromaMyAccountServiceMock.isApiReadyToUse).thenReturn(true);
+    when(pleromaMyAccountServiceMock.isConnected).thenReturn(true);
+    when(pleromaMyAccountServiceMock.pleromaApiState).thenReturn(
+      PleromaApiState.validAuth,
+    );
 
     preferencesService = MemoryLocalPreferencesService();
 

@@ -47,14 +47,10 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbPleromaChatPopulatedWrapper> findByRemoteId(
-    String? remoteId,
+  Future<DbPleromaChatPopulatedWrapper?> findByRemoteId(
+    String remoteId,
   ) async =>
-      mapDataClassToItem(
-        await dao.findByRemoteId(
-          remoteId,
-        ),
-      );
+      (await dao.findByRemoteId(remoteId))?.toDbPleromaChatPopulatedWrapper();
 
   @override
   Future upsertRemoteChat(pleroma_lib.IPleromaChat remoteChat) async {
@@ -143,23 +139,21 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbPleromaChatPopulatedWrapper> findById(int id) async =>
-      mapDataClassToItem(
-        await dao.findById(
-          id,
-        ),
-      );
+  Future<DbPleromaChatPopulatedWrapper?> findById(int id) async =>
+      (await dao.findById(id))?.toDbPleromaChatPopulatedWrapper();
 
   @override
-  Stream<DbPleromaChatPopulatedWrapper> watchById(int id) =>
+  Stream<DbPleromaChatPopulatedWrapper?> watchById(int id) =>
       (dao.watchById(id)).map(
-        mapDataClassToItem,
+        (value) => value?.toDbPleromaChatPopulatedWrapper(),
       );
 
   @override
-  Stream<DbPleromaChatPopulatedWrapper> watchByRemoteId(String? remoteId) {
+  Stream<DbPleromaChatPopulatedWrapper?> watchByRemoteId(String remoteId) {
     _logger.finest(() => "watchByRemoteId $remoteId");
-    return (dao.watchByRemoteId(remoteId)).map(mapDataClassToItem);
+    return (dao.watchByRemoteId(remoteId)).map(
+      (value) => value?.toDbPleromaChatPopulatedWrapper(),
+    );
   }
 
   @override
@@ -168,14 +162,16 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<DbPleromaChatPopulatedWrapper>> getAll() async =>
-      (await dao.findAll()).map(mapDataClassToItem).toList();
+      (await dao.findAll()).toDbPleromaChatPopulatedWrapperList();
 
   @override
   Future<int> countAll() => dao.countAll().getSingle();
 
   @override
   Stream<List<DbPleromaChatPopulatedWrapper>> watchAll() =>
-      (dao.watchAll()).map((list) => list.map(mapDataClassToItem).toList());
+      (dao.watchAll()).map(
+        (list) => list.toDbPleromaChatPopulatedWrapperList(),
+      );
 
   @override
   Future<int> insert(DbChat item) => dao.insert(item);
@@ -190,16 +186,6 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
     }
     return dao.replace(DbChat);
   }
-
-  DbPleromaChatPopulatedWrapper mapDataClassToItem(
-    DbPleromaChatPopulated dataClass,
-  ) =>
-      DbPleromaChatPopulatedWrapper(
-        dbChatPopulated: dataClass,
-      );
-
-  Insertable<DbChat> mapItemToDataClass(DbPleromaChatPopulatedWrapper item) =>
-      item.dbChatPopulated.dbChat;
 
   @override
   Future updateLocalChatByRemoteChat({
@@ -246,11 +232,9 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
       pagination: pagination,
       orderingTermData: orderingTermData,
     );
-
-    return dao
-        .typedResultListToPopulated(await query.get())
-        .map(mapDataClassToItem)
-        .toList();
+    return (await query.get())
+        .toDbPleromaChatPopulatedList(dao: dao)
+        .toDbPleromaChatPopulatedWrapperList();
   }
 
   @override
@@ -266,14 +250,11 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    Stream<List<DbPleromaChatPopulated>> stream = query.watch().map(
-          dao.typedResultListToPopulated,
+    return query.watch().map(
+          (list) => list
+              .toDbPleromaChatPopulatedList(dao: dao)
+              .toDbPleromaChatPopulatedWrapperList(),
         );
-    return stream.map((list) => list
-        .map(
-          mapDataClassToItem,
-        )
-        .toList());
   }
 
   JoinedSelectStatement createQuery({
@@ -322,7 +303,7 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbPleromaChatPopulatedWrapper> getChat({
+  Future<DbPleromaChatPopulatedWrapper?> getChat({
     required PleromaChatRepositoryFilters? filters,
     PleromaChatOrderingTermData? orderingTermData =
         PleromaChatOrderingTermData.updatedAtDesc,
@@ -333,15 +314,15 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    return mapDataClassToItem(
-      dao.typedResultToPopulated(
-        await query.getSingle(),
-      ),
-    );
+    return (await query.getSingleOrNull())
+        ?.toDbPleromaChatPopulated(
+          dao: dao,
+        )
+        .toDbPleromaChatPopulatedWrapper();
   }
 
   @override
-  Stream<DbPleromaChatPopulatedWrapper> watchChat({
+  Stream<DbPleromaChatPopulatedWrapper?> watchChat({
     required PleromaChatRepositoryFilters? filters,
     PleromaChatOrderingTermData? orderingTermData =
         PleromaChatOrderingTermData.updatedAtDesc,
@@ -352,16 +333,11 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    Stream<DbPleromaChatPopulated> stream = query.watchSingle().map(
-          (typedResult) => dao.typedResultToPopulated(
-            typedResult,
-          ),
+    return query.watchSingleOrNull().map(
+          (typedResult) => typedResult
+              ?.toDbPleromaChatPopulated(dao: dao)
+              .toDbPleromaChatPopulatedWrapper(),
         );
-    return stream.map(
-      (dbChat) => mapDataClassToItem(
-        dbChat,
-      ),
-    );
   }
 
   @override
@@ -376,11 +352,16 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
         .getSingleOrNull();
 
     if (dbChatAccount != null) {
-      return DbPleromaChatPopulatedWrapper(
-        dbChatPopulated: await dao.findByRemoteId(
-          dbChatAccount.chatRemoteId,
-        ),
+      var dbPleromaChatPopulated = await dao.findByRemoteId(
+        dbChatAccount.chatRemoteId,
       );
+      if (dbPleromaChatPopulated != null) {
+        return DbPleromaChatPopulatedWrapper(
+          dbChatPopulated: dbPleromaChatPopulated,
+        );
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
@@ -415,4 +396,24 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
         chatRemoteId: chatRemoteId,
         updatedAt: updatedAt,
       );
+}
+
+extension DbPleromaChatPopulatedExtension on DbPleromaChatPopulated {
+  DbPleromaChatPopulatedWrapper toDbPleromaChatPopulatedWrapper() =>
+      DbPleromaChatPopulatedWrapper(
+        dbChatPopulated: this,
+      );
+}
+
+extension DbPleromaChatPopulatedListExtension on List<DbPleromaChatPopulated> {
+  List<DbPleromaChatPopulatedWrapper> toDbPleromaChatPopulatedWrapperList() =>
+      map(
+        (value) => value.toDbPleromaChatPopulatedWrapper(),
+      ).toList();
+}
+
+extension DbPleromaChatPopulatedWrapperExtension
+    on DbPleromaChatPopulatedWrapper {
+  DbChat toDbChat(DbPleromaChatPopulatedWrapper item) =>
+      item.dbChatPopulated.dbChat;
 }

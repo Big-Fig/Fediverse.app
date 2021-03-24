@@ -12,20 +12,24 @@ import 'package:fedi/app/notification/repository/notification_repository_impl.da
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/notification/pleroma_notification_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
-import '../../pleroma/notification/pleroma_notification_service_mock.dart';
 import '../account/account_model_helper.dart';
 import '../status/status_model_helper.dart';
+import 'notification_bloc_impl_test.mocks.dart';
 import 'notification_model_helper.dart';
 
+@GenerateMocks([PleromaNotificationService])
 void main() {
   late INotification notification;
   late DbStatusPopulatedWrapper status;
   late INotificationBloc notificationBloc;
-  late PleromaNotificationServiceMock pleromaNotificationServiceMock;
+  late MockPleromaNotificationService pleromaNotificationServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
@@ -50,9 +54,11 @@ void main() {
       statusRepository: statusRepository,
     );
 
-    pleromaNotificationServiceMock = PleromaNotificationServiceMock();
+    pleromaNotificationServiceMock = MockPleromaNotificationService();
 
-    when(pleromaNotificationServiceMock.isApiReadyToUse).thenReturn(true);
+    when(pleromaNotificationServiceMock.isConnected).thenReturn(true);
+    when(pleromaNotificationServiceMock.pleromaApiState)
+        .thenReturn(PleromaApiState.validAuth);
 
     status = await createTestStatus(seed: "seed4");
 

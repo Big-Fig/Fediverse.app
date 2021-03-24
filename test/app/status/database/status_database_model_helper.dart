@@ -26,7 +26,7 @@ Future<DbStatusPopulated> createTestDbStatusPopulated(
   DbStatusPopulated dbStatusPopulated = DbStatusPopulated(
     dbStatus: dbStatus,
     dbAccount:
-        (await accountRepository.findByRemoteId(dbStatus.accountRemoteId))
+        (await accountRepository.findByRemoteId(dbStatus.accountRemoteId))!
             .dbAccount,
     reblogDbStatus: null,
     reblogDbStatusAccount: null,
@@ -89,7 +89,7 @@ Future<DbStatus> createTestDbStatus({
   return dbStatus;
 }
 
-Future<PleromaStatus?> createTestRemoteStatus({
+Future<PleromaStatus> createTestRemoteStatus({
   required String seed,
   DateTime? createdAt,
   required DbAccount dbAccount,

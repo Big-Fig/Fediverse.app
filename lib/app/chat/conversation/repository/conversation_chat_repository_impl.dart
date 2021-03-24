@@ -27,8 +27,8 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
     implements IConversationChatRepository {
   late ConversationDao dao;
 
-  final IAccountRepository? accountRepository;
-  final IStatusRepository? statusRepository;
+  final IAccountRepository accountRepository;
+  final IStatusRepository statusRepository;
 
   ConversationChatRepository({
     required AppDatabase appDatabase,
@@ -56,7 +56,7 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
     _logger.finer(() => "upsertRemoteConversation $remoteConversation");
     var remoteAccounts = remoteConversation!.accounts;
 
-    await accountRepository!.upsertRemoteAccounts(
+    await accountRepository.upsertRemoteAccounts(
       remoteAccounts,
       conversationRemoteId: remoteConversation.id,
       chatRemoteId: null,
@@ -64,7 +64,7 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
 
     var lastStatus = remoteConversation.lastStatus;
     if (lastStatus != null) {
-      await statusRepository!.upsertRemoteStatus(
+      await statusRepository.upsertRemoteStatus(
         lastStatus,
         conversationRemoteId: remoteConversation.id,
         listRemoteId: null,
@@ -85,14 +85,14 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
     for (var remoteConversation in remoteConversations!) {
       var lastStatus = remoteConversation.lastStatus;
       if (lastStatus != null) {
-        await statusRepository!.upsertRemoteStatus(
+        await statusRepository.upsertRemoteStatus(
           lastStatus,
           listRemoteId: null,
           conversationRemoteId: remoteConversation.id,
         );
       }
 
-      await accountRepository!.upsertRemoteAccounts(
+      await accountRepository.upsertRemoteAccounts(
         remoteConversation.accounts,
         conversationRemoteId: remoteConversation.id,
         chatRemoteId: null,
@@ -109,15 +109,14 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbConversationChatWrapper> findByRemoteId(String remoteId) async =>
-      mapDataClassToItem(
-        await dao.findByRemoteId(remoteId).getSingle(),
-      );
+  Future<DbConversationChatWrapper?> findByRemoteId(String remoteId) async =>
+      (await dao.findByRemoteId(remoteId).getSingleOrNull())
+          ?.toDbConversationChatWrapper();
 
   @override
-  Stream<DbConversationChatWrapper> watchByRemoteId(String? remoteId) =>
-      dao.findByRemoteId(remoteId!).watchSingle().map(
-            mapDataClassToItem,
+  Stream<DbConversationChatWrapper?> watchByRemoteId(String remoteId) =>
+      dao.findByRemoteId(remoteId).watchSingleOrNull().map(
+            (value) => value?.toDbConversationChatWrapper(),
           );
 
   @override
@@ -147,27 +146,31 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbConversationChatWrapper> findById(int id) =>
-      dao.findById(id).map(mapDataClassToItem).getSingle();
+  Future<DbConversationChatWrapper?> findById(int id) async =>
+      (await dao.findById(id).getSingleOrNull())?.toDbConversationChatWrapper();
 
   @override
-  Stream<DbConversationChatWrapper> watchById(int id) =>
-      dao.findById(id).map(mapDataClassToItem).watchSingle();
+  Stream<DbConversationChatWrapper?> watchById(int id) =>
+      dao.findById(id).watchSingleOrNull().map(
+            (value) => value?.toDbConversationChatWrapper(),
+          );
 
   @override
   Future<bool> isExistWithId(int id) =>
       dao.countById(id).map((count) => count > 0).getSingle();
 
   @override
-  Future<List<DbConversationChatWrapper>> getAll() =>
-      dao.getAll().map(mapDataClassToItem).get();
+  Future<List<DbConversationChatWrapper>> getAll() async =>
+      (await dao.getAll().get()).toDbConversationChatWrapperList();
 
   @override
   Future<int> countAll() => dao.countAll().getSingle();
 
   @override
   Stream<List<DbConversationChatWrapper>> watchAll() =>
-      dao.getAll().map(mapDataClassToItem).watch();
+      dao.getAll().watch().map(
+            (list) => list.toDbConversationChatWrapperList(),
+          );
 
   @override
   Future<int> insert(DbConversation item) => dao.insert(item);
@@ -186,16 +189,6 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
     return dao.replace(dbConversation);
   }
 
-  DbConversationChatWrapper mapDataClassToItem(DbConversation dataClass) =>
-      DbConversationChatWrapper(
-        dbConversation: dataClass,
-      );
-
-  Insertable<DbConversation>? mapItemToDataClass(
-    DbConversationChatWrapper item,
-  ) =>
-      item.dbConversation;
-
   @override
   Future updateLocalConversationByRemoteConversation({
     required IConversationChat? oldLocalConversation,
@@ -207,7 +200,7 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
 
     var remoteAccounts = newRemoteConversation.accounts;
 
-    await accountRepository!.upsertRemoteAccounts(
+    await accountRepository.upsertRemoteAccounts(
       remoteAccounts,
       conversationRemoteId: oldLocalConversation!.remoteId,
       chatRemoteId: null,
@@ -215,7 +208,7 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
 
     var lastStatus = newRemoteConversation.lastStatus;
     if (lastStatus != null) {
-      await statusRepository!.upsertRemoteStatus(
+      await statusRepository.upsertRemoteStatus(
         lastStatus,
         listRemoteId: null,
         conversationRemoteId: oldLocalConversation.remoteId,
@@ -244,15 +237,7 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    var dbConversations = await query.get();
-    return dbConversations
-        .map(
-          (dbConversation) => mapDataClassToItem(
-            // todo: check all as DbConversation
-            dbConversation as DbConversation,
-          ),
-        )
-        .toList();
+    return (await query.get()).toDbConversationChatWrapperList();
   }
 
   @override
@@ -268,16 +253,12 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    Stream<List<DbConversation>> stream =
-        query.watch() as Stream<List<DbConversation>>;
-    return stream.map((list) => list
-        .map(
-          mapDataClassToItem,
-        )
-        .toList());
+    return query.watch().map(
+          (list) => list.toDbConversationChatWrapperList(),
+        );
   }
 
-  SimpleSelectStatement createQuery({
+  SimpleSelectStatement<$DbConversationsTable, DbConversation> createQuery({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat>? pagination,
     required ConversationChatOrderingTermData? orderingTermData,
@@ -287,7 +268,8 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
         "\t pagination=$pagination\n"
         "\t orderingTermData=$orderingTermData");
 
-    var query = dao.startSelectQuery();
+    SimpleSelectStatement<$DbConversationsTable, DbConversation> query =
+        dao.startSelectQuery();
 
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
@@ -368,4 +350,21 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<int> watchTotalUnreadCount() => dao.watchTotalAmountUnread();
+}
+
+extension DbConversationExtension on DbConversation {
+  DbConversationChatWrapper toDbConversationChatWrapper() =>
+      DbConversationChatWrapper(
+        dbConversation: this,
+      );
+}
+
+extension DbConversationListExtension on List<DbConversation> {
+  List<DbConversationChatWrapper> toDbConversationChatWrapperList() => map(
+        (item) => item.toDbConversationChatWrapper(),
+      ).toList();
+}
+
+extension DbConversationChatWrapperExtension on DbConversationChatWrapper {
+  DbConversation toDbConversation() => dbConversation;
 }

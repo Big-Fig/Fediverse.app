@@ -26,12 +26,6 @@ class PleromaListService extends DisposableOwner
   PleromaApiState get pleromaApiState => restService.pleromaApiState;
 
   @override
-  Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
-
-  @override
-  bool get isApiReadyToUse => restService.isApiReadyToUse;
-
-  @override
   bool get isConnected => restService.isConnected;
 
   @override

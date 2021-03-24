@@ -53,13 +53,13 @@ abstract class IPleromaChatRepository
         PleromaChatOrderingTermData.updatedAtDesc,
   });
 
-  Future<DbPleromaChatPopulatedWrapper> getChat({
+  Future<DbPleromaChatPopulatedWrapper?> getChat({
     required PleromaChatRepositoryFilters filters,
     PleromaChatOrderingTermData? orderingTermData =
         PleromaChatOrderingTermData.updatedAtDesc,
   });
 
-  Stream<DbPleromaChatPopulatedWrapper> watchChat({
+  Stream<DbPleromaChatPopulatedWrapper?> watchChat({
     required PleromaChatRepositoryFilters? filters,
     PleromaChatOrderingTermData? orderingTermData =
         PleromaChatOrderingTermData.updatedAtDesc,

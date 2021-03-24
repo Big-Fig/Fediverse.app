@@ -3,7 +3,7 @@ import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaPollService implements IPleromaApi {
+abstract class IPleromaPollService extends IPleromaApi {
   static IPleromaPollService of(
     BuildContext context, {
     bool listen = true,

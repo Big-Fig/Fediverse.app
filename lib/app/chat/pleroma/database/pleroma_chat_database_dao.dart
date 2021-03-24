@@ -38,26 +38,44 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   Future<List<DbPleromaChatPopulated>> findAll() async {
     JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAll();
 
-    return typedResultListToPopulated(await chatMessageQuery.get());
+    return (await chatMessageQuery.get())
+        .toDbPleromaChatPopulatedList(dao: this);
   }
 
   Stream<List<DbPleromaChatPopulated>> watchAll() {
     JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAll();
 
-    return chatMessageQuery.watch().map(typedResultListToPopulated);
+    return chatMessageQuery.watch().map(
+          (list) => list.toDbPleromaChatPopulatedList(
+            dao: this,
+          ),
+        );
   }
 
-  Future<DbPleromaChatPopulated> findById(int id) async =>
-      typedResultToPopulated(await _findById(id).getSingle());
+  Future<DbPleromaChatPopulated?> findById(int id) async =>
+      (await _findById(id).getSingleOrNull())?.toDbPleromaChatPopulated(
+        dao: this,
+      );
 
-  Future<DbPleromaChatPopulated> findByRemoteId(String? remoteId) async =>
-      typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
+  Future<DbPleromaChatPopulated?> findByRemoteId(String remoteId) async =>
+      (await _findByRemoteId(remoteId).getSingleOrNull())
+          ?.toDbPleromaChatPopulated(
+        dao: this,
+      );
 
-  Stream<DbPleromaChatPopulated> watchById(int id) =>
-      (_findById(id).watchSingle().map(typedResultToPopulated));
+  Stream<DbPleromaChatPopulated?> watchById(int id) =>
+      _findById(id).watchSingleOrNull().map(
+            (value) => value?.toDbPleromaChatPopulated(
+              dao: this,
+            ),
+          );
 
-  Stream<DbPleromaChatPopulated> watchByRemoteId(String? remoteId) =>
-      (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
+  Stream<DbPleromaChatPopulated?> watchByRemoteId(String? remoteId) =>
+      _findByRemoteId(remoteId).watchSingleOrNull().map(
+            (value) => value?.toDbPleromaChatPopulated(
+              dao: this,
+            ),
+          );
 
   JoinedSelectStatement<Table, DataClass> _findAll() {
     var sqlQuery = (select(db.dbChats).join(
@@ -192,19 +210,6 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
                 })
             .toList());
 
-  List<DbPleromaChatPopulated> typedResultListToPopulated(
-    List<TypedResult> typedResult,
-  ) {
-    return typedResult.map(typedResultToPopulated).toList();
-  }
-
-  DbPleromaChatPopulated typedResultToPopulated(TypedResult typedResult) {
-    return DbPleromaChatPopulated(
-      dbChat: typedResult.readTable(db.dbChats),
-      dbAccount: typedResult.readTable(accountAlias),
-    );
-  }
-
   List<Join<Table, DataClass>> populateChatJoin() {
     return [
       leftOuterJoin(
@@ -212,5 +217,28 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
         accountAlias.remoteId.equalsExp(dbChats.accountRemoteId),
       ),
     ];
+  }
+}
+
+extension DbPleromaChatPopulatedTypedResultListExtension on List<TypedResult> {
+  List<DbPleromaChatPopulated> toDbPleromaChatPopulatedList({
+    required ChatDao dao,
+  }) {
+    return map(
+      (item) => item.toDbPleromaChatPopulated(
+        dao: dao,
+      ),
+    ).toList();
+  }
+}
+
+extension DbPleromaChatPopulatedTypedResultExtension on TypedResult {
+  DbPleromaChatPopulated toDbPleromaChatPopulated({
+    required ChatDao dao,
+  }) {
+    return DbPleromaChatPopulated(
+      dbChat: readTable(dao.db.dbChats),
+      dbAccount: readTable(dao.accountAlias),
+    );
   }
 }
