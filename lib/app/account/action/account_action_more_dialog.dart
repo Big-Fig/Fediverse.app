@@ -29,7 +29,7 @@ void showAccountActionMoreDialog({
     context: context,
     child: Provider<IAccountBloc>.value(
       value: accountBloc,
-      child: Provider<IAccount?>.value(
+      child: Provider<IAccount>.value(
         value: accountBloc.account,
         child: const AccountActionMoreDialog(
           cancelable: true,

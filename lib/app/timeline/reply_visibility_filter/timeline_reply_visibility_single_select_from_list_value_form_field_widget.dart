@@ -20,7 +20,7 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget
   Widget build(BuildContext context) =>
       TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBlocProxyProvider(
         child: SingleSelectFromListValueFormFieldRowWidget<
-            PleromaReplyVisibilityFilter>(
+            PleromaReplyVisibilityFilter?>(
           label: label ??
               S
                   .of(context)

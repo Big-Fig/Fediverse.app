@@ -9,7 +9,7 @@ class UiSettingsFontSizeSingleFromListValueFormFieldRowWidget
   @override
   Widget build(BuildContext context) =>
       UiSettingsFontSizeSingleFromListValueFormFieldBlocProxyProvider(
-        child: SingleSelectFromListValueFormFieldRowWidget<UiSettingsFontSize>(
+        child: SingleSelectFromListValueFormFieldRowWidget<UiSettingsFontSize?>(
           label: S.of(context).app_ui_statusFontSize,
           valueTitleMapper: (context, value) =>
               mapUiSettingsFontSizeToLabel(context, value!),

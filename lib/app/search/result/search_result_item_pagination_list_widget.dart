@@ -115,7 +115,7 @@ class SearchResultItemPaginationListWidget
             case SearchResultItemType.status:
               return buildStatusListItem(item, index);
             case SearchResultItemType.account:
-              return buildAccountListItem(item.account);
+              return buildAccountListItem(item.account!);
             case SearchResultItemType.hashtag:
               return buildHashtagListItem(item, index);
           }
@@ -152,8 +152,8 @@ class SearchResultItemPaginationListWidget
     );
   }
 
-  Provider<IAccount?> buildAccountListItem(IAccount? account) {
-    return Provider<IAccount?>.value(
+  Widget buildAccountListItem(IAccount account) {
+    return Provider<IAccount>.value(
       value: account,
       child: DisposableProxyProvider<IAccount, IAccountBloc>(
         update: (context, account, oldValue) =>

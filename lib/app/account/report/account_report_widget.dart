@@ -75,7 +75,7 @@ class _AccountReportStatusesWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ...accountReportBloc.statuses.map(
-          (status) => Provider<IStatus?>.value(
+          (status) => Provider<IStatus>.value(
             value: status,
             child: DisposableProxyProvider<IStatus, IStatusBloc>(
               update: (context, status, _) {
@@ -130,7 +130,7 @@ class _AccountReportForwardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountReportBloc = IAccountReportBloc.of(context);
-    var account = accountReportBloc.account!;
+    var account = accountReportBloc.account;
     var acctRemoteHost = account.acctRemoteHost!;
     return ProxyProvider<IAccountReportBloc, IBoolValueFormFieldBloc>(
       update: (context, value, _) => value.forwardBoolValueFormFieldBloc,

@@ -44,7 +44,7 @@ void goToAccountFollowerAccountListPage(
           context,
           child: AccountPaginationListBloc.provideToContext(
             context,
-            child: Provider<IAccount?>.value(
+            child: Provider<IAccount>.value(
               value: account,
               child: const AccountFollowerAccountListPage(),
             ),

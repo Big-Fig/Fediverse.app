@@ -10,11 +10,14 @@ class AccountAvatarWidget extends StatelessWidget {
   final double imageSize;
   final double progressSize;
 
-  const AccountAvatarWidget({this.imageSize = 80.0, this.progressSize = 30.0});
+  const AccountAvatarWidget({
+    this.imageSize = 80.0,
+    this.progressSize = 30.0,
+  });
 
   @override
   Widget build(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context, listen: true);
+    var accountBloc = IAccountBloc.of(context);
 
     return StreamBuilder<String?>(
       stream: accountBloc.avatarStream,

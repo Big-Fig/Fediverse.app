@@ -11,7 +11,7 @@ class SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget
   Widget build(BuildContext context) =>
       SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBlocProxyProvider(
         child: SingleSelectFromListValueFormFieldRowWidget<
-            FilesCacheSizeLimitCountType>(
+            FilesCacheSizeLimitCountType?>(
           label: S.of(context).app_cache_files_settings_sizeLimit_label,
           displayIconInRow: false,
           valueIconMapper: null,
