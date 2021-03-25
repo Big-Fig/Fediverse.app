@@ -26,8 +26,8 @@ class RecentSearchWidget extends StatelessWidget {
             .toList();
 
         var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
-        return Provider<List<String>?>.value(
-          value: recentItems,
+        return Provider<List<String>>.value(
+          value: recentItems ?? [],
           child: Padding(
             padding: FediPadding.allBigPadding,
             child: Column(

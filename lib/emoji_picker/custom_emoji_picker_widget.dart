@@ -37,7 +37,7 @@ class CustomEmojiPickerWidget extends StatelessWidget {
   final EmptyCategoryBuilder? emptyCategoryBuilder;
   final CustomCategoryIconBuilder? customCategoryIconBuilder;
   final CustomCategoryBodyBuilder? customCategoryBodyBuilder;
-  final Widget? loadingWidget;
+  final Widget loadingWidget;
   final bool useImageEmoji;
 
   CustomEmojiPickerWidget({
@@ -48,7 +48,7 @@ class CustomEmojiPickerWidget extends StatelessWidget {
     this.selectedIndicatorColor = Colors.blue,
     this.customCategoryIconBuilder,
     this.customCategoryBodyBuilder,
-    this.loadingWidget,
+    required this.loadingWidget,
     this.indicatorHeight = 50.0,
     this.selectedCategoryItemsGridHeight = 200.0,
     this.useImageEmoji = true,
@@ -95,7 +95,7 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
   }) : super(key: key);
 
   final double selectedCategoryItemsGridHeight;
-  final Widget? loadingWidget;
+  final Widget loadingWidget;
   final bool useImageEmoji;
   final EmptyCategoryBuilder? emptyCategoryBuilder;
   final int rowsCount;
@@ -126,7 +126,7 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
                     var items = snapshot.data;
 
                     if (items == null) {
-                      return loadingWidget!;
+                      return loadingWidget;
                     }
 
                     if (!useImageEmoji) {
@@ -146,7 +146,7 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
                         ),
                       );
                     }
-                    return Provider<List<CustomEmojiPickerItem>?>.value(
+                    return Provider<List<CustomEmojiPickerItem>>.value(
                       value: items,
                       child: _CustomEmojiPickerSelectedCategoryItemsWidget(
                         rowsCount: rowsCount,
@@ -234,7 +234,7 @@ class _CustomEmojiPickerIndicatorListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var customEmojiPickerBloc = ICustomEmojiPickerBloc.of(context);
-    return StreamBuilder<List<ICustomEmojiPickerCategoryBloc?>>(
+    return StreamBuilder<List<ICustomEmojiPickerCategoryBloc>>(
       stream: customEmojiPickerBloc.availableCategoriesStream,
       initialData: customEmojiPickerBloc.availableCategories,
       builder: (context, snapshot) {
@@ -247,7 +247,7 @@ class _CustomEmojiPickerIndicatorListWidget extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             children: availableCategories
                 .map(
-                  (category) => Provider<ICustomEmojiPickerCategoryBloc?>.value(
+                  (category) => Provider<ICustomEmojiPickerCategoryBloc>.value(
                     value: category,
                     child: _CustomEmojiPickerCategoryIndicatorWidget(
                       selectedIndicatorColor: selectedIndicatorColor,

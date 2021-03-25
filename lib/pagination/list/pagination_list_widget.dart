@@ -132,7 +132,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     // SmartRefresher require ScrollView as child
     // If child is StreamBuilder SmartRefresher builds all items widget
     // instead visible only
-    return StreamBuilder<List<T>?>(
+    return StreamBuilder<List<T>>(
       stream: paginationListBloc.itemsDistinctStream,
       builder: (context, snapshot) {
         var items = snapshot.data;

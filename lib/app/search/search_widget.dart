@@ -184,8 +184,8 @@ class _SearchTabBarWidget extends StatelessWidget {
       child: Builder(
         builder: (context) {
           var tabController = DefaultTabController.of(context);
-          return DisposableProvider<IFediTabIndicatorBloc<SearchTab?>>(
-            create: (context) => FediTabIndicatorBloc<SearchTab?>(
+          return DisposableProvider<IFediTabIndicatorBloc<SearchTab>>(
+            create: (context) => FediTabIndicatorBloc<SearchTab>(
               items: tabs,
               tabController: tabController!,
             ),

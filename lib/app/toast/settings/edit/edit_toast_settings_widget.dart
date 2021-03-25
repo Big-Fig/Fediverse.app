@@ -18,7 +18,7 @@ class EditToastSettingsWidget extends StatelessWidget {
         mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
         children: [
           ProxyProvider<IEditToastSettingsBloc,
-              IToastHandlingTypeSingleFromListValueFormFieldBloc?>(
+              IToastHandlingTypeSingleFromListValueFormFieldBloc>(
             update: (context, value, previous) =>
                 value.toastHandlingTypeSingleFromListValueFormFieldBloc,
             child:
@@ -45,7 +45,7 @@ class _EditToastSettingsPleromaEmojiReactionFieldWidget
   Widget build(BuildContext context) {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
 
-    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc?>(
+    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.pleromaEmojiReactionFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label:
@@ -66,7 +66,7 @@ class _EditToastSettingsPleromaMentionFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
-    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc?>(
+    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.pleromaChatMentionFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S.of(context).app_push_settings_field_pleroma_chat_label,
@@ -86,7 +86,7 @@ class _EditToastSettingsPollFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
-    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc?>(
+    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.pollFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S.of(context).app_push_settings_field_polls_label,
@@ -106,7 +106,7 @@ class _EditToastSettingsReblogFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
-    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc?>(
+    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.reblogFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S.of(context).app_push_settings_field_reblogs_label,
@@ -126,7 +126,7 @@ class _EditToastSettingsMentionFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
-    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc?>(
+    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.mentionFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S.of(context).app_push_settings_field_mentions_label,
@@ -146,7 +146,7 @@ class _EditToastSettingsFollowFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
-    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc?>(
+    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.followFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S.of(context).app_push_settings_field_follows_label,
@@ -166,7 +166,7 @@ class _EditToastSettingsFavouriteFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
-    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc?>(
+    return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.favouriteFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S.of(context).app_push_settings_field_favourites_label,

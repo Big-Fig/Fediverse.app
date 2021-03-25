@@ -12,14 +12,14 @@ class CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldRowWidget
   @override
   Widget build(BuildContext context) =>
       CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider(
-        child: InfoFormFieldRowWidget<DateTime>(
+        child: InfoFormFieldRowWidget<DateTime?>(
           label: S.of(context).app_cache_database_settings_currentMaxAge_label,
           description: null,
           valueToTextMapper: (context, value) {
             return S
                 .of(context)
                 .app_cache_database_settings_currentMaxAge_value(
-                  _dateFormat.format(value),
+                  _dateFormat.format(value ?? DateTime.now()),
                 );
           },
         ),

@@ -54,7 +54,7 @@ MaterialPageRoute createCreateCustomListPageRoute({
     builder: (context) => CreateCustomListBloc.provideToContext(
       context,
       child: ProxyProvider<IEditCustomListBloc,
-          IEditCustomListAccountListPaginationListBloc?>(
+          IEditCustomListAccountListPaginationListBloc>(
         update: (context, value, _) =>
             value.editCustomListAccountListPaginationListBloc,
         child: const CreateCustomListPage(),

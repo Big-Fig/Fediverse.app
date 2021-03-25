@@ -17,7 +17,7 @@ class CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider
           ICurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc,
           IInfoFormFieldBloc<DateTime?>>(
         update: (context, value, previous) => value,
-        child: InfoFormFieldBlocProxyProvider<DateTime>(
+        child: InfoFormFieldBlocProxyProvider<DateTime?>(
           child: child,
         ),
       );

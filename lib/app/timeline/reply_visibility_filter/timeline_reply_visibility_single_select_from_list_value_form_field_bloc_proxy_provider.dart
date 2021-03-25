@@ -20,7 +20,7 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBlocProxyPr
               PleromaReplyVisibilityFilter?>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
-            PleromaReplyVisibilityFilter>(
+            PleromaReplyVisibilityFilter?>(
           child: child,
         ),
       );

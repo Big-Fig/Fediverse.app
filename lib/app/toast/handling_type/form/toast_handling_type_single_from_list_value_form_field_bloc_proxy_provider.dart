@@ -19,7 +19,7 @@ class ToastHandlingTypeSingleSelectFromListValueFormFieldBlocProxyProvider
           ISingleSelectFromListValueFormFieldBloc<ToastHandlingType?>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
-            ToastHandlingType>(
+            ToastHandlingType?>(
           child: child,
         ),
       );

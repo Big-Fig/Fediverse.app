@@ -10,17 +10,17 @@ abstract class ICreateTimelineBloc implements IFormBloc {
   static ICreateTimelineBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<ICreateTimelineBloc>(context, listen: listen);
 
-  IStringValueFormFieldBloc? get idFieldBloc;
+  IStringValueFormFieldBloc get idFieldBloc;
 
-  IStringValueFormFieldBloc? get nameFieldBloc;
+  IStringValueFormFieldBloc get nameFieldBloc;
 
-  ITimelineTypeSingleFromListValueFormFieldBloc? get typeFieldBloc;
+  ITimelineTypeSingleFromListValueFormFieldBloc get typeFieldBloc;
 
-  ITimelineSettingsBloc? get timelineSettingsBloc;
+  ITimelineSettingsBloc get timelineSettingsBloc;
 
   IEditTimelineSettingsBloc? get editTimelineSettingsBloc;
 
-  Stream<IEditTimelineSettingsBloc> get editTimelineSettingsBlocStream;
+  Stream<IEditTimelineSettingsBloc?> get editTimelineSettingsBlocStream;
 
   Future save();
 

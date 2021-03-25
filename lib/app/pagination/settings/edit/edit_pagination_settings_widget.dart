@@ -30,7 +30,7 @@ class _EditPaginationSettingsPageSizeFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditPaginationSettingsBloc,
-          IPaginationPageSizeSingleFromListValueFormFieldBloc?>(
+          IPaginationPageSizeSingleFromListValueFormFieldBloc>(
         update: (context, value, previous) => value.pageSizeFieldBloc,
         child: const PaginationPageSizeSingleFromListValueFormFieldRowWidget(),
       );

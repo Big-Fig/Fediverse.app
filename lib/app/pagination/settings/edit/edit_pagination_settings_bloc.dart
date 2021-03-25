@@ -15,5 +15,5 @@ abstract class IEditPaginationSettingsBloc
         listen: listen,
       );
 
-  IPaginationPageSizeSingleFromListValueFormFieldBloc? get pageSizeFieldBloc;
+  IPaginationPageSizeSingleFromListValueFormFieldBloc get pageSizeFieldBloc;
 }

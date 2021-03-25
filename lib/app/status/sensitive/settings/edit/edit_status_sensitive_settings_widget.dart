@@ -36,7 +36,7 @@ class _EditStatusSensitiveSettingsNsfwDisplayDurationWidget
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditStatusSensitiveSettingsBloc,
-        IDurationValueFormFieldBloc?>(
+        IDurationValueFormFieldBloc>(
       update: (context, value, _) => value.nsfwDisplayDelayDurationFieldBloc,
       child: DurationValueFormFieldRowWidget(
         label: S
@@ -56,7 +56,7 @@ class _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditStatusSensitiveSettingsBloc,
-        IBoolValueFormFieldBloc?>(
+        IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.isAlwaysShowNsfwFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S
@@ -76,7 +76,7 @@ class _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditStatusSensitiveSettingsBloc,
-        IBoolValueFormFieldBloc?>(
+        IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.isAlwaysShowSpoilerFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S

@@ -54,14 +54,14 @@ class SearchResultItemPaginationListWidget
   }) {
     SearchResultItemType? previousType;
 
-    List<_ItemOrSeparator<ISearchResultItem?>> itemWithSeparators =
+    List<_ItemOrSeparator<ISearchResultItem>> itemWithSeparators =
         <_ItemOrSeparator<ISearchResultItem>>[];
     items.forEach((item) {
       if (item.type != previousType) {
         switch (item.type) {
           case SearchResultItemType.status:
             itemWithSeparators.add(
-              _ItemOrSeparator<ISearchResultItem?>(
+              _ItemOrSeparator<ISearchResultItem>(
                 item: null,
                 separator: S.of(context).app_search_tab_statuses,
               ),
@@ -69,7 +69,7 @@ class SearchResultItemPaginationListWidget
             break;
           case SearchResultItemType.account:
             itemWithSeparators.add(
-              _ItemOrSeparator<ISearchResultItem?>(
+              _ItemOrSeparator<ISearchResultItem>(
                 item: null,
                 separator: S.of(context).app_search_tab_accounts,
               ),
@@ -77,7 +77,7 @@ class SearchResultItemPaginationListWidget
             break;
           case SearchResultItemType.hashtag:
             itemWithSeparators.add(
-              _ItemOrSeparator<ISearchResultItem?>(
+              _ItemOrSeparator<ISearchResultItem>(
                 item: null,
                 separator: S.of(context).app_search_tab_hashtags,
               ),
@@ -91,7 +91,7 @@ class SearchResultItemPaginationListWidget
     });
 
     return PaginationListWidget.buildItemsListView<
-        _ItemOrSeparator<ISearchResultItem?>>(
+        _ItemOrSeparator<ISearchResultItem>>(
       context: context,
       keyboardDismissBehavior: keyboardDismissBehavior,
       items: itemWithSeparators,
@@ -125,8 +125,8 @@ class SearchResultItemPaginationListWidget
   }
 
   Widget buildHashtagListItem(ISearchResultItem item, int index) {
-    return Provider<IHashtag?>.value(
-      value: item.hashtag,
+    return Provider<IHashtag>.value(
+      value: item.hashtag!,
       child: FediListTile(
         isFirstInList: index == 0, //                isFirstInList: false,
         child: const HashtagListItemWidget(),
@@ -196,10 +196,13 @@ void _accountSelectedCallback(BuildContext context, IAccount account) {
 }
 
 class _ItemOrSeparator<T> {
-  final T item;
+  final T? item;
   final String? separator;
 
-  _ItemOrSeparator({required this.item, required this.separator}) {
+  _ItemOrSeparator({
+    required this.item,
+    required this.separator,
+  }) {
     assert(item != null || separator != null);
     assert(!(item != null && separator != null));
   }

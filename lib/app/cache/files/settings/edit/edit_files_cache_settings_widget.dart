@@ -78,7 +78,7 @@ class _EditFilesCacheSettingsMaxSizeLimitFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditFilesCacheSettingsBloc,
-          ISizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc?>(
+          ISizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc>(
         update: (context, value, previous) => value
             .sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc,
         child:
@@ -95,7 +95,7 @@ class _AgeLimitFilesCacheDurationValueFormFieldRowWidget
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditFilesCacheSettingsBloc,
-          IAgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc?>(
+          IAgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc>(
         update: (context, value, previous) =>
             value.ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc,
         child:

@@ -13,9 +13,9 @@ abstract class IEditStatusSensitiveSettingsBloc
   }) =>
       Provider.of<IEditStatusSensitiveSettingsBloc>(context, listen: listen);
 
-  IDurationValueFormFieldBloc? get nsfwDisplayDelayDurationFieldBloc;
+  IDurationValueFormFieldBloc get nsfwDisplayDelayDurationFieldBloc;
 
-  IBoolValueFormFieldBloc? get isAlwaysShowSpoilerFieldBloc;
+  IBoolValueFormFieldBloc get isAlwaysShowSpoilerFieldBloc;
 
-  IBoolValueFormFieldBloc? get isAlwaysShowNsfwFieldBloc;
+  IBoolValueFormFieldBloc get isAlwaysShowNsfwFieldBloc;
 }

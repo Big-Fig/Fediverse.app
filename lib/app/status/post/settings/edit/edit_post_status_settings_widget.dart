@@ -37,7 +37,7 @@ class _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IEditPostStatusSettingsBloc, IBoolValueFormFieldBloc?>(
+    return ProxyProvider<IEditPostStatusSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) =>
           value.markMediaAsNsfwOnAttachFormFieldBloc,
       child: BoolValueFormFieldRowWidget(
@@ -59,7 +59,7 @@ class _EditPostStatusSettingsDefaultStatusLocaleFieldWidget
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditPostStatusSettingsBloc,
-        ILocalizationLocaleSingleFromListValueFormFieldBloc?>(
+        ILocalizationLocaleSingleFromListValueFormFieldBloc>(
       update: (context, value, previous) =>
       value.defaultStatusLocaleFormFieldBloc,
       child: const LocalizationLocaleSingleFromListValueFormFieldRowWidget(),
@@ -77,7 +77,7 @@ class _EditPostStatusSettingsDefaultVisibilityFieldWidget
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditPostStatusSettingsBloc,
-        IStatusVisibilitySelectSingleFromListValueFormFieldBloc?>(
+        IStatusVisibilitySelectSingleFromListValueFormFieldBloc>(
       update: (context, value, previous) =>
           value.defaultVisibilityFormFieldBloc,
       child: const StatusVisibilitySelectSingleFromListValueFormFieldRowWidget(),

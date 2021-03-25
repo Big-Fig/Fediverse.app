@@ -118,7 +118,7 @@ class _EditDatabaseCacheSettingsCurrentMaxEntriesCountByTypeFieldWidget
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditDatabaseCacheSettingsBloc,
-          ICurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc?>(
+          ICurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc>(
         update: (context, value, previous) =>
             value.currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc,
         child:
@@ -135,7 +135,7 @@ class _EditDatabaseCacheSettingsCurrentMaxAgeFieldWidget
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditDatabaseCacheSettingsBloc,
-          ICurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc?>(
+          ICurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc>(
         update: (context, value, previous) =>
             value.currentMaxAgeDatabaseCacheInfoFormFieldBloc,
         child: const CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldRowWidget(),
@@ -150,7 +150,7 @@ class _EditDatabaseCacheSettingsAgeLimitFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditDatabaseCacheSettingsBloc,
-          IAgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc?>(
+          IAgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc>(
         update: (context, value, previous) =>
             value.ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc,
         child:
@@ -167,7 +167,7 @@ class _EditDatabaseCacheSettingsEntriesCountByTypeLimitFieldWidget
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditDatabaseCacheSettingsBloc,
-          IEntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc?>(
+          IEntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc>(
         update: (context, value, previous) => value
             .entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc,
         child:
