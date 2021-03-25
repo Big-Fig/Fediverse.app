@@ -79,8 +79,8 @@ class ScheduledStatusCachedPaginationBloc
     required Widget child,
   }) {
     return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<IScheduledStatus?>,
-            IScheduledStatus?>>(
+        ICachedPaginationBloc<CachedPaginationPage<IScheduledStatus>,
+            IScheduledStatus>>(
       create: (context) =>
           ScheduledStatusCachedPaginationBloc.createFromContext(
         context,

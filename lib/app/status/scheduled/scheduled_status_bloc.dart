@@ -15,7 +15,7 @@ abstract class IScheduledStatusBloc implements IDisposable {
 
   String? get remoteId;
 
-  IScheduledStatus? get scheduledStatus;
+  IScheduledStatus get scheduledStatus;
 
   Stream<IScheduledStatus> get scheduledStatusStream;
 

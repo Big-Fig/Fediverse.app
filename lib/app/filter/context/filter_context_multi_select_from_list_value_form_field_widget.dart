@@ -22,7 +22,7 @@ class FilterContextMultiSelectFromListValueFormFieldWidget
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IFilterContextMultiSelectFromListValueFormFieldBloc,
-        IMultiSelectFromListValueFormFieldBloc<MastodonFilterContextType?>>(
+        IMultiSelectFromListValueFormFieldBloc<MastodonFilterContextType>>(
       update: (context, value, _) => value,
       child: MultiSelectFromListValueFormFieldBlocProxyProvider<
           MastodonFilterContextType>(

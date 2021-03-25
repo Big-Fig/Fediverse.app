@@ -112,7 +112,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
                     contextType != MastodonFilterContextType.unknown,
               )
               .map(
-                (contextType) => contextType!.toJsonValue(),
+                (contextType) => contextType.toJsonValue(),
               )
               .toList() ??
           [],

@@ -38,7 +38,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
           ProxyProvider<IScheduledStatusBloc, IStatus>(
             update: (context, value, previous) =>
                 ScheduledStatusAdapterToStatus(
-              scheduledStatus: value.scheduledStatus!,
+              scheduledStatus: value.scheduledStatus,
               account: IMyAccountBloc.of(context, listen: false).account,
             ),
             child:
