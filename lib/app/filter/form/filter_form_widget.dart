@@ -36,7 +36,7 @@ class _FilterFormExpiresInFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IFilterFormBloc, IDurationDateTimeValueFormFieldBloc?>(
+    return ProxyProvider<IFilterFormBloc, IDurationDateTimeValueFormFieldBloc>(
       update: (context, value, previous) => value.expiresInField,
       child: DurationDateTimeValueFormFieldRowWidget(
         label: S.of(context).app_filter_edit_field_expiresIn_label,

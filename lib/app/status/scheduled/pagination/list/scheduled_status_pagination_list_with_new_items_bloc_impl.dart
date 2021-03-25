@@ -58,7 +58,7 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
   }) {
     return DisposableProvider<
         ICachedPaginationListWithNewItemsBloc<
-            CachedPaginationPage<IScheduledStatus>, IScheduledStatus?>>(
+            CachedPaginationPage<IScheduledStatus>, IScheduledStatus>>(
       create: (context) => ScheduledStatusPaginationListWithNewItemsBloc(
         scheduledStatusCachedListService:
             IScheduledStatusCachedListBloc.of(context, listen: false),
