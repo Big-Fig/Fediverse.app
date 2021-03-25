@@ -13,9 +13,9 @@ abstract class IEditFilesCacheSettingsBloc
   }) =>
       Provider.of<IEditFilesCacheSettingsBloc>(context, listen: listen);
 
-  ISizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc?
+  ISizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
       get sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc;
 
-  IAgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc?
+  IAgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc
       get ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc;
 }

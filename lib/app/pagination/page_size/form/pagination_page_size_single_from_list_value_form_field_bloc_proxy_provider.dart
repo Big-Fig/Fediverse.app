@@ -19,7 +19,7 @@ class PaginationPageSizeSingleFromListValueFormFieldBlocProxyProvider
           ISingleSelectFromListValueFormFieldBloc<PaginationPageSize?>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
-            PaginationPageSize>(
+            PaginationPageSize?>(
           child: child,
         ),
       );

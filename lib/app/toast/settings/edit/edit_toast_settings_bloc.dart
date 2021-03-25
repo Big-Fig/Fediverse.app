@@ -13,20 +13,20 @@ abstract class IEditToastSettingsBloc
   }) =>
       Provider.of<IEditToastSettingsBloc>(context, listen: listen);
 
-  IBoolValueFormFieldBloc? get favouriteFieldBloc;
+  IBoolValueFormFieldBloc get favouriteFieldBloc;
 
-  IBoolValueFormFieldBloc? get followFieldBloc;
+  IBoolValueFormFieldBloc get followFieldBloc;
 
-  IBoolValueFormFieldBloc? get mentionFieldBloc;
+  IBoolValueFormFieldBloc get mentionFieldBloc;
 
-  IBoolValueFormFieldBloc? get reblogFieldBloc;
+  IBoolValueFormFieldBloc get reblogFieldBloc;
 
-  IBoolValueFormFieldBloc? get pollFieldBloc;
+  IBoolValueFormFieldBloc get pollFieldBloc;
 
-  IBoolValueFormFieldBloc? get pleromaChatMentionFieldBloc;
+  IBoolValueFormFieldBloc get pleromaChatMentionFieldBloc;
 
-  IBoolValueFormFieldBloc? get pleromaEmojiReactionFieldBloc;
+  IBoolValueFormFieldBloc get pleromaEmojiReactionFieldBloc;
 
-  IToastHandlingTypeSingleFromListValueFormFieldBloc?
+  IToastHandlingTypeSingleFromListValueFormFieldBloc
       get toastHandlingTypeSingleFromListValueFormFieldBloc;
 }

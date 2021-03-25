@@ -220,7 +220,7 @@ class _StatusBodyCardWidget extends StatelessWidget {
         if (card == null) {
           return const SizedBox.shrink();
         }
-        return Provider<IPleromaCard>.value(
+        return Provider<IPleromaCard?>.value(
           value: card,
           child: const CardWidget(),
         );

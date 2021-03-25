@@ -9,7 +9,7 @@ class CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldRowWidget
   @override
   Widget build(BuildContext context) =>
       CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider(
-        child: InfoFormFieldRowWidget<int>(
+        child: InfoFormFieldRowWidget<int?>(
           label: S
               .of(context)
               .app_cache_database_settings_currentEntriesCountByType_label,
@@ -17,7 +17,7 @@ class CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldRowWidget
           valueToTextMapper: (context, value) => S
               .of(context)
               .app_cache_database_settings_currentEntriesCountByType_value(
-                value,
+                value ?? 0,
               ),
         ),
       );

@@ -157,15 +157,15 @@ class _EditCustomListBodyAlreadyAddedAccountsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditCustomListBloc,
-        ICustomListAccountListNetworkOnlyListBloc?>(
+        ICustomListAccountListNetworkOnlyListBloc>(
       update: (context, editCustomListBloc, previous) =>
           editCustomListBloc.customListAccountListNetworkOnlyListBloc,
-      child: ProxyProvider<IEditCustomListBloc,
-          IAccountNetworkOnlyPaginationBloc?>(
+      child:
+          ProxyProvider<IEditCustomListBloc, IAccountNetworkOnlyPaginationBloc>(
         update: (context, editCustomListBloc, previous) =>
             editCustomListBloc.customListAccountListNetworkOnlyPaginationBloc,
         child: ProxyProvider<IEditCustomListBloc,
-            IEditCustomListAccountListPaginationListBloc?>(
+            IEditCustomListAccountListPaginationListBloc>(
           update: (context, editCustomListBloc, previous) =>
               editCustomListBloc.editCustomListAccountListPaginationListBloc,
           child: EditCustomListAccountListPaginationListBlocProxyProvider(

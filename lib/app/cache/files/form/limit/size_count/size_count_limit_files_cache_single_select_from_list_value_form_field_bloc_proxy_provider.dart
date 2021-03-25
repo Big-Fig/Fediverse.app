@@ -20,7 +20,7 @@ class SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBlocProxyProvide
               FilesCacheSizeLimitCountType?>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
-            FilesCacheSizeLimitCountType>(
+            FilesCacheSizeLimitCountType?>(
           child: child,
         ),
       );

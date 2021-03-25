@@ -12,7 +12,7 @@ abstract class IEditMediaSettingsBloc
   }) =>
       Provider.of<IEditMediaSettingsBloc>(context, listen: listen);
 
-  IBoolValueFormFieldBloc? get autoPlayFieldBloc;
+  IBoolValueFormFieldBloc get autoPlayFieldBloc;
 
-  IBoolValueFormFieldBloc? get autoInitFieldBloc;
+  IBoolValueFormFieldBloc get autoInitFieldBloc;
 }

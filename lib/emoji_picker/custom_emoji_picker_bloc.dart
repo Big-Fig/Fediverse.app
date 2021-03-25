@@ -11,9 +11,9 @@ abstract class ICustomEmojiPickerBloc implements IDisposable {
   }) =>
       Provider.of<ICustomEmojiPickerBloc>(context, listen: listen);
 
-  List<ICustomEmojiPickerCategoryBloc>? get availableCategories;
+  List<ICustomEmojiPickerCategoryBloc> get availableCategories;
 
-  Stream<List<ICustomEmojiPickerCategoryBloc?>> get availableCategoriesStream;
+  Stream<List<ICustomEmojiPickerCategoryBloc>> get availableCategoriesStream;
 
   ICustomEmojiPickerCategoryBloc? get selectedCategoryBloc;
 

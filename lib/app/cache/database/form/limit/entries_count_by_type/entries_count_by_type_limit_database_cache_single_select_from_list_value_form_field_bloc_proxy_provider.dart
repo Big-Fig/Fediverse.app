@@ -20,7 +20,7 @@ class EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldBlocProxyPro
               DatabaseCacheEntriesCountByTypeLimitType?>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
-            DatabaseCacheEntriesCountByTypeLimitType>(
+            DatabaseCacheEntriesCountByTypeLimitType?>(
           child: child,
         ),
       );

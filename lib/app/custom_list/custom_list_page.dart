@@ -264,7 +264,7 @@ MaterialPageRoute createCustomListPageRoute({
                               .provideToContext(
                             context,
                             mergeNewItemsImmediately: false,
-                            child: Provider<ICustomList?>.value(
+                            child: Provider<ICustomList>.value(
                               value: customList,
                               child: DisposableProxyProvider<ICustomList,
                                   ICustomListBloc>(

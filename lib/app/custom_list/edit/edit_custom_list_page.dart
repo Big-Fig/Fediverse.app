@@ -62,7 +62,7 @@ MaterialPageRoute createEditCustomListPageRoute({
       onSubmit: onSubmit,
       onDelete: onDelete,
       child: ProxyProvider<IEditCustomListBloc,
-          IEditCustomListAccountListPaginationListBloc?>(
+          IEditCustomListAccountListPaginationListBloc>(
         update: (context, value, _) =>
             value.editCustomListAccountListPaginationListBloc,
         child: const EditCustomListPage(),

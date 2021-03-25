@@ -32,7 +32,7 @@ class _EditChatSettingsCountConversationsInChatsUnreadBadgesFieldWidget
 
   @override
   Widget build(BuildContext context) =>
-      ProxyProvider<IEditChatSettingsBloc, IBoolValueFormFieldBloc?>(
+      ProxyProvider<IEditChatSettingsBloc, IBoolValueFormFieldBloc>(
         update: (context, value, previous) =>
             value.countConversationsInChatsUnreadBadgesFieldBloc,
         child: BoolValueFormFieldRowWidget(
@@ -51,7 +51,7 @@ class _EditChatSettingsReplaceConversationsWithPleromaChatsFieldWidget
 
   @override
   Widget build(BuildContext context) =>
-      ProxyProvider<IEditChatSettingsBloc, IBoolValueFormFieldBloc?>(
+      ProxyProvider<IEditChatSettingsBloc, IBoolValueFormFieldBloc>(
         update: (context, value, previous) =>
             value.replaceConversationsWithPleromaChatsFieldBloc,
         child: BoolValueFormFieldRowWidget(

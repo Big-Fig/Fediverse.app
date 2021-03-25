@@ -119,7 +119,7 @@ class EditCustomListBloc extends DisposableOwner
   late IAccountPaginationListBloc accountPaginationListBloc;
 
   @override
-  IEditCustomListAccountListPaginationListBloc?
+  late IEditCustomListAccountListPaginationListBloc
       editCustomListAccountListPaginationListBloc;
 
   @override
@@ -198,14 +198,14 @@ class EditCustomListBloc extends DisposableOwner
         customListFormBlocIsSomethingChanged:
             customListFormBloc.isSomethingChanged,
         editCustomListAccountListPaginationListBlocIsSomethingChanged:
-            editCustomListAccountListPaginationListBloc!.isSomethingChanged,
+            editCustomListAccountListPaginationListBloc.isSomethingChanged,
       );
 
   @override
   Stream<bool> get isReadyToSubmitStream => Rx.combineLatest3(
         customListFormBloc.isHaveAtLeastOneErrorStream,
         customListFormBloc.isSomethingChangedStream,
-        editCustomListAccountListPaginationListBloc!.isSomethingChangedStream,
+        editCustomListAccountListPaginationListBloc.isSomethingChangedStream,
         (
           dynamic customListFormBlocIsHaveAtLeastOneError,
           dynamic customListFormBlocIsSomethingChanged,
@@ -239,9 +239,9 @@ class EditCustomListBloc extends DisposableOwner
       title: customListFormBloc.titleField.currentValue,
     );
 
-    if (editCustomListAccountListPaginationListBloc!.isSomethingChanged) {
+    if (editCustomListAccountListPaginationListBloc.isSomethingChanged) {
       var addedAccounts =
-          editCustomListAccountListPaginationListBloc!.addedItems;
+          editCustomListAccountListPaginationListBloc.addedItems;
 
       // TODO: remove hack
       // Pleroma issue: it is only possible to add one account in one request
@@ -257,7 +257,7 @@ class EditCustomListBloc extends DisposableOwner
       }
 
       var removedAccounts =
-          editCustomListAccountListPaginationListBloc!.removedItems;
+          editCustomListAccountListPaginationListBloc.removedItems;
 
       if (removedAccounts.isNotEmpty) {
         // TODO: remove hack
@@ -272,7 +272,7 @@ class EditCustomListBloc extends DisposableOwner
         }
       }
 
-      await editCustomListAccountListPaginationListBloc!
+      await editCustomListAccountListPaginationListBloc
           .clearChangesAndRefresh();
     }
 
@@ -319,7 +319,7 @@ class EditCustomListBloc extends DisposableOwner
 
   @override
   bool get isListContainsAccounts => _calculateIsListContainsAccounts(
-        editCustomListAccountListPaginationListBloc!.items,
+        editCustomListAccountListPaginationListBloc.items,
       );
 
   bool _calculateIsListContainsAccounts(List<IAccount>? items) {
@@ -332,7 +332,7 @@ class EditCustomListBloc extends DisposableOwner
 
   @override
   Stream<bool> get isListContainsAccountsStream =>
-      editCustomListAccountListPaginationListBloc!.itemsStream.map(
+      editCustomListAccountListPaginationListBloc.itemsStream.map(
         (items) => _calculateIsListContainsAccounts(items),
       );
 }

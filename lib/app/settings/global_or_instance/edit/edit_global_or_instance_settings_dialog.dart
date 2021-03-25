@@ -58,11 +58,12 @@ void showEditGlobalOrInstanceSettingsDialog({
             initialData: isUseGlobalSettingsFormBoolFieldBloc
                 .globalOrInstanceSettingsType,
             builder: (context, snapshot) {
-              var globalOrInstanceSettingsType = snapshot.data;
+              var globalOrInstanceSettingsType =
+                  snapshot.data ?? GlobalOrInstanceSettingsType.global;
               _logger.finest(() =>
                   "globalOrInstanceSettingsType $globalOrInstanceSettingsType");
 
-              return Provider<GlobalOrInstanceSettingsType?>.value(
+              return Provider<GlobalOrInstanceSettingsType>.value(
                 value: globalOrInstanceSettingsType,
                 child: _EditGlobalOrInstanceSettingsDialogBodyWidget(
                   child: childContextBuilder(

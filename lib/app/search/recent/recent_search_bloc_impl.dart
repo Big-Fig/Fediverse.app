@@ -34,7 +34,12 @@ class RecentSearchBloc extends DisposableOwner implements IRecentSearchBloc {
 
           var recentItems = oldValue.recentItems!;
           if (recentItems.length > recentCountLimit) {
-            recentItems = recentItems.sublist(0, recentCountLimit);
+            recentItems = recentItems
+                .sublist(
+                  0,
+                  recentCountLimit,
+                )
+                .toList();
           }
 
           if (confirmedSearchTerm.isNotEmpty == true) {

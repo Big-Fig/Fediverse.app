@@ -29,13 +29,13 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
 
   @override
   IEditTimelineSettingsBloc? get editTimelineSettingsBloc =>
-      editTimelineSettingsBlocSubject.value!;
+      editTimelineSettingsBlocSubject.value;
 
   @override
-  Stream<IEditTimelineSettingsBloc> get editTimelineSettingsBlocStream =>
+  Stream<IEditTimelineSettingsBloc?> get editTimelineSettingsBlocStream =>
       editTimelineSettingsBlocSubject.stream;
 
-  late BehaviorSubject<IEditTimelineSettingsBloc>
+  late BehaviorSubject<IEditTimelineSettingsBloc?>
       editTimelineSettingsBlocSubject;
 
   @override

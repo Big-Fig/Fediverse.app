@@ -29,7 +29,7 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
         //     hint: null,
         //   ),
         // ),
-        ProxyProvider<ICreateTimelineBloc, IStringValueFormFieldBloc?>(
+        ProxyProvider<ICreateTimelineBloc, IStringValueFormFieldBloc>(
           update: (context, value, previous) => value.nameFieldBloc,
           child: StringValueFormFieldRowWidget(
             label: S.of(context).app_timeline_create_field_title_label,
@@ -40,12 +40,12 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
           ),
         ),
         ProxyProvider<ICreateTimelineBloc,
-            ITimelineTypeSingleFromListValueFormFieldBloc?>(
+            ITimelineTypeSingleFromListValueFormFieldBloc>(
           update: (context, value, previous) => value.typeFieldBloc,
           child: const TimelineTypeSingleFromListValueFormFieldRowWidget(),
         ),
         StreamBuilder<TimelineType?>(
-          stream: createTimelineBloc.typeFieldBloc!.currentValueStream,
+          stream: createTimelineBloc.typeFieldBloc.currentValueStream,
           builder: (context, snapshot) {
             var timelineType = snapshot.data;
 
@@ -74,7 +74,7 @@ class _CreateItemTimelinesHomeTabStorageSettingsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var createTimelineBloc = ICreateTimelineBloc.of(context);
 
-    return StreamBuilder<IEditTimelineSettingsBloc>(
+    return StreamBuilder<IEditTimelineSettingsBloc?>(
       stream: createTimelineBloc.editTimelineSettingsBlocStream,
       builder: (context, snapshot) {
         var editBloc = snapshot.data;

@@ -54,7 +54,7 @@ class _DurationDateTimeValueFormFieldRowValueWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var fieldBloc = IDurationDateTimeValueFormFieldBloc.of(context);
 
-    return StreamBuilder<bool?>(
+    return StreamBuilder<bool>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
@@ -95,7 +95,7 @@ class DurationDateTimeValueFormFieldRowValueTextWidget extends StatelessWidget {
     var fieldBloc = IDurationDateTimeValueFormFieldBloc.of(context);
 
     var fediUiTextTheme = IFediUiTextTheme.of(context);
-    return StreamBuilder<bool?>(
+    return StreamBuilder<bool>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {

@@ -16,13 +16,13 @@ abstract class IEditCustomListBloc extends IDisposable {
 
   Stream<bool> get isListContainsAccountsStream;
 
-  ICustomListAccountListNetworkOnlyListBloc?
+  ICustomListAccountListNetworkOnlyListBloc
       get customListAccountListNetworkOnlyListBloc;
 
-  IAccountNetworkOnlyPaginationBloc?
+  IAccountNetworkOnlyPaginationBloc
       get customListAccountListNetworkOnlyPaginationBloc;
 
-  IEditCustomListAccountListPaginationListBloc?
+  IEditCustomListAccountListPaginationListBloc
       get editCustomListAccountListPaginationListBloc;
 
   ISelectAccountListBloc get selectAccountListBloc;

@@ -31,7 +31,7 @@ class _EditMediaSettingsAutoPlayFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IEditMediaSettingsBloc, IBoolValueFormFieldBloc?>(
+    return ProxyProvider<IEditMediaSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.autoPlayFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S.of(context).app_media_settings_field_autoPlay_label,
@@ -47,7 +47,7 @@ class _EditMediaSettingsAutoInitFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IEditMediaSettingsBloc, IBoolValueFormFieldBloc?>(
+    return ProxyProvider<IEditMediaSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.autoInitFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S.of(context).app_media_settings_field_autoInit_label,

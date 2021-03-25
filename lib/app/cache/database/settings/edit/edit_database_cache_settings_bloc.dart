@@ -15,16 +15,16 @@ abstract class IEditDatabaseCacheSettingsBloc
   }) =>
       Provider.of<IEditDatabaseCacheSettingsBloc>(context, listen: listen);
 
-  IAgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc?
+  IAgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
       get ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc;
 
-  IEntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc?
+  IEntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
       get entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc;
 
-  ICurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc?
+  ICurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc
       get currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc;
 
-  ICurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc?
+  ICurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc
       get currentMaxAgeDatabaseCacheInfoFormFieldBloc;
 
   Future clearByLimits();

@@ -14,11 +14,11 @@ abstract class IEditPostStatusSettingsBloc
   }) =>
       Provider.of<IEditPostStatusSettingsBloc>(context, listen: listen);
 
-  IBoolValueFormFieldBloc? get markMediaAsNsfwOnAttachFormFieldBloc;
+  IBoolValueFormFieldBloc get markMediaAsNsfwOnAttachFormFieldBloc;
 
-  IStatusVisibilitySelectSingleFromListValueFormFieldBloc?
+  IStatusVisibilitySelectSingleFromListValueFormFieldBloc
       get defaultVisibilityFormFieldBloc;
 
-  ILocalizationLocaleSingleFromListValueFormFieldBloc?
+  ILocalizationLocaleSingleFromListValueFormFieldBloc
       get defaultStatusLocaleFormFieldBloc;
 }
