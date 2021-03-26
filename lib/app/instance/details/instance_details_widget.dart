@@ -35,7 +35,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/style.dart';
 import 'package:intl/intl.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+
+final _logger = Logger("pleroma_oauth_service_impl.dart");
 
 final _mbSizeNumberFormat = NumberFormat("#.#");
 
@@ -52,10 +55,11 @@ class InstanceDetailsWidget extends StatelessWidget {
         return FediListSmartRefresherWidget(
           controller: instanceDetailsBloc.refreshController,
           onRefresh: () async {
-            var result = await instanceDetailsBloc.refresh();
-            if (result != null) {
+            try {
+              await instanceDetailsBloc.refresh();
               return FediListSmartRefresherLoadingState.loaded;
-            } else {
+            } catch (e, stackTrace) {
+              _logger.warning(() => "instanceDetailsBloc.refresh", e, stackTrace);
               return FediListSmartRefresherLoadingState.failed;
             }
           },

@@ -38,7 +38,7 @@ class ExternalShareMediaPage extends StatelessWidget {
 
 void goToExternalShareMediaPage({
   required BuildContext context,
-  required IPleromaMediaAttachment? mediaAttachment,
+  required IPleromaMediaAttachment mediaAttachment,
   required bool isShareAsLinkPossible,
 }) {
   Navigator.push(
@@ -53,7 +53,7 @@ void goToExternalShareMediaPage({
 
 MaterialPageRoute createExternalShareMediaPageRoute({
   required BuildContext context,
-  required IPleromaMediaAttachment? mediaAttachment,
+  required IPleromaMediaAttachment mediaAttachment,
   required bool isShareAsLinkPossible,
 }) {
   return MaterialPageRoute(
@@ -61,7 +61,7 @@ MaterialPageRoute createExternalShareMediaPageRoute({
       context,
       mediaAttachment: mediaAttachment,
       child: Provider<IPleromaMediaAttachment>.value(
-        value: mediaAttachment!,
+        value: mediaAttachment,
         child: ExternalShareMediaPage(
           isShareAsLinkPossible: isShareAsLinkPossible,
         ),

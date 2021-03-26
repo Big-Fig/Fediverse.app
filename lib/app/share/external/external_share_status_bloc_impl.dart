@@ -51,9 +51,8 @@ class ExternalShareStatusBloc extends ExternalShareBloc
           ? null
           : status.mediaAttachments
               ?.map(
-                (mediaAttachment) => ShareUrlFile(
+                (mediaAttachment) => ShareUrlFile.fromUrl(
                   url: mediaAttachment.url,
-                  filename: mediaAttachment.description,
                 ),
               )
               .toList(),

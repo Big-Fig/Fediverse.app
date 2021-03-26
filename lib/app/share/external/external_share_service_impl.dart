@@ -1,22 +1,13 @@
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:fedi/app/share/external/external_share_model.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:flutter/foundation.dart';
+import 'package:fedi/file/temp/temp_file_helper.dart';
+import 'package:fedi/file/temp/temp_file_model.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:share/share.dart';
 
 class ExternalShareService extends DisposableOwner
     implements IExternalShareService {
-  static Future<Uint8List> loadBytesFromUrl(String url) async {
-    var request = await HttpClient().getUrl(Uri.parse(url));
-    var response = await request.close();
-    Uint8List bytes = await consolidateHttpClientResponseBytes(response);
-    return bytes;
-  }
-
   @override
   Future share({
     required String popupTitle,
@@ -27,10 +18,17 @@ class ExternalShareService extends DisposableOwner
 
     if (urlFiles?.isNotEmpty == true) {
       if (text?.isNotEmpty == true) {
-        shareSeveralUrlFilesAsLinksWithText(popupTitle, text, urlFiles);
+        shareSeveralUrlFilesAsLinksWithText(
+          popupTitle: popupTitle,
+          text: text,
+          urlFiles: urlFiles!,
+        );
       } else {
         if (urlFiles!.length == 1) {
-          await shareSingleUrlFileAsBytesWithoutText(urlFiles[0], popupTitle);
+          await shareSingleUrlFileAsBytesWithoutText(
+            popupTitle: popupTitle,
+            urlFile: urlFiles[0],
+          );
         } else {
           await shareSeveralUrlFilesAsBytesWithoutText(
             urlFiles,
@@ -56,21 +54,31 @@ class ExternalShareService extends DisposableOwner
 
     // several files sharing not supported with text
     if (urlFilesPossibleToShareAsBytes.length == 1) {
-      var firstUrlFileToShareAsBytes = urlFilesPossibleToShareAsBytes.first;
-      var url = firstUrlFileToShareAsBytes.url;
-      var mimeType = mime(url);
+      var firstUrlFileToShareAsFiles = urlFilesPossibleToShareAsBytes.first;
+      var url = firstUrlFileToShareAsFiles.url;
       var nonFirstUrlFileToShareAsBytes = urlFiles
-          .where((attachment) => attachment != firstUrlFileToShareAsBytes);
+          .where((attachment) => attachment != firstUrlFileToShareAsFiles);
       if (nonFirstUrlFileToShareAsBytes.isNotEmpty == true) {
         text +=
             "[${nonFirstUrlFileToShareAsBytes.map((attachment) => attachment.url).join(", ")}]";
       }
-      //
-      // Share.shareFiles(paths)
-      //
-      // await Share.file(popupTitle, firstUrlFileToShareAsBytes.filename,
-      //     await loadBytesFromUrl(url), mimeType,
-      //     text: text);
+
+      var file = await TempFileHelper.downloadFileToTempFolder(
+        request: DownloadTempFileRequest(
+          url: url,
+          filenameWithExtension: firstUrlFileToShareAsFiles.filenameWithExtension,
+        ),
+      );
+
+      await Share.shareFiles(
+        [
+          file.path,
+        ],
+        subject: popupTitle,
+        text: text,
+      );
+
+      await file.delete();
     } else {
       // share everything as text
       text +=
@@ -85,32 +93,44 @@ class ExternalShareService extends DisposableOwner
     );
   }
 
-  Future shareSingleUrlFileAsBytesWithoutText(
-    ShareUrlFile urlFile,
-    String popupTitle,
-  ) async {
+  Future shareSingleUrlFileAsBytesWithoutText({
+    required String popupTitle,
+    required ShareUrlFile urlFile,
+  }) async {
     var url = urlFile.url;
-    var filename = urlFile.filename;
+    var filename = urlFile.filenameWithExtension;
     // other types too big, for example video
     // todo: improve sharing other media types
     if (isPossibleToShareAsBytes(url)) {
-      Uint8List bytes = await loadBytesFromUrl(url!);
-      // await Share.file(popupTitle, filename, bytes, mime(url));
+      var file = await TempFileHelper.downloadFileToTempFolder(
+        request: DownloadTempFileRequest(
+          url: url,
+          filenameWithExtension: filename,
+        ),
+      );
+
+      await Share.shareFiles(
+        [
+          file.path,
+        ],
+        subject: popupTitle,
+      );
+
+      await file.delete();
     } else {
-      shareTextOnly(popupTitle, url!);
+      shareTextOnly(popupTitle, url);
     }
   }
 
-  void shareSeveralUrlFilesAsLinksWithText(
-    String popupTitle,
-    String? text,
-    List<ShareUrlFile>? urlFiles,
-  ) {
-    // Share.text(
-    //   popupTitle,
-    //   "$text  [${urlFiles.map((urlFile) => urlFile.url).join(", ")}]",
-    //   textMimeType,
-    // );
+  void shareSeveralUrlFilesAsLinksWithText({
+    required String popupTitle,
+    required String? text,
+    required List<ShareUrlFile> urlFiles,
+  }) {
+    shareTextOnly(
+      popupTitle,
+      "${text ?? ""}  [${urlFiles.map((urlFile) => urlFile.url).join(", ")}]",
+    );
   }
 
   bool isPossibleToShareAsBytes(String? url) => mime(url)!.contains("image");
