@@ -42,7 +42,7 @@ class _StatusReblogActionCounterWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Provider.value(
+        return Provider<int>.value(
           value: reblogsCount,
           child: StatusActionCounterWidget(
             onClick: _onCounterClick,

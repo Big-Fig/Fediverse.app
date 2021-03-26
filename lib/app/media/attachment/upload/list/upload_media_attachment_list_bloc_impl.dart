@@ -41,7 +41,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
         (mediaAttachmentBlocs) {
           uploadedSubscription?.dispose();
           uploadedSubscription = DisposableOwner();
-          mediaAttachmentBlocs!.forEach(
+          mediaAttachmentBlocs.forEach(
             (bloc) {
               uploadedSubscription!.addDisposable(
                 streamSubscription: bloc.uploadStateStream.listen(
@@ -58,7 +58,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   }
 
   // ignore: close_sinks
-  BehaviorSubject<List<IUploadMediaAttachmentBloc>?>
+  BehaviorSubject<List<IUploadMediaAttachmentBloc>>
       mediaAttachmentBlocsSubject = BehaviorSubject.seeded([]);
 
   // ignore: close_sinks
@@ -74,24 +74,24 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       isAllAttachedMediaUploadedSubject.stream;
 
   @override
-  List<IUploadMediaAttachmentBloc>? get onlyMediaAttachmentBlocs =>
-      mediaAttachmentBlocs?.where((bloc) => bloc.isMedia).toList();
+  List<IUploadMediaAttachmentBloc> get onlyMediaAttachmentBlocs =>
+      mediaAttachmentBlocs.where((bloc) => bloc.isMedia).toList();
 
   @override
-  Stream<List<IUploadMediaAttachmentBloc>?>
+  Stream<List<IUploadMediaAttachmentBloc>>
       get onlyMediaAttachmentBlocsStream =>
           mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
-              mediaAttachmentBlocs?.where((bloc) => bloc.isMedia).toList());
+              mediaAttachmentBlocs.where((bloc) => bloc.isMedia).toList());
 
   @override
-  List<IUploadMediaAttachmentBloc>? get onlyNonMediaAttachmentBlocs =>
-      mediaAttachmentBlocs?.where((bloc) => !bloc.isMedia).toList();
+  List<IUploadMediaAttachmentBloc> get onlyNonMediaAttachmentBlocs =>
+      mediaAttachmentBlocs.where((bloc) => !bloc.isMedia).toList();
 
   @override
-  Stream<List<IUploadMediaAttachmentBloc>?>
+  Stream<List<IUploadMediaAttachmentBloc>>
       get onlyNonMediaAttachmentBlocsStream =>
           mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
-              mediaAttachmentBlocs?.where((bloc) => !bloc.isMedia).toList());
+              mediaAttachmentBlocs.where((bloc) => !bloc.isMedia).toList());
 
   @override
   bool get isMaximumMediaAttachmentCountReached =>
@@ -133,11 +133,11 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       isMaximumMediaAttachmentCountReachedStream.map((value) => !value);
 
   @override
-  List<IUploadMediaAttachmentBloc>? get mediaAttachmentBlocs =>
-      mediaAttachmentBlocsSubject.value;
+  List<IUploadMediaAttachmentBloc> get mediaAttachmentBlocs =>
+      mediaAttachmentBlocsSubject.value!;
 
   @override
-  Stream<List<IUploadMediaAttachmentBloc>?> get mediaAttachmentBlocsStream =>
+  Stream<List<IUploadMediaAttachmentBloc>> get mediaAttachmentBlocsStream =>
       mediaAttachmentBlocsSubject.stream;
 
   @override
@@ -150,7 +150,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
         pleromaMediaAttachmentService: pleromaMediaAttachmentService,
         maximumFileSizeInBytes: maximumFileSizeInBytes,
       );
-      mediaAttachmentBlocs!.add(uploadMediaAttachmentBloc);
+      mediaAttachmentBlocs.add(uploadMediaAttachmentBloc);
       mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
       await uploadMediaAttachmentBloc.startUpload();
     }
@@ -169,14 +169,14 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     IUploadMediaAttachmentBloc mediaAttachmentBloc,
   ) {
     mediaAttachmentBloc.dispose();
-    mediaAttachmentBlocs!.remove(mediaAttachmentBloc);
+    mediaAttachmentBlocs.remove(mediaAttachmentBloc);
     mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
   }
 
   IUploadMediaAttachmentBloc? findMediaAttachmentBlocByFilePickerFile(
     IMediaDeviceFile mediaDeviceFile,
   ) =>
-      mediaAttachmentBlocs!.firstWhereOrNull((bloc) {
+      mediaAttachmentBlocs.firstWhereOrNull((bloc) {
         if (bloc is UploadMediaAttachmentBlocDevice) {
           return bloc.mediaDeviceFile == mediaDeviceFile;
         } else {
@@ -213,18 +213,18 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   @override
   Future clear() async {
-    mediaAttachmentBlocs!.clear();
+    mediaAttachmentBlocs.clear();
     if (!mediaAttachmentBlocsSubject.isClosed) {
       mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
     }
 
-    for (var mediaAttachmentBloc in mediaAttachmentBlocs!) {
+    for (var mediaAttachmentBloc in mediaAttachmentBlocs) {
       await mediaAttachmentBloc.dispose();
     }
   }
 
   void _recalculateIsAllAttachedMediaUploaded() {
-    var allUploaded = mediaAttachmentBlocs!.fold(
+    var allUploaded = mediaAttachmentBlocs.fold(
       true,
       (dynamic previousValue, element) =>
           previousValue &&
@@ -236,7 +236,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   @override
   void addUploadedAttachment(IPleromaMediaAttachment attachment) {
-    mediaAttachmentBlocs!.add(
+    mediaAttachmentBlocs.add(
       UploadedUploadMediaAttachmentBloc(
         pleromaMediaAttachment: attachment,
       ),

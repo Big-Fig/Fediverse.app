@@ -74,7 +74,7 @@ class _StatusFavouriteActionCounterWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Provider.value(
+        return Provider<int>.value(
           value: favouritesCount,
           child: StatusActionCounterWidget(
             onClick: _onCounterClick,

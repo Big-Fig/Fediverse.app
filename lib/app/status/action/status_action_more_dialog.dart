@@ -39,7 +39,7 @@ void showStatusActionMoreDialog({
     context: context,
     child: Provider<IStatusBloc>.value(
       value: statusBloc,
-      child: Provider.value(
+      child: Provider<IStatus>.value(
         value: statusBloc.status,
         child: const StatusActionMoreDialogBody(),
       ),

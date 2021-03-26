@@ -21,10 +21,10 @@ extension PendingStateExtension on PendingState {
         result = _notSenYetPendingStateJsonValue;
         break;
       case PendingState.pending:
-        result = _publishedPendingStateJsonValue;
+        result = _pendingPendingStateJsonValue;
         break;
       case PendingState.published:
-        result = _pendingPendingStateJsonValue;
+        result = _publishedPendingStateJsonValue;
         break;
       case PendingState.fail:
         result = _failPendingStateJsonValue;

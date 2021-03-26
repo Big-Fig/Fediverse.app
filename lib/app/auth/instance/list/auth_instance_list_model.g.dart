@@ -17,7 +17,7 @@ class AuthInstanceListAdapter extends TypeAdapter<AuthInstanceList> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return AuthInstanceList(
-      instances: (fields[0] as List?)?.cast<AuthInstance?>(),
+      instances: (fields[0] as List?)?.cast<AuthInstance>(),
     );
   }
 
@@ -47,13 +47,12 @@ class AuthInstanceListAdapter extends TypeAdapter<AuthInstanceList> {
 AuthInstanceList _$AuthInstanceListFromJson(Map<String, dynamic> json) {
   return AuthInstanceList(
     instances: (json['instances'] as List<dynamic>?)
-        ?.map((e) =>
-            e == null ? null : AuthInstance.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => AuthInstance.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
 
 Map<String, dynamic> _$AuthInstanceListToJson(AuthInstanceList instance) =>
     <String, dynamic>{
-      'instances': instance.instances?.map((e) => e?.toJson()).toList(),
+      'instances': instance.instances?.map((e) => e.toJson()).toList(),
     };

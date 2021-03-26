@@ -154,7 +154,7 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
     return DisposableProvider<
         ICachedPaginationListWithNewItemsBloc<
             CachedPaginationPage<IConversationChatMessage>,
-            IConversationChatMessage?>>(
+            IConversationChatMessage>>(
       create: (context) =>
           ConversationChatMessageCachedPaginationListWithNewItemsBloc
               .createFromContext(

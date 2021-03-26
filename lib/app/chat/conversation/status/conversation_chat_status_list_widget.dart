@@ -156,7 +156,7 @@ class ConversationChatStatusListWidget
           isLastInDayGroup = true;
           isLastInMinuteGroup = true;
         }
-        var statusWidget = Provider.value(
+        var statusWidget = Provider<IStatus>.value(
           value: currentMessage,
           child: DisposableProxyProvider<IStatus, IStatusBloc>(
             update: (context, value, previous) =>

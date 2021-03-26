@@ -15,13 +15,13 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
         listen: listen,
       );
 
-  List<IUploadMediaAttachmentBloc>? get onlyMediaAttachmentBlocs;
+  List<IUploadMediaAttachmentBloc> get onlyMediaAttachmentBlocs;
 
-  Stream<List<IUploadMediaAttachmentBloc>?> get onlyMediaAttachmentBlocsStream;
+  Stream<List<IUploadMediaAttachmentBloc>> get onlyMediaAttachmentBlocsStream;
 
-  List<IUploadMediaAttachmentBloc>? get onlyNonMediaAttachmentBlocs;
+  List<IUploadMediaAttachmentBloc> get onlyNonMediaAttachmentBlocs;
 
-  Stream<List<IUploadMediaAttachmentBloc>?>
+  Stream<List<IUploadMediaAttachmentBloc>>
       get onlyNonMediaAttachmentBlocsStream;
 
   bool get isMaximumMediaAttachmentCountReached;

@@ -4,7 +4,7 @@ extension RawStringFromHtmlStringExtension on String {
   String extractRawStringFromHtmlString() {
     var document = parse(this);
 
-    var parsedString = parse(document.text.toString()).documentElement?.text ?? "";
+    String parsedString = document.body?.text ?? document.text ?? this;
 
     return parsedString;
   }

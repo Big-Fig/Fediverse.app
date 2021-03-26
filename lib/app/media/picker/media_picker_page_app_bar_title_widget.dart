@@ -80,7 +80,7 @@ Future<T?> _showFolderChooserModalBottomSheet<T>(
   var fediUiTextTheme = IFediUiTextTheme.of(context, listen: false);
   return showFediModalBottomSheetDialog<T>(
     context: context,
-    child: Provider.value(
+    child: Provider<IMediaDeviceGalleryBloc>.value(
       value: mediaDeviceGalleryBloc,
       child: Padding(
         padding: FediPadding.allBigPadding,

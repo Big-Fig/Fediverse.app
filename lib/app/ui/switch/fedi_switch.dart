@@ -18,15 +18,18 @@ class FediSwitch extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Provider.value(
+  Widget build(BuildContext context) => Provider<bool>.value(
         value: value,
         child: DisposableProxyProvider<bool, ICustomSwitchBloc>(
           update: (context, value, previous) {
             var switchBloc = CustomSwitchBloc(startValue: value);
-            switchBloc.addDisposable(streamSubscription:
-                switchBloc.currentValueStream.listen((newValue) {
-              onChanged(newValue);
-            }));
+            switchBloc.addDisposable(
+              streamSubscription: switchBloc.currentValueStream.listen(
+                (newValue) {
+                  onChanged(newValue);
+                },
+              ),
+            );
             return switchBloc;
           },
           child: CustomSwitch(

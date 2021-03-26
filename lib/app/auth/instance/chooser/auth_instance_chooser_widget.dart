@@ -31,7 +31,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
 
     _logger.finest(() => "build");
 
-    return StreamBuilder<List<AuthInstance?>>(
+    return StreamBuilder<List<AuthInstance>>(
       stream: instanceChooserBloc.instancesAvailableToChooseStream,
       builder: (context, snapshot) {
         var instancesAvailableToChoose = snapshot.data;
@@ -44,7 +44,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
           shrinkWrap: true,
           children: [
             const _AuthInstanceChooserSelectedInstanceRowWidget(),
-            StreamBuilder<List<AuthInstance?>>(
+            StreamBuilder<List<AuthInstance>>(
               stream: instanceChooserBloc.instancesAvailableToChooseStream,
               builder: (context, snapshot) {
                 var instancesAvailableToChoose = snapshot.data;
@@ -55,7 +55,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                 _logger.finest(() => "build instancesAvailableToChoose "
                     "${instancesAvailableToChoose.length}");
 
-                return Provider<List<AuthInstance?>>.value(
+                return Provider<List<AuthInstance>>.value(
                   value: instancesAvailableToChoose,
                   child: const _AuthInstanceChooserItemsToChooseWidget(),
                 );
@@ -173,7 +173,11 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
         stream: instanceChooserBloc.selectedInstanceStream,
         builder: (context, snapshot) {
           var authInstance = snapshot.data;
-          return Provider.value(
+
+          if(authInstance == null) {
+            return const SizedBox.shrink();
+          }
+          return Provider<AuthInstance>.value(
             value: authInstance,
             child: DisposableProxyProvider<AuthInstance,
                 IAuthInstanceChooserInstanceListItemBloc>(

@@ -65,7 +65,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     addDisposable(disposable: restService);
     addDisposable(disposable: pleromaRestService);
     addDisposable(disposable: pleromaCaptchaService);
-    addDisposable(disposable: registerAuthInstanceFormBloc);
+
     addDisposable(disposable: pleromaInstanceService);
   }
 
@@ -126,5 +126,6 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
       localizationSettingsBloc: localizationSettingsBloc,
       approvalRequired: pleromaInstance.approvalRequired,
     );
+    addDisposable(disposable: registerAuthInstanceFormBloc);
   }
 }

@@ -11,7 +11,7 @@ class UploadMediaAttachmentListNonMediaWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaAttachmentsCollectionBloc =
         IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-    return StreamBuilder<List<IUploadMediaAttachmentBloc>?>(
+    return StreamBuilder<List<IUploadMediaAttachmentBloc>>(
       stream: mediaAttachmentsCollectionBloc.onlyNonMediaAttachmentBlocsStream,
       builder: (context, snapshot) {
         var mediaItemBlocs = snapshot.data;
@@ -28,7 +28,7 @@ class UploadMediaAttachmentListNonMediaWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ...mediaItemBlocs!.map((mediaItemBloc) {
-                    return Provider.value(
+                    return Provider<IUploadMediaAttachmentBloc>.value(
                       value: mediaItemBloc,
                       child: Padding(
                         padding: const EdgeInsets.only(

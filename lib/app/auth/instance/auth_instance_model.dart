@@ -21,9 +21,9 @@ class AuthInstance extends IJsonObject {
   final String? urlSchema;
   @HiveField(1)
   @JsonKey(name: "url_host")
-  final String? urlHost;
+  final String urlHost;
   @HiveField(2)
-  final String? acct;
+  final String acct;
   @HiveField(3)
   final PleromaOAuthToken? token;
   @HiveField(4)
