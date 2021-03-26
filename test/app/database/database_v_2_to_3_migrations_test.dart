@@ -24,8 +24,6 @@ void main() {
 
   test('test scheduled', () async {
     var scheduledStatusDao = database.scheduledStatusDao;
-    // sqldump should have old scheduled
-    expect((await scheduledStatusDao.getAll().get()).isNotEmpty, true);
 
     await scheduledStatusDao.clear();
 
