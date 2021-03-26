@@ -64,10 +64,11 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
 
   void _onListen() {
     listening = true;
-    _logger.finest(() => "_onListen");
+    _logger.finest(() => "_onListen called");
     _source = config.createChannelSource();
+    var eventsStream = _source!.eventsStream;
     _sourceSubscription =
-        _source!.eventsStream.listen(
+        eventsStream.listen(
       (event) {
         _logger.finest(() => "newEvent event");
         listeners.forEach(

@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 
 import '../pleroma/websockets/pleroma_websockets_service_impl_test.mocks.dart';
+import 'websockets_channel_source_mock.dart';
 import 'websockets_model_helper.dart';
 
 @GenerateMocks([
@@ -35,6 +36,11 @@ void main() {
         queryArgs: {"arg": "value"},
         baseUrl: Uri.parse("wss://fedi.app"),
         connectionService: connectionServiceMock,
+        sourceCreator: () => WebSocketsChannelSourceMock<TestWebSocketEvent>(
+          url: Uri.parse(
+            "wss://fedi1.app?arg=value",
+          ),
+        ),
       ),
     );
     expect(webSocketsService.urlToChannel.length, 1);
@@ -47,6 +53,11 @@ void main() {
           "wss://fedi.app",
         ),
         connectionService: connectionServiceMock,
+        sourceCreator: () => WebSocketsChannelSourceMock<TestWebSocketEvent>(
+          url: Uri.parse(
+            "wss://fedi1.app?arg=value",
+          ),
+        ),
       ),
     );
 
@@ -57,6 +68,11 @@ void main() {
         queryArgs: {"arg": "newValue"},
         baseUrl: Uri.parse("wss://fedi.app"),
         connectionService: connectionServiceMock,
+        sourceCreator: () => WebSocketsChannelSourceMock<TestWebSocketEvent>(
+          url: Uri.parse(
+            "wss://fedi1.app?arg=value",
+          ),
+        ),
       ),
     );
 
@@ -68,6 +84,11 @@ void main() {
         queryArgs: {"arg": "newValue"},
         baseUrl: Uri.parse("wss://fedi_2.app"),
         connectionService: connectionServiceMock,
+        sourceCreator: () => WebSocketsChannelSourceMock<TestWebSocketEvent>(
+          url: Uri.parse(
+            "wss://fedi1.app?arg=value",
+          ),
+        ),
       ),
     );
 
