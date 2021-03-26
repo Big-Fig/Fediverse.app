@@ -12,8 +12,12 @@ abstract class IFcmPushService extends IDisposable
 
   Stream<PushMessage> get messageStream;
 
+  PushMessage? get initialMessage;
+
   Future<bool> askPermissions();
 
   static IFcmPushService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFcmPushService>(context, listen: listen);
+
+  void clearInitialMessage();
 }

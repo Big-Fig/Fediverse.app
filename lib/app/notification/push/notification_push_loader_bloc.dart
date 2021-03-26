@@ -12,10 +12,10 @@ abstract class INotificationPushLoaderBloc extends IDisposable
   }) =>
       Provider.of<INotificationPushLoaderBloc>(context, listen: listen);
 
-  NotificationPushLoaderNotification? get launchOrResumePushLoaderNotification;
+  NotificationPushLoaderNotification? get launchPushLoaderNotification;
 
   Stream<NotificationPushLoaderNotification?>
-      get launchOrResumePushLoaderNotificationStream;
+      get launchPushLoaderNotificationStream;
 
   Stream<NotificationPushLoaderNotification> get handledNotificationsStream;
 }
