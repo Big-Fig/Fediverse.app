@@ -3,9 +3,12 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/app/chat/conversation/unread/conversation_chat_unread_badge_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/chat/pleroma/start/pleroma_chat_start_page.dart';
+import 'package:fedi/app/chat/pleroma/with_last_message/list/cached/pleroma_chat_with_last_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_widget.dart';
+import 'package:fedi/app/chat/pleroma/with_last_message/pagination/pleroma_chat_with_last_message_pagination_bloc.dart';
+import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
@@ -22,8 +25,10 @@ import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
+import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -75,10 +80,13 @@ class PleromaChatHomeTabPage extends StatelessWidget {
 
         return MultiProvider(
           providers: [
-            Provider.value(value: chatsListBloc.chatListBloc),
-            Provider.value(value: chatsListBloc.chatPaginationBloc),
-            Provider.value(value: chatsListBloc.chatPaginationListBloc),
-            Provider.value(
+            Provider<IPleromaChatWithLastMessageCachedListBloc>.value(value: chatsListBloc.chatListBloc),
+            Provider<IPleromaChatWithLastMessagePaginationBloc>.value(value: chatsListBloc.chatPaginationBloc),
+            Provider<IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
+                IPleromaChatWithLastMessage>>.value(value: chatsListBloc.chatPaginationListBloc),
+            Provider< ICachedPaginationListWithNewItemsBloc<
+                CachedPaginationPage<IPleromaChatWithLastMessage>,
+                IPleromaChatWithLastMessage>>.value(
               value: chatsListBloc.chatPaginationListWithNewItemsBloc,
             ),
             Provider<ICachedPaginationListWithNewItemsBloc>.value(

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc.dart';
@@ -18,11 +19,11 @@ class AuthInstanceListBloc extends DisposableOwner
   });
 
   @override
-  List<AuthInstance?> get availableInstances =>
+  List<AuthInstance> get availableInstances =>
       instanceListLocalPreferenceBloc.value?.instances ?? [];
 
   @override
-  Stream<List<AuthInstance?>> get availableInstancesStream =>
+  Stream<List<AuthInstance>> get availableInstancesStream =>
       instanceListLocalPreferenceBloc.stream
           .map((instanceList) => instanceList?.instances ?? []);
 
@@ -41,9 +42,9 @@ class AuthInstanceListBloc extends DisposableOwner
       .map((availableInstances) => availableInstances.isNotEmpty == true);
 
   @override
-  Future addInstance(AuthInstance? instance) async {
+  Future addInstance(AuthInstance instance) async {
     _logger.finest(() => "addInstance $instance");
-    var instances = availableInstances;
+    var instances = availableInstances.toList(growable: true);
     if (!instances.contains(instance)) {
       instances.add(instance);
       await instanceListLocalPreferenceBloc.setValue(
@@ -55,12 +56,14 @@ class AuthInstanceListBloc extends DisposableOwner
   }
 
   @override
-  Future removeInstance(AuthInstance? instance) async {
+  Future removeInstance(AuthInstance instance) async {
     _logger.finest(() => "removeInstance $instance");
-    var instances = availableInstances;
+    var instances = availableInstances.toList(growable: true);
 
-    var foundInstanceToRemove =
-        findInstanceByCredentials(host: instance!.urlHost, acct: instance.acct);
+    var foundInstanceToRemove = findInstanceByCredentials(
+      host: instance.urlHost,
+      acct: instance.acct,
+    );
     if (foundInstanceToRemove != null) {
       instances.remove(foundInstanceToRemove);
       await instanceListLocalPreferenceBloc.setValue(
@@ -75,13 +78,12 @@ class AuthInstanceListBloc extends DisposableOwner
 
   @override
   AuthInstance? findInstanceByCredentials({
-    required String? host,
-    required String? acct,
+    required String host,
+    required String acct,
   }) {
-    var instanceList = instanceListLocalPreferenceBloc.value!;
-    var foundInstance = instanceList.instances!.firstWhere(
-      (instance) => instance!.urlHost == host && instance.acct == acct,
-      orElse: () => null,
+    var instanceList = instanceListLocalPreferenceBloc.value;
+    var foundInstance = instanceList?.instances?.firstWhereOrNull(
+      (instance) => instance.urlHost == host && instance.acct == acct,
     );
 
     return foundInstance;

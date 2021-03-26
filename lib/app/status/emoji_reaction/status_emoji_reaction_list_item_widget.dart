@@ -24,7 +24,7 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Provider.value(
+        return Provider<IPleromaStatusEmojiReaction>.value(
           value: emojiReaction,
           child: const _StatusEmojiReactionListItemBodyWidget(),
         );

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_local_preference_bloc.dart';
@@ -25,12 +26,11 @@ class CurrentAuthInstanceBloc extends DisposableOwner
       currentLocalPreferenceBloc.stream;
 
   @override
-  Future changeCurrentInstance(AuthInstance? instance) async {
+  Future changeCurrentInstance(AuthInstance instance) async {
     _logger.finest(() => "changeCurrentInstance $instance");
 
-    var found = instanceListBloc.availableInstances.firstWhere(
-      (existInstance) => existInstance!.userAtHost == instance!.userAtHost,
-      orElse: () => null,
+    var found = instanceListBloc.availableInstances.firstWhereOrNull(
+      (existInstance) => existInstance.userAtHost == instance.userAtHost,
     );
 
     if (found == null) {
@@ -46,7 +46,7 @@ class CurrentAuthInstanceBloc extends DisposableOwner
   @override
   Future logoutCurrentInstance() async {
     _logger.finest(() => "logoutCurrentInstance $currentInstance");
-    await instanceListBloc.removeInstance(currentInstance);
+    await instanceListBloc.removeInstance(currentInstance!);
 
     if (instanceListBloc.isHaveInstances == true) {
       await currentLocalPreferenceBloc

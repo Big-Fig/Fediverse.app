@@ -46,7 +46,7 @@ class _RegisterAuthInstanceFormCaptchaFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
-          IRegisterAuthInstanceFormBloc, ICaptchaStringValueFormFieldBloc?>(
+          IRegisterAuthInstanceFormBloc, ICaptchaStringValueFormFieldBloc>(
         update: (context, value, previous) => value.captchaFieldBloc,
         child: FormCaptchaStringFormFieldRowWidget(
           label: S.of(context).app_auth_instance_register_field_captcha_label,
@@ -67,7 +67,7 @@ class _RegisterAuthInstanceFormLocaleFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IRegisterAuthInstanceFormBloc,
-        ILocalizationLocaleSingleFromListValueFormFieldBloc?>(
+        ILocalizationLocaleSingleFromListValueFormFieldBloc>(
       update: (context, value, previous) => value.localeFieldBloc,
       builder: (context, snapshot) =>
           const LocalizationLocaleSingleFromListValueFormFieldRowWidget(),

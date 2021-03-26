@@ -84,8 +84,8 @@ class ConversationChatMessageCachedPaginationBloc
     required Widget child,
   }) {
     return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<IConversationChatMessage?>,
-            IConversationChatMessage?>>(
+        ICachedPaginationBloc<CachedPaginationPage<IConversationChatMessage>,
+            IConversationChatMessage>>(
       create: (context) =>
           ConversationChatMessageCachedPaginationBloc.createFromContext(
         context,

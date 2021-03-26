@@ -168,7 +168,7 @@ class AccountActionMoreDialog extends StatelessWidget {
     return DialogAction(
       icon: FediIcons.instance,
       label: S.of(context).app_account_action_instanceDetails(
-            isLocal ? currentInstanceUrlHost! : remoteDomainOrNull!,
+            isLocal ? currentInstanceUrlHost : remoteDomainOrNull!,
           ),
       onAction: (context) async {
         if (isLocal) {

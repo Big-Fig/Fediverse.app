@@ -35,8 +35,8 @@ class DraftStatusListItemWidget extends StatelessWidget {
           initialData: draftStatusBloc.draftStatus,
           builder: (context, snapshot) {
             var draftStatus = snapshot.data;
-            return Provider.value(
-              value: draftStatus,
+            return Provider<IDraftStatus>.value(
+              value: draftStatus!,
               child: ProxyProvider<IDraftStatus, IStatus>(
                 update: (context, value, previous) =>
                     DraftStatusAdapterToStatus(

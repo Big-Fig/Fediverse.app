@@ -87,7 +87,7 @@ class UrlHelper {
             context: context,
             url: url,
             remoteInstanceDomain: urlHost,
-            localInstanceDomain: localInstanceDomain!,
+            localInstanceDomain: localInstanceDomain,
             hashtag: hashtag,
           );
         } else {
@@ -110,7 +110,7 @@ class UrlHelper {
           context: context,
           url: url,
           remoteInstanceDomain: remoteInstanceDomain,
-          localInstanceDomain: localInstanceDomain!,
+          localInstanceDomain: localInstanceDomain,
           hashtag: hashtag,
         );
       }

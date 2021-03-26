@@ -18,8 +18,8 @@ class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
     };
     return AuthInstance(
       urlSchema: fields[0] as String?,
-      urlHost: fields[1] as String?,
-      acct: fields[2] as String?,
+      urlHost: fields[1] as String,
+      acct: fields[2] as String,
       token: fields[3] as PleromaOAuthToken?,
       authCode: fields[4] as String?,
       isPleroma: fields[5] as bool,
@@ -68,8 +68,8 @@ class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
 AuthInstance _$AuthInstanceFromJson(Map<String, dynamic> json) {
   return AuthInstance(
     urlSchema: json['url_schema'] as String?,
-    urlHost: json['url_host'] as String?,
-    acct: json['acct'] as String?,
+    urlHost: json['url_host'] as String,
+    acct: json['acct'] as String,
     token: json['token'] == null
         ? null
         : PleromaOAuthToken.fromJson(json['token'] as Map<String, dynamic>),

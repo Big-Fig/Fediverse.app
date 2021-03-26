@@ -13,7 +13,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class AddMyAccountDomainBlockDialog extends FediDialog {
-  IAddMyAccountDomainBlockBloc? addMyAccountDomainBlockBloc;
+  late IAddMyAccountDomainBlockBloc addMyAccountDomainBlockBloc;
 
   AddMyAccountDomainBlockDialog.createFromContext({
     required BuildContext context,
@@ -58,7 +58,7 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
   }
 
   @override
-  Widget buildDialogBody(BuildContext context) => Provider.value(
+  Widget buildDialogBody(BuildContext context) => Provider<IAddMyAccountDomainBlockBloc>.value(
         value: addMyAccountDomainBlockBloc,
         child: Builder(
           builder: (context) => super.buildDialogBody(context),

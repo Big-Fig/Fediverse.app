@@ -36,8 +36,8 @@ class FormCaptchaStringFormFieldRowWidget extends StatelessWidget {
       initialData: captchaStringFieldBloc.isExist,
       builder: (context, snapshot) {
         var isExist = snapshot.data;
-        return Provider.value(
-          value: isExist,
+        return Provider<bool>.value(
+          value: isExist!,
           child: _FormCaptchaStringFormFieldRowContentWidget(
             hint: hint,
             label: label,

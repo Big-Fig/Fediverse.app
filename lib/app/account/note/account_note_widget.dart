@@ -31,7 +31,7 @@ class AccountNoteWidget extends StatelessWidget {
         left: FediSizes.bigPadding,
         right: FediSizes.bigPadding,
       ),
-      child: StreamProvider.value(
+      child: StreamProvider<EmojiText?>.value(
         value: accountBloc.noteEmojiTextStream,
         initialData: accountBloc.noteEmojiText,
         child: DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(

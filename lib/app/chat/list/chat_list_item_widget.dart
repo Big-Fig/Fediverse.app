@@ -140,7 +140,13 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
         var content = lastMessage.content;
-        if (content?.isNotEmpty != true) {
+        if (content?.isNotEmpty == true) {
+          content = _extractContent(
+            context: context,
+            chatMessage: lastMessage,
+            content: content,
+          );
+        } else {
           content = lastMessage.mediaAttachments!.map(
             (mediaAttachment) {
               var description = mediaAttachment.description;
@@ -151,21 +157,16 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
               }
             },
           ).join(", ");
-        } else {
-          content = _extractContent(
-            context: context,
-            chatMessage: lastMessage,
-            content: content,
-          );
         }
 
         var fediUiColorTheme = IFediUiColorTheme.of(context);
         var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+        var pendingState = lastMessage.pendingState;
         return Row(
           children: [
-            if (lastMessage.pendingState == PendingState.pending)
-              FediCircularProgressIndicator(size: 16.0),
-            if (lastMessage.pendingState == PendingState.fail)
+            if (pendingState == PendingState.pending)
+              const FediCircularProgressIndicator(size: 16.0),
+            if (pendingState == PendingState.fail)
               Padding(
                 padding: FediPadding.horizontalSmallPadding,
                 child: Icon(
@@ -176,7 +177,7 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
               ),
             Flexible(
               child: Provider<EmojiText>.value(
-                value: EmojiText(text: content!, emojis: lastMessage.emojis),
+                value: EmojiText(text: content, emojis: lastMessage.emojis),
                 child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
                   update: (context, emojiText, _) {
                     return HtmlTextBloc(
@@ -208,17 +209,17 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
   }
 }
 
-String? _extractContent({
+String _extractContent({
   required BuildContext context,
   required IChatMessage chatMessage,
   required String? content,
 }) {
-  String? formattedText = content?.extractRawStringFromHtmlString();
+  String formattedText = content?.extractRawStringFromHtmlString() ?? "";
 
   var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 
   if (myAccountBloc.checkIsChatMessageFromMe(chatMessage)) {
-    formattedText = S.of(context).app_chat_preview_you(formattedText!);
+    formattedText = S.of(context).app_chat_preview_you(formattedText);
   }
 
   return formattedText;

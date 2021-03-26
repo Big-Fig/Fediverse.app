@@ -87,7 +87,7 @@ class _AccountHomeTabMenuDialogBodyInstanceItemWidget extends StatelessWidget {
     var currentInstanceUrlHost =
         ICurrentAuthInstanceBloc.of(context, listen: false)
             .currentInstance!
-            .urlHost!;
+            .urlHost;
 
     return InkWell(
       onTap: () {

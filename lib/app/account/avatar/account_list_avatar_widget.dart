@@ -125,7 +125,7 @@ class _AccountListAvatarMultiAccountTwoWidget extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.bottomLeft,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[0],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -135,7 +135,7 @@ class _AccountListAvatarMultiAccountTwoWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.topRight,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[1],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -164,7 +164,7 @@ class _AccountListAvatarMultiAccountThreeWidget extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.topLeft,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[0],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -174,7 +174,7 @@ class _AccountListAvatarMultiAccountThreeWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.topRight,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[1],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -184,7 +184,7 @@ class _AccountListAvatarMultiAccountThreeWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[2],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -213,7 +213,7 @@ class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.topLeft,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[0],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -223,7 +223,7 @@ class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.topRight,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[1],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -233,7 +233,7 @@ class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomLeft,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[2],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -243,7 +243,7 @@ class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomRight,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[3],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -272,7 +272,7 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.topLeft,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[0],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -282,7 +282,7 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.topRight,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[1],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -292,7 +292,7 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomLeft,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[2],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -302,7 +302,7 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomRight,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[3],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -312,7 +312,7 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.center,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[4],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,

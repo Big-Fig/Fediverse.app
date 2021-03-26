@@ -14,13 +14,13 @@ class StatusReblogHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
     if (statusBloc.reblog != null) {
-      return StreamBuilder<IAccount?>(
+      return StreamBuilder<IAccount>(
         stream: statusBloc.accountStream,
         initialData: statusBloc.account,
         builder: (context, snapshot) {
           var account = snapshot.data;
-          return Provider.value(
-            value: account,
+          return Provider<IAccount>.value(
+            value: account!,
             child: StatusHeaderWidget(
               descText: S.of(context).app_status_reblog_header,
               icon: FediIcons.reply,

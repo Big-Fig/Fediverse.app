@@ -130,7 +130,7 @@ class _RecentSelectAccountListWidget extends StatelessWidget {
         children: [
           if (header != null) header!,
           ...recentItems.map(
-            (account) => Provider.value(
+            (account) => Provider<IAccount>.value(
               value: account,
               child: DisposableProxyProvider<IAccount, IAccountBloc>(
                 update: (context, account, _) =>

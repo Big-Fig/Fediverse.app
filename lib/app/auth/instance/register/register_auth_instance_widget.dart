@@ -27,7 +27,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: ProxyProvider<IRegisterAuthInstanceBloc,
-                    IRegisterAuthInstanceFormBloc?>(
+                    IRegisterAuthInstanceFormBloc>(
                   update: (context, value, previous) =>
                       value.registerAuthInstanceFormBloc,
                   child: const RegisterAuthInstanceFormWidget(),

@@ -309,7 +309,7 @@ class _ChatMessageListItemCardWidget extends StatelessWidget {
         var card = snapshot.data;
 
         if (card != null) {
-          return Provider.value(
+          return Provider<IPleromaCard?>.value(
             value: card,
             child: const CardWidget(),
           );
