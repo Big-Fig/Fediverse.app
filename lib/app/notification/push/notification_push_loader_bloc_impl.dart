@@ -30,17 +30,17 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   final IMyAccountBloc myAccountBloc;
 
   BehaviorSubject<NotificationPushLoaderNotification>
-      launchOrResumePushLoaderNotificationSubject = BehaviorSubject();
+      launchPushLoaderNotificationSubject = BehaviorSubject();
 
   @override
   NotificationPushLoaderNotification?
-      get launchOrResumePushLoaderNotification =>
-          launchOrResumePushLoaderNotificationSubject.value;
+      get launchPushLoaderNotification =>
+          launchPushLoaderNotificationSubject.value;
 
   @override
   Stream<NotificationPushLoaderNotification?>
-      get launchOrResumePushLoaderNotificationStream =>
-          launchOrResumePushLoaderNotificationSubject.stream;
+      get launchPushLoaderNotificationStream =>
+          launchPushLoaderNotificationSubject.stream;
 
   final StreamController<NotificationPushLoaderNotification>
       _handledNotificationsStreamController = StreamController.broadcast();
@@ -58,7 +58,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     required this.myAccountBloc,
   }) {
     pushHandlerBloc.addRealTimeHandler(handlePush);
-    addDisposable(subject: launchOrResumePushLoaderNotificationSubject);
+    addDisposable(subject: launchPushLoaderNotificationSubject);
     addDisposable(
       disposable: CustomDisposable(
         () async {
@@ -113,7 +113,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       );
       if (pushHandlerMessage.pushMessage.isLaunch) {
         if (notification != null) {
-          launchOrResumePushLoaderNotificationSubject.add(
+          launchPushLoaderNotificationSubject.add(
             NotificationPushLoaderNotification(
               notification: notification,
               pushHandlerMessage: pushHandlerMessage,
@@ -122,8 +122,6 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         }
       }
 
-      // todo: remove temp hack unread should be redesigned
-      // Also, we should fetch chat info if chat not exist locally
       var chatMessage = remoteNotification.chatMessage;
       if (chatMessage != null) {
         await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);

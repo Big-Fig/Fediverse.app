@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("fcm_push_service_impl.dart");
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   // await Firebase.initializeApp();
@@ -36,6 +36,22 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
   FcmPushService() {
     addDisposable(subject: _deviceTokenSubject);
     addDisposable(subject: _messageSubject);
+  }
+
+  @override
+  PushMessage? initialMessage;
+
+  Future<PushMessage?> getInitialMessage() async {
+    var initialRemoteMessage = await _fcm.getInitialMessage();
+
+    if (initialRemoteMessage != null) {
+      return _createPushMessage(
+        message: initialRemoteMessage,
+        type: PushMessageType.launch,
+      );
+    } else {
+      return null;
+    }
   }
 
   void _onNewToken(String newToken) {
@@ -86,38 +102,20 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
 
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) {
-        Map<String, dynamic> data = message.data;
-        RemoteNotification? notification = message.notification;
-
         _onNewMessage(
-          PushMessage(
-            typeString: PushMessageType.launch.toJsonValue(),
-            notification: notification != null
-                ? PushNotification(
-                    title: notification.title,
-                    body: notification.body,
-                  )
-                : null,
-            data: data,
+          _createPushMessage(
+            message: message,
+            type: PushMessageType.launch,
           ),
         );
       },
     );
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
-        Map<String, dynamic> data = message.data;
-        RemoteNotification? notification = message.notification;
-
         _onNewMessage(
-          PushMessage(
-            typeString: PushMessageType.foreground.toJsonValue(),
-            notification: notification != null
-                ? PushNotification(
-                    title: notification.title,
-                    body: notification.body,
-                  )
-                : null,
-            data: data,
+          _createPushMessage(
+            message: message,
+            type: PushMessageType.foreground,
           ),
         );
       },
@@ -126,9 +124,36 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
     await _fcm.setAutoInitEnabled(true);
 
     await _updateToken();
-  }
-}
 
-Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
-  print("myBackgroundMessageHandler $message");
+    initialMessage = await getInitialMessage();
+  }
+
+  PushMessage _createPushMessage({
+    required RemoteMessage message,
+    required PushMessageType type,
+  }) {
+    Map<String, dynamic> data = message.data;
+    RemoteNotification? notification = message.notification;
+    _logger.finest(() => "_createPushMessage \n"
+        "type $type \n"
+        "notification $notification \n"
+        "data $data");
+
+    var pushMessage = PushMessage(
+      typeString: type.toJsonValue(),
+      notification: notification != null
+          ? PushNotification(
+              title: notification.title,
+              body: notification.body,
+            )
+          : null,
+      data: data,
+    );
+    return pushMessage;
+  }
+
+  @override
+  void clearInitialMessage() {
+    initialMessage = null;
+  }
 }

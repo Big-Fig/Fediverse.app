@@ -31,7 +31,7 @@ dependencies:
   # firebase auth
   firebase_core: ^1.0.1
   # push notifications FCM
-  firebase_messaging: ^9.0.0
+  firebase_messaging: ^9.1.0
 
   # handle crashes and non-fatal errors
   firebase_crashlytics: ^1.0.0

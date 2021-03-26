@@ -340,7 +340,7 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
             state == CurrentAuthInstanceContextInitState.localCacheExist) {
           currentInstanceContextBloc!.addDisposable(
             streamSubscription: pushLoaderBloc
-                .launchOrResumePushLoaderNotificationStream
+                .launchPushLoaderNotificationStream
                 .listen(
               (launchOrResumePushLoaderNotification) {
                 if (launchOrResumePushLoaderNotification != null) {
@@ -395,13 +395,13 @@ Widget buildAuthInstanceContextInitWidget({
         create: (context) {
           var homeBloc = HomeBloc(
             startTab: calculateHomeTabForNotification(
-              pushLoaderBloc.launchOrResumePushLoaderNotification,
+              pushLoaderBloc.launchPushLoaderNotification,
             ),
           );
 
           homeBloc.addDisposable(
             streamSubscription: pushLoaderBloc
-                .launchOrResumePushLoaderNotificationStream
+                .launchPushLoaderNotificationStream
                 .listen(
               (launchOrResumePushLoaderNotification) {
                 homeBloc.selectTab(

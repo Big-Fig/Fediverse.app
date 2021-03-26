@@ -20,7 +20,10 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
       _isInitLoadingSubject.stream.distinct();
 
   @override
-  AsyncInitLoadingState? get initLoadingState => _isInitLoadingSubject.value;
+  AsyncInitLoadingState get initLoadingState => _isInitLoadingSubject.value!;
+
+  bool get isInitLoadingStateFinished =>
+      initLoadingState == AsyncInitLoadingState.finished;
 
   @override
   dynamic initLoadingException;
