@@ -245,7 +245,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
     required this.mediaAttachment,
   }) : super(key: key);
 
-  final IPleromaMediaAttachment? mediaAttachment;
+  final IPleromaMediaAttachment mediaAttachment;
 
   @override
   Widget build(BuildContext context) {
@@ -285,7 +285,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
 
             goToNewPostStatusPageWithInitial(
               context,
-              initialText: mediaAttachment!.url,
+              initialText: mediaAttachment.url,
             );
           },
         );

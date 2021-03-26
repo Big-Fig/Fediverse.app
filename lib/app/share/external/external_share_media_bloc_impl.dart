@@ -14,7 +14,7 @@ class ExternalShareMediaBloc extends ExternalShareBloc
   final String popupTitle;
 
   @override
-  IPleromaMediaAttachment? mediaAttachment;
+  final IPleromaMediaAttachment mediaAttachment;
 
   ExternalShareMediaBloc({
     required this.popupTitle,
@@ -35,7 +35,7 @@ class ExternalShareMediaBloc extends ExternalShareBloc
     if (message?.isNotEmpty == true || asLink) {
       text = message ?? "";
       if (asLink) {
-        text += " ${mediaAttachment!.url}";
+        text += " ${mediaAttachment.url}";
       }
     }
     return externalShareService.share(
@@ -44,9 +44,8 @@ class ExternalShareMediaBloc extends ExternalShareBloc
       urlFiles: asLink
           ? null
           : [
-              ShareUrlFile(
-                url: mediaAttachment!.url,
-                filename: mediaAttachment!.description,
+              ShareUrlFile.fromUrl(
+                url: mediaAttachment.url,
               ),
             ],
     );
@@ -54,7 +53,7 @@ class ExternalShareMediaBloc extends ExternalShareBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    required IPleromaMediaAttachment? mediaAttachment,
+    required IPleromaMediaAttachment mediaAttachment,
     required String popupTitle,
     required Widget child,
   }) {
@@ -78,7 +77,7 @@ class ExternalShareMediaBloc extends ExternalShareBloc
 
   static ExternalShareMediaBloc createFromContext(
     BuildContext context, {
-    required IPleromaMediaAttachment? mediaAttachment,
+    required IPleromaMediaAttachment mediaAttachment,
     required String popupTitle,
   }) =>
       ExternalShareMediaBloc(

@@ -1,37 +1,29 @@
-import 'package:path/path.dart' as path;
-
-class ShareUrlFile {
+class DownloadTempFileRequest {
   final String url;
   final String filenameWithExtension;
 
-  ShareUrlFile({
+  DownloadTempFileRequest({
     required this.url,
     required this.filenameWithExtension,
   });
 
-  ShareUrlFile.fromUrl({
-    required String url,
-  }) : this(
-          url: url,
-          filenameWithExtension: path.basename(url),
-        );
+
+  @override
+  String toString() {
+    return 'DownloadTempFileRequest{'
+        'url: $url, '
+        'filename: $filenameWithExtension'
+        '}';
+  }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ShareUrlFile &&
+      other is DownloadTempFileRequest &&
           runtimeType == other.runtimeType &&
           url == other.url &&
           filenameWithExtension == other.filenameWithExtension;
 
   @override
   int get hashCode => url.hashCode ^ filenameWithExtension.hashCode;
-
-  @override
-  String toString() {
-    return 'ShareUrlFile{'
-        'url: $url, '
-        'filename: $filenameWithExtension'
-        '}';
-  }
 }

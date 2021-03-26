@@ -103,7 +103,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
     if (loadFromCacheDuringInit) {
       try {
-        var page = await paginationBloc.requestPage(
+        await paginationBloc.requestPage(
           pageIndex: 0,
           forceToSkipCache: false,
         );
