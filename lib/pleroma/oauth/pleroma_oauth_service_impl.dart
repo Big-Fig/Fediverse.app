@@ -11,7 +11,7 @@ import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:uni_links2/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 var _logger = Logger("pleroma_oauth_service_impl.dart");
