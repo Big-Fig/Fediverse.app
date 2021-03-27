@@ -37,25 +37,8 @@ dependencies:
   firebase_crashlytics: ^1.0.0
 
   # handle init urls. Used for login/register and navigation from notification
-  #  uni_links: ^0.4.0
-  uni_links:
-    git:
-      url: https://github.com/xal/uni_links.git
-      ref: 25ac00d7a635a0d870bd64767cfdf28ac47bcedd
-      path: uni_links
-
-  uni_links_platform_interface:
-    git:
-      url: https://github.com/xal/uni_links.git
-      ref: 25ac00d7a635a0d870bd64767cfdf28ac47bcedd
-      path: uni_links_platform_interface
-
-  uni_links_web:
-    git:
-      url: https://github.com/xal/uni_links.git
-      ref: 25ac00d7a635a0d870bd64767cfdf28ac47bcedd
-      path: uni_links_web
-
+  # actually uni_links fork with null-safety
+  uni_links2: ^0.6.0+2
 
   # launch browser to view links
   url_launcher: ^6.0.2
@@ -113,8 +96,8 @@ dependencies:
   pedantic: ^1.11.0
 
   # customizable datetime picker
-  #flutter_datetime_picker: ^1.4.0
-
+  # null-safety fork from original
+  #  flutter_datetime_picker: ^1.5.0
   flutter_datetime_picker:
     git:
       url: https://github.com/figengungor/flutter_datetime_picker.git
@@ -152,12 +135,10 @@ dependencies:
   # WebSockets API mobile implementation
   web_socket_channel: ^2.0.0
 
-  # Provides internationalization and localization facilities
-  #  intl: ^0.16.1
 
   # save photo and video to gallery
+  # null-safety fork from original
   #  gallery_saver: ^2.0.3
-
   gallery_saver:
     git:
       url: https://github.com/Saad29/gallery_saver.git
@@ -176,8 +157,8 @@ dependencies:
   package_info: ^2.0.0
 
   # better scroll controller for nested scroll
-#  nested_scroll_controller: ^0.2.1
-
+  # null-safety fork from original
+  #  nested_scroll_controller: ^0.2.1
   nested_scroll_controller:
     git:
       url: https://github.com/xal/nested_scroll_controller.git
@@ -191,8 +172,8 @@ dependencies:
   video_player: ^2.0.2
 
   # pull to refresh and pull to load more
+  # null-safety fork from original
   #  pull_to_refresh: ^1.6.4
-
   pull_to_refresh:
     git:
       url: https://github.com/fzyzcjy/flutter_pulltorefresh.git
@@ -230,21 +211,14 @@ dependencies:
 
   # better dateTime manipulation (especially for add duration to dateTime)
   jiffy: ^4.0.0
+
+  # collections extensions
   collection: ^1.15.0-nullsafety.4
 
 dependency_overrides:
-  uni_links_platform_interface:
-    git:
-      url: https://github.com/xal/uni_links.git
-      ref: 25ac00d7a635a0d870bd64767cfdf28ac47bcedd
-      path: uni_links_platform_interface
-
-
-  uni_links_web:
-    git:
-      url: https://github.com/xal/uni_links.git
-      ref: 25ac00d7a635a0d870bd64767cfdf28ac47bcedd
-      path: uni_links_web
+  # dev_dependencies conflict:
+  # hive_generator 1.0.0 which is null-safe uses web_socket_channel: ^2.0.0
+  # build_runner: ^1.11.5 which is not null-safe uses web_socket_channel: ^1.0.0
 
   web_socket_channel: ^2.0.0
 
@@ -256,8 +230,7 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  # additional linter
-#  dart_code_metrics: ^2.4.1
+
   # easy mock for tests
   mockito: ^5.0.0-nullsafety.7
   # build tools runner
@@ -271,6 +244,9 @@ dev_dependencies:
 
   # object serialization generator
   hive_generator: ^1.0.0
+
+  # additional linter
+  #  dart_code_metrics: ^2.4.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
