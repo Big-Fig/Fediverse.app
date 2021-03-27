@@ -56,7 +56,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
       statusBloc: statusBloc,
       statusSensitiveBloc: statusSensitiveBloc,
     );
-    return StreamBuilder<bool?>(
+    return StreamBuilder<bool>(
       stream: statusBloc.deletedStream.distinct(),
       builder: (context, snapshot) {
         var deleted = snapshot.data ?? false;
@@ -85,11 +85,8 @@ class StatusListItemMediaWidget extends StatelessWidget {
     return StreamBuilder<StatusSensitiveWarningState>(
       stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
       builder: (context, snapshot) {
-        var statusWarningState = snapshot.data;
-
-        if (statusWarningState == null) {
-          return child;
-        }
+        var statusWarningState =
+            snapshot.data ?? statusSensitiveBloc.statusWarningState;
 
         var nsfwSensitiveAndDisplayNsfwContentEnabled =
             statusWarningState.nsfwSensitive != true ||

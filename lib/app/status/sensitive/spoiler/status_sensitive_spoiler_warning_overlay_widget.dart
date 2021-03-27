@@ -15,7 +15,7 @@ class StatusSensitiveSpoilerWarningOverlayWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
 
-    var isAlwaysShowSpoiler = statusSensitiveBloc.isAlwaysShowSpoiler!;
+    var isAlwaysShowSpoiler = statusSensitiveBloc.isAlwaysShowSpoiler;
     if (isAlwaysShowSpoiler) {
       return child;
     } else {
