@@ -21,7 +21,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   final IPleromaNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
   final IFilterRepository filterRepository;
-  final List<PleromaNotificationType>? excludeTypes;
+  final List<PleromaNotificationType> excludeTypes;
 
   NotificationRepositoryFilters get _notificationRepositoryFilters =>
       NotificationRepositoryFilters(
@@ -40,7 +40,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
     required this.pleromaNotificationService,
     required this.notificationRepository,
     required this.filterRepository,
-    this.excludeTypes,
+    required this.excludeTypes,
   });
 
   late List<IFilter> filters;
