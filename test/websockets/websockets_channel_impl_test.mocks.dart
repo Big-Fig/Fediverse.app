@@ -51,6 +51,15 @@ class MockConnectionService extends _i1.Mock implements _i3.ConnectionService {
               returnValue: Stream<_i6.AsyncInitLoadingState>.empty())
           as _i4.Stream<_i6.AsyncInitLoadingState>);
   @override
+  _i6.AsyncInitLoadingState get initLoadingState =>
+      (super.noSuchMethod(Invocation.getter(#initLoadingState),
+              returnValue: _i6.AsyncInitLoadingState.notStarted)
+          as _i6.AsyncInitLoadingState);
+  @override
+  bool get isInitLoadingStateFinished =>
+      (super.noSuchMethod(Invocation.getter(#isInitLoadingStateFinished),
+          returnValue: false) as bool);
+  @override
   _i4.Stream<bool> get isLoadingStream =>
       (super.noSuchMethod(Invocation.getter(#isLoadingStream),
           returnValue: Stream<bool>.empty()) as _i4.Stream<bool>);
