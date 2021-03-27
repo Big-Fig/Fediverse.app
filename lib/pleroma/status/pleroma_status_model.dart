@@ -336,23 +336,23 @@ class PleromaStatus extends IPleromaStatus {
   final String? url;
   @override
   @JsonKey(name: "replies_count")
-  final int repliesCount;
+  final int? repliesCount;
   @override
   @JsonKey(name: "reblogs_count")
-  int reblogsCount;
+  final int? reblogsCount;
   @override
   @JsonKey(name: "favourites_count")
-  int favouritesCount;
+  final int? favouritesCount;
   @override
-  bool favourited;
+  final bool? favourited;
   @override
-  bool reblogged;
+  final bool? reblogged;
   @override
-  final bool muted;
+  final bool? muted;
   @override
-  final bool bookmarked;
+  final bool? bookmarked;
   @override
-  final bool pinned;
+  final bool? pinned;
   @override
   final String? content;
   @override

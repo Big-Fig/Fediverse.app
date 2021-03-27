@@ -28,21 +28,21 @@ abstract class IMastodonStatus {
 
   String? get url;
 
-  int get repliesCount;
+  int? get repliesCount;
 
-  int get reblogsCount;
+  int? get reblogsCount;
 
-  int get favouritesCount;
+  int? get favouritesCount;
 
-  bool get favourited;
+  bool? get favourited;
 
-  bool get reblogged;
+  bool? get reblogged;
 
-  bool get muted;
+  bool? get muted;
 
-  bool get bookmarked;
+  bool? get bookmarked;
 
-  bool get pinned;
+  bool? get pinned;
 
   String? get content;
 
