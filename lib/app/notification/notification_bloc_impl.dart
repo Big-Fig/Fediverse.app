@@ -5,12 +5,14 @@ import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/notification/mastodon_notification_model.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
+
 
 var _logger = Logger("notification_bloc_impl.dart");
 
@@ -135,6 +137,13 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   @override
   Stream<String?> get chatRemoteIdStream =>
       notificationStream.map((notification) => notification.chatRemoteId);
+
+  @override
+  IPleromaChatMessage? get chatMessage => notification.chatMessage;
+
+  @override
+  Stream<IPleromaChatMessage?> get chatMessageStream =>
+      notificationStream.map((notification) => notification.chatMessage);
 
   @override
   DateTime get createdAt => notification.createdAt;

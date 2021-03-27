@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -30,6 +31,10 @@ abstract class INotificationBloc implements IDisposable {
   String? get chatRemoteId;
 
   Stream<String?> get chatRemoteIdStream;
+
+  IPleromaChatMessage? get chatMessage;
+
+  Stream<IPleromaChatMessage?> get chatMessageStream;
 
   String get remoteId;
 

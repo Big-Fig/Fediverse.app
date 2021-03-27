@@ -320,7 +320,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
       case PleromaNotificationType.pleromaChatMention:
         rawText = S.of(context).app_notification_header_pleromaChatMention(
-              _extractStatusRawContent(notificationBloc)!,
+          _extractChatMessageRawContent(notificationBloc)!,
             );
         break;
       case PleromaNotificationType.pleromaReport:
@@ -392,9 +392,23 @@ class _NotificationListItemContentWidget extends StatelessWidget {
       if (content.isEmpty && mediaAttachments?.isNotEmpty == true) {
         content = mediaAttachments!
             .map(
-              (mediaAttachment) => mediaAttachment.description,
+              (mediaAttachment) => mediaAttachment.description ?? mediaAttachment.url,
             )
             .join(", ");
+      }
+    }
+
+    return content;
+  }
+  String? _extractChatMessageRawContent(INotificationBloc notificationBloc) {
+    var content = notificationBloc.chatMessage?.content;
+
+    if (content != null) {
+      content = content.extractRawStringFromHtmlString();
+      var mediaAttachment =
+          notificationBloc.notification.chatMessage?.mediaAttachment;
+      if (mediaAttachment != null) {
+        content = mediaAttachment.description ?? mediaAttachment.url;
       }
     }
 
