@@ -486,18 +486,13 @@ abstract class PostStatusBloc extends PostMessageBloc
     return await internalPostStatusData(postStatusData);
   }
 
-  Future<bool> internalPostStatusData(IPostStatusData postStatusData) async {
-    bool success;
+  Future internalPostStatusData(IPostStatusData postStatusData) async {
     if (isScheduledAtExist) {
-      success = await actualScheduleStatus();
+      await actualScheduleStatus();
     } else {
-      success = await actualPostStatus();
+      await actualPostStatus();
     }
-
-    if (success) {
-      clear();
-    }
-    return success;
+    clear();
   }
 
   String calculateVisibilityField() => visibility.toJsonValue();

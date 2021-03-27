@@ -15,7 +15,7 @@ class StatusSensitiveNsfwWarningOverlayWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
 
-    var isAlwaysShowNsfw = statusSensitiveBloc.isAlwaysShowNsfw!;
+    var isAlwaysShowNsfw = statusSensitiveBloc.isAlwaysShowNsfw;
     if (isAlwaysShowNsfw) {
       return child;
     } else {
