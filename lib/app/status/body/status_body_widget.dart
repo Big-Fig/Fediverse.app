@@ -63,17 +63,12 @@ class _StatusBodyChildWithWarningsWidget extends StatelessWidget {
     var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
     return StreamBuilder<StatusSensitiveWarningState>(
       stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
-      initialData: statusSensitiveBloc.statusWarningState,
       builder: (context, snapshot) {
-        var statusWarningState = snapshot.data;
+        var statusWarningState = snapshot.data ?? statusSensitiveBloc.statusWarningState;
 
         _logger.finest(
           () => "StreamBuilder statusWarningState $statusWarningState",
         );
-
-        if (statusWarningState == null) {
-          return const SizedBox.shrink();
-        }
 
         Widget child;
         if (statusWarningState.containsSpoilerAndDisplayEnabled) {

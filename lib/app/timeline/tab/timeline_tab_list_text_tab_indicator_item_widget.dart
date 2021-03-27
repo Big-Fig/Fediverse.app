@@ -79,6 +79,6 @@ class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
     );
   }
 
-  static String? mapTabToTitle(BuildContext context, Timeline tab) =>
+  static String mapTabToTitle(BuildContext context, Timeline tab) =>
       tab.calculateLabel(context);
 }

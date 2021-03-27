@@ -216,7 +216,7 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var timeline = Provider.of<Timeline>(context);
 
-    var label = timeline.calculateLabel(context)!;
+    var label = timeline.calculateLabel(context);
     return InkWell(
       onTap: () {
         showEditTimelineSettingsDialog(
@@ -359,7 +359,7 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
                   title: S.of(context).app_timeline_storage_delete_dialog_title,
                   contentText:
                       S.of(context).app_timeline_storage_delete_dialog_content(
-                            timeline.calculateLabel(context)!,
+                            timeline.calculateLabel(context),
                           ),
                   okActionLabel: S
                       .of(context)
