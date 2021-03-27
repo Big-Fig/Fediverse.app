@@ -16,6 +16,8 @@ abstract class IPushHandlerBloc extends IDisposable {
     AuthInstance instance,
   );
 
+  Future handleInitialMessage();
+
   Future<bool> markAsHandled(List<PushHandlerMessage> messages);
 
   Future markAsLaunchMessage(PushHandlerMessage message);
