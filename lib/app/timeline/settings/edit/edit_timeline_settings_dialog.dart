@@ -26,7 +26,7 @@ void showEditTimelineSettingsDialog({
     context: context,
     title: S.of(context).app_timeline_settings_title,
     subTitle: S.of(context).app_timeline_settings_content(
-          timeline.calculateLabel(context)!,
+          timeline.calculateLabel(context),
         ),
     child: Provider<Timeline>.value(
       value: timeline,

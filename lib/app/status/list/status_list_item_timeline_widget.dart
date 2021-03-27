@@ -140,7 +140,7 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var deleted = snapshot.data ?? false;
 
-        if (deleted == true) {
+        if (deleted) {
           return Stack(
             children: [
               child,
@@ -155,6 +155,34 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
       },
     );
   }
+}
+
+class _StatusListItemTimelineOriginalBodyInnerBodyWidget extends StatelessWidget {
+  const _StatusListItemTimelineOriginalBodyInnerBodyWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
+    if (statusListItemTimelineBloc.isReplyAndNotDisplayReplyOrFirstReply) {
+      return Padding(
+        padding: EdgeInsets.fromLTRB(
+          68.0 - FediSizes.bigPadding,
+          FediSizes.smallPadding,
+          0.0,
+          FediSizes.bigPadding,
+        ),
+        child: const _StatusListItemTimelineOriginalBodyContentWidget(),
+      );
+    } else {
+      return Padding(
+        padding: EdgeInsets.only(top: FediSizes.smallPadding),
+        child: const _StatusListItemTimelineOriginalBodyContentWidget(),
+      );
+    }
+  }
+
 }
 
 class _StatusListItemTimelineOriginalBodyWidget extends StatelessWidget {
@@ -192,7 +220,7 @@ class _StatusListItemTimelineOriginalBodyWidget extends StatelessWidget {
                   child:
                       const _StatusListItemTimelineOriginalBodyReplySubHeaderWidget(),
                 ),
-              buildBody(context),
+              const _StatusListItemTimelineOriginalBodyInnerBodyWidget(),
               const StatusEmojiReactionListWidget(),
             ],
           ),
@@ -301,25 +329,6 @@ class _StatusListItemTimelineStatusHeaderWidget extends StatelessWidget {
   }
 }
 
-Widget buildBody(BuildContext context) {
-  var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
-  if (statusListItemTimelineBloc.isReplyAndNotDisplayReplyOrFirstReply) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(
-        68.0 - FediSizes.bigPadding,
-        FediSizes.smallPadding,
-        0.0,
-        FediSizes.bigPadding,
-      ),
-      child: const _StatusListItemTimelineOriginalBodyContentWidget(),
-    );
-  } else {
-    return Padding(
-      padding: EdgeInsets.only(top: FediSizes.smallPadding),
-      child: const _StatusListItemTimelineOriginalBodyContentWidget(),
-    );
-  }
-}
 
 class _StatusListItemTimelineOriginalBodyContentWidget extends StatelessWidget {
   const _StatusListItemTimelineOriginalBodyContentWidget({

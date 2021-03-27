@@ -8,7 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
 class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
-  final String? text;
+  final String text;
   final VoidCallback? onPressed;
   final double height;
   final double borderWidth;
@@ -77,7 +77,7 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
             padding: FediPadding.buttonHorizontalPadding,
             child: Center(
               child: Text(
-                text!, textAlign: TextAlign.center, // 80% transparency
+                text, textAlign: TextAlign.center, // 80% transparency
                 style: textStyle,
               ),
             ),
@@ -91,7 +91,9 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
     } else {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [button],
+        children: [
+          button,
+        ],
       );
     }
   }

@@ -44,10 +44,11 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
                 Padding(
                   padding: FediPadding.allSmallPadding,
                   child: FediPrimaryFilledTextButtonWithBorder(
-                    buttonText,
+                    buttonText!,
+                    limitMinWidth: true,
+                    expanded: false,
                     enabledBorderColor: fediUiColorTheme.transparent,
                     disabledBorderColor: fediUiColorTheme.transparent,
-                    expanded: false,
                     onPressed: buttonAction,
                   ),
                 ),

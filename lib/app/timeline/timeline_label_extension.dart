@@ -4,9 +4,9 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 extension TimelineLabelExtension on Timeline {
-  String? calculateLabel(BuildContext context) {
+  String calculateLabel(BuildContext context) {
     if (label?.isNotEmpty == true) {
-      return label;
+      return label!;
     } else {
       switch (type) {
         case TimelineType.public:

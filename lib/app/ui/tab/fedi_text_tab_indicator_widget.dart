@@ -11,7 +11,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-typedef TabToTextMapper<T> = String? Function(BuildContext context, T tab);
+typedef TabToTextMapper<T> = String Function(BuildContext context, T tab);
 
 class FediTextTabIndicatorWidget<T> extends StatelessWidget {
   final TabToTextMapper<T?> tabToTextMapper;
