@@ -168,5 +168,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     }
 
     await pushHandlerBloc.markAsHandled(handledMessages);
+
+    await pushHandlerBloc.handleInitialMessage();
   }
 }

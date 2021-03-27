@@ -36,9 +36,14 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
         },
       ),
     );
+
+  }
+
+  @override
+  Future handleInitialMessage() async {
     var initialMessage = fcmPushService.initialMessage;
     if (initialMessage != null) {
-      handlePushMessage(initialMessage);
+      await handlePushMessage(initialMessage);
       fcmPushService.clearInitialMessage();
     }
   }
