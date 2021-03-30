@@ -20,7 +20,7 @@ abstract class AccountStatusesWithoutRepliesNetworkOnlyListBloc
   IPleromaApi get pleromaApi => pleromaAccountService;
 
   @override
-  Future<List<IStatus?>> loadItemsFromRemoteForPage({
+  Future<List<IStatus>> loadItemsFromRemoteForPage({
     int? pageIndex,
     int? itemsCountPerPage,
     String? minId,

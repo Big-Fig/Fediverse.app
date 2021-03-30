@@ -122,10 +122,10 @@ extension IAccountBlocExtension on IAccountBloc {
   Stream<bool?> get pleromaHideFollowsCountStream =>
       accountStream.map((account) => account.pleromaHideFollowsCount);
 
-  List<IPleromaField>? get fields => account.fields;
+  List<IPleromaField> get fields => account.fields ?? [];
 
-  Stream<List<IPleromaField>?> get fieldsStream =>
-      accountStream.map((account) => account.fields);
+  Stream<List<IPleromaField>> get fieldsStream =>
+      accountStream.map((account) => account.fields ?? []);
 
   int? get followersCount => account.followersCount;
 

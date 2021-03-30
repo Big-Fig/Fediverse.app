@@ -22,12 +22,12 @@ class PollWidget extends StatelessWidget {
     var pollBloc = IPollBloc.of(context);
     return Padding(
       padding: FediPadding.horizontalBigPadding,
-      child: StreamBuilder<IPleromaPoll?>(
+      child: StreamBuilder<IPleromaPoll>(
         initialData: pollBloc.poll,
         stream: pollBloc.pollStream,
         builder: (context, snapshot) {
-          var poll = snapshot.data;
-          return Provider<IPleromaPoll?>.value(
+          var poll = snapshot.data!;
+          return Provider<IPleromaPoll>.value(
             value: poll,
             child: const _PollBodyWidget(),
           );

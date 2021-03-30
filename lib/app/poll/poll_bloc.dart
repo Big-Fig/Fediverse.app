@@ -13,9 +13,9 @@ abstract class IPollBloc implements IDisposable {
         listen: listen,
       );
 
-  IPleromaPoll? get poll;
+  IPleromaPoll get poll;
 
-  Stream<IPleromaPoll?> get pollStream;
+  Stream<IPleromaPoll> get pollStream;
 
   bool get isNeedShowResultsWithoutVote;
 

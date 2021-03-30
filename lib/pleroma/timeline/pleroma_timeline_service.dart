@@ -12,7 +12,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
   static IPleromaTimelineService of(BuildContext context, {listen = true}) =>
       Provider.of<IPleromaTimelineService>(context, listen: listen);
 
-  Future<List<IPleromaStatus>?> getPublicTimeline({
+  Future<List<IPleromaStatus>> getPublicTimeline({
     IPleromaPaginationRequest? pagination,
     bool? onlyWithMedia = false,
     bool onlyLocal = false,
@@ -25,7 +25,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     PleromaReplyVisibilityFilter? pleromaReplyVisibilityFilter,
   });
 
-  Future<List<IPleromaStatus>?> getHashtagTimeline({
+  Future<List<IPleromaStatus>> getHashtagTimeline({
     required String? hashtag,
     IPleromaPaginationRequest? pagination,
     bool? onlyWithMedia = false,
@@ -36,7 +36,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     ],
   });
 
-  Future<List<IPleromaStatus>?> getHomeTimeline({
+  Future<List<IPleromaStatus>> getHomeTimeline({
     IPleromaPaginationRequest? pagination,
     bool onlyLocal = false,
     bool withMuted = false,
@@ -46,7 +46,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     PleromaReplyVisibilityFilter? pleromaReplyVisibilityFilter,
   });
 
-  Future<List<IPleromaStatus>?> getListTimeline({
+  Future<List<IPleromaStatus>> getListTimeline({
     required String? listId,
     IPleromaPaginationRequest? pagination,
     bool onlyLocal = false,

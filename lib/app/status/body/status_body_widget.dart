@@ -194,7 +194,7 @@ class _StatusBodyPollWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => ProxyProvider<IStatusBloc, IPollBloc?>(
+  Widget build(BuildContext context) => ProxyProvider<IStatusBloc, IPollBloc>(
         update: (context, statusBloc, _) => statusBloc.pollBloc,
         child: PollWidget(),
       );

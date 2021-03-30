@@ -16,7 +16,7 @@ class AccountFieldListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
 
-    return StreamBuilder<List<IPleromaField>?>(
+    return StreamBuilder<List<IPleromaField>>(
       stream: accountBloc.fieldsStream,
       builder: (context, snapshot) {
         var fields = snapshot.data;

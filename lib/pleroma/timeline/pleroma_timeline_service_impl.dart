@@ -36,7 +36,7 @@ class PleromaTimelineService extends DisposableOwner
   PleromaTimelineService({required this.restService});
 
   @override
-  Future<List<IPleromaStatus>?> getHashtagTimeline({
+  Future<List<IPleromaStatus>> getHashtagTimeline({
     required String? hashtag,
     IPleromaPaginationRequest? pagination,
     bool? onlyWithMedia = false,
@@ -61,7 +61,7 @@ class PleromaTimelineService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaStatus>?> getHomeTimeline({
+  Future<List<IPleromaStatus>> getHomeTimeline({
     IPleromaPaginationRequest? pagination,
     bool onlyLocal = false,
     bool withMuted = false,
@@ -84,7 +84,7 @@ class PleromaTimelineService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaStatus>?> getListTimeline({
+  Future<List<IPleromaStatus>> getListTimeline({
     required String? listId,
     IPleromaPaginationRequest? pagination,
     bool onlyLocal = false,
@@ -108,7 +108,7 @@ class PleromaTimelineService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaStatus>?> getPublicTimeline({
+  Future<List<IPleromaStatus>> getPublicTimeline({
     IPleromaPaginationRequest? pagination,
     bool? onlyWithMedia = false,
     bool onlyLocal = false,
@@ -133,7 +133,7 @@ class PleromaTimelineService extends DisposableOwner
     );
   }
 
-  Future<List<IPleromaStatus>?> getTimeline({
+  Future<List<IPleromaStatus>> getTimeline({
     required String relativeTimeLineUrlPath,
     required IPleromaPaginationRequest? pagination,
     required bool? onlyWithMedia,
@@ -178,7 +178,7 @@ class PleromaTimelineService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaTimelineException(
         statusCode: httpResponse.statusCode,

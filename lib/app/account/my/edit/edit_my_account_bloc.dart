@@ -3,7 +3,7 @@ import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
-import 'package:fedi/form/group/pair/key_value_pair_form_group_bloc.dart';
+import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +11,7 @@ abstract class IEditMyAccountBloc implements IFormBloc {
   static IEditMyAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IEditMyAccountBloc>(context, listen: listen);
 
-  IOneTypeFormGroupBloc<IKeyValuePairFormGroupBloc> get customFieldsGroupBloc;
+  IOneTypeFormGroupBloc<ILinkPairFormGroupBloc> get customFieldsGroupBloc;
 
   IImageFilePickerOrUrlFormFieldBloc get avatarField;
 

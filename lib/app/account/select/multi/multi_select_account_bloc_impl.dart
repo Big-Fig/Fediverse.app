@@ -11,7 +11,7 @@ var _logger = Logger("multi_select_account_page.dart");
 
 class MultiSelectAccountBloc extends DisposableOwner
     implements IMultiSelectAccountBloc {
-  final BehaviorSubject<List<IAccount>?> selectedAccountsSubject =
+  final BehaviorSubject<List<IAccount>> selectedAccountsSubject =
       BehaviorSubject.seeded([]);
 
   MultiSelectAccountBloc() {
@@ -34,17 +34,17 @@ class MultiSelectAccountBloc extends DisposableOwner
       );
 
   @override
-  bool get isSomethingSelected => selectedAccounts?.isNotEmpty == true;
+  bool get isSomethingSelected => selectedAccounts.isNotEmpty == true;
 
   @override
   Stream<bool> get isSomethingSelectedStream => selectedAccountsStream
-      .map((selectedAccounts) => selectedAccounts?.isNotEmpty == true);
+      .map((selectedAccounts) => selectedAccounts.isNotEmpty == true);
 
   @override
-  List<IAccount>? get selectedAccounts => selectedAccountsSubject.value;
+  List<IAccount> get selectedAccounts => selectedAccountsSubject.value!;
 
   @override
-  Stream<List<IAccount>?> get selectedAccountsStream =>
+  Stream<List<IAccount>> get selectedAccountsStream =>
       selectedAccountsSubject.stream;
 
   static MultiSelectAccountBloc createFromContext(
@@ -88,7 +88,7 @@ class MultiSelectAccountBloc extends DisposableOwner
 
   @override
   void addAccountSelection(IAccount account) {
-    selectedAccounts!.add(account);
+    selectedAccounts.add(account);
 
     _logger.finest(() => "addAccountSelection $account");
     onSelectionChanged();
@@ -97,13 +97,13 @@ class MultiSelectAccountBloc extends DisposableOwner
   void onSelectionChanged() {
     selectedAccountsSubject.add(selectedAccounts);
     _logger.finest(() =>
-        "onSelectionChanged ${selectedAccounts!.length} $selectedAccounts");
+        "onSelectionChanged ${selectedAccounts.length} $selectedAccounts");
   }
 
   @override
   void removeAccountSelection(IAccount account) {
     _logger.finest(() => "removeAccountSelection $account");
-    selectedAccounts!
+    selectedAccounts
         .removeWhere((currentAccount) => account.remoteId == account.remoteId);
     onSelectionChanged();
   }

@@ -49,8 +49,8 @@ class RecentSelectAccountWidget extends StatelessWidget {
             )
             .toList();
 
-        return Provider<List<IAccount>?>.value(
-          value: recentItems,
+        return Provider<List<IAccount>>.value(
+          value: recentItems ?? [],
           child: _RecentSelectAccountListWidget(
             itemActions: itemActions,
             itemPadding: itemPadding,

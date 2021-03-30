@@ -64,11 +64,11 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   Stream<IConversationChatMessage?> get lastChatMessageStream =>
       _lastMessageSubject.stream;
 
-  final StreamController<IConversationChatMessage?>
+  final StreamController<IConversationChatMessage>
       onMessageLocallyHiddenStreamController = StreamController.broadcast();
 
   @override
-  Stream<IConversationChatMessage?> get onMessageLocallyHiddenStream =>
+  Stream<IConversationChatMessage> get onMessageLocallyHiddenStream =>
       onMessageLocallyHiddenStreamController.stream;
 
   final IMyAccountBloc myAccountBloc;

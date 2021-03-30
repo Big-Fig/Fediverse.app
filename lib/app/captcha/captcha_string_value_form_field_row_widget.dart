@@ -80,7 +80,7 @@ class _FormCaptchaStringFormFieldRowContentWidget extends StatelessWidget {
     _logger.finest(() => "build isExist $isExist");
 
     if (isExist) {
-      return StreamBuilder<List<FormItemValidationError?>?>(
+      return StreamBuilder<List<FormItemValidationError>>(
         stream: captchaStringFieldBloc.errorsStream,
         builder: (context, snapshot) {
           var errors = snapshot.data ?? [];

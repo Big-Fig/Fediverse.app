@@ -3,6 +3,7 @@ import 'package:fedi/app/account/my/edit/field/custom_fields/edit_my_account_cus
 import 'package:fedi/app/account/my/edit/field/custom_fields/edit_my_account_custom_fields_item_field_widget.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/form/group/pair/key_value_pair_form_group_bloc.dart';
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
@@ -18,9 +19,20 @@ class EditMyAccountCustomFieldsListFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditMyAccountBloc,
-        IOneTypeFormGroupBloc<IKeyValuePairFormGroupBloc>>(
+        IOneTypeFormGroupBloc<ILinkPairFormGroupBloc>>(
       update: (context, value, _) => value.customFieldsGroupBloc,
-      child: const _EditMyAccountCustomFieldsListFieldBodyWidget(),
+      child: ProxyProvider<IEditMyAccountBloc,
+          IOneTypeFormGroupBloc<IKeyValuePairFormGroupBloc>>(
+        update: (context, value, _) => value.customFieldsGroupBloc,
+        child: ProxyProvider<
+            IEditMyAccountBloc,
+            IOneTypeFormGroupBloc<
+                IKeyValuePairFormGroupBloc<IStringValueFormFieldBloc,
+                    IStringValueFormFieldBloc>>>(
+          update: (context, value, _) => value.customFieldsGroupBloc,
+          child: const _EditMyAccountCustomFieldsListFieldBodyWidget(),
+        ),
+      ),
     );
   }
 }
@@ -33,10 +45,10 @@ class _EditMyAccountCustomFieldsListFieldBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var customFieldsGroupBloc =
-        Provider.of<IOneTypeFormGroupBloc<IKeyValuePairFormGroupBloc>>(context);
-    return StreamBuilder<List<ILinkPairFormGroupBloc>?>(
-      stream: customFieldsGroupBloc.itemsStream as Stream<List<ILinkPairFormGroupBloc>?>?,
-      initialData: customFieldsGroupBloc.items as List<ILinkPairFormGroupBloc>?,
+        Provider.of<IOneTypeFormGroupBloc<ILinkPairFormGroupBloc>>(context);
+    return StreamBuilder<List<ILinkPairFormGroupBloc>>(
+      stream: customFieldsGroupBloc.itemsStream,
+      initialData: customFieldsGroupBloc.items,
       builder: (context, snapshot) {
         var fields = snapshot.data!;
         return Column(
