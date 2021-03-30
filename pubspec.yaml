@@ -53,13 +53,7 @@ dependencies:
       url: https://github.com/xal/flutter_html.git
       ref: f7559889775e8f773f2104958bf8178b7b4380f0
 
-  #flutter_duration_picker: ^1.0.4
-  # actually it is ^1.0.4 with bug fixes & style improvements
-  #  flutter_duration_picker:
-  #    git:
-  #      url: https://github.com/xal/flutter_duration_picker
-  #      ref: xal/minute_fixes
-
+  # minutes/hours picker
   duration_picker: ^1.0.1
 
   # media grid
@@ -217,7 +211,6 @@ dependency_overrides:
   # dev_dependencies conflict:
   # hive_generator 1.0.0 which is null-safe uses web_socket_channel: ^2.0.0
   # build_runner: ^1.11.5 which is not null-safe uses web_socket_channel: ^1.0.0
-
   web_socket_channel: ^2.0.0
 
   # for dart_code_metrics
