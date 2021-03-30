@@ -37,7 +37,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: StreamBuilder<List<FormItemValidationError?>?>(
+                child: StreamBuilder<List<FormItemValidationError>>(
                   stream: nameStringFieldBloc.errorsStream,
                   initialData: nameStringFieldBloc.errors,
                   builder: (context, snapshot) {

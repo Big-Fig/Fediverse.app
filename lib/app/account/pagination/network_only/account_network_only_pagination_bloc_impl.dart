@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 class AccountNetworkOnlyPaginationBloc
     extends NetworkOnlyPleromaPaginationBloc<IAccount>
     implements IAccountNetworkOnlyPaginationBloc {
-  final INetworkOnlyListBloc<IAccount>? listBloc;
+  final INetworkOnlyListBloc<IAccount> listBloc;
 
   AccountNetworkOnlyPaginationBloc({
     required this.listBloc,
@@ -24,7 +24,7 @@ class AccountNetworkOnlyPaginationBloc
         );
 
   @override
-  IPleromaApi get pleromaApi => listBloc!.pleromaApi;
+  IPleromaApi get pleromaApi => listBloc.pleromaApi;
 
   static AccountNetworkOnlyPaginationBloc createFromContext(
     BuildContext context, {
@@ -49,7 +49,7 @@ class AccountNetworkOnlyPaginationBloc
     required PaginationPage<IAccount>? olderPage,
     required PaginationPage<IAccount>? newerPage,
   }) {
-    return listBloc!.loadItemsFromRemoteForPage(
+    return listBloc.loadItemsFromRemoteForPage(
       itemsCountPerPage: itemsCountPerPage,
       maxId: newerPage?.items.lastOrNull?.remoteId,
       minId: olderPage?.items.firstOrNull?.remoteId,

@@ -138,7 +138,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
             nameMaxLength: customFieldLimits?.nameLength,
             valueMaxLength: customFieldLimits?.valueLength,
           ),
-          originalItems: myAccountBloc.fields!
+          originalItems: myAccountBloc.fields
               .map(
                 (field) => LinkPairFormGroupBloc(
                   name: field.name,

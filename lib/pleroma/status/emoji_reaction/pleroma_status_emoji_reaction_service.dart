@@ -23,7 +23,7 @@ abstract class IPleromaStatusEmojiReactionService extends IPleromaApi {
     required String emoji,
   });
 
-  Future<List<IPleromaStatusEmojiReaction>?> getReactions({
+  Future<List<IPleromaStatusEmojiReaction>> getReactions({
     required String statusRemoteId,
   });
 

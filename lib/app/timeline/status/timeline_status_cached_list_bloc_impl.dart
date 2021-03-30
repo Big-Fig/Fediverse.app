@@ -257,7 +257,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         break;
     }
 
-    if (remoteStatuses != null) {
+    if (remoteStatuses.isNotEmpty) {
       await statusRepository.upsertRemoteStatuses(
         remoteStatuses,
         listRemoteId: timeline.onlyInRemoteList?.id,

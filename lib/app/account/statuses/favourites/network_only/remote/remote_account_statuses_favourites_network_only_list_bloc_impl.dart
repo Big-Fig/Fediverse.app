@@ -62,7 +62,7 @@ class RemoteAccountStatusesFavouritesNetworkOnlyListBloc
         child: ProxyProvider<IStatusNetworkOnlyListBloc, INetworkOnlyListBloc>(
           update: (context, value, previous) => value,
           child: ProxyProvider<IStatusNetworkOnlyListBloc,
-              INetworkOnlyListBloc<IStatus?>>(
+              INetworkOnlyListBloc<IStatus>>(
             update: (context, value, previous) => value,
             child: child,
           ),

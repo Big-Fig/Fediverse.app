@@ -64,7 +64,7 @@ class RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
         update: (context, value, previous) => value,
         child: StatusNetworkOnlyListBlocProxyProvider(
           child: ProxyProvider<IStatusNetworkOnlyListBloc,
-              INetworkOnlyListBloc<IStatus?>>(
+              INetworkOnlyListBloc<IStatus>>(
             update: (context, value, previous) => value,
             child: child,
           ),

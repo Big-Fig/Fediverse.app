@@ -48,16 +48,16 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
     addDisposable(subject: hiddenItemsSubject);
   }
 
-  final BehaviorSubject<List<IConversationChatMessage?>?> hiddenItemsSubject =
+  final BehaviorSubject<List<IConversationChatMessage>> hiddenItemsSubject =
       BehaviorSubject.seeded([]);
 
-  List<IConversationChatMessage?>? get hiddenItems => hiddenItemsSubject.value;
+  List<IConversationChatMessage> get hiddenItems => hiddenItemsSubject.value!;
 
-  Stream<List<IConversationChatMessage?>?> get hiddenItemsStream =>
+  Stream<List<IConversationChatMessage>> get hiddenItemsStream =>
       hiddenItemsSubject.stream;
 
-  void hideItem(IConversationChatMessage? itemToHide) {
-    hiddenItems!.add(itemToHide);
+  void hideItem(IConversationChatMessage itemToHide) {
+    hiddenItems.add(itemToHide);
     hiddenItemsSubject.add(hiddenItems);
   }
 
