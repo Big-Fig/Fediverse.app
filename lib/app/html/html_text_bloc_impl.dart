@@ -167,8 +167,8 @@ Map<String, Style> _calculateHtmlStyles({
       fontSize: fontSizeObject,
       fontWeight: settings.fontWeight,
       color: settings.color,
-      // textOverflow: settings.textOverflow,
-      // textMaxLines: settings.textMaxLines,
+      textOverflow: settings.textOverflow,
+      textMaxLines: settings.textMaxLines,
       textAlign: settings.textAlign,
     ),
     "a": Style(
@@ -182,8 +182,8 @@ Map<String, Style> _calculateHtmlStyles({
       fontSize: fontSizeObject,
       fontWeight: settings.fontWeight,
       color: settings.color,
-      // textOverflow: settings.textOverflow,
-      // textMaxLines: settings.textMaxLines,
+      textOverflow: settings.textOverflow,
+      textMaxLines: settings.textMaxLines,
       textAlign: settings.textAlign,
     ),
   };
