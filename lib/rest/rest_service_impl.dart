@@ -108,9 +108,9 @@ class RestService extends DisposableOwner implements IRestService {
         break;
       case RestRequestType.delete:
         var rq = http.Request('DELETE', url);
-        rq.encoding = encoding!;
         if (requestBodyJson?.isNotEmpty == true) {
           rq.body = requestBodyJson!;
+          rq.encoding = encoding!;
         }
         if (requestHeaders.isNotEmpty == true) {
           rq.headers.addAll(requestHeaders);
