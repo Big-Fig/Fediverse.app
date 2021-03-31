@@ -494,7 +494,7 @@ class PleromaInstancePollLimits {
   );
 
   Duration get minExpirationDurationOrDefault =>
-      maxExpiration?.toDuration() ?? defaultMinPollExpiration;
+      minExpiration?.toDuration() ?? defaultMinPollExpiration;
 
   Duration get maxExpirationDurationOrDefault =>
       maxExpiration?.toDuration() ?? defaultMaxPollExpiration;
