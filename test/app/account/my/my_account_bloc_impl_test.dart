@@ -221,7 +221,7 @@ void main() {
     await subscription.cancel();
   });
   test('fields', () async {
-    expect(myAccountBloc.fields, myAccount.fields);
+    expect(myAccountBloc.fields, myAccount.fields ?? []);
 
     var newValue = [
       PleromaField(
@@ -238,7 +238,7 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, myAccount.fields);
+    expect(listenedValue, myAccount.fields ?? []);
 
     await _update(myAccount.copyWith(fields: newValue));
 
