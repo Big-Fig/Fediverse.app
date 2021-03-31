@@ -50,7 +50,9 @@ class StatusSensitiveBloc extends DisposableOwner
     if (statusLastDisplayEnabledTime != null) {
       var diff = statusLastDisplayEnabledTime.difference(DateTime.now()).abs();
 
-      if (diff < statusSensitiveSettingsBloc.nsfwDisplayDelayDuration!) {
+      var nsfwDisplayDelayDuration =
+          statusSensitiveSettingsBloc.nsfwDisplayDelayDuration;
+      if (nsfwDisplayDelayDuration != null && diff < nsfwDisplayDelayDuration) {
         initialDisplayEnabled = true;
       }
     }
@@ -141,7 +143,8 @@ class StatusSensitiveBloc extends DisposableOwner
       );
 
   @override
-  bool get isAlwaysShowNsfw => statusSensitiveSettingsBloc.isAlwaysShowNsfw ?? false;
+  bool get isAlwaysShowNsfw =>
+      statusSensitiveSettingsBloc.isAlwaysShowNsfw ?? false;
 
   @override
   bool get isAlwaysShowSpoiler =>

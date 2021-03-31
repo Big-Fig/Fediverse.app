@@ -8,13 +8,20 @@ import 'package:flutter/material.dart';
 Future<T?> showFediModalBottomSheetDialog<T>({
   required BuildContext context,
   required Widget child,
+  bool isScrollControlled = true,
+  bool useRootNavigator = false,
+  bool isDismissible = true,
+  bool enableDrag = true,
 }) {
   var fediUiColorTheme = IFediUiColorTheme.of(context, listen: false);
   return showModalBottomSheet<T>(
     context: context,
+    isScrollControlled:isScrollControlled,
+    useRootNavigator:useRootNavigator,
+    isDismissible:isDismissible,
+    enableDrag:enableDrag,
     backgroundColor: fediUiColorTheme.transparent,
     barrierColor: fediUiColorTheme.modalBottomSheetDarkOverlay,
-    isScrollControlled: true,
     builder: (BuildContext context) => AnimatedPadding(
       duration: const Duration(milliseconds: 100),
       curve: Curves.decelerate,
