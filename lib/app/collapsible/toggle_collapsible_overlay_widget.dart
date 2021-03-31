@@ -17,7 +17,7 @@ class ToggleCollapsibleOverlayWidget extends StatelessWidget {
 
         if (isAtLeastOneVisibleItemExpanded) {
           return FediIconInCircleFilledButton(
-            FediIcons.chevron_down,
+            FediIcons.chevron_up,
             onPressed: collapsibleBloc.collapseAllVisibleItems,
           );
         } else {
