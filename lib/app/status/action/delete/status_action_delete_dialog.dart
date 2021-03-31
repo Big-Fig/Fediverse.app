@@ -16,9 +16,11 @@ Future<T?> showStatusActionDeleteDialog<T>({
   required BuildContext context,
   required IStatusBloc statusBloc,
 }) {
-  var pollLimits =
-      ICurrentAuthInstanceBloc.of(context).currentInstance?.info?.pollLimits ??
-          PleromaInstancePollLimits.defaultLimits;
+  var pollLimits = ICurrentAuthInstanceBloc.of(
+        context,
+        listen: false,
+      ).currentInstance?.info?.pollLimits ??
+      PleromaInstancePollLimits.defaultLimits;
   return StatusActionDeleteDialog(
     actionsBorderVisible: false,
     title: S.of(context).app_status_delete_dialog_title,
