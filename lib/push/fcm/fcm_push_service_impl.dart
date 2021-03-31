@@ -123,7 +123,15 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
 
     await _fcm.setAutoInitEnabled(true);
 
-    await _updateToken();
+    try {
+      await _updateToken();
+    } catch (e, stackTrace) {
+      _logger.warning(
+        () => "failed to _updateToken on internalAsyncInit",
+        e,
+        stackTrace,
+      );
+    }
 
     initialMessage = await getInitialMessage();
   }
