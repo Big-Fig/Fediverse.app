@@ -24,15 +24,6 @@ void showPostStatusUnsavedDialog(
     actions: [
       DialogAction(
         customTextStyle: fediUiTextTheme.bigTallPrimaryDark,
-        label: S.of(context).app_status_post_new_unsaved_dialog_action_discard,
-        onAction: (context) {
-          Navigator.pop(context);
-          Navigator.pop(context);
-        },
-      ),
-      DialogAction(
-        customTextStyle: fediUiTextTheme.bigTallError,
-        customColor: fediUiTextTheme.bigTallError.color,
         label:
             S.of(context).app_status_post_new_unsaved_dialog_action_saveAsDraft,
         onAction: (context) async {
@@ -49,6 +40,15 @@ void showPostStatusUnsavedDialog(
               ),
             ),
           );
+          Navigator.pop(context);
+          Navigator.pop(context);
+        },
+      ),
+      DialogAction(
+        customTextStyle: fediUiTextTheme.bigTallError,
+        customColor: fediUiTextTheme.bigTallError.color,
+        label: S.of(context).app_status_post_new_unsaved_dialog_action_discard,
+        onAction: (context) {
           Navigator.pop(context);
           Navigator.pop(context);
         },
