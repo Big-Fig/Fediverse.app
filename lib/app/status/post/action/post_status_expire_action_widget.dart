@@ -27,7 +27,7 @@ class PostStatusExpireActionWidget extends StatelessWidget {
 
         return FediIconButton(
           icon: Icon(
-            FediIcons.expire,
+            FediIcons.post_expiry,
             color: isExpireAtExist
                 ? IFediUiColorTheme.of(context).primary
                 : IFediUiColorTheme.of(context).darkGrey,
