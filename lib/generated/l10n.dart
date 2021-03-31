@@ -7103,6 +7103,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Delete`
+  String get app_datetime_picker_action_delete {
+    return Intl.message(
+      'Delete',
+      name: 'app_datetime_picker_action_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get app_duration_picker_action_done {
+    return Intl.message(
+      'Done',
+      name: 'app_duration_picker_action_done',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get app_duration_picker_action_cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'app_duration_picker_action_cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get app_datetime_picker_action_done {
+    return Intl.message(
+      'Done',
+      name: 'app_datetime_picker_action_done',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -22,9 +22,9 @@ class StatusSensitiveSettings
   @JsonKey(name: "nsfw_display_delay_duration_seconds_total")
   final int? nsfwDisplayDelayDurationMicrosecondsTotal;
 
-  Duration get nsfwDisplayDelayDuration => Duration(
+  Duration? get nsfwDisplayDelayDuration => nsfwDisplayDelayDurationMicrosecondsTotal != null ? Duration(
         microseconds: nsfwDisplayDelayDurationMicrosecondsTotal!,
-      );
+      ) : null;
 
   StatusSensitiveSettings({
     required this.isAlwaysShowSpoiler,
@@ -54,7 +54,8 @@ class StatusSensitiveSettings
         'isAlwaysShowSpoiler: $isAlwaysShowSpoiler,'
         ' isAlwaysShowNsfw: $isAlwaysShowNsfw,'
         ' nsfwDisplayDelayDurationMicrosecondsTotal:'
-        ' $nsfwDisplayDelayDurationMicrosecondsTotal}';
+        ' $nsfwDisplayDelayDurationMicrosecondsTotal'
+        '}';
   }
 
   factory StatusSensitiveSettings.fromJson(Map<String, dynamic> json) =>

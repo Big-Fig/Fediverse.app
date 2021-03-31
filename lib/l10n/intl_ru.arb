@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-03-17T09:27:44+00:00",
+    "@@last_modified": "2021-03-31T14:19:52+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -724,5 +724,9 @@
     "app_notification_all_dialog_action_pushNotifications": "Настройки Push уведомлений",
     "app_notification_all_dialog_action_markAllAsRead": "Отметить ВСЕ как прочитанное",
     "app_notification_all_dialog_action_dismissAll": "Очистить ВСЕ",
-    "app_cache_files_settings_sizeLimit_value_size10000": "10000"
+    "app_cache_files_settings_sizeLimit_value_size10000": "10000",
+    "app_datetime_picker_action_delete": "Удалить",
+    "app_duration_picker_action_done": "Выбрать",
+    "app_duration_picker_action_cancel": "Отмена",
+    "app_datetime_picker_action_done": "Выбрать"
 }

@@ -27,7 +27,7 @@ class FediDatePicker {
   ///
   /// Display date picker bottom sheet.
   ///
-  static Future<DateTime> showDatePicker(
+  static Future<DateTime?> showDatePicker(
     BuildContext context, {
     bool showTitleActions = true,
     DateTime? minTime,
@@ -64,7 +64,7 @@ class FediDatePicker {
   ///
   /// Display time picker bottom sheet.
   ///
-  static Future<DateTime> showTimePicker(
+  static Future<DateTime?> showTimePicker(
     BuildContext context, {
     bool showTitleActions = true,
     bool showSecondsColumn = true,
@@ -99,7 +99,7 @@ class FediDatePicker {
   ///
   /// Display time picker bottom sheet with AM/PM.
   ///
-  static Future<DateTime> showTime12hPicker(
+  static Future<DateTime?> showTime12hPicker(
     BuildContext context, {
     bool showTitleActions = true,
     DateChangedCallback? onChanged,
@@ -166,7 +166,7 @@ class FediDatePicker {
   ///
   /// Display date picker bottom sheet witch custom picker model.
   ///
-  static Future<DateTime> showPicker(
+  static Future<DateTime?> showPicker(
     BuildContext context, {
     bool showTitleActions = true,
     DateChangedCallback? onChanged,
@@ -193,7 +193,7 @@ class FediDatePicker {
     );
   }
 
-  static Future<DateTime> _showDatePickerPopup({
+  static Future<DateTime?> _showDatePickerPopup({
     required BuildContext context,
     required bool showTitleActions,
     required DateChangedCallback? onChanged,
@@ -206,7 +206,7 @@ class FediDatePicker {
     required BasePickerModel? pickerModel,
     required bool isDeletePossible,
   }) {
-    var completer = Completer<DateTime>();
+    var completer = Completer<DateTime?>();
     Widget widget = _FediDatePickerComponent(
       onChanged: onChanged,
       locale: locale,
@@ -515,16 +515,16 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
 
   String _localeDone() {
     return widget.theme!.customDone ??
-        i18nObjInLocale(widget.locale)['done'] as String;
+        S.of(context).app_datetime_picker_action_done;
   }
 
   String _localeCancel() {
     return widget.theme!.customCancel ??
-        i18nObjInLocale(widget.locale)['cancel'] as String;
+        S.of(context).app_datetime_picker_action_cancel;
   }
 
   String _localeDelete() {
-    return S.of(context).app_duration_picker_action_delete;
+    return S.of(context).app_datetime_picker_action_delete;
   }
 }
 

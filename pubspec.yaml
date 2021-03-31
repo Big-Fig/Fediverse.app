@@ -54,7 +54,12 @@ dependencies:
       ref: f7559889775e8f773f2104958bf8178b7b4380f0
 
   # minutes/hours picker
-  duration_picker: ^1.0.1
+  # duration_picker: ^1.0.1
+  # it is 1.0.1 with minute fixes and widget layout changes
+  duration_picker:
+    git:
+      url: https://github.com/xal/duration_picker.git
+      ref: ea2decc7d3f6cf2ebb7ff01570268045da71f647
 
   # media grid
   flutter_staggered_grid_view: ^0.4.0-nullsafety.3
