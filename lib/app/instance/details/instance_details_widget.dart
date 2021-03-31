@@ -1,15 +1,9 @@
 import 'dart:math';
 
-import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
-import 'package:fedi/app/account/account_widget.dart';
-import 'package:fedi/app/account/acct/account_acct_widget.dart';
 import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/details/remote_account_details_page.dart';
-import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
-import 'package:fedi/app/account/local_account_bloc_impl.dart';
-import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/form/field/value/duration/duration_value_form_field_row_widget.dart';
 import 'package:fedi/app/html/html_text_bloc.dart';
@@ -20,6 +14,7 @@ import 'package:fedi/app/instance/details/instance_details_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
@@ -31,6 +26,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/mastodon/instance/mastodon_instance_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
+import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/style.dart';
@@ -59,7 +55,8 @@ class InstanceDetailsWidget extends StatelessWidget {
               await instanceDetailsBloc.refresh();
               return FediListSmartRefresherLoadingState.loaded;
             } catch (e, stackTrace) {
-              _logger.warning(() => "instanceDetailsBloc.refresh", e, stackTrace);
+              _logger.warning(
+                  () => "instanceDetailsBloc.refresh", e, stackTrace);
               return FediListSmartRefresherLoadingState.failed;
             }
           },
@@ -445,7 +442,7 @@ class _InstanceDetailsEmailWidget extends StatelessWidget {
 
         if (email?.isNotEmpty == true) {
           return Padding(
-            padding: _InstanceDetailsRowWidget.padding,
+            padding: _BaseInstanceDetailsRowWidget.padding,
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -462,7 +459,7 @@ class _InstanceDetailsEmailWidget extends StatelessWidget {
                       );
                     },
                     child: _InstanceDetailsRowValueWidget(
-                      value: email,
+                      value: email!,
                       customColor: IFediUiColorTheme.of(context).primary,
                     ),
                   ),
@@ -478,28 +475,73 @@ class _InstanceDetailsEmailWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsRowWidget extends StatelessWidget {
-  const _InstanceDetailsRowWidget({
+class _SimpleInstanceDetailsRowWidget extends StatelessWidget {
+  const _SimpleInstanceDetailsRowWidget({
     Key? key,
     required this.label,
     required this.value,
   }) : super(key: key);
 
   final String label;
-  final String? value;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return _BaseInstanceDetailsRowWidget(
+      label: label,
+      value: value,
+      valueIcon: null,
+      valueOnClick: null,
+    );
+  }
+}
+
+class _BaseInstanceDetailsRowWidget extends StatelessWidget {
+  const _BaseInstanceDetailsRowWidget({
+    Key? key,
+    required this.label,
+    required this.value,
+    required this.valueIcon,
+    required this.valueOnClick,
+  }) : super(key: key);
+
+  final String label;
+  final String value;
+  final Icon? valueIcon;
+  final OnClickUiCallback? valueOnClick;
+
   static const padding = FediPadding.allBigPadding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: _InstanceDetailsRowWidget.padding,
+      padding: FediPadding.allBigPadding,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _InstanceDetailsRowLabelWidget(label: label),
           Flexible(
-            child: _InstanceDetailsRowValueWidget(value: value),
+            child: InkWell(
+              onTap: () {
+                if (valueOnClick != null) {
+                  valueOnClick!(context);
+                }
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: _InstanceDetailsRowValueWidget(value: value),
+                  ),
+                  if (valueIcon != null)
+                    Padding(
+                      padding: FediPadding.horizontalSmallPadding,
+                      child: valueIcon!,
+                    ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -508,7 +550,7 @@ class _InstanceDetailsRowWidget extends StatelessWidget {
 }
 
 class _InstanceDetailsRowValueWidget extends StatelessWidget {
-  final String? value;
+  final String value;
   final Color? customColor;
 
   const _InstanceDetailsRowValueWidget({
@@ -520,7 +562,7 @@ class _InstanceDetailsRowValueWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      value!,
+      value,
       textAlign: TextAlign.end,
       style: IFediUiTextTheme.of(context)
           .bigTallMediumGrey
@@ -568,9 +610,9 @@ class _InstanceDetailsVersionWidget extends StatelessWidget {
         var version = snapshot.data;
 
         if (version?.isNotEmpty == true) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label: S.of(context).app_instance_details_field_version_label,
-            value: version,
+            value: version!,
           );
         } else {
           return const SizedBox.shrink();
@@ -608,25 +650,25 @@ class _InstanceDetailsStatsWidget extends StatelessWidget {
                     title: S.of(context).app_instance_details_field_stats_title,
                   ),
                   if (stats.domainCount != null)
-                    _InstanceDetailsRowWidget(
+                    _SimpleInstanceDetailsRowWidget(
                       label: S
                           .of(context)
                           .app_instance_details_field_stats_domainCount_label,
-                      value: stats.domainCount?.toString(),
+                      value: stats.domainCount!.toString(),
                     ),
                   if (stats.statusCount != null)
-                    _InstanceDetailsRowWidget(
+                    _SimpleInstanceDetailsRowWidget(
                       label: S
                           .of(context)
                           .app_instance_details_field_stats_statusCount_label,
-                      value: stats.statusCount?.toString(),
+                      value: stats.statusCount!.toString(),
                     ),
                   if (stats.userCount != null)
-                    _InstanceDetailsRowWidget(
+                    _SimpleInstanceDetailsRowWidget(
                       label: S
                           .of(context)
                           .app_instance_details_field_stats_userCount_label,
-                      value: stats.userCount?.toString(),
+                      value: stats.userCount!.toString(),
                     ),
                 ],
               );
@@ -654,6 +696,7 @@ class _InstanceDetailsGroupTitleWidget extends StatelessWidget {
       padding: FediPadding.horizontalBigPadding,
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const FediSmallVerticalSpacer(),
@@ -713,7 +756,7 @@ class _InstanceDetailsLanguagesWidget extends StatelessWidget {
         var languages = snapshot.data;
 
         if (languages?.isNotEmpty == true) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label: S.of(context).app_instance_details_field_languages_label,
             value: languages?.join("\n") ?? "",
           );
@@ -741,7 +784,7 @@ class _InstanceDetailsRegistrationEnabledWidget extends StatelessWidget {
         var registrations = snapshot.data;
 
         if (registrations != null) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label: S.of(context).app_instance_details_field_registrations_label,
             value: registrations
                 ? S.of(context).app_instance_details_value_bool_true
@@ -771,7 +814,7 @@ class _InstanceDetailsApprovalRequiredWidget extends StatelessWidget {
         var approvalRequired = snapshot.data;
 
         if (approvalRequired != null) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label:
                 S.of(context).app_instance_details_field_approvalRequired_label,
             value: approvalRequired
@@ -802,7 +845,7 @@ class _InstanceDetailsInvitesEnablesWidget extends StatelessWidget {
         var invitesEnabled = snapshot.data;
 
         if (invitesEnabled != null) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label:
                 S.of(context).app_instance_details_field_invitesEnabled_label,
             value: invitesEnabled
@@ -838,61 +881,21 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
 
         if (contactAccount != null) {
           var account = contactAccount.toDbAccountWrapper();
-          return Provider<IAccount>.value(
-            value: account,
-            child: DisposableProxyProvider<IAccount, IAccountBloc>(
-              update: (context, account, _) {
-                var isNeedRefreshFromNetworkOnInit = false;
-                if (isLocal) {
-                  return LocalAccountBloc.createFromContext(
-                    context,
-                    account: account,
-                    isNeedWatchWebSocketsEvents: false,
-                    isNeedRefreshFromNetworkOnInit:
-                        isNeedRefreshFromNetworkOnInit,
-                    isNeedPreFetchRelationship: true,
-                    isNeedWatchLocalRepositoryForUpdates: false,
-                  );
-                } else {
-                  return RemoteAccountBloc.createFromContext(
-                    context,
-                    account: account,
-                    isNeedRefreshFromNetworkOnInit:
-                        isNeedRefreshFromNetworkOnInit,
-                  );
-                }
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _InstanceDetailsGroupTitleWidget(
-                    title: S
-                        .of(context)
-                        .app_instance_details_field_contactAccount_label,
-                  ),
-                  const _InstanceDetailsContactAccountDisplayNameAndAcctWidget(),
-                  InkWell(
-                    onTap: () {
-                      _goToAccount(
-                        context: context,
-                        isLocal: isLocal,
-                        account: account,
-                      );
-                    },
-                    child: AccountWidget(
-                      onStatusesTapCallback: (context) {
-                        _goToAccount(
-                          context: context,
-                          isLocal: isLocal,
-                          account: account,
-                        );
-                      },
-                      footer: const SizedBox.shrink(),
-                    ),
-                  ),
-                ],
-              ),
+          return _BaseInstanceDetailsRowWidget(
+            label:
+                S.of(context).app_instance_details_field_contactAccount_label,
+            valueIcon: Icon(
+              FediIcons.chevron_right,
+              color: IFediUiColorTheme.of(context).darkGrey,
             ),
+            valueOnClick: (BuildContext context) {
+              _goToAccount(
+                context: context,
+                isLocal: isLocal,
+                account: account,
+              );
+            },
+            value: account.acct,
           );
         } else {
           return const SizedBox.shrink();
@@ -920,28 +923,6 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsContactAccountDisplayNameAndAcctWidget
-    extends StatelessWidget {
-  const _InstanceDetailsContactAccountDisplayNameAndAcctWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allBigPadding,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const AccountDisplayNameWidget(),
-          const AccountAcctWidget(),
-        ],
-      ),
-    );
-  }
-}
-
 class _InstanceDetailsPleromaMaxTootCharsLimitWidget extends StatelessWidget {
   const _InstanceDetailsPleromaMaxTootCharsLimitWidget({
     Key? key,
@@ -958,7 +939,7 @@ class _InstanceDetailsPleromaMaxTootCharsLimitWidget extends StatelessWidget {
         var maxTootChars = snapshot.data;
 
         if (maxTootChars != null) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label: S.of(context).app_instance_details_field_maxTootChars_label,
             value: maxTootChars.toString(),
           );
@@ -986,7 +967,7 @@ class _InstanceDetailsPleromaChatMessageLimitWidget extends StatelessWidget {
         var chatLimit = snapshot.data;
 
         if (chatLimit != null) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label: S.of(context).app_instance_details_field_chatLimit_label,
             value: chatLimit.toString(),
           );
@@ -1015,7 +996,7 @@ class _InstanceDetailsPleromaImageDescriptionLimitWidget
         var descriptionLimit = snapshot.data;
 
         if (descriptionLimit != null) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label: S
                 .of(context)
                 .app_instance_details_field_imageDescriptionLimit_label,
@@ -1060,7 +1041,7 @@ class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
                           .app_instance_details_field_pollLimit_title,
                     ),
                     if (pollLimits.minExpiration != null)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_pollLimit_minExpiration_label,
@@ -1071,7 +1052,7 @@ class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
                         ),
                       ),
                     if (pollLimits.maxExpiration != null)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_pollLimit_maxExpiration_label,
@@ -1082,18 +1063,18 @@ class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
                         ),
                       ),
                     if (pollLimits.maxOptionChars != null)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_pollLimit_maxOptionsChars_label,
-                        value: pollLimits.maxOptionChars?.toString(),
+                        value: pollLimits.maxOptionChars!.toString(),
                       ),
                     if (pollLimits.maxOptions != null)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_pollLimit_maxOptions_label,
-                        value: pollLimits.maxOptions?.toString(),
+                        value: pollLimits.maxOptions!.toString(),
                       ),
                   ],
                 );
@@ -1126,7 +1107,7 @@ class _InstanceDetailsPleromaUploadMediaLimitWidget extends StatelessWidget {
         var uploadLimit = snapshot.data;
 
         if (uploadLimit != null) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label: S.of(context).app_instance_details_field_uploadMedia_label,
             value: S.of(context).app_instance_details_value_sizeInMb(
                   _mbSizeNumberFormat.format(
@@ -1159,7 +1140,7 @@ class _InstanceDetailsPleromaUploadAccountAvatarLimitWidget
         var avatarUploadLimit = snapshot.data;
 
         if (avatarUploadLimit != null) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label: S.of(context).app_instance_details_field_uploadAvatar_label,
             value: S.of(context).app_instance_details_value_sizeInMb(
                   _mbSizeNumberFormat.format(
@@ -1192,7 +1173,7 @@ class _InstanceDetailsPleromaUploadAccountBackgroundLimitWidget
         var backgroundUploadLimit = snapshot.data;
 
         if (backgroundUploadLimit != null) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label:
                 S.of(context).app_instance_details_field_uploadBackground_label,
             value: S.of(context).app_instance_details_value_sizeInMb(
@@ -1226,7 +1207,7 @@ class _InstanceDetailsPleromaUploadAccountBannerLimitWidget
         var bannerUploadLimit = snapshot.data;
 
         if (bannerUploadLimit != null) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label: S.of(context).app_instance_details_field_uploadBanner_label,
             value: S.of(context).app_instance_details_value_sizeInMb(
                   _mbSizeNumberFormat.format(
@@ -1258,7 +1239,7 @@ class _InstanceDetailsPleromaMetadataFeaturesWidget extends StatelessWidget {
         var pleromaMetadataFeatures = snapshot.data;
 
         if (pleromaMetadataFeatures?.isNotEmpty == true) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label: S
                 .of(context)
                 .app_instance_details_field_pleroma_metadata_features_label,
@@ -1303,7 +1284,7 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
                           .app_instance_details_field_federation_title,
                     ),
                     if (pleromaMetadataFederation.enabled != null)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_federation_enabled_label,
@@ -1314,7 +1295,7 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
                                 .app_instance_details_value_bool_false,
                       ),
                     if (pleromaMetadataFederation.exclusions != null)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_federation_exclusions_label,
@@ -1326,16 +1307,16 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
                       ),
                     if (pleromaMetadataFederation.mrfPolicies?.isNotEmpty ==
                         true)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_federation_mrfPolicies_label,
                         value:
-                            pleromaMetadataFederation.mrfPolicies?.join("\n"),
+                            pleromaMetadataFederation.mrfPolicies!.join("\n"),
                       ),
                     if (pleromaMetadataFederation.mrfObjectAge?.threshold !=
                         null)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_federation_mrfObjectAge_threshold_label,
@@ -1348,22 +1329,22 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
                         ),
                       ),
                     if (pleromaMetadataFederation.mrfObjectAge?.actions != null)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_federation_mrfObjectAge_actions_label,
-                        value: pleromaMetadataFederation.mrfObjectAge?.actions
-                            ?.join("\n"),
+                        value: pleromaMetadataFederation.mrfObjectAge!.actions!
+                            .join("\n"),
                       ),
                     if (pleromaMetadataFederation
                             .quarantinedInstances?.isNotEmpty ==
                         true)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_federation_quarantinedInstances_label,
-                        value: pleromaMetadataFederation.quarantinedInstances
-                            ?.join("\n"),
+                        value: pleromaMetadataFederation.quarantinedInstances!
+                            .join("\n"),
                       ),
                   ],
                 );
@@ -1413,36 +1394,36 @@ class _InstanceDetailsPleromaMetadataFieldsLimitsWidget
                           .app_instance_details_field_pleroma_metadata_fields_title,
                     ),
                     if (pleromaMetadataFieldsLimits.maxFields != null)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_pleroma_metadata_fields_maxFields_label,
                         value:
-                            pleromaMetadataFieldsLimits.maxFields?.toString(),
+                            pleromaMetadataFieldsLimits.maxFields!.toString(),
                       ),
                     if (pleromaMetadataFieldsLimits.maxRemoteFields != null)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_pleroma_metadata_fields_maxRemoteFields_label,
-                        value: pleromaMetadataFieldsLimits.maxRemoteFields
-                            ?.toString(),
+                        value: pleromaMetadataFieldsLimits.maxRemoteFields!
+                            .toString(),
                       ),
                     if (pleromaMetadataFieldsLimits.nameLength != null)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_pleroma_metadata_fields_nameLength_label,
                         value:
-                            pleromaMetadataFieldsLimits.nameLength?.toString(),
+                            pleromaMetadataFieldsLimits.nameLength!.toString(),
                       ),
                     if (pleromaMetadataFieldsLimits.valueLength != null)
-                      _InstanceDetailsRowWidget(
+                      _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_pleroma_metadata_fields_valueLength_label,
                         value:
-                            pleromaMetadataFieldsLimits.valueLength?.toString(),
+                            pleromaMetadataFieldsLimits.valueLength!.toString(),
                       ),
                   ],
                 );
@@ -1475,7 +1456,7 @@ class _InstanceDetailsPleromaMetadataPostFormatsWidget extends StatelessWidget {
         var pleromaMetadataPostFormats = snapshot.data;
 
         if (pleromaMetadataPostFormats?.isNotEmpty == true) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label: S
                 .of(context)
                 .app_instance_details_field_pleroma_metadata_fields_postFormats_label,
@@ -1505,10 +1486,10 @@ class _InstanceDetailsVapidPublicKeyWidget extends StatelessWidget {
         var vapidPublicKey = snapshot.data;
 
         if (vapidPublicKey?.isNotEmpty == true) {
-          return _InstanceDetailsRowWidget(
+          return _SimpleInstanceDetailsRowWidget(
             label:
                 S.of(context).app_instance_details_field_vapidPublicKey_label,
-            value: vapidPublicKey?.toString(),
+            value: vapidPublicKey!.toString(),
           );
         } else {
           return const SizedBox.shrink();
