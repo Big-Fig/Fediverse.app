@@ -64,6 +64,12 @@ class AccountFieldListItemWidget extends StatelessWidget {
 
   IconData _calculateIconData({required String valueAsRawUrlWithoutSchema}) {
     valueAsRawUrlWithoutSchema = valueAsRawUrlWithoutSchema.toLowerCase();
+    if (valueAsRawUrlWithoutSchema.startsWith("www.")) {
+      valueAsRawUrlWithoutSchema = valueAsRawUrlWithoutSchema.replaceAll(
+        "www.",
+        "",
+      );
+    }
     if (_isFacebookLink(valueAsRawUrlWithoutSchema)) {
       return FediIcons.fb;
     }
