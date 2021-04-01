@@ -5,12 +5,14 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
+import 'package:fedi/mastodon/card/mastodon_card_model.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-const _cardImageSize = 114.0;
+const _cardWithContentImageSize = 114.0;
+const _cardWithoutContentImageSize = _cardWithContentImageSize * 3;
 const _cardBorderRadius = 8.0;
 
 class CardWidget extends StatelessWidget {
@@ -22,12 +24,17 @@ class CardWidget extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
+    var isHaveContent = card.isHaveContent;
+    var isHaveImage = card.isHaveImage;
+
     return ProxyProvider<IPleromaCard?, IPleromaCard>(
       update: (context, value, previous) => value!,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
         child: Container(
-          height: _cardImageSize,
+          height: isHaveContent
+              ? _cardWithContentImageSize
+              : _cardWithoutContentImageSize,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(_cardBorderRadius),
             child: InkWell(
@@ -39,11 +46,10 @@ class CardWidget extends StatelessWidget {
                 );
               },
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  if (card.image != null) const _CardImageWidget(),
-                  const _CardContentWidget(),
+                  if (isHaveImage) const _CardImageWidget(),
+                  if (isHaveContent) const _CardContentWidget(),
                 ],
               ),
             ),
@@ -104,8 +110,8 @@ class _CardImageWidget extends StatelessWidget {
     var card = Provider.of<IPleromaCard>(context);
 
     return IFilesCacheService.of(context).createCachedNetworkImageWidget(
-      width: _cardImageSize,
-      height: _cardImageSize,
+      width: _cardWithContentImageSize,
+      height: _cardWithContentImageSize,
       imageUrl: card.image,
       fit: BoxFit.cover,
       placeholder: (context, url) => Padding(

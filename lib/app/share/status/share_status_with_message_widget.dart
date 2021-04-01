@@ -41,8 +41,9 @@ class ShareStatusWithMessageWidget extends StatelessWidget {
             bottom: FediSizes.bigPadding,
           ),
           child: ConstrainedBox(
-            constraints:
-                BoxConstraints(maxHeight: mediaQueryData.size.height * 0.2),
+            constraints: BoxConstraints(
+              maxHeight: mediaQueryData.size.height * 0.2,
+            ),
             child: const CardWidget(),
           ),
         ),
