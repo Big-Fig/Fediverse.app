@@ -5,11 +5,18 @@ class FediFadeShaderMask extends StatelessWidget {
   final double fadingPercent;
   final Color fadingColor;
   final Widget child;
+  final bool onlyEnd;
+
+  final Alignment begin;
+  final Alignment end;
 
   FediFadeShaderMask({
     required this.fadingPercent,
     required this.fadingColor,
     required this.child,
+    this.onlyEnd = false,
+    this.begin = Alignment.centerLeft,
+    this.end = Alignment.centerRight,
   });
 
   @override
@@ -17,10 +24,10 @@ class FediFadeShaderMask extends StatelessWidget {
     return ShaderMask(
       shaderCallback: (rect) {
         return LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
+          begin: begin,
+          end: end,
           colors: [
-            fadingColor.withOpacity(0.0),
+            onlyEnd ? Colors.white : fadingColor.withOpacity(0.0),
             Colors.white,
             Colors.white,
             fadingColor.withOpacity(0.0),

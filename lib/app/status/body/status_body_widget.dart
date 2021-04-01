@@ -24,6 +24,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/settings/font_size/ui_settings_font_size_model.dart';
 import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
+import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -233,22 +234,27 @@ class _StatusBodyCollapsibleButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusCollapsibleItemBloc = IStatusCollapsibleItemBloc.of(context);
-    return Center(
-      child: StreamBuilder<bool>(
-        stream: statusCollapsibleItemBloc.isCollapsedStream,
-        builder: (context, snapshot) {
-          var isCollapsed = snapshot.data ?? true;
-          return FediPrimaryFilledTextButtonWithBorder(
-            isCollapsed
-                ? S.of(context).app_status_collapsible_action_expand
-                : S.of(context).app_status_collapsible_action_collapse,
-            onPressed: () {
-              statusCollapsibleItemBloc.toggleCollapseExpand();
+    return Column(
+      children: [
+        const FediSmallVerticalSpacer(),
+        Center(
+          child: StreamBuilder<bool>(
+            stream: statusCollapsibleItemBloc.isCollapsedStream,
+            builder: (context, snapshot) {
+              var isCollapsed = snapshot.data ?? true;
+              return FediPrimaryFilledTextButtonWithBorder(
+                isCollapsed
+                    ? S.of(context).app_status_collapsible_action_expand
+                    : S.of(context).app_status_collapsible_action_collapse,
+                onPressed: () {
+                  statusCollapsibleItemBloc.toggleCollapseExpand();
+                },
+                expanded: false,
+              );
             },
-            expanded: false,
-          );
-        },
-      ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -375,9 +381,16 @@ class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isCollapsed = snapshot.data ?? false;
         if (isCollapsed && isNeedCollapse) {
-          return Container(
-            height: 200,
-            child: htmlTextWidget,
+          return FediFadeShaderMask(
+            fadingColor: IFediUiColorTheme.of(context).white,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            onlyEnd: true,
+            fadingPercent: 0.2,
+            child: Container(
+              height: 200,
+              child: htmlTextWidget,
+            ),
           );
         } else {
           return htmlTextWidget;
