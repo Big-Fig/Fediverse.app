@@ -6934,10 +6934,10 @@ class S {
     );
   }
 
-  /// `Selected ({selectionCount})`
+  /// `{selectionCount} media selected`
   String file_picker_multi_selectionCount_selected(Object selectionCount) {
     return Intl.message(
-      'Selected ($selectionCount)',
+      '$selectionCount media selected',
       name: 'file_picker_multi_selectionCount_selected',
       desc: '',
       args: [selectionCount],
