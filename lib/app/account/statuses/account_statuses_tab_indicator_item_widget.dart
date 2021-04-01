@@ -1,6 +1,4 @@
 import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc.dart';
 import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc_impl.dart';
 import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_model.dart';
