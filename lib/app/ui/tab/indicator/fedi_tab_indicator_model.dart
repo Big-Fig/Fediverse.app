@@ -5,3 +5,8 @@ typedef CustomTabBuilder<T> = Widget Function(
   Widget child,
   T tab,
 );
+
+enum FediTabStyle {
+  bubble,
+  underline,
+}

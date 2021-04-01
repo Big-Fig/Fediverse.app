@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';

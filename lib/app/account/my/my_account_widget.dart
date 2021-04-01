@@ -11,7 +11,6 @@ import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
-import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/callback/on_click_ui_callback.dart';
@@ -38,46 +37,52 @@ class MyAccountWidget extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context, listen: true);
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     var isNotMyAccount = !myAccountBloc.checkAccountIsMe(accountBloc.account);
-    return Stack(
+    return Column(
       children: [
-        if (brightness == Brightness.light)
-          const Positioned.fill(
-            child: AccountHeaderBackgroundWidget(),
-          ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            MyAccountInfoWidget(
-              onStatusesTapCallback: onStatusesTapCallback,
-              brightness: brightness,
-            ),
-            if (isNotMyAccount)
-              Container(
-                color: IFediUiColorTheme.of(context).primary,
-                child: const AccountActionListWidget(),
+        Stack(
+          children: [
+            if (brightness == Brightness.light)
+              Positioned.fill(
+                child: Container(
+                  color: IFediUiColorTheme.of(context).white,
+                  child: const AccountHeaderBackgroundWidget(),
+                ),
               ),
-            AccountNoteWidget(
-              textStyle: brightness == Brightness.dark
-                  ? IFediUiTextTheme.of(context).bigTallBoldDarkGrey
-                  : IFediUiTextTheme.of(context).bigTallBoldWhite,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                MyAccountInfoWidget(
+                  onStatusesTapCallback: onStatusesTapCallback,
+                  brightness: brightness,
+                ),
+                if (isNotMyAccount)
+                  Container(
+                    color: IFediUiColorTheme.of(context).primary,
+                    child: const AccountActionListWidget(),
+                  ),
+                AccountNoteWidget(
+                  textStyle: brightness == Brightness.dark
+                      ? IFediUiTextTheme.of(context).bigTallBoldDarkGrey
+                      : IFediUiTextTheme.of(context).bigTallBoldWhite,
+                ),
+                Padding(
+                  padding: _bodyPadding,
+                  child: AccountFieldListWidget(
+                    brightness: brightness,
+                  ),
+                ),
+                Padding(
+                  padding: _bodyPadding,
+                  child: _MyAccountFooterWidget(
+                    brightness: brightness,
+                  ),
+                ),
+                const FediBigVerticalSpacer(),
+              ],
             ),
-            Padding(
-              padding: _bodyPadding,
-              child: AccountFieldListWidget(
-                brightness: brightness,
-              ),
-            ),
-            Padding(
-              padding: _bodyPadding,
-              child: _MyAccountFooterWidget(
-                brightness: brightness,
-              ),
-            ),
-            const FediBigVerticalSpacer(),
-            if (footer != null) footer!,
-            if (footer != null) const FediSmallVerticalSpacer(),
           ],
         ),
+        if (footer != null) footer!,
       ],
     );
   }

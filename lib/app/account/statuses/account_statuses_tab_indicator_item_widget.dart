@@ -1,9 +1,10 @@
 import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
-import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc.dart';
-import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc_impl.dart';
-import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc_impl.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_model.dart';
+import 'package:fedi/app/ui/tab/indicator/text/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -20,10 +21,8 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
-          return FediFadeShaderMask(
-            fadingPercent: fadingPercent,
-            fadingColor: IFediUiColorTheme.of(context).darkGrey,
+          return Container(
+            color:  IFediUiColorTheme.of(context).white,
             child: DisposableProxyProvider<TabController,
                 IFediTabIndicatorBloc<AccountStatusesTab>>(
               update: (context, tabController, _) =>
@@ -32,6 +31,7 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
                 tabController: tabController,
               ),
               child: FediTextTabIndicatorWidget<AccountStatusesTab>(
+                style: FediTabStyle.underline,
                 customTabBuilder: (
                   BuildContext context,
                   Widget child,

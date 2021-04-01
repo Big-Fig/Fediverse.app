@@ -6,9 +6,10 @@ import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
-import 'package:fedi/app/ui/tab/fedi_icon_tab_indicator_widget.dart';
-import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc.dart';
-import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc_impl.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc_impl.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_model.dart';
+import 'package:fedi/app/ui/tab/indicator/icon/fedi_icon_tab_indicator_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -56,6 +57,7 @@ class _NotificationTabTextTabIndicatorItemBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FediIconTabIndicatorWidget(
+      style: FediTabStyle.bubble,
       customTabBuilder:
           (BuildContext context, Widget child, NotificationTab tab) {
         var notificationTabsBloc = INotificationTabsBloc.of(
