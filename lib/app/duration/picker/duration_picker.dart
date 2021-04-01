@@ -120,7 +120,7 @@ class __DurationPickerBodyState extends State<_DurationPickerBody> {
               if (widget.isDeletePossible)
                 FediTransparentTextButtonWithBorder(
                   S.of(context).app_duration_picker_action_delete,
-                  color: IFediUiColorTheme.of(context).darkGrey,
+                  color: IFediUiColorTheme.of(context).primary,
                   onPressed: () {
                     widget.deleteCallback();
                     Navigator.pop(context, null);

@@ -488,7 +488,7 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
           if (widget.isDeletePossible)
             FediTransparentTextButtonWithBorder(
               '$delete',
-              color: IFediUiColorTheme.of(context).darkGrey,
+              color: IFediUiColorTheme.of(context).primary,
               onPressed: () {
                 if (widget.onDelete != null) {
                   widget.onDelete!();
