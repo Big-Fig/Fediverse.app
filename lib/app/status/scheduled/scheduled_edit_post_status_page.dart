@@ -1,3 +1,4 @@
+import 'package:fedi/app/status/post/app_bar/post_status_app_bar_post_action.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
@@ -29,6 +30,9 @@ class ScheduledEditPostStatusPage extends StatelessWidget {
               handleBackPressed(context);
             },
           ),
+          actions: [
+            const PostStatusAppBarPostAction(),
+          ],
         ),
         body: const SafeArea(
           child: EditPostStatusWidget(),

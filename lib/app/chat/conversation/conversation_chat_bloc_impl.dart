@@ -437,11 +437,11 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   }) async {
     if (conversationChatMessage.isPendingStatePublishedOrNull) {
       await pleromaAuthStatusService.deleteStatus(
-        statusRemoteId: conversationChatMessage.status.remoteId,
+        statusRemoteId: conversationChatMessage.status.remoteId!,
       );
 
       await statusRepository.markStatusAsDeleted(
-        statusRemoteId: conversationChatMessage.status.remoteId,
+        statusRemoteId: conversationChatMessage.status.remoteId!,
       );
     } else {
       await statusRepository.markStatusAsHiddenLocallyOnDevice(

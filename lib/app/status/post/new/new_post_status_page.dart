@@ -1,3 +1,4 @@
+import 'package:fedi/app/status/post/app_bar/post_status_app_bar_post_action.dart';
 import 'package:fedi/app/status/post/new/new_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
@@ -72,7 +73,7 @@ class _NewPostStatusPageComposeWidget extends StatelessWidget {
         expanded: true,
         maxLines: null,
         displayAccountAvatar: false,
-        showPostAction: true,
+        showPostAction: false,
         displaySubjectField: true,
       );
 }
@@ -93,6 +94,9 @@ class NewPostStatusPageAppBar extends StatelessWidget
           _newPostStatusPageHandleBackPressed(context, postStatusBloc);
         },
       ),
+      actions: [
+        const PostStatusAppBarPostAction(),
+      ],
     );
   }
 

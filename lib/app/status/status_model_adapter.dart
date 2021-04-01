@@ -130,7 +130,7 @@ extension IStatusPleromaExtension on IStatus {
 
   PleromaStatus toPleromaStatus() {
     return PleromaStatus(
-      id: remoteId,
+      id: remoteId!,
       createdAt: createdAt,
       inReplyToId: inReplyToRemoteId,
       inReplyToAccountId: inReplyToAccountRemoteId,

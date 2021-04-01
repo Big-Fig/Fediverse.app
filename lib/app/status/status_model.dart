@@ -28,7 +28,7 @@ abstract class IStatus {
 
   int? get localId;
 
-  String get remoteId;
+  String? get remoteId;
 
   DateTime get createdAt;
 
@@ -225,7 +225,7 @@ extension IStatusDbExtension on IStatus {
     } else {
       return DbStatus(
         id: localId,
-        remoteId: remoteId,
+        remoteId: remoteId!,
         createdAt: createdAt,
         inReplyToRemoteId: inReplyToRemoteId,
         inReplyToAccountRemoteId: inReplyToAccountRemoteId,

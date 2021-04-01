@@ -51,7 +51,7 @@ class ConversationChatStatusListContextApiBloc
       return false;
     }
     var remoteContext = await pleromaStatusService.getStatusContext(
-      statusRemoteId: statusToFetchContext!.remoteId,
+      statusRemoteId: statusToFetchContext!.remoteId!,
     );
 
     var remoteStatuses = <IPleromaStatus>[

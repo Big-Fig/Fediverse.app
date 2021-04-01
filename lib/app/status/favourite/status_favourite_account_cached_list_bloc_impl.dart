@@ -50,7 +50,7 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
     List<IPleromaAccount> remoteAccounts;
 
     remoteAccounts = await pleromaAuthStatusService.favouritedBy(
-      statusRemoteId: status.remoteId,
+      statusRemoteId: status.remoteId!,
       pagination: PleromaPaginationRequest(
         limit: limit,
         sinceId: newerThan?.remoteId,
@@ -65,7 +65,7 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
     );
 
     await accountRepository.updateStatusFavouritedBy(
-      statusRemoteId: status.remoteId,
+      statusRemoteId: status.remoteId!,
       favouritedByAccounts: remoteAccounts,
     );
   }

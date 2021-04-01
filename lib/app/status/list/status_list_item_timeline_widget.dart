@@ -33,10 +33,8 @@ import 'package:fedi/collapsible/owner/collapsible_owner_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("status_list_item_timeline_widget.dart");
 
 class StatusListItemTimelineWidget extends StatelessWidget {
   const StatusListItemTimelineWidget();
@@ -44,10 +42,6 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
-
-    var status = statusListItemTimelineBloc.status;
-
-    _logger.finest(() => "build status?.remoteId ${status.remoteId}");
 
     Widget child;
     if (statusListItemTimelineBloc
@@ -157,7 +151,8 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
   }
 }
 
-class _StatusListItemTimelineOriginalBodyInnerBodyWidget extends StatelessWidget {
+class _StatusListItemTimelineOriginalBodyInnerBodyWidget
+    extends StatelessWidget {
   const _StatusListItemTimelineOriginalBodyInnerBodyWidget({
     Key? key,
   }) : super(key: key);
@@ -182,7 +177,6 @@ class _StatusListItemTimelineOriginalBodyInnerBodyWidget extends StatelessWidget
       );
     }
   }
-
 }
 
 class _StatusListItemTimelineOriginalBodyWidget extends StatelessWidget {
@@ -328,7 +322,6 @@ class _StatusListItemTimelineStatusHeaderWidget extends StatelessWidget {
     );
   }
 }
-
 
 class _StatusListItemTimelineOriginalBodyContentWidget extends StatelessWidget {
   const _StatusListItemTimelineOriginalBodyContentWidget({

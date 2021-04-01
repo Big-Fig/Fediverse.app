@@ -75,7 +75,7 @@ class StatusCachedPaginationListWithNewItemsBloc<
     } else if (a == null && b != null) {
       return -1;
     } else {
-      return a!.remoteId.compareTo(b!.remoteId);
+      return a!.remoteId!.compareTo(b!.remoteId!);
     }
   }
 

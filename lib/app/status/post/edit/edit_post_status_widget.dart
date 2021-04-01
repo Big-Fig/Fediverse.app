@@ -17,7 +17,7 @@ class EditPostStatusWidget extends StatelessWidget {
             expanded: true,
             maxLines: null,
             displayAccountAvatar: false,
-            showPostAction: true,
+            showPostAction: false,
             displaySubjectField: true,
           ),
         ),

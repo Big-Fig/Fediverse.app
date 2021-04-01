@@ -64,7 +64,7 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Stream<DateTime> get createdAtStream;
 
-  String get remoteId;
+  String? get remoteId;
 
   List<IPleromaMediaAttachment>? get mediaAttachments;
 
