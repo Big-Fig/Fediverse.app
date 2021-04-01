@@ -86,7 +86,7 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
   List<IPleromaEmoji>? get emojis => status.emojis;
 
   @override
-  String get remoteId => status.remoteId;
+  String get remoteId => status.remoteId!;
 
   @override
   List<IPleromaMediaAttachment>? get mediaAttachments =>

@@ -210,9 +210,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
   final String? inReplyToConversationId;
 
   @override
-  IPleromaStatus? get inReplyToPleromaStatus => throw UnsupportedError(
-        "inReplyToPleromaStatus not possible in PleromaScheduledStatusParams",
-      );
+  IPleromaStatus? get inReplyToPleromaStatus => null;
 
   @override
   @JsonKey(name: "to")

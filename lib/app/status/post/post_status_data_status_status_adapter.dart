@@ -183,9 +183,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   int get reblogsCount => 0;
 
   @override
-  String get remoteId => throw UnsupportedError(
-        "remoteId not exist in PostStatusDataStatusStatusAdapter",
-      );
+  String? get remoteId => null;
 
   @override
   int get repliesCount => 0;

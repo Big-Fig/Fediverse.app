@@ -50,7 +50,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
     List<IPleromaAccount>? remoteAccounts;
 
     remoteAccounts = await pleromaAuthStatusService.rebloggedBy(
-      statusRemoteId: status.remoteId,
+      statusRemoteId: status.remoteId!,
       pagination: PleromaPaginationRequest(
         limit: limit,
         sinceId: newerThan?.remoteId,
@@ -65,7 +65,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
     );
 
     await accountRepository.updateStatusRebloggedBy(
-      statusRemoteId: status.remoteId,
+      statusRemoteId: status.remoteId!,
       rebloggedByAccounts: remoteAccounts.toPleromaAccounts(),
     );
   }

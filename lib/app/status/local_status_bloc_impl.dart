@@ -215,16 +215,19 @@ class LocalStatusBloc extends StatusBloc {
     required bool isNeedRefreshFromNetworkOnInit,
   }) async {
     if (isNeedWatchLocalRepositoryForUpdates) {
-      addDisposable(
-        streamSubscription:
-            statusRepository.watchByRemoteId(status.remoteId).listen(
-          (updatedStatus) {
-            if (updatedStatus != null) {
-              statusSubject.add(updatedStatus);
-            }
-          },
-        ),
-      );
+      var remoteId = status.remoteId;
+      if (remoteId != null) {
+        addDisposable(
+          streamSubscription:
+              statusRepository.watchByRemoteId(remoteId).listen(
+            (updatedStatus) {
+              if (updatedStatus != null) {
+                statusSubject.add(updatedStatus);
+              }
+            },
+          ),
+        );
+      }
     }
     if (isNeedRefreshFromNetworkOnInit) {
       await refreshFromNetwork();
@@ -236,11 +239,11 @@ class LocalStatusBloc extends StatusBloc {
     IPleromaStatus remoteStatus;
     if (reblogOrOriginal.favourited == true) {
       remoteStatus = await pleromaAuthStatusService.unFavouriteStatus(
-        statusRemoteId: reblogOrOriginal.remoteId,
+        statusRemoteId: reblogOrOriginal.remoteId!,
       );
     } else {
       remoteStatus = await pleromaAuthStatusService.favouriteStatus(
-        statusRemoteId: reblogOrOriginal.remoteId,
+        statusRemoteId: reblogOrOriginal.remoteId!,
       );
     }
 
@@ -263,11 +266,11 @@ class LocalStatusBloc extends StatusBloc {
     IPleromaStatus remoteStatus;
     if (reblogOrOriginal.reblogged == true) {
       remoteStatus = await pleromaAuthStatusService.unReblogStatus(
-        statusRemoteId: reblogOrOriginal.remoteId,
+        statusRemoteId: reblogOrOriginal.remoteId!,
       );
     } else {
       remoteStatus = await pleromaAuthStatusService.reblogStatus(
-        statusRemoteId: reblogOrOriginal.remoteId,
+        statusRemoteId: reblogOrOriginal.remoteId!,
       );
     }
 
@@ -316,11 +319,11 @@ class LocalStatusBloc extends StatusBloc {
 
     if (reblogOrOriginal.muted == true) {
       remoteStatus = await pleromaAuthStatusService.unMuteStatus(
-        statusRemoteId: reblogOrOriginal.remoteId,
+        statusRemoteId: reblogOrOriginal.remoteId!,
       );
     } else {
       remoteStatus = await pleromaAuthStatusService.muteStatus(
-        statusRemoteId: reblogOrOriginal.remoteId,
+        statusRemoteId: reblogOrOriginal.remoteId!,
         expireDurationInSeconds: expireDurationInSeconds,
       );
     }
@@ -331,7 +334,7 @@ class LocalStatusBloc extends StatusBloc {
     );
 
     var result = await statusRepository.findByRemoteId(
-      reblogOrOriginal.remoteId,
+      reblogOrOriginal.remoteId!,
     );
     return result!;
   }
@@ -341,11 +344,11 @@ class LocalStatusBloc extends StatusBloc {
     IPleromaStatus remoteStatus;
     if (reblogOrOriginal.bookmarked == true) {
       remoteStatus = await pleromaAuthStatusService.unBookmarkStatus(
-        statusRemoteId: reblogOrOriginal.remoteId,
+        statusRemoteId: reblogOrOriginal.remoteId!,
       );
     } else {
       remoteStatus = await pleromaAuthStatusService.bookmarkStatus(
-        statusRemoteId: reblogOrOriginal.remoteId,
+        statusRemoteId: reblogOrOriginal.remoteId!,
       );
     }
 
@@ -355,7 +358,7 @@ class LocalStatusBloc extends StatusBloc {
     );
 
     var result = await statusRepository.findByRemoteId(
-      reblogOrOriginal.remoteId,
+      reblogOrOriginal.remoteId!,
     );
     return result!;
   }
@@ -365,17 +368,17 @@ class LocalStatusBloc extends StatusBloc {
     IPleromaStatus remoteStatus;
     if (reblogOrOriginal.pinned == true) {
       remoteStatus = await pleromaAuthStatusService.unPinStatus(
-        statusRemoteId: reblogOrOriginal.remoteId,
+        statusRemoteId: reblogOrOriginal.remoteId!,
       );
     } else {
       // reblogged don't support pin
       if (reblogOrOriginal.reblogged) {
         remoteStatus = await pleromaAuthStatusService.pinStatus(
-          statusRemoteId: reblogOrOriginal.remoteId,
+          statusRemoteId: reblogOrOriginal.remoteId!,
         );
       } else {
         remoteStatus = await pleromaAuthStatusService.pinStatus(
-          statusRemoteId: reblogOrOriginal.remoteId,
+          statusRemoteId: reblogOrOriginal.remoteId!,
         );
       }
     }
@@ -386,7 +389,7 @@ class LocalStatusBloc extends StatusBloc {
     );
 
     var result = await statusRepository.findByRemoteId(
-      reblogOrOriginal.remoteId,
+      reblogOrOriginal.remoteId!,
     );
     return result!;
   }
@@ -394,11 +397,11 @@ class LocalStatusBloc extends StatusBloc {
   @override
   Future delete() async {
     await pleromaAuthStatusService.deleteStatus(
-      statusRemoteId: status.remoteId,
+      statusRemoteId: status.remoteId!,
     );
 
     await statusRepository.markStatusAsDeleted(
-      statusRemoteId: status.remoteId,
+      statusRemoteId: status.remoteId!,
     );
   }
 
@@ -420,12 +423,12 @@ class LocalStatusBloc extends StatusBloc {
     IPleromaStatus? remoteStatus;
     if (alreadyAdded) {
       remoteStatus = await pleromaStatusEmojiReactionService!.removeReaction(
-        statusRemoteId: status.remoteId,
+        statusRemoteId: status.remoteId!,
         emoji: emoji,
       );
     } else {
       remoteStatus = await pleromaStatusEmojiReactionService!.addReaction(
-        statusRemoteId: status.remoteId,
+        statusRemoteId: status.remoteId!,
         emoji: emoji,
       );
     }

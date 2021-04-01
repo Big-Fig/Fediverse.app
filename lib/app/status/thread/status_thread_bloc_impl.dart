@@ -102,7 +102,7 @@ abstract class StatusThreadBloc extends DisposableOwner
 
       // update start status
       var updatedStartRemoteStatus = await pleromaStatusService.getStatus(
-        statusRemoteId: initialStatusToFetchThread.remoteId,
+        statusRemoteId: initialStatusToFetchThread.remoteId!,
       );
       // don't await because we don't need it
       onInitialStatusUpdated(updatedStartRemoteStatus);
@@ -115,7 +115,7 @@ abstract class StatusThreadBloc extends DisposableOwner
 
       // update context
       var remoteStatusContext = await pleromaStatusService.getStatusContext(
-        statusRemoteId: initialStatusToFetchThread.remoteId,
+        statusRemoteId: initialStatusToFetchThread.remoteId!,
       );
       var ancestors = remoteStatusContext.ancestors.where(
         (remoteStatus) => isNotFiltered(

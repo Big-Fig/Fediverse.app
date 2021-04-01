@@ -45,7 +45,6 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
     required bool isNeedRefreshFromNetworkOnInit,
     required bool delayInit,
   }) : statusSubject = BehaviorSubject.seeded(status) {
-    _logger.finest(() => "required constructor ${status.remoteId}");
 
     if (status.poll != null) {
       pollBloc = PollBloc(
@@ -162,7 +161,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.createdAt);
 
   @override
-  String get remoteId => status.remoteId;
+  String? get remoteId => status.remoteId;
 
   @override
   List<IPleromaMention>? get mentions => status.mentions;
@@ -254,7 +253,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   Future<IPleromaStatus> loadRemoteStatus() async {
     var remoteStatus = await pleromaStatusService.getStatus(
-      statusRemoteId: remoteId,
+      statusRemoteId: remoteId!,
     );
     return remoteStatus;
   }

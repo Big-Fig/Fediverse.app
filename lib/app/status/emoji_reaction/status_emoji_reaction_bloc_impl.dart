@@ -36,12 +36,12 @@ class StatusEmojiReactionBloc extends DisposableOwner
     IPleromaStatus remoteStatus;
     if (emojiReaction.me) {
       remoteStatus = await pleromaStatusEmojiReactionService.removeReaction(
-        statusRemoteId: status.remoteId,
+        statusRemoteId: status.remoteId!,
         emoji: emojiReaction.name,
       );
     } else {
       remoteStatus = await pleromaStatusEmojiReactionService.addReaction(
-        statusRemoteId: status.remoteId,
+        statusRemoteId: status.remoteId!,
         emoji: emojiReaction.name,
       );
     }
