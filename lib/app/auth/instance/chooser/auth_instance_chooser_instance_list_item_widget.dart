@@ -3,6 +3,7 @@ import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_instance_list_item_bloc.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -27,7 +28,6 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 const _AuthInstanceChooserInstanceListItemLogoutButtonWidget(),
-                const FediBigHorizontalSpacer(),
                 Flexible(
                   child:
                       const _AuthInstanceChooserInstanceListItemAccountInfoWidget(),
@@ -140,10 +140,10 @@ class _AuthInstanceChooserInstanceListItemLogoutButtonWidget
     var instanceChooserBloc = IAuthInstanceChooserBloc.of(context);
     var instanceListItemBloc =
         IAuthInstanceChooserInstanceListItemBloc.of(context);
-    return FediIconInCircleTransparentButton(
-      FediIcons.remove,
+    return FediIconButton(
+      icon: Icon(FediIcons.remove_circle),
+      padding: EdgeInsets.zero,
       color: IFediUiColorTheme.of(context).darkGrey,
-      size: FediSizes.smallFilledButtonHeight,
       onPressed: () async {
         await FediConfirmAlertDialog(
           context: context,
