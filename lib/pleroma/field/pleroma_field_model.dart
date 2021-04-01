@@ -103,8 +103,11 @@ class PleromaField implements IPleromaField {
   }
 
   @override
-  String get valueAsRawUrlWithoutSchema {
-    var rawUrl = valueAsRawUrl!;
+  String? get valueAsRawUrlWithoutSchema {
+    var rawUrl = valueAsRawUrl;
+    if(rawUrl == null) {
+      return rawUrl;
+    }
     try {
       var uri = Uri.parse(rawUrl);
       return "${uri.host}${uri.path}";

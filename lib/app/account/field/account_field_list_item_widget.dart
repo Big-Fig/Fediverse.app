@@ -17,21 +17,27 @@ class AccountFieldListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var valueAsRawUrlWithoutSchema = field.valueAsRawUrlWithoutSchema ?? "";
+
     return InkWell(
       onTap: () {
-        String url = UrlHelper.extractUrl(field.valueAsRawUrl!);
-        var accountBloc = IAccountBloc.of(context, listen: false);
-        UrlHelper.handleUrlClickWithInstanceLocation(
-          context: context,
-          url: url,
-          instanceLocationBloc: accountBloc,
-        );
+        var valueAsRawUrl = field.valueAsRawUrl;
+        if (valueAsRawUrl?.isNotEmpty == true) {
+          String url = UrlHelper.extractUrl(valueAsRawUrl!);
+          var accountBloc = IAccountBloc.of(context, listen: false);
+          UrlHelper.handleUrlClickWithInstanceLocation(
+            context: context,
+            url: url,
+            instanceLocationBloc: accountBloc,
+          );
+        }
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Icon(
-            FediIcons.link,
+            _calculateIconData(
+                valueAsRawUrlWithoutSchema: valueAsRawUrlWithoutSchema),
             color: brightness == Brightness.dark
                 ? IFediUiColorTheme.of(context).mediumGrey
                 : IFediUiColorTheme.of(context).white,
@@ -46,7 +52,7 @@ class AccountFieldListItemWidget extends StatelessWidget {
           ),
           Flexible(
             child: Text(
-              field.valueAsRawUrlWithoutSchema,
+              valueAsRawUrlWithoutSchema,
               overflow: TextOverflow.ellipsis,
               style: IFediUiTextTheme.of(context).mediumTallPrimary,
             ),
@@ -54,5 +60,28 @@ class AccountFieldListItemWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  IconData _calculateIconData({required String valueAsRawUrlWithoutSchema}) {
+    valueAsRawUrlWithoutSchema = valueAsRawUrlWithoutSchema.toLowerCase();
+    if (_isFacebookLink(valueAsRawUrlWithoutSchema)) {
+      return FediIcons.fb;
+    }
+    if (_isInstagramLink(valueAsRawUrlWithoutSchema)) {
+      return FediIcons.ig;
+    } else {
+      return FediIcons.link;
+    }
+  }
+
+  bool _isFacebookLink(String valueAsRawUrlWithoutSchema) {
+    return valueAsRawUrlWithoutSchema.startsWith("facebook.com") ||
+        valueAsRawUrlWithoutSchema.startsWith("fb.me");
+  }
+
+  bool _isInstagramLink(String valueAsRawUrlWithoutSchema) {
+    return valueAsRawUrlWithoutSchema.startsWith("instagram.com") ||
+        valueAsRawUrlWithoutSchema.startsWith("instagr.am") ||
+        valueAsRawUrlWithoutSchema.startsWith("instagr.com");
   }
 }

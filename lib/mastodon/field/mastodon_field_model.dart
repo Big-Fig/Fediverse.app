@@ -3,7 +3,7 @@ abstract class IMastodonField {
 
   String? get value;
   String? get valueAsRawUrl;
-  String get valueAsRawUrlWithoutSchema;
+  String? get valueAsRawUrlWithoutSchema;
 
 
   DateTime? get verifiedAt;
