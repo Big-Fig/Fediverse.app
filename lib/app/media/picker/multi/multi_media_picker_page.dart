@@ -7,16 +7,14 @@ import 'package:fedi/app/media/picker/single/single_media_picker_page.dart';
 import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/toast/toast_service.dart';
-import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc.dart';
-import 'package:fedi/app/ui/badge/int/fedi_int_badge_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
@@ -52,6 +50,7 @@ class _MultiMediaPickerPageBodyWidget extends StatelessWidget {
         Expanded(
           child: const MediaPickerWidget(),
         ),
+        const FediUltraLightGreyDivider(),
         StreamBuilder<int>(
           stream: multiMediaPickerBloc.currentFilesMetadataSelectionCountStream,
           builder: (context, snapshot) {
@@ -61,6 +60,13 @@ class _MultiMediaPickerPageBodyWidget extends StatelessWidget {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  FediIconButton(
+                    icon: Icon(FediIcons.share_native),
+                    color: fediUiColorTheme.primary,
+                    onPressed: () {
+                      multiMediaPickerBloc.acceptSelectedFilesMetadata();
+                    },
+                  ),
                   Padding(
                     padding: FediPadding.allBigPadding,
                     child: FediSubHeaderText(
@@ -70,8 +76,8 @@ class _MultiMediaPickerPageBodyWidget extends StatelessWidget {
                     ),
                   ),
                   FediIconButton(
-                    icon: Icon(FediIcons.close),
-                    color: fediUiColorTheme.darkGrey,
+                    icon: Icon(FediIcons.delete),
+                    color: fediUiColorTheme.primary,
                     onPressed: () {
                       multiMediaPickerBloc.clearSelection();
                     },
@@ -102,9 +108,6 @@ class _MultiMediaPickerPageAppBar extends StatelessWidget
         emptyTitleWidget: _MultiMediaPickerPageAppBarEmptyTitleWidget(),
       ),
       leading: const FediBackIconButton(),
-      actions: [
-        const _MultiMediaPickerPageAppBarAttachAction(),
-      ],
     );
   }
 
@@ -121,57 +124,6 @@ class _MultiMediaPickerPageAppBarEmptyTitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FediSubHeaderText(
       S.of(context).file_picker_multi_title,
-    );
-  }
-}
-
-class _MultiMediaPickerPageAppBarAttachActionIntBadgeBloc
-    extends DisposableOwner implements IFediIntBadgeBloc {
-  final IMultiMediaPickerBloc multiMediaPickerBloc;
-
-  _MultiMediaPickerPageAppBarAttachActionIntBadgeBloc({
-    required this.multiMediaPickerBloc,
-  });
-
-  @override
-  Stream<int> get badgeStream =>
-      multiMediaPickerBloc.currentFilesMetadataSelectionCountStream;
-}
-
-class _MultiMediaPickerPageAppBarAttachAction extends StatelessWidget {
-  const _MultiMediaPickerPageAppBarAttachAction({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var multiMediaPickerBloc = IMultiMediaPickerBloc.of(context);
-    var fediUiColorTheme = IFediUiColorTheme.of(context);
-    return StreamBuilder<bool>(
-      stream: multiMediaPickerBloc.isSomethingSelectedStream,
-      initialData: multiMediaPickerBloc.isSomethingSelected,
-      builder: (context, snapshot) {
-        var isSomethingSelected = snapshot.data!;
-        return DisposableProvider<IFediIntBadgeBloc>(
-          create: (context) =>
-              _MultiMediaPickerPageAppBarAttachActionIntBadgeBloc(
-            multiMediaPickerBloc: multiMediaPickerBloc,
-          ),
-          child: FediIntBadgeWidget(
-            child: FediIconButton(
-              color: isSomethingSelected
-                  ? fediUiColorTheme.darkGrey
-                  : fediUiColorTheme.lightGrey,
-              icon: Icon(FediIcons.check),
-              onPressed: isSomethingSelected
-                  ? () {
-                      multiMediaPickerBloc.acceptSelectedFilesMetadata();
-                    }
-                  : null,
-            ),
-          ),
-        );
-      },
     );
   }
 }

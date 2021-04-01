@@ -133,7 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m56(selectionCountLimit) => "Maximum ${selectionCountLimit}";
 
-  static m57(selectionCount) => "Selected (${selectionCount})";
+  static m57(selectionCount) => "${selectionCount} media selected";
 
   static m58(max) => "Should be not more than ${max}";
 

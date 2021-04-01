@@ -133,7 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m56(selectionCountLimit) => "Максимум ${selectionCountLimit}";
 
-  static m57(selectionCount) => "Выбрано (${selectionCount})";
+  static m57(selectionCount) => "${selectionCount} выбрано";
 
   static m58(max) => "Не больше ${max}";
 
