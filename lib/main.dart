@@ -369,7 +369,7 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
                       } else if (notification.isContainsAccount) {
                         await navigatorKey.currentState!.push(
                           createLocalAccountDetailsPageRoute(
-                            notification.account,
+                            notification.account!,
                           ),
                         );
                       }

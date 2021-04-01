@@ -510,7 +510,7 @@ class _NotificationListItemAvatarWidget extends StatelessWidget {
       onTap: () {
         goToLocalAccountDetailsPage(
           context,
-          account: notificationBloc.account,
+          account: notificationBloc.account!,
         );
       },
       child: const AccountAvatarWidget(

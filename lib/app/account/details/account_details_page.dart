@@ -4,6 +4,8 @@ import 'package:fedi/app/account/acct/account_acct_widget.dart';
 import 'package:fedi/app/account/details/account_details_bloc.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/account/header/account_header_background_widget.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/account/my/my_account_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_media_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_tab_indicator_item_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
@@ -525,24 +527,26 @@ class _AccountDetailsNestedScrollViewHeader extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => FediDarkStatusBarStyleArea(
-        child: ClipRRect(
-          borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
-          child: Container(
-            color: IFediUiColorTheme.of(context).offWhite,
-            child: const FediListTile(
-              isFirstInList: true,
-              child: AccountWidget(
-                onStatusesTapCallback: _onStatusesTapCallback,
-                footer: _AccountDetailsPageTabIndicatorWidget(),
-              ),
-              // special hack to avoid 1px horizontal line on some devices
-              oneSidePadding: FediSizes.bigPadding - 1,
-//                    oneSidePadding: FediSizes.smallPadding - 1,
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+
+    var myAccountBloc = IMyAccountBloc.of(context);
+
+    var isMyAccount = myAccountBloc.checkAccountIsMe(accountBloc.account);
+
+    return FediDarkStatusBarStyleArea(
+      child: isMyAccount
+          ? const MyAccountWidget(
+              onStatusesTapCallback: _onStatusesTapCallback,
+              footer: _AccountDetailsPageTabIndicatorWidget(),
+              brightness: Brightness.light,
+            )
+          : const AccountWidget(
+              onStatusesTapCallback: _onStatusesTapCallback,
+              footer: _AccountDetailsPageTabIndicatorWidget(),
             ),
-          ),
-        ),
-      );
+    );
+  }
 }
 
 void _onStatusesTapCallback(BuildContext context) {

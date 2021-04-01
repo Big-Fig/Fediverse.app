@@ -62,7 +62,7 @@ class _AccountFollowingAccountListBodyWidget extends StatelessWidget {
         ),
         const Expanded(
           child: AccountPaginationListWidget(
-            accountSelectedCallback: _goToAccountDetailsPage,
+            accountSelectedCallback: _goToAccountFollowingAccountListPage,
             key: PageStorageKey("AccountFollowingAccountListPage"),
           ),
         ),
@@ -71,7 +71,7 @@ class _AccountFollowingAccountListBodyWidget extends StatelessWidget {
   }
 }
 
-void _goToAccountDetailsPage(BuildContext context, IAccount account) {
+void _goToAccountFollowingAccountListPage(BuildContext context, IAccount account) {
   var accountListBloc = IAccountListBloc.of(context, listen: false);
   var instanceLocation = accountListBloc.instanceLocation;
   var isLocal = instanceLocation == InstanceLocation.local;
