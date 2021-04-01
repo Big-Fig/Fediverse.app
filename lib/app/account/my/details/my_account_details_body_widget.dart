@@ -23,6 +23,8 @@ class MyAccountDetailsBodyWidget extends StatelessWidget {
           isFirstInList: true,
           child: MyAccountWidget(
             onStatusesTapCallback: _onStatusesTapCallback,
+            footer: null,
+            brightness: Brightness.dark,
           ),
         ),
         alwaysShowHeader: true,

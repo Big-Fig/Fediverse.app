@@ -16,9 +16,11 @@ import 'package:flutter/material.dart';
 
 class MyAccountInfoWidget extends StatelessWidget {
   final OnClickUiCallback? onStatusesTapCallback;
+  final Brightness brightness;
 
   MyAccountInfoWidget({
     required this.onStatusesTapCallback,
+    required this.brightness,
   });
 
   @override
@@ -33,7 +35,7 @@ class MyAccountInfoWidget extends StatelessWidget {
             const FediSmallHorizontalSpacer(),
             DisposableProvider<IAccountInfoBloc>(
               create: (context) => AccountInfoBloc(
-                brightness: Brightness.dark,
+                brightness: brightness,
                 onStatusesTapCallback: onStatusesTapCallback,
               ),
               child:

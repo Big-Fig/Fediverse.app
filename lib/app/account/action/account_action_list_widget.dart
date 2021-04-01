@@ -120,7 +120,7 @@ class _AccountActionListMoreWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FediIconInCircleBlurredButton(
-      FediIcons.menu,
+      FediIcons.menu_vertical,
       onPressed: () async {
         var accountBloc = IAccountBloc.of(context, listen: false);
         showAccountActionMoreDialog(

@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/header/account_header_background_widget.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
-import 'package:fedi/app/account/my/edit/edit_my_account_page.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_widget.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_cached_list_bloc.dart';
@@ -225,6 +224,8 @@ class _AccountHomeTabMyAccountWidget extends StatelessWidget {
               isFirstInList: true,
               child: MyAccountWidget(
                 onStatusesTapCallback: _onStatusesTapCallback,
+                footer: null,
+                brightness: Brightness.dark,
               ),
               // special hack to avoid 1px horizontal line on some devices
               oneSidePadding: FediSizes.bigPadding - 1,
@@ -491,19 +492,12 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
                   ),
                 ),
                 const FediBigHorizontalSpacer(),
-                FediIconInCircleBlurredButton(
-                  FediIcons.pen,
-                  onPressed: () {
-                    goToEditMyAccountPage(context);
-                  },
-                ),
-                const FediBigHorizontalSpacer(),
                 AccountHomeTabMenuIntBadgeBloc.provideToContext(
                   context,
                   child: FediIntBadgeWidget(
                     offset: 0.0,
                     child: FediIconInCircleBlurredButton(
-                      FediIcons.menu_list,
+                      FediIcons.settings,
                       iconSize: 15.0,
                       onPressed: () {
                         showAccountHomeTabMenuDialog(context);
