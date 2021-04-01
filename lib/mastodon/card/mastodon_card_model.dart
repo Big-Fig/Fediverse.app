@@ -29,6 +29,15 @@ abstract class IMastodonCard {
   String? get embedUrl;
 }
 
+extension IMastodonCardExtension on IMastodonCard {
+  bool get isHaveImage => image?.isNotEmpty == true;
+
+  bool get isHaveContent =>
+      title?.isNotEmpty == true ||
+      description?.isNotEmpty == true ||
+      html?.isNotEmpty == true;
+}
+
 enum MastodonCardType {
   link,
   photo,
@@ -36,7 +45,6 @@ enum MastodonCardType {
   rich,
   unknown,
 }
-
 
 const unknownMastodonCardType = MastodonCardType.unknown;
 
@@ -49,7 +57,7 @@ const _unknownMastodonCardTypeJsonValue = "unknown";
 extension MastodonCardTypeListExtension on List<MastodonCardType> {
   List<String> toMastodonCardTypeStrings() => map(
         (visibility) => visibility.toJsonValue(),
-  ).toList();
+      ).toList();
 }
 
 extension MastodonCardTypeExtension on MastodonCardType {
@@ -110,7 +118,7 @@ extension MastodonCardTypeStringExtension on String {
 extension MastodonCardTypeStringListExtension on List<String> {
   List<MastodonCardType> toPleromaVisibilities() => map(
         (visibilityString) => visibilityString.toMastodonCardType(),
-  ).toList();
+      ).toList();
 }
 
 class MastodonCardTypeTypeConverter
