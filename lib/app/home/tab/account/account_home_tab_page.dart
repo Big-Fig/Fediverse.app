@@ -56,7 +56,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-const _headerBackgroundHeight = 200.0;
+const _headerBackgroundHeight = 120.0;
 
 class AccountHomeTabPage extends StatelessWidget {
   const AccountHomeTabPage({Key? key}) : super(key: key);
