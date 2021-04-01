@@ -11,7 +11,7 @@ import 'package:flutter/widgets.dart';
 /// The [tabBarIndicatorSize] specifies the type of TabBarIndicatorSize i.e label or tab.
 /// /// The selected tab bubble is inset from the tab's boundary by [insets] when [tabBarIndicatorSize] is tab.
 /// The selected tab bubble is applied padding by [padding] when [tabBarIndicatorSize] is label.
-class FediTabIndicator extends Decoration {
+class FediTabBubbleStyleIndicator extends Decoration {
   final double indicatorHeight;
   final Color indicatorColor;
   final double indicatorRadius;
@@ -20,7 +20,7 @@ class FediTabIndicator extends Decoration {
   final EdgeInsetsGeometry insets;
   final TabBarIndicatorSize tabBarIndicatorSize;
 
-  const FediTabIndicator({
+  const FediTabBubbleStyleIndicator({
     this.indicatorHeight = 20.0,
     required this.indicatorColor,
     this.indicatorRadius = 100.0,
@@ -31,8 +31,8 @@ class FediTabIndicator extends Decoration {
 
   @override
   Decoration? lerpFrom(Decoration? a, double t) {
-    if (a is FediTabIndicator) {
-      return FediTabIndicator(
+    if (a is FediTabBubbleStyleIndicator) {
+      return FediTabBubbleStyleIndicator(
         padding: EdgeInsetsGeometry.lerp(a.padding, padding, t)!,
         insets: EdgeInsetsGeometry.lerp(a.insets, insets, t)!,
         indicatorColor: a.indicatorColor,
@@ -46,8 +46,8 @@ class FediTabIndicator extends Decoration {
 
   @override
   Decoration? lerpTo(Decoration? b, double t) {
-    if (b is FediTabIndicator) {
-      return FediTabIndicator(
+    if (b is FediTabBubbleStyleIndicator) {
+      return FediTabBubbleStyleIndicator(
         padding: EdgeInsetsGeometry.lerp(padding, b.padding, t)!,
         insets: EdgeInsetsGeometry.lerp(insets, b.insets, t)!,
         indicatorColor: b.indicatorColor,
@@ -68,7 +68,7 @@ class FediTabIndicator extends Decoration {
 class _BubblePainter extends BoxPainter {
   _BubblePainter(this.decoration, VoidCallback? onChanged) : super(onChanged);
 
-  final FediTabIndicator decoration;
+  final FediTabBubbleStyleIndicator decoration;
 
   double get indicatorHeight => decoration.indicatorHeight;
 
@@ -88,15 +88,6 @@ class _BubblePainter extends BoxPainter {
     if (tabBarIndicatorSize == TabBarIndicatorSize.tab) {
       indicator = insets.resolve(textDirection).deflateRect(rect);
     }
-//
-//    _logger.finest(
-//      () => "_indicatorRectFor"
-//          " width = ${indicator.width}"
-//          " height = ${indicator.height}",
-//          " left = ${indicator.left}"
-//          " top = ${indicator.left}"
-//    );
-
     return Rect.fromLTWH(
       indicator.left,
       indicator.top,

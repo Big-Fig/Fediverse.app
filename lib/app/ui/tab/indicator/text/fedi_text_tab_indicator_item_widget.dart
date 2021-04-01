@@ -1,8 +1,10 @@
 import 'package:fedi/app/ui/button/text/with_border/fedi_blurred_text_button_with_border.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
-import 'package:fedi/app/ui/tab/fedi_tab_indicator_item_bloc.dart';
-import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_model.dart';
+import 'package:fedi/app/ui/tab/indicator/item/fedi_tab_indicator_item_bloc.dart';
+import 'package:fedi/app/ui/tab/indicator/text/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,16 +12,52 @@ import 'package:flutter/material.dart';
 class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
   final bool isTransparent;
   final TabToTextMapper<T?> tabToTextMapper;
+  final FediTabStyle style;
 
   const FediTextTabIndicatorItemWidget({
     required this.isTransparent,
     required this.tabToTextMapper,
+    required this.style,
   });
 
   @override
   Widget build(BuildContext context) {
-    var fediTabIndicatorItemBloc =
-        IFediTabIndicatorItemBloc.of<T>(context, listen: false);
+    switch (style) {
+      case FediTabStyle.bubble:
+        return _buildBubbleStyleBody(context);
+
+      case FediTabStyle.underline:
+        return _buildUnderlineStyleBody(context);
+    }
+  }
+
+  Widget _buildUnderlineStyleBody(BuildContext context) {
+    var fediTabIndicatorItemBloc = IFediTabIndicatorItemBloc.of<T>(context);
+    var label = tabToTextMapper(context, fediTabIndicatorItemBloc.item);
+
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            width: 1.0,
+            color: fediUiColorTheme.ultraLightGrey,
+          ),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: FediSizes.smallPadding,
+          horizontal: FediSizes.bigPadding,
+        ),
+        child: Text(label,
+            style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey),
+      ),
+    );
+  }
+
+  Widget _buildBubbleStyleBody(BuildContext context) {
+    var fediTabIndicatorItemBloc = IFediTabIndicatorItemBloc.of<T>(context);
     var fontSize = 16.0;
     var lineHeight = 1.5;
 

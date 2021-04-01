@@ -112,6 +112,7 @@ class _AccountHomeTabPageBody extends StatelessWidget {
         topSliverWidgets: [
           const _AccountHomeTabFediTabMainHeaderBarWidget(),
           const _AccountHomeTabMyAccountWidget(),
+          const _AccountHomeTabTextIndicatorWidget(),
         ],
         tabKeyPrefix: "AccountHomeTabPage",
         tabBodyProviderBuilder:
@@ -222,6 +223,7 @@ class _AccountHomeTabMyAccountWidget extends StatelessWidget {
             color: IFediUiColorTheme.of(context).offWhite,
             child: FediListTile(
               isFirstInList: true,
+              noPadding: true,
               child: MyAccountWidget(
                 onStatusesTapCallback: _onStatusesTapCallback,
                 footer: null,
@@ -507,8 +509,6 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const FediSmallVerticalSpacer(),
-            const _AccountHomeTabTextIndicatorWidget(),
           ],
         ),
         endingWidgets: null,

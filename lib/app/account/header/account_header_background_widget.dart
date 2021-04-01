@@ -25,9 +25,7 @@ class AccountHeaderBackgroundWidget extends StatelessWidget {
 
         return Provider<String>.value(
           value: header,
-          child: RepaintBoundary(
-            child: const _AccountHeaderBackgroundImageWidget(),
-          ),
+          child: const _AccountHeaderBackgroundImageWidget(),
         );
       },
     );
@@ -64,7 +62,7 @@ class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
           progressIndicatorBuilder: (context, url, progress) =>
               const _AccountHeaderBackgroundProgressWidget(),
           errorWidget: (context, url, error) =>
-              _AccountHeaderBackgroundErrorWidget(),
+              const _AccountHeaderBackgroundErrorWidget(),
         );
       },
     );

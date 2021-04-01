@@ -1,16 +1,16 @@
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/tab/fedi_icon_tab_indicator_item_widget.dart';
-import 'package:fedi/app/ui/tab/fedi_tab_indicator.dart';
-import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc.dart';
-import 'package:fedi/app/ui/tab/fedi_tab_indicator_item_bloc_impl.dart';
-import 'package:fedi/app/ui/tab/fedi_tab_indicator_item_widget.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_model.dart';
+import 'package:fedi/app/ui/tab/indicator/icon/fedi_icon_tab_indicator_item_widget.dart';
+import 'package:fedi/app/ui/tab/indicator/item/fedi_tab_indicator_item_bloc.dart';
+import 'package:fedi/app/ui/tab/indicator/item/fedi_tab_indicator_item_bloc_impl.dart';
+import 'package:fedi/app/ui/tab/indicator/style/bubble/fedi_tab_bubble_style_indicator.dart';
+import 'package:fedi/app/ui/tab/indicator/style/underline/fedi_tab_underline_style_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'fedi_tab_indicator_item_bloc.dart';
 
 typedef TabToIconMapper<T> = IconData Function(BuildContext context, T tab);
 
@@ -18,10 +18,12 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
   final TabToIconMapper<T?> tabToIconMapper;
   final bool expand;
   final CustomTabBuilder<T>? customTabBuilder;
+  final FediTabStyle style;
 
   FediIconTabIndicatorWidget({
     required this.expand,
     required this.tabToIconMapper,
+    required this.style,
     this.customTabBuilder,
   });
 
@@ -30,20 +32,12 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
     var fediTabIndicatorBloc =
         IFediTabIndicatorBloc.of<T>(context, listen: false);
 
-    var borderHeight = 2.0;
-
     return TabBar(
       isScrollable: true,
       indicatorSize: TabBarIndicatorSize.label,
       labelPadding: FediPadding.horizontalSmallPadding,
-      indicator: FediTabIndicator(
-        indicatorHeight: FediSizes.tabIndicatorIconHeight - borderHeight,
-        indicatorRadius: (FediSizes.iconButtonHeight + borderHeight) / 2,
-        // indicatorHeight: FediSizes.tabIndicatorIconHeight,
-        indicatorColor: IFediUiColorTheme.of(context).primary,
-        padding: EdgeInsets.only(top: borderHeight),
-        insets: EdgeInsets.zero,
-        tabBarIndicatorSize: TabBarIndicatorSize.label,
+      indicator: buildFediTabIndicator(
+        context,
       ),
       tabs: fediTabIndicatorBloc.items.asMap().entries.map(
         (entry) {
@@ -59,6 +53,7 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
             ),
             child: FediIconTabIndicatorItemWidget(
               tabToIconMapper: tabToIconMapper,
+              style: style,
             ),
           );
 
@@ -70,5 +65,25 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
       ).toList(),
       controller: fediTabIndicatorBloc.tabController,
     );
+  }
+
+  Decoration buildFediTabIndicator(BuildContext context) {
+    switch (style) {
+      case FediTabStyle.bubble:
+        var borderHeight = 2.0;
+        return FediTabBubbleStyleIndicator(
+          indicatorHeight: FediSizes.tabIndicatorIconHeight - borderHeight,
+          indicatorRadius: (FediSizes.iconButtonHeight + borderHeight) / 2,
+          // indicatorHeight: FediSizes.tabIndicatorIconHeight,
+          indicatorColor: IFediUiColorTheme.of(context).primary,
+          padding: EdgeInsets.only(top: borderHeight),
+          insets: EdgeInsets.zero,
+          tabBarIndicatorSize: TabBarIndicatorSize.label,
+        );
+      case FediTabStyle.underline:
+        return FediTabUnderlineStyleIndicator(
+          indicatorColor: IFediUiColorTheme.of(context).primary,
+        );
+    }
   }
 }

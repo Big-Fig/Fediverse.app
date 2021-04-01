@@ -19,34 +19,42 @@ class AccountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        const Positioned.fill(
-          child: AccountHeaderBackgroundWidget(),
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            top: FediSizes.bigPadding,
-            bottom: FediSizes.smallPadding,
-            left: FediSizes.bigPadding,
-            right: FediSizes.bigPadding,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
-                child: AccountInfoWidget(
-                  onStatusesTapCallback: onStatusesTapCallback,
-                ),
+    return Column(
+      children: [
+        Stack(
+          children: <Widget>[
+            Positioned.fill(
+              child: Container(
+                color: IFediUiColorTheme.of(context).white,
+                child: const AccountHeaderBackgroundWidget(),
               ),
-              const AccountActionListWidget(),
-              const _AccountNoteWidget(),
-              const _AccountFieldListWidget(),
-              footer,
-            ],
-          ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: FediSizes.bigPadding,
+                bottom: FediSizes.smallPadding,
+                left: FediSizes.bigPadding,
+                right: FediSizes.bigPadding,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(bottom: FediSizes.smallPadding),
+                    child: AccountInfoWidget(
+                      onStatusesTapCallback: onStatusesTapCallback,
+                    ),
+                  ),
+                  const AccountActionListWidget(),
+                  const _AccountNoteWidget(),
+                  const _AccountFieldListWidget(),
+                ],
+              ),
+            ),
+          ],
         ),
+        footer,
       ],
     );
   }
