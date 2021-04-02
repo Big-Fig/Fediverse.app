@@ -36,7 +36,7 @@ class StatusRepository extends AsyncInitLoadingBloc
   late StatusListsDao listsDao;
   late HomeTimelineStatusesDao homeTimelineStatusesDao;
   late ConversationStatusesDao conversationStatusesDao;
-  IAccountRepository? accountRepository;
+  final IAccountRepository accountRepository;
 
   StatusRepository({
     required AppDatabase appDatabase,
@@ -76,7 +76,7 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     var remoteAccount = remoteStatus.account;
 
-    await accountRepository!.upsertRemoteAccount(
+    await accountRepository.upsertRemoteAccount(
       remoteAccount,
       conversationRemoteId: conversationRemoteId,
       chatRemoteId: null,
@@ -152,7 +152,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     List<IPleromaAccount> remoteAccounts =
         remoteStatuses.map((remoteStatus) => remoteStatus.account).toList();
 
-    await accountRepository!.upsertRemoteAccounts(
+    await accountRepository.upsertRemoteAccounts(
       remoteAccounts,
       conversationRemoteId: conversationRemoteId,
       chatRemoteId: null,
@@ -441,7 +441,7 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     var remoteAccount = newRemoteStatus.account;
 
-    await accountRepository!.upsertRemoteAccount(
+    await accountRepository.upsertRemoteAccount(
       remoteAccount,
       conversationRemoteId: null,
       chatRemoteId: null,
