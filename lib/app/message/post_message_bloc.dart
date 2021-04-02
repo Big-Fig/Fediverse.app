@@ -57,7 +57,7 @@ abstract class IPostMessageBloc implements IDisposable {
 
   Stream<bool> get isExpandedStream;
 
-  bool? get isExpanded;
+  bool get isExpanded;
 
   void toggleExpanded();
 }
