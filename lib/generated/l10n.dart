@@ -7193,6 +7193,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Delete`
+  String get app_chat_action_delete {
+    return Intl.message(
+      'Delete',
+      name: 'app_chat_action_delete',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

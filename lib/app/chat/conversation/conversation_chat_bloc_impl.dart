@@ -455,4 +455,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   @override
   IConversationChatMessage? get lastPublishedChatMessage =>
       _lastPublishedMessageSubject.value;
+
+  @override
+  bool get isDeletePossible => true;
 }
