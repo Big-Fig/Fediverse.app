@@ -21,6 +21,10 @@ abstract class IPostMessageBloc implements IDisposable {
 
   Stream<bool> get isReadyToPostStream;
 
+  bool get isInputFocused;
+
+  Stream<bool> get isInputFocusedStream;
+
   String? get inputText;
 
   Stream<String?> get inputTextStream;

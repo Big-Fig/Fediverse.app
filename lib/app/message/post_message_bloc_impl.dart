@@ -27,8 +27,16 @@ abstract class PostMessageBloc extends DisposableOwner
   Stream<List<FormItemValidationError>> get inputTextErrorsStream =>
       inputTextErrorsSubject.stream;
 
-  BehaviorSubject<List<FormItemValidationError>> inputTextErrorsSubject =
+  final BehaviorSubject<List<FormItemValidationError>> inputTextErrorsSubject =
       BehaviorSubject.seeded([]);
+  final BehaviorSubject<bool> isInputFocusedSubject =
+      BehaviorSubject.seeded(false);
+
+  @override
+  bool get isInputFocused => isInputFocusedSubject.value!;
+
+  @override
+  Stream<bool> get isInputFocusedStream => isInputFocusedSubject.stream;
 
   void regenerateIdempotencyKey() {
     idempotencyKey = DateTime.now().millisecondsSinceEpoch.toString();
@@ -51,6 +59,24 @@ abstract class PostMessageBloc extends DisposableOwner
     addDisposable(disposable: mediaAttachmentsBloc);
 
     addDisposable(subject: inputTextSubject);
+    addDisposable(subject: isInputFocusedSubject);
+
+    isInputFocusedSubject.add(inputFocusNode.hasFocus);
+
+    var listener = () {
+      var hasFocus = inputFocusNode.hasFocus;
+      isInputFocusedSubject.add(hasFocus);
+    };
+    inputFocusNode.addListener(
+      listener,
+    );
+    addDisposable(
+      custom: () {
+        inputFocusNode.removeListener(
+          listener,
+        );
+      },
+    );
 
     addDisposable(focusNode: inputFocusNode);
 

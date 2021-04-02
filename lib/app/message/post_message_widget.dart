@@ -16,13 +16,16 @@ import 'package:rxdart/rxdart.dart';
 
 class PostMessageWidget extends StatelessWidget {
   final String hintText;
+  final bool showActionsOnlyWhenFocused;
 
   const PostMessageWidget({
     required this.hintText,
+    required this.showActionsOnlyWhenFocused,
   });
 
   @override
   Widget build(BuildContext context) {
+    var postMessageBloc = IPostMessageBloc.of(context);
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: Column(
@@ -30,6 +33,29 @@ class PostMessageWidget extends StatelessWidget {
         children: <Widget>[
           const _PostMessageMediaAttachmentsWidget(),
           _PostMessageTextContentWidget(hintText: hintText),
+          if (!showActionsOnlyWhenFocused) buildActionsAndSendRow(),
+          if (showActionsOnlyWhenFocused)
+            StreamBuilder<bool>(
+              stream: postMessageBloc.isInputFocusedStream,
+              initialData: postMessageBloc.isInputFocused,
+              builder: (context, snapshot) {
+                var isInputFocused = snapshot.data!;
+
+                if (isInputFocused) {
+                  return buildActionsAndSendRow();
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildActionsAndSendRow() => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -41,9 +67,7 @@ class PostMessageWidget extends StatelessWidget {
           ),
           const PostMessageSelectedActionWidget(),
         ],
-      ),
-    );
-  }
+      );
 
   List<Widget> buildActions() {
     return [
