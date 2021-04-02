@@ -7,6 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IChatBloc implements IDisposable, IAsyncInitLoadingBloc {
+  bool get isDeletePossible;
+
   static IChatBloc of(
     BuildContext context, {
     bool listen = true,

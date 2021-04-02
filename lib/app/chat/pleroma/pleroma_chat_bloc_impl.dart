@@ -383,4 +383,8 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   IPleromaChatMessage? get lastPublishedChatMessage =>
       _lastPublishedMessageSubject.value;
+
+
+  @override
+  bool get isDeletePossible => false;
 }

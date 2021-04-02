@@ -23,7 +23,7 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
     var isMessageForOpenedChat =
         currentChatBloc.currentChat?.remoteId == conversationRemoteId;
 
-    if (isMessageForOpenedChat) {
+    if (isMessageForOpenedChat && conversationRemoteId != null) {
       conversation = await conversationChatService.markConversationAsRead(
         conversationRemoteId: conversationRemoteId,
       );

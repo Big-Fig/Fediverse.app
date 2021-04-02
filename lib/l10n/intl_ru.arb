@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-04-02T11:26:08+00:00",
+    "@@last_modified": "2021-04-02T16:03:41+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -712,7 +712,7 @@
     "app_chat_pleroma_account_notAcceptsChatMessages_toast": "Пользователь отключил прием сообщений",
     "app_chat_message_pending_actions_dialog_title": "Не отправленное сообщение",
     "app_chat_message_pending_actions_dialog_action_delete": "Удалить",
-    "app_chat_message_pending_actions_dialog_action_resend": "Отправить еще раз",
+    "app_chat_message_pending_actions_dialog_action_resend": "Переотправить",
     "app_chat_message_deleted_desc": "Сообщение удалено",
     "app_chat_action_delete_dialog_title": "Удалить",
     "app_chat_action_delete_dialog_content": "Вы уверены?",
@@ -733,5 +733,6 @@
     "app_status_mute_dialog_action_clearDate": "Clear date",
     "app_chat_message_pending_desc": "Отправляется.",
     "app_chat_message_pending_failed_desc": "Ошибка отправления.",
-    "app_chat_message_pending_tapToViewOptions": "Нажмите для действий."
+    "app_chat_message_pending_tapToViewOptions": "Нажмите для действий.",
+    "app_chat_action_delete": "Удалить"
 }

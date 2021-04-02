@@ -63,12 +63,12 @@ class PleromaConversationPleromaPart extends IPleromaConversationPleromaPart {
 @JsonSerializable()
 class PleromaConversation implements IPleromaConversation {
   @override
-  final bool unread;
+  final bool? unread;
   @JsonKey(name: "last_status")
   @override
   final PleromaStatus? lastStatus;
   @override
-  final String id;
+  final String? id;
   @override
   final List<PleromaAccount> accounts;
   @override
@@ -78,9 +78,9 @@ class PleromaConversation implements IPleromaConversation {
     required this.unread,
     required this.lastStatus,
     required this.id,
-    required this.accounts,
+    required List<PleromaAccount>? accounts,
     required this.pleroma,
-  });
+  }) : accounts = accounts ?? [];
 
   factory PleromaConversation.fromJson(Map<String, dynamic> json) =>
       _$PleromaConversationFromJson(json);
