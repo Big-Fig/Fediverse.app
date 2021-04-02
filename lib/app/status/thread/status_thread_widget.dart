@@ -59,7 +59,17 @@ class StatusThreadWidget extends StatelessWidget {
                 ),
               ),
               if (isLocal) ...[
-                const _StatusThreadInReplyToStatusWidget(),
+                StreamBuilder<bool>(
+                    stream: postMessageBloc.isInputFocusedStream,
+                    initialData: postMessageBloc.isInputFocused,
+                    builder: (context, snapshot) {
+                      var isInputFocused = snapshot.data!;
+                      if (isInputFocused) {
+                        return const _StatusThreadInReplyToStatusWidget();
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    }),
                 const FediUltraLightGreyDivider(),
                 Container(
                   decoration: BoxDecoration(
@@ -142,7 +152,10 @@ class _StatusThreadInReplyToStatusWidget extends StatelessWidget {
                         .copyWith(height: 1),
                   ),
                   InkWell(
-                    child: Icon(Icons.cancel),
+                    child: Icon(
+                      Icons.close,
+                      color: IFediUiColorTheme.of(context).darkGrey,
+                    ),
                     onTap: () {
                       postStatusBloc.cancelOriginInReplyToStatus();
                     },
@@ -171,6 +184,7 @@ class _StatusThreadPostStatusWidget extends StatelessWidget {
       hintText: S.of(context).app_status_thread_post_hint(
             statusThreadBloc.initialStatusToFetchThread!.account.acct,
           ),
+      showActionsOnlyWhenFocused: true,
     );
   }
 }
