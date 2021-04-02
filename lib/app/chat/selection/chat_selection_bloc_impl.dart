@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
@@ -155,24 +156,24 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   }
 
   @override
-  bool isItemSelected(IChatMessage? chatMessage) =>
+  bool isItemSelected(IChatMessage chatMessage) =>
       _calculateIsChatMessageSelected(
         currentChatMessagesSelection: currentSelection,
-        chatMessageRemoteId: chatMessage!.remoteId,
+        chatMessageRemoteId: chatMessage.remoteId,
       );
 
   @override
-  Stream<bool> isItemSelectedStream(IChatMessage? chatMessage) =>
+  Stream<bool> isItemSelectedStream(IChatMessage chatMessage) =>
       currentSelectionStream.map(
         (currentChatMessagesSelection) => _calculateIsChatMessageSelected(
           currentChatMessagesSelection: currentChatMessagesSelection,
-          chatMessageRemoteId: chatMessage!.remoteId,
+          chatMessageRemoteId: chatMessage.remoteId,
         ),
       );
 
   static bool _calculateIsChatMessageSelected({
-    required List<IChatMessage?> currentChatMessagesSelection,
-    required String? chatMessageRemoteId,
+    required List<IChatMessage> currentChatMessagesSelection,
+    required String chatMessageRemoteId,
   }) {
     var found = findChatMessageByRemoteId(
       currentChatMessagesSelection: currentChatMessagesSelection,
@@ -183,13 +184,12 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   }
 
   static IChatMessage? findChatMessageByRemoteId({
-    required List<IChatMessage?> currentChatMessagesSelection,
-    required String? chatMessageRemoteId,
+    required List<IChatMessage> currentChatMessagesSelection,
+    required String chatMessageRemoteId,
   }) {
-    var found = currentChatMessagesSelection.firstWhere(
+    var found = currentChatMessagesSelection.firstWhereOrNull(
       (currentChatMessage) =>
-          currentChatMessage!.remoteId == chatMessageRemoteId,
-      orElse: () => null,
+          currentChatMessage.remoteId == chatMessageRemoteId,
     );
 
     return found;

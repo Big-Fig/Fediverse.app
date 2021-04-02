@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_bloc.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
 import 'package:fedi/app/chat/conversation/message/list/cached/conversation_chat_message_cached_list_bloc.dart';
@@ -81,10 +82,10 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
     if (hiddenItems!.isEmpty) {
       return superItems;
     }
+
     superItems.removeWhere((currentItem) =>
-        hiddenItems.firstWhere(
+        hiddenItems.firstWhereOrNull(
           (hiddenItem) => isItemsEqual(hiddenItem!, currentItem),
-          orElse: () => null,
         ) !=
         null);
 

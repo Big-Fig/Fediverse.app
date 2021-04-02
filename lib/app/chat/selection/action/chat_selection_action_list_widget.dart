@@ -10,7 +10,8 @@ class ChatSelectionActionListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         const ChatSelectionShareActionButtonWidget(),
         const ChatSelectionCopyAsRawTextActionButtonWidget(),

@@ -447,6 +447,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_chat_post_error_empty_dialog_title" : MessageLookupByLibrary.simpleMessage("Can\'t send empty message"),
     "app_chat_post_field_content_hint" : MessageLookupByLibrary.simpleMessage("Start a message"),
     "app_chat_preview_you" : m24,
+    "app_chat_selection_action_cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "app_chat_selection_action_copyAsRawText_toast_success" : MessageLookupByLibrary.simpleMessage("Copied in clipboard"),
     "app_chat_selection_action_delete_confirm_dialog_action_delete" : MessageLookupByLibrary.simpleMessage("Delete"),
     "app_chat_selection_action_delete_confirm_dialog_content" : MessageLookupByLibrary.simpleMessage("Are you sure?"),
