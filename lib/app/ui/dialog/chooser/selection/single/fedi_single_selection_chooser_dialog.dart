@@ -61,46 +61,59 @@ class FediSingleSelectionChooserDialogBody extends StatelessWidget {
               var enabled = snapshot.data!;
               var fediUiColorTheme = IFediUiColorTheme.of(context);
               var fediUiTextTheme = IFediUiTextTheme.of(context);
-              return InkWell(
-                onTap: enabled
-                    ? () {
-                        if (actionExist && enabled) {
-                          action.onAction!(context);
-                        }
-                      }
-                    : null,
-                child: Row(
-                  children: [
-                    if (action.icon != null)
-                      Icon(
-                        action.icon,
-                        color: isSelected
-                            ? fediUiColorTheme.primary
-                            : actionExist && enabled
-                                ? IFediUiColorTheme.of(context).darkGrey
-                                : IFediUiColorTheme.of(context).lightGrey,
-                      ),
-                    Padding(
-                      padding: FediPadding.allMediumPadding,
-                      child: Text(
-                        action.label!,
-                        style: action.customTextStyle?.copyWith(
+              return StreamBuilder<bool>(
+                  initialData: action.isActionVisibleFetcher != null
+                      ? action.isActionVisibleFetcher!(context)
+                      : true,
+                  stream: action.isActionVisibleStreamFetcher != null
+                      ? action.isActionVisibleStreamFetcher!(context)
+                      : Stream.value(true),
+                  builder: (context, snapshot) {
+                    var visible = snapshot.data!;
+                    if (!visible) {
+                      return SizedBox.shrink();
+                    }
+                    return InkWell(
+                      onTap: enabled
+                          ? () {
+                              if (actionExist && enabled) {
+                                action.onAction!(context);
+                              }
+                            }
+                          : null,
+                      child: Row(
+                        children: [
+                          if (action.icon != null)
+                            Icon(
+                              action.icon,
                               color: isSelected
                                   ? fediUiColorTheme.primary
                                   : actionExist && enabled
-                                      ? fediUiColorTheme.darkGrey
-                                      : fediUiColorTheme.lightGrey,
-                            ) ??
-                            (isSelected
-                                ? fediUiTextTheme.bigTallPrimary
-                                : actionExist && enabled
-                                    ? fediUiTextTheme.bigTallDarkGrey
-                                    : fediUiTextTheme.bigTallLightGrey),
+                                      ? IFediUiColorTheme.of(context).darkGrey
+                                      : IFediUiColorTheme.of(context).lightGrey,
+                            ),
+                          Padding(
+                            padding: FediPadding.allMediumPadding,
+                            child: Text(
+                              action.label!,
+                              style: action.customTextStyle?.copyWith(
+                                    color: isSelected
+                                        ? fediUiColorTheme.primary
+                                        : actionExist && enabled
+                                            ? fediUiColorTheme.darkGrey
+                                            : fediUiColorTheme.lightGrey,
+                                  ) ??
+                                  (isSelected
+                                      ? fediUiTextTheme.bigTallPrimary
+                                      : actionExist && enabled
+                                          ? fediUiTextTheme.bigTallDarkGrey
+                                          : fediUiTextTheme.bigTallLightGrey),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              );
+                    );
+                  });
             },
           ),
         ],

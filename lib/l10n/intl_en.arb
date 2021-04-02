@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-04-01T13:02:53+00:00",
+    "@@last_modified": "2021-04-01T15:20:09+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -492,7 +492,7 @@
     "app_share_action_send": "Send",
     "app_account_select_recent_empty": "You don’t have recent accounts selection",
     "app_share_action_sent": "Sent",
-    "app_account_mute_dialog_title": "Muting",
+    "app_account_mute_dialog_title": "Snooze User",
     "app_account_mute_toast_mute_with_notifications": "Notifications muted",
     "app_account_mute_toast_mute_without_notifications": "Notifications unmuted",
     "app_account_report_description": "Report will be send to server moderators",
@@ -728,5 +728,7 @@
     "app_datetime_picker_action_delete": "Delete",
     "app_duration_picker_action_done": "Done",
     "app_duration_picker_action_cancel": "Cancel",
-    "app_datetime_picker_action_done": "Done"
+    "app_datetime_picker_action_done": "Done",
+    "app_account_mute_dialog_action_clearDate": "Clear date",
+    "app_status_mute_dialog_action_clearDate": "Clear date"
 }

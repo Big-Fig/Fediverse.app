@@ -4,6 +4,7 @@ import 'package:fedi/app/status/action/mute/status_action_mute_bloc.dart';
 import 'package:fedi/app/status/action/mute/status_action_mute_bloc_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/dialog/fedi_dialog.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -13,29 +14,65 @@ import 'package:provider/provider.dart';
 Future<T?> showStatusActionMuteDialog<T>({
   required BuildContext context,
   required IStatusBloc statusBloc,
-}) => StatusActionMuteDialog(
-    statusBloc: statusBloc,
-    actionsBorderVisible: false,
-    title: S.of(context).app_status_mute_dialog_title,
-    actionsAxis: Axis.vertical,
-    cancelable: true,
-    actions: [
-      DialogAction(
-        label: S.of(context).app_status_mute_dialog_action_mute,
-        onAction: (context) async {
-          var statusActionMuteBloc =
-              IStatusActionMuteBloc.of(context, listen: false);
+}) =>
+    StatusActionMuteDialog(
+      statusBloc: statusBloc,
+      actionsBorderVisible: false,
+      title: S.of(context).app_status_mute_dialog_title,
+      actionsAxis: Axis.vertical,
+      cancelable: true,
+      actions: [
+        DialogAction(
+          label: S.of(context).app_status_mute_dialog_action_clearDate,
+          isActionVisibleFetcher: (context) {
+            var statusActionMuteBloc =
+                IStatusActionMuteBloc.of(context, listen: false);
 
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-            context: context,
-            asyncCode: () => statusActionMuteBloc.mute(),
-          );
+            return statusActionMuteBloc
+                    .expireDurationFieldBloc.currentValueDuration !=
+                null;
+          },
+          isActionVisibleStreamFetcher: (context) {
+            var statusActionMuteBloc =
+                IStatusActionMuteBloc.of(context, listen: false);
 
-          Navigator.pop(context);
-        },
-      ),
-    ],
-  ).show(context);
+            return statusActionMuteBloc
+                .expireDurationFieldBloc.currentValueDurationStream
+                .map(
+              (duration) => duration != null,
+            );
+          },
+          customTextStyle: IFediUiTextTheme.of(
+            context,
+            listen: false,
+          ).bigTallPrimaryDark,
+          onAction: (context) async {
+            var statusActionMuteBloc =
+                IStatusActionMuteBloc.of(context, listen: false);
+
+            statusActionMuteBloc.expireDurationFieldBloc.clear();
+          },
+        ),
+        DialogAction(
+          label: S.of(context).app_status_mute_dialog_action_mute,
+          customTextStyle: IFediUiTextTheme.of(
+            context,
+            listen: false,
+          ).bigTallBoldPrimaryDark,
+          onAction: (context) async {
+            var statusActionMuteBloc =
+                IStatusActionMuteBloc.of(context, listen: false);
+
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+              context: context,
+              asyncCode: () => statusActionMuteBloc.mute(),
+            );
+
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    ).show(context);
 
 class StatusActionMuteDialog extends FediDialog {
   final IStatusActionMuteBloc statusActionMuteBloc;
@@ -72,7 +109,9 @@ class StatusActionMuteDialog extends FediDialog {
   Widget buildContentWidget(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: [const _StatusActionMuteDialogExpireField()],
+      children: [
+        const _StatusActionMuteDialogExpireField(),
+      ],
     );
   }
 }
@@ -89,6 +128,7 @@ class _StatusActionMuteDialogExpireField extends StatelessWidget {
       update: (context, value, _) => value.expireDurationFieldBloc,
       child: DurationDateTimeValueFormFieldRowWidget(
         label: S.of(context).app_status_mute_dialog_field_expire_label,
+        useDialogPickerForValueSelection: false,
       ),
     );
   }

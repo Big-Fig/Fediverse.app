@@ -16,3 +16,10 @@ abstract class IValueFormFieldBloc<T> extends IFormFieldBloc {
 
   void updateValidators(List<FormValueFieldValidation<T>> validators);
 }
+
+extension IValueFormFieldBlocExtension on IValueFormFieldBloc {
+  bool get isValueExist => currentValue != null;
+
+  Stream<bool> get isValueExistStream =>
+      currentValueStream.map((currentValue) => currentValue != null);
+}

@@ -4774,10 +4774,10 @@ class S {
     );
   }
 
-  /// `Muting`
+  /// `Snooze User`
   String get app_account_mute_dialog_title {
     return Intl.message(
-      'Muting',
+      'Snooze User',
       name: 'app_account_mute_dialog_title',
       desc: '',
       args: [],
@@ -7139,6 +7139,26 @@ class S {
     return Intl.message(
       'Done',
       name: 'app_datetime_picker_action_done',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clear date`
+  String get app_account_mute_dialog_action_clearDate {
+    return Intl.message(
+      'Clear date',
+      name: 'app_account_mute_dialog_action_clearDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clear date`
+  String get app_status_mute_dialog_action_clearDate {
+    return Intl.message(
+      'Clear date',
+      name: 'app_status_mute_dialog_action_clearDate',
       desc: '',
       args: [],
     );

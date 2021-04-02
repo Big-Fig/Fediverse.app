@@ -25,7 +25,42 @@ Future<T?> showAccountActionMuteDialog<T>({
       cancelable: true,
       actions: [
         DialogAction(
+          label: S.of(context).app_account_mute_dialog_action_clearDate,
+          isActionVisibleFetcher: (context) {
+            var accountActionMuteBloc =
+            IAccountActionMuteBloc.of(context, listen: false);
+
+            return accountActionMuteBloc
+                .expireDurationFieldBloc.currentValueDuration !=
+                null;
+          },
+          isActionVisibleStreamFetcher: (context) {
+            var accountActionMuteBloc =
+            IAccountActionMuteBloc.of(context, listen: false);
+
+            return accountActionMuteBloc
+                .expireDurationFieldBloc.currentValueDurationStream
+                .map(
+                  (duration) => duration != null,
+            );
+          },
+          customTextStyle: IFediUiTextTheme.of(
+            context,
+            listen: false,
+          ).bigTallPrimaryDark,
+          onAction: (context) async {
+            var accountActionMuteBloc =
+            IAccountActionMuteBloc.of(context, listen: false);
+
+            accountActionMuteBloc.expireDurationFieldBloc.clear();
+          },
+        ),
+        DialogAction(
           label: S.of(context).app_account_mute_dialog_action_mute,
+          customTextStyle: IFediUiTextTheme.of(
+            context,
+            listen: false,
+          ).bigTallBoldPrimaryDark,
           onAction: (context) async {
             var accountActionMuteBloc =
                 IAccountActionMuteBloc.of(context, listen: false);
@@ -97,6 +132,7 @@ class _AccountActionMuteDialogExpireField extends StatelessWidget {
       update: (context, value, _) => value.expireDurationFieldBloc,
       child: DurationDateTimeValueFormFieldRowWidget(
         label: S.of(context).app_account_mute_dialog_field_expire_label,
+        useDialogPickerForValueSelection: false,
       ),
     );
   }
