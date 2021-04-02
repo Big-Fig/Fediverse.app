@@ -447,6 +447,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_chat_post_error_empty_dialog_title" : MessageLookupByLibrary.simpleMessage("Невозможно отправить пустое сообщение"),
     "app_chat_post_field_content_hint" : MessageLookupByLibrary.simpleMessage("Начните сообщение"),
     "app_chat_preview_you" : m24,
+    "app_chat_selection_action_cancel" : MessageLookupByLibrary.simpleMessage("Отмена"),
     "app_chat_selection_action_copyAsRawText_toast_success" : MessageLookupByLibrary.simpleMessage("Скопировано в буфер"),
     "app_chat_selection_action_delete_confirm_dialog_action_delete" : MessageLookupByLibrary.simpleMessage("Удалить"),
     "app_chat_selection_action_delete_confirm_dialog_content" : MessageLookupByLibrary.simpleMessage("Вы уверены?"),

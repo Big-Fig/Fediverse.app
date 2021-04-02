@@ -32,51 +32,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 
-class _ChatListItemDeleteActionWidget extends StatelessWidget {
-  const _ChatListItemDeleteActionWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var chatBloc = IChatBloc.of(context);
-    var paginationListBloc = IPaginationListBloc.of(context);
-    return IconSlideAction(
-      icon: FediIcons.delete,
-      color: IFediUiColorTheme.of(context).error,
-      onTap: () async {
-        var success = await FediActionsDialog(
-          context: context,
-          title: S.of(context).app_chat_action_delete_dialog_title,
-          contentText: S.of(context).app_chat_action_delete_dialog_content,
-          actions: [
-            DialogAction(
-              label: S.of(context).app_chat_action_delete,
-              customColor: IFediUiColorTheme.of(
-                context,
-                listen: false,
-              ).error,
-              onAction: (BuildContext context) async {
-                var dialogResult = await PleromaAsyncOperationHelper
-                    .performPleromaAsyncOperation(
-                  context: context,
-                  asyncCode: () => chatBloc.delete(),
-                );
-
-                Navigator.of(context).pop(dialogResult.success);
-              },
-            ),
-          ],
-        ).show(context);
-
-        if (success) {
-          await paginationListBloc.refreshWithController();
-        }
-      },
-    );
-  }
-}
-
 class ChatListItemWidget extends StatelessWidget {
   final OnClickUiCallback onClick;
 
@@ -325,4 +280,50 @@ String _extractContent({
   }
 
   return formattedText;
+}
+
+
+class _ChatListItemDeleteActionWidget extends StatelessWidget {
+  const _ChatListItemDeleteActionWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var chatBloc = IChatBloc.of(context);
+    var paginationListBloc = IPaginationListBloc.of(context);
+    return IconSlideAction(
+      icon: FediIcons.delete,
+      color: IFediUiColorTheme.of(context).error,
+      onTap: () async {
+        var success = await FediActionsDialog(
+          context: context,
+          title: S.of(context).app_chat_action_delete_dialog_title,
+          contentText: S.of(context).app_chat_action_delete_dialog_content,
+          actions: [
+            DialogAction(
+              label: S.of(context).app_chat_action_delete,
+              customColor: IFediUiColorTheme.of(
+                context,
+                listen: false,
+              ).error,
+              onAction: (BuildContext context) async {
+                var dialogResult = await PleromaAsyncOperationHelper
+                    .performPleromaAsyncOperation(
+                  context: context,
+                  asyncCode: () => chatBloc.delete(),
+                );
+
+                Navigator.of(context).pop(dialogResult.success);
+              },
+            ),
+          ],
+        ).show(context);
+
+        if (success) {
+          await paginationListBloc.refreshWithController();
+        }
+      },
+    );
+  }
 }

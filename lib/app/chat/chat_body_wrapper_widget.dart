@@ -1,3 +1,4 @@
+import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/app/chat/selection/chat_selection_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_widget.dart';
@@ -17,6 +18,8 @@ class ChatBodyWrapperWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
     var postMessageWidget = const _ChatPostMessageWidget();
+
+    var chatSelectionBloc = IChatSelectionBloc.of(context);
     return StreamBuilder<bool>(
       stream: postMessageBloc.isExpandedStream,
       initialData: postMessageBloc.isExpanded,
@@ -27,7 +30,6 @@ class ChatBodyWrapperWidget extends StatelessWidget {
         } else {
           return Column(
             children: <Widget>[
-              const ChatSelectionWidget(),
               Expanded(
                 child: Padding(
                   padding: FediPadding.horizontalBigPadding,
@@ -35,7 +37,18 @@ class ChatBodyWrapperWidget extends StatelessWidget {
                 ),
               ),
               const FediUltraLightGreyDivider(),
-              postMessageWidget,
+              StreamBuilder<bool>(
+                stream: chatSelectionBloc.isSomethingSelectedStream,
+                initialData: chatSelectionBloc.isSomethingSelected,
+                builder: (context, snapshot) {
+                  var isSomethingSelected = snapshot.data!;
+                  if (isSomethingSelected) {
+                    return const ChatSelectionWidget();
+                  } else {
+                    return postMessageWidget;
+                  }
+                },
+              ),
             ],
           );
         }

@@ -124,6 +124,7 @@ class FediIcons {
   static const IconData sort = IconData(0xe8c7, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unmute = IconData(0xe8e3, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unblock = IconData(0xe8e4, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData circle = IconData(0xe821, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData forward = chevron_right;
   static const IconData subscribe = unmute;
   static const IconData unsubscribe = mute;

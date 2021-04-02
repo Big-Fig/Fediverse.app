@@ -7,6 +7,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_widget.dart';
 import 'package:fedi/app/chat/pleroma/post/pleroma_chat_post_message_bloc_impl.dart';
+import 'package:fedi/app/chat/selection/chat_page_selection_app_bar_widget.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc_impl.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
@@ -46,18 +47,20 @@ class _PleromaChatPageAppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FediPageCustomAppBar(
-      leading: FediBackIconButton(),
-      child: InkWell(
-        onTap: () {
-          var chatBloc = IPleromaChatBloc.of(context, listen: false);
+    return ChatPageSelectionAppBarWidget(
+      emptySelectionAppBar: FediPageCustomAppBar(
+        leading: FediBackIconButton(),
+        child: InkWell(
+          onTap: () {
+            var chatBloc = IPleromaChatBloc.of(context, listen: false);
 
-          goToPleromaChatAccountsPage(
-            context,
-            chat: chatBloc.chat,
-          );
-        },
-        child: const ChatPageAppBarBodyWidget(),
+            goToPleromaChatAccountsPage(
+              context,
+              chat: chatBloc.chat,
+            );
+          },
+          child: const ChatPageAppBarBodyWidget(),
+        ),
       ),
     );
   }

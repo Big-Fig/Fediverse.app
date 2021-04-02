@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-04-02T16:03:37+00:00",
+    "@@last_modified": "2021-04-02T19:07:14+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -734,5 +734,6 @@
     "app_chat_message_pending_desc": "Message pending.",
     "app_chat_message_pending_failed_desc": "Message failed to send.",
     "app_chat_message_pending_tapToViewOptions": "Tap to view options.",
-    "app_chat_action_delete": "Delete"
+    "app_chat_action_delete": "Delete",
+    "app_chat_selection_action_cancel": "Cancel"
 }

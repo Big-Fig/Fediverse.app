@@ -54,6 +54,7 @@ class FediIcons {
   static const IconData check_circle_solid = IconData(0xe81e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData list_select = IconData(0xe81f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData post_expiry = IconData(0xe820, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData circle = IconData(0xe821, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData failed = IconData(0xe82e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData warning = IconData(0xe82f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData loading = IconData(0xe830, fontFamily: _kFontFam, fontPackage: _kFontPkg);

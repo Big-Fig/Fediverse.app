@@ -76,13 +76,13 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
 
   @override
   Future upsertRemoteConversations(
-    List<IPleromaConversation>? remoteConversations,
+    List<IPleromaConversation> remoteConversations,
   ) async {
     _logger.finer(
-      () => "upsertRemoteConversations ${remoteConversations!.length}",
+      () => "upsertRemoteConversations ${remoteConversations.length}",
     );
 
-    for (var remoteConversation in remoteConversations!) {
+    for (var remoteConversation in remoteConversations) {
       var lastStatus = remoteConversation.lastStatus;
       if (lastStatus != null) {
         await statusRepository.upsertRemoteStatus(
