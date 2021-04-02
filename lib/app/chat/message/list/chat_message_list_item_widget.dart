@@ -164,7 +164,8 @@ class _ChatMessageListItemBodyWidget<T extends IChatMessage>
                 children: [
                   if (!isPendingFailed)
                     const _ChatMessageListItemMetadataCreatedAtWidget(),
-                  const _ChatMessageListItemMetadataPendingStateWidget()
+                  if (isChatMessageFromMe)
+                    const _ChatMessageListItemMetadataPendingStateWidget()
                 ],
               ),
           ],
