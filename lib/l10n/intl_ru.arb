@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-04-01T15:20:37+00:00",
+    "@@last_modified": "2021-04-02T11:26:08+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -730,5 +730,8 @@
     "app_duration_picker_action_cancel": "Отмена",
     "app_datetime_picker_action_done": "Выбрать",
     "app_account_mute_dialog_action_clearDate": "Удалить дату",
-    "app_status_mute_dialog_action_clearDate": "Clear date"
+    "app_status_mute_dialog_action_clearDate": "Clear date",
+    "app_chat_message_pending_desc": "Отправляется.",
+    "app_chat_message_pending_failed_desc": "Ошибка отправления.",
+    "app_chat_message_pending_tapToViewOptions": "Нажмите для действий."
 }

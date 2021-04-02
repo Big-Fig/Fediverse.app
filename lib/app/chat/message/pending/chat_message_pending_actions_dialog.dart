@@ -16,13 +16,12 @@ Future showChatMessagePendingActionsDialog({
     actions: [
       DialogAction(
         label:
-            S.of(context).app_chat_message_pending_actions_dialog_action_delete,
-        customColor: IUiColorTheme.of(context, listen: false).error,
+            S.of(context).app_chat_message_pending_actions_dialog_action_resend,
         onAction: (BuildContext context) async {
           var dialogResult =
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context,
-            asyncCode: () => chatMessageBloc.delete(),
+            asyncCode: () => chatMessageBloc.resendPendingFailed(),
           );
 
           if (dialogResult.success) {
@@ -32,12 +31,13 @@ Future showChatMessagePendingActionsDialog({
       ),
       DialogAction(
         label:
-            S.of(context).app_chat_message_pending_actions_dialog_action_resend,
+            S.of(context).app_chat_message_pending_actions_dialog_action_delete,
+        customColor: IUiColorTheme.of(context, listen: false).error,
         onAction: (BuildContext context) async {
           var dialogResult =
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context,
-            asyncCode: () => chatMessageBloc.resendPendingFailed(),
+            asyncCode: () => chatMessageBloc.delete(),
           );
 
           if (dialogResult.success) {

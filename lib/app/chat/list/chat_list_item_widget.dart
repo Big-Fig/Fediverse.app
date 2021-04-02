@@ -16,6 +16,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -122,6 +123,57 @@ class _ChatListItemPreviewWidget extends StatelessWidget {
   }
 }
 
+class _ChatListItemLastMessageWidgetPendingStateWidget extends StatelessWidget {
+  const _ChatListItemLastMessageWidgetPendingStateWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var lastMessage = Provider.of<IChatMessage?>(context);
+    var pendingState = lastMessage?.pendingState;
+
+    switch (pendingState) {
+      case PendingState.notSentYet:
+      case PendingState.published:
+      case null:
+        return SizedBox.shrink();
+
+      case PendingState.pending:
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            FediCircularProgressIndicator(
+              size: 12.0,
+              color: IFediUiColorTheme.of(context).grey,
+            ),
+            const FediSmallHorizontalSpacer(),
+            Text(
+              S.of(context).app_chat_message_pending_desc,
+              style: IFediUiTextTheme.of(context).mediumGrey,
+            ),
+          ],
+        );
+      case PendingState.fail:
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Icon(
+              FediIcons.warning,
+              color: IFediUiColorTheme.of(context).error,
+              size: 12.0,
+            ),
+            const FediSmallHorizontalSpacer(),
+            Text(
+              S.of(context).app_chat_message_pending_failed_desc,
+              style: IFediUiTextTheme.of(context).mediumGrey,
+            ),
+          ],
+        );
+    }
+  }
+}
+
 class _ChatListItemLastMessageWidget extends StatelessWidget {
   const _ChatListItemLastMessageWidget({
     Key? key,
@@ -161,22 +213,13 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
 
         var fediUiColorTheme = IFediUiColorTheme.of(context);
         var textScaleFactor = MediaQuery.of(context).textScaleFactor;
-        var pendingState = lastMessage.pendingState;
-        return Row(
-          children: [
-            if (pendingState == PendingState.pending)
-              const FediCircularProgressIndicator(size: 16.0),
-            if (pendingState == PendingState.fail)
-              Padding(
-                padding: FediPadding.horizontalSmallPadding,
-                child: Icon(
-                  FediIcons.warning,
-                  color: IFediUiColorTheme.of(context).error,
-                  size: 16.0,
-                ),
-              ),
-            Flexible(
-              child: Provider<EmojiText>.value(
+
+        return Provider<IChatMessage?>.value(
+          value: lastMessage,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Provider<EmojiText>.value(
                 value: EmojiText(text: content, emojis: lastMessage.emojis),
                 child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
                   update: (context, emojiText, _) {
@@ -201,8 +244,9 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
                   child: const HtmlTextWidget(),
                 ),
               ),
-            ),
-          ],
+              const _ChatListItemLastMessageWidgetPendingStateWidget(),
+            ],
+          ),
         );
       },
     );

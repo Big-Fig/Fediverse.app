@@ -67,6 +67,14 @@ abstract class IChatMessageBloc implements IDisposable {
 
   Stream<bool> get isNotPendingStream;
 
+  bool get isPending;
+
+  Stream<bool> get isPendingStream;
+
+  bool get isPendingFailed;
+
+  Stream<bool> get isPendingFailedStream;
+
   List<IPleromaEmoji>? get emojis;
 
   Future refreshFromNetwork();

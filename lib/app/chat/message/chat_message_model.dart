@@ -58,13 +58,18 @@ extension IChatMessageExtension on IChatMessage {
 
   bool get isPublishedAndNotDeletedAndNotLocallyHidden =>
       deleted != true &&
-          hiddenLocallyOnDevice != true &&
-          isPendingStatePublishedOrNull;
+      hiddenLocallyOnDevice != true &&
+      isPendingStatePublishedOrNull;
 
   bool get isPendingStateNotPublishedOrNull => !isPendingStatePublishedOrNull;
 
   bool get isNotPending => pendingState != PendingState.pending;
 
+  bool get isPending => pendingState == PendingState.pending;
+
+  bool get isPendingFailed => pendingState == PendingState.fail;
+
+  bool get isPendingFailedOrPending => isPending || isPendingFailed;
 
   EmojiText? toContentEmojiText() {
     if (content?.isNotEmpty == true) {
@@ -76,5 +81,4 @@ extension IChatMessageExtension on IChatMessage {
       return null;
     }
   }
-
 }

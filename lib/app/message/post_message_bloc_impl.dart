@@ -62,6 +62,7 @@ abstract class PostMessageBloc extends DisposableOwner
     addDisposable(subject: isInputFocusedSubject);
 
     isInputFocusedSubject.add(inputFocusNode.hasFocus);
+    addDisposable(focusNode: inputFocusNode);
 
     var listener = () {
       var hasFocus = inputFocusNode.hasFocus;
@@ -78,7 +79,6 @@ abstract class PostMessageBloc extends DisposableOwner
       },
     );
 
-    addDisposable(focusNode: inputFocusNode);
 
     addDisposable(subject: selectedActionSubject);
     addDisposable(textEditingController: inputTextController);

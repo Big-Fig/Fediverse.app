@@ -163,6 +163,21 @@ abstract class ChatMessageBloc extends DisposableOwner
       );
 
   @override
+  bool get isPending => chatMessage.isPending;
+
+  @override
+  Stream<bool> get isPendingStream => chatMessageStream.map(
+        (chatMessage) => chatMessage.isPending,
+      );
+  @override
+  bool get isPendingFailed => chatMessage.isPendingFailed;
+
+  @override
+  Stream<bool> get isPendingFailedStream => chatMessageStream.map(
+        (chatMessage) => chatMessage.isPendingFailed,
+      );
+
+  @override
   bool get isPublishedAndNotDeletedAndNotLocallyHidden =>
       chatMessage.isPublishedAndNotDeletedAndNotLocallyHidden;
 

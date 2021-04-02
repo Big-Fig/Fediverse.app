@@ -6964,10 +6964,10 @@ class S {
     );
   }
 
-  /// `Delete`
+  /// `Delete message`
   String get app_chat_message_pending_actions_dialog_action_delete {
     return Intl.message(
-      'Delete',
+      'Delete message',
       name: 'app_chat_message_pending_actions_dialog_action_delete',
       desc: '',
       args: [],
@@ -7159,6 +7159,36 @@ class S {
     return Intl.message(
       'Clear date',
       name: 'app_status_mute_dialog_action_clearDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Message pending.`
+  String get app_chat_message_pending_desc {
+    return Intl.message(
+      'Message pending.',
+      name: 'app_chat_message_pending_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Message failed to send.`
+  String get app_chat_message_pending_failed_desc {
+    return Intl.message(
+      'Message failed to send.',
+      name: 'app_chat_message_pending_failed_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap to view options.`
+  String get app_chat_message_pending_tapToViewOptions {
+    return Intl.message(
+      'Tap to view options.',
+      name: 'app_chat_message_pending_tapToViewOptions',
       desc: '',
       args: [],
     );
