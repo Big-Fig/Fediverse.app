@@ -44,6 +44,7 @@ class _FilterFormExpiresInFieldWidget extends StatelessWidget {
         descriptionOnDisabled:
             S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
         negativeValue: S.of(context).app_filter_expired,
+        useDialogPickerForValueSelection: true,
       ),
     );
   }

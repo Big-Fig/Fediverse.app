@@ -5,6 +5,10 @@ typedef DialogActionEnabledFetcher = bool Function(BuildContext context);
 typedef DialogActionEnabledStreamFetcher = Stream<bool> Function(
   BuildContext context,
 );
+typedef DialogActionVisibleFetcher = bool Function(BuildContext context);
+typedef DialogActionVisibleStreamFetcher = Stream<bool> Function(
+  BuildContext context,
+);
 
 class DialogAction {
   final String? label;
@@ -17,6 +21,9 @@ class DialogAction {
   final DialogActionEnabledFetcher? isActionEnabledFetcher;
   final DialogActionEnabledStreamFetcher? isActionEnabledStreamFetcher;
 
+  final DialogActionVisibleFetcher? isActionVisibleFetcher;
+  final DialogActionVisibleStreamFetcher? isActionVisibleStreamFetcher;
+
   DialogAction({
     required this.label,
     this.icon,
@@ -25,6 +32,8 @@ class DialogAction {
     this.customColor,
     this.isActionEnabledFetcher,
     this.isActionEnabledStreamFetcher,
+    this.isActionVisibleFetcher,
+    this.isActionVisibleStreamFetcher,
   });
 
   @override
@@ -34,7 +43,10 @@ class DialogAction {
         'customTextStyle: $customTextStyle, '
         'onAction: $onAction, '
         'isActionEnabledFetcher: $isActionEnabledFetcher, '
-        'isActionEnabledStreamFetcher: $isActionEnabledStreamFetcher}';
+        'isActionEnabledStreamFetcher: $isActionEnabledStreamFetcher '
+        'isActionVisibleFetcher: $isActionVisibleFetcher, '
+        'isActionVisibleStreamFetcher: $isActionVisibleStreamFetcher'
+        '}';
   }
 
   @override
@@ -42,10 +54,29 @@ class DialogAction {
       identical(this, other) ||
       other is DialogAction &&
           runtimeType == other.runtimeType &&
-          label == other.label;
+          label == other.label &&
+          icon == other.icon &&
+          customTextStyle == other.customTextStyle &&
+          customColor == other.customColor &&
+          onAction == other.onAction &&
+          isActionEnabledFetcher == other.isActionEnabledFetcher &&
+          isActionEnabledStreamFetcher == other.isActionEnabledStreamFetcher &&
+          isActionVisibleFetcher == other.isActionVisibleFetcher &&
+          isActionVisibleStreamFetcher == other.isActionVisibleStreamFetcher;
 
   @override
-  int get hashCode => label.hashCode;
+  int get hashCode =>
+      label.hashCode ^
+      icon.hashCode ^
+      customTextStyle.hashCode ^
+      customColor.hashCode ^
+      onAction.hashCode ^
+      isActionEnabledFetcher.hashCode ^
+      isActionEnabledStreamFetcher.hashCode ^
+      isActionVisibleFetcher.hashCode ^
+      isActionVisibleStreamFetcher.hashCode;
+
+
 }
 
 class SelectionDialogAction extends DialogAction {

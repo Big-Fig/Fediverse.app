@@ -12,7 +12,7 @@ abstract class IDurationValueFormFieldBloc
 
   Duration? get maxDuration;
 
-  Duration get minDuration;
+  Duration? get minDuration;
 
   void deleteValue();
 }

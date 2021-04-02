@@ -207,7 +207,7 @@ class FediDatePicker {
     required bool isDeletePossible,
   }) {
     var completer = Completer<DateTime?>();
-    Widget widget = _FediDatePickerComponent(
+    Widget widget = FediDatePickerComponent(
       onChanged: onChanged,
       locale: locale,
       pickerModel: pickerModel,
@@ -242,8 +242,8 @@ class FediDatePicker {
   }
 }
 
-class _FediDatePickerComponent extends StatefulWidget {
-  _FediDatePickerComponent({
+class FediDatePickerComponent extends StatefulWidget {
+  FediDatePickerComponent({
     Key? key,
     required this.theme,
     required this.locale,
@@ -275,7 +275,7 @@ class _FediDatePickerComponent extends StatefulWidget {
   }
 }
 
-class _DatePickerState extends State<_FediDatePickerComponent> {
+class _DatePickerState extends State<FediDatePickerComponent> {
   FixedExtentScrollController? leftScrollCtrl,
       middleScrollCtrl,
       rightScrollCtrl;
@@ -330,7 +330,7 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
         ],
       );
     }
-    return itemView;
+    return Container(child: itemView);
   }
 
   Widget _renderColumnView(

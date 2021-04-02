@@ -16,7 +16,7 @@ abstract class IDurationDateTimeValueFormFieldBloc
 
   Duration? get maxDuration;
 
-  Duration get minDuration;
+  Duration? get minDuration;
 
   Duration? get currentValueDuration;
 

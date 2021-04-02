@@ -240,5 +240,6 @@ class _PostStatusPollLengthFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => DurationDateTimeValueFormFieldRowWidget(
         label: S.of(context).app_status_post_poll_field_length_label,
+        useDialogPickerForValueSelection: true,
       );
 }

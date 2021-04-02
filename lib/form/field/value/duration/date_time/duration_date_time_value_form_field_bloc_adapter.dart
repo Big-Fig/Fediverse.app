@@ -86,7 +86,7 @@ class DurationDateTimeValueFormFieldBlocAdapter extends DisposableOwner
   Duration? get maxDuration => durationDateTimeValueFormFieldBloc.maxDuration;
 
   @override
-  Duration get minDuration => durationDateTimeValueFormFieldBloc.minDuration;
+  Duration? get minDuration => durationDateTimeValueFormFieldBloc.minDuration;
 
   @override
   Duration? get originValue =>

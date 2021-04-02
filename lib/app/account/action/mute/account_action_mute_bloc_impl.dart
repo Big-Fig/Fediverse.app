@@ -20,7 +20,7 @@ class AccountActionMuteBloc extends DisposableOwner
   final IDurationDateTimeValueFormFieldBloc expireDurationFieldBloc =
       DurationDateTimeValueFormFieldBloc(
     originValue: null,
-    minDuration: Duration(seconds: 0),
+    minDuration: Duration(hours: 1),
     maxDuration: Duration(days: 366),
     isNullValuePossible: true,
     isEnabled: true,

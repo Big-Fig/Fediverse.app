@@ -39,17 +39,31 @@ abstract class FediDialog extends BaseDialog {
           : Stream.value(true),
       builder: (context, snapshot) {
         var enabled = snapshot.data!;
-        return FediTransparentTextButtonWithBorder(
-          action.label,
-          borderVisible: actionsBorderVisible,
-          textStyle: action.customTextStyle,
-          onPressed: enabled
-              ? () {
-                  action.onAction!(context);
-                }
-              : null,
-          color: action.customColor ?? (enabled ? color : disabledColor),
-          expanded: true,
+        return StreamBuilder<bool>(
+            initialData: action.isActionVisibleFetcher != null
+                ? action.isActionVisibleFetcher!(context)
+                : true,
+            stream: action.isActionVisibleStreamFetcher != null
+                ? action.isActionVisibleStreamFetcher!(context)
+                : Stream.value(true),
+          builder: (context, snapshot) {
+            var visible = snapshot.data!;
+            if(!visible) {
+              return SizedBox.shrink();
+            }
+            return FediTransparentTextButtonWithBorder(
+              action.label,
+              borderVisible: actionsBorderVisible,
+              textStyle: action.customTextStyle,
+              onPressed: enabled
+                  ? () {
+                      action.onAction!(context);
+                    }
+                  : null,
+              color: action.customColor ?? (enabled ? color : disabledColor),
+              expanded: true,
+            );
+          }
         );
       },
     );
