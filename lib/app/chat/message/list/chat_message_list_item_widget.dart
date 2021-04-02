@@ -14,7 +14,6 @@ import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_carousel_widget.dart';
 import 'package:fedi/app/pending/pending_model.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -48,16 +47,16 @@ class ChatMessageListItemWidget<T extends IChatMessage>
         if (isHiddenLocallyOnDevice) {
           return const SizedBox.shrink();
         } else {
-          return _ChatMessageListItemDeletedWrapperWidget<T>();
+          return _ChatMessageListItemDeletedOrNotWrapperWidget<T>();
         }
       },
     );
   }
 }
 
-class _ChatMessageListItemDeletedWrapperWidget<T extends IChatMessage>
+class _ChatMessageListItemDeletedOrNotWrapperWidget<T extends IChatMessage>
     extends StatelessWidget {
-  const _ChatMessageListItemDeletedWrapperWidget({
+  const _ChatMessageListItemDeletedOrNotWrapperWidget({
     Key? key,
   }) : super(key: key);
 
@@ -122,42 +121,54 @@ class _ChatMessageListItemBodyWidget<T extends IChatMessage>
     var maxWidthConstraints = BoxConstraints(
       maxWidth: deviceWidth * 0.80,
     );
+    var isPendingFailedOrPending = chatMessage.isPendingFailedOrPending;
+    var isPendingFailed = chatMessage.isPendingFailed;
     return Align(
       alignment: alignment,
-      child: Column(
-        crossAxisAlignment: isChatMessageFromMe
-            ? CrossAxisAlignment.end
-            : CrossAxisAlignment.start,
-        children: [
-          Container(
-            constraints: maxWidthConstraints,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const _ChatMessageListItemMetadataPendingStateWidget(),
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: isChatMessageFromMe
-                        ? CrossAxisAlignment.end
-                        : CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 4.0,
-                      ),
-                      const _ChatMessageListItemContentContainerWidget(),
-                      const _ChatMessageListItemCardWidget(),
-                    ],
+      child: InkWell(
+        onTap: () {
+          if (chatMessage.isPendingFailed) {
+            showChatMessagePendingActionsDialog(
+              context: context,
+              chatMessageBloc: chatMessageBloc,
+            );
+          }
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: isChatMessageFromMe
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
+          children: [
+            Container(
+              constraints: maxWidthConstraints,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: isChatMessageFromMe
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 4.0,
                   ),
-                ),
-              ],
+                  const _ChatMessageListItemContentContainerWidget(),
+                  const _ChatMessageListItemCardWidget(),
+                ],
+              ),
             ),
-          ),
-          if (isFirstInMinuteGroup)
-            Align(
-              alignment: alignment,
-              child: const _ChatMessageListItemMetadataCreatedAtWidget(),
-            ),
-        ],
+            if (isFirstInMinuteGroup || isPendingFailedOrPending)
+              Row(
+                mainAxisAlignment: isChatMessageFromMe
+                    ? MainAxisAlignment.end
+                    : MainAxisAlignment.start,
+                children: [
+                  if (!isPendingFailed)
+                    const _ChatMessageListItemMetadataCreatedAtWidget(),
+                  const _ChatMessageListItemMetadataPendingStateWidget()
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -173,36 +184,53 @@ class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
     var chatMessageBloc = IChatMessageBloc.of(context);
     return StreamBuilder<PendingState?>(
       stream: chatMessageBloc.pendingStateStream,
+      initialData: chatMessageBloc.pendingState,
       builder: (context, snapshot) {
         var pendingState = snapshot.data;
 
-        if (pendingState == null) {
-          return const SizedBox.shrink();
-        }
-
         switch (pendingState) {
           case PendingState.notSentYet:
-          case PendingState.published:
             return const SizedBox.shrink();
+          case null:
+          case PendingState.published:
+            return Padding(
+              padding: const EdgeInsets.only(left: FediSizes.smallPadding / 2),
+              child: Icon(
+                FediIcons.check,
+                size: 12.0,
+                color: IFediUiColorTheme.of(context).primary,
+              ),
+            );
           case PendingState.pending:
             return Padding(
               padding: FediPadding.horizontalSmallPadding,
-              child: const FediCircularProgressIndicator(
-                size: 24.0,
+              child: FediCircularProgressIndicator(
+                size: 12.0,
+                color: IFediUiColorTheme.of(context).grey,
               ),
             );
           case PendingState.fail:
-            return FediIconButton(
-              icon: Icon(
-                FediIcons.warning,
+            return Padding(
+              padding: const EdgeInsets.only(top: FediSizes.smallPadding / 2),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    S.of(context).app_chat_message_pending_failed_desc +
+                        " " +
+                        S.of(context).app_chat_message_pending_tapToViewOptions,
+                    style: IFediUiTextTheme.of(context).smallShortGrey,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: FediSizes.smallPadding),
+                    child: Icon(
+                      FediIcons.warning,
+                      size: 12.0,
+                      color: IFediUiColorTheme.of(context).error,
+                    ),
+                  ),
+                ],
               ),
-              color: IFediUiColorTheme.of(context).error,
-              onPressed: () {
-                showChatMessagePendingActionsDialog(
-                  context: context,
-                  chatMessageBloc: chatMessageBloc,
-                );
-              },
             );
         }
       },
@@ -225,54 +253,66 @@ class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
 
     var isLastInMinuteGroup = chatMessageListItem.isLastInMinuteGroup;
     var isHaveTextContent = messageBloc.content?.isNotEmpty == true;
-    return Container(
-      decoration: BoxDecoration(
-        color: isHaveTextContent
-            ? isChatMessageFromMe
-                ? IFediUiColorTheme.of(context).primaryDark
-                : IFediUiColorTheme.of(context).ultraLightGrey
-            : IFediUiColorTheme.of(context).transparent,
-        borderRadius: isHaveTextContent
-            ? isChatMessageFromMe
-                ? BorderRadius.only(
-                    topLeft: _borderRadius,
-                    topRight: isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                    bottomLeft: _borderRadius,
-                  )
-                : BorderRadius.only(
-                    topLeft: isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                    topRight: _borderRadius,
-                    bottomRight: _borderRadius,
-                  )
-            : BorderRadius.zero,
-      ),
-      child: Padding(
-        padding: isHaveTextContent
-            ? EdgeInsets.symmetric(
-                vertical: FediSizes.mediumPadding,
-                horizontal: FediSizes.bigPadding,
-              )
-            : EdgeInsets.zero,
-        child: isHaveTextContent
-            ? const _ChatMessageListItemContentWidget()
-            : ClipRRect(
-                borderRadius: isChatMessageFromMe
-                    ? BorderRadius.only(
-                        topLeft: _borderRadius,
-                        topRight:
-                            isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                        bottomLeft: _borderRadius,
-                      )
-                    : BorderRadius.only(
-                        topLeft:
-                            isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                        topRight: _borderRadius,
-                        bottomRight: _borderRadius,
-                      ),
-                child: const _ChatMessageListItemContentWidget(),
-              ),
-      ),
-    );
+    return StreamBuilder<bool>(
+        stream: messageBloc.isPendingFailedStream,
+        initialData: messageBloc.isPendingFailed,
+        builder: (context, snapshot) {
+          var isPendingFailed = snapshot.data!;
+          return Container(
+            decoration: BoxDecoration(
+              color: isHaveTextContent
+                  ? isChatMessageFromMe
+                      ? isPendingFailed
+                          ? IFediUiColorTheme.of(context).grey
+                          : IFediUiColorTheme.of(context).primaryDark
+                      : IFediUiColorTheme.of(context).ultraLightGrey
+                  : IFediUiColorTheme.of(context).transparent,
+              borderRadius: isHaveTextContent
+                  ? isChatMessageFromMe
+                      ? BorderRadius.only(
+                          topLeft: _borderRadius,
+                          topRight:
+                              isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                          bottomLeft: _borderRadius,
+                        )
+                      : BorderRadius.only(
+                          topLeft:
+                              isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                          topRight: _borderRadius,
+                          bottomRight: _borderRadius,
+                        )
+                  : BorderRadius.zero,
+            ),
+            child: Padding(
+              padding: isHaveTextContent
+                  ? EdgeInsets.symmetric(
+                      vertical: FediSizes.mediumPadding,
+                      horizontal: FediSizes.bigPadding,
+                    )
+                  : EdgeInsets.zero,
+              child: isHaveTextContent
+                  ? const _ChatMessageListItemContentWidget()
+                  : ClipRRect(
+                      borderRadius: isChatMessageFromMe
+                          ? BorderRadius.only(
+                              topLeft: _borderRadius,
+                              topRight: isLastInMinuteGroup
+                                  ? _borderRadius
+                                  : Radius.zero,
+                              bottomLeft: _borderRadius,
+                            )
+                          : BorderRadius.only(
+                              topLeft: isLastInMinuteGroup
+                                  ? _borderRadius
+                                  : Radius.zero,
+                              topRight: _borderRadius,
+                              bottomRight: _borderRadius,
+                            ),
+                      child: const _ChatMessageListItemContentWidget(),
+                    ),
+            ),
+          );
+        });
   }
 }
 
