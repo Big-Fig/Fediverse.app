@@ -162,30 +162,20 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
           .listen(
         (lastStatus) {
           if (lastStatus != null) {
+            var conversationChatMessageStatusAdapter =
+                ConversationChatMessageStatusAdapter(
+              status: lastStatus,
+            );
             _lastMessageSubject.add(
-              ConversationChatMessageStatusAdapter(
-                status: lastStatus,
-              ),
+              conversationChatMessageStatusAdapter,
             );
-          }
-        },
-      ),
-    );
 
-    addDisposable(
-      streamSubscription: statusRepository
-          .watchConversationLastStatus(
-        conversation: chat,
-        onlyPendingStatePublishedOrNull: true,
-      )
-          .listen(
-        (lastStatus) {
-          if (lastStatus != null) {
-            _lastPublishedMessageSubject.add(
-              ConversationChatMessageStatusAdapter(
-                status: lastStatus,
-              ),
-            );
+            if (conversationChatMessageStatusAdapter
+                .isPendingStatePublishedOrNull) {
+              _lastPublishedMessageSubject.add(
+                conversationChatMessageStatusAdapter,
+              );
+            }
           }
         },
       ),
