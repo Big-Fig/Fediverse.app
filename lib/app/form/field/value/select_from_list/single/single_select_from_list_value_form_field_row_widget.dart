@@ -1,5 +1,6 @@
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/dialog/chooser/selection/single/fedi_single_selection_chooser_dialog.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/form/fedi_form_field_row.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
@@ -92,20 +93,26 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
           );
         }
       },
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (displayIconInRow)
-            _SingleSelectFromListValueFormFieldRowValueIconWidget<T>(
-              label: label,
-              valueIconMapper: valueIconMapper,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: FediSizes.smallPadding / 2,
+          horizontal: FediSizes.mediumPadding,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (displayIconInRow)
+              _SingleSelectFromListValueFormFieldRowValueIconWidget<T>(
+                label: label,
+                valueIconMapper: valueIconMapper,
+                valueTitleMapper: valueTitleMapper,
+                displayIconInDialog: displayIconInDialog,
+              ),
+            _SingleSelectFromListValueFormFieldRowValueTitleWidget<T>(
               valueTitleMapper: valueTitleMapper,
-              displayIconInDialog: displayIconInDialog,
             ),
-          _SingleSelectFromListValueFormFieldRowValueTitleWidget<T>(
-            valueTitleMapper: valueTitleMapper,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
