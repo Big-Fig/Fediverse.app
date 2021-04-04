@@ -103,10 +103,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
     if (loadFromCacheDuringInit) {
       try {
-        await paginationBloc.requestPage(
-          pageIndex: 0,
-          forceToSkipCache: false,
-        );
+        await loadFirstPageOnInit();
       } catch (e, stackTrace) {
         _logger.severe(
           () => "failed to internalAsyncInit",
@@ -115,6 +112,13 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
         );
       }
     }
+  }
+
+  Future<TPage> loadFirstPageOnInit() {
+    return paginationBloc.requestPage(
+      pageIndex: 0,
+      forceToSkipCache: false,
+    );
   }
 
   @override
