@@ -52,12 +52,20 @@ class PleromaChatWithLastMessageListWidget
           value: items[index],
           child: DisposableProxyProvider<IPleromaChatWithLastMessage,
               IPleromaChatBloc>(
-            update: (context, chatWithLastMessage, oldValue) =>
-                PleromaChatBloc.createFromContext(
-              context,
-              chat: chatWithLastMessage.chat,
-              lastChatMessage: chatWithLastMessage.lastChatMessage,
-            ),
+            update: (context, chatWithLastMessage, oldBloc) {
+              // don't recreate bloc if it is already crated for this chat
+              // all data updates handled inside bloc
+              if (oldBloc != null &&
+                  oldBloc.chat.remoteId == chatWithLastMessage.chat.remoteId) {
+                return oldBloc;
+              } else {
+                return PleromaChatBloc.createFromContext(
+                  context,
+                  chat: chatWithLastMessage.chat,
+                  lastChatMessage: chatWithLastMessage.lastChatMessage,
+                );
+              }
+            },
             child: ProxyProvider<IPleromaChatBloc, IChatBloc>(
               update: (context, value, _) => value,
               child: FediListTile(
