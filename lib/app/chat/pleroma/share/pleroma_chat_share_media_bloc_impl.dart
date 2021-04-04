@@ -18,7 +18,7 @@ import 'package:provider/provider.dart';
 class PleromaChatShareMediaBloc extends PleromaChatShareBloc
     implements IPleromaChatShareBloc, IShareMediaBloc {
   @override
-  final IPleromaMediaAttachment? mediaAttachment;
+  final IPleromaMediaAttachment mediaAttachment;
 
   PleromaChatShareMediaBloc({
     required this.mediaAttachment,
@@ -40,7 +40,7 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
   @override
   PleromaChatMessageSendData createPleromaChatMessageSendData() {
     var messageSendData = PleromaChatMessageSendData(
-      content: "${mediaAttachment!.url} ${message ?? ""}".trim(),
+      content: "${mediaAttachment.url} ${message ?? ""}".trim(),
       idempotencyKey: null,
       mediaId: null,
     );
@@ -49,7 +49,7 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    required IPleromaMediaAttachment? mediaAttachment,
+    required IPleromaMediaAttachment mediaAttachment,
     required Widget child,
   }) {
     return DisposableProvider<PleromaChatShareMediaBloc>(
@@ -69,7 +69,7 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
 
   static PleromaChatShareMediaBloc createFromContext(
     BuildContext context,
-    IPleromaMediaAttachment? mediaAttachment,
+    IPleromaMediaAttachment mediaAttachment,
   ) =>
       PleromaChatShareMediaBloc(
         mediaAttachment: mediaAttachment,

@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 class ConversationChatShareMediaBloc extends ConversationChatShareBloc
     implements IConversationChatShareBloc, IShareMediaBloc {
   @override
-  final IPleromaMediaAttachment? mediaAttachment;
+  final IPleromaMediaAttachment mediaAttachment;
 
   ConversationChatShareMediaBloc({
     required this.mediaAttachment,
@@ -59,7 +59,7 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
       sensitive: false,
       spoilerText: null,
       to: null,
-      status: "${mediaAttachment!.url} ${message ?? ""} ${to}".trim(),
+      status: "${mediaAttachment.url} ${message ?? ""} ${to}".trim(),
       visibility: visibility.toJsonValue(),
     );
     return messageSendData;
@@ -67,7 +67,7 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    required IPleromaMediaAttachment? mediaAttachment,
+    required IPleromaMediaAttachment mediaAttachment,
     required Widget child,
   }) {
     return DisposableProvider<ConversationChatShareMediaBloc>(
@@ -91,7 +91,7 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
 
   static ConversationChatShareMediaBloc createFromContext(
     BuildContext context,
-    IPleromaMediaAttachment? mediaAttachment,
+    IPleromaMediaAttachment mediaAttachment,
   ) =>
       ConversationChatShareMediaBloc(
         mediaAttachment: mediaAttachment,
