@@ -113,25 +113,10 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
               " lastMessage $lastMessage");
           if (lastMessage != null) {
             _lastMessageSubject.add(lastMessage);
-          }
-        },
-      ),
-    );
 
-    addDisposable(
-      streamSubscription: chatMessageRepository
-          .watchChatLastChatMessage(
-        chat: chat,
-        onlyPendingStatePublishedOrNull: true,
-      )
-          .listen(
-        (lastMessage) {
-          _logger.finest(() => "watchChatLastChatMessage \n"
-              "onlyPendingStatePublishedOrNull: true, \n"
-              " chat ${chat.remoteId} \n"
-              " lastMessage $lastMessage");
-          if (lastMessage != null) {
-            _lastPublishedMessageSubject.add(lastMessage);
+            if (lastMessage.isPendingStatePublishedOrNull) {
+              _lastPublishedMessageSubject.add(lastMessage);
+            }
           }
         },
       ),
@@ -216,7 +201,6 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   Future markAsRead() async {
     if (chat.unread > 0) {
-
       if (pleromaChatService.isApiReadyToUse) {
         var lastReadChatMessageId = lastChatMessage?.remoteId;
         if (lastReadChatMessageId == null) {
@@ -304,7 +288,8 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         createdAt: createdAt,
         content: pleromaChatMessageSendData.content,
         emojis: null,
-        mediaAttachment: pleromaChatMessageSendDataMediaAttachment?.toPleromaMediaAttachment(),
+        mediaAttachment: pleromaChatMessageSendDataMediaAttachment
+            ?.toPleromaMediaAttachment(),
         card: null,
         pendingState: PendingState.pending,
         oldPendingRemoteId: fakeUniqueRemoteRemoteId,
@@ -383,7 +368,6 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   IPleromaChatMessage? get lastPublishedChatMessage =>
       _lastPublishedMessageSubject.value;
-
 
   @override
   bool get isDeletePossible => false;
