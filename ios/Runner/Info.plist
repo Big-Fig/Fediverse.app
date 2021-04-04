@@ -46,29 +46,13 @@
 		<true/>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Need apple music access</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Required when you use Bluetooth accessories</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Required when you use Bluetooth accessories</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>Need to access your calendar to update events</string>
+	<string>To share audio</string>
 	<key>NSCameraUsageDescription</key>
-	<string>We need access to your camera to post to your instance</string>
-	<key>NSContactsUsageDescription</key>
-	<string>Need to see your contacts to share with</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Attach location to photo from camera</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Attach location to photo from camera</string>
+	<string>Video sharing</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Required for video recording</string>
-	<key>NSMotionUsageDescription</key>
-	<string>Need access to motion</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Save photo and video to your gallery</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Required for video recording</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
