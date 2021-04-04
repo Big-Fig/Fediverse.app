@@ -47,6 +47,10 @@
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Need apple music access</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Required when you use Bluetooth accessories</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Required when you use Bluetooth accessories</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>Need to access your calendar to update events</string>
 	<key>NSCameraUsageDescription</key>
