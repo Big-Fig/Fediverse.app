@@ -44,43 +44,43 @@ class FediSingleSelectionChooserDialogBody extends StatelessWidget {
     required bool isSelected,
   }) {
     var actionExist = action.onAction != null;
-    return Padding(
-      padding: FediPadding.horizontalBigPadding,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          StreamBuilder<bool>(
-            initialData: action.isActionEnabledFetcher != null
-                ? action.isActionEnabledFetcher!(context)
-                : true,
-            stream: action.isActionEnabledStreamFetcher != null
-                ? action.isActionEnabledStreamFetcher!(context)
-                : Stream.value(true),
-            builder: (context, snapshot) {
-              var enabled = snapshot.data!;
-              var fediUiColorTheme = IFediUiColorTheme.of(context);
-              var fediUiTextTheme = IFediUiTextTheme.of(context);
-              return StreamBuilder<bool>(
-                  initialData: action.isActionVisibleFetcher != null
-                      ? action.isActionVisibleFetcher!(context)
-                      : true,
-                  stream: action.isActionVisibleStreamFetcher != null
-                      ? action.isActionVisibleStreamFetcher!(context)
-                      : Stream.value(true),
-                  builder: (context, snapshot) {
-                    var visible = snapshot.data!;
-                    if (!visible) {
-                      return SizedBox.shrink();
-                    }
-                    return InkWell(
-                      onTap: enabled
-                          ? () {
-                              if (actionExist && enabled) {
-                                action.onAction!(context);
-                              }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        StreamBuilder<bool>(
+          initialData: action.isActionEnabledFetcher != null
+              ? action.isActionEnabledFetcher!(context)
+              : true,
+          stream: action.isActionEnabledStreamFetcher != null
+              ? action.isActionEnabledStreamFetcher!(context)
+              : Stream.value(true),
+          builder: (context, snapshot) {
+            var enabled = snapshot.data!;
+            var fediUiColorTheme = IFediUiColorTheme.of(context);
+            var fediUiTextTheme = IFediUiTextTheme.of(context);
+            return StreamBuilder<bool>(
+                initialData: action.isActionVisibleFetcher != null
+                    ? action.isActionVisibleFetcher!(context)
+                    : true,
+                stream: action.isActionVisibleStreamFetcher != null
+                    ? action.isActionVisibleStreamFetcher!(context)
+                    : Stream.value(true),
+                builder: (context, snapshot) {
+                  var visible = snapshot.data!;
+                  if (!visible) {
+                    return SizedBox.shrink();
+                  }
+                  return InkWell(
+                    onTap: enabled
+                        ? () {
+                            if (actionExist && enabled) {
+                              action.onAction!(context);
                             }
-                          : null,
+                          }
+                        : null,
+                    child: Padding(
+                      padding: FediPadding.horizontalBigPadding,
                       child: Row(
                         children: [
                           if (action.icon != null)
@@ -112,12 +112,12 @@ class FediSingleSelectionChooserDialogBody extends StatelessWidget {
                           ),
                         ],
                       ),
-                    );
-                  });
-            },
-          ),
-        ],
-      ),
+                    ),
+                  );
+                });
+          },
+        ),
+      ],
     );
   }
 
