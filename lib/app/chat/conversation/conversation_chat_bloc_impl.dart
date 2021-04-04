@@ -131,6 +131,9 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
               isNeedWatchLocalRepositoryForUpdates,
           delayInit: delayInit,
         ) {
+
+    _logger.finest(() => "conversation chat bloc");
+
     addDisposable(subject: _chatSubject);
     addDisposable(subject: _lastMessageSubject);
     addDisposable(subject: _lastPublishedMessageSubject);

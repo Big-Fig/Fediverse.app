@@ -52,12 +52,20 @@ class ConversationChatWithLastMessageListWidget
           value: items[index],
           child: DisposableProxyProvider<IConversationChatWithLastMessage,
               IConversationChatBloc>(
-            update: (context, chatWithLastMessage, oldValue) =>
-                ConversationChatBloc.createFromContext(
-              context,
-              chat: chatWithLastMessage.chat,
-              lastChatMessage: chatWithLastMessage.lastChatMessage,
-            ),
+            update: (context, chatWithLastMessage, oldBloc) {
+              // don't recreate bloc if it is already crated for this chat
+              // all data updates handled inside bloc
+              if (oldBloc != null &&
+                  oldBloc.chat.remoteId == chatWithLastMessage.chat.remoteId) {
+                return oldBloc;
+              } else {
+                return ConversationChatBloc.createFromContext(
+                  context,
+                  chat: chatWithLastMessage.chat,
+                  lastChatMessage: chatWithLastMessage.lastChatMessage,
+                );
+              }
+            },
             child: ProxyProvider<IConversationChatBloc, IChatBloc>(
               update: (context, value, _) => value,
               child: FediListTile(
