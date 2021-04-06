@@ -1,5 +1,4 @@
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
-import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_model.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_model.dart';
@@ -30,36 +29,12 @@ class ConversationChatWithLastMessageRepository extends AsyncInitLoadingBloc
     required RepositoryPagination<IConversationChat> pagination,
     ConversationChatOrderingTermData orderingTermData =
         ConversationChatOrderingTermData.updatedAtDesc,
-  }) async {
-    var chats = await conversationChatRepository.getConversations(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return await _createConversationWithLastMessageList(chats);
-  }
-
-  Future<List<ConversationChatWithLastMessageWrapper>>
-      _createConversationWithLastMessageList(
-    List<DbConversationChatWrapper> conversations,
-  ) async {
-    var chatLastStatusesMap = await statusRepository.getConversationsLastStatus(
-      conversations: conversations,
-    );
-
-    return chatLastStatusesMap.entries.map(
-      (entry) {
-        var chat = entry.key;
-        var lastChatStatus = entry.value;
-        return ConversationChatWithLastMessageWrapper(
-          chat: chat,
-          lastChatMessage:
-              lastChatStatus?.toConversationChatMessageStatusAdapter(),
-        );
-      },
-    ).toList();
-  }
+  }) =>
+          conversationChatRepository.getConversationsWithLastMessage(
+            filters: filters,
+            pagination: pagination,
+            orderingTermData: orderingTermData,
+          );
 
   @override
   Stream<List<IConversationChatWithLastMessage>>
@@ -68,15 +43,10 @@ class ConversationChatWithLastMessageRepository extends AsyncInitLoadingBloc
     required RepositoryPagination<IConversationChat> pagination,
     ConversationChatOrderingTermData orderingTermData =
         ConversationChatOrderingTermData.updatedAtDesc,
-  }) {
-    return conversationChatRepository
-        .watchConversations(
-          filters: filters,
-          pagination: pagination,
-          orderingTermData: orderingTermData,
-        )
-        .asyncMap(
-          (chats) => _createConversationWithLastMessageList(chats),
-        );
-  }
+  }) =>
+          conversationChatRepository.watchConversationsWithLastMessage(
+            filters: filters,
+            pagination: pagination,
+            orderingTermData: orderingTermData,
+          );
 }

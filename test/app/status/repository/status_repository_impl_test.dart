@@ -1218,11 +1218,13 @@ void main() {
     var conversationRemoteId = "conversationRemoteId";
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
-        onlyInConversation: DbConversationChatWrapper(
-          dbConversation: DbConversation(
-            remoteId: conversationRemoteId,
-            unread: false,
-            id: null,
+        onlyInConversation: DbConversationChatPopulatedWrapper(
+          dbConversationPopulated: DbConversationPopulated(
+            dbConversation: DbConversation(
+              remoteId: conversationRemoteId,
+              unread: false,
+              id: null,
+            ),
           ),
         ),
       ),

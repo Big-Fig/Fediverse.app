@@ -1,5 +1,6 @@
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_model.dart';
+import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
@@ -10,7 +11,7 @@ import 'package:provider/provider.dart';
 
 abstract class IConversationChatRepository
     implements
-        IReadIdListRepository<DbConversationChatWrapper, int>,
+        IReadIdListRepository<DbConversationChatPopulatedWrapper, int>,
         IWriteIdListRepository<DbConversation, int>,
         IDisposable {
   static IConversationChatRepository of(
@@ -22,7 +23,7 @@ abstract class IConversationChatRepository
         listen: listen,
       );
 
-  Future<DbConversationChatWrapper?> findByRemoteId(
+  Future<DbConversationChatPopulatedWrapper?> findByRemoteId(
     String remoteId,
   );
 
@@ -32,33 +33,33 @@ abstract class IConversationChatRepository
 
   Future deleteByRemoteId(String remoteId);
 
-  Stream<DbConversationChatWrapper?> watchByRemoteId(String remoteId);
+  Stream<DbConversationChatPopulatedWrapper?> watchByRemoteId(String remoteId);
 
   Future upsertRemoteConversation(
     IPleromaConversation remoteConversation,
   );
 
-  Future<List<DbConversationChatWrapper>> getConversations({
+  Future<List<DbConversationChatPopulatedWrapper>> getConversations({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat>? pagination,
     ConversationChatOrderingTermData? orderingTermData =
         ConversationChatOrderingTermData.updatedAtDesc,
   });
 
-  Stream<List<DbConversationChatWrapper>> watchConversations({
+  Stream<List<DbConversationChatPopulatedWrapper>> watchConversations({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat>? pagination,
     ConversationChatOrderingTermData? orderingTermData =
         ConversationChatOrderingTermData.updatedAtDesc,
   });
 
-  Future<DbConversationChatWrapper?> getConversation({
+  Future<DbConversationChatPopulatedWrapper?> getConversation({
     required ConversationChatRepositoryFilters? filters,
     ConversationChatOrderingTermData? orderingTermData =
         ConversationChatOrderingTermData.updatedAtDesc,
   });
 
-  Stream<DbConversationChatWrapper?> watchConversation({
+  Stream<DbConversationChatPopulatedWrapper?> watchConversation({
     required ConversationChatRepositoryFilters? filters,
     ConversationChatOrderingTermData? orderingTermData =
         ConversationChatOrderingTermData.updatedAtDesc,
@@ -76,4 +77,30 @@ abstract class IConversationChatRepository
   Future<int> getTotalUnreadCount();
 
   Stream<int> watchTotalUnreadCount();
+
+  Future<List<IConversationChatWithLastMessage>> getConversationsWithLastMessage({
+    required ConversationChatRepositoryFilters? filters,
+    required RepositoryPagination<IConversationChat>? pagination,
+    ConversationChatOrderingTermData? orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  });
+
+  Stream<List<IConversationChatWithLastMessage>> watchConversationsWithLastMessage({
+    required ConversationChatRepositoryFilters? filters,
+    required RepositoryPagination<IConversationChat>? pagination,
+    ConversationChatOrderingTermData? orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  });
+
+  Future<IConversationChatWithLastMessage?> getConversationWithLastMessage({
+    required ConversationChatRepositoryFilters filters,
+    ConversationChatOrderingTermData? orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  });
+
+  Stream<IConversationChatWithLastMessage?> watchConversationWithLastMessage({
+    required ConversationChatRepositoryFilters? filters,
+    ConversationChatOrderingTermData? orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  });
 }

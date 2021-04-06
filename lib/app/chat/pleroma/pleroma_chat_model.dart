@@ -62,6 +62,26 @@ class DbPleromaChatWithLastMessagePopulated {
     required this.dbPleromaChatPopulated,
     required this.dbChatMessagePopulated,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DbPleromaChatWithLastMessagePopulated &&
+          runtimeType == other.runtimeType &&
+          dbPleromaChatPopulated == other.dbPleromaChatPopulated &&
+          dbChatMessagePopulated == other.dbChatMessagePopulated;
+
+  @override
+  int get hashCode =>
+      dbPleromaChatPopulated.hashCode ^ dbChatMessagePopulated.hashCode;
+
+  @override
+  String toString() {
+    return 'DbPleromaChatWithLastMessagePopulated{'
+        'dbPleromaChatPopulated: $dbPleromaChatPopulated, '
+        'dbChatMessagePopulated: $dbChatMessagePopulated'
+        '}';
+  }
 }
 
 class DbPleromaChatWithLastMessagePopulatedWrapper
@@ -87,6 +107,25 @@ class DbPleromaChatWithLastMessagePopulatedWrapper
                   dbPleromaChatWithLastMessagePopulated.dbChatMessagePopulated!,
             )
           : null;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DbPleromaChatWithLastMessagePopulatedWrapper &&
+          runtimeType == other.runtimeType &&
+          dbPleromaChatWithLastMessagePopulated ==
+              other.dbPleromaChatWithLastMessagePopulated;
+
+  @override
+  int get hashCode => dbPleromaChatWithLastMessagePopulated.hashCode;
+
+  @override
+  String toString() {
+    return 'DbPleromaChatWithLastMessagePopulatedWrapper{'
+        'dbPleromaChatWithLastMessagePopulated: '
+        '$dbPleromaChatWithLastMessagePopulated'
+        '}';
+  }
 }
 
 class DbPleromaChatPopulatedWrapper implements IPleromaChat {
@@ -138,4 +177,19 @@ class DbPleromaChatPopulatedWrapper implements IPleromaChat {
           dbAccount: dbChatPopulated.dbAccount,
         ),
       ];
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DbPleromaChatPopulatedWrapper &&
+          runtimeType == other.runtimeType &&
+          dbChatPopulated == other.dbChatPopulated;
+
+  @override
+  int get hashCode => dbChatPopulated.hashCode;
+
+  @override
+  String toString() {
+    return 'DbPleromaChatPopulatedWrapper{dbChatPopulated: $dbChatPopulated}';
+  }
 }

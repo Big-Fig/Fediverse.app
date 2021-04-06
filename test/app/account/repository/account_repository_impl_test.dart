@@ -352,11 +352,14 @@ void main() {
 
   test('createQuery onlyInConversation', () async {
     var conversationRemoteId = "conversationRemoteId";
-    var conversation = DbConversationChatWrapper(
-      dbConversation: DbConversation(
-        id: null,
-        remoteId: conversationRemoteId,
-        unread: false,
+
+    var conversation = DbConversationChatPopulatedWrapper(
+      dbConversationPopulated: DbConversationPopulated(
+        dbConversation: DbConversation(
+          id: null,
+          remoteId: conversationRemoteId,
+          unread: false,
+        ),
       ),
     );
 
@@ -604,7 +607,6 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-
     var actualList = (await query.get())
         .toDbAccountList(dao: accountRepository.dao)
         .toDbAccountWrapperList();
@@ -640,7 +642,6 @@ void main() {
       (await createTestDbAccount(seed: "seed3"))
           .copyWith(remoteId: "remoteId3"),
     );
-
 
     var actualList = (await query.get())
         .toDbAccountList(dao: accountRepository.dao)
