@@ -156,7 +156,7 @@ void main() {
       remoteId: newRemoteId,
     )
         .toPleromaChat(
-      lastChatMessage: DbChatMessagePopulatedWrapper(
+      lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: DbChatMessagePopulated(
           dbChatMessage: dbChatMessage.copyWith(content: newContent),
           dbAccount: dbAccount.copyWith(
@@ -213,7 +213,7 @@ void main() {
             dbAccount: dbAccount,
           ),
         ],
-        lastChatMessage: DbChatMessagePopulatedWrapper(
+        lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ),
       ),
@@ -253,7 +253,7 @@ void main() {
             dbAccount: dbAccount,
           ),
         ],
-        lastChatMessage: DbChatMessagePopulatedWrapper(
+        lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ),
       ),
@@ -275,7 +275,7 @@ void main() {
     );
   });
 
-  test('upsertRemoteChates', () async {
+  test('upsertRemoteChats', () async {
     expect(await chatRepository.countAll(), 0);
     await chatRepository.upsertRemoteChats(
       [
@@ -286,7 +286,7 @@ void main() {
               dbAccount: dbAccount,
             ),
           ],
-          lastChatMessage: DbChatMessagePopulatedWrapper(
+          lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
             dbChatMessagePopulated: dbChatMessagePopulated,
           ),
         ),
@@ -318,7 +318,7 @@ void main() {
             dbAccount: dbAccount,
           ),
         ],
-        lastChatMessage: DbChatMessagePopulatedWrapper(
+        lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ),
       ),
@@ -347,6 +347,7 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData: null,
+      withLastMessage: false,
     );
 
     expect((await query.get()).length, 0);
@@ -388,6 +389,7 @@ void main() {
         ),
       ),
       orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+      withLastMessage: false,
     );
 
     await insertDbChat(
@@ -446,6 +448,7 @@ void main() {
         ),
       ),
       orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+      withLastMessage: false,
     );
 
     await insertDbChat(
@@ -510,6 +513,7 @@ void main() {
         ),
       ),
       orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+      withLastMessage: false,
     );
 
     await insertDbChat(
@@ -583,6 +587,7 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData: PleromaChatOrderingTermData.remoteIdAsc,
+      withLastMessage: false,
     );
 
     var chat2 = await insertDbChat(
@@ -610,9 +615,8 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-
     List<DbPleromaChatPopulated> actualList =
-    (await query.get()).toDbPleromaChatPopulatedList(
+        (await query.get()).toDbPleromaChatPopulatedList(
       dao: chatRepository.dao,
     );
     expect(actualList.length, 3);
@@ -627,6 +631,7 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData: PleromaChatOrderingTermData.remoteIdDesc,
+      withLastMessage: false,
     );
 
     var chat2 = await insertDbChat(
@@ -654,9 +659,8 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-
     List<DbPleromaChatPopulated> actualList =
-    (await query.get()).toDbPleromaChatPopulatedList(
+        (await query.get()).toDbPleromaChatPopulatedList(
       dao: chatRepository.dao,
     );
     expect(actualList.length, 3);
@@ -674,6 +678,7 @@ void main() {
         offset: 1,
       ),
       orderingTermData: PleromaChatOrderingTermData.remoteIdDesc,
+      withLastMessage: false,
     );
 
     var chat2 = await insertDbChat(

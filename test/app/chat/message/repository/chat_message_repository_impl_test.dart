@@ -70,7 +70,7 @@ void main() {
     expect(await chatMessageRepository.countAll(), 0);
 
     await chatMessageRepository.upsertRemoteChatMessage(
-      DbChatMessagePopulatedWrapper(
+      DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toPleromaChatMessage(),
     );
@@ -88,7 +88,7 @@ void main() {
 
     // item with same id updated
     await chatMessageRepository.upsertRemoteChatMessage(
-      DbChatMessagePopulatedWrapper(
+      DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toPleromaChatMessage(),
     );
@@ -108,7 +108,7 @@ void main() {
     expect(await chatMessageRepository.countAll(), 0);
     await chatMessageRepository.upsertRemoteChatMessages(
       [
-        DbChatMessagePopulatedWrapper(
+        DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ).toPleromaChatMessage(),
       ],
@@ -126,7 +126,7 @@ void main() {
     );
 
     await chatMessageRepository.upsertRemoteChatMessages([
-      DbChatMessagePopulatedWrapper(
+      DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toPleromaChatMessage(),
     ]);
@@ -190,14 +190,14 @@ void main() {
         .insert(dbChatMessage.copyWith(content: "oldContent"));
     assert(id > 0, true);
 
-    var oldLocalChatMessage = DbChatMessagePopulatedWrapper(
+    var oldLocalChatMessage = DbPleromaChatMessagePopulatedWrapper(
       dbChatMessagePopulated: DbChatMessagePopulated(
         dbChatMessage: dbChatMessage.copyWith(id: id),
         dbAccount: dbAccount,
       ),
     );
     var newContent = "newContent";
-    var newRemoteChatMessage = DbChatMessagePopulatedWrapper(
+    var newRemoteChatMessage = DbPleromaChatMessagePopulatedWrapper(
       dbChatMessagePopulated: DbChatMessagePopulated(
         dbChatMessage: dbChatMessage.copyWith(id: id, content: newContent),
         dbAccount: dbAccount,
@@ -562,7 +562,7 @@ void main() {
 
     // duplicate adding. Should be skipped
     await chatMessageRepository.upsertRemoteChatMessage(
-      DbChatMessagePopulatedWrapper(
+      DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: DbChatMessagePopulated(
           dbChatMessage: await createTestDbChatMessage(
             seed: "seed3",
@@ -594,7 +594,7 @@ void main() {
 
     // 1 is not related to chat
     await chatMessageRepository
-        .upsertRemoteChatMessage(DbChatMessagePopulatedWrapper(
+        .upsertRemoteChatMessage(DbPleromaChatMessagePopulatedWrapper(
       dbChatMessagePopulated: await createTestDbChatMessagePopulated(
         dbChatMessage.copyWith(
           remoteId: "chatMessage1",
@@ -613,7 +613,7 @@ void main() {
 
     // 2 is related to chat
     await chatMessageRepository.upsertRemoteChatMessage(
-      DbChatMessagePopulatedWrapper(
+      DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: await createTestDbChatMessagePopulated(
           dbChatMessage.copyWith(
             remoteId: "chatMessage2",
@@ -637,7 +637,7 @@ void main() {
 
     // 4 is newer than 2
     await chatMessageRepository
-        .upsertRemoteChatMessage(DbChatMessagePopulatedWrapper(
+        .upsertRemoteChatMessage(DbPleromaChatMessagePopulatedWrapper(
       dbChatMessagePopulated: await createTestDbChatMessagePopulated(
         dbChatMessage.copyWith(
           remoteId: "chatMessage4",
@@ -655,7 +655,7 @@ void main() {
 
     // remain 4
     await chatMessageRepository.upsertRemoteChatMessage(
-      DbChatMessagePopulatedWrapper(
+      DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: await createTestDbChatMessagePopulated(
           dbChatMessage.copyWith(
             remoteId: "chatMessage3",
@@ -683,38 +683,38 @@ void main() {
         dbChatMessagePopulated.copyWith(chatRemoteId: chatRemoteId);
 
     await chatMessageRepository.upsertRemoteChatMessages([
-      DbChatMessagePopulatedWrapper(
+      DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toPleromaChatMessage(),
     ]);
     await chatMessageRepository.upsertRemoteChatMessages(
       [
-        DbChatMessagePopulatedWrapper(
+        DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ).toPleromaChatMessage(),
       ],
     );
 
     var future1 = chatMessageRepository.upsertRemoteChatMessage(
-      DbChatMessagePopulatedWrapper(
+      DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toPleromaChatMessage(),
     );
     var future2 = chatMessageRepository.upsertRemoteChatMessage(
-      DbChatMessagePopulatedWrapper(
+      DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toPleromaChatMessage(),
     );
 
     var future3 = chatMessageRepository.upsertRemoteChatMessages(
       [
-        DbChatMessagePopulatedWrapper(
+        DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ).toPleromaChatMessage(),
       ],
     );
     var future4 = chatMessageRepository.upsertRemoteChatMessages([
-      DbChatMessagePopulatedWrapper(
+      DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toPleromaChatMessage(),
     ]);

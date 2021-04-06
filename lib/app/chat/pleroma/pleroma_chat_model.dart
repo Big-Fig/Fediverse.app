@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/chat_model.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
+import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 
 abstract class IPleromaChat implements IChat {
@@ -50,6 +52,41 @@ class DbPleromaChatPopulated {
         dbChat: dbChat ?? this.dbChat,
         dbAccount: dbAccount ?? this.dbAccount,
       );
+}
+
+class DbPleromaChatWithLastMessagePopulated {
+  final DbPleromaChatPopulated dbPleromaChatPopulated;
+  final DbChatMessagePopulated? dbChatMessagePopulated;
+
+  DbPleromaChatWithLastMessagePopulated({
+    required this.dbPleromaChatPopulated,
+    required this.dbChatMessagePopulated,
+  });
+}
+
+class DbPleromaChatWithLastMessagePopulatedWrapper
+    implements IPleromaChatWithLastMessage {
+  final DbPleromaChatWithLastMessagePopulated
+      dbPleromaChatWithLastMessagePopulated;
+
+  DbPleromaChatWithLastMessagePopulatedWrapper({
+    required this.dbPleromaChatWithLastMessagePopulated,
+  });
+
+  @override
+  IPleromaChat get chat => DbPleromaChatPopulatedWrapper(
+        dbChatPopulated:
+            dbPleromaChatWithLastMessagePopulated.dbPleromaChatPopulated,
+      );
+
+  @override
+  IPleromaChatMessage? get lastChatMessage =>
+      dbPleromaChatWithLastMessagePopulated.dbChatMessagePopulated != null
+          ? DbPleromaChatMessagePopulatedWrapper(
+              dbChatMessagePopulated:
+                  dbPleromaChatWithLastMessagePopulated.dbChatMessagePopulated!,
+            )
+          : null;
 }
 
 class DbPleromaChatPopulatedWrapper implements IPleromaChat {

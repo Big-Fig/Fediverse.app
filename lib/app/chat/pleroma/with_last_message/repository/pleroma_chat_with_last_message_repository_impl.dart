@@ -29,31 +29,13 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
     PleromaChatOrderingTermData orderingTermData =
         PleromaChatOrderingTermData.updatedAtDesc,
   }) async {
-    var chats = await chatRepository.getChats(
+    var chats = await chatRepository.getChatsWithLastMessage(
       filters: filters,
       pagination: pagination,
       orderingTermData: orderingTermData,
     );
 
-    return await _createChatWithLastMessageList(chats);
-  }
-
-  Future<List<PleromaChatWithLastMessageWrapper>>
-      _createChatWithLastMessageList(
-    List<DbPleromaChatPopulatedWrapper> chats,
-  ) async {
-    var chatLastMessagesMap =
-        await chatMessageRepository.getChatsLastChatMessage(chats: chats);
-    return chatLastMessagesMap.entries.map(
-      (entry) {
-        var chat = entry.key;
-        var lastChatMessage = entry.value;
-        return PleromaChatWithLastMessageWrapper(
-          chat: chat,
-          lastChatMessage: lastChatMessage,
-        );
-      },
-    ).toList();
+    return chats;
   }
 
   @override
@@ -63,16 +45,10 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
     PleromaChatOrderingTermData orderingTermData =
         PleromaChatOrderingTermData.updatedAtDesc,
   }) {
-    return chatRepository
-        .watchChats(
-          filters: filters,
-          pagination: pagination,
-          orderingTermData: orderingTermData,
-        )
-        .asyncMap(
-          (chats) => _createChatWithLastMessageList(
-            chats,
-          ),
-        );
+    return chatRepository.watchChatsWithLastMessage(
+      filters: filters,
+      pagination: pagination,
+      orderingTermData: orderingTermData,
+    );
   }
 }

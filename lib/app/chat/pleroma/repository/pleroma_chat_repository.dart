@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
+import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
@@ -60,6 +61,32 @@ abstract class IPleromaChatRepository
   });
 
   Stream<DbPleromaChatPopulatedWrapper?> watchChat({
+    required PleromaChatRepositoryFilters? filters,
+    PleromaChatOrderingTermData? orderingTermData =
+        PleromaChatOrderingTermData.updatedAtDesc,
+  });
+
+  Future<List<IPleromaChatWithLastMessage>> getChatsWithLastMessage({
+    required PleromaChatRepositoryFilters? filters,
+    required RepositoryPagination<IPleromaChat>? pagination,
+    PleromaChatOrderingTermData? orderingTermData =
+        PleromaChatOrderingTermData.updatedAtDesc,
+  });
+
+  Stream<List<IPleromaChatWithLastMessage>> watchChatsWithLastMessage({
+    required PleromaChatRepositoryFilters? filters,
+    required RepositoryPagination<IPleromaChat>? pagination,
+    PleromaChatOrderingTermData? orderingTermData =
+        PleromaChatOrderingTermData.updatedAtDesc,
+  });
+
+  Future<IPleromaChatWithLastMessage?> getChatWithLastMessage({
+    required PleromaChatRepositoryFilters filters,
+    PleromaChatOrderingTermData? orderingTermData =
+        PleromaChatOrderingTermData.updatedAtDesc,
+  });
+
+  Stream<IPleromaChatWithLastMessage?> watchChatWithLastMessage({
     required PleromaChatRepositoryFilters? filters,
     PleromaChatOrderingTermData? orderingTermData =
         PleromaChatOrderingTermData.updatedAtDesc,

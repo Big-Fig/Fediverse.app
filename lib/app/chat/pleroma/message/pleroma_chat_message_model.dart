@@ -29,19 +29,19 @@ abstract class IPleromaChatMessage extends IChatMessage {
 }
 
 extension IPleromaChatDbMessage on IPleromaChatMessage {
-  DbChatMessagePopulatedWrapper toDbChatMessagePopulatedWrapper() {
-    if (this is DbChatMessagePopulatedWrapper) {
-      return this as DbChatMessagePopulatedWrapper;
+  DbPleromaChatMessagePopulatedWrapper toDbChatMessagePopulatedWrapper() {
+    if (this is DbPleromaChatMessagePopulatedWrapper) {
+      return this as DbPleromaChatMessagePopulatedWrapper;
     } else {
-      return DbChatMessagePopulatedWrapper(
+      return DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: toDbChatMessagePopulated(),
       );
     }
   }
 
   DbChatMessagePopulated toDbChatMessagePopulated() {
-    if (this is DbChatMessagePopulatedWrapper) {
-      return (this as DbChatMessagePopulatedWrapper).dbChatMessagePopulated;
+    if (this is DbPleromaChatMessagePopulatedWrapper) {
+      return (this as DbPleromaChatMessagePopulatedWrapper).dbChatMessagePopulated;
     } else {
       return DbChatMessagePopulated(
         dbChatMessage: toDbChatMessage(),
@@ -51,8 +51,8 @@ extension IPleromaChatDbMessage on IPleromaChatMessage {
   }
 
   DbChatMessage toDbChatMessage() {
-    if (this is DbChatMessagePopulatedWrapper) {
-      return (this as DbChatMessagePopulatedWrapper)
+    if (this is DbPleromaChatMessagePopulatedWrapper) {
+      return (this as DbPleromaChatMessagePopulatedWrapper)
           .dbChatMessagePopulated
           .dbChatMessage;
     } else {
@@ -78,8 +78,8 @@ extension IPleromaChatDbMessage on IPleromaChatMessage {
   }
 
   DbAccount toDbAccount() {
-    if (this is DbChatMessagePopulatedWrapper) {
-      return (this as DbChatMessagePopulatedWrapper)
+    if (this is DbPleromaChatMessagePopulatedWrapper) {
+      return (this as DbPleromaChatMessagePopulatedWrapper)
           .dbChatMessagePopulated
           .dbAccount;
     } else {
@@ -88,15 +88,17 @@ extension IPleromaChatDbMessage on IPleromaChatMessage {
   }
 }
 
-class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
+class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
   final DbChatMessagePopulated dbChatMessagePopulated;
 
   @override
   String toString() {
-    return 'DbChatMessagePopulatedWrapper{dbChatMessagePopulated: $dbChatMessagePopulated}';
+    return 'DbPleromaChatMessagePopulatedWrapper{'
+        'dbChatMessagePopulated: $dbChatMessagePopulated'
+        '}';
   }
 
-  DbChatMessagePopulatedWrapper({
+  DbPleromaChatMessagePopulatedWrapper({
     required this.dbChatMessagePopulated,
   });
 
@@ -148,7 +150,7 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
       dbChatMessagePopulated.dbChatMessage.wasSentWithIdempotencyKey;
 
   @override
-  DbChatMessagePopulatedWrapper copyWith({
+  DbPleromaChatMessagePopulatedWrapper copyWith({
     int? localId,
     String? remoteId,
     String? chatRemoteId,
@@ -164,7 +166,7 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
     bool? hiddenLocallyOnDevice,
     String? wasSentWithIdempotencyKey,
   }) =>
-      DbChatMessagePopulatedWrapper(
+      DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated.copyWith(
           localId: localId,
           remoteId: remoteId,
@@ -186,7 +188,7 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DbChatMessagePopulatedWrapper &&
+      other is DbPleromaChatMessagePopulatedWrapper &&
           runtimeType == other.runtimeType &&
           dbChatMessagePopulated == other.dbChatMessagePopulated;
 
