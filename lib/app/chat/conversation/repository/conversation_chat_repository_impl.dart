@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model_adapter.dart';
@@ -51,10 +50,10 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
 
   @override
   Future upsertRemoteConversation(
-    IPleromaConversation? remoteConversation,
+    IPleromaConversation remoteConversation,
   ) async {
     _logger.finer(() => "upsertRemoteConversation $remoteConversation");
-    var remoteAccounts = remoteConversation!.accounts;
+    var remoteAccounts = remoteConversation.accounts;
 
     await accountRepository.upsertRemoteAccounts(
       remoteAccounts,
@@ -109,15 +108,17 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbConversationChatWrapper?> findByRemoteId(String remoteId) async =>
-      (await dao.findByRemoteId(remoteId).getSingleOrNull())
-          ?.toDbConversationChatWrapper();
+  Future<DbConversationChatPopulatedWrapper?> findByRemoteId(
+          String remoteId) async =>
+      (await dao.findByRemoteId(remoteId))
+          ?.toDbConversationChatPopulatedWrapper();
 
   @override
-  Stream<DbConversationChatWrapper?> watchByRemoteId(String remoteId) =>
-      dao.findByRemoteId(remoteId).watchSingleOrNull().map(
-            (value) => value?.toDbConversationChatWrapper(),
-          );
+  Stream<DbConversationChatPopulatedWrapper?> watchByRemoteId(
+          String remoteId) =>
+      (dao.watchByRemoteId(remoteId)).map(
+        (value) => value?.toDbConversationChatPopulatedWrapper(),
+      );
 
   @override
   Future upsertAll(List<DbConversation> items) async {
@@ -146,13 +147,13 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbConversationChatWrapper?> findById(int id) async =>
-      (await dao.findById(id).getSingleOrNull())?.toDbConversationChatWrapper();
+  Future<DbConversationChatPopulatedWrapper?> findById(int id) async =>
+      (await dao.findById(id))?.toDbConversationChatPopulatedWrapper();
 
   @override
-  Stream<DbConversationChatWrapper?> watchById(int id) =>
-      dao.findById(id).watchSingleOrNull().map(
-            (value) => value?.toDbConversationChatWrapper(),
+  Stream<DbConversationChatPopulatedWrapper?> watchById(int id) =>
+      dao.watchById(id).map(
+            (value) => value?.toDbConversationChatPopulatedWrapper(),
           );
 
   @override
@@ -160,16 +161,16 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       dao.countById(id).map((count) => count > 0).getSingle();
 
   @override
-  Future<List<DbConversationChatWrapper>> getAll() async =>
-      (await dao.getAll().get()).toDbConversationChatWrapperList();
+  Future<List<DbConversationChatPopulatedWrapper>> getAll() async =>
+      (await dao.findAll()).toDbConversationChatPopulatedWrapperList();
 
   @override
   Future<int> countAll() => dao.countAll().getSingle();
 
   @override
-  Stream<List<DbConversationChatWrapper>> watchAll() =>
-      dao.getAll().watch().map(
-            (list) => list.toDbConversationChatWrapperList(),
+  Stream<List<DbConversationChatPopulatedWrapper>> watchAll() =>
+      dao.watchAll().map(
+            (list) => list.toDbConversationChatPopulatedWrapperList(),
           );
 
   @override
@@ -225,7 +226,7 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<List<DbConversationChatWrapper>> getConversations({
+  Future<List<DbConversationChatPopulatedWrapper>> getConversations({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat>? pagination,
     ConversationChatOrderingTermData? orderingTermData =
@@ -235,13 +236,16 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       filters: filters,
       pagination: pagination,
       orderingTermData: orderingTermData,
+      withLastMessage: false,
     );
 
-    return (await query.get()).toDbConversationChatWrapperList();
+    return (await query.get())
+        .toDbConversationChatPopulatedList(dao: dao)
+        .toDbConversationChatPopulatedWrapperList();
   }
 
   @override
-  Stream<List<DbConversationChatWrapper>> watchConversations({
+  Stream<List<DbConversationChatPopulatedWrapper>> watchConversations({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat>? pagination,
     ConversationChatOrderingTermData? orderingTermData =
@@ -251,17 +255,63 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       filters: filters,
       pagination: pagination,
       orderingTermData: orderingTermData,
+      withLastMessage: false,
     );
 
     return query.watch().map(
-          (list) => list.toDbConversationChatWrapperList(),
+          (list) => list
+              .toDbConversationChatPopulatedList(
+                dao: dao,
+              )
+              .toDbConversationChatPopulatedWrapperList(),
         );
   }
 
-  SimpleSelectStatement<$DbConversationsTable, DbConversation> createQuery({
+  @override
+  Future<DbConversationChatPopulatedWrapper?> getConversation({
+    required ConversationChatRepositoryFilters? filters,
+    ConversationChatOrderingTermData? orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  }) async {
+    var query = createQuery(
+      filters: filters,
+      pagination: _singleConversationChatRepositoryPagination,
+      orderingTermData: orderingTermData,
+      withLastMessage: false,
+    );
+
+    return (await query.getSingleOrNull())
+        ?.toDbConversationPopulated(
+          dao: dao,
+        )
+        .toDbConversationChatPopulatedWrapper();
+  }
+
+  @override
+  Stream<DbConversationChatPopulatedWrapper?> watchConversation({
+    required ConversationChatRepositoryFilters? filters,
+    ConversationChatOrderingTermData? orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  }) {
+    var query = createQuery(
+      filters: filters,
+      pagination: _singleConversationChatRepositoryPagination,
+      orderingTermData: orderingTermData,
+      withLastMessage: false,
+    );
+
+    return query.watchSingleOrNull().map(
+          (typedResult) => typedResult
+              ?.toDbConversationPopulated(dao: dao)
+              .toDbConversationChatPopulatedWrapper(),
+        );
+  }
+
+  JoinedSelectStatement createQuery({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat>? pagination,
     required ConversationChatOrderingTermData? orderingTermData,
+    required bool withLastMessage,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t filters=$filters\n"
@@ -291,44 +341,32 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       );
     }
 
-    if (pagination?.limit != null) {
-      query.limit(
-        pagination!.limit!,
-        offset: pagination.offset,
+    var joinQuery = query.join([
+      // ...dao.populateChatJoin(),
+      if (withLastMessage) ...dao.conversationLastMessageJoin(),
+    ]);
+
+    if (withLastMessage) {
+      // todo: rework with moor-like code
+      var fieldName = dao.statusAlias.createdAt.$name;
+      var aliasName = dao.statusAlias.$tableName;
+      var having =
+      CustomExpression<bool>("MAX($aliasName.$fieldName)");
+      joinQuery.groupBy(
+        [
+          dao.dbConversations.remoteId,
+        ],
+        having: having,
       );
     }
-    return query;
-  }
-
-  @override
-  Future<DbConversationChatWrapper?> getConversation({
-    required ConversationChatRepositoryFilters? filters,
-    ConversationChatOrderingTermData? orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
-  }) async {
-    var conversations = await getConversations(
-      filters: filters,
-      pagination: _singleConversationChatRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return conversations.singleOrNull;
-  }
-
-  @override
-  Stream<DbConversationChatWrapper?> watchConversation({
-    required ConversationChatRepositoryFilters? filters,
-    ConversationChatOrderingTermData? orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
-  }) {
-    var conversationsStream = watchConversations(
-      filters: filters,
-      pagination: _singleConversationChatRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-    return conversationsStream.map(
-      (conversations) => conversations.singleOrNull,
-    );
+    var limit = pagination?.limit;
+    if (limit != null) {
+      joinQuery.limit(
+        limit,
+        offset: pagination?.offset,
+      );
+    }
+    return joinQuery;
   }
 
   @override
@@ -350,21 +388,127 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<int> watchTotalUnreadCount() => dao.watchTotalAmountUnread();
+
+  @override
+  Future<List<DbConversationChatWithLastMessagePopulatedWrapper>>
+      getConversationsWithLastMessage({
+    required ConversationChatRepositoryFilters? filters,
+    required RepositoryPagination<IConversationChat>? pagination,
+    ConversationChatOrderingTermData? orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  }) async {
+    var query = createQuery(
+      filters: filters,
+      pagination: pagination,
+      orderingTermData: orderingTermData,
+      withLastMessage: true,
+    );
+    return (await query.get())
+        .toDbConversationChatWithLastMessagePopulatedList(dao: dao)
+        .toDbConversationChatWithLastMessagePopulatedWrapperList();
+  }
+
+  @override
+  Stream<List<DbConversationChatWithLastMessagePopulatedWrapper>>
+      watchConversationsWithLastMessage({
+    required ConversationChatRepositoryFilters? filters,
+    required RepositoryPagination<IConversationChat>? pagination,
+    ConversationChatOrderingTermData? orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  }) {
+    var query = createQuery(
+      filters: filters,
+      pagination: pagination,
+      orderingTermData: orderingTermData,
+      withLastMessage: true,
+    );
+
+    return query.watch().map(
+          (list) => list
+              .toDbConversationChatWithLastMessagePopulatedList(dao: dao)
+              .toDbConversationChatWithLastMessagePopulatedWrapperList(),
+        );
+  }
+
+  @override
+  Future<DbConversationChatWithLastMessagePopulatedWrapper?>
+      getConversationWithLastMessage({
+    required ConversationChatRepositoryFilters filters,
+    ConversationChatOrderingTermData? orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  }) async {
+    var query = createQuery(
+      filters: filters,
+      pagination: _singleConversationChatRepositoryPagination,
+      orderingTermData: orderingTermData,
+      withLastMessage: true,
+    );
+
+    return (await query.getSingleOrNull())
+        ?.toDbConversationChatWithLastMessagePopulated(
+          dao: dao,
+        )
+        .toDbConversationChatWithLastMessagePopulatedWrapper();
+  }
+
+  @override
+  Stream<DbConversationChatWithLastMessagePopulatedWrapper?>
+      watchConversationWithLastMessage({
+    required ConversationChatRepositoryFilters? filters,
+    ConversationChatOrderingTermData? orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  }) {
+    var query = createQuery(
+      filters: filters,
+      pagination: _singleConversationChatRepositoryPagination,
+      orderingTermData: orderingTermData,
+      withLastMessage: true,
+    );
+
+    return query.watchSingleOrNull().map(
+          (typedResult) => typedResult
+              ?.toDbConversationChatWithLastMessagePopulated(dao: dao)
+              .toDbConversationChatWithLastMessagePopulatedWrapper(),
+        );
+  }
 }
 
-extension DbConversationExtension on DbConversation {
-  DbConversationChatWrapper toDbConversationChatWrapper() =>
-      DbConversationChatWrapper(
-        dbConversation: this,
+extension DbConversationExtension on DbConversationPopulated {
+  DbConversationChatPopulatedWrapper toDbConversationChatPopulatedWrapper() =>
+      DbConversationChatPopulatedWrapper(
+        dbConversationPopulated: this,
       );
 }
 
-extension DbConversationListExtension on List<DbConversation> {
-  List<DbConversationChatWrapper> toDbConversationChatWrapperList() => map(
-        (item) => item.toDbConversationChatWrapper(),
-      ).toList();
+extension DbConversationListExtension on List<DbConversationPopulated> {
+  List<DbConversationChatPopulatedWrapper>
+      toDbConversationChatPopulatedWrapperList() => map(
+            (item) => item.toDbConversationChatPopulatedWrapper(),
+          ).toList();
 }
 
-extension DbConversationChatWrapperExtension on DbConversationChatWrapper {
-  DbConversation toDbConversation() => dbConversation;
+extension DbConversationChatPopulatedWrapperExtension
+    on DbConversationChatPopulatedWrapper {
+  DbConversation toDbConversation() => dbConversationPopulated.dbConversation;
+
+  DbConversationPopulated toDbConversationPopulated() =>
+      dbConversationPopulated;
+}
+
+extension DbConversationChatWithLastMessagePopulatedExtension
+    on DbConversationChatWithLastMessagePopulated {
+  DbConversationChatWithLastMessagePopulatedWrapper
+      toDbConversationChatWithLastMessagePopulatedWrapper() =>
+          DbConversationChatWithLastMessagePopulatedWrapper(
+            dbConversationChatWithLastMessagePopulated: this,
+          );
+}
+
+extension DbConversationChatWithLastMessagePopulatedListExtension
+    on List<DbConversationChatWithLastMessagePopulated> {
+  List<DbConversationChatWithLastMessagePopulatedWrapper>
+      toDbConversationChatWithLastMessagePopulatedWrapperList() => map(
+            (value) =>
+                value.toDbConversationChatWithLastMessagePopulatedWrapper(),
+          ).toList();
 }

@@ -3,14 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'database/conversation_database_model_helper.dart';
 
-Future<DbConversationChatWrapper> createTestConversation({
+Future<DbConversationChatPopulatedWrapper> createTestConversation({
   required String seed,
   String? remoteId,
 }) async =>
-    DbConversationChatWrapper(
-      dbConversation: await createTestDbConversation(
-        seed: seed,
-        remoteId: remoteId,
+    DbConversationChatPopulatedWrapper(
+      dbConversationPopulated: DbConversationPopulated(
+        dbConversation: await createTestDbConversation(
+          seed: seed,
+          remoteId: remoteId,
+        ),
       ),
     );
 

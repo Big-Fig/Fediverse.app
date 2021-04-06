@@ -1,6 +1,9 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/chat_model.dart';
+import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
+import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 
 abstract class IConversationChat implements IChat {
@@ -16,31 +19,65 @@ abstract class IConversationChat implements IChat {
   });
 }
 
-class DbConversationChatWrapper implements IConversationChat {
+class DbConversationPopulated {
   final DbConversation dbConversation;
 
-  DbConversationChatWrapper({
+  DbConversationPopulated({
     required this.dbConversation,
   });
 
   @override
-  int? get localId => dbConversation.id;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DbConversationPopulated &&
+          runtimeType == other.runtimeType &&
+          dbConversation == other.dbConversation;
 
   @override
-  String get remoteId => dbConversation.remoteId;
-
-  @override
-  int get unread => dbConversation.unread == true ? 1 : 0;
+  int get hashCode => dbConversation.hashCode;
 
   @override
   String toString() {
-    return 'DbConversationChatWrapper{'
+    return 'DbConversationPopulated{'
         'dbConversation: $dbConversation'
         '}';
   }
 
+  DbConversationPopulated copyWith({
+    DbConversation? dbConversation,
+  }) {
+    return DbConversationPopulated(
+      dbConversation: dbConversation ?? this.dbConversation,
+    );
+  }
+}
+
+class DbConversationChatPopulatedWrapper implements IConversationChat {
+  final DbConversationPopulated dbConversationPopulated;
+
+  DbConversationChatPopulatedWrapper({
+    required this.dbConversationPopulated,
+  });
+
   @override
-  DbConversationChatWrapper copyWith({
+  int? get localId => dbConversationPopulated.dbConversation.id;
+
+  @override
+  String get remoteId => dbConversationPopulated.dbConversation.remoteId;
+
+  @override
+  int get unread =>
+      dbConversationPopulated.dbConversation.unread == true ? 1 : 0;
+
+  @override
+  String toString() {
+    return 'DbConversationChatPopulatedWrapper{'
+        'dbConversationPopulated: $dbConversationPopulated'
+        '}';
+  }
+
+  @override
+  DbConversationChatPopulatedWrapper copyWith({
     int? id,
     String? remoteId,
     int? unread,
@@ -50,8 +87,9 @@ class DbConversationChatWrapper implements IConversationChat {
     if (accounts != null) {
       throw UnimplementedError();
     }
-    return DbConversationChatWrapper(
-      dbConversation: dbConversation.copyWith(
+    return DbConversationChatPopulatedWrapper(
+      dbConversationPopulated: DbConversationPopulated(
+          dbConversation: dbConversationPopulated.dbConversation.copyWith(
         id: id ?? localId,
         remoteId: remoteId ?? this.remoteId,
         unread: unread != null
@@ -62,22 +100,22 @@ class DbConversationChatWrapper implements IConversationChat {
                 ? true
                 : false,
         updatedAt: updatedAt ?? this.updatedAt,
-      ),
+      )),
     );
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DbConversationChatWrapper &&
+      other is DbConversationChatPopulatedWrapper &&
           runtimeType == other.runtimeType &&
-          dbConversation == other.dbConversation;
+          dbConversationPopulated == other.dbConversationPopulated;
 
   @override
-  int get hashCode => dbConversation.hashCode;
+  int get hashCode => dbConversationPopulated.hashCode;
 
   @override
-  DateTime? get updatedAt => dbConversation.updatedAt;
+  DateTime? get updatedAt => dbConversationPopulated.dbConversation.updatedAt;
 
   @override
   // todo: implement
@@ -88,4 +126,41 @@ class DbConversationChatWrapper implements IConversationChat {
         "accounts not included in ConversationChat "
         "and should be manually fetched from repository",
       );
+}
+
+class DbConversationChatWithLastMessagePopulated {
+  final DbConversationPopulated dbConversationPopulated;
+  final DbStatusPopulated? dbStatusPopulated;
+
+  DbConversationChatWithLastMessagePopulated({
+    required this.dbConversationPopulated,
+    required this.dbStatusPopulated,
+  });
+}
+
+class DbConversationChatWithLastMessagePopulatedWrapper
+    implements IConversationChatWithLastMessage {
+  final DbConversationChatWithLastMessagePopulated
+      dbConversationChatWithLastMessagePopulated;
+
+  DbConversationChatWithLastMessagePopulatedWrapper({
+    required this.dbConversationChatWithLastMessagePopulated,
+  });
+
+  @override
+  IConversationChat get chat => DbConversationChatPopulatedWrapper(
+        dbConversationPopulated:
+            dbConversationChatWithLastMessagePopulated.dbConversationPopulated,
+      );
+
+  @override
+  IConversationChatMessage? get lastChatMessage =>
+      dbConversationChatWithLastMessagePopulated.dbStatusPopulated != null
+          ? ConversationChatMessageStatusAdapter(
+              status: DbStatusPopulatedWrapper(
+                dbStatusPopulated: dbConversationChatWithLastMessagePopulated
+                    .dbStatusPopulated!,
+              ),
+            )
+          : null;
 }
