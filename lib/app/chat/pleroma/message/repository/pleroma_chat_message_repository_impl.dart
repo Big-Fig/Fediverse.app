@@ -68,7 +68,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbChatMessagePopulatedWrapper?> findByRemoteId(
+  Future<DbPleromaChatMessagePopulatedWrapper?> findByRemoteId(
     String remoteId,
   ) async {
     var dbChatMessagePopulated = await dao.findByRemoteId(
@@ -82,7 +82,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   Future deleteByRemoteId(String remoteId) => dao.deleteByRemoteId(remoteId);
 
   @override
-  Future<List<DbChatMessagePopulatedWrapper>> getChatMessages({
+  Future<List<DbPleromaChatMessagePopulatedWrapper>> getChatMessages({
     required PleromaChatMessageRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChatMessage>? pagination,
     PleromaChatMessageOrderingTermData? orderingTermData =
@@ -104,7 +104,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<List<DbChatMessagePopulatedWrapper>> watchChatMessages({
+  Stream<List<DbPleromaChatMessagePopulatedWrapper>> watchChatMessages({
     required PleromaChatMessageRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChatMessage>? pagination,
     PleromaChatMessageOrderingTermData? orderingTermData =
@@ -245,7 +245,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       (await dao.findById(id))?.toDbChatMessagePopulatedWrapper();
 
   @override
-  Stream<DbChatMessagePopulatedWrapper?> watchById(int id) =>
+  Stream<DbPleromaChatMessagePopulatedWrapper?> watchById(int id) =>
       (dao.watchById(id)).map(
         (item) => item?.toDbChatMessagePopulatedWrapper(),
       );
@@ -282,14 +282,14 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       dao.countById(id).map((count) => count > 0).getSingle();
 
   @override
-  Future<List<DbChatMessagePopulatedWrapper>> getAll() async =>
+  Future<List<DbPleromaChatMessagePopulatedWrapper>> getAll() async =>
       (await dao.findAll()).toDbChatMessagePopulatedWrappers();
 
   @override
   Future<int> countAll() => dao.countAll().getSingle();
 
   @override
-  Stream<List<DbChatMessagePopulatedWrapper>> watchAll() =>
+  Stream<List<DbPleromaChatMessagePopulatedWrapper>> watchAll() =>
       (dao.watchAll()).map(
         (items) => items.toDbChatMessagePopulatedWrappers(),
       );
@@ -309,7 +309,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   Insertable<DbChatMessage>? mapItemToDataClass(
-    DbChatMessagePopulatedWrapper item,
+    DbPleromaChatMessagePopulatedWrapper item,
   ) {
     return item.dbChatMessagePopulated.dbChatMessage;
   }
@@ -330,7 +330,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbChatMessagePopulatedWrapper?> getChatMessage({
+  Future<DbPleromaChatMessagePopulatedWrapper?> getChatMessage({
     required PleromaChatMessageRepositoryFilters? filters,
     PleromaChatMessageOrderingTermData? orderingTermData =
         PleromaChatMessageOrderingTermData.createdAtDesc,
@@ -347,7 +347,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<DbChatMessagePopulatedWrapper?> watchChatMessage({
+  Stream<DbPleromaChatMessagePopulatedWrapper?> watchChatMessage({
     required PleromaChatMessageRepositoryFilters? filters,
     PleromaChatMessageOrderingTermData? orderingTermData =
         PleromaChatMessageOrderingTermData.createdAtDesc,
@@ -470,15 +470,15 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 }
 
 extension DbChatMessagePopulatedListExtension on List<DbChatMessagePopulated> {
-  List<DbChatMessagePopulatedWrapper> toDbChatMessagePopulatedWrappers() => map(
+  List<DbPleromaChatMessagePopulatedWrapper> toDbChatMessagePopulatedWrappers() => map(
         (dbChatMessagePopulated) =>
             dbChatMessagePopulated.toDbChatMessagePopulatedWrapper(),
       ).toList();
 }
 
 extension DbChatMessagePopulatedExtension on DbChatMessagePopulated {
-  DbChatMessagePopulatedWrapper toDbChatMessagePopulatedWrapper() =>
-      DbChatMessagePopulatedWrapper(
+  DbPleromaChatMessagePopulatedWrapper toDbChatMessagePopulatedWrapper() =>
+      DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: this,
       );
 }

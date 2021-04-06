@@ -231,6 +231,7 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
       filters: filters,
       pagination: pagination,
       orderingTermData: orderingTermData,
+      withLastMessage: false,
     );
     return (await query.get())
         .toDbPleromaChatPopulatedList(dao: dao)
@@ -248,6 +249,7 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
       filters: filters,
       pagination: pagination,
       orderingTermData: orderingTermData,
+      withLastMessage: false,
     );
 
     return query.watch().map(
@@ -257,14 +259,56 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
         );
   }
 
+  @override
+  Future<DbPleromaChatPopulatedWrapper?> getChat({
+    required PleromaChatRepositoryFilters? filters,
+    PleromaChatOrderingTermData? orderingTermData =
+        PleromaChatOrderingTermData.updatedAtDesc,
+  }) async {
+    var query = createQuery(
+      filters: filters,
+      pagination: _singlePleromaChatRepositoryPagination,
+      orderingTermData: orderingTermData,
+      withLastMessage: false,
+    );
+
+    return (await query.getSingleOrNull())
+        ?.toDbPleromaChatPopulated(
+          dao: dao,
+        )
+        .toDbPleromaChatPopulatedWrapper();
+  }
+
+  @override
+  Stream<DbPleromaChatPopulatedWrapper?> watchChat({
+    required PleromaChatRepositoryFilters? filters,
+    PleromaChatOrderingTermData? orderingTermData =
+        PleromaChatOrderingTermData.updatedAtDesc,
+  }) {
+    var query = createQuery(
+      filters: filters,
+      pagination: _singlePleromaChatRepositoryPagination,
+      orderingTermData: orderingTermData,
+      withLastMessage: false,
+    );
+
+    return query.watchSingleOrNull().map(
+          (typedResult) => typedResult
+              ?.toDbPleromaChatPopulated(dao: dao)
+              .toDbPleromaChatPopulatedWrapper(),
+        );
+  }
+
   JoinedSelectStatement createQuery({
     required PleromaChatRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChat>? pagination,
     required PleromaChatOrderingTermData? orderingTermData,
+    required bool withLastMessage,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t filters=$filters\n"
         "\t pagination=$pagination\n"
+        "\t withLastMessage=$withLastMessage\n"
         "\t orderingTermData=$orderingTermData");
 
     var query = dao.startSelectQuery();
@@ -288,9 +332,24 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
       );
     }
 
-    var joinQuery = query.join(
-      dao.populateChatJoin(),
-    );
+    var joinQuery = query.join([
+      ...dao.populateChatJoin(),
+      if (withLastMessage) ...dao.chatLastMessageJoin(),
+    ]);
+
+    if (withLastMessage) {
+      // todo: rework with moor-like code
+      var fieldName = dao.chatMessageAlias.createdAt.$name;
+      var aliasName = dao.chatMessageAlias.$tableName;
+      var having =
+          CustomExpression<bool>("MAX($aliasName.$fieldName)");
+      joinQuery.groupBy(
+        [
+          dao.dbChats.remoteId,
+        ],
+        having: having,
+      );
+    }
 
     var limit = pagination?.limit;
     if (limit != null) {
@@ -300,44 +359,6 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
       );
     }
     return joinQuery;
-  }
-
-  @override
-  Future<DbPleromaChatPopulatedWrapper?> getChat({
-    required PleromaChatRepositoryFilters? filters,
-    PleromaChatOrderingTermData? orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
-  }) async {
-    var query = createQuery(
-      filters: filters,
-      pagination: _singlePleromaChatRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return (await query.getSingleOrNull())
-        ?.toDbPleromaChatPopulated(
-          dao: dao,
-        )
-        .toDbPleromaChatPopulatedWrapper();
-  }
-
-  @override
-  Stream<DbPleromaChatPopulatedWrapper?> watchChat({
-    required PleromaChatRepositoryFilters? filters,
-    PleromaChatOrderingTermData? orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
-  }) {
-    var query = createQuery(
-      filters: filters,
-      pagination: _singlePleromaChatRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return query.watchSingleOrNull().map(
-          (typedResult) => typedResult
-              ?.toDbPleromaChatPopulated(dao: dao)
-              .toDbPleromaChatPopulatedWrapper(),
-        );
   }
 
   @override
@@ -368,9 +389,9 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future markAsRead({required IPleromaChat? chat}) {
+  Future markAsRead({required IPleromaChat chat}) {
     return updateById(
-      chat!.localId,
+      chat.localId,
       DbChat(
         id: chat.localId,
         remoteId: chat.remoteId,
@@ -396,6 +417,88 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
         chatRemoteId: chatRemoteId,
         updatedAt: updatedAt,
       );
+
+  @override
+  Future<List<DbPleromaChatWithLastMessagePopulatedWrapper>>
+      getChatsWithLastMessage({
+    required PleromaChatRepositoryFilters? filters,
+    required RepositoryPagination<IPleromaChat>? pagination,
+    PleromaChatOrderingTermData? orderingTermData =
+        PleromaChatOrderingTermData.updatedAtDesc,
+  }) async {
+    var query = createQuery(
+      filters: filters,
+      pagination: pagination,
+      orderingTermData: orderingTermData,
+      withLastMessage: true,
+    );
+    return (await query.get())
+        .toDbPleromaChatWithLastMessagePopulatedList(dao: dao)
+        .toDbPleromaChatWithLastMessagePopulatedWrapperList();
+  }
+
+  @override
+  Stream<List<DbPleromaChatWithLastMessagePopulatedWrapper>>
+      watchChatsWithLastMessage({
+    required PleromaChatRepositoryFilters? filters,
+    required RepositoryPagination<IPleromaChat>? pagination,
+    PleromaChatOrderingTermData? orderingTermData =
+        PleromaChatOrderingTermData.updatedAtDesc,
+  }) {
+    var query = createQuery(
+      filters: filters,
+      pagination: pagination,
+      orderingTermData: orderingTermData,
+      withLastMessage: true,
+    );
+
+    return query.watch().map(
+          (list) => list
+              .toDbPleromaChatWithLastMessagePopulatedList(dao: dao)
+              .toDbPleromaChatWithLastMessagePopulatedWrapperList(),
+        );
+  }
+
+  @override
+  Future<DbPleromaChatWithLastMessagePopulatedWrapper?> getChatWithLastMessage({
+    required PleromaChatRepositoryFilters filters,
+    PleromaChatOrderingTermData? orderingTermData =
+        PleromaChatOrderingTermData.updatedAtDesc,
+  }) async {
+    var query = createQuery(
+      filters: filters,
+      pagination: _singlePleromaChatRepositoryPagination,
+      orderingTermData: orderingTermData,
+      withLastMessage: true,
+    );
+
+    return (await query.getSingleOrNull())
+        ?.toDbPleromaChatWithLastMessagePopulated(
+          dao: dao,
+        )
+        .toDbPleromaChatWithLastMessagePopulatedWrapper();
+  }
+
+  @override
+  Stream<DbPleromaChatWithLastMessagePopulatedWrapper?>
+      watchChatWithLastMessage({
+    required PleromaChatRepositoryFilters? filters,
+    PleromaChatOrderingTermData? orderingTermData =
+        PleromaChatOrderingTermData.updatedAtDesc,
+  }) {
+    var query = createQuery(
+      filters: filters,
+      pagination: _singlePleromaChatRepositoryPagination,
+      orderingTermData: orderingTermData,
+      withLastMessage: true,
+    );
+
+    return query.watchSingleOrNull().map(
+          (typedResult) => typedResult
+              ?.toDbPleromaChatWithLastMessagePopulated(dao: dao)
+              .toDbPleromaChatWithLastMessagePopulatedWrapper(),
+        );
+  }
 }
 
 extension DbPleromaChatPopulatedExtension on DbPleromaChatPopulated {
@@ -410,6 +513,23 @@ extension DbPleromaChatPopulatedListExtension on List<DbPleromaChatPopulated> {
       map(
         (value) => value.toDbPleromaChatPopulatedWrapper(),
       ).toList();
+}
+
+extension DbPleromaChatWithLastMessagePopulatedExtension
+    on DbPleromaChatWithLastMessagePopulated {
+  DbPleromaChatWithLastMessagePopulatedWrapper
+      toDbPleromaChatWithLastMessagePopulatedWrapper() =>
+          DbPleromaChatWithLastMessagePopulatedWrapper(
+            dbPleromaChatWithLastMessagePopulated: this,
+          );
+}
+
+extension DbPleromaChatWithLastMessagePopulatedListExtension
+    on List<DbPleromaChatWithLastMessagePopulated> {
+  List<DbPleromaChatWithLastMessagePopulatedWrapper>
+      toDbPleromaChatWithLastMessagePopulatedWrapperList() => map(
+            (value) => value.toDbPleromaChatWithLastMessagePopulatedWrapper(),
+          ).toList();
 }
 
 extension DbPleromaChatPopulatedWrapperExtension

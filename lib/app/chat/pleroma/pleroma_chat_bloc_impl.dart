@@ -320,7 +320,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       );
 
       onMessageLocallyHiddenStreamController.add(
-        DbChatMessagePopulatedWrapper(
+        DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: DbChatMessagePopulated(
             dbChatMessage: dbChatMessage,
             // todo: rework

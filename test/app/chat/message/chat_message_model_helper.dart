@@ -8,7 +8,7 @@ import 'database/chat_message_database_model_helper.dart';
 
 Function eq = const ListEquality().equals;
 
-Future<DbChatMessagePopulatedWrapper> createTestChatMessage({
+Future<DbPleromaChatMessagePopulatedWrapper> createTestChatMessage({
   required String seed,
   String? remoteId,
   DateTime? createdAt,
@@ -17,7 +17,7 @@ Future<DbChatMessagePopulatedWrapper> createTestChatMessage({
 }) async {
   account = account ?? await createTestAccount(seed: seed);
   var dbAccount = account.dbAccount;
-  return DbChatMessagePopulatedWrapper(
+  return DbPleromaChatMessagePopulatedWrapper(
     dbChatMessagePopulated: DbChatMessagePopulated(
       dbChatMessage: await createTestDbChatMessage(
         createdAt: createdAt,

@@ -7,10 +7,10 @@ import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 
 extension IPleromaChatMessageExtension on pleroma_lib.IPleromaChatMessage {
-  DbChatMessagePopulatedWrapper toDbChatMessagePopulatedWrapper({
+  DbPleromaChatMessagePopulatedWrapper toDbChatMessagePopulatedWrapper({
     required DbAccount dbAccount,
   }) {
-    return DbChatMessagePopulatedWrapper(
+    return DbPleromaChatMessagePopulatedWrapper(
       dbChatMessagePopulated: toDbChatMessagePopulated(
         dbAccount: dbAccount,
       ),

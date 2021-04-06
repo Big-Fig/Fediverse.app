@@ -1,4 +1,5 @@
 import 'package:fedi/app/chat/pleroma/database/pleroma_chat_database_model.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
@@ -8,6 +9,8 @@ part 'pleroma_chat_database_dao.g.dart';
 
 var _accountAliasId = "account";
 var _chatAccountsAliasId = "chatAccounts";
+var _chatMessageAliasId = "chatMessage";
+var _chatMessageAccountAliasId = "chatMessageAccount";
 
 @UseDao(
   tables: [
@@ -27,12 +30,19 @@ var _chatAccountsAliasId = "chatAccounts";
 class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
-  $DbChatAccountsTable? chatAccountsAlias;
+  late $DbChatMessagesTable chatMessageAlias;
+  late $DbAccountsTable chatMessageAccountAlias;
+  late $DbChatAccountsTable chatAccountsAlias;
 
   // Called by the AppDatabase class
   ChatDao(this.db) : super(db) {
     accountAlias = alias(db.dbAccounts, _accountAliasId);
     chatAccountsAlias = alias(db.dbChatAccounts, _chatAccountsAliasId);
+    chatMessageAlias = alias(db.dbChatMessages, _chatMessageAliasId);
+    chatMessageAccountAlias = alias(
+      db.dbAccounts,
+      _chatMessageAccountAliasId,
+    );
   }
 
   Future<List<DbPleromaChatPopulated>> findAll() async {
@@ -190,10 +200,13 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   SimpleSelectStatement<$DbChatsTable, DbChat> orderBy(
     SimpleSelectStatement<$DbChatsTable, DbChat> query,
     List<PleromaChatOrderingTermData> orderTerms,
-  ) =>
-      query
-        ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
+  ) {
+    // ignore: curly_braces_in_flow_control_structures
+    return query
+        ..orderBy(
+          orderTerms
+              .map(
+                (orderTerm) => (item) {
                   var expression;
                   switch (orderTerm.orderType) {
                     case PleromaChatOrderType.remoteId:
@@ -207,14 +220,31 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
                     expression: expression,
                     mode: orderTerm.orderingMode,
                   );
-                })
-            .toList());
+                },
+              )
+              .toList(),
+        );
+  }
 
   List<Join<Table, DataClass>> populateChatJoin() {
     return [
       leftOuterJoin(
         accountAlias,
         accountAlias.remoteId.equalsExp(dbChats.accountRemoteId),
+      ),
+    ];
+  }
+
+  List<Join<Table, DataClass>> chatLastMessageJoin() {
+    return [
+      leftOuterJoin(
+        chatMessageAlias,
+        chatMessageAlias.chatRemoteId.equalsExp(dbChats.remoteId),
+      ),
+      leftOuterJoin(
+        chatMessageAccountAlias,
+        chatMessageAccountAlias.remoteId
+            .equalsExp(chatMessageAlias.accountRemoteId),
       ),
     ];
   }
@@ -239,6 +269,45 @@ extension DbPleromaChatPopulatedTypedResultExtension on TypedResult {
     return DbPleromaChatPopulated(
       dbChat: readTable(dao.db.dbChats),
       dbAccount: readTable(dao.accountAlias),
+    );
+  }
+}
+
+extension DbPleromaChatWithLastMessagePopulatedTypedResultListExtension
+    on List<TypedResult> {
+  List<DbPleromaChatWithLastMessagePopulated>
+      toDbPleromaChatWithLastMessagePopulatedList({
+    required ChatDao dao,
+  }) {
+    return map(
+      (item) => item.toDbPleromaChatWithLastMessagePopulated(
+        dao: dao,
+      ),
+    ).toList();
+  }
+}
+
+extension DbPleromaChatWithLastMessagePopulatedTypedResultExtension
+    on TypedResult {
+  DbPleromaChatWithLastMessagePopulated
+      toDbPleromaChatWithLastMessagePopulated({
+    required ChatDao dao,
+  }) {
+    var dbChatMessage = readTableOrNull(dao.chatMessageAlias);
+    var dbChatMessageAccount = readTableOrNull(dao.chatMessageAccountAlias);
+
+    DbChatMessagePopulated? dbChatMessagePopulated;
+
+    if (dbChatMessage != null && dbChatMessageAccount != null) {
+      dbChatMessagePopulated = DbChatMessagePopulated(
+        dbChatMessage: dbChatMessage,
+        dbAccount: dbChatMessageAccount,
+      );
+    }
+
+    return DbPleromaChatWithLastMessagePopulated(
+      dbPleromaChatPopulated: toDbPleromaChatPopulated(dao: dao),
+      dbChatMessagePopulated: dbChatMessagePopulated,
     );
   }
 }
