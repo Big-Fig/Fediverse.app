@@ -11,7 +11,7 @@ abstract class IOverlayNotificationService implements IDisposable {
 
   void showNotification({
     required Widget child,
-    required bool slideDismissible,
+    DismissDirection dismissDirection = DismissDirection.horizontal,
     required Key key,
     required Duration duration,
   });
