@@ -1,4 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/app_database_dao.dart';
 import 'package:fedi/app/status/database'
     '/status_favourited_accounts_database_model.dart';
 import 'package:moor/moor.dart';
@@ -21,29 +22,16 @@ part 'status_favourited_accounts_database_dao.g.dart';
     "getAll": "SELECT * FROM db_status_favourited_accounts",
   },
 )
-class StatusFavouritedAccountsDao extends DatabaseAccessor<AppDatabase>
-    with _$StatusFavouritedAccountsDaoMixin {
+class StatusFavouritedAccountsDao extends AppDatabaseDao<
+    DbStatusFavouritedAccount,
+    int,
+    $DbStatusFavouritedAccountsTable,
+    $DbStatusFavouritedAccountsTable> with _$StatusFavouritedAccountsDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
   StatusFavouritedAccountsDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbStatusFavouritedAccount> entity) async =>
-      into(dbStatusFavouritedAccounts).insert(entity);
-
-  Future insertAll(
-    List<Insertable<DbStatusFavouritedAccount>> entities,
-    InsertMode mode,
-  ) async =>
-      await batch(
-        (batch) {
-          batch.insertAll(
-            dbStatusFavouritedAccounts,
-            entities,
-          );
-        },
-      );
-
-  Future<bool> replace(Insertable<DbStatusFavouritedAccount> entity) async =>
-      await update(dbStatusFavouritedAccounts).replace(entity);
+  @override
+  $DbStatusFavouritedAccountsTable get table => dbStatusFavouritedAccounts;
 }

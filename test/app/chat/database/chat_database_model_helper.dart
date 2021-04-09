@@ -24,8 +24,9 @@ Future<DbPleromaChatPopulated> createTestDbChatPopulated(
 ) async {
   DbPleromaChatPopulated dbChatPopulated = DbPleromaChatPopulated(
     dbChat: dbChat,
-    dbAccount: (await accountRepository.findByRemoteId(dbChat.accountRemoteId))!
-        .dbAccount,
+    dbAccount: (await accountRepository.findByRemoteIdInDbType(
+      dbChat.accountRemoteId,
+    ))!,
   );
   return dbChatPopulated;
 }

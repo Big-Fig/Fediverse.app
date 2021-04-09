@@ -94,7 +94,7 @@ class ScheduledStatusBloc extends DisposableOwner
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
           streamSubscription: scheduledStatusRepository
-              .watchByRemoteId(scheduledStatus.remoteId)
+              .watchByDbIdInAppType(scheduledStatus.localId!)
               .listen(
             (updatedStatus) {
               if (updatedStatus != null) {

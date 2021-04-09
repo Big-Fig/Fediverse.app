@@ -33,7 +33,10 @@ void main() {
       seed: "seed1",
       dbAccount: await createTestDbAccount(seed: "seed2"),
     );
-    await notificationDao.insert(testDbNotification);
+    await notificationDao.insert(
+      entity: testDbNotification,
+      mode: null,
+    );
 
     expect((await notificationDao.getAll().get()).isNotEmpty, true);
 

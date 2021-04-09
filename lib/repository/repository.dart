@@ -1,35 +1,162 @@
-abstract class IReadListRepository<Item> {
-  Future<List<Item>> getAll();
+import 'package:moor/moor.dart';
 
+abstract class IBaseReadRepository<DbId> {
   Future<int> countAll();
 
-  Stream<List<Item>> watchAll();
+  Future<bool> isExistWithDbId(DbId dbId);
 }
 
-abstract class IWriteListRepository<Item> {
+abstract class IDbReadRepository<DbItem extends DataClass, DbId>
+    extends IBaseReadRepository<DbId> {
+  Future<List<DbItem>> getAllInDbType();
+
+  Stream<List<DbItem>> watchAllInDbType();
+
+  Future<DbItem?> findByDbIdInDbType(DbId dbId);
+
+  Stream<DbItem?> watchByDbIdInDbType(DbId dbId);
+}
+
+abstract class IAppReadRepository<DbItem extends DataClass, AppItem, DbId>
+    extends IDbReadRepository<DbItem, DbId> {
+  Future<List<AppItem>> getAllInAppType();
+
+  Stream<List<AppItem>> watchAllInAppType();
+
+  Future<AppItem?> findByDbIdInAppType(DbId dbId);
+
+  Stream<AppItem?> watchByDbIdInAppType(DbId dbId);
+}
+
+abstract class IAppRemoteReadRepository<
+    DbItem extends DataClass,
+    AppItem,
+    RemoteItem,
+    DbId,
+    RemoteId> extends IAppReadRepository<DbItem, AppItem, DbId> {
+  Future<DbItem?> findByRemoteIdInDbType(RemoteId remoteId);
+
+  Stream<DbItem?> watchByRemoteIdInDbType(RemoteId remoteId);
+
+  Future<AppItem?> findByRemoteIdInAppType(RemoteId remoteId);
+
+  Stream<AppItem?> watchByRemoteIdInAppType(RemoteId remoteId);
+
+  Future<RemoteItem?> findByRemoteIdInRemoteType(RemoteId remoteId);
+
+  Stream<RemoteItem?> watchByRemoteIdInRemoteType(RemoteId remoteId);
+
+  Future<List<RemoteItem>> getAllInRemoteType();
+
+  Stream<List<RemoteItem>> watchAllInRemoteType();
+
+  Future<RemoteItem?> findByDbIdInRemoteType(DbId id);
+
+  Stream<RemoteItem?> watchByDbIdInRemoteType(DbId id);
+}
+
+abstract class IBaseWriteRepository<DbId> {
+  Future<int> deleteById(DbId id);
+
   Future clear();
-
-  Future insertAll(List<Item> items);
-
-  Future upsertAll(List<Item> items);
 }
 
-abstract class IReadIdListRepository<Item, Id>
-    implements IReadListRepository<Item> {
-  Future<Item?> findById(Id id);
+abstract class IDbWriteRepository<DbItem extends DataClass, DbId>
+    extends IBaseWriteRepository<DbId> {
+  
+  Future insertAllInDbType(List<Insertable<DbItem>> dbItems);
 
-  Stream<Item?> watchById(Id id);
+  Future upsertAllInDbType(List<Insertable<DbItem>> dbItems);
 
-  Future<bool> isExistWithId(Id id);
+  Future<int> insertInDbType(Insertable<DbItem> dbItem);
+
+  Future<int> upsertInDbType(Insertable<DbItem> dbItem);
+
+  Future<bool> updateByDbIdInDbType({
+    required DbId dbId,
+    required Insertable<DbItem> dbItem,
+  });
 }
 
-abstract class IWriteIdListRepository<Item, Id>
-    implements IWriteListRepository<Item> {
-  Future<int> insert(Item item);
+abstract class IAppWriteRepository<DbItem extends DataClass, AppItem, DbId>
+    extends IDbWriteRepository<DbItem, DbId> {
+  Future insertAllInAppType(List<AppItem> appItems);
 
-  Future<int> upsert(Item item);
+  Future upsertAllInAppType(List<AppItem> appItems);
 
-  Future<bool> deleteById(Id id);
+  Future<int> insertInAppType(AppItem appItem);
 
-  Future<bool> updateById(Id id, Item item);
+  Future<int> upsertInAppType(AppItem appItem);
+
+  Future<bool> updateByDbIdInAppType({
+    required DbId dbId,
+    required AppItem appItem,
+  });
+
+  Future<bool> updateDbTypeByAppType({
+    required DbItem dbItem,
+    required AppItem appItem,
+  });
+
+  Future<bool> updateAppTypeByDbType({
+    required DbItem dbItem,
+    required AppItem appItem,
+  });
+}
+
+abstract class IAppRemoteWriteRepository<
+    DbItem extends DataClass,
+    AppItem,
+    RemoteItem,
+    DbId,
+    RemoteId> extends IAppWriteRepository<DbItem, AppItem, DbId> {
+  Future<bool> deleteByRemoteId(RemoteId RemoteId);
+  
+  Future insertAllInRemoteType(List<RemoteItem> remoteItems);
+
+  Future upsertAllInRemoteType(List<RemoteItem> remoteItems);
+
+  Future<int> insertInRemoteType(RemoteItem remoteItem);
+
+  Future<int> upsertInRemoteType(RemoteItem remoteItem);
+
+  Future<bool> updateByIdInRemoteType({
+    required DbId dbId,
+    required RemoteItem remoteItem,
+  });
+
+  Future<bool> updateDbTypeByRemoteType({
+    required DbItem dbItem,
+    required RemoteItem remoteItem,
+  });
+
+  Future<bool> updateRemoteTypeByDbType({
+    required DbItem dbItem,
+    required RemoteItem remoteItem,
+  });
+
+  Future<bool> updateAppTypeByRemoteType({
+    required AppItem appItem,
+    required RemoteItem remoteItem,
+  });
+}
+
+abstract class IBaseReadWriteRepository<DbId>
+    implements IBaseReadRepository<DbId>, IBaseWriteRepository<DbId> {}
+
+abstract class IDbReadWriteRepository<DbItem extends DataClass, DbId>
+    implements
+        IDbReadRepository<DbItem, DbId>,
+        IDbWriteRepository<DbItem, DbId> {}
+
+abstract class IAppReadWriteRepository<DbItem extends DataClass, AppItem, DbId>
+    implements
+        IAppReadRepository<DbItem, AppItem, DbId>,
+        IAppWriteRepository<DbItem, AppItem, DbId> {}
+
+abstract class IAppRemoteReadWriteRepository<DbItem extends DataClass, AppItem,
+        RemoteItem, DbId, RemoteId>
+    implements
+        IAppRemoteReadRepository<DbItem, AppItem, RemoteItem, DbId, RemoteId>,
+        IAppRemoteWriteRepository<DbItem, AppItem, RemoteItem, DbId, RemoteId> {
 }

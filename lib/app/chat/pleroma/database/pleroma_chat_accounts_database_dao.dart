@@ -1,6 +1,7 @@
 import 'package:fedi/app/chat/pleroma/database/pleroma_chat_accounts_database_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:moor/moor.dart';
+import 'package:fedi/app/database/dao/app_database_dao.dart';
 
 part 'pleroma_chat_accounts_database_dao.g.dart';
 
@@ -26,35 +27,17 @@ part 'pleroma_chat_accounts_database_dao.g.dart';
     "getAll": "SELECT * FROM db_chat_accounts",
   },
 )
-class ChatAccountsDao extends DatabaseAccessor<AppDatabase>
-    with _$ChatAccountsDaoMixin {
+
+class ChatAccountsDao extends AppDatabaseDao<
+    DbChatAccount,
+    int,
+    $DbChatAccountsTable,
+    $DbChatAccountsTable> with _$ChatAccountsDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
   ChatAccountsDao(this.db) : super(db);
 
-  Future<int> insert(
-    Insertable<DbChatAccount> entity, {
-    InsertMode? mode,
-  }) async =>
-      into(dbChatAccounts).insert(
-        entity,
-        mode: mode,
-      );
-
-  Future insertAll(
-    List<Insertable<DbChatAccount>> entities,
-    InsertMode mode,
-  ) async =>
-      await batch(
-        (batch) {
-          batch.insertAll(
-            dbChatAccounts,
-            entities,
-          );
-        },
-      );
-
-  Future<bool> replace(Insertable<DbChatAccount> entity) async =>
-      await update(dbChatAccounts).replace(entity);
+  @override
+  $DbChatAccountsTable get table => dbChatAccounts;
 }

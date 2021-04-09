@@ -4206,7 +4206,7 @@ class $DbConversationsTable extends DbConversations
 class DbNotification extends DataClass implements Insertable<DbNotification> {
   final int? id;
   final String remoteId;
-  final String accountRemoteId;
+  final String? accountRemoteId;
   final String? statusRemoteId;
   final String? chatRemoteId;
   final String? chatMessageRemoteId;
@@ -4222,7 +4222,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
   DbNotification(
       {this.id,
       required this.remoteId,
-      required this.accountRemoteId,
+      this.accountRemoteId,
       this.statusRemoteId,
       this.chatRemoteId,
       this.chatMessageRemoteId,
@@ -4247,8 +4247,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       remoteId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}remote_id'])!,
-      accountRemoteId: stringType.mapFromDatabaseResponse(
-          data['${effectivePrefix}account_remote_id'])!,
+      accountRemoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
       statusRemoteId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
       chatRemoteId: stringType
@@ -4281,7 +4281,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       map['id'] = Variable<int?>(id);
     }
     map['remote_id'] = Variable<String>(remoteId);
-    map['account_remote_id'] = Variable<String>(accountRemoteId);
+    if (!nullToAbsent || accountRemoteId != null) {
+      map['account_remote_id'] = Variable<String?>(accountRemoteId);
+    }
     if (!nullToAbsent || statusRemoteId != null) {
       map['status_remote_id'] = Variable<String?>(statusRemoteId);
     }
@@ -4325,7 +4327,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
     return DbNotificationsCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       remoteId: Value(remoteId),
-      accountRemoteId: Value(accountRemoteId),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
       statusRemoteId: statusRemoteId == null && nullToAbsent
           ? const Value.absent()
           : Value(statusRemoteId),
@@ -4363,7 +4367,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
     return DbNotification(
       id: serializer.fromJson<int?>(json['id']),
       remoteId: serializer.fromJson<String>(json['remoteId']),
-      accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
+      accountRemoteId: serializer.fromJson<String?>(json['accountRemoteId']),
       statusRemoteId: serializer.fromJson<String?>(json['statusRemoteId']),
       chatRemoteId: serializer.fromJson<String?>(json['chatRemoteId']),
       chatMessageRemoteId:
@@ -4387,7 +4391,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
     return <String, dynamic>{
       'id': serializer.toJson<int?>(id),
       'remoteId': serializer.toJson<String>(remoteId),
-      'accountRemoteId': serializer.toJson<String>(accountRemoteId),
+      'accountRemoteId': serializer.toJson<String?>(accountRemoteId),
       'statusRemoteId': serializer.toJson<String?>(statusRemoteId),
       'chatRemoteId': serializer.toJson<String?>(chatRemoteId),
       'chatMessageRemoteId': serializer.toJson<String?>(chatMessageRemoteId),
@@ -4513,7 +4517,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
 class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
   final Value<int?> id;
   final Value<String> remoteId;
-  final Value<String> accountRemoteId;
+  final Value<String?> accountRemoteId;
   final Value<String?> statusRemoteId;
   final Value<String?> chatRemoteId;
   final Value<String?> chatMessageRemoteId;
@@ -4546,7 +4550,7 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
   DbNotificationsCompanion.insert({
     this.id = const Value.absent(),
     required String remoteId,
-    required String accountRemoteId,
+    this.accountRemoteId = const Value.absent(),
     this.statusRemoteId = const Value.absent(),
     this.chatRemoteId = const Value.absent(),
     this.chatMessageRemoteId = const Value.absent(),
@@ -4560,13 +4564,12 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     required DateTime createdAt,
     this.dismissed = const Value.absent(),
   })  : remoteId = Value(remoteId),
-        accountRemoteId = Value(accountRemoteId),
         type = Value(type),
         createdAt = Value(createdAt);
   static Insertable<DbNotification> custom({
     Expression<int?>? id,
     Expression<String>? remoteId,
-    Expression<String>? accountRemoteId,
+    Expression<String?>? accountRemoteId,
     Expression<String?>? statusRemoteId,
     Expression<String?>? chatRemoteId,
     Expression<String?>? chatMessageRemoteId,
@@ -4603,7 +4606,7 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
   DbNotificationsCompanion copyWith(
       {Value<int?>? id,
       Value<String>? remoteId,
-      Value<String>? accountRemoteId,
+      Value<String?>? accountRemoteId,
       Value<String?>? statusRemoteId,
       Value<String?>? chatRemoteId,
       Value<String?>? chatMessageRemoteId,
@@ -4645,7 +4648,7 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       map['remote_id'] = Variable<String>(remoteId.value);
     }
     if (accountRemoteId.present) {
-      map['account_remote_id'] = Variable<String>(accountRemoteId.value);
+      map['account_remote_id'] = Variable<String?>(accountRemoteId.value);
     }
     if (statusRemoteId.present) {
       map['status_remote_id'] = Variable<String?>(statusRemoteId.value);
@@ -4744,7 +4747,7 @@ class $DbNotificationsTable extends DbNotifications
     return GeneratedTextColumn(
       'account_remote_id',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -4928,8 +4931,6 @@ class $DbNotificationsTable extends DbNotifications
           _accountRemoteIdMeta,
           accountRemoteId.isAcceptableOrUnknown(
               data['account_remote_id']!, _accountRemoteIdMeta));
-    } else if (isInserting) {
-      context.missing(_accountRemoteIdMeta);
     }
     if (data.containsKey('status_remote_id')) {
       context.handle(

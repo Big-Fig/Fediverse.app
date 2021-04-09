@@ -2,6 +2,7 @@ import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_data
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:moor/moor.dart';
 
@@ -31,8 +32,13 @@ var _accountAliasId = "account";
         "SELECT * FROM db_chat_messages ORDER BY id DESC LIMIT 1 OFFSET :offset",
   },
 )
-class ChatMessageDao extends DatabaseAccessor<AppDatabase>
-    with _$ChatMessageDaoMixin {
+class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
+    DbChatMessage,
+    DbChatMessagePopulated,
+    int,
+    String,
+    $DbChatMessagesTable,
+    $DbChatMessagesTable> with _$ChatMessageDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
 
@@ -59,34 +65,6 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
           ),
         );
   }
-
-  Future<DbChatMessagePopulated?> findById(int id) async {
-    var typedResult = await _findByIdQuery(id).getSingleOrNull();
-    return typedResult?.toDbChatMessagePopulated(
-      dao: this,
-    );
-  }
-
-  Stream<DbChatMessagePopulated?> watchById(int id) =>
-      _findByIdQuery(id).watchSingleOrNull().map((typedResult) {
-        return typedResult?.toDbChatMessagePopulated(
-          dao: this,
-        );
-      });
-
-  Future<DbChatMessagePopulated?> findByRemoteId(String remoteId) async {
-    var typedResult = await _findByRemoteIdQuery(remoteId).getSingleOrNull();
-    return typedResult?.toDbChatMessagePopulated(
-      dao: this,
-    );
-  }
-
-  Stream<DbChatMessagePopulated?> watchByRemoteId(String remoteId) =>
-      _findByRemoteIdQuery(remoteId).watchSingleOrNull().map(
-        (typedResult) => typedResult?.toDbChatMessagePopulated(
-            dao: this,
-          ),
-      );
 
   Future<DbChatMessagePopulated?> findByOldPendingRemoteId(
     String oldPendingRemoteId,
@@ -129,26 +107,6 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
                   ),
             );
 
-  JoinedSelectStatement<Table, DataClass> _findByIdQuery(int id) =>
-      (select(db.dbChatMessages)
-            ..where((chatMessage) => chatMessage.id.equals(id)))
-          .join(
-        populateChatMessageJoin(),
-      );
-
-  JoinedSelectStatement<Table, DataClass> _findByRemoteIdQuery(
-    String remoteId,
-  ) =>
-      (select(db.dbChatMessages)
-            ..where(
-              (chatMessage) => chatMessage.remoteId.like(
-                remoteId,
-              ),
-            ))
-          .join(
-        populateChatMessageJoin(),
-      );
-
   JoinedSelectStatement<Table, DataClass> _findByOldPendingRemoteIdQuery(
     String? oldPendingRemoteId,
   ) =>
@@ -161,38 +119,6 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
           .join(
         populateChatMessageJoin(),
       );
-
-  Future<int> insert(
-    Insertable<DbChatMessage> entity, {
-    InsertMode? mode,
-  }) async =>
-      into(db.dbChatMessages).insert(
-        entity,
-        mode: mode,
-      );
-
-  Future<int> upsert(Insertable<DbChatMessage> entity) async =>
-      into(db.dbChatMessages).insert(
-        entity,
-        mode: InsertMode.insertOrReplace,
-      );
-
-  Future insertAll(
-    List<Insertable<DbChatMessage>> entities,
-    InsertMode mode,
-  ) async =>
-      await batch(
-        (batch) {
-          batch.insertAll(
-            db.dbChatMessages,
-            entities,
-            mode: mode,
-          );
-        },
-      );
-
-  Future<bool> replace(Insertable<DbChatMessage> entity) async =>
-      await update(db.dbChatMessages).replace(entity);
 
   Future<int> updateByRemoteId(
     String remoteId,
@@ -207,14 +133,14 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
             ))
           .write(entity);
     } else {
-      localId = await insert(entity);
+      localId = await insert(
+        entity: entity,
+        mode: null,
+      );
     }
 
     return localId;
   }
-
-  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
-      startSelectQuery() => (select(db.dbChatMessages));
 
   JoinedSelectStatement addChatWhere(
     JoinedSelectStatement query,
@@ -347,6 +273,9 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
 
     return query;
   }
+
+  @override
+  $DbChatMessagesTable get table => dbChatMessages;
 }
 
 extension ListTypedResultDbChatMessagePopulatedExtension on List<TypedResult> {

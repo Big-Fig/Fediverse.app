@@ -18,10 +18,10 @@ class NotificationState {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is NotificationState &&
-              runtimeType == other.runtimeType &&
-              dismissed == other.dismissed &&
-              unread == other.unread;
+      other is NotificationState &&
+          runtimeType == other.runtimeType &&
+          dismissed == other.dismissed &&
+          unread == other.unread;
 
   @override
   int get hashCode => dismissed.hashCode ^ unread.hashCode;
@@ -104,10 +104,16 @@ class DbNotificationPopulatedWrapper implements INotification {
   });
 
   @override
-  IAccount? get account =>
-      DbAccountWrapper(
-        dbAccount: dbNotificationPopulated.dbAccount,
+  IAccount? get account {
+    var dbAccount = dbNotificationPopulated.dbAccount;
+    if (dbAccount != null) {
+      return DbAccountWrapper(
+        dbAccount: dbAccount,
       );
+    } else {
+      return null;
+    }
+  }
 
   @override
   DateTime get createdAt => dbNotificationPopulated.dbNotification.createdAt;
@@ -168,7 +174,7 @@ class DbNotificationPopulatedWrapper implements INotification {
             dismissed: dismissed ?? this.dismissed,
           ),
           dbAccount:
-          account?.toDbAccount() ?? dbNotificationPopulated.dbAccount,
+              account?.toDbAccount() ?? dbNotificationPopulated.dbAccount,
           dbStatus: status?.toDbStatus() ??
               dbNotificationPopulated.dbStatusPopulated?.dbStatus,
           dbStatusAccount: status?.account.toDbAccount() ??
@@ -180,14 +186,14 @@ class DbNotificationPopulatedWrapper implements INotification {
           replyDbStatus: status?.inReplyToStatus?.toDbStatus() ??
               dbNotificationPopulated.dbStatusPopulated?.replyDbStatus,
           replyDbStatusAccount: status?.inReplyToStatus?.account
-              .toDbAccount() ??
+                  .toDbAccount() ??
               dbNotificationPopulated.dbStatusPopulated?.replyDbStatusAccount,
           replyReblogDbStatus: status?.reblog?.inReplyToStatus?.toDbStatus() ??
               dbNotificationPopulated.dbStatusPopulated?.replyReblogDbStatus,
           replyReblogDbStatusAccount:
-          status?.reblog?.inReplyToStatus?.account.toDbAccount() ??
-              dbNotificationPopulated
-                  .dbStatusPopulated?.replyReblogDbStatusAccount,
+              status?.reblog?.inReplyToStatus?.account.toDbAccount() ??
+                  dbNotificationPopulated
+                      .dbStatusPopulated?.replyReblogDbStatusAccount,
         ),
       );
 
@@ -224,7 +230,7 @@ class DbNotificationPopulatedWrapper implements INotification {
 
 class DbNotificationPopulated {
   final DbNotification dbNotification;
-  final DbAccount dbAccount;
+  final DbAccount? dbAccount;
 
   final DbStatus? dbStatus;
   final DbAccount? dbStatusAccount;
@@ -270,18 +276,18 @@ class DbNotificationPopulated {
     required DbAccount dbAccount,
     required DbStatusPopulated? dbStatusPopulated,
   }) : this(
-    dbNotification: dbNotification,
-    dbAccount: dbAccount,
-    dbStatus: dbStatusPopulated?.dbStatus,
-    dbStatusAccount: dbStatusPopulated?.dbAccount,
-    reblogDbStatus: dbStatusPopulated?.reblogDbStatus,
-    reblogDbStatusAccount: dbStatusPopulated?.reblogDbStatusAccount,
-    replyDbStatus: dbStatusPopulated?.replyDbStatus,
-    replyDbStatusAccount: dbStatusPopulated?.replyDbStatusAccount,
-    replyReblogDbStatus: dbStatusPopulated?.replyReblogDbStatus,
-    replyReblogDbStatusAccount: dbStatusPopulated?.replyReblogDbStatusAccount,
-
-  );
+          dbNotification: dbNotification,
+          dbAccount: dbAccount,
+          dbStatus: dbStatusPopulated?.dbStatus,
+          dbStatusAccount: dbStatusPopulated?.dbAccount,
+          reblogDbStatus: dbStatusPopulated?.reblogDbStatus,
+          reblogDbStatusAccount: dbStatusPopulated?.reblogDbStatusAccount,
+          replyDbStatus: dbStatusPopulated?.replyDbStatus,
+          replyDbStatusAccount: dbStatusPopulated?.replyDbStatusAccount,
+          replyReblogDbStatus: dbStatusPopulated?.replyReblogDbStatus,
+          replyReblogDbStatusAccount:
+              dbStatusPopulated?.replyReblogDbStatusAccount,
+        );
 
   @override
   String toString() {
@@ -302,18 +308,18 @@ class DbNotificationPopulated {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is DbNotificationPopulated &&
-              runtimeType == other.runtimeType &&
-              dbNotification == other.dbNotification &&
-              dbAccount == other.dbAccount &&
-              dbStatus == other.dbStatus &&
-              dbStatusAccount == other.dbStatusAccount &&
-              reblogDbStatus == other.reblogDbStatus &&
-              reblogDbStatusAccount == other.reblogDbStatusAccount &&
-              replyDbStatus == other.replyDbStatus &&
-              replyDbStatusAccount == other.replyDbStatusAccount &&
-              replyReblogDbStatus == other.replyReblogDbStatus &&
-              replyReblogDbStatusAccount == other.replyReblogDbStatusAccount;
+      other is DbNotificationPopulated &&
+          runtimeType == other.runtimeType &&
+          dbNotification == other.dbNotification &&
+          dbAccount == other.dbAccount &&
+          dbStatus == other.dbStatus &&
+          dbStatusAccount == other.dbStatusAccount &&
+          reblogDbStatus == other.reblogDbStatus &&
+          reblogDbStatusAccount == other.reblogDbStatusAccount &&
+          replyDbStatus == other.replyDbStatus &&
+          replyDbStatusAccount == other.replyDbStatusAccount &&
+          replyReblogDbStatus == other.replyReblogDbStatus &&
+          replyReblogDbStatusAccount == other.replyReblogDbStatusAccount;
 
   @override
   int get hashCode =>

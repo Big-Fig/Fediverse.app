@@ -2,6 +2,7 @@ import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/database/conversation_chat_database_model.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:moor/moor.dart';
 
@@ -36,8 +37,13 @@ var _statusReplyReblogAccountAliasId = "statusReplyReblogAccount";
             ":remoteId;",
   },
 )
-class ConversationDao extends DatabaseAccessor<AppDatabase>
-    with _$ConversationDaoMixin {
+class ConversationDao extends PopulatedAppRemoteDatabaseDao<
+    DbConversation,
+    DbConversationPopulated,
+    int,
+    String,
+    $DbConversationsTable,
+    $DbConversationsTable> with _$ConversationDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
   late $DbConversationAccountsTable conversationAccountsAlias;
@@ -74,87 +80,6 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
         alias(db.dbAccounts, _statusReplyReblogAccountAliasId);
   }
 
-  Future<List<DbConversationPopulated>> findAll() async {
-    JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAll();
-
-    List<TypedResult> typedResultList = (await chatMessageQuery.get());
-    return typedResultList.toDbConversationChatPopulatedList(dao: this);
-  }
-
-  Stream<List<DbConversationPopulated>> watchAll() {
-    JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAll();
-
-    return chatMessageQuery.watch().map(
-          (list) => list.toDbConversationChatPopulatedList(
-            dao: this,
-          ),
-        );
-  }
-
-  Future<DbConversationPopulated?> findById(int id) async =>
-      (await _findById(id).getSingleOrNull())?.toDbConversationPopulated(
-        dao: this,
-      );
-
-  Future<DbConversationPopulated?> findByRemoteId(String remoteId) async =>
-      (await _findByRemoteId(remoteId).getSingleOrNull())
-          ?.toDbConversationPopulated(
-        dao: this,
-      );
-
-  Stream<DbConversationPopulated?> watchById(int id) =>
-      _findById(id).watchSingleOrNull().map(
-            (value) => value?.toDbConversationPopulated(
-              dao: this,
-            ),
-          );
-
-  Stream<DbConversationPopulated?> watchByRemoteId(String remoteId) =>
-      _findByRemoteId(remoteId).watchSingleOrNull().map(
-            (value) => value?.toDbConversationPopulated(
-              dao: this,
-            ),
-          );
-
-  JoinedSelectStatement<Table, DataClass> _findAll() {
-    var sqlQuery = (select(db.dbConversations).join(
-      populateChatJoin(),
-    ));
-    return sqlQuery;
-  }
-
-  JoinedSelectStatement<Table, DataClass> _findById(int id) =>
-      (select(db.dbConversations)
-            ..where((chatMessage) => chatMessage.id.equals(id)))
-          .join(populateChatJoin());
-
-  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String? remoteId) =>
-      (select(db.dbConversations)
-            ..where((chatMessage) => chatMessage.remoteId.like(remoteId!)))
-          .join(populateChatJoin());
-
-  Future<int> insert(Insertable<DbConversation> entity,
-          {InsertMode? mode}) async =>
-      into(db.dbConversations).insert(entity, mode: mode);
-
-  Future<int> upsert(Insertable<DbConversation> entity) async =>
-      into(db.dbConversations).insert(entity, mode: InsertMode.insertOrReplace);
-
-  Future insertAll(
-          List<Insertable<DbConversation>> entities, InsertMode mode) async =>
-      await batch(
-        (batch) {
-          batch.insertAll(
-            db.dbConversations,
-            entities,
-            mode: mode,
-          );
-        },
-      );
-
-  Future<bool> replace(Insertable<DbConversation> entity) async =>
-      await update(db.dbConversations).replace(entity);
-
   Future<int> updateByRemoteId(
     String remoteId,
     Insertable<DbConversation> entity,
@@ -168,14 +93,14 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
             ))
           .write(entity);
     } else {
-      localId = await insert(entity);
+      localId = await insert(
+        entity: entity,
+        mode: null,
+      );
     }
 
     return localId;
   }
-
-  SimpleSelectStatement<$DbConversationsTable, DbConversation>
-      startSelectQuery() => (select(db.dbConversations));
 
   /// remote ids are strings but it is possible to compare them in
   /// chronological order
@@ -310,6 +235,9 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
       ),
     ];
   }
+
+  @override
+  $DbConversationsTable get table => dbConversations;
 }
 
 extension DbConversationChatPopulatedTypedResultListExtension

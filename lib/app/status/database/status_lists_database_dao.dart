@@ -1,4 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/app_database_dao.dart';
 import 'package:fedi/app/status/database/status_lists_database_model.dart';
 import 'package:moor/moor.dart';
 
@@ -21,36 +22,13 @@ part 'status_lists_database_dao.g.dart';
         "SELECT * FROM db_status_lists WHERE list_remote_id = :listRemoteId;",
   },
 )
-class StatusListsDao extends DatabaseAccessor<AppDatabase>
-    with _$StatusListsDaoMixin {
+class StatusListsDao extends AppDatabaseDao<DbStatusList, int,
+    $DbStatusListsTable, $DbStatusListsTable> with _$StatusListsDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
   StatusListsDao(this.db) : super(db);
 
-  Future<int> insert(
-    Insertable<DbStatusList> entity, {
-    InsertMode? mode,
-  }) async =>
-      into(dbStatusLists).insert(entity, mode: mode);
-
-  Future<int> upsert(Insertable<DbStatusList> entity) async =>
-      into(db.dbStatusLists).insert(entity, mode: InsertMode.insertOrReplace);
-
-  Future insertAll(
-    List<Insertable<DbStatusList>> entities,
-    InsertMode mode,
-  ) async =>
-      await batch(
-        (batch) {
-          batch.insertAll(
-            dbStatusLists,
-            entities,
-            mode: mode,
-          );
-        },
-      );
-
-  Future<bool> replace(Insertable<DbStatusList> entity) async =>
-      await update(dbStatusLists).replace(entity);
+  @override
+  $DbStatusListsTable get table => dbStatusLists;
 }

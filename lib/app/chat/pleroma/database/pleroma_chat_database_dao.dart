@@ -3,6 +3,7 @@ import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
 import 'package:moor/moor.dart';
 
 part 'pleroma_chat_database_dao.g.dart';
@@ -27,7 +28,13 @@ var _chatMessageAccountAliasId = "chatMessageAccount";
         ":remoteId;",
   },
 )
-class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
+class ChatDao extends PopulatedAppRemoteDatabaseDao<
+    DbChat,
+    DbPleromaChatPopulated,
+    int,
+    String,
+    $DbChatsTable,
+    $DbChatsTable> with _$ChatDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
   late $DbChatMessagesTable chatMessageAlias;
@@ -45,84 +52,6 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
     );
   }
 
-  Future<List<DbPleromaChatPopulated>> findAll() async {
-    JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAll();
-
-    return (await chatMessageQuery.get())
-        .toDbPleromaChatPopulatedList(dao: this);
-  }
-
-  Stream<List<DbPleromaChatPopulated>> watchAll() {
-    JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAll();
-
-    return chatMessageQuery.watch().map(
-          (list) => list.toDbPleromaChatPopulatedList(
-            dao: this,
-          ),
-        );
-  }
-
-  Future<DbPleromaChatPopulated?> findById(int id) async =>
-      (await _findById(id).getSingleOrNull())?.toDbPleromaChatPopulated(
-        dao: this,
-      );
-
-  Future<DbPleromaChatPopulated?> findByRemoteId(String remoteId) async =>
-      (await _findByRemoteId(remoteId).getSingleOrNull())
-          ?.toDbPleromaChatPopulated(
-        dao: this,
-      );
-
-  Stream<DbPleromaChatPopulated?> watchById(int id) =>
-      _findById(id).watchSingleOrNull().map(
-            (value) => value?.toDbPleromaChatPopulated(
-              dao: this,
-            ),
-          );
-
-  Stream<DbPleromaChatPopulated?> watchByRemoteId(String? remoteId) =>
-      _findByRemoteId(remoteId).watchSingleOrNull().map(
-            (value) => value?.toDbPleromaChatPopulated(
-              dao: this,
-            ),
-          );
-
-  JoinedSelectStatement<Table, DataClass> _findAll() {
-    var sqlQuery = (select(db.dbChats).join(
-      populateChatJoin(),
-    ));
-    return sqlQuery;
-  }
-
-  JoinedSelectStatement<Table, DataClass> _findById(int id) =>
-      (select(db.dbChats)..where((chatMessage) => chatMessage.id.equals(id)))
-          .join(populateChatJoin());
-
-  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String? remoteId) =>
-      (select(db.dbChats)
-            ..where((chatMessage) => chatMessage.remoteId.like(remoteId!)))
-          .join(populateChatJoin());
-
-  Future<int> insert(Insertable<DbChat> entity, {InsertMode? mode}) async =>
-      into(db.dbChats).insert(entity, mode: mode);
-
-  Future<int> upsert(Insertable<DbChat> entity) async =>
-      into(db.dbChats).insert(entity, mode: InsertMode.insertOrReplace);
-
-  Future insertAll(List<Insertable<DbChat>> entities, InsertMode mode) async =>
-      await batch(
-        (batch) {
-          batch.insertAll(
-            db.dbChats,
-            entities,
-            mode: mode,
-          );
-        },
-      );
-
-  Future<bool> replace(Insertable<DbChat> entity) async =>
-      await update(db.dbChats).replace(entity);
-
   Future<int> updateByRemoteId(
     String remoteId,
     Insertable<DbChat> entity,
@@ -136,14 +65,14 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
             ))
           .write(entity);
     } else {
-      localId = await insert(entity);
+      localId = await insert(
+        entity: entity,
+        mode: null,
+      );
     }
 
     return localId;
   }
-
-  SimpleSelectStatement<$DbChatsTable, DbChat> startSelectQuery() =>
-      (select(db.dbChats));
 
   SimpleSelectStatement<$DbChatsTable, DbChat> addUpdatedAtBoundsWhere(
     SimpleSelectStatement<$DbChatsTable, DbChat> query, {
@@ -203,27 +132,27 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   ) {
     // ignore: curly_braces_in_flow_control_structures
     return query
-        ..orderBy(
-          orderTerms
-              .map(
-                (orderTerm) => (item) {
-                  var expression;
-                  switch (orderTerm.orderType) {
-                    case PleromaChatOrderType.remoteId:
-                      expression = item.remoteId;
-                      break;
-                    case PleromaChatOrderType.updatedAt:
-                      expression = item.updatedAt;
-                      break;
-                  }
-                  return OrderingTerm(
-                    expression: expression,
-                    mode: orderTerm.orderingMode,
-                  );
-                },
-              )
-              .toList(),
-        );
+      ..orderBy(
+        orderTerms
+            .map(
+              (orderTerm) => (item) {
+                var expression;
+                switch (orderTerm.orderType) {
+                  case PleromaChatOrderType.remoteId:
+                    expression = item.remoteId;
+                    break;
+                  case PleromaChatOrderType.updatedAt:
+                    expression = item.updatedAt;
+                    break;
+                }
+                return OrderingTerm(
+                  expression: expression,
+                  mode: orderTerm.orderingMode,
+                );
+              },
+            )
+            .toList(),
+      );
   }
 
   List<Join<Table, DataClass>> populateChatJoin() {
@@ -248,6 +177,9 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
       ),
     ];
   }
+
+  @override
+  $DbChatsTable get table => dbChats;
 }
 
 extension DbPleromaChatPopulatedTypedResultListExtension on List<TypedResult> {

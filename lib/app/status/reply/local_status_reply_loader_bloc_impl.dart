@@ -44,7 +44,7 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     }
     var inReplyToRemoteId = originalStatus.inReplyToRemoteId!;
 
-    inReplyToStatus = await statusRepository.findByRemoteId(inReplyToRemoteId);
+    inReplyToStatus = await statusRepository.findByRemoteIdInAppType(inReplyToRemoteId);
 
     if (inReplyToStatus == null) {
       var replyToRemoteStatus = await pleromaStatusService.getStatus(
@@ -57,7 +57,7 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
         conversationRemoteId: null,
       );
 
-      inReplyToStatus = await statusRepository.findByRemoteId(
+      inReplyToStatus = await statusRepository.findByRemoteIdInAppType(
         inReplyToRemoteId,
       );
     }

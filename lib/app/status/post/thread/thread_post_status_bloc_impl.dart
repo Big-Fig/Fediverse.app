@@ -132,7 +132,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
   @override
   Future onStatusPosted(IPleromaStatus remoteStatus) async {
     _logger.finest(() => "onStatusPosted $onStatusPosted");
-    var status = await statusRepository.findByRemoteId(remoteStatus.id);
+    var status = await statusRepository.findByRemoteIdInAppType(remoteStatus.id);
     if (status != null) {
       statusThreadBloc.addStatusInThread(status);
     }

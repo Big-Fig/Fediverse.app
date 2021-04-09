@@ -3,18 +3,21 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'database/scheduled_status_database_model_helper.dart';
 
-Future<DbScheduledStatusWrapper> createTestScheduledStatus({
+Future<DbScheduledStatusPopulatedWrapper> createTestScheduledStatus({
   required String seed,
   String? remoteId,
 }) async =>
-    DbScheduledStatusWrapper(
-      dbScheduledStatus: await createTestDbScheduledStatus(
-        seed: seed,
-        remoteId: remoteId,
+    DbScheduledStatusPopulatedWrapper(
+      dbScheduledStatusPopulated: DbScheduledStatusPopulated(
+        dbScheduledStatus: await createTestDbScheduledStatus(
+          seed: seed,
+          remoteId: remoteId,
+        ),
       ),
     );
 
-void expectScheduledStatus(IScheduledStatus? actual, IScheduledStatus? expected) {
+void expectScheduledStatus(
+    IScheduledStatus? actual, IScheduledStatus? expected) {
   if (actual == null && expected == null) {
     return;
   }

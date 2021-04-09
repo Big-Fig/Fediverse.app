@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:fedi/app/account/repository/account_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -26,6 +28,11 @@ void main() {
   test('test updated chat message schema', () async {
     var pleromaCardTitle = "pleromaCardTitle";
     var chatMessageDao = database.chatMessageDao;
+    var accountRepository = AccountRepository(appDatabase: database);
+    var pleromaChatMessageRepository = PleromaChatMessageRepository(
+      accountRepository: accountRepository,
+      appDatabase: database,
+    );
     var accountDao = database.accountDao;
     var updatedRemoteId = "updatedRemoteId1";
 
@@ -34,10 +41,10 @@ void main() {
       remoteId: "accountRemoteId",
     );
 
-    await accountDao.upsert(dbAccount);
+    await accountDao.upsert(entity: dbAccount);
 
     await chatMessageDao.insert(
-      DbChatMessage(
+      entity: DbChatMessage(
         id: null,
         remoteId: updatedRemoteId,
         chatRemoteId: "chatRemoteId",
@@ -46,9 +53,14 @@ void main() {
         content: "content",
         card: PleromaCard.only(title: pleromaCardTitle),
       ),
+      mode: null,
     );
-    var found = await chatMessageDao.findByRemoteId(updatedRemoteId);
+    var found = await pleromaChatMessageRepository
+        .findByRemoteIdInAppType(updatedRemoteId);
 
-    expect(pleromaCardTitle, found!.dbChatMessage.card!.title);
+    expect(pleromaCardTitle, found!.card!.title);
+
+    await accountRepository.dispose();
+    await pleromaChatMessageRepository.dispose();
   });
 }

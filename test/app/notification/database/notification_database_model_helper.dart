@@ -84,9 +84,9 @@ Future<DbNotificationPopulated> createTestNotificationPopulated(
 ) async {
   DbNotificationPopulated dbNotificationPopulated = DbNotificationPopulated(
     dbNotification: dbNotification,
-    dbAccount:
-        (await accountRepository.findByRemoteId(dbNotification.accountRemoteId))!
-            .dbAccount,
+    dbAccount: (await accountRepository.findByRemoteIdInDbType(
+      dbNotification.accountRemoteId!,
+    ))!,
     reblogDbStatus: null,
     replyReblogDbStatus: null,
     replyDbStatus: null,

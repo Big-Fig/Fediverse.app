@@ -8,7 +8,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model_adapter.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
@@ -23,8 +23,16 @@ var _singlePleromaChatRepositoryPagination = RepositoryPagination<IPleromaChat>(
   olderThanItem: null,
 );
 
-class PleromaChatRepository extends AsyncInitLoadingBloc
-    implements IPleromaChatRepository {
+class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
+    DbChat,
+    DbPleromaChatPopulated,
+    IPleromaChat,
+    pleroma_lib.IPleromaChat,
+    int,
+    String,
+    $DbChatsTable,
+    $DbChatsTable> implements IPleromaChatRepository {
+  @override
   late ChatDao dao;
   late ChatAccountsDao chatAccountsDao;
 
@@ -39,18 +47,6 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
     dao = appDatabase.chatDao;
     chatAccountsDao = appDatabase.chatAccountsDao;
   }
-
-  @override
-  Future internalAsyncInit() async {
-    // nothing to init now
-    return null;
-  }
-
-  @override
-  Future<DbPleromaChatPopulatedWrapper?> findByRemoteId(
-    String remoteId,
-  ) async =>
-      (await dao.findByRemoteId(remoteId))?.toDbPleromaChatPopulatedWrapper();
 
   @override
   Future upsertRemoteChat(pleroma_lib.IPleromaChat remoteChat) async {
@@ -71,8 +67,8 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
       await chatMessageRepository.upsertRemoteChatMessage(lastMessage);
     }
 
-    await upsert(
-      remoteChat.toDbChat(),
+    await upsertInRemoteType(
+      remoteChat,
     );
   }
 
@@ -97,94 +93,9 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
       );
     }
 
-    await upsertAll(
-      pleromaChats
-          .map(
-            (pleromaChat) => pleromaChat.toDbChat(),
-          )
-          .toList(),
+    await upsertAllInRemoteType(
+      pleromaChats,
     );
-  }
-
-  @override
-  Future upsertAll(List<DbChat> items) async {
-    // insertOrReplace
-    // if a row with the same primary or unique key already
-    // exists, it will be deleted and re-created with the row being inserted.
-    // We declared remoteId as unique so it possible to insertOrReplace by it too
-    await dao.insertAll(
-      items,
-      InsertMode.insertOrReplace,
-    );
-  }
-
-  @override
-  Future insertAll(List<DbChat> items) async {
-    // if item already exist rollback changes
-    // call this only if you sure that items not exist instead user upsertAll
-    return await dao.insertAll(
-      items,
-      InsertMode.insertOrRollback,
-    );
-  }
-
-  @override
-  Future clear() => dao.clear();
-
-  @override
-  Future<bool> deleteById(int id) async {
-    var affectedRows = await dao.deleteById(id);
-    assert(affectedRows == 0 || affectedRows == 1);
-    return (affectedRows) == 1;
-  }
-
-  @override
-  Future<DbPleromaChatPopulatedWrapper?> findById(int id) async =>
-      (await dao.findById(id))?.toDbPleromaChatPopulatedWrapper();
-
-  @override
-  Stream<DbPleromaChatPopulatedWrapper?> watchById(int id) =>
-      (dao.watchById(id)).map(
-        (value) => value?.toDbPleromaChatPopulatedWrapper(),
-      );
-
-  @override
-  Stream<DbPleromaChatPopulatedWrapper?> watchByRemoteId(String remoteId) {
-    _logger.finest(() => "watchByRemoteId $remoteId");
-    return (dao.watchByRemoteId(remoteId)).map(
-      (value) => value?.toDbPleromaChatPopulatedWrapper(),
-    );
-  }
-
-  @override
-  Future<bool> isExistWithId(int id) =>
-      dao.countById(id).map((count) => count > 0).getSingle();
-
-  @override
-  Future<List<DbPleromaChatPopulatedWrapper>> getAll() async =>
-      (await dao.findAll()).toDbPleromaChatPopulatedWrapperList();
-
-  @override
-  Future<int> countAll() => dao.countAll().getSingle();
-
-  @override
-  Stream<List<DbPleromaChatPopulatedWrapper>> watchAll() =>
-      (dao.watchAll()).map(
-        (list) => list.toDbPleromaChatPopulatedWrapperList(),
-      );
-
-  @override
-  Future<int> insert(DbChat item) => dao.insert(item);
-
-  @override
-  Future<int> upsert(DbChat item) => dao.upsert(item);
-
-  @override
-  Future<bool> updateById(int? id, DbChat DbChat) {
-    if (DbChat.id != id) {
-      DbChat = DbChat.copyWith(id: id);
-    }
-    return dao.replace(DbChat);
   }
 
   @override
@@ -211,9 +122,9 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
       );
     }
     if (oldLocalChat.localId != null) {
-      await updateById(
-        oldLocalChat.localId,
-        newRemoteChat.toDbChat(),
+      await updateByDbIdInDbType(
+        dbId: oldLocalChat.localId!,
+        dbItem: newRemoteChat.toDbChat(),
       );
     } else {
       await upsertRemoteChat(newRemoteChat);
@@ -341,8 +252,7 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
       // todo: rework with moor-like code
       var fieldName = dao.chatMessageAlias.createdAt.$name;
       var aliasName = dao.chatMessageAlias.$tableName;
-      var having =
-          CustomExpression<bool>("MAX($aliasName.$fieldName)");
+      var having = CustomExpression<bool>("MAX($aliasName.$fieldName)");
       joinQuery.groupBy(
         [
           dao.dbChats.remoteId,
@@ -373,13 +283,11 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
         .getSingleOrNull();
 
     if (dbChatAccount != null) {
-      var dbPleromaChatPopulated = await dao.findByRemoteId(
+      var pleromaChat = await findByRemoteIdInAppType(
         dbChatAccount.chatRemoteId,
       );
-      if (dbPleromaChatPopulated != null) {
-        return DbPleromaChatPopulatedWrapper(
-          dbChatPopulated: dbPleromaChatPopulated,
-        );
+      if (pleromaChat != null) {
+        return pleromaChat;
       } else {
         return null;
       }
@@ -390,9 +298,9 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
 
   @override
   Future markAsRead({required IPleromaChat chat}) {
-    return updateById(
-      chat.localId,
-      DbChat(
+    return updateByDbIdInDbType(
+      dbId: chat.localId!,
+      dbItem: DbChat(
         id: chat.localId,
         remoteId: chat.remoteId,
         unread: 0,
@@ -499,6 +407,34 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
               .toDbPleromaChatWithLastMessagePopulatedWrapper(),
         );
   }
+
+  @override
+  DbChat mapAppItemToDbItem(IPleromaChat appItem) => appItem.toDbChat();
+
+  @override
+  pleroma_lib.IPleromaChat mapAppItemToRemoteItem(IPleromaChat appItem) =>
+      // todo: improve
+      appItem.toPleromaChat(
+        lastChatMessage: null,
+        accounts: [],
+      );
+
+  @override
+  DbPleromaChatPopulated mapAppItemToDbPopulatedItem(IPleromaChat appItem) =>
+      appItem.toDbPleromaChatPopulated();
+
+  @override
+  IPleromaChat mapDbPopulatedItemToAppItem(
+          DbPleromaChatPopulated dbPopulatedItem) =>
+      dbPopulatedItem.toDbPleromaChatPopulatedWrapper();
+
+  @override
+  pleroma_lib.IPleromaChat mapDbPopulatedItemToRemoteItem(
+          DbPleromaChatPopulated dbPopulatedItem) =>
+      dbPopulatedItem.toDbPleromaChatPopulatedWrapper().toPleromaChat(
+        lastChatMessage: null,
+        accounts: [],
+      );
 }
 
 extension DbPleromaChatPopulatedExtension on DbPleromaChatPopulated {

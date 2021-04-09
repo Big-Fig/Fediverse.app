@@ -11,8 +11,8 @@ import 'package:provider/provider.dart';
 
 abstract class IStatusRepository
     implements
-        IReadIdListRepository<IStatus, int>,
-        IWriteIdListRepository<DbStatus, int>,
+        IAppRemoteReadWriteRepository<DbStatus, IStatus,
+            IPleromaStatus, int, String>,
         IDisposable {
   static IStatusRepository of(
     BuildContext context, {
@@ -22,10 +22,6 @@ abstract class IStatusRepository
         context,
         listen: listen,
       );
-
-  Future<IStatus?> findByRemoteId(String remoteId);
-
-  Future deleteByRemoteId(String remoteId);
 
   Future addStatusesToConversationWithDuplicatePreCheck({
     required List<String> statusRemoteIds,
@@ -38,8 +34,6 @@ abstract class IStatusRepository
     required String? conversationRemoteId,
     bool isFromHomeTimeline = false,
   });
-
-  Stream<IStatus?> watchByRemoteId(String remoteId);
 
   Future updateLocalStatusByRemoteStatus({
     required IStatus oldLocalStatus,

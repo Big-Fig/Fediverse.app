@@ -55,7 +55,7 @@ void main() {
     );
 
     dbAccount = await createTestDbAccount(seed: "seed1");
-    var accountId = await accountRepository.insert(dbAccount);
+    var accountId = await accountRepository.insertInDbType(dbAccount);
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
@@ -70,12 +70,12 @@ void main() {
     );
 
     var reblogDbAccount = await createTestDbAccount(seed: "seed11");
-    await accountRepository.insert(reblogDbAccount);
+    await accountRepository.insertInDbType(reblogDbAccount);
     var reblogDbStatus = await createTestDbStatus(
       seed: "seed33",
       dbAccount: reblogDbAccount,
     );
-    await statusRepository.insert(reblogDbStatus);
+    await statusRepository.insertInDbType(reblogDbStatus);
 
     dbStatus = dbStatus.copyWith(reblogStatusRemoteId: reblogDbStatus.remoteId);
 
@@ -90,7 +90,7 @@ void main() {
       replyDbStatus: null,
     );
 
-    await statusRepository.insert(dbStatus);
+    await statusRepository.insertInDbType(dbStatus);
 
     dbNotification = await createTestDbNotification(
       seed: "seed4",
@@ -113,10 +113,10 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await notificationRepository.insert(dbNotification);
+    var id = await notificationRepository.insertInDbType(dbNotification);
     assert(id > 0, true);
     expectDbNotificationPopulated(
-      (await notificationRepository.findById(id))!,
+      (await notificationRepository.findByDbIdInAppType(id))!,
       dbNotificationPopulated,
     );
   });
@@ -134,15 +134,15 @@ void main() {
     ))
         .copyWith(remoteId: "remoteId1");
 
-    await notificationRepository.upsertAll([dbNotification1]);
+    await notificationRepository.upsertAllInDbType([dbNotification1]);
 
-    expect((await notificationRepository.getAll()).length, 1);
+    expect((await notificationRepository.getAllInAppType()).length, 1);
 
-    await notificationRepository.upsertAll([dbNotification2]);
-    expect((await notificationRepository.getAll()).length, 1);
+    await notificationRepository.upsertAllInDbType([dbNotification2]);
+    expect((await notificationRepository.getAllInAppType()).length, 1);
 
     expectDbNotificationPopulated(
-      (await notificationRepository.getAll()).first,
+      (await notificationRepository.getAllInAppType()).first,
       await createTestNotificationPopulated(
         dbNotification2,
         accountRepository,
@@ -151,22 +151,22 @@ void main() {
   });
 
   test('updateById', () async {
-    var id = await notificationRepository.insert(dbNotification);
+    var id = await notificationRepository.insertInDbType(dbNotification);
     assert(id > 0, true);
 
-    await notificationRepository.updateById(
-      id,
-      dbNotification.copyWith(remoteId: "newRemoteId"),
+    await notificationRepository.updateByDbIdInDbType(
+      dbId: id,
+      dbItem: dbNotification.copyWith(remoteId: "newRemoteId"),
     );
 
     expect(
-      (await notificationRepository.findById(id))!.remoteId,
+      (await notificationRepository.findByDbIdInAppType(id))!.remoteId,
       "newRemoteId",
     );
   });
 
   test('updateLocalNotificationByRemoteNotification', () async {
-    var id = await notificationRepository.insert(
+    var id = await notificationRepository.insertInDbType(
       dbNotification.copyWith(
         type: PleromaNotificationType.follow.toJsonValue(),
       ),
@@ -206,20 +206,23 @@ void main() {
     );
 
     expect(
-      (await notificationRepository.findById(id))!.status!.content,
+      (await notificationRepository.findByDbIdInAppType(id))!.status!.content,
       newContent,
     );
     expect(
-      (await notificationRepository.findById(id))!.type,
+      (await notificationRepository.findByDbIdInAppType(id))!.type,
       newType.toJsonValue(),
     );
-    expect((await notificationRepository.findById(id))!.account!.acct, newAcct);
+    expect(
+        (await notificationRepository.findByDbIdInAppType(id))!.account!.acct,
+        newAcct);
   });
 
   test('findByRemoteId', () async {
-    await notificationRepository.insert(dbNotification);
+    await notificationRepository.insertInDbType(dbNotification);
     expectDbNotificationPopulated(
-      (await notificationRepository.findByRemoteId(dbNotification.remoteId))!,
+      (await notificationRepository
+          .findByRemoteIdInAppType(dbNotification.remoteId))!,
       dbNotificationPopulated,
     );
   });
@@ -239,15 +242,16 @@ void main() {
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
     expectDbNotification(
-      (await notificationRepository.findByRemoteId(dbNotification.remoteId))!,
+      (await notificationRepository
+          .findByRemoteIdInAppType(dbNotification.remoteId))!,
       dbNotification,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
     expectDbStatus(
-      await statusRepository.findByRemoteId(dbStatus.remoteId),
+      await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
 
@@ -263,15 +267,16 @@ void main() {
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
     expectDbNotification(
-      (await notificationRepository.findByRemoteId(dbNotification.remoteId))!,
+      (await notificationRepository
+          .findByRemoteIdInAppType(dbNotification.remoteId))!,
       dbNotification,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
     expectDbStatus(
-      await statusRepository.findByRemoteId(dbStatus.remoteId),
+      await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
   });
@@ -292,15 +297,16 @@ void main() {
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
     expectDbNotification(
-      (await notificationRepository.findByRemoteId(dbNotification.remoteId))!,
+      (await notificationRepository
+          .findByRemoteIdInAppType(dbNotification.remoteId))!,
       dbNotification,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
     expectDbStatus(
-      await statusRepository.findByRemoteId(dbStatus.remoteId),
+      await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
 
@@ -319,15 +325,16 @@ void main() {
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
     expectDbNotification(
-      (await notificationRepository.findByRemoteId(dbNotification.remoteId))!,
+      (await notificationRepository
+          .findByRemoteIdInAppType(dbNotification.remoteId))!,
       dbNotification,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
     expectDbStatus(
-      await statusRepository.findByRemoteId(dbStatus.remoteId),
+      await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
   });
@@ -671,7 +678,7 @@ void main() {
     );
 
     List<DbNotificationPopulated> actualList =
-    (await query.get()).toDbNotificationPopulatedList(
+        (await query.get()).toDbNotificationPopulatedList(
       dao: notificationRepository.dao,
     );
     expect(actualList.length, 3);
@@ -723,7 +730,7 @@ void main() {
     );
 
     List<DbNotificationPopulated> actualList =
-    (await query.get()).toDbNotificationPopulatedList(
+        (await query.get()).toDbNotificationPopulatedList(
       dao: notificationRepository.dao,
     );
     expect(actualList.length, 3);
@@ -778,7 +785,7 @@ void main() {
     );
 
     List<DbNotificationPopulated> actualList =
-    (await query.get()).toDbNotificationPopulatedList(
+        (await query.get()).toDbNotificationPopulatedList(
       dao: notificationRepository.dao,
     );
     expect(actualList.length, 1);

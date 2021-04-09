@@ -1,6 +1,8 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_model.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_model.dart';
+import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:moor/moor.dart';
 
 part 'scheduled_status_database_dao.g.dart';
@@ -23,36 +25,17 @@ part 'scheduled_status_database_dao.g.dart';
             ":remoteId;",
   },
 )
-class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
-    with _$ScheduledStatusDaoMixin {
+class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
+    DbScheduledStatus,
+    DbScheduledStatusPopulated,
+    int,
+    String,
+    $DbScheduledStatusesTable,
+    $DbScheduledStatusesTable> with _$ScheduledStatusDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
   ScheduledStatusDao(this.db) : super(db);
-
-  Future<int> insert(Insertable<DbScheduledStatus> entity) =>
-      into(dbScheduledStatuses).insert(entity);
-
-  Future<int> upsert(Insertable<DbScheduledStatus> entity) =>
-      into(dbScheduledStatuses)
-          .insert(entity, mode: InsertMode.insertOrReplace);
-
-  Future insertAll(
-    List<Insertable<DbScheduledStatus>> entities,
-    InsertMode mode,
-  ) async =>
-      await batch(
-        (batch) {
-          batch.insertAll(
-            dbScheduledStatuses,
-            entities,
-            mode: mode,
-          );
-        },
-      );
-
-  Future<bool> replace(Insertable<DbScheduledStatus> entity) async =>
-      await update(dbScheduledStatuses).replace(entity);
 
   Future<int> updateByRemoteId(
     String remoteId,
@@ -64,14 +47,14 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
       await (update(dbScheduledStatuses)..where((i) => i.id.equals(localId)))
           .write(entity);
     } else {
-      localId = await insert(entity);
+      localId = await insert(
+        entity: entity,
+        mode: null,
+      );
     }
 
     return localId;
   }
-
-  SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
-      startSelectQuery() => (select(db.dbScheduledStatuses));
 
   /// remote ids are strings but it is possible to compare them in
   /// chronological order
@@ -137,13 +120,38 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
                 })
             .toList());
 
-  List<DbScheduledStatus> typedResultListToPopulated(
-    List<TypedResult> typedResult,
-  ) {
-    return typedResult.map(typedResultToPopulated).toList();
-  }
+  @override
+  $DbScheduledStatusesTable get table => dbScheduledStatuses;
+}
 
-  DbScheduledStatus typedResultToPopulated(TypedResult typedResult) {
-    return typedResult.readTable(db.dbScheduledStatuses);
-  }
+extension DbScheduledStatusTypedResultExtension on TypedResult {
+  DbScheduledStatus toDbScheduledStatus({
+    required ScheduledStatusDao dao,
+  }) =>
+      readTable(dao.db.dbScheduledStatuses);
+
+  DbScheduledStatusPopulated toDbScheduledStatusPopulated({
+    required ScheduledStatusDao dao,
+  }) =>
+      DbScheduledStatusPopulated(
+        dbScheduledStatus: toDbScheduledStatus(
+          dao: dao,
+        ),
+      );
+}
+
+extension DbScheduledStatusTypedResultListExtension on List<TypedResult> {
+  List<DbScheduledStatus> toDbScheduledStatusList({
+    required ScheduledStatusDao dao,
+  }) =>
+      map(
+        (item) => item.toDbScheduledStatus(dao: dao),
+      ).toList();
+
+  List<DbScheduledStatusPopulated> toDbScheduledStatusPopulatedList({
+    required ScheduledStatusDao dao,
+  }) =>
+      map(
+        (item) => item.toDbScheduledStatusPopulated(dao: dao),
+      ).toList();
 }

@@ -95,7 +95,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   void watchLocalRepositoryForUpdates() {
     addDisposable(
-      streamSubscription: chatRepository.watchByRemoteId(chat.remoteId).listen(
+      streamSubscription: chatRepository.watchByRemoteIdInAppType(chat.remoteId).listen(
         (updatedChat) {
           if (updatedChat != null) {
             _chatSubject.add(updatedChat);
@@ -270,9 +270,9 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         idempotencyKey: dbChatMessage.wasSentWithIdempotencyKey,
       );
 
-      await chatMessageRepository.updateById(
-        localChatMessageId,
-        dbChatMessage.copyWith(
+      await chatMessageRepository.updateByDbIdInDbType(
+        dbId: localChatMessageId,
+        dbItem: dbChatMessage.copyWith(
           pendingState: PendingState.pending,
         ),
       );
@@ -297,7 +297,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         hiddenLocallyOnDevice: false,
         wasSentWithIdempotencyKey: null,
       );
-      localChatMessageId = await chatMessageRepository.insert(
+      localChatMessageId = await chatMessageRepository.insertInDbType(
         dbChatMessage,
       );
 
@@ -311,9 +311,9 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         chatId: chat.remoteId,
         data: pleromaChatMessageSendData,
       );
-      await chatMessageRepository.updateById(
-        localChatMessageId,
-        dbChatMessage.copyWith(
+      await chatMessageRepository.updateByDbIdInDbType(
+        dbId: localChatMessageId,
+        dbItem: dbChatMessage.copyWith(
           hiddenLocallyOnDevice: true,
           pendingState: PendingState.published,
         ),
@@ -334,9 +334,9 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       );
     } catch (e, stackTrace) {
       _logger.warning(() => "postMessage error", e, stackTrace);
-      await chatMessageRepository.updateById(
-        localChatMessageId,
-        dbChatMessage.copyWith(
+      await chatMessageRepository.updateByDbIdInDbType(
+        dbId:localChatMessageId,
+        dbItem:dbChatMessage.copyWith(
           pendingState: PendingState.fail,
         ),
       );

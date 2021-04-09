@@ -11,9 +11,9 @@ import 'package:fedi/app/chat/conversation/database/conversation_chat_accounts_d
 import 'package:fedi/app/chat/pleroma/database/pleroma_chat_accounts_database_dao.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/repository/remote/simple_app_remote_database_dao_repository.dart';
 import 'package:fedi/app/status/database/status_favourited_accounts_database_dao.dart';
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_dao.dart';
-import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
@@ -28,8 +28,15 @@ var _singleAccountRepositoryPagination = RepositoryPagination<IAccount>(
   olderThanItem: null,
 );
 
-class AccountRepository extends AsyncInitLoadingBloc
-    implements IAccountRepository {
+class AccountRepository extends SimpleAppRemoteDatabaseDaoRepository<
+    DbAccount,
+    IAccount,
+    IPleromaAccount,
+    int,
+    String,
+    $DbAccountsTable,
+    $DbAccountsTable> implements IAccountRepository {
+  @override
   late AccountDao dao;
   late AccountFollowingsDao accountFollowingsDao;
   late AccountFollowersDao accountFollowersDao;
@@ -38,7 +45,9 @@ class AccountRepository extends AsyncInitLoadingBloc
   late ConversationAccountsDao conversationAccountsDao;
   late ChatAccountsDao chatAccountsDao;
 
-  AccountRepository({required AppDatabase appDatabase}) {
+  AccountRepository({
+    required AppDatabase appDatabase,
+  }) {
     dao = appDatabase.accountDao;
     accountFollowingsDao = appDatabase.accountFollowingsDao;
     accountFollowersDao = appDatabase.accountFollowersDao;
@@ -49,109 +58,20 @@ class AccountRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future internalAsyncInit() async {
-    // nothing to init now
-    return null;
-  }
-
-  @override
-  Future<DbAccountWrapper?> findByRemoteId(String remoteId) async =>
-      (await dao.findByRemoteId(remoteId).getSingleOrNull())
-          ?.toDbAccountWrapper();
-
-  @override
-  Stream<DbAccountWrapper?> watchByRemoteId(String remoteId) =>
-      dao.findByRemoteId(remoteId).watchSingleOrNull().map(
-            (value) => value?.toDbAccountWrapper(),
-          );
-
-  @override
-  Future upsertAll(List<DbAccount> items) async {
-    // insertOrReplace
-    // if a row with the same primary or unique key already
-    // exists, it will be deleted and re-created with the row being inserted.
-    // We declared remoteId as unique so it possible to insertOrReplace by it too
-    await dao.insertAll(
-      items,
-      InsertMode.insertOrReplace,
-    );
-  }
-
-  @override
-  Future insertAll(List<DbAccount> items) async {
-    // if item already exist rollback changes
-    // call this only if you sure that items not exist instead user upsertAll
-    return await dao.insertAll(
-      items,
-      InsertMode.insertOrRollback,
-    );
-  }
-
-  @override
-  Future clear() => dao.clear();
-
-  @override
-  Future<bool> deleteById(int id) async {
-    var affectedRows = await dao.deleteById(id);
-    assert(affectedRows == 0 || affectedRows == 1);
-    return (affectedRows) == 1;
-  }
-
-  @override
-  Future<DbAccountWrapper?> findById(int id) async =>
-      (await dao.findById(id).getSingleOrNull())?.toDbAccountWrapper();
-
-  @override
-  Stream<DbAccountWrapper?> watchById(int id) =>
-      dao.findById(id).watchSingleOrNull().map(
-            (value) => value?.toDbAccountWrapper(),
-          );
-
-  @override
-  Future<bool> isExistWithId(int id) =>
-      dao.countById(id).map((count) => count > 0).getSingle();
-
-  @override
-  Future<List<DbAccountWrapper>> getAll() async =>
-      (await dao.getAll().get()).toDbAccountWrapperList();
-
-  @override
-  Future<int> countAll() => dao.countAll().getSingle();
-
-  @override
-  Stream<List<DbAccountWrapper>> watchAll() => dao.getAll().watch().map(
-        (list) => list.toDbAccountWrapperList(),
-      );
-
-  @override
-  Future<int> insert(DbAccount item) => dao.insert(item);
-
-  @override
-  Future<int> upsert(DbAccount item) => dao.upsert(item);
-
-  @override
-  Future<bool> updateById(int id, DbAccount dbAccount) {
-    if (dbAccount.id != id) {
-      dbAccount = dbAccount.copyWith(id: id);
-    }
-    return dao.replace(dbAccount);
-  }
-
-  @override
   Future upsertRemoteAccount(
     IPleromaAccount pleromaAccount, {
     required String? conversationRemoteId,
     required String? chatRemoteId,
   }) async {
-    await upsert(
-      pleromaAccount.toDbAccount(),
+    await upsertInRemoteType(
+      pleromaAccount,
     );
 
     if (conversationRemoteId != null) {
       var accountRemoteId = pleromaAccount.id;
 
       await conversationAccountsDao.insert(
-        DbConversationAccount(
+        entity: DbConversationAccount(
           id: null,
           conversationRemoteId: conversationRemoteId,
           accountRemoteId: accountRemoteId,
@@ -163,7 +83,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       var accountRemoteId = pleromaAccount.id;
 
       await chatAccountsDao.insert(
-        DbChatAccount(
+        entity: DbChatAccount(
           id: null,
           chatRemoteId: chatRemoteId,
           accountRemoteId: accountRemoteId,
@@ -197,7 +117,7 @@ class AccountRepository extends AsyncInitLoadingBloc
 
       if (accountsToInsert.isNotEmpty == true) {
         await conversationAccountsDao.insertAll(
-          accountsToInsert
+          entities: accountsToInsert
               .map(
                 (accountToInsert) => DbConversationAccount(
                   id: null,
@@ -206,7 +126,7 @@ class AccountRepository extends AsyncInitLoadingBloc
                 ),
               )
               .toList(),
-          InsertMode.insertOrReplace,
+          mode: InsertMode.insertOrReplace,
         );
       }
     }
@@ -227,7 +147,7 @@ class AccountRepository extends AsyncInitLoadingBloc
 
       if (accountsToInsert.isNotEmpty == true) {
         await chatAccountsDao.insertAll(
-          accountsToInsert
+          entities: accountsToInsert
               .map(
                 (accountToInsert) => DbChatAccount(
                   id: null,
@@ -236,42 +156,37 @@ class AccountRepository extends AsyncInitLoadingBloc
                 ),
               )
               .toList(),
-          InsertMode.insertOrReplace,
+          mode: InsertMode.insertOrReplace,
         );
       }
     }
 
     if (pleromaAccounts.isNotEmpty) {
-      await upsertAll(
-        pleromaAccounts
-            .map(
-              (pleromaAccount) => pleromaAccount.toDbAccount(),
-            )
-            .toList(),
-      );
+      await upsertAllInRemoteType(pleromaAccounts);
     }
   }
 
-  @override
-  Future updateLocalAccountByRemoteAccount({
-    required IAccount oldLocalAccount,
-    required IPleromaAccount newRemoteAccount,
-  }) async {
-    _logger.finer(() => "updateLocalAccountByRemoteAccount \n"
-        "\t old: $oldLocalAccount \n"
-        "\t newRemoteAccount: $newRemoteAccount");
-
-    DbAccount newLocalDbAccount = newRemoteAccount.toDbAccount();
-    if (newLocalDbAccount.pleromaRelationship == null) {
-      newLocalDbAccount = newLocalDbAccount.copyWith(
-        pleromaRelationship: oldLocalAccount.pleromaRelationship,
-      );
-    }
-    await updateById(
-      oldLocalAccount.localId!,
-      newLocalDbAccount,
-    );
-  }
+  //
+  // @override
+  // Future updateLocalAccountByRemoteAccount({
+  //   required IAccount oldLocalAccount,
+  //   required IPleromaAccount newRemoteAccount,
+  // }) async {
+  //   _logger.finer(() => "updateLocalAccountByRemoteAccount \n"
+  //       "\t old: $oldLocalAccount \n"
+  //       "\t newRemoteAccount: $newRemoteAccount");
+  //
+  //   DbAccount newLocalDbAccount = newRemoteAccount.toDbAccount();
+  //   if (newLocalDbAccount.pleromaRelationship == null) {
+  //     newLocalDbAccount = newLocalDbAccount.copyWith(
+  //       pleromaRelationship: oldLocalAccount.pleromaRelationship,
+  //     );
+  //   }
+  //   await updateByIdInDbType(
+  //     dbId: oldLocalAccount.localId!,
+  //     dbItem: newLocalDbAccount,
+  //   );
+  // }
 
   @override
   Future<List<DbAccountWrapper>> getAccounts({
@@ -352,7 +267,7 @@ class AccountRepository extends AsyncInitLoadingBloc
     );
     // await accountFollowingsDao.deleteByAccountRemoteId(accountRemoteId);
     await accountFollowingsDao.insertAll(
-      followings
+      entities: followings
           .map(
             (followingAccount) => DbAccountFollowing(
               id: null,
@@ -361,7 +276,7 @@ class AccountRepository extends AsyncInitLoadingBloc
             ),
           )
           .toList(),
-      InsertMode.insertOrReplace,
+      mode: InsertMode.insertOrReplace,
     );
   }
 
@@ -377,7 +292,7 @@ class AccountRepository extends AsyncInitLoadingBloc
     );
     // await accountFollowersDao.deleteByAccountRemoteId(accountRemoteId);
     await accountFollowersDao.insertAll(
-      followers
+      entities: followers
           .map(
             (followerAccount) => DbAccountFollower(
               id: null,
@@ -386,7 +301,7 @@ class AccountRepository extends AsyncInitLoadingBloc
             ),
           )
           .toList(),
-      InsertMode.insertOrReplace,
+      mode: InsertMode.insertOrReplace,
     );
   }
 
@@ -402,7 +317,7 @@ class AccountRepository extends AsyncInitLoadingBloc
     );
     await statusFavouritedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
     await statusFavouritedAccountsDao.insertAll(
-      favouritedByAccounts
+      entities: favouritedByAccounts
           .map(
             (favouritedByAccount) => DbStatusFavouritedAccount(
               id: null,
@@ -411,7 +326,7 @@ class AccountRepository extends AsyncInitLoadingBloc
             ),
           )
           .toList(),
-      InsertMode.insertOrReplace,
+      mode: InsertMode.insertOrReplace,
     );
   }
 
@@ -427,7 +342,7 @@ class AccountRepository extends AsyncInitLoadingBloc
     );
     await statusRebloggedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
     await statusRebloggedAccountsDao.insertAll(
-      rebloggedByAccounts
+      entities: rebloggedByAccounts
           .map(
             (favouritedByAccount) => DbStatusRebloggedAccount(
               id: null,
@@ -436,7 +351,7 @@ class AccountRepository extends AsyncInitLoadingBloc
             ),
           )
           .toList(),
-      InsertMode.insertOrReplace,
+      mode: InsertMode.insertOrReplace,
     );
   }
 
@@ -604,6 +519,28 @@ class AccountRepository extends AsyncInitLoadingBloc
 
     return joinQuery;
   }
+
+  @override
+  DbAccount mapAppItemToDbItem(IAccount appItem) => appItem.toDbAccount();
+
+  @override
+  IPleromaAccount mapAppItemToRemoteItem(IAccount appItem) =>
+      appItem.toPleromaAccount();
+
+  @override
+  IAccount mapDbItemToAppItem(DbAccount dbItem) => dbItem.toDbAccountWrapper();
+
+  @override
+  IPleromaAccount mapDbItemToRemoteItem(DbAccount dbItem) =>
+      dbItem.toDbAccountWrapper().toPleromaAccount();
+
+  // @override
+  // IAccount mapRemoteItemToAppItem(IPleromaAccount remoteItem) =>
+  //     remoteItem.toDbAccountWrapper();
+
+  @override
+  DbAccount mapRemoteItemToDbItem(IPleromaAccount remoteItem) =>
+      remoteItem.toDbAccount();
 }
 
 extension DbAccountListExtension on List<DbAccount> {

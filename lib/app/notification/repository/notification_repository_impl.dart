@@ -2,13 +2,13 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
 import 'package:fedi/app/notification/database/notification_database_dao.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/notification_model_adapter.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
@@ -27,8 +27,16 @@ var _singleNotificationRepositoryPagination =
   olderThanItem: null,
 );
 
-class NotificationRepository extends AsyncInitLoadingBloc
-    implements INotificationRepository {
+class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
+    DbNotification,
+    DbNotificationPopulated,
+    INotification,
+    IPleromaNotification,
+    int,
+    String,
+    $DbNotificationsTable,
+    $DbNotificationsTable> implements INotificationRepository {
+  @override
   final NotificationDao dao;
   final IAccountRepository accountRepository;
   final IStatusRepository statusRepository;
@@ -40,12 +48,6 @@ class NotificationRepository extends AsyncInitLoadingBloc
     required this.statusRepository,
     required this.chatMessageRepository,
   }) : dao = appDatabase.notificationDao;
-
-  @override
-  Future internalAsyncInit() async {
-    // nothing to init now
-    return null;
-  }
 
   @override
   Future upsertRemoteNotification(
@@ -78,7 +80,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
         remoteChatMessage,
       );
     }
-    await upsert(
+    await upsertInDbType(
       remoteNotification.toDbNotification(
         unread: unread,
       ),
@@ -132,7 +134,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
     await chatMessageRepository.upsertRemoteChatMessages(remoteChatMessages);
 
-    await upsertAll(
+    await upsertAllInDbType(
       remoteNotifications
           .map(
             (remoteNotification) =>
@@ -140,14 +142,6 @@ class NotificationRepository extends AsyncInitLoadingBloc
           )
           .toList(),
     );
-  }
-
-  @override
-  Future<DbNotificationPopulatedWrapper?> findByRemoteId(
-    String remoteId,
-  ) async {
-    return (await dao.findByRemoteId(remoteId))
-        ?.toDbNotificationPopulatedWrapper();
   }
 
   @override
@@ -267,81 +261,6 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future upsertAll(List<DbNotification> items) async {
-    // insertOrReplace
-    // if a row with the same primary or unique key already
-    // exists, it will be deleted and re-created with the row being inserted.
-    // We declared remoteId as unique so it possible to insertOrReplace by it too
-    await dao.insertAll(items, InsertMode.insertOrReplace);
-  }
-
-  @override
-  Future insertAll(List<DbNotification> items) async {
-    // if item already exist rollback changes
-    // call this only if you sure that items not exist instead user upsertAll
-    return await dao.insertAll(items, InsertMode.insertOrRollback);
-  }
-
-  @override
-  Future clear() => dao.clear();
-
-  @override
-  Future<bool> deleteById(int id) async {
-    var affectedRows = await dao.deleteById(id);
-    assert(affectedRows == 0 || affectedRows == 1);
-    return (affectedRows) == 1;
-  }
-
-  @override
-  Future<INotification?> findById(int id) async =>
-      (await dao.findById(id))?.toDbNotificationPopulatedWrapper();
-
-  @override
-  Stream<DbNotificationPopulatedWrapper?> watchById(int id) =>
-      (dao.watchById(id)).map(
-        (value) => value?.toDbNotificationPopulatedWrapper(),
-      );
-
-  @override
-  Stream<INotification?> watchByRemoteId(String remoteId) {
-    _logger.finest(() => "watchByRemoteId $remoteId");
-    return (dao.watchByRemoteId(remoteId)).map(
-      (value) => value?.toDbNotificationPopulatedWrapper(),
-    );
-  }
-
-  @override
-  Future<bool> isExistWithId(int id) =>
-      dao.countById(id).map((count) => count > 0).getSingle();
-
-  @override
-  Future<List<DbNotificationPopulatedWrapper>> getAll() async =>
-      (await dao.findAll()).toDbNotificationPopulatedWrapperList();
-
-  @override
-  Future<int> countAll() => dao.countAll().getSingle();
-
-  @override
-  Stream<List<DbNotificationPopulatedWrapper>> watchAll() =>
-      (dao.watchAll()).map(
-        (list) => list.toDbNotificationPopulatedWrapperList(),
-      );
-
-  @override
-  Future<int> insert(DbNotification item) => dao.insert(item);
-
-  @override
-  Future<int> upsert(DbNotification item) => dao.upsert(item);
-
-  @override
-  Future<bool> updateById(int id, DbNotification dbNotification) {
-    if (dbNotification.id != id) {
-      dbNotification = dbNotification.copyWith(id: id);
-    }
-    return dao.replace(dbNotification);
-  }
-
-  @override
   Future updateLocalNotificationByRemoteNotification({
     required INotification oldLocalNotification,
     required IPleromaNotification newRemoteNotification,
@@ -371,9 +290,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
       );
     }
 
-    await updateById(
-      oldLocalNotification.localId!,
-      newRemoteNotification.toDbNotification(
+    await updateByDbIdInDbType(
+      dbId: oldLocalNotification.localId!,
+      dbItem: newRemoteNotification.toDbNotification(
         unread: unread,
       ),
     );
@@ -487,6 +406,33 @@ class NotificationRepository extends AsyncInitLoadingBloc
         accountRemoteId: account.remoteId,
         type: PleromaNotificationType.followRequest,
       );
+
+  @override
+  DbNotification mapAppItemToDbItem(INotification appItem) =>
+      appItem.toDbNotification();
+
+  @override
+  IPleromaNotification mapAppItemToRemoteItem(INotification appItem) =>
+      appItem.toPleromaNotification();
+
+  @override
+  DbNotificationPopulated mapAppItemToDbPopulatedItem(INotification appItem) {
+    return appItem.toDbNotificationPopulated();
+  }
+
+  @override
+  INotification mapDbPopulatedItemToAppItem(
+    DbNotificationPopulated dbPopulatedItem,
+  ) =>
+      dbPopulatedItem.toDbNotificationPopulatedWrapper();
+
+  @override
+  IPleromaNotification mapDbPopulatedItemToRemoteItem(
+    DbNotificationPopulated dbPopulatedItem,
+  ) =>
+      dbPopulatedItem
+          .toDbNotificationPopulatedWrapper()
+          .toPleromaNotification();
 }
 
 extension DbNotificationPopulatedListExtension

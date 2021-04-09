@@ -1,6 +1,7 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_model.dart';
 import 'package:moor/moor.dart';
+import 'package:fedi/app/database/dao/app_database_dao.dart';
 
 part 'status_reblogged_accounts_database_dao.g.dart';
 
@@ -20,31 +21,16 @@ part 'status_reblogged_accounts_database_dao.g.dart';
     "getAll": "SELECT * FROM db_status_reblogged_accounts",
   },
 )
-class StatusRebloggedAccountsDao extends DatabaseAccessor<AppDatabase>
-    with _$StatusRebloggedAccountsDaoMixin {
+class StatusRebloggedAccountsDao extends AppDatabaseDao<
+    DbStatusRebloggedAccount,
+    int,
+    $DbStatusRebloggedAccountsTable,
+    $DbStatusRebloggedAccountsTable> with _$StatusRebloggedAccountsDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
   StatusRebloggedAccountsDao(this.db) : super(db);
 
-  Future<int> insert(
-    Insertable<DbStatusRebloggedAccount> entity, {
-    InsertMode? mode,
-  }) async =>
-      into(dbStatusRebloggedAccounts).insert(entity, mode: mode);
-
-  Future insertAll(
-    List<Insertable<DbStatusRebloggedAccount>> entities,
-    InsertMode mode,
-  ) async =>
-      await batch((batch) {
-        batch.insertAll(
-          dbStatusRebloggedAccounts,
-          entities,
-          mode: mode,
-        );
-      });
-
-  Future<bool> replace(Insertable<DbStatusRebloggedAccount> entity) async =>
-      await update(dbStatusRebloggedAccounts).replace(entity);
+  @override
+  $DbStatusRebloggedAccountsTable get table => dbStatusRebloggedAccounts;
 }

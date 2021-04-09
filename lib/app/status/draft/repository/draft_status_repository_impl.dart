@@ -1,11 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/repository/local/populated_app_local_database_dao_repository.dart';
 import 'package:fedi/app/status/draft/database/draft_status_database_dao.dart';
-import 'package:fedi/app/status/draft/database/draft_status_database_model_adapter.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository_model.dart';
-import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -19,8 +18,14 @@ var _singleDraftStatusRepositoryPagination = RepositoryPagination<IDraftStatus>(
   olderThanItem: null,
 );
 
-class DraftStatusRepository extends AsyncInitLoadingBloc
-    implements IDraftStatusRepository {
+class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
+    DbDraftStatus,
+    DbDraftStatusPopulated,
+    IDraftStatus,
+    int,
+    $DbDraftStatusesTable,
+    $DbDraftStatusesTable> implements IDraftStatusRepository {
+  @override
   late DraftStatusDao dao;
 
   DraftStatusRepository({required AppDatabase appDatabase}) {
@@ -28,89 +33,7 @@ class DraftStatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future internalAsyncInit() async {
-    // nothing to init now
-    return null;
-  }
-
-  @override
-  Future upsertAll(List<DbDraftStatus> items) async {
-    // insertOrReplace
-    // if a row with the same primary or unique key already
-    // exists, it will be deleted and re-created with the row being inserted.
-    // We declared remoteId as unique so it possible to insertOrReplace by it too
-    await dao.insertAll(
-      items,
-      InsertMode.insertOrReplace,
-    );
-  }
-
-  @override
-  Future insertAll(List<DbDraftStatus> items) async {
-    // if item already exist rollback changes
-    // call this only if you sure that items not exist instead user upsertAll
-    return await dao.insertAll(
-      items,
-      InsertMode.insertOrRollback,
-    );
-  }
-
-  @override
-  Future clear() => dao.clear();
-
-  @override
-  Future<bool> deleteById(int? id) async {
-    var affectedRows = await dao.deleteById(id!);
-    assert(affectedRows == 0 || affectedRows == 1);
-    return (affectedRows) == 1;
-  }
-
-  @override
-  Future<DbDraftStatusWrapper> findById(int? id) =>
-      dao.findById(id!).map(mapDataClassToItem).getSingle();
-
-  @override
-  Stream<DbDraftStatusWrapper> watchById(int? id) =>
-      dao.findById(id!).map(mapDataClassToItem).watchSingle();
-
-  @override
-  Future<bool> isExistWithId(int? id) =>
-      dao.countById(id!).map((count) => count > 0).getSingle();
-
-  @override
-  Future<List<DbDraftStatusWrapper>> getAll() =>
-      dao.getAll().map(mapDataClassToItem).get();
-
-  @override
-  Future<int> countAll() => dao.countAll().getSingle();
-
-  @override
-  Stream<List<DbDraftStatusWrapper>> watchAll() =>
-      dao.getAll().map(mapDataClassToItem).watch();
-
-  @override
-  Future<int> insert(DbDraftStatus item) => dao.insert(item);
-
-  @override
-  Future<int> upsert(DbDraftStatus item) => dao.upsert(item);
-
-  @override
-  Future<bool> updateById(int? id, DbDraftStatus dbDraftStatus) {
-    if (dbDraftStatus.id != id) {
-      dbDraftStatus = dbDraftStatus.copyWith(id: id);
-    }
-    return dao.replace(dbDraftStatus);
-  }
-
-  DbDraftStatusWrapper mapDataClassToItem(DbDraftStatus dataClass) {
-    return DbDraftStatusWrapper(dataClass);
-  }
-
-  Insertable<DbDraftStatus> mapItemToDataClass(DbDraftStatusWrapper item) =>
-      item.dbDraftStatus;
-
-  @override
-  Future<List<DbDraftStatusWrapper>> getDraftStatuses({
+  Future<List<DbDraftStatusPopulatedWrapper>> getDraftStatuses({
     required ScheduledStatusRepositoryFilters? filters,
     required RepositoryPagination<IDraftStatus> pagination,
     DraftStatusOrderingTermData orderingTermData =
@@ -122,20 +45,15 @@ class DraftStatusRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    var typedDraftStatusesList = await query.get();
+    var typedResultList = await query.get();
 
-    return dao
-        .typedResultListToPopulated(typedDraftStatusesList)
-        .map(
-          (dbDraftStatus) => mapDataClassToItem(
-            dbDraftStatus,
-          ),
-        )
-        .toList();
+    return typedResultList
+        .toDbDraftStatusPopulatedList(dao: dao)
+        .toDbDraftStatusPopulatedWrapperList();
   }
 
   @override
-  Stream<List<DbDraftStatusWrapper>> watchDraftStatuses({
+  Stream<List<DbDraftStatusPopulatedWrapper>> watchDraftStatuses({
     required ScheduledStatusRepositoryFilters filters,
     required RepositoryPagination<IDraftStatus> pagination,
     DraftStatusOrderingTermData orderingTermData =
@@ -149,10 +67,11 @@ class DraftStatusRepository extends AsyncInitLoadingBloc
 
     Stream<List<TypedResult>> stream = query.watch();
 
-    return stream.map((typedList) => dao
-        .typedResultListToPopulated(typedList)
-        .map(mapDataClassToItem)
-        .toList());
+    return stream.map((typedResultList) {
+      return typedResultList
+          .toDbDraftStatusPopulatedList(dao: dao)
+          .toDbDraftStatusPopulatedWrapperList();
+    });
   }
 
   JoinedSelectStatement createQuery({
@@ -201,7 +120,7 @@ class DraftStatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbDraftStatusWrapper?> getDraftStatus({
+  Future<DbDraftStatusPopulatedWrapper?> getDraftStatus({
     required ScheduledStatusRepositoryFilters filters,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
@@ -215,7 +134,7 @@ class DraftStatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<DbDraftStatusWrapper?> watchDraftStatus({
+  Stream<DbDraftStatusPopulatedWrapper?> watchDraftStatus({
     required ScheduledStatusRepositoryFilters filters,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
@@ -235,5 +154,50 @@ class DraftStatusRepository extends AsyncInitLoadingBloc
   Future addDraftStatus({
     required IDraftStatus draftStatus,
   }) =>
-      insert(mapDraftStatusToDbDraftStatus(draftStatus));
+      insertInAppType(draftStatus);
+
+  @override
+  DbDraftStatus mapAppItemToDbItem(IDraftStatus appItem) =>
+      appItem.toDbDraftStatus();
+
+  @override
+  DbDraftStatusPopulated mapAppItemToDbPopulatedItem(IDraftStatus appItem) =>
+      appItem.toDbDraftStatusPopulated();
+
+  @override
+  IDraftStatus mapDbPopulatedItemToAppItem(
+          DbDraftStatusPopulated dbPopulatedItem) =>
+      dbPopulatedItem.toDbDraftStatusPopulatedWrapper();
+}
+
+extension DbDraftStatusTypedResultExtension on TypedResult {
+  DbDraftStatus toDbDraftStatus({
+    required DraftStatusDao dao,
+  }) =>
+      readTable(dao.db.dbDraftStatuses);
+
+  DbDraftStatusPopulated toDbDraftStatusPopulated({
+    required DraftStatusDao dao,
+  }) =>
+      DbDraftStatusPopulated(
+        dbDraftStatus: toDbDraftStatus(
+          dao: dao,
+        ),
+      );
+}
+
+extension DbDraftStatusTypedResultListExtension on List<TypedResult> {
+  List<DbDraftStatus> toDbDraftStatusList({
+    required DraftStatusDao dao,
+  }) =>
+      map(
+        (item) => item.toDbDraftStatus(dao: dao),
+      ).toList();
+
+  List<DbDraftStatusPopulated> toDbDraftStatusPopulatedList({
+    required DraftStatusDao dao,
+  }) =>
+      map(
+        (item) => item.toDbDraftStatusPopulated(dao: dao),
+      ).toList();
 }

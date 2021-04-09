@@ -6,7 +6,7 @@ Future<DbScheduledStatus> insertDbScheduledStatus(
   ScheduledStatusRepository scheduledStatusRepository,
   DbScheduledStatus scheduledStatusData,
 ) async {
-  var id = await scheduledStatusRepository.insert(scheduledStatusData);
+  var id = await scheduledStatusRepository.insertInDbType(scheduledStatusData);
   assert(id > 0, true);
   var dbScheduledStatus = scheduledStatusData.copyWith(id: id);
   return dbScheduledStatus;

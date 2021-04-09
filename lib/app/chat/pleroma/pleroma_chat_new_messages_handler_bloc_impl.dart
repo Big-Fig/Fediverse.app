@@ -23,7 +23,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
 
     // local chat message may not exist
     // when message is first message in new chat
-    var chat = await chatRepository.findByRemoteId(
+    var chat = await chatRepository.findByRemoteIdInAppType(
       chatId,
     );
     if (chat == null) {
@@ -33,7 +33,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
       await chatRepository.upsertRemoteChat(
         remoteChat,
       );
-      chat = await chatRepository.findByRemoteId(
+      chat = await chatRepository.findByRemoteIdInAppType(
         chatId,
       );
     }

@@ -95,7 +95,8 @@ class DbFilterPopulatedWrapper implements IFilter {
 
   @override
   List<MastodonFilterContextType> get contextAsMastodonFilterContextType =>
-      context.map(
+      context
+          .map(
             (contextString) => contextString.toMastodonFilterContextType(),
           )
           .toList();
@@ -151,6 +152,44 @@ extension IFilterExtension on IFilter {
       return false;
     } else {
       return DateTime.now().isAfter(expiresAt!);
+    }
+  }
+
+  DbFilterPopulatedWrapper toDbFilterPopulatedWrapper() {
+    if (this is DbFilterPopulatedWrapper) {
+      return this as DbFilterPopulatedWrapper;
+    } else {
+      return DbFilterPopulatedWrapper(
+        dbFilterPopulated: toDbFilterPopulated(),
+      );
+    }
+  }
+
+  DbFilterPopulated toDbFilterPopulated() {
+    if (this is DbFilterPopulatedWrapper) {
+      var dbFilterPopulatedWrapper = this as DbFilterPopulatedWrapper;
+      return dbFilterPopulatedWrapper.dbFilterPopulated;
+    } else {
+      return DbFilterPopulated(
+        dbFilter: toDbFilter(),
+      );
+    }
+  }
+
+  DbFilter toDbFilter() {
+    if (this is DbFilterPopulatedWrapper) {
+      var dbFilterPopulatedWrapper = this as DbFilterPopulatedWrapper;
+      return dbFilterPopulatedWrapper.dbFilterPopulated.dbFilter;
+    } else {
+      return DbFilter(
+        id: localId,
+        remoteId: remoteId,
+        phrase: phrase,
+        context: context,
+        irreversible: irreversible,
+        wholeWord: wholeWord,
+        expiresAt: expiresAt,
+      );
     }
   }
 }

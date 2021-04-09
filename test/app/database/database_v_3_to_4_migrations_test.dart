@@ -33,7 +33,10 @@ void main() {
       seed: "seed1",
       dbAccount: await createTestDbAccount(seed: "seed2"),
     );
-    await statusDao.insert(testDbStatus);
+    await statusDao.insert(
+      entity: testDbStatus,
+      mode: null,
+    );
 
     expect((await statusDao.getAll().get()).isNotEmpty, true);
 

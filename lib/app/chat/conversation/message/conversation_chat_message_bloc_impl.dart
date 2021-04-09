@@ -88,7 +88,7 @@ class ConversationChatMessageBloc extends ChatMessageBloc
   void watchLocalRepositoryChanges() {
     addDisposable(
       streamSubscription:
-          statusRepository.watchByRemoteId(chatMessage.remoteId).listen(
+          statusRepository.watchByRemoteIdInAppType(chatMessage.remoteId).listen(
         (updatedChatMessage) {
           if (updatedChatMessage != null) {
             _chatMessageSubject.add(

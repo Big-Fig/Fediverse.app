@@ -193,3 +193,42 @@ class DbPleromaChatPopulatedWrapper implements IPleromaChat {
     return 'DbPleromaChatPopulatedWrapper{dbChatPopulated: $dbChatPopulated}';
   }
 }
+
+extension IPleromaChatExtension on IPleromaChat {
+  DbPleromaChatPopulatedWrapper toDbPleromaChatPopulatedWrapper() {
+    if (this is DbPleromaChatPopulatedWrapper) {
+      return this as DbPleromaChatPopulatedWrapper;
+    } else {
+      return DbPleromaChatPopulatedWrapper(
+        dbChatPopulated: toDbPleromaChatPopulated(),
+      );
+    }
+  }
+
+  DbPleromaChatPopulated toDbPleromaChatPopulated() {
+    if (this is DbPleromaChatPopulatedWrapper) {
+      var dbPleromaChatPopulatedWrapper = this as DbPleromaChatPopulatedWrapper;
+      return dbPleromaChatPopulatedWrapper.dbChatPopulated;
+    } else {
+      return DbPleromaChatPopulated(
+        dbChat: toDbChat(),
+        dbAccount: accounts.first.toDbAccount(),
+      );
+    }
+  }
+
+  DbChat toDbChat() {
+    if (this is DbPleromaChatPopulatedWrapper) {
+      var dbPleromaChatPopulatedWrapper = this as DbPleromaChatPopulatedWrapper;
+      return dbPleromaChatPopulatedWrapper.dbChatPopulated.dbChat;
+    } else {
+      return DbChat(
+        id: localId,
+        remoteId: remoteId,
+        unread: unread,
+        updatedAt: updatedAt,
+        accountRemoteId: accounts.first.remoteId,
+      );
+    }
+  }
+}

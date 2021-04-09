@@ -5,8 +5,8 @@ import 'package:fedi/app/chat/conversation/database/conversation_chat_database_d
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
@@ -22,8 +22,17 @@ var _singleConversationChatRepositoryPagination =
   olderThanItem: null,
 );
 
-class ConversationChatRepository extends AsyncInitLoadingBloc
-    implements IConversationChatRepository {
+class ConversationChatRepository
+    extends PopulatedAppRemoteDatabaseDaoRepository<
+        DbConversation,
+        DbConversationPopulated,
+        IConversationChat,
+        IPleromaConversation,
+        int,
+        String,
+        $DbConversationsTable,
+        $DbConversationsTable> implements IConversationChatRepository {
+  @override
   late ConversationDao dao;
 
   final IAccountRepository accountRepository;
@@ -35,17 +44,6 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
     required this.statusRepository,
   }) {
     dao = appDatabase.conversationDao;
-  }
-
-  @override
-  Future deleteByRemoteId(String? remoteId) => dao.deleteByRemoteId(
-        remoteId!,
-      );
-
-  @override
-  Future internalAsyncInit() async {
-    // nothing to init now
-    return null;
   }
 
   @override
@@ -70,7 +68,7 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       );
     }
 
-    await upsert(remoteConversation.toDbConversation());
+    await upsertInRemoteType(remoteConversation);
   }
 
   @override
@@ -98,96 +96,9 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       );
     }
 
-    await upsertAll(
-      remoteConversations
-          .map(
-            (pleromaConversation) => pleromaConversation.toDbConversation(),
-          )
-          .toList(),
+    await upsertAllInRemoteType(
+      remoteConversations,
     );
-  }
-
-  @override
-  Future<DbConversationChatPopulatedWrapper?> findByRemoteId(
-          String remoteId) async =>
-      (await dao.findByRemoteId(remoteId))
-          ?.toDbConversationChatPopulatedWrapper();
-
-  @override
-  Stream<DbConversationChatPopulatedWrapper?> watchByRemoteId(
-          String remoteId) =>
-      (dao.watchByRemoteId(remoteId)).map(
-        (value) => value?.toDbConversationChatPopulatedWrapper(),
-      );
-
-  @override
-  Future upsertAll(List<DbConversation> items) async {
-    // insertOrReplace
-    // if a row with the same primary or unique key already
-    // exists, it will be deleted and re-created with the row being inserted.
-    // We declared remoteId as unique so it possible to insertOrReplace by it too
-    await dao.insertAll(items, InsertMode.insertOrReplace);
-  }
-
-  @override
-  Future insertAll(List<DbConversation> items) async {
-    // if item already exist rollback changes
-    // call this only if you sure that items not exist instead user upsertAll
-    return await dao.insertAll(items, InsertMode.insertOrRollback);
-  }
-
-  @override
-  Future clear() => dao.clear();
-
-  @override
-  Future<bool> deleteById(int id) async {
-    var affectedRows = await dao.deleteById(id);
-    assert(affectedRows == 0 || affectedRows == 1);
-    return (affectedRows) == 1;
-  }
-
-  @override
-  Future<DbConversationChatPopulatedWrapper?> findById(int id) async =>
-      (await dao.findById(id))?.toDbConversationChatPopulatedWrapper();
-
-  @override
-  Stream<DbConversationChatPopulatedWrapper?> watchById(int id) =>
-      dao.watchById(id).map(
-            (value) => value?.toDbConversationChatPopulatedWrapper(),
-          );
-
-  @override
-  Future<bool> isExistWithId(int id) =>
-      dao.countById(id).map((count) => count > 0).getSingle();
-
-  @override
-  Future<List<DbConversationChatPopulatedWrapper>> getAll() async =>
-      (await dao.findAll()).toDbConversationChatPopulatedWrapperList();
-
-  @override
-  Future<int> countAll() => dao.countAll().getSingle();
-
-  @override
-  Stream<List<DbConversationChatPopulatedWrapper>> watchAll() =>
-      dao.watchAll().map(
-            (list) => list.toDbConversationChatPopulatedWrapperList(),
-          );
-
-  @override
-  Future<int> insert(DbConversation item) => dao.insert(item);
-
-  @override
-  Future<int> upsert(DbConversation item) => dao.upsert(item);
-
-  @override
-  Future<bool> updateById(
-    int? id,
-    DbConversation dbConversation,
-  ) {
-    if (dbConversation.id != id) {
-      dbConversation = dbConversation.copyWith(id: id);
-    }
-    return dao.replace(dbConversation);
   }
 
   @override
@@ -216,9 +127,9 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       );
     }
     if (oldLocalConversation.localId != null) {
-      await updateById(
-        oldLocalConversation.localId,
-        newRemoteConversation.toDbConversation(),
+      await updateByDbIdInDbType(
+        dbId: oldLocalConversation.localId!,
+        dbItem: newRemoteConversation.toDbConversation(),
       );
     } else {
       await upsertRemoteConversation(newRemoteConversation);
@@ -350,8 +261,7 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       // todo: rework with moor-like code
       var fieldName = dao.statusAlias.createdAt.$name;
       var aliasName = dao.statusAlias.$tableName;
-      var having =
-      CustomExpression<bool>("MAX($aliasName.$fieldName)");
+      var having = CustomExpression<bool>("MAX($aliasName.$fieldName)");
       joinQuery.groupBy(
         [
           dao.dbConversations.remoteId,
@@ -371,11 +281,11 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
 
   @override
   Future<bool> markAsRead({
-    required IConversationChat? conversation,
+    required IConversationChat conversation,
   }) {
-    return updateById(
-      conversation!.localId,
-      DbConversation(
+    return updateByDbIdInDbType(
+      dbId: conversation.localId!,
+      dbItem: DbConversation(
         id: conversation.localId,
         remoteId: conversation.remoteId,
         unread: false,
@@ -471,44 +381,39 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
               .toDbConversationChatWithLastMessagePopulatedWrapper(),
         );
   }
-}
 
-extension DbConversationExtension on DbConversationPopulated {
-  DbConversationChatPopulatedWrapper toDbConversationChatPopulatedWrapper() =>
-      DbConversationChatPopulatedWrapper(
-        dbConversationPopulated: this,
-      );
-}
+  @override
+  DbConversation mapAppItemToDbItem(IConversationChat appItem) =>
+      appItem.toDbConversation();
 
-extension DbConversationListExtension on List<DbConversationPopulated> {
-  List<DbConversationChatPopulatedWrapper>
-      toDbConversationChatPopulatedWrapperList() => map(
-            (item) => item.toDbConversationChatPopulatedWrapper(),
-          ).toList();
-}
+  @override
+  IPleromaConversation mapAppItemToRemoteItem(IConversationChat appItem) {
+    // todo: improve
+    return appItem.toPleromaConversation(
+      lastStatus: null,
+      accounts: [],
+    );
+  }
 
-extension DbConversationChatPopulatedWrapperExtension
-    on DbConversationChatPopulatedWrapper {
-  DbConversation toDbConversation() => dbConversationPopulated.dbConversation;
+  @override
+  DbConversationPopulated mapAppItemToDbPopulatedItem(
+          IConversationChat appItem) =>
+      appItem.toDbConversationPopulated();
 
-  DbConversationPopulated toDbConversationPopulated() =>
-      dbConversationPopulated;
-}
+  @override
+  IConversationChat mapDbPopulatedItemToAppItem(
+          DbConversationPopulated dbPopulatedItem) =>
+      dbPopulatedItem.toDbConversationChatPopulatedWrapper();
 
-extension DbConversationChatWithLastMessagePopulatedExtension
-    on DbConversationChatWithLastMessagePopulated {
-  DbConversationChatWithLastMessagePopulatedWrapper
-      toDbConversationChatWithLastMessagePopulatedWrapper() =>
-          DbConversationChatWithLastMessagePopulatedWrapper(
-            dbConversationChatWithLastMessagePopulated: this,
-          );
-}
-
-extension DbConversationChatWithLastMessagePopulatedListExtension
-    on List<DbConversationChatWithLastMessagePopulated> {
-  List<DbConversationChatWithLastMessagePopulatedWrapper>
-      toDbConversationChatWithLastMessagePopulatedWrapperList() => map(
-            (value) =>
-                value.toDbConversationChatWithLastMessagePopulatedWrapper(),
-          ).toList();
+  @override
+  IPleromaConversation mapDbPopulatedItemToRemoteItem(
+      DbConversationPopulated dbPopulatedItem) {
+    // todo: improve
+    return dbPopulatedItem
+        .toDbConversationChatPopulatedWrapper()
+        .toPleromaConversation(
+      lastStatus: null,
+      accounts: [],
+    );
+  }
 }

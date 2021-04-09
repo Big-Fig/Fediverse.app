@@ -60,7 +60,7 @@ Future<T?> showStatusActionDeleteDialog<T>({
               listen: false,
             );
 
-            await draftStatusRepository.upsert(
+            await draftStatusRepository.upsertInDbType(
               DbDraftStatus(
                 data: postStatusData,
                 updatedAt: DateTime.now(),

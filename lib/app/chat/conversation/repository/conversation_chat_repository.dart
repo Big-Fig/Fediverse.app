@@ -11,8 +11,8 @@ import 'package:provider/provider.dart';
 
 abstract class IConversationChatRepository
     implements
-        IReadIdListRepository<DbConversationChatPopulatedWrapper, int>,
-        IWriteIdListRepository<DbConversation, int>,
+        IAppRemoteReadWriteRepository<DbConversation, IConversationChat,
+            IPleromaConversation, int, String>,
         IDisposable {
   static IConversationChatRepository of(
     BuildContext context, {
@@ -23,17 +23,9 @@ abstract class IConversationChatRepository
         listen: listen,
       );
 
-  Future<DbConversationChatPopulatedWrapper?> findByRemoteId(
-    String remoteId,
-  );
-
   Future upsertRemoteConversations(
     List<IPleromaConversation> remoteConversations,
   );
-
-  Future deleteByRemoteId(String remoteId);
-
-  Stream<DbConversationChatPopulatedWrapper?> watchByRemoteId(String remoteId);
 
   Future upsertRemoteConversation(
     IPleromaConversation remoteConversation,
@@ -78,14 +70,16 @@ abstract class IConversationChatRepository
 
   Stream<int> watchTotalUnreadCount();
 
-  Future<List<IConversationChatWithLastMessage>> getConversationsWithLastMessage({
+  Future<List<IConversationChatWithLastMessage>>
+      getConversationsWithLastMessage({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat>? pagination,
     ConversationChatOrderingTermData? orderingTermData =
         ConversationChatOrderingTermData.updatedAtDesc,
   });
 
-  Stream<List<IConversationChatWithLastMessage>> watchConversationsWithLastMessage({
+  Stream<List<IConversationChatWithLastMessage>>
+      watchConversationsWithLastMessage({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat>? pagination,
     ConversationChatOrderingTermData? orderingTermData =

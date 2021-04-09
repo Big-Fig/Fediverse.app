@@ -71,7 +71,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
           streamSubscription:
-              filterRepository.watchByRemoteId(filter.remoteId).listen(
+              filterRepository.watchByRemoteIdInAppType(filter.remoteId).listen(
             (updatedFilter) {
               if (updatedFilter != null) {
                 _filterSubject.add(updatedFilter);

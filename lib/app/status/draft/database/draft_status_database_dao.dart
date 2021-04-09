@@ -1,5 +1,7 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/local/populated_app_local_database_dao.dart';
 import 'package:fedi/app/status/draft/database/draft_status_database_model.dart';
+import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository_model.dart';
 import 'package:moor/moor.dart';
 
@@ -18,32 +20,16 @@ part 'draft_status_database_dao.g.dart';
     "getAll": "SELECT * FROM db_draft_statuses",
   },
 )
-class DraftStatusDao extends DatabaseAccessor<AppDatabase>
-    with _$DraftStatusDaoMixin {
+class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
+    DbDraftStatus,
+    DbDraftStatusPopulated,
+    int,
+    $DbDraftStatusesTable,
+    $DbDraftStatusesTable> with _$DraftStatusDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
   DraftStatusDao(this.db) : super(db);
-
-  Future<int> insert(Insertable<DbDraftStatus> entity) =>
-      into(dbDraftStatuses).insert(entity);
-
-  Future<int> upsert(Insertable<DbDraftStatus> entity) =>
-      into(dbDraftStatuses).insert(entity, mode: InsertMode.insertOrReplace);
-
-  Future insertAll(
-    List<Insertable<DbDraftStatus>> entities,
-    InsertMode mode,
-  ) async =>
-      await batch((batch) {
-        batch.insertAll(dbDraftStatuses, entities, mode: mode);
-      });
-
-  Future<bool> replace(Insertable<DbDraftStatus> entity) async =>
-      await update(dbDraftStatuses).replace(entity);
-
-  SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus>
-      startSelectQuery() => (select(db.dbDraftStatuses));
 
   SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> orderBy(
     SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
@@ -105,4 +91,7 @@ class DraftStatusDao extends DatabaseAccessor<AppDatabase>
 
     return query;
   }
+
+  @override
+  $DbDraftStatusesTable get table => dbDraftStatuses;
 }

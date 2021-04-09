@@ -32,7 +32,10 @@ void main() {
     var testDbAccount = await createTestDbAccount(seed: "seed1");
     testDbAccount =
         testDbAccount.copyWith(pleromaBackgroundImage: pleromaBackgroundImage);
-    await accountDao.insert(testDbAccount);
+    await accountDao.insert(
+      entity: testDbAccount,
+      mode: null,
+    );
 
     expect(
       (await accountDao.findByRemoteId(testDbAccount.remoteId).getSingle())

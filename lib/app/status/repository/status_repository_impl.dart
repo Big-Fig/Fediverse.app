@@ -3,6 +3,7 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/database/conversation_chat_statuses_database_dao.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
 import 'package:fedi/app/status/database/home_timeline_statuses_database_dao.dart';
 import 'package:fedi/app/status/database/status_database_dao.dart';
 import 'package:fedi/app/status/database/status_hashtags_database_dao.dart';
@@ -11,7 +12,6 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
@@ -29,8 +29,16 @@ var _singleStatusRepositoryPagination = RepositoryPagination<IStatus>(
   olderThanItem: null,
 );
 
-class StatusRepository extends AsyncInitLoadingBloc
-    implements IStatusRepository {
+class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
+    DbStatus,
+    DbStatusPopulated,
+    IStatus,
+    IPleromaStatus,
+    int,
+    String,
+    $DbStatusesTable,
+    $DbStatusesTable> implements IStatusRepository {
+  @override
   late StatusDao dao;
   late StatusHashtagsDao hashtagsDao;
   late StatusListsDao listsDao;
@@ -48,15 +56,6 @@ class StatusRepository extends AsyncInitLoadingBloc
     homeTimelineStatusesDao = appDatabase.homeTimelineStatusesDao;
     conversationStatusesDao = appDatabase.conversationStatusesDao;
   }
-
-  @override
-  Future internalAsyncInit() async {
-    // nothing to init now
-    return null;
-  }
-
-  @override
-  Future deleteByRemoteId(String remoteId) => dao.deleteByRemoteId(remoteId);
 
   @override
   Future upsertRemoteStatus(
@@ -82,11 +81,11 @@ class StatusRepository extends AsyncInitLoadingBloc
       chatRemoteId: null,
     );
 
-    await upsert(remoteStatus.toDbStatus());
+    await upsertInRemoteType(remoteStatus);
 
     if (isFromHomeTimeline == true) {
       await homeTimelineStatusesDao.insert(
-        DbHomeTimelineStatus(
+        entity: DbHomeTimelineStatus(
           statusRemoteId: remoteStatus.id,
           id: null,
           accountRemoteId: remoteStatus.account.id,
@@ -158,13 +157,13 @@ class StatusRepository extends AsyncInitLoadingBloc
       chatRemoteId: null,
     );
 
-    await upsertAll(
-      remoteStatuses.map((remoteStatus) => remoteStatus.toDbStatus()).toList(),
+    await upsertAllInRemoteType(
+      remoteStatuses,
     );
 
     if (isFromHomeTimeline == true) {
       await homeTimelineStatusesDao.insertAll(
-        remoteStatuses
+        entities: remoteStatuses
             .map(
               (remoteStatus) => DbHomeTimelineStatus(
                 statusRemoteId: remoteStatus.id,
@@ -173,7 +172,7 @@ class StatusRepository extends AsyncInitLoadingBloc
               ),
             )
             .toList(),
-        InsertMode.insertOrReplace,
+        mode: InsertMode.insertOrReplace,
       );
     }
 
@@ -241,7 +240,7 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     if (notAddedYetStatusRemoteIds.isNotEmpty == true) {
       await listsDao.insertAll(
-        notAddedYetStatusRemoteIds
+        entities: notAddedYetStatusRemoteIds
             .map(
               (statusRemoteId) => DbStatusList(
                 id: null,
@@ -250,7 +249,7 @@ class StatusRepository extends AsyncInitLoadingBloc
               ),
             )
             .toList(),
-        InsertMode.insertOrReplace,
+        mode: InsertMode.insertOrReplace,
       );
     }
   }
@@ -276,7 +275,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     if (notAddedYetStatusRemoteIds.isNotEmpty == true) {
       for (var statusRemoteId in notAddedYetStatusRemoteIds) {
         await conversationStatusesDao.insert(
-          DbConversationStatus(
+          entity: DbConversationStatus(
             id: null,
             statusRemoteId: statusRemoteId,
             conversationRemoteId: conversationRemoteId,
@@ -294,7 +293,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     await hashtagsDao.deleteByStatusRemoteId(statusRemoteId);
     tags ??= [];
     await hashtagsDao.insertAll(
-      tags
+      entities: tags
           .map(
             (remoteTag) => DbStatusHashtag(
               id: null,
@@ -303,13 +302,9 @@ class StatusRepository extends AsyncInitLoadingBloc
             ),
           )
           .toList(),
-      InsertMode.insertOrReplace,
+      mode: InsertMode.insertOrReplace,
     );
   }
-
-  @override
-  Future<DbStatusPopulatedWrapper?> findByRemoteId(String remoteId) async =>
-      (await dao.findByRemoteId(remoteId))?.toDbStatusPopulatedWrapper();
 
   @override
   Future<List<DbStatusPopulatedWrapper>> getStatuses({
@@ -353,83 +348,6 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future upsertAll(List<DbStatus> items) async {
-    // insertOrReplace
-    // if a row with the same primary or unique key already
-    // exists, it will be deleted and re-created with the row being inserted.
-    // We declared remoteId as unique so it possible to insertOrReplace by it too
-    await dao.insertAll(items, InsertMode.insertOrReplace);
-  }
-
-  @override
-  Future insertAll(List<DbStatus> items) async {
-    // if item already exist rollback changes
-    // call this only if you sure that items not exist instead user upsertAll
-    return await dao.insertAll(items, InsertMode.insertOrRollback);
-  }
-
-  @override
-  Future clear() => dao.clear();
-
-  @override
-  Future<bool> deleteById(int id) async {
-    var affectedRows = await dao.deleteById(id);
-    assert(affectedRows == 0 || affectedRows == 1);
-    return (affectedRows) == 1;
-  }
-
-  @override
-  Future<IStatus?> findById(int id) async =>
-      (await dao.findById(id))?.toDbStatusPopulatedWrapper();
-
-  @override
-  Stream<DbStatusPopulatedWrapper?> watchById(int id) => dao
-      .watchById(
-        id,
-      )
-      .map(
-        (value) => value?.toDbStatusPopulatedWrapper(),
-      );
-
-  @override
-  Stream<IStatus?> watchByRemoteId(String remoteId) {
-    _logger.finest(() => "watchByRemoteId $remoteId");
-    return dao.watchByRemoteId(remoteId).map(
-          (value) => value?.toDbStatusPopulatedWrapper(),
-        );
-  }
-
-  @override
-  Future<bool> isExistWithId(int id) =>
-      dao.countById(id).map((count) => count > 0).getSingle();
-
-  @override
-  Future<List<DbStatusPopulatedWrapper>> getAll() async =>
-      (await dao.findAll()).toDbStatusPopulatedWrappers();
-
-  @override
-  Future<int> countAll() => dao.countAll().getSingle();
-
-  @override
-  Stream<List<DbStatusPopulatedWrapper>> watchAll() => (dao.watchAll()).map(
-        (list) => list.toDbStatusPopulatedWrappers(),
-      );
-
-  @override
-  Future<int> insert(DbStatus item) => dao.insert(item);
-
-  @override
-  Future<int> upsert(DbStatus item) => dao.upsert(item);
-
-  @override
-  Future<bool> updateById(int id, DbStatus dbStatus) {
-    if (dbStatus.id != id) {
-      dbStatus = dbStatus.copyWith(id: id);
-    }
-    return dao.replace(dbStatus);
-  }
-
-  @override
   Future updateLocalStatusByRemoteStatus({
     required IStatus oldLocalStatus,
     required IPleromaStatus newRemoteStatus,
@@ -447,14 +365,14 @@ class StatusRepository extends AsyncInitLoadingBloc
       chatRemoteId: null,
     );
 
-    await updateById(
-      oldLocalStatus.localId!,
-      newRemoteStatus.toDbStatus(),
+    await updateByDbIdInDbType(
+      dbId: oldLocalStatus.localId!,
+      dbItem: newRemoteStatus.toDbStatus(),
     );
 
     if (isFromHomeTimeline == true) {
       await homeTimelineStatusesDao.insert(
-        DbHomeTimelineStatus(
+        entity: DbHomeTimelineStatus(
           statusRemoteId: newRemoteStatus.id,
           id: null,
           accountRemoteId: newRemoteStatus.account.id,
@@ -883,11 +801,12 @@ class StatusRepository extends AsyncInitLoadingBloc
     required String conversationRemoteId,
   }) =>
       conversationStatusesDao.insert(
-        DbConversationStatus(
+        entity: DbConversationStatus(
           id: null,
           conversationRemoteId: conversationRemoteId,
           statusRemoteId: statusRemoteId,
         ),
+        mode: null,
       );
 
   @override
@@ -897,4 +816,32 @@ class StatusRepository extends AsyncInitLoadingBloc
   }) =>
       conversationStatusesDao
           .deleteByConversationRemoteId(conversationRemoteId);
+
+  @override
+  DbStatus mapAppItemToDbItem(IStatus appItem) => appItem.toDbStatus();
+
+  @override
+  IPleromaStatus mapAppItemToRemoteItem(IStatus appItem) =>
+      appItem.toPleromaStatus();
+
+  // @override
+  // IStatus mapRemoteItemToAppItem(IPleromaStatus remoteItem) =>
+  //     remoteItem.toDbStatusPopulatedWrapper();
+
+  @override
+  DbStatusPopulated mapAppItemToDbPopulatedItem(IStatus appItem) =>
+      appItem.toDbStatusPopulated();
+
+  @override
+  IStatus mapDbPopulatedItemToAppItem(DbStatusPopulated dbPopulatedItem) =>
+      dbPopulatedItem.toDbStatusPopulatedWrapper();
+
+  @override
+  IPleromaStatus mapDbPopulatedItemToRemoteItem(
+          DbStatusPopulated dbPopulatedItem) =>
+      dbPopulatedItem.toDbStatusPopulatedWrapper().toPleromaStatus();
+
+  // @override
+  // DbStatusPopulated mapRemoteItemToDbPopulatedItem(IPleromaStatus remoteItem) =>
+  //     remoteItem.toDbStatusPopulated();
 }

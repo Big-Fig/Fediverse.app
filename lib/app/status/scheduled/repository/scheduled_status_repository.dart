@@ -11,8 +11,8 @@ import 'package:provider/provider.dart';
 abstract class IScheduledStatusRepository
     implements
         IDisposable,
-        IReadIdListRepository<IScheduledStatus, int>,
-        IWriteIdListRepository<DbScheduledStatus, int> {
+        IAppRemoteReadWriteRepository<DbScheduledStatus, IScheduledStatus,
+            IPleromaScheduledStatus, int, String> {
   static IScheduledStatusRepository of(
     BuildContext context, {
     bool listen = true,
@@ -39,13 +39,6 @@ abstract class IScheduledStatusRepository
     required IScheduledStatus scheduledStatus,
   });
 
-  Future<IScheduledStatus?> findByRemoteId(
-    String remoteId,
-  );
-
-  Stream<IScheduledStatus?> watchByRemoteId(
-    String? remoteId,
-  );
 
   Future<List<IScheduledStatus>> getScheduledStatuses({
     required ScheduledStatusRepositoryFilters? filters,

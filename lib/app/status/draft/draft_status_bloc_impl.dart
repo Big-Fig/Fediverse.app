@@ -60,7 +60,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
           streamSubscription:
-              draftStatusRepository.watchById(draftStatus.localId).listen(
+              draftStatusRepository.watchByDbIdInAppType(draftStatus.localId!).listen(
             (updatedStatus) {
               if (updatedStatus != null) {
                 _draftStatusSubject.add(updatedStatus);
@@ -73,7 +73,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   }
 
   @override
-  IDraftStatus? get draftStatus => _draftStatusSubject.value;
+  IDraftStatus get draftStatus => _draftStatusSubject.value!;
 
   @override
   Stream<IDraftStatus> get draftStatusStream => _draftStatusSubject.stream;
@@ -99,19 +99,19 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
       );
 
   @override
-  DateTime? get updatedAt => draftStatus!.updatedAt;
+  DateTime? get updatedAt => draftStatus.updatedAt;
 
   @override
   Stream<DateTime?> get updatedAtStream =>
       draftStatusStream.map((draftStatus) => draftStatus.updatedAt);
 
   @override
-  IPostStatusData? calculatePostStatusData() => draftStatus!.postStatusData;
+  IPostStatusData? calculatePostStatusData() => draftStatus.postStatusData;
 
   @override
   Future cancelDraft() {
     _stateSubject.add(DraftStatusState.canceled);
-    return draftStatusRepository.deleteById(draftStatus!.localId);
+    return draftStatusRepository.deleteById(draftStatus.localId!);
   }
 
   @override
@@ -138,17 +138,17 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
       );
     }
 
-    await draftStatusRepository.deleteById(draftStatus!.localId);
+    await draftStatusRepository.deleteById(draftStatus.localId!);
 
     _stateSubject.add(DraftStatusState.alreadyPosted);
   }
 
   @override
   Future updatePostStatusData(PostStatusData postStatusData) async {
-    var localId = draftStatus!.localId;
-    await draftStatusRepository.updateById(
-      localId,
-      DbDraftStatus(
+    var localId = draftStatus.localId;
+    await draftStatusRepository.updateByDbIdInDbType(
+      dbId:localId!,
+      dbItem:DbDraftStatus(
         id: localId,
         updatedAt: DateTime.now(),
         data: postStatusData,

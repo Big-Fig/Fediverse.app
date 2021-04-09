@@ -131,7 +131,6 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
               isNeedWatchLocalRepositoryForUpdates,
           delayInit: delayInit,
         ) {
-
     _logger.finest(() => "conversation chat bloc");
 
     addDisposable(subject: _chatSubject);
@@ -148,7 +147,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   void watchLocalRepositoryForUpdates() {
     addDisposable(
       streamSubscription:
-          conversationRepository.watchByRemoteId(chat.remoteId).listen(
+          conversationRepository.watchByRemoteIdInAppType(chat.remoteId).listen(
         (updatedChat) {
           if (updatedChat != null) {
             _chatSubject.add(updatedChat);
@@ -354,9 +353,9 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         idempotencyKey: dbStatus.wasSentWithIdempotencyKey,
       );
 
-      await statusRepository.updateById(
-        localStatusId!,
-        dbStatus.copyWith(
+      await statusRepository.updateByDbIdInDbType(
+        dbId: localStatusId!,
+        dbItem: dbStatus.copyWith(
           pendingState: PendingState.pending,
         ),
       );
@@ -377,7 +376,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       dbStatus = postStatusDataStatusStatusAdapter.toDbStatus(
         fakeUniqueRemoteRemoteId: fakeUniqueRemoteRemoteId,
       );
-      localStatusId = await statusRepository.insert(
+      localStatusId = await statusRepository.upsertInDbType(
         dbStatus,
       );
 
@@ -395,9 +394,9 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       var pleromaStatus = await pleromaAuthStatusService.postStatus(
         data: pleromaPostStatus,
       );
-      await statusRepository.updateById(
-        localStatusId,
-        dbStatus.copyWith(
+      await statusRepository.updateByDbIdInDbType(
+        dbId:localStatusId,
+        dbItem:dbStatus.copyWith(
           hiddenLocallyOnDevice: true,
           pendingState: PendingState.published,
         ),
@@ -414,9 +413,9 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
     } catch (e, stackTrace) {
       _logger.warning(() => "postMessage error", e, stackTrace);
-      await statusRepository.updateById(
-        localStatusId,
-        dbStatus.copyWith(
+      await statusRepository.updateByDbIdInDbType(
+        dbId:localStatusId,
+        dbItem:dbStatus.copyWith(
           pendingState: PendingState.fail,
         ),
       );
