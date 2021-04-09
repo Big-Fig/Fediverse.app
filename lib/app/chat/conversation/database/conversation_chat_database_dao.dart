@@ -172,7 +172,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
     return customSelect(
       'SELECT COUNT(*) FROM db_conversations WHERE unread=1;',
       readsFrom: {dbConversations},
-    ).map((QueryRow row) => row.readInt('COUNT(*)'));
+    ).map((QueryRow row) => row.read<int>('COUNT(*)'));
   }
 
   List<Join<Table, DataClass>> populateChatJoin() {

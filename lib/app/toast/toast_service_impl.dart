@@ -29,7 +29,6 @@ class ToastService extends DisposableOwner implements IToastService {
         titleAutoFontSize: titleAutoFontSize,
         onClick: onClick,
       ),
-      slideDismissible: true,
       key: ValueKey(title),
       duration: duration,
     );
@@ -52,7 +51,6 @@ class ToastService extends DisposableOwner implements IToastService {
         titleAutoFontSize: titleAutoFontSize,
         onClick: onClick,
       ),
-      slideDismissible: true,
       key: ValueKey(title),
       duration: duration,
     );

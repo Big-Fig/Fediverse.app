@@ -15,5 +15,4 @@ abstract class PopulatedAppRemoteDatabaseDao<
         PopulatedDatabaseDaoMixin<DbItem, DbPopulatedItem, DbId, TableDsl,
             TableInfoDsl> {
   PopulatedAppRemoteDatabaseDao(AppDatabase db) : super(db);
-
 }

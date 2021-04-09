@@ -9,5 +9,5 @@ mixin PopulatedDatabaseDaoMixin<
         TableInfoDsl extends TableInfo<TableDsl, DbItem>>
     on AppDatabaseDao<DbItem, DbID, TableDsl, TableInfoDsl> {
   @override
-  Selectable<DbItem> findById(DbID id) {}
+  Selectable<DbPopulatedItem> findByIdPopulated(DbID id) {}
 }

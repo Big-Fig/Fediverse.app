@@ -11,6 +11,7 @@ analyzer:
     - test/resources/**
     - test/**/examples/**
     - lib/generated/*
+    - lib/**.g.dart
 #  plugins:
 #    - dart_code_metrics
 #  strong-mode:

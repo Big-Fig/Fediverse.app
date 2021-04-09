@@ -18,13 +18,13 @@ class OverlayNotificationService extends DisposableOwner
     double elevation = 16,
     Key? key,
     bool autoDismiss = true,
-    bool slideDismiss = false,
+    DismissDirection dismissDirection = DismissDirection.horizontal,
     NotificationPosition position = NotificationPosition.top,
   }) {
     return showOverlayNotification(
       (context) {
         return SlideDismissible(
-          enable: slideDismiss,
+          direction: dismissDirection,
           key: ValueKey(key),
           child: FediLightStatusBarStyleArea(
             child: Material(
@@ -60,14 +60,14 @@ class OverlayNotificationService extends DisposableOwner
   @override
   void showNotification({
     required Widget child,
-    required bool slideDismissible,
+    DismissDirection dismissDirection = DismissDirection.horizontal,
     required Key key,
     required Duration duration,
   }) {
     showOverlayNotification(
       (context) {
         return SlideDismissible(
-          enable: slideDismissible,
+          direction: dismissDirection,
           key: ValueKey(key),
           child: child,
         );
