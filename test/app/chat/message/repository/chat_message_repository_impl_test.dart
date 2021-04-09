@@ -38,7 +38,7 @@ void main() {
 
     dbAccount = await createTestDbAccount(seed: "seed1");
 
-    var accountId = await accountRepository.insert(dbAccount);
+    var accountId = await accountRepository.insertInDbType(dbAccount);
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
@@ -58,10 +58,10 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await chatMessageRepository.insert(dbChatMessage);
+    var id = await chatMessageRepository.insertInDbType(dbChatMessage);
     assert(id > 0, true);
     expectDbChatMessagePopulated(
-      await chatMessageRepository.findById(id),
+      await chatMessageRepository.findByDbIdInAppType(id),
       dbChatMessagePopulated,
     );
   });
@@ -78,11 +78,11 @@ void main() {
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbChatMessage(
-      await chatMessageRepository.findByRemoteId(dbChatMessage.remoteId),
+      await chatMessageRepository.findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
 
@@ -95,11 +95,11 @@ void main() {
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbChatMessage(
-      await chatMessageRepository.findByRemoteId(dbChatMessage.remoteId),
+      await chatMessageRepository.findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
   });
@@ -117,11 +117,11 @@ void main() {
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbChatMessage(
-      await chatMessageRepository.findByRemoteId(dbChatMessage.remoteId),
+      await chatMessageRepository.findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
 
@@ -135,11 +135,11 @@ void main() {
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbChatMessage(
-      await chatMessageRepository.findByRemoteId(dbChatMessage.remoteId),
+      await chatMessageRepository.findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
   });
@@ -157,15 +157,15 @@ void main() {
     ))
         .copyWith(remoteId: "remoteId1");
 
-    await chatMessageRepository.upsertAll([dbChatMessage1]);
+    await chatMessageRepository.upsertAllInDbType([dbChatMessage1]);
 
-    expect((await chatMessageRepository.getAll()).length, 1);
+    expect((await chatMessageRepository.getAllInAppType()).length, 1);
 
-    await chatMessageRepository.upsertAll([dbChatMessage2]);
-    expect((await chatMessageRepository.getAll()).length, 1);
+    await chatMessageRepository.upsertAllInDbType([dbChatMessage2]);
+    expect((await chatMessageRepository.getAllInAppType()).length, 1);
 
     expectDbChatMessagePopulated(
-      (await chatMessageRepository.getAll()).first,
+      (await chatMessageRepository.getAllInAppType()).first,
       await createTestDbChatMessagePopulated(
         dbChatMessage2,
         accountRepository,
@@ -174,20 +174,24 @@ void main() {
   });
 
   test('updateById', () async {
-    var id = await chatMessageRepository.insert(dbChatMessage);
+    var id = await chatMessageRepository.insertInDbType(dbChatMessage);
     assert(id > 0, true);
 
-    await chatMessageRepository.updateById(
-      id,
-      dbChatMessage.copyWith(remoteId: "newRemoteId"),
+    await chatMessageRepository.updateByDbIdInDbType(
+      dbId: id,
+      dbItem: dbChatMessage.copyWith(remoteId: "newRemoteId"),
     );
 
-    expect((await chatMessageRepository.findById(id))!.remoteId, "newRemoteId");
+    expect((await chatMessageRepository.findByDbIdInAppType(id))!.remoteId,
+        "newRemoteId");
   });
 
   test('updateLocalChatMessageByRemoteChatMessage', () async {
-    var id = await chatMessageRepository
-        .insert(dbChatMessage.copyWith(content: "oldContent"));
+    var id = await chatMessageRepository.insertInDbType(
+      dbChatMessage.copyWith(
+        content: "oldContent",
+      ),
+    );
     assert(id > 0, true);
 
     var oldLocalChatMessage = DbPleromaChatMessagePopulatedWrapper(
@@ -208,13 +212,15 @@ void main() {
       newRemoteChatMessage: newRemoteChatMessage,
     );
 
-    expect((await chatMessageRepository.findById(id))!.content, newContent);
+    expect((await chatMessageRepository.findByDbIdInRemoteType(id))!.content,
+        newContent);
   });
 
   test('findByRemoteId', () async {
-    await chatMessageRepository.insert(dbChatMessage);
+    await chatMessageRepository.insertInDbType(dbChatMessage);
     expectDbChatMessagePopulated(
-      await chatMessageRepository.findByRemoteId(dbChatMessage.remoteId),
+      await chatMessageRepository
+          .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessagePopulated,
     );
   });
@@ -743,11 +749,12 @@ void main() {
       1,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
     expectDbChatMessage(
-      await chatMessageRepository.findByRemoteId(dbChatMessage.remoteId),
+      await chatMessageRepository
+          .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessagePopulated.dbChatMessage,
     );
   });

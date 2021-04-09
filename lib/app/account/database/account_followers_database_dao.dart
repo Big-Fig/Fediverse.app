@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/database/account_followers_database_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/app_database_dao.dart';
 import 'package:moor/moor.dart';
 
 part 'account_followers_database_dao.g.dart';
@@ -25,33 +26,16 @@ part 'account_followers_database_dao.g.dart';
     "getAll": "SELECT * FROM db_account_followers",
   },
 )
-class AccountFollowersDao extends DatabaseAccessor<AppDatabase>
-    with _$AccountFollowersDaoMixin {
+class AccountFollowersDao extends AppDatabaseDao<
+    DbAccountFollower,
+    int,
+    $DbAccountFollowersTable,
+    $DbAccountFollowersTable> with _$AccountFollowersDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
   AccountFollowersDao(this.db) : super(db);
 
-  Future<int> insert(
-    Insertable<DbAccountFollower> entity, {
-    InsertMode? mode,
-  }) async =>
-      into(dbAccountFollowers).insert(entity, mode: mode);
-
-  Future insertAll(
-    List<Insertable<DbAccountFollower>> entities,
-    InsertMode mode,
-  ) async =>
-      await batch(
-        (batch) {
-          batch.insertAll(
-            dbAccountFollowers,
-            entities,
-            mode: mode,
-          );
-        },
-      );
-
-  Future<bool> replace(Insertable<DbAccountFollower> entity) async =>
-      await update(dbAccountFollowers).replace(entity);
+  @override
+  $DbAccountFollowersTable get table => dbAccountFollowers;
 }

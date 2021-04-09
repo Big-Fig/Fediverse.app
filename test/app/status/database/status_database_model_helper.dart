@@ -26,8 +26,7 @@ Future<DbStatusPopulated> createTestDbStatusPopulated(
   DbStatusPopulated dbStatusPopulated = DbStatusPopulated(
     dbStatus: dbStatus,
     dbAccount:
-        (await accountRepository.findByRemoteId(dbStatus.accountRemoteId))!
-            .dbAccount,
+        (await accountRepository.findByRemoteIdInDbType(dbStatus.accountRemoteId))!,
     reblogDbStatus: null,
     reblogDbStatusAccount: null,
     replyReblogDbStatus: null,

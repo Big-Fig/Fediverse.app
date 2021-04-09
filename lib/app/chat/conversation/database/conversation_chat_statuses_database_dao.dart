@@ -1,5 +1,6 @@
 import 'package:fedi/app/chat/conversation/database/conversation_chat_statuses_database_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/app_database_dao.dart';
 import 'package:moor/moor.dart';
 
 part 'conversation_chat_statuses_database_dao.g.dart';
@@ -26,34 +27,16 @@ part 'conversation_chat_statuses_database_dao.g.dart';
     "getAll": "SELECT * FROM db_conversation_statuses",
   },
 )
-class ConversationStatusesDao extends DatabaseAccessor<AppDatabase>
-    with _$ConversationStatusesDaoMixin {
+class ConversationStatusesDao extends AppDatabaseDao<
+    DbConversationStatus,
+    int,
+    $DbConversationStatusesTable,
+    $DbConversationStatusesTable> with _$ConversationStatusesDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
   ConversationStatusesDao(this.db) : super(db);
 
-  Future<int> insert(
-    Insertable<DbConversationStatus> entity, {
-    InsertMode? mode,
-  }) async =>
-      into(dbConversationStatuses).insert(entity, mode: mode);
-
-  Future insertAll(
-    List<Insertable<DbConversationStatus>> entities,
-    InsertMode mode,
-  ) async {
-    await batch(
-      (batch) {
-        batch.insertAll(
-          dbConversationStatuses,
-          entities,
-          mode: mode,
-        );
-      },
-    );
-  }
-
-  Future<bool> replace(Insertable<DbConversationStatus> entity) async =>
-      await update(dbConversationStatuses).replace(entity);
+  @override
+  $DbConversationStatusesTable get table => dbConversationStatuses;
 }

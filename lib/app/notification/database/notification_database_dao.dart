@@ -1,4 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
 import 'package:fedi/app/notification/database/notification_database_model.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
@@ -35,8 +36,13 @@ var _statusReblogAccountAliasId = "status_reblog_account";
         "SELECT * FROM db_notifications ORDER BY id DESC LIMIT 1 OFFSET :offset",
   },
 )
-class NotificationDao extends DatabaseAccessor<AppDatabase>
-    with _$NotificationDaoMixin {
+class NotificationDao extends PopulatedAppRemoteDatabaseDao<
+    DbNotification,
+    DbNotificationPopulated,
+    int,
+    String,
+    $DbNotificationsTable,
+    $DbNotificationsTable> with _$NotificationDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
   late $DbStatusesTable statusAlias;
@@ -54,88 +60,6 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
         alias(db.dbAccounts, _statusReblogAccountAliasId);
   }
 
-  Future<List<DbNotificationPopulated>> findAll() async {
-    JoinedSelectStatement<Table, DataClass> notificationQuery = _findAll();
-
-    return (await notificationQuery.get()).toDbNotificationPopulatedList(
-      dao: this,
-    );
-  }
-
-  Stream<List<DbNotificationPopulated>> watchAll() {
-    JoinedSelectStatement<Table, DataClass> notificationQuery = _findAll();
-
-    return notificationQuery.watch().map(
-          (item) => item.toDbNotificationPopulatedList(
-            dao: this,
-          ),
-        );
-  }
-
-  Future<DbNotificationPopulated?> findById(int id) async =>
-      (await _findById(id).getSingleOrNull())?.toDbNotificationPopulated(
-        dao: this,
-      );
-
-  Future<DbNotificationPopulated?> findByRemoteId(String remoteId) async =>
-      (await _findByRemoteId(remoteId).getSingleOrNull())
-          ?.toDbNotificationPopulated(
-        dao: this,
-      );
-
-  Stream<DbNotificationPopulated?> watchById(int id) =>
-      _findById(id).watchSingleOrNull().map(
-            (value) => value?.toDbNotificationPopulated(dao: this),
-          );
-
-  Stream<DbNotificationPopulated?> watchByRemoteId(String remoteId) =>
-      _findByRemoteId(remoteId).watchSingleOrNull().map(
-            (value) => value?.toDbNotificationPopulated(dao: this),
-          );
-
-  JoinedSelectStatement<Table, DataClass> _findAll() {
-    var sqlQuery = (select(db.dbNotifications).join(
-      populateNotificationJoin(),
-    ));
-    return sqlQuery;
-  }
-
-  JoinedSelectStatement<Table, DataClass> _findById(int id) =>
-      (select(db.dbNotifications)
-            ..where((notification) => notification.id.equals(id)))
-          .join(populateNotificationJoin());
-
-  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
-      (select(db.dbNotifications)
-            ..where(
-              (notification) => notification.remoteId.like(remoteId),
-            ))
-          .join(populateNotificationJoin());
-
-  Future<int> insert(
-    Insertable<DbNotification> entity, {
-    InsertMode? mode,
-  }) async =>
-      into(db.dbNotifications).insert(entity, mode: mode);
-
-  Future<int> upsert(Insertable<DbNotification> entity) async =>
-      into(db.dbNotifications).insert(entity, mode: InsertMode.insertOrReplace);
-
-  Future insertAll(
-    List<Insertable<DbNotification>> entities,
-    InsertMode mode,
-  ) async =>
-      await batch((batch) {
-        batch.insertAll(
-          db.dbNotifications,
-          entities,
-          mode: mode,
-        );
-      });
-
-  Future<bool> replace(Insertable<DbNotification> entity) async =>
-      await update(db.dbNotifications).replace(entity);
-
   Future<int> updateByRemoteId(
     String remoteId,
     Insertable<DbNotification> entity,
@@ -143,10 +67,16 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
-      await (update(db.dbNotifications)..where((i) => i.id.equals(localId)))
+      await (update(db.dbNotifications)
+            ..where(
+              (i) => i.id.equals(localId),
+            ))
           .write(entity);
     } else {
-      localId = await insert(entity);
+      localId = await insert(
+        entity: entity,
+        mode: null,
+      );
     }
 
     return localId;
@@ -180,8 +110,6 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
               ),
             );
 
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-      startSelectQuery() => (select(db.dbNotifications));
 
   /// notification remote ids can't be compared
 //  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
@@ -382,6 +310,9 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
         ..where(
           (status) => status.unread.equals(true),
         );
+
+  @override
+  $DbNotificationsTable get table => dbNotifications;
 }
 
 extension DbNotificationPopulatedTypedResultListExtension on List<TypedResult> {

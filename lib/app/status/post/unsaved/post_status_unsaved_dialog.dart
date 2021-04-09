@@ -32,11 +32,13 @@ void showPostStatusUnsavedDialog(
           var draftStatusRepository =
               IDraftStatusRepository.of(context, listen: false);
           await draftStatusRepository.addDraftStatus(
-            draftStatus: DbDraftStatusWrapper(
-              DbDraftStatus(
-                id: null,
-                updatedAt: DateTime.now(),
-                data: postStatusData.toPostStatusData(),
+            draftStatus: DbDraftStatusPopulatedWrapper(
+              dbDraftStatusPopulated: DbDraftStatusPopulated(
+                dbDraftStatus: DbDraftStatus(
+                  id: null,
+                  updatedAt: DateTime.now(),
+                  data: postStatusData.toPostStatusData(),
+                ),
               ),
             ),
           );

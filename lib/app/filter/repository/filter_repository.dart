@@ -10,22 +10,14 @@ import 'package:provider/provider.dart';
 
 abstract class IFilterRepository
     implements
-        IReadIdListRepository<IFilter, int>,
-        IWriteIdListRepository<DbFilter, int?>,
+        IAppRemoteReadWriteRepository<DbFilter, IFilter, IPleromaFilter, int,
+            String>,
         IDisposable {
   static IFilterRepository of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFilterRepository>(context, listen: listen);
 
-  Future<IFilter?> findByRemoteId(
-    String remoteId,
-  );
-
   Future upsertRemoteFilters(
     List<IPleromaFilter> remoteFilters,
-  );
-
-  Stream<IFilter?> watchByRemoteId(
-    String remoteId,
   );
 
   Future updateLocalFilterByRemoteFilter({

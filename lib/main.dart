@@ -354,7 +354,7 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
                           createPleromaChatPageRoute(
                             (await currentInstanceContextBloc!
                                 .get<IPleromaChatRepository>()
-                                .findByRemoteId(
+                                .findByRemoteIdInAppType(
                                   notification.chatRemoteId!,
                                 ))!,
                           ),

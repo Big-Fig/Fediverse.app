@@ -13,9 +13,9 @@ Future<DbChatMessagePopulated> createTestDbChatMessagePopulated(
 ) async {
   DbChatMessagePopulated dbChatMessagePopulated = DbChatMessagePopulated(
     dbChatMessage: dbChatMessage,
-    dbAccount:
-        (await accountRepository.findByRemoteId(dbChatMessage.accountRemoteId))!
-            .dbAccount,
+    dbAccount: (await accountRepository.findByRemoteIdInDbType(
+      dbChatMessage.accountRemoteId,
+    ))!,
   );
   return dbChatMessagePopulated;
 }

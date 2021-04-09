@@ -4,6 +4,39 @@ import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 
+class DbDraftStatusPopulated {
+  final DbDraftStatus dbDraftStatus;
+
+  DbDraftStatusPopulated({
+    required this.dbDraftStatus,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DbDraftStatusPopulated &&
+          runtimeType == other.runtimeType &&
+          dbDraftStatus == other.dbDraftStatus;
+
+  @override
+  int get hashCode => dbDraftStatus.hashCode;
+
+  @override
+  String toString() {
+    return 'DbDraftStatusPopulated{'
+        'dbDraftStatus: $dbDraftStatus'
+        '}';
+  }
+
+  DbDraftStatusPopulated copyWith({
+    DbDraftStatus? dbDraftStatus,
+  }) {
+    return DbDraftStatusPopulated(
+      dbDraftStatus: dbDraftStatus ?? this.dbDraftStatus,
+    );
+  }
+}
+
 abstract class IDraftStatus {
   int? get localId;
 
@@ -12,10 +45,14 @@ abstract class IDraftStatus {
   PostStatusData get postStatusData;
 }
 
-class DbDraftStatusWrapper implements IDraftStatus {
-  final DbDraftStatus dbDraftStatus;
+class DbDraftStatusPopulatedWrapper implements IDraftStatus {
+  final DbDraftStatusPopulated dbDraftStatusPopulated;
 
-  DbDraftStatusWrapper(this.dbDraftStatus);
+  DbDraftStatus get dbDraftStatus => dbDraftStatusPopulated.dbDraftStatus;
+
+  DbDraftStatusPopulatedWrapper({
+    required this.dbDraftStatusPopulated,
+  });
 
   @override
   int? get localId => dbDraftStatus.id;
@@ -48,3 +85,50 @@ class DraftStatusAdapterToStatus extends PostStatusDataStatusStatusAdapter {
 }
 
 enum DraftStatusState { draft, canceled, alreadyPosted }
+
+extension IDraftStatusExtension on IDraftStatus {
+  DbDraftStatusPopulatedWrapper toDbDraftStatusPopulatedWrapper() {
+    if (this is DbDraftStatusPopulatedWrapper) {
+      var dbDraftStatusPopulatedWrapper = this as DbDraftStatusPopulatedWrapper;
+      return dbDraftStatusPopulatedWrapper;
+    } else {
+      return DbDraftStatusPopulatedWrapper(
+        dbDraftStatusPopulated: toDbDraftStatusPopulated(),
+      );
+    }
+  }
+
+  DbDraftStatusPopulated toDbDraftStatusPopulated() {
+    if (this is DbDraftStatusPopulatedWrapper) {
+      var dbDraftStatusPopulatedWrapper = this as DbDraftStatusPopulatedWrapper;
+      return dbDraftStatusPopulatedWrapper.dbDraftStatusPopulated;
+    } else {
+      return DbDraftStatusPopulated(
+        dbDraftStatus: toDbDraftStatus(),
+      );
+    }
+  }
+
+  DbDraftStatus toDbDraftStatus() {
+    if (this is DbDraftStatusPopulatedWrapper) {
+      var dbDraftStatusPopulatedWrapper = this as DbDraftStatusPopulatedWrapper;
+      return dbDraftStatusPopulatedWrapper.dbDraftStatusPopulated.dbDraftStatus;
+    } else {
+      return DbDraftStatus(
+        id: localId,
+        updatedAt: updatedAt,
+        data: postStatusData,
+      );
+    }
+  }
+}
+
+extension DbDraftStatusPopulatedExtension on DbDraftStatusPopulated {
+  DbDraftStatusPopulatedWrapper toDbDraftStatusPopulatedWrapper() =>
+      DbDraftStatusPopulatedWrapper(dbDraftStatusPopulated: this);
+}
+
+extension DbDraftStatusPopulatedListExtension on List<DbDraftStatusPopulated> {
+  List<DbDraftStatusPopulatedWrapper> toDbDraftStatusPopulatedWrapperList() =>
+      map((item) => item.toDbDraftStatusPopulatedWrapper()).toList();
+}

@@ -136,7 +136,7 @@ class LocalStatusBloc extends StatusBloc {
           chatRemoteId: null,
         );
       }
-      account = await accountRepository.findByRemoteId(
+      account = await accountRepository.findByRemoteIdInAppType(
         accountRemoteId,
       );
     }
@@ -148,7 +148,7 @@ class LocalStatusBloc extends StatusBloc {
   Future<IAccount?> getInReplyToAccount() async {
     var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
     if (inReplyToAccountRemoteId != null) {
-      return await accountRepository.findByRemoteId(
+      return await accountRepository.findByRemoteIdInAppType(
         inReplyToAccountRemoteId,
       );
     } else {
@@ -160,7 +160,7 @@ class LocalStatusBloc extends StatusBloc {
   Stream<IAccount?> watchInReplyToAccount() {
     var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
     if (inReplyToAccountRemoteId != null) {
-      return accountRepository.watchByRemoteId(
+      return accountRepository.watchByRemoteIdInAppType(
         inReplyToAccountRemoteId,
       );
     } else {
@@ -176,7 +176,7 @@ class LocalStatusBloc extends StatusBloc {
     } else {
       var inReplyToRemoteId = status.inReplyToRemoteId;
       if (inReplyToRemoteId != null) {
-        return await statusRepository.findByRemoteId(
+        return await statusRepository.findByRemoteIdInAppType(
           inReplyToRemoteId,
         );
       } else {
@@ -189,8 +189,8 @@ class LocalStatusBloc extends StatusBloc {
   Stream<IStatus?> watchInReplyToStatus() {
     var inReplyToRemoteId = status.inReplyToRemoteId;
     if (inReplyToRemoteId != null) {
-      return statusRepository.watchByRemoteId(
-        status.inReplyToRemoteId!,
+      return statusRepository.watchByRemoteIdInAppType(
+        inReplyToRemoteId,
       );
     } else {
       return Stream.value(null);
@@ -201,9 +201,9 @@ class LocalStatusBloc extends StatusBloc {
   Future<IStatus> onPollUpdated(IPleromaPoll? poll) async {
     var updatedLocalStatus = await super.onPollUpdated(poll);
 
-    await statusRepository.updateById(
-      status.localId!,
-      updatedLocalStatus.toDbStatus(),
+    await statusRepository.updateByDbIdInDbType(
+      dbId:status.localId!,
+      dbItem:updatedLocalStatus.toDbStatus(),
     );
 
     return updatedLocalStatus;
@@ -219,7 +219,7 @@ class LocalStatusBloc extends StatusBloc {
       if (remoteId != null) {
         addDisposable(
           streamSubscription:
-              statusRepository.watchByRemoteId(remoteId).listen(
+              statusRepository.watchByRemoteIdInAppType(remoteId).listen(
             (updatedStatus) {
               if (updatedStatus != null) {
                 statusSubject.add(updatedStatus);
@@ -252,7 +252,7 @@ class LocalStatusBloc extends StatusBloc {
       newRemoteStatus: remoteStatus,
     );
 
-    var result = await statusRepository.findByRemoteId(
+    var result = await statusRepository.findByRemoteIdInAppType(
       remoteStatus.id,
     );
 
@@ -280,7 +280,7 @@ class LocalStatusBloc extends StatusBloc {
       conversationRemoteId: null,
     );
 
-    var result = await statusRepository.findByRemoteId(
+    var result = await statusRepository.findByRemoteIdInAppType(
       remoteStatus.id,
     );
 
@@ -333,7 +333,7 @@ class LocalStatusBloc extends StatusBloc {
       newRemoteStatus: remoteStatus,
     );
 
-    var result = await statusRepository.findByRemoteId(
+    var result = await statusRepository.findByRemoteIdInAppType(
       reblogOrOriginal.remoteId!,
     );
     return result!;
@@ -357,7 +357,7 @@ class LocalStatusBloc extends StatusBloc {
       newRemoteStatus: remoteStatus,
     );
 
-    var result = await statusRepository.findByRemoteId(
+    var result = await statusRepository.findByRemoteIdInAppType(
       reblogOrOriginal.remoteId!,
     );
     return result!;
@@ -388,7 +388,7 @@ class LocalStatusBloc extends StatusBloc {
       newRemoteStatus: remoteStatus,
     );
 
-    var result = await statusRepository.findByRemoteId(
+    var result = await statusRepository.findByRemoteIdInAppType(
       reblogOrOriginal.remoteId!,
     );
     return result!;

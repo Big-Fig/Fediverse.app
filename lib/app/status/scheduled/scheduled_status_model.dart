@@ -30,8 +30,54 @@ abstract class IScheduledStatus {
   });
 }
 
+extension DbScheduledStatusPopulatedExtension on DbScheduledStatusPopulated {
+  DbScheduledStatusPopulatedWrapper toDbScheduledStatusPopulatedWrapper() {
+    return DbScheduledStatusPopulatedWrapper(dbScheduledStatusPopulated: this);
+  }
+}
+
+extension DbScheduledStatusPopulatedListExtension on List<
+    DbScheduledStatusPopulated> {
+  List<
+      DbScheduledStatusPopulatedWrapper> toDbScheduledStatusPopulatedWrappers() {
+    return map((item) => item.toDbScheduledStatusPopulatedWrapper()).toList();
+  }
+}
+
+class DbScheduledStatusPopulated {
+  final DbScheduledStatus dbScheduledStatus;
+
+  DbScheduledStatusPopulated({
+    required this.dbScheduledStatus,
+  });
+
+  @override
+  String toString() {
+    return 'DbScheduledStatusPopulated{'
+        'dbScheduledStatus: $dbScheduledStatus'
+        '}';
+  }
+
+  DbScheduledStatusPopulated copyWith({
+    DbScheduledStatus? dbScheduledStatus,
+  }) =>
+      DbScheduledStatusPopulated(
+        dbScheduledStatus: dbScheduledStatus ?? this.dbScheduledStatus,
+      );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is DbScheduledStatusPopulated &&
+              runtimeType == other.runtimeType &&
+              dbScheduledStatus == other.dbScheduledStatus;
+
+  @override
+  int get hashCode => dbScheduledStatus.hashCode;
+}
+
 extension IPleromaScheduledStatusParamsExtension
-    on IPleromaScheduledStatusParams {
+on IPleromaScheduledStatusParams {
   PleromaScheduledStatusParams toPleromaScheduledStatusParams() {
     if (this is PleromaScheduledStatusParams) {
       return this as PleromaScheduledStatusParams;
@@ -57,7 +103,8 @@ extension IPleromaScheduledStatusParamsExtension
 }
 
 extension IScheduledStatusExtension on IScheduledStatus {
-  IPostStatusData get postStatusData => PostStatusData(
+  IPostStatusData get postStatusData =>
+      PostStatusData(
         subject: params.spoilerText,
         text: params.text,
         scheduledAt: scheduledAt,
@@ -66,20 +113,60 @@ extension IScheduledStatusExtension on IScheduledStatus {
         poll: params.poll?.toPostStatusPoll(),
         to: params.to,
         inReplyToPleromaStatus:
-            params.inReplyToPleromaStatus?.toPleromaStatus(),
+        params.inReplyToPleromaStatus?.toPleromaStatus(),
         inReplyToConversationId: params.inReplyToConversationId,
         isNsfwSensitiveEnabled: params.sensitive,
         language: params.language,
         expiresInSeconds: params.expiresInSeconds,
       );
+
+  DbScheduledStatusPopulatedWrapper toDbScheduledStatusPopulatedWrapper() {
+    if (this is DbScheduledStatusPopulatedWrapper) {
+      var dbScheduledStatusPopulatedWrapper = this as DbScheduledStatusPopulatedWrapper;
+      return dbScheduledStatusPopulatedWrapper;
+    } else {
+      return DbScheduledStatusPopulatedWrapper(
+        dbScheduledStatusPopulated: toDbScheduledStatusPopulated(),
+      );
+    }
+  }
+
+  DbScheduledStatusPopulated toDbScheduledStatusPopulated() {
+    if (this is DbScheduledStatusPopulatedWrapper) {
+      var dbScheduledStatusPopulatedWrapper = this as DbScheduledStatusPopulatedWrapper;
+      return dbScheduledStatusPopulatedWrapper.dbScheduledStatusPopulated;
+    } else {
+      return DbScheduledStatusPopulated(
+          dbScheduledStatus: toDbScheduledStatus(),
+      );
+    }
+  }
+
+  DbScheduledStatus toDbScheduledStatus() {
+    if (this is DbScheduledStatusPopulatedWrapper) {
+      var dbScheduledStatusPopulatedWrapper = this as DbScheduledStatusPopulatedWrapper;
+      return dbScheduledStatusPopulatedWrapper.dbScheduledStatusPopulated
+          .dbScheduledStatus;
+    } else {
+      return DbScheduledStatus(
+        remoteId: remoteId!,
+        scheduledAt: scheduledAt,
+        canceled: canceled,
+        params: params.toPleromaScheduledStatusParams(),
+      );
+    }
+  }
 }
 
-class DbScheduledStatusWrapper implements IScheduledStatus {
-  final DbScheduledStatus dbScheduledStatus;
+class DbScheduledStatusPopulatedWrapper implements IScheduledStatus {
+  final DbScheduledStatusPopulated dbScheduledStatusPopulated;
 
-  DbScheduledStatusWrapper({
-    required this.dbScheduledStatus,
+  DbScheduledStatusPopulatedWrapper({
+    required this.dbScheduledStatusPopulated,
   });
+
+  DbScheduledStatus get dbScheduledStatus =>
+      dbScheduledStatusPopulated.dbScheduledStatus;
 
   @override
   IScheduledStatus copyWith({
@@ -90,14 +177,17 @@ class DbScheduledStatusWrapper implements IScheduledStatus {
     bool? canceled,
     List<PleromaMediaAttachment>? mediaAttachments,
   }) =>
-      DbScheduledStatusWrapper(
-        dbScheduledStatus: dbScheduledStatus.copyWith(
-          id: localId,
-          remoteId: remoteId,
-          scheduledAt: scheduledAt,
-          params: params?.toPleromaScheduledStatusParams(),
-          canceled: canceled,
-          mediaAttachments: mediaAttachments,
+      DbScheduledStatusPopulatedWrapper(
+        dbScheduledStatusPopulated: DbScheduledStatusPopulated(
+          dbScheduledStatus:
+          dbScheduledStatusPopulated.dbScheduledStatus.copyWith(
+            id: localId,
+            remoteId: remoteId,
+            scheduledAt: scheduledAt,
+            params: params?.toPleromaScheduledStatusParams(),
+            canceled: canceled,
+            mediaAttachments: mediaAttachments,
+          ),
         ),
       );
 
@@ -128,14 +218,14 @@ class ScheduledStatusAdapterToStatus extends PostStatusDataStatusStatusAdapter {
     required IAccount account,
     required this.scheduledStatus,
   }) : super(
-          localId: scheduledStatus.localId,
-          account: account,
-          postStatusData: scheduledStatus.postStatusData.toPostStatusData(),
-          createdAt: scheduledStatus.scheduledAt,
-          pendingState: PendingState.notSentYet,
-          oldPendingRemoteId: null,
-          wasSentWithIdempotencyKey: null,
-        );
+    localId: scheduledStatus.localId,
+    account: account,
+    postStatusData: scheduledStatus.postStatusData.toPostStatusData(),
+    createdAt: scheduledStatus.scheduledAt,
+    pendingState: PendingState.notSentYet,
+    oldPendingRemoteId: null,
+    wasSentWithIdempotencyKey: null,
+  );
 
   @override
   bool get hiddenLocallyOnDevice => false;

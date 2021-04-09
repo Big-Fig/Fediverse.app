@@ -47,10 +47,10 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await filterRepository.insert(dbFilter);
+    var id = await filterRepository.insertInDbType(dbFilter);
     assert(id > 0, true);
     expectDbFilterPopulated(
-      (await filterRepository.findById(id))!,
+      (await filterRepository.findByDbIdInAppType(id))!,
       dbFilterPopulated,
     );
   });
@@ -62,36 +62,36 @@ void main() {
     var dbFilter2 = (await createTestDbFilter(seed: "seed6"))
         .copyWith(remoteId: "remoteId1");
 
-    await filterRepository.upsertAll([dbFilter1]);
+    await filterRepository.upsertAllInDbType([dbFilter1]);
 
-    expect((await filterRepository.getAll()).length, 1);
+    expect((await filterRepository.getAllInAppType()).length, 1);
 
-    await filterRepository.upsertAll([dbFilter2]);
-    expect((await filterRepository.getAll()).length, 1);
+    await filterRepository.upsertAllInDbType([dbFilter2]);
+    expect((await filterRepository.getAllInAppType()).length, 1);
 
     expectDbFilterPopulated(
-      (await filterRepository.getAll()).first,
+      (await filterRepository.getAllInAppType()).first,
       await createTestFilterPopulated(dbFilter2),
     );
   });
 
   test('updateById', () async {
-    var id = await filterRepository.insert(dbFilter);
+    var id = await filterRepository.insertInDbType(dbFilter);
     assert(id > 0, true);
 
-    await filterRepository.updateById(
-      id,
-      dbFilter.copyWith(remoteId: "newRemoteId"),
+    await filterRepository.updateByDbIdInDbType(
+      dbId:id,
+      dbItem:dbFilter.copyWith(remoteId: "newRemoteId"),
     );
 
     expect(
-      (await filterRepository.findById(id))!.remoteId,
+      (await filterRepository.findByDbIdInAppType(id))!.remoteId,
       "newRemoteId",
     );
   });
 
   test('updateLocalFilterByRemoteFilter', () async {
-    var id = await filterRepository.insert(
+    var id = await filterRepository.insertInDbType(
       dbFilter.copyWith(phrase: "phrase2"),
     );
     assert(id > 0, true);
@@ -111,13 +111,13 @@ void main() {
       newRemoteFilter: newRemoteFilter,
     );
 
-    expect((await filterRepository.findById(id))!.phrase, "phrase3");
+    expect((await filterRepository.findByDbIdInAppType(id))!.phrase, "phrase3");
   });
 
   test('findByRemoteId', () async {
-    await filterRepository.insert(dbFilter);
+    await filterRepository.insertInDbType(dbFilter);
     expectDbFilterPopulated(
-      (await filterRepository.findByRemoteId(dbFilter.remoteId))!,
+      (await filterRepository.findByRemoteIdInAppType(dbFilter.remoteId))!,
       dbFilterPopulated,
     );
   });
@@ -133,7 +133,7 @@ void main() {
     expect(await filterRepository.countAll(), 1);
 
     expectDbFilter(
-      (await filterRepository.findByRemoteId(dbFilter.remoteId))!,
+      (await filterRepository.findByRemoteIdInAppType(dbFilter.remoteId))!,
       dbFilter,
     );
 
@@ -145,7 +145,7 @@ void main() {
     expect(await filterRepository.countAll(), 1);
 
     expectDbFilter(
-      (await filterRepository.findByRemoteId(dbFilter.remoteId))!,
+      (await filterRepository.findByRemoteIdInAppType(dbFilter.remoteId))!,
       dbFilter,
     );
   });
@@ -162,7 +162,7 @@ void main() {
     expect(await filterRepository.countAll(), 1);
 
     expectDbFilter(
-      (await filterRepository.findByRemoteId(dbFilter.remoteId))!,
+      (await filterRepository.findByRemoteIdInAppType(dbFilter.remoteId))!,
       dbFilter,
     );
 
@@ -176,7 +176,7 @@ void main() {
     // update item with same id
     expect(await filterRepository.countAll(), 1);
     expectDbFilter(
-      (await filterRepository.findByRemoteId(dbFilter.remoteId))!,
+      (await filterRepository.findByRemoteIdInAppType(dbFilter.remoteId))!,
       dbFilter,
     );
   });

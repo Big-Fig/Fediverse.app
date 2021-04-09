@@ -34,7 +34,7 @@ extension GoToNotificationExtension on INotification {
     } else if (chatRemoteId != null) {
       var chatRepository = IPleromaChatRepository.of(context, listen: false);
 
-      var chat = await chatRepository.findByRemoteId(chatRemoteId);
+      var chat = await chatRepository.findByRemoteIdInAppType(chatRemoteId);
 
       if (chat != null) {
         goToPleromaChatPage(context, chat: chat);

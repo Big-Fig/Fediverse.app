@@ -1,4 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
 import 'package:fedi/app/filter/database/filter_database_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
@@ -21,78 +22,17 @@ part 'filter_database_dao.g.dart';
         ":remoteId;",
   },
 )
-class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
+class FilterDao extends PopulatedAppRemoteDatabaseDao<
+    DbFilter,
+    DbFilterPopulated,
+    int,
+    String,
+    $DbFiltersTable,
+    $DbFiltersTable> with _$FilterDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
   FilterDao(this.db) : super(db);
-
-  Future<List<DbFilterPopulated>> findAll() async {
-    JoinedSelectStatement<Table, DataClass> filterQuery = _findAll();
-
-    return (await filterQuery.get()).toDbFilterPopulatedList(dao: this);
-  }
-
-  Stream<List<DbFilterPopulated>> watchAll() {
-    JoinedSelectStatement<Table, DataClass> filterQuery = _findAll();
-
-    return filterQuery.watch().map(
-          (list) => list.toDbFilterPopulatedList(dao: this),
-        );
-  }
-
-  Future<DbFilterPopulated?> findById(int id) async =>
-      (await _findById(id).getSingleOrNull())?.toDbFilterPopulated(dao: this);
-
-  Future<DbFilterPopulated?> findByRemoteId(String remoteId) async =>
-      (await _findByRemoteId(remoteId).getSingleOrNull())
-          ?.toDbFilterPopulated(dao: this);
-
-  Stream<DbFilterPopulated?> watchById(int id) =>
-      (_findById(id).watchSingleOrNull().map(
-            (value) => value?.toDbFilterPopulated(dao: this),
-          ));
-
-  Stream<DbFilterPopulated?> watchByRemoteId(String? remoteId) =>
-      (_findByRemoteId(remoteId).watchSingleOrNull().map(
-            (value) => value?.toDbFilterPopulated(dao: this),
-          ));
-
-  JoinedSelectStatement<Table, DataClass> _findAll() {
-    var sqlQuery = (select(db.dbFilters).join(
-      populateFilterJoin(),
-    ));
-    return sqlQuery;
-  }
-
-  JoinedSelectStatement<Table, DataClass> _findById(int id) =>
-      (select(db.dbFilters)..where((filter) => filter.id.equals(id)))
-          .join(populateFilterJoin());
-
-  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String? remoteId) =>
-      (select(db.dbFilters)..where((filter) => filter.remoteId.like(remoteId!)))
-          .join(populateFilterJoin());
-
-  Future<int> insert(Insertable<DbFilter> entity, {InsertMode? mode}) async =>
-      into(db.dbFilters).insert(entity, mode: mode);
-
-  Future<int> upsert(Insertable<DbFilter> entity) async =>
-      into(db.dbFilters).insert(entity, mode: InsertMode.insertOrReplace);
-
-  Future insertAll(
-    List<Insertable<DbFilter>> entities,
-    InsertMode mode,
-  ) async =>
-      await batch((batch) {
-        batch.insertAll(
-          db.dbFilters,
-          entities,
-          mode: mode,
-        );
-      });
-
-  Future<bool> replace(Insertable<DbFilter> entity) async =>
-      await update(db.dbFilters).replace(entity);
 
   Future<int> updateByRemoteId(
     String remoteId,
@@ -104,14 +44,14 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
       await (update(db.dbFilters)..where((i) => i.id.equals(localId)))
           .write(entity);
     } else {
-      localId = await insert(entity);
+      localId = await insert(
+        entity: entity,
+        mode: null,
+      );
     }
 
     return localId;
   }
-
-  SimpleSelectStatement<$DbFiltersTable, DbFilter> startSelectQuery() =>
-      (select(db.dbFilters));
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> addRemoteIdBoundsWhere(
     SimpleSelectStatement<$DbFiltersTable, DbFilter> query, {
@@ -194,6 +134,9 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
   List<Join<Table, DataClass>> populateFilterJoin() {
     return [];
   }
+
+  @override
+  $DbFiltersTable get table => dbFilters;
 }
 
 extension DbFilterPopulatedTypedResultListExtension on List<TypedResult> {

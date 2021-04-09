@@ -1,4 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/database/status_database_model.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
@@ -46,7 +47,13 @@ var _homeTimelineStatusesAliasId = "homeTimelineStatuses";
         "SELECT * FROM db_statuses ORDER BY id DESC LIMIT 1 OFFSET :offset",
   },
 )
-class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
+class StatusDao extends PopulatedAppRemoteDatabaseDao<
+    DbStatus,
+    DbStatusPopulated,
+    int,
+    String,
+    $DbStatusesTable,
+    $DbStatusesTable> with _$StatusDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
   late $DbStatusesTable reblogAlias;
@@ -65,7 +72,6 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   // Called by the AppDatabase class
   StatusDao(this.db) : super(db) {
-
     accountAlias = alias(db.dbAccounts, _accountAliasId);
     reblogAlias = alias(db.dbStatuses, _reblogAliasId);
     reblogAccountAlias = alias(db.dbAccounts, _reblogAccountAliasId);
@@ -86,37 +92,6 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         alias(db.dbHomeTimelineStatuses, _homeTimelineStatusesAliasId);
   }
 
-  Future<List<DbStatusPopulated>> findAll() async {
-    JoinedSelectStatement<Table, DataClass> statusQuery = _findAll();
-
-    return (await statusQuery.get()).toDbStatusPopulatedList(dao: this);
-  }
-
-  Stream<List<DbStatusPopulated>> watchAll() {
-    JoinedSelectStatement<Table, DataClass> statusQuery = _findAll();
-
-    return statusQuery.watch().map(
-          (list) => list.toDbStatusPopulatedList(dao: this),
-        );
-  }
-
-  Future<DbStatusPopulated?> findById(int id) async =>
-      (await _findById(id).getSingleOrNull())?.toDbStatusPopulated(dao: this);
-
-  Stream<DbStatusPopulated?> watchById(int id) =>
-      (_findById(id).watchSingleOrNull().map(
-            (typedResult) => typedResult?.toDbStatusPopulated(dao: this),
-          ));
-
-  Future<DbStatusPopulated?> findByRemoteId(String remoteId) async =>
-      (await _findByRemoteId(remoteId).getSingleOrNull())
-          ?.toDbStatusPopulated(dao: this);
-
-  Stream<DbStatusPopulated?> watchByRemoteId(String remoteId) =>
-      (_findByRemoteId(remoteId).watchSingleOrNull().map(
-            (typedResult) => typedResult?.toDbStatusPopulated(dao: this),
-          ));
-
   Future<DbStatusPopulated?> findByOldPendingRemoteId(
     String oldPendingRemoteId,
   ) async =>
@@ -129,56 +104,6 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       (_findByOldPendingRemoteId(oldPendingRemoteId).watchSingleOrNull().map(
             (typedResult) => typedResult?.toDbStatusPopulated(dao: this),
           ));
-
-  JoinedSelectStatement<Table, DataClass> _findAll() {
-    var sqlQuery = (select(db.dbStatuses).join(
-      populateStatusJoin(
-        includeAccountFollowing: false,
-        includeStatusLists: false,
-        includeStatusHashtags: false,
-        includeConversations: false,
-        includeHomeTimeline: false,
-        includeReplyToAccountFollowing: false,
-      ),
-    ));
-    return sqlQuery;
-  }
-
-  JoinedSelectStatement<Table, DataClass> _findById(int id) =>
-      (select(db.dbStatuses)
-            ..where(
-              (status) => status.id.equals(
-                id,
-              ),
-            ))
-          .join(
-        populateStatusJoin(
-          includeAccountFollowing: false,
-          includeStatusLists: false,
-          includeStatusHashtags: false,
-          includeConversations: false,
-          includeHomeTimeline: false,
-          includeReplyToAccountFollowing: false,
-        ),
-      );
-
-  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String? remoteId) =>
-      (select(db.dbStatuses)
-            ..where(
-              (status) => status.remoteId.like(
-                remoteId!,
-              ),
-            ))
-          .join(
-        populateStatusJoin(
-          includeAccountFollowing: false,
-          includeStatusLists: false,
-          includeStatusHashtags: false,
-          includeConversations: false,
-          includeHomeTimeline: false,
-          includeReplyToAccountFollowing: false,
-        ),
-      );
 
   JoinedSelectStatement<Table, DataClass> _findByOldPendingRemoteId(
     String? oldPendingRemoteId,
@@ -200,29 +125,6 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         ),
       );
 
-  Future<int> insert(Insertable<DbStatus> entity, {InsertMode? mode}) async =>
-      into(db.dbStatuses).insert(entity, mode: mode);
-
-  Future<int> upsert(Insertable<DbStatus> entity) async =>
-      into(db.dbStatuses).insert(entity, mode: InsertMode.insertOrReplace);
-
-  Future insertAll(
-    List<Insertable<DbStatus>> entities,
-    InsertMode mode,
-  ) async =>
-      await batch(
-        (batch) {
-          batch.insertAll(
-            db.dbStatuses,
-            entities,
-            mode: mode,
-          );
-        },
-      );
-
-  Future<bool> replace(Insertable<DbStatus> entity) async =>
-      await update(db.dbStatuses).replace(entity);
-
   Future<int> updateByRemoteId(
     String remoteId,
     Insertable<DbStatus> entity,
@@ -238,14 +140,14 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
             ))
           .write(entity);
     } else {
-      localId = await insert(entity);
+      localId = await insert(
+        entity: entity,
+        mode: null,
+      );
     }
 
     return localId;
   }
-
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> startSelectQuery() =>
-      (select(db.dbStatuses));
 
   // TODO: separate media in own table & use join
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
@@ -700,6 +602,9 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
     return query;
   }
+
+  @override
+  $DbStatusesTable get table => dbStatuses;
 }
 
 extension TypedResultDbStatusPopulatedExtension on TypedResult {

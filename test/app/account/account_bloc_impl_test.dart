@@ -58,7 +58,7 @@ void main() {
       conversationRemoteId: null,
       chatRemoteId: null,
     );
-    account = (await accountRepository.findByRemoteId(
+    account = (await accountRepository.findByRemoteIdInAppType(
       account.remoteId,
     ))!;
 

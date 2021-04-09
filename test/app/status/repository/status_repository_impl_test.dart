@@ -43,7 +43,7 @@ void main() {
 
     dbAccount = await createTestDbAccount(seed: "seed1");
 
-    var accountId = await accountRepository.insert(dbAccount);
+    var accountId = await accountRepository.insertInDbType(dbAccount);
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
@@ -65,22 +65,22 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await statusRepository.insert(dbStatus);
+    var id = await statusRepository.insertInDbType(dbStatus);
     assert(id > 0, true);
     expectDbStatusPopulated(
-      await statusRepository.findById(id),
+      await statusRepository.findByDbIdInAppType(id),
       dbStatusPopulated,
     );
   });
 
   test('reblog join', () async {
     var reblogDbAccount = await createTestDbAccount(seed: "seed11");
-    await accountRepository.insert(reblogDbAccount);
+    await accountRepository.insertInDbType(reblogDbAccount);
     var reblogDbStatus = await createTestDbStatus(
       seed: "seed33",
       dbAccount: reblogDbAccount,
     );
-    await statusRepository.insert(reblogDbStatus);
+    await statusRepository.insertInDbType(reblogDbStatus);
 
     dbStatus = dbStatus.copyWith(reblogStatusRemoteId: reblogDbStatus.remoteId);
 
@@ -95,10 +95,10 @@ void main() {
       replyDbStatus: null,
     );
 
-    var id = await statusRepository.insert(dbStatus);
+    var id = await statusRepository.insertInDbType(dbStatus);
     assert(id > 0, true);
     expectDbStatusPopulated(
-      await statusRepository.findById(id),
+      await statusRepository.findByDbIdInAppType(id),
       dbStatusPopulated,
     );
   });
@@ -116,11 +116,11 @@ void main() {
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbStatus(
-      await statusRepository.findByRemoteId(dbStatus.remoteId),
+      await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
 
@@ -134,11 +134,11 @@ void main() {
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbStatus(
-      await statusRepository.findByRemoteId(dbStatus.remoteId),
+      await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
   });
@@ -157,11 +157,11 @@ void main() {
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbStatus(
-      await statusRepository.findByRemoteId(dbStatus.remoteId),
+      await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
 
@@ -178,11 +178,11 @@ void main() {
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbStatus(
-      await statusRepository.findByRemoteId(dbStatus.remoteId),
+      await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
   });
@@ -200,15 +200,15 @@ void main() {
     ))
         .copyWith(remoteId: "remoteId1");
 
-    await statusRepository.upsertAll([dbStatus1]);
+    await statusRepository.upsertAllInDbType([dbStatus1]);
 
-    expect((await statusRepository.getAll()).length, 1);
+    expect((await statusRepository.getAllInAppType()).length, 1);
 
-    await statusRepository.upsertAll([dbStatus2]);
-    expect((await statusRepository.getAll()).length, 1);
+    await statusRepository.upsertAllInDbType([dbStatus2]);
+    expect((await statusRepository.getAllInAppType()).length, 1);
 
     expectDbStatusPopulated(
-      (await statusRepository.getAll()).first,
+      (await statusRepository.getAllInAppType()).first,
       await createTestDbStatusPopulated(
         dbStatus2,
         accountRepository,
@@ -217,22 +217,22 @@ void main() {
   });
 
   test('updateById', () async {
-    var id = await statusRepository.insert(dbStatus);
+    var id = await statusRepository.insertInDbType(dbStatus);
     assert(id > 0, true);
 
-    await statusRepository.updateById(
-      id,
-      dbStatus.copyWith(remoteId: "newRemoteId"),
+    await statusRepository.updateByDbIdInDbType(
+      dbId: id,
+      dbItem: dbStatus.copyWith(remoteId: "newRemoteId"),
     );
 
     expect(
-      (await statusRepository.findById(id))?.remoteId,
+      (await statusRepository.findByDbIdInAppType(id))?.remoteId,
       "newRemoteId",
     );
   });
 
   test('updateLocalStatusByRemoteStatus', () async {
-    var id = await statusRepository.insert(
+    var id = await statusRepository.insertInDbType(
       dbStatus.copyWith(
         content: "oldContent",
       ),
@@ -274,19 +274,19 @@ void main() {
     );
 
     expect(
-      (await statusRepository.findById(id))?.content,
+      (await statusRepository.findByDbIdInAppType(id))?.content,
       newContent,
     );
     expect(
-      (await statusRepository.findById(id))?.account.acct,
+      (await statusRepository.findByDbIdInAppType(id))?.account.acct,
       newAcct,
     );
   });
 
   test('findByRemoteId', () async {
-    await statusRepository.insert(dbStatus);
+    await statusRepository.insertInDbType(dbStatus);
     expectDbStatusPopulated(
-      await statusRepository.findByRemoteId(dbStatus.remoteId),
+      await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatusPopulated,
     );
   });
@@ -1534,11 +1534,11 @@ void main() {
       1,
     );
     expectDbStatus(
-      await statusRepository.findByRemoteId(dbStatus.remoteId),
+      await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
   });
@@ -1573,7 +1573,7 @@ void main() {
       ),
       pagination: RepositoryPagination<IStatus>(
         newerThanItem:
-            await statusRepository.findByRemoteId(dbStatus1.remoteId),
+            await statusRepository.findByRemoteIdInAppType(dbStatus1.remoteId),
       ),
       orderingTermData: StatusRepositoryOrderingTermData(
         orderingMode: OrderingMode.desc,
@@ -1864,9 +1864,9 @@ void main() {
       content: "",
     );
 
-    await statusRepository.updateById(
-      dbStatus3.id!,
-      dbStatus3,
+    await statusRepository.updateByDbIdInDbType(
+      dbId: dbStatus3.id!,
+      dbItem: dbStatus3,
     );
 
     expect((await query.get()).length, 1);

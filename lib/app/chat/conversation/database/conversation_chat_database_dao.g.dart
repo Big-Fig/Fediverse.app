@@ -54,12 +54,6 @@ mixin _$ConversationDaoMixin on DatabaseAccessor<AppDatabase> {
     );
   }
 
-  Selectable<DbConversation> getAll() {
-    return customSelect('SELECT * FROM db_conversations',
-        variables: [],
-        readsFrom: {dbConversations}).map(dbConversations.mapFromRow);
-  }
-
   Selectable<int?> findLocalIdByRemoteId(String remoteId) {
     return customSelect(
         'SELECT id FROM db_conversations WHERE remote_id = :remoteId;',

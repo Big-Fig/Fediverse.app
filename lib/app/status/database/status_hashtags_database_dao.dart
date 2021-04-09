@@ -1,4 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/app_database_dao.dart';
 import 'package:fedi/app/status/database/status_hashtags_database_model.dart';
 import 'package:moor/moor.dart';
 
@@ -19,31 +20,16 @@ part 'status_hashtags_database_dao.g.dart';
     "getAll": "SELECT * FROM db_status_hashtags",
   },
 )
-class StatusHashtagsDao extends DatabaseAccessor<AppDatabase>
-    with _$StatusHashtagsDaoMixin {
+class StatusHashtagsDao extends AppDatabaseDao<
+    DbStatusHashtag,
+    int,
+    $DbStatusHashtagsTable,
+    $DbStatusHashtagsTable> with _$StatusHashtagsDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
   StatusHashtagsDao(this.db) : super(db);
 
-  Future<int> insert(
-    Insertable<DbStatusHashtag> entity, {
-    InsertMode? mode,
-  }) async =>
-      into(dbStatusHashtags).insert(entity, mode: mode);
-
-  Future insertAll(
-    List<Insertable<DbStatusHashtag>> entities,
-    InsertMode mode,
-  ) async =>
-      await batch((batch) {
-        batch.insertAll(
-          dbStatusHashtags,
-          entities,
-          mode: mode,
-        );
-      });
-
-  Future<bool> replace(Insertable<DbStatusHashtag> entity) async =>
-      await update(dbStatusHashtags).replace(entity);
+  @override
+  $DbStatusHashtagsTable get table => dbStatusHashtags;
 }

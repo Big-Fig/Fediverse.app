@@ -6,7 +6,7 @@ Future<DbAccount> insertDbAccount(
   AccountRepository accountRepository,
   DbAccount accountData,
 ) async {
-  var id = await accountRepository.insert(accountData);
+  var id = await accountRepository.insertInDbType(accountData);
   assert(id > 0, true);
   var dbAccount = accountData.copyWith(id: id);
   return dbAccount;

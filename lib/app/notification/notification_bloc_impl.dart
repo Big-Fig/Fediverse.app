@@ -85,7 +85,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
           streamSubscription: notificationRepository
-              .watchByRemoteId(
+              .watchByRemoteIdInAppType(
             notification.remoteId,
           )
               .listen(

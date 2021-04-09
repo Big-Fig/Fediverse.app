@@ -92,7 +92,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       _logger.finest(() => "all ${all}");
 
       var alreadyExistNotification =
-          await notificationRepository.findByRemoteId(remoteNotificationId);
+          await notificationRepository.findByRemoteIdInAppType(remoteNotificationId);
 
       _logger.finest(() => "handlePush \n"
           "\t remoteNotification = $remoteNotification");
@@ -108,7 +108,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         unread: unread,
       );
 
-      var notification = await notificationRepository.findByRemoteId(
+      var notification = await notificationRepository.findByRemoteIdInAppType(
         remoteNotification.id,
       );
       if (pushHandlerMessage.pushMessage.isLaunch) {

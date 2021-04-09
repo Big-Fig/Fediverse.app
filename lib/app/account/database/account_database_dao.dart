@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/database/account_database_model.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/remote/simple_app_remote_database_dao.dart';
 import 'package:moor/moor.dart';
 
 part 'account_database_dao.g.dart';
@@ -33,15 +34,19 @@ var _chatAccountsAliasId = "chatAccountsAliasId";
         "SELECT * FROM db_accounts ORDER BY id DESC LIMIT 1 OFFSET :offset",
   },
 )
-class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
+class AccountDao extends SimpleAppRemoteDatabaseDao<DbAccount, int, String,
+    $DbAccountsTable, $DbAccountsTable> with _$AccountDaoMixin {
   final AppDatabase db;
-  $DbAccountsTable? accountAlias;
+  late $DbAccountsTable? accountAlias;
   late $DbAccountFollowingsTable accountFollowingsAlias;
   late $DbAccountFollowersTable accountFollowersAlias;
   late $DbStatusRebloggedAccountsTable statusRebloggedAccountsAlias;
   late $DbStatusFavouritedAccountsTable statusFavouritedAccountsAlias;
   late $DbConversationAccountsTable conversationAccountsAlias;
   late $DbChatAccountsTable chatAccountsAlias;
+
+  @override
+  $DbAccountsTable get table => dbAccounts;
 
   // Called by the AppDatabase class
   AccountDao(this.db) : super(db) {
@@ -59,29 +64,6 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
     chatAccountsAlias = alias(db.dbChatAccounts, _chatAccountsAliasId);
   }
 
-  Future<int> insert(Insertable<DbAccount> entity, {InsertMode? mode}) =>
-      into(dbAccounts).insert(entity, mode: mode);
-
-  Future<int> upsert(Insertable<DbAccount> entity) =>
-      into(dbAccounts).insert(entity, mode: InsertMode.insertOrReplace);
-
-  Future insertAll(
-    List<Insertable<DbAccount>> entities,
-    InsertMode mode,
-  ) async =>
-      await batch(
-        (batch) {
-          batch.insertAll(
-            dbAccounts,
-            entities,
-            mode: mode,
-          );
-        },
-      );
-
-  Future<bool> replace(Insertable<DbAccount> entity) async =>
-      await update(dbAccounts).replace(entity);
-
   Future<int> updateByRemoteId(
     String remoteId,
     Insertable<DbAccount> entity,
@@ -95,14 +77,14 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
             ))
           .write(entity);
     } else {
-      localId = await insert(entity);
+      localId = await insert(
+        entity: entity,
+        mode: null,
+      );
     }
 
     return localId;
   }
-
-  SimpleSelectStatement<$DbAccountsTable, DbAccount> startSelectQuery() =>
-      (select(db.dbAccounts));
 
   /// remote ids are strings but it is possible to compare them in
   /// chronological order

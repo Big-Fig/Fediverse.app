@@ -164,3 +164,83 @@ class DbConversationChatWithLastMessagePopulatedWrapper
             )
           : null;
 }
+
+extension IConversationChatExtension on IConversationChat {
+  DbConversationChatPopulatedWrapper toDbConversationChatPopulatedWrapper() {
+    if (this is DbConversationChatPopulatedWrapper) {
+      return this as DbConversationChatPopulatedWrapper;
+    } else {
+      return DbConversationChatPopulatedWrapper(
+        dbConversationPopulated: toDbConversationPopulated(),
+      );
+    }
+  }
+
+  DbConversationPopulated toDbConversationPopulated() {
+    if (this is DbConversationPopulated) {
+      var dbConversationChatPopulatedWrapper =
+          this as DbConversationChatPopulatedWrapper;
+      return dbConversationChatPopulatedWrapper.dbConversationPopulated;
+    } else {
+      return DbConversationPopulated(
+        dbConversation: toDbConversation(),
+      );
+    }
+  }
+
+  DbConversation toDbConversation() {
+    if (this is DbConversationPopulated) {
+      var dbConversationChatPopulatedWrapper =
+          this as DbConversationChatPopulatedWrapper;
+      return dbConversationChatPopulatedWrapper
+          .dbConversationPopulated.dbConversation;
+    } else {
+      return DbConversation(
+        id: localId,
+        remoteId: remoteId,
+        unread: unread > 0,
+        updatedAt: updatedAt,
+      );
+    }
+  }
+}
+
+extension DbConversationExtension on DbConversationPopulated {
+  DbConversationChatPopulatedWrapper toDbConversationChatPopulatedWrapper() =>
+      DbConversationChatPopulatedWrapper(
+        dbConversationPopulated: this,
+      );
+}
+
+extension DbConversationListExtension on List<DbConversationPopulated> {
+  List<DbConversationChatPopulatedWrapper>
+      toDbConversationChatPopulatedWrapperList() => map(
+            (item) => item.toDbConversationChatPopulatedWrapper(),
+          ).toList();
+}
+
+extension DbConversationChatPopulatedWrapperExtension
+    on DbConversationChatPopulatedWrapper {
+  DbConversation toDbConversation() => dbConversationPopulated.dbConversation;
+
+  DbConversationPopulated toDbConversationPopulated() =>
+      dbConversationPopulated;
+}
+
+extension DbConversationChatWithLastMessagePopulatedExtension
+    on DbConversationChatWithLastMessagePopulated {
+  DbConversationChatWithLastMessagePopulatedWrapper
+      toDbConversationChatWithLastMessagePopulatedWrapper() =>
+          DbConversationChatWithLastMessagePopulatedWrapper(
+            dbConversationChatWithLastMessagePopulated: this,
+          );
+}
+
+extension DbConversationChatWithLastMessagePopulatedListExtension
+    on List<DbConversationChatWithLastMessagePopulated> {
+  List<DbConversationChatWithLastMessagePopulatedWrapper>
+      toDbConversationChatWithLastMessagePopulatedWrapperList() => map(
+            (value) =>
+                value.toDbConversationChatWithLastMessagePopulatedWrapper(),
+          ).toList();
+}

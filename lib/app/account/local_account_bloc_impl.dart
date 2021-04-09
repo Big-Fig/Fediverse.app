@@ -139,7 +139,7 @@ class LocalAccountBloc extends AccountBloc {
     if (isNeedWatchLocalRepositoryForUpdates) {
       addDisposable(
         streamSubscription:
-            accountRepository.watchByRemoteId(account.remoteId).listen(
+            accountRepository.watchByRemoteIdInAppType(account.remoteId).listen(
           (updatedAccount) {
             if (updatedAccount != null) {
               accountSubject.add(updatedAccount);
@@ -224,9 +224,9 @@ class LocalAccountBloc extends AccountBloc {
       newRelationship = await pleromaAuthAccountService.unFollowAccount(
         accountRemoteId: account.remoteId,
       );
-      await accountRepository.updateLocalAccountByRemoteAccount(
-        oldLocalAccount: account,
-        newRemoteAccount: account
+      await accountRepository.updateAppTypeByRemoteType(
+        appItem: account,
+        remoteItem: account
             .copyWith(
               followersCount: account.followersCount - 1,
               pleromaRelationship: newRelationship,
@@ -253,9 +253,9 @@ class LocalAccountBloc extends AccountBloc {
       newRelationship = await pleromaAuthAccountService.followAccount(
         accountRemoteId: account.remoteId,
       );
-      await accountRepository.updateLocalAccountByRemoteAccount(
-        oldLocalAccount: account,
-        newRemoteAccount: account
+      await accountRepository.updateAppTypeByRemoteType(
+        appItem: account,
+        remoteItem: account
             .copyWith(
               followersCount: account.followersCount + 1,
               pleromaRelationship: newRelationship,
@@ -397,9 +397,9 @@ class LocalAccountBloc extends AccountBloc {
     _logger.finest(() => "_updateRelationship newRemoteAccount.relationship"
         "${newRemoteAccount.pleroma?.relationship}");
     if (account.localId != null) {
-      await accountRepository.updateLocalAccountByRemoteAccount(
-        oldLocalAccount: account,
-        newRemoteAccount: newRemoteAccount,
+      await accountRepository.updateAppTypeByRemoteType(
+        appItem: account,
+        remoteItem: newRemoteAccount,
       );
     } else {
       // sometimes we don't have local account id, for example go from search
@@ -454,9 +454,9 @@ class LocalAccountBloc extends AccountBloc {
       );
 
       if (account.localId != null) {
-        await accountRepository.updateLocalAccountByRemoteAccount(
-          oldLocalAccount: account,
-          newRemoteAccount: remoteAccount,
+        await accountRepository.updateAppTypeByRemoteType(
+          appItem: account,
+          remoteItem: remoteAccount,
         );
       } else {
         // sometimes we don't have local account id, for example go from search

@@ -13,8 +13,8 @@ import 'package:provider/provider.dart';
 abstract class IAccountRepository
     implements
         IDisposable,
-        IReadIdListRepository<IAccount, int>,
-        IWriteIdListRepository<DbAccount, int> {
+        IAppRemoteReadWriteRepository<DbAccount, IAccount, IPleromaAccount, int,
+            String> {
   static IAccountRepository of(
     BuildContext context, {
     bool listen = true,
@@ -23,10 +23,6 @@ abstract class IAccountRepository
         context,
         listen: listen,
       );
-
-  Future<IAccount?> findByRemoteId(String remoteId);
-
-  Stream<IAccount?> watchByRemoteId(String remoteId);
 
   Future upsertRemoteAccounts(
     List<IPleromaAccount> remoteAccounts, {
@@ -58,11 +54,6 @@ abstract class IAccountRepository
   Future updateStatusFavouritedBy({
     required String statusRemoteId,
     required List<IPleromaAccount> favouritedByAccounts,
-  });
-
-  Future updateLocalAccountByRemoteAccount({
-    required IAccount oldLocalAccount,
-    required IPleromaAccount newRemoteAccount,
   });
 
   Future<List<IAccount>> getAccounts({

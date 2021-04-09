@@ -30,7 +30,7 @@ void main() {
     expect((await scheduledStatusDao.getAll().get()).isNotEmpty, false);
 
     await scheduledStatusDao.insert(
-      DbScheduledStatus(
+      entity: DbScheduledStatus(
         scheduledAt: DateTime.now(),
         canceled: false,
         id: null,
@@ -41,6 +41,7 @@ void main() {
           scheduledAt: DateTime.now(),
         ),
       ),
+      mode: null,
     );
 
     expect((await scheduledStatusDao.getAll().get()).isNotEmpty, true);
@@ -53,7 +54,7 @@ void main() {
     expect((await draftStatusDao.getAll().get()).isNotEmpty, false);
 
     await draftStatusDao.insert(
-      DbDraftStatus(
+      entity: DbDraftStatus(
         id: null,
         updatedAt: DateTime.now(),
         data: PostStatusData.only(
@@ -61,6 +62,7 @@ void main() {
           isNsfwSensitiveEnabled: true,
         ),
       ),
+      mode: null,
     );
 
     expect((await draftStatusDao.getAll().get()).isNotEmpty, true);

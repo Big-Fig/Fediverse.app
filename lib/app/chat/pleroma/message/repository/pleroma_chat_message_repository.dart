@@ -10,26 +10,17 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaChatMessageRepository
-    implements
-        IReadIdListRepository<IPleromaChatMessage, int>,
-        IWriteIdListRepository<DbChatMessage, int>,
-        IDisposable {
+    implements IDisposable,
+        IAppRemoteReadWriteRepository<DbChatMessage, IPleromaChatMessage,
+            pleroma_lib.IPleromaChatMessage, int, String> {
   static IPleromaChatMessageRepository of(
     BuildContext context, {
     bool listen = true,
   }) =>
       Provider.of<IPleromaChatMessageRepository>(context, listen: listen);
 
-  Future<IPleromaChatMessage?> findByRemoteId(String remoteId);
-
-  Future deleteByRemoteId(String remoteId);
-
   Future upsertRemoteChatMessages(
     List<pleroma_lib.IPleromaChatMessage> remoteChatMessages,
-  );
-
-  Stream<IPleromaChatMessage?> watchByRemoteId(
-    String remoteId,
   );
 
   Future<IPleromaChatMessage?> findByOldPendingRemoteId(

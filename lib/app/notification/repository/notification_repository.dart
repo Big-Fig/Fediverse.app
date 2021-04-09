@@ -11,8 +11,8 @@ import 'package:provider/provider.dart';
 
 abstract class INotificationRepository
     implements
-        IReadIdListRepository<INotification, int>,
-        IWriteIdListRepository<DbNotification, int>,
+        IAppRemoteReadWriteRepository<DbNotification, INotification,
+            IPleromaNotification, int, String>,
         IDisposable {
   static INotificationRepository of(
     BuildContext context, {
@@ -23,14 +23,10 @@ abstract class INotificationRepository
         listen: listen,
       );
 
-  Future<INotification?> findByRemoteId(String remoteId);
-
   Future upsertRemoteNotifications(
     List<IPleromaNotification> remoteNotifications, {
     required bool? unread,
   });
-
-  Stream<INotification?> watchByRemoteId(String remoteId);
 
   Future updateLocalNotificationByRemoteNotification({
     required INotification oldLocalNotification,

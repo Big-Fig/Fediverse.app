@@ -12,8 +12,8 @@ import 'package:provider/provider.dart';
 
 abstract class IPleromaChatRepository
     implements
-        IReadIdListRepository<DbPleromaChatPopulatedWrapper, int>,
-        IWriteIdListRepository<DbChat, int>,
+        IAppRemoteReadWriteRepository<DbChat, IPleromaChat,
+            pleroma_lib.IPleromaChat, int, String>,
         IDisposable {
   static IPleromaChatRepository of(
     BuildContext context, {
@@ -24,16 +24,9 @@ abstract class IPleromaChatRepository
         listen: listen,
       );
 
-  Future<DbPleromaChatPopulatedWrapper?> findByRemoteId(
-    String remoteId,
-  );
 
   Future upsertRemoteChats(
     List<pleroma_lib.IPleromaChat> remoteChats,
-  );
-
-  Stream<DbPleromaChatPopulatedWrapper?> watchByRemoteId(
-    String remoteId,
   );
 
   Future upsertRemoteChat(

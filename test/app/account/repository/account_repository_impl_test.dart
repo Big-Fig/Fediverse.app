@@ -38,22 +38,28 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await accountRepository.insert(dbAccount1);
+    var id = await accountRepository.insertInDbType(dbAccount1);
     assert(id > 0, true);
-    expectDbAccount(await accountRepository.findById(id), dbAccount1);
+    expectDbAccount(
+        await accountRepository.findByDbIdInAppType(id), dbAccount1);
   });
 
   test('updateById', () async {
-    var id = await accountRepository.insert(dbAccount1);
+    var id = await accountRepository.insertInDbType(dbAccount1);
     assert(id > 0, true);
 
-    await accountRepository.updateById(id, dbAccount2);
-    expectDbAccount(await accountRepository.findById(id), dbAccount2);
+    await accountRepository.updateByDbIdInDbType(
+      dbId: id,
+      dbItem: dbAccount2,
+    );
+    expectDbAccount(
+        await accountRepository.findByDbIdInAppType(id), dbAccount2);
   });
 
   test('updateLocalAccountByRemoteAccount', () async {
-    var id =
-        await accountRepository.insert(dbAccount1.copyWith(acct: "oldAcct"));
+    var id = await accountRepository.insertInDbType(dbAccount1.copyWith(
+      acct: "oldAcct",
+    ));
     assert(id > 0, true);
 
     var oldLocalAccount =
@@ -65,20 +71,20 @@ void main() {
         acct: newAcct,
       ),
     ).toPleromaAccount();
-    await accountRepository.updateLocalAccountByRemoteAccount(
-      oldLocalAccount: oldLocalAccount,
-      newRemoteAccount: newRemoteAccount,
+    await accountRepository.updateAppTypeByRemoteType(
+      appItem: oldLocalAccount,
+      remoteItem: newRemoteAccount,
     );
 
-    expect((await accountRepository.findById(id))!.acct, newAcct);
+    expect((await accountRepository.findByDbIdInAppType(id))!.acct, newAcct);
   });
 
   test('findByRemoteId', () async {
-    var id = await accountRepository.insert(dbAccount1);
+    var id = await accountRepository.insertInDbType(dbAccount1);
     assert(id > 0, true);
 
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount1.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount1.remoteId),
       dbAccount1,
     );
   });
@@ -94,7 +100,7 @@ void main() {
 
     expect(await accountRepository.countAll(), 1);
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount1.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount1.remoteId),
       dbAccount1,
     );
 
@@ -119,7 +125,7 @@ void main() {
 
     expect(await accountRepository.countAll(), 1);
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount1.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount1.remoteId),
       dbAccount1,
     );
 
@@ -135,11 +141,11 @@ void main() {
     // update item with same id
     expect(await accountRepository.countAll(), 2);
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount1.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount1.remoteId),
       dbAccount1,
     );
     expectDbAccount(
-      await accountRepository.findByRemoteId(dbAccount2.remoteId),
+      await accountRepository.findByRemoteIdInAppType(dbAccount2.remoteId),
       dbAccount2,
     );
   });
@@ -154,17 +160,17 @@ void main() {
     expect((await query.get()).length, 0);
 
     await accountRepository
-        .insert((await createTestDbAccount(seed: "seed1")).copyWith());
+        .insertInDbType((await createTestDbAccount(seed: "seed1")).copyWith());
 
     expect((await query.get()).length, 1);
 
     await accountRepository
-        .insert((await createTestDbAccount(seed: "seed2")).copyWith());
+        .insertInDbType((await createTestDbAccount(seed: "seed2")).copyWith());
 
     expect((await query.get()).length, 2);
 
     await accountRepository
-        .insert((await createTestDbAccount(seed: "seed3")).copyWith());
+        .insertInDbType((await createTestDbAccount(seed: "seed3")).copyWith());
 
     expect((await query.get()).length, 3);
   });
@@ -180,27 +186,27 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await accountRepository.insert(
+    await accountRepository.insertInDbType(
       (await createTestDbAccount(seed: "seed1")).copyWith(acct: "qu"),
     );
 
     expect((await query.get()).length, 1);
 
-    await accountRepository.insert(
+    await accountRepository.insertInDbType(
       (await createTestDbAccount(seed: "seed2")).copyWith(acct: "qur"),
     );
 
     expect((await query.get()).length, 2);
 
-    await accountRepository
-        .insert((await createTestDbAccount(seed: "seed3")).copyWith(acct: "q"));
+    await accountRepository.insertInDbType(
+        (await createTestDbAccount(seed: "seed3")).copyWith(acct: "q"));
 
     expect((await query.get()).length, 2);
   });
 
   test('createQuery onlyInStatusFavouritedBy', () async {
-    await accountRepository.insert(dbAccount1);
-    await accountRepository.insert(dbAccount2);
+    await accountRepository.insertInDbType(dbAccount1);
+    await accountRepository.insertInDbType(dbAccount2);
 
     var dbStatus =
         await createTestDbStatus(seed: "seedStatus", dbAccount: dbAccount1);
@@ -245,8 +251,8 @@ void main() {
   });
 
   test('createQuery onlyInStatusRebloggedBy', () async {
-    await accountRepository.insert(dbAccount1);
-    await accountRepository.insert(dbAccount2);
+    await accountRepository.insertInDbType(dbAccount1);
+    await accountRepository.insertInDbType(dbAccount2);
 
     var dbStatus =
         await createTestDbStatus(seed: "seedStatus", dbAccount: dbAccount1);
@@ -291,8 +297,8 @@ void main() {
   });
 
   test('createQuery onlyInAccountFollowers', () async {
-    await accountRepository.insert(dbAccount1);
-    await accountRepository.insert(dbAccount2);
+    await accountRepository.insertInDbType(dbAccount1);
+    await accountRepository.insertInDbType(dbAccount2);
 
     var query = accountRepository.createQuery(
       filters: AccountRepositoryFilters(
@@ -321,8 +327,8 @@ void main() {
   });
 
   test('createQuery onlyInAccountFollowing', () async {
-    await accountRepository.insert(dbAccount1);
-    await accountRepository.insert(dbAccount2);
+    await accountRepository.insertInDbType(dbAccount1);
+    await accountRepository.insertInDbType(dbAccount2);
 
     var query = accountRepository.createQuery(
       filters: AccountRepositoryFilters(

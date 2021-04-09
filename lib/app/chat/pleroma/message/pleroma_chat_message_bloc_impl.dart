@@ -74,7 +74,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   void watchLocalRepositoryChanges() {
     addDisposable(
       streamSubscription:
-          chatMessageRepository.watchByRemoteId(chatMessage.remoteId).listen(
+          chatMessageRepository.watchByRemoteIdInAppType(chatMessage.remoteId).listen(
         (updatedChatMessage) {
           if (updatedChatMessage != null) {
             _chatMessageSubject.add(updatedChatMessage);
