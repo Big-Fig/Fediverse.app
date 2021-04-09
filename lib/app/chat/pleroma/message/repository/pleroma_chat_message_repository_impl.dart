@@ -15,7 +15,7 @@ import 'package:moor/moor.dart';
 var _logger = Logger("pleroma_chat_message_repository_impl.dart");
 
 var _singlePleromaChatMessageRepositoryPagination =
-RepositoryPagination<IPleromaChatMessage>(
+    RepositoryPagination<IPleromaChatMessage>(
   limit: 1,
   newerThanItem: null,
   offset: null,
@@ -31,7 +31,9 @@ class PleromaChatMessageRepository
         int,
         String,
         $DbChatMessagesTable,
-        $DbChatMessagesTable>
+        $DbChatMessagesTable,
+        PleromaChatMessageRepositoryFilters,
+        PleromaChatMessageRepositoryOrderingTermData>
     implements IPleromaChatMessageRepository {
   @override
   late ChatMessageDao dao;
@@ -46,7 +48,8 @@ class PleromaChatMessageRepository
 
   @override
   Future upsertRemoteChatMessage(
-      pleroma_lib.IPleromaChatMessage remoteChatMessage,) async {
+    pleroma_lib.IPleromaChatMessage remoteChatMessage,
+  ) async {
     _logger.finer(() => "upsertRemoteChatMessage $remoteChatMessage");
 
     await upsertInRemoteType(
@@ -56,7 +59,8 @@ class PleromaChatMessageRepository
 
   @override
   Future upsertRemoteChatMessages(
-      List<pleroma_lib.IPleromaChatMessage> pleromaChatMessages,) async {
+    List<pleroma_lib.IPleromaChatMessage> pleromaChatMessages,
+  ) async {
     _logger
         .finer(() => "upsertRemoteChatMessages ${pleromaChatMessages.length}");
     if (pleromaChatMessages.isEmpty) {
@@ -69,8 +73,8 @@ class PleromaChatMessageRepository
   Future<List<DbPleromaChatMessagePopulatedWrapper>> getChatMessages({
     required PleromaChatMessageRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChatMessage>? pagination,
-    PleromaChatMessageOrderingTermData? orderingTermData =
-        PleromaChatMessageOrderingTermData.createdAtDesc,
+    PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
+        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
   }) async {
     var query = createQuery(
       filters: filters,
@@ -82,8 +86,8 @@ class PleromaChatMessageRepository
 
     return typedResultList
         .toDbChatMessagePopulatedList(
-      dao: dao,
-    )
+          dao: dao,
+        )
         .toDbChatMessagePopulatedWrappers();
   }
 
@@ -91,8 +95,8 @@ class PleromaChatMessageRepository
   Stream<List<DbPleromaChatMessagePopulatedWrapper>> watchChatMessages({
     required PleromaChatMessageRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChatMessage>? pagination,
-    PleromaChatMessageOrderingTermData? orderingTermData =
-        PleromaChatMessageOrderingTermData.createdAtDesc,
+    PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
+        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
   }) {
     var query = createQuery(
       filters: filters,
@@ -101,25 +105,23 @@ class PleromaChatMessageRepository
     );
 
     Stream<List<DbChatMessagePopulated>> stream = query.watch().map(
-          (typedResultList) =>
-          typedResultList.toDbChatMessagePopulatedList(
+          (typedResultList) => typedResultList.toDbChatMessagePopulatedList(
             dao: dao,
           ),
-    );
+        );
     return stream.map(
-          (list) =>
-          list
-              .map(
-                (list) => list.toDbChatMessagePopulatedWrapper(),
+      (list) => list
+          .map(
+            (list) => list.toDbChatMessagePopulatedWrapper(),
           )
-              .toList(),
+          .toList(),
     );
   }
 
   JoinedSelectStatement createQuery({
     required PleromaChatMessageRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChatMessage>? pagination,
-    required PleromaChatMessageOrderingTermData? orderingTermData,
+    required PleromaChatMessageRepositoryOrderingTermData? orderingTermData,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t filters=$filters\n"
@@ -143,7 +145,7 @@ class PleromaChatMessageRepository
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
       assert(
-      orderingTermData?.orderType == PleromaChatMessageOrderType.createdAt);
+          orderingTermData?.orderType == PleromaChatMessageOrderType.createdAt);
       dao.addCreatedAtBoundsWhere(
         query,
         maximumDateTimeExcluding: pagination?.olderThanItem?.createdAt,
@@ -178,7 +180,7 @@ class PleromaChatMessageRepository
           onlyInChats
               .map(
                 (chat) => chat.remoteId,
-          )
+              )
               .toList(),
         );
       }
@@ -196,7 +198,8 @@ class PleromaChatMessageRepository
 
   @override
   Future<IPleromaChatMessage?> findByOldPendingRemoteId(
-      String oldPendingRemoteId,) async {
+    String oldPendingRemoteId,
+  ) async {
     _logger.finest(() => "findByOldPendingRemoteId $oldPendingRemoteId");
     return (await dao.findByOldPendingRemoteId(oldPendingRemoteId))
         ?.toDbChatMessagePopulatedWrapper();
@@ -204,15 +207,17 @@ class PleromaChatMessageRepository
 
   @override
   Stream<IPleromaChatMessage?> watchByOldPendingRemoteId(
-      String? oldPendingRemoteId,) {
+    String? oldPendingRemoteId,
+  ) {
     _logger.finest(() => "watchByOldPendingRemoteId $oldPendingRemoteId");
     return dao.watchByOldPendingRemoteId(oldPendingRemoteId).map(
           (item) => item?.toDbChatMessagePopulatedWrapper(),
-    );
+        );
   }
 
   Insertable<DbChatMessage>? mapItemToDataClass(
-      DbPleromaChatMessagePopulatedWrapper item,) {
+    DbPleromaChatMessagePopulatedWrapper item,
+  ) {
     return item.dbChatMessagePopulated.dbChatMessage;
   }
 
@@ -234,8 +239,8 @@ class PleromaChatMessageRepository
   @override
   Future<DbPleromaChatMessagePopulatedWrapper?> getChatMessage({
     required PleromaChatMessageRepositoryFilters? filters,
-    PleromaChatMessageOrderingTermData? orderingTermData =
-        PleromaChatMessageOrderingTermData.createdAtDesc,
+    PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
+        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
   }) async {
     var query = createQuery(
       filters: filters,
@@ -251,8 +256,8 @@ class PleromaChatMessageRepository
   @override
   Stream<DbPleromaChatMessagePopulatedWrapper?> watchChatMessage({
     required PleromaChatMessageRepositoryFilters? filters,
-    PleromaChatMessageOrderingTermData? orderingTermData =
-        PleromaChatMessageOrderingTermData.createdAtDesc,
+    PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
+        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
   }) {
     var query = createQuery(
       filters: filters,
@@ -262,9 +267,9 @@ class PleromaChatMessageRepository
 
     Stream<DbChatMessagePopulated?> stream = query.watchSingleOrNull().map(
           (typedResult) => typedResult?.toDbChatMessagePopulated(dao: dao),
-    );
+        );
     return stream.map(
-          (item) => item?.toDbChatMessagePopulatedWrapper(),
+      (item) => item?.toDbChatMessagePopulatedWrapper(),
     );
   }
 
@@ -282,7 +287,8 @@ class PleromaChatMessageRepository
           onlyNotDeleted: true,
           onlyNotHiddenLocallyOnDevice: true,
         ),
-        orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
+        orderingTermData:
+            PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
       );
 
   @override
@@ -299,7 +305,8 @@ class PleromaChatMessageRepository
           onlyNotDeleted: true,
           onlyNotHiddenLocallyOnDevice: true,
         ),
-        orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
+        orderingTermData:
+            PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
       );
 
   @override
@@ -314,7 +321,8 @@ class PleromaChatMessageRepository
         onlyNotHiddenLocallyOnDevice: true,
       ),
       pagination: null,
-      orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
+      orderingTermData:
+          PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
     );
     dao.addGroupByChatId(query);
 
@@ -325,15 +333,14 @@ class PleromaChatMessageRepository
     Map<IPleromaChat, IPleromaChatMessage?> result = {};
 
     chats.forEach(
-          (chat) {
+      (chat) {
         var currentChatMessages = chatMessages.where(
-              (chatMessage) => chatMessage.chatRemoteId == chat.remoteId,
+          (chatMessage) => chatMessage.chatRemoteId == chat.remoteId,
         );
 
         IPleromaChatMessage? chatMessage = currentChatMessages.fold(
           null,
-              (IPleromaChatMessage? previousValue,
-              IPleromaChatMessage element) {
+          (IPleromaChatMessage? previousValue, IPleromaChatMessage element) {
             if (previousValue == null) {
               return element;
             } else {
@@ -377,32 +384,98 @@ class PleromaChatMessageRepository
 
   @override
   pleroma_lib.IPleromaChatMessage mapAppItemToRemoteItem(
-      IPleromaChatMessage appItem) =>
+          IPleromaChatMessage appItem) =>
       appItem.toPleromaChatMessage();
 
   @override
   DbChatMessagePopulated mapAppItemToDbPopulatedItem(
-      IPleromaChatMessage appItem) => appItem.toDbChatMessagePopulated();
+          IPleromaChatMessage appItem) =>
+      appItem.toDbChatMessagePopulated();
 
   @override
   IPleromaChatMessage mapDbPopulatedItemToAppItem(
-      DbChatMessagePopulated dbPopulatedItem) =>
+          DbChatMessagePopulated dbPopulatedItem) =>
       dbPopulatedItem.toDbChatMessagePopulatedWrapper();
 
   @override
   pleroma_lib.IPleromaChatMessage mapDbPopulatedItemToRemoteItem(
-      DbChatMessagePopulated dbPopulatedItem) =>
+          DbChatMessagePopulated dbPopulatedItem) =>
       dbPopulatedItem.toDbChatMessagePopulatedWrapper().toPleromaChatMessage();
 
+  @override
+  PleromaChatMessageRepositoryFilters get emptyFilters =>
+      PleromaChatMessageRepositoryFilters.empty;
+
+  @override
+  List<PleromaChatMessageRepositoryOrderingTermData> get defaultOrderingTerms =>
+      PleromaChatMessageRepositoryOrderingTermData.defaultTerms;
+
+  @override
+  void addFiltersToQuery({
+    required SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
+    required PleromaChatMessageRepositoryFilters? filters,
+  }) {
+    // TODO: implement addFiltersToQuery
+  }
+
+  @override
+  void addOrderingToQuery({
+    required SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
+    required List<PleromaChatMessageRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    // TODO: implement addOrderingToQuery
+  }
+
+  @override
+  JoinedSelectStatement<Table, DataClass>
+      convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
+    required PleromaChatMessageRepositoryFilters? filters,
+  }) {
+    // TODO: implement convertSimpleSelectStatementToJoinedSelectStatement
+    throw UnimplementedError();
+  }
+
+  @override
+  Future insertAllInRemoteType(
+      List<pleroma_lib.IPleromaChatMessage> remoteItems) {
+    // TODO: implement insertAllInRemoteType
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> insertInRemoteType(pleroma_lib.IPleromaChatMessage remoteItem) {
+    // TODO: implement insertInRemoteType
+    throw UnimplementedError();
+  }
+
+  @override
+  DbChatMessagePopulated mapTypedResultToDbPopulatedItem(
+      TypedResult typedResult) {
+    // TODO: implement mapTypedResultToDbPopulatedItem
+    throw UnimplementedError();
+  }
+
+  @override
+  Future upsertAllInRemoteType(
+      List<pleroma_lib.IPleromaChatMessage> remoteItems) {
+    // TODO: implement upsertAllInRemoteType
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> upsertInRemoteType(pleroma_lib.IPleromaChatMessage remoteItem) {
+    // TODO: implement upsertInRemoteType
+    throw UnimplementedError();
+  }
 }
 
 extension DbChatMessagePopulatedListExtension on List<DbChatMessagePopulated> {
   List<DbPleromaChatMessagePopulatedWrapper>
-  toDbChatMessagePopulatedWrappers() =>
-      map(
+      toDbChatMessagePopulatedWrappers() => map(
             (dbChatMessagePopulated) =>
-            dbChatMessagePopulated.toDbChatMessagePopulatedWrapper(),
-      ).toList();
+                dbChatMessagePopulated.toDbChatMessagePopulatedWrapper(),
+          ).toList();
 }
 
 extension DbChatMessagePopulatedExtension on DbChatMessagePopulated {

@@ -31,7 +31,9 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     int,
     String,
     $DbChatsTable,
-    $DbChatsTable> implements IPleromaChatRepository {
+    $DbChatsTable,
+    PleromaChatRepositoryFilters,
+    PleromaChatRepositoryOrderingTermData> implements IPleromaChatRepository {
   @override
   late ChatDao dao;
   late ChatAccountsDao chatAccountsDao;
@@ -135,8 +137,8 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Future<List<DbPleromaChatPopulatedWrapper>> getChats({
     required PleromaChatRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChat>? pagination,
-    PleromaChatOrderingTermData? orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
+    PleromaChatRepositoryOrderingTermData? orderingTermData =
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) async {
     var query = createQuery(
       filters: filters,
@@ -153,8 +155,8 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Stream<List<DbPleromaChatPopulatedWrapper>> watchChats({
     required PleromaChatRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChat>? pagination,
-    PleromaChatOrderingTermData? orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
+    PleromaChatRepositoryOrderingTermData? orderingTermData =
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) {
     var query = createQuery(
       filters: filters,
@@ -173,8 +175,8 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<DbPleromaChatPopulatedWrapper?> getChat({
     required PleromaChatRepositoryFilters? filters,
-    PleromaChatOrderingTermData? orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
+    PleromaChatRepositoryOrderingTermData? orderingTermData =
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) async {
     var query = createQuery(
       filters: filters,
@@ -193,8 +195,8 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Stream<DbPleromaChatPopulatedWrapper?> watchChat({
     required PleromaChatRepositoryFilters? filters,
-    PleromaChatOrderingTermData? orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
+    PleromaChatRepositoryOrderingTermData? orderingTermData =
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) {
     var query = createQuery(
       filters: filters,
@@ -213,7 +215,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   JoinedSelectStatement createQuery({
     required PleromaChatRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChat>? pagination,
-    required PleromaChatOrderingTermData? orderingTermData,
+    required PleromaChatRepositoryOrderingTermData? orderingTermData,
     required bool withLastMessage,
   }) {
     _logger.fine(() => "createQuery \n"
@@ -331,8 +333,8 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       getChatsWithLastMessage({
     required PleromaChatRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChat>? pagination,
-    PleromaChatOrderingTermData? orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
+    PleromaChatRepositoryOrderingTermData? orderingTermData =
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) async {
     var query = createQuery(
       filters: filters,
@@ -350,8 +352,8 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       watchChatsWithLastMessage({
     required PleromaChatRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChat>? pagination,
-    PleromaChatOrderingTermData? orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
+    PleromaChatRepositoryOrderingTermData? orderingTermData =
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) {
     var query = createQuery(
       filters: filters,
@@ -370,8 +372,8 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<DbPleromaChatWithLastMessagePopulatedWrapper?> getChatWithLastMessage({
     required PleromaChatRepositoryFilters filters,
-    PleromaChatOrderingTermData? orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
+    PleromaChatRepositoryOrderingTermData? orderingTermData =
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) async {
     var query = createQuery(
       filters: filters,
@@ -391,8 +393,8 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Stream<DbPleromaChatWithLastMessagePopulatedWrapper?>
       watchChatWithLastMessage({
     required PleromaChatRepositoryFilters? filters,
-    PleromaChatOrderingTermData? orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
+    PleromaChatRepositoryOrderingTermData? orderingTermData =
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) {
     var query = createQuery(
       filters: filters,
@@ -435,6 +437,14 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         lastChatMessage: null,
         accounts: [],
       );
+
+  @override
+  PleromaChatRepositoryFilters get emptyFilters =>
+      PleromaChatRepositoryFilters.empty;
+
+  @override
+  List<PleromaChatRepositoryOrderingTermData> get defaultOrderingTerms =>
+      PleromaChatRepositoryOrderingTermData.defaultTerms;
 }
 
 extension DbPleromaChatPopulatedExtension on DbPleromaChatPopulated {

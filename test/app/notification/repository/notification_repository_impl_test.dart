@@ -376,7 +376,7 @@ void main() {
           PleromaNotificationType.follow,
         ],
       ),
-      orderingTermData: NotificationOrderingTermData.createdAtDesc,
+      orderingTermData: NotificationRepositoryOrderingTermData.createdAtDesc,
     );
 
     await insertDbNotification(
@@ -415,7 +415,7 @@ void main() {
           createdAt: DateTime(5),
         ),
       ),
-      orderingTermData: NotificationOrderingTermData.createdAtDesc,
+      orderingTermData: NotificationRepositoryOrderingTermData.createdAtDesc,
     );
 
     await insertDbNotification(
@@ -484,7 +484,7 @@ void main() {
           createdAt: DateTime(5),
         ),
       ),
-      orderingTermData: NotificationOrderingTermData.createdAtDesc,
+      orderingTermData: NotificationRepositoryOrderingTermData.createdAtDesc,
     );
 
     await insertDbNotification(
@@ -560,7 +560,7 @@ void main() {
             createdAt: DateTime(5),
           ),
         ),
-        orderingTermData: NotificationOrderingTermData.createdAtDesc,
+        orderingTermData: NotificationRepositoryOrderingTermData.createdAtDesc,
       );
 
       await insertDbNotification(
@@ -649,7 +649,7 @@ void main() {
     var query = notificationRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: NotificationOrderingTermData.remoteIdAsc,
+      orderingTermData: NotificationRepositoryOrderingTermData.remoteIdAsc,
     );
 
     var notification2 = await insertDbNotification(
@@ -701,7 +701,7 @@ void main() {
     var query = notificationRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: NotificationOrderingTermData.remoteIdDesc,
+      orderingTermData: NotificationRepositoryOrderingTermData.remoteIdDesc,
     );
 
     var notification2 = await insertDbNotification(
@@ -756,7 +756,7 @@ void main() {
         limit: 1,
         offset: 1,
       ),
-      orderingTermData: NotificationOrderingTermData.remoteIdDesc,
+      orderingTermData: NotificationRepositoryOrderingTermData.remoteIdDesc,
     );
 
     var notification2 = await insertDbNotification(
@@ -805,7 +805,7 @@ void main() {
           limit: 1,
           offset: 1,
         ),
-        orderingTermData: NotificationOrderingTermData.createdAtDesc,
+        orderingTermData: NotificationRepositoryOrderingTermData.createdAtDesc,
       );
 
       var notification2 = await insertDbNotification(

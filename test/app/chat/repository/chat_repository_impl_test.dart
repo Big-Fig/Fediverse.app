@@ -388,7 +388,7 @@ void main() {
           updatedAt: DateTime(2005),
         ),
       ),
-      orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+      orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
       withLastMessage: false,
     );
 
@@ -447,7 +447,7 @@ void main() {
           updatedAt: DateTime(2005),
         ),
       ),
-      orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+      orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
       withLastMessage: false,
     );
 
@@ -512,7 +512,7 @@ void main() {
           updatedAt: DateTime(2005),
         ),
       ),
-      orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+      orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
       withLastMessage: false,
     );
 
@@ -586,7 +586,7 @@ void main() {
     var query = chatRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: PleromaChatOrderingTermData.remoteIdAsc,
+      orderingTermData: PleromaChatRepositoryOrderingTermData.remoteIdAsc,
       withLastMessage: false,
     );
 
@@ -630,7 +630,7 @@ void main() {
     var query = chatRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: PleromaChatOrderingTermData.remoteIdDesc,
+      orderingTermData: PleromaChatRepositoryOrderingTermData.remoteIdDesc,
       withLastMessage: false,
     );
 
@@ -677,7 +677,7 @@ void main() {
         limit: 1,
         offset: 1,
       ),
-      orderingTermData: PleromaChatOrderingTermData.remoteIdDesc,
+      orderingTermData: PleromaChatRepositoryOrderingTermData.remoteIdDesc,
       withLastMessage: false,
     );
 

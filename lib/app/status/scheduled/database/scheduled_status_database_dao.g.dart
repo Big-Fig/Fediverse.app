@@ -45,6 +45,15 @@ mixin _$ScheduledStatusDaoMixin on DatabaseAccessor<AppDatabase> {
     );
   }
 
+  Future<int> deleteByRemoteId(String remoteId) {
+    return customUpdate(
+      'DELETE FROM db_scheduled_statuses WHERE remote_id = :remoteId;',
+      variables: [Variable<String>(remoteId)],
+      updates: {dbScheduledStatuses},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
   Future<int> clear() {
     return customUpdate(
       'DELETE FROM db_scheduled_statuses',

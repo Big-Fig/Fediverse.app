@@ -73,7 +73,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
         newerThanItem: newerThan,
         limit: limit,
       ),
-      orderingTermData: ScheduledStatusOrderingTermData.remoteIdDesc,
+      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
     );
 
     return statuses;
@@ -88,7 +88,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
         pagination: RepositoryPagination(
           newerThanItem: item,
         ),
-        orderingTermData: ScheduledStatusOrderingTermData.remoteIdDesc,
+        orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
       );
 
   @override

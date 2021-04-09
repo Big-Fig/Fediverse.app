@@ -26,8 +26,8 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
   Future<List<IPleromaChatWithLastMessage>> getChatsWithLastMessage({
     required PleromaChatRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChat> pagination,
-    PleromaChatOrderingTermData orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
+    PleromaChatRepositoryOrderingTermData orderingTermData =
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) async {
     var chats = await chatRepository.getChatsWithLastMessage(
       filters: filters,
@@ -42,8 +42,8 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
   Stream<List<IPleromaChatWithLastMessage>> watchChatsWithLastMessage({
     required PleromaChatRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChat> pagination,
-    PleromaChatOrderingTermData orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
+    PleromaChatRepositoryOrderingTermData orderingTermData =
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) {
     return chatRepository.watchChatsWithLastMessage(
       filters: filters,

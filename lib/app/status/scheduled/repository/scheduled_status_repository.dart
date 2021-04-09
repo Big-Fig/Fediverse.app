@@ -11,8 +11,13 @@ import 'package:provider/provider.dart';
 abstract class IScheduledStatusRepository
     implements
         IDisposable,
-        IAppRemoteReadWriteRepository<DbScheduledStatus, IScheduledStatus,
-            IPleromaScheduledStatus, int, String> {
+        IAppRemoteReadWriteRepository<
+            DbScheduledStatus,
+            IScheduledStatus,
+            IPleromaScheduledStatus,
+            int,
+            String,
+            ScheduledStatusRepositoryFilters, ScheduledStatusRepositoryOrderingTermData> {
   static IScheduledStatusRepository of(
     BuildContext context, {
     bool listen = true,
@@ -39,30 +44,29 @@ abstract class IScheduledStatusRepository
     required IScheduledStatus scheduledStatus,
   });
 
-
   Future<List<IScheduledStatus>> getScheduledStatuses({
     required ScheduledStatusRepositoryFilters? filters,
     required RepositoryPagination<IScheduledStatus>? pagination,
-    ScheduledStatusOrderingTermData? orderingTermData =
-        ScheduledStatusOrderingTermData.remoteIdDesc,
+    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
   });
 
   Stream<List<IScheduledStatus>> watchScheduledStatuses({
     required ScheduledStatusRepositoryFilters? filters,
     required RepositoryPagination<IScheduledStatus>? pagination,
-    ScheduledStatusOrderingTermData? orderingTermData =
-        ScheduledStatusOrderingTermData.remoteIdDesc,
+    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
   });
 
   Future<IScheduledStatus?> getScheduledStatus({
     required ScheduledStatusRepositoryFilters? filters,
-    ScheduledStatusOrderingTermData? orderingTermData =
-        ScheduledStatusOrderingTermData.remoteIdDesc,
+    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
   });
 
   Stream<IScheduledStatus?> watchScheduledStatus({
     required ScheduledStatusRepositoryFilters? filters,
-    ScheduledStatusOrderingTermData? orderingTermData =
-        ScheduledStatusOrderingTermData.remoteIdDesc,
+    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
   });
 }

@@ -35,7 +35,9 @@ class AccountRepository extends SimpleAppRemoteDatabaseDaoRepository<
     int,
     String,
     $DbAccountsTable,
-    $DbAccountsTable> implements IAccountRepository {
+    $DbAccountsTable,
+    AccountRepositoryFilters,
+    AccountRepositoryOrderingTermData> implements IAccountRepository {
   @override
   late AccountDao dao;
   late AccountFollowingsDao accountFollowingsDao;
@@ -534,13 +536,44 @@ class AccountRepository extends SimpleAppRemoteDatabaseDaoRepository<
   IPleromaAccount mapDbItemToRemoteItem(DbAccount dbItem) =>
       dbItem.toDbAccountWrapper().toPleromaAccount();
 
-  // @override
-  // IAccount mapRemoteItemToAppItem(IPleromaAccount remoteItem) =>
-  //     remoteItem.toDbAccountWrapper();
-
   @override
   DbAccount mapRemoteItemToDbItem(IPleromaAccount remoteItem) =>
       remoteItem.toDbAccount();
+
+  @override
+  AccountRepositoryFilters get emptyFilters => AccountRepositoryFilters.empty;
+
+  @override
+  List<AccountRepositoryOrderingTermData> get defaultOrderingTerms =>
+      AccountRepositoryOrderingTermData.defaultTerms;
+
+  @override
+  void addFiltersToQuery({
+    required Query<Table, DataClass> query,
+    required AccountRepositoryFilters? filters,
+  }) {
+    // TODO: implement addFiltersToQuery
+  }
+
+  @override
+  void addOrderingToQuery({
+    required Query<Table, DataClass> query,
+    required List<AccountRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    // TODO: implement addOrderingToQuery
+  }
+
+  @override
+  Future insertAllInRemoteType(List<IPleromaAccount> remoteItems) {}
+
+  @override
+  Future<int> insertInRemoteType(IPleromaAccount remoteItem) {}
+
+  @override
+  Future upsertAllInRemoteType(List<IPleromaAccount> remoteItems) {}
+
+  @override
+  Future<int> upsertInRemoteType(IPleromaAccount remoteItem) {}
 }
 
 extension DbAccountListExtension on List<DbAccount> {

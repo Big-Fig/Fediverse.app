@@ -8,6 +8,24 @@ part of 'filter_database_dao.dart';
 
 mixin _$FilterDaoMixin on DatabaseAccessor<AppDatabase> {
   $DbFiltersTable get dbFilters => attachedDatabase.dbFilters;
+  Selectable<DbFilter> findById(int? id) {
+    return customSelect('SELECT * FROM db_filters WHERE id = :id;',
+        variables: [Variable<int?>(id)],
+        readsFrom: {dbFilters}).map(dbFilters.mapFromRow);
+  }
+
+  Selectable<DbFilter> findByRemoteId(String remoteId) {
+    return customSelect(
+        'SELECT * FROM db_filters WHERE remote_id LIKE :remoteId;',
+        variables: [Variable<String>(remoteId)],
+        readsFrom: {dbFilters}).map(dbFilters.mapFromRow);
+  }
+
+  Selectable<DbFilter> getAll() {
+    return customSelect('SELECT * FROM db_filters',
+        variables: [], readsFrom: {dbFilters}).map(dbFilters.mapFromRow);
+  }
+
   Selectable<int> countAll() {
     return customSelect('SELECT Count(*) FROM db_filters;',
         variables: [],
@@ -18,6 +36,15 @@ mixin _$FilterDaoMixin on DatabaseAccessor<AppDatabase> {
     return customUpdate(
       'DELETE FROM db_filters WHERE id = :id;',
       variables: [Variable<int?>(id)],
+      updates: {dbFilters},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
+  Future<int> deleteByRemoteId(String remoteId) {
+    return customUpdate(
+      'DELETE FROM db_filters WHERE remote_id = :remoteId;',
+      variables: [Variable<String>(remoteId)],
       updates: {dbFilters},
       updateKind: UpdateKind.delete,
     );
@@ -36,11 +63,6 @@ mixin _$FilterDaoMixin on DatabaseAccessor<AppDatabase> {
       updates: {dbFilters},
       updateKind: UpdateKind.delete,
     );
-  }
-
-  Selectable<DbFilter> getAll() {
-    return customSelect('SELECT * FROM db_filters',
-        variables: [], readsFrom: {dbFilters}).map(dbFilters.mapFromRow);
   }
 
   Selectable<int?> findLocalIdByRemoteId(String remoteId) {

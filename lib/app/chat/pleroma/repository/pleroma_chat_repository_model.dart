@@ -1,42 +1,53 @@
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
-class PleromaChatRepositoryFilters {}
+class PleromaChatRepositoryFilters {
+  static const PleromaChatRepositoryFilters empty =
+      PleromaChatRepositoryFilters();
+
+  const PleromaChatRepositoryFilters();
+}
 
 enum PleromaChatOrderType {
   remoteId,
   updatedAt,
 }
 
-class PleromaChatOrderingTermData {
+class PleromaChatRepositoryOrderingTermData extends RepositoryOrderingTerm {
   final PleromaChatOrderType orderType;
+  @override
   final OrderingMode orderingMode;
 
-  const PleromaChatOrderingTermData({
+  const PleromaChatRepositoryOrderingTermData({
     required this.orderType,
     required this.orderingMode,
   });
 
-  static const PleromaChatOrderingTermData remoteIdDesc =
-      PleromaChatOrderingTermData(
+  static const PleromaChatRepositoryOrderingTermData remoteIdDesc =
+      PleromaChatRepositoryOrderingTermData(
     orderingMode: OrderingMode.desc,
     orderType: PleromaChatOrderType.remoteId,
   );
-  static const PleromaChatOrderingTermData remoteIdAsc =
-      PleromaChatOrderingTermData(
+  static const PleromaChatRepositoryOrderingTermData remoteIdAsc =
+      PleromaChatRepositoryOrderingTermData(
     orderingMode: OrderingMode.asc,
     orderType: PleromaChatOrderType.remoteId,
   );
 
-  static const PleromaChatOrderingTermData updatedAtDesc =
-      PleromaChatOrderingTermData(
+  static const PleromaChatRepositoryOrderingTermData updatedAtDesc =
+      PleromaChatRepositoryOrderingTermData(
     orderingMode: OrderingMode.desc,
     orderType: PleromaChatOrderType.updatedAt,
   );
-  static const PleromaChatOrderingTermData updatedAtAsc =
-      PleromaChatOrderingTermData(
+  static const PleromaChatRepositoryOrderingTermData updatedAtAsc =
+      PleromaChatRepositoryOrderingTermData(
     orderingMode: OrderingMode.asc,
     orderType: PleromaChatOrderType.updatedAt,
   );
+
+  static const List<PleromaChatRepositoryOrderingTermData> defaultTerms = [
+    updatedAtDesc,
+  ];
 
   @override
   String toString() {

@@ -11,8 +11,14 @@ import 'package:provider/provider.dart';
 
 abstract class INotificationRepository
     implements
-        IAppRemoteReadWriteRepository<DbNotification, INotification,
-            IPleromaNotification, int, String>,
+        IAppRemoteReadWriteRepository<
+            DbNotification,
+            INotification,
+            IPleromaNotification,
+            int,
+            String,
+            NotificationRepositoryFilters,
+            NotificationRepositoryOrderingTermData>,
         IDisposable {
   static INotificationRepository of(
     BuildContext context, {
@@ -50,27 +56,27 @@ abstract class INotificationRepository
   Future<List<DbNotificationPopulatedWrapper>> getNotifications({
     required NotificationRepositoryFilters? filters,
     required RepositoryPagination<INotification>? pagination,
-    NotificationOrderingTermData? orderingTermData =
-        NotificationOrderingTermData.createdAtDesc,
+    NotificationRepositoryOrderingTermData? orderingTermData =
+        NotificationRepositoryOrderingTermData.createdAtDesc,
   });
 
   Stream<List<DbNotificationPopulatedWrapper>> watchNotifications({
     required NotificationRepositoryFilters? filters,
     required RepositoryPagination<INotification>? pagination,
-    NotificationOrderingTermData? orderingTermData =
-        NotificationOrderingTermData.createdAtDesc,
+    NotificationRepositoryOrderingTermData? orderingTermData =
+        NotificationRepositoryOrderingTermData.createdAtDesc,
   });
 
   Future<DbNotificationPopulatedWrapper?> getNotification({
     required NotificationRepositoryFilters? filters,
-    NotificationOrderingTermData? orderingTermData =
-        NotificationOrderingTermData.createdAtDesc,
+    NotificationRepositoryOrderingTermData? orderingTermData =
+        NotificationRepositoryOrderingTermData.createdAtDesc,
   });
 
   Stream<DbNotificationPopulatedWrapper?> watchNotification({
     required NotificationRepositoryFilters? filters,
-    NotificationOrderingTermData? orderingTermData =
-        NotificationOrderingTermData.createdAtDesc,
+    NotificationRepositoryOrderingTermData? orderingTermData =
+        NotificationRepositoryOrderingTermData.createdAtDesc,
   });
 
   Future markAsRead({

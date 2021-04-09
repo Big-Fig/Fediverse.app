@@ -30,8 +30,8 @@ class PleromaChatWithLastMessageCachedListBloc
 
   PleromaChatRepositoryFilters? get filters => null;
 
-  PleromaChatOrderingTermData get orderingTermData =>
-      PleromaChatOrderingTermData.updatedAtDesc;
+  PleromaChatRepositoryOrderingTermData get orderingTermData =>
+      PleromaChatRepositoryOrderingTermData.updatedAtDesc;
 
   @override
   Future refreshItemsFromRemoteForPage({

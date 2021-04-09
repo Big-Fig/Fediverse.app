@@ -14,6 +14,25 @@ mixin _$ConversationDaoMixin on DatabaseAccessor<AppDatabase> {
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
+  Selectable<DbConversation> findById(int? id) {
+    return customSelect('SELECT * FROM db_conversations WHERE id = :id;',
+        variables: [Variable<int?>(id)],
+        readsFrom: {dbConversations}).map(dbConversations.mapFromRow);
+  }
+
+  Selectable<DbConversation> findByRemoteId(String remoteId) {
+    return customSelect(
+        'SELECT * FROM db_conversations WHERE remote_id LIKE :remoteId;',
+        variables: [Variable<String>(remoteId)],
+        readsFrom: {dbConversations}).map(dbConversations.mapFromRow);
+  }
+
+  Selectable<DbConversation> getAll() {
+    return customSelect('SELECT * FROM db_conversations',
+        variables: [],
+        readsFrom: {dbConversations}).map(dbConversations.mapFromRow);
+  }
+
   Selectable<DbConversation> oldest() {
     return customSelect(
         'SELECT * FROM db_conversations ORDER BY updated_at ASC LIMIT 1;',

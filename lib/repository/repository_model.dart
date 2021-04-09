@@ -1,3 +1,5 @@
+import 'package:moor/moor.dart';
+
 class RepositoryPagination<T> {
   final T? newerThanItem;
   final T? olderThanItem;
@@ -37,4 +39,10 @@ class RepositoryPagination<T> {
         ' offset: $offset'
         '}';
   }
+}
+
+abstract class RepositoryOrderingTerm {
+  OrderingMode get orderingMode;
+
+  const RepositoryOrderingTerm();
 }

@@ -27,8 +27,8 @@ class ConversationChatWithLastMessageRepository extends AsyncInitLoadingBloc
       getConversationsWithLastMessage({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat> pagination,
-    ConversationChatOrderingTermData orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
+    ConversationRepositoryChatOrderingTermData orderingTermData =
+        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) =>
           conversationChatRepository.getConversationsWithLastMessage(
             filters: filters,
@@ -41,8 +41,8 @@ class ConversationChatWithLastMessageRepository extends AsyncInitLoadingBloc
       watchConversationsWithLastMessage({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat> pagination,
-    ConversationChatOrderingTermData orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
+    ConversationRepositoryChatOrderingTermData orderingTermData =
+        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) =>
           conversationChatRepository.watchConversationsWithLastMessage(
             filters: filters,

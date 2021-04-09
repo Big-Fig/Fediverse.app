@@ -71,7 +71,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
         newerThanItem: newerThan,
         limit: limit,
       ),
-      orderingTermData: NotificationOrderingTermData.createdAtDesc,
+      orderingTermData: NotificationRepositoryOrderingTermData.createdAtDesc,
     );
   }
 

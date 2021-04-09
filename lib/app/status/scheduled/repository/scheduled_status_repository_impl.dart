@@ -22,14 +22,17 @@ var _singleScheduledStatusRepositoryPagination =
 );
 
 class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
-    DbScheduledStatus,
-    DbScheduledStatusPopulated,
-    IScheduledStatus,
-    IPleromaScheduledStatus,
-    int,
-    String,
-    $DbScheduledStatusesTable,
-    $DbScheduledStatusesTable> implements IScheduledStatusRepository {
+        DbScheduledStatus,
+        DbScheduledStatusPopulated,
+        IScheduledStatus,
+        IPleromaScheduledStatus,
+        int,
+        String,
+        $DbScheduledStatusesTable,
+        $DbScheduledStatusesTable,
+        ScheduledStatusRepositoryFilters,
+        ScheduledStatusRepositoryOrderingTermData>
+    implements IScheduledStatusRepository {
   @override
   late ScheduledStatusDao dao;
 
@@ -86,8 +89,8 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Future<List<DbScheduledStatusPopulatedWrapper>> getScheduledStatuses({
     required ScheduledStatusRepositoryFilters? filters,
     required RepositoryPagination<IScheduledStatus>? pagination,
-    ScheduledStatusOrderingTermData? orderingTermData =
-        ScheduledStatusOrderingTermData.remoteIdDesc,
+    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
   }) async {
     var query = createQuery(
       filters: filters,
@@ -106,8 +109,8 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Stream<List<DbScheduledStatusPopulatedWrapper>> watchScheduledStatuses({
     required ScheduledStatusRepositoryFilters? filters,
     required RepositoryPagination<IScheduledStatus>? pagination,
-    ScheduledStatusOrderingTermData? orderingTermData =
-        ScheduledStatusOrderingTermData.remoteIdDesc,
+    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
   }) {
     var query = createQuery(
       filters: filters,
@@ -127,7 +130,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   JoinedSelectStatement createQuery({
     required ScheduledStatusRepositoryFilters? filters,
     required RepositoryPagination<IScheduledStatus>? pagination,
-    required ScheduledStatusOrderingTermData? orderingTermData,
+    required ScheduledStatusRepositoryOrderingTermData? orderingTermData,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t filters=$filters\n"
@@ -180,8 +183,8 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<DbScheduledStatusPopulatedWrapper?> getScheduledStatus({
     required ScheduledStatusRepositoryFilters? filters,
-    ScheduledStatusOrderingTermData? orderingTermData =
-        ScheduledStatusOrderingTermData.remoteIdDesc,
+    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
   }) async {
     var scheduledStatuses = await getScheduledStatuses(
       filters: filters,
@@ -194,8 +197,8 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Stream<DbScheduledStatusPopulatedWrapper?> watchScheduledStatus({
     required ScheduledStatusRepositoryFilters? filters,
-    ScheduledStatusOrderingTermData? orderingTermData =
-        ScheduledStatusOrderingTermData.remoteIdDesc,
+    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
   }) {
     var scheduledStatusesStream = watchScheduledStatuses(
       filters: filters,
@@ -249,4 +252,12 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbPopulatedItem
           .toDbScheduledStatusPopulatedWrapper()
           .toPleromaScheduledStatus();
+
+  @override
+  ScheduledStatusRepositoryFilters get emptyFilters =>
+      ScheduledStatusRepositoryFilters.empty;
+
+  @override
+  List<ScheduledStatusRepositoryOrderingTermData> get defaultOrderingTerms =>
+      ScheduledStatusRepositoryOrderingTermData.defaultTerms;
 }

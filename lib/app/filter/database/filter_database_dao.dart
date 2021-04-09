@@ -13,11 +13,15 @@ part 'filter_database_dao.g.dart';
     DbFilters,
   ],
   queries: {
+    "findById": "SELECT * FROM db_filters WHERE id = :id;",
+    "findByRemoteId":
+    "SELECT * FROM db_filters WHERE remote_id LIKE :remoteId;",
+    "getAll": "SELECT * FROM db_filters",
     "countAll": "SELECT Count(*) FROM db_filters;",
     "deleteById": "DELETE FROM db_filters WHERE id = :id;",
+    "deleteByRemoteId": "DELETE FROM db_filters WHERE remote_id = :remoteId;",
     "countById": "SELECT COUNT(*) FROM db_filters WHERE id = :id;",
     "clear": "DELETE FROM db_filters",
-    "getAll": "SELECT * FROM db_filters",
     "findLocalIdByRemoteId": "SELECT id FROM db_filters WHERE remote_id = "
         ":remoteId;",
   },

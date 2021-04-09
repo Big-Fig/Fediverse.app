@@ -8,6 +8,25 @@ part of 'pleroma_chat_message_database_dao.dart';
 
 mixin _$ChatMessageDaoMixin on DatabaseAccessor<AppDatabase> {
   $DbChatMessagesTable get dbChatMessages => attachedDatabase.dbChatMessages;
+  Selectable<DbChatMessage> findById(int? id) {
+    return customSelect('SELECT * FROM db_chat_messages WHERE id = :id;',
+        variables: [Variable<int?>(id)],
+        readsFrom: {dbChatMessages}).map(dbChatMessages.mapFromRow);
+  }
+
+  Selectable<DbChatMessage> findByRemoteId(String remoteId) {
+    return customSelect(
+        'SELECT * FROM db_chat_messages WHERE remote_id LIKE :remoteId;',
+        variables: [Variable<String>(remoteId)],
+        readsFrom: {dbChatMessages}).map(dbChatMessages.mapFromRow);
+  }
+
+  Selectable<DbChatMessage> getAll() {
+    return customSelect('SELECT * FROM db_chat_messages',
+        variables: [],
+        readsFrom: {dbChatMessages}).map(dbChatMessages.mapFromRow);
+  }
+
   Selectable<int> countAll() {
     return customSelect('SELECT Count(*) FROM db_chat_messages;',
             variables: [], readsFrom: {dbChatMessages})
@@ -45,12 +64,6 @@ mixin _$ChatMessageDaoMixin on DatabaseAccessor<AppDatabase> {
       updates: {dbChatMessages},
       updateKind: UpdateKind.delete,
     );
-  }
-
-  Selectable<DbChatMessage> getAll() {
-    return customSelect('SELECT * FROM db_chat_messages',
-        variables: [],
-        readsFrom: {dbChatMessages}).map(dbChatMessages.mapFromRow);
   }
 
   Selectable<DbChatMessage> oldest() {

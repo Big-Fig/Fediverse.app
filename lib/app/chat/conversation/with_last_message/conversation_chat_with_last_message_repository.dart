@@ -21,15 +21,15 @@ abstract class IConversationChatWithLastMessageRepository
       getConversationsWithLastMessage({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat> pagination,
-    ConversationChatOrderingTermData orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
+    ConversationRepositoryChatOrderingTermData orderingTermData =
+        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   });
 
   Stream<List<IConversationChatWithLastMessage>>
       watchConversationsWithLastMessage({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat> pagination,
-    ConversationChatOrderingTermData orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
+    ConversationRepositoryChatOrderingTermData orderingTermData =
+        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   });
 }

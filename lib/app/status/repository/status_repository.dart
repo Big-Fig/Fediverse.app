@@ -11,8 +11,8 @@ import 'package:provider/provider.dart';
 
 abstract class IStatusRepository
     implements
-        IAppRemoteReadWriteRepository<DbStatus, IStatus,
-            IPleromaStatus, int, String>,
+        IAppRemoteReadWriteRepository<DbStatus, IStatus, IPleromaStatus, int,
+            String, StatusRepositoryFilters, StatusRepositoryOrderingTermData>,
         IDisposable {
   static IStatusRepository of(
     BuildContext context, {

@@ -1,14 +1,21 @@
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
-class ScheduledStatusRepositoryFilters {}
+class DraftStatusRepositoryFilters {
+  static const DraftStatusRepositoryFilters empty =
+      DraftStatusRepositoryFilters();
+
+  const DraftStatusRepositoryFilters();
+}
 
 enum DraftStatusRepositoryOrderType {
   localId,
   updatedAt,
 }
 
-class DraftStatusOrderingTermData {
+class DraftStatusOrderingTermData extends RepositoryOrderingTerm {
   final DraftStatusRepositoryOrderType orderType;
+  @override
   final OrderingMode orderingMode;
 
   const DraftStatusOrderingTermData({
@@ -36,6 +43,10 @@ class DraftStatusOrderingTermData {
     orderingMode: OrderingMode.asc,
     orderType: DraftStatusRepositoryOrderType.updatedAt,
   );
+
+  static const List<DraftStatusOrderingTermData> defaultTerms = [
+    updatedAtDesc,
+  ];
 
   @override
   String toString() {

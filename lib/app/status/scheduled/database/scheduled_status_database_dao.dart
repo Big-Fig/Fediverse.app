@@ -18,6 +18,7 @@ part 'scheduled_status_database_dao.g.dart';
         "SELECT * FROM db_scheduled_statuses WHERE remote_id LIKE :remoteId;",
     "countById": "SELECT COUNT(*) FROM db_scheduled_statuses WHERE id = :id;",
     "deleteById": "DELETE FROM db_scheduled_statuses WHERE id = :id;",
+    "deleteByRemoteId": "DELETE FROM db_scheduled_statuses WHERE remote_id = :remoteId;",
     "clear": "DELETE FROM db_scheduled_statuses",
     "getAll": "SELECT * FROM db_scheduled_statuses",
     "findLocalIdByRemoteId":
@@ -102,7 +103,7 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
 
   SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> orderBy(
     SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query,
-    List<ScheduledStatusOrderingTermData> orderTerms,
+    List<ScheduledStatusRepositoryOrderingTermData> orderTerms,
   ) =>
       query
         ..orderBy(orderTerms

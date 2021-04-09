@@ -19,14 +19,14 @@ abstract class IPleromaChatWithLastMessageRepository implements IDisposable {
   Future<List<IPleromaChatWithLastMessage>> getChatsWithLastMessage({
     required PleromaChatRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChat> pagination,
-    PleromaChatOrderingTermData orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
+    PleromaChatRepositoryOrderingTermData orderingTermData =
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   });
 
   Stream<List<IPleromaChatWithLastMessage>> watchChatsWithLastMessage({
     required PleromaChatRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChat> pagination,
-    PleromaChatOrderingTermData orderingTermData =
-        PleromaChatOrderingTermData.updatedAtDesc,
+    PleromaChatRepositoryOrderingTermData orderingTermData =
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   });
 }

@@ -73,7 +73,7 @@ class ConversationChatWithLastMessageCachedListBloc
         newerThanItem: newerThan?.chat,
         limit: limit,
       ),
-      orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
+      orderingTermData: ConversationRepositoryChatOrderingTermData.updatedAtDesc,
     );
 
     _logger.finer(() => "finish loadLocalItems chats ${chats.length}");
@@ -89,6 +89,6 @@ class ConversationChatWithLastMessageCachedListBloc
         pagination: RepositoryPagination<IConversationChat>(
           newerThanItem: item?.chat,
         ),
-        orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
+        orderingTermData: ConversationRepositoryChatOrderingTermData.updatedAtDesc,
       );
 }

@@ -27,7 +27,9 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     int,
     String,
     $DbFiltersTable,
-    $DbFiltersTable> implements IFilterRepository {
+    $DbFiltersTable,
+    FilterRepositoryFilters,
+    FilterOrderingTermData> implements IFilterRepository {
   @override
   final FilterDao dao;
 
@@ -222,6 +224,13 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   IPleromaFilter mapDbPopulatedItemToRemoteItem(
           DbFilterPopulated dbPopulatedItem) =>
       dbPopulatedItem.toDbFilterPopulatedWrapper().toPleromaFilter();
+
+  @override
+  FilterRepositoryFilters get emptyFilters => FilterRepositoryFilters.empty;
+
+  @override
+  List<FilterOrderingTermData> get defaultOrderingTerms =>
+      FilterOrderingTermData.defaultTerms;
 }
 
 extension DbFilterPopulatedListExtension on List<DbFilterPopulated> {

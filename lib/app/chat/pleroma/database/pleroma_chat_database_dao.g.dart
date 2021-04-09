@@ -8,6 +8,24 @@ part of 'pleroma_chat_database_dao.dart';
 
 mixin _$ChatDaoMixin on DatabaseAccessor<AppDatabase> {
   $DbChatsTable get dbChats => attachedDatabase.dbChats;
+  Selectable<DbChat> findById(int? id) {
+    return customSelect('SELECT * FROM db_chats WHERE id = :id;',
+        variables: [Variable<int?>(id)],
+        readsFrom: {dbChats}).map(dbChats.mapFromRow);
+  }
+
+  Selectable<DbChat> findByRemoteId(String remoteId) {
+    return customSelect(
+        'SELECT * FROM db_chats WHERE remote_id LIKE :remoteId;',
+        variables: [Variable<String>(remoteId)],
+        readsFrom: {dbChats}).map(dbChats.mapFromRow);
+  }
+
+  Selectable<DbChat> getAll() {
+    return customSelect('SELECT * FROM db_chats',
+        variables: [], readsFrom: {dbChats}).map(dbChats.mapFromRow);
+  }
+
   Selectable<int> countAll() {
     return customSelect('SELECT Count(*) FROM db_chats;',
         variables: [],
@@ -29,6 +47,15 @@ mixin _$ChatDaoMixin on DatabaseAccessor<AppDatabase> {
     );
   }
 
+  Future<int> deleteByRemoteId(String remoteId) {
+    return customUpdate(
+      'DELETE FROM db_chats WHERE remote_id = :remoteId;',
+      variables: [Variable<String>(remoteId)],
+      updates: {dbChats},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
   Selectable<DbChat> oldest() {
     return customSelect(
         'SELECT * FROM db_chats ORDER BY updated_at ASC LIMIT 1;',
@@ -43,11 +70,6 @@ mixin _$ChatDaoMixin on DatabaseAccessor<AppDatabase> {
       updates: {dbChats},
       updateKind: UpdateKind.delete,
     );
-  }
-
-  Selectable<DbChat> getAll() {
-    return customSelect('SELECT * FROM db_chats',
-        variables: [], readsFrom: {dbChats}).map(dbChats.mapFromRow);
   }
 
   Selectable<int?> findLocalIdByRemoteId(String remoteId) {

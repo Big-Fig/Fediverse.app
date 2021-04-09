@@ -4,6 +4,7 @@ import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 Function eq = const ListEquality().equals;
@@ -60,7 +61,9 @@ class StatusRepositoryFilters {
   final PleromaReplyVisibilityFilterCondition? replyVisibilityFilterCondition;
   final bool onlyPendingStatePublishedOrNull;
 
-  StatusRepositoryFilters({
+  static const StatusRepositoryFilters empty = StatusRepositoryFilters();
+
+  const StatusRepositoryFilters({
     this.onlyInListWithRemoteId,
     this.onlyWithHashtag,
     this.onlyFromAccountsFollowingByAccount,
@@ -189,8 +192,9 @@ enum StatusRepositoryOrderType {
   createdAt,
 }
 
-class StatusRepositoryOrderingTermData {
+class StatusRepositoryOrderingTermData extends RepositoryOrderingTerm {
   final StatusRepositoryOrderType orderByType;
+  @override
   final OrderingMode orderingMode;
 
   static const StatusRepositoryOrderingTermData remoteIdDesc =
@@ -214,6 +218,10 @@ class StatusRepositoryOrderingTermData {
     orderingMode: OrderingMode.asc,
     orderByType: StatusRepositoryOrderType.createdAt,
   );
+
+  static const List<StatusRepositoryOrderingTermData> defaultTerms = [
+    createdAtDesc,
+  ];
 
   const StatusRepositoryOrderingTermData({
     required this.orderByType,

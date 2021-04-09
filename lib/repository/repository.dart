@@ -1,3 +1,4 @@
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 abstract class IBaseReadRepository<DbId> {
@@ -6,7 +7,8 @@ abstract class IBaseReadRepository<DbId> {
   Future<bool> isExistWithDbId(DbId dbId);
 }
 
-abstract class IDbReadRepository<DbItem extends DataClass, DbId>
+abstract class IDbReadRepository<DbItem extends DataClass, DbId, Filters,
+        OrderingTerm extends RepositoryOrderingTerm>
     extends IBaseReadRepository<DbId> {
   Future<List<DbItem>> getAllInDbType();
 
@@ -15,10 +17,35 @@ abstract class IDbReadRepository<DbItem extends DataClass, DbId>
   Future<DbItem?> findByDbIdInDbType(DbId dbId);
 
   Stream<DbItem?> watchByDbIdInDbType(DbId dbId);
+
+  Future<DbItem?> findInDbType({
+    required RepositoryPagination<DbItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Stream<DbItem?> watchInDbType({
+    required RepositoryPagination<DbItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Future<List<DbItem>> findAllInDbType({
+    required RepositoryPagination<DbItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Stream<List<DbItem>> watchFindAllInDbType({
+    required RepositoryPagination<DbItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
 }
 
-abstract class IAppReadRepository<DbItem extends DataClass, AppItem, DbId>
-    extends IDbReadRepository<DbItem, DbId> {
+abstract class IAppReadRepository<DbItem extends DataClass, AppItem, DbId,
+        Filters, OrderingTerm extends RepositoryOrderingTerm>
+    extends IDbReadRepository<DbItem, DbId, Filters, OrderingTerm> {
   Future<List<AppItem>> getAllInAppType();
 
   Stream<List<AppItem>> watchAllInAppType();
@@ -26,14 +53,41 @@ abstract class IAppReadRepository<DbItem extends DataClass, AppItem, DbId>
   Future<AppItem?> findByDbIdInAppType(DbId dbId);
 
   Stream<AppItem?> watchByDbIdInAppType(DbId dbId);
+
+  Future<AppItem?> findInAppType({
+    required RepositoryPagination<AppItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Stream<AppItem?> watchInAppType({
+    required RepositoryPagination<AppItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Future<List<AppItem>> findAllInAppType({
+    required RepositoryPagination<AppItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Stream<List<AppItem>> watchFindAllInAppType({
+    required RepositoryPagination<AppItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
 }
 
 abstract class IAppRemoteReadRepository<
-    DbItem extends DataClass,
-    AppItem,
-    RemoteItem,
-    DbId,
-    RemoteId> extends IAppReadRepository<DbItem, AppItem, DbId> {
+        DbItem extends DataClass,
+        AppItem,
+        RemoteItem,
+        DbId,
+        RemoteId,
+        Filters,
+        OrderingTerm extends RepositoryOrderingTerm>
+    extends IAppReadRepository<DbItem, AppItem, DbId, Filters, OrderingTerm> {
   Future<DbItem?> findByRemoteIdInDbType(RemoteId remoteId);
 
   Stream<DbItem?> watchByRemoteIdInDbType(RemoteId remoteId);
@@ -53,6 +107,30 @@ abstract class IAppRemoteReadRepository<
   Future<RemoteItem?> findByDbIdInRemoteType(DbId id);
 
   Stream<RemoteItem?> watchByDbIdInRemoteType(DbId id);
+
+  Future<RemoteItem?> findInRemoteType({
+    required RepositoryPagination<RemoteItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Stream<RemoteItem?> watchInRemoteType({
+    required RepositoryPagination<RemoteItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Future<List<RemoteItem>> findAllInRemoteType({
+    required RepositoryPagination<RemoteItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Stream<List<RemoteItem>> watchFindAllInRemoteType({
+    required RepositoryPagination<RemoteItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
 }
 
 abstract class IBaseWriteRepository<DbId> {
@@ -63,7 +141,6 @@ abstract class IBaseWriteRepository<DbId> {
 
 abstract class IDbWriteRepository<DbItem extends DataClass, DbId>
     extends IBaseWriteRepository<DbId> {
-  
   Future insertAllInDbType(List<Insertable<DbItem>> dbItems);
 
   Future upsertAllInDbType(List<Insertable<DbItem>> dbItems);
@@ -110,8 +187,8 @@ abstract class IAppRemoteWriteRepository<
     RemoteItem,
     DbId,
     RemoteId> extends IAppWriteRepository<DbItem, AppItem, DbId> {
-  Future<bool> deleteByRemoteId(RemoteId RemoteId);
-  
+  Future<int> deleteByRemoteId(RemoteId remoteId);
+
   Future insertAllInRemoteType(List<RemoteItem> remoteItems);
 
   Future upsertAllInRemoteType(List<RemoteItem> remoteItems);
@@ -144,19 +221,28 @@ abstract class IAppRemoteWriteRepository<
 abstract class IBaseReadWriteRepository<DbId>
     implements IBaseReadRepository<DbId>, IBaseWriteRepository<DbId> {}
 
-abstract class IDbReadWriteRepository<DbItem extends DataClass, DbId>
+abstract class IDbReadWriteRepository<DbItem extends DataClass, DbId, Filters,
+        OrderingTerm extends RepositoryOrderingTerm>
     implements
-        IDbReadRepository<DbItem, DbId>,
+        IDbReadRepository<DbItem, DbId, Filters, OrderingTerm>,
         IDbWriteRepository<DbItem, DbId> {}
 
-abstract class IAppReadWriteRepository<DbItem extends DataClass, AppItem, DbId>
+abstract class IAppReadWriteRepository<DbItem extends DataClass, AppItem, DbId,
+        Filters, OrderingTerm extends RepositoryOrderingTerm>
     implements
-        IAppReadRepository<DbItem, AppItem, DbId>,
+        IAppReadRepository<DbItem, AppItem, DbId, Filters, OrderingTerm>,
         IAppWriteRepository<DbItem, AppItem, DbId> {}
 
-abstract class IAppRemoteReadWriteRepository<DbItem extends DataClass, AppItem,
-        RemoteItem, DbId, RemoteId>
+abstract class IAppRemoteReadWriteRepository<
+        DbItem extends DataClass,
+        AppItem,
+        RemoteItem,
+        DbId,
+        RemoteId,
+        Filters,
+        OrderingTerm extends RepositoryOrderingTerm>
     implements
-        IAppRemoteReadRepository<DbItem, AppItem, RemoteItem, DbId, RemoteId>,
+        IAppRemoteReadRepository<DbItem, AppItem, RemoteItem, DbId, RemoteId,
+            Filters, OrderingTerm>,
         IAppRemoteWriteRepository<DbItem, AppItem, RemoteItem, DbId, RemoteId> {
 }
