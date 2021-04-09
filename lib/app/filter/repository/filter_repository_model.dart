@@ -1,11 +1,14 @@
 import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 class FilterRepositoryFilters {
   final List<MastodonFilterContextType>? onlyWithContextTypes;
   final bool? notExpired;
 
-  FilterRepositoryFilters({
+  static const FilterRepositoryFilters empty = FilterRepositoryFilters();
+
+  const FilterRepositoryFilters({
     this.onlyWithContextTypes,
     this.notExpired,
   });
@@ -34,8 +37,9 @@ enum FilterOrderType {
   remoteId,
 }
 
-class FilterOrderingTermData {
+class FilterOrderingTermData extends RepositoryOrderingTerm {
   final FilterOrderType orderType;
+  @override
   final OrderingMode orderingMode;
 
   static const FilterOrderingTermData remoteIdDesc = FilterOrderingTermData(
@@ -51,6 +55,10 @@ class FilterOrderingTermData {
     required this.orderType,
     required this.orderingMode,
   });
+
+  static const List<FilterOrderingTermData> defaultTerms = [
+    remoteIdDesc,
+  ];
 
   @override
   String toString() {

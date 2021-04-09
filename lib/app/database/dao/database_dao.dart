@@ -105,9 +105,8 @@ abstract class DatabaseDao<
 
   Selectable<int> countAll();
 
-  //
-  // Selectable<List<DbItem>> getAll();
-  //
+  Selectable<DbItem> getAll();
+
   Selectable<DbItem> findById(DbId id);
 
   Selectable<int> countById(DbId id);

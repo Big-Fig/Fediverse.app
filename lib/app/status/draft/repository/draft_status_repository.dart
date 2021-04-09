@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 abstract class IDraftStatusRepository
     implements
         IDisposable,
-        IAppReadWriteRepository<DbDraftStatus, IDraftStatus, int> {
+        IAppReadWriteRepository<DbDraftStatus, IDraftStatus, int,
+            DraftStatusRepositoryFilters, DraftStatusOrderingTermData> {
   static IDraftStatusRepository of(
     BuildContext context, {
     bool listen = true,
@@ -22,27 +23,27 @@ abstract class IDraftStatusRepository
   });
 
   Future<List<IDraftStatus>> getDraftStatuses({
-    required ScheduledStatusRepositoryFilters? filters,
+    required DraftStatusRepositoryFilters? filters,
     required RepositoryPagination<IDraftStatus> pagination,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
   });
 
   Stream<List<IDraftStatus>> watchDraftStatuses({
-    required ScheduledStatusRepositoryFilters filters,
+    required DraftStatusRepositoryFilters filters,
     required RepositoryPagination<IDraftStatus> pagination,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
   });
 
   Future<IDraftStatus?> getDraftStatus({
-    required ScheduledStatusRepositoryFilters filters,
+    required DraftStatusRepositoryFilters filters,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
   });
 
   Stream<IDraftStatus?> watchDraftStatus({
-    required ScheduledStatusRepositoryFilters filters,
+    required DraftStatusRepositoryFilters filters,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
   });

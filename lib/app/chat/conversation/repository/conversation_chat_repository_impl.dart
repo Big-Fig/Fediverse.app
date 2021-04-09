@@ -31,7 +31,10 @@ class ConversationChatRepository
         int,
         String,
         $DbConversationsTable,
-        $DbConversationsTable> implements IConversationChatRepository {
+        $DbConversationsTable,
+        ConversationChatRepositoryFilters,
+        ConversationRepositoryChatOrderingTermData>
+    implements IConversationChatRepository {
   @override
   late ConversationDao dao;
 
@@ -140,8 +143,8 @@ class ConversationChatRepository
   Future<List<DbConversationChatPopulatedWrapper>> getConversations({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat>? pagination,
-    ConversationChatOrderingTermData? orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
+    ConversationRepositoryChatOrderingTermData? orderingTermData =
+        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) async {
     var query = createQuery(
       filters: filters,
@@ -159,8 +162,8 @@ class ConversationChatRepository
   Stream<List<DbConversationChatPopulatedWrapper>> watchConversations({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat>? pagination,
-    ConversationChatOrderingTermData? orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
+    ConversationRepositoryChatOrderingTermData? orderingTermData =
+        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) {
     var query = createQuery(
       filters: filters,
@@ -181,8 +184,8 @@ class ConversationChatRepository
   @override
   Future<DbConversationChatPopulatedWrapper?> getConversation({
     required ConversationChatRepositoryFilters? filters,
-    ConversationChatOrderingTermData? orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
+    ConversationRepositoryChatOrderingTermData? orderingTermData =
+        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) async {
     var query = createQuery(
       filters: filters,
@@ -201,8 +204,8 @@ class ConversationChatRepository
   @override
   Stream<DbConversationChatPopulatedWrapper?> watchConversation({
     required ConversationChatRepositoryFilters? filters,
-    ConversationChatOrderingTermData? orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
+    ConversationRepositoryChatOrderingTermData? orderingTermData =
+        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) {
     var query = createQuery(
       filters: filters,
@@ -221,7 +224,7 @@ class ConversationChatRepository
   JoinedSelectStatement createQuery({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat>? pagination,
-    required ConversationChatOrderingTermData? orderingTermData,
+    required ConversationRepositoryChatOrderingTermData? orderingTermData,
     required bool withLastMessage,
   }) {
     _logger.fine(() => "createQuery \n"
@@ -304,8 +307,8 @@ class ConversationChatRepository
       getConversationsWithLastMessage({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat>? pagination,
-    ConversationChatOrderingTermData? orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
+    ConversationRepositoryChatOrderingTermData? orderingTermData =
+        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) async {
     var query = createQuery(
       filters: filters,
@@ -323,8 +326,8 @@ class ConversationChatRepository
       watchConversationsWithLastMessage({
     required ConversationChatRepositoryFilters? filters,
     required RepositoryPagination<IConversationChat>? pagination,
-    ConversationChatOrderingTermData? orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
+    ConversationRepositoryChatOrderingTermData? orderingTermData =
+        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) {
     var query = createQuery(
       filters: filters,
@@ -344,8 +347,8 @@ class ConversationChatRepository
   Future<DbConversationChatWithLastMessagePopulatedWrapper?>
       getConversationWithLastMessage({
     required ConversationChatRepositoryFilters filters,
-    ConversationChatOrderingTermData? orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
+    ConversationRepositoryChatOrderingTermData? orderingTermData =
+        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) async {
     var query = createQuery(
       filters: filters,
@@ -365,8 +368,8 @@ class ConversationChatRepository
   Stream<DbConversationChatWithLastMessagePopulatedWrapper?>
       watchConversationWithLastMessage({
     required ConversationChatRepositoryFilters? filters,
-    ConversationChatOrderingTermData? orderingTermData =
-        ConversationChatOrderingTermData.updatedAtDesc,
+    ConversationRepositoryChatOrderingTermData? orderingTermData =
+        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) {
     var query = createQuery(
       filters: filters,
@@ -416,4 +419,48 @@ class ConversationChatRepository
       accounts: [],
     );
   }
+
+  @override
+  DbConversationPopulated mapTypedResultToDbPopulatedItem(
+    TypedResult typedResult,
+  ) =>
+      typedResult.toDbConversationPopulated(dao: dao);
+
+  @override
+  ConversationChatRepositoryFilters get emptyFilters =>
+      ConversationChatRepositoryFilters.empty;
+
+  @override
+  List<ConversationRepositoryChatOrderingTermData> get defaultOrderingTerms =>
+      ConversationRepositoryChatOrderingTermData.defaultTerms;
+
+  @override
+  void addFiltersToQuery({
+    required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
+    required ConversationChatRepositoryFilters? filters,
+  }) {}
+
+  @override
+  void addOrderingToQuery({
+    required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
+    required List<ConversationRepositoryChatOrderingTermData>? orderingTerms,
+  }) {}
+
+  @override
+  JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
+    required ConversationChatRepositoryFilters? filters,
+  }) {}
+
+  @override
+  Future insertAllInRemoteType(List<IPleromaConversation> remoteItems) {}
+
+  @override
+  Future<int> insertInRemoteType(IPleromaConversation remoteItem) {}
+
+  @override
+  Future upsertAllInRemoteType(List<IPleromaConversation> remoteItems) {}
+
+  @override
+  Future<int> upsertInRemoteType(IPleromaConversation remoteItem) {}
 }

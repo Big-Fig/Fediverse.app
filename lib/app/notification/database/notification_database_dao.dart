@@ -19,12 +19,16 @@ var _statusReblogAccountAliasId = "status_reblog_account";
     DbNotifications,
   ],
   queries: {
+    "findById": "SELECT * FROM db_notifications WHERE id = :id;",
+    "findByRemoteId":
+    "SELECT * FROM db_notifications WHERE remote_id LIKE :remoteId;",
+    "getAll": "SELECT * FROM db_notifications",
     "countAll": "SELECT Count(*) FROM db_notifications;",
     "countById": "SELECT COUNT(*) FROM db_notifications WHERE id = :id;",
     "oldest": "SELECT * FROM db_notifications ORDER BY created_at ASC LIMIT 1;",
     "deleteById": "DELETE FROM db_notifications WHERE id = :id;",
+    "deleteByRemoteId": "DELETE FROM db_notifications WHERE remote_id = :remoteId;",
     "clear": "DELETE FROM db_notifications",
-    "getAll": "SELECT * FROM db_notifications",
     "findLocalIdByRemoteId":
         "SELECT id FROM db_notifications WHERE remote_id = "
             ":remoteId;",
@@ -200,7 +204,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification> orderBy(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
-    List<NotificationOrderingTermData> orderTerms,
+    List<NotificationRepositoryOrderingTermData> orderTerms,
   ) =>
       query
         ..orderBy(orderTerms

@@ -14,6 +14,12 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbStatuses}).map((QueryRow row) => row.readInt('Count(*)'));
   }
 
+  Selectable<DbStatus> findById(int? id) {
+    return customSelect('SELECT * FROM db_statuses WHERE id = :id;',
+        variables: [Variable<int?>(id)],
+        readsFrom: {dbStatuses}).map(dbStatuses.mapFromRow);
+  }
+
   Selectable<int> countById(int? id) {
     return customSelect('SELECT COUNT(*) FROM db_statuses WHERE id = :id;',
         variables: [Variable<int?>(id)],

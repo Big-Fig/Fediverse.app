@@ -27,6 +27,11 @@ mixin _$AccountDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbAccounts}).map(dbAccounts.mapFromRow);
   }
 
+  Selectable<DbAccount> getAll() {
+    return customSelect('SELECT * FROM db_accounts',
+        variables: [], readsFrom: {dbAccounts}).map(dbAccounts.mapFromRow);
+  }
+
   Selectable<DbAccount> oldest() {
     return customSelect(
         'SELECT * FROM db_accounts ORDER BY last_status_at ASC LIMIT 1;',
@@ -49,6 +54,15 @@ mixin _$AccountDaoMixin on DatabaseAccessor<AppDatabase> {
     );
   }
 
+  Future<int> deleteByRemoteId(String remoteId) {
+    return customUpdate(
+      'DELETE FROM db_accounts WHERE remote_id = :remoteId;',
+      variables: [Variable<String>(remoteId)],
+      updates: {dbAccounts},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
   Future<int> clear() {
     return customUpdate(
       'DELETE FROM db_accounts',
@@ -56,11 +70,6 @@ mixin _$AccountDaoMixin on DatabaseAccessor<AppDatabase> {
       updates: {dbAccounts},
       updateKind: UpdateKind.delete,
     );
-  }
-
-  Selectable<DbAccount> getAll() {
-    return customSelect('SELECT * FROM db_accounts',
-        variables: [], readsFrom: {dbAccounts}).map(dbAccounts.mapFromRow);
   }
 
   Selectable<int?> findLocalIdByRemoteId(String remoteId) {

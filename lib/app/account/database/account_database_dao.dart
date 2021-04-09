@@ -21,11 +21,12 @@ var _chatAccountsAliasId = "chatAccountsAliasId";
     "findById": "SELECT * FROM db_accounts WHERE id = :id;",
     "findByRemoteId":
         "SELECT * FROM db_accounts WHERE remote_id LIKE :remoteId;",
+    "getAll": "SELECT * FROM db_accounts",
     "oldest": "SELECT * FROM db_accounts ORDER BY last_status_at ASC LIMIT 1;",
     "countById": "SELECT COUNT(*) FROM db_accounts WHERE id = :id;",
     "deleteById": "DELETE FROM db_accounts WHERE id = :id;",
+    "deleteByRemoteId": "DELETE FROM db_accounts WHERE remote_id = :remoteId;",
     "clear": "DELETE FROM db_accounts",
-    "getAll": "SELECT * FROM db_accounts",
     "findLocalIdByRemoteId": "SELECT id FROM db_accounts WHERE remote_id = "
         ":remoteId;",
     "deleteOlderThanLocalId": "DELETE FROM db_accounts WHERE id = "

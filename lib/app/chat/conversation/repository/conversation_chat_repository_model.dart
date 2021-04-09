@@ -1,7 +1,11 @@
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 class ConversationChatRepositoryFilters {
+  static const ConversationChatRepositoryFilters empty =
+      ConversationChatRepositoryFilters();
 
+  const ConversationChatRepositoryFilters();
 }
 
 enum ConversationChatOrderType {
@@ -9,40 +13,45 @@ enum ConversationChatOrderType {
   updatedAt,
 }
 
-class ConversationChatOrderingTermData {
+class ConversationRepositoryChatOrderingTermData extends RepositoryOrderingTerm {
   final ConversationChatOrderType orderType;
+  @override
   final OrderingMode orderingMode;
 
-  const ConversationChatOrderingTermData({
+  const ConversationRepositoryChatOrderingTermData({
     required this.orderType,
     required this.orderingMode,
   });
 
-  static const ConversationChatOrderingTermData remoteIdDesc =
-      ConversationChatOrderingTermData(
+  static const ConversationRepositoryChatOrderingTermData remoteIdDesc =
+      ConversationRepositoryChatOrderingTermData(
     orderingMode: OrderingMode.desc,
     orderType: ConversationChatOrderType.remoteId,
   );
-  static const ConversationChatOrderingTermData remoteIdAsc =
-      ConversationChatOrderingTermData(
+  static const ConversationRepositoryChatOrderingTermData remoteIdAsc =
+      ConversationRepositoryChatOrderingTermData(
     orderingMode: OrderingMode.asc,
     orderType: ConversationChatOrderType.remoteId,
   );
 
-  static const ConversationChatOrderingTermData updatedAtDesc =
-      ConversationChatOrderingTermData(
+  static const ConversationRepositoryChatOrderingTermData updatedAtDesc =
+      ConversationRepositoryChatOrderingTermData(
     orderingMode: OrderingMode.desc,
     orderType: ConversationChatOrderType.updatedAt,
   );
-  static const ConversationChatOrderingTermData updatedAtAsc =
-      ConversationChatOrderingTermData(
+  static const ConversationRepositoryChatOrderingTermData updatedAtAsc =
+      ConversationRepositoryChatOrderingTermData(
     orderingMode: OrderingMode.asc,
     orderType: ConversationChatOrderType.updatedAt,
   );
+
+  static const List<ConversationRepositoryChatOrderingTermData> defaultTerms = [
+    updatedAtDesc,
+  ];
 
   @override
   String toString() {
-    return 'ConversationChatOrderType{'
+    return 'ConversationRepositoryChatOrderingTermData{'
         'orderByType: $orderType,'
         ' orderingMode: $orderingMode'
         '}';

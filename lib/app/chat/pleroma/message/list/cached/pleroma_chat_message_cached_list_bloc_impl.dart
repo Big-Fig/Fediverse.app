@@ -80,7 +80,7 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
         newerThanItem: newerThan,
         limit: limit,
       ),
-      orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
+      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
     );
 
     _logger.finer(
@@ -98,7 +98,7 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
       pagination: RepositoryPagination(
         newerThanItem: item,
       ),
-      orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
+      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
     );
   }
 

@@ -319,7 +319,7 @@ void main() {
           remoteId: "remoteId5",
         ),
       ),
-      orderingTermData: ScheduledStatusOrderingTermData.remoteIdDesc,
+      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
     );
 
     await insertDbScheduledStatus(
@@ -363,7 +363,7 @@ void main() {
           remoteId: "remoteId5",
         ),
       ),
-      orderingTermData: ScheduledStatusOrderingTermData.remoteIdDesc,
+      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
     );
 
     await insertDbScheduledStatus(
@@ -411,7 +411,7 @@ void main() {
           remoteId: "remoteId5",
         ),
       ),
-      orderingTermData: ScheduledStatusOrderingTermData.remoteIdDesc,
+      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
     );
 
     await insertDbScheduledStatus(
@@ -466,7 +466,7 @@ void main() {
     var query = scheduledStatusRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: ScheduledStatusOrderingTermData.remoteIdAsc,
+      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdAsc,
     );
 
     var scheduledStatus2 = await insertDbScheduledStatus(
@@ -502,7 +502,7 @@ void main() {
     var query = scheduledStatusRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: ScheduledStatusOrderingTermData.remoteIdDesc,
+      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
     );
 
     var scheduledStatus2 = await insertDbScheduledStatus(
@@ -540,7 +540,7 @@ void main() {
         limit: 1,
         offset: 1,
       ),
-      orderingTermData: ScheduledStatusOrderingTermData.remoteIdAsc,
+      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdAsc,
     );
 
     var scheduledStatus2 = await insertDbScheduledStatus(

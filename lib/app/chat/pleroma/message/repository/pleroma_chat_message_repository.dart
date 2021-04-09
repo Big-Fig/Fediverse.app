@@ -10,9 +10,15 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaChatMessageRepository
-    implements IDisposable,
-        IAppRemoteReadWriteRepository<DbChatMessage, IPleromaChatMessage,
-            pleroma_lib.IPleromaChatMessage, int, String> {
+    implements
+        IDisposable,
+        IAppRemoteReadWriteRepository<
+            DbChatMessage,
+            IPleromaChatMessage,
+            pleroma_lib.IPleromaChatMessage,
+            int,
+            String,
+            PleromaChatMessageRepositoryFilters, PleromaChatMessageRepositoryOrderingTermData> {
   static IPleromaChatMessageRepository of(
     BuildContext context, {
     bool listen = true,
@@ -43,27 +49,27 @@ abstract class IPleromaChatMessageRepository
   Future<List<IPleromaChatMessage>> getChatMessages({
     required PleromaChatMessageRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChatMessage>? pagination,
-    PleromaChatMessageOrderingTermData? orderingTermData =
-        PleromaChatMessageOrderingTermData.createdAtDesc,
+    PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
+        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
   });
 
   Stream<List<IPleromaChatMessage>> watchChatMessages({
     required PleromaChatMessageRepositoryFilters? filters,
     required RepositoryPagination<IPleromaChatMessage>? pagination,
-    PleromaChatMessageOrderingTermData orderingTermData =
-        PleromaChatMessageOrderingTermData.createdAtDesc,
+    PleromaChatMessageRepositoryOrderingTermData orderingTermData =
+        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
   });
 
   Future<IPleromaChatMessage?> getChatMessage({
     required PleromaChatMessageRepositoryFilters? filters,
-    PleromaChatMessageOrderingTermData? orderingTermData =
-        PleromaChatMessageOrderingTermData.createdAtDesc,
+    PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
+        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
   });
 
   Stream<IPleromaChatMessage?> watchChatMessage({
     required PleromaChatMessageRepositoryFilters? filters,
-    PleromaChatMessageOrderingTermData? orderingTermData =
-        PleromaChatMessageOrderingTermData.createdAtDesc,
+    PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
+        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
   });
 
   Stream<IPleromaChatMessage?> watchChatLastChatMessage({

@@ -26,6 +26,10 @@ var _statusReplyReblogAccountAliasId = "statusReplyReblogAccount";
   ],
   queries: {
     "countAll": "SELECT Count(*) FROM db_conversations;",
+    "findById": "SELECT * FROM db_conversations WHERE id = :id;",
+    "findByRemoteId":
+    "SELECT * FROM db_conversations WHERE remote_id LIKE :remoteId;",
+    "getAll": "SELECT * FROM db_conversations",
     "oldest": "SELECT * FROM db_conversations ORDER BY updated_at ASC LIMIT 1;",
     "countById": "SELECT COUNT(*) FROM db_conversations WHERE id = :id;",
     "deleteById": "DELETE FROM db_conversations WHERE id = :id;",
@@ -132,7 +136,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
 
   SimpleSelectStatement<$DbConversationsTable, DbConversation> orderBy(
     SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
-    List<ConversationChatOrderingTermData> orderTerms,
+    List<ConversationRepositoryChatOrderingTermData> orderTerms,
   ) =>
       query
         ..orderBy(

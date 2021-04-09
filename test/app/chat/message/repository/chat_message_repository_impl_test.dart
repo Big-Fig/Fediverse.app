@@ -258,7 +258,7 @@ void main() {
           createdAt: DateTime(2005),
         ),
       ),
-      orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
+      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
     );
 
     await insertDbChatMessage(
@@ -303,7 +303,7 @@ void main() {
           createdAt: DateTime(2005),
         ),
       ),
-      orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
+      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
     );
 
     await insertDbChatMessage(
@@ -353,7 +353,7 @@ void main() {
           createdAt: DateTime(2005),
         ),
       ),
-      orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
+      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
     );
 
     await insertDbChatMessage(
@@ -408,7 +408,7 @@ void main() {
     var query = chatMessageRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: PleromaChatMessageOrderingTermData.remoteIdAsc,
+      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.remoteIdAsc,
     );
 
     var chatMessage2 = await insertDbChatMessage(
@@ -443,7 +443,7 @@ void main() {
     var query = chatMessageRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: PleromaChatMessageOrderingTermData.remoteIdDesc,
+      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.remoteIdDesc,
     );
 
     var chatMessage2 = await insertDbChatMessage(
@@ -481,7 +481,7 @@ void main() {
         limit: 1,
         offset: 1,
       ),
-      orderingTermData: PleromaChatMessageOrderingTermData.remoteIdAsc,
+      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.remoteIdAsc,
     );
 
     var chatMessage2 = await insertDbChatMessage(

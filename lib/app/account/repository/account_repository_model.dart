@@ -2,6 +2,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 class AccountRepositoryFilters {
@@ -13,7 +14,9 @@ class AccountRepositoryFilters {
   final IAccount? onlyInAccountFollowing;
   final String? searchQuery;
 
-  AccountRepositoryFilters({
+  static const AccountRepositoryFilters empty = AccountRepositoryFilters();
+
+  const AccountRepositoryFilters({
     this.onlyInConversation,
     this.onlyInChat,
     this.onlyInStatusRebloggedBy,
@@ -78,8 +81,9 @@ enum AccountOrderType {
   remoteId,
 }
 
-class AccountRepositoryOrderingTermData {
+class AccountRepositoryOrderingTermData extends RepositoryOrderingTerm {
   final AccountOrderType orderType;
+  @override
   final OrderingMode orderingMode;
 
   static const AccountRepositoryOrderingTermData remoteIdDesc =
@@ -92,6 +96,10 @@ class AccountRepositoryOrderingTermData {
     orderingMode: OrderingMode.asc,
     orderType: AccountOrderType.remoteId,
   );
+
+  static const List<AccountRepositoryOrderingTermData> defaultTerms = [
+    remoteIdDesc,
+  ];
 
   const AccountRepositoryOrderingTermData({
     required this.orderType,

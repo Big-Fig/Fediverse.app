@@ -8,6 +8,25 @@ part of 'notification_database_dao.dart';
 
 mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
   $DbNotificationsTable get dbNotifications => attachedDatabase.dbNotifications;
+  Selectable<DbNotification> findById(int? id) {
+    return customSelect('SELECT * FROM db_notifications WHERE id = :id;',
+        variables: [Variable<int?>(id)],
+        readsFrom: {dbNotifications}).map(dbNotifications.mapFromRow);
+  }
+
+  Selectable<DbNotification> findByRemoteId(String remoteId) {
+    return customSelect(
+        'SELECT * FROM db_notifications WHERE remote_id LIKE :remoteId;',
+        variables: [Variable<String>(remoteId)],
+        readsFrom: {dbNotifications}).map(dbNotifications.mapFromRow);
+  }
+
+  Selectable<DbNotification> getAll() {
+    return customSelect('SELECT * FROM db_notifications',
+        variables: [],
+        readsFrom: {dbNotifications}).map(dbNotifications.mapFromRow);
+  }
+
   Selectable<int> countAll() {
     return customSelect('SELECT Count(*) FROM db_notifications;',
             variables: [], readsFrom: {dbNotifications})
@@ -36,6 +55,15 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
     );
   }
 
+  Future<int> deleteByRemoteId(String remoteId) {
+    return customUpdate(
+      'DELETE FROM db_notifications WHERE remote_id = :remoteId;',
+      variables: [Variable<String>(remoteId)],
+      updates: {dbNotifications},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
   Future<int> clear() {
     return customUpdate(
       'DELETE FROM db_notifications',
@@ -43,12 +71,6 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
       updates: {dbNotifications},
       updateKind: UpdateKind.delete,
     );
-  }
-
-  Selectable<DbNotification> getAll() {
-    return customSelect('SELECT * FROM db_notifications',
-        variables: [],
-        readsFrom: {dbNotifications}).map(dbNotifications.mapFromRow);
   }
 
   Selectable<int?> findLocalIdByRemoteId(String remoteId) {

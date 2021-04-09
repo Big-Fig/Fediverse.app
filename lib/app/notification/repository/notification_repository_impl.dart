@@ -35,7 +35,8 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     int,
     String,
     $DbNotificationsTable,
-    $DbNotificationsTable> implements INotificationRepository {
+    $DbNotificationsTable,
+    NotificationRepositoryFilters, NotificationRepositoryOrderingTermData> implements INotificationRepository {
   @override
   final NotificationDao dao;
   final IAccountRepository accountRepository;
@@ -148,8 +149,8 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Future<List<DbNotificationPopulatedWrapper>> getNotifications({
     required NotificationRepositoryFilters? filters,
     required RepositoryPagination<INotification>? pagination,
-    NotificationOrderingTermData? orderingTermData =
-        NotificationOrderingTermData.createdAtDesc,
+    NotificationRepositoryOrderingTermData? orderingTermData =
+        NotificationRepositoryOrderingTermData.createdAtDesc,
   }) async {
     var query = createQuery(
       filters: filters,
@@ -166,8 +167,8 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Stream<List<DbNotificationPopulatedWrapper>> watchNotifications({
     required NotificationRepositoryFilters? filters,
     required RepositoryPagination<INotification>? pagination,
-    NotificationOrderingTermData? orderingTermData =
-        NotificationOrderingTermData.createdAtDesc,
+    NotificationRepositoryOrderingTermData? orderingTermData =
+        NotificationRepositoryOrderingTermData.createdAtDesc,
   }) {
     var query = createQuery(
       filters: filters,
@@ -185,7 +186,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   JoinedSelectStatement createQuery({
     required NotificationRepositoryFilters? filters,
     required RepositoryPagination<INotification>? pagination,
-    required NotificationOrderingTermData? orderingTermData,
+    required NotificationRepositoryOrderingTermData? orderingTermData,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t filters=$filters\n"
@@ -301,8 +302,8 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<DbNotificationPopulatedWrapper?> getNotification({
     required NotificationRepositoryFilters? filters,
-    NotificationOrderingTermData? orderingTermData =
-        NotificationOrderingTermData.createdAtDesc,
+    NotificationRepositoryOrderingTermData? orderingTermData =
+        NotificationRepositoryOrderingTermData.createdAtDesc,
   }) async {
     var query = createQuery(
       filters: filters,
@@ -318,8 +319,8 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Stream<DbNotificationPopulatedWrapper?> watchNotification({
     required NotificationRepositoryFilters? filters,
-    NotificationOrderingTermData? orderingTermData =
-        NotificationOrderingTermData.createdAtDesc,
+    NotificationRepositoryOrderingTermData? orderingTermData =
+        NotificationRepositoryOrderingTermData.createdAtDesc,
   }) {
     var query = createQuery(
       filters: filters,
@@ -433,6 +434,14 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbPopulatedItem
           .toDbNotificationPopulatedWrapper()
           .toPleromaNotification();
+
+  @override
+  NotificationRepositoryFilters get emptyFilters =>
+      NotificationRepositoryFilters.empty;
+
+  @override
+  List<NotificationRepositoryOrderingTermData> get defaultOrderingTerms =>
+      NotificationRepositoryOrderingTermData.defaultTerms;
 }
 
 extension DbNotificationPopulatedListExtension

@@ -99,7 +99,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       pagination: RepositoryPagination<IConversationChat>(
         limit: limit,
       ),
-      orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
+      orderingTermData: ConversationRepositoryChatOrderingTermData.updatedAtDesc,
       filters: null,
     );
 

@@ -10,6 +10,7 @@ part 'conversation_chat_statuses_database_dao.g.dart';
   queries: {
     "countAll": "SELECT Count(*) FROM db_conversation_statuses;",
     "findById": "SELECT * FROM db_conversation_statuses WHERE id = :id;",
+    "getAll": "SELECT * FROM db_conversation_statuses",
     "findByConversationRemoteId":
         "SELECT * FROM db_conversation_statuses WHERE conversation_remote_id = :conversationRemoteId;",
     "countById":
@@ -24,7 +25,6 @@ part 'conversation_chat_statuses_database_dao.g.dart';
             "AND "
             "status_remote_id = :statusRemoteId;",
     "clear": "DELETE FROM db_conversation_statuses",
-    "getAll": "SELECT * FROM db_conversation_statuses",
   },
 )
 class ConversationStatusesDao extends AppDatabaseDao<

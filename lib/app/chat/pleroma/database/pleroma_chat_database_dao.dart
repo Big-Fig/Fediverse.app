@@ -18,12 +18,16 @@ var _chatMessageAccountAliasId = "chatMessageAccount";
     DbChats,
   ],
   queries: {
+    "findById": "SELECT * FROM db_chats WHERE id = :id;",
+    "findByRemoteId":
+    "SELECT * FROM db_chats WHERE remote_id LIKE :remoteId;",
+    "getAll": "SELECT * FROM db_chats",
     "countAll": "SELECT Count(*) FROM db_chats;",
     "countById": "SELECT COUNT(*) FROM db_chats WHERE id = :id;",
     "deleteById": "DELETE FROM db_chats WHERE id = :id;",
+    "deleteByRemoteId": "DELETE FROM db_chats WHERE remote_id = :remoteId;",
     "oldest": "SELECT * FROM db_chats ORDER BY updated_at ASC LIMIT 1;",
     "clear": "DELETE FROM db_chats",
-    "getAll": "SELECT * FROM db_chats",
     "findLocalIdByRemoteId": "SELECT id FROM db_chats WHERE remote_id = "
         ":remoteId;",
   },
@@ -128,7 +132,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
 
   SimpleSelectStatement<$DbChatsTable, DbChat> orderBy(
     SimpleSelectStatement<$DbChatsTable, DbChat> query,
-    List<PleromaChatOrderingTermData> orderTerms,
+    List<PleromaChatRepositoryOrderingTermData> orderTerms,
   ) {
     // ignore: curly_braces_in_flow_control_structures
     return query

@@ -1,4 +1,5 @@
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 class PleromaChatMessageRepositoryFilters {
@@ -7,13 +8,19 @@ class PleromaChatMessageRepositoryFilters {
   final bool onlyNotDeleted;
   final bool onlyNotHiddenLocallyOnDevice;
 
-  PleromaChatMessageRepositoryFilters({
+  static const PleromaChatMessageRepositoryFilters empty =
+      PleromaChatMessageRepositoryFilters(
+    onlyPendingStatePublishedOrNull: false,
+    onlyNotDeleted: false,
+    onlyNotHiddenLocallyOnDevice: false,
+  );
+
+  const PleromaChatMessageRepositoryFilters({
     this.onlyInChats,
     required this.onlyPendingStatePublishedOrNull,
     required this.onlyNotDeleted,
     required this.onlyNotHiddenLocallyOnDevice,
   });
-
 
   @override
   bool operator ==(Object other) =>
@@ -35,11 +42,11 @@ class PleromaChatMessageRepositoryFilters {
 
   @override
   String toString() => 'PleromaChatMessageRepositoryFilters{'
-        'onlyInChats: $onlyInChats, '
-        'onlyPendingStatePublishedOrNull: $onlyPendingStatePublishedOrNull, '
-        'onlyNotDeleted: $onlyNotDeleted'
-        'onlyNotHiddenLocallyOnDevice: $onlyNotHiddenLocallyOnDevice'
-        '}';
+      'onlyInChats: $onlyInChats, '
+      'onlyPendingStatePublishedOrNull: $onlyPendingStatePublishedOrNull, '
+      'onlyNotDeleted: $onlyNotDeleted'
+      'onlyNotHiddenLocallyOnDevice: $onlyNotHiddenLocallyOnDevice'
+      '}';
 }
 
 enum PleromaChatMessageOrderType {
@@ -47,40 +54,45 @@ enum PleromaChatMessageOrderType {
   createdAt,
 }
 
-class PleromaChatMessageOrderingTermData {
+class PleromaChatMessageRepositoryOrderingTermData extends RepositoryOrderingTerm {
   final PleromaChatMessageOrderType orderType;
+  @override
   final OrderingMode orderingMode;
 
-  const PleromaChatMessageOrderingTermData({
+  const PleromaChatMessageRepositoryOrderingTermData({
     required this.orderType,
     required this.orderingMode,
   });
 
-  static const PleromaChatMessageOrderingTermData remoteIdDesc =
-      PleromaChatMessageOrderingTermData(
+  static const PleromaChatMessageRepositoryOrderingTermData remoteIdDesc =
+      PleromaChatMessageRepositoryOrderingTermData(
     orderingMode: OrderingMode.desc,
     orderType: PleromaChatMessageOrderType.remoteId,
   );
-  static const PleromaChatMessageOrderingTermData remoteIdAsc =
-      PleromaChatMessageOrderingTermData(
+  static const PleromaChatMessageRepositoryOrderingTermData remoteIdAsc =
+      PleromaChatMessageRepositoryOrderingTermData(
     orderingMode: OrderingMode.asc,
     orderType: PleromaChatMessageOrderType.remoteId,
   );
 
-  static const PleromaChatMessageOrderingTermData createdAtDesc =
-      PleromaChatMessageOrderingTermData(
+  static const PleromaChatMessageRepositoryOrderingTermData createdAtDesc =
+      PleromaChatMessageRepositoryOrderingTermData(
     orderingMode: OrderingMode.desc,
     orderType: PleromaChatMessageOrderType.createdAt,
   );
-  static const PleromaChatMessageOrderingTermData createdAtAsc =
-      PleromaChatMessageOrderingTermData(
+  static const PleromaChatMessageRepositoryOrderingTermData createdAtAsc =
+      PleromaChatMessageRepositoryOrderingTermData(
     orderingMode: OrderingMode.asc,
     orderType: PleromaChatMessageOrderType.createdAt,
   );
+
+  static const List<PleromaChatMessageRepositoryOrderingTermData> defaultTerms = [
+    createdAtDesc,
+  ];
 
   @override
   String toString() {
-    return 'ChatMessageOrderingTermData{'
+    return 'PleromaChatMessageRepositoryOrderingTermData{'
         'orderByType: $orderType, '
         'orderingMode: $orderingMode'
         '}';

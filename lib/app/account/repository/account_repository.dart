@@ -13,8 +13,14 @@ import 'package:provider/provider.dart';
 abstract class IAccountRepository
     implements
         IDisposable,
-        IAppRemoteReadWriteRepository<DbAccount, IAccount, IPleromaAccount, int,
-            String> {
+        IAppRemoteReadWriteRepository<
+            DbAccount,
+            IAccount,
+            IPleromaAccount,
+            int,
+            String,
+            AccountRepositoryFilters,
+            AccountRepositoryOrderingTermData> {
   static IAccountRepository of(
     BuildContext context, {
     bool listen = true,

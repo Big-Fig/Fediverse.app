@@ -416,7 +416,7 @@ void main() {
             remoteId: "remoteId5",
           ),
         ),
-        orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
+        orderingTermData: ConversationRepositoryChatOrderingTermData.updatedAtDesc,
         withLastMessage: false,
       );
 
@@ -462,7 +462,7 @@ void main() {
           remoteId: "remoteId5",
         ),
       ),
-      orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
+      orderingTermData: ConversationRepositoryChatOrderingTermData.updatedAtDesc,
       withLastMessage: false,
     );
 
@@ -511,7 +511,7 @@ void main() {
           remoteId: "remoteId5",
         ),
       ),
-      orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
+      orderingTermData: ConversationRepositoryChatOrderingTermData.updatedAtDesc,
       withLastMessage: false,
     );
 
@@ -567,7 +567,7 @@ void main() {
     var query = conversationRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: ConversationChatOrderingTermData.remoteIdAsc,
+      orderingTermData: ConversationRepositoryChatOrderingTermData.remoteIdAsc,
       withLastMessage: false,
     );
 
@@ -602,7 +602,7 @@ void main() {
     var query = conversationRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: ConversationChatOrderingTermData.remoteIdDesc,
+      orderingTermData: ConversationRepositoryChatOrderingTermData.remoteIdDesc,
       withLastMessage: false,
     );
 
@@ -640,7 +640,7 @@ void main() {
         limit: 1,
         offset: 1,
       ),
-      orderingTermData: ConversationChatOrderingTermData.remoteIdDesc,
+      orderingTermData: ConversationRepositoryChatOrderingTermData.remoteIdDesc,
       withLastMessage: false,
     );
 

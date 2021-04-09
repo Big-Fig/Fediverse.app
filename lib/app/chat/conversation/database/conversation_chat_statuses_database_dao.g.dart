@@ -23,6 +23,12 @@ mixin _$ConversationStatusesDaoMixin on DatabaseAccessor<AppDatabase> {
         .map(dbConversationStatuses.mapFromRow);
   }
 
+  Selectable<DbConversationStatus> getAll() {
+    return customSelect('SELECT * FROM db_conversation_statuses',
+            variables: [], readsFrom: {dbConversationStatuses})
+        .map(dbConversationStatuses.mapFromRow);
+  }
+
   Selectable<DbConversationStatus> findByConversationRemoteId(
       String conversationRemoteId) {
     return customSelect(
@@ -81,11 +87,5 @@ mixin _$ConversationStatusesDaoMixin on DatabaseAccessor<AppDatabase> {
       updates: {dbConversationStatuses},
       updateKind: UpdateKind.delete,
     );
-  }
-
-  Selectable<DbConversationStatus> getAll() {
-    return customSelect('SELECT * FROM db_conversation_statuses',
-            variables: [], readsFrom: {dbConversationStatuses})
-        .map(dbConversationStatuses.mapFromRow);
   }
 }

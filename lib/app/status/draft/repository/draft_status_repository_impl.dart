@@ -24,7 +24,9 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
     IDraftStatus,
     int,
     $DbDraftStatusesTable,
-    $DbDraftStatusesTable> implements IDraftStatusRepository {
+    $DbDraftStatusesTable,
+    DraftStatusRepositoryFilters,
+    DraftStatusOrderingTermData> implements IDraftStatusRepository {
   @override
   late DraftStatusDao dao;
 
@@ -34,7 +36,7 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
 
   @override
   Future<List<DbDraftStatusPopulatedWrapper>> getDraftStatuses({
-    required ScheduledStatusRepositoryFilters? filters,
+    required DraftStatusRepositoryFilters? filters,
     required RepositoryPagination<IDraftStatus> pagination,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
@@ -54,7 +56,7 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
 
   @override
   Stream<List<DbDraftStatusPopulatedWrapper>> watchDraftStatuses({
-    required ScheduledStatusRepositoryFilters filters,
+    required DraftStatusRepositoryFilters filters,
     required RepositoryPagination<IDraftStatus> pagination,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
@@ -75,7 +77,7 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
   }
 
   JoinedSelectStatement createQuery({
-    required ScheduledStatusRepositoryFilters? filters,
+    required DraftStatusRepositoryFilters? filters,
     required RepositoryPagination<IDraftStatus>? pagination,
     required DraftStatusOrderingTermData? orderingTermData,
   }) {
@@ -121,7 +123,7 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
 
   @override
   Future<DbDraftStatusPopulatedWrapper?> getDraftStatus({
-    required ScheduledStatusRepositoryFilters filters,
+    required DraftStatusRepositoryFilters filters,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
   }) async {
@@ -135,7 +137,7 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
 
   @override
   Stream<DbDraftStatusPopulatedWrapper?> watchDraftStatus({
-    required ScheduledStatusRepositoryFilters filters,
+    required DraftStatusRepositoryFilters filters,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
   }) {
@@ -168,6 +170,14 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
   IDraftStatus mapDbPopulatedItemToAppItem(
           DbDraftStatusPopulated dbPopulatedItem) =>
       dbPopulatedItem.toDbDraftStatusPopulatedWrapper();
+
+  @override
+  DraftStatusRepositoryFilters get emptyFilters =>
+      DraftStatusRepositoryFilters.empty;
+
+  @override
+  List<DraftStatusOrderingTermData> get defaultOrderingTerms =>
+      DraftStatusOrderingTermData.defaultTerms;
 }
 
 extension DbDraftStatusTypedResultExtension on TypedResult {

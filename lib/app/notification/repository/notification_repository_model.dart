@@ -1,5 +1,6 @@
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 class NotificationRepositoryFilters {
@@ -9,16 +10,17 @@ class NotificationRepositoryFilters {
   final bool? onlyUnread;
   final List<StatusTextCondition>? excludeStatusTextConditions;
 
+  static final NotificationRepositoryFilters empty =
+      NotificationRepositoryFilters();
+
   NotificationRepositoryFilters({
     this.onlyWithType,
     this.excludeTypes,
     this.onlyNotDismissed = true,
     this.onlyUnread,
     this.excludeStatusTextConditions,
-  }) {
-    assert(!(onlyWithType != null && excludeTypes?.isNotEmpty == true),
-        "onlyWithType and excludeTypes can be set both");
-  }
+  }) : assert(!(onlyWithType != null && excludeTypes?.isNotEmpty == true),
+            "onlyWithType and excludeTypes can be set both");
 
   @override
   String toString() {
@@ -56,40 +58,45 @@ enum NotificationOrderType {
   createdAt,
 }
 
-class NotificationOrderingTermData {
+class NotificationRepositoryOrderingTermData extends RepositoryOrderingTerm {
   final NotificationOrderType orderType;
+  @override
   final OrderingMode orderingMode;
 
-  const NotificationOrderingTermData({
+  const NotificationRepositoryOrderingTermData({
     required this.orderType,
     required this.orderingMode,
   });
 
-  static const NotificationOrderingTermData remoteIdDesc =
-      NotificationOrderingTermData(
+  static const NotificationRepositoryOrderingTermData remoteIdDesc =
+      NotificationRepositoryOrderingTermData(
     orderingMode: OrderingMode.desc,
     orderType: NotificationOrderType.remoteId,
   );
-  static const NotificationOrderingTermData remoteIdAsc =
-      NotificationOrderingTermData(
+  static const NotificationRepositoryOrderingTermData remoteIdAsc =
+      NotificationRepositoryOrderingTermData(
     orderingMode: OrderingMode.asc,
     orderType: NotificationOrderType.remoteId,
   );
 
-  static const NotificationOrderingTermData createdAtDesc =
-      NotificationOrderingTermData(
+  static const NotificationRepositoryOrderingTermData createdAtDesc =
+      NotificationRepositoryOrderingTermData(
     orderingMode: OrderingMode.desc,
     orderType: NotificationOrderType.createdAt,
   );
-  static const NotificationOrderingTermData createdAtAsc =
-      NotificationOrderingTermData(
+  static const NotificationRepositoryOrderingTermData createdAtAsc =
+      NotificationRepositoryOrderingTermData(
     orderingMode: OrderingMode.asc,
     orderType: NotificationOrderType.createdAt,
   );
+
+  static const List<NotificationRepositoryOrderingTermData> defaultTerms = [
+    createdAtDesc,
+  ];
 
   @override
   String toString() {
-    return 'NotificationOrderingTermData{'
+    return 'NotificationRepositoryOrderingTermData{'
         'orderByType: $orderType, '
         'orderingMode: $orderingMode}';
   }

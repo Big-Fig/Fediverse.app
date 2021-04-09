@@ -37,7 +37,9 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     int,
     String,
     $DbStatusesTable,
-    $DbStatusesTable> implements IStatusRepository {
+    $DbStatusesTable,
+    StatusRepositoryFilters,
+    StatusRepositoryOrderingTermData> implements IStatusRepository {
   @override
   late StatusDao dao;
   late StatusHashtagsDao hashtagsDao;
@@ -841,7 +843,14 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           DbStatusPopulated dbPopulatedItem) =>
       dbPopulatedItem.toDbStatusPopulatedWrapper().toPleromaStatus();
 
-  // @override
-  // DbStatusPopulated mapRemoteItemToDbPopulatedItem(IPleromaStatus remoteItem) =>
-  //     remoteItem.toDbStatusPopulated();
+  @override
+  StatusRepositoryFilters get emptyFilters => StatusRepositoryFilters.empty;
+
+  @override
+  List<StatusRepositoryOrderingTermData> get defaultOrderingTerms =>
+      StatusRepositoryOrderingTermData.defaultTerms;
+
+// @override
+// DbStatusPopulated mapRemoteItemToDbPopulatedItem(IPleromaStatus remoteItem) =>
+//     remoteItem.toDbStatusPopulated();
 }

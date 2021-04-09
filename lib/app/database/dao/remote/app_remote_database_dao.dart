@@ -11,4 +11,7 @@ abstract class AppRemoteDatabaseDao<
     extends AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl> {
   AppRemoteDatabaseDao(AppDatabase db) : super(db);
 
+  Future<int> deleteByRemoteId(RemoteId remoteId);
+
+  Selectable<DbItem> findByRemoteId(RemoteId remoteId);
 }

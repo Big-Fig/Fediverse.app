@@ -105,7 +105,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
       pagination: RepositoryPagination(
         limit: limit,
       ),
-      orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+      orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
     );
 
     return chats.map((chat) => chat.accounts.first).toList();

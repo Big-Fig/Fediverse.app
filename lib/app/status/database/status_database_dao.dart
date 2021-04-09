@@ -30,6 +30,8 @@ var _homeTimelineStatusesAliasId = "homeTimelineStatuses";
   ],
   queries: {
     "countAll": "SELECT Count(*) FROM db_statuses;",
+    "findById": "SELECT * FROM db_statuses WHERE id = :id;",
+    "findByRemoteId": "SELECT * FROM db_statuses WHERE remote_id = :remoteId;",
     "countById": "SELECT COUNT(*) FROM db_statuses WHERE id = :id;",
     "oldest": "SELECT * FROM db_statuses ORDER BY created_at ASC LIMIT 1;",
     "deleteById": "DELETE FROM db_statuses WHERE id = :id;",
