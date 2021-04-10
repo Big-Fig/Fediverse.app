@@ -4,14 +4,16 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'database/account_database_model_helper.dart';
 
-Future<DbAccountWrapper> createTestAccount({
+Future<DbAccountPopulatedWrapper> createTestAccount({
   required String seed,
   String? remoteId,
 }) async =>
-    DbAccountWrapper(
-      dbAccount: await createTestDbAccount(
-        seed: seed,
-        remoteId: remoteId,
+    DbAccountPopulatedWrapper(
+      dbAccountPopulated: DbAccountPopulated(
+        dbAccount: await createTestDbAccount(
+          seed: seed,
+          remoteId: remoteId,
+        ),
       ),
     );
 

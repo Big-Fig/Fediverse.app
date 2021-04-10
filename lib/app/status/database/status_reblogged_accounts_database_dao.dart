@@ -1,7 +1,7 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/app_database_dao.dart';
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_model.dart';
 import 'package:moor/moor.dart';
-import 'package:fedi/app/database/dao/app_database_dao.dart';
 
 part 'status_reblogged_accounts_database_dao.g.dart';
 
@@ -22,4 +22,33 @@ class StatusRebloggedAccountsDao extends AppDatabaseDao<
 
   @override
   $DbStatusRebloggedAccountsTable get table => dbStatusRebloggedAccounts;
+
+  Future<int> deleteByStatusRemoteId(String statusRemoteId) => customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${_createStatusRemoteIdEqualExpression(statusRemoteId)}',
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+
+  Future deleteByStatusRemoteIdBatch(
+    String statusRemoteId, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => _createStatusRemoteIdEqualExpression(statusRemoteId),
+      );
+    } else {
+      return await deleteByStatusRemoteId(statusRemoteId);
+    }
+  }
+
+  CustomExpression<bool> _createStatusRemoteIdEqualExpression(
+      String statusRemoteId) {
+    return createMainTableEqualWhereExpression(
+      fieldName: table.statusRemoteId.$name,
+      value: statusRemoteId,
+    );
+  }
 }

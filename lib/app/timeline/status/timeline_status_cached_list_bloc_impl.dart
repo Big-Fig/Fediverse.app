@@ -258,11 +258,12 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     }
 
     if (remoteStatuses.isNotEmpty) {
-      await statusRepository.upsertRemoteStatuses(
+      await statusRepository.upsertRemoteStatusesWithAllArguments(
         remoteStatuses,
         listRemoteId: timeline.onlyInRemoteList?.id,
         conversationRemoteId: null,
         isFromHomeTimeline: isFromHomeTimeline,
+        batchTransaction: null,
       );
 
       return true;
@@ -279,13 +280,14 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    var statuses = await statusRepository.getStatuses(
+    var statuses = await statusRepository.findAllInAppType(
       filters: _statusRepositoryFilters,
       pagination: RepositoryPagination<IStatus>(
         olderThanItem: olderThan,
         newerThanItem: newerThan,
         limit: limit,
       ),
+      orderingTerms: [StatusRepositoryOrderingTermData.remoteIdDesc],
     );
 
     return statuses;
@@ -293,11 +295,12 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus? item) {
-    return statusRepository.watchStatuses(
+    return statusRepository.watchFindAllInAppType(
       filters: _statusRepositoryFilters,
       pagination: RepositoryPagination<IStatus>(
         newerThanItem: item,
       ),
+      orderingTerms: [StatusRepositoryOrderingTermData.remoteIdDesc],
     );
   }
 
@@ -369,12 +372,13 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     var countAll = await filterRepository.countAll();
     _logger.finest(() => "filterRepository countAll ${countAll}");
 
-    filters = await filterRepository.getFilters(
+    filters = await filterRepository.findAllInAppType(
       filters: FilterRepositoryFilters(
         onlyWithContextTypes: onlyWithContextTypes,
         notExpired: true,
       ),
       pagination: null,
+      orderingTerms: null,
     );
 
     _logger.finest(() => "timelineType $timelineType, "

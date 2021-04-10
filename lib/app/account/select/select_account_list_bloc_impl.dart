@@ -92,12 +92,19 @@ class SelectAccountListBloc extends DisposableOwner
         following: following,
       );
 
-      if (following) {
-        await accountRepository.addAccountFollowings(
-          accountRemoteId: myAccountBloc.account.remoteId,
-          followings: remoteAccounts.toPleromaAccounts(),
+      await accountRepository.batch((batch) {
+        accountRepository.upsertAllInRemoteType(
+          remoteAccounts,
+          batchTransaction: batch,
         );
-      }
+        if (following) {
+          accountRepository.addAccountFollowings(
+            accountRemoteId: myAccountBloc.account.remoteId,
+            followings: remoteAccounts.toPleromaAccounts(),
+            batchTransaction: batch,
+          );
+        }
+      });
     } else {
       if (customEmptySearchRemoteAccountListLoader != null) {
         remoteAccounts = await customEmptySearchRemoteAccountListLoader!(
@@ -105,24 +112,31 @@ class SelectAccountListBloc extends DisposableOwner
           olderThan: olderThan,
           newerThan: newerThan,
         );
+
+        await accountRepository.upsertAllInRemoteType(
+          remoteAccounts,
+          batchTransaction: null,
+        );
       } else {
         remoteAccounts = await defaultEmptySearchRemoteAccountListLoader(
           limit: limit,
           olderThan: olderThan,
           newerThan: newerThan,
         );
-        await accountRepository.addAccountFollowings(
-          accountRemoteId: myAccountBloc.account.remoteId,
-          followings: remoteAccounts.toPleromaAccounts(),
-        );
+
+        await accountRepository.batch((batch) {
+          accountRepository.upsertAllInRemoteType(
+            remoteAccounts,
+            batchTransaction: batch,
+          );
+          accountRepository.addAccountFollowings(
+            accountRemoteId: myAccountBloc.account.remoteId,
+            followings: remoteAccounts.toPleromaAccounts(),
+            batchTransaction: batch,
+          );
+        });
       }
     }
-
-    await accountRepository.upsertRemoteAccounts(
-      remoteAccounts,
-      conversationRemoteId: null,
-      chatRemoteId: null,
-    );
   }
 
   Future<List<IPleromaAccount>> defaultEmptySearchRemoteAccountListLoader({
@@ -158,18 +172,19 @@ class SelectAccountListBloc extends DisposableOwner
       if (followingsOnly == true) {
         onlyInAccountFollowing = myAccountBloc.account;
       }
-      accounts = await accountRepository.getAccounts(
-        filters: AccountRepositoryFilters(
-          onlyInAccountFollowing: onlyInAccountFollowing,
-          searchQuery: searchText,
-        ),
-        pagination: RepositoryPagination<IAccount>(
-          olderThanItem: olderThan,
-          newerThanItem: newerThan,
-          limit: limit,
-        ),
-        orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
-      );
+      accounts = await accountRepository.findAllInAppType(
+          filters: AccountRepositoryFilters(
+            onlyInAccountFollowing: onlyInAccountFollowing,
+            searchQuery: searchText,
+          ),
+          pagination: RepositoryPagination<IAccount>(
+            olderThanItem: olderThan,
+            newerThanItem: newerThan,
+            limit: limit,
+          ),
+          orderingTerms: [
+            AccountRepositoryOrderingTermData.remoteIdDesc,
+          ]);
     } else {
       if (customEmptySearchLocalAccountListLoader != null) {
         accounts = await customEmptySearchLocalAccountListLoader!(
@@ -211,7 +226,7 @@ class SelectAccountListBloc extends DisposableOwner
     required IAccount? newerThan,
     required int? limit,
   }) async {
-    return await accountRepository.getAccounts(
+    return await accountRepository.findAllInAppType(
       filters: AccountRepositoryFilters(
         onlyInAccountFollowing: myAccountBloc.account,
       ),
@@ -220,7 +235,7 @@ class SelectAccountListBloc extends DisposableOwner
         newerThanItem: newerThan,
         limit: limit,
       ),
-      orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+      orderingTerms: [AccountRepositoryOrderingTermData.remoteIdDesc],
     );
   }
 

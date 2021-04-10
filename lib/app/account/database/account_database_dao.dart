@@ -57,7 +57,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     String remoteId,
     Insertable<DbAccount> entity,
   ) async {
-    var localId = await findLocalIdByRemoteId(remoteId).getSingleOrNull();
+    var localId = await findLocalIdByRemoteId(remoteId);
 
     if (localId != null && localId >= 0) {
       await (update(dbAccounts)
@@ -254,6 +254,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
           CustomExpression<bool>("$_accountFollowersAliasId.account_remote_id"
               " = '$followerAccountRemoteId'"),
         );
+
+
 }
 
 extension DbAccountTypedResultExtension on TypedResult {

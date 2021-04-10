@@ -105,7 +105,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     String remoteId,
     Insertable<DbChatMessage> entity,
   ) async {
-    var localId = await findLocalIdByRemoteId(remoteId).getSingleOrNull();
+    var localId = await findLocalIdByRemoteId(remoteId);
 
     if (localId != null && localId >= 0) {
       await (update(db.dbChatMessages)
@@ -237,7 +237,22 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     );
   }
 
-  Future markAsDeleted({required String? remoteId}) {
+  Future markAsDeleted({
+    required String remoteId,
+    // required Batch? batchTransaction,
+  }) async {
+    // todo: support batch
+    // if (batchTransaction != null) {
+    //   batchTransaction.customStatement(sql)
+    // } else {
+    //   await db.batch((batch) {
+    //     markAsDeleted(
+    //       remoteId: remoteId,
+    //       batchTransaction: batch,
+    //     );
+    //   });
+    // }
+
     var update = "UPDATE db_chat_messages "
         "SET deleted = 1 "
         "WHERE remote_id = '$remoteId'";
@@ -246,7 +261,11 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     return query;
   }
 
-  Future markAsHiddenLocallyOnDevice({required int? localId}) {
+  Future markAsHiddenLocallyOnDevice({
+    required int? localId,
+    // required Batch? batchTransaction,
+  }) {
+    // todo: support batch
     var update = "UPDATE db_chat_messages "
         "SET hidden_locally_on_device = 1 "
         "WHERE id = '$localId'";
@@ -257,6 +276,16 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   $DbChatMessagesTable get table => dbChatMessages;
+
+  Future deleteOlderThanDate(
+    DateTime dateTimeToDelete, {
+    required Batch? batchTransaction,
+  }) =>
+      deleteOlderThanDateTime(
+        dateTimeToDelete,
+        fieldName: table.createdAt.$name,
+        batchTransaction: batchTransaction,
+      );
 }
 
 extension ListTypedResultDbChatMessagePopulatedExtension on List<TypedResult> {

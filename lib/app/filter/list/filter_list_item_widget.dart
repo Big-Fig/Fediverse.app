@@ -32,6 +32,7 @@ class FilterListItemWidget extends StatelessWidget {
           onDelete: () async {
             await IFilterRepository.of(context, listen: false).deleteById(
               filterBloc.filter.localId!,
+              batchTransaction: null,
             );
             _refresh(context);
           },

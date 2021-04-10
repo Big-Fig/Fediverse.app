@@ -72,7 +72,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
     String remoteId,
     Insertable<DbConversation> entity,
   ) async {
-    var localId = await findLocalIdByRemoteId(remoteId).getSingleOrNull();
+    var localId = await findLocalIdByRemoteId(remoteId);
 
     if (localId != null && localId >= 0) {
       await (update(db.dbConversations)

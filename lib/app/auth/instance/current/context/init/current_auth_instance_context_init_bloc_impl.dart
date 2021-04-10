@@ -145,7 +145,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     var isPleroma = currentAuthInstanceBloc.currentInstance!.isPleroma;
     var isMastodon = currentAuthInstanceBloc.currentInstance!.isMastodon;
 
-    var actualNotificationUnreadCount = await notificationRepository.getCount(
+    var actualNotificationUnreadCount = await notificationRepository.findCount(
       filters: NotificationRepositoryFilters(onlyUnread: true),
     );
     var actualConversationChatUnreadCount =
@@ -190,8 +190,13 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   Future updateFilters() async {
     var remoteFilters = await pleromaFilterService.getFilters();
 
-    await filterRepository.clear();
-    await filterRepository.upsertRemoteFilters(remoteFilters);
+    await filterRepository.batch((batch) {
+      filterRepository.clear(batchTransaction: batch);
+      filterRepository.upsertAllInRemoteType(
+        remoteFilters,
+        batchTransaction: batch,
+      );
+    });
   }
 
   Future updateInstanceInformation() async {
@@ -222,21 +227,26 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   Future updateNotifications() async {
     var remoteNotifications =
         await pleromaNotificationService.getNotifications();
-    await notificationRepository.upsertRemoteNotifications(
+    await notificationRepository.upsertAllInRemoteType(
       remoteNotifications,
-      unread: null,
+      batchTransaction: null,
     );
   }
 
   Future updateChats() async {
     var remoteChats = await pleromaChatService.getChats();
-    await pleromaChatRepository.upsertRemoteChats(remoteChats);
+    await pleromaChatRepository.upsertAllInRemoteType(
+      remoteChats,
+      batchTransaction: null,
+    );
   }
 
   Future updateConversations() async {
     var remoteConversations =
         await pleromaConversationService.getConversations();
-    await conversationChatRepository
-        .upsertRemoteConversations(remoteConversations);
+    await conversationChatRepository.upsertAllInRemoteType(
+      remoteConversations,
+      batchTransaction: null,
+    );
   }
 }

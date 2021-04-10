@@ -22,13 +22,5 @@ abstract class SimpleAppRemoteDatabaseDaoRepository<
   RemoteItem mapDbItemToRemoteItem(DbItem dbItem);
 
   @override
-  Stream<AppItem?> watchByRemoteIdInAppType(RemoteId remoteId) {
-          // var query = dao.startSelectQuery();
-          //
-          // addFindByRemoteIdWhereToSimpleSelectStatement(
-          //     simpleSelectStatement: query, remoteId: remoteId);
-          //
-          // ret
-          // convertSimpleSelectStatementToJoinedSelectStatement()
-  }
+  Stream<AppItem?> watchByRemoteIdInAppType(RemoteId remoteId);
 }

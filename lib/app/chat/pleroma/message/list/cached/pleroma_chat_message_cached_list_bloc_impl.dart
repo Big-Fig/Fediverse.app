@@ -60,7 +60,10 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
       ),
     );
 
-    await chatMessageRepository.upsertRemoteChatMessages(remoteMessages);
+    await chatMessageRepository.upsertAllInRemoteType(
+      remoteMessages,
+      batchTransaction: null,
+    );
   }
 
   @override
@@ -73,14 +76,16 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
 
-    var messages = await chatMessageRepository.getChatMessages(
+    var messages = await chatMessageRepository.findAllInAppType(
       filters: _pleromaChatMessageRepositoryFilters,
       pagination: RepositoryPagination(
         olderThanItem: olderThan,
         newerThanItem: newerThan,
         limit: limit,
       ),
-      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+      orderingTerms: [
+        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+      ],
     );
 
     _logger.finer(
@@ -93,12 +98,14 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   Stream<List<IPleromaChatMessage>> watchLocalItemsNewerThanItem(
     IPleromaChatMessage? item,
   ) {
-    return chatMessageRepository.watchChatMessages(
+    return chatMessageRepository.watchFindAllInAppType(
       filters: _pleromaChatMessageRepositoryFilters,
       pagination: RepositoryPagination(
         newerThanItem: item,
       ),
-      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+      orderingTerms: [
+        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+      ],
     );
   }
 

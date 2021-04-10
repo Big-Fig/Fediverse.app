@@ -56,7 +56,7 @@ void main() {
   });
 
   Future _update(IFilter filter) async {
-    await filterRepository.upsertRemoteFilter(
+    await filterRepository.upsertInRemoteType(
       filter.toPleromaFilter(),
     );
     // hack to execute notify callbacks

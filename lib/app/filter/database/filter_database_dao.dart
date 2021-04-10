@@ -25,24 +25,24 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
   // Called by the AppDatabase class
   FilterDao(this.db) : super(db);
 
-  Future<int> updateByRemoteId(
-    String remoteId,
-    Insertable<DbFilter> entity,
-  ) async {
-    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
-
-    if (localId != null && localId >= 0) {
-      await (update(db.dbFilters)..where((i) => i.id.equals(localId)))
-          .write(entity);
-    } else {
-      localId = await insert(
-        entity: entity,
-        mode: null,
-      );
-    }
-
-    return localId;
-  }
+  // Future<int> updateByRemoteId(
+  //   String remoteId,
+  //   Insertable<DbFilter> entity,
+  // ) async {
+  //   var localId = await findLocalIdByRemoteId(remoteId).getSingle();
+  //
+  //   if (localId != null && localId >= 0) {
+  //     await (update(db.dbFilters)..where((i) => i.id.equals(localId)))
+  //         .write(entity);
+  //   } else {
+  //     localId = await insert(
+  //       entity: entity,
+  //       mode: null,
+  //     );
+  //   }
+  //
+  //   return localId;
+  // }
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> addRemoteIdBoundsWhere(
     SimpleSelectStatement<$DbFiltersTable, DbFilter> query, {

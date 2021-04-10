@@ -107,29 +107,29 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         ),
       );
 
-  Future<int> updateByRemoteId(
-    String remoteId,
-    Insertable<DbStatus> entity,
-  ) async {
-    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
-
-    if (localId != null && localId >= 0) {
-      await (update(db.dbStatuses)
-            ..where(
-              (i) => i.id.equals(
-                localId,
-              ),
-            ))
-          .write(entity);
-    } else {
-      localId = await insert(
-        entity: entity,
-        mode: null,
-      );
-    }
-
-    return localId;
-  }
+  // Future<int> updateByRemoteId(
+  //   String remoteId,
+  //   Insertable<DbStatus> entity,
+  // ) async {
+  //   var localId = await findLocalIdByRemoteId(remoteId);
+  //
+  //   if (localId != null && localId >= 0) {
+  //     await (update(db.dbStatuses)
+  //           ..where(
+  //             (i) => i.id.equals(
+  //               localId,
+  //             ),
+  //           ))
+  //         .write(entity);
+  //   } else {
+  //     localId = await insert(
+  //       entity: entity,
+  //       mode: null,
+  //     );
+  //   }
+  //
+  //   return localId;
+  // }
 
   // TODO: separate media in own table & use join
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
@@ -587,6 +587,16 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   $DbStatusesTable get table => dbStatuses;
+
+  Future deleteOlderThanDate(
+    DateTime dateTimeToDelete, {
+    required Batch? batchTransaction,
+  }) =>
+      deleteOlderThanDateTime(
+        dateTimeToDelete,
+        fieldName: table.createdAt.$name,
+        batchTransaction: batchTransaction,
+      );
 }
 
 extension TypedResultDbStatusPopulatedExtension on TypedResult {

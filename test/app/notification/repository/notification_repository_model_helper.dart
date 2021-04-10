@@ -6,7 +6,11 @@ Future<DbNotification> insertDbNotification(
   NotificationRepository notificationRepository,
   DbNotification notificationData,
 ) async {
-  var id = await notificationRepository.insertInDbType(notificationData);
+  var id = await notificationRepository.insertInDbType(
+    notificationData,
+    mode: null,
+
+  );
   assert(id > 0, true);
   var dbNotification = notificationData.copyWith(id: id);
   return dbNotification;

@@ -87,8 +87,9 @@ class ConversationChatMessageBloc extends ChatMessageBloc
   @override
   void watchLocalRepositoryChanges() {
     addDisposable(
-      streamSubscription:
-          statusRepository.watchByRemoteIdInAppType(chatMessage.remoteId).listen(
+      streamSubscription: statusRepository
+          .watchByRemoteIdInAppType(chatMessage.remoteId)
+          .listen(
         (updatedChatMessage) {
           if (updatedChatMessage != null) {
             _chatMessageSubject.add(
@@ -99,7 +100,7 @@ class ConversationChatMessageBloc extends ChatMessageBloc
       ),
     );
 
-    var  oldPendingRemoteId = chatMessage.oldPendingRemoteId;
+    var oldPendingRemoteId = chatMessage.oldPendingRemoteId;
     if (oldPendingRemoteId != null) {
       addDisposable(
         streamSubscription: statusRepository
@@ -133,9 +134,10 @@ class ConversationChatMessageBloc extends ChatMessageBloc
       statusRemoteId: chatMessage.remoteId,
     );
 
-    await statusRepository.updateLocalStatusByRemoteStatus(
-      oldLocalStatus: chatMessage.status,
-      newRemoteStatus: remoteStatus,
+    await statusRepository.updateAppTypeByRemoteType(
+      appItem: chatMessage.status,
+      remoteItem: remoteStatus,
+      batchTransaction: null,
     );
   }
 

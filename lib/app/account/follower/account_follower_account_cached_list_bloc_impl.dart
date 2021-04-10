@@ -58,16 +58,18 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
     );
 
     if (remoteAccounts.isNotEmpty) {
-      await accountRepository.upsertRemoteAccounts(
-        remoteAccounts,
-        conversationRemoteId: null,
-        chatRemoteId: null,
-      );
+      await accountRepository.batch((batch) {
+        accountRepository.upsertAllInRemoteType(
+          remoteAccounts,
+          batchTransaction: batch,
+        );
 
-      await accountRepository.addAccountFollowers(
-        accountRemoteId: account.remoteId,
-        followers: remoteAccounts,
-      );
+        accountRepository.addAccountFollowers(
+          accountRemoteId: account.remoteId,
+          followers: remoteAccounts,
+          batchTransaction: batch,
+        );
+      });
 
       return true;
     } else {
@@ -87,13 +89,15 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
         "\t newerThanAccount=$newerThan"
         "\t olderThanAccount=$olderThan");
 
-    var accounts = await accountRepository.getAccounts(
+    var accounts = await accountRepository.findAllInAppType(
       pagination: RepositoryPagination<IAccount>(
         olderThanItem: olderThan,
         newerThanItem: newerThan,
         limit: limit,
       ),
-      orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+      orderingTerms: [
+        AccountRepositoryOrderingTermData.remoteIdDesc,
+      ],
       filters: _accountRepositoryFilters,
     );
 

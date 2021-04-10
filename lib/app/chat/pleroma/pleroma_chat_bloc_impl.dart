@@ -19,6 +19,7 @@ import 'package:fedi/pleroma/id/pleroma_fake_id_helper.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
 final _logger = Logger("pleroma_chat_bloc_impl.dart");
@@ -95,7 +96,8 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   void watchLocalRepositoryForUpdates() {
     addDisposable(
-      streamSubscription: chatRepository.watchByRemoteIdInAppType(chat.remoteId).listen(
+      streamSubscription:
+          chatRepository.watchByRemoteIdInAppType(chat.remoteId).listen(
         (updatedChat) {
           if (updatedChat != null) {
             _chatSubject.add(updatedChat);
@@ -155,28 +157,36 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   Future refreshFromNetwork() async {
     var remoteChat = await pleromaChatService.getChat(id: chat.remoteId);
 
-    await accountRepository.upsertRemoteAccount(
-      remoteChat.account,
-      chatRemoteId: remoteChat.id,
-      conversationRemoteId: null,
-    );
-
-    var lastMessage = remoteChat.lastMessage;
-    if (lastMessage != null) {
-      await chatMessageRepository.upsertRemoteChatMessage(
-        lastMessage,
+    await accountRepository.batch((batch) {
+      accountRepository.upsertChatRemoteAccount(
+        remoteChat.account,
+        chatRemoteId: remoteChat.id,
+        batchTransaction: batch,
       );
-    }
 
-    await _updateByRemoteChat(remoteChat);
+      var lastMessage = remoteChat.lastMessage;
+      if (lastMessage != null) {
+        chatMessageRepository.upsertInRemoteTypeBatch(
+          lastMessage,
+          batchTransaction: batch,
+        );
+      }
+
+      _updateByRemoteChat(
+        remoteChat,
+        batchTransaction: batch,
+      );
+    });
   }
 
   Future _updateByRemoteChat(
-    pleroma_lib.IPleromaChat remoteChat,
-  ) =>
-      chatRepository.updateLocalChatByRemoteChat(
-        oldLocalChat: chat,
-        newRemoteChat: remoteChat,
+    pleroma_lib.IPleromaChat remoteChat, {
+    required Batch? batchTransaction,
+  }) =>
+      chatRepository.updateAppTypeByRemoteType(
+        appItem: chat,
+        remoteItem: remoteChat,
+        batchTransaction: batchTransaction,
       );
 
   static PleromaChatBloc createFromContext(
@@ -215,10 +225,10 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
           lastReadChatMessageId: lastReadChatMessageId,
         );
 
-        await chatRepository.upsertRemoteChat(updatedRemoteChat);
+        await chatRepository.upsertInRemoteType(updatedRemoteChat);
       } else {
         // TODO: mark as read once app receive network connection
-        await chatRepository.markAsRead(chat: chat);
+        await chatRepository.markAsRead(chat: chat, batchTransaction: null);
       }
     }
   }
@@ -240,6 +250,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
       await chatMessageRepository.markChatMessageAsDeleted(
         chatMessageRemoteId: remoteId,
+        batchTransaction: null,
       );
     }
   }
@@ -275,6 +286,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         dbItem: dbChatMessage.copyWith(
           pendingState: PendingState.pending,
         ),
+        batchTransaction: null,
       );
     } else {
       var createdAt = DateTime.now();
@@ -299,6 +311,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       );
       localChatMessageId = await chatMessageRepository.insertInDbType(
         dbChatMessage,
+        mode: null,
       );
 
       pleromaChatMessageSendData = pleromaChatMessageSendData.copyWith(
@@ -311,14 +324,6 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         chatId: chat.remoteId,
         data: pleromaChatMessageSendData,
       );
-      await chatMessageRepository.updateByDbIdInDbType(
-        dbId: localChatMessageId,
-        dbItem: dbChatMessage.copyWith(
-          hiddenLocallyOnDevice: true,
-          pendingState: PendingState.published,
-        ),
-      );
-
       onMessageLocallyHiddenStreamController.add(
         DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: DbChatMessagePopulated(
@@ -329,16 +334,29 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         ),
       );
 
-      await chatMessageRepository.upsertRemoteChatMessage(
-        pleromaChatMessage,
-      );
+      await chatMessageRepository.batch((batch) {
+        chatMessageRepository.updateByDbIdInDbType(
+          dbId: localChatMessageId!,
+          dbItem: dbChatMessage.copyWith(
+            hiddenLocallyOnDevice: true,
+            pendingState: PendingState.published,
+          ),
+          batchTransaction: batch,
+        );
+
+        chatMessageRepository.upsertInRemoteTypeBatch(
+          pleromaChatMessage,
+          batchTransaction: batch,
+        );
+      });
     } catch (e, stackTrace) {
       _logger.warning(() => "postMessage error", e, stackTrace);
       await chatMessageRepository.updateByDbIdInDbType(
-        dbId:localChatMessageId,
-        dbItem:dbChatMessage.copyWith(
+        dbId: localChatMessageId,
+        dbItem: dbChatMessage.copyWith(
           pendingState: PendingState.fail,
         ),
+        batchTransaction: null,
       );
       rethrow;
     }
@@ -356,10 +374,12 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
       await chatMessageRepository.markChatMessageAsDeleted(
         chatMessageRemoteId: pleromaChatMessage.remoteId,
+        batchTransaction: null,
       );
     } else {
       await chatMessageRepository.markChatMessageAsHiddenLocallyOnDevice(
         chatMessageLocalId: pleromaChatMessage.localId!,
+        batchTransaction: null,
       );
       onMessageLocallyHiddenStreamController.add(pleromaChatMessage);
     }

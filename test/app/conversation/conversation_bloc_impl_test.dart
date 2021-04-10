@@ -141,7 +141,7 @@ void main() {
     IStatus? lastStatus,
     required List<IAccount> accounts,
   }) async {
-    await conversationRepository.upsertRemoteConversation(
+    await conversationRepository.upsertInRemoteType(
       conversation.toPleromaConversation(
         lastStatus: lastStatus,
         accounts: accounts,

@@ -58,7 +58,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
     if (isAccountIsMe) {
       filters = [];
     } else {
-      filters = await filterRepository.getFilters(
+      filters = await filterRepository.findAllInAppType(
         filters: FilterRepositoryFilters(
           notExpired: true,
           onlyWithContextTypes: [
@@ -66,6 +66,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
           ],
         ),
         pagination: null,
+        orderingTerms: null,
       );
     }
   }

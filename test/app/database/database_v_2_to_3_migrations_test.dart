@@ -25,9 +25,9 @@ void main() {
   test('test scheduled', () async {
     var scheduledStatusDao = database.scheduledStatusDao;
 
-    await scheduledStatusDao.clear();
+    await scheduledStatusDao.clear(batchTransaction: null);
 
-    expect((await scheduledStatusDao.getAll().get()).isNotEmpty, false);
+    expect((await scheduledStatusDao.getAll()).isNotEmpty, false);
 
     await scheduledStatusDao.insert(
       entity: DbScheduledStatus(
@@ -44,14 +44,14 @@ void main() {
       mode: null,
     );
 
-    expect((await scheduledStatusDao.getAll().get()).isNotEmpty, true);
+    expect((await scheduledStatusDao.getAll()).isNotEmpty, true);
   });
 
   test('test draft', () async {
     var draftStatusDao = database.draftStatusDao;
 
-    await draftStatusDao.clear();
-    expect((await draftStatusDao.getAll().get()).isNotEmpty, false);
+    await draftStatusDao.clear(batchTransaction: null);
+    expect((await draftStatusDao.getAll()).isNotEmpty, false);
 
     await draftStatusDao.insert(
       entity: DbDraftStatus(
@@ -65,6 +65,6 @@ void main() {
       mode: null,
     );
 
-    expect((await draftStatusDao.getAll().get()).isNotEmpty, true);
+    expect((await draftStatusDao.getAll()).isNotEmpty, true);
   });
 }

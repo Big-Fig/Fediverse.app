@@ -47,7 +47,10 @@ void main() {
     );
 
     dbAccount = await createTestDbAccount(seed: "seed1");
-    var accountId = await accountRepository.insertInDbType(dbAccount);
+    var accountId = await accountRepository.insertInDbType(
+      dbAccount,
+      mode: null,
+    );
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
@@ -77,7 +80,10 @@ void main() {
       dbAccount: dbAccount,
     );
 
-    await chatMessageRepository.insertInDbType(dbChatMessage);
+    await chatMessageRepository.insertInDbType(
+      dbChatMessage,
+      mode: null,
+    );
   });
 
   tearDown(() async {
@@ -88,7 +94,10 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await chatRepository.insertInDbType(dbChat);
+    var id = await chatRepository.insertInDbType(
+      dbChat,
+      mode: null,
+    );
     assert(id > 0, true);
     expectDbChat(
       await chatRepository.findByDbIdInAppType(id),
@@ -111,11 +120,17 @@ void main() {
     ))
         .copyWith(remoteId: "remoteId1");
 
-    await chatRepository.upsertAllInDbType([dbChat1]);
+    await chatRepository.upsertAllInDbType(
+      [dbChat1],
+      batchTransaction: null,
+    );
 
     expect((await chatRepository.getAllInAppType()).length, 1);
 
-    await chatRepository.upsertAllInDbType([dbChat2]);
+    await chatRepository.upsertAllInDbType(
+      [dbChat2],
+      batchTransaction: null,
+    );
     expect((await chatRepository.getAllInAppType()).length, 1);
 
     expectDbChat(
@@ -125,12 +140,16 @@ void main() {
   });
 
   test('updateById', () async {
-    var id = await chatRepository.insertInDbType(dbChat);
+    var id = await chatRepository.insertInDbType(
+      dbChat,
+      mode: null,
+    );
     assert(id > 0, true);
 
     await chatRepository.updateByDbIdInDbType(
-      dbId:id,
-      dbItem:dbChat.copyWith(remoteId: "newRemoteId"),
+      dbId: id,
+      dbItem: dbChat.copyWith(remoteId: "newRemoteId"),
+      batchTransaction: null,
     );
 
     expect(
@@ -140,8 +159,10 @@ void main() {
   });
 
   test('updateLocalChatByRemoteChat', () async {
-    var id =
-        await chatRepository.insertInDbType(dbChat.copyWith(remoteId: "oldRemoteId"));
+    var id = await chatRepository.insertInDbType(
+      dbChat.copyWith(remoteId: "oldRemoteId"),
+      mode: null,
+    );
     assert(id > 0, true);
 
     var oldLocalChat = chat.copyWith(id: id);
@@ -165,17 +186,20 @@ void main() {
         ),
       ),
       accounts: [
-        DbAccountWrapper(
-          dbAccount: dbAccount.copyWith(
-            acct: newAcct,
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount.copyWith(
+              acct: newAcct,
+            ),
           ),
         ),
       ],
     );
 
-    await chatRepository.updateLocalChatByRemoteChat(
-      oldLocalChat: oldLocalChat,
-      newRemoteChat: newRemoteChat,
+    await chatRepository.updateAppTypeByRemoteType(
+      appItem: oldLocalChat,
+      remoteItem: newRemoteChat,
+      batchTransaction: null,
     );
 
     expect(
@@ -183,18 +207,23 @@ void main() {
       newRemoteId,
     );
     expect(
-      (await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId))!.acct,
+      (await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId))!
+          .acct,
       newAcct,
     );
     expect(
-      (await chatMessageRepository.findByRemoteIdInAppType(dbChatMessage.remoteId))!
+      (await chatMessageRepository
+              .findByRemoteIdInAppType(dbChatMessage.remoteId))!
           .content,
       newContent,
     );
   });
 
   test('findByRemoteId', () async {
-    await chatRepository.insertInDbType(dbChat);
+    await chatRepository.insertInDbType(
+      dbChat,
+      mode: null,
+    );
     expectDbChat(
       await chatRepository.findByRemoteIdInAppType(dbChat.remoteId),
       dbChat,
@@ -204,13 +233,15 @@ void main() {
   test('upsertRemoteChat', () async {
     expect(await chatRepository.countAll(), 0);
 
-    await chatRepository.upsertRemoteChat(
+    await chatRepository.upsertInRemoteType(
       DbPleromaChatPopulatedWrapper(
         dbChatPopulated: dbChatPopulated,
       ).toPleromaChat(
         accounts: [
-          DbAccountWrapper(
-            dbAccount: dbAccount,
+          DbAccountPopulatedWrapper(
+            dbAccountPopulated: DbAccountPopulated(
+              dbAccount: dbAccount,
+            ),
           ),
         ],
         lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
@@ -238,19 +269,22 @@ void main() {
       dbAccount,
     );
     expectDbChatMessage(
-      await chatMessageRepository.findByRemoteIdInAppType(dbChatMessage.remoteId),
+      await chatMessageRepository
+          .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
     );
 
     // item with same id updated
 
-    await chatRepository.upsertRemoteChat(
+    await chatRepository.upsertInRemoteType(
       DbPleromaChatPopulatedWrapper(
         dbChatPopulated: dbChatPopulated,
       ).toPleromaChat(
         accounts: [
-          DbAccountWrapper(
-            dbAccount: dbAccount,
+          DbAccountPopulatedWrapper(
+            dbAccountPopulated: DbAccountPopulated(
+              dbAccount: dbAccount,
+            ),
           ),
         ],
         lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
@@ -270,20 +304,23 @@ void main() {
       dbAccount,
     );
     expectDbChatMessage(
-      await chatMessageRepository.findByRemoteIdInAppType(dbChatMessage.remoteId),
+      await chatMessageRepository
+          .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
     );
   });
 
   test('upsertRemoteChats', () async {
     expect(await chatRepository.countAll(), 0);
-    await chatRepository.upsertRemoteChats(
+    await chatRepository.upsertAllInRemoteType(
       [
         DbPleromaChatPopulatedWrapper(dbChatPopulated: dbChatPopulated)
             .toPleromaChat(
           accounts: [
-            DbAccountWrapper(
-              dbAccount: dbAccount,
+            DbAccountPopulatedWrapper(
+              dbAccountPopulated: DbAccountPopulated(
+                dbAccount: dbAccount,
+              ),
             ),
           ],
           lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
@@ -291,6 +328,7 @@ void main() {
           ),
         ),
       ],
+      batchTransaction: null,
     );
 
     expect(await chatRepository.countAll(), 1);
@@ -306,23 +344,28 @@ void main() {
       dbAccount,
     );
     expectDbChatMessage(
-      await chatMessageRepository.findByRemoteIdInAppType(dbChatMessage.remoteId),
+      await chatMessageRepository
+          .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
     );
 
-    await chatRepository.upsertRemoteChats([
-      DbPleromaChatPopulatedWrapper(dbChatPopulated: dbChatPopulated)
-          .toPleromaChat(
-        accounts: [
-          DbAccountWrapper(
-            dbAccount: dbAccount,
+    await chatRepository.upsertAllInRemoteType(
+      [
+        DbPleromaChatPopulatedWrapper(dbChatPopulated: dbChatPopulated)
+            .toPleromaChat(
+          accounts: [
+            DbAccountPopulatedWrapper(
+                dbAccountPopulated: DbAccountPopulated(
+              dbAccount: dbAccount,
+            )),
+          ],
+          lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
+            dbChatMessagePopulated: dbChatMessagePopulated,
           ),
-        ],
-        lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
-          dbChatMessagePopulated: dbChatMessagePopulated,
         ),
-      ),
-    ]);
+      ],
+      batchTransaction: null,
+    );
     // update item with same id
     expect(await chatRepository.countAll(), 1);
 
@@ -337,7 +380,8 @@ void main() {
       dbAccount,
     );
     expectDbChatMessage(
-      await chatMessageRepository.findByRemoteIdInAppType(dbChatMessage.remoteId),
+      await chatMessageRepository
+          .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
     );
   });
@@ -352,27 +396,36 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await chatRepository.insertInDbType((await createTestDbChat(
-      seed: "seed1",
-      dbAccount: dbAccount,
-    ))
-        .copyWith());
+    await chatRepository.insertInDbType(
+      (await createTestDbChat(
+        seed: "seed1",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 1);
 
-    await chatRepository.insertInDbType((await createTestDbChat(
-      seed: "seed2",
-      dbAccount: dbAccount,
-    ))
-        .copyWith());
+    await chatRepository.insertInDbType(
+      (await createTestDbChat(
+        seed: "seed2",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 2);
 
-    await chatRepository.insertInDbType((await createTestDbChat(
-      seed: "seed3",
-      dbAccount: dbAccount,
-    ))
-        .copyWith());
+    await chatRepository.insertInDbType(
+      (await createTestDbChat(
+        seed: "seed3",
+        dbAccount: dbAccount,
+      ))
+          .copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 3);
   });
@@ -738,8 +791,12 @@ void main() {
       updatedAt: DateTime.now(),
     );
 
-    expect((await chatRepository.findByRemoteIdInAppType(chat2.remoteId))!.unread, 2);
-    expect((await chatRepository.findByRemoteIdInAppType(chat3.remoteId))!.unread, 1);
+    expect(
+        (await chatRepository.findByRemoteIdInAppType(chat2.remoteId))!.unread,
+        2);
+    expect(
+        (await chatRepository.findByRemoteIdInAppType(chat3.remoteId))!.unread,
+        1);
   });
 
   test('incrementUnreadCount', () async {
@@ -766,7 +823,7 @@ void main() {
           dbChat: chat2,
           dbAccount: dbAccount,
         ),
-      ),
+      ), batchTransaction: null,
     );
 
     expect(
@@ -814,7 +871,7 @@ void main() {
           dbChat: chat2,
           dbAccount: dbAccount,
         ),
-      ),
+      ), batchTransaction: null,
     );
     await Future.delayed(Duration(milliseconds: 1));
     expect(await chatRepository.getTotalUnreadCount(), 1);

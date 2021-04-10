@@ -12,13 +12,6 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("filter_repository_impl.dart");
 
-var _singleFilterRepositoryPagination = RepositoryPagination<IFilter>(
-  limit: 1,
-  newerThanItem: null,
-  offset: null,
-  olderThanItem: null,
-);
-
 class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbFilter,
     DbFilterPopulated,
@@ -37,68 +30,69 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required AppDatabase appDatabase,
   }) : dao = appDatabase.filterDao;
 
-  @override
-  Future upsertRemoteFilter(IPleromaFilter remoteFilter) async {
-    _logger.finer(() => "upsertRemoteFilter ${remoteFilter.id} "
-        "$remoteFilter");
-
-    await upsertInRemoteType(
-      remoteFilter,
-    );
-  }
-
-  @override
-  Future upsertRemoteFilters(
-    List<IPleromaFilter> remoteFilters,
-  ) async {
-    _logger.finer(() => "upsertRemoteFilters ${remoteFilters.length} ");
-    if (remoteFilters.isEmpty) {
-      return;
-    }
-    await upsertAllInRemoteType(remoteFilters);
-  }
-
-  @override
-  Future<List<DbFilterPopulatedWrapper>> getFilters({
-    required FilterRepositoryFilters filters,
-    required RepositoryPagination<IFilter>? pagination,
-    FilterOrderingTermData orderingTermData =
-        FilterOrderingTermData.remoteIdDesc,
-  }) async {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return (await query.get())
-        .toDbFilterPopulatedList(
-          dao: dao,
-        )
-        .toDbFilterPopulatedWrapperList();
-  }
-
-  @override
-  Stream<List<DbFilterPopulatedWrapper>> watchFilters({
-    required FilterRepositoryFilters filters,
-    required RepositoryPagination<IFilter> pagination,
-    FilterOrderingTermData orderingTermData =
-        FilterOrderingTermData.remoteIdDesc,
-  }) {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return query.watch().map(
-          (value) => value
-              .toDbFilterPopulatedList(
-                dao: dao,
-              )
-              .toDbFilterPopulatedWrapperList(),
-        );
-  }
+  //
+  // @override
+  // Future upsertRemoteFilter(IPleromaFilter remoteFilter) async {
+  //   _logger.finer(() => "upsertRemoteFilter ${remoteFilter.id} "
+  //       "$remoteFilter");
+  //
+  //   await upsertInRemoteType(
+  //     remoteFilter,
+  //   );
+  // }
+  //
+  // @override
+  // Future upsertRemoteFilters(
+  //   List<IPleromaFilter> remoteFilters,
+  // ) async {
+  //   _logger.finer(() => "upsertRemoteFilters ${remoteFilters.length} ");
+  //   if (remoteFilters.isEmpty) {
+  //     return;
+  //   }
+  //   await upsertAllInRemoteType(remoteFilters, batchTransaction: null);
+  // }
+  //
+  // @override
+  // Future<List<DbFilterPopulatedWrapper>> getFilters({
+  //   required FilterRepositoryFilters filters,
+  //   required RepositoryPagination<IFilter>? pagination,
+  //   FilterOrderingTermData orderingTermData =
+  //       FilterOrderingTermData.remoteIdDesc,
+  // }) async {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: pagination,
+  //     orderingTermData: orderingTermData,
+  //   );
+  //
+  //   return (await query.get())
+  //       .toDbFilterPopulatedList(
+  //         dao: dao,
+  //       )
+  //       .toDbFilterPopulatedWrapperList();
+  // }
+  //
+  // @override
+  // Stream<List<DbFilterPopulatedWrapper>> watchFilters({
+  //   required FilterRepositoryFilters filters,
+  //   required RepositoryPagination<IFilter> pagination,
+  //   FilterOrderingTermData orderingTermData =
+  //       FilterOrderingTermData.remoteIdDesc,
+  // }) {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: pagination,
+  //     orderingTermData: orderingTermData,
+  //   );
+  //
+  //   return query.watch().map(
+  //         (value) => value
+  //             .toDbFilterPopulatedList(
+  //               dao: dao,
+  //             )
+  //             .toDbFilterPopulatedWrapperList(),
+  //       );
+  // }
 
   JoinedSelectStatement createQuery({
     required FilterRepositoryFilters? filters,
@@ -154,56 +148,57 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     return finalQuery;
   }
 
-  @override
-  Future updateLocalFilterByRemoteFilter({
-    required IFilter oldLocalFilter,
-    required IPleromaFilter newRemoteFilter,
-  }) async {
-    _logger.finer(() => "updateLocalFilterByRemoteFilter \n"
-        "\t old: $oldLocalFilter \n"
-        "\t newRemoteFilter: $newRemoteFilter");
-
-    await updateByDbIdInDbType(
-      dbId: oldLocalFilter.localId!,
-      dbItem: newRemoteFilter.toDbFilter(),
-    );
-  }
-
-  @override
-  Future<DbFilterPopulatedWrapper?> getFilter({
-    required FilterRepositoryFilters filters,
-    FilterOrderingTermData orderingTermData =
-        FilterOrderingTermData.remoteIdDesc,
-  }) async {
-    var query = createQuery(
-      filters: filters,
-      pagination: _singleFilterRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return (await query.getSingleOrNull())
-        ?.toDbFilterPopulated(dao: dao)
-        .toDbFilterPopulatedWrapper();
-  }
-
-  @override
-  Stream<DbFilterPopulatedWrapper?> watchFilter({
-    required FilterRepositoryFilters filters,
-    FilterOrderingTermData orderingTermData =
-        FilterOrderingTermData.remoteIdDesc,
-  }) {
-    var query = createQuery(
-      filters: filters,
-      pagination: _singleFilterRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return query.watchSingleOrNull().map(
-          (typedResult) => typedResult
-              ?.toDbFilterPopulated(dao: dao)
-              .toDbFilterPopulatedWrapper(),
-        );
-  }
+  //
+  // @override
+  // Future updateLocalFilterByRemoteFilter({
+  //   required IFilter oldLocalFilter,
+  //   required IPleromaFilter newRemoteFilter,
+  // }) async {
+  //   _logger.finer(() => "updateLocalFilterByRemoteFilter \n"
+  //       "\t old: $oldLocalFilter \n"
+  //       "\t newRemoteFilter: $newRemoteFilter");
+  //
+  //   await updateByDbIdInDbType(
+  //     dbId: oldLocalFilter.localId!,
+  //     dbItem: newRemoteFilter.toDbFilter(), batchTransaction: null,
+  //   );
+  // }
+  //
+  // @override
+  // Future<DbFilterPopulatedWrapper?> getFilter({
+  //   required FilterRepositoryFilters filters,
+  //   FilterOrderingTermData orderingTermData =
+  //       FilterOrderingTermData.remoteIdDesc,
+  // }) async {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: _singleFilterRepositoryPagination,
+  //     orderingTermData: orderingTermData,
+  //   );
+  //
+  //   return (await query.getSingleOrNull())
+  //       ?.toDbFilterPopulated(dao: dao)
+  //       .toDbFilterPopulatedWrapper();
+  // }
+  //
+  // @override
+  // Stream<DbFilterPopulatedWrapper?> watchFilter({
+  //   required FilterRepositoryFilters filters,
+  //   FilterOrderingTermData orderingTermData =
+  //       FilterOrderingTermData.remoteIdDesc,
+  // }) {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: _singleFilterRepositoryPagination,
+  //     orderingTermData: orderingTermData,
+  //   );
+  //
+  //   return query.watchSingleOrNull().map(
+  //         (typedResult) => typedResult
+  //             ?.toDbFilterPopulated(dao: dao)
+  //             .toDbFilterPopulatedWrapper(),
+  //       );
+  // }
 
   @override
   DbFilter mapAppItemToDbItem(IFilter appItem) => appItem.toDbFilter();

@@ -69,7 +69,7 @@ abstract class AppDatabaseDaoRepository<
       ).watch();
 
   @override
-  Stream<AppItem?> watchInAppType({
+  Stream<AppItem?> watchFindInAppType({
     required RepositoryPagination<AppItem>? pagination,
     required Filters? filters,
     required List<OrderingTerm>? orderingTerms,

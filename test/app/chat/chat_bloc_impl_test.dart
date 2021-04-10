@@ -137,16 +137,16 @@ void main() {
     IPleromaChatMessage? lastChatMessage,
     required List<IAccount> accounts,
   }) async {
-    await accountRepository.upsertRemoteAccounts(
+    await accountRepository.upsertChatRemoteAccounts(
       accounts
           .map(
             (account) => account.toPleromaAccount(),
           )
           .toList(),
-      conversationRemoteId: null,
       chatRemoteId: chat.remoteId,
+      batchTransaction: null,
     );
-    await chatRepository.upsertRemoteChat(chat.toPleromaChat(
+    await chatRepository.upsertInRemoteType(chat.toPleromaChat(
       lastChatMessage: lastChatMessage,
       accounts: accounts,
     ));
@@ -248,7 +248,7 @@ void main() {
     expectChatMessage(chatBloc.lastChatMessage, chatMessage1);
     expectChatMessage(listenedValue, chatMessage1);
 
-    await chatMessageRepository.upsertRemoteChatMessage(
+    await chatMessageRepository.upsertInRemoteType(
       chatMessage2.toPleromaChatMessage(),
     );
 

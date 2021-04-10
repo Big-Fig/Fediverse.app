@@ -107,8 +107,10 @@ class DbNotificationPopulatedWrapper implements INotification {
   IAccount? get account {
     var dbAccount = dbNotificationPopulated.dbAccount;
     if (dbAccount != null) {
-      return DbAccountWrapper(
-        dbAccount: dbAccount,
+      return DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount,
+        ),
       );
     } else {
       return null;

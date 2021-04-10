@@ -37,10 +37,8 @@ class MyAccountBloc extends IMyAccountBloc {
       streamSubscription: myAccountStream.listen(
         (myAccount) {
           if (myAccount != null) {
-            accountRepository.upsertRemoteAccount(
+            accountRepository.upsertInRemoteType(
               myAccount.toPleromaAccount(),
-              conversationRemoteId: null,
-              chatRemoteId: null,
             );
           }
         },

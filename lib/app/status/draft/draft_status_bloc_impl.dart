@@ -10,6 +10,7 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
@@ -59,8 +60,9 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
     if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
-          streamSubscription:
-              draftStatusRepository.watchByDbIdInAppType(draftStatus.localId!).listen(
+          streamSubscription: draftStatusRepository
+              .watchByDbIdInAppType(draftStatus.localId!)
+              .listen(
             (updatedStatus) {
               if (updatedStatus != null) {
                 _draftStatusSubject.add(updatedStatus);
@@ -111,7 +113,10 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   @override
   Future cancelDraft() {
     _stateSubject.add(DraftStatusState.canceled);
-    return draftStatusRepository.deleteById(draftStatus.localId!);
+    return draftStatusRepository.deleteById(
+      draftStatus.localId!,
+      batchTransaction: null,
+    );
   }
 
   @override
@@ -124,17 +129,18 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
         ),
       );
       await scheduledStatusRepository
-          .upsertRemoteScheduledStatus(pleromaScheduledStatus);
+          .upsertInRemoteType(pleromaScheduledStatus);
     } else {
       var pleromaStatus = await pleromaAuthStatusService.postStatus(
         data: postStatusData.toPleromaPostStatus(
           idempotencyKey: null,
         ),
       );
-      await statusRepository.upsertRemoteStatus(
+      await statusRepository.upsertRemoteStatusWithAllArguments(
         pleromaStatus,
         listRemoteId: null,
         conversationRemoteId: postStatusData.inReplyToConversationId,
+        isFromHomeTimeline: null,
       );
     }
 
@@ -144,15 +150,19 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   }
 
   @override
-  Future updatePostStatusData(PostStatusData postStatusData) async {
+  Future updatePostStatusData(
+    PostStatusData postStatusData, {
+    required Batch? batchTransaction,
+  }) async {
     var localId = draftStatus.localId;
     await draftStatusRepository.updateByDbIdInDbType(
-      dbId:localId!,
-      dbItem:DbDraftStatus(
+      dbId: localId!,
+      dbItem: DbDraftStatus(
         id: localId,
         updatedAt: DateTime.now(),
         data: postStatusData,
       ),
+      batchTransaction: batchTransaction,
     );
   }
 }

@@ -173,8 +173,10 @@ class DbPleromaChatPopulatedWrapper implements IPleromaChat {
 
   @override
   List<IAccount> get accounts => [
-        DbAccountWrapper(
-          dbAccount: dbChatPopulated.dbAccount,
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbChatPopulated.dbAccount,
+          ),
         ),
       ];
 

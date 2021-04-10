@@ -42,28 +42,28 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     statusReblogAccountAlias =
         alias(db.dbAccounts, _statusReblogAccountAliasId);
   }
-
-  Future<int> updateByRemoteId(
-    String remoteId,
-    Insertable<DbNotification> entity,
-  ) async {
-    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
-
-    if (localId != null && localId >= 0) {
-      await (update(db.dbNotifications)
-            ..where(
-              (i) => i.id.equals(localId),
-            ))
-          .write(entity);
-    } else {
-      localId = await insert(
-        entity: entity,
-        mode: null,
-      );
-    }
-
-    return localId;
-  }
+  //
+  // Future<int> updateByRemoteId(
+  //   String remoteId,
+  //   Insertable<DbNotification> entity,
+  // ) async {
+  //   var localId = await findLocalIdByRemoteId(remoteId);
+  //
+  //   if (localId != null && localId >= 0) {
+  //     await (update(db.dbNotifications)
+  //           ..where(
+  //             (i) => i.id.equals(localId),
+  //           ))
+  //         .write(entity);
+  //   } else {
+  //     localId = await insert(
+  //       entity: entity,
+  //       mode: null,
+  //     );
+  //   }
+  //
+  //   return localId;
+  // }
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       addExcludeTypeWhere(
@@ -92,7 +92,6 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
                 onlyWithType.toJsonValue(),
               ),
             );
-
 
   /// notification remote ids can't be compared
 //  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
@@ -296,6 +295,17 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   $DbNotificationsTable get table => dbNotifications;
+
+
+  Future deleteOlderThanDate(
+      DateTime dateTimeToDelete, {
+        required Batch? batchTransaction,
+      }) =>
+      deleteOlderThanDateTime(
+        dateTimeToDelete,
+        fieldName: table.createdAt.$name,
+        batchTransaction: batchTransaction,
+      );
 }
 
 extension DbNotificationPopulatedTypedResultListExtension on List<TypedResult> {
@@ -337,4 +347,5 @@ extension DbNotificationPopulatedTypedResultExtension on TypedResult {
       replyReblogDbStatusAccount: null,
     );
   }
+
 }

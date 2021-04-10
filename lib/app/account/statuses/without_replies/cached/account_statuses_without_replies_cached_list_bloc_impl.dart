@@ -83,13 +83,16 @@ class AccountStatusesWithoutRepliesListBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    var statuses = await statusRepository.getStatuses(
+    var statuses = await statusRepository.findAllInAppType(
       filters: _statusRepositoryFilters,
       pagination: RepositoryPagination<IStatus>(
         olderThanItem: olderThan,
         newerThanItem: newerThan,
         limit: limit,
       ),
+      orderingTerms: [
+        StatusRepositoryOrderingTermData.remoteIdDesc,
+      ],
     );
 
     return statuses;
@@ -97,11 +100,14 @@ class AccountStatusesWithoutRepliesListBloc
 
   @override
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus? item) {
-    return statusRepository.watchStatuses(
+    return statusRepository.watchFindAllInAppType(
       filters: _statusRepositoryFilters,
       pagination: RepositoryPagination<IStatus>(
         newerThanItem: item,
       ),
+      orderingTerms: [
+        StatusRepositoryOrderingTermData.remoteIdDesc,
+      ],
     );
   }
 
@@ -126,10 +132,9 @@ class AccountStatusesWithoutRepliesListBloc
       ),
     );
 
-    await statusRepository.upsertRemoteStatuses(
+    await statusRepository.upsertAllInRemoteType(
       remoteStatuses,
-      listRemoteId: null,
-      conversationRemoteId: null,
+      batchTransaction: null,
     );
   }
 

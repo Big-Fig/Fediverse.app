@@ -7,7 +7,10 @@ Future<DbStatus> insertDbStatus(
   StatusRepository statusRepository,
   DbStatus statusData,
 ) async {
-  var id = await statusRepository.insertInDbType(statusData);
+  var id = await statusRepository.insertInDbType(
+    statusData,
+    mode: null,
+  );
   assert(id > 0, true);
   var dbStatus = statusData.copyWith(id: id);
   return dbStatus;

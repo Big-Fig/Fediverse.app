@@ -58,16 +58,18 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
       ),
     );
 
-    await accountRepository.upsertRemoteAccounts(
-      remoteAccounts,
-      conversationRemoteId: null,
-      chatRemoteId: null,
-    );
+    await accountRepository.batch((batch) {
+      accountRepository.upsertAllInRemoteType(
+        remoteAccounts,
+        batchTransaction: batch,
+      );
 
-    await accountRepository.updateStatusFavouritedBy(
-      statusRemoteId: status.remoteId!,
-      favouritedByAccounts: remoteAccounts,
-    );
+      accountRepository.updateStatusFavouritedBy(
+        statusRemoteId: status.remoteId!,
+        favouritedByAccounts: remoteAccounts,
+        batchTransaction: batch,
+      );
+    });
   }
 
   @override
@@ -80,14 +82,16 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
         "\t newerThanAccount=$newerThan"
         "\t olderThanAccount=$olderThan");
 
-    var accounts = await accountRepository.getAccounts(
+    var accounts = await accountRepository.findAllInAppType(
       filters: _accountRepositoryFilters,
       pagination: RepositoryPagination<IAccount>(
         olderThanItem: olderThan,
         newerThanItem: newerThan,
         limit: limit,
       ),
-      orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+      orderingTerms: [
+        AccountRepositoryOrderingTermData.remoteIdDesc,
+      ],
     );
 
     _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");

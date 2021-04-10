@@ -90,6 +90,7 @@ void main() {
     await notificationRepository.upsertRemoteNotification(
       notification.toPleromaNotification(),
       unread: unread,
+      batchTransaction: null,
     );
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));

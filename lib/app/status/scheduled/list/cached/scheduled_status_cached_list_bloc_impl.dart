@@ -66,14 +66,16 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
     required IScheduledStatus? newerThan,
     required IScheduledStatus? olderThan,
   }) async {
-    var statuses = await scheduledStatusRepository.getScheduledStatuses(
+    var statuses = await scheduledStatusRepository.findAllInAppType(
       filters: _scheduledStatusRepositoryFilters,
       pagination: RepositoryPagination(
         olderThanItem: olderThan,
         newerThanItem: newerThan,
         limit: limit,
       ),
-      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+      orderingTerms: [
+        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+      ],
     );
 
     return statuses;
@@ -83,12 +85,14 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   Stream<List<IScheduledStatus>> watchLocalItemsNewerThanItem(
     IScheduledStatus? item,
   ) =>
-      scheduledStatusRepository.watchScheduledStatuses(
+      scheduledStatusRepository.watchFindAllInAppType(
         filters: _scheduledStatusRepositoryFilters,
         pagination: RepositoryPagination(
           newerThanItem: item,
         ),
-        orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+        orderingTerms: [
+          ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+        ],
       );
 
   @override
@@ -111,8 +115,10 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
       ),
     );
 
-    await scheduledStatusRepository
-        .upsertRemoteScheduledStatuses(remoteStatuses);
+    await scheduledStatusRepository.upsertAllInRemoteType(
+      remoteStatuses,
+      batchTransaction: null,
+    );
   }
 
   @override

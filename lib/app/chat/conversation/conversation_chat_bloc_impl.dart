@@ -25,6 +25,7 @@ import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
 Function eq = const ListEquality().equals;
@@ -84,14 +85,15 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   @override
   Stream<List<IAccount>> get accountsWithoutMeStream => accountsStream;
 
-  void listenForAccounts(IConversationChat? conversation) {
+  void listenForAccounts(IConversationChat conversation) {
     addDisposable(
       streamSubscription: accountRepository
-          .watchAccounts(
+          .watchFindAllInAppType(
         filters: AccountRepositoryFilters.createForOnlyInConversation(
           conversation: conversation,
         ),
         pagination: null,
+        orderingTerms: null,
       )
           .listen(
         (accounts) {
@@ -229,31 +231,40 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       conversationRemoteId: chat.remoteId,
     );
 
-    if (remoteConversation.accounts.isNotEmpty) {
-      for (var account in remoteConversation.accounts) {
-        await accountRepository.upsertRemoteAccount(
-          account,
-          chatRemoteId: null,
-          conversationRemoteId: remoteConversation.id,
+    await accountRepository.batch((batch) {
+      if (remoteConversation.accounts.isNotEmpty) {
+        for (var account in remoteConversation.accounts) {
+          accountRepository.upsertConversationRemoteAccount(
+            account,
+            conversationRemoteId: remoteConversation.id!,
+            batchTransaction: batch,
+          );
+        }
+      }
+      var lastStatus = remoteConversation.lastStatus;
+      if (lastStatus != null) {
+        statusRepository.upsertRemoteStatusForConversation(
+          lastStatus,
+          conversationRemoteId: remoteConversation.id!,
+          batchTransaction: batch,
         );
       }
-    }
-    var lastStatus = remoteConversation.lastStatus;
-    if (lastStatus != null) {
-      await statusRepository.upsertRemoteStatus(
-        lastStatus,
-        conversationRemoteId: remoteConversation.id,
-        listRemoteId: null,
-      );
-    }
 
-    await _updateByRemoteChat(remoteConversation);
+      _updateByRemoteChat(
+        remoteConversation,
+        batchTransaction: batch,
+      );
+    });
   }
 
-  Future _updateByRemoteChat(IPleromaConversation remoteChat) =>
-      conversationRepository.updateLocalConversationByRemoteConversation(
-        oldLocalConversation: chat,
-        newRemoteConversation: remoteChat,
+  Future _updateByRemoteChat(
+    IPleromaConversation remoteChat, {
+    required Batch batchTransaction,
+  }) =>
+      conversationRepository.updateAppTypeByRemoteType(
+        appItem: chat,
+        remoteItem: remoteChat,
+        batchTransaction: batchTransaction,
       );
 
   static ConversationChatBloc createFromContext(
@@ -296,11 +307,15 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
           conversationRemoteId: chat.remoteId,
         );
 
-        await conversationRepository
-            .upsertRemoteConversation(updatedRemoteChat);
+        await conversationRepository.upsertInRemoteType(
+          updatedRemoteChat,
+        );
       } else {
         // TODO: mark as read once app receive network connection
-        await conversationRepository.markAsRead(conversation: chat);
+        await conversationRepository.markAsRead(
+          conversation: chat,
+          batchTransaction: null,
+        );
       }
     }
   }
@@ -309,14 +324,18 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   bool get isCountInUnreadSupported => false;
 
   @override
-  Future deleteMessages(List<IChatMessage>? chatMessages) async {
+  Future deleteMessages(List<IChatMessage> chatMessages) async {
     // create queue instead of parallel requests to avoid throttle limit on server
-    for (var chatMessage in chatMessages!) {
+    for (var chatMessage in chatMessages) {
       if (chatMessage.isPendingStatePublishedOrNull) {
         await pleromaAuthStatusService.deleteStatus(
           statusRemoteId: chatMessage.remoteId,
         );
       }
+    }
+
+    for (var chatMessage in chatMessages) {
+      // todo: rework in one request
       await statusRepository.markStatusAsDeleted(
         statusRemoteId: chatMessage.remoteId,
       );
@@ -330,7 +349,10 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       conversationRemoteId: remoteId,
     );
 
-    await conversationRepository.deleteByRemoteId(remoteId);
+    await conversationRepository.deleteByRemoteId(
+      remoteId,
+      batchTransaction: null,
+    );
   }
 
   @override
@@ -344,7 +366,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     PleromaPostStatus pleromaPostStatus;
     var oldMessageExist = oldPendingFailedConversationChatMessage != null;
     if (oldMessageExist) {
-      localStatusId = oldPendingFailedConversationChatMessage!.status.localId;
+      localStatusId = oldPendingFailedConversationChatMessage!.status.localId!;
       dbStatus = oldPendingFailedConversationChatMessage.status
           .toDbStatus()
           .copyWith(id: localStatusId);
@@ -354,10 +376,11 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
 
       await statusRepository.updateByDbIdInDbType(
-        dbId: localStatusId!,
+        dbId: localStatusId,
         dbItem: dbStatus.copyWith(
           pendingState: PendingState.pending,
         ),
+        batchTransaction: null,
       );
     } else {
       var createdAt = DateTime.now();
@@ -376,6 +399,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       dbStatus = postStatusDataStatusStatusAdapter.toDbStatus(
         fakeUniqueRemoteRemoteId: fakeUniqueRemoteRemoteId,
       );
+
       localStatusId = await statusRepository.upsertInDbType(
         dbStatus,
       );
@@ -383,6 +407,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       await statusRepository.addStatusToConversation(
         statusRemoteId: fakeUniqueRemoteRemoteId,
         conversationRemoteId: chat.remoteId,
+        batchTransaction: null,
       );
 
       pleromaPostStatus = postStatusData.toPleromaPostStatus(
@@ -394,30 +419,33 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       var pleromaStatus = await pleromaAuthStatusService.postStatus(
         data: pleromaPostStatus,
       );
-      await statusRepository.updateByDbIdInDbType(
-        dbId:localStatusId,
-        dbItem:dbStatus.copyWith(
-          hiddenLocallyOnDevice: true,
-          pendingState: PendingState.published,
-        ),
-      );
+      await statusRepository.batch((batch) {
+        statusRepository.updateByDbIdInDbType(
+          dbId: localStatusId!,
+          dbItem: dbStatus.copyWith(
+            hiddenLocallyOnDevice: true,
+            pendingState: PendingState.published,
+          ),
+          batchTransaction: batch,
+        );
+        statusRepository.upsertRemoteStatusForConversation(
+          pleromaStatus,
+          conversationRemoteId: chat.remoteId,
+          batchTransaction: batch,
+        );
+      });
 
       onMessageLocallyHiddenStreamController.add(
         pleromaStatus.toConversationChatMessageStatusAdapter(),
       );
-
-      await statusRepository.upsertRemoteStatus(
-        pleromaStatus,
-        listRemoteId: null,
-        conversationRemoteId: chat.remoteId,
-      );
     } catch (e, stackTrace) {
       _logger.warning(() => "postMessage error", e, stackTrace);
       await statusRepository.updateByDbIdInDbType(
-        dbId:localStatusId,
-        dbItem:dbStatus.copyWith(
+        dbId: localStatusId,
+        dbItem: dbStatus.copyWith(
           pendingState: PendingState.fail,
         ),
+        batchTransaction: null,
       );
       rethrow;
     }

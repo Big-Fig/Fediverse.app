@@ -154,6 +154,7 @@ class ScheduledStatusBloc extends DisposableOwner
     if (success) {
       await scheduledStatusRepository.markAsCanceled(
         scheduledStatus: scheduledStatus,
+        batchTransaction: null,
       );
     }
   }
@@ -168,10 +169,10 @@ class ScheduledStatusBloc extends DisposableOwner
       scheduledAt: scheduledAt,
     );
 
-    await scheduledStatusRepository
-        .updateLocalScheduledStatusByRemoteScheduledStatus(
-      oldLocalScheduledStatus: scheduledStatus,
-      newRemoteScheduledStatus: newScheduledStatus,
+    await scheduledStatusRepository.updateAppTypeByRemoteType(
+      appItem: scheduledStatus,
+      remoteItem: newScheduledStatus,
+      batchTransaction: null,
     );
   }
 
@@ -182,10 +183,10 @@ class ScheduledStatusBloc extends DisposableOwner
       scheduledStatusRemoteId: remoteId!,
     );
 
-    await scheduledStatusRepository
-        .updateLocalScheduledStatusByRemoteScheduledStatus(
-      oldLocalScheduledStatus: scheduledStatus,
-      newRemoteScheduledStatus: newScheduledStatus,
+    await scheduledStatusRepository.updateAppTypeByRemoteType(
+      appItem: scheduledStatus,
+      remoteItem: newScheduledStatus,
+      batchTransaction: null,
     );
   }
 
@@ -254,8 +255,7 @@ class ScheduledStatusBloc extends DisposableOwner
       ),
     );
 
-    await scheduledStatusRepository
-        .upsertRemoteScheduledStatus(pleromaScheduledStatus);
+    await scheduledStatusRepository.upsertInRemoteType(pleromaScheduledStatus);
 
     return true;
   }

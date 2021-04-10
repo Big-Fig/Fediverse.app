@@ -38,49 +38,68 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await accountRepository.insertInDbType(dbAccount1);
+    var id = await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
     assert(id > 0, true);
     expectDbAccount(
         await accountRepository.findByDbIdInAppType(id), dbAccount1);
   });
 
   test('updateById', () async {
-    var id = await accountRepository.insertInDbType(dbAccount1);
+    var id = await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
     assert(id > 0, true);
 
     await accountRepository.updateByDbIdInDbType(
       dbId: id,
       dbItem: dbAccount2,
+      batchTransaction: null,
     );
     expectDbAccount(
         await accountRepository.findByDbIdInAppType(id), dbAccount2);
   });
 
   test('updateLocalAccountByRemoteAccount', () async {
-    var id = await accountRepository.insertInDbType(dbAccount1.copyWith(
-      acct: "oldAcct",
-    ));
+    var id = await accountRepository.insertInDbType(
+      dbAccount1.copyWith(
+        acct: "oldAcct",
+      ),
+      mode: null,
+    );
     assert(id > 0, true);
 
-    var oldLocalAccount =
-        DbAccountWrapper(dbAccount: dbAccount1.copyWith(id: id));
+    var oldLocalAccount = DbAccountPopulatedWrapper(
+      dbAccountPopulated: DbAccountPopulated(
+        dbAccount: dbAccount1.copyWith(id: id),
+      ),
+    );
     var newAcct = "newAcct";
-    var newRemoteAccount = DbAccountWrapper(
-      dbAccount: dbAccount1.copyWith(
-        id: id,
-        acct: newAcct,
+    var newRemoteAccount = DbAccountPopulatedWrapper(
+      dbAccountPopulated: DbAccountPopulated(
+        dbAccount: dbAccount1.copyWith(
+          id: id,
+          acct: newAcct,
+        ),
       ),
     ).toPleromaAccount();
     await accountRepository.updateAppTypeByRemoteType(
       appItem: oldLocalAccount,
       remoteItem: newRemoteAccount,
+      batchTransaction: null,
     );
 
     expect((await accountRepository.findByDbIdInAppType(id))!.acct, newAcct);
   });
 
   test('findByRemoteId', () async {
-    var id = await accountRepository.insertInDbType(dbAccount1);
+    var id = await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
     assert(id > 0, true);
 
     expectDbAccount(
@@ -92,10 +111,12 @@ void main() {
   test('upsertRemoteAccount', () async {
     expect(await accountRepository.countAll(), 0);
 
-    await accountRepository.upsertRemoteAccount(
-      DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
-      conversationRemoteId: null,
-      chatRemoteId: null,
+    await accountRepository.upsertInRemoteType(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaAccount(),
     );
 
     expect(await accountRepository.countAll(), 1);
@@ -105,22 +126,27 @@ void main() {
     );
 
     // item with same id updated
-    await accountRepository.upsertRemoteAccount(
-      DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
-      conversationRemoteId: null,
-      chatRemoteId: null,
+    await accountRepository.upsertInRemoteType(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaAccount(),
     );
     expect(await accountRepository.countAll(), 1);
   });
 
   test('upsertRemoteAccounts', () async {
     expect(await accountRepository.countAll(), 0);
-    await accountRepository.upsertRemoteAccounts(
+    await accountRepository.upsertAllInRemoteType(
       [
-        DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaAccount(),
       ],
-      conversationRemoteId: null,
-      chatRemoteId: null,
+      batchTransaction: null,
     );
 
     expect(await accountRepository.countAll(), 1);
@@ -129,13 +155,20 @@ void main() {
       dbAccount1,
     );
 
-    await accountRepository.upsertRemoteAccounts(
+    await accountRepository.upsertAllInRemoteType(
       [
-        DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
-        DbAccountWrapper(dbAccount: dbAccount2).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaAccount(),
       ],
-      conversationRemoteId: null,
-      chatRemoteId: null,
+      batchTransaction: null,
     );
 
     // update item with same id
@@ -159,18 +192,24 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await accountRepository
-        .insertInDbType((await createTestDbAccount(seed: "seed1")).copyWith());
+    await accountRepository.insertInDbType(
+      (await createTestDbAccount(seed: "seed1")).copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 1);
 
-    await accountRepository
-        .insertInDbType((await createTestDbAccount(seed: "seed2")).copyWith());
+    await accountRepository.insertInDbType(
+      (await createTestDbAccount(seed: "seed2")).copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 2);
 
-    await accountRepository
-        .insertInDbType((await createTestDbAccount(seed: "seed3")).copyWith());
+    await accountRepository.insertInDbType(
+      (await createTestDbAccount(seed: "seed3")).copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 3);
   });
@@ -188,25 +227,35 @@ void main() {
 
     await accountRepository.insertInDbType(
       (await createTestDbAccount(seed: "seed1")).copyWith(acct: "qu"),
+      mode: null,
     );
 
     expect((await query.get()).length, 1);
 
     await accountRepository.insertInDbType(
       (await createTestDbAccount(seed: "seed2")).copyWith(acct: "qur"),
+      mode: null,
     );
 
     expect((await query.get()).length, 2);
 
     await accountRepository.insertInDbType(
-        (await createTestDbAccount(seed: "seed3")).copyWith(acct: "q"));
+      (await createTestDbAccount(seed: "seed3")).copyWith(acct: "q"),
+      mode: null,
+    );
 
     expect((await query.get()).length, 2);
   });
 
   test('createQuery onlyInStatusFavouritedBy', () async {
-    await accountRepository.insertInDbType(dbAccount1);
-    await accountRepository.insertInDbType(dbAccount2);
+    await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
+    await accountRepository.insertInDbType(
+      dbAccount2,
+      mode: null,
+    );
 
     var dbStatus =
         await createTestDbStatus(seed: "seedStatus", dbAccount: dbAccount1);
@@ -225,8 +274,13 @@ void main() {
     await accountRepository.updateStatusFavouritedBy(
       statusRemoteId: dbStatus.remoteId,
       favouritedByAccounts: [
-        DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaAccount(),
       ],
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 1);
@@ -234,9 +288,18 @@ void main() {
     await accountRepository.updateStatusFavouritedBy(
       statusRemoteId: dbStatus.remoteId,
       favouritedByAccounts: [
-        DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
-        DbAccountWrapper(dbAccount: dbAccount2).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaAccount(),
       ],
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 2);
@@ -244,15 +307,26 @@ void main() {
     await accountRepository.updateStatusFavouritedBy(
       statusRemoteId: dbStatus.remoteId,
       favouritedByAccounts: [
-        DbAccountWrapper(dbAccount: dbAccount2).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaAccount(),
       ],
+      batchTransaction: null,
     );
     expect((await query.get()).length, 1);
   });
 
   test('createQuery onlyInStatusRebloggedBy', () async {
-    await accountRepository.insertInDbType(dbAccount1);
-    await accountRepository.insertInDbType(dbAccount2);
+    await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
+    await accountRepository.insertInDbType(
+      dbAccount2,
+      mode: null,
+    );
 
     var dbStatus =
         await createTestDbStatus(seed: "seedStatus", dbAccount: dbAccount1);
@@ -271,8 +345,13 @@ void main() {
     await accountRepository.updateStatusRebloggedBy(
       statusRemoteId: dbStatus.remoteId,
       rebloggedByAccounts: [
-        DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaAccount(),
       ],
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 1);
@@ -280,9 +359,18 @@ void main() {
     await accountRepository.updateStatusRebloggedBy(
       statusRemoteId: dbStatus.remoteId,
       rebloggedByAccounts: [
-        DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
-        DbAccountWrapper(dbAccount: dbAccount2).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaAccount(),
       ],
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 2);
@@ -290,19 +378,34 @@ void main() {
     await accountRepository.updateStatusRebloggedBy(
       statusRemoteId: dbStatus.remoteId,
       rebloggedByAccounts: [
-        DbAccountWrapper(dbAccount: dbAccount2).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaAccount(),
       ],
+      batchTransaction: null,
     );
     expect((await query.get()).length, 1);
   });
 
   test('createQuery onlyInAccountFollowers', () async {
-    await accountRepository.insertInDbType(dbAccount1);
-    await accountRepository.insertInDbType(dbAccount2);
+    await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
+    await accountRepository.insertInDbType(
+      dbAccount2,
+      mode: null,
+    );
 
     var query = accountRepository.createQuery(
       filters: AccountRepositoryFilters(
-        onlyInAccountFollowers: DbAccountWrapper(dbAccount: dbAccount1),
+        onlyInAccountFollowers: DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ),
       ),
       pagination: null,
       orderingTermData: null,
@@ -312,27 +415,53 @@ void main() {
 
     await accountRepository.addAccountFollowers(
       accountRemoteId: dbAccount1.remoteId,
-      followers: [DbAccountWrapper(dbAccount: dbAccount2).toPleromaAccount()],
+      followers: [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaAccount()
+      ],
+      batchTransaction: null,
     );
     expect((await query.get()).length, 1);
 
     await accountRepository.addAccountFollowers(
       accountRemoteId: dbAccount1.remoteId,
       followers: [
-        DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
-        DbAccountWrapper(dbAccount: dbAccount2).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaAccount(),
       ],
+      batchTransaction: null,
     );
     expect((await query.get()).length, 2);
   });
 
   test('createQuery onlyInAccountFollowing', () async {
-    await accountRepository.insertInDbType(dbAccount1);
-    await accountRepository.insertInDbType(dbAccount2);
+    await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
+    await accountRepository.insertInDbType(
+      dbAccount2,
+      mode: null,
+    );
 
     var query = accountRepository.createQuery(
       filters: AccountRepositoryFilters(
-        onlyInAccountFollowing: DbAccountWrapper(dbAccount: dbAccount1),
+        onlyInAccountFollowing: DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ),
       ),
       pagination: null,
       orderingTermData: null,
@@ -342,16 +471,32 @@ void main() {
 
     await accountRepository.addAccountFollowings(
       accountRemoteId: dbAccount1.remoteId,
-      followings: [DbAccountWrapper(dbAccount: dbAccount2).toPleromaAccount()],
+      followings: [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaAccount()
+      ],
+      batchTransaction: null,
     );
     expect((await query.get()).length, 1);
 
     await accountRepository.addAccountFollowings(
       accountRemoteId: dbAccount1.remoteId,
       followings: [
-        DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
-        DbAccountWrapper(dbAccount: dbAccount2).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaAccount(),
       ],
+      batchTransaction: null,
     );
     expect((await query.get()).length, 2);
   });
@@ -378,35 +523,49 @@ void main() {
     );
 
     // not associated with conversation
-    await accountRepository.upsertRemoteAccount(
-      DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
-      conversationRemoteId: null,
-      chatRemoteId: null,
+    await accountRepository.upsertInRemoteType(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaAccount(),
     );
     expect((await query.get()).length, 0);
 
     // associated with conversation
-    await accountRepository.upsertRemoteAccount(
-      DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
+    await accountRepository.upsertConversationRemoteAccount(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaAccount(),
       conversationRemoteId: conversationRemoteId,
-      chatRemoteId: null,
+      batchTransaction: null,
     );
     expect((await query.get()).length, 1);
 
     // duplicated
-    await accountRepository.upsertRemoteAccount(
-      DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
+    await accountRepository.upsertConversationRemoteAccount(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaAccount(),
       conversationRemoteId: conversationRemoteId,
-      chatRemoteId: null,
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 1);
 
     // additional account associated with conversation
-    await accountRepository.upsertRemoteAccount(
-      DbAccountWrapper(dbAccount: dbAccount2).toPleromaAccount(),
+    await accountRepository.upsertConversationRemoteAccount(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount2,
+        ),
+      ).toPleromaAccount(),
       conversationRemoteId: conversationRemoteId,
-      chatRemoteId: null,
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 2);
@@ -581,7 +740,7 @@ void main() {
 
     var actualList = (await query.get())
         .toDbAccountList(dao: accountRepository.dao)
-        .toDbAccountWrapperList();
+        .toDbAccountPopulatedWrapperList();
 
     expect(actualList.length, 3);
 
@@ -615,7 +774,7 @@ void main() {
 
     var actualList = (await query.get())
         .toDbAccountList(dao: accountRepository.dao)
-        .toDbAccountWrapperList();
+        .toDbAccountPopulatedWrapperList();
     expect(actualList.length, 3);
 
     expectDbAccount(actualList[0], account3);
@@ -651,7 +810,7 @@ void main() {
 
     var actualList = (await query.get())
         .toDbAccountList(dao: accountRepository.dao)
-        .toDbAccountWrapperList();
+        .toDbAccountPopulatedWrapperList();
     expect(actualList.length, 1);
 
     expectDbAccount(actualList[0], account2);
@@ -662,10 +821,14 @@ void main() {
 
     expect(await accountRepository.countAll(), 0);
 
-    await accountRepository.upsertRemoteAccount(
-      DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
+    await accountRepository.upsertConversationRemoteAccount(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaAccount(),
       conversationRemoteId: conversationRemoteId,
-      chatRemoteId: null,
+      batchTransaction: null,
     );
 
     var conversation = await createTestConversation(
@@ -675,24 +838,26 @@ void main() {
 
     expect(await accountRepository.countAll(), 1);
     expect(
-      (await accountRepository.getAccounts(
+      (await accountRepository.findAllInAppType(
         pagination: null,
         filters: null,
+        orderingTerms: null,
       ))
           .length,
       1,
     );
     expect(
-      (await accountRepository.conversationAccountsDao.getAll().get()).length,
+      (await accountRepository.conversationAccountsDao.getAll()).length,
       1,
     );
 
     expect(
-      (await accountRepository.getAccounts(
+      (await accountRepository.findAllInAppType(
         filters: AccountRepositoryFilters.createForOnlyInConversation(
           conversation: conversation,
         ),
         pagination: null,
+        orderingTerms: null,
       ))
           .length,
       1,
@@ -703,18 +868,18 @@ void main() {
     ));
     expect(accounts.length, 1);
 
-    await accountRepository.upsertRemoteAccount(
-      DbAccountWrapper(dbAccount: dbAccount1).toPleromaAccount(),
+    await accountRepository.upsertConversationRemoteAccount(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaAccount(),
       conversationRemoteId: conversationRemoteId,
-      chatRemoteId: null,
+      batchTransaction: null,
     );
     expect(await accountRepository.countAll(), 1);
     expect(
-      (await accountRepository.getAccounts(
-        pagination: null,
-        filters: null,
-      ))
-          .length,
+      (await accountRepository.getAllInAppType()).length,
       1,
     );
     expect(

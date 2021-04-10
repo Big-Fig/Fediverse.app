@@ -34,7 +34,7 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    filters = await filterRepository.getFilters(
+    filters = await filterRepository.findAllInAppType(
       filters: FilterRepositoryFilters(
         onlyWithContextTypes: [
           MastodonFilterContextType.notifications,
@@ -42,11 +42,12 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
         notExpired: true,
       ),
       pagination: null,
+      orderingTerms: null,
     );
 
     if (!isDisposed) {
       notificationRepository
-          .watchCount(
+          .watchFindCount(
             filters: NotificationRepositoryFilters(
               onlyUnread: true,
               excludeTypes: excludeTypes,

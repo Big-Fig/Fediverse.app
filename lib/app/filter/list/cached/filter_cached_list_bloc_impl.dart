@@ -27,7 +27,7 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
     required IFilter? newerThan,
     required IFilter? olderThan,
   }) {
-    return filterRepository.getFilters(
+    return filterRepository.findAllInAppType(
       pagination: RepositoryPagination(
         olderThanItem: olderThan,
         newerThanItem: newerThan,
@@ -36,7 +36,9 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
       filters: FilterRepositoryFilters(
         notExpired: false,
       ),
-      orderingTermData: FilterOrderingTermData.remoteIdDesc,
+      orderingTerms: [
+        FilterOrderingTermData.remoteIdDesc,
+      ],
     );
   }
 
@@ -55,7 +57,10 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
       ),
     );
 
-    await filterRepository.upsertRemoteFilters(remoteFilters);
+    await filterRepository.upsertAllInRemoteType(
+      remoteFilters,
+      batchTransaction: null,
+    );
   }
 
   static FilterCachedListBloc createFromContext(BuildContext context) =>

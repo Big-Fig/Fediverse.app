@@ -10,9 +10,9 @@ import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:moor/moor.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
-
 
 var _logger = Logger("notification_bloc_impl.dart");
 
@@ -168,13 +168,19 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       notificationRemoteId: remoteId,
     );
 
-    await _updateByRemoteNotification(remoteNotification);
+    await _updateByRemoteNotification(
+      remoteNotification,
+      batchTransaction: null,
+    );
   }
 
-  Future _updateByRemoteNotification(IPleromaNotification remoteNotification) {
-    return notificationRepository.updateLocalNotificationByRemoteNotification(
-      oldLocalNotification: notification,
-      newRemoteNotification: remoteNotification,
+  Future _updateByRemoteNotification(
+    IPleromaNotification remoteNotification, {
+    required Batch? batchTransaction,
+  }) {
+    return notificationRepository.updateAppTypeByRemoteType(
+      appItem: notification,
+      remoteItem: remoteNotification,
       unread: notification.unread,
     );
   }
@@ -203,12 +209,16 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       notificationRemoteId: notification.remoteId,
     );
 
-    await notificationRepository.dismiss(notification: notification);
+    await notificationRepository.dismiss(
+      notification: notification,
+    );
   }
 
   @override
   Future markAsRead() async {
-    await notificationRepository.markAsRead(notification: notification);
+    await notificationRepository.markAsRead(
+      notification: notification,
+    );
     if (pleromaNotificationService.isPleroma) {
       unawaited(
         pleromaNotificationService.markAsReadSingle(

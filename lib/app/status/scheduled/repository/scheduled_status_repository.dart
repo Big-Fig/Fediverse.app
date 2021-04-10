@@ -4,8 +4,8 @@ import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/repository/repository.dart';
-import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 
 abstract class IScheduledStatusRepository
@@ -26,47 +26,48 @@ abstract class IScheduledStatusRepository
         context,
         listen: listen,
       );
+  //
+  // Future upsertRemoteScheduledStatuses(
+  //   List<IPleromaScheduledStatus> remoteScheduledStatuses,
+  // );
+  //
+  // Future upsertRemoteScheduledStatus(
+  //   IPleromaScheduledStatus remoteScheduledStatus,
+  // );
 
-  Future upsertRemoteScheduledStatuses(
-    List<IPleromaScheduledStatus> remoteScheduledStatuses,
-  );
-
-  Future upsertRemoteScheduledStatus(
-    IPleromaScheduledStatus remoteScheduledStatus,
-  );
-
-  Future updateLocalScheduledStatusByRemoteScheduledStatus({
-    required IScheduledStatus oldLocalScheduledStatus,
-    required IPleromaScheduledStatus newRemoteScheduledStatus,
-  });
+  // Future updateLocalScheduledStatusByRemoteScheduledStatus({
+  //   required IScheduledStatus oldLocalScheduledStatus,
+  //   required IPleromaScheduledStatus newRemoteScheduledStatus,
+  // });
 
   Future markAsCanceled({
     required IScheduledStatus scheduledStatus,
+    required Batch? batchTransaction,
   });
-
-  Future<List<IScheduledStatus>> getScheduledStatuses({
-    required ScheduledStatusRepositoryFilters? filters,
-    required RepositoryPagination<IScheduledStatus>? pagination,
-    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
-        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
-  });
-
-  Stream<List<IScheduledStatus>> watchScheduledStatuses({
-    required ScheduledStatusRepositoryFilters? filters,
-    required RepositoryPagination<IScheduledStatus>? pagination,
-    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
-        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
-  });
-
-  Future<IScheduledStatus?> getScheduledStatus({
-    required ScheduledStatusRepositoryFilters? filters,
-    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
-        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
-  });
-
-  Stream<IScheduledStatus?> watchScheduledStatus({
-    required ScheduledStatusRepositoryFilters? filters,
-    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
-        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
-  });
+  //
+  // Future<List<IScheduledStatus>> getScheduledStatuses({
+  //   required ScheduledStatusRepositoryFilters? filters,
+  //   required RepositoryPagination<IScheduledStatus>? pagination,
+  //   ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+  //       ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+  // });
+  //
+  // Stream<List<IScheduledStatus>> watchScheduledStatuses({
+  //   required ScheduledStatusRepositoryFilters? filters,
+  //   required RepositoryPagination<IScheduledStatus>? pagination,
+  //   ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+  //       ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+  // });
+  //
+  // Future<IScheduledStatus?> getScheduledStatus({
+  //   required ScheduledStatusRepositoryFilters? filters,
+  //   ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+  //       ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+  // });
+  //
+  // Stream<IScheduledStatus?> watchScheduledStatus({
+  //   required ScheduledStatusRepositoryFilters? filters,
+  //   ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+  //       ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+  // });
 }

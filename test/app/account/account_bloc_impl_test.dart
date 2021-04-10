@@ -53,10 +53,8 @@ void main() {
 
     pleromaWebSocketsService = MockPleromaWebSocketsService();
 
-    await accountRepository.upsertRemoteAccount(
+    await accountRepository.upsertInRemoteType(
       account.toPleromaAccount(),
-      conversationRemoteId: null,
-      chatRemoteId: null,
     );
     account = (await accountRepository.findByRemoteIdInAppType(
       account.remoteId,
@@ -80,10 +78,8 @@ void main() {
   });
 
   Future _update(IAccount account) async {
-    await accountRepository.upsertRemoteAccount(
+    await accountRepository.upsertInRemoteType(
       account.toPleromaAccount(),
-      conversationRemoteId: null,
-      chatRemoteId: null,
     );
     // hack to execute notify callbacks
     await Future.delayed(

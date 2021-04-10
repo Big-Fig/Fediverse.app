@@ -22,4 +22,34 @@ class HomeTimelineStatusesDao extends AppDatabaseDao<
 
   @override
   $DbHomeTimelineStatusesTable get table => dbHomeTimelineStatuses;
+
+
+  Future<int> deleteByAccountRemoteId(String accountRemoteId) => customUpdate(
+    'DELETE FROM $tableName '
+        'WHERE ${_createAccountRemoteIdEqualExpression(accountRemoteId)}',
+    updates: {table},
+    updateKind: UpdateKind.delete,
+  );
+
+  Future deleteByAccountRemoteIdBatch(
+      String accountRemoteId, {
+        required Batch? batchTransaction,
+      }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+            (tbl) => _createAccountRemoteIdEqualExpression(accountRemoteId),
+      );
+    } else {
+      return await deleteByAccountRemoteId(accountRemoteId);
+    }
+  }
+
+  CustomExpression<bool> _createAccountRemoteIdEqualExpression(
+      String accountRemoteId) {
+    return createMainTableEqualWhereExpression(
+      fieldName: table.accountRemoteId.$name,
+      value: accountRemoteId,
+    );
+  }
 }

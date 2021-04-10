@@ -19,4 +19,40 @@ class StatusListsDao extends AppDatabaseDao<DbStatusList, int,
 
   @override
   $DbStatusListsTable get table => dbStatusLists;
+
+  Selectable<DbStatusList> findByListRemoteId(String listRemoteId) {
+    return customSelect(
+        'SELECT * FROM $tableName WHERE list_remote_id = :listRemoteId;',
+        variables: [Variable<String>(listRemoteId)],
+        readsFrom: {dbStatusLists}).map(dbStatusLists.mapFromRow);
+  }
+
+  Future<int> deleteByListRemoteId(String listRemoteId) => customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${_createListRemoteIdEqualExpression(listRemoteId)}',
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+
+  Future deleteByListRemoteIdBatch(
+    String listRemoteId, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => _createListRemoteIdEqualExpression(listRemoteId),
+      );
+    } else {
+      return await deleteByListRemoteId(listRemoteId);
+    }
+  }
+
+  CustomExpression<bool> _createListRemoteIdEqualExpression(
+      String listRemoteId) {
+    return createMainTableEqualWhereExpression(
+      fieldName: table.listRemoteId.$name,
+      value: listRemoteId,
+    );
+  }
 }

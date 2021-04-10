@@ -50,8 +50,9 @@ class ConversationChatWithLastMessageCachedListBloc
       ),
     );
 
-    await conversationRepository.upsertRemoteConversations(
+    await conversationRepository.upsertAllInRemoteType(
       remoteConversations,
+      batchTransaction: null,
     );
   }
 
@@ -73,7 +74,8 @@ class ConversationChatWithLastMessageCachedListBloc
         newerThanItem: newerThan?.chat,
         limit: limit,
       ),
-      orderingTermData: ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+      orderingTermData:
+          ConversationRepositoryChatOrderingTermData.updatedAtDesc,
     );
 
     _logger.finer(() => "finish loadLocalItems chats ${chats.length}");
@@ -89,6 +91,7 @@ class ConversationChatWithLastMessageCachedListBloc
         pagination: RepositoryPagination<IConversationChat>(
           newerThanItem: item?.chat,
         ),
-        orderingTermData: ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+        orderingTermData:
+            ConversationRepositoryChatOrderingTermData.updatedAtDesc,
       );
 }

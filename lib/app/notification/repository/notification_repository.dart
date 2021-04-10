@@ -5,8 +5,8 @@ import 'package:fedi/app/notification/repository/notification_repository_model.d
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/repository/repository.dart';
-import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 
 abstract class INotificationRepository
@@ -29,55 +29,29 @@ abstract class INotificationRepository
         listen: listen,
       );
 
-  Future upsertRemoteNotifications(
-    List<IPleromaNotification> remoteNotifications, {
-    required bool? unread,
-  });
+  // Future upsertRemoteNotifications(
+  //   List<IPleromaNotification> remoteNotifications, {
+  //   required bool? unread,
+  // });
+  //
+  // Future updateLocalNotificationByRemoteNotification({
+  //   required INotification oldLocalNotification,
+  //   required IPleromaNotification newRemoteNotification,
+  //   required bool? unread,
+  // });
 
-  Future updateLocalNotificationByRemoteNotification({
-    required INotification oldLocalNotification,
-    required IPleromaNotification newRemoteNotification,
-    required bool? unread,
-  });
+  // Future upsertRemoteNotification(
+  //   IPleromaNotification remoteNotification, {
+  //   required bool? unread,
+  // });
 
-  Future upsertRemoteNotification(
-    IPleromaNotification remoteNotification, {
-    required bool? unread,
-  });
-
-  Future<int> getCount({
-    required NotificationRepositoryFilters? filters,
-  });
-
-  Stream<int> watchCount({
-    required NotificationRepositoryFilters? filters,
-  });
-
-  Future<List<DbNotificationPopulatedWrapper>> getNotifications({
-    required NotificationRepositoryFilters? filters,
-    required RepositoryPagination<INotification>? pagination,
-    NotificationRepositoryOrderingTermData? orderingTermData =
-        NotificationRepositoryOrderingTermData.createdAtDesc,
-  });
-
-  Stream<List<DbNotificationPopulatedWrapper>> watchNotifications({
-    required NotificationRepositoryFilters? filters,
-    required RepositoryPagination<INotification>? pagination,
-    NotificationRepositoryOrderingTermData? orderingTermData =
-        NotificationRepositoryOrderingTermData.createdAtDesc,
-  });
-
-  Future<DbNotificationPopulatedWrapper?> getNotification({
-    required NotificationRepositoryFilters? filters,
-    NotificationRepositoryOrderingTermData? orderingTermData =
-        NotificationRepositoryOrderingTermData.createdAtDesc,
-  });
-
-  Stream<DbNotificationPopulatedWrapper?> watchNotification({
-    required NotificationRepositoryFilters? filters,
-    NotificationRepositoryOrderingTermData? orderingTermData =
-        NotificationRepositoryOrderingTermData.createdAtDesc,
-  });
+  // Future<int> getCount({
+  //   required NotificationRepositoryFilters? filters,
+  // });
+  //
+  // Stream<int> watchCount({
+  //   required NotificationRepositoryFilters? filters,
+  // });
 
   Future markAsRead({
     required INotification notification,
@@ -89,11 +63,24 @@ abstract class INotificationRepository
 
   Future dismissFollowRequestNotificationsFromAccount({
     required IAccount account,
+    required Batch? batchTransaction,
   });
 
   Future dismissAll();
 
   Future markAllAsRead();
 
-  Future<DbNotificationPopulatedWrapper?> getNewest();
+  Future<INotification?> getNewest();
+
+  Future upsertRemoteNotification(
+    PleromaNotification pleromaNotification, {
+    required bool unread,
+    required Batch? batchTransaction,
+  });
+
+  Future upsertRemoteNotifications(
+    List<PleromaNotification> pleromaNotifications, {
+    required bool unread,
+    required Batch? batchTransaction,
+  });
 }

@@ -22,4 +22,34 @@ class StatusHashtagsDao extends AppDatabaseDao<
 
   @override
   $DbStatusHashtagsTable get table => dbStatusHashtags;
+
+
+  Future<int> deleteByStatusRemoteId(String statusRemoteId) => customUpdate(
+    'DELETE FROM $tableName '
+        'WHERE ${_createStatusRemoteIdEqualExpression(statusRemoteId)}',
+    updates: {table},
+    updateKind: UpdateKind.delete,
+  );
+
+  Future deleteByStatusRemoteIdBatch(
+      String statusRemoteId, {
+        required Batch? batchTransaction,
+      }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+            (tbl) => _createStatusRemoteIdEqualExpression(statusRemoteId),
+      );
+    } else {
+      return await deleteByStatusRemoteId(statusRemoteId);
+    }
+  }
+
+  CustomExpression<bool> _createStatusRemoteIdEqualExpression(
+      String statusRemoteId) {
+    return createMainTableEqualWhereExpression(
+      fieldName: table.statusRemoteId.$name,
+      value: statusRemoteId,
+    );
+  }
 }

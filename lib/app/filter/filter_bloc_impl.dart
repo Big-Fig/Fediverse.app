@@ -6,6 +6,7 @@ import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("filter_bloc_impl.dart");
@@ -90,13 +91,20 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
     var remoteFilter =
         await pleromaFilterService.getFilter(filterRemoteId: remoteId);
 
-    return _updateByRemoteFilter(remoteFilter);
+    return _updateByRemoteFilter(
+      remoteFilter,
+      batchTransaction: null,
+    );
   }
 
-  Future _updateByRemoteFilter(IPleromaFilter remoteFilter) {
-    return filterRepository.updateLocalFilterByRemoteFilter(
-      oldLocalFilter: filter,
-      newRemoteFilter: remoteFilter,
+  Future _updateByRemoteFilter(
+    IPleromaFilter remoteFilter, {
+    required Batch? batchTransaction,
+  }) {
+    return filterRepository.updateAppTypeByRemoteType(
+      appItem: filter,
+      remoteItem: remoteFilter,
+      batchTransaction: batchTransaction,
     );
   }
 

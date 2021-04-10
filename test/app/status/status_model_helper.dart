@@ -9,12 +9,12 @@ Future<DbStatusPopulatedWrapper> createTestStatus({
   required String seed,
   String? remoteId,
   DateTime? createdAt,
-  DbAccountWrapper? account,
+  DbAccountPopulatedWrapper? account,
   DbStatusPopulatedWrapper? reblog,
   DbStatusPopulatedWrapper? reply,
 }) async {
   account = account ?? await createTestAccount(seed: seed);
-  var dbAccount = account.dbAccount;
+  var dbAccount = account.toDbAccount();
   return DbStatusPopulatedWrapper(
     dbStatusPopulated: DbStatusPopulated(
       dbStatus: await createTestDbStatus(

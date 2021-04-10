@@ -57,17 +57,18 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
       ),
     );
 
-      await accountRepository.upsertRemoteAccounts(
+    await accountRepository.batch((batch) {
+      accountRepository.upsertAllInRemoteType(
         remoteAccounts,
-        conversationRemoteId: null,
-        chatRemoteId: null,
+        batchTransaction: batch,
       );
 
-      await accountRepository.addAccountFollowings(
+      accountRepository.addAccountFollowings(
         accountRemoteId: account.remoteId,
         followings: remoteAccounts.toPleromaAccounts(),
+        batchTransaction: batch,
       );
-
+    });
   }
 
   @override
@@ -80,13 +81,13 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
         "\t newerThanAccount=$newerThan"
         "\t olderThanAccount=$olderThan");
 
-    var accounts = await accountRepository.getAccounts(
+    var accounts = await accountRepository.findAllInAppType(
       pagination: RepositoryPagination<IAccount>(
         olderThanItem: olderThan,
         newerThanItem: newerThan,
         limit: limit,
       ),
-      orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+      orderingTerms: [AccountRepositoryOrderingTermData.remoteIdDesc],
       filters: _accountRepositoryFilters,
     );
 

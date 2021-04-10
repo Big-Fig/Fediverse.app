@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
@@ -98,10 +99,8 @@ Future<void> main() async {
   });
 
   Future _update(IStatus status) async {
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertInRemoteType(
       status.toPleromaStatus(),
-      conversationRemoteId: null,
-      listRemoteId: null,
     );
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -1407,10 +1406,8 @@ Future<void> main() async {
       status,
     );
 
-    var id = await statusRepository.upsertRemoteStatus(
+    var id = await statusRepository.upsertInRemoteType(
       status.toPleromaStatus(),
-      listRemoteId: null,
-      conversationRemoteId: null,
     );
     status = status.copyWith(id: id);
 
@@ -1488,10 +1485,8 @@ Future<void> main() async {
   test('inReplyToAccount', () async {
     var account1 = await createTestAccount(seed: "inReplyToAccount");
 
-    await accountRepository.upsertRemoteAccount(
+    await accountRepository.upsertInRemoteType(
       account1.toPleromaAccount(),
-      conversationRemoteId: null,
-      chatRemoteId: null,
     );
 
     expectAccount(
@@ -1518,10 +1513,8 @@ Future<void> main() async {
   });
 
   test('requestToggleReblog', () async {
-    var id = await statusRepository.upsertRemoteStatus(
+    var id = await statusRepository.upsertInRemoteType(
       status.toPleromaStatus(),
-      listRemoteId: null,
-      conversationRemoteId: null,
     );
     status = status.copyWith(id: id);
 
@@ -1586,10 +1579,8 @@ Future<void> main() async {
   });
 
   test('requestToggleFavourite', () async {
-    var id = await statusRepository.upsertRemoteStatus(
+    var id = await statusRepository.upsertInRemoteType(
       status.toPleromaStatus(),
-      listRemoteId: null,
-      conversationRemoteId: null,
     );
     status = status.copyWith(id: id);
 
@@ -1651,10 +1642,8 @@ Future<void> main() async {
   });
 
   test('requestToggleMute', () async {
-    var id = await statusRepository.upsertRemoteStatus(
+    var id = await statusRepository.upsertInRemoteType(
       status.toPleromaStatus(),
-      listRemoteId: null,
-      conversationRemoteId: null,
     );
     status = status.copyWith(id: id);
 
@@ -1720,10 +1709,8 @@ Future<void> main() async {
   });
 
   test('requestToggleBookmark', () async {
-    var id = await statusRepository.upsertRemoteStatus(
+    var id = await statusRepository.upsertInRemoteType(
       status.toPleromaStatus(),
-      listRemoteId: null,
-      conversationRemoteId: null,
     );
     status = status.copyWith(id: id);
 
@@ -1788,10 +1775,8 @@ Future<void> main() async {
   });
 
   test('requestTogglePin', () async {
-    var id = await statusRepository.upsertRemoteStatus(
+    var id = await statusRepository.upsertInRemoteType(
       status.toPleromaStatus(),
-      listRemoteId: null,
-      conversationRemoteId: null,
     );
     status = status.copyWith(id: id);
 

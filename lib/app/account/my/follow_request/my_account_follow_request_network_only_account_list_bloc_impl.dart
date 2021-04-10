@@ -55,17 +55,18 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
         )
         .toPleromaAccount();
 
-    await notificationRepository.dismissFollowRequestNotificationsFromAccount(
-      account: account,
-    );
+    await notificationRepository.batch((batch) {
+      notificationRepository.dismissFollowRequestNotificationsFromAccount(
+        account: account,
+        batchTransaction: batch,
+      );
+      accountRepository.upsertInRemoteTypeBatch(
+        pleromaAccount,
+        batchTransaction: batch,
+      );
+    });
 
     await myAccountBloc.decreaseFollowingRequestCount();
-
-    await accountRepository.upsertRemoteAccount(
-      pleromaAccount,
-      conversationRemoteId: null,
-      chatRemoteId: null,
-    );
   }
 
   @override
@@ -97,10 +98,9 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
       ),
     );
 
-    await accountRepository.upsertRemoteAccounts(
+    await accountRepository.upsertAllInRemoteType(
       remoteAccounts,
-      conversationRemoteId: null,
-      chatRemoteId: null,
+      batchTransaction: null,
     );
     return remoteAccounts
         .map(

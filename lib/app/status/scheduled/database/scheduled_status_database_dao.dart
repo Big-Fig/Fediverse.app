@@ -28,7 +28,7 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
     String remoteId,
     Insertable<DbScheduledStatus> entity,
   ) async {
-    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
+    var localId = await findLocalIdByRemoteId(remoteId);
 
     if (localId != null && localId >= 0) {
       await (update(dbScheduledStatuses)..where((i) => i.id.equals(localId)))

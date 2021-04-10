@@ -20,4 +20,103 @@ class AccountFollowersDao extends AppDatabaseDao<
 
   @override
   $DbAccountFollowersTable get table => dbAccountFollowers;
+
+  Selectable<DbAccountFollower> findByAccountRemoteId(String accountRemoteId) {
+    return customSelect(
+        'SELECT * FROM $tableName WHERE account_remote_id = :accountRemoteId;',
+        variables: [Variable<String>(accountRemoteId)],
+        readsFrom: {dbAccountFollowers}).map(dbAccountFollowers.mapFromRow);
+  }
+
+  Future<int> deleteByAccountRemoteIdAndFollowerAccountRemoteId({
+    required String followerAccountRemoteId,
+    required String accountRemoteId,
+  }) =>
+      customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${_createAccountRemoteIdEqualExpression(accountRemoteId)} '
+        'AND ${_createFollowerAccountRemoteIdEqualExpression(accountRemoteId)}',
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+
+  Future deleteByAccountRemoteIdAndFollowerAccountRemoteIdBatch({
+    required String followerAccountRemoteId,
+    required String accountRemoteId,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+          table,
+          (tbl) =>
+              _createAccountRemoteIdEqualExpression(accountRemoteId) &
+              _createFollowerAccountRemoteIdEqualExpression(
+                  followerAccountRemoteId));
+    } else {
+      return await deleteByAccountRemoteIdAndFollowerAccountRemoteId(
+        accountRemoteId: accountRemoteId,
+        followerAccountRemoteId: followerAccountRemoteId,
+      );
+    }
+  }
+
+  Future<int> deleteByAccountRemoteId(String accountRemoteId) => customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${_createAccountRemoteIdEqualExpression(accountRemoteId)}',
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+
+  Future deleteByAccountRemoteIdBatch(
+    String accountRemoteId, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => _createAccountRemoteIdEqualExpression(accountRemoteId),
+      );
+    } else {
+      return await deleteByAccountRemoteId(accountRemoteId);
+    }
+  }
+
+  CustomExpression<bool> _createAccountRemoteIdEqualExpression(
+      String accountRemoteId) {
+    return createMainTableEqualWhereExpression(
+      fieldName: table.accountRemoteId.$name,
+      value: accountRemoteId,
+    );
+  }
+
+  Future<int> deleteByFollowerAccountRemoteId(String followerAccountRemoteId) =>
+      customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${_createFollowerAccountRemoteIdEqualExpression(followerAccountRemoteId)}',
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+
+  Future deleteByFollowerAccountRemoteIdBatch(
+    String followerAccountRemoteId, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => _createFollowerAccountRemoteIdEqualExpression(
+            followerAccountRemoteId),
+      );
+    } else {
+      return await deleteByFollowerAccountRemoteId(followerAccountRemoteId);
+    }
+  }
+
+  CustomExpression<bool> _createFollowerAccountRemoteIdEqualExpression(
+      String followerAccountRemoteId) {
+    return createMainTableEqualWhereExpression(
+      fieldName: table.followerAccountRemoteId.$name,
+      value: followerAccountRemoteId,
+    );
+  }
 }

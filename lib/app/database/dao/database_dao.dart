@@ -140,11 +140,11 @@ abstract class DatabaseDao<
         readsFrom: {table},
       ).map(table.mapFromRow);
 
-  Future<DbItem> getNewestOrderById({required int? offset}) =>
-      getNewestOrderByIdSelectable(offset: offset).getSingle();
+  Future<DbItem?> getNewestOrderById({required int? offset}) =>
+      getNewestOrderByIdSelectable(offset: offset).getSingleOrNull();
 
-  Stream<DbItem> watchGetNewestOrderById({required int? offset}) =>
-      getNewestOrderByIdSelectable(offset: offset).watchSingle();
+  Stream<DbItem?> watchGetNewestOrderById({required int? offset}) =>
+      getNewestOrderByIdSelectable(offset: offset).watchSingleOrNull();
 
   Selectable<DbItem> getNewestOrderByIdSelectable({required int? offset}) =>
       customSelect(
@@ -156,11 +156,11 @@ abstract class DatabaseDao<
         readsFrom: {table},
       ).map(table.mapFromRow);
 
-  Future<DbItem> getOldestOrderById({required int? offset}) =>
-      getOldestOrderByIdSelectable(offset: offset).getSingle();
+  Future<DbItem?> getOldestOrderById({required int? offset}) =>
+      getOldestOrderByIdSelectable(offset: offset).getSingleOrNull();
 
-  Stream<DbItem> watchGetOldestOrderById({required int? offset}) =>
-      getOldestOrderByIdSelectable(offset: offset).watchSingle();
+  Stream<DbItem?> watchGetOldestOrderById({required int? offset}) =>
+      getOldestOrderByIdSelectable(offset: offset).watchSingleOrNull();
 
   Selectable<DbItem> getOldestOrderByIdSelectable({required int? offset}) =>
       customSelect(
@@ -175,9 +175,9 @@ abstract class DatabaseDao<
   String _createOffsetContent(int? offset) =>
       (offset != null ? " OFFSET :offset" : "");
 
-  Future<DbItem> findById(DbId id) => findByIdSelectable(id).getSingle();
+  Future<DbItem?> findById(DbId id) => findByIdSelectable(id).getSingleOrNull();
 
-  Stream<DbItem> watchFindById(DbId id) => findByIdSelectable(id).watchSingle();
+  Stream<DbItem?> watchFindById(DbId id) => findByIdSelectable(id).watchSingleOrNull();
 
   Selectable<DbItem> findByIdSelectable(DbId id) => customSelect(
         'SELECT * FROM $tableName '
@@ -208,7 +208,6 @@ abstract class DatabaseDao<
   Future<int> deleteById(DbId id) => customUpdate(
         'DELETE FROM $tableName '
         'WHERE ${createFindByDbIdWhereExpressionContent(id)}',
-        variables: [Variable(id)],
         updates: {table},
         updateKind: UpdateKind.delete,
       );

@@ -20,4 +20,84 @@ class ConversationStatusesDao extends AppDatabaseDao<
 
   @override
   $DbConversationStatusesTable get table => dbConversationStatuses;
+
+  Selectable<DbConversationStatus> findByConversationRemoteId(
+      String conversationRemoteId) {
+    return customSelect(
+        'SELECT * FROM $tableName WHERE conversation_remote_id = :conversationRemoteId;',
+        variables: [
+          Variable<String>(conversationRemoteId)
+        ],
+        readsFrom: {
+          dbConversationStatuses
+        }).map(dbConversationStatuses.mapFromRow);
+  }
+
+  Future<int> deleteByConversationRemoteId(String conversationRemoteId) =>
+      customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${_createConversationRemoteIdEqualExpression(conversationRemoteId)}',
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+
+  Future deleteByConversationRemoteIdBatch(
+    String conversationRemoteId, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) =>
+            _createConversationRemoteIdEqualExpression(conversationRemoteId),
+      );
+    } else {
+      return await deleteByConversationRemoteId(conversationRemoteId);
+    }
+  }
+
+  CustomExpression<bool> _createConversationRemoteIdEqualExpression(
+      String conversationRemoteId) {
+    return createMainTableEqualWhereExpression(
+      fieldName: table.conversationRemoteId.$name,
+      value: conversationRemoteId,
+    );
+  }
+
+  CustomExpression<bool> _createStatusRemoteIdEqualExpression(
+      String statusRemoteId) {
+    return createMainTableEqualWhereExpression(
+      fieldName: table.statusRemoteId.$name,
+      value: statusRemoteId,
+    );
+  }
+
+  Future<int> deleteByConversationRemoteIdAndStatusRemoteId({
+    required String conversationRemoteId,
+    required String statusRemoteId,
+  }) =>
+      customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${_createConversationRemoteIdEqualExpression(conversationRemoteId)}'
+        'AND ${_createStatusRemoteIdEqualExpression(statusRemoteId)}',
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+
+  Future deleteByConversationRemoteIdAndStatusRemoteIdBatch({
+    required String conversationRemoteId,
+    required String statusRemoteId,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) =>
+            _createConversationRemoteIdEqualExpression(conversationRemoteId) &
+            _createStatusRemoteIdEqualExpression(statusRemoteId),
+      );
+    } else {
+      return await deleteByConversationRemoteId(conversationRemoteId);
+    }
+  }
 }
