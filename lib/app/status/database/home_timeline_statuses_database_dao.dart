@@ -9,17 +9,6 @@ part 'home_timeline_statuses_database_dao.g.dart';
   tables: [
     DbHomeTimelineStatuses,
   ],
-  queries: {
-    "countAll": "SELECT Count(*) FROM db_home_timeline_statuses;",
-    "findById": "SELECT * FROM db_home_timeline_statuses WHERE id = :id;",
-    "countById":
-        "SELECT COUNT(*) FROM db_home_timeline_statuses WHERE id = :id;",
-    "deleteById": "DELETE FROM db_home_timeline_statuses WHERE id = :id;",
-    "deleteByAccountRemoteId": "DELETE FROM db_home_timeline_statuses WHERE "
-        "account_remote_id = :accountRemoteId;",
-    "clear": "DELETE FROM db_home_timeline_statuses",
-    "getAll": "SELECT * FROM db_home_timeline_statuses",
-  },
 )
 class HomeTimelineStatusesDao extends AppDatabaseDao<
     DbHomeTimelineStatus,

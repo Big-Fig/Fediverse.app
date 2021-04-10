@@ -9,23 +9,6 @@ part 'conversation_chat_accounts_database_dao.g.dart';
   tables: [
     DbConversationAccounts,
   ],
-  queries: {
-    "countAll": "SELECT Count(*) FROM db_conversation_accounts;",
-    "findById": "SELECT * FROM db_conversation_accounts WHERE id = :id;",
-    "findByConversationRemoteId":
-        "SELECT * FROM db_conversation_accounts WHERE conversation_remote_id = :conversationRemoteId;",
-    "findByConversationRemoteIdAndAccountRemoteId":
-        "SELECT * FROM db_conversation_accounts WHERE conversation_remote_id = "
-            ":conversationRemoteId AND account_remote_id = :accountRemoteId;",
-    "countById":
-        "SELECT COUNT(*) FROM db_conversation_accounts WHERE id = :id;",
-    "deleteById": "DELETE FROM db_conversation_accounts WHERE id = :id;",
-    "deleteByConversationRemoteId":
-        "DELETE FROM db_conversation_accounts WHERE "
-            "conversation_remote_id = :conversationRemoteId;",
-    "clear": "DELETE FROM db_conversation_accounts",
-    "getAll": "SELECT * FROM db_conversation_accounts",
-  },
 )
 class ConversationAccountsDao extends AppDatabaseDao<
     DbConversationAccount,

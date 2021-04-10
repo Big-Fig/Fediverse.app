@@ -18,7 +18,6 @@ abstract class SimpleAppRemoteDatabaseDaoRepository<
     with
         SimpleDatabaseDaoRepositoryMixin<DbItem, AppItem, DbId, TableDsl,
             TableInfoDsl, Filters, OrderingTerm> {
-  DbItem mapRemoteItemToDbItem(RemoteItem remoteItem);
 
   RemoteItem mapDbItemToRemoteItem(DbItem dbItem);
 

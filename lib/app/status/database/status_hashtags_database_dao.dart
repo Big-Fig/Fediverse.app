@@ -9,16 +9,6 @@ part 'status_hashtags_database_dao.g.dart';
   tables: [
     DbStatusHashtags,
   ],
-  queries: {
-    "countAll": "SELECT Count(*) FROM db_status_hashtags;",
-    "findById": "SELECT * FROM db_status_hashtags WHERE id = :id;",
-    "countById": "SELECT COUNT(*) FROM db_status_hashtags WHERE id = :id;",
-    "deleteById": "DELETE FROM db_status_hashtags WHERE id = :id;",
-    "deleteByStatusRemoteId": "DELETE FROM db_status_hashtags WHERE "
-        "status_remote_id = :statusRemoteId;",
-    "clear": "DELETE FROM db_status_hashtags",
-    "getAll": "SELECT * FROM db_status_hashtags",
-  },
 )
 class StatusHashtagsDao extends AppDatabaseDao<
     DbStatusHashtag,

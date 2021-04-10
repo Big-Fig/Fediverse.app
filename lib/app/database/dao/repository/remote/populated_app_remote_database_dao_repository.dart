@@ -38,22 +38,4 @@ abstract class PopulatedAppRemoteDatabaseDaoRepository<
       return null;
     }
   }
-
-  @override
-  Stream<AppItem?> watchByRemoteIdInAppType(RemoteId remoteId) {
-    // var query = dao.startSelectQuery();
-    //
-    // addFindByRemoteIdWhereToSimpleSelectStatement(
-    //   simpleSelectStatement: query,
-    //   remoteId: remoteId,
-    // );
-    //
-    // var
-    // joinedSelectStatement = convertSimpleSelectStatementToJoinedSelectStatement(
-    //   query: query,
-    //   filters: null,
-    // );
-    //
-    // return joinedSelectStatement.map(mapTypedResultToDbPopulatedItem);
-  }
 }

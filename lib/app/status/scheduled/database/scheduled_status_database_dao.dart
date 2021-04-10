@@ -11,20 +11,6 @@ part 'scheduled_status_database_dao.g.dart';
   tables: [
     DbScheduledStatuses,
   ],
-  queries: {
-    "countAll": "SELECT Count(*) FROM db_scheduled_statuses;",
-    "findById": "SELECT * FROM db_scheduled_statuses WHERE id = :id;",
-    "findByRemoteId":
-        "SELECT * FROM db_scheduled_statuses WHERE remote_id LIKE :remoteId;",
-    "countById": "SELECT COUNT(*) FROM db_scheduled_statuses WHERE id = :id;",
-    "deleteById": "DELETE FROM db_scheduled_statuses WHERE id = :id;",
-    "deleteByRemoteId": "DELETE FROM db_scheduled_statuses WHERE remote_id = :remoteId;",
-    "clear": "DELETE FROM db_scheduled_statuses",
-    "getAll": "SELECT * FROM db_scheduled_statuses",
-    "findLocalIdByRemoteId":
-        "SELECT id FROM db_scheduled_statuses WHERE remote_id = "
-            ":remoteId;",
-  },
 )
 class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
     DbScheduledStatus,

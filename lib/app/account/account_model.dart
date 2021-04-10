@@ -157,11 +157,36 @@ abstract class IAccount {
   });
 }
 
-class DbAccountWrapper implements IAccount {
+class DbAccountPopulated {
   final DbAccount dbAccount;
 
-  DbAccountWrapper({
+  DbAccountPopulated({
     required this.dbAccount,
+  });
+
+  @override
+  String toString() {
+    return 'DbAccountPopulated{dbAccount: $dbAccount}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DbAccountPopulated &&
+          runtimeType == other.runtimeType &&
+          dbAccount == other.dbAccount;
+
+  @override
+  int get hashCode => dbAccount.hashCode;
+}
+
+class DbAccountPopulatedWrapper implements IAccount {
+  final DbAccountPopulated dbAccountPopulated;
+
+  DbAccount get dbAccount => dbAccountPopulated.dbAccount;
+
+  DbAccountPopulatedWrapper({
+    required this.dbAccountPopulated,
   });
 
   @override
@@ -330,70 +355,84 @@ class DbAccountWrapper implements IAccount {
     String? pleromaBackgroundImage,
     bool? pleromaAcceptsChatMessages,
   }) =>
-      DbAccountWrapper(
-        dbAccount: dbAccount.copyWith(
-          id: id,
-          remoteId: remoteId,
-          username: username,
-          url: url,
-          note: note,
-          locked: locked,
-          headerStatic: headerStatic,
-          header: header,
-          followingCount: followingCount,
-          followersCount: followersCount,
-          statusesCount: statusesCount,
-          displayName: displayName,
-          createdAt: createdAt,
-          bot: bot,
-          avatarStatic: avatarStatic,
-          avatar: avatar,
-          acct: acct,
-          lastStatusAt: lastStatusAt,
-          fields: fields,
-          emojis: emojis,
-          pleromaRelationship:
-              pleromaRelationship?.toPleromaAccountRelationship() ??
-                  this.pleromaRelationship,
-          pleromaTags: pleromaTags ?? this.pleromaTags,
-          pleromaIsAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
-          pleromaIsModerator: pleromaIsModerator ?? this.pleromaIsModerator,
-          pleromaConfirmationPending:
-              pleromaConfirmationPending ?? this.pleromaConfirmationPending,
-          pleromaHideFavorites:
-              pleromaHideFavorites ?? this.pleromaHideFavorites,
-          pleromaHideFollowers:
-              pleromaHideFollowers ?? this.pleromaHideFollowers,
-          pleromaHideFollows: pleromaHideFollows ?? this.pleromaHideFollows,
-          pleromaHideFollowersCount:
-              pleromaHideFollowersCount ?? this.pleromaHideFollowersCount,
-          pleromaHideFollowsCount:
-              pleromaHideFollowsCount ?? this.pleromaHideFollowsCount,
-          pleromaDeactivated: pleromaDeactivated ?? this.pleromaDeactivated,
-          pleromaAllowFollowingMove:
-              pleromaAllowFollowingMove ?? this.pleromaAllowFollowingMove,
-          pleromaSkipThreadContainment:
-              pleromaSkipThreadContainment ?? this.pleromaSkipThreadContainment,
-          pleromaBackgroundImage:
-              pleromaBackgroundImage ?? this.pleromaBackgroundImage,
-          pleromaAcceptsChatMessages:
-              pleromaAcceptsChatMessages ?? this.pleromaAcceptsChatMessages,
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount.copyWith(
+            id: id,
+            remoteId: remoteId,
+            username: username,
+            url: url,
+            note: note,
+            locked: locked,
+            headerStatic: headerStatic,
+            header: header,
+            followingCount: followingCount,
+            followersCount: followersCount,
+            statusesCount: statusesCount,
+            displayName: displayName,
+            createdAt: createdAt,
+            bot: bot,
+            avatarStatic: avatarStatic,
+            avatar: avatar,
+            acct: acct,
+            lastStatusAt: lastStatusAt,
+            fields: fields,
+            emojis: emojis,
+            pleromaRelationship:
+                pleromaRelationship?.toPleromaAccountRelationship() ??
+                    this.pleromaRelationship,
+            pleromaTags: pleromaTags ?? this.pleromaTags,
+            pleromaIsAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
+            pleromaIsModerator: pleromaIsModerator ?? this.pleromaIsModerator,
+            pleromaConfirmationPending:
+                pleromaConfirmationPending ?? this.pleromaConfirmationPending,
+            pleromaHideFavorites:
+                pleromaHideFavorites ?? this.pleromaHideFavorites,
+            pleromaHideFollowers:
+                pleromaHideFollowers ?? this.pleromaHideFollowers,
+            pleromaHideFollows: pleromaHideFollows ?? this.pleromaHideFollows,
+            pleromaHideFollowersCount:
+                pleromaHideFollowersCount ?? this.pleromaHideFollowersCount,
+            pleromaHideFollowsCount:
+                pleromaHideFollowsCount ?? this.pleromaHideFollowsCount,
+            pleromaDeactivated: pleromaDeactivated ?? this.pleromaDeactivated,
+            pleromaAllowFollowingMove:
+                pleromaAllowFollowingMove ?? this.pleromaAllowFollowingMove,
+            pleromaSkipThreadContainment: pleromaSkipThreadContainment ??
+                this.pleromaSkipThreadContainment,
+            pleromaBackgroundImage:
+                pleromaBackgroundImage ?? this.pleromaBackgroundImage,
+            pleromaAcceptsChatMessages:
+                pleromaAcceptsChatMessages ?? this.pleromaAcceptsChatMessages,
+          ),
         ),
       );
 }
 
 extension IAccountExtension on IAccount {
-  DbAccountWrapper toDbAccountWrapper() {
-    if (this is DbAccountWrapper) {
-      return this as DbAccountWrapper;
+  DbAccountPopulatedWrapper toDbAccountWrapper() {
+    if (this is DbAccountPopulatedWrapper) {
+      return this as DbAccountPopulatedWrapper;
     } else {
-      return DbAccountWrapper(dbAccount: toDbAccount());
+      return DbAccountPopulatedWrapper(
+        dbAccountPopulated: toDbAccountPopulated(),
+      );
+    }
+  }
+
+  DbAccountPopulated toDbAccountPopulated() {
+    if (this is DbAccountPopulatedWrapper) {
+      return (this as DbAccountPopulatedWrapper).dbAccountPopulated;
+    } else {
+      return DbAccountPopulated(
+        dbAccount: toDbAccount(),
+      );
     }
   }
 
   DbAccount toDbAccount() {
-    if (this is DbAccountWrapper) {
-      return (this as DbAccountWrapper).dbAccount;
+    if (this is DbAccountPopulatedWrapper) {
+      return (this as DbAccountPopulatedWrapper).dbAccountPopulated.dbAccount;
     } else {
       return DbAccount(
         id: localId,

@@ -1,7 +1,8 @@
+import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/database/account_database_model.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/database/dao/remote/simple_app_remote_database_dao.dart';
+import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
 import 'package:moor/moor.dart';
 
 part 'account_database_dao.g.dart';
@@ -16,27 +17,14 @@ var _chatAccountsAliasId = "chatAccountsAliasId";
 
 @UseDao(
   tables: [DbAccounts],
-  queries: {
-    "countAll": "SELECT Count(*) FROM db_accounts;",
-    "findById": "SELECT * FROM db_accounts WHERE id = :id;",
-    "findByRemoteId":
-        "SELECT * FROM db_accounts WHERE remote_id LIKE :remoteId;",
-    "getAll": "SELECT * FROM db_accounts",
-    "oldest": "SELECT * FROM db_accounts ORDER BY last_status_at ASC LIMIT 1;",
-    "countById": "SELECT COUNT(*) FROM db_accounts WHERE id = :id;",
-    "deleteById": "DELETE FROM db_accounts WHERE id = :id;",
-    "deleteByRemoteId": "DELETE FROM db_accounts WHERE remote_id = :remoteId;",
-    "clear": "DELETE FROM db_accounts",
-    "findLocalIdByRemoteId": "SELECT id FROM db_accounts WHERE remote_id = "
-        ":remoteId;",
-    "deleteOlderThanLocalId": "DELETE FROM db_accounts WHERE id = "
-        ":id;",
-    "getNewestByLocalIdWithOffset":
-        "SELECT * FROM db_accounts ORDER BY id DESC LIMIT 1 OFFSET :offset",
-  },
 )
-class AccountDao extends SimpleAppRemoteDatabaseDao<DbAccount, int, String,
-    $DbAccountsTable, $DbAccountsTable> with _$AccountDaoMixin {
+class AccountDao extends PopulatedAppRemoteDatabaseDao<
+    DbAccount,
+    DbAccountPopulated,
+    int,
+    String,
+    $DbAccountsTable,
+    $DbAccountsTable> with _$AccountDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable? accountAlias;
   late $DbAccountFollowingsTable accountFollowingsAlias;

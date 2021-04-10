@@ -11,14 +11,6 @@ part 'draft_status_database_dao.g.dart';
   tables: [
     DbDraftStatuses,
   ],
-  queries: {
-    "countAll": "SELECT Count(*) FROM db_draft_statuses;",
-    "findById": "SELECT * FROM db_draft_statuses WHERE id = :id;",
-    "countById": "SELECT COUNT(*) FROM db_draft_statuses WHERE id = :id;",
-    "deleteById": "DELETE FROM db_draft_statuses WHERE id = :id;",
-    "clear": "DELETE FROM db_draft_statuses",
-    "getAll": "SELECT * FROM db_draft_statuses",
-  },
 )
 class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
     DbDraftStatus,
