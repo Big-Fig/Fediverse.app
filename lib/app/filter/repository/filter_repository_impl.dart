@@ -30,70 +30,6 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required AppDatabase appDatabase,
   }) : dao = appDatabase.filterDao;
 
-  //
-  // @override
-  // Future upsertRemoteFilter(IPleromaFilter remoteFilter) async {
-  //   _logger.finer(() => "upsertRemoteFilter ${remoteFilter.id} "
-  //       "$remoteFilter");
-  //
-  //   await upsertInRemoteType(
-  //     remoteFilter,
-  //   );
-  // }
-  //
-  // @override
-  // Future upsertRemoteFilters(
-  //   List<IPleromaFilter> remoteFilters,
-  // ) async {
-  //   _logger.finer(() => "upsertRemoteFilters ${remoteFilters.length} ");
-  //   if (remoteFilters.isEmpty) {
-  //     return;
-  //   }
-  //   await upsertAllInRemoteType(remoteFilters, batchTransaction: null);
-  // }
-  //
-  // @override
-  // Future<List<DbFilterPopulatedWrapper>> getFilters({
-  //   required FilterRepositoryFilters filters,
-  //   required RepositoryPagination<IFilter>? pagination,
-  //   FilterOrderingTermData orderingTermData =
-  //       FilterOrderingTermData.remoteIdDesc,
-  // }) async {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: pagination,
-  //     orderingTermData: orderingTermData,
-  //   );
-  //
-  //   return (await query.get())
-  //       .toDbFilterPopulatedList(
-  //         dao: dao,
-  //       )
-  //       .toDbFilterPopulatedWrapperList();
-  // }
-  //
-  // @override
-  // Stream<List<DbFilterPopulatedWrapper>> watchFilters({
-  //   required FilterRepositoryFilters filters,
-  //   required RepositoryPagination<IFilter> pagination,
-  //   FilterOrderingTermData orderingTermData =
-  //       FilterOrderingTermData.remoteIdDesc,
-  // }) {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: pagination,
-  //     orderingTermData: orderingTermData,
-  //   );
-  //
-  //   return query.watch().map(
-  //         (value) => value
-  //             .toDbFilterPopulatedList(
-  //               dao: dao,
-  //             )
-  //             .toDbFilterPopulatedWrapperList(),
-  //       );
-  // }
-
   JoinedSelectStatement createQuery({
     required FilterRepositoryFilters? filters,
     required RepositoryPagination<IFilter>? pagination,
@@ -163,43 +99,6 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   //     dbItem: newRemoteFilter.toDbFilter(), batchTransaction: null,
   //   );
   // }
-  //
-  // @override
-  // Future<DbFilterPopulatedWrapper?> getFilter({
-  //   required FilterRepositoryFilters filters,
-  //   FilterOrderingTermData orderingTermData =
-  //       FilterOrderingTermData.remoteIdDesc,
-  // }) async {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: _singleFilterRepositoryPagination,
-  //     orderingTermData: orderingTermData,
-  //   );
-  //
-  //   return (await query.getSingleOrNull())
-  //       ?.toDbFilterPopulated(dao: dao)
-  //       .toDbFilterPopulatedWrapper();
-  // }
-  //
-  // @override
-  // Stream<DbFilterPopulatedWrapper?> watchFilter({
-  //   required FilterRepositoryFilters filters,
-  //   FilterOrderingTermData orderingTermData =
-  //       FilterOrderingTermData.remoteIdDesc,
-  // }) {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: _singleFilterRepositoryPagination,
-  //     orderingTermData: orderingTermData,
-  //   );
-  //
-  //   return query.watchSingleOrNull().map(
-  //         (typedResult) => typedResult
-  //             ?.toDbFilterPopulated(dao: dao)
-  //             .toDbFilterPopulatedWrapper(),
-  //       );
-  // }
-
   @override
   DbFilter mapAppItemToDbItem(IFilter appItem) => appItem.toDbFilter();
 
@@ -221,11 +120,16 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbPopulatedItem.toDbFilterPopulatedWrapper().toPleromaFilter();
 
   @override
+  IFilter mapRemoteItemToAppItem(IPleromaFilter appItem) =>
+      appItem.toDbFilterPopulatedWrapper();
+
+  @override
   FilterRepositoryFilters get emptyFilters => FilterRepositoryFilters.empty;
 
   @override
   List<FilterOrderingTermData> get defaultOrderingTerms =>
       FilterOrderingTermData.defaultTerms;
+
 }
 
 extension DbFilterPopulatedListExtension on List<DbFilterPopulated> {

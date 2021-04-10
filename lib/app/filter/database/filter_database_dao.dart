@@ -19,7 +19,8 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
     int,
     String,
     $DbFiltersTable,
-    $DbFiltersTable> with _$FilterDaoMixin {
+    $DbFiltersTable,
+    FilterRepositoryFilters> with _$FilterDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class

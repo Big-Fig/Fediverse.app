@@ -180,4 +180,31 @@ abstract class AppRemoteDatabaseDaoRepository<
             : null,
         orderingTerms: orderingTerms,
       );
+
+  @override
+  Future<int> upsertInRemoteType(RemoteItem remoteItem) => insertInRemoteType(
+        remoteItem,
+        mode: InsertMode.insertOrReplace,
+      );
+
+  @override
+  Future<void> upsertInRemoteTypeBatch(
+    RemoteItem remoteItem, {
+    required Batch? batchTransaction,
+  }) =>
+      insertInRemoteTypeBatch(
+        remoteItem,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  Future upsertAllInRemoteType(
+    List<RemoteItem> remoteItems, {
+    required Batch? batchTransaction,
+  }) => insertAllInRemoteType(
+      remoteItems,
+      mode: InsertMode.insertOrReplace,
+      batchTransaction: batchTransaction,
+    );
 }

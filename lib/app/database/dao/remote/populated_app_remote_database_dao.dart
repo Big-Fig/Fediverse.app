@@ -9,10 +9,30 @@ abstract class PopulatedAppRemoteDatabaseDao<
         DbId,
         RemoteId,
         TableDsl extends Table,
-        TableInfoDsl extends TableInfo<TableDsl, DbItem>>
+        TableInfoDsl extends TableInfo<TableDsl, DbItem>,
+        Filters>
     extends AppRemoteDatabaseDao<DbItem, DbId, RemoteId, TableDsl, TableInfoDsl>
     with
         PopulatedDatabaseDaoMixin<DbItem, DbPopulatedItem, DbId, TableDsl,
-            TableInfoDsl> {
+            TableInfoDsl, Filters> {
   PopulatedAppRemoteDatabaseDao(AppDatabase db) : super(db);
+
+  Future<DbPopulatedItem?> findByRemoteIdPopulated(RemoteId remoteId) =>
+      findByRemoteIdPopulatedSelectable(remoteId).getSingleOrNull();
+
+  Stream<DbPopulatedItem?> watchFindByRemoteIdPopulated(RemoteId remoteId) =>
+      findByRemoteIdPopulatedSelectable(remoteId).watchSingleOrNull();
+
+  Selectable<DbPopulatedItem> findByRemoteIdPopulatedSelectable(
+      RemoteId remoteId) {
+    var query = startSelectQuery();
+    var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(
+      query: query,
+      filters: null,
+    );
+    joinedQuery.where(createFindByRemoteIdWhereExpression(remoteId));
+    joinedQuery.limit(1, offset: null);
+
+    return joinedQuery.map(mapTypedResultToDbPopulatedItem);
+  }
 }

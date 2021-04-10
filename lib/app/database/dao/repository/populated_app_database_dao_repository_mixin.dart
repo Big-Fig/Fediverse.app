@@ -13,11 +13,6 @@ mixin PopulatedDatabaseDaoRepositoryMixin<
         OrderingTerm extends RepositoryOrderingTerm>
     on AppDatabaseDaoRepository<DbItem, AppItem, DbID, TableDsl, TableInfoDsl,
         Filters, OrderingTerm> {
-  DbPopulatedItem mapTypedResultToDbPopulatedItem(TypedResult typedResult);
-
-  List<DbPopulatedItem> mapTypedResultListToDbPopulatedItemList(
-          List<TypedResult> typedResults) =>
-      typedResults.map(mapTypedResultToDbPopulatedItem).toList();
 
   DbPopulatedItem mapAppItemToDbPopulatedItem(AppItem appItem);
 
@@ -48,17 +43,6 @@ mixin PopulatedDatabaseDaoRepositoryMixin<
     }
   }
 
-  @override
-  Selectable<AppItem> createFindInAppTypeQuerySelectable({
-    required RepositoryPagination<AppItem>? pagination,
-    required Filters? filters,
-    required List<OrderingTerm>? orderingTerms,
-  });
-
-  JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
-    required SimpleSelectStatement<TableDsl, DbItem> query,
-    required Filters? filters,
-  });
 
 
 

@@ -107,4 +107,48 @@ abstract class AppDatabaseDaoRepository<
     Filters? filters,
     List<OrderingTerm>? orderingTerms,
   });
+
+  @override
+  Stream<List<DbItem>> watchAllInDbType() => dao.watchGetAll();
+
+  @override
+  Future upsertAllInAppType(
+    List<AppItem> appItems, {
+    required Batch? batchTransaction,
+  }) =>
+      insertAllInAppType(
+        appItems,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  Future<int> upsertInAppType(AppItem appItem) => insertInAppType(
+        appItem,
+        mode: InsertMode.insertOrReplace,
+      );
+
+  @override
+  Future<void> upsertInAppTypeBatch(
+    AppItem appItem, {
+    required Batch? batchTransaction,
+  }) {
+    return insertInAppTypeBatch(
+      appItem,
+      mode: InsertMode.insertOrReplace,
+      batchTransaction: batchTransaction,
+    );
+  }
+
+  @override
+  Future<void> upsertInDbTypeBatch(
+    Insertable<DbItem> dbItem, {
+    required Batch? batchTransaction,
+  }) {
+    return insertInDbTypeBatch(
+      dbItem,
+      mode: InsertMode.insertOrReplace,
+      batchTransaction: batchTransaction,
+    );
+  }
 }

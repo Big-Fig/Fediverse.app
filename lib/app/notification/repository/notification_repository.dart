@@ -73,14 +73,21 @@ abstract class INotificationRepository
   Future<INotification?> getNewest();
 
   Future upsertRemoteNotification(
-    PleromaNotification pleromaNotification, {
+    IPleromaNotification pleromaNotification, {
     required bool unread,
     required Batch? batchTransaction,
   });
 
   Future upsertRemoteNotifications(
-    List<PleromaNotification> pleromaNotifications, {
+    List<IPleromaNotification> pleromaNotifications, {
     required bool unread,
+    required Batch? batchTransaction,
+  });
+
+  Future updateNotificationByRemoteType({
+    required INotification appItem,
+    required IPleromaNotification remoteItem,
+    required bool? unread,
     required Batch? batchTransaction,
   });
 }

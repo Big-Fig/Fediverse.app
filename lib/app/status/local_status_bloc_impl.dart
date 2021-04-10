@@ -250,6 +250,7 @@ class LocalStatusBloc extends StatusBloc {
     await statusRepository.updateAppTypeByRemoteType(
       appItem: reblogOrOriginal,
       remoteItem: remoteStatus,
+      batchTransaction: null,
     );
 
     var result = await statusRepository.findByRemoteIdInAppType(

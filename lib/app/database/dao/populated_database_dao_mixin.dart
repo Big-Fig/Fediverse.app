@@ -2,9 +2,116 @@ import 'package:fedi/app/database/dao/app_database_dao.dart';
 import 'package:moor/moor.dart';
 
 mixin PopulatedDatabaseDaoMixin<
-        DbItem extends DataClass,
-        DbPopulatedItem,
-        DbID,
-        TableDsl extends Table,
-        TableInfoDsl extends TableInfo<TableDsl, DbItem>>
-    on AppDatabaseDao<DbItem, DbID, TableDsl, TableInfoDsl> {}
+    DbItem extends DataClass,
+    DbPopulatedItem,
+    DbId,
+    TableDsl extends Table,
+    TableInfoDsl extends TableInfo<TableDsl, DbItem>,
+    Filters> on AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl> {
+  JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<TableDsl, DbItem> query,
+    required Filters? filters,
+  });
+
+  DbPopulatedItem mapTypedResultToDbPopulatedItem(TypedResult typedResult);
+
+  List<DbPopulatedItem> mapTypedResultListToDbPopulatedItemList(
+          List<TypedResult> typedResults) =>
+      typedResults.map(mapTypedResultToDbPopulatedItem).toList();
+
+  Future<List<DbPopulatedItem>> getAllPopulated() =>
+      getAllPopulatedSelectable().get();
+
+  Stream<List<DbPopulatedItem>> watchGetAllPopulated() =>
+      getAllPopulatedSelectable().watch();
+
+  Selectable<DbPopulatedItem> getAllPopulatedSelectable() {
+    var query = startSelectQuery();
+    var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(
+      query: query,
+      filters: null,
+    );
+
+    return joinedQuery.map(mapTypedResultToDbPopulatedItem);
+  }
+
+  Future<DbPopulatedItem?> getNewestPopulatedOrderById({
+    required int? offset,
+  }) =>
+      getNewestPopulatedOrderByIdSelectable(offset: offset).getSingleOrNull();
+
+  Stream<DbPopulatedItem?> watchGetNewestPopulatedOrderById({
+    required int? offset,
+  }) =>
+      getNewestPopulatedOrderByIdSelectable(offset: offset).watchSingleOrNull();
+
+  Selectable<DbPopulatedItem> getNewestPopulatedOrderByIdSelectable({
+    required int? offset,
+  }) {
+    var query = startSelectQuery();
+    query.orderBy(
+      [
+        (tbl) => OrderingTerm.asc(
+              CustomExpression(idFieldName),
+            ),
+      ],
+    );
+    var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(
+      query: query,
+      filters: null,
+    );
+    joinedQuery.limit(1, offset: offset);
+
+    return joinedQuery.map(mapTypedResultToDbPopulatedItem);
+  }
+
+  Future<DbPopulatedItem?> getOldestPopulatedOrderById({
+    required int? offset,
+  }) =>
+      getOldestPopulatedOrderByIdSelectable(
+        offset: offset,
+      ).getSingleOrNull();
+
+  Stream<DbPopulatedItem?> watchGetOldestPopulatedOrderById({
+    required int? offset,
+  }) =>
+      getOldestPopulatedOrderByIdSelectable(offset: offset).watchSingleOrNull();
+
+  Selectable<DbPopulatedItem> getOldestPopulatedOrderByIdSelectable({
+    required int? offset,
+  }) {
+    var query = startSelectQuery();
+    query.orderBy(
+      [
+        (tbl) => OrderingTerm.desc(
+              CustomExpression(idFieldName),
+            ),
+      ],
+    );
+    var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(
+      query: query,
+      filters: null,
+    );
+    joinedQuery.limit(1, offset: offset);
+
+    return joinedQuery.map(mapTypedResultToDbPopulatedItem);
+  }
+
+  Future<DbPopulatedItem?> findByIdPopulated(DbId id) =>
+      findByIdPopulatedSelectable(id).getSingleOrNull();
+
+  Stream<DbPopulatedItem?> watchFindByIdPopulated(DbId id) =>
+      findByIdPopulatedSelectable(id).watchSingleOrNull();
+
+  Selectable<DbPopulatedItem> findByIdPopulatedSelectable(DbId id) {
+    var query = startSelectQuery();
+    var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(
+      query: query,
+      filters: null,
+    );
+    joinedQuery.where(createFindByDbIdWhereExpression(id));
+    joinedQuery.limit(1, offset: null);
+
+    return joinedQuery.map(mapTypedResultToDbPopulatedItem);
+  }
+}

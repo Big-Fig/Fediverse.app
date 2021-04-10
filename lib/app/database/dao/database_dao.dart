@@ -151,7 +151,7 @@ abstract class DatabaseDao<
         'SELECT * FROM $tableName '
                 'ORDER BY $idFieldName ASC'
                 'LIMIT 1' +
-            _createOffsetContent(offset),
+            createOffsetContent(offset),
         variables: [Variable(offset)],
         readsFrom: {table},
       ).map(table.mapFromRow);
@@ -167,12 +167,12 @@ abstract class DatabaseDao<
         'SELECT * FROM $tableName '
                 'ORDER BY $idFieldName DESC'
                 'LIMIT 1' +
-            _createOffsetContent(offset),
+            createOffsetContent(offset),
         variables: [Variable(offset)],
         readsFrom: {table},
       ).map(table.mapFromRow);
 
-  String _createOffsetContent(int? offset) =>
+  String createOffsetContent(int? offset) =>
       (offset != null ? " OFFSET :offset" : "");
 
   Future<DbItem?> findById(DbId id) => findByIdSelectable(id).getSingleOrNull();

@@ -69,6 +69,7 @@ void goToDraftEditPostStatusPage(
           onBackPressed: (IPostStatusData postStatusData) async {
             await draftStatusBloc.updatePostStatusData(
               postStatusData.toPostStatusData(),
+              batchTransaction: null,
             );
             Navigator.of(context).pop();
             return true;

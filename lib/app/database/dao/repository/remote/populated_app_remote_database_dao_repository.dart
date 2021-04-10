@@ -22,7 +22,7 @@ abstract class PopulatedAppRemoteDatabaseDaoRepository<
             DbId, TableDsl, TableInfoDsl, Filters, Ordering> {
   @override
   PopulatedAppRemoteDatabaseDao<DbItem, DbPopulatedItem, DbId, RemoteId,
-      TableDsl, TableInfoDsl> get dao;
+      TableDsl, TableInfoDsl, Filters> get dao;
 
   RemoteItem mapDbPopulatedItemToRemoteItem(DbPopulatedItem dbPopulatedItem);
 
@@ -38,4 +38,30 @@ abstract class PopulatedAppRemoteDatabaseDaoRepository<
       return null;
     }
   }
+
+  @override
+  Stream<AppItem?> watchByDbIdInAppType(DbId dbId) =>
+      dao.watchFindByIdPopulated(dbId).map(mapDbPopulatedItemToAppItemNullable);
+
+  @override
+  Stream<AppItem?> watchByRemoteIdInAppType(RemoteId remoteId) => dao
+      .watchFindByRemoteIdPopulated(remoteId)
+      .map(mapDbPopulatedItemToAppItemNullable);
+
+  @override
+  Stream<List<AppItem>> watchAllInAppType() =>
+      dao.watchGetAllPopulated().map(mapDbPopulatedItemListToAppItemList);
+
+  @override
+  Future<AppItem?> findByDbIdInAppType(DbId dbId) =>
+      dao.findByIdPopulated(dbId).then(mapDbPopulatedItemToAppItemNullable);
+
+  @override
+  Future<AppItem?> findByRemoteIdInAppType(RemoteId remoteId) => dao
+      .findByRemoteIdPopulated(remoteId)
+      .then(mapDbPopulatedItemToAppItemNullable);
+
+  @override
+  Future<List<AppItem>> getAllInAppType() =>
+      dao.getAllPopulated().then(mapDbPopulatedItemListToAppItemList);
 }

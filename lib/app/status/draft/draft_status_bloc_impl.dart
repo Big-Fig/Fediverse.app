@@ -141,10 +141,14 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
         listRemoteId: null,
         conversationRemoteId: postStatusData.inReplyToConversationId,
         isFromHomeTimeline: null,
+        batchTransaction: null,
       );
     }
 
-    await draftStatusRepository.deleteById(draftStatus.localId!);
+    await draftStatusRepository.deleteById(
+      draftStatus.localId!,
+      batchTransaction: null,
+    );
 
     _stateSubject.add(DraftStatusState.alreadyPosted);
   }

@@ -25,7 +25,8 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     int,
     String,
     $DbNotificationsTable,
-    $DbNotificationsTable> with _$NotificationDaoMixin {
+    $DbNotificationsTable,
+    NotificationRepositoryFilters> with _$NotificationDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
   late $DbStatusesTable statusAlias;
@@ -42,6 +43,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     statusReblogAccountAlias =
         alias(db.dbAccounts, _statusReblogAccountAliasId);
   }
+
   //
   // Future<int> updateByRemoteId(
   //   String remoteId,
@@ -296,11 +298,10 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   @override
   $DbNotificationsTable get table => dbNotifications;
 
-
   Future deleteOlderThanDate(
-      DateTime dateTimeToDelete, {
-        required Batch? batchTransaction,
-      }) =>
+    DateTime dateTimeToDelete, {
+    required Batch? batchTransaction,
+  }) =>
       deleteOlderThanDateTime(
         dateTimeToDelete,
         fieldName: table.createdAt.$name,
@@ -347,5 +348,4 @@ extension DbNotificationPopulatedTypedResultExtension on TypedResult {
       replyReblogDbStatusAccount: null,
     );
   }
-
 }
