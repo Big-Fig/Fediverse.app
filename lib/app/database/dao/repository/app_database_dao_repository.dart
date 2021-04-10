@@ -19,52 +19,6 @@ abstract class AppDatabaseDaoRepository<
   @override
   AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl> get dao;
 
-  @override
-  Future<AppItem?> findByDbIdInAppType(DbId dbId) {
-
-  }
-
-  @override
-  Future<List<AppItem>> getAllInAppType() {
-
-  }
-
-  @override
-  Future insertAllInAppType(List<AppItem> appItems) {}
-
-  @override
-  Future<int> insertInAppType(AppItem appItem) {}
-
-  @override
-  Future<bool> updateAppTypeByDbType({
-    required DbItem dbItem,
-    required AppItem appItem,
-  }) {}
-
-  @override
-  Future<bool> updateByDbIdInAppType({
-    required DbId dbId,
-    required AppItem appItem,
-  }) {}
-
-  @override
-  Future<bool> updateDbTypeByAppType({
-    required DbItem dbItem,
-    required AppItem appItem,
-  }) {}
-
-  @override
-  Future upsertAllInAppType(List<AppItem> appItems) {}
-
-  @override
-  Future<int> upsertInAppType(AppItem appItem) {}
-
-  @override
-  Stream<List<AppItem>> watchAllInAppType() {}
-
-  @override
-  Stream<AppItem?> watchByDbIdInAppType(DbId dbId) {}
-
   DbItem mapAppItemToDbItem(AppItem appItem);
 
   List<DbItem> mapAppItemListToDbItemList(List<AppItem> appItems) =>
@@ -126,20 +80,31 @@ abstract class AppDatabaseDaoRepository<
         orderingTerms: orderingTerms,
       ).watchSingleOrNull();
 
-  Selectable<AppItem> createFindInAppTypeQuerySelectable({
-    required RepositoryPagination<AppItem>? pagination,
-    required Filters? filters,
-    required List<OrderingTerm>? orderingTerms,
-  }){
-
-  }
-
   void addAppItemPagination({
     required SimpleSelectStatement<TableDsl, DbItem> query,
     required RepositoryPagination<AppItem>? pagination,
     required List<OrderingTerm>? orderingTerms,
+  }) =>
+      addDbItemPagination(
+        query: query,
+        pagination: pagination != null
+            ? RepositoryPagination<DbItem>(
+                newerThanItem: mapAppItemToDbItemNullable(
+                  pagination.newerThanItem,
+                ),
+                olderThanItem: mapAppItemToDbItemNullable(
+                  pagination.olderThanItem,
+                ),
+                limit: pagination.limit,
+                offset: pagination.offset,
+              )
+            : null,
+        orderingTerms: orderingTerms,
+      );
+
+  Selectable<AppItem> createFindInAppTypeQuerySelectable({
+    RepositoryPagination<AppItem>? pagination,
+    Filters? filters,
+    List<OrderingTerm>? orderingTerms,
   });
-
-
-
 }

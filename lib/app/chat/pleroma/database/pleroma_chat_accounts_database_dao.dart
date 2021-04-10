@@ -10,8 +10,6 @@ part 'pleroma_chat_accounts_database_dao.g.dart';
     DbChatAccounts,
   ],
   queries: {
-    "countAll": "SELECT Count(*) FROM db_chat_accounts;",
-    "findById": "SELECT * FROM db_chat_accounts WHERE id = :id;",
     "findByChatRemoteId":
         "SELECT * FROM db_chat_accounts WHERE chat_remote_id = :chatRemoteId;",
     "findByChatRemoteIdAndAccountRemoteId":
@@ -19,12 +17,8 @@ part 'pleroma_chat_accounts_database_dao.g.dart';
             ":chatRemoteId AND account_remote_id = :accountRemoteId;",
     "findByAccountRemoteId":
         "SELECT * FROM db_chat_accounts WHERE account_remote_id = :accountRemoteId;",
-    "countById": "SELECT COUNT(*) FROM db_chat_accounts WHERE id = :id;",
-    "deleteById": "DELETE FROM db_chat_accounts WHERE id = :id;",
     "deleteByChatRemoteId": "DELETE FROM db_chat_accounts WHERE "
         "chat_remote_id = :chatRemoteId;",
-    "clear": "DELETE FROM db_chat_accounts",
-    "getAll": "SELECT * FROM db_chat_accounts",
   },
 )
 

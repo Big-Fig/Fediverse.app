@@ -6,8 +6,8 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/repository/repository.dart';
-import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 
 abstract class IAccountRepository
@@ -30,62 +30,51 @@ abstract class IAccountRepository
         listen: listen,
       );
 
-  Future upsertRemoteAccounts(
+  Future upsertConversationRemoteAccounts(
     List<IPleromaAccount> remoteAccounts, {
-    required String? conversationRemoteId,
-    required String? chatRemoteId,
+    required String conversationRemoteId,
+    required Batch? batchTransaction,
   });
 
-  Future upsertRemoteAccount(
+  Future upsertConversationRemoteAccount(
     IPleromaAccount remoteAccount, {
-    required String? conversationRemoteId,
-    required String? chatRemoteId,
+    required String conversationRemoteId,
+    required Batch? batchTransaction,
+  });
+
+  Future upsertChatRemoteAccount(
+    IPleromaAccount remoteAccount, {
+    required String chatRemoteId,
+    required Batch? batchTransaction,
+  });
+
+  Future upsertChatRemoteAccounts(
+    List<IPleromaAccount> remoteAccount, {
+    required String chatRemoteId,
   });
 
   Future addAccountFollowings({
     required String accountRemoteId,
     required List<PleromaAccount> followings,
+    required Batch? batchTransaction,
   });
 
   Future addAccountFollowers({
     required String accountRemoteId,
     required List<IPleromaAccount> followers,
+    required Batch? batchTransaction,
   });
 
   Future updateStatusRebloggedBy({
     required String statusRemoteId,
     required List<IPleromaAccount> rebloggedByAccounts,
+    required Batch? batchTransaction,
   });
 
   Future updateStatusFavouritedBy({
     required String statusRemoteId,
     required List<IPleromaAccount> favouritedByAccounts,
-  });
-
-  Future<List<IAccount>> getAccounts({
-    required AccountRepositoryFilters? filters,
-    required RepositoryPagination<IAccount>? pagination,
-    AccountRepositoryOrderingTermData? orderingTermData =
-        AccountRepositoryOrderingTermData.remoteIdDesc,
-  });
-
-  Stream<List<IAccount>> watchAccounts({
-    required AccountRepositoryFilters? filters,
-    required RepositoryPagination<IAccount>? pagination,
-    AccountRepositoryOrderingTermData? orderingTermData =
-        AccountRepositoryOrderingTermData.remoteIdDesc,
-  });
-
-  Future<IAccount?> getAccount({
-    required AccountRepositoryFilters? filters,
-    AccountRepositoryOrderingTermData? orderingTermData =
-        AccountRepositoryOrderingTermData.remoteIdDesc,
-  });
-
-  Stream<IAccount?> watchAccount({
-    required AccountRepositoryFilters? filters,
-    AccountRepositoryOrderingTermData? orderingTermData =
-        AccountRepositoryOrderingTermData.remoteIdDesc,
+    required Batch? batchTransaction,
   });
 
   Future<List<IAccount>> getConversationAccounts({
@@ -107,10 +96,12 @@ abstract class IAccountRepository
   Future removeAccountFollowing({
     required String accountRemoteId,
     required String followingAccountId,
+    required Batch? batchTransaction,
   });
 
   Future removeAccountFollower({
     required String accountRemoteId,
     required String followerAccountId,
+    required Batch? batchTransaction,
   });
 }

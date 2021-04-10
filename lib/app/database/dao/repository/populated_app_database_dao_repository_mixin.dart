@@ -53,7 +53,7 @@ mixin PopulatedDatabaseDaoRepositoryMixin<
     required RepositoryPagination<AppItem>? pagination,
     required Filters? filters,
     required List<OrderingTerm>? orderingTerms,
-  }) {}
+  });
 
   JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<TableDsl, DbItem> query,

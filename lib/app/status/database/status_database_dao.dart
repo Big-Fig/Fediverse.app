@@ -28,26 +28,6 @@ var _homeTimelineStatusesAliasId = "homeTimelineStatuses";
   tables: [
     DbStatuses,
   ],
-  queries: {
-    "countAll": "SELECT Count(*) FROM db_statuses;",
-    "findById": "SELECT * FROM db_statuses WHERE id = :id;",
-    "findByRemoteId": "SELECT * FROM db_statuses WHERE remote_id = :remoteId;",
-    "countById": "SELECT COUNT(*) FROM db_statuses WHERE id = :id;",
-    "oldest": "SELECT * FROM db_statuses ORDER BY created_at ASC LIMIT 1;",
-    "deleteById": "DELETE FROM db_statuses WHERE id = :id;",
-    "deleteByRemoteId": "DELETE FROM db_statuses WHERE remote_id = "
-        ":remoteId;",
-    "clear": "DELETE FROM db_statuses",
-    "getAll": "SELECT * FROM db_statuses",
-    "findLocalIdByRemoteId": "SELECT id FROM db_statuses WHERE remote_id = "
-        ":remoteId;",
-    "deleteOlderThanDate":
-        "DELETE FROM db_statuses WHERE created_at < :createdAt",
-    "deleteOlderThanLocalId": "DELETE FROM db_statuses WHERE id = "
-        ":localId;",
-    "getNewestByLocalIdWithOffset":
-        "SELECT * FROM db_statuses ORDER BY id DESC LIMIT 1 OFFSET :offset",
-  },
 )
 class StatusDao extends PopulatedAppRemoteDatabaseDao<
     DbStatus,
@@ -64,7 +44,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   late $DbAccountsTable replyAccountAlias;
   late $DbStatusesTable replyReblogAlias;
   late $DbAccountsTable replyReblogAccountAlias;
-  $DbStatusesTable? statusAlias;
+  late $DbStatusesTable statusAlias;
   late $DbStatusHashtagsTable statusHashtagsAlias;
   late $DbStatusListsTable statusListsAlias;
   late $DbAccountFollowingsTable accountFollowingsAlias;

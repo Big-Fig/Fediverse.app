@@ -12,28 +12,6 @@ var _accountAliasId = "account";
 
 @UseDao(
   tables: [DbChatMessages],
-  queries: {
-    "findById": "SELECT * FROM db_chat_messages WHERE id = :id;",
-    "findByRemoteId":
-    "SELECT * FROM db_chat_messages WHERE remote_id LIKE :remoteId;",
-    "getAll": "SELECT * FROM db_chat_messages",
-    "countAll": "SELECT Count(*) FROM db_chat_messages;",
-    "countById": "SELECT COUNT(*) FROM db_chat_messages WHERE id = :id;",
-    "deleteById": "DELETE FROM db_chat_messages WHERE id = :id;",
-    "deleteByRemoteId": "DELETE FROM db_chat_messages WHERE remote_id = "
-        ":remoteId;",
-    "clear": "DELETE FROM db_chat_messages",
-    "oldest": "SELECT * FROM db_chat_messages ORDER BY created_at ASC LIMIT 1;",
-    "findLocalIdByRemoteId":
-        "SELECT id FROM db_chat_messages WHERE remote_id = "
-            ":remoteId;",
-    "deleteOlderThanDate":
-        "DELETE FROM db_chat_messages WHERE created_at < :createdAt",
-    "deleteOlderThanLocalId": "DELETE FROM db_chat_messages WHERE id = "
-        ":localId;",
-    "getNewestByLocalIdWithOffset":
-        "SELECT * FROM db_chat_messages ORDER BY id DESC LIMIT 1 OFFSET :offset",
-  },
 )
 class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     DbChatMessage,

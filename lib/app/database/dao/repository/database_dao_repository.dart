@@ -19,8 +19,6 @@ abstract class DatabaseDaoRepository<
 
   List<OrderingTerm> get defaultOrderingTerms;
 
-  String get idFieldName => "id";
-
   @override
   Future internalAsyncInit() async {
     // nothing to init by default
@@ -28,23 +26,14 @@ abstract class DatabaseDaoRepository<
   }
 
   @override
-  Future<int> countAll() => dao.countAll().getSingle();
+  Future<int> countAll() => dao.countAllSelectable().getSingle();
 
   @override
   Future<DbItem?> findByDbIdInDbType(DbId dbId) =>
-      dao.findById(dbId).getSingleOrNull();
+      dao.findByIdSelectable(dbId).getSingleOrNull();
 
   @override
-  Future<List<DbItem>> getAllInDbType() => dao.getAll().get();
-
-  @override
-  Future<bool> updateByDbIdInDbType({
-    required DbId dbId,
-    required Insertable<DbItem> dbItem,
-  }) {}
-
-  @override
-  Stream<List<DbItem>> watchAllInDbType() {}
+  Future<List<DbItem>> getAllInDbType() => dao.getAllSelectable().get();
 
   @override
   Future<bool> isExistWithDbId(DbId dbId) async {
@@ -53,30 +42,70 @@ abstract class DatabaseDaoRepository<
   }
 
   @override
-  Future insertAllInDbType(List<Insertable<DbItem>> dbItems) =>
-      dao.insertAll(entities: dbItems, mode: null);
+  Future insertAllInDbType(
+    List<Insertable<DbItem>> dbItems, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) =>
+      dao.insertAll(
+        entities: dbItems,
+        mode: mode,
+        batchTransaction: batchTransaction,
+      );
 
   @override
-  Future<int> insertInDbType(Insertable<DbItem> dbItem) =>
-      dao.insert(entity: dbItem, mode: null);
+  Future insertInDbType(
+    Insertable<DbItem> dbItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) =>
+      dao.insertBatch(
+        entity: dbItem,
+        mode: mode,
+        batchTransaction: batchTransaction,
+      );
 
   @override
-  Future upsertAllInDbType(List<Insertable<DbItem>> dbItems) =>
-      dao.insertAll(entities: dbItems, mode: InsertMode.insertOrReplace);
+  Future upsertAllInDbType(
+    List<Insertable<DbItem>> dbItems, {
+    required Batch? batchTransaction,
+  }) =>
+      dao.upsertAll(
+        entities: dbItems,
+        batchTransaction: batchTransaction,
+      );
 
   @override
-  Future<int> upsertInDbType(Insertable<DbItem> dbItem) =>
-      dao.insert(entity: dbItem, mode: InsertMode.insertOrReplace);
+  Future upsertInDbType(
+    Insertable<DbItem> dbItem, {
+    required Batch? batchTransaction,
+  }) =>
+      dao.upsertBatch(
+        entity: dbItem,
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Stream<DbItem?> watchByDbIdInDbType(DbId dbId) =>
-      dao.findById(dbId).watchSingleOrNull();
+      dao.findByIdSelectable(dbId).watchSingleOrNull();
 
   @override
-  Future<int> deleteById(DbId id) => dao.deleteById(id);
+  Future deleteById(
+    DbId id, {
+    required Batch? batchTransaction,
+  }) =>
+      dao.deleteByIdBatch(
+        id,
+        batchTransaction: batchTransaction,
+      );
 
   @override
-  Future clear() => dao.clear();
+  Future clear({
+    required Batch? batchTransaction,
+  }) =>
+      dao.clear(
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future<List<DbItem>> findAllInDbType({
@@ -143,6 +172,23 @@ abstract class DatabaseDaoRepository<
     required SimpleSelectStatement<TableDsl, DbItem> query,
     required RepositoryPagination<DbItem>? pagination,
     required List<OrderingTerm>? orderingTerms,
+  }) {
+    addNewerOlderDbItemPagination(
+      query: query,
+      pagination: pagination,
+      orderingTerms: orderingTerms,
+    );
+
+    var limit = pagination?.limit;
+    if (limit != null) {
+      query.limit(limit, offset: pagination?.offset);
+    }
+  }
+
+  void addNewerOlderDbItemPagination({
+    required SimpleSelectStatement<TableDsl, DbItem> query,
+    required RepositoryPagination<DbItem>? pagination,
+    required List<OrderingTerm>? orderingTerms,
   });
 
   void addFiltersToQuery({
@@ -155,44 +201,4 @@ abstract class DatabaseDaoRepository<
     required List<OrderingTerm>? orderingTerms,
   });
 
-  CustomExpression<bool> createFindByDbIdWhereExpression(DbId dbId) =>
-      createMainTableEqualWhereExpression(
-        fieldName: idFieldName,
-        value: dbId,
-      );
-
-  void addFindByDbIdWhereToJoinedSelectStatement({
-    required JoinedSelectStatement joinedSelectStatement,
-    required DbId dbId,
-  }) {
-    joinedSelectStatement.where(
-      createFindByDbIdWhereExpression(dbId),
-    );
-  }
-
-  void addFindByDbIdWhereToSimpleSelectStatement({
-    required SimpleSelectStatement simpleSelectStatement,
-    required DbId dbId,
-  }) {
-    simpleSelectStatement.where(
-      (_) => createFindByDbIdWhereExpression(dbId),
-    );
-  }
-
-  CustomExpression<bool> createMainTableEqualWhereExpression({
-    required String fieldName,
-    required dynamic value,
-  }) =>
-      createEqualWhereExpression(
-        tableName: dao.table.$tableName,
-        fieldName: fieldName,
-        value: value,
-      );
-
-  static CustomExpression<bool> createEqualWhereExpression({
-    required String tableName,
-    required String fieldName,
-    required dynamic value,
-  }) =>
-      CustomExpression<bool>("$tableName.$fieldName = ${value.toString()}");
 }

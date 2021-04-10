@@ -19,8 +19,6 @@ abstract class AppRemoteDatabaseDaoRepository<
     implements
         IAppRemoteReadWriteRepository<DbItem, AppItem, RemoteItem, DbId,
             RemoteId, Filters, OrderingTerm> {
-  String get remoteIdFieldName => "remote_id";
-
   @override
   AppRemoteDatabaseDao<DbItem, DbId, RemoteId, TableDsl, TableInfoDsl> get dao;
 
@@ -30,7 +28,7 @@ abstract class AppRemoteDatabaseDaoRepository<
 
   @override
   Future<DbItem?> findByRemoteIdInDbType(RemoteId remoteId) =>
-      dao.findByRemoteId(remoteId).getSingleOrNull();
+      dao.findByRemoteIdSelectable(remoteId).getSingleOrNull();
 
   @override
   Future<RemoteItem?> findByRemoteIdInRemoteType(RemoteId remoteId) =>
@@ -39,55 +37,6 @@ abstract class AppRemoteDatabaseDaoRepository<
   @override
   Future<List<RemoteItem>> getAllInRemoteType() =>
       getAllInAppType().then(mapAppItemListToRemoteItemList);
-
-  @override
-  Future<AppItem?> findByRemoteIdInAppType(RemoteId remoteId) {}
-
-  @override
-  Future<int> insertInRemoteType(RemoteItem remoteItem);
-
-  @override
-  Future insertAllInRemoteType(List<RemoteItem> remoteItems);
-
-  @override
-  Future<bool> updateAppTypeByRemoteType({
-    required AppItem appItem,
-    required RemoteItem remoteItem,
-  }) {}
-
-  @override
-  Future<bool> updateByIdInRemoteType({
-    required DbId dbId,
-    required RemoteItem remoteItem,
-  }) {}
-
-  @override
-  Future<bool> updateDbTypeByRemoteType({
-    required DbItem dbItem,
-    required RemoteItem remoteItem,
-  }) {}
-
-  @override
-  Future<bool> updateRemoteTypeByDbType({
-    required DbItem dbItem,
-    required RemoteItem remoteItem,
-  }) {}
-
-  @override
-  Future upsertAllInRemoteType(List<RemoteItem> remoteItems);
-
-  @override
-  Future<int> upsertInRemoteType(RemoteItem remoteItem);
-
-  @override
-  Stream<AppItem?> watchByRemoteIdInAppType(RemoteId remoteId) {
-    var query = dao.startSelectQuery();
-
-    addFindByRemoteIdWhereToSimpleSelectStatement(
-        simpleSelectStatement: query, remoteId: remoteId);
-
-    convertSimpleSelectStatementToJoinedSelectStatement()
-  }
 
   @override
   Stream<List<RemoteItem>> watchAllInRemoteType() =>
@@ -99,7 +48,7 @@ abstract class AppRemoteDatabaseDaoRepository<
 
   @override
   Stream<DbItem?> watchByRemoteIdInDbType(RemoteId remoteId) =>
-      dao.findByRemoteId(remoteId).watchSingleOrNull();
+      dao.findByRemoteIdSelectable(remoteId).watchSingleOrNull();
 
   @override
   Stream<RemoteItem?> watchByRemoteIdInRemoteType(RemoteId remoteId) =>
@@ -118,9 +67,43 @@ abstract class AppRemoteDatabaseDaoRepository<
     }
   }
 
+  AppItem mapRemoteItemToAppItem(RemoteItem appItem);
+
+  List<AppItem> mapRemoteItemListToAppItemList(List<RemoteItem> remoteItems) =>
+      remoteItems.map(mapRemoteItemToAppItem).toList();
+
+  AppItem? mapRemoteItemToAppItemNullable(RemoteItem? remoteItem) {
+    if (remoteItem != null) {
+      return mapRemoteItemToAppItem(remoteItem);
+    } else {
+      return null;
+    }
+  }
+
+  DbItem mapRemoteItemToDbItem(RemoteItem remoteItem) => mapAppItemToDbItem(
+        mapRemoteItemToAppItem(remoteItem),
+      );
+
+  List<DbItem> mapRemoteItemListToDbItemList(List<RemoteItem> remoteItems) =>
+      remoteItems.map(mapRemoteItemToDbItem).toList();
+
+  DbItem? mapRemoteItemToDbItemNullable(RemoteItem? remoteItem) {
+    if (remoteItem != null) {
+      return mapRemoteItemToDbItem(remoteItem);
+    } else {
+      return null;
+    }
+  }
+
   @override
-  Future<int> deleteByRemoteId(RemoteId remoteId) =>
-      dao.deleteByRemoteId(remoteId);
+  Future deleteByRemoteId(
+    RemoteId remoteId, {
+    required Batch? batchTransaction,
+  }) =>
+      dao.deleteByRemoteId(
+        remoteId,
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future<List<RemoteItem>> findAllInRemoteType({
@@ -174,36 +157,27 @@ abstract class AppRemoteDatabaseDaoRepository<
     required RepositoryPagination<RemoteItem>? pagination,
     required Filters? filters,
     required List<OrderingTerm>? orderingTerms,
-  }) {}
-
-  CustomExpression<bool> createFindByRemoteIdWhereExpression(
-          RemoteId remoteId) =>
-      createMainTableEqualWhereExpression(
-        fieldName: remoteIdFieldName,
-        value: remoteId,
-      );
-
-  void addFindByRemoteIdWhereToJoinedSelectStatement({
-    required JoinedSelectStatement joinedSelectStatement,
-    required RemoteId remoteId,
-  }) {
-    joinedSelectStatement.where(
-      createFindByRemoteIdWhereExpression(remoteId),
-    );
-  }
-
-  void addFindByRemoteIdWhereToSimpleSelectStatement({
-    required SimpleSelectStatement simpleSelectStatement,
-    required RemoteId remoteId,
-  }) {
-    simpleSelectStatement.where(
-      (_) => createFindByRemoteIdWhereExpression(remoteId),
-    );
-  }
+  });
 
   void addRemoteItemPagination({
     required SimpleSelectStatement<TableDsl, DbItem> query,
     required RepositoryPagination<RemoteItem>? pagination,
     required List<OrderingTerm>? orderingTerms,
-  });
+  }) =>
+      addDbItemPagination(
+        query: query,
+        pagination: pagination != null
+            ? RepositoryPagination<DbItem>(
+                newerThanItem: mapRemoteItemToDbItemNullable(
+                  pagination.newerThanItem,
+                ),
+                olderThanItem: mapRemoteItemToDbItemNullable(
+                  pagination.olderThanItem,
+                ),
+                limit: pagination.limit,
+                offset: pagination.offset,
+              )
+            : null,
+        orderingTerms: orderingTerms,
+      );
 }

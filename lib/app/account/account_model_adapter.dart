@@ -6,10 +6,11 @@ import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 
 extension IPleromaAccountListDbExtension on List<IPleromaAccount> {
-  List<DbAccountWrapper> toDbAccountWrappers() => map(
+  List<DbAccountPopulatedWrapper> toDbAccountPopulatedWrappers() => map(
         (pleromaAccount) => pleromaAccount.toDbAccountWrapper(),
       ).toList();
 }
+
 extension IAccountListExtension on List<IAccount> {
   List<PleromaAccount> toPleromaAccounts() => map(
         (pleromaAccount) => pleromaAccount.toPleromaAccount(),
@@ -17,14 +18,18 @@ extension IAccountListExtension on List<IAccount> {
 }
 
 extension DbAccountExtension on DbAccount {
-  DbAccountWrapper toDbAccountWrapper() => DbAccountWrapper(
-        dbAccount: this,
+  DbAccountPopulatedWrapper toDbAccountWrapper() => DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: this,
+        ),
       );
 }
 
 extension IPleromaAccountDbExtension on IPleromaAccount {
-  DbAccountWrapper toDbAccountWrapper() => DbAccountWrapper(
-        dbAccount: toDbAccount(),
+  DbAccountPopulatedWrapper toDbAccountWrapper() => DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: toDbAccount(),
+        ),
       );
 
   DbAccount toDbAccount() => DbAccount(

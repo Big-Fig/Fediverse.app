@@ -10,17 +10,6 @@ part 'status_favourited_accounts_database_dao.g.dart';
   tables: [
     DbStatusFavouritedAccounts,
   ],
-  queries: {
-    "countAll": "SELECT Count(*) FROM db_status_favourited_accounts;",
-    "findById": "SELECT * FROM db_status_favourited_accounts WHERE id = :id;",
-    "countById":
-        "SELECT COUNT(*) FROM db_status_favourited_accounts WHERE id = :id;",
-    "deleteById": "DELETE FROM db_status_favourited_accounts WHERE id = :id;",
-    "deleteByStatusRemoteId": "DELETE FROM db_status_favourited_accounts WHERE "
-        "status_remote_id = :statusRemoteId;",
-    "clear": "DELETE FROM db_status_favourited_accounts",
-    "getAll": "SELECT * FROM db_status_favourited_accounts",
-  },
 )
 class StatusFavouritedAccountsDao extends AppDatabaseDao<
     DbStatusFavouritedAccount,

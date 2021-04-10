@@ -18,27 +18,6 @@ var _statusReblogAccountAliasId = "status_reblog_account";
   tables: [
     DbNotifications,
   ],
-  queries: {
-    "findById": "SELECT * FROM db_notifications WHERE id = :id;",
-    "findByRemoteId":
-    "SELECT * FROM db_notifications WHERE remote_id LIKE :remoteId;",
-    "getAll": "SELECT * FROM db_notifications",
-    "countAll": "SELECT Count(*) FROM db_notifications;",
-    "countById": "SELECT COUNT(*) FROM db_notifications WHERE id = :id;",
-    "oldest": "SELECT * FROM db_notifications ORDER BY created_at ASC LIMIT 1;",
-    "deleteById": "DELETE FROM db_notifications WHERE id = :id;",
-    "deleteByRemoteId": "DELETE FROM db_notifications WHERE remote_id = :remoteId;",
-    "clear": "DELETE FROM db_notifications",
-    "findLocalIdByRemoteId":
-        "SELECT id FROM db_notifications WHERE remote_id = "
-            ":remoteId;",
-    "deleteOlderThanDate":
-        "DELETE FROM db_notifications WHERE created_at < :createdAt",
-    "deleteOlderThanLocalId": "DELETE FROM db_notifications WHERE id = "
-        ":id;",
-    "getNewestByLocalIdWithOffset":
-        "SELECT * FROM db_notifications ORDER BY id DESC LIMIT 1 OFFSET :offset",
-  },
 )
 class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     DbNotification,

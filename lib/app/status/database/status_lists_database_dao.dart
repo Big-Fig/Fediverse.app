@@ -9,18 +9,6 @@ part 'status_lists_database_dao.g.dart';
   tables: [
     DbStatusLists,
   ],
-  queries: {
-    "countAll": "SELECT Count(*) FROM db_status_lists;",
-    "findById": "SELECT * FROM db_status_lists WHERE id = :id;",
-    "countById": "SELECT COUNT(*) FROM db_status_lists WHERE id = :id;",
-    "deleteById": "DELETE FROM db_status_lists WHERE id = :id;",
-    "deleteByRemoteId":
-        "DELETE FROM db_status_lists WHERE list_remote_id = :listRemoteId;",
-    "clear": "DELETE FROM db_status_lists",
-    "getAll": "SELECT * FROM db_status_lists",
-    "findByListRemoteId":
-        "SELECT * FROM db_status_lists WHERE list_remote_id = :listRemoteId;",
-  },
 )
 class StatusListsDao extends AppDatabaseDao<DbStatusList, int,
     $DbStatusListsTable, $DbStatusListsTable> with _$StatusListsDaoMixin {

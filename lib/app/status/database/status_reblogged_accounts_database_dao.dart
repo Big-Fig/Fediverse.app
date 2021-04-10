@@ -9,17 +9,6 @@ part 'status_reblogged_accounts_database_dao.g.dart';
   tables: [
     DbStatusRebloggedAccounts,
   ],
-  queries: {
-    "countAll": "SELECT Count(*) FROM db_status_reblogged_accounts;",
-    "findById": "SELECT * FROM db_status_reblogged_accounts WHERE id = :id;",
-    "countById":
-        "SELECT COUNT(*) FROM db_status_reblogged_accounts WHERE id = :id;",
-    "deleteById": "DELETE FROM db_status_reblogged_accounts WHERE id = :id;",
-    "deleteByStatusRemoteId": "DELETE FROM db_status_reblogged_accounts WHERE "
-        "status_remote_id = :statusRemoteId;",
-    "clear": "DELETE FROM db_status_reblogged_accounts",
-    "getAll": "SELECT * FROM db_status_reblogged_accounts",
-  },
 )
 class StatusRebloggedAccountsDao extends AppDatabaseDao<
     DbStatusRebloggedAccount,

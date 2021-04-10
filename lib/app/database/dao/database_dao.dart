@@ -9,6 +9,10 @@ abstract class DatabaseDao<
     extends DatabaseAccessor<AppDatabase> {
   TableInfoDsl get table;
 
+  String get tableName => table.$tableName;
+
+  String get idFieldName => "id";
+
   DatabaseDao(AppDatabase db) : super(db);
 
   SimpleSelectStatement<TableDsl, DbItem> startSelectQuery() => (select(table));
@@ -27,6 +31,16 @@ abstract class DatabaseDao<
   }) =>
       insertBatch(
         entity: entity,
+        batchTransaction: batchTransaction,
+        mode: InsertMode.insertOrReplace,
+      );
+
+  Future upsertAll({
+    required List<Insertable<DbItem>> entities,
+    required Batch? batchTransaction,
+  }) =>
+      insertAll(
+        entities: entities,
         batchTransaction: batchTransaction,
         mode: InsertMode.insertOrReplace,
       );
@@ -74,7 +88,7 @@ abstract class DatabaseDao<
   Future insertAll({
     required List<Insertable<DbItem>> entities,
     required InsertMode? mode,
-    Batch? batchTransaction,
+    required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
       _insertAll(
@@ -103,15 +117,253 @@ abstract class DatabaseDao<
     );
   }
 
-  Selectable<int> countAll();
+  Future<int> countAll() => countAllSelectable().getSingle();
 
-  Selectable<DbItem> getAll();
+  Stream<int> watchCountAll() => countAllSelectable().watchSingle();
 
-  Selectable<DbItem> findById(DbId id);
+  Selectable<int> countAllSelectable() => customSelect(
+        'SELECT COUNT(*) FROM $tableName',
+        readsFrom: {table},
+      ).map(
+        (QueryRow row) => row.readInt(
+          'COUNT(*)',
+        ),
+      );
 
-  Selectable<int> countById(DbId id);
+  Future<List<DbItem>> getAll() => getAllSelectable().get();
 
-  Future<int> deleteById(DbId id);
+  Stream<List<DbItem>> watchGetAll() => getAllSelectable().watch();
 
-  Future<int> clear();
+  Selectable<DbItem> getAllSelectable() => customSelect(
+        'SELECT * FROM $tableName',
+        variables: [],
+        readsFrom: {table},
+      ).map(table.mapFromRow);
+
+  Future<DbItem> getNewestOrderById({required int? offset}) =>
+      getNewestOrderByIdSelectable(offset: offset).getSingle();
+
+  Stream<DbItem> watchGetNewestOrderById({required int? offset}) =>
+      getNewestOrderByIdSelectable(offset: offset).watchSingle();
+
+  Selectable<DbItem> getNewestOrderByIdSelectable({required int? offset}) =>
+      customSelect(
+        'SELECT * FROM $tableName '
+                'ORDER BY $idFieldName ASC'
+                'LIMIT 1' +
+            _createOffsetContent(offset),
+        variables: [Variable(offset)],
+        readsFrom: {table},
+      ).map(table.mapFromRow);
+
+  Future<DbItem> getOldestOrderById({required int? offset}) =>
+      getOldestOrderByIdSelectable(offset: offset).getSingle();
+
+  Stream<DbItem> watchGetOldestOrderById({required int? offset}) =>
+      getOldestOrderByIdSelectable(offset: offset).watchSingle();
+
+  Selectable<DbItem> getOldestOrderByIdSelectable({required int? offset}) =>
+      customSelect(
+        'SELECT * FROM $tableName '
+                'ORDER BY $idFieldName DESC'
+                'LIMIT 1' +
+            _createOffsetContent(offset),
+        variables: [Variable(offset)],
+        readsFrom: {table},
+      ).map(table.mapFromRow);
+
+  String _createOffsetContent(int? offset) =>
+      (offset != null ? " OFFSET :offset" : "");
+
+  Future<DbItem> findById(DbId id) => findByIdSelectable(id).getSingle();
+
+  Stream<DbItem> watchFindById(DbId id) => findByIdSelectable(id).watchSingle();
+
+  Selectable<DbItem> findByIdSelectable(DbId id) => customSelect(
+        'SELECT * FROM $tableName '
+        'WHERE ${createFindByDbIdWhereExpressionContent(id)} '
+        'LIMIT 1',
+        variables: [Variable(id)],
+        readsFrom: {table},
+      ).map(table.mapFromRow);
+
+  String createFindByDbIdWhereExpressionContent(DbId id) =>
+      createFindByDbIdWhereExpression(id).content;
+
+  Future<int> countById(DbId id) => countByIdSelectable(id).getSingle();
+
+  Stream<int> watchCountById(DbId id) => countByIdSelectable(id).watchSingle();
+
+  Selectable<int> countByIdSelectable(DbId id) => customSelect(
+        'SELECT COUNT(*) FROM $tableName '
+        'WHERE ${createFindByDbIdWhereExpressionContent(id)}',
+        variables: [Variable(id)],
+        readsFrom: {table},
+      ).map(
+        (QueryRow row) => row.readInt(
+          'COUNT(*)',
+        ),
+      );
+
+  Future<int> deleteById(DbId id) => customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${createFindByDbIdWhereExpressionContent(id)}',
+        variables: [Variable(id)],
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+
+  Future deleteByIdBatch(
+    DbId id, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => createFindByDbIdWhereExpression(id),
+      );
+    } else {
+      return await deleteById(id);
+    }
+  }
+
+  Future deleteOlderThanDateTime(
+    DateTime dateTime, {
+    required String fieldName,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => createOlderThanDateTimeWhereExpression(
+          fieldName: fieldName,
+          dateTimeValue: dateTime,
+        ),
+      );
+    } else {
+      return await batch(
+        (batch) => deleteOlderThanDateTime(
+          dateTime,
+          fieldName: fieldName,
+          batchTransaction: batchTransaction,
+        ),
+      );
+    }
+  }
+
+  Future deleteOlderThanString(
+    String string, {
+    required String fieldName,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => createOlderThanStringWhereExpression(
+          fieldName: fieldName,
+          stringValue: string,
+        ),
+      );
+    } else {
+      return await batch(
+        (batch) => deleteOlderThanString(
+          string,
+          fieldName: fieldName,
+          batchTransaction: batchTransaction,
+        ),
+      );
+    }
+  }
+
+  Future deleteOlderThanInt(
+    int intValue, {
+    required String fieldName,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => createOlderThanIntWhereExpression(
+          fieldName: fieldName,
+          intValue: intValue,
+        ),
+      );
+    } else {
+      return await batch(
+        (batch) => deleteOlderThanInt(
+          intValue,
+          fieldName: fieldName,
+          batchTransaction: batchTransaction,
+        ),
+      );
+    }
+  }
+
+  Future clear({
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => const Constant(true),
+      );
+    } else {
+      return await customUpdate(
+        'DELETE FROM $tableName',
+        variables: [],
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+    }
+  }
+
+  CustomExpression<bool> createFindByDbIdWhereExpression(DbId dbId) =>
+      createMainTableEqualWhereExpression(
+        fieldName: idFieldName,
+        value: dbId,
+      );
+
+  CustomExpression<bool> createOlderThanStringWhereExpression({
+    required String fieldName,
+    required String stringValue,
+  }) =>
+      CustomExpression<bool>("$tableName.$fieldName < $stringValue");
+
+  CustomExpression<bool> createOlderThanIntWhereExpression({
+    required String fieldName,
+    required int intValue,
+  }) =>
+      CustomExpression<bool>("$tableName.$fieldName < $intValue");
+
+  CustomExpression<bool> createOlderThanDateTimeWhereExpression({
+    required String fieldName,
+    required DateTime dateTimeValue,
+  }) =>
+      CustomExpression<bool>("$tableName.$fieldName < $dateTimeValue");
+
+  void addFindByDbIdWhereToSimpleSelectStatement({
+    required SimpleSelectStatement simpleSelectStatement,
+    required DbId dbId,
+  }) {
+    simpleSelectStatement.where(
+      (_) => createFindByDbIdWhereExpression(dbId),
+    );
+  }
+
+  CustomExpression<bool> createMainTableEqualWhereExpression({
+    required String fieldName,
+    required dynamic value,
+  }) =>
+      createEqualWhereExpression(
+        tableName: tableName,
+        fieldName: fieldName,
+        value: value,
+      );
+
+  static CustomExpression<bool> createEqualWhereExpression({
+    required String tableName,
+    required String fieldName,
+    required dynamic value,
+  }) =>
+      CustomExpression<bool>("$tableName.$fieldName = ${value.toString()}");
 }

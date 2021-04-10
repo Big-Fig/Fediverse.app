@@ -9,9 +9,81 @@ abstract class AppRemoteDatabaseDao<
         TableDsl extends Table,
         TableInfoDsl extends TableInfo<TableDsl, DbItem>>
     extends AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl> {
+  String get remoteIdFieldName => "remote_id";
+
   AppRemoteDatabaseDao(AppDatabase db) : super(db);
 
-  Future<int> deleteByRemoteId(RemoteId remoteId);
+  Future<int> deleteByRemoteId(RemoteId remoteId) => customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${createFindByRemoteIdWhereExpression(remoteId)}',
+        variables: [Variable(remoteId)],
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
 
-  Selectable<DbItem> findByRemoteId(RemoteId remoteId);
+  Future deleteByRemoteIdBatch(
+    RemoteId remoteId, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => createFindByRemoteIdWhereExpression(remoteId),
+      );
+    } else {
+      return await deleteByRemoteId(remoteId);
+    }
+  }
+
+  Future<DbId> findLocalIdByRemoteId(RemoteId remoteId) =>
+      findLocalIdByRemoteIdSelectable(remoteId).getSingle();
+
+  Stream<DbId> watchFindLocalIdByRemoteId(RemoteId remoteId) =>
+      findLocalIdByRemoteIdSelectable(remoteId).watchSingle();
+
+  Selectable<DbId> findLocalIdByRemoteIdSelectable(RemoteId remoteId) =>
+      customSelect(
+        'SELECT $idFieldName FROM $tableName '
+        'WHERE ${createFindByRemoteIdWhereExpressionContent(remoteId)}',
+        variables: [Variable(remoteId)],
+        readsFrom: {table},
+      ).map(
+        (QueryRow row) => row.read<DbId>(
+          idFieldName,
+        ),
+      );
+
+  Future<DbItem> findByRemoteId(RemoteId remoteId) =>
+      findByRemoteIdSelectable(remoteId).getSingle();
+
+  Stream<DbItem> watchFindByRemoteId(RemoteId remoteId) =>
+      findByRemoteIdSelectable(remoteId).watchSingle();
+
+  Selectable<DbItem> findByRemoteIdSelectable(RemoteId remoteId) =>
+      customSelect(
+        'SELECT * FROM $tableName '
+        'WHERE ${createFindByRemoteIdWhereExpressionContent(remoteId)} '
+        'LIMIT 1',
+        variables: [Variable(remoteId)],
+        readsFrom: {table},
+      ).map(table.mapFromRow);
+
+  CustomExpression<bool> createFindByRemoteIdWhereExpression(
+          RemoteId remoteId) =>
+      createMainTableEqualWhereExpression(
+        fieldName: remoteIdFieldName,
+        value: remoteId,
+      );
+
+  String createFindByRemoteIdWhereExpressionContent(RemoteId remoteId) =>
+      createFindByRemoteIdWhereExpression(remoteId).content;
+
+  void addFindByRemoteIdWhereToSimpleSelectStatement({
+    required SimpleSelectStatement simpleSelectStatement,
+    required RemoteId remoteId,
+  }) {
+    simpleSelectStatement.where(
+      (_) => createFindByRemoteIdWhereExpression(remoteId),
+    );
+  }
 }

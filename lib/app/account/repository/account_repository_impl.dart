@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/database/account_database_dao.dart';
@@ -11,7 +10,7 @@ import 'package:fedi/app/chat/conversation/database/conversation_chat_accounts_d
 import 'package:fedi/app/chat/pleroma/database/pleroma_chat_accounts_database_dao.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/database/dao/repository/remote/simple_app_remote_database_dao_repository.dart';
+import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
 import 'package:fedi/app/status/database/status_favourited_accounts_database_dao.dart';
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_dao.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
@@ -21,15 +20,9 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("account_repository_impl.dart");
 
-var _singleAccountRepositoryPagination = RepositoryPagination<IAccount>(
-  limit: 1,
-  newerThanItem: null,
-  offset: null,
-  olderThanItem: null,
-);
-
-class AccountRepository extends SimpleAppRemoteDatabaseDaoRepository<
+class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbAccount,
+    DbAccountPopulated,
     IAccount,
     IPleromaAccount,
     int,
@@ -59,114 +52,114 @@ class AccountRepository extends SimpleAppRemoteDatabaseDaoRepository<
     chatAccountsDao = appDatabase.chatAccountsDao;
   }
 
-  @override
-  Future upsertRemoteAccount(
-    IPleromaAccount pleromaAccount, {
-    required String? conversationRemoteId,
-    required String? chatRemoteId,
-  }) async {
-    await upsertInRemoteType(
-      pleromaAccount,
-    );
-
-    if (conversationRemoteId != null) {
-      var accountRemoteId = pleromaAccount.id;
-
-      await conversationAccountsDao.insert(
-        entity: DbConversationAccount(
-          id: null,
-          conversationRemoteId: conversationRemoteId,
-          accountRemoteId: accountRemoteId,
-        ),
-        mode: InsertMode.insertOrReplace,
-      );
-    }
-    if (chatRemoteId != null) {
-      var accountRemoteId = pleromaAccount.id;
-
-      await chatAccountsDao.insert(
-        entity: DbChatAccount(
-          id: null,
-          chatRemoteId: chatRemoteId,
-          accountRemoteId: accountRemoteId,
-        ),
-        mode: InsertMode.insertOrReplace,
-      );
-    }
-  }
-
-  @override
-  Future upsertRemoteAccounts(
-    List<IPleromaAccount> pleromaAccounts, {
-    required String? conversationRemoteId,
-    required String? chatRemoteId,
-  }) async {
-    if (conversationRemoteId != null) {
-      var existConversationAccount = await conversationAccountsDao
-          .findByConversationRemoteId(conversationRemoteId)
-          .get();
-
-      var accountsToInsert = pleromaAccounts.where(
-        (remoteAccount) {
-          var found = existConversationAccount.firstWhereOrNull(
-            (conversationAccount) =>
-                conversationAccount.accountRemoteId == remoteAccount.id,
-          );
-          var exist = found != null;
-          return !exist;
-        },
-      );
-
-      if (accountsToInsert.isNotEmpty == true) {
-        await conversationAccountsDao.insertAll(
-          entities: accountsToInsert
-              .map(
-                (accountToInsert) => DbConversationAccount(
-                  id: null,
-                  conversationRemoteId: conversationRemoteId,
-                  accountRemoteId: accountToInsert.id,
-                ),
-              )
-              .toList(),
-          mode: InsertMode.insertOrReplace,
-        );
-      }
-    }
-
-    if (chatRemoteId != null) {
-      var existChatAccounts =
-          await chatAccountsDao.findByChatRemoteId(chatRemoteId).get();
-
-      var accountsToInsert = pleromaAccounts.where(
-        (remoteAccount) {
-          var found = existChatAccounts.firstWhereOrNull(
-            (chatAccount) => chatAccount.accountRemoteId == remoteAccount.id,
-          );
-          var exist = found != null;
-          return !exist;
-        },
-      );
-
-      if (accountsToInsert.isNotEmpty == true) {
-        await chatAccountsDao.insertAll(
-          entities: accountsToInsert
-              .map(
-                (accountToInsert) => DbChatAccount(
-                  id: null,
-                  chatRemoteId: chatRemoteId,
-                  accountRemoteId: accountToInsert.id,
-                ),
-              )
-              .toList(),
-          mode: InsertMode.insertOrReplace,
-        );
-      }
-    }
-
-    if (pleromaAccounts.isNotEmpty) {
-      await upsertAllInRemoteType(pleromaAccounts);
-    }
-  }
+  // @override
+  // Future upsertRemoteAccount(
+  //   IPleromaAccount pleromaAccount, {
+  //   required String? conversationRemoteId,
+  //   required String? chatRemoteId,
+  // }) async {
+  //   await upsertInRemoteType(
+  //     pleromaAccount,
+  //   );
+  //
+  //   if (conversationRemoteId != null) {
+  //     var accountRemoteId = pleromaAccount.id;
+  //
+  //     await conversationAccountsDao.insert(
+  //       entity: DbConversationAccount(
+  //         id: null,
+  //         conversationRemoteId: conversationRemoteId,
+  //         accountRemoteId: accountRemoteId,
+  //       ),
+  //       mode: InsertMode.insertOrReplace,
+  //     );
+  //   }
+  //   if (chatRemoteId != null) {
+  //     var accountRemoteId = pleromaAccount.id;
+  //
+  //     await chatAccountsDao.insert(
+  //       entity: DbChatAccount(
+  //         id: null,
+  //         chatRemoteId: chatRemoteId,
+  //         accountRemoteId: accountRemoteId,
+  //       ),
+  //       mode: InsertMode.insertOrReplace,
+  //     );
+  //   }
+  // }
+  //
+  // @override
+  // Future upsertRemoteAccounts(
+  //   List<IPleromaAccount> pleromaAccounts, {
+  //   required String? conversationRemoteId,
+  //   required String? chatRemoteId,
+  // }) async {
+  //   if (conversationRemoteId != null) {
+  //     var existConversationAccount = await conversationAccountsDao
+  //         .findByConversationRemoteId(conversationRemoteId)
+  //         .get();
+  //
+  //     var accountsToInsert = pleromaAccounts.where(
+  //       (remoteAccount) {
+  //         var found = existConversationAccount.firstWhereOrNull(
+  //           (conversationAccount) =>
+  //               conversationAccount.accountRemoteId == remoteAccount.id,
+  //         );
+  //         var exist = found != null;
+  //         return !exist;
+  //       },
+  //     );
+  //
+  //     if (accountsToInsert.isNotEmpty == true) {
+  //       await conversationAccountsDao.insertAll(
+  //         entities: accountsToInsert
+  //             .map(
+  //               (accountToInsert) => DbConversationAccount(
+  //                 id: null,
+  //                 conversationRemoteId: conversationRemoteId,
+  //                 accountRemoteId: accountToInsert.id,
+  //               ),
+  //             )
+  //             .toList(),
+  //         mode: InsertMode.insertOrReplace,
+  //       );
+  //     }
+  //   }
+  //
+  //   if (chatRemoteId != null) {
+  //     var existChatAccounts =
+  //         await chatAccountsDao.findByChatRemoteId(chatRemoteId).get();
+  //
+  //     var accountsToInsert = pleromaAccounts.where(
+  //       (remoteAccount) {
+  //         var found = existChatAccounts.firstWhereOrNull(
+  //           (chatAccount) => chatAccount.accountRemoteId == remoteAccount.id,
+  //         );
+  //         var exist = found != null;
+  //         return !exist;
+  //       },
+  //     );
+  //
+  //     if (accountsToInsert.isNotEmpty == true) {
+  //       await chatAccountsDao.insertAll(
+  //         entities: accountsToInsert
+  //             .map(
+  //               (accountToInsert) => DbChatAccount(
+  //                 id: null,
+  //                 chatRemoteId: chatRemoteId,
+  //                 accountRemoteId: accountToInsert.id,
+  //               ),
+  //             )
+  //             .toList(),
+  //         mode: InsertMode.insertOrReplace,
+  //       );
+  //     }
+  //   }
+  //
+  //   if (pleromaAccounts.isNotEmpty) {
+  //     await upsertAllInRemoteType(pleromaAccounts);
+  //   }
+  // }
 
   //
   // @override
@@ -191,145 +184,110 @@ class AccountRepository extends SimpleAppRemoteDatabaseDaoRepository<
   // }
 
   @override
-  Future<List<DbAccountWrapper>> getAccounts({
-    required AccountRepositoryFilters? filters,
-    required RepositoryPagination<IAccount>? pagination,
-    AccountRepositoryOrderingTermData? orderingTermData =
-        AccountRepositoryOrderingTermData.remoteIdDesc,
-  }) async {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return (await query.get())
-        .toDbAccountList(dao: dao)
-        .toDbAccountWrapperList();
-  }
-
-  @override
-  Stream<List<DbAccountWrapper>> watchAccounts({
-    required AccountRepositoryFilters? filters,
-    required RepositoryPagination<IAccount>? pagination,
-    AccountRepositoryOrderingTermData? orderingTermData =
-        AccountRepositoryOrderingTermData.remoteIdDesc,
-  }) {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return query.watch().map(
-          (list) => list.toDbAccountList(dao: dao).toDbAccountWrapperList(),
-        );
-  }
-
-  @override
-  Future<DbAccountWrapper?> getAccount({
-    required AccountRepositoryFilters? filters,
-    AccountRepositoryOrderingTermData? orderingTermData =
-        AccountRepositoryOrderingTermData.remoteIdDesc,
-  }) async {
-    var accounts = await getAccounts(
-      filters: filters,
-      pagination: _singleAccountRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return accounts.firstOrNull;
-  }
-
-  @override
-  Stream<DbAccountWrapper?> watchAccount({
-    required AccountRepositoryFilters? filters,
-    AccountRepositoryOrderingTermData? orderingTermData =
-        AccountRepositoryOrderingTermData.remoteIdDesc,
-  }) {
-    var accountsStream = watchAccounts(
-      filters: filters,
-      pagination: _singleAccountRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-    return accountsStream.map(
-      (accounts) => accounts.firstOrNull,
-    );
-  }
-
-  @override
   Future addAccountFollowings({
     required String accountRemoteId,
     required List<PleromaAccount> followings,
+    required Batch? batchTransaction,
   }) async {
-    await upsertRemoteAccounts(
-      followings,
-      conversationRemoteId: null,
-      chatRemoteId: null,
-    );
-    // await accountFollowingsDao.deleteByAccountRemoteId(accountRemoteId);
-    await accountFollowingsDao.insertAll(
-      entities: followings
-          .map(
-            (followingAccount) => DbAccountFollowing(
-              id: null,
-              accountRemoteId: accountRemoteId,
-              followingAccountRemoteId: followingAccount.id,
-            ),
-          )
-          .toList(),
-      mode: InsertMode.insertOrReplace,
-    );
+    if (batchTransaction == null) {
+      await dao.batch(
+        (batch) => addAccountFollowings(
+          accountRemoteId: accountRemoteId,
+          followings: followings,
+          batchTransaction: batch,
+        ),
+      );
+    } else {
+      await upsertAllInRemoteType(
+        followings,
+        batchTransaction: batchTransaction,
+      );
+      // await accountFollowingsDao.deleteByAccountRemoteId(accountRemoteId);
+      await accountFollowingsDao.insertAll(
+        entities: followings
+            .map(
+              (followingAccount) => DbAccountFollowing(
+                id: null,
+                accountRemoteId: accountRemoteId,
+                followingAccountRemoteId: followingAccount.id,
+              ),
+            )
+            .toList(),
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
+      );
+    }
   }
 
   @override
   Future addAccountFollowers({
     required String accountRemoteId,
     required List<IPleromaAccount> followers,
+    required Batch? batchTransaction,
   }) async {
-    await upsertRemoteAccounts(
-      followers,
-      conversationRemoteId: null,
-      chatRemoteId: null,
-    );
-    // await accountFollowersDao.deleteByAccountRemoteId(accountRemoteId);
-    await accountFollowersDao.insertAll(
-      entities: followers
-          .map(
-            (followerAccount) => DbAccountFollower(
-              id: null,
-              accountRemoteId: accountRemoteId,
-              followerAccountRemoteId: followerAccount.id,
-            ),
-          )
-          .toList(),
-      mode: InsertMode.insertOrReplace,
-    );
+    if (batchTransaction == null) {
+      await dao.batch(
+        (batch) => addAccountFollowers(
+          accountRemoteId: accountRemoteId,
+          followers: followers,
+          batchTransaction: batch,
+        ),
+      );
+    } else {
+      await upsertAllInRemoteType(
+        followers,
+        batchTransaction: batchTransaction,
+      );
+      // await accountFollowersDao.deleteByAccountRemoteId(accountRemoteId);
+      await accountFollowersDao.insertAll(
+        entities: followers
+            .map(
+              (followerAccount) => DbAccountFollower(
+                id: null,
+                accountRemoteId: accountRemoteId,
+                followerAccountRemoteId: followerAccount.id,
+              ),
+            )
+            .toList(),
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
+      );
+    }
   }
 
   @override
   Future updateStatusFavouritedBy({
     required String statusRemoteId,
     required List<IPleromaAccount> favouritedByAccounts,
+    required Batch? batchTransaction,
   }) async {
-    await upsertRemoteAccounts(
-      favouritedByAccounts,
-      conversationRemoteId: null,
-      chatRemoteId: null,
-    );
-    await statusFavouritedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
-    await statusFavouritedAccountsDao.insertAll(
-      entities: favouritedByAccounts
-          .map(
-            (favouritedByAccount) => DbStatusFavouritedAccount(
-              id: null,
-              accountRemoteId: favouritedByAccount.id,
-              statusRemoteId: statusRemoteId,
-            ),
-          )
-          .toList(),
-      mode: InsertMode.insertOrReplace,
-    );
+    if (batchTransaction == null) {
+      await dao.batch(
+        (batch) => updateStatusFavouritedBy(
+          statusRemoteId: statusRemoteId,
+          favouritedByAccounts: favouritedByAccounts,
+          batchTransaction: batch,
+        ),
+      );
+    } else {
+      await upsertRemoteAccounts(
+        favouritedByAccounts,
+        batchTransaction: batchTransaction,
+      );
+      await statusFavouritedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
+      await statusFavouritedAccountsDao.insertAll(
+        entities: favouritedByAccounts
+            .map(
+              (favouritedByAccount) => DbStatusFavouritedAccount(
+                id: null,
+                accountRemoteId: favouritedByAccount.id,
+                statusRemoteId: statusRemoteId,
+              ),
+            )
+            .toList(),
+        mode: InsertMode.insertOrReplace,
+      );
+    }
   }
 
   @override
@@ -541,6 +499,10 @@ class AccountRepository extends SimpleAppRemoteDatabaseDaoRepository<
       remoteItem.toDbAccount();
 
   @override
+  IAccount mapRemoteItemToAppItem(IPleromaAccount appItem) =>
+      appItem.toDbAccountWrapper();
+
+  @override
   AccountRepositoryFilters get emptyFilters => AccountRepositoryFilters.empty;
 
   @override
@@ -548,8 +510,27 @@ class AccountRepository extends SimpleAppRemoteDatabaseDaoRepository<
       AccountRepositoryOrderingTermData.defaultTerms;
 
   @override
+  void addNewerOlderDbItemPagination({
+    required SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
+    required RepositoryPagination<DbAccount>? pagination,
+    required List<AccountRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTerms?.length == 1);
+      var orderingTermData = orderingTerms!.first;
+      assert(orderingTermData.orderType == AccountOrderType.remoteId);
+      query = dao.addRemoteIdBoundsWhere(
+        query,
+        maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
+        minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
+      );
+    }
+  }
+
+  @override
   void addFiltersToQuery({
-    required Query<Table, DataClass> query,
+    required SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
     required AccountRepositoryFilters? filters,
   }) {
     // TODO: implement addFiltersToQuery
@@ -557,23 +538,88 @@ class AccountRepository extends SimpleAppRemoteDatabaseDaoRepository<
 
   @override
   void addOrderingToQuery({
-    required Query<Table, DataClass> query,
+    required SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
     required List<AccountRepositoryOrderingTermData>? orderingTerms,
   }) {
-    // TODO: implement addOrderingToQuery
+    dao.orderBy(
+      query,
+      orderingTerms ?? [],
+    );
   }
 
   @override
-  Future insertAllInRemoteType(List<IPleromaAccount> remoteItems) {}
+  Future upsertChatRemoteAccount(
+    IPleromaAccount remoteAccount, {
+    required String chatRemoteId,
+    required Batch? batchTransaction,
+  }) {
+    // TODO: implement upsertChatRemoteAccount
+    throw UnimplementedError();
+  }
 
   @override
-  Future<int> insertInRemoteType(IPleromaAccount remoteItem) {}
+  Future upsertChatRemoteAccounts(
+    List<IPleromaAccount> remoteAccount, {
+    required String chatRemoteId,
+  }) {
+    // TODO: implement upsertChatRemoteAccounts
+    throw UnimplementedError();
+  }
 
   @override
-  Future upsertAllInRemoteType(List<IPleromaAccount> remoteItems) {}
+  Future upsertConversationRemoteAccount(
+    IPleromaAccount remoteAccount, {
+    required String conversationRemoteId,
+    required Batch? batchTransaction,
+  }) {
+    // TODO: implement upsertConversationRemoteAccount
+    throw UnimplementedError();
+  }
 
   @override
-  Future<int> upsertInRemoteType(IPleromaAccount remoteItem) {}
+  Future upsertConversationRemoteAccounts(
+    List<IPleromaAccount> remoteAccounts, {
+    required String conversationRemoteId,
+    required Batch? batchTransaction,
+  }) {
+    // TODO: implement upsertConversationRemoteAccounts
+    throw UnimplementedError();
+  }
+
+  @override
+  JoinedSelectStatement<Table, DataClass>
+      convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
+    required AccountRepositoryFilters? filters,
+  }) {
+    // TODO: implement convertSimpleSelectStatementToJoinedSelectStatement
+    throw UnimplementedError();
+  }
+
+  @override
+  DbAccountPopulated mapAppItemToDbPopulatedItem(IAccount appItem) {
+    // TODO: implement mapAppItemToDbPopulatedItem
+    throw UnimplementedError();
+  }
+
+  @override
+  IAccount mapDbPopulatedItemToAppItem(DbAccountPopulated dbPopulatedItem) {
+    // TODO: implement mapDbPopulatedItemToAppItem
+    throw UnimplementedError();
+  }
+
+  @override
+  IPleromaAccount mapDbPopulatedItemToRemoteItem(
+      DbAccountPopulated dbPopulatedItem) {
+    // TODO: implement mapDbPopulatedItemToRemoteItem
+    throw UnimplementedError();
+  }
+
+  @override
+  DbAccountPopulated mapTypedResultToDbPopulatedItem(TypedResult typedResult) {
+    // TODO: implement mapTypedResultToDbPopulatedItem
+    throw UnimplementedError();
+  }
 }
 
 extension DbAccountListExtension on List<DbAccount> {
