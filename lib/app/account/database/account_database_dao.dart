@@ -24,7 +24,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     int,
     String,
     $DbAccountsTable,
-    $DbAccountsTable> with _$AccountDaoMixin {
+    $DbAccountsTable, AccountRepositoryFilters> with _$AccountDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable? accountAlias;
   late $DbAccountFollowingsTable accountFollowingsAlias;

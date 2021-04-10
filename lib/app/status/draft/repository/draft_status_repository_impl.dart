@@ -158,7 +158,7 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
   }) =>
       insertInAppType(
         draftStatus,
-        insertMode: null,
+        mode: null,
       );
 
   @override

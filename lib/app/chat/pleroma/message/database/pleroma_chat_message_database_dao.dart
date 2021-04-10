@@ -19,7 +19,8 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     int,
     String,
     $DbChatMessagesTable,
-    $DbChatMessagesTable> with _$ChatMessageDaoMixin {
+    $DbChatMessagesTable,
+    PleromaChatMessageRepositoryFilters> with _$ChatMessageDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
 

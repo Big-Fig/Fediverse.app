@@ -54,15 +54,13 @@ abstract class DatabaseDaoRepository<
       );
 
   @override
-  Future insertInDbType(
+  Future<int> insertInDbType(
     Insertable<DbItem> dbItem, {
     required InsertMode? mode,
-    required Batch? batchTransaction,
   }) =>
-      dao.insertBatch(
+      dao.insert(
         entity: dbItem,
         mode: mode,
-        batchTransaction: batchTransaction,
       );
 
   @override
@@ -76,13 +74,8 @@ abstract class DatabaseDaoRepository<
       );
 
   @override
-  Future upsertInDbType(
-    Insertable<DbItem> dbItem, {
-    required Batch? batchTransaction,
-  }) =>
-      dao.upsertBatch(
+  Future<int> upsertInDbType(Insertable<DbItem> dbItem) => dao.upsert(
         entity: dbItem,
-        batchTransaction: batchTransaction,
       );
 
   @override
@@ -202,5 +195,44 @@ abstract class DatabaseDaoRepository<
   });
 
   @override
+  Future<int> findCount({
+    required Filters? filters,
+  }) async {
+    // todo: rework with COUNT * only
+    var query = dao.startSelectQuery();
+    addFiltersToQuery(query: query, filters: filters);
+
+    var items = await query.get();
+
+    return items.length;
+  }
+
+  @override
+  Stream<int> watchFindCount({
+    required Filters? filters,
+  }) {
+    // todo: rework with COUNT * only
+    var query = dao.startSelectQuery();
+    addFiltersToQuery(query: query, filters: filters);
+
+    var stream = query.watch();
+
+    return stream.map((items) => items.length);
+  }
+
+  @override
   Future batch(Function(Batch batch) runInBatch) => dao.batch(runInBatch);
+
+  @override
+  Future<void> upsertInDbTypeBatch(
+    Insertable<DbItem> dbItem, {
+    required Batch? batchTransaction,
+  }) {
+    return insertInDbTypeBatch(
+      dbItem,
+      mode: InsertMode.insertOrReplace,
+      batchTransaction: batchTransaction,
+    );
+  }
+
 }

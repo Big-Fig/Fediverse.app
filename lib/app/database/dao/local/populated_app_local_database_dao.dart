@@ -8,10 +8,11 @@ abstract class PopulatedAppLocalDatabaseDao<
         DbPopulatedItem,
         DbId,
         TableDsl extends Table,
-        TableInfoDsl extends TableInfo<TableDsl, DbItem>>
+        TableInfoDsl extends TableInfo<TableDsl, DbItem>,
+Filters>
     extends AppLocalDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl>
     with
         PopulatedDatabaseDaoMixin<DbItem, DbPopulatedItem, DbId, TableDsl,
-            TableInfoDsl> {
+            TableInfoDsl, Filters> {
   PopulatedAppLocalDatabaseDao(AppDatabase db) : super(db);
 }

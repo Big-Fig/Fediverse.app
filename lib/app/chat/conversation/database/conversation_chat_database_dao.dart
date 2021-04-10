@@ -31,7 +31,8 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
     int,
     String,
     $DbConversationsTable,
-    $DbConversationsTable> with _$ConversationDaoMixin {
+    $DbConversationsTable,
+    ConversationChatRepositoryFilters> with _$ConversationDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
   late $DbConversationAccountsTable conversationAccountsAlias;

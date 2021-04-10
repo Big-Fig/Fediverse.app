@@ -232,7 +232,7 @@ void main() {
         ),
       ),
     ).toPleromaNotification();
-    await notificationRepository.updateAppTypeByRemoteType(
+    await notificationRepository.updateNotificationByRemoteType(
       appItem: oldLocalNotification,
       remoteItem: newRemoteNotification,
       unread: true, batchTransaction: null,

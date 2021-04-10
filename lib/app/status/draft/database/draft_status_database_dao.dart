@@ -17,10 +17,11 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
     DbDraftStatusPopulated,
     int,
     $DbDraftStatusesTable,
-    $DbDraftStatusesTable> with _$DraftStatusDaoMixin {
+    $DbDraftStatusesTable,
+    DraftStatusRepositoryFilters> with _$DraftStatusDaoMixin {
   final AppDatabase db;
 
-  // Called by the AppDatabase class
+// Called by the AppDatabase class
   DraftStatusDao(this.db) : super(db);
 
   SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> orderBy(

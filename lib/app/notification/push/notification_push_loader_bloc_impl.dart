@@ -33,9 +33,8 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       launchPushLoaderNotificationSubject = BehaviorSubject();
 
   @override
-  NotificationPushLoaderNotification?
-      get launchPushLoaderNotification =>
-          launchPushLoaderNotificationSubject.value;
+  NotificationPushLoaderNotification? get launchPushLoaderNotification =>
+      launchPushLoaderNotificationSubject.value;
 
   @override
   Stream<NotificationPushLoaderNotification?>
@@ -91,8 +90,8 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       var all = await notificationRepository.countAll();
       _logger.finest(() => "all ${all}");
 
-      var alreadyExistNotification =
-          await notificationRepository.findByRemoteIdInAppType(remoteNotificationId);
+      var alreadyExistNotification = await notificationRepository
+          .findByRemoteIdInAppType(remoteNotificationId);
 
       _logger.finest(() => "handlePush \n"
           "\t remoteNotification = $remoteNotification");
@@ -106,6 +105,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       await notificationRepository.upsertRemoteNotification(
         remoteNotification,
         unread: unread,
+        batchTransaction: null,
       );
 
       var notification = await notificationRepository.findByRemoteIdInAppType(

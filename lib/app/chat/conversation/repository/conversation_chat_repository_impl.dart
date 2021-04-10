@@ -48,6 +48,7 @@ class ConversationChatRepository
   }) {
     dao = appDatabase.conversationDao;
   }
+
   //
   // @override
   // Future upsertRemoteConversation(
@@ -290,15 +291,16 @@ class ConversationChatRepository
   Future markAsRead({
     required IConversationChat conversation,
     required Batch? batchTransaction,
-  }) => updateByDbIdInDbType(
-      dbId: conversation.localId!,
-      dbItem: DbConversation(
-        id: conversation.localId,
-        remoteId: conversation.remoteId,
-        unread: false,
-      ),
-      batchTransaction: batchTransaction,
-    );
+  }) =>
+      updateByDbIdInDbType(
+        dbId: conversation.localId!,
+        dbItem: DbConversation(
+          id: conversation.localId,
+          remoteId: conversation.remoteId,
+          unread: false,
+        ),
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future<int> getTotalUnreadCount() => dao.getTotalAmountUnread();
@@ -425,12 +427,6 @@ class ConversationChatRepository
   }
 
   @override
-  DbConversationPopulated mapTypedResultToDbPopulatedItem(
-    TypedResult typedResult,
-  ) =>
-      typedResult.toDbConversationPopulated(dao: dao);
-
-  @override
   ConversationChatRepositoryFilters get emptyFilters =>
       ConversationChatRepositoryFilters.empty;
 
@@ -449,5 +445,4 @@ class ConversationChatRepository
     required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
     required List<ConversationRepositoryChatOrderingTermData>? orderingTerms,
   }) {}
-
 }

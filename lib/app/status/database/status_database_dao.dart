@@ -35,7 +35,8 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     int,
     String,
     $DbStatusesTable,
-    $DbStatusesTable> with _$StatusDaoMixin {
+    $DbStatusesTable,
+    StatusRepositoryFilters> with _$StatusDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
   late $DbStatusesTable reblogAlias;
@@ -597,6 +598,19 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         fieldName: table.createdAt.$name,
         batchTransaction: batchTransaction,
       );
+
+  @override
+  JoinedSelectStatement<Table, DataClass>
+      convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    required StatusRepositoryFilters? filters,
+  }) {
+    // query.join(populateStatusJoin(includeAccountFollowing: includeAccountFollowing, includeReplyToAccountFollowing: includeReplyToAccountFollowing, includeStatusHashtags: includeStatusHashtags, includeStatusLists: includeStatusLists, includeConversations: includeConversations, includeHomeTimeline: includeHomeTimeline))
+  }
+
+  @override
+  DbStatusPopulated mapTypedResultToDbPopulatedItem(TypedResult typedResult) =>
+      typedResult.toDbStatusPopulated(dao: this);
 }
 
 extension TypedResultDbStatusPopulatedExtension on TypedResult {

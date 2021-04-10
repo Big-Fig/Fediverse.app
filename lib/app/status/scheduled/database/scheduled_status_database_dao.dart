@@ -18,7 +18,8 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
     int,
     String,
     $DbScheduledStatusesTable,
-    $DbScheduledStatusesTable> with _$ScheduledStatusDaoMixin {
+    $DbScheduledStatusesTable,
+    ScheduledStatusRepositoryFilters> with _$ScheduledStatusDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class

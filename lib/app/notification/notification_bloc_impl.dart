@@ -178,10 +178,11 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
     IPleromaNotification remoteNotification, {
     required Batch? batchTransaction,
   }) {
-    return notificationRepository.updateAppTypeByRemoteType(
+    return notificationRepository.updateNotificationByRemoteType(
       appItem: notification,
       remoteItem: remoteNotification,
       unread: notification.unread,
+      batchTransaction: batchTransaction,
     );
   }
 
