@@ -5,8 +5,8 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/repository/repository.dart';
-import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaChatMessageRepository
@@ -18,16 +18,17 @@ abstract class IPleromaChatMessageRepository
             pleroma_lib.IPleromaChatMessage,
             int,
             String,
-            PleromaChatMessageRepositoryFilters, PleromaChatMessageRepositoryOrderingTermData> {
+            PleromaChatMessageRepositoryFilters,
+            PleromaChatMessageRepositoryOrderingTermData> {
   static IPleromaChatMessageRepository of(
     BuildContext context, {
     bool listen = true,
   }) =>
       Provider.of<IPleromaChatMessageRepository>(context, listen: listen);
 
-  Future upsertRemoteChatMessages(
-    List<pleroma_lib.IPleromaChatMessage> remoteChatMessages,
-  );
+  // Future upsertRemoteChatMessages(
+  //   List<pleroma_lib.IPleromaChatMessage> remoteChatMessages,
+  // );
 
   Future<IPleromaChatMessage?> findByOldPendingRemoteId(
     String oldPendingRemoteId,
@@ -37,40 +38,41 @@ abstract class IPleromaChatMessageRepository
     String oldPendingRemoteId,
   );
 
-  Future updateLocalChatMessageByRemoteChatMessage({
-    required IPleromaChatMessage oldLocalChatMessage,
-    required pleroma_lib.IPleromaChatMessage newRemoteChatMessage,
-  });
-
-  Future upsertRemoteChatMessage(
-    pleroma_lib.IPleromaChatMessage remoteChatMessage,
-  );
-
-  Future<List<IPleromaChatMessage>> getChatMessages({
-    required PleromaChatMessageRepositoryFilters? filters,
-    required RepositoryPagination<IPleromaChatMessage>? pagination,
-    PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
-        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
-  });
-
-  Stream<List<IPleromaChatMessage>> watchChatMessages({
-    required PleromaChatMessageRepositoryFilters? filters,
-    required RepositoryPagination<IPleromaChatMessage>? pagination,
-    PleromaChatMessageRepositoryOrderingTermData orderingTermData =
-        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
-  });
-
-  Future<IPleromaChatMessage?> getChatMessage({
-    required PleromaChatMessageRepositoryFilters? filters,
-    PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
-        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
-  });
-
-  Stream<IPleromaChatMessage?> watchChatMessage({
-    required PleromaChatMessageRepositoryFilters? filters,
-    PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
-        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
-  });
+  //
+  // Future updateLocalChatMessageByRemoteChatMessage({
+  //   required IPleromaChatMessage oldLocalChatMessage,
+  //   required pleroma_lib.IPleromaChatMessage newRemoteChatMessage,
+  // });
+  //
+  // Future upsertRemoteChatMessage(
+  //   pleroma_lib.IPleromaChatMessage remoteChatMessage,
+  // );
+  //
+  // Future<List<IPleromaChatMessage>> getChatMessages({
+  //   required PleromaChatMessageRepositoryFilters? filters,
+  //   required RepositoryPagination<IPleromaChatMessage>? pagination,
+  //   PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
+  //       PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+  // });
+  //
+  // Stream<List<IPleromaChatMessage>> watchChatMessages({
+  //   required PleromaChatMessageRepositoryFilters? filters,
+  //   required RepositoryPagination<IPleromaChatMessage>? pagination,
+  //   PleromaChatMessageRepositoryOrderingTermData orderingTermData =
+  //       PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+  // });
+  //
+  // Future<IPleromaChatMessage?> getChatMessage({
+  //   required PleromaChatMessageRepositoryFilters? filters,
+  //   PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
+  //       PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+  // });
+  //
+  // Stream<IPleromaChatMessage?> watchChatMessage({
+  //   required PleromaChatMessageRepositoryFilters? filters,
+  //   PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
+  //       PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+  // });
 
   Stream<IPleromaChatMessage?> watchChatLastChatMessage({
     required IPleromaChat chat,
@@ -89,9 +91,11 @@ abstract class IPleromaChatMessageRepository
 
   Future markChatMessageAsDeleted({
     required String chatMessageRemoteId,
+    required Batch? batchTransaction,
   });
 
   Future markChatMessageAsHiddenLocallyOnDevice({
     required int chatMessageLocalId,
+    required Batch? batchTransaction,
   });
 }

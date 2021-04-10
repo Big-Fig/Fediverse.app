@@ -55,7 +55,11 @@ void main() {
     );
 
     dbAccount = await createTestDbAccount(seed: "seed1");
-    var accountId = await accountRepository.insertInDbType(dbAccount);
+    var accountId = await accountRepository.insertInDbType(
+      dbAccount,
+
+      mode: null,
+    );
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
@@ -70,12 +74,20 @@ void main() {
     );
 
     var reblogDbAccount = await createTestDbAccount(seed: "seed11");
-    await accountRepository.insertInDbType(reblogDbAccount);
+    await accountRepository.insertInDbType(
+      reblogDbAccount,
+      mode: null,
+
+    );
     var reblogDbStatus = await createTestDbStatus(
       seed: "seed33",
       dbAccount: reblogDbAccount,
     );
-    await statusRepository.insertInDbType(reblogDbStatus);
+    await statusRepository.insertInDbType(
+      reblogDbStatus,
+
+      mode: null,
+    );
 
     dbStatus = dbStatus.copyWith(reblogStatusRemoteId: reblogDbStatus.remoteId);
 
@@ -90,7 +102,11 @@ void main() {
       replyDbStatus: null,
     );
 
-    await statusRepository.insertInDbType(dbStatus);
+    await statusRepository.insertInDbType(
+      dbStatus,
+
+      mode: null,
+    );
 
     dbNotification = await createTestDbNotification(
       seed: "seed4",
@@ -113,7 +129,11 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await notificationRepository.insertInDbType(dbNotification);
+    var id = await notificationRepository.insertInDbType(
+      dbNotification,
+      mode: null,
+
+    );
     assert(id > 0, true);
     expectDbNotificationPopulated(
       (await notificationRepository.findByDbIdInAppType(id))!,
@@ -134,11 +154,17 @@ void main() {
     ))
         .copyWith(remoteId: "remoteId1");
 
-    await notificationRepository.upsertAllInDbType([dbNotification1]);
+    await notificationRepository.upsertAllInDbType(
+      [dbNotification1],
+      batchTransaction: null,
+    );
 
     expect((await notificationRepository.getAllInAppType()).length, 1);
 
-    await notificationRepository.upsertAllInDbType([dbNotification2]);
+    await notificationRepository.upsertAllInDbType(
+      [dbNotification2],
+      batchTransaction: null,
+    );
     expect((await notificationRepository.getAllInAppType()).length, 1);
 
     expectDbNotificationPopulated(
@@ -151,12 +177,17 @@ void main() {
   });
 
   test('updateById', () async {
-    var id = await notificationRepository.insertInDbType(dbNotification);
+    var id = await notificationRepository.insertInDbType(
+      dbNotification,
+
+      mode: null,
+    );
     assert(id > 0, true);
 
     await notificationRepository.updateByDbIdInDbType(
       dbId: id,
       dbItem: dbNotification.copyWith(remoteId: "newRemoteId"),
+      batchTransaction: null,
     );
 
     expect(
@@ -170,6 +201,8 @@ void main() {
       dbNotification.copyWith(
         type: PleromaNotificationType.follow.toJsonValue(),
       ),
+      mode: null,
+
     );
     assert(id > 0, true);
 
@@ -199,10 +232,10 @@ void main() {
         ),
       ),
     ).toPleromaNotification();
-    await notificationRepository.updateLocalNotificationByRemoteNotification(
-      oldLocalNotification: oldLocalNotification,
-      newRemoteNotification: newRemoteNotification,
-      unread: true,
+    await notificationRepository.updateAppTypeByRemoteType(
+      appItem: oldLocalNotification,
+      remoteItem: newRemoteNotification,
+      unread: true, batchTransaction: null,
     );
 
     expect(
@@ -219,7 +252,11 @@ void main() {
   });
 
   test('findByRemoteId', () async {
-    await notificationRepository.insertInDbType(dbNotification);
+    await notificationRepository.insertInDbType(
+      dbNotification,
+      mode: null,
+
+    );
     expectDbNotificationPopulated(
       (await notificationRepository
           .findByRemoteIdInAppType(dbNotification.remoteId))!,
@@ -234,7 +271,7 @@ void main() {
       DbNotificationPopulatedWrapper(
         dbNotificationPopulated: dbNotificationPopulated,
       ).toPleromaNotification(),
-      unread: false,
+      unread: false, batchTransaction: null,
     );
 
     expect(await notificationRepository.countAll(), 1);
@@ -260,7 +297,7 @@ void main() {
       DbNotificationPopulatedWrapper(
         dbNotificationPopulated: dbNotificationPopulated,
       ).toPleromaNotification(),
-      unread: false,
+      unread: false, batchTransaction: null,
     );
     expect(await notificationRepository.countAll(), 1);
     // with reblog
@@ -289,7 +326,7 @@ void main() {
           dbNotificationPopulated: dbNotificationPopulated,
         ).toPleromaNotification(),
       ],
-      unread: false,
+      unread: false, batchTransaction: null,
     );
 
     expect(await notificationRepository.countAll(), 1);
@@ -316,7 +353,7 @@ void main() {
           dbNotificationPopulated: dbNotificationPopulated,
         ).toPleromaNotification(),
       ],
-      unread: false,
+      unread: false, batchTransaction: null,
     );
 
     // update item with same id
@@ -848,7 +885,7 @@ void main() {
 
   test('countUnread', () async {
     expect(
-      (await notificationRepository.getCount(
+      (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
           onlyUnread: true,
         ),
@@ -868,7 +905,7 @@ void main() {
     );
 
     expect(
-      (await notificationRepository.getCount(
+      (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
           onlyWithType: PleromaNotificationType.reblog,
           onlyUnread: true,
@@ -877,7 +914,7 @@ void main() {
       0,
     );
     expect(
-      (await notificationRepository.getCount(
+      (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
           onlyWithType: PleromaNotificationType.follow,
           onlyUnread: true,
@@ -886,7 +923,7 @@ void main() {
       1,
     );
     expect(
-      (await notificationRepository.getCount(
+      (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
           onlyUnread: true,
         ),
@@ -907,7 +944,7 @@ void main() {
     );
 
     expect(
-      (await notificationRepository.getCount(
+      (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
           onlyWithType: PleromaNotificationType.reblog,
           onlyUnread: true,
@@ -916,7 +953,7 @@ void main() {
       0,
     );
     expect(
-      (await notificationRepository.getCount(
+      (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
           onlyWithType: PleromaNotificationType.follow,
           onlyUnread: true,
@@ -925,7 +962,7 @@ void main() {
       1,
     );
     expect(
-      (await notificationRepository.getCount(
+      (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
           onlyUnread: true,
         ),
@@ -946,7 +983,7 @@ void main() {
     );
 
     expect(
-      (await notificationRepository.getCount(
+      (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
           onlyWithType: PleromaNotificationType.reblog,
           onlyUnread: true,
@@ -955,7 +992,7 @@ void main() {
       1,
     );
     expect(
-      (await notificationRepository.getCount(
+      (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
           onlyWithType: PleromaNotificationType.follow,
           onlyUnread: true,
@@ -964,7 +1001,7 @@ void main() {
       1,
     );
     expect(
-      (await notificationRepository.getCount(
+      (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
           onlyUnread: true,
         ),

@@ -51,10 +51,8 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
         statusRemoteId: inReplyToRemoteId,
       );
 
-      await statusRepository.upsertRemoteStatus(
+      await statusRepository.upsertInRemoteType(
         replyToRemoteStatus,
-        listRemoteId: null,
-        conversationRemoteId: null,
       );
 
       inReplyToStatus = await statusRepository.findByRemoteIdInAppType(

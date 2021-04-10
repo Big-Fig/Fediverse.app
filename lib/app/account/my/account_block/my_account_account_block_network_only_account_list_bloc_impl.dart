@@ -41,10 +41,8 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
         )
         .toPleromaAccount();
 
-    await accountRepository.upsertRemoteAccount(
+    await accountRepository.upsertInRemoteType(
       remoteAccount,
-      conversationRemoteId: null,
-      chatRemoteId: null,
     );
   }
 
@@ -62,10 +60,8 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
         )
         .toPleromaAccount();
 
-    await accountRepository.upsertRemoteAccount(
+    await accountRepository.upsertInRemoteType(
       remoteAccount,
-      conversationRemoteId: null,
-      chatRemoteId: null,
     );
   }
 
@@ -84,10 +80,10 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
       ),
     );
 
-    await accountRepository.upsertRemoteAccounts(
+    await accountRepository.upsertAllInRemoteType(
       remoteAccounts,
-      conversationRemoteId: null,
-      chatRemoteId: null,
+      // don't need batch because we have only one transaction
+      batchTransaction: null,
     );
     return remoteAccounts
         .map(

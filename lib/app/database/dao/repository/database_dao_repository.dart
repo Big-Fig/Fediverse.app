@@ -144,7 +144,7 @@ abstract class DatabaseDaoRepository<
       ).watch();
 
   @override
-  Stream<DbItem?> watchInDbType({
+  Stream<DbItem?> watchFindInDbType({
     required RepositoryPagination<DbItem>? pagination,
     required Filters? filters,
     required List<OrderingTerm>? orderingTerms,
@@ -201,4 +201,6 @@ abstract class DatabaseDaoRepository<
     required List<OrderingTerm>? orderingTerms,
   });
 
+  @override
+  Future batch(Function(Batch batch) runInBatch) => dao.batch(runInBatch);
 }

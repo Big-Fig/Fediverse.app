@@ -6,7 +6,11 @@ Future<DbConversation> insertDbConversation(
   ConversationChatRepository conversationRepository,
   DbConversation conversationData,
 ) async {
-  var id = await conversationRepository.insertInDbType(conversationData);
+  var id = await conversationRepository.insertInDbType(
+    conversationData,
+    mode: null,
+
+  );
   assert(id > 0, true);
   var dbConversation = conversationData.copyWith(id: id);
   return dbConversation;

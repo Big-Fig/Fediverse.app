@@ -16,7 +16,6 @@ abstract class AppRemoteDatabaseDao<
   Future<int> deleteByRemoteId(RemoteId remoteId) => customUpdate(
         'DELETE FROM $tableName '
         'WHERE ${createFindByRemoteIdWhereExpression(remoteId)}',
-        variables: [Variable(remoteId)],
         updates: {table},
         updateKind: UpdateKind.delete,
       );
@@ -35,11 +34,11 @@ abstract class AppRemoteDatabaseDao<
     }
   }
 
-  Future<DbId> findLocalIdByRemoteId(RemoteId remoteId) =>
-      findLocalIdByRemoteIdSelectable(remoteId).getSingle();
+  Future<DbId?> findLocalIdByRemoteId(RemoteId remoteId) =>
+      findLocalIdByRemoteIdSelectable(remoteId).getSingleOrNull();
 
-  Stream<DbId> watchFindLocalIdByRemoteId(RemoteId remoteId) =>
-      findLocalIdByRemoteIdSelectable(remoteId).watchSingle();
+  Stream<DbId?> watchFindLocalIdByRemoteId(RemoteId remoteId) =>
+      findLocalIdByRemoteIdSelectable(remoteId).watchSingleOrNull();
 
   Selectable<DbId> findLocalIdByRemoteIdSelectable(RemoteId remoteId) =>
       customSelect(
@@ -53,11 +52,11 @@ abstract class AppRemoteDatabaseDao<
         ),
       );
 
-  Future<DbItem> findByRemoteId(RemoteId remoteId) =>
-      findByRemoteIdSelectable(remoteId).getSingle();
+  Future<DbItem?> findByRemoteId(RemoteId remoteId) =>
+      findByRemoteIdSelectable(remoteId).getSingleOrNull();
 
-  Stream<DbItem> watchFindByRemoteId(RemoteId remoteId) =>
-      findByRemoteIdSelectable(remoteId).watchSingle();
+  Stream<DbItem?> watchFindByRemoteId(RemoteId remoteId) =>
+      findByRemoteIdSelectable(remoteId).watchSingleOrNull();
 
   Selectable<DbItem> findByRemoteIdSelectable(RemoteId remoteId) =>
       customSelect(

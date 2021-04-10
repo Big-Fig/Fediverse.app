@@ -5,8 +5,8 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/repository/repository.dart';
-import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 
 abstract class IStatusRepository
@@ -26,52 +26,64 @@ abstract class IStatusRepository
   Future addStatusesToConversationWithDuplicatePreCheck({
     required List<String> statusRemoteIds,
     required String conversationRemoteId,
+    required Batch? batchTransaction,
   });
 
-  Future upsertRemoteStatuses(
-    List<IPleromaStatus> remoteStatuses, {
-    required String? listRemoteId,
-    required String? conversationRemoteId,
-    bool isFromHomeTimeline = false,
-  });
+  //
+  // Future upsertRemoteStatuses(
+  //   List<IPleromaStatus> remoteStatuses, {
+  //   required String? listRemoteId,
+  //   required String? conversationRemoteId,
+  //   bool isFromHomeTimeline = false,
+  // });
+  //
+  // Future updateLocalStatusByRemoteStatus({
+  //   required IStatus oldLocalStatus,
+  //   required IPleromaStatus newRemoteStatus,
+  //   bool isFromHomeTimeline = false,
+  // });
+  //
+  // Future upsertRemoteStatus(
+  //   IPleromaStatus remoteStatus, {
+  //   required String? listRemoteId,
+  //   required String? conversationRemoteId,
+  //   bool isFromHomeTimeline = false,
+  // });
 
-  Future updateLocalStatusByRemoteStatus({
-    required IStatus oldLocalStatus,
-    required IPleromaStatus newRemoteStatus,
-    bool isFromHomeTimeline = false,
-  });
-
-  Future upsertRemoteStatus(
+  Future upsertRemoteStatusForList(
     IPleromaStatus remoteStatus, {
-    required String? listRemoteId,
-    required String? conversationRemoteId,
-    bool isFromHomeTimeline = false,
+    required String listRemoteId,
+    required Batch? batchTransaction,
   });
 
-  Future<List<IStatus>> getStatuses({
-    required StatusRepositoryFilters? filters,
-    required RepositoryPagination<IStatus>? pagination,
-    StatusRepositoryOrderingTermData? orderingTermData =
-        StatusRepositoryOrderingTermData.remoteIdDesc,
+  Future upsertRemoteStatusForConversation(
+    IPleromaStatus remoteStatus, {
+    required String conversationRemoteId,
+    required Batch? batchTransaction,
   });
 
-  Stream<List<IStatus>> watchStatuses({
-    required StatusRepositoryFilters? filters,
-    required RepositoryPagination<IStatus>? pagination,
-    StatusRepositoryOrderingTermData? orderingTermData =
-        StatusRepositoryOrderingTermData.remoteIdDesc,
+  Future upsertRemoteStatusForHomeTimeline(
+    IPleromaStatus remoteStatus, {
+    required bool isFromHomeTimeline,
+    required Batch? batchTransaction,
   });
 
-  Future<IStatus?> getStatus({
-    required StatusRepositoryFilters? filters,
-    StatusRepositoryOrderingTermData? orderingTermData =
-        StatusRepositoryOrderingTermData.remoteIdDesc,
+  Future upsertRemoteStatusesForList(
+    List<IPleromaStatus> remoteStatuses, {
+    required String listRemoteId,
+    required Batch? batchTransaction,
   });
 
-  Stream<IStatus?> watchStatus({
-    required StatusRepositoryFilters? filters,
-    StatusRepositoryOrderingTermData? orderingTermData =
-        StatusRepositoryOrderingTermData.remoteIdDesc,
+  Future upsertRemoteStatusesForConversation(
+    List<IPleromaStatus> remoteStatuses, {
+    required String conversationRemoteId,
+    required Batch? batchTransaction,
+  });
+
+  Future upsertRemoteStatusesForHomeTimeline(
+    List<IPleromaStatus> remoteStatuses, {
+    required bool isFromHomeTimeline,
+    required Batch? batchTransaction,
   });
 
   Future incrementRepliesCount({
@@ -80,6 +92,7 @@ abstract class IStatusRepository
 
   Future removeAccountStatusesFromHome({
     required String accountRemoteId,
+    required Batch? batchTransaction,
   });
 
   Future markStatusAsDeleted({
@@ -92,6 +105,7 @@ abstract class IStatusRepository
 
   Future clearListStatusesConnection({
     required String listRemoteId,
+    required Batch? batchTransaction,
   });
 
   Future<Map<IConversationChat, IStatus?>> getConversationsLastStatus({
@@ -120,10 +134,28 @@ abstract class IStatusRepository
   Future addStatusToConversation({
     required String statusRemoteId,
     required String conversationRemoteId,
+    required Batch? batchTransaction,
   });
 
-  Future removeStatusToConversation({
+  Future removeStatusFromConversation({
     required String statusRemoteId,
     required String conversationRemoteId,
+    required Batch? batchTransaction,
+  });
+
+  Future upsertRemoteStatusWithAllArguments(
+    IPleromaStatus remoteStatus, {
+    required bool? isFromHomeTimeline,
+    required String? listRemoteId,
+    required String? conversationRemoteId,
+    required Batch? batchTransaction,
+  });
+
+  Future upsertRemoteStatusesWithAllArguments(
+    List<IPleromaStatus> remoteStatuses, {
+    required bool? isFromHomeTimeline,
+    required String? listRemoteId,
+    required String? conversationRemoteId,
+    required Batch? batchTransaction,
   });
 }

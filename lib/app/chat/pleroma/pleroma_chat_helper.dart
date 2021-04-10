@@ -33,7 +33,7 @@ void goToPleromaChatWithAccount({
             accountId: account.remoteId,
           );
 
-          await chatRepository.upsertRemoteChat(remoteChat);
+          await chatRepository.upsertInRemoteType(remoteChat);
 
           return await chatRepository.findByRemoteIdInAppType(remoteChat.id);
         },

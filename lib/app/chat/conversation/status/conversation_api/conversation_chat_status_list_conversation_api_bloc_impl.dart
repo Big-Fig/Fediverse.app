@@ -46,10 +46,10 @@ class ConversationChatStatusListConversationApiBloc
       ),
     );
 
-    await statusRepository.upsertRemoteStatuses(
+    await statusRepository.upsertRemoteStatusesForConversation(
       remoteStatuses,
-      listRemoteId: null,
       conversationRemoteId: conversation!.remoteId,
+      batchTransaction: null,
     );
   }
 

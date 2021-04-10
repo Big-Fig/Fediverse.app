@@ -25,9 +25,9 @@ void main() {
   test('test dismissed', () async {
     var notificationDao = database.notificationDao;
 
-    await notificationDao.clear();
+    await notificationDao.clear(batchTransaction: null);
 
-    expect((await notificationDao.getAll().get()).isNotEmpty, false);
+    expect((await notificationDao.getAll()).isNotEmpty, false);
 
     var testDbNotification = await createTestDbNotification(
       seed: "seed1",
@@ -38,13 +38,13 @@ void main() {
       mode: null,
     );
 
-    expect((await notificationDao.getAll().get()).isNotEmpty, true);
+    expect((await notificationDao.getAll()).isNotEmpty, true);
 
     await notificationDao.markAsDismissed(
       remoteId: testDbNotification.remoteId,
     );
 
-    expect((await notificationDao.getAll().get()).isNotEmpty, true);
+    expect((await notificationDao.getAll()).isNotEmpty, true);
 
     var query = notificationDao.startSelectQuery();
     notificationDao.addOnlyNotDismissedWhere(query);

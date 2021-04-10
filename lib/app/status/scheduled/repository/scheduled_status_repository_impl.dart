@@ -1,4 +1,4 @@
-import 'package:collection/collection.dart';
+
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_dao.dart';
@@ -12,14 +12,6 @@ import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
 var _logger = Logger("scheduledStatus_repository_impl.dart");
-
-var _singleScheduledStatusRepositoryPagination =
-    RepositoryPagination<IScheduledStatus>(
-  limit: 1,
-  newerThanItem: null,
-  offset: null,
-  olderThanItem: null,
-);
 
 class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         DbScheduledStatus,
@@ -39,93 +31,95 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   ScheduledStatusRepository({required AppDatabase appDatabase}) {
     dao = appDatabase.scheduledStatusDao;
   }
-
-  @override
-  Future upsertRemoteScheduledStatus(
-    IPleromaScheduledStatus remoteScheduledStatus,
-  ) async {
-    await upsertInDbType(
-      remoteScheduledStatus.toDbScheduledStatus(canceled: false),
-    );
-  }
-
-  @override
-  Future upsertRemoteScheduledStatuses(
-    List<IPleromaScheduledStatus> remoteScheduledStatuses,
-  ) async {
-    if (remoteScheduledStatuses.isNotEmpty == true) {
-      await upsertAllInDbType(
-        remoteScheduledStatuses
-            .map(
-              (remoteScheduledStatus) =>
-                  remoteScheduledStatus.toDbScheduledStatus(
-                canceled: false,
-              ),
-            )
-            .toList(),
-      );
-    }
-  }
-
-  @override
-  Future updateLocalScheduledStatusByRemoteScheduledStatus({
-    required IScheduledStatus oldLocalScheduledStatus,
-    required IPleromaScheduledStatus newRemoteScheduledStatus,
-  }) async {
-    _logger.finer(() => "updateLocalScheduledStatusByRemoteScheduledStatus \n"
-        "\t old: $oldLocalScheduledStatus \n"
-        "\t newRemoteScheduledStatus: $newRemoteScheduledStatus");
-
-    var newLocalScheduledStatus = newRemoteScheduledStatus.toDbScheduledStatus(
-      canceled: oldLocalScheduledStatus.canceled,
-    );
-    await updateByDbIdInDbType(
-      dbId: oldLocalScheduledStatus.localId!,
-      dbItem: newLocalScheduledStatus,
-    );
-  }
-
-  @override
-  Future<List<DbScheduledStatusPopulatedWrapper>> getScheduledStatuses({
-    required ScheduledStatusRepositoryFilters? filters,
-    required RepositoryPagination<IScheduledStatus>? pagination,
-    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
-        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
-  }) async {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-    );
-
-    var typedScheduledStatusesList = await query.get();
-
-    return typedScheduledStatusesList
-        .toDbScheduledStatusPopulatedList(dao: dao)
-        .toDbScheduledStatusPopulatedWrappers();
-  }
-
-  @override
-  Stream<List<DbScheduledStatusPopulatedWrapper>> watchScheduledStatuses({
-    required ScheduledStatusRepositoryFilters? filters,
-    required RepositoryPagination<IScheduledStatus>? pagination,
-    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
-        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
-  }) {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-    );
-
-    Stream<List<TypedResult>> stream = query.watch();
-
-    return stream.map(
-      (typedList) => typedList
-          .toDbScheduledStatusPopulatedList(dao: dao)
-          .toDbScheduledStatusPopulatedWrappers(),
-    );
-  }
+  //
+  // @override
+  // Future upsertRemoteScheduledStatus(
+  //   IPleromaScheduledStatus remoteScheduledStatus,
+  // ) async {
+  //   await upsertInDbType(
+  //     remoteScheduledStatus.toDbScheduledStatus(canceled: false),
+  //   );
+  // }
+  //
+  // @override
+  // Future upsertRemoteScheduledStatuses(
+  //   List<IPleromaScheduledStatus> remoteScheduledStatuses,
+  // ) async {
+  //   if (remoteScheduledStatuses.isNotEmpty == true) {
+  //     await upsertAllInDbType(
+  //       remoteScheduledStatuses
+  //           .map(
+  //             (remoteScheduledStatus) =>
+  //                 remoteScheduledStatus.toDbScheduledStatus(
+  //               canceled: false,
+  //             ),
+  //           )
+  //           .toList(),
+  //       batchTransaction: null,
+  //     );
+  //   }
+  // }
+  //
+  // @override
+  // Future updateLocalScheduledStatusByRemoteScheduledStatus({
+  //   required IScheduledStatus oldLocalScheduledStatus,
+  //   required IPleromaScheduledStatus newRemoteScheduledStatus,
+  // }) async {
+  //   _logger.finer(() => "updateLocalScheduledStatusByRemoteScheduledStatus \n"
+  //       "\t old: $oldLocalScheduledStatus \n"
+  //       "\t newRemoteScheduledStatus: $newRemoteScheduledStatus");
+  //
+  //   var newLocalScheduledStatus = newRemoteScheduledStatus.toDbScheduledStatus(
+  //     canceled: oldLocalScheduledStatus.canceled,
+  //   );
+  //   await updateByDbIdInDbType(
+  //     dbId: oldLocalScheduledStatus.localId!,
+  //     dbItem: newLocalScheduledStatus,
+  //     batchTransaction: null,
+  //   );
+  // }
+  //
+  // @override
+  // Future<List<DbScheduledStatusPopulatedWrapper>> getScheduledStatuses({
+  //   required ScheduledStatusRepositoryFilters? filters,
+  //   required RepositoryPagination<IScheduledStatus>? pagination,
+  //   ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+  //       ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+  // }) async {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: pagination,
+  //     orderingTermData: orderingTermData,
+  //   );
+  //
+  //   var typedScheduledStatusesList = await query.get();
+  //
+  //   return typedScheduledStatusesList
+  //       .toDbScheduledStatusPopulatedList(dao: dao)
+  //       .toDbScheduledStatusPopulatedWrappers();
+  // }
+  //
+  // @override
+  // Stream<List<DbScheduledStatusPopulatedWrapper>> watchScheduledStatuses({
+  //   required ScheduledStatusRepositoryFilters? filters,
+  //   required RepositoryPagination<IScheduledStatus>? pagination,
+  //   ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+  //       ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+  // }) {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: pagination,
+  //     orderingTermData: orderingTermData,
+  //   );
+  //
+  //   Stream<List<TypedResult>> stream = query.watch();
+  //
+  //   return stream.map(
+  //     (typedList) => typedList
+  //         .toDbScheduledStatusPopulatedList(dao: dao)
+  //         .toDbScheduledStatusPopulatedWrappers(),
+  //   );
+  // }
 
   JoinedSelectStatement createQuery({
     required ScheduledStatusRepositoryFilters? filters,
@@ -179,41 +173,42 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     }
     return joinQuery;
   }
-
-  @override
-  Future<DbScheduledStatusPopulatedWrapper?> getScheduledStatus({
-    required ScheduledStatusRepositoryFilters? filters,
-    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
-        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
-  }) async {
-    var scheduledStatuses = await getScheduledStatuses(
-      filters: filters,
-      pagination: _singleScheduledStatusRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-    return scheduledStatuses.first;
-  }
-
-  @override
-  Stream<DbScheduledStatusPopulatedWrapper?> watchScheduledStatus({
-    required ScheduledStatusRepositoryFilters? filters,
-    ScheduledStatusRepositoryOrderingTermData? orderingTermData =
-        ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
-  }) {
-    var scheduledStatusesStream = watchScheduledStatuses(
-      filters: filters,
-      pagination: _singleScheduledStatusRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return scheduledStatusesStream.map(
-      (scheduledStatuses) => scheduledStatuses.firstOrNull,
-    );
-  }
+  //
+  // @override
+  // Future<DbScheduledStatusPopulatedWrapper?> getScheduledStatus({
+  //   required ScheduledStatusRepositoryFilters? filters,
+  //   ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+  //       ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+  // }) async {
+  //   var scheduledStatuses = await getScheduledStatuses(
+  //     filters: filters,
+  //     pagination: _singleScheduledStatusRepositoryPagination,
+  //     orderingTermData: orderingTermData,
+  //   );
+  //   return scheduledStatuses.first;
+  // }
+  //
+  // @override
+  // Stream<DbScheduledStatusPopulatedWrapper?> watchScheduledStatus({
+  //   required ScheduledStatusRepositoryFilters? filters,
+  //   ScheduledStatusRepositoryOrderingTermData? orderingTermData =
+  //       ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+  // }) {
+  //   var scheduledStatusesStream = watchScheduledStatuses(
+  //     filters: filters,
+  //     pagination: _singleScheduledStatusRepositoryPagination,
+  //     orderingTermData: orderingTermData,
+  //   );
+  //
+  //   return scheduledStatusesStream.map(
+  //     (scheduledStatuses) => scheduledStatuses.firstOrNull,
+  //   );
+  // }
 
   @override
   Future markAsCanceled({
     required IScheduledStatus scheduledStatus,
+    required Batch? batchTransaction,
   }) async {
     await updateByDbIdInDbType(
       dbId: scheduledStatus.localId!,
@@ -225,6 +220,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         remoteId: scheduledStatus.remoteId!,
         scheduledAt: scheduledStatus.scheduledAt,
       ),
+      batchTransaction: batchTransaction,
     );
   }
 

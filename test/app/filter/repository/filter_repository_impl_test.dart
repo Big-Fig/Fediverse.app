@@ -47,7 +47,10 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await filterRepository.insertInDbType(dbFilter);
+    var id = await filterRepository.insertInDbType(
+      dbFilter,
+      mode: null,
+    );
     assert(id > 0, true);
     expectDbFilterPopulated(
       (await filterRepository.findByDbIdInAppType(id))!,
@@ -62,11 +65,17 @@ void main() {
     var dbFilter2 = (await createTestDbFilter(seed: "seed6"))
         .copyWith(remoteId: "remoteId1");
 
-    await filterRepository.upsertAllInDbType([dbFilter1]);
+    await filterRepository.upsertAllInDbType(
+      [dbFilter1],
+      batchTransaction: null,
+    );
 
     expect((await filterRepository.getAllInAppType()).length, 1);
 
-    await filterRepository.upsertAllInDbType([dbFilter2]);
+    await filterRepository.upsertAllInDbType(
+      [dbFilter2],
+      batchTransaction: null,
+    );
     expect((await filterRepository.getAllInAppType()).length, 1);
 
     expectDbFilterPopulated(
@@ -76,12 +85,16 @@ void main() {
   });
 
   test('updateById', () async {
-    var id = await filterRepository.insertInDbType(dbFilter);
+    var id = await filterRepository.insertInDbType(
+      dbFilter,
+      mode: null,
+    );
     assert(id > 0, true);
 
     await filterRepository.updateByDbIdInDbType(
-      dbId:id,
-      dbItem:dbFilter.copyWith(remoteId: "newRemoteId"),
+      dbId: id,
+      dbItem: dbFilter.copyWith(remoteId: "newRemoteId"),
+      batchTransaction: null,
     );
 
     expect(
@@ -93,6 +106,7 @@ void main() {
   test('updateLocalFilterByRemoteFilter', () async {
     var id = await filterRepository.insertInDbType(
       dbFilter.copyWith(phrase: "phrase2"),
+      mode: null,
     );
     assert(id > 0, true);
 
@@ -106,16 +120,20 @@ void main() {
         dbFilter: dbFilter.copyWith(id: id, phrase: "phrase3"),
       ),
     ).toPleromaFilter();
-    await filterRepository.updateLocalFilterByRemoteFilter(
-      oldLocalFilter: oldLocalFilter,
-      newRemoteFilter: newRemoteFilter,
+    await filterRepository.updateAppTypeByRemoteType(
+      appItem: oldLocalFilter,
+      remoteItem: newRemoteFilter,
+      batchTransaction: null,
     );
 
     expect((await filterRepository.findByDbIdInAppType(id))!.phrase, "phrase3");
   });
 
   test('findByRemoteId', () async {
-    await filterRepository.insertInDbType(dbFilter);
+    await filterRepository.insertInDbType(
+      dbFilter,
+      mode: null,
+    );
     expectDbFilterPopulated(
       (await filterRepository.findByRemoteIdInAppType(dbFilter.remoteId))!,
       dbFilterPopulated,
@@ -125,7 +143,7 @@ void main() {
   test('upsertRemoteFilter', () async {
     expect(await filterRepository.countAll(), 0);
 
-    await filterRepository.upsertRemoteFilter(
+    await filterRepository.upsertInRemoteType(
       DbFilterPopulatedWrapper(dbFilterPopulated: dbFilterPopulated)
           .toPleromaFilter(),
     );
@@ -138,7 +156,7 @@ void main() {
     );
 
     // item with same id updated
-    await filterRepository.upsertRemoteFilter(
+    await filterRepository.upsertInRemoteType(
       DbFilterPopulatedWrapper(dbFilterPopulated: dbFilterPopulated)
           .toPleromaFilter(),
     );
@@ -152,11 +170,12 @@ void main() {
 
   test('upsertRemoteFilters', () async {
     expect(await filterRepository.countAll(), 0);
-    await filterRepository.upsertRemoteFilters(
+    await filterRepository.upsertAllInRemoteType(
       [
         DbFilterPopulatedWrapper(dbFilterPopulated: dbFilterPopulated)
             .toPleromaFilter(),
       ],
+      batchTransaction: null,
     );
 
     expect(await filterRepository.countAll(), 1);
@@ -166,11 +185,12 @@ void main() {
       dbFilter,
     );
 
-    await filterRepository.upsertRemoteFilters(
+    await filterRepository.upsertAllInRemoteType(
       [
         DbFilterPopulatedWrapper(dbFilterPopulated: dbFilterPopulated)
             .toPleromaFilter(),
       ],
+      batchTransaction: null,
     );
 
     // update item with same id
@@ -528,8 +548,8 @@ void main() {
       (await createTestDbFilter(seed: "seed3")).copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbFilterPopulated> actualList = (await query.get())
-        .toDbFilterPopulatedList(dao: filterRepository.dao);
+    List<DbFilterPopulated> actualList =
+        (await query.get()).toDbFilterPopulatedList(dao: filterRepository.dao);
 
     expect(actualList.length, 3);
 
@@ -579,8 +599,8 @@ void main() {
       (await createTestDbFilter(seed: "seed3")).copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbFilterPopulated> actualList = (await query.get())
-        .toDbFilterPopulatedList(dao: filterRepository.dao);
+    List<DbFilterPopulated> actualList =
+        (await query.get()).toDbFilterPopulatedList(dao: filterRepository.dao);
     expect(actualList.length, 3);
 
     expectDbFilter(
@@ -632,8 +652,8 @@ void main() {
       (await createTestDbFilter(seed: "seed3")).copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbFilterPopulated> actualList = (await query.get())
-        .toDbFilterPopulatedList(dao: filterRepository.dao);
+    List<DbFilterPopulated> actualList =
+        (await query.get()).toDbFilterPopulatedList(dao: filterRepository.dao);
     expect(actualList.length, 1);
 
     expectDbFilter(

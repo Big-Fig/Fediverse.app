@@ -63,7 +63,10 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
       );
 
       pleromaChatsByAccounts = await Future.wait(chatsByAccountsFuture);
-      await chatRepository.upsertRemoteChats(pleromaChatsByAccounts);
+      await chatRepository.upsertAllInRemoteType(
+        pleromaChatsByAccounts,
+        batchTransaction: null,
+      );
     } else {
       pleromaChatsByAccounts = [];
     }
@@ -85,7 +88,10 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
 
     var pleromaChatMessages = await Future.wait(pleromaChatMessagesFuture);
 
-    await chatMessageRepository.upsertRemoteChatMessages(pleromaChatMessages);
+    await chatMessageRepository.upsertAllInRemoteType(
+      pleromaChatMessages,
+      batchTransaction: null,
+    );
     return true;
   }
 
@@ -100,12 +106,14 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     if (newerThan != null || olderThan != null) {
       return [];
     }
-    var chats = await chatRepository.getChats(
+    var chats = await chatRepository.findAllInAppType(
       filters: null,
       pagination: RepositoryPagination(
         limit: limit,
       ),
-      orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
+      orderingTerms: [
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
+      ],
     );
 
     return chats.map((chat) => chat.accounts.first).toList();
@@ -126,7 +134,10 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
       ),
     );
 
-    await chatRepository.upsertRemoteChats(pleromaChats);
+    await chatRepository.upsertAllInRemoteType(
+      pleromaChats,
+      batchTransaction: null,
+    );
 
     return pleromaChats
         .map(

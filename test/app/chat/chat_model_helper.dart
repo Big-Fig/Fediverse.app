@@ -10,7 +10,7 @@ Future<DbPleromaChatPopulatedWrapper> createTestChat({
   String? remoteId,
   int? unread,
   DateTime? updatedAt,
-  DbAccountWrapper? account,
+  DbAccountPopulatedWrapper? account,
 }) async {
   account = account ?? await createTestAccount(seed: seed);
   var dbAccount = account.dbAccount;

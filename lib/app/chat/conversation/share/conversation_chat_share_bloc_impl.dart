@@ -2,7 +2,6 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_model.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc.dart';
@@ -70,10 +69,8 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       data: sendData,
     );
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertInRemoteType(
       accountsPleromaStatus,
-      listRemoteId: null,
-      conversationRemoteId: null,
     );
 
     return true;
@@ -95,12 +92,14 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       return [];
     }
 
-    var conversations = await conversationRepository.getConversations(
-      pagination: RepositoryPagination<IConversationChat>(
+    var conversations = await conversationRepository.findAllInAppType(
+      pagination: RepositoryPagination(
         limit: limit,
       ),
-      orderingTermData: ConversationRepositoryChatOrderingTermData.updatedAtDesc,
       filters: null,
+      orderingTerms: [
+        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+      ],
     );
 
     var accounts = <IAccount>[];
@@ -142,8 +141,10 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       ),
     );
 
-    await conversationRepository
-        .upsertRemoteConversations(pleromaConversations);
+    await conversationRepository.upsertAllInRemoteType(
+      pleromaConversations,
+      batchTransaction: null,
+    );
 
     var pleromaAccounts = <IPleromaAccount>[];
 

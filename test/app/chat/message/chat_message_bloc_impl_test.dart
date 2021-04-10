@@ -78,10 +78,10 @@ void main() {
         chatRemoteId: chat.remoteId,
       );
 
-      await accountRepository.upsertRemoteAccount(
+      await accountRepository.upsertChatRemoteAccount(
         chatMessage.account.toPleromaAccount(),
-        conversationRemoteId: null,
         chatRemoteId: chatMessage.chatRemoteId,
+        batchTransaction: null,
       );
 
       chatMessageBloc = PleromaChatMessageBloc(
@@ -113,7 +113,7 @@ void main() {
   });
 
   Future _update(IPleromaChatMessage chatMessage) async {
-    await chatMessageRepository.upsertRemoteChatMessage(
+    await chatMessageRepository.upsertInRemoteType(
       chatMessage.toPleromaChatMessage(),
     );
     // hack to execute notify callbacks
@@ -127,10 +127,10 @@ void main() {
       seed: "seed2",
       remoteId: chatMessage.remoteId,
     );
-    await accountRepository.upsertRemoteAccount(
+    await accountRepository.upsertChatRemoteAccount(
       newValue.account.toPleromaAccount(),
-      conversationRemoteId: null,
       chatRemoteId: newValue.chatRemoteId,
+      batchTransaction: null,
     );
 
     var listenedValue;

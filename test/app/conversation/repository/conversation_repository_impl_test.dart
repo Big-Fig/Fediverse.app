@@ -45,7 +45,10 @@ void main() {
     );
 
     dbAccount = await createTestDbAccount(seed: "seed1");
-    var accountId = await accountRepository.insertInDbType(dbAccount);
+    var accountId = await accountRepository.insertInDbType(
+      dbAccount,
+      mode: null,
+    );
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
@@ -60,12 +63,18 @@ void main() {
     );
 
     var reblogDbAccount = await createTestDbAccount(seed: "seed11");
-    await accountRepository.insertInDbType(reblogDbAccount);
+    await accountRepository.insertInDbType(
+      reblogDbAccount,
+      mode: null,
+    );
     var reblogDbStatus = await createTestDbStatus(
       seed: "seed33",
       dbAccount: reblogDbAccount,
     );
-    await statusRepository.insertInDbType(reblogDbStatus);
+    await statusRepository.insertInDbType(
+      reblogDbStatus,
+      mode: null,
+    );
 
     dbStatus = dbStatus.copyWith(
       reblogStatusRemoteId: reblogDbStatus.remoteId,
@@ -82,7 +91,10 @@ void main() {
       replyReblogDbStatusAccount: null,
     );
 
-    await statusRepository.insertInDbType(dbStatus);
+    await statusRepository.insertInDbType(
+      dbStatus,
+      mode: null,
+    );
 
     dbConversation = await createTestDbConversation(seed: "seed4");
   });
@@ -95,7 +107,10 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await conversationRepository.insertInDbType(dbConversation);
+    var id = await conversationRepository.insertInDbType(
+      dbConversation,
+      mode: null,
+    );
     assert(id > 0, true);
     expectDbConversation(
       await conversationRepository.findByDbIdInAppType(id),
@@ -110,11 +125,17 @@ void main() {
     var dbConversation2 = (await createTestDbConversation(seed: "seed6"))
         .copyWith(remoteId: "remoteId1");
 
-    await conversationRepository.upsertAllInDbType([dbConversation1]);
+    await conversationRepository.upsertAllInDbType(
+      [dbConversation1],
+      batchTransaction: null,
+    );
 
     expect((await conversationRepository.getAllInAppType()).length, 1);
 
-    await conversationRepository.upsertAllInDbType([dbConversation2]);
+    await conversationRepository.upsertAllInDbType(
+      [dbConversation2],
+      batchTransaction: null,
+    );
     expect((await conversationRepository.getAllInAppType()).length, 1);
 
     expectDbConversation(
@@ -124,21 +145,27 @@ void main() {
   });
 
   test('updateById', () async {
-    var id = await conversationRepository.insertInDbType(dbConversation);
+    var id = await conversationRepository.insertInDbType(
+      dbConversation,
+      mode: null,
+    );
     assert(id > 0, true);
 
     await conversationRepository.updateByDbIdInDbType(
-      dbId:id,
-      dbItem:dbConversation.copyWith(remoteId: "newRemoteId"),
+      dbId: id,
+      dbItem: dbConversation.copyWith(remoteId: "newRemoteId"),
+      batchTransaction: null,
     );
 
-    expect(
-        (await conversationRepository.findByDbIdInAppType(id))!.remoteId, "newRemoteId");
+    expect((await conversationRepository.findByDbIdInAppType(id))!.remoteId,
+        "newRemoteId");
   });
 
   test('updateLocalConversationByRemoteConversation', () async {
-    var id = await conversationRepository
-        .insertInDbType(dbConversation.copyWith(remoteId: "oldRemoteId"));
+    var id = await conversationRepository.insertInDbType(
+      dbConversation.copyWith(remoteId: "oldRemoteId"),
+      mode: null,
+    );
     assert(id > 0, true);
 
     var oldLocalConversation = DbConversationChatPopulatedWrapper(
@@ -173,33 +200,43 @@ void main() {
         ),
       ),
       accounts: [
-        DbAccountWrapper(
-          dbAccount: dbAccount.copyWith(
-            acct: newAcct,
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount.copyWith(
+              acct: newAcct,
+            ),
           ),
         ),
       ],
     );
-    await conversationRepository.updateLocalConversationByRemoteConversation(
-      oldLocalConversation: oldLocalConversation,
-      newRemoteConversation: newRemoteConversation,
+    await conversationRepository.updateAppTypeByRemoteType(
+      appItem: oldLocalConversation,
+      remoteItem: newRemoteConversation,
+      batchTransaction: null,
     );
 
-    expect((await conversationRepository.findByDbIdInAppType(id))!.remoteId, newRemoteId);
+    expect((await conversationRepository.findByDbIdInAppType(id))!.remoteId,
+        newRemoteId);
     expect(
-      (await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId))!.acct,
+      (await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId))!
+          .acct,
       newAcct,
     );
     expect(
-      (await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId))?.content,
+      (await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId))
+          ?.content,
       newContent,
     );
   });
 
   test('findByRemoteId', () async {
-    await conversationRepository.insertInDbType(dbConversation);
+    await conversationRepository.insertInDbType(
+      dbConversation,
+      mode: null,
+    );
     expectDbConversation(
-      await conversationRepository.findByRemoteIdInAppType(dbConversation.remoteId),
+      await conversationRepository
+          .findByRemoteIdInAppType(dbConversation.remoteId),
       dbConversation,
     );
   });
@@ -207,15 +244,17 @@ void main() {
   test('upsertRemoteConversation', () async {
     expect(await conversationRepository.countAll(), 0);
 
-    await conversationRepository.upsertRemoteConversation(
+    await conversationRepository.upsertInRemoteType(
       DbConversationChatPopulatedWrapper(
-              dbConversationPopulated:
-                  DbConversationPopulated(dbConversation: dbConversation))
-          .toPleromaConversation(
+        dbConversationPopulated: DbConversationPopulated(
+          dbConversation: dbConversation,
+        ),
+      ).toPleromaConversation(
         accounts: [
-          DbAccountWrapper(
+          DbAccountPopulatedWrapper(
+              dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount,
-          ),
+          )),
         ],
         lastStatus: DbStatusPopulatedWrapper(
           dbStatusPopulated: dbStatusPopulated,
@@ -228,7 +267,8 @@ void main() {
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
     expectDbConversation(
-      await conversationRepository.findByRemoteIdInAppType(dbConversation.remoteId),
+      await conversationRepository
+          .findByRemoteIdInAppType(dbConversation.remoteId),
       dbConversation,
     );
     expectDbAccount(
@@ -242,15 +282,17 @@ void main() {
 
     // item with same id updated
 
-    await conversationRepository.upsertRemoteConversation(
+    await conversationRepository.upsertInRemoteType(
       DbConversationChatPopulatedWrapper(
         dbConversationPopulated: DbConversationPopulated(
           dbConversation: dbConversation,
         ),
       ).toPleromaConversation(
         accounts: [
-          DbAccountWrapper(
-            dbAccount: dbAccount,
+          DbAccountPopulatedWrapper(
+            dbAccountPopulated: DbAccountPopulated(
+              dbAccount: dbAccount,
+            ),
           ),
         ],
         lastStatus: DbStatusPopulatedWrapper(
@@ -263,7 +305,8 @@ void main() {
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
     expectDbConversation(
-      await conversationRepository.findByRemoteIdInAppType(dbConversation.remoteId),
+      await conversationRepository
+          .findByRemoteIdInAppType(dbConversation.remoteId),
       dbConversation,
     );
     expectDbAccount(
@@ -278,7 +321,7 @@ void main() {
 
   test('upsertRemoteConversations', () async {
     expect(await conversationRepository.countAll(), 0);
-    await conversationRepository.upsertRemoteConversations(
+    await conversationRepository.upsertAllInRemoteType(
       [
         DbConversationChatPopulatedWrapper(
           dbConversationPopulated: DbConversationPopulated(
@@ -286,8 +329,10 @@ void main() {
           ),
         ).toPleromaConversation(
           accounts: [
-            DbAccountWrapper(
-              dbAccount: dbAccount,
+            DbAccountPopulatedWrapper(
+              dbAccountPopulated: DbAccountPopulated(
+                dbAccount: dbAccount,
+              ),
             ),
           ],
           lastStatus: DbStatusPopulatedWrapper(
@@ -295,6 +340,7 @@ void main() {
           ),
         ),
       ],
+      batchTransaction: null,
     );
 
     expect(await conversationRepository.countAll(), 1);
@@ -302,7 +348,8 @@ void main() {
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
     expectDbConversation(
-      await conversationRepository.findByRemoteIdInAppType(dbConversation.remoteId),
+      await conversationRepository
+          .findByRemoteIdInAppType(dbConversation.remoteId),
       dbConversation,
     );
     expectDbAccount(
@@ -314,7 +361,7 @@ void main() {
       dbStatus,
     );
 
-    await conversationRepository.upsertRemoteConversations(
+    await conversationRepository.upsertAllInRemoteType(
       [
         DbConversationChatPopulatedWrapper(
           dbConversationPopulated: DbConversationPopulated(
@@ -322,8 +369,10 @@ void main() {
           ),
         ).toPleromaConversation(
           accounts: [
-            DbAccountWrapper(
-              dbAccount: dbAccount,
+            DbAccountPopulatedWrapper(
+              dbAccountPopulated: DbAccountPopulated(
+                dbAccount: dbAccount,
+              ),
             ),
           ],
           lastStatus: DbStatusPopulatedWrapper(
@@ -331,6 +380,7 @@ void main() {
           ),
         ),
       ],
+      batchTransaction: null,
     );
     // update item with same id
     expect(await conversationRepository.countAll(), 1);
@@ -338,7 +388,8 @@ void main() {
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
     expectDbConversation(
-      await conversationRepository.findByRemoteIdInAppType(dbConversation.remoteId),
+      await conversationRepository
+          .findByRemoteIdInAppType(dbConversation.remoteId),
       dbConversation,
     );
     expectDbAccount(
@@ -361,18 +412,24 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await conversationRepository
-        .insertInDbType((await createTestDbConversation(seed: "seed1")).copyWith());
+    await conversationRepository.insertInDbType(
+      (await createTestDbConversation(seed: "seed1")).copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 1);
 
-    await conversationRepository
-        .insertInDbType((await createTestDbConversation(seed: "seed2")).copyWith());
+    await conversationRepository.insertInDbType(
+      (await createTestDbConversation(seed: "seed2")).copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 2);
 
-    await conversationRepository
-        .insertInDbType((await createTestDbConversation(seed: "seed3")).copyWith());
+    await conversationRepository.insertInDbType(
+      (await createTestDbConversation(seed: "seed3")).copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 3);
   });
@@ -416,7 +473,8 @@ void main() {
             remoteId: "remoteId5",
           ),
         ),
-        orderingTermData: ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+        orderingTermData:
+            ConversationRepositoryChatOrderingTermData.updatedAtDesc,
         withLastMessage: false,
       );
 
@@ -462,7 +520,8 @@ void main() {
           remoteId: "remoteId5",
         ),
       ),
-      orderingTermData: ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+      orderingTermData:
+          ConversationRepositoryChatOrderingTermData.updatedAtDesc,
       withLastMessage: false,
     );
 
@@ -511,7 +570,8 @@ void main() {
           remoteId: "remoteId5",
         ),
       ),
-      orderingTermData: ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+      orderingTermData:
+          ConversationRepositoryChatOrderingTermData.updatedAtDesc,
       withLastMessage: false,
     );
 

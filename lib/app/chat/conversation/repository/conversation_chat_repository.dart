@@ -7,6 +7,7 @@ import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/repository/repository.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 
 abstract class IConversationChatRepository
@@ -29,47 +30,48 @@ abstract class IConversationChatRepository
         listen: listen,
       );
 
-  Future upsertRemoteConversations(
-    List<IPleromaConversation> remoteConversations,
-  );
+  // Future upsertRemoteConversations(
+  //   List<IPleromaConversation> remoteConversations,
+  // );
+  //
+  // Future upsertRemoteConversation(
+  //   IPleromaConversation remoteConversation,
+  // );
+  //
+  // Future<List<DbConversationChatPopulatedWrapper>> getConversations({
+  //   required ConversationChatRepositoryFilters? filters,
+  //   required RepositoryPagination<IConversationChat>? pagination,
+  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
+  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+  // });
+  //
+  // Stream<List<DbConversationChatPopulatedWrapper>> watchConversations({
+  //   required ConversationChatRepositoryFilters? filters,
+  //   required RepositoryPagination<IConversationChat>? pagination,
+  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
+  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+  // });
+  //
+  // Future<DbConversationChatPopulatedWrapper?> getConversation({
+  //   required ConversationChatRepositoryFilters? filters,
+  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
+  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+  // });
+  //
+  // Stream<DbConversationChatPopulatedWrapper?> watchConversation({
+  //   required ConversationChatRepositoryFilters? filters,
+  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
+  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+  // });
+  //
+  // Future updateLocalConversationByRemoteConversation({
+  //   required IConversationChat oldLocalConversation,
+  //   required IPleromaConversation newRemoteConversation,
+  // });
 
-  Future upsertRemoteConversation(
-    IPleromaConversation remoteConversation,
-  );
-
-  Future<List<DbConversationChatPopulatedWrapper>> getConversations({
-    required ConversationChatRepositoryFilters? filters,
-    required RepositoryPagination<IConversationChat>? pagination,
-    ConversationRepositoryChatOrderingTermData? orderingTermData =
-        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  });
-
-  Stream<List<DbConversationChatPopulatedWrapper>> watchConversations({
-    required ConversationChatRepositoryFilters? filters,
-    required RepositoryPagination<IConversationChat>? pagination,
-    ConversationRepositoryChatOrderingTermData? orderingTermData =
-        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  });
-
-  Future<DbConversationChatPopulatedWrapper?> getConversation({
-    required ConversationChatRepositoryFilters? filters,
-    ConversationRepositoryChatOrderingTermData? orderingTermData =
-        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  });
-
-  Stream<DbConversationChatPopulatedWrapper?> watchConversation({
-    required ConversationChatRepositoryFilters? filters,
-    ConversationRepositoryChatOrderingTermData? orderingTermData =
-        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  });
-
-  Future updateLocalConversationByRemoteConversation({
-    required IConversationChat oldLocalConversation,
-    required IPleromaConversation newRemoteConversation,
-  });
-
-  Future<bool> markAsRead({
+  Future markAsRead({
     required IConversationChat conversation,
+    required Batch? batchTransaction,
   });
 
   Future<int> getTotalUnreadCount();
@@ -103,4 +105,7 @@ abstract class IConversationChatRepository
     ConversationRepositoryChatOrderingTermData? orderingTermData =
         ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   });
+
+
+
 }

@@ -270,7 +270,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         ),
       );
     } else {
-      await upsertRemoteAccounts(
+      await upsertAllInRemoteType(
         favouritedByAccounts,
         batchTransaction: batchTransaction,
       );
@@ -286,6 +286,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
             )
             .toList(),
         mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
       );
     }
   }
@@ -294,85 +295,109 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Future updateStatusRebloggedBy({
     required String statusRemoteId,
     required List<IPleromaAccount> rebloggedByAccounts,
+    required Batch? batchTransaction,
   }) async {
-    await upsertRemoteAccounts(
-      rebloggedByAccounts,
-      conversationRemoteId: null,
-      chatRemoteId: null,
-    );
-    await statusRebloggedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
-    await statusRebloggedAccountsDao.insertAll(
-      entities: rebloggedByAccounts
-          .map(
-            (favouritedByAccount) => DbStatusRebloggedAccount(
-              id: null,
-              accountRemoteId: favouritedByAccount.id,
-              statusRemoteId: statusRemoteId,
-            ),
-          )
-          .toList(),
-      mode: InsertMode.insertOrReplace,
-    );
+    if (batchTransaction != null) {
+      await upsertAllInRemoteType(
+        rebloggedByAccounts,
+        batchTransaction: batchTransaction,
+      );
+      await statusRebloggedAccountsDao.deleteByStatusRemoteIdBatch(
+        statusRemoteId,
+        batchTransaction: batchTransaction,
+      );
+      await statusRebloggedAccountsDao.insertAll(
+        entities: rebloggedByAccounts
+            .map(
+              (favouritedByAccount) => DbStatusRebloggedAccount(
+                id: null,
+                accountRemoteId: favouritedByAccount.id,
+                statusRemoteId: statusRemoteId,
+              ),
+            )
+            .toList(),
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
+      );
+    } else {
+      return batch(
+        (batch) => updateStatusRebloggedBy(
+          statusRemoteId: statusRemoteId,
+          rebloggedByAccounts: rebloggedByAccounts,
+          batchTransaction: batch,
+        ),
+      );
+    }
   }
 
   @override
   Future<List<IAccount>> getConversationAccounts({
     required IConversationChat conversation,
   }) =>
-      getAccounts(
+      findAllInAppType(
         filters: AccountRepositoryFilters.createForOnlyInConversation(
           conversation: conversation,
         ),
         pagination: null,
+        orderingTerms: null,
       );
 
   @override
   Stream<List<IAccount>> watchConversationAccounts({
     required IConversationChat conversation,
   }) =>
-      watchAccounts(
+      watchFindAllInAppType(
         filters: AccountRepositoryFilters.createForOnlyInConversation(
           conversation: conversation,
         ),
         pagination: null,
+        orderingTerms: null,
       );
 
   @override
   Future<List<IAccount>> getChatAccounts({required IPleromaChat chat}) =>
-      getAccounts(
+      findAllInAppType(
         filters: AccountRepositoryFilters.createForOnlyInChat(
           chat: chat,
         ),
         pagination: null,
+        orderingTerms: null,
       );
 
   @override
   Stream<List<IAccount>> watchChatAccounts({required IPleromaChat chat}) =>
-      watchAccounts(
+      watchFindAllInAppType(
         filters: AccountRepositoryFilters.createForOnlyInChat(
           chat: chat,
         ),
         pagination: null,
+        orderingTerms: null,
       );
 
   @override
   Future removeAccountFollowing({
-    required String? accountRemoteId,
-    required String? followingAccountId,
+    required String accountRemoteId,
+    required String followingAccountId,
+    required Batch? batchTransaction,
   }) =>
-      accountFollowingsDao.deleteByAccountRemoteIdAndFollowingAccountRemoteId(
-        followingAccountId!,
-        accountRemoteId!,
+      accountFollowingsDao
+          .deleteByAccountRemoteIdAndFollowingAccountRemoteIdBatch(
+        followingAccountRemoteId: followingAccountId,
+        accountRemoteId: accountRemoteId,
+        batchTransaction: batchTransaction,
       );
 
   @override
   Future removeAccountFollower({
     required String accountRemoteId,
     required String followerAccountId,
+    required Batch? batchTransaction,
   }) =>
-      accountFollowersDao.deleteByAccountRemoteIdAndFollowerAccountRemoteId(
-        followerAccountId,
-        accountRemoteId,
+      accountFollowersDao
+          .deleteByAccountRemoteIdAndFollowerAccountRemoteIdBatch(
+        followerAccountRemoteId: followerAccountId,
+        accountRemoteId: accountRemoteId,
+        batchTransaction: batchTransaction,
       );
 
   JoinedSelectStatement createQuery({
@@ -488,13 +513,6 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       appItem.toPleromaAccount();
 
   @override
-  IAccount mapDbItemToAppItem(DbAccount dbItem) => dbItem.toDbAccountWrapper();
-
-  @override
-  IPleromaAccount mapDbItemToRemoteItem(DbAccount dbItem) =>
-      dbItem.toDbAccountWrapper().toPleromaAccount();
-
-  @override
   DbAccount mapRemoteItemToDbItem(IPleromaAccount remoteItem) =>
       remoteItem.toDbAccount();
 
@@ -561,6 +579,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Future upsertChatRemoteAccounts(
     List<IPleromaAccount> remoteAccount, {
     required String chatRemoteId,
+    required Batch? batchTransaction,
   }) {
     // TODO: implement upsertChatRemoteAccounts
     throw UnimplementedError();
@@ -585,49 +604,14 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     // TODO: implement upsertConversationRemoteAccounts
     throw UnimplementedError();
   }
-
-  @override
-  JoinedSelectStatement<Table, DataClass>
-      convertSimpleSelectStatementToJoinedSelectStatement({
-    required SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
-    required AccountRepositoryFilters? filters,
-  }) {
-    // TODO: implement convertSimpleSelectStatementToJoinedSelectStatement
-    throw UnimplementedError();
-  }
-
-  @override
-  DbAccountPopulated mapAppItemToDbPopulatedItem(IAccount appItem) {
-    // TODO: implement mapAppItemToDbPopulatedItem
-    throw UnimplementedError();
-  }
-
-  @override
-  IAccount mapDbPopulatedItemToAppItem(DbAccountPopulated dbPopulatedItem) {
-    // TODO: implement mapDbPopulatedItemToAppItem
-    throw UnimplementedError();
-  }
-
-  @override
-  IPleromaAccount mapDbPopulatedItemToRemoteItem(
-      DbAccountPopulated dbPopulatedItem) {
-    // TODO: implement mapDbPopulatedItemToRemoteItem
-    throw UnimplementedError();
-  }
-
-  @override
-  DbAccountPopulated mapTypedResultToDbPopulatedItem(TypedResult typedResult) {
-    // TODO: implement mapTypedResultToDbPopulatedItem
-    throw UnimplementedError();
-  }
 }
 
 extension DbAccountListExtension on List<DbAccount> {
-  List<DbAccountWrapper> toDbAccountWrapperList() => map(
+  List<DbAccountPopulatedWrapper> toDbAccountPopulatedWrapperList() => map(
         (item) => item.toDbAccountWrapper(),
       ).toList();
 }
 
-extension DbAccountWrapperExtension on DbAccountWrapper {
+extension DbAccountWrapperExtension on DbAccountPopulatedWrapper {
   DbAccount toDbAccount() => dbAccount;
 }

@@ -17,6 +17,7 @@ import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:moor/moor.dart';
 
 final _logger = Logger("local_status_bloc_impl.dart");
 
@@ -130,10 +131,8 @@ class LocalStatusBloc extends StatusBloc {
         var remoteAccount = await pleromaAccountService.getAccount(
           accountRemoteId: accountRemoteId,
         );
-        await accountRepository.upsertRemoteAccount(
+        await accountRepository.upsertInRemoteType(
           remoteAccount,
-          conversationRemoteId: null,
-          chatRemoteId: null,
         );
       }
       account = await accountRepository.findByRemoteIdInAppType(
@@ -202,8 +201,9 @@ class LocalStatusBloc extends StatusBloc {
     var updatedLocalStatus = await super.onPollUpdated(poll);
 
     await statusRepository.updateByDbIdInDbType(
-      dbId:status.localId!,
-      dbItem:updatedLocalStatus.toDbStatus(),
+      dbId: status.localId!,
+      dbItem: updatedLocalStatus.toDbStatus(),
+      batchTransaction: null,
     );
 
     return updatedLocalStatus;
@@ -247,9 +247,9 @@ class LocalStatusBloc extends StatusBloc {
       );
     }
 
-    await statusRepository.updateLocalStatusByRemoteStatus(
-      oldLocalStatus: reblogOrOriginal,
-      newRemoteStatus: remoteStatus,
+    await statusRepository.updateAppTypeByRemoteType(
+      appItem: reblogOrOriginal,
+      remoteItem: remoteStatus,
     );
 
     var result = await statusRepository.findByRemoteIdInAppType(
@@ -274,10 +274,8 @@ class LocalStatusBloc extends StatusBloc {
       );
     }
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertInRemoteType(
       remoteStatus,
-      listRemoteId: null,
-      conversationRemoteId: null,
     );
 
     var result = await statusRepository.findByRemoteIdInAppType(
@@ -328,9 +326,10 @@ class LocalStatusBloc extends StatusBloc {
       );
     }
 
-    await statusRepository.updateLocalStatusByRemoteStatus(
-      oldLocalStatus: reblogOrOriginal,
-      newRemoteStatus: remoteStatus,
+    await statusRepository.updateAppTypeByRemoteType(
+      appItem: reblogOrOriginal,
+      remoteItem: remoteStatus,
+      batchTransaction: null,
     );
 
     var result = await statusRepository.findByRemoteIdInAppType(
@@ -352,9 +351,10 @@ class LocalStatusBloc extends StatusBloc {
       );
     }
 
-    await statusRepository.updateLocalStatusByRemoteStatus(
-      oldLocalStatus: reblogOrOriginal,
-      newRemoteStatus: remoteStatus,
+    await statusRepository.updateAppTypeByRemoteType(
+      appItem: reblogOrOriginal,
+      remoteItem: remoteStatus,
+      batchTransaction: null,
     );
 
     var result = await statusRepository.findByRemoteIdInAppType(
@@ -383,9 +383,10 @@ class LocalStatusBloc extends StatusBloc {
       }
     }
 
-    await statusRepository.updateLocalStatusByRemoteStatus(
-      oldLocalStatus: reblogOrOriginal,
-      newRemoteStatus: remoteStatus,
+    await statusRepository.updateAppTypeByRemoteType(
+      appItem: reblogOrOriginal,
+      remoteItem: remoteStatus,
+      batchTransaction: null,
     );
 
     var result = await statusRepository.findByRemoteIdInAppType(
@@ -433,21 +434,22 @@ class LocalStatusBloc extends StatusBloc {
       );
     }
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertInRemoteType(
       remoteStatus,
-      listRemoteId: null,
-      conversationRemoteId: null,
     );
 
     return remoteStatus;
   }
 
-  Future _updateByRemoteStatus(IPleromaStatus remoteStatus) {
-    return statusRepository.updateLocalStatusByRemoteStatus(
-      oldLocalStatus: status,
-      newRemoteStatus: remoteStatus,
-    );
-  }
+  Future _updateByRemoteStatus(
+    IPleromaStatus remoteStatus, {
+    Batch? batchTransaction,
+  }) =>
+      statusRepository.updateAppTypeByRemoteType(
+        appItem: status,
+        remoteItem: remoteStatus,
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future refreshFromNetwork() async {

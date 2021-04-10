@@ -35,13 +35,16 @@ class MyAccountFavouritedStatusesCachedListBloc extends AsyncInitLoadingBloc
     IStatus? newerThan,
     IStatus? olderThan,
   }) {
-    return statusRepository.getStatuses(
+    return statusRepository.findAllInAppType(
       filters: _statusRepositoryFilters,
       pagination: RepositoryPagination<IStatus>(
         olderThanItem: olderThan,
         newerThanItem: newerThan,
         limit: limit,
       ),
+      orderingTerms: [
+        StatusRepositoryOrderingTermData.remoteIdDesc,
+      ],
     );
   }
 
@@ -49,11 +52,14 @@ class MyAccountFavouritedStatusesCachedListBloc extends AsyncInitLoadingBloc
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(
     IStatus? item,
   ) {
-    return statusRepository.watchStatuses(
+    return statusRepository.watchFindAllInAppType(
       filters: _statusRepositoryFilters,
       pagination: RepositoryPagination<IStatus>(
         newerThanItem: item,
       ),
+      orderingTerms: [
+        StatusRepositoryOrderingTermData.remoteIdDesc,
+      ],
     );
   }
 
@@ -71,12 +77,10 @@ class MyAccountFavouritedStatusesCachedListBloc extends AsyncInitLoadingBloc
       ),
     );
 
-      await statusRepository.upsertRemoteStatuses(
-        remoteStatuses,
-        listRemoteId: null,
-        conversationRemoteId: null,
-      );
-
+    await statusRepository.upsertAllInRemoteType(
+      remoteStatuses,
+      batchTransaction: null,
+    );
   }
 
   @override

@@ -48,178 +48,182 @@ class ConversationChatRepository
   }) {
     dao = appDatabase.conversationDao;
   }
+  //
+  // @override
+  // Future upsertRemoteConversation(
+  //   IPleromaConversation remoteConversation,
+  // ) async {
+  //   _logger.finer(() => "upsertRemoteConversation $remoteConversation");
+  //   var remoteAccounts = remoteConversation.accounts;
+  //
+  //   await accountRepository.batch((batch) {
+  //     accountRepository.upsertConversationRemoteAccounts(
+  //       remoteAccounts,
+  //       conversationRemoteId: remoteConversation.id,
+  //       batchTransaction: batch,
+  //     );
+  //
+  //     var lastStatus = remoteConversation.lastStatus;
+  //     if (lastStatus != null) {
+  //       statusRepository.upsertRemoteStatusForConversation(
+  //         lastStatus,
+  //         conversationRemoteId: remoteConversation.id,
+  //         batchTransaction: batch,
+  //       );
+  //     }
+  //     upsertInRemoteTypeBatch(
+  //       remoteConversation,
+  //       batchTransaction: batch,
+  //     );
+  //   });
+  // }
 
-  @override
-  Future upsertRemoteConversation(
-    IPleromaConversation remoteConversation,
-  ) async {
-    _logger.finer(() => "upsertRemoteConversation $remoteConversation");
-    var remoteAccounts = remoteConversation.accounts;
-
-    await accountRepository.upsertRemoteAccounts(
-      remoteAccounts,
-      conversationRemoteId: remoteConversation.id,
-      chatRemoteId: null,
-    );
-
-    var lastStatus = remoteConversation.lastStatus;
-    if (lastStatus != null) {
-      await statusRepository.upsertRemoteStatus(
-        lastStatus,
-        conversationRemoteId: remoteConversation.id,
-        listRemoteId: null,
-      );
-    }
-
-    await upsertInRemoteType(remoteConversation);
-  }
-
-  @override
-  Future upsertRemoteConversations(
-    List<IPleromaConversation> remoteConversations,
-  ) async {
-    _logger.finer(
-      () => "upsertRemoteConversations ${remoteConversations.length}",
-    );
-
-    for (var remoteConversation in remoteConversations) {
-      var lastStatus = remoteConversation.lastStatus;
-      if (lastStatus != null) {
-        await statusRepository.upsertRemoteStatus(
-          lastStatus,
-          listRemoteId: null,
-          conversationRemoteId: remoteConversation.id,
-        );
-      }
-
-      await accountRepository.upsertRemoteAccounts(
-        remoteConversation.accounts,
-        conversationRemoteId: remoteConversation.id,
-        chatRemoteId: null,
-      );
-    }
-
-    await upsertAllInRemoteType(
-      remoteConversations,
-    );
-  }
-
-  @override
-  Future updateLocalConversationByRemoteConversation({
-    required IConversationChat? oldLocalConversation,
-    required IPleromaConversation newRemoteConversation,
-  }) async {
-    _logger.finer(() => "updateLocalConversationByRemoteConversation \n"
-        "\t old: $oldLocalConversation \n"
-        "\t newRemoteConversation: $newRemoteConversation");
-
-    var remoteAccounts = newRemoteConversation.accounts;
-
-    await accountRepository.upsertRemoteAccounts(
-      remoteAccounts,
-      conversationRemoteId: oldLocalConversation!.remoteId,
-      chatRemoteId: null,
-    );
-
-    var lastStatus = newRemoteConversation.lastStatus;
-    if (lastStatus != null) {
-      await statusRepository.upsertRemoteStatus(
-        lastStatus,
-        listRemoteId: null,
-        conversationRemoteId: oldLocalConversation.remoteId,
-      );
-    }
-    if (oldLocalConversation.localId != null) {
-      await updateByDbIdInDbType(
-        dbId: oldLocalConversation.localId!,
-        dbItem: newRemoteConversation.toDbConversation(),
-      );
-    } else {
-      await upsertRemoteConversation(newRemoteConversation);
-    }
-  }
-
-  @override
-  Future<List<DbConversationChatPopulatedWrapper>> getConversations({
-    required ConversationChatRepositoryFilters? filters,
-    required RepositoryPagination<IConversationChat>? pagination,
-    ConversationRepositoryChatOrderingTermData? orderingTermData =
-        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  }) async {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: false,
-    );
-
-    return (await query.get())
-        .toDbConversationChatPopulatedList(dao: dao)
-        .toDbConversationChatPopulatedWrapperList();
-  }
-
-  @override
-  Stream<List<DbConversationChatPopulatedWrapper>> watchConversations({
-    required ConversationChatRepositoryFilters? filters,
-    required RepositoryPagination<IConversationChat>? pagination,
-    ConversationRepositoryChatOrderingTermData? orderingTermData =
-        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  }) {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: false,
-    );
-
-    return query.watch().map(
-          (list) => list
-              .toDbConversationChatPopulatedList(
-                dao: dao,
-              )
-              .toDbConversationChatPopulatedWrapperList(),
-        );
-  }
-
-  @override
-  Future<DbConversationChatPopulatedWrapper?> getConversation({
-    required ConversationChatRepositoryFilters? filters,
-    ConversationRepositoryChatOrderingTermData? orderingTermData =
-        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  }) async {
-    var query = createQuery(
-      filters: filters,
-      pagination: _singleConversationChatRepositoryPagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: false,
-    );
-
-    return (await query.getSingleOrNull())
-        ?.toDbConversationPopulated(
-          dao: dao,
-        )
-        .toDbConversationChatPopulatedWrapper();
-  }
-
-  @override
-  Stream<DbConversationChatPopulatedWrapper?> watchConversation({
-    required ConversationChatRepositoryFilters? filters,
-    ConversationRepositoryChatOrderingTermData? orderingTermData =
-        ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  }) {
-    var query = createQuery(
-      filters: filters,
-      pagination: _singleConversationChatRepositoryPagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: false,
-    );
-
-    return query.watchSingleOrNull().map(
-          (typedResult) => typedResult
-              ?.toDbConversationPopulated(dao: dao)
-              .toDbConversationChatPopulatedWrapper(),
-        );
-  }
+  // @override
+  // Future upsertRemoteConversations(
+  //   List<IPleromaConversation> remoteConversations,
+  // ) async {
+  //   _logger.finer(
+  //     () => "upsertRemoteConversations ${remoteConversations.length}",
+  //   );
+  //
+  //   for (var remoteConversation in remoteConversations) {
+  //     var lastStatus = remoteConversation.lastStatus;
+  //     if (lastStatus != null) {
+  //       await statusRepository.upsertRemoteStatus(
+  //         lastStatus,
+  //         listRemoteId: null,
+  //         conversationRemoteId: remoteConversation.id,
+  //       );
+  //     }
+  //
+  //     await accountRepository.upsertRemoteAccounts(
+  //       remoteConversation.accounts,
+  //       conversationRemoteId: remoteConversation.id,
+  //       chatRemoteId: null,
+  //     );
+  //   }
+  //
+  //   await upsertAllInRemoteType(
+  //     remoteConversations,
+  //   );
+  // }
+  //
+  // @override
+  // Future updateLocalConversationByRemoteConversation({
+  //   required IConversationChat? oldLocalConversation,
+  //   required IPleromaConversation newRemoteConversation,
+  // }) async {
+  //   _logger.finer(() => "updateLocalConversationByRemoteConversation \n"
+  //       "\t old: $oldLocalConversation \n"
+  //       "\t newRemoteConversation: $newRemoteConversation");
+  //
+  //   var remoteAccounts = newRemoteConversation.accounts;
+  //
+  //   await accountRepository.upsertRemoteAccounts(
+  //     remoteAccounts,
+  //     conversationRemoteId: oldLocalConversation!.remoteId,
+  //     chatRemoteId: null,
+  //   );
+  //
+  //   var lastStatus = newRemoteConversation.lastStatus;
+  //   if (lastStatus != null) {
+  //     await statusRepository.upsertRemoteStatus(
+  //       lastStatus,
+  //       listRemoteId: null,
+  //       conversationRemoteId: oldLocalConversation.remoteId,
+  //     );
+  //   }
+  //   if (oldLocalConversation.localId != null) {
+  //     await updateByDbIdInDbType(
+  //       dbId: oldLocalConversation.localId!,
+  //       dbItem: newRemoteConversation.toDbConversation(),
+  //     );
+  //   } else {
+  //     await upsertRemoteConversation(newRemoteConversation);
+  //   }
+  // }
+  //
+  // @override
+  // Future<List<DbConversationChatPopulatedWrapper>> getConversations({
+  //   required ConversationChatRepositoryFilters? filters,
+  //   required RepositoryPagination<IConversationChat>? pagination,
+  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
+  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+  // }) async {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: pagination,
+  //     orderingTermData: orderingTermData,
+  //     withLastMessage: false,
+  //   );
+  //
+  //   return (await query.get())
+  //       .toDbConversationChatPopulatedList(dao: dao)
+  //       .toDbConversationChatPopulatedWrapperList();
+  // }
+  //
+  // @override
+  // Stream<List<DbConversationChatPopulatedWrapper>> watchConversations({
+  //   required ConversationChatRepositoryFilters? filters,
+  //   required RepositoryPagination<IConversationChat>? pagination,
+  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
+  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+  // }) {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: pagination,
+  //     orderingTermData: orderingTermData,
+  //     withLastMessage: false,
+  //   );
+  //
+  //   return query.watch().map(
+  //         (list) => list
+  //             .toDbConversationChatPopulatedList(
+  //               dao: dao,
+  //             )
+  //             .toDbConversationChatPopulatedWrapperList(),
+  //       );
+  // }
+  //
+  // @override
+  // Future<DbConversationChatPopulatedWrapper?> getConversation({
+  //   required ConversationChatRepositoryFilters? filters,
+  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
+  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+  // }) async {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: _singleConversationChatRepositoryPagination,
+  //     orderingTermData: orderingTermData,
+  //     withLastMessage: false,
+  //   );
+  //
+  //   return (await query.getSingleOrNull())
+  //       ?.toDbConversationPopulated(
+  //         dao: dao,
+  //       )
+  //       .toDbConversationChatPopulatedWrapper();
+  // }
+  //
+  // @override
+  // Stream<DbConversationChatPopulatedWrapper?> watchConversation({
+  //   required ConversationChatRepositoryFilters? filters,
+  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
+  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
+  // }) {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: _singleConversationChatRepositoryPagination,
+  //     orderingTermData: orderingTermData,
+  //     withLastMessage: false,
+  //   );
+  //
+  //   return query.watchSingleOrNull().map(
+  //         (typedResult) => typedResult
+  //             ?.toDbConversationPopulated(dao: dao)
+  //             .toDbConversationChatPopulatedWrapper(),
+  //       );
+  // }
 
   JoinedSelectStatement createQuery({
     required ConversationChatRepositoryFilters? filters,
@@ -283,18 +287,18 @@ class ConversationChatRepository
   }
 
   @override
-  Future<bool> markAsRead({
+  Future markAsRead({
     required IConversationChat conversation,
-  }) {
-    return updateByDbIdInDbType(
+    required Batch? batchTransaction,
+  }) => updateByDbIdInDbType(
       dbId: conversation.localId!,
       dbItem: DbConversation(
         id: conversation.localId,
         remoteId: conversation.remoteId,
         unread: false,
       ),
+      batchTransaction: batchTransaction,
     );
-  }
 
   @override
   Future<int> getTotalUnreadCount() => dao.getTotalAmountUnread();
@@ -446,21 +450,4 @@ class ConversationChatRepository
     required List<ConversationRepositoryChatOrderingTermData>? orderingTerms,
   }) {}
 
-  @override
-  JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
-    required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
-    required ConversationChatRepositoryFilters? filters,
-  }) {}
-
-  @override
-  Future insertAllInRemoteType(List<IPleromaConversation> remoteItems) {}
-
-  @override
-  Future<int> insertInRemoteType(IPleromaConversation remoteItem) {}
-
-  @override
-  Future upsertAllInRemoteType(List<IPleromaConversation> remoteItems) {}
-
-  @override
-  Future<int> upsertInRemoteType(IPleromaConversation remoteItem) {}
 }

@@ -24,9 +24,9 @@ void main() {
   test('test pleromaBackgroundImage', () async {
     var accountDao = database.accountDao;
 
-    await accountDao.clear();
+    await accountDao.clear(batchTransaction: null);
 
-    expect((await accountDao.getAll().get()).isNotEmpty, false);
+    expect((await accountDao.getAll()).isNotEmpty, false);
 
     var pleromaBackgroundImage = "pleromaBackgroundImage11";
     var testDbAccount = await createTestDbAccount(seed: "seed1");
@@ -38,7 +38,7 @@ void main() {
     );
 
     expect(
-      (await accountDao.findByRemoteId(testDbAccount.remoteId).getSingle())
+      (await accountDao.findByRemoteId(testDbAccount.remoteId))!
           .pleromaBackgroundImage,
       pleromaBackgroundImage,
     );

@@ -38,7 +38,10 @@ void main() {
 
     dbAccount = await createTestDbAccount(seed: "seed1");
 
-    var accountId = await accountRepository.insertInDbType(dbAccount);
+    var accountId = await accountRepository.insertInDbType(
+      dbAccount,
+      mode: null,
+    );
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
@@ -58,7 +61,10 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await chatMessageRepository.insertInDbType(dbChatMessage);
+    var id = await chatMessageRepository.insertInDbType(
+      dbChatMessage,
+      mode: null,
+    );
     assert(id > 0, true);
     expectDbChatMessagePopulated(
       await chatMessageRepository.findByDbIdInAppType(id),
@@ -69,7 +75,7 @@ void main() {
   test('upsertRemoteChatMessage', () async {
     expect(await chatMessageRepository.countAll(), 0);
 
-    await chatMessageRepository.upsertRemoteChatMessage(
+    await chatMessageRepository.upsertInRemoteType(
       DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toPleromaChatMessage(),
@@ -78,7 +84,8 @@ void main() {
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbChatMessage(
-      await chatMessageRepository.findByRemoteIdInAppType(dbChatMessage.remoteId),
+      await chatMessageRepository
+          .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
     );
     expectDbAccount(
@@ -87,7 +94,7 @@ void main() {
     );
 
     // item with same id updated
-    await chatMessageRepository.upsertRemoteChatMessage(
+    await chatMessageRepository.upsertInRemoteType(
       DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toPleromaChatMessage(),
@@ -95,7 +102,8 @@ void main() {
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbChatMessage(
-      await chatMessageRepository.findByRemoteIdInAppType(dbChatMessage.remoteId),
+      await chatMessageRepository
+          .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
     );
     expectDbAccount(
@@ -106,18 +114,20 @@ void main() {
 
   test('upsertRemoteChatMessages', () async {
     expect(await chatMessageRepository.countAll(), 0);
-    await chatMessageRepository.upsertRemoteChatMessages(
+    await chatMessageRepository.upsertAllInRemoteType(
       [
         DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ).toPleromaChatMessage(),
       ],
+      batchTransaction: null,
     );
 
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbChatMessage(
-      await chatMessageRepository.findByRemoteIdInAppType(dbChatMessage.remoteId),
+      await chatMessageRepository
+          .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
     );
     expectDbAccount(
@@ -125,17 +135,21 @@ void main() {
       dbAccount,
     );
 
-    await chatMessageRepository.upsertRemoteChatMessages([
-      DbPleromaChatMessagePopulatedWrapper(
-        dbChatMessagePopulated: dbChatMessagePopulated,
-      ).toPleromaChatMessage(),
-    ]);
+    await chatMessageRepository.upsertAllInRemoteType(
+      [
+        DbPleromaChatMessagePopulatedWrapper(
+          dbChatMessagePopulated: dbChatMessagePopulated,
+        ).toPleromaChatMessage(),
+      ],
+      batchTransaction: null,
+    );
 
     // update item with same id
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbChatMessage(
-      await chatMessageRepository.findByRemoteIdInAppType(dbChatMessage.remoteId),
+      await chatMessageRepository
+          .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
     );
     expectDbAccount(
@@ -157,11 +171,17 @@ void main() {
     ))
         .copyWith(remoteId: "remoteId1");
 
-    await chatMessageRepository.upsertAllInDbType([dbChatMessage1]);
+    await chatMessageRepository.upsertAllInDbType(
+      [dbChatMessage1],
+      batchTransaction: null,
+    );
 
     expect((await chatMessageRepository.getAllInAppType()).length, 1);
 
-    await chatMessageRepository.upsertAllInDbType([dbChatMessage2]);
+    await chatMessageRepository.upsertAllInDbType(
+      [dbChatMessage2],
+      batchTransaction: null,
+    );
     expect((await chatMessageRepository.getAllInAppType()).length, 1);
 
     expectDbChatMessagePopulated(
@@ -174,12 +194,16 @@ void main() {
   });
 
   test('updateById', () async {
-    var id = await chatMessageRepository.insertInDbType(dbChatMessage);
+    var id = await chatMessageRepository.insertInDbType(
+      dbChatMessage,
+      mode: null,
+    );
     assert(id > 0, true);
 
     await chatMessageRepository.updateByDbIdInDbType(
       dbId: id,
       dbItem: dbChatMessage.copyWith(remoteId: "newRemoteId"),
+      batchTransaction: null,
     );
 
     expect((await chatMessageRepository.findByDbIdInAppType(id))!.remoteId,
@@ -191,6 +215,7 @@ void main() {
       dbChatMessage.copyWith(
         content: "oldContent",
       ),
+      mode: null,
     );
     assert(id > 0, true);
 
@@ -207,9 +232,10 @@ void main() {
         dbAccount: dbAccount,
       ),
     ).toPleromaChatMessage();
-    await chatMessageRepository.updateLocalChatMessageByRemoteChatMessage(
-      oldLocalChatMessage: oldLocalChatMessage,
-      newRemoteChatMessage: newRemoteChatMessage,
+    await chatMessageRepository.updateAppTypeByRemoteType(
+      appItem: oldLocalChatMessage,
+      remoteItem: newRemoteChatMessage,
+      batchTransaction: null,
     );
 
     expect((await chatMessageRepository.findByDbIdInRemoteType(id))!.content,
@@ -217,7 +243,10 @@ void main() {
   });
 
   test('findByRemoteId', () async {
-    await chatMessageRepository.insertInDbType(dbChatMessage);
+    await chatMessageRepository.insertInDbType(
+      dbChatMessage,
+      mode: null,
+    );
     expectDbChatMessagePopulated(
       await chatMessageRepository
           .findByRemoteIdInAppType(dbChatMessage.remoteId),
@@ -258,7 +287,8 @@ void main() {
           createdAt: DateTime(2005),
         ),
       ),
-      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+      orderingTermData:
+          PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
     );
 
     await insertDbChatMessage(
@@ -303,7 +333,8 @@ void main() {
           createdAt: DateTime(2005),
         ),
       ),
-      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+      orderingTermData:
+          PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
     );
 
     await insertDbChatMessage(
@@ -353,7 +384,8 @@ void main() {
           createdAt: DateTime(2005),
         ),
       ),
-      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+      orderingTermData:
+          PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
     );
 
     await insertDbChatMessage(
@@ -408,7 +440,8 @@ void main() {
     var query = chatMessageRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.remoteIdAsc,
+      orderingTermData:
+          PleromaChatMessageRepositoryOrderingTermData.remoteIdAsc,
     );
 
     var chatMessage2 = await insertDbChatMessage(
@@ -443,7 +476,8 @@ void main() {
     var query = chatMessageRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.remoteIdDesc,
+      orderingTermData:
+          PleromaChatMessageRepositoryOrderingTermData.remoteIdDesc,
     );
 
     var chatMessage2 = await insertDbChatMessage(
@@ -481,7 +515,8 @@ void main() {
         limit: 1,
         offset: 1,
       ),
-      orderingTermData: PleromaChatMessageRepositoryOrderingTermData.remoteIdAsc,
+      orderingTermData:
+          PleromaChatMessageRepositoryOrderingTermData.remoteIdAsc,
     );
 
     var chatMessage2 = await insertDbChatMessage(
@@ -567,7 +602,7 @@ void main() {
     expect((await query.get()).length, 1);
 
     // duplicate adding. Should be skipped
-    await chatMessageRepository.upsertRemoteChatMessage(
+    await chatMessageRepository.upsertInRemoteType(
       DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: DbChatMessagePopulated(
           dbChatMessage: await createTestDbChatMessage(
@@ -600,7 +635,7 @@ void main() {
 
     // 1 is not related to chat
     await chatMessageRepository
-        .upsertRemoteChatMessage(DbPleromaChatMessagePopulatedWrapper(
+        .upsertInRemoteType(DbPleromaChatMessagePopulatedWrapper(
       dbChatMessagePopulated: await createTestDbChatMessagePopulated(
         dbChatMessage.copyWith(
           remoteId: "chatMessage1",
@@ -618,7 +653,7 @@ void main() {
     );
 
     // 2 is related to chat
-    await chatMessageRepository.upsertRemoteChatMessage(
+    await chatMessageRepository.upsertInRemoteType(
       DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: await createTestDbChatMessagePopulated(
           dbChatMessage.copyWith(
@@ -643,7 +678,7 @@ void main() {
 
     // 4 is newer than 2
     await chatMessageRepository
-        .upsertRemoteChatMessage(DbPleromaChatMessagePopulatedWrapper(
+        .upsertInRemoteType(DbPleromaChatMessagePopulatedWrapper(
       dbChatMessagePopulated: await createTestDbChatMessagePopulated(
         dbChatMessage.copyWith(
           remoteId: "chatMessage4",
@@ -660,7 +695,7 @@ void main() {
     );
 
     // remain 4
-    await chatMessageRepository.upsertRemoteChatMessage(
+    await chatMessageRepository.upsertInRemoteType(
       DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: await createTestDbChatMessagePopulated(
           dbChatMessage.copyWith(
@@ -688,42 +723,50 @@ void main() {
     dbChatMessagePopulated =
         dbChatMessagePopulated.copyWith(chatRemoteId: chatRemoteId);
 
-    await chatMessageRepository.upsertRemoteChatMessages([
-      DbPleromaChatMessagePopulatedWrapper(
-        dbChatMessagePopulated: dbChatMessagePopulated,
-      ).toPleromaChatMessage(),
-    ]);
-    await chatMessageRepository.upsertRemoteChatMessages(
+    await chatMessageRepository.upsertAllInRemoteType(
       [
         DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ).toPleromaChatMessage(),
       ],
+      batchTransaction: null,
     );
-
-    var future1 = chatMessageRepository.upsertRemoteChatMessage(
-      DbPleromaChatMessagePopulatedWrapper(
-        dbChatMessagePopulated: dbChatMessagePopulated,
-      ).toPleromaChatMessage(),
-    );
-    var future2 = chatMessageRepository.upsertRemoteChatMessage(
-      DbPleromaChatMessagePopulatedWrapper(
-        dbChatMessagePopulated: dbChatMessagePopulated,
-      ).toPleromaChatMessage(),
-    );
-
-    var future3 = chatMessageRepository.upsertRemoteChatMessages(
+    await chatMessageRepository.upsertAllInRemoteType(
       [
         DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ).toPleromaChatMessage(),
       ],
+      batchTransaction: null,
     );
-    var future4 = chatMessageRepository.upsertRemoteChatMessages([
+
+    var future1 = chatMessageRepository.upsertInRemoteType(
       DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toPleromaChatMessage(),
-    ]);
+    );
+    var future2 = chatMessageRepository.upsertInRemoteType(
+      DbPleromaChatMessagePopulatedWrapper(
+        dbChatMessagePopulated: dbChatMessagePopulated,
+      ).toPleromaChatMessage(),
+    );
+
+    var future3 = chatMessageRepository.upsertAllInRemoteType(
+      [
+        DbPleromaChatMessagePopulatedWrapper(
+          dbChatMessagePopulated: dbChatMessagePopulated,
+        ).toPleromaChatMessage(),
+      ],
+      batchTransaction: null,
+    );
+    var future4 = chatMessageRepository.upsertAllInRemoteType(
+      [
+        DbPleromaChatMessagePopulatedWrapper(
+          dbChatMessagePopulated: dbChatMessagePopulated,
+        ).toPleromaChatMessage(),
+      ],
+      batchTransaction: null,
+    );
 
     await future1;
     await future2;
@@ -732,9 +775,9 @@ void main() {
 
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
-    expect((await chatMessageRepository.dao.countAll().get()).length, 1);
+    expect((await chatMessageRepository.dao.getAll()).length, 1);
     expect(
-      (await chatMessageRepository.getChatMessages(
+      (await chatMessageRepository.findAllInAppType(
         filters: PleromaChatMessageRepositoryFilters(
           onlyInChats: [
             await createTestChat(seed: "seed5", remoteId: chatRemoteId),
@@ -744,6 +787,7 @@ void main() {
           onlyNotHiddenLocallyOnDevice: false,
         ),
         pagination: null,
+        orderingTerms: null,
       ))
           .length,
       1,

@@ -70,7 +70,7 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
 
   @override
   Future<List<IFilter>> loadFilters() async {
-    var filters = await filterRepository.getFilters(
+    var filters = await filterRepository.findAllInAppType(
       filters: FilterRepositoryFilters(
         onlyWithContextTypes: [
           MastodonFilterContextType.thread,
@@ -78,6 +78,7 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
         notExpired: true,
       ),
       pagination: null,
+      orderingTerms: null,
     );
     return filters;
   }
@@ -85,9 +86,10 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
   @override
   void onInitialStatusUpdated(IPleromaStatus updatedStartRemoteStatus) {
     unawaited(
-      statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: initialStatusToFetchThread,
-        newRemoteStatus: updatedStartRemoteStatus,
+      statusRepository.updateAppTypeByRemoteType(
+        appItem: initialStatusToFetchThread,
+        remoteItem: updatedStartRemoteStatus,
+        batchTransaction: null,
       ),
     );
   }

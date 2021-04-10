@@ -8,13 +8,19 @@ import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/repository/repository.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaChatRepository
     implements
-        IAppRemoteReadWriteRepository<DbChat, IPleromaChat,
-            pleroma_lib.IPleromaChat, int, String, 
-PleromaChatRepositoryFilters, PleromaChatRepositoryOrderingTermData>,
+        IAppRemoteReadWriteRepository<
+            DbChat,
+            IPleromaChat,
+            pleroma_lib.IPleromaChat,
+            int,
+            String,
+            PleromaChatRepositoryFilters,
+            PleromaChatRepositoryOrderingTermData>,
         IDisposable {
   static IPleromaChatRepository of(
     BuildContext context, {
@@ -24,41 +30,6 @@ PleromaChatRepositoryFilters, PleromaChatRepositoryOrderingTermData>,
         context,
         listen: listen,
       );
-
-
-  Future upsertRemoteChats(
-    List<pleroma_lib.IPleromaChat> remoteChats,
-  );
-
-  Future upsertRemoteChat(
-    pleroma_lib.IPleromaChat remoteChat,
-  );
-
-  Future<List<DbPleromaChatPopulatedWrapper>> getChats({
-    required PleromaChatRepositoryFilters? filters,
-    required RepositoryPagination<IPleromaChat>? pagination,
-    PleromaChatRepositoryOrderingTermData? orderingTermData =
-        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-  });
-
-  Stream<List<DbPleromaChatPopulatedWrapper>> watchChats({
-    required PleromaChatRepositoryFilters? filters,
-    required RepositoryPagination<IPleromaChat>? pagination,
-    PleromaChatRepositoryOrderingTermData? orderingTermData =
-        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-  });
-
-  Future<DbPleromaChatPopulatedWrapper?> getChat({
-    required PleromaChatRepositoryFilters filters,
-    PleromaChatRepositoryOrderingTermData? orderingTermData =
-        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-  });
-
-  Stream<DbPleromaChatPopulatedWrapper?> watchChat({
-    required PleromaChatRepositoryFilters? filters,
-    PleromaChatRepositoryOrderingTermData? orderingTermData =
-        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-  });
 
   Future<List<IPleromaChatWithLastMessage>> getChatsWithLastMessage({
     required PleromaChatRepositoryFilters? filters,
@@ -86,10 +57,6 @@ PleromaChatRepositoryFilters, PleromaChatRepositoryOrderingTermData>,
         PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   });
 
-  Future updateLocalChatByRemoteChat({
-    required IPleromaChat oldLocalChat,
-    required pleroma_lib.IPleromaChat newRemoteChat,
-  });
 
   Future<int> getTotalUnreadCount();
 
@@ -101,10 +68,13 @@ PleromaChatRepositoryFilters, PleromaChatRepositoryOrderingTermData>,
 
   Future markAsRead({
     required IPleromaChat chat,
+    required Batch? batchTransaction,
   });
 
   Future incrementUnreadCount({
     required String chatRemoteId,
     required DateTime updatedAt,
   });
+
+
 }

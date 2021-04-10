@@ -46,10 +46,8 @@ class StatusEmojiReactionBloc extends DisposableOwner
       );
     }
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertInRemoteType(
       remoteStatus,
-      listRemoteId: null,
-      conversationRemoteId: null,
     );
 
     return remoteStatus;

@@ -30,7 +30,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
       var remoteChat = await pleromaChatService.getChat(
         id: chatId,
       );
-      await chatRepository.upsertRemoteChat(
+      await chatRepository.upsertInRemoteType(
         remoteChat,
       );
       chat = await chatRepository.findByRemoteIdInAppType(
@@ -54,7 +54,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
           chatId: chatId,
           lastReadChatMessageId: chatMessage.id,
         );
-        await chatRepository.upsertRemoteChat(updatedChat);
+        await chatRepository.upsertInRemoteType(updatedChat);
         // updates updatedAt from backend
       } else {
         if (isNew) {
@@ -81,6 +81,6 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
       );
     }
 
-    return chatRepository.upsertRemoteChat(chat);
+    return chatRepository.upsertInRemoteType(chat);
   }
 }

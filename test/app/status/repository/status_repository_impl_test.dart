@@ -43,7 +43,10 @@ void main() {
 
     dbAccount = await createTestDbAccount(seed: "seed1");
 
-    var accountId = await accountRepository.insertInDbType(dbAccount);
+    var accountId = await accountRepository.insertInDbType(
+      dbAccount,
+      mode: null,
+    );
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
@@ -65,7 +68,10 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await statusRepository.insertInDbType(dbStatus);
+    var id = await statusRepository.insertInDbType(
+      dbStatus,
+      mode: null,
+    );
     assert(id > 0, true);
     expectDbStatusPopulated(
       await statusRepository.findByDbIdInAppType(id),
@@ -75,12 +81,18 @@ void main() {
 
   test('reblog join', () async {
     var reblogDbAccount = await createTestDbAccount(seed: "seed11");
-    await accountRepository.insertInDbType(reblogDbAccount);
+    await accountRepository.insertInDbType(
+      reblogDbAccount,
+      mode: null,
+    );
     var reblogDbStatus = await createTestDbStatus(
       seed: "seed33",
       dbAccount: reblogDbAccount,
     );
-    await statusRepository.insertInDbType(reblogDbStatus);
+    await statusRepository.insertInDbType(
+      reblogDbStatus,
+      mode: null,
+    );
 
     dbStatus = dbStatus.copyWith(reblogStatusRemoteId: reblogDbStatus.remoteId);
 
@@ -95,7 +107,10 @@ void main() {
       replyDbStatus: null,
     );
 
-    var id = await statusRepository.insertInDbType(dbStatus);
+    var id = await statusRepository.insertInDbType(
+      dbStatus,
+      mode: null,
+    );
     assert(id > 0, true);
     expectDbStatusPopulated(
       await statusRepository.findByDbIdInAppType(id),
@@ -106,11 +121,13 @@ void main() {
   test('upsertRemoteStatus', () async {
     expect(await statusRepository.countAll(), 0);
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
           .toPleromaStatus(),
       conversationRemoteId: null,
       listRemoteId: null,
+      batchTransaction: null,
+      isFromHomeTimeline: null,
     );
 
     expect(await statusRepository.countAll(), 1);
@@ -125,11 +142,13 @@ void main() {
     );
 
     // item with same id updated
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
           .toPleromaStatus(),
       conversationRemoteId: null,
       listRemoteId: null,
+      batchTransaction: null,
+      isFromHomeTimeline: null,
     );
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
@@ -145,13 +164,15 @@ void main() {
 
   test('upsertRemoteStatuses', () async {
     expect(await statusRepository.countAll(), 0);
-    await statusRepository.upsertRemoteStatuses(
+    await statusRepository.upsertRemoteStatusesWithAllArguments(
       [
         DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
             .toPleromaStatus(),
       ],
       conversationRemoteId: null,
       listRemoteId: null,
+      batchTransaction: null,
+      isFromHomeTimeline: null,
     );
 
     expect(await statusRepository.countAll(), 1);
@@ -165,13 +186,15 @@ void main() {
       dbAccount,
     );
 
-    await statusRepository.upsertRemoteStatuses(
+    await statusRepository.upsertRemoteStatusesWithAllArguments(
       [
         DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
             .toPleromaStatus(),
       ],
       conversationRemoteId: null,
       listRemoteId: null,
+      isFromHomeTimeline: null,
+      batchTransaction: null,
     );
 
     // update item with same id
@@ -200,11 +223,17 @@ void main() {
     ))
         .copyWith(remoteId: "remoteId1");
 
-    await statusRepository.upsertAllInDbType([dbStatus1]);
+    await statusRepository.upsertAllInDbType(
+      [dbStatus1],
+      batchTransaction: null,
+    );
 
     expect((await statusRepository.getAllInAppType()).length, 1);
 
-    await statusRepository.upsertAllInDbType([dbStatus2]);
+    await statusRepository.upsertAllInDbType(
+      [dbStatus2],
+      batchTransaction: null,
+    );
     expect((await statusRepository.getAllInAppType()).length, 1);
 
     expectDbStatusPopulated(
@@ -217,12 +246,16 @@ void main() {
   });
 
   test('updateById', () async {
-    var id = await statusRepository.insertInDbType(dbStatus);
+    var id = await statusRepository.insertInDbType(
+      dbStatus,
+      mode: null,
+    );
     assert(id > 0, true);
 
     await statusRepository.updateByDbIdInDbType(
       dbId: id,
       dbItem: dbStatus.copyWith(remoteId: "newRemoteId"),
+      batchTransaction: null,
     );
 
     expect(
@@ -236,6 +269,7 @@ void main() {
       dbStatus.copyWith(
         content: "oldContent",
       ),
+      mode: null,
     );
     assert(id > 0, true);
 
@@ -268,9 +302,9 @@ void main() {
         replyDbStatus: null,
       ),
     ).toPleromaStatus();
-    await statusRepository.updateLocalStatusByRemoteStatus(
-      oldLocalStatus: oldLocalStatus,
-      newRemoteStatus: newRemoteStatus,
+    await statusRepository.updateAppTypeByRemoteType(
+      appItem: oldLocalStatus,
+      remoteItem: newRemoteStatus, batchTransaction: null,
     );
 
     expect(
@@ -284,7 +318,10 @@ void main() {
   });
 
   test('findByRemoteId', () async {
-    await statusRepository.insertInDbType(dbStatus);
+    await statusRepository.insertInDbType(
+      dbStatus,
+      mode: null,
+    );
     expectDbStatusPopulated(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatusPopulated,
@@ -984,21 +1021,27 @@ void main() {
     await accountRepository.addAccountFollowings(
       accountRemoteId: accountRemoteId,
       followings: [
-        DbAccountWrapper(
-          dbAccount: (await createTestDbAccount(seed: followingAccountRemoteId))
-              .copyWith(
-            remoteId: followingAccountRemoteId,
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount:
+                (await createTestDbAccount(seed: followingAccountRemoteId))
+                    .copyWith(
+              remoteId: followingAccountRemoteId,
+            ),
           ),
         ).toPleromaAccount(),
       ],
+      batchTransaction: null,
     );
 
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
-        onlyFromAccountsFollowingByAccount: DbAccountWrapper(
-          dbAccount: await createTestDbAccount(
-            seed: followingAccountRemoteId,
-            remoteId: followingAccountRemoteId,
+        onlyFromAccountsFollowingByAccount: DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: await createTestDbAccount(
+              seed: followingAccountRemoteId,
+              remoteId: followingAccountRemoteId,
+            ),
           ),
         ),
       ),
@@ -1045,7 +1088,7 @@ void main() {
         .copyWith(tags: null);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus1.remoteId,
-      tags: dbStatus1.tags,
+      tags: dbStatus1.tags, batchTransaction: null,
     );
     await insertDbStatus(statusRepository, dbStatus1);
 
@@ -1058,7 +1101,7 @@ void main() {
         .copyWith(tags: []);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus2.remoteId,
-      tags: dbStatus2.tags,
+      tags: dbStatus2.tags, batchTransaction: null,
     );
     await insertDbStatus(
       statusRepository,
@@ -1074,7 +1117,7 @@ void main() {
         .copyWith(tags: [createTestPleromaTag(name: "#dogs")]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus3.remoteId,
-      tags: dbStatus3.tags,
+      tags: dbStatus3.tags, batchTransaction: null,
     );
     await insertDbStatus(
       statusRepository,
@@ -1092,7 +1135,7 @@ void main() {
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus4.remoteId,
-      tags: dbStatus4.tags,
+      tags: dbStatus4.tags, batchTransaction: null,
     );
     await insertDbStatus(
       statusRepository,
@@ -1111,7 +1154,7 @@ void main() {
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus5.remoteId,
-      tags: dbStatus5.tags,
+      tags: dbStatus5.tags, batchTransaction: null,
     );
     await insertDbStatus(
       statusRepository,
@@ -1129,7 +1172,7 @@ void main() {
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus6.remoteId,
-      tags: dbStatus6.tags,
+      tags: dbStatus6.tags, batchTransaction: null,
     );
     await insertDbStatus(
       statusRepository,
@@ -1249,7 +1292,7 @@ void main() {
     await insertDbStatus(statusRepository, dbStatus2);
     await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
       statusRemoteIds: [dbStatus2.remoteId],
-      conversationRemoteId: "invalidConversationId",
+      conversationRemoteId: "invalidConversationId", batchTransaction: null,
     );
 
     expect((await query.get()).length, 0);
@@ -1262,7 +1305,7 @@ void main() {
     await insertDbStatus(statusRepository, dbStatus3);
     await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
       statusRemoteIds: [dbStatus3.remoteId],
-      conversationRemoteId: conversationRemoteId,
+      conversationRemoteId: conversationRemoteId, batchTransaction: null,
     );
 
     expect((await query.get()).length, 1);
@@ -1270,7 +1313,7 @@ void main() {
     // duplicate adding. Should be skipped
     await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
       statusRemoteIds: [dbStatus3.remoteId],
-      conversationRemoteId: conversationRemoteId,
+      conversationRemoteId: conversationRemoteId, batchTransaction: null,
     );
     expect((await query.get()).length, 1);
 
@@ -1283,6 +1326,7 @@ void main() {
     await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
       statusRemoteIds: [dbStatus4.remoteId],
       conversationRemoteId: conversationRemoteId,
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 2);
@@ -1291,9 +1335,10 @@ void main() {
   test('createQuery onlyFromAccount', () async {
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
-        onlyFromAccount: DbAccountWrapper(
+        onlyFromAccount: DbAccountPopulatedWrapper(
+            dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount,
-        ),
+        )),
       ),
       pagination: null,
       orderingTermData: null,
@@ -1341,7 +1386,7 @@ void main() {
     );
 
     // 1 is not related to conversation
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(
         dbStatusPopulated: await createTestDbStatusPopulated(
           dbStatus.copyWith(remoteId: "status1"),
@@ -1350,6 +1395,8 @@ void main() {
       ).toPleromaStatus(),
       listRemoteId: null,
       conversationRemoteId: null,
+      isFromHomeTimeline: null,
+      batchTransaction: null,
     );
 
     expect(
@@ -1360,7 +1407,7 @@ void main() {
     );
 
     // 2 is related to conversation
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(
         dbStatusPopulated: await createTestDbStatusPopulated(
           dbStatus.copyWith(
@@ -1372,6 +1419,8 @@ void main() {
       ).toPleromaStatus(),
       listRemoteId: null,
       conversationRemoteId: conversationRemoteId,
+      isFromHomeTimeline: null,
+      batchTransaction: null,
     );
 
     expect(
@@ -1383,7 +1432,7 @@ void main() {
     );
 
     // 4 is newer than 2
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(
         dbStatusPopulated: await createTestDbStatusPopulated(
           dbStatus.copyWith(
@@ -1395,6 +1444,8 @@ void main() {
       ).toPleromaStatus(),
       listRemoteId: null,
       conversationRemoteId: conversationRemoteId,
+      isFromHomeTimeline: null,
+      batchTransaction: null,
     );
     expect(
       (await statusRepository.getConversationLastStatus(
@@ -1405,7 +1456,7 @@ void main() {
     );
 
     // remain 4
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(
         dbStatusPopulated: await createTestDbStatusPopulated(
           dbStatus.copyWith(
@@ -1417,6 +1468,8 @@ void main() {
       ).toPleromaStatus(),
       listRemoteId: null,
       conversationRemoteId: conversationRemoteId,
+      batchTransaction: null,
+      isFromHomeTimeline: null,
     );
 
     expect(
@@ -1430,27 +1483,28 @@ void main() {
 
   test('addStatusesToConversation', () async {
     expect(
-      (await statusRepository.conversationStatusesDao.getAll().get()).length,
+      (await statusRepository.conversationStatusesDao.getAll()).length,
       0,
     );
 
     await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
       statusRemoteIds: ["statusRemoteId1"],
-      conversationRemoteId: "conversationRemoteId1",
+      conversationRemoteId: "conversationRemoteId1", batchTransaction: null,
     );
 
     expect(
-      (await statusRepository.conversationStatusesDao.getAll().get()).length,
+      (await statusRepository.conversationStatusesDao.getAll()).length,
       1,
     );
 
     await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
       statusRemoteIds: ["statusRemoteId1"],
       conversationRemoteId: "conversationRemoteId1",
+      batchTransaction: null,
     );
 
     expect(
-      (await statusRepository.conversationStatusesDao.getAll().get()).length,
+      (await statusRepository.conversationStatusesDao.getAll()).length,
       1,
     );
   });
@@ -1460,52 +1514,63 @@ void main() {
 
     var conversationRemoteId = "conversationRemoteId";
 
-    await statusRepository.upsertRemoteStatuses(
+    await statusRepository.upsertRemoteStatusesWithAllArguments(
       [
         DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
             .toPleromaStatus(),
       ],
       conversationRemoteId: conversationRemoteId,
       listRemoteId: null,
+      isFromHomeTimeline: null,
+      batchTransaction: null,
     );
-    await statusRepository.upsertRemoteStatuses(
+    await statusRepository.upsertRemoteStatusesWithAllArguments(
       [
         DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
             .toPleromaStatus(),
       ],
       conversationRemoteId: conversationRemoteId,
       listRemoteId: null,
+      batchTransaction: null,
+      isFromHomeTimeline: null,
     );
 
-    var future1 = statusRepository.upsertRemoteStatus(
+    var future1 = statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
           .toPleromaStatus(),
       conversationRemoteId: conversationRemoteId,
       listRemoteId: null,
+      isFromHomeTimeline: null,
+      batchTransaction: null,
     );
-    var future2 = statusRepository.upsertRemoteStatus(
+    var future2 = statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
           .toPleromaStatus(),
       conversationRemoteId: conversationRemoteId,
       listRemoteId: null,
+      isFromHomeTimeline: null,
+      batchTransaction: null,
     );
 
-    var future3 = statusRepository.upsertRemoteStatuses(
+    var future3 = statusRepository.upsertRemoteStatusesWithAllArguments(
       [
         DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
             .toPleromaStatus(),
       ],
       conversationRemoteId: conversationRemoteId,
       listRemoteId: null,
+      isFromHomeTimeline: null,
+      batchTransaction: null,
     );
-    var future4 = statusRepository.upsertRemoteStatuses(
+    var future4 = statusRepository.upsertRemoteStatusesWithAllArguments(
       [
         DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
             .toPleromaStatus(),
       ],
       conversationRemoteId: conversationRemoteId,
-//        conversationRemoteId: null,
       listRemoteId: null,
+      batchTransaction: null,
+      isFromHomeTimeline: null,
     );
 
     await future1;
@@ -1516,11 +1581,11 @@ void main() {
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expect(
-      (await statusRepository.conversationStatusesDao.countAll().get()).length,
+      (await statusRepository.conversationStatusesDao.getAll()).length,
       1,
     );
     expect(
-      (await statusRepository.getStatuses(
+      (await statusRepository.findAllInAppType(
         filters: StatusRepositoryFilters(
           onlyInConversation: await createTestConversation(
             seed: "seed5",
@@ -1528,7 +1593,7 @@ void main() {
           ),
         ),
         pagination: null,
-        orderingTermData: null,
+        orderingTerms: null,
       ))
           .length,
       1,
@@ -1557,17 +1622,18 @@ void main() {
       accountRepository,
     );
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(
         dbStatusPopulated: status1Populated,
       ).toPleromaStatus(),
       listRemoteId: listRemoteId,
       conversationRemoteId: null,
+      batchTransaction: null,
+      isFromHomeTimeline: null,
     );
 
     late List<IStatus> watchedStatuses;
-    var subscription = statusRepository
-        .watchStatuses(
+    var subscription = statusRepository.watchFindAllInAppType(
       filters: StatusRepositoryFilters(
         onlyInListWithRemoteId: listRemoteId,
       ),
@@ -1575,12 +1641,13 @@ void main() {
         newerThanItem:
             await statusRepository.findByRemoteIdInAppType(dbStatus1.remoteId),
       ),
-      orderingTermData: StatusRepositoryOrderingTermData(
-        orderingMode: OrderingMode.desc,
-        orderByType: StatusRepositoryOrderType.remoteId,
-      ),
-    )
-        .listen((statuses) {
+      orderingTerms: [
+        StatusRepositoryOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: StatusRepositoryOrderType.remoteId,
+        ),
+      ],
+    ).listen((statuses) {
       watchedStatuses = statuses;
     });
 
@@ -1599,11 +1666,13 @@ void main() {
       accountRepository,
     );
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(dbStatusPopulated: status2Populated)
           .toPleromaStatus(),
       listRemoteId: listRemoteId,
       conversationRemoteId: null,
+      batchTransaction: null,
+      isFromHomeTimeline: null,
     );
 
     await Future.delayed(Duration(milliseconds: 100), () {});
@@ -1621,11 +1690,13 @@ void main() {
       accountRepository,
     );
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(dbStatusPopulated: status0Populated)
           .toPleromaStatus(),
       listRemoteId: listRemoteId,
       conversationRemoteId: null,
+      batchTransaction: null,
+      isFromHomeTimeline: null,
     );
 
     await Future.delayed(Duration(milliseconds: 100), () {});
@@ -1867,6 +1938,7 @@ void main() {
     await statusRepository.updateByDbIdInDbType(
       dbId: dbStatus3.id!,
       dbItem: dbStatus3,
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 1);
@@ -1881,7 +1953,7 @@ void main() {
       orderingTermData: null,
     );
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       (await createTestRemoteStatus(
         seed: "seed1",
         dbAccount: dbAccount,
@@ -1890,11 +1962,12 @@ void main() {
       listRemoteId: null,
       conversationRemoteId: null,
       isFromHomeTimeline: false,
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 0);
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       (await createTestRemoteStatus(
         seed: "seed2",
         dbAccount: dbAccount,
@@ -1903,11 +1976,12 @@ void main() {
       listRemoteId: null,
       conversationRemoteId: null,
       isFromHomeTimeline: true,
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 1);
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       (await createTestRemoteStatus(
         seed: "seed3",
         dbAccount: dbAccount,
@@ -1916,11 +1990,12 @@ void main() {
       listRemoteId: null,
       conversationRemoteId: null,
       isFromHomeTimeline: true,
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 2);
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       (await createTestRemoteStatus(
         seed: "seed3",
         dbAccount: dbAccount,
@@ -1929,11 +2004,12 @@ void main() {
       listRemoteId: null,
       conversationRemoteId: null,
       isFromHomeTimeline: true,
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 2);
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       (await createTestRemoteStatus(
         seed: "seed2",
         dbAccount: dbAccount,
@@ -1942,6 +2018,7 @@ void main() {
       listRemoteId: null,
       conversationRemoteId: null,
       isFromHomeTimeline: true,
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 2);
@@ -2258,8 +2335,13 @@ void main() {
     await accountRepository.addAccountFollowings(
       accountRemoteId: myDbAccount.remoteId,
       followings: [
-        DbAccountWrapper(dbAccount: dbAccount).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount,
+          ),
+        ).toPleromaAccount(),
       ],
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 2);
@@ -2329,8 +2411,13 @@ void main() {
     await accountRepository.addAccountFollowings(
       accountRemoteId: myDbAccount.remoteId,
       followings: [
-        DbAccountWrapper(dbAccount: dbAccount3).toPleromaAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount3,
+          ),
+        ).toPleromaAccount(),
       ],
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 3);
@@ -2401,6 +2488,7 @@ void main() {
     await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
       statusRemoteIds: [dbStatus1.remoteId],
       conversationRemoteId: "conversationRemoteId1",
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 1);

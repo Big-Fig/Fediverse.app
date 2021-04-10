@@ -52,7 +52,7 @@ void _accountSelectedCallback(BuildContext context, IAccount account) async {
           accountId: account.remoteId,
         );
 
-        await chatRepository.upsertRemoteChat(remoteChat);
+        await chatRepository.upsertInRemoteType(remoteChat);
         chat = await chatRepository.findByRemoteIdInAppType(remoteChat.id);
       }
 

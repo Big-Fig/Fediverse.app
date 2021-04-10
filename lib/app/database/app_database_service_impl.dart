@@ -98,13 +98,13 @@ class AppDatabaseService extends AsyncInitLoadingBloc
 
   @override
   Future<int> calculateMaxCountByType() async {
-    var statusesCount = await appDatabase.statusDao.countAll().getSingle();
+    var statusesCount = await appDatabase.statusDao.countAll();
     var notificationsCount =
-        await appDatabase.notificationDao.countAll().getSingle();
+        await appDatabase.notificationDao.countAll();
     var chatMessagesCount =
-        await appDatabase.chatMessageDao.countAll().getSingle();
+        await appDatabase.chatMessageDao.countAll();
 
-    var accountsCount = await appDatabase.accountDao.countAll().getSingle();
+    var accountsCount = await appDatabase.accountDao.countAll();
 
     var counts = <int>[
       statusesCount,
@@ -125,16 +125,16 @@ class AppDatabaseService extends AsyncInitLoadingBloc
 
   @override
   Future<DateTime?> calculateOldestEntryAge() async {
-    var oldestStatus = await appDatabase.statusDao.oldest().getSingle();
+    var oldestStatus = await appDatabase.statusDao.getOldestOrderById(offset: null);
     var oldestNotification =
-        await appDatabase.notificationDao.oldest().getSingle();
+        await appDatabase.notificationDao.getOldestOrderById(offset: null);
     var oldestChatMessage =
-        await appDatabase.chatMessageDao.oldest().getSingle();
+        await appDatabase.chatMessageDao.getOldestOrderById(offset: null);
 
     var dateTimes = <DateTime?>[
-      oldestStatus.createdAt,
-      oldestNotification.createdAt,
-      oldestChatMessage.createdAt,
+      oldestStatus?.createdAt,
+      oldestNotification?.createdAt,
+      oldestChatMessage?.createdAt,
     ].where((datetime) => datetime != null).toList();
 
     var oldestDateTime;
@@ -169,54 +169,71 @@ class AppDatabaseService extends AsyncInitLoadingBloc
     if (ageLimit != null) {
       var now = DateTime.now();
       var dateTimeToDelete = now.subtract(ageLimit.abs());
-      await appDatabase.statusDao.deleteOlderThanDate(dateTimeToDelete);
-      await appDatabase.notificationDao.deleteOlderThanDate(dateTimeToDelete);
-      await appDatabase.chatMessageDao.deleteOlderThanDate(dateTimeToDelete);
+      await appDatabase.batch((batch) {
+        appDatabase.statusDao.deleteOlderThanDate(
+          dateTimeToDelete,
+          batchTransaction: batch,
+        );
+        appDatabase.notificationDao.deleteOlderThanDate(
+          dateTimeToDelete,
+          batchTransaction: batch,
+        );
+        appDatabase.chatMessageDao.deleteOlderThanDate(
+          dateTimeToDelete,
+          batchTransaction: batch,
+        );
+      });
     }
 
     if (entriesCountByTypeLimit != null) {
-      if ((await appDatabase.accountDao.countAll().getSingle()) >
-          entriesCountByTypeLimit) {
+      if ((await appDatabase.accountDao.countAll()) > entriesCountByTypeLimit) {
         var oldestAccountToStartToDelete = await appDatabase.accountDao
-            .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
-            .getSingleOrNull();
+            .getNewestOrderById(offset: entriesCountByTypeLimit);
         if (oldestAccountToStartToDelete != null) {
-          await appDatabase.accountDao
-              .deleteOlderThanLocalId(oldestAccountToStartToDelete.id!);
+          await appDatabase.accountDao.deleteOlderThanInt(
+            oldestAccountToStartToDelete.id!,
+            fieldName: appDatabase.accountDao.dbAccounts.id.$name,
+            batchTransaction: null,
+          );
         }
       }
 
-      if ((await appDatabase.statusDao.countAll().getSingle()) >
-          entriesCountByTypeLimit) {
+      if ((await appDatabase.statusDao.countAll()) > entriesCountByTypeLimit) {
         var oldestStatusToStartToDelete = await appDatabase.statusDao
-            .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
-            .getSingleOrNull();
+            .getNewestOrderById(offset: entriesCountByTypeLimit);
         if (oldestStatusToStartToDelete != null) {
-          await appDatabase.statusDao
-              .deleteOlderThanLocalId(oldestStatusToStartToDelete.id!);
+          await appDatabase.statusDao.deleteOlderThanInt(
+            oldestStatusToStartToDelete.id!,
+            fieldName: appDatabase.statusDao.dbStatuses.id.$name,
+            batchTransaction: null,
+          );
         }
       }
 
-      if ((await appDatabase.notificationDao.countAll().getSingle()) >
+      if ((await appDatabase.notificationDao.countAll()) >
           entriesCountByTypeLimit) {
         var oldestNotificationToStartToDelete = await appDatabase
             .notificationDao
-            .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
-            .getSingleOrNull();
+            .getNewestOrderById(offset: entriesCountByTypeLimit);
         if (oldestNotificationToStartToDelete != null) {
-          await appDatabase.notificationDao
-              .deleteOlderThanLocalId(oldestNotificationToStartToDelete.id!);
+          await appDatabase.notificationDao.deleteOlderThanInt(
+            oldestNotificationToStartToDelete.id!,
+            fieldName: appDatabase.notificationDao.dbNotifications.id.$name,
+            batchTransaction: null,
+          );
         }
       }
 
-      if ((await appDatabase.chatMessageDao.countAll().getSingle()) >
+      if ((await appDatabase.chatMessageDao.countAll()) >
           entriesCountByTypeLimit) {
         var oldestChatMessageToStartToDelete = await appDatabase.chatMessageDao
-            .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
-            .getSingleOrNull();
+            .getNewestOrderById(offset: entriesCountByTypeLimit);
         if (oldestChatMessageToStartToDelete != null) {
-          await appDatabase.chatMessageDao
-              .deleteOlderThanLocalId(oldestChatMessageToStartToDelete.id!);
+          await appDatabase.chatMessageDao.deleteOlderThanInt(
+            oldestChatMessageToStartToDelete.id!,
+            fieldName: appDatabase.chatMessageDao.dbChatMessages.id.$name,
+            batchTransaction: null,
+          );
         }
       }
     }

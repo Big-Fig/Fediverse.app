@@ -156,7 +156,10 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
   Future addDraftStatus({
     required IDraftStatus draftStatus,
   }) =>
-      insertInAppType(draftStatus);
+      insertInAppType(
+        draftStatus,
+        insertMode: null,
+      );
 
   @override
   DbDraftStatus mapAppItemToDbItem(IDraftStatus appItem) =>

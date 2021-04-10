@@ -49,168 +49,169 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     dao = appDatabase.chatDao;
     chatAccountsDao = appDatabase.chatAccountsDao;
   }
+  //
+  // @override
+  // Future upsertRemoteChat(pleroma_lib.IPleromaChat remoteChat) async {
+  //   _logger.finer(() => "upsertRemoteChat $remoteChat");
+  //
+  //   var remoteAccounts = [
+  //     remoteChat.account,
+  //   ];
+  //
+  //   await accountRepository.upsertRemoteAccounts(
+  //     remoteAccounts,
+  //     chatRemoteId: remoteChat.id,
+  //     conversationRemoteId: null,
+  //   );
+  //
+  //   var lastMessage = remoteChat.lastMessage;
+  //   if (lastMessage != null) {
+  //     await chatMessageRepository.upsertRemoteChatMessage(lastMessage);
+  //   }
+  //
+  //   await upsertInRemoteType(
+  //     remoteChat,
+  //   );
+  // }
 
-  @override
-  Future upsertRemoteChat(pleroma_lib.IPleromaChat remoteChat) async {
-    _logger.finer(() => "upsertRemoteChat $remoteChat");
-
-    var remoteAccounts = [
-      remoteChat.account,
-    ];
-
-    await accountRepository.upsertRemoteAccounts(
-      remoteAccounts,
-      chatRemoteId: remoteChat.id,
-      conversationRemoteId: null,
-    );
-
-    var lastMessage = remoteChat.lastMessage;
-    if (lastMessage != null) {
-      await chatMessageRepository.upsertRemoteChatMessage(lastMessage);
-    }
-
-    await upsertInRemoteType(
-      remoteChat,
-    );
-  }
-
-  @override
-  Future upsertRemoteChats(
-    List<pleroma_lib.IPleromaChat> pleromaChats,
-  ) async {
-    _logger.finer(() => "upsertRemoteChats ${pleromaChats.length}");
-
-    for (var remoteChat in pleromaChats) {
-      var lastMessage = remoteChat.lastMessage;
-      if (lastMessage != null) {
-        await chatMessageRepository.upsertRemoteChatMessage(lastMessage);
-      }
-
-      await accountRepository.upsertRemoteAccounts(
-        [
-          remoteChat.account,
-        ],
-        chatRemoteId: remoteChat.id,
-        conversationRemoteId: null,
-      );
-    }
-
-    await upsertAllInRemoteType(
-      pleromaChats,
-    );
-  }
-
-  @override
-  Future updateLocalChatByRemoteChat({
-    required IPleromaChat oldLocalChat,
-    required pleroma_lib.IPleromaChat newRemoteChat,
-  }) async {
-    _logger.finer(() => "updateLocalChatByRemoteChat \n"
-        "\t old: $oldLocalChat \n"
-        "\t newRemoteChat: $newRemoteChat");
-
-    await accountRepository.upsertRemoteAccounts(
-      [
-        newRemoteChat.account,
-      ],
-      chatRemoteId: oldLocalChat.remoteId,
-      conversationRemoteId: null,
-    );
-
-    var lastMessage = newRemoteChat.lastMessage;
-    if (lastMessage != null) {
-      await chatMessageRepository.upsertRemoteChatMessage(
-        lastMessage,
-      );
-    }
-    if (oldLocalChat.localId != null) {
-      await updateByDbIdInDbType(
-        dbId: oldLocalChat.localId!,
-        dbItem: newRemoteChat.toDbChat(),
-      );
-    } else {
-      await upsertRemoteChat(newRemoteChat);
-    }
-  }
-
-  @override
-  Future<List<DbPleromaChatPopulatedWrapper>> getChats({
-    required PleromaChatRepositoryFilters? filters,
-    required RepositoryPagination<IPleromaChat>? pagination,
-    PleromaChatRepositoryOrderingTermData? orderingTermData =
-        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-  }) async {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: false,
-    );
-    return (await query.get())
-        .toDbPleromaChatPopulatedList(dao: dao)
-        .toDbPleromaChatPopulatedWrapperList();
-  }
-
-  @override
-  Stream<List<DbPleromaChatPopulatedWrapper>> watchChats({
-    required PleromaChatRepositoryFilters? filters,
-    required RepositoryPagination<IPleromaChat>? pagination,
-    PleromaChatRepositoryOrderingTermData? orderingTermData =
-        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-  }) {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: false,
-    );
-
-    return query.watch().map(
-          (list) => list
-              .toDbPleromaChatPopulatedList(dao: dao)
-              .toDbPleromaChatPopulatedWrapperList(),
-        );
-  }
-
-  @override
-  Future<DbPleromaChatPopulatedWrapper?> getChat({
-    required PleromaChatRepositoryFilters? filters,
-    PleromaChatRepositoryOrderingTermData? orderingTermData =
-        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-  }) async {
-    var query = createQuery(
-      filters: filters,
-      pagination: _singlePleromaChatRepositoryPagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: false,
-    );
-
-    return (await query.getSingleOrNull())
-        ?.toDbPleromaChatPopulated(
-          dao: dao,
-        )
-        .toDbPleromaChatPopulatedWrapper();
-  }
-
-  @override
-  Stream<DbPleromaChatPopulatedWrapper?> watchChat({
-    required PleromaChatRepositoryFilters? filters,
-    PleromaChatRepositoryOrderingTermData? orderingTermData =
-        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-  }) {
-    var query = createQuery(
-      filters: filters,
-      pagination: _singlePleromaChatRepositoryPagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: false,
-    );
-
-    return query.watchSingleOrNull().map(
-          (typedResult) => typedResult
-              ?.toDbPleromaChatPopulated(dao: dao)
-              .toDbPleromaChatPopulatedWrapper(),
-        );
-  }
+  //
+  // @override
+  // Future upsertRemoteChats(
+  //   List<pleroma_lib.IPleromaChat> pleromaChats,
+  // ) async {
+  //   _logger.finer(() => "upsertRemoteChats ${pleromaChats.length}");
+  //
+  //   for (var remoteChat in pleromaChats) {
+  //     var lastMessage = remoteChat.lastMessage;
+  //     if (lastMessage != null) {
+  //       await chatMessageRepository.upsertRemoteChatMessage(lastMessage);
+  //     }
+  //
+  //     await accountRepository.upsertRemoteAccounts(
+  //       [
+  //         remoteChat.account,
+  //       ],
+  //       chatRemoteId: remoteChat.id,
+  //       conversationRemoteId: null,
+  //     );
+  //   }
+  //
+  //   await upsertAllInRemoteType(
+  //     pleromaChats,
+  //   );
+  // }
+  //
+  // @override
+  // Future updateLocalChatByRemoteChat({
+  //   required IPleromaChat oldLocalChat,
+  //   required pleroma_lib.IPleromaChat newRemoteChat,
+  // }) async {
+  //   _logger.finer(() => "updateLocalChatByRemoteChat \n"
+  //       "\t old: $oldLocalChat \n"
+  //       "\t newRemoteChat: $newRemoteChat");
+  //
+  //   await accountRepository.upsertRemoteAccounts(
+  //     [
+  //       newRemoteChat.account,
+  //     ],
+  //     chatRemoteId: oldLocalChat.remoteId,
+  //     conversationRemoteId: null,
+  //   );
+  //
+  //   var lastMessage = newRemoteChat.lastMessage;
+  //   if (lastMessage != null) {
+  //     await chatMessageRepository.upsertRemoteChatMessage(
+  //       lastMessage,
+  //     );
+  //   }
+  //   if (oldLocalChat.localId != null) {
+  //     await updateByDbIdInDbType(
+  //       dbId: oldLocalChat.localId!,
+  //       dbItem: newRemoteChat.toDbChat(),
+  //     );
+  //   } else {
+  //     await upsertRemoteChat(newRemoteChat);
+  //   }
+  // }
+  //
+  // @override
+  // Future<List<DbPleromaChatPopulatedWrapper>> getChats({
+  //   required PleromaChatRepositoryFilters? filters,
+  //   required RepositoryPagination<IPleromaChat>? pagination,
+  //   PleromaChatRepositoryOrderingTermData? orderingTermData =
+  //       PleromaChatRepositoryOrderingTermData.updatedAtDesc,
+  // }) async {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: pagination,
+  //     orderingTermData: orderingTermData,
+  //     withLastMessage: false,
+  //   );
+  //   return (await query.get())
+  //       .toDbPleromaChatPopulatedList(dao: dao)
+  //       .toDbPleromaChatPopulatedWrapperList();
+  // }
+  //
+  // @override
+  // Stream<List<DbPleromaChatPopulatedWrapper>> watchChats({
+  //   required PleromaChatRepositoryFilters? filters,
+  //   required RepositoryPagination<IPleromaChat>? pagination,
+  //   PleromaChatRepositoryOrderingTermData? orderingTermData =
+  //       PleromaChatRepositoryOrderingTermData.updatedAtDesc,
+  // }) {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: pagination,
+  //     orderingTermData: orderingTermData,
+  //     withLastMessage: false,
+  //   );
+  //
+  //   return query.watch().map(
+  //         (list) => list
+  //             .toDbPleromaChatPopulatedList(dao: dao)
+  //             .toDbPleromaChatPopulatedWrapperList(),
+  //       );
+  // }
+  //
+  // @override
+  // Future<DbPleromaChatPopulatedWrapper?> getChat({
+  //   required PleromaChatRepositoryFilters? filters,
+  //   PleromaChatRepositoryOrderingTermData? orderingTermData =
+  //       PleromaChatRepositoryOrderingTermData.updatedAtDesc,
+  // }) async {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: _singlePleromaChatRepositoryPagination,
+  //     orderingTermData: orderingTermData,
+  //     withLastMessage: false,
+  //   );
+  //
+  //   return (await query.getSingleOrNull())
+  //       ?.toDbPleromaChatPopulated(
+  //         dao: dao,
+  //       )
+  //       .toDbPleromaChatPopulatedWrapper();
+  // }
+  //
+  // @override
+  // Stream<DbPleromaChatPopulatedWrapper?> watchChat({
+  //   required PleromaChatRepositoryFilters? filters,
+  //   PleromaChatRepositoryOrderingTermData? orderingTermData =
+  //       PleromaChatRepositoryOrderingTermData.updatedAtDesc,
+  // }) {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: _singlePleromaChatRepositoryPagination,
+  //     orderingTermData: orderingTermData,
+  //     withLastMessage: false,
+  //   );
+  //
+  //   return query.watchSingleOrNull().map(
+  //         (typedResult) => typedResult
+  //             ?.toDbPleromaChatPopulated(dao: dao)
+  //             .toDbPleromaChatPopulatedWrapper(),
+  //       );
+  // }
 
   JoinedSelectStatement createQuery({
     required PleromaChatRepositoryFilters? filters,
@@ -299,7 +300,10 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future markAsRead({required IPleromaChat chat}) {
+  Future markAsRead({
+    required IPleromaChat chat,
+    required Batch? batchTransaction,
+  }) {
     return updateByDbIdInDbType(
       dbId: chat.localId!,
       dbItem: DbChat(
@@ -309,6 +313,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         updatedAt: DateTime.now(),
         accountRemoteId: chat.accounts.first.remoteId,
       ),
+      batchTransaction: batchTransaction,
     );
   }
 

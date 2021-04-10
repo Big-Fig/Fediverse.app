@@ -25,9 +25,9 @@ void main() {
   test('test deleted', () async {
     var statusDao = database.statusDao;
 
-    await statusDao.clear();
+    await statusDao.clear(batchTransaction: null);
 
-    expect((await statusDao.getAll().get()).isNotEmpty, false);
+    expect((await statusDao.getAll()).isNotEmpty, false);
 
     var testDbStatus = await createTestDbStatus(
       seed: "seed1",
@@ -38,11 +38,11 @@ void main() {
       mode: null,
     );
 
-    expect((await statusDao.getAll().get()).isNotEmpty, true);
+    expect((await statusDao.getAll()).isNotEmpty, true);
 
     await statusDao.markAsDeleted(remoteId: testDbStatus.remoteId);
 
-    expect((await statusDao.getAll().get()).isNotEmpty, true);
+    expect((await statusDao.getAll()).isNotEmpty, true);
 
     var query = statusDao.startSelectQuery();
     statusDao.addOnlyNotDeletedWhere(query);

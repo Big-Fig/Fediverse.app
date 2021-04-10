@@ -100,7 +100,7 @@ abstract class AppRemoteDatabaseDaoRepository<
     RemoteId remoteId, {
     required Batch? batchTransaction,
   }) =>
-      dao.deleteByRemoteId(
+      dao.deleteByRemoteIdBatch(
         remoteId,
         batchTransaction: batchTransaction,
       );
@@ -142,7 +142,7 @@ abstract class AppRemoteDatabaseDaoRepository<
       ).watch();
 
   @override
-  Stream<RemoteItem?> watchInRemoteType({
+  Stream<RemoteItem?> watchFindInRemoteType({
     required RepositoryPagination<RemoteItem>? pagination,
     required Filters? filters,
     required List<OrderingTerm>? orderingTerms,

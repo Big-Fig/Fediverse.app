@@ -47,7 +47,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
         "\t newerThanAccount = $newerThan"
         "\t olderThanAccount = $olderThan");
 
-    List<IPleromaAccount>? remoteAccounts;
+    List<IPleromaAccount> remoteAccounts;
 
     remoteAccounts = await pleromaAuthStatusService.rebloggedBy(
       statusRemoteId: status.remoteId!,
@@ -58,16 +58,18 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
       ),
     );
 
-    await accountRepository.upsertRemoteAccounts(
-      remoteAccounts,
-      conversationRemoteId: null,
-      chatRemoteId: null,
-    );
+    await accountRepository.batch((batch) {
+      accountRepository.upsertAllInRemoteType(
+        remoteAccounts,
+        batchTransaction: batch,
+      );
 
-    await accountRepository.updateStatusRebloggedBy(
-      statusRemoteId: status.remoteId!,
-      rebloggedByAccounts: remoteAccounts.toPleromaAccounts(),
-    );
+      accountRepository.updateStatusRebloggedBy(
+        statusRemoteId: status.remoteId!,
+        rebloggedByAccounts: remoteAccounts.toPleromaAccounts(),
+        batchTransaction: batch,
+      );
+    });
   }
 
   @override
@@ -79,14 +81,16 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThanAccount=$newerThan"
         "\t olderThanAccount=$olderThan");
-    var accounts = await accountRepository.getAccounts(
+    var accounts = await accountRepository.findAllInAppType(
       filters: _accountRepositoryFilters,
       pagination: RepositoryPagination<IAccount>(
         olderThanItem: olderThan,
         newerThanItem: newerThan,
         limit: limit,
       ),
-      orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+      orderingTerms: [
+        AccountRepositoryOrderingTermData.remoteIdDesc,
+      ],
     );
 
     _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");

@@ -180,7 +180,7 @@ dependencies:
   extended_nested_scroll_view: ^3.0.0
 
   # error overlay
-  overlay_support: ^1.2.0-nullsafety.0
+  overlay_support: ^1.2.0
 
   # file picker for media attachment
   file_picker: ^3.0.0

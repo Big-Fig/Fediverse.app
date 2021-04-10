@@ -23,9 +23,7 @@ abstract class ConversationChatStatusListBloc extends AsyncInitLoadingBloc
   ConversationChatStatusListBloc({
     required this.conversation,
     required this.statusRepository,
-  }) {
-    assert(conversation != null);
-  }
+  });
 
   @override
   Future internalAsyncInit() async {
@@ -38,27 +36,26 @@ abstract class ConversationChatStatusListBloc extends AsyncInitLoadingBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    var statuses = await statusRepository.getStatuses(
-      filters: _statusRepositoryFilters,
-      pagination: RepositoryPagination<IStatus>(
-        olderThanItem: olderThan,
-        newerThanItem: newerThan,
-        limit: limit,
-      ),
-      orderingTermData: orderingTermData,
-    );
+    var statuses = await statusRepository.findAllInAppType(
+        filters: _statusRepositoryFilters,
+        pagination: RepositoryPagination<IStatus>(
+          olderThanItem: olderThan,
+          newerThanItem: newerThan,
+          limit: limit,
+        ),
+        orderingTerms: [orderingTermData]);
 
     return statuses;
   }
 
   @override
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus? item) {
-    return statusRepository.watchStatuses(
+    return statusRepository.watchFindAllInAppType(
       filters: _statusRepositoryFilters,
       pagination: RepositoryPagination<IStatus>(
         newerThanItem: item,
       ),
-      orderingTermData: orderingTermData,
+      orderingTerms: [orderingTermData],
     );
   }
 }

@@ -53,7 +53,10 @@ class PleromaChatWithLastMessageCachedListBloc
       ),
     );
 
-    await chatRepository.upsertRemoteChats(remoteChats);
+    await chatRepository.upsertAllInRemoteType(
+      remoteChats,
+      batchTransaction: null,
+    );
   }
 
   @override

@@ -40,10 +40,8 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
         )
         .toPleromaAccount();
 
-    await accountRepository.upsertRemoteAccount(
+    await accountRepository.upsertInRemoteType(
       pleromaAccount,
-      conversationRemoteId: null,
-      chatRemoteId: null,
     );
   }
 
@@ -61,10 +59,8 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
         )
         .toPleromaAccount();
 
-    await accountRepository.upsertRemoteAccount(
+    await accountRepository.upsertInRemoteType(
       pleromaAccount,
-      conversationRemoteId: null,
-      chatRemoteId: null,
     );
   }
 
@@ -83,12 +79,12 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
       ),
     );
 
-    await accountRepository.upsertRemoteAccounts(
+    await accountRepository.upsertAllInRemoteType(
       remoteAccounts,
-      conversationRemoteId: null,
-      chatRemoteId: null,
+      // don't need batch because we have only one transaction
+      batchTransaction: null,
     );
-    return remoteAccounts.toDbAccountWrappers();
+    return remoteAccounts.toDbAccountPopulatedWrappers();
   }
 
   @override
@@ -157,10 +153,8 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
         )
         .toPleromaAccount();
 
-    await accountRepository.upsertRemoteAccount(
+    await accountRepository.upsertInRemoteType(
       pleromaAccount,
-      conversationRemoteId: null,
-      chatRemoteId: null,
     );
   }
 

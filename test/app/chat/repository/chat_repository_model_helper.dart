@@ -6,7 +6,10 @@ Future<DbChat> insertDbChat(
   PleromaChatRepository chatRepository,
   DbChat chatData,
 ) async {
-  var id = await chatRepository.insertInDbType(chatData);
+  var id = await chatRepository.insertInDbType(
+    chatData,
+    mode: null,
+  );
   assert(id > 0, true);
   var dbChat = chatData.copyWith(id: id);
   return dbChat;

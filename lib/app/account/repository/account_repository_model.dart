@@ -27,7 +27,7 @@ class AccountRepositoryFilters {
   });
 
   static AccountRepositoryFilters createForOnlyInConversation({
-    required IConversationChat? conversation,
+    required IConversationChat conversation,
   }) =>
       AccountRepositoryFilters(
         onlyInConversation: conversation,

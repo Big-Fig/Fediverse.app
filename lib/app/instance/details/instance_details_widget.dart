@@ -907,7 +907,7 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
   void _goToAccount({
     required BuildContext context,
     required bool isLocal,
-    required DbAccountWrapper account,
+    required IAccount account,
   }) {
     if (isLocal) {
       goToLocalAccountDetailsPage(

@@ -344,8 +344,10 @@ class DbStatusPopulatedWrapper extends IStatus {
   });
 
   @override
-  DbAccountWrapper get account => DbAccountWrapper(
-        dbAccount: dbStatusPopulated.dbAccount,
+  DbAccountPopulatedWrapper get account => DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbStatusPopulated.dbAccount,
+        ),
       );
 
   @override

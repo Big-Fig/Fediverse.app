@@ -224,31 +224,38 @@ class LocalAccountBloc extends AccountBloc {
       newRelationship = await pleromaAuthAccountService.unFollowAccount(
         accountRemoteId: account.remoteId,
       );
-      await accountRepository.updateAppTypeByRemoteType(
-        appItem: account,
-        remoteItem: account
-            .copyWith(
-              followersCount: account.followersCount - 1,
-              pleromaRelationship: newRelationship,
-            )
-            .toPleromaAccount(),
-      );
 
-      if (myAccount != null) {
-        await accountRepository.removeAccountFollower(
-          accountRemoteId: account.remoteId,
-          followerAccountId: account.remoteId,
+      await accountRepository.batch((batch) {
+        accountRepository.updateAppTypeByRemoteType(
+          appItem: account,
+          remoteItem: account
+              .copyWith(
+                followersCount: account.followersCount - 1,
+                pleromaRelationship: newRelationship,
+              )
+              .toPleromaAccount(),
+          batchTransaction: batch,
         );
 
-        await accountRepository.removeAccountFollowing(
-          accountRemoteId: account.remoteId,
-          followingAccountId: account.remoteId,
-        );
-      }
+        if (myAccount != null) {
+          accountRepository.removeAccountFollower(
+            accountRemoteId: account.remoteId,
+            followerAccountId: account.remoteId,
+            batchTransaction: batch,
+          );
 
-      await statusRepository.removeAccountStatusesFromHome(
-        accountRemoteId: account.remoteId,
-      );
+          accountRepository.removeAccountFollowing(
+            accountRemoteId: account.remoteId,
+            followingAccountId: account.remoteId,
+            batchTransaction: batch,
+          );
+        }
+
+        statusRepository.removeAccountStatusesFromHome(
+          accountRemoteId: account.remoteId,
+          batchTransaction: batch,
+        );
+      });
     } else {
       newRelationship = await pleromaAuthAccountService.followAccount(
         accountRemoteId: account.remoteId,
@@ -261,6 +268,8 @@ class LocalAccountBloc extends AccountBloc {
               pleromaRelationship: newRelationship,
             )
             .toPleromaAccount(),
+        // don't need batch because we have only one transaction
+        batchTransaction: null,
       );
     }
 
@@ -400,14 +409,14 @@ class LocalAccountBloc extends AccountBloc {
       await accountRepository.updateAppTypeByRemoteType(
         appItem: account,
         remoteItem: newRemoteAccount,
+        // don't need batch because we have only one transaction
+        batchTransaction: null,
       );
     } else {
       // sometimes we don't have local account id, for example go from search
       // to account page
-      await accountRepository.upsertRemoteAccount(
+      await accountRepository.upsertInRemoteType(
         newRemoteAccount,
-        conversationRemoteId: null,
-        chatRemoteId: null,
       );
     }
   }
@@ -457,14 +466,14 @@ class LocalAccountBloc extends AccountBloc {
         await accountRepository.updateAppTypeByRemoteType(
           appItem: account,
           remoteItem: remoteAccount,
+          // don't need batch because we have only one transaction
+          batchTransaction: null,
         );
       } else {
         // sometimes we don't have local account id, for example go from search
         // to account page
-        await accountRepository.upsertRemoteAccount(
+        await accountRepository.upsertInRemoteType(
           remoteAccount,
-          conversationRemoteId: null,
-          chatRemoteId: null,
         );
       }
     }

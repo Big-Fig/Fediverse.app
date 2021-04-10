@@ -75,11 +75,12 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
 
     switch (event.eventType) {
       case PleromaWebSocketsEventType.update:
-        await statusRepository.upsertRemoteStatus(
+        await statusRepository.upsertRemoteStatusWithAllArguments(
           event.parsePayloadAsStatus(),
           isFromHomeTimeline: isFromHomeTimeline,
           listRemoteId: statusListRemoteId,
           conversationRemoteId: statusConversationRemoteId,
+          batchTransaction: null,
         );
         break;
       case PleromaWebSocketsEventType.notification:
@@ -98,6 +99,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
         await notificationRepository.upsertRemoteNotification(
           notification,
           unread: true,
+          batchTransaction: null,
         );
 
         var chatMessage = notification.chatMessage;

@@ -51,6 +51,7 @@ abstract class IAccountRepository
   Future upsertChatRemoteAccounts(
     List<IPleromaAccount> remoteAccount, {
     required String chatRemoteId,
+    required Batch? batchTransaction,
   });
 
   Future addAccountFollowings({
@@ -104,4 +105,5 @@ abstract class IAccountRepository
     required String followerAccountId,
     required Batch? batchTransaction,
   });
+
 }

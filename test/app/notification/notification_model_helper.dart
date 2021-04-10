@@ -10,7 +10,7 @@ import 'database/notification_database_model_helper.dart';
 Future<DbNotificationPopulatedWrapper> createTestNotification({
   required String seed,
   String? remoteId,
-  DbAccountWrapper? account,
+  DbAccountPopulatedWrapper? account,
   DbStatusPopulated? status,
   DateTime? createdAt,
 }) async {

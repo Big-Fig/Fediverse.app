@@ -13,7 +13,7 @@ Future<DbPleromaChatMessagePopulatedWrapper> createTestChatMessage({
   String? remoteId,
   DateTime? createdAt,
   String? chatRemoteId,
-  DbAccountWrapper? account,
+  DbAccountPopulatedWrapper? account,
 }) async {
   account = account ?? await createTestAccount(seed: seed);
   var dbAccount = account.dbAccount;

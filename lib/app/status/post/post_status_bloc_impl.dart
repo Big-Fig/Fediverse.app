@@ -696,10 +696,12 @@ abstract class PostStatusBloc extends PostMessageBloc
       data: calculatePleromaPostStatus(),
     );
 
-    await statusRepository.upsertRemoteStatus(
+    await statusRepository.upsertRemoteStatusWithAllArguments(
       remoteStatus,
-      listRemoteId: null,
       conversationRemoteId: initialData.inReplyToConversationId,
+      batchTransaction: null,
+      listRemoteId: '',
+      isFromHomeTimeline: null,
     );
     await onStatusPosted(remoteStatus);
     var inReplyToStatusRemoteId = this.inReplyToStatusRemoteId;
@@ -722,8 +724,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     var scheduledStatus = await pleromaAuthStatusService.scheduleStatus(
       data: calculateScheduleStatus(),
     );
-    await scheduledStatusRepository
-        .upsertRemoteScheduledStatus(scheduledStatus);
+    await scheduledStatusRepository.upsertInRemoteType(scheduledStatus);
   }
 
   @override

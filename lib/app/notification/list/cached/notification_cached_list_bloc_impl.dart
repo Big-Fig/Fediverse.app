@@ -47,7 +47,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    filters = await filterRepository.getFilters(
+    filters = await filterRepository.findAllInAppType(
       filters: FilterRepositoryFilters(
         onlyWithContextTypes: [
           MastodonFilterContextType.notifications,
@@ -55,6 +55,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
         notExpired: true,
       ),
       pagination: null,
+      orderingTerms: null,
     );
   }
 
@@ -64,14 +65,16 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
     required INotification? newerThan,
     required INotification? olderThan,
   }) {
-    return notificationRepository.getNotifications(
+    return notificationRepository.findAllInAppType(
       filters: _notificationRepositoryFilters,
       pagination: RepositoryPagination<INotification>(
         olderThanItem: olderThan,
         newerThanItem: newerThan,
         limit: limit,
       ),
-      orderingTermData: NotificationRepositoryOrderingTermData.createdAtDesc,
+      orderingTerms: [
+        NotificationRepositoryOrderingTermData.createdAtDesc,
+      ],
     );
   }
 
@@ -91,9 +94,9 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
       excludeTypes: excludeTypes,
     );
 
-    await notificationRepository.upsertRemoteNotifications(
+    await notificationRepository.upsertAllInRemoteType(
       remoteNotifications,
-      unread: null,
+      batchTransaction: null,
     );
   }
 
@@ -135,11 +138,14 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   Stream<List<INotification>> watchLocalItemsNewerThanItem(
     INotification? item,
   ) =>
-      notificationRepository.watchNotifications(
+      notificationRepository.watchFindAllInAppType(
         filters: _notificationRepositoryFilters,
         pagination: RepositoryPagination<INotification>(
           newerThanItem: item,
         ),
+        orderingTerms: [
+          NotificationRepositoryOrderingTermData.createdAtDesc,
+        ],
       );
 
   @override

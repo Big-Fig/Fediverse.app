@@ -9,23 +9,12 @@ import 'package:fedi/app/notification/notification_model_adapter.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
 var _logger = Logger("notification_repository_impl.dart");
-
-var _singleNotificationRepositoryPagination =
-    RepositoryPagination<INotification>(
-  limit: 1,
-  newerThanItem: null,
-  offset: null,
-  olderThanItem: null,
-);
 
 class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbNotification,
@@ -36,7 +25,8 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     String,
     $DbNotificationsTable,
     $DbNotificationsTable,
-    NotificationRepositoryFilters, NotificationRepositoryOrderingTermData> implements INotificationRepository {
+    NotificationRepositoryFilters,
+    NotificationRepositoryOrderingTermData> implements INotificationRepository {
   @override
   final NotificationDao dao;
   final IAccountRepository accountRepository;
@@ -50,138 +40,101 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required this.chatMessageRepository,
   }) : dao = appDatabase.notificationDao;
 
-  @override
-  Future upsertRemoteNotification(
-    IPleromaNotification remoteNotification, {
-    required bool? unread,
-  }) async {
-    _logger.finer(() => "upsertRemoteNotification ${remoteNotification.id} "
-        "$remoteNotification");
-    var remoteAccount = remoteNotification.account;
-
-    if (remoteAccount != null) {
-      await accountRepository.upsertRemoteAccount(
-        remoteAccount,
-        conversationRemoteId: null,
-        chatRemoteId: null,
-      );
-    }
-
-    var remoteStatus = remoteNotification.status;
-    if (remoteStatus != null) {
-      await statusRepository.upsertRemoteStatus(
-        remoteStatus,
-        listRemoteId: null,
-        conversationRemoteId: null,
-      );
-    }
-    var remoteChatMessage = remoteNotification.chatMessage;
-    if (remoteChatMessage != null) {
-      await chatMessageRepository.upsertRemoteChatMessage(
-        remoteChatMessage,
-      );
-    }
-    await upsertInDbType(
-      remoteNotification.toDbNotification(
-        unread: unread,
-      ),
-    );
-  }
-
-  @override
-  Future upsertRemoteNotifications(
-    List<IPleromaNotification>? remoteNotifications, {
-    required bool? unread,
-  }) async {
-    _logger.finer(
-      () => "upsertRemoteNotifications ${remoteNotifications!.length} ",
-    );
-    if (remoteNotifications!.isEmpty) {
-      return;
-    }
-
-    List<IPleromaAccount> remoteAccounts = remoteNotifications
-        .where((remoteNotification) => remoteNotification.account != null)
-        .map(
-          (remoteNotification) => remoteNotification.account!,
-        )
-        .toList();
-
-    await accountRepository.upsertRemoteAccounts(
-      remoteAccounts,
-      conversationRemoteId: null,
-      chatRemoteId: null,
-    );
-
-    List<IPleromaStatus> remoteStatuses = remoteNotifications
-        .where((remoteNotification) => remoteNotification.status != null)
-        .map(
-          (remoteNotification) => remoteNotification.status!,
-        )
-        .toList();
-
-    await statusRepository.upsertRemoteStatuses(
-      remoteStatuses,
-      conversationRemoteId: null,
-      listRemoteId: null,
-    );
-
-    List<IPleromaChatMessage> remoteChatMessages = remoteNotifications
-        .where((remoteNotification) => remoteNotification.chatMessage != null)
-        .map(
-          (remoteNotification) => remoteNotification.chatMessage!,
-        )
-        .toList();
-
-    await chatMessageRepository.upsertRemoteChatMessages(remoteChatMessages);
-
-    await upsertAllInDbType(
-      remoteNotifications
-          .map(
-            (remoteNotification) =>
-                remoteNotification.toDbNotification(unread: unread),
-          )
-          .toList(),
-    );
-  }
-
-  @override
-  Future<List<DbNotificationPopulatedWrapper>> getNotifications({
-    required NotificationRepositoryFilters? filters,
-    required RepositoryPagination<INotification>? pagination,
-    NotificationRepositoryOrderingTermData? orderingTermData =
-        NotificationRepositoryOrderingTermData.createdAtDesc,
-  }) async {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return (await query.get())
-        .toDbNotificationPopulatedList(dao: dao)
-        .toDbNotificationPopulatedWrapperList();
-  }
-
-  @override
-  Stream<List<DbNotificationPopulatedWrapper>> watchNotifications({
-    required NotificationRepositoryFilters? filters,
-    required RepositoryPagination<INotification>? pagination,
-    NotificationRepositoryOrderingTermData? orderingTermData =
-        NotificationRepositoryOrderingTermData.createdAtDesc,
-  }) {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return query.watch().map(
-          (item) => item
-              .toDbNotificationPopulatedList(dao: dao)
-              .toDbNotificationPopulatedWrapperList(),
-        );
-  }
+  //
+  // @override
+  // Future upsertRemoteNotification(
+  //   IPleromaNotification remoteNotification, {
+  //   required bool? unread,
+  // }) async {
+  //   _logger.finer(() => "upsertRemoteNotification ${remoteNotification.id} "
+  //       "$remoteNotification");
+  //   var remoteAccount = remoteNotification.account;
+  //
+  //   if (remoteAccount != null) {
+  //     await accountRepository.upsertRemoteAccount(
+  //       remoteAccount,
+  //       conversationRemoteId: null,
+  //       chatRemoteId: null,
+  //     );
+  //   }
+  //
+  //   var remoteStatus = remoteNotification.status;
+  //   if (remoteStatus != null) {
+  //     await statusRepository.upsertRemoteStatus(
+  //       remoteStatus,
+  //       listRemoteId: null,
+  //       conversationRemoteId: null,
+  //     );
+  //   }
+  //   var remoteChatMessage = remoteNotification.chatMessage;
+  //   if (remoteChatMessage != null) {
+  //     await chatMessageRepository.upsertRemoteChatMessage(
+  //       remoteChatMessage,
+  //     );
+  //   }
+  //   await upsertInDbType(
+  //     remoteNotification.toDbNotification(
+  //       unread: unread,
+  //     ),
+  //   );
+  // }
+  //
+  // @override
+  // Future upsertRemoteNotifications(
+  //   List<IPleromaNotification>? remoteNotifications, {
+  //   required bool? unread,
+  // }) async {
+  //   _logger.finer(
+  //     () => "upsertRemoteNotifications ${remoteNotifications!.length} ",
+  //   );
+  //   if (remoteNotifications!.isEmpty) {
+  //     return;
+  //   }
+  //
+  //   List<IPleromaAccount> remoteAccounts = remoteNotifications
+  //       .where((remoteNotification) => remoteNotification.account != null)
+  //       .map(
+  //         (remoteNotification) => remoteNotification.account!,
+  //       )
+  //       .toList();
+  //
+  //   await accountRepository.upsertRemoteAccounts(
+  //     remoteAccounts,
+  //     conversationRemoteId: null,
+  //     chatRemoteId: null,
+  //   );
+  //
+  //   List<IPleromaStatus> remoteStatuses = remoteNotifications
+  //       .where((remoteNotification) => remoteNotification.status != null)
+  //       .map(
+  //         (remoteNotification) => remoteNotification.status!,
+  //       )
+  //       .toList();
+  //
+  //   await statusRepository.upsertRemoteStatuses(
+  //     remoteStatuses,
+  //     conversationRemoteId: null,
+  //     listRemoteId: null,
+  //   );
+  //
+  //   List<IPleromaChatMessage> remoteChatMessages = remoteNotifications
+  //       .where((remoteNotification) => remoteNotification.chatMessage != null)
+  //       .map(
+  //         (remoteNotification) => remoteNotification.chatMessage!,
+  //       )
+  //       .toList();
+  //
+  //   await chatMessageRepository.upsertRemoteChatMessages(remoteChatMessages);
+  //
+  //   await upsertAllInDbType(
+  //     remoteNotifications
+  //         .map(
+  //           (remoteNotification) =>
+  //               remoteNotification.toDbNotification(unread: unread),
+  //         )
+  //         .toList(),
+  //   );
+  // }
 
   JoinedSelectStatement createQuery({
     required NotificationRepositoryFilters? filters,
@@ -261,79 +214,80 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     return finalQuery;
   }
 
-  @override
-  Future updateLocalNotificationByRemoteNotification({
-    required INotification oldLocalNotification,
-    required IPleromaNotification newRemoteNotification,
-    required bool? unread,
-  }) async {
-    _logger.finer(() => "updateLocalNotificationByRemoteNotification \n"
-        "\t old: $oldLocalNotification \n"
-        "\t newRemoteNotification: $newRemoteNotification");
-
-    var remoteAccount = newRemoteNotification.account;
-
-    if (remoteAccount != null) {
-      await accountRepository.upsertRemoteAccount(
-        remoteAccount,
-        conversationRemoteId: null,
-        chatRemoteId: null,
-      );
-    }
-
-    var remoteStatus = newRemoteNotification.status;
-
-    if (remoteStatus != null) {
-      await statusRepository.upsertRemoteStatus(
-        remoteStatus,
-        conversationRemoteId: null,
-        listRemoteId: null,
-      );
-    }
-
-    await updateByDbIdInDbType(
-      dbId: oldLocalNotification.localId!,
-      dbItem: newRemoteNotification.toDbNotification(
-        unread: unread,
-      ),
-    );
-  }
-
-  @override
-  Future<DbNotificationPopulatedWrapper?> getNotification({
-    required NotificationRepositoryFilters? filters,
-    NotificationRepositoryOrderingTermData? orderingTermData =
-        NotificationRepositoryOrderingTermData.createdAtDesc,
-  }) async {
-    var query = createQuery(
-      filters: filters,
-      pagination: _singleNotificationRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return (await query.getSingleOrNull())
-        ?.toDbNotificationPopulated(dao: dao)
-        .toDbNotificationPopulatedWrapper();
-  }
-
-  @override
-  Stream<DbNotificationPopulatedWrapper?> watchNotification({
-    required NotificationRepositoryFilters? filters,
-    NotificationRepositoryOrderingTermData? orderingTermData =
-        NotificationRepositoryOrderingTermData.createdAtDesc,
-  }) {
-    var query = createQuery(
-      filters: filters,
-      pagination: _singleNotificationRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return query.watchSingleOrNull().map(
-          (typedResult) => typedResult
-              ?.toDbNotificationPopulated(dao: dao)
-              .toDbNotificationPopulatedWrapper(),
-        );
-  }
+  //
+  // @override
+  // Future updateLocalNotificationByRemoteNotification({
+  //   required INotification oldLocalNotification,
+  //   required IPleromaNotification newRemoteNotification,
+  //   required bool? unread,
+  // }) async {
+  //   _logger.finer(() => "updateLocalNotificationByRemoteNotification \n"
+  //       "\t old: $oldLocalNotification \n"
+  //       "\t newRemoteNotification: $newRemoteNotification");
+  //
+  //   var remoteAccount = newRemoteNotification.account;
+  //
+  //   if (remoteAccount != null) {
+  //     await accountRepository.upsertRemoteAccount(
+  //       remoteAccount,
+  //       conversationRemoteId: null,
+  //       chatRemoteId: null,
+  //     );
+  //   }
+  //
+  //   var remoteStatus = newRemoteNotification.status;
+  //
+  //   if (remoteStatus != null) {
+  //     await statusRepository.upsertRemoteStatus(
+  //       remoteStatus,
+  //       conversationRemoteId: null,
+  //       listRemoteId: null,
+  //     );
+  //   }
+  //
+  //   await updateByDbIdInDbType(
+  //     dbId: oldLocalNotification.localId!,
+  //     dbItem: newRemoteNotification.toDbNotification(
+  //       unread: unread,
+  //     ),
+  //   );
+  // }
+  //
+  // @override
+  // Future<DbNotificationPopulatedWrapper?> getNotification({
+  //   required NotificationRepositoryFilters? filters,
+  //   NotificationRepositoryOrderingTermData? orderingTermData =
+  //       NotificationRepositoryOrderingTermData.createdAtDesc,
+  // }) async {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: _singleNotificationRepositoryPagination,
+  //     orderingTermData: orderingTermData,
+  //   );
+  //
+  //   return (await query.getSingleOrNull())
+  //       ?.toDbNotificationPopulated(dao: dao)
+  //       .toDbNotificationPopulatedWrapper();
+  // }
+  //
+  // @override
+  // Stream<DbNotificationPopulatedWrapper?> watchNotification({
+  //   required NotificationRepositoryFilters? filters,
+  //   NotificationRepositoryOrderingTermData? orderingTermData =
+  //       NotificationRepositoryOrderingTermData.createdAtDesc,
+  // }) {
+  //   var query = createQuery(
+  //     filters: filters,
+  //     pagination: _singleNotificationRepositoryPagination,
+  //     orderingTermData: orderingTermData,
+  //   );
+  //
+  //   return query.watchSingleOrNull().map(
+  //         (typedResult) => typedResult
+  //             ?.toDbNotificationPopulated(dao: dao)
+  //             .toDbNotificationPopulatedWrapper(),
+  //       );
+  // }
 
   Selectable<int> createCountQuery({
     required NotificationRepositoryFilters? filters,
@@ -380,28 +334,12 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future<int> getCount({
-    required NotificationRepositoryFilters? filters,
-  }) =>
-      createCountQuery(filters: filters).getSingle();
-
-  @override
-  Stream<int> watchCount({
-    required NotificationRepositoryFilters? filters,
-  }) =>
-      createCountQuery(filters: filters).watchSingle();
-
-  @override
-  Future<DbNotificationPopulatedWrapper?> getNewest() => getNotification(
-        filters: null,
-      );
-
-  @override
   Future markAllAsRead() => dao.markAllAsRead();
 
   @override
   Future dismissFollowRequestNotificationsFromAccount({
     required IAccount account,
+    required Batch? batchTransaction,
   }) =>
       dao.markAsDismissedWhere(
         accountRemoteId: account.remoteId,
