@@ -9,17 +9,6 @@ part 'pleroma_chat_accounts_database_dao.g.dart';
   tables: [
     DbChatAccounts,
   ],
-  queries: {
-    "findByChatRemoteId":
-        "SELECT * FROM db_chat_accounts WHERE chat_remote_id = :chatRemoteId;",
-    "findByChatRemoteIdAndAccountRemoteId":
-        "SELECT * FROM db_chat_accounts WHERE chat_remote_id = "
-            ":chatRemoteId AND account_remote_id = :accountRemoteId;",
-    "findByAccountRemoteId":
-        "SELECT * FROM db_chat_accounts WHERE account_remote_id = :accountRemoteId;",
-    "deleteByChatRemoteId": "DELETE FROM db_chat_accounts WHERE "
-        "chat_remote_id = :chatRemoteId;",
-  },
 )
 class ChatAccountsDao extends DatabaseDao<DbChatAccount, int,
     $DbChatAccountsTable, $DbChatAccountsTable> with _$ChatAccountsDaoMixin {

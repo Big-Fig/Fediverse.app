@@ -439,23 +439,28 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      // todo: support mode
       await _upsertChatMessageMetadata(
         remoteItem,
         batchTransaction: batchTransaction,
       );
 
-      await dao.upsertBatch(
-        entity: remoteItem.toDbChat().copyWith(
-              id: appItem.localId,
-            ),
-        batchTransaction: batchTransaction,
-      );
+      if (appItem.localId != null) {
+        await updateByDbIdInDbType(
+          dbId: appItem.localId!,
+          dbItem: remoteItem.toDbChat(),
+          batchTransaction: batchTransaction,
+        );
+      } else {
+        await upsertInRemoteTypeBatch(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        );
+      }
     } else {
       await batch((batch) {
-        insertInRemoteTypeBatch(
-          remoteItem,
-          mode: InsertMode.insertOrReplace,
+        updateAppTypeByRemoteType(
+          appItem: appItem,
+          remoteItem: remoteItem,
           batchTransaction: batch,
         );
       });

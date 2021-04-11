@@ -286,7 +286,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
           query
             ..where(
-              (status) => status.dismissed.isNull(),
+              (status) => status.dismissed.isNull() | status.dismissed.equals(false),
             );
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification> addOnlyUnread(

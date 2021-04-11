@@ -24,7 +24,7 @@ class StatusFavouritedAccountsDao extends DatabaseDao<
 
   Future<int> deleteByStatusRemoteId(String statusRemoteId) => customUpdate(
         'DELETE FROM $tableName '
-        'WHERE ${_createStatusRemoteIdEqualExpression(statusRemoteId)}',
+        'WHERE ${_createStatusRemoteIdEqualExpression(statusRemoteId).content}',
         updates: {table},
         updateKind: UpdateKind.delete,
       );

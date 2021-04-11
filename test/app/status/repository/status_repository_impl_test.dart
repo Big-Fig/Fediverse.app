@@ -33,7 +33,7 @@ void main() {
   late DbAccount dbAccount;
 
   setUp(() async {
-    database = AppDatabase(VmDatabase.memory(logStatements: false));
+    database = AppDatabase(VmDatabase.memory(logStatements: true));
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
       appDatabase: database,
@@ -933,8 +933,7 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    var actualList =
-        (await query.get());
+    var actualList = (await query.get());
     expect(actualList.length, 1);
 
     expect(
@@ -1217,6 +1216,7 @@ void main() {
     await statusRepository.addStatusesToList(
       statusRemoteIds: [dbStatus2.remoteId],
       listRemoteId: "invalidStatusRemoteId",
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 0);
@@ -1233,6 +1233,7 @@ void main() {
     await statusRepository.addStatusesToList(
       statusRemoteIds: [dbStatus3.remoteId],
       listRemoteId: listWithRemoteId,
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 1);
@@ -1241,6 +1242,7 @@ void main() {
     await statusRepository.addStatusesToList(
       statusRemoteIds: [dbStatus3.remoteId],
       listRemoteId: listWithRemoteId,
+      batchTransaction: null,
     );
     expect((await query.get()).length, 1);
 
@@ -1256,6 +1258,7 @@ void main() {
     await statusRepository.addStatusesToList(
       statusRemoteIds: [dbStatus4.remoteId],
       listRemoteId: listWithRemoteId,
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 2);
@@ -1956,6 +1959,7 @@ void main() {
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
         isFromHomeTimeline: true,
+        // isFromHomeTimeline: null,
       ),
       pagination: null,
       orderingTermData: null,

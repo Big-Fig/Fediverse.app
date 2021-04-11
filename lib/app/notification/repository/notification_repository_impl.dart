@@ -407,23 +407,28 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      // todo: support mode
       await _upsertNotificationMetadata(
         remoteItem,
         batchTransaction: batchTransaction,
       );
 
-      await dao.upsertBatch(
-        entity: remoteItem.toDbNotification(unread: null).copyWith(
-              id: appItem.localId,
-            ),
-        batchTransaction: batchTransaction,
-      );
+      if (appItem.localId != null) {
+        await updateByDbIdInDbType(
+          dbId: appItem.localId!,
+          dbItem: remoteItem.toDbNotification(unread: null),
+          batchTransaction: batchTransaction,
+        );
+      } else {
+        await upsertInRemoteTypeBatch(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        );
+      }
     } else {
       await batch((batch) {
-        insertInRemoteTypeBatch(
-          remoteItem,
-          mode: InsertMode.insertOrReplace,
+        updateAppTypeByRemoteType(
+          appItem: appItem,
+          remoteItem: remoteItem,
           batchTransaction: batch,
         );
       });
@@ -449,23 +454,28 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      // todo: support mode
       await _upsertNotificationMetadata(
         remoteItem,
         batchTransaction: batchTransaction,
       );
 
-      await dao.upsertBatch(
-        entity: remoteItem.toDbNotification(unread: unread).copyWith(
-              id: appItem.localId,
-            ),
-        batchTransaction: batchTransaction,
-      );
+      if (appItem.localId != null) {
+        await updateByDbIdInDbType(
+          dbId: appItem.localId!,
+          dbItem: remoteItem.toDbNotification(unread: unread),
+          batchTransaction: batchTransaction,
+        );
+      } else {
+        await upsertInRemoteTypeBatch(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        );
+      }
     } else {
       await batch((batch) {
-        insertInRemoteTypeBatch(
-          remoteItem,
-          mode: InsertMode.insertOrReplace,
+        updateAppTypeByRemoteType(
+          appItem: appItem,
+          remoteItem: remoteItem,
           batchTransaction: batch,
         );
       });
@@ -490,13 +500,15 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         batchTransaction: batchTransaction,
       );
     } else {
-      await batch((batch) {
-        insertInRemoteTypeBatch(
-          remoteItem,
-          mode: InsertMode.insertOrReplace,
-          batchTransaction: batch,
-        );
-      });
+      await batch(
+        (batch) {
+          upsertRemoteNotification(
+            remoteItem,
+            unread: unread,
+            batchTransaction: batch,
+          );
+        },
+      );
     }
   }
 
@@ -505,20 +517,29 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     List<IPleromaNotification> pleromaNotifications, {
     required bool unread,
     required Batch? batchTransaction,
-  }) =>
-      batch(
-        (batch) {
-          pleromaNotifications.forEach(
-            (remoteAccount) {
-              upsertRemoteNotification(
-                remoteAccount,
-                unread: unread,
-                batchTransaction: batch,
-              );
-            },
+  }) async {
+    if (batchTransaction != null) {
+      pleromaNotifications.forEach(
+        (remoteNotification) {
+          upsertRemoteNotification(
+            remoteNotification,
+            unread: unread,
+            batchTransaction: batchTransaction,
           );
         },
       );
+    } else {
+      await batch(
+        (batch) {
+          upsertRemoteNotifications(
+            pleromaNotifications,
+            unread: unread,
+            batchTransaction: batch,
+          );
+        },
+      );
+    }
+  }
 }
 
 extension DbNotificationPopulatedListExtension

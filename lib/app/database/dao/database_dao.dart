@@ -121,14 +121,14 @@ abstract class DatabaseDao<
 
   Stream<int> watchCountAll() => countAllSelectable().watchSingle();
 
-  Selectable<int> countAllSelectable() => customSelect(
-        'SELECT COUNT(*) FROM $tableName',
-        readsFrom: {table},
-      ).map(
-        (QueryRow row) => row.readInt(
-          'COUNT(*)',
-        ),
-      );
+  Selectable<int> countAllSelectable() {
+    return customSelect(
+      'SELECT COUNT(*) FROM $tableName',
+      readsFrom: {table},
+    ).map(
+      (QueryRow row) => row.readInt('COUNT(*)'),
+    );
+  }
 
   Future<List<DbItem>> getAll() => getAllSelectable().get();
 
@@ -360,5 +360,4 @@ abstract class DatabaseDao<
     required dynamic value,
   }) =>
       CustomExpression<bool>("$tableName.$fieldName = '${value.toString()}'");
-
 }

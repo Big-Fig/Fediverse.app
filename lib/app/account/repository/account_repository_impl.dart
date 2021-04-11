@@ -535,14 +535,30 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required IAccount appItem,
     required IPleromaAccount remoteItem,
     required Batch? batchTransaction,
-  }) =>
-      upsertRemoteAccount(
-        remoteItem,
-        conversationRemoteId: null,
-        chatRemoteId: null,
-        dbId: appItem.localId,
-        batchTransaction: batchTransaction,
-      );
+  }) async {
+    if (batchTransaction != null) {
+      if (appItem.localId != null) {
+        await updateByDbIdInDbType(
+          dbId: appItem.localId!,
+          dbItem: remoteItem.toDbAccount(),
+          batchTransaction: batchTransaction,
+        );
+      } else {
+        await upsertInRemoteTypeBatch(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        );
+      }
+    } else {
+      await batch((batch) {
+        updateAppTypeByRemoteType(
+          appItem: appItem,
+          remoteItem: remoteItem,
+          batchTransaction: batch,
+        );
+      });
+    }
+  }
 
   @override
   Future<void> updateByDbIdInDbType({
@@ -607,20 +623,27 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     List<IPleromaAccount> remoteAccounts, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
-  }) =>
-      batch(
+  }) async {
+    if (batchTransaction != null) {
+      for (var remoteAccount in remoteAccounts) {
+        await upsertConversationRemoteAccount(
+          remoteAccount,
+          conversationRemoteId: conversationRemoteId,
+          batchTransaction: batchTransaction,
+        );
+      }
+    } else {
+      await batch(
         (batch) {
-          remoteAccounts.forEach(
-            (remoteAccount) {
-              upsertConversationRemoteAccount(
-                remoteAccount,
-                conversationRemoteId: conversationRemoteId,
-                batchTransaction: batch,
-              );
-            },
+          upsertConversationRemoteAccounts(
+            remoteAccounts,
+            conversationRemoteId: conversationRemoteId,
+            batchTransaction: batch,
           );
         },
       );
+    }
+  }
 }
 
 extension DbAccountListExtension on List<DbAccount> {

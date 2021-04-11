@@ -320,6 +320,8 @@ void main() {
 
   test('upsertRemoteConversations', () async {
     expect(await conversationRepository.countAll(), 0);
+
+
     await conversationRepository.upsertAllInRemoteType(
       [
         DbConversationChatPopulatedWrapper(
@@ -381,6 +383,7 @@ void main() {
       ],
       batchTransaction: null,
     );
+
     // update item with same id
     expect(await conversationRepository.countAll(), 1);
     // with reblog
@@ -654,7 +657,6 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData: ConversationRepositoryChatOrderingTermData.remoteIdDesc,
-
     );
 
     var conversation2 = await insertDbConversation(

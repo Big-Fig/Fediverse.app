@@ -30,15 +30,13 @@ abstract class AppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      remoteItems.forEach(
-        (remoteItem) {
-          insertInRemoteTypeBatch(
-            remoteItem,
-            mode: mode,
-            batchTransaction: batchTransaction,
-          );
-        },
-      );
+      for (var remoteItem in remoteItems) {
+        await insertInRemoteTypeBatch(
+          remoteItem,
+          mode: mode,
+          batchTransaction: batchTransaction,
+        );
+      }
     } else {
       await batch((batch) {
         insertAllInRemoteType(
