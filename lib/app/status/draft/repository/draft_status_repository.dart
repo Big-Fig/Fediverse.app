@@ -3,7 +3,6 @@ import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/repository/repository.dart';
-import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -20,31 +19,5 @@ abstract class IDraftStatusRepository
 
   Future addDraftStatus({
     required IDraftStatus draftStatus,
-  });
-
-  Future<List<IDraftStatus>> getDraftStatuses({
-    required DraftStatusRepositoryFilters? filters,
-    required RepositoryPagination<IDraftStatus> pagination,
-    DraftStatusOrderingTermData orderingTermData =
-        DraftStatusOrderingTermData.updatedAtDesc,
-  });
-
-  Stream<List<IDraftStatus>> watchDraftStatuses({
-    required DraftStatusRepositoryFilters filters,
-    required RepositoryPagination<IDraftStatus> pagination,
-    DraftStatusOrderingTermData orderingTermData =
-        DraftStatusOrderingTermData.updatedAtDesc,
-  });
-
-  Future<IDraftStatus?> getDraftStatus({
-    required DraftStatusRepositoryFilters filters,
-    DraftStatusOrderingTermData orderingTermData =
-        DraftStatusOrderingTermData.updatedAtDesc,
-  });
-
-  Stream<IDraftStatus?> watchDraftStatus({
-    required DraftStatusRepositoryFilters filters,
-    DraftStatusOrderingTermData orderingTermData =
-        DraftStatusOrderingTermData.updatedAtDesc,
   });
 }

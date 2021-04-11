@@ -1,5 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/database/dao/app_database_dao.dart';
+import 'package:fedi/app/database/dao/database_dao.dart';
 import 'package:fedi/app/status/database/status_hashtags_database_model.dart';
 import 'package:moor/moor.dart';
 
@@ -10,7 +10,7 @@ part 'status_hashtags_database_dao.g.dart';
     DbStatusHashtags,
   ],
 )
-class StatusHashtagsDao extends AppDatabaseDao<
+class StatusHashtagsDao extends DatabaseDao<
     DbStatusHashtag,
     int,
     $DbStatusHashtagsTable,

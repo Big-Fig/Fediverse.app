@@ -1,22 +1,14 @@
-import 'package:collection/collection.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
 import 'package:fedi/app/database/dao/repository/local/populated_app_local_database_dao_repository.dart';
 import 'package:fedi/app/status/draft/database/draft_status_database_dao.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository_model.dart';
-import 'package:fedi/repository/repository_model.dart';
-import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
-
-var _logger = Logger("draftStatus_repository_impl.dart");
-
-var _singleDraftStatusRepositoryPagination = RepositoryPagination<IDraftStatus>(
-  limit: 1,
-  newerThanItem: null,
-  offset: null,
-  olderThanItem: null,
-);
+import 'package:moor/src/runtime/api/runtime_api.dart';
+import 'package:moor/src/runtime/data_class.dart';
+import 'package:moor/src/runtime/query_builder/query_builder.dart';
 
 class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
     DbDraftStatus,
@@ -35,131 +27,29 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
   }
 
   @override
-  Future<List<DbDraftStatusPopulatedWrapper>> getDraftStatuses({
-    required DraftStatusRepositoryFilters? filters,
-    required RepositoryPagination<IDraftStatus> pagination,
-    DraftStatusOrderingTermData orderingTermData =
-        DraftStatusOrderingTermData.updatedAtDesc,
-  }) async {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-    );
-
-    var typedResultList = await query.get();
-
-    return typedResultList
-        .toDbDraftStatusPopulatedList(dao: dao)
-        .toDbDraftStatusPopulatedWrapperList();
-  }
-
-  @override
-  Stream<List<DbDraftStatusPopulatedWrapper>> watchDraftStatuses({
-    required DraftStatusRepositoryFilters filters,
-    required RepositoryPagination<IDraftStatus> pagination,
-    DraftStatusOrderingTermData orderingTermData =
-        DraftStatusOrderingTermData.updatedAtDesc,
-  }) {
-    var query = createQuery(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-    );
-
-    Stream<List<TypedResult>> stream = query.watch();
-
-    return stream.map((typedResultList) {
-      return typedResultList
-          .toDbDraftStatusPopulatedList(dao: dao)
-          .toDbDraftStatusPopulatedWrapperList();
-    });
-  }
-
-  JoinedSelectStatement createQuery({
-    required DraftStatusRepositoryFilters? filters,
-    required RepositoryPagination<IDraftStatus>? pagination,
-    required DraftStatusOrderingTermData? orderingTermData,
-  }) {
-    _logger.fine(() => "createQuery \n"
-        "\t filters=$filters\n"
-        "\t pagination=$pagination\n"
-        "\t orderingTermData=$orderingTermData");
-
-    var query = dao.startSelectQuery();
-
-    if (pagination?.olderThanItem != null ||
-        pagination?.newerThanItem != null) {
-      assert(orderingTermData?.orderType ==
-          DraftStatusRepositoryOrderType.updatedAt);
-      query = dao.addUpdatedAtBoundsWhere(
-        query,
-        maximumUpdatedAtExcluding: pagination?.olderThanItem?.updatedAt,
-        minimumUpdatedAtExcluding: pagination?.newerThanItem?.updatedAt,
-      );
-    }
-
-    if (orderingTermData != null) {
-      query = dao.orderBy(
-        query,
-        [
-          orderingTermData,
-        ],
-      );
-    }
-
-    // nothing to join by now, just to avoid unnecessary code wrappers overhead
-    var joinQuery = query.join([]);
-
-    var limit = pagination?.limit;
-    if (limit != null) {
-      joinQuery.limit(
-        limit,
-        offset: pagination?.offset,
-      );
-    }
-    return joinQuery;
-  }
-
-  @override
-  Future<DbDraftStatusPopulatedWrapper?> getDraftStatus({
-    required DraftStatusRepositoryFilters filters,
-    DraftStatusOrderingTermData orderingTermData =
-        DraftStatusOrderingTermData.updatedAtDesc,
-  }) async {
-    var draftStatuses = await getDraftStatuses(
-      filters: filters,
-      pagination: _singleDraftStatusRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-    return draftStatuses.isNotEmpty ? draftStatuses.first : null;
-  }
-
-  @override
-  Stream<DbDraftStatusPopulatedWrapper?> watchDraftStatus({
-    required DraftStatusRepositoryFilters filters,
-    DraftStatusOrderingTermData orderingTermData =
-        DraftStatusOrderingTermData.updatedAtDesc,
-  }) {
-    var draftStatusesStream = watchDraftStatuses(
-      filters: filters,
-      pagination: _singleDraftStatusRepositoryPagination,
-      orderingTermData: orderingTermData,
-    );
-
-    return draftStatusesStream.map(
-      (draftStatuses) => draftStatuses.firstOrNull,
-    );
-  }
+  PopulatedDatabaseDaoMixin<
+      DbDraftStatus,
+      DbDraftStatusPopulated,
+      int,
+      $DbDraftStatusesTable,
+      $DbDraftStatusesTable,
+      DraftStatusRepositoryFilters,
+      DraftStatusOrderingTermData> get populatedDao => dao;
 
   @override
   Future addDraftStatus({
     required IDraftStatus draftStatus,
-  }) =>
-      insertInAppType(
-        draftStatus,
-        mode: null,
-      );
+  }) {
+    // todo: implement insertInAppType
+    return insertInDbType(
+      draftStatus.toDbDraftStatus(),
+      mode: null,
+    );
+    // return insertInAppType(
+    //     draftStatus,
+    //     mode: null,
+    //   );
+  }
 
   @override
   DbDraftStatus mapAppItemToDbItem(IDraftStatus appItem) =>
@@ -181,36 +71,29 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
   @override
   List<DraftStatusOrderingTermData> get defaultOrderingTerms =>
       DraftStatusOrderingTermData.defaultTerms;
-}
 
-extension DbDraftStatusTypedResultExtension on TypedResult {
-  DbDraftStatus toDbDraftStatus({
-    required DraftStatusDao dao,
+  @override
+  Future<void> insertInDbTypeBatch(
+    Insertable<DbDraftStatus> dbItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
   }) =>
-      readTable(dao.db.dbDraftStatuses);
-
-  DbDraftStatusPopulated toDbDraftStatusPopulated({
-    required DraftStatusDao dao,
-  }) =>
-      DbDraftStatusPopulated(
-        dbDraftStatus: toDbDraftStatus(
-          dao: dao,
-        ),
+      dao.insertBatch(
+        entity: dbItem,
+        mode: mode,
+        batchTransaction: batchTransaction,
       );
-}
 
-extension DbDraftStatusTypedResultListExtension on List<TypedResult> {
-  List<DbDraftStatus> toDbDraftStatusList({
-    required DraftStatusDao dao,
-  }) =>
-      map(
-        (item) => item.toDbDraftStatus(dao: dao),
-      ).toList();
-
-  List<DbDraftStatusPopulated> toDbDraftStatusPopulatedList({
-    required DraftStatusDao dao,
-  }) =>
-      map(
-        (item) => item.toDbDraftStatusPopulated(dao: dao),
-      ).toList();
+  @override
+  Future<void> updateByDbIdInDbType({
+    required int dbId,
+    required DbDraftStatus dbItem,
+    required Batch? batchTransaction,
+  }) => insertInDbTypeBatch(
+      dbItem.copyWith(
+        id: dbId,
+      ),
+      mode: InsertMode.insertOrReplace,
+      batchTransaction: batchTransaction,
+    );
 }

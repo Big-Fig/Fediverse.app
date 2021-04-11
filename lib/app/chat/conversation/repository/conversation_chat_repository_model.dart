@@ -5,7 +5,36 @@ class ConversationChatRepositoryFilters {
   static const ConversationChatRepositoryFilters empty =
       ConversationChatRepositoryFilters();
 
-  const ConversationChatRepositoryFilters();
+  final bool withLastMessage;
+
+  const ConversationChatRepositoryFilters({
+    this.withLastMessage = false,
+  });
+
+  ConversationChatRepositoryFilters copyWith({
+    bool? withLastMessage,
+  }) {
+    return ConversationChatRepositoryFilters(
+      withLastMessage: withLastMessage ?? this.withLastMessage,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'ConversationChatRepositoryFilters{'
+        'withLastMessage: $withLastMessage'
+        '}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ConversationChatRepositoryFilters &&
+          runtimeType == other.runtimeType &&
+          withLastMessage == other.withLastMessage;
+
+  @override
+  int get hashCode => withLastMessage.hashCode;
 }
 
 enum ConversationChatOrderType {
@@ -13,7 +42,8 @@ enum ConversationChatOrderType {
   updatedAt,
 }
 
-class ConversationRepositoryChatOrderingTermData extends RepositoryOrderingTerm {
+class ConversationRepositoryChatOrderingTermData
+    extends RepositoryOrderingTerm {
   final ConversationChatOrderType orderType;
   @override
   final OrderingMode orderingMode;

@@ -177,7 +177,8 @@ abstract class DatabaseDao<
 
   Future<DbItem?> findById(DbId id) => findByIdSelectable(id).getSingleOrNull();
 
-  Stream<DbItem?> watchFindById(DbId id) => findByIdSelectable(id).watchSingleOrNull();
+  Stream<DbItem?> watchFindById(DbId id) =>
+      findByIdSelectable(id).watchSingleOrNull();
 
   Selectable<DbItem> findByIdSelectable(DbId id) => customSelect(
         'SELECT * FROM $tableName '
@@ -365,4 +366,5 @@ abstract class DatabaseDao<
     required dynamic value,
   }) =>
       CustomExpression<bool>("$tableName.$fieldName = ${value.toString()}");
+
 }

@@ -5,14 +5,12 @@ import 'package:fedi/app/chat/conversation/database/conversation_chat_database_d
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
 import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
-
-var _logger = Logger("conversation_chat_repository_impl.dart");
 
 var _singleConversationChatRepositoryPagination =
     RepositoryPagination<IConversationChat>(
@@ -35,6 +33,16 @@ class ConversationChatRepository
         ConversationChatRepositoryFilters,
         ConversationRepositoryChatOrderingTermData>
     implements IConversationChatRepository {
+  @override
+  PopulatedDatabaseDaoMixin<
+      DbConversation,
+      DbConversationPopulated,
+      int,
+      $DbConversationsTable,
+      $DbConversationsTable,
+      ConversationChatRepositoryFilters,
+      ConversationRepositoryChatOrderingTermData> get populatedDao => dao;
+
   @override
   late ConversationDao dao;
 
@@ -143,149 +151,6 @@ class ConversationChatRepository
   //     await upsertRemoteConversation(newRemoteConversation);
   //   }
   // }
-  //
-  // @override
-  // Future<List<DbConversationChatPopulatedWrapper>> getConversations({
-  //   required ConversationChatRepositoryFilters? filters,
-  //   required RepositoryPagination<IConversationChat>? pagination,
-  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
-  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  // }) async {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: pagination,
-  //     orderingTermData: orderingTermData,
-  //     withLastMessage: false,
-  //   );
-  //
-  //   return (await query.get())
-  //       .toDbConversationChatPopulatedList(dao: dao)
-  //       .toDbConversationChatPopulatedWrapperList();
-  // }
-  //
-  // @override
-  // Stream<List<DbConversationChatPopulatedWrapper>> watchConversations({
-  //   required ConversationChatRepositoryFilters? filters,
-  //   required RepositoryPagination<IConversationChat>? pagination,
-  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
-  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  // }) {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: pagination,
-  //     orderingTermData: orderingTermData,
-  //     withLastMessage: false,
-  //   );
-  //
-  //   return query.watch().map(
-  //         (list) => list
-  //             .toDbConversationChatPopulatedList(
-  //               dao: dao,
-  //             )
-  //             .toDbConversationChatPopulatedWrapperList(),
-  //       );
-  // }
-  //
-  // @override
-  // Future<DbConversationChatPopulatedWrapper?> getConversation({
-  //   required ConversationChatRepositoryFilters? filters,
-  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
-  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  // }) async {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: _singleConversationChatRepositoryPagination,
-  //     orderingTermData: orderingTermData,
-  //     withLastMessage: false,
-  //   );
-  //
-  //   return (await query.getSingleOrNull())
-  //       ?.toDbConversationPopulated(
-  //         dao: dao,
-  //       )
-  //       .toDbConversationChatPopulatedWrapper();
-  // }
-  //
-  // @override
-  // Stream<DbConversationChatPopulatedWrapper?> watchConversation({
-  //   required ConversationChatRepositoryFilters? filters,
-  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
-  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  // }) {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: _singleConversationChatRepositoryPagination,
-  //     orderingTermData: orderingTermData,
-  //     withLastMessage: false,
-  //   );
-  //
-  //   return query.watchSingleOrNull().map(
-  //         (typedResult) => typedResult
-  //             ?.toDbConversationPopulated(dao: dao)
-  //             .toDbConversationChatPopulatedWrapper(),
-  //       );
-  // }
-
-  JoinedSelectStatement createQuery({
-    required ConversationChatRepositoryFilters? filters,
-    required RepositoryPagination<IConversationChat>? pagination,
-    required ConversationRepositoryChatOrderingTermData? orderingTermData,
-    required bool withLastMessage,
-  }) {
-    _logger.fine(() => "createQuery \n"
-        "\t filters=$filters\n"
-        "\t pagination=$pagination\n"
-        "\t orderingTermData=$orderingTermData");
-
-    SimpleSelectStatement<$DbConversationsTable, DbConversation> query =
-        dao.startSelectQuery();
-
-    if (pagination?.olderThanItem != null ||
-        pagination?.newerThanItem != null) {
-      assert(
-          orderingTermData!.orderType == ConversationChatOrderType.updatedAt);
-      dao.addRemoteIdBoundsWhere(
-        query,
-        maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
-        minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
-      );
-    }
-
-    if (orderingTermData != null) {
-      dao.orderBy(
-        query,
-        [
-          orderingTermData,
-        ],
-      );
-    }
-
-    var joinQuery = query.join([
-      // ...dao.populateChatJoin(),
-      if (withLastMessage) ...dao.conversationLastMessageJoin(),
-    ]);
-
-    if (withLastMessage) {
-      // todo: rework with moor-like code
-      var fieldName = dao.statusAlias.createdAt.$name;
-      var aliasName = dao.statusAlias.$tableName;
-      var having = CustomExpression<bool>("MAX($aliasName.$fieldName)");
-      joinQuery.groupBy(
-        [
-          dao.dbConversations.remoteId,
-        ],
-        having: having,
-      );
-    }
-    var limit = pagination?.limit;
-    if (limit != null) {
-      joinQuery.limit(
-        limit,
-        offset: pagination?.offset,
-      );
-    }
-    return joinQuery;
-  }
 
   @override
   Future markAsRead({
@@ -316,11 +181,15 @@ class ConversationChatRepository
     ConversationRepositoryChatOrderingTermData? orderingTermData =
         ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) async {
-    var query = createQuery(
-      filters: filters,
+    var query = createFindInTypedResultSelectable(
+      filters: filters?.copyWith(withLastMessage: true) ??
+          ConversationChatRepositoryFilters(withLastMessage: true),
       pagination: pagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: true,
+      orderingTerms: orderingTermData != null
+          ? [
+        orderingTermData,
+      ]
+          : null,
     );
     return (await query.get())
         .toDbConversationChatWithLastMessagePopulatedList(dao: dao)
@@ -335,11 +204,15 @@ class ConversationChatRepository
     ConversationRepositoryChatOrderingTermData? orderingTermData =
         ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) {
-    var query = createQuery(
-      filters: filters,
+    var query = createFindInTypedResultSelectable(
+      filters: filters?.copyWith(withLastMessage: true) ??
+          ConversationChatRepositoryFilters(withLastMessage: true),
       pagination: pagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: true,
+      orderingTerms: orderingTermData != null
+          ? [
+        orderingTermData,
+      ]
+          : null,
     );
 
     return query.watch().map(
@@ -352,15 +225,19 @@ class ConversationChatRepository
   @override
   Future<DbConversationChatWithLastMessagePopulatedWrapper?>
       getConversationWithLastMessage({
-    required ConversationChatRepositoryFilters filters,
+    required ConversationChatRepositoryFilters? filters,
     ConversationRepositoryChatOrderingTermData? orderingTermData =
         ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) async {
-    var query = createQuery(
-      filters: filters,
+    var query = createFindInTypedResultSelectable(
+      filters: filters?.copyWith(withLastMessage: true) ??
+          ConversationChatRepositoryFilters(withLastMessage: true),
       pagination: _singleConversationChatRepositoryPagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: true,
+      orderingTerms: orderingTermData != null
+          ? [
+        orderingTermData,
+      ]
+          : null,
     );
 
     return (await query.getSingleOrNull())
@@ -377,11 +254,15 @@ class ConversationChatRepository
     ConversationRepositoryChatOrderingTermData? orderingTermData =
         ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   }) {
-    var query = createQuery(
-      filters: filters,
+    var query = createFindInTypedResultSelectable(
+      filters: filters?.copyWith(withLastMessage: true) ??
+          ConversationChatRepositoryFilters(withLastMessage: true),
       pagination: _singleConversationChatRepositoryPagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: true,
+      orderingTerms: orderingTermData != null
+          ? [
+        orderingTermData,
+      ]
+          : null,
     );
 
     return query.watchSingleOrNull().map(
@@ -433,16 +314,4 @@ class ConversationChatRepository
   @override
   List<ConversationRepositoryChatOrderingTermData> get defaultOrderingTerms =>
       ConversationRepositoryChatOrderingTermData.defaultTerms;
-
-  @override
-  void addFiltersToQuery({
-    required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
-    required ConversationChatRepositoryFilters? filters,
-  }) {}
-
-  @override
-  void addOrderingToQuery({
-    required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
-    required List<ConversationRepositoryChatOrderingTermData>? orderingTerms,
-  }) {}
 }

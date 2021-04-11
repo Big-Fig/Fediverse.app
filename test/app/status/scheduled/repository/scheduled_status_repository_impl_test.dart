@@ -1,5 +1,4 @@
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/status/scheduled/database/scheduled_status_database_dao.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_impl.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
@@ -509,11 +508,8 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    var typedResultList = await query.get();
+    var actualList = await query.get();
 
-    var actualList = typedResultList
-        .toDbScheduledStatusPopulatedList(dao: scheduledStatusRepository.dao)
-        .toDbScheduledStatusPopulatedWrappers();
 
     expect(actualList.length, 3);
 
@@ -544,11 +540,8 @@ void main() {
       (await createTestDbScheduledStatus(seed: "seed3"))
           .copyWith(remoteId: "remoteId3"),
     );
-    var typedResultList = await query.get();
+    var actualList = await query.get();
 
-    var actualList = typedResultList
-        .toDbScheduledStatusPopulatedList(dao: scheduledStatusRepository.dao)
-        .toDbScheduledStatusPopulatedWrappers();
 
     expect(actualList.length, 3);
 
@@ -583,11 +576,8 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    var typedResultList = await query.get();
+    var actualList = await query.get();
 
-    var actualList = typedResultList
-        .toDbScheduledStatusPopulatedList(dao: scheduledStatusRepository.dao)
-        .toDbScheduledStatusPopulatedWrappers();
     expect(actualList.length, 1);
 
     expectDbScheduledStatus(actualList[0], scheduledStatus2);

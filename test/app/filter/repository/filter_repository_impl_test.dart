@@ -1,5 +1,4 @@
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/filter/database/filter_database_dao.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
@@ -548,15 +547,14 @@ void main() {
       (await createTestDbFilter(seed: "seed3")).copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbFilterPopulated> actualList =
-        (await query.get()).toDbFilterPopulatedList(dao: filterRepository.dao);
+    List<IFilter> actualList = await query.get();
 
     expect(actualList.length, 3);
 
     expectDbFilter(
       DbFilterPopulatedWrapper(
         dbFilterPopulated: DbFilterPopulated(
-          dbFilter: actualList[0].dbFilter,
+          dbFilter: actualList[0].toDbFilter(),
         ),
       ),
       filter1,
@@ -564,7 +562,7 @@ void main() {
     expectDbFilter(
       DbFilterPopulatedWrapper(
         dbFilterPopulated: DbFilterPopulated(
-          dbFilter: actualList[1].dbFilter,
+          dbFilter: actualList[1].toDbFilter(),
         ),
       ),
       filter2,
@@ -572,7 +570,7 @@ void main() {
     expectDbFilter(
       DbFilterPopulatedWrapper(
         dbFilterPopulated: DbFilterPopulated(
-          dbFilter: actualList[2].dbFilter,
+          dbFilter: actualList[2].toDbFilter(),
         ),
       ),
       filter3,
@@ -599,14 +597,14 @@ void main() {
       (await createTestDbFilter(seed: "seed3")).copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbFilterPopulated> actualList =
-        (await query.get()).toDbFilterPopulatedList(dao: filterRepository.dao);
+    List<IFilter> actualList =
+        await query.get();
     expect(actualList.length, 3);
 
     expectDbFilter(
       DbFilterPopulatedWrapper(
         dbFilterPopulated: DbFilterPopulated(
-          dbFilter: actualList[0].dbFilter,
+          dbFilter: actualList[0].toDbFilter(),
         ),
       ),
       filter3,
@@ -614,7 +612,7 @@ void main() {
     expectDbFilter(
       DbFilterPopulatedWrapper(
         dbFilterPopulated: DbFilterPopulated(
-          dbFilter: actualList[1].dbFilter,
+          dbFilter: actualList[1].toDbFilter(),
         ),
       ),
       filter2,
@@ -622,7 +620,7 @@ void main() {
     expectDbFilter(
       DbFilterPopulatedWrapper(
         dbFilterPopulated: DbFilterPopulated(
-          dbFilter: actualList[2].dbFilter,
+          dbFilter: actualList[2].toDbFilter(),
         ),
       ),
       filter1,
@@ -652,14 +650,13 @@ void main() {
       (await createTestDbFilter(seed: "seed3")).copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbFilterPopulated> actualList =
-        (await query.get()).toDbFilterPopulatedList(dao: filterRepository.dao);
+    List<IFilter> actualList = await query.get();
     expect(actualList.length, 1);
 
     expectDbFilter(
       DbFilterPopulatedWrapper(
         dbFilterPopulated: DbFilterPopulated(
-          dbFilter: actualList[0].dbFilter,
+          dbFilter: actualList[0].toDbFilter(),
         ),
       ),
       filter2,

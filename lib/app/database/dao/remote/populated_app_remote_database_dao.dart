@@ -1,6 +1,7 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
 import 'package:fedi/app/database/dao/remote/app_remote_database_dao.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 abstract class PopulatedAppRemoteDatabaseDao<
@@ -10,11 +11,13 @@ abstract class PopulatedAppRemoteDatabaseDao<
         RemoteId,
         TableDsl extends Table,
         TableInfoDsl extends TableInfo<TableDsl, DbItem>,
-        Filters>
-    extends AppRemoteDatabaseDao<DbItem, DbId, RemoteId, TableDsl, TableInfoDsl>
+        Filters,
+        OrderingTerm extends RepositoryOrderingTerm>
+    extends AppRemoteDatabaseDao<DbItem, DbId, RemoteId, TableDsl, TableInfoDsl,
+        Filters, OrderingTerm>
     with
         PopulatedDatabaseDaoMixin<DbItem, DbPopulatedItem, DbId, TableDsl,
-            TableInfoDsl, Filters> {
+            TableInfoDsl, Filters, OrderingTerm> {
   PopulatedAppRemoteDatabaseDao(AppDatabase db) : super(db);
 
   Future<DbPopulatedItem?> findByRemoteIdPopulated(RemoteId remoteId) =>

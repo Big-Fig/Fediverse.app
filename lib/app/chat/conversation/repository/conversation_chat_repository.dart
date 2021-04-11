@@ -95,7 +95,7 @@ abstract class IConversationChatRepository
   });
 
   Future<IConversationChatWithLastMessage?> getConversationWithLastMessage({
-    required ConversationChatRepositoryFilters filters,
+    required ConversationChatRepositoryFilters? filters,
     ConversationRepositoryChatOrderingTermData? orderingTermData =
         ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   });

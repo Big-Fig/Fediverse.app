@@ -5,7 +5,34 @@ class PleromaChatRepositoryFilters {
   static const PleromaChatRepositoryFilters empty =
       PleromaChatRepositoryFilters();
 
-  const PleromaChatRepositoryFilters();
+  final bool withLastMessage;
+
+  const PleromaChatRepositoryFilters({
+    this.withLastMessage = false,
+  });
+
+  PleromaChatRepositoryFilters copyWith({
+    bool? withLastMessage,
+  }) {
+    return PleromaChatRepositoryFilters(
+      withLastMessage: withLastMessage ?? this.withLastMessage,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaChatRepositoryFilters &&
+          runtimeType == other.runtimeType &&
+          withLastMessage == other.withLastMessage;
+
+  @override
+  int get hashCode => withLastMessage.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaChatRepositoryFilters{withLastMessage: $withLastMessage}';
+  }
 }
 
 enum PleromaChatOrderType {

@@ -8,13 +8,11 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model_adapter.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
 import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/repository/repository_model.dart';
-import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
-
-var _logger = Logger("pleroma_chat_repository_impl.dart");
 
 var _singlePleromaChatRepositoryPagination = RepositoryPagination<IPleromaChat>(
   limit: 1,
@@ -38,6 +36,16 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   late ChatDao dao;
   late ChatAccountsDao chatAccountsDao;
 
+  @override
+  PopulatedDatabaseDaoMixin<
+      DbChat,
+      DbPleromaChatPopulated,
+      int,
+      $DbChatsTable,
+      $DbChatsTable,
+      PleromaChatRepositoryFilters,
+      PleromaChatRepositoryOrderingTermData> get populatedDao => dao;
+
   final IAccountRepository accountRepository;
   final IPleromaChatMessageRepository chatMessageRepository;
 
@@ -49,6 +57,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     dao = appDatabase.chatDao;
     chatAccountsDao = appDatabase.chatAccountsDao;
   }
+
   //
   // @override
   // Future upsertRemoteChat(pleroma_lib.IPleromaChat remoteChat) async {
@@ -133,146 +142,6 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   //     await upsertRemoteChat(newRemoteChat);
   //   }
   // }
-  //
-  // @override
-  // Future<List<DbPleromaChatPopulatedWrapper>> getChats({
-  //   required PleromaChatRepositoryFilters? filters,
-  //   required RepositoryPagination<IPleromaChat>? pagination,
-  //   PleromaChatRepositoryOrderingTermData? orderingTermData =
-  //       PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-  // }) async {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: pagination,
-  //     orderingTermData: orderingTermData,
-  //     withLastMessage: false,
-  //   );
-  //   return (await query.get())
-  //       .toDbPleromaChatPopulatedList(dao: dao)
-  //       .toDbPleromaChatPopulatedWrapperList();
-  // }
-  //
-  // @override
-  // Stream<List<DbPleromaChatPopulatedWrapper>> watchChats({
-  //   required PleromaChatRepositoryFilters? filters,
-  //   required RepositoryPagination<IPleromaChat>? pagination,
-  //   PleromaChatRepositoryOrderingTermData? orderingTermData =
-  //       PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-  // }) {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: pagination,
-  //     orderingTermData: orderingTermData,
-  //     withLastMessage: false,
-  //   );
-  //
-  //   return query.watch().map(
-  //         (list) => list
-  //             .toDbPleromaChatPopulatedList(dao: dao)
-  //             .toDbPleromaChatPopulatedWrapperList(),
-  //       );
-  // }
-  //
-  // @override
-  // Future<DbPleromaChatPopulatedWrapper?> getChat({
-  //   required PleromaChatRepositoryFilters? filters,
-  //   PleromaChatRepositoryOrderingTermData? orderingTermData =
-  //       PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-  // }) async {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: _singlePleromaChatRepositoryPagination,
-  //     orderingTermData: orderingTermData,
-  //     withLastMessage: false,
-  //   );
-  //
-  //   return (await query.getSingleOrNull())
-  //       ?.toDbPleromaChatPopulated(
-  //         dao: dao,
-  //       )
-  //       .toDbPleromaChatPopulatedWrapper();
-  // }
-  //
-  // @override
-  // Stream<DbPleromaChatPopulatedWrapper?> watchChat({
-  //   required PleromaChatRepositoryFilters? filters,
-  //   PleromaChatRepositoryOrderingTermData? orderingTermData =
-  //       PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-  // }) {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: _singlePleromaChatRepositoryPagination,
-  //     orderingTermData: orderingTermData,
-  //     withLastMessage: false,
-  //   );
-  //
-  //   return query.watchSingleOrNull().map(
-  //         (typedResult) => typedResult
-  //             ?.toDbPleromaChatPopulated(dao: dao)
-  //             .toDbPleromaChatPopulatedWrapper(),
-  //       );
-  // }
-
-  JoinedSelectStatement createQuery({
-    required PleromaChatRepositoryFilters? filters,
-    required RepositoryPagination<IPleromaChat>? pagination,
-    required PleromaChatRepositoryOrderingTermData? orderingTermData,
-    required bool withLastMessage,
-  }) {
-    _logger.fine(() => "createQuery \n"
-        "\t filters=$filters\n"
-        "\t pagination=$pagination\n"
-        "\t withLastMessage=$withLastMessage\n"
-        "\t orderingTermData=$orderingTermData");
-
-    var query = dao.startSelectQuery();
-
-    if (pagination?.olderThanItem != null ||
-        pagination?.newerThanItem != null) {
-      assert(orderingTermData?.orderType == PleromaChatOrderType.updatedAt);
-      dao.addUpdatedAtBoundsWhere(
-        query,
-        maximumDateTimeExcluding: pagination?.olderThanItem?.updatedAt,
-        minimumDateTimeExcluding: pagination?.newerThanItem?.updatedAt,
-      );
-    }
-
-    if (orderingTermData != null) {
-      dao.orderBy(
-        query,
-        [
-          orderingTermData,
-        ],
-      );
-    }
-
-    var joinQuery = query.join([
-      ...dao.populateChatJoin(),
-      if (withLastMessage) ...dao.chatLastMessageJoin(),
-    ]);
-
-    if (withLastMessage) {
-      // todo: rework with moor-like code
-      var fieldName = dao.chatMessageAlias.createdAt.$name;
-      var aliasName = dao.chatMessageAlias.$tableName;
-      var having = CustomExpression<bool>("MAX($aliasName.$fieldName)");
-      joinQuery.groupBy(
-        [
-          dao.dbChats.remoteId,
-        ],
-        having: having,
-      );
-    }
-
-    var limit = pagination?.limit;
-    if (limit != null) {
-      joinQuery.limit(
-        limit,
-        offset: pagination?.offset,
-      );
-    }
-    return joinQuery;
-  }
 
   @override
   Future<IPleromaChat?> findByAccount({
@@ -341,13 +210,18 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     PleromaChatRepositoryOrderingTermData? orderingTermData =
         PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) async {
-    var query = createQuery(
-      filters: filters,
+    var query = createFindInTypedResultSelectable(
+      filters: filters?.copyWith(withLastMessage: true) ??
+          PleromaChatRepositoryFilters(withLastMessage: true),
       pagination: pagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: true,
+      orderingTerms: orderingTermData != null
+          ? [
+              orderingTermData,
+            ]
+          : null,
     );
-    return (await query.get())
+    return (await query
+        .get())
         .toDbPleromaChatWithLastMessagePopulatedList(dao: dao)
         .toDbPleromaChatWithLastMessagePopulatedWrapperList();
   }
@@ -360,11 +234,15 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     PleromaChatRepositoryOrderingTermData? orderingTermData =
         PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) {
-    var query = createQuery(
-      filters: filters,
+    var query = createFindInTypedResultSelectable(
+      filters: filters?.copyWith(withLastMessage: true) ??
+          PleromaChatRepositoryFilters(withLastMessage: true),
       pagination: pagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: true,
+      orderingTerms: orderingTermData != null
+          ? [
+              orderingTermData,
+            ]
+          : null,
     );
 
     return query.watch().map(
@@ -376,15 +254,19 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<DbPleromaChatWithLastMessagePopulatedWrapper?> getChatWithLastMessage({
-    required PleromaChatRepositoryFilters filters,
+    required PleromaChatRepositoryFilters? filters,
     PleromaChatRepositoryOrderingTermData? orderingTermData =
         PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) async {
-    var query = createQuery(
-      filters: filters,
+    var query = createFindInTypedResultSelectable(
+      filters: filters?.copyWith(withLastMessage: true) ??
+          PleromaChatRepositoryFilters(withLastMessage: true),
       pagination: _singlePleromaChatRepositoryPagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: true,
+      orderingTerms: orderingTermData != null
+          ? [
+              orderingTermData,
+            ]
+          : null,
     );
 
     return (await query.getSingleOrNull())
@@ -401,11 +283,15 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     PleromaChatRepositoryOrderingTermData? orderingTermData =
         PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   }) {
-    var query = createQuery(
-      filters: filters,
+    var query = createFindInTypedResultSelectable(
+      filters: filters?.copyWith(withLastMessage: true) ??
+          PleromaChatRepositoryFilters(withLastMessage: true),
       pagination: _singlePleromaChatRepositoryPagination,
-      orderingTermData: orderingTermData,
-      withLastMessage: true,
+      orderingTerms: orderingTermData != null
+          ? [
+              orderingTermData,
+            ]
+          : null,
     );
 
     return query.watchSingleOrNull().map(

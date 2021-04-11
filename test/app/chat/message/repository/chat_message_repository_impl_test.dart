@@ -1,5 +1,4 @@
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_database_dao.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
@@ -460,16 +459,13 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    var typedResultList = await query.get();
-    List<DbChatMessagePopulated> actualList =
-        typedResultList.toDbChatMessagePopulatedList(
-      dao: chatMessageRepository.dao,
-    );
+    var actualList = await query.get();
+
     expect(actualList.length, 3);
 
-    expect(actualList[0].dbChatMessage, chatMessage1);
-    expect(actualList[1].dbChatMessage, chatMessage2);
-    expect(actualList[2].dbChatMessage, chatMessage3);
+    expect(actualList[0].toDbChatMessage(), chatMessage1);
+    expect(actualList[1].toDbChatMessage(), chatMessage2);
+    expect(actualList[2].toDbChatMessage(), chatMessage3);
   });
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
@@ -496,16 +492,13 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    var typedResultList = await query.get();
-    List<DbChatMessagePopulated> actualList =
-        typedResultList.toDbChatMessagePopulatedList(
-      dao: chatMessageRepository.dao,
-    );
+    var actualList = await query.get();
+
     expect(actualList.length, 3);
 
-    expect(actualList[0].dbChatMessage, chatMessage3);
-    expect(actualList[1].dbChatMessage, chatMessage2);
-    expect(actualList[2].dbChatMessage, chatMessage1);
+    expect(actualList[0].toDbChatMessage(), chatMessage3);
+    expect(actualList[1].toDbChatMessage(), chatMessage2);
+    expect(actualList[2].toDbChatMessage(), chatMessage1);
   });
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
@@ -535,14 +528,11 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    var typedResultList = await query.get();
-    List<DbChatMessagePopulated> actualList =
-        typedResultList.toDbChatMessagePopulatedList(
-      dao: chatMessageRepository.dao,
-    );
+    var actualList = await query.get();
+
     expect(actualList.length, 1);
 
-    expect(actualList[0].dbChatMessage, chatMessage2);
+    expect(actualList[0].toDbChatMessage(), chatMessage2);
   });
 
   test('createQuery onlyInChat', () async {

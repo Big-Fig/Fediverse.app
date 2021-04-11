@@ -43,14 +43,16 @@ class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
     IDraftStatus? olderThan,
     IDraftStatus? newerThan,
   }) async {
-    var statuses = await draftStatusRepository.getDraftStatuses(
+    var statuses = await draftStatusRepository.findAllInAppType(
       filters: null,
       pagination: RepositoryPagination(
         olderThanItem: olderThan,
         newerThanItem: newerThan,
         limit: itemsCountPerPage,
       ),
-      orderingTermData: DraftStatusOrderingTermData.updatedAtDesc,
+      orderingTerms: [
+        DraftStatusOrderingTermData.updatedAtDesc,
+      ],
     );
 
     return statuses;

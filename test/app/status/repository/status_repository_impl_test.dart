@@ -3,7 +3,6 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/status/database/status_database_dao.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -304,7 +303,8 @@ void main() {
     ).toPleromaStatus();
     await statusRepository.updateAppTypeByRemoteType(
       appItem: oldLocalStatus,
-      remoteItem: newRemoteStatus, batchTransaction: null,
+      remoteItem: newRemoteStatus,
+      batchTransaction: null,
     );
 
     expect(
@@ -826,20 +826,19 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbStatusPopulated> actualList =
-        (await query.get()).toDbStatusPopulatedList(dao: statusRepository.dao);
+    var actualList = (await query.get());
     expect(actualList.length, 3);
 
     expect(
-      actualList[0].dbStatus,
+      actualList[0].toDbStatus(),
       status1,
     );
     expect(
-      actualList[1].dbStatus,
+      actualList[1].toDbStatus(),
       status2,
     );
     expect(
-      actualList[2].dbStatus,
+      actualList[2].toDbStatus(),
       status3,
     );
   });
@@ -879,20 +878,19 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbStatusPopulated> actualList =
-        (await query.get()).toDbStatusPopulatedList(dao: statusRepository.dao);
+    var actualList = (await query.get());
     expect(actualList.length, 3);
 
     expect(
-      actualList[0].dbStatus,
+      actualList[0].toDbStatus(),
       status3,
     );
     expect(
-      actualList[1].dbStatus,
+      actualList[1].toDbStatus(),
       status2,
     );
     expect(
-      actualList[2].dbStatus,
+      actualList[2].toDbStatus(),
       status1,
     );
   });
@@ -935,12 +933,12 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbStatusPopulated> actualList =
-        (await query.get()).toDbStatusPopulatedList(dao: statusRepository.dao);
+    var actualList =
+        (await query.get());
     expect(actualList.length, 1);
 
     expect(
-      actualList[0].dbStatus,
+      actualList[0].toDbStatus(),
       status2,
     );
   });
@@ -1088,7 +1086,8 @@ void main() {
         .copyWith(tags: null);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus1.remoteId,
-      tags: dbStatus1.tags, batchTransaction: null,
+      tags: dbStatus1.tags,
+      batchTransaction: null,
     );
     await insertDbStatus(statusRepository, dbStatus1);
 
@@ -1101,7 +1100,8 @@ void main() {
         .copyWith(tags: []);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus2.remoteId,
-      tags: dbStatus2.tags, batchTransaction: null,
+      tags: dbStatus2.tags,
+      batchTransaction: null,
     );
     await insertDbStatus(
       statusRepository,
@@ -1117,7 +1117,8 @@ void main() {
         .copyWith(tags: [createTestPleromaTag(name: "#dogs")]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus3.remoteId,
-      tags: dbStatus3.tags, batchTransaction: null,
+      tags: dbStatus3.tags,
+      batchTransaction: null,
     );
     await insertDbStatus(
       statusRepository,
@@ -1135,7 +1136,8 @@ void main() {
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus4.remoteId,
-      tags: dbStatus4.tags, batchTransaction: null,
+      tags: dbStatus4.tags,
+      batchTransaction: null,
     );
     await insertDbStatus(
       statusRepository,
@@ -1154,7 +1156,8 @@ void main() {
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus5.remoteId,
-      tags: dbStatus5.tags, batchTransaction: null,
+      tags: dbStatus5.tags,
+      batchTransaction: null,
     );
     await insertDbStatus(
       statusRepository,
@@ -1172,7 +1175,8 @@ void main() {
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus6.remoteId,
-      tags: dbStatus6.tags, batchTransaction: null,
+      tags: dbStatus6.tags,
+      batchTransaction: null,
     );
     await insertDbStatus(
       statusRepository,
@@ -1292,7 +1296,8 @@ void main() {
     await insertDbStatus(statusRepository, dbStatus2);
     await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
       statusRemoteIds: [dbStatus2.remoteId],
-      conversationRemoteId: "invalidConversationId", batchTransaction: null,
+      conversationRemoteId: "invalidConversationId",
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 0);
@@ -1305,7 +1310,8 @@ void main() {
     await insertDbStatus(statusRepository, dbStatus3);
     await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
       statusRemoteIds: [dbStatus3.remoteId],
-      conversationRemoteId: conversationRemoteId, batchTransaction: null,
+      conversationRemoteId: conversationRemoteId,
+      batchTransaction: null,
     );
 
     expect((await query.get()).length, 1);
@@ -1313,7 +1319,8 @@ void main() {
     // duplicate adding. Should be skipped
     await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
       statusRemoteIds: [dbStatus3.remoteId],
-      conversationRemoteId: conversationRemoteId, batchTransaction: null,
+      conversationRemoteId: conversationRemoteId,
+      batchTransaction: null,
     );
     expect((await query.get()).length, 1);
 
@@ -1489,7 +1496,8 @@ void main() {
 
     await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
       statusRemoteIds: ["statusRemoteId1"],
-      conversationRemoteId: "conversationRemoteId1", batchTransaction: null,
+      conversationRemoteId: "conversationRemoteId1",
+      batchTransaction: null,
     );
 
     expect(

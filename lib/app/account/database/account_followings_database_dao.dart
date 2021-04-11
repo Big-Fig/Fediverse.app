@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/database/account_followings_database_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/database/dao/app_database_dao.dart';
+import 'package:fedi/app/database/dao/database_dao.dart';
 import 'package:moor/moor.dart';
 
 part 'account_followings_database_dao.g.dart';
@@ -10,7 +10,7 @@ part 'account_followings_database_dao.g.dart';
     DbAccountFollowings,
   ],
 )
-class AccountFollowingsDao extends AppDatabaseDao<
+class AccountFollowingsDao extends DatabaseDao<
     DbAccountFollowing,
     int,
     $DbAccountFollowingsTable,

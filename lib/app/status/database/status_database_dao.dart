@@ -4,7 +4,9 @@ import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/database/status_database_model.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 part 'status_database_dao.g.dart';
@@ -36,7 +38,8 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     String,
     $DbStatusesTable,
     $DbStatusesTable,
-    StatusRepositoryFilters> with _$StatusDaoMixin {
+    StatusRepositoryFilters,
+    StatusRepositoryOrderingTermData> with _$StatusDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
   late $DbStatusesTable reblogAlias;
@@ -378,56 +381,6 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
           (status) => status.inReplyToRemoteId.isNull(),
         );
 
-  /// remote ids are strings but it is possible to compare them in
-  /// chronological order
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addRemoteIdBoundsWhere(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query, {
-    required String? minimumRemoteIdExcluding,
-    required String? maximumRemoteIdExcluding,
-  }) {
-    var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
-    var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
-    assert(minimumExist || maximumExist);
-
-    if (minimumExist) {
-      var biggerExp = CustomExpression<bool>(
-        "db_statuses.remote_id > '$minimumRemoteIdExcluding'",
-      );
-      query = query..where((status) => biggerExp);
-    }
-    if (maximumExist) {
-      var smallerExp = CustomExpression<bool>(
-        "db_statuses.remote_id < '$maximumRemoteIdExcluding'",
-      );
-      query = query..where((status) => smallerExp);
-    }
-
-    return query;
-  }
-
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addCreatedAtBoundsWhere(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query, {
-    required DateTime? minimumDateTimeExcluding,
-    required DateTime? maximumDateTimeExcluding,
-  }) {
-    var minimumExist = minimumDateTimeExcluding != null;
-    var maximumExist = maximumDateTimeExcluding != null;
-    assert(minimumExist || maximumExist);
-
-    if (minimumExist) {
-      query = query
-        ..where((status) =>
-            status.createdAt.isBiggerThanValue(minimumDateTimeExcluding));
-    }
-    if (maximumExist) {
-      query = query
-        ..where((status) =>
-            status.createdAt.isSmallerThanValue(maximumDateTimeExcluding));
-    }
-
-    return query;
-  }
-
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addExcludeVisibilitiesWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     List<PleromaVisibility> excludeVisibilities,
@@ -600,17 +553,234 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
       );
 
   @override
+  DbStatusPopulated mapTypedResultToDbPopulatedItem(TypedResult typedResult) =>
+      typedResult.toDbStatusPopulated(dao: this);
+
+  @override
+  void addFiltersToQuery({
+    required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    required StatusRepositoryFilters? filters,
+  }) {
+    assert(
+        !(filters?.onlyLocalCondition != null &&
+            filters?.onlyRemoteCondition != null),
+        "onlyLocalCondition && onlyRemoteCondition  can't be set both");
+
+    if (filters?.onlyFromInstance != null) {
+      assert(filters?.onlyRemoteCondition != null,
+          "onlyRemoteCondition should be notNull if onlyFromInstance was set");
+
+      addOnlyFromInstanceWhere(
+        query,
+        filters?.onlyFromInstance,
+      );
+    } else {
+      if (filters?.onlyRemoteCondition != null) {
+        addOnlyRemoteWhere(
+          query,
+          filters?.onlyRemoteCondition?.localUrlHost,
+        );
+      }
+    }
+
+    if (filters?.onlyLocalCondition != null) {
+      assert(filters?.onlyLocalCondition?.localUrlHost?.isNotEmpty == true);
+
+      addOnlyLocalWhere(
+        query,
+        filters?.onlyLocalCondition?.localUrlHost,
+      );
+    }
+
+    if (filters?.onlyWithMedia == true) {
+      addOnlyMediaWhere(query);
+    }
+
+    if (filters?.onlyFromAccount != null) {
+      addOnlyFromAccountWhere(
+        query,
+        filters?.onlyFromAccount?.remoteId,
+      );
+    }
+
+    if (filters?.withMuted != true) {
+      addOnlyNotMutedWhere(query);
+    }
+
+    if (filters?.onlyNoNsfwSensitive == true) {
+      addOnlyNoNsfwSensitiveWhere(query);
+    }
+
+    if (filters?.onlyBookmarked == true) {
+      addOnlyBookmarkedWhere(query);
+    }
+
+    if (filters?.onlyFavourited == true) {
+      addOnlyFavouritedWhere(query);
+    }
+
+    if (filters?.onlyNoReplies == true) {
+      addOnlyNoRepliesWhere(query);
+    }
+
+    var excludeVisibilities = filters?.excludeVisibilities;
+    if (excludeVisibilities?.isNotEmpty == true) {
+      addExcludeVisibilitiesWhere(query, filters!.excludeVisibilities!);
+    }
+
+    if (filters?.onlyNotDeleted == true) {
+      addOnlyNotDeletedWhere(query);
+    }
+    if (filters?.onlyNotHiddenLocallyOnDevice == true) {
+      addOnlyNotHiddenLocallyOnDeviceWhere(query);
+    }
+
+    if (filters?.onlyPendingStatePublishedOrNull == true) {
+      addOnlyPendingStatePublishedOrNull(query);
+    }
+
+    var replyVisibilityFilter =
+        filters?.replyVisibilityFilterCondition?.replyVisibilityFilter;
+    if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
+        null) {
+      if (replyVisibilityFilter == PleromaReplyVisibilityFilter.self) {
+        addOnlyInReplyToAccountRemoteIdOrNotReply(
+          query,
+          filters?.replyVisibilityFilterCondition?.myAccountRemoteId,
+        );
+      }
+    }
+  }
+
+  @override
+  void addNewerOlderDbItemPagination({
+    required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    required RepositoryPagination<DbStatus>? pagination,
+    required List<StatusRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTerms?.length == 1);
+      var orderingTermData = orderingTerms!.first;
+      var isRemoteIdOrdering =
+          orderingTermData.orderByType == StatusRepositoryOrderType.remoteId;
+      var isCreatedAtOrdering =
+          orderingTermData.orderByType == StatusRepositoryOrderType.createdAt;
+      assert(isRemoteIdOrdering || isCreatedAtOrdering);
+      if (isRemoteIdOrdering) {
+        addRemoteIdBoundsWhere(
+          query,
+          maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
+          minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
+        );
+      } else if (isCreatedAtOrdering) {
+        addDateTimeBoundsWhere(
+          query,
+          column: dbStatuses.createdAt,
+          maximumDateTimeExcluding: pagination?.olderThanItem?.createdAt,
+          minimumDateTimeExcluding: pagination?.newerThanItem?.createdAt,
+        );
+      }
+    }
+  }
+
+  @override
+  void addOrderingToQuery({
+    required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    required List<StatusRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    orderBy(query, orderingTerms ?? []);
+  }
+
+  @override
   JoinedSelectStatement<Table, DataClass>
       convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     required StatusRepositoryFilters? filters,
   }) {
-    // query.join(populateStatusJoin(includeAccountFollowing: includeAccountFollowing, includeReplyToAccountFollowing: includeReplyToAccountFollowing, includeStatusHashtags: includeStatusHashtags, includeStatusLists: includeStatusLists, includeConversations: includeConversations, includeHomeTimeline: includeHomeTimeline))
-  }
+    var needFilterByFollowing =
+        filters?.onlyFromAccountsFollowingByAccount != null;
+    var needFilterByList = filters?.onlyInListWithRemoteId?.isNotEmpty == true;
+    var needFilterByTag = filters?.onlyWithHashtag?.isNotEmpty == true;
+    var needFilterByConversation = filters?.onlyInConversation != null;
+    var needFilterByHomeTimeline = filters?.isFromHomeTimeline == true;
+    var includeReplyToAccountFollowing = false;
 
-  @override
-  DbStatusPopulated mapTypedResultToDbPopulatedItem(TypedResult typedResult) =>
-      typedResult.toDbStatusPopulated(dao: this);
+    var replyVisibilityFilter =
+        filters?.replyVisibilityFilterCondition?.replyVisibilityFilter;
+    if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
+        null) {
+      if (replyVisibilityFilter == PleromaReplyVisibilityFilter.following) {
+        includeReplyToAccountFollowing = true;
+      }
+    }
+
+    var joinQuery = query.join(
+      populateStatusJoin(
+        includeAccountFollowing: needFilterByFollowing,
+        includeStatusLists: needFilterByList,
+        includeStatusHashtags: needFilterByTag,
+        includeConversations:
+            needFilterByConversation || filters?.mustBeConversationItem == true,
+        includeHomeTimeline: needFilterByHomeTimeline,
+        includeReplyToAccountFollowing: includeReplyToAccountFollowing,
+      ),
+    );
+
+    var finalQuery = joinQuery;
+
+    if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
+        null) {
+      if (replyVisibilityFilter == PleromaReplyVisibilityFilter.following) {
+        finalQuery = addReplyToAccountSelfOrFollowingWhere(
+          joinQuery,
+          filters?.replyVisibilityFilterCondition?.myAccountRemoteId,
+        );
+      }
+    }
+
+    if (filters?.excludeTextConditions?.isNotEmpty == true) {
+      for (var textCondition in filters!.excludeTextConditions!) {
+        addExcludeTextWhere(
+          joinQuery,
+          phrase: textCondition.phrase,
+          wholeWord: textCondition.wholeWord,
+        );
+      }
+    }
+
+    if (needFilterByFollowing) {
+      finalQuery = addFollowingWhere(
+        joinQuery,
+        filters?.onlyFromAccountsFollowingByAccount?.remoteId,
+      );
+    }
+    if (needFilterByList) {
+      finalQuery = addListWhere(
+        finalQuery,
+        filters?.onlyInListWithRemoteId,
+      );
+    }
+    if (needFilterByConversation) {
+      finalQuery = addConversationWhere(
+        finalQuery,
+        filters?.onlyInConversation?.remoteId,
+      );
+    }
+
+    if (needFilterByTag) {
+      finalQuery = addHashtagWhere(
+        finalQuery,
+        filters?.onlyWithHashtag,
+      );
+    }
+
+    if (needFilterByHomeTimeline) {
+      // nothing it is filtered by inner join
+    }
+
+    return joinQuery;
+  }
 }
 
 extension TypedResultDbStatusPopulatedExtension on TypedResult {

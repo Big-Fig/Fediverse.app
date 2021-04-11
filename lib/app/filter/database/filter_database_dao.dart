@@ -4,6 +4,7 @@ import 'package:fedi/app/filter/database/filter_database_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 part 'filter_database_dao.g.dart';
@@ -20,55 +21,12 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
     String,
     $DbFiltersTable,
     $DbFiltersTable,
-    FilterRepositoryFilters> with _$FilterDaoMixin {
+    FilterRepositoryFilters,
+    FilterOrderingTermData> with _$FilterDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
   FilterDao(this.db) : super(db);
-
-  // Future<int> updateByRemoteId(
-  //   String remoteId,
-  //   Insertable<DbFilter> entity,
-  // ) async {
-  //   var localId = await findLocalIdByRemoteId(remoteId).getSingle();
-  //
-  //   if (localId != null && localId >= 0) {
-  //     await (update(db.dbFilters)..where((i) => i.id.equals(localId)))
-  //         .write(entity);
-  //   } else {
-  //     localId = await insert(
-  //       entity: entity,
-  //       mode: null,
-  //     );
-  //   }
-  //
-  //   return localId;
-  // }
-
-  SimpleSelectStatement<$DbFiltersTable, DbFilter> addRemoteIdBoundsWhere(
-    SimpleSelectStatement<$DbFiltersTable, DbFilter> query, {
-    required String? minimumRemoteIdExcluding,
-    required String? maximumRemoteIdExcluding,
-  }) {
-    var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
-    var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
-    assert(minimumExist || maximumExist);
-
-    if (minimumExist) {
-      var biggerExp = CustomExpression<bool>(
-        "db_filters.remote_id > '$minimumRemoteIdExcluding'",
-      );
-      query = query..where((filter) => biggerExp);
-    }
-    if (maximumExist) {
-      var smallerExp = CustomExpression<bool>(
-        "db_filters.remote_id < '$maximumRemoteIdExcluding'",
-      );
-      query = query..where((filter) => smallerExp);
-    }
-
-    return query;
-  }
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> addContextTypesWhere(
     SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
@@ -129,6 +87,69 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   $DbFiltersTable get table => dbFilters;
+
+  @override
+  void addFiltersToQuery({
+    required SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
+    required FilterRepositoryFilters? filters,
+  }) {
+    if (filters?.onlyWithContextTypes?.isNotEmpty == true) {
+      addContextTypesWhere(
+        query,
+        filters!.onlyWithContextTypes!,
+      );
+    }
+
+    if (filters?.notExpired == true) {
+      addNotExpiredWhere(query);
+    }
+  }
+
+  @override
+  void addNewerOlderDbItemPagination({
+    required SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
+    required RepositoryPagination<DbFilter>? pagination,
+    required List<FilterOrderingTermData>? orderingTerms,
+  }) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTerms?.length == 1);
+      var orderingTermData = orderingTerms!.first;
+      assert(
+        orderingTermData.orderType == FilterOrderType.remoteId,
+      );
+      addRemoteIdBoundsWhere(
+        query,
+        maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
+        minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
+      );
+    }
+  }
+
+  @override
+  void addOrderingToQuery({
+    required SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
+    required List<FilterOrderingTermData>? orderingTerms,
+  }) {
+    if (orderingTerms != null) {
+      orderBy(
+        query,
+        orderingTerms,
+      );
+    }
+  }
+
+  @override
+  JoinedSelectStatement<Table, DataClass>
+      convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
+    required FilterRepositoryFilters? filters,
+  }) =>
+          query.join(populateFilterJoin());
+
+  @override
+  DbFilterPopulated mapTypedResultToDbPopulatedItem(TypedResult typedResult) =>
+      typedResult.toDbFilterPopulated(dao: this);
 }
 
 extension DbFilterPopulatedTypedResultListExtension on List<TypedResult> {

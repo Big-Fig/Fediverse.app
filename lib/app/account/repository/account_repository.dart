@@ -49,7 +49,7 @@ abstract class IAccountRepository
   });
 
   Future upsertChatRemoteAccounts(
-    List<IPleromaAccount> remoteAccount, {
+    List<IPleromaAccount> remoteAccounts, {
     required String chatRemoteId,
     required Batch? batchTransaction,
   });

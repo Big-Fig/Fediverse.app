@@ -1,4 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
 import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
 import 'package:fedi/app/filter/database/filter_database_dao.dart';
 import 'package:fedi/app/filter/filter_model.dart';
@@ -6,11 +7,7 @@ import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
-import 'package:fedi/repository/repository_model.dart';
-import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
-
-var _logger = Logger("filter_repository_impl.dart");
 
 class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbFilter,
@@ -26,79 +23,20 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   final FilterDao dao;
 
+  @override
+  PopulatedDatabaseDaoMixin<
+      DbFilter,
+      DbFilterPopulated,
+      int,
+      $DbFiltersTable,
+      $DbFiltersTable,
+      FilterRepositoryFilters,
+      FilterOrderingTermData> get populatedDao => dao;
+
   FilterRepository({
     required AppDatabase appDatabase,
   }) : dao = appDatabase.filterDao;
 
-  JoinedSelectStatement createQuery({
-    required FilterRepositoryFilters? filters,
-    required RepositoryPagination<IFilter>? pagination,
-    required FilterOrderingTermData? orderingTermData,
-  }) {
-    _logger.fine(() => "createQuery \n"
-        "\t filters=$filters\n"
-        "\t pagination=$pagination\n"
-        "\t orderingTermData=$orderingTermData");
-
-    var query = dao.startSelectQuery();
-
-    if (pagination?.olderThanItem != null ||
-        pagination?.newerThanItem != null) {
-      dao.addRemoteIdBoundsWhere(
-        query,
-        maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
-        minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
-      );
-    }
-
-    if (filters?.onlyWithContextTypes?.isNotEmpty == true) {
-      dao.addContextTypesWhere(
-        query,
-        filters!.onlyWithContextTypes!,
-      );
-    }
-
-    if (filters?.notExpired == true) {
-      dao.addNotExpiredWhere(query);
-    }
-
-    if (orderingTermData != null) {
-      dao.orderBy(
-        query,
-        [orderingTermData],
-      );
-    }
-    var joinQuery = query.join(
-      dao.populateFilterJoin(),
-    );
-
-    var finalQuery = joinQuery;
-
-    var limit = pagination?.limit;
-    if (limit != null) {
-      finalQuery.limit(
-        limit,
-        offset: pagination?.offset,
-      );
-    }
-    return finalQuery;
-  }
-
-  //
-  // @override
-  // Future updateLocalFilterByRemoteFilter({
-  //   required IFilter oldLocalFilter,
-  //   required IPleromaFilter newRemoteFilter,
-  // }) async {
-  //   _logger.finer(() => "updateLocalFilterByRemoteFilter \n"
-  //       "\t old: $oldLocalFilter \n"
-  //       "\t newRemoteFilter: $newRemoteFilter");
-  //
-  //   await updateByDbIdInDbType(
-  //     dbId: oldLocalFilter.localId!,
-  //     dbItem: newRemoteFilter.toDbFilter(), batchTransaction: null,
-  //   );
-  // }
   @override
   DbFilter mapAppItemToDbItem(IFilter appItem) => appItem.toDbFilter();
 
@@ -129,6 +67,69 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   List<FilterOrderingTermData> get defaultOrderingTerms =>
       FilterOrderingTermData.defaultTerms;
+
+  @override
+  Future<void> insertInDbTypeBatch(
+    Insertable<DbFilter> dbItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) =>
+      dao.insertBatch(
+        entity: dbItem,
+        mode: mode,
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  Future<int> insertInRemoteType(
+    IPleromaFilter remoteItem, {
+    required InsertMode? mode,
+  }) =>
+      insertInDbType(
+        mapRemoteItemToDbItem(
+          remoteItem,
+        ),
+        mode: mode,
+      );
+
+  @override
+  Future<void> insertInRemoteTypeBatch(
+    IPleromaFilter remoteItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) {
+    return upsertInDbTypeBatch(
+      mapRemoteItemToDbItem(
+        remoteItem,
+      ),
+      batchTransaction: batchTransaction,
+    );
+  }
+
+  @override
+  Future<void> updateAppTypeByRemoteType({
+    required IFilter appItem,
+    required IPleromaFilter remoteItem,
+    required Batch? batchTransaction,
+  }) =>
+      updateByDbIdInDbType(
+        dbId: appItem.localId!,
+        dbItem: remoteItem.toDbFilter(),
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  Future<void> updateByDbIdInDbType({
+    required int dbId,
+    required DbFilter dbItem,
+    required Batch? batchTransaction,
+  }) =>
+      dao.upsertBatch(
+        entity: dbItem.copyWith(id: dbId),
+        batchTransaction: batchTransaction,
+      );
+
+
 
 }
 

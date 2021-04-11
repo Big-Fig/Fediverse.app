@@ -187,53 +187,53 @@ abstract class IDbWriteRepository<DbItem extends DataClass, DbId>
 
   Future<void> updateByDbIdInDbType({
     required DbId dbId,
-    required Insertable<DbItem> dbItem,
+    required DbItem dbItem,
     required Batch? batchTransaction,
   });
 }
 
 abstract class IAppWriteRepository<DbItem extends DataClass, AppItem, DbId>
     extends IDbWriteRepository<DbItem, DbId> {
-  Future insertAllInAppType(
-    List<AppItem> appItems, {
-    required InsertMode? mode,
-    required Batch? batchTransaction,
-  });
+  // Future insertAllInAppType(
+  //   List<AppItem> appItems, {
+  //   required InsertMode? mode,
+  //   required Batch? batchTransaction,
+  // });
 
-  Future upsertAllInAppType(
-    List<AppItem> appItems, {
-    required Batch? batchTransaction,
-  });
+  // Future upsertAllInAppType(
+  //   List<AppItem> appItems, {
+  //   required Batch? batchTransaction,
+  // });
+  //
+  // Future<int> insertInAppType(
+  //   AppItem appItem, {
+  //   required InsertMode? mode,
+  // });
 
-  Future<int> insertInAppType(
-    AppItem appItem, {
-    required InsertMode? mode,
-  });
-
-  Future<int> upsertInAppType(AppItem appItem);
-
-  Future<void> insertInAppTypeBatch(
-    AppItem appItem, {
-    required InsertMode? mode,
-    required Batch? batchTransaction,
-  });
-
-  Future<void> upsertInAppTypeBatch(
-    AppItem appItem, {
-    required Batch? batchTransaction,
-  });
-
-  Future updateByDbIdInAppType({
-    required DbId dbId,
-    required AppItem appItem,
-    required Batch? batchTransaction,
-  });
-
-  Future updateDbTypeByAppType({
-    required DbItem dbItem,
-    required AppItem appItem,
-    required Batch? batchTransaction,
-  });
+  // Future<int> upsertInAppType(AppItem appItem);
+  //
+  // Future<void> insertInAppTypeBatch(
+  //   AppItem appItem, {
+  //   required InsertMode? mode,
+  //   required Batch? batchTransaction,
+  // });
+  //
+  // Future<void> upsertInAppTypeBatch(
+  //   AppItem appItem, {
+  //   required Batch? batchTransaction,
+  // });
+  //
+  // Future updateByDbIdInAppType({
+  //   required DbId dbId,
+  //   required AppItem appItem,
+  //   required Batch? batchTransaction,
+  // });
+  //
+  // Future updateDbTypeByAppType({
+  //   required DbItem dbItem,
+  //   required AppItem appItem,
+  //   required Batch? batchTransaction,
+  // });
 
 }
 
@@ -259,6 +259,11 @@ abstract class IAppRemoteWriteRepository<
     required Batch? batchTransaction,
   });
 
+  Future<void> upsertInRemoteTypeBatch(
+    RemoteItem remoteItem, {
+    required Batch? batchTransaction,
+  });
+
   Future<int> insertInRemoteType(
     RemoteItem remoteItem, {
     required InsertMode? mode,
@@ -274,22 +279,17 @@ abstract class IAppRemoteWriteRepository<
     required Batch? batchTransaction,
   });
 
-  Future<void> upsertInRemoteTypeBatch(
-    RemoteItem remoteItem, {
-    required Batch? batchTransaction,
-  });
+  // Future<void> updateByIdInRemoteType({
+  //   required DbId dbId,
+  //   required RemoteItem remoteItem,
+  //   required Batch? batchTransaction,
+  // });
 
-  Future<void> updateByIdInRemoteType({
-    required DbId dbId,
-    required RemoteItem remoteItem,
-    required Batch? batchTransaction,
-  });
-
-  Future<void> updateDbTypeByRemoteType({
-    required DbItem dbItem,
-    required RemoteItem remoteItem,
-    required Batch? batchTransaction,
-  });
+  // Future<void> updateDbTypeByRemoteType({
+  //   required DbItem dbItem,
+  //   required RemoteItem remoteItem,
+  //   required Batch? batchTransaction,
+  // });
 
   Future<void> updateAppTypeByRemoteType({
     required AppItem appItem,

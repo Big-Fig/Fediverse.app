@@ -29,27 +29,6 @@ abstract class IStatusRepository
     required Batch? batchTransaction,
   });
 
-  //
-  // Future upsertRemoteStatuses(
-  //   List<IPleromaStatus> remoteStatuses, {
-  //   required String? listRemoteId,
-  //   required String? conversationRemoteId,
-  //   bool isFromHomeTimeline = false,
-  // });
-  //
-  // Future updateLocalStatusByRemoteStatus({
-  //   required IStatus oldLocalStatus,
-  //   required IPleromaStatus newRemoteStatus,
-  //   bool isFromHomeTimeline = false,
-  // });
-  //
-  // Future upsertRemoteStatus(
-  //   IPleromaStatus remoteStatus, {
-  //   required String? listRemoteId,
-  //   required String? conversationRemoteId,
-  //   bool isFromHomeTimeline = false,
-  // });
-
   Future upsertRemoteStatusForList(
     IPleromaStatus remoteStatus, {
     required String listRemoteId,
