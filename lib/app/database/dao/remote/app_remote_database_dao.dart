@@ -48,7 +48,6 @@ abstract class AppRemoteDatabaseDao<
       customSelect(
         'SELECT $idFieldName FROM $tableName '
         'WHERE ${createFindByRemoteIdWhereExpressionContent(remoteId)}',
-        variables: [Variable(remoteId)],
         readsFrom: {table},
       ).map(
         (QueryRow row) => row.read<DbId>(
@@ -67,7 +66,6 @@ abstract class AppRemoteDatabaseDao<
         'SELECT * FROM $tableName '
         'WHERE ${createFindByRemoteIdWhereExpressionContent(remoteId)} '
         'LIMIT 1',
-        variables: [Variable(remoteId)],
         readsFrom: {table},
       ).map(table.mapFromRow);
 
