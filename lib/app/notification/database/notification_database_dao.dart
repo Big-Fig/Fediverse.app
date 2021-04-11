@@ -4,6 +4,7 @@ import 'package:fedi/app/notification/database/notification_database_model.dart'
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 part 'notification_database_dao.g.dart';
@@ -26,7 +27,8 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     String,
     $DbNotificationsTable,
     $DbNotificationsTable,
-    NotificationRepositoryFilters> with _$NotificationDaoMixin {
+    NotificationRepositoryFilters,
+    NotificationRepositoryOrderingTermData> with _$NotificationDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
   late $DbStatusesTable statusAlias;
@@ -307,6 +309,90 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
         fieldName: table.createdAt.$name,
         batchTransaction: batchTransaction,
       );
+
+  @override
+  void addFiltersToQuery({
+    required SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+    required NotificationRepositoryFilters? filters,
+  }) {
+    if (filters?.excludeTypes?.isNotEmpty == true) {
+      addExcludeTypeWhere(query, filters?.excludeTypes);
+    }
+
+    var onlyWithType = filters?.onlyWithType;
+    if (onlyWithType != null) {
+      addOnlyWithTypeWhere(query, onlyWithType);
+    }
+
+    if (filters?.onlyNotDismissed == true) {
+      addOnlyNotDismissedWhere(query);
+    }
+    if (filters?.onlyUnread == true) {
+      addOnlyUnread(query);
+    }
+  }
+
+  @override
+  void addNewerOlderDbItemPagination({
+    required SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+    required RepositoryPagination<DbNotification>? pagination,
+    required List<NotificationRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTerms?.length == 1);
+      var orderingTermData = orderingTerms!.first;
+      assert(orderingTermData.orderType == NotificationOrderType.createdAt);
+      addDateTimeBoundsWhere(
+        query,
+        column: dbNotifications.createdAt,
+        maximumDateTimeExcluding: pagination?.olderThanItem?.createdAt,
+        minimumDateTimeExcluding: pagination?.newerThanItem?.createdAt,
+      );
+    }
+  }
+
+  @override
+  void addOrderingToQuery({
+    required SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+    required List<NotificationRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    orderBy(query, orderingTerms ?? []);
+  }
+
+  @override
+  JoinedSelectStatement<Table, DataClass>
+      convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+    required NotificationRepositoryFilters? filters,
+  }) {
+    var joinQuery = query.join(populateNotificationJoin());
+
+    // move to filters
+    var excludeStatusTextConditions = filters?.excludeStatusTextConditions;
+    if (excludeStatusTextConditions != null) {
+      for (var condition in excludeStatusTextConditions) {
+        addExcludeContentWhere(
+          joinQuery,
+          phrase: condition.phrase,
+          wholeWord: condition.wholeWord,
+        );
+        addExcludeSpoilerTextWhere(
+          joinQuery,
+          phrase: condition.phrase,
+          wholeWord: condition.wholeWord,
+        );
+      }
+    }
+
+    return joinQuery;
+  }
+
+  @override
+  DbNotificationPopulated mapTypedResultToDbPopulatedItem(
+    TypedResult typedResult,
+  ) =>
+      typedResult.toDbNotificationPopulated(dao: this);
 }
 
 extension DbNotificationPopulatedTypedResultListExtension on List<TypedResult> {

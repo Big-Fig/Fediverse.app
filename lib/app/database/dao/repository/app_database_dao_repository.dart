@@ -17,7 +17,8 @@ abstract class AppDatabaseDaoRepository<
     implements
         IAppReadWriteRepository<DbItem, AppItem, DbId, Filters, OrderingTerm> {
   @override
-  AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl> get dao;
+  AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl, Filters, OrderingTerm>
+      get dao;
 
   DbItem mapAppItemToDbItem(AppItem appItem);
 
@@ -38,7 +39,7 @@ abstract class AppDatabaseDaoRepository<
     required Filters? filters,
     required List<OrderingTerm>? orderingTerms,
   }) =>
-      createFindInAppTypeQuerySelectable(
+      createFindInAppTypeSelectable(
         pagination: pagination,
         filters: filters,
         orderingTerms: orderingTerms,
@@ -50,7 +51,7 @@ abstract class AppDatabaseDaoRepository<
     required Filters? filters,
     required List<OrderingTerm>? orderingTerms,
   }) =>
-      createFindInAppTypeQuerySelectable(
+      createFindInAppTypeSelectable(
         pagination: pagination,
         filters: filters,
         orderingTerms: orderingTerms,
@@ -62,7 +63,7 @@ abstract class AppDatabaseDaoRepository<
     required Filters? filters,
     required List<OrderingTerm>? orderingTerms,
   }) =>
-      createFindInAppTypeQuerySelectable(
+      createFindInAppTypeSelectable(
         pagination: pagination,
         filters: filters,
         orderingTerms: orderingTerms,
@@ -74,7 +75,7 @@ abstract class AppDatabaseDaoRepository<
     required Filters? filters,
     required List<OrderingTerm>? orderingTerms,
   }) =>
-      createFindInAppTypeQuerySelectable(
+      createFindInAppTypeSelectable(
         pagination: pagination,
         filters: filters,
         orderingTerms: orderingTerms,
@@ -102,43 +103,37 @@ abstract class AppDatabaseDaoRepository<
         orderingTerms: orderingTerms,
       );
 
-  Selectable<AppItem> createFindInAppTypeQuerySelectable({
-    RepositoryPagination<AppItem>? pagination,
-    Filters? filters,
-    List<OrderingTerm>? orderingTerms,
-  });
-
   @override
   Stream<List<DbItem>> watchAllInDbType() => dao.watchGetAll();
 
-  @override
-  Future upsertAllInAppType(
-    List<AppItem> appItems, {
-    required Batch? batchTransaction,
-  }) =>
-      insertAllInAppType(
-        appItems,
-        mode: InsertMode.insertOrReplace,
-        batchTransaction: batchTransaction,
-      );
+  // @override
+  // Future upsertAllInAppType(
+  //   List<AppItem> appItems, {
+  //   required Batch? batchTransaction,
+  // }) =>
+  //     insertAllInAppType(
+  //       appItems,
+  //       mode: InsertMode.insertOrReplace,
+  //       batchTransaction: batchTransaction,
+  //     );
 
-  @override
-  Future<int> upsertInAppType(AppItem appItem) => insertInAppType(
-        appItem,
-        mode: InsertMode.insertOrReplace,
-      );
-
-  @override
-  Future<void> upsertInAppTypeBatch(
-    AppItem appItem, {
-    required Batch? batchTransaction,
-  }) {
-    return insertInAppTypeBatch(
-      appItem,
-      mode: InsertMode.insertOrReplace,
-      batchTransaction: batchTransaction,
-    );
-  }
+  // @override
+  // Future<int> upsertInAppType(AppItem appItem) => insertInAppType(
+  //       appItem,
+  //       mode: InsertMode.insertOrReplace,
+  //     );
+  //
+  // @override
+  // Future<void> upsertInAppTypeBatch(
+  //   AppItem appItem, {
+  //   required Batch? batchTransaction,
+  // }) {
+  //   return insertInAppTypeBatch(
+  //     appItem,
+  //     mode: InsertMode.insertOrReplace,
+  //     batchTransaction: batchTransaction,
+  //   );
+  // }
 
   @override
   Future<void> upsertInDbTypeBatch(
@@ -149,6 +144,131 @@ abstract class AppDatabaseDaoRepository<
       dbItem,
       mode: InsertMode.insertOrReplace,
       batchTransaction: batchTransaction,
+    );
+  }
+
+  @override
+  Future<List<DbItem>> findAllInDbType({
+    required RepositoryPagination<DbItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  }) =>
+      createFindInDbTypeQuerySelectable(
+        pagination: pagination,
+        filters: filters,
+        orderingTerms: orderingTerms,
+      ).get();
+
+  @override
+  Future<DbItem?> findInDbType({
+    required RepositoryPagination<DbItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  }) =>
+      createFindInDbTypeQuerySelectable(
+        pagination: pagination,
+        filters: filters,
+        orderingTerms: orderingTerms,
+      ).getSingleOrNull();
+
+  @override
+  Stream<List<DbItem>> watchFindAllInDbType({
+    required RepositoryPagination<DbItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  }) =>
+      createFindInDbTypeQuerySelectable(
+        pagination: pagination,
+        filters: filters,
+        orderingTerms: orderingTerms,
+      ).watch();
+
+  @override
+  Stream<DbItem?> watchFindInDbType({
+    required RepositoryPagination<DbItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  }) =>
+      createFindInDbTypeQuerySelectable(
+        pagination: pagination,
+        filters: filters,
+        orderingTerms: orderingTerms,
+      ).watchSingleOrNull();
+
+  Selectable<DbItem> createFindInDbTypeQuerySelectable({
+    required RepositoryPagination<DbItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  }) {
+    var query = dao.startSelectQuery();
+
+    dao.addFiltersToQuery(query: query, filters: filters);
+    dao.addOrderingToQuery(query: query, orderingTerms: orderingTerms);
+
+    return query;
+  }
+
+  void addDbItemPagination({
+    required SimpleSelectStatement<TableDsl, DbItem> query,
+    required RepositoryPagination<DbItem>? pagination,
+    required List<OrderingTerm>? orderingTerms,
+  }) {
+    dao.addNewerOlderDbItemPagination(
+      query: query,
+      pagination: pagination,
+      orderingTerms: orderingTerms,
+    );
+
+    var limit = pagination?.limit;
+    if (limit != null) {
+      query.limit(limit, offset: pagination?.offset);
+    }
+  }
+
+  @override
+  Future<int> findCount({
+    required Filters? filters,
+  }) async {
+    // todo: rework with COUNT * only
+    var query = dao.startSelectQuery();
+    dao.addFiltersToQuery(query: query, filters: filters);
+
+    var items = await query.get();
+
+    return items.length;
+  }
+
+  @override
+  Stream<int> watchFindCount({
+    required Filters? filters,
+  }) {
+    // todo: rework with COUNT * only
+    var query = dao.startSelectQuery();
+    dao.addFiltersToQuery(query: query, filters: filters);
+
+    var stream = query.watch();
+
+    return stream.map((items) => items.length);
+  }
+
+  Selectable<AppItem> createFindInAppTypeSelectable({
+    RepositoryPagination<AppItem>? pagination,
+    Filters? filters,
+    List<OrderingTerm>? orderingTerms,
+  });
+
+  // todo: remove hack
+  Selectable<AppItem> createQuery({
+    RepositoryPagination<AppItem>? pagination,
+    Filters? filters,
+    OrderingTerm? orderingTermData,
+  }) {
+    return createFindInAppTypeSelectable(
+      pagination: pagination,
+      filters: filters,
+      orderingTerms: orderingTermData != null ? [
+        orderingTermData,
+      ] : null,
     );
   }
 }

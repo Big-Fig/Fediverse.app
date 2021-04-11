@@ -2,7 +2,6 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model_adapter.dart';
-import 'package:fedi/app/chat/conversation/database/conversation_chat_database_dao.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_impl.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
@@ -407,7 +406,6 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData: null,
-      withLastMessage: false,
     );
 
     expect((await query.get()).length, 0);
@@ -475,7 +473,6 @@ void main() {
         ),
         orderingTermData:
             ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-        withLastMessage: false,
       );
 
       await insertDbConversation(
@@ -522,7 +519,6 @@ void main() {
       ),
       orderingTermData:
           ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-      withLastMessage: false,
     );
 
     await insertDbConversation(
@@ -572,7 +568,6 @@ void main() {
       ),
       orderingTermData:
           ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-      withLastMessage: false,
     );
 
     await insertDbConversation(
@@ -628,7 +623,6 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData: ConversationRepositoryChatOrderingTermData.remoteIdAsc,
-      withLastMessage: false,
     );
 
     var conversation2 = await insertDbConversation(
@@ -647,10 +641,7 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    var dbConversations = (await query.get()).toDbConversationChatPopulatedList(
-      dao: conversationRepository.dao,
-    );
-    var actualList = dbConversations.toDbConversationChatPopulatedWrapperList();
+    var actualList = (await query.get());
     expect(actualList.length, 3);
 
     expectDbConversation(actualList[0], conversation1);
@@ -663,7 +654,7 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData: ConversationRepositoryChatOrderingTermData.remoteIdDesc,
-      withLastMessage: false,
+
     );
 
     var conversation2 = await insertDbConversation(
@@ -682,10 +673,7 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    var dbConversations = (await query.get()).toDbConversationChatPopulatedList(
-      dao: conversationRepository.dao,
-    );
-    var actualList = dbConversations.toDbConversationChatPopulatedWrapperList();
+    var actualList = (await query.get());
     expect(actualList.length, 3);
 
     expectDbConversation(actualList[0], conversation3);
@@ -701,7 +689,6 @@ void main() {
         offset: 1,
       ),
       orderingTermData: ConversationRepositoryChatOrderingTermData.remoteIdDesc,
-      withLastMessage: false,
     );
 
     var conversation2 = await insertDbConversation(
@@ -720,10 +707,7 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    var dbConversations = (await query.get()).toDbConversationChatPopulatedList(
-      dao: conversationRepository.dao,
-    );
-    var actualList = dbConversations.toDbConversationChatPopulatedWrapperList();
+    var actualList = (await query.get());
     expect(actualList.length, 1);
 
     expectDbConversation(actualList[0], conversation2);

@@ -1,6 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/database/pleroma_chat_database_dao.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
@@ -391,7 +390,6 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData: null,
-      withLastMessage: false,
     );
 
     expect((await query.get()).length, 0);
@@ -442,7 +440,6 @@ void main() {
         ),
       ),
       orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-      withLastMessage: false,
     );
 
     await insertDbChat(
@@ -501,7 +498,6 @@ void main() {
         ),
       ),
       orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-      withLastMessage: false,
     );
 
     await insertDbChat(
@@ -566,7 +562,6 @@ void main() {
         ),
       ),
       orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-      withLastMessage: false,
     );
 
     await insertDbChat(
@@ -640,7 +635,6 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData: PleromaChatRepositoryOrderingTermData.remoteIdAsc,
-      withLastMessage: false,
     );
 
     var chat2 = await insertDbChat(
@@ -668,15 +662,13 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbPleromaChatPopulated> actualList =
-        (await query.get()).toDbPleromaChatPopulatedList(
-      dao: chatRepository.dao,
-    );
+    var actualList =
+        (await query.get());
     expect(actualList.length, 3);
 
-    expect(actualList[0].dbChat, chat1);
-    expect(actualList[1].dbChat, chat2);
-    expect(actualList[2].dbChat, chat3);
+    expect(actualList[0].toDbChat(), chat1);
+    expect(actualList[1].toDbChat(), chat2);
+    expect(actualList[2].toDbChat(), chat3);
   });
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
@@ -684,7 +676,6 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData: PleromaChatRepositoryOrderingTermData.remoteIdDesc,
-      withLastMessage: false,
     );
 
     var chat2 = await insertDbChat(
@@ -712,15 +703,12 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbPleromaChatPopulated> actualList =
-        (await query.get()).toDbPleromaChatPopulatedList(
-      dao: chatRepository.dao,
-    );
+    List<IPleromaChat> actualList = (await query.get());
     expect(actualList.length, 3);
 
-    expect(actualList[0].dbChat, chat3);
-    expect(actualList[1].dbChat, chat2);
-    expect(actualList[2].dbChat, chat1);
+    expect(actualList[0].toDbChat(), chat3);
+    expect(actualList[1].toDbChat(), chat2);
+    expect(actualList[2].toDbChat(), chat1);
   });
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
@@ -731,7 +719,6 @@ void main() {
         offset: 1,
       ),
       orderingTermData: PleromaChatRepositoryOrderingTermData.remoteIdDesc,
-      withLastMessage: false,
     );
 
     var chat2 = await insertDbChat(
@@ -759,13 +746,10 @@ void main() {
           .copyWith(remoteId: "remoteId3"),
     );
 
-    List<DbPleromaChatPopulated> actualList =
-        (await query.get()).toDbPleromaChatPopulatedList(
-      dao: chatRepository.dao,
-    );
+    var actualList = (await query.get());
     expect(actualList.length, 1);
 
-    expect(actualList[0].dbChat, chat2);
+    expect(actualList[0].toDbChat(), chat2);
   });
 
   test('incrementUnreadCount', () async {
@@ -823,7 +807,8 @@ void main() {
           dbChat: chat2,
           dbAccount: dbAccount,
         ),
-      ), batchTransaction: null,
+      ),
+      batchTransaction: null,
     );
 
     expect(
@@ -871,7 +856,8 @@ void main() {
           dbChat: chat2,
           dbAccount: dbAccount,
         ),
-      ), batchTransaction: null,
+      ),
+      batchTransaction: null,
     );
     await Future.delayed(Duration(milliseconds: 1));
     expect(await chatRepository.getTotalUnreadCount(), 1);

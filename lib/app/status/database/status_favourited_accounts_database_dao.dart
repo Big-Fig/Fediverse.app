@@ -1,5 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/database/dao/app_database_dao.dart';
+import 'package:fedi/app/database/dao/database_dao.dart';
 import 'package:fedi/app/status/database'
     '/status_favourited_accounts_database_model.dart';
 import 'package:moor/moor.dart';
@@ -9,7 +9,7 @@ part 'status_favourited_accounts_database_dao.g.dart';
 @UseDao(tables: [
   DbStatusFavouritedAccounts,
 ])
-class StatusFavouritedAccountsDao extends AppDatabaseDao<
+class StatusFavouritedAccountsDao extends DatabaseDao<
     DbStatusFavouritedAccount,
     int,
     $DbStatusFavouritedAccountsTable,

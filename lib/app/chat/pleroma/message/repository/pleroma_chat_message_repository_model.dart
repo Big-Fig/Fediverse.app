@@ -7,6 +7,7 @@ class PleromaChatMessageRepositoryFilters {
   final bool onlyPendingStatePublishedOrNull;
   final bool onlyNotDeleted;
   final bool onlyNotHiddenLocallyOnDevice;
+  final bool groupByChatId;
 
   static const PleromaChatMessageRepositoryFilters empty =
       PleromaChatMessageRepositoryFilters(
@@ -20,6 +21,7 @@ class PleromaChatMessageRepositoryFilters {
     required this.onlyPendingStatePublishedOrNull,
     required this.onlyNotDeleted,
     required this.onlyNotHiddenLocallyOnDevice,
+    this.groupByChatId = false,
   });
 
   @override

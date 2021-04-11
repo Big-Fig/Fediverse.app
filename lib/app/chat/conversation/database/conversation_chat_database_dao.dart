@@ -4,6 +4,7 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 part 'conversation_chat_database_dao.g.dart';
@@ -32,7 +33,8 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
     String,
     $DbConversationsTable,
     $DbConversationsTable,
-    ConversationChatRepositoryFilters> with _$ConversationDaoMixin {
+    ConversationChatRepositoryFilters,
+    ConversationRepositoryChatOrderingTermData> with _$ConversationDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
   late $DbConversationAccountsTable conversationAccountsAlias;
@@ -89,34 +91,6 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
     }
 
     return localId;
-  }
-
-  /// remote ids are strings but it is possible to compare them in
-  /// chronological order
-  SimpleSelectStatement<$DbConversationsTable, DbConversation>
-      addRemoteIdBoundsWhere(
-    SimpleSelectStatement<$DbConversationsTable, DbConversation> query, {
-    required String? minimumRemoteIdExcluding,
-    required String? maximumRemoteIdExcluding,
-  }) {
-    var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
-    var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
-    assert(minimumExist || maximumExist);
-
-    if (minimumExist) {
-      var biggerExp = CustomExpression<bool>(
-        "db_conversations.remote_id > '$minimumRemoteIdExcluding'",
-      );
-      query = query..where((conversation) => biggerExp);
-    }
-    if (maximumExist) {
-      var smallerExp = CustomExpression<bool>(
-        "db_conversations.remote_id < '$maximumRemoteIdExcluding'",
-      );
-      query = query..where((conversation) => smallerExp);
-    }
-
-    return query;
   }
 
   SimpleSelectStatement<$DbConversationsTable, DbConversation> orderBy(
@@ -227,6 +201,74 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   $DbConversationsTable get table => dbConversations;
+
+  @override
+  void addFiltersToQuery({
+    required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
+    required ConversationChatRepositoryFilters? filters,
+  }) {
+    // nothing by now
+  }
+
+  @override
+  void addNewerOlderDbItemPagination({
+    required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
+    required RepositoryPagination<DbConversation>? pagination,
+    required List<ConversationRepositoryChatOrderingTermData>? orderingTerms,
+  }) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTerms?.length == 1);
+      var orderingTermData = orderingTerms!.first;
+      assert(orderingTermData.orderType == ConversationChatOrderType.updatedAt);
+      addRemoteIdBoundsWhere(
+        query,
+        maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
+        minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
+      );
+    }
+  }
+
+  @override
+  void addOrderingToQuery({
+    required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
+    required List<ConversationRepositoryChatOrderingTermData>? orderingTerms,
+  }) {
+    orderBy(query, orderingTerms ?? []);
+  }
+
+  @override
+  JoinedSelectStatement<Table, DataClass>
+      convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
+    required ConversationChatRepositoryFilters? filters,
+  }) {
+    var withLastMessage = filters?.withLastMessage == true;
+    var joinQuery = query.join([
+      // ...dao.populateChatJoin(),
+      if (withLastMessage) ...conversationLastMessageJoin(),
+    ]);
+
+    if (withLastMessage) {
+      // todo: rework with moor-like code
+      var fieldName = statusAlias.createdAt.$name;
+      var aliasName = statusAlias.$tableName;
+      var having = CustomExpression<bool>("MAX($aliasName.$fieldName)");
+      joinQuery.groupBy(
+        [
+          dbConversations.remoteId,
+        ],
+        having: having,
+      );
+    }
+
+    return joinQuery;
+  }
+
+  @override
+  DbConversationPopulated mapTypedResultToDbPopulatedItem(
+          TypedResult typedResult) =>
+      typedResult.toDbConversationPopulated(dao: this);
 }
 
 extension DbConversationChatPopulatedTypedResultListExtension

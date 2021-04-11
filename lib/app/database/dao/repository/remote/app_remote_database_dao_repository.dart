@@ -20,7 +20,57 @@ abstract class AppRemoteDatabaseDaoRepository<
         IAppRemoteReadWriteRepository<DbItem, AppItem, RemoteItem, DbId,
             RemoteId, Filters, OrderingTerm> {
   @override
-  AppRemoteDatabaseDao<DbItem, DbId, RemoteId, TableDsl, TableInfoDsl> get dao;
+  AppRemoteDatabaseDao<DbItem, DbId, RemoteId, TableDsl, TableInfoDsl, Filters,
+      OrderingTerm> get dao;
+
+  @override
+  Future insertAllInRemoteType(
+    List<RemoteItem> remoteItems, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      await batch((batch) {
+        remoteItems.forEach(
+          (remoteItem) {
+            insertInRemoteTypeBatch(
+              remoteItem,
+              mode: mode,
+              batchTransaction: batch,
+            );
+          },
+        );
+      });
+    } else {
+      return await insertAllInRemoteType(
+        remoteItems,
+        mode: mode,
+        batchTransaction: batchTransaction,
+      );
+    }
+  }
+
+  @override
+  Future upsertAllInRemoteType(
+    List<RemoteItem> remoteItems, {
+    required Batch? batchTransaction,
+  }) =>
+      insertAllInRemoteType(
+        remoteItems,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  Future<void> upsertInRemoteTypeBatch(
+    RemoteItem remoteItem, {
+    required Batch? batchTransaction,
+  }) =>
+      insertInRemoteTypeBatch(
+        remoteItem,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future<RemoteItem?> findByDbIdInRemoteType(DbId id) =>
@@ -157,7 +207,22 @@ abstract class AppRemoteDatabaseDaoRepository<
     required RepositoryPagination<RemoteItem>? pagination,
     required Filters? filters,
     required List<OrderingTerm>? orderingTerms,
-  });
+  }) {
+    return createFindInAppTypeSelectable(
+      pagination: pagination != null
+          ? RepositoryPagination(
+              newerThanItem:
+                  mapRemoteItemToAppItemNullable(pagination.newerThanItem),
+              olderThanItem:
+                  mapRemoteItemToAppItemNullable(pagination.olderThanItem),
+              limit: pagination.limit,
+              offset: pagination.offset,
+            )
+          : null,
+      filters: filters,
+      orderingTerms: orderingTerms,
+    ).map(mapAppItemToRemoteItem);
+  }
 
   void addRemoteItemPagination({
     required SimpleSelectStatement<TableDsl, DbItem> query,
@@ -186,25 +251,4 @@ abstract class AppRemoteDatabaseDaoRepository<
         remoteItem,
         mode: InsertMode.insertOrReplace,
       );
-
-  @override
-  Future<void> upsertInRemoteTypeBatch(
-    RemoteItem remoteItem, {
-    required Batch? batchTransaction,
-  }) =>
-      insertInRemoteTypeBatch(
-        remoteItem,
-        mode: InsertMode.insertOrReplace,
-        batchTransaction: batchTransaction,
-      );
-
-  @override
-  Future upsertAllInRemoteType(
-    List<RemoteItem> remoteItems, {
-    required Batch? batchTransaction,
-  }) => insertAllInRemoteType(
-      remoteItems,
-      mode: InsertMode.insertOrReplace,
-      batchTransaction: batchTransaction,
-    );
 }

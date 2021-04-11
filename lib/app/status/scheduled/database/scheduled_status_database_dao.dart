@@ -3,6 +3,7 @@ import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.d
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_model.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 part 'scheduled_status_database_dao.g.dart';
@@ -19,58 +20,12 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
     String,
     $DbScheduledStatusesTable,
     $DbScheduledStatusesTable,
-    ScheduledStatusRepositoryFilters> with _$ScheduledStatusDaoMixin {
+    ScheduledStatusRepositoryFilters,
+    ScheduledStatusRepositoryOrderingTermData> with _$ScheduledStatusDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
   ScheduledStatusDao(this.db) : super(db);
-
-  Future<int> updateByRemoteId(
-    String remoteId,
-    Insertable<DbScheduledStatus> entity,
-  ) async {
-    var localId = await findLocalIdByRemoteId(remoteId);
-
-    if (localId != null && localId >= 0) {
-      await (update(dbScheduledStatuses)..where((i) => i.id.equals(localId)))
-          .write(entity);
-    } else {
-      localId = await insert(
-        entity: entity,
-        mode: null,
-      );
-    }
-
-    return localId;
-  }
-
-  /// remote ids are strings but it is possible to compare them in
-  /// chronological order
-  SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
-      addRemoteIdBoundsWhere(
-    SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query, {
-    required String? minimumRemoteIdExcluding,
-    required String? maximumRemoteIdExcluding,
-  }) {
-    var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
-    var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
-    assert(minimumExist || maximumExist);
-
-    if (minimumExist) {
-      var biggerExp = CustomExpression<bool>(
-        "db_scheduled_statuses.remote_id > '$minimumRemoteIdExcluding'",
-      );
-      query = query..where((scheduledStatus) => biggerExp);
-    }
-    if (maximumExist) {
-      var smallerExp = CustomExpression<bool>(
-        "db_scheduled_statuses.remote_id < '$maximumRemoteIdExcluding'",
-      );
-      query = query..where((scheduledStatus) => smallerExp);
-    }
-
-    return query;
-  }
 
   SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
       addExcludeCanceledWhere(
@@ -110,6 +65,73 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   $DbScheduledStatusesTable get table => dbScheduledStatuses;
+
+  @override
+  void addFiltersToQuery({
+    required SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
+        query,
+    required ScheduledStatusRepositoryFilters? filters,
+  }) {
+    if (filters?.excludeCanceled == true) {
+      query = addExcludeCanceledWhere(query);
+    }
+
+    if (filters?.excludeScheduleAtExpired == true) {
+      query = addExcludeScheduleAtExpiredWhere(query);
+    }
+  }
+
+  @override
+  void addNewerOlderDbItemPagination({
+    required SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
+        query,
+    required RepositoryPagination<DbScheduledStatus>? pagination,
+    required List<ScheduledStatusRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTerms?.length == 1);
+      var orderingTermData = orderingTerms!.first;
+      assert(orderingTermData.orderType ==
+          ScheduledStatusRepositoryOrderType.remoteId);
+      query = addRemoteIdBoundsWhere(
+        query,
+        maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
+        minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
+      );
+    }
+  }
+
+  @override
+  void addOrderingToQuery({
+    required SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
+        query,
+    required List<ScheduledStatusRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    query = orderBy(
+      query,
+      orderingTerms ?? [],
+    );
+  }
+
+  List<Join<Table, DataClass>> populateJoin() {
+    return [];
+  }
+
+  @override
+  JoinedSelectStatement<Table, DataClass>
+      convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
+        query,
+    required ScheduledStatusRepositoryFilters? filters,
+  }) =>
+          query.join(populateJoin());
+
+  @override
+  DbScheduledStatusPopulated mapTypedResultToDbPopulatedItem(
+    TypedResult typedResult,
+  ) =>
+      typedResult.toDbScheduledStatusPopulated(dao: this);
 }
 
 extension DbScheduledStatusTypedResultExtension on TypedResult {

@@ -1,5 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/database/dao/app_database_dao.dart';
+import 'package:fedi/app/database/dao/database_dao.dart';
 import 'package:fedi/app/status/database/home_timeline_statuses_database_model.dart';
 import 'package:moor/moor.dart';
 
@@ -10,7 +10,7 @@ part 'home_timeline_statuses_database_dao.g.dart';
     DbHomeTimelineStatuses,
   ],
 )
-class HomeTimelineStatusesDao extends AppDatabaseDao<
+class HomeTimelineStatusesDao extends DatabaseDao<
     DbHomeTimelineStatus,
     int,
     $DbHomeTimelineStatusesTable,
@@ -23,22 +23,21 @@ class HomeTimelineStatusesDao extends AppDatabaseDao<
   @override
   $DbHomeTimelineStatusesTable get table => dbHomeTimelineStatuses;
 
-
   Future<int> deleteByAccountRemoteId(String accountRemoteId) => customUpdate(
-    'DELETE FROM $tableName '
+        'DELETE FROM $tableName '
         'WHERE ${_createAccountRemoteIdEqualExpression(accountRemoteId)}',
-    updates: {table},
-    updateKind: UpdateKind.delete,
-  );
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
 
   Future deleteByAccountRemoteIdBatch(
-      String accountRemoteId, {
-        required Batch? batchTransaction,
-      }) async {
+    String accountRemoteId, {
+    required Batch? batchTransaction,
+  }) async {
     if (batchTransaction != null) {
       batchTransaction.deleteWhere(
         table,
-            (tbl) => _createAccountRemoteIdEqualExpression(accountRemoteId),
+        (tbl) => _createAccountRemoteIdEqualExpression(accountRemoteId),
       );
     } else {
       return await deleteByAccountRemoteId(accountRemoteId);

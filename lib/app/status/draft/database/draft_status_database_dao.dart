@@ -3,6 +3,7 @@ import 'package:fedi/app/database/dao/local/populated_app_local_database_dao.dar
 import 'package:fedi/app/status/draft/database/draft_status_database_model.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 part 'draft_status_database_dao.g.dart';
@@ -18,7 +19,8 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
     int,
     $DbDraftStatusesTable,
     $DbDraftStatusesTable,
-    DraftStatusRepositoryFilters> with _$DraftStatusDaoMixin {
+    DraftStatusRepositoryFilters,
+    DraftStatusOrderingTermData> with _$DraftStatusDaoMixin {
   final AppDatabase db;
 
 // Called by the AppDatabase class
@@ -65,6 +67,7 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
     required DateTime? minimumUpdatedAtExcluding,
     required DateTime? maximumUpdatedAtExcluding,
   }) {
+    // todo: use parent common method
     var minimumExist = minimumUpdatedAtExcluding != null;
     var maximumExist = maximumUpdatedAtExcluding != null;
     assert(minimumExist || maximumExist);
@@ -87,4 +90,92 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
 
   @override
   $DbDraftStatusesTable get table => dbDraftStatuses;
+
+  @override
+  void addFiltersToQuery({
+    required SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
+    required DraftStatusRepositoryFilters? filters,
+  }) {
+    // nothing
+  }
+
+  @override
+  void addNewerOlderDbItemPagination({
+    required SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
+    required RepositoryPagination<DbDraftStatus>? pagination,
+    required List<DraftStatusOrderingTermData>? orderingTerms,
+  }) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTerms?.length == 1);
+      var orderingTermData = orderingTerms!.first;
+      assert(
+        orderingTermData.orderType == DraftStatusRepositoryOrderType.updatedAt,
+      );
+      query = addUpdatedAtBoundsWhere(
+        query,
+        maximumUpdatedAtExcluding: pagination?.olderThanItem?.updatedAt,
+        minimumUpdatedAtExcluding: pagination?.newerThanItem?.updatedAt,
+      );
+    }
+  }
+
+  @override
+  void addOrderingToQuery({
+    required SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
+    required List<DraftStatusOrderingTermData>? orderingTerms,
+  }) {
+    orderBy(
+      query,
+      orderingTerms ?? [],
+    );
+  }
+
+  @override
+  JoinedSelectStatement<Table, DataClass>
+      convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
+    required DraftStatusRepositoryFilters? filters,
+  }) {
+    // nothing
+    return query.join([]);
+  }
+
+  @override
+  DbDraftStatusPopulated mapTypedResultToDbPopulatedItem(
+    TypedResult typedResult,
+  ) =>
+      typedResult.toDbDraftStatusPopulated(dao: this);
+}
+
+extension DbDraftStatusTypedResultExtension on TypedResult {
+  DbDraftStatus toDbDraftStatus({
+    required DraftStatusDao dao,
+  }) =>
+      readTable(dao.db.dbDraftStatuses);
+
+  DbDraftStatusPopulated toDbDraftStatusPopulated({
+    required DraftStatusDao dao,
+  }) =>
+      DbDraftStatusPopulated(
+        dbDraftStatus: toDbDraftStatus(
+          dao: dao,
+        ),
+      );
+}
+
+extension DbDraftStatusTypedResultListExtension on List<TypedResult> {
+  List<DbDraftStatus> toDbDraftStatusList({
+    required DraftStatusDao dao,
+  }) =>
+      map(
+        (item) => item.toDbDraftStatus(dao: dao),
+      ).toList();
+
+  List<DbDraftStatusPopulated> toDbDraftStatusPopulatedList({
+    required DraftStatusDao dao,
+  }) =>
+      map(
+        (item) => item.toDbDraftStatusPopulated(dao: dao),
+      ).toList();
 }

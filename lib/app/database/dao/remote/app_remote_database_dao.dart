@@ -1,5 +1,6 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/app_database_dao.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 abstract class AppRemoteDatabaseDao<
@@ -7,8 +8,11 @@ abstract class AppRemoteDatabaseDao<
         DbId,
         RemoteId,
         TableDsl extends Table,
-        TableInfoDsl extends TableInfo<TableDsl, DbItem>>
-    extends AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl> {
+        TableInfoDsl extends TableInfo<TableDsl, DbItem>,
+        Filters,
+        OrderingTerm extends RepositoryOrderingTerm>
+    extends AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl, Filters,
+        OrderingTerm> {
   String get remoteIdFieldName => "remote_id";
 
   AppRemoteDatabaseDao(AppDatabase db) : super(db);
@@ -84,5 +88,56 @@ abstract class AppRemoteDatabaseDao<
     simpleSelectStatement.where(
       (_) => createFindByRemoteIdWhereExpression(remoteId),
     );
+  }
+
+
+
+  SimpleSelectStatement<TableDsl, DbItem> addDateTimeBoundsWhere(
+      SimpleSelectStatement<TableDsl, DbItem> query, {
+        required GeneratedDateTimeColumn column,
+        required DateTime? minimumDateTimeExcluding,
+        required DateTime? maximumDateTimeExcluding,
+      }) {
+    var minimumExist = minimumDateTimeExcluding != null;
+    var maximumExist = maximumDateTimeExcluding != null;
+    assert(minimumExist || maximumExist);
+
+    if (minimumExist) {
+      query = query
+        ..where((status) =>
+            column.isBiggerThanValue(minimumDateTimeExcluding));
+    }
+    if (maximumExist) {
+      query = query
+        ..where((status) =>
+            column.isSmallerThanValue(maximumDateTimeExcluding));
+    }
+
+    return query;
+  }
+
+  SimpleSelectStatement<TableDsl, DbItem> addRemoteIdBoundsWhere(
+      SimpleSelectStatement<TableDsl, DbItem> query, {
+        required String? minimumRemoteIdExcluding,
+        required String? maximumRemoteIdExcluding,
+      }) {
+    var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
+    var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
+    assert(minimumExist || maximumExist);
+
+    if (minimumExist) {
+      var biggerExp = CustomExpression<bool>(
+        "${tableName}.${remoteIdFieldName} > '$minimumRemoteIdExcluding'",
+      );
+      query = query..where((filter) => biggerExp);
+    }
+    if (maximumExist) {
+      var smallerExp = CustomExpression<bool>(
+        "${tableName}.${remoteIdFieldName} < '$maximumRemoteIdExcluding'",
+      );
+      query = query..where((filter) => smallerExp);
+    }
+
+    return query;
   }
 }

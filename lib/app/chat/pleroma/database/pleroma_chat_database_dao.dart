@@ -4,6 +4,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 part 'pleroma_chat_database_dao.g.dart';
@@ -25,7 +26,8 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     String,
     $DbChatsTable,
     $DbChatsTable,
-    PleromaChatRepositoryFilters> with _$ChatDaoMixin {
+    PleromaChatRepositoryFilters,
+    PleromaChatRepositoryOrderingTermData> with _$ChatDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
   late $DbChatMessagesTable chatMessageAlias;
@@ -171,6 +173,74 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   $DbChatsTable get table => dbChats;
+
+  @override
+  void addFiltersToQuery({
+    required SimpleSelectStatement<$DbChatsTable, DbChat> query,
+    required PleromaChatRepositoryFilters? filters,
+  }) {
+    // nothing
+  }
+
+  @override
+  void addNewerOlderDbItemPagination({
+    required SimpleSelectStatement<$DbChatsTable, DbChat> query,
+    required RepositoryPagination<DbChat>? pagination,
+    required List<PleromaChatRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTerms?.length == 1);
+      var orderingTermData = orderingTerms!.first;
+      assert(orderingTermData.orderType == PleromaChatOrderType.updatedAt);
+      addDateTimeBoundsWhere(
+        query,
+        column: dbChats.updatedAt,
+        maximumDateTimeExcluding: pagination?.olderThanItem?.updatedAt,
+        minimumDateTimeExcluding: pagination?.newerThanItem?.updatedAt,
+      );
+    }
+  }
+
+  @override
+  void addOrderingToQuery({
+    required SimpleSelectStatement<$DbChatsTable, DbChat> query,
+    required List<PleromaChatRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    orderBy(query, orderingTerms ?? []);
+  }
+
+  @override
+  JoinedSelectStatement<Table, DataClass>
+      convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbChatsTable, DbChat> query,
+    required PleromaChatRepositoryFilters? filters,
+  }) {
+    var join = query.join([
+      ...populateChatJoin(),
+      if (filters?.withLastMessage == true) ...chatLastMessageJoin(),
+    ]);
+    if (filters?.withLastMessage == true) {
+      // todo: rework with moor-like code
+      var fieldName = chatMessageAlias.createdAt.$name;
+      var aliasName = chatMessageAlias.$tableName;
+      var having = CustomExpression<bool>("MAX($aliasName.$fieldName)");
+      join.groupBy(
+        [
+          dbChats.remoteId,
+        ],
+        having: having,
+      );
+    }
+
+    return join;
+  }
+
+  @override
+  DbPleromaChatPopulated mapTypedResultToDbPopulatedItem(
+    TypedResult typedResult,
+  ) =>
+      typedResult.toDbPleromaChatPopulated(dao: this);
 }
 
 extension DbPleromaChatPopulatedTypedResultListExtension on List<TypedResult> {

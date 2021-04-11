@@ -4,6 +4,7 @@ import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_re
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
 import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 part 'pleroma_chat_message_database_dao.g.dart';
@@ -20,7 +21,8 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     String,
     $DbChatMessagesTable,
     $DbChatMessagesTable,
-    PleromaChatMessageRepositoryFilters> with _$ChatMessageDaoMixin {
+    PleromaChatMessageRepositoryFilters,
+    PleromaChatMessageRepositoryOrderingTermData> with _$ChatMessageDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable accountAlias;
 
@@ -124,24 +126,28 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     return localId;
   }
 
-  JoinedSelectStatement addChatWhere(
-    JoinedSelectStatement query,
+  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> addChatWhere(
+    SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
     String chatRemoteId,
   ) =>
       query
         ..where(
-          CustomExpression<bool>(
+          (_) => CustomExpression<bool>(
             "db_chat_messages.chat_remote_id = '$chatRemoteId'",
           ),
         );
 
-  JoinedSelectStatement addChatsWhere(
-    JoinedSelectStatement query,
+  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> addChatsWhere(
+    SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
     List<String> chatRemoteIds,
   ) =>
       query
-        ..where(CustomExpression<bool>("db_chat_messages.chat_remote_id IN ("
-            "${chatRemoteIds.join(", ")})"));
+        ..where(
+          (_) => CustomExpression<bool>(
+            "db_chat_messages.chat_remote_id IN ("
+            "${chatRemoteIds.join(", ")})",
+          ),
+        );
 
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
       addOnlyNotDeletedWhere(
@@ -168,34 +174,6 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
                     false,
                   ),
             );
-
-  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
-      addCreatedAtBoundsWhere(
-    SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query, {
-    required DateTime? minimumDateTimeExcluding,
-    required DateTime? maximumDateTimeExcluding,
-  }) {
-    var minimumExist = minimumDateTimeExcluding != null;
-    var maximumExist = maximumDateTimeExcluding != null;
-    assert(minimumExist || maximumExist);
-
-    if (minimumExist) {
-      query = query
-        ..where(
-          (chatMessage) =>
-              chatMessage.createdAt.isBiggerThanValue(minimumDateTimeExcluding),
-        );
-    }
-    if (maximumExist) {
-      query = query
-        ..where(
-          (chatMessage) => chatMessage.createdAt
-              .isSmallerThanValue(maximumDateTimeExcluding),
-        );
-    }
-
-    return query;
-  }
 
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> orderBy(
     SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
@@ -287,6 +265,95 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
         fieldName: table.createdAt.$name,
         batchTransaction: batchTransaction,
       );
+
+  @override
+  DbChatMessagePopulated mapTypedResultToDbPopulatedItem(
+          TypedResult typedResult) =>
+      typedResult.toDbChatMessagePopulated(dao: this);
+
+  @override
+  void addFiltersToQuery({
+    required SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
+    required PleromaChatMessageRepositoryFilters? filters,
+  }) {
+    if (filters?.onlyPendingStatePublishedOrNull == true) {
+      addOnlyPendingStatePublishedOrNull(query);
+    }
+
+    if (filters?.onlyNotDeleted == true) {
+      addOnlyNotDeletedWhere(query);
+    }
+
+    if (filters?.onlyNotHiddenLocallyOnDevice == true) {
+      addOnlyNotHiddenLocallyOnDevice(query);
+    }
+
+    var onlyInChats = filters?.onlyInChats;
+    if (onlyInChats != null) {
+      if (onlyInChats.length == 1) {
+        addChatWhere(
+          query,
+          onlyInChats.first.remoteId,
+        );
+      } else {
+        addChatsWhere(
+          query,
+          onlyInChats
+              .map(
+                (chat) => chat.remoteId,
+              )
+              .toList(),
+        );
+      }
+    }
+
+  }
+
+  @override
+  void addNewerOlderDbItemPagination({
+    required SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
+    required RepositoryPagination<DbChatMessage>? pagination,
+    required List<PleromaChatMessageRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTerms?.length == 1);
+      var orderingTermData = orderingTerms!.first;
+      assert(
+          orderingTermData.orderType == PleromaChatMessageOrderType.createdAt);
+      addDateTimeBoundsWhere(
+        query,
+        column: dbChatMessages.createdAt,
+        maximumDateTimeExcluding: pagination?.olderThanItem?.createdAt,
+        minimumDateTimeExcluding: pagination?.newerThanItem?.createdAt,
+      );
+    }
+  }
+
+  @override
+  void addOrderingToQuery({
+    required SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
+    required List<PleromaChatMessageRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    orderBy(
+      query,
+      orderingTerms ?? [],
+    );
+  }
+
+  @override
+  JoinedSelectStatement<Table, DataClass>
+      convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
+    required PleromaChatMessageRepositoryFilters? filters,
+  }) {
+    var joinedSelectStatement = query.join(populateChatMessageJoin());
+
+    if(filters?.groupByChatId == true) {
+      addGroupByChatId(joinedSelectStatement);
+    }
+    return joinedSelectStatement;
+  }
 }
 
 extension ListTypedResultDbChatMessagePopulatedExtension on List<TypedResult> {

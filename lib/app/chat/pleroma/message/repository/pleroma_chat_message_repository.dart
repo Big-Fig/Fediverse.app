@@ -26,9 +26,6 @@ abstract class IPleromaChatMessageRepository
   }) =>
       Provider.of<IPleromaChatMessageRepository>(context, listen: listen);
 
-  // Future upsertRemoteChatMessages(
-  //   List<pleroma_lib.IPleromaChatMessage> remoteChatMessages,
-  // );
 
   Future<IPleromaChatMessage?> findByOldPendingRemoteId(
     String oldPendingRemoteId,
@@ -38,41 +35,6 @@ abstract class IPleromaChatMessageRepository
     String oldPendingRemoteId,
   );
 
-  //
-  // Future updateLocalChatMessageByRemoteChatMessage({
-  //   required IPleromaChatMessage oldLocalChatMessage,
-  //   required pleroma_lib.IPleromaChatMessage newRemoteChatMessage,
-  // });
-  //
-  // Future upsertRemoteChatMessage(
-  //   pleroma_lib.IPleromaChatMessage remoteChatMessage,
-  // );
-  //
-  // Future<List<IPleromaChatMessage>> getChatMessages({
-  //   required PleromaChatMessageRepositoryFilters? filters,
-  //   required RepositoryPagination<IPleromaChatMessage>? pagination,
-  //   PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
-  //       PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
-  // });
-  //
-  // Stream<List<IPleromaChatMessage>> watchChatMessages({
-  //   required PleromaChatMessageRepositoryFilters? filters,
-  //   required RepositoryPagination<IPleromaChatMessage>? pagination,
-  //   PleromaChatMessageRepositoryOrderingTermData orderingTermData =
-  //       PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
-  // });
-  //
-  // Future<IPleromaChatMessage?> getChatMessage({
-  //   required PleromaChatMessageRepositoryFilters? filters,
-  //   PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
-  //       PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
-  // });
-  //
-  // Stream<IPleromaChatMessage?> watchChatMessage({
-  //   required PleromaChatMessageRepositoryFilters? filters,
-  //   PleromaChatMessageRepositoryOrderingTermData? orderingTermData =
-  //       PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
-  // });
 
   Stream<IPleromaChatMessage?> watchChatLastChatMessage({
     required IPleromaChat chat,

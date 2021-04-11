@@ -3,6 +3,7 @@ import 'package:fedi/app/account/database/account_database_model.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 part 'account_database_dao.g.dart';
@@ -24,7 +25,9 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     int,
     String,
     $DbAccountsTable,
-    $DbAccountsTable, AccountRepositoryFilters> with _$AccountDaoMixin {
+    $DbAccountsTable,
+    AccountRepositoryFilters,
+    AccountRepositoryOrderingTermData> with _$AccountDaoMixin {
   final AppDatabase db;
   late $DbAccountsTable? accountAlias;
   late $DbAccountFollowingsTable accountFollowingsAlias;
@@ -73,33 +76,6 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     }
 
     return localId;
-  }
-
-  /// remote ids are strings but it is possible to compare them in
-  /// chronological order
-  SimpleSelectStatement<$DbAccountsTable, DbAccount> addRemoteIdBoundsWhere(
-    SimpleSelectStatement<$DbAccountsTable, DbAccount> query, {
-    required String? minimumRemoteIdExcluding,
-    required String? maximumRemoteIdExcluding,
-  }) {
-    var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
-    var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
-    assert(minimumExist || maximumExist);
-
-    if (minimumExist) {
-      var biggerExp = CustomExpression<bool>(
-        "db_accounts.remote_id > '$minimumRemoteIdExcluding'",
-      );
-      query = query..where((account) => biggerExp);
-    }
-    if (maximumExist) {
-      var smallerExp = CustomExpression<bool>(
-        "db_accounts.remote_id < '$maximumRemoteIdExcluding'",
-      );
-      query = query..where((account) => smallerExp);
-    }
-
-    return query;
   }
 
   SimpleSelectStatement<$DbAccountsTable, DbAccount> orderBy(
@@ -255,7 +231,117 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
               " = '$followerAccountRemoteId'"),
         );
 
+  @override
+  void addFiltersToQuery({
+    required SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
+    required AccountRepositoryFilters? filters,
+  }) {
+    if (filters?.searchQuery != null) {
+      addSearchWhere(query, filters?.searchQuery);
+    }
+    // other added after populating
+    // todo: should be reworked
+  }
 
+  @override
+  void addNewerOlderDbItemPagination({
+    required SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
+    required RepositoryPagination<DbAccount>? pagination,
+    required List<AccountRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTerms?.length == 1);
+      var orderingTermData = orderingTerms!.first;
+      assert(orderingTermData.orderType == AccountOrderType.remoteId);
+      query = addRemoteIdBoundsWhere(
+        query,
+        maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
+        minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
+      );
+    }
+  }
+
+  @override
+  void addOrderingToQuery({
+    required SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
+    required List<AccountRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    orderBy(
+      query,
+      orderingTerms ?? [],
+    );
+  }
+
+  @override
+  JoinedSelectStatement<Table, DataClass>
+      convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
+    required AccountRepositoryFilters? filters,
+  }) {
+    var includeAccountFollowings = filters?.onlyInAccountFollowing != null;
+    var includeAccountFollowers = filters?.onlyInAccountFollowers != null;
+    var includeStatusFavouritedAccounts =
+        filters?.onlyInStatusFavouritedBy != null;
+    var includeStatusRebloggedAccounts =
+        filters?.onlyInStatusRebloggedBy != null;
+    var includeConversationAccounts = filters?.onlyInConversation != null;
+    var includeChatAccounts = filters?.onlyInChat != null;
+    var joinQuery = query.join(
+      populateAccountJoin(
+        includeAccountFollowings: includeAccountFollowings,
+        includeAccountFollowers: includeAccountFollowers,
+        includeStatusFavouritedAccounts: includeStatusFavouritedAccounts,
+        includeStatusRebloggedAccounts: includeStatusRebloggedAccounts,
+        includeConversationAccounts: includeConversationAccounts,
+        includeChatAccounts: includeChatAccounts,
+      ),
+    );
+    // should be added in filters phase
+    // todo: should be reworked
+
+    if (includeAccountFollowings) {
+      joinQuery = addFollowingsWhere(
+        joinQuery,
+        filters?.onlyInAccountFollowing?.remoteId,
+      );
+    }
+    if (includeAccountFollowers) {
+      joinQuery = addFollowersWhere(
+        joinQuery,
+        filters?.onlyInAccountFollowers?.remoteId,
+      );
+    }
+    if (includeStatusFavouritedAccounts) {
+      joinQuery = addStatusFavouritedByWhere(
+        joinQuery,
+        filters?.onlyInStatusFavouritedBy?.remoteId,
+      );
+    }
+    if (includeStatusRebloggedAccounts) {
+      joinQuery = addStatusRebloggedByWhere(
+        joinQuery,
+        filters?.onlyInStatusRebloggedBy?.remoteId,
+      );
+    }
+    if (includeConversationAccounts) {
+      joinQuery = addConversationWhere(
+        joinQuery,
+        filters?.onlyInConversation?.remoteId,
+      );
+    }
+    if (includeChatAccounts) {
+      joinQuery = addChatWhere(
+        joinQuery,
+        filters?.onlyInChat?.remoteId,
+      );
+    }
+    return joinQuery;
+  }
+
+  @override
+  DbAccountPopulated mapTypedResultToDbPopulatedItem(TypedResult typedResult) =>
+      typedResult.toDbAccountPopulated(dao: this);
 }
 
 extension DbAccountTypedResultExtension on TypedResult {
@@ -263,6 +349,15 @@ extension DbAccountTypedResultExtension on TypedResult {
     required AccountDao dao,
   }) =>
       readTable(dao.db.dbAccounts);
+
+  DbAccountPopulated toDbAccountPopulated({
+    required AccountDao dao,
+  }) =>
+      DbAccountPopulated(
+        dbAccount: toDbAccount(
+          dao: dao,
+        ),
+      );
 }
 
 extension DbAccountTypedResultListExtension on List<TypedResult> {

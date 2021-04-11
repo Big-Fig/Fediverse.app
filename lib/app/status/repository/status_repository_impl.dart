@@ -14,8 +14,6 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
-import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
-import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
@@ -255,6 +253,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required String conversationRemoteId,
     required Batch? batchTransaction,
   }) async {
+    // todo: rework with less queries
     List<DbConversationStatus> alreadyAddedConversationStatuses =
         await conversationStatusesDao
             .findByConversationRemoteId(conversationRemoteId)
@@ -269,18 +268,20 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     });
 
     if (notAddedYetStatusRemoteIds.isNotEmpty == true) {
-      await conversationStatusesDao.batch((batch) {
-        for (var statusRemoteId in notAddedYetStatusRemoteIds) {
-          conversationStatusesDao.insertBatch(
-              entity: DbConversationStatus(
-                id: null,
-                statusRemoteId: statusRemoteId,
-                conversationRemoteId: conversationRemoteId,
-              ),
-              mode: InsertMode.insertOrReplace,
-              batchTransaction: batch);
-        }
-      });
+      await conversationStatusesDao.batch(
+        (batch) {
+          for (var statusRemoteId in notAddedYetStatusRemoteIds) {
+            conversationStatusesDao.insertBatch(
+                entity: DbConversationStatus(
+                  id: null,
+                  statusRemoteId: statusRemoteId,
+                  conversationRemoteId: conversationRemoteId,
+                ),
+                mode: InsertMode.insertOrReplace,
+                batchTransaction: batch);
+          }
+        },
+      );
     }
   }
 
@@ -537,13 +538,14 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required List<IConversationChat> conversations,
     bool onlyPendingStatePublishedOrNull = false,
   }) async {
-    var query = createQuery(
-      orderingTermData: StatusRepositoryOrderingTermData.createdAtDesc,
-      filters: StatusRepositoryFilters.createForMustBeConversationItem(
-        onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
-      ),
-      pagination: null,
-    );
+    var query = createFindInTypedResultSelectable(
+        filters: StatusRepositoryFilters.createForMustBeConversationItem(
+          onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
+        ),
+        pagination: null,
+        orderingTerms: [
+          StatusRepositoryOrderingTermData.createdAtDesc,
+        ]);
 
     var typedResultList = await query.get();
 
@@ -570,235 +572,6 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     );
 
     return result;
-  }
-
-  void addGroupByConversationId(JoinedSelectStatement query) {
-    query.groupBy(
-      [
-        conversationStatusesDao.dbConversationStatuses.conversationRemoteId,
-      ],
-      having: CustomExpression("MAX(db_statuses.created_at)"),
-    );
-  }
-
-  JoinedSelectStatement createQuery({
-    required StatusRepositoryFilters? filters,
-    required RepositoryPagination<IStatus>? pagination,
-    required StatusRepositoryOrderingTermData? orderingTermData,
-  }) {
-    // todo: rework excludeTextCondition with fts sqlite extension
-    _logger.fine(() => "createQuery \n"
-        "\t filters=$filters\n"
-        "\t pagination=$pagination\n"
-        "\t orderingTermData=$orderingTermData");
-
-    var query = dao.startSelectQuery();
-
-    assert(
-        !(filters?.onlyLocalCondition != null &&
-            filters?.onlyRemoteCondition != null),
-        "onlyLocalCondition && onlyRemoteCondition  can't be set both");
-
-    if (filters?.onlyFromInstance != null) {
-      assert(filters?.onlyRemoteCondition != null,
-          "onlyRemoteCondition should be notNull if onlyFromInstance was set");
-
-      dao.addOnlyFromInstanceWhere(
-        query,
-        filters?.onlyFromInstance,
-      );
-    } else {
-      if (filters?.onlyRemoteCondition != null) {
-        dao.addOnlyRemoteWhere(
-          query,
-          filters?.onlyRemoteCondition?.localUrlHost,
-        );
-      }
-    }
-
-    if (filters?.onlyLocalCondition != null) {
-      assert(filters?.onlyLocalCondition?.localUrlHost?.isNotEmpty == true);
-
-      dao.addOnlyLocalWhere(
-        query,
-        filters?.onlyLocalCondition?.localUrlHost,
-      );
-    }
-
-    if (filters?.onlyWithMedia == true) {
-      dao.addOnlyMediaWhere(query);
-    }
-
-    if (filters?.onlyFromAccount != null) {
-      dao.addOnlyFromAccountWhere(
-        query,
-        filters?.onlyFromAccount?.remoteId,
-      );
-    }
-
-    if (filters?.withMuted != true) {
-      dao.addOnlyNotMutedWhere(query);
-    }
-
-    if (filters?.onlyNoNsfwSensitive == true) {
-      dao.addOnlyNoNsfwSensitiveWhere(query);
-    }
-
-    if (filters?.onlyBookmarked == true) {
-      dao.addOnlyBookmarkedWhere(query);
-    }
-
-    if (filters?.onlyFavourited == true) {
-      dao.addOnlyFavouritedWhere(query);
-    }
-
-    if (filters?.onlyNoReplies == true) {
-      dao.addOnlyNoRepliesWhere(query);
-    }
-
-    var excludeVisibilities = filters?.excludeVisibilities;
-    if (excludeVisibilities?.isNotEmpty == true) {
-      dao.addExcludeVisibilitiesWhere(query, filters!.excludeVisibilities!);
-    }
-
-    if (filters?.onlyNotDeleted == true) {
-      dao.addOnlyNotDeletedWhere(query);
-    }
-    if (filters?.onlyNotHiddenLocallyOnDevice == true) {
-      dao.addOnlyNotHiddenLocallyOnDeviceWhere(query);
-    }
-
-    if (filters?.onlyPendingStatePublishedOrNull == true) {
-      dao.addOnlyPendingStatePublishedOrNull(query);
-    }
-
-    var includeReplyToAccountFollowing = false;
-
-    var replyVisibilityFilter =
-        filters?.replyVisibilityFilterCondition?.replyVisibilityFilter;
-    if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
-        null) {
-      if (replyVisibilityFilter == PleromaReplyVisibilityFilter.self) {
-        dao.addOnlyInReplyToAccountRemoteIdOrNotReply(
-          query,
-          filters?.replyVisibilityFilterCondition?.myAccountRemoteId,
-        );
-      } else if (replyVisibilityFilter ==
-          PleromaReplyVisibilityFilter.following) {
-        includeReplyToAccountFollowing = true;
-      }
-    }
-
-    if (pagination?.olderThanItem != null ||
-        pagination?.newerThanItem != null) {
-      var isRemoteIdOrdering =
-          orderingTermData!.orderByType == StatusRepositoryOrderType.remoteId;
-      var isCreatedAtOrdering =
-          orderingTermData.orderByType == StatusRepositoryOrderType.createdAt;
-      assert(isRemoteIdOrdering || isCreatedAtOrdering);
-      if (isRemoteIdOrdering) {
-        dao.addRemoteIdBoundsWhere(
-          query,
-          maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
-          minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
-        );
-      } else if (isCreatedAtOrdering) {
-        dao.addCreatedAtBoundsWhere(
-          query,
-          maximumDateTimeExcluding: pagination?.olderThanItem?.createdAt,
-          minimumDateTimeExcluding: pagination?.newerThanItem?.createdAt,
-        );
-      }
-    }
-
-    if (orderingTermData != null) {
-      dao.orderBy(
-        query,
-        [
-          orderingTermData,
-        ],
-      );
-    }
-
-    var needFilterByFollowing =
-        filters?.onlyFromAccountsFollowingByAccount != null;
-    var needFilterByList = filters?.onlyInListWithRemoteId?.isNotEmpty == true;
-    var needFilterByTag = filters?.onlyWithHashtag?.isNotEmpty == true;
-    var needFilterByConversation = filters?.onlyInConversation != null;
-    var needFilterByHomeTimeline = filters?.isFromHomeTimeline == true;
-    var joinQuery = query.join(
-      dao.populateStatusJoin(
-        includeAccountFollowing: needFilterByFollowing,
-        includeStatusLists: needFilterByList,
-        includeStatusHashtags: needFilterByTag,
-        includeConversations:
-            needFilterByConversation || filters?.mustBeConversationItem == true,
-        includeHomeTimeline: needFilterByHomeTimeline,
-        includeReplyToAccountFollowing: includeReplyToAccountFollowing,
-      ),
-    );
-
-    var finalQuery = joinQuery;
-
-    if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
-        null) {
-      if (replyVisibilityFilter == PleromaReplyVisibilityFilter.following) {
-        finalQuery = dao.addReplyToAccountSelfOrFollowingWhere(
-          joinQuery,
-          filters?.replyVisibilityFilterCondition?.myAccountRemoteId,
-        );
-      }
-    }
-
-    if (filters?.excludeTextConditions?.isNotEmpty == true) {
-      for (var textCondition in filters!.excludeTextConditions!) {
-        dao.addExcludeTextWhere(
-          joinQuery,
-          phrase: textCondition.phrase,
-          wholeWord: textCondition.wholeWord,
-        );
-      }
-    }
-
-    if (needFilterByFollowing) {
-      finalQuery = dao.addFollowingWhere(
-        joinQuery,
-        filters?.onlyFromAccountsFollowingByAccount?.remoteId,
-      );
-    }
-    if (needFilterByList) {
-      finalQuery = dao.addListWhere(
-        finalQuery,
-        filters?.onlyInListWithRemoteId,
-      );
-    }
-    if (needFilterByConversation) {
-      finalQuery = dao.addConversationWhere(
-        finalQuery,
-        filters?.onlyInConversation?.remoteId,
-      );
-    }
-
-    if (needFilterByTag) {
-      finalQuery = dao.addHashtagWhere(
-        finalQuery,
-        filters?.onlyWithHashtag,
-      );
-    }
-
-    if (needFilterByHomeTimeline) {
-      // nothing it is filtered by inner join
-    }
-
-    var limit = pagination?.limit;
-    if (limit != null) {
-      finalQuery.limit(
-        limit,
-        offset: pagination?.offset,
-      );
-    }
-
-    return finalQuery;
   }
 
   @override
@@ -871,6 +644,10 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   IPleromaStatus mapDbPopulatedItemToRemoteItem(
           DbStatusPopulated dbPopulatedItem) =>
       dbPopulatedItem.toDbStatusPopulatedWrapper().toPleromaStatus();
+
+  @override
+  IStatus mapRemoteItemToAppItem(IPleromaStatus appItem) =>
+      appItem.toDbStatusPopulatedWrapper();
 
   @override
   StatusRepositoryFilters get emptyFilters => StatusRepositoryFilters.empty;

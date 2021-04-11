@@ -1,6 +1,6 @@
 import 'package:fedi/app/chat/conversation/database/conversation_chat_accounts_database_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/database/dao/app_database_dao.dart';
+import 'package:fedi/app/database/dao/database_dao.dart';
 import 'package:moor/moor.dart';
 
 part 'conversation_chat_accounts_database_dao.g.dart';
@@ -10,7 +10,7 @@ part 'conversation_chat_accounts_database_dao.g.dart';
     DbConversationAccounts,
   ],
 )
-class ConversationAccountsDao extends AppDatabaseDao<
+class ConversationAccountsDao extends DatabaseDao<
     DbConversationAccount,
     int,
     $DbConversationAccountsTable,

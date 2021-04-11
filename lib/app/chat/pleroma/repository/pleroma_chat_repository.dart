@@ -46,7 +46,7 @@ abstract class IPleromaChatRepository
   });
 
   Future<IPleromaChatWithLastMessage?> getChatWithLastMessage({
-    required PleromaChatRepositoryFilters filters,
+    required PleromaChatRepositoryFilters? filters,
     PleromaChatRepositoryOrderingTermData? orderingTermData =
         PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   });

@@ -1,13 +1,18 @@
 import 'package:fedi/app/database/dao/app_database_dao.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
+import 'package:moor/moor.dart' as moor;
 
 mixin PopulatedDatabaseDaoMixin<
-    DbItem extends DataClass,
-    DbPopulatedItem,
-    DbId,
-    TableDsl extends Table,
-    TableInfoDsl extends TableInfo<TableDsl, DbItem>,
-    Filters> on AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl> {
+        DbItem extends DataClass,
+        DbPopulatedItem,
+        DbId,
+        TableDsl extends Table,
+        TableInfoDsl extends TableInfo<TableDsl, DbItem>,
+        Filters,
+        OrderingTerm extends RepositoryOrderingTerm>
+    on AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl, Filters,
+        OrderingTerm> {
   JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<TableDsl, DbItem> query,
     required Filters? filters,
@@ -51,7 +56,7 @@ mixin PopulatedDatabaseDaoMixin<
     var query = startSelectQuery();
     query.orderBy(
       [
-        (tbl) => OrderingTerm.asc(
+        (tbl) => moor.OrderingTerm.asc(
               CustomExpression(idFieldName),
             ),
       ],
@@ -83,7 +88,7 @@ mixin PopulatedDatabaseDaoMixin<
     var query = startSelectQuery();
     query.orderBy(
       [
-        (tbl) => OrderingTerm.desc(
+        (tbl) => moor.OrderingTerm.desc(
               CustomExpression(idFieldName),
             ),
       ],
