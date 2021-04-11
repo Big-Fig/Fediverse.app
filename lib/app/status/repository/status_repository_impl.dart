@@ -1030,7 +1030,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
             listRemoteId: listRemoteId,
             conversationRemoteId: conversationRemoteId,
             isFromHomeTimeline: isFromHomeTimeline,
-            batchTransaction: batchTransaction,
+            batchTransaction: batch,
           );
         },
       );

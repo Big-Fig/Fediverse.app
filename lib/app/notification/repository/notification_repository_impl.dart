@@ -365,7 +365,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         (batch) {
           _upsertNotificationMetadata(
             remoteItem,
-            batchTransaction: batchTransaction,
+            batchTransaction: batch,
           );
         },
       );

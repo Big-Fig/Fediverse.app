@@ -70,6 +70,11 @@ mixin PopulatedDatabaseDaoRepositoryMixin<
 
     dao.addFiltersToQuery(query: query, filters: filters);
     dao.addOrderingToQuery(query: query, orderingTerms: orderingTerms);
+    addAppItemPagination(
+      query: query,
+      pagination: pagination,
+      orderingTerms: orderingTerms,
+    );
     var joinedQuery =
         populatedDao.convertSimpleSelectStatementToJoinedSelectStatement(
       query: query,

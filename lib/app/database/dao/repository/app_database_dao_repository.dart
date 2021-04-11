@@ -204,7 +204,11 @@ abstract class AppDatabaseDaoRepository<
 
     dao.addFiltersToQuery(query: query, filters: filters);
     dao.addOrderingToQuery(query: query, orderingTerms: orderingTerms);
-
+    addDbItemPagination(
+      query: query,
+      pagination: pagination,
+      orderingTerms: orderingTerms,
+    );
     return query;
   }
 

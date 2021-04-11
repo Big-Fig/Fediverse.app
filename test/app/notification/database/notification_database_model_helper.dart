@@ -23,6 +23,7 @@ Future<DbNotification> createTestDbNotification({
     statusRemoteId: dbStatus?.remoteId,
     unread: unread,
     type: type,
+    dismissed: false,
   );
   return dbNotification;
 }

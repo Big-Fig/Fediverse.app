@@ -606,12 +606,9 @@ void main() {
       (_) async => account.pleromaRelationship!.copyWith(muting: false),
     );
 
-    await accountBloc.mute(
-      notifications: false,
-      duration: null,
-    );
-
-    await accountBloc.unMute();
+    if (accountBloc.relationshipMuting == true) {
+      await accountBloc.unMute();
+    }
 
     var initialValue = account.pleromaRelationship!.muting!;
 
