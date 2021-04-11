@@ -373,7 +373,7 @@ class ConversationChatRepository
       await batch((batch) {
         _upsertChatMessageMetadata(
           remoteItem,
-          batchTransaction: batchTransaction,
+          batchTransaction: batch,
         );
       });
     }

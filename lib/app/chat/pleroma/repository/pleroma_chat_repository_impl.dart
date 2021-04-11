@@ -398,7 +398,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       await batch((batch) {
         _upsertChatMessageMetadata(
           remoteItem,
-          batchTransaction: batchTransaction,
+          batchTransaction: batch,
         );
       });
     }

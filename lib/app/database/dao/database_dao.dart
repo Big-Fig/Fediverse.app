@@ -136,7 +136,6 @@ abstract class DatabaseDao<
 
   Selectable<DbItem> getAllSelectable() => customSelect(
         'SELECT * FROM $tableName',
-        variables: [],
         readsFrom: {table},
       ).map(table.mapFromRow);
 
@@ -152,7 +151,6 @@ abstract class DatabaseDao<
                 'ORDER BY $idFieldName ASC'
                 'LIMIT 1' +
             createOffsetContent(offset),
-        variables: [Variable(offset)],
         readsFrom: {table},
       ).map(table.mapFromRow);
 
@@ -168,7 +166,6 @@ abstract class DatabaseDao<
                 'ORDER BY $idFieldName DESC'
                 'LIMIT 1' +
             createOffsetContent(offset),
-        variables: [Variable(offset)],
         readsFrom: {table},
       ).map(table.mapFromRow);
 
@@ -184,7 +181,6 @@ abstract class DatabaseDao<
         'SELECT * FROM $tableName '
         'WHERE ${createFindByDbIdWhereExpressionContent(id)} '
         'LIMIT 1',
-        variables: [Variable(id)],
         readsFrom: {table},
       ).map(table.mapFromRow);
 
@@ -198,7 +194,6 @@ abstract class DatabaseDao<
   Selectable<int> countByIdSelectable(DbId id) => customSelect(
         'SELECT COUNT(*) FROM $tableName '
         'WHERE ${createFindByDbIdWhereExpressionContent(id)}',
-        variables: [Variable(id)],
         readsFrom: {table},
       ).map(
         (QueryRow row) => row.readInt(
@@ -310,7 +305,6 @@ abstract class DatabaseDao<
     } else {
       return await customUpdate(
         'DELETE FROM $tableName',
-        variables: [],
         updates: {table},
         updateKind: UpdateKind.delete,
       );
@@ -365,6 +359,6 @@ abstract class DatabaseDao<
     required String fieldName,
     required dynamic value,
   }) =>
-      CustomExpression<bool>("$tableName.$fieldName = ${value.toString()}");
+      CustomExpression<bool>("$tableName.$fieldName = '${value.toString()}'");
 
 }
