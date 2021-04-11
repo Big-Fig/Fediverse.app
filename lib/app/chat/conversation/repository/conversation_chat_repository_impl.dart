@@ -365,8 +365,8 @@ class ConversationChatRepository
       if (lastMessage != null) {
         await statusRepository.upsertRemoteStatusForConversation(
           lastMessage,
-          batchTransaction: batchTransaction,
           conversationRemoteId: remoteItem.id!,
+          batchTransaction: batchTransaction,
         );
       }
     } else {
@@ -397,13 +397,15 @@ class ConversationChatRepository
         batchTransaction: batchTransaction,
       );
     } else {
-      await batch((batch) {
-        insertInRemoteTypeBatch(
-          remoteItem,
-          mode: mode,
-          batchTransaction: batch,
-        );
-      });
+      await batch(
+        (batch) {
+          insertInRemoteTypeBatch(
+            remoteItem,
+            mode: mode,
+            batchTransaction: batch,
+          );
+        },
+      );
     }
   }
 
@@ -414,23 +416,28 @@ class ConversationChatRepository
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      // todo: support mode
       await _upsertChatMessageMetadata(
         remoteItem,
         batchTransaction: batchTransaction,
       );
 
-      await dao.upsertBatch(
-        entity: remoteItem.toDbConversation().copyWith(
-              id: appItem.localId,
-            ),
-        batchTransaction: batchTransaction,
-      );
+      if (appItem.localId != null) {
+        await updateByDbIdInDbType(
+          dbId: appItem.localId!,
+          dbItem: remoteItem.toDbConversation(),
+          batchTransaction: batchTransaction,
+        );
+      } else {
+        await upsertInRemoteTypeBatch(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        );
+      }
     } else {
       await batch((batch) {
-        insertInRemoteTypeBatch(
-          remoteItem,
-          mode: InsertMode.insertOrReplace,
+        updateAppTypeByRemoteType(
+          appItem: appItem,
+          remoteItem: remoteItem,
           batchTransaction: batch,
         );
       });

@@ -36,7 +36,7 @@ void main() {
   late DbAccount dbAccount;
 
   setUp(() async {
-    database = AppDatabase(VmDatabase.memory());
+    database = AppDatabase(VmDatabase.memory(logStatements: false));
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
       appDatabase: database,
@@ -314,6 +314,7 @@ void main() {
 
   test('upsertRemoteNotifications', () async {
     expect(await notificationRepository.countAll(), 0);
+
     await notificationRepository.upsertRemoteNotifications(
       [
         DbNotificationPopulatedWrapper(
