@@ -73,8 +73,9 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   @override
   void watchLocalRepositoryChanges() {
     addDisposable(
-      streamSubscription:
-          chatMessageRepository.watchByRemoteIdInAppType(chatMessage.remoteId).listen(
+      streamSubscription: chatMessageRepository
+          .watchByRemoteIdInAppType(chatMessage.remoteId)
+          .listen(
         (updatedChatMessage) {
           if (updatedChatMessage != null) {
             _chatMessageSubject.add(updatedChatMessage);
@@ -107,7 +108,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
       _chatMessageSubject.stream.distinct();
 
   @override
-  IAccount get account => chatMessage.account;
+  IAccount? get account => chatMessage.account;
 
   @override
   Future refreshFromNetwork() async {
@@ -136,4 +137,12 @@ class PleromaChatMessageBloc extends ChatMessageBloc
           chatMessage.mediaAttachments?.singleOrNull,
     );
   }
+
+  @override
+  String get accountRemoteId => chatMessage.accountRemoteId;
+
+  @override
+  Stream<String> get accountRemoteIdStream => chatMessageStream.map(
+        (chatMessage) => chatMessage.accountRemoteId,
+      );
 }

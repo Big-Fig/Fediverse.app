@@ -136,7 +136,7 @@ class MyAccountBloc extends IMyAccountBloc {
 
   @override
   bool checkIsChatMessageFromMe(IChatMessage? chatMessage) {
-    return myAccount!.remoteId == chatMessage!.account.remoteId;
+    return myAccount!.remoteId == chatMessage!.accountRemoteId;
   }
 
   @override

@@ -33,9 +33,13 @@ abstract class IChatMessageBloc implements IDisposable {
 
   Stream<EmojiText?> get contentWithEmojisStream;
 
-  IAccount get account;
+  IAccount? get account;
 
-  Stream<IAccount> get accountStream;
+  Stream<IAccount?> get accountStream;
+
+  String get accountRemoteId;
+
+  Stream<String> get accountRemoteIdStream;
 
   DateTime get createdAt;
 
@@ -43,9 +47,9 @@ abstract class IChatMessageBloc implements IDisposable {
 
   String get remoteId;
 
-  String get accountAvatar;
+  String? get accountAvatar;
 
-  Stream<String> get accountAvatarStream;
+  Stream<String?> get accountAvatarStream;
 
   PendingState? get pendingState;
 

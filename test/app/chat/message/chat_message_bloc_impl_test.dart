@@ -79,7 +79,7 @@ void main() {
       );
 
       await accountRepository.upsertChatRemoteAccount(
-        chatMessage.account.toPleromaAccount(),
+        chatMessage.account!.toPleromaAccount(),
         chatRemoteId: chatMessage.chatRemoteId,
         batchTransaction: null,
       );
@@ -128,7 +128,7 @@ void main() {
       remoteId: chatMessage.remoteId,
     );
     await accountRepository.upsertChatRemoteAccount(
-      newValue.account.toPleromaAccount(),
+      newValue.account!.toPleromaAccount(),
       chatRemoteId: newValue.chatRemoteId,
       batchTransaction: null,
     );

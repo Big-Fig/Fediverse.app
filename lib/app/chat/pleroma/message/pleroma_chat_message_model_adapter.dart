@@ -8,7 +8,7 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 
 extension IPleromaChatMessageExtension on pleroma_lib.IPleromaChatMessage {
   DbPleromaChatMessagePopulatedWrapper toDbChatMessagePopulatedWrapper({
-    required DbAccount dbAccount,
+    required DbAccount? dbAccount,
   }) {
     return DbPleromaChatMessagePopulatedWrapper(
       dbChatMessagePopulated: toDbChatMessagePopulated(
@@ -18,7 +18,7 @@ extension IPleromaChatMessageExtension on pleroma_lib.IPleromaChatMessage {
   }
 
   DbChatMessagePopulated toDbChatMessagePopulated({
-    required DbAccount dbAccount,
+    required DbAccount? dbAccount,
   }) {
     return DbChatMessagePopulated(
       dbChatMessage: toDbChatMessage(),
@@ -73,7 +73,7 @@ extension IPleromaChatMessagePleromaExtension on IPleromaChatMessage {
       emojis: emojis?.toPleromaEmojis(),
       mediaAttachment:
           mediaAttachments?.singleOrNull?.toPleromaMediaAttachment(),
-      accountId: account.remoteId,
+      accountId: accountRemoteId,
       chatId: chatRemoteId,
       card: card?.toPleromaCard(),
     );

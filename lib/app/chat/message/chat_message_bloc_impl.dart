@@ -72,10 +72,10 @@ abstract class ChatMessageBloc extends DisposableOwner
       _chatMessageSubject.stream..distinct();
 
   @override
-  IAccount get account => chatMessage.account;
+  IAccount? get account => chatMessage.account;
 
   @override
-  Stream<IAccount> get accountStream => chatMessageStream
+  Stream<IAccount?> get accountStream => chatMessageStream
       .map(
         (chatMessage) => chatMessage.account,
       )
@@ -105,12 +105,12 @@ abstract class ChatMessageBloc extends DisposableOwner
       .distinct();
 
   @override
-  String get accountAvatar => account.avatar;
+  String? get accountAvatar => account?.avatar;
 
   @override
-  Stream<String> get accountAvatarStream => accountStream
+  Stream<String?> get accountAvatarStream => accountStream
       .map(
-        (account) => account.avatar,
+        (account) => account?.avatar,
       )
       .distinct();
 

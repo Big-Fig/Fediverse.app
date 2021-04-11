@@ -93,9 +93,9 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   String calculateSelectionAsRawText() {
     var rawText = currentSelection.map((chatMessage) {
       var chatMessageText = "";
-      chatMessageText += chatMessage.account.acct;
+      chatMessageText += chatMessage.account?.acct ?? "";
       chatMessageText += " ";
-      chatMessageText += "(${chatMessage.account.displayName})";
+      chatMessageText += "(${chatMessage.account?.displayName ?? ""})";
       chatMessageText += " ";
       chatMessageText += "${_dateFormat.format(chatMessage.createdAt)}";
       if (chatMessage.content?.isNotEmpty == true) {

@@ -89,4 +89,73 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   List<ScheduledStatusRepositoryOrderingTermData> get defaultOrderingTerms =>
       ScheduledStatusRepositoryOrderingTermData.defaultTerms;
+
+  @override
+  IScheduledStatus mapRemoteItemToAppItem(IPleromaScheduledStatus appItem) =>
+      DbScheduledStatusPopulated(
+        dbScheduledStatus: appItem.toDbScheduledStatus(
+          canceled: false,
+        ),
+      ).toDbScheduledStatusPopulatedWrapper();
+
+  @override
+  Future<void> insertInDbTypeBatch(
+    Insertable<DbScheduledStatus> dbItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) =>
+      dao.insertBatch(
+        entity: dbItem,
+        mode: mode,
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  Future<int> insertInRemoteType(
+    IPleromaScheduledStatus remoteItem, {
+    required InsertMode? mode,
+  }) =>
+      insertInDbType(
+        mapRemoteItemToDbItem(
+          remoteItem,
+        ),
+        mode: mode,
+      );
+
+  @override
+  Future<void> insertInRemoteTypeBatch(
+    IPleromaScheduledStatus remoteItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) {
+    return upsertInDbTypeBatch(
+      mapRemoteItemToDbItem(
+        remoteItem,
+      ),
+      batchTransaction: batchTransaction,
+    );
+  }
+
+  @override
+  Future<void> updateAppTypeByRemoteType({
+    required IScheduledStatus appItem,
+    required IPleromaScheduledStatus remoteItem,
+    required Batch? batchTransaction,
+  }) =>
+      updateByDbIdInDbType(
+        dbId: appItem.localId!,
+        dbItem: remoteItem.toDbScheduledStatus(canceled: false),
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  Future<void> updateByDbIdInDbType({
+    required int dbId,
+    required DbScheduledStatus dbItem,
+    required Batch? batchTransaction,
+  }) =>
+      dao.upsertBatch(
+        entity: dbItem.copyWith(id: dbId),
+        batchTransaction: batchTransaction,
+      );
 }
