@@ -187,8 +187,8 @@ class ConversationChatRepository
       pagination: pagination,
       orderingTerms: orderingTermData != null
           ? [
-        orderingTermData,
-      ]
+              orderingTermData,
+            ]
           : null,
     );
     return (await query.get())
@@ -210,8 +210,8 @@ class ConversationChatRepository
       pagination: pagination,
       orderingTerms: orderingTermData != null
           ? [
-        orderingTermData,
-      ]
+              orderingTermData,
+            ]
           : null,
     );
 
@@ -235,8 +235,8 @@ class ConversationChatRepository
       pagination: _singleConversationChatRepositoryPagination,
       orderingTerms: orderingTermData != null
           ? [
-        orderingTermData,
-      ]
+              orderingTermData,
+            ]
           : null,
     );
 
@@ -260,8 +260,8 @@ class ConversationChatRepository
       pagination: _singleConversationChatRepositoryPagination,
       orderingTerms: orderingTermData != null
           ? [
-        orderingTermData,
-      ]
+              orderingTermData,
+            ]
           : null,
     );
 
@@ -284,6 +284,14 @@ class ConversationChatRepository
       accounts: [],
     );
   }
+
+  @override
+  IConversationChat mapRemoteItemToAppItem(IPleromaConversation remoteItem) =>
+      DbConversationChatPopulatedWrapper(
+        dbConversationPopulated: DbConversationPopulated(
+          dbConversation: remoteItem.toDbConversation(),
+        ),
+      );
 
   @override
   DbConversationPopulated mapAppItemToDbPopulatedItem(
@@ -314,4 +322,129 @@ class ConversationChatRepository
   @override
   List<ConversationRepositoryChatOrderingTermData> get defaultOrderingTerms =>
       ConversationRepositoryChatOrderingTermData.defaultTerms;
+
+  @override
+  Future<void> insertInDbTypeBatch(
+    Insertable<DbConversation> dbItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) =>
+      dao.insertBatch(
+        entity: dbItem,
+        mode: mode,
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  Future<int> insertInRemoteType(
+    IPleromaConversation remoteItem, {
+    required InsertMode? mode,
+  }) async {
+    await _upsertChatMessageMetadata(
+      remoteItem,
+      batchTransaction: null,
+    );
+
+    return await dao.upsert(
+      entity: remoteItem.toDbConversation(),
+    );
+  }
+
+  Future _upsertChatMessageMetadata(
+    IPleromaConversation remoteItem, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      await accountRepository.upsertConversationRemoteAccounts(
+        remoteItem.accounts,
+        conversationRemoteId: remoteItem.id!,
+        batchTransaction: batchTransaction,
+      );
+
+      var lastMessage = remoteItem.lastStatus;
+      if (lastMessage != null) {
+        await statusRepository.upsertRemoteStatusForConversation(
+          lastMessage,
+          batchTransaction: batchTransaction,
+          conversationRemoteId: remoteItem.id!,
+        );
+      }
+    } else {
+      await batch((batch) {
+        _upsertChatMessageMetadata(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        );
+      });
+    }
+  }
+
+  @override
+  Future<void> insertInRemoteTypeBatch(
+    IPleromaConversation remoteItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      // todo: support mode
+      await _upsertChatMessageMetadata(
+        remoteItem,
+        batchTransaction: batchTransaction,
+      );
+
+      await dao.upsertBatch(
+        entity: remoteItem.toDbConversation(),
+        batchTransaction: batchTransaction,
+      );
+    } else {
+      await batch((batch) {
+        insertInRemoteTypeBatch(
+          remoteItem,
+          mode: mode,
+          batchTransaction: batch,
+        );
+      });
+    }
+  }
+
+  @override
+  Future<void> updateAppTypeByRemoteType({
+    required IConversationChat appItem,
+    required IPleromaConversation remoteItem,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      // todo: support mode
+      await _upsertChatMessageMetadata(
+        remoteItem,
+        batchTransaction: batchTransaction,
+      );
+
+      await dao.upsertBatch(
+        entity: remoteItem.toDbConversation().copyWith(
+              id: appItem.localId,
+            ),
+        batchTransaction: batchTransaction,
+      );
+    } else {
+      await batch((batch) {
+        insertInRemoteTypeBatch(
+          remoteItem,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        );
+      });
+    }
+  }
+
+  @override
+  Future<void> updateByDbIdInDbType({
+    required int dbId,
+    required DbConversation dbItem,
+    required Batch? batchTransaction,
+  }) =>
+      dao.upsertBatch(
+        entity: dbItem.copyWith(id: dbId),
+        batchTransaction: batchTransaction,
+      );
 }

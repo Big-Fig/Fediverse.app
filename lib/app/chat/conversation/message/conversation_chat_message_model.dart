@@ -154,4 +154,7 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
 
   @override
   String? get wasSentWithIdempotencyKey => status.wasSentWithIdempotencyKey;
+
+  @override
+  String get accountRemoteId => status.account.remoteId;
 }

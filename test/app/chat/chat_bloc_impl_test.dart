@@ -238,7 +238,7 @@ void main() {
 
     await _update(
       newValue,
-      accounts: [chatMessage1.account],
+      accounts: [chatMessage1.account!],
       lastChatMessage: chatMessage1,
     );
 
@@ -254,7 +254,7 @@ void main() {
 
     await _update(
       newValue,
-      accounts: [chatMessage2.account],
+      accounts: [chatMessage2.account!],
       lastChatMessage: chatMessage1,
     );
 

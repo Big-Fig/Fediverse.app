@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
@@ -41,7 +40,8 @@ extension IPleromaChatDbMessage on IPleromaChatMessage {
 
   DbChatMessagePopulated toDbChatMessagePopulated() {
     if (this is DbPleromaChatMessagePopulatedWrapper) {
-      return (this as DbPleromaChatMessagePopulatedWrapper).dbChatMessagePopulated;
+      return (this as DbPleromaChatMessagePopulatedWrapper)
+          .dbChatMessagePopulated;
     } else {
       return DbChatMessagePopulated(
         dbChatMessage: toDbChatMessage(),
@@ -56,7 +56,6 @@ extension IPleromaChatDbMessage on IPleromaChatMessage {
           .dbChatMessagePopulated
           .dbChatMessage;
     } else {
-
       return DbChatMessage(
         id: localId,
         remoteId: remoteId,
@@ -67,7 +66,7 @@ extension IPleromaChatDbMessage on IPleromaChatMessage {
         card: card?.toPleromaCard(),
         mediaAttachment:
             mediaAttachments?.singleOrNull?.toPleromaMediaAttachment(),
-        accountRemoteId: account.remoteId,
+        accountRemoteId: accountRemoteId,
         pendingState: pendingState,
         oldPendingRemoteId: oldPendingRemoteId,
         deleted: deleted,
@@ -77,13 +76,13 @@ extension IPleromaChatDbMessage on IPleromaChatMessage {
     }
   }
 
-  DbAccount toDbAccount() {
+  DbAccount? toDbAccount() {
     if (this is DbPleromaChatMessagePopulatedWrapper) {
       return (this as DbPleromaChatMessagePopulatedWrapper)
           .dbChatMessagePopulated
           .dbAccount;
     } else {
-      return account.toDbAccount();
+      return account?.toDbAccount();
     }
   }
 }
@@ -106,7 +105,13 @@ class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
   int? get localId => dbChatMessagePopulated.dbChatMessage.id;
 
   @override
-  IAccount get account => dbChatMessagePopulated.dbAccount.toDbAccountWrapper();
+  IAccount? get account => dbChatMessagePopulated.dbAccount != null
+      ? DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbChatMessagePopulated.dbAccount!,
+          ),
+        )
+      : null;
 
   @override
   String get chatRemoteId => dbChatMessagePopulated.dbChatMessage.chatRemoteId;
@@ -201,11 +206,14 @@ class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
   @override
   bool get hiddenLocallyOnDevice =>
       dbChatMessagePopulated.dbChatMessage.hiddenLocallyOnDevice == true;
+
+  @override
+  String get accountRemoteId => dbChatMessagePopulated.dbChatMessage.accountRemoteId;
 }
 
 class DbChatMessagePopulated {
   final DbChatMessage dbChatMessage;
-  final DbAccount dbAccount;
+  final DbAccount? dbAccount;
 
   DbChatMessagePopulated({
     required this.dbChatMessage,
@@ -239,7 +247,7 @@ class DbChatMessagePopulated {
           card: card?.toPleromaCard() ?? dbChatMessage.card,
           mediaAttachment: mediaAttachment?.toPleromaMediaAttachment() ??
               dbChatMessage.mediaAttachment,
-          accountRemoteId: account?.remoteId ?? dbAccount.remoteId,
+          accountRemoteId: account?.remoteId ?? dbChatMessage.accountRemoteId,
           pendingState: pendingState ?? dbChatMessage.pendingState,
           oldPendingRemoteId:
               oldPendingRemoteId ?? dbChatMessage.oldPendingRemoteId,

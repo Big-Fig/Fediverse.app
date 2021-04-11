@@ -126,7 +126,7 @@ class ConversationChatMessageBloc extends ChatMessageBloc
       _chatMessageSubject.stream.distinct();
 
   @override
-  IAccount get account => chatMessage.account;
+  IAccount get account => chatMessage.account!;
 
   @override
   Future refreshFromNetwork() async {
@@ -152,5 +152,13 @@ class ConversationChatMessageBloc extends ChatMessageBloc
           limits: pleromaInstancePollLimits,
         ),
         oldPendingFailedConversationChatMessage: chatMessage,
+      );
+
+  @override
+  String get accountRemoteId => chatMessage.accountRemoteId;
+
+  @override
+  Stream<String> get accountRemoteIdStream => chatMessageStream.map(
+        (chatMessage) => chatMessage.accountRemoteId,
       );
 }

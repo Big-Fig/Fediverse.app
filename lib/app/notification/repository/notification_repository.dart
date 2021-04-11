@@ -73,7 +73,7 @@ abstract class INotificationRepository
   Future<INotification?> getNewest();
 
   Future upsertRemoteNotification(
-    IPleromaNotification pleromaNotification, {
+    IPleromaNotification remoteItem, {
     required bool unread,
     required Batch? batchTransaction,
   });

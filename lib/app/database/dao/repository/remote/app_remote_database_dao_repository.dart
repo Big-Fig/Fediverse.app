@@ -117,7 +117,7 @@ abstract class AppRemoteDatabaseDaoRepository<
     }
   }
 
-  AppItem mapRemoteItemToAppItem(RemoteItem appItem);
+  AppItem mapRemoteItemToAppItem(RemoteItem remoteItem);
 
   List<AppItem> mapRemoteItemListToAppItemList(List<RemoteItem> remoteItems) =>
       remoteItems.map(mapRemoteItemToAppItem).toList();

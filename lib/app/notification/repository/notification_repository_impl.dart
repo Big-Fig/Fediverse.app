@@ -281,12 +281,244 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           .toPleromaNotification();
 
   @override
+  INotification mapRemoteItemToAppItem(IPleromaNotification remoteItem) =>
+      remoteItem.toDbNotificationPopulatedWrapper(unread: null);
+
+  @override
   NotificationRepositoryFilters get emptyFilters =>
       NotificationRepositoryFilters.empty;
 
   @override
   List<NotificationRepositoryOrderingTermData> get defaultOrderingTerms =>
       NotificationRepositoryOrderingTermData.defaultTerms;
+
+  @override
+  Future<INotification?> getNewest() => dao
+      .getNewestPopulatedOrderById(offset: null)
+      .then(mapDbPopulatedItemToAppItemNullable);
+
+  @override
+  Future<void> insertInDbTypeBatch(
+    Insertable<DbNotification> dbItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) =>
+      dao.insertBatch(
+        entity: dbItem,
+        mode: mode,
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  Future<int> insertInRemoteType(
+    IPleromaNotification remoteItem, {
+    required InsertMode? mode,
+  }) async {
+    await _upsertNotificationMetadata(
+      remoteItem,
+      batchTransaction: null,
+    );
+
+    return await dao.upsert(
+      entity: remoteItem.toDbNotification(unread: null),
+    );
+  }
+
+  Future _upsertNotificationMetadata(
+    IPleromaNotification remoteItem, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      var remoteAccount = remoteItem.account;
+
+      if (remoteAccount != null) {
+        await accountRepository.upsertInRemoteTypeBatch(
+          remoteAccount,
+          batchTransaction: batchTransaction,
+        );
+      }
+      var targetRemoteAccount = remoteItem.target;
+
+      if (targetRemoteAccount != null) {
+        await accountRepository.upsertInRemoteTypeBatch(
+          targetRemoteAccount,
+          batchTransaction: batchTransaction,
+        );
+      }
+
+      var remoteStatus = remoteItem.status;
+      if (remoteStatus != null) {
+        await statusRepository.upsertInRemoteTypeBatch(
+          remoteStatus,
+          batchTransaction: batchTransaction,
+        );
+      }
+      var remoteChatMessage = remoteItem.chatMessage;
+      if (remoteChatMessage != null) {
+        await chatMessageRepository.upsertInRemoteTypeBatch(
+          remoteChatMessage,
+          batchTransaction: batchTransaction,
+        );
+      }
+    } else {
+      await batch(
+        (batch) {
+          _upsertNotificationMetadata(
+            remoteItem,
+            batchTransaction: batchTransaction,
+          );
+        },
+      );
+    }
+  }
+
+  @override
+  Future<void> insertInRemoteTypeBatch(
+    IPleromaNotification remoteItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      // todo: support mode
+      await _upsertNotificationMetadata(
+        remoteItem,
+        batchTransaction: batchTransaction,
+      );
+
+      await dao.upsertBatch(
+        entity: remoteItem.toDbNotification(unread: null),
+        batchTransaction: batchTransaction,
+      );
+    } else {
+      await batch((batch) {
+        insertInRemoteTypeBatch(
+          remoteItem,
+          mode: mode,
+          batchTransaction: batch,
+        );
+      });
+    }
+  }
+
+  @override
+  Future<void> updateAppTypeByRemoteType({
+    required INotification appItem,
+    required IPleromaNotification remoteItem,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      // todo: support mode
+      await _upsertNotificationMetadata(
+        remoteItem,
+        batchTransaction: batchTransaction,
+      );
+
+      await dao.upsertBatch(
+        entity: remoteItem.toDbNotification(unread: null).copyWith(
+              id: appItem.localId,
+            ),
+        batchTransaction: batchTransaction,
+      );
+    } else {
+      await batch((batch) {
+        insertInRemoteTypeBatch(
+          remoteItem,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        );
+      });
+    }
+  }
+
+  @override
+  Future<void> updateByDbIdInDbType({
+    required int dbId,
+    required DbNotification dbItem,
+    required Batch? batchTransaction,
+  }) =>
+      dao.upsertBatch(
+        entity: dbItem.copyWith(id: dbId),
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  Future updateNotificationByRemoteType({
+    required INotification appItem,
+    required IPleromaNotification remoteItem,
+    required bool? unread,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      // todo: support mode
+      await _upsertNotificationMetadata(
+        remoteItem,
+        batchTransaction: batchTransaction,
+      );
+
+      await dao.upsertBatch(
+        entity: remoteItem.toDbNotification(unread: unread).copyWith(
+              id: appItem.localId,
+            ),
+        batchTransaction: batchTransaction,
+      );
+    } else {
+      await batch((batch) {
+        insertInRemoteTypeBatch(
+          remoteItem,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        );
+      });
+    }
+  }
+
+  @override
+  Future upsertRemoteNotification(
+    IPleromaNotification remoteItem, {
+    required bool unread,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      // todo: support mode
+      await _upsertNotificationMetadata(
+        remoteItem,
+        batchTransaction: batchTransaction,
+      );
+
+      await dao.upsertBatch(
+        entity: remoteItem.toDbNotification(unread: unread),
+        batchTransaction: batchTransaction,
+      );
+    } else {
+      await batch((batch) {
+        insertInRemoteTypeBatch(
+          remoteItem,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        );
+      });
+    }
+  }
+
+  @override
+  Future upsertRemoteNotifications(
+    List<IPleromaNotification> pleromaNotifications, {
+    required bool unread,
+    required Batch? batchTransaction,
+  }) =>
+      batch(
+        (batch) {
+          pleromaNotifications.forEach(
+            (remoteAccount) {
+              upsertRemoteNotification(
+                remoteAccount,
+                unread: unread,
+                batchTransaction: batch,
+              );
+            },
+          );
+        },
+      );
 }
 
 extension DbNotificationPopulatedListExtension

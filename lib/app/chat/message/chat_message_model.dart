@@ -12,7 +12,9 @@ abstract class IChatMessage {
 
   String get chatRemoteId;
 
-  IAccount get account;
+  IAccount? get account;
+
+  String get accountRemoteId;
 
   String? get content;
 

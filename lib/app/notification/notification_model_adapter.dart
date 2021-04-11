@@ -36,10 +36,36 @@ extension IPleromaNotificationExtension on IPleromaNotification {
       target: remoteNotification.target?.toPleromaAccount(),
     );
   }
+
+  DbNotificationPopulated toDbNotificationPopulated({
+    required bool? unread,
+  }) {
+    return DbNotificationPopulated(
+      dbNotification: toDbNotification(
+        unread: unread,
+      ),
+      dbAccount: account?.toDbAccount(),
+      dbStatus: status?.toDbStatus(),
+      reblogDbStatus: status?.reblog?.toDbStatus(),
+      reblogDbStatusAccount: status?.reblog?.account.toDbAccount(),
+      replyDbStatus: null,
+      replyReblogDbStatusAccount: null,
+      replyReblogDbStatus: null,
+      dbStatusAccount: null,
+      replyDbStatusAccount: null,
+    );
+  }
+
+  DbNotificationPopulatedWrapper toDbNotificationPopulatedWrapper({
+    required bool? unread,
+  }) =>
+      DbNotificationPopulatedWrapper(
+        dbNotificationPopulated: toDbNotificationPopulated(unread: unread),
+      );
 }
 
 extension INotificationExtension on INotification {
-  DbNotificationPopulatedWrapper toDbStatusPopulatedWrapper() {
+  DbNotificationPopulatedWrapper toDbNotificationPopulatedWrapper() {
     if (this is DbNotificationPopulatedWrapper) {
       return this as DbNotificationPopulatedWrapper;
     } else {

@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/pleroma/database/pleroma_chat_accounts_database_dao.dart';
 import 'package:fedi/app/chat/pleroma/database/pleroma_chat_database_dao.dart';
@@ -220,8 +221,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
             ]
           : null,
     );
-    return (await query
-        .get())
+    return (await query.get())
         .toDbPleromaChatWithLastMessagePopulatedList(dao: dao)
         .toDbPleromaChatWithLastMessagePopulatedWrapperList();
   }
@@ -330,12 +330,148 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
+  IPleromaChat mapRemoteItemToAppItem(
+    pleroma_lib.IPleromaChat remoteItem,
+  ) {
+    return DbPleromaChatPopulatedWrapper(
+      dbChatPopulated: DbPleromaChatPopulated(
+        dbAccount: remoteItem.account.toDbAccount(),
+        dbChat: remoteItem.toDbChat(),
+      ),
+    );
+  }
+
+  @override
   PleromaChatRepositoryFilters get emptyFilters =>
       PleromaChatRepositoryFilters.empty;
 
   @override
   List<PleromaChatRepositoryOrderingTermData> get defaultOrderingTerms =>
       PleromaChatRepositoryOrderingTermData.defaultTerms;
+
+  @override
+  Future<void> insertInDbTypeBatch(
+    Insertable<DbChat> dbItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) =>
+      dao.insertBatch(
+        entity: dbItem,
+        mode: mode,
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  Future<int> insertInRemoteType(
+    pleroma_lib.IPleromaChat remoteItem, {
+    required InsertMode? mode,
+  }) async {
+    await _upsertChatMessageMetadata(
+      remoteItem,
+      batchTransaction: null,
+    );
+
+    return await dao.upsert(
+      entity: remoteItem.toDbChat(),
+    );
+  }
+
+  Future _upsertChatMessageMetadata(
+    pleroma_lib.IPleromaChat remoteItem, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      await accountRepository.upsertChatRemoteAccount(
+        remoteItem.account,
+        chatRemoteId: remoteItem.id,
+        batchTransaction: batchTransaction,
+      );
+
+      var lastMessage = remoteItem.lastMessage;
+      if (lastMessage != null) {
+        await chatMessageRepository.upsertInRemoteTypeBatch(
+          lastMessage,
+          batchTransaction: batchTransaction,
+        );
+      }
+    } else {
+      await batch((batch) {
+        _upsertChatMessageMetadata(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        );
+      });
+    }
+  }
+
+  @override
+  Future<void> insertInRemoteTypeBatch(
+    pleroma_lib.IPleromaChat remoteItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      // todo: support mode
+      await _upsertChatMessageMetadata(
+        remoteItem,
+        batchTransaction: batchTransaction,
+      );
+
+      await dao.upsertBatch(
+        entity: remoteItem.toDbChat(),
+        batchTransaction: batchTransaction,
+      );
+    } else {
+      await batch((batch) {
+        insertInRemoteTypeBatch(
+          remoteItem,
+          mode: mode,
+          batchTransaction: batch,
+        );
+      });
+    }
+  }
+
+  @override
+  Future<void> updateAppTypeByRemoteType({
+    required IPleromaChat appItem,
+    required pleroma_lib.IPleromaChat remoteItem,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      // todo: support mode
+      await _upsertChatMessageMetadata(
+        remoteItem,
+        batchTransaction: batchTransaction,
+      );
+
+      await dao.upsertBatch(
+        entity: remoteItem.toDbChat().copyWith(
+              id: appItem.localId,
+            ),
+        batchTransaction: batchTransaction,
+      );
+    } else {
+      await batch((batch) {
+        insertInRemoteTypeBatch(
+          remoteItem,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        );
+      });
+    }
+  }
+
+  @override
+  Future<void> updateByDbIdInDbType({
+    required int dbId,
+    required DbChat dbItem,
+    required Batch? batchTransaction,
+  }) =>
+      dao.upsertBatch(
+        entity: dbItem.copyWith(id: dbId),
+        batchTransaction: batchTransaction,
+      );
 }
 
 extension DbPleromaChatPopulatedExtension on DbPleromaChatPopulated {
