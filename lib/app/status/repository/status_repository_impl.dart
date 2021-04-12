@@ -15,7 +15,6 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
-import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
@@ -415,7 +414,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           StatusRepositoryOrderingTermData.createdAtDesc,
         ],
         // pagination: null,
-        pagination: RepositoryPagination(limit: 1),
+        pagination: null,
       );
 
   @override
@@ -432,7 +431,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           StatusRepositoryOrderingTermData.createdAtDesc,
         ],
         // pagination: null,
-        pagination: RepositoryPagination(limit: 1),
+        pagination: null,
       );
 
   @override
