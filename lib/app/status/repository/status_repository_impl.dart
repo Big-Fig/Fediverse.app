@@ -13,7 +13,6 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/repository/repository_model.dart';
@@ -806,6 +805,31 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         isFromHomeTimeline: null,
         batchTransaction: batchTransaction,
       );
+
+  @override
+  Future insertAllInRemoteType(
+    List<IPleromaStatus> remoteItems, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) async {
+    for (var remoteItem in remoteItems) {
+      await insertInRemoteTypeBatch(
+        remoteItem,
+        mode: mode,
+        batchTransaction: batchTransaction,
+      );
+    }
+    // if (batchTransaction != null) {
+    // } else {
+    //   await batch((batch) {
+    //     insertAllInRemoteType(
+    //       remoteItems,
+    //       mode: mode,
+    //       batchTransaction: batch,
+    //     );
+    //   });
+    // }
+  }
 
   @override
   Future upsertRemoteStatusesWithAllArguments(
