@@ -118,7 +118,7 @@ dependencies:
   # commandline script to pull database from emulator
   # adb exec-out run-as com.fediverse.app cat ./databases/jffdev@fedi.app.sqlite > database.sqlite
   # sqlite orm
-  moor: ^4.1.0
+  moor: ^4.2.1
 
   # sqlite3_flutter_libs required for moor ffi
   sqlite3_flutter_libs: ^0.4.1
@@ -236,7 +236,7 @@ dev_dependencies:
   # build tool to generate json from & to methods
   json_serializable: ^4.0.2
   # sql orm generator
-  moor_generator: ^4.1.0
+  moor_generator: ^4.2.1
 
   # object serialization generator
   hive_generator: ^1.0.0

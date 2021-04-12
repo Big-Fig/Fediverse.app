@@ -233,18 +233,18 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required String listRemoteId,
     required Batch? batchTransaction,
   }) async {
-    List<DbStatusList> alreadyAddedListStatuses =
-        await listsDao.findByListRemoteId(listRemoteId).get();
-    Iterable<String> alreadyAddedListStatusesIds =
-        alreadyAddedListStatuses.map((listStatus) => listStatus.statusRemoteId);
-    Iterable<String> notAddedYetStatusRemoteIds =
-        statusRemoteIds.where((statusRemoteId) {
-      return !alreadyAddedListStatusesIds.contains(statusRemoteId);
-    });
+    // List<DbStatusList> alreadyAddedListStatuses =
+    //     await listsDao.findByListRemoteId(listRemoteId).get();
+    // Iterable<String> alreadyAddedListStatusesIds =
+    //     alreadyAddedListStatuses.map((listStatus) => listStatus.statusRemoteId);
+    // Iterable<String> notAddedYetStatusRemoteIds =
+    //     statusRemoteIds.where((statusRemoteId) {
+    //   return !alreadyAddedListStatusesIds.contains(statusRemoteId);
+    // });
 
-    if (notAddedYetStatusRemoteIds.isNotEmpty == true) {
+    if (statusRemoteIds.isNotEmpty == true) {
       await listsDao.insertAll(
-        entities: notAddedYetStatusRemoteIds
+        entities: statusRemoteIds
             .map(
               (statusRemoteId) => DbStatusList(
                 id: null,
@@ -267,21 +267,21 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // todo: rework with less queries
-      List<DbConversationStatus> alreadyAddedConversationStatuses =
-          await conversationStatusesDao
-              .findByConversationRemoteId(conversationRemoteId)
-              .get();
-      Iterable<String> alreadyAddedConversationStatusesIds =
-          alreadyAddedConversationStatuses.map(
-        (conversationStatus) => conversationStatus.statusRemoteId,
-      );
-      Iterable<String> notAddedYetStatusRemoteIds =
-          statusRemoteIds.where((statusRemoteId) {
-        return !alreadyAddedConversationStatusesIds.contains(statusRemoteId);
-      });
+      // List<DbConversationStatus> alreadyAddedConversationStatuses =
+      //     await conversationStatusesDao
+      //         .findByConversationRemoteId(conversationRemoteId)
+      //         .get();
+      // Iterable<String> alreadyAddedConversationStatusesIds =
+      //     alreadyAddedConversationStatuses.map(
+      //   (conversationStatus) => conversationStatus.statusRemoteId,
+      // );
+      // Iterable<String> notAddedYetStatusRemoteIds =
+      //     statusRemoteIds.where((statusRemoteId) {
+      //   return !alreadyAddedConversationStatusesIds.contains(statusRemoteId);
+      // });
 
-      if (notAddedYetStatusRemoteIds.isNotEmpty == true) {
-        for (var statusRemoteId in notAddedYetStatusRemoteIds) {
+      if (statusRemoteIds.isNotEmpty == true) {
+        for (var statusRemoteId in statusRemoteIds) {
           await conversationStatusesDao.insertBatch(
             entity: DbConversationStatus(
               id: null,
@@ -338,142 +338,6 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       });
     }
   }
-
-  //
-  // @override
-  // Future<List<DbStatusPopulatedWrapper>> getStatuses({
-  //   required StatusRepositoryFilters? filters,
-  //   required RepositoryPagination<IStatus>? pagination,
-  //   StatusRepositoryOrderingTermData? orderingTermData =
-  //       StatusRepositoryOrderingTermData.remoteIdDesc,
-  // }) async {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: pagination,
-  //     orderingTermData: orderingTermData,
-  //   );
-  //
-  //   var typedResultList = await query.get();
-  //
-  //   return typedResultList
-  //       .toDbStatusPopulatedList(dao: dao)
-  //       .toDbStatusPopulatedWrappers();
-  // }
-  //
-  // @override
-  // Stream<List<DbStatusPopulatedWrapper>> watchStatuses({
-  //   required StatusRepositoryFilters? filters,
-  //   required RepositoryPagination<IStatus>? pagination,
-  //   StatusRepositoryOrderingTermData? orderingTermData =
-  //       StatusRepositoryOrderingTermData.remoteIdDesc,
-  // }) {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: pagination,
-  //     orderingTermData: orderingTermData,
-  //   );
-  //
-  //   Stream<List<DbStatusPopulated>> stream = query.watch().map(
-  //         (list) => list.toDbStatusPopulatedList(dao: dao),
-  //       );
-  //   return stream.map(
-  //     (list) => list.toDbStatusPopulatedWrappers(),
-  //   );
-  // }
-
-  // //
-  // // @override
-  // // Future updateLocalStatusByRemoteStatus({
-  // //   required IStatus oldLocalStatus,
-  // //   required IPleromaStatus newRemoteStatus,
-  // //   bool isFromHomeTimeline = false,
-  // // }) async {
-  // //   _logger.finer(() => "updateLocalStatusByRemoteStatus \n"
-  // //       "\t old: $oldLocalStatus \n"
-  // //       "\t newRemoteStatus: $newRemoteStatus");
-  // //
-  // //   var remoteAccount = newRemoteStatus.account;
-  // //
-  // //   await accountRepository.upsertRemoteAccount(
-  // //     remoteAccount,
-  // //     conversationRemoteId: null,
-  // //     chatRemoteId: null,
-  // //   );
-  // //
-  // //   await updateByDbIdInDbType(
-  // //     dbId: oldLocalStatus.localId!,
-  // //     dbItem: newRemoteStatus.toDbStatus(),
-  // //
-  // //   );
-  // //
-  // //   if (isFromHomeTimeline == true) {
-  // //     await homeTimelineStatusesDao.insert(
-  // //       entity: DbHomeTimelineStatus(
-  // //         statusRemoteId: newRemoteStatus.id,
-  // //         id: null,
-  // //         accountRemoteId: newRemoteStatus.account.id,
-  // //       ),
-  // //       mode: InsertMode.insertOrReplace,
-  // //     );
-  // //   }
-  // //
-  // //   var statusRemoteId = newRemoteStatus.id;
-  // //
-  // //   var tags = newRemoteStatus.tags;
-  // //
-  // //   if (tags?.isNotEmpty == true) {
-  // //     await updateStatusTags(
-  // //       statusRemoteId: statusRemoteId,
-  // //       tags: tags!,
-  // //     );
-  // //   }
-  // //
-  // //   if (newRemoteStatus.reblog != null) {
-  // //     await upsertRemoteStatus(
-  // //       newRemoteStatus,
-  // //       listRemoteId: null,
-  // //       conversationRemoteId: null,
-  // //     );
-  // //   }
-  // // }
-  //
-  // @override
-  // Future<DbStatusPopulatedWrapper?> getStatus({
-  //   required StatusRepositoryFilters? filters,
-  //   StatusRepositoryOrderingTermData? orderingTermData =
-  //       StatusRepositoryOrderingTermData.remoteIdDesc,
-  // }) async {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: _singleStatusRepositoryPagination,
-  //     orderingTermData: orderingTermData,
-  //   );
-  //
-  //   var typedResult = await query.getSingleOrNull();
-  //
-  //   var dbStatusPopulated = typedResult?.toDbStatusPopulated(dao: dao);
-  //
-  //   return dbStatusPopulated?.toDbStatusPopulatedWrapper();
-  // }
-  //
-  // @override
-  // Stream<DbStatusPopulatedWrapper?> watchStatus({
-  //   required StatusRepositoryFilters? filters,
-  //   StatusRepositoryOrderingTermData? orderingTermData =
-  //       StatusRepositoryOrderingTermData.remoteIdDesc,
-  // }) {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: _singleStatusRepositoryPagination,
-  //     orderingTermData: orderingTermData,
-  //   );
-  //
-  //   return query.watchSingleOrNull().map(
-  //         (typedResult) => typedResult
-  //             ?.toDbStatusPopulated(dao: dao)
-  //             .toDbStatusPopulatedWrapper(),
-  //       );
-  // }
 
   @override
   Future incrementRepliesCount({
@@ -795,33 +659,35 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required String? conversationRemoteId,
     required Batch? batchTransaction,
   }) async {
-    if (batchTransaction != null) {
-      // todo: support mode
-      await _upsertStatusMetadata(
-        remoteStatus,
-        listRemoteId: listRemoteId,
-        conversationRemoteId: conversationRemoteId,
-        isFromHomeTimeline: isFromHomeTimeline,
-        batchTransaction: batchTransaction,
-      );
+    await _upsertStatusMetadata(
+      remoteStatus,
+      listRemoteId: listRemoteId,
+      conversationRemoteId: conversationRemoteId,
+      isFromHomeTimeline: isFromHomeTimeline,
+      batchTransaction: null,
+    );
 
-      await dao.upsertBatch(
-        entity: remoteStatus.toDbStatus(),
-        batchTransaction: batchTransaction,
-      );
-    } else {
-      await batch(
-        (batch) {
-          upsertRemoteStatusWithAllArguments(
-            remoteStatus,
-            listRemoteId: listRemoteId,
-            conversationRemoteId: conversationRemoteId,
-            isFromHomeTimeline: isFromHomeTimeline,
-            batchTransaction: batch,
-          );
-        },
-      );
-    }
+    await dao.upsertBatch(
+      entity: remoteStatus.toDbStatus(),
+      batchTransaction: null,
+    );
+
+    // if (batchTransaction != null) {
+    //   // todo: support mode
+    //
+    // } else {
+    //   await batch(
+    //     (batch) {
+    //       upsertRemoteStatusWithAllArguments(
+    //         remoteStatus,
+    //         listRemoteId: listRemoteId,
+    //         conversationRemoteId: conversationRemoteId,
+    //         isFromHomeTimeline: isFromHomeTimeline,
+    //         batchTransaction: batch,
+    //       );
+    //     },
+    //   );
+    // }
   }
 
   @override
@@ -871,87 +737,42 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     List<IPleromaStatus> remoteStatuses, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
-  }) async {
-    if (batchTransaction != null) {
-      remoteStatuses.forEach(
-        (remoteStatus) {
-          upsertRemoteStatusWithAllArguments(
-            remoteStatus,
-            conversationRemoteId: conversationRemoteId,
-            isFromHomeTimeline: null,
-            listRemoteId: null,
-            batchTransaction: batchTransaction,
-          );
-        },
+  }) =>
+      upsertRemoteStatusesWithAllArguments(
+        remoteStatuses,
+        listRemoteId: null,
+        conversationRemoteId: conversationRemoteId,
+        isFromHomeTimeline: null,
+        batchTransaction: batchTransaction,
       );
-    } else {
-      await batch((batch) {
-        upsertRemoteStatusesForConversation(
-          remoteStatuses,
-          conversationRemoteId: conversationRemoteId,
-          batchTransaction: batch,
-        );
-      });
-    }
-  }
 
   @override
   Future upsertRemoteStatusesForHomeTimeline(
     List<IPleromaStatus> remoteStatuses, {
     required bool isFromHomeTimeline,
     required Batch? batchTransaction,
-  }) async {
-    if (batchTransaction != null) {
-      remoteStatuses.forEach(
-        (remoteStatus) {
-          upsertRemoteStatusWithAllArguments(
-            remoteStatus,
-            isFromHomeTimeline: isFromHomeTimeline,
-            conversationRemoteId: null,
-            listRemoteId: null,
-            batchTransaction: batchTransaction,
-          );
-        },
+  }) =>
+      upsertRemoteStatusesWithAllArguments(
+        remoteStatuses,
+        listRemoteId: null,
+        conversationRemoteId: null,
+        isFromHomeTimeline: isFromHomeTimeline,
+        batchTransaction: batchTransaction,
       );
-    } else {
-      await batch((batch) {
-        upsertRemoteStatusesForHomeTimeline(
-          remoteStatuses,
-          isFromHomeTimeline: isFromHomeTimeline,
-          batchTransaction: batch,
-        );
-      });
-    }
-  }
 
   @override
   Future upsertRemoteStatusesForList(
     List<IPleromaStatus> remoteStatuses, {
     required String listRemoteId,
     required Batch? batchTransaction,
-  }) async {
-    if (batchTransaction != null) {
-      remoteStatuses.forEach(
-        (remoteStatus) {
-          upsertRemoteStatusWithAllArguments(
-            remoteStatus,
-            isFromHomeTimeline: null,
-            conversationRemoteId: null,
-            listRemoteId: listRemoteId,
-            batchTransaction: batchTransaction,
-          );
-        },
+  }) async =>
+      upsertRemoteStatusesWithAllArguments(
+        remoteStatuses,
+        listRemoteId: listRemoteId,
+        conversationRemoteId: null,
+        isFromHomeTimeline: null,
+        batchTransaction: batchTransaction,
       );
-    } else {
-      await batch((batch) {
-        upsertRemoteStatusesForList(
-          remoteStatuses,
-          listRemoteId: listRemoteId,
-          batchTransaction: batch,
-        );
-      });
-    }
-  }
 
   @override
   Future upsertRemoteStatusesWithAllArguments(
@@ -962,17 +783,15 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      remoteStatuses.forEach(
-        (remoteStatus) {
-          upsertRemoteStatusWithAllArguments(
-            remoteStatus,
-            isFromHomeTimeline: isFromHomeTimeline,
-            conversationRemoteId: conversationRemoteId,
-            listRemoteId: listRemoteId,
-            batchTransaction: batchTransaction,
-          );
-        },
-      );
+      for (var remoteStatus in remoteStatuses) {
+        await upsertRemoteStatusWithAllArguments(
+          remoteStatus,
+          isFromHomeTimeline: isFromHomeTimeline,
+          conversationRemoteId: conversationRemoteId,
+          listRemoteId: listRemoteId,
+          batchTransaction: batchTransaction,
+        );
+      }
     } else {
       await batch((batch) {
         upsertRemoteStatusesWithAllArguments(
@@ -1005,17 +824,19 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
       var remoteAccount = remoteStatus.account;
 
-      if (conversationRemoteId != null) {
-        await accountRepository.upsertConversationRemoteAccount(
-          remoteAccount,
-          conversationRemoteId: conversationRemoteId,
-          batchTransaction: batchTransaction,
-        );
-      } else {
-        await accountRepository.upsertInRemoteTypeBatch(
-          remoteAccount,
-          batchTransaction: batchTransaction,
-        );
+      if (remoteAccount.id != remoteStatus.reblog?.account.id) {
+        if (conversationRemoteId != null) {
+          await accountRepository.upsertConversationRemoteAccount(
+            remoteAccount,
+            conversationRemoteId: conversationRemoteId,
+            batchTransaction: batchTransaction,
+          );
+        } else {
+          await accountRepository.upsertInRemoteTypeBatch(
+            remoteAccount,
+            batchTransaction: batchTransaction,
+          );
+        }
       }
 
       if (isFromHomeTimeline == true) {
