@@ -378,6 +378,31 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
+  Future insertAllInRemoteType(
+    List<IPleromaNotification> remoteItems, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) async {
+    for (var remoteItem in remoteItems) {
+      await insertInRemoteTypeBatch(
+        remoteItem,
+        mode: mode,
+        batchTransaction: batchTransaction,
+      );
+    }
+    // if (batchTransaction != null) {
+    // } else {
+    //   await batch((batch) {
+    //     insertAllInRemoteType(
+    //       remoteItems,
+    //       mode: mode,
+    //       batchTransaction: batch,
+    //     );
+    //   });
+    // }
+  }
+
+  @override
   Future<void> insertInRemoteTypeBatch(
     IPleromaNotification remoteItem, {
     required InsertMode? mode,
