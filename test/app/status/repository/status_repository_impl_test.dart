@@ -1297,7 +1297,7 @@ void main() {
     ))
         .copyWith();
     await insertDbStatus(statusRepository, dbStatus2);
-    await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
+    await statusRepository.addStatusesToConversation(
       statusRemoteIds: [dbStatus2.remoteId],
       conversationRemoteId: "invalidConversationId",
       batchTransaction: null,
@@ -1311,7 +1311,7 @@ void main() {
     ))
         .copyWith();
     await insertDbStatus(statusRepository, dbStatus3);
-    await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
+    await statusRepository.addStatusesToConversation(
       statusRemoteIds: [dbStatus3.remoteId],
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
@@ -1320,7 +1320,7 @@ void main() {
     expect((await query.get()).length, 1);
 
     // duplicate adding. Should be skipped
-    await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
+    await statusRepository.addStatusesToConversation(
       statusRemoteIds: [dbStatus3.remoteId],
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
@@ -1333,7 +1333,7 @@ void main() {
     ))
         .copyWith();
     await insertDbStatus(statusRepository, dbStatus4);
-    await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
+    await statusRepository.addStatusesToConversation(
       statusRemoteIds: [dbStatus4.remoteId],
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
@@ -1497,7 +1497,7 @@ void main() {
       0,
     );
 
-    await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
+    await statusRepository.addStatusesToConversation(
       statusRemoteIds: ["statusRemoteId1"],
       conversationRemoteId: "conversationRemoteId1",
       batchTransaction: null,
@@ -1508,7 +1508,7 @@ void main() {
       1,
     );
 
-    await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
+    await statusRepository.addStatusesToConversation(
       statusRemoteIds: ["statusRemoteId1"],
       conversationRemoteId: "conversationRemoteId1",
       batchTransaction: null,
@@ -2513,7 +2513,7 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await statusRepository.addStatusesToConversationWithDuplicatePreCheck(
+    await statusRepository.addStatusesToConversation(
       statusRemoteIds: [dbStatus1.remoteId],
       conversationRemoteId: "conversationRemoteId1",
       batchTransaction: null,

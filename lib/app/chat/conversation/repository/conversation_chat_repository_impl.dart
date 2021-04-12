@@ -340,17 +340,18 @@ class ConversationChatRepository
     IPleromaConversation remoteItem, {
     required InsertMode? mode,
   }) async {
-    await _upsertChatMetadata(
+    await _upsertConversationMetadata(
       remoteItem,
       batchTransaction: null,
     );
 
-    return await dao.upsert(
+    return await dao.insert(
       entity: remoteItem.toDbConversation(),
+      mode: mode,
     );
   }
 
-  Future _upsertChatMetadata(
+  Future _upsertConversationMetadata(
     IPleromaConversation remoteItem, {
     required Batch? batchTransaction,
   }) async {
@@ -362,11 +363,22 @@ class ConversationChatRepository
           account.id == lastMessage?.account.id ||
           account.id == lastMessage?.reblog?.account.id);
 
-      await accountRepository.upsertConversationRemoteAccounts(
-        accounts,
-        conversationRemoteId: remoteItem.id!,
-        batchTransaction: batchTransaction,
-      );
+
+      for (var account in accounts) {
+        await accountRepository.upsertConversationRemoteAccount(
+          account,
+          conversationRemoteId: remoteItem.id!,
+          batchTransaction: batchTransaction,
+        );
+      }
+
+      // strange bug upsertConversationRemoteAccounts not work
+      // todo: check
+      // await accountRepository.upsertConversationRemoteAccounts(
+      //   accounts,
+      //   conversationRemoteId: remoteItem.id!,
+      //   batchTransaction: batchTransaction,
+      // );
 
       if (lastMessage != null) {
         await statusRepository.upsertRemoteStatusForConversation(
@@ -377,7 +389,7 @@ class ConversationChatRepository
       }
     } else {
       await batch((batch) {
-        _upsertChatMetadata(
+        _upsertConversationMetadata(
           remoteItem,
           batchTransaction: batch,
         );
@@ -393,7 +405,7 @@ class ConversationChatRepository
   }) async {
     if (batchTransaction != null) {
       // todo: support mode
-      await _upsertChatMetadata(
+      await _upsertConversationMetadata(
         remoteItem,
         batchTransaction: batchTransaction,
       );
@@ -422,7 +434,7 @@ class ConversationChatRepository
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      await _upsertChatMetadata(
+      await _upsertConversationMetadata(
         remoteItem,
         batchTransaction: batchTransaction,
       );

@@ -61,21 +61,20 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   Future upsertRemoteAccount(
     IPleromaAccount pleromaAccount, {
-    int? dbId,
     required String? conversationRemoteId,
     required String? chatRemoteId,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      await upsertInDbTypeBatch(
-        pleromaAccount.toDbAccount().copyWith(id: dbId),
-        batchTransaction: batchTransaction,
-      );
-
       await _upsertRemoteAccountMetadata(
         pleromaAccount,
         conversationRemoteId: conversationRemoteId,
         chatRemoteId: chatRemoteId,
+        batchTransaction: batchTransaction,
+      );
+
+      await upsertInDbTypeBatch(
+        pleromaAccount.toDbAccount(),
         batchTransaction: batchTransaction,
       );
     } else {
@@ -97,9 +96,8 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
+      var accountRemoteId = pleromaAccount.id;
       if (conversationRemoteId != null) {
-        var accountRemoteId = pleromaAccount.id;
-
         await conversationAccountsDao.insertBatch(
           entity: DbConversationAccount(
             id: null,
@@ -111,8 +109,6 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         );
       }
       if (chatRemoteId != null) {
-        var accountRemoteId = pleromaAccount.id;
-
         await chatAccountsDao.insertBatch(
           entity: DbChatAccount(
             id: null,
