@@ -23,7 +23,7 @@ abstract class IStatusRepository
         listen: listen,
       );
 
-  Future addStatusesToConversationWithDuplicatePreCheck({
+  Future addStatusesToConversation({
     required List<String> statusRemoteIds,
     required String conversationRemoteId,
     required Batch? batchTransaction,
