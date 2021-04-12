@@ -13,8 +13,10 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
+import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
@@ -414,7 +416,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           StatusRepositoryOrderingTermData.createdAtDesc,
         ],
         // pagination: null,
-        pagination: null,
+        pagination: RepositoryPagination(limit: 1),
       );
 
   @override
@@ -431,7 +433,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           StatusRepositoryOrderingTermData.createdAtDesc,
         ],
         // pagination: null,
-        pagination: null,
+        pagination: RepositoryPagination(limit: 1),
       );
 
   @override
@@ -677,7 +679,20 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required String? conversationRemoteId,
     required Batch? batchTransaction,
   }) async {
-
+    // //
+    // // todo: support mode
+    // await _upsertStatusMetadata(
+    //   remoteStatus,
+    //   listRemoteId: listRemoteId,
+    //   conversationRemoteId: conversationRemoteId,
+    //   isFromHomeTimeline: isFromHomeTimeline,
+    //   batchTransaction: batchTransaction,
+    // );
+    //
+    // await dao.upsertBatch(
+    //   entity: remoteStatus.toDbStatus(),
+    //   batchTransaction: batchTransaction,
+    // );
 
     if (batchTransaction != null) {
       // todo: support mode
@@ -693,7 +708,6 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         entity: remoteStatus.toDbStatus(),
         batchTransaction: batchTransaction,
       );
-
     } else {
       await batch(
         (batch) {
@@ -801,27 +815,137 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required String? conversationRemoteId,
     required Batch? batchTransaction,
   }) async {
-    if (batchTransaction != null) {
-      for (var remoteStatus in remoteStatuses) {
-        await upsertRemoteStatusWithAllArguments(
-          remoteStatus,
-          isFromHomeTimeline: isFromHomeTimeline,
-          conversationRemoteId: conversationRemoteId,
-          listRemoteId: listRemoteId,
-          batchTransaction: batchTransaction,
-        );
-      }
-    } else {
-      await batch((batch) {
-        upsertRemoteStatusesWithAllArguments(
-          remoteStatuses,
-          listRemoteId: listRemoteId,
-          conversationRemoteId: conversationRemoteId,
-          isFromHomeTimeline: isFromHomeTimeline,
-          batchTransaction: batch,
-        );
-      });
+    // assert(batchTransaction == null);
+    // _logger.finer(() => "upsertRemoteStatuses ${remoteStatuses.length} "
+    //     "listRemoteId => $listRemoteId"
+    //     "conversationRemoteId => $conversationRemoteId"
+    //     "isFromHomeTimeline => $isFromHomeTimeline");
+    // if (remoteStatuses.isEmpty) {
+    //   return;
+    // }
+    //
+    // List<IPleromaAccount> remoteAccounts =
+    //     remoteStatuses.map((remoteStatus) => remoteStatus.account).toList();
+    //
+    // if (conversationRemoteId != null) {
+    //   await accountRepository.upsertConversationRemoteAccounts(
+    //     remoteAccounts,
+    //     conversationRemoteId: conversationRemoteId,
+    //     batchTransaction: null,
+    //   );
+    // } else {
+    //   await accountRepository.upsertAllInRemoteType(
+    //     remoteAccounts,
+    //     batchTransaction: null,
+    //   );
+    // }
+    //
+    // await upsertAllInDbType(
+    //   remoteStatuses.map((remoteStatus) => remoteStatus.toDbStatus()).toList(),
+    //   batchTransaction: null,
+    // );
+    //
+    // if (isFromHomeTimeline == true) {
+    //   await homeTimelineStatusesDao.insertAll(
+    //     entities: remoteStatuses
+    //         .map(
+    //           (remoteStatus) => DbHomeTimelineStatus(
+    //             statusRemoteId: remoteStatus.id,
+    //             id: null,
+    //             accountRemoteId: remoteStatus.account.id,
+    //           ),
+    //         )
+    //         .toList(),
+    //     mode: InsertMode.insertOrReplace,
+    //     batchTransaction: null,
+    //   );
+    // }
+    //
+    // if (listRemoteId != null) {
+    //   await addStatusesToList(
+    //     statusRemoteIds: remoteStatuses
+    //         .map(
+    //           (remoteStatus) => remoteStatus.id,
+    //         )
+    //         .toList(),
+    //     listRemoteId: listRemoteId,
+    //     batchTransaction: null,
+    //   );
+    // }
+    // if (conversationRemoteId != null) {
+    //   await addStatusesToConversation(
+    //     statusRemoteIds: remoteStatuses
+    //         .map(
+    //           (remoteStatus) => remoteStatus.id,
+    //         )
+    //         .toList(),
+    //     conversationRemoteId: conversationRemoteId,
+    //     batchTransaction: null,
+    //   );
+    // }
+    //
+    // // todo: rework with batch update
+    // for (var remoteStatus in remoteStatuses) {
+    //   var statusRemoteId = remoteStatus.id;
+    //   var tags = remoteStatus.tags;
+    //   if (tags?.isNotEmpty == true) {
+    //     await updateStatusTags(
+    //       statusRemoteId: statusRemoteId,
+    //       tags: tags!,
+    //       batchTransaction: null,
+    //     );
+    //   }
+    // }
+    //
+    // List<IPleromaStatus> reblogs = remoteStatuses
+    //     .where((remoteStatus) => remoteStatus.reblog != null)
+    //     .map((remoteStatus) => remoteStatus.reblog!)
+    //     .toList();
+    //
+    // if (reblogs.isNotEmpty) {
+    //   // list & conversation should be null. We don't need reblogs in
+    //   // conversations & lists
+    //   await upsertRemoteStatusesWithAllArguments(
+    //     reblogs,
+    //     listRemoteId: null,
+    //     conversationRemoteId: null,
+    //     batchTransaction: null,
+    //     isFromHomeTimeline: null,
+    //   );
+    // }
+
+    for (var remoteStatus in remoteStatuses) {
+      await upsertRemoteStatusWithAllArguments(
+        remoteStatus,
+        isFromHomeTimeline: isFromHomeTimeline,
+        conversationRemoteId: conversationRemoteId,
+        listRemoteId: listRemoteId,
+        batchTransaction: batchTransaction,
+      );
     }
+
+    //
+    // if (batchTransaction != null) {
+    //   for (var remoteStatus in remoteStatuses) {
+    //     await upsertRemoteStatusWithAllArguments(
+    //       remoteStatus,
+    //       isFromHomeTimeline: isFromHomeTimeline,
+    //       conversationRemoteId: conversationRemoteId,
+    //       listRemoteId: listRemoteId,
+    //       batchTransaction: batchTransaction,
+    //     );
+    //   }
+    // } else {
+    //   await batch((batch) {
+    //     upsertRemoteStatusesWithAllArguments(
+    //       remoteStatuses,
+    //       listRemoteId: listRemoteId,
+    //       conversationRemoteId: conversationRemoteId,
+    //       isFromHomeTimeline: isFromHomeTimeline,
+    //       batchTransaction: batch,
+    //     );
+    //   });
+    // }
   }
 
   Future _upsertStatusMetadata(
