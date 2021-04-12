@@ -33,7 +33,7 @@ void main() {
   late DbAccount dbAccount;
 
   setUp(() async {
-    database = AppDatabase(VmDatabase.memory(logStatements: true));
+    database = AppDatabase(VmDatabase.memory(logStatements: false));
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
       appDatabase: database,
@@ -1535,6 +1535,14 @@ void main() {
       isFromHomeTimeline: null,
       batchTransaction: null,
     );
+
+
+    expect(await statusRepository.countAll(), 1);
+    expect(await accountRepository.countAll(), 1);
+    expect(
+      (await statusRepository.conversationStatusesDao.getAll()).length,
+      1,
+    );
     await statusRepository.upsertRemoteStatusesWithAllArguments(
       [
         DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
@@ -1544,6 +1552,14 @@ void main() {
       listRemoteId: null,
       batchTransaction: null,
       isFromHomeTimeline: null,
+    );
+
+
+    expect(await statusRepository.countAll(), 1);
+    expect(await accountRepository.countAll(), 1);
+    expect(
+      (await statusRepository.conversationStatusesDao.getAll()).length,
+      1,
     );
 
     var future1 = statusRepository.upsertRemoteStatusWithAllArguments(

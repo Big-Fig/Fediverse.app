@@ -340,7 +340,7 @@ class ConversationChatRepository
     IPleromaConversation remoteItem, {
     required InsertMode? mode,
   }) async {
-    await _upsertChatMessageMetadata(
+    await _upsertChatMetadata(
       remoteItem,
       batchTransaction: null,
     );
@@ -350,18 +350,24 @@ class ConversationChatRepository
     );
   }
 
-  Future _upsertChatMessageMetadata(
+  Future _upsertChatMetadata(
     IPleromaConversation remoteItem, {
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
+      var accounts = remoteItem.accounts;
+
+      var lastMessage = remoteItem.lastStatus;
+      accounts.removeWhere((account) =>
+          account.id == lastMessage?.account.id ||
+          account.id == lastMessage?.reblog?.account.id);
+
       await accountRepository.upsertConversationRemoteAccounts(
-        remoteItem.accounts,
+        accounts,
         conversationRemoteId: remoteItem.id!,
         batchTransaction: batchTransaction,
       );
 
-      var lastMessage = remoteItem.lastStatus;
       if (lastMessage != null) {
         await statusRepository.upsertRemoteStatusForConversation(
           lastMessage,
@@ -371,7 +377,7 @@ class ConversationChatRepository
       }
     } else {
       await batch((batch) {
-        _upsertChatMessageMetadata(
+        _upsertChatMetadata(
           remoteItem,
           batchTransaction: batch,
         );
@@ -387,7 +393,7 @@ class ConversationChatRepository
   }) async {
     if (batchTransaction != null) {
       // todo: support mode
-      await _upsertChatMessageMetadata(
+      await _upsertChatMetadata(
         remoteItem,
         batchTransaction: batchTransaction,
       );
@@ -416,7 +422,7 @@ class ConversationChatRepository
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      await _upsertChatMessageMetadata(
+      await _upsertChatMetadata(
         remoteItem,
         batchTransaction: batchTransaction,
       );

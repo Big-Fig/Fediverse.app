@@ -336,6 +336,7 @@ void main() {
               ),
             ),
           ],
+          // lastStatus: null,
           lastStatus: DbStatusPopulatedWrapper(
             dbStatusPopulated: dbStatusPopulated,
           ),

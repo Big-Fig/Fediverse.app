@@ -329,23 +329,6 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      var remoteAccount = remoteItem.account;
-
-      if (remoteAccount != null) {
-        await accountRepository.upsertInRemoteTypeBatch(
-          remoteAccount,
-          batchTransaction: batchTransaction,
-        );
-      }
-      var targetRemoteAccount = remoteItem.target;
-
-      if (targetRemoteAccount != null) {
-        await accountRepository.upsertInRemoteTypeBatch(
-          targetRemoteAccount,
-          batchTransaction: batchTransaction,
-        );
-      }
-
       var remoteStatus = remoteItem.status;
       if (remoteStatus != null) {
         await statusRepository.upsertInRemoteTypeBatch(
@@ -353,6 +336,28 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           batchTransaction: batchTransaction,
         );
       }
+
+      var remoteAccount = remoteItem.account;
+
+      // account may be already added during status update
+      if (remoteAccount != null &&
+          remoteStatus?.account.id != remoteAccount.id) {
+        await accountRepository.upsertInRemoteTypeBatch(
+          remoteAccount,
+          batchTransaction: batchTransaction,
+        );
+      }
+      var targetRemoteAccount = remoteItem.target;
+
+      if (targetRemoteAccount != null &&
+          remoteStatus?.account.id != targetRemoteAccount.id &&
+          targetRemoteAccount.id != remoteAccount?.id) {
+        await accountRepository.upsertInRemoteTypeBatch(
+          targetRemoteAccount,
+          batchTransaction: batchTransaction,
+        );
+      }
+
       var remoteChatMessage = remoteItem.chatMessage;
       if (remoteChatMessage != null) {
         await chatMessageRepository.upsertInRemoteTypeBatch(
@@ -495,8 +500,9 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         batchTransaction: batchTransaction,
       );
 
+      var dbNotification = remoteItem.toDbNotification(unread: unread);
       await dao.upsertBatch(
-        entity: remoteItem.toDbNotification(unread: unread),
+        entity: dbNotification,
         batchTransaction: batchTransaction,
       );
     } else {
