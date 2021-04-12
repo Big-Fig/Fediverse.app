@@ -128,9 +128,6 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         entity: dbItem.copyWith(id: dbId),
         batchTransaction: batchTransaction,
       );
-
-
-
 }
 
 extension DbFilterPopulatedListExtension on List<DbFilterPopulated> {

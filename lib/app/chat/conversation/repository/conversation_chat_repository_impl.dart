@@ -356,13 +356,11 @@ class ConversationChatRepository
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      var accounts = remoteItem.accounts;
-
       var lastMessage = remoteItem.lastStatus;
+      var accounts = remoteItem.accounts;
       accounts.removeWhere((account) =>
           account.id == lastMessage?.account.id ||
           account.id == lastMessage?.reblog?.account.id);
-
 
       for (var account in accounts) {
         await accountRepository.upsertConversationRemoteAccount(
@@ -425,6 +423,53 @@ class ConversationChatRepository
         },
       );
     }
+  }
+
+  @override
+  Future insertAllInRemoteType(
+    List<IPleromaConversation> remoteItems, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) async {
+    assert(batchTransaction == null);
+    //
+    // var accounts = <IPleromaAccount>{};
+    // remoteItems.forEach((conversation) {
+    //   accounts.addAll(conversation.accounts);
+    // });
+    //
+    // accountRepository.upsertConversationRemoteAccounts(
+    //   accounts,
+    //   conversationRemoteId: chatRemoteId,
+    //   batchTransaction: batchTransaction,
+    // );
+
+    for (var remoteItem in remoteItems) {
+      await insertInRemoteTypeBatch(
+        remoteItem,
+        mode: mode,
+        batchTransaction: batchTransaction,
+      );
+    }
+    //
+    //
+    // if (batchTransaction != null) {
+    //   for (var remoteItem in remoteItems) {
+    //     await insertInRemoteTypeBatch(
+    //       remoteItem,
+    //       mode: mode,
+    //       batchTransaction: batchTransaction,
+    //     );
+    //   }
+    // } else {
+    //   await batch((batch) {
+    //     insertAllInRemoteType(
+    //       remoteItems,
+    //       mode: mode,
+    //       batchTransaction: batch,
+    //     );
+    //   });
+    // }
   }
 
   @override
