@@ -358,30 +358,36 @@ class ConversationChatRepository
     if (batchTransaction != null) {
       var lastMessage = remoteItem.lastStatus;
       var accounts = remoteItem.accounts;
-      accounts.removeWhere((account) =>
-          account.id == lastMessage?.account.id ||
-          account.id == lastMessage?.reblog?.account.id);
+      // accounts.removeWhere((account) =>
+      //     account.id == lastMessage?.account.id ||
+      //     account.id == lastMessage?.reblog?.account.id);
 
-      for (var account in accounts) {
-        await accountRepository.upsertConversationRemoteAccount(
-          account,
-          conversationRemoteId: remoteItem.id!,
-          batchTransaction: batchTransaction,
-        );
-      }
+        // await accountRepository.upsertConversationRemoteAccounts(
+        //   accounts,
+        //   conversationRemoteId: remoteItem.id,
+        //   batchTransaction: batchTransaction,
+        // );
+      // for (var account in accounts) {
+      // }
 
       // strange bug upsertConversationRemoteAccounts not work
       // todo: check
       // await accountRepository.upsertConversationRemoteAccounts(
       //   accounts,
-      //   conversationRemoteId: remoteItem.id!,
+      //   conversationRemoteId: remoteItem.id,
       //   batchTransaction: batchTransaction,
       // );
+      await accountRepository.upsertConversationRemoteAccounts(
+        accounts,
+        conversationRemoteId: remoteItem.id,
+        batchTransaction: batchTransaction,
+      );
+
 
       if (lastMessage != null) {
-        await statusRepository.upsertRemoteStatusForConversation(
+         statusRepository.upsertRemoteStatusForConversation(
           lastMessage,
-          conversationRemoteId: remoteItem.id!,
+          conversationRemoteId: remoteItem.id,
           batchTransaction: batchTransaction,
         );
       }
@@ -431,7 +437,6 @@ class ConversationChatRepository
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) async {
-    assert(batchTransaction == null);
     //
     // var accounts = <IPleromaAccount>{};
     // remoteItems.forEach((conversation) {
@@ -443,33 +448,34 @@ class ConversationChatRepository
     //   conversationRemoteId: chatRemoteId,
     //   batchTransaction: batchTransaction,
     // );
-
-    for (var remoteItem in remoteItems) {
-      await insertInRemoteTypeBatch(
-        remoteItem,
-        mode: mode,
-        batchTransaction: batchTransaction,
-      );
-    }
     //
-    //
-    // if (batchTransaction != null) {
-    //   for (var remoteItem in remoteItems) {
-    //     await insertInRemoteTypeBatch(
-    //       remoteItem,
-    //       mode: mode,
-    //       batchTransaction: batchTransaction,
-    //     );
-    //   }
-    // } else {
-    //   await batch((batch) {
-    //     insertAllInRemoteType(
-    //       remoteItems,
-    //       mode: mode,
-    //       batchTransaction: batch,
-    //     );
-    //   });
+    // for (var remoteItem in remoteItems) {
+    //   await insertInRemoteTypeBatch(
+    //     remoteItem,
+    //     mode: mode,
+    //     batchTransaction: batchTransaction,
+    //   );
     // }
+
+
+
+    if (batchTransaction != null) {
+      for (var remoteItem in remoteItems) {
+        await insertInRemoteTypeBatch(
+          remoteItem,
+          mode: mode,
+          batchTransaction: batchTransaction,
+        );
+      }
+    } else {
+      await batch((batch) {
+        insertAllInRemoteType(
+          remoteItems,
+          mode: mode,
+          batchTransaction: batch,
+        );
+      });
+    }
   }
 
   @override

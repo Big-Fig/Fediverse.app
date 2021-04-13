@@ -68,7 +68,7 @@ class PleromaConversation implements IPleromaConversation {
   @override
   final PleromaStatus? lastStatus;
   @override
-  final String? id;
+  final String id;
   @override
   final List<PleromaAccount> accounts;
   @override

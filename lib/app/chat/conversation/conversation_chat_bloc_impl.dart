@@ -236,7 +236,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         for (var account in remoteConversation.accounts) {
           accountRepository.upsertConversationRemoteAccount(
             account,
-            conversationRemoteId: remoteConversation.id!,
+            conversationRemoteId: remoteConversation.id,
             batchTransaction: batch,
           );
         }
@@ -245,7 +245,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       if (lastStatus != null) {
         statusRepository.upsertRemoteStatusForConversation(
           lastStatus,
-          conversationRemoteId: remoteConversation.id!,
+          conversationRemoteId: remoteConversation.id,
           batchTransaction: batch,
         );
       }

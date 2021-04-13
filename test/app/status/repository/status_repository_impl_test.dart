@@ -2521,4 +2521,69 @@ void main() {
 
     expect((await query.get()).length, 1);
   });
+
+
+  test('insertInDbTypeBatch duplicated', () async {
+    expect(await statusRepository.countAll(), 0);
+
+    var dbItem1 = await createTestDbStatus(seed: "seed1", dbAccount: dbAccount.copyWith());
+    var dbItem1copy = await createTestDbStatus(seed: "seed1", dbAccount: dbAccount.copyWith());
+
+    await statusRepository.batch((batch) {
+      statusRepository.insertInDbTypeBatch(
+        dbItem1,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+      statusRepository.insertInDbTypeBatch(
+        dbItem1copy,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+    });
+
+    expect(await statusRepository.countAll(), 1);
+  });
+
+  test('insertInRemoteTypeBatch duplicated', () async {
+    expect(await statusRepository.countAll(), 0);
+
+    var status1 = await createTestStatus(seed: "seed1");
+    var status1Copy = await createTestStatus(seed: "seed1");
+
+    var remoteStatus1 = status1.toPleromaStatus();
+    var remoteStatus1Copy = status1Copy.toPleromaStatus();
+
+    await statusRepository.batch((batch) {
+      statusRepository.insertInRemoteTypeBatch(
+        remoteStatus1,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+      statusRepository.insertInRemoteTypeBatch(
+        remoteStatus1Copy,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+    });
+
+    expect(await statusRepository.countAll(), 1);
+  });
+  test('insertInRemoteTypeBatch duplicated', () async {
+    expect(await statusRepository.countAll(), 0);
+
+    var status1 = await createTestStatus(seed: "seed1");
+    var status1Copy = await createTestStatus(seed: "seed1");
+
+    var remoteStatus1 = status1.toPleromaStatus();
+    var remoteStatus1Copy = status1Copy.toPleromaStatus();
+
+    await statusRepository.insertAllInRemoteType(
+      [remoteStatus1, remoteStatus1Copy],
+      mode: InsertMode.insertOrReplace,
+      batchTransaction: null,
+    );
+
+    expect(await statusRepository.countAll(), 1);
+  });
 }

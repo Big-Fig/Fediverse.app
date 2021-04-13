@@ -8,6 +8,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
+import 'package:moor/moor.dart';
 
 import '../../conversation/conversation_model_helper.dart';
 import '../../status/database/status_database_model_helper.dart';
@@ -885,5 +886,69 @@ void main() {
           .length,
       1,
     );
+  });
+
+  test('insertInDbTypeBatch duplicated', () async {
+    expect(await accountRepository.countAll(), 0);
+
+    var dbItem1 = await createTestDbAccount(seed: "seed1");
+    var dbItem1copy = await createTestDbAccount(seed: "seed1");
+
+    await accountRepository.batch((batch) {
+      accountRepository.insertInDbTypeBatch(
+        dbItem1,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+      accountRepository.insertInDbTypeBatch(
+        dbItem1copy,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+    });
+
+    expect(await accountRepository.countAll(), 1);
+  });
+
+  test('insertInRemoteTypeBatch duplicated', () async {
+    expect(await accountRepository.countAll(), 0);
+
+    var account1 = await createTestAccount(seed: "seed1");
+    var account1Copy = await createTestAccount(seed: "seed1");
+
+    var remoteAccount1 = account1.toPleromaAccount();
+    var remoteAccount1Copy = account1Copy.toPleromaAccount();
+
+    await accountRepository.batch((batch) {
+      accountRepository.insertInRemoteTypeBatch(
+        remoteAccount1,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+      accountRepository.insertInRemoteTypeBatch(
+        remoteAccount1Copy,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+    });
+
+    expect(await accountRepository.countAll(), 1);
+  });
+  test('insertInRemoteTypeBatch duplicated', () async {
+    expect(await accountRepository.countAll(), 0);
+
+    var account1 = await createTestAccount(seed: "seed1");
+    var account1Copy = await createTestAccount(seed: "seed1");
+
+    var remoteAccount1 = account1.toPleromaAccount();
+    var remoteAccount1Copy = account1Copy.toPleromaAccount();
+
+    await accountRepository.insertAllInRemoteType(
+      [remoteAccount1, remoteAccount1Copy],
+      mode: InsertMode.insertOrReplace,
+      batchTransaction: null,
+    );
+
+    expect(await accountRepository.countAll(), 1);
   });
 }

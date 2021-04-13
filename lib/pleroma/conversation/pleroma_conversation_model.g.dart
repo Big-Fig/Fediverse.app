@@ -27,7 +27,7 @@ PleromaConversation _$PleromaConversationFromJson(Map<String, dynamic> json) {
     lastStatus: json['last_status'] == null
         ? null
         : PleromaStatus.fromJson(json['last_status'] as Map<String, dynamic>),
-    id: json['id'] as String?,
+    id: json['id'] as String,
     accounts: (json['accounts'] as List<dynamic>?)
         ?.map((e) => PleromaAccount.fromJson(e as Map<String, dynamic>))
         .toList(),

@@ -10,9 +10,12 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
+import 'package:moor/moor.dart';
 
+import '../../account/account_model_helper.dart';
 import '../../account/database/account_database_model_helper.dart';
 import '../../status/database/status_database_model_helper.dart';
+import '../../status/status_model_helper.dart';
 import '../conversation_model_helper.dart';
 import '../database/conversation_database_model_helper.dart';
 import 'conversation_repository_model_helper.dart';
@@ -31,7 +34,7 @@ void main() {
   late DbAccount dbAccount;
 
   setUp(() async {
-    database = AppDatabase(VmDatabase.memory());
+    database = AppDatabase(VmDatabase.memory(logStatements: false));
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
       appDatabase: database,
@@ -281,23 +284,24 @@ void main() {
 
     // item with same id updated
 
-    await conversationRepository.upsertInRemoteTypeBatch(
-      DbConversationChatPopulatedWrapper(
-        dbConversationPopulated: DbConversationPopulated(
-          dbConversation: dbConversation,
-        ),
-      ).toPleromaConversation(
-        accounts: [
-          DbAccountPopulatedWrapper(
-            dbAccountPopulated: DbAccountPopulated(
-              dbAccount: dbAccount,
-            ),
-          ),
-        ],
-        lastStatus: DbStatusPopulatedWrapper(
-          dbStatusPopulated: dbStatusPopulated,
-        ),
+    var pleromaConversation = DbConversationChatPopulatedWrapper(
+      dbConversationPopulated: DbConversationPopulated(
+        dbConversation: dbConversation,
       ),
+    ).toPleromaConversation(
+      accounts: [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount,
+          ),
+        ),
+      ],
+      lastStatus: DbStatusPopulatedWrapper(
+        dbStatusPopulated: dbStatusPopulated,
+      ),
+    );
+    await conversationRepository.upsertInRemoteTypeBatch(
+      pleromaConversation,
       batchTransaction: null,
     );
     expect(await conversationRepository.countAll(), 1);
@@ -714,5 +718,181 @@ void main() {
     expect(actualList.length, 1);
 
     expectDbConversation(actualList[0], conversation2);
+  });
+
+  test('insertInDbTypeBatch duplicated', () async {
+    expect(await conversationRepository.countAll(), 0);
+
+    var dbItem1 = await createTestDbConversation(seed: "seed1");
+    var dbItem1copy = await createTestDbConversation(seed: "seed1");
+
+    await conversationRepository.batch((batch) {
+      conversationRepository.insertInDbTypeBatch(
+        dbItem1,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+      conversationRepository.insertInDbTypeBatch(
+        dbItem1copy,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+    });
+
+    expect(await conversationRepository.countAll(), 1);
+  });
+
+  test('insertInRemoteTypeBatch duplicated', () async {
+    expect(await conversationRepository.countAll(), 0);
+
+    var conversation1 = await createTestConversation(seed: "seed1");
+    var conversation1Copy = await createTestConversation(seed: "seed1");
+
+    var remoteConversation1 = conversation1.toPleromaConversation(
+      accounts: [
+        await createTestAccount(seed: "seed1"),
+      ],
+      lastStatus: await createTestStatus(
+        seed: "seed1",
+      ),
+    );
+    var remoteConversation1Copy = conversation1Copy.toPleromaConversation(
+      accounts: [
+        await createTestAccount(seed: "seed1"),
+      ],
+      lastStatus: await createTestStatus(
+        seed: "seed1",
+      ),
+    );
+
+    await conversationRepository.batch((batch) {
+      conversationRepository.insertInRemoteTypeBatch(
+        remoteConversation1,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+      conversationRepository.insertInRemoteTypeBatch(
+        remoteConversation1Copy,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+    });
+
+    expect(await conversationRepository.countAll(), 1);
+  });
+  test('insertInRemoteTypeBatch duplicated', () async {
+    expect(await conversationRepository.countAll(), 0);
+
+    var conversation1 = await createTestConversation(seed: "seed1");
+    var conversation1Copy = await createTestConversation(seed: "seed1");
+
+    var remoteConversation1 = conversation1.toPleromaConversation(
+      accounts: [
+        await createTestAccount(seed: "seed1"),
+      ],
+      lastStatus: await createTestStatus(
+        seed: "seed1",
+      ),
+    );
+    var remoteConversation1Copy = conversation1Copy.toPleromaConversation(
+      accounts: [
+        await createTestAccount(seed: "seed1"),
+      ],
+      lastStatus: await createTestStatus(
+        seed: "seed1",
+      ),
+    );
+
+    await conversationRepository.insertAllInRemoteType(
+      [remoteConversation1, remoteConversation1Copy],
+      mode: InsertMode.insertOrReplace,
+      batchTransaction: null,
+    );
+
+    expect(await conversationRepository.countAll(), 1);
+  });
+  test('conversationAccountsDao', () async {
+    expect(await accountRepository.conversationAccountsDao.countAll(), 0);
+    await accountRepository.conversationAccountsDao.batch((batch) {
+      accountRepository.conversationAccountsDao.upsertBatch(
+        entity: DbConversationAccount(
+            conversationRemoteId: "conversationRemoteId",
+            accountRemoteId: "accountRemoteId"),
+        // mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+      accountRepository.conversationAccountsDao.upsertBatch(
+        entity: DbConversationAccount(
+            conversationRemoteId: "conversationRemoteId",
+            accountRemoteId: "accountRemoteId"),
+        // mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+      accountRepository.conversationAccountsDao.upsertBatch(
+        entity: DbConversationAccount(
+            conversationRemoteId: "conversationRemoteId",
+            accountRemoteId: "accountRemoteId"),
+        // mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+    });
+    expect(await accountRepository.conversationAccountsDao.countAll(), 1);
+  });
+  test('insertInRemoteTypeBatch three', () async {
+    await accountRepository.clear(batchTransaction: null);
+    await statusRepository.clear(batchTransaction: null);
+    expect(await accountRepository.countAll(), 0);
+    expect(await statusRepository.countAll(), 0);
+    expect(await conversationRepository.countAll(), 0);
+
+    var conversation1 = await createTestConversation(seed: "seed1");
+    var conversation2 = await createTestConversation(seed: "seed2");
+    var conversation3 = await createTestConversation(seed: "seed3");
+
+    var remoteConversation1 = conversation1.toPleromaConversation(
+      accounts: [
+        await createTestAccount(seed: "seed1"),
+      ],
+      lastStatus: await createTestStatus(
+        seed: "seed1",
+        account: await createTestAccount(seed: "seed1"),
+      ),
+    );
+    var remoteConversation2 = conversation2.toPleromaConversation(
+      accounts: [
+        await createTestAccount(seed: "seed1"),
+      ],
+      lastStatus: await createTestStatus(
+        seed: "seed2",
+        account: await createTestAccount(seed: "seed1"),
+      ),
+    );
+    var remoteConversation3 = conversation3.toPleromaConversation(
+      accounts: [
+        await createTestAccount(seed: "seed1"),
+      ],
+      lastStatus: await createTestStatus(
+        seed: "seed3",
+        account: await createTestAccount(seed: "seed1"),
+      ),
+    );
+
+    await conversationRepository.upsertAllInRemoteType(
+      [
+        remoteConversation1,
+        remoteConversation2,
+        remoteConversation3,
+      ],
+      batchTransaction: null,
+    );
+
+    expect(await conversationRepository.countAll(), 3);
+
+    expect(await accountRepository.countAll(), 1);
+    print("${await accountRepository.conversationAccountsDao.getAll()}");
+    expect(await accountRepository.conversationAccountsDao.countAll(), 3);
+
+    expect(await statusRepository.countAll(), 3);
+    expect(await statusRepository.conversationStatusesDao.countAll(), 3);
   });
 }
