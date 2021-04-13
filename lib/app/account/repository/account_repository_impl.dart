@@ -66,12 +66,39 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      await _upsertRemoteAccountMetadata(
-        pleromaAccount,
-        conversationRemoteId: conversationRemoteId,
-        chatRemoteId: chatRemoteId,
-        batchTransaction: batchTransaction,
-      );
+      var accountRemoteId = pleromaAccount.id;
+      if (chatRemoteId != null) {
+        chatAccountsDao.insertBatch(
+          entity: DbChatAccount(
+            id: null,
+            chatRemoteId: chatRemoteId,
+            accountRemoteId: accountRemoteId,
+          ),
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batchTransaction,
+        );
+      }
+      if (conversationRemoteId != null) {
+        var dbConversationAccount = DbConversationAccount(
+            id: null,
+            conversationRemoteId: conversationRemoteId,
+            accountRemoteId: accountRemoteId,
+          );
+        // print("dbConversationAccount $dbConversationAccount");
+         conversationAccountsDao.insertBatch(
+          entity: dbConversationAccount,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batchTransaction,
+        );
+      }
+
+      // print("dbConversationAccount after");
+      //  _upsertRemoteAccountMetadata(
+      //   pleromaAccount,
+      //   conversationRemoteId: conversationRemoteId,
+      //   chatRemoteId: chatRemoteId,
+      //   batchTransaction: batchTransaction,
+      // );
 
       await upsertInDbTypeBatch(
         pleromaAccount.toDbAccount(),
@@ -98,7 +125,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     if (batchTransaction != null) {
       var accountRemoteId = pleromaAccount.id;
       if (conversationRemoteId != null) {
-        await conversationAccountsDao.insertBatch(
+         conversationAccountsDao.insertBatch(
           entity: DbConversationAccount(
             id: null,
             conversationRemoteId: conversationRemoteId,
@@ -109,7 +136,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         );
       }
       if (chatRemoteId != null) {
-        await chatAccountsDao.insertBatch(
+         chatAccountsDao.insertBatch(
           entity: DbChatAccount(
             id: null,
             chatRemoteId: chatRemoteId,
@@ -269,15 +296,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required List<IPleromaAccount> followers,
     required Batch? batchTransaction,
   }) async {
-    if (batchTransaction == null) {
-      await dao.batch(
-        (batch) => addAccountFollowers(
-          accountRemoteId: accountRemoteId,
-          followers: followers,
-          batchTransaction: batch,
-        ),
-      );
-    } else {
+    if (batchTransaction != null) {
       await upsertAllInRemoteType(
         followers,
         batchTransaction: batchTransaction,
@@ -296,6 +315,14 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         mode: InsertMode.insertOrReplace,
         batchTransaction: batchTransaction,
       );
+    } else {
+      await dao.batch(
+        (batch) => addAccountFollowers(
+          accountRemoteId: accountRemoteId,
+          followers: followers,
+          batchTransaction: batch,
+        ),
+      );
     }
   }
 
@@ -305,15 +332,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required List<IPleromaAccount> favouritedByAccounts,
     required Batch? batchTransaction,
   }) async {
-    if (batchTransaction == null) {
-      await dao.batch(
-        (batch) => updateStatusFavouritedBy(
-          statusRemoteId: statusRemoteId,
-          favouritedByAccounts: favouritedByAccounts,
-          batchTransaction: batch,
-        ),
-      );
-    } else {
+    if (batchTransaction != null) {
       await upsertAllInRemoteType(
         favouritedByAccounts,
         batchTransaction: batchTransaction,
@@ -331,6 +350,14 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
             .toList(),
         mode: InsertMode.insertOrReplace,
         batchTransaction: batchTransaction,
+      );
+    } else {
+      await dao.batch(
+        (batch) => updateStatusFavouritedBy(
+          statusRemoteId: statusRemoteId,
+          favouritedByAccounts: favouritedByAccounts,
+          batchTransaction: batch,
+        ),
       );
     }
   }
@@ -496,16 +523,16 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     IPleromaAccount remoteItem, {
     required InsertMode? mode,
   }) async {
-    var id = await insertInDbType(
-      remoteItem.toDbAccount(),
-      mode: mode,
-    );
-
     await _upsertRemoteAccountMetadata(
       remoteItem,
       conversationRemoteId: null,
       chatRemoteId: null,
       batchTransaction: null,
+    );
+
+    var id = await insertInDbType(
+      remoteItem.toDbAccount(),
+      mode: mode,
     );
 
     return id;
@@ -586,20 +613,25 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     List<IPleromaAccount> remoteAccounts, {
     required String chatRemoteId,
     required Batch? batchTransaction,
-  }) =>
-      batch(
-        (batch) {
-          remoteAccounts.forEach(
-            (remoteAccount) {
-              upsertChatRemoteAccount(
-                remoteAccount,
-                chatRemoteId: chatRemoteId,
-                batchTransaction: batch,
-              );
-            },
-          );
-        },
-      );
+  }) async {
+    if (batchTransaction != null) {
+      for (var remoteAccount in remoteAccounts) {
+        await upsertChatRemoteAccount(
+          remoteAccount,
+          chatRemoteId: chatRemoteId,
+          batchTransaction: batchTransaction,
+        );
+      }
+    } else {
+      await batch((batch) {
+        upsertChatRemoteAccounts(
+          remoteAccounts,
+          chatRemoteId: chatRemoteId,
+          batchTransaction: batch,
+        );
+      });
+    }
+  }
 
   @override
   Future upsertConversationRemoteAccount(

@@ -6,7 +6,7 @@ abstract class IMastodonConversation {
 
   IMastodonStatus? get lastStatus;
 
-  String? get id;
+  String get id;
 
   List<IMastodonAccount> get accounts;
 }

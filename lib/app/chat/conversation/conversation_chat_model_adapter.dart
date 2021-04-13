@@ -10,8 +10,7 @@ extension IPleromaConversationDbExtension on IPleromaConversation {
   DbConversation toDbConversation() {
     return DbConversation(
       id: null,
-      // todo: think about it
-      remoteId: id ?? "",
+      remoteId: id,
       unread: unread == true,
       updatedAt: lastStatus?.createdAt,
     );

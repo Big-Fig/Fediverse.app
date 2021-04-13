@@ -7,7 +7,7 @@ import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
-import '../account/database/account_database_model_helper.dart';
+import '../../account/database/account_database_model_helper.dart';
 
 void main() {
   late AppDatabase database;

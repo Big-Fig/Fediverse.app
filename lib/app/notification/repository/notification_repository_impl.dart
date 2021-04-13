@@ -331,7 +331,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     if (batchTransaction != null) {
       var remoteStatus = remoteItem.status;
       if (remoteStatus != null) {
-        await statusRepository.upsertInRemoteTypeBatch(
+         statusRepository.upsertInRemoteTypeBatch(
           remoteStatus,
           batchTransaction: batchTransaction,
         );
@@ -342,7 +342,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       // account may be already added during status update
       if (remoteAccount != null &&
           remoteStatus?.account.id != remoteAccount.id) {
-        await accountRepository.upsertInRemoteTypeBatch(
+         accountRepository.upsertInRemoteTypeBatch(
           remoteAccount,
           batchTransaction: batchTransaction,
         );
@@ -352,7 +352,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       if (targetRemoteAccount != null &&
           remoteStatus?.account.id != targetRemoteAccount.id &&
           targetRemoteAccount.id != remoteAccount?.id) {
-        await accountRepository.upsertInRemoteTypeBatch(
+         accountRepository.upsertInRemoteTypeBatch(
           targetRemoteAccount,
           batchTransaction: batchTransaction,
         );
@@ -360,7 +360,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
       var remoteChatMessage = remoteItem.chatMessage;
       if (remoteChatMessage != null) {
-        await chatMessageRepository.upsertInRemoteTypeBatch(
+         chatMessageRepository.upsertInRemoteTypeBatch(
           remoteChatMessage,
           batchTransaction: batchTransaction,
         );
@@ -378,31 +378,6 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future insertAllInRemoteType(
-    List<IPleromaNotification> remoteItems, {
-    required InsertMode? mode,
-    required Batch? batchTransaction,
-  }) async {
-    for (var remoteItem in remoteItems) {
-      await insertInRemoteTypeBatch(
-        remoteItem,
-        mode: mode,
-        batchTransaction: batchTransaction,
-      );
-    }
-    // if (batchTransaction != null) {
-    // } else {
-    //   await batch((batch) {
-    //     insertAllInRemoteType(
-    //       remoteItems,
-    //       mode: mode,
-    //       batchTransaction: batch,
-    //     );
-    //   });
-    // }
-  }
-
-  @override
   Future<void> insertInRemoteTypeBatch(
     IPleromaNotification remoteItem, {
     required InsertMode? mode,
@@ -410,12 +385,12 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // todo: support mode
-      await _upsertNotificationMetadata(
+       _upsertNotificationMetadata(
         remoteItem,
         batchTransaction: batchTransaction,
       );
 
-      await dao.upsertBatch(
+       dao.upsertBatch(
         entity: remoteItem.toDbNotification(unread: null),
         batchTransaction: batchTransaction,
       );
