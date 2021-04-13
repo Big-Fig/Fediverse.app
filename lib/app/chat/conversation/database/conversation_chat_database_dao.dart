@@ -141,10 +141,6 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
   List<Join<Table, DataClass>> populateChatJoin() {
     return [
       // todo: accounts join
-      // leftOuterJoin(
-      //   accountAlias,
-      //   accountAlias.remoteId.equalsExp(dbConversations.accountRemoteId),
-      // ),
     ];
   }
 
@@ -165,8 +161,8 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
             .equalsExp(conversationStatusesAlias.statusRemoteId),
       ),
       innerJoin(
-        accountAlias,
-        accountAlias.remoteId.equalsExp(statusAlias.accountRemoteId),
+        statusAccountAlias,
+        statusAccountAlias.remoteId.equalsExp(statusAlias.accountRemoteId),
       ),
       leftOuterJoin(
         statusReblogAlias,
@@ -245,7 +241,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     var withLastMessage = filters?.withLastMessage == true;
     var joinQuery = query.join([
-      // ...dao.populateChatJoin(),
+      ...populateChatJoin(),
       if (withLastMessage) ...conversationLastMessageJoin(),
     ]);
 
