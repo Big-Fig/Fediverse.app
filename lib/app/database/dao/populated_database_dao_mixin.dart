@@ -56,8 +56,8 @@ mixin PopulatedDatabaseDaoMixin<
     var query = startSelectQuery();
     query.orderBy(
       [
-        (tbl) => moor.OrderingTerm.asc(
-              CustomExpression(idFieldName),
+        (tbl) => moor.OrderingTerm.desc(
+              CustomExpression("$tableName.$idFieldName"),
             ),
       ],
     );
@@ -88,8 +88,8 @@ mixin PopulatedDatabaseDaoMixin<
     var query = startSelectQuery();
     query.orderBy(
       [
-        (tbl) => moor.OrderingTerm.desc(
-              CustomExpression(idFieldName),
+        (tbl) => moor.OrderingTerm.asc(
+              CustomExpression("$tableName.$idFieldName"),
             ),
       ],
     );
