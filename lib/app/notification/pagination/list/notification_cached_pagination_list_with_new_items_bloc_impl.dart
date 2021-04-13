@@ -7,7 +7,10 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+
+final _logger = Logger("notification_cached_pagination_list_with_new_items_bloc_impl.dart");
 
 class NotificationCachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<INotification>>
@@ -24,8 +27,13 @@ class NotificationCachedPaginationListWithNewItemsBloc<
         );
 
   @override
-  Stream<List<INotification>> watchItemsNewerThanItem(INotification? item) =>
-      cachedListBloc.watchLocalItemsNewerThanItem(item);
+  Stream<List<INotification>> watchItemsNewerThanItem(INotification? item) {
+    if(item == null) {
+      return Stream.value([]);
+    }
+    _logger.finest(() => "watchItemsNewerThanItem $item");
+    return cachedListBloc.watchLocalItemsNewerThanItem(item);
+  }
 
   @override
   int compareItemsToSort(INotification? a, INotification? b) {

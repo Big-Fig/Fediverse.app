@@ -46,29 +46,6 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
         alias(db.dbAccounts, _statusReblogAccountAliasId);
   }
 
-  //
-  // Future<int> updateByRemoteId(
-  //   String remoteId,
-  //   Insertable<DbNotification> entity,
-  // ) async {
-  //   var localId = await findLocalIdByRemoteId(remoteId);
-  //
-  //   if (localId != null && localId >= 0) {
-  //     await (update(db.dbNotifications)
-  //           ..where(
-  //             (i) => i.id.equals(localId),
-  //           ))
-  //         .write(entity);
-  //   } else {
-  //     localId = await insert(
-  //       entity: entity,
-  //       mode: null,
-  //     );
-  //   }
-  //
-  //   return localId;
-  // }
-
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       addExcludeTypeWhere(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
@@ -96,31 +73,6 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
                 onlyWithType.toJsonValue(),
               ),
             );
-
-  /// notification remote ids can't be compared
-//  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-//      addRemoteIdBoundsWhere(
-//    SimpleSelectStatement<$DbNotificationsTable, DbNotification> query, {
-//    @required String minimumRemoteIdExcluding,
-//    @required String maximumRemoteIdExcluding,
-//  }) {
-//    var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
-//    var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
-//    assert(minimumExist || maximumExist);
-//
-//    if (minimumExist) {
-//      var biggerExp = CustomExpression<bool>(
-//          "db_notifications.remote_id > '$minimumRemoteIdExcluding'");
-//      query = query..where((notification) => biggerExp);
-//    }
-//    if (maximumExist) {
-//      var smallerExp = CustomExpression<bool>(
-//          "db_notifications.remote_id < '$maximumRemoteIdExcluding'");
-//      query = query..where((notification) => smallerExp);
-//    }
-//
-//    return query;
-//  }
 
   JoinedSelectStatement addExcludeContentWhere(
     JoinedSelectStatement query, {
@@ -342,13 +294,24 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
         pagination?.newerThanItem != null) {
       assert(orderingTerms?.length == 1);
       var orderingTermData = orderingTerms!.first;
-      assert(orderingTermData.orderType == NotificationOrderType.createdAt);
-      addDateTimeBoundsWhere(
-        query,
-        column: dbNotifications.createdAt,
-        maximumDateTimeExcluding: pagination?.olderThanItem?.createdAt,
-        minimumDateTimeExcluding: pagination?.newerThanItem?.createdAt,
-      );
+      if(orderingTermData.orderType == NotificationOrderType.createdAt) {
+        addDateTimeBoundsWhere(
+          query,
+          column: dbNotifications.createdAt,
+          maximumDateTimeExcluding: pagination?.olderThanItem?.createdAt,
+          minimumDateTimeExcluding: pagination?.newerThanItem?.createdAt,
+        );
+      } else if(orderingTermData.orderType == NotificationOrderType.remoteId) {
+        addRemoteIdBoundsWhere(
+          query,
+          maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
+          minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
+        );
+      } else {
+        throw "Unsupported orderingTermData $orderingTermData";
+      }
+
+
     }
   }
 
