@@ -159,7 +159,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
                 })
             .toList());
 
-  Future markAsRead({required String? remoteId}) {
+  Future markAsRead({required String remoteId}) {
     var update = "UPDATE db_notifications "
         "SET unread = 0 "
         "WHERE remote_id = '$remoteId'";
@@ -169,8 +169,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   Future markAllAsRead() {
-    var update = "UPDATE db_notifications "
-        "SET unread = 0 ";
+    var update = "UPDATE db_notifications SET unread = 0";
     var query = db.customUpdate(update, updates: {dbNotifications});
 
     return query;
