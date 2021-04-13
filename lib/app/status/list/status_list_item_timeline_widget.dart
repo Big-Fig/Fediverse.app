@@ -35,7 +35,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-
 class StatusListItemTimelineWidget extends StatelessWidget {
   const StatusListItemTimelineWidget();
 
@@ -72,10 +71,15 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
     return DisposableProxyProvider<IStatusListItemTimelineBloc, IStatusBloc>(
       update: (context, statusListItemTimelineBloc, oldValue) {
         if (isLocal) {
-          return LocalStatusBloc.createFromContext(
-            context,
-            status: statusListItemTimelineBloc.status,
-          );
+          if (statusListItemTimelineBloc.status.remoteId ==
+              oldValue?.remoteId) {
+            return oldValue!;
+          } else {
+            return LocalStatusBloc.createFromContext(
+              context,
+              status: statusListItemTimelineBloc.status,
+            );
+          }
         } else {
           return RemoteStatusBloc.createFromContext(
             context,

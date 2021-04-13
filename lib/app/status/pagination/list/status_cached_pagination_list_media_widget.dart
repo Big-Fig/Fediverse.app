@@ -122,10 +122,15 @@ class StatusCachedPaginationListMediaWidget
                 child: DisposableProxyProvider<IStatus, IStatusBloc>(
                   update: (context, status, oldValue) {
                     if (isLocal) {
-                      return LocalStatusBloc.createFromContext(
-                        context,
-                        status: status,
-                      );
+                      if (status.remoteId ==
+                          oldValue?.remoteId) {
+                        return oldValue!;
+                      } else {
+                        return LocalStatusBloc.createFromContext(
+                          context,
+                          status: status,
+                        );
+                      }
                     } else {
                       return RemoteStatusBloc.createFromContext(
                         context,
