@@ -79,5 +79,13 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Required when you use Bluetooth accessories</string>
+    <key>NSBluetoothPeripheralUsageDescription</key>
+    <string>Required when you use Bluetooth accessories</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Location access when you use camera</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Location access when you use camera</string>
 </dict>
 </plist>
