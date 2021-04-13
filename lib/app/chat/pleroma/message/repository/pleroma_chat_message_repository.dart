@@ -6,7 +6,6 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/repository/repository.dart';
 import 'package:flutter/widgets.dart';
-import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaChatMessageRepository
@@ -53,11 +52,9 @@ abstract class IPleromaChatMessageRepository
 
   Future markChatMessageAsDeleted({
     required String chatMessageRemoteId,
-    required Batch? batchTransaction,
   });
 
   Future markChatMessageAsHiddenLocallyOnDevice({
     required int chatMessageLocalId,
-    required Batch? batchTransaction,
   });
 }

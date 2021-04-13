@@ -162,7 +162,6 @@ class PleromaChatMessageRepository
   @override
   Future markChatMessageAsDeleted({
     required String chatMessageRemoteId,
-    required Batch? batchTransaction,
   }) =>
       dao.markAsDeleted(
         remoteId: chatMessageRemoteId,
@@ -171,7 +170,6 @@ class PleromaChatMessageRepository
   @override
   Future markChatMessageAsHiddenLocallyOnDevice({
     required int chatMessageLocalId,
-    required Batch? batchTransaction,
   }) =>
       dao.markAsHiddenLocallyOnDevice(
         localId: chatMessageLocalId,
