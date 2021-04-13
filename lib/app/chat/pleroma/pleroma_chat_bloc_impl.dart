@@ -250,7 +250,6 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
       await chatMessageRepository.markChatMessageAsDeleted(
         chatMessageRemoteId: remoteId,
-        batchTransaction: null,
       );
     }
   }
@@ -374,12 +373,10 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
       await chatMessageRepository.markChatMessageAsDeleted(
         chatMessageRemoteId: pleromaChatMessage.remoteId,
-        batchTransaction: null,
       );
     } else {
       await chatMessageRepository.markChatMessageAsHiddenLocallyOnDevice(
         chatMessageLocalId: pleromaChatMessage.localId!,
-        batchTransaction: null,
       );
       onMessageLocallyHiddenStreamController.add(pleromaChatMessage);
     }

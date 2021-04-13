@@ -45,10 +45,6 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
       draftStatus.toDbDraftStatus(),
       mode: null,
     );
-    // return insertInAppType(
-    //     draftStatus,
-    //     mode: null,
-    //   );
   }
 
   @override

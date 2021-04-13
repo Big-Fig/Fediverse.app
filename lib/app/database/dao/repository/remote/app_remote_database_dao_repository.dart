@@ -3,6 +3,7 @@ import 'package:fedi/app/database/dao/repository/app_database_dao_repository.dar
 import 'package:fedi/repository/repository.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
+import 'package:pedantic/pedantic.dart';
 
 abstract class AppRemoteDatabaseDaoRepository<
         DbItem extends DataClass,
@@ -31,10 +32,12 @@ abstract class AppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       for (var remoteItem in remoteItems) {
-        await insertInRemoteTypeBatch(
-          remoteItem,
-          mode: mode,
-          batchTransaction: batchTransaction,
+        unawaited(
+          insertInRemoteTypeBatch(
+            remoteItem,
+            mode: mode,
+            batchTransaction: batchTransaction,
+          ),
         );
       }
     } else {

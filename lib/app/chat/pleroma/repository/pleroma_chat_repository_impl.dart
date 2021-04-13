@@ -14,6 +14,7 @@ import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_dat
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
+import 'package:pedantic/pedantic.dart';
 
 var _singlePleromaChatRepositoryPagination = RepositoryPagination<IPleromaChat>(
   limit: 1,
@@ -59,91 +60,6 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     chatAccountsDao = appDatabase.chatAccountsDao;
   }
 
-  //
-  // @override
-  // Future upsertRemoteChat(pleroma_lib.IPleromaChat remoteChat) async {
-  //   _logger.finer(() => "upsertRemoteChat $remoteChat");
-  //
-  //   var remoteAccounts = [
-  //     remoteChat.account,
-  //   ];
-  //
-  //   await accountRepository.upsertRemoteAccounts(
-  //     remoteAccounts,
-  //     chatRemoteId: remoteChat.id,
-  //     conversationRemoteId: null,
-  //   );
-  //
-  //   var lastMessage = remoteChat.lastMessage;
-  //   if (lastMessage != null) {
-  //     await chatMessageRepository.upsertRemoteChatMessage(lastMessage);
-  //   }
-  //
-  //   await upsertInRemoteType(
-  //     remoteChat,
-  //   );
-  // }
-
-  //
-  // @override
-  // Future upsertRemoteChats(
-  //   List<pleroma_lib.IPleromaChat> pleromaChats,
-  // ) async {
-  //   _logger.finer(() => "upsertRemoteChats ${pleromaChats.length}");
-  //
-  //   for (var remoteChat in pleromaChats) {
-  //     var lastMessage = remoteChat.lastMessage;
-  //     if (lastMessage != null) {
-  //       await chatMessageRepository.upsertRemoteChatMessage(lastMessage);
-  //     }
-  //
-  //     await accountRepository.upsertRemoteAccounts(
-  //       [
-  //         remoteChat.account,
-  //       ],
-  //       chatRemoteId: remoteChat.id,
-  //       conversationRemoteId: null,
-  //     );
-  //   }
-  //
-  //   await upsertAllInRemoteType(
-  //     pleromaChats,
-  //   );
-  // }
-  //
-  // @override
-  // Future updateLocalChatByRemoteChat({
-  //   required IPleromaChat oldLocalChat,
-  //   required pleroma_lib.IPleromaChat newRemoteChat,
-  // }) async {
-  //   _logger.finer(() => "updateLocalChatByRemoteChat \n"
-  //       "\t old: $oldLocalChat \n"
-  //       "\t newRemoteChat: $newRemoteChat");
-  //
-  //   await accountRepository.upsertRemoteAccounts(
-  //     [
-  //       newRemoteChat.account,
-  //     ],
-  //     chatRemoteId: oldLocalChat.remoteId,
-  //     conversationRemoteId: null,
-  //   );
-  //
-  //   var lastMessage = newRemoteChat.lastMessage;
-  //   if (lastMessage != null) {
-  //     await chatMessageRepository.upsertRemoteChatMessage(
-  //       lastMessage,
-  //     );
-  //   }
-  //   if (oldLocalChat.localId != null) {
-  //     await updateByDbIdInDbType(
-  //       dbId: oldLocalChat.localId!,
-  //       dbItem: newRemoteChat.toDbChat(),
-  //     );
-  //   } else {
-  //     await upsertRemoteChat(newRemoteChat);
-  //   }
-  // }
-
   @override
   Future<IPleromaChat?> findByAccount({
     required IAccount account,
@@ -173,19 +89,18 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Future markAsRead({
     required IPleromaChat chat,
     required Batch? batchTransaction,
-  }) {
-    return updateByDbIdInDbType(
-      dbId: chat.localId!,
-      dbItem: DbChat(
-        id: chat.localId,
-        remoteId: chat.remoteId,
-        unread: 0,
-        updatedAt: DateTime.now(),
-        accountRemoteId: chat.accounts.first.remoteId,
-      ),
-      batchTransaction: batchTransaction,
-    );
-  }
+  }) =>
+      updateByDbIdInDbType(
+        dbId: chat.localId!,
+        dbItem: DbChat(
+          id: chat.localId,
+          remoteId: chat.remoteId,
+          unread: 0,
+          updatedAt: DateTime.now(),
+          accountRemoteId: chat.accounts.first.remoteId,
+        ),
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future<int> getTotalUnreadCount() => dao.getTotalAmountUnread();
@@ -332,14 +247,13 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   IPleromaChat mapRemoteItemToAppItem(
     pleroma_lib.IPleromaChat remoteItem,
-  ) {
-    return DbPleromaChatPopulatedWrapper(
-      dbChatPopulated: DbPleromaChatPopulated(
-        dbAccount: remoteItem.account.toDbAccount(),
-        dbChat: remoteItem.toDbChat(),
-      ),
-    );
-  }
+  ) =>
+      DbPleromaChatPopulatedWrapper(
+        dbChatPopulated: DbPleromaChatPopulated(
+          dbAccount: remoteItem.account.toDbAccount(),
+          dbChat: remoteItem.toDbChat(),
+        ),
+      );
 
   @override
   PleromaChatRepositoryFilters get emptyFilters =>
@@ -381,17 +295,21 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      await accountRepository.upsertChatRemoteAccount(
-        remoteItem.account,
-        chatRemoteId: remoteItem.id,
-        batchTransaction: batchTransaction,
+      unawaited(
+        accountRepository.upsertChatRemoteAccount(
+          remoteItem.account,
+          chatRemoteId: remoteItem.id,
+          batchTransaction: batchTransaction,
+        ),
       );
 
       var lastMessage = remoteItem.lastMessage;
       if (lastMessage != null) {
-        await chatMessageRepository.upsertInRemoteTypeBatch(
-          lastMessage,
-          batchTransaction: batchTransaction,
+        unawaited(
+          chatMessageRepository.upsertInRemoteTypeBatch(
+            lastMessage,
+            batchTransaction: batchTransaction,
+          ),
         );
       }
     } else {
@@ -412,14 +330,18 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // todo: support mode
-      await _upsertChatMessageMetadata(
-        remoteItem,
-        batchTransaction: batchTransaction,
+      unawaited(
+        _upsertChatMessageMetadata(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        ),
       );
 
-      await dao.upsertBatch(
-        entity: remoteItem.toDbChat(),
-        batchTransaction: batchTransaction,
+      unawaited(
+        dao.upsertBatch(
+          entity: remoteItem.toDbChat(),
+          batchTransaction: batchTransaction,
+        ),
       );
     } else {
       await batch((batch) {
@@ -439,21 +361,27 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      await _upsertChatMessageMetadata(
-        remoteItem,
-        batchTransaction: batchTransaction,
+      unawaited(
+        _upsertChatMessageMetadata(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        ),
       );
 
       if (appItem.localId != null) {
-        await updateByDbIdInDbType(
-          dbId: appItem.localId!,
-          dbItem: remoteItem.toDbChat(),
-          batchTransaction: batchTransaction,
+        unawaited(
+          updateByDbIdInDbType(
+            dbId: appItem.localId!,
+            dbItem: remoteItem.toDbChat(),
+            batchTransaction: batchTransaction,
+          ),
         );
       } else {
-        await upsertInRemoteTypeBatch(
-          remoteItem,
-          batchTransaction: batchTransaction,
+        unawaited(
+          upsertInRemoteTypeBatch(
+            remoteItem,
+            batchTransaction: batchTransaction,
+          ),
         );
       }
     } else {

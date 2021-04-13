@@ -12,6 +12,7 @@ import 'package:fedi/app/notification/repository/notification_repository_model.d
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:moor/moor.dart';
+import 'package:pedantic/pedantic.dart';
 
 class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbNotification,
@@ -46,176 +47,6 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required this.statusRepository,
     required this.chatMessageRepository,
   }) : dao = appDatabase.notificationDao;
-
-  //
-  // @override
-  // Future upsertRemoteNotification(
-  //   IPleromaNotification remoteNotification, {
-  //   required bool? unread,
-  // }) async {
-  //   _logger.finer(() => "upsertRemoteNotification ${remoteNotification.id} "
-  //       "$remoteNotification");
-  //   var remoteAccount = remoteNotification.account;
-  //
-  //   if (remoteAccount != null) {
-  //     await accountRepository.upsertRemoteAccount(
-  //       remoteAccount,
-  //       conversationRemoteId: null,
-  //       chatRemoteId: null,
-  //     );
-  //   }
-  //
-  //   var remoteStatus = remoteNotification.status;
-  //   if (remoteStatus != null) {
-  //     await statusRepository.upsertRemoteStatus(
-  //       remoteStatus,
-  //       listRemoteId: null,
-  //       conversationRemoteId: null,
-  //     );
-  //   }
-  //   var remoteChatMessage = remoteNotification.chatMessage;
-  //   if (remoteChatMessage != null) {
-  //     await chatMessageRepository.upsertRemoteChatMessage(
-  //       remoteChatMessage,
-  //     );
-  //   }
-  //   await upsertInDbType(
-  //     remoteNotification.toDbNotification(
-  //       unread: unread,
-  //     ),
-  //   );
-  // }
-  //
-  // @override
-  // Future upsertRemoteNotifications(
-  //   List<IPleromaNotification>? remoteNotifications, {
-  //   required bool? unread,
-  // }) async {
-  //   _logger.finer(
-  //     () => "upsertRemoteNotifications ${remoteNotifications!.length} ",
-  //   );
-  //   if (remoteNotifications!.isEmpty) {
-  //     return;
-  //   }
-  //
-  //   List<IPleromaAccount> remoteAccounts = remoteNotifications
-  //       .where((remoteNotification) => remoteNotification.account != null)
-  //       .map(
-  //         (remoteNotification) => remoteNotification.account!,
-  //       )
-  //       .toList();
-  //
-  //   await accountRepository.upsertRemoteAccounts(
-  //     remoteAccounts,
-  //     conversationRemoteId: null,
-  //     chatRemoteId: null,
-  //   );
-  //
-  //   List<IPleromaStatus> remoteStatuses = remoteNotifications
-  //       .where((remoteNotification) => remoteNotification.status != null)
-  //       .map(
-  //         (remoteNotification) => remoteNotification.status!,
-  //       )
-  //       .toList();
-  //
-  //   await statusRepository.upsertRemoteStatuses(
-  //     remoteStatuses,
-  //     conversationRemoteId: null,
-  //     listRemoteId: null,
-  //   );
-  //
-  //   List<IPleromaChatMessage> remoteChatMessages = remoteNotifications
-  //       .where((remoteNotification) => remoteNotification.chatMessage != null)
-  //       .map(
-  //         (remoteNotification) => remoteNotification.chatMessage!,
-  //       )
-  //       .toList();
-  //
-  //   await chatMessageRepository.upsertRemoteChatMessages(remoteChatMessages);
-  //
-  //   await upsertAllInDbType(
-  //     remoteNotifications
-  //         .map(
-  //           (remoteNotification) =>
-  //               remoteNotification.toDbNotification(unread: unread),
-  //         )
-  //         .toList(),
-  //   );
-  // }
-  //
-  // @override
-  // Future updateLocalNotificationByRemoteNotification({
-  //   required INotification oldLocalNotification,
-  //   required IPleromaNotification newRemoteNotification,
-  //   required bool? unread,
-  // }) async {
-  //   _logger.finer(() => "updateLocalNotificationByRemoteNotification \n"
-  //       "\t old: $oldLocalNotification \n"
-  //       "\t newRemoteNotification: $newRemoteNotification");
-  //
-  //   var remoteAccount = newRemoteNotification.account;
-  //
-  //   if (remoteAccount != null) {
-  //     await accountRepository.upsertRemoteAccount(
-  //       remoteAccount,
-  //       conversationRemoteId: null,
-  //       chatRemoteId: null,
-  //     );
-  //   }
-  //
-  //   var remoteStatus = newRemoteNotification.status;
-  //
-  //   if (remoteStatus != null) {
-  //     await statusRepository.upsertRemoteStatus(
-  //       remoteStatus,
-  //       conversationRemoteId: null,
-  //       listRemoteId: null,
-  //     );
-  //   }
-  //
-  //   await updateByDbIdInDbType(
-  //     dbId: oldLocalNotification.localId!,
-  //     dbItem: newRemoteNotification.toDbNotification(
-  //       unread: unread,
-  //     ),
-  //   );
-  // }
-  //
-  // @override
-  // Future<DbNotificationPopulatedWrapper?> getNotification({
-  //   required NotificationRepositoryFilters? filters,
-  //   NotificationRepositoryOrderingTermData? orderingTermData =
-  //       NotificationRepositoryOrderingTermData.createdAtDesc,
-  // }) async {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: _singleNotificationRepositoryPagination,
-  //     orderingTermData: orderingTermData,
-  //   );
-  //
-  //   return (await query.getSingleOrNull())
-  //       ?.toDbNotificationPopulated(dao: dao)
-  //       .toDbNotificationPopulatedWrapper();
-  // }
-  //
-  // @override
-  // Stream<DbNotificationPopulatedWrapper?> watchNotification({
-  //   required NotificationRepositoryFilters? filters,
-  //   NotificationRepositoryOrderingTermData? orderingTermData =
-  //       NotificationRepositoryOrderingTermData.createdAtDesc,
-  // }) {
-  //   var query = createQuery(
-  //     filters: filters,
-  //     pagination: _singleNotificationRepositoryPagination,
-  //     orderingTermData: orderingTermData,
-  //   );
-  //
-  //   return query.watchSingleOrNull().map(
-  //         (typedResult) => typedResult
-  //             ?.toDbNotificationPopulated(dao: dao)
-  //             .toDbNotificationPopulatedWrapper(),
-  //       );
-  // }
 
   @override
   Future markAsRead({
@@ -331,38 +162,43 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     if (batchTransaction != null) {
       var remoteStatus = remoteItem.status;
       if (remoteStatus != null) {
-         statusRepository.upsertInRemoteTypeBatch(
-          remoteStatus,
-          batchTransaction: batchTransaction,
+        unawaited(
+          statusRepository.upsertInRemoteTypeBatch(
+            remoteStatus,
+            batchTransaction: batchTransaction,
+          ),
         );
       }
 
       var remoteAccount = remoteItem.account;
 
       // account may be already added during status update
-      if (remoteAccount != null &&
-          remoteStatus?.account.id != remoteAccount.id) {
-         accountRepository.upsertInRemoteTypeBatch(
-          remoteAccount,
-          batchTransaction: batchTransaction,
+      if (remoteAccount != null) {
+        unawaited(
+          accountRepository.upsertInRemoteTypeBatch(
+            remoteAccount,
+            batchTransaction: batchTransaction,
+          ),
         );
       }
       var targetRemoteAccount = remoteItem.target;
 
-      if (targetRemoteAccount != null &&
-          remoteStatus?.account.id != targetRemoteAccount.id &&
-          targetRemoteAccount.id != remoteAccount?.id) {
-         accountRepository.upsertInRemoteTypeBatch(
-          targetRemoteAccount,
-          batchTransaction: batchTransaction,
+      if (targetRemoteAccount != null) {
+        unawaited(
+          accountRepository.upsertInRemoteTypeBatch(
+            targetRemoteAccount,
+            batchTransaction: batchTransaction,
+          ),
         );
       }
 
       var remoteChatMessage = remoteItem.chatMessage;
       if (remoteChatMessage != null) {
-         chatMessageRepository.upsertInRemoteTypeBatch(
-          remoteChatMessage,
-          batchTransaction: batchTransaction,
+        unawaited(
+          chatMessageRepository.upsertInRemoteTypeBatch(
+            remoteChatMessage,
+            batchTransaction: batchTransaction,
+          ),
         );
       }
     } else {
@@ -385,14 +221,18 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // todo: support mode
-       _upsertNotificationMetadata(
-        remoteItem,
-        batchTransaction: batchTransaction,
+      unawaited(
+        _upsertNotificationMetadata(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        ),
       );
 
-       dao.upsertBatch(
-        entity: remoteItem.toDbNotification(unread: null),
-        batchTransaction: batchTransaction,
+      unawaited(
+        dao.upsertBatch(
+          entity: remoteItem.toDbNotification(unread: null),
+          batchTransaction: batchTransaction,
+        ),
       );
     } else {
       await batch((batch) {
@@ -412,21 +252,27 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      await _upsertNotificationMetadata(
-        remoteItem,
-        batchTransaction: batchTransaction,
+      unawaited(
+        _upsertNotificationMetadata(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        ),
       );
 
       if (appItem.localId != null) {
-        await updateByDbIdInDbType(
-          dbId: appItem.localId!,
-          dbItem: remoteItem.toDbNotification(unread: null),
-          batchTransaction: batchTransaction,
+        unawaited(
+          updateByDbIdInDbType(
+            dbId: appItem.localId!,
+            dbItem: remoteItem.toDbNotification(unread: null),
+            batchTransaction: batchTransaction,
+          ),
         );
       } else {
-        await upsertInRemoteTypeBatch(
-          remoteItem,
-          batchTransaction: batchTransaction,
+        unawaited(
+          upsertInRemoteTypeBatch(
+            remoteItem,
+            batchTransaction: batchTransaction,
+          ),
         );
       }
     } else {
@@ -459,21 +305,27 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      await _upsertNotificationMetadata(
-        remoteItem,
-        batchTransaction: batchTransaction,
+      unawaited(
+        _upsertNotificationMetadata(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        ),
       );
 
       if (appItem.localId != null) {
-        await updateByDbIdInDbType(
-          dbId: appItem.localId!,
-          dbItem: remoteItem.toDbNotification(unread: unread),
-          batchTransaction: batchTransaction,
+        unawaited(
+          updateByDbIdInDbType(
+            dbId: appItem.localId!,
+            dbItem: remoteItem.toDbNotification(unread: unread),
+            batchTransaction: batchTransaction,
+          ),
         );
       } else {
-        await upsertInRemoteTypeBatch(
-          remoteItem,
-          batchTransaction: batchTransaction,
+        unawaited(
+          upsertInRemoteTypeBatch(
+            remoteItem,
+            batchTransaction: batchTransaction,
+          ),
         );
       }
     } else {
@@ -495,15 +347,19 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // todo: support mode
-      await _upsertNotificationMetadata(
-        remoteItem,
-        batchTransaction: batchTransaction,
+      unawaited(
+        _upsertNotificationMetadata(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        ),
       );
 
       var dbNotification = remoteItem.toDbNotification(unread: unread);
-      await dao.upsertBatch(
-        entity: dbNotification,
-        batchTransaction: batchTransaction,
+      unawaited(
+        dao.upsertBatch(
+          entity: dbNotification,
+          batchTransaction: batchTransaction,
+        ),
       );
     } else {
       await batch(
@@ -525,15 +381,15 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      pleromaNotifications.forEach(
-        (remoteNotification) {
+      for (var remoteNotification in pleromaNotifications) {
+        unawaited(
           upsertRemoteNotification(
             remoteNotification,
             unread: unread,
             batchTransaction: batchTransaction,
-          );
-        },
-      );
+          ),
+        );
+      }
     } else {
       await batch(
         (batch) {

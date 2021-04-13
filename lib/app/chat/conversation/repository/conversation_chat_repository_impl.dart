@@ -11,6 +11,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
+import 'package:pedantic/pedantic.dart';
 
 var _singleConversationChatRepositoryPagination =
     RepositoryPagination<IConversationChat>(
@@ -56,101 +57,6 @@ class ConversationChatRepository
   }) {
     dao = appDatabase.conversationDao;
   }
-
-  //
-  // @override
-  // Future upsertRemoteConversation(
-  //   IPleromaConversation remoteConversation,
-  // ) async {
-  //   _logger.finer(() => "upsertRemoteConversation $remoteConversation");
-  //   var remoteAccounts = remoteConversation.accounts;
-  //
-  //   await accountRepository.batch((batch) {
-  //     accountRepository.upsertConversationRemoteAccounts(
-  //       remoteAccounts,
-  //       conversationRemoteId: remoteConversation.id,
-  //       batchTransaction: batch,
-  //     );
-  //
-  //     var lastStatus = remoteConversation.lastStatus;
-  //     if (lastStatus != null) {
-  //       statusRepository.upsertRemoteStatusForConversation(
-  //         lastStatus,
-  //         conversationRemoteId: remoteConversation.id,
-  //         batchTransaction: batch,
-  //       );
-  //     }
-  //     upsertInRemoteTypeBatch(
-  //       remoteConversation,
-  //       batchTransaction: batch,
-  //     );
-  //   });
-  // }
-
-  // @override
-  // Future upsertRemoteConversations(
-  //   List<IPleromaConversation> remoteConversations,
-  // ) async {
-  //   _logger.finer(
-  //     () => "upsertRemoteConversations ${remoteConversations.length}",
-  //   );
-  //
-  //   for (var remoteConversation in remoteConversations) {
-  //     var lastStatus = remoteConversation.lastStatus;
-  //     if (lastStatus != null) {
-  //       await statusRepository.upsertRemoteStatus(
-  //         lastStatus,
-  //         listRemoteId: null,
-  //         conversationRemoteId: remoteConversation.id,
-  //       );
-  //     }
-  //
-  //     await accountRepository.upsertRemoteAccounts(
-  //       remoteConversation.accounts,
-  //       conversationRemoteId: remoteConversation.id,
-  //       chatRemoteId: null,
-  //     );
-  //   }
-  //
-  //   await upsertAllInRemoteType(
-  //     remoteConversations,
-  //   );
-  // }
-  //
-  // @override
-  // Future updateLocalConversationByRemoteConversation({
-  //   required IConversationChat? oldLocalConversation,
-  //   required IPleromaConversation newRemoteConversation,
-  // }) async {
-  //   _logger.finer(() => "updateLocalConversationByRemoteConversation \n"
-  //       "\t old: $oldLocalConversation \n"
-  //       "\t newRemoteConversation: $newRemoteConversation");
-  //
-  //   var remoteAccounts = newRemoteConversation.accounts;
-  //
-  //   await accountRepository.upsertRemoteAccounts(
-  //     remoteAccounts,
-  //     conversationRemoteId: oldLocalConversation!.remoteId,
-  //     chatRemoteId: null,
-  //   );
-  //
-  //   var lastStatus = newRemoteConversation.lastStatus;
-  //   if (lastStatus != null) {
-  //     await statusRepository.upsertRemoteStatus(
-  //       lastStatus,
-  //       listRemoteId: null,
-  //       conversationRemoteId: oldLocalConversation.remoteId,
-  //     );
-  //   }
-  //   if (oldLocalConversation.localId != null) {
-  //     await updateByDbIdInDbType(
-  //       dbId: oldLocalConversation.localId!,
-  //       dbItem: newRemoteConversation.toDbConversation(),
-  //     );
-  //   } else {
-  //     await upsertRemoteConversation(newRemoteConversation);
-  //   }
-  // }
 
   @override
   Future markAsRead({
@@ -358,37 +264,22 @@ class ConversationChatRepository
     if (batchTransaction != null) {
       var lastMessage = remoteItem.lastStatus;
       var accounts = remoteItem.accounts;
-      // accounts.removeWhere((account) =>
-      //     account.id == lastMessage?.account.id ||
-      //     account.id == lastMessage?.reblog?.account.id);
 
-        // await accountRepository.upsertConversationRemoteAccounts(
-        //   accounts,
-        //   conversationRemoteId: remoteItem.id,
-        //   batchTransaction: batchTransaction,
-        // );
-      // for (var account in accounts) {
-      // }
-
-      // strange bug upsertConversationRemoteAccounts not work
-      // todo: check
-      // await accountRepository.upsertConversationRemoteAccounts(
-      //   accounts,
-      //   conversationRemoteId: remoteItem.id,
-      //   batchTransaction: batchTransaction,
-      // );
-      await accountRepository.upsertConversationRemoteAccounts(
-        accounts,
-        conversationRemoteId: remoteItem.id,
-        batchTransaction: batchTransaction,
-      );
-
-
-      if (lastMessage != null) {
-         statusRepository.upsertRemoteStatusForConversation(
-          lastMessage,
+      unawaited(
+        accountRepository.upsertConversationRemoteAccounts(
+          accounts,
           conversationRemoteId: remoteItem.id,
           batchTransaction: batchTransaction,
+        ),
+      );
+
+      if (lastMessage != null) {
+        unawaited(
+          statusRepository.upsertRemoteStatusForConversation(
+            lastMessage,
+            conversationRemoteId: remoteItem.id,
+            batchTransaction: batchTransaction,
+          ),
         );
       }
     } else {
@@ -409,14 +300,18 @@ class ConversationChatRepository
   }) async {
     if (batchTransaction != null) {
       // todo: support mode
-      await _upsertConversationMetadata(
-        remoteItem,
-        batchTransaction: batchTransaction,
+      unawaited(
+        _upsertConversationMetadata(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        ),
       );
 
-      await dao.upsertBatch(
-        entity: remoteItem.toDbConversation(),
-        batchTransaction: batchTransaction,
+      unawaited(
+        dao.upsertBatch(
+          entity: remoteItem.toDbConversation(),
+          batchTransaction: batchTransaction,
+        ),
       );
     } else {
       await batch(
@@ -437,34 +332,14 @@ class ConversationChatRepository
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) async {
-    //
-    // var accounts = <IPleromaAccount>{};
-    // remoteItems.forEach((conversation) {
-    //   accounts.addAll(conversation.accounts);
-    // });
-    //
-    // accountRepository.upsertConversationRemoteAccounts(
-    //   accounts,
-    //   conversationRemoteId: chatRemoteId,
-    //   batchTransaction: batchTransaction,
-    // );
-    //
-    // for (var remoteItem in remoteItems) {
-    //   await insertInRemoteTypeBatch(
-    //     remoteItem,
-    //     mode: mode,
-    //     batchTransaction: batchTransaction,
-    //   );
-    // }
-
-
-
     if (batchTransaction != null) {
       for (var remoteItem in remoteItems) {
-        await insertInRemoteTypeBatch(
-          remoteItem,
-          mode: mode,
-          batchTransaction: batchTransaction,
+        unawaited(
+          insertInRemoteTypeBatch(
+            remoteItem,
+            mode: mode,
+            batchTransaction: batchTransaction,
+          ),
         );
       }
     } else {
@@ -485,21 +360,27 @@ class ConversationChatRepository
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      await _upsertConversationMetadata(
-        remoteItem,
-        batchTransaction: batchTransaction,
+      unawaited(
+        _upsertConversationMetadata(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        ),
       );
 
       if (appItem.localId != null) {
-        await updateByDbIdInDbType(
-          dbId: appItem.localId!,
-          dbItem: remoteItem.toDbConversation(),
-          batchTransaction: batchTransaction,
+        unawaited(
+          updateByDbIdInDbType(
+            dbId: appItem.localId!,
+            dbItem: remoteItem.toDbConversation(),
+            batchTransaction: batchTransaction,
+          ),
         );
       } else {
-        await upsertInRemoteTypeBatch(
-          remoteItem,
-          batchTransaction: batchTransaction,
+        unawaited(
+          upsertInRemoteTypeBatch(
+            remoteItem,
+            batchTransaction: batchTransaction,
+          ),
         );
       }
     } else {
