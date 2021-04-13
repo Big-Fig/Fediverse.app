@@ -419,24 +419,32 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       var pleromaStatus = await pleromaAuthStatusService.postStatus(
         data: pleromaPostStatus,
       );
-      await statusRepository.updateByDbIdInDbType(
-        dbId: localStatusId,
-        dbItem: dbStatus.copyWith(
-          hiddenLocallyOnDevice: true,
-          pendingState: PendingState.published,
-        ),
-        batchTransaction: null,
-      );
+
+      //
+
 
       // onMessageLocallyHiddenStreamController.add(
       //   pleromaStatus.toConversationChatMessageStatusAdapter(),
       // );
 
-      await statusRepository.upsertRemoteStatusForConversation(
-        pleromaStatus,
-        conversationRemoteId: chat.remoteId,
-        batchTransaction: null,
-      );
+      await statusRepository.batch((batch)  {
+         statusRepository.updateByDbIdInDbType(
+          dbId: localStatusId!,
+          dbItem: dbStatus.copyWith(
+            hiddenLocallyOnDevice: true,
+            pendingState: PendingState.published,
+          ),
+          batchTransaction: batch,
+        );
+
+         statusRepository.upsertRemoteStatusForConversation(
+          pleromaStatus,
+          conversationRemoteId: chat.remoteId,
+          batchTransaction: batch,
+        );
+      });
+
+
       // await statusRepository.batch((batch) {
       // });
 
