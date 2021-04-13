@@ -68,11 +68,15 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
             child: DisposableProxyProvider<IStatus, IStatusBloc>(
               update: (context, value, previous) {
                 if (isLocal) {
-                  return LocalStatusBloc.createFromContext(
-                    context,
-                    status: status,
-                    isNeedWatchLocalRepositoryForUpdates: false,
-                  );
+                  if (value.remoteId == previous?.remoteId) {
+                    return previous!;
+                  } else {
+                    return LocalStatusBloc.createFromContext(
+                      context,
+                      status: status,
+                      isNeedWatchLocalRepositoryForUpdates: false,
+                    );
+                  }
                 } else {
                   return RemoteStatusBloc.createFromContext(
                     context,
