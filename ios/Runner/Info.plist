@@ -47,8 +47,16 @@
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>To share audio</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Required when you use Bluetooth accessories</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Required when you use Bluetooth accessories</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Video sharing</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location access when you use camera</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location access when you use camera</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Required for video recording</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -79,13 +87,5 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-    <string>Required when you use Bluetooth accessories</string>
-    <key>NSBluetoothPeripheralUsageDescription</key>
-    <string>Required when you use Bluetooth accessories</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>Location access when you use camera</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Location access when you use camera</string>
 </dict>
 </plist>
