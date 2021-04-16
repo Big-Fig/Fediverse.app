@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/search/result/pagination/search_adapter_pagination_bloc_impl.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class SearchAccountPaginationBloc
-    extends SearchAdapterPaginationBloc<IAccount?> {
+    extends SearchAdapterPaginationBloc<IAccount> {
   SearchAccountPaginationBloc({
     required IPaginationBloc<PaginationPage<ISearchResultItem>,
             ISearchResultItem>
@@ -16,11 +17,13 @@ class SearchAccountPaginationBloc
   }) : super(searchResultItemPaginationBloc: searchResultItemPaginationBloc);
 
   @override
-  PaginationPage<IAccount?> mapPage(PaginationPage<ISearchResultItem> page) {
-    List<IAccount?> items = page.items
+  PaginationPage<IAccount> mapPage(PaginationPage<ISearchResultItem> page) {
+    // IterableExtension
+    List<IAccount> items = page.items
         .where((searchResultItem) =>
             searchResultItem.type == SearchResultItemType.account)
         .map((searchResultItem) => searchResultItem.account)
+        .whereNotNull()
         .toList();
     return PaginationPage(
       requestedLimitPerPage: page.requestedLimitPerPage,
@@ -41,7 +44,7 @@ class SearchAccountPaginationBloc
     required Widget child,
   }) {
     return DisposableProvider<
-        IPaginationBloc<PaginationPage<IAccount?>, IAccount?>>(
+        IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
       create: (context) =>
           SearchAccountPaginationBloc.createFromContext(context),
       child: child,
