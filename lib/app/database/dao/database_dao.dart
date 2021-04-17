@@ -126,7 +126,7 @@ abstract class DatabaseDao<
       'SELECT COUNT(*) FROM $tableName',
       readsFrom: {table},
     ).map(
-      (QueryRow row) => row.readInt('COUNT(*)'),
+      (QueryRow row) => row.read<int>('COUNT(*)'),
     );
   }
 
@@ -196,7 +196,7 @@ abstract class DatabaseDao<
         'WHERE ${createFindByDbIdWhereExpressionContent(id)}',
         readsFrom: {table},
       ).map(
-        (QueryRow row) => row.readInt(
+        (QueryRow row) => row.read<int>(
           'COUNT(*)',
         ),
       );
