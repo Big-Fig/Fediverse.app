@@ -28,9 +28,6 @@ class NotificationCachedPaginationListWithNewItemsBloc<
 
   @override
   Stream<List<INotification>> watchItemsNewerThanItem(INotification? item) {
-    if(item == null) {
-      return Stream.value([]);
-    }
     _logger.finest(() => "watchItemsNewerThanItem $item");
     return cachedListBloc.watchLocalItemsNewerThanItem(item);
   }

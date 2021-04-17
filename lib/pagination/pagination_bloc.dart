@@ -14,6 +14,7 @@ abstract class IPaginationBloc<TPage extends PaginationPage<TItem>, TItem>
         listen: listen,
       );
 
+  int get loadedPagesCount;
 
   int? get loadedPagesMinimumIndex;
 

@@ -59,6 +59,9 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
       );
 
   @override
+  int get loadedPagesCount => pagesSubject.value?.length ?? 0;
+
+  @override
   int? get loadedPagesMinimumIndex =>
       _calculateMinIndex(loadedPageIndexesSortedByIndex);
 
