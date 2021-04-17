@@ -40,6 +40,8 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
   final bool mergeNewItemsImmediatelyWhenItemsIsEmpty;
 
+  TItem? previousNeverItem;
+
   CachedPaginationListWithNewItemsBloc({
     required this.mergeNewItemsImmediately,
     this.mergeNewItemsImmediatelyWhenItemsIsEmpty = true,
@@ -49,11 +51,27 @@ abstract class CachedPaginationListWithNewItemsBloc<
     addDisposable(subject: unmergedNewItemsSubject);
 
     addDisposable(
-      streamSubscription: newerItemStream.distinct().listen(
+      streamSubscription: newerItemStream.listen(
         (newerItem) {
-//          clearNewItems();
-          // todo: remove hack actually we should listen even with newerItem == null
-          // but it is hack to avoid duplicated data
+          // don't watch new items before we something actually loaded
+          if (paginationBloc.loadedPagesCount == 0) {
+            return;
+          }
+
+          var bothItemsIsNull = previousNeverItem == null && newerItem == null;
+          var newItemsSubscriptionAlreadyExist = newItemsSubscription != null;
+          if (bothItemsIsNull && newItemsSubscriptionAlreadyExist) {
+            return;
+          }
+
+          var bothItemsNotNull = previousNeverItem != null && newerItem != null;
+          if (bothItemsNotNull) {
+            var isEqual = isItemsEqual(previousNeverItem!, newerItem!);
+            if (isEqual) {
+              return;
+            }
+          }
+
           _logger.finest(() => "newerItem $newerItem");
           newItemsSubscription?.cancel();
 

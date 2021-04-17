@@ -13,6 +13,9 @@ abstract class SearchAdapterPaginationBloc<T> extends DisposableOwner
   });
 
   @override
+  int get loadedPagesCount => searchResultItemPaginationBloc.loadedPagesCount;
+
+  @override
   bool get isLoadedPagesInSequence =>
       searchResultItemPaginationBloc.isLoadedPagesInSequence;
 
