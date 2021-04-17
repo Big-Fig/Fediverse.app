@@ -138,4 +138,36 @@ abstract class AppRemoteDatabaseDao<
 
     return query;
   }
+
+
+
+  Future<DbItem?> getNewestOrderByRemoteId({required int? offset}) =>
+      getNewestOrderByRemoteIdSelectable(offset: offset).getSingleOrNull();
+
+  Stream<DbItem?> watchGetNewestOrderByRemoteId({required int? offset}) =>
+      getNewestOrderByRemoteIdSelectable(offset: offset).watchSingleOrNull();
+
+  Selectable<DbItem> getNewestOrderByRemoteIdSelectable({required int? offset}) =>
+      customSelect(
+        'SELECT * FROM $tableName '
+            'ORDER BY $remoteIdFieldName ASC '
+            'LIMIT 1' +
+            createOffsetContent(offset),
+        readsFrom: {table},
+      ).map(table.mapFromRow);
+
+  Future<DbItem?> getOldestOrderByRemoteId({required int? offset}) =>
+      getOldestOrderByRemoteIdSelectable(offset: offset).getSingleOrNull();
+
+  Stream<DbItem?> watchGetOldestOrderByRemoteId({required int? offset}) =>
+      getOldestOrderByRemoteIdSelectable(offset: offset).watchSingleOrNull();
+
+  Selectable<DbItem> getOldestOrderByRemoteIdSelectable({required int? offset}) =>
+      customSelect(
+        'SELECT * FROM $tableName '
+            'ORDER BY $remoteIdFieldName DESC '
+            'LIMIT 1' +
+            createOffsetContent(offset),
+        readsFrom: {table},
+      ).map(table.mapFromRow);
 }

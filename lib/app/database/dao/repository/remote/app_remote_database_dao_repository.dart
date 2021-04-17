@@ -252,4 +252,5 @@ abstract class AppRemoteDatabaseDaoRepository<
         remoteItem,
         mode: InsertMode.insertOrReplace,
       );
+
 }

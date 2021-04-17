@@ -102,6 +102,69 @@ mixin PopulatedDatabaseDaoMixin<
     return joinedQuery.map(mapTypedResultToDbPopulatedItem);
   }
 
+
+  Future<DbPopulatedItem?> getNewestPopulatedOrderByRemoteId({
+    required int? offset,
+  }) =>
+      getNewestPopulatedOrderByRemoteIdSelectable(offset: offset).getSingleOrNull();
+
+  Stream<DbPopulatedItem?> watchGetNewestPopulatedOrderByRemoteId({
+    required int? offset,
+  }) =>
+      getNewestPopulatedOrderByRemoteIdSelectable(offset: offset).watchSingleOrNull();
+
+  Selectable<DbPopulatedItem> getNewestPopulatedOrderByRemoteIdSelectable({
+    required int? offset,
+  }) {
+    var query = startSelectQuery();
+    query.orderBy(
+      [
+            (tbl) => moor.OrderingTerm.desc(
+          CustomExpression("$tableName.$idFieldName"),
+        ),
+      ],
+    );
+    var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(
+      query: query,
+      filters: null,
+    );
+    joinedQuery.limit(1, offset: offset);
+
+    return joinedQuery.map(mapTypedResultToDbPopulatedItem);
+  }
+
+  Future<DbPopulatedItem?> getOldestPopulatedOrderByRemoteId({
+    required int? offset,
+  }) =>
+      getOldestPopulatedOrderByRemoteIdSelectable(
+        offset: offset,
+      ).getSingleOrNull();
+
+  Stream<DbPopulatedItem?> watchGetOldestPopulatedOrderByRemoteId({
+    required int? offset,
+  }) =>
+      getOldestPopulatedOrderByRemoteIdSelectable(offset: offset).watchSingleOrNull();
+
+  Selectable<DbPopulatedItem> getOldestPopulatedOrderByRemoteIdSelectable({
+    required int? offset,
+  }) {
+    var query = startSelectQuery();
+    query.orderBy(
+      [
+            (tbl) => moor.OrderingTerm.asc(
+          CustomExpression("$tableName.$idFieldName"),
+        ),
+      ],
+    );
+    var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(
+      query: query,
+      filters: null,
+    );
+    joinedQuery.limit(1, offset: offset);
+
+    return joinedQuery.map(mapTypedResultToDbPopulatedItem);
+  }
+
   Future<DbPopulatedItem?> findByIdPopulated(DbId id) =>
       findByIdPopulatedSelectable(id).getSingleOrNull();
 

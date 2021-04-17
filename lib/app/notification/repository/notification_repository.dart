@@ -70,7 +70,9 @@ abstract class INotificationRepository
 
   Future markAllAsRead();
 
-  Future<INotification?> getNewest();
+  Future<INotification?> getNewestOrderByRemoteId();
+
+  Future<INotification?> getOldestOrderByRemoteId();
 
   Future upsertRemoteNotification(
     IPleromaNotification remoteItem, {

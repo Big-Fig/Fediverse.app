@@ -124,8 +124,13 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       NotificationRepositoryOrderingTermData.defaultTerms;
 
   @override
-  Future<INotification?> getNewest() => dao
-      .getNewestPopulatedOrderById(offset: null)
+  Future<INotification?> getNewestOrderByRemoteId() => dao
+      .getNewestPopulatedOrderByRemoteId(offset: null)
+      .then(mapDbPopulatedItemToAppItemNullable);
+
+  @override
+  Future<INotification?> getOldestOrderByRemoteId() => dao
+      .getOldestPopulatedOrderByRemoteId(offset: null)
       .then(mapDbPopulatedItemToAppItemNullable);
 
   @override
