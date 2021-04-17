@@ -16,7 +16,7 @@ abstract class IAccount {
 
   static List<IAccount> excludeAccountFromList(
     List<IAccount> accounts,
-    bool predicate(IAccount account),
+    bool Function(IAccount account) predicate,
   ) =>
       accounts
           .where(
@@ -516,7 +516,7 @@ extension IAccountExtension on IAccount {
   }
 
   String? get acctRemoteDomainOrNull {
-    var usernameWithAt = "${username}@";
+    var usernameWithAt = "$username@";
     if (acct.contains(usernameWithAt)) {
       return acct.replaceAll(usernameWithAt, "");
     } else {

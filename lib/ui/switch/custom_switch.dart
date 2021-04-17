@@ -1,7 +1,7 @@
 import 'package:fedi/ui/switch/custom_switch_bloc.dart';
 import 'package:flutter/material.dart';
-
 // todo: refactor, cant change value outside this widget
+// ignore_for_file: no-magic-number
 class CustomSwitch extends StatelessWidget {
   final double width;
   final double height;

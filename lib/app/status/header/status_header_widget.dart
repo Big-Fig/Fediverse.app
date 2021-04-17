@@ -78,6 +78,7 @@ class StatusHeaderWidget extends StatelessWidget {
               FediIcons.warning,
             ),
             height: FediSizes.accountAvatarProgressSmallSize,
+            // ignore: no-equal-arguments
             width: FediSizes.accountAvatarProgressSmallSize,
           ),
         ),

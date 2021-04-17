@@ -9,17 +9,17 @@ import 'package:logging/logging.dart';
 
 Logger _logger = Logger("async_dialog.dart");
 
-typedef ErrorData? ErrorDataBuilder(
+typedef ErrorDataBuilder = ErrorData? Function(
   BuildContext context,
   dynamic error,
   StackTrace stackTrace,
 );
 
-typedef void ErrorCallback(BuildContext? context, ErrorData errorData);
+typedef ErrorCallback = void Function(BuildContext? context, ErrorData errorData);
 
 Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
   required BuildContext context,
-  required Future<T> asyncCode(),
+  required Future<T> Function() asyncCode,
   required ErrorCallback? errorCallback,
   String? contentMessage,
   List<ErrorDataBuilder> errorDataBuilders = const [],
@@ -89,7 +89,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
   }
 
   // wait until progress dialog actually hides
-  await Future.delayed(Duration(milliseconds: 100), () {});
+  await Future.delayed(Duration(milliseconds: 100));
 
   AsyncDialogResult<T> dialogResult;
   if (progressDialog?.isCanceled == true) {

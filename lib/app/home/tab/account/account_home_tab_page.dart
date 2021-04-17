@@ -223,13 +223,13 @@ class _AccountHomeTabMyAccountWidget extends StatelessWidget {
             child: FediListTile(
               isFirstInList: true,
               noPadding: true,
+              // special hack to avoid 1px horizontal line on some devices
+              oneSidePadding: FediSizes.bigPadding - 1,
               child: MyAccountWidget(
                 onStatusesTapCallback: _onStatusesTapCallback,
                 footer: null,
                 brightness: Brightness.dark,
               ),
-              // special hack to avoid 1px horizontal line on some devices
-              oneSidePadding: FediSizes.bigPadding - 1,
 //                    oneSidePadding: FediSizes.smallPadding - 1,
             ),
           ),

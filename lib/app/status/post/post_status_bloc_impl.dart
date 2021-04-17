@@ -251,6 +251,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     expiresInSeconds: null,
   );
 
+  // ignore: no-empty-block
   void onFocusChange(bool hasFocus) {
     // nothing by default
   }
@@ -561,6 +562,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     setScheduledAt(null);
   }
 
+  // ignore: no-empty-block
   Future onStatusPosted(IPleromaStatus remoteStatus) async {
     // nothing by default
   }
@@ -580,7 +582,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       if (originInReplyToStatus != null) {
         var inReplyToStatusAcct = originInReplyToStatus!.account.acct;
 
-        return "@${inReplyToStatusAcct} $inputText";
+        return "@$inReplyToStatusAcct $inputText";
       } else {
         return inputText;
       }

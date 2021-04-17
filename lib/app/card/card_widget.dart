@@ -111,6 +111,7 @@ class _CardImageWidget extends StatelessWidget {
 
     return IFilesCacheService.of(context).createCachedNetworkImageWidget(
       width: _cardWithContentImageSize,
+      // ignore: no-equal-arguments
       height: _cardWithContentImageSize,
       imageUrl: card.image,
       fit: BoxFit.cover,

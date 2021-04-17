@@ -40,10 +40,10 @@ class _SingleMediaPickerPageAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     return FediPageCustomAppBar(
       centerTitle: true,
+      leading: const FediBackIconButton(),
       child: const MediaPickerPageAppBarTitle(
         emptyTitleWidget: _SingleMediaPickerPageAppBarEmptyTitleWidget(),
       ),
-      leading: const FediBackIconButton(),
     );
   }
 

@@ -375,11 +375,11 @@ class LocalStatusBloc extends StatusBloc {
       // reblogged don't support pin
       if (reblogOrOriginal.reblogged) {
         remoteStatus = await pleromaAuthStatusService.pinStatus(
-          statusRemoteId: reblogOrOriginal.remoteId!,
+          statusRemoteId: reblog!.remoteId!,
         );
       } else {
         remoteStatus = await pleromaAuthStatusService.pinStatus(
-          statusRemoteId: reblogOrOriginal.remoteId!,
+          statusRemoteId: status.remoteId!,
         );
       }
     }

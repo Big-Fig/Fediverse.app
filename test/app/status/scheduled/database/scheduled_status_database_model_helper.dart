@@ -5,7 +5,7 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+// ignore_for_file: no-magic-number
 Future<DbScheduledStatus> createTestDbScheduledStatus({
   required String seed,
   String? remoteId,

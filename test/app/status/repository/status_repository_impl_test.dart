@@ -20,6 +20,7 @@ import '../database/status_database_model_helper.dart';
 import '../status_model_helper.dart';
 import 'status_repository_model_helper.dart';
 
+// ignore_for_file: no-magic-number
 final String baseUrl = "https://pleroma.com";
 
 void main() {
@@ -1037,6 +1038,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: await createTestDbAccount(
               seed: followingAccountRemoteId,
+              // ignore: no-equal-arguments
               remoteId: followingAccountRemoteId,
             ),
           ),
@@ -1392,6 +1394,7 @@ void main() {
 
     var conversation = await createTestConversation(
       seed: conversationRemoteId,
+      // ignore: no-equal-arguments
       remoteId: conversationRemoteId,
     );
 
@@ -1678,7 +1681,7 @@ void main() {
       watchedStatuses = statuses;
     });
 
-    await Future.delayed(Duration(milliseconds: 100), () {});
+    await Future.delayed(Duration(milliseconds: 100));
 
     expect(watchedStatuses.length, 0);
 
@@ -1702,7 +1705,7 @@ void main() {
       isFromHomeTimeline: null,
     );
 
-    await Future.delayed(Duration(milliseconds: 100), () {});
+    await Future.delayed(Duration(milliseconds: 100));
 
     expect(watchedStatuses.length, 1);
 
@@ -1726,7 +1729,7 @@ void main() {
       isFromHomeTimeline: null,
     );
 
-    await Future.delayed(Duration(milliseconds: 100), () {});
+    await Future.delayed(Duration(milliseconds: 100));
 
     expect(watchedStatuses.length, 1);
 

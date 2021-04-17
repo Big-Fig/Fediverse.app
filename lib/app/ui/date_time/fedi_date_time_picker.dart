@@ -18,10 +18,10 @@ export 'package:flutter_datetime_picker/src/date_model.dart';
 export 'package:flutter_datetime_picker/src/datetime_picker_theme.dart';
 export 'package:flutter_datetime_picker/src/i18n_model.dart';
 
-typedef void DateChangedCallback(DateTime? time);
-typedef void DateCancelledCallback();
-typedef void DateDeletedCallback();
-typedef String? StringAtIndexCallBack(int index);
+typedef DateChangedCallback = void Function(DateTime? time);
+typedef DateCancelledCallback = void Function();
+typedef DateDeletedCallback = void Function();
+typedef StringAtIndexCallBack = String? Function(int index);
 
 class FediDatePicker {
   ///

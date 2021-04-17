@@ -130,7 +130,7 @@ class _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget
     return FediIconButton(
       icon: Icon(FediIcons.maximize),
       color: IFediUiColorTheme.of(context).grey,
-      onPressed: () {},
+      onPressed: null,
     );
   }
 }

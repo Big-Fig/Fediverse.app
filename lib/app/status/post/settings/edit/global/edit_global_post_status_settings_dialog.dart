@@ -45,6 +45,7 @@ void showEditGlobalPostStatusSettingsDialog({
           postStatusSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
           isEnabled: true,
+          // ignore: no-equal-then-else
           pleromaVisibilityPossibleValues: isPleromaInstance
               ? [
                   PleromaVisibility.public,

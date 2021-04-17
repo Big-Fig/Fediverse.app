@@ -33,7 +33,7 @@ import '../account/my/my_account_model_helper.dart';
 import '../status/status_model_helper.dart';
 import 'conversation_bloc_impl_test.mocks.dart';
 import 'conversation_model_helper.dart';
-
+// ignore_for_file: no-magic-number
 @GenerateMocks([
   PleromaConversationService,
   PleromaAuthStatusService,

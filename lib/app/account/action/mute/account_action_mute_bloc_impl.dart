@@ -21,6 +21,8 @@ class AccountActionMuteBloc extends DisposableOwner
       DurationDateTimeValueFormFieldBloc(
     originValue: null,
     minDuration: Duration(hours: 1),
+    // ignore: no-magic-number
+    // 1 year
     maxDuration: Duration(days: 366),
     isNullValuePossible: true,
     isEnabled: true,
@@ -64,7 +66,7 @@ class AccountActionMuteBloc extends DisposableOwner
 
   @override
   Future mute() => accountBloc.mute(
-      notifications: notificationsBoolFieldBloc.currentValue ?? false,
-      duration: expireDurationFieldBloc.currentValueDuration,
-    );
+        notifications: notificationsBoolFieldBloc.currentValue ?? false,
+        duration: expireDurationFieldBloc.currentValueDuration,
+      );
 }

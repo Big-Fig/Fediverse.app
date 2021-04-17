@@ -66,7 +66,7 @@ class _AccountFieldListWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => const Padding(
+  Widget build(_) => const Padding(
         padding: EdgeInsets.only(
           left: FediSizes.accountAvatarBigSize + FediSizes.bigPadding * 2,
           right: FediSizes.bigPadding,

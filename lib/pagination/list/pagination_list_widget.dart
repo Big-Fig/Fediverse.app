@@ -20,6 +20,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   final ScrollController? scrollController;
   final bool refreshOnFirstLoad;
 
+  // ignore: no-empty-block
   Future additionalPreRefreshAction(BuildContext context) async {
     // nothing by default
   }
@@ -180,8 +181,8 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
 
   Widget buildNotListBody(Widget child) {
     _logger.finest(() => "buildNotListBody "
-        "alwaysShowHeader=${alwaysShowHeader} "
-        "alwaysShowFooter=${alwaysShowFooter} ");
+        "alwaysShowHeader=$alwaysShowHeader "
+        "alwaysShowFooter=$alwaysShowFooter ");
     if (alwaysShowHeader != true && alwaysShowFooter != true) {
       return child;
     } else {

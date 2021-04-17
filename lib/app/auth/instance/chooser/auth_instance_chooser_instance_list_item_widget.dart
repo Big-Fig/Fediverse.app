@@ -48,6 +48,8 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
 
 class _AuthInstanceChooserInstanceListItemAccountInfoWidget
     extends StatelessWidget {
+  static const msToWaitBeforeChangeInstance = 500;
+
   const _AuthInstanceChooserInstanceListItemAccountInfoWidget({
     Key? key,
   }) : super(key: key);
@@ -61,8 +63,11 @@ class _AuthInstanceChooserInstanceListItemAccountInfoWidget
       onTap: () {
         if (!instanceListItemBloc.isSelected) {
           Navigator.of(context).pop();
-          Future.delayed(Duration(milliseconds: 500), () {
-            instanceChooserBloc.chooseInstance(instanceListItemBloc.instance);
+          Future.delayed(Duration(milliseconds: msToWaitBeforeChangeInstance),
+              () {
+            instanceChooserBloc.chooseInstance(
+              instanceListItemBloc.instance,
+            );
           });
         }
       },

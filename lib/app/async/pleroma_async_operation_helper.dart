@@ -16,7 +16,7 @@ class PleromaAsyncOperationHelper {
 
   static Future<AsyncDialogResult<T?>> performPleromaAsyncOperation<T>({
     required BuildContext context,
-    required Future<T> asyncCode(),
+    required Future<T> Function() asyncCode,
     String? contentMessage,
     List<ErrorDataBuilder> errorDataBuilders = pleromaErrorDataBuilders,
     bool createDefaultErrorDataUnhandledError = true,

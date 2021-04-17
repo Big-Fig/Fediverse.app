@@ -29,6 +29,7 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
       },
       child: ClipRect(
         child: FediBackgroundBlur(
+          sigma: 6.0,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,7 +55,6 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
                 ),
             ],
           ),
-          sigma: 6.0,
         ),
       ),
     );

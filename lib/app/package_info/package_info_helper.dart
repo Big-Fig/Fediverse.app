@@ -19,7 +19,7 @@ class FediPackageInfoHelper {
       return devAppName;
     } else {
       var packageName = await getPackageId();
-      throw "Invalid package name ${packageName}";
+      throw "Invalid package name $packageName";
     }
   }
 
@@ -35,7 +35,7 @@ class FediPackageInfoHelper {
       return devAppAppleId;
     } else {
       var packageName = await getPackageId();
-      throw "Invalid package name ${packageName}";
+      throw "Invalid package name $packageName";
     }
   }
 

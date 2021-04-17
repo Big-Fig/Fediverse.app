@@ -66,12 +66,12 @@ void showEditGlobalOrInstanceSettingsDialog({
               return Provider<GlobalOrInstanceSettingsType>.value(
                 value: globalOrInstanceSettingsType,
                 child: _EditGlobalOrInstanceSettingsDialogBodyWidget(
+                  showGlobalSettingsDialogCallback:
+                      showGlobalSettingsDialogCallback,
                   child: childContextBuilder(
                     context: context,
                     child: child,
                   ),
-                  showGlobalSettingsDialogCallback:
-                      showGlobalSettingsDialogCallback,
                 ),
               );
             },

@@ -26,7 +26,7 @@ import 'package:moor/ffi.dart';
 import '../chat_model_helper.dart';
 import 'chat_message_bloc_impl_test.mocks.dart';
 import 'chat_message_model_helper.dart';
-
+// ignore_for_file: no-magic-number
 @GenerateMocks([
   PleromaChatService,
   PleromaAuthAccountService,

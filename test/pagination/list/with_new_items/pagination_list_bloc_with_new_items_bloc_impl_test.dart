@@ -9,6 +9,10 @@ import '../../memory_cached_pagination_bloc_impl.dart';
 import '../../pagination_model_helper.dart';
 import 'pagination_list_bloc_with_new_items_memory_impl.dart';
 
+const int storageSize = 30;
+const int? maximumCachedPagesCount = null;
+const int itemsCountPerPage = 5;
+// ignore_for_file: no-magic-number
 void main() {
   late ICachedPaginationBloc<CachedPaginationPage<TestPaginationItem>,
       TestPaginationItem> paginationBloc;
@@ -22,9 +26,7 @@ void main() {
       CachedPaginationPage<TestPaginationItem>,
       TestPaginationItem> memoryPaginationListWithNewItemsBloc;
   late MemoryCachedPaginationBloc<TestPaginationItem> memoryPaginationBloc;
-  int storageSize = 30;
-  int? maximumCachedPagesCount;
-  int itemsCountPerPage = 5;
+
 
   setUp(() {
     memoryPaginationBloc = MemoryCachedPaginationBloc.createTestWithSize(

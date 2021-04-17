@@ -88,7 +88,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
 
       handled = true;
       var all = await notificationRepository.countAll();
-      _logger.finest(() => "all ${all}");
+      _logger.finest(() => "all $all");
 
       var alreadyExistNotification = await notificationRepository
           .findByRemoteIdInAppType(remoteNotificationId);

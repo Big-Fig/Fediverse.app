@@ -16,7 +16,8 @@ import '../database/chat_message_database_model_helper.dart';
 import 'chat_message_repository_model_helper.dart';
 
 final String baseUrl = "https://pleroma.com";
-
+// ignore_for_file: no-equal-arguments
+// ignore_for_file: no-magic-number
 void main() {
   late AppDatabase database;
   late AccountRepository accountRepository;
@@ -205,8 +206,10 @@ void main() {
       batchTransaction: null,
     );
 
-    expect((await chatMessageRepository.findByDbIdInAppType(id))!.remoteId,
-        "newRemoteId");
+    expect(
+      (await chatMessageRepository.findByDbIdInAppType(id))!.remoteId,
+      "newRemoteId",
+    );
   });
 
   test('updateLocalChatMessageByRemoteChatMessage', () async {

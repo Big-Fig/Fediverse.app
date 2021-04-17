@@ -152,13 +152,13 @@ class _StatusThreadInReplyToStatusWidget extends StatelessWidget {
                         .copyWith(height: 1),
                   ),
                   InkWell(
+                    onTap: () {
+                      postStatusBloc.cancelOriginInReplyToStatus();
+                    },
                     child: Icon(
                       Icons.close,
                       color: IFediUiColorTheme.of(context).darkGrey,
                     ),
-                    onTap: () {
-                      postStatusBloc.cancelOriginInReplyToStatus();
-                    },
                   ),
                 ],
               ),

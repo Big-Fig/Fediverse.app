@@ -40,6 +40,8 @@ class _DateTimeDynamicTimeAgoWidgetState
       if (!disposed) {
         timer = Timer.periodic(Duration(minutes: 1), (_) {
           // redraw timeago each minute
+          // todo: rework with stateless widget
+          // ignore: no-empty-block
           setState(() {});
         });
       }

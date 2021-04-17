@@ -132,12 +132,12 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
       final sharedPreferencesStorageExist =
           await sharedPreferencesLocalPreferencesService.isStorageExist();
       _logger.finest(() =>
-          "sharedPreferencesStorageExist == ${sharedPreferencesStorageExist}}");
+          "sharedPreferencesStorageExist == $sharedPreferencesStorageExist}");
 
       var sharedPreferencesLocalPreferencesServiceExist =
           await sharedPreferencesLocalPreferencesService.isStorageExist();
       _logger.finest(() => "sharedPreferencesLocalPreferencesServiceExist =="
-          " ${sharedPreferencesLocalPreferencesServiceExist}");
+          " $sharedPreferencesLocalPreferencesServiceExist");
       if (sharedPreferencesLocalPreferencesServiceExist) {
         var migrationBloc = FediLocalPreferencesServiceMigrationBloc(
           inputService: sharedPreferencesLocalPreferencesService,

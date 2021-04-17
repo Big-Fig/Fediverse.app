@@ -13,6 +13,10 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
 
     return InkWell(
+      onTap: () {
+        postStatusBloc
+            .changeNsfwSensitive(!postStatusBloc.isNsfwSensitiveEnabled!);
+      },
       child: StreamBuilder<bool?>(
         stream: postStatusBloc.isNsfwSensitiveEnabledStream,
         initialData: postStatusBloc.isNsfwSensitiveEnabled,
@@ -34,10 +38,6 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
           );
         },
       ),
-      onTap: () {
-        postStatusBloc
-            .changeNsfwSensitive(!postStatusBloc.isNsfwSensitiveEnabled!);
-      },
     );
   }
 

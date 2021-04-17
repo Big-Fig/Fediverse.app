@@ -59,7 +59,7 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
       sensitive: false,
       spoilerText: null,
       to: null,
-      status: "${mediaAttachment.url} ${message ?? ""} ${to}".trim(),
+      status: "${mediaAttachment.url} ${message ?? ""} $to".trim(),
       visibility: visibility.toJsonValue(),
     );
     return messageSendData;

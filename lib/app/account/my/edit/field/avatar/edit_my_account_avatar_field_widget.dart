@@ -163,6 +163,7 @@ class _EditMyAccountAvatarFieldImageMediaSourceWidget extends StatelessWidget {
               color: IFediUiColorTheme.of(context).error,
             ),
             height: avatarSize,
+            // ignore: no-equal-arguments
             width: avatarSize,
           );
         } else {

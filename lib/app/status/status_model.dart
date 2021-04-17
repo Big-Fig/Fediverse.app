@@ -826,7 +826,7 @@ extension DbStatusPopulatedListExtension on List<DbStatusPopulated> {
 
 class CantExtractStatusRemoteIdFromStatusUrlException implements Exception {
   final IStatus status;
-  final Object? e;
+  final dynamic? e;
 
   CantExtractStatusRemoteIdFromStatusUrlException({
     required this.status,

@@ -8,16 +8,17 @@ import 'package:flutter_test/flutter_test.dart';
 import '../memory_cached_pagination_bloc_impl.dart';
 import '../pagination_model_helper.dart';
 
+const int storageSize = 30;
+const int? maximumCachedPagesCount = null;
+const int itemsCountPerPage = 5;
+// ignore_for_file: no-magic-number
 void main() {
   late IPaginationBloc<CachedPaginationPage<TestPaginationItem>,
       TestPaginationItem> paginationBloc;
 
-  late IPaginationListBloc<CachedPaginationPage<TestPaginationItem>?,
+  late IPaginationListBloc<CachedPaginationPage<TestPaginationItem>,
       TestPaginationItem> paginationListBloc;
   MemoryCachedPaginationBloc<TestPaginationItem> memoryPaginationBloc;
-  int storageSize = 30;
-  int? maximumCachedPagesCount;
-  int itemsCountPerPage = 5;
 
   setUp(() {
     memoryPaginationBloc = MemoryCachedPaginationBloc.createTestWithSize(

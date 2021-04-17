@@ -3,7 +3,7 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'database/account_database_model_helper.dart';
-
+// ignore_for_file: no-magic-number
 Future<DbAccountPopulatedWrapper> createTestAccount({
   required String seed,
   String? remoteId,

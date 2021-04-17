@@ -16,7 +16,7 @@ import '../chat_model_helper.dart';
 import '../database/chat_database_model_helper.dart';
 import '../message/database/chat_message_database_model_helper.dart';
 import 'chat_repository_model_helper.dart';
-
+// ignore_for_file: no-magic-number
 void main() {
   late AppDatabase database;
   late PleromaChatRepository chatRepository;
@@ -413,6 +413,7 @@ void main() {
           .copyWith(),
       mode: null,
     );
+
 
     expect((await query.get()).length, 2);
 

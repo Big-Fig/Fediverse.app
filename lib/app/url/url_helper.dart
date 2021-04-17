@@ -131,7 +131,7 @@ class UrlHelper {
     var urlHost = remoteInstanceUriOrNull.host;
     var urlSchema = remoteInstanceUriOrNull.scheme;
 
-    url = "${urlSchema}://$urlHost$url";
+    url = "$urlSchema://$urlHost$url";
     return url;
   }
 
@@ -145,7 +145,7 @@ class UrlHelper {
     var urlHost = currentAuthInstanceBloc.currentInstance!.urlHost;
     var urlSchema = currentAuthInstanceBloc.currentInstance!.urlSchema;
 
-    url = "${urlSchema}://$urlHost$url";
+    url = "$urlSchema://$urlHost$url";
     return url;
   }
 

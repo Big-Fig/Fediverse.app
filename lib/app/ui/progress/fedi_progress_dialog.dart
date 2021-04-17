@@ -102,11 +102,11 @@ abstract class FediProgressDialog extends BaseDialog {
                   };
                 }
                 return InkWell(
+                  onTap: onPressed,
                   child: Text(
                     S.of(context).dialog_progress_action_cancel,
                     style: IFediUiTextTheme.of(context).mediumShortPrimary,
                   ),
-                  onTap: onPressed,
                 );
               },
             ),

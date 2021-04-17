@@ -199,9 +199,11 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
   $DbConversationsTable get table => dbConversations;
 
   @override
+  // ignore: no-empty-block
   void addFiltersToQuery({
     required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
     required ConversationChatRepositoryFilters? filters,
+  // ignore: no-empty-block
   }) {
     // nothing by now
   }

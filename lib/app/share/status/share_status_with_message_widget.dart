@@ -18,6 +18,7 @@ class ShareStatusWithMessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaQueryData = MediaQuery.of(context);
     return ShareWithMessageWidget(
+      footer: footer,
       child: ProxyProvider<IStatus, IPleromaCard?>(
         update: (context, status, _) => PleromaCard(
           authorName: status.account.displayName,
@@ -48,7 +49,6 @@ class ShareStatusWithMessageWidget extends StatelessWidget {
           ),
         ),
       ),
-      footer: footer,
     );
   }
 }

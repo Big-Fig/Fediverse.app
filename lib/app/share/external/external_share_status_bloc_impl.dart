@@ -42,7 +42,7 @@ class ExternalShareStatusBloc extends ExternalShareBloc
         text += " ${spoilerText?.extractRawStringFromHtmlString()}";
       }
 
-      text += " ${content}";
+      text += " $content";
     }
     return externalShareService.share(
       popupTitle: popupTitle,

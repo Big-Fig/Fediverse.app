@@ -154,7 +154,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   Future<String> _calculateRedirectUri() async {
     var packageId = await FediPackageInfoHelper.getPackageId();
-    var redirectUri = "${packageId}://addNewInstance";
+    var redirectUri = "$packageId://addNewInstance";
     return redirectUri;
   }
 
