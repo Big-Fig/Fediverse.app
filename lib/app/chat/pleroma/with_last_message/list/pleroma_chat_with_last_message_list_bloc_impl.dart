@@ -77,11 +77,13 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
     );
     addDisposable(disposable: chatPaginationListWithNewItemsBloc);
 
-    addDisposable(
-      disposable: webSocketsHandlerManagerBloc.listenPleromaChatChannel(
-        listenType: webSocketsListenType,
-      ),
-    );
+    if (pleromaChatService.isPleroma) {
+      addDisposable(
+        disposable: webSocketsHandlerManagerBloc.listenPleromaChatChannel(
+          listenType: webSocketsListenType,
+        ),
+      );
+    }
   }
 
   static PleromaChatWithLastMessageListBloc createFromContext(
