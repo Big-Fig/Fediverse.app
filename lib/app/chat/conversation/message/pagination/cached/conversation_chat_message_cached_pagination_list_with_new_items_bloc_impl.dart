@@ -104,17 +104,19 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
 
   List<IConversationChatMessage> excludeHiddenItems(
     List<IConversationChatMessage> superItems,
-    List<IConversationChatMessage?>? hiddenItems,
+    List<IConversationChatMessage> hiddenItems,
   ) {
-    if (hiddenItems!.isEmpty) {
+    if (hiddenItems.isEmpty) {
       return superItems;
     }
 
-    superItems.removeWhere((currentItem) =>
-        hiddenItems.firstWhereOrNull(
-          (hiddenItem) => isItemsEqual(hiddenItem!, currentItem),
-        ) !=
-        null);
+    superItems.removeWhere(
+      (currentItem) {
+        return hiddenItems.firstWhereOrNull(
+              (hiddenItem) => isItemsEqual(hiddenItem, currentItem),
+            ) != null;
+      },
+    );
 
     return superItems;
   }
