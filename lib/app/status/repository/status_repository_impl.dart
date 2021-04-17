@@ -764,4 +764,37 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
     }
   }
+
+  @override
+  Future<IStatus?> findNewestForHomeTimeline() {
+    return findInAppType(
+      pagination: RepositoryPagination(
+        limit: 1,
+      ),
+      filters: StatusRepositoryFilters(
+        isFromHomeTimeline: true,
+      ),
+      orderingTerms: [
+        StatusRepositoryOrderingTermData.remoteIdDesc,
+      ],
+    );
+  }
+
+  @override
+  Stream<int> watchNewestCountForHomeTimeline({
+    required IStatus lastSeenStatus,
+  }) {
+    var statusesStream = watchFindAllInAppType(
+      pagination: RepositoryPagination(
+        newerThanItem: lastSeenStatus,
+      ),
+      filters: StatusRepositoryFilters(
+        isFromHomeTimeline: true,
+      ),
+      orderingTerms: [
+        StatusRepositoryOrderingTermData.remoteIdDesc,
+      ],
+    );
+    return statusesStream.map((list) => list.length);
+  }
 }

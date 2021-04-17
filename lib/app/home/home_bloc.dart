@@ -14,9 +14,11 @@ abstract class IHomeBloc implements IDisposable {
   Stream<HomeTab?> get selectedTabStream;
 
   Stream<HomeTab?> get reselectedTabStream;
+
   Stream<bool> get selectedTabReselectedStream;
 
   bool? get isTimelinesUnread;
+
   Stream<bool> get isTimelinesUnreadStream;
 
   void selectTab(HomeTab tab);
