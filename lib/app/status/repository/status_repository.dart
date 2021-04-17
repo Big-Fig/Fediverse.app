@@ -137,4 +137,10 @@ abstract class IStatusRepository
     required String? conversationRemoteId,
     required Batch? batchTransaction,
   });
+
+  Future<IStatus?> findNewestForHomeTimeline();
+
+  Stream<int> watchNewestCountForHomeTimeline({
+    required IStatus lastSeenStatus,
+  });
 }

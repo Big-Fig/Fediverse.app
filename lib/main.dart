@@ -30,6 +30,7 @@ import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_widget.dart';
 import 'package:fedi/app/splash/splash_page.dart';
+import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/thread/local_status_thread_page.dart';
 import 'package:fedi/app/toast/handler/toast_handler_bloc.dart';
 import 'package:fedi/app/toast/handler/toast_handler_bloc_impl.dart';
@@ -40,6 +41,7 @@ import 'package:fedi/app/ui/theme/dark/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_proxy_provider.dart';
 import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/localization/localization_model.dart';
@@ -231,7 +233,7 @@ Future runInitializedCurrentInstanceApp({
         appContextBloc: appContextBloc,
         appTitle: appTitle,
       );
-      if(currentInstanceContextBloc != null) {
+      if (currentInstanceContextBloc != null) {
         await currentInstanceContextBloc!.dispose();
       }
 
@@ -339,9 +341,8 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
                     .cantFetchAndLocalCacheNotExist ||
             state == CurrentAuthInstanceContextInitState.localCacheExist) {
           currentInstanceContextBloc!.addDisposable(
-            streamSubscription: pushLoaderBloc
-                .launchPushLoaderNotificationStream
-                .listen(
+            streamSubscription:
+                pushLoaderBloc.launchPushLoaderNotificationStream.listen(
               (launchOrResumePushLoaderNotification) {
                 if (launchOrResumePushLoaderNotification != null) {
                   Future.delayed(
@@ -397,12 +398,19 @@ Widget buildAuthInstanceContextInitWidget({
             startTab: calculateHomeTabForNotification(
               pushLoaderBloc.launchPushLoaderNotification,
             ),
+            webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
+              context,
+              listen: false,
+            ),
+            statusRepository: IStatusRepository.of(
+              context,
+              listen: false,
+            ),
           );
 
           homeBloc.addDisposable(
-            streamSubscription: pushLoaderBloc
-                .launchPushLoaderNotificationStream
-                .listen(
+            streamSubscription:
+                pushLoaderBloc.launchPushLoaderNotificationStream.listen(
               (launchOrResumePushLoaderNotification) {
                 homeBloc.selectTab(
                   calculateHomeTabForNotification(
@@ -414,8 +422,8 @@ Widget buildAuthInstanceContextInitWidget({
           );
           return homeBloc;
         },
-        child: FcmPushPermissionCheckerWidget(
-          child: const HomePage(),
+        child: const FcmPushPermissionCheckerWidget(
+          child: HomePage(),
         ),
       ),
     );
@@ -440,10 +448,10 @@ void runInitializedLoginApp(IAppContextBloc appContextBloc, String appTitle) {
   );
 }
 
-HomeTab? calculateHomeTabForNotification(
+HomeTab calculateHomeTabForNotification(
   NotificationPushLoaderNotification? launchOrResumePushLoaderNotification,
 ) {
-  HomeTab? homeTab;
+  HomeTab homeTab;
   if (launchOrResumePushLoaderNotification != null) {
     var notification = launchOrResumePushLoaderNotification.notification;
     if (notification.isContainsChat) {
@@ -452,6 +460,8 @@ HomeTab? calculateHomeTabForNotification(
       homeTab = HomeTab.notifications;
     } else if (notification.isContainsAccount) {
       homeTab = HomeTab.notifications;
+    } else {
+      homeTab = HomeTab.timelines;
     }
   } else {
     homeTab = HomeTab.timelines;

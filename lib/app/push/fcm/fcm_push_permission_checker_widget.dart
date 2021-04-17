@@ -10,7 +10,7 @@ var _logger = Logger("fcm_push_permission_checker_widget.dart");
 class FcmPushPermissionCheckerWidget extends StatefulWidget {
   final Widget child;
 
-  FcmPushPermissionCheckerWidget({
+  const FcmPushPermissionCheckerWidget({
     required this.child,
   });
 
