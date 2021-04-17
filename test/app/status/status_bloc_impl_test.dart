@@ -30,7 +30,7 @@ import 'status_bloc_impl_test.mocks.dart';
 import 'status_model_helper.dart';
 
 Function eq = const ListEquality().equals;
-
+// ignore_for_file: no-magic-number
 @GenerateMocks([
   PleromaAuthStatusService,
   PleromaAuthAccountService,

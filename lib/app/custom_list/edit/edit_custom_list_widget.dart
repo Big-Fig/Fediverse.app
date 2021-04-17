@@ -279,6 +279,7 @@ class _EditCustomListBodySearchToAddAccountsBodyWidget extends StatelessWidget {
   }
 }
 
+  // ignore: no-empty-block
 void _accountSelectedCallback(BuildContext context, IAccount account) {
   // nothing
 }

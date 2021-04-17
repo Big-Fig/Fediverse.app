@@ -19,7 +19,7 @@ class FediPlayerControlToggleMuteButtonWidget extends StatelessWidget {
         if (isInitialized) {
           return const _FediPlayerControlToggleMuteButtonInitializedWidget();
         } else {
-          return const _FediPlayerControlToggleMuteButtonNotInitialiedWidget();
+          return const _FediPlayerControlToggleMuteButtonNotInitializedWidget();
         }
       },
     );
@@ -58,9 +58,9 @@ class _FediPlayerControlToggleMuteButtonInitializedWidget
   }
 }
 
-class _FediPlayerControlToggleMuteButtonNotInitialiedWidget
+class _FediPlayerControlToggleMuteButtonNotInitializedWidget
     extends StatelessWidget {
-  const _FediPlayerControlToggleMuteButtonNotInitialiedWidget({
+  const _FediPlayerControlToggleMuteButtonNotInitializedWidget({
     Key? key,
   }) : super(key: key);
 
@@ -70,7 +70,7 @@ class _FediPlayerControlToggleMuteButtonNotInitialiedWidget
       icon: Icon(FediIcons.sound_on),
       color: IFediUiColorTheme.of(context).grey,
       iconSize: 16.0,
-      onPressed: () {},
+      onPressed: null,
     );
   }
 }

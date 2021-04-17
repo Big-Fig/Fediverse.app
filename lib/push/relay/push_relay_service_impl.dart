@@ -36,6 +36,7 @@ class PushRelayService extends DisposableOwner implements IPushRelayService {
 
     if (Platform.isIOS) {
       endpoint += "&device=iOS";
+    // ignore: no-empty-block
     } else if (Platform.isAndroid) {
 //      endpoint += "&device=android";
       // nothing

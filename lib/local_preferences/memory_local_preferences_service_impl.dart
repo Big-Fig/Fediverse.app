@@ -93,7 +93,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   @override
   T? getObjectPreference<T>(
     String key,
-    T jsonConverter(Map<String, dynamic> jsonData),
+    T Function(Map<String, dynamic> jsonData) jsonConverter,
   ) {
     return preferences[key];
   }

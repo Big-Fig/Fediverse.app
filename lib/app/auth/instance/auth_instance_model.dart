@@ -13,6 +13,7 @@ part 'auth_instance_model.g.dart';
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
 //@HiveType()
+// ignore_for_file: no-magic-number
 @HiveType(typeId: -32 + 50)
 @JsonSerializable(explicitToJson: true)
 class AuthInstance extends IJsonObject {

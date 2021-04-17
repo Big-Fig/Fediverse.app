@@ -180,9 +180,9 @@ class __DurationDateTimeValueFormFieldRowPickerWidgetState
         theme: FediDatePickerTheme.byDefault(
           context: context,
         ),
-        onConfirm: (_) {},
-        onCancel: () {},
-        onDelete: () {},
+        onConfirm: null,
+        onCancel: null,
+        onDelete: null,
         isDeletePossible: false,
       );
     } else {

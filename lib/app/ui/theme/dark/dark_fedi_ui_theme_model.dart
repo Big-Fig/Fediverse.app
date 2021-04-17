@@ -5,6 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/material/theme_data.dart';
 
+// ignore_for_file: no-magic-number
+// ignore_for_file: no-equal-arguments
+// ignore_for_file: long-method
+
 const darkFediUiTheme = DarkFediUiTheme();
 const _darkFediUiColorTheme = DarkFediUiColorTheme();
 const _darkFediUiTextTheme = FediUiTextTheme(colorTheme: _darkFediUiColorTheme);

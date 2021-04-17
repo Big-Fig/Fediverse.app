@@ -9,7 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 var _logger = Logger("shared_preferences_local_preferences_service_impl.dart");
 
-var _specialStorageKeyCreatedKey = "_specialStorageKeyCreatedKey";
+const _specialStorageKeyCreatedKey = "_specialStorageKeyCreatedKey";
+const _specialStorageKeyCreatedValue = _specialStorageKeyCreatedKey;
 
 class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
@@ -26,7 +27,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   Future putStorageCreatedKey() async {
     await preferences.setString(
       _specialStorageKeyCreatedKey,
-      _specialStorageKeyCreatedKey,
+      _specialStorageKeyCreatedValue,
     );
   }
 
@@ -103,7 +104,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   @override
   T? getObjectPreference<T>(
     String key,
-    T jsonConverter(Map<String, dynamic> jsonData),
+    T Function(Map<String, dynamic> jsonData) jsonConverter,
   ) {
     var stringPreference = getStringPreference(key);
     if (stringPreference?.isNotEmpty != true) {

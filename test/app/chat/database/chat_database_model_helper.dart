@@ -2,7 +2,7 @@ import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+// ignore_for_file: no-magic-number
 Future<DbChat> createTestDbChat({
   required String seed,
   String? remoteId,

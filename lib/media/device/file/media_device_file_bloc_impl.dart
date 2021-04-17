@@ -21,6 +21,7 @@ abstract class MediaDeviceFileBloc extends AsyncInitLoadingBloc
   Future internalAsyncInit() async {
     thumbImageData = await loadThumbData(
       width: _thumbImageSize,
+      // ignore: no-equal-arguments
       height: _thumbImageSize,
     );
   }

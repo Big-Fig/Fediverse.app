@@ -39,7 +39,7 @@ abstract class LocalPreferencesServiceMigrationBloc
 
     var currentValue = inputBloc.value;
     if (currentValue != null) {
-      _logger.finest(() => "migrateData currentValue ${currentValue}");
+      _logger.finest(() => "migrateData currentValue $currentValue");
       await outputBloc.setValue(currentValue);
     }
 

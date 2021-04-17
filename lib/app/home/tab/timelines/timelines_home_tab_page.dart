@@ -219,7 +219,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
     var timelineTabListBloc = ITimelineTabListBloc.of(context, listen: false);
     var tabBloc = timelineTabListBloc.timelineTabBlocs[index];
 
-    _logger.finest(() => "tabBodyProviderBuilder index ${index} "
+    _logger.finest(() => "tabBodyProviderBuilder index $index "
         "tabBloc ${tabBloc.timelineId}");
 
     return Provider<ITimelineTabBloc>.value(
@@ -264,9 +264,9 @@ class _TimelinesHomeTabPageBodyHeaderSecondRowWidget extends StatelessWidget {
             color: IFediUiColorTheme.of(context).offWhite,
             child: const FediListTile(
               isFirstInList: true,
-              child: TimelinesHomeTabPostStatusHeaderWidget(),
               // special hack to avoid 1px horizontal line on some devices
               oneSidePadding: FediSizes.smallPadding - 1,
+              child: TimelinesHomeTabPostStatusHeaderWidget(),
             ),
           ),
         ),

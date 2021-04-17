@@ -162,9 +162,9 @@ class _FediInstanceImageBackgroundDarkOverlayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        child: child,
         decoration: BoxDecoration(
           color: IFediUiColorTheme.of(context).imageDarkOverlay,
         ),
+        child: child,
       );
 }

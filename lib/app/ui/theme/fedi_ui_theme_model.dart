@@ -2,7 +2,7 @@ import 'package:fedi/ui/theme/ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-
+// ignore_for_file: no-magic-number
 ThemeData createBaseFediThemeData(Color primaryColor) => ThemeData(
       fontFamily: "Rubik",
       primarySwatch: MaterialColor(primaryColor.value, {

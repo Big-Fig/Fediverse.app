@@ -109,11 +109,12 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
 
     if (!isForCurrentInstance) {
       await _handleNonCurrentInstancePushMessage(pushHandlerMessage);
-    } else {
-      // current instance push messages handled
-      // via currentInstanceNotificationPushLoaderBloc
-      // and _handleCurrentInstanceNotification
     }
+    // else {
+    // current instance push messages handled
+    // via currentInstanceNotificationPushLoaderBloc
+    // and _handleCurrentInstanceNotification
+    // }
 
     return false;
   }

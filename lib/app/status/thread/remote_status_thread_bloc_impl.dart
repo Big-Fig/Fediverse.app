@@ -68,8 +68,10 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
   Future<List<IFilter>> loadFilters() async => [];
 
   @override
+  // ignore: no-empty-block
   Future<void> onInitialStatusUpdated(
     IPleromaStatus updatedStartRemoteStatus,
+  // ignore: no-empty-block
   ) async {
     // nothing
   }

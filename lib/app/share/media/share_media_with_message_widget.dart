@@ -14,12 +14,12 @@ class ShareMediaWithMessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaQueryData = MediaQuery.of(context);
     return ShareWithMessageWidget(
+      footer: footer,
       child: ConstrainedBox(
         constraints:
             BoxConstraints(maxHeight: mediaQueryData.size.height * 0.2),
         child: const MediaAttachmentWidget(),
       ),
-      footer: footer,
     );
   }
 }

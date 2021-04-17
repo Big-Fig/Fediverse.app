@@ -3,7 +3,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../account_model_helper.dart';
-
+// ignore_for_file: no-magic-number
 Future<DbAccount> createTestDbAccount({
   required String seed,
   String? remoteId,

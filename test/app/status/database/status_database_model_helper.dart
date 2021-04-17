@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../../pleroma/application/pleroma_application_model_helper.dart';
 import '../../account/database/account_database_model_helper.dart';
-
+// ignore_for_file: no-magic-number
 PleromaMediaAttachment createTestPleromaMediaAttachment() {
   return PleromaMediaAttachment.only(
     id: "id",

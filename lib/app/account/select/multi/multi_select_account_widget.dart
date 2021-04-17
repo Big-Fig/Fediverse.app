@@ -28,6 +28,7 @@ class MultiSelectAccountWidget extends StatelessWidget {
       footer: footer,
       alwaysShowHeader: alwaysShowHeader,
       alwaysShowFooter: alwaysShowFooter,
+      // ignore: no-empty-block
       accountSelectedCallback: (_, __) {
         // nothing
       },

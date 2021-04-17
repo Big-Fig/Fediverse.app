@@ -24,7 +24,6 @@ class ChatPageSelectionAppBarWidget extends StatelessWidget
         if (isSomethingSelected) {
           return FediPageCustomAppBar(
             leading: const SizedBox.shrink(),
-            child: const SizedBox.shrink(),
             actions: [
               FediTextButton(
                 text: S.of(context).app_chat_selection_action_cancel,
@@ -33,6 +32,7 @@ class ChatPageSelectionAppBarWidget extends StatelessWidget
                 },
               ),
             ],
+            child: const SizedBox.shrink(),
           );
         } else {
           return emptySelectionAppBar;

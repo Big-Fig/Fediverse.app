@@ -119,7 +119,7 @@ class _ChatMessageListItemBodyWidget<T extends IChatMessage>
     var alignment =
         isChatMessageFromMe ? Alignment.centerRight : Alignment.centerLeft;
     var maxWidthConstraints = BoxConstraints(
-      maxWidth: deviceWidth * 0.80,
+      maxWidth: deviceWidth * 0.8,
     );
     var isPendingFailedOrPending = chatMessage.isPendingFailedOrPending;
     var isPendingFailed = chatMessage.isPendingFailed;

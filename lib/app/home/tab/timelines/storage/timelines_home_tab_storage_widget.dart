@@ -121,7 +121,7 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
     Key item,
   ) {
     final draggedItem = timelinesHomeTabStorageBloc.timelineOfKey(item);
-    debugPrint("Reordering finished for ${draggedItem}}");
+    debugPrint("Reordering finished for $draggedItem}");
   }
 }
 

@@ -80,6 +80,7 @@ class AccountAvatarUrlWidget extends StatelessWidget {
           ),
           errorWidget: (context, url, error) => _AccountAvatarFailedWidget(),
           height: imageSize,
+          // ignore: no-equal-arguments
           width: imageSize,
         ),
       ),

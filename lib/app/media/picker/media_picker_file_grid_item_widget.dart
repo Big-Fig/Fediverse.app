@@ -78,7 +78,7 @@ class _MediaPickerFileGridItemBodyWidget extends StatelessWidget {
         );
 
         var mediaDeviceFileMetadata =
-            await mediaDeviceFileBloc.mediaDeviceFileMetadata;
+            mediaDeviceFileBloc.mediaDeviceFileMetadata;
         await mediaPickerBloc
             .toggleFileMetadataSelection(mediaDeviceFileMetadata);
       },

@@ -75,6 +75,7 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
           hint: S
               .of(context)
               .app_account_my_domainBlock_add_dialog_field_domain_hint,
+          // ignore: no-empty-block
           onSubmitted: (_) {
             // nothing
           },

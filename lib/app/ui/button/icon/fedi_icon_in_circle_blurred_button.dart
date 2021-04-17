@@ -29,6 +29,7 @@ class FediIconInCircleBlurredButton extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(size),
           child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -48,7 +49,6 @@ class FediIconInCircleBlurredButton extends StatelessWidget {
                 onPressed: onPressed,
               ),
             ),
-            filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           ),
         ),
       );

@@ -24,7 +24,6 @@ class MultiSelectAccountPage extends StatelessWidget {
     return Scaffold(
       appBar: FediPageCustomAppBar(
         leading: const FediBackIconButton(),
-        child: const SearchInputWidget(),
         actions: [
           StreamBuilder<bool>(
             stream: multiSelectAccountBloc.isSomethingSelectedStream,
@@ -43,6 +42,7 @@ class MultiSelectAccountPage extends StatelessWidget {
             },
           ),
         ],
+        child: const SearchInputWidget(),
       ),
       body: const SafeArea(
         child: MultiSelectAccountWidget(),

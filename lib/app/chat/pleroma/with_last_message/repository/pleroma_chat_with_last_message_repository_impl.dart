@@ -18,6 +18,7 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
   });
 
   @override
+  // ignore: no-empty-block
   Future internalAsyncInit() async {
     // nothing by now
   }

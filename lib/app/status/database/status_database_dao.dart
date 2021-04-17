@@ -775,9 +775,9 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
       );
     }
 
-    if (needFilterByHomeTimeline) {
-      // nothing it is filtered by inner join
-    }
+    // if (needFilterByHomeTimeline) {
+    //   // nothing it is filtered by inner join
+    // }
 
     return joinQuery;
   }

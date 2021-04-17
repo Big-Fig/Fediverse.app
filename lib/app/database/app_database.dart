@@ -57,7 +57,7 @@ import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:moor/moor.dart';
 
 part 'app_database.g.dart';
-
+// ignore_for_file: no-magic-number
 @UseMoor(
   tables: [
     // todo: remove hack

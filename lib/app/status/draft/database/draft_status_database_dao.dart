@@ -92,9 +92,11 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   $DbDraftStatusesTable get table => dbDraftStatuses;
 
   @override
+  // ignore: no-empty-block
   void addFiltersToQuery({
     required SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
     required DraftStatusRepositoryFilters? filters,
+  // ignore: no-empty-block
   }) {
     // nothing
   }

@@ -44,7 +44,7 @@ abstract class ILocalPreferencesService extends DisposableOwner
 
   T? getObjectPreference<T>(
     String key,
-    T jsonConverter(Map<String, dynamic> jsonData),
+    T Function(Map<String, dynamic> jsonData) jsonConverter,
   );
 
   IDisposable listenKeyPreferenceChanged<T>(

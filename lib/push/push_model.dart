@@ -6,7 +6,7 @@ import 'package:moor/moor.dart' as moor;
 
 part 'push_model.g.dart';
 
-typedef dynamic PushMessageListener(PushMessage message);
+typedef PushMessageListener = dynamic Function(PushMessage message);
 
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,

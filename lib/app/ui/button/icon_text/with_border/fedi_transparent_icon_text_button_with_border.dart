@@ -40,6 +40,7 @@ class FediTransparentIconTextButtonWithBorder extends StatelessWidget {
         child: ClipRRect(
           borderRadius: borderRadius,
           child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
@@ -73,7 +74,6 @@ class FediTransparentIconTextButtonWithBorder extends StatelessWidget {
                 ),
               ),
             ),
-            filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           ),
         ),
       ),

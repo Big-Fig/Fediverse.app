@@ -175,9 +175,11 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
   $DbChatsTable get table => dbChats;
 
   @override
+  // ignore: no-empty-block
   void addFiltersToQuery({
     required SimpleSelectStatement<$DbChatsTable, DbChat> query,
     required PleromaChatRepositoryFilters? filters,
+  // ignore: no-empty-block
   }) {
     // nothing
   }

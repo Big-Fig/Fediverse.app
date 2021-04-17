@@ -26,6 +26,7 @@ abstract class ConversationChatStatusListBloc extends AsyncInitLoadingBloc
   });
 
   @override
+  // ignore: no-empty-block
   Future internalAsyncInit() async {
     // nothing
   }

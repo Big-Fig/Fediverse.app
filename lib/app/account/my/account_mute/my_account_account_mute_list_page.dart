@@ -71,6 +71,7 @@ class _MyAccountAccountMuteListPageAddButton extends StatelessWidget {
         goToSingleSelectAccountPage(
           context,
           isNeedPreFetchRelationship: true,
+          // ignore: no-empty-block
           accountSelectedCallback: (context, account) async {
             // nothing
           },

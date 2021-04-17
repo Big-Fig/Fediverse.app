@@ -54,7 +54,6 @@ class FediListSmartRefresherWidget extends StatelessWidget {
   Widget build(BuildContext context) => SmartRefresher(
         key: key,
         controller: controller,
-        child: child,
         header: header,
         footer: footer,
         enablePullDown: enablePullDown,
@@ -82,5 +81,6 @@ class FediListSmartRefresherWidget extends StatelessWidget {
         physics: physics,
         scrollDirection: scrollDirection,
         scrollController: scrollController,
+        child: child,
       );
 }

@@ -125,13 +125,13 @@ abstract class AppRemoteDatabaseDao<
 
     if (minimumExist) {
       var biggerExp = CustomExpression<bool>(
-        "${tableName}.${remoteIdFieldName} > '$minimumRemoteIdExcluding'",
+        "$tableName.$remoteIdFieldName > '$minimumRemoteIdExcluding'",
       );
       query = query..where((filter) => biggerExp);
     }
     if (maximumExist) {
       var smallerExp = CustomExpression<bool>(
-        "${tableName}.${remoteIdFieldName} < '$maximumRemoteIdExcluding'",
+        "$tableName.$remoteIdFieldName < '$maximumRemoteIdExcluding'",
       );
       query = query..where((filter) => smallerExp);
     }

@@ -7,6 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'app_analytics_model.g.dart';
 
 @JsonSerializable()
+// ignore: no-magic-number
 @HiveType(typeId: -32 + 94)
 class AppAnalyticsData implements IJsonObject {
   @HiveField(0)

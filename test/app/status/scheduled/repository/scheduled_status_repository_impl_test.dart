@@ -10,7 +10,7 @@ import 'package:moor/ffi.dart';
 import '../database/scheduled_status_database_model_helper.dart';
 import '../scheduled_status_model_helper.dart';
 import 'scheduled_status_repository_model_helper.dart';
-
+// ignore_for_file: no-magic-number
 void main() {
   late AppDatabase database;
   late ScheduledStatusRepository scheduledStatusRepository;

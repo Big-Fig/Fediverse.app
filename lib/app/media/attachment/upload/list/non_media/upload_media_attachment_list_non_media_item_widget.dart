@@ -133,7 +133,7 @@ class _UploadMediaAttachmentListNonMediaItemActionsWidget
               ],
             );
           default:
-            throw "Invalid state uploadState ${uploadState}";
+            throw "Invalid state uploadState $uploadState";
         }
       },
     );

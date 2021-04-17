@@ -15,7 +15,7 @@ import '../../status/database/status_database_model_helper.dart';
 import '../account_model_helper.dart';
 import '../database/account_database_model_helper.dart';
 import 'account_repository_model_helper.dart';
-
+// ignore_for_file: no-magic-number
 void main() {
 //  initTestLog();
 

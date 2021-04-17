@@ -74,7 +74,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                     : BorderRadius.zero,
               ),
               constraints: BoxConstraints(
-                maxWidth: deviceWidth * 0.80,
+                maxWidth: deviceWidth * 0.8,
               ),
               child: Padding(
                 padding: isHaveTextContent

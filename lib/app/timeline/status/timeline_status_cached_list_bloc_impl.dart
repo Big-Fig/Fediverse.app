@@ -391,7 +391,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     }
 
     var countAll = await filterRepository.countAll();
-    _logger.finest(() => "filterRepository countAll ${countAll}");
+    _logger.finest(() => "filterRepository countAll $countAll");
 
     filters = await filterRepository.findAllInAppType(
       filters: FilterRepositoryFilters(

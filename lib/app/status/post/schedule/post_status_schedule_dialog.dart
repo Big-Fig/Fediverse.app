@@ -42,14 +42,13 @@ void showPostStatusScheduleDialog({
     onDelete: () {
       deleted = true;
     },
-    onConfirm: (date) {
-      // nothing
-    },
+    onConfirm: null,
     isDeletePossible: true,
   );
 
   if (deleted) {
     postStatusBloc.setScheduledAt(null);
+  // ignore: no-empty-block
   } else if (canceled) {
     // nothing
   } else {

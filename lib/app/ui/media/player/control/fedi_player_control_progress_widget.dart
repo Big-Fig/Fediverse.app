@@ -9,15 +9,18 @@ class FediPlayerControlProgressWidget extends StatelessWidget {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
-        activeTrackColor: IFediUiColorTheme.of(context).white,
-        inactiveTrackColor: IFediUiColorTheme.of(context).grey,
-        disabledActiveTrackColor: IFediUiColorTheme.of(context).mediumGrey,
-        disabledInactiveTrackColor: IFediUiColorTheme.of(context).mediumGrey,
+        activeTrackColor: fediUiColorTheme.white,
+        inactiveTrackColor: fediUiColorTheme.grey,
+        disabledActiveTrackColor: fediUiColorTheme.mediumGrey,
+        disabledInactiveTrackColor: fediUiColorTheme.mediumGrey,
         trackShape: RoundedRectSliderTrackShape(),
         trackHeight: 1.0,
+        // ignore: no-magic-number
         thumbShape: RoundSliderThumbShape(enabledThumbRadius: 4.0),
+        // ignore: no-equal-arguments
         thumbColor: fediUiColorTheme.white,
-        disabledThumbColor: IFediUiColorTheme.of(context).mediumGrey,
+        // ignore: no-equal-arguments
+        disabledThumbColor: fediUiColorTheme.mediumGrey,
       ),
       child: _FediPlayerControlProgressPlaybackWidget(),
     );

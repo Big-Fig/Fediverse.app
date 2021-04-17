@@ -8,7 +8,7 @@ import 'package:mockito/annotations.dart';
 import '../pleroma/websockets/pleroma_websockets_service_impl_test.mocks.dart';
 import 'websockets_channel_source_mock.dart';
 import 'websockets_model_helper.dart';
-
+// ignore_for_file: no-magic-number
 @GenerateMocks([
   ConnectionService,
 ])

@@ -19,7 +19,7 @@ import '../../status/status_model_helper.dart';
 import '../conversation_model_helper.dart';
 import '../database/conversation_database_model_helper.dart';
 import 'conversation_repository_model_helper.dart';
-
+// ignore_for_file: no-magic-number
 void main() {
   late AppDatabase database;
   late ConversationChatRepository conversationRepository;

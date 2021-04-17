@@ -36,10 +36,10 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   TimelineTabListBloc({
     required List<String> timelineIds,
     required String? oldSelectedTimelineId,
-    required ITimelineTabBloc timelineTabBlocCreator(
+    required ITimelineTabBloc Function(
       String timelineId,
       WebSocketsListenType webSocketsListenType,
-    ),
+    ) timelineTabBlocCreator,
   }) {
     var selectedTimelineId = oldSelectedTimelineId ?? timelineIds.first;
 
