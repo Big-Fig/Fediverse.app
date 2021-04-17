@@ -222,4 +222,10 @@ class PleromaChatService extends DisposableOwner
       ),
     );
   }
+
+  @override
+  bool get isMastodon => restService.isMastodon;
+
+  @override
+  bool get isPleroma => restService.isPleroma;
 }
