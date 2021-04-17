@@ -20,6 +20,7 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("timeline_tab_bloc_impl.dart");
@@ -139,4 +140,33 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   String toString() {
     return 'TimelineTabBloc{timelineId: $timelineId}';
   }
+
+  static TimelineTabBloc createFromContext(
+    BuildContext context, {
+    required String timelineId,
+    required WebSocketsListenType webSocketsListenType,
+  }) =>
+      TimelineTabBloc(
+        timelineId: timelineId,
+        webSocketsListenType: webSocketsListenType,
+        filterRepository: IFilterRepository.of(
+          context,
+          listen: false,
+        ),
+        pleromaTimelineService:
+            IPleromaTimelineService.of(context, listen: false),
+        pleromaAccountService:
+            IPleromaAccountService.of(context, listen: false),
+        statusRepository: IStatusRepository.of(context, listen: false),
+        myAccountBloc: IMyAccountBloc.of(context, listen: false),
+        currentAuthInstanceBloc:
+            ICurrentAuthInstanceBloc.of(context, listen: false),
+        preferencesService: ILocalPreferencesService.of(context, listen: false),
+        webSocketsHandlerManagerBloc:
+            IWebSocketsHandlerManagerBloc.of(context, listen: false),
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+      );
 }

@@ -1,6 +1,6 @@
 import 'package:fedi/app/pagination/cached/cached_pagination_list_with_new_items_unread_badge_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
-import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_list_tab_controller_bloc.dart';
 import 'package:fedi/app/timeline/timeline_label_extension.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
@@ -29,13 +29,12 @@ class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
         return FediFadeShaderMask(
           fadingPercent: fadingPercent,
           fadingColor: IFediUiColorTheme.of(context).darkGrey,
-          child: DisposableProxyProvider<ITimelineTabListBloc,
+          child: DisposableProxyProvider<ITimelineListTabControllerBloc,
               IFediTabIndicatorBloc<ITimelineTabBloc>>(
-            update: (context, value, previous) {
-              var timelineTabBlocsList = value.timelineTabBlocsList!;
+            update: (context, ITimelineListTabControllerBloc value, previous) {
               return FediTabIndicatorBloc<ITimelineTabBloc>(
-                items: timelineTabBlocsList.timelineTabBlocs,
-                tabController: timelineTabBlocsList.tabController,
+                items: value.timelineTabListBloc.timelineTabBlocs,
+                tabController: value.tabController,
               );
             },
             child: FediTextTabIndicatorWidget<ITimelineTabBloc>(
