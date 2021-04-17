@@ -17,34 +17,36 @@ analyzer:
     - dart_code_metrics
 
 dart_code_metrics:
-  anti-patterns:
-    - long-method
-    - long-parameter-list
-  metrics:
-    cyclomatic-complexity: 20
-    lines-of-code: 100
-    lines-of-executable-code: 50
-    maximum-nesting: 5
-    number-of-arguments: 5
-    number-of-methods: 4
-    weight-of-class: 0.33
+  #  anti-patterns:
+  #    - long-method
+  #    - long-parameter-list
+#  metrics:
+#    cyclomatic-complexity: 100
+  #    lines-of-code: 100
+  #    lines-of-executable-code: 50
+  #    maximum-nesting: 5
+  #    number-of-arguments: 5
+  #    number-of-parameters: 5
+  #    number-of-methods: 4
+  #    weight-of-class: 0.33
   metrics-exclude:
     - test/**
   rules:
-    - prefer-trailing-comma
-    - avoid-unused-parameters
     - binary-expression-operand-order
     - double-literal-format
-    - newline-before-return
-    - no-boolean-literal-compare
     - no-empty-block
     - no-equal-then-else
     - no-equal-arguments
     - no-object-declaration
-    - no-magic-number
+#    - no-magic-number
+#    - prefer-trailing-comma
+#    - no-boolean-literal-compare
+#    - newline-before-return
+#    - avoid-unused-parameters
 #    - member-ordering
 
 linter:
   rules:
     prefer_single_quotes: false
     omit_local_variable_types: false
+    prefer_generic_function_type_aliases: false
