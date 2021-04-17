@@ -68,7 +68,7 @@ class ConversationChatStatusListConversationApiBloc
       );
 
   @override
-  Stream<bool> get settingsChangedStream => Stream.empty();
+  Stream get settingsChangedStream => Stream.empty();
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
