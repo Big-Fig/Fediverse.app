@@ -23,5 +23,5 @@ abstract class IStatusCachedListBloc
 
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus? item);
 
-  Stream<bool> get settingsChangedStream;
+  Stream get settingsChangedStream;
 }

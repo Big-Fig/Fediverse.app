@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
@@ -93,11 +95,13 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         onlyRemoteCondition: onlyRemoteCondition,
       );
 
+  final StreamController settingsChangedStreamController =
+      StreamController.broadcast();
+
   @override
-  Stream<bool> get settingsChangedStream => timelineLocalPreferencesBloc.stream
-      .map((timeline) => timeline?.settings)
-      .map((_) => true)
-      .distinct();
+  Stream get settingsChangedStream => settingsChangedStreamController.stream;
+
+  Timeline? currentTimelineData;
 
   TimelineStatusCachedListBloc({
     required this.pleromaAccountService,
@@ -110,6 +114,23 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     required this.myAccountBloc,
     required WebSocketsListenType webSocketsListenType,
   }) {
+    addDisposable(streamController: settingsChangedStreamController);
+
+    addDisposable(
+      streamSubscription: timelineLocalPreferencesBloc.stream.listen(
+        (Timeline? timeline) {
+          _logger.finest(
+            () => "timelineLocalPreferencesBloc timeline $timeline",
+          );
+          if (currentTimelineData != timeline) {
+            currentTimelineData = timeline;
+
+            settingsChangedStreamController.add(timeline?.settings);
+          }
+        },
+      ),
+    );
+
     resubscribeWebSocketsUpdates(webSocketsListenType);
 
     addDisposable(custom: () {

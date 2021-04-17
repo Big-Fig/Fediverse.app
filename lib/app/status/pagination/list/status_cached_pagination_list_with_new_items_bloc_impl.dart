@@ -32,10 +32,9 @@ class StatusCachedPaginationListWithNewItemsBloc<
         ) {
     addDisposable(
       streamSubscription: statusCachedListBloc.settingsChangedStream.listen(
-        (changed) async {
-          if (changed == true) {
-            await refreshWithController();
-          }
+        (_) async {
+          _logger.finest(() => "settingsChangedStream ");
+          await refreshWithController();
         },
       ),
     );
