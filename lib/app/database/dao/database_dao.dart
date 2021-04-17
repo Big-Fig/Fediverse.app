@@ -148,7 +148,7 @@ abstract class DatabaseDao<
   Selectable<DbItem> getNewestOrderByIdSelectable({required int? offset}) =>
       customSelect(
         'SELECT * FROM $tableName '
-                'ORDER BY $idFieldName ASC'
+                'ORDER BY $idFieldName ASC '
                 'LIMIT 1' +
             createOffsetContent(offset),
         readsFrom: {table},
@@ -163,7 +163,7 @@ abstract class DatabaseDao<
   Selectable<DbItem> getOldestOrderByIdSelectable({required int? offset}) =>
       customSelect(
         'SELECT * FROM $tableName '
-                'ORDER BY $idFieldName DESC'
+                'ORDER BY $idFieldName DESC '
                 'LIMIT 1' +
             createOffsetContent(offset),
         readsFrom: {table},
