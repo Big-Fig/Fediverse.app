@@ -214,11 +214,6 @@ dependency_overrides:
   # build_runner: ^1.11.5 which is not null-safe uses web_socket_channel: ^1.0.0
   web_socket_channel: ^2.0.0
 
-  # for dart_code_metrics
-#  crypto: ^3.0.0
-#  quiver: ^2.0.0
-#  glob: ^1.1.7
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -238,7 +233,7 @@ dev_dependencies:
   hive_generator: ^1.0.0
 
   # additional linter
-  #  dart_code_metrics: ^2.4.1
+  dart_code_metrics: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
