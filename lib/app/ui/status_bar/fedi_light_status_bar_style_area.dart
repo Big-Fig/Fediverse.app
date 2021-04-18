@@ -21,16 +21,11 @@ class FediLightStatusBarStyleArea extends StatelessWidget {
       );
     } else {
       return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light.copyWith(
+        value: SystemUiOverlayStyle.dark.copyWith(
           statusBarColor: fediUiColorTheme.transparent,
         ),
         child: child,
       );
-      // return AnnotatedRegion<SystemUiOverlayStyle>(
-      //     value: SystemUiOverlayStyle.dark.copyWith(
-      //       statusBarColor: IFediUiColorTheme.of(context).white,
-      //     ),
-      //     child: child);
     }
   }
 }
