@@ -557,6 +557,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
       typedResult.toDbStatusPopulated(dao: this);
 
   @override
+  // ignore: code-metrics
   void addFiltersToQuery({
     required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     required StatusRepositoryFilters? filters,
@@ -693,6 +694,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
+  // ignore: code-metrics
   JoinedSelectStatement<Table, DataClass>
       convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,

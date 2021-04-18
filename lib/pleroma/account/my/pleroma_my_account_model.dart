@@ -194,6 +194,7 @@ class PleromaMyAccountEdit extends IPleromaMyAccountEdit {
   String toJsonString() => jsonEncode(_$PleromaMyAccountEditToJson(this));
 
   @override
+  // ignore: code-metrics
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is PleromaMyAccountEdit &&
@@ -743,6 +744,7 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
   String toJsonString() => jsonEncode(_$PleromaMyAccountToJson(this));
 
   @override
+  // ignore: code-metrics
   PleromaMyAccount copyWith({
     String? username,
     String? url,
@@ -801,6 +803,7 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
   }
 
   @override
+  // ignore: code-metrics
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is PleromaMyAccount &&
@@ -1129,6 +1132,7 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
       jsonEncode(_$PleromaMyAccountPleromaPartToJson(this));
 
   @override
+  // ignore: code-metrics
   PleromaMyAccountPleromaPart copyWith({
     String? backgroundImage,
     List<IPleromaTag>? tags,
@@ -1217,6 +1221,7 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
   }
 
   @override
+  // ignore: code-metrics
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is PleromaMyAccountPleromaPart &&

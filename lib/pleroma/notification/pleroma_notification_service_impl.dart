@@ -111,56 +111,12 @@ class PleromaNotificationService extends DisposableOwner
     List<PleromaNotificationType>? includeTypes,
     List<PleromaVisibility>? excludeVisibilities,
   }) async {
-    if (includeTypes?.isNotEmpty == true) {
-      assert(restService.isPleroma);
-      for (PleromaNotificationType includeType in includeTypes!) {
-        assert(
-          IPleromaNotificationService.validPleromaTypesToInclude
-              .contains(includeType),
-          "includeType $includeType not supported on backend",
-        );
-      }
-    }
+    _checkGetNotificationsIncludeTypes(includeTypes);
 
-    if (excludeVisibilities?.isNotEmpty == true) {
-      assert(restService.isPleroma);
-      for (PleromaVisibility excludeVisibility in excludeVisibilities!) {
-        assert(
-          IPleromaNotificationService.validPleromaVisibilityToExclude
-              .contains(excludeVisibility),
-          "excludeVisibility $excludeVisibility not supported on backend",
-        );
-      }
-    }
-    if (excludeTypes?.isNotEmpty == true) {
-      if (restService.isMastodon) {
-        excludeTypes = excludeTypes!
-            .where(
-              (excludeType) => IPleromaNotificationService
-                  .validMastodonTypesToExclude
-                  .contains(excludeType),
-            )
-            .toList();
-      } else if (restService.isPleroma) {
-        excludeTypes = excludeTypes!
-            .where(
-              (excludeType) => IPleromaNotificationService
-                  .validPleromaTypesToExclude
-                  .contains(excludeType),
-            )
-            .toList();
-      }
-    }
+    _checkGetNotificationsExcludeVisibilities(excludeVisibilities);
+    excludeTypes = _checkGetNotificationsExcludeTypes(excludeTypes);
 
-    if (onlyFromAccountRemoteId != null) {
-      // todo: remove when pleroma will support
-      assert(
-        restService.isMastodon,
-        "Not supported on Pleroma. "
-        "onlyFromAccountRemoteId added only in Mastodon 2.9.0 "
-        "but Pleroma targets Mastodon 2.7.2 API",
-      );
-    }
+    _checkGetNotificationsOnlyFromAccountRemoteId(onlyFromAccountRemoteId);
 
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -196,6 +152,74 @@ class PleromaNotificationService extends DisposableOwner
     );
 
     return parseNotificationListResponse(httpResponse);
+  }
+
+  void _checkGetNotificationsOnlyFromAccountRemoteId(
+    String? onlyFromAccountRemoteId,
+  ) {
+    if (onlyFromAccountRemoteId != null) {
+      // todo: remove when pleroma will support
+      assert(
+        restService.isMastodon,
+        "Not supported on Pleroma. "
+        "onlyFromAccountRemoteId added only in Mastodon 2.9.0 "
+        "but Pleroma targets Mastodon 2.7.2 API",
+      );
+    }
+  }
+
+  List<PleromaNotificationType>? _checkGetNotificationsExcludeTypes(
+    List<PleromaNotificationType>? excludeTypes,
+  ) {
+    if (excludeTypes?.isNotEmpty == true) {
+      if (restService.isMastodon) {
+        excludeTypes = excludeTypes!
+            .where(
+              (excludeType) => IPleromaNotificationService
+                  .validMastodonTypesToExclude
+                  .contains(excludeType),
+            )
+            .toList();
+      } else if (restService.isPleroma) {
+        excludeTypes = excludeTypes!
+            .where(
+              (excludeType) => IPleromaNotificationService
+                  .validPleromaTypesToExclude
+                  .contains(excludeType),
+            )
+            .toList();
+      }
+    }
+    return excludeTypes;
+  }
+
+  void _checkGetNotificationsExcludeVisibilities(
+    List<PleromaVisibility>? excludeVisibilities,
+  ) {
+    if (excludeVisibilities?.isNotEmpty == true) {
+      assert(restService.isPleroma);
+      for (PleromaVisibility excludeVisibility in excludeVisibilities!) {
+        assert(
+          IPleromaNotificationService.validPleromaVisibilityToExclude
+              .contains(excludeVisibility),
+          "excludeVisibility $excludeVisibility not supported on backend",
+        );
+      }
+    }
+  }
+
+  void _checkGetNotificationsIncludeTypes(
+      List<PleromaNotificationType>? includeTypes) {
+    if (includeTypes?.isNotEmpty == true) {
+      assert(restService.isPleroma);
+      for (PleromaNotificationType includeType in includeTypes!) {
+        assert(
+          IPleromaNotificationService.validPleromaTypesToInclude
+              .contains(includeType),
+          "includeType $includeType not supported on backend",
+        );
+      }
+    }
   }
 
   PleromaNotification parseNotificationResponse(Response httpResponse) {

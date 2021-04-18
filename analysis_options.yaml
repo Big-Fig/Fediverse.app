@@ -20,8 +20,8 @@ dart_code_metrics:
   #  anti-patterns:
   #    - long-method
   #    - long-parameter-list
-#  metrics:
-#    cyclomatic-complexity: 100
+  metrics:
+    cyclomatic-complexity: 20
   #    lines-of-code: 100
   #    lines-of-executable-code: 50
   #    maximum-nesting: 5

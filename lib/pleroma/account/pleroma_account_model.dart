@@ -314,6 +314,7 @@ class PleromaAccount implements IPleromaAccount {
   }
 
   @override
+  // ignore: code-metrics
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is PleromaAccount &&
@@ -365,6 +366,7 @@ class PleromaAccount implements IPleromaAccount {
       lastStatusAt.hashCode;
 
   @override
+  // ignore: code-metrics
   PleromaAccount copyWith({
     String? username,
     String? url,
@@ -661,6 +663,7 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
   String toJsonString() => jsonEncode(_$PleromaAccountPleromaPartToJson(this));
 
   @override
+  // ignore: code-metrics
   PleromaAccountPleromaPart copyWith({
     String? backgroundImage,
     List<IPleromaTag>? tags,
@@ -707,6 +710,7 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
       );
 
   @override
+  // ignore: code-metrics
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is PleromaAccountPleromaPart &&

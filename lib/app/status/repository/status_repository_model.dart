@@ -106,6 +106,7 @@ class StatusRepositoryFilters {
       );
 
   @override
+  // ignore: code-metrics
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is StatusRepositoryFilters &&
