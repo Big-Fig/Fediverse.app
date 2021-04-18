@@ -7,6 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logging/logging.dart';
 
+// ignore_for_file: no-magic-number
 part 'pleroma_instance_model.g.dart';
 
 final _logger = Logger("pleroma_instance_model.dart");

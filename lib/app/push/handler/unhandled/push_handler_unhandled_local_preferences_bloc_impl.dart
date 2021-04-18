@@ -14,10 +14,10 @@ class PushHandlerUnhandledLocalPreferencesBloc
   PushHandlerUnhandledLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
   ) : super(
-          preferencesService,
-          "push.unhandled",
-          2,
-          (json) => PushHandlerUnhandledList.fromJson(json),
+          preferencesService: preferencesService,
+          key: "push.unhandled",
+          schemaVersion: 2,
+          jsonConverter: (json) => PushHandlerUnhandledList.fromJson(json),
         );
 
   @override
@@ -62,11 +62,13 @@ class PushHandlerUnhandledLocalPreferencesBloc
   Future<bool> markAsHandled(List<PushHandlerMessage> messages) async {
     var pleromaUnhandledList = value!;
 
-    var cleanedMessages = pleromaUnhandledList.messages.where(
-      (message) => !messages.contains(
-        message,
-      ),
-    ).toList();
+    var cleanedMessages = pleromaUnhandledList.messages
+        .where(
+          (message) => !messages.contains(
+            message,
+          ),
+        )
+        .toList();
 
     _logger.finest(() => "markAsHandled \n"
         "\t messages = ${messages.length}");

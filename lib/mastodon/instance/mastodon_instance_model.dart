@@ -4,6 +4,7 @@ import 'package:fedi/mastodon/account/mastodon_account_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'mastodon_instance_model.g.dart';
 
 abstract class IMastodonInstanceHistory {

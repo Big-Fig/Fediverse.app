@@ -1,3 +1,4 @@
+// ignore_for_file: no-magic-number
 enum FilesCacheSizeLimitCountType {
   notSet,
   size50,

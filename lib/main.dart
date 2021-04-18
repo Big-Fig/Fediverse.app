@@ -287,8 +287,11 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
                 pushLoaderBloc.launchPushLoaderNotificationStream.listen(
               (launchOrResumePushLoaderNotification) {
                 if (launchOrResumePushLoaderNotification != null) {
+                  // ignore: no-magic-number
+                  const durationToWaitUntilHandleLaunchNotification =
+                      Duration(milliseconds: 100);
                   Future.delayed(
-                    Duration(milliseconds: 100),
+                    durationToWaitUntilHandleLaunchNotification,
                     () async {
                       await handleLaunchPushLoaderNotification(
                         launchOrResumePushLoaderNotification,

@@ -10,6 +10,7 @@ import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'my_account_model.g.dart';
 
 abstract class IMyAccount extends IAccount implements IJsonObject {

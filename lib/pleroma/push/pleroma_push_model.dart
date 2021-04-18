@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'pleroma_push_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)

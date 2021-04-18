@@ -4,6 +4,7 @@ import 'package:fedi/app/settings/settings_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'push_settings_model.g.dart';
 
 @JsonSerializable()

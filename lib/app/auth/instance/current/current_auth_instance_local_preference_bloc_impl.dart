@@ -9,9 +9,9 @@ class CurrentAuthInstanceLocalPreferenceBloc
   CurrentAuthInstanceLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
   ) : super(
-          preferencesService,
-          "instance.current",
-          1,
-          (json) => AuthInstance.fromJson(json),
+          preferencesService: preferencesService,
+          key: "instance.current",
+          schemaVersion: 1,
+          jsonConverter: (json) => AuthInstance.fromJson(json),
         );
 }

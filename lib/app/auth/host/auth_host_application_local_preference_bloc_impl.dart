@@ -10,9 +10,9 @@ class AuthHostApplicationLocalPreferenceBloc
     ILocalPreferencesService preferencesService, {
     required String? host,
   }) : super(
-          preferencesService,
-          "auth.host.$host.application",
-          1,
-          (json) => PleromaClientApplication.fromJson(json),
+          preferencesService: preferencesService,
+          key: "auth.host.$host.application",
+          schemaVersion: 1,
+          jsonConverter: (json) => PleromaClientApplication.fromJson(json),
         );
 }

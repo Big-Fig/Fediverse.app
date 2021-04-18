@@ -8,7 +8,7 @@ import 'package:rxdart/rxdart.dart';
 
 abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
     implements IAsyncInitLoadingBloc, ILocalPreferenceBloc<T> {
-  final ILocalPreferencesService? _preferenceService;
+  final ILocalPreferencesService preferencesService;
   final String key;
 
   // ignore: close_sinks
@@ -20,10 +20,10 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
   @override
   Stream<T?> get stream => _subject.stream;
 
-  LocalPreferenceBloc(
-    this._preferenceService,
-    this.key,
-  ) {
+  LocalPreferenceBloc({
+    required this.preferencesService,
+    required this.key,
+  }) {
     addDisposable(subject: _subject);
   }
 
@@ -33,7 +33,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
   Future internalAsyncInit() async {
     _subject.add((await getValueInternal()) ?? defaultValue);
 
-    _preferenceService!.listenKeyPreferenceChanged(key, (newValue) {
+    preferencesService.listenKeyPreferenceChanged(key, (newValue) {
       if (value != newValue) {
         if (!_subject.isClosed) {
           _subject.add(newValue);
@@ -43,11 +43,11 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
   }
 
   @override
-  bool get isSavedPreferenceExist => _preferenceService!.isKeyExist(key);
+  bool get isSavedPreferenceExist => preferencesService.isKeyExist(key);
 
   @override
   Future<bool> clearValue() {
-    var future = _preferenceService!.clearValue(key);
+    var future = preferencesService.clearValue(key);
     _subject.add(null);
     return future;
   }
@@ -78,76 +78,93 @@ abstract class ObjectLocalPreferenceBloc<T extends IJsonObject?>
   final T Function(Map<String, dynamic> jsonData) jsonConverter;
   final int schemaVersion;
 
-  ObjectLocalPreferenceBloc(
-    ILocalPreferencesService? preferencesService,
-    String key,
-    this.schemaVersion,
-    this.jsonConverter,
-  ) : super(preferencesService, "$key.$schemaVersion");
+  ObjectLocalPreferenceBloc({
+    required ILocalPreferencesService preferencesService,
+    required String key,
+    required this.schemaVersion,
+    required this.jsonConverter,
+  }) : super(
+          preferencesService: preferencesService,
+          key: "$key.$schemaVersion",
+        );
 
   @override
   Future<bool> setValueInternal(T? newValue) async {
-    return await _preferenceService!.setObjectPreference(key, newValue);
+    return await preferencesService.setObjectPreference(key, newValue);
   }
 
   @override
   Future<T?> getValueInternal() async =>
-      _preferenceService!.getObjectPreference(key, jsonConverter);
+      preferencesService.getObjectPreference(key, jsonConverter);
 }
 
 abstract class SimpleLocalPreferencesBloc<T> extends LocalPreferenceBloc<T> {
-  SimpleLocalPreferencesBloc(
-    ILocalPreferencesService preferencesService,
-    String key,
-  ) : super(preferencesService, key);
+  SimpleLocalPreferencesBloc({
+    required ILocalPreferencesService preferencesService,
+    required String key,
+  }) : super(
+          preferencesService: preferencesService,
+          key: key,
+        );
 }
 
 abstract class IntPreferenceBloc extends SimpleLocalPreferencesBloc<int?> {
-  IntPreferenceBloc(ILocalPreferencesService preferencesService, String key)
-      : super(preferencesService, key);
+  IntPreferenceBloc({
+    required ILocalPreferencesService preferencesService,
+    required String key,
+  }) : super(
+          preferencesService: preferencesService,
+          key: key,
+        );
 
   @override
   Future<bool> setValueInternal(int? newValue) async =>
-      await _preferenceService!.setIntPreference(key, newValue);
+      await preferencesService.setIntPreference(key, newValue);
 
   @override
-  Future<int?> getValueInternal() async => _preferenceService!.getIntPreference(
+  Future<int?> getValueInternal() async => preferencesService.getIntPreference(
         key,
       );
 }
 
 abstract class BoolLocalPreferenceBloc
     extends SimpleLocalPreferencesBloc<bool?> {
-  BoolLocalPreferenceBloc(
-    ILocalPreferencesService preferencesService,
-    String key,
-  ) : super(preferencesService, key);
+  BoolLocalPreferenceBloc({
+    required ILocalPreferencesService preferencesService,
+    required String key,
+  }) : super(
+          preferencesService: preferencesService,
+          key: key,
+        );
 
   @override
   Future<bool> setValueInternal(bool? newValue) async =>
-      await _preferenceService!.setBoolPreference(key, newValue);
+      await preferencesService.setBoolPreference(key, newValue);
 
   @override
   Future<bool?> getValueInternal() async =>
-      _preferenceService!.getBoolPreference(
+      preferencesService.getBoolPreference(
         key,
       );
 }
 
 abstract class StringLocalPreferenceBloc
     extends SimpleLocalPreferencesBloc<String?> {
-  StringLocalPreferenceBloc(
-    ILocalPreferencesService preferencesService,
-    String key,
-  ) : super(preferencesService, key);
+  StringLocalPreferenceBloc({
+    required ILocalPreferencesService preferencesService,
+    required String key,
+  }) : super(
+          preferencesService: preferencesService,
+          key: key,
+        );
 
   @override
   Future<bool> setValueInternal(String? newValue) async =>
-      await _preferenceService!.setString(key, newValue);
+      await preferencesService.setString(key, newValue);
 
   @override
   Future<String?> getValueInternal() async =>
-      _preferenceService!.getStringPreference(
+      preferencesService.getStringPreference(
         key,
       );
 }

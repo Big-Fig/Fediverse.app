@@ -10,9 +10,9 @@ abstract class ToastSettingsLocalPreferencesBloc
     ILocalPreferencesService preferencesService,
     String key,
   ) : super(
-          preferencesService,
-          key,
-          3,
-          (json) => ToastSettings.fromJson(json),
+          preferencesService: preferencesService,
+          key: key,
+          schemaVersion: 3,
+          jsonConverter: (json) => ToastSettings.fromJson(json),
         );
 }

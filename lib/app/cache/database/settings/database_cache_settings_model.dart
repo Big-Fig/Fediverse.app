@@ -9,6 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'database_cache_settings_model.g.dart';
 
+// ignore_for_file: no-magic-number
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: -32 + 96)
 class DatabaseCacheSettings

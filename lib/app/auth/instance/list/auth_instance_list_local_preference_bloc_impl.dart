@@ -9,9 +9,9 @@ class AuthInstanceListLocalPreferenceBloc
   AuthInstanceListLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
   ) : super(
-          preferencesService,
-          "instance.list",
-          1,
-          (json) => AuthInstanceList.fromJson(json),
+          preferencesService: preferencesService,
+          key: "instance.list",
+          schemaVersion: 1,
+          jsonConverter: (json) => AuthInstanceList.fromJson(json),
         );
 }

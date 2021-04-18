@@ -5,6 +5,7 @@ import 'package:fedi/mastodon/application/mastodon_application_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'pleroma_application_model.g.dart';
 
 abstract class IPleromaApplication implements IMastodonApplication {}

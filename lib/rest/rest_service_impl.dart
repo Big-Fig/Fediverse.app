@@ -5,6 +5,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/rest/error/rest_error_model.dart';
 import 'package:fedi/rest/rest_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
@@ -20,15 +21,15 @@ Map<RestRequestType, String> requestTypeToStringMap = {
   RestRequestType.patch: "patch",
 };
 
+// ignore: no-magic-number
 final _defaultTimeoutDuration = Duration(seconds: 20);
+// ignore: no-magic-number
 final _uploadTimeoutDuration = Duration(seconds: 300);
 
 var urlPath = p.Context(style: p.Style.url);
 final Encoding? _defaultEncoding = Encoding.getByName("utf-8");
 
 final Logger _logger = Logger("rest_service_impl.dart");
-
-const successResponseStatusCode = 200;
 
 class RestService extends DisposableOwner implements IRestService {
   // ignore: close_sinks
@@ -152,7 +153,8 @@ class RestService extends DisposableOwner implements IRestService {
     var log = () => "response sendHttpRequest \n"
         "\t url($requestType): $url \n"
         "\t response(${response.statusCode}): ${response.body}";
-    if (response.statusCode == 200) {
+
+    if (response.statusCode == RestResponse.successResponseStatusCode) {
       _logger.fine(log);
     } else {
       _logger.shout(log);
@@ -265,7 +267,7 @@ class RestService extends DisposableOwner implements IRestService {
     var log = () => "response multipartFileRequest \n"
         "\t url($requestType): $url \n"
         "\t response(${response.statusCode}): ${response.body}";
-    if (response.statusCode == 200) {
+    if (response.statusCode == RestResponse.successResponseStatusCode) {
       _logger.fine(log);
     } else {
       _logger.shout(log);

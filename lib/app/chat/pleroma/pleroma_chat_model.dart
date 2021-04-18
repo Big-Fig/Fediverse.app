@@ -155,6 +155,8 @@ class DbPleromaChatPopulatedWrapper implements IPleromaChat {
     DateTime? updatedAt,
     List<IAccount>? accounts,
   }) {
+    // accounts should be null or single
+    // ignore: no-magic-number
     assert(accounts?.length == null || accounts!.length < 2);
 
     var account = accounts?.singleOrNull;

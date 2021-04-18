@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:moor/moor.dart' as moor;
 
+// ignore_for_file: no-magic-number
 part 'push_model.g.dart';
 
 typedef PushMessageListener = dynamic Function(PushMessage message);

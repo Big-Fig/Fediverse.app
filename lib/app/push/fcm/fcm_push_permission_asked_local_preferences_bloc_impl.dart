@@ -8,8 +8,8 @@ class FcmPushPermissionAskedLocalPreferencesBloc extends BoolLocalPreferenceBloc
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
   }) : super(
-          preferencesService,
-          "$userAtHost.fcm.push.permission_asked",
+          preferencesService: preferencesService,
+          key: "$userAtHost.fcm.push.permission_asked",
         );
 
   @override

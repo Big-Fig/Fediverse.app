@@ -6,6 +6,7 @@ import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'ui_settings_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
