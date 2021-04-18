@@ -9,10 +9,10 @@ class AppAnalyticsLocalPreferenceBloc
   AppAnalyticsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
   ) : super(
-          preferencesService,
-          "analytics.app",
-          1,
-          (json) => AppAnalyticsData.fromJson(json),
+          preferencesService: preferencesService,
+          key: "analytics.app",
+          schemaVersion: 1,
+          jsonConverter: (json) => AppAnalyticsData.fromJson(json),
         );
 
   @override

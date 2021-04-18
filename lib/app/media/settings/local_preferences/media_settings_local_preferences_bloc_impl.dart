@@ -10,9 +10,9 @@ abstract class MediaSettingsLocalPreferencesBloc
     ILocalPreferencesService preferencesService,
     String key,
   ) : super(
-          preferencesService,
-          key,
-          1,
-          (json) => MediaSettings.fromJson(json),
+          preferencesService: preferencesService,
+          key: key,
+          schemaVersion: 1,
+          jsonConverter: (json) => MediaSettings.fromJson(json),
         );
 }

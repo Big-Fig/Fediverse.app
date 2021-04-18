@@ -7,12 +7,12 @@ abstract class PaginationSettingsLocalPreferencesBloc
     extends ObjectLocalPreferenceBloc<PaginationSettings?>
     implements IPaginationSettingsLocalPreferencesBloc {
   PaginationSettingsLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService,
-      String key,
-      ) : super(
-    preferencesService,
-    key,
-    1,
-        (json) => PaginationSettings.fromJson(json),
-  );
+    ILocalPreferencesService preferencesService,
+    String key,
+  ) : super(
+          preferencesService: preferencesService,
+          key: key,
+          schemaVersion: 1,
+          jsonConverter: (json) => PaginationSettings.fromJson(json),
+        );
 }

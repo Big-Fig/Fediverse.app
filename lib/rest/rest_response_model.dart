@@ -6,6 +6,7 @@ typedef T RestResultParser<T>(dynamic body);
 class RestResponse<K> {
   final K? body;
   final RestError? error;
+  static const successResponseStatusCode = 200;
 
   static RestResponse<T> fromResponse<T>({
     required Response response,
@@ -14,10 +15,19 @@ class RestResponse<K> {
     var body = response.body;
 
     var statusCode = response.statusCode;
-    if (statusCode == 200) {
-      return RestResponse.success(response: resultParser(body));
+    if (statusCode == successResponseStatusCode) {
+      return RestResponse.success(
+        response: resultParser(
+          body,
+        ),
+      );
     } else {
-      return RestResponse.fail(error: RestHttpError(statusCode, body));
+      return RestResponse.fail(
+        error: RestHttpError(
+          statusCode,
+          body,
+        ),
+      );
     }
   }
 

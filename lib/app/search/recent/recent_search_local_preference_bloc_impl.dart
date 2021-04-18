@@ -10,9 +10,9 @@ class RecentSearchLocalPreferenceBloc
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
   }) : super(
-          preferencesService,
-          "$userAtHost.search.recent",
-          1,
-          (json) => RecentSearchList.fromJson(json),
+          preferencesService: preferencesService,
+          key: "$userAtHost.search.recent",
+          schemaVersion: 1,
+          jsonConverter: (json) => RecentSearchList.fromJson(json),
         );
 }

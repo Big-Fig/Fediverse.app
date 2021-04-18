@@ -8,7 +8,7 @@ class PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
   PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
   ) : super(
-          preferencesService,
-          "PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc",
+          preferencesService: preferencesService,
+          key: "PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc",
         );
 }

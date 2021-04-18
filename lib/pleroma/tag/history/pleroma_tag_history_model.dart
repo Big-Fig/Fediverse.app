@@ -4,6 +4,7 @@ import 'package:fedi/mastodon/history/mastodon_history_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'pleroma_tag_history_model.g.dart';
 
 abstract class IPleromaTagHistory extends IMastodonTagHistory {}

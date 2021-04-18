@@ -10,10 +10,10 @@ class TimelinesHomeTabStorageLocalPreferencesBloc
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
   }) : super(
-          preferencesService,
-          "$userAtHost.timelines.storage",
-          1,
-          (json) => TimelinesHomeTabStorage.fromJson(json),
+          preferencesService: preferencesService,
+          key: "$userAtHost.timelines.storage",
+          schemaVersion: 1,
+          jsonConverter: (json) => TimelinesHomeTabStorage.fromJson(json),
         );
 
   @override

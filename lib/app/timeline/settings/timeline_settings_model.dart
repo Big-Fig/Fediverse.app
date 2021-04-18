@@ -10,6 +10,7 @@ import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'timeline_settings_model.g.dart';
 
 Function eq = const ListEquality().equals;

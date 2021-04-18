@@ -4,6 +4,7 @@ import 'package:fedi/mastodon/list/mastodon_list_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'pleroma_list_model.g.dart';
 
 abstract class IPleromaList extends IMastodonList {}

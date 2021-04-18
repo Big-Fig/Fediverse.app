@@ -5,6 +5,7 @@ import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.d
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'web_sockets_settings_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)

@@ -17,6 +17,7 @@ class OverlayNotificationService extends DisposableOwner
     EdgeInsetsGeometry? contentPadding,
     Color? background,
     Color? foreground,
+    // ignore: no-magic-number
     double elevation = 16,
     Key? key,
     bool autoDismiss = true,

@@ -10,9 +10,9 @@ abstract class DatabaseCacheSettingsLocalPreferencesBloc
       ILocalPreferencesService preferencesService,
       String key,
       ) : super(
-    preferencesService,
-    key,
-    1,
-        (json) => DatabaseCacheSettings.fromJson(json),
+    preferencesService: preferencesService,
+    key: key,
+    schemaVersion: 1,
+    jsonConverter: (json) => DatabaseCacheSettings.fromJson(json),
   );
 }

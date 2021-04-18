@@ -4,6 +4,7 @@ import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'pleroma_filter_model.g.dart';
 
 abstract class IPleromaFilter extends IMastodonFilter {

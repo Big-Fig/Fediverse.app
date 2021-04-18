@@ -11,6 +11,7 @@ import 'package:photo_manager/photo_manager.dart';
 var _logger = Logger("photo_manager_media_device_file_model.dart");
 
 const _heicExtension = ".heic";
+const int _jpegQuality = 88;
 
 class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
   final AssetEntity assetEntity;
@@ -89,7 +90,7 @@ class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
       originPath,
       resultPath,
       format: CompressFormat.jpeg,
-      quality: 88,
+      quality: _jpegQuality,
     );
 
     return result!;

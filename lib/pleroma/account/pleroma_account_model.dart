@@ -10,7 +10,7 @@ import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_account_model.g.dart';
-
+// ignore_for_file: no-magic-number
 Function eq = const ListEquality().equals;
 
 abstract class IPleromaAccount implements IMastodonAccount {

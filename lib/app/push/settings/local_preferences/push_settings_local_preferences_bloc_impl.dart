@@ -10,9 +10,9 @@ abstract class PushSettingsLocalPreferencesBloc
     ILocalPreferencesService preferencesService,
     String key,
   ) : super(
-          preferencesService,
-          key,
-          1,
-          (json) => PushSettings.fromJson(json),
+          preferencesService: preferencesService,
+          key: key,
+          schemaVersion: 1,
+          jsonConverter: (json) => PushSettings.fromJson(json),
         );
 }

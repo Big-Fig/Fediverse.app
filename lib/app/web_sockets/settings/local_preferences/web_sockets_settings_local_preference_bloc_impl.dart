@@ -10,9 +10,10 @@ abstract class WebSocketsSettingsLocalPreferencesBloc
     ILocalPreferencesService preferencesService,
     String key,
   ) : super(
-          preferencesService,
-          key,
-          2,
-          (json) => WebSocketsSettings.fromJson(json),
+          preferencesService: preferencesService,
+          key: key,
+          // ignore: no-magic-number
+          schemaVersion: 2,
+          jsonConverter: (json) => WebSocketsSettings.fromJson(json),
         );
 }

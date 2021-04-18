@@ -10,9 +10,9 @@ class AuthHostAccessTokenLocalPreferenceBloc
     ILocalPreferencesService preferencesService, {
     required String? host,
   }) : super(
-          preferencesService,
-          "auth.host.$host.access_token",
-          1,
-          (json) => PleromaOAuthToken.fromJson(json),
+          preferencesService: preferencesService,
+          key: "auth.host.$host.access_token",
+          schemaVersion: 1,
+          jsonConverter: (json) => PleromaOAuthToken.fromJson(json),
         );
 }

@@ -39,8 +39,8 @@ dart_code_metrics:
     - no-equal-then-else
     - no-equal-arguments
     - no-object-declaration
+    - no-magic-number
 #    - prefer-trailing-comma
-#    - no-magic-number
 #    - no-boolean-literal-compare
 #    - newline-before-return
 #    - avoid-unused-parameters

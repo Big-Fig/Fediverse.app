@@ -10,9 +10,10 @@ class EmojiPickerRecentCategoryLocalPreferenceBloc
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
   }) : super(
-          preferencesService,
-          "$userAtHost.emoji.recent",
-          1,
-          (json) => EmojiPickerRecentCategoryItemsList.fromJson(json),
+          preferencesService: preferencesService,
+          key: "$userAtHost.emoji.recent",
+          schemaVersion: 1,
+          jsonConverter: (json) =>
+              EmojiPickerRecentCategoryItemsList.fromJson(json),
         );
 }

@@ -11,9 +11,9 @@ abstract class RecentSelectAccountLocalPreferenceBloc
     required String userAtHost,
     required String type,
   }) : super(
-          preferencesService,
-          "$userAtHost.account.select.recent.$type",
-          1,
-          (json) => RecentSelectAccountList.fromJson(json),
+          preferencesService: preferencesService,
+          key: "$userAtHost.account.select.recent.$type",
+          schemaVersion: 1,
+          jsonConverter: (json) => RecentSelectAccountList.fromJson(json),
         );
 }

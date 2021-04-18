@@ -7,12 +7,12 @@ class MyAccountLocalPreferenceBloc
     extends ObjectLocalPreferenceBloc<PleromaMyAccountWrapper>
     implements IMyAccountLocalPreferenceBloc {
   MyAccountLocalPreferenceBloc(
-    ILocalPreferencesService? preferencesService, {
+    ILocalPreferencesService preferencesService, {
     required String userAtHost,
   }) : super(
-          preferencesService,
-          "account.my.$userAtHost",
-          1,
-          (json) => PleromaMyAccountWrapper.fromJson(json),
+          preferencesService: preferencesService,
+          key: "account.my.$userAtHost",
+          schemaVersion: 1,
+          jsonConverter: (json) => PleromaMyAccountWrapper.fromJson(json),
         );
 }
