@@ -108,6 +108,8 @@ class PleromaTimelineService extends DisposableOwner
   }
 
   @override
+  // todo: refactor long-parameter-list
+  // ignore: long-parameter-list
   Future<List<IPleromaStatus>> getPublicTimeline({
     IPleromaPaginationRequest? pagination,
     bool? onlyWithMedia = false,
@@ -132,7 +134,8 @@ class PleromaTimelineService extends DisposableOwner
       onlyRemote: onlyRemote,
     );
   }
-
+  // todo: refactor long-parameter-list
+  // ignore: long-parameter-list
   Future<List<IPleromaStatus>> getTimeline({
     required String relativeTimeLineUrlPath,
     required IPleromaPaginationRequest? pagination,

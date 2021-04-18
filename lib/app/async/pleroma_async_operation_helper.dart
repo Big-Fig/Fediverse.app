@@ -14,6 +14,7 @@ class PleromaAsyncOperationHelper {
     ...AsyncOperationHelper.defaultErrorDataBuilders,
   ];
 
+  // ignore: long-parameter-list
   static Future<AsyncDialogResult<T?>> performPleromaAsyncOperation<T>({
     required BuildContext context,
     required Future<T> Function() asyncCode,

@@ -318,6 +318,7 @@ class DbAccountPopulatedWrapper implements IAccount {
   }
 
   @override
+  // ignore: long-parameter-list
   IAccount copyWith({
     int? id,
     String? remoteId,

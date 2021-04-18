@@ -12,6 +12,7 @@ class DisposableOwner extends IDisposable {
   bool isDisposed = false;
   final CompositeDisposable _compositeDisposable = CompositeDisposable([]);
 
+  // ignore: long-parameter-list
   void addDisposable({
     IDisposable? disposable,
     StreamSubscription? streamSubscription,

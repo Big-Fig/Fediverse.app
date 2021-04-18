@@ -102,6 +102,9 @@ class PushSettings extends ISettings<PushSettings> {
 
   String toJsonString() => jsonEncode(_$PushSettingsToJson(this));
 
+
+
+  // ignore: long-parameter-list
   PushSettings copyWith({
     bool? favourite,
     bool? follow,

@@ -29,6 +29,8 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
   }
 
   @override
+  // todo: refactor long-parameter-list
+  // ignore: long-parameter-list
   Widget createCachedNetworkImageWidget({
     String? stringKey,
     required String? imageUrl,

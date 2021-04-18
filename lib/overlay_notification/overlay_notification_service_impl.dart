@@ -7,6 +7,8 @@ import 'package:overlay_support/overlay_support.dart';
 
 class OverlayNotificationService extends DisposableOwner
     implements IOverlayNotificationService {
+  // todo: refactor long-parameter-list
+  // ignore: long-parameter-list
   OverlaySupportEntry showFediNotificationOverlay(
     Widget content, {
     Widget? leading,

@@ -17,18 +17,18 @@ analyzer:
     - dart_code_metrics
 
 dart_code_metrics:
-  #  anti-patterns:
-  #    - long-method
-  #    - long-parameter-list
+  anti-patterns:
+#    - long-method
+    - long-parameter-list
   metrics:
     cyclomatic-complexity: 20
-  #    lines-of-code: 100
-  #    lines-of-executable-code: 50
-  #    maximum-nesting: 5
-  #    number-of-arguments: 5
-  #    number-of-parameters: 5
-  #    number-of-methods: 4
-  #    weight-of-class: 0.33
+    lines-of-code: 100
+    lines-of-executable-code: 50
+    maximum-nesting: 5
+    weight-of-class: 0.33
+    number-of-arguments: 6
+    number-of-parameters: 6
+    number-of-methods: 4
   metrics-exclude:
     - test/**
   rules:
@@ -38,8 +38,8 @@ dart_code_metrics:
     - no-equal-then-else
     - no-equal-arguments
     - no-object-declaration
-#    - no-magic-number
 #    - prefer-trailing-comma
+#    - no-magic-number
 #    - no-boolean-literal-compare
 #    - newline-before-return
 #    - avoid-unused-parameters

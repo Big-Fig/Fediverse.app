@@ -29,6 +29,8 @@ class PleromaSearchService extends DisposableOwner
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
   @override
+  // todo: refactor long-parameter-list
+  // ignore: long-parameter-list, code-metrics
   Future<IPleromaSearchResult> search({
     required String? query,
     String? accountId,

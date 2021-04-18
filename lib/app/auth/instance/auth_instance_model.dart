@@ -106,6 +106,7 @@ class AuthInstance extends IJsonObject {
   }) =>
       this.acct == acct && urlHost == host;
 
+  // ignore: long-parameter-list
   AuthInstance copyWith({
     String? urlSchema,
     String? urlHost,

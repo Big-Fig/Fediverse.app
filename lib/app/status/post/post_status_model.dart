@@ -131,7 +131,9 @@ class PostStatusData implements IPostStatusData {
 
   PleromaVisibility get visibilityPleroma => visibility.toPleromaVisibility();
 
+
   @override
+  // ignore: long-parameter-list
   PostStatusData copyWith({
     String? subject,
     String? text,
