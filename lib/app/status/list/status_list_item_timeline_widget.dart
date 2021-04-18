@@ -72,8 +72,8 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
       update: (context, statusListItemTimelineBloc, oldValue) {
         if (isLocal) {
           if (statusListItemTimelineBloc.status.remoteId ==
-              oldValue?.remoteId) {
-            return oldValue!;
+              oldValue?.remoteId && oldValue != null) {
+            return oldValue;
           } else {
             return LocalStatusBloc.createFromContext(
               context,
