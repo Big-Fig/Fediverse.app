@@ -119,6 +119,8 @@ class _ChatMessageListItemBodyWidget<T extends IChatMessage>
     var alignment =
         isChatMessageFromMe ? Alignment.centerRight : Alignment.centerLeft;
     var maxWidthConstraints = BoxConstraints(
+      // todo: refactor
+      // ignore: no-magic-number
       maxWidth: deviceWidth * 0.8,
     );
     var isPendingFailedOrPending = chatMessage.isPendingFailedOrPending;
@@ -198,6 +200,8 @@ class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
               padding: const EdgeInsets.only(left: FediSizes.smallPadding / 2),
               child: Icon(
                 FediIcons.check,
+                // todo: refactor
+                // ignore: no-magic-number
                 size: 12.0,
                 color: IFediUiColorTheme.of(context).primary,
               ),
@@ -206,6 +210,8 @@ class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
             return Padding(
               padding: FediPadding.horizontalSmallPadding,
               child: FediCircularProgressIndicator(
+                // todo: refactor
+                // ignore: no-magic-number
                 size: 12.0,
                 color: IFediUiColorTheme.of(context).grey,
               ),
@@ -226,6 +232,8 @@ class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
                     padding: EdgeInsets.only(left: FediSizes.smallPadding),
                     child: Icon(
                       FediIcons.warning,
+                      // todo: refactor
+                      // ignore: no-magic-number
                       size: 12.0,
                       color: IFediUiColorTheme.of(context).error,
                     ),
@@ -468,7 +476,11 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
                     linkColor: isChatMessageFromMe
                         ? fediUiColorTheme.white
                         : fediUiColorTheme.primary,
+                    // todo: refactor
+                    // ignore: no-magic-number
                     fontSize: 16.0,
+                    // todo: refactor
+                    // ignore: no-magic-number
                     lineHeight: 1.5,
                     drawNewLines: true,
                     textMaxLines: null,

@@ -15,8 +15,8 @@ typedef ErrorDataBuilder = ErrorData? Function(
   StackTrace stackTrace,
 );
 
-typedef ErrorCallback = void Function(BuildContext? context, ErrorData errorData);
-
+typedef ErrorCallback = void Function(
+    BuildContext? context, ErrorData errorData);
 
 // todo: refactor long-parameter-list, long-method
 // ignore: long-parameter-list, long-method
@@ -92,7 +92,12 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
   }
 
   // wait until progress dialog actually hides
-  await Future.delayed(Duration(milliseconds: 100));
+  await Future.delayed(
+    Duration(
+      // ignore: no-magic-number
+      milliseconds: 100,
+    ),
+  );
 
   AsyncDialogResult<T> dialogResult;
   if (progressDialog?.isCanceled == true) {

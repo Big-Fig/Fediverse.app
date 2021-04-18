@@ -58,6 +58,7 @@ class MediaPickerFileGridWidget
     }
     return GridView.builder(
       gridDelegate:
+          // ignore: no-magic-number
           SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       itemCount: itemCount,
       itemBuilder: (context, index) {

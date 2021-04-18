@@ -483,6 +483,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     required AppAnalyticsBloc appAnalyticsBloc,
     required InAppReviewBloc inAppReviewBloc,
   }) async {
+    // ignore: no-magic-number
     final appOpenedCountToShowAppReview = 5;
     var isAppRated = appAnalyticsBloc.isAppRated!;
     var appOpenedCount = appAnalyticsBloc.appOpenedCount;
@@ -501,6 +502,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
       var inAppReviewBlocAvailable = await inAppReviewBloc.isAvailable();
       if (inAppReviewBlocAvailable) {
         Future.delayed(
+          // ignore: no-magic-number
           Duration(seconds: 5),
           () {
             unawaited(

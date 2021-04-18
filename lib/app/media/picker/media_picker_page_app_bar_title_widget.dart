@@ -58,6 +58,8 @@ class MediaPickerPageAppBarTitle extends StatelessWidget {
                     Icon(
                       FediIcons.chevron_down,
                       color: IFediUiColorTheme.of(context).darkGrey,
+                      // todo: refactor
+                      // ignore: no-magic-number
                       size: 14.0,
                     ),
                   ],

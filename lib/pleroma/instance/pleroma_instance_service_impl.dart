@@ -7,6 +7,7 @@ import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -36,7 +37,7 @@ class PleromaInstanceService extends DisposableOwner
   });
 
   List<String> parseInstancePeers(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return jsonDecode(httpResponse.body);
     } else {
       throw PleromaInstanceException(
@@ -47,7 +48,7 @@ class PleromaInstanceService extends DisposableOwner
   }
 
   IPleromaInstance parseInstanceResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaInstance.fromJsonString(httpResponse.body);
     } else {
       throw PleromaInstanceException(
@@ -60,7 +61,7 @@ class PleromaInstanceService extends DisposableOwner
   List<IPleromaInstanceHistory> parseInstanceHistoryListResponse(
     Response httpResponse,
   ) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaInstanceHistory.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaInstanceException(

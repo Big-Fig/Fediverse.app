@@ -11,6 +11,7 @@ class FediCircularProgressIndicator extends StatefulWidget {
 
   const FediCircularProgressIndicator({
     this.color,
+    // ignore: no-magic-number
     this.size = 30.0,
   });
 
@@ -31,8 +32,10 @@ class _FediCircularProgressIndicatorState
     _controller = AnimationController(
       vsync: this,
       duration: Duration(
+        // ignore: no-magic-number
         seconds: 2,
       ),
+      // ignore: no-magic-number
       upperBound: pi * 2,
     )..repeat();
   }

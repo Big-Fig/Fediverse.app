@@ -47,6 +47,7 @@ class _FediPlayerControlToggleMuteButtonInitializedWidget
             return FediIconButton(
               icon: Icon(isMuted ? FediIcons.sound_off : FediIcons.sound_on),
               color: IFediUiColorTheme.of(context).white,
+              // ignore: no-magic-number
               iconSize: 16.0,
               onPressed: onPressed,
             );
@@ -69,6 +70,8 @@ class _FediPlayerControlToggleMuteButtonNotInitializedWidget
     return FediIconButton(
       icon: Icon(FediIcons.sound_on),
       color: IFediUiColorTheme.of(context).grey,
+      // todo: refactor
+      // ignore: no-magic-number
       iconSize: 16.0,
       onPressed: null,
     );

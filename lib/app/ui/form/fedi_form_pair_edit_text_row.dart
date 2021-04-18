@@ -45,6 +45,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
               ),
               const FediBigHorizontalSpacer(),
               Expanded(
+                // ignore: no-magic-number
                 flex: 2,
                 child: _FediFormPairEditTextRowValueWidget(
                   valueStringFieldBloc: valueStringFieldBloc,

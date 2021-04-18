@@ -24,6 +24,8 @@ class ChatSelectionItemWidget extends StatelessWidget {
           var isSelected = snapshot.data ?? false;
           return Container(
             color: isSelected
+            // todo: refactor
+            // ignore: no-magic-number
                 ? IFediUiColorTheme.of(context).primaryDark.withOpacity(0.1)
                 : null,
             child: StreamBuilder<bool>(

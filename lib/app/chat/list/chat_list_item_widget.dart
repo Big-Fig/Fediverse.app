@@ -44,6 +44,7 @@ class ChatListItemWidget extends StatelessWidget {
     var chatBloc = IChatBloc.of(context);
     return Slidable(
       actionPane: const SlidableDrawerActionPane(),
+      // ignore: no-magic-number
       actionExtentRatio: 0.25,
       secondaryActions: <Widget>[
         if (chatBloc.isDeletePossible) const _ChatListItemDeleteActionWidget(),
@@ -157,6 +158,8 @@ class _ChatListItemLastMessageWidgetPendingStateWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             FediCircularProgressIndicator(
+              // todo: refactor
+              // ignore: no-magic-number
               size: 12.0,
               color: IFediUiColorTheme.of(context).grey,
             ),
@@ -174,6 +177,8 @@ class _ChatListItemLastMessageWidgetPendingStateWidget extends StatelessWidget {
             Icon(
               FediIcons.warning,
               color: IFediUiColorTheme.of(context).error,
+              // todo: refactor
+              // ignore: no-magic-number
               size: 12.0,
             ),
             const FediSmallHorizontalSpacer(),
@@ -245,6 +250,8 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
                         drawNewLines: false,
                         textMaxLines: 1,
                         textOverflow: TextOverflow.ellipsis,
+                        // todo: refactor
+                        // ignore: no-magic-number
                         fontSize: 16.0,
                         fontWeight: FontWeight.w300,
                         color: fediUiColorTheme.mediumGrey,

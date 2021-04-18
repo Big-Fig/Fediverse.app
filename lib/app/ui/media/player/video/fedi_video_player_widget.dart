@@ -67,6 +67,7 @@ class _FediVideoPlayerErrorBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned.fill(
       child: Container(
+        // ignore: no-magic-number
         color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

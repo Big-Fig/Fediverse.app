@@ -8,16 +8,20 @@ class SplashWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: <Widget>[
-      const Center(
-        child: _SplashLogoWidget(),
-      ),
-      Positioned(
-        right: 20.0,
-        bottom: 20.0,
-        child: const _SplashVersionInfoWidget(),
-      ),
-    ]);
+    return Stack(
+      children: <Widget>[
+        const Center(
+          child: _SplashLogoWidget(),
+        ),
+        Positioned(
+          // ignore: no-magic-number
+          right: 20.0,
+          // ignore: no-magic-number
+          bottom: 20.0,
+          child: const _SplashVersionInfoWidget(),
+        ),
+      ],
+    );
   }
 }
 
@@ -44,6 +48,7 @@ class _SplashLogoWidget extends StatelessWidget {
     return Container(
       child: Image(
         image: AssetImage("assets/images/theme/logo.png"),
+        // ignore: no-magic-number
         width: 200,
       ),
     );

@@ -157,6 +157,7 @@ class EditTimelineSettingsBloc
         ),
         withRemoteHashtagFieldBloc = StringValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.withRemoteHashtag,
+          // ignore: no-magic-number
           maxLength: 50,
           isEnabled:
               timelineType.isWithHashtagFilterSupportedOnInstance(authInstance),
@@ -190,6 +191,7 @@ class EditTimelineSettingsBloc
         ),
         onlyFromInstanceFieldBloc = StringValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyFromInstance,
+          // ignore: no-magic-number
           maxLength: 50,
           isEnabled: timelineType
               .isOnlyFromInstanceFilterSupportedOnInstance(authInstance),

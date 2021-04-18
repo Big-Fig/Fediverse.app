@@ -106,6 +106,8 @@ class __DurationPickerBodyState extends State<_DurationPickerBody> {
           ),
         ),
         Container(
+          // todo: refactor
+          // ignore: no-magic-number
           height: 56,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,

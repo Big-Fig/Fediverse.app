@@ -3,6 +3,8 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+const _size = 12.0;
+
 class FediIndicatorWidget extends StatelessWidget {
   final bool active;
 
@@ -12,10 +14,11 @@ class FediIndicatorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     return Container(
-      width: 12.0,
-      height: 12.0,
+      width: _size,
+      height: _size,
       margin: EdgeInsets.symmetric(
         vertical: FediSizes.mediumPadding,
+        // ignore: no-magic-number
         horizontal: 2.0,
       ),
       decoration: BoxDecoration(
@@ -24,6 +27,7 @@ class FediIndicatorWidget extends StatelessWidget {
             ? Theme.of(context).primaryColor
             : Theme.of(context).backgroundColor,
         border: Border.all(
+          // ignore: no-magic-number
           width: 1.0,
           color: fediUiColorTheme.white,
         ),

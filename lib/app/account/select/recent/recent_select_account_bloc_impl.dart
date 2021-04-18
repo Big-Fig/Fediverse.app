@@ -21,6 +21,7 @@ class RecentSelectAccountBloc extends DisposableOwner
       recentSelectAccountLocalPreferenceBloc.stream;
 
   RecentSelectAccountBloc({
+    // ignore: no-magic-number
     this.recentCountLimit = 20,
     required this.selectAccountListBloc,
     required this.recentSelectAccountLocalPreferenceBloc,

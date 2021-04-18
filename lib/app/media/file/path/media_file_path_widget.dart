@@ -135,6 +135,7 @@ class _MediaFilePathIconWidget extends StatelessWidget {
                 child: AutoSizeText(
                   mediaFilePathBloc.extension.toUpperCase(),
                   maxLines: 1,
+                  // ignore: no-magic-number
                   minFontSize: 8.0,
                   style: IFediUiTextTheme.of(context).smallShortDarkGrey,
                 ),

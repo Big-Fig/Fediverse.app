@@ -8,6 +8,7 @@ import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -39,7 +40,7 @@ class PleromaAccountService extends DisposableOwner
   });
 
   List<PleromaAccount> parseAccountListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaAccount.listFromJsonString(
         httpResponse.body,
       );
@@ -54,7 +55,7 @@ class PleromaAccountService extends DisposableOwner
   List<IPleromaAccountIdentityProof> parseAccountAccountIdentityProofList(
     Response httpResponse,
   ) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaAccountIdentityProof.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaAccountException(
@@ -65,7 +66,7 @@ class PleromaAccountService extends DisposableOwner
   }
 
   List<IPleromaList> parseListList(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaList.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaAccountException(
@@ -76,7 +77,7 @@ class PleromaAccountService extends DisposableOwner
   }
 
   List<IPleromaStatus> parseStatusListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaStatus.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaAccountException(
@@ -89,7 +90,7 @@ class PleromaAccountService extends DisposableOwner
   IPleromaAccountRelationship parseAccountRelationshipResponse(
     Response httpResponse,
   ) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaAccountRelationship.fromJsonString(httpResponse.body);
     } else {
       throw PleromaAccountException(
@@ -102,7 +103,7 @@ class PleromaAccountService extends DisposableOwner
   List<IPleromaAccountRelationship> parseAccountRelationshipResponseList(
     Response httpResponse,
   ) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaAccountRelationship.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaAccountException(
@@ -113,7 +114,7 @@ class PleromaAccountService extends DisposableOwner
   }
 
   IPleromaAccount parseAccountResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaAccount.fromJsonString(httpResponse.body);
     } else {
       throw PleromaAccountException(

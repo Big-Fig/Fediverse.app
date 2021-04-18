@@ -15,7 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-var _statusHeaderHeight = 41.0;
+const _statusHeaderHeight = 41.0;
 
 class StatusHeaderWidget extends StatelessWidget {
   final String descText;
@@ -64,6 +64,8 @@ class StatusHeaderWidget extends StatelessWidget {
     return Row(
       children: <Widget>[
         ClipRRect(
+          // todo: refactor
+          // ignore: no-magic-number
           borderRadius: BorderRadius.circular(12.0),
           child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
             imageUrl: account.avatar,
@@ -90,6 +92,8 @@ class StatusHeaderWidget extends StatelessWidget {
         const FediMediumHorizontalSpacer(),
         Icon(
           icon,
+          // todo: refactor
+          // ignore: no-magic-number
           size: 16,
           color: IFediUiColorTheme.of(context).grey,
         ),

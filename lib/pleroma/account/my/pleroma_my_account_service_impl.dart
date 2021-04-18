@@ -10,6 +10,7 @@ import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
@@ -41,7 +42,7 @@ class PleromaMyAccountService extends DisposableOwner
   PleromaMyAccountService({required this.restService});
 
   IPleromaMyAccount parseMyAccountResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaMyAccount.fromJsonString(
         httpResponse.body,
       );
@@ -56,7 +57,7 @@ class PleromaMyAccountService extends DisposableOwner
   IPleromaAccountRelationship parseAccountRelationshipResponse(
     Response httpResponse,
   ) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaAccountRelationship.fromJsonString(httpResponse.body);
     } else {
       throw PleromaMyAccountException(
@@ -67,7 +68,7 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   List<IPleromaStatus> parseStatusListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaStatus.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaMyAccountException(
@@ -78,7 +79,7 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   List<IPleromaAccount> parseAccountListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaAccount.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaMyAccountException(
@@ -89,7 +90,7 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   List<String> parseStringListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       var result = <String>[];
       try {
         var list = json.decode(httpResponse.body) as List;

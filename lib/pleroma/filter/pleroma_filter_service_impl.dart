@@ -6,6 +6,7 @@ import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -33,7 +34,7 @@ class PleromaFilterService extends DisposableOwner
   PleromaFilterService({required this.restService});
 
   IPleromaFilter parseFilterResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaFilter.fromJsonString(
         httpResponse.body,
       );
@@ -46,7 +47,7 @@ class PleromaFilterService extends DisposableOwner
   }
 
   List<IPleromaFilter> parseFilterListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaFilter.listFromJsonString(
         httpResponse.body,
       );

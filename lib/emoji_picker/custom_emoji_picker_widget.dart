@@ -49,7 +49,9 @@ class CustomEmojiPickerWidget extends StatelessWidget {
     this.customCategoryIconBuilder,
     this.customCategoryBodyBuilder,
     required this.loadingWidget,
+    // ignore: no-magic-number
     this.indicatorHeight = 50.0,
+    // ignore: no-magic-number
     this.selectedCategoryItemsGridHeight = 200.0,
     this.useImageEmoji = true,
     this.emptyCategoryBuilder,

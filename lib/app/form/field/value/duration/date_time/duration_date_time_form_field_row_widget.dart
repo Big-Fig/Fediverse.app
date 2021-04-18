@@ -258,6 +258,7 @@ class _DurationDateTimeValueFormFieldRowValueWidget extends StatelessWidget {
                         isValueExist
                             ? FediIcons.chevron_up
                             : FediIcons.chevron_down,
+                        // ignore: no-magic-number
                         size: 16.0,
                         color: isValueExist
                             ? IFediUiColorTheme.of(context).primary

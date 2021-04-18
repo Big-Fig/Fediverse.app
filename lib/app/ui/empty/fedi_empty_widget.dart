@@ -15,6 +15,7 @@ class FediEmptyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var fediUiTextTheme = IFediUiTextTheme.of(context);
     return Padding(
+      // ignore: no-magic-number
       padding: EdgeInsets.all(40.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -49,11 +49,16 @@ class _CurrentAuthInstanceContextInitWidgetState
         CurrentAuthInstanceContextInitState.loading;
     _logger.finest(() => "didChangeDependencies "
         "isLoading $isLoading disposed $disposed");
-    Future.delayed(Duration(milliseconds: 100), () {
-      if (isLoading && !disposed) {
-        showProgressDialog(context, currentInstanceContextLoadingBloc);
-      }
-    });
+    Future.delayed(
+      // todo: refactor
+      // ignore: no-magic-number
+      Duration(milliseconds: 100),
+      () {
+        if (isLoading && !disposed) {
+          showProgressDialog(context, currentInstanceContextLoadingBloc);
+        }
+      },
+    );
   }
 
   void showProgressDialog(

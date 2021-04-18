@@ -58,7 +58,10 @@ class _MediaAttachmentImageLoadingWidget extends StatelessWidget {
       padding: FediPadding.allBigPadding,
       child: Center(
         child: Container(
+          // todo: refactor
+          // ignore: no-magic-number
           width: 30,
+          // ignore: no-magic-number
           height: 30,
           child: const FediCircularProgressIndicator(),
         ),

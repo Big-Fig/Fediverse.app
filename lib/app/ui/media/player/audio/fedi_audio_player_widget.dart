@@ -51,6 +51,7 @@ class _FediAudioPlayerErrorWidget extends StatelessWidget {
         if (isHaveError) {
           return Positioned.fill(
             child: Container(
+              // ignore: no-magic-number
               color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
               child: Padding(
                 padding: FediPadding.horizontalBigPadding,

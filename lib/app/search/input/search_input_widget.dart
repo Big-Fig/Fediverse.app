@@ -28,6 +28,8 @@ class SearchInputWidget extends StatelessWidget {
         children: [
           Flexible(
             child: Container(
+              // todo: refactor
+              // ignore: no-magic-number
               height: 40.0,
               child: FediFilledEditTextField(
                 border:
@@ -37,6 +39,8 @@ class SearchInputWidget extends StatelessWidget {
                   child: Icon(
                     FediIcons.search,
                     color: IFediUiColorTheme.of(context).grey,
+                    // todo: refactor
+                    // ignore: no-magic-number
                     size: 20.0,
                   ),
                 ),
@@ -88,6 +92,8 @@ class _SearchInputClearButtonWidget extends StatelessWidget {
               onPressed: () {
                 searchInputBloc.clearSearch();
               },
+              // todo: refactor
+              // ignore: no-magic-number
               size: 20.0,
             ),
           );

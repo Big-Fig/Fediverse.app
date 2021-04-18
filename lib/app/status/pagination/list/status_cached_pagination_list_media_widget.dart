@@ -72,6 +72,7 @@ class StatusCachedPaginationListMediaWidget
     }
 
     return StaggeredGridView.countBuilder(
+      // ignore: no-magic-number
       crossAxisCount: 4,
       itemCount: length,
       itemBuilder: (BuildContext context, int index) {
@@ -97,6 +98,7 @@ class StatusCachedPaginationListMediaWidget
         );
       },
       staggeredTileBuilder: (int index) =>
+          // ignore: no-magic-number
           StaggeredTile.count(2, index.isEven ? 2 : 1),
     );
   }

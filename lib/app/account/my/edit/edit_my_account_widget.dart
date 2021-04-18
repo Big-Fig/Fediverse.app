@@ -55,6 +55,7 @@ class _EditMyAccountTopHeaderAndAvatarWidget extends StatelessWidget {
     return Container(
       height: _editAccountAvatarTopPadding +
           _editAccountAvatarSize +
+          // ignore: no-magic-number
           _editAccountAvatarCircleBorderWidth * 2,
       child: Container(
         child: Stack(

@@ -32,22 +32,27 @@ class FediBlurredTextButtonWithBorder extends StatelessWidget {
   Widget build(BuildContext context) {
     var textStyle =
         this.textStyle ?? IFediUiTextTheme.of(context).mediumShortBoldWhite;
+    // ignore: no-magic-number
     var calculatedHeight = height + borderWidth * 2;
+    // ignore: no-magic-number
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
     var button = InkWell(
       onTap: onPressed,
       child: ConstrainedBox(
         constraints: BoxConstraints(
+          // ignore: no-magic-number
           minWidth: limitMinWidth == true ? 120.0 : 0.0,
         ),
         child: ClipRRect(
           borderRadius: borderRadius,
           child: BackdropFilter(
+            // ignore: no-magic-number
             filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
             child: Container(
               height: calculatedHeight,
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
+                // ignore: no-magic-number
                 color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.3),
                 borderRadius: borderRadius,
                 border: Border.all(
@@ -62,6 +67,7 @@ class FediBlurredTextButtonWithBorder extends StatelessWidget {
                     text!,
                     textAlign: TextAlign.center,
                     style: textStyle.copyWith(
+                      // ignore: no-magic-number
                       color: textStyle.color!.withOpacity(0.8),
                     ),
                   ),
@@ -72,7 +78,6 @@ class FediBlurredTextButtonWithBorder extends StatelessWidget {
         ),
       ),
     );
-
 
     if (expanded) {
       return button;

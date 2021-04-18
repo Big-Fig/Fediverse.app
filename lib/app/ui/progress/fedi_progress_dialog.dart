@@ -60,10 +60,17 @@ abstract class FediProgressDialog extends BaseDialog {
   @override
   Widget buildDialogBody(BuildContext context) => Dialog(
         insetAnimationCurve: Curves.easeInOut,
+        // ignore: no-magic-number
         insetAnimationDuration: Duration(milliseconds: 100),
+        // ignore: no-magic-number
         elevation: 10.0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              // ignore: no-magic-number
+              10.0,
+            ),
+          ),
         ),
         child: buildDialogContainer(context),
       );
@@ -78,6 +85,7 @@ abstract class FediProgressDialog extends BaseDialog {
           Padding(
             padding: const EdgeInsets.all(2.0),
             child: FediCircularProgressIndicator(
+              // ignore: no-magic-number
               size: 35.0,
               color: IFediUiColorTheme.of(context).primary,
             ),

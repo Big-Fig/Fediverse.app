@@ -154,6 +154,7 @@ class _CardTitleWidget extends StatelessWidget {
 
     return Text(
       card.title!,
+      // ignore: no-magic-number
       maxLines: 2,
       style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
       overflow: TextOverflow.ellipsis,

@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 DateTime _lastRefreshErrorShowedDateTime = DateTime.now();
 DateTime _lastLoadMoreErrorShowedDateTime = DateTime.now();
 
+// ignore: no-magic-number
 final Duration _throttleDuration = Duration(seconds: 2);
 
 class FediPaginationListLoadingErrorNotificationOverlayBuilderWidget<T>

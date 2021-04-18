@@ -6,6 +6,7 @@ import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -33,7 +34,7 @@ class PleromaChatService extends DisposableOwner
   PleromaChatService({required this.restService});
 
   List<IPleromaChat> parseChatListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaChat.listFromJsonString(
         httpResponse.body,
       );
@@ -46,7 +47,7 @@ class PleromaChatService extends DisposableOwner
   }
 
   IPleromaChat parseChatResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaChat.fromJsonString(
         httpResponse.body,
       );
@@ -61,7 +62,7 @@ class PleromaChatService extends DisposableOwner
   List<IPleromaChatMessage> parseChatMessageListResponse(
     Response httpResponse,
   ) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaChatMessage.listFromJsonString(
         httpResponse.body,
       );
@@ -74,7 +75,7 @@ class PleromaChatService extends DisposableOwner
   }
 
   IPleromaChatMessage parseChatMessageResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaChatMessage.fromJsonString(
         httpResponse.body,
       );

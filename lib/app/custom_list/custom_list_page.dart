@@ -101,6 +101,8 @@ class _CustomListPageAppBar extends StatelessWidget
 
   @override
   Size get preferredSize =>
+      // todo: refactor
+      // ignore: no-magic-number
       FediPageTitleAppBar.calculatePreferredSize() + Offset(0, 48.0);
 }
 

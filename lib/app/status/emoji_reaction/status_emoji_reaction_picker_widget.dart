@@ -19,7 +19,9 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EmojiPickerWidget(
+      // ignore: no-magic-number
       selectedCategoryItemsGridHeight: 200,
+      // ignore: no-magic-number
       rowsCount: 5,
       onEmojiSelected: (emoji) {
         emojiReactionSelectedCallback(emoji.name, emoji.code);

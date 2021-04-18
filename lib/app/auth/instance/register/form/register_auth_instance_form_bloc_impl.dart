@@ -103,6 +103,8 @@ class RegisterAuthInstanceFormBloc extends FormBloc
     originValue: "",
     validators: [
       StringValueFormFieldLengthValidationError.createValidator(
+        // todo: refactor
+        // ignore: no-magic-number
         minLength: 4,
         maxLength: null,
       ),

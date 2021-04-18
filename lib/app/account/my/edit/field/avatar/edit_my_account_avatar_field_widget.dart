@@ -85,6 +85,8 @@ class _EditMyAccountAvatarFieldEditButtonWidget extends StatelessWidget {
     return FediIconInCircleBlurredButton(
       FediIcons.camera,
       iconSize: FediSizes.mediumIconSize,
+      // todo: refactor
+      // ignore: no-magic-number
       borderWidth: 2.0,
       size: FediSizes.smallFilledButtonHeight,
       onPressed: () {
@@ -110,6 +112,7 @@ class _EditMyAccountAvatarFieldImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        // ignore: no-magic-number
         borderRadius: BorderRadius.circular(avatarAndBorderSize / 2),
         border: Border.all(
           color: IFediUiColorTheme.of(context).white,
@@ -197,6 +200,7 @@ class _EditMyAccountAvatarFieldImageContainerWidget extends StatelessWidget {
       width: avatarSize,
       child: ClipRRect(
         borderRadius:
+            // ignore: no-magic-number
             BorderRadius.circular(avatarSize / 2 - avatarCircleBorderWidth),
         child: Image(
           image: imageProvider,

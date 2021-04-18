@@ -277,7 +277,7 @@ class PleromaNotificationService extends DisposableOwner
       ),
     );
 
-    if (httpResponse.statusCode != 200) {
+    if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
       throw PleromaNotificationException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
@@ -296,7 +296,7 @@ class PleromaNotificationService extends DisposableOwner
       ),
     );
 
-    if (httpResponse.statusCode != 200) {
+    if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
       throw PleromaNotificationException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,

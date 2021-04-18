@@ -74,7 +74,9 @@ class _AccountListItemBodyWidget extends StatelessWidget {
               AccountDisplayNameWidget(
                 textStyle: IFediUiTextTheme.of(context).bigBoldDarkGrey,
               ),
-              SizedBox(
+              const SizedBox(
+                // todo: refactor
+                // ignore: no-magic-number
                 height: 4.0,
               ),
               AccountAcctWidget(

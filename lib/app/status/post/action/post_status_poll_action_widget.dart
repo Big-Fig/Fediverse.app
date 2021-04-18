@@ -48,6 +48,8 @@ class PostStatusPollActionWidget extends StatelessWidget {
                   postStatusPollBloc: postStatusPollBloc,
                 ),
                 child: FediBoolBadgeWidget(
+                  // todo: refactor
+                  // ignore: no-magic-number
                   offset: 8.0,
                   child: button,
                 ),

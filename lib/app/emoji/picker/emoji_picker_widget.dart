@@ -26,7 +26,9 @@ class EmojiPickerWidget extends StatelessWidget {
   EmojiPickerWidget({
     required this.onEmojiSelected,
     required this.useImageEmoji,
+    // ignore: no-magic-number
     this.rowsCount = 3,
+    // ignore: no-magic-number
     this.selectedCategoryItemsGridHeight = 108.0,
   });
 

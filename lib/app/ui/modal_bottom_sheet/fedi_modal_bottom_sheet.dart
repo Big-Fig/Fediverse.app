@@ -54,6 +54,7 @@ class _FediModalBottomSheetDialogBodyWidget extends StatelessWidget {
           child: Container(
             color: fediUiColorTheme.white,
             constraints: BoxConstraints(
+              // ignore: no-magic-number
               maxHeight: MediaQuery.of(context).size.height / 4.0 * 3.0,
             ),
             child: Padding(
@@ -75,10 +76,13 @@ class _FediModalBottomSheetHandlerBar extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(11.0),
       child: Container(
+        // ignore: no-magic-number
         width: 42.0,
+        // ignore: no-magic-number
         height: 6.0,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
+            // ignore: no-magic-number
             Radius.circular(6.0),
           ),
           color: IFediUiColorTheme.of(context).lightGrey,

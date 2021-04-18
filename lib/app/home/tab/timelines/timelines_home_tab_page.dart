@@ -188,6 +188,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
                 const _TimelinesHomeTabPageBodyHeaderSecondRowWidget(),
               ],
               // white status bar over post status header
+              // ignore: no-magic-number
               topSliverScrollOffsetToShowWhiteStatusBar: 100,
               tabKeyPrefix: "TimelineTab",
               tabBodyProviderBuilder:
@@ -326,7 +327,12 @@ class _TimelinesHomeTabIndicatorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
+      // ignore: no-magic-number
+      padding: EdgeInsets.only(
+        // ignore: no-magic-number
+        top: 3.0,
+        right: FediSizes.bigPadding,
+      ),
       child: TimelineTabListTextTabIndicatorItemWidget(),
     );
   }

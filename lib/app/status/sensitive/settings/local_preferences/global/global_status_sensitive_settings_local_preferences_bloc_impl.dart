@@ -15,6 +15,7 @@ class GlobalStatusSensitiveSettingsLocalPreferencesBloc
         isAlwaysShowNsfw: false,
         isAlwaysShowSpoiler: false,
         nsfwDisplayDelayDurationMicrosecondsTotal:
+            // ignore: no-magic-number
             Duration(minutes: 5).inMicroseconds,
       );
 }

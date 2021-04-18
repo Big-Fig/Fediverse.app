@@ -22,8 +22,12 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // todo: refactor
+      // ignore: no-magic-number
       height: 45,
       decoration: BoxDecoration(
+        // todo: refactor
+        // ignore: no-magic-number
         borderRadius: BorderRadius.circular(8.0),
         border: Border.all(color: IFediUiColorTheme.of(context).lightGrey),
       ),
@@ -65,6 +69,8 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
             Positioned(
               top: 0.0,
               bottom: 0.0,
+              // todo: refactor
+              // ignore: no-magic-number
               right: 8.0,
               child:
                   _PostStatusPollOptionFormStringFieldFormRowErrorBuilderWidget(

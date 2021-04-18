@@ -237,6 +237,8 @@ class _StatusThreadStatusesListWidgetState
           !statusThreadBloc.isJumpedToStartState && statuses.length > 1;
       if (isNeedJumpToStartState) {
         Future.delayed(
+          // todo: refactor
+          // ignore: no-magic-number
           Duration(milliseconds: 1000),
           () {
             statusThreadBloc.jumpToStartIndex();
@@ -291,10 +293,16 @@ class _StatusThreadStatusesListItemWidget extends StatelessWidget {
     var isFirstStatusInThread = statusThreadBloc.isFirstStatusInThread(status);
     return Padding(
       padding: isFirstInList
+          // todo: refactor
+          // ignore: no-magic-number
           ? const EdgeInsets.only(bottom: 3.0)
+          // todo: refactor
+          // ignore: no-magic-number
           : const EdgeInsets.symmetric(vertical: 4.0),
       child: Container(
         color: isInFocus
+            // todo: refactor
+            // ignore: no-magic-number
             ? IFediUiColorTheme.of(context).ultraLightGrey.withOpacity(0.5)
             : IFediUiColorTheme.of(context).white,
         child: Column(

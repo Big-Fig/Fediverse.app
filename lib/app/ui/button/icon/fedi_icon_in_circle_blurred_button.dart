@@ -24,15 +24,19 @@ class FediIconInCircleBlurredButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
+        // ignore: no-magic-number
         width: size + borderWidth * 2,
+        // ignore: no-magic-number
         height: size + borderWidth * 2,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(size),
           child: BackdropFilter(
+            // ignore: no-magic-number
             filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
+                // ignore: no-magic-number
                 color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.3),
                 border: Border.all(
                   color: IFediUiColorTheme.of(context).white,

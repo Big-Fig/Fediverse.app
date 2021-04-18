@@ -5,6 +5,7 @@ import 'package:fedi/pleroma/announcement/pleroma_announcement_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -34,7 +35,7 @@ class PleromaAnnouncementService extends DisposableOwner
   List<IPleromaAnnouncement> parseAnnouncementListResponse(
     Response httpResponse,
   ) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaAnnouncement.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaAnnouncementException(
@@ -74,7 +75,7 @@ class PleromaAnnouncementService extends DisposableOwner
       ),
     );
 
-    if (httpResponse.statusCode != 200) {
+    if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
       throw PleromaAnnouncementException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
@@ -98,7 +99,7 @@ class PleromaAnnouncementService extends DisposableOwner
       ),
     );
 
-    if (httpResponse.statusCode != 200) {
+    if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
       // todo: handle 422: Unprocessable Entity
       // {"error":"Validation failed: Name is not a recognized emoji"}
       throw PleromaAnnouncementException(
@@ -124,7 +125,7 @@ class PleromaAnnouncementService extends DisposableOwner
       ),
     );
 
-    if (httpResponse.statusCode != 200) {
+    if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
       // todo: handle 422: Unprocessable Entity
       // {"error":"Validation failed: Name is not a recognized emoji"}
       throw PleromaAnnouncementException(

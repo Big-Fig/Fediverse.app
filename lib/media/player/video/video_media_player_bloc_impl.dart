@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
+// ignore: no-magic-number
 final _durationToHideControlsDuringPlaying = Duration(seconds: 3);
 
 class VideoMediaPlayerBloc extends MediaPlayerBloc

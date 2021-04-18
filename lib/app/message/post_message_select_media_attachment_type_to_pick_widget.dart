@@ -13,7 +13,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-var _typeContainerSize = 60.0;
+// ignore: no-magic-number
+const _typeContainerSize = 60.0;
 
 class PostMessageSelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
   const PostMessageSelectMediaAttachmentTypeToPickWidget();
@@ -26,6 +27,8 @@ class PostMessageSelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
         vertical: FediSizes.bigPadding,
       ),
       child: Container(
+        // todo: refactor
+        // ignore: no-magic-number
         height: 87,
         child: ListView(
           scrollDirection: Axis.horizontal,

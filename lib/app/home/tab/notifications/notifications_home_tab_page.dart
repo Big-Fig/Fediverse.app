@@ -238,6 +238,7 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
           Navigator.of(contextDialog).pop();
 
           Future.delayed(
+            // ignore: no-magic-number
             Duration(milliseconds: 100),
             () async {
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
@@ -262,6 +263,8 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
           Navigator.of(contextDialog).pop();
 
           Future.delayed(
+            // todo: refactor
+            // ignore: no-magic-number
             Duration(milliseconds: 100),
             () async {
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation(

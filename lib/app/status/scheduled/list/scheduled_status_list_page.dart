@@ -59,6 +59,8 @@ void goToScheduledStatusListPage(BuildContext context) {
         context,
         child: ScheduledStatusCachedPaginationBloc.provideToContext(
           context,
+          // todo: refactor
+          // ignore: no-magic-number
           itemsCountPerPage: 20,
           maximumCachedPagesCount: null,
           child: ScheduledStatusPaginationListWithNewItemsBloc.provideToContext(

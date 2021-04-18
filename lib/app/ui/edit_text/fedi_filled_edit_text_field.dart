@@ -59,6 +59,7 @@ class FediFilledEditTextField extends StatelessWidget {
           ? BoxDecoration(
               color: backgroundColor,
               border: border,
+              // ignore: no-magic-number
               borderRadius: BorderRadius.circular(30.0),
             )
           : null,
@@ -87,6 +88,7 @@ class FediFilledEditTextField extends StatelessWidget {
                 textStyle: IFediUiTextTheme.of(context).bigTallDarkGrey,
                 minLines: null,
                 hintStyle: IFediUiTextTheme.of(context).bigTallGrey,
+                // ignore: no-magic-number
                 contentPadding: EdgeInsets.symmetric(vertical: 10.0),
                 border: InputBorder.none,
                 errorBorder: InputBorder.none,

@@ -7,6 +7,7 @@ import 'package:fedi/pleroma/list/pleroma_list_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -36,7 +37,7 @@ class PleromaListService extends DisposableOwner
   });
 
   IPleromaList parseListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaList.fromJsonString(
         httpResponse.body,
       );
@@ -49,7 +50,7 @@ class PleromaListService extends DisposableOwner
   }
 
   List<IPleromaList> parseListListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaList.listFromJsonString(
         httpResponse.body,
       );
@@ -62,7 +63,7 @@ class PleromaListService extends DisposableOwner
   }
 
   List<IPleromaAccount> parseAccountListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaAccount.listFromJsonString(
         httpResponse.body,
       );

@@ -34,18 +34,26 @@ class _DateTimeDynamicTimeAgoWidgetState
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    var timeToFirstUpdate = 60 - widget.dateTime!.second;
+    // ignore: no-magic-number
+    final secondsInMinute = 60;
+    var timeToFirstUpdate = secondsInMinute - widget.dateTime!.second;
     // synchronize redraw at 00 seconds for each minute
-    Future.delayed(Duration(seconds: timeToFirstUpdate), () {
-      if (!disposed) {
-        timer = Timer.periodic(Duration(minutes: 1), (_) {
-          // redraw timeago each minute
-          // todo: rework with stateless widget
-          // ignore: no-empty-block
-          setState(() {});
-        });
-      }
-    });
+    Future.delayed(
+      Duration(seconds: timeToFirstUpdate),
+      () {
+        if (!disposed) {
+          timer = Timer.periodic(
+            Duration(seconds: secondsInMinute),
+            (_) {
+              // redraw timeago each minute
+              // todo: rework with stateless widget
+              // ignore: no-empty-block
+              setState(() {});
+            },
+          );
+        }
+      },
+    );
   }
 
   @override

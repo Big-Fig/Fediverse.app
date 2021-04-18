@@ -29,6 +29,7 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
       },
       child: ClipRect(
         child: FediBackgroundBlur(
+          // ignore: no-magic-number
           sigma: 6.0,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

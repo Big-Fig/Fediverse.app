@@ -47,6 +47,7 @@ class _FediAudioPlayerControlsPausePlayButtonBodyWidget
           builder: (BuildContext context, void Function()? onPressed) {
             return FediIconButton(
               icon: Icon(isPlaying ? FediIcons.pause : FediIcons.play),
+              // ignore: no-magic-number
               iconSize: 16.0,
               color: IFediUiColorTheme.of(context).white,
               onPressed: onPressed,
@@ -73,6 +74,7 @@ class _FediAudioPlayerControlsPausePlayButtonLoadingWidget
       padding: FediPadding.horizontalBigPadding,
       child: FediCircularProgressIndicator(
         color: IFediUiColorTheme.of(context).white,
+        // ignore: no-magic-number
         size: 22.0,
       ),
     );

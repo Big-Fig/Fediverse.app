@@ -50,13 +50,18 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
     var disabledBorderColor =
         this.disabledBorderColor ?? IFediUiColorTheme.of(context).white;
 
+    // ignore: no-magic-number
     var calculatedHeight = height + borderWidth * 2;
+    // ignore: no-magic-number
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
+
+    // todo: copy-pasted code
 
     var button = InkWell(
       onTap: onPressed,
       child: ConstrainedBox(
         constraints: BoxConstraints(
+          // ignore: no-magic-number
           minWidth: limitMinWidth == true ? 120.0 : 0.0,
         ),
         child: Container(

@@ -51,7 +51,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-var _headerBackgroundHeight = 200.0;
+const _headerBackgroundHeight = 200.0;
 
 class AccountDetailsPage extends StatelessWidget {
   const AccountDetailsPage({Key? key}) : super(key: key);
@@ -124,6 +124,8 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
               value.nestedScrollControllerBloc,
           child: FediNestedScrollViewWithNestedScrollableTabsWidget(
             onLongScrollUpTopOverlayWidget: null,
+            // todo: refactor
+            // ignore: no-magic-number
             topSliverScrollOffsetToShowWhiteStatusBar: 100,
             topSliverWidgets: [
               const _AccountDetailsNestedScrollViewHeader(),
@@ -550,7 +552,10 @@ class _AccountDetailsNestedScrollViewHeader extends StatelessWidget {
 void _onStatusesTapCallback(BuildContext context) {
   var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
   scrollControllerBloc.scrollController!.animateTo(
+    // ignore: no-magic-number
     MediaQuery.of(context).size.height / 2,
+    // todo: refactor
+    // ignore: no-magic-number
     duration: Duration(milliseconds: 500),
     curve: Curves.easeOut,
   );
@@ -566,7 +571,12 @@ class _AccountDetailsPageTabIndicatorWidget extends StatelessWidget {
     var accountDetailsBloc = IAccountDetailsBloc.of(context);
     var tabs = accountDetailsBloc.tabs;
     return Padding(
-      padding: EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
+      // ignore: no-magic-number
+      padding: EdgeInsets.only(
+        // ignore: no-magic-number
+        top: 3.0,
+        right: FediSizes.bigPadding,
+      ),
       child: AccountTabTextTabIndicatorItemWidget(
         accountTabs: tabs,
       ),

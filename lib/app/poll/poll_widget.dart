@@ -258,6 +258,8 @@ class _PollMetadataExpiresAtNotExpiredWidget extends StatelessWidget {
   }
 }
 
+// todo: refactor
+// ignore: no-magic-number
 final borderRadius = BorderRadius.circular(8.0);
 
 class PollOptionWidget extends StatelessWidget {
@@ -293,6 +295,8 @@ class _PollOptionBodyWidget extends StatelessWidget {
     var isOwnVote = poll.isOwnVote(pollOption);
 
     return Container(
+      // todo: refactor
+      // ignore: no-magic-number
       height: 40,
       decoration: BoxDecoration(
         borderRadius: borderRadius,
@@ -403,6 +407,8 @@ class _PollOptionSelectionWidget extends StatelessWidget {
               var backgroundColor = isSelected
                   ? IFediUiColorTheme.of(context).primary
                   : IFediUiColorTheme.of(context).white;
+              // todo: refactor
+              // ignore: no-magic-number
               var size = 28.0;
               return Padding(
                 padding: const EdgeInsets.only(left: FediSizes.bigPadding),
@@ -416,6 +422,7 @@ class _PollOptionSelectionWidget extends StatelessWidget {
                     ),
                     borderRadius: multiple
                         ? borderRadius
+                        // ignore: no-magic-number
                         : BorderRadius.circular(size / 2),
                   ),
                   child: isSelected
@@ -423,6 +430,8 @@ class _PollOptionSelectionWidget extends StatelessWidget {
                           child: Icon(
                             FediIcons.check,
                             color: IFediUiColorTheme.of(context).white,
+                            // todo: refactor
+                            // ignore: no-magic-number
                             size: 16.0,
                           ),
                         )
@@ -490,6 +499,8 @@ class PollOptionVotesPercentWidget extends StatelessWidget {
 
     var votesPercent = poll.votesPercent(pollOption);
     return Container(
+      // todo: refactor
+      // ignore: no-magic-number
       width: 60,
       child: Center(
         child: Text(

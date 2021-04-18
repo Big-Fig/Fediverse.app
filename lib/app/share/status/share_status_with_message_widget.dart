@@ -43,6 +43,8 @@ class ShareStatusWithMessageWidget extends StatelessWidget {
           ),
           child: ConstrainedBox(
             constraints: BoxConstraints(
+              // todo: refactor
+              // ignore: no-magic-number
               maxHeight: mediaQueryData.size.height * 0.2,
             ),
             child: const CardWidget(),

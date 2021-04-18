@@ -802,7 +802,9 @@ extension IStatusExtension on IStatus {
       if (isHaveEndingSlash) {
         return splitResult.last;
       } else {
-        return splitResult[splitResult.length - 2];
+        // ignore: no-magic-number
+        var middleIndex = splitResult.length - 2;
+        return splitResult[middleIndex];
       }
     } catch (e, stackTrace) {
       var exception = CantExtractStatusRemoteIdFromStatusUrlException(

@@ -21,7 +21,10 @@ class StatusSensitiveNsfwWarningOverlayWidget extends StatelessWidget {
     } else {
       return ConstrainedBox(
         constraints: BoxConstraints(
+          // todo: refactor
+          // ignore: no-magic-number
           minHeight: 54,
+          // ignore: no-magic-number
           minWidth: 200,
         ),
         child: Stack(

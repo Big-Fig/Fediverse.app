@@ -7,6 +7,7 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 
 class PleromaMediaAttachmentService extends DisposableOwner
     implements IPleromaMediaAttachmentService {
@@ -43,7 +44,7 @@ class PleromaMediaAttachmentService extends DisposableOwner
       ),
     );
 
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaMediaAttachment.fromJsonString(httpResponse.body);
     } else {
       throw PleromaMediaAttachmentUploadException(

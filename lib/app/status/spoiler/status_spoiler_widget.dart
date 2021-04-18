@@ -57,6 +57,7 @@ class StatusSpoilerWidget extends StatelessWidget {
                       fontSize: textStyle.fontSize,
                       // todo: 1000 is hack, actually it should be null, but don't
                       //  work as expected
+                      // ignore: no-magic-number
                       textMaxLines: 1000,
                       textOverflow: TextOverflow.ellipsis,
                       linkColor: fediUiColorTheme.primary,

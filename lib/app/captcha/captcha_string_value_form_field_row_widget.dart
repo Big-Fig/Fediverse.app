@@ -202,6 +202,7 @@ class _FormCaptchaStringFormFieldRowImageWidget extends StatelessWidget {
 
         return ConstrainedBox(
           constraints: BoxConstraints(
+            // ignore: no-magic-number
             minHeight: 100,
           ),
           child: result,

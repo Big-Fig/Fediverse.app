@@ -74,7 +74,9 @@ class HtmlTextSettings {
     required this.fontSize,
     required this.lineHeight,
     required this.fontWeight,
+    // ignore: no-magic-number
     this.customEmojiImageSize = 20.0,
+    // ignore: no-magic-number
     this.imageSize = 20.0,
     required this.linkColor,
     required this.color,

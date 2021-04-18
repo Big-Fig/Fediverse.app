@@ -6,6 +6,8 @@ import 'package:fedi/app/share/select_account/recent/recent_share_select_account
 class RecentShareSelectAccountBloc extends RecentSelectAccountBloc
     implements IRecentShareSelectAccountBloc {
   RecentShareSelectAccountBloc({
+    // todo: refactor
+    // ignore: no-magic-number
     int recentCountLimit = 20,
     required ISelectAccountListBloc selectAccountListBloc,
     required IRecentSelectAccountLocalPreferenceBloc
