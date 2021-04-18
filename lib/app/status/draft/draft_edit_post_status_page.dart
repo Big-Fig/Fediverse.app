@@ -1,3 +1,4 @@
+import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/status/draft/draft_status_bloc.dart';
 import 'package:fedi/app/status/post/app_bar/post_status_app_bar_post_action.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_bloc_impl.dart';
@@ -60,10 +61,19 @@ void goToDraftEditPostStatusPage(
       builder: (context) => EditPostStatusBloc.provideToContext(
         context,
         postStatusDataCallback: (IPostStatusData postStatusData) async {
-          await draftStatusBloc.postDraft(
-            postStatusData.toPostStatusData(),
+          var dialogResult =
+              await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            context: context,
+            asyncCode: () async {
+              await draftStatusBloc.postDraft(
+                postStatusData.toPostStatusData(),
+              );
+            },
           );
-          return true;
+          if (dialogResult.success) {
+            Navigator.of(context).pop();
+          }
+          return dialogResult.success;
         },
         child: DraftEditPostStatusPage(
           onBackPressed: (IPostStatusData postStatusData) async {

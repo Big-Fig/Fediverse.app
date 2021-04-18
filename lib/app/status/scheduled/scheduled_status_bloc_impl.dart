@@ -231,7 +231,7 @@ class ScheduledStatusBloc extends DisposableOwner
   }
 
   @override
-  Future<bool> postScheduledPost(PostStatusData postStatusData) async {
+  Future postScheduledPost(PostStatusData postStatusData) async {
     await cancelSchedule();
 
     var pleromaScheduledStatus = await pleromaAuthStatusService.scheduleStatus(
@@ -257,7 +257,6 @@ class ScheduledStatusBloc extends DisposableOwner
 
     await scheduledStatusRepository.upsertInRemoteType(pleromaScheduledStatus);
 
-    return true;
   }
 
   @override

@@ -41,5 +41,5 @@ abstract class IScheduledStatusBloc implements IDisposable {
 
   IPostStatusData calculatePostStatusData();
 
-  Future<bool> postScheduledPost(PostStatusData postStatusData);
+  Future postScheduledPost(PostStatusData postStatusData);
 }
