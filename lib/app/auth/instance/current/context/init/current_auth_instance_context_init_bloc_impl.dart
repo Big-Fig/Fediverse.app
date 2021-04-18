@@ -16,6 +16,7 @@ import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_model.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -249,4 +250,58 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
       batchTransaction: null,
     );
   }
+
+  static CurrentAuthInstanceContextInitBloc createFromContext(
+    BuildContext context,
+  ) =>
+      CurrentAuthInstanceContextInitBloc(
+        pleromaChatRepository: IPleromaChatRepository.of(
+          context,
+          listen: false,
+        ),
+        conversationChatRepository: IConversationChatRepository.of(
+          context,
+          listen: false,
+        ),
+        notificationRepository: INotificationRepository.of(
+          context,
+          listen: false,
+        ),
+        pleromaChatService: IPleromaChatService.of(
+          context,
+          listen: false,
+        ),
+        pleromaNotificationService: IPleromaNotificationService.of(
+          context,
+          listen: false,
+        ),
+        pleromaConversationService: IPleromaConversationService.of(
+          context,
+          listen: false,
+        ),
+        myAccountBloc: IMyAccountBloc.of(
+          context,
+          listen: false,
+        ),
+        pleromaInstanceService: IPleromaInstanceService.of(
+          context,
+          listen: false,
+        ),
+        currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+          context,
+          listen: false,
+        ),
+        pleromaAuthRestService: IPleromaAuthRestService.of(
+          context,
+          listen: false,
+        ),
+        filterRepository: IFilterRepository.of(
+          context,
+          listen: false,
+        ),
+        pleromaFilterService: IPleromaFilterService.of(
+          context,
+          listen: false,
+        ),
+      );
 }

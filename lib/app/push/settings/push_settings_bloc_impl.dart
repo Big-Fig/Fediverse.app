@@ -163,52 +163,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
     _logger.finest(() => "updateSubscriptionPreferences "
         "deviceToken $deviceToken permissionGranted $permissionGranted");
     if (deviceToken != null && permissionGranted) {
-      PleromaPushSubscription? subscription;
-      try {
-        subscription = await pleromaPushService.subscribe(
-          endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
-            account: currentInstance.acct,
-            baseServerUrl: currentInstance.uri,
-            fcmDeviceToken: deviceToken,
-          ),
-          data: PleromaPushSubscribeData(
-            alerts: PleromaPushSettingsDataAlerts(
-              favourite: newSettings!.favourite,
-              follow: newSettings.follow,
-              mention: newSettings.mention,
-              reblog: newSettings.reblog,
-              poll: newSettings.poll,
-              pleromaChatMention: newSettings.pleromaChatMention,
-              pleromaEmojiReaction: newSettings.pleromaEmojiReaction,
-            ),
-          ),
-        );
-
-        success = subscription != null;
-      } catch (error, stackTrace) {
-        success = false;
-        _logger.warning(
-          () => "failed to update subscription ",
-          error,
-          stackTrace,
-        );
-      }
-
-      if (success) {
-        await instanceLocalPreferencesBloc.setValue(
-          PushSettings(
-            favourite: subscription!.alerts!.favourite ?? false,
-            follow: subscription.alerts!.follow ?? false,
-            mention: subscription.alerts!.mention ?? false,
-            reblog: subscription.alerts!.reblog ?? false,
-            poll: subscription.alerts!.poll ?? false,
-            pleromaChatMention:
-                subscription.alerts!.pleromaChatMention ?? false,
-            pleromaEmojiReaction:
-                subscription.alerts!.pleromaEmojiReaction ?? false,
-          ),
-        );
-      }
+      success = await _trySubscribe(deviceToken, newSettings);
     } else {
       success = false;
     }
@@ -225,6 +180,59 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
           "\t success = $success");
     }
 
+    return success;
+  }
+
+  Future<bool> _trySubscribe(
+    String deviceToken,
+    PushSettings? newSettings,
+  ) async {
+    bool success;
+    PleromaPushSubscription? subscription;
+    try {
+      subscription = await pleromaPushService.subscribe(
+        endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
+          account: currentInstance.acct,
+          baseServerUrl: currentInstance.uri,
+          fcmDeviceToken: deviceToken,
+        ),
+        data: PleromaPushSubscribeData(
+          alerts: PleromaPushSettingsDataAlerts(
+            favourite: newSettings!.favourite,
+            follow: newSettings.follow,
+            mention: newSettings.mention,
+            reblog: newSettings.reblog,
+            poll: newSettings.poll,
+            pleromaChatMention: newSettings.pleromaChatMention,
+            pleromaEmojiReaction: newSettings.pleromaEmojiReaction,
+          ),
+        ),
+      );
+
+      success = subscription != null;
+    } catch (error, stackTrace) {
+      success = false;
+      _logger.warning(
+        () => "failed to update subscription ",
+        error,
+        stackTrace,
+      );
+    }
+
+    if (success) {
+      await instanceLocalPreferencesBloc.setValue(
+        PushSettings(
+          favourite: subscription!.alerts!.favourite ?? false,
+          follow: subscription.alerts!.follow ?? false,
+          mention: subscription.alerts!.mention ?? false,
+          reblog: subscription.alerts!.reblog ?? false,
+          poll: subscription.alerts!.poll ?? false,
+          pleromaChatMention: subscription.alerts!.pleromaChatMention ?? false,
+          pleromaEmojiReaction:
+              subscription.alerts!.pleromaEmojiReaction ?? false,
+        ),
+      );
+    }
     return success;
   }
 }

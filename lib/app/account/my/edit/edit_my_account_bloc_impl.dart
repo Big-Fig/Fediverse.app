@@ -91,6 +91,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
         botField,
       ];
 
+  // ignore: long-method
   EditMyAccountBloc({
     required this.myAccountBloc,
     required this.currentAuthInstanceBloc,

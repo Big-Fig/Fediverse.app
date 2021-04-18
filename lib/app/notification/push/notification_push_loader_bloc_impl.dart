@@ -68,6 +68,8 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     addDisposable(streamController: _handledNotificationsStreamController);
   }
 
+  // todo: refactor
+  // ignore: long-method
   Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
     PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
 

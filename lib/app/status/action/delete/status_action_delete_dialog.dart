@@ -16,101 +16,125 @@ Future<T?> showStatusActionDeleteDialog<T>({
   required BuildContext context,
   required IStatusBloc statusBloc,
 }) {
-  var pollLimits = ICurrentAuthInstanceBloc.of(
-        context,
-        listen: false,
-      ).currentInstance?.info?.pollLimits ??
-      PleromaInstancePollLimits.defaultLimits;
   return StatusActionDeleteDialog(
     actionsBorderVisible: false,
     title: S.of(context).app_status_delete_dialog_title,
     actionsAxis: Axis.vertical,
     cancelable: true,
     actions: [
-      DialogAction(
-        label: S.of(context).app_status_delete_dialog_action_delete,
-        onAction: (context) async {
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-            context: context,
-            asyncCode: () => statusBloc.delete(),
-          );
-
-          Navigator.pop(context);
-        },
-      ),
-      DialogAction(
-        label:
-            S.of(context).app_status_delete_dialog_action_deleteAndSaveToDrafts,
-        onAction: (context) async {
-          var dialogResult =
-              await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-            context: context,
-            asyncCode: () => statusBloc.delete(),
-          );
-
-          if (dialogResult.success) {
-            Navigator.pop(context);
-
-            var postStatusData = statusBloc.status.calculatePostStatusData(
-              limits: pollLimits,
-            );
-
-            var draftStatusRepository = IDraftStatusRepository.of(
-              context,
-              listen: false,
-            );
-
-            await draftStatusRepository.upsertInDbType(
-              DbDraftStatus(
-                data: postStatusData,
-                updatedAt: DateTime.now(),
-                id: null,
-              ),
-            );
-
-            // delay to be sure pop already finished, it looks like bug in flutter
-            Future.delayed(
-              Duration(milliseconds: 100),
-              () {
-                goToDraftStatusListPage(context);
-              },
-            );
-          }
-        },
-      ),
-      DialogAction(
-        label: S.of(context).app_status_delete_dialog_action_deleteAndStartNew,
-        onAction: (context) async {
-          var dialogResult =
-              await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-            context: context,
-            asyncCode: () => statusBloc.delete(),
-          );
-
-          if (dialogResult.success) {
-            Navigator.pop(context);
-
-            var postStatusData = statusBloc.status.calculatePostStatusData(
-              limits: pollLimits,
-            );
-
-            // delay to be sure pop already finished, it looks like bug in flutter
-            Future.delayed(
-              Duration(milliseconds: 100),
-              () {
-                goToNewPostStatusPage(
-                  context,
-                  initialData: postStatusData,
-                );
-              },
-            );
-          }
-        },
-      ),
+      buildDeleteAction(context, statusBloc),
+      buildDeleteAndSaveToDrafts(context, statusBloc),
+      buildDeleteAndStartNewAction(context, statusBloc),
     ],
     contentText: null,
   ).show(context);
 }
+
+DialogAction buildDeleteAndSaveToDrafts(
+  BuildContext context,
+  IStatusBloc statusBloc,
+) {
+  var pollLimits = ICurrentAuthInstanceBloc.of(
+        context,
+        listen: false,
+      ).currentInstance?.info?.pollLimits ??
+      PleromaInstancePollLimits.defaultLimits;
+  return DialogAction(
+    label: S.of(context).app_status_delete_dialog_action_deleteAndSaveToDrafts,
+    onAction: (context) async {
+      var dialogResult =
+          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        context: context,
+        asyncCode: () => statusBloc.delete(),
+      );
+
+      if (dialogResult.success) {
+        Navigator.pop(context);
+
+        var postStatusData = statusBloc.status.calculatePostStatusData(
+          limits: pollLimits,
+        );
+
+        var draftStatusRepository = IDraftStatusRepository.of(
+          context,
+          listen: false,
+        );
+
+        await draftStatusRepository.upsertInDbType(
+          DbDraftStatus(
+            data: postStatusData,
+            updatedAt: DateTime.now(),
+            id: null,
+          ),
+        );
+
+        // delay to be sure pop already finished, it looks like bug in flutter
+        Future.delayed(
+          Duration(milliseconds: 100),
+          () {
+            goToDraftStatusListPage(context);
+          },
+        );
+      }
+    },
+  );
+}
+
+DialogAction buildDeleteAndStartNewAction(
+  BuildContext context,
+  IStatusBloc statusBloc,
+) {
+  var pollLimits = ICurrentAuthInstanceBloc.of(
+        context,
+        listen: false,
+      ).currentInstance?.info?.pollLimits ??
+      PleromaInstancePollLimits.defaultLimits;
+  return DialogAction(
+    label: S.of(context).app_status_delete_dialog_action_deleteAndStartNew,
+    onAction: (context) async {
+      var dialogResult =
+          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        context: context,
+        asyncCode: () => statusBloc.delete(),
+      );
+
+      if (dialogResult.success) {
+        Navigator.pop(context);
+
+        var postStatusData = statusBloc.status.calculatePostStatusData(
+          limits: pollLimits,
+        );
+
+        // delay to be sure pop already finished, it looks like bug in flutter
+        Future.delayed(
+          Duration(milliseconds: 100),
+          () {
+            goToNewPostStatusPage(
+              context,
+              initialData: postStatusData,
+            );
+          },
+        );
+      }
+    },
+  );
+}
+
+DialogAction buildDeleteAction(
+  BuildContext context,
+  IStatusBloc statusBloc,
+) =>
+    DialogAction(
+      label: S.of(context).app_status_delete_dialog_action_delete,
+      onAction: (context) async {
+        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          context: context,
+          asyncCode: () => statusBloc.delete(),
+        );
+
+        Navigator.pop(context);
+      },
+    );
 
 class StatusActionDeleteDialog extends FediBaseAlertDialog {
   StatusActionDeleteDialog({

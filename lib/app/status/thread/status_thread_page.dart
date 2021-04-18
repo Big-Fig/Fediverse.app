@@ -51,6 +51,7 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  // ignore: long-method
   Widget build(BuildContext context) {
     var statusThreadBloc = IStatusThreadBloc.of(context);
     var isLocal = statusThreadBloc.instanceLocation == InstanceLocation.local;
@@ -68,6 +69,7 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
             child: DisposableProxyProvider<IStatus, IStatusBloc>(
               update: (context, value, previous) {
                 if (isLocal) {
+                  // todo: refactor
                   if (value.remoteId == previous?.remoteId) {
                     return previous!;
                   } else {
@@ -99,6 +101,7 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
                       var isNeedWatchLocalRepositoryForUpdates = false;
                       var isNeedPreFetchRelationship = false;
                       if (isLocal) {
+                        // todo: refactor
                         return LocalAccountBloc.createFromContext(
                           context,
                           account: account,
@@ -122,6 +125,7 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
                     },
                     child: InkWell(
                       onTap: () {
+                        // todo: refactor
                         if (isLocal) {
                           goToLocalAccountDetailsPage(
                             context,

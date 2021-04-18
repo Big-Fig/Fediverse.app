@@ -31,6 +31,8 @@ class EmojiPickerWidget extends StatelessWidget {
   });
 
   @override
+  // todo: refactor
+  // ignore: long-method
   Widget build(BuildContext context) {
     return DisposableProvider<ICustomEmojiPickerBloc>(
       create: (context) {

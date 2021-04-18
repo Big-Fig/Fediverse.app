@@ -18,12 +18,13 @@ analyzer:
 
 dart_code_metrics:
   anti-patterns:
-#    - long-method
+    - long-method
     - long-parameter-list
   metrics:
     cyclomatic-complexity: 20
     lines-of-code: 100
-    lines-of-executable-code: 50
+    lines-of-executable-code: 65
+#    lines-of-executable-code: 50
     maximum-nesting: 5
     weight-of-class: 0.33
     number-of-arguments: 6

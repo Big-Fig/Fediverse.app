@@ -65,6 +65,12 @@ class EditToastSettingsBloc
           isAllItemsInitialized: false,
           isGlobalForced: isGlobalForced,
         ) {
+    var isGlobal =
+        globalOrInstanceSettingsType == GlobalOrInstanceSettingsType.global;
+    var isPleromaOrGlobal = (currentInstance!.isPleroma || isGlobal);
+
+    var isMastodonOrGlobal = (currentInstance!.isMastodon || isGlobal);
+
     favouriteFieldBloc = BoolValueFormFieldBloc(
       originValue: currentPushSettings!.favourite,
       isEnabled: isEnabled,
@@ -83,34 +89,18 @@ class EditToastSettingsBloc
       isEnabled: isEnabled,
     );
     pollFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentPushSettings!.poll! &&
-          (currentInstance!.isMastodon ||
-              globalOrInstanceSettingsType ==
-                  GlobalOrInstanceSettingsType.global),
-      isEnabled: isEnabled &&
-          (currentInstance!.isMastodon ||
-              globalOrInstanceSettingsType ==
-                  GlobalOrInstanceSettingsType.global),
+      originValue: currentPushSettings!.poll! && isMastodonOrGlobal,
+      isEnabled: isEnabled && isMastodonOrGlobal,
     );
     pleromaChatMentionFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentPushSettings!.pleromaChatMention! &&
-          (currentInstance!.isPleroma ||
-              globalOrInstanceSettingsType ==
-                  GlobalOrInstanceSettingsType.global),
-      isEnabled: isEnabled &&
-          (currentInstance!.isPleroma ||
-              globalOrInstanceSettingsType ==
-                  GlobalOrInstanceSettingsType.global),
+      originValue:
+          currentPushSettings!.pleromaChatMention! && isPleromaOrGlobal,
+      isEnabled: isEnabled && isPleromaOrGlobal,
     );
     pleromaEmojiReactionFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentPushSettings!.pleromaEmojiReaction! &&
-          (currentInstance!.isPleroma ||
-              globalOrInstanceSettingsType ==
-                  GlobalOrInstanceSettingsType.global),
-      isEnabled: isEnabled &&
-          (currentInstance!.isPleroma ||
-              globalOrInstanceSettingsType ==
-                  GlobalOrInstanceSettingsType.global),
+      originValue:
+          currentPushSettings!.pleromaEmojiReaction! && isPleromaOrGlobal,
+      isEnabled: isEnabled && isPleromaOrGlobal,
     );
 
     toastHandlingTypeSingleFromListValueFormFieldBloc =

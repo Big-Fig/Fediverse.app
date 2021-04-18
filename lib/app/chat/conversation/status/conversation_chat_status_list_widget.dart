@@ -92,6 +92,8 @@ class ConversationChatStatusListWidget
       );
 
   @override
+  // todo: unify with pleroma chat message list widget
+  // ignore: long-method
   ScrollView buildItemsCollectionView({
     required BuildContext context,
     required List<IStatus> items,

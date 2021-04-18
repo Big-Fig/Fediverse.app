@@ -166,42 +166,10 @@ Future<List<IMediaDeviceFile>?> goToMultiMediaPickerPage(
           );
         }, // provide parent abstract implementation by type
         child: DisposableProvider<IMultiMediaPickerBloc>(
-          create: (context) {
-            var multiMediaPickerBloc =
-                MultiMediaPickerBloc(selectionCountLimit: selectionCountLimit);
-
-            multiMediaPickerBloc.addDisposable(
-              streamSubscription:
-                  multiMediaPickerBloc.acceptedFilesSelectionStream.listen(
-                (List<IMediaDeviceFile> acceptedFiles) {
-                  Navigator.pop(context, acceptedFiles);
-                },
-              ),
-            );
-
-            multiMediaPickerBloc.addDisposable(
-              streamSubscription:
-                  multiMediaPickerBloc.selectionCountLimitReachedStream.listen(
-                (_) {
-                  var toastService = IToastService.of(context, listen: false);
-
-                  toastService.showInfoToast(
-                    context: context,
-                    title: S
-                        .of(context)
-                        .file_picker_multi_selectionCountLimitReached_notification_title,
-                    content: S
-                        .of(context)
-                        .file_picker_multi_selectionCountLimitReached_notification_content(
-                          selectionCountLimit!,
-                        ),
-                  );
-                },
-              ),
-            );
-
-            return multiMediaPickerBloc;
-          },
+          create: (context) => _createMultiMediaPickerBloc(
+            context,
+            selectionCountLimit,
+          ),
           child: MultiMediaPickerBlocProxyProvider(
             child: const MultiMediaPickerPage(),
           ),
@@ -209,4 +177,44 @@ Future<List<IMediaDeviceFile>?> goToMultiMediaPickerPage(
       ),
     ),
   );
+}
+
+MultiMediaPickerBloc _createMultiMediaPickerBloc(
+  BuildContext context,
+  int? selectionCountLimit,
+) {
+  var multiMediaPickerBloc =
+      MultiMediaPickerBloc(selectionCountLimit: selectionCountLimit);
+
+  multiMediaPickerBloc.addDisposable(
+    streamSubscription:
+        multiMediaPickerBloc.acceptedFilesSelectionStream.listen(
+      (List<IMediaDeviceFile> acceptedFiles) {
+        Navigator.pop(context, acceptedFiles);
+      },
+    ),
+  );
+
+  multiMediaPickerBloc.addDisposable(
+    streamSubscription:
+        multiMediaPickerBloc.selectionCountLimitReachedStream.listen(
+      (_) {
+        var toastService = IToastService.of(context, listen: false);
+
+        toastService.showInfoToast(
+          context: context,
+          title: S
+              .of(context)
+              .file_picker_multi_selectionCountLimitReached_notification_title,
+          content: S
+              .of(context)
+              .file_picker_multi_selectionCountLimitReached_notification_content(
+                selectionCountLimit!,
+              ),
+        );
+      },
+    ),
+  );
+
+  return multiMediaPickerBloc;
 }

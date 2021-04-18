@@ -52,7 +52,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
     required int? maximumMessageLength,
     required PleromaInstancePollLimits? pleromaInstancePollLimits,
     required int? maximumFileSizeInBytes,
-    required bool? markMediaAsNsfwOnAttach,
+    required bool markMediaAsNsfwOnAttach,
     required String? language,
     required bool isPleromaInstance,
   }) : super(
@@ -95,7 +95,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)
-              .markMediaAsNsfwOnAttach,
+              .markMediaAsNsfwOnAttach ?? false,
       language: IPostStatusSettingsBloc.of(context, listen: false)
           .defaultStatusLocale
           ?.localeString,

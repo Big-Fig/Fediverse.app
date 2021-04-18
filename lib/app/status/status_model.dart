@@ -544,7 +544,7 @@ class DbStatusPopulatedWrapper extends IStatus {
   }
 
   @override
-  // ignore: long-parameter-list, code-metrics
+  // ignore: long-parameter-list, code-metrics, long-method
   DbStatusPopulatedWrapper copyWith({
     IAccount? account,
     IStatus? reblog,

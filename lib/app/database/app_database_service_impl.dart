@@ -156,6 +156,8 @@ class AppDatabaseService extends AsyncInitLoadingBloc
   }
 
   @override
+  // todo: refactor
+  // ignore: long-method
   Future clearByLimits({
     required Duration? ageLimit,
     required int? entriesCountByTypeLimit,

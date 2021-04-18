@@ -260,6 +260,8 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   }
 
   @override
+  // todo: refactor
+  // ignore: long-method
   Future postMessage({
     required pleroma_lib.IPleromaChatMessageSendData pleromaChatMessageSendData,
     required IPleromaMediaAttachment? pleromaChatMessageSendDataMediaAttachment,

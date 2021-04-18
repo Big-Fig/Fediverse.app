@@ -418,6 +418,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
                 })
             .toList());
 
+  // ignore: long-method
   List<Join<Table, DataClass>> populateStatusJoin({
     required includeAccountFollowing,
     required includeReplyToAccountFollowing,
@@ -557,7 +558,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
       typedResult.toDbStatusPopulated(dao: this);
 
   @override
-  // ignore: code-metrics
+  // ignore: code-metrics, long-method
   void addFiltersToQuery({
     required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     required StatusRepositoryFilters? filters,
@@ -694,7 +695,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  // ignore: code-metrics
+  // ignore: code-metrics, long-method
   JoinedSelectStatement<Table, DataClass>
       convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,

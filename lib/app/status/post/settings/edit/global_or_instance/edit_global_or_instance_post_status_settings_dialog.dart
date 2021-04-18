@@ -15,6 +15,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// todo: refactor
+// ignore: long-method
 void showEditGlobalOrInstancePostStatusSettingsDialog({
   required BuildContext context,
 }) {

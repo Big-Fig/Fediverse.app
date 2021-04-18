@@ -356,6 +356,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   }
 
   @override
+  // todo: refactor
+  // ignore: long-method
   Future postMessage({
     required IPostStatusData postStatusData,
     required IConversationChatMessage? oldPendingFailedConversationChatMessage,

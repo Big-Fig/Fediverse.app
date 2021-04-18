@@ -1,4 +1,5 @@
 import 'package:fedi/app/html/html_text_bloc.dart';
+import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,79 +27,94 @@ class HtmlTextWidget extends StatelessWidget {
 
     // TODO: add linkify support
     if (htmlData.isActuallyHaveHtmlInData) {
-      return Html(
-        data: htmlData.text!,
-        shrinkWrap: htmlTextBloc.settings.shrinkWrap,
-        customImageRenders: {
-          networkSourceMatcher(): networkImageRender(
-            loadingWidget: () => const FediCircularProgressIndicator(),
-          ),
-        },
-        onImageTap: (
-          String? url,
-          RenderContext context,
-          Map<String, String> attributes,
-          dom.Element? element,
-        ) {
-          _logger.finest(() => "onImageTap $url");
-        },
-        style: htmlTextBloc.htmlStyles,
-        onLinkTap: (
-          String? url,
-          RenderContext context,
-          Map<String, String> attributes,
-          dom.Element? element,
-        ) {
-          if (url != null) {
-            htmlTextBloc.onLinkClicked(url: url);
-          }
-        },
-      );
+      return buildHtmlWidget(htmlTextBloc);
     } else {
-      var settings = htmlTextBloc.settings;
-      Alignment alignment;
-      switch (settings.textAlign) {
-        case TextAlign.left:
-          alignment = Alignment.centerLeft;
-          break;
-        case TextAlign.right:
-          alignment = Alignment.centerRight;
-          break;
-        case TextAlign.center:
-          alignment = Alignment.center;
-          break;
-        case TextAlign.justify:
-          alignment = Alignment.center;
-          break;
-        case TextAlign.start:
-          alignment = Alignment.centerLeft;
-          break;
-        case TextAlign.end:
-          alignment = Alignment.centerRight;
-          break;
-        default:
-          alignment = Alignment.centerLeft;
-      }
-      var text = Text(
-        htmlData.text!,
-        style: TextStyle(
-          color: settings.color,
-          fontSize: settings.fontSize,
-          fontWeight: settings.fontWeight,
-          height: settings.lineHeight,
-        ),
-        textAlign: settings.textAlign,
-        overflow: settings.textOverflow,
-        maxLines: settings.textMaxLines,
-      );
-      if (settings.shrinkWrap == true) {
-        return text;
-      } else {
-        return Align(
-          alignment: alignment,
-          child: text,
-        );
-      }
+      return buildTextWidget(htmlTextBloc);
     }
+  }
+
+  Widget buildTextWidget(IHtmlTextBloc htmlTextBloc) {
+    var htmlData = htmlTextBloc.htmlData;
+    var settings = htmlTextBloc.settings;
+    Alignment alignment = mapToAligment(settings);
+    var text = Text(
+      htmlData.text!,
+      style: TextStyle(
+        color: settings.color,
+        fontSize: settings.fontSize,
+        fontWeight: settings.fontWeight,
+        height: settings.lineHeight,
+      ),
+      textAlign: settings.textAlign,
+      overflow: settings.textOverflow,
+      maxLines: settings.textMaxLines,
+    );
+    if (settings.shrinkWrap == true) {
+      return text;
+    } else {
+      return Align(
+        alignment: alignment,
+        child: text,
+      );
+    }
+  }
+
+  Widget buildHtmlWidget(IHtmlTextBloc htmlTextBloc) {
+    var htmlData = htmlTextBloc.htmlData;
+    return Html(
+      data: htmlData.text!,
+      shrinkWrap: htmlTextBloc.settings.shrinkWrap,
+      customImageRenders: {
+        networkSourceMatcher(): networkImageRender(
+          loadingWidget: () => const FediCircularProgressIndicator(),
+        ),
+      },
+      onImageTap: (
+        String? url,
+        RenderContext context,
+        Map<String, String> attributes,
+        dom.Element? element,
+      ) {
+        _logger.finest(() => "onImageTap $url");
+      },
+      style: htmlTextBloc.htmlStyles,
+      onLinkTap: (
+        String? url,
+        RenderContext context,
+        Map<String, String> attributes,
+        dom.Element? element,
+      ) {
+        if (url != null) {
+          htmlTextBloc.onLinkClicked(url: url);
+        }
+      },
+    );
+  }
+
+  Alignment mapToAligment(HtmlTextSettings settings) {
+    Alignment alignment;
+    switch (settings.textAlign) {
+      case TextAlign.left:
+        alignment = Alignment.centerLeft;
+        break;
+      case TextAlign.right:
+        alignment = Alignment.centerRight;
+        break;
+      case TextAlign.center:
+        alignment = Alignment.center;
+        break;
+      case TextAlign.justify:
+        alignment = Alignment.center;
+        break;
+      case TextAlign.start:
+        alignment = Alignment.centerLeft;
+        break;
+      case TextAlign.end:
+        alignment = Alignment.centerRight;
+        break;
+      default:
+        alignment = Alignment.centerLeft;
+    }
+    return alignment;
   }
 }

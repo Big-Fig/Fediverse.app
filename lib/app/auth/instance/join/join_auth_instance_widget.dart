@@ -12,6 +12,7 @@ import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -269,41 +270,7 @@ Future signUpToInstance(BuildContext context) async {
       await authHostBloc.checkIsRegistrationsEnabled();
       await authHostBloc.dispose();
     },
-    errorDataBuilders: [
-      (
-        context,
-        error,
-        stackTrace,
-      ) {
-        if (error is DisabledRegistrationAuthHostException) {
-          return createRegistrationDisabledErrorData(
-            context,
-            error,
-            stackTrace,
-          );
-        } else if (error is InvitesOnlyRegistrationAuthHostException) {
-          return createRegistrationInvitesOnlyErrorData(
-            context,
-            error,
-            stackTrace,
-          );
-        } else {
-          return null;
-        }
-      },
-      (
-        context,
-        error,
-        stackTrace,
-      ) {
-        // todo: handle specific error
-        return createInstanceDeadErrorData(
-          context,
-          error,
-          stackTrace,
-        );
-      },
-    ],
+    errorDataBuilders: _createSignUpErrorDataBuilders(),
   );
   if (asyncDialogResult.success) {
     var registrationResult = await goToRegisterAuthInstancePage(
@@ -317,6 +284,36 @@ Future signUpToInstance(BuildContext context) async {
       Navigator.of(context).pop();
     }
   }
+}
+
+List<ErrorDataBuilder> _createSignUpErrorDataBuilders() {
+  return [
+    (context, error, stackTrace) {
+      if (error is DisabledRegistrationAuthHostException) {
+        return createRegistrationDisabledErrorData(
+          context,
+          error,
+          stackTrace,
+        );
+      } else if (error is InvitesOnlyRegistrationAuthHostException) {
+        return createRegistrationInvitesOnlyErrorData(
+          context,
+          error,
+          stackTrace,
+        );
+      } else {
+        return null;
+      }
+    },
+    (context, error, stackTrace) {
+      // todo: handle specific error
+      return createInstanceDeadErrorData(
+        context,
+        error,
+        stackTrace,
+      );
+    },
+  ];
 }
 
 ErrorData createInstanceDeadErrorData(

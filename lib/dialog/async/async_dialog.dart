@@ -18,8 +18,8 @@ typedef ErrorDataBuilder = ErrorData? Function(
 typedef ErrorCallback = void Function(BuildContext? context, ErrorData errorData);
 
 
-// todo: refactor long-parameter-list
-// ignore: long-parameter-list
+// todo: refactor long-parameter-list, long-method
+// ignore: long-parameter-list, long-method
 Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
   required BuildContext context,
   required Future<T> Function() asyncCode,
