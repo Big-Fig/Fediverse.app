@@ -91,6 +91,8 @@ var _logger = Logger("app_context_bloc_impl.dart");
 
 class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
   @override
+  // todo:divide into small methods
+  // ignore: long-method
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
 

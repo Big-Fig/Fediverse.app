@@ -653,6 +653,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     }
   }
 
+  // ignore: long-method
   Future _upsertStatusMetadata(
     IPleromaStatus remoteStatus, {
     required String? listRemoteId,

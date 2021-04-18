@@ -40,7 +40,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     required int? maximumMessageLength,
     required PleromaInstancePollLimits? pleromaInstancePollLimits,
     required int? maximumFileSizeInBytes,
-    required bool? markMediaAsNsfwOnAttach,
+    required bool markMediaAsNsfwOnAttach,
     required String? language,
   }) : super(
           isExpirePossible: false,
@@ -83,7 +83,8 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)
-              .markMediaAsNsfwOnAttach,
+                  .markMediaAsNsfwOnAttach ??
+              false,
       language: IPostStatusSettingsBloc.of(context, listen: false)
           .defaultStatusLocale
           ?.localeString,

@@ -171,6 +171,7 @@ class _StatusCachedPaginationListMediaItemWidget extends StatelessWidget {
             child: DisposableProxyProvider<IStatus, IStatusBloc>(
               update: (context, status, oldValue) {
                 if (isLocal) {
+                  // todo: refactor copy-pasted code
                   if (status.remoteId == oldValue?.remoteId) {
                     return oldValue!;
                   } else {
@@ -192,43 +193,56 @@ class _StatusCachedPaginationListMediaItemWidget extends StatelessWidget {
                   context: context,
                   statusBloc: statusBloc,
                 ),
-                child: InkWell(
-                  onTap: () {
-                    var statusWithMediaAttachment =
-                        Provider.of<_StatusWithMediaAttachment>(
-                      context,
-                      listen: false,
-                    );
-                    if (isLocal) {
-                      goToLocalStatusThreadPage(
-                        context,
-                        status: statusWithMediaAttachment.status,
-                        initialMediaAttachment:
-                            statusWithMediaAttachment.mediaAttachment,
-                      );
-                    } else {
-                      goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
-                        context,
-                        remoteInstanceStatus: statusWithMediaAttachment.status,
-                        remoteInstanceInitialMediaAttachment:
-                            statusWithMediaAttachment.mediaAttachment,
-                      );
-                    }
-                  },
-                  child: Padding(
-                    padding: FediPadding.allSmallPadding,
-                    child: Center(
-                      child: ProxyProvider<_StatusWithMediaAttachment,
-                          IPleromaMediaAttachment>(
-                        update: (context, value, previous) =>
-                            value.mediaAttachment,
-                        child: const StatusListItemMediaWidget(),
-                      ),
-                    ),
-                  ),
+                child: _StatusCachedPaginationListMediaItemBodyWidget(
+                  isLocal: isLocal,
                 ),
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StatusCachedPaginationListMediaItemBodyWidget extends StatelessWidget {
+  const _StatusCachedPaginationListMediaItemBodyWidget({
+    Key? key,
+    required this.isLocal,
+  }) : super(key: key);
+
+  final bool isLocal;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        var statusWithMediaAttachment = Provider.of<_StatusWithMediaAttachment>(
+          context,
+          listen: false,
+        );
+        if (isLocal) {
+          goToLocalStatusThreadPage(
+            context,
+            status: statusWithMediaAttachment.status,
+            initialMediaAttachment: statusWithMediaAttachment.mediaAttachment,
+          );
+        } else {
+          goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
+            context,
+            remoteInstanceStatus: statusWithMediaAttachment.status,
+            remoteInstanceInitialMediaAttachment:
+                statusWithMediaAttachment.mediaAttachment,
+          );
+        }
+      },
+      child: Padding(
+        padding: FediPadding.allSmallPadding,
+        child: Center(
+          child: ProxyProvider<_StatusWithMediaAttachment,
+              IPleromaMediaAttachment>(
+            update: (context, value, previous) => value.mediaAttachment,
+            child: const StatusListItemMediaWidget(),
           ),
         ),
       ),

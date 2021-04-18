@@ -287,7 +287,26 @@ class _NotificationListItemContentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
 
-    var rawText;
+    var rawText = _mapToRawText(context, notificationBloc);
+
+    var emojis = notificationBloc.status?.emojis;
+    return Provider<EmojiText>.value(
+      value: EmojiText(text: rawText, emojis: emojis),
+      child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+        update: (context, emojiText, _) {
+          HtmlTextBloc htmlTextBloc = _createHtmlTextBloc(context, emojiText);
+          return htmlTextBloc;
+        },
+        child: const HtmlTextWidget(),
+      ),
+    );
+  }
+
+  String _mapToRawText(
+    BuildContext context,
+    INotificationBloc notificationBloc,
+  ) {
+    String rawText;
 
     switch (notificationBloc.typePleroma) {
       case PleromaNotificationType.follow:
@@ -320,7 +339,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
       case PleromaNotificationType.pleromaChatMention:
         rawText = S.of(context).app_notification_header_pleromaChatMention(
-          _extractChatMessageRawContent(notificationBloc)!,
+              _extractChatMessageRawContent(notificationBloc)!,
             );
         break;
       case PleromaNotificationType.pleromaReport:
@@ -349,37 +368,34 @@ class _NotificationListItemContentWidget extends StatelessWidget {
             );
         break;
     }
+    return rawText;
+  }
 
-    var fediUiColorTheme = IFediUiColorTheme.of(context);
+  HtmlTextBloc _createHtmlTextBloc(BuildContext context, EmojiText emojiText) {
+    var fediUiColorTheme = IFediUiColorTheme.of(
+      context,
+      listen: false,
+    );
     var textScaleFactor = MediaQuery.of(context).textScaleFactor;
-    var emojis = notificationBloc.status?.emojis;
-    return Provider<EmojiText>.value(
-      value: EmojiText(text: rawText, emojis: emojis),
-      child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
-        update: (context, emojiText, _) {
-          var htmlTextBloc = HtmlTextBloc(
-            inputData: HtmlTextInputData(
-              input: emojiText.text,
-              emojis: emojiText.emojis,
-            ),
-            settings: HtmlTextSettings(
-              textMaxLines: 3,
-              textOverflow: TextOverflow.ellipsis,
-              color: fediUiColorTheme.mediumGrey,
-              fontSize: 14,
-              lineHeight: 1.5,
-              fontWeight: FontWeight.w300,
-              shrinkWrap: true,
-              linkColor: fediUiColorTheme.primary,
-              drawNewLines: false,
-              textScaleFactor: textScaleFactor,
-            ),
-          );
-          return htmlTextBloc;
-        },
-        child: const HtmlTextWidget(),
+    var htmlTextBloc = HtmlTextBloc(
+      inputData: HtmlTextInputData(
+        input: emojiText.text,
+        emojis: emojiText.emojis,
+      ),
+      settings: HtmlTextSettings(
+        textMaxLines: 3,
+        textOverflow: TextOverflow.ellipsis,
+        color: fediUiColorTheme.mediumGrey,
+        fontSize: 14,
+        lineHeight: 1.5,
+        fontWeight: FontWeight.w300,
+        shrinkWrap: true,
+        linkColor: fediUiColorTheme.primary,
+        drawNewLines: false,
+        textScaleFactor: textScaleFactor,
       ),
     );
+    return htmlTextBloc;
   }
 
   String? _extractStatusRawContent(INotificationBloc notificationBloc) {
@@ -392,7 +408,8 @@ class _NotificationListItemContentWidget extends StatelessWidget {
       if (content.isEmpty && mediaAttachments?.isNotEmpty == true) {
         content = mediaAttachments!
             .map(
-              (mediaAttachment) => mediaAttachment.description ?? mediaAttachment.url,
+              (mediaAttachment) =>
+                  mediaAttachment.description ?? mediaAttachment.url,
             )
             .join(", ");
       }
@@ -400,6 +417,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
 
     return content;
   }
+
   String? _extractChatMessageRawContent(INotificationBloc notificationBloc) {
     var content = notificationBloc.chatMessage?.content;
 

@@ -245,6 +245,8 @@ class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  // todo: refactor
+  // ignore: long-method
   Widget build(BuildContext context) {
     var chatMessageListItem = ChatMessageListItem.of<IChatMessage>(context);
     var messageBloc = IChatMessageBloc.of(context);
@@ -255,65 +257,66 @@ class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
     var isLastInMinuteGroup = chatMessageListItem.isLastInMinuteGroup;
     var isHaveTextContent = messageBloc.content?.isNotEmpty == true;
     return StreamBuilder<bool>(
-        stream: messageBloc.isPendingFailedStream,
-        initialData: messageBloc.isPendingFailed,
-        builder: (context, snapshot) {
-          var isPendingFailed = snapshot.data!;
-          return Container(
-            decoration: BoxDecoration(
-              color: isHaveTextContent
-                  ? isChatMessageFromMe
-                      ? isPendingFailed
-                          ? IFediUiColorTheme.of(context).grey
-                          : IFediUiColorTheme.of(context).primaryDark
-                      : IFediUiColorTheme.of(context).ultraLightGrey
-                  : IFediUiColorTheme.of(context).transparent,
-              borderRadius: isHaveTextContent
-                  ? isChatMessageFromMe
-                      ? BorderRadius.only(
-                          topLeft: _borderRadius,
-                          topRight:
-                              isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                          bottomLeft: _borderRadius,
-                        )
-                      : BorderRadius.only(
-                          topLeft:
-                              isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                          topRight: _borderRadius,
-                          bottomRight: _borderRadius,
-                        )
-                  : BorderRadius.zero,
-            ),
-            child: Padding(
-              padding: isHaveTextContent
-                  ? EdgeInsets.symmetric(
-                      vertical: FediSizes.mediumPadding,
-                      horizontal: FediSizes.bigPadding,
-                    )
-                  : EdgeInsets.zero,
-              child: isHaveTextContent
-                  ? const _ChatMessageListItemContentWidget()
-                  : ClipRRect(
-                      borderRadius: isChatMessageFromMe
-                          ? BorderRadius.only(
-                              topLeft: _borderRadius,
-                              topRight: isLastInMinuteGroup
-                                  ? _borderRadius
-                                  : Radius.zero,
-                              bottomLeft: _borderRadius,
-                            )
-                          : BorderRadius.only(
-                              topLeft: isLastInMinuteGroup
-                                  ? _borderRadius
-                                  : Radius.zero,
-                              topRight: _borderRadius,
-                              bottomRight: _borderRadius,
-                            ),
-                      child: const _ChatMessageListItemContentWidget(),
-                    ),
-            ),
-          );
-        });
+      stream: messageBloc.isPendingFailedStream,
+      initialData: messageBloc.isPendingFailed,
+      builder: (context, snapshot) {
+        var isPendingFailed = snapshot.data!;
+        return Container(
+          decoration: BoxDecoration(
+            color: isHaveTextContent
+                ? isChatMessageFromMe
+                    ? isPendingFailed
+                        ? IFediUiColorTheme.of(context).grey
+                        : IFediUiColorTheme.of(context).primaryDark
+                    : IFediUiColorTheme.of(context).ultraLightGrey
+                : IFediUiColorTheme.of(context).transparent,
+            borderRadius: isHaveTextContent
+                ? isChatMessageFromMe
+                    ? BorderRadius.only(
+                        topLeft: _borderRadius,
+                        topRight:
+                            isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                        bottomLeft: _borderRadius,
+                      )
+                    : BorderRadius.only(
+                        topLeft:
+                            isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                        topRight: _borderRadius,
+                        bottomRight: _borderRadius,
+                      )
+                : BorderRadius.zero,
+          ),
+          child: Padding(
+            padding: isHaveTextContent
+                ? EdgeInsets.symmetric(
+                    vertical: FediSizes.mediumPadding,
+                    horizontal: FediSizes.bigPadding,
+                  )
+                : EdgeInsets.zero,
+            child: isHaveTextContent
+                ? const _ChatMessageListItemContentWidget()
+                : ClipRRect(
+                    borderRadius: isChatMessageFromMe
+                        ? BorderRadius.only(
+                            topLeft: _borderRadius,
+                            topRight: isLastInMinuteGroup
+                                ? _borderRadius
+                                : Radius.zero,
+                            bottomLeft: _borderRadius,
+                          )
+                        : BorderRadius.only(
+                            topLeft: isLastInMinuteGroup
+                                ? _borderRadius
+                                : Radius.zero,
+                            topRight: _borderRadius,
+                            bottomRight: _borderRadius,
+                          ),
+                    child: const _ChatMessageListItemContentWidget(),
+                  ),
+          ),
+        );
+      },
+    );
   }
 }
 

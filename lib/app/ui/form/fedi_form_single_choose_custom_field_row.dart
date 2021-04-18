@@ -40,7 +40,9 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
   });
 
   @override
+  // ignore: long-method
   Widget build(BuildContext context) {
+    // todo: copy-pasted code
     return FediFormRow(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -94,6 +96,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                     ),
                   ),
                   if (isNullValuePossible && value != null)
+
                     InkWell(
                       onTap: () {
                         clearCallback();

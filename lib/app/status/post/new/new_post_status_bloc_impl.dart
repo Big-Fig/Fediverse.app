@@ -23,7 +23,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     required int? maximumMessageLength,
     required PleromaInstancePollLimits? pleromaInstancePollLimits,
     required int? maximumFileSizeInBytes,
-    required bool? markMediaAsNsfwOnAttach,
+    required bool markMediaAsNsfwOnAttach,
     required bool isPleromaInstance,
     required IPostStatusData initialData,
   }) : super(
@@ -71,7 +71,7 @@ class NewPostStatusBloc extends PostStatusBloc {
           ),
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
-          markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
+          markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach ?? false,
         );
 
   static NewPostStatusBloc createFromContextWithInitial(
@@ -163,7 +163,7 @@ class NewPostStatusBloc extends PostStatusBloc {
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
-      markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
+      markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach ?? false,
       isPleromaInstance: info.isPleroma,
       scheduledStatusRepository: IScheduledStatusRepository.of(
         context,

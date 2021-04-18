@@ -406,6 +406,8 @@ class _DatePickerState extends State<FediDatePickerComponent> {
     );
   }
 
+  // todo: refactor
+  // ignore: long-method
   Widget _renderItemView(FediDatePickerTheme theme) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -44,6 +44,7 @@ class RestService extends DisposableOwner implements IRestService {
   });
 
   @override
+  // ignore: long-method
   Future<http.Response> sendHttpRequest<T extends RestRequest, K>(
     T request,
   ) async {

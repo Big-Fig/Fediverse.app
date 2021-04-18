@@ -32,102 +32,15 @@ class EditTimelineSettingsWidget extends StatelessWidget {
 
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
 
-    var authInstance = currentAuthInstanceBloc.currentInstance;
+    var authInstance = currentAuthInstanceBloc.currentInstance!;
 
-    List<Widget> children;
-
-    var timelineType = editSettingsBloc.timelineType;
-    switch (timelineType) {
-      case TimelineType.home:
-        children = [
-          buildOnlyLocalField(context, editSettingsBloc, authInstance),
-          buildOnlyRemoteField(context, editSettingsBloc, authInstance),
-          buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
-          buildOnlyMediaField(context, editSettingsBloc, authInstance),
-          buildWithMutedField(context, editSettingsBloc, authInstance),
-          buildReplyVisibilityFilterField(
-            context,
-            editSettingsBloc,
-            authInstance,
-          ),
-          buildExcludeVisibilitiesField(
-            context,
-            editSettingsBloc,
-            authInstance,
-          ),
-        ];
-        break;
-      case TimelineType.public:
-        children = [
-          buildOnlyLocalField(context, editSettingsBloc, authInstance),
-          buildOnlyRemoteField(context, editSettingsBloc, authInstance),
-          buildOnlyFromInstanceField(context, editSettingsBloc, authInstance),
-          buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
-          buildOnlyMediaField(context, editSettingsBloc, authInstance),
-          buildWithMutedField(context, editSettingsBloc, authInstance),
-          buildReplyVisibilityFilterField(
-            context,
-            editSettingsBloc,
-            authInstance,
-          ),
-          buildExcludeVisibilitiesField(
-            context,
-            editSettingsBloc,
-            authInstance,
-          ),
-        ];
-        break;
-      case TimelineType.customList:
-        children = [
-          buildOnlyLocalField(context, editSettingsBloc, authInstance),
-          buildOnlyRemoteField(context, editSettingsBloc, authInstance),
-          buildCustomListField(context, editSettingsBloc, authInstance),
-          buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
-          buildOnlyMediaField(context, editSettingsBloc, authInstance),
-          buildWithMutedField(context, editSettingsBloc, authInstance),
-          buildExcludeVisibilitiesField(
-            context,
-            editSettingsBloc,
-            authInstance,
-          ),
-        ];
-        break;
-
-      case TimelineType.hashtag:
-        children = [
-          buildOnlyLocalField(context, editSettingsBloc, authInstance),
-          buildOnlyRemoteField(context, editSettingsBloc, authInstance),
-          buildHashtagField(context, editSettingsBloc, authInstance),
-          buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
-          buildOnlyMediaField(context, editSettingsBloc, authInstance),
-          buildWithMutedField(context, editSettingsBloc, authInstance),
-          buildExcludeVisibilitiesField(
-            context,
-            editSettingsBloc,
-            authInstance,
-          ),
-        ];
-        break;
-      case TimelineType.account:
-        children = [
-          buildAccountField(context, editSettingsBloc, authInstance),
-          buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
-          buildOnlyMediaField(context, editSettingsBloc, authInstance),
-          buildHashtagField(context, editSettingsBloc, authInstance),
-          buildExcludeReblogsField(context, editSettingsBloc, authInstance),
-          buildExcludeRepliesField(context, editSettingsBloc, authInstance),
-          buildOnlyPinnedField(context, editSettingsBloc, authInstance),
-          buildExcludeVisibilitiesField(
-            context,
-            editSettingsBloc,
-            authInstance,
-          ),
-        ];
-        break;
-
-      default:
-        throw "Invalid timelineType $timelineType";
-    }
+    var timelineType = editSettingsBloc.timelineType!;
+    var children = _buildWidgetsForType(
+      context,
+      timelineType,
+      editSettingsBloc,
+      authInstance,
+    );
 
     if (shrinkWrap) {
       return Column(
@@ -138,6 +51,152 @@ class EditTimelineSettingsWidget extends StatelessWidget {
         children: children,
       );
     }
+  }
+
+  List<Widget> _buildWidgetsForType(
+    BuildContext context,
+    TimelineType timelineType,
+    IEditTimelineSettingsBloc editSettingsBloc,
+    AuthInstance authInstance,
+  ) {
+    List<Widget> children;
+    switch (timelineType) {
+      case TimelineType.home:
+        children = _buildHomeWidgets(
+          context,
+          editSettingsBloc,
+          authInstance,
+        );
+        break;
+      case TimelineType.public:
+        children = buildPublicWidgets(
+          context,
+          editSettingsBloc,
+          authInstance,
+        );
+        break;
+      case TimelineType.customList:
+        children = buildCustomListWidgets(
+          context,
+          editSettingsBloc,
+          authInstance,
+        );
+        break;
+
+      case TimelineType.hashtag:
+        children = buildHashtagWidgets(
+          context,
+          editSettingsBloc,
+          authInstance,
+        );
+        break;
+      case TimelineType.account:
+        children = buildAccountWidgets(
+          context,
+          editSettingsBloc,
+          authInstance,
+        );
+        break;
+
+      default:
+        throw "Invalid timelineType $timelineType";
+    }
+    return children;
+  }
+
+  List<Widget> buildAccountWidgets(BuildContext context,
+      IEditTimelineSettingsBloc editSettingsBloc, AuthInstance authInstance) {
+    return [
+      buildAccountField(context, editSettingsBloc, authInstance),
+      buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
+      buildOnlyMediaField(context, editSettingsBloc, authInstance),
+      buildHashtagField(context, editSettingsBloc, authInstance),
+      buildExcludeReblogsField(context, editSettingsBloc, authInstance),
+      buildExcludeRepliesField(context, editSettingsBloc, authInstance),
+      buildOnlyPinnedField(context, editSettingsBloc, authInstance),
+      buildExcludeVisibilitiesField(
+        context,
+        editSettingsBloc,
+        authInstance,
+      ),
+    ];
+  }
+
+  List<Widget> buildHashtagWidgets(BuildContext context,
+      IEditTimelineSettingsBloc editSettingsBloc, AuthInstance authInstance) {
+    return [
+      buildOnlyLocalField(context, editSettingsBloc, authInstance),
+      buildOnlyRemoteField(context, editSettingsBloc, authInstance),
+      buildHashtagField(context, editSettingsBloc, authInstance),
+      buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
+      buildOnlyMediaField(context, editSettingsBloc, authInstance),
+      buildWithMutedField(context, editSettingsBloc, authInstance),
+      buildExcludeVisibilitiesField(
+        context,
+        editSettingsBloc,
+        authInstance,
+      ),
+    ];
+  }
+
+  List<Widget> buildCustomListWidgets(BuildContext context,
+      IEditTimelineSettingsBloc editSettingsBloc, AuthInstance authInstance) {
+    return [
+      buildOnlyLocalField(context, editSettingsBloc, authInstance),
+      buildOnlyRemoteField(context, editSettingsBloc, authInstance),
+      buildCustomListField(context, editSettingsBloc, authInstance),
+      buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
+      buildOnlyMediaField(context, editSettingsBloc, authInstance),
+      buildWithMutedField(context, editSettingsBloc, authInstance),
+      buildExcludeVisibilitiesField(
+        context,
+        editSettingsBloc,
+        authInstance,
+      ),
+    ];
+  }
+
+  List<Widget> buildPublicWidgets(BuildContext context,
+      IEditTimelineSettingsBloc editSettingsBloc, AuthInstance authInstance) {
+    return [
+      buildOnlyLocalField(context, editSettingsBloc, authInstance),
+      buildOnlyRemoteField(context, editSettingsBloc, authInstance),
+      buildOnlyFromInstanceField(context, editSettingsBloc, authInstance),
+      buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
+      buildOnlyMediaField(context, editSettingsBloc, authInstance),
+      buildWithMutedField(context, editSettingsBloc, authInstance),
+      buildReplyVisibilityFilterField(
+        context,
+        editSettingsBloc,
+        authInstance,
+      ),
+      buildExcludeVisibilitiesField(
+        context,
+        editSettingsBloc,
+        authInstance,
+      ),
+    ];
+  }
+
+  List<Widget> _buildHomeWidgets(BuildContext context,
+      IEditTimelineSettingsBloc editSettingsBloc, AuthInstance authInstance) {
+    return [
+      buildOnlyLocalField(context, editSettingsBloc, authInstance),
+      buildOnlyRemoteField(context, editSettingsBloc, authInstance),
+      buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
+      buildOnlyMediaField(context, editSettingsBloc, authInstance),
+      buildWithMutedField(context, editSettingsBloc, authInstance),
+      buildReplyVisibilityFilterField(
+        context,
+        editSettingsBloc,
+        authInstance,
+      ),
+      buildExcludeVisibilitiesField(
+        context,
+        editSettingsBloc,
+        authInstance,
+      ),
+    ];
   }
 
   Widget buildWithMutedField(

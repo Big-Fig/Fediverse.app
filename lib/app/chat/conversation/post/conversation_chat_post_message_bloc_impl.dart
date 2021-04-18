@@ -27,7 +27,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
     required int? maximumMessageLength,
     required PleromaInstancePollLimits? pleromaInstancePollLimits,
     required int? maximumFileSizeInBytes,
-    required bool? markMediaAsNsfwOnAttach,
+    required bool markMediaAsNsfwOnAttach,
     required String? language,
   }) : super(
           isExpirePossible: false,
@@ -77,7 +77,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
       markMediaAsNsfwOnAttach: IPostStatusSettingsBloc.of(
         context,
         listen: false,
-      ).markMediaAsNsfwOnAttach,
+      ).markMediaAsNsfwOnAttach ?? false,
       language: IPostStatusSettingsBloc.of(
         context,
         listen: false,

@@ -84,12 +84,13 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
         },
       );
 
+  // todo: refactor UI
+  // ignore: long-method
   Widget mapTabToIcon(BuildContext context, HomeTab tab, bool isSelected) {
     var fediUiColorTheme = IFediUiColorTheme.of(context, listen: true);
     var color =
         isSelected ? fediUiColorTheme.primary : fediUiColorTheme.darkGrey;
 
-    // todo: refactor UI
     const insets = FediPadding.allBigPadding;
     var additionalOffset = 2.0;
     var badgeOffset = additionalOffset + FediSizes.smallPadding;

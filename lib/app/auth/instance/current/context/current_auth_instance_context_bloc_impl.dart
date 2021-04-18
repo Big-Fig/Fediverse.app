@@ -194,6 +194,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
   });
 
   @override
+  // todo: refactor
+  // ignore: long-method
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
 

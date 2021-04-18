@@ -22,7 +22,9 @@ import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/widgets.dart';
@@ -205,6 +207,22 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   bool get isFromHomeTimeline => timelineType == TimelineType.home;
 
+  bool get onlyLocal => timeline.onlyLocal == true;
+
+  bool get onlyRemote => timeline.onlyRemote == true;
+
+  String? get onlyFromInstance => timeline.onlyFromInstance;
+
+  bool get withMuted => timeline.withMuted == true;
+
+  bool get onlyWithMedia => timeline.onlyWithMedia == true;
+
+  List<PleromaVisibility>? get excludeVisibilities =>
+      timeline.excludeVisibilities;
+
+  PleromaReplyVisibilityFilter? get pleromaReplyVisibilityFilter =>
+      timeline.replyVisibilityFilter;
+
   @override
   Future<bool> refreshItemsFromRemoteForPage({
     required int? limit,
@@ -217,13 +235,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         "\t olderThan = $olderThan");
 
     List<IPleromaStatus>? remoteStatuses;
-    var onlyLocal = timeline.onlyLocal == true;
-    var onlyRemote = timeline.onlyRemote == true;
-    var onlyFromInstance = timeline.onlyFromInstance;
-    var withMuted = timeline.withMuted == true;
-    var onlyWithMedia = timeline.onlyWithMedia;
-    var excludeVisibilities = timeline.excludeVisibilities;
-    var pleromaReplyVisibilityFilter = timeline.replyVisibilityFilter;
+
     var pagination = PleromaPaginationRequest(
       limit: limit,
       sinceId: newerThan?.remoteId,
@@ -231,50 +243,19 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     );
     switch (timelineType) {
       case TimelineType.public:
-        remoteStatuses = await pleromaTimelineService.getPublicTimeline(
-          pagination: pagination,
-          onlyLocal: onlyLocal,
-          onlyRemote: onlyRemote,
-          onlyFromInstance: onlyFromInstance,
-          onlyWithMedia: onlyWithMedia,
-          withMuted: withMuted,
-          excludeVisibilities: excludeVisibilities,
-          pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
-        );
+        remoteStatuses = await _loadPublicTimeline(pagination);
         break;
       case TimelineType.customList:
-        remoteStatuses = await pleromaTimelineService.getListTimeline(
-          listId: timeline.onlyInRemoteList!.id,
-          pagination: pagination,
-          onlyLocal: onlyLocal,
-          withMuted: withMuted,
-          excludeVisibilities: excludeVisibilities,
-        );
+        remoteStatuses = await _loadListTimeline(pagination);
         break;
       case TimelineType.home:
-        remoteStatuses = await pleromaTimelineService.getHomeTimeline(
-          pagination: pagination,
-          onlyLocal: onlyLocal,
-          withMuted: withMuted,
-          excludeVisibilities: excludeVisibilities,
-          pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
-        );
+        remoteStatuses = await _loadHomeTimeline(pagination);
         break;
       case TimelineType.hashtag:
-        remoteStatuses = await pleromaTimelineService.getHashtagTimeline(
-          hashtag: timeline.withRemoteHashtag,
-          pagination: pagination,
-          onlyLocal: onlyLocal,
-          onlyWithMedia: onlyWithMedia,
-          withMuted: withMuted,
-          excludeVisibilities: excludeVisibilities,
-        );
+        remoteStatuses = await _loadHashtagTimeline(pagination);
         break;
       case TimelineType.account:
-        remoteStatuses = await pleromaAccountService.getAccountStatuses(
-          accountRemoteId: timeline.onlyFromRemoteAccount!.id,
-          onlyWithMedia: onlyWithMedia,
-        );
+        remoteStatuses = await _loadAccountTimeline();
         break;
     }
 
@@ -293,6 +274,61 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
           "statuses is null");
       return false;
     }
+  }
+
+  Future<List<IPleromaStatus>> _loadAccountTimeline() async {
+    return await pleromaAccountService.getAccountStatuses(
+      accountRemoteId: timeline.onlyFromRemoteAccount!.id,
+      onlyWithMedia: onlyWithMedia,
+    );
+  }
+
+  Future<List<IPleromaStatus>> _loadHashtagTimeline(
+      PleromaPaginationRequest pagination) async {
+    return await pleromaTimelineService.getHashtagTimeline(
+      hashtag: timeline.withRemoteHashtag,
+      pagination: pagination,
+      onlyLocal: onlyLocal,
+      onlyWithMedia: onlyWithMedia,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+    );
+  }
+
+  Future<List<IPleromaStatus>> _loadHomeTimeline(
+      PleromaPaginationRequest pagination) async {
+    return await pleromaTimelineService.getHomeTimeline(
+      pagination: pagination,
+      onlyLocal: onlyLocal,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+      pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
+    );
+  }
+
+  Future<List<IPleromaStatus>> _loadListTimeline(
+      PleromaPaginationRequest pagination) async {
+    return await pleromaTimelineService.getListTimeline(
+      listId: timeline.onlyInRemoteList!.id,
+      pagination: pagination,
+      onlyLocal: onlyLocal,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+    );
+  }
+
+  Future<List<IPleromaStatus>> _loadPublicTimeline(
+      PleromaPaginationRequest pagination) async {
+    return await pleromaTimelineService.getPublicTimeline(
+      pagination: pagination,
+      onlyLocal: onlyLocal,
+      onlyRemote: onlyRemote,
+      onlyFromInstance: onlyFromInstance,
+      onlyWithMedia: onlyWithMedia,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+      pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
+    );
   }
 
   @override
@@ -327,9 +363,8 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   static TimelineStatusCachedListBloc createFromContext(
     BuildContext context, {
-    required TimelineType timelineType,
-    required ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc,
     required WebSocketsListenType webSocketsListenType,
+    required ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc,
   }) =>
       TimelineStatusCachedListBloc(
         pleromaAccountService: IPleromaAccountService.of(

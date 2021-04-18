@@ -28,6 +28,8 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
   });
 
   @override
+  // todo: refactor. use common code with pleroma_chat_list_item_widget
+  // ignore: long-method
   Widget build(BuildContext context) {
     IStatusBloc statusBloc = IStatusBloc.of(context, listen: false);
 
