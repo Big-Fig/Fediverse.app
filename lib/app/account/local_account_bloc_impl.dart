@@ -240,12 +240,12 @@ class LocalAccountBloc extends AccountBloc {
         if (myAccount != null) {
           accountRepository.removeAccountFollower(
             accountRemoteId: account.remoteId,
-            followerAccountId: account.remoteId,
+            followerAccountId: myAccount!.remoteId,
             batchTransaction: batch,
           );
 
           accountRepository.removeAccountFollowing(
-            accountRemoteId: account.remoteId,
+            accountRemoteId: myAccount!.remoteId,
             followingAccountId: account.remoteId,
             batchTransaction: batch,
           );
