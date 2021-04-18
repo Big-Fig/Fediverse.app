@@ -6,6 +6,7 @@ import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/thread/local_status_thread_page.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
+import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pedantic/pedantic.dart';
 
@@ -14,11 +15,21 @@ extension GoToNotificationExtension on INotification {
     var notificationRepository =
         INotificationRepository.of(context, listen: false);
 
+    var pleromaNotificationService =
+        IPleromaNotificationService.of(context, listen: false);
+
     unawaited(
       notificationRepository.markAsRead(
         notification: this,
       ),
     );
+    if (pleromaNotificationService.isPleroma) {
+      unawaited(
+        pleromaNotificationService.markAsReadSingle(
+          notificationRemoteId: remoteId,
+        ),
+      );
+    }
 
     var status = this.status;
     var account = this.account;
