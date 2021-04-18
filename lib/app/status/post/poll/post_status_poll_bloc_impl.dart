@@ -132,5 +132,8 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     pollOptionsGroupBloc.changeFields(
       createDefaultPollOptions(pollLimits.maxOptionChars),
     );
+
+    multiplyFieldBloc.clear();
+    durationDateTimeLengthFieldBloc.clear();
   }
 }
