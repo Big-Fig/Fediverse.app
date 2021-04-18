@@ -484,10 +484,10 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   @override
-  Future<bool> post() async {
+  Future post() async {
     var postStatusData = calculateCurrentPostStatusData();
 
-    return await internalPostStatusData(postStatusData);
+    await internalPostStatusData(postStatusData);
   }
 
   Future internalPostStatusData(IPostStatusData postStatusData) async {

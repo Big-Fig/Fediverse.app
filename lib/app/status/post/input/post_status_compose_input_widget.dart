@@ -52,7 +52,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
                 context: context,
                 asyncCode: () => postStatusBloc.post(),
               );
-              var success = dialogResult.result!;
+              var success = dialogResult.success;
 
               if (success) {
                 showPostStatusPostOverlayNotification(
