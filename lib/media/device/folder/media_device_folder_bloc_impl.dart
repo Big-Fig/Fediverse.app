@@ -14,25 +14,6 @@ abstract class MediaDeviceFolderBloc extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     await storagePermissionBloc.checkPermissionStatus();
-
-    if (storagePermissionBloc.permissionGranted!) {
-      await _initAfterPermissionGranted();
-    } else {
-      addDisposable(
-        streamSubscription:
-            storagePermissionBloc.permissionGrantedStream.distinct().listen(
-          (granted) {
-            // if (granted && files?.isNotEmpty != true) {
-            //   _initAfterPermissionGranted();
-            // }
-          },
-        ),
-      );
-    }
-  }
-
-  Future _initAfterPermissionGranted() async {
-    // return await reloadFiles();
   }
 
   @override
