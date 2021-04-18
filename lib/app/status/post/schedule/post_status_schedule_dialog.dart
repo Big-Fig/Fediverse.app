@@ -33,7 +33,7 @@ void showPostStatusScheduleDialog({
       // ignore: no-magic-number
       Duration(days: 365),
     ),
-    currentDateTime: initialDate,
+    currentDateTime: postStatusBloc.scheduledAt ?? initialDate,
     theme: FediDatePickerTheme.byDefault(
       context: context,
       customTitle: pickerTitle,
