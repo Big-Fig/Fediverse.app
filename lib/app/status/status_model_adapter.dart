@@ -43,6 +43,7 @@ extension PleromaStatusDbExtension on IPleromaStatus {
     }
   }
 
+  // ignore: code-metrics
   DbStatus toDbStatus() {
     var remoteStatus = this;
 

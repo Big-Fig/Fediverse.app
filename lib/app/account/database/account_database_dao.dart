@@ -274,6 +274,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
+  // ignore: code-metrics
   JoinedSelectStatement<Table, DataClass>
       convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbAccountsTable, DbAccount> query,

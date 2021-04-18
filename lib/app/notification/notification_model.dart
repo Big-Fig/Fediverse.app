@@ -151,6 +151,7 @@ class DbNotificationPopulatedWrapper implements INotification {
   bool get unread => dbNotificationPopulated.dbNotification.unread == true;
 
   @override
+  // ignore: code-metrics
   DbNotificationPopulatedWrapper copyWith({
     int? localId,
     String? remoteId,

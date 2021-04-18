@@ -58,33 +58,10 @@ class StatusCachedPaginationListMediaWidget
     var isLocal = instanceLocation == InstanceLocation.local;
 
     // all statuses should be already with media attachments
-    items = items
-        .where((IStatus status) =>
-            (status.reblog?.mediaAttachments ?? status.mediaAttachments)
-                ?.where((mediaAttachment) => mediaAttachment.isImageOrGif)
-                .isNotEmpty ==
-            true)
-        .toList();
+    items = filterItemsWithMedia(items);
 
-    var statusesWithMediaAttachment = <_StatusWithMediaAttachment>[];
-
-    items.forEach(
-      (status) {
-        Iterable<PleromaMediaAttachment> mediaAttachments =
-            (status.reblog?.mediaAttachments ?? status.mediaAttachments ?? [])
-                .where((mediaAttachment) => mediaAttachment.isImageOrGif);
-        mediaAttachments.forEach(
-          (mediaAttachment) {
-            statusesWithMediaAttachment.add(
-              _StatusWithMediaAttachment(
-                status: status,
-                mediaAttachment: mediaAttachment,
-              ),
-            );
-          },
-        );
-      },
-    );
+    List<_StatusWithMediaAttachment> statusesWithMediaAttachment =
+        mapToStatusesWithAttachments(items);
 
     var length = statusesWithMediaAttachment.length;
     if (header != null) {
@@ -112,78 +89,51 @@ class StatusCachedPaginationListMediaWidget
 
         var statusWithMediaAttachment = statusesWithMediaAttachment[itemIndex];
 
-        return UnfocusOnScrollAreaWidget(
-          child: Container(
-            color: IFediUiColorTheme.of(context).offWhite,
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Provider<IStatus>.value(
-                value: statusWithMediaAttachment.status,
-                child: DisposableProxyProvider<IStatus, IStatusBloc>(
-                  update: (context, status, oldValue) {
-                    if (isLocal) {
-                      if (status.remoteId ==
-                          oldValue?.remoteId) {
-                        return oldValue!;
-                      } else {
-                        return LocalStatusBloc.createFromContext(
-                          context,
-                          status: status,
-                        );
-                      }
-                    } else {
-                      return RemoteStatusBloc.createFromContext(
-                        context,
-                        status: status,
-                      );
-                    }
-                  },
-                  child: DisposableProxyProvider<IStatusBloc,
-                      IStatusSensitiveBloc>(
-                    update: (context, statusBloc, _) =>
-                        StatusSensitiveBloc.createFromContext(
-                      context: context,
-                      statusBloc: statusBloc,
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        if (isLocal) {
-                          goToLocalStatusThreadPage(
-                            context,
-                            status: statusWithMediaAttachment.status,
-                            initialMediaAttachment:
-                                statusWithMediaAttachment.mediaAttachment,
-                          );
-                        } else {
-                          goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
-                            context,
-                            remoteInstanceStatus:
-                                statusWithMediaAttachment.status,
-                            remoteInstanceInitialMediaAttachment:
-                                statusWithMediaAttachment.mediaAttachment,
-                          );
-                        }
-                      },
-                      child: Padding(
-                        padding: FediPadding.allSmallPadding,
-                        child: Center(
-                          child: Provider<IPleromaMediaAttachment>.value(
-                            value: statusWithMediaAttachment.mediaAttachment,
-                            child: const StatusListItemMediaWidget(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+        return Provider<_StatusWithMediaAttachment>.value(
+          value: statusWithMediaAttachment,
+          child: _StatusCachedPaginationListMediaItemWidget(
+            isLocal: isLocal,
           ),
         );
       },
       staggeredTileBuilder: (int index) =>
           StaggeredTile.count(2, index.isEven ? 2 : 1),
     );
+  }
+
+  static List<_StatusWithMediaAttachment> mapToStatusesWithAttachments(
+      List<IStatus> items) {
+    var statusesWithMediaAttachment = <_StatusWithMediaAttachment>[];
+
+    items.forEach(
+      (status) {
+        Iterable<PleromaMediaAttachment> mediaAttachments =
+            (status.reblog?.mediaAttachments ?? status.mediaAttachments ?? [])
+                .where((mediaAttachment) => mediaAttachment.isImageOrGif);
+        mediaAttachments.forEach(
+          (mediaAttachment) {
+            statusesWithMediaAttachment.add(
+              _StatusWithMediaAttachment(
+                status: status,
+                mediaAttachment: mediaAttachment,
+              ),
+            );
+          },
+        );
+      },
+    );
+    return statusesWithMediaAttachment;
+  }
+
+  static List<IStatus> filterItemsWithMedia(List<IStatus> items) {
+    items = items
+        .where((IStatus status) =>
+            (status.reblog?.mediaAttachments ?? status.mediaAttachments)
+                ?.where((mediaAttachment) => mediaAttachment.isImageOrGif)
+                .isNotEmpty ==
+            true)
+        .toList();
+    return items;
   }
 
   @override
@@ -199,6 +149,91 @@ class StatusCachedPaginationListMediaWidget
         header: header,
         footer: footer,
       );
+}
+
+class _StatusCachedPaginationListMediaItemWidget extends StatelessWidget {
+  const _StatusCachedPaginationListMediaItemWidget({
+    Key? key,
+    required this.isLocal,
+  }) : super(key: key);
+
+  final bool isLocal;
+
+  @override
+  Widget build(BuildContext context) {
+    return UnfocusOnScrollAreaWidget(
+      child: Container(
+        color: IFediUiColorTheme.of(context).offWhite,
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: ProxyProvider<_StatusWithMediaAttachment, IStatus>(
+            update: (context, value, previous) => value.status,
+            child: DisposableProxyProvider<IStatus, IStatusBloc>(
+              update: (context, status, oldValue) {
+                if (isLocal) {
+                  if (status.remoteId == oldValue?.remoteId) {
+                    return oldValue!;
+                  } else {
+                    return LocalStatusBloc.createFromContext(
+                      context,
+                      status: status,
+                    );
+                  }
+                } else {
+                  return RemoteStatusBloc.createFromContext(
+                    context,
+                    status: status,
+                  );
+                }
+              },
+              child: DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
+                update: (context, statusBloc, _) =>
+                    StatusSensitiveBloc.createFromContext(
+                  context: context,
+                  statusBloc: statusBloc,
+                ),
+                child: InkWell(
+                  onTap: () {
+                    var statusWithMediaAttachment =
+                        Provider.of<_StatusWithMediaAttachment>(
+                      context,
+                      listen: false,
+                    );
+                    if (isLocal) {
+                      goToLocalStatusThreadPage(
+                        context,
+                        status: statusWithMediaAttachment.status,
+                        initialMediaAttachment:
+                            statusWithMediaAttachment.mediaAttachment,
+                      );
+                    } else {
+                      goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
+                        context,
+                        remoteInstanceStatus: statusWithMediaAttachment.status,
+                        remoteInstanceInitialMediaAttachment:
+                            statusWithMediaAttachment.mediaAttachment,
+                      );
+                    }
+                  },
+                  child: Padding(
+                    padding: FediPadding.allSmallPadding,
+                    child: Center(
+                      child: ProxyProvider<_StatusWithMediaAttachment,
+                          IPleromaMediaAttachment>(
+                        update: (context, value, previous) =>
+                            value.mediaAttachment,
+                        child: const StatusListItemMediaWidget(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _StatusWithMediaAttachment {

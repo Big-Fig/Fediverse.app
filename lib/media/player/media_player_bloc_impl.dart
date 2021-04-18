@@ -77,59 +77,15 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
     await _actualInit();
   }
 
+  DateTime positionChangedLastDateTime = DateTime.now();
+
   Future _actualInit() async {
     playerStateSubject.add(MediaPlayerState.initializing);
 
     VideoPlayerController videoPlayerController = createVideoPlayerController();
 
-    var positionChangedLastDateTime = DateTime.now();
-
     var listener = () {
-      var oldVideoPlayerValue = this.videoPlayerValue;
-      var videoPlayerValue = videoPlayerController.value;
-      if (videoPlayerValue.hasError == true) {
-        if (error == null && videoPlayerValue.errorDescription != null) {
-          error == videoPlayerValue.errorDescription;
-        }
-        if (playerState != MediaPlayerState.error) {
-          playerStateSubject.add(MediaPlayerState.error);
-        }
-      }
-      // _logger.finest(() => "videoPlayerController.value ${videoPlayerValue}");
-      videoPlayerValueSubject.add(videoPlayerValue);
-
-      if (videoPlayerValue.duration == videoPlayerValue.position) {
-        playerStateSubject.add(MediaPlayerState.finished);
-      }
-
-      if (videoPlayerValue.isBuffering) {
-        isBufferingSubject.add(true);
-      } else {
-        // below lines is hack
-        // actually videoPlayerValue.isBuffering is always false
-        // in almost all cases
-        // so we should detect buffering on our side
-        if (isPlaying) {
-          var continuesPlaying = oldVideoPlayerValue?.isPlaying == true;
-          var positionChanged =
-              oldVideoPlayerValue?.position != videoPlayerValue.position;
-
-          if (positionChanged) {
-            positionChangedLastDateTime = DateTime.now();
-          }
-
-          var now = DateTime.now();
-          if (continuesPlaying &&
-              now.difference(positionChangedLastDateTime).abs() >
-                  Duration(seconds: 1)) {
-            isBufferingSubject.add(true);
-          } else {
-            isBufferingSubject.add(false);
-          }
-        } else {
-          isBufferingSubject.add(false);
-        }
-      }
+      _onVideoPlayerStateChanged(videoPlayerController);
     };
 
     videoPlayerController.addListener(listener);
@@ -137,12 +93,16 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
     // dispose old init if it is exist
     await videoPlayerDisposable?.dispose();
 
-    videoPlayerDisposable = CompositeDisposable([
-      CustomDisposable(() async {
-        videoPlayerController.removeListener(listener);
-        await videoPlayerController.dispose();
-      }),
-    ]);
+    videoPlayerDisposable = CompositeDisposable(
+      [
+        CustomDisposable(
+          () async {
+            videoPlayerController.removeListener(listener);
+            await videoPlayerController.dispose();
+          },
+        ),
+      ],
+    );
 
     try {
       await videoPlayerController.initialize();
@@ -165,6 +125,56 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
       );
 
       playerStateSubject.add(MediaPlayerState.error);
+    }
+  }
+
+  void _onVideoPlayerStateChanged(
+    VideoPlayerController videoPlayerController,
+  ) {
+    var oldVideoPlayerValue = this.videoPlayerValue;
+    var videoPlayerValue = videoPlayerController.value;
+    if (videoPlayerValue.hasError == true) {
+      if (error == null && videoPlayerValue.errorDescription != null) {
+        error == videoPlayerValue.errorDescription;
+      }
+      if (playerState != MediaPlayerState.error) {
+        playerStateSubject.add(MediaPlayerState.error);
+      }
+    }
+    // _logger.finest(() => "videoPlayerController.value ${videoPlayerValue}");
+    videoPlayerValueSubject.add(videoPlayerValue);
+
+    if (videoPlayerValue.duration == videoPlayerValue.position) {
+      playerStateSubject.add(MediaPlayerState.finished);
+    }
+
+    if (videoPlayerValue.isBuffering) {
+      isBufferingSubject.add(true);
+    } else {
+      // below lines is hack
+      // actually videoPlayerValue.isBuffering is always false
+      // in almost all cases
+      // so we should detect buffering on our side
+      if (isPlaying) {
+        var continuesPlaying = oldVideoPlayerValue?.isPlaying == true;
+        var positionChanged =
+            oldVideoPlayerValue?.position != videoPlayerValue.position;
+
+        if (positionChanged) {
+          positionChangedLastDateTime = DateTime.now();
+        }
+
+        var now = DateTime.now();
+        if (continuesPlaying &&
+            now.difference(positionChangedLastDateTime).abs() >
+                Duration(seconds: 1)) {
+          isBufferingSubject.add(true);
+        } else {
+          isBufferingSubject.add(false);
+        }
+      } else {
+        isBufferingSubject.add(false);
+      }
     }
   }
 

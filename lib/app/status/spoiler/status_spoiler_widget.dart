@@ -41,25 +41,8 @@ class StatusSpoilerWidget extends StatelessWidget {
                 return const SizedBox.shrink();
               }
 
-              TextStyle textStyle = fediUiTextTheme.bigTallDarkGrey;
-
-              switch (statusFontSize) {
-                case UiSettingsFontSize.smallest:
-                  textStyle = fediUiTextTheme.smallTallDarkGrey;
-                  break;
-                case UiSettingsFontSize.small:
-                  textStyle = fediUiTextTheme.mediumTallDarkGrey;
-                  break;
-                case UiSettingsFontSize.medium:
-                  textStyle = fediUiTextTheme.bigTallDarkGrey;
-                  break;
-                case UiSettingsFontSize.large:
-                  textStyle = fediUiTextTheme.subHeaderTallDarkGrey;
-                  break;
-                case UiSettingsFontSize.largest:
-                  textStyle = fediUiTextTheme.headerDarkGrey;
-                  break;
-              }
+              TextStyle textStyle =
+                  _mapToTextStyle(fediUiTextTheme, statusFontSize);
 
               return DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
                 update: (context, spoilerWithEmojis, _) {
@@ -98,6 +81,30 @@ class StatusSpoilerWidget extends StatelessWidget {
         );
       },
     );
+  }
+
+  TextStyle _mapToTextStyle(
+      IFediUiTextTheme fediUiTextTheme, UiSettingsFontSize statusFontSize) {
+    TextStyle textStyle = fediUiTextTheme.bigTallDarkGrey;
+
+    switch (statusFontSize) {
+      case UiSettingsFontSize.smallest:
+        textStyle = fediUiTextTheme.smallTallDarkGrey;
+        break;
+      case UiSettingsFontSize.small:
+        textStyle = fediUiTextTheme.mediumTallDarkGrey;
+        break;
+      case UiSettingsFontSize.medium:
+        textStyle = fediUiTextTheme.bigTallDarkGrey;
+        break;
+      case UiSettingsFontSize.large:
+        textStyle = fediUiTextTheme.subHeaderTallDarkGrey;
+        break;
+      case UiSettingsFontSize.largest:
+        textStyle = fediUiTextTheme.headerDarkGrey;
+        break;
+    }
+    return textStyle;
   }
 
   const StatusSpoilerWidget();

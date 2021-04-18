@@ -52,74 +52,8 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
     addDisposable(
       streamSubscription: newerItemStream.listen(
-        (newerItem) {
-          // don't watch new items before we something actually loaded
-          if (paginationBloc.loadedPagesCount == 0) {
-            return;
-          }
-
-          var bothItemsIsNull = previousNeverItem == null && newerItem == null;
-          var newItemsSubscriptionAlreadyExist = newItemsSubscription != null;
-          if (bothItemsIsNull && newItemsSubscriptionAlreadyExist) {
-            return;
-          }
-
-          var bothItemsNotNull = previousNeverItem != null && newerItem != null;
-          if (bothItemsNotNull) {
-            var isEqual = isItemsEqual(previousNeverItem!, newerItem!);
-            if (isEqual) {
-              return;
-            }
-          }
-
-          _logger.finest(() => "newerItem $newerItem");
-          newItemsSubscription?.cancel();
-
-          newItemsSubscription = watchItemsNewerThanItem(newerItem)
-              .skipWhile((newItems) => newItems.isNotEmpty != true)
-              .listen(
-            (newItems) {
-              // we need to filter again to be sure that newerItem is no
-              // changed during sql request execute time
-              List<TItem> actuallyNew = newItems.where(
-                (newItem) {
-                  if (newerItem != null) {
-                    return compareItemsToSort(newItem, newerItem) > 0;
-                  } else {
-                    return true;
-                  }
-                },
-              ).toList();
-
-              var currentItems = items;
-
-              // remove duplicates
-              // sometimes local storage sqlite returns duplicated items
-              // sometimes item is newer but already exist
-              // for example chat updateAt updated
-              actuallyNew = removeDuplicatesAndUpdate(
-                actuallyNew: actuallyNew,
-                currentItems: currentItems,
-              );
-
-              _logger.finest(() => "watchItemsNewerThanItem "
-                  "\n"
-                  "\t newItems ${newItems.length} \n"
-                  "\t actuallyNew = ${actuallyNew.length}");
-
-              if (actuallyNew.isNotEmpty == true) {
-                if (currentItems.isNotEmpty != true &&
-                    mergeNewItemsImmediatelyWhenItemsIsEmpty) {
-                  // merge immediately
-                  mergedNewItemsSubject.add(actuallyNew);
-                } else {
-                  unmergedNewItemsSubject.add(actuallyNew);
-                }
-              }
-            },
-          );
-
-          addDisposable(streamSubscription: newItemsSubscription);
+        (TItem? newerItem) {
+       checkWatchNewItemsSubscription(newerItem);
         },
       ),
     );
@@ -282,4 +216,78 @@ abstract class CachedPaginationListWithNewItemsBloc<
   int compareItemsToSort(TItem a, TItem b);
 
   bool isItemsEqual(TItem a, TItem b);
+
+  void checkWatchNewItemsSubscription(TItem? newerItem) {
+    // don't watch new items before we something actually loaded
+    if (paginationBloc.loadedPagesCount == 0) {
+      return;
+    }
+
+    var bothItemsIsNull = previousNeverItem == null && newerItem == null;
+    var newItemsSubscriptionAlreadyExist = newItemsSubscription != null;
+    if (bothItemsIsNull && newItemsSubscriptionAlreadyExist) {
+      return;
+    }
+
+    var bothItemsNotNull = previousNeverItem != null && newerItem != null;
+    if (bothItemsNotNull) {
+      var isEqual = isItemsEqual(previousNeverItem!, newerItem!);
+      if (isEqual) {
+        return;
+      }
+    }
+
+    _logger.finest(() => "newerItem $newerItem");
+    newItemsSubscription?.cancel();
+
+    newItemsSubscription = createWatchNewItemsSubscription(newerItem);
+
+    addDisposable(streamSubscription: newItemsSubscription);
+  }
+
+  StreamSubscription<List> createWatchNewItemsSubscription(newerItem) {
+    return watchItemsNewerThanItem(newerItem)
+      .skipWhile((newItems) => newItems.isNotEmpty != true)
+      .listen(
+        (newItems) {
+      // we need to filter again to be sure that newerItem is no
+      // changed during sql request execute time
+      List<TItem> actuallyNew = newItems.where(
+            (newItem) {
+          if (newerItem != null) {
+            return compareItemsToSort(newItem, newerItem) > 0;
+          } else {
+            return true;
+          }
+        },
+      ).toList();
+
+      var currentItems = items;
+
+      // remove duplicates
+      // sometimes local storage sqlite returns duplicated items
+      // sometimes item is newer but already exist
+      // for example chat updateAt updated
+      actuallyNew = removeDuplicatesAndUpdate(
+        actuallyNew: actuallyNew,
+        currentItems: currentItems,
+      );
+
+      _logger.finest(() => "watchItemsNewerThanItem "
+          "\n"
+          "\t newItems ${newItems.length} \n"
+          "\t actuallyNew = ${actuallyNew.length}");
+
+      if (actuallyNew.isNotEmpty == true) {
+        if (currentItems.isNotEmpty != true &&
+            mergeNewItemsImmediatelyWhenItemsIsEmpty) {
+          // merge immediately
+          mergedNewItemsSubject.add(actuallyNew);
+        } else {
+          unmergedNewItemsSubject.add(actuallyNew);
+        }
+      }
+    },
+  );
+  }
 }

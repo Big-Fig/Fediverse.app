@@ -314,6 +314,7 @@ bool _calculateIsHaveMetadataFields(IPleromaInstance? instance) =>
     instance?.pleroma?.metadata?.features?.isNotEmpty == true ||
     instance?.pleroma?.metadata?.postFormats?.isNotEmpty == true;
 
+// ignore: code-metrics
 bool _calculateIsHaveFederationFields(IPleromaInstance? instance) =>
     instance?.pleroma?.metadata?.federation?.enabled != null ||
     instance?.pleroma?.metadata?.federation?.exclusions != null ||

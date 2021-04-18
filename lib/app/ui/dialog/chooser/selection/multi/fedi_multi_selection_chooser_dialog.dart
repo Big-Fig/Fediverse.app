@@ -41,112 +41,6 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
     required this.isNeedRebuildActionsStream,
   });
 
-  Widget _buildAction({
-    required BuildContext context,
-    required DialogAction action,
-    required bool isSelected,
-    required bool isCancelAction,
-  }) {
-    var actionExist = action.onAction != null;
-    return Padding(
-      padding: FediPadding.horizontalBigPadding,
-      child: StreamBuilder<bool>(
-        initialData: action.isActionEnabledFetcher != null
-            ? action.isActionEnabledFetcher!(context)
-            : true,
-        stream: action.isActionEnabledStreamFetcher != null
-            ? action.isActionEnabledStreamFetcher!(context)
-            : Stream.value(true),
-        builder: (context, snapshot) {
-          var enabled = snapshot.data!;
-          var fediUiColorTheme = IFediUiColorTheme.of(context);
-          var fediUiTextTheme = IFediUiTextTheme.of(context);
-          var color = isSelected
-              ? fediUiColorTheme.primary
-              : actionExist && enabled
-                  ? IFediUiColorTheme.of(context).darkGrey
-                  : IFediUiColorTheme.of(context).lightGrey;
-          return StreamBuilder<bool>(
-              initialData: action.isActionVisibleFetcher != null
-                  ? action.isActionVisibleFetcher!(context)
-                  : true,
-              stream: action.isActionVisibleStreamFetcher != null
-                  ? action.isActionVisibleStreamFetcher!(context)
-                  : Stream.value(true),
-              builder: (context, snapshot) {
-                var visible = snapshot.data!;
-                if(!visible) {
-                  return SizedBox.shrink();
-                }
-              return InkWell(
-                onTap: enabled
-                    ? () {
-                        if (actionExist && enabled) {
-                          action.onAction!(context);
-                        }
-                      }
-                    : null,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: isCancelAction
-                            ? MainAxisAlignment.center
-                            : MainAxisAlignment.start,
-                        children: [
-                          if (action.icon != null)
-                            Icon(
-                              action.icon,
-                              color: color,
-                            ),
-                          Padding(
-                            padding: FediPadding.allMediumPadding,
-                            child: Text(
-                              action.label!,
-                              style: action.customTextStyle?.copyWith(
-                                    color: isSelected
-                                        ? fediUiColorTheme.primary
-                                        : actionExist && enabled
-                                            ? fediUiColorTheme.darkGrey
-                                            : fediUiColorTheme.lightGrey,
-                                  ) ??
-                                  (isSelected
-                                      ? fediUiTextTheme.bigTallPrimary
-                                      : actionExist && enabled
-                                          ? fediUiTextTheme.bigTallDarkGrey
-                                          : fediUiTextTheme.bigTallLightGrey),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (!isCancelAction)
-                      FediIconButton(
-                        icon: Icon(
-                          isSelected
-                              ? FediIcons.check_circle_solid
-                              : FediIcons.check_circle,
-                        ),
-                        color: color,
-                        onPressed: () {
-                          if (actionExist && enabled) {
-                            action.onAction!(context);
-                          }
-                        },
-                      ),
-                  ],
-                ),
-              );
-            }
-          );
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -154,21 +48,9 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (title != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
-            child: Text(
-              title!,
-              style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
-            ),
-          ),
+          _FediMultiSelectChooserDialogBodyTitleWidget(title: title),
         if (content != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
-            child: Text(
-              content!,
-              style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
-            ),
-          ),
+          _FediMultiSelectChooserDialogBodyContentWidget(content: content),
         Align(
           alignment: Alignment.centerLeft,
           child: StreamBuilder<List<SelectionDialogAction>?>(
@@ -186,8 +68,8 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
                 children: [
                   ...actions
                       .map(
-                        (action) => _buildAction(
-                          context: context,
+                        (action) =>
+                            _FediMultiSelectChooserDialogBodyActionWidget(
                           action: action,
                           isSelected: action.isSelected,
                           isCancelAction: false,
@@ -200,8 +82,7 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
           ),
         ),
         if (cancelable)
-          _buildAction(
-            context: context,
+          _FediMultiSelectChooserDialogBodyActionWidget(
             action: BaseDialog.createDefaultCancelAction(
               context: context,
             ),
@@ -209,6 +90,195 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
             isCancelAction: true,
           ),
       ],
+    );
+  }
+}
+
+class _FediMultiSelectChooserDialogBodyContentWidget extends StatelessWidget {
+  const _FediMultiSelectChooserDialogBodyContentWidget({
+    Key? key,
+    required this.content,
+  }) : super(key: key);
+
+  final String? content;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+      child: Text(
+        content!,
+        style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
+      ),
+    );
+  }
+}
+
+class _FediMultiSelectChooserDialogBodyTitleWidget extends StatelessWidget {
+  const _FediMultiSelectChooserDialogBodyTitleWidget({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+
+  final String? title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+      child: Text(
+        title!,
+        style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
+      ),
+    );
+  }
+}
+
+class _FediMultiSelectChooserDialogBodyActionWidget extends StatelessWidget {
+  final DialogAction action;
+  final bool isSelected;
+  final bool isCancelAction;
+
+  const _FediMultiSelectChooserDialogBodyActionWidget({
+    Key? key,
+    required this.action,
+    required this.isSelected,
+    required this.isCancelAction,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var actionExist = action.onAction != null;
+    return Padding(
+      padding: FediPadding.horizontalBigPadding,
+      child: StreamBuilder<bool>(
+        initialData: action.isActionEnabledFetcher != null
+            ? action.isActionEnabledFetcher!(context)
+            : true,
+        stream: action.isActionEnabledStreamFetcher != null
+            ? action.isActionEnabledStreamFetcher!(context)
+            : Stream.value(true),
+        builder: (context, snapshot) {
+          var enabled = snapshot.data!;
+          var fediUiColorTheme = IFediUiColorTheme.of(context);
+
+          var color = isSelected
+              ? fediUiColorTheme.primary
+              : actionExist && enabled
+                  ? IFediUiColorTheme.of(context).darkGrey
+                  : IFediUiColorTheme.of(context).lightGrey;
+          return StreamBuilder<bool>(
+            initialData: action.isActionVisibleFetcher != null
+                ? action.isActionVisibleFetcher!(context)
+                : true,
+            stream: action.isActionVisibleStreamFetcher != null
+                ? action.isActionVisibleStreamFetcher!(context)
+                : Stream.value(true),
+            builder: (context, snapshot) {
+              var visible = snapshot.data!;
+              if (!visible) {
+                return SizedBox.shrink();
+              }
+              return _FediMultiSelectChooserDialogBodyActionBodyWidget(
+                enabled: enabled,
+                actionExist: actionExist,
+                action: action,
+                isCancelAction: isCancelAction,
+                color: color,
+                isSelected: isSelected,
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _FediMultiSelectChooserDialogBodyActionBodyWidget
+    extends StatelessWidget {
+  const _FediMultiSelectChooserDialogBodyActionBodyWidget({
+    Key? key,
+    required this.enabled,
+    required this.actionExist,
+    required this.action,
+    required this.isCancelAction,
+    required this.color,
+    required this.isSelected,
+  }) : super(key: key);
+
+  final bool enabled;
+  final bool actionExist;
+  final DialogAction action;
+  final bool isCancelAction;
+  final Color color;
+  final bool isSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    var fediUiTextTheme = IFediUiTextTheme.of(context);
+    return InkWell(
+      onTap: enabled
+          ? () {
+              if (actionExist && enabled) {
+                action.onAction!(context);
+              }
+            }
+          : null,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: isCancelAction
+                  ? MainAxisAlignment.center
+                  : MainAxisAlignment.start,
+              children: [
+                if (action.icon != null)
+                  Icon(
+                    action.icon,
+                    color: color,
+                  ),
+                Padding(
+                  padding: FediPadding.allMediumPadding,
+                  child: Text(
+                    action.label!,
+                    style: action.customTextStyle?.copyWith(
+                          color: isSelected
+                              ? fediUiColorTheme.primary
+                              : actionExist && enabled
+                                  ? fediUiColorTheme.darkGrey
+                                  : fediUiColorTheme.lightGrey,
+                        ) ??
+                        (isSelected
+                            ? fediUiTextTheme.bigTallPrimary
+                            : actionExist && enabled
+                                ? fediUiTextTheme.bigTallDarkGrey
+                                : fediUiTextTheme.bigTallLightGrey),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (!isCancelAction)
+            FediIconButton(
+              icon: Icon(
+                isSelected
+                    ? FediIcons.check_circle_solid
+                    : FediIcons.check_circle,
+              ),
+              color: color,
+              onPressed: () {
+                if (actionExist && enabled) {
+                  action.onAction!(context);
+                }
+              },
+            ),
+        ],
+      ),
     );
   }
 }

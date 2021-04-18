@@ -220,6 +220,7 @@ class DbChatMessagePopulated {
     required this.dbAccount,
   });
 
+  // ignore: code-metrics
   DbChatMessagePopulated copyWith({
     int? localId,
     String? remoteId,
