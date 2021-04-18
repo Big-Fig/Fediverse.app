@@ -292,6 +292,9 @@ List<SelectionDialogAction> _calculateActions<T>({
   return result;
 }
 
+
+// todo: refactor long-parameter-list
+// ignore: long-parameter-list, code-metrics
 SelectionDialogAction _buildDialogAction<T>({
   required BuildContext context,
   required IMultiSelectFromListValueFormFieldBloc<T> fieldBloc,

@@ -58,6 +58,9 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
     addDisposable(subject: lastIterationDateTimeSubject);
   }
 
+
+  // todo: refactor long-parameter-list
+  // ignore: long-parameter-list
   static VideoMediaPlayerBloc createFromContext(
     BuildContext context, {
     required MediaPlayerSource mediaPlayerSource,
@@ -77,6 +80,9 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
     );
   }
 
+
+  // todo: refactor long-parameter-list
+  // ignore: long-parameter-list
   static Widget provideToContext(
     BuildContext context, {
     required MediaPlayerSource mediaPlayerSource,

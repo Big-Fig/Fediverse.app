@@ -99,6 +99,7 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
   String? get oldPendingRemoteId => status.oldPendingRemoteId;
 
   @override
+  // ignore: long-parameter-list
   IConversationChatMessage copyWith({
     int? localId,
     String? remoteId,

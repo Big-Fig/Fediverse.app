@@ -366,7 +366,7 @@ class PleromaAccount implements IPleromaAccount {
       lastStatusAt.hashCode;
 
   @override
-  // ignore: code-metrics
+  // ignore: long-parameter-list, code-metrics
   PleromaAccount copyWith({
     String? username,
     String? url,
@@ -663,7 +663,7 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
   String toJsonString() => jsonEncode(_$PleromaAccountPleromaPartToJson(this));
 
   @override
-  // ignore: code-metrics
+  // ignore: long-parameter-list, code-metrics
   PleromaAccountPleromaPart copyWith({
     String? backgroundImage,
     List<IPleromaTag>? tags,
@@ -896,6 +896,7 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
   });
 
   @override
+  // ignore: long-parameter-list
   PleromaAccountRelationship copyWith({
     bool? blocking,
     bool? domainBlocking,

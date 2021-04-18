@@ -369,6 +369,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
   @override
   TimelineSettings clone() => copyWith();
 
+  // ignore: long-parameter-list
   TimelineSettings copyWith({
     bool? onlyWithMedia,
     bool? excludeReplies,

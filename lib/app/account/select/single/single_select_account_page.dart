@@ -36,6 +36,9 @@ class SingleSelectAccountPage extends StatelessWidget {
       );
 }
 
+
+// todo: refactor long-parameter-list
+// ignore: long-parameter-list
 void goToSingleSelectAccountPage(
   BuildContext context, {
   required AccountCallback accountSelectedCallback,

@@ -57,6 +57,7 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
   PleromaCard? get card => throw UnimplementedError();
 
   @override
+  // ignore: long-parameter-list
   IStatus copyWith({
     IAccount? account,
     IStatus? reblog,

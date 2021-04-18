@@ -544,7 +544,7 @@ class DbStatusPopulatedWrapper extends IStatus {
   }
 
   @override
-  // ignore: code-metrics
+  // ignore: long-parameter-list, code-metrics
   DbStatusPopulatedWrapper copyWith({
     IAccount? account,
     IStatus? reblog,
@@ -760,6 +760,7 @@ class DbStatusPopulated {
         '}';
   }
 
+  // ignore: long-parameter-list
   DbStatusPopulated copyWith({
     DbStatus? dbStatus,
     DbAccount? dbAccount,

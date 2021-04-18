@@ -155,6 +155,7 @@ class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
       dbChatMessagePopulated.dbChatMessage.wasSentWithIdempotencyKey;
 
   @override
+  // ignore: long-parameter-list
   DbPleromaChatMessagePopulatedWrapper copyWith({
     int? localId,
     String? remoteId,
@@ -220,7 +221,7 @@ class DbChatMessagePopulated {
     required this.dbAccount,
   });
 
-  // ignore: code-metrics
+  // ignore: long-parameter-list, code-metrics
   DbChatMessagePopulated copyWith({
     int? localId,
     String? remoteId,

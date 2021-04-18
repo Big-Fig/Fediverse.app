@@ -744,7 +744,7 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
   String toJsonString() => jsonEncode(_$PleromaMyAccountToJson(this));
 
   @override
-  // ignore: code-metrics
+  // ignore: long-parameter-list, code-metrics
   PleromaMyAccount copyWith({
     String? username,
     String? url,
@@ -1132,7 +1132,7 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
       jsonEncode(_$PleromaMyAccountPleromaPartToJson(this));
 
   @override
-  // ignore: code-metrics
+  // ignore: long-parameter-list, code-metrics
   PleromaMyAccountPleromaPart copyWith({
     String? backgroundImage,
     List<IPleromaTag>? tags,

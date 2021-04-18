@@ -224,6 +224,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   bool get hiddenLocallyOnDevice => false;
 
   @override
+  // ignore: long-parameter-list
   IStatus copyWith({
     IAccount? account,
     IStatus? reblog,

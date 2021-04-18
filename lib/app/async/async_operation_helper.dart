@@ -15,6 +15,8 @@ class AsyncOperationHelper {
     timeoutErrorAlertDialogBuilder,
   ];
 
+  // todo: refactor long-parameter-list
+  // ignore: long-parameter-list
   static Future<AsyncDialogResult<T?>> performAsyncOperation<T>({
     required BuildContext context,
     required AsyncButtonAction<T> asyncCode,
