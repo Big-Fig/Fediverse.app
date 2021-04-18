@@ -75,7 +75,11 @@ void _showEmojiPicker(BuildContext context) {
   var statusBloc = IStatusBloc.of(context, listen: false);
   showEmojiPickerModalPopup(
     context,
-    emojiReactionSelectedCallback: (String emojiName, String emoji) {
+    emojiReactionSelectedCallback: (
+      context,
+      String emojiName,
+      String emoji,
+    ) {
       PleromaAsyncOperationHelper.performPleromaAsyncOperation(
         context: context,
         asyncCode: () => statusBloc.toggleEmojiReaction(emoji: emoji),
