@@ -1,3 +1,4 @@
+import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/status/post/app_bar/post_status_app_bar_post_action.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_widget.dart';
@@ -61,13 +62,20 @@ void goToScheduledEditPostStatusPage(
       builder: (context) => EditPostStatusBloc.provideToContext(
         context,
         postStatusDataCallback: (IPostStatusData postStatusData) async {
-          var success = await scheduledStatusBloc.postScheduledPost(
-            postStatusData.toPostStatusData(),
+          var dialogResult =
+              await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            context: context,
+            asyncCode: () async {
+              await scheduledStatusBloc.postScheduledPost(
+                postStatusData.toPostStatusData(),
+              );
+            },
           );
-          if (success) {
+          if (dialogResult.success) {
             successCallback();
+            Navigator.of(context).pop();
           }
-          return success;
+          return dialogResult.success;
         },
         child: ScheduledEditPostStatusPage(
           onBackPressed: (IPostStatusData postStatusData) async {
