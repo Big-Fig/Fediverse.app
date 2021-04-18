@@ -23,14 +23,12 @@ class PostStatusPostIconActionWidget extends StatelessWidget {
           showProgressDialog: false,
           asyncButtonAction: () async {
             var isScheduled = postStatusBloc.isScheduledAtExist;
-            var success = await postStatusBloc.post();
-            if (success) {
-              showPostStatusPostOverlayNotification(
-                context: context,
-                postStatusBloc: postStatusBloc,
-                isScheduled: isScheduled,
-              );
-            }
+            await postStatusBloc.post();
+            showPostStatusPostOverlayNotification(
+              context: context,
+              postStatusBloc: postStatusBloc,
+              isScheduled: isScheduled,
+            );
           },
           builder: (BuildContext context, onPressed) {
             return FediIconButton(

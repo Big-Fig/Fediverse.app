@@ -32,7 +32,8 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
         );
 
   @override
-  Future<bool> post() async {
+  Future post() async {
+    // todo: refactor
     unawaited(
       pleromaChatBloc.postMessage(
         pleromaChatMessageSendData: calculateSendData(),
@@ -42,8 +43,6 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     );
 
     clear();
-
-    return true;
   }
 
   PleromaChatMessageSendData calculateSendData() {
