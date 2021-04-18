@@ -24,6 +24,8 @@ class StatusListItemMediaWidget extends StatelessWidget {
   ) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     return Container(
+      // todo: refactor
+      // ignore: no-magic-number
       color: fediUiColorTheme.black.withOpacity(0.2),
       child: SizedBox.expand(
         child: IFilesCacheService.of(context).createCachedNetworkImageWidget(

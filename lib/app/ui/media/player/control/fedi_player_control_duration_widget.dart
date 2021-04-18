@@ -15,8 +15,8 @@ class FediPlayerControlDurationWidget extends StatelessWidget {
     var durationExist = duration != null;
     if (durationExist) {
       totalMinutes = duration!.inMinutes +
-          duration.inHours * 60 +
-          duration.inDays * 24 * 60;
+          duration.inHours * Duration.secondsPerMinute +
+          duration.inDays * Duration.hoursPerDay * Duration.secondsPerMinute;
     } else {
       totalMinutes = 0;
     }

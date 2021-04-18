@@ -189,6 +189,8 @@ class _MediaAttachmentDetailsPageState
           Positioned(
             left: 0.0,
             right: 0.0,
+            // todo: refactor
+            // ignore: no-magic-number
             bottom: 12.0,
             child: StreamBuilder<IPleromaMediaAttachment?>(
               stream: selectedMediaAttachmentStream,

@@ -15,6 +15,7 @@ extension PleromaNativeCaptchaImageExtension on IPleromaCaptcha {
     // if url field don't have ','
     if (encoded.contains(",")) {
       var split = encoded.split(",");
+      // ignore: no-magic-number
       assert(split.length == 2, "Invalid encoded url $encoded");
 
       var base64Part = split[1];

@@ -107,6 +107,8 @@ class _AccountHomeTabPageBody extends StatelessWidget {
       ),
       child: FediNestedScrollViewWithNestedScrollableTabsWidget(
         onLongScrollUpTopOverlayWidget: null,
+        // todo: refactor
+        // ignore: no-magic-number
         topSliverScrollOffsetToShowWhiteStatusBar: 100,
         topSliverWidgets: [
           const _AccountHomeTabFediTabMainHeaderBarWidget(),
@@ -242,7 +244,11 @@ class _AccountHomeTabMyAccountWidget extends StatelessWidget {
 void _onStatusesTapCallback(BuildContext context) {
   var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
   scrollControllerBloc.scrollController!.animateTo(
+    // todo: refactor
+    // ignore: no-magic-number
     MediaQuery.of(context).size.height / 2,
+    // todo: refactor
+    // ignore: no-magic-number
     duration: Duration(milliseconds: 500),
     curve: Curves.easeOut,
   );
@@ -449,6 +455,7 @@ class _AccountHomeTabTextIndicatorWidget extends StatelessWidget {
     var accountHomeTabBloc = IAccountHomeTabBloc.of(context);
 
     return Padding(
+      // ignore: no-magic-number
       padding: EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
       child: AccountTabTextTabIndicatorItemWidget(
         accountTabs: accountHomeTabBloc.tabs,
@@ -485,6 +492,8 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
                         const FediSmallHorizontalSpacer(),
                         Icon(
                           FediIcons.chevron_down,
+                          // todo: refactor
+                          // ignore: no-magic-number
                           size: 18.0,
                           color: IFediUiColorTheme.of(context).white,
                         ),
@@ -499,6 +508,8 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
                     offset: 0.0,
                     child: FediIconInCircleBlurredButton(
                       FediIcons.settings,
+                      // todo: refactor
+                      // ignore: no-magic-number
                       iconSize: 15.0,
                       onPressed: () {
                         showAccountHomeTabMenuDialog(context);

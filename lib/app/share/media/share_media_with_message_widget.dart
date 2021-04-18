@@ -16,8 +16,11 @@ class ShareMediaWithMessageWidget extends StatelessWidget {
     return ShareWithMessageWidget(
       footer: footer,
       child: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: mediaQueryData.size.height * 0.2),
+        constraints: BoxConstraints(
+          // todo: refactor
+          // ignore: no-magic-number
+          maxHeight: mediaQueryData.size.height * 0.2,
+        ),
         child: const MediaAttachmentWidget(),
       ),
     );

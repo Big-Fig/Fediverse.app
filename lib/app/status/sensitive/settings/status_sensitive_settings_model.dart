@@ -5,6 +5,7 @@ import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'status_sensitive_settings_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -22,9 +23,12 @@ class StatusSensitiveSettings
   @JsonKey(name: "nsfw_display_delay_duration_seconds_total")
   final int? nsfwDisplayDelayDurationMicrosecondsTotal;
 
-  Duration? get nsfwDisplayDelayDuration => nsfwDisplayDelayDurationMicrosecondsTotal != null ? Duration(
-        microseconds: nsfwDisplayDelayDurationMicrosecondsTotal!,
-      ) : null;
+  Duration? get nsfwDisplayDelayDuration =>
+      nsfwDisplayDelayDurationMicrosecondsTotal != null
+          ? Duration(
+              microseconds: nsfwDisplayDelayDurationMicrosecondsTotal!,
+            )
+          : null;
 
   StatusSensitiveSettings({
     required this.isAlwaysShowSpoiler,

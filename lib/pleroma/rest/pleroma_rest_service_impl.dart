@@ -38,7 +38,6 @@ class PleromaRestService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => connectionService.isConnectedStream;
 
-
   @override
   final IRestService restService;
 
@@ -58,14 +57,16 @@ class PleromaRestService extends DisposableOwner
 
     var statusCode = response.statusCode;
     // todo: refactor pleroma errors handling
-    if (response.statusCode == 429) {
+    if (response.statusCode == PleromaThrottledRestException.httpStatusCode) {
       throw PleromaThrottledRestException(
         statusCode: statusCode,
         body: response.body,
       );
     }
 
-    if (statusCode >= 400 && statusCode < 500) {
+    // ignore: no-magic-number
+    var isFailStatusCode = statusCode >= 400 && statusCode < 500;
+    if (isFailStatusCode) {
       var body = response.body;
       var isInvalidCredentials;
       try {

@@ -58,8 +58,10 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
 
   Widget _buildBubbleStyleBody(BuildContext context) {
     var fediTabIndicatorItemBloc = IFediTabIndicatorItemBloc.of<T>(context);
-    var fontSize = 16.0;
-    var lineHeight = 1.5;
+    // ignore: no-magic-number
+    const fontSize = 16.0;
+    // ignore: no-magic-number
+    const lineHeight = 1.5;
 
     return StreamBuilder<bool>(
       stream: fediTabIndicatorItemBloc.isSelectedStream,
@@ -85,6 +87,7 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
                     ),
             expanded: false,
             enabledBackgroundColor:
+            // ignore: no-magic-number
                 IFediUiColorTheme.of(context).primary.withOpacity(0.8),
           );
         } else {

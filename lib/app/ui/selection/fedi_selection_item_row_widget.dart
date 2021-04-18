@@ -66,6 +66,8 @@ class FediSelectionItemRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // todo: refactor
+      // ignore: no-magic-number
       height: 24.0 + 16.0 + 16.0,
       child: Padding(
         padding: FediPadding.horizontalBigPadding,
@@ -104,6 +106,7 @@ class FediSelectionItemIconWidget extends StatelessWidget {
       child: Icon(
         FediIcons.chevron_right,
         color: IFediUiColorTheme.of(context).darkGrey,
+        // ignore: no-magic-number
         size: 14.0,
       ),
     );

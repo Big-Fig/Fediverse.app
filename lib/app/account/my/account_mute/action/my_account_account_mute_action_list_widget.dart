@@ -12,6 +12,8 @@ class MyAccountAccountMuteActionListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // todo: refactor
+      // ignore: no-magic-number
       height: 48,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

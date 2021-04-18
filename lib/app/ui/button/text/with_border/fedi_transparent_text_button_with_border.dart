@@ -42,12 +42,16 @@ class FediTransparentTextButtonWithBorder extends StatelessWidget {
   Widget build(BuildContext context) {
     var textStyle = this.textStyle ??
         IFediUiTextTheme.of(context).mediumShortBoldMediumGrey;
+    // todo: copy-pasted code
+    // ignore: no-magic-number
     var calculatedHeight = height + borderWidth * 2;
+    // ignore: no-magic-number
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
     var button = InkWell(
       onTap: onPressed,
       child: ConstrainedBox(
         constraints: BoxConstraints(
+          // ignore: no-magic-number
           minWidth: limitMinWidth == true ? 120.0 : 0.0,
         ),
         child: Container(

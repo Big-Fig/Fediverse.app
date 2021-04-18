@@ -21,8 +21,10 @@ class FediTabBubbleStyleIndicator extends Decoration {
   final TabBarIndicatorSize tabBarIndicatorSize;
 
   const FediTabBubbleStyleIndicator({
+    // ignore: no-magic-number
     this.indicatorHeight = 20.0,
     required this.indicatorColor,
+    // ignore: no-magic-number
     this.indicatorRadius = 100.0,
     this.tabBarIndicatorSize = TabBarIndicatorSize.label,
     this.padding = FediPadding.horizontalSmallPadding,
@@ -101,6 +103,7 @@ class _BubblePainter extends BoxPainter {
     assert(configuration.size != null);
     final Rect rect = Offset(
           offset.dx,
+      // ignore: no-magic-number
           (configuration.size!.height / 2) - indicatorHeight / 2,
         ) &
         Size(configuration.size!.width, indicatorHeight);

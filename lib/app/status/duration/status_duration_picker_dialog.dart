@@ -11,6 +11,7 @@ Future<Duration?> showStatusDurationPickerDialog({
   Duration? oldValue,
   String? pickerTitle,
 }) async {
+  // ignore: no-magic-number
   var durationForSelection = Duration(minutes: 5);
   var minimumExpireDuration =
       IPostStatusBloc.minimumExpireDuration + durationForSelection;

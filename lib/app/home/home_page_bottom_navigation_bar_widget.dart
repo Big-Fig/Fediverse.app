@@ -35,6 +35,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
     var homeBloc = IHomeBloc.of(context, listen: false);
     var tabs = homeBloc.tabs;
 
+    // ignore: no-magic-number
     var middleIndex = tabs.length ~/ 2;
 
     var tabsWithPlusButton = [
@@ -92,6 +93,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
         isSelected ? fediUiColorTheme.primary : fediUiColorTheme.darkGrey;
 
     const insets = FediPadding.allBigPadding;
+    // ignore: no-magic-number
     var additionalOffset = 2.0;
     var badgeOffset = additionalOffset + FediSizes.smallPadding;
     switch (tab) {

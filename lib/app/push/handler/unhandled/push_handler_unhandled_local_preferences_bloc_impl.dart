@@ -16,6 +16,7 @@ class PushHandlerUnhandledLocalPreferencesBloc
   ) : super(
           preferencesService: preferencesService,
           key: "push.unhandled",
+          // ignore: no-magic-number
           schemaVersion: 2,
           jsonConverter: (json) => PushHandlerUnhandledList.fromJson(json),
         );

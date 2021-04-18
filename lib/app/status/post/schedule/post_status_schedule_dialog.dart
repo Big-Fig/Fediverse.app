@@ -12,6 +12,7 @@ void showPostStatusScheduleDialog({
   required BuildContext context,
   required IPostStatusBloc postStatusBloc,
 }) async {
+  // ignore: no-magic-number
   var approximateDurationForSelection = Duration(minutes: 2);
   var now = DateTime.now();
 
@@ -29,6 +30,7 @@ void showPostStatusScheduleDialog({
     showTitleActions: true,
     minDateTime: now,
     maxDateTime: now.add(
+      // ignore: no-magic-number
       Duration(days: 365),
     ),
     currentDateTime: initialDate,

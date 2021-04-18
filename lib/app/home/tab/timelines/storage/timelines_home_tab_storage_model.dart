@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'timelines_home_tab_storage_model.g.dart';
 
 enum TimelinesHomeTabStorageUiState { edit, view }

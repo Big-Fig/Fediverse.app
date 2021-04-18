@@ -386,8 +386,12 @@ class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             onlyEnd: true,
+            // todo: refactor
+            // ignore: no-magic-number
             fadingPercent: 0.2,
             child: Container(
+              // todo: refactor
+              // ignore: no-magic-number
               height: 200,
               child: htmlTextWidget,
             ),
@@ -455,6 +459,7 @@ class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
                 fontSize: textStyle.fontSize,
                 // todo: 1000 is hack, actually it should be null, but don't
                 //  work as expected
+                // ignore: no-magic-number
                 textMaxLines: 1000,
                 textOverflow: TextOverflow.ellipsis,
                 linkColor: fediUiColorTheme.primary,

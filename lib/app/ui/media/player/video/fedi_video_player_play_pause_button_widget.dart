@@ -93,6 +93,7 @@ class _FediVideoPlayerPlayPauseControlsWidget extends StatelessWidget {
           height: size,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
+            // ignore: no-magic-number
             color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.6),
           ),
           child: StreamBuilder<bool>(

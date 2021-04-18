@@ -132,6 +132,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           isPossibleToDeleteOriginal: true,
         ),
         customFieldsGroupBloc = OneTypeFormGroupBloc<ILinkPairFormGroupBloc>(
+          // ignore: no-magic-number
           maximumFieldsCount: customFieldLimits?.maxFields ?? 20,
           newEmptyFieldCreator: () => LinkPairFormGroupBloc(
             value: null,

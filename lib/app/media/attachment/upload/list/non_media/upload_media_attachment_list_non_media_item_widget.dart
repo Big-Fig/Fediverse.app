@@ -165,13 +165,19 @@ class _UploadMediaAttachmentListNonMediaItemLoadingWidget
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
+      // todo: refactor
+      // ignore: no-magic-number
       borderRadius: BorderRadius.circular(24.0),
       child: Container(
+        // ignore: no-magic-number
         width: 24,
+        // ignore: no-magic-number
         height: 24,
+        // ignore: no-magic-number
         color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.8),
         child: FediCircularProgressIndicator(
           color: IFediUiColorTheme.of(context).white,
+          // ignore: no-magic-number
           size: 20.0,
         ),
       ),
@@ -194,14 +200,20 @@ class _UploadMediaAttachmentListNonMediaItemErrorWidget
         mediaItemBloc.startUpload();
       },
       child: ClipRRect(
+        // todo: refactor
+        // ignore: no-magic-number
         borderRadius: BorderRadius.circular(24.0),
         child: Container(
+          // ignore: no-magic-number
           width: 24,
+          // ignore: no-magic-number
           height: 24,
+          // ignore: no-magic-number
           color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
           child: Icon(
             FediIcons.failed,
             color: IFediUiColorTheme.of(context).white,
+            // ignore: no-magic-number
             size: 14.0,
           ),
         ),

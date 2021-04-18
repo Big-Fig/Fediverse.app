@@ -100,6 +100,7 @@ class _NotificationListItemBodyWidget extends StatelessWidget {
           var dismissed = notificationState?.dismissed ?? false;
           return Slidable(
             actionPane: const SlidableDrawerActionPane(),
+            // ignore: no-magic-number
             actionExtentRatio: 0.25,
             secondaryActions: <Widget>[
               if (unread == true)
@@ -167,6 +168,7 @@ class _NotificationListItemBodySlidableChildWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var unread = snapshot.data ?? true;
         return Opacity(
+          // ignore: no-magic-number
           opacity: unread ? 1.0 : 0.6,
           child: const _NotificationListItemBodySlidableChildContentWidget(),
         );
@@ -383,10 +385,15 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         emojis: emojiText.emojis,
       ),
       settings: HtmlTextSettings(
+        // ignore: no-magic-number
         textMaxLines: 3,
         textOverflow: TextOverflow.ellipsis,
         color: fediUiColorTheme.mediumGrey,
+        // todo: refactor
+        // ignore: no-magic-number
         fontSize: 14,
+        // todo: refactor
+        // ignore: no-magic-number
         lineHeight: 1.5,
         fontWeight: FontWeight.w300,
         shrinkWrap: true,

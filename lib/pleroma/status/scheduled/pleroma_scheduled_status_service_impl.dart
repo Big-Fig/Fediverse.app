@@ -58,7 +58,7 @@ class PleromaScheduledStatusService extends DisposableOwner
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return httpResponse.statusCode == 200;
+    return httpResponse.statusCode == RestResponse.successResponseStatusCode;
   }
 
   @override

@@ -41,6 +41,8 @@ class AccountFieldListItemWidget extends StatelessWidget {
             color: brightness == Brightness.dark
                 ? IFediUiColorTheme.of(context).mediumGrey
                 : IFediUiColorTheme.of(context).white,
+            // todo: refactor
+            // ignore: no-magic-number
             size: 16.0,
           ),
           const FediMediumHorizontalSpacer(),

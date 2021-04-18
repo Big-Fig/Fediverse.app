@@ -78,6 +78,7 @@ class PleromaChatMessageCachedPaginationBloc
 
   static Widget provideToContext(
     BuildContext context, {
+    // ignore: no-magic-number
     int itemsCountPerPage = 20,
     int? maximumCachedPagesCount,
     required Widget child,

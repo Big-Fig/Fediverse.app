@@ -114,25 +114,35 @@ class _PostMessageMediaAttachmentsWidget extends StatelessWidget {
           height -= mediaQueryData.padding.bottom;
           height -= kToolbarHeight;
           // input bar
+          // todo: refactor
+          // ignore: no-magic-number
           height -= 70;
+          // ignore: no-magic-number
           height -= 90;
           if (isAnySelectedActionVisible) {
+            // ignore: no-magic-number
             height -= 120;
           }
           if (isListMediaVisible) {
+            // ignore: no-magic-number
             height -= 100;
           }
           if (isListNonMediaVisible) {
+            // ignore: no-magic-number
             height -= 50;
           }
           if (isSingleMediaVisible) {
+            // ignore: no-magic-number
             height -= 230;
           }
 
           // i am not sure, but overflow ~ 100 px so I added it here
+          // ignore: no-magic-number
           height -= 100;
 
+          // ignore: no-magic-number
           if (height < 100) {
+            // ignore: no-magic-number
             height = 100;
           }
 

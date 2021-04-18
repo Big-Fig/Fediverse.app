@@ -76,12 +76,17 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                     : BorderRadius.zero,
               ),
               constraints: BoxConstraints(
+                // todo: refactor
+                // ignore: no-magic-number
                 maxWidth: deviceWidth * 0.8,
               ),
               child: Padding(
                 padding: isHaveTextContent
                     ? EdgeInsets.symmetric(
+                        // todo: refactor
+                        // ignore: no-magic-number
                         vertical: 12,
+                        // ignore: no-magic-number
                         horizontal: 16,
                       )
                     : EdgeInsets.zero,
@@ -192,7 +197,11 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                       linkColor: isStatusFromMe
                           ? fediUiColorTheme.white
                           : fediUiColorTheme.primary,
+                      // todo: refactor
+                      // ignore: no-magic-number
                       fontSize: 16.0,
+                      // todo: refactor
+                      // ignore: no-magic-number
                       lineHeight: 1.5,
                       drawNewLines: false,
                       textMaxLines: 1,

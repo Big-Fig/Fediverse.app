@@ -171,6 +171,8 @@ class _JoinAuthInstanceHostTextFieldWidget extends StatelessWidget {
           focusNode: null,
           displayUnderlineBorder: true,
           customBorderColor:
+              // todo: refactor
+              // ignore: no-magic-number
               IFediUiColorTheme.of(context).white.withOpacity(0.8),
           textStyle: IFediUiTextTheme.of(context).subHeaderTallWhite,
           highlightMentions: false,
@@ -179,6 +181,8 @@ class _JoinAuthInstanceHostTextFieldWidget extends StatelessWidget {
         Text(
           S.of(context).app_auth_instance_join_field_host_helper,
           style: IFediUiTextTheme.of(context).mediumShortWhite.copyWith(
+                // todo: refactor
+                // ignore: no-magic-number
                 color: IFediUiColorTheme.of(context).white.withOpacity(0.5),
               ),
         ),
@@ -197,8 +201,12 @@ class _JoinAuthInstanceLogoWidget extends StatelessWidget {
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
       double width;
       if (isKeyboardVisible == true) {
+        // todo: refactor
+        // ignore: no-magic-number
         width = 75.0;
       } else {
+        // todo: refactor
+        // ignore: no-magic-number
         width = 175.0;
       }
 

@@ -22,6 +22,7 @@ class EditMyAccountNoteFieldWidget extends StatelessWidget {
         update: (context, value, _) => value.noteField,
         child: StringValueFormFieldRowWidget(
           autocorrect: true,
+          // ignore: no-magic-number
           maxLines: 3,
           label: S.of(context).app_account_my_edit_field_note_label,
           hint: S.of(context).app_account_my_edit_field_note_hint,

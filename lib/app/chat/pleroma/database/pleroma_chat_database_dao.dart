@@ -96,7 +96,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     var update = "UPDATE db_chats "
         "SET unread = unread + 1,"
-        " updated_at = ${updatedAt.millisecondsSinceEpoch ~/ 1000} "
+        " updated_at = ${updatedAt.millisecondsSinceEpoch ~/ Duration.millisecondsPerSecond} "
         "WHERE remote_id = '$chatRemoteId'";
     var query = db.customUpdate(update, updates: {
       dbChats,
@@ -179,7 +179,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
   void addFiltersToQuery({
     required SimpleSelectStatement<$DbChatsTable, DbChat> query,
     required PleromaChatRepositoryFilters? filters,
-  // ignore: no-empty-block
+    // ignore: no-empty-block
   }) {
     // nothing
   }

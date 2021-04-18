@@ -13,6 +13,7 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
   static IPostStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPostStatusBloc>(context, listen: listen);
 
+  // ignore: no-magic-number
   static final Duration requiredDurationToScheduleDateTime = Duration(minutes: 5);
   static final Duration minimumExpireDuration = Duration(hours: 1);
 

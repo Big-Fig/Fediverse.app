@@ -95,6 +95,6 @@ class PleromaPushService extends DisposableOwner
       ),
     );
 
-    return httpResponse.statusCode == 200;
+    return httpResponse.statusCode == RestResponse.successResponseStatusCode;
   }
 }

@@ -19,7 +19,9 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
   }) : cacheManager = CacheManager(
           Config(
             key,
+            // ignore: no-magic-number
             stalePeriod: stalePeriod ?? Duration(days: 30),
+            // ignore: no-magic-number
             maxNrOfCacheObjects: maxNrOfCacheObjects ?? 100,
           ),
         ) {

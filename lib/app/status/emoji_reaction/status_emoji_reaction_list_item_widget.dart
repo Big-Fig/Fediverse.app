@@ -83,11 +83,17 @@ class _StatusEmojiReactionListItemContentWidget extends StatelessWidget {
         ? IFediUiColorTheme.of(context).primary
         : IFediUiColorTheme.of(context).lightGrey;
     return Container(
+      // todo: refactor
+      // ignore: no-magic-number
       height: 36.0,
       decoration: BoxDecoration(
+        // todo: refactor
+        // ignore: no-magic-number
         borderRadius: BorderRadius.circular(40.0),
         border: Border.all(
           color: color,
+          // todo: refactor
+          // ignore: no-magic-number
           width: 1.5,
         ),
       ),
@@ -101,6 +107,8 @@ class _StatusEmojiReactionListItemContentWidget extends StatelessWidget {
           children: <Widget>[
             Text(
               emojiReaction.name,
+              // todo: refactor
+              // ignore: no-magic-number
               style: TextStyle(fontSize: 16, height: 14 / 16),
             ),
             const FediSmallHorizontalSpacer(),

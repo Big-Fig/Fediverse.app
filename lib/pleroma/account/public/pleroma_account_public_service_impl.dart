@@ -9,6 +9,7 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 
@@ -54,7 +55,7 @@ class PleromaAccountPublicService extends DisposableOwner
       ),
     );
 
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       _logger.finest(() => "registerAccount ${httpResponse.body}");
       return PleromaOAuthToken.fromJson(
         jsonDecode(

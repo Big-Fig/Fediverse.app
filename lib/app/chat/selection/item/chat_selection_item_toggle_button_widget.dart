@@ -31,6 +31,8 @@ class ChatSelectionItemToggleButtonWidget extends StatelessWidget {
                         : FediIcons.circle,
                   ),
                   padding: EdgeInsets.zero,
+                  // todo: refactor
+                  // ignore: no-magic-number
                   iconSize: 24.0,
                   onPressed: () {
                     if (isSelectionPossible) {

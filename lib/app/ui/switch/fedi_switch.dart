@@ -6,6 +6,9 @@ import 'package:fedi/ui/switch/custom_switch_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
+// todo: refactor
+// ignore_for_file: no-magic-number
+
 class FediSwitch extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;

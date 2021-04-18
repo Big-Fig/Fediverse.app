@@ -7,6 +7,7 @@ import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
@@ -280,7 +281,7 @@ class PleromaAuthAccountService extends PleromaAccountService
       ),
     );
 
-    return httpResponse.statusCode == 200;
+    return httpResponse.statusCode == RestResponse.successResponseStatusCode;
   }
 
   @override
@@ -299,7 +300,7 @@ class PleromaAuthAccountService extends PleromaAccountService
       ),
     );
 
-    if (httpResponse.statusCode != 200) {
+    if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
       throw PleromaAccountException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
@@ -323,7 +324,7 @@ class PleromaAuthAccountService extends PleromaAccountService
       ),
     );
 
-    if (httpResponse.statusCode != 200) {
+    if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
       throw PleromaAccountException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,

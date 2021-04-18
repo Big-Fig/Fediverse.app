@@ -30,6 +30,8 @@ class PleromaRestException implements Exception {
 }
 
 class PleromaThrottledRestException extends PleromaRestException {
+  static const int httpStatusCode = 429;
+
   PleromaThrottledRestException({
     required int statusCode,
     required String body,

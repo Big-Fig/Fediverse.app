@@ -158,6 +158,7 @@ class _TimelinesHomeTabStorageListAddTimelineItemWidget
                   children: [
                     Icon(
                       FediIcons.add,
+                      // ignore: no-magic-number
                       size: 20.0,
                       color: IFediUiColorTheme.of(context).primary,
                     ),
@@ -258,6 +259,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
                 padding: FediPadding.allSmallPadding,
                 child: Icon(
                   FediIcons.sort,
+                  // ignore: no-magic-number
                   size: 16.0,
                   color: IFediUiColorTheme.of(context).lightGrey,
                 ),
@@ -384,7 +386,9 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
             ),
           ),
         if (!isPossibleToDelete)
-          SizedBox(
+          const SizedBox(
+            // todo: refactor
+            // ignore: no-magic-number
             width: 48,
           ),
       ],

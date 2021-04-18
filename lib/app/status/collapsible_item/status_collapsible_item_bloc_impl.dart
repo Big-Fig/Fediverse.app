@@ -25,6 +25,7 @@ class StatusCollapsibleItemBloc extends DisposableOwner
     required this.statusBloc,
     required this.collapsibleBloc,
     bool initialCollapsed = true,
+    // ignore: no-magic-number
     this.minimumCharactersLimitToCollapse = 400,
   }) : _isCollapsedSubject = BehaviorSubject.seeded(initialCollapsed) {
     addDisposable(subject: _isCollapsedSubject);

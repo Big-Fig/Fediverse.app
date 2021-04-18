@@ -65,10 +65,12 @@ class _AccountListAvatarSingleAccountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
+      // ignore: no-magic-number
       borderRadius: BorderRadius.circular(baseAvatarSize / 2),
       child: ProxyProvider<IAccount, String?>(
         update: (context, account, _) => account.avatar,
         child: AccountAvatarUrlWidget(
+          // ignore: no-magic-number
           progressSize: baseAvatarSize / 2,
           imageSize: baseAvatarSize,
         ),
@@ -89,14 +91,17 @@ class _AccountListAvatarMultiAccountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accounts = Provider.of<List<IAccount>>(context);
     switch (accounts.length) {
+      // ignore: no-magic-number
       case 2:
         return _AccountListAvatarMultiAccountTwoWidget(
           baseAvatarSize: baseAvatarSize,
         );
+      // ignore: no-magic-number
       case 3:
         return _AccountListAvatarMultiAccountThreeWidget(
           baseAvatarSize: baseAvatarSize,
         );
+      // ignore: no-magic-number
       case 4:
         return _AccountListAvatarMultiAccountFourWidget(
           baseAvatarSize: baseAvatarSize,
@@ -185,6 +190,7 @@ class _AccountListAvatarMultiAccountThreeWidget extends StatelessWidget {
         Align(
           alignment: Alignment.bottomCenter,
           child: Provider<IAccount>.value(
+            // ignore: no-magic-number
             value: accounts[2],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -234,6 +240,7 @@ class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
         Align(
           alignment: Alignment.bottomLeft,
           child: Provider<IAccount>.value(
+            // ignore: no-magic-number
             value: accounts[2],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -244,6 +251,7 @@ class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
         Align(
           alignment: Alignment.bottomRight,
           child: Provider<IAccount>.value(
+            // ignore: no-magic-number
             value: accounts[3],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -293,6 +301,7 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
         Align(
           alignment: Alignment.bottomLeft,
           child: Provider<IAccount>.value(
+            // ignore: no-magic-number
             value: accounts[2],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -303,6 +312,7 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
         Align(
           alignment: Alignment.bottomRight,
           child: Provider<IAccount>.value(
+            // ignore: no-magic-number
             value: accounts[3],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -313,6 +323,7 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
         Align(
           alignment: Alignment.center,
           child: Provider<IAccount>.value(
+            // ignore: no-magic-number
             value: accounts[4],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -342,19 +353,25 @@ class _AccountListAvatarMultiAccountImageWidget extends StatelessWidget {
       height: baseAvatarSize * sizeMultiplier,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
+          // todo: refactor
+          // ignore: no-magic-number
           Radius.circular(baseAvatarSize * sizeMultiplier / 2),
         ),
         border: Border.all(
+          // ignore: no-magic-number
           color: IFediUiColorTheme.of(context).white.withOpacity(0.5),
+          // ignore: no-magic-number
           width: 2.0,
         ),
       ),
       child: ClipRRect(
         borderRadius:
+            // ignore: no-magic-number
             BorderRadius.circular(baseAvatarSize / 2 * sizeMultiplier),
         child: ProxyProvider<IAccount, String?>(
           update: (context, account, _) => account.avatar,
           child: AccountAvatarUrlWidget(
+            // ignore: no-magic-number
             progressSize: baseAvatarSize / 2 * sizeMultiplier,
             imageSize: baseAvatarSize * sizeMultiplier,
           ),

@@ -15,6 +15,7 @@ class FediIconButton extends StatelessWidget {
     required this.onPressed,
     this.color,
     this.padding = FediPadding.allSmallPadding,
+    // ignore: no-magic-number
     this.iconSize = 24.0,
     this.tooltip,
   });

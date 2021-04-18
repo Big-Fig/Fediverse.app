@@ -7,6 +7,7 @@ import 'package:fedi/pleroma/search/pleroma_search_exception.dart';
 import 'package:fedi/pleroma/search/pleroma_search_model.dart';
 import 'package:fedi/pleroma/search/pleroma_search_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 
 class PleromaSearchService extends DisposableOwner
     implements IPleromaSearchService {
@@ -42,6 +43,7 @@ class PleromaSearchService extends DisposableOwner
     IPleromaPaginationRequest? pagination,
   }) async {
     if (pagination?.limit != null) {
+      // ignore: no-magic-number
       assert(pagination!.limit! <= 40, "Server-side limit");
     }
 
@@ -85,7 +87,7 @@ class PleromaSearchService extends DisposableOwner
       ),
     );
 
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaSearchResult.fromJsonString(httpResponse.body);
     } else {
       throw PleromaSearchException(

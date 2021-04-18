@@ -167,6 +167,8 @@ class _StatusListItemTimelineOriginalBodyInnerBodyWidget
     if (statusListItemTimelineBloc.isReplyAndNotDisplayReplyOrFirstReply) {
       return Padding(
         padding: EdgeInsets.fromLTRB(
+          // todo: refactor
+          // ignore: no-magic-number
           68.0 - FediSizes.bigPadding,
           FediSizes.smallPadding,
           0.0,

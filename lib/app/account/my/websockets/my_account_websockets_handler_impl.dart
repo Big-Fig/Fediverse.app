@@ -47,6 +47,7 @@ class MyAccountWebSocketsHandler extends WebSocketsChannelHandler {
     // other websockets handle can handle same Status and override this flag
     // we should be sure that handler with isHomeTimeline executes after all
     // other handlers
+    // ignore: no-magic-number
     await Future.delayed(Duration(milliseconds: 500));
     return super.handleEvent(event);
   }

@@ -8,6 +8,7 @@ class FediBackgroundBlur extends StatelessWidget {
 
   FediBackgroundBlur({
     required this.child,
+    // ignore: no-magic-number
     this.sigma = 3.0,
   });
 

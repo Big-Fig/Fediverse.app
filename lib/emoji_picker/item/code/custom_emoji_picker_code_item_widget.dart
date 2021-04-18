@@ -12,6 +12,8 @@ class CustomEmojiPickerCodeItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
         item.code,
+        // todo: refactor
+        // ignore: no-magic-number
         style: TextStyle(fontSize: 24),
       );
 }

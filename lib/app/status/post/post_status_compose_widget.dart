@@ -114,6 +114,8 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
         children: [
           Flexible(
             child: Container(
+              // todo: refactor
+              // ignore: no-magic-number
               height: 35,
               child: Padding(
                 padding: FediPadding.horizontalSmallPadding,

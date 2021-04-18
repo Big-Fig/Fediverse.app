@@ -5,6 +5,7 @@ import 'package:fedi/pleroma/captcha/pleroma_captcha_model.dart';
 import 'package:fedi/pleroma/captcha/pleroma_captcha_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -34,7 +35,7 @@ class PleromaCaptchaService extends DisposableOwner
   });
 
   IPleromaCaptcha parseCaptchaResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
+    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return PleromaCaptcha.fromJsonString(httpResponse.body);
     } else {
       throw PleromaCaptchaException(

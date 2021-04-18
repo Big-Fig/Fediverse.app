@@ -37,7 +37,10 @@ class MyAccountDetailsBodyWidget extends StatelessWidget {
 void _onStatusesTapCallback(BuildContext context) {
   var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
   scrollControllerBloc.scrollController!.animateTo(
+    // ignore: no-magic-number
     MediaQuery.of(context).size.height / 2,
+    // todo: refactor
+    // ignore: no-magic-number
     duration: Duration(milliseconds: 500),
     curve: Curves.easeOut,
   );

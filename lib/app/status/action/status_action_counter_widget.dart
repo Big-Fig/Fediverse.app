@@ -22,9 +22,13 @@ class StatusActionCounterWidget extends StatelessWidget {
       },
       child: Padding(
         padding: const EdgeInsets.only(
+          // todo: refactor
+          // ignore: no-magic-number
           right: 4.0,
         ),
         child: ConstrainedBox(
+          // todo: refactor
+          // ignore: no-magic-number
           constraints: BoxConstraints(minWidth: 10),
           child: Text(
             value == 0 ? "" : value.toString(),

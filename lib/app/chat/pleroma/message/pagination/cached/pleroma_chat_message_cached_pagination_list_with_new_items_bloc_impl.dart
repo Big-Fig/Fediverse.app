@@ -72,6 +72,8 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
       unawaited(
         Future.delayed(
           Duration(
+            // todo: refactor
+            // ignore: no-magic-number
             milliseconds: 100,
           ),
           () {

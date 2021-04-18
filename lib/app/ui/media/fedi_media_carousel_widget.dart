@@ -32,6 +32,7 @@ class FediMediaCarouselWidget extends StatelessWidget {
                   .toList(),
               options: CarouselOptions(
                 initialPage: fediMediaCarouselBloc.currentIndex!,
+                // ignore: no-magic-number
                 viewportFraction: 0.9,
                 enableInfiniteScroll: false,
                 onPageChanged: (index, reason) {
@@ -42,6 +43,7 @@ class FediMediaCarouselWidget extends StatelessWidget {
             Positioned(
               left: 0.0,
               right: 0.0,
+              // ignore: no-magic-number
               bottom: 12.0,
               child: Row(
                 mainAxisSize: MainAxisSize.max,

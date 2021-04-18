@@ -4,6 +4,7 @@ import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'custom_emoji_picker_code_item_model.g.dart';
 
 // -32 is hack for hive 0.x backward ids compatibility

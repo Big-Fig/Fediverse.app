@@ -70,9 +70,11 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
   Decoration buildFediTabIndicator(BuildContext context) {
     switch (style) {
       case FediTabStyle.bubble:
-        var borderHeight = 2.0;
+        // ignore: no-magic-number
+        const borderHeight = 2.0;
         return FediTabBubbleStyleIndicator(
           indicatorHeight: FediSizes.tabIndicatorIconHeight - borderHeight,
+          // ignore: no-magic-number
           indicatorRadius: (FediSizes.iconButtonHeight + borderHeight) / 2,
           // indicatorHeight: FediSizes.tabIndicatorIconHeight,
           indicatorColor: IFediUiColorTheme.of(context).primary,

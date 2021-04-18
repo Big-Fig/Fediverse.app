@@ -12,6 +12,7 @@ abstract class ToastSettingsLocalPreferencesBloc
   ) : super(
           preferencesService: preferencesService,
           key: key,
+          // ignore: no-magic-number
           schemaVersion: 3,
           jsonConverter: (json) => ToastSettings.fromJson(json),
         );

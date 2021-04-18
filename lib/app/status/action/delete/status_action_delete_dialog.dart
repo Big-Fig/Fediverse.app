@@ -70,6 +70,8 @@ DialogAction buildDeleteAndSaveToDrafts(
 
         // delay to be sure pop already finished, it looks like bug in flutter
         Future.delayed(
+          // todo: refactor
+          // ignore: no-magic-number
           Duration(milliseconds: 100),
           () {
             goToDraftStatusListPage(context);
@@ -107,6 +109,8 @@ DialogAction buildDeleteAndStartNewAction(
 
         // delay to be sure pop already finished, it looks like bug in flutter
         Future.delayed(
+          // todo: refactor
+          // ignore: no-magic-number
           Duration(milliseconds: 100),
           () {
             goToNewPostStatusPage(

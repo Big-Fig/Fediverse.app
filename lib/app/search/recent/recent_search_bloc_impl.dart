@@ -23,6 +23,7 @@ class RecentSearchBloc extends DisposableOwner implements IRecentSearchBloc {
   }
 
   RecentSearchBloc({
+    // ignore: no-magic-number
     this.recentCountLimit = 20,
     required this.searchInputBloc,
     required this.recentSearchLocalPreferenceBloc,

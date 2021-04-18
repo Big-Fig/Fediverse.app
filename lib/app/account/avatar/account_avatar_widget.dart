@@ -11,7 +11,9 @@ class AccountAvatarWidget extends StatelessWidget {
   final double progressSize;
 
   const AccountAvatarWidget({
+    // ignore: no-magic-number
     this.imageSize = 80.0,
+    // ignore: no-magic-number
     this.progressSize = 30.0,
   });
 
@@ -66,6 +68,7 @@ class AccountAvatarUrlWidget extends StatelessWidget {
         child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
           imageBuilder: (context, imageProvider) {
             return ClipRRect(
+              // ignore: no-magic-number
               borderRadius: BorderRadius.circular(imageSize / 2),
               child: Image(
                 width: imageSize,

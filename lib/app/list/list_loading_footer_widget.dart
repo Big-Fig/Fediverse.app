@@ -42,6 +42,8 @@ Widget _builder(BuildContext context, LoadStatus? mode) {
   }
 
   return Container(
+    // todo: refactor
+    // ignore: no-magic-number
     height: 55.0,
     child: Center(child: body),
   );

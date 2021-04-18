@@ -23,6 +23,9 @@ typedef DateCancelledCallback = void Function();
 typedef DateDeletedCallback = void Function();
 typedef StringAtIndexCallBack = String? Function(int index);
 
+// todo: refactor
+// ignore_for_file: no-magic-number
+
 class FediDatePicker {
   ///
   /// Display date picker bottom sheet.
@@ -344,7 +347,6 @@ class _DatePickerState extends State<FediDatePickerComponent> {
     }
     return Container(child: itemView);
   }
-
 
   // todo: refactor long-parameter-list
   // ignore: long-parameter-list

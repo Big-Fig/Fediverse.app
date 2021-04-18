@@ -80,6 +80,8 @@ class _UploadMediaAttachmentListMediaItemWidgetState
                   return previewWidget;
                 } else {
                   return Opacity(
+                    // todo: refactor
+                    // ignore: no-magic-number
                     opacity: 0.7,
                     child: previewWidget,
                   );
@@ -221,12 +223,18 @@ class _UploadMediaAttachmentListMediaItemLoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
+      // todo: refactor
+      // ignore: no-magic-number
       borderRadius: BorderRadius.circular(24.0),
       child: Container(
+        // ignore: no-magic-number
         width: 24,
+        // ignore: no-magic-number
         height: 24,
+        // ignore: no-magic-number
         color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.8),
         child: FediCircularProgressIndicator(
+          // ignore: no-magic-number
           size: 20,
           color: IFediUiColorTheme.of(context).white,
         ),
@@ -253,13 +261,19 @@ class _UploadMediaAttachmentListMediaItemErrorButtonWidget
         uploadMediaAttachmentBloc.startUpload();
       },
       child: ClipRRect(
+        // todo: refactor
+        // ignore: no-magic-number
         borderRadius: BorderRadius.circular(24.0),
         child: Container(
+          // ignore: no-magic-number
           width: 24,
+          // ignore: no-magic-number
           height: 24,
+          // ignore: no-magic-number
           color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
           child: Icon(
             FediIcons.failed,
+            // ignore: no-magic-number
             size: 14,
             color: fediUiColorTheme.white,
           ),

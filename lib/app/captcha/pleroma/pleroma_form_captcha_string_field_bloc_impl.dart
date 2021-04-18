@@ -11,7 +11,8 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-final checkCaptchaExpiredDuration = Duration(seconds: 5);
+// ignore: no-magic-number
+const checkCaptchaExpiredDuration = Duration(seconds: 5);
 
 final _logger = Logger("pleroma_form_captcha_string_field_bloc_impl.dart");
 

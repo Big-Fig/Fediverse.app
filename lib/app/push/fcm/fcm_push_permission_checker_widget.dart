@@ -32,40 +32,54 @@ class _FcmPushPermissionCheckerWidgetState
     var fcmPushPermissionCheckerBloc =
         IFcmPushPermissionCheckerBloc.of(context, listen: false);
 
-    var isNeedCheckPermission = fcmPushPermissionCheckerBloc.isNeedCheckPermission;
+    var isNeedCheckPermission =
+        fcmPushPermissionCheckerBloc.isNeedCheckPermission;
     _logger.finest(() => "isNeedCheckPermission $isNeedCheckPermission");
 
     if (isNeedCheckPermission) {
-      Future.delayed(Duration(milliseconds: 100), () async {
-        late FediBaseAlertDialog askFcmPushPermissionDialog;
-        askFcmPushPermissionDialog = createAskFcmPushPermissionDialog(
-          context: context,
-          yesAction: (context) async {
-            await askFcmPushPermissionDialog.hide(context);
-            var success = await fcmPushPermissionCheckerBloc.checkAndSubscribe();
-            if (!success) {
+      // todo: refactor
+      // ignore: no-magic-number
+      Future.delayed(
+        // todo: refactor
+        // ignore: no-magic-number
+        Duration(milliseconds: 100),
+        () async {
+          late FediBaseAlertDialog askFcmPushPermissionDialog;
+          askFcmPushPermissionDialog = createAskFcmPushPermissionDialog(
+            context: context,
+            yesAction: (context) async {
+              await askFcmPushPermissionDialog.hide(context);
+              var success =
+                  await fcmPushPermissionCheckerBloc.checkAndSubscribe();
+              if (!success) {
+                showDeclinedDialog(context);
+              }
+            },
+            noAction: (context) {
+              askFcmPushPermissionDialog.hide(context);
+              fcmPushPermissionCheckerBloc.onCheckDismissed();
               showDeclinedDialog(context);
-            }
-          },
-          noAction: (context) {
-            askFcmPushPermissionDialog.hide(context);
-            fcmPushPermissionCheckerBloc.onCheckDismissed();
-            showDeclinedDialog(context);
-          },
-        );
+            },
+          );
 
-        await askFcmPushPermissionDialog.show(context);
-      });
+          await askFcmPushPermissionDialog.show(context);
+        },
+      );
     }
   }
 
   void showDeclinedDialog(BuildContext context) {
-    Future.delayed(Duration(milliseconds: 100), () {
-      var declinedFcmPushPermissionDialog =
-          createDeclinedFcmPushPermissionDialog(context: context);
+    Future.delayed(
+      // todo: refactor
+      // ignore: no-magic-number
+      Duration(milliseconds: 100),
+      () {
+        var declinedFcmPushPermissionDialog =
+            createDeclinedFcmPushPermissionDialog(context: context);
 
-      declinedFcmPushPermissionDialog.show(context);
-    });
+        declinedFcmPushPermissionDialog.show(context);
+      },
+    );
   }
 
   @override

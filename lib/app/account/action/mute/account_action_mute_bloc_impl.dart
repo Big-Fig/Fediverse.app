@@ -21,8 +21,8 @@ class AccountActionMuteBloc extends DisposableOwner
       DurationDateTimeValueFormFieldBloc(
     originValue: null,
     minDuration: Duration(hours: 1),
-    // ignore: no-magic-number
     // 1 year
+    // ignore: no-magic-number
     maxDuration: Duration(days: 366),
     isNullValuePossible: true,
     isEnabled: true,

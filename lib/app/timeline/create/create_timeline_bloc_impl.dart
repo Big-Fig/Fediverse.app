@@ -70,7 +70,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     idFieldBloc = _createIdField(timelineId);
 
     typeFieldBloc = _createTypeField(startType);
-    nameFieldBloc = _createNamrField();
+    nameFieldBloc = _createNameField();
 
     editTimelineSettingsBlocSubject = BehaviorSubject.seeded(
       _createEditTimelineSettingsBloc(startType),
@@ -126,12 +126,13 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     );
   }
 
-  StringValueFormFieldBloc _createNamrField() {
+  StringValueFormFieldBloc _createNameField() {
     return StringValueFormFieldBloc(
       originValue: "",
       validators: [
         StringValueFormFieldNonEmptyValidationError.createValidator(),
       ],
+      // ignore: no-magic-number
       maxLength: 50,
     );
   }

@@ -5,6 +5,7 @@ import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'auth_instance_list_model.g.dart';
 
 // -32 is hack for hive 0.x backward ids compatibility
