@@ -27,7 +27,6 @@ void main() {
       TestPaginationItem> memoryPaginationListWithNewItemsBloc;
   late MemoryCachedPaginationBloc<TestPaginationItem> memoryPaginationBloc;
 
-
   setUp(() {
     memoryPaginationBloc = MemoryCachedPaginationBloc.createTestWithSize(
       size: storageSize,
@@ -41,6 +40,8 @@ void main() {
         MemoryCachedPaginationListWithNewItemsBloc(
       paginationBloc: paginationBloc,
       mergeNewItemsImmediately: false,
+      // todo: write tests when watchNewerItemsWhenLoadedPagesIsEmpty: false
+      watchNewerItemsWhenLoadedPagesIsEmpty: true,
       comparator: TestPaginationItem.compareItems,
       equalTo: TestPaginationItem.equalItems,
       mergeNewItemsImmediatelyWhenItemsIsEmpty: false,
@@ -683,6 +684,7 @@ void main() {
         MemoryCachedPaginationListWithNewItemsBloc(
       paginationBloc: paginationBloc,
       mergeNewItemsImmediately: true,
+      watchNewerItemsWhenLoadedPagesIsEmpty: true,
       comparator: TestPaginationItem.compareItems,
       equalTo: TestPaginationItem.equalItems,
       mergeNewItemsImmediatelyWhenItemsIsEmpty: false,

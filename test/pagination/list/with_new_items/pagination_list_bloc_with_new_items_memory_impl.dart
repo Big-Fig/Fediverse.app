@@ -22,12 +22,15 @@ class MemoryCachedPaginationListWithNewItemsBloc<
     required bool mergeNewItemsImmediatelyWhenItemsIsEmpty,
     required this.comparator,
     required this.equalTo,
+    required bool watchNewerItemsWhenLoadedPagesIsEmpty,
     required ICachedPaginationBloc<TPage, TItem> paginationBloc,
   }) : super(
           mergeNewItemsImmediately: mergeNewItemsImmediately,
           mergeNewItemsImmediatelyWhenItemsIsEmpty:
               mergeNewItemsImmediatelyWhenItemsIsEmpty,
           paginationBloc: paginationBloc,
+          watchNewerItemsWhenLoadedPagesIsEmpty:
+              watchNewerItemsWhenLoadedPagesIsEmpty,
         ) {
     addDisposable(streamController: newItemsStreamController);
   }
