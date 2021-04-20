@@ -42,9 +42,12 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
   TItem? previousNeverItem;
 
+  final bool watchNewerItemsWhenLoadedPagesIsEmpty;
+
   CachedPaginationListWithNewItemsBloc({
     required this.mergeNewItemsImmediately,
     this.mergeNewItemsImmediatelyWhenItemsIsEmpty = true,
+    this.watchNewerItemsWhenLoadedPagesIsEmpty = false,
     required ICachedPaginationBloc<TPage, TItem> paginationBloc,
   }) : super(cachedPaginationBloc: paginationBloc) {
     addDisposable(subject: mergedNewItemsSubject);
@@ -53,7 +56,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
     addDisposable(
       streamSubscription: newerItemStream.listen(
         (TItem? newerItem) {
-       checkWatchNewItemsSubscription(newerItem);
+          checkWatchNewItemsSubscription(newerItem);
         },
       ),
     );
@@ -219,7 +222,8 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
   void checkWatchNewItemsSubscription(TItem? newerItem) {
     // don't watch new items before we something actually loaded
-    if (paginationBloc.loadedPagesCount == 0) {
+    if (paginationBloc.loadedPagesCount == 0 &&
+        !watchNewerItemsWhenLoadedPagesIsEmpty) {
       return;
     }
 
@@ -247,47 +251,47 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
   StreamSubscription<List> createWatchNewItemsSubscription(newerItem) {
     return watchItemsNewerThanItem(newerItem)
-      .skipWhile((newItems) => newItems.isNotEmpty != true)
-      .listen(
-        (newItems) {
-      // we need to filter again to be sure that newerItem is no
-      // changed during sql request execute time
-      List<TItem> actuallyNew = newItems.where(
-            (newItem) {
-          if (newerItem != null) {
-            return compareItemsToSort(newItem, newerItem) > 0;
+        .skipWhile((newItems) => newItems.isNotEmpty != true)
+        .listen(
+      (newItems) {
+        // we need to filter again to be sure that newerItem is no
+        // changed during sql request execute time
+        List<TItem> actuallyNew = newItems.where(
+          (newItem) {
+            if (newerItem != null) {
+              return compareItemsToSort(newItem, newerItem) > 0;
+            } else {
+              return true;
+            }
+          },
+        ).toList();
+
+        var currentItems = items;
+
+        // remove duplicates
+        // sometimes local storage sqlite returns duplicated items
+        // sometimes item is newer but already exist
+        // for example chat updateAt updated
+        actuallyNew = removeDuplicatesAndUpdate(
+          actuallyNew: actuallyNew,
+          currentItems: currentItems,
+        );
+
+        _logger.finest(() => "watchItemsNewerThanItem "
+            "\n"
+            "\t newItems ${newItems.length} \n"
+            "\t actuallyNew = ${actuallyNew.length}");
+
+        if (actuallyNew.isNotEmpty == true) {
+          if (currentItems.isNotEmpty != true &&
+              mergeNewItemsImmediatelyWhenItemsIsEmpty) {
+            // merge immediately
+            mergedNewItemsSubject.add(actuallyNew);
           } else {
-            return true;
+            unmergedNewItemsSubject.add(actuallyNew);
           }
-        },
-      ).toList();
-
-      var currentItems = items;
-
-      // remove duplicates
-      // sometimes local storage sqlite returns duplicated items
-      // sometimes item is newer but already exist
-      // for example chat updateAt updated
-      actuallyNew = removeDuplicatesAndUpdate(
-        actuallyNew: actuallyNew,
-        currentItems: currentItems,
-      );
-
-      _logger.finest(() => "watchItemsNewerThanItem "
-          "\n"
-          "\t newItems ${newItems.length} \n"
-          "\t actuallyNew = ${actuallyNew.length}");
-
-      if (actuallyNew.isNotEmpty == true) {
-        if (currentItems.isNotEmpty != true &&
-            mergeNewItemsImmediatelyWhenItemsIsEmpty) {
-          // merge immediately
-          mergedNewItemsSubject.add(actuallyNew);
-        } else {
-          unmergedNewItemsSubject.add(actuallyNew);
         }
-      }
-    },
-  );
+      },
+    );
   }
 }
