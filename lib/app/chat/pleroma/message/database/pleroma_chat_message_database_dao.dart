@@ -104,28 +104,6 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
         populateChatMessageJoin(),
       );
 
-  Future<int> updateByRemoteId(
-    String remoteId,
-    Insertable<DbChatMessage> entity,
-  ) async {
-    var localId = await findLocalIdByRemoteId(remoteId);
-
-    if (localId != null && localId >= 0) {
-      await (update(db.dbChatMessages)
-            ..where(
-              (i) => i.id.equals(localId),
-            ))
-          .write(entity);
-    } else {
-      localId = await insert(
-        entity: entity,
-        mode: null,
-      );
-    }
-
-    return localId;
-  }
-
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> addChatWhere(
     SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
     String chatRemoteId,

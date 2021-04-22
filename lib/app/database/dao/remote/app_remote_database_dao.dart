@@ -55,6 +55,21 @@ abstract class AppRemoteDatabaseDao<
         ),
       );
 
+  Future<void> updateByRemoteId(
+    RemoteId remoteId,
+    Insertable<DbItem> entity,
+  ) async {
+    var rowsChanged = await (update(table)
+          ..where(
+            (_) => createFindByRemoteIdWhereExpression(remoteId),
+          ))
+        .write(entity);
+
+    if (rowsChanged == 0) {
+      await upsert(entity: entity);
+    }
+  }
+
   Future<DbItem?> findByRemoteId(RemoteId remoteId) =>
       findByRemoteIdSelectable(remoteId).getSingleOrNull();
 
@@ -88,37 +103,34 @@ abstract class AppRemoteDatabaseDao<
     );
   }
 
-
-
   SimpleSelectStatement<TableDsl, DbItem> addDateTimeBoundsWhere(
-      SimpleSelectStatement<TableDsl, DbItem> query, {
-        required GeneratedDateTimeColumn column,
-        required DateTime? minimumDateTimeExcluding,
-        required DateTime? maximumDateTimeExcluding,
-      }) {
+    SimpleSelectStatement<TableDsl, DbItem> query, {
+    required GeneratedDateTimeColumn column,
+    required DateTime? minimumDateTimeExcluding,
+    required DateTime? maximumDateTimeExcluding,
+  }) {
     var minimumExist = minimumDateTimeExcluding != null;
     var maximumExist = maximumDateTimeExcluding != null;
     assert(minimumExist || maximumExist);
 
     if (minimumExist) {
       query = query
-        ..where((status) =>
-            column.isBiggerThanValue(minimumDateTimeExcluding));
+        ..where((status) => column.isBiggerThanValue(minimumDateTimeExcluding));
     }
     if (maximumExist) {
       query = query
-        ..where((status) =>
-            column.isSmallerThanValue(maximumDateTimeExcluding));
+        ..where(
+            (status) => column.isSmallerThanValue(maximumDateTimeExcluding));
     }
 
     return query;
   }
 
   SimpleSelectStatement<TableDsl, DbItem> addRemoteIdBoundsWhere(
-      SimpleSelectStatement<TableDsl, DbItem> query, {
-        required String? minimumRemoteIdExcluding,
-        required String? maximumRemoteIdExcluding,
-      }) {
+    SimpleSelectStatement<TableDsl, DbItem> query, {
+    required String? minimumRemoteIdExcluding,
+    required String? maximumRemoteIdExcluding,
+  }) {
     var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
     var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
     assert(minimumExist || maximumExist);
@@ -139,19 +151,18 @@ abstract class AppRemoteDatabaseDao<
     return query;
   }
 
-
-
   Future<DbItem?> getNewestOrderByRemoteId({required int? offset}) =>
       getNewestOrderByRemoteIdSelectable(offset: offset).getSingleOrNull();
 
   Stream<DbItem?> watchGetNewestOrderByRemoteId({required int? offset}) =>
       getNewestOrderByRemoteIdSelectable(offset: offset).watchSingleOrNull();
 
-  Selectable<DbItem> getNewestOrderByRemoteIdSelectable({required int? offset}) =>
+  Selectable<DbItem> getNewestOrderByRemoteIdSelectable(
+          {required int? offset}) =>
       customSelect(
         'SELECT * FROM $tableName '
-            'ORDER BY $remoteIdFieldName ASC '
-            'LIMIT 1' +
+                'ORDER BY $remoteIdFieldName ASC '
+                'LIMIT 1' +
             createOffsetContent(offset),
         readsFrom: {table},
       ).map(table.mapFromRow);
@@ -162,11 +173,12 @@ abstract class AppRemoteDatabaseDao<
   Stream<DbItem?> watchGetOldestOrderByRemoteId({required int? offset}) =>
       getOldestOrderByRemoteIdSelectable(offset: offset).watchSingleOrNull();
 
-  Selectable<DbItem> getOldestOrderByRemoteIdSelectable({required int? offset}) =>
+  Selectable<DbItem> getOldestOrderByRemoteIdSelectable(
+          {required int? offset}) =>
       customSelect(
         'SELECT * FROM $tableName '
-            'ORDER BY $remoteIdFieldName DESC '
-            'LIMIT 1' +
+                'ORDER BY $remoteIdFieldName DESC '
+                'LIMIT 1' +
             createOffsetContent(offset),
         readsFrom: {table},
       ).map(table.mapFromRow);

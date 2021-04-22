@@ -45,28 +45,6 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     );
   }
 
-  Future<int> updateByRemoteId(
-    String remoteId,
-    Insertable<DbChat> entity,
-  ) async {
-    var localId = await findLocalIdByRemoteId(remoteId);
-
-    if (localId != null && localId >= 0) {
-      await (update(db.dbChats)
-            ..where(
-              (i) => i.id.equals(localId),
-            ))
-          .write(entity);
-    } else {
-      localId = await insert(
-        entity: entity,
-        mode: null,
-      );
-    }
-
-    return localId;
-  }
-
   SimpleSelectStatement<$DbChatsTable, DbChat> addUpdatedAtBoundsWhere(
     SimpleSelectStatement<$DbChatsTable, DbChat> query, {
     required DateTime? minimumDateTimeExcluding,
