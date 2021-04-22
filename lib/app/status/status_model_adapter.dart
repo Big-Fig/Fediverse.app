@@ -11,9 +11,6 @@ import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:logging/logging.dart';
-
-var _logger = Logger("status_model_adapter.dart");
 
 extension PleromaStatusDbExtension on IPleromaStatus {
   DbStatusPopulatedWrapper toDbStatusPopulatedWrapper() {
@@ -46,23 +43,6 @@ extension PleromaStatusDbExtension on IPleromaStatus {
   // ignore: code-metrics
   DbStatus toDbStatus() {
     var remoteStatus = this;
-
-// TODO: fix when https://git.pleroma.social/pleroma/pleroma/issues/1573  will be resolved
-    DateTime? expiresAt;
-    try {
-      if (remoteStatus.pleroma?.expiresAt == false ||
-          remoteStatus.pleroma?.expiresAt == null) {
-        expiresAt = null;
-      } else {
-        if (remoteStatus.pleroma?.expiresAt is DateTime) {
-          expiresAt = remoteStatus.pleroma?.expiresAt;
-        } else {
-          expiresAt = DateTime.parse(remoteStatus.pleroma?.expiresAt);
-        }
-      }
-    } catch (e) {
-      _logger.shout(() => "Error during parsing expiresAt $e");
-    }
 
     return DbStatus(
       id: null,
@@ -100,7 +80,7 @@ extension PleromaStatusDbExtension on IPleromaStatus {
       pleromaInReplyToAccountAcct: remoteStatus.pleroma?.inReplyToAccountAcct,
       pleromaLocal: remoteStatus.pleroma?.local,
       pleromaSpoilerText: remoteStatus.pleroma?.spoilerText,
-      pleromaExpiresAt: expiresAt,
+      pleromaExpiresAt: remoteStatus.pleroma?.expiresAt,
       pleromaThreadMuted: remoteStatus.pleroma?.threadMuted,
       pleromaEmojiReactions:
           remoteStatus.pleroma?.emojiReactions?.toPleromaStatusEmojiReactions(),
