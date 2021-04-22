@@ -17,15 +17,21 @@ void main() {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v1.sqlite';
     var file = File(filePath);
     dbFile = await file.copy(filePath + ".temp");
-    database = AppDatabase(VmDatabase(dbFile));
+    database = AppDatabase(VmDatabase(dbFile, logStatements: true));
   });
 
   tearDown(() async {
     await database.close();
     await dbFile.delete();
+
+
+    // hack because we don't have too old v1 db dump
+    // ignore: no-magic-number
+    expect(database.migrationsFromExecuted, 3);
+    expect(database.migrationsToExecuted, database.schemaVersion);
   });
 
-  test('test updated chat message schema', () async {
+  test('test dbMigration v1->v2 updated chat message schema', () async {
     var pleromaCardTitle = "pleromaCardTitle";
     var chatMessageDao = database.chatMessageDao;
     var accountRepository = AccountRepository(appDatabase: database);

@@ -19,9 +19,13 @@ void main() {
   tearDown(() async {
     await database.close();
     await dbFile.delete();
+
+    // ignore: no-magic-number
+    expect(database.migrationsFromExecuted, 4);
+    expect(database.migrationsToExecuted, database.schemaVersion);
   });
 
-  test('test pleromaBackgroundImage', () async {
+  test('test dbMigration v4->v5 pleromaBackgroundImage', () async {
     var accountDao = database.accountDao;
 
     await accountDao.clear(batchTransaction: null);
