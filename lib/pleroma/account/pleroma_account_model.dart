@@ -138,7 +138,7 @@ class PleromaAccountReport implements IPleromaAccountReport {
       other is PleromaAccountReport &&
           runtimeType == other.runtimeType &&
           account == other.account &&
-          statuses == other.statuses &&
+          eq(statuses, other.statuses) &&
           user == other.user;
 
   @override
