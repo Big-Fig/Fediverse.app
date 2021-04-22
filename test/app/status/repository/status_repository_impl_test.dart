@@ -67,14 +67,25 @@ void main() {
     await database.close();
   });
 
-  test('insert & find by id', () async {
+  test('insert & findByRemoteIdInAppType', () async {
     var id = await statusRepository.insertInDbType(
       dbStatus,
       mode: null,
     );
     assert(id > 0, true);
     expectDbStatusPopulated(
-      await statusRepository.findByDbIdInAppType(id),
+      await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
+      dbStatusPopulated,
+    );
+  });
+  test('insert & find byRemoteId', () async {
+    var id = await statusRepository.insertInDbType(
+      dbStatus,
+      mode: null,
+    );
+    assert(id > 0, true);
+    expectDbStatusPopulated(
+      await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatusPopulated,
     );
   });
