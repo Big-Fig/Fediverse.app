@@ -77,6 +77,20 @@ void expectDbNotification(INotification actual, DbNotification dbNotification) {
     actual.unread,
     dbNotification.unread,
   );
+  expect(
+    actual.target,
+    dbNotification.target,
+  );
+
+  expect(
+    actual.report,
+    dbNotification.report,
+  );
+
+  expect(
+    actual.chatMessage,
+    dbNotification.chatMessage,
+  );
 }
 
 Future<DbNotificationPopulated> createTestNotificationPopulated(
