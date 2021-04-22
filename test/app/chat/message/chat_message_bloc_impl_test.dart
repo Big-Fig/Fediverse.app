@@ -100,6 +100,7 @@ void main() {
           accountRepository: accountRepository,
           chat: chat,
           lastChatMessage: null,
+          delayInit: false,
         ),
       );
     },
