@@ -309,7 +309,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PleromaStatus extends IPleromaStatus {
   @override
   final String id;
@@ -435,23 +435,112 @@ class PleromaStatus extends IPleromaStatus {
 
   String toJsonString() => jsonEncode(_$PleromaStatusToJson(this));
 
+
+  @override
+  // ignore: code-metrics
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaStatus &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          createdAt == other.createdAt &&
+          inReplyToId == other.inReplyToId &&
+          inReplyToAccountId == other.inReplyToAccountId &&
+          sensitive == other.sensitive &&
+          spoilerText == other.spoilerText &&
+          uri == other.uri &&
+          url == other.url &&
+          repliesCount == other.repliesCount &&
+          reblogsCount == other.reblogsCount &&
+          favouritesCount == other.favouritesCount &&
+          favourited == other.favourited &&
+          reblogged == other.reblogged &&
+          muted == other.muted &&
+          bookmarked == other.bookmarked &&
+          pinned == other.pinned &&
+          content == other.content &&
+          reblog == other.reblog &&
+          application == other.application &&
+          account == other.account &&
+          eq(mediaAttachments, other.mediaAttachments) &&
+          eq(mentions, other.mentions) &&
+          eq(tags, other.tags) &&
+          eq(emojis, other.emojis) &&
+          poll == other.poll &&
+          card == other.card &&
+          pleroma == other.pleroma &&
+          language == other.language &&
+          visibility == other.visibility;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      createdAt.hashCode ^
+      inReplyToId.hashCode ^
+      inReplyToAccountId.hashCode ^
+      sensitive.hashCode ^
+      spoilerText.hashCode ^
+      uri.hashCode ^
+      url.hashCode ^
+      repliesCount.hashCode ^
+      reblogsCount.hashCode ^
+      favouritesCount.hashCode ^
+      favourited.hashCode ^
+      reblogged.hashCode ^
+      muted.hashCode ^
+      bookmarked.hashCode ^
+      pinned.hashCode ^
+      content.hashCode ^
+      reblog.hashCode ^
+      application.hashCode ^
+      account.hashCode ^
+      mediaAttachments.hashCode ^
+      mentions.hashCode ^
+      tags.hashCode ^
+      emojis.hashCode ^
+      poll.hashCode ^
+      card.hashCode ^
+      pleroma.hashCode ^
+      language.hashCode ^
+      visibility.hashCode;
+
   @override
   String toString() {
-    return 'PleromaStatus{id: $id, createdAt: $createdAt,'
-        ' inReplyToId: $inReplyToId, inReplyToAccountId: $inReplyToAccountId,'
-        ' sensitive: $sensitive, spoilerText: $spoilerText, uri: $uri,'
-        ' url: $url, repliesCount: $repliesCount, reblogsCount: $reblogsCount,'
-        ' favouritesCount: $favouritesCount, favourited: $favourited, '
-        'reblogged: $reblogged, muted: $muted, bookmarked: $bookmarked,'
-        ' pinned: $pinned, content: $content, reblog: $reblog,'
-        ' application: $application, account: $account, '
-        'mediaAttachments: $mediaAttachments, mentions: $mentions, '
-        'tags: $tags, emojis: $emojis, poll: $poll, card: $card, '
-        'pleroma: $pleroma, language: $language, visibility: $visibility}';
+    return 'PleromaStatus{'
+        'id: $id, '
+        'createdAt: $createdAt, '
+        'inReplyToId: $inReplyToId, '
+        'inReplyToAccountId: $inReplyToAccountId,'
+        'sensitive: $sensitive, '
+        'spoilerText: $spoilerText, '
+        'uri: $uri, '
+        'url: $url, '
+        'repliesCount: $repliesCount, '
+        'reblogsCount: $reblogsCount,'
+        'favouritesCount: $favouritesCount, '
+        'favourited: $favourited, '
+        'reblogged: $reblogged, '
+        'muted: $muted, '
+        'bookmarked: $bookmarked, '
+        'pinned: $pinned, '
+        'content: $content, '
+        'reblog: $reblog, '
+        'application: $application, '
+        'account: $account, '
+        'mediaAttachments: $mediaAttachments, '
+        'mentions: $mentions, '
+        'tags: $tags, '
+        'emojis: $emojis, '
+        'poll: $poll, '
+        'card: $card, '
+        'pleroma: $pleroma, '
+        'language: $language, '
+        'visibility: $visibility'
+        '}';
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PleromaStatusPleromaPart {
   // a map consisting of alternate representations of the content property with
   // the key being it's mimetype.
@@ -483,7 +572,7 @@ class PleromaStatusPleromaPart {
   @JsonKey(name: "expires_at")
   //  will be resolved
 //  DateTime expiresAt;
-  final dynamic expiresAt;
+  final DateTime? expiresAt;
   @JsonKey(name: "thread_muted")
   final bool? threadMuted;
 
@@ -515,6 +604,48 @@ class PleromaStatusPleromaPart {
   Map<String, dynamic> toJson() => _$PleromaStatusPleromaPartToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaStatusPleromaPartToJson(this));
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaStatusPleromaPart &&
+          runtimeType == other.runtimeType &&
+          content == other.content &&
+          conversationId == other.conversationId &&
+          directConversationId == other.directConversationId &&
+          inReplyToAccountAcct == other.inReplyToAccountAcct &&
+          local == other.local &&
+          spoilerText == other.spoilerText &&
+          expiresAt == other.expiresAt &&
+          threadMuted == other.threadMuted &&
+          eq(emojiReactions, other.emojiReactions);
+
+  @override
+  int get hashCode =>
+      content.hashCode ^
+      conversationId.hashCode ^
+      directConversationId.hashCode ^
+      inReplyToAccountAcct.hashCode ^
+      local.hashCode ^
+      spoilerText.hashCode ^
+      expiresAt.hashCode ^
+      threadMuted.hashCode ^
+      emojiReactions.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaStatusPleromaPart{'
+        'content: $content, '
+        'conversationId: $conversationId, '
+        'directConversationId: $directConversationId, '
+        'inReplyToAccountAcct: $inReplyToAccountAcct, '
+        'local: $local, '
+        'spoilerText: $spoilerText, '
+        'expiresAt: $expiresAt, '
+        'threadMuted: $threadMuted, '
+        'emojiReactions: $emojiReactions'
+        '}';
+  }
 }
 
 abstract class IPleromaPostStatusBase

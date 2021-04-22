@@ -143,16 +143,17 @@ Map<String, dynamic> _$PleromaStatusToJson(PleromaStatus instance) =>
       'bookmarked': instance.bookmarked,
       'pinned': instance.pinned,
       'content': instance.content,
-      'reblog': instance.reblog,
-      'application': instance.application,
-      'account': instance.account,
-      'media_attachments': instance.mediaAttachments,
-      'mentions': instance.mentions,
-      'tags': instance.tags,
-      'emojis': instance.emojis,
-      'poll': instance.poll,
-      'card': instance.card,
-      'pleroma': instance.pleroma,
+      'reblog': instance.reblog?.toJson(),
+      'application': instance.application?.toJson(),
+      'account': instance.account.toJson(),
+      'media_attachments':
+          instance.mediaAttachments?.map((e) => e.toJson()).toList(),
+      'mentions': instance.mentions?.map((e) => e.toJson()).toList(),
+      'tags': instance.tags?.map((e) => e.toJson()).toList(),
+      'emojis': instance.emojis?.map((e) => e.toJson()).toList(),
+      'poll': instance.poll?.toJson(),
+      'card': instance.card?.toJson(),
+      'pleroma': instance.pleroma?.toJson(),
       'language': instance.language,
       'visibility': instance.visibility,
     };
@@ -170,7 +171,9 @@ PleromaStatusPleromaPart _$PleromaStatusPleromaPartFromJson(
     spoilerText: json['spoiler_text'] == null
         ? null
         : PleromaContent.fromJson(json['spoiler_text'] as Map<String, dynamic>),
-    expiresAt: json['expires_at'],
+    expiresAt: json['expires_at'] == null
+        ? null
+        : DateTime.parse(json['expires_at'] as String),
     threadMuted: json['thread_muted'] as bool?,
     emojiReactions: (json['emoji_reactions'] as List<dynamic>?)
         ?.map((e) =>
@@ -182,15 +185,16 @@ PleromaStatusPleromaPart _$PleromaStatusPleromaPartFromJson(
 Map<String, dynamic> _$PleromaStatusPleromaPartToJson(
         PleromaStatusPleromaPart instance) =>
     <String, dynamic>{
-      'content': instance.content,
+      'content': instance.content?.toJson(),
       'conversation_id': instance.conversationId,
       'direct_conversation_id': instance.directConversationId,
       'in_reply_to_account_acct': instance.inReplyToAccountAcct,
       'local': instance.local,
-      'spoiler_text': instance.spoilerText,
-      'expires_at': instance.expiresAt,
+      'spoiler_text': instance.spoilerText?.toJson(),
+      'expires_at': instance.expiresAt?.toIso8601String(),
       'thread_muted': instance.threadMuted,
-      'emoji_reactions': instance.emojiReactions,
+      'emoji_reactions':
+          instance.emojiReactions?.map((e) => e.toJson()).toList(),
     };
 
 PleromaPostStatusPoll _$PleromaPostStatusPollFromJson(

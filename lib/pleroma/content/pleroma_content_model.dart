@@ -8,7 +8,7 @@ abstract class IPleromaContent {
   String? get textPlain;
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PleromaContent implements IPleromaContent {
   @override
   @JsonKey(name: "text/plain")
