@@ -56,27 +56,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     chatAccountsAlias = alias(db.dbChatAccounts, _chatAccountsAliasId);
   }
 
-  Future<int> updateByRemoteId(
-    String remoteId,
-    Insertable<DbAccount> entity,
-  ) async {
-    var localId = await findLocalIdByRemoteId(remoteId);
 
-    if (localId != null && localId >= 0) {
-      await (update(dbAccounts)
-            ..where(
-              (i) => i.id.equals(localId),
-            ))
-          .write(entity);
-    } else {
-      localId = await insert(
-        entity: entity,
-        mode: null,
-      );
-    }
-
-    return localId;
-  }
 
   SimpleSelectStatement<$DbAccountsTable, DbAccount> orderBy(
     SimpleSelectStatement<$DbAccountsTable, DbAccount> query,

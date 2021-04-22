@@ -71,28 +71,6 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
         alias(db.dbAccounts, _statusReplyReblogAccountAliasId);
   }
 
-  Future<int> updateByRemoteId(
-    String remoteId,
-    Insertable<DbConversation> entity,
-  ) async {
-    var localId = await findLocalIdByRemoteId(remoteId);
-
-    if (localId != null && localId >= 0) {
-      await (update(db.dbConversations)
-            ..where(
-              (i) => i.id.equals(localId),
-            ))
-          .write(entity);
-    } else {
-      localId = await insert(
-        entity: entity,
-        mode: null,
-      );
-    }
-
-    return localId;
-  }
-
   SimpleSelectStatement<$DbConversationsTable, DbConversation> orderBy(
     SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
     List<ConversationRepositoryChatOrderingTermData> orderTerms,

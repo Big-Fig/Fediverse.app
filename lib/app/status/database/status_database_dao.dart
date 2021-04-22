@@ -437,6 +437,11 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
               ),
             ]
           : []),
+      // todo: think about leftOuterJoin and nullable account field
+      // or foreign keys
+      // in some cases status may already exist in local database,
+      // but account still not added
+      // leftOuterJoin(
       innerJoin(
         accountAlias,
         accountAlias.remoteId.equalsExp(dbStatuses.accountRemoteId),
@@ -784,6 +789,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
     return joinQuery;
   }
+
 }
 
 extension TypedResultDbStatusPopulatedExtension on TypedResult {

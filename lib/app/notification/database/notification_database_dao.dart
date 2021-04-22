@@ -207,6 +207,10 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
 
   List<Join<Table, DataClass>> populateNotificationJoin() {
     return [
+      // todo: think about leftOuterJoin and nullable account field
+      // or foreign keys
+      // in some cases status may already exist in local database,
+      // but account still not added
       innerJoin(
         accountAlias,
         accountAlias.remoteId.equalsExp(dbNotifications.accountRemoteId),
