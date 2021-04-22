@@ -20,9 +20,14 @@ void main() {
   tearDown(() async {
     await database.close();
     await dbFile.delete();
+
+    // hack because we don't have too old v2 db dump
+    // ignore: no-magic-number
+    expect(database.migrationsFromExecuted, 3);
+    expect(database.migrationsToExecuted, database.schemaVersion);
   });
 
-  test('test scheduled', () async {
+  test('test dbMigration v2->v3 scheduled', () async {
     var scheduledStatusDao = database.scheduledStatusDao;
 
     await scheduledStatusDao.clear(batchTransaction: null);

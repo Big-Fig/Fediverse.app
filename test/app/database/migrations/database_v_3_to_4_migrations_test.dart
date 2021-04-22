@@ -20,9 +20,13 @@ void main() {
   tearDown(() async {
     await database.close();
     await dbFile.delete();
+
+    // ignore: no-magic-number
+    expect(database.migrationsFromExecuted, 3);
+    expect(database.migrationsToExecuted, database.schemaVersion);
   });
 
-  test('test deleted', () async {
+  test('test dbMigration v3->v4 deleted', () async {
     var statusDao = database.statusDao;
 
     await statusDao.clear(batchTransaction: null);

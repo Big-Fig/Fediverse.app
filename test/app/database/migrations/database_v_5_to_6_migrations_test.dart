@@ -20,9 +20,13 @@ void main() {
   tearDown(() async {
     await database.close();
     await dbFile.delete();
+
+    // ignore: no-magic-number
+    expect(database.migrationsFromExecuted, 5);
+    expect(database.migrationsToExecuted, database.schemaVersion);
   });
 
-  test('test dismissed', () async {
+  test('test dbMigration v5->v6 notification dismissed', () async {
     var notificationDao = database.notificationDao;
 
     await notificationDao.clear(batchTransaction: null);
