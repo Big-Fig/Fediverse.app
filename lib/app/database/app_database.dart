@@ -57,6 +57,7 @@ import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:moor/moor.dart';
 
 part 'app_database.g.dart';
+
 // ignore_for_file: no-magic-number
 @UseMoor(
   tables: [
@@ -113,11 +114,16 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 15;
 
+  int? migrationsFromExecuted;
+  int? migrationsToExecuted;
+
   @override
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (Migrator m) => m.createAll(),
         onUpgrade: (Migrator m, int from, int to) async {
           var currentVersion = from;
+          migrationsFromExecuted = from;
+          migrationsToExecuted = to;
 
           while (currentVersion < to) {
             switch (currentVersion) {
