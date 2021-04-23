@@ -3,7 +3,7 @@ import 'package:fedi/app/localization/locale/form/localization_locale_single_fro
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_bloc.dart';
-import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
+import 'package:fedi/pleroma/api/account/public/pleroma_account_public_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

@@ -1,5 +1,5 @@
 import 'package:fedi/app/moor/moor_converters.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_visibility_model.dart';
 import 'package:moor/moor.dart';
 
 // todo: add foreign keys

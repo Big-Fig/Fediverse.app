@@ -8,11 +8,11 @@ import 'package:fedi/app/notification/repository/notification_repository_model.d
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
+import 'package:fedi/mastodon/api/filter/mastodon_filter_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
-import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
-import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_notification_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_notification_service.dart';
+import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 

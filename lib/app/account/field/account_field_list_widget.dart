@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/field/account_field_list_item_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/pleroma/api/field/pleroma_field_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

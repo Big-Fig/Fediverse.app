@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
+import 'package:fedi/mastodon/api/media/attachment/mastodon_media_attachment_model.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gallery_saver/gallery_saver.dart';

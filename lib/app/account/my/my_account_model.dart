@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/json/json_model.dart';
-import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:fedi/pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_my_account_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/pleroma/api/field/pleroma_field_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_tag_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 

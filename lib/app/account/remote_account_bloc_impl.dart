@@ -6,9 +6,9 @@ import 'package:fedi/app/instance/location/instance_location_exception.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service_impl.dart';
+import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_account_service.dart';
+import 'package:fedi/pleroma/api/account/pleroma_account_service_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 

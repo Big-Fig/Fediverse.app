@@ -16,7 +16,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_my_account_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';

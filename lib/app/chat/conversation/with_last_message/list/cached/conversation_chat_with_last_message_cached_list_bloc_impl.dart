@@ -5,9 +5,9 @@ import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_w
 import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_repository.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/list/cached/conversation_chat_with_last_message_cached_list_bloc.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
-import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
-import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/pleroma/api/conversation/pleroma_conversation_model.dart';
+import 'package:fedi/pleroma/api/conversation/pleroma_conversation_service.dart';
+import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 

@@ -15,9 +15,9 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
-import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
+import 'package:fedi/pleroma/api/account/pleroma_account_service.dart';
+import 'package:fedi/pleroma/api/filter/pleroma_filter_model.dart';
+import 'package:fedi/pleroma/api/filter/pleroma_filter_service.dart';
 import 'package:flutter/widgets.dart';
 
 class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {

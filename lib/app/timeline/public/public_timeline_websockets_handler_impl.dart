@@ -5,7 +5,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dar
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_impl.dart';
-import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
+import 'package:fedi/pleroma/api/web_sockets/pleroma_web_sockets_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 
 class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {

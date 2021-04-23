@@ -3,7 +3,7 @@ import 'package:fedi/app/status/visibility/form/single_from_list/status_visibili
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/status/visibility/status_visibility_title_widget.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class StatusVisibilitySelectSingleFromListValueFormFieldRowWidget

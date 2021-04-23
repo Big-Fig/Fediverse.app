@@ -9,8 +9,8 @@ import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
-import 'package:fedi/pleroma/search/pleroma_search_service.dart';
+import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/pleroma/api/search/pleroma_search_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

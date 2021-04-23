@@ -8,10 +8,10 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service.dart';
-import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
+import 'package:fedi/pleroma/api/account/auth/pleroma_auth_account_service.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

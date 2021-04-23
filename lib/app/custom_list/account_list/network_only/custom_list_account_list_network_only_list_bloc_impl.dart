@@ -4,8 +4,8 @@ import 'package:fedi/app/custom_list/account_list/network_only/custom_list_accou
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/list/pleroma_list_service.dart';
-import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/pleroma/api/list/pleroma_list_service.dart';
+import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart';
 import 'package:logging/logging.dart';
 
 final _logger =

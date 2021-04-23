@@ -4,8 +4,8 @@ import 'package:fedi/app/ui/dialog/chooser/selection/single/fedi_single_selectio
 import 'package:fedi/app/ui/form/fedi_form_single_choose_custom_field_row.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/list/pleroma_list_model.dart';
-import 'package:fedi/pleroma/list/pleroma_list_service.dart';
+import 'package:fedi/pleroma/api/list/pleroma_list_model.dart';
+import 'package:fedi/pleroma/api/list/pleroma_list_service.dart';
 import 'package:flutter/cupertino.dart';
 
 class TimelineSettingsOnlyInCustomListFormFieldRowWidget

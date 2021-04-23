@@ -1,5 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
+import 'package:fedi/mastodon/api/filter/mastodon_filter_model.dart';
 
 class FilterState {
   final bool? dismissed;

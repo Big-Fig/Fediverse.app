@@ -1,5 +1,5 @@
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
-import 'package:fedi/pleroma/captcha/pleroma_captcha_model.dart';
+import 'package:fedi/pleroma/api/captcha/pleroma_captcha_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

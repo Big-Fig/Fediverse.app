@@ -5,8 +5,8 @@ import 'package:fedi/app/push/settings/local_preferences/push_settings_local_pre
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/push/pleroma_push_model.dart';
-import 'package:fedi/pleroma/push/pleroma_push_service.dart';
+import 'package:fedi/pleroma/api/push/pleroma_push_model.dart';
+import 'package:fedi/pleroma/api/push/pleroma_push_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:logging/logging.dart';

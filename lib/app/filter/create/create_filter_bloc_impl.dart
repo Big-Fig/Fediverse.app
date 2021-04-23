@@ -10,9 +10,9 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
-import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
+import 'package:fedi/pleroma/api/account/pleroma_account_service.dart';
+import 'package:fedi/pleroma/api/filter/pleroma_filter_model.dart';
+import 'package:fedi/pleroma/api/filter/pleroma_filter_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

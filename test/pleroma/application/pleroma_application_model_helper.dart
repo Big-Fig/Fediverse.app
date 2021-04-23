@@ -1,4 +1,4 @@
-import 'package:fedi/pleroma/application/pleroma_application_model.dart';
+import 'package:fedi/pleroma/api/application/pleroma_application_model.dart';
 
 PleromaApplication createTestPleromaApplication(String seed) =>
     PleromaApplication(

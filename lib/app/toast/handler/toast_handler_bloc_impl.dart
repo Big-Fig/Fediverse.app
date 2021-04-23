@@ -18,8 +18,8 @@ import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
-import 'package:fedi/pleroma/push/pleroma_push_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_notification_model.dart';
+import 'package:fedi/pleroma/api/push/pleroma_push_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 

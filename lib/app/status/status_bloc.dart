@@ -5,12 +5,12 @@ import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
-import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
+import 'package:fedi/pleroma/api/card/pleroma_card_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/mention/pleroma_mention_model.dart';
+import 'package:fedi/pleroma/api/poll/pleroma_poll_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_tag_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
