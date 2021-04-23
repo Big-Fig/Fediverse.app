@@ -36,8 +36,8 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     // todo: refactor
     unawaited(
       pleromaChatBloc.postMessage(
-        pleromaChatMessageSendData: calculateSendData(),
-        pleromaChatMessageSendDataMediaAttachment: calculateMediaAttachment(),
+        pleromaApiChatMessageSendData: calculateSendData(),
+        pleromaApiChatMessageSendDataMediaAttachment: calculateMediaAttachment(),
         oldPendingFailedPleromaChatMessage: null,
       ),
     );

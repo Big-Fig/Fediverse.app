@@ -147,7 +147,7 @@ void main() {
       chatRemoteId: chat.remoteId,
       batchTransaction: null,
     );
-    await chatRepository.upsertInRemoteType(chat.toPleromaChat(
+    await chatRepository.upsertInRemoteType(chat.toPleromaApiChat(
       lastChatMessage: lastChatMessage,
       accounts: accounts,
     ));
@@ -250,7 +250,7 @@ void main() {
     expectChatMessage(listenedValue, chatMessage1);
 
     await chatMessageRepository.upsertInRemoteType(
-      chatMessage2.toPleromaChatMessage(),
+      chatMessage2.toPleromaApiChatMessage(),
     );
 
     await _update(

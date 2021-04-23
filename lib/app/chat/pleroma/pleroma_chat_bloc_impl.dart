@@ -13,7 +13,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart' as pleroma_lib;
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:fedi/pleroma/api/id/pleroma_api_fake_id_helper.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
@@ -180,12 +180,12 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   }
 
   Future _updateByRemoteChat(
-    pleroma_lib.IPleromaApiChat remoteChat, {
+    IPleromaApiChat pleromaApiChat, {
     required Batch? batchTransaction,
   }) =>
       chatRepository.updateAppTypeByRemoteType(
         appItem: chat,
-        remoteItem: remoteChat,
+        remoteItem: pleromaApiChat,
         batchTransaction: batchTransaction,
       );
 
@@ -263,8 +263,8 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   // todo: refactor
   // ignore: long-method
   Future postMessage({
-    required pleroma_lib.IPleromaApiChatMessageSendData pleromaChatMessageSendData,
-    required IPleromaApiMediaAttachment? pleromaChatMessageSendDataMediaAttachment,
+    required IPleromaApiChatMessageSendData pleromaApiChatMessageSendData,
+    required IPleromaApiMediaAttachment? pleromaApiChatMessageSendDataMediaAttachment,
     required IPleromaChatMessage? oldPendingFailedPleromaChatMessage,
   }) async {
     DbChatMessage dbChatMessage;
@@ -278,7 +278,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
                 id: localChatMessageId,
               );
 
-      pleromaChatMessageSendData = pleromaChatMessageSendData.copyWith(
+      pleromaApiChatMessageSendData = pleromaApiChatMessageSendData.copyWith(
         idempotencyKey: dbChatMessage.wasSentWithIdempotencyKey,
       );
 
@@ -299,9 +299,9 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         chatRemoteId: chat.remoteId,
         accountRemoteId: myAccountBloc.account.remoteId,
         createdAt: createdAt,
-        content: pleromaChatMessageSendData.content,
+        content: pleromaApiChatMessageSendData.content,
         emojis: null,
-        mediaAttachment: pleromaChatMessageSendDataMediaAttachment
+        mediaAttachment: pleromaApiChatMessageSendDataMediaAttachment
             ?.toPleromaApiMediaAttachment(),
         card: null,
         pendingState: PendingState.pending,
@@ -315,7 +315,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         mode: null,
       );
 
-      pleromaChatMessageSendData = pleromaChatMessageSendData.copyWith(
+      pleromaApiChatMessageSendData = pleromaApiChatMessageSendData.copyWith(
         idempotencyKey: fakeUniqueRemoteRemoteId,
       );
     }
@@ -323,7 +323,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     try {
       var pleromaChatMessage = await pleromaChatService.sendMessage(
         chatId: chat.remoteId,
-        data: pleromaChatMessageSendData,
+        data: pleromaApiChatMessageSendData,
       );
       onMessageLocallyHiddenStreamController.add(
         DbPleromaChatMessagePopulatedWrapper(

@@ -115,7 +115,7 @@ void main() {
 
   Future _update(IPleromaChatMessage chatMessage) async {
     await chatMessageRepository.upsertInRemoteType(
-      chatMessage.toPleromaChatMessage(),
+      chatMessage.toPleromaApiChatMessage(),
     );
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));

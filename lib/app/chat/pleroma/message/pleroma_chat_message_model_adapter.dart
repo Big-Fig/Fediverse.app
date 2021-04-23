@@ -2,11 +2,11 @@ import 'package:collection/collection.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart' as pleroma_lib;
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 
-extension IPleromaChatMessageExtension on pleroma_lib.IPleromaApiChatMessage {
+extension IPleromaApiChatMessageExtension on IPleromaApiChatMessage {
   DbPleromaChatMessagePopulatedWrapper toDbChatMessagePopulatedWrapper({
     required DbAccount? dbAccount,
   }) {
@@ -45,11 +45,11 @@ extension IPleromaChatMessageExtension on pleroma_lib.IPleromaApiChatMessage {
     );
   }
 
-  pleroma_lib.PleromaApiChatMessage toPleromaChatMessage() {
-    if (this is pleroma_lib.PleromaApiChatMessage) {
-      return this as pleroma_lib.PleromaApiChatMessage;
+  PleromaApiChatMessage toPleromaApiChatMessage() {
+    if (this is PleromaApiChatMessage) {
+      return this as PleromaApiChatMessage;
     } else {
-      return pleroma_lib.PleromaApiChatMessage(
+      return PleromaApiChatMessage(
         id: id,
         createdAt: createdAt,
         content: content,
@@ -65,8 +65,8 @@ extension IPleromaChatMessageExtension on pleroma_lib.IPleromaApiChatMessage {
 }
 
 extension IPleromaChatMessagePleromaExtension on IPleromaChatMessage {
-  pleroma_lib.PleromaApiChatMessage toPleromaChatMessage() {
-    return pleroma_lib.PleromaApiChatMessage(
+  PleromaApiChatMessage toPleromaApiChatMessage() {
+    return PleromaApiChatMessage(
       id: remoteId,
       createdAt: createdAt,
       content: content,

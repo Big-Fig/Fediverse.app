@@ -145,7 +145,7 @@ void main() {
 
     testDbNotification = testDbNotification.copyWith(
       chatMessage:
-          (await createTestChatMessage(seed: "seed1")).toPleromaChatMessage(),
+          (await createTestChatMessage(seed: "seed1")).toPleromaApiChatMessage(),
     );
     await notificationDao.insert(
       entity: testDbNotification,

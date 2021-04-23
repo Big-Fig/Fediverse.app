@@ -175,7 +175,7 @@ void main() {
       id: id,
       remoteId: newRemoteId,
     )
-        .toPleromaChat(
+        .toPleromaApiChat(
       lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: DbChatMessagePopulated(
           dbChatMessage: dbChatMessage.copyWith(content: newContent),
@@ -235,7 +235,7 @@ void main() {
     await chatRepository.upsertInRemoteType(
       DbPleromaChatPopulatedWrapper(
         dbChatPopulated: dbChatPopulated,
-      ).toPleromaChat(
+      ).toPleromaApiChat(
         accounts: [
           DbAccountPopulatedWrapper(
             dbAccountPopulated: DbAccountPopulated(
@@ -278,7 +278,7 @@ void main() {
     await chatRepository.upsertInRemoteType(
       DbPleromaChatPopulatedWrapper(
         dbChatPopulated: dbChatPopulated,
-      ).toPleromaChat(
+      ).toPleromaApiChat(
         accounts: [
           DbAccountPopulatedWrapper(
             dbAccountPopulated: DbAccountPopulated(
@@ -314,7 +314,7 @@ void main() {
     await chatRepository.upsertAllInRemoteType(
       [
         DbPleromaChatPopulatedWrapper(dbChatPopulated: dbChatPopulated)
-            .toPleromaChat(
+            .toPleromaApiChat(
           accounts: [
             DbAccountPopulatedWrapper(
               dbAccountPopulated: DbAccountPopulated(
@@ -351,7 +351,7 @@ void main() {
     await chatRepository.upsertAllInRemoteType(
       [
         DbPleromaChatPopulatedWrapper(dbChatPopulated: dbChatPopulated)
-            .toPleromaChat(
+            .toPleromaApiChat(
           accounts: [
             DbAccountPopulatedWrapper(
                 dbAccountPopulated: DbAccountPopulated(
