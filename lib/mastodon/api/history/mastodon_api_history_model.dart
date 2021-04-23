@@ -1,4 +1,4 @@
-abstract class IMastodonTagHistory {
+abstract class IMastodonApiTagHistory {
   int? get dayInUnixTimestamp;
 
   // int(pleroma) or String(mastodon)

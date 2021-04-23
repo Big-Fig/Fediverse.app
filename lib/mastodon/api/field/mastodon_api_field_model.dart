@@ -1,4 +1,4 @@
-abstract class IMastodonField {
+abstract class IMastodonApiField {
   String? get name;
 
   String? get value;

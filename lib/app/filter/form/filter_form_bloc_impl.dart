@@ -11,7 +11,7 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.d
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:fedi/mastodon/api/filter/mastodon_filter_model.dart';
+import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_filter_model.dart';
 
 final _wholeWordRegex = RegExp(r'^[a-zA-Z0-9_]+$');
@@ -49,7 +49,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
           originValue: initialValue?.wholeWord ?? false,
         ),
         contextField = FilterContextMultiSelectFromListValueFormFieldBloc(
-          originValue: initialValue?.contextAsMastodonFilterContextType ?? [],
+          originValue: initialValue?.contextAsMastodonApiFilterContextType ?? [],
           validators: [
             MultiSelectFromListValueFormFieldNonNullAndNonEmptyValidationError
                 .createValidator(),
@@ -114,7 +114,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
       expiresInSeconds: expiresInField.currentValueDuration?.totalSeconds,
       context: contextField.currentValue
           .where(
-            (contextType) => contextType != MastodonFilterContextType.unknown,
+            (contextType) => contextType != MastodonApiFilterContextType.unknown,
           )
           .map(
             (contextType) => contextType.toJsonValue(),

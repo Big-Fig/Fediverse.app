@@ -1,7 +1,7 @@
-import 'package:fedi/mastodon/api/pagination/mastodon_pagination_model.dart';
+import 'package:fedi/mastodon/api/pagination/mastodon_api_pagination_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 
-abstract class IPleromaPaginationRequest implements IMastodonPaginationRequest {
+abstract class IPleromaPaginationRequest implements IMastodonApiPaginationRequest {
   List<RestRequestQueryArg> toQueryArgs();
 }
 

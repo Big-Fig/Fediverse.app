@@ -1,4 +1,4 @@
-abstract class IMastodonAccountRegister {
+abstract class IMastodonApiAccountRegister {
   /// Text that will be reviewed by moderators if registrations require manual approval.
   String? get reason;
 

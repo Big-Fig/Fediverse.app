@@ -13,7 +13,7 @@ import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/mastodon/api/media/attachment/mastodon_media_attachment_model.dart';
+import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_status_service_impl.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +37,7 @@ Future goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
 Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
   BuildContext context, {
   required IStatus? localInstanceRemoteStatus,
-  required IMastodonMediaAttachment? localInstanceRemoteInitialMediaAttachment,
+  required IMastodonApiMediaAttachment? localInstanceRemoteInitialMediaAttachment,
 }) async {
   AsyncDialogResult<IStatus?> remoteInstanceStatusDialogResult =
       await PleromaAsyncOperationHelper.performPleromaAsyncOperation<IStatus?>(

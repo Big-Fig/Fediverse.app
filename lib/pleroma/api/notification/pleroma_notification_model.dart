@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fedi/mastodon/api/notification/mastodon_notification_model.dart';
+import 'package:fedi/mastodon/api/notification/mastodon_api_notification_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
@@ -9,7 +9,7 @@ import 'package:moor/moor.dart' as moor;
 
 part 'pleroma_notification_model.g.dart';
 
-abstract class IPleromaNotification extends IMastodonNotification {
+abstract class IPleromaNotification extends IMastodonApiNotification {
   @override
   IPleromaAccount? get account;
 
@@ -299,8 +299,8 @@ class PleromaNotification extends IPleromaNotification {
   }
 
   @override
-  MastodonNotificationType get typeMastodon =>
-      type.toMastodonNotificationType();
+  MastodonApiNotificationType get typeAsMastodonApi =>
+      type.toMastodonApiNotificationType();
 
   @override
   PleromaNotificationType? get typePleroma => type.toPleromaNotificationType();

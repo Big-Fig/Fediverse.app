@@ -22,7 +22,7 @@ import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/file/file_size_helper.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/mastodon/api/instance/mastodon_instance_model.dart';
+import 'package:fedi/mastodon/api/instance/mastodon_api_instance_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_instance_model.dart';
 import 'package:fedi/ui/callback/on_click_ui_callback.dart';
@@ -638,7 +638,7 @@ class _InstanceDetailsStatsWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isHaveStatsFields = snapshot.data!;
         if (isHaveStatsFields) {
-          return StreamBuilder<MastodonInstanceStats?>(
+          return StreamBuilder<MastodonApiInstanceStats?>(
             stream: instanceDetailsBloc.statsStream,
             initialData: instanceDetailsBloc.stats,
             builder: (context, snapshot) {

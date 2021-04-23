@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/mastodon/api/mention/mastodon_mention_model.dart';
+import 'package:fedi/mastodon/api/mention/mastodon_api_mention_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_mention_model.g.dart';
 
-abstract class IPleromaMention implements IMastodonMention {}
+abstract class IPleromaMention implements IMastodonApiMention {}
 
 extension IPleromaMentionStatusListExtension on List<IStatus> {
   List<IPleromaMention> findAllMentions() {

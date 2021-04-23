@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:fedi/mastodon/api/emoji/mastodon_emoji_model.dart';
+import 'package:fedi/mastodon/api/emoji/mastodon_api_emoji_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 // ignore_for_file: no-magic-number
 part 'pleroma_emoji_model.g.dart';
 
-abstract class IPleromaEmoji extends IMastodonEmoji {}
+abstract class IPleromaEmoji extends IMastodonApiEmoji {}
 
 abstract class IPleromaCustomEmoji {
   List<String>? get tags;

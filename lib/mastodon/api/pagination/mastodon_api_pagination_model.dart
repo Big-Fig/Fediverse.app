@@ -1,4 +1,4 @@
-abstract class IMastodonPaginationRequest {
+abstract class IMastodonApiPaginationRequest {
   String? get maxId;
 
   String? get minId;

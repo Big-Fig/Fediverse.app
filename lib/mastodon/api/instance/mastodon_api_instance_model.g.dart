@@ -1,22 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'mastodon_instance_model.dart';
+part of 'mastodon_api_instance_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MastodonInstanceStatsAdapter extends TypeAdapter<MastodonInstanceStats> {
+class MastodonApiInstanceStatsAdapter
+    extends TypeAdapter<MastodonApiInstanceStats> {
   @override
   final int typeId = 29;
 
   @override
-  MastodonInstanceStats read(BinaryReader reader) {
+  MastodonApiInstanceStats read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MastodonInstanceStats(
+    return MastodonApiInstanceStats(
       userCount: fields[0] as int?,
       statusCount: fields[1] as int?,
       domainCount: fields[2] as int?,
@@ -24,7 +25,7 @@ class MastodonInstanceStatsAdapter extends TypeAdapter<MastodonInstanceStats> {
   }
 
   @override
-  void write(BinaryWriter writer, MastodonInstanceStats obj) {
+  void write(BinaryWriter writer, MastodonApiInstanceStats obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -41,28 +42,28 @@ class MastodonInstanceStatsAdapter extends TypeAdapter<MastodonInstanceStats> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MastodonInstanceStatsAdapter &&
+      other is MastodonApiInstanceStatsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class MastodonUrlsAdapter extends TypeAdapter<MastodonUrls> {
+class MastodonApiUrlsAdapter extends TypeAdapter<MastodonApiUrls> {
   @override
   final int typeId = 30;
 
   @override
-  MastodonUrls read(BinaryReader reader) {
+  MastodonApiUrls read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MastodonUrls(
+    return MastodonApiUrls(
       streamingApi: fields[0] as String?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, MastodonUrls obj) {
+  void write(BinaryWriter writer, MastodonApiUrls obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
@@ -75,7 +76,7 @@ class MastodonUrlsAdapter extends TypeAdapter<MastodonUrls> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MastodonUrlsAdapter &&
+      other is MastodonApiUrlsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -84,30 +85,30 @@ class MastodonUrlsAdapter extends TypeAdapter<MastodonUrls> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-MastodonInstanceStats _$MastodonInstanceStatsFromJson(
+MastodonApiInstanceStats _$MastodonApiInstanceStatsFromJson(
     Map<String, dynamic> json) {
-  return MastodonInstanceStats(
+  return MastodonApiInstanceStats(
     userCount: json['user_count'] as int?,
     statusCount: json['status_count'] as int?,
     domainCount: json['domain_count'] as int?,
   );
 }
 
-Map<String, dynamic> _$MastodonInstanceStatsToJson(
-        MastodonInstanceStats instance) =>
+Map<String, dynamic> _$MastodonApiInstanceStatsToJson(
+        MastodonApiInstanceStats instance) =>
     <String, dynamic>{
       'user_count': instance.userCount,
       'status_count': instance.statusCount,
       'domain_count': instance.domainCount,
     };
 
-MastodonUrls _$MastodonUrlsFromJson(Map<String, dynamic> json) {
-  return MastodonUrls(
+MastodonApiUrls _$MastodonApiUrlsFromJson(Map<String, dynamic> json) {
+  return MastodonApiUrls(
     streamingApi: json['streaming_api'] as String?,
   );
 }
 
-Map<String, dynamic> _$MastodonUrlsToJson(MastodonUrls instance) =>
+Map<String, dynamic> _$MastodonApiUrlsToJson(MastodonApiUrls instance) =>
     <String, dynamic>{
       'streaming_api': instance.streamingApi,
     };

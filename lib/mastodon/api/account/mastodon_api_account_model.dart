@@ -1,7 +1,7 @@
-import 'package:fedi/mastodon/api/emoji/mastodon_emoji_model.dart';
-import 'package:fedi/mastodon/api/field/mastodon_field_model.dart';
+import 'package:fedi/mastodon/api/emoji/mastodon_api_emoji_model.dart';
+import 'package:fedi/mastodon/api/field/mastodon_api_field_model.dart';
 
-abstract class IMastodonAccount {
+abstract class IMastodonApiAccount {
   String get username;
 
   String get url;
@@ -24,9 +24,9 @@ abstract class IMastodonAccount {
 
   int get followersCount;
 
-  List<IMastodonField>? get fields;
+  List<IMastodonApiField>? get fields;
 
-  List<IMastodonEmoji>? get emojis;
+  List<IMastodonApiEmoji>? get emojis;
 
   String? get displayName;
 
@@ -69,7 +69,7 @@ abstract class IMastodonAccountRelationship {
   String? get note;
 }
 
-abstract class IMastodonAccountIdentityProof {
+abstract class IMastodonApiAccountIdentityProof {
   String? get provider;
 
   String? get providerUsername;
@@ -81,7 +81,7 @@ abstract class IMastodonAccountIdentityProof {
   String? get profileUrl;
 }
 
-abstract class IMastodonAccountReportRequest {
+abstract class IMastodonApiAccountReportRequest {
   /// ID of the account to report
   String get accountId;
 

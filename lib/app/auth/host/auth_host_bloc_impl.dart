@@ -12,7 +12,7 @@ import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/mastodon/api/application/mastodon_application_model.dart';
+import 'package:fedi/mastodon/api/application/mastodon_api_application_model.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_my_account_service_impl.dart';
 import 'package:fedi/pleroma/api/account/public/pleroma_account_public_model.dart';
 import 'package:fedi/pleroma/api/account/public/pleroma_account_public_service.dart';
@@ -133,7 +133,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     String redirectUri = await _calculateRedirectUri();
 
     var application = await pleromaApplicationService.registerApp(
-      registrationRequest: MastodonApplicationRegistrationRequest(
+      registrationRequest: MastodonApiApplicationRegistrationRequest(
         clientName: "Fedi",
         redirectUris: redirectUri,
         scopes: scopes,

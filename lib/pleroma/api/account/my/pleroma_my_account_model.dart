@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fedi/json/json_model.dart';
-import 'package:fedi/mastodon/api/account/my/mastodon_my_account_model.dart';
+import 'package:fedi/mastodon/api/account/my/mastodon_api_my_account_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/api/field/pleroma_field_model.dart';
@@ -19,7 +19,7 @@ extension IPleromaMyAccountEditExtension on IPleromaMyAccountEdit {
       defaultScope?.toPleromaVisibility();
 }
 
-abstract class IPleromaMyAccountEdit extends IMastodonMyAccountEdit {
+abstract class IPleromaMyAccountEdit extends IMastodonApiMyAccountEdit {
   @override
   IPleromaMyAccountEditSource? get source;
 
@@ -266,7 +266,7 @@ class PleromaMyAccountEdit extends IPleromaMyAccountEdit {
 }
 
 abstract class IPleromaMyAccount
-    implements IMastodonMyAccount, IPleromaAccount {
+    implements IMastodonApiMyAccount, IPleromaAccount {
   @override
   IPleromaMyAccountSource? get source;
 
@@ -341,7 +341,7 @@ extension IPleromaMyAccountExtension on IPleromaMyAccount {
 }
 
 abstract class IPleromaMyAccountEditSource
-    implements IMastodonMyAccountEditSource {}
+    implements IMastodonApiMyAccountEditSource {}
 
 @JsonSerializable(explicitToJson: true)
 class PleromaMyAccountEditSource
@@ -391,7 +391,7 @@ class PleromaMyAccountEditSource
   String toJsonString() => jsonEncode(_$PleromaMyAccountEditSourceToJson(this));
 }
 
-abstract class IPleromaMyAccountSource implements IMastodonMyAccountSource {
+abstract class IPleromaMyAccountSource implements IMastodonApiMyAccountSource {
   @override
   List<IPleromaField>? get fields;
 

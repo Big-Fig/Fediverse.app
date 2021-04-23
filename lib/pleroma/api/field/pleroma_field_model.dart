@@ -1,4 +1,4 @@
-import 'package:fedi/mastodon/api/field/mastodon_field_model.dart';
+import 'package:fedi/mastodon/api/field/mastodon_api_field_model.dart';
 import 'package:flutter_html/html_parser.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -9,7 +9,7 @@ part 'pleroma_field_model.g.dart';
 
 var _logger = Logger("pleroma_field_model.dart");
 
-abstract class IPleromaField implements IMastodonField {}
+abstract class IPleromaField implements IMastodonApiField {}
 
 extension IPleromaFieldExtension on IPleromaField {
   PleromaField toPleromaField() {

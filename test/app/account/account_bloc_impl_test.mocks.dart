@@ -9,10 +9,12 @@ import 'package:fedi/disposable/disposable.dart' as _i15;
 import 'package:fedi/pleroma/api/account/auth/pleroma_auth_account_service_impl.dart'
     as _i8;
 import 'package:fedi/pleroma/api/account/pleroma_account_model.dart' as _i4;
-import 'package:fedi/pleroma/api/pleroma_api_service.dart' as _i10;
 import 'package:fedi/pleroma/api/list/pleroma_list_model.dart' as _i11;
-import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart' as _i12;
-import 'package:fedi/pleroma/api/rest/auth/pleroma_auth_rest_service.dart' as _i2;
+import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart'
+    as _i12;
+import 'package:fedi/pleroma/api/pleroma_api_service.dart' as _i10;
+import 'package:fedi/pleroma/api/rest/auth/pleroma_auth_rest_service.dart'
+    as _i2;
 import 'package:fedi/pleroma/api/rest/pleroma_rest_service.dart' as _i3;
 import 'package:fedi/pleroma/api/status/pleroma_status_model.dart' as _i14;
 import 'package:fedi/pleroma/api/web_sockets/pleroma_web_sockets_model.dart'

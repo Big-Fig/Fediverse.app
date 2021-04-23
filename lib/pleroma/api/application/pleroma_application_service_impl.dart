@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/mastodon/api/application/mastodon_application_model.dart';
+import 'package:fedi/mastodon/api/application/mastodon_api_application_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/application/pleroma_application_exception.dart';
 import 'package:fedi/pleroma/api/application/pleroma_application_model.dart';
@@ -77,7 +77,7 @@ class PleromaApplicationService extends DisposableOwner
 
   @override
   Future<IPleromaClientApplication?> registerApp({
-    required MastodonApplicationRegistrationRequest registrationRequest,
+    required MastodonApiApplicationRegistrationRequest registrationRequest,
   }) async {
     var request = RestRequest.post(
       relativePath: appsRelativeUrlPath,

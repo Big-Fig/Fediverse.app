@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:fedi/mastodon/api/account/public/mastodon_account_public_model.dart';
+import 'package:fedi/mastodon/api/account/public/mastodon_api_account_public_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_account_public_model.g.dart';
 
-abstract class IPleromaAccountRegisterRequest extends IMastodonAccountRegister {
+abstract class IPleromaAccountRegisterRequest extends IMastodonApiAccountRegister {
   Map<String, dynamic> toJson();
 
   String? get captchaToken;

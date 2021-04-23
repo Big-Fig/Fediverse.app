@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:fedi/mastodon/api/announcement/mastodon_announcements_model.dart';
+import 'package:fedi/mastodon/api/announcement/mastodon_api_announcements_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_announcement_model.g.dart';
 
-abstract class IPleromaAnnouncement implements IMastodonAnnouncement {}
+abstract class IPleromaAnnouncement implements IMastodonApiAnnouncement {}
 
 abstract class IPleromaAnnouncementReaction
-    implements IMastodonAnnouncementReaction {}
+    implements IMastodonApiAnnouncementReaction {}
 
 @JsonSerializable(explicitToJson: true)
 class PleromaAnnouncement implements IPleromaAnnouncement {

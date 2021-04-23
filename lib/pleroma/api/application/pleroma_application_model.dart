@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 import 'package:fedi/json/json_model.dart';
-import 'package:fedi/mastodon/api/application/mastodon_application_model.dart';
+import 'package:fedi/mastodon/api/application/mastodon_api_application_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 // ignore_for_file: no-magic-number
 part 'pleroma_application_model.g.dart';
 
-abstract class IPleromaApplication implements IMastodonApplication {}
+abstract class IPleromaApplication implements IMastodonApiApplication {}
 
-abstract class IPleromaClientApplication implements IMastodonClientApplication {
+abstract class IPleromaClientApplication implements IMastodonApiClientApplication {
 }
 
 extension IPleromaApplicationExtension on IPleromaApplication {

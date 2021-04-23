@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:fedi/mastodon/api/filter/mastodon_filter_model.dart';
+import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 // ignore_for_file: no-magic-number
 part 'pleroma_filter_model.g.dart';
 
-abstract class IPleromaFilter extends IMastodonFilter {
+abstract class IPleromaFilter extends IMastodonApiFilter {
   IPleromaFilter copyWith({
     List<String> context,
     DateTime? expiresAt,
@@ -22,7 +22,7 @@ abstract class IPleromaFilter extends IMastodonFilter {
   String toJsonString();
 }
 
-abstract class IPostPleromaFilter implements IPostMastodonFilter {
+abstract class IPostPleromaFilter implements IPostMastodonApiFilter {
   Map<String, dynamic> toJson();
 
   String toJsonString();
@@ -70,8 +70,8 @@ class PleromaFilter extends IPleromaFilter {
   });
 
   @override
-  List<MastodonFilterContextType> get contextMastodonType =>
-      context.toMastodonFilterContextTypes();
+  List<MastodonApiFilterContextType> get contextAsMastodonApiType =>
+      context.toMastodonApiFilterContextTypes();
 
   @override
   bool operator ==(Object other) =>
@@ -168,9 +168,9 @@ class PostPleromaFilter extends IPostPleromaFilter {
   });
 
   @override
-  List<MastodonFilterContextType> get contextMastodonType => context
+  List<MastodonApiFilterContextType> get contextAsMastodonApiType => context
       .map(
-        (contextString) => contextString.toMastodonFilterContextType(),
+        (contextString) => contextString.toMastodonApiFilterContextType(),
       )
       .toList();
 

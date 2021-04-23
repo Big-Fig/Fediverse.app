@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:fedi/mastodon/api/card/mastodon_card_model.dart';
+import 'package:fedi/mastodon/api/card/mastodon_api_card_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_card_model.g.dart';
 
-abstract class IPleromaCard implements IMastodonCard {}
+abstract class IPleromaCard implements IMastodonApiCard {}
 
 extension IPleromaCardExtension on IPleromaCard {
   PleromaCard toPleromaCard() {
@@ -69,7 +69,7 @@ class PleromaCard implements IPleromaCard {
   final String? title;
 
   @override
-  final MastodonCardType? type;
+  final MastodonApiCardType? type;
 
   @override
   final String? url;
