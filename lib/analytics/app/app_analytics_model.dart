@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -11,11 +9,11 @@ part 'app_analytics_model.g.dart';
 @HiveType(typeId: -32 + 94)
 class AppAnalyticsData implements IJsonObject {
   @HiveField(0)
-  final int? appOpenedCount;
+  final int appOpenedCount;
   @HiveField(1)
-  final bool? isAppRated;
+  final bool isAppRated;
 
-  AppAnalyticsData({
+  const AppAnalyticsData({
     required this.appOpenedCount,
     required this.isAppRated,
   });
@@ -33,8 +31,10 @@ class AppAnalyticsData implements IJsonObject {
 
   @override
   String toString() {
-    return 'AppAnalyticsData{appOpenedCount: $appOpenedCount,'
-        ' isAppRated: $isAppRated}';
+    return 'AppAnalyticsData{'
+        'appOpenedCount: $appOpenedCount, '
+        'isAppRated: $isAppRated'
+        '}';
   }
 
   AppAnalyticsData copyWith({
@@ -49,15 +49,6 @@ class AppAnalyticsData implements IJsonObject {
   factory AppAnalyticsData.fromJson(Map<String, dynamic> json) =>
       _$AppAnalyticsDataFromJson(json);
 
-  factory AppAnalyticsData.fromJsonString(String jsonString) =>
-      _$AppAnalyticsDataFromJson(jsonDecode(jsonString));
-
-  static List<AppAnalyticsData> listFromJsonString(String str) =>
-      List<AppAnalyticsData>.from(
-          json.decode(str).map((x) => AppAnalyticsData.fromJson(x)),);
-
   @override
   Map<String, dynamic> toJson() => _$AppAnalyticsDataToJson(this);
-
-  String toJsonString() => jsonEncode(_$AppAnalyticsDataToJson(this));
 }

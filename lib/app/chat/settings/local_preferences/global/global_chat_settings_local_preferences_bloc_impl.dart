@@ -11,7 +11,7 @@ class GlobalChatSettingsLocalPreferencesBloc
   ) : super(preferencesService, "chat.settings.global");
 
   @override
-  ChatSettings get defaultValue => ChatSettings(
+  ChatSettings get defaultPreferenceValue => ChatSettings(
         replaceConversationsWithPleromaChats: true,
         countConversationsInChatsUnreadBadges: true,
       );

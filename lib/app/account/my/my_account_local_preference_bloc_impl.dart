@@ -4,7 +4,7 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class MyAccountLocalPreferenceBloc
-    extends ObjectLocalPreferenceBloc<PleromaMyAccountWrapper>
+    extends ObjectLocalPreferenceBloc<PleromaMyAccountWrapper?>
     implements IMyAccountLocalPreferenceBloc {
   MyAccountLocalPreferenceBloc(
     ILocalPreferencesService preferencesService, {
@@ -15,4 +15,8 @@ class MyAccountLocalPreferenceBloc
           schemaVersion: 1,
           jsonConverter: (json) => PleromaMyAccountWrapper.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  PleromaMyAccountWrapper? get defaultPreferenceValue => null;
 }

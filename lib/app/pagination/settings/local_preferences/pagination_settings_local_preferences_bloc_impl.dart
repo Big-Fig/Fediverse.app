@@ -15,4 +15,8 @@ abstract class PaginationSettingsLocalPreferencesBloc
           schemaVersion: 1,
           jsonConverter: (json) => PaginationSettings.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  PaginationSettings? get defaultPreferenceValue => null;
 }

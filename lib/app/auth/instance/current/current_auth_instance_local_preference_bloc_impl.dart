@@ -4,7 +4,7 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class CurrentAuthInstanceLocalPreferenceBloc
-    extends ObjectLocalPreferenceBloc<AuthInstance>
+    extends ObjectLocalPreferenceBloc<AuthInstance?>
     implements ICurrentAuthInstanceLocalPreferenceBloc {
   CurrentAuthInstanceLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
@@ -14,4 +14,7 @@ class CurrentAuthInstanceLocalPreferenceBloc
           schemaVersion: 1,
           jsonConverter: (json) => AuthInstance.fromJson(json),
         );
+
+  @override
+  AuthInstance? get defaultPreferenceValue => null;
 }

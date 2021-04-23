@@ -13,7 +13,7 @@ class GlobalToastSettingsLocalPreferencesBloc
   ) : super(preferencesService, "toast.settings.global");
 
   @override
-  ToastSettings get defaultValue => ToastSettings(
+  ToastSettings get defaultPreferenceValue => ToastSettings(
         pushSettings: PushSettings.defaultAllEnabled(),
         handlingTypeString: ToastHandlingType.always.toJsonValue(),
       );

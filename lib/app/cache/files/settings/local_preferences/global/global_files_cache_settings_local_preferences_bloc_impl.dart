@@ -13,7 +13,7 @@ class GlobalFilesCacheSettingsLocalPreferencesBloc
   ) : super(preferencesService, "cache.files.settings.global");
 
   @override
-  FilesCacheSettings get defaultValue => FilesCacheSettings(
+  FilesCacheSettings get defaultPreferenceValue => FilesCacheSettings(
         filesCacheSizeLimitCountTypeString:
             FilesCacheSizeLimitCountType.size50.toJsonValue(),
         filesCacheAgeLimitTypeString:

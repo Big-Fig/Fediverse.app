@@ -13,7 +13,7 @@ class GlobalUiSettingsLocalPreferencesBloc
   ) : super(preferencesService, "ui.settings.global");
 
   @override
-  UiSettings get defaultValue => UiSettings(
+  UiSettings get defaultPreferenceValue => UiSettings(
         themeId: null,
         statusFontSize:
             IUiSettingsBloc.defaultStatusFontSettingsValue.toJsonValue(),

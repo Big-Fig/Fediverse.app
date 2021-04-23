@@ -4,8 +4,13 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class AppAnalyticsLocalPreferenceBloc
-    extends ObjectLocalPreferenceBloc<AppAnalyticsData?>
+    extends ObjectLocalPreferenceBloc<AppAnalyticsData>
     implements IAppAnalyticsLocalPreferenceBloc {
+  static const defaultValue = AppAnalyticsData(
+    appOpenedCount: 0,
+    isAppRated: false,
+  );
+
   AppAnalyticsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
   ) : super(
@@ -16,7 +21,7 @@ class AppAnalyticsLocalPreferenceBloc
         );
 
   @override
-  AppAnalyticsData get defaultValue => AppAnalyticsData(
+  AppAnalyticsData get defaultPreferenceValue => AppAnalyticsData(
         appOpenedCount: 0,
         isAppRated: false,
       );

@@ -15,4 +15,8 @@ abstract class FilesCacheSettingsLocalPreferencesBloc
           schemaVersion: 1,
           jsonConverter: (json) => FilesCacheSettings.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  FilesCacheSettings? get defaultPreferenceValue => null;
 }

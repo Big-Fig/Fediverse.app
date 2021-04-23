@@ -16,4 +16,8 @@ abstract class RecentSelectAccountLocalPreferenceBloc
           schemaVersion: 1,
           jsonConverter: (json) => RecentSelectAccountList.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  RecentSelectAccountList? get defaultPreferenceValue => null;
 }

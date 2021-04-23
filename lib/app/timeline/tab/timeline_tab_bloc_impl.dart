@@ -72,7 +72,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
       preferencesService,
       userAtHost: currentAuthInstanceBloc.currentInstance!.userAtHost,
       timelineId: timelineId,
-      defaultValue: null,
+      defaultPreferenceValue: null,
     );
 
     addDisposable(disposable: timelineLocalPreferencesBloc);

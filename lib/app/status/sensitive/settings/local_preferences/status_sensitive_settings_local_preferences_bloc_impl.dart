@@ -4,7 +4,7 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 abstract class StatusSensitiveSettingsLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<StatusSensitiveSettings>
+    extends ObjectLocalPreferenceBloc<StatusSensitiveSettings?>
     implements IStatusSensitiveSettingsLocalPreferencesBloc {
   StatusSensitiveSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
@@ -15,4 +15,8 @@ abstract class StatusSensitiveSettingsLocalPreferencesBloc
           schemaVersion: 1,
           jsonConverter: (json) => StatusSensitiveSettings.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  StatusSensitiveSettings? get defaultPreferenceValue => null;
 }

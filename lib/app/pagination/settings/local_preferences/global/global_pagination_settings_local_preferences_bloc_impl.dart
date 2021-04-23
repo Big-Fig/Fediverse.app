@@ -13,7 +13,7 @@ class GlobalPaginationSettingsLocalPreferencesBloc
   ) : super(preferencesService, "pagination.settings.global");
 
   @override
-  PaginationSettings get defaultValue => PaginationSettings(
+  PaginationSettings get defaultPreferenceValue => PaginationSettings(
         pageSize: IPaginationSettingsBloc.defaultPageSizeValue.toJsonValue(),
       );
 }

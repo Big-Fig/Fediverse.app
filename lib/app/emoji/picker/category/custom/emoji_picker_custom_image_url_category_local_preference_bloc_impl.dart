@@ -16,4 +16,8 @@ class EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc
           jsonConverter: (json) =>
               EmojiPickerCustomImageUrlCategoryItems.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  EmojiPickerCustomImageUrlCategoryItems? get defaultPreferenceValue => null;
 }

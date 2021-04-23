@@ -13,5 +13,5 @@ class FcmPushPermissionAskedLocalPreferencesBloc extends BoolLocalPreferenceBloc
         );
 
   @override
-  bool get defaultValue => false;
+  bool get defaultPreferenceValue => false;
 }
