@@ -26,7 +26,7 @@ class AuthInstance extends IJsonObject {
   @HiveField(2)
   final String acct;
   @HiveField(3)
-  final PleromaOAuthToken? token;
+  final PleromaApiOAuthToken? token;
   @HiveField(4)
   @JsonKey(name: "auth_code")
   final String? authCode;
@@ -38,10 +38,10 @@ class AuthInstance extends IJsonObject {
   bool get isMastodon => !isPleroma;
 
   @HiveField(6)
-  final PleromaClientApplication? application;
+  final PleromaApiClientApplication? application;
 
   @HiveField(7)
-  final PleromaInstance? info;
+  final PleromaApiInstance? info;
 
   bool get isSupportChats =>
       info?.pleroma?.metadata?.features?.contains("pleroma_chat_messages") ==
@@ -111,11 +111,11 @@ class AuthInstance extends IJsonObject {
     String? urlSchema,
     String? urlHost,
     String? acct,
-    PleromaOAuthToken? token,
+    PleromaApiOAuthToken? token,
     String? authCode,
     bool? isPleroma,
-    PleromaClientApplication? application,
-    IPleromaInstance? info,
+    PleromaApiClientApplication? application,
+    IPleromaApiInstance? info,
   }) {
     return AuthInstance(
       urlSchema: urlSchema ?? this.urlSchema,
@@ -125,7 +125,7 @@ class AuthInstance extends IJsonObject {
       authCode: authCode ?? this.authCode,
       isPleroma: isPleroma ?? this.isPleroma,
       application: application ?? this.application,
-      info: info?.toPleromaInstance() ?? this.info,
+      info: info?.toPleromaApiInstance() ?? this.info,
     );
   }
 

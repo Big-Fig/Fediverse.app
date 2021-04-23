@@ -19,11 +19,11 @@ abstract class IInstanceDetailsBloc
 
   Uri get instanceUri;
 
-  IPleromaInstance? get instance;
+  IPleromaApiInstance? get instance;
 
-  Stream<IPleromaInstance?> get instanceStream;
+  Stream<IPleromaApiInstance?> get instanceStream;
 
-  Future<IPleromaInstance> refresh();
+  Future<IPleromaApiInstance> refresh();
 }
 
 extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
@@ -64,9 +64,9 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
   Stream<String?> get versionStream =>
       instanceStream.map((instance) => instance?.version);
 
-  PleromaInstanceVersionType? get versionType => instance?.versionType;
+  PleromaApiInstanceVersionType? get versionType => instance?.versionType;
 
-  Stream<PleromaInstanceVersionType?> get versionTypeStream =>
+  Stream<PleromaApiInstanceVersionType?> get versionTypeStream =>
       instanceStream.map((instance) => instance?.versionType);
 
   MastodonApiUrls? get urls => instance?.urls;
@@ -116,9 +116,9 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
         return maxTootChars != null ? int.parse(maxTootChars.toString()) : null;
       });
 
-  PleromaInstancePollLimits? get pollLimits => instance?.pollLimits;
+  PleromaApiInstancePollLimits? get pollLimits => instance?.pollLimits;
 
-  Stream<PleromaInstancePollLimits?> get pollLimitsStream =>
+  Stream<PleromaApiInstancePollLimits?> get pollLimitsStream =>
       instanceStream.map((instance) => instance?.pollLimits);
 
   int? get uploadLimit => instance?.uploadLimit;
@@ -151,15 +151,15 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
   Stream<int?> get chatLimitStream =>
       instanceStream.map((instance) => instance?.chatLimit);
 
-  PleromaInstancePleromaPart? get pleroma => instance?.pleroma;
+  PleromaApiInstancePleromaPart? get pleroma => instance?.pleroma;
 
-  Stream<PleromaInstancePleromaPart?> get pleromaStream =>
+  Stream<PleromaApiInstancePleromaPart?> get pleromaStream =>
       instanceStream.map((instance) => instance?.pleroma);
 
-  PleromaInstancePleromaPartMetadata? get pleromaMetadata =>
+  PleromaApiInstancePleromaPartMetadata? get pleromaMetadata =>
       instance?.pleroma?.metadata;
 
-  Stream<PleromaInstancePleromaPartMetadata?> get pleromaMetadataStream =>
+  Stream<PleromaApiInstancePleromaPartMetadata?> get pleromaMetadataStream =>
       instanceStream.map((instance) => instance?.pleroma?.metadata);
 
   List<String>? get pleromaMetadataFeatures =>
@@ -168,10 +168,10 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
   Stream<List<String>?> get pleromaMetadataFeaturesStream =>
       instanceStream.map((instance) => instance?.pleroma?.metadata?.features);
 
-  PleromaInstancePleromaPartMetadataFederation? get pleromaMetadataFederation =>
+  PleromaApiInstancePleromaPartMetadataFederation? get pleromaMetadataFederation =>
       instance?.pleroma?.metadata?.federation;
 
-  Stream<PleromaInstancePleromaPartMetadataFederation?>
+  Stream<PleromaApiInstancePleromaPartMetadataFederation?>
       get pleromaMetadataFederationStream => instanceStream
           .map((instance) => instance?.pleroma?.metadata?.federation);
 
@@ -189,11 +189,11 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
         (instance) => instance?.pleroma?.metadata?.accountActivationRequired,
       );
 
-  PleromaInstancePleromaPartMetadataFieldLimits?
+  PleromaApiInstancePleromaPartMetadataFieldLimits?
       get pleromaMetadataFieldsLimits =>
           instance?.pleroma?.metadata?.fieldsLimits;
 
-  Stream<PleromaInstancePleromaPartMetadataFieldLimits?>
+  Stream<PleromaApiInstancePleromaPartMetadataFieldLimits?>
       get pleromaMetadataFieldsLimitsStream => instanceStream
           .map((instance) => instance?.pleroma?.metadata?.fieldsLimits);
 
@@ -207,9 +207,9 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
   Stream<String?> get backgroundImageStream =>
       instanceStream.map((instance) => instance?.backgroundImage);
 
-  IPleromaAccount? get contactAccount => instance?.contactAccount;
+  IPleromaApiAccount? get contactAccount => instance?.contactAccount;
 
-  Stream<IPleromaAccount?> get contactAccountStream =>
+  Stream<IPleromaApiAccount?> get contactAccountStream =>
       instanceStream.map((instance) => instance?.contactAccount);
 
   bool get isHaveDetailsFields => _calculateIsHaveDetailsFields(instance);
@@ -271,51 +271,51 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
       );
 }
 
-bool _calculateIsHaveDetailsFields(IPleromaInstance? instance) =>
+bool _calculateIsHaveDetailsFields(IPleromaApiInstance? instance) =>
     instance?.email != null ||
     instance?.version != null ||
     instance?.languages != null ||
     instance?.vapidPublicKey != null;
 
-bool _calculateIsHaveRegistrationsFields(IPleromaInstance? instance) =>
+bool _calculateIsHaveRegistrationsFields(IPleromaApiInstance? instance) =>
     instance?.registrations != null ||
     instance?.approvalRequired != null ||
     instance?.invitesEnabled != null;
 
-bool _calculateIsHaveStatsFields(IPleromaInstance? instance) =>
+bool _calculateIsHaveStatsFields(IPleromaApiInstance? instance) =>
     instance?.stats?.domainCount != null ||
     instance?.stats?.statusCount != null ||
     instance?.stats?.userCount != null;
 
-bool _calculateIsHaveUploadLimitsFields(IPleromaInstance? instance) =>
+bool _calculateIsHaveUploadLimitsFields(IPleromaApiInstance? instance) =>
     instance?.uploadLimit != null ||
     instance?.avatarUploadLimit != null ||
     instance?.bannerUploadLimit != null ||
     instance?.backgroundUploadLimit != null;
 
-bool _calculateIsHaveMessagesLimitsFields(IPleromaInstance? instance) =>
+bool _calculateIsHaveMessagesLimitsFields(IPleromaApiInstance? instance) =>
     instance?.maxTootChars != null ||
     instance?.chatLimit != null ||
     instance?.descriptionLimit != null;
 
-bool _calculateIsHavePollLimitsFields(IPleromaInstance? instance) =>
+bool _calculateIsHavePollLimitsFields(IPleromaApiInstance? instance) =>
     instance?.pollLimits?.maxOptions != null ||
     instance?.pollLimits?.maxOptionChars != null ||
     instance?.pollLimits?.maxExpiration != null ||
     instance?.pollLimits?.minExpiration != null;
 
-bool _calculateIsHaveFieldsLimitsFields(IPleromaInstance? instance) =>
+bool _calculateIsHaveFieldsLimitsFields(IPleromaApiInstance? instance) =>
     instance?.pleroma?.metadata?.fieldsLimits?.valueLength != null ||
     instance?.pleroma?.metadata?.fieldsLimits?.nameLength != null ||
     instance?.pleroma?.metadata?.fieldsLimits?.maxRemoteFields != null ||
     instance?.pleroma?.metadata?.fieldsLimits?.maxFields != null;
 
-bool _calculateIsHaveMetadataFields(IPleromaInstance? instance) =>
+bool _calculateIsHaveMetadataFields(IPleromaApiInstance? instance) =>
     instance?.pleroma?.metadata?.features?.isNotEmpty == true ||
     instance?.pleroma?.metadata?.postFormats?.isNotEmpty == true;
 
 // ignore: code-metrics
-bool _calculateIsHaveFederationFields(IPleromaInstance? instance) =>
+bool _calculateIsHaveFederationFields(IPleromaApiInstance? instance) =>
     instance?.pleroma?.metadata?.federation?.enabled != null ||
     instance?.pleroma?.metadata?.federation?.exclusions != null ||
     instance?.pleroma?.metadata?.federation?.mrfObjectAge != null ||

@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StatusVisibilityTitleWidget extends StatelessWidget {
-  final PleromaVisibility visibility;
+  final PleromaApiVisibility visibility;
   final bool isPossibleToChangeVisibility;
   final bool isSelectedVisibility;
 
@@ -26,7 +26,7 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
 
   static Text buildVisibilityTitle({
     required BuildContext context,
-    required PleromaVisibility visibility,
+    required PleromaApiVisibility visibility,
     required isPossibleToChangeVisibility,
     required isSelectedVisibility,
   }) =>
@@ -43,24 +43,24 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
 
   static String mapVisibilityToTitle(
     BuildContext context,
-    PleromaVisibility visibility,
+    PleromaApiVisibility visibility,
   ) {
     switch (visibility) {
-      case PleromaVisibility.public:
+      case PleromaApiVisibility.public:
         return S.of(context).app_status_post_visibility_state_public;
-      case PleromaVisibility.unlisted:
+      case PleromaApiVisibility.unlisted:
         return S.of(context).app_status_post_visibility_state_unlisted;
 
-      case PleromaVisibility.local:
+      case PleromaApiVisibility.local:
         return S.of(context).app_status_post_visibility_state_local;
 
-      case PleromaVisibility.direct:
+      case PleromaApiVisibility.direct:
         return S.of(context).app_status_post_visibility_state_direct;
 
-      case PleromaVisibility.list:
+      case PleromaApiVisibility.list:
         return S.of(context).app_status_post_visibility_state_list;
 
-      case PleromaVisibility.private:
+      case PleromaApiVisibility.private:
         return S.of(context).app_status_post_visibility_state_private;
     }
   }

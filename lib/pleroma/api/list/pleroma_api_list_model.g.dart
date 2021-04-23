@@ -6,24 +6,24 @@ part of 'pleroma_api_list_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PleromaListAdapter extends TypeAdapter<PleromaList> {
+class PleromaApiListAdapter extends TypeAdapter<PleromaApiList> {
   @override
   final int typeId = 48;
 
   @override
-  PleromaList read(BinaryReader reader) {
+  PleromaApiList read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaList(
+    return PleromaApiList(
       id: fields[0] as String,
       title: fields[1] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, PleromaList obj) {
+  void write(BinaryWriter writer, PleromaApiList obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -38,7 +38,7 @@ class PleromaListAdapter extends TypeAdapter<PleromaList> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaListAdapter &&
+      other is PleromaApiListAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -47,14 +47,14 @@ class PleromaListAdapter extends TypeAdapter<PleromaList> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaList _$PleromaListFromJson(Map<String, dynamic> json) {
-  return PleromaList(
+PleromaApiList _$PleromaApiListFromJson(Map<String, dynamic> json) {
+  return PleromaApiList(
     id: json['id'] as String,
     title: json['title'] as String,
   );
 }
 
-Map<String, dynamic> _$PleromaListToJson(PleromaList instance) =>
+Map<String, dynamic> _$PleromaApiListToJson(PleromaApiList instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

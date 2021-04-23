@@ -1,5 +1,5 @@
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_exception.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
@@ -12,11 +12,11 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaChatService extends DisposableOwner
-    implements IPleromaChatService {
+class PleromaApiChatService extends DisposableOwner
+    implements IPleromaApiChatService {
   final chatRelativeUrlPath = "/api/v1/pleroma/chats";
   @override
-  final IPleromaAuthRestService restService;
+  final IPleromaApiAuthRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -31,56 +31,56 @@ class PleromaChatService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaChatService({required this.restService});
+  PleromaApiChatService({required this.restService});
 
-  List<IPleromaChat> parseChatListResponse(Response httpResponse) {
+  List<IPleromaApiChat> parseChatListResponse(Response httpResponse) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaChat.listFromJsonString(
+      return PleromaApiChat.listFromJsonString(
         httpResponse.body,
       );
     } else {
-      throw PleromaChatException(
+      throw PleromaApiChatException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  IPleromaChat parseChatResponse(Response httpResponse) {
+  IPleromaApiChat parseChatResponse(Response httpResponse) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaChat.fromJsonString(
+      return PleromaApiChat.fromJsonString(
         httpResponse.body,
       );
     } else {
-      throw PleromaChatException(
+      throw PleromaApiChatException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  List<IPleromaChatMessage> parseChatMessageListResponse(
+  List<IPleromaApiChatMessage> parseChatMessageListResponse(
     Response httpResponse,
   ) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaChatMessage.listFromJsonString(
+      return PleromaApiChatMessage.listFromJsonString(
         httpResponse.body,
       );
     } else {
-      throw PleromaChatException(
+      throw PleromaApiChatException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  IPleromaChatMessage parseChatMessageResponse(Response httpResponse) {
+  IPleromaApiChatMessage parseChatMessageResponse(Response httpResponse) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaChatMessage.fromJsonString(
+      return PleromaApiChatMessage.fromJsonString(
         httpResponse.body,
       );
     } else {
-      throw PleromaChatException(
+      throw PleromaApiChatException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -88,8 +88,8 @@ class PleromaChatService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaChat>> getChats({
-    IPleromaPaginationRequest? pagination,
+  Future<List<IPleromaApiChat>> getChats({
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -104,9 +104,9 @@ class PleromaChatService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaChatMessage>> getChatMessages({
+  Future<List<IPleromaApiChatMessage>> getChatMessages({
     required String? chatId,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     assert(chatId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
@@ -126,7 +126,7 @@ class PleromaChatService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaChat> markChatAsRead({
+  Future<IPleromaApiChat> markChatAsRead({
     required String? chatId,
     required String? lastReadChatMessageId,
   }) async {
@@ -149,7 +149,7 @@ class PleromaChatService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaChat> getOrCreateChatByAccountId({
+  Future<IPleromaApiChat> getOrCreateChatByAccountId({
     required String? accountId,
   }) async {
     assert(accountId?.isNotEmpty == true);
@@ -167,7 +167,7 @@ class PleromaChatService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaChat> getChat({
+  Future<IPleromaApiChat> getChat({
     required String? id,
   }) async {
     assert(id?.isNotEmpty == true);
@@ -184,9 +184,9 @@ class PleromaChatService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaChatMessage> sendMessage({
+  Future<IPleromaApiChatMessage> sendMessage({
     required String? chatId,
-    required IPleromaChatMessageSendData data,
+    required IPleromaApiChatMessageSendData data,
   }) async {
     assert(chatId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(

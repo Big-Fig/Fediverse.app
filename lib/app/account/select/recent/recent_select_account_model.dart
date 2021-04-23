@@ -16,7 +16,7 @@ part 'recent_select_account_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class RecentSelectAccountList implements IJsonObject {
   @HiveField(0)
-  final List<PleromaAccount>? recentItems;
+  final List<PleromaApiAccount>? recentItems;
 
   RecentSelectAccountList({this.recentItems});
 

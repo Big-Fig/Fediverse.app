@@ -22,12 +22,12 @@ class PollWidget extends StatelessWidget {
     var pollBloc = IPollBloc.of(context);
     return Padding(
       padding: FediPadding.horizontalBigPadding,
-      child: StreamBuilder<IPleromaPoll>(
+      child: StreamBuilder<IPleromaApiPoll>(
         initialData: pollBloc.poll,
         stream: pollBloc.pollStream,
         builder: (context, snapshot) {
           var poll = snapshot.data!;
-          return Provider<IPleromaPoll>.value(
+          return Provider<IPleromaApiPoll>.value(
             value: poll,
             child: const _PollBodyWidget(),
           );
@@ -45,12 +45,12 @@ class _PollBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
 
     return Column(
       children: [
         ...poll.options
-            .map((pollOption) => Provider<IPleromaPollOption>.value(
+            .map((pollOption) => Provider<IPleromaApiPollOption>.value(
                   value: pollOption,
                   child: const _PollBodyOptionWidget(),
                 ))
@@ -113,8 +113,8 @@ class _PollBodyOptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
-    var poll = Provider.of<IPleromaPoll>(context);
-    var pollOption = Provider.of<IPleromaPollOption>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+    var pollOption = Provider.of<IPleromaApiPollOption>(context);
 
     return Padding(
       padding: const EdgeInsets.only(top: FediSizes.mediumPadding),
@@ -143,7 +143,7 @@ class PollMetadataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -176,7 +176,7 @@ class PollMetadataTotalVotesCountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
     return Text(
       S.of(context).app_poll_metadata_totalVotes(poll.votesCount),
       style: IFediUiTextTheme.of(context).mediumShortGrey,
@@ -220,7 +220,7 @@ class PollMetadataExpiresAtWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
     return poll.expired
         ? const _PollMetadataExpiresAtExpiredWidget()
         : const _PollMetadataExpiresAtNotExpiredWidget();
@@ -248,7 +248,7 @@ class _PollMetadataExpiresAtNotExpiredWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
     return DateTimeDynamicTimeAgoWidget(
       dateTime: poll.expiresAt,
       textStyle: IFediUiTextTheme.of(context).mediumShortGrey,
@@ -289,8 +289,8 @@ class _PollOptionBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var backgroundColor = IFediUiColorTheme.of(context).white;
-    var poll = Provider.of<IPleromaPoll>(context);
-    var pollOption = Provider.of<IPleromaPollOption>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+    var pollOption = Provider.of<IPleromaApiPollOption>(context);
 
     var isOwnVote = poll.isOwnVote(pollOption);
 
@@ -327,8 +327,8 @@ class _PollOptionBodyFillerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
-    var pollOption = Provider.of<IPleromaPollOption>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+    var pollOption = Provider.of<IPleromaApiPollOption>(context);
 
     var isOwnVote = poll.isOwnVote(pollOption);
 
@@ -385,15 +385,15 @@ class _PollOptionSelectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
-    var poll = Provider.of<IPleromaPoll>(context);
-    var pollOption = Provider.of<IPleromaPollOption>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+    var pollOption = Provider.of<IPleromaApiPollOption>(context);
     return StreamBuilder<bool>(
       stream: pollBloc.isPossibleToVoteStream,
       initialData: pollBloc.isPossibleToVote,
       builder: (context, snapshot) {
         var isPossibleToVote = snapshot.data!;
         if (isPossibleToVote) {
-          return StreamBuilder<List<IPleromaPollOption>?>(
+          return StreamBuilder<List<IPleromaApiPollOption>?>(
             stream: pollBloc.selectedVotesStream,
             initialData: pollBloc.selectedVotes,
             builder: (context, snapshot) {
@@ -455,7 +455,7 @@ class _PollOptionContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: FediSizes.mediumPadding,
@@ -477,7 +477,7 @@ class PollOptionVotesCountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
     return Text(
       "(${poll.votesCount.toString()})",
       style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
@@ -492,8 +492,8 @@ class PollOptionVotesPercentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
-    var pollOption = Provider.of<IPleromaPollOption>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+    var pollOption = Provider.of<IPleromaApiPollOption>(context);
 
     var isOwnVote = poll.isOwnVote(pollOption);
 
@@ -519,8 +519,8 @@ class PollOptionTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
-    var pollOption = Provider.of<IPleromaPollOption>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+    var pollOption = Provider.of<IPleromaApiPollOption>(context);
 
     var isOwnVote = poll.isOwnVote(pollOption);
 

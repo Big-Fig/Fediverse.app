@@ -7,8 +7,8 @@ import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:http/http.dart';
 
-class PleromaAuthRestService extends PleromaRestService
-    implements IPleromaAuthRestService {
+class PleromaAuthRestService extends PleromaApiRestService
+    implements IPleromaApiAuthRestService {
   static final authHeaderKey = "authorization";
   static final authHeaderValuePrefix = "Bearer";
 

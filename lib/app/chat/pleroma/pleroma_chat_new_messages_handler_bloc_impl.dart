@@ -7,7 +7,7 @@ import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 
 class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
     implements IPleromaChatNewMessagesHandlerBloc {
-  final IPleromaChatService pleromaChatService;
+  final IPleromaApiChatService pleromaChatService;
   final IPleromaChatRepository chatRepository;
   final IPleromaChatCurrentBloc currentChatBloc;
 
@@ -18,7 +18,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
   });
 
   @override
-  Future handleNewMessage(IPleromaChatMessage chatMessage) async {
+  Future handleNewMessage(IPleromaApiChatMessage chatMessage) async {
     var chatId = chatMessage.chatId;
 
     // local chat message may not exist
@@ -68,7 +68,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
   }
 
   @override
-  Future handleChatUpdate(IPleromaChat chat) async {
+  Future handleChatUpdate(IPleromaApiChat chat) async {
     // increase only if chat closed now
     var chatId = chat.id;
     var isMessageForOpenedChat =

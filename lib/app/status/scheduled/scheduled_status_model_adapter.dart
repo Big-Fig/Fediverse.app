@@ -4,14 +4,14 @@ import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_m
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 
 extension IScheduledStatusListExtension on List<IScheduledStatus> {
-  List<PleromaScheduledStatus> toPleromaScheduledStatuses() => map(
+  List<PleromaApiScheduledStatus> toPleromaScheduledStatuses() => map(
         (pleromaScheduledStatus) =>
             pleromaScheduledStatus.toPleromaScheduledStatus(),
       ).toList();
 }
 
 extension IPleromaScheduledStatusDbListExtension
-    on List<IPleromaScheduledStatus> {
+    on List<IPleromaApiScheduledStatus> {
   List<DbScheduledStatus> toDbScheduledStatusList({
     required bool canceled,
   }) {
@@ -22,14 +22,14 @@ extension IPleromaScheduledStatusDbListExtension
 }
 
 extension IScheduledStatusbListExtension on List<IScheduledStatus> {
-  List<PleromaScheduledStatus> toPleromaScheduledStatusList() {
+  List<PleromaApiScheduledStatus> toPleromaScheduledStatusList() {
     return map(
       (item) => item.toPleromaScheduledStatus(),
     ).toList();
   }
 }
 
-extension IPleromaScheduledStatusDbExtension on IPleromaScheduledStatus {
+extension IPleromaScheduledStatusDbExtension on IPleromaApiScheduledStatus {
   DbScheduledStatus toDbScheduledStatus({
     required bool canceled,
   }) {
@@ -38,15 +38,15 @@ extension IPleromaScheduledStatusDbExtension on IPleromaScheduledStatus {
       remoteId: id,
       scheduledAt: scheduledAt,
       params: params.toPleromaScheduledStatusParams(),
-      mediaAttachments: mediaAttachments?.toPleromaMediaAttachments(),
+      mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
       canceled: canceled,
     );
   }
 }
 
 extension IScheduledStatusExtension on IScheduledStatus {
-  PleromaScheduledStatus toPleromaScheduledStatus() {
-    return PleromaScheduledStatus(
+  PleromaApiScheduledStatus toPleromaScheduledStatus() {
+    return PleromaApiScheduledStatus(
       id: remoteId!,
       mediaAttachments: mediaAttachments,
       params: params.toPleromaScheduledStatusParams(),

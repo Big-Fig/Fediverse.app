@@ -8,20 +8,20 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_chat_model.g.dart';
 
-abstract class IPleromaChat {
+abstract class IPleromaApiChat {
   String get id;
 
   int get unread;
 
   DateTime? get updatedAt;
 
-  IPleromaAccount get account;
+  IPleromaApiAccount get account;
 
-  IPleromaChatMessage? get lastMessage;
+  IPleromaApiChatMessage? get lastMessage;
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaChat implements IPleromaChat {
+class PleromaApiChat implements IPleromaApiChat {
   @override
   final String id;
   @override
@@ -32,13 +32,13 @@ class PleromaChat implements IPleromaChat {
   final DateTime? updatedAt;
 
   @override
-  final PleromaAccount account;
+  final PleromaApiAccount account;
 
   @override
   @JsonKey(name: "last_message")
-  final PleromaChatMessage? lastMessage;
+  final PleromaApiChatMessage? lastMessage;
 
-  PleromaChat({
+  PleromaApiChat({
     required this.id,
     required this.unread,
     required this.account,
@@ -46,14 +46,14 @@ class PleromaChat implements IPleromaChat {
     required this.lastMessage,
   });
 
-  PleromaChat copyWith({
+  PleromaApiChat copyWith({
     String? id,
     bool? unread,
-    PleromaAccount? account,
+    PleromaApiAccount? account,
     DateTime? updatedAt,
-    PleromaChatMessage? lastMessage,
+    PleromaApiChatMessage? lastMessage,
   }) =>
-      PleromaChat(
+      PleromaApiChat(
         id: id ?? this.id,
         unread: unread as int? ?? this.unread,
         account: account ?? this.account,
@@ -61,25 +61,25 @@ class PleromaChat implements IPleromaChat {
         lastMessage: lastMessage ?? this.lastMessage,
       );
 
-  factory PleromaChat.fromJson(Map<String, dynamic> json) =>
-      _$PleromaChatFromJson(json);
+  factory PleromaApiChat.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiChatFromJson(json);
 
-  factory PleromaChat.fromJsonString(String jsonString) =>
-      _$PleromaChatFromJson(jsonDecode(jsonString));
+  factory PleromaApiChat.fromJsonString(String jsonString) =>
+      _$PleromaApiChatFromJson(jsonDecode(jsonString));
 
-  static List<PleromaChat> listFromJsonString(String str) =>
-      List<PleromaChat>.from(
-        json.decode(str).map((x) => PleromaChat.fromJson(x)),
+  static List<PleromaApiChat> listFromJsonString(String str) =>
+      List<PleromaApiChat>.from(
+        json.decode(str).map((x) => PleromaApiChat.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$PleromaChatToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiChatToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaChatToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiChatToJson(this));
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaChat &&
+      other is PleromaApiChat &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           unread == other.unread &&
@@ -97,12 +97,17 @@ class PleromaChat implements IPleromaChat {
 
   @override
   String toString() {
-    return 'PleromaChat{id: $id, unread: $unread, updatedAt: $updatedAt,'
-        ' account: $account, lastMessage: $lastMessage}';
+    return 'PleromaApiChat{'
+        'id: $id, '
+        'unread: $unread, '
+        'updatedAt: $updatedAt, '
+        'account: $account, '
+        'lastMessage: $lastMessage'
+        '}';
   }
 }
 
-abstract class IPleromaChatMessage {
+abstract class IPleromaApiChatMessage {
   String get id;
 
   String get chatId;
@@ -113,15 +118,15 @@ abstract class IPleromaChatMessage {
 
   DateTime get createdAt;
 
-  List<IPleromaEmoji>? get emojis;
+  List<IPleromaApiEmoji>? get emojis;
 
-  IPleromaMediaAttachment? get mediaAttachment;
+  IPleromaApiMediaAttachment? get mediaAttachment;
 
-  IPleromaCard? get card;
+  IPleromaApiCard? get card;
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaChatMessage extends IPleromaChatMessage {
+class PleromaApiChatMessage extends IPleromaApiChatMessage {
   @override
   final String id;
   @override
@@ -136,15 +141,15 @@ class PleromaChatMessage extends IPleromaChatMessage {
   @JsonKey(name: "created_at")
   final DateTime createdAt;
   @override
-  final List<PleromaEmoji>? emojis;
+  final List<PleromaApiEmoji>? emojis;
   @override
   @JsonKey(name: "attachment")
-  final PleromaMediaAttachment? mediaAttachment;
+  final PleromaApiMediaAttachment? mediaAttachment;
 
   @override
-  final PleromaCard? card;
+  final PleromaApiCard? card;
 
-  PleromaChatMessage({
+  PleromaApiChatMessage({
     required this.id,
     required this.chatId,
     required this.accountId,
@@ -157,18 +162,22 @@ class PleromaChatMessage extends IPleromaChatMessage {
 
   @override
   String toString() {
-    return 'PleromaChatMessage{id: $id, chatId: $chatId, '
-        'accountId: $accountId, content: $content,'
-        ' createdAt: $createdAt, emojis: $emojis,'
-        ' mediaAttachment: $mediaAttachment'
-        ' card: $card'
+    return 'PleromaApiChatMessage{'
+        'id: $id, '
+        'chatId: $chatId, '
+        'accountId: $accountId, '
+        'content: $content, '
+        'createdAt: $createdAt, '
+        'emojis: $emojis, '
+        'mediaAttachment: $mediaAttachment '
+        'card: $card'
         '}';
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaChatMessage &&
+      other is PleromaApiChatMessage &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           chatId == other.chatId &&
@@ -190,30 +199,30 @@ class PleromaChatMessage extends IPleromaChatMessage {
       mediaAttachment.hashCode ^
       card.hashCode;
 
-  factory PleromaChatMessage.fromJson(Map<String, dynamic> json) =>
-      _$PleromaChatMessageFromJson(json);
+  factory PleromaApiChatMessage.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiChatMessageFromJson(json);
 
-  factory PleromaChatMessage.fromJsonString(String jsonString) =>
-      _$PleromaChatMessageFromJson(jsonDecode(jsonString));
+  factory PleromaApiChatMessage.fromJsonString(String jsonString) =>
+      _$PleromaApiChatMessageFromJson(jsonDecode(jsonString));
 
-  static List<PleromaChatMessage> listFromJsonString(String str) =>
-      List<PleromaChatMessage>.from(
-        json.decode(str).map((x) => PleromaChatMessage.fromJson(x)),
+  static List<PleromaApiChatMessage> listFromJsonString(String str) =>
+      List<PleromaApiChatMessage>.from(
+        json.decode(str).map((x) => PleromaApiChatMessage.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$PleromaChatMessageToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiChatMessageToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaChatMessageToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiChatMessageToJson(this));
 }
 
-abstract class IPleromaChatMessageSendData {
+abstract class IPleromaApiChatMessageSendData {
   String? get content;
 
   String? get mediaId;
 
   String? get idempotencyKey;
 
-  IPleromaChatMessageSendData copyWith({
+  IPleromaApiChatMessageSendData copyWith({
     String? content,
     String? mediaId,
     String? idempotencyKey,
@@ -223,7 +232,7 @@ abstract class IPleromaChatMessageSendData {
 }
 
 @JsonSerializable()
-class PleromaChatMessageSendData implements IPleromaChatMessageSendData {
+class PleromaApiChatMessageSendData implements IPleromaApiChatMessageSendData {
   @override
   final String? content;
   @override
@@ -234,19 +243,19 @@ class PleromaChatMessageSendData implements IPleromaChatMessageSendData {
   @JsonKey(name: "idempotency_key")
   final String? idempotencyKey;
 
-  PleromaChatMessageSendData({
+  PleromaApiChatMessageSendData({
     required this.content,
     required this.mediaId,
     required this.idempotencyKey,
   });
 
   @override
-  PleromaChatMessageSendData copyWith({
+  PleromaApiChatMessageSendData copyWith({
     String? content,
     String? mediaId,
     String? idempotencyKey,
   }) =>
-      PleromaChatMessageSendData(
+      PleromaApiChatMessageSendData(
         content: content ?? this.content,
         mediaId: mediaId ?? this.mediaId,
         idempotencyKey: idempotencyKey ?? this.idempotencyKey,
@@ -255,7 +264,7 @@ class PleromaChatMessageSendData implements IPleromaChatMessageSendData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaChatMessageSendData &&
+      other is PleromaApiChatMessageSendData &&
           runtimeType == other.runtimeType &&
           content == other.content &&
           mediaId == other.mediaId;
@@ -265,22 +274,25 @@ class PleromaChatMessageSendData implements IPleromaChatMessageSendData {
 
   @override
   String toString() {
-    return 'PleromaChatMessageSendData{content: $content, mediaId: $mediaId}';
+    return 'PleromaApiChatMessageSendData{'
+        'content: $content, '
+        'mediaId: $mediaId'
+        '}';
   }
 
-  factory PleromaChatMessageSendData.fromJson(Map<String, dynamic> json) =>
-      _$PleromaChatMessageSendDataFromJson(json);
+  factory PleromaApiChatMessageSendData.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiChatMessageSendDataFromJson(json);
 
-  factory PleromaChatMessageSendData.fromJsonString(String jsonString) =>
-      _$PleromaChatMessageSendDataFromJson(jsonDecode(jsonString));
+  factory PleromaApiChatMessageSendData.fromJsonString(String jsonString) =>
+      _$PleromaApiChatMessageSendDataFromJson(jsonDecode(jsonString));
 
-  static List<PleromaChatMessageSendData> listFromJsonString(String str) =>
-      List<PleromaChatMessageSendData>.from(
-        json.decode(str).map((x) => PleromaChatMessageSendData.fromJson(x)),
+  static List<PleromaApiChatMessageSendData> listFromJsonString(String str) =>
+      List<PleromaApiChatMessageSendData>.from(
+        json.decode(str).map((x) => PleromaApiChatMessageSendData.fromJson(x)),
       );
 
   @override
-  Map<String, dynamic> toJson() => _$PleromaChatMessageSendDataToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiChatMessageSendDataToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaChatMessageSendDataToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiChatMessageSendDataToJson(this));
 }

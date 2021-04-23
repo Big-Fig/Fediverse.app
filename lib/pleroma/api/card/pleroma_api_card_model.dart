@@ -5,14 +5,14 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_card_model.g.dart';
 
-abstract class IPleromaCard implements IMastodonApiCard {}
+abstract class IPleromaApiCard implements IMastodonApiCard {}
 
-extension IPleromaCardExtension on IPleromaCard {
-  PleromaCard toPleromaCard() {
-    if (this is PleromaCard) {
-      return this as PleromaCard;
+extension IPleromaApiCardExtension on IPleromaApiCard {
+  PleromaApiCard toPleromaApiCard() {
+    if (this is PleromaApiCard) {
+      return this as PleromaApiCard;
     } else {
-      return PleromaCard(
+      return PleromaApiCard(
         authorName: authorName,
         authorUrl: authorUrl,
         description: description,
@@ -32,7 +32,7 @@ extension IPleromaCardExtension on IPleromaCard {
 }
 
 @JsonSerializable()
-class PleromaCard implements IPleromaCard {
+class PleromaApiCard implements IPleromaApiCard {
   @override
   @JsonKey(name: "author_name")
   final String? authorName;
@@ -77,7 +77,7 @@ class PleromaCard implements IPleromaCard {
   @override
   final int? width;
 
-  PleromaCard({
+  PleromaApiCard({
     required this.authorName,
     required this.authorUrl,
     required this.description,
@@ -93,7 +93,7 @@ class PleromaCard implements IPleromaCard {
     required this.width,
   });
 
-  PleromaCard.only({
+  PleromaApiCard.only({
     this.authorName,
     this.authorUrl,
     this.description,
@@ -109,25 +109,25 @@ class PleromaCard implements IPleromaCard {
     this.width,
   });
 
-  factory PleromaCard.fromJson(Map<String, dynamic> json) =>
-      _$PleromaCardFromJson(json);
+  factory PleromaApiCard.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiCardFromJson(json);
 
-  factory PleromaCard.fromJsonString(String jsonString) =>
-      _$PleromaCardFromJson(jsonDecode(jsonString));
+  factory PleromaApiCard.fromJsonString(String jsonString) =>
+      _$PleromaApiCardFromJson(jsonDecode(jsonString));
 
-  static List<PleromaCard> listFromJsonString(String str) =>
-      List<PleromaCard>.from(
-        json.decode(str).map((x) => PleromaCard.fromJson(x)),
+  static List<PleromaApiCard> listFromJsonString(String str) =>
+      List<PleromaApiCard>.from(
+        json.decode(str).map((x) => PleromaApiCard.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$PleromaCardToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiCardToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaCardToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiCardToJson(this));
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaCard &&
+      other is PleromaApiCard &&
           runtimeType == other.runtimeType &&
           authorName == other.authorName &&
           authorUrl == other.authorUrl &&
@@ -161,10 +161,20 @@ class PleromaCard implements IPleromaCard {
 
   @override
   String toString() {
-    return 'PleromaCard{authorName: $authorName, authorUrl: $authorUrl,'
-        ' description: $description, embedUrl: $embedUrl, height: $height,'
-        ' html: $html, image: $image, providerName: $providerName,'
-        ' providerUrl: $providerUrl, title: $title, type: $type,'
-        ' url: $url, width: $width}';
+    return 'PleromaApiCard{'
+        'authorName: $authorName, '
+        'authorUrl: $authorUrl, '
+        'description: $description, '
+        'embedUrl: $embedUrl, '
+        'height: $height, '
+        'html: $html, '
+        'image: $image, '
+        'providerName: $providerName, '
+        'providerUrl: $providerUrl, '
+        'title: $title, '
+        'type: $type, '
+        'url: $url, '
+        'width: $width'
+        '}';
   }
 }

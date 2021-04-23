@@ -19,11 +19,11 @@ abstract class IPostStatusSettingsBloc
 
   void changeMarkMediaAsNsfwOnAttach(bool value);
 
-  PleromaVisibility get defaultVisibility;
+  PleromaApiVisibility get defaultVisibility;
 
-  Stream<PleromaVisibility> get defaultVisibilityStream;
+  Stream<PleromaApiVisibility> get defaultVisibilityStream;
 
-  void changeDefaultVisibility(PleromaVisibility value);
+  void changeDefaultVisibility(PleromaApiVisibility value);
 
   LocalizationLocale? get defaultStatusLocale;
 

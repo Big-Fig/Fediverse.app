@@ -8,12 +8,12 @@ Function eq = const ListEquality().equals;
 class MediaAttachmentListBloc extends DisposableOwner
     implements IMediaAttachmentListBloc {
   @override
-  final List<IPleromaMediaAttachment> mediaAttachments;
+  final List<IPleromaApiMediaAttachment> mediaAttachments;
   @override
-  final IPleromaMediaAttachment? initialMediaAttachment;
+  final IPleromaApiMediaAttachment? initialMediaAttachment;
 
   MediaAttachmentListBloc({
-    required  List<IPleromaMediaAttachment>? mediaAttachments,
+    required  List<IPleromaApiMediaAttachment>? mediaAttachments,
     required this.initialMediaAttachment,
   }): mediaAttachments = mediaAttachments ?? [];
 

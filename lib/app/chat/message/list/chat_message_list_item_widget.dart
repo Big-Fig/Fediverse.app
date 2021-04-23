@@ -354,14 +354,14 @@ class _ChatMessageListItemCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var messageBloc = IChatMessageBloc.of(context);
-    return StreamBuilder<IPleromaCard?>(
+    return StreamBuilder<IPleromaApiCard?>(
       stream: messageBloc.cardStream,
       initialData: messageBloc.card,
       builder: (context, snapshot) {
         var card = snapshot.data;
 
         if (card != null) {
-          return Provider<IPleromaCard?>.value(
+          return Provider<IPleromaApiCard?>.value(
             value: card,
             child: const CardWidget(),
           );
@@ -405,7 +405,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var messageBloc = IChatMessageBloc.of(context);
-    return StreamBuilder<List<IPleromaMediaAttachment>?>(
+    return StreamBuilder<List<IPleromaApiMediaAttachment>?>(
       stream: messageBloc.mediaAttachmentsStream,
       builder: (context, snapshot) {
         var mediaAttachments = snapshot.data;
@@ -413,7 +413,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Provider<List<IPleromaMediaAttachment>?>.value(
+        return Provider<List<IPleromaApiMediaAttachment>?>.value(
           value: mediaAttachments!,
           child: InkWell(
             onTap: () {
@@ -423,7 +423,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
                 initialMediaAttachment: null,
               );
             },
-            child: ProxyProvider<List<IPleromaMediaAttachment>?,
+            child: ProxyProvider<List<IPleromaApiMediaAttachment>?,
                 IMediaAttachmentListBloc>(
               update: (context, mediaAttachments, _) => MediaAttachmentListBloc(
                 initialMediaAttachment: null,

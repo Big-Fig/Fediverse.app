@@ -6,7 +6,7 @@ class StatusBodyBloc extends DisposableOwner implements IStatusBodyBloc {
   @override
   final bool collapsible;
   @override
-  final IPleromaMediaAttachment? initialMediaAttachment;
+  final IPleromaApiMediaAttachment? initialMediaAttachment;
 
   StatusBodyBloc({
     required this.collapsible,

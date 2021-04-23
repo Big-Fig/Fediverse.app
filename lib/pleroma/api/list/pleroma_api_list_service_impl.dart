@@ -1,6 +1,6 @@
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_exception.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_service.dart';
@@ -13,11 +13,11 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaListService extends DisposableOwner
-    implements IPleromaListService {
+class PleromaApiListService extends DisposableOwner
+    implements IPleromaApiListService {
   final listRelativeUrlPath = "/api/v1/lists";
   @override
-  final IPleromaRestService restService;
+  final IPleromaApiRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -32,43 +32,43 @@ class PleromaListService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaListService({
+  PleromaApiListService({
     required this.restService,
   });
 
-  IPleromaList parseListResponse(Response httpResponse) {
+  IPleromaApiList parseListResponse(Response httpResponse) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaList.fromJsonString(
+      return PleromaApiList.fromJsonString(
         httpResponse.body,
       );
     } else {
-      throw PleromaListException(
+      throw PleromaApiListException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  List<IPleromaList> parseListListResponse(Response httpResponse) {
+  List<IPleromaApiList> parseListListResponse(Response httpResponse) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaList.listFromJsonString(
+      return PleromaApiList.listFromJsonString(
         httpResponse.body,
       );
     } else {
-      throw PleromaListException(
+      throw PleromaApiListException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  List<IPleromaAccount> parseAccountListResponse(Response httpResponse) {
+  List<IPleromaApiAccount> parseAccountListResponse(Response httpResponse) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaAccount.listFromJsonString(
+      return PleromaApiAccount.listFromJsonString(
         httpResponse.body,
       );
     } else {
-      throw PleromaListException(
+      throw PleromaApiListException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -76,7 +76,7 @@ class PleromaListService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaList>> getLists() async {
+  Future<List<IPleromaApiList>> getLists() async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: urlPath.join(
@@ -89,7 +89,7 @@ class PleromaListService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaList> getList({
+  Future<IPleromaApiList> getList({
     required String listRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -119,7 +119,7 @@ class PleromaListService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaList> createList({
+  Future<IPleromaApiList> createList({
     required String? title,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -137,7 +137,7 @@ class PleromaListService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaList> updateList({
+  Future<IPleromaApiList> updateList({
     required String? listRemoteId,
     required String? title,
   }) async {
@@ -157,9 +157,9 @@ class PleromaListService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaAccount>> getListAccounts({
+  Future<List<IPleromaApiAccount>> getListAccounts({
     required String? listRemoteId,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(

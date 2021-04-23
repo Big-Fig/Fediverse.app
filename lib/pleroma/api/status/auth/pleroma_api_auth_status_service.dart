@@ -1,82 +1,82 @@
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaAuthStatusService
-    extends IPleromaAuthApi implements IPleromaStatusService {
-  static IPleromaAuthStatusService of(
+abstract class IPleromaApiAuthStatusService
+    extends IPleromaApiAuth implements IPleromaApiStatusService {
+  static IPleromaApiAuthStatusService of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IPleromaAuthStatusService>(
+      Provider.of<IPleromaApiAuthStatusService>(
         context,
         listen: listen,
       );
 
-  Future<IPleromaStatus> postStatus({
-    required IPleromaPostStatus data,
+  Future<IPleromaApiStatus> postStatus({
+    required IPleromaApiPostStatus data,
   });
 
-  Future<IPleromaScheduledStatus> scheduleStatus({
-    required IPleromaScheduleStatus data,
+  Future<IPleromaApiScheduledStatus> scheduleStatus({
+    required IPleromaApiScheduleStatus data,
   });
 
   Future deleteStatus({
     required String statusRemoteId,
   });
 
-  Future<IPleromaStatus> muteStatus({
+  Future<IPleromaApiStatus> muteStatus({
     required String statusRemoteId,
     required int? expireDurationInSeconds,
   });
 
-  Future<IPleromaStatus> unMuteStatus({
+  Future<IPleromaApiStatus> unMuteStatus({
     required String statusRemoteId,
   });
 
-  Future<IPleromaStatus> pinStatus({
+  Future<IPleromaApiStatus> pinStatus({
     required String statusRemoteId,
   });
 
-  Future<IPleromaStatus> unPinStatus({
+  Future<IPleromaApiStatus> unPinStatus({
     required String statusRemoteId,
   });
 
-  Future<IPleromaStatus> favouriteStatus({
+  Future<IPleromaApiStatus> favouriteStatus({
     required String statusRemoteId,
   });
 
-  Future<IPleromaStatus> unFavouriteStatus({
+  Future<IPleromaApiStatus> unFavouriteStatus({
     required String statusRemoteId,
   });
 
-  Future<IPleromaStatus> bookmarkStatus({
+  Future<IPleromaApiStatus> bookmarkStatus({
     required String statusRemoteId,
   });
 
-  Future<IPleromaStatus> unBookmarkStatus({
+  Future<IPleromaApiStatus> unBookmarkStatus({
     required String statusRemoteId,
   });
 
-  Future<IPleromaStatus> reblogStatus({
+  Future<IPleromaApiStatus> reblogStatus({
     required String statusRemoteId,
   });
 
-  Future<IPleromaStatus> unReblogStatus({
+  Future<IPleromaApiStatus> unReblogStatus({
     required String statusRemoteId,
   });
 
-  Future<List<IPleromaAccount>> favouritedBy({
+  Future<List<IPleromaApiAccount>> favouritedBy({
     required String statusRemoteId,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   });
 
-  Future<List<IPleromaAccount>> rebloggedBy({
+  Future<List<IPleromaApiAccount>> rebloggedBy({
     required String statusRemoteId,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   });
 }

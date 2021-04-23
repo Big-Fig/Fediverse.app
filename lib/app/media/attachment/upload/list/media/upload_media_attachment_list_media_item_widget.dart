@@ -310,7 +310,7 @@ class _UploadMediaAttachmentListMediaItemPreviewWidget extends StatelessWidget {
       );
     } else if (bloc is UploadedUploadMediaAttachmentBloc) {
       var pleromaMediaAttachment = bloc.pleromaMediaAttachment;
-      mediaPreview = Provider<IPleromaMediaAttachment>.value(
+      mediaPreview = Provider<IPleromaApiMediaAttachment>.value(
         value: pleromaMediaAttachment,
         child: const MediaAttachmentWidget(),
       );

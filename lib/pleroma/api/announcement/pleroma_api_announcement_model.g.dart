@@ -6,8 +6,9 @@ part of 'pleroma_api_announcement_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaAnnouncement _$PleromaAnnouncementFromJson(Map<String, dynamic> json) {
-  return PleromaAnnouncement(
+PleromaApiAnnouncement _$PleromaApiAnnouncementFromJson(
+    Map<String, dynamic> json) {
+  return PleromaApiAnnouncement(
     id: json['id'] as String?,
     text: json['text'] as String?,
     published: json['published'] as bool?,
@@ -21,7 +22,7 @@ PleromaAnnouncement _$PleromaAnnouncementFromJson(Map<String, dynamic> json) {
     read: json['read'] as bool?,
     reactions: (json['reactions'] as List<dynamic>?)
         ?.map((e) =>
-            PleromaAnnouncementReaction.fromJson(e as Map<String, dynamic>))
+            PleromaApiAnnouncementReaction.fromJson(e as Map<String, dynamic>))
         .toList(),
     scheduledAt: json['scheduled_at'] == null
         ? null
@@ -35,8 +36,8 @@ PleromaAnnouncement _$PleromaAnnouncementFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaAnnouncementToJson(
-        PleromaAnnouncement instance) =>
+Map<String, dynamic> _$PleromaApiAnnouncementToJson(
+        PleromaApiAnnouncement instance) =>
     <String, dynamic>{
       'id': instance.id,
       'text': instance.text,
@@ -51,9 +52,9 @@ Map<String, dynamic> _$PleromaAnnouncementToJson(
       'ends_at': instance.endsAt?.toIso8601String(),
     };
 
-PleromaAnnouncementReaction _$PleromaAnnouncementReactionFromJson(
+PleromaApiAnnouncementReaction _$PleromaApiAnnouncementReactionFromJson(
     Map<String, dynamic> json) {
-  return PleromaAnnouncementReaction(
+  return PleromaApiAnnouncementReaction(
     name: json['name'] as String?,
     count: json['count'] as int?,
     me: json['me'] as bool?,
@@ -62,8 +63,8 @@ PleromaAnnouncementReaction _$PleromaAnnouncementReactionFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaAnnouncementReactionToJson(
-        PleromaAnnouncementReaction instance) =>
+Map<String, dynamic> _$PleromaApiAnnouncementReactionToJson(
+        PleromaApiAnnouncementReaction instance) =>
     <String, dynamic>{
       'name': instance.name,
       'count': instance.count,

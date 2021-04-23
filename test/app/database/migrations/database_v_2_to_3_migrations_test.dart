@@ -40,9 +40,9 @@ void main() {
         canceled: false,
         id: null,
         remoteId: "asda",
-        params: PleromaScheduledStatusParams.only(
+        params: PleromaApiScheduledStatusParams.only(
           sensitive: true,
-          visibility: PleromaVisibility.private.toJsonValue(),
+          visibility: PleromaApiVisibility.private.toJsonValue(),
           scheduledAt: DateTime.now(),
         ),
       ),
@@ -63,7 +63,7 @@ void main() {
         id: null,
         updatedAt: DateTime.now(),
         data: PostStatusData.only(
-          visibility: PleromaVisibility.private.toJsonValue(),
+          visibility: PleromaApiVisibility.private.toJsonValue(),
           isNsfwSensitiveEnabled: true,
         ),
       ),

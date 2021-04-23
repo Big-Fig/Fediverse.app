@@ -13,9 +13,9 @@ abstract class IPollBloc implements IDisposable {
         listen: listen,
       );
 
-  IPleromaPoll get poll;
+  IPleromaApiPoll get poll;
 
-  Stream<IPleromaPoll> get pollStream;
+  Stream<IPleromaApiPoll> get pollStream;
 
   bool get isNeedShowResultsWithoutVote;
 
@@ -39,11 +39,11 @@ abstract class IPollBloc implements IDisposable {
 
   Stream<int> get votersCountStream;
 
-  void onPollOptionSelected(IPleromaPollOption pollOption);
+  void onPollOptionSelected(IPleromaApiPollOption pollOption);
 
-  List<IPleromaPollOption> get selectedVotes;
+  List<IPleromaApiPollOption> get selectedVotes;
 
-  Stream<List<IPleromaPollOption>> get selectedVotesStream;
+  Stream<List<IPleromaApiPollOption>> get selectedVotesStream;
 
   bool get isVoted;
 
@@ -51,7 +51,7 @@ abstract class IPollBloc implements IDisposable {
 
   Future vote();
 
-  void onPollUpdated(IPleromaPoll? poll);
+  void onPollUpdated(IPleromaApiPoll? poll);
 
   Future refreshFromNetwork();
 

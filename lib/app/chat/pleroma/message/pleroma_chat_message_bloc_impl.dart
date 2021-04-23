@@ -21,9 +21,9 @@ class PleromaChatMessageBloc extends ChatMessageBloc
     bool delayInit = true,
   }) =>
       PleromaChatMessageBloc(
-        pleromaChatService: IPleromaChatService.of(context, listen: false),
+        pleromaChatService: IPleromaApiChatService.of(context, listen: false),
         pleromaAccountService:
-            IPleromaAccountService.of(context, listen: false),
+            IPleromaApiAccountService.of(context, listen: false),
         chatMessageRepository:
             IPleromaChatMessageRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
@@ -40,8 +40,8 @@ class PleromaChatMessageBloc extends ChatMessageBloc
 
   final BehaviorSubject<IPleromaChatMessage> _chatMessageSubject;
 
-  final IPleromaChatService pleromaChatService;
-  final IPleromaAccountService pleromaAccountService;
+  final IPleromaApiChatService pleromaChatService;
+  final IPleromaApiAccountService pleromaAccountService;
   final IPleromaChatMessageRepository chatMessageRepository;
   final IAccountRepository accountRepository;
   final IPleromaChatBloc pleromaChatBloc;
@@ -124,7 +124,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   Future resendPendingFailed() {
     String? mediaId = chatMessage.mediaAttachments?.singleOrNull?.id;
 
-    var pleromaChatMessageSendData = pleroma_lib.PleromaChatMessageSendData(
+    var pleromaChatMessageSendData = pleroma_lib.PleromaApiChatMessageSendData(
       content: chatMessage.content,
       mediaId: mediaId,
       idempotencyKey: chatMessage.wasSentWithIdempotencyKey,

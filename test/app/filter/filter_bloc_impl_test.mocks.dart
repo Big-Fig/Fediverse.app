@@ -10,7 +10,7 @@ import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service_impl.dart'
     as _i4;
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart'
     as _i8;
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart' as _i6;
+import 'package:fedi/pleroma/api/pleroma_api_service.dart' as _i6;
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart' as _i2;
 import 'package:flutter/src/widgets/editable_text.dart' as _i10;
 import 'package:flutter/src/widgets/focus_manager.dart' as _i12;
@@ -22,17 +22,18 @@ import 'package:rxdart/src/subjects/subject.dart' as _i13;
 // ignore_for_file: comment_references
 // ignore_for_file: unnecessary_parenthesis
 
-class _FakeIPleromaRestService extends _i1.Fake
-    implements _i2.IPleromaRestService {}
+class _FakeIPleromaApiRestService extends _i1.Fake
+    implements _i2.IPleromaApiRestService {}
 
-class _FakeIPleromaFilter extends _i1.Fake implements _i3.IPleromaFilter {}
+class _FakeIPleromaApiFilter extends _i1.Fake implements _i3.IPleromaApiFilter {
+}
 
-/// A class which mocks [PleromaFilterService].
+/// A class which mocks [PleromaApiFilterService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPleromaFilterService extends _i1.Mock
-    implements _i4.PleromaFilterService {
-  MockPleromaFilterService() {
+class MockPleromaApiFilterService extends _i1.Mock
+    implements _i4.PleromaApiFilterService {
+  MockPleromaApiFilterService() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -41,9 +42,10 @@ class MockPleromaFilterService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#filterRelativeUrlPath),
           returnValue: '') as String);
   @override
-  _i2.IPleromaRestService get restService =>
+  _i2.IPleromaApiRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
-          returnValue: _FakeIPleromaRestService()) as _i2.IPleromaRestService);
+              returnValue: _FakeIPleromaApiRestService())
+          as _i2.IPleromaApiRestService);
   @override
   _i5.Stream<_i6.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
@@ -70,29 +72,31 @@ class MockPleromaFilterService extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
           returnValueForMissingStub: null);
   @override
-  _i3.IPleromaFilter parseFilterResponse(_i7.Response? httpResponse) => (super
-      .noSuchMethod(Invocation.method(#parseFilterResponse, [httpResponse]),
-          returnValue: _FakeIPleromaFilter()) as _i3.IPleromaFilter);
+  _i3.IPleromaApiFilter parseFilterResponse(_i7.Response? httpResponse) =>
+      (super.noSuchMethod(
+          Invocation.method(#parseFilterResponse, [httpResponse]),
+          returnValue: _FakeIPleromaApiFilter()) as _i3.IPleromaApiFilter);
   @override
-  List<_i3.IPleromaFilter> parseFilterListResponse(
+  List<_i3.IPleromaApiFilter> parseFilterListResponse(
           _i7.Response? httpResponse) =>
       (super.noSuchMethod(
-          Invocation.method(#parseFilterListResponse, [httpResponse]),
-          returnValue: <_i3.IPleromaFilter>[]) as List<_i3.IPleromaFilter>);
+              Invocation.method(#parseFilterListResponse, [httpResponse]),
+              returnValue: <_i3.IPleromaApiFilter>[])
+          as List<_i3.IPleromaApiFilter>);
   @override
-  _i5.Future<List<_i3.IPleromaFilter>> getFilters(
-          {_i8.IPleromaPaginationRequest? pagination}) =>
+  _i5.Future<List<_i3.IPleromaApiFilter>> getFilters(
+          {_i8.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
-          Invocation.method(#getFilters, [], {#pagination: pagination}),
-          returnValue: Future<List<_i3.IPleromaFilter>>.value(
-              <_i3.IPleromaFilter>[])) as _i5.Future<List<_i3.IPleromaFilter>>);
+              Invocation.method(#getFilters, [], {#pagination: pagination}),
+              returnValue: Future<List<_i3.IPleromaApiFilter>>.value(
+                  <_i3.IPleromaApiFilter>[]))
+          as _i5.Future<List<_i3.IPleromaApiFilter>>);
   @override
-  _i5.Future<_i3.IPleromaFilter> getFilter({String? filterRemoteId}) =>
+  _i5.Future<_i3.IPleromaApiFilter> getFilter({String? filterRemoteId}) =>
       (super.noSuchMethod(
           Invocation.method(#getFilter, [], {#filterRemoteId: filterRemoteId}),
-          returnValue:
-              Future<_i3.IPleromaFilter>.value(_FakeIPleromaFilter())) as _i5
-          .Future<_i3.IPleromaFilter>);
+          returnValue: Future<_i3.IPleromaApiFilter>.value(
+              _FakeIPleromaApiFilter())) as _i5.Future<_i3.IPleromaApiFilter>);
   @override
   _i5.Future<dynamic> deleteFilter({String? filterRemoteId}) =>
       (super.noSuchMethod(
@@ -100,26 +104,26 @@ class MockPleromaFilterService extends _i1.Mock
               #deleteFilter, [], {#filterRemoteId: filterRemoteId}),
           returnValue: Future<dynamic>.value(null)) as _i5.Future<dynamic>);
   @override
-  _i5.Future<_i3.IPleromaFilter> createFilter(
-          {_i3.IPostPleromaFilter? postPleromaFilter}) =>
+  _i5.Future<_i3.IPleromaApiFilter> createFilter(
+          {_i3.IPostPleromaApiFilter? postPleromaFilter}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #createFilter, [], {#postPleromaFilter: postPleromaFilter}),
               returnValue:
-                  Future<_i3.IPleromaFilter>.value(_FakeIPleromaFilter()))
-          as _i5.Future<_i3.IPleromaFilter>);
+                  Future<_i3.IPleromaApiFilter>.value(_FakeIPleromaApiFilter()))
+          as _i5.Future<_i3.IPleromaApiFilter>);
   @override
-  _i5.Future<_i3.IPleromaFilter> updateFilter(
+  _i5.Future<_i3.IPleromaApiFilter> updateFilter(
           {String? filterRemoteId,
-          _i3.IPostPleromaFilter? postPleromaFilter}) =>
+          _i3.IPostPleromaApiFilter? postPleromaFilter}) =>
       (super.noSuchMethod(
               Invocation.method(#updateFilter, [], {
                 #filterRemoteId: filterRemoteId,
                 #postPleromaFilter: postPleromaFilter
               }),
               returnValue:
-                  Future<_i3.IPleromaFilter>.value(_FakeIPleromaFilter()))
-          as _i5.Future<_i3.IPleromaFilter>);
+                  Future<_i3.IPleromaApiFilter>.value(_FakeIPleromaApiFilter()))
+          as _i5.Future<_i3.IPleromaApiFilter>);
   @override
   void addDisposable(
           {_i9.IDisposable? disposable,

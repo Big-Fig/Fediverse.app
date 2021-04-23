@@ -14,7 +14,7 @@ class MediaAttachmentVideoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaSettingsBloc = IMediaSettingsBloc.of(context);
-    return DisposableProxyProvider<IPleromaMediaAttachment,
+    return DisposableProxyProvider<IPleromaApiMediaAttachment,
         IVideoMediaPlayerBloc>(
       update: (context, mediaAttachment, _) =>
           VideoMediaPlayerBloc.createFromContext(

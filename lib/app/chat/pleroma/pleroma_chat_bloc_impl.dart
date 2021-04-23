@@ -12,7 +12,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart' as pleroma_lib;
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:fedi/pleroma/api/id/pleroma_api_fake_id_helper.dart';
@@ -49,7 +49,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       _lastMessageSubject.stream;
 
   final IMyAccountBloc myAccountBloc;
-  final IPleromaChatService pleromaChatService;
+  final IPleromaApiChatService pleromaChatService;
   final IPleromaChatRepository chatRepository;
   final IPleromaChatMessageRepository chatMessageRepository;
   final IAccountRepository accountRepository;
@@ -180,7 +180,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   }
 
   Future _updateByRemoteChat(
-    pleroma_lib.IPleromaChat remoteChat, {
+    pleroma_lib.IPleromaApiChat remoteChat, {
     required Batch? batchTransaction,
   }) =>
       chatRepository.updateAppTypeByRemoteType(
@@ -196,7 +196,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     bool needRefreshFromNetworkOnInit = false,
   }) {
     return PleromaChatBloc(
-      pleromaChatService: IPleromaChatService.of(context, listen: false),
+      pleromaChatService: IPleromaApiChatService.of(context, listen: false),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
       chat: chat,
       lastChatMessage: lastChatMessage,
@@ -263,8 +263,8 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   // todo: refactor
   // ignore: long-method
   Future postMessage({
-    required pleroma_lib.IPleromaChatMessageSendData pleromaChatMessageSendData,
-    required IPleromaMediaAttachment? pleromaChatMessageSendDataMediaAttachment,
+    required pleroma_lib.IPleromaApiChatMessageSendData pleromaChatMessageSendData,
+    required IPleromaApiMediaAttachment? pleromaChatMessageSendDataMediaAttachment,
     required IPleromaChatMessage? oldPendingFailedPleromaChatMessage,
   }) async {
     DbChatMessage dbChatMessage;
@@ -291,7 +291,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       );
     } else {
       var createdAt = DateTime.now();
-      var fakeUniqueRemoteRemoteId = generateUniquePleromaFakeId();
+      var fakeUniqueRemoteRemoteId = generateUniquePleromaApiFakeId();
 
       dbChatMessage = DbChatMessage(
         id: null,
@@ -302,7 +302,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         content: pleromaChatMessageSendData.content,
         emojis: null,
         mediaAttachment: pleromaChatMessageSendDataMediaAttachment
-            ?.toPleromaMediaAttachment(),
+            ?.toPleromaApiMediaAttachment(),
         card: null,
         pendingState: PendingState.pending,
         oldPendingRemoteId: fakeUniqueRemoteRemoteId,

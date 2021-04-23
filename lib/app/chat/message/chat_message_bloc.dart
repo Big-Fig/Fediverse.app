@@ -21,13 +21,13 @@ abstract class IChatMessageBloc implements IDisposable {
 
   Stream<String?> get contentStream;
 
-  List<IPleromaMediaAttachment>? get mediaAttachments;
+  List<IPleromaApiMediaAttachment>? get mediaAttachments;
 
-  Stream<List<IPleromaMediaAttachment>?> get mediaAttachmentsStream;
+  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream;
 
-  IPleromaCard? get card;
+  IPleromaApiCard? get card;
 
-  Stream<IPleromaCard?> get cardStream;
+  Stream<IPleromaApiCard?> get cardStream;
 
   EmojiText? get contentWithEmojis;
 
@@ -79,7 +79,7 @@ abstract class IChatMessageBloc implements IDisposable {
 
   Stream<bool> get isPendingFailedStream;
 
-  List<IPleromaEmoji>? get emojis;
+  List<IPleromaApiEmoji>? get emojis;
 
   Future refreshFromNetwork();
 

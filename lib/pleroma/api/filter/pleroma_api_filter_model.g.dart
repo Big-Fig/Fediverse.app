@@ -6,17 +6,17 @@ part of 'pleroma_api_filter_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PleromaFilterAdapter extends TypeAdapter<PleromaFilter> {
+class PleromaApiFilterAdapter extends TypeAdapter<PleromaApiFilter> {
   @override
   final int typeId = 63;
 
   @override
-  PleromaFilter read(BinaryReader reader) {
+  PleromaApiFilter read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaFilter(
+    return PleromaApiFilter(
       context: (fields[0] as List).cast<String>(),
       phrase: fields[4] as String,
       expiresAt: fields[1] as DateTime?,
@@ -27,7 +27,7 @@ class PleromaFilterAdapter extends TypeAdapter<PleromaFilter> {
   }
 
   @override
-  void write(BinaryWriter writer, PleromaFilter obj) {
+  void write(BinaryWriter writer, PleromaApiFilter obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)
@@ -50,7 +50,7 @@ class PleromaFilterAdapter extends TypeAdapter<PleromaFilter> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaFilterAdapter &&
+      other is PleromaApiFilterAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -59,8 +59,8 @@ class PleromaFilterAdapter extends TypeAdapter<PleromaFilter> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaFilter _$PleromaFilterFromJson(Map<String, dynamic> json) {
-  return PleromaFilter(
+PleromaApiFilter _$PleromaApiFilterFromJson(Map<String, dynamic> json) {
+  return PleromaApiFilter(
     context:
         (json['context'] as List<dynamic>).map((e) => e as String).toList(),
     phrase: json['phrase'] as String,
@@ -73,7 +73,7 @@ PleromaFilter _$PleromaFilterFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaFilterToJson(PleromaFilter instance) {
+Map<String, dynamic> _$PleromaApiFilterToJson(PleromaApiFilter instance) {
   final val = <String, dynamic>{
     'context': instance.context,
   };
@@ -92,8 +92,8 @@ Map<String, dynamic> _$PleromaFilterToJson(PleromaFilter instance) {
   return val;
 }
 
-PostPleromaFilter _$PostPleromaFilterFromJson(Map<String, dynamic> json) {
-  return PostPleromaFilter(
+PostPleromaApiFilter _$PostPleromaApiFilterFromJson(Map<String, dynamic> json) {
+  return PostPleromaApiFilter(
     context:
         (json['context'] as List<dynamic>).map((e) => e as String).toList(),
     phrase: json['phrase'] as String,
@@ -103,7 +103,8 @@ PostPleromaFilter _$PostPleromaFilterFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PostPleromaFilterToJson(PostPleromaFilter instance) {
+Map<String, dynamic> _$PostPleromaApiFilterToJson(
+    PostPleromaApiFilter instance) {
   final val = <String, dynamic>{
     'context': instance.context,
   };

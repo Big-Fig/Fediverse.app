@@ -9,27 +9,27 @@ import 'package:moor/moor.dart' as moor;
 
 part 'pleroma_api_notification_model.g.dart';
 
-abstract class IPleromaNotification extends IMastodonApiNotification {
+abstract class IPleromaApiNotification extends IMastodonApiNotification {
   @override
-  IPleromaAccount? get account;
+  IPleromaApiAccount? get account;
 
-  IPleromaAccount? get target;
+  IPleromaApiAccount? get target;
 
   @override
-  IPleromaStatus? get status;
+  IPleromaApiStatus? get status;
 
-  IPleromaChatMessage? get chatMessage;
+  IPleromaApiChatMessage? get chatMessage;
 
-  PleromaNotificationType? get typePleroma;
+  PleromaApiNotificationType? get typePleroma;
 
   String? get emoji;
 
-  PleromaNotificationPleromaPart? get pleroma;
+  PleromaApiNotificationPleromaPart? get pleroma;
 
-  IPleromaAccountReport? get report;
+  IPleromaApiAccountReport? get report;
 }
 
-enum PleromaNotificationType {
+enum PleromaApiNotificationType {
   follow,
   favourite,
   reblog,
@@ -43,30 +43,31 @@ enum PleromaNotificationType {
   unknown,
 }
 
-const unknownPleromaNotificationType = PleromaNotificationType.unknown;
+const unknownPleromaApiNotificationType = PleromaApiNotificationType.unknown;
 
-const _followPleromaNotificationTypeJsonValue = "follow";
-const _favouritePleromaNotificationTypeJsonValue = "favourite";
-const _reblogPleromaNotificationTypeJsonValue = "reblog";
-const _mentionPleromaNotificationTypeJsonValue = "mention";
-const _pollPleromaNotificationTypeJsonValue = "poll";
-const _movePleromaNotificationTypeJsonValue = "move";
-const _followRequestPleromaNotificationTypeJsonValue = "follow_request";
-const _pleromaEmojiReactionRequestPleromaNotificationTypeJsonValue =
+const _followPleromaApiNotificationTypeJsonValue = "follow";
+const _favouritePleromaApiNotificationTypeJsonValue = "favourite";
+const _reblogPleromaApiNotificationTypeJsonValue = "reblog";
+const _mentionPleromaApiNotificationTypeJsonValue = "mention";
+const _pollPleromaApiNotificationTypeJsonValue = "poll";
+const _movePleromaApiNotificationTypeJsonValue = "move";
+const _followRequestPleromaApiNotificationTypeJsonValue = "follow_request";
+const _pleromaEmojiReactionRequestPleromaApiNotificationTypeJsonValue =
     "pleroma:emoji_reaction";
-const _pleromaChatMentionRequestPleromaNotificationTypeJsonValue =
+const _pleromaChatMentionRequestPleromaApiNotificationTypeJsonValue =
     "pleroma:chat_mention";
-const _pleromaReportRequestPleromaNotificationTypeJsonValue = "pleroma:report";
-const _unknownRequestPleromaNotificationTypeJsonValue = "unknown";
+const _pleromaReportRequestPleromaApiNotificationTypeJsonValue =
+    "pleroma:report";
+const _unknownRequestPleromaApiNotificationTypeJsonValue = "unknown";
 
-extension PleromaNotificationTypeListExtension
-    on List<PleromaNotificationType> {
-  List<String> toPleromaNotificationTypeStrings() => map(
+extension PleromaApiNotificationTypeListExtension
+    on List<PleromaApiNotificationType> {
+  List<String> toPleromaApiNotificationTypeStrings() => map(
         (notificationType) => notificationType.toJsonValue(),
       ).toList();
 
-  List<PleromaNotificationType> valuesWithoutSelected(
-    List<PleromaNotificationType> valuesToExclude,
+  List<PleromaApiNotificationType> valuesWithoutSelected(
+    List<PleromaApiNotificationType> valuesToExclude,
   ) =>
       where(
         (value) => !valuesToExclude.contains(
@@ -75,43 +76,44 @@ extension PleromaNotificationTypeListExtension
       ).toList();
 }
 
-extension PleromaNotificationTypeExtension on PleromaNotificationType {
+extension PleromaApiNotificationTypeExtension on PleromaApiNotificationType {
   String toJsonValue() {
     String result;
 
     switch (this) {
-      case PleromaNotificationType.follow:
-        result = _followPleromaNotificationTypeJsonValue;
+      case PleromaApiNotificationType.follow:
+        result = _followPleromaApiNotificationTypeJsonValue;
         break;
-      case PleromaNotificationType.favourite:
-        result = _favouritePleromaNotificationTypeJsonValue;
+      case PleromaApiNotificationType.favourite:
+        result = _favouritePleromaApiNotificationTypeJsonValue;
         break;
-      case PleromaNotificationType.reblog:
-        result = _reblogPleromaNotificationTypeJsonValue;
+      case PleromaApiNotificationType.reblog:
+        result = _reblogPleromaApiNotificationTypeJsonValue;
         break;
-      case PleromaNotificationType.mention:
-        result = _mentionPleromaNotificationTypeJsonValue;
+      case PleromaApiNotificationType.mention:
+        result = _mentionPleromaApiNotificationTypeJsonValue;
         break;
-      case PleromaNotificationType.poll:
-        result = _pollPleromaNotificationTypeJsonValue;
+      case PleromaApiNotificationType.poll:
+        result = _pollPleromaApiNotificationTypeJsonValue;
         break;
-      case PleromaNotificationType.move:
-        result = _movePleromaNotificationTypeJsonValue;
+      case PleromaApiNotificationType.move:
+        result = _movePleromaApiNotificationTypeJsonValue;
         break;
-      case PleromaNotificationType.followRequest:
-        result = _followRequestPleromaNotificationTypeJsonValue;
+      case PleromaApiNotificationType.followRequest:
+        result = _followRequestPleromaApiNotificationTypeJsonValue;
         break;
-      case PleromaNotificationType.pleromaEmojiReaction:
-        result = _pleromaEmojiReactionRequestPleromaNotificationTypeJsonValue;
+      case PleromaApiNotificationType.pleromaEmojiReaction:
+        result =
+            _pleromaEmojiReactionRequestPleromaApiNotificationTypeJsonValue;
         break;
-      case PleromaNotificationType.pleromaChatMention:
-        result = _pleromaChatMentionRequestPleromaNotificationTypeJsonValue;
+      case PleromaApiNotificationType.pleromaChatMention:
+        result = _pleromaChatMentionRequestPleromaApiNotificationTypeJsonValue;
         break;
-      case PleromaNotificationType.pleromaReport:
-        result = _pleromaReportRequestPleromaNotificationTypeJsonValue;
+      case PleromaApiNotificationType.pleromaReport:
+        result = _pleromaReportRequestPleromaApiNotificationTypeJsonValue;
         break;
-      case PleromaNotificationType.unknown:
-        result = _unknownRequestPleromaNotificationTypeJsonValue;
+      case PleromaApiNotificationType.unknown:
+        result = _unknownRequestPleromaApiNotificationTypeJsonValue;
         break;
     }
 
@@ -119,47 +121,47 @@ extension PleromaNotificationTypeExtension on PleromaNotificationType {
   }
 }
 
-extension PleromaNotificationTypeStringExtension on String {
-  PleromaNotificationType toPleromaNotificationType() {
-    PleromaNotificationType result;
+extension PleromaApiNotificationTypeStringExtension on String {
+  PleromaApiNotificationType toPleromaApiNotificationType() {
+    PleromaApiNotificationType result;
 
     switch (this) {
-      case _followPleromaNotificationTypeJsonValue:
-        result = PleromaNotificationType.follow;
+      case _followPleromaApiNotificationTypeJsonValue:
+        result = PleromaApiNotificationType.follow;
         break;
-      case _movePleromaNotificationTypeJsonValue:
-        result = PleromaNotificationType.move;
+      case _movePleromaApiNotificationTypeJsonValue:
+        result = PleromaApiNotificationType.move;
         break;
-      case _favouritePleromaNotificationTypeJsonValue:
-        result = PleromaNotificationType.favourite;
+      case _favouritePleromaApiNotificationTypeJsonValue:
+        result = PleromaApiNotificationType.favourite;
         break;
-      case _pollPleromaNotificationTypeJsonValue:
-        result = PleromaNotificationType.poll;
+      case _pollPleromaApiNotificationTypeJsonValue:
+        result = PleromaApiNotificationType.poll;
         break;
-      case _mentionPleromaNotificationTypeJsonValue:
-        result = PleromaNotificationType.mention;
+      case _mentionPleromaApiNotificationTypeJsonValue:
+        result = PleromaApiNotificationType.mention;
         break;
-      case _reblogPleromaNotificationTypeJsonValue:
-        result = PleromaNotificationType.reblog;
+      case _reblogPleromaApiNotificationTypeJsonValue:
+        result = PleromaApiNotificationType.reblog;
         break;
-      case _followRequestPleromaNotificationTypeJsonValue:
-        result = PleromaNotificationType.followRequest;
+      case _followRequestPleromaApiNotificationTypeJsonValue:
+        result = PleromaApiNotificationType.followRequest;
         break;
-      case _pleromaChatMentionRequestPleromaNotificationTypeJsonValue:
-        result = PleromaNotificationType.pleromaChatMention;
+      case _pleromaChatMentionRequestPleromaApiNotificationTypeJsonValue:
+        result = PleromaApiNotificationType.pleromaChatMention;
         break;
-      case _pleromaEmojiReactionRequestPleromaNotificationTypeJsonValue:
-        result = PleromaNotificationType.pleromaEmojiReaction;
+      case _pleromaEmojiReactionRequestPleromaApiNotificationTypeJsonValue:
+        result = PleromaApiNotificationType.pleromaEmojiReaction;
         break;
-      case _pleromaReportRequestPleromaNotificationTypeJsonValue:
-        result = PleromaNotificationType.pleromaReport;
+      case _pleromaReportRequestPleromaApiNotificationTypeJsonValue:
+        result = PleromaApiNotificationType.pleromaReport;
         break;
-      case _unknownRequestPleromaNotificationTypeJsonValue:
-        result = PleromaNotificationType.unknown;
+      case _unknownRequestPleromaApiNotificationTypeJsonValue:
+        result = PleromaApiNotificationType.unknown;
         break;
       // can't parse, default value
       default:
-        result = unknownPleromaNotificationType;
+        result = unknownPleromaApiNotificationType;
         break;
     }
 
@@ -167,77 +169,100 @@ extension PleromaNotificationTypeStringExtension on String {
   }
 }
 
-extension PleromaNotificationTypeStringPollExtension on List<String> {
-  List<PleromaNotificationType> toPleromaVisibilities() => map(
+extension PleromaApiNotificationTypeStringPollExtension on List<String> {
+  List<PleromaApiNotificationType> toPleromaApiVisibilities() => map(
         (notificationTypeString) =>
-            notificationTypeString.toPleromaNotificationType(),
+            notificationTypeString.toPleromaApiNotificationType(),
       ).toList();
 }
 
-class PleromaNotificationTypeTypeConverter
+class PleromaApiNotificationTypeTypeConverter
     implements
-        JsonConverter<PleromaNotificationType, String?>,
-        moor.TypeConverter<PleromaNotificationType, String?> {
-  const PleromaNotificationTypeTypeConverter();
+        JsonConverter<PleromaApiNotificationType, String?>,
+        moor.TypeConverter<PleromaApiNotificationType, String?> {
+  const PleromaApiNotificationTypeTypeConverter();
 
   @override
-  PleromaNotificationType fromJson(String? value) =>
-      value?.toPleromaNotificationType() ?? unknownPleromaNotificationType;
+  PleromaApiNotificationType fromJson(String? value) =>
+      value?.toPleromaApiNotificationType() ??
+      unknownPleromaApiNotificationType;
 
   @override
-  String? toJson(PleromaNotificationType? value) => value?.toJsonValue();
+  String? toJson(PleromaApiNotificationType? value) => value?.toJsonValue();
 
   @override
-  PleromaNotificationType? mapToDart(String? fromDb) => fromJson(fromDb);
+  PleromaApiNotificationType? mapToDart(String? fromDb) => fromJson(fromDb);
 
   @override
-  String? mapToSql(PleromaNotificationType? value) => toJson(value);
+  String? mapToSql(PleromaApiNotificationType? value) => toJson(value);
 }
 
 @JsonSerializable()
-class PleromaNotificationPleromaPart {
+class PleromaApiNotificationPleromaPart {
   @JsonKey(name: "is_seen")
   final bool? isSeen;
   @JsonKey(name: "is_muted")
   final bool? isMuted;
 
-  PleromaNotificationPleromaPart({
+  PleromaApiNotificationPleromaPart({
     required this.isSeen,
     required this.isMuted,
   });
 
-  PleromaNotificationPleromaPart copyWith({
+  PleromaApiNotificationPleromaPart copyWith({
     bool? isSeen,
     bool? isMuted,
   }) =>
-      PleromaNotificationPleromaPart(
+      PleromaApiNotificationPleromaPart(
         isSeen: isSeen ?? this.isSeen,
         isMuted: isMuted ?? this.isMuted,
       );
 
-  factory PleromaNotificationPleromaPart.fromJson(Map<String, dynamic> json) =>
-      _$PleromaNotificationPleromaPartFromJson(json);
+  factory PleromaApiNotificationPleromaPart.fromJson(
+          Map<String, dynamic> json) =>
+      _$PleromaApiNotificationPleromaPartFromJson(json);
 
-  factory PleromaNotificationPleromaPart.fromJsonString(String jsonString) =>
-      _$PleromaNotificationPleromaPartFromJson(jsonDecode(jsonString));
+  factory PleromaApiNotificationPleromaPart.fromJsonString(String jsonString) =>
+      _$PleromaApiNotificationPleromaPartFromJson(jsonDecode(jsonString));
 
-  static List<PleromaNotificationPleromaPart> listFromJsonString(String str) =>
-      List<PleromaNotificationPleromaPart>.from(json
+  static List<PleromaApiNotificationPleromaPart> listFromJsonString(
+          String str) =>
+      List<PleromaApiNotificationPleromaPart>.from(json
           .decode(str)
-          .map((x) => PleromaNotificationPleromaPart.fromJson(x)));
+          .map((x) => PleromaApiNotificationPleromaPart.fromJson(x)));
 
-  Map<String, dynamic> toJson() => _$PleromaNotificationPleromaPartToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$PleromaApiNotificationPleromaPartToJson(this);
 
   String toJsonString() =>
-      jsonEncode(_$PleromaNotificationPleromaPartToJson(this));
+      jsonEncode(_$PleromaApiNotificationPleromaPartToJson(this));
+
+  @override
+  String toString() {
+    return 'PleromaApiNotificationPleromaPart{'
+        'isSeen: $isSeen, '
+        'isMuted: $isMuted'
+        '}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiNotificationPleromaPart &&
+          runtimeType == other.runtimeType &&
+          isSeen == other.isSeen &&
+          isMuted == other.isMuted;
+
+  @override
+  int get hashCode => isSeen.hashCode ^ isMuted.hashCode;
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaNotification extends IPleromaNotification {
+class PleromaApiNotification extends IPleromaApiNotification {
   @override
-  final PleromaAccount? account;
+  final PleromaApiAccount? account;
   @override
-  final PleromaAccount? target;
+  final PleromaApiAccount? target;
   @override
   @JsonKey(name: "created_at")
   final DateTime createdAt;
@@ -246,20 +271,20 @@ class PleromaNotification extends IPleromaNotification {
   @override
   final String type;
   @override
-  final PleromaStatus? status;
+  final PleromaApiStatus? status;
   @override
   final String? emoji;
   @override
-  final PleromaNotificationPleromaPart? pleroma;
+  final PleromaApiNotificationPleromaPart? pleroma;
 
   @override
   @JsonKey(name: "chat_message")
-  final PleromaChatMessage? chatMessage;
+  final PleromaApiChatMessage? chatMessage;
 
   @override
-  final PleromaAccountReport? report;
+  final PleromaApiAccountReport? report;
 
-  PleromaNotification({
+  PleromaApiNotification({
     required this.account,
     required this.createdAt,
     required this.id,
@@ -272,24 +297,24 @@ class PleromaNotification extends IPleromaNotification {
     required this.target,
   });
 
-  factory PleromaNotification.fromJson(Map<String, dynamic> json) =>
-      _$PleromaNotificationFromJson(json);
+  factory PleromaApiNotification.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiNotificationFromJson(json);
 
-  factory PleromaNotification.fromJsonString(String jsonString) =>
-      _$PleromaNotificationFromJson(jsonDecode(jsonString));
+  factory PleromaApiNotification.fromJsonString(String jsonString) =>
+      _$PleromaApiNotificationFromJson(jsonDecode(jsonString));
 
-  static List<PleromaNotification> listFromJsonString(String str) =>
-      List<PleromaNotification>.from(
-        json.decode(str).map((x) => PleromaNotification.fromJson(x)),
+  static List<PleromaApiNotification> listFromJsonString(String str) =>
+      List<PleromaApiNotification>.from(
+        json.decode(str).map((x) => PleromaApiNotification.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$PleromaNotificationToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiNotificationToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaNotificationToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiNotificationToJson(this));
 
   @override
   String toString() {
-    return 'PleromaNotification{'
+    return 'PleromaApiNotification{'
         'id: $id, '
         'account: $account, '
         'createdAt: $createdAt, '
@@ -303,5 +328,6 @@ class PleromaNotification extends IPleromaNotification {
       type.toMastodonApiNotificationType();
 
   @override
-  PleromaNotificationType? get typePleroma => type.toPleromaNotificationType();
+  PleromaApiNotificationType? get typePleroma =>
+      type.toPleromaApiNotificationType();
 }

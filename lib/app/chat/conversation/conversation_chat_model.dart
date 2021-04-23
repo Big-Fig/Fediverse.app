@@ -7,7 +7,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_model.dart';
 
 abstract class IConversationChat implements IChat {
-  IPleromaConversationPleromaPart? get pleroma;
+  IPleromaApiConversationPleromaPart? get pleroma;
 
   @override
   IConversationChat copyWith({
@@ -119,7 +119,7 @@ class DbConversationChatPopulatedWrapper implements IConversationChat {
 
   @override
   // todo: implement
-  IPleromaConversationPleromaPart? get pleroma => null;
+  IPleromaApiConversationPleromaPart? get pleroma => null;
 
   @override
   List<IAccount> get accounts => throw Exception(

@@ -6,15 +6,15 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
     implements IMyAccountDomainBlockNetworkOnlyListBloc {
-  final IPleromaAuthAccountService pleromaAuthAccountService;
-  final IPleromaMyAccountService pleromaMyAccountService;
+  final IPleromaApiAuthAccountService pleromaAuthAccountService;
+  final IPleromaApiMyAccountService pleromaMyAccountService;
 
   MyAccountDomainBlockNetworkOnlyDomainListBloc({
     required this.pleromaAuthAccountService,
@@ -34,7 +34,7 @@ class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
     String? maxId,
   }) async {
     var remoteDomains = await pleromaMyAccountService.getDomainBlocks(
-      pagination: PleromaPaginationRequest(
+      pagination: PleromaApiPaginationRequest(
         sinceId: minId,
         maxId: maxId,
         limit: itemsCountPerPage,
@@ -53,14 +53,14 @@ class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
     BuildContext context,
   ) =>
       MyAccountDomainBlockNetworkOnlyDomainListBloc(
-        pleromaMyAccountService: IPleromaMyAccountService.of(
+        pleromaMyAccountService: IPleromaApiMyAccountService.of(
           context,
           listen: false,
         ),
-        pleromaAuthAccountService: IPleromaAccountService.of(
+        pleromaAuthAccountService: IPleromaApiAccountService.of(
           context,
           listen: false,
-        ) as IPleromaAuthAccountService,
+        ) as IPleromaApiAuthAccountService,
       );
 
   static Widget provideToContext(

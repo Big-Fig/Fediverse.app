@@ -8,7 +8,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
 import 'package:fedi/repository/repository_model.dart';
@@ -19,7 +19,7 @@ var _logger = Logger("status_reblog_account_list_service_impl.dart");
 
 class StatusReblogAccountCachedListBloc extends DisposableOwner
     implements IAccountCachedListBloc {
-  final IPleromaAuthStatusService pleromaAuthStatusService;
+  final IPleromaApiAuthStatusService pleromaAuthStatusService;
   final IAccountRepository accountRepository;
   final IStatus status;
 
@@ -47,11 +47,11 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
         "\t newerThanAccount = $newerThan"
         "\t olderThanAccount = $olderThan");
 
-    List<IPleromaAccount> remoteAccounts;
+    List<IPleromaApiAccount> remoteAccounts;
 
     remoteAccounts = await pleromaAuthStatusService.rebloggedBy(
       statusRemoteId: status.remoteId!,
-      pagination: PleromaPaginationRequest(
+      pagination: PleromaApiPaginationRequest(
         limit: limit,
         sinceId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
@@ -66,7 +66,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
 
       accountRepository.updateStatusRebloggedBy(
         statusRemoteId: status.remoteId!,
-        rebloggedByAccounts: remoteAccounts.toPleromaAccounts(),
+        rebloggedByAccounts: remoteAccounts.toPleromaApiAccounts(),
         batchTransaction: batch,
       );
     });
@@ -104,7 +104,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
       StatusReblogAccountCachedListBloc(
         accountRepository: IAccountRepository.of(context, listen: false),
         pleromaAuthStatusService:
-            IPleromaAuthStatusService.of(context, listen: false),
+            IPleromaApiAuthStatusService.of(context, listen: false),
         status: status,
       );
 

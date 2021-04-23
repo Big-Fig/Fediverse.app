@@ -6,22 +6,23 @@ part of 'pleroma_api_search_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaSearchResult _$PleromaSearchResultFromJson(Map<String, dynamic> json) {
-  return PleromaSearchResult(
+PleromaApiSearchResult _$PleromaApiSearchResultFromJson(
+    Map<String, dynamic> json) {
+  return PleromaApiSearchResult(
     accounts: (json['accounts'] as List<dynamic>)
-        .map((e) => PleromaAccount.fromJson(e as Map<String, dynamic>))
+        .map((e) => PleromaApiAccount.fromJson(e as Map<String, dynamic>))
         .toList(),
     hashtags: (json['hashtags'] as List<dynamic>)
-        .map((e) => PleromaTag.fromJson(e as Map<String, dynamic>))
+        .map((e) => PleromaApiTag.fromJson(e as Map<String, dynamic>))
         .toList(),
     statuses: (json['statuses'] as List<dynamic>)
-        .map((e) => PleromaStatus.fromJson(e as Map<String, dynamic>))
+        .map((e) => PleromaApiStatus.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
 
-Map<String, dynamic> _$PleromaSearchResultToJson(
-        PleromaSearchResult instance) =>
+Map<String, dynamic> _$PleromaApiSearchResultToJson(
+        PleromaApiSearchResult instance) =>
     <String, dynamic>{
       'accounts': instance.accounts.map((e) => e.toJson()).toList(),
       'hashtags': instance.hashtags.map((e) => e.toJson()).toList(),

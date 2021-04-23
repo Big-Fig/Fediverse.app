@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_captcha_model.g.dart';
 
-abstract class IPleromaCaptcha {
+abstract class IPleromaApiCaptcha {
   String? get answerData;
 
   int? get secondsValid;
@@ -13,17 +13,17 @@ abstract class IPleromaCaptcha {
 
   String? get type;
 
-  PleromaCaptchaType get pleromaType;
+  PleromaApiCaptchaType get typeAsPleromaApi;
 
   String? get url;
 }
 
-extension IPleromaCaptchaExtension on IPleromaCaptcha {
-  PleromaCaptcha toPleromaCaptcha() {
-    if (this is PleromaCaptcha) {
-      return this as PleromaCaptcha;
+extension IPleromaApiCaptchaExtension on IPleromaApiCaptcha {
+  PleromaApiCaptcha toPleromaApiCaptcha() {
+    if (this is PleromaApiCaptcha) {
+      return this as PleromaApiCaptcha;
     } else {
-      return PleromaCaptcha(
+      return PleromaApiCaptcha(
         answerData: answerData,
         secondsValid: secondsValid,
         token: token,
@@ -35,7 +35,7 @@ extension IPleromaCaptchaExtension on IPleromaCaptcha {
 }
 
 @JsonSerializable()
-class PleromaCaptcha implements IPleromaCaptcha {
+class PleromaApiCaptcha implements IPleromaApiCaptcha {
   @override
   @JsonKey(name: "answer_data")
   final String? answerData;
@@ -54,20 +54,20 @@ class PleromaCaptcha implements IPleromaCaptcha {
   final String? url;
 
   @override
-  PleromaCaptchaType get pleromaType {
+  PleromaApiCaptchaType get typeAsPleromaApi {
     switch (type) {
       case "native":
-        return PleromaCaptchaType.native;
+        return PleromaApiCaptchaType.native;
       case "none":
-        return PleromaCaptchaType.none;
+        return PleromaApiCaptchaType.none;
       case "kocaptcha":
-        return PleromaCaptchaType.kocaptcha;
+        return PleromaApiCaptchaType.kocaptcha;
     }
 
-    return PleromaCaptchaType.unknown;
+    return PleromaApiCaptchaType.unknown;
   }
 
-  PleromaCaptcha({
+  PleromaApiCaptcha({
     required this.answerData,
     required this.secondsValid,
     required this.token,
@@ -77,7 +77,7 @@ class PleromaCaptcha implements IPleromaCaptcha {
 
   @override
   String toString() {
-    return 'PleromaCaptcha{'
+    return 'PleromaApiCaptcha{'
         'answerData: $answerData, '
         'secondsValid: $secondsValid, '
         'token: $token,'
@@ -89,7 +89,7 @@ class PleromaCaptcha implements IPleromaCaptcha {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaCaptcha &&
+      other is PleromaApiCaptcha &&
           runtimeType == other.runtimeType &&
           answerData == other.answerData &&
           secondsValid == other.secondsValid &&
@@ -105,23 +105,23 @@ class PleromaCaptcha implements IPleromaCaptcha {
       type.hashCode ^
       url.hashCode;
 
-  factory PleromaCaptcha.fromJson(Map<String, dynamic> json) =>
-      _$PleromaCaptchaFromJson(json);
+  factory PleromaApiCaptcha.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiCaptchaFromJson(json);
 
-  factory PleromaCaptcha.fromJsonString(String jsonString) =>
-      _$PleromaCaptchaFromJson(jsonDecode(jsonString));
+  factory PleromaApiCaptcha.fromJsonString(String jsonString) =>
+      _$PleromaApiCaptchaFromJson(jsonDecode(jsonString));
 
-  static List<PleromaCaptcha> listFromJsonString(String str) =>
-      List<PleromaCaptcha>.from(
-        json.decode(str).map((x) => PleromaCaptcha.fromJson(x)),
+  static List<PleromaApiCaptcha> listFromJsonString(String str) =>
+      List<PleromaApiCaptcha>.from(
+        json.decode(str).map((x) => PleromaApiCaptcha.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$PleromaCaptchaToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiCaptchaToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaCaptchaToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiCaptchaToJson(this));
 }
 
-enum PleromaCaptchaType {
+enum PleromaApiCaptchaType {
   unknown,
   native,
   kocaptcha,

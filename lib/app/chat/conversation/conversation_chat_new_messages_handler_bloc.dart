@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IConversationChatNewMessagesHandlerBloc extends IDisposable {
-  Future handleChatUpdate(IPleromaConversation conversation);
+  Future handleChatUpdate(IPleromaApiConversation conversation);
 
   static IConversationChatNewMessagesHandlerBloc of(
     BuildContext context, {

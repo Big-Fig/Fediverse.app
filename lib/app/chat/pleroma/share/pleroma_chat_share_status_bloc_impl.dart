@@ -25,10 +25,10 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
     required this.status,
     required IPleromaChatRepository chatRepository,
     required IPleromaChatMessageRepository chatMessageRepository,
-    required IPleromaChatService pleromaChatService,
+    required IPleromaApiChatService pleromaChatService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaAccountService pleromaAccountService,
+    required IPleromaApiAccountService pleromaAccountService,
   }) : super(
           chatRepository: chatRepository,
           chatMessageRepository: chatMessageRepository,
@@ -39,7 +39,7 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
         );
 
   @override
-  PleromaChatMessageSendData createPleromaChatMessageSendData() {
+  PleromaApiChatMessageSendData createPleromaChatMessageSendData() {
     var accountAcctAndDisplayName =
         status.account.acct + " (${status.account.displayName})";
 
@@ -67,7 +67,7 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
     ].where((element) => element?.isNotEmpty == true).toList();
 
     var content = contentParts.join("\n\n");
-    var messageSendData = PleromaChatMessageSendData(
+    var messageSendData = PleromaApiChatMessageSendData(
       content: content.trim(),
       mediaId: null,
       idempotencyKey: null,
@@ -109,7 +109,7 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        pleromaChatService: IPleromaChatService.of(
+        pleromaChatService: IPleromaApiChatService.of(
           context,
           listen: false,
         ),
@@ -121,7 +121,7 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        pleromaAccountService: IPleromaAccountService.of(
+        pleromaAccountService: IPleromaApiAccountService.of(
           context,
           listen: false,
         ),

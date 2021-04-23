@@ -18,13 +18,13 @@ abstract class IChatMessage {
 
   String? get content;
 
-  List<IPleromaMediaAttachment>? get mediaAttachments;
+  List<IPleromaApiMediaAttachment>? get mediaAttachments;
 
   DateTime get createdAt;
 
-  List<IPleromaEmoji>? get emojis;
+  List<IPleromaApiEmoji>? get emojis;
 
-  IPleromaCard? get card;
+  IPleromaApiCard? get card;
 
   PendingState? get pendingState;
 
@@ -43,9 +43,9 @@ abstract class IChatMessage {
     IAccount? account,
     String? content,
     DateTime? createdAt,
-    List<IPleromaMediaAttachment>? mediaAttachments,
-    List<PleromaEmoji>? emojis,
-    IPleromaCard? card,
+    List<IPleromaApiMediaAttachment>? mediaAttachments,
+    List<PleromaApiEmoji>? emojis,
+    IPleromaApiCard? card,
     PendingState? pendingState,
     String? oldPendingRemoteId,
     bool? deleted,

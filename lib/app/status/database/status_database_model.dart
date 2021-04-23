@@ -21,7 +21,7 @@ class DbStatuses extends Table {
   TextColumn? get spoilerText => text().nullable()();
 
   TextColumn? get visibility =>
-      text().map(PleromaVisibilityTypeConverter())();
+      text().map(PleromaApiVisibilityTypeConverter())();
 
   TextColumn? get uri => text()();
 
@@ -60,10 +60,10 @@ class DbStatuses extends Table {
 
   // TODO: rework with join
   TextColumn? get tags =>
-      text().map(PleromaTagListDatabaseConverter()).nullable()();
+      text().map(PleromaApiTagListDatabaseConverter()).nullable()();
 
   TextColumn? get emojis =>
-      text().map(PleromaEmojiListDatabaseConverter()).nullable()();
+      text().map(PleromaApiEmojiListDatabaseConverter()).nullable()();
 
   TextColumn? get poll =>
       text().map(PleromaPollDatabaseConverter()).nullable()();

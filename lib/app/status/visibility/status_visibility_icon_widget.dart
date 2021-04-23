@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StatusVisibilityIconWidget extends StatelessWidget {
-  final PleromaVisibility visibility;
+  final PleromaApiVisibility visibility;
   final bool isPossibleToChangeVisibility;
   final bool isSelectedVisibility;
 
@@ -25,7 +25,7 @@ class StatusVisibilityIconWidget extends StatelessWidget {
 
   static Icon buildVisibilityIcon({
     required BuildContext context,
-    required PleromaVisibility visibility,
+    required PleromaApiVisibility visibility,
     required isPossibleToChangeVisibility,
     required isSelectedVisibility,
   }) =>
@@ -38,19 +38,19 @@ class StatusVisibilityIconWidget extends StatelessWidget {
         ),
       );
 
-  static IconData mapVisibilityToIconData(PleromaVisibility visibility) {
+  static IconData mapVisibilityToIconData(PleromaApiVisibility visibility) {
     switch (visibility) {
-      case PleromaVisibility.public:
+      case PleromaApiVisibility.public:
         return FediIcons.world;
-      case PleromaVisibility.local:
+      case PleromaApiVisibility.local:
         return FediIcons.instance;
-      case PleromaVisibility.unlisted:
+      case PleromaApiVisibility.unlisted:
         return FediIcons.unlisted;
-      case PleromaVisibility.direct:
+      case PleromaApiVisibility.direct:
         return FediIcons.message;
-      case PleromaVisibility.list:
+      case PleromaApiVisibility.list:
         return FediIcons.lists;
-      case PleromaVisibility.private:
+      case PleromaApiVisibility.private:
         return FediIcons.private;
     }
   }

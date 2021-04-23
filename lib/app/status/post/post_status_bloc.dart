@@ -25,9 +25,9 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   bool get isPossibleToChangeVisibility;
 
-  PleromaVisibility? get visibility;
+  PleromaApiVisibility? get visibility;
 
-  Stream<PleromaVisibility> get visibilityStream;
+  Stream<PleromaApiVisibility> get visibilityStream;
 
   bool? get isNsfwSensitiveEnabled;
 
@@ -47,7 +47,7 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   void removeMentionByAcct(String acct);
 
-  void changeVisibility(PleromaVisibility visibility);
+  void changeVisibility(PleromaApiVisibility visibility);
 
   void changeNsfwSensitive(bool nsfwSensitive);
 

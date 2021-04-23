@@ -8,7 +8,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
@@ -18,7 +18,7 @@ var _logger = Logger("account_following_account_cached_list_bloc_impl.dart");
 
 class AccountFollowingAccountCachedListBloc extends DisposableOwner
     implements IAccountCachedListBloc {
-  final IPleromaAccountService pleromaAccountService;
+  final IPleromaApiAccountService pleromaAccountService;
   final IAccountRepository accountRepository;
   final IAccount account;
 
@@ -46,11 +46,11 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
         "\t newerThanAccount = $newerThan"
         "\t olderThanAccount = $olderThan");
 
-    List<IPleromaAccount> remoteAccounts;
+    List<IPleromaApiAccount> remoteAccounts;
 
     remoteAccounts = await pleromaAccountService.getAccountFollowings(
       accountRemoteId: account.remoteId,
-      pagination: PleromaPaginationRequest(
+      pagination: PleromaApiPaginationRequest(
         maxId: olderThan?.remoteId,
         sinceId: newerThan?.remoteId,
         limit: limit,
@@ -65,7 +65,7 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
 
       accountRepository.addAccountFollowings(
         accountRemoteId: account.remoteId,
-        followings: remoteAccounts.toPleromaAccounts(),
+        followings: remoteAccounts.toPleromaApiAccounts(),
         batchTransaction: batch,
       );
     });
@@ -101,7 +101,7 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
   }) =>
       AccountFollowingAccountCachedListBloc(
         accountRepository: IAccountRepository.of(context, listen: false),
-        pleromaAccountService: IPleromaAccountService.of(
+        pleromaAccountService: IPleromaApiAccountService.of(
           context,
           listen: false,
         ),

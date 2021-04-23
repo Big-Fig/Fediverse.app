@@ -16,12 +16,12 @@ import 'package:flutter/widgets.dart';
 
 class NewPostStatusBloc extends PostStatusBloc {
   NewPostStatusBloc({
-    required IPleromaAuthStatusService pleromaAuthStatusService,
+    required IPleromaApiAuthStatusService pleromaAuthStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
     required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     required int? maximumMessageLength,
-    required PleromaInstancePollLimits? pleromaInstancePollLimits,
+    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required bool isPleromaInstance,
@@ -41,17 +41,17 @@ class NewPostStatusBloc extends PostStatusBloc {
         );
 
   NewPostStatusBloc.withInitial({
-    required IPleromaAuthStatusService pleromaAuthStatusService,
+    required IPleromaApiAuthStatusService pleromaAuthStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
     required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     required int? maximumMessageLength,
-    required PleromaInstancePollLimits? pleromaInstancePollLimits,
+    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
     required int? maximumFileSizeInBytes,
-    required PleromaVisibility initialVisibility,
+    required PleromaApiVisibility initialVisibility,
     required String? initialText,
     required String? initialSubject,
-    required List<PleromaMediaAttachment>? initialMediaAttachments,
+    required List<PleromaApiMediaAttachment>? initialMediaAttachments,
     required bool? markMediaAsNsfwOnAttach,
     required String? initialLanguage,
     required bool isPleromaInstance,
@@ -78,7 +78,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     BuildContext context, {
     required String? initialText,
     required String? initialSubject,
-    required List<PleromaMediaAttachment>? initialMediaAttachments,
+    required List<PleromaApiMediaAttachment>? initialMediaAttachments,
   }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance!
@@ -88,7 +88,7 @@ class NewPostStatusBloc extends PostStatusBloc {
         IPostStatusSettingsBloc.of(context, listen: false);
 
     return NewPostStatusBloc.withInitial(
-      pleromaAuthStatusService: IPleromaAuthStatusService.of(
+      pleromaAuthStatusService: IPleromaApiAuthStatusService.of(
         context,
         listen: false,
       ),
@@ -122,7 +122,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     required Widget child,
     required String? initialText,
     required String? initialSubject,
-    required List<PleromaMediaAttachment>? initialMediaAttachments,
+    required List<PleromaApiMediaAttachment>? initialMediaAttachments,
   }) {
     return DisposableProvider<IPostStatusBloc>(
       create: (context) => NewPostStatusBloc.createFromContextWithInitial(
@@ -147,7 +147,7 @@ class NewPostStatusBloc extends PostStatusBloc {
         IPostStatusSettingsBloc.of(context, listen: false);
 
     return NewPostStatusBloc(
-      pleromaAuthStatusService: IPleromaAuthStatusService.of(
+      pleromaAuthStatusService: IPleromaApiAuthStatusService.of(
         context,
         listen: false,
       ),

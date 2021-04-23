@@ -15,7 +15,7 @@ class RemoteInstanceBloc extends DisposableOwner
 
   late RestService restService;
   @override
-  late PleromaRestService pleromaRestService;
+  late PleromaApiRestService pleromaRestService;
 
   RemoteInstanceBloc({
     required this.instanceUri,
@@ -24,7 +24,7 @@ class RemoteInstanceBloc extends DisposableOwner
     restService = RestService(
       baseUri: instanceUri,
     );
-    pleromaRestService = PleromaRestService(
+    pleromaRestService = PleromaApiRestService(
       connectionService: connectionService,
       restService: restService,
     );

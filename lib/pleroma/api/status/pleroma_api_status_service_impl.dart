@@ -1,6 +1,6 @@
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/pleroma/api/status/context/pleroma_api_status_context_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_exception.dart';
@@ -11,11 +11,11 @@ import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
 
-class PleromaStatusService extends DisposableOwner
-    implements IPleromaStatusService {
+class PleromaApiStatusService extends DisposableOwner
+    implements IPleromaApiStatusService {
   final statusRelativeUrlPath = "/api/v1/statuses/";
   @override
-  final IPleromaRestService restService;
+  final IPleromaApiRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -30,7 +30,7 @@ class PleromaStatusService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaStatusService({required this.restService});
+  PleromaApiStatusService({required this.restService});
 
   @override
   Future dispose() async {
@@ -38,7 +38,7 @@ class PleromaStatusService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaStatus> getStatus({
+  Future<IPleromaApiStatus> getStatus({
     required String statusRemoteId,
   }) async {
     var request = RestRequest.get(
@@ -49,10 +49,10 @@ class PleromaStatusService extends DisposableOwner
     return parseStatusResponse(httpResponse);
   }
 
-  PleromaStatus parseStatusResponse(Response httpResponse) {
-    RestResponse<PleromaStatus> restResponse = RestResponse.fromResponse(
+  PleromaApiStatus parseStatusResponse(Response httpResponse) {
+    RestResponse<PleromaApiStatus> restResponse = RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) => PleromaStatus.fromJsonString(
+      resultParser: (body) => PleromaApiStatus.fromJsonString(
         httpResponse.body,
       ),
     );
@@ -60,35 +60,35 @@ class PleromaStatusService extends DisposableOwner
     if (restResponse.isSuccess) {
       return restResponse.body!;
     } else {
-      throw PleromaStatusException(
+      throw PleromaApiStatusException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  PleromaScheduledStatus parseScheduledStatusResponse(Response httpResponse) {
-    RestResponse<PleromaScheduledStatus> restResponse =
+  PleromaApiScheduledStatus parseScheduledStatusResponse(Response httpResponse) {
+    RestResponse<PleromaApiScheduledStatus> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
       resultParser: (body) =>
-          PleromaScheduledStatus.fromJsonString(httpResponse.body),
+          PleromaApiScheduledStatus.fromJsonString(httpResponse.body),
     );
 
     if (restResponse.isSuccess) {
       return restResponse.body!;
     } else {
-      throw PleromaStatusException(
+      throw PleromaApiStatusException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  PleromaStatusContext parseStatusContextResponse(Response httpResponse) {
-    RestResponse<PleromaStatusContext> restResponse = RestResponse.fromResponse(
+  PleromaApiStatusContext parseStatusContextResponse(Response httpResponse) {
+    RestResponse<PleromaApiStatusContext> restResponse = RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) => PleromaStatusContext.fromJsonString(
+      resultParser: (body) => PleromaApiStatusContext.fromJsonString(
         httpResponse.body,
       ),
     );
@@ -96,17 +96,17 @@ class PleromaStatusService extends DisposableOwner
     if (restResponse.isSuccess) {
       return restResponse.body!;
     } else {
-      throw PleromaStatusException(
+      throw PleromaApiStatusException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  List<PleromaAccount> parseAccountsResponse(Response httpResponse) {
-    RestResponse<List<PleromaAccount>> restResponse = RestResponse.fromResponse(
+  List<PleromaApiAccount> parseAccountsResponse(Response httpResponse) {
+    RestResponse<List<PleromaApiAccount>> restResponse = RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) => PleromaAccount.listFromJsonString(
+      resultParser: (body) => PleromaApiAccount.listFromJsonString(
         httpResponse.body,
       ),
     );
@@ -114,7 +114,7 @@ class PleromaStatusService extends DisposableOwner
     if (restResponse.isSuccess) {
       return restResponse.body!;
     } else {
-      throw PleromaStatusException(
+      throw PleromaApiStatusException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -122,7 +122,7 @@ class PleromaStatusService extends DisposableOwner
   }
 
   @override
-  Future<PleromaStatusContext> getStatusContext({
+  Future<PleromaApiStatusContext> getStatusContext({
     required String statusRemoteId,
   }) async {
     var request = RestRequest.get(

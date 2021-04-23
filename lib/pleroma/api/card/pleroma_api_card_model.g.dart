@@ -6,8 +6,8 @@ part of 'pleroma_api_card_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaCard _$PleromaCardFromJson(Map<String, dynamic> json) {
-  return PleromaCard(
+PleromaApiCard _$PleromaApiCardFromJson(Map<String, dynamic> json) {
+  return PleromaApiCard(
     authorName: json['author_name'] as String?,
     authorUrl: json['author_url'] as String?,
     description: json['description'] as String?,
@@ -24,7 +24,7 @@ PleromaCard _$PleromaCardFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaCardToJson(PleromaCard instance) =>
+Map<String, dynamic> _$PleromaApiCardToJson(PleromaApiCard instance) =>
     <String, dynamic>{
       'author_name': instance.authorName,
       'author_url': instance.authorUrl,

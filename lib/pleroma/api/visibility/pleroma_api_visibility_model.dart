@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:moor/moor.dart';
 
-enum PleromaVisibility {
+enum PleromaApiVisibility {
   public,
   unlisted,
   direct,
@@ -10,43 +10,43 @@ enum PleromaVisibility {
   local,
 }
 
-const defaultPleromaVisibility = PleromaVisibility.public;
+const defaultPleromaApiVisibility = PleromaApiVisibility.public;
 
-const _publicPleromaVisibilityJsonValue = "public";
-const _localPleromaVisibilityJsonValue = "local";
-const _unlistedPleromaVisibilityJsonValue = "unlisted";
-const _directPleromaVisibilityJsonValue = "direct";
-const _listPleromaVisibilityJsonValue = "list";
-const _privatePleromaVisibilityJsonValue = "private";
+const _publicPleromaApiVisibilityJsonValue = "public";
+const _localPleromaApiVisibilityJsonValue = "local";
+const _unlistedPleromaApiVisibilityJsonValue = "unlisted";
+const _directPleromaApiVisibilityJsonValue = "direct";
+const _listPleromaApiVisibilityJsonValue = "list";
+const _privatePleromaApiVisibilityJsonValue = "private";
 
-extension PleromaVisibilityListExtension on List<PleromaVisibility> {
-  List<String> toPleromaVisibilityStrings() => map(
+extension PleromaApiVisibilityListExtension on List<PleromaApiVisibility> {
+  List<String> toPleromaApiVisibilityStrings() => map(
         (visibility) => visibility.toJsonValue(),
       ).toList();
 }
 
-extension PleromaVisibilityExtension on PleromaVisibility {
+extension PleromaApiVisibilityExtension on PleromaApiVisibility {
   String toJsonValue() {
     String result;
 
     switch (this) {
-      case PleromaVisibility.public:
-        result = _publicPleromaVisibilityJsonValue;
+      case PleromaApiVisibility.public:
+        result = _publicPleromaApiVisibilityJsonValue;
         break;
-      case PleromaVisibility.local:
-        result = _localPleromaVisibilityJsonValue;
+      case PleromaApiVisibility.local:
+        result = _localPleromaApiVisibilityJsonValue;
         break;
-      case PleromaVisibility.unlisted:
-        result = _unlistedPleromaVisibilityJsonValue;
+      case PleromaApiVisibility.unlisted:
+        result = _unlistedPleromaApiVisibilityJsonValue;
         break;
-      case PleromaVisibility.direct:
-        result = _directPleromaVisibilityJsonValue;
+      case PleromaApiVisibility.direct:
+        result = _directPleromaApiVisibilityJsonValue;
         break;
-      case PleromaVisibility.list:
-        result = _listPleromaVisibilityJsonValue;
+      case PleromaApiVisibility.list:
+        result = _listPleromaApiVisibilityJsonValue;
         break;
-      case PleromaVisibility.private:
-        result = _privatePleromaVisibilityJsonValue;
+      case PleromaApiVisibility.private:
+        result = _privatePleromaApiVisibilityJsonValue;
         break;
     }
 
@@ -54,32 +54,32 @@ extension PleromaVisibilityExtension on PleromaVisibility {
   }
 }
 
-extension PleromaVisibilityStringExtension on String {
-  PleromaVisibility toPleromaVisibility() {
-    PleromaVisibility result;
+extension PleromaApiVisibilityStringExtension on String {
+  PleromaApiVisibility toPleromaApiVisibility() {
+    PleromaApiVisibility result;
 
     switch (this) {
-      case _publicPleromaVisibilityJsonValue:
-        result = PleromaVisibility.public;
+      case _publicPleromaApiVisibilityJsonValue:
+        result = PleromaApiVisibility.public;
         break;
-      case _privatePleromaVisibilityJsonValue:
-        result = PleromaVisibility.private;
+      case _privatePleromaApiVisibilityJsonValue:
+        result = PleromaApiVisibility.private;
         break;
-      case _localPleromaVisibilityJsonValue:
-        result = PleromaVisibility.local;
+      case _localPleromaApiVisibilityJsonValue:
+        result = PleromaApiVisibility.local;
         break;
-      case _listPleromaVisibilityJsonValue:
-        result = PleromaVisibility.list;
+      case _listPleromaApiVisibilityJsonValue:
+        result = PleromaApiVisibility.list;
         break;
-      case _directPleromaVisibilityJsonValue:
-        result = PleromaVisibility.direct;
+      case _directPleromaApiVisibilityJsonValue:
+        result = PleromaApiVisibility.direct;
         break;
-      case _unlistedPleromaVisibilityJsonValue:
-        result = PleromaVisibility.unlisted;
+      case _unlistedPleromaApiVisibilityJsonValue:
+        result = PleromaApiVisibility.unlisted;
         break;
       // can't parse, default value
       default:
-        result = defaultPleromaVisibility;
+        result = defaultPleromaApiVisibility;
         break;
     }
 
@@ -87,29 +87,29 @@ extension PleromaVisibilityStringExtension on String {
   }
 }
 
-extension PleromaVisibilityStringListExtension on List<String> {
-  List<PleromaVisibility> toPleromaVisibilities() => map(
-        (visibilityString) => visibilityString.toPleromaVisibility(),
+extension PleromaApiVisibilityStringListExtension on List<String> {
+  List<PleromaApiVisibility> toPleromaVisibilities() => map(
+        (visibilityString) => visibilityString.toPleromaApiVisibility(),
       ).toList();
 }
 
-class PleromaVisibilityTypeConverter
+class PleromaApiVisibilityTypeConverter
     implements
-        JsonConverter<PleromaVisibility, String>,
-        TypeConverter<PleromaVisibility, String> {
-  const PleromaVisibilityTypeConverter();
+        JsonConverter<PleromaApiVisibility, String>,
+        TypeConverter<PleromaApiVisibility, String> {
+  const PleromaApiVisibilityTypeConverter();
 
   @override
-  PleromaVisibility fromJson(String? value) =>
-      value?.toPleromaVisibility() ?? defaultPleromaVisibility;
+  PleromaApiVisibility fromJson(String? value) =>
+      value?.toPleromaApiVisibility() ?? defaultPleromaApiVisibility;
 
   @override
-  String toJson(PleromaVisibility? value) =>
-      value?.toJsonValue() ?? defaultPleromaVisibility.toJsonValue();
+  String toJson(PleromaApiVisibility? value) =>
+      value?.toJsonValue() ?? defaultPleromaApiVisibility.toJsonValue();
 
   @override
-  PleromaVisibility? mapToDart(String? fromDb) => fromJson(fromDb);
+  PleromaApiVisibility? mapToDart(String? fromDb) => fromJson(fromDb);
 
   @override
-  String? mapToSql(PleromaVisibility? value) => toJson(value);
+  String? mapToSql(PleromaApiVisibility? value) => toJson(value);
 }

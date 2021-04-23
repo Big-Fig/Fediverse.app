@@ -22,12 +22,12 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
   Widget build(BuildContext context) {
     var fieldBloc = ITimelineSettingsOnlyInCustomListFormFieldBloc.of(context);
 
-    return StreamBuilder<IPleromaList?>(
+    return StreamBuilder<IPleromaApiList?>(
       stream: fieldBloc.currentValueStream,
       initialData: fieldBloc.currentValue,
       builder: (context, snapshot) {
         var currentValue = snapshot.data;
-        return FediFormSingleChooseCustomFromListFieldRow<IPleromaList?>(
+        return FediFormSingleChooseCustomFromListFieldRow<IPleromaApiList?>(
           isEnabled: fieldBloc.isEnabled,
           description: description,
           descriptionOnDisabled: descriptionOnDisabled,
@@ -40,7 +40,7 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
           },
           startCustomSelectCallback: () async {
             var pleromaListService =
-                IPleromaListService.of(context, listen: false);
+                IPleromaApiListService.of(context, listen: false);
 
             var dialogResult =
                 await PleromaAsyncOperationHelper.performPleromaAsyncOperation(

@@ -6,7 +6,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_model.dart';
 
-extension IPleromaConversationDbExtension on IPleromaConversation {
+extension IPleromaConversationDbExtension on IPleromaApiConversation {
   DbConversation toDbConversation() {
     return DbConversation(
       id: null,
@@ -18,17 +18,17 @@ extension IPleromaConversationDbExtension on IPleromaConversation {
 }
 
 extension IConversationChatExtension on IConversationChat {
-  PleromaConversation toPleromaConversation({
+  PleromaApiConversation toPleromaConversation({
     required IStatus? lastStatus,
     required List<IAccount> accounts,
   }) {
     var unread = this.unread;
-    return PleromaConversation(
+    return PleromaApiConversation(
       unread: (unread > 0) ? true : false,
       lastStatus: lastStatus?.toPleromaStatus(),
       id: remoteId,
-      accounts: accounts.toPleromaAccounts(),
-      pleroma: pleroma?.toPleromaConversationPleromaPart(),
+      accounts: accounts.toPleromaApiAccounts(),
+      pleroma: pleroma?.toPleromaApiConversationPleromaPart(),
     );
   }
 }

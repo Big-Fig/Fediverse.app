@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/api/application/mastodon_api_application_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/application/pleroma_api_application_exception.dart';
 import 'package:fedi/pleroma/api/application/pleroma_api_application_model.dart';
 import 'package:fedi/pleroma/api/application/pleroma_api_application_service.dart';
@@ -12,11 +12,11 @@ import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
 
-class PleromaApplicationService extends DisposableOwner
-    implements IPleromaApplicationService {
+class PleromaApiApplicationService extends DisposableOwner
+    implements IPleromaApiApplicationService {
   final appsRelativeUrlPath = "/api/v1/apps/";
   @override
-  final IPleromaRestService restService;
+  final IPleromaApiRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -31,44 +31,44 @@ class PleromaApplicationService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaApplicationService({required this.restService});
+  PleromaApiApplicationService({required this.restService});
 
   @override
   Future dispose() async {
     return await super.dispose();
   }
 
-  PleromaApplication? parseApplicationResponse(Response httpResponse) {
-    RestResponse<PleromaApplication> restResponse = RestResponse.fromResponse(
+  PleromaApiApplication? parseApplicationResponse(Response httpResponse) {
+    RestResponse<PleromaApiApplication> restResponse = RestResponse.fromResponse(
       response: httpResponse,
       resultParser: (body) =>
-          PleromaApplication.fromJsonString(httpResponse.body),
+          PleromaApiApplication.fromJsonString(httpResponse.body),
     );
 
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw PleromaApplicationException(
+      throw PleromaApiApplicationException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  PleromaClientApplication? parseClientApplicationResponse(
+  PleromaApiClientApplication? parseClientApplicationResponse(
     Response httpResponse,
   ) {
-    RestResponse<PleromaClientApplication> restResponse =
+    RestResponse<PleromaApiClientApplication> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
       resultParser: (body) =>
-          PleromaClientApplication.fromJsonString(httpResponse.body),
+          PleromaApiClientApplication.fromJsonString(httpResponse.body),
     );
 
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw PleromaApplicationException(
+      throw PleromaApiApplicationException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -76,7 +76,7 @@ class PleromaApplicationService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaClientApplication?> registerApp({
+  Future<IPleromaApiClientApplication?> registerApp({
     required MastodonApiApplicationRegistrationRequest registrationRequest,
   }) async {
     var request = RestRequest.post(
@@ -91,7 +91,7 @@ class PleromaApplicationService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaApplication?> verifyCredentials({
+  Future<IPleromaApiApplication?> verifyCredentials({
     required String appToken,
   }) async {
     var request = RestRequest.get(

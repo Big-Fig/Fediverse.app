@@ -383,7 +383,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addExcludeVisibilitiesWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-    List<PleromaVisibility> excludeVisibilities,
+    List<PleromaApiVisibility> excludeVisibilities,
   ) {
     assert(excludeVisibilities.isNotEmpty == true);
 
@@ -650,7 +650,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         filters?.replyVisibilityFilterCondition?.replyVisibilityFilter;
     if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
         null) {
-      if (replyVisibilityFilter == PleromaReplyVisibilityFilter.self) {
+      if (replyVisibilityFilter == PleromaApiReplyVisibilityFilter.self) {
         addOnlyInReplyToAccountRemoteIdOrNotReply(
           query,
           filters?.replyVisibilityFilterCondition?.myAccountRemoteId,
@@ -718,7 +718,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         filters?.replyVisibilityFilterCondition?.replyVisibilityFilter;
     if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
         null) {
-      if (replyVisibilityFilter == PleromaReplyVisibilityFilter.following) {
+      if (replyVisibilityFilter == PleromaApiReplyVisibilityFilter.following) {
         includeReplyToAccountFollowing = true;
       }
     }
@@ -739,7 +739,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
     if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
         null) {
-      if (replyVisibilityFilter == PleromaReplyVisibilityFilter.following) {
+      if (replyVisibilityFilter == PleromaApiReplyVisibilityFilter.following) {
         finalQuery = addReplyToAccountSelfOrFollowingWhere(
           joinQuery,
           filters?.replyVisibilityFilterCondition?.myAccountRemoteId,

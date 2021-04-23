@@ -6,18 +6,18 @@ part of 'pleroma_api_application_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PleromaClientApplicationAdapter
-    extends TypeAdapter<PleromaClientApplication> {
+class PleromaApiClientApplicationAdapter
+    extends TypeAdapter<PleromaApiClientApplication> {
   @override
   final int typeId = 20;
 
   @override
-  PleromaClientApplication read(BinaryReader reader) {
+  PleromaApiClientApplication read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaClientApplication(
+    return PleromaApiClientApplication(
       name: fields[0] as String?,
       website: fields[1] as String?,
       vapidKey: fields[2] as String?,
@@ -27,7 +27,7 @@ class PleromaClientApplicationAdapter
   }
 
   @override
-  void write(BinaryWriter writer, PleromaClientApplication obj) {
+  void write(BinaryWriter writer, PleromaApiClientApplication obj) {
     writer
       ..writeByte(5)
       ..writeByte(0)
@@ -48,7 +48,7 @@ class PleromaClientApplicationAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaClientApplicationAdapter &&
+      other is PleromaApiClientApplicationAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -57,24 +57,26 @@ class PleromaClientApplicationAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaApplication _$PleromaApplicationFromJson(Map<String, dynamic> json) {
-  return PleromaApplication(
+PleromaApiApplication _$PleromaApiApplicationFromJson(
+    Map<String, dynamic> json) {
+  return PleromaApiApplication(
     name: json['name'] as String?,
     website: json['website'] as String?,
     vapidKey: json['vapid_key'] as String?,
   );
 }
 
-Map<String, dynamic> _$PleromaApplicationToJson(PleromaApplication instance) =>
+Map<String, dynamic> _$PleromaApiApplicationToJson(
+        PleromaApiApplication instance) =>
     <String, dynamic>{
       'name': instance.name,
       'website': instance.website,
       'vapid_key': instance.vapidKey,
     };
 
-PleromaClientApplication _$PleromaClientApplicationFromJson(
+PleromaApiClientApplication _$PleromaApiClientApplicationFromJson(
     Map<String, dynamic> json) {
-  return PleromaClientApplication(
+  return PleromaApiClientApplication(
     name: json['name'] as String?,
     website: json['website'] as String?,
     vapidKey: json['vapid_key'] as String?,
@@ -83,8 +85,8 @@ PleromaClientApplication _$PleromaClientApplicationFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaClientApplicationToJson(
-        PleromaClientApplication instance) =>
+Map<String, dynamic> _$PleromaApiClientApplicationToJson(
+        PleromaApiClientApplication instance) =>
     <String, dynamic>{
       'name': instance.name,
       'website': instance.website,

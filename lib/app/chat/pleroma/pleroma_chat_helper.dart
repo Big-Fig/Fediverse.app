@@ -26,9 +26,9 @@ void goToPleromaChatWithAccount({
         context: context,
         asyncCode: () async {
           var pleromaChatService =
-              IPleromaChatService.of(context, listen: false);
+              IPleromaApiChatService.of(context, listen: false);
 
-          pleroma_lib.IPleromaChat remoteChat =
+          pleroma_lib.IPleromaApiChat remoteChat =
               await pleromaChatService.getOrCreateChatByAccountId(
             accountId: account.remoteId,
           );

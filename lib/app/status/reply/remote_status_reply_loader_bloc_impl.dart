@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 
 class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     implements IStatusReplyLoaderBloc {
-  final IPleromaStatusService pleromaStatusService;
+  final IPleromaApiStatusService pleromaStatusService;
   @override
   final IStatus originalStatus;
   @override
@@ -21,7 +21,7 @@ class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
   ) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
-    var pleromaStatusService = PleromaStatusService(
+    var pleromaStatusService = PleromaApiStatusService(
       restService: remoteInstanceBloc.pleromaRestService,
     );
     var bloc = RemoteStatusReplyLoaderBloc(

@@ -20,7 +20,7 @@ class PleromaChatMessageRepository
         DbChatMessage,
         DbChatMessagePopulated,
         IPleromaChatMessage,
-        pleroma_lib.IPleromaChatMessage,
+        pleroma_lib.IPleromaApiChatMessage,
         int,
         String,
         $DbChatMessagesTable,
@@ -180,7 +180,7 @@ class PleromaChatMessageRepository
       appItem.toDbChatMessage();
 
   @override
-  pleroma_lib.IPleromaChatMessage mapAppItemToRemoteItem(
+  pleroma_lib.IPleromaApiChatMessage mapAppItemToRemoteItem(
           IPleromaChatMessage appItem) =>
       appItem.toPleromaChatMessage();
 
@@ -195,13 +195,13 @@ class PleromaChatMessageRepository
       dbPopulatedItem.toDbChatMessagePopulatedWrapper();
 
   @override
-  pleroma_lib.IPleromaChatMessage mapDbPopulatedItemToRemoteItem(
+  pleroma_lib.IPleromaApiChatMessage mapDbPopulatedItemToRemoteItem(
           DbChatMessagePopulated dbPopulatedItem) =>
       dbPopulatedItem.toDbChatMessagePopulatedWrapper().toPleromaChatMessage();
 
   @override
   IPleromaChatMessage mapRemoteItemToAppItem(
-    pleroma_lib.IPleromaChatMessage appItem,
+    pleroma_lib.IPleromaApiChatMessage appItem,
   ) {
     return appItem.toDbChatMessagePopulatedWrapper(
       dbAccount: null,
@@ -230,7 +230,7 @@ class PleromaChatMessageRepository
 
   @override
   Future<int> insertInRemoteType(
-    pleroma_lib.IPleromaChatMessage remoteItem, {
+    pleroma_lib.IPleromaApiChatMessage remoteItem, {
     required InsertMode? mode,
   })  =>
       insertInDbType(
@@ -243,7 +243,7 @@ class PleromaChatMessageRepository
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    pleroma_lib.IPleromaChatMessage remoteItem, {
+    pleroma_lib.IPleromaApiChatMessage remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) {
@@ -258,7 +258,7 @@ class PleromaChatMessageRepository
   @override
   Future<void> updateAppTypeByRemoteType({
     required IPleromaChatMessage appItem,
-    required pleroma_lib.IPleromaChatMessage remoteItem,
+    required pleroma_lib.IPleromaApiChatMessage remoteItem,
     required Batch? batchTransaction,
   })  =>
       updateByDbIdInDbType(

@@ -7,11 +7,11 @@ import 'package:json_annotation/json_annotation.dart';
 part 'pleroma_api_push_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class PleromaPushSubscribeRequest {
-  PleromaPushSubscribeData? data;
-  PleromaPushSubscribeRequestSubscription? subscription;
+class PleromaApiPushSubscribeRequest {
+  PleromaApiPushSubscribeData? data;
+  PleromaApiPushSubscribeRequestSubscription? subscription;
 
-  PleromaPushSubscribeRequest({
+  PleromaApiPushSubscribeRequest({
     required this.data,
     required this.subscription,
   });
@@ -19,7 +19,7 @@ class PleromaPushSubscribeRequest {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaPushSubscribeRequest &&
+      other is PleromaApiPushSubscribeRequest &&
           runtimeType == other.runtimeType &&
           data == other.data &&
           subscription == other.subscription;
@@ -29,32 +29,35 @@ class PleromaPushSubscribeRequest {
 
   @override
   String toString() {
-    return 'PleromaPushSettings{data: $data, subscription: $subscription}';
+    return 'PleromaApiPushSubscribeRequest{'
+        'data: $data, '
+        'subscription: $subscription'
+        '}';
   }
 
-  factory PleromaPushSubscribeRequest.fromJson(Map<String, dynamic> json) =>
-      _$PleromaPushSubscribeRequestFromJson(json);
+  factory PleromaApiPushSubscribeRequest.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiPushSubscribeRequestFromJson(json);
 
-  factory PleromaPushSubscribeRequest.fromJsonString(String jsonString) =>
-      _$PleromaPushSubscribeRequestFromJson(jsonDecode(jsonString));
+  factory PleromaApiPushSubscribeRequest.fromJsonString(String jsonString) =>
+      _$PleromaApiPushSubscribeRequestFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaPushSubscribeRequestToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiPushSubscribeRequestToJson(this);
 
   String toJsonString() =>
-      jsonEncode(_$PleromaPushSubscribeRequestToJson(this));
+      jsonEncode(_$PleromaApiPushSubscribeRequestToJson(this));
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaPushSubscription {
+class PleromaApiPushSubscription {
   // todo: pleroma id is string but mastodon is int
   final dynamic id;
   final String? endpoint;
-  final PleromaPushSettingsDataAlerts? alerts;
+  final PleromaApiPushSubscribeRequestDataAlerts? alerts;
   @JsonKey(name: "server_key")
   final String? serverKey;
-  PleromaPushSubscribeRequestSubscription? subscription;
+  PleromaApiPushSubscribeRequestSubscription? subscription;
 
-  PleromaPushSubscription({
+  PleromaApiPushSubscription({
     required this.id,
     required this.endpoint,
     required this.alerts,
@@ -64,14 +67,18 @@ class PleromaPushSubscription {
 
   @override
   String toString() {
-    return 'PleromaPushSubscription{id: $id, endpoint: $endpoint,'
-        ' alerts: $alerts, serverKey: $serverKey, subscription: $subscription}';
+    return 'PleromaApiPushSubscription{'
+        'id: $id, endpoint: $endpoint, '
+        'alerts: $alerts, '
+        'serverKey: $serverKey, '
+        'subscription: $subscription'
+        '}';
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaPushSubscription &&
+      other is PleromaApiPushSubscription &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           endpoint == other.endpoint &&
@@ -87,27 +94,27 @@ class PleromaPushSubscription {
       serverKey.hashCode ^
       subscription.hashCode;
 
-  factory PleromaPushSubscription.fromJson(Map<String, dynamic> json) =>
-      _$PleromaPushSubscriptionFromJson(json);
+  factory PleromaApiPushSubscription.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiPushSubscriptionFromJson(json);
 
-  factory PleromaPushSubscription.fromJsonString(String jsonString) =>
-      _$PleromaPushSubscriptionFromJson(jsonDecode(jsonString));
+  factory PleromaApiPushSubscription.fromJsonString(String jsonString) =>
+      _$PleromaApiPushSubscriptionFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaPushSubscriptionToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiPushSubscriptionToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaPushSubscriptionToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiPushSubscriptionToJson(this));
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaPushSubscribeData {
-  PleromaPushSettingsDataAlerts? alerts;
+class PleromaApiPushSubscribeData {
+  final PleromaApiPushSubscribeRequestDataAlerts? alerts;
 
-  PleromaPushSubscribeData({this.alerts});
+  PleromaApiPushSubscribeData({required this.alerts});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaPushSubscribeData &&
+      other is PleromaApiPushSubscribeData &&
           runtimeType == other.runtimeType &&
           alerts == other.alerts;
 
@@ -116,25 +123,26 @@ class PleromaPushSubscribeData {
 
   @override
   String toString() {
-    return 'PleromaPushSettingsData{alerts: $alerts}';
+    return 'PleromaApiPushSubscribeRequestData{alerts: $alerts}';
   }
 
-  factory PleromaPushSubscribeData.fromJson(Map<String, dynamic> json) =>
-      _$PleromaPushSubscribeDataFromJson(json);
+  factory PleromaApiPushSubscribeData.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiPushSubscribeDataFromJson(json);
 
-  factory PleromaPushSubscribeData.fromJsonString(String jsonString) =>
-      _$PleromaPushSubscribeDataFromJson(jsonDecode(jsonString));
+  factory PleromaApiPushSubscribeData.fromJsonString(String jsonString) =>
+      _$PleromaApiPushSubscribeDataFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaPushSubscribeDataToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiPushSubscribeDataToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaPushSubscribeDataToJson(this));
+  String toJsonString() =>
+      jsonEncode(_$PleromaApiPushSubscribeDataToJson(this));
 }
 
 @JsonSerializable(
   explicitToJson: true,
   includeIfNull: false,
 )
-class PleromaPushSettingsDataAlerts {
+class PleromaApiPushSubscribeRequestDataAlerts {
   final bool? favourite;
 
   final bool? follow;
@@ -150,7 +158,7 @@ class PleromaPushSettingsDataAlerts {
   @JsonKey(name: "pleroma:emoji_reaction")
   final bool? pleromaEmojiReaction;
 
-  PleromaPushSettingsDataAlerts({
+  PleromaApiPushSubscribeRequestDataAlerts({
     required this.favourite,
     required this.follow,
     required this.mention,
@@ -160,7 +168,7 @@ class PleromaPushSettingsDataAlerts {
     required this.pleromaEmojiReaction,
   });
 
-  PleromaPushSettingsDataAlerts.defaultAllEnabled()
+  PleromaApiPushSubscribeRequestDataAlerts.defaultAllEnabled()
       : this(
           favourite: true,
           follow: true,
@@ -174,7 +182,7 @@ class PleromaPushSettingsDataAlerts {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaPushSettingsDataAlerts &&
+      other is PleromaApiPushSubscribeRequestDataAlerts &&
           runtimeType == other.runtimeType &&
           favourite == other.favourite &&
           follow == other.follow &&
@@ -196,45 +204,56 @@ class PleromaPushSettingsDataAlerts {
 
   @override
   String toString() {
-    return 'PleromaPushSettingsDataAlerts{favourite: $favourite,'
-        ' follow: $follow, mention: $mention, reblog: $reblog,'
-        ' poll: $poll, pleromaChatMention: $pleromaChatMention,'
-        ' pleromaEmojiReaction: $pleromaEmojiReaction}';
+    return 'PleromaApiPushSubscribeRequestDataAlerts{'
+        'favourite: $favourite,'
+        'follow: $follow, '
+        'mention: $mention, '
+        'reblog: $reblog, '
+        'poll: $poll, '
+        'pleromaChatMention: $pleromaChatMention, '
+        'pleromaEmojiReaction: $pleromaEmojiReaction'
+        '}';
   }
 
-  factory PleromaPushSettingsDataAlerts.fromJson(Map<String, dynamic> json) =>
-      _$PleromaPushSettingsDataAlertsFromJson(json);
+  factory PleromaApiPushSubscribeRequestDataAlerts.fromJson(
+          Map<String, dynamic> json) =>
+      _$PleromaApiPushSubscribeRequestDataAlertsFromJson(json);
 
-  factory PleromaPushSettingsDataAlerts.fromJsonString(String jsonString) =>
-      _$PleromaPushSettingsDataAlertsFromJson(jsonDecode(jsonString));
+  factory PleromaApiPushSubscribeRequestDataAlerts.fromJsonString(
+          String jsonString) =>
+      _$PleromaApiPushSubscribeRequestDataAlertsFromJson(
+          jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaPushSettingsDataAlertsToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$PleromaApiPushSubscribeRequestDataAlertsToJson(this);
 
   String toJsonString() =>
-      jsonEncode(_$PleromaPushSettingsDataAlertsToJson(this));
+      jsonEncode(_$PleromaApiPushSubscribeRequestDataAlertsToJson(this));
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaPushSubscribeRequestSubscription {
+class PleromaApiPushSubscribeRequestSubscription {
   /// Endpoint URL that is called when a notification event occurs.
-  String? endpoint;
-  PleromaPushSubscriptionKeys? keys;
+  final String? endpoint;
+  final PleromaApiPushSubscriptionKeys? keys;
 
-  PleromaPushSubscribeRequestSubscription({
+  PleromaApiPushSubscribeRequestSubscription({
     required this.endpoint,
     required this.keys,
   });
 
   @override
   String toString() {
-    return 'PleromaPushSettingsSubscription{endpoint: $endpoint,'
-        ' keys: $keys}';
+    return 'PleromaApiPushSubscribeRequestSubscription{'
+        'endpoint: $endpoint,'
+        'keys: $keys'
+        '}';
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaPushSubscribeRequestSubscription &&
+      other is PleromaApiPushSubscribeRequestSubscription &&
           runtimeType == other.runtimeType &&
           endpoint == other.endpoint &&
           keys == other.keys;
@@ -242,38 +261,42 @@ class PleromaPushSubscribeRequestSubscription {
   @override
   int get hashCode => endpoint.hashCode ^ keys.hashCode;
 
-  factory PleromaPushSubscribeRequestSubscription.fromJson(
+  factory PleromaApiPushSubscribeRequestSubscription.fromJson(
     Map<String, dynamic> json,
   ) =>
-      _$PleromaPushSubscribeRequestSubscriptionFromJson(json);
+      _$PleromaApiPushSubscribeRequestSubscriptionFromJson(json);
 
-  factory PleromaPushSubscribeRequestSubscription.fromJsonString(
+  factory PleromaApiPushSubscribeRequestSubscription.fromJsonString(
     String jsonString,
   ) =>
-      _$PleromaPushSubscribeRequestSubscriptionFromJson(jsonDecode(jsonString));
+      _$PleromaApiPushSubscribeRequestSubscriptionFromJson(
+          jsonDecode(jsonString));
 
   Map<String, dynamic> toJson() =>
-      _$PleromaPushSubscribeRequestSubscriptionToJson(this);
+      _$PleromaApiPushSubscribeRequestSubscriptionToJson(this);
 
   String toJsonString() =>
-      jsonEncode(_$PleromaPushSubscribeRequestSubscriptionToJson(this));
+      jsonEncode(_$PleromaApiPushSubscribeRequestSubscriptionToJson(this));
 }
 
 @JsonSerializable()
-class PleromaPushSubscriptionKeys {
+class PleromaApiPushSubscriptionKeys {
   /// User agent public key.
   /// Base64 encoded string of public key of ECDH key using prime256v1 curve.
-  String? p256dh;
+  final String? p256dh;
 
   /// Auth secret. Base64 encoded string of 16 bytes of random data.
-  String? auth;
+  final String? auth;
 
-  PleromaPushSubscriptionKeys({required this.p256dh, required this.auth});
+  PleromaApiPushSubscriptionKeys({
+    required this.p256dh,
+    required this.auth,
+  });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaPushSubscriptionKeys &&
+      other is PleromaApiPushSubscriptionKeys &&
           runtimeType == other.runtimeType &&
           p256dh == other.p256dh &&
           auth == other.auth;
@@ -283,20 +306,20 @@ class PleromaPushSubscriptionKeys {
 
   @override
   String toString() {
-    return 'PleromaPushSubscriptionKeys{p256dh: $p256dh,'
+    return 'PleromaApiPushSubscriptionKeys{p256dh: $p256dh,'
         ' auth: $auth}';
   }
 
-  factory PleromaPushSubscriptionKeys.fromJson(Map<String, dynamic> json) =>
-      _$PleromaPushSubscriptionKeysFromJson(json);
+  factory PleromaApiPushSubscriptionKeys.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiPushSubscriptionKeysFromJson(json);
 
-  factory PleromaPushSubscriptionKeys.fromJsonString(String jsonString) =>
-      _$PleromaPushSubscriptionKeysFromJson(jsonDecode(jsonString));
+  factory PleromaApiPushSubscriptionKeys.fromJsonString(String jsonString) =>
+      _$PleromaApiPushSubscriptionKeysFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaPushSubscriptionKeysToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiPushSubscriptionKeysToJson(this);
 
   String toJsonString() =>
-      jsonEncode(_$PleromaPushSubscriptionKeysToJson(this));
+      jsonEncode(_$PleromaApiPushSubscriptionKeysToJson(this));
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -305,7 +328,7 @@ class PleromaPushSubscriptionKeys {
 //@HiveType()
 @HiveType(typeId: -32 + 56)
 @JsonSerializable()
-class PleromaPushMessageBody {
+class PleromaApiPushMessageBody {
   @HiveField(0)
   @JsonKey(name: "notification_id")
   final String notificationId;
@@ -317,34 +340,37 @@ class PleromaPushMessageBody {
   @HiveField(3)
   final String notificationType;
 
-  PleromaPushMessageBody({
+  PleromaApiPushMessageBody({
     required this.notificationId,
     required this.server,
     required this.account,
     required this.notificationType,
   });
 
-  factory PleromaPushMessageBody.fromJson(Map<String, dynamic> json) =>
-      _$PleromaPushMessageBodyFromJson(json);
+  factory PleromaApiPushMessageBody.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiPushMessageBodyFromJson(json);
 
-  factory PleromaPushMessageBody.fromJsonString(String jsonString) =>
-      _$PleromaPushMessageBodyFromJson(jsonDecode(jsonString));
+  factory PleromaApiPushMessageBody.fromJsonString(String jsonString) =>
+      _$PleromaApiPushMessageBodyFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaPushMessageBodyToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiPushMessageBodyToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaPushMessageBodyToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiPushMessageBodyToJson(this));
 
   @override
   String toString() {
-    return 'PleromaPushMessageBody{notificationId: $notificationId,'
-        ' server: $server, account: $account,'
-        ' notificationType: $notificationType}';
+    return 'PleromaApiPushMessageBody{'
+        'notificationId: $notificationId, '
+        'server: $server, '
+        'account: $account, '
+        'notificationType: $notificationType'
+        '}';
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaPushMessageBody &&
+      other is PleromaApiPushMessageBody &&
           runtimeType == other.runtimeType &&
           notificationId == other.notificationId &&
           server == other.server &&

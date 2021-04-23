@@ -58,7 +58,7 @@ class AccountActionMoreDialog extends StatelessWidget {
 
     var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
 
-    return StreamBuilder<IPleromaAccountRelationship?>(
+    return StreamBuilder<IPleromaApiAccountRelationship?>(
       stream: accountBloc.relationshipStream,
       builder: (context, snapshot) {
         var accountRelationship = snapshot.data;

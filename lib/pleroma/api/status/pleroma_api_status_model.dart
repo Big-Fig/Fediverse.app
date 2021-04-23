@@ -19,57 +19,57 @@ part 'pleroma_api_status_model.g.dart';
 
 Function eq = const ListEquality().equals;
 
-abstract class IPleromaStatus implements IMastodonApiStatus {
+abstract class IPleromaApiStatus implements IMastodonApiStatus {
   @override
-  IPleromaApplication? get application;
-
-  @override
-  IPleromaAccount get account;
+  IPleromaApiApplication? get application;
 
   @override
-  List<IPleromaMediaAttachment>? get mediaAttachments;
+  IPleromaApiAccount get account;
 
   @override
-  List<IPleromaMention>? get mentions;
+  List<IPleromaApiMediaAttachment>? get mediaAttachments;
 
   @override
-  List<IPleromaTag>? get tags;
+  List<IPleromaApiMention>? get mentions;
 
   @override
-  List<IPleromaEmoji>? get emojis;
+  List<IPleromaApiTag>? get tags;
 
   @override
-  IPleromaPoll? get poll;
+  List<IPleromaApiEmoji>? get emojis;
 
   @override
-  IPleromaCard? get card;
+  IPleromaApiPoll? get poll;
 
   @override
-  IPleromaStatus? get reblog;
+  IPleromaApiCard? get card;
 
-  PleromaStatusPleromaPart? get pleroma;
+  @override
+  IPleromaApiStatus? get reblog;
 
-  PleromaVisibility get visibilityPleroma;
+  PleromaApiStatusPleromaPart? get pleroma;
+
+  PleromaApiVisibility get visibilityPleroma;
 }
 
-extension IPleromaStatusListExtension on List<IPleromaStatus> {
-  List<PleromaStatus> toPleromaStatuses() {
-    if (this is List<PleromaStatus>) {
-      return this as List<PleromaStatus>;
+extension IPleromaApiStatusListExtension on List<IPleromaApiStatus> {
+  List<PleromaApiStatus> toPleromaApiStatuses() {
+    if (this is List<PleromaApiStatus>) {
+      return this as List<PleromaApiStatus>;
     } else {
       return map(
-        (pleromaStatus) => pleromaStatus.toPleromaStatus(),
+        (pleromaApiStatus) => pleromaApiStatus.toPleromaApiStatus(),
       ).toList();
     }
   }
 }
 
-extension IPleromaStatusExtension on IPleromaStatus {
-  PleromaStatus toPleromaStatus() {
-    if (this is PleromaStatus) {
-      return this as PleromaStatus;
+extension IPleromaApiStatusExtension on IPleromaApiStatus {
+  PleromaApiStatus toPleromaApiStatus() {
+    if (this is PleromaApiStatus) {
+      return this as PleromaApiStatus;
     } else {
-      return PleromaStatus(
+      return PleromaApiStatus(
         id: id,
         createdAt: createdAt,
         inReplyToId: inReplyToId,
@@ -86,15 +86,15 @@ extension IPleromaStatusExtension on IPleromaStatus {
         muted: muted,
         bookmarked: bookmarked,
         pinned: pinned,
-        reblog: reblog?.toPleromaStatus(),
-        application: application?.toPleromaApplication(),
-        account: account.toPleromaAccount(),
-        mediaAttachments: mediaAttachments?.toPleromaMediaAttachments(),
-        mentions: mentions?.toPleromaMentions(),
-        tags: tags?.toPleromaTags(),
-        emojis: emojis?.toPleromaEmojis(),
-        poll: poll?.toPleromaPoll(),
-        card: card?.toPleromaCard(),
+        reblog: reblog?.toPleromaApiStatus(),
+        application: application?.toPleromaApiApplication(),
+        account: account.toPleromaApiAccount(),
+        mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
+        mentions: mentions?.toPleromaApiMentions(),
+        tags: tags?.toPleromaApiTags(),
+        emojis: emojis?.toPleromaApiEmojis(),
+        poll: poll?.toPleromaApiPoll(),
+        card: card?.toPleromaApiCard(),
         pleroma: pleroma,
         visibility: visibility,
         language: language,
@@ -104,15 +104,15 @@ extension IPleromaStatusExtension on IPleromaStatus {
   }
 }
 
-abstract class IPleromaScheduledStatus extends IMastodonApiScheduledStatus {
+abstract class IPleromaApiScheduledStatus extends IMastodonApiScheduledStatus {
   @override
-  IPleromaScheduledStatusParams get params;
+  IPleromaApiScheduledStatusParams get params;
 
   @override
-  List<IPleromaMediaAttachment>? get mediaAttachments;
+  List<IPleromaApiMediaAttachment>? get mediaAttachments;
 }
 
-abstract class IPleromaScheduledStatusParams
+abstract class IPleromaApiScheduledStatusParams
     extends IMastodonApiScheduledStatusParams {
   List<String>? get to;
 
@@ -120,50 +120,61 @@ abstract class IPleromaScheduledStatusParams
 
   int? get expiresInSeconds;
 
-  PleromaVisibility get visibilityPleroma => visibility.toPleromaVisibility();
+  PleromaApiVisibility get visibilityPleroma =>
+      visibility.toPleromaApiVisibility();
 }
 
 @JsonSerializable()
-class PleromaScheduledStatus extends IPleromaScheduledStatus {
+class PleromaApiScheduledStatus extends IPleromaApiScheduledStatus {
   @override
   final String id;
 
   @override
   @JsonKey(name: "media_attachments")
-  final List<PleromaMediaAttachment>? mediaAttachments;
+  final List<PleromaApiMediaAttachment>? mediaAttachments;
 
   @override
-  final PleromaScheduledStatusParams params;
+  final PleromaApiScheduledStatusParams params;
 
   @JsonKey(name: "scheduled_at")
   @override
   final DateTime scheduledAt;
 
-  PleromaScheduledStatus({
+  PleromaApiScheduledStatus({
     required this.id,
     required this.mediaAttachments,
     required this.params,
     required this.scheduledAt,
   });
 
-  factory PleromaScheduledStatus.fromJson(Map<String, dynamic> json) =>
-      _$PleromaScheduledStatusFromJson(json);
+  factory PleromaApiScheduledStatus.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiScheduledStatusFromJson(json);
 
-  factory PleromaScheduledStatus.fromJsonString(String jsonString) =>
-      _$PleromaScheduledStatusFromJson(jsonDecode(jsonString));
+  factory PleromaApiScheduledStatus.fromJsonString(String jsonString) =>
+      _$PleromaApiScheduledStatusFromJson(jsonDecode(jsonString));
 
-  static List<PleromaScheduledStatus> listFromJsonString(String str) =>
-      List<PleromaScheduledStatus>.from(
-        json.decode(str).map((x) => PleromaScheduledStatus.fromJson(x)),
+  static List<PleromaApiScheduledStatus> listFromJsonString(String str) =>
+      List<PleromaApiScheduledStatus>.from(
+        json.decode(str).map((x) => PleromaApiScheduledStatus.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$PleromaScheduledStatusToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiScheduledStatusToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaScheduledStatusToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiScheduledStatusToJson(this));
+
+  @override
+  String toString() {
+    return 'PleromaApiScheduledStatus{'
+        'id: $id, '
+        'mediaAttachments: $mediaAttachments, '
+        'params: $params, '
+        'scheduledAt: $scheduledAt'
+        '}';
+  }
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
+class PleromaApiScheduledStatusParams extends IPleromaApiScheduledStatusParams {
   @override
   final int? expiresInSeconds;
   @override
@@ -191,7 +202,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
   final DateTime scheduledAt;
 
   @override
-  final PleromaPostStatusPoll? poll;
+  final PleromaApiPostStatusPoll? poll;
 
   @override
   final String? idempotency;
@@ -210,13 +221,13 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
   final String? inReplyToConversationId;
 
   @override
-  IPleromaStatus? get inReplyToPleromaStatus => null;
+  IPleromaApiStatus? get inReplyToPleromaApiStatus => null;
 
   @override
   @JsonKey(name: "to")
   final List<String>? to;
 
-  PleromaScheduledStatusParams({
+  PleromaApiScheduledStatusParams({
     required this.text,
     required this.mediaIds,
     required this.sensitive,
@@ -233,7 +244,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
     required this.inReplyToConversationId,
   });
 
-  PleromaScheduledStatusParams.only({
+  PleromaApiScheduledStatusParams.only({
     this.text,
     this.mediaIds,
     required this.sensitive,
@@ -250,26 +261,27 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
     this.inReplyToConversationId,
   });
 
-  factory PleromaScheduledStatusParams.fromJson(Map<String, dynamic> json) =>
-      _$PleromaScheduledStatusParamsFromJson(json);
+  factory PleromaApiScheduledStatusParams.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiScheduledStatusParamsFromJson(json);
 
-  factory PleromaScheduledStatusParams.fromJsonString(String jsonString) =>
-      _$PleromaScheduledStatusParamsFromJson(jsonDecode(jsonString));
+  factory PleromaApiScheduledStatusParams.fromJsonString(String jsonString) =>
+      _$PleromaApiScheduledStatusParamsFromJson(jsonDecode(jsonString));
 
-  static List<PleromaScheduledStatusParams> listFromJsonString(String str) =>
-      List<PleromaScheduledStatusParams>.from(json
+  static List<PleromaApiScheduledStatusParams> listFromJsonString(String str) =>
+      List<PleromaApiScheduledStatusParams>.from(json
           .decode(str)
-          .map((x) => PleromaScheduledStatusParams.fromJson(x)));
+          .map((x) => PleromaApiScheduledStatusParams.fromJson(x)));
 
-  Map<String, dynamic> toJson() => _$PleromaScheduledStatusParamsToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$PleromaApiScheduledStatusParamsToJson(this);
 
   String toJsonString() =>
-      jsonEncode(_$PleromaScheduledStatusParamsToJson(this));
+      jsonEncode(_$PleromaApiScheduledStatusParamsToJson(this));
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaScheduledStatusParams &&
+      other is PleromaApiScheduledStatusParams &&
           runtimeType == other.runtimeType &&
           expiresInSeconds == other.expiresInSeconds &&
           text == other.text &&
@@ -305,12 +317,27 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
 
   @override
   String toString() {
-    return 'PleromaScheduledStatusParams{expiresInSeconds: $expiresInSeconds, text: $text, mediaIds: $mediaIds, sensitive: $sensitive, spoilerText: $spoilerText, visibility: $visibility, language: $language, scheduledAt: $scheduledAt, poll: $poll, idempotency: $idempotency, inReplyToId: $inReplyToId, applicationId: $applicationId, inReplyToConversationId: $inReplyToConversationId, to: $to}';
+    return 'PleromaApiScheduledStatusParams{'
+        'expiresInSeconds: $expiresInSeconds, '
+        'text: $text, '
+        'mediaIds: $mediaIds, '
+        'sensitive: $sensitive, '
+        'spoilerText: $spoilerText, '
+        'visibility: $visibility, '
+        'language: $language, '
+        'scheduledAt: $scheduledAt, '
+        'poll: $poll, '
+        'idempotency: $idempotency, '
+        'inReplyToId: $inReplyToId, '
+        'applicationId: $applicationId, '
+        'inReplyToConversationId: $inReplyToConversationId, '
+        'to: $to'
+        '}';
   }
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaStatus extends IPleromaStatus {
+class PleromaApiStatus extends IPleromaApiStatus {
   @override
   final String id;
   @override
@@ -354,26 +381,26 @@ class PleromaStatus extends IPleromaStatus {
   @override
   final String? content;
   @override
-  final PleromaStatus? reblog;
+  final PleromaApiStatus? reblog;
   @override
-  final PleromaApplication? application;
+  final PleromaApiApplication? application;
   @override
-  final PleromaAccount account;
+  final PleromaApiAccount account;
   @override
   @JsonKey(name: "media_attachments")
-  final List<PleromaMediaAttachment>? mediaAttachments;
+  final List<PleromaApiMediaAttachment>? mediaAttachments;
   @override
-  final List<PleromaMention>? mentions;
+  final List<PleromaApiMention>? mentions;
   @override
-  final List<PleromaTag>? tags;
+  final List<PleromaApiTag>? tags;
   @override
-  final List<PleromaEmoji>? emojis;
+  final List<PleromaApiEmoji>? emojis;
   @override
-  final PleromaPoll? poll;
+  final PleromaApiPoll? poll;
   @override
-  final PleromaCard? card;
+  final PleromaApiCard? card;
   @override
-  final PleromaStatusPleromaPart? pleroma;
+  final PleromaApiStatusPleromaPart? pleroma;
 
   @override
   final String? language;
@@ -386,9 +413,10 @@ class PleromaStatus extends IPleromaStatus {
       visibility.toMastodonApiVisibility();
 
   @override
-  PleromaVisibility get visibilityPleroma => visibility.toPleromaVisibility();
+  PleromaApiVisibility get visibilityPleroma =>
+      visibility.toPleromaApiVisibility();
 
-  PleromaStatus({
+  PleromaApiStatus({
     required this.id,
     required this.createdAt,
     required this.inReplyToId,
@@ -420,27 +448,26 @@ class PleromaStatus extends IPleromaStatus {
     required this.language,
   });
 
-  factory PleromaStatus.fromJson(Map<String, dynamic> json) =>
-      _$PleromaStatusFromJson(json);
+  factory PleromaApiStatus.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiStatusFromJson(json);
 
-  factory PleromaStatus.fromJsonString(String jsonString) =>
-      _$PleromaStatusFromJson(jsonDecode(jsonString));
+  factory PleromaApiStatus.fromJsonString(String jsonString) =>
+      _$PleromaApiStatusFromJson(jsonDecode(jsonString));
 
-  static List<PleromaStatus> listFromJsonString(String str) =>
-      List<PleromaStatus>.from(
-        json.decode(str).map((x) => PleromaStatus.fromJson(x)),
+  static List<PleromaApiStatus> listFromJsonString(String str) =>
+      List<PleromaApiStatus>.from(
+        json.decode(str).map((x) => PleromaApiStatus.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$PleromaStatusToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiStatusToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaStatusToJson(this));
-
+  String toJsonString() => jsonEncode(_$PleromaApiStatusToJson(this));
 
   @override
   // ignore: code-metrics
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaStatus &&
+      other is PleromaApiStatus &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           createdAt == other.createdAt &&
@@ -506,7 +533,7 @@ class PleromaStatus extends IPleromaStatus {
 
   @override
   String toString() {
-    return 'PleromaStatus{'
+    return 'PleromaApiStatus{'
         'id: $id, '
         'createdAt: $createdAt, '
         'inReplyToId: $inReplyToId, '
@@ -541,11 +568,11 @@ class PleromaStatus extends IPleromaStatus {
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaStatusPleromaPart {
+class PleromaApiStatusPleromaPart {
   // a map consisting of alternate representations of the content property with
   // the key being it's mimetype.
   // Currently the only alternate representation supported is text/plain
-  final PleromaContent? content;
+  final PleromaApiContent? content;
 
   // the ID of the AP context the status is associated with (if any)
   @JsonKey(name: "conversation_id")
@@ -564,7 +591,7 @@ class PleromaStatusPleromaPart {
   // a map consisting of alternate representations of the spoiler_text property
   // with the key being it's mimetype. Currently the only alternate
   // representation supported is text/plain
-  final PleromaContent? spoilerText;
+  final PleromaApiContent? spoilerText;
 
   // a datetime (iso8601) that states when
   // the post will expire (be deleted automatically),
@@ -581,9 +608,9 @@ class PleromaStatusPleromaPart {
   // Contains no information about the reacting users,
   // for that use the /statuses/:id/reactions endpoint.
   @JsonKey(name: "emoji_reactions")
-  final List<PleromaStatusEmojiReaction>? emojiReactions;
+  final List<PleromaApiStatusEmojiReaction>? emojiReactions;
 
-  PleromaStatusPleromaPart({
+  PleromaApiStatusPleromaPart({
     required this.content,
     required this.conversationId,
     required this.directConversationId,
@@ -595,20 +622,21 @@ class PleromaStatusPleromaPart {
     required this.emojiReactions,
   });
 
-  factory PleromaStatusPleromaPart.fromJson(Map<String, dynamic> json) =>
-      _$PleromaStatusPleromaPartFromJson(json);
+  factory PleromaApiStatusPleromaPart.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiStatusPleromaPartFromJson(json);
 
-  factory PleromaStatusPleromaPart.fromJsonString(String jsonString) =>
-      _$PleromaStatusPleromaPartFromJson(jsonDecode(jsonString));
+  factory PleromaApiStatusPleromaPart.fromJsonString(String jsonString) =>
+      _$PleromaApiStatusPleromaPartFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaStatusPleromaPartToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiStatusPleromaPartToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaStatusPleromaPartToJson(this));
+  String toJsonString() =>
+      jsonEncode(_$PleromaApiStatusPleromaPartToJson(this));
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaStatusPleromaPart &&
+      other is PleromaApiStatusPleromaPart &&
           runtimeType == other.runtimeType &&
           content == other.content &&
           conversationId == other.conversationId &&
@@ -634,7 +662,7 @@ class PleromaStatusPleromaPart {
 
   @override
   String toString() {
-    return 'PleromaStatusPleromaPart{'
+    return 'PleromaApiStatusPleromaPart{'
         'content: $content, '
         'conversationId: $conversationId, '
         'directConversationId: $directConversationId, '
@@ -648,9 +676,9 @@ class PleromaStatusPleromaPart {
   }
 }
 
-abstract class IPleromaPostStatusBase
+abstract class IPleromaApiPostStatusBase
     implements IMastodonApiPostStatusBaseRequest {
-  PleromaVisibility get pleromaVisibility;
+  PleromaApiVisibility get visibilityAsPleromaApi;
 
   /// Will reply to a given conversation,
   /// addressing only the people who are part of the recipient
@@ -658,7 +686,7 @@ abstract class IPleromaPostStatusBase
   String? get inReplyToConversationId;
 
   @override
-  IPleromaPostStatusPoll? get poll;
+  IPleromaApiPostStatusPoll? get poll;
 
   /// A list of nicknames (like lain@soykaf.club or lain on the local server)
   /// that will be used to determine who is going to be addressed by this post.
@@ -685,11 +713,11 @@ abstract class IPleromaPostStatusBase
   Map<String, dynamic> toJson();
 }
 
-abstract class IPleromaPostStatusPoll
+abstract class IPleromaApiPostStatusPoll
     implements IMastodonApiPostStatusRequestPoll {}
 
 @JsonSerializable()
-class PleromaPostStatusPoll implements IPleromaPostStatusPoll {
+class PleromaApiPostStatusPoll implements IPleromaApiPostStatusPoll {
   @JsonKey(name: "expires_in")
   @override
   final int expiresInSeconds;
@@ -705,32 +733,59 @@ class PleromaPostStatusPoll implements IPleromaPostStatusPoll {
   @override
   final List<String> options;
 
-  PleromaPostStatusPoll({
+  PleromaApiPostStatusPoll({
     required this.expiresInSeconds,
     required this.hideTotals,
     required this.multiple,
     required this.options,
   });
 
-  factory PleromaPostStatusPoll.fromJson(Map<String, dynamic> json) =>
-      _$PleromaPostStatusPollFromJson(json);
+  factory PleromaApiPostStatusPoll.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiPostStatusPollFromJson(json);
 
-  factory PleromaPostStatusPoll.fromJsonString(String jsonString) =>
-      _$PleromaPostStatusPollFromJson(jsonDecode(jsonString));
+  factory PleromaApiPostStatusPoll.fromJsonString(String jsonString) =>
+      _$PleromaApiPostStatusPollFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaPostStatusPollToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiPostStatusPollToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaPostStatusPollToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiPostStatusPollToJson(this));
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiPostStatusPoll &&
+          runtimeType == other.runtimeType &&
+          expiresInSeconds == other.expiresInSeconds &&
+          hideTotals == other.hideTotals &&
+          multiple == other.multiple &&
+          options == other.options;
+
+  @override
+  int get hashCode =>
+      expiresInSeconds.hashCode ^
+      hideTotals.hashCode ^
+      multiple.hashCode ^
+      options.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaApiPostStatusPoll{'
+        'expiresInSeconds: $expiresInSeconds, '
+        'hideTotals: $hideTotals, '
+        'multiple: $multiple, '
+        'options: $options'
+        '}';
+  }
 }
 
-abstract class IPleromaPostStatus
-    implements IPleromaPostStatusBase, IMastodonApiPostStatusRequest {}
+abstract class IPleromaApiPostStatus
+    implements IPleromaApiPostStatusBase, IMastodonApiPostStatusRequest {}
 
-abstract class IPleromaScheduleStatus
-    implements IPleromaPostStatusBase, IMastodonApiScheduleStatusRequest {}
+abstract class IPleromaApiScheduleStatus
+    implements IPleromaApiPostStatusBase, IMastodonApiScheduleStatusRequest {}
 
 @JsonSerializable()
-class PleromaPostStatus implements IPleromaPostStatus {
+class PleromaApiPostStatus implements IPleromaApiPostStatus {
   @JsonKey(name: "content_type")
   @override
   final String? contentType;
@@ -759,14 +814,15 @@ class PleromaPostStatus implements IPleromaPostStatus {
 
   @JsonKey(ignore: true)
   @override
-  PleromaVisibility get pleromaVisibility => visibility.toPleromaVisibility();
+  PleromaApiVisibility get visibilityAsPleromaApi =>
+      visibility.toPleromaApiVisibility();
 
   @JsonKey(name: "media_ids")
   @override
   final List<String>? mediaIds;
 
   @override
-  final PleromaPostStatusPoll? poll;
+  final PleromaApiPostStatusPoll? poll;
   @override
   final bool? preview;
 
@@ -780,7 +836,7 @@ class PleromaPostStatus implements IPleromaPostStatus {
   @override
   final List<String?>? to;
 
-  PleromaPostStatus({
+  PleromaApiPostStatus({
     required this.contentType,
     required this.expiresInSeconds,
     this.idempotencyKey,
@@ -808,20 +864,40 @@ class PleromaPostStatus implements IPleromaPostStatus {
 //    assert(idempotencyKey != null);
   }
 
-  factory PleromaPostStatus.fromJson(Map<String, dynamic> json) =>
-      _$PleromaPostStatusFromJson(json);
+  factory PleromaApiPostStatus.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiPostStatusFromJson(json);
 
-  factory PleromaPostStatus.fromJsonString(String jsonString) =>
-      _$PleromaPostStatusFromJson(jsonDecode(jsonString));
+  factory PleromaApiPostStatus.fromJsonString(String jsonString) =>
+      _$PleromaApiPostStatusFromJson(jsonDecode(jsonString));
 
   @override
-  Map<String, dynamic> toJson() => _$PleromaPostStatusToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiPostStatusToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaPostStatusToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiPostStatusToJson(this));
+
+  @override
+  String toString() {
+    return 'PleromaApiPostStatus{'
+        'contentType: $contentType, '
+        'expiresInSeconds: $expiresInSeconds, '
+        'idempotencyKey: $idempotencyKey, '
+        'inReplyToConversationId: $inReplyToConversationId, '
+        'inReplyToId: $inReplyToId, '
+        'language: $language, '
+        'visibility: $visibility, '
+        'mediaIds: $mediaIds, '
+        'poll: $poll, '
+        'preview: $preview, '
+        'sensitive: $sensitive, '
+        'spoilerText: $spoilerText, '
+        'status: $status, '
+        'to: $to'
+        '}';
+  }
 }
 
 @JsonSerializable()
-class PleromaScheduleStatus implements IPleromaScheduleStatus {
+class PleromaApiScheduleStatus implements IPleromaApiScheduleStatus {
   @JsonKey(name: "content_type")
   @override
   final String? contentType;
@@ -850,14 +926,15 @@ class PleromaScheduleStatus implements IPleromaScheduleStatus {
 
   @JsonKey(ignore: true)
   @override
-  PleromaVisibility get pleromaVisibility => visibility.toPleromaVisibility();
+  PleromaApiVisibility get visibilityAsPleromaApi =>
+      visibility.toPleromaApiVisibility();
 
   @JsonKey(name: "media_ids")
   @override
   final List<String>? mediaIds;
 
   @override
-  final PleromaPostStatusPoll? poll;
+  final PleromaApiPostStatusPoll? poll;
   @override
   final bool? preview;
 
@@ -875,7 +952,7 @@ class PleromaScheduleStatus implements IPleromaScheduleStatus {
   @override
   DateTime scheduledAt;
 
-  PleromaScheduleStatus({
+  PleromaApiScheduleStatus({
     required this.contentType,
     required this.expiresInSeconds,
     this.idempotencyKey,
@@ -907,46 +984,67 @@ class PleromaScheduleStatus implements IPleromaScheduleStatus {
 //    assert(idempotencyKey != null);
   }
 
-  factory PleromaScheduleStatus.fromJson(Map<String, dynamic> json) =>
-      _$PleromaScheduleStatusFromJson(json);
+  factory PleromaApiScheduleStatus.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiScheduleStatusFromJson(json);
 
-  factory PleromaScheduleStatus.fromJsonString(String jsonString) =>
-      _$PleromaScheduleStatusFromJson(jsonDecode(jsonString));
+  factory PleromaApiScheduleStatus.fromJsonString(String jsonString) =>
+      _$PleromaApiScheduleStatusFromJson(jsonDecode(jsonString));
 
   @override
-  Map<String, dynamic> toJson() => _$PleromaScheduleStatusToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiScheduleStatusToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaScheduleStatusToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiScheduleStatusToJson(this));
 
   static String toUTCIsoString(DateTime scheduledAt) =>
       scheduledAt.toUtc().toIso8601String();
+
+  @override
+  String toString() {
+    return 'PleromaApiScheduleStatus{'
+        'contentType: $contentType, '
+        'expiresInSeconds: $expiresInSeconds, '
+        'idempotencyKey: $idempotencyKey, '
+        'inReplyToConversationId: $inReplyToConversationId, '
+        'inReplyToId: $inReplyToId, '
+        'language: $language, '
+        'visibility: $visibility, '
+        'mediaIds: $mediaIds, '
+        'poll: $poll, '
+        'preview: $preview, '
+        'sensitive: $sensitive, '
+        'spoilerText: $spoilerText, '
+        'status: $status, '
+        'to: $to, '
+        'scheduledAt: $scheduledAt'
+        '}';
+  }
 }
 
-abstract class IPleromaStatusEmojiReaction {
+abstract class IPleromaApiStatusEmojiReaction {
   String get name;
 
   int get count;
 
   bool get me;
 
-  List<IPleromaAccount>? get accounts;
+  List<IPleromaApiAccount>? get accounts;
 }
 
-extension IPleromaStatusEmojiReactionListExtension
-    on List<IPleromaStatusEmojiReaction> {
-  int sumPleromaEmojiReactions() => fold(
+extension IPleromaApiStatusEmojiReactionListExtension
+    on List<IPleromaApiStatusEmojiReaction> {
+  int sumPleromaApiEmojiReactions() => fold(
         0,
-        (int previousValue, IPleromaStatusEmojiReaction element) =>
+        (int previousValue, IPleromaApiStatusEmojiReaction element) =>
             previousValue + element.count,
       );
 
-  List<IPleromaStatusEmojiReaction> mergeEmojiReactionsLists(
-    List<IPleromaStatusEmojiReaction>? emojiReactionsListToMerge,
+  List<IPleromaApiStatusEmojiReaction> mergePleromaApiEmojiReactionsLists(
+    List<IPleromaApiStatusEmojiReaction>? emojiReactionsListToMerge,
   ) {
     if (emojiReactionsListToMerge?.isNotEmpty != true) {
       return this;
     }
-    var mergedList = <IPleromaStatusEmojiReaction>[];
+    var mergedList = <IPleromaApiStatusEmojiReaction>[];
 
     mergedList.addAll(this);
 
@@ -958,13 +1056,13 @@ extension IPleromaStatusEmojiReactionListExtension
 
       if (alreadyExistEmojiReaction != null) {
         mergedList.remove(alreadyExistEmojiReaction);
-        var mergedEmojiReaction = PleromaStatusEmojiReaction(
+        var mergedEmojiReaction = PleromaApiStatusEmojiReaction(
           name: alreadyExistEmojiReaction.name,
           me: alreadyExistEmojiReaction.me || emojiReaction.me,
           count: alreadyExistEmojiReaction.count + emojiReaction.count,
           accounts: [
-            ...alreadyExistEmojiReaction.accounts?.toPleromaAccounts() ?? [],
-            ...emojiReaction.accounts?.toPleromaAccounts() ?? [],
+            ...alreadyExistEmojiReaction.accounts?.toPleromaApiAccounts() ?? [],
+            ...emojiReaction.accounts?.toPleromaApiAccounts() ?? [],
           ],
         );
         mergedList.add(mergedEmojiReaction);
@@ -976,34 +1074,35 @@ extension IPleromaStatusEmojiReactionListExtension
     return mergedList;
   }
 
-  List<PleromaStatusEmojiReaction> toPleromaStatusEmojiReactions() {
-    if (this is List<PleromaStatusEmojiReaction>) {
-      return this as List<PleromaStatusEmojiReaction>;
+  List<PleromaApiStatusEmojiReaction> toPleromaApiStatusEmojiReactions() {
+    if (this is List<PleromaApiStatusEmojiReaction>) {
+      return this as List<PleromaApiStatusEmojiReaction>;
     } else {
       return map(
-        (reaction) => reaction.toPleromaStatusEmojiReaction(),
+        (reaction) => reaction.toPleromaApiStatusEmojiReaction(),
       ).toList();
     }
   }
 }
 
-extension IPleromaStatusEmojiReactionExtension on IPleromaStatusEmojiReaction {
-  PleromaStatusEmojiReaction toPleromaStatusEmojiReaction() {
-    if (this is PleromaStatusEmojiReaction) {
-      return this as PleromaStatusEmojiReaction;
+extension IPleromaApiStatusEmojiReactionExtension
+    on IPleromaApiStatusEmojiReaction {
+  PleromaApiStatusEmojiReaction toPleromaApiStatusEmojiReaction() {
+    if (this is PleromaApiStatusEmojiReaction) {
+      return this as PleromaApiStatusEmojiReaction;
     } else {
-      return PleromaStatusEmojiReaction(
+      return PleromaApiStatusEmojiReaction(
         name: name,
         count: count,
         me: me,
-        accounts: accounts?.toPleromaAccounts(),
+        accounts: accounts?.toPleromaApiAccounts(),
       );
     }
   }
 }
 
 @JsonSerializable()
-class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
+class PleromaApiStatusEmojiReaction implements IPleromaApiStatusEmojiReaction {
   @override
   final String name;
   @override
@@ -1012,54 +1111,55 @@ class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
   final bool me;
 
   @override
-  List<PleromaAccount>? accounts;
+  final List<PleromaApiAccount>? accounts;
 
-  PleromaStatusEmojiReaction({
+  PleromaApiStatusEmojiReaction({
     required this.name,
     required this.count,
     required this.me,
     required this.accounts,
   });
 
-  PleromaStatusEmojiReaction.only({
+  PleromaApiStatusEmojiReaction.only({
     required this.name,
     required this.count,
     required this.me,
     this.accounts,
   });
 
-  PleromaStatusEmojiReaction copyWith({
+  PleromaApiStatusEmojiReaction copyWith({
     String? name,
     int? count,
     bool? me,
-    List<PleromaAccount>? accounts,
+    List<PleromaApiAccount>? accounts,
   }) =>
-      PleromaStatusEmojiReaction(
+      PleromaApiStatusEmojiReaction(
         name: name ?? this.name,
         count: count ?? this.count,
         me: me ?? this.me,
         accounts: accounts ?? this.accounts,
       );
 
-  factory PleromaStatusEmojiReaction.fromJson(Map<String, dynamic> json) =>
-      _$PleromaStatusEmojiReactionFromJson(json);
+  factory PleromaApiStatusEmojiReaction.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiStatusEmojiReactionFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PleromaStatusEmojiReactionToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiStatusEmojiReactionToJson(this);
 
-  static List<PleromaStatusEmojiReaction> listFromJsonString(String str) =>
-      List<PleromaStatusEmojiReaction>.from(
-        json.decode(str).map((x) => PleromaStatusEmojiReaction.fromJson(x)),
+  static List<PleromaApiStatusEmojiReaction> listFromJsonString(String str) =>
+      List<PleromaApiStatusEmojiReaction>.from(
+        json.decode(str).map((x) => PleromaApiStatusEmojiReaction.fromJson(x)),
       );
 
-  factory PleromaStatusEmojiReaction.fromJsonString(String jsonString) =>
-      _$PleromaStatusEmojiReactionFromJson(jsonDecode(jsonString));
+  factory PleromaApiStatusEmojiReaction.fromJsonString(String jsonString) =>
+      _$PleromaApiStatusEmojiReactionFromJson(jsonDecode(jsonString));
 
-  String toJsonString() => jsonEncode(_$PleromaStatusEmojiReactionToJson(this));
+  String toJsonString() =>
+      jsonEncode(_$PleromaApiStatusEmojiReactionToJson(this));
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaStatusEmojiReaction &&
+      other is PleromaApiStatusEmojiReaction &&
           runtimeType == other.runtimeType &&
           name == other.name &&
           count == other.count &&
@@ -1072,7 +1172,11 @@ class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
 
   @override
   String toString() {
-    return 'PleromaStatusEmojiReaction{name: $name, count: $count,'
-        ' me: $me, accounts: $accounts}';
+    return 'PleromaApiStatusEmojiReaction{'
+        'name: $name, '
+        'count: $count, '
+        'me: $me, '
+        'accounts: $accounts'
+        '}';
   }
 }

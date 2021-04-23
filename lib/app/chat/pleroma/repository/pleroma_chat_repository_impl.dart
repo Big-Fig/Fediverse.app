@@ -27,7 +27,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbChat,
     DbPleromaChatPopulated,
     IPleromaChat,
-    pleroma_lib.IPleromaChat,
+    pleroma_lib.IPleromaApiChat,
     int,
     String,
     $DbChatsTable,
@@ -220,7 +220,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   DbChat mapAppItemToDbItem(IPleromaChat appItem) => appItem.toDbChat();
 
   @override
-  pleroma_lib.IPleromaChat mapAppItemToRemoteItem(IPleromaChat appItem) =>
+  pleroma_lib.IPleromaApiChat mapAppItemToRemoteItem(IPleromaChat appItem) =>
       // todo: improve
       appItem.toPleromaChat(
         lastChatMessage: null,
@@ -237,7 +237,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbPopulatedItem.toDbPleromaChatPopulatedWrapper();
 
   @override
-  pleroma_lib.IPleromaChat mapDbPopulatedItemToRemoteItem(
+  pleroma_lib.IPleromaApiChat mapDbPopulatedItemToRemoteItem(
           DbPleromaChatPopulated dbPopulatedItem) =>
       dbPopulatedItem.toDbPleromaChatPopulatedWrapper().toPleromaChat(
         lastChatMessage: null,
@@ -246,7 +246,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   IPleromaChat mapRemoteItemToAppItem(
-    pleroma_lib.IPleromaChat remoteItem,
+    pleroma_lib.IPleromaApiChat remoteItem,
   ) =>
       DbPleromaChatPopulatedWrapper(
         dbChatPopulated: DbPleromaChatPopulated(
@@ -277,7 +277,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<int> insertInRemoteType(
-    pleroma_lib.IPleromaChat remoteItem, {
+    pleroma_lib.IPleromaApiChat remoteItem, {
     required InsertMode? mode,
   }) async {
     await _upsertChatMessageMetadata(
@@ -291,7 +291,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   Future _upsertChatMessageMetadata(
-    pleroma_lib.IPleromaChat remoteItem, {
+    pleroma_lib.IPleromaApiChat remoteItem, {
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -324,7 +324,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    pleroma_lib.IPleromaChat remoteItem, {
+    pleroma_lib.IPleromaApiChat remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) async {
@@ -357,7 +357,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<void> updateAppTypeByRemoteType({
     required IPleromaChat appItem,
-    required pleroma_lib.IPleromaChat remoteItem,
+    required pleroma_lib.IPleromaApiChat remoteItem,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {

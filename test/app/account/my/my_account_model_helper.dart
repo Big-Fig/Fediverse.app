@@ -6,7 +6,7 @@ Future<PleromaMyAccountWrapper> createTestMyAccount({
   String? remoteId,
 }) async {
   return PleromaMyAccountWrapper(
-    pleromaAccount: PleromaMyAccount(
+    pleromaAccount: PleromaApiMyAccount(
       id: remoteId ?? seed + "remoteId1",
       username: seed + "username1",
       url: seed + "url1",
@@ -26,7 +26,7 @@ Future<PleromaMyAccountWrapper> createTestMyAccount({
       bot: false,
       fields: null,
       emojis: null,
-      pleroma: PleromaMyAccountPleromaPart(
+      pleroma: PleromaApiMyAccountPleromaPart(
         tags: null,
         relationship: null,
         isAdmin: true,

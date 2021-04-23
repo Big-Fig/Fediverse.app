@@ -1,7 +1,7 @@
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/api/search/mastodon_api_search_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
 import 'package:fedi/pleroma/api/search/pleroma_api_search_exception.dart';
 import 'package:fedi/pleroma/api/search/pleroma_api_search_model.dart';
@@ -9,12 +9,14 @@ import 'package:fedi/pleroma/api/search/pleroma_api_search_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
 
-class PleromaSearchService extends DisposableOwner
-    implements IPleromaSearchService {
+class PleromaApiSearchService extends DisposableOwner
+    implements IPleromaApiSearchService {
   @override
-  final IPleromaAuthRestService restService;
+  final IPleromaApiAuthRestService restService;
 
-  PleromaSearchService({required this.restService});
+  PleromaApiSearchService({
+    required this.restService,
+  });
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -32,7 +34,7 @@ class PleromaSearchService extends DisposableOwner
   @override
   // todo: refactor long-parameter-list
   // ignore: long-parameter-list, code-metrics
-  Future<IPleromaSearchResult> search({
+  Future<IPleromaApiSearchResult> search({
     required String? query,
     String? accountId,
     bool? excludeUnreviewed,
@@ -40,7 +42,7 @@ class PleromaSearchService extends DisposableOwner
     bool? resolve,
     int? offset,
     MastodonSearchRequestType? type,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     if (pagination?.limit != null) {
       // ignore: no-magic-number
@@ -88,9 +90,9 @@ class PleromaSearchService extends DisposableOwner
     );
 
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaSearchResult.fromJsonString(httpResponse.body);
+      return PleromaApiSearchResult.fromJsonString(httpResponse.body);
     } else {
-      throw PleromaSearchException(
+      throw PleromaApiSearchException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );

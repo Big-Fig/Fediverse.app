@@ -93,13 +93,13 @@ abstract class IMastodonApiScheduledStatusParams {
 
   DateTime get scheduledAt;
 
-  PleromaPostStatusPoll? get poll;
+  PleromaApiPostStatusPoll? get poll;
 
   String? get idempotency;
 
   String? get inReplyToId;
 
-  IPleromaStatus? get inReplyToPleromaStatus;
+  IPleromaApiStatus? get inReplyToPleromaApiStatus;
 
   String? get language;
 

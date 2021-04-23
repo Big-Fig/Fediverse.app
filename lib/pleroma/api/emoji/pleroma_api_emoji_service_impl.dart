@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_exception.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_service.dart';
@@ -10,11 +10,11 @@ import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 
-class PleromaEmojiService extends DisposableOwner
-    implements IPleromaEmojiService {
+class PleromaApiEmojiService extends DisposableOwner
+    implements IPleromaApiEmojiService {
   final emojiRelativeUrlPath = "/api/pleroma/emoji";
   @override
-  final IPleromaAuthRestService restService;
+  final IPleromaApiAuthRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -29,7 +29,7 @@ class PleromaEmojiService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaEmojiService({required this.restService});
+  PleromaApiEmojiService({required this.restService});
 
   @override
   Future dispose() async {
@@ -37,7 +37,7 @@ class PleromaEmojiService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaCustomEmoji>> getCustomEmojis() async {
+  Future<List<IPleromaApiCustomEmoji>> getCustomEmojis() async {
     var request = RestRequest.get(
       relativePath: emojiRelativeUrlPath,
     );
@@ -46,10 +46,10 @@ class PleromaEmojiService extends DisposableOwner
     return parsePleromaCustomEmojiListResponse(httpResponse);
   }
 
-  List<IPleromaCustomEmoji> parsePleromaCustomEmojiListResponse(
+  List<IPleromaApiCustomEmoji> parsePleromaCustomEmojiListResponse(
     Response httpResponse,
   ) {
-    RestResponse<List<IPleromaCustomEmoji>> restResponse =
+    RestResponse<List<IPleromaApiCustomEmoji>> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
       resultParser: (body) {
@@ -61,8 +61,8 @@ class PleromaEmojiService extends DisposableOwner
           return map.entries.map((entry) {
             var name = entry.key;
             var json = entry.value;
-            var customEmoji = PleromaCustomEmoji.fromJson(json);
-            customEmoji = PleromaCustomEmoji(
+            var customEmoji = PleromaApiCustomEmoji.fromJson(json);
+            customEmoji = PleromaApiCustomEmoji(
               name: name,
               tags: customEmoji.tags,
               imageUrl: customEmoji.imageUrl,
@@ -76,7 +76,7 @@ class PleromaEmojiService extends DisposableOwner
     if (restResponse.isSuccess) {
       return restResponse.body!;
     } else {
-      throw PleromaEmojiException(
+      throw PleromaApiEmojiException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );

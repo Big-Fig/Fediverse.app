@@ -1,7 +1,7 @@
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
 
-extension IPleromaListExtension on IPleromaList {
+extension IPleromaListExtension on IPleromaApiList {
   CustomList toCustomList() {
     if (this is CustomList) {
       return this as CustomList;
@@ -15,11 +15,11 @@ extension IPleromaListExtension on IPleromaList {
 }
 
 extension ICustomListExtension on ICustomList {
-  PleromaList toPleromaList() {
-    if (this is PleromaList) {
-      return this as PleromaList;
+  PleromaApiList toPleromaList() {
+    if (this is PleromaApiList) {
+      return this as PleromaApiList;
     } else {
-      return PleromaList(
+      return PleromaApiList(
         id: remoteId,
         title: title,
       );

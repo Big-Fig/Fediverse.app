@@ -1,4 +1,4 @@
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -6,32 +6,32 @@ import 'package:provider/provider.dart';
 typedef dynamic AuthorizationCodeSuccessCallback(String code);
 typedef dynamic AuthorizationCodeErrorCallback(error);
 
-abstract class IPleromaOAuthService extends IPleromaApi {
-  static IPleromaOAuthService of(
+abstract class IPleromaApiOAuthService extends IPleromaApi {
+  static IPleromaApiOAuthService of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IPleromaOAuthService>(
+      Provider.of<IPleromaApiOAuthService>(
         context,
         listen: listen,
       );
 
   Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
-    required PleromaOAuthAuthorizeRequest authorizeRequest,
+    required PleromaApiOAuthAuthorizeRequest authorizeRequest,
   });
 
   static String extractAuthCodeFromUri(Uri uri) =>
       uri.queryParameters['code'].toString();
 
-  Future<PleromaOAuthToken> retrieveAccountAccessToken({
-    required PleromaOAuthAccountTokenRequest tokenRequest,
+  Future<PleromaApiOAuthToken> retrieveAccountAccessToken({
+    required PleromaApiOAuthAccountTokenRequest tokenRequest,
   });
 
-  Future<PleromaOAuthToken?> retrieveAppAccessToken({
-    required PleromaOAuthAppTokenRequest tokenRequest,
+  Future<PleromaApiOAuthToken?> retrieveAppAccessToken({
+    required PleromaApiOAuthAppTokenRequest tokenRequest,
   });
 
   Future<bool> revokeToken({
-    required PleromaOAuthAppTokenRevokeRequest revokeRequest,
+    required PleromaApiOAuthAppTokenRevokeRequest revokeRequest,
   });
 }

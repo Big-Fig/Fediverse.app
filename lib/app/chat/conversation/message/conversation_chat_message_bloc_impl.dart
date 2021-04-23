@@ -16,7 +16,7 @@ import 'package:rxdart/rxdart.dart';
 
 class ConversationChatMessageBloc extends ChatMessageBloc
     implements IConversationChatMessageBloc {
-  final PleromaInstancePollLimits pleromaInstancePollLimits;
+  final PleromaApiInstancePollLimits pleromaInstancePollLimits;
 
   static ConversationChatMessageBloc createFromContext(
     BuildContext context,
@@ -29,12 +29,12 @@ class ConversationChatMessageBloc extends ChatMessageBloc
               context,
               listen: false,
             ).currentInstance?.info?.pollLimits ??
-            PleromaInstancePollLimits.defaultLimits,
+            PleromaApiInstancePollLimits.defaultLimits,
         conversationChatService:
-            IPleromaConversationService.of(context, listen: false),
-        authStatusService: IPleromaAuthStatusService.of(context, listen: false),
+            IPleromaApiConversationService.of(context, listen: false),
+        authStatusService: IPleromaApiAuthStatusService.of(context, listen: false),
         pleromaAccountService:
-            IPleromaAccountService.of(context, listen: false),
+            IPleromaApiAccountService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         chatMessage: chatMessage,
@@ -50,9 +50,9 @@ class ConversationChatMessageBloc extends ChatMessageBloc
 
   final BehaviorSubject<IConversationChatMessage> _chatMessageSubject;
 
-  final IPleromaConversationService conversationChatService;
-  final IPleromaAuthStatusService authStatusService;
-  final IPleromaAccountService pleromaAccountService;
+  final IPleromaApiConversationService conversationChatService;
+  final IPleromaApiAuthStatusService authStatusService;
+  final IPleromaApiAccountService pleromaAccountService;
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
   final IConversationChatBloc conversationChatBloc;

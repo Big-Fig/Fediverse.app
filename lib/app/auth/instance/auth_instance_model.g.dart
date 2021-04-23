@@ -20,11 +20,11 @@ class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
       urlSchema: fields[0] as String?,
       urlHost: fields[1] as String,
       acct: fields[2] as String,
-      token: fields[3] as PleromaOAuthToken?,
+      token: fields[3] as PleromaApiOAuthToken?,
       authCode: fields[4] as String?,
       isPleroma: fields[5] as bool,
-      application: fields[6] as PleromaClientApplication?,
-      info: fields[7] as PleromaInstance?,
+      application: fields[6] as PleromaApiClientApplication?,
+      info: fields[7] as PleromaApiInstance?,
     );
   }
 
@@ -72,16 +72,16 @@ AuthInstance _$AuthInstanceFromJson(Map<String, dynamic> json) {
     acct: json['acct'] as String,
     token: json['token'] == null
         ? null
-        : PleromaOAuthToken.fromJson(json['token'] as Map<String, dynamic>),
+        : PleromaApiOAuthToken.fromJson(json['token'] as Map<String, dynamic>),
     authCode: json['auth_code'] as String?,
     isPleroma: json['is_pleroma_instance'] as bool,
     application: json['application'] == null
         ? null
-        : PleromaClientApplication.fromJson(
+        : PleromaApiClientApplication.fromJson(
             json['application'] as Map<String, dynamic>),
     info: json['info'] == null
         ? null
-        : PleromaInstance.fromJson(json['info'] as Map<String, dynamic>),
+        : PleromaApiInstance.fromJson(json['info'] as Map<String, dynamic>),
   );
 }
 

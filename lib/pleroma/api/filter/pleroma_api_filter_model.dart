@@ -7,8 +7,8 @@ import 'package:json_annotation/json_annotation.dart';
 // ignore_for_file: no-magic-number
 part 'pleroma_api_filter_model.g.dart';
 
-abstract class IPleromaFilter extends IMastodonApiFilter {
-  IPleromaFilter copyWith({
+abstract class IPleromaApiFilter extends IMastodonApiFilter {
+  IPleromaApiFilter copyWith({
     List<String> context,
     DateTime? expiresAt,
     String id,
@@ -22,7 +22,7 @@ abstract class IPleromaFilter extends IMastodonApiFilter {
   String toJsonString();
 }
 
-abstract class IPostPleromaFilter implements IPostMastodonApiFilter {
+abstract class IPostPleromaApiFilter implements IPostMastodonApiFilter {
   Map<String, dynamic> toJson();
 
   String toJsonString();
@@ -33,7 +33,7 @@ abstract class IPostPleromaFilter implements IPostMastodonApiFilter {
   includeIfNull: false,
 )
 @HiveType(typeId: -32 + 95)
-class PleromaFilter extends IPleromaFilter {
+class PleromaApiFilter extends IPleromaApiFilter {
   @override
   @HiveField(0)
   final List<String> context;
@@ -60,7 +60,7 @@ class PleromaFilter extends IPleromaFilter {
   @JsonKey(name: "whole_word")
   final bool wholeWord;
 
-  PleromaFilter({
+  PleromaApiFilter({
     required this.context,
     required this.phrase,
     required this.expiresAt,
@@ -76,7 +76,7 @@ class PleromaFilter extends IPleromaFilter {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaFilter &&
+      other is PleromaApiFilter &&
           runtimeType == other.runtimeType &&
           context == other.context &&
           expiresAt == other.expiresAt &&
@@ -96,13 +96,18 @@ class PleromaFilter extends IPleromaFilter {
 
   @override
   String toString() {
-    return 'PleromaFilter{'
-        'context: $context, expiresAt: $expiresAt, id: $id, '
-        'irreversible: $irreversible, phrase: $phrase, wholeWord: $wholeWord}';
+    return 'PleromaApiFilter{'
+        'context: $context, '
+        'expiresAt: $expiresAt, '
+        'id: $id, '
+        'irreversible: $irreversible, '
+        'phrase: $phrase, '
+        'wholeWord: $wholeWord'
+        '}';
   }
 
   @override
-  PleromaFilter copyWith({
+  PleromaApiFilter copyWith({
     List<String>? context,
     DateTime? expiresAt,
     String? id,
@@ -110,7 +115,7 @@ class PleromaFilter extends IPleromaFilter {
     String? phrase,
     bool? wholeWord,
   }) =>
-      PleromaFilter(
+      PleromaApiFilter(
         context: context ?? this.context,
         expiresAt: expiresAt ?? this.expiresAt,
         id: id ?? this.id,
@@ -119,29 +124,29 @@ class PleromaFilter extends IPleromaFilter {
         wholeWord: wholeWord ?? this.wholeWord,
       );
 
-  factory PleromaFilter.fromJson(Map<String, dynamic> json) =>
-      _$PleromaFilterFromJson(json);
+  factory PleromaApiFilter.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiFilterFromJson(json);
 
-  factory PleromaFilter.fromJsonString(String jsonString) =>
-      _$PleromaFilterFromJson(jsonDecode(jsonString));
+  factory PleromaApiFilter.fromJsonString(String jsonString) =>
+      _$PleromaApiFilterFromJson(jsonDecode(jsonString));
 
-  static List<PleromaFilter> listFromJsonString(String str) =>
-      List<PleromaFilter>.from(
-        json.decode(str).map((x) => PleromaFilter.fromJson(x)),
+  static List<PleromaApiFilter> listFromJsonString(String str) =>
+      List<PleromaApiFilter>.from(
+        json.decode(str).map((x) => PleromaApiFilter.fromJson(x)),
       );
 
   @override
-  Map<String, dynamic> toJson() => _$PleromaFilterToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiFilterToJson(this);
 
   @override
-  String toJsonString() => jsonEncode(_$PleromaFilterToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiFilterToJson(this));
 }
 
 @JsonSerializable(
   explicitToJson: true,
   includeIfNull: false,
 )
-class PostPleromaFilter extends IPostPleromaFilter {
+class PostPleromaApiFilter extends IPostPleromaApiFilter {
   @override
   final List<String> context;
 
@@ -159,7 +164,7 @@ class PostPleromaFilter extends IPostPleromaFilter {
   @JsonKey(name: "whole_word")
   final bool wholeWord;
 
-  PostPleromaFilter({
+  PostPleromaApiFilter({
     required this.context,
     required this.phrase,
     required this.expiresInSeconds,
@@ -177,7 +182,7 @@ class PostPleromaFilter extends IPostPleromaFilter {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PostPleromaFilter &&
+      other is PostPleromaApiFilter &&
           runtimeType == other.runtimeType &&
           context == other.context &&
           expiresInSeconds == other.expiresInSeconds &&
@@ -195,7 +200,7 @@ class PostPleromaFilter extends IPostPleromaFilter {
 
   @override
   String toString() {
-    return 'PostPleromaFilter{'
+    return 'PostPleromaApiFilter{'
         'context: $context, '
         'expiresInSeconds: $expiresInSeconds, '
         'irreversible: $irreversible, '
@@ -204,14 +209,14 @@ class PostPleromaFilter extends IPostPleromaFilter {
         '}';
   }
 
-  PostPleromaFilter copyWith({
+  PostPleromaApiFilter copyWith({
     List<String>? context,
     int? expiresInSeconds,
     bool? irreversible,
     String? phrase,
     bool? wholeWord,
   }) =>
-      PostPleromaFilter(
+      PostPleromaApiFilter(
         context: context ?? this.context,
         expiresInSeconds: expiresInSeconds ?? this.expiresInSeconds,
         irreversible: irreversible ?? this.irreversible,
@@ -219,20 +224,20 @@ class PostPleromaFilter extends IPostPleromaFilter {
         wholeWord: wholeWord ?? this.wholeWord,
       );
 
-  factory PostPleromaFilter.fromJson(Map<String, dynamic> json) =>
-      _$PostPleromaFilterFromJson(json);
+  factory PostPleromaApiFilter.fromJson(Map<String, dynamic> json) =>
+      _$PostPleromaApiFilterFromJson(json);
 
-  factory PostPleromaFilter.fromJsonString(String jsonString) =>
-      _$PostPleromaFilterFromJson(jsonDecode(jsonString));
+  factory PostPleromaApiFilter.fromJsonString(String jsonString) =>
+      _$PostPleromaApiFilterFromJson(jsonDecode(jsonString));
 
-  static List<PostPleromaFilter> listFromJsonString(String str) =>
-      List<PostPleromaFilter>.from(
-        json.decode(str).map((x) => PleromaFilter.fromJson(x)),
+  static List<PostPleromaApiFilter> listFromJsonString(String str) =>
+      List<PostPleromaApiFilter>.from(
+        json.decode(str).map((x) => PleromaApiFilter.fromJson(x)),
       );
 
   @override
-  Map<String, dynamic> toJson() => _$PostPleromaFilterToJson(this);
+  Map<String, dynamic> toJson() => _$PostPleromaApiFilterToJson(this);
 
   @override
-  String toJsonString() => jsonEncode(_$PostPleromaFilterToJson(this));
+  String toJsonString() => jsonEncode(_$PostPleromaApiFilterToJson(this));
 }

@@ -12,35 +12,35 @@ class StatusEmojiReactionBloc extends DisposableOwner
   final IStatusRepository statusRepository;
 
   // ignore: close_sinks
-  BehaviorSubject<IPleromaStatusEmojiReaction> emojiReactionSubject;
+  BehaviorSubject<IPleromaApiStatusEmojiReaction> emojiReactionSubject;
 
   @override
-  Stream<IPleromaStatusEmojiReaction> get emojiReactionStream =>
+  Stream<IPleromaApiStatusEmojiReaction> get emojiReactionStream =>
       emojiReactionSubject.stream;
 
   @override
-  IPleromaStatusEmojiReaction get emojiReaction => emojiReactionSubject.value!;
-  final IPleromaStatusEmojiReactionService pleromaStatusEmojiReactionService;
+  IPleromaApiStatusEmojiReaction get emojiReaction => emojiReactionSubject.value!;
+  final IPleromaApiStatusEmojiReactionService PleromaApiStatusEmojiReactionService;
 
   StatusEmojiReactionBloc({
     required this.status,
     required this.statusRepository,
-    required IPleromaStatusEmojiReaction emojiReaction,
-    required this.pleromaStatusEmojiReactionService,
+    required IPleromaApiStatusEmojiReaction emojiReaction,
+    required this.PleromaApiStatusEmojiReactionService,
   }) : emojiReactionSubject = BehaviorSubject.seeded(emojiReaction) {
     addDisposable(subject: emojiReactionSubject);
   }
 
   @override
-  Future<IPleromaStatus> toggleEmojiReaction() async {
-    IPleromaStatus remoteStatus;
+  Future<IPleromaApiStatus> toggleEmojiReaction() async {
+    IPleromaApiStatus remoteStatus;
     if (emojiReaction.me) {
-      remoteStatus = await pleromaStatusEmojiReactionService.removeReaction(
+      remoteStatus = await PleromaApiStatusEmojiReactionService.removeReaction(
         statusRemoteId: status.remoteId!,
         emoji: emojiReaction.name,
       );
     } else {
-      remoteStatus = await pleromaStatusEmojiReactionService.addReaction(
+      remoteStatus = await PleromaApiStatusEmojiReactionService.addReaction(
         statusRemoteId: status.remoteId!,
         emoji: emojiReaction.name,
       );

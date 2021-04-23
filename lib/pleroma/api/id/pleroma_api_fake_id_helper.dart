@@ -1,4 +1,4 @@
-String generateUniquePleromaFakeId() {
+String generateUniquePleromaApiFakeId() {
   // todo: check
   var createdAt = DateTime.now();
 

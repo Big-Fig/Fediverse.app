@@ -9,5 +9,5 @@ abstract class IRemoteInstanceBloc implements IDisposable {
 
   Uri get instanceUri;
 
-  IPleromaRestService get pleromaRestService;
+  IPleromaApiRestService get pleromaRestService;
 }

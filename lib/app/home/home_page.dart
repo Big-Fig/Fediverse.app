@@ -220,7 +220,7 @@ class _HomePageNotificationTabWidget extends StatelessWidget {
         var homeBloc = IHomeBloc.of(context, listen: false);
 
         var notificationsHomeTabBloc = NotificationsHomeTabBloc(
-          pleromaNotificationService: IPleromaNotificationService.of(
+          pleromaNotificationService: IPleromaApiNotificationService.of(
             context,
             listen: false,
           ),

@@ -2,7 +2,7 @@ import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/pleroma/api/tag/history/pleroma_api_tag_history_model.dart';
 import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 
-extension IPleromaTagExtension on IPleromaTag {
+extension IPleromaTagExtension on IPleromaApiTag {
   Hashtag toHashtag() {
     if (this is Hashtag) {
       return this as Hashtag;
@@ -17,14 +17,14 @@ extension IPleromaTagExtension on IPleromaTag {
 }
 
 extension IHashtagExtension on IHashtag {
-  PleromaTag toPleromaTag() {
-    if (this is PleromaTag) {
-      return this as PleromaTag;
+  PleromaApiTag toPleromaTag() {
+    if (this is PleromaApiTag) {
+      return this as PleromaApiTag;
     } else {
-      return PleromaTag(
+      return PleromaApiTag(
         name: name,
         url: url,
-        history: history?.toPleromaTagHistories(),
+        history: history?.toPleromaApiTagHistories(),
       );
     }
   }

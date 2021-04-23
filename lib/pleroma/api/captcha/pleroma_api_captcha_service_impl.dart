@@ -1,5 +1,5 @@
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_exception.dart';
 import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_model.dart';
 import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service.dart';
@@ -11,11 +11,11 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaCaptchaService extends DisposableOwner
-    implements IPleromaCaptchaService {
+class PleromaApiCaptchaService extends DisposableOwner
+    implements IPleromaApiCaptchaService {
   final captchaRelativeUrlPath = "/api/pleroma/captcha";
   @override
-  final IPleromaRestService restService;
+  final IPleromaApiRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -30,15 +30,15 @@ class PleromaCaptchaService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaCaptchaService({
+  PleromaApiCaptchaService({
     required this.restService,
   });
 
-  IPleromaCaptcha parseCaptchaResponse(Response httpResponse) {
+  IPleromaApiCaptcha parseCaptchaResponse(Response httpResponse) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaCaptcha.fromJsonString(httpResponse.body);
+      return PleromaApiCaptcha.fromJsonString(httpResponse.body);
     } else {
-      throw PleromaCaptchaException(
+      throw PleromaApiCaptchaException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -46,7 +46,7 @@ class PleromaCaptchaService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaCaptcha> getCaptcha() async {
+  Future<IPleromaApiCaptcha> getCaptcha() async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: captchaRelativeUrlPath,

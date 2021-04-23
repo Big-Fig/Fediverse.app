@@ -1,5 +1,5 @@
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_exception.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service.dart';
@@ -12,11 +12,11 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaFilterService extends DisposableOwner
-    implements IPleromaFilterService {
+class PleromaApiFilterService extends DisposableOwner
+    implements IPleromaApiFilterService {
   final filterRelativeUrlPath = "/api/v1/filters";
   @override
-  final IPleromaRestService restService;
+  final IPleromaApiRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -31,28 +31,28 @@ class PleromaFilterService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaFilterService({required this.restService});
+  PleromaApiFilterService({required this.restService});
 
-  IPleromaFilter parseFilterResponse(Response httpResponse) {
+  IPleromaApiFilter parseFilterResponse(Response httpResponse) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaFilter.fromJsonString(
+      return PleromaApiFilter.fromJsonString(
         httpResponse.body,
       );
     } else {
-      throw PleromaFilterException(
+      throw PleromaApiFilterException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  List<IPleromaFilter> parseFilterListResponse(Response httpResponse) {
+  List<IPleromaApiFilter> parseFilterListResponse(Response httpResponse) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaFilter.listFromJsonString(
+      return PleromaApiFilter.listFromJsonString(
         httpResponse.body,
       );
     } else {
-      throw PleromaFilterException(
+      throw PleromaApiFilterException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -60,8 +60,8 @@ class PleromaFilterService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaFilter>> getFilters({
-    IPleromaPaginationRequest? pagination,
+  Future<List<IPleromaApiFilter>> getFilters({
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -76,7 +76,7 @@ class PleromaFilterService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaFilter> getFilter({
+  Future<IPleromaApiFilter> getFilter({
     required String? filterRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -106,8 +106,8 @@ class PleromaFilterService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaFilter> createFilter({
-    required IPostPleromaFilter postPleromaFilter,
+  Future<IPleromaApiFilter> createFilter({
+    required IPostPleromaApiFilter postPleromaFilter,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
@@ -124,9 +124,9 @@ class PleromaFilterService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaFilter> updateFilter({
+  Future<IPleromaApiFilter> updateFilter({
     required String? filterRemoteId,
-    required IPostPleromaFilter postPleromaFilter,
+    required IPostPleromaApiFilter postPleromaFilter,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.put(
@@ -144,7 +144,7 @@ class PleromaFilterService extends DisposableOwner
   }
 
   Map<String, dynamic> _mapFilterToFromBody(
-    IPostPleromaFilter postPleromaFilter,
+    IPostPleromaApiFilter postPleromaFilter,
   ) =>
       postPleromaFilter.toJson();
 }

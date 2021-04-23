@@ -39,7 +39,7 @@ enum PleromaApiState {
   loggedOut,
 }
 
-abstract class IPleromaAuthApi extends IPleromaApi {
+abstract class IPleromaApiAuth extends IPleromaApi {
   bool get isPleroma;
 
   bool get isMastodon;

@@ -184,43 +184,43 @@ class ToastSettingsBloc
 
   @override
   bool? isNotificationTypeEnabled(
-    PleromaNotificationType pleromaNotificationType,
+    PleromaApiNotificationType pleromaNotificationType,
   ) {
     switch (pleromaNotificationType) {
-      case PleromaNotificationType.follow:
+      case PleromaApiNotificationType.follow:
         return follow;
 
-      case PleromaNotificationType.favourite:
+      case PleromaApiNotificationType.favourite:
         return favourite;
 
-      case PleromaNotificationType.reblog:
+      case PleromaApiNotificationType.reblog:
         return reblog;
 
-      case PleromaNotificationType.mention:
+      case PleromaApiNotificationType.mention:
         return mention;
 
-      case PleromaNotificationType.poll:
+      case PleromaApiNotificationType.poll:
         return poll;
 
-      case PleromaNotificationType.move:
+      case PleromaApiNotificationType.move:
         // todo: handle move type?
         return false;
 
-      case PleromaNotificationType.pleromaReport:
+      case PleromaApiNotificationType.pleromaReport:
         // todo: pleromaReport move type?
         return false;
 
-      case PleromaNotificationType.followRequest:
+      case PleromaApiNotificationType.followRequest:
         // todo: handle followRequest type?
         return false;
 
-      case PleromaNotificationType.pleromaEmojiReaction:
+      case PleromaApiNotificationType.pleromaEmojiReaction:
         return pleromaEmojiReaction;
 
-      case PleromaNotificationType.pleromaChatMention:
+      case PleromaApiNotificationType.pleromaChatMention:
         return pleromaChatMention;
 
-      case PleromaNotificationType.unknown:
+      case PleromaApiNotificationType.unknown:
         // todo: handle unknown type?
         return true;
     }

@@ -13,7 +13,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
@@ -25,7 +25,7 @@ typedef AccountListLoader = Future<List<IAccount>> Function({
   required IAccount? olderThan,
 });
 
-typedef PleromaAccountListLoader = Future<List<IPleromaAccount>> Function({
+typedef PleromaAccountListLoader = Future<List<IPleromaApiAccount>> Function({
   required int? limit,
   required IAccount? newerThan,
   required IAccount? olderThan,
@@ -35,7 +35,7 @@ var _logger = Logger("select_account_list_bloc_impl.dart");
 
 class SelectAccountListBloc extends DisposableOwner
     implements ISelectAccountListBloc {
-  final IPleromaAuthAccountService pleromaAuthAccountService;
+  final IPleromaApiAuthAccountService pleromaAuthAccountService;
   final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
   final bool excludeMyAccount;
@@ -81,7 +81,7 @@ class SelectAccountListBloc extends DisposableOwner
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
 
-    List<IPleromaAccount> remoteAccounts;
+    List<IPleromaApiAccount> remoteAccounts;
 
     var searchTermExist = searchText?.isNotEmpty == true;
     if (searchTermExist) {
@@ -100,7 +100,7 @@ class SelectAccountListBloc extends DisposableOwner
         if (following) {
           accountRepository.addAccountFollowings(
             accountRemoteId: myAccountBloc.account.remoteId,
-            followings: remoteAccounts.toPleromaAccounts(),
+            followings: remoteAccounts.toPleromaApiAccounts(),
             batchTransaction: batch,
           );
         }
@@ -131,7 +131,7 @@ class SelectAccountListBloc extends DisposableOwner
           );
           accountRepository.addAccountFollowings(
             accountRemoteId: myAccountBloc.account.remoteId,
-            followings: remoteAccounts.toPleromaAccounts(),
+            followings: remoteAccounts.toPleromaApiAccounts(),
             batchTransaction: batch,
           );
         });
@@ -139,14 +139,14 @@ class SelectAccountListBloc extends DisposableOwner
     }
   }
 
-  Future<List<IPleromaAccount>> defaultEmptySearchRemoteAccountListLoader({
+  Future<List<IPleromaApiAccount>> defaultEmptySearchRemoteAccountListLoader({
     required IAccount? olderThan,
     required IAccount? newerThan,
     required int? limit,
   }) async {
     // my account followings by default
     return await pleromaAuthAccountService.getAccountFollowings(
-      pagination: PleromaPaginationRequest(
+      pagination: PleromaApiPaginationRequest(
         sinceId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
         limit: limit,
@@ -251,7 +251,7 @@ class SelectAccountListBloc extends DisposableOwner
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         pleromaAuthAccountService:
-            IPleromaAuthAccountService.of(context, listen: false),
+            IPleromaApiAuthAccountService.of(context, listen: false),
         customEmptySearchRemoteAccountListLoader: customRemoteAccountListLoader,
         customEmptySearchLocalAccountListLoader: customLocalAccountListLoader,
         followingsOnly: followingsOnly,

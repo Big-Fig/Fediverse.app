@@ -9,5 +9,5 @@ abstract class IStatusBodyBloc implements IDisposable {
 
   bool get collapsible;
 
-  IPleromaMediaAttachment? get initialMediaAttachment;
+  IPleromaApiMediaAttachment? get initialMediaAttachment;
 }

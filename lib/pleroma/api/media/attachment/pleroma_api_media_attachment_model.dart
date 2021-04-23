@@ -5,16 +5,16 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_media_attachment_model.g.dart';
 
-abstract class IPleromaMediaAttachment extends IMastodonApiMediaAttachment {
-  PleromaMediaAttachmentPleromaPart? get pleroma;
+abstract class IPleromaApiMediaAttachment extends IMastodonApiMediaAttachment {
+  PleromaApiMediaAttachmentPleromaPart? get pleroma;
 }
 
-extension IPleromaMediaAttachmentExtension on IPleromaMediaAttachment {
-  PleromaMediaAttachment toPleromaMediaAttachment() {
-    if (this is PleromaMediaAttachment) {
-      return this as PleromaMediaAttachment;
+extension IPleromaApiMediaAttachmentExtension on IPleromaApiMediaAttachment {
+  PleromaApiMediaAttachment toPleromaApiMediaAttachment() {
+    if (this is PleromaApiMediaAttachment) {
+      return this as PleromaApiMediaAttachment;
     } else {
-      return PleromaMediaAttachment(
+      return PleromaApiMediaAttachment(
         description: description,
         id: id,
         previewUrl: previewUrl,
@@ -28,19 +28,19 @@ extension IPleromaMediaAttachmentExtension on IPleromaMediaAttachment {
   }
 }
 
-extension IPleromaMediaAttachmentListExtension
-    on List<IPleromaMediaAttachment> {
-  List<PleromaMediaAttachment> toPleromaMediaAttachments() {
-    if (this is List<PleromaMediaAttachment>) {
-      return this as List<PleromaMediaAttachment>;
+extension IPleromaApiMediaAttachmentListExtension
+    on List<IPleromaApiMediaAttachment> {
+  List<PleromaApiMediaAttachment> toPleromaApiMediaAttachments() {
+    if (this is List<PleromaApiMediaAttachment>) {
+      return this as List<PleromaApiMediaAttachment>;
     } else {
       return map(
-        (mediaAttachment) => mediaAttachment.toPleromaMediaAttachment(),
+        (mediaAttachment) => mediaAttachment.toPleromaApiMediaAttachment(),
       ).toList();
     }
   }
 
-  List<String> toPleromaMediaAttachmentIds() {
+  List<String> toPleromaApiMediaAttachmentIds() {
     return map(
       (mediaAttachment) => mediaAttachment.id,
     ).toList();
@@ -48,7 +48,7 @@ extension IPleromaMediaAttachmentListExtension
 }
 
 @JsonSerializable()
-class PleromaMediaAttachment implements IPleromaMediaAttachment {
+class PleromaApiMediaAttachment implements IPleromaApiMediaAttachment {
   @override
   final String? description;
   @override
@@ -74,9 +74,9 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
   @override
   final String url;
   @override
-  PleromaMediaAttachmentPleromaPart? pleroma;
+  PleromaApiMediaAttachmentPleromaPart? pleroma;
 
-  PleromaMediaAttachment({
+  PleromaApiMediaAttachment({
     required this.description,
     required this.id,
     required this.previewUrl,
@@ -87,7 +87,7 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
     required this.pleroma,
   });
 
-  PleromaMediaAttachment.only({
+  PleromaApiMediaAttachment.only({
     this.description,
     required this.id,
     this.previewUrl,
@@ -98,11 +98,11 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
     this.pleroma,
   });
 
-  factory PleromaMediaAttachment.fromJson(Map<String, dynamic> json) =>
-      _$PleromaMediaAttachmentFromJson(json);
+  factory PleromaApiMediaAttachment.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiMediaAttachmentFromJson(json);
 
-  factory PleromaMediaAttachment.fromJsonString(String jsonString) =>
-      _$PleromaMediaAttachmentFromJson(jsonDecode(jsonString));
+  factory PleromaApiMediaAttachment.fromJsonString(String jsonString) =>
+      _$PleromaApiMediaAttachmentFromJson(jsonDecode(jsonString));
 
   bool get isImage => typeAsMastodonApi == MastodonApiMediaAttachmentType.image;
 
@@ -132,14 +132,14 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
     }
   }
 
-  Map<String, dynamic> toJson() => _$PleromaMediaAttachmentToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiMediaAttachmentToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaMediaAttachmentToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiMediaAttachmentToJson(this));
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaMediaAttachment &&
+      other is PleromaApiMediaAttachment &&
           runtimeType == other.runtimeType &&
           description == other.description &&
           id == other.id &&
@@ -163,15 +163,22 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
 
   @override
   String toString() {
-    return 'PleromaMediaAttachment{description: $description, id: $id,'
-        ' previewUrl: $previewUrl, remoteUrl: $remoteUrl, textUrl: $textUrl,'
-        ' type: $type, url: $url, pleroma: $pleroma}';
+    return 'PleromaApiMediaAttachment{'
+        'description: $description, '
+        'id: $id, '
+        'previewUrl: $previewUrl, '
+        'remoteUrl: $remoteUrl, '
+        'textUrl: $textUrl, '
+        'type: $type, '
+        'url: $url, '
+        'pleroma: $pleroma'
+        '}';
   }
 
-  static PleromaMediaAttachment fromIPleromaMediaAttachment(
-    IPleromaMediaAttachment mediaAttachment,
+  static PleromaApiMediaAttachment fromIPleromaApiMediaAttachment(
+    IPleromaApiMediaAttachment mediaAttachment,
   ) =>
-      PleromaMediaAttachment(
+      PleromaApiMediaAttachment(
         description: mediaAttachment.description,
         id: mediaAttachment.id,
         previewUrl: mediaAttachment.previewUrl,
@@ -184,35 +191,40 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
 }
 
 @JsonSerializable()
-class PleromaMediaAttachmentPleromaPart {
+class PleromaApiMediaAttachmentPleromaPart {
   @JsonKey(name: "mime_type")
   final String? mimeType;
 
-  PleromaMediaAttachmentPleromaPart({
+  PleromaApiMediaAttachmentPleromaPart({
     this.mimeType,
   });
 
-  factory PleromaMediaAttachmentPleromaPart.fromJson(
+  factory PleromaApiMediaAttachmentPleromaPart.fromJson(
     Map<String, dynamic> json,
   ) =>
-      _$PleromaMediaAttachmentPleromaPartFromJson(json);
+      _$PleromaApiMediaAttachmentPleromaPartFromJson(json);
 
-  factory PleromaMediaAttachmentPleromaPart.fromJsonString(String jsonString) =>
-      _$PleromaMediaAttachmentPleromaPartFromJson(jsonDecode(jsonString));
+  factory PleromaApiMediaAttachmentPleromaPart.fromJsonString(String jsonString) =>
+      _$PleromaApiMediaAttachmentPleromaPartFromJson(jsonDecode(jsonString));
 
   Map<String, dynamic> toJson() =>
-      _$PleromaMediaAttachmentPleromaPartToJson(this);
+      _$PleromaApiMediaAttachmentPleromaPartToJson(this);
 
   String toJsonString() =>
-      jsonEncode(_$PleromaMediaAttachmentPleromaPartToJson(this));
+      jsonEncode(_$PleromaApiMediaAttachmentPleromaPartToJson(this));
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaMediaAttachmentPleromaPart &&
+      other is PleromaApiMediaAttachmentPleromaPart &&
           runtimeType == other.runtimeType &&
           mimeType == other.mimeType;
 
   @override
   int get hashCode => mimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaApiMediaAttachmentPleromaPart{mimeType: $mimeType}';
+  }
 }

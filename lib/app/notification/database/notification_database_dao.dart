@@ -49,7 +49,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       addExcludeTypeWhere(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
-    List<PleromaNotificationType>? excludeTypes,
+    List<PleromaApiNotificationType>? excludeTypes,
   ) =>
           query
             ..where(
@@ -65,7 +65,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       addOnlyWithTypeWhere(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
-    PleromaNotificationType onlyWithType,
+    PleromaApiNotificationType onlyWithType,
   ) =>
           query
             ..where(
@@ -186,7 +186,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
 
   Future markAsDismissedWhere({
     required String? accountRemoteId,
-    required PleromaNotificationType type,
+    required PleromaApiNotificationType type,
   }) {
     var update = "UPDATE db_notifications "
         "SET dismissed = 1 "

@@ -22,7 +22,7 @@ import 'package:flutter/widgets.dart';
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final IMyAccountBloc myAccountBloc;
-  final IPleromaMyAccountService pleromaMyAccountService;
+  final IPleromaApiMyAccountService pleromaMyAccountService;
 
   @override
   final StringValueFormFieldBloc displayNameField;
@@ -100,7 +100,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     required int? avatarUploadSizeInBytes,
     required int? headerUploadSizeInBytes,
     required int? backgroundUploadSizeInBytes,
-    required PleromaInstancePleromaPartMetadataFieldLimits? customFieldLimits,
+    required PleromaApiInstancePleromaPartMetadataFieldLimits? customFieldLimits,
   })   : displayNameField = StringValueFormFieldBloc(
           originValue: myAccountBloc.displayNameEmojiText!.text,
           validators: [
@@ -273,7 +273,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
         headerPickedFile != null ||
         backgroundPickedFile != null;
     if (isAnyFileExist) {
-      var request = PleromaMyAccountFilesRequest(
+      var request = PleromaApiMyAccountFilesRequest(
         avatar: await avatarPickedFile?.loadFile(),
         header: await headerPickedFile?.loadFile(),
         pleromaBackgroundImage: await backgroundPickedFile?.loadFile(),
@@ -293,14 +293,14 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     }
   }
 
-  PleromaMyAccountEdit _calculatePleromaMyAccountEdit() {
-    Map<int, PleromaField> fieldsAttributes = {};
+  PleromaApiMyAccountEdit _calculatePleromaMyAccountEdit() {
+    Map<int, PleromaApiField> fieldsAttributes = {};
 
     customFieldsGroupBloc.items.asMap().entries.forEach(
       (entry) {
         var index = entry.key;
         var field = entry.value;
-        fieldsAttributes[index] = PleromaField(
+        fieldsAttributes[index] = PleromaApiField(
           name: field.keyField.currentValue,
           value: field.valueField.currentValue,
           verifiedAt: null,
@@ -318,7 +318,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
     var isPleromaInstance = currentAuthInstanceBloc.currentInstance!.isPleroma;
 
-    return PleromaMyAccountEdit(
+    return PleromaApiMyAccountEdit(
       displayName: displayNameField.currentValue,
       note: noteField.currentValue,
       fieldsAttributes: fieldsAttributes,
@@ -346,7 +346,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   }
 
   Future _sendPleromaMyAccountFilesRequest(
-    PleromaMyAccountFilesRequest pleromaMyAccountFilesRequest,
+    PleromaApiMyAccountFilesRequest pleromaMyAccountFilesRequest,
   ) async {
     var remoteMyAccount =
         await pleromaMyAccountService.updateFiles(pleromaMyAccountFilesRequest);
@@ -365,7 +365,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
       ),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
       pleromaMyAccountService:
-          IPleromaMyAccountService.of(context, listen: false),
+          IPleromaApiMyAccountService.of(context, listen: false),
       customFieldLimits: info?.pleroma?.metadata?.fieldsLimits,
       noteMaxLength: info?.descriptionLimit,
       avatarUploadSizeInBytes: info?.avatarUploadLimit,

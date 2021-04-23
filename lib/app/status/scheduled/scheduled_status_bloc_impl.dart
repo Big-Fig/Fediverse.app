@@ -33,8 +33,8 @@ class ScheduledStatusBloc extends DisposableOwner
   @override
   Stream<ScheduledStatusState?> get stateStream => _stateSubject.stream;
 
-  final IPleromaAuthStatusService pleromaAuthStatusService;
-  final IPleromaScheduledStatusService pleromaScheduledStatusService;
+  final IPleromaApiAuthStatusService pleromaAuthStatusService;
+  final IPleromaApiScheduledStatusService pleromaScheduledStatusService;
   final IScheduledStatusRepository scheduledStatusRepository;
   final IStatusRepository statusRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
@@ -137,11 +137,11 @@ class ScheduledStatusBloc extends DisposableOwner
       );
 
   @override
-  List<IPleromaMediaAttachment>? get mediaAttachments =>
+  List<IPleromaApiMediaAttachment>? get mediaAttachments =>
       scheduledStatus.mediaAttachments;
 
   @override
-  Stream<List<IPleromaMediaAttachment>?> get mediaAttachmentsStream =>
+  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream =>
       scheduledStatusStream
           .map((scheduledStatus) => scheduledStatus.mediaAttachments);
 
@@ -198,9 +198,9 @@ class ScheduledStatusBloc extends DisposableOwner
   }) =>
       ScheduledStatusBloc(
         pleromaAuthStatusService:
-            IPleromaAuthStatusService.of(context, listen: false),
+            IPleromaApiAuthStatusService.of(context, listen: false),
         pleromaScheduledStatusService:
-            IPleromaScheduledStatusService.of(context, listen: false),
+            IPleromaApiScheduledStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         scheduledStatusRepository:
             IScheduledStatusRepository.of(context, listen: false),
@@ -235,9 +235,9 @@ class ScheduledStatusBloc extends DisposableOwner
     await cancelSchedule();
 
     var pleromaScheduledStatus = await pleromaAuthStatusService.scheduleStatus(
-      data: PleromaScheduleStatus(
+      data: PleromaApiScheduleStatus(
         mediaIds:
-            postStatusData.mediaAttachments?.toPleromaMediaAttachmentIds(),
+            postStatusData.mediaAttachments?.toPleromaApiMediaAttachmentIds(),
         status: postStatusData.text,
         sensitive: postStatusData.isNsfwSensitiveEnabled,
         visibility: postStatusData.visibility,
@@ -274,7 +274,7 @@ class ScheduledStatusBloc extends DisposableOwner
       mediaAttachments: scheduledStatus.mediaAttachments,
       poll: scheduledStatus.params.poll?.toPostStatusPoll(),
       inReplyToPleromaStatus:
-          scheduledStatus.params.inReplyToPleromaStatus?.toPleromaStatus(),
+          scheduledStatus.params.inReplyToPleromaApiStatus?.toPleromaApiStatus(),
       inReplyToConversationId: scheduledStatus.params.inReplyToConversationId,
       isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
       to: scheduledStatus.params.to,

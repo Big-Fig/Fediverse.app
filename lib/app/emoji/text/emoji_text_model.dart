@@ -5,7 +5,7 @@ Function eq = const ListEquality().equals;
 
 class EmojiText {
   final String text;
-  final List<IPleromaEmoji>? emojis;
+  final List<IPleromaApiEmoji>? emojis;
 
   EmojiText({
     required this.text,

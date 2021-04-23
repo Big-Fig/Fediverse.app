@@ -30,7 +30,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
     bool isNeedWatchLocalRepositoryForUpdates = true,
   }) =>
       NotificationBloc(
-        pleromaNotificationService: IPleromaNotificationService.of(
+        pleromaNotificationService: IPleromaApiNotificationService.of(
           context,
           listen: false,
         ),
@@ -46,7 +46,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
 
   final BehaviorSubject<INotification> _notificationSubject;
 
-  final IPleromaNotificationService pleromaNotificationService;
+  final IPleromaApiNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
@@ -139,10 +139,10 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       notificationStream.map((notification) => notification.chatRemoteId);
 
   @override
-  IPleromaChatMessage? get chatMessage => notification.chatMessage;
+  IPleromaApiChatMessage? get chatMessage => notification.chatMessage;
 
   @override
-  Stream<IPleromaChatMessage?> get chatMessageStream =>
+  Stream<IPleromaApiChatMessage?> get chatMessageStream =>
       notificationStream.map((notification) => notification.chatMessage);
 
   @override
@@ -175,7 +175,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   }
 
   Future _updateByRemoteNotification(
-    IPleromaNotification remoteNotification, {
+    IPleromaApiNotification remoteNotification, {
     required Batch? batchTransaction,
   }) {
     return notificationRepository.updateNotificationByRemoteType(
@@ -202,7 +202,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   MastodonApiNotificationType get typeMastodon => notification.typeAsMastodonApi;
 
   @override
-  PleromaNotificationType get typePleroma => notification.typePleroma;
+  PleromaApiNotificationType get typePleroma => notification.typePleroma;
 
   @override
   Future dismiss() async {

@@ -27,9 +27,9 @@ abstract class IScheduledStatusBloc implements IDisposable {
 
   Stream<String?> get spoilerTextStream;
 
-  List<IPleromaMediaAttachment>? get mediaAttachments;
+  List<IPleromaApiMediaAttachment>? get mediaAttachments;
 
-  Stream<List<IPleromaMediaAttachment>?> get mediaAttachmentsStream;
+  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream;
 
   Future reSchedule({
     required DateTime scheduledAt,

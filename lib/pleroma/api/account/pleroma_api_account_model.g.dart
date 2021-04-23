@@ -6,17 +6,17 @@ part of 'pleroma_api_account_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PleromaAccountAdapter extends TypeAdapter<PleromaAccount> {
+class PleromaApiAccountAdapter extends TypeAdapter<PleromaApiAccount> {
   @override
   final int typeId = 32;
 
   @override
-  PleromaAccount read(BinaryReader reader) {
+  PleromaApiAccount read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaAccount(
+    return PleromaApiAccount(
       username: fields[0] as String,
       url: fields[1] as String,
       statusesCount: fields[2] as int,
@@ -27,22 +27,22 @@ class PleromaAccountAdapter extends TypeAdapter<PleromaAccount> {
       header: fields[7] as String,
       followingCount: fields[8] as int,
       followersCount: fields[9] as int,
-      fields: (fields[10] as List?)?.cast<PleromaField>(),
-      emojis: (fields[11] as List?)?.cast<PleromaEmoji>(),
+      fields: (fields[10] as List?)?.cast<PleromaApiField>(),
+      emojis: (fields[11] as List?)?.cast<PleromaApiEmoji>(),
       displayName: fields[12] as String?,
       createdAt: fields[13] as DateTime,
       bot: fields[14] as bool?,
       avatarStatic: fields[15] as String,
       avatar: fields[16] as String,
       acct: fields[17] as String,
-      pleroma: fields[19] as PleromaAccountPleromaPart?,
+      pleroma: fields[19] as PleromaApiAccountPleromaPart?,
       lastStatusAt: fields[20] as DateTime?,
       fqn: fields[21] as String?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, PleromaAccount obj) {
+  void write(BinaryWriter writer, PleromaApiAccount obj) {
     writer
       ..writeByte(21)
       ..writeByte(0)
@@ -95,26 +95,26 @@ class PleromaAccountAdapter extends TypeAdapter<PleromaAccount> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaAccountAdapter &&
+      other is PleromaApiAccountAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class PleromaAccountPleromaPartAdapter
-    extends TypeAdapter<PleromaAccountPleromaPart> {
+class PleromaApiAccountPleromaPartAdapter
+    extends TypeAdapter<PleromaApiAccountPleromaPart> {
   @override
   final int typeId = 43;
 
   @override
-  PleromaAccountPleromaPart read(BinaryReader reader) {
+  PleromaApiAccountPleromaPart read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaAccountPleromaPart(
+    return PleromaApiAccountPleromaPart(
       backgroundImage: fields[1] as String?,
-      tags: (fields[2] as List?)?.cast<PleromaTag>(),
-      relationship: fields[3] as PleromaAccountRelationship?,
+      tags: (fields[2] as List?)?.cast<PleromaApiTag>(),
+      relationship: fields[3] as PleromaApiAccountRelationship?,
       isAdmin: fields[4] as bool?,
       isModerator: fields[5] as bool?,
       confirmationPending: fields[7] as bool?,
@@ -135,7 +135,7 @@ class PleromaAccountPleromaPartAdapter
   }
 
   @override
-  void write(BinaryWriter writer, PleromaAccountPleromaPart obj) {
+  void write(BinaryWriter writer, PleromaApiAccountPleromaPart obj) {
     writer
       ..writeByte(19)
       ..writeByte(1)
@@ -184,23 +184,23 @@ class PleromaAccountPleromaPartAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaAccountPleromaPartAdapter &&
+      other is PleromaApiAccountPleromaPartAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class PleromaAccountRelationshipAdapter
-    extends TypeAdapter<PleromaAccountRelationship> {
+class PleromaApiAccountRelationshipAdapter
+    extends TypeAdapter<PleromaApiAccountRelationship> {
   @override
   final int typeId = 10;
 
   @override
-  PleromaAccountRelationship read(BinaryReader reader) {
+  PleromaApiAccountRelationship read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaAccountRelationship(
+    return PleromaApiAccountRelationship(
       blocking: fields[1] as bool?,
       domainBlocking: fields[2] as bool?,
       endorsed: fields[3] as bool?,
@@ -218,7 +218,7 @@ class PleromaAccountRelationshipAdapter
   }
 
   @override
-  void write(BinaryWriter writer, PleromaAccountRelationship obj) {
+  void write(BinaryWriter writer, PleromaApiAccountRelationship obj) {
     writer
       ..writeByte(13)
       ..writeByte(1)
@@ -255,7 +255,7 @@ class PleromaAccountRelationshipAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaAccountRelationshipAdapter &&
+      other is PleromaApiAccountRelationshipAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -264,30 +264,31 @@ class PleromaAccountRelationshipAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaAccountReport _$PleromaAccountReportFromJson(Map<String, dynamic> json) {
-  return PleromaAccountReport(
+PleromaApiAccountReport _$PleromaApiAccountReportFromJson(
+    Map<String, dynamic> json) {
+  return PleromaApiAccountReport(
     account: json['account'] == null
         ? null
-        : PleromaAccount.fromJson(json['account'] as Map<String, dynamic>),
+        : PleromaApiAccount.fromJson(json['account'] as Map<String, dynamic>),
     statuses: (json['statuses'] as List<dynamic>?)
-        ?.map((e) => PleromaStatus.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => PleromaApiStatus.fromJson(e as Map<String, dynamic>))
         .toList(),
     user: json['user'] == null
         ? null
-        : PleromaAccount.fromJson(json['user'] as Map<String, dynamic>),
+        : PleromaApiAccount.fromJson(json['user'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$PleromaAccountReportToJson(
-        PleromaAccountReport instance) =>
+Map<String, dynamic> _$PleromaApiAccountReportToJson(
+        PleromaApiAccountReport instance) =>
     <String, dynamic>{
       'account': instance.account?.toJson(),
       'statuses': instance.statuses?.map((e) => e.toJson()).toList(),
       'user': instance.user?.toJson(),
     };
 
-PleromaAccount _$PleromaAccountFromJson(Map<String, dynamic> json) {
-  return PleromaAccount(
+PleromaApiAccount _$PleromaApiAccountFromJson(Map<String, dynamic> json) {
+  return PleromaApiAccount(
     username: json['username'] as String,
     url: json['url'] as String,
     statusesCount: json['statuses_count'] as int,
@@ -299,10 +300,10 @@ PleromaAccount _$PleromaAccountFromJson(Map<String, dynamic> json) {
     followingCount: json['following_count'] as int,
     followersCount: json['followers_count'] as int,
     fields: (json['fields'] as List<dynamic>?)
-        ?.map((e) => PleromaField.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => PleromaApiField.fromJson(e as Map<String, dynamic>))
         .toList(),
     emojis: (json['emojis'] as List<dynamic>?)
-        ?.map((e) => PleromaEmoji.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => PleromaApiEmoji.fromJson(e as Map<String, dynamic>))
         .toList(),
     displayName: json['display_name'] as String?,
     createdAt: DateTime.parse(json['created_at'] as String),
@@ -312,7 +313,7 @@ PleromaAccount _$PleromaAccountFromJson(Map<String, dynamic> json) {
     acct: json['acct'] as String,
     pleroma: json['pleroma'] == null
         ? null
-        : PleromaAccountPleromaPart.fromJson(
+        : PleromaApiAccountPleromaPart.fromJson(
             json['pleroma'] as Map<String, dynamic>),
     lastStatusAt: json['last_status_at'] == null
         ? null
@@ -321,7 +322,7 @@ PleromaAccount _$PleromaAccountFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaAccountToJson(PleromaAccount instance) =>
+Map<String, dynamic> _$PleromaApiAccountToJson(PleromaApiAccount instance) =>
     <String, dynamic>{
       'username': instance.username,
       'url': instance.url,
@@ -346,16 +347,16 @@ Map<String, dynamic> _$PleromaAccountToJson(PleromaAccount instance) =>
       'fqn': instance.fqn,
     };
 
-PleromaAccountPleromaPart _$PleromaAccountPleromaPartFromJson(
+PleromaApiAccountPleromaPart _$PleromaApiAccountPleromaPartFromJson(
     Map<String, dynamic> json) {
-  return PleromaAccountPleromaPart(
+  return PleromaApiAccountPleromaPart(
     backgroundImage: json['background_image'] as String?,
     tags: (json['tags'] as List<dynamic>?)
-        ?.map((e) => PleromaTag.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => PleromaApiTag.fromJson(e as Map<String, dynamic>))
         .toList(),
     relationship: json['relationship'] == null
         ? null
-        : PleromaAccountRelationship.fromJson(
+        : PleromaApiAccountRelationship.fromJson(
             json['relationship'] as Map<String, dynamic>),
     isAdmin: json['is_admin'] as bool?,
     isModerator: json['is_moderator'] as bool?,
@@ -378,8 +379,8 @@ PleromaAccountPleromaPart _$PleromaAccountPleromaPartFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaAccountPleromaPartToJson(
-        PleromaAccountPleromaPart instance) =>
+Map<String, dynamic> _$PleromaApiAccountPleromaPartToJson(
+        PleromaApiAccountPleromaPart instance) =>
     <String, dynamic>{
       'background_image': instance.backgroundImage,
       'tags': instance.tags?.map((e) => e.toJson()).toList(),
@@ -402,9 +403,9 @@ Map<String, dynamic> _$PleromaAccountPleromaPartToJson(
       'also_known_as': instance.alsoKnownAs,
     };
 
-PleromaAccountRelationship _$PleromaAccountRelationshipFromJson(
+PleromaApiAccountRelationship _$PleromaApiAccountRelationshipFromJson(
     Map<String, dynamic> json) {
-  return PleromaAccountRelationship(
+  return PleromaApiAccountRelationship(
     blocking: json['blocking'] as bool?,
     domainBlocking: json['domain_blocking'] as bool?,
     endorsed: json['endorsed'] as bool?,
@@ -421,8 +422,8 @@ PleromaAccountRelationship _$PleromaAccountRelationshipFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaAccountRelationshipToJson(
-        PleromaAccountRelationship instance) =>
+Map<String, dynamic> _$PleromaApiAccountRelationshipToJson(
+        PleromaApiAccountRelationship instance) =>
     <String, dynamic>{
       'blocking': instance.blocking,
       'domain_blocking': instance.domainBlocking,
@@ -439,9 +440,9 @@ Map<String, dynamic> _$PleromaAccountRelationshipToJson(
       'note': instance.note,
     };
 
-PleromaAccountIdentityProof _$PleromaAccountIdentityProofFromJson(
+PleromaApiAccountIdentityProof _$PleromaApiAccountIdentityProofFromJson(
     Map<String, dynamic> json) {
-  return PleromaAccountIdentityProof(
+  return PleromaApiAccountIdentityProof(
     profileUrl: json['profileUrl'] as String?,
     proofUrl: json['proofUrl'] as String?,
     provider: json['provider'] as String?,
@@ -452,8 +453,8 @@ PleromaAccountIdentityProof _$PleromaAccountIdentityProofFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaAccountIdentityProofToJson(
-        PleromaAccountIdentityProof instance) =>
+Map<String, dynamic> _$PleromaApiAccountIdentityProofToJson(
+        PleromaApiAccountIdentityProof instance) =>
     <String, dynamic>{
       'profileUrl': instance.profileUrl,
       'proofUrl': instance.proofUrl,
@@ -462,9 +463,9 @@ Map<String, dynamic> _$PleromaAccountIdentityProofToJson(
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };
 
-PleromaAccountReportRequest _$PleromaAccountReportRequestFromJson(
+PleromaApiAccountReportRequest _$PleromaApiAccountReportRequestFromJson(
     Map<String, dynamic> json) {
-  return PleromaAccountReportRequest(
+  return PleromaApiAccountReportRequest(
     accountId: json['account_id'] as String,
     comment: json['comment'] as String?,
     forward: json['forward'] as bool?,
@@ -474,8 +475,8 @@ PleromaAccountReportRequest _$PleromaAccountReportRequestFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaAccountReportRequestToJson(
-    PleromaAccountReportRequest instance) {
+Map<String, dynamic> _$PleromaApiAccountReportRequestToJson(
+    PleromaApiAccountReportRequest instance) {
   final val = <String, dynamic>{
     'account_id': instance.accountId,
   };

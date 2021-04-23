@@ -29,7 +29,7 @@ class PleromaChatShareMediaPage extends StatelessWidget {
 
 void goToPleromaChatShareMediaPage({
   required BuildContext context,
-  required IPleromaMediaAttachment mediaAttachment,
+  required IPleromaApiMediaAttachment mediaAttachment,
 }) {
   Navigator.push(
     context,
@@ -42,13 +42,13 @@ void goToPleromaChatShareMediaPage({
 
 MaterialPageRoute createPleromaChatShareMediaPageRoute({
   required BuildContext context,
-  required IPleromaMediaAttachment mediaAttachment,
+  required IPleromaApiMediaAttachment mediaAttachment,
 }) {
   return MaterialPageRoute(
     builder: (context) => PleromaChatShareMediaBloc.provideToContext(
       context,
       mediaAttachment: mediaAttachment,
-      child: Provider<IPleromaMediaAttachment>.value(
+      child: Provider<IPleromaApiMediaAttachment>.value(
         value: mediaAttachment,
         child: const PleromaChatShareMediaPage(),
       ),

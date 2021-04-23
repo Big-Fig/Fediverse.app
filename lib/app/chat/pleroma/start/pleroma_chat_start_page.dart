@@ -46,7 +46,7 @@ void _accountSelectedCallback(BuildContext context, IAccount account) async {
       var chat = await chatRepository.findByAccount(account: account);
 
       if (chat == null) {
-        var pleromaChatService = IPleromaChatService.of(context, listen: false);
+        var pleromaChatService = IPleromaApiChatService.of(context, listen: false);
 
         var remoteChat = await pleromaChatService.getOrCreateChatByAccountId(
           accountId: account.remoteId,

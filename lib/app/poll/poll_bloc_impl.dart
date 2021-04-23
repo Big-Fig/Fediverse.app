@@ -9,7 +9,7 @@ import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PollBloc extends DisposableOwner implements IPollBloc {
-  final BehaviorSubject<IPleromaPoll> pollSubject;
+  final BehaviorSubject<IPleromaApiPoll> pollSubject;
 
   BehaviorSubject<bool> isNeedShowResultsWithoutVoteSubject =
       BehaviorSubject.seeded(false);
@@ -22,15 +22,15 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   Stream<bool> get isNeedShowResultsWithoutVoteStream =>
       isNeedShowResultsWithoutVoteSubject.stream;
 
-  final BehaviorSubject<List<IPleromaPollOption>> selectedVotesSubject =
+  final BehaviorSubject<List<IPleromaApiPollOption>> selectedVotesSubject =
       BehaviorSubject.seeded([]);
 
-  final IPleromaPollService? pleromaPollService;
+  final IPleromaApiPollService? pleromaPollService;
 
   final InstanceLocation instanceLocation;
 
   PollBloc({
-    required IPleromaPoll poll,
+    required IPleromaApiPoll poll,
     required this.pleromaPollService,
     required this.instanceLocation,
   }) : pollSubject = BehaviorSubject.seeded(poll) {
@@ -60,10 +60,10 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       instanceLocation == InstanceLocation.local;
 
   @override
-  IPleromaPoll get poll => pollSubject.value!;
+  IPleromaApiPoll get poll => pollSubject.value!;
 
   @override
-  Stream<IPleromaPoll> get pollStream => pollSubject.stream;
+  Stream<IPleromaApiPoll> get pollStream => pollSubject.stream;
 
   @override
   bool get isPossibleToVote => isLocalInstanceLocation && poll.isPossibleToVote;
@@ -97,7 +97,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       );
 
   @override
-  void onPollOptionSelected(IPleromaPollOption pollOption) {
+  void onPollOptionSelected(IPleromaApiPollOption pollOption) {
     if (!multiple) {
       selectedVotes.clear();
     }
@@ -133,10 +133,10 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   }
 
   @override
-  List<IPleromaPollOption> get selectedVotes => selectedVotesSubject.value!;
+  List<IPleromaApiPollOption> get selectedVotes => selectedVotesSubject.value!;
 
   @override
-  Stream<List<IPleromaPollOption>> get selectedVotesStream =>
+  Stream<List<IPleromaApiPollOption>> get selectedVotesStream =>
       selectedVotesSubject.stream;
 
   @override
@@ -148,7 +148,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       );
 
   @override
-  void onPollUpdated(IPleromaPoll? poll) {
+  void onPollUpdated(IPleromaApiPoll? poll) {
     // TODO: WTF?
     pollSubject.add(poll!);
   }

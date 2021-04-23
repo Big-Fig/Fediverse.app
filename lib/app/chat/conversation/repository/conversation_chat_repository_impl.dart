@@ -26,7 +26,7 @@ class ConversationChatRepository
         DbConversation,
         DbConversationPopulated,
         IConversationChat,
-        IPleromaConversation,
+        IPleromaApiConversation,
         int,
         String,
         $DbConversationsTable,
@@ -183,7 +183,7 @@ class ConversationChatRepository
       appItem.toDbConversation();
 
   @override
-  IPleromaConversation mapAppItemToRemoteItem(IConversationChat appItem) {
+  IPleromaApiConversation mapAppItemToRemoteItem(IConversationChat appItem) {
     // todo: improve
     return appItem.toPleromaConversation(
       lastStatus: null,
@@ -192,7 +192,7 @@ class ConversationChatRepository
   }
 
   @override
-  IConversationChat mapRemoteItemToAppItem(IPleromaConversation remoteItem) =>
+  IConversationChat mapRemoteItemToAppItem(IPleromaApiConversation remoteItem) =>
       DbConversationChatPopulatedWrapper(
         dbConversationPopulated: DbConversationPopulated(
           dbConversation: remoteItem.toDbConversation(),
@@ -210,7 +210,7 @@ class ConversationChatRepository
       dbPopulatedItem.toDbConversationChatPopulatedWrapper();
 
   @override
-  IPleromaConversation mapDbPopulatedItemToRemoteItem(
+  IPleromaApiConversation mapDbPopulatedItemToRemoteItem(
       DbConversationPopulated dbPopulatedItem) {
     // todo: improve
     return dbPopulatedItem
@@ -243,7 +243,7 @@ class ConversationChatRepository
 
   @override
   Future<int> insertInRemoteType(
-    IPleromaConversation remoteItem, {
+    IPleromaApiConversation remoteItem, {
     required InsertMode? mode,
   }) async {
     await _upsertConversationMetadata(
@@ -258,7 +258,7 @@ class ConversationChatRepository
   }
 
   Future _upsertConversationMetadata(
-    IPleromaConversation remoteItem, {
+    IPleromaApiConversation remoteItem, {
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -294,7 +294,7 @@ class ConversationChatRepository
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    IPleromaConversation remoteItem, {
+    IPleromaApiConversation remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) async {
@@ -328,7 +328,7 @@ class ConversationChatRepository
 
   @override
   Future insertAllInRemoteType(
-    List<IPleromaConversation> remoteItems, {
+    List<IPleromaApiConversation> remoteItems, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) async {
@@ -356,7 +356,7 @@ class ConversationChatRepository
   @override
   Future<void> updateAppTypeByRemoteType({
     required IConversationChat appItem,
-    required IPleromaConversation remoteItem,
+    required IPleromaApiConversation remoteItem,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {

@@ -20,14 +20,14 @@ class EditPostStatusBloc extends PostStatusBloc {
   final PostStatusDataCallback postStatusDataCallback;
 
   EditPostStatusBloc({
-    required IPleromaAuthStatusService pleromaAuthStatusService,
+    required IPleromaApiAuthStatusService pleromaAuthStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
     required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     required IPostStatusData initialData,
     required this.postStatusDataCallback,
     required int? maximumMessageLength,
-    required PleromaInstancePollLimits? pleromaInstancePollLimits,
+    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required bool isPleromaInstance,
@@ -56,7 +56,7 @@ class EditPostStatusBloc extends PostStatusBloc {
     var postStatusSettingsBloc =
         IPostStatusSettingsBloc.of(context, listen: false);
     return EditPostStatusBloc(
-      pleromaAuthStatusService: IPleromaAuthStatusService.of(
+      pleromaAuthStatusService: IPleromaApiAuthStatusService.of(
         context,
         listen: false,
       ),

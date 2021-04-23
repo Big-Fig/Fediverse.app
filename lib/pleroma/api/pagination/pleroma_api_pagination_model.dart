@@ -1,11 +1,11 @@
 import 'package:fedi/mastodon/api/pagination/mastodon_api_pagination_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 
-abstract class IPleromaPaginationRequest implements IMastodonApiPaginationRequest {
+abstract class IPleromaApiPaginationRequest implements IMastodonApiPaginationRequest {
   List<RestRequestQueryArg> toQueryArgs();
 }
 
-class PleromaPaginationRequest implements IPleromaPaginationRequest {
+class PleromaApiPaginationRequest implements IPleromaApiPaginationRequest {
   @override
   final int? limit;
   @override
@@ -15,7 +15,7 @@ class PleromaPaginationRequest implements IPleromaPaginationRequest {
   @override
   final String? sinceId;
 
-  PleromaPaginationRequest({
+  PleromaApiPaginationRequest({
     this.limit,
     this.maxId,
     this.minId,
@@ -35,7 +35,7 @@ class PleromaPaginationRequest implements IPleromaPaginationRequest {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaPaginationRequest &&
+      other is PleromaApiPaginationRequest &&
           runtimeType == other.runtimeType &&
           limit == other.limit &&
           maxId == other.maxId &&
@@ -48,7 +48,11 @@ class PleromaPaginationRequest implements IPleromaPaginationRequest {
 
   @override
   String toString() {
-    return 'PleromaPaginationRequest{limit: $limit, maxId: $maxId,'
-        ' minId: $minId, sinceId: $sinceId}';
+    return 'PleromaApiPaginationRequest{'
+        'limit: $limit, '
+        'maxId: $maxId, '
+        'minId: $minId, '
+        'sinceId: $sinceId'
+        '}';
   }
 }

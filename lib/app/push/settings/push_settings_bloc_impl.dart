@@ -15,7 +15,7 @@ final _logger = Logger("push_settings_bloc_impl.dart");
 
 class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
   final IPushSettingsLocalPreferencesBloc instanceLocalPreferencesBloc;
-  final IPleromaPushService pleromaPushService;
+  final IPleromaApiPushService pleromaPushService;
   final IPushRelayService pushRelayService;
   final AuthInstance currentInstance;
   final IFcmPushService fcmPushService;
@@ -188,7 +188,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
     PushSettings? newSettings,
   ) async {
     bool success;
-    PleromaPushSubscription? subscription;
+    PleromaApiPushSubscription? subscription;
     try {
       subscription = await pleromaPushService.subscribe(
         endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
@@ -196,8 +196,8 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
           baseServerUrl: currentInstance.uri,
           fcmDeviceToken: deviceToken,
         ),
-        data: PleromaPushSubscribeData(
-          alerts: PleromaPushSettingsDataAlerts(
+        data: PleromaApiPushSubscribeData(
+          alerts: PleromaApiPushSubscribeRequestDataAlerts(
             favourite: newSettings!.favourite,
             follow: newSettings.follow,
             mention: newSettings.mention,

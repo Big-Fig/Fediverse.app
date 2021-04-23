@@ -17,32 +17,32 @@ abstract class IAccountBloc extends DisposableOwner
 
   Stream<IAccount> get accountStream;
 
-  IPleromaAccountRelationship? get relationship;
+  IPleromaApiAccountRelationship? get relationship;
 
-  Stream<IPleromaAccountRelationship?>? get relationshipStream;
+  Stream<IPleromaApiAccountRelationship?>? get relationshipStream;
 
-  Future<IPleromaAccountRelationship> toggleFollow();
+  Future<IPleromaApiAccountRelationship> toggleFollow();
 
-  Future<IPleromaAccountRelationship> toggleMute();
+  Future<IPleromaApiAccountRelationship> toggleMute();
 
-  Future<IPleromaAccountRelationship> mute({
+  Future<IPleromaApiAccountRelationship> mute({
     required bool notifications,
     required Duration? duration,
   });
 
-  Future<IPleromaAccountRelationship> unMute();
+  Future<IPleromaApiAccountRelationship> unMute();
 
-  Future<IPleromaAccountRelationship> subscribe();
+  Future<IPleromaApiAccountRelationship> subscribe();
 
-  Future<IPleromaAccountRelationship> unSubscribe();
+  Future<IPleromaApiAccountRelationship> unSubscribe();
 
-  Future<IPleromaAccountRelationship> togglePin();
+  Future<IPleromaApiAccountRelationship> togglePin();
 
-  Future<IPleromaAccountRelationship> toggleBlock();
+  Future<IPleromaApiAccountRelationship> toggleBlock();
 
-  Future<IPleromaAccountRelationship> toggleSubscribe();
+  Future<IPleromaApiAccountRelationship> toggleSubscribe();
 
-  Future<IPleromaAccountRelationship> toggleBlockDomain();
+  Future<IPleromaApiAccountRelationship> toggleBlockDomain();
 
   Future refreshFromNetwork({
     required bool isNeedPreFetchRelationship,
@@ -122,9 +122,9 @@ extension IAccountBlocExtension on IAccountBloc {
   Stream<bool?> get pleromaHideFollowsCountStream =>
       accountStream.map((account) => account.pleromaHideFollowsCount);
 
-  List<IPleromaField> get fields => account.fields ?? [];
+  List<IPleromaApiField> get fields => account.fields ?? [];
 
-  Stream<List<IPleromaField>> get fieldsStream =>
+  Stream<List<IPleromaApiField>> get fieldsStream =>
       accountStream.map((account) => account.fields ?? []);
 
   int? get followersCount => account.followersCount;

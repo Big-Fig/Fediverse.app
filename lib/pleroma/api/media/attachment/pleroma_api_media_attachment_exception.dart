@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_model.dart';
 
-class PleromaMediaAttachmentUploadException extends PleromaRestException {
+class PleromaApiMediaAttachmentUploadException extends PleromaApiRestException {
   final File file;
 
-  PleromaMediaAttachmentUploadException({
+  PleromaApiMediaAttachmentUploadException({
     required int statusCode,
     required String body,
     required this.file,

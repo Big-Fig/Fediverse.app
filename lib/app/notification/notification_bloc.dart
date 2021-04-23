@@ -32,9 +32,9 @@ abstract class INotificationBloc implements IDisposable {
 
   Stream<String?> get chatRemoteIdStream;
 
-  IPleromaChatMessage? get chatMessage;
+  IPleromaApiChatMessage? get chatMessage;
 
-  Stream<IPleromaChatMessage?> get chatMessageStream;
+  Stream<IPleromaApiChatMessage?> get chatMessageStream;
 
   String get remoteId;
 
@@ -46,7 +46,7 @@ abstract class INotificationBloc implements IDisposable {
 
   MastodonApiNotificationType get typeMastodon;
 
-  PleromaNotificationType get typePleroma;
+  PleromaApiNotificationType get typePleroma;
 
   DateTime get createdAt;
 

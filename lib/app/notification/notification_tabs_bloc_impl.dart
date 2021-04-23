@@ -52,7 +52,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
   @override
   Stream<NotificationTab> get selectedTabStream => selectedTabSubject!.stream;
 
-  final IPleromaNotificationService pleromaNotificationService;
+  final IPleromaApiNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
   final IFilterRepository filterRepository;
   final IPaginationSettingsBloc paginationSettingsBloc;
@@ -82,7 +82,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
       NotificationsTabsBloc(
         startTab: NotificationTab.all,
         pleromaNotificationService:
-            IPleromaNotificationService.of(context, listen: false),
+            IPleromaApiNotificationService.of(context, listen: false),
         notificationRepository:
             INotificationRepository.of(context, listen: false),
         webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(

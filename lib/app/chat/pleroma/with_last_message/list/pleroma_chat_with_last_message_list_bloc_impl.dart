@@ -46,7 +46,7 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   PleromaChatWithLastMessageListBloc({
-    required IPleromaChatService pleromaChatService,
+    required IPleromaApiChatService pleromaChatService,
     required this.chatMessageRepository,
     required this.chatRepository,
     required this.chatWithLastMessageRepository,
@@ -91,7 +91,7 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
     required WebSocketsListenType webSocketsListenType,
   }) =>
       PleromaChatWithLastMessageListBloc(
-        pleromaChatService: IPleromaChatService.of(context, listen: false),
+        pleromaChatService: IPleromaApiChatService.of(context, listen: false),
         chatWithLastMessageRepository:
             IPleromaChatWithLastMessageRepository.of(context, listen: false),
         chatMessageRepository:

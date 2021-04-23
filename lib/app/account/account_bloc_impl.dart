@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 abstract class AccountBloc extends IAccountBloc {
   final BehaviorSubject<IAccount> accountSubject;
 
-  final IPleromaAccountService? pleromaAccountService;
+  final IPleromaApiAccountService? pleromaAccountService;
 
   // todo: remove hack. Don't init when bloc quickly disposed. Help
   AccountBloc({
@@ -57,7 +57,7 @@ abstract class AccountBloc extends IAccountBloc {
   @override
   Stream<IAccount> get accountStream => accountSubject.stream.distinct();
 
-  Future<IPleromaAccount> loadRemoteAccount() async {
+  Future<IPleromaApiAccount> loadRemoteAccount() async {
     return pleromaAccountService!.getAccount(
       accountRemoteId: account.remoteId,
     );

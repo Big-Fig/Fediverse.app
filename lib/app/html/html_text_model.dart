@@ -29,7 +29,7 @@ class HtmlTextResultData {
 class HtmlTextInputData {
   final String? input;
 
-  final List<IPleromaEmoji>? emojis;
+  final List<IPleromaApiEmoji>? emojis;
 
   bool get isHaveEmojis => emojis?.isNotEmpty == true;
 

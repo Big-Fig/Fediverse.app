@@ -13,7 +13,7 @@ part 'pleroma_api_oauth_model.g.dart';
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 51)
-class PleromaOAuthToken implements IJsonObject {
+class PleromaApiOAuthToken implements IJsonObject {
   @HiveField(0)
   @JsonKey(name: "access_token")
   final String accessToken;
@@ -27,7 +27,7 @@ class PleromaOAuthToken implements IJsonObject {
   @HiveField(3)
   final dynamic createdAt;
 
-  PleromaOAuthToken({
+  PleromaApiOAuthToken({
     required this.accessToken,
     required this.tokenType,
     required this.scope,
@@ -36,14 +36,18 @@ class PleromaOAuthToken implements IJsonObject {
 
   @override
   String toString() {
-    return 'PleromaOAuthToken{accessToken: $accessToken,'
-        ' tokenType: $tokenType, scope: $scope, createdAt: $createdAt}';
+    return 'PleromaApiOAuthToken{'
+        'accessToken: $accessToken, '
+        'tokenType: $tokenType, '
+        'scope: $scope, '
+        'createdAt: $createdAt'
+        '}';
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaOAuthToken &&
+      other is PleromaApiOAuthToken &&
           runtimeType == other.runtimeType &&
           accessToken == other.accessToken &&
           tokenType == other.tokenType &&
@@ -57,18 +61,18 @@ class PleromaOAuthToken implements IJsonObject {
       scope.hashCode ^
       createdAt.hashCode;
 
-  factory PleromaOAuthToken.fromJson(Map<String, dynamic> json) =>
-      _$PleromaOAuthTokenFromJson(json);
+  factory PleromaApiOAuthToken.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiOAuthTokenFromJson(json);
 
-  factory PleromaOAuthToken.fromJsonString(String jsonString) =>
-      _$PleromaOAuthTokenFromJson(jsonDecode(jsonString));
+  factory PleromaApiOAuthToken.fromJsonString(String jsonString) =>
+      _$PleromaApiOAuthTokenFromJson(jsonDecode(jsonString));
 
   @override
-  Map<String, dynamic> toJson() => _$PleromaOAuthTokenToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiOAuthTokenToJson(this);
 }
 
 @JsonSerializable()
-class PleromaOAuthAuthorizeRequest {
+class PleromaApiOAuthAuthorizeRequest {
   @JsonKey(name: "force_login")
 
   /// Forces the user to re-login,
@@ -98,7 +102,7 @@ class PleromaOAuthAuthorizeRequest {
   /// app registration. If not provided, defaults to read.
   final String? scope;
 
-  PleromaOAuthAuthorizeRequest({
+  PleromaApiOAuthAuthorizeRequest({
     required this.forceLogin,
     required this.clientId,
     required this.redirectUri,
@@ -106,17 +110,47 @@ class PleromaOAuthAuthorizeRequest {
     this.responseType = "code",
   });
 
-  factory PleromaOAuthAuthorizeRequest.fromJsonString(String jsonString) =>
-      _$PleromaOAuthAuthorizeRequestFromJson(jsonDecode(jsonString));
+  factory PleromaApiOAuthAuthorizeRequest.fromJsonString(String jsonString) =>
+      _$PleromaApiOAuthAuthorizeRequestFromJson(jsonDecode(jsonString));
 
-  factory PleromaOAuthAuthorizeRequest.fromJson(Map<String, dynamic> json) =>
-      _$PleromaOAuthAuthorizeRequestFromJson(json);
+  factory PleromaApiOAuthAuthorizeRequest.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiOAuthAuthorizeRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PleromaOAuthAuthorizeRequestToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiOAuthAuthorizeRequestToJson(this);
+
+  @override
+  String toString() {
+    return 'PleromaApiOAuthAuthorizeRequest{'
+        'forceLogin: $forceLogin, '
+        'responseType: $responseType, '
+        'clientId: $clientId, '
+        'redirectUri: $redirectUri, '
+        'scope: $scope'
+        '}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiOAuthAuthorizeRequest &&
+          runtimeType == other.runtimeType &&
+          forceLogin == other.forceLogin &&
+          responseType == other.responseType &&
+          clientId == other.clientId &&
+          redirectUri == other.redirectUri &&
+          scope == other.scope;
+
+  @override
+  int get hashCode =>
+      forceLogin.hashCode ^
+      responseType.hashCode ^
+      clientId.hashCode ^
+      redirectUri.hashCode ^
+      scope.hashCode;
 }
 
 @JsonSerializable()
-class PleromaOAuthAccountTokenRequest {
+class PleromaApiOAuthAccountTokenRequest {
   @JsonKey(name: "grant_type")
   final String? grantType;
 
@@ -133,7 +167,7 @@ class PleromaOAuthAccountTokenRequest {
   @JsonKey(name: "client_secret")
   String? clientSecret;
 
-  PleromaOAuthAccountTokenRequest({
+  PleromaApiOAuthAccountTokenRequest({
     required this.code,
     required this.scope,
     required this.redirectUri,
@@ -144,23 +178,50 @@ class PleromaOAuthAccountTokenRequest {
 
   @override
   String toString() {
-    return 'PleromaOAuthAuthTokenRequest{grantType: $grantType, '
-        'code: $code, scope: $scope, redirectUri: $redirectUri, '
-        'clientId: $clientId, clientSecret: $clientSecret}';
+    return 'PleromaOAuthAuthTokenRequest{'
+        'grantType: $grantType, '
+        'code: $code, '
+        'scope: $scope, '
+        'redirectUri: $redirectUri, '
+        'clientId: $clientId, '
+        'clientSecret: $clientSecret'
+        '}';
   }
 
-  factory PleromaOAuthAccountTokenRequest.fromJson(Map<String, dynamic> json) =>
-      _$PleromaOAuthAccountTokenRequestFromJson(json);
 
-  factory PleromaOAuthAccountTokenRequest.fromJsonString(String jsonString) =>
-      _$PleromaOAuthAccountTokenRequestFromJson(jsonDecode(jsonString));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiOAuthAccountTokenRequest &&
+          runtimeType == other.runtimeType &&
+          grantType == other.grantType &&
+          code == other.code &&
+          scope == other.scope &&
+          redirectUri == other.redirectUri &&
+          clientId == other.clientId &&
+          clientSecret == other.clientSecret;
+
+  @override
+  int get hashCode =>
+      grantType.hashCode ^
+      code.hashCode ^
+      scope.hashCode ^
+      redirectUri.hashCode ^
+      clientId.hashCode ^
+      clientSecret.hashCode;
+
+  factory PleromaApiOAuthAccountTokenRequest.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiOAuthAccountTokenRequestFromJson(json);
+
+  factory PleromaApiOAuthAccountTokenRequest.fromJsonString(String jsonString) =>
+      _$PleromaApiOAuthAccountTokenRequestFromJson(jsonDecode(jsonString));
 
   Map<String, dynamic> toJson() =>
-      _$PleromaOAuthAccountTokenRequestToJson(this);
+      _$PleromaApiOAuthAccountTokenRequestToJson(this);
 }
 
 @JsonSerializable()
-class PleromaOAuthAppTokenRequest {
+class PleromaApiOAuthAppTokenRequest {
   @JsonKey(name: "grant_type")
   final String? grantType;
 
@@ -174,7 +235,7 @@ class PleromaOAuthAppTokenRequest {
   @JsonKey(name: "client_secret")
   String? clientSecret;
 
-  PleromaOAuthAppTokenRequest({
+  PleromaApiOAuthAppTokenRequest({
     this.scope,
     this.redirectUri,
     this.clientId,
@@ -184,30 +245,54 @@ class PleromaOAuthAppTokenRequest {
 
   @override
   String toString() {
-    return 'PleromaOAuthAppTokenRequest{grantType: $grantType, '
-        ' scope: $scope, redirectUri: $redirectUri, '
-        'clientId: $clientId, clientSecret: $clientSecret}';
+    return 'PleromaApiOAuthAppTokenRequest{'
+        'grantType: $grantType, '
+        'scope: $scope, '
+        'redirectUri: $redirectUri, '
+        'clientId: $clientId, '
+        'clientSecret: $clientSecret'
+        '}';
   }
 
-  factory PleromaOAuthAppTokenRequest.fromJsonString(String jsonString) =>
-      _$PleromaOAuthAppTokenRequestFromJson(jsonDecode(jsonString));
 
-  factory PleromaOAuthAppTokenRequest.fromJson(Map<String, dynamic> json) =>
-      _$PleromaOAuthAppTokenRequestFromJson(json);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiOAuthAppTokenRequest &&
+          runtimeType == other.runtimeType &&
+          grantType == other.grantType &&
+          scope == other.scope &&
+          redirectUri == other.redirectUri &&
+          clientId == other.clientId &&
+          clientSecret == other.clientSecret;
 
-  Map<String, dynamic> toJson() => _$PleromaOAuthAppTokenRequestToJson(this);
+  @override
+  int get hashCode =>
+      grantType.hashCode ^
+      scope.hashCode ^
+      redirectUri.hashCode ^
+      clientId.hashCode ^
+      clientSecret.hashCode;
+
+  factory PleromaApiOAuthAppTokenRequest.fromJsonString(String jsonString) =>
+      _$PleromaApiOAuthAppTokenRequestFromJson(jsonDecode(jsonString));
+
+  factory PleromaApiOAuthAppTokenRequest.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiOAuthAppTokenRequestFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PleromaApiOAuthAppTokenRequestToJson(this);
 }
 
 @JsonSerializable()
-class PleromaOAuthAppTokenRevokeRequest {
+class PleromaApiOAuthAppTokenRevokeRequest {
   @JsonKey(name: "client_id")
-  String? clientId;
+  final String? clientId;
   @JsonKey(name: "client_secret")
-  String? clientSecret;
+  final String? clientSecret;
 
-  String? token;
+  final String? token;
 
-  PleromaOAuthAppTokenRevokeRequest({
+  PleromaApiOAuthAppTokenRevokeRequest({
     required this.clientId,
     required this.clientSecret,
     required this.token,
@@ -215,18 +300,35 @@ class PleromaOAuthAppTokenRevokeRequest {
 
   @override
   String toString() {
-    return 'PleromaOAuthAppTokenRevokeRequest{clientId: $clientId,'
-        ' clientSecret: $clientSecret, token: $token}';
+    return 'PleromaApiOAuthAppTokenRevokeRequest{'
+        'clientId: $clientId, '
+        'clientSecret: $clientSecret, '
+        'token: $token'
+        '}';
   }
 
-  factory PleromaOAuthAppTokenRevokeRequest.fromJsonString(String jsonString) =>
-      _$PleromaOAuthAppTokenRevokeRequestFromJson(jsonDecode(jsonString));
 
-  factory PleromaOAuthAppTokenRevokeRequest.fromJson(
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiOAuthAppTokenRevokeRequest &&
+          runtimeType == other.runtimeType &&
+          clientId == other.clientId &&
+          clientSecret == other.clientSecret &&
+          token == other.token;
+
+  @override
+  int get hashCode =>
+      clientId.hashCode ^ clientSecret.hashCode ^ token.hashCode;
+
+  factory PleromaApiOAuthAppTokenRevokeRequest.fromJsonString(String jsonString) =>
+      _$PleromaApiOAuthAppTokenRevokeRequestFromJson(jsonDecode(jsonString));
+
+  factory PleromaApiOAuthAppTokenRevokeRequest.fromJson(
     Map<String, dynamic> json,
   ) =>
-      _$PleromaOAuthAppTokenRevokeRequestFromJson(json);
+      _$PleromaApiOAuthAppTokenRevokeRequestFromJson(json);
 
   Map<String, dynamic> toJson() =>
-      _$PleromaOAuthAppTokenRevokeRequestToJson(this);
+      _$PleromaApiOAuthAppTokenRevokeRequestToJson(this);
 }

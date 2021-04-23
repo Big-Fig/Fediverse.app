@@ -6,12 +6,12 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_mention_model.g.dart';
 
-abstract class IPleromaMention implements IMastodonApiMention {}
+abstract class IPleromaApiMention implements IMastodonApiMention {}
 
-extension IPleromaMentionStatusListExtension on List<IStatus> {
-  List<IPleromaMention> findAllMentions() {
+extension IPleromaApiMentionStatusListExtension on List<IStatus> {
+  List<IPleromaApiMention> findAllMentions() {
     List<IStatus> statuses = this;
-    Set<IPleromaMention> mentions = {};
+    Set<IPleromaApiMention> mentions = {};
 
     statuses.forEach(
       (status) {
@@ -23,12 +23,12 @@ extension IPleromaMentionStatusListExtension on List<IStatus> {
   }
 }
 
-extension IPleromaMentionExtension on IPleromaMention {
-  PleromaMention toPleromaMention() {
-    if (this is PleromaMention) {
-      return this as PleromaMention;
+extension IPleromaApiMentionExtension on IPleromaApiMention {
+  PleromaApiMention toPleromaApiMention() {
+    if (this is PleromaApiMention) {
+      return this as PleromaApiMention;
     } else {
-      return PleromaMention(
+      return PleromaApiMention(
         acct: acct,
         id: id,
         url: url,
@@ -38,26 +38,26 @@ extension IPleromaMentionExtension on IPleromaMention {
   }
 }
 
-extension IPleromaMentionListExtension on List<IPleromaMention> {
-  List<PleromaMention> toPleromaMentions() {
-    if (this is List<PleromaMention>) {
-      return this as List<PleromaMention>;
+extension IPleromaApiMentionListExtension on List<IPleromaApiMention> {
+  List<PleromaApiMention> toPleromaApiMentions() {
+    if (this is List<PleromaApiMention>) {
+      return this as List<PleromaApiMention>;
     } else {
       return map(
-        (pleromaMention) => pleromaMention.toPleromaMention(),
+        (pleromaApiMention) => pleromaApiMention.toPleromaApiMention(),
       ).toList();
     }
   }
 
   List<String> toAccts() {
     return map(
-      (pleromaMention) => pleromaMention.acct,
+      (pleromaApiMention) => pleromaApiMention.acct,
     ).toList();
   }
 }
 
 @JsonSerializable()
-class PleromaMention implements IPleromaMention {
+class PleromaApiMention implements IPleromaApiMention {
   @override
   final String acct;
   @override
@@ -67,34 +67,34 @@ class PleromaMention implements IPleromaMention {
   @override
   final String? username;
 
-  PleromaMention({
+  PleromaApiMention({
     required this.acct,
     required this.id,
     required this.url,
     required this.username,
   });
 
-  PleromaMention.only({
+  PleromaApiMention.only({
     required this.acct,
     required this.id,
     required this.url,
      this.username,
   });
 
-  factory PleromaMention.fromJson(Map<String, dynamic> json) =>
-      _$PleromaMentionFromJson(json);
+  factory PleromaApiMention.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiMentionFromJson(json);
 
-  factory PleromaMention.fromJsonString(String jsonString) =>
-      _$PleromaMentionFromJson(jsonDecode(jsonString));
+  factory PleromaApiMention.fromJsonString(String jsonString) =>
+      _$PleromaApiMentionFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaMentionToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiMentionToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaMentionToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiMentionToJson(this));
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaMention &&
+      other is PleromaApiMention &&
           runtimeType == other.runtimeType &&
           acct == other.acct &&
           id == other.id &&
@@ -107,7 +107,7 @@ class PleromaMention implements IPleromaMention {
 
   @override
   String toString() {
-    return 'PleromaMention{'
+    return 'PleromaApiMention{'
         'acct: $acct, '
         'id: $id, '
         'url: $url, '

@@ -22,7 +22,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
       listen: false,
     ).currentInstance!.isPleroma;
 
-    return StreamBuilder<PleromaVisibility>(
+    return StreamBuilder<PleromaApiVisibility>(
       stream: postStatusBloc.visibilityStream,
       initialData: postStatusBloc.visibility,
       builder: (context, snapshot) {
@@ -44,34 +44,34 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
                 buildVisibilityDialogAction(
                   context: context,
                   postStatusBloc: postStatusBloc,
-                  visibility: PleromaVisibility.public,
+                  visibility: PleromaApiVisibility.public,
                 ),
                 if (isPleromaInstance)
                   buildVisibilityDialogAction(
                     context: context,
                     postStatusBloc: postStatusBloc,
-                    visibility: PleromaVisibility.local,
+                    visibility: PleromaApiVisibility.local,
                   ),
                 buildVisibilityDialogAction(
                   context: context,
                   postStatusBloc: postStatusBloc,
-                  visibility: PleromaVisibility.direct,
+                  visibility: PleromaApiVisibility.direct,
                 ),
                 if (isPleromaInstance)
                   buildVisibilityDialogAction(
                     context: context,
                     postStatusBloc: postStatusBloc,
-                    visibility: PleromaVisibility.list,
+                    visibility: PleromaApiVisibility.list,
                   ),
                 buildVisibilityDialogAction(
                   context: context,
                   postStatusBloc: postStatusBloc,
-                  visibility: PleromaVisibility.unlisted,
+                  visibility: PleromaApiVisibility.unlisted,
                 ),
                 buildVisibilityDialogAction(
                   context: context,
                   postStatusBloc: postStatusBloc,
-                  visibility: PleromaVisibility.private,
+                  visibility: PleromaApiVisibility.private,
                 ),
               ],
             );
@@ -84,7 +84,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
   SelectionDialogAction buildVisibilityDialogAction({
     required BuildContext context,
     required IPostStatusBloc postStatusBloc,
-    required PleromaVisibility visibility,
+    required PleromaApiVisibility visibility,
   }) {
     DialogActionCallback? onPressed;
     var isPossibleToChangeVisibility =

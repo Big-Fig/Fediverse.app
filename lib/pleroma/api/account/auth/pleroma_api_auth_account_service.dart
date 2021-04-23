@@ -1,81 +1,81 @@
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaAuthAccountService
-    extends IPleromaAuthApi implements IPleromaAccountService {
-  static IPleromaAuthAccountService of(
+abstract class IPleromaApiAuthAccountService
+    extends IPleromaApiAuth implements IPleromaApiAccountService {
+  static IPleromaApiAuthAccountService of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IPleromaAuthAccountService>(
+      Provider.of<IPleromaApiAuthAccountService>(
         context,
         listen: listen,
       );
 
   /// Find out whether a given account is followed, blocked, muted, etc.
-  Future<List<IPleromaAccountRelationship>> getRelationshipWithAccounts({
+  Future<List<IPleromaApiAccountRelationship>> getRelationshipWithAccounts({
     required List<String> remoteAccountIds,
   });
 
-  Future<List<IPleromaAccount>> search({
+  Future<List<IPleromaApiAccount>> search({
     required String query,
     bool? resolve,
     bool? following,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   });
 
-  Future<List<IPleromaList>> getListsWithAccount({
+  Future<List<IPleromaApiList>> getListsWithAccount({
     required String accountRemoteId,
   });
 
-  Future<List<IPleromaAccountIdentityProof>> getAccountIdentifyProofs({
+  Future<List<IPleromaApiAccountIdentityProof>> getAccountIdentifyProofs({
     required String accountRemoteId,
   });
 
-  Future<IPleromaAccountRelationship> followAccount({
+  Future<IPleromaApiAccountRelationship> followAccount({
     required String accountRemoteId,
   });
 
-  Future<IPleromaAccountRelationship> unFollowAccount({
+  Future<IPleromaApiAccountRelationship> unFollowAccount({
     required String accountRemoteId,
   });
 
-  Future<IPleromaAccountRelationship> subscribeAccount({
+  Future<IPleromaApiAccountRelationship> subscribeAccount({
     required String accountRemoteId,
   });
 
-  Future<IPleromaAccountRelationship> unSubscribeAccount({
+  Future<IPleromaApiAccountRelationship> unSubscribeAccount({
     required String accountRemoteId,
   });
 
-  Future<IPleromaAccountRelationship> pinAccount({
+  Future<IPleromaApiAccountRelationship> pinAccount({
     required String accountRemoteId,
   });
 
-  Future<IPleromaAccountRelationship> unPinAccount({
+  Future<IPleromaApiAccountRelationship> unPinAccount({
     required String accountRemoteId,
   });
 
-  Future<IPleromaAccountRelationship> muteAccount({
+  Future<IPleromaApiAccountRelationship> muteAccount({
     required String accountRemoteId,
     required bool? notifications,
     required int? expireDurationInSeconds,
   });
 
-  Future<IPleromaAccountRelationship> unMuteAccount({
+  Future<IPleromaApiAccountRelationship> unMuteAccount({
     required String accountRemoteId,
   });
 
-  Future<IPleromaAccountRelationship> blockAccount({
+  Future<IPleromaApiAccountRelationship> blockAccount({
     required String accountRemoteId,
   });
 
-  Future<IPleromaAccountRelationship> unBlockAccount({
+  Future<IPleromaApiAccountRelationship> unBlockAccount({
     required String accountRemoteId,
   });
 
@@ -88,6 +88,6 @@ abstract class IPleromaAuthAccountService
   });
 
   Future<bool> reportAccount({
-    required IPleromaAccountReportRequest reportRequest,
+    required IPleromaApiAccountReportRequest reportRequest,
   });
 }

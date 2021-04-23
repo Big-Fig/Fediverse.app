@@ -30,11 +30,11 @@ abstract class IPostStatusData {
 
   List<String>? get to;
 
-  List<IPleromaMediaAttachment>? get mediaAttachments;
+  List<IPleromaApiMediaAttachment>? get mediaAttachments;
 
   IPostStatusPoll? get poll;
 
-  IPleromaStatus? get inReplyToPleromaStatus;
+  IPleromaApiStatus? get inReplyToPleromaStatus;
 
   String? get inReplyToConversationId;
 
@@ -49,9 +49,9 @@ abstract class IPostStatusData {
     String? visibility,
     String? language,
     List<String>? to,
-    List<IPleromaMediaAttachment>? mediaAttachments,
-    PleromaPostStatusPoll? poll,
-    PleromaStatus? inReplyToPleromaStatus,
+    List<IPleromaApiMediaAttachment>? mediaAttachments,
+    PleromaApiPostStatusPoll? poll,
+    PleromaApiStatus? inReplyToPleromaStatus,
     String? inReplyToConversationId,
     bool? isNsfwSensitiveEnabled,
     int? expiresInSeconds,
@@ -78,12 +78,12 @@ class PostStatusData implements IPostStatusData {
   final List<String>? to;
   @override
   @JsonKey(name: "media_attachments")
-  final List<PleromaMediaAttachment>? mediaAttachments;
+  final List<PleromaApiMediaAttachment>? mediaAttachments;
   @override
   final PostStatusPoll? poll;
   @override
   @JsonKey(name: "in_reply_to_status")
-  final PleromaStatus? inReplyToPleromaStatus;
+  final PleromaApiStatus? inReplyToPleromaStatus;
   @override
   @JsonKey(name: "in_reply_to_conversation_id")
   final String? inReplyToConversationId;
@@ -129,7 +129,7 @@ class PostStatusData implements IPostStatusData {
     this.expiresInSeconds,
   });
 
-  PleromaVisibility get visibilityPleroma => visibility.toPleromaVisibility();
+  PleromaApiVisibility get visibilityPleroma => visibility.toPleromaApiVisibility();
 
 
   @override
@@ -141,9 +141,9 @@ class PostStatusData implements IPostStatusData {
     String? visibility,
     String? language,
     List<String>? to,
-    List<IPleromaMediaAttachment>? mediaAttachments,
-    IPleromaPostStatusPoll? poll,
-    PleromaStatus? inReplyToPleromaStatus,
+    List<IPleromaApiMediaAttachment>? mediaAttachments,
+    IPleromaApiPostStatusPoll? poll,
+    PleromaApiStatus? inReplyToPleromaStatus,
     String? inReplyToConversationId,
     bool? isNsfwSensitiveEnabled,
     int? expiresInSeconds,
@@ -156,7 +156,7 @@ class PostStatusData implements IPostStatusData {
         visibility: visibility ?? this.visibility,
         language: language ?? this.language,
         to: to ?? this.to,
-        mediaAttachments: mediaAttachments?.toPleromaMediaAttachments(),
+        mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
         poll: poll?.toPostStatusPoll() ?? this.poll,
         inReplyToPleromaStatus:
             inReplyToPleromaStatus ?? this.inReplyToPleromaStatus,
@@ -224,15 +224,15 @@ class PostStatusData implements IPostStatusData {
 }
 
 extension IPostStatusDataExtension on IPostStatusData {
-  PleromaScheduleStatus toPleromaScheduleStatus({
+  PleromaApiScheduleStatus toPleromaScheduleStatus({
     required String? idempotencyKey,
   }) {
     assert(isScheduled);
-    return PleromaScheduleStatus(
+    return PleromaApiScheduleStatus(
       inReplyToConversationId: inReplyToConversationId,
       inReplyToId: inReplyToPleromaStatus?.id,
       visibility: visibility,
-      mediaIds: mediaAttachments?.toPleromaMediaAttachmentIds(),
+      mediaIds: mediaAttachments?.toPleromaApiMediaAttachmentIds(),
       sensitive: isNsfwSensitiveEnabled,
       spoilerText: subject,
       status: text,
@@ -257,9 +257,9 @@ extension IPostStatusDataExtension on IPostStatusData {
         scheduledAt: scheduledAt,
         visibility: visibility,
         to: to,
-        mediaAttachments: mediaAttachments?.toPleromaMediaAttachments(),
+        mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
         poll: poll?.toPostStatusPoll(),
-        inReplyToPleromaStatus: inReplyToPleromaStatus?.toPleromaStatus(),
+        inReplyToPleromaStatus: inReplyToPleromaStatus?.toPleromaApiStatus(),
         inReplyToConversationId: inReplyToConversationId,
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
         language: language,
@@ -268,18 +268,18 @@ extension IPostStatusDataExtension on IPostStatusData {
     }
   }
 
-  PleromaPostStatus toPleromaPostStatus({
+  PleromaApiPostStatus toPleromaPostStatus({
     required String? idempotencyKey,
   }) {
     assert(!isScheduled);
 
-    return PleromaPostStatus(
+    return PleromaApiPostStatus(
       idempotencyKey: idempotencyKey,
       expiresInSeconds: expiresInSeconds,
       inReplyToConversationId: inReplyToConversationId,
       inReplyToId: inReplyToPleromaStatus?.id,
       visibility: visibility,
-      mediaIds: mediaAttachments?.toPleromaMediaAttachmentIds(),
+      mediaIds: mediaAttachments?.toPleromaApiMediaAttachmentIds(),
       sensitive: isNsfwSensitiveEnabled,
       language: language,
       spoilerText: subject,
@@ -294,7 +294,7 @@ extension IPostStatusDataExtension on IPostStatusData {
 
 extension PostStatusDataStatusExtension on IStatus {
   PostStatusData calculatePostStatusData({
-    required PleromaInstancePollLimits limits,
+    required PleromaApiInstancePollLimits limits,
   }) =>
       PostStatusData(
         subject: spoilerText,

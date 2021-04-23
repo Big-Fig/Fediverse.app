@@ -14,7 +14,7 @@ class ExternalShareMediaBloc extends ExternalShareBloc
   final String popupTitle;
 
   @override
-  final IPleromaMediaAttachment mediaAttachment;
+  final IPleromaApiMediaAttachment mediaAttachment;
 
   ExternalShareMediaBloc({
     required this.popupTitle,
@@ -53,7 +53,7 @@ class ExternalShareMediaBloc extends ExternalShareBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    required IPleromaMediaAttachment mediaAttachment,
+    required IPleromaApiMediaAttachment mediaAttachment,
     required String popupTitle,
     required Widget child,
   }) {
@@ -77,7 +77,7 @@ class ExternalShareMediaBloc extends ExternalShareBloc
 
   static ExternalShareMediaBloc createFromContext(
     BuildContext context, {
-    required IPleromaMediaAttachment mediaAttachment,
+    required IPleromaApiMediaAttachment mediaAttachment,
     required String popupTitle,
   }) =>
       ExternalShareMediaBloc(

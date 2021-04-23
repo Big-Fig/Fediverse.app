@@ -17,7 +17,7 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
 
-    return StreamBuilder<List<IPleromaStatusEmojiReaction>?>(
+    return StreamBuilder<List<IPleromaApiStatusEmojiReaction>?>(
       stream: statusBloc.reblogPlusOriginalEmojiReactionsStream,
       builder: (context, snapshot) {
         var emojiReactions = snapshot.data;
@@ -32,10 +32,10 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
                 crossAxisAlignment: WrapCrossAlignment.start,
                 children: emojiReactions!
                     .map((emojiReaction) =>
-                        Provider<IPleromaStatusEmojiReaction>.value(
+                        Provider<IPleromaApiStatusEmojiReaction>.value(
                           value: emojiReaction,
                           child: DisposableProxyProvider<
-                              IPleromaStatusEmojiReaction,
+                              IPleromaApiStatusEmojiReaction,
                               IStatusEmojiReactionBloc>(
                             update: (context, value, previous) =>
                                 StatusEmojiReactionBloc(
@@ -43,8 +43,8 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
                               statusRepository:
                                   IStatusRepository.of(context, listen: false),
                               emojiReaction: value,
-                              pleromaStatusEmojiReactionService:
-                                  IPleromaStatusEmojiReactionService.of(
+                              PleromaApiStatusEmojiReactionService:
+                                  IPleromaApiStatusEmojiReactionService.of(
                                 context,
                                 listen: false,
                               ),

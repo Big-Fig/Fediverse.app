@@ -6,24 +6,24 @@ part of 'pleroma_api_instance_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PleromaInstancePleromaPartAdapter
-    extends TypeAdapter<PleromaInstancePleromaPart> {
+class PleromaApiInstancePleromaPartAdapter
+    extends TypeAdapter<PleromaApiInstancePleromaPart> {
   @override
   final int typeId = 26;
 
   @override
-  PleromaInstancePleromaPart read(BinaryReader reader) {
+  PleromaApiInstancePleromaPart read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaInstancePleromaPart(
-      metadata: fields[0] as PleromaInstancePleromaPartMetadata?,
+    return PleromaApiInstancePleromaPart(
+      metadata: fields[0] as PleromaApiInstancePleromaPartMetadata?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, PleromaInstancePleromaPart obj) {
+  void write(BinaryWriter writer, PleromaApiInstancePleromaPart obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
@@ -36,23 +36,23 @@ class PleromaInstancePleromaPartAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaInstancePleromaPartAdapter &&
+      other is PleromaApiInstancePleromaPartAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class PleromaInstancePleromaPartMetadataFieldLimitsAdapter
-    extends TypeAdapter<PleromaInstancePleromaPartMetadataFieldLimits> {
+class PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter
+    extends TypeAdapter<PleromaApiInstancePleromaPartMetadataFieldLimits> {
   @override
   final int typeId = 40;
 
   @override
-  PleromaInstancePleromaPartMetadataFieldLimits read(BinaryReader reader) {
+  PleromaApiInstancePleromaPartMetadataFieldLimits read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaInstancePleromaPartMetadataFieldLimits(
+    return PleromaApiInstancePleromaPartMetadataFieldLimits(
       maxFields: fields[0] as int?,
       maxRemoteFields: fields[1] as int?,
       nameLength: fields[2] as int?,
@@ -61,8 +61,8 @@ class PleromaInstancePleromaPartMetadataFieldLimitsAdapter
   }
 
   @override
-  void write(
-      BinaryWriter writer, PleromaInstancePleromaPartMetadataFieldLimits obj) {
+  void write(BinaryWriter writer,
+      PleromaApiInstancePleromaPartMetadataFieldLimits obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -81,25 +81,25 @@ class PleromaInstancePleromaPartMetadataFieldLimitsAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaInstancePleromaPartMetadataFieldLimitsAdapter &&
+      other is PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class PleromaInstancePleromaPartMetadataFederationMfrObjectAgeAdapter
+class PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeAdapter
     extends TypeAdapter<
-        PleromaInstancePleromaPartMetadataFederationMfrObjectAge> {
+        PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge> {
   @override
   final int typeId = 66;
 
   @override
-  PleromaInstancePleromaPartMetadataFederationMfrObjectAge read(
+  PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge read(
       BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaInstancePleromaPartMetadataFederationMfrObjectAge(
+    return PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge(
       threshold: fields[0] as int?,
       actions: (fields[1] as List?)?.cast<String>(),
     );
@@ -107,7 +107,7 @@ class PleromaInstancePleromaPartMetadataFederationMfrObjectAgeAdapter
 
   @override
   void write(BinaryWriter writer,
-      PleromaInstancePleromaPartMetadataFederationMfrObjectAge obj) {
+      PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -122,35 +122,35 @@ class PleromaInstancePleromaPartMetadataFederationMfrObjectAgeAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaInstancePleromaPartMetadataFederationMfrObjectAgeAdapter &&
+      other is PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class PleromaInstancePleromaPartMetadataFederationAdapter
-    extends TypeAdapter<PleromaInstancePleromaPartMetadataFederation> {
+class PleromaApiInstancePleromaPartMetadataFederationAdapter
+    extends TypeAdapter<PleromaApiInstancePleromaPartMetadataFederation> {
   @override
   final int typeId = 67;
 
   @override
-  PleromaInstancePleromaPartMetadataFederation read(BinaryReader reader) {
+  PleromaApiInstancePleromaPartMetadataFederation read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaInstancePleromaPartMetadataFederation(
+    return PleromaApiInstancePleromaPartMetadataFederation(
       enabled: fields[0] as bool?,
       exclusions: fields[1] as bool?,
       mrfObjectAge: fields[2]
-          as PleromaInstancePleromaPartMetadataFederationMfrObjectAge?,
+          as PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge?,
       mrfPolicies: (fields[3] as List?)?.cast<String>(),
       quarantinedInstances: (fields[4] as List?)?.cast<String>(),
     );
   }
 
   @override
-  void write(
-      BinaryWriter writer, PleromaInstancePleromaPartMetadataFederation obj) {
+  void write(BinaryWriter writer,
+      PleromaApiInstancePleromaPartMetadataFederation obj) {
     writer
       ..writeByte(5)
       ..writeByte(0)
@@ -171,33 +171,34 @@ class PleromaInstancePleromaPartMetadataFederationAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaInstancePleromaPartMetadataFederationAdapter &&
+      other is PleromaApiInstancePleromaPartMetadataFederationAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class PleromaInstancePleromaPartMetadataAdapter
-    extends TypeAdapter<PleromaInstancePleromaPartMetadata> {
+class PleromaApiInstancePleromaPartMetadataAdapter
+    extends TypeAdapter<PleromaApiInstancePleromaPartMetadata> {
   @override
   final int typeId = 28;
 
   @override
-  PleromaInstancePleromaPartMetadata read(BinaryReader reader) {
+  PleromaApiInstancePleromaPartMetadata read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaInstancePleromaPartMetadata(
+    return PleromaApiInstancePleromaPartMetadata(
       features: (fields[0] as List?)?.cast<String>(),
-      federation: fields[5] as PleromaInstancePleromaPartMetadataFederation?,
+      federation: fields[5] as PleromaApiInstancePleromaPartMetadataFederation?,
       postFormats: (fields[2] as List?)?.cast<String>(),
       accountActivationRequired: fields[3] as bool?,
-      fieldsLimits: fields[4] as PleromaInstancePleromaPartMetadataFieldLimits?,
+      fieldsLimits:
+          fields[4] as PleromaApiInstancePleromaPartMetadataFieldLimits?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, PleromaInstancePleromaPartMetadata obj) {
+  void write(BinaryWriter writer, PleromaApiInstancePleromaPartMetadata obj) {
     writer
       ..writeByte(5)
       ..writeByte(0)
@@ -218,23 +219,23 @@ class PleromaInstancePleromaPartMetadataAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaInstancePleromaPartMetadataAdapter &&
+      other is PleromaApiInstancePleromaPartMetadataAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class PleromaInstancePollLimitsAdapter
-    extends TypeAdapter<PleromaInstancePollLimits> {
+class PleromaApiInstancePollLimitsAdapter
+    extends TypeAdapter<PleromaApiInstancePollLimits> {
   @override
   final int typeId = 31;
 
   @override
-  PleromaInstancePollLimits read(BinaryReader reader) {
+  PleromaApiInstancePollLimits read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaInstancePollLimits(
+    return PleromaApiInstancePollLimits(
       maxExpiration: fields[0] as int?,
       maxOptionChars: fields[1] as int?,
       maxOptions: fields[2] as int?,
@@ -243,7 +244,7 @@ class PleromaInstancePollLimitsAdapter
   }
 
   @override
-  void write(BinaryWriter writer, PleromaInstancePollLimits obj) {
+  void write(BinaryWriter writer, PleromaApiInstancePollLimits obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -262,32 +263,32 @@ class PleromaInstancePollLimitsAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaInstancePollLimitsAdapter &&
+      other is PleromaApiInstancePollLimitsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
+class PleromaApiInstanceAdapter extends TypeAdapter<PleromaApiInstance> {
   @override
   final int typeId = 27;
 
   @override
-  PleromaInstance read(BinaryReader reader) {
+  PleromaApiInstance read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaInstance(
+    return PleromaApiInstance(
       approvalRequired: fields[0] as bool?,
       avatarUploadLimit: fields[1] as int?,
       backgroundUploadLimit: fields[2] as int?,
       bannerUploadLimit: fields[3] as int?,
-      contactAccount: fields[4] as PleromaAccount?,
+      contactAccount: fields[4] as PleromaApiAccount?,
       email: fields[5] as String?,
       languages: (fields[6] as List?)?.cast<String>(),
       maxTootChars: fields[7] as int?,
-      pleroma: fields[8] as PleromaInstancePleromaPart?,
-      pollLimits: fields[9] as PleromaInstancePollLimits?,
+      pleroma: fields[8] as PleromaApiInstancePleromaPart?,
+      pollLimits: fields[9] as PleromaApiInstancePollLimits?,
       registrations: fields[10] as bool?,
       shortDescription: fields[11] as String?,
       stats: fields[12] as MastodonApiInstanceStats?,
@@ -307,7 +308,7 @@ class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
   }
 
   @override
-  void write(BinaryWriter writer, PleromaInstance obj) {
+  void write(BinaryWriter writer, PleromaApiInstance obj) {
     writer
       ..writeByte(25)
       ..writeByte(0)
@@ -368,7 +369,7 @@ class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaInstanceAdapter &&
+      other is PleromaApiInstanceAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -377,9 +378,9 @@ class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaInstanceHistory _$PleromaInstanceHistoryFromJson(
+PleromaApiInstanceHistory _$PleromaApiInstanceHistoryFromJson(
     Map<String, dynamic> json) {
-  return PleromaInstanceHistory(
+  return PleromaApiInstanceHistory(
     logins: json['logins'] as String?,
     registrations: json['registrations'] as String?,
     statuses: json['statuses'] as String?,
@@ -387,8 +388,8 @@ PleromaInstanceHistory _$PleromaInstanceHistoryFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaInstanceHistoryToJson(
-        PleromaInstanceHistory instance) =>
+Map<String, dynamic> _$PleromaApiInstanceHistoryToJson(
+        PleromaApiInstanceHistory instance) =>
     <String, dynamic>{
       'logins': instance.logins,
       'registrations': instance.registrations,
@@ -396,26 +397,26 @@ Map<String, dynamic> _$PleromaInstanceHistoryToJson(
       'week': instance.week,
     };
 
-PleromaInstancePleromaPart _$PleromaInstancePleromaPartFromJson(
+PleromaApiInstancePleromaPart _$PleromaApiInstancePleromaPartFromJson(
     Map<String, dynamic> json) {
-  return PleromaInstancePleromaPart(
+  return PleromaApiInstancePleromaPart(
     metadata: json['metadata'] == null
         ? null
-        : PleromaInstancePleromaPartMetadata.fromJson(
+        : PleromaApiInstancePleromaPartMetadata.fromJson(
             json['metadata'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$PleromaInstancePleromaPartToJson(
-        PleromaInstancePleromaPart instance) =>
+Map<String, dynamic> _$PleromaApiInstancePleromaPartToJson(
+        PleromaApiInstancePleromaPart instance) =>
     <String, dynamic>{
       'metadata': instance.metadata?.toJson(),
     };
 
-PleromaInstancePleromaPartMetadataFieldLimits
-    _$PleromaInstancePleromaPartMetadataFieldLimitsFromJson(
+PleromaApiInstancePleromaPartMetadataFieldLimits
+    _$PleromaApiInstancePleromaPartMetadataFieldLimitsFromJson(
         Map<String, dynamic> json) {
-  return PleromaInstancePleromaPartMetadataFieldLimits(
+  return PleromaApiInstancePleromaPartMetadataFieldLimits(
     maxFields: json['max_fields'] as int?,
     maxRemoteFields: json['max_remote_fields'] as int?,
     nameLength: json['name_length'] as int?,
@@ -423,8 +424,8 @@ PleromaInstancePleromaPartMetadataFieldLimits
   );
 }
 
-Map<String, dynamic> _$PleromaInstancePleromaPartMetadataFieldLimitsToJson(
-        PleromaInstancePleromaPartMetadataFieldLimits instance) =>
+Map<String, dynamic> _$PleromaApiInstancePleromaPartMetadataFieldLimitsToJson(
+        PleromaApiInstancePleromaPartMetadataFieldLimits instance) =>
     <String, dynamic>{
       'max_fields': instance.maxFields,
       'max_remote_fields': instance.maxRemoteFields,
@@ -432,33 +433,34 @@ Map<String, dynamic> _$PleromaInstancePleromaPartMetadataFieldLimitsToJson(
       'value_length': instance.valueLength,
     };
 
-PleromaInstancePleromaPartMetadataFederationMfrObjectAge
-    _$PleromaInstancePleromaPartMetadataFederationMfrObjectAgeFromJson(
+PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge
+    _$PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeFromJson(
         Map<String, dynamic> json) {
-  return PleromaInstancePleromaPartMetadataFederationMfrObjectAge(
+  return PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge(
     threshold: json['threshold'] as int?,
     actions:
         (json['actions'] as List<dynamic>?)?.map((e) => e as String).toList(),
   );
 }
 
-Map<String,
-    dynamic> _$PleromaInstancePleromaPartMetadataFederationMfrObjectAgeToJson(
-        PleromaInstancePleromaPartMetadataFederationMfrObjectAge instance) =>
-    <String, dynamic>{
-      'threshold': instance.threshold,
-      'actions': instance.actions,
-    };
+Map<String, dynamic>
+    _$PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeToJson(
+            PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge
+                instance) =>
+        <String, dynamic>{
+          'threshold': instance.threshold,
+          'actions': instance.actions,
+        };
 
-PleromaInstancePleromaPartMetadataFederation
-    _$PleromaInstancePleromaPartMetadataFederationFromJson(
+PleromaApiInstancePleromaPartMetadataFederation
+    _$PleromaApiInstancePleromaPartMetadataFederationFromJson(
         Map<String, dynamic> json) {
-  return PleromaInstancePleromaPartMetadataFederation(
+  return PleromaApiInstancePleromaPartMetadataFederation(
     enabled: json['enabled'] as bool?,
     exclusions: json['exclusions'] as bool?,
     mrfObjectAge: json['mrf_object_age'] == null
         ? null
-        : PleromaInstancePleromaPartMetadataFederationMfrObjectAge.fromJson(
+        : PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge.fromJson(
             json['mrf_object_age'] as Map<String, dynamic>),
     mrfPolicies: (json['mrf_policies'] as List<dynamic>?)
         ?.map((e) => e as String)
@@ -469,8 +471,8 @@ PleromaInstancePleromaPartMetadataFederation
   );
 }
 
-Map<String, dynamic> _$PleromaInstancePleromaPartMetadataFederationToJson(
-        PleromaInstancePleromaPartMetadataFederation instance) =>
+Map<String, dynamic> _$PleromaApiInstancePleromaPartMetadataFederationToJson(
+        PleromaApiInstancePleromaPartMetadataFederation instance) =>
     <String, dynamic>{
       'enabled': instance.enabled,
       'exclusions': instance.exclusions,
@@ -479,14 +481,14 @@ Map<String, dynamic> _$PleromaInstancePleromaPartMetadataFederationToJson(
       'quarantined_instances': instance.quarantinedInstances,
     };
 
-PleromaInstancePleromaPartMetadata _$PleromaInstancePleromaPartMetadataFromJson(
-    Map<String, dynamic> json) {
-  return PleromaInstancePleromaPartMetadata(
+PleromaApiInstancePleromaPartMetadata
+    _$PleromaApiInstancePleromaPartMetadataFromJson(Map<String, dynamic> json) {
+  return PleromaApiInstancePleromaPartMetadata(
     features:
         (json['features'] as List<dynamic>?)?.map((e) => e as String).toList(),
     federation: json['federation'] == null
         ? null
-        : PleromaInstancePleromaPartMetadataFederation.fromJson(
+        : PleromaApiInstancePleromaPartMetadataFederation.fromJson(
             json['federation'] as Map<String, dynamic>),
     postFormats: (json['post_formats'] as List<dynamic>?)
         ?.map((e) => e as String)
@@ -494,13 +496,13 @@ PleromaInstancePleromaPartMetadata _$PleromaInstancePleromaPartMetadataFromJson(
     accountActivationRequired: json['account_activation_required'] as bool?,
     fieldsLimits: json['fields_limits'] == null
         ? null
-        : PleromaInstancePleromaPartMetadataFieldLimits.fromJson(
+        : PleromaApiInstancePleromaPartMetadataFieldLimits.fromJson(
             json['fields_limits'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$PleromaInstancePleromaPartMetadataToJson(
-        PleromaInstancePleromaPartMetadata instance) =>
+Map<String, dynamic> _$PleromaApiInstancePleromaPartMetadataToJson(
+        PleromaApiInstancePleromaPartMetadata instance) =>
     <String, dynamic>{
       'features': instance.features,
       'post_formats': instance.postFormats,
@@ -509,9 +511,9 @@ Map<String, dynamic> _$PleromaInstancePleromaPartMetadataToJson(
       'federation': instance.federation?.toJson(),
     };
 
-PleromaInstancePollLimits _$PleromaInstancePollLimitsFromJson(
+PleromaApiInstancePollLimits _$PleromaApiInstancePollLimitsFromJson(
     Map<String, dynamic> json) {
-  return PleromaInstancePollLimits(
+  return PleromaApiInstancePollLimits(
     maxExpiration: json['max_expiration'] as int?,
     maxOptionChars: json['max_option_chars'] as int?,
     maxOptions: json['max_options'] as int?,
@@ -519,8 +521,8 @@ PleromaInstancePollLimits _$PleromaInstancePollLimitsFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaInstancePollLimitsToJson(
-        PleromaInstancePollLimits instance) =>
+Map<String, dynamic> _$PleromaApiInstancePollLimitsToJson(
+        PleromaApiInstancePollLimits instance) =>
     <String, dynamic>{
       'max_expiration': instance.maxExpiration,
       'max_option_chars': instance.maxOptionChars,
@@ -528,27 +530,27 @@ Map<String, dynamic> _$PleromaInstancePollLimitsToJson(
       'min_expiration': instance.minExpiration,
     };
 
-PleromaInstance _$PleromaInstanceFromJson(Map<String, dynamic> json) {
-  return PleromaInstance(
+PleromaApiInstance _$PleromaApiInstanceFromJson(Map<String, dynamic> json) {
+  return PleromaApiInstance(
     approvalRequired: json['approval_required'] as bool?,
     avatarUploadLimit: json['avatar_upload_limit'] as int?,
     backgroundUploadLimit: json['background_upload_limit'] as int?,
     bannerUploadLimit: json['banner_upload_limit'] as int?,
     contactAccount: json['contact_account'] == null
         ? null
-        : PleromaAccount.fromJson(
+        : PleromaApiAccount.fromJson(
             json['contact_account'] as Map<String, dynamic>),
     email: json['email'] as String?,
     languages:
         (json['languages'] as List<dynamic>?)?.map((e) => e as String).toList(),
-    maxTootChars: PleromaInstance.parseMaxTootChars(json['max_toot_chars']),
+    maxTootChars: PleromaApiInstance.parseMaxTootChars(json['max_toot_chars']),
     pleroma: json['pleroma'] == null
         ? null
-        : PleromaInstancePleromaPart.fromJson(
+        : PleromaApiInstancePleromaPart.fromJson(
             json['pleroma'] as Map<String, dynamic>),
     pollLimits: json['poll_limits'] == null
         ? null
-        : PleromaInstancePollLimits.fromJson(
+        : PleromaApiInstancePollLimits.fromJson(
             json['poll_limits'] as Map<String, dynamic>),
     registrations: json['registrations'] as bool?,
     shortDescription: json['short_description'] as String?,
@@ -573,7 +575,7 @@ PleromaInstance _$PleromaInstanceFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaInstanceToJson(PleromaInstance instance) =>
+Map<String, dynamic> _$PleromaApiInstanceToJson(PleromaApiInstance instance) =>
     <String, dynamic>{
       'approval_required': instance.approvalRequired,
       'avatar_upload_limit': instance.avatarUploadLimit,

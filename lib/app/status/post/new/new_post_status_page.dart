@@ -108,7 +108,7 @@ void goToNewPostStatusPageWithInitial(
   BuildContext context, {
   String? initialText,
   String? initialSubject,
-  List<PleromaMediaAttachment>? initialMediaAttachments,
+  List<PleromaApiMediaAttachment>? initialMediaAttachments,
 }) {
   Navigator.push(
     context,

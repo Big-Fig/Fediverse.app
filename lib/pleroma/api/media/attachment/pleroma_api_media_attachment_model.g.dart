@@ -6,9 +6,9 @@ part of 'pleroma_api_media_attachment_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaMediaAttachment _$PleromaMediaAttachmentFromJson(
+PleromaApiMediaAttachment _$PleromaApiMediaAttachmentFromJson(
     Map<String, dynamic> json) {
-  return PleromaMediaAttachment(
+  return PleromaApiMediaAttachment(
     description: json['description'] as String?,
     id: json['id'] as String,
     previewUrl: json['preview_url'] as String?,
@@ -18,13 +18,13 @@ PleromaMediaAttachment _$PleromaMediaAttachmentFromJson(
     url: json['url'] as String,
     pleroma: json['pleroma'] == null
         ? null
-        : PleromaMediaAttachmentPleromaPart.fromJson(
+        : PleromaApiMediaAttachmentPleromaPart.fromJson(
             json['pleroma'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$PleromaMediaAttachmentToJson(
-        PleromaMediaAttachment instance) =>
+Map<String, dynamic> _$PleromaApiMediaAttachmentToJson(
+        PleromaApiMediaAttachment instance) =>
     <String, dynamic>{
       'description': instance.description,
       'id': instance.id,
@@ -36,15 +36,15 @@ Map<String, dynamic> _$PleromaMediaAttachmentToJson(
       'pleroma': instance.pleroma,
     };
 
-PleromaMediaAttachmentPleromaPart _$PleromaMediaAttachmentPleromaPartFromJson(
-    Map<String, dynamic> json) {
-  return PleromaMediaAttachmentPleromaPart(
+PleromaApiMediaAttachmentPleromaPart
+    _$PleromaApiMediaAttachmentPleromaPartFromJson(Map<String, dynamic> json) {
+  return PleromaApiMediaAttachmentPleromaPart(
     mimeType: json['mime_type'] as String?,
   );
 }
 
-Map<String, dynamic> _$PleromaMediaAttachmentPleromaPartToJson(
-        PleromaMediaAttachmentPleromaPart instance) =>
+Map<String, dynamic> _$PleromaApiMediaAttachmentPleromaPartToJson(
+        PleromaApiMediaAttachmentPleromaPart instance) =>
     <String, dynamic>{
       'mime_type': instance.mimeType,
     };

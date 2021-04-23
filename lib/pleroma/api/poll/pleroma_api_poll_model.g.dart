@@ -6,27 +6,28 @@ part of 'pleroma_api_poll_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaPollOption _$PleromaPollOptionFromJson(Map<String, dynamic> json) {
-  return PleromaPollOption(
+PleromaApiPollOption _$PleromaApiPollOptionFromJson(Map<String, dynamic> json) {
+  return PleromaApiPollOption(
     title: json['title'] as String,
     votesCount: json['votes_count'] as int,
   );
 }
 
-Map<String, dynamic> _$PleromaPollOptionToJson(PleromaPollOption instance) =>
+Map<String, dynamic> _$PleromaApiPollOptionToJson(
+        PleromaApiPollOption instance) =>
     <String, dynamic>{
       'title': instance.title,
       'votes_count': instance.votesCount,
     };
 
-PleromaPoll _$PleromaPollFromJson(Map<String, dynamic> json) {
-  return PleromaPoll(
+PleromaApiPoll _$PleromaApiPollFromJson(Map<String, dynamic> json) {
+  return PleromaApiPoll(
     expired: json['expired'] as bool,
     expiresAt: DateTime.parse(json['expires_at'] as String),
     id: json['id'] as String?,
     multiple: json['multiple'] as bool,
     options: (json['options'] as List<dynamic>)
-        .map((e) => PleromaPollOption.fromJson(e as Map<String, dynamic>))
+        .map((e) => PleromaApiPollOption.fromJson(e as Map<String, dynamic>))
         .toList(),
     ownVotes:
         (json['own_votes'] as List<dynamic>).map((e) => e as int).toList(),
@@ -36,7 +37,7 @@ PleromaPoll _$PleromaPollFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaPollToJson(PleromaPoll instance) =>
+Map<String, dynamic> _$PleromaApiPollToJson(PleromaApiPoll instance) =>
     <String, dynamic>{
       'expired': instance.expired,
       'expires_at': instance.expiresAt.toIso8601String(),

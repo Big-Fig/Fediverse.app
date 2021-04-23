@@ -11,7 +11,7 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_service_impl.dart';
@@ -26,8 +26,8 @@ class RemoteStatusBloc extends StatusBloc {
 
   RemoteStatusBloc({
     required this.instanceUri,
-    required IPleromaStatusService pleromaStatusService,
-    required IPleromaAccountService pleromaAccountService,
+    required IPleromaApiStatusService pleromaStatusService,
+    required IPleromaApiAccountService pleromaAccountService,
     required IStatus status,
     required bool isNeedRefreshFromNetworkOnInit,
     required bool delayInit,
@@ -35,7 +35,7 @@ class RemoteStatusBloc extends StatusBloc {
           pleromaStatusService: pleromaStatusService,
           pleromaAccountService: pleromaAccountService,
           // todo: rework passing null to separate classes without these fields
-          pleromaStatusEmojiReactionService: null,
+          PleromaApiStatusEmojiReactionService: null,
           pleromaPollService: null,
           status: status,
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
@@ -53,10 +53,10 @@ class RemoteStatusBloc extends StatusBloc {
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
-    var pleromaAccountService = PleromaAccountService(
+    var pleromaAccountService = PleromaApiAccountService(
       restService: remoteInstanceBloc.pleromaRestService,
     );
-    var pleromaStatusService = PleromaStatusService(
+    var pleromaStatusService = PleromaApiStatusService(
       restService: remoteInstanceBloc.pleromaRestService,
     );
 
@@ -205,7 +205,7 @@ class RemoteStatusBloc extends StatusBloc {
   }
 
   @override
-  Future<IPleromaStatus> toggleEmojiReaction({
+  Future<IPleromaApiStatus> toggleEmojiReaction({
     required String? emoji,
   }) {
     throw UnsupportedOnRemoteInstanceLocationException();

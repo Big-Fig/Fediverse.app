@@ -389,7 +389,7 @@ class _AccountHomeTabProviderFavouritedTabProviderWidget
   Widget build(BuildContext context) {
     return DisposableProvider<IMyAccountFavouritedStatusesCachedListBloc>(
       create: (context) => MyAccountFavouritedStatusesCachedListBloc(
-        pleromaMyAccountService: IPleromaMyAccountService.of(
+        pleromaMyAccountService: IPleromaApiMyAccountService.of(
           context,
           listen: false,
         ),

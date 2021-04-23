@@ -80,7 +80,7 @@ class TimelineLocalPreferencesBloc extends ObjectLocalPreferenceBloc<Timeline?>
             label: account.acct,
             isPossibleToDelete: true,
             settings: TimelineSettings.createDefaultAccountSettings(
-              onlyFromRemoteAccount: account.toPleromaAccount(),
+              onlyFromRemoteAccount: account.toPleromaApiAccount(),
             ),
             typeString: TimelineType.account.toJsonValue(),
           ),

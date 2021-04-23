@@ -30,8 +30,8 @@ abstract class IPleromaChatBloc implements IChatBloc, IAsyncInitLoadingBloc {
 
   Future postMessage({
     required
-        pleroma_lib.IPleromaChatMessageSendData pleromaChatMessageSendData,
-    required IPleromaMediaAttachment? pleromaChatMessageSendDataMediaAttachment,
+        pleroma_lib.IPleromaApiChatMessageSendData pleromaChatMessageSendData,
+    required IPleromaApiMediaAttachment? pleromaChatMessageSendDataMediaAttachment,
     required IPleromaChatMessage? oldPendingFailedPleromaChatMessage,
   });
 

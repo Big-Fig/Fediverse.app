@@ -58,5 +58,5 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
 
   Future clear();
 
-  void addUploadedAttachment(IPleromaMediaAttachment attachment);
+  void addUploadedAttachment(IPleromaApiMediaAttachment attachment);
 }

@@ -17,10 +17,10 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBlocProxyPr
   Widget build(BuildContext context) => ProxyProvider<
           ITimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc,
           ISingleSelectFromListValueFormFieldBloc<
-              PleromaReplyVisibilityFilter?>>(
+              PleromaApiReplyVisibilityFilter?>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
-            PleromaReplyVisibilityFilter?>(
+            PleromaApiReplyVisibilityFilter?>(
           child: child,
         ),
       );

@@ -18,16 +18,16 @@ import 'package:provider/provider.dart';
 class PleromaChatShareMediaBloc extends PleromaChatShareBloc
     implements IPleromaChatShareBloc, IShareMediaBloc {
   @override
-  final IPleromaMediaAttachment mediaAttachment;
+  final IPleromaApiMediaAttachment mediaAttachment;
 
   PleromaChatShareMediaBloc({
     required this.mediaAttachment,
     required IPleromaChatRepository chatRepository,
     required IPleromaChatMessageRepository chatMessageRepository,
-    required IPleromaChatService pleromaChatService,
+    required IPleromaApiChatService pleromaChatService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaAccountService pleromaAccountService,
+    required IPleromaApiAccountService pleromaAccountService,
   }) : super(
           chatRepository: chatRepository,
           chatMessageRepository: chatMessageRepository,
@@ -38,8 +38,8 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
         );
 
   @override
-  PleromaChatMessageSendData createPleromaChatMessageSendData() {
-    var messageSendData = PleromaChatMessageSendData(
+  PleromaApiChatMessageSendData createPleromaChatMessageSendData() {
+    var messageSendData = PleromaApiChatMessageSendData(
       content: "${mediaAttachment.url} ${message ?? ""}".trim(),
       idempotencyKey: null,
       mediaId: null,
@@ -49,7 +49,7 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    required IPleromaMediaAttachment mediaAttachment,
+    required IPleromaApiMediaAttachment mediaAttachment,
     required Widget child,
   }) {
     return DisposableProvider<PleromaChatShareMediaBloc>(
@@ -69,7 +69,7 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
 
   static PleromaChatShareMediaBloc createFromContext(
     BuildContext context,
-    IPleromaMediaAttachment mediaAttachment,
+    IPleromaApiMediaAttachment mediaAttachment,
   ) =>
       PleromaChatShareMediaBloc(
         mediaAttachment: mediaAttachment,
@@ -81,12 +81,12 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        pleromaChatService: IPleromaChatService.of(
+        pleromaChatService: IPleromaApiChatService.of(
           context,
           listen: false,
         ),
         accountRepository: IAccountRepository.of(context, listen: false),
-        pleromaAccountService: IPleromaAccountService.of(
+        pleromaAccountService: IPleromaApiAccountService.of(
           context,
           listen: false,
         ),

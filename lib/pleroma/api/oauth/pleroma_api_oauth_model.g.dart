@@ -6,17 +6,17 @@ part of 'pleroma_api_oauth_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PleromaOAuthTokenAdapter extends TypeAdapter<PleromaOAuthToken> {
+class PleromaApiOAuthTokenAdapter extends TypeAdapter<PleromaApiOAuthToken> {
   @override
   final int typeId = 19;
 
   @override
-  PleromaOAuthToken read(BinaryReader reader) {
+  PleromaApiOAuthToken read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaOAuthToken(
+    return PleromaApiOAuthToken(
       accessToken: fields[0] as String,
       tokenType: fields[1] as String,
       scope: fields[2] as dynamic,
@@ -25,7 +25,7 @@ class PleromaOAuthTokenAdapter extends TypeAdapter<PleromaOAuthToken> {
   }
 
   @override
-  void write(BinaryWriter writer, PleromaOAuthToken obj) {
+  void write(BinaryWriter writer, PleromaApiOAuthToken obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -44,7 +44,7 @@ class PleromaOAuthTokenAdapter extends TypeAdapter<PleromaOAuthToken> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaOAuthTokenAdapter &&
+      other is PleromaApiOAuthTokenAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -53,8 +53,8 @@ class PleromaOAuthTokenAdapter extends TypeAdapter<PleromaOAuthToken> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaOAuthToken _$PleromaOAuthTokenFromJson(Map<String, dynamic> json) {
-  return PleromaOAuthToken(
+PleromaApiOAuthToken _$PleromaApiOAuthTokenFromJson(Map<String, dynamic> json) {
+  return PleromaApiOAuthToken(
     accessToken: json['access_token'] as String,
     tokenType: json['token_type'] as String,
     scope: json['scope'],
@@ -62,7 +62,8 @@ PleromaOAuthToken _$PleromaOAuthTokenFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaOAuthTokenToJson(PleromaOAuthToken instance) =>
+Map<String, dynamic> _$PleromaApiOAuthTokenToJson(
+        PleromaApiOAuthToken instance) =>
     <String, dynamic>{
       'access_token': instance.accessToken,
       'token_type': instance.tokenType,
@@ -70,9 +71,9 @@ Map<String, dynamic> _$PleromaOAuthTokenToJson(PleromaOAuthToken instance) =>
       'created_at': instance.createdAt,
     };
 
-PleromaOAuthAuthorizeRequest _$PleromaOAuthAuthorizeRequestFromJson(
+PleromaApiOAuthAuthorizeRequest _$PleromaApiOAuthAuthorizeRequestFromJson(
     Map<String, dynamic> json) {
-  return PleromaOAuthAuthorizeRequest(
+  return PleromaApiOAuthAuthorizeRequest(
     forceLogin: json['force_login'] as bool?,
     clientId: json['client_id'] as String?,
     redirectUri: json['redirect_uri'] as String?,
@@ -81,8 +82,8 @@ PleromaOAuthAuthorizeRequest _$PleromaOAuthAuthorizeRequestFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaOAuthAuthorizeRequestToJson(
-        PleromaOAuthAuthorizeRequest instance) =>
+Map<String, dynamic> _$PleromaApiOAuthAuthorizeRequestToJson(
+        PleromaApiOAuthAuthorizeRequest instance) =>
     <String, dynamic>{
       'force_login': instance.forceLogin,
       'response_type': instance.responseType,
@@ -91,9 +92,9 @@ Map<String, dynamic> _$PleromaOAuthAuthorizeRequestToJson(
       'scope': instance.scope,
     };
 
-PleromaOAuthAccountTokenRequest _$PleromaOAuthAccountTokenRequestFromJson(
+PleromaApiOAuthAccountTokenRequest _$PleromaApiOAuthAccountTokenRequestFromJson(
     Map<String, dynamic> json) {
-  return PleromaOAuthAccountTokenRequest(
+  return PleromaApiOAuthAccountTokenRequest(
     code: json['code'] as String?,
     scope: json['scope'] as String?,
     redirectUri: json['redirect_uri'] as String?,
@@ -103,8 +104,8 @@ PleromaOAuthAccountTokenRequest _$PleromaOAuthAccountTokenRequestFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaOAuthAccountTokenRequestToJson(
-        PleromaOAuthAccountTokenRequest instance) =>
+Map<String, dynamic> _$PleromaApiOAuthAccountTokenRequestToJson(
+        PleromaApiOAuthAccountTokenRequest instance) =>
     <String, dynamic>{
       'grant_type': instance.grantType,
       'code': instance.code,
@@ -114,9 +115,9 @@ Map<String, dynamic> _$PleromaOAuthAccountTokenRequestToJson(
       'client_secret': instance.clientSecret,
     };
 
-PleromaOAuthAppTokenRequest _$PleromaOAuthAppTokenRequestFromJson(
+PleromaApiOAuthAppTokenRequest _$PleromaApiOAuthAppTokenRequestFromJson(
     Map<String, dynamic> json) {
-  return PleromaOAuthAppTokenRequest(
+  return PleromaApiOAuthAppTokenRequest(
     scope: json['scope'] as String?,
     redirectUri: json['redirect_uri'] as String?,
     clientId: json['client_id'] as String?,
@@ -125,8 +126,8 @@ PleromaOAuthAppTokenRequest _$PleromaOAuthAppTokenRequestFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaOAuthAppTokenRequestToJson(
-        PleromaOAuthAppTokenRequest instance) =>
+Map<String, dynamic> _$PleromaApiOAuthAppTokenRequestToJson(
+        PleromaApiOAuthAppTokenRequest instance) =>
     <String, dynamic>{
       'grant_type': instance.grantType,
       'scope': instance.scope,
@@ -135,17 +136,17 @@ Map<String, dynamic> _$PleromaOAuthAppTokenRequestToJson(
       'client_secret': instance.clientSecret,
     };
 
-PleromaOAuthAppTokenRevokeRequest _$PleromaOAuthAppTokenRevokeRequestFromJson(
-    Map<String, dynamic> json) {
-  return PleromaOAuthAppTokenRevokeRequest(
+PleromaApiOAuthAppTokenRevokeRequest
+    _$PleromaApiOAuthAppTokenRevokeRequestFromJson(Map<String, dynamic> json) {
+  return PleromaApiOAuthAppTokenRevokeRequest(
     clientId: json['client_id'] as String?,
     clientSecret: json['client_secret'] as String?,
     token: json['token'] as String?,
   );
 }
 
-Map<String, dynamic> _$PleromaOAuthAppTokenRevokeRequestToJson(
-        PleromaOAuthAppTokenRevokeRequest instance) =>
+Map<String, dynamic> _$PleromaApiOAuthAppTokenRevokeRequestToJson(
+        PleromaApiOAuthAppTokenRevokeRequest instance) =>
     <String, dynamic>{
       'client_id': instance.clientId,
       'client_secret': instance.clientSecret,

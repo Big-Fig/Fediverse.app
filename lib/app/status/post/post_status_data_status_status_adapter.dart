@@ -98,19 +98,19 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
       );
 
   @override
-  PleromaApplication? get application => null;
+  PleromaApiApplication? get application => null;
 
   @override
   bool get bookmarked => false;
 
   @override
-  PleromaCard? get card => null;
+  PleromaApiCard? get card => null;
 
   @override
   String? get content => postStatusData.text;
 
   @override
-  List<PleromaEmoji> get emojis => [];
+  List<PleromaApiEmoji> get emojis => [];
 
   @override
   bool get favourited => false;
@@ -129,7 +129,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   String? get language => postStatusData.language;
 
   @override
-  List<PleromaMention> get mentions => [];
+  List<PleromaApiMention> get mentions => [];
 
   @override
   bool get muted => false;
@@ -141,7 +141,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   bool get pinned => false;
 
   @override
-  PleromaContent? get pleromaContent => null;
+  PleromaApiContent? get pleromaContent => null;
 
   @override
   int? get pleromaConversationId => null;
@@ -150,7 +150,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   int? get pleromaDirectConversationId => null;
 
   @override
-  List<PleromaStatusEmojiReaction>? get pleromaEmojiReactions => null;
+  List<PleromaApiStatusEmojiReaction>? get pleromaEmojiReactions => null;
 
   @override
   DateTime? get pleromaExpiresAt => null;
@@ -162,13 +162,13 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   bool? get pleromaLocal => null;
 
   @override
-  PleromaContent? get pleromaSpoilerText => null;
+  PleromaApiContent? get pleromaSpoilerText => null;
 
   @override
   bool? get pleromaThreadMuted => null;
 
   @override
-  PleromaPoll? get poll => postStatusData.poll?.toPleromaPoll();
+  PleromaApiPoll? get poll => postStatusData.poll?.toPleromaPoll();
 
   @override
   IStatus? get reblog => null;
@@ -192,7 +192,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   String get spoilerText => postStatusData.subject ?? "";
 
   @override
-  List<PleromaTag> get tags => [];
+  List<PleromaApiTag> get tags => [];
 
   @override
   String get uri => "";
@@ -201,7 +201,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   String get url => "";
 
   @override
-  PleromaVisibility get visibility => postStatusData.visibilityPleroma;
+  PleromaApiVisibility get visibility => postStatusData.visibilityPleroma;
 
   @override
   bool get isHaveReblog => false;
@@ -214,7 +214,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
       postStatusData.inReplyToPleromaStatus?.toDbStatusPopulatedWrapper();
 
   @override
-  List<PleromaMediaAttachment>? get mediaAttachments =>
+  List<PleromaApiMediaAttachment>? get mediaAttachments =>
       postStatusData.mediaAttachments;
 
   @override
@@ -236,7 +236,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
     String? inReplyToAccountRemoteId,
     bool? nsfwSensitive,
     String? spoilerText,
-    PleromaVisibility? visibility,
+    PleromaApiVisibility? visibility,
     String? uri,
     String? url,
     int? repliesCount,
@@ -249,24 +249,24 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
     bool? pinned,
     String? content,
     String? reblogStatusRemoteId,
-    PleromaApplication? application,
+    PleromaApiApplication? application,
     String? accountRemoteId,
-    List<PleromaMediaAttachment>? mediaAttachments,
-    List<PleromaMention>? mentions,
-    List<PleromaTag>? tags,
-    List<PleromaEmoji>? emojis,
-    PleromaPoll? poll,
-    PleromaCard? card,
+    List<PleromaApiMediaAttachment>? mediaAttachments,
+    List<PleromaApiMention>? mentions,
+    List<PleromaApiTag>? tags,
+    List<PleromaApiEmoji>? emojis,
+    PleromaApiPoll? poll,
+    PleromaApiCard? card,
     String? language,
-    PleromaContent? pleromaContent,
+    PleromaApiContent? pleromaContent,
     int? pleromaConversationId,
     int? pleromaDirectConversationId,
     String? pleromaInReplyToAccountAcct,
     bool? pleromaLocal,
-    PleromaContent? pleromaSpoilerText,
+    PleromaApiContent? pleromaSpoilerText,
     DateTime? pleromaExpiresAt,
     bool? pleromaThreadMuted,
-    List<PleromaStatusEmojiReaction?>? pleromaEmojiReactions,
+    List<PleromaApiStatusEmojiReaction?>? pleromaEmojiReactions,
     bool? deleted,
     PendingState? pendingState,
     String? oldPendingRemoteId,

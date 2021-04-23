@@ -44,7 +44,7 @@ class EditCustomListBloc extends DisposableOwner
     var editCustomListBloc = EditCustomListBloc(
       customList: initialValue,
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaListService: IPleromaListService.of(
+      pleromaListService: IPleromaApiListService.of(
         context,
         listen: false,
       ),
@@ -52,7 +52,7 @@ class EditCustomListBloc extends DisposableOwner
         context,
         listen: false,
       ),
-      pleromaAuthAccountService: IPleromaAuthAccountService.of(
+      pleromaAuthAccountService: IPleromaApiAuthAccountService.of(
         context,
         listen: false,
       ),
@@ -106,7 +106,7 @@ class EditCustomListBloc extends DisposableOwner
 
   final ICustomList? customList;
 
-  final IPleromaListService pleromaListService;
+  final IPleromaApiListService pleromaListService;
 
   @override
   late ICustomListAccountListNetworkOnlyListBloc
@@ -144,7 +144,7 @@ class EditCustomListBloc extends DisposableOwner
     required this.paginationSettingsBloc,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaAuthAccountService pleromaAuthAccountService,
+    required IPleromaApiAuthAccountService pleromaAuthAccountService,
   })   : selectAccountListBloc = SelectAccountListBloc(
           pleromaAuthAccountService: pleromaAuthAccountService,
           accountRepository: accountRepository,

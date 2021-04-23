@@ -90,7 +90,7 @@ class Timeline implements IJsonObject {
         );
 
   Timeline.hashtag({
-    required IPleromaTag remoteTag,
+    required IPleromaApiTag remoteTag,
     required TimelineSettings settings,
     bool isPossibleToDelete = true,
   }) : this.byType(
@@ -102,7 +102,7 @@ class Timeline implements IJsonObject {
         );
 
   Timeline.customList({
-    required IPleromaList remoteList,
+    required IPleromaApiList remoteList,
     required TimelineSettings settings,
     bool isPossibleToDelete = true,
   }) : this.byType(
@@ -114,7 +114,7 @@ class Timeline implements IJsonObject {
         );
 
   Timeline.account({
-    required IPleromaAccount account,
+    required IPleromaApiAccount account,
     required TimelineSettings settings,
     bool isPossibleToDelete = true,
   }) : this.byType(
@@ -182,20 +182,20 @@ class Timeline implements IJsonObject {
   List<String?>? get excludeVisibilitiesStrings =>
       settings.excludeVisibilitiesStrings;
 
-  List<PleromaVisibility>? get excludeVisibilities =>
+  List<PleromaApiVisibility>? get excludeVisibilities =>
       settings.excludeVisibilities;
 
-  PleromaList? get onlyInRemoteList => settings.onlyInRemoteList;
+  PleromaApiList? get onlyInRemoteList => settings.onlyInRemoteList;
 
   String? get withRemoteHashtag => settings.withRemoteHashtag;
 
   String? get PleromaReplyVisibilityFilterString =>
       settings.replyVisibilityFilterString;
 
-  PleromaReplyVisibilityFilter? get replyVisibilityFilter =>
+  PleromaApiReplyVisibilityFilter? get replyVisibilityFilter =>
       settings.replyVisibilityFilter;
 
-  PleromaAccount? get onlyFromRemoteAccount => settings.onlyFromRemoteAccount;
+  PleromaApiAccount? get onlyFromRemoteAccount => settings.onlyFromRemoteAccount;
 
   String? get onlyFromInstance => settings.onlyFromInstance;
 
@@ -219,15 +219,15 @@ class Timeline implements IJsonObject {
       );
 }
 
-extension TimelineIdPleromaListExtension on IPleromaList {
+extension TimelineIdPleromaListExtension on IPleromaApiList {
   String calculateTimelineId() => "list.$id";
 }
 
-extension TimelineIdPleromaTagExtension on IPleromaTag {
+extension TimelineIdPleromaTagExtension on IPleromaApiTag {
   String calculateTimelineId() => "hashtag.$name";
 }
 
-extension TimelineIdPleromaAccountExtension on IPleromaAccount {
+extension TimelineIdPleromaAccountExtension on IPleromaApiAccount {
   String calculateTimelineId() => "account.$id";
 }
 

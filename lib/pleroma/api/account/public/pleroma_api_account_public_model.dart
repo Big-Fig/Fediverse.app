@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_account_public_model.g.dart';
 
-abstract class IPleromaAccountRegisterRequest extends IMastodonApiAccountRegister {
+abstract class IPleromaApiAccountRegisterRequest extends IMastodonApiAccountRegister {
   Map<String, dynamic> toJson();
 
   String? get captchaToken;
@@ -18,7 +18,7 @@ abstract class IPleromaAccountRegisterRequest extends IMastodonApiAccountRegiste
 @JsonSerializable(
   includeIfNull: false,
 )
-class PleromaAccountRegisterRequest extends IPleromaAccountRegisterRequest {
+class PleromaApiAccountRegisterRequest extends IPleromaApiAccountRegisterRequest {
   @override
   final bool? agreement;
 
@@ -47,7 +47,7 @@ class PleromaAccountRegisterRequest extends IPleromaAccountRegisterRequest {
   @JsonKey(name: "captcha_solution")
   final String? captchaSolution;
 
-  PleromaAccountRegisterRequest({
+  PleromaApiAccountRegisterRequest({
     required this.agreement,
     required this.email,
     required this.locale,
@@ -61,17 +61,23 @@ class PleromaAccountRegisterRequest extends IPleromaAccountRegisterRequest {
 
   @override
   String toString() {
-    return 'PleromaAccountRegisterRequest{agreement: $agreement, '
-        'email: $email, locale: $locale, password: $password, '
-        'reason: $reason, username: $username, captchaToken: $captchaToken, '
+    return 'PleromaApiAccountRegisterRequest{'
+        'agreement: $agreement, '
+        'email: $email, '
+        'locale: $locale, '
+        'password: $password, '
+        'reason: $reason, '
+        'username: $username, '
+        'captchaToken: $captchaToken, '
         'captchaAnswerData: $captchaAnswerData, '
-        'captchaSolution: $captchaSolution}';
+        'captchaSolution: $captchaSolution'
+        '}';
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaAccountRegisterRequest &&
+      other is PleromaApiAccountRegisterRequest &&
           runtimeType == other.runtimeType &&
           agreement == other.agreement &&
           email == other.email &&
@@ -95,20 +101,20 @@ class PleromaAccountRegisterRequest extends IPleromaAccountRegisterRequest {
       captchaAnswerData.hashCode ^
       captchaSolution.hashCode;
 
-  factory PleromaAccountRegisterRequest.fromJson(Map<String, dynamic> json) =>
-      _$PleromaAccountRegisterRequestFromJson(json);
+  factory PleromaApiAccountRegisterRequest.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiAccountRegisterRequestFromJson(json);
 
-  factory PleromaAccountRegisterRequest.fromJsonString(String jsonString) =>
-      _$PleromaAccountRegisterRequestFromJson(jsonDecode(jsonString));
+  factory PleromaApiAccountRegisterRequest.fromJsonString(String jsonString) =>
+      _$PleromaApiAccountRegisterRequestFromJson(jsonDecode(jsonString));
 
-  static List<PleromaAccountRegisterRequest> listFromJsonString(String str) =>
-      List<PleromaAccountRegisterRequest>.from(json
+  static List<PleromaApiAccountRegisterRequest> listFromJsonString(String str) =>
+      List<PleromaApiAccountRegisterRequest>.from(json
           .decode(str)
-          .map((x) => PleromaAccountRegisterRequest.fromJson(x)));
+          .map((x) => PleromaApiAccountRegisterRequest.fromJson(x)));
 
   @override
-  Map<String, dynamic> toJson() => _$PleromaAccountRegisterRequestToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiAccountRegisterRequestToJson(this);
 
   String toJsonString() =>
-      jsonEncode(_$PleromaAccountRegisterRequestToJson(this));
+      jsonEncode(_$PleromaApiAccountRegisterRequestToJson(this));
 }

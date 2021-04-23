@@ -18,7 +18,7 @@ class RemoteAccountBloc extends AccountBloc {
   final Uri? instanceUri;
 
   RemoteAccountBloc({
-    required IPleromaAccountService? pleromaAccountService,
+    required IPleromaApiAccountService? pleromaAccountService,
     required IAccount account,
     required this.instanceUri,
     bool isNeedRefreshFromNetworkOnInit = false,
@@ -38,7 +38,7 @@ class RemoteAccountBloc extends AccountBloc {
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
-    var pleromaAccountService = PleromaAccountService(
+    var pleromaAccountService = PleromaApiAccountService(
       restService: remoteInstanceBloc.pleromaRestService,
     );
 
@@ -100,7 +100,7 @@ class RemoteAccountBloc extends AccountBloc {
   }
 
   @override
-  Future<IPleromaAccountRelationship> mute({
+  Future<IPleromaApiAccountRelationship> mute({
     required bool notifications,
     required Duration? duration,
   }) {
@@ -108,53 +108,53 @@ class RemoteAccountBloc extends AccountBloc {
   }
 
   @override
-  Future<IPleromaAccountRelationship> subscribe() {
+  Future<IPleromaApiAccountRelationship> subscribe() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaAccountRelationship> toggleBlock() {
+  Future<IPleromaApiAccountRelationship> toggleBlock() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaAccountRelationship> toggleBlockDomain() {
+  Future<IPleromaApiAccountRelationship> toggleBlockDomain() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaAccountRelationship> toggleFollow() {
+  Future<IPleromaApiAccountRelationship> toggleFollow() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaAccountRelationship> toggleMute() {
+  Future<IPleromaApiAccountRelationship> toggleMute() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaAccountRelationship> togglePin() {
+  Future<IPleromaApiAccountRelationship> togglePin() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaAccountRelationship> toggleSubscribe() {
+  Future<IPleromaApiAccountRelationship> toggleSubscribe() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaAccountRelationship> unMute() {
+  Future<IPleromaApiAccountRelationship> unMute() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaAccountRelationship> unSubscribe() {
+  Future<IPleromaApiAccountRelationship> unSubscribe() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  IPleromaAccountRelationship? get relationship => null;
+  IPleromaApiAccountRelationship? get relationship => null;
 
   @override
-  Stream<IPleromaAccountRelationship>? get relationshipStream => null;
+  Stream<IPleromaApiAccountRelationship>? get relationshipStream => null;
 }

@@ -13,7 +13,7 @@ var _logger = Logger("deep_link_init_bloc_impl.dart");
 
 class DeepLinkInitBloc extends AsyncInitLoadingBloc
     implements IDeepLinkInitBloc {
-  final IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
+  final IPleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
@@ -53,7 +53,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
         isPleroma: false,
       );
       await authHostBloc.performAsyncInit();
-      String authCode = IPleromaOAuthService.extractAuthCodeFromUri(initialUri);
+      String authCode = IPleromaApiOAuthService.extractAuthCodeFromUri(initialUri);
 
       try {
         var authInstance = await authHostBloc.loginWithAuthCode(authCode);

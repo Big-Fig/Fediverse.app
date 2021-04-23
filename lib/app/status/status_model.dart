@@ -66,23 +66,23 @@ abstract class IStatus {
 
   String? get reblogStatusRemoteId;
 
-  PleromaApplication? get application;
+  PleromaApiApplication? get application;
 
   IAccount get account;
 
-  List<PleromaMediaAttachment>? get mediaAttachments;
+  List<PleromaApiMediaAttachment>? get mediaAttachments;
 
-  List<PleromaMention>? get mentions;
+  List<PleromaApiMention>? get mentions;
 
-  List<PleromaTag>? get tags;
+  List<PleromaApiTag>? get tags;
 
-  List<PleromaEmoji>? get emojis;
+  List<PleromaApiEmoji>? get emojis;
 
-  PleromaPoll? get poll;
+  PleromaApiPoll? get poll;
 
-  PleromaCard? get card;
+  PleromaApiCard? get card;
 
-  PleromaVisibility get visibility;
+  PleromaApiVisibility get visibility;
 
   String? get language;
 
@@ -91,7 +91,7 @@ abstract class IStatus {
   /// a map consisting of alternate representations of the content property with
   /// the key being it's mimetype.
   /// Currently the only alternate representation supported is text/plain
-  PleromaContent? get pleromaContent;
+  PleromaApiContent? get pleromaContent;
 
   /// the ID of the AP context the status is associated with (if any)
 
@@ -109,7 +109,7 @@ abstract class IStatus {
   /// a map consisting of alternate representations of the spoiler_text property
   /// with the key being it's mimetype. Currently the only alternate
   /// representation supported is text/plain
-  PleromaContent? get pleromaSpoilerText;
+  PleromaApiContent? get pleromaSpoilerText;
 
   /// a datetime (iso8601) that states when
   /// the post will expire (be deleted automatically),
@@ -122,7 +122,7 @@ abstract class IStatus {
   /// {name: "☕", count: 1, me: true}.
   /// Contains no information about the reacting users,
   /// for that use the /statuses/:id/reactions endpoint.
-  List<PleromaStatusEmojiReaction>? get pleromaEmojiReactions;
+  List<PleromaApiStatusEmojiReaction>? get pleromaEmojiReactions;
 
   bool get isReply =>
       inReplyToAccountRemoteId != null && inReplyToRemoteId != null;
@@ -150,7 +150,7 @@ abstract class IStatus {
     String? inReplyToAccountRemoteId,
     bool? nsfwSensitive,
     String? spoilerText,
-    PleromaVisibility? visibility,
+    PleromaApiVisibility? visibility,
     String? uri,
     String? url,
     int? repliesCount,
@@ -163,24 +163,24 @@ abstract class IStatus {
     bool? pinned,
     String? content,
     String? reblogStatusRemoteId,
-    PleromaApplication? application,
+    PleromaApiApplication? application,
     String? accountRemoteId,
-    List<PleromaMediaAttachment>? mediaAttachments,
-    List<PleromaMention>? mentions,
-    List<PleromaTag>? tags,
-    List<PleromaEmoji>? emojis,
-    PleromaPoll? poll,
-    PleromaCard? card,
+    List<PleromaApiMediaAttachment>? mediaAttachments,
+    List<PleromaApiMention>? mentions,
+    List<PleromaApiTag>? tags,
+    List<PleromaApiEmoji>? emojis,
+    PleromaApiPoll? poll,
+    PleromaApiCard? card,
     String? language,
-    PleromaContent? pleromaContent,
+    PleromaApiContent? pleromaContent,
     int? pleromaConversationId,
     int? pleromaDirectConversationId,
     String? pleromaInReplyToAccountAcct,
     bool? pleromaLocal,
-    PleromaContent? pleromaSpoilerText,
+    PleromaApiContent? pleromaSpoilerText,
     DateTime? pleromaExpiresAt,
     bool? pleromaThreadMuted,
-    List<PleromaStatusEmojiReaction>? pleromaEmojiReactions,
+    List<PleromaApiStatusEmojiReaction>? pleromaEmojiReactions,
     bool? deleted,
     PendingState? pendingState,
     String? oldPendingRemoteId,
@@ -351,13 +351,13 @@ class DbStatusPopulatedWrapper extends IStatus {
       );
 
   @override
-  PleromaApplication? get application => dbStatusPopulated.dbStatus.application;
+  PleromaApiApplication? get application => dbStatusPopulated.dbStatus.application;
 
   @override
   bool get bookmarked => dbStatusPopulated.dbStatus.bookmarked == true;
 
   @override
-  PleromaCard? get card => dbStatusPopulated.dbStatus.card;
+  PleromaApiCard? get card => dbStatusPopulated.dbStatus.card;
 
   @override
   String? get content => dbStatusPopulated.dbStatus.content;
@@ -366,7 +366,7 @@ class DbStatusPopulatedWrapper extends IStatus {
   DateTime get createdAt => dbStatusPopulated.dbStatus.createdAt;
 
   @override
-  List<PleromaEmoji>? get emojis => dbStatusPopulated.dbStatus.emojis;
+  List<PleromaApiEmoji>? get emojis => dbStatusPopulated.dbStatus.emojis;
 
   @override
   bool get favourited => dbStatusPopulated.dbStatus.favourited;
@@ -407,17 +407,17 @@ class DbStatusPopulatedWrapper extends IStatus {
   int? get localId => dbStatusPopulated.dbStatus.id;
 
   @override
-  List<PleromaMediaAttachment>? get mediaAttachments =>
+  List<PleromaApiMediaAttachment>? get mediaAttachments =>
       dbStatusPopulated.dbStatus.mediaAttachments;
 
   @override
-  List<PleromaMention>? get mentions => dbStatusPopulated.dbStatus.mentions;
+  List<PleromaApiMention>? get mentions => dbStatusPopulated.dbStatus.mentions;
 
   @override
   bool get muted => dbStatusPopulated.dbStatus.muted;
 
   @override
-  PleromaContent? get pleromaContent =>
+  PleromaApiContent? get pleromaContent =>
       dbStatusPopulated.dbStatus.pleromaContent;
 
   @override
@@ -429,7 +429,7 @@ class DbStatusPopulatedWrapper extends IStatus {
       dbStatusPopulated.dbStatus.pleromaDirectConversationId;
 
   @override
-  List<PleromaStatusEmojiReaction>? get pleromaEmojiReactions =>
+  List<PleromaApiStatusEmojiReaction>? get pleromaEmojiReactions =>
       dbStatusPopulated.dbStatus.pleromaEmojiReactions;
 
   @override
@@ -443,14 +443,14 @@ class DbStatusPopulatedWrapper extends IStatus {
   bool? get pleromaLocal => dbStatusPopulated.dbStatus.pleromaLocal;
 
   @override
-  PleromaContent? get pleromaSpoilerText =>
+  PleromaApiContent? get pleromaSpoilerText =>
       dbStatusPopulated.dbStatus.pleromaSpoilerText;
 
   @override
   bool? get pleromaThreadMuted => dbStatusPopulated.dbStatus.pleromaThreadMuted;
 
   @override
-  PleromaPoll? get poll => dbStatusPopulated.dbStatus.poll;
+  PleromaApiPoll? get poll => dbStatusPopulated.dbStatus.poll;
 
   @override
   String? get reblogStatusRemoteId =>
@@ -475,7 +475,7 @@ class DbStatusPopulatedWrapper extends IStatus {
   String? get spoilerText => dbStatusPopulated.dbStatus.spoilerText;
 
   @override
-  List<PleromaTag>? get tags => dbStatusPopulated.dbStatus.tags;
+  List<PleromaApiTag>? get tags => dbStatusPopulated.dbStatus.tags;
 
   @override
   String get uri => dbStatusPopulated.dbStatus.uri;
@@ -484,7 +484,7 @@ class DbStatusPopulatedWrapper extends IStatus {
   String? get url => dbStatusPopulated.dbStatus.url;
 
   @override
-  PleromaVisibility get visibility => dbStatusPopulated.dbStatus.visibility;
+  PleromaApiVisibility get visibility => dbStatusPopulated.dbStatus.visibility;
 
   @override
   String? get language => dbStatusPopulated.dbStatus.language;
@@ -556,7 +556,7 @@ class DbStatusPopulatedWrapper extends IStatus {
     String? inReplyToAccountRemoteId,
     bool? nsfwSensitive,
     String? spoilerText,
-    PleromaVisibility? visibility,
+    PleromaApiVisibility? visibility,
     String? uri,
     String? url,
     int? repliesCount,
@@ -569,24 +569,24 @@ class DbStatusPopulatedWrapper extends IStatus {
     bool? pinned,
     String? content,
     String? reblogStatusRemoteId,
-    PleromaApplication? application,
+    PleromaApiApplication? application,
     String? accountRemoteId,
-    List<PleromaMediaAttachment>? mediaAttachments,
-    List<PleromaMention>? mentions,
-    List<PleromaTag>? tags,
-    List<PleromaEmoji>? emojis,
-    PleromaPoll? poll,
-    PleromaCard? card,
+    List<PleromaApiMediaAttachment>? mediaAttachments,
+    List<PleromaApiMention>? mentions,
+    List<PleromaApiTag>? tags,
+    List<PleromaApiEmoji>? emojis,
+    PleromaApiPoll? poll,
+    PleromaApiCard? card,
     String? language,
-    PleromaContent? pleromaContent,
+    PleromaApiContent? pleromaContent,
     int? pleromaConversationId,
     int? pleromaDirectConversationId,
     String? pleromaInReplyToAccountAcct,
     bool? pleromaLocal,
-    PleromaContent? pleromaSpoilerText,
+    PleromaApiContent? pleromaSpoilerText,
     DateTime? pleromaExpiresAt,
     bool? pleromaThreadMuted,
-    List<PleromaStatusEmojiReaction>? pleromaEmojiReactions,
+    List<PleromaApiStatusEmojiReaction>? pleromaEmojiReactions,
     bool? deleted,
     PendingState? pendingState,
     String? oldPendingRemoteId,
@@ -669,10 +669,10 @@ class DbStatusPopulatedWrapper extends IStatus {
           avatar: account?.avatar,
           acct: account?.acct,
           lastStatusAt: account?.lastStatusAt,
-          fields: account?.fields?.toPleromaFields(),
-          emojis: account?.emojis?.toPleromaEmojis(),
+          fields: account?.fields?.toPleromaApiFields(),
+          emojis: account?.emojis?.toPleromaApiEmojis(),
           pleromaRelationship: account?.pleromaRelationship,
-          pleromaTags: account?.pleromaTags?.toPleromaTags(),
+          pleromaTags: account?.pleromaTags?.toPleromaApiTags(),
           pleromaIsAdmin: account?.pleromaIsAdmin,
           pleromaIsModerator: account?.pleromaIsModerator,
           pleromaConfirmationPending: account?.pleromaConfirmationPending,

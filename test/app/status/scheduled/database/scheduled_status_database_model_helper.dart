@@ -18,19 +18,19 @@ Future<DbScheduledStatus> createTestDbScheduledStatus({
       remoteId: remoteId ?? seed + "remoteId1",
       scheduledAt: scheduledAt ?? DateTime(seed.hashCode % 10),
       mediaAttachments: [
-        PleromaMediaAttachment.only(
+        PleromaApiMediaAttachment.only(
           remoteUrl: seed + "remoteUrl1",
           type: MastodonApiMediaAttachmentType.audio.toJsonValue(),
           url: seed + "url",
           id: seed + "id",
         ),
       ],
-      params: PleromaScheduledStatusParams(
+      params: PleromaApiScheduledStatusParams(
         text: seed + "text1",
         mediaIds: [seed + "mediaIds1"],
         sensitive: seed.hashCode % 2 == 0,
         spoilerText: seed + "spoilerText1",
-        visibility: PleromaVisibility.public.toJsonValue(),
+        visibility: PleromaApiVisibility.public.toJsonValue(),
         scheduledAt: DateTime(seed.hashCode % 10),
         poll: null,
         idempotency: seed + "idempotency1",

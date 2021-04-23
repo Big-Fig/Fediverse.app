@@ -29,7 +29,7 @@ class ConversationChatShareMediaPage extends StatelessWidget {
 
 void goToConversationShareMediaPage({
   required BuildContext context,
-  required IPleromaMediaAttachment mediaAttachment,
+  required IPleromaApiMediaAttachment mediaAttachment,
 }) {
   Navigator.push(
     context,
@@ -42,13 +42,13 @@ void goToConversationShareMediaPage({
 
 MaterialPageRoute createConversationShareMediaPageRoute({
   required BuildContext context,
-  required IPleromaMediaAttachment mediaAttachment,
+  required IPleromaApiMediaAttachment mediaAttachment,
 }) {
   return MaterialPageRoute(
     builder: (context) => ConversationChatShareMediaBloc.provideToContext(
       context,
       mediaAttachment: mediaAttachment,
-      child: Provider<IPleromaMediaAttachment>.value(
+      child: Provider<IPleromaApiMediaAttachment>.value(
         value: mediaAttachment,
         child: const ConversationChatShareMediaPage(),
       ),

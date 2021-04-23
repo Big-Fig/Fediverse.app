@@ -6,8 +6,8 @@ part of 'pleroma_api_mention_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaMention _$PleromaMentionFromJson(Map<String, dynamic> json) {
-  return PleromaMention(
+PleromaApiMention _$PleromaApiMentionFromJson(Map<String, dynamic> json) {
+  return PleromaApiMention(
     acct: json['acct'] as String,
     id: json['id'] as String,
     url: json['url'] as String,
@@ -15,7 +15,7 @@ PleromaMention _$PleromaMentionFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaMentionToJson(PleromaMention instance) =>
+Map<String, dynamic> _$PleromaApiMentionToJson(PleromaApiMention instance) =>
     <String, dynamic>{
       'acct': instance.acct,
       'id': instance.id,

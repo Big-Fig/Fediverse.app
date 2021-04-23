@@ -10,7 +10,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service_impl.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
 import 'package:fedi/pleroma/api/web_sockets/pleroma_api_web_sockets_service_impl.dart';
@@ -23,17 +23,17 @@ import 'account_bloc_impl_test.mocks.dart';
 import 'account_model_helper.dart';
 
 @GenerateMocks([
-  PleromaAuthAccountService,
-  PleromaWebSocketsService,
+  PleromaApiAuthAccountService,
+  PleromaApiWebSocketsService,
 ])
 void main() {
   late IAccount account;
   late IAccountBloc accountBloc;
-  late MockPleromaAuthAccountService pleromaAuthAccountServiceMock;
+  late MockPleromaApiAuthAccountService pleromaAuthAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
-  late MockPleromaWebSocketsService pleromaWebSocketsService;
+  late MockPleromaApiWebSocketsService pleromaWebSocketsService;
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
@@ -43,7 +43,7 @@ void main() {
       accountRepository: accountRepository,
     );
 
-    pleromaAuthAccountServiceMock = MockPleromaAuthAccountService();
+    pleromaAuthAccountServiceMock = MockPleromaApiAuthAccountService();
 
     when(pleromaAuthAccountServiceMock.isConnected).thenReturn(true);
     when(pleromaAuthAccountServiceMock.pleromaApiState)
@@ -51,10 +51,10 @@ void main() {
 
     account = await createTestAccount(seed: "seed1");
 
-    pleromaWebSocketsService = MockPleromaWebSocketsService();
+    pleromaWebSocketsService = MockPleromaApiWebSocketsService();
 
     await accountRepository.upsertInRemoteType(
-      account.toPleromaAccount(),
+      account.toPleromaApiAccount(),
     );
     account = (await accountRepository.findByRemoteIdInAppType(
       account.remoteId,
@@ -79,7 +79,7 @@ void main() {
 
   Future _update(IAccount account) async {
     await accountRepository.upsertInRemoteType(
-      account.toPleromaAccount(),
+      account.toPleromaApiAccount(),
     );
     // hack to execute notify callbacks
     await Future.delayed(
@@ -219,7 +219,7 @@ void main() {
     expect(accountBloc.fields, account.fields ?? []);
 
     var newValue = [
-      PleromaField(
+      PleromaApiField(
         name: "newName",
         value: "newValue",
         verifiedAt: null,
@@ -373,7 +373,7 @@ void main() {
     await subscription.cancel();
 
     var newEmojis = [
-      PleromaEmoji(
+      PleromaApiEmoji(
         url: "url",
         staticUrl: "staticUrl",
         visibleInPicker: null,
@@ -456,7 +456,7 @@ void main() {
     var newRelationship = createTestAccountRelationship(seed: "seed11");
     when(pleromaAuthAccountServiceMock.getAccount(
       accountRemoteId: account.remoteId,
-    )).thenAnswer((_) async => newValue.toPleromaAccount());
+    )).thenAnswer((_) async => newValue.toPleromaApiAccount());
 
     when(pleromaAuthAccountServiceMock
             .getRelationshipWithAccounts(remoteAccountIds: [account.remoteId]))
@@ -480,7 +480,7 @@ void main() {
   test('toggleBlock', () async {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    IPleromaAccountRelationship? listenedValue;
+    IPleromaApiAccountRelationship? listenedValue;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
       listenedValue = newValue;
@@ -530,7 +530,7 @@ void main() {
   test('toggleFollow', () async {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    IPleromaAccountRelationship? listenedValue;
+    IPleromaApiAccountRelationship? listenedValue;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
       listenedValue = newValue;
@@ -573,7 +573,7 @@ void main() {
   test('mute & unmute', () async {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    IPleromaAccountRelationship? listenedValue;
+    IPleromaApiAccountRelationship? listenedValue;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
       listenedValue = newValue;
@@ -634,7 +634,7 @@ void main() {
   test('togglePin', () async {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    IPleromaAccountRelationship? listenedValue;
+    IPleromaApiAccountRelationship? listenedValue;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
       listenedValue = newValue;

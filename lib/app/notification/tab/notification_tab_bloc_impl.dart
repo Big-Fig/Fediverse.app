@@ -22,7 +22,7 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
   late INotificationCachedPaginationBloc notificationCachedPaginationBloc;
 
   final INotificationRepository notificationRepository;
-  final IPleromaNotificationService pleromaNotificationService;
+  final IPleromaApiNotificationService pleromaNotificationService;
   final IFilterRepository filterRepository;
   final IPaginationSettingsBloc paginationSettingsBloc;
 

@@ -7,14 +7,14 @@ import 'package:json_annotation/json_annotation.dart';
 // ignore_for_file: no-magic-number
 part 'pleroma_api_list_model.g.dart';
 
-abstract class IPleromaList extends IMastodonApiList {}
+abstract class IPleromaApiList extends IMastodonApiList {}
 
-extension IPleromaListExtension on IPleromaList {
-  PleromaList toPleromaList() {
-    if (this is PleromaList) {
-      return this as PleromaList;
+extension IPleromaApiListExtension on IPleromaApiList {
+  PleromaApiList toPleromaApiList() {
+    if (this is PleromaApiList) {
+      return this as PleromaApiList;
     } else {
-      return PleromaList(
+      return PleromaApiList(
         id: id,
         title: title,
       );
@@ -22,13 +22,13 @@ extension IPleromaListExtension on IPleromaList {
   }
 }
 
-extension IPleromaListListExtension on List<IPleromaList> {
-  List<PleromaList> toPleromaList() {
-    if (this is List<PleromaList>) {
-      return this as List<PleromaList>;
+extension IPleromaApiListListExtension on List<IPleromaApiList> {
+  List<PleromaApiList> toPleromaApiListList() {
+    if (this is List<PleromaApiList>) {
+      return this as List<PleromaApiList>;
     } else {
       return map(
-        (list) => list.toPleromaList(),
+        (list) => list.toPleromaApiList(),
       ).toList();
     }
   }
@@ -40,7 +40,7 @@ extension IPleromaListListExtension on List<IPleromaList> {
 //@HiveType()
 @HiveType(typeId: -32 + 80)
 @JsonSerializable()
-class PleromaList extends IPleromaList {
+class PleromaApiList extends IPleromaApiList {
   @override
   @HiveField(0)
   String id;
@@ -49,23 +49,42 @@ class PleromaList extends IPleromaList {
   @HiveField(1)
   String title;
 
-  PleromaList({
+  PleromaApiList({
     required this.id,
     required this.title,
   });
 
-  factory PleromaList.fromJson(Map<String, dynamic> json) =>
-      _$PleromaListFromJson(json);
+  factory PleromaApiList.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiListFromJson(json);
 
-  factory PleromaList.fromJsonString(String jsonString) =>
-      _$PleromaListFromJson(jsonDecode(jsonString));
+  factory PleromaApiList.fromJsonString(String jsonString) =>
+      _$PleromaApiListFromJson(jsonDecode(jsonString));
 
-  static List<PleromaList> listFromJsonString(String str) =>
-      List<PleromaList>.from(
-        json.decode(str).map((x) => PleromaList.fromJson(x)),
+  static List<PleromaApiList> listFromJsonString(String str) =>
+      List<PleromaApiList>.from(
+        json.decode(str).map((x) => PleromaApiList.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$PleromaListToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiListToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaListToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiListToJson(this));
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiList &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          title == other.title;
+
+  @override
+  int get hashCode => id.hashCode ^ title.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaApiList{'
+        'id: $id, '
+        'title: $title'
+        '}';
+  }
 }

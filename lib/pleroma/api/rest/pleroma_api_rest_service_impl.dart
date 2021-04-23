@@ -2,22 +2,19 @@ import 'dart:convert';
 
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_model.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
-import 'package:path/path.dart' as path;
 import 'package:rxdart/rxdart.dart';
 
 final _logger = Logger("pleroma_rest_service_impl.dart");
 
-var urlPath = path.Context(style: path.Style.url);
-
-class PleromaRestService extends DisposableOwner
-    implements IPleromaRestService {
+class PleromaApiRestService extends DisposableOwner
+    implements IPleromaApiRestService {
   final IConnectionService connectionService;
 
   // TODO: rework seed state
@@ -44,7 +41,7 @@ class PleromaRestService extends DisposableOwner
   @override
   Uri get baseUri => restService.baseUri;
 
-  PleromaRestService({
+  PleromaApiRestService({
     required this.restService,
     required this.connectionService,
   }) {
@@ -57,8 +54,9 @@ class PleromaRestService extends DisposableOwner
 
     var statusCode = response.statusCode;
     // todo: refactor pleroma errors handling
-    if (response.statusCode == PleromaThrottledRestException.httpStatusCode) {
-      throw PleromaThrottledRestException(
+    if (response.statusCode ==
+        PleromaApiThrottledRestException.httpStatusCode) {
+      throw PleromaApiThrottledRestException(
         statusCode: statusCode,
         body: response.body,
       );
@@ -72,18 +70,18 @@ class PleromaRestService extends DisposableOwner
       try {
         Map<String, dynamic> jsonBody = jsonDecode(body);
 
-        var error = jsonBody[PleromaRestException.jsonBodyErrorKey];
+        var error = jsonBody[PleromaApiRestException.jsonBodyErrorKey];
         var isPleromaInvalidCredentials = error ==
-                PleromaInvalidCredentialsForbiddenRestException
+                PleromaApiInvalidCredentialsForbiddenRestException
                     .pleromaInvalidCredentialsErrorValue &&
             statusCode ==
-                PleromaInvalidCredentialsForbiddenRestException
+                PleromaApiInvalidCredentialsForbiddenRestException
                     .pleromaInvalidCredentialsStatusCode;
         var isMastodonInvalidCredentials = error ==
-                PleromaInvalidCredentialsForbiddenRestException
+                PleromaApiInvalidCredentialsForbiddenRestException
                     .mastodonInvalidCredentialsErrorValue &&
             statusCode ==
-                PleromaInvalidCredentialsForbiddenRestException
+                PleromaApiInvalidCredentialsForbiddenRestException
                     .mastodonInvalidCredentialsStatusCode;
         isInvalidCredentials =
             isPleromaInvalidCredentials || isMastodonInvalidCredentials;
@@ -93,12 +91,12 @@ class PleromaRestService extends DisposableOwner
       if (isInvalidCredentials) {
         _pleromaApiStateSubject.add(PleromaApiState.brokenAuth);
         _logger.finest(() => "pleromaApiState $pleromaApiState");
-        throw PleromaInvalidCredentialsForbiddenRestException(
+        throw PleromaApiInvalidCredentialsForbiddenRestException(
           statusCode: response.statusCode,
           body: body,
         );
       } else {
-        throw PleromaForbiddenRestException(
+        throw PleromaApiForbiddenRestException(
           statusCode: response.statusCode,
           body: body,
         );

@@ -59,8 +59,8 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
     asyncCode: () async {
       IAccount? result;
       RemoteInstanceBloc? remoteInstanceBloc;
-      PleromaStatusService? pleromaStatusService;
-      PleromaAccountService? pleromaAccountService;
+      PleromaApiStatusService? pleromaStatusService;
+      PleromaApiAccountService? pleromaAccountService;
       try {
         var instanceUri = localInstanceRemoteAccount!.urlRemoteHostUri;
 
@@ -72,10 +72,10 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           ),
         );
 
-        pleromaStatusService = PleromaStatusService(
+        pleromaStatusService = PleromaApiStatusService(
           restService: remoteInstanceBloc.pleromaRestService,
         );
-        pleromaAccountService = PleromaAccountService(
+        pleromaAccountService = PleromaApiAccountService(
           restService: remoteInstanceBloc.pleromaRestService,
         );
 
@@ -115,7 +115,7 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
 Future<IAccount?> loadRemoteInstanceAccountViaAccountInStatus(
   BuildContext context,
   IAccount localInstanceRemoteAccount,
-  PleromaStatusService pleromaStatusService,
+  PleromaApiStatusService pleromaStatusService,
 ) async {
   var remoteAccountAnyStatusOnLocalInstance =
       await loadRemoteAccountAnyStatusOnLocalInstance(
@@ -142,12 +142,12 @@ Future<IStatus?> loadRemoteAccountAnyStatusOnLocalInstance(
   IAccount localInstanceRemoteAccount,
 ) async {
   var localInstancePleromaAccountService =
-      IPleromaAccountService.of(context, listen: false);
+      IPleromaApiAccountService.of(context, listen: false);
 
   var remoteStatuses =
       await localInstancePleromaAccountService.getAccountStatuses(
     accountRemoteId: localInstanceRemoteAccount.remoteId,
-    pagination: PleromaPaginationRequest(limit: 1),
+    pagination: PleromaApiPaginationRequest(limit: 1),
   );
 
   var firstPleromaStatus = remoteStatuses.singleOrNull;

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_exception.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service.dart';
@@ -13,11 +13,11 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaInstanceService extends DisposableOwner
-    implements IPleromaInstanceService {
+class PleromaApiInstanceService extends DisposableOwner
+    implements IPleromaApiInstanceService {
   final instanceRelativeUrlPath = "/api/v1/instance";
   @override
-  final IPleromaRestService restService;
+  final IPleromaApiRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -32,7 +32,7 @@ class PleromaInstanceService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaInstanceService({
+  PleromaApiInstanceService({
     required this.restService,
   });
 
@@ -40,31 +40,31 @@ class PleromaInstanceService extends DisposableOwner
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       return jsonDecode(httpResponse.body);
     } else {
-      throw PleromaInstanceException(
+      throw PleromaApiInstanceException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  IPleromaInstance parseInstanceResponse(Response httpResponse) {
+  IPleromaApiInstance parseInstanceResponse(Response httpResponse) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaInstance.fromJsonString(httpResponse.body);
+      return PleromaApiInstance.fromJsonString(httpResponse.body);
     } else {
-      throw PleromaInstanceException(
+      throw PleromaApiInstanceException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  List<IPleromaInstanceHistory> parseInstanceHistoryListResponse(
+  List<IPleromaApiInstanceHistory> parseInstanceHistoryListResponse(
     Response httpResponse,
   ) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaInstanceHistory.listFromJsonString(httpResponse.body);
+      return PleromaApiInstanceHistory.listFromJsonString(httpResponse.body);
     } else {
-      throw PleromaInstanceException(
+      throw PleromaApiInstanceException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -72,7 +72,7 @@ class PleromaInstanceService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaInstanceHistory>> getHistory() async {
+  Future<List<IPleromaApiInstanceHistory>> getHistory() async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: urlPath.join(
@@ -86,7 +86,7 @@ class PleromaInstanceService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaInstance> getInstance() async {
+  Future<IPleromaApiInstance> getInstance() async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: instanceRelativeUrlPath,

@@ -6,22 +6,23 @@ part of 'pleroma_api_chat_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaChat _$PleromaChatFromJson(Map<String, dynamic> json) {
-  return PleromaChat(
+PleromaApiChat _$PleromaApiChatFromJson(Map<String, dynamic> json) {
+  return PleromaApiChat(
     id: json['id'] as String,
     unread: json['unread'] as int,
-    account: PleromaAccount.fromJson(json['account'] as Map<String, dynamic>),
+    account:
+        PleromaApiAccount.fromJson(json['account'] as Map<String, dynamic>),
     updatedAt: json['updated_at'] == null
         ? null
         : DateTime.parse(json['updated_at'] as String),
     lastMessage: json['last_message'] == null
         ? null
-        : PleromaChatMessage.fromJson(
+        : PleromaApiChatMessage.fromJson(
             json['last_message'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$PleromaChatToJson(PleromaChat instance) =>
+Map<String, dynamic> _$PleromaApiChatToJson(PleromaApiChat instance) =>
     <String, dynamic>{
       'id': instance.id,
       'unread': instance.unread,
@@ -30,27 +31,29 @@ Map<String, dynamic> _$PleromaChatToJson(PleromaChat instance) =>
       'last_message': instance.lastMessage?.toJson(),
     };
 
-PleromaChatMessage _$PleromaChatMessageFromJson(Map<String, dynamic> json) {
-  return PleromaChatMessage(
+PleromaApiChatMessage _$PleromaApiChatMessageFromJson(
+    Map<String, dynamic> json) {
+  return PleromaApiChatMessage(
     id: json['id'] as String,
     chatId: json['chat_id'] as String,
     accountId: json['account_id'] as String,
     content: json['content'] as String?,
     createdAt: DateTime.parse(json['created_at'] as String),
     emojis: (json['emojis'] as List<dynamic>?)
-        ?.map((e) => PleromaEmoji.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => PleromaApiEmoji.fromJson(e as Map<String, dynamic>))
         .toList(),
     mediaAttachment: json['attachment'] == null
         ? null
-        : PleromaMediaAttachment.fromJson(
+        : PleromaApiMediaAttachment.fromJson(
             json['attachment'] as Map<String, dynamic>),
     card: json['card'] == null
         ? null
-        : PleromaCard.fromJson(json['card'] as Map<String, dynamic>),
+        : PleromaApiCard.fromJson(json['card'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$PleromaChatMessageToJson(PleromaChatMessage instance) =>
+Map<String, dynamic> _$PleromaApiChatMessageToJson(
+        PleromaApiChatMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'chat_id': instance.chatId,
@@ -62,17 +65,17 @@ Map<String, dynamic> _$PleromaChatMessageToJson(PleromaChatMessage instance) =>
       'card': instance.card?.toJson(),
     };
 
-PleromaChatMessageSendData _$PleromaChatMessageSendDataFromJson(
+PleromaApiChatMessageSendData _$PleromaApiChatMessageSendDataFromJson(
     Map<String, dynamic> json) {
-  return PleromaChatMessageSendData(
+  return PleromaApiChatMessageSendData(
     content: json['content'] as String?,
     mediaId: json['media_id'] as String?,
     idempotencyKey: json['idempotency_key'] as String?,
   );
 }
 
-Map<String, dynamic> _$PleromaChatMessageSendDataToJson(
-        PleromaChatMessageSendData instance) =>
+Map<String, dynamic> _$PleromaApiChatMessageSendDataToJson(
+        PleromaApiChatMessageSendData instance) =>
     <String, dynamic>{
       'content': instance.content,
       'media_id': instance.mediaId,

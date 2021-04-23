@@ -26,16 +26,16 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
-  final IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
+  final IPleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalizationSettingsBloc localizationSettingsBloc;
 
-  late IPleromaInstance pleromaInstance;
+  late IPleromaApiInstance pleromaInstance;
   late IRestService restService;
-  late IPleromaRestService pleromaRestService;
-  late IPleromaCaptchaService pleromaCaptchaService;
+  late IPleromaApiRestService pleromaRestService;
+  late IPleromaApiCaptchaService pleromaCaptchaService;
 
-  late IPleromaInstanceService pleromaInstanceService;
+  late IPleromaApiInstanceService pleromaInstanceService;
 
   @override
   late RegisterAuthInstanceFormBloc registerAuthInstanceFormBloc;
@@ -49,17 +49,17 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     required this.localizationSettingsBloc,
   }) : super() {
     restService = RestService(baseUri: instanceBaseUri);
-    pleromaRestService = PleromaRestService(
+    pleromaRestService = PleromaApiRestService(
       connectionService: connectionService,
       restService: restService,
     );
 
-    pleromaCaptchaService = PleromaCaptchaService(
+    pleromaCaptchaService = PleromaApiCaptchaService(
       restService: pleromaRestService,
     );
 
     pleromaInstanceService =
-        PleromaInstanceService(restService: pleromaRestService);
+        PleromaApiInstanceService(restService: pleromaRestService);
 
     addDisposable(streamController: successRegistrationStreamController);
     addDisposable(disposable: restService);

@@ -17,10 +17,10 @@ Future<DbAccountPopulatedWrapper> createTestAccount({
       ),
     );
 
-PleromaAccountRelationship createTestAccountRelationship({
+PleromaApiAccountRelationship createTestAccountRelationship({
   required String seed,
 }) =>
-    PleromaAccountRelationship(
+    PleromaApiAccountRelationship(
       blocking: seed.hashCode % 2 == 0,
       domainBlocking: seed.hashCode % 3 == 0,
       endorsed: seed.hashCode % 4 == 0,

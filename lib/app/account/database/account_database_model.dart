@@ -42,19 +42,19 @@ class DbAccounts extends Table {
   DateTimeColumn get lastStatusAt => dateTime().nullable()();
 
   TextColumn get fields =>
-      text().nullable().map(PleromaFieldListDatabaseConverter()).nullable()();
+      text().nullable().map(PleromaApiFieldListDatabaseConverter()).nullable()();
 
   TextColumn get emojis =>
-      text().nullable().map(PleromaEmojiListDatabaseConverter()).nullable()();
+      text().nullable().map(PleromaApiEmojiListDatabaseConverter()).nullable()();
 
   TextColumn get pleromaBackgroundImage => text().nullable()();
 
   TextColumn get pleromaTags =>
-      text().nullable().map(PleromaTagListDatabaseConverter()).nullable()();
+      text().nullable().map(PleromaApiTagListDatabaseConverter()).nullable()();
 
   TextColumn get pleromaRelationship => text()
       .nullable()
-      .map(PleromaAccountRelationshipDatabaseConverter())
+      .map(PleromaApiAccountRelationshipDatabaseConverter())
       .nullable()();
 
   BoolColumn get pleromaIsAdmin => boolean().nullable()();

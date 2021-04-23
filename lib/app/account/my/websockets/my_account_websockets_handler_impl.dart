@@ -11,7 +11,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 
 class MyAccountWebSocketsHandler extends WebSocketsChannelHandler {
   MyAccountWebSocketsHandler({
-    required IPleromaWebSocketsService pleromaWebSocketsService,
+    required IPleromaApiWebSocketsService pleromaWebSocketsService,
     required IStatusRepository statusRepository,
     required INotificationRepository notificationRepository,
     required IConversationChatRepository conversationRepository,
@@ -41,7 +41,7 @@ class MyAccountWebSocketsHandler extends WebSocketsChannelHandler {
         );
 
   @override
-  Future handleEvent(PleromaWebSocketsEvent event) async {
+  Future handleEvent(PleromaApiWebSocketsEvent event) async {
     // todo: remove hack
     // it is for isHomeTimeline flag
     // other websockets handle can handle same Status and override this flag

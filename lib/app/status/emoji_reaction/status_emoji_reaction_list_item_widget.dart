@@ -14,7 +14,7 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusEmojiReactionBloc = IStatusEmojiReactionBloc.of(context);
-    return StreamBuilder<IPleromaStatusEmojiReaction>(
+    return StreamBuilder<IPleromaApiStatusEmojiReaction>(
       stream: statusEmojiReactionBloc.emojiReactionStream,
       builder: (context, snapshot) {
         var emojiReaction = snapshot.data;
@@ -24,7 +24,7 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Provider<IPleromaStatusEmojiReaction>.value(
+        return Provider<IPleromaApiStatusEmojiReaction>.value(
           value: emojiReaction,
           child: const _StatusEmojiReactionListItemBodyWidget(),
         );
@@ -78,7 +78,7 @@ class _StatusEmojiReactionListItemContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var emojiReaction = Provider.of<IPleromaStatusEmojiReaction>(context);
+    var emojiReaction = Provider.of<IPleromaApiStatusEmojiReaction>(context);
     var color = emojiReaction.me
         ? IFediUiColorTheme.of(context).primary
         : IFediUiColorTheme.of(context).lightGrey;

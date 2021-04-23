@@ -1,76 +1,76 @@
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaNotificationService extends IPleromaAuthApi {
-  static IPleromaNotificationService of(
+abstract class IPleromaApiNotificationService extends IPleromaApiAuth {
+  static IPleromaApiNotificationService of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IPleromaNotificationService>(context, listen: listen);
+      Provider.of<IPleromaApiNotificationService>(context, listen: listen);
 
-  static const List<PleromaNotificationType> validMastodonTypesToExclude = [
-    PleromaNotificationType.follow,
-    PleromaNotificationType.favourite,
-    PleromaNotificationType.reblog,
-    PleromaNotificationType.mention,
-    PleromaNotificationType.poll,
-    PleromaNotificationType.move,
-    PleromaNotificationType.followRequest,
+  static const List<PleromaApiNotificationType> validMastodonTypesToExclude = [
+    PleromaApiNotificationType.follow,
+    PleromaApiNotificationType.favourite,
+    PleromaApiNotificationType.reblog,
+    PleromaApiNotificationType.mention,
+    PleromaApiNotificationType.poll,
+    PleromaApiNotificationType.move,
+    PleromaApiNotificationType.followRequest,
   ];
-  static const List<PleromaNotificationType> validPleromaTypesToExclude = [
-    PleromaNotificationType.follow,
-    PleromaNotificationType.favourite,
-    PleromaNotificationType.reblog,
-    PleromaNotificationType.mention,
-    PleromaNotificationType.poll,
-    PleromaNotificationType.move,
+  static const List<PleromaApiNotificationType> validPleromaTypesToExclude = [
+    PleromaApiNotificationType.follow,
+    PleromaApiNotificationType.favourite,
+    PleromaApiNotificationType.reblog,
+    PleromaApiNotificationType.mention,
+    PleromaApiNotificationType.poll,
+    PleromaApiNotificationType.move,
     // "Not supported on Pleroma. "
     //     "MastodonNotificationType.followRequest added only in Mastodon 3.1.0 "
     //     "but Pleroma targets Mastodon 2.7.2 API",
     // PleromaNotificationType.followRequest,
-    PleromaNotificationType.pleromaEmojiReaction,
-    PleromaNotificationType.pleromaChatMention,
-    PleromaNotificationType.pleromaReport,
+    PleromaApiNotificationType.pleromaEmojiReaction,
+    PleromaApiNotificationType.pleromaChatMention,
+    PleromaApiNotificationType.pleromaReport,
   ];
-  static const List<PleromaVisibility> validPleromaVisibilityToExclude = [
-    PleromaVisibility.public,
-    PleromaVisibility.unlisted,
-    PleromaVisibility.private,
-    PleromaVisibility.direct,
-  ];
-
-  static const List<PleromaNotificationType> validPleromaTypesToInclude = [
-    PleromaNotificationType.mention,
-    PleromaNotificationType.follow,
-    PleromaNotificationType.reblog,
-    PleromaNotificationType.favourite,
-    PleromaNotificationType.move,
-    PleromaNotificationType.pleromaEmojiReaction,
-    PleromaNotificationType.pleromaChatMention,
-    PleromaNotificationType.pleromaReport,
+  static const List<PleromaApiVisibility> validPleromaVisibilityToExclude = [
+    PleromaApiVisibility.public,
+    PleromaApiVisibility.unlisted,
+    PleromaApiVisibility.private,
+    PleromaApiVisibility.direct,
   ];
 
-  Future<List<IPleromaNotification>> getNotifications({
-    IPleromaPaginationRequest? pagination,
-    List<PleromaNotificationType>? excludeTypes,
+  static const List<PleromaApiNotificationType> validPleromaTypesToInclude = [
+    PleromaApiNotificationType.mention,
+    PleromaApiNotificationType.follow,
+    PleromaApiNotificationType.reblog,
+    PleromaApiNotificationType.favourite,
+    PleromaApiNotificationType.move,
+    PleromaApiNotificationType.pleromaEmojiReaction,
+    PleromaApiNotificationType.pleromaChatMention,
+    PleromaApiNotificationType.pleromaReport,
+  ];
+
+  Future<List<IPleromaApiNotification>> getNotifications({
+    IPleromaApiPaginationRequest? pagination,
+    List<PleromaApiNotificationType>? excludeTypes,
     String? onlyFromAccountRemoteId,
-    List<PleromaNotificationType>? includeTypes,
-    List<PleromaVisibility>? excludeVisibilities,
+    List<PleromaApiNotificationType>? includeTypes,
+    List<PleromaApiVisibility>? excludeVisibilities,
   });
 
-  Future<IPleromaNotification> getNotification({
+  Future<IPleromaApiNotification> getNotification({
     required String notificationRemoteId,
   });
 
-  Future<IPleromaNotification> markAsReadSingle({
+  Future<IPleromaApiNotification> markAsReadSingle({
     required String notificationRemoteId,
   });
 
-  Future<List<IPleromaNotification>> markAsReadList({
+  Future<List<IPleromaApiNotification>> markAsReadList({
     required String maxNotificationRemoteId,
   });
 

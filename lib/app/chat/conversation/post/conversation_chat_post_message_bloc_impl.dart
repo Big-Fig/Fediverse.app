@@ -20,12 +20,12 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
 
   ConversationChatPostMessageBloc({
     required this.conversationChatBloc,
-    required IPleromaAuthStatusService pleromaAuthStatusService,
+    required IPleromaApiAuthStatusService pleromaAuthStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
     required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     required int? maximumMessageLength,
-    required PleromaInstancePollLimits? pleromaInstancePollLimits,
+    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required String? language,
@@ -36,7 +36,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
           scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibility: PleromaVisibility.private.toJsonValue(),
+            visibility: PleromaApiVisibility.private.toJsonValue(),
             language: language,
             inReplyToConversationId:
                 conversationChatBloc.conversation.remoteId,
@@ -59,7 +59,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
         .info!;
 
     return ConversationChatPostMessageBloc(
-      pleromaAuthStatusService: IPleromaAuthStatusService.of(
+      pleromaAuthStatusService: IPleromaApiAuthStatusService.of(
         context,
         listen: false,
       ),

@@ -14,7 +14,7 @@ class LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc
     extends AccountStatusesPinnedOnlyNetworkOnlyListBloc {
   LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc({
     required IAccount? account,
-    required IPleromaAccountService pleromaAccountService,
+    required IPleromaApiAccountService pleromaAccountService,
   }) : super(
           account: account,
           pleromaAccountService: pleromaAccountService,
@@ -26,7 +26,7 @@ class LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc
   }) {
     return LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc(
       account: account,
-      pleromaAccountService: IPleromaAccountService.of(context, listen: false),
+      pleromaAccountService: IPleromaApiAccountService.of(context, listen: false),
     );
   }
 

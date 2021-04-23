@@ -13,7 +13,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         DbScheduledStatus,
         DbScheduledStatusPopulated,
         IScheduledStatus,
-        IPleromaScheduledStatus,
+        IPleromaApiScheduledStatus,
         int,
         String,
         $DbScheduledStatusesTable,
@@ -62,7 +62,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       appItem.toDbScheduledStatus();
 
   @override
-  IPleromaScheduledStatus mapAppItemToRemoteItem(IScheduledStatus appItem) =>
+  IPleromaApiScheduledStatus mapAppItemToRemoteItem(IScheduledStatus appItem) =>
       appItem.toPleromaScheduledStatus();
 
   @override
@@ -76,7 +76,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbPopulatedItem.toDbScheduledStatusPopulatedWrapper();
 
   @override
-  IPleromaScheduledStatus mapDbPopulatedItemToRemoteItem(
+  IPleromaApiScheduledStatus mapDbPopulatedItemToRemoteItem(
           DbScheduledStatusPopulated dbPopulatedItem) =>
       dbPopulatedItem
           .toDbScheduledStatusPopulatedWrapper()
@@ -91,7 +91,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       ScheduledStatusRepositoryOrderingTermData.defaultTerms;
 
   @override
-  IScheduledStatus mapRemoteItemToAppItem(IPleromaScheduledStatus appItem) =>
+  IScheduledStatus mapRemoteItemToAppItem(IPleromaApiScheduledStatus appItem) =>
       DbScheduledStatusPopulated(
         dbScheduledStatus: appItem.toDbScheduledStatus(
           canceled: false,
@@ -112,7 +112,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<int> insertInRemoteType(
-    IPleromaScheduledStatus remoteItem, {
+    IPleromaApiScheduledStatus remoteItem, {
     required InsertMode? mode,
   }) =>
       insertInDbType(
@@ -124,7 +124,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    IPleromaScheduledStatus remoteItem, {
+    IPleromaApiScheduledStatus remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) {
@@ -139,7 +139,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<void> updateAppTypeByRemoteType({
     required IScheduledStatus appItem,
-    required IPleromaScheduledStatus remoteItem,
+    required IPleromaApiScheduledStatus remoteItem,
     required Batch? batchTransaction,
   }) =>
       updateByDbIdInDbType(

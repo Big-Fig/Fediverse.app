@@ -7,7 +7,7 @@ import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
 import 'package:flutter/material.dart';
 
 class AccountFieldListItemWidget extends StatelessWidget {
-  final IPleromaField field;
+  final IPleromaApiField field;
   final Brightness brightness;
 
   const AccountFieldListItemWidget({

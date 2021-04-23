@@ -151,7 +151,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
   }
 
   Widget buildMediaContent(IStatusBloc statusBloc) =>
-      StreamBuilder<List<IPleromaMediaAttachment>?>(
+      StreamBuilder<List<IPleromaApiMediaAttachment>?>(
         stream: statusBloc.mediaAttachmentsStream,
         builder: (context, snapshot) {
           var mediaAttachments = snapshot.data;

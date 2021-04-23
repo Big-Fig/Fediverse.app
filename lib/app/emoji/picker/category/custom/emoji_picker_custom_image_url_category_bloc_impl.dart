@@ -13,7 +13,7 @@ var _logger = Logger("emoji_picker_custom_image_url_category_bloc_impl.dart");
 class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     implements ICustomEmojiPickerImageUrlCategoryBloc {
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
-  final IPleromaEmojiService pleromaEmojiService;
+  final IPleromaApiEmojiService pleromaEmojiService;
   final IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc
       preferenceBloc;
 

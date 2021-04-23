@@ -18,7 +18,7 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   @override
   final IAccount account;
 
-  final IPleromaAuthAccountService pleromaAuthAccountService;
+  final IPleromaApiAuthAccountService pleromaAuthAccountService;
 
   @override
   final IBoolValueFormFieldBloc forwardBoolValueFormFieldBloc =
@@ -60,7 +60,7 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
 
   @override
   Future<bool> send() async {
-    var accountReportRequest = PleromaAccountReportRequest(
+    var accountReportRequest = PleromaApiAccountReportRequest(
       accountId: account.remoteId,
       statusIds: statuses.isNotEmpty == true
           ? statuses.map((status) => status.remoteId!).toList()

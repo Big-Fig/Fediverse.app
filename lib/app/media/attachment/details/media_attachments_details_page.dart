@@ -29,8 +29,8 @@ import 'package:photo_view/photo_view.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MediaAttachmentDetailsPage extends StatefulWidget {
-  final List<IPleromaMediaAttachment> mediaAttachments;
-  final IPleromaMediaAttachment? initialMediaAttachment;
+  final List<IPleromaApiMediaAttachment> mediaAttachments;
+  final IPleromaApiMediaAttachment? initialMediaAttachment;
 
   int get initialIndex => initialMediaAttachment != null
       ? mediaAttachments.indexOf(initialMediaAttachment!)
@@ -42,7 +42,7 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
   });
 
   MediaAttachmentDetailsPage.single({
-    required IPleromaMediaAttachment mediaAttachment,
+    required IPleromaApiMediaAttachment mediaAttachment,
   }) : this.multi(
           mediaAttachments: [mediaAttachment],
           initialMediaAttachment: mediaAttachment,
@@ -58,22 +58,22 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
 
 class _MediaAttachmentDetailsPageState
     extends State<MediaAttachmentDetailsPage> {
-  IPleromaMediaAttachment get mediaAttachment =>
+  IPleromaApiMediaAttachment get mediaAttachment =>
       selectedMediaAttachmentSubject.value!;
 
   final PageController _controller;
 
-  BehaviorSubject<IPleromaMediaAttachment?> selectedMediaAttachmentSubject;
+  BehaviorSubject<IPleromaApiMediaAttachment?> selectedMediaAttachmentSubject;
 
-  Stream<IPleromaMediaAttachment?> get selectedMediaAttachmentStream =>
+  Stream<IPleromaApiMediaAttachment?> get selectedMediaAttachmentStream =>
       selectedMediaAttachmentSubject.stream;
 
-  IPleromaMediaAttachment? get selectedMediaAttachment =>
+  IPleromaApiMediaAttachment? get selectedMediaAttachment =>
       selectedMediaAttachmentSubject.value;
   late VoidCallback listener;
 
   _MediaAttachmentDetailsPageState(
-    IPleromaMediaAttachment? initialMediaAttachment,
+    IPleromaApiMediaAttachment? initialMediaAttachment,
     int initialIndex,
   )   : _controller = PageController(
           initialPage: initialIndex,
@@ -116,7 +116,7 @@ class _MediaAttachmentDetailsPageState
 
   Widget buildMediaAttachmentBody(
     BuildContext context,
-    IPleromaMediaAttachment mediaAttachment,
+    IPleromaApiMediaAttachment mediaAttachment,
   ) {
     switch (mediaAttachment.typeAsMastodonApi) {
       case MastodonApiMediaAttachmentType.image:
@@ -192,7 +192,7 @@ class _MediaAttachmentDetailsPageState
             // todo: refactor
             // ignore: no-magic-number
             bottom: 12.0,
-            child: StreamBuilder<IPleromaMediaAttachment?>(
+            child: StreamBuilder<IPleromaApiMediaAttachment?>(
               stream: selectedMediaAttachmentStream,
               initialData: selectedMediaAttachment,
               builder: (context, snapshot) {
@@ -247,7 +247,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
     required this.mediaAttachment,
   }) : super(key: key);
 
-  final IPleromaMediaAttachment mediaAttachment;
+  final IPleromaApiMediaAttachment mediaAttachment;
 
   @override
   Widget build(BuildContext context) {
@@ -302,7 +302,7 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
     required this.mediaAttachment,
   }) : super(key: key);
 
-  final IPleromaMediaAttachment mediaAttachment;
+  final IPleromaApiMediaAttachment mediaAttachment;
 
   @override
   Widget build(BuildContext context) {
@@ -352,7 +352,7 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
 
 void goToSingleMediaAttachmentDetailsPage(
   BuildContext context, {
-  required IPleromaMediaAttachment mediaAttachment,
+  required IPleromaApiMediaAttachment mediaAttachment,
 }) {
   Navigator.push(
     context,
@@ -366,8 +366,8 @@ void goToSingleMediaAttachmentDetailsPage(
 
 void goToMultiMediaAttachmentDetailsPage(
   BuildContext context, {
-  required List<IPleromaMediaAttachment> mediaAttachments,
-  required IPleromaMediaAttachment? initialMediaAttachment,
+  required List<IPleromaApiMediaAttachment> mediaAttachments,
+  required IPleromaApiMediaAttachment? initialMediaAttachment,
 }) {
   Navigator.push(
     context,

@@ -4,31 +4,32 @@ import 'package:fedi/web_sockets/channel/web_sockets_channel.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaWebSocketsService extends DisposableOwner {
-  static IPleromaWebSocketsService of(BuildContext context, {listen = true}) =>
+abstract class IPleromaApiWebSocketsService extends DisposableOwner {
+  static IPleromaApiWebSocketsService of(BuildContext context,
+          {listen = true}) =>
       Provider.of(context, listen: listen);
 
   /// Returns events that are relevant to user with accountId
-  IWebSocketsChannel<PleromaWebSocketsEvent> getMyAccountChannel({
+  IWebSocketsChannel<PleromaApiWebSocketsEvent> getMyAccountChannel({
     required bool notification,
     required bool chat,
   });
 
   /// Returns events that are relevant to the authorized user,
   /// i.e. home timeline and notifications
-  IWebSocketsChannel<PleromaWebSocketsEvent> getAccountChannel({
+  IWebSocketsChannel<PleromaApiWebSocketsEvent> getAccountChannel({
     required String? accountId,
     required bool notification,
   });
 
   /// Returns all direct events
   // todo: why we need account id here?
-  IWebSocketsChannel<PleromaWebSocketsEvent> getDirectChannel({
+  IWebSocketsChannel<PleromaApiWebSocketsEvent> getDirectChannel({
     required String? accountId,
   });
 
   /// Returns all public events
-  IWebSocketsChannel<PleromaWebSocketsEvent> getPublicChannel({
+  IWebSocketsChannel<PleromaApiWebSocketsEvent> getPublicChannel({
     required bool? onlyLocal,
     required bool? onlyRemote,
     required bool? onlyMedia,
@@ -37,13 +38,13 @@ abstract class IPleromaWebSocketsService extends DisposableOwner {
 
   /// Returns all public events for a particular hashtag
   /// local support mentioned in Mastodon docs but not implemented in Pleroma
-  IWebSocketsChannel<PleromaWebSocketsEvent> getHashtagChannel({
+  IWebSocketsChannel<PleromaApiWebSocketsEvent> getHashtagChannel({
     required String? hashtag,
     required bool? local,
   });
 
   /// Return events for a list
-  IWebSocketsChannel<PleromaWebSocketsEvent> getListChannel({
+  IWebSocketsChannel<PleromaApiWebSocketsEvent> getListChannel({
     required String? listId,
   });
 }

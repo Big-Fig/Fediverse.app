@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IAuthHostApplicationLocalPreferenceBloc
-    implements LocalPreferenceBloc<PleromaClientApplication?> {
+    implements LocalPreferenceBloc<PleromaApiClientApplication?> {
   static IAuthHostApplicationLocalPreferenceBloc of(
     BuildContext context, {
     bool listen = true,

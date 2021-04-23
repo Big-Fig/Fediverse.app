@@ -14,7 +14,7 @@ abstract class IScheduledStatusRepository
         IAppRemoteReadWriteRepository<
             DbScheduledStatus,
             IScheduledStatus,
-            IPleromaScheduledStatus,
+            IPleromaApiScheduledStatus,
             int,
             String,
             ScheduledStatusRepositoryFilters, ScheduledStatusRepositoryOrderingTermData> {

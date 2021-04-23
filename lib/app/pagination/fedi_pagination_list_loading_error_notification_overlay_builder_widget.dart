@@ -72,7 +72,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
     if (error is CantUpdateFromNetworkException) {
       return S.of(context).app_list_cantUpdateFromNetwork;
     } else {
-      if (error is PleromaRestException &&
+      if (error is PleromaApiRestException &&
           error.decodedErrorDescriptionOrBody.isNotEmpty == true) {
         return error.decodedErrorDescriptionOrBody;
       } else {

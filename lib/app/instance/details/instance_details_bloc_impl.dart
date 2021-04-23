@@ -9,13 +9,13 @@ abstract class InstanceDetailsBloc extends AsyncInitLoadingBloc
     implements IInstanceDetailsBloc {
   @override
   final Uri instanceUri;
-  final BehaviorSubject<IPleromaInstance?> instanceSubject;
+  final BehaviorSubject<IPleromaApiInstance?> instanceSubject;
 
   @override
   final RefreshController refreshController;
 
   InstanceDetailsBloc({
-    required IPleromaInstance? initialInstance,
+    required IPleromaApiInstance? initialInstance,
     required this.instanceUri,
   }) :
         refreshController = RefreshController(),
@@ -26,19 +26,19 @@ abstract class InstanceDetailsBloc extends AsyncInitLoadingBloc
     });
   }
 
-  IPleromaInstanceService get pleromaInstanceService;
+  IPleromaApiInstanceService get pleromaInstanceService;
 
   @override
-  IPleromaInstance? get instance => instanceSubject.value;
+  IPleromaApiInstance? get instance => instanceSubject.value;
 
   @override
-  Stream<IPleromaInstance?> get instanceStream => instanceSubject.stream;
+  Stream<IPleromaApiInstance?> get instanceStream => instanceSubject.stream;
 
   @override
   bool get isPleroma => instance!.isPleroma;
 
   @override
-  Future<IPleromaInstance> refresh() async{
+  Future<IPleromaApiInstance> refresh() async{
     var instance = await pleromaInstanceService.getInstance();
     instanceSubject.add(instance);
 

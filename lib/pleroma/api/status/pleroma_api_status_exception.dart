@@ -1,7 +1,7 @@
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_model.dart';
 
-class PleromaStatusException extends PleromaRestException {
-  PleromaStatusException({
+class PleromaApiStatusException extends PleromaApiRestException {
+  PleromaApiStatusException({
     required int statusCode,
     required String body,
   }) : super(

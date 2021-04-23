@@ -22,7 +22,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbAccount,
     DbAccountPopulated,
     IAccount,
-    IPleromaAccount,
+    IPleromaApiAccount,
     int,
     String,
     $DbAccountsTable,
@@ -61,7 +61,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   Future upsertRemoteAccount(
-    IPleromaAccount pleromaAccount, {
+    IPleromaApiAccount pleromaAccount, {
     required String? conversationRemoteId,
     required String? chatRemoteId,
     required Batch? batchTransaction,
@@ -93,7 +93,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   Future _upsertRemoteAccountMetadata(
-    IPleromaAccount pleromaAccount, {
+    IPleromaApiAccount pleromaAccount, {
     required String? conversationRemoteId,
     required String? chatRemoteId,
     required Batch? batchTransaction,
@@ -141,7 +141,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future addAccountFollowings({
     required String accountRemoteId,
-    required List<PleromaAccount> followings,
+    required List<PleromaApiAccount> followings,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -181,7 +181,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future addAccountFollowers({
     required String accountRemoteId,
-    required List<IPleromaAccount> followers,
+    required List<IPleromaApiAccount> followers,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -221,7 +221,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future updateStatusFavouritedBy({
     required String statusRemoteId,
-    required List<IPleromaAccount> favouritedByAccounts,
+    required List<IPleromaApiAccount> favouritedByAccounts,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -263,7 +263,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future updateStatusRebloggedBy({
     required String statusRemoteId,
-    required List<IPleromaAccount> rebloggedByAccounts,
+    required List<IPleromaApiAccount> rebloggedByAccounts,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -379,15 +379,15 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   DbAccount mapAppItemToDbItem(IAccount appItem) => appItem.toDbAccount();
 
   @override
-  IPleromaAccount mapAppItemToRemoteItem(IAccount appItem) =>
-      appItem.toPleromaAccount();
+  IPleromaApiAccount mapAppItemToRemoteItem(IAccount appItem) =>
+      appItem.toPleromaApiAccount();
 
   @override
-  DbAccount mapRemoteItemToDbItem(IPleromaAccount remoteItem) =>
+  DbAccount mapRemoteItemToDbItem(IPleromaApiAccount remoteItem) =>
       remoteItem.toDbAccount();
 
   @override
-  IAccount mapRemoteItemToAppItem(IPleromaAccount appItem) =>
+  IAccount mapRemoteItemToAppItem(IPleromaApiAccount appItem) =>
       appItem.toDbAccountWrapper();
 
   @override
@@ -399,9 +399,9 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       DbAccountPopulatedWrapper(dbAccountPopulated: dbPopulatedItem);
 
   @override
-  IPleromaAccount mapDbPopulatedItemToRemoteItem(
+  IPleromaApiAccount mapDbPopulatedItemToRemoteItem(
           DbAccountPopulated dbPopulatedItem) =>
-      mapDbPopulatedItemToAppItem(dbPopulatedItem).toPleromaAccount();
+      mapDbPopulatedItemToAppItem(dbPopulatedItem).toPleromaApiAccount();
 
   @override
   AccountRepositoryFilters get emptyFilters => AccountRepositoryFilters.empty;
@@ -424,7 +424,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<int> insertInRemoteType(
-    IPleromaAccount remoteItem, {
+    IPleromaApiAccount remoteItem, {
     required InsertMode? mode,
   }) async {
     await _upsertRemoteAccountMetadata(
@@ -444,7 +444,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    IPleromaAccount remoteItem, {
+    IPleromaApiAccount remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) {
@@ -460,7 +460,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<void> updateAppTypeByRemoteType({
     required IAccount appItem,
-    required IPleromaAccount remoteItem,
+    required IPleromaApiAccount remoteItem,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -505,7 +505,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertChatRemoteAccount(
-    IPleromaAccount remoteAccount, {
+    IPleromaApiAccount remoteAccount, {
     required String chatRemoteId,
     required Batch? batchTransaction,
   }) =>
@@ -518,7 +518,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertChatRemoteAccounts(
-    List<IPleromaAccount> remoteAccounts, {
+    List<IPleromaApiAccount> remoteAccounts, {
     required String chatRemoteId,
     required Batch? batchTransaction,
   }) async {
@@ -545,7 +545,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertConversationRemoteAccount(
-    IPleromaAccount remoteAccount, {
+    IPleromaApiAccount remoteAccount, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   }) =>
@@ -558,7 +558,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertConversationRemoteAccounts(
-    List<IPleromaAccount> remoteAccounts, {
+    List<IPleromaApiAccount> remoteAccounts, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   }) async {

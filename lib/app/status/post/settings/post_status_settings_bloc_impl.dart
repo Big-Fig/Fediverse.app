@@ -35,15 +35,15 @@ class PostStatusSettingsBloc
   }
 
   @override
-  PleromaVisibility get defaultVisibility =>
+  PleromaApiVisibility get defaultVisibility =>
       settingsData.defaultVisibilityPleroma;
 
   @override
-  Stream<PleromaVisibility> get defaultVisibilityStream =>
+  Stream<PleromaApiVisibility> get defaultVisibilityStream =>
       settingsDataStream.map((settings) => settings.defaultVisibilityPleroma);
 
   @override
-  void changeDefaultVisibility(PleromaVisibility value) {
+  void changeDefaultVisibility(PleromaApiVisibility value) {
     updateInstanceSettings(
       settingsData.copyWith(
         defaultVisibilityString: value.toJsonValue(),

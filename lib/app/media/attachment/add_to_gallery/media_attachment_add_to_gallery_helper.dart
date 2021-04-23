@@ -12,7 +12,7 @@ var _logger = Logger("media_attachment_add_to_gallery_helper.dart");
 
 Future<bool> addMediaAttachmentToGallery({
   required BuildContext context,
-  required IPleromaMediaAttachment mediaAttachment,
+  required IPleromaApiMediaAttachment mediaAttachment,
 }) async {
   _logger.finest(() => "addMediaAttachmentToGallery start");
 
@@ -33,7 +33,7 @@ Future<bool> addMediaAttachmentToGallery({
   return result;
 }
 
-Future<bool?> _save(IPleromaMediaAttachment mediaAttachment) async {
+Future<bool?> _save(IPleromaApiMediaAttachment mediaAttachment) async {
   bool? saved;
   var typeMastodon = mediaAttachment.typeAsMastodonApi;
   if (typeMastodon == MastodonApiMediaAttachmentType.image) {

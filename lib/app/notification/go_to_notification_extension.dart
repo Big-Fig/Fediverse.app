@@ -16,7 +16,7 @@ extension GoToNotificationExtension on INotification {
         INotificationRepository.of(context, listen: false);
 
     var pleromaNotificationService =
-        IPleromaNotificationService.of(context, listen: false);
+        IPleromaApiNotificationService.of(context, listen: false);
 
     unawaited(
       notificationRepository.markAsRead(
@@ -34,7 +34,7 @@ extension GoToNotificationExtension on INotification {
     var status = this.status;
     var account = this.account;
     var chatRemoteId = this.chatRemoteId;
-    if (typePleroma == PleromaNotificationType.followRequest) {
+    if (typePleroma == PleromaApiNotificationType.followRequest) {
       await goToMyAccountFollowRequestListPage(context);
     } else if (status != null) {
       await goToLocalStatusThreadPage(

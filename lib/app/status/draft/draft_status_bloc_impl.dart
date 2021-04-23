@@ -17,7 +17,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   // ignore: close_sinks
   final BehaviorSubject<IDraftStatus> _draftStatusSubject;
 
-  final IPleromaAuthStatusService pleromaAuthStatusService;
+  final IPleromaApiAuthStatusService pleromaAuthStatusService;
   final IDraftStatusRepository draftStatusRepository;
   final IScheduledStatusRepository scheduledStatusRepository;
   final IStatusRepository statusRepository;
@@ -88,7 +88,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   }) =>
       DraftStatusBloc(
         pleromaAuthStatusService:
-            IPleromaAuthStatusService.of(context, listen: false),
+            IPleromaApiAuthStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         draftStatusRepository:
             IDraftStatusRepository.of(context, listen: false),

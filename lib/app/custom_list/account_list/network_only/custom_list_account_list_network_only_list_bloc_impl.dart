@@ -3,7 +3,7 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:logging/logging.dart';
@@ -14,7 +14,7 @@ final _logger =
 class CustomListAccountListNetworkOnlyListBloc extends DisposableOwner
     implements ICustomListAccountListNetworkOnlyListBloc {
   final ICustomList? customList;
-  final IPleromaListService pleromaListService;
+  final IPleromaApiListService pleromaListService;
 
   @override
   IPleromaApi get pleromaApi => pleromaListService;
@@ -36,7 +36,7 @@ class CustomListAccountListNetworkOnlyListBloc extends DisposableOwner
       result = [];
     } else {
       var pleromaAccounts = await pleromaListService.getListAccounts(
-        pagination: PleromaPaginationRequest(
+        pagination: PleromaApiPaginationRequest(
           limit: itemsCountPerPage,
           sinceId: minId,
           maxId: maxId,

@@ -556,8 +556,8 @@ void main() {
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
         excludeVisibilities: [
-          PleromaVisibility.direct,
-          PleromaVisibility.unlisted,
+          PleromaApiVisibility.direct,
+          PleromaApiVisibility.unlisted,
         ],
       ),
       pagination: null,
@@ -570,7 +570,7 @@ void main() {
         seed: "seed1",
         dbAccount: dbAccount,
       ))
-          .copyWith(visibility: PleromaVisibility.direct),
+          .copyWith(visibility: PleromaApiVisibility.direct),
     );
 
     expect((await query.get()).length, 0);
@@ -581,7 +581,7 @@ void main() {
         seed: "seed2",
         dbAccount: dbAccount,
       ))
-          .copyWith(visibility: PleromaVisibility.unlisted),
+          .copyWith(visibility: PleromaApiVisibility.unlisted),
     );
 
     expect((await query.get()).length, 0);
@@ -592,7 +592,7 @@ void main() {
         seed: "seed3",
         dbAccount: dbAccount,
       ))
-          .copyWith(visibility: PleromaVisibility.public),
+          .copyWith(visibility: PleromaApiVisibility.public),
     );
 
     expect((await query.get()).length, 1);
@@ -603,7 +603,7 @@ void main() {
         seed: "seed4",
         dbAccount: dbAccount,
       ))
-          .copyWith(visibility: PleromaVisibility.list),
+          .copyWith(visibility: PleromaApiVisibility.list),
     );
 
     expect((await query.get()).length, 2);
@@ -1038,7 +1038,7 @@ void main() {
               remoteId: followingAccountRemoteId,
             ),
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -2332,7 +2332,7 @@ void main() {
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
         replyVisibilityFilterCondition: PleromaReplyVisibilityFilterCondition(
-          replyVisibilityFilter: PleromaReplyVisibilityFilter.self,
+          replyVisibilityFilter: PleromaApiReplyVisibilityFilter.self,
           myAccountRemoteId: myDbAccount.remoteId,
         ),
       ),
@@ -2381,7 +2381,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -2408,7 +2408,7 @@ void main() {
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
         replyVisibilityFilterCondition: PleromaReplyVisibilityFilterCondition(
-          replyVisibilityFilter: PleromaReplyVisibilityFilter.following,
+          replyVisibilityFilter: PleromaApiReplyVisibilityFilter.following,
           myAccountRemoteId: myDbAccount.remoteId,
         ),
       ),
@@ -2457,7 +2457,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount3,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
