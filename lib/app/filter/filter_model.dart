@@ -1,5 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/mastodon/api/filter/mastodon_filter_model.dart';
+import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 
 class FilterState {
   final bool? dismissed;
@@ -36,7 +36,7 @@ abstract class IFilter {
 
   List<String> get context;
 
-  List<MastodonFilterContextType> get contextAsMastodonFilterContextType;
+  List<MastodonApiFilterContextType> get contextAsMastodonApiFilterContextType;
 
   DateTime? get expiresAt;
 
@@ -95,10 +95,10 @@ class DbFilterPopulatedWrapper implements IFilter {
   }
 
   @override
-  List<MastodonFilterContextType> get contextAsMastodonFilterContextType =>
+  List<MastodonApiFilterContextType> get contextAsMastodonApiFilterContextType =>
       context
           .map(
-            (contextString) => contextString.toMastodonFilterContextType(),
+            (contextString) => contextString.toMastodonApiFilterContextType(),
           )
           .toList();
 

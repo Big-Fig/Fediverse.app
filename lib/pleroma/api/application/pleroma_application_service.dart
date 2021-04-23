@@ -1,4 +1,4 @@
-import 'package:fedi/mastodon/api/application/mastodon_application_model.dart';
+import 'package:fedi/mastodon/api/application/mastodon_api_application_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/application/pleroma_application_model.dart';
 import 'package:flutter/widgets.dart';
@@ -12,7 +12,7 @@ abstract class IPleromaApplicationService implements IPleromaApi {
       Provider.of<IPleromaApplicationService>(context, listen: listen);
 
   Future<IPleromaClientApplication?> registerApp({
-    required MastodonApplicationRegistrationRequest registrationRequest,
+    required MastodonApiApplicationRegistrationRequest registrationRequest,
   });
 
   Future<IPleromaApplication?> verifyCredentials({

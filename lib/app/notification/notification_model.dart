@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/mastodon/api/notification/mastodon_notification_model.dart';
+import 'package:fedi/mastodon/api/notification/mastodon_api_notification_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_notification_model.dart';
@@ -57,7 +57,7 @@ abstract class INotification {
 
   PleromaNotificationType get typePleroma;
 
-  MastodonNotificationType get typeMastodon;
+  MastodonApiNotificationType get typeAsMastodonApi;
 
   String? get emoji;
 
@@ -82,7 +82,7 @@ abstract class INotification {
     String? emoji,
     PleromaNotificationPleromaPart? pleroma,
     IAccount? account,
-    MastodonNotificationType? type,
+    MastodonApiNotificationType? type,
     bool? dismissed,
   });
 }
@@ -134,8 +134,8 @@ class DbNotificationPopulatedWrapper implements INotification {
       dbNotificationPopulated.dbNotification.pleroma;
 
   @override
-  MastodonNotificationType get typeMastodon =>
-      type.toMastodonNotificationType();
+  MastodonApiNotificationType get typeAsMastodonApi =>
+      type.toMastodonApiNotificationType();
 
   @override
   PleromaNotificationType get typePleroma => type.toPleromaNotificationType();
@@ -161,7 +161,7 @@ class DbNotificationPopulatedWrapper implements INotification {
     IAccount? account,
     String? emoji,
     PleromaNotificationPleromaPart? pleroma,
-    MastodonNotificationType? type,
+    MastodonApiNotificationType? type,
     bool? dismissed,
   }) =>
       DbNotificationPopulatedWrapper(

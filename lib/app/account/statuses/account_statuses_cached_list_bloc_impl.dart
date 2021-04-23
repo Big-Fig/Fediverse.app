@@ -8,7 +8,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/mastodon/api/filter/mastodon_filter_model.dart';
+import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
@@ -62,7 +62,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
         filters: FilterRepositoryFilters(
           notExpired: true,
           onlyWithContextTypes: [
-            MastodonFilterContextType.account,
+            MastodonApiFilterContextType.account,
           ],
         ),
         pagination: null,

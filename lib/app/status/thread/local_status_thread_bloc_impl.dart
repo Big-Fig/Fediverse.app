@@ -7,7 +7,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/mastodon/api/filter/mastodon_filter_model.dart';
+import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_status_service.dart';
@@ -73,7 +73,7 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
     var filters = await filterRepository.findAllInAppType(
       filters: FilterRepositoryFilters(
         onlyWithContextTypes: [
-          MastodonFilterContextType.thread,
+          MastodonApiFilterContextType.thread,
         ],
         notExpired: true,
       ),

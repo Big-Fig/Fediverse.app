@@ -1,4 +1,4 @@
-import 'package:fedi/mastodon/api/search/mastodon_search_model.dart';
+import 'package:fedi/mastodon/api/search/mastodon_api_search_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/api/search/pleroma_search_model.dart';

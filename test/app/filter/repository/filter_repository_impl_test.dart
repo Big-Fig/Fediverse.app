@@ -3,7 +3,7 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
-import 'package:fedi/mastodon/api/filter/mastodon_filter_model.dart';
+import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
@@ -225,7 +225,7 @@ void main() {
     var query = filterRepository.createQuery(
       filters: FilterRepositoryFilters(
         onlyWithContextTypes: [
-          MastodonFilterContextType.homeAndCustomLists,
+          MastodonApiFilterContextType.homeAndCustomLists,
         ],
       ),
       pagination: null,
@@ -272,8 +272,8 @@ void main() {
     var query = filterRepository.createQuery(
       filters: FilterRepositoryFilters(
         onlyWithContextTypes: [
-          MastodonFilterContextType.homeAndCustomLists,
-          MastodonFilterContextType.public,
+          MastodonApiFilterContextType.homeAndCustomLists,
+          MastodonApiFilterContextType.public,
         ],
       ),
       pagination: null,
@@ -320,7 +320,7 @@ void main() {
     var query = filterRepository.createQuery(
       filters: FilterRepositoryFilters(
         onlyWithContextTypes: [
-          MastodonFilterContextType.homeAndCustomLists,
+          MastodonApiFilterContextType.homeAndCustomLists,
         ],
         notExpired: true,
       ),

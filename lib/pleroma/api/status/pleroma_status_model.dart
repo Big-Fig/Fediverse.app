@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:fedi/mastodon/api/status/mastodon_status_model.dart';
-import 'package:fedi/mastodon/api/visibility/mastodon_visibility_model.dart';
+import 'package:fedi/mastodon/api/status/mastodon_api_status_model.dart';
+import 'package:fedi/mastodon/api/visibility/mastodon_api_visibility_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/application/pleroma_application_model.dart';
 import 'package:fedi/pleroma/api/card/pleroma_card_model.dart';
@@ -19,7 +19,7 @@ part 'pleroma_status_model.g.dart';
 
 Function eq = const ListEquality().equals;
 
-abstract class IPleromaStatus implements IMastodonStatus {
+abstract class IPleromaStatus implements IMastodonApiStatus {
   @override
   IPleromaApplication? get application;
 
@@ -104,7 +104,7 @@ extension IPleromaStatusExtension on IPleromaStatus {
   }
 }
 
-abstract class IPleromaScheduledStatus extends IMastodonScheduledStatus {
+abstract class IPleromaScheduledStatus extends IMastodonApiScheduledStatus {
   @override
   IPleromaScheduledStatusParams get params;
 
@@ -113,7 +113,7 @@ abstract class IPleromaScheduledStatus extends IMastodonScheduledStatus {
 }
 
 abstract class IPleromaScheduledStatusParams
-    extends IMastodonScheduledStatusParams {
+    extends IMastodonApiScheduledStatusParams {
   List<String>? get to;
 
   String? get inReplyToConversationId;
@@ -382,8 +382,8 @@ class PleromaStatus extends IPleromaStatus {
   String visibility;
 
   @override
-  MastodonVisibility get visibilityMastodon =>
-      visibility.toMastodonVisibility();
+  MastodonApiVisibility get visibilityAsMastodonApi =>
+      visibility.toMastodonApiVisibility();
 
   @override
   PleromaVisibility get visibilityPleroma => visibility.toPleromaVisibility();
@@ -649,7 +649,7 @@ class PleromaStatusPleromaPart {
 }
 
 abstract class IPleromaPostStatusBase
-    implements IMastodonPostStatusBaseRequest {
+    implements IMastodonApiPostStatusBaseRequest {
   PleromaVisibility get pleromaVisibility;
 
   /// Will reply to a given conversation,
@@ -686,7 +686,7 @@ abstract class IPleromaPostStatusBase
 }
 
 abstract class IPleromaPostStatusPoll
-    implements IMastodonPostStatusRequestPoll {}
+    implements IMastodonApiPostStatusRequestPoll {}
 
 @JsonSerializable()
 class PleromaPostStatusPoll implements IPleromaPostStatusPoll {
@@ -724,10 +724,10 @@ class PleromaPostStatusPoll implements IPleromaPostStatusPoll {
 }
 
 abstract class IPleromaPostStatus
-    implements IPleromaPostStatusBase, IMastodonPostStatusRequest {}
+    implements IPleromaPostStatusBase, IMastodonApiPostStatusRequest {}
 
 abstract class IPleromaScheduleStatus
-    implements IPleromaPostStatusBase, IMastodonScheduleStatusRequest {}
+    implements IPleromaPostStatusBase, IMastodonApiScheduleStatusRequest {}
 
 @JsonSerializable()
 class PleromaPostStatus implements IPleromaPostStatus {
@@ -754,8 +754,8 @@ class PleromaPostStatus implements IPleromaPostStatus {
 
   @JsonKey(ignore: true)
   @override
-  MastodonVisibility get mastodonVisibility =>
-      visibility.toMastodonVisibility();
+  MastodonApiVisibility get visibilityAsMastodonApi =>
+      visibility.toMastodonApiVisibility();
 
   @JsonKey(ignore: true)
   @override
@@ -845,8 +845,8 @@ class PleromaScheduleStatus implements IPleromaScheduleStatus {
 
   @JsonKey(ignore: true)
   @override
-  MastodonVisibility get mastodonVisibility =>
-      visibility.toMastodonVisibility();
+  MastodonApiVisibility get visibilityAsMastodonApi =>
+      visibility.toMastodonApiVisibility();
 
   @JsonKey(ignore: true)
   @override

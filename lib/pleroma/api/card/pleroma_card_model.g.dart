@@ -18,7 +18,7 @@ PleromaCard _$PleromaCardFromJson(Map<String, dynamic> json) {
     providerName: json['provider_name'] as String?,
     providerUrl: json['provider_url'] as String?,
     title: json['title'] as String?,
-    type: _$enumDecodeNullable(_$MastodonCardTypeEnumMap, json['type']),
+    type: _$enumDecodeNullable(_$MastodonApiCardTypeEnumMap, json['type']),
     url: json['url'] as String?,
     width: json['width'] as int?,
   );
@@ -36,7 +36,7 @@ Map<String, dynamic> _$PleromaCardToJson(PleromaCard instance) =>
       'provider_name': instance.providerName,
       'provider_url': instance.providerUrl,
       'title': instance.title,
-      'type': _$MastodonCardTypeEnumMap[instance.type],
+      'type': _$MastodonApiCardTypeEnumMap[instance.type],
       'url': instance.url,
       'width': instance.width,
     };
@@ -78,10 +78,10 @@ K? _$enumDecodeNullable<K, V>(
   return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$MastodonCardTypeEnumMap = {
-  MastodonCardType.link: 'link',
-  MastodonCardType.photo: 'photo',
-  MastodonCardType.video: 'video',
-  MastodonCardType.rich: 'rich',
-  MastodonCardType.unknown: 'unknown',
+const _$MastodonApiCardTypeEnumMap = {
+  MastodonApiCardType.link: 'link',
+  MastodonApiCardType.photo: 'photo',
+  MastodonApiCardType.video: 'video',
+  MastodonApiCardType.rich: 'rich',
+  MastodonApiCardType.unknown: 'unknown',
 };

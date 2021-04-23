@@ -1,4 +1,4 @@
-abstract class IMastodonEmoji {
+abstract class IMastodonApiEmoji {
   String? get shortcode;
 
   String? get url;

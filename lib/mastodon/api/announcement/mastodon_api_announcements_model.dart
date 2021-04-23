@@ -1,4 +1,4 @@
-abstract class IMastodonAnnouncement {
+abstract class IMastodonApiAnnouncement {
   String? get id;
 
   String? get text;
@@ -13,7 +13,7 @@ abstract class IMastodonAnnouncement {
 
   bool? get read;
 
-  List<IMastodonAnnouncementReaction>? get reactions;
+  List<IMastodonApiAnnouncementReaction>? get reactions;
 
   // nullable
   DateTime? get scheduledAt;
@@ -25,7 +25,7 @@ abstract class IMastodonAnnouncement {
   DateTime? get endsAt;
 }
 
-abstract class IMastodonAnnouncementReaction {
+abstract class IMastodonApiAnnouncementReaction {
   String? get name;
 
   int? get count;

@@ -1,4 +1,4 @@
-abstract class IMastodonPoll {
+abstract class IMastodonApiPoll {
   String? get id;
 
   DateTime get expiresAt;
@@ -18,7 +18,7 @@ abstract class IMastodonPoll {
   List<IMastodonPollOption> get options;
 }
 
-extension IMastodonPollExtension on IMastodonPoll {
+extension IMastodonPollExtension on IMastodonApiPoll {
   bool get isPossibleToVote => expired != true && voted != true;
 }
 

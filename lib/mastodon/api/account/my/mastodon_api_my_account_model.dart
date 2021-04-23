@@ -1,7 +1,7 @@
-import 'package:fedi/mastodon/api/account/mastodon_account_model.dart';
-import 'package:fedi/mastodon/api/field/mastodon_field_model.dart';
+import 'package:fedi/mastodon/api/account/mastodon_api_account_model.dart';
+import 'package:fedi/mastodon/api/field/mastodon_api_field_model.dart';
 
-abstract class IMastodonMyAccountEdit {
+abstract class IMastodonApiMyAccountEdit {
 
   /// Whether the account should be shown in the profile directory.
   bool? get discoverable;
@@ -17,36 +17,36 @@ abstract class IMastodonMyAccountEdit {
   /// Whether manual approval of follow requests is required.
   bool? get locked;
 
-  IMastodonMyAccountEditSource? get source;
+  IMastodonApiMyAccountEditSource? get source;
 
   /// Profile metadata name and value.
   /// (By default, max 4 fields and 255 characters per property/value)
-  Map<int, IMastodonField>? get fieldsAttributes;
+  Map<int, IMastodonApiField>? get fieldsAttributes;
 }
 
-abstract class IMastodonMyAccount implements IMastodonAccount {
+abstract class IMastodonApiMyAccount implements IMastodonApiAccount {
   /// Note the extra source property,
   /// which is not visible on accounts other than your own.
   /// Also note that plain-text is used within source and
   /// HTML is used for their corresponding properties such as note and fields.
-  IMastodonMyAccountSource? get source;
+  IMastodonApiMyAccountSource? get source;
 
   bool? get discoverable;
 }
 
-abstract class IMastodonMyAccountSource
-    implements IMastodonMyAccountEditSource {
+abstract class IMastodonApiMyAccountSource
+    implements IMastodonApiMyAccountEditSource {
   /// Profile bio.
   String? get note;
 
   /// Metadata about the account.
-  List<IMastodonField>? get fields;
+  List<IMastodonApiField>? get fields;
 
   /// The number of pending follow requests.
   int? get followRequestsCount;
 }
 
-abstract class IMastodonMyAccountEditSource {
+abstract class IMastodonApiMyAccountEditSource {
   /// The default post privacy to be used for new statuses.
   String? get privacy;
 
@@ -58,5 +58,5 @@ abstract class IMastodonMyAccountEditSource {
 }
 
 extension IMastodonMyAccountEditSourceExtension
-    on IMastodonMyAccountEditSource {
+    on IMastodonApiMyAccountEditSource {
 }

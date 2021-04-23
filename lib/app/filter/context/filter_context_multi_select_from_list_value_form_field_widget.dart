@@ -3,7 +3,7 @@ import 'package:fedi/app/form/field/value/select_from_list/multi/multi_select_fr
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc_proxy_provider.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/mastodon/api/filter/mastodon_filter_model.dart';
+import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -22,10 +22,10 @@ class FilterContextMultiSelectFromListValueFormFieldWidget
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IFilterContextMultiSelectFromListValueFormFieldBloc,
-        IMultiSelectFromListValueFormFieldBloc<MastodonFilterContextType>>(
+        IMultiSelectFromListValueFormFieldBloc<MastodonApiFilterContextType>>(
       update: (context, value, _) => value,
       child: MultiSelectFromListValueFormFieldBlocProxyProvider<
-          MastodonFilterContextType>(
+          MastodonApiFilterContextType>(
         child: MultiSelectFromListValueFormFieldRowWidget(
           label: label,
           description: description,
@@ -39,21 +39,21 @@ class FilterContextMultiSelectFromListValueFormFieldWidget
     );
   }
 
-  String mapValueToTitle(BuildContext context, MastodonFilterContextType contextType) {
+  String mapValueToTitle(BuildContext context, MastodonApiFilterContextType contextType) {
 
     switch(contextType) {
 
-      case MastodonFilterContextType.homeAndCustomLists:
+      case MastodonApiFilterContextType.homeAndCustomLists:
         return S.of(context).app_filter_context_type_home_and_lists;
-      case MastodonFilterContextType.notifications:
+      case MastodonApiFilterContextType.notifications:
         return S.of(context).app_filter_context_type_notifications;
-      case MastodonFilterContextType.public:
+      case MastodonApiFilterContextType.public:
         return S.of(context).app_filter_context_type_public;
-      case MastodonFilterContextType.thread:
+      case MastodonApiFilterContextType.thread:
         return S.of(context).app_filter_context_type_threads;
-      case MastodonFilterContextType.account:
+      case MastodonApiFilterContextType.account:
         return S.of(context).app_filter_context_type_account;
-      case MastodonFilterContextType.unknown:
+      case MastodonApiFilterContextType.unknown:
         return S.of(context).app_filter_context_type_unknown;
     }
   }

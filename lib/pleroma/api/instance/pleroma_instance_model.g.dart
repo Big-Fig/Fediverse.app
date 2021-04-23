@@ -290,12 +290,12 @@ class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
       pollLimits: fields[9] as PleromaInstancePollLimits?,
       registrations: fields[10] as bool?,
       shortDescription: fields[11] as String?,
-      stats: fields[12] as MastodonInstanceStats?,
+      stats: fields[12] as MastodonApiInstanceStats?,
       thumbnail: fields[13] as String?,
       title: fields[14] as String?,
       uploadLimit: fields[15] as int?,
       uri: fields[16] as String?,
-      urls: fields[17] as MastodonUrls?,
+      urls: fields[17] as MastodonApiUrls?,
       vapidPublicKey: fields[18] as String?,
       version: fields[19] as String?,
       backgroundImage: fields[20] as String?,
@@ -554,14 +554,15 @@ PleromaInstance _$PleromaInstanceFromJson(Map<String, dynamic> json) {
     shortDescription: json['short_description'] as String?,
     stats: json['stats'] == null
         ? null
-        : MastodonInstanceStats.fromJson(json['stats'] as Map<String, dynamic>),
+        : MastodonApiInstanceStats.fromJson(
+            json['stats'] as Map<String, dynamic>),
     thumbnail: json['thumbnail'] as String?,
     title: json['title'] as String?,
     uploadLimit: json['upload_limit'] as int?,
     uri: json['uri'] as String?,
     urls: json['urls'] == null
         ? null
-        : MastodonUrls.fromJson(json['urls'] as Map<String, dynamic>),
+        : MastodonApiUrls.fromJson(json['urls'] as Map<String, dynamic>),
     vapidPublicKey: json['vapid_public_key'] as String?,
     version: json['version'] as String?,
     backgroundImage: json['background_image'] as String?,

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/duration/duration_extension.dart';
-import 'package:fedi/mastodon/api/instance/mastodon_instance_model.dart';
+import 'package:fedi/mastodon/api/instance/mastodon_api_instance_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -12,7 +12,7 @@ part 'pleroma_instance_model.g.dart';
 
 final _logger = Logger("pleroma_instance_model.dart");
 
-abstract class IPleromaInstanceHistory extends IMastodonInstanceHistory {}
+abstract class IPleromaInstanceHistory extends IMastodonApiInstanceHistory {}
 
 enum PleromaInstanceVersionType { pleroma, mastodon, unknown }
 
@@ -129,7 +129,7 @@ class PleromaInstanceHistory extends IPleromaInstanceHistory {
   String toJsonString() => jsonEncode(_$PleromaInstanceHistoryToJson(this));
 }
 
-abstract class IPleromaInstance extends IMastodonInstance {
+abstract class IPleromaInstance extends IMastodonApiInstance {
   int? get maxTootChars;
 
   PleromaInstancePollLimits? get pollLimits;
@@ -624,7 +624,7 @@ class PleromaInstance extends IPleromaInstance {
 
   @override
   @HiveField(12)
-  final MastodonInstanceStats? stats;
+  final MastodonApiInstanceStats? stats;
 
   @override
   @HiveField(13)
@@ -645,7 +645,7 @@ class PleromaInstance extends IPleromaInstance {
 
   @override
   @HiveField(17)
-  final MastodonUrls? urls;
+  final MastodonApiUrls? urls;
 
   @override
   @HiveField(18)

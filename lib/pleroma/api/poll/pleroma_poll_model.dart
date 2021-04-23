@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/duration/duration_extension.dart';
-import 'package:fedi/mastodon/api/poll/mastodon_poll_model.dart';
+import 'package:fedi/mastodon/api/poll/mastodon_api_poll_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -12,7 +12,7 @@ part 'pleroma_poll_model.g.dart';
 
 Function eq = const ListEquality().equals;
 
-abstract class IPleromaPoll implements IMastodonPoll {
+abstract class IPleromaPoll implements IMastodonApiPoll {
   @override
   List<IPleromaPollOption> get options;
 }

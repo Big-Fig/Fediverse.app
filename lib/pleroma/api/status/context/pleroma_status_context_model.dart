@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:fedi/mastodon/api/status/context/mastodon_status_context_model.dart';
+import 'package:fedi/mastodon/api/status/context/mastodon_api_status_context_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_status_context_model.g.dart';
 
-abstract class IPleromaStatusContext implements IMastodonStatusContext {
+abstract class IPleromaStatusContext implements IMastodonApiStatusContext {
   @override
   List<IPleromaStatus> get descendants;
 

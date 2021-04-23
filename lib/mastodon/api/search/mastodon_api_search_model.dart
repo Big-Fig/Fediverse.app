@@ -1,10 +1,10 @@
-import 'package:fedi/mastodon/api/account/mastodon_account_model.dart';
-import 'package:fedi/mastodon/api/status/mastodon_status_model.dart';
-import 'package:fedi/mastodon/api/tag/mastodon_tag_model.dart';
+import 'package:fedi/mastodon/api/account/mastodon_api_account_model.dart';
+import 'package:fedi/mastodon/api/status/mastodon_api_status_model.dart';
+import 'package:fedi/mastodon/api/tag/mastodon_api_tag_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:moor/moor.dart' as moor;
 
-abstract class IMastodonSearchRequest {
+abstract class IMastodonApiSearchRequest {
   String get query;
 
   String get accountId;
@@ -33,11 +33,11 @@ enum MastodonSearchRequestType {
 }
 
 abstract class IMastodonSearchResult {
-  List<IMastodonAccount> get accounts;
+  List<IMastodonApiAccount> get accounts;
 
-  List<IMastodonStatus> get statuses;
+  List<IMastodonApiStatus> get statuses;
 
-  List<IMastodonTag> get hashtags;
+  List<IMastodonApiTag> get hashtags;
 }
 
 const _accountsMastodonSearchRequestTypeJsonValue = "accounts";

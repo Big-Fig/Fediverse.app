@@ -1,7 +1,7 @@
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/mastodon/api/instance/mastodon_instance_model.dart';
+import 'package:fedi/mastodon/api/instance/mastodon_api_instance_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_instance_model.dart';
 import 'package:flutter/widgets.dart';
@@ -69,14 +69,14 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
   Stream<PleromaInstanceVersionType?> get versionTypeStream =>
       instanceStream.map((instance) => instance?.versionType);
 
-  MastodonUrls? get urls => instance?.urls;
+  MastodonApiUrls? get urls => instance?.urls;
 
-  Stream<MastodonUrls?> get urlsStream =>
+  Stream<MastodonApiUrls?> get urlsStream =>
       instanceStream.map((instance) => instance?.urls);
 
-  MastodonInstanceStats? get stats => instance?.stats;
+  MastodonApiInstanceStats? get stats => instance?.stats;
 
-  Stream<MastodonInstanceStats?> get statsStream =>
+  Stream<MastodonApiInstanceStats?> get statsStream =>
       instanceStream.map((instance) => instance?.stats);
 
   String? get thumbnail => instance?.thumbnail;

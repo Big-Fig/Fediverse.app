@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:fedi/mastodon/api/account/mastodon_account_model.dart';
+import 'package:fedi/mastodon/api/account/mastodon_api_account_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/api/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
@@ -13,7 +13,7 @@ part 'pleroma_account_model.g.dart';
 // ignore_for_file: no-magic-number
 Function eq = const ListEquality().equals;
 
-abstract class IPleromaAccount implements IMastodonAccount {
+abstract class IPleromaAccount implements IMastodonApiAccount {
   @override
   List<IPleromaField>? get fields;
 
@@ -993,7 +993,7 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
 }
 
 abstract class IPleromaAccountIdentityProof
-    extends IMastodonAccountIdentityProof {}
+    extends IMastodonApiAccountIdentityProof {}
 
 @JsonSerializable()
 class PleromaAccountIdentityProof extends IPleromaAccountIdentityProof {
@@ -1045,7 +1045,7 @@ class PleromaAccountIdentityProof extends IPleromaAccountIdentityProof {
 }
 
 abstract class IPleromaAccountReportRequest
-    implements IMastodonAccountReportRequest {
+    implements IMastodonApiAccountReportRequest {
   Map<String, dynamic> toJson();
 }
 

@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:fedi/mastodon/api/account/mastodon_account_model.dart';
+import 'package:fedi/mastodon/api/account/mastodon_api_account_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 // ignore_for_file: no-magic-number
-part 'mastodon_instance_model.g.dart';
+part 'mastodon_api_instance_model.g.dart';
 
-abstract class IMastodonInstanceHistory {
+abstract class IMastodonApiInstanceHistory {
   String? get week;
 
   String? get statuses;
@@ -17,7 +17,7 @@ abstract class IMastodonInstanceHistory {
   String? get registrations;
 }
 
-abstract class IMastodonInstance {
+abstract class IMastodonApiInstance {
   String? get uri;
 
   String? get title;
@@ -30,9 +30,9 @@ abstract class IMastodonInstance {
 
   String? get version;
 
-  MastodonUrls? get urls;
+  MastodonApiUrls? get urls;
 
-  MastodonInstanceStats? get stats;
+  MastodonApiInstanceStats? get stats;
 
   String? get thumbnail;
 
@@ -44,7 +44,7 @@ abstract class IMastodonInstance {
 
   bool? get invitesEnabled;
 
-  IMastodonAccount? get contactAccount;
+  IMastodonApiAccount? get contactAccount;
 }
 
 @JsonSerializable()
@@ -53,7 +53,7 @@ abstract class IMastodonInstance {
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 61)
-class MastodonInstanceStats {
+class MastodonApiInstanceStats {
   @JsonKey(name: "user_count")
   @HiveField(0)
   final int? userCount;
@@ -64,12 +64,16 @@ class MastodonInstanceStats {
   @HiveField(2)
   final int? domainCount;
 
-  MastodonInstanceStats({this.userCount, this.statusCount, this.domainCount});
+  MastodonApiInstanceStats({
+    this.userCount,
+    this.statusCount,
+    this.domainCount,
+  });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MastodonInstanceStats &&
+      other is MastodonApiInstanceStats &&
           runtimeType == other.runtimeType &&
           userCount == other.userCount &&
           statusCount == other.statusCount &&
@@ -81,24 +85,24 @@ class MastodonInstanceStats {
 
   @override
   String toString() {
-    return 'MastodonInstanceStats{userCount: $userCount,'
+    return 'MastodonApiInstanceStats{userCount: $userCount,'
         ' statusCount: $statusCount, domainCount: $domainCount}';
   }
 
-  factory MastodonInstanceStats.fromJson(Map<String, dynamic> json) =>
-      _$MastodonInstanceStatsFromJson(json);
+  factory MastodonApiInstanceStats.fromJson(Map<String, dynamic> json) =>
+      _$MastodonApiInstanceStatsFromJson(json);
 
-  factory MastodonInstanceStats.fromJsonString(String jsonString) =>
-      _$MastodonInstanceStatsFromJson(jsonDecode(jsonString));
+  factory MastodonApiInstanceStats.fromJsonString(String jsonString) =>
+      _$MastodonApiInstanceStatsFromJson(jsonDecode(jsonString));
 
-  static List<MastodonInstanceStats> listFromJsonString(String str) =>
-      List<MastodonInstanceStats>.from(
-        json.decode(str).map((x) => MastodonInstanceStats.fromJson(x)),
+  static List<MastodonApiInstanceStats> listFromJsonString(String str) =>
+      List<MastodonApiInstanceStats>.from(
+        json.decode(str).map((x) => MastodonApiInstanceStats.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$MastodonInstanceStatsToJson(this);
+  Map<String, dynamic> toJson() => _$MastodonApiInstanceStatsToJson(this);
 
-  String toJsonString() => jsonEncode(_$MastodonInstanceStatsToJson(this));
+  String toJsonString() => jsonEncode(_$MastodonApiInstanceStatsToJson(this));
 }
 
 @JsonSerializable()
@@ -107,17 +111,17 @@ class MastodonInstanceStats {
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 62)
-class MastodonUrls {
+class MastodonApiUrls {
   @JsonKey(name: "streaming_api")
   @HiveField(0)
   final String? streamingApi;
 
-  MastodonUrls({this.streamingApi});
+  MastodonApiUrls({this.streamingApi});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MastodonUrls &&
+      other is MastodonApiUrls &&
           runtimeType == other.runtimeType &&
           streamingApi == other.streamingApi;
 
@@ -126,21 +130,21 @@ class MastodonUrls {
 
   @override
   String toString() {
-    return 'MastodonUrls{streamingApi: $streamingApi}';
+    return 'MastodonApiUrls{streamingApi: $streamingApi}';
   }
 
-  factory MastodonUrls.fromJson(Map<String, dynamic> json) =>
-      _$MastodonUrlsFromJson(json);
+  factory MastodonApiUrls.fromJson(Map<String, dynamic> json) =>
+      _$MastodonApiUrlsFromJson(json);
 
-  factory MastodonUrls.fromJsonString(String jsonString) =>
-      _$MastodonUrlsFromJson(jsonDecode(jsonString));
+  factory MastodonApiUrls.fromJsonString(String jsonString) =>
+      _$MastodonApiUrlsFromJson(jsonDecode(jsonString));
 
-  static List<MastodonUrls> listFromJsonString(String str) =>
-      List<MastodonUrls>.from(
-        json.decode(str).map((x) => MastodonUrls.fromJson(x)),
+  static List<MastodonApiUrls> listFromJsonString(String str) =>
+      List<MastodonApiUrls>.from(
+        json.decode(str).map((x) => MastodonApiUrls.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$MastodonUrlsToJson(this);
+  Map<String, dynamic> toJson() => _$MastodonApiUrlsToJson(this);
 
-  String toJsonString() => jsonEncode(_$MastodonUrlsToJson(this));
+  String toJsonString() => jsonEncode(_$MastodonApiUrlsToJson(this));
 }

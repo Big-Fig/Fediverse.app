@@ -1,15 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'mastodon_application_model.dart';
+part of 'mastodon_api_application_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MastodonApplicationRegistrationRequest
-    _$MastodonApplicationRegistrationRequestFromJson(
+MastodonApiApplicationRegistrationRequest
+    _$MastodonApiApplicationRegistrationRequestFromJson(
         Map<String, dynamic> json) {
-  return MastodonApplicationRegistrationRequest(
+  return MastodonApiApplicationRegistrationRequest(
     clientName: json['client_name'] as String?,
     redirectUris: json['redirect_uris'] as String?,
     scopes: json['scopes'] as String?,
@@ -17,8 +17,8 @@ MastodonApplicationRegistrationRequest
   );
 }
 
-Map<String, dynamic> _$MastodonApplicationRegistrationRequestToJson(
-        MastodonApplicationRegistrationRequest instance) =>
+Map<String, dynamic> _$MastodonApiApplicationRegistrationRequestToJson(
+        MastodonApiApplicationRegistrationRequest instance) =>
     <String, dynamic>{
       'client_name': instance.clientName,
       'redirect_uris': instance.redirectUris,

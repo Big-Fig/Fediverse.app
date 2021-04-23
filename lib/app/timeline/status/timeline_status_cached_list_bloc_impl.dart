@@ -17,7 +17,7 @@ import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/mastodon/api/filter/mastodon_filter_model.dart';
+import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart';
@@ -401,18 +401,18 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    List<MastodonFilterContextType>? onlyWithContextTypes;
+    List<MastodonApiFilterContextType>? onlyWithContextTypes;
 
     switch (timelineType) {
       case TimelineType.public:
         onlyWithContextTypes = [
-          MastodonFilterContextType.public,
+          MastodonApiFilterContextType.public,
         ];
         break;
       case TimelineType.home:
       case TimelineType.customList:
         onlyWithContextTypes = [
-          MastodonFilterContextType.homeAndCustomLists,
+          MastodonApiFilterContextType.homeAndCustomLists,
         ];
         break;
       case TimelineType.hashtag:
@@ -420,7 +420,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         break;
       case TimelineType.account:
         onlyWithContextTypes = [
-          MastodonFilterContextType.account,
+          MastodonApiFilterContextType.account,
         ];
         break;
     }

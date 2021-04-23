@@ -4,7 +4,7 @@ import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/mastodon/api/notification/mastodon_notification_model.dart';
+import 'package:fedi/mastodon/api/notification/mastodon_api_notification_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_notification_service.dart';
@@ -199,7 +199,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   String get type => notification.type;
 
   @override
-  MastodonNotificationType get typeMastodon => notification.typeMastodon;
+  MastodonApiNotificationType get typeMastodon => notification.typeAsMastodonApi;
 
   @override
   PleromaNotificationType get typePleroma => notification.typePleroma;

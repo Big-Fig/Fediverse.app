@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fedi/mastodon/api/search/mastodon_search_model.dart';
+import 'package:fedi/mastodon/api/search/mastodon_api_search_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/api/tag/pleroma_tag_model.dart';
@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_search_model.g.dart';
 
-abstract class IPleromaSearchRequest extends IMastodonSearchRequest {
+abstract class IPleromaSearchRequest extends IMastodonApiSearchRequest {
   Map<String, dynamic> toJson();
 }
 

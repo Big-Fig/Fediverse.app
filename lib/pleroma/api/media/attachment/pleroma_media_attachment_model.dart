@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:fedi/mastodon/api/media/attachment/mastodon_media_attachment_model.dart';
+import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_media_attachment_model.g.dart';
 
-abstract class IPleromaMediaAttachment extends IMastodonMediaAttachment {
+abstract class IPleromaMediaAttachment extends IMastodonApiMediaAttachment {
   PleromaMediaAttachmentPleromaPart? get pleroma;
 }
 
@@ -68,8 +68,8 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
   final String type;
 
   @override
-  MastodonMediaAttachmentType get typeMastodon =>
-      type.toMastodonMediaAttachmentType();
+  MastodonApiMediaAttachmentType get typeAsMastodonApi =>
+      type.toMastodonApiMediaAttachmentType();
 
   @override
   final String url;
@@ -104,29 +104,29 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
   factory PleromaMediaAttachment.fromJsonString(String jsonString) =>
       _$PleromaMediaAttachmentFromJson(jsonDecode(jsonString));
 
-  bool get isImage => typeMastodon == MastodonMediaAttachmentType.image;
+  bool get isImage => typeAsMastodonApi == MastodonApiMediaAttachmentType.image;
 
   bool get isMedia {
-    switch (typeMastodon) {
-      case MastodonMediaAttachmentType.image:
-      case MastodonMediaAttachmentType.gifv:
-      case MastodonMediaAttachmentType.video:
-      case MastodonMediaAttachmentType.audio:
+    switch (typeAsMastodonApi) {
+      case MastodonApiMediaAttachmentType.image:
+      case MastodonApiMediaAttachmentType.gifv:
+      case MastodonApiMediaAttachmentType.video:
+      case MastodonApiMediaAttachmentType.audio:
         return true;
-      case MastodonMediaAttachmentType.unknown:
+      case MastodonApiMediaAttachmentType.unknown:
       default:
         return false;
     }
   }
 
   bool get isImageOrGif {
-    switch (typeMastodon) {
-      case MastodonMediaAttachmentType.image:
-      case MastodonMediaAttachmentType.gifv:
+    switch (typeAsMastodonApi) {
+      case MastodonApiMediaAttachmentType.image:
+      case MastodonApiMediaAttachmentType.gifv:
         return true;
-      case MastodonMediaAttachmentType.video:
-      case MastodonMediaAttachmentType.audio:
-      case MastodonMediaAttachmentType.unknown:
+      case MastodonApiMediaAttachmentType.video:
+      case MastodonApiMediaAttachmentType.audio:
+      case MastodonApiMediaAttachmentType.unknown:
       default:
         return false;
     }

@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:fedi/mastodon/api/list/mastodon_list_model.dart';
+import 'package:fedi/mastodon/api/list/mastodon_api_list_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 // ignore_for_file: no-magic-number
 part 'pleroma_list_model.g.dart';
 
-abstract class IPleromaList extends IMastodonList {}
+abstract class IPleromaList extends IMastodonApiList {}
 
 extension IPleromaListExtension on IPleromaList {
   PleromaList toPleromaList() {

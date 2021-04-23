@@ -1,5 +1,5 @@
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/mastodon/api/search/mastodon_search_model.dart';
+import 'package:fedi/mastodon/api/search/mastodon_api_search_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_auth_rest_service.dart';

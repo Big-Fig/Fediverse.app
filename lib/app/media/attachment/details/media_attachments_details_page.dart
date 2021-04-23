@@ -19,7 +19,7 @@ import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/mastodon/api/media/attachment/mastodon_media_attachment_model.dart';
+import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment_model.dart';
 import 'package:fedi/media/player/audio/audio_media_player_bloc_impl.dart';
 import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
@@ -118,9 +118,9 @@ class _MediaAttachmentDetailsPageState
     BuildContext context,
     IPleromaMediaAttachment mediaAttachment,
   ) {
-    switch (mediaAttachment.typeMastodon) {
-      case MastodonMediaAttachmentType.image:
-      case MastodonMediaAttachmentType.gifv:
+    switch (mediaAttachment.typeAsMastodonApi) {
+      case MastodonApiMediaAttachmentType.image:
+      case MastodonApiMediaAttachmentType.gifv:
         return IFilesCacheService.of(context).createCachedNetworkImageWidget(
           imageBuilder: (context, imageProvider) {
             return Container(
@@ -136,7 +136,7 @@ class _MediaAttachmentDetailsPageState
           errorWidget: (context, url, error) => buildDetails(),
           imageUrl: mediaAttachment.url,
         );
-      case MastodonMediaAttachmentType.video:
+      case MastodonApiMediaAttachmentType.video:
         var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
         return VideoMediaPlayerBloc.provideToContext(
           context,
@@ -149,7 +149,7 @@ class _MediaAttachmentDetailsPageState
               VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
           isFullscreen: false,
         );
-      case MastodonMediaAttachmentType.audio:
+      case MastodonApiMediaAttachmentType.audio:
         var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
         return AudioMediaPlayerBloc.provideToContext(
           context,
@@ -159,7 +159,7 @@ class _MediaAttachmentDetailsPageState
               MediaPlayerSource.network(networkUrl: mediaAttachment.url),
           child: const FediAudioPlayerWidget(),
         );
-      case MastodonMediaAttachmentType.unknown:
+      case MastodonApiMediaAttachmentType.unknown:
       default:
         return Center(
           child: Text(

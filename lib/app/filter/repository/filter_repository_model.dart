@@ -1,9 +1,9 @@
-import 'package:fedi/mastodon/api/filter/mastodon_filter_model.dart';
+import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 class FilterRepositoryFilters {
-  final List<MastodonFilterContextType>? onlyWithContextTypes;
+  final List<MastodonApiFilterContextType>? onlyWithContextTypes;
   final bool? notExpired;
 
   static const FilterRepositoryFilters empty = FilterRepositoryFilters();

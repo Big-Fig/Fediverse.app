@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fedi/mastodon/api/tag/mastodon_tag_model.dart';
+import 'package:fedi/mastodon/api/tag/mastodon_api_tag_model.dart';
 import 'package:fedi/pleroma/api/tag/history/pleroma_tag_history_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 // ignore_for_file: no-magic-number
 part 'pleroma_tag_model.g.dart';
 
-abstract class IPleromaTag implements IMastodonTag {
+abstract class IPleromaTag implements IMastodonApiTag {
   @override
   List<IPleromaTagHistory>? get history;
 }

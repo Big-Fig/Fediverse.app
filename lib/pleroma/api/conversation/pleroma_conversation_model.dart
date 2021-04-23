@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:fedi/mastodon/api/conversation/mastodon_conversation_model.dart';
+import 'package:fedi/mastodon/api/conversation/mastodon_api_conversation_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_conversation_model.g.dart';
 
-abstract class IPleromaConversation extends IMastodonConversation {
+abstract class IPleromaConversation extends IMastodonApiConversation {
   @override
   IPleromaStatus? get lastStatus;
 

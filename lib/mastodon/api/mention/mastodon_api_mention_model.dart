@@ -1,4 +1,4 @@
-abstract class IMastodonMention {
+abstract class IMastodonApiMention {
   String get acct;
 
   String get id;
