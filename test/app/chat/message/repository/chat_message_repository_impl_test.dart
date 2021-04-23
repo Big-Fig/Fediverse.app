@@ -78,7 +78,7 @@ void main() {
     await chatMessageRepository.upsertInRemoteType(
       DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
-      ).toPleromaChatMessage(),
+      ).toPleromaApiChatMessage(),
     );
 
     expect(await chatMessageRepository.countAll(), 1);
@@ -97,7 +97,7 @@ void main() {
     await chatMessageRepository.upsertInRemoteType(
       DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
-      ).toPleromaChatMessage(),
+      ).toPleromaApiChatMessage(),
     );
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
@@ -118,7 +118,7 @@ void main() {
       [
         DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
-        ).toPleromaChatMessage(),
+        ).toPleromaApiChatMessage(),
       ],
       batchTransaction: null,
     );
@@ -139,7 +139,7 @@ void main() {
       [
         DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
-        ).toPleromaChatMessage(),
+        ).toPleromaApiChatMessage(),
       ],
       batchTransaction: null,
     );
@@ -233,7 +233,7 @@ void main() {
         dbChatMessage: dbChatMessage.copyWith(id: id, content: newContent),
         dbAccount: dbAccount,
       ),
-    ).toPleromaChatMessage();
+    ).toPleromaApiChatMessage();
     await chatMessageRepository.updateAppTypeByRemoteType(
       appItem: oldLocalChatMessage,
       remoteItem: newRemoteChatMessage,
@@ -605,7 +605,7 @@ void main() {
           ),
           dbAccount: dbAccount,
         ),
-      ).toPleromaChatMessage(),
+      ).toPleromaApiChatMessage(),
     );
 
     expect((await query.get()).length, 1);
@@ -638,7 +638,7 @@ void main() {
         ),
         accountRepository,
       ),
-    ).toPleromaChatMessage());
+    ).toPleromaApiChatMessage());
 
     expect(
       await chatMessageRepository.getChatLastChatMessage(chat: chat),
@@ -658,7 +658,7 @@ void main() {
           ),
           accountRepository,
         ),
-      ).toPleromaChatMessage(),
+      ).toPleromaApiChatMessage(),
     );
 
     expect(
@@ -680,7 +680,7 @@ void main() {
         ),
         accountRepository,
       ),
-    ).toPleromaChatMessage());
+    ).toPleromaApiChatMessage());
     expect(
       (await chatMessageRepository.getChatLastChatMessage(chat: chat))!
           .remoteId,
@@ -698,7 +698,7 @@ void main() {
           ),
           accountRepository,
         ),
-      ).toPleromaChatMessage(),
+      ).toPleromaApiChatMessage(),
     );
 
     expect(
@@ -720,7 +720,7 @@ void main() {
       [
         DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
-        ).toPleromaChatMessage(),
+        ).toPleromaApiChatMessage(),
       ],
       batchTransaction: null,
     );
@@ -728,7 +728,7 @@ void main() {
       [
         DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
-        ).toPleromaChatMessage(),
+        ).toPleromaApiChatMessage(),
       ],
       batchTransaction: null,
     );
@@ -736,19 +736,19 @@ void main() {
     var future1 = chatMessageRepository.upsertInRemoteType(
       DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
-      ).toPleromaChatMessage(),
+      ).toPleromaApiChatMessage(),
     );
     var future2 = chatMessageRepository.upsertInRemoteType(
       DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
-      ).toPleromaChatMessage(),
+      ).toPleromaApiChatMessage(),
     );
 
     var future3 = chatMessageRepository.upsertAllInRemoteType(
       [
         DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
-        ).toPleromaChatMessage(),
+        ).toPleromaApiChatMessage(),
       ],
       batchTransaction: null,
     );
@@ -756,7 +756,7 @@ void main() {
       [
         DbPleromaChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
-        ).toPleromaChatMessage(),
+        ).toPleromaApiChatMessage(),
       ],
       batchTransaction: null,
     );

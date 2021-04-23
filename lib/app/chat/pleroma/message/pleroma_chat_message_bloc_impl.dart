@@ -7,7 +7,7 @@ import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart' as pleroma_lib;
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
@@ -124,16 +124,16 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   Future resendPendingFailed() {
     String? mediaId = chatMessage.mediaAttachments?.singleOrNull?.id;
 
-    var pleromaChatMessageSendData = pleroma_lib.PleromaApiChatMessageSendData(
+    var pleromaApiChatMessageSendData = PleromaApiChatMessageSendData(
       content: chatMessage.content,
       mediaId: mediaId,
       idempotencyKey: chatMessage.wasSentWithIdempotencyKey,
     );
 
     return pleromaChatBloc.postMessage(
-      pleromaChatMessageSendData: pleromaChatMessageSendData,
+      pleromaApiChatMessageSendData: pleromaApiChatMessageSendData,
       oldPendingFailedPleromaChatMessage: chatMessage,
-      pleromaChatMessageSendDataMediaAttachment:
+      pleromaApiChatMessageSendDataMediaAttachment:
           chatMessage.mediaAttachments?.singleOrNull,
     );
   }

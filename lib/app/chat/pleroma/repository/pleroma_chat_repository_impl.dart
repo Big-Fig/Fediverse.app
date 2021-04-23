@@ -11,7 +11,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.d
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
 import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart' as pleroma_lib;
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 import 'package:pedantic/pedantic.dart';
@@ -27,7 +27,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbChat,
     DbPleromaChatPopulated,
     IPleromaChat,
-    pleroma_lib.IPleromaApiChat,
+    IPleromaApiChat,
     int,
     String,
     $DbChatsTable,
@@ -220,9 +220,9 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   DbChat mapAppItemToDbItem(IPleromaChat appItem) => appItem.toDbChat();
 
   @override
-  pleroma_lib.IPleromaApiChat mapAppItemToRemoteItem(IPleromaChat appItem) =>
+  IPleromaApiChat mapAppItemToRemoteItem(IPleromaChat appItem) =>
       // todo: improve
-      appItem.toPleromaChat(
+      appItem.toPleromaApiChat(
         lastChatMessage: null,
         accounts: [],
       );
@@ -237,16 +237,16 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbPopulatedItem.toDbPleromaChatPopulatedWrapper();
 
   @override
-  pleroma_lib.IPleromaApiChat mapDbPopulatedItemToRemoteItem(
+  IPleromaApiChat mapDbPopulatedItemToRemoteItem(
           DbPleromaChatPopulated dbPopulatedItem) =>
-      dbPopulatedItem.toDbPleromaChatPopulatedWrapper().toPleromaChat(
+      dbPopulatedItem.toDbPleromaChatPopulatedWrapper().toPleromaApiChat(
         lastChatMessage: null,
         accounts: [],
       );
 
   @override
   IPleromaChat mapRemoteItemToAppItem(
-    pleroma_lib.IPleromaApiChat remoteItem,
+    IPleromaApiChat remoteItem,
   ) =>
       DbPleromaChatPopulatedWrapper(
         dbChatPopulated: DbPleromaChatPopulated(
@@ -277,7 +277,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<int> insertInRemoteType(
-    pleroma_lib.IPleromaApiChat remoteItem, {
+    IPleromaApiChat remoteItem, {
     required InsertMode? mode,
   }) async {
     await _upsertChatMessageMetadata(
@@ -291,7 +291,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   Future _upsertChatMessageMetadata(
-    pleroma_lib.IPleromaApiChat remoteItem, {
+    IPleromaApiChat remoteItem, {
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -324,7 +324,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    pleroma_lib.IPleromaApiChat remoteItem, {
+    IPleromaApiChat remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) async {
@@ -357,7 +357,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<void> updateAppTypeByRemoteType({
     required IPleromaChat appItem,
-    required pleroma_lib.IPleromaApiChat remoteItem,
+    required IPleromaApiChat remoteItem,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {

@@ -5,7 +5,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart' as pleroma_lib;
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:flutter/widgets.dart';
 
@@ -28,14 +28,14 @@ void goToPleromaChatWithAccount({
           var pleromaChatService =
               IPleromaApiChatService.of(context, listen: false);
 
-          pleroma_lib.IPleromaApiChat remoteChat =
+          IPleromaApiChat pleromaApiChat =
               await pleromaChatService.getOrCreateChatByAccountId(
             accountId: account.remoteId,
           );
 
-          await chatRepository.upsertInRemoteType(remoteChat);
+          await chatRepository.upsertInRemoteType(pleromaApiChat);
 
-          return await chatRepository.findByRemoteIdInAppType(remoteChat.id);
+          return await chatRepository.findByRemoteIdInAppType(pleromaApiChat.id);
         },
       );
       chat = dialogResult.result;
