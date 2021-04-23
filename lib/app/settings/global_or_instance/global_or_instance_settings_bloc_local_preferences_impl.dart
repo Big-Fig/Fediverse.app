@@ -5,9 +5,9 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings?>
+class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings>
     extends DisposableOwner implements IGlobalOrInstanceSettingsBloc<T> {
-  final ILocalPreferenceBloc<T?> globalLocalPreferencesBloc;
+  final ILocalPreferenceBloc<T> globalLocalPreferencesBloc;
   final ILocalPreferenceBloc<T?> instanceLocalPreferencesBloc;
 
   GlobalOrInstanceSettingsLocalPreferencesBloc({
@@ -50,18 +50,18 @@ class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings?>
       );
 
   @override
-  T? get settingsData => globalOrInstanceSettings.settings;
+  T get settingsData => globalOrInstanceSettings.settings;
 
   @override
-  Stream<T?> get settingsDataStream => globalOrInstanceSettingsStream.map(
+  Stream<T> get settingsDataStream => globalOrInstanceSettingsStream.map(
         (globalOrInstanceSettings) => globalOrInstanceSettings.settings,
       );
 
   @override
-  T? get globalSettingsData => globalLocalPreferencesBloc.value;
+  T get globalSettingsData => globalLocalPreferencesBloc.value;
 
   @override
-  Stream<T?> get globalSettingsDataStream => globalLocalPreferencesBloc.stream;
+  Stream<T> get globalSettingsDataStream => globalLocalPreferencesBloc.stream;
 
   @override
   T? get instanceSettingsData => instanceLocalPreferencesBloc.value;
@@ -100,7 +100,7 @@ class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings?>
   @override
   Future cloneGlobalToInstanceSettings() async {
     await instanceLocalPreferencesBloc.setValue(
-      globalLocalPreferencesBloc.value!.clone(),
+      globalLocalPreferencesBloc.value.clone(),
     );
   }
 
@@ -112,14 +112,14 @@ class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings?>
   }
 
   @override
-  Future updateGlobalSettings(T? newSettings) async {
+  Future updateGlobalSettings(T newSettings) async {
     if (globalLocalPreferencesBloc.value != newSettings) {
       await globalLocalPreferencesBloc.setValue(newSettings);
     }
   }
 
   @override
-  Future updateSettings(T? newSettings) async {
+  Future updateSettings(T newSettings) async {
     if (isInstance) {
       return updateInstanceSettings(newSettings);
     } else {

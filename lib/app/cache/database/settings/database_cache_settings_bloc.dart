@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IDatabaseCacheSettingsBloc
-    implements IGlobalOrInstanceSettingsBloc<DatabaseCacheSettings?> {
+    implements IGlobalOrInstanceSettingsBloc<DatabaseCacheSettings> {
   static IDatabaseCacheSettingsBloc of(
     BuildContext context, {
     bool listen = true,
@@ -16,18 +16,18 @@ abstract class IDatabaseCacheSettingsBloc
         listen: listen,
       );
 
-  DatabaseCacheEntriesCountByTypeLimitType? get entriesCountByTypeLimit;
+  DatabaseCacheEntriesCountByTypeLimitType get entriesCountByTypeLimit;
 
-  Stream<DatabaseCacheEntriesCountByTypeLimitType?>
+  Stream<DatabaseCacheEntriesCountByTypeLimitType>
       get entriesCountByTypeLimitStream;
 
   Future changeEntriesCountByTypeLimit(
     DatabaseCacheEntriesCountByTypeLimitType value,
   );
 
-  DatabaseCacheAgeLimitType? get ageLimit;
+  DatabaseCacheAgeLimitType get ageLimit;
 
-  Stream<DatabaseCacheAgeLimitType?> get ageLimitStream;
+  Stream<DatabaseCacheAgeLimitType> get ageLimitStream;
 
   Future changeAgeLimit(DatabaseCacheAgeLimitType value);
 }

@@ -3,8 +3,8 @@ import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IToastSettingsLocalPreferencesBloc
-    implements ILocalPreferenceBloc<ToastSettings?> {
+abstract class IToastSettingsLocalPreferencesBloc<T extends ToastSettings?>
+    implements ILocalPreferenceBloc<T> {
   static IToastSettingsLocalPreferencesBloc of(
     BuildContext context, {
     bool listen = true,

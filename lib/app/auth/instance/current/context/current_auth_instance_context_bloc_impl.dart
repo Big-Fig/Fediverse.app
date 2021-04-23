@@ -592,7 +592,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         INotificationPushLoaderBloc>(notificationPushLoaderBloc);
 
     if (timelinesHomeTabStorageLocalPreferencesBloc
-            .value?.timelineIds.isNotEmpty !=
+            .value.timelineIds.isNotEmpty !=
         true) {
       var remoteLists = await pleromaListService.getLists();
 
@@ -951,18 +951,18 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       connectionService: connectionService,
       key: userAtHost,
       stalePeriod:
-          filesCacheSettingsBloc.filesCacheAgeLimitType?.toDurationOrNull(),
+          filesCacheSettingsBloc.filesCacheAgeLimitType.toDurationOrNull(),
       maxNrOfCacheObjects:
-          filesCacheSettingsBloc.filesCacheSizeLimitCountType?.toCountOrNull(),
+          filesCacheSettingsBloc.filesCacheSizeLimitCountType.toCountOrNull(),
     );
     addDisposable(disposable: filesCacheService);
     await globalProviderService
         .asyncInitAndRegister<IFilesCacheService>(filesCacheService);
 
     await moorDatabaseService.clearByLimits(
-      ageLimit: databaseCacheSettingsBloc.ageLimit?.toDurationOrNull(),
+      ageLimit: databaseCacheSettingsBloc.ageLimit.toDurationOrNull(),
       entriesCountByTypeLimit:
-          databaseCacheSettingsBloc.entriesCountByTypeLimit?.toCountOrNull(),
+          databaseCacheSettingsBloc.entriesCountByTypeLimit.toCountOrNull(),
     );
   }
 }

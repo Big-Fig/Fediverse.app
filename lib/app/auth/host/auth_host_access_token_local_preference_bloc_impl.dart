@@ -17,6 +17,5 @@ class AuthHostAccessTokenLocalPreferenceBloc
         );
 
   @override
-  // TODO: implement defaultValue
   PleromaOAuthToken? get defaultPreferenceValue => null;
 }

@@ -11,15 +11,15 @@ abstract class IStatusSensitiveSettingsBloc
   }) =>
       Provider.of<IStatusSensitiveSettingsBloc>(context, listen: listen);
 
-  bool? get isAlwaysShowSpoiler;
+  bool get isAlwaysShowSpoiler;
 
-  Stream<bool?> get isAlwaysShowSpoilerStream;
+  Stream<bool> get isAlwaysShowSpoilerStream;
 
   void changeIsAlwaysShowSpoiler(bool value);
 
-  bool? get isAlwaysShowNsfw;
+  bool get isAlwaysShowNsfw;
 
-  Stream<bool?> get isAlwaysShowNsfwStream;
+  Stream<bool> get isAlwaysShowNsfwStream;
 
   void changeIsAlwaysShowNsfw(bool value);
 
@@ -27,5 +27,5 @@ abstract class IStatusSensitiveSettingsBloc
 
   Stream<Duration?> get nsfwDisplayDelayDurationStream;
 
-  void changeNsfwDisplayDelayDuration(Duration value);
+  void changeNsfwDisplayDelayDuration(Duration? value);
 }

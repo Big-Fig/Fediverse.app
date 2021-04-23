@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class ITimelinesHomeTabStorageLocalPreferencesBloc
-    implements ILocalPreferenceBloc<TimelinesHomeTabStorage?> {
+    implements ILocalPreferenceBloc<TimelinesHomeTabStorage> {
   static ITimelinesHomeTabStorageLocalPreferencesBloc of(
     BuildContext context, {
     bool listen = true,

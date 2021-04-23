@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IEditChatSettingsBloc
-    implements IEditGlobalOrInstanceSettingsBloc<ChatSettings?> {
+    implements IEditGlobalOrInstanceSettingsBloc<ChatSettings> {
   static IEditChatSettingsBloc of(
     BuildContext context, {
     bool listen = true,

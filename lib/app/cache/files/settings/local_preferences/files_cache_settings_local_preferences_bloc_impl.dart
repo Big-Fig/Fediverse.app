@@ -3,9 +3,9 @@ import 'package:fedi/app/cache/files/settings/local_preferences/files_cache_sett
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-abstract class FilesCacheSettingsLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<FilesCacheSettings?>
-    implements IFilesCacheSettingsLocalPreferencesBloc {
+abstract class FilesCacheSettingsLocalPreferencesBloc<T extends FilesCacheSettings?>
+    extends ObjectLocalPreferenceBloc<T>
+    implements IFilesCacheSettingsLocalPreferencesBloc<T> {
   FilesCacheSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
     String key,
@@ -13,10 +13,7 @@ abstract class FilesCacheSettingsLocalPreferencesBloc
           preferencesService: preferencesService,
           key: key,
           schemaVersion: 1,
-          jsonConverter: (json) => FilesCacheSettings.fromJson(json),
+          jsonConverter: (json) => FilesCacheSettings.fromJson(json) as T,
         );
 
-  @override
-  // TODO: implement defaultValue
-  FilesCacheSettings? get defaultPreferenceValue => null;
 }

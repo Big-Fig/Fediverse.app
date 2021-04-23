@@ -13,7 +13,7 @@ import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 
 class EditPostStatusSettingsBloc
-    extends EditGlobalOrInstanceSettingsBloc<PostStatusSettings?>
+    extends EditGlobalOrInstanceSettingsBloc<PostStatusSettings>
     implements IEditPostStatusSettingsBloc {
   final IPostStatusSettingsBloc postStatusSettingsBloc;
 
@@ -77,9 +77,9 @@ class EditPostStatusSettingsBloc
   @override
   PostStatusSettings calculateCurrentFormFieldsSettings() => PostStatusSettings(
         defaultVisibilityString:
-            defaultVisibilityFormFieldBloc.currentValue?.toJsonValue(),
+            defaultVisibilityFormFieldBloc.currentValue!.toJsonValue(),
         markMediaAsNsfwOnAttach:
-            markMediaAsNsfwOnAttachFormFieldBloc.currentValue,
+            markMediaAsNsfwOnAttachFormFieldBloc.currentValue!,
         defaultStatusLocale: defaultStatusLocaleFormFieldBloc.currentValue,
       );
 

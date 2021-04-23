@@ -6,7 +6,7 @@ import 'package:fedi/app/cache/database/settings/local_preferences/global/global
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class GlobalDatabaseCacheSettingsLocalPreferencesBloc
-    extends DatabaseCacheSettingsLocalPreferencesBloc
+    extends DatabaseCacheSettingsLocalPreferencesBloc<DatabaseCacheSettings>
     implements IGlobalDatabaseCacheSettingsLocalPreferencesBloc {
   GlobalDatabaseCacheSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,

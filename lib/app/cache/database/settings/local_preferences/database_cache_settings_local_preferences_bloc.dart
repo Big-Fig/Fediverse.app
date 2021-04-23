@@ -3,8 +3,8 @@ import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IDatabaseCacheSettingsLocalPreferencesBloc
-    implements ILocalPreferenceBloc<DatabaseCacheSettings?> {
+abstract class IDatabaseCacheSettingsLocalPreferencesBloc<
+    T extends DatabaseCacheSettings?> implements ILocalPreferenceBloc<T> {
   static IDatabaseCacheSettingsLocalPreferencesBloc of(
     BuildContext context, {
     bool listen = true,

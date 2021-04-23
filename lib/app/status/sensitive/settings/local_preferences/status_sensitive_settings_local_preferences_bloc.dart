@@ -3,8 +3,8 @@ import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IStatusSensitiveSettingsLocalPreferencesBloc
-    implements ILocalPreferenceBloc<StatusSensitiveSettings?> {
+abstract class IStatusSensitiveSettingsLocalPreferencesBloc<T extends StatusSensitiveSettings?>
+    implements ILocalPreferenceBloc<T> {
   static IStatusSensitiveSettingsLocalPreferencesBloc of(
     BuildContext context, {
     bool listen = true,

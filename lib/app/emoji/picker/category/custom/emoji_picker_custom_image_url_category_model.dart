@@ -18,7 +18,9 @@ class EmojiPickerCustomImageUrlCategoryItems implements IJsonObject {
   @HiveField(0)
   final List<CustomEmojiPickerImageUrlItem>? items;
 
-  EmojiPickerCustomImageUrlCategoryItems({this.items});
+  EmojiPickerCustomImageUrlCategoryItems({
+    this.items,
+  });
 
   @override
   String toString() {

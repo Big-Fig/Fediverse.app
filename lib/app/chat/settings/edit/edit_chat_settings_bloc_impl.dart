@@ -8,7 +8,7 @@ import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart'
 import 'package:fedi/form/form_item_bloc.dart';
 
 class EditChatSettingsBloc
-    extends EditGlobalOrInstanceSettingsBloc<ChatSettings?>
+    extends EditGlobalOrInstanceSettingsBloc<ChatSettings>
     implements IEditChatSettingsBloc {
   final IChatSettingsBloc chatSettingsBloc;
 
@@ -54,9 +54,9 @@ class EditChatSettingsBloc
   @override
   ChatSettings calculateCurrentFormFieldsSettings() => ChatSettings(
         countConversationsInChatsUnreadBadges:
-            countConversationsInChatsUnreadBadgesFieldBloc.currentValue,
+            countConversationsInChatsUnreadBadgesFieldBloc.currentValue!,
         replaceConversationsWithPleromaChats:
-            replaceConversationsWithPleromaChatsFieldBloc.currentValue,
+            replaceConversationsWithPleromaChatsFieldBloc.currentValue!,
       );
 
   @override

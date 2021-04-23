@@ -30,7 +30,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   @override
-  int? get itemsCountPerPage => paginationSettingsBloc.pageSize?.toCount();
+  int? get itemsCountPerPage => paginationSettingsBloc.pageSize.toCount();
 
   final Map<int, TPage> indexToCachedPageMap = {};
 

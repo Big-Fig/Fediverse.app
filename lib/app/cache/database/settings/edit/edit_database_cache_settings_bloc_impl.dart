@@ -13,7 +13,7 @@ import 'package:fedi/database/database_service.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 
 class EditDatabaseCacheSettingsBloc
-    extends EditGlobalOrInstanceSettingsBloc<DatabaseCacheSettings?>
+    extends EditGlobalOrInstanceSettingsBloc<DatabaseCacheSettings>
     implements IEditDatabaseCacheSettingsBloc {
   final IDatabaseCacheSettingsBloc databaseCacheSettingsBloc;
 
@@ -101,12 +101,12 @@ class EditDatabaseCacheSettingsBloc
       DatabaseCacheSettings(
         ageLimitTypeString:
             ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
-                .currentValue
-                ?.toJsonValue(),
+                .currentValue!
+                .toJsonValue(),
         entriesCountByTypeLimitTypeString:
             entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
-                .currentValue
-                ?.toJsonValue(),
+                .currentValue!
+                .toJsonValue(),
       );
 
   @override
@@ -132,9 +132,9 @@ class EditDatabaseCacheSettingsBloc
   @override
   Future clearByLimits() async {
     await databaseService.clearByLimits(
-      ageLimit: databaseCacheSettingsBloc.ageLimit?.toDurationOrNull(),
+      ageLimit: databaseCacheSettingsBloc.ageLimit.toDurationOrNull(),
       entriesCountByTypeLimit:
-          databaseCacheSettingsBloc.entriesCountByTypeLimit?.toCountOrNull(),
+          databaseCacheSettingsBloc.entriesCountByTypeLimit.toCountOrNull(),
     );
 
     await _recalculateInfoFields();

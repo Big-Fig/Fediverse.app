@@ -1,9 +1,10 @@
 import 'package:fedi/app/media/settings/local_preferences/media_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/media/settings/media_settings_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IInstanceMediaSettingsLocalPreferencesBloc
-    implements IMediaSettingsLocalPreferencesBloc {
+    implements IMediaSettingsLocalPreferencesBloc<MediaSettings?> {
   static IInstanceMediaSettingsLocalPreferencesBloc of(
     BuildContext context, {
     bool listen = true,

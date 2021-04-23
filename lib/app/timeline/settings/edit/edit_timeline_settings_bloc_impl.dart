@@ -184,10 +184,10 @@ class EditTimelineSettingsBloc
         ),
         webSocketsUpdatesFieldBloc = BoolValueFormFieldBloc(
           originValue: (settingsBloc.settingsData?.webSocketsUpdates ?? true) &&
-              webSocketsSettingsBloc.handlingType!.isEnabled,
+              webSocketsSettingsBloc.handlingType.isEnabled,
           isEnabled: timelineType
                   .isWebSocketsUpdatesFilterSupportedOnInstance(authInstance) &&
-              webSocketsSettingsBloc.handlingType!.isEnabled,
+              webSocketsSettingsBloc.handlingType.isEnabled,
         ),
         onlyFromInstanceFieldBloc = StringValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyFromInstance,

@@ -4,7 +4,7 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class TimelinesHomeTabStorageLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<TimelinesHomeTabStorage?>
+    extends ObjectLocalPreferenceBloc<TimelinesHomeTabStorage>
     implements ITimelinesHomeTabStorageLocalPreferencesBloc {
   TimelinesHomeTabStorageLocalPreferencesBloc(
     ILocalPreferencesService preferencesService, {
@@ -17,5 +17,7 @@ class TimelinesHomeTabStorageLocalPreferencesBloc
         );
 
   @override
-  TimelinesHomeTabStorage? get defaultPreferenceValue => null;
+  TimelinesHomeTabStorage get defaultPreferenceValue => TimelinesHomeTabStorage(
+        timelineIds: [],
+      );
 }

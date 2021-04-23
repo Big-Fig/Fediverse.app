@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
-    implements StringLocalPreferenceBloc {
+    implements StringNullableLocalPreferenceBloc {
   static IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc of(
     BuildContext context, {
     bool listen = true,

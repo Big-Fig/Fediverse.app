@@ -18,8 +18,8 @@ class StatusSensitiveSettingsAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return StatusSensitiveSettings(
-      isAlwaysShowSpoiler: fields[0] as bool?,
-      isAlwaysShowNsfw: fields[1] as bool?,
+      isAlwaysShowSpoiler: fields[0] as bool,
+      isAlwaysShowNsfw: fields[1] as bool,
       nsfwDisplayDelayDurationMicrosecondsTotal: fields[2] as int?,
     );
   }
@@ -54,8 +54,8 @@ class StatusSensitiveSettingsAdapter
 StatusSensitiveSettings _$StatusSensitiveSettingsFromJson(
     Map<String, dynamic> json) {
   return StatusSensitiveSettings(
-    isAlwaysShowSpoiler: json['is_always_show_spoiler'] as bool?,
-    isAlwaysShowNsfw: json['is_always_show_nsfw'] as bool?,
+    isAlwaysShowSpoiler: json['is_always_show_spoiler'] as bool,
+    isAlwaysShowNsfw: json['is_always_show_nsfw'] as bool,
     nsfwDisplayDelayDurationMicrosecondsTotal:
         json['nsfw_display_delay_duration_seconds_total'] as int?,
   );

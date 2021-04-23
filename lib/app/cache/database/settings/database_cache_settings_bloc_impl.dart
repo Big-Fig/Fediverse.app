@@ -6,12 +6,12 @@ import 'package:fedi/app/cache/database/settings/local_preferences/database_cach
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
 
 class DatabaseCacheSettingsBloc
-    extends GlobalOrInstanceSettingsLocalPreferencesBloc<DatabaseCacheSettings?>
+    extends GlobalOrInstanceSettingsLocalPreferencesBloc<DatabaseCacheSettings>
     implements IDatabaseCacheSettingsBloc {
   DatabaseCacheSettingsBloc({
-    required IDatabaseCacheSettingsLocalPreferencesBloc
+    required IDatabaseCacheSettingsLocalPreferencesBloc<DatabaseCacheSettings>
         globalLocalPreferencesBloc,
-    required IDatabaseCacheSettingsLocalPreferencesBloc
+    required IDatabaseCacheSettingsLocalPreferencesBloc<DatabaseCacheSettings?>
         instanceLocalPreferencesBloc,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
@@ -19,12 +19,12 @@ class DatabaseCacheSettingsBloc
         );
 
   @override
-  DatabaseCacheAgeLimitType? get ageLimit => settingsData?.ageLimitType;
+  DatabaseCacheAgeLimitType get ageLimit => settingsData.ageLimitType;
 
   @override
-  Stream<DatabaseCacheAgeLimitType?> get ageLimitStream =>
+  Stream<DatabaseCacheAgeLimitType> get ageLimitStream =>
       settingsDataStream.map(
-        (settings) => settings?.ageLimitType,
+        (settings) => settings.ageLimitType,
       );
 
   @override
@@ -32,18 +32,18 @@ class DatabaseCacheSettingsBloc
         DatabaseCacheSettings(
           ageLimitTypeString: value.toJsonValue(),
           entriesCountByTypeLimitTypeString:
-              entriesCountByTypeLimit?.toJsonValue(),
+              entriesCountByTypeLimit.toJsonValue(),
         ),
       );
 
   @override
-  DatabaseCacheEntriesCountByTypeLimitType? get entriesCountByTypeLimit =>
-      settingsData?.entriesCountByTypeLimitType;
+  DatabaseCacheEntriesCountByTypeLimitType get entriesCountByTypeLimit =>
+      settingsData.entriesCountByTypeLimitType;
 
   @override
-  Stream<DatabaseCacheEntriesCountByTypeLimitType?>
+  Stream<DatabaseCacheEntriesCountByTypeLimitType>
       get entriesCountByTypeLimitStream => settingsDataStream.map(
-            (settings) => settings?.entriesCountByTypeLimitType,
+            (settings) => settings.entriesCountByTypeLimitType,
           );
 
   @override
@@ -52,7 +52,7 @@ class DatabaseCacheSettingsBloc
   ) =>
       updateSettings(
         DatabaseCacheSettings(
-          ageLimitTypeString: ageLimit?.toJsonValue(),
+          ageLimitTypeString: ageLimit.toJsonValue(),
           entriesCountByTypeLimitTypeString: value.toJsonValue(),
         ),
       );

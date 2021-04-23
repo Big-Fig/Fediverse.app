@@ -95,7 +95,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)
-              .markMediaAsNsfwOnAttach ?? false,
+              .markMediaAsNsfwOnAttach,
       language: IPostStatusSettingsBloc.of(context, listen: false)
           .defaultStatusLocale
           ?.localeString,

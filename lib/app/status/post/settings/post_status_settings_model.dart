@@ -15,19 +15,18 @@ part 'post_status_settings_model.g.dart';
 class PostStatusSettings implements IJsonObject, ISettings<PostStatusSettings> {
   @HiveField(0)
   @JsonKey(name: "mark_media_as_nsfw_on_attach")
-  final bool? markMediaAsNsfwOnAttach;
+  final bool markMediaAsNsfwOnAttach;
 
   @HiveField(1)
   @JsonKey(name: "default_visibility")
-  final String? defaultVisibilityString;
+  final String defaultVisibilityString;
 
   @HiveField(2)
   @JsonKey(name: "default_status_locale")
   final LocalizationLocale? defaultStatusLocale;
 
   PleromaVisibility get defaultVisibilityPleroma =>
-      defaultVisibilityString?.toPleromaVisibility() ??
-      defaultPleromaVisibility;
+      defaultVisibilityString.toPleromaVisibility();
 
   PostStatusSettings({
     required this.markMediaAsNsfwOnAttach,
@@ -54,7 +53,8 @@ class PostStatusSettings implements IJsonObject, ISettings<PostStatusSettings> {
   String toString() => 'PostStatusSettings{'
       'markMediaAsNsfwOnAttach: $markMediaAsNsfwOnAttach,'
       ' defaultVisibilityString: $defaultVisibilityString,'
-      ' defaultStatusLocale: $defaultStatusLocale}';
+      ' defaultStatusLocale: $defaultStatusLocale'
+      '}';
 
   factory PostStatusSettings.fromJson(Map<String, dynamic> json) =>
       _$PostStatusSettingsFromJson(json);

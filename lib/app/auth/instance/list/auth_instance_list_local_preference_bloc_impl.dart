@@ -16,6 +16,5 @@ class AuthInstanceListLocalPreferenceBloc
         );
 
   @override
-  // TODO: implement defaultValue
   AuthInstanceList? get defaultPreferenceValue => null;
 }

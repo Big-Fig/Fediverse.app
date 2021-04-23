@@ -17,8 +17,8 @@ class DatabaseCacheSettingsAdapter extends TypeAdapter<DatabaseCacheSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return DatabaseCacheSettings(
-      entriesCountByTypeLimitTypeString: fields[2] as String?,
-      ageLimitTypeString: fields[3] as String?,
+      entriesCountByTypeLimitTypeString: fields[2] as String,
+      ageLimitTypeString: fields[3] as String,
     );
   }
 
@@ -51,8 +51,8 @@ DatabaseCacheSettings _$DatabaseCacheSettingsFromJson(
     Map<String, dynamic> json) {
   return DatabaseCacheSettings(
     entriesCountByTypeLimitTypeString:
-        json['entries_count_by_type_limit_type'] as String?,
-    ageLimitTypeString: json['age_limit_in_microseconds_type'] as String?,
+        json['entries_count_by_type_limit_type'] as String,
+    ageLimitTypeString: json['age_limit_in_microseconds_type'] as String,
   );
 }
 

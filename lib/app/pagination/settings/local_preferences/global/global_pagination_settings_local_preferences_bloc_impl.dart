@@ -6,7 +6,7 @@ import 'package:fedi/app/pagination/settings/pagination_settings_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class GlobalPaginationSettingsLocalPreferencesBloc
-    extends PaginationSettingsLocalPreferencesBloc
+    extends PaginationSettingsLocalPreferencesBloc<PaginationSettings>
     implements IGlobalPaginationSettingsLocalPreferencesBloc {
   GlobalPaginationSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,

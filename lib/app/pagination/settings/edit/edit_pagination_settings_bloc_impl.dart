@@ -8,7 +8,7 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/form/form_item_bloc.dart';
 
 class EditPaginationSettingsBloc
-    extends EditGlobalOrInstanceSettingsBloc<PaginationSettings?>
+    extends EditGlobalOrInstanceSettingsBloc<PaginationSettings>
     implements IEditPaginationSettingsBloc {
   final IPaginationSettingsBloc paginationSettingsBloc;
 
@@ -44,7 +44,7 @@ class EditPaginationSettingsBloc
 
   @override
   PaginationSettings calculateCurrentFormFieldsSettings() => PaginationSettings(
-        pageSize: pageSizeFieldBloc.currentValue?.toJsonValue(),
+        pageSize: pageSizeFieldBloc.currentValue!.toJsonValue(),
       );
 
   @override

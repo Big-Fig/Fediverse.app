@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IEditFilesCacheSettingsBloc
-    implements IEditGlobalOrInstanceSettingsBloc<FilesCacheSettings?> {
+    implements IEditGlobalOrInstanceSettingsBloc<FilesCacheSettings> {
   static IEditFilesCacheSettingsBloc of(
     BuildContext context, {
     bool listen = true,

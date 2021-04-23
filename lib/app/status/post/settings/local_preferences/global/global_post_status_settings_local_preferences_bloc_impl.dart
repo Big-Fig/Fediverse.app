@@ -5,7 +5,7 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 
 class GlobalPostStatusSettingsLocalPreferencesBloc
-    extends PostStatusSettingsLocalPreferencesBloc
+    extends PostStatusSettingsLocalPreferencesBloc<PostStatusSettings>
     implements IGlobalPostStatusSettingsLocalPreferencesBloc {
   GlobalPostStatusSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,

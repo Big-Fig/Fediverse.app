@@ -4,7 +4,7 @@ import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_sett
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class GlobalChatSettingsLocalPreferencesBloc
-    extends ChatSettingsLocalPreferencesBloc
+    extends ChatSettingsLocalPreferencesBloc<ChatSettings>
     implements IGlobalChatSettingsLocalPreferencesBloc {
   GlobalChatSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,

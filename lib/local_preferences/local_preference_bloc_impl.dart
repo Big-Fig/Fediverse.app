@@ -70,7 +70,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
   Future<T> getValueInternal();
 
   @protected
-  Future<bool> setValueInternal(T? newValue);
+  Future<bool> setValueInternal(T newValue);
 }
 
 abstract class ObjectLocalPreferenceBloc<T extends IJsonObject?>
@@ -95,7 +95,8 @@ abstract class ObjectLocalPreferenceBloc<T extends IJsonObject?>
 
   @override
   Future<T> getValueInternal() async =>
-      preferencesService.getObjectPreference(key, jsonConverter) ?? defaultPreferenceValue;
+      preferencesService.getObjectPreference(key, jsonConverter) ??
+      defaultPreferenceValue;
 }
 
 abstract class SimpleLocalPreferencesBloc<T> extends LocalPreferenceBloc<T> {
@@ -108,7 +109,7 @@ abstract class SimpleLocalPreferencesBloc<T> extends LocalPreferenceBloc<T> {
         );
 }
 
-abstract class IntPreferenceBloc extends SimpleLocalPreferencesBloc<int?> {
+abstract class IntPreferenceBloc extends SimpleLocalPreferencesBloc<int> {
   IntPreferenceBloc({
     required ILocalPreferencesService preferencesService,
     required String key,
@@ -118,17 +119,19 @@ abstract class IntPreferenceBloc extends SimpleLocalPreferencesBloc<int?> {
         );
 
   @override
-  Future<bool> setValueInternal(int? newValue) async =>
+  Future<bool> setValueInternal(int newValue) async =>
       await preferencesService.setIntPreference(key, newValue);
 
   @override
-  Future<int?> getValueInternal() async => preferencesService.getIntPreference(
+  Future<int> getValueInternal() async =>
+      preferencesService.getIntPreference(
         key,
-      );
+      ) ??
+      defaultPreferenceValue;
 }
 
 abstract class BoolLocalPreferenceBloc
-    extends SimpleLocalPreferencesBloc<bool?> {
+    extends SimpleLocalPreferencesBloc<bool> {
   BoolLocalPreferenceBloc({
     required ILocalPreferencesService preferencesService,
     required String key,
@@ -138,19 +141,42 @@ abstract class BoolLocalPreferenceBloc
         );
 
   @override
-  Future<bool> setValueInternal(bool? newValue) async =>
+  Future<bool> setValueInternal(bool newValue) async =>
       await preferencesService.setBoolPreference(key, newValue);
 
   @override
-  Future<bool?> getValueInternal() async =>
+  Future<bool> getValueInternal() async =>
       preferencesService.getBoolPreference(
         key,
-      );
+      ) ??
+      defaultPreferenceValue;
 }
 
 abstract class StringLocalPreferenceBloc
-    extends SimpleLocalPreferencesBloc<String?> {
+    extends SimpleLocalPreferencesBloc<String> {
   StringLocalPreferenceBloc({
+    required ILocalPreferencesService preferencesService,
+    required String key,
+  }) : super(
+          preferencesService: preferencesService,
+          key: key,
+        );
+
+  @override
+  Future<bool> setValueInternal(String newValue) async =>
+      await preferencesService.setString(key, newValue);
+
+  @override
+  Future<String> getValueInternal() async =>
+      preferencesService.getStringPreference(
+        key,
+      ) ??
+      defaultPreferenceValue;
+}
+
+abstract class StringNullableLocalPreferenceBloc
+    extends SimpleLocalPreferencesBloc<String?> {
+  StringNullableLocalPreferenceBloc({
     required ILocalPreferencesService preferencesService,
     required String key,
   }) : super(
@@ -167,4 +193,7 @@ abstract class StringLocalPreferenceBloc
       preferencesService.getStringPreference(
         key,
       );
+
+  @override
+  String? get defaultPreferenceValue => null;
 }
