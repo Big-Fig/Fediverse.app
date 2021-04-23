@@ -5,7 +5,6 @@ import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.d
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:fedi/web_sockets/service/config/web_sockets_service_config_bloc_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logging/logging.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -66,17 +65,6 @@ void main() {
   });
 
   test('eventsStream', () async {
-    Logger.root.level = Level.ALL;
-    Logger.root.onRecord.listen((record) {
-      print('${record.level.name}(${record.loggerName}): ${record.time}: '
-          '${record.message}');
-      if (record.error != null) {
-        print("\n${record.error}");
-      }
-      if (record.stackTrace != null) {
-        print("\n${record.stackTrace}");
-      }
-    });
     var event1 = TestWebSocketEvent("test1");
     var event2 = TestWebSocketEvent("test2");
 

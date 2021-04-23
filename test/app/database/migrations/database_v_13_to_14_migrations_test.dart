@@ -17,7 +17,7 @@ void main() {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v13.sqlite';
     var file = File(filePath);
     dbFile = await file.copy(filePath + ".temp");
-    database = AppDatabase(VmDatabase(dbFile, logStatements: true));
+    database = AppDatabase(VmDatabase(dbFile, logStatements: false));
     dbAccount = await createTestDbAccount(seed: "seed");
     await database.accountDao.insert(entity: dbAccount, mode: null);
   });
