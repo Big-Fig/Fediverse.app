@@ -6,7 +6,7 @@ import 'package:fedi/app/toast/handling_type/toast_handling_type_model.dart';
 import 'package:fedi/app/toast/settings/local_preferences/toast_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
-import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_notification_model.dart';
 import 'package:logging/logging.dart';
 
 final _logger = Logger("toast_settings_bloc_impl.dart");

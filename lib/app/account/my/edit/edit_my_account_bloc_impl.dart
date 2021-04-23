@@ -13,10 +13,10 @@ import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc_impl.dart';
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc_impl.dart';
-import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
-import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
-import 'package:fedi/pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_my_account_model.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_my_account_service.dart';
+import 'package:fedi/pleroma/api/field/pleroma_field_model.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_instance_model.dart';
 import 'package:flutter/widgets.dart';
 
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {

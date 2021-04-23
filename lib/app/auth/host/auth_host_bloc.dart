@@ -1,9 +1,9 @@
 import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
-import 'package:fedi/pleroma/application/pleroma_application_model.dart';
-import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
+import 'package:fedi/pleroma/api/account/public/pleroma_account_public_model.dart';
+import 'package:fedi/pleroma/api/application/pleroma_application_model.dart';
+import 'package:fedi/pleroma/api/oauth/pleroma_oauth_model.dart';
 
 abstract class IAuthHostBloc extends IDisposable {
   bool get isHostApplicationRegistered;

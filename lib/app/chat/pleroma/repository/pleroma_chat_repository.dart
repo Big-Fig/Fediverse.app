@@ -4,7 +4,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.d
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
+import 'package:fedi/pleroma/api/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/repository/repository.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';

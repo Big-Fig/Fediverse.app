@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:fedi/json/json_model.dart';
-import 'package:fedi/pleroma/application/pleroma_application_model.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
-import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
+import 'package:fedi/pleroma/api/application/pleroma_application_model.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_instance_model.dart';
+import 'package:fedi/pleroma/api/oauth/pleroma_oauth_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 

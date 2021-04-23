@@ -2,15 +2,15 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/application/pleroma_application_model.dart';
-import 'package:fedi/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
-import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/application/pleroma_application_model.dart';
+import 'package:fedi/pleroma/api/card/pleroma_card_model.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/mention/pleroma_mention_model.dart';
+import 'package:fedi/pleroma/api/poll/pleroma_poll_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_tag_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_visibility_model.dart';
 
 extension PleromaStatusDbExtension on IPleromaStatus {
   DbStatusPopulatedWrapper toDbStatusPopulatedWrapper() {

@@ -4,8 +4,8 @@ import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
-import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/pleroma/api/filter/pleroma_filter_service.dart';
+import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 

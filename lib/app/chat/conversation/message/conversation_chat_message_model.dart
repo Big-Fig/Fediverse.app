@@ -4,10 +4,10 @@ import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/pleroma/api/card/pleroma_card_model.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
 
 abstract class IConversationChatMessage extends IChatMessage {
   IStatus get status;

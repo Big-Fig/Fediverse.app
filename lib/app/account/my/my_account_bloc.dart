@@ -4,7 +4,7 @@ import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_my_account_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:provider/provider.dart';

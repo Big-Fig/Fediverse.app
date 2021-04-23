@@ -2,7 +2,7 @@ import 'package:fedi/app/status/reply/status_reply_loader_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
+import 'package:fedi/pleroma/api/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
 
 class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc

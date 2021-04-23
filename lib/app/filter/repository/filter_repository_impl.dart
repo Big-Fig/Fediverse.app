@@ -6,7 +6,7 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
-import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
+import 'package:fedi/pleroma/api/filter/pleroma_filter_model.dart';
 import 'package:moor/moor.dart';
 
 class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<

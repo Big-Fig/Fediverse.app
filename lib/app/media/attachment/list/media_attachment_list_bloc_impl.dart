@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
 
 Function eq = const ListEquality().equals;
 

@@ -1,9 +1,9 @@
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/mastodon/instance/mastodon_instance_model.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
+import 'package:fedi/mastodon/api/instance/mastodon_instance_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_instance_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

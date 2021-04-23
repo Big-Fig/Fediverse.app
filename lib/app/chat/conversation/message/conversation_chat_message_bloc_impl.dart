@@ -7,10 +7,10 @@ import 'package:fedi/app/chat/conversation/message/conversation_chat_message_mod
 import 'package:fedi/app/chat/message/chat_message_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
-import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
+import 'package:fedi/pleroma/api/account/pleroma_account_service.dart';
+import 'package:fedi/pleroma/api/conversation/pleroma_conversation_service.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_instance_model.dart';
+import 'package:fedi/pleroma/api/status/auth/pleroma_auth_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 

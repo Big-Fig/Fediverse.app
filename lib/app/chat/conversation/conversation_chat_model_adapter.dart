@@ -4,7 +4,7 @@ import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
+import 'package:fedi/pleroma/api/conversation/pleroma_conversation_model.dart';
 
 extension IPleromaConversationDbExtension on IPleromaConversation {
   DbConversation toDbConversation() {

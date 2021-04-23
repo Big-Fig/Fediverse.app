@@ -1,8 +1,8 @@
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:fedi/pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/pleroma/api/field/pleroma_field_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_tag_model.dart';
 import 'package:flutter/widgets.dart';
 
 typedef AccountCallback = Function(BuildContext context, IAccount account);

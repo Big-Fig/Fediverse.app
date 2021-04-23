@@ -6,7 +6,7 @@ import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc.
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/pleroma/api/account/pleroma_account_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

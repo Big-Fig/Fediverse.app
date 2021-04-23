@@ -2,8 +2,8 @@ import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_chat_model.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_chat_service.dart';
 
 class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
     implements IPleromaChatNewMessagesHandlerBloc {

@@ -3,7 +3,7 @@ import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.d
 import 'package:fedi/app/notification/database/notification_database_model.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
-import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_notification_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 

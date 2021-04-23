@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/my/my_account_model.dart';
-import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_my_account_model.dart';
 // ignore_for_file: no-magic-number
 Future<PleromaMyAccountWrapper> createTestMyAccount({
   required String seed,

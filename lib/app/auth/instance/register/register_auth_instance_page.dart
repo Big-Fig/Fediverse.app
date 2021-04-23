@@ -11,7 +11,7 @@ import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/pleroma/oauth/pleroma_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi/pleroma/api/oauth/pleroma_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

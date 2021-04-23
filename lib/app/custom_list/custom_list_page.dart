@@ -24,7 +24,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pleroma/list/pleroma_list_service.dart';
+import 'package:fedi/pleroma/api/list/pleroma_list_service.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';

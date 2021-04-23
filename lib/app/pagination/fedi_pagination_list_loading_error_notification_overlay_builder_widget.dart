@@ -3,7 +3,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
-import 'package:fedi/pleroma/rest/pleroma_rest_model.dart';
+import 'package:fedi/pleroma/api/rest/pleroma_rest_model.dart';
 import 'package:flutter/cupertino.dart';
 
 DateTime _lastRefreshErrorShowedDateTime = DateTime.now();

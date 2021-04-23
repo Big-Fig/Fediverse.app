@@ -1,4 +1,4 @@
-import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_emoji_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/style.dart';
 

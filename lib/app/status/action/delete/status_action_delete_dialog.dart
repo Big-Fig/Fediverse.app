@@ -9,7 +9,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_base_alert_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_instance_model.dart';
 import 'package:flutter/cupertino.dart';
 
 Future<T?> showStatusActionDeleteDialog<T>({

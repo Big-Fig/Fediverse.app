@@ -9,7 +9,7 @@ import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
 class ChatSelectionShareActionButtonWidget extends StatelessWidget {

@@ -5,8 +5,8 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/thread/local_status_thread_page.dart';
-import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
-import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_notification_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_notification_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pedantic/pedantic.dart';
 

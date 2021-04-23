@@ -3,8 +3,8 @@ import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/api/field/pleroma_field_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

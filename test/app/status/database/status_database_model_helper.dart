@@ -2,10 +2,10 @@ import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/mastodon/api/media/attachment/mastodon_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_visibility_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../pleroma/application/pleroma_application_model_helper.dart';

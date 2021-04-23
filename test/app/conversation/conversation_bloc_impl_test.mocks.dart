@@ -5,23 +5,23 @@
 import 'dart:async' as _i10;
 
 import 'package:fedi/disposable/disposable.dart' as _i13;
-import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart' as _i7;
-import 'package:fedi/pleroma/account/my/pleroma_my_account_service_impl.dart'
+import 'package:fedi/pleroma/api/account/my/pleroma_my_account_model.dart' as _i7;
+import 'package:fedi/pleroma/api/account/my/pleroma_my_account_service_impl.dart'
     as _i20;
-import 'package:fedi/pleroma/account/pleroma_account_model.dart' as _i8;
+import 'package:fedi/pleroma/api/account/pleroma_account_model.dart' as _i8;
 import 'package:fedi/pleroma/api/pleroma_api_service.dart' as _i11;
-import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart'
+import 'package:fedi/pleroma/api/conversation/pleroma_conversation_model.dart'
     as _i3;
-import 'package:fedi/pleroma/conversation/pleroma_conversation_service_impl.dart'
+import 'package:fedi/pleroma/api/conversation/pleroma_conversation_service_impl.dart'
     as _i9;
-import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart' as _i12;
-import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart' as _i2;
-import 'package:fedi/pleroma/rest/pleroma_rest_service.dart' as _i4;
-import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service_impl.dart'
+import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart' as _i12;
+import 'package:fedi/pleroma/api/rest/auth/pleroma_auth_rest_service.dart' as _i2;
+import 'package:fedi/pleroma/api/rest/pleroma_rest_service.dart' as _i4;
+import 'package:fedi/pleroma/api/status/auth/pleroma_auth_status_service_impl.dart'
     as _i18;
-import 'package:fedi/pleroma/status/context/pleroma_status_context_model.dart'
+import 'package:fedi/pleroma/api/status/context/pleroma_status_context_model.dart'
     as _i6;
-import 'package:fedi/pleroma/status/pleroma_status_model.dart' as _i5;
+import 'package:fedi/pleroma/api/status/pleroma_status_model.dart' as _i5;
 import 'package:flutter/src/widgets/editable_text.dart' as _i14;
 import 'package:flutter/src/widgets/focus_manager.dart' as _i16;
 import 'package:flutter/src/widgets/scroll_controller.dart' as _i15;

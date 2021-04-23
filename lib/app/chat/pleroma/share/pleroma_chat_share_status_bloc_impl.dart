@@ -10,9 +10,9 @@ import 'package:fedi/app/share/status/share_status_bloc.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
+import 'package:fedi/pleroma/api/account/pleroma_account_service.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_chat_model.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_chat_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

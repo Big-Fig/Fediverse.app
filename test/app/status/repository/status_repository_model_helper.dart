@@ -1,6 +1,6 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
-import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_tag_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<DbStatus> insertDbStatus(

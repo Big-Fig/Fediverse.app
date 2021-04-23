@@ -10,10 +10,10 @@ import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_my_account_service.dart';
+import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

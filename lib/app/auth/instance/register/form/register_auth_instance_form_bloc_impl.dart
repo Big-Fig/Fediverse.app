@@ -14,8 +14,8 @@ import 'package:fedi/form/field/value/string/validation/string_value_form_field_
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
-import 'package:fedi/pleroma/captcha/pleroma_captcha_service.dart';
+import 'package:fedi/pleroma/api/account/public/pleroma_account_public_model.dart';
+import 'package:fedi/pleroma/api/captcha/pleroma_captcha_service.dart';
 
 class RegisterAuthInstanceFormBloc extends FormBloc
     implements IRegisterAuthInstanceFormBloc {
