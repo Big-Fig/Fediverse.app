@@ -15,4 +15,8 @@ abstract class PostStatusSettingsLocalPreferencesBloc
           schemaVersion: 1,
           jsonConverter: (json) => PostStatusSettings.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  PostStatusSettings? get defaultPreferenceValue => null;
 }

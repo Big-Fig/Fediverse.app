@@ -12,7 +12,7 @@ class GlobalWebSocketsSettingsLocalPreferencesBloc
   ) : super(preferencesService, "webSockets.settings.global");
 
   @override
-  WebSocketsSettings get defaultValue => WebSocketsSettings(
+  WebSocketsSettings get defaultPreferenceValue => WebSocketsSettings(
         typeString:
             WebSocketsHandlingType.foregroundAndBackground.toJsonValue(),
       );

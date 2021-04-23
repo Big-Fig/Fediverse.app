@@ -11,4 +11,8 @@ class PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
           preferencesService: preferencesService,
           key: "PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc",
         );
+
+  @override
+  // TODO: implement defaultValue
+  String? get defaultPreferenceValue => null;
 }

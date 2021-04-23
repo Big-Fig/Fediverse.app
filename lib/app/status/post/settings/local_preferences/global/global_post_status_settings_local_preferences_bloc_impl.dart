@@ -12,7 +12,7 @@ class GlobalPostStatusSettingsLocalPreferencesBloc
   ) : super(preferencesService, "postStatus.settings.global");
 
   @override
-  PostStatusSettings get defaultValue => PostStatusSettings(
+  PostStatusSettings get defaultPreferenceValue => PostStatusSettings(
         defaultVisibilityString: PleromaVisibility.public.toJsonValue(),
         markMediaAsNsfwOnAttach: false,
         defaultStatusLocale: null,

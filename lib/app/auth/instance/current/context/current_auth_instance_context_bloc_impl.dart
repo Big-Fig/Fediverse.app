@@ -640,7 +640,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
           preferencesService,
           userAtHost: currentInstance.userAtHost,
           timelineId: timeline.id,
-          defaultValue: null,
+          defaultPreferenceValue: null,
         );
         await timelineLocalPreferencesBloc.performAsyncInit();
         await timelineLocalPreferencesBloc.setValue(timeline);

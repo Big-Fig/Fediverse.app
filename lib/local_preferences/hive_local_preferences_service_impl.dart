@@ -11,15 +11,22 @@ var _logger = Logger("hive_local_preferences_service_impl.dart");
 class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
   final String boxName;
+  final String? path;
 
-  HiveLocalPreferencesService({required this.boxName});
+  HiveLocalPreferencesService({
+    required this.boxName,
+    this.path,
+  });
 
   late Box _box;
 
   @override
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
-    _box = await Hive.openBox(boxName);
+    _box = await Hive.openBox(
+      boxName,
+      path: path,
+    );
   }
 
   @override

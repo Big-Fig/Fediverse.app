@@ -16,4 +16,8 @@ class EmojiPickerRecentCategoryLocalPreferenceBloc
           jsonConverter: (json) =>
               EmojiPickerRecentCategoryItemsList.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  EmojiPickerRecentCategoryItemsList? get defaultPreferenceValue => null;
 }

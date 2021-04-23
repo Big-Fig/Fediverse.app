@@ -16,4 +16,8 @@ abstract class ToastSettingsLocalPreferencesBloc
           schemaVersion: 3,
           jsonConverter: (json) => ToastSettings.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  ToastSettings? get defaultPreferenceValue => null;
 }

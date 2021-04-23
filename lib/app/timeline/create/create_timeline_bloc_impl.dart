@@ -116,7 +116,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
       localPreferencesService,
       userAtHost: authInstance.userAtHost,
       timelineId: timelineId,
-      defaultValue: Timeline.byType(
+      defaultPreferenceValue: Timeline.byType(
         id: timelineId,
         type: startType,
         settings: TimelineSettings.createDefaultSettings(startType),

@@ -15,4 +15,8 @@ class AuthHostApplicationLocalPreferenceBloc
           schemaVersion: 1,
           jsonConverter: (json) => PleromaClientApplication.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  PleromaClientApplication? get defaultPreferenceValue => null;
 }

@@ -16,4 +16,8 @@ abstract class WebSocketsSettingsLocalPreferencesBloc
           schemaVersion: 2,
           jsonConverter: (json) => WebSocketsSettings.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  WebSocketsSettings? get defaultPreferenceValue => null;
 }

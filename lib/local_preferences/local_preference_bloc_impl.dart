@@ -12,13 +12,13 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
   final String key;
 
   // ignore: close_sinks
-  final BehaviorSubject<T?> _subject = BehaviorSubject();
+  final BehaviorSubject<T> _subject = BehaviorSubject();
 
   @override
-  T? get value => _subject.value;
+  T get value => _subject.value ?? defaultPreferenceValue;
 
   @override
-  Stream<T?> get stream => _subject.stream;
+  Stream<T> get stream => _subject.stream;
 
   LocalPreferenceBloc({
     required this.preferencesService,
@@ -27,11 +27,11 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
     addDisposable(subject: _subject);
   }
 
-  T? get defaultValue => null;
+  T get defaultPreferenceValue;
 
   @override
   Future internalAsyncInit() async {
-    _subject.add((await getValueInternal()) ?? defaultValue);
+    _subject.add((await getValueInternal()) ?? defaultPreferenceValue);
 
     preferencesService.listenKeyPreferenceChanged(key, (newValue) {
       if (value != newValue) {
@@ -48,12 +48,12 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
   @override
   Future<bool> clearValue() {
     var future = preferencesService.clearValue(key);
-    _subject.add(null);
+    _subject.add(defaultPreferenceValue);
     return future;
   }
 
   @override
-  Future<bool> setValue(T? newValue) {
+  Future<bool> setValue(T newValue) {
     var future = setValueInternal(newValue);
     if (!_subject.isClosed) {
       _subject.add(newValue);
@@ -74,7 +74,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
 }
 
 abstract class ObjectLocalPreferenceBloc<T extends IJsonObject?>
-    extends LocalPreferenceBloc<T?> {
+    extends LocalPreferenceBloc<T> {
   final T Function(Map<String, dynamic> jsonData) jsonConverter;
   final int schemaVersion;
 
@@ -94,8 +94,8 @@ abstract class ObjectLocalPreferenceBloc<T extends IJsonObject?>
   }
 
   @override
-  Future<T?> getValueInternal() async =>
-      preferencesService.getObjectPreference(key, jsonConverter);
+  Future<T> getValueInternal() async =>
+      preferencesService.getObjectPreference(key, jsonConverter) ?? defaultPreferenceValue;
 }
 
 abstract class SimpleLocalPreferencesBloc<T> extends LocalPreferenceBloc<T> {

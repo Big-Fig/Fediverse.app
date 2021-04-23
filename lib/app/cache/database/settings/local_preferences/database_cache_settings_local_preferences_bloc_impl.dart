@@ -15,4 +15,9 @@ abstract class DatabaseCacheSettingsLocalPreferencesBloc
     schemaVersion: 1,
     jsonConverter: (json) => DatabaseCacheSettings.fromJson(json),
   );
+
+
+  @override
+  // TODO: implement defaultValue
+  DatabaseCacheSettings? get defaultPreferenceValue => null;
 }

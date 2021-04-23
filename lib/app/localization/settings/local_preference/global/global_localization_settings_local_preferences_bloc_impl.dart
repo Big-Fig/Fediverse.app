@@ -11,7 +11,7 @@ class GlobalLocalizationSettingsLocalPreferencesBloc
   ) : super(preferencesService, "localization.settings.global");
 
   @override
-  LocalizationSettings get defaultValue => LocalizationSettings(
+  LocalizationSettings get defaultPreferenceValue => LocalizationSettings(
         localizationLocale: null,
       );
 }

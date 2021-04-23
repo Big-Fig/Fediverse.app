@@ -56,7 +56,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
         preferencesService,
         userAtHost: authInstance.userAtHost,
         timelineId: timelineId,
-        defaultValue: null,
+        defaultPreferenceValue: null,
       );
 
       await bloc.performAsyncInit();
@@ -134,7 +134,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
       preferencesService,
       userAtHost: authInstance.userAtHost,
       timelineId: timeline.id,
-      defaultValue: null,
+      defaultPreferenceValue: null,
     );
 
     await settingsLocalPreferencesBloc.setValue(timeline);
@@ -155,7 +155,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
       preferencesService,
       userAtHost: authInstance.userAtHost,
       timelineId: timeline.id,
-      defaultValue: null,
+      defaultPreferenceValue: null,
     );
 
     await settingsLocalPreferencesBloc.clearValue();

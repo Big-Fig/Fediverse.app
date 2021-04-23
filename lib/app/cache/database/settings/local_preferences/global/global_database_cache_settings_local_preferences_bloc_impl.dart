@@ -16,7 +16,7 @@ class GlobalDatabaseCacheSettingsLocalPreferencesBloc
         );
 
   @override
-  DatabaseCacheSettings get defaultValue => DatabaseCacheSettings(
+  DatabaseCacheSettings get defaultPreferenceValue => DatabaseCacheSettings(
         entriesCountByTypeLimitTypeString:
             DatabaseCacheEntriesCountByTypeLimitType.notSet.toJsonValue(),
         ageLimitTypeString: DatabaseCacheAgeLimitType.notSet.toJsonValue(),

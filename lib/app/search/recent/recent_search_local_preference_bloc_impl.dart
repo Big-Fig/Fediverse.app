@@ -15,4 +15,8 @@ class RecentSearchLocalPreferenceBloc
           schemaVersion: 1,
           jsonConverter: (json) => RecentSearchList.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  RecentSearchList? get defaultPreferenceValue => null;
 }

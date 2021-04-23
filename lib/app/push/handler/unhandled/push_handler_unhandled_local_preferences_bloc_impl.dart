@@ -22,7 +22,7 @@ class PushHandlerUnhandledLocalPreferencesBloc
         );
 
   @override
-  PushHandlerUnhandledList get defaultValue =>
+  PushHandlerUnhandledList get defaultPreferenceValue =>
       PushHandlerUnhandledList(messages: []);
 
   @override

@@ -17,8 +17,8 @@ class AppAnalyticsDataAdapter extends TypeAdapter<AppAnalyticsData> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return AppAnalyticsData(
-      appOpenedCount: fields[0] as int?,
-      isAppRated: fields[1] as bool?,
+      appOpenedCount: fields[0] as int,
+      isAppRated: fields[1] as bool,
     );
   }
 
@@ -49,8 +49,8 @@ class AppAnalyticsDataAdapter extends TypeAdapter<AppAnalyticsData> {
 
 AppAnalyticsData _$AppAnalyticsDataFromJson(Map<String, dynamic> json) {
   return AppAnalyticsData(
-    appOpenedCount: json['appOpenedCount'] as int?,
-    isAppRated: json['isAppRated'] as bool?,
+    appOpenedCount: json['appOpenedCount'] as int,
+    isAppRated: json['isAppRated'] as bool,
   );
 }
 

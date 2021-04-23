@@ -17,5 +17,5 @@ class TimelinesHomeTabStorageLocalPreferencesBloc
         );
 
   @override
-  TimelinesHomeTabStorage? get defaultValue => null;
+  TimelinesHomeTabStorage? get defaultPreferenceValue => null;
 }

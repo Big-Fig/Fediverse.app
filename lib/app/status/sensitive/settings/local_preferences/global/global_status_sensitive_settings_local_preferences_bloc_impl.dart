@@ -11,7 +11,7 @@ class GlobalStatusSensitiveSettingsLocalPreferencesBloc
   ) : super(preferencesService, "statusSensitive.settings.global");
 
   @override
-  StatusSensitiveSettings get defaultValue => StatusSensitiveSettings(
+  StatusSensitiveSettings get defaultPreferenceValue => StatusSensitiveSettings(
         isAlwaysShowNsfw: false,
         isAlwaysShowSpoiler: false,
         nsfwDisplayDelayDurationMicrosecondsTotal:

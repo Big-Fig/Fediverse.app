@@ -15,13 +15,13 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 class TimelineLocalPreferencesBloc extends ObjectLocalPreferenceBloc<Timeline?>
     implements ITimelineLocalPreferencesBloc {
   @override
-  final Timeline? defaultValue;
+  final Timeline? defaultPreferenceValue;
 
   TimelineLocalPreferencesBloc.byId(
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
     required String? timelineId,
-    required this.defaultValue,
+    required this.defaultPreferenceValue,
   }) : super(
           preferencesService: preferencesService,
           key: "$userAtHost.timeline.$timelineId",
@@ -37,7 +37,7 @@ class TimelineLocalPreferencesBloc extends ObjectLocalPreferenceBloc<Timeline?>
           preferencesService,
           userAtHost: userAtHost,
           timelineId: customList.calculateTimelineId(),
-          defaultValue: Timeline(
+          defaultPreferenceValue: Timeline(
             id: customList.calculateTimelineId(),
             label: customList.title,
             isPossibleToDelete: true,
@@ -56,7 +56,7 @@ class TimelineLocalPreferencesBloc extends ObjectLocalPreferenceBloc<Timeline?>
           preferencesService,
           userAtHost: userAtHost,
           timelineId: hashtag.calculateTimelineId(),
-          defaultValue: Timeline(
+          defaultPreferenceValue: Timeline(
             id: hashtag.calculateTimelineId(),
             label: hashtag.name,
             isPossibleToDelete: true,
@@ -75,7 +75,7 @@ class TimelineLocalPreferencesBloc extends ObjectLocalPreferenceBloc<Timeline?>
           preferencesService,
           userAtHost: userAtHost,
           timelineId: account.calculateTimelineId(),
-          defaultValue: Timeline(
+          defaultPreferenceValue: Timeline(
             id: account.calculateTimelineId(),
             label: account.acct,
             isPossibleToDelete: true,

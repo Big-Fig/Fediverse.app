@@ -14,4 +14,8 @@ class AuthInstanceListLocalPreferenceBloc
           schemaVersion: 1,
           jsonConverter: (json) => AuthInstanceList.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  AuthInstanceList? get defaultPreferenceValue => null;
 }

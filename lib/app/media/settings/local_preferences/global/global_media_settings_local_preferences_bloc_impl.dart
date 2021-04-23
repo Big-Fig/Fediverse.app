@@ -11,7 +11,7 @@ class GlobalMediaSettingsLocalPreferencesBloc
   ) : super(preferencesService, "media.settings.global");
 
   @override
-  MediaSettings get defaultValue => MediaSettings(
+  MediaSettings get defaultPreferenceValue => MediaSettings(
         autoInit: false,
         autoPlay: false,
       );

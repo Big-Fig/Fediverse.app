@@ -485,11 +485,11 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
   }) async {
     // ignore: no-magic-number
     final appOpenedCountToShowAppReview = 5;
-    var isAppRated = appAnalyticsBloc.isAppRated!;
+    var isAppRated = appAnalyticsBloc.isAppRated;
     var appOpenedCount = appAnalyticsBloc.appOpenedCount;
     var isProdPackageId = await FediPackageInfoHelper.isProdPackageId();
     var isNeedRequestReview =
-        (!isAppRated && appOpenedCount! >= appOpenedCountToShowAppReview) &&
+        (!isAppRated && appOpenedCount >= appOpenedCountToShowAppReview) &&
             isProdPackageId;
     _logger.finest(
       () => " appOpenedCountToShowAppReview $appOpenedCountToShowAppReview \n"

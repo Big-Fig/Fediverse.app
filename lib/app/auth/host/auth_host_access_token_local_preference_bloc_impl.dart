@@ -15,4 +15,8 @@ class AuthHostAccessTokenLocalPreferenceBloc
           schemaVersion: 1,
           jsonConverter: (json) => PleromaOAuthToken.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  PleromaOAuthToken? get defaultPreferenceValue => null;
 }

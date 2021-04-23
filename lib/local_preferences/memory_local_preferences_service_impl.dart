@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/json/json_model.dart';
@@ -73,7 +75,14 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     String key,
     IJsonObject? preferencesObject,
   ) async {
-    preferences[key] = preferencesObject;
+    var data = preferencesObject?.toJson();
+
+    String? str;
+    if (data != null) {
+      str = jsonEncode(data);
+    }
+    preferences[key] = str;
+
     notifyKeyValueChanged(key, preferencesObject);
     return true;
   }
@@ -95,7 +104,12 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     String key,
     T Function(Map<String, dynamic> jsonData) jsonConverter,
   ) {
-    return preferences[key];
+    var str = getStringPreference(key);
+    if (str != null) {
+      return jsonConverter(jsonDecode(str));
+    } else {
+      return null;
+    }
   }
 
   @override

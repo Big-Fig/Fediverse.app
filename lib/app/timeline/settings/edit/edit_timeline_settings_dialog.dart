@@ -85,6 +85,6 @@ TimelineLocalPreferencesBloc _createTimelinePreferencesBloc(
     localPreferencesService,
     userAtHost: currentInstance.userAtHost,
     timelineId: timeline.id,
-    defaultValue: timeline,
+    defaultPreferenceValue: timeline,
   );
 }

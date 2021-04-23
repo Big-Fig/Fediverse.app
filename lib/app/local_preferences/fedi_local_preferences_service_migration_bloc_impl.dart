@@ -79,7 +79,7 @@ class FediLocalPreferencesServiceMigrationBloc
                     lps,
                     userAtHost: userAtHost,
                     timelineId: timelineId,
-                    defaultValue: null,
+                    defaultPreferenceValue: null,
                   ),
             ) ??
             [],

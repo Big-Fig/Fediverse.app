@@ -15,4 +15,8 @@ abstract class ChatSettingsLocalPreferencesBloc
           schemaVersion: 1,
           jsonConverter: (json) => ChatSettings.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  ChatSettings? get defaultPreferenceValue => null;
 }

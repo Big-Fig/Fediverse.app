@@ -15,4 +15,8 @@ abstract class MediaSettingsLocalPreferencesBloc
           schemaVersion: 1,
           jsonConverter: (json) => MediaSettings.fromJson(json),
         );
+
+  @override
+  // TODO: implement defaultValue
+  MediaSettings? get defaultPreferenceValue => null;
 }
