@@ -6,7 +6,7 @@ import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/mastodon/api/card/mastodon_api_card_model.dart';
-import 'package:fedi/pleroma/api/card/pleroma_card_model.dart';
+import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

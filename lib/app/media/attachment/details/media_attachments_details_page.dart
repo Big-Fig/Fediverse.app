@@ -23,7 +23,7 @@ import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment
 import 'package:fedi/media/player/audio/audio_media_player_bloc_impl.dart';
 import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:rxdart/rxdart.dart';

@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
-import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/api/list/pleroma_list_model.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_timeline_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
+import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 

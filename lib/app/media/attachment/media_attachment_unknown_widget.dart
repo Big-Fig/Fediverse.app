@@ -1,7 +1,7 @@
 import 'package:fedi/app/media/attachment/media_attachment_non_media_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

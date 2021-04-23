@@ -1,5 +1,5 @@
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/api/poll/pleroma_poll_model.dart';
+import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

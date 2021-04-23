@@ -3,9 +3,9 @@ import 'package:fedi/app/chat/conversation/status/list/cached/conversation_chat_
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/api/status/pleroma_status_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 

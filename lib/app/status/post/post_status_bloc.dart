@@ -3,7 +3,7 @@ import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

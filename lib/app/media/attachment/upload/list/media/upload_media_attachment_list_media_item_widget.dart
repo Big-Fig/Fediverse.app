@@ -18,7 +18,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

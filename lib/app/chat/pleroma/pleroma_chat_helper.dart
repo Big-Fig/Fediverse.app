@@ -5,8 +5,8 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_chat_model.dart' as pleroma_lib;
-import 'package:fedi/pleroma/api/chat/pleroma_chat_service.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart' as pleroma_lib;
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:flutter/widgets.dart';
 
 void goToPleromaChatWithAccount({

@@ -8,9 +8,9 @@ import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/api/status/pleroma_status_service.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pedantic/pedantic.dart';
 

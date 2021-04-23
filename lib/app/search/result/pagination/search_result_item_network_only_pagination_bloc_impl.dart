@@ -6,7 +6,7 @@ import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 

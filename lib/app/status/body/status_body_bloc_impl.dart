@@ -1,6 +1,6 @@
 import 'package:fedi/app/status/body/status_body_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 
 class StatusBodyBloc extends DisposableOwner implements IStatusBodyBloc {
   @override

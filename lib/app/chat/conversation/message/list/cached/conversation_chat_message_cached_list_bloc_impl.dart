@@ -7,7 +7,7 @@ import 'package:fedi/app/chat/conversation/status/conversation_api/conversation_
 import 'package:fedi/app/chat/conversation/status/list/cached/conversation_chat_status_list_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 

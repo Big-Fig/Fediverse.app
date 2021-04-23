@@ -20,10 +20,10 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/validation/value_form_field_non_null_validation.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/api/list/pleroma_list_model.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_timeline_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
+import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 
 class EditTimelineSettingsBloc

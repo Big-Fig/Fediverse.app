@@ -5,8 +5,8 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_notification_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 
 extension IPleromaNotificationExtension on IPleromaNotification {
   DbNotification toDbNotification({

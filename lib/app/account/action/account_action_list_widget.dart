@@ -12,7 +12,7 @@ import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

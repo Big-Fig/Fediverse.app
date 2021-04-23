@@ -2,8 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_timeline_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 

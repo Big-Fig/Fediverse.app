@@ -3,10 +3,10 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.d
 import 'package:fedi/app/chat/pleroma/with_last_message/list/cached/pleroma_chat_with_last_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_chat_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_chat_service.dart';
-import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
+import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 

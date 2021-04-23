@@ -8,7 +8,7 @@ import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/status/auth/pleroma_auth_status_service.dart';
+import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';

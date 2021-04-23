@@ -1,6 +1,6 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_instance_model.dart';
-import 'package:fedi/pleroma/api/oauth/pleroma_oauth_model.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
+import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_model.dart';
 
 class DisabledRegistrationAuthHostException implements Exception {
   const DisabledRegistrationAuthHostException();
