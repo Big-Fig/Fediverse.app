@@ -1,9 +1,10 @@
 import 'package:fedi/app/pagination/settings/local_preferences/pagination_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IGlobalPaginationSettingsLocalPreferencesBloc
-    implements IPaginationSettingsLocalPreferencesBloc {
+    implements IPaginationSettingsLocalPreferencesBloc<PaginationSettings> {
   static IGlobalPaginationSettingsLocalPreferencesBloc of(
     BuildContext context, {
     bool listen = true,

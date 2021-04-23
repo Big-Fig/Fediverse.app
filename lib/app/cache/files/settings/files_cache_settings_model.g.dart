@@ -17,8 +17,8 @@ class FilesCacheSettingsAdapter extends TypeAdapter<FilesCacheSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return FilesCacheSettings(
-      filesCacheSizeLimitCountTypeString: fields[2] as String?,
-      filesCacheAgeLimitTypeString: fields[3] as String?,
+      filesCacheSizeLimitCountTypeString: fields[2] as String,
+      filesCacheAgeLimitTypeString: fields[3] as String,
     );
   }
 
@@ -50,9 +50,9 @@ class FilesCacheSettingsAdapter extends TypeAdapter<FilesCacheSettings> {
 FilesCacheSettings _$FilesCacheSettingsFromJson(Map<String, dynamic> json) {
   return FilesCacheSettings(
     filesCacheSizeLimitCountTypeString:
-        json['files_cache_size_limit_count_type_string'] as String?,
+        json['files_cache_size_limit_count_type_string'] as String,
     filesCacheAgeLimitTypeString:
-        json['files_cache_ageL_limit_type_string'] as String?,
+        json['files_cache_ageL_limit_type_string'] as String,
   );
 }
 

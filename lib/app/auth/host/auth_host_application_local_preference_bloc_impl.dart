@@ -17,6 +17,5 @@ class AuthHostApplicationLocalPreferenceBloc
         );
 
   @override
-  // TODO: implement defaultValue
   PleromaClientApplication? get defaultPreferenceValue => null;
 }

@@ -14,10 +14,10 @@ part 'pagination_settings_model.g.dart';
 class PaginationSettings implements IJsonObject, ISettings<PaginationSettings> {
   @HiveField(0)
   @JsonKey(name: "page_size")
-  final String? pageSize;
+  final String pageSize;
 
-  PaginationPageSize? get pageSizeAsUiSettingsFontSize =>
-      pageSize?.toPaginationPageSize();
+  PaginationPageSize get pageSizeAsUiSettingsFontSize =>
+      pageSize.toPaginationPageSize();
 
   PaginationSettings({
     required this.pageSize,

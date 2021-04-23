@@ -14,10 +14,10 @@ class StatusSensitiveSettings
     implements IJsonObject, ISettings<StatusSensitiveSettings> {
   @HiveField(0)
   @JsonKey(name: "is_always_show_spoiler")
-  final bool? isAlwaysShowSpoiler;
+  final bool isAlwaysShowSpoiler;
   @HiveField(1)
   @JsonKey(name: "is_always_show_nsfw")
-  final bool? isAlwaysShowNsfw;
+  final bool isAlwaysShowNsfw;
 
   @HiveField(2)
   @JsonKey(name: "nsfw_display_delay_duration_seconds_total")
@@ -55,10 +55,10 @@ class StatusSensitiveSettings
   @override
   String toString() {
     return 'StatusSensitiveSettings{'
-        'isAlwaysShowSpoiler: $isAlwaysShowSpoiler,'
-        ' isAlwaysShowNsfw: $isAlwaysShowNsfw,'
-        ' nsfwDisplayDelayDurationMicrosecondsTotal:'
-        ' $nsfwDisplayDelayDurationMicrosecondsTotal'
+        'isAlwaysShowSpoiler: $isAlwaysShowSpoiler, '
+        'isAlwaysShowNsfw: $isAlwaysShowNsfw, '
+        'nsfwDisplayDelayDurationMicrosecondsTotal: '
+        '$nsfwDisplayDelayDurationMicrosecondsTotal'
         '}';
   }
 

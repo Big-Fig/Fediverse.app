@@ -13,7 +13,7 @@ import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart'
 import 'package:fedi/form/form_item_bloc.dart';
 
 class EditToastSettingsBloc
-    extends EditGlobalOrInstanceSettingsBloc<ToastSettings?>
+    extends EditGlobalOrInstanceSettingsBloc<ToastSettings>
     implements IEditToastSettingsBloc {
   final IToastSettingsBloc toastSettingsBloc;
 

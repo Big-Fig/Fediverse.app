@@ -4,7 +4,7 @@ import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_mod
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class GlobalStatusSensitiveSettingsLocalPreferencesBloc
-    extends StatusSensitiveSettingsLocalPreferencesBloc
+    extends StatusSensitiveSettingsLocalPreferencesBloc<StatusSensitiveSettings>
     implements IGlobalStatusSensitiveSettingsLocalPreferencesBloc {
   GlobalStatusSensitiveSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,

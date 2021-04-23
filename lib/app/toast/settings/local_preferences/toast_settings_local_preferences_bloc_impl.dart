@@ -3,9 +3,9 @@ import 'package:fedi/app/toast/settings/toast_settings_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-abstract class ToastSettingsLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<ToastSettings?>
-    implements IToastSettingsLocalPreferencesBloc {
+abstract class ToastSettingsLocalPreferencesBloc<T extends ToastSettings?>
+    extends ObjectLocalPreferenceBloc<T>
+    implements IToastSettingsLocalPreferencesBloc<T> {
   ToastSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
     String key,
@@ -14,10 +14,6 @@ abstract class ToastSettingsLocalPreferencesBloc
           key: key,
           // ignore: no-magic-number
           schemaVersion: 3,
-          jsonConverter: (json) => ToastSettings.fromJson(json),
+          jsonConverter: (json) => ToastSettings.fromJson(json) as T,
         );
-
-  @override
-  // TODO: implement defaultValue
-  ToastSettings? get defaultPreferenceValue => null;
 }

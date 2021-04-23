@@ -3,8 +3,8 @@ import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPostStatusSettingsLocalPreferencesBloc
-    implements ILocalPreferenceBloc<PostStatusSettings?> {
+abstract class IPostStatusSettingsLocalPreferencesBloc<T extends PostStatusSettings?>
+    implements ILocalPreferenceBloc<T> {
   static IPostStatusSettingsLocalPreferencesBloc of(
     BuildContext context, {
     bool listen = true,

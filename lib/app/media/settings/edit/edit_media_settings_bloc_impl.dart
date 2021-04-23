@@ -8,7 +8,7 @@ import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart'
 import 'package:fedi/form/form_item_bloc.dart';
 
 class EditMediaSettingsBloc
-    extends EditGlobalOrInstanceSettingsBloc<MediaSettings?>
+    extends EditGlobalOrInstanceSettingsBloc<MediaSettings>
     implements IEditMediaSettingsBloc {
   final IMediaSettingsBloc mediaSettingsBloc;
 
@@ -55,11 +55,11 @@ class EditMediaSettingsBloc
   @override
   MediaSettings calculateCurrentFormFieldsSettings() {
     MediaSettings? oldPreferences = settingsBloc.settingsData;
-    var oldMediaAutoInit = oldPreferences?.autoInit ?? false;
-    var oldMediaAutoPlay = oldPreferences?.autoPlay ?? false;
+    var oldMediaAutoInit = oldPreferences.autoInit;
+    var oldMediaAutoPlay = oldPreferences.autoPlay;
 
-    bool? newMediaAutoInit = autoInitFieldBloc.currentValue;
-    bool? newMediaAutoPlay = autoPlayFieldBloc.currentValue;
+    bool? newMediaAutoInit = autoInitFieldBloc.currentValue!;
+    bool? newMediaAutoPlay = autoPlayFieldBloc.currentValue!;
 
     if (newMediaAutoPlay == true && oldMediaAutoPlay == false) {
       newMediaAutoInit = true;

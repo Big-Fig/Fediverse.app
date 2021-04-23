@@ -13,13 +13,13 @@ part 'web_sockets_settings_model.g.dart';
 class WebSocketsSettings implements ISettings<WebSocketsSettings> {
   @HiveField(0)
   @JsonKey(name: "type_string")
-  final String? typeString;
+  final String typeString;
 
   WebSocketsSettings({
     required this.typeString,
   });
 
-  WebSocketsHandlingType? get type => typeString?.toWebSocketsHandlingType();
+  WebSocketsHandlingType get type => typeString.toWebSocketsHandlingType();
 
   @override
   bool operator ==(Object other) =>

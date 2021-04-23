@@ -6,7 +6,7 @@ import 'package:fedi/app/toast/settings/toast_settings_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class GlobalToastSettingsLocalPreferencesBloc
-    extends ToastSettingsLocalPreferencesBloc
+    extends ToastSettingsLocalPreferencesBloc<ToastSettings>
     implements IGlobalToastSettingsLocalPreferencesBloc {
   GlobalToastSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,

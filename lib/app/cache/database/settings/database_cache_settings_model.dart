@@ -16,18 +16,18 @@ class DatabaseCacheSettings
     implements IJsonObject, ISettings<DatabaseCacheSettings> {
   @HiveField(2)
   @JsonKey(name: "entries_count_by_type_limit_type")
-  final String? entriesCountByTypeLimitTypeString;
+  final String entriesCountByTypeLimitTypeString;
 
-  DatabaseCacheEntriesCountByTypeLimitType? get entriesCountByTypeLimitType =>
+  DatabaseCacheEntriesCountByTypeLimitType get entriesCountByTypeLimitType =>
       entriesCountByTypeLimitTypeString
-          ?.toDatabaseCacheEntriesCountByTypeLimitType();
+          .toDatabaseCacheEntriesCountByTypeLimitType();
 
   @HiveField(3)
   @JsonKey(name: "age_limit_in_microseconds_type")
-  final String? ageLimitTypeString;
+  final String ageLimitTypeString;
 
-  DatabaseCacheAgeLimitType? get ageLimitType =>
-      ageLimitTypeString?.toDatabaseCacheAgeLimitType();
+  DatabaseCacheAgeLimitType get ageLimitType =>
+      ageLimitTypeString.toDatabaseCacheAgeLimitType();
 
   DatabaseCacheSettings({
     required this.entriesCountByTypeLimitTypeString,
@@ -79,7 +79,8 @@ class DatabaseCacheSettings
   @override
   String toString() {
     return 'DatabaseCacheSettings{'
-        'entriesCountByTypeLimitTypeString: $entriesCountByTypeLimitTypeString,'
-        ' ageLimitTypeString: $ageLimitTypeString}';
+        'entriesCountByTypeLimitTypeString: $entriesCountByTypeLimitTypeString, '
+        'ageLimitTypeString: $ageLimitTypeString'
+        '}';
   }
 }

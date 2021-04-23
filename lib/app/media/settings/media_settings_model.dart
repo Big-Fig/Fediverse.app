@@ -13,10 +13,10 @@ part 'media_settings_model.g.dart';
 class MediaSettings implements IJsonObject, ISettings<MediaSettings> {
   @HiveField(0)
   @JsonKey(name: "auto_init")
-  final bool? autoInit;
+  final bool autoInit;
   @HiveField(1)
   @JsonKey(name: "auto_play")
-  final bool? autoPlay;
+  final bool autoPlay;
 
   MediaSettings({
     required this.autoInit,
@@ -53,6 +53,9 @@ class MediaSettings implements IJsonObject, ISettings<MediaSettings> {
 
   @override
   String toString() {
-    return 'MediaSettings{autoInit: $autoInit, autoPlay: $autoPlay}';
+    return 'MediaSettings{'
+        'autoInit: $autoInit, '
+        'autoPlay: $autoPlay'
+        '}';
   }
 }

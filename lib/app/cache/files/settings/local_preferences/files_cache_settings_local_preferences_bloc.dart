@@ -3,8 +3,8 @@ import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IFilesCacheSettingsLocalPreferencesBloc
-    implements ILocalPreferenceBloc<FilesCacheSettings?> {
+abstract class IFilesCacheSettingsLocalPreferencesBloc<T extends FilesCacheSettings?>
+    implements ILocalPreferenceBloc<T> {
   static IFilesCacheSettingsLocalPreferencesBloc of(
     BuildContext context, {
     bool listen = true,

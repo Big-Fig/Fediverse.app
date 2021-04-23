@@ -3,9 +3,9 @@ import 'package:fedi/app/chat/settings/local_preferences/chat_settings_local_pre
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-abstract class ChatSettingsLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<ChatSettings?>
-    implements IChatSettingsLocalPreferencesBloc {
+abstract class ChatSettingsLocalPreferencesBloc<T extends ChatSettings?>
+    extends ObjectLocalPreferenceBloc<T>
+    implements IChatSettingsLocalPreferencesBloc<T> {
   ChatSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
     String key,
@@ -13,10 +13,6 @@ abstract class ChatSettingsLocalPreferencesBloc
           preferencesService: preferencesService,
           key: key,
           schemaVersion: 1,
-          jsonConverter: (json) => ChatSettings.fromJson(json),
+          jsonConverter: (json) => ChatSettings.fromJson(json) as T,
         );
-
-  @override
-  // TODO: implement defaultValue
-  ChatSettings? get defaultPreferenceValue => null;
 }

@@ -77,7 +77,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
       markMediaAsNsfwOnAttach: IPostStatusSettingsBloc.of(
         context,
         listen: false,
-      ).markMediaAsNsfwOnAttach ?? false,
+      ).markMediaAsNsfwOnAttach,
       language: IPostStatusSettingsBloc.of(
         context,
         listen: false,

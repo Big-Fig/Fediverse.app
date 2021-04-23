@@ -3,7 +3,7 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 
 class PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
-    extends StringLocalPreferenceBloc
+    extends StringNullableLocalPreferenceBloc
     implements IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc {
   PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
@@ -11,8 +11,4 @@ class PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
           preferencesService: preferencesService,
           key: "PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc",
         );
-
-  @override
-  // TODO: implement defaultValue
-  String? get defaultPreferenceValue => null;
 }

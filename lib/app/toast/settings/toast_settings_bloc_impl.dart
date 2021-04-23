@@ -12,20 +12,22 @@ import 'package:logging/logging.dart';
 final _logger = Logger("toast_settings_bloc_impl.dart");
 
 class ToastSettingsBloc
-    extends GlobalOrInstanceSettingsLocalPreferencesBloc<ToastSettings?>
+    extends GlobalOrInstanceSettingsLocalPreferencesBloc<ToastSettings>
     implements IToastSettingsBloc {
   ToastSettingsBloc({
-    required IToastSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
-    required IToastSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
+    required IToastSettingsLocalPreferencesBloc<ToastSettings>
+        globalLocalPreferencesBloc,
+    required IToastSettingsLocalPreferencesBloc<ToastSettings?>
+        instanceLocalPreferencesBloc,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
         );
 
-  PushSettings? get pushSettingsData => settingsData?.pushSettings;
+  PushSettings? get pushSettingsData => settingsData.pushSettings;
 
   Stream<PushSettings?> get pushSettingsDataStream =>
-      settingsDataStream.map((settingsData) => settingsData?.pushSettings);
+      settingsDataStream.map((settingsData) => settingsData.pushSettings);
 
   Future updatePushSettings(PushSettings newPushSettings) async {
     if (pushSettingsData == newPushSettings) {
@@ -34,7 +36,7 @@ class ToastSettingsBloc
     }
 
     await updateSettings(
-      settingsData!.copyWith(
+      settingsData.copyWith(
         pushSettings: newPushSettings,
       ),
     );
@@ -153,16 +155,16 @@ class ToastSettingsBloc
   }
 
   @override
-  ToastHandlingType get handlingType => settingsData!.handlingType!;
+  ToastHandlingType get handlingType => settingsData.handlingType!;
 
   @override
   Stream<ToastHandlingType> get handlingTypeStream =>
-      settingsDataStream.map((settings) => settings!.handlingType!);
+      settingsDataStream.map((settings) => settings.handlingType!);
 
   @override
   void changeHandlingType(ToastHandlingType value) {
     updateSettings(
-      settingsData!.copyWith(
+      settingsData.copyWith(
         handlingTypeString: value.toJsonValue(),
       ),
     );

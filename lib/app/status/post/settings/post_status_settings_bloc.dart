@@ -6,22 +6,22 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPostStatusSettingsBloc
-    implements IGlobalOrInstanceSettingsBloc<PostStatusSettings?> {
+    implements IGlobalOrInstanceSettingsBloc<PostStatusSettings> {
   static IPostStatusSettingsBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
       Provider.of<IPostStatusSettingsBloc>(context, listen: listen);
 
-  bool? get markMediaAsNsfwOnAttach;
+  bool get markMediaAsNsfwOnAttach;
 
-  Stream<bool?> get markMediaAsNsfwOnAttachStream;
+  Stream<bool> get markMediaAsNsfwOnAttachStream;
 
   void changeMarkMediaAsNsfwOnAttach(bool value);
 
-  PleromaVisibility? get defaultVisibility;
+  PleromaVisibility get defaultVisibility;
 
-  Stream<PleromaVisibility?> get defaultVisibilityStream;
+  Stream<PleromaVisibility> get defaultVisibilityStream;
 
   void changeDefaultVisibility(PleromaVisibility value);
 
@@ -29,5 +29,5 @@ abstract class IPostStatusSettingsBloc
 
   Stream<LocalizationLocale?> get defaultStatusLocaleStream;
 
-  void changeDefaultStatusLocale(LocalizationLocale value);
+  void changeDefaultStatusLocale(LocalizationLocale? value);
 }

@@ -101,7 +101,7 @@ class NewPostStatusBloc extends PostStatusBloc {
         listen: false,
       ),
       initialLanguage: postStatusSettingsBloc.defaultStatusLocale?.localeString,
-      initialVisibility: postStatusSettingsBloc.defaultVisibility!,
+      initialVisibility: postStatusSettingsBloc.defaultVisibility,
       initialText: initialText,
       initialSubject: initialSubject,
       initialMediaAttachments: initialMediaAttachments,
@@ -163,7 +163,7 @@ class NewPostStatusBloc extends PostStatusBloc {
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
-      markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach ?? false,
+      markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
       isPleromaInstance: info.isPleroma,
       scheduledStatusRepository: IScheduledStatusRepository.of(
         context,

@@ -3,9 +3,9 @@ import 'package:fedi/app/pagination/settings/pagination_settings_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-abstract class PaginationSettingsLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<PaginationSettings?>
-    implements IPaginationSettingsLocalPreferencesBloc {
+abstract class PaginationSettingsLocalPreferencesBloc<
+        T extends PaginationSettings?> extends ObjectLocalPreferenceBloc<T>
+    implements IPaginationSettingsLocalPreferencesBloc<T> {
   PaginationSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
     String key,
@@ -13,10 +13,6 @@ abstract class PaginationSettingsLocalPreferencesBloc
           preferencesService: preferencesService,
           key: key,
           schemaVersion: 1,
-          jsonConverter: (json) => PaginationSettings.fromJson(json),
+          jsonConverter: (json) => PaginationSettings.fromJson(json) as T,
         );
-
-  @override
-  // TODO: implement defaultValue
-  PaginationSettings? get defaultPreferenceValue => null;
 }

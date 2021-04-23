@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IEditDatabaseCacheSettingsBloc
-    implements IEditGlobalOrInstanceSettingsBloc<DatabaseCacheSettings?> {
+    implements IEditGlobalOrInstanceSettingsBloc<DatabaseCacheSettings> {
   static IEditDatabaseCacheSettingsBloc of(
     BuildContext context, {
     bool listen = true,

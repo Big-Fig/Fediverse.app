@@ -10,7 +10,7 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/form/form_item_bloc.dart';
 
 class EditFilesCacheSettingsBloc
-    extends EditGlobalOrInstanceSettingsBloc<FilesCacheSettings?>
+    extends EditGlobalOrInstanceSettingsBloc<FilesCacheSettings>
     implements IEditFilesCacheSettingsBloc {
   final IFilesCacheSettingsBloc filesCacheSettingsBloc;
 
@@ -66,11 +66,11 @@ class EditFilesCacheSettingsBloc
   FilesCacheSettings calculateCurrentFormFieldsSettings() => FilesCacheSettings(
         filesCacheSizeLimitCountTypeString:
             sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
-                .currentValue
-                ?.toJsonValue(),
+                .currentValue!
+                .toJsonValue(),
         filesCacheAgeLimitTypeString:
-            ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc.currentValue
-                ?.toJsonValue(),
+            ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc.currentValue!
+                .toJsonValue(),
       );
 
   @override

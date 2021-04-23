@@ -3,9 +3,9 @@ import 'package:fedi/app/media/settings/media_settings_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-abstract class MediaSettingsLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<MediaSettings?>
-    implements IMediaSettingsLocalPreferencesBloc {
+abstract class MediaSettingsLocalPreferencesBloc<T extends MediaSettings?>
+    extends ObjectLocalPreferenceBloc<T>
+    implements IMediaSettingsLocalPreferencesBloc<T> {
   MediaSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
     String key,
@@ -13,10 +13,6 @@ abstract class MediaSettingsLocalPreferencesBloc
           preferencesService: preferencesService,
           key: key,
           schemaVersion: 1,
-          jsonConverter: (json) => MediaSettings.fromJson(json),
+          jsonConverter: (json) => MediaSettings.fromJson(json) as T,
         );
-
-  @override
-  // TODO: implement defaultValue
-  MediaSettings? get defaultPreferenceValue => null;
 }

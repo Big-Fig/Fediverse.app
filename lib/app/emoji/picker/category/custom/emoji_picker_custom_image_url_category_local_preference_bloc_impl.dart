@@ -18,6 +18,5 @@ class EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc
         );
 
   @override
-  // TODO: implement defaultValue
   EmojiPickerCustomImageUrlCategoryItems? get defaultPreferenceValue => null;
 }

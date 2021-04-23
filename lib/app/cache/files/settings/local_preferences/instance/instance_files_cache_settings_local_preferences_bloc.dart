@@ -1,9 +1,10 @@
+import 'package:fedi/app/cache/files/settings/files_cache_settings_model.dart';
 import 'package:fedi/app/cache/files/settings/local_preferences/files_cache_settings_local_preferences_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IInstanceFilesCacheSettingsLocalPreferencesBloc
-    implements IFilesCacheSettingsLocalPreferencesBloc {
+    implements IFilesCacheSettingsLocalPreferencesBloc<FilesCacheSettings?> {
   static IInstanceFilesCacheSettingsLocalPreferencesBloc of(
     BuildContext context, {
     bool listen = true,

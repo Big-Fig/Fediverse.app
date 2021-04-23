@@ -6,11 +6,12 @@ import 'package:fedi/app/cache/files/settings/local_preferences/files_cache_sett
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
 
 class FilesCacheSettingsBloc
-    extends GlobalOrInstanceSettingsLocalPreferencesBloc<FilesCacheSettings?>
+    extends GlobalOrInstanceSettingsLocalPreferencesBloc<FilesCacheSettings>
     implements IFilesCacheSettingsBloc {
   FilesCacheSettingsBloc({
-    required IFilesCacheSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
-    required IFilesCacheSettingsLocalPreferencesBloc
+    required IFilesCacheSettingsLocalPreferencesBloc<FilesCacheSettings>
+        globalLocalPreferencesBloc,
+    required IFilesCacheSettingsLocalPreferencesBloc<FilesCacheSettings?>
         instanceLocalPreferencesBloc,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
@@ -18,14 +19,14 @@ class FilesCacheSettingsBloc
         );
 
   @override
-  FilesCacheSizeLimitCountType? get filesCacheSizeLimitCountType =>
-      settingsData?.filesCacheSizeLimitCountType;
+  FilesCacheSizeLimitCountType get filesCacheSizeLimitCountType =>
+      settingsData.filesCacheSizeLimitCountType;
 
   @override
-  Stream<FilesCacheSizeLimitCountType?>
-      get filesCacheSizeLimitCountTypeStream => settingsDataStream.map(
-            (settings) => settings?.filesCacheSizeLimitCountType,
-          );
+  Stream<FilesCacheSizeLimitCountType> get filesCacheSizeLimitCountTypeStream =>
+      settingsDataStream.map(
+        (settings) => settings.filesCacheSizeLimitCountType,
+      );
 
   @override
   Future changeFilesCacheSizeLimitCountType(
@@ -34,18 +35,18 @@ class FilesCacheSettingsBloc
       updateSettings(
         FilesCacheSettings(
           filesCacheSizeLimitCountTypeString: value.toJsonValue(),
-          filesCacheAgeLimitTypeString: filesCacheAgeLimitType?.toJsonValue(),
+          filesCacheAgeLimitTypeString: filesCacheAgeLimitType.toJsonValue(),
         ),
       );
 
   @override
-  FilesCacheAgeLimitType? get filesCacheAgeLimitType =>
-      settingsData?.filesCacheAgeLimitType;
+  FilesCacheAgeLimitType get filesCacheAgeLimitType =>
+      settingsData.filesCacheAgeLimitType;
 
   @override
-  Stream<FilesCacheAgeLimitType?> get filesCacheAgeLimitTypeStream =>
+  Stream<FilesCacheAgeLimitType> get filesCacheAgeLimitTypeStream =>
       settingsDataStream.map(
-        (settings) => settings?.filesCacheAgeLimitType,
+        (settings) => settings.filesCacheAgeLimitType,
       );
 
   @override
@@ -53,7 +54,7 @@ class FilesCacheSettingsBloc
       updateSettings(
         FilesCacheSettings(
           filesCacheSizeLimitCountTypeString:
-              filesCacheSizeLimitCountType?.toJsonValue(),
+              filesCacheSizeLimitCountType.toJsonValue(),
           filesCacheAgeLimitTypeString: value.toJsonValue(),
         ),
       );

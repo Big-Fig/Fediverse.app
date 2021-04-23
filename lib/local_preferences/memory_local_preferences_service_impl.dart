@@ -105,8 +105,8 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     T Function(Map<String, dynamic> jsonData) jsonConverter,
   ) {
     var str = getStringPreference(key);
-    if (str != null) {
-      return jsonConverter(jsonDecode(str));
+    if (str?.isNotEmpty == true) {
+      return jsonConverter(jsonDecode(str!));
     } else {
       return null;
     }

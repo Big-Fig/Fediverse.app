@@ -70,8 +70,8 @@ class EditStatusSensitiveSettingsBloc
       StatusSensitiveSettings(
         nsfwDisplayDelayDurationMicrosecondsTotal:
             nsfwDisplayDelayDurationFieldBloc.currentValue?.inMicroseconds,
-        isAlwaysShowSpoiler: isAlwaysShowSpoilerFieldBloc.currentValue,
-        isAlwaysShowNsfw: isAlwaysShowNsfwFieldBloc.currentValue,
+        isAlwaysShowSpoiler: isAlwaysShowSpoilerFieldBloc.currentValue!,
+        isAlwaysShowNsfw: isAlwaysShowNsfwFieldBloc.currentValue!,
       );
 
   @override

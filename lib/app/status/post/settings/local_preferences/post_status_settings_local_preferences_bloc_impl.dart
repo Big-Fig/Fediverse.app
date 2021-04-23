@@ -3,9 +3,9 @@ import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-abstract class PostStatusSettingsLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<PostStatusSettings?>
-    implements IPostStatusSettingsLocalPreferencesBloc {
+abstract class PostStatusSettingsLocalPreferencesBloc<
+        T extends PostStatusSettings?> extends ObjectLocalPreferenceBloc<T>
+    implements IPostStatusSettingsLocalPreferencesBloc<T> {
   PostStatusSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
     String key,
@@ -13,10 +13,6 @@ abstract class PostStatusSettingsLocalPreferencesBloc
           preferencesService: preferencesService,
           key: key,
           schemaVersion: 1,
-          jsonConverter: (json) => PostStatusSettings.fromJson(json),
+          jsonConverter: (json) => PostStatusSettings.fromJson(json) as T,
         );
-
-  @override
-  // TODO: implement defaultValue
-  PostStatusSettings? get defaultPreferenceValue => null;
 }

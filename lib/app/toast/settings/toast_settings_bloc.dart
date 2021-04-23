@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IToastSettingsBloc
-    implements IGlobalOrInstanceSettingsBloc<ToastSettings?> {
+    implements IGlobalOrInstanceSettingsBloc<ToastSettings> {
   static IToastSettingsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IToastSettingsBloc>(context, listen: listen);
 

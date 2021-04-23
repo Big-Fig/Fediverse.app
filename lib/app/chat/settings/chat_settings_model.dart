@@ -13,10 +13,10 @@ part 'chat_settings_model.g.dart';
 class ChatSettings implements IJsonObject, ISettings<ChatSettings> {
   @HiveField(0)
   @JsonKey(name: "replace_conversations_with_pleroma_chats")
-  final bool? replaceConversationsWithPleromaChats;
+  final bool replaceConversationsWithPleromaChats;
   @HiveField(1)
   @JsonKey(name: "count_conversations_in_chats_unread_badges")
-  final bool? countConversationsInChatsUnreadBadges;
+  final bool countConversationsInChatsUnreadBadges;
 
   ChatSettings({
     required this.replaceConversationsWithPleromaChats,
@@ -71,11 +71,10 @@ class ChatSettings implements IJsonObject, ISettings<ChatSettings> {
       countConversationsInChatsUnreadBadges.hashCode;
 
   @override
-  String toString() {
-    return 'ChatSettings{'
+  String toString() => 'ChatSettings{'
         'replaceConversationsWithPleromaChats: '
         '$replaceConversationsWithPleromaChats, '
         'countConversationsInChatsUnreadBadges: '
-        '$countConversationsInChatsUnreadBadges}';
-  }
+        '$countConversationsInChatsUnreadBadges'
+        '}';
 }

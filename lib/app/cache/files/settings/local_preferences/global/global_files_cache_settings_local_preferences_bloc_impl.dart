@@ -6,7 +6,7 @@ import 'package:fedi/app/cache/files/settings/local_preferences/global/global_fi
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class GlobalFilesCacheSettingsLocalPreferencesBloc
-    extends FilesCacheSettingsLocalPreferencesBloc
+    extends FilesCacheSettingsLocalPreferencesBloc<FilesCacheSettings>
     implements IGlobalFilesCacheSettingsLocalPreferencesBloc {
   GlobalFilesCacheSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,

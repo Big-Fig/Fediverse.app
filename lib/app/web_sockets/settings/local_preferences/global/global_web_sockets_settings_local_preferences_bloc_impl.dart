@@ -5,7 +5,7 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 
 class GlobalWebSocketsSettingsLocalPreferencesBloc
-    extends WebSocketsSettingsLocalPreferencesBloc
+    extends WebSocketsSettingsLocalPreferencesBloc<WebSocketsSettings>
     implements IGlobalWebSocketsSettingsLocalPreferencesBloc {
   GlobalWebSocketsSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
