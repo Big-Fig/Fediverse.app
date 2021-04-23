@@ -18,7 +18,7 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
   @override
   final IAccount account;
   @override
-  final PleromaVisibility visibility;
+  final PleromaApiVisibility visibility;
 
   ChatSelectionShareActionStatusAdapter({
     required this.content,
@@ -48,13 +48,13 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
   int get hashCode => content.hashCode ^ account.hashCode ^ visibility.hashCode;
 
   @override
-  PleromaApplication? get application => throw UnimplementedError();
+  PleromaApiApplication? get application => throw UnimplementedError();
 
   @override
   bool get bookmarked => throw UnimplementedError();
 
   @override
-  PleromaCard? get card => throw UnimplementedError();
+  PleromaApiCard? get card => throw UnimplementedError();
 
   @override
   // ignore: long-parameter-list
@@ -69,7 +69,7 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
     String? inReplyToAccountRemoteId,
     bool? nsfwSensitive,
     String? spoilerText,
-    PleromaVisibility? visibility,
+    PleromaApiVisibility? visibility,
     String? uri,
     String? url,
     int? repliesCount,
@@ -82,24 +82,24 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
     bool? pinned,
     String? content,
     String? reblogStatusRemoteId,
-    PleromaApplication? application,
+    PleromaApiApplication? application,
     String? accountRemoteId,
-    List<PleromaMediaAttachment>? mediaAttachments,
-    List<PleromaMention>? mentions,
-    List<PleromaTag>? tags,
-    List<PleromaEmoji>? emojis,
-    PleromaPoll? poll,
-    PleromaCard? card,
+    List<PleromaApiMediaAttachment>? mediaAttachments,
+    List<PleromaApiMention>? mentions,
+    List<PleromaApiTag>? tags,
+    List<PleromaApiEmoji>? emojis,
+    PleromaApiPoll? poll,
+    PleromaApiCard? card,
     String? language,
-    PleromaContent? pleromaContent,
+    PleromaApiContent? pleromaContent,
     int? pleromaConversationId,
     int? pleromaDirectConversationId,
     String? pleromaInReplyToAccountAcct,
     bool? pleromaLocal,
-    PleromaContent? pleromaSpoilerText,
+    PleromaApiContent? pleromaSpoilerText,
     DateTime? pleromaExpiresAt,
     bool? pleromaThreadMuted,
-    List<PleromaStatusEmojiReaction?>? pleromaEmojiReactions,
+    List<PleromaApiStatusEmojiReaction?>? pleromaEmojiReactions,
     bool? deleted,
     PendingState? pendingState,
     String? oldPendingRemoteId,
@@ -116,7 +116,7 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
   bool get deleted => throw UnimplementedError();
 
   @override
-  List<PleromaEmoji>? get emojis => throw UnimplementedError();
+  List<PleromaApiEmoji>? get emojis => throw UnimplementedError();
 
   @override
   bool get favourited => throw UnimplementedError();
@@ -149,11 +149,11 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
   int? get localId => throw UnimplementedError();
 
   @override
-  List<PleromaMediaAttachment>? get mediaAttachments =>
+  List<PleromaApiMediaAttachment>? get mediaAttachments =>
       throw UnimplementedError();
 
   @override
-  List<PleromaMention>? get mentions => throw UnimplementedError();
+  List<PleromaApiMention>? get mentions => throw UnimplementedError();
 
   @override
   bool get muted => throw UnimplementedError();
@@ -171,7 +171,7 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
   bool get pinned => throw UnimplementedError();
 
   @override
-  PleromaContent? get pleromaContent => throw UnimplementedError();
+  PleromaApiContent? get pleromaContent => throw UnimplementedError();
 
   @override
   int? get pleromaConversationId => throw UnimplementedError();
@@ -180,7 +180,7 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
   int? get pleromaDirectConversationId => throw UnimplementedError();
 
   @override
-  List<PleromaStatusEmojiReaction>? get pleromaEmojiReactions =>
+  List<PleromaApiStatusEmojiReaction>? get pleromaEmojiReactions =>
       throw UnimplementedError();
 
   @override
@@ -193,13 +193,13 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
   bool? get pleromaLocal => throw UnimplementedError();
 
   @override
-  PleromaContent? get pleromaSpoilerText => throw UnimplementedError();
+  PleromaApiContent? get pleromaSpoilerText => throw UnimplementedError();
 
   @override
   bool? get pleromaThreadMuted => throw UnimplementedError();
 
   @override
-  PleromaPoll? get poll => throw UnimplementedError();
+  PleromaApiPoll? get poll => throw UnimplementedError();
 
   @override
   IStatus? get reblog => throw UnimplementedError();
@@ -223,7 +223,7 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
   String? get spoilerText => throw UnimplementedError();
 
   @override
-  List<PleromaTag>? get tags => throw UnimplementedError();
+  List<PleromaApiTag>? get tags => throw UnimplementedError();
 
   @override
   String get uri => throw UnimplementedError();

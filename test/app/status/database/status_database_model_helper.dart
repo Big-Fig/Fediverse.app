@@ -11,8 +11,8 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../pleroma/application/pleroma_application_model_helper.dart';
 import '../../account/database/account_database_model_helper.dart';
 // ignore_for_file: no-magic-number
-PleromaMediaAttachment createTestPleromaMediaAttachment() {
-  return PleromaMediaAttachment.only(
+PleromaApiMediaAttachment createTestPleromaMediaAttachment() {
+  return PleromaApiMediaAttachment.only(
     id: "id",
     type: MastodonApiMediaAttachmentType.audio.toJsonValue(),
     url: "url",
@@ -53,7 +53,7 @@ Future<DbStatus> createTestDbStatus({
     inReplyToAccountRemoteId: inReplyToAccountRemoteId,
     sensitive: true,
     spoilerText: seed + "spoilerText",
-    visibility: PleromaVisibility.public,
+    visibility: PleromaApiVisibility.public,
     uri: seed + "uri",
     url: seed + "url",
     repliesCount: 3,
@@ -88,7 +88,7 @@ Future<DbStatus> createTestDbStatus({
   return dbStatus;
 }
 
-Future<PleromaStatus> createTestRemoteStatus({
+Future<PleromaApiStatus> createTestRemoteStatus({
   required String seed,
   DateTime? createdAt,
   required DbAccount dbAccount,

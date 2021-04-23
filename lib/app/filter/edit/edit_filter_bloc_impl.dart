@@ -30,7 +30,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     var editFilterBloc = EditFilterBloc(
       filter: initialValue,
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaFilterService: IPleromaFilterService.of(
+      pleromaFilterService: IPleromaApiFilterService.of(
         context,
         listen: false,
       ),
@@ -38,7 +38,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
         context,
         listen: false,
       ),
-      pleromaAccountService: IPleromaAccountService.of(
+      pleromaAccountService: IPleromaApiAccountService.of(
         context,
         listen: false,
       ),
@@ -91,7 +91,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
 
   final IFilter? filter;
 
-  final IPleromaFilterService pleromaFilterService;
+  final IPleromaApiFilterService pleromaFilterService;
 
   @override
   final IFilterFormBloc filterFormBloc;
@@ -112,7 +112,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     required this.timelinesHomeTabStorageBloc,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaAccountService pleromaAccountService,
+    required IPleromaApiAccountService pleromaAccountService,
     required this.currentInstance,
   }) : filterFormBloc = FilterFormBloc(
           initialValue: filter,
@@ -145,9 +145,9 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     return localFilter;
   }
 
-  Future<IPleromaFilter> actuallySubmitFilter(
+  Future<IPleromaApiFilter> actuallySubmitFilter(
     String? listRemoteId,
-    IPostPleromaFilter postPleromaFilter,
+    IPostPleromaApiFilter postPleromaFilter,
   ) async {
     var remoteFilter = await pleromaFilterService.updateFilter(
       filterRemoteId: listRemoteId,

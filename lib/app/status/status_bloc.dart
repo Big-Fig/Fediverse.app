@@ -44,13 +44,13 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Stream<EmojiText?> get contentWithEmojisStream;
 
-  IPleromaCard? get card;
+  IPleromaApiCard? get card;
 
-  Stream<IPleromaCard?> get cardStream;
+  Stream<IPleromaApiCard?> get cardStream;
 
-  IPleromaCard? get reblogOrOriginalCard;
+  IPleromaApiCard? get reblogOrOriginalCard;
 
-  Stream<IPleromaCard?> get reblogOrOriginalCardStream;
+  Stream<IPleromaApiCard?> get reblogOrOriginalCardStream;
 
   IAccount get account;
 
@@ -66,33 +66,33 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   String? get remoteId;
 
-  List<IPleromaMediaAttachment>? get mediaAttachments;
+  List<IPleromaApiMediaAttachment>? get mediaAttachments;
 
-  Stream<List<IPleromaMediaAttachment>?> get mediaAttachmentsStream;
+  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream;
 
-  List<IPleromaMediaAttachment>? get reblogOrOriginalMediaAttachments;
+  List<IPleromaApiMediaAttachment>? get reblogOrOriginalMediaAttachments;
 
-  Stream<List<IPleromaMediaAttachment>?>
+  Stream<List<IPleromaApiMediaAttachment>?>
       get reblogOrOriginalMediaAttachmentsStream;
 
-  IPleromaPoll? get poll;
+  IPleromaApiPoll? get poll;
 
-  Stream<IPleromaPoll?> get pollStream;
+  Stream<IPleromaApiPoll?> get pollStream;
 
   IPollBloc get pollBloc;
 
-  List<IPleromaStatusEmojiReaction>? get pleromaEmojiReactions;
+  List<IPleromaApiStatusEmojiReaction>? get pleromaEmojiReactions;
 
-  Stream<List<IPleromaStatusEmojiReaction>?> get pleromaEmojiReactionsStream;
+  Stream<List<IPleromaApiStatusEmojiReaction>?> get pleromaEmojiReactionsStream;
 
   int? get pleromaEmojiReactionsCount;
 
   Stream<int?> get pleromaEmojiReactionsCountStream;
 
-  List<IPleromaStatusEmojiReaction>?
+  List<IPleromaApiStatusEmojiReaction>?
       get reblogPlusOriginalPleromaEmojiReactions;
 
-  Stream<List<IPleromaStatusEmojiReaction>?>
+  Stream<List<IPleromaApiStatusEmojiReaction>?>
       get reblogPlusOriginalEmojiReactionsStream;
 
   int? get reblogPlusOriginalEmojiReactionsCount;
@@ -107,15 +107,15 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Stream<bool> get favouritedStream;
 
-  List<IPleromaMention>? get mentions;
+  List<IPleromaApiMention>? get mentions;
 
-  Stream<List<IPleromaMention>?> get mentionsStream;
+  Stream<List<IPleromaApiMention>?> get mentionsStream;
 
-  List<IPleromaMention>? get reblogOrOriginalMentions;
+  List<IPleromaApiMention>? get reblogOrOriginalMentions;
 
-  List<IPleromaTag>? get tags;
+  List<IPleromaApiTag>? get tags;
 
-  List<IPleromaTag>? get reblogOrOriginalTags;
+  List<IPleromaApiTag>? get reblogOrOriginalTags;
 
   bool get reblogged;
 
@@ -205,12 +205,12 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Future delete();
 
-  Future<IPleromaStatus> toggleEmojiReaction({
+  Future<IPleromaApiStatus> toggleEmojiReaction({
     required String emoji,
   });
 
   Future<IStatus> onPollUpdated(
-    IPleromaPoll poll,
+    IPleromaApiPoll poll,
   );
 
   bool get deleted;

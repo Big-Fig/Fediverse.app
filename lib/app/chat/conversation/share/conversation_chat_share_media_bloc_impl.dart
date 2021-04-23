@@ -20,17 +20,17 @@ import 'package:provider/provider.dart';
 class ConversationChatShareMediaBloc extends ConversationChatShareBloc
     implements IConversationChatShareBloc, IShareMediaBloc {
   @override
-  final IPleromaMediaAttachment mediaAttachment;
+  final IPleromaApiMediaAttachment mediaAttachment;
 
   ConversationChatShareMediaBloc({
     required this.mediaAttachment,
     required IConversationChatRepository conversationRepository,
     required IStatusRepository statusRepository,
-    required IPleromaConversationService pleromaConversationService,
-    required IPleromaAuthStatusService pleromaAuthStatusService,
+    required IPleromaApiConversationService pleromaConversationService,
+    required IPleromaApiAuthStatusService pleromaAuthStatusService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaAccountService pleromaAccountService,
+    required IPleromaApiAccountService pleromaAccountService,
   }) : super(
           conversationRepository: conversationRepository,
           statusRepository: statusRepository,
@@ -42,11 +42,11 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
         );
 
   @override
-  IPleromaPostStatus createSendData({
+  IPleromaApiPostStatus createSendData({
     required String to,
-    required PleromaVisibility visibility,
+    required PleromaApiVisibility visibility,
   }) {
-    var messageSendData = PleromaPostStatus(
+    var messageSendData = PleromaApiPostStatus(
       contentType: null,
       expiresInSeconds: null,
       idempotencyKey: null,
@@ -67,7 +67,7 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    required IPleromaMediaAttachment mediaAttachment,
+    required IPleromaApiMediaAttachment mediaAttachment,
     required Widget child,
   }) {
     return DisposableProvider<ConversationChatShareMediaBloc>(
@@ -91,7 +91,7 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
 
   static ConversationChatShareMediaBloc createFromContext(
     BuildContext context,
-    IPleromaMediaAttachment mediaAttachment,
+    IPleromaApiMediaAttachment mediaAttachment,
   ) =>
       ConversationChatShareMediaBloc(
         mediaAttachment: mediaAttachment,
@@ -99,16 +99,16 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
           context,
           listen: false,
         ),
-        pleromaAuthStatusService: IPleromaAuthStatusService.of(
+        pleromaAuthStatusService: IPleromaApiAuthStatusService.of(
           context,
           listen: false,
         ),
         pleromaConversationService:
-            IPleromaConversationService.of(context, listen: false),
+            IPleromaApiConversationService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        pleromaAccountService: IPleromaAccountService.of(
+        pleromaAccountService: IPleromaApiAccountService.of(
           context,
           listen: false,
         ),

@@ -14,9 +14,9 @@ abstract class IScheduledStatus {
 
   DateTime get scheduledAt;
 
-  IPleromaScheduledStatusParams get params;
+  IPleromaApiScheduledStatusParams get params;
 
-  List<PleromaMediaAttachment>? get mediaAttachments;
+  List<PleromaApiMediaAttachment>? get mediaAttachments;
 
   bool get canceled;
 
@@ -24,9 +24,9 @@ abstract class IScheduledStatus {
     int? localId,
     String? remoteId,
     DateTime? scheduledAt,
-    IPleromaScheduledStatusParams? params,
+    IPleromaApiScheduledStatusParams? params,
     bool? canceled,
-    List<PleromaMediaAttachment>? mediaAttachments,
+    List<PleromaApiMediaAttachment>? mediaAttachments,
   });
 }
 
@@ -77,12 +77,12 @@ class DbScheduledStatusPopulated {
 }
 
 extension IPleromaScheduledStatusParamsExtension
-on IPleromaScheduledStatusParams {
-  PleromaScheduledStatusParams toPleromaScheduledStatusParams() {
-    if (this is PleromaScheduledStatusParams) {
-      return this as PleromaScheduledStatusParams;
+on IPleromaApiScheduledStatusParams {
+  PleromaApiScheduledStatusParams toPleromaScheduledStatusParams() {
+    if (this is PleromaApiScheduledStatusParams) {
+      return this as PleromaApiScheduledStatusParams;
     } else {
-      return PleromaScheduledStatusParams(
+      return PleromaApiScheduledStatusParams(
         text: text,
         mediaIds: mediaIds,
         sensitive: sensitive,
@@ -113,7 +113,7 @@ extension IScheduledStatusExtension on IScheduledStatus {
         poll: params.poll?.toPostStatusPoll(),
         to: params.to,
         inReplyToPleromaStatus:
-        params.inReplyToPleromaStatus?.toPleromaStatus(),
+        params.inReplyToPleromaApiStatus?.toPleromaApiStatus(),
         inReplyToConversationId: params.inReplyToConversationId,
         isNsfwSensitiveEnabled: params.sensitive,
         language: params.language,
@@ -173,9 +173,9 @@ class DbScheduledStatusPopulatedWrapper implements IScheduledStatus {
     int? localId,
     String? remoteId,
     DateTime? scheduledAt,
-    IPleromaScheduledStatusParams? params,
+    IPleromaApiScheduledStatusParams? params,
     bool? canceled,
-    List<PleromaMediaAttachment>? mediaAttachments,
+    List<PleromaApiMediaAttachment>? mediaAttachments,
   }) =>
       DbScheduledStatusPopulatedWrapper(
         dbScheduledStatusPopulated: DbScheduledStatusPopulated(
@@ -195,11 +195,11 @@ class DbScheduledStatusPopulatedWrapper implements IScheduledStatus {
   int? get localId => dbScheduledStatus.id;
 
   @override
-  List<PleromaMediaAttachment>? get mediaAttachments =>
+  List<PleromaApiMediaAttachment>? get mediaAttachments =>
       dbScheduledStatus.mediaAttachments;
 
   @override
-  IPleromaScheduledStatusParams get params => dbScheduledStatus.params;
+  IPleromaApiScheduledStatusParams get params => dbScheduledStatus.params;
 
   @override
   String? get remoteId => dbScheduledStatus.remoteId;

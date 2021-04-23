@@ -42,7 +42,7 @@ class EmojiPickerWidget extends StatelessWidget {
         if (useImageEmoji) {
           customCategoryBloc = EmojiPickerCustomImageUrlCategoryBloc(
             pleromaEmojiService:
-                IPleromaEmojiService.of(context, listen: false),
+                IPleromaApiEmojiService.of(context, listen: false),
             preferenceBloc:
                 IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc.of(
               context,

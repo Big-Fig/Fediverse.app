@@ -18,7 +18,7 @@ class MediaAttachmentNonMediaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DisposableProxyProvider<IPleromaMediaAttachment, IMediaFilePathBloc>(
+    return DisposableProxyProvider<IPleromaApiMediaAttachment, IMediaFilePathBloc>(
       update: (context, value, _) => MediaFilePathBloc(path: value.remoteUrl),
       child: MediaFilePathWidget(
         opacity: opacity,

@@ -11,7 +11,7 @@ Function eq = const ListEquality().equals;
 
 class PleromaReplyVisibilityFilterCondition {
   final String? myAccountRemoteId;
-  final PleromaReplyVisibilityFilter? replyVisibilityFilter;
+  final PleromaApiReplyVisibilityFilter? replyVisibilityFilter;
 
   PleromaReplyVisibilityFilterCondition({
     required this.myAccountRemoteId,
@@ -46,7 +46,7 @@ class StatusRepositoryFilters {
   final StatusOnlyLocalCondition? onlyLocalCondition;
   final bool? onlyWithMedia;
   final bool? withMuted;
-  final List<PleromaVisibility>? excludeVisibilities;
+  final List<PleromaApiVisibility>? excludeVisibilities;
   final bool? onlyNoNsfwSensitive;
   final bool? onlyNoReplies;
   final bool? isFromHomeTimeline;

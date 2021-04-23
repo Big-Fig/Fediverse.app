@@ -12,13 +12,13 @@ abstract class IStatusThreadBloc implements IDisposable, IStatusListBloc {
   static IStatusThreadBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusThreadBloc>(context, listen: listen);
 
-  List<IPleromaMention> get mentions;
+  List<IPleromaApiMention> get mentions;
 
-  Stream<List<IPleromaMention>> get mentionsStream;
+  Stream<List<IPleromaApiMention>> get mentionsStream;
 
   IStatus? get initialStatusToFetchThread;
 
-  IPleromaMediaAttachment? get initialMediaAttachment;
+  IPleromaApiMediaAttachment? get initialMediaAttachment;
 
   int get initialStatusToFetchThreadIndex;
 

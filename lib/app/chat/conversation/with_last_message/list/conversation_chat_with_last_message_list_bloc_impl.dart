@@ -46,7 +46,7 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   ConversationChatWithLastMessageListBloc({
-    required IPleromaConversationService conversationService,
+    required IPleromaApiConversationService conversationService,
     required this.conversationRepository,
     required this.paginationSettingsBloc,
     required this.conversationChatWithLastMessageRepository,
@@ -91,7 +91,7 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
           context,
           listen: false,
         ),
-        conversationService: IPleromaConversationService.of(
+        conversationService: IPleromaApiConversationService.of(
           context,
           listen: false,
         ),

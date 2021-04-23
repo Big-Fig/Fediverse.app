@@ -5,15 +5,15 @@ import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
 import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 
-extension IPleromaAccountListDbExtension on List<IPleromaAccount> {
+extension IPleromaAccountListDbExtension on List<IPleromaApiAccount> {
   List<DbAccountPopulatedWrapper> toDbAccountPopulatedWrappers() => map(
         (pleromaAccount) => pleromaAccount.toDbAccountWrapper(),
       ).toList();
 }
 
 extension IAccountListExtension on List<IAccount> {
-  List<PleromaAccount> toPleromaAccounts() => map(
-        (pleromaAccount) => pleromaAccount.toPleromaAccount(),
+  List<PleromaApiAccount> toPleromaApiAccounts() => map(
+        (pleromaAccount) => pleromaAccount.toPleromaApiAccount(),
       ).toList();
 }
 
@@ -25,7 +25,7 @@ extension DbAccountExtension on DbAccount {
       );
 }
 
-extension IPleromaAccountDbExtension on IPleromaAccount {
+extension IPleromaAccountDbExtension on IPleromaApiAccount {
   DbAccountPopulatedWrapper toDbAccountWrapper() => DbAccountPopulatedWrapper(
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: toDbAccount(),
@@ -51,9 +51,9 @@ extension IPleromaAccountDbExtension on IPleromaAccount {
         avatar: avatar,
         acct: acct,
         lastStatusAt: lastStatusAt,
-        fields: fields?.toPleromaFields(),
-        emojis: emojis?.toPleromaEmojis(),
-        pleromaTags: pleroma?.tags?.toPleromaTags(),
+        fields: fields?.toPleromaApiFields(),
+        emojis: emojis?.toPleromaApiEmojis(),
+        pleromaTags: pleroma?.tags?.toPleromaApiTags(),
         pleromaRelationship: pleroma?.relationship,
         pleromaIsAdmin: pleroma?.isAdmin,
         pleromaIsModerator: pleroma?.isModerator,
@@ -72,8 +72,8 @@ extension IPleromaAccountDbExtension on IPleromaAccount {
 }
 
 extension IAccountPleromaAccountExtension on IAccount {
-  PleromaAccountPleromaPart toPleromaAccountPleromaPart() {
-    return PleromaAccountPleromaPart(
+  PleromaApiAccountPleromaPart toPleromaApiAccountPleromaPart() {
+    return PleromaApiAccountPleromaPart(
       backgroundImage: pleromaBackgroundImage,
       tags: pleromaTags,
       relationship: pleromaRelationship,
@@ -97,10 +97,10 @@ extension IAccountPleromaAccountExtension on IAccount {
     );
   }
 
-  PleromaAccount toPleromaAccount() {
+  PleromaApiAccount toPleromaApiAccount() {
     var localAccount = this;
-    return PleromaAccount(
-      pleroma: localAccount.toPleromaAccountPleromaPart(),
+    return PleromaApiAccount(
+      pleroma: localAccount.toPleromaApiAccountPleromaPart(),
       id: localAccount.remoteId,
       username: localAccount.username,
       url: localAccount.url,
@@ -118,8 +118,8 @@ extension IAccountPleromaAccountExtension on IAccount {
       avatar: localAccount.avatar,
       acct: localAccount.acct,
       lastStatusAt: localAccount.lastStatusAt,
-      fields: localAccount.fields?.toPleromaFields(),
-      emojis: localAccount.emojis?.toPleromaEmojis(),
+      fields: localAccount.fields?.toPleromaApiFields(),
+      emojis: localAccount.emojis?.toPleromaApiEmojis(),
       fqn: localAccount.fqn,
     );
   }

@@ -12,7 +12,7 @@ import 'package:rxdart/rxdart.dart';
 
 class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
     implements IFediBoolBadgeBloc {
-  final List<PleromaNotificationType> excludeTypes;
+  final List<PleromaApiNotificationType> excludeTypes;
   final INotificationRepository notificationRepository;
   final IFilterRepository filterRepository;
 

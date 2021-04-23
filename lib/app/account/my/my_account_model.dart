@@ -14,7 +14,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'my_account_model.g.dart';
 
 abstract class IMyAccount extends IAccount implements IJsonObject {
-  PleromaMyAccountPleromaPartNotificationsSettings?
+  PleromaApiMyAccountPleromaPartNotificationsSettings?
       get pleromaNotificationSettings;
 
   Map<String, dynamic>? get pleromaSettingsStore;
@@ -29,9 +29,9 @@ abstract class IMyAccount extends IAccount implements IJsonObject {
 
   int? get followRequestsCount;
 
-  IPleromaMyAccountSource? get source;
+  IPleromaApiMyAccountSource? get source;
 
-  IPleromaMyAccountPleromaPart? get pleroma;
+  IPleromaApiMyAccountPleromaPart? get pleroma;
 
   @override
   IMyAccount copyWith({
@@ -53,10 +53,10 @@ abstract class IMyAccount extends IAccount implements IJsonObject {
     String? avatar,
     String? acct,
     DateTime? lastStatusAt,
-    List<PleromaField>? fields,
-    List<PleromaEmoji>? emojis,
-    List<PleromaTag>? pleromaTags,
-    IPleromaAccountRelationship? pleromaRelationship,
+    List<PleromaApiField>? fields,
+    List<PleromaApiEmoji>? emojis,
+    List<PleromaApiTag>? pleromaTags,
+    IPleromaApiAccountRelationship? pleromaRelationship,
     bool? pleromaIsAdmin,
     bool? pleromaIsModerator,
     bool? pleromaConfirmationPending,
@@ -70,13 +70,13 @@ abstract class IMyAccount extends IAccount implements IJsonObject {
     bool? pleromaSkipThreadContainment,
     String? pleromaBackgroundImage,
     bool? pleromaAcceptsChatMessages,
-    PleromaMyAccountPleromaPartNotificationsSettings?
+    PleromaApiMyAccountPleromaPartNotificationsSettings?
         pleromaNotificationSettings,
     int? pleromaUnreadConversationCount,
     String? pleromaChatToken,
     bool? discoverable,
     int? followRequestsCount,
-    IPleromaMyAccountSource? source,
+    IPleromaApiMyAccountSource? source,
     Map<String, dynamic>? pleromaSettingsStore,
     int? pleromaUnreadNotificationsCount,
     List<String>? pleromaAlsoKnownAs,
@@ -87,11 +87,11 @@ abstract class IMyAccount extends IAccount implements IJsonObject {
 }
 
 extension IMyAccountPleromaExtension on IMyAccount {
-  PleromaMyAccount toPleromaMyAccount() {
+  PleromaApiMyAccount toPleromaApiMyAccount() {
     if (this is PleromaMyAccountWrapper) {
       return (this as PleromaMyAccountWrapper).pleromaAccount;
     } else {
-      return PleromaMyAccount(
+      return PleromaApiMyAccount(
         header: header,
         headerStatic: headerStatic,
         username: username,
@@ -102,17 +102,17 @@ extension IMyAccountPleromaExtension on IMyAccount {
         id: remoteId,
         followingCount: followingCount,
         followersCount: followersCount,
-        fields: fields?.toPleromaFields(),
-        emojis: emojis?.toPleromaEmojis(),
+        fields: fields?.toPleromaApiFields(),
+        emojis: emojis?.toPleromaApiEmojis(),
         displayName: displayName,
         createdAt: createdAt,
         bot: bot,
         avatarStatic: avatarStatic,
         avatar: avatar,
         acct: acct,
-        pleroma: pleroma?.toPleromaMyAccountPleromaPart(),
+        pleroma: pleroma?.toPleromaApiMyAccountPleromaPart(),
         lastStatusAt: lastStatusAt,
-        source: source?.toPleromaMyAccountSource(),
+        source: source?.toPleromaApiMyAccountSource(),
         discoverable: discoverable,
         followRequestsCount: followRequestsCount,
         fqn: fqn,
@@ -122,12 +122,12 @@ extension IMyAccountPleromaExtension on IMyAccount {
 }
 
 extension IMyAccountExtension on IMyAccount {
-  PleromaMyAccountWrapper toPleromaMyAccountWrapper() {
+  PleromaMyAccountWrapper toPleromaApiMyAccountWrapper() {
     if (this is PleromaMyAccountWrapper) {
       return this as PleromaMyAccountWrapper;
     } else {
       return PleromaMyAccountWrapper(
-        pleromaAccount: toPleromaMyAccount(),
+        pleromaAccount: toPleromaApiMyAccount(),
       );
     }
   }
@@ -142,17 +142,17 @@ extension IMyAccountExtension on IMyAccount {
 class PleromaMyAccountWrapper extends IMyAccount {
   @HiveField(0)
   @JsonKey(name: "remote_account")
-  final PleromaMyAccount pleromaAccount;
+  final PleromaApiMyAccount pleromaAccount;
 
   PleromaMyAccountWrapper({
     required this.pleromaAccount,
   });
 
   @override
-  IPleromaMyAccountSource? get source => pleromaAccount.source;
+  IPleromaApiMyAccountSource? get source => pleromaAccount.source;
 
   @override
-  IPleromaMyAccountPleromaPart? get pleroma => pleromaAccount.pleroma;
+  IPleromaApiMyAccountPleromaPart? get pleroma => pleromaAccount.pleroma;
 
   @override
   bool get discoverable =>
@@ -177,10 +177,10 @@ class PleromaMyAccountWrapper extends IMyAccount {
   String? get displayName => pleromaAccount.displayName;
 
   @override
-  List<IPleromaEmoji>? get emojis => pleromaAccount.emojis;
+  List<IPleromaApiEmoji>? get emojis => pleromaAccount.emojis;
 
   @override
-  List<IPleromaField>? get fields => pleromaAccount.fields;
+  List<IPleromaApiField>? get fields => pleromaAccount.fields;
 
   @override
   int get followersCount => pleromaAccount.followersCount;
@@ -240,7 +240,7 @@ class PleromaMyAccountWrapper extends IMyAccount {
   bool? get pleromaIsModerator => pleromaAccount.pleroma?.isModerator;
 
   @override
-  PleromaAccountRelationship? get pleromaRelationship =>
+  PleromaApiAccountRelationship? get pleromaRelationship =>
       pleromaAccount.pleroma?.relationship;
 
   @override
@@ -248,7 +248,7 @@ class PleromaMyAccountWrapper extends IMyAccount {
       pleromaAccount.pleroma?.skipThreadContainment;
 
   @override
-  List<PleromaTag>? get pleromaTags => pleromaAccount.pleroma?.tags;
+  List<PleromaApiTag>? get pleromaTags => pleromaAccount.pleroma?.tags;
 
   @override
   String get remoteId => pleromaAccount.id;
@@ -293,10 +293,10 @@ class PleromaMyAccountWrapper extends IMyAccount {
     String? avatar,
     String? acct,
     DateTime? lastStatusAt,
-    List<PleromaField>? fields,
-    List<PleromaEmoji>? emojis,
-    List<PleromaTag>? pleromaTags,
-    IPleromaAccountRelationship? pleromaRelationship,
+    List<PleromaApiField>? fields,
+    List<PleromaApiEmoji>? emojis,
+    List<PleromaApiTag>? pleromaTags,
+    IPleromaApiAccountRelationship? pleromaRelationship,
     bool? pleromaIsAdmin,
     bool? pleromaIsModerator,
     bool? pleromaConfirmationPending,
@@ -310,13 +310,13 @@ class PleromaMyAccountWrapper extends IMyAccount {
     bool? pleromaSkipThreadContainment,
     String? pleromaBackgroundImage,
     bool? pleromaAcceptsChatMessages,
-    PleromaMyAccountPleromaPartNotificationsSettings?
+    PleromaApiMyAccountPleromaPartNotificationsSettings?
         pleromaNotificationSettings,
     int? pleromaUnreadConversationCount,
     String? pleromaChatToken,
     bool? discoverable,
     int? followRequestsCount,
-    IPleromaMyAccountSource? source,
+    IPleromaApiMyAccountSource? source,
     Map<String, dynamic>? pleromaSettingsStore,
     int? pleromaUnreadNotificationsCount,
     List<String>? pleromaAlsoKnownAs,
@@ -345,13 +345,13 @@ class PleromaMyAccountWrapper extends IMyAccount {
           lastStatusAt: lastStatusAt,
           fields: fields,
           emojis: emojis,
-          source: source?.toPleromaMyAccountSource(),
+          source: source?.toPleromaApiMyAccountSource(),
           fqn: fqn,
           discoverable: discoverable,
           followRequestsCount: followRequestsCount,
-          pleroma: PleromaMyAccountPleromaPart(
-            tags: pleromaTags?.toPleromaTags() ?? this.pleromaTags,
-            relationship: pleromaRelationship?.toPleromaAccountRelationship() ??
+          pleroma: PleromaApiMyAccountPleromaPart(
+            tags: pleromaTags?.toPleromaApiTags() ?? this.pleromaTags,
+            relationship: pleromaRelationship?.toPleromaApiAccountRelationship() ??
                 this.pleromaRelationship,
             isAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
             isModerator: pleromaIsModerator ?? this.pleromaIsModerator,
@@ -393,7 +393,7 @@ class PleromaMyAccountWrapper extends IMyAccount {
   String? get pleromaChatToken => pleromaAccount.pleroma?.chatToken;
 
   @override
-  PleromaMyAccountPleromaPartNotificationsSettings?
+  PleromaApiMyAccountPleromaPartNotificationsSettings?
       get pleromaNotificationSettings =>
           pleromaAccount.pleroma?.notificationSettings;
 

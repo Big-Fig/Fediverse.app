@@ -15,7 +15,7 @@ class MediaAttachmentAudioWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaSettingsBloc = IMediaSettingsBloc.of(context);
 
-    return DisposableProxyProvider<IPleromaMediaAttachment,
+    return DisposableProxyProvider<IPleromaApiMediaAttachment,
         IAudioMediaPlayerBloc>(
       update: (context, mediaAttachment, _) =>
           AudioMediaPlayerBloc.createFromContext(

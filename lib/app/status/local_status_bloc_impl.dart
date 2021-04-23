@@ -9,7 +9,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service.dart';
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
@@ -25,24 +25,24 @@ class LocalStatusBloc extends StatusBloc {
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
-  final IPleromaAuthStatusService pleromaAuthStatusService;
+  final IPleromaApiAuthStatusService pleromaAuthStatusService;
 
   LocalStatusBloc({
     required this.statusRepository,
     required this.accountRepository,
     required this.isNeedWatchLocalRepositoryForUpdates,
     required this.pleromaAuthStatusService,
-    required IPleromaAccountService pleromaAccountService,
-    required IPleromaStatusEmojiReactionService
-        pleromaStatusEmojiReactionService,
-    required IPleromaPollService pleromaPollService,
+    required IPleromaApiAccountService pleromaAccountService,
+    required IPleromaApiStatusEmojiReactionService
+        PleromaApiStatusEmojiReactionService,
+    required IPleromaApiPollService pleromaPollService,
     required IStatus status,
     required bool isNeedRefreshFromNetworkOnInit,
     required bool delayInit,
   }) : super(
           pleromaStatusService: pleromaAuthStatusService,
           pleromaAccountService: pleromaAccountService,
-          pleromaStatusEmojiReactionService: pleromaStatusEmojiReactionService,
+          PleromaApiStatusEmojiReactionService: PleromaApiStatusEmojiReactionService,
           pleromaPollService: pleromaPollService,
           status: status,
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
@@ -65,20 +65,20 @@ class LocalStatusBloc extends StatusBloc {
         delayInit: delayInit,
         isNeedWatchLocalRepositoryForUpdates:
             isNeedWatchLocalRepositoryForUpdates,
-        pleromaAuthStatusService: IPleromaAuthStatusService.of(
+        pleromaAuthStatusService: IPleromaApiAuthStatusService.of(
           context,
           listen: false,
         ),
-        pleromaAccountService: IPleromaAccountService.of(
+        pleromaAccountService: IPleromaApiAccountService.of(
           context,
           listen: false,
         ),
-        pleromaStatusEmojiReactionService:
-            IPleromaStatusEmojiReactionService.of(
+        PleromaApiStatusEmojiReactionService:
+            IPleromaApiStatusEmojiReactionService.of(
           context,
           listen: false,
         ),
-        pleromaPollService: IPleromaPollService.of(
+        pleromaPollService: IPleromaApiPollService.of(
           context,
           listen: false,
         ),
@@ -197,7 +197,7 @@ class LocalStatusBloc extends StatusBloc {
   }
 
   @override
-  Future<IStatus> onPollUpdated(IPleromaPoll? poll) async {
+  Future<IStatus> onPollUpdated(IPleromaApiPoll? poll) async {
     var updatedLocalStatus = await super.onPollUpdated(poll);
 
     await statusRepository.updateByDbIdInDbType(
@@ -236,7 +236,7 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Future<IStatus> toggleFavourite() async {
-    IPleromaStatus remoteStatus;
+    IPleromaApiStatus remoteStatus;
     if (reblogOrOriginal.favourited == true) {
       remoteStatus = await pleromaAuthStatusService.unFavouriteStatus(
         statusRemoteId: reblogOrOriginal.remoteId!,
@@ -264,7 +264,7 @@ class LocalStatusBloc extends StatusBloc {
   Future<IStatus> toggleReblog() async {
     _logger.finest(() =>
         "requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}");
-    IPleromaStatus remoteStatus;
+    IPleromaApiStatus remoteStatus;
     if (reblogOrOriginal.reblogged == true) {
       remoteStatus = await pleromaAuthStatusService.unReblogStatus(
         statusRemoteId: reblogOrOriginal.remoteId!,
@@ -314,7 +314,7 @@ class LocalStatusBloc extends StatusBloc {
   Future<IStatus> _actualMuteUnmute({
     required int? expireDurationInSeconds,
   }) async {
-    IPleromaStatus remoteStatus;
+    IPleromaApiStatus remoteStatus;
 
     if (reblogOrOriginal.muted == true) {
       remoteStatus = await pleromaAuthStatusService.unMuteStatus(
@@ -341,7 +341,7 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Future<IStatus> toggleBookmark() async {
-    IPleromaStatus remoteStatus;
+    IPleromaApiStatus remoteStatus;
     if (reblogOrOriginal.bookmarked == true) {
       remoteStatus = await pleromaAuthStatusService.unBookmarkStatus(
         statusRemoteId: reblogOrOriginal.remoteId!,
@@ -366,7 +366,7 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Future<IStatus> togglePin() async {
-    IPleromaStatus remoteStatus;
+    IPleromaApiStatus remoteStatus;
     if (reblogOrOriginal.pinned == true) {
       remoteStatus = await pleromaAuthStatusService.unPinStatus(
         statusRemoteId: reblogOrOriginal.remoteId!,
@@ -408,7 +408,7 @@ class LocalStatusBloc extends StatusBloc {
   }
 
   @override
-  Future<IPleromaStatus> toggleEmojiReaction({
+  Future<IPleromaApiStatus> toggleEmojiReaction({
     required String emoji,
   }) async {
     var alreadyAdded;
@@ -422,14 +422,14 @@ class LocalStatusBloc extends StatusBloc {
       alreadyAdded = false;
     }
 
-    IPleromaStatus? remoteStatus;
+    IPleromaApiStatus? remoteStatus;
     if (alreadyAdded) {
-      remoteStatus = await pleromaStatusEmojiReactionService!.removeReaction(
+      remoteStatus = await PleromaApiStatusEmojiReactionService!.removeReaction(
         statusRemoteId: status.remoteId!,
         emoji: emoji,
       );
     } else {
-      remoteStatus = await pleromaStatusEmojiReactionService!.addReaction(
+      remoteStatus = await PleromaApiStatusEmojiReactionService!.addReaction(
         statusRemoteId: status.remoteId!,
         emoji: emoji,
       );
@@ -443,7 +443,7 @@ class LocalStatusBloc extends StatusBloc {
   }
 
   Future _updateByRemoteStatus(
-    IPleromaStatus remoteStatus, {
+    IPleromaApiStatus remoteStatus, {
     Batch? batchTransaction,
   }) =>
       statusRepository.updateAppTypeByRemoteType(

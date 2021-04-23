@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_model.dart';
 import 'package:flutter/cupertino.dart';
 
-extension PleromaNativeCaptchaImageExtension on IPleromaCaptcha {
+extension PleromaApiNativeCaptchaImageExtension on IPleromaApiCaptcha {
   Image decodeUrlAsBase64Image() {
-    assert(pleromaType == PleromaCaptchaType.native);
+    assert(typeAsPleromaApi == PleromaApiCaptchaType.native);
 
     String encoded = url!;
 

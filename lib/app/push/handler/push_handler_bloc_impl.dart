@@ -49,7 +49,7 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
   }
 
   Future handlePushMessage(PushMessage pushMessage) async {
-    var body = PleromaPushMessageBody.fromJson(pushMessage.data!);
+    var body = PleromaApiPushMessageBody.fromJson(pushMessage.data!);
 
     var pushMessageHandler = PushHandlerMessage(
       pushMessage: pushMessage,

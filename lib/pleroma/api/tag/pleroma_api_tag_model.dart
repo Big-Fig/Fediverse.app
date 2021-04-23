@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:fedi/mastodon/api/tag/mastodon_api_tag_model.dart';
 import 'package:fedi/pleroma/api/tag/history/pleroma_api_tag_history_model.dart';
 import 'package:hive/hive.dart';
@@ -8,32 +9,34 @@ import 'package:json_annotation/json_annotation.dart';
 // ignore_for_file: no-magic-number
 part 'pleroma_api_tag_model.g.dart';
 
-abstract class IPleromaTag implements IMastodonApiTag {
+final Function _listEq = const ListEquality().equals;
+
+abstract class IPleromaApiTag implements IMastodonApiTag {
   @override
-  List<IPleromaTagHistory>? get history;
+  List<IPleromaApiTagHistory>? get history;
 }
 
-extension IPleromaTagExtension on IPleromaTag {
-  PleromaTag toPleromaTag() {
-    if (this is PleromaTag) {
-      return this as PleromaTag;
+extension IPleromaApiTagExtension on IPleromaApiTag {
+  PleromaApiTag toPleromaApiTag() {
+    if (this is PleromaApiTag) {
+      return this as PleromaApiTag;
     } else {
-      return PleromaTag(
+      return PleromaApiTag(
         name: name,
         url: url,
-        history: history?.toPleromaTagHistories(),
+        history: history?.toPleromaApiTagHistories(),
       );
     }
   }
 }
 
-extension IPleromaTagListExtension on List<IPleromaTag> {
-  List<PleromaTag> toPleromaTags() {
-    if (this is List<PleromaTag>) {
-      return this as List<PleromaTag>;
+extension IPleromaApiTagListExtension on List<IPleromaApiTag> {
+  List<PleromaApiTag> toPleromaApiTags() {
+    if (this is List<PleromaApiTag>) {
+      return this as List<PleromaApiTag>;
     } else {
       return map(
-        (pleromaTag) => pleromaTag.toPleromaTag(),
+        (pleromaApiTag) => pleromaApiTag.toPleromaApiTag(),
       ).toList();
     }
   }
@@ -45,7 +48,7 @@ extension IPleromaTagListExtension on List<IPleromaTag> {
 //@HiveType()
 @HiveType(typeId: -32 + 74)
 @JsonSerializable()
-class PleromaTag implements IPleromaTag {
+class PleromaApiTag implements IPleromaApiTag {
   @override
   @HiveField(0)
   final String name;
@@ -54,27 +57,48 @@ class PleromaTag implements IPleromaTag {
   final String url;
   @override
   @HiveField(2)
-  final List<PleromaTagHistory>? history;
+  final List<PleromaApiTagHistory>? history;
 
-  PleromaTag({
+  PleromaApiTag({
     required this.name,
     required this.url,
     required this.history,
   });
 
-  PleromaTag.only({
+  PleromaApiTag.only({
     required this.name,
     required this.url,
     this.history,
   });
 
-  factory PleromaTag.fromJson(Map<String, dynamic> json) =>
-      _$PleromaTagFromJson(json);
+  factory PleromaApiTag.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiTagFromJson(json);
 
-  factory PleromaTag.fromJsonString(String jsonString) =>
-      _$PleromaTagFromJson(jsonDecode(jsonString));
+  factory PleromaApiTag.fromJsonString(String jsonString) =>
+      _$PleromaApiTagFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaTagToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiTagToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaTagToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiTagToJson(this));
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiTag &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          url == other.url &&
+          _listEq(history, other.history);
+
+  @override
+  int get hashCode => name.hashCode ^ url.hashCode ^ history.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaApiTag{'
+        'name: $name, '
+        'url: $url, '
+        'history: $history'
+        '}';
+  }
 }

@@ -20,7 +20,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service_impl.dart';
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -35,16 +35,16 @@ import 'conversation_bloc_impl_test.mocks.dart';
 import 'conversation_model_helper.dart';
 // ignore_for_file: no-magic-number
 @GenerateMocks([
-  PleromaConversationService,
-  PleromaAuthStatusService,
-  PleromaMyAccountService,
+  PleromaApiConversationService,
+  PleromaApiAuthStatusService,
+  PleromaApiMyAccountService,
 ])
 void main() {
   late IConversationChat conversation;
   late IConversationChatBloc conversationBloc;
-  late MockPleromaConversationService pleromaConversationServiceMock;
-  late MockPleromaAuthStatusService pleromaAuthStatusServiceMock;
-  late MockPleromaMyAccountService pleromaMyAccountServiceMock;
+  late MockPleromaApiConversationService pleromaConversationServiceMock;
+  late MockPleromaApiAuthStatusService pleromaAuthStatusServiceMock;
+  late MockPleromaApiMyAccountService pleromaMyAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
@@ -70,9 +70,9 @@ void main() {
         statusRepository: statusRepository,
       );
 
-      pleromaConversationServiceMock = MockPleromaConversationService();
-      pleromaMyAccountServiceMock = MockPleromaMyAccountService();
-      pleromaAuthStatusServiceMock = MockPleromaAuthStatusService();
+      pleromaConversationServiceMock = MockPleromaApiConversationService();
+      pleromaMyAccountServiceMock = MockPleromaApiMyAccountService();
+      pleromaAuthStatusServiceMock = MockPleromaApiAuthStatusService();
       preferencesService = MemoryLocalPreferencesService();
 
       myAccount = await createTestMyAccount(seed: "myAccount");
@@ -93,7 +93,7 @@ void main() {
       );
 
       await myAccountLocalPreferenceBloc.setValue(
-        myAccount.toPleromaMyAccountWrapper(),
+        myAccount.toPleromaApiMyAccountWrapper(),
       );
       // hack to execute notify callbacks
       await Future.delayed(Duration(milliseconds: 1));

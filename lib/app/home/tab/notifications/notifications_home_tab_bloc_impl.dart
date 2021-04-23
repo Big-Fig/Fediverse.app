@@ -5,7 +5,7 @@ import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.d
 
 class NotificationsHomeTabBloc extends HomeTabBloc
     implements INotificationsHomeTabBloc {
-  final IPleromaNotificationService pleromaNotificationService;
+  final IPleromaApiNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
 
   NotificationsHomeTabBloc({

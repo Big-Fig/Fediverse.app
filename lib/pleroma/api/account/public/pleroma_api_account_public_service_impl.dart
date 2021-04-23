@@ -5,7 +5,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/account/public/pleroma_api_account_public_exception.dart';
 import 'package:fedi/pleroma/api/account/public/pleroma_api_account_public_model.dart';
 import 'package:fedi/pleroma/api/account/public/pleroma_api_account_public_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_model.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
@@ -17,11 +17,11 @@ var urlPath = path.Context(style: path.Style.url);
 
 var _logger = Logger("pleroma_account_public_service_impl.dart");
 
-class PleromaAccountPublicService extends DisposableOwner
-    implements IPleromaAccountPublicService {
+class PleromaApiAccountPublicService extends DisposableOwner
+    implements IPleromaApiAccountPublicService {
   final accountRelativeUrlPath = "/api/v1/accounts/";
   @override
-  final IPleromaRestService restService;
+  final IPleromaApiRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -36,13 +36,13 @@ class PleromaAccountPublicService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaAccountPublicService({
+  PleromaApiAccountPublicService({
     required this.restService,
   });
 
   @override
-  Future<PleromaOAuthToken> registerAccount({
-    required IPleromaAccountRegisterRequest request,
+  Future<PleromaApiOAuthToken> registerAccount({
+    required IPleromaApiAccountRegisterRequest request,
     required String? appAccessToken,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -57,13 +57,13 @@ class PleromaAccountPublicService extends DisposableOwner
 
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
       _logger.finest(() => "registerAccount ${httpResponse.body}");
-      return PleromaOAuthToken.fromJson(
+      return PleromaApiOAuthToken.fromJson(
         jsonDecode(
           httpResponse.body,
         ),
       );
     } else {
-      throw PleromaAccountPublicException(
+      throw PleromaApiAccountPublicException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );

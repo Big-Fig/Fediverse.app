@@ -2,7 +2,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_exception.dart';
 import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart';
 import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
@@ -11,11 +11,11 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaAnnouncementService extends DisposableOwner
-    implements IPleromaAnnouncementService {
+class PleromaApiAnnouncementService extends DisposableOwner
+    implements IPleromaApiAnnouncementService {
   final announcementRelativeUrlPath = "/api/v1/announcements";
   @override
-  final IPleromaRestService restService;
+  final IPleromaApiRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -30,15 +30,15 @@ class PleromaAnnouncementService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaAnnouncementService({required this.restService});
+  PleromaApiAnnouncementService({required this.restService});
 
-  List<IPleromaAnnouncement> parseAnnouncementListResponse(
+  List<IPleromaApiAnnouncement> parseAnnouncementListResponse(
     Response httpResponse,
   ) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaAnnouncement.listFromJsonString(httpResponse.body);
+      return PleromaApiAnnouncement.listFromJsonString(httpResponse.body);
     } else {
-      throw PleromaAnnouncementException(
+      throw PleromaApiAnnouncementException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -46,7 +46,7 @@ class PleromaAnnouncementService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaAnnouncement>> getAnnouncements({
+  Future<List<IPleromaApiAnnouncement>> getAnnouncements({
     bool withDismissed = false,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -76,7 +76,7 @@ class PleromaAnnouncementService extends DisposableOwner
     );
 
     if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
-      throw PleromaAnnouncementException(
+      throw PleromaApiAnnouncementException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -102,7 +102,7 @@ class PleromaAnnouncementService extends DisposableOwner
     if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
       // todo: handle 422: Unprocessable Entity
       // {"error":"Validation failed: Name is not a recognized emoji"}
-      throw PleromaAnnouncementException(
+      throw PleromaApiAnnouncementException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -128,7 +128,7 @@ class PleromaAnnouncementService extends DisposableOwner
     if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
       // todo: handle 422: Unprocessable Entity
       // {"error":"Validation failed: Name is not a recognized emoji"}
-      throw PleromaAnnouncementException(
+      throw PleromaApiAnnouncementException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );

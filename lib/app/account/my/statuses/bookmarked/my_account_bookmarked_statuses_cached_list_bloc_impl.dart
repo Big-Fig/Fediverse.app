@@ -5,7 +5,7 @@ import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 
@@ -16,7 +16,7 @@ var _statusRepositoryFilters = StatusRepositoryFilters(
 class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
     implements IMyAccountBookmarkedStatusesCachedListBloc {
   final IStatusRepository statusRepository;
-  final IPleromaMyAccountService pleromaMyAccountService;
+  final IPleromaApiMyAccountService pleromaMyAccountService;
 
   MyAccountBookmarkedStatusesCachedListBloc({
     required this.pleromaMyAccountService,
@@ -70,7 +70,7 @@ class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
     IStatus? olderThan,
   }) async {
     var remoteStatuses = await pleromaMyAccountService.getBookmarks(
-      pagination: PleromaPaginationRequest(
+      pagination: PleromaApiPaginationRequest(
         sinceId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
         limit: limit,

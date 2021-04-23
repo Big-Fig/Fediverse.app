@@ -15,7 +15,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
   final String? inReplyToAccountRemoteId;
   final bool sensitive;
   final String? spoilerText;
-  final PleromaVisibility visibility;
+  final PleromaApiVisibility visibility;
   final String uri;
   final String? url;
   final int repliesCount;
@@ -28,24 +28,24 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
   final bool? pinned;
   final String? content;
   final String? reblogStatusRemoteId;
-  final PleromaApplication? application;
+  final PleromaApiApplication? application;
   final String accountRemoteId;
-  final List<PleromaMediaAttachment>? mediaAttachments;
-  final List<PleromaMention>? mentions;
-  final List<PleromaTag>? tags;
-  final List<PleromaEmoji>? emojis;
-  final PleromaPoll? poll;
-  final PleromaCard? card;
+  final List<PleromaApiMediaAttachment>? mediaAttachments;
+  final List<PleromaApiMention>? mentions;
+  final List<PleromaApiTag>? tags;
+  final List<PleromaApiEmoji>? emojis;
+  final PleromaApiPoll? poll;
+  final PleromaApiCard? card;
   final String? language;
-  final PleromaContent? pleromaContent;
+  final PleromaApiContent? pleromaContent;
   final int? pleromaConversationId;
   final int? pleromaDirectConversationId;
   final String? pleromaInReplyToAccountAcct;
   final bool? pleromaLocal;
-  final PleromaContent? pleromaSpoilerText;
+  final PleromaApiContent? pleromaSpoilerText;
   final DateTime? pleromaExpiresAt;
   final bool? pleromaThreadMuted;
-  final List<PleromaStatusEmojiReaction>? pleromaEmojiReactions;
+  final List<PleromaApiStatusEmojiReaction>? pleromaEmojiReactions;
   final bool? deleted;
   final bool? hiddenLocallyOnDevice;
   final PendingState? pendingState;
@@ -438,7 +438,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           serializer.fromJson<String?>(json['inReplyToAccountRemoteId']),
       sensitive: serializer.fromJson<bool>(json['sensitive']),
       spoilerText: serializer.fromJson<String?>(json['spoilerText']),
-      visibility: serializer.fromJson<PleromaVisibility>(json['visibility']),
+      visibility: serializer.fromJson<PleromaApiVisibility>(json['visibility']),
       uri: serializer.fromJson<String>(json['uri']),
       url: serializer.fromJson<String?>(json['url']),
       repliesCount: serializer.fromJson<int>(json['repliesCount']),
@@ -453,18 +453,18 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       reblogStatusRemoteId:
           serializer.fromJson<String?>(json['reblogStatusRemoteId']),
       application:
-          serializer.fromJson<PleromaApplication?>(json['application']),
+          serializer.fromJson<PleromaApiApplication?>(json['application']),
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
       mediaAttachments: serializer
-          .fromJson<List<PleromaMediaAttachment>?>(json['mediaAttachments']),
-      mentions: serializer.fromJson<List<PleromaMention>?>(json['mentions']),
-      tags: serializer.fromJson<List<PleromaTag>?>(json['tags']),
-      emojis: serializer.fromJson<List<PleromaEmoji>?>(json['emojis']),
-      poll: serializer.fromJson<PleromaPoll?>(json['poll']),
-      card: serializer.fromJson<PleromaCard?>(json['card']),
+          .fromJson<List<PleromaApiMediaAttachment>?>(json['mediaAttachments']),
+      mentions: serializer.fromJson<List<PleromaApiMention>?>(json['mentions']),
+      tags: serializer.fromJson<List<PleromaApiTag>?>(json['tags']),
+      emojis: serializer.fromJson<List<PleromaApiEmoji>?>(json['emojis']),
+      poll: serializer.fromJson<PleromaApiPoll?>(json['poll']),
+      card: serializer.fromJson<PleromaApiCard?>(json['card']),
       language: serializer.fromJson<String?>(json['language']),
       pleromaContent:
-          serializer.fromJson<PleromaContent?>(json['pleromaContent']),
+          serializer.fromJson<PleromaApiContent?>(json['pleromaContent']),
       pleromaConversationId:
           serializer.fromJson<int?>(json['pleromaConversationId']),
       pleromaDirectConversationId:
@@ -473,13 +473,13 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           serializer.fromJson<String?>(json['pleromaInReplyToAccountAcct']),
       pleromaLocal: serializer.fromJson<bool?>(json['pleromaLocal']),
       pleromaSpoilerText:
-          serializer.fromJson<PleromaContent?>(json['pleromaSpoilerText']),
+          serializer.fromJson<PleromaApiContent?>(json['pleromaSpoilerText']),
       pleromaExpiresAt:
           serializer.fromJson<DateTime?>(json['pleromaExpiresAt']),
       pleromaThreadMuted:
           serializer.fromJson<bool?>(json['pleromaThreadMuted']),
       pleromaEmojiReactions:
-          serializer.fromJson<List<PleromaStatusEmojiReaction>?>(
+          serializer.fromJson<List<PleromaApiStatusEmojiReaction>?>(
               json['pleromaEmojiReactions']),
       deleted: serializer.fromJson<bool?>(json['deleted']),
       hiddenLocallyOnDevice:
@@ -503,7 +503,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           serializer.toJson<String?>(inReplyToAccountRemoteId),
       'sensitive': serializer.toJson<bool>(sensitive),
       'spoilerText': serializer.toJson<String?>(spoilerText),
-      'visibility': serializer.toJson<PleromaVisibility>(visibility),
+      'visibility': serializer.toJson<PleromaApiVisibility>(visibility),
       'uri': serializer.toJson<String>(uri),
       'url': serializer.toJson<String?>(url),
       'repliesCount': serializer.toJson<int>(repliesCount),
@@ -516,17 +516,17 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       'pinned': serializer.toJson<bool?>(pinned),
       'content': serializer.toJson<String?>(content),
       'reblogStatusRemoteId': serializer.toJson<String?>(reblogStatusRemoteId),
-      'application': serializer.toJson<PleromaApplication?>(application),
+      'application': serializer.toJson<PleromaApiApplication?>(application),
       'accountRemoteId': serializer.toJson<String>(accountRemoteId),
       'mediaAttachments':
-          serializer.toJson<List<PleromaMediaAttachment>?>(mediaAttachments),
-      'mentions': serializer.toJson<List<PleromaMention>?>(mentions),
-      'tags': serializer.toJson<List<PleromaTag>?>(tags),
-      'emojis': serializer.toJson<List<PleromaEmoji>?>(emojis),
-      'poll': serializer.toJson<PleromaPoll?>(poll),
-      'card': serializer.toJson<PleromaCard?>(card),
+          serializer.toJson<List<PleromaApiMediaAttachment>?>(mediaAttachments),
+      'mentions': serializer.toJson<List<PleromaApiMention>?>(mentions),
+      'tags': serializer.toJson<List<PleromaApiTag>?>(tags),
+      'emojis': serializer.toJson<List<PleromaApiEmoji>?>(emojis),
+      'poll': serializer.toJson<PleromaApiPoll?>(poll),
+      'card': serializer.toJson<PleromaApiCard?>(card),
       'language': serializer.toJson<String?>(language),
-      'pleromaContent': serializer.toJson<PleromaContent?>(pleromaContent),
+      'pleromaContent': serializer.toJson<PleromaApiContent?>(pleromaContent),
       'pleromaConversationId': serializer.toJson<int?>(pleromaConversationId),
       'pleromaDirectConversationId':
           serializer.toJson<int?>(pleromaDirectConversationId),
@@ -534,11 +534,11 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           serializer.toJson<String?>(pleromaInReplyToAccountAcct),
       'pleromaLocal': serializer.toJson<bool?>(pleromaLocal),
       'pleromaSpoilerText':
-          serializer.toJson<PleromaContent?>(pleromaSpoilerText),
+          serializer.toJson<PleromaApiContent?>(pleromaSpoilerText),
       'pleromaExpiresAt': serializer.toJson<DateTime?>(pleromaExpiresAt),
       'pleromaThreadMuted': serializer.toJson<bool?>(pleromaThreadMuted),
       'pleromaEmojiReactions': serializer
-          .toJson<List<PleromaStatusEmojiReaction>?>(pleromaEmojiReactions),
+          .toJson<List<PleromaApiStatusEmojiReaction>?>(pleromaEmojiReactions),
       'deleted': serializer.toJson<bool?>(deleted),
       'hiddenLocallyOnDevice': serializer.toJson<bool?>(hiddenLocallyOnDevice),
       'pendingState': serializer.toJson<PendingState?>(pendingState),
@@ -556,7 +556,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           String? inReplyToAccountRemoteId,
           bool? sensitive,
           String? spoilerText,
-          PleromaVisibility? visibility,
+          PleromaApiVisibility? visibility,
           String? uri,
           String? url,
           int? repliesCount,
@@ -569,24 +569,24 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           bool? pinned,
           String? content,
           String? reblogStatusRemoteId,
-          PleromaApplication? application,
+          PleromaApiApplication? application,
           String? accountRemoteId,
-          List<PleromaMediaAttachment>? mediaAttachments,
-          List<PleromaMention>? mentions,
-          List<PleromaTag>? tags,
-          List<PleromaEmoji>? emojis,
-          PleromaPoll? poll,
-          PleromaCard? card,
+          List<PleromaApiMediaAttachment>? mediaAttachments,
+          List<PleromaApiMention>? mentions,
+          List<PleromaApiTag>? tags,
+          List<PleromaApiEmoji>? emojis,
+          PleromaApiPoll? poll,
+          PleromaApiCard? card,
           String? language,
-          PleromaContent? pleromaContent,
+          PleromaApiContent? pleromaContent,
           int? pleromaConversationId,
           int? pleromaDirectConversationId,
           String? pleromaInReplyToAccountAcct,
           bool? pleromaLocal,
-          PleromaContent? pleromaSpoilerText,
+          PleromaApiContent? pleromaSpoilerText,
           DateTime? pleromaExpiresAt,
           bool? pleromaThreadMuted,
-          List<PleromaStatusEmojiReaction>? pleromaEmojiReactions,
+          List<PleromaApiStatusEmojiReaction>? pleromaEmojiReactions,
           bool? deleted,
           bool? hiddenLocallyOnDevice,
           PendingState? pendingState,
@@ -797,7 +797,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
   final Value<String?> inReplyToAccountRemoteId;
   final Value<bool> sensitive;
   final Value<String?> spoilerText;
-  final Value<PleromaVisibility> visibility;
+  final Value<PleromaApiVisibility> visibility;
   final Value<String> uri;
   final Value<String?> url;
   final Value<int> repliesCount;
@@ -810,24 +810,24 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
   final Value<bool?> pinned;
   final Value<String?> content;
   final Value<String?> reblogStatusRemoteId;
-  final Value<PleromaApplication?> application;
+  final Value<PleromaApiApplication?> application;
   final Value<String> accountRemoteId;
-  final Value<List<PleromaMediaAttachment>?> mediaAttachments;
-  final Value<List<PleromaMention>?> mentions;
-  final Value<List<PleromaTag>?> tags;
-  final Value<List<PleromaEmoji>?> emojis;
-  final Value<PleromaPoll?> poll;
-  final Value<PleromaCard?> card;
+  final Value<List<PleromaApiMediaAttachment>?> mediaAttachments;
+  final Value<List<PleromaApiMention>?> mentions;
+  final Value<List<PleromaApiTag>?> tags;
+  final Value<List<PleromaApiEmoji>?> emojis;
+  final Value<PleromaApiPoll?> poll;
+  final Value<PleromaApiCard?> card;
   final Value<String?> language;
-  final Value<PleromaContent?> pleromaContent;
+  final Value<PleromaApiContent?> pleromaContent;
   final Value<int?> pleromaConversationId;
   final Value<int?> pleromaDirectConversationId;
   final Value<String?> pleromaInReplyToAccountAcct;
   final Value<bool?> pleromaLocal;
-  final Value<PleromaContent?> pleromaSpoilerText;
+  final Value<PleromaApiContent?> pleromaSpoilerText;
   final Value<DateTime?> pleromaExpiresAt;
   final Value<bool?> pleromaThreadMuted;
-  final Value<List<PleromaStatusEmojiReaction>?> pleromaEmojiReactions;
+  final Value<List<PleromaApiStatusEmojiReaction>?> pleromaEmojiReactions;
   final Value<bool?> deleted;
   final Value<bool?> hiddenLocallyOnDevice;
   final Value<PendingState?> pendingState;
@@ -886,7 +886,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.inReplyToAccountRemoteId = const Value.absent(),
     required bool sensitive,
     this.spoilerText = const Value.absent(),
-    required PleromaVisibility visibility,
+    required PleromaApiVisibility visibility,
     required String uri,
     this.url = const Value.absent(),
     required int repliesCount,
@@ -939,7 +939,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     Expression<String?>? inReplyToAccountRemoteId,
     Expression<bool>? sensitive,
     Expression<String?>? spoilerText,
-    Expression<PleromaVisibility>? visibility,
+    Expression<PleromaApiVisibility>? visibility,
     Expression<String>? uri,
     Expression<String?>? url,
     Expression<int>? repliesCount,
@@ -952,24 +952,24 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     Expression<bool?>? pinned,
     Expression<String?>? content,
     Expression<String?>? reblogStatusRemoteId,
-    Expression<PleromaApplication?>? application,
+    Expression<PleromaApiApplication?>? application,
     Expression<String>? accountRemoteId,
-    Expression<List<PleromaMediaAttachment>?>? mediaAttachments,
-    Expression<List<PleromaMention>?>? mentions,
-    Expression<List<PleromaTag>?>? tags,
-    Expression<List<PleromaEmoji>?>? emojis,
-    Expression<PleromaPoll?>? poll,
-    Expression<PleromaCard?>? card,
+    Expression<List<PleromaApiMediaAttachment>?>? mediaAttachments,
+    Expression<List<PleromaApiMention>?>? mentions,
+    Expression<List<PleromaApiTag>?>? tags,
+    Expression<List<PleromaApiEmoji>?>? emojis,
+    Expression<PleromaApiPoll?>? poll,
+    Expression<PleromaApiCard?>? card,
     Expression<String?>? language,
-    Expression<PleromaContent?>? pleromaContent,
+    Expression<PleromaApiContent?>? pleromaContent,
     Expression<int?>? pleromaConversationId,
     Expression<int?>? pleromaDirectConversationId,
     Expression<String?>? pleromaInReplyToAccountAcct,
     Expression<bool?>? pleromaLocal,
-    Expression<PleromaContent?>? pleromaSpoilerText,
+    Expression<PleromaApiContent?>? pleromaSpoilerText,
     Expression<DateTime?>? pleromaExpiresAt,
     Expression<bool?>? pleromaThreadMuted,
-    Expression<List<PleromaStatusEmojiReaction>?>? pleromaEmojiReactions,
+    Expression<List<PleromaApiStatusEmojiReaction>?>? pleromaEmojiReactions,
     Expression<bool?>? deleted,
     Expression<bool?>? hiddenLocallyOnDevice,
     Expression<PendingState?>? pendingState,
@@ -1042,7 +1042,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       Value<String?>? inReplyToAccountRemoteId,
       Value<bool>? sensitive,
       Value<String?>? spoilerText,
-      Value<PleromaVisibility>? visibility,
+      Value<PleromaApiVisibility>? visibility,
       Value<String>? uri,
       Value<String?>? url,
       Value<int>? repliesCount,
@@ -1055,24 +1055,24 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       Value<bool?>? pinned,
       Value<String?>? content,
       Value<String?>? reblogStatusRemoteId,
-      Value<PleromaApplication?>? application,
+      Value<PleromaApiApplication?>? application,
       Value<String>? accountRemoteId,
-      Value<List<PleromaMediaAttachment>?>? mediaAttachments,
-      Value<List<PleromaMention>?>? mentions,
-      Value<List<PleromaTag>?>? tags,
-      Value<List<PleromaEmoji>?>? emojis,
-      Value<PleromaPoll?>? poll,
-      Value<PleromaCard?>? card,
+      Value<List<PleromaApiMediaAttachment>?>? mediaAttachments,
+      Value<List<PleromaApiMention>?>? mentions,
+      Value<List<PleromaApiTag>?>? tags,
+      Value<List<PleromaApiEmoji>?>? emojis,
+      Value<PleromaApiPoll?>? poll,
+      Value<PleromaApiCard?>? card,
       Value<String?>? language,
-      Value<PleromaContent?>? pleromaContent,
+      Value<PleromaApiContent?>? pleromaContent,
       Value<int?>? pleromaConversationId,
       Value<int?>? pleromaDirectConversationId,
       Value<String?>? pleromaInReplyToAccountAcct,
       Value<bool?>? pleromaLocal,
-      Value<PleromaContent?>? pleromaSpoilerText,
+      Value<PleromaApiContent?>? pleromaSpoilerText,
       Value<DateTime?>? pleromaExpiresAt,
       Value<bool?>? pleromaThreadMuted,
-      Value<List<PleromaStatusEmojiReaction>?>? pleromaEmojiReactions,
+      Value<List<PleromaApiStatusEmojiReaction>?>? pleromaEmojiReactions,
       Value<bool?>? deleted,
       Value<bool?>? hiddenLocallyOnDevice,
       Value<PendingState?>? pendingState,
@@ -2112,28 +2112,28 @@ class $DbStatusesTable extends DbStatuses
     return $DbStatusesTable(_db, alias);
   }
 
-  static TypeConverter<PleromaVisibility, String> $converter0 =
-      PleromaVisibilityTypeConverter();
-  static TypeConverter<PleromaApplication, String> $converter1 =
+  static TypeConverter<PleromaApiVisibility, String> $converter0 =
+      PleromaApiVisibilityTypeConverter();
+  static TypeConverter<PleromaApiApplication, String> $converter1 =
       PleromaApplicationDatabaseConverter();
-  static TypeConverter<List<PleromaMediaAttachment>, String> $converter2 =
+  static TypeConverter<List<PleromaApiMediaAttachment>, String> $converter2 =
       PleromaMediaAttachmentListDatabaseConverter();
-  static TypeConverter<List<PleromaMention>, String> $converter3 =
+  static TypeConverter<List<PleromaApiMention>, String> $converter3 =
       PleromaMentionListDatabaseConverter();
-  static TypeConverter<List<PleromaTag>, String> $converter4 =
-      PleromaTagListDatabaseConverter();
-  static TypeConverter<List<PleromaEmoji>, String> $converter5 =
-      PleromaEmojiListDatabaseConverter();
-  static TypeConverter<PleromaPoll, String> $converter6 =
+  static TypeConverter<List<PleromaApiTag>, String> $converter4 =
+      PleromaApiTagListDatabaseConverter();
+  static TypeConverter<List<PleromaApiEmoji>, String> $converter5 =
+      PleromaApiEmojiListDatabaseConverter();
+  static TypeConverter<PleromaApiPoll, String> $converter6 =
       PleromaPollDatabaseConverter();
-  static TypeConverter<PleromaCard, String> $converter7 =
+  static TypeConverter<PleromaApiCard, String> $converter7 =
       PleromaCardDatabaseConverter();
-  static TypeConverter<PleromaContent, String> $converter8 =
+  static TypeConverter<PleromaApiContent, String> $converter8 =
       PleromaContentDatabaseConverter();
-  static TypeConverter<PleromaContent, String> $converter9 =
+  static TypeConverter<PleromaApiContent, String> $converter9 =
       PleromaContentDatabaseConverter();
-  static TypeConverter<List<PleromaStatusEmojiReaction>, String> $converter10 =
-      PleromaEmojiReactionsListDatabaseConverter();
+  static TypeConverter<List<PleromaApiStatusEmojiReaction>, String>
+      $converter10 = PleromaEmojiReactionsListDatabaseConverter();
   static TypeConverter<PendingState, String> $converter11 =
       PendingStateDatabaseConverter();
 }
@@ -2157,11 +2157,11 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
   final String avatar;
   final String acct;
   final DateTime? lastStatusAt;
-  final List<PleromaField>? fields;
-  final List<PleromaEmoji>? emojis;
+  final List<PleromaApiField>? fields;
+  final List<PleromaApiEmoji>? emojis;
   final String? pleromaBackgroundImage;
-  final List<PleromaTag>? pleromaTags;
-  final PleromaAccountRelationship? pleromaRelationship;
+  final List<PleromaApiTag>? pleromaTags;
+  final PleromaApiAccountRelationship? pleromaRelationship;
   final bool? pleromaIsAdmin;
   final bool? pleromaIsModerator;
   final bool? pleromaConfirmationPending;
@@ -2486,13 +2486,14 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       avatar: serializer.fromJson<String>(json['avatar']),
       acct: serializer.fromJson<String>(json['acct']),
       lastStatusAt: serializer.fromJson<DateTime?>(json['lastStatusAt']),
-      fields: serializer.fromJson<List<PleromaField>?>(json['fields']),
-      emojis: serializer.fromJson<List<PleromaEmoji>?>(json['emojis']),
+      fields: serializer.fromJson<List<PleromaApiField>?>(json['fields']),
+      emojis: serializer.fromJson<List<PleromaApiEmoji>?>(json['emojis']),
       pleromaBackgroundImage:
           serializer.fromJson<String?>(json['pleromaBackgroundImage']),
-      pleromaTags: serializer.fromJson<List<PleromaTag>?>(json['pleromaTags']),
-      pleromaRelationship: serializer
-          .fromJson<PleromaAccountRelationship?>(json['pleromaRelationship']),
+      pleromaTags:
+          serializer.fromJson<List<PleromaApiTag>?>(json['pleromaTags']),
+      pleromaRelationship: serializer.fromJson<PleromaApiAccountRelationship?>(
+          json['pleromaRelationship']),
       pleromaIsAdmin: serializer.fromJson<bool?>(json['pleromaIsAdmin']),
       pleromaIsModerator:
           serializer.fromJson<bool?>(json['pleromaIsModerator']),
@@ -2540,13 +2541,13 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       'avatar': serializer.toJson<String>(avatar),
       'acct': serializer.toJson<String>(acct),
       'lastStatusAt': serializer.toJson<DateTime?>(lastStatusAt),
-      'fields': serializer.toJson<List<PleromaField>?>(fields),
-      'emojis': serializer.toJson<List<PleromaEmoji>?>(emojis),
+      'fields': serializer.toJson<List<PleromaApiField>?>(fields),
+      'emojis': serializer.toJson<List<PleromaApiEmoji>?>(emojis),
       'pleromaBackgroundImage':
           serializer.toJson<String?>(pleromaBackgroundImage),
-      'pleromaTags': serializer.toJson<List<PleromaTag>?>(pleromaTags),
-      'pleromaRelationship':
-          serializer.toJson<PleromaAccountRelationship?>(pleromaRelationship),
+      'pleromaTags': serializer.toJson<List<PleromaApiTag>?>(pleromaTags),
+      'pleromaRelationship': serializer
+          .toJson<PleromaApiAccountRelationship?>(pleromaRelationship),
       'pleromaIsAdmin': serializer.toJson<bool?>(pleromaIsAdmin),
       'pleromaIsModerator': serializer.toJson<bool?>(pleromaIsModerator),
       'pleromaConfirmationPending':
@@ -2587,11 +2588,11 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           String? avatar,
           String? acct,
           DateTime? lastStatusAt,
-          List<PleromaField>? fields,
-          List<PleromaEmoji>? emojis,
+          List<PleromaApiField>? fields,
+          List<PleromaApiEmoji>? emojis,
           String? pleromaBackgroundImage,
-          List<PleromaTag>? pleromaTags,
-          PleromaAccountRelationship? pleromaRelationship,
+          List<PleromaApiTag>? pleromaTags,
+          PleromaApiAccountRelationship? pleromaRelationship,
           bool? pleromaIsAdmin,
           bool? pleromaIsModerator,
           bool? pleromaConfirmationPending,
@@ -2796,11 +2797,11 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
   final Value<String> avatar;
   final Value<String> acct;
   final Value<DateTime?> lastStatusAt;
-  final Value<List<PleromaField>?> fields;
-  final Value<List<PleromaEmoji>?> emojis;
+  final Value<List<PleromaApiField>?> fields;
+  final Value<List<PleromaApiEmoji>?> emojis;
   final Value<String?> pleromaBackgroundImage;
-  final Value<List<PleromaTag>?> pleromaTags;
-  final Value<PleromaAccountRelationship?> pleromaRelationship;
+  final Value<List<PleromaApiTag>?> pleromaTags;
+  final Value<PleromaApiAccountRelationship?> pleromaRelationship;
   final Value<bool?> pleromaIsAdmin;
   final Value<bool?> pleromaIsModerator;
   final Value<bool?> pleromaConfirmationPending;
@@ -2918,11 +2919,11 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     Expression<String>? avatar,
     Expression<String>? acct,
     Expression<DateTime?>? lastStatusAt,
-    Expression<List<PleromaField>?>? fields,
-    Expression<List<PleromaEmoji>?>? emojis,
+    Expression<List<PleromaApiField>?>? fields,
+    Expression<List<PleromaApiEmoji>?>? emojis,
     Expression<String?>? pleromaBackgroundImage,
-    Expression<List<PleromaTag>?>? pleromaTags,
-    Expression<PleromaAccountRelationship?>? pleromaRelationship,
+    Expression<List<PleromaApiTag>?>? pleromaTags,
+    Expression<PleromaApiAccountRelationship?>? pleromaRelationship,
     Expression<bool?>? pleromaIsAdmin,
     Expression<bool?>? pleromaIsModerator,
     Expression<bool?>? pleromaConfirmationPending,
@@ -3006,11 +3007,11 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       Value<String>? avatar,
       Value<String>? acct,
       Value<DateTime?>? lastStatusAt,
-      Value<List<PleromaField>?>? fields,
-      Value<List<PleromaEmoji>?>? emojis,
+      Value<List<PleromaApiField>?>? fields,
+      Value<List<PleromaApiEmoji>?>? emojis,
       Value<String?>? pleromaBackgroundImage,
-      Value<List<PleromaTag>?>? pleromaTags,
-      Value<PleromaAccountRelationship?>? pleromaRelationship,
+      Value<List<PleromaApiTag>?>? pleromaTags,
+      Value<PleromaApiAccountRelationship?>? pleromaRelationship,
       Value<bool?>? pleromaIsAdmin,
       Value<bool?>? pleromaIsModerator,
       Value<bool?>? pleromaConfirmationPending,
@@ -3923,14 +3924,14 @@ class $DbAccountsTable extends DbAccounts
     return $DbAccountsTable(_db, alias);
   }
 
-  static TypeConverter<List<PleromaField>, String> $converter0 =
-      PleromaFieldListDatabaseConverter();
-  static TypeConverter<List<PleromaEmoji>, String> $converter1 =
-      PleromaEmojiListDatabaseConverter();
-  static TypeConverter<List<PleromaTag>, String> $converter2 =
-      PleromaTagListDatabaseConverter();
-  static TypeConverter<PleromaAccountRelationship, String> $converter3 =
-      PleromaAccountRelationshipDatabaseConverter();
+  static TypeConverter<List<PleromaApiField>, String> $converter0 =
+      PleromaApiFieldListDatabaseConverter();
+  static TypeConverter<List<PleromaApiEmoji>, String> $converter1 =
+      PleromaApiEmojiListDatabaseConverter();
+  static TypeConverter<List<PleromaApiTag>, String> $converter2 =
+      PleromaApiTagListDatabaseConverter();
+  static TypeConverter<PleromaApiAccountRelationship, String> $converter3 =
+      PleromaApiAccountRelationshipDatabaseConverter();
 }
 
 class DbConversation extends DataClass implements Insertable<DbConversation> {
@@ -4211,10 +4212,10 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
   final String? chatRemoteId;
   final String? chatMessageRemoteId;
   final String? emoji;
-  final PleromaNotificationPleromaPart? pleroma;
-  final PleromaAccountReport? report;
-  final PleromaChatMessage? chatMessage;
-  final PleromaAccount? target;
+  final PleromaApiNotificationPleromaPart? pleroma;
+  final PleromaApiAccountReport? report;
+  final PleromaApiChatMessage? chatMessage;
+  final PleromaApiAccount? target;
   final bool? unread;
   final String type;
   final DateTime createdAt;
@@ -4373,12 +4374,12 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       chatMessageRemoteId:
           serializer.fromJson<String?>(json['chatMessageRemoteId']),
       emoji: serializer.fromJson<String?>(json['emoji']),
-      pleroma:
-          serializer.fromJson<PleromaNotificationPleromaPart?>(json['pleroma']),
-      report: serializer.fromJson<PleromaAccountReport?>(json['report']),
+      pleroma: serializer
+          .fromJson<PleromaApiNotificationPleromaPart?>(json['pleroma']),
+      report: serializer.fromJson<PleromaApiAccountReport?>(json['report']),
       chatMessage:
-          serializer.fromJson<PleromaChatMessage?>(json['chatMessage']),
-      target: serializer.fromJson<PleromaAccount?>(json['target']),
+          serializer.fromJson<PleromaApiChatMessage?>(json['chatMessage']),
+      target: serializer.fromJson<PleromaApiAccount?>(json['target']),
       unread: serializer.fromJson<bool?>(json['unread']),
       type: serializer.fromJson<String>(json['type']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -4396,10 +4397,10 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       'chatRemoteId': serializer.toJson<String?>(chatRemoteId),
       'chatMessageRemoteId': serializer.toJson<String?>(chatMessageRemoteId),
       'emoji': serializer.toJson<String?>(emoji),
-      'pleroma': serializer.toJson<PleromaNotificationPleromaPart?>(pleroma),
-      'report': serializer.toJson<PleromaAccountReport?>(report),
-      'chatMessage': serializer.toJson<PleromaChatMessage?>(chatMessage),
-      'target': serializer.toJson<PleromaAccount?>(target),
+      'pleroma': serializer.toJson<PleromaApiNotificationPleromaPart?>(pleroma),
+      'report': serializer.toJson<PleromaApiAccountReport?>(report),
+      'chatMessage': serializer.toJson<PleromaApiChatMessage?>(chatMessage),
+      'target': serializer.toJson<PleromaApiAccount?>(target),
       'unread': serializer.toJson<bool?>(unread),
       'type': serializer.toJson<String>(type),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -4415,10 +4416,10 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           String? chatRemoteId,
           String? chatMessageRemoteId,
           String? emoji,
-          PleromaNotificationPleromaPart? pleroma,
-          PleromaAccountReport? report,
-          PleromaChatMessage? chatMessage,
-          PleromaAccount? target,
+          PleromaApiNotificationPleromaPart? pleroma,
+          PleromaApiAccountReport? report,
+          PleromaApiChatMessage? chatMessage,
+          PleromaApiAccount? target,
           bool? unread,
           String? type,
           DateTime? createdAt,
@@ -4522,10 +4523,10 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
   final Value<String?> chatRemoteId;
   final Value<String?> chatMessageRemoteId;
   final Value<String?> emoji;
-  final Value<PleromaNotificationPleromaPart?> pleroma;
-  final Value<PleromaAccountReport?> report;
-  final Value<PleromaChatMessage?> chatMessage;
-  final Value<PleromaAccount?> target;
+  final Value<PleromaApiNotificationPleromaPart?> pleroma;
+  final Value<PleromaApiAccountReport?> report;
+  final Value<PleromaApiChatMessage?> chatMessage;
+  final Value<PleromaApiAccount?> target;
   final Value<bool?> unread;
   final Value<String> type;
   final Value<DateTime> createdAt;
@@ -4574,10 +4575,10 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     Expression<String?>? chatRemoteId,
     Expression<String?>? chatMessageRemoteId,
     Expression<String?>? emoji,
-    Expression<PleromaNotificationPleromaPart?>? pleroma,
-    Expression<PleromaAccountReport?>? report,
-    Expression<PleromaChatMessage?>? chatMessage,
-    Expression<PleromaAccount?>? target,
+    Expression<PleromaApiNotificationPleromaPart?>? pleroma,
+    Expression<PleromaApiAccountReport?>? report,
+    Expression<PleromaApiChatMessage?>? chatMessage,
+    Expression<PleromaApiAccount?>? target,
     Expression<bool?>? unread,
     Expression<String>? type,
     Expression<DateTime>? createdAt,
@@ -4611,10 +4612,10 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       Value<String?>? chatRemoteId,
       Value<String?>? chatMessageRemoteId,
       Value<String?>? emoji,
-      Value<PleromaNotificationPleromaPart?>? pleroma,
-      Value<PleromaAccountReport?>? report,
-      Value<PleromaChatMessage?>? chatMessage,
-      Value<PleromaAccount?>? target,
+      Value<PleromaApiNotificationPleromaPart?>? pleroma,
+      Value<PleromaApiAccountReport?>? report,
+      Value<PleromaApiChatMessage?>? chatMessage,
+      Value<PleromaApiAccount?>? target,
       Value<bool?>? unread,
       Value<String>? type,
       Value<DateTime>? createdAt,
@@ -4994,13 +4995,13 @@ class $DbNotificationsTable extends DbNotifications
     return $DbNotificationsTable(_db, alias);
   }
 
-  static TypeConverter<PleromaNotificationPleromaPart, String> $converter0 =
+  static TypeConverter<PleromaApiNotificationPleromaPart, String> $converter0 =
       PleromaNotificationPleromaPartDatabaseConverter();
-  static TypeConverter<PleromaAccountReport, String> $converter1 =
+  static TypeConverter<PleromaApiAccountReport, String> $converter1 =
       PleromaAccountReportDatabaseConverter();
-  static TypeConverter<PleromaChatMessage, String> $converter2 =
+  static TypeConverter<PleromaApiChatMessage, String> $converter2 =
       PleromaChatMessageDatabaseConverter();
-  static TypeConverter<PleromaAccount, String> $converter3 =
+  static TypeConverter<PleromaApiAccount, String> $converter3 =
       PleromaAccountDatabaseConverter();
 }
 
@@ -6963,8 +6964,8 @@ class DbScheduledStatus extends DataClass
   final String remoteId;
   final DateTime scheduledAt;
   final bool canceled;
-  final PleromaScheduledStatusParams params;
-  final List<PleromaMediaAttachment>? mediaAttachments;
+  final PleromaApiScheduledStatusParams params;
+  final List<PleromaApiMediaAttachment>? mediaAttachments;
   DbScheduledStatus(
       {this.id,
       required this.remoteId,
@@ -7037,9 +7038,10 @@ class DbScheduledStatus extends DataClass
       remoteId: serializer.fromJson<String>(json['remoteId']),
       scheduledAt: serializer.fromJson<DateTime>(json['scheduledAt']),
       canceled: serializer.fromJson<bool>(json['canceled']),
-      params: serializer.fromJson<PleromaScheduledStatusParams>(json['params']),
+      params:
+          serializer.fromJson<PleromaApiScheduledStatusParams>(json['params']),
       mediaAttachments: serializer
-          .fromJson<List<PleromaMediaAttachment>?>(json['mediaAttachments']),
+          .fromJson<List<PleromaApiMediaAttachment>?>(json['mediaAttachments']),
     );
   }
   @override
@@ -7050,9 +7052,9 @@ class DbScheduledStatus extends DataClass
       'remoteId': serializer.toJson<String>(remoteId),
       'scheduledAt': serializer.toJson<DateTime>(scheduledAt),
       'canceled': serializer.toJson<bool>(canceled),
-      'params': serializer.toJson<PleromaScheduledStatusParams>(params),
+      'params': serializer.toJson<PleromaApiScheduledStatusParams>(params),
       'mediaAttachments':
-          serializer.toJson<List<PleromaMediaAttachment>?>(mediaAttachments),
+          serializer.toJson<List<PleromaApiMediaAttachment>?>(mediaAttachments),
     };
   }
 
@@ -7061,8 +7063,8 @@ class DbScheduledStatus extends DataClass
           String? remoteId,
           DateTime? scheduledAt,
           bool? canceled,
-          PleromaScheduledStatusParams? params,
-          List<PleromaMediaAttachment>? mediaAttachments}) =>
+          PleromaApiScheduledStatusParams? params,
+          List<PleromaApiMediaAttachment>? mediaAttachments}) =>
       DbScheduledStatus(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -7110,8 +7112,8 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
   final Value<String> remoteId;
   final Value<DateTime> scheduledAt;
   final Value<bool> canceled;
-  final Value<PleromaScheduledStatusParams> params;
-  final Value<List<PleromaMediaAttachment>?> mediaAttachments;
+  final Value<PleromaApiScheduledStatusParams> params;
+  final Value<List<PleromaApiMediaAttachment>?> mediaAttachments;
   const DbScheduledStatusesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -7125,7 +7127,7 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
     required String remoteId,
     required DateTime scheduledAt,
     required bool canceled,
-    required PleromaScheduledStatusParams params,
+    required PleromaApiScheduledStatusParams params,
     this.mediaAttachments = const Value.absent(),
   })  : remoteId = Value(remoteId),
         scheduledAt = Value(scheduledAt),
@@ -7136,8 +7138,8 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
     Expression<String>? remoteId,
     Expression<DateTime>? scheduledAt,
     Expression<bool>? canceled,
-    Expression<PleromaScheduledStatusParams>? params,
-    Expression<List<PleromaMediaAttachment>?>? mediaAttachments,
+    Expression<PleromaApiScheduledStatusParams>? params,
+    Expression<List<PleromaApiMediaAttachment>?>? mediaAttachments,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -7154,8 +7156,8 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
       Value<String>? remoteId,
       Value<DateTime>? scheduledAt,
       Value<bool>? canceled,
-      Value<PleromaScheduledStatusParams>? params,
-      Value<List<PleromaMediaAttachment>?>? mediaAttachments}) {
+      Value<PleromaApiScheduledStatusParams>? params,
+      Value<List<PleromaApiMediaAttachment>?>? mediaAttachments}) {
     return DbScheduledStatusesCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -7330,9 +7332,9 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
     return $DbScheduledStatusesTable(_db, alias);
   }
 
-  static TypeConverter<PleromaScheduledStatusParams, String> $converter0 =
+  static TypeConverter<PleromaApiScheduledStatusParams, String> $converter0 =
       PleromaScheduledStatusParamsDatabaseConverter();
-  static TypeConverter<List<PleromaMediaAttachment>, String> $converter1 =
+  static TypeConverter<List<PleromaApiMediaAttachment>, String> $converter1 =
       PleromaMediaAttachmentListDatabaseConverter();
 }
 
@@ -7665,9 +7667,9 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
   final String accountRemoteId;
   final String? content;
   final DateTime createdAt;
-  final List<PleromaEmoji>? emojis;
-  final PleromaMediaAttachment? mediaAttachment;
-  final PleromaCard? card;
+  final List<PleromaApiEmoji>? emojis;
+  final PleromaApiMediaAttachment? mediaAttachment;
+  final PleromaApiCard? card;
   final PendingState? pendingState;
   final bool? deleted;
   final bool? hiddenLocallyOnDevice;
@@ -7818,10 +7820,10 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
       content: serializer.fromJson<String?>(json['content']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      emojis: serializer.fromJson<List<PleromaEmoji>?>(json['emojis']),
-      mediaAttachment:
-          serializer.fromJson<PleromaMediaAttachment?>(json['mediaAttachment']),
-      card: serializer.fromJson<PleromaCard?>(json['card']),
+      emojis: serializer.fromJson<List<PleromaApiEmoji>?>(json['emojis']),
+      mediaAttachment: serializer
+          .fromJson<PleromaApiMediaAttachment?>(json['mediaAttachment']),
+      card: serializer.fromJson<PleromaApiCard?>(json['card']),
       pendingState: serializer.fromJson<PendingState?>(json['pendingState']),
       deleted: serializer.fromJson<bool?>(json['deleted']),
       hiddenLocallyOnDevice:
@@ -7842,10 +7844,10 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       'accountRemoteId': serializer.toJson<String>(accountRemoteId),
       'content': serializer.toJson<String?>(content),
       'createdAt': serializer.toJson<DateTime>(createdAt),
-      'emojis': serializer.toJson<List<PleromaEmoji>?>(emojis),
+      'emojis': serializer.toJson<List<PleromaApiEmoji>?>(emojis),
       'mediaAttachment':
-          serializer.toJson<PleromaMediaAttachment?>(mediaAttachment),
-      'card': serializer.toJson<PleromaCard?>(card),
+          serializer.toJson<PleromaApiMediaAttachment?>(mediaAttachment),
+      'card': serializer.toJson<PleromaApiCard?>(card),
       'pendingState': serializer.toJson<PendingState?>(pendingState),
       'deleted': serializer.toJson<bool?>(deleted),
       'hiddenLocallyOnDevice': serializer.toJson<bool?>(hiddenLocallyOnDevice),
@@ -7862,9 +7864,9 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           String? accountRemoteId,
           String? content,
           DateTime? createdAt,
-          List<PleromaEmoji>? emojis,
-          PleromaMediaAttachment? mediaAttachment,
-          PleromaCard? card,
+          List<PleromaApiEmoji>? emojis,
+          PleromaApiMediaAttachment? mediaAttachment,
+          PleromaApiCard? card,
           PendingState? pendingState,
           bool? deleted,
           bool? hiddenLocallyOnDevice,
@@ -7967,9 +7969,9 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
   final Value<String> accountRemoteId;
   final Value<String?> content;
   final Value<DateTime> createdAt;
-  final Value<List<PleromaEmoji>?> emojis;
-  final Value<PleromaMediaAttachment?> mediaAttachment;
-  final Value<PleromaCard?> card;
+  final Value<List<PleromaApiEmoji>?> emojis;
+  final Value<PleromaApiMediaAttachment?> mediaAttachment;
+  final Value<PleromaApiCard?> card;
   final Value<PendingState?> pendingState;
   final Value<bool?> deleted;
   final Value<bool?> hiddenLocallyOnDevice;
@@ -8017,9 +8019,9 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     Expression<String>? accountRemoteId,
     Expression<String?>? content,
     Expression<DateTime>? createdAt,
-    Expression<List<PleromaEmoji>?>? emojis,
-    Expression<PleromaMediaAttachment?>? mediaAttachment,
-    Expression<PleromaCard?>? card,
+    Expression<List<PleromaApiEmoji>?>? emojis,
+    Expression<PleromaApiMediaAttachment?>? mediaAttachment,
+    Expression<PleromaApiCard?>? card,
     Expression<PendingState?>? pendingState,
     Expression<bool?>? deleted,
     Expression<bool?>? hiddenLocallyOnDevice,
@@ -8054,9 +8056,9 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       Value<String>? accountRemoteId,
       Value<String?>? content,
       Value<DateTime>? createdAt,
-      Value<List<PleromaEmoji>?>? emojis,
-      Value<PleromaMediaAttachment?>? mediaAttachment,
-      Value<PleromaCard?>? card,
+      Value<List<PleromaApiEmoji>?>? emojis,
+      Value<PleromaApiMediaAttachment?>? mediaAttachment,
+      Value<PleromaApiCard?>? card,
       Value<PendingState?>? pendingState,
       Value<bool?>? deleted,
       Value<bool?>? hiddenLocallyOnDevice,
@@ -8430,11 +8432,11 @@ class $DbChatMessagesTable extends DbChatMessages
     return $DbChatMessagesTable(_db, alias);
   }
 
-  static TypeConverter<List<PleromaEmoji>, String> $converter0 =
-      PleromaEmojiListDatabaseConverter();
-  static TypeConverter<PleromaMediaAttachment, String> $converter1 =
+  static TypeConverter<List<PleromaApiEmoji>, String> $converter0 =
+      PleromaApiEmojiListDatabaseConverter();
+  static TypeConverter<PleromaApiMediaAttachment, String> $converter1 =
       PleromaMediaAttachmentDatabaseConverter();
-  static TypeConverter<PleromaCard, String> $converter2 =
+  static TypeConverter<PleromaApiCard, String> $converter2 =
       PleromaCardDatabaseConverter();
   static TypeConverter<PendingState, String> $converter3 =
       PendingStateDatabaseConverter();

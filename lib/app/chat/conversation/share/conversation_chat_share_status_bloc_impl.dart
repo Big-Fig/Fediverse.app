@@ -26,11 +26,11 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
     required this.status,
     required IConversationChatRepository conversationRepository,
     required IStatusRepository statusRepository,
-    required IPleromaConversationService pleromaConversationService,
-    required IPleromaAuthStatusService pleromaAuthStatusService,
+    required IPleromaApiConversationService pleromaConversationService,
+    required IPleromaApiAuthStatusService pleromaAuthStatusService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaAccountService pleromaAccountService,
+    required IPleromaApiAccountService pleromaAccountService,
   }) : super(
           conversationRepository: conversationRepository,
           statusRepository: statusRepository,
@@ -42,13 +42,13 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
         );
 
   @override
-  IPleromaPostStatus createSendData({
+  IPleromaApiPostStatus createSendData({
     required String to,
-    required PleromaVisibility visibility,
+    required PleromaApiVisibility visibility,
   }) {
     var url = status!.url ?? "";
     var content = message == null ? url : "${message ?? ""} $url".trim();
-    var messageSendData = PleromaPostStatus(
+    var messageSendData = PleromaApiPostStatus(
       status: "$content $to",
       visibility: visibility.toJsonValue(),
       contentType: null,
@@ -101,16 +101,16 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
           context,
           listen: false,
         ),
-        pleromaAuthStatusService: IPleromaAuthStatusService.of(
+        pleromaAuthStatusService: IPleromaApiAuthStatusService.of(
           context,
           listen: false,
         ),
         pleromaConversationService:
-            IPleromaConversationService.of(context, listen: false),
+            IPleromaApiConversationService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        pleromaAccountService: IPleromaAccountService.of(
+        pleromaAccountService: IPleromaApiAccountService.of(
           context,
           listen: false,
         ),

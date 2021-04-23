@@ -101,7 +101,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   }
 
   Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
-    PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
     var isForCurrentInstance = currentInstance!.isInstanceWithHostAndAcct(
       host: pleromaPushMessage.server,
       acct: pleromaPushMessage.account,
@@ -123,11 +123,11 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     NotificationPushLoaderNotification handledNotification,
   ) {
     var pushHandlerMessage = handledNotification.pushHandlerMessage;
-    PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
 
     var notificationType = pleromaPushMessage.notificationType;
 
-    var pleromaNotificationType = notificationType.toPleromaNotificationType();
+    var pleromaNotificationType = notificationType.toPleromaApiNotificationType();
     var enabled = currentInstanceToastSettingsBloc
         .isNotificationTypeEnabled(pleromaNotificationType)!;
 
@@ -179,7 +179,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     required PushHandlerMessage pushHandlerMessage,
     required VoidCallback onClick,
   }) {
-    PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
 
     var title = "${pleromaPushMessage.account}@${pleromaPushMessage.server}"
         " "
@@ -195,11 +195,11 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   Future _handleNonCurrentInstancePushMessage(
     PushHandlerMessage pushHandlerMessage,
   ) async {
-    PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
 
     var notificationType = pleromaPushMessage.notificationType;
 
-    var pleromaNotificationType = notificationType.toPleromaNotificationType();
+    var pleromaNotificationType = notificationType.toPleromaApiNotificationType();
 
     var instanceLocalPreferencesBloc =
         InstanceToastSettingsLocalPreferencesBloc(

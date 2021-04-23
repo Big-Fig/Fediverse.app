@@ -58,5 +58,5 @@ abstract class IToastSettingsBloc
 
   void changePleromaEmojiReaction(bool value);
 
-  bool? isNotificationTypeEnabled(PleromaNotificationType pleromaNotificationType);
+  bool? isNotificationTypeEnabled(PleromaApiNotificationType pleromaNotificationType);
 }

@@ -48,20 +48,20 @@ abstract class ChatMessageBloc extends DisposableOwner
   }
 
   @override
-  List<IPleromaMediaAttachment>? get mediaAttachments =>
+  List<IPleromaApiMediaAttachment>? get mediaAttachments =>
       chatMessage.mediaAttachments;
 
   @override
-  Stream<List<IPleromaMediaAttachment>?> get mediaAttachmentsStream =>
+  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream =>
       chatMessageStream.map(
         (chatMessage) => chatMessage.mediaAttachments,
       );
 
   @override
-  IPleromaCard? get card => chatMessage.card;
+  IPleromaApiCard? get card => chatMessage.card;
 
   @override
-  Stream<IPleromaCard?> get cardStream =>
+  Stream<IPleromaApiCard?> get cardStream =>
       chatMessageStream.map((chatMessage) => chatMessage.card);
 
   @override
@@ -189,5 +189,5 @@ abstract class ChatMessageBloc extends DisposableOwner
       );
 
   @override
-  List<IPleromaEmoji>? get emojis => chatMessage.emojis;
+  List<IPleromaApiEmoji>? get emojis => chatMessage.emojis;
 }

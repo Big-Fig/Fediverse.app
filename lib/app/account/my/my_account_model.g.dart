@@ -18,7 +18,7 @@ class PleromaMyAccountWrapperAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaMyAccountWrapper(
-      pleromaAccount: fields[0] as PleromaMyAccount,
+      pleromaAccount: fields[0] as PleromaApiMyAccount,
     );
   }
 
@@ -48,7 +48,7 @@ class PleromaMyAccountWrapperAdapter
 PleromaMyAccountWrapper _$PleromaMyAccountWrapperFromJson(
     Map<String, dynamic> json) {
   return PleromaMyAccountWrapper(
-    pleromaAccount: PleromaMyAccount.fromJson(
+    pleromaAccount: PleromaApiMyAccount.fromJson(
         json['remote_account'] as Map<String, dynamic>),
   );
 }

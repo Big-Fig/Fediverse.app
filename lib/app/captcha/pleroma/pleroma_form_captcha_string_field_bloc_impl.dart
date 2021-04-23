@@ -18,9 +18,9 @@ final _logger = Logger("pleroma_form_captcha_string_field_bloc_impl.dart");
 
 class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
     implements IPleromaFormCaptchaStringFieldBloc {
-  final IPleromaCaptchaService pleromaCaptchaService;
+  final IPleromaApiCaptchaService pleromaCaptchaService;
 
-  final BehaviorSubject<PleromaCaptcha?> captchaSubject;
+  final BehaviorSubject<PleromaApiCaptcha?> captchaSubject;
   final BehaviorSubject<dynamic> errorSubject;
 
   @override
@@ -57,10 +57,10 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
       );
 
   @override
-  PleromaCaptcha? get captcha => captchaSubject.value;
+  PleromaApiCaptcha? get captcha => captchaSubject.value;
 
   @override
-  Stream<PleromaCaptcha?> get captchaStream => captchaSubject.stream;
+  Stream<PleromaApiCaptcha?> get captchaStream => captchaSubject.stream;
 
   final BehaviorSubject<DateTime> captchaLoadedDateTimeSubject;
 
@@ -126,11 +126,11 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
   @override
   Stream<Image?> get captchaImageStream => captchaStream.asyncMap(
         (captcha) async {
-          switch (captcha?.pleromaType) {
-            case PleromaCaptchaType.kocaptcha:
-            case PleromaCaptchaType.unknown:
+          switch (captcha?.typeAsPleromaApi) {
+            case PleromaApiCaptchaType.kocaptcha:
+            case PleromaApiCaptchaType.unknown:
               return Image.network(captcha!.url!);
-            case PleromaCaptchaType.native:
+            case PleromaApiCaptchaType.native:
               return captcha!.decodeUrlAsBase64Image();
             default:
               return null;
@@ -146,7 +146,7 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
     errorSubject.add(null);
     try {
       var captcha = await pleromaCaptchaService.getCaptcha();
-      captchaSubject.add(captcha.toPleromaCaptcha());
+      captchaSubject.add(captcha.toPleromaApiCaptcha());
       _logger.finest(() => "reloadCaptcha FINISH $captcha");
     } catch (e, stackTrace) {
       _logger.warning(() => "reloadCaptcha ERROR", e, stackTrace);
@@ -155,11 +155,11 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
   }
 
   @override
-  PleromaCaptchaType? get captchaType => captcha?.pleromaType;
+  PleromaApiCaptchaType? get captchaType => captcha?.typeAsPleromaApi;
 
   @override
-  Stream<PleromaCaptchaType?> get captchaTypeStream => captchaStream.map(
-        (captcha) => captcha?.pleromaType,
+  Stream<PleromaApiCaptchaType?> get captchaTypeStream => captchaStream.map(
+        (captcha) => captcha?.typeAsPleromaApi,
       );
 
   @override
@@ -175,10 +175,10 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
         ),
       );
 
-  bool _calculateIsExist(PleromaCaptcha? captcha, error) {
+  bool _calculateIsExist(PleromaApiCaptcha? captcha, error) {
     var isExist;
     if (captcha != null) {
-      if (captcha.pleromaType == PleromaCaptchaType.none) {
+      if (captcha.typeAsPleromaApi == PleromaApiCaptchaType.none) {
         isExist = false;
       } else {
         isExist = true;

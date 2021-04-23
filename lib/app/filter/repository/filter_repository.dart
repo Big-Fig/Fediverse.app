@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 abstract class IFilterRepository
     implements
-        IAppRemoteReadWriteRepository<DbFilter, IFilter, IPleromaFilter, int,
+        IAppRemoteReadWriteRepository<DbFilter, IFilter, IPleromaApiFilter, int,
             String, FilterRepositoryFilters, FilterOrderingTermData>,
         IDisposable {
   static IFilterRepository of(BuildContext context, {bool listen = true}) =>

@@ -22,8 +22,8 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     implements IConversationChatShareBloc {
   final IConversationChatRepository conversationRepository;
   final IStatusRepository statusRepository;
-  final IPleromaConversationService pleromaConversationService;
-  final IPleromaAuthStatusService pleromaAuthStatusService;
+  final IPleromaApiConversationService pleromaConversationService;
+  final IPleromaApiAuthStatusService pleromaAuthStatusService;
   final IMyAccountBloc myAccountBloc;
   final IAccountRepository accountRepository;
 
@@ -45,7 +45,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     required this.statusRepository,
     required this.pleromaConversationService,
     required this.pleromaAuthStatusService,
-    required IPleromaAccountService pleromaAccountService,
+    required IPleromaApiAccountService pleromaAccountService,
     required this.myAccountBloc,
     required this.accountRepository,
   }) : super(
@@ -58,7 +58,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
 
   @override
   Future<bool> actuallyShareToAccount(IAccount account) async {
-    final pleromaVisibility = PleromaVisibility.direct;
+    final pleromaVisibility = PleromaApiVisibility.direct;
 
     var targetAccounts = [account];
     var sendData = createSendData(
@@ -76,9 +76,9 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     return true;
   }
 
-  IPleromaPostStatus createSendData({
+  IPleromaApiPostStatus createSendData({
     required String to,
-    required PleromaVisibility visibility,
+    required PleromaApiVisibility visibility,
   });
 
   @override
@@ -125,7 +125,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
   }
 
   @override
-  Future<List<IPleromaAccount>> customRemoteAccountListLoader({
+  Future<List<IPleromaApiAccount>> customRemoteAccountListLoader({
     required int? limit,
     required IAccount? newerThan,
     required IAccount? olderThan,
@@ -136,7 +136,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     }
     var pleromaConversations =
         await pleromaConversationService.getConversations(
-      pagination: PleromaPaginationRequest(
+      pagination: PleromaApiPaginationRequest(
         limit: limit,
       ),
     );
@@ -146,7 +146,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       batchTransaction: null,
     );
 
-    var pleromaAccounts = <IPleromaAccount>[];
+    var pleromaAccounts = <IPleromaApiAccount>[];
 
     for (var pleromaConversation in pleromaConversations) {
       var pleromaConversationAccounts = pleromaConversation.accounts;

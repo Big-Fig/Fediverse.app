@@ -57,7 +57,7 @@ void main() {
     );
 
     account1 = (await createTestAccount(seed: "reportAccount1"));
-    await accountRepository.upsertInRemoteType(account1.toPleromaAccount());
+    await accountRepository.upsertInRemoteType(account1.toPleromaApiAccount());
   });
 
   tearDown(() async {
@@ -86,13 +86,13 @@ void main() {
     );
 
     testDbNotification = testDbNotification.copyWith(
-      report: PleromaAccountReport(
-        account: account1.toPleromaAccount(),
+      report: PleromaApiAccountReport(
+        account: account1.toPleromaApiAccount(),
         statuses: [
           (await createTestStatus(seed: "status1")).toPleromaStatus(),
           (await createTestStatus(seed: "status2")).toPleromaStatus(),
         ],
-        user: (await createTestAccount(seed: "reportUser")).toPleromaAccount(),
+        user: (await createTestAccount(seed: "reportUser")).toPleromaApiAccount(),
       ),
     );
     await notificationDao.insert(
@@ -119,7 +119,7 @@ void main() {
     );
 
     testDbNotification = testDbNotification.copyWith(
-      target: account1.toPleromaAccount(),
+      target: account1.toPleromaApiAccount(),
     );
     await notificationDao.insert(
       entity: testDbNotification,

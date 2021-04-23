@@ -17,7 +17,7 @@ class EditPostStatusSettingsBloc
     implements IEditPostStatusSettingsBloc {
   final IPostStatusSettingsBloc postStatusSettingsBloc;
 
-  final List<PleromaVisibility> pleromaVisibilityPossibleValues;
+  final List<PleromaApiVisibility> pleromaVisibilityPossibleValues;
   @override
   late IStatusVisibilitySelectSingleFromListValueFormFieldBloc
       defaultVisibilityFormFieldBloc;

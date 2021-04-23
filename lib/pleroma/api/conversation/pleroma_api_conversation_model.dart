@@ -7,93 +7,123 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_conversation_model.g.dart';
 
-abstract class IPleromaConversation extends IMastodonApiConversation {
+abstract class IPleromaApiConversation extends IMastodonApiConversation {
   @override
-  IPleromaStatus? get lastStatus;
+  IPleromaApiStatus? get lastStatus;
 
   @override
-  List<IPleromaAccount> get accounts;
+  List<IPleromaApiAccount> get accounts;
 
-  IPleromaConversationPleromaPart? get pleroma;
+  IPleromaApiConversationPleromaPart? get pleroma;
 }
 
-abstract class IPleromaConversationPleromaPart {
-  List<IPleromaAccount>? get recipients;
+abstract class IPleromaApiConversationPleromaPart {
+  List<IPleromaApiAccount>? get recipients;
 }
 
-extension IPleromaConversationPleromaPartExtension
-    on IPleromaConversationPleromaPart {
-  PleromaConversationPleromaPart toPleromaConversationPleromaPart() {
-    if (PleromaConversationPleromaPart is PleromaConversationPleromaPart) {
-      return this as PleromaConversationPleromaPart;
+extension IPleromaApiConversationPleromaPartExtension
+    on IPleromaApiConversationPleromaPart {
+  PleromaApiConversationPleromaPart toPleromaApiConversationPleromaPart() {
+    if (PleromaApiConversationPleromaPart is PleromaApiConversationPleromaPart) {
+      return this as PleromaApiConversationPleromaPart;
     } else {
-      return PleromaConversationPleromaPart(
-        recipients: recipients?.toPleromaAccounts(),
+      return PleromaApiConversationPleromaPart(
+        recipients: recipients?.toPleromaApiAccounts(),
       );
     }
   }
 }
 
 @JsonSerializable()
-class PleromaConversationPleromaPart extends IPleromaConversationPleromaPart {
+class PleromaApiConversationPleromaPart extends IPleromaApiConversationPleromaPart {
   @override
-  final List<PleromaAccount>? recipients;
+  final List<PleromaApiAccount>? recipients;
 
-  PleromaConversationPleromaPart({
+  PleromaApiConversationPleromaPart({
     required this.recipients,
   });
 
-  factory PleromaConversationPleromaPart.fromJson(Map<String, dynamic> json) =>
-      _$PleromaConversationPleromaPartFromJson(json);
+  factory PleromaApiConversationPleromaPart.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiConversationPleromaPartFromJson(json);
 
-  factory PleromaConversationPleromaPart.fromJsonString(String jsonString) =>
-      _$PleromaConversationPleromaPartFromJson(jsonDecode(jsonString));
+  factory PleromaApiConversationPleromaPart.fromJsonString(String jsonString) =>
+      _$PleromaApiConversationPleromaPartFromJson(jsonDecode(jsonString));
 
-  static List<PleromaConversationPleromaPart> listFromJsonString(String str) =>
-      List<PleromaConversationPleromaPart>.from(json
+  static List<PleromaApiConversationPleromaPart> listFromJsonString(String str) =>
+      List<PleromaApiConversationPleromaPart>.from(json
           .decode(str)
-          .map((x) => PleromaConversationPleromaPart.fromJson(x)));
+          .map((x) => PleromaApiConversationPleromaPart.fromJson(x)));
 
-  Map<String, dynamic> toJson() => _$PleromaConversationPleromaPartToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiConversationPleromaPartToJson(this);
 
   String toJsonString() =>
-      jsonEncode(_$PleromaConversationPleromaPartToJson(this));
+      jsonEncode(_$PleromaApiConversationPleromaPartToJson(this));
 }
 
 @JsonSerializable()
-class PleromaConversation implements IPleromaConversation {
+class PleromaApiConversation implements IPleromaApiConversation {
   @override
   final bool? unread;
   @JsonKey(name: "last_status")
   @override
-  final PleromaStatus? lastStatus;
+  final PleromaApiStatus? lastStatus;
   @override
   final String id;
   @override
-  final List<PleromaAccount> accounts;
+  final List<PleromaApiAccount> accounts;
   @override
-  final PleromaConversationPleromaPart? pleroma;
+  final PleromaApiConversationPleromaPart? pleroma;
 
-  PleromaConversation({
+  PleromaApiConversation({
     required this.unread,
     required this.lastStatus,
     required this.id,
-    required List<PleromaAccount>? accounts,
+    required List<PleromaApiAccount>? accounts,
     required this.pleroma,
   }) : accounts = accounts ?? [];
 
-  factory PleromaConversation.fromJson(Map<String, dynamic> json) =>
-      _$PleromaConversationFromJson(json);
+  factory PleromaApiConversation.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiConversationFromJson(json);
 
-  factory PleromaConversation.fromJsonString(String jsonString) =>
-      _$PleromaConversationFromJson(jsonDecode(jsonString));
+  factory PleromaApiConversation.fromJsonString(String jsonString) =>
+      _$PleromaApiConversationFromJson(jsonDecode(jsonString));
 
-  static List<PleromaConversation> listFromJsonString(String str) =>
-      List<PleromaConversation>.from(
-        json.decode(str).map((x) => PleromaConversation.fromJson(x)),
+  static List<PleromaApiConversation> listFromJsonString(String str) =>
+      List<PleromaApiConversation>.from(
+        json.decode(str).map((x) => PleromaApiConversation.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$PleromaConversationToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiConversationToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaConversationToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiConversationToJson(this));
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiConversation &&
+          runtimeType == other.runtimeType &&
+          unread == other.unread &&
+          lastStatus == other.lastStatus &&
+          id == other.id &&
+          accounts == other.accounts &&
+          pleroma == other.pleroma;
+
+  @override
+  int get hashCode =>
+      unread.hashCode ^
+      lastStatus.hashCode ^
+      id.hashCode ^
+      accounts.hashCode ^
+      pleroma.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaApiConversation{'
+        'unread: $unread, '
+        'lastStatus: $lastStatus, '
+        'id: $id, '
+        'accounts: $accounts, '
+        'pleroma: $pleroma'
+        '}';
+  }
 }

@@ -7,14 +7,14 @@ import 'package:json_annotation/json_annotation.dart';
 // ignore_for_file: no-magic-number
 part 'pleroma_api_tag_history_model.g.dart';
 
-abstract class IPleromaTagHistory extends IMastodonApiTagHistory {}
+abstract class IPleromaApiTagHistory extends IMastodonApiTagHistory {}
 
-extension IPleromaTagHistoryExtension on IPleromaTagHistory {
-  PleromaTagHistory toPleromaTagHistory() {
-    if (this is PleromaTagHistory) {
-      return this as PleromaTagHistory;
+extension IPleromaApiTagHistoryExtension on IPleromaApiTagHistory {
+  PleromaApiTagHistory toPleromaApiTagHistory() {
+    if (this is PleromaApiTagHistory) {
+      return this as PleromaApiTagHistory;
     } else {
-      return PleromaTagHistory(
+      return PleromaApiTagHistory(
         accounts: accounts,
         dayInUnixTimestamp: dayInUnixTimestamp,
         uses: uses,
@@ -23,13 +23,13 @@ extension IPleromaTagHistoryExtension on IPleromaTagHistory {
   }
 }
 
-extension IPleromaTagHistoryListExtension on List<IPleromaTagHistory> {
-  List<PleromaTagHistory> toPleromaTagHistories() {
-    if (this is List<PleromaTagHistory>) {
-      return this as List<PleromaTagHistory>;
+extension IPleromaApiTagHistoryListExtension on List<IPleromaApiTagHistory> {
+  List<PleromaApiTagHistory> toPleromaApiTagHistories() {
+    if (this is List<PleromaApiTagHistory>) {
+      return this as List<PleromaApiTagHistory>;
     } else {
       return map(
-        (pleromaTagHistory) => pleromaTagHistory.toPleromaTagHistory(),
+        (pleromaApiTagHistory) => pleromaApiTagHistory.toPleromaApiTagHistory(),
       ).toList();
     }
   }
@@ -41,7 +41,7 @@ extension IPleromaTagHistoryListExtension on List<IPleromaTagHistory> {
 //@HiveType()
 @HiveType(typeId: -32 + 77)
 @JsonSerializable()
-class PleromaTagHistory implements IPleromaTagHistory {
+class PleromaApiTagHistory implements IPleromaApiTagHistory {
   @override
   @HiveField(0)
   // int(pleroma) or String(mastodon)
@@ -56,19 +56,41 @@ class PleromaTagHistory implements IPleromaTagHistory {
   // int(pleroma) or String(mastodon)
   final dynamic uses;
 
-  PleromaTagHistory({
+  PleromaApiTagHistory({
     required this.accounts,
     required this.dayInUnixTimestamp,
     required this.uses,
   });
 
-  factory PleromaTagHistory.fromJson(Map<String, dynamic> json) =>
-      _$PleromaTagHistoryFromJson(json);
+  factory PleromaApiTagHistory.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiTagHistoryFromJson(json);
 
-  factory PleromaTagHistory.fromJsonString(String jsonString) =>
-      _$PleromaTagHistoryFromJson(jsonDecode(jsonString));
+  factory PleromaApiTagHistory.fromJsonString(String jsonString) =>
+      _$PleromaApiTagHistoryFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaTagHistoryToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiTagHistoryToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaTagHistoryToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiTagHistoryToJson(this));
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiTagHistory &&
+          runtimeType == other.runtimeType &&
+          accounts == other.accounts &&
+          dayInUnixTimestamp == other.dayInUnixTimestamp &&
+          uses == other.uses;
+
+  @override
+  int get hashCode =>
+      accounts.hashCode ^ dayInUnixTimestamp.hashCode ^ uses.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaApiTagHistory{'
+        'accounts: $accounts, '
+        'dayInUnixTimestamp: $dayInUnixTimestamp, '
+        'uses: $uses'
+        '}';
+  }
 }

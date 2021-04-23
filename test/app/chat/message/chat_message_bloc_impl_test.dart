@@ -15,7 +15,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.da
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service_impl.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,16 +28,16 @@ import 'chat_message_bloc_impl_test.mocks.dart';
 import 'chat_message_model_helper.dart';
 // ignore_for_file: no-magic-number
 @GenerateMocks([
-  PleromaChatService,
-  PleromaAuthAccountService,
+  PleromaApiChatService,
+  PleromaApiAuthAccountService,
   MyAccountBloc,
 ])
 void main() {
   late IPleromaChat chat;
   late IPleromaChatMessage chatMessage;
   late IPleromaChatMessageBloc chatMessageBloc;
-  late MockPleromaChatService pleromaChatServiceMock;
-  late MockPleromaAuthAccountService pleromaAccountServiceMock;
+  late MockPleromaApiChatService pleromaChatServiceMock;
+  late MockPleromaApiAuthAccountService pleromaAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IPleromaChatRepository chatRepository;
@@ -60,8 +60,8 @@ void main() {
       );
 
       myAccountBloc = MockMyAccountBloc();
-      pleromaChatServiceMock = MockPleromaChatService();
-      pleromaAccountServiceMock = MockPleromaAuthAccountService();
+      pleromaChatServiceMock = MockPleromaApiChatService();
+      pleromaAccountServiceMock = MockPleromaApiAuthAccountService();
 
       when(pleromaChatServiceMock.isConnected).thenReturn(true);
       when(pleromaChatServiceMock.pleromaApiState).thenReturn(
@@ -79,7 +79,7 @@ void main() {
       );
 
       await accountRepository.upsertChatRemoteAccount(
-        chatMessage.account!.toPleromaAccount(),
+        chatMessage.account!.toPleromaApiAccount(),
         chatRemoteId: chatMessage.chatRemoteId,
         batchTransaction: null,
       );
@@ -129,7 +129,7 @@ void main() {
       remoteId: chatMessage.remoteId,
     );
     await accountRepository.upsertChatRemoteAccount(
-      newValue.account!.toPleromaAccount(),
+      newValue.account!.toPleromaApiAccount(),
       chatRemoteId: newValue.chatRemoteId,
       batchTransaction: null,
     );
@@ -185,7 +185,7 @@ void main() {
 
     // same if emojis is empty or null
     await _update(
-      chatMessage.copyWith(content: newValue, emojis: <PleromaEmoji>[]),
+      chatMessage.copyWith(content: newValue, emojis: <PleromaApiEmoji>[]),
     );
 
     expect(
@@ -208,14 +208,14 @@ void main() {
       chatMessage.copyWith(
         content: newValue,
         emojis: [
-          PleromaEmoji(
+          PleromaApiEmoji(
             shortcode: "emoji1",
             url: "https://fedi.app/emoji1.png",
             category: null,
             staticUrl: null,
             visibleInPicker: null,
           ),
-          PleromaEmoji(
+          PleromaApiEmoji(
             shortcode: "emoji2",
             url: "https://fedi.app/emoji2.png",
             category: null,
@@ -231,14 +231,14 @@ void main() {
       EmojiText(
         text: "newContent :emoji: :emoji1: :emoji2:",
         emojis: [
-          PleromaEmoji(
+          PleromaApiEmoji(
             shortcode: "emoji1",
             url: "https://fedi.app/emoji1.png",
             staticUrl: null,
             visibleInPicker: null,
             category: null,
           ),
-          PleromaEmoji(
+          PleromaApiEmoji(
             shortcode: "emoji2",
             url: "https://fedi.app/emoji2.png",
             staticUrl: null,
@@ -253,14 +253,14 @@ void main() {
       EmojiText(
         text: "newContent :emoji: :emoji1: :emoji2:",
         emojis: [
-          PleromaEmoji(
+          PleromaApiEmoji(
             shortcode: "emoji1",
             url: "https://fedi.app/emoji1.png",
             staticUrl: null,
             visibleInPicker: null,
             category: null,
           ),
-          PleromaEmoji(
+          PleromaApiEmoji(
             shortcode: "emoji2",
             url: "https://fedi.app/emoji2.png",
             staticUrl: null,

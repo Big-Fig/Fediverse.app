@@ -1,5 +1,5 @@
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_exception.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service.dart';
@@ -9,11 +9,11 @@ import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
 
-class PleromaPollService extends DisposableOwner
-    implements IPleromaPollService {
+class PleromaApiPollService extends DisposableOwner
+    implements IPleromaApiPollService {
   final pollRelativeUrlPath = "/api/v1/polls/";
   @override
-  final IPleromaAuthRestService restService;
+  final IPleromaApiAuthRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -28,7 +28,7 @@ class PleromaPollService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaPollService({required this.restService});
+  PleromaApiPollService({required this.restService});
 
   @override
   Future dispose() async {
@@ -36,7 +36,7 @@ class PleromaPollService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaPoll> getPoll({
+  Future<IPleromaApiPoll> getPoll({
     required String? pollRemoteId,
   }) async {
     var request = RestRequest.get(
@@ -51,7 +51,7 @@ class PleromaPollService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaPoll> vote({
+  Future<IPleromaApiPoll> vote({
     required String? pollRemoteId,
     required List<int> voteIndexes,
   }) async {
@@ -64,10 +64,10 @@ class PleromaPollService extends DisposableOwner
     return parsePollResponse(httpResponse);
   }
 
-  PleromaPoll parsePollResponse(Response httpResponse) {
-    RestResponse<PleromaPoll> restResponse = RestResponse.fromResponse(
+  PleromaApiPoll parsePollResponse(Response httpResponse) {
+    RestResponse<PleromaApiPoll> restResponse = RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) => PleromaPoll.fromJsonString(
+      resultParser: (body) => PleromaApiPoll.fromJsonString(
         httpResponse.body,
       ),
     );
@@ -75,7 +75,7 @@ class PleromaPollService extends DisposableOwner
     if (restResponse.isSuccess) {
       return restResponse.body!;
     } else {
-      throw PleromaPollException(
+      throw PleromaApiPollException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );

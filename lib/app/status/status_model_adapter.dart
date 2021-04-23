@@ -12,7 +12,7 @@ import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 
-extension PleromaStatusDbExtension on IPleromaStatus {
+extension PleromaStatusDbExtension on IPleromaApiStatus {
   DbStatusPopulatedWrapper toDbStatusPopulatedWrapper() {
     if (this is DbStatusPopulatedWrapper) {
       return this as DbStatusPopulatedWrapper;
@@ -66,14 +66,14 @@ extension PleromaStatusDbExtension on IPleromaStatus {
       language: remoteStatus.language,
       content: remoteStatus.content,
       reblogStatusRemoteId: remoteStatus.reblog?.id,
-      application: remoteStatus.application?.toPleromaApplication(),
+      application: remoteStatus.application?.toPleromaApiApplication(),
       mediaAttachments:
-          remoteStatus.mediaAttachments?.toPleromaMediaAttachments(),
-      mentions: remoteStatus.mentions?.toPleromaMentions(),
-      tags: remoteStatus.tags?.toPleromaTags(),
-      emojis: remoteStatus.emojis?.toPleromaEmojis(),
-      poll: remoteStatus.poll?.toPleromaPoll(),
-      card: remoteStatus.card?.toPleromaCard(),
+          remoteStatus.mediaAttachments?.toPleromaApiMediaAttachments(),
+      mentions: remoteStatus.mentions?.toPleromaApiMentions(),
+      tags: remoteStatus.tags?.toPleromaApiTags(),
+      emojis: remoteStatus.emojis?.toPleromaApiEmojis(),
+      poll: remoteStatus.poll?.toPleromaApiPoll(),
+      card: remoteStatus.card?.toPleromaApiCard(),
       pleromaContent: remoteStatus.pleroma?.content,
       pleromaConversationId: remoteStatus.pleroma?.conversationId,
       pleromaDirectConversationId: remoteStatus.pleroma?.directConversationId,
@@ -83,7 +83,7 @@ extension PleromaStatusDbExtension on IPleromaStatus {
       pleromaExpiresAt: remoteStatus.pleroma?.expiresAt,
       pleromaThreadMuted: remoteStatus.pleroma?.threadMuted,
       pleromaEmojiReactions:
-          remoteStatus.pleroma?.emojiReactions?.toPleromaStatusEmojiReactions(),
+          remoteStatus.pleroma?.emojiReactions?.toPleromaApiStatusEmojiReactions(),
       accountRemoteId: remoteStatus.account.id,
       // remote statuses always published
       pendingState: PendingState.published,
@@ -96,8 +96,8 @@ extension PleromaStatusDbExtension on IPleromaStatus {
 }
 
 extension IStatusPleromaExtension on IStatus {
-  PleromaStatusPleromaPart toPleromaStatusPleromaPart() =>
-      PleromaStatusPleromaPart(
+  PleromaApiStatusPleromaPart toPleromaApiStatusPleromaPart() =>
+      PleromaApiStatusPleromaPart(
         content: pleromaContent,
         conversationId: pleromaConversationId,
         directConversationId: pleromaDirectConversationId,
@@ -109,8 +109,8 @@ extension IStatusPleromaExtension on IStatus {
         emojiReactions: pleromaEmojiReactions,
       );
 
-  PleromaStatus toPleromaStatus() {
-    return PleromaStatus(
+  PleromaApiStatus toPleromaStatus() {
+    return PleromaApiStatus(
       id: remoteId!,
       createdAt: createdAt,
       inReplyToId: inReplyToRemoteId,
@@ -138,8 +138,8 @@ extension IStatusPleromaExtension on IStatus {
       emojis: emojis,
       poll: poll,
       card: card,
-      account: account.toPleromaAccount(),
-      pleroma: toPleromaStatusPleromaPart(),
+      account: account.toPleromaApiAccount(),
+      pleroma: toPleromaApiStatusPleromaPart(),
     );
   }
 }

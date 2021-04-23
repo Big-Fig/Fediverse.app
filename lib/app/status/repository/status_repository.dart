@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 abstract class IStatusRepository
     implements
-        IAppRemoteReadWriteRepository<DbStatus, IStatus, IPleromaStatus, int,
+        IAppRemoteReadWriteRepository<DbStatus, IStatus, IPleromaApiStatus, int,
             String, StatusRepositoryFilters, StatusRepositoryOrderingTermData>,
         IDisposable {
   static IStatusRepository of(
@@ -30,37 +30,37 @@ abstract class IStatusRepository
   });
 
   Future upsertRemoteStatusForList(
-    IPleromaStatus remoteStatus, {
+    IPleromaApiStatus remoteStatus, {
     required String listRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertRemoteStatusForConversation(
-    IPleromaStatus remoteStatus, {
+    IPleromaApiStatus remoteStatus, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertRemoteStatusForHomeTimeline(
-    IPleromaStatus remoteStatus, {
+    IPleromaApiStatus remoteStatus, {
     required bool isFromHomeTimeline,
     required Batch? batchTransaction,
   });
 
   Future upsertRemoteStatusesForList(
-    List<IPleromaStatus> remoteStatuses, {
+    List<IPleromaApiStatus> remoteStatuses, {
     required String listRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertRemoteStatusesForConversation(
-    List<IPleromaStatus> remoteStatuses, {
+    List<IPleromaApiStatus> remoteStatuses, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertRemoteStatusesForHomeTimeline(
-    List<IPleromaStatus> remoteStatuses, {
+    List<IPleromaApiStatus> remoteStatuses, {
     required bool isFromHomeTimeline,
     required Batch? batchTransaction,
   });
@@ -123,7 +123,7 @@ abstract class IStatusRepository
   });
 
   Future upsertRemoteStatusWithAllArguments(
-    IPleromaStatus remoteStatus, {
+    IPleromaApiStatus remoteStatus, {
     required bool? isFromHomeTimeline,
     required String? listRemoteId,
     required String? conversationRemoteId,
@@ -131,7 +131,7 @@ abstract class IStatusRepository
   });
 
   Future upsertRemoteStatusesWithAllArguments(
-    List<IPleromaStatus> remoteStatuses, {
+    List<IPleromaApiStatus> remoteStatuses, {
     required bool? isFromHomeTimeline,
     required String? listRemoteId,
     required String? conversationRemoteId,

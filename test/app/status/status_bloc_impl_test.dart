@@ -11,7 +11,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
@@ -32,19 +32,19 @@ import 'status_model_helper.dart';
 Function eq = const ListEquality().equals;
 // ignore_for_file: no-magic-number
 @GenerateMocks([
-  PleromaAuthStatusService,
-  PleromaAuthAccountService,
-  PleromaStatusEmojiReactionService,
-  PleromaPollService,
+  PleromaApiAuthStatusService,
+  PleromaApiAuthAccountService,
+  PleromaApiStatusEmojiReactionService,
+  PleromaApiPollService,
 ])
 Future<void> main() async {
   late IStatus status;
   late IStatusBloc statusBloc;
-  late MockPleromaAuthStatusService pleromaAuthStatusServiceMock;
-  late MockPleromaAuthAccountService pleromaAccountServiceMock;
-  late MockPleromaStatusEmojiReactionService
-      pleromaStatusEmojiReactionServiceMock;
-  late MockPleromaPollService pleromaPollServiceMock;
+  late MockPleromaApiAuthStatusService pleromaAuthStatusServiceMock;
+  late MockPleromaApiAuthAccountService pleromaAccountServiceMock;
+  late MockPleromaApiStatusEmojiReactionService
+      PleromaApiStatusEmojiReactionServiceMock;
+  late MockPleromaApiPollService pleromaPollServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
@@ -57,11 +57,11 @@ Future<void> main() async {
       accountRepository: accountRepository,
     );
 
-    pleromaAuthStatusServiceMock = MockPleromaAuthStatusService();
-    pleromaAccountServiceMock = MockPleromaAuthAccountService();
-    pleromaPollServiceMock = MockPleromaPollService();
-    pleromaStatusEmojiReactionServiceMock =
-        MockPleromaStatusEmojiReactionService();
+    pleromaAuthStatusServiceMock = MockPleromaApiAuthStatusService();
+    pleromaAccountServiceMock = MockPleromaApiAuthAccountService();
+    pleromaPollServiceMock = MockPleromaApiPollService();
+    PleromaApiStatusEmojiReactionServiceMock =
+        MockPleromaApiStatusEmojiReactionService();
 
     when(pleromaAuthStatusServiceMock.isConnected).thenReturn(true);
     when(pleromaAuthStatusServiceMock.pleromaApiState)
@@ -71,8 +71,8 @@ Future<void> main() async {
     when(pleromaAccountServiceMock.pleromaApiState)
         .thenReturn(PleromaApiState.validAuth);
 
-    when(pleromaStatusEmojiReactionServiceMock.isConnected).thenReturn(true);
-    when(pleromaStatusEmojiReactionServiceMock.pleromaApiState)
+    when(PleromaApiStatusEmojiReactionServiceMock.isConnected).thenReturn(true);
+    when(PleromaApiStatusEmojiReactionServiceMock.pleromaApiState)
         .thenReturn(PleromaApiState.validAuth);
 
     status = await createTestStatus(seed: "seed1");
@@ -84,7 +84,7 @@ Future<void> main() async {
       delayInit: false,
       accountRepository: accountRepository,
       pleromaAccountService: pleromaAccountServiceMock,
-      pleromaStatusEmojiReactionService: pleromaStatusEmojiReactionServiceMock,
+      PleromaApiStatusEmojiReactionService: PleromaApiStatusEmojiReactionServiceMock,
       pleromaPollService: pleromaPollServiceMock,
       isNeedWatchLocalRepositoryForUpdates: true,
       isNeedRefreshFromNetworkOnInit: false,
@@ -283,14 +283,14 @@ Future<void> main() async {
     await _update(status.copyWith(
       content: newValue,
       emojis: [
-        PleromaEmoji(
+        PleromaApiEmoji(
           shortcode: "emoji1",
           url: "https://fedi.app/emoji1.png",
           visibleInPicker: null,
           category: null,
           staticUrl: null,
         ),
-        PleromaEmoji(
+        PleromaApiEmoji(
           shortcode: "emoji2",
           url: "https://fedi.app/emoji2.png",
           visibleInPicker: null,
@@ -304,14 +304,14 @@ Future<void> main() async {
       EmojiText(
         text: "newContent :emoji: :emoji1: :emoji2:",
         emojis: [
-          PleromaEmoji(
+          PleromaApiEmoji(
             shortcode: "emoji1",
             url: "https://fedi.app/emoji1.png",
             staticUrl: null,
             visibleInPicker: null,
             category: null,
           ),
-          PleromaEmoji(
+          PleromaApiEmoji(
             shortcode: "emoji2",
             url: "https://fedi.app/emoji2.png",
             staticUrl: null,
@@ -326,14 +326,14 @@ Future<void> main() async {
       EmojiText(
         text: "newContent :emoji: :emoji1: :emoji2:",
         emojis: [
-          PleromaEmoji(
+          PleromaApiEmoji(
             shortcode: "emoji1",
             url: "https://fedi.app/emoji1.png",
             staticUrl: null,
             visibleInPicker: null,
             category: null,
           ),
-          PleromaEmoji(
+          PleromaApiEmoji(
             shortcode: "emoji2",
             url: "https://fedi.app/emoji2.png",
             staticUrl: null,
@@ -352,7 +352,7 @@ Future<void> main() async {
       status.card,
     );
 
-    var newValue = PleromaCard.only(url: "fedi.app");
+    var newValue = PleromaApiCard.only(url: "fedi.app");
 
     var listenedValue;
 
@@ -385,8 +385,8 @@ Future<void> main() async {
       status.card,
     );
 
-    var reblogValue = PleromaCard.only(url: "fedi_1.app");
-    var newValue = PleromaCard.only(url: "fedi_2.app");
+    var reblogValue = PleromaApiCard.only(url: "fedi_1.app");
+    var newValue = PleromaApiCard.only(url: "fedi_2.app");
 
     var reblog = await createTestStatus(seed: "reblogOrOriginalCard");
 
@@ -751,7 +751,7 @@ Future<void> main() async {
     );
 
     var newValue = [
-      PleromaStatusEmojiReaction.only(
+      PleromaApiStatusEmojiReaction.only(
         name: "newName",
         count: 1,
         me: true,
@@ -798,15 +798,15 @@ Future<void> main() async {
     var emojiAccount = await createTestAccount(seed: "emojiAccount");
 
     var reblogValue = [
-      PleromaStatusEmojiReaction(
+      PleromaApiStatusEmojiReaction(
         name: "emoji",
         count: 2,
         me: false,
         accounts: [
-          reblogEmojiAccount.toPleromaAccount(),
+          reblogEmojiAccount.toPleromaApiAccount(),
         ],
       ),
-      PleromaStatusEmojiReaction(
+      PleromaApiStatusEmojiReaction(
         name: "emojiReblog",
         count: 1,
         me: true,
@@ -814,15 +814,15 @@ Future<void> main() async {
       ),
     ];
     var newValue = [
-      PleromaStatusEmojiReaction(
+      PleromaApiStatusEmojiReaction(
         name: "emoji",
         count: 3,
         me: true,
         accounts: [
-          emojiAccount.toPleromaAccount(),
+          emojiAccount.toPleromaApiAccount(),
         ],
       ),
-      PleromaStatusEmojiReaction(
+      PleromaApiStatusEmojiReaction(
         name: "emojiOriginal",
         count: 1,
         me: true,
@@ -868,22 +868,22 @@ Future<void> main() async {
     ));
 
     var expected = [
-      PleromaStatusEmojiReaction(
+      PleromaApiStatusEmojiReaction(
         name: "emojiOriginal",
         count: 1,
         me: true,
         accounts: [],
       ),
-      PleromaStatusEmojiReaction(
+      PleromaApiStatusEmojiReaction(
         name: "emoji",
         count: 5,
         me: true,
         accounts: [
-          emojiAccount.toPleromaAccount(),
-          reblogEmojiAccount.toPleromaAccount(),
+          emojiAccount.toPleromaApiAccount(),
+          reblogEmojiAccount.toPleromaApiAccount(),
         ],
       ),
-      PleromaStatusEmojiReaction(
+      PleromaApiStatusEmojiReaction(
         name: "emojiReblog",
         count: 1,
         me: true,
@@ -968,7 +968,7 @@ Future<void> main() async {
     );
 
     var newValue = [
-      PleromaMention.only(
+      PleromaApiMention.only(
         username: "newUsername",
         url: 'url',
         id: 'id',
@@ -1448,13 +1448,13 @@ Future<void> main() async {
   test('loadAccountByMentionUrl', () async {
     var accountId1 = "accountId1";
     await _update(status.copyWith(mentions: [
-      PleromaMention(
+      PleromaApiMention(
         id: accountId1,
         url: "url1",
         acct: "acct1",
         username: "name1",
       ),
-      PleromaMention(
+      PleromaApiMention(
         id: "accountId2",
         url: "url2",
         acct: "acct2",
@@ -1469,7 +1469,7 @@ Future<void> main() async {
 
     when(pleromaAccountServiceMock.getAccount(accountRemoteId: accountId1))
         .thenAnswer(
-      (_) async => account.toPleromaAccount(),
+      (_) async => account.toPleromaApiAccount(),
     );
 
     expect(
@@ -1486,7 +1486,7 @@ Future<void> main() async {
     var account1 = await createTestAccount(seed: "inReplyToAccount");
 
     await accountRepository.upsertInRemoteType(
-      account1.toPleromaAccount(),
+      account1.toPleromaApiAccount(),
     );
 
     expectAccount(
@@ -1847,12 +1847,12 @@ Future<void> main() async {
     var account1 = await createTestAccount(seed: "account1");
     var account2 = await createTestAccount(seed: "account2");
 
-    var reaction2 = PleromaStatusEmojiReaction(
+    var reaction2 = PleromaApiStatusEmojiReaction(
       name: emoji2,
       count: 1,
       me: true,
       accounts: [
-        account2.toPleromaAccount(),
+        account2.toPleromaApiAccount(),
       ],
     );
 
@@ -1878,11 +1878,11 @@ Future<void> main() async {
       true,
     );
 
-    when(pleromaStatusEmojiReactionServiceMock.addReaction(
+    when(PleromaApiStatusEmojiReactionServiceMock.addReaction(
       emoji: emoji1,
       statusRemoteId: status.remoteId,
     )).thenAnswer((_) async {
-      List<PleromaStatusEmojiReaction> reactions =
+      List<PleromaApiStatusEmojiReaction> reactions =
           status.pleromaEmojiReactions ?? [];
 
       var reaction = reactions.firstWhereOrNull(
@@ -1890,12 +1890,12 @@ Future<void> main() async {
       );
 
       if (reaction == null) {
-        reaction = PleromaStatusEmojiReaction(
+        reaction = PleromaApiStatusEmojiReaction(
           name: emoji1,
           count: 1,
           me: true,
           accounts: [
-            account1.toPleromaAccount(),
+            account1.toPleromaApiAccount(),
           ],
         );
         reactions.add(reaction);
@@ -1903,7 +1903,7 @@ Future<void> main() async {
         reactions.remove(reaction);
         var accounts = reaction.accounts!;
         accounts.add(
-          account1.toPleromaAccount(),
+          account1.toPleromaApiAccount(),
         );
         reaction = reaction.copyWith(
           count: reaction.count + 1,
@@ -1918,11 +1918,11 @@ Future<void> main() async {
           .toPleromaStatus();
     });
 
-    when(pleromaStatusEmojiReactionServiceMock.removeReaction(
+    when(PleromaApiStatusEmojiReactionServiceMock.removeReaction(
       emoji: emoji1,
       statusRemoteId: status.remoteId,
     )).thenAnswer((_) async {
-      List<PleromaStatusEmojiReaction> reactions =
+      List<PleromaApiStatusEmojiReaction> reactions =
           status.pleromaEmojiReactions ?? [];
 
       var reaction = reactions.firstWhereOrNull(
@@ -1972,12 +1972,12 @@ Future<void> main() async {
 
     var newReactions = [
       reaction2,
-      PleromaStatusEmojiReaction(
+      PleromaApiStatusEmojiReaction(
         name: emoji1,
         count: 1,
         me: true,
         accounts: [
-          account1.toPleromaAccount(),
+          account1.toPleromaApiAccount(),
         ],
       ),
     ];

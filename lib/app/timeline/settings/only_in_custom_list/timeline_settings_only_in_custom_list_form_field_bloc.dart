@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class ITimelineSettingsOnlyInCustomListFormFieldBloc
-    implements IValueFormFieldBloc<IPleromaList?> {
+    implements IValueFormFieldBloc<IPleromaApiList?> {
   static ITimelineSettingsOnlyInCustomListFormFieldBloc of(
     BuildContext context, {
     bool listen = true,

@@ -54,7 +54,7 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
                 listen: false,
               ),
               pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-                  IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
+                  IPleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
                 context,
                 listen: false,
               ),

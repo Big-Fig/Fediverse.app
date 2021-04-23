@@ -23,13 +23,13 @@ abstract class ShareToAccountBloc extends DisposableOwner
 
   ShareToAccountBloc({
     required IMyAccountBloc myAccountBloc,
-    required IPleromaAccountService pleromaAccountService,
+    required IPleromaApiAccountService pleromaAccountService,
     required IAccountRepository accountRepository,
   }) {
     addDisposable(subject: alreadySharedToAccountsSubject);
   }
 
-  Future<List<IPleromaAccount>> customRemoteAccountListLoader({
+  Future<List<IPleromaApiAccount>> customRemoteAccountListLoader({
     required int? limit,
     required IAccount? newerThan,
     required IAccount? olderThan,

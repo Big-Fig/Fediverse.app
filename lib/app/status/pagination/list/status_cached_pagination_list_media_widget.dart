@@ -109,7 +109,7 @@ class StatusCachedPaginationListMediaWidget
 
     items.forEach(
       (status) {
-        Iterable<PleromaMediaAttachment> mediaAttachments =
+        Iterable<PleromaApiMediaAttachment> mediaAttachments =
             (status.reblog?.mediaAttachments ?? status.mediaAttachments ?? [])
                 .where((mediaAttachment) => mediaAttachment.isImageOrGif);
         mediaAttachments.forEach(
@@ -242,7 +242,7 @@ class _StatusCachedPaginationListMediaItemBodyWidget extends StatelessWidget {
         padding: FediPadding.allSmallPadding,
         child: Center(
           child: ProxyProvider<_StatusWithMediaAttachment,
-              IPleromaMediaAttachment>(
+              IPleromaApiMediaAttachment>(
             update: (context, value, previous) => value.mediaAttachment,
             child: const StatusListItemMediaWidget(),
           ),
@@ -254,7 +254,7 @@ class _StatusCachedPaginationListMediaItemBodyWidget extends StatelessWidget {
 
 class _StatusWithMediaAttachment {
   final IStatus status;
-  final IPleromaMediaAttachment mediaAttachment;
+  final IPleromaApiMediaAttachment mediaAttachment;
 
   _StatusWithMediaAttachment({
     required this.status,

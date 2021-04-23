@@ -6,17 +6,17 @@ part of 'pleroma_api_tag_history_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PleromaTagHistoryAdapter extends TypeAdapter<PleromaTagHistory> {
+class PleromaApiTagHistoryAdapter extends TypeAdapter<PleromaApiTagHistory> {
   @override
   final int typeId = 45;
 
   @override
-  PleromaTagHistory read(BinaryReader reader) {
+  PleromaApiTagHistory read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaTagHistory(
+    return PleromaApiTagHistory(
       accounts: fields[0] as dynamic,
       dayInUnixTimestamp: fields[1] as int?,
       uses: fields[2] as dynamic,
@@ -24,7 +24,7 @@ class PleromaTagHistoryAdapter extends TypeAdapter<PleromaTagHistory> {
   }
 
   @override
-  void write(BinaryWriter writer, PleromaTagHistory obj) {
+  void write(BinaryWriter writer, PleromaApiTagHistory obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -41,7 +41,7 @@ class PleromaTagHistoryAdapter extends TypeAdapter<PleromaTagHistory> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaTagHistoryAdapter &&
+      other is PleromaApiTagHistoryAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -50,15 +50,16 @@ class PleromaTagHistoryAdapter extends TypeAdapter<PleromaTagHistory> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaTagHistory _$PleromaTagHistoryFromJson(Map<String, dynamic> json) {
-  return PleromaTagHistory(
+PleromaApiTagHistory _$PleromaApiTagHistoryFromJson(Map<String, dynamic> json) {
+  return PleromaApiTagHistory(
     accounts: json['accounts'],
     dayInUnixTimestamp: json['dayInUnixTimestamp'] as int?,
     uses: json['uses'],
   );
 }
 
-Map<String, dynamic> _$PleromaTagHistoryToJson(PleromaTagHistory instance) =>
+Map<String, dynamic> _$PleromaApiTagHistoryToJson(
+        PleromaApiTagHistory instance) =>
     <String, dynamic>{
       'accounts': instance.accounts,
       'dayInUnixTimestamp': instance.dayInUnixTimestamp,

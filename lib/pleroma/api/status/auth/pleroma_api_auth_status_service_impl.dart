@@ -7,14 +7,14 @@ import 'package:fedi/pleroma/api/status/pleroma_api_status_service_impl.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:path/path.dart';
 
-class PleromaAuthStatusService extends PleromaStatusService
-    implements IPleromaAuthStatusService {
-  final IPleromaAuthRestService authRestService;
+class PleromaApiAuthStatusService extends PleromaApiStatusService
+    implements IPleromaApiAuthStatusService {
+  final IPleromaApiAuthRestService authRestService;
 
   @override
   bool get isPleroma => authRestService.isPleroma;
 
-  PleromaAuthStatusService({
+  PleromaApiAuthStatusService({
     required this.authRestService,
   }) : super(
           restService: authRestService,
@@ -32,7 +32,7 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaStatus> muteStatus({
+  Future<IPleromaApiStatus> muteStatus({
     required String statusRemoteId,
     required int? expireDurationInSeconds,
   }) async {
@@ -56,7 +56,7 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaStatus> unMuteStatus({
+  Future<IPleromaApiStatus> unMuteStatus({
     required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
@@ -72,7 +72,7 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaStatus> pinStatus({
+  Future<IPleromaApiStatus> pinStatus({
     required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
@@ -88,7 +88,7 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaStatus> unPinStatus({
+  Future<IPleromaApiStatus> unPinStatus({
     required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
@@ -104,9 +104,9 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<List<IPleromaAccount>> favouritedBy({
+  Future<List<IPleromaApiAccount>> favouritedBy({
     required String statusRemoteId,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     var request = RestRequest.get(
       queryArgs: pagination?.toQueryArgs(),
@@ -122,9 +122,9 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<List<IPleromaAccount>> rebloggedBy({
+  Future<List<IPleromaApiAccount>> rebloggedBy({
     required String statusRemoteId,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     var request = RestRequest.get(
       queryArgs: pagination?.toQueryArgs(),
@@ -140,7 +140,7 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaStatus> reblogStatus({
+  Future<IPleromaApiStatus> reblogStatus({
     required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
@@ -156,7 +156,7 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaStatus> unReblogStatus({
+  Future<IPleromaApiStatus> unReblogStatus({
     required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
@@ -172,7 +172,7 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaStatus> favouriteStatus({
+  Future<IPleromaApiStatus> favouriteStatus({
     required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
@@ -188,7 +188,7 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaStatus> unFavouriteStatus({
+  Future<IPleromaApiStatus> unFavouriteStatus({
     required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
@@ -204,7 +204,7 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaStatus> bookmarkStatus({
+  Future<IPleromaApiStatus> bookmarkStatus({
     required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
@@ -220,7 +220,7 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaStatus> unBookmarkStatus({
+  Future<IPleromaApiStatus> unBookmarkStatus({
     required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
@@ -236,8 +236,8 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaStatus> postStatus({
-    required IPleromaPostStatus data,
+  Future<IPleromaApiStatus> postStatus({
+    required IPleromaApiPostStatus data,
   }) async {
     var json = data.toJson();
 
@@ -256,8 +256,8 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaScheduledStatus> scheduleStatus({
-    required IPleromaScheduleStatus data,
+  Future<IPleromaApiScheduledStatus> scheduleStatus({
+    required IPleromaApiScheduleStatus data,
   }) async {
     var json = data.toJson();
 

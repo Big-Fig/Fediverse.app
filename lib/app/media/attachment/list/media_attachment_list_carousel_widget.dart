@@ -40,7 +40,7 @@ class MediaAttachmentListCarouselBodyWidget extends StatelessWidget {
     assert(mediaAttachments.isNotEmpty == true);
 
     if (mediaAttachments.length == 1) {
-      return Provider<IPleromaMediaAttachment>.value(
+      return Provider<IPleromaApiMediaAttachment>.value(
         value: mediaAttachments.first,
         child: const MediaAttachmentListItemWidget(),
       );
@@ -62,7 +62,7 @@ class MediaAttachmentListCarouselBodyWidget extends StatelessWidget {
 class MediaAttachmentListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var mediaAttachment = Provider.of<IPleromaMediaAttachment>(context);
+    var mediaAttachment = Provider.of<IPleromaApiMediaAttachment>(context);
     Widget child = const MediaAttachmentWidget();
     if (mediaAttachment.typeAsMastodonApi == MastodonApiMediaAttachmentType.image ||
         mediaAttachment.typeAsMastodonApi == MastodonApiMediaAttachmentType.gifv) {
@@ -91,7 +91,7 @@ Widget _carouselWidgetBuilder(BuildContext context, int index) {
   var mediaAttachmentListBloc = IMediaAttachmentListBloc.of(context);
   var mediaAttachments = mediaAttachmentListBloc.mediaAttachments;
 
-  return Provider<IPleromaMediaAttachment>.value(
+  return Provider<IPleromaApiMediaAttachment>.value(
     value: mediaAttachments[index],
     child: const MediaAttachmentListItemWidget(),
   );

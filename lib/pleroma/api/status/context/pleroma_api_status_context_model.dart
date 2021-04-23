@@ -6,39 +6,39 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_status_context_model.g.dart';
 
-abstract class IPleromaStatusContext implements IMastodonApiStatusContext {
+abstract class IPleromaApiStatusContext implements IMastodonApiStatusContext {
   @override
-  List<IPleromaStatus> get descendants;
+  List<IPleromaApiStatus> get descendants;
 
   @override
-  List<IPleromaStatus> get ancestors;
+  List<IPleromaApiStatus> get ancestors;
 }
 
 @JsonSerializable()
-class PleromaStatusContext implements IPleromaStatusContext {
+class PleromaApiStatusContext implements IPleromaApiStatusContext {
   @override
-  final List<PleromaStatus> descendants;
+  final List<PleromaApiStatus> descendants;
   @override
-  final List<PleromaStatus> ancestors;
+  final List<PleromaApiStatus> ancestors;
 
-  PleromaStatusContext({
+  PleromaApiStatusContext({
     required this.descendants,
     required this.ancestors,
   });
 
-  factory PleromaStatusContext.fromJson(Map<String, dynamic> json) =>
-      _$PleromaStatusContextFromJson(json);
+  factory PleromaApiStatusContext.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiStatusContextFromJson(json);
 
-  factory PleromaStatusContext.fromJsonString(String jsonString) =>
-      _$PleromaStatusContextFromJson(jsonDecode(jsonString));
+  factory PleromaApiStatusContext.fromJsonString(String jsonString) =>
+      _$PleromaApiStatusContextFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaStatusContextToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiStatusContextToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaStatusContextToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiStatusContextToJson(this));
 
   @override
   String toString() {
-    return 'PleromaStatusContext{'
+    return 'PleromaApiStatusContext{'
         'descendants: $descendants, '
         'ancestors: $ancestors'
         '}';

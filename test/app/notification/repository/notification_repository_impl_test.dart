@@ -192,7 +192,7 @@ void main() {
   test('updateLocalNotificationByRemoteNotification', () async {
     var id = await notificationRepository.insertInDbType(
       dbNotification.copyWith(
-        type: PleromaNotificationType.follow.toJsonValue(),
+        type: PleromaApiNotificationType.follow.toJsonValue(),
       ),
       mode: null,
     );
@@ -207,7 +207,7 @@ void main() {
     );
     var newContent = "newContent";
     var newAcct = "newAcct";
-    var newType = PleromaNotificationType.reblog;
+    var newType = PleromaApiNotificationType.reblog;
     var newRemoteNotification = DbNotificationPopulatedWrapper(
       dbNotificationPopulated: DbNotificationPopulated.statusPopulated(
         dbNotification: dbNotification.copyWith(id: id),
@@ -408,7 +408,7 @@ void main() {
       pagination: null,
       filters: NotificationRepositoryFilters(
         excludeTypes: [
-          PleromaNotificationType.follow,
+          PleromaApiNotificationType.follow,
         ],
       ),
       orderingTermData: NotificationRepositoryOrderingTermData.createdAtDesc,
@@ -421,7 +421,7 @@ void main() {
         dbAccount: dbAccount,
       ))
           .copyWith(
-        type: PleromaNotificationType.follow.toJsonValue(),
+        type: PleromaApiNotificationType.follow.toJsonValue(),
       ),
     );
 
@@ -434,7 +434,7 @@ void main() {
         dbAccount: dbAccount,
       ))
           .copyWith(
-        type: PleromaNotificationType.reblog.toJsonValue(),
+        type: PleromaApiNotificationType.reblog.toJsonValue(),
       ),
     );
     expect((await query.get()).length, 1);
@@ -885,7 +885,7 @@ void main() {
         dbAccount: dbAccount,
       ))
           .copyWith(
-        type: PleromaNotificationType.follow.toJsonValue(),
+        type: PleromaApiNotificationType.follow.toJsonValue(),
         unread: true,
       ),
     );
@@ -893,7 +893,7 @@ void main() {
     expect(
       (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
-          onlyWithType: PleromaNotificationType.reblog,
+          onlyWithType: PleromaApiNotificationType.reblog,
           onlyUnread: true,
         ),
       )),
@@ -902,7 +902,7 @@ void main() {
     expect(
       (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
-          onlyWithType: PleromaNotificationType.follow,
+          onlyWithType: PleromaApiNotificationType.follow,
           onlyUnread: true,
         ),
       )),
@@ -924,7 +924,7 @@ void main() {
         dbAccount: dbAccount,
       ))
           .copyWith(
-        type: PleromaNotificationType.follow.toJsonValue(),
+        type: PleromaApiNotificationType.follow.toJsonValue(),
         unread: false,
       ),
     );
@@ -932,7 +932,7 @@ void main() {
     expect(
       (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
-          onlyWithType: PleromaNotificationType.reblog,
+          onlyWithType: PleromaApiNotificationType.reblog,
           onlyUnread: true,
         ),
       )),
@@ -941,7 +941,7 @@ void main() {
     expect(
       (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
-          onlyWithType: PleromaNotificationType.follow,
+          onlyWithType: PleromaApiNotificationType.follow,
           onlyUnread: true,
         ),
       )),
@@ -963,7 +963,7 @@ void main() {
         dbAccount: dbAccount,
       ))
           .copyWith(
-        type: PleromaNotificationType.reblog.toJsonValue(),
+        type: PleromaApiNotificationType.reblog.toJsonValue(),
         unread: true,
       ),
     );
@@ -971,7 +971,7 @@ void main() {
     expect(
       (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
-          onlyWithType: PleromaNotificationType.reblog,
+          onlyWithType: PleromaApiNotificationType.reblog,
           onlyUnread: true,
         ),
       )),
@@ -980,7 +980,7 @@ void main() {
     expect(
       (await notificationRepository.findCount(
         filters: NotificationRepositoryFilters(
-          onlyWithType: PleromaNotificationType.follow,
+          onlyWithType: PleromaApiNotificationType.follow,
           onlyUnread: true,
         ),
       )),

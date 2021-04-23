@@ -12,7 +12,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -26,11 +26,11 @@ import '../database/account_database_model_helper.dart';
 import 'my_account_bloc_impl_test.mocks.dart';
 import 'my_account_model_helper.dart';
 // ignore_for_file: no-magic-number
-@GenerateMocks([PleromaMyAccountService])
+@GenerateMocks([PleromaApiMyAccountService])
 void main() {
   late IMyAccount myAccount;
   late IMyAccountBloc myAccountBloc;
-  late MockPleromaMyAccountService pleromaMyAccountServiceMock;
+  late MockPleromaApiMyAccountService pleromaMyAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late MyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
@@ -42,7 +42,7 @@ void main() {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
 
-    pleromaMyAccountServiceMock = MockPleromaMyAccountService();
+    pleromaMyAccountServiceMock = MockPleromaApiMyAccountService();
 
     when(pleromaMyAccountServiceMock.isConnected).thenReturn(true);
     when(pleromaMyAccountServiceMock.pleromaApiState).thenReturn(
@@ -92,7 +92,7 @@ void main() {
 
   Future _update(IMyAccount account) async {
     await myAccountLocalPreferenceBloc.setValue(
-      account.toPleromaMyAccountWrapper(),
+      account.toPleromaApiMyAccountWrapper(),
     );
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -224,7 +224,7 @@ void main() {
     expect(myAccountBloc.fields, myAccount.fields ?? []);
 
     var newValue = [
-      PleromaField(
+      PleromaApiField(
         name: "newName",
         value: "newValue",
         verifiedAt: null,
@@ -378,7 +378,7 @@ void main() {
     await subscription.cancel();
 
     var newEmojis = [
-      PleromaEmoji(
+      PleromaApiEmoji(
         url: "url",
         staticUrl: "staticUrl",
         visibleInPicker: null,

@@ -275,13 +275,13 @@ class EditTimelineSettingsBloc
       onlyLocal: newOnlyLocal,
       withMuted: withMutedFieldBloc.currentValue,
       excludeVisibilitiesStrings: excludeVisibilitiesFieldBloc.currentValue
-          .toPleromaVisibilityStrings(),
-      onlyInRemoteList: onlyInCustomListFieldBloc.currentValue?.toPleromaList(),
+          .toPleromaApiVisibilityStrings(),
+      onlyInRemoteList: onlyInCustomListFieldBloc.currentValue?.toPleromaApiList(),
       withRemoteHashtag: withRemoteHashtagFieldBloc.currentValue,
       replyVisibilityFilterString:
           replyVisibilityFilterFieldBloc.currentValue?.toJsonValue(),
       onlyFromRemoteAccount:
-          onlyFromAccountFieldBloc.currentValue?.toPleromaAccount(),
+          onlyFromAccountFieldBloc.currentValue?.toPleromaApiAccount(),
       excludeReblogs: excludeReblogsFieldBloc.currentValue,
       onlyPinned: onlyPinnedFieldBloc.currentValue,
       webSocketsUpdates: webSocketsUpdatesFieldBloc.currentValue,

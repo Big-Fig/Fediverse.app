@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_exception.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
@@ -12,7 +12,7 @@ import 'package:fedi/rest/rest_response_model.dart';
 class PleromaMediaAttachmentService extends DisposableOwner
     implements IPleromaMediaAttachmentService {
   @override
-  final IPleromaAuthRestService restService;
+  final IPleromaApiAuthRestService restService;
 
   PleromaMediaAttachmentService({
     required this.restService,
@@ -32,7 +32,7 @@ class PleromaMediaAttachmentService extends DisposableOwner
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
   @override
-  Future<PleromaMediaAttachment> uploadMedia({
+  Future<PleromaApiMediaAttachment> uploadMedia({
     required File file,
   }) async {
     var httpResponse = await restService.uploadFileMultipartRequest(
@@ -45,9 +45,9 @@ class PleromaMediaAttachmentService extends DisposableOwner
     );
 
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaMediaAttachment.fromJsonString(httpResponse.body);
+      return PleromaApiMediaAttachment.fromJsonString(httpResponse.body);
     } else {
-      throw PleromaMediaAttachmentUploadException(
+      throw PleromaApiMediaAttachmentUploadException(
         file: file,
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,

@@ -33,7 +33,7 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
         var status = ChatSelectionShareActionStatusAdapter(
           content: rawText,
           account: chatSelectionBloc.currentSelection.first.account!,
-          visibility: PleromaVisibility.public,
+          visibility: PleromaApiVisibility.public,
         );
 
         showShareChooserDialog(

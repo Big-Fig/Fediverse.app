@@ -25,8 +25,8 @@ class PostStatusSettings implements IJsonObject, ISettings<PostStatusSettings> {
   @JsonKey(name: "default_status_locale")
   final LocalizationLocale? defaultStatusLocale;
 
-  PleromaVisibility get defaultVisibilityPleroma =>
-      defaultVisibilityString.toPleromaVisibility();
+  PleromaApiVisibility get defaultVisibilityPleroma =>
+      defaultVisibilityString.toPleromaApiVisibility();
 
   PostStatusSettings({
     required this.markMediaAsNsfwOnAttach,

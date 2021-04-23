@@ -31,7 +31,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
   final bool? approvalRequired;
 
   RegisterAuthInstanceFormBloc({
-    required IPleromaCaptchaService pleromaCaptchaService,
+    required IPleromaApiCaptchaService pleromaCaptchaService,
     required this.instanceBaseUri,
     required this.approvalRequired,
     required this.localizationSettingsBloc,
@@ -131,7 +131,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
       ];
 
   @override
-  PleromaAccountRegisterRequest calculateRegisterFormData() {
+  PleromaApiAccountRegisterRequest calculateRegisterFormData() {
     final validUsername = usernameFieldBloc.currentValue;
     final validEmail = emailFieldBloc.currentValue;
     final validPassword = passwordFieldBloc.currentValue;
@@ -143,7 +143,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
 
     final reason = reasonFieldBloc.currentValue;
 
-    var request = PleromaAccountRegisterRequest(
+    var request = PleromaApiAccountRegisterRequest(
       agreement: agreeTermsOfService,
       email: validEmail,
       locale: locale?.localeString,

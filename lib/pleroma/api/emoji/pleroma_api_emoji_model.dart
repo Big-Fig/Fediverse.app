@@ -7,9 +7,9 @@ import 'package:json_annotation/json_annotation.dart';
 // ignore_for_file: no-magic-number
 part 'pleroma_api_emoji_model.g.dart';
 
-abstract class IPleromaEmoji extends IMastodonApiEmoji {}
+abstract class IPleromaApiEmoji extends IMastodonApiEmoji {}
 
-abstract class IPleromaCustomEmoji {
+abstract class IPleromaApiCustomEmoji {
   List<String>? get tags;
 
   String get imageUrl;
@@ -17,12 +17,12 @@ abstract class IPleromaCustomEmoji {
   String get name;
 }
 
-extension IPleromaEmojiExtension on IPleromaEmoji {
-  PleromaEmoji toPleromaEmoji() {
-    if (this is PleromaEmoji) {
-      return this as PleromaEmoji;
+extension IPleromaApiEmojiExtension on IPleromaApiEmoji {
+  PleromaApiEmoji toPleromaApiEmoji() {
+    if (this is PleromaApiEmoji) {
+      return this as PleromaApiEmoji;
     } else {
-      return PleromaEmoji(
+      return PleromaApiEmoji(
         shortcode: shortcode,
         url: url,
         staticUrl: staticUrl,
@@ -33,13 +33,13 @@ extension IPleromaEmojiExtension on IPleromaEmoji {
   }
 }
 
-extension IPleromaEmojiListExtension on List<IPleromaEmoji> {
-  List<PleromaEmoji> toPleromaEmojis() {
-    if (this is List<PleromaEmoji>) {
-      return this as List<PleromaEmoji>;
+extension IPleromaEmojiListExtension on List<IPleromaApiEmoji> {
+  List<PleromaApiEmoji> toPleromaApiEmojis() {
+    if (this is List<PleromaApiEmoji>) {
+      return this as List<PleromaApiEmoji>;
     } else {
       return map(
-        (emoji) => emoji.toPleromaEmoji(),
+        (emoji) => emoji.toPleromaApiEmoji(),
       ).toList();
     }
   }
@@ -51,7 +51,7 @@ extension IPleromaEmojiListExtension on List<IPleromaEmoji> {
 //@HiveType()
 @HiveType(typeId: -32 + 38)
 @JsonSerializable()
-class PleromaEmoji implements IPleromaEmoji {
+class PleromaApiEmoji implements IPleromaApiEmoji {
   @override
   @HiveField(0)
   final String? shortcode;
@@ -70,7 +70,7 @@ class PleromaEmoji implements IPleromaEmoji {
   @HiveField(4)
   final String? category;
 
-  PleromaEmoji({
+  PleromaApiEmoji({
     required this.shortcode,
     required this.url,
     required this.staticUrl,
@@ -81,7 +81,7 @@ class PleromaEmoji implements IPleromaEmoji {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaEmoji &&
+      other is PleromaApiEmoji &&
           runtimeType == other.runtimeType &&
           shortcode == other.shortcode &&
           url == other.url &&
@@ -99,15 +99,19 @@ class PleromaEmoji implements IPleromaEmoji {
 
   @override
   String toString() {
-    return 'PleromaEmoji{shortcode: $shortcode, url: $url,'
-        ' staticUrl: $staticUrl,'
-        ' visibleInPicker: $visibleInPicker, category: $category}';
+    return 'PleromaApiEmoji{'
+        'shortcode: $shortcode, '
+        'url: $url, '
+        'staticUrl: $staticUrl, '
+        'visibleInPicker: $visibleInPicker, '
+        'category: $category'
+        '}';
   }
 
-  factory PleromaEmoji.fromJson(Map<String, dynamic> json) =>
-      _$PleromaEmojiFromJson(json);
+  factory PleromaApiEmoji.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiEmojiFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PleromaEmojiToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiEmojiToJson(this);
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -116,7 +120,7 @@ class PleromaEmoji implements IPleromaEmoji {
 //@HiveType()
 @HiveType(typeId: -32 + 76)
 @JsonSerializable()
-class PleromaCustomEmoji implements IPleromaCustomEmoji {
+class PleromaApiCustomEmoji implements IPleromaApiCustomEmoji {
   @override
   @HiveField(0)
   final List<String>? tags;
@@ -129,7 +133,7 @@ class PleromaCustomEmoji implements IPleromaCustomEmoji {
   @HiveField(2)
   final String name;
 
-  PleromaCustomEmoji({
+  PleromaApiCustomEmoji({
     required this.tags,
     required this.imageUrl,
     required this.name,
@@ -138,7 +142,7 @@ class PleromaCustomEmoji implements IPleromaCustomEmoji {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaCustomEmoji &&
+      other is PleromaApiCustomEmoji &&
           runtimeType == other.runtimeType &&
           tags == other.tags &&
           imageUrl == other.imageUrl &&
@@ -149,16 +153,20 @@ class PleromaCustomEmoji implements IPleromaCustomEmoji {
 
   @override
   String toString() {
-    return 'PleromaCustomEmoji{tags: $tags, imageUrl: $imageUrl, name: $name}';
+    return 'PleromaApiCustomEmoji{'
+        'tags: $tags, '
+        'imageUrl: $imageUrl, '
+        'name: $name'
+        '}';
   }
 
-  factory PleromaCustomEmoji.fromJson(Map<String, dynamic> json) =>
-      _$PleromaCustomEmojiFromJson(json);
+  factory PleromaApiCustomEmoji.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiCustomEmojiFromJson(json);
 
-  static List<PleromaCustomEmoji> listFromJsonString(String str) =>
-      List<PleromaCustomEmoji>.from(
-        json.decode(str).map((x) => PleromaCustomEmoji.fromJson(x)),
+  static List<PleromaApiCustomEmoji> listFromJsonString(String str) =>
+      List<PleromaApiCustomEmoji>.from(
+        json.decode(str).map((x) => PleromaApiCustomEmoji.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$PleromaCustomEmojiToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiCustomEmojiToJson(this);
 }

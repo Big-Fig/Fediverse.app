@@ -3,7 +3,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.d
 import 'package:fedi/app/chat/pleroma/with_last_message/list/cached/pleroma_chat_with_last_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
@@ -15,7 +15,7 @@ var _logger =
 
 class PleromaChatWithLastMessageCachedListBloc
     extends IPleromaChatWithLastMessageCachedListBloc {
-  final IPleromaChatService pleromaChatService;
+  final IPleromaApiChatService pleromaChatService;
   final IPleromaChatRepository chatRepository;
   final IPleromaChatWithLastMessageRepository chatWithLastMessageRepository;
 
@@ -43,10 +43,10 @@ class PleromaChatWithLastMessageCachedListBloc
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
 
-    List<IPleromaChat> remoteChats;
+    List<IPleromaApiChat> remoteChats;
 
     remoteChats = await pleromaChatService.getChats(
-      pagination: PleromaPaginationRequest(
+      pagination: PleromaApiPaginationRequest(
         maxId: olderThan?.chat.remoteId,
         sinceId: newerThan?.chat.remoteId,
         limit: limit,

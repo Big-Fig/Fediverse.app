@@ -20,7 +20,7 @@ var _logger = Logger("status_thread_bloc_impl.dart");
 
 abstract class StatusThreadBloc extends DisposableOwner
     implements IStatusThreadBloc {
-  final IPleromaStatusService pleromaStatusService;
+  final IPleromaApiStatusService pleromaStatusService;
 
   @override
   late IStatus initialStatusToFetchThread;
@@ -35,7 +35,7 @@ abstract class StatusThreadBloc extends DisposableOwner
       onNewStatusAddedStreamController.stream;
 
   @override
-  final IPleromaMediaAttachment? initialMediaAttachment;
+  final IPleromaApiMediaAttachment? initialMediaAttachment;
 
   @override
   final ItemScrollController itemScrollController = ItemScrollController();
@@ -75,10 +75,10 @@ abstract class StatusThreadBloc extends DisposableOwner
       );
 
   @override
-  List<IPleromaMention> get mentions => statuses.findAllMentions();
+  List<IPleromaApiMention> get mentions => statuses.findAllMentions();
 
   @override
-  Stream<List<IPleromaMention>> get mentionsStream =>
+  Stream<List<IPleromaApiMention>> get mentionsStream =>
       statusesStream.map((statuses) => statuses.findAllMentions());
 
   @override
@@ -156,7 +156,7 @@ abstract class StatusThreadBloc extends DisposableOwner
 
   Future<List<IFilter>> loadFilters();
 
-  void onInitialStatusUpdated(IPleromaStatus updatedStartRemoteStatus);
+  void onInitialStatusUpdated(IPleromaApiStatus updatedStartRemoteStatus);
 
   @override
   int get initialStatusToFetchThreadIndex =>
@@ -238,7 +238,7 @@ abstract class StatusThreadBloc extends DisposableOwner
   }
 
   bool isNotFiltered({
-    required IPleromaStatus remoteStatus,
+    required IPleromaApiStatus remoteStatus,
     required List<IFilter> filters,
   }) {
     var spoilerText = remoteStatus.spoilerText;

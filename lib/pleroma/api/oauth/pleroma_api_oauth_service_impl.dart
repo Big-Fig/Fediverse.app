@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_exception.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_model.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_service.dart';
@@ -14,13 +14,13 @@ import 'package:path/path.dart';
 import 'package:uni_links2/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-var _logger = Logger("pleroma_oauth_service_impl.dart");
+var _logger = Logger("pleroma_api_oauth_service_impl.dart");
 
-class PleromaOAuthService extends DisposableOwner
-    implements IPleromaOAuthService {
+class PleromaApiOAuthService extends DisposableOwner
+    implements IPleromaApiOAuthService {
   final oauthRelativeUrlPath = "/oauth/";
   @override
-  final IPleromaRestService restService;
+  final IPleromaApiRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -35,24 +35,24 @@ class PleromaOAuthService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaOAuthService({required this.restService});
+  PleromaApiOAuthService({required this.restService});
 
   @override
   Future dispose() async {
     return super.dispose();
   }
 
-  PleromaOAuthToken parseTokenResponse(Response httpResponse) {
-    RestResponse<PleromaOAuthToken> restResponse = RestResponse.fromResponse(
+  PleromaApiOAuthToken parseTokenResponse(Response httpResponse) {
+    RestResponse<PleromaApiOAuthToken> restResponse = RestResponse.fromResponse(
       response: httpResponse,
       resultParser: (body) =>
-          PleromaOAuthToken.fromJsonString(httpResponse.body),
+          PleromaApiOAuthToken.fromJsonString(httpResponse.body),
     );
 
     if (restResponse.isSuccess) {
       return restResponse.body!;
     } else {
-      throw PleromaOAuthException(
+      throw PleromaApiOAuthException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -61,7 +61,7 @@ class PleromaOAuthService extends DisposableOwner
 
   @override
   Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
-    required PleromaOAuthAuthorizeRequest authorizeRequest,
+    required PleromaApiOAuthAuthorizeRequest authorizeRequest,
   }) async {
     _logger.finest(() => "launchAuthorizeFormAndExtractAuthorizationCode");
     var host = restService.baseUri;
@@ -111,8 +111,8 @@ class PleromaOAuthService extends DisposableOwner
       uri.queryParameters['code'].toString();
 
   @override
-  Future<PleromaOAuthToken> retrieveAccountAccessToken({
-    required PleromaOAuthAccountTokenRequest tokenRequest,
+  Future<PleromaApiOAuthToken> retrieveAccountAccessToken({
+    required PleromaApiOAuthAccountTokenRequest tokenRequest,
   }) async {
     var queryArgs = tokenRequest
         .toJson()
@@ -135,8 +135,8 @@ class PleromaOAuthService extends DisposableOwner
   }
 
   @override
-  Future<PleromaOAuthToken?> retrieveAppAccessToken({
-    required PleromaOAuthAppTokenRequest tokenRequest,
+  Future<PleromaApiOAuthToken?> retrieveAppAccessToken({
+    required PleromaApiOAuthAppTokenRequest tokenRequest,
   }) async {
     var request = RestRequest.post(
       relativePath: join(oauthRelativeUrlPath, "token"),
@@ -149,7 +149,7 @@ class PleromaOAuthService extends DisposableOwner
 
   @override
   Future<bool> revokeToken({
-    required PleromaOAuthAppTokenRevokeRequest revokeRequest,
+    required PleromaApiOAuthAppTokenRevokeRequest revokeRequest,
   }) async {
     var request = RestRequest.post(
       relativePath: join(oauthRelativeUrlPath, "revoke"),

@@ -7,7 +7,7 @@ import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.d
 
 class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
     implements IConversationChatNewMessagesHandlerBloc {
-  final IPleromaConversationService conversationChatService;
+  final IPleromaApiConversationService conversationChatService;
   final IConversationChatRepository conversationRepository;
   final IConversationChatCurrentBloc currentChatBloc;
 
@@ -18,7 +18,7 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
   });
 
   @override
-  Future handleChatUpdate(IPleromaConversation conversation) async {
+  Future handleChatUpdate(IPleromaApiConversation conversation) async {
     var conversationRemoteId = conversation.id;
     var isMessageForOpenedChat =
         currentChatBloc.currentChat?.remoteId == conversationRemoteId;

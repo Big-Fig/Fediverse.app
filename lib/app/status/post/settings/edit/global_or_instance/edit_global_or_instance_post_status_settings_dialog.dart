@@ -54,18 +54,18 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
           ),
           pleromaVisibilityPossibleValues: isPleromaInstance
               ? [
-                  PleromaVisibility.public,
-                  PleromaVisibility.unlisted,
-                  PleromaVisibility.direct,
-                  PleromaVisibility.private,
-                  PleromaVisibility.list,
-                  PleromaVisibility.local,
+                  PleromaApiVisibility.public,
+                  PleromaApiVisibility.unlisted,
+                  PleromaApiVisibility.direct,
+                  PleromaApiVisibility.private,
+                  PleromaApiVisibility.list,
+                  PleromaApiVisibility.local,
                 ]
               : [
-                  PleromaVisibility.public,
-                  PleromaVisibility.unlisted,
-                  PleromaVisibility.direct,
-                  PleromaVisibility.private,
+                  PleromaApiVisibility.public,
+                  PleromaApiVisibility.unlisted,
+                  PleromaApiVisibility.direct,
+                  PleromaApiVisibility.private,
                 ],
           globalOrInstanceSettingsType: globalOrInstanceType,
           isEnabled: isEnabled,

@@ -66,7 +66,7 @@ MaterialPageRoute createMyAccountFavouritedStatusesPage() {
     builder: (context) =>
         DisposableProvider<IMyAccountFavouritedStatusesCachedListBloc>(
       create: (context) => MyAccountFavouritedStatusesCachedListBloc(
-        pleromaMyAccountService: IPleromaMyAccountService.of(
+        pleromaMyAccountService: IPleromaApiMyAccountService.of(
           context,
           listen: false,
         ),

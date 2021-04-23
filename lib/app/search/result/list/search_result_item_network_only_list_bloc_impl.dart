@@ -8,7 +8,7 @@ import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/search/pleroma_api_search_service.dart';
 import 'package:flutter/widgets.dart';
@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 
 class SearchResultItemNetworkOnlyListBloc
     extends ISearchResultItemNetworkOnlyListBloc {
-  final IPleromaSearchService pleromaSearchService;
+  final IPleromaApiSearchService pleromaSearchService;
 
   final ISearchInputBloc searchInputBloc;
 
@@ -46,7 +46,7 @@ class SearchResultItemNetworkOnlyListBloc
         resolve: true,
         query: query,
         type: null,
-        pagination: PleromaPaginationRequest(
+        pagination: PleromaApiPaginationRequest(
           limit: itemsCountPerPage,
         ),
       );
@@ -96,7 +96,7 @@ class SearchResultItemNetworkOnlyListBloc
           context,
           listen: false,
         ),
-        pleromaSearchService: IPleromaSearchService.of(
+        pleromaSearchService: IPleromaApiSearchService.of(
           context,
           listen: false,
         ),

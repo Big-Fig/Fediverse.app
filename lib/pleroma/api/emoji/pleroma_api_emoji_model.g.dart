@@ -6,17 +6,17 @@ part of 'pleroma_api_emoji_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PleromaEmojiAdapter extends TypeAdapter<PleromaEmoji> {
+class PleromaApiEmojiAdapter extends TypeAdapter<PleromaApiEmoji> {
   @override
   final int typeId = 6;
 
   @override
-  PleromaEmoji read(BinaryReader reader) {
+  PleromaApiEmoji read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaEmoji(
+    return PleromaApiEmoji(
       shortcode: fields[0] as String?,
       url: fields[1] as String?,
       staticUrl: fields[2] as String?,
@@ -26,7 +26,7 @@ class PleromaEmojiAdapter extends TypeAdapter<PleromaEmoji> {
   }
 
   @override
-  void write(BinaryWriter writer, PleromaEmoji obj) {
+  void write(BinaryWriter writer, PleromaApiEmoji obj) {
     writer
       ..writeByte(5)
       ..writeByte(0)
@@ -47,22 +47,22 @@ class PleromaEmojiAdapter extends TypeAdapter<PleromaEmoji> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaEmojiAdapter &&
+      other is PleromaApiEmojiAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class PleromaCustomEmojiAdapter extends TypeAdapter<PleromaCustomEmoji> {
+class PleromaApiCustomEmojiAdapter extends TypeAdapter<PleromaApiCustomEmoji> {
   @override
   final int typeId = 44;
 
   @override
-  PleromaCustomEmoji read(BinaryReader reader) {
+  PleromaApiCustomEmoji read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaCustomEmoji(
+    return PleromaApiCustomEmoji(
       tags: (fields[0] as List?)?.cast<String>(),
       imageUrl: fields[1] as String,
       name: fields[2] as String,
@@ -70,7 +70,7 @@ class PleromaCustomEmojiAdapter extends TypeAdapter<PleromaCustomEmoji> {
   }
 
   @override
-  void write(BinaryWriter writer, PleromaCustomEmoji obj) {
+  void write(BinaryWriter writer, PleromaApiCustomEmoji obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -87,7 +87,7 @@ class PleromaCustomEmojiAdapter extends TypeAdapter<PleromaCustomEmoji> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaCustomEmojiAdapter &&
+      other is PleromaApiCustomEmojiAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -96,8 +96,8 @@ class PleromaCustomEmojiAdapter extends TypeAdapter<PleromaCustomEmoji> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaEmoji _$PleromaEmojiFromJson(Map<String, dynamic> json) {
-  return PleromaEmoji(
+PleromaApiEmoji _$PleromaApiEmojiFromJson(Map<String, dynamic> json) {
+  return PleromaApiEmoji(
     shortcode: json['shortcode'] as String?,
     url: json['url'] as String?,
     staticUrl: json['static_url'] as String?,
@@ -106,7 +106,7 @@ PleromaEmoji _$PleromaEmojiFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaEmojiToJson(PleromaEmoji instance) =>
+Map<String, dynamic> _$PleromaApiEmojiToJson(PleromaApiEmoji instance) =>
     <String, dynamic>{
       'shortcode': instance.shortcode,
       'url': instance.url,
@@ -115,15 +115,17 @@ Map<String, dynamic> _$PleromaEmojiToJson(PleromaEmoji instance) =>
       'category': instance.category,
     };
 
-PleromaCustomEmoji _$PleromaCustomEmojiFromJson(Map<String, dynamic> json) {
-  return PleromaCustomEmoji(
+PleromaApiCustomEmoji _$PleromaApiCustomEmojiFromJson(
+    Map<String, dynamic> json) {
+  return PleromaApiCustomEmoji(
     tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
     imageUrl: json['image_url'] as String,
     name: json['name'] as String,
   );
 }
 
-Map<String, dynamic> _$PleromaCustomEmojiToJson(PleromaCustomEmoji instance) =>
+Map<String, dynamic> _$PleromaApiCustomEmojiToJson(
+        PleromaApiCustomEmoji instance) =>
     <String, dynamic>{
       'tags': instance.tags,
       'image_url': instance.imageUrl,

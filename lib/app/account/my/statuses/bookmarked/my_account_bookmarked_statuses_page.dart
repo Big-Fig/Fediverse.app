@@ -66,7 +66,7 @@ MaterialPageRoute createMyAccountBookmarkedStatusesPage() {
     builder: (context) =>
         DisposableProvider<IMyAccountBookmarkedStatusesCachedListBloc>(
       create: (context) => MyAccountBookmarkedStatusesCachedListBloc(
-        pleromaMyAccountService: IPleromaMyAccountService.of(
+        pleromaMyAccountService: IPleromaApiMyAccountService.of(
           context,
           listen: false,
         ),

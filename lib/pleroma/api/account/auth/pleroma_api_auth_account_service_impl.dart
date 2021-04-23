@@ -2,7 +2,7 @@ import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.d
 import 'package:fedi/pleroma/api/account/pleroma_api_account_exception.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
@@ -12,11 +12,11 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaAuthAccountService extends PleromaAccountService
-    implements IPleromaAuthAccountService {
+class PleromaApiAuthAccountService extends PleromaApiAccountService
+    implements IPleromaApiAuthAccountService {
   final String accountReportRelativeUrlPath = "/api/v1/reports";
 
-  final IPleromaAuthRestService authRestService;
+  final IPleromaApiAuthRestService authRestService;
 
   @override
   bool get isPleroma => authRestService.isPleroma;
@@ -34,13 +34,13 @@ class PleromaAuthAccountService extends PleromaAccountService
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaAuthAccountService({required this.authRestService})
+  PleromaApiAuthAccountService({required this.authRestService})
       : super(
           restService: authRestService,
         );
 
   @override
-  Future<List<IPleromaAccountRelationship>> getRelationshipWithAccounts({
+  Future<List<IPleromaApiAccountRelationship>> getRelationshipWithAccounts({
     required List<String> remoteAccountIds,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -58,7 +58,7 @@ class PleromaAuthAccountService extends PleromaAccountService
   }
 
   @override
-  Future<IPleromaAccountRelationship> blockAccount({
+  Future<IPleromaApiAccountRelationship> blockAccount({
     required String accountRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -75,7 +75,7 @@ class PleromaAuthAccountService extends PleromaAccountService
   }
 
   @override
-  Future<IPleromaAccountRelationship> followAccount({
+  Future<IPleromaApiAccountRelationship> followAccount({
     required String accountRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -92,7 +92,7 @@ class PleromaAuthAccountService extends PleromaAccountService
   }
 
   @override
-  Future<IPleromaAccountRelationship> muteAccount({
+  Future<IPleromaApiAccountRelationship> muteAccount({
     required String? accountRemoteId,
     required bool? notifications,
     required int? expireDurationInSeconds,
@@ -122,7 +122,7 @@ class PleromaAuthAccountService extends PleromaAccountService
   }
 
   @override
-  Future<IPleromaAccountRelationship> pinAccount({
+  Future<IPleromaApiAccountRelationship> pinAccount({
     required String accountRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -139,7 +139,7 @@ class PleromaAuthAccountService extends PleromaAccountService
   }
 
   @override
-  Future<IPleromaAccountRelationship> unBlockAccount({
+  Future<IPleromaApiAccountRelationship> unBlockAccount({
     required String accountRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -156,7 +156,7 @@ class PleromaAuthAccountService extends PleromaAccountService
   }
 
   @override
-  Future<IPleromaAccountRelationship> unFollowAccount({
+  Future<IPleromaApiAccountRelationship> unFollowAccount({
     required String accountRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -173,7 +173,7 @@ class PleromaAuthAccountService extends PleromaAccountService
   }
 
   @override
-  Future<IPleromaAccountRelationship> unMuteAccount({
+  Future<IPleromaApiAccountRelationship> unMuteAccount({
     required String accountRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -190,7 +190,7 @@ class PleromaAuthAccountService extends PleromaAccountService
   }
 
   @override
-  Future<IPleromaAccountRelationship> unPinAccount({
+  Future<IPleromaApiAccountRelationship> unPinAccount({
     required String accountRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -207,7 +207,7 @@ class PleromaAuthAccountService extends PleromaAccountService
   }
 
   @override
-  Future<List<IPleromaAccountIdentityProof>> getAccountIdentifyProofs({
+  Future<List<IPleromaApiAccountIdentityProof>> getAccountIdentifyProofs({
     required String accountRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -224,7 +224,7 @@ class PleromaAuthAccountService extends PleromaAccountService
   }
 
   @override
-  Future<List<IPleromaList>> getListsWithAccount({
+  Future<List<IPleromaApiList>> getListsWithAccount({
     required String accountRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -241,11 +241,11 @@ class PleromaAuthAccountService extends PleromaAccountService
   }
 
   @override
-  Future<List<IPleromaAccount>> search({
+  Future<List<IPleromaApiAccount>> search({
     required String query,
     bool? resolve,
     bool? following,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -272,7 +272,7 @@ class PleromaAuthAccountService extends PleromaAccountService
 
   @override
   Future<bool> reportAccount({
-    required IPleromaAccountReportRequest reportRequest,
+    required IPleromaApiAccountReportRequest reportRequest,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
@@ -301,7 +301,7 @@ class PleromaAuthAccountService extends PleromaAccountService
     );
 
     if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
-      throw PleromaAccountException(
+      throw PleromaApiAccountException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -325,7 +325,7 @@ class PleromaAuthAccountService extends PleromaAccountService
     );
 
     if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
-      throw PleromaAccountException(
+      throw PleromaApiAccountException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -333,7 +333,7 @@ class PleromaAuthAccountService extends PleromaAccountService
   }
 
   @override
-  Future<IPleromaAccountRelationship> subscribeAccount({
+  Future<IPleromaApiAccountRelationship> subscribeAccount({
     required String accountRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -350,7 +350,7 @@ class PleromaAuthAccountService extends PleromaAccountService
   }
 
   @override
-  Future<IPleromaAccountRelationship> unSubscribeAccount({
+  Future<IPleromaApiAccountRelationship> unSubscribeAccount({
     required String accountRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(

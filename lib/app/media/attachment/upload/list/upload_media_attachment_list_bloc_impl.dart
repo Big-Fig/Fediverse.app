@@ -235,7 +235,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   }
 
   @override
-  void addUploadedAttachment(IPleromaMediaAttachment attachment) {
+  void addUploadedAttachment(IPleromaApiMediaAttachment attachment) {
     mediaAttachmentBlocs.add(
       UploadedUploadMediaAttachmentBloc(
         pleromaMediaAttachment: attachment,

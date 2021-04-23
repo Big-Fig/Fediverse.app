@@ -19,7 +19,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 
 class WebSocketsHandlerManagerBloc extends DisposableOwner
     implements IWebSocketsHandlerManagerBloc {
-  final IPleromaWebSocketsService pleromaWebSocketsService;
+  final IPleromaApiWebSocketsService pleromaWebSocketsService;
   final IConversationChatRepository conversationRepository;
   final INotificationRepository notificationRepository;
   final IStatusRepository statusRepository;

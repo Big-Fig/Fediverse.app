@@ -173,11 +173,11 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IStoragePermissionBloc>(storagePermissionBloc);
 
     var pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc =
-        PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc(
+        PleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc(
       hiveLocalPreferencesService,
     );
     await globalProviderService.asyncInitAndRegister<
-        IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
+        IPleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     );
 

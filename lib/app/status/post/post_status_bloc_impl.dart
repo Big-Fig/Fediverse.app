@@ -43,7 +43,7 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   final bool markMediaAsNsfwOnAttach;
   bool alreadyMarkMediaNsfwByDefault = false;
-  final PleromaInstancePollLimits? pleromaInstancePollLimits;
+  final PleromaApiInstancePollLimits? pleromaInstancePollLimits;
 
   // todo: refactor arguments in class
   // ignore: long-method
@@ -72,7 +72,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     initialData = initialData ?? defaultInitData;
     this.initialData = initialData;
     visibilitySubject = BehaviorSubject.seeded(
-      initialData.visibility.toPleromaVisibility(),
+      initialData.visibility.toPleromaApiVisibility(),
     );
     nsfwSensitiveSubject = BehaviorSubject.seeded(
       initialData.isNsfwSensitiveEnabled,
@@ -80,7 +80,7 @@ abstract class PostStatusBloc extends PostMessageBloc
 
     pollBloc = PostStatusPollBloc(
       pollLimits:
-          pleromaInstancePollLimits ?? PleromaInstancePollLimits.defaultLimits,
+          pleromaInstancePollLimits ?? PleromaApiInstancePollLimits.defaultLimits,
     );
 
     addDisposable(subject: selectedActionSubject);
@@ -224,7 +224,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
   }
 
-  final IPleromaAuthStatusService pleromaAuthStatusService;
+  final IPleromaApiAuthStatusService pleromaAuthStatusService;
   final IStatusRepository statusRepository;
   final IScheduledStatusRepository scheduledStatusRepository;
 
@@ -243,7 +243,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     subject: null,
     text: null,
     scheduledAt: null,
-    visibility: PleromaVisibility.public.toJsonValue(),
+    visibility: PleromaApiVisibility.public.toJsonValue(),
     mediaAttachments: null,
     poll: null,
     inReplyToPleromaStatus: null,
@@ -293,13 +293,13 @@ abstract class PostStatusBloc extends PostMessageBloc
   Stream<DateTime?> get scheduledAtStream => scheduledAtSubject.stream;
 
   // ignore: close_sinks
-  late BehaviorSubject<PleromaVisibility> visibilitySubject;
+  late BehaviorSubject<PleromaApiVisibility> visibilitySubject;
 
   @override
-  PleromaVisibility get visibility => visibilitySubject.value!;
+  PleromaApiVisibility get visibility => visibilitySubject.value!;
 
   @override
-  Stream<PleromaVisibility> get visibilityStream => visibilitySubject.stream;
+  Stream<PleromaApiVisibility> get visibilityStream => visibilitySubject.stream;
 
   // ignore: close_sinks
   late BehaviorSubject<bool> nsfwSensitiveSubject;
@@ -467,7 +467,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   @override
-  void changeVisibility(PleromaVisibility visibility) {
+  void changeVisibility(PleromaApiVisibility visibility) {
     visibilitySubject.add(visibility);
   }
 
@@ -505,7 +505,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       ?.map((mediaAttachment) => mediaAttachment.id)
       .toList();
 
-  List<IPleromaMediaAttachment>? _calculateMediaAttachmentsField() {
+  List<IPleromaApiMediaAttachment>? _calculateMediaAttachmentsField() {
     var mediaAttachments = mediaAttachmentsBloc.mediaAttachmentBlocs
         ?.where(
           (bloc) =>
@@ -524,7 +524,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   void clear() {
     super.clear();
 
-    visibilitySubject.add(initialData.visibility.toPleromaVisibility());
+    visibilitySubject.add(initialData.visibility.toPleromaApiVisibility());
     alreadyMarkMediaNsfwByDefault = false;
     nsfwSensitiveSubject.add(false);
 
@@ -566,7 +566,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   // ignore: no-empty-block
-  Future onStatusPosted(IPleromaStatus remoteStatus) async {
+  Future onStatusPosted(IPleromaApiStatus remoteStatus) async {
     // nothing by default
   }
 
@@ -612,13 +612,13 @@ abstract class PostStatusBloc extends PostMessageBloc
     return poll;
   }
 
-  PleromaPostStatusPoll? _calculatePleromaPostStatusPollField() {
+  PleromaApiPostStatusPoll? _calculatePleromaPostStatusPollField() {
     var poll;
     if (pollBloc.isSomethingChanged) {
       var expiresInSeconds = pollBloc
           .durationDateTimeLengthFieldBloc.currentValueDuration!.totalSeconds;
 
-      poll = PleromaPostStatusPoll(
+      poll = PleromaApiPostStatusPoll(
         expiresInSeconds: expiresInSeconds,
         multiple: pollBloc.multiplyFieldBloc.currentValue!,
         options: pollBloc.pollOptionsGroupBloc.items
@@ -742,7 +742,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         visibility: visibility.toJsonValue(),
         mediaAttachments: _calculateMediaAttachmentsField()
             ?.map(
-              (mediaAttachment) => PleromaMediaAttachment(
+              (mediaAttachment) => PleromaApiMediaAttachment(
                 description: mediaAttachment.description,
                 id: mediaAttachment.id,
                 previewUrl: mediaAttachment.previewUrl,
@@ -764,8 +764,8 @@ abstract class PostStatusBloc extends PostMessageBloc
         expiresInSeconds: expireAtSubject.value?.totalSeconds,
       );
 
-  PleromaScheduleStatus calculateScheduleStatus() {
-    return PleromaScheduleStatus(
+  PleromaApiScheduleStatus calculateScheduleStatus() {
+    return PleromaApiScheduleStatus(
       mediaIds: _calculateMediaIdsField(),
       status: calculateStatusTextField(),
       sensitive: isNsfwSensitiveEnabled,
@@ -784,8 +784,8 @@ abstract class PostStatusBloc extends PostMessageBloc
     );
   }
 
-  PleromaPostStatus calculatePleromaPostStatus() {
-    return PleromaPostStatus(
+  PleromaApiPostStatus calculatePleromaPostStatus() {
+    return PleromaApiPostStatus(
       mediaIds: _calculateMediaIdsField(),
       status: calculateStatusTextField(),
       sensitive: isNsfwSensitiveEnabled,

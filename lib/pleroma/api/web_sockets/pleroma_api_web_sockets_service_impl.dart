@@ -8,7 +8,7 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.posix;
 
-class PleromaWebSocketsService extends IPleromaWebSocketsService {
+class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
   static final _relativePath = "/api/v1/streaming";
   final IWebSocketsService? webSocketsService;
 
@@ -16,14 +16,14 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
   final String accessToken;
   final IConnectionService connectionService;
 
-  PleromaWebSocketsService({
+  PleromaApiWebSocketsService({
     required this.webSocketsService,
     required this.connectionService,
     required this.baseUri,
     required this.accessToken,
   });
 
-  IWebSocketsChannel<PleromaWebSocketsEvent> getOrCreateNewChannel({
+  IWebSocketsChannel<PleromaApiWebSocketsEvent> getOrCreateNewChannel({
     required String stream,
     Map<String, String?>? queryArgs,
   }) {
@@ -35,7 +35,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
       path: _relativePath,
     );
     return webSocketsService!.getOrCreateWebSocketsChannel(
-      config: PleromaWebSocketsChannelConfig(
+      config: PleromaApiWebSocketsChannelConfig(
         connectionService: connectionService,
         baseUrl: baseUrl,
         queryArgs: {
@@ -58,7 +58,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
   }
 
   @override
-  IWebSocketsChannel<PleromaWebSocketsEvent> getHashtagChannel({
+  IWebSocketsChannel<PleromaApiWebSocketsEvent> getHashtagChannel({
     required String? hashtag,
     required bool? local,
   }) =>
@@ -68,7 +68,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
       );
 
   @override
-  IWebSocketsChannel<PleromaWebSocketsEvent> getListChannel({
+  IWebSocketsChannel<PleromaApiWebSocketsEvent> getListChannel({
     required String? listId,
   }) =>
       getOrCreateNewChannel(
@@ -77,7 +77,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
       );
 
   @override
-  IWebSocketsChannel<PleromaWebSocketsEvent> getPublicChannel({
+  IWebSocketsChannel<PleromaApiWebSocketsEvent> getPublicChannel({
     required bool? onlyLocal,
     required bool? onlyRemote,
     required bool? onlyMedia,
@@ -115,7 +115,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
   }
 
   @override
-  IWebSocketsChannel<PleromaWebSocketsEvent> getAccountChannel({
+  IWebSocketsChannel<PleromaApiWebSocketsEvent> getAccountChannel({
     required String? accountId,
     required bool notification,
   }) {
@@ -127,7 +127,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
   }
 
   @override
-  IWebSocketsChannel<PleromaWebSocketsEvent> getMyAccountChannel({
+  IWebSocketsChannel<PleromaApiWebSocketsEvent> getMyAccountChannel({
     required bool notification,
     required bool chat,
   }) {
@@ -142,7 +142,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
   }
 
   @override
-  IWebSocketsChannel<PleromaWebSocketsEvent> getDirectChannel({
+  IWebSocketsChannel<PleromaApiWebSocketsEvent> getDirectChannel({
     required String? accountId,
   }) {
     Map<String, String> queryArgs = {};
@@ -156,5 +156,5 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
   }
 
   WebSocketsEvent eventParser(Map<String, dynamic> json) =>
-      PleromaWebSocketsEvent.fromJson(json);
+      PleromaApiWebSocketsEvent.fromJson(json);
 }

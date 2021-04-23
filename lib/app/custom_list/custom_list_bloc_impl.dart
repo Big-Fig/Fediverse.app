@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CustomListBloc extends DisposableOwner implements ICustomListBloc {
-  final IPleromaListService pleromaListService;
+  final IPleromaApiListService pleromaListService;
 
   BehaviorSubject<ICustomList?> customListSubject;
 
@@ -47,7 +47,7 @@ class CustomListBloc extends DisposableOwner implements ICustomListBloc {
   }) =>
       CustomListBloc(
         customList: customList,
-        pleromaListService: IPleromaListService.of(
+        pleromaListService: IPleromaApiListService.of(
           context,
           listen: false,
         ),

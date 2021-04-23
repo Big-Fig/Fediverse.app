@@ -16,9 +16,9 @@ abstract class IPleromaChatMessage extends IChatMessage {
     IAccount? account,
     String? content,
     DateTime? createdAt,
-    List<IPleromaMediaAttachment>? mediaAttachments,
-    List<PleromaEmoji>? emojis,
-    IPleromaCard? card,
+    List<IPleromaApiMediaAttachment>? mediaAttachments,
+    List<PleromaApiEmoji>? emojis,
+    IPleromaApiCard? card,
     PendingState? pendingState,
     String? oldPendingRemoteId,
     bool? deleted,
@@ -62,10 +62,10 @@ extension IPleromaChatDbMessage on IPleromaChatMessage {
         chatRemoteId: chatRemoteId,
         content: content,
         createdAt: createdAt,
-        emojis: emojis?.toPleromaEmojis(),
-        card: card?.toPleromaCard(),
+        emojis: emojis?.toPleromaApiEmojis(),
+        card: card?.toPleromaApiCard(),
         mediaAttachment:
-            mediaAttachments?.singleOrNull?.toPleromaMediaAttachment(),
+            mediaAttachments?.singleOrNull?.toPleromaApiMediaAttachment(),
         accountRemoteId: accountRemoteId,
         pendingState: pendingState,
         oldPendingRemoteId: oldPendingRemoteId,
@@ -120,20 +120,20 @@ class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
   String? get content => dbChatMessagePopulated.dbChatMessage.content;
 
   @override
-  IPleromaCard? get card => dbChatMessagePopulated.dbChatMessage.card;
+  IPleromaApiCard? get card => dbChatMessagePopulated.dbChatMessage.card;
 
   @override
   DateTime get createdAt => dbChatMessagePopulated.dbChatMessage.createdAt;
 
   @override
-  List<IPleromaEmoji>? get emojis =>
+  List<IPleromaApiEmoji>? get emojis =>
       dbChatMessagePopulated.dbChatMessage.emojis;
 
   @override
   String get remoteId => dbChatMessagePopulated.dbChatMessage.remoteId;
 
   @override
-  List<IPleromaMediaAttachment>? get mediaAttachments {
+  List<IPleromaApiMediaAttachment>? get mediaAttachments {
     var mediaAttachment = dbChatMessagePopulated.dbChatMessage.mediaAttachment;
     return mediaAttachment != null
         ? [
@@ -163,9 +163,9 @@ class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
     IAccount? account,
     String? content,
     DateTime? createdAt,
-    List<IPleromaMediaAttachment>? mediaAttachments,
-    List<PleromaEmoji>? emojis,
-    IPleromaCard? card,
+    List<IPleromaApiMediaAttachment>? mediaAttachments,
+    List<PleromaApiEmoji>? emojis,
+    IPleromaApiCard? card,
     PendingState? pendingState,
     String? oldPendingRemoteId,
     bool? deleted,
@@ -229,9 +229,9 @@ class DbChatMessagePopulated {
     IAccount? account,
     String? content,
     DateTime? createdAt,
-    IPleromaMediaAttachment? mediaAttachment,
-    List<IPleromaEmoji>? emojis,
-    IPleromaCard? card,
+    IPleromaApiMediaAttachment? mediaAttachment,
+    List<IPleromaApiEmoji>? emojis,
+    IPleromaApiCard? card,
     PendingState? pendingState,
     String? oldPendingRemoteId,
     bool? deleted,
@@ -245,9 +245,9 @@ class DbChatMessagePopulated {
           chatRemoteId: chatRemoteId ?? dbChatMessage.chatRemoteId,
           content: content ?? dbChatMessage.content,
           createdAt: createdAt ?? dbChatMessage.createdAt,
-          emojis: emojis?.toPleromaEmojis() ?? dbChatMessage.emojis,
-          card: card?.toPleromaCard() ?? dbChatMessage.card,
-          mediaAttachment: mediaAttachment?.toPleromaMediaAttachment() ??
+          emojis: emojis?.toPleromaApiEmojis() ?? dbChatMessage.emojis,
+          card: card?.toPleromaApiCard() ?? dbChatMessage.card,
+          mediaAttachment: mediaAttachment?.toPleromaApiMediaAttachment() ??
               dbChatMessage.mediaAttachment,
           accountRemoteId: account?.remoteId ?? dbChatMessage.accountRemoteId,
           pendingState: pendingState ?? dbChatMessage.pendingState,

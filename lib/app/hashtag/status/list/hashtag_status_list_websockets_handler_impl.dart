@@ -11,7 +11,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
   HashtagStatusListWebSocketsHandler({
     required String? hashtag,
-    required IPleromaWebSocketsService pleromaWebSocketsService,
+    required IPleromaApiWebSocketsService pleromaWebSocketsService,
     required IStatusRepository statusRepository,
     required INotificationRepository notificationRepository,
     required IConversationChatRepository conversationRepository,

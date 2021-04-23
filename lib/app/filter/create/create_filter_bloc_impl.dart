@@ -22,12 +22,12 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
     required Function(IFilter)? onSubmit,
   }) {
     var createFilterBloc = CreateFilterBloc(
-      pleromaFilterService: IPleromaFilterService.of(
+      pleromaFilterService: IPleromaApiFilterService.of(
         context,
         listen: false,
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaAccountService: IPleromaAccountService.of(
+      pleromaAccountService: IPleromaApiAccountService.of(
         context,
         listen: false,
       ),
@@ -78,9 +78,9 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
   }
 
   @override
-  Future<IPleromaFilter> actuallySubmitFilter(
+  Future<IPleromaApiFilter> actuallySubmitFilter(
     String? listRemoteId,
-    IPostPleromaFilter postPleromaFilter,
+    IPostPleromaApiFilter postPleromaFilter,
   ) async {
     var remoteFilter = await pleromaFilterService.createFilter(
       postPleromaFilter: postPleromaFilter,
@@ -90,11 +90,11 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
   }
 
   CreateFilterBloc({
-    required IPleromaFilterService pleromaFilterService,
+    required IPleromaApiFilterService pleromaFilterService,
     required IStatusRepository statusRepository,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaAccountService pleromaAccountService,
+    required IPleromaApiAccountService pleromaAccountService,
     required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
     required AuthInstance currentInstance,
   }) : super(

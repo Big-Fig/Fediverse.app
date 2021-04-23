@@ -79,7 +79,7 @@ class PostStatusPoll implements IPostStatusPoll {
 }
 
 extension IPostStatusPollExtension on IPostStatusPoll {
-  PleromaPostStatusPoll toPleromaPostStatusPoll() => PleromaPostStatusPoll(
+  PleromaApiPostStatusPoll toPleromaPostStatusPoll() => PleromaApiPostStatusPoll(
         options: options,
         multiple: multiple,
         expiresInSeconds: durationLength.totalSeconds,
@@ -99,13 +99,13 @@ extension IPostStatusPollExtension on IPostStatusPoll {
     }
   }
 
-  PleromaPoll toPleromaPoll() {
-    return PleromaPoll(
+  PleromaApiPoll toPleromaPoll() {
+    return PleromaApiPoll(
       id: null,
       expired: false,
       voted: true,
       multiple: multiple,
-      options: options.toPleromaPollOptions(),
+      options: options.toPleromaApiPollOptions(),
       ownVotes: [],
       votersCount: 0,
       votesCount: 0,
@@ -114,7 +114,7 @@ extension IPostStatusPollExtension on IPostStatusPoll {
   }
 }
 
-extension PleromaPostStatusPollExtension on IPleromaPostStatusPoll {
+extension PleromaPostStatusPollExtension on IPleromaApiPostStatusPoll {
   PostStatusPoll toPostStatusPoll() {
     return PostStatusPoll(
       durationLength: expiresInSeconds.toDuration(),

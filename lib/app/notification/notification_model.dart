@@ -49,19 +49,19 @@ abstract class INotification {
 
   String? get chatRemoteId;
 
-  IPleromaChatMessage? get chatMessage;
+  IPleromaApiChatMessage? get chatMessage;
 
-  IPleromaAccountReport? get report;
+  IPleromaApiAccountReport? get report;
 
   String get type;
 
-  PleromaNotificationType get typePleroma;
+  PleromaApiNotificationType get typePleroma;
 
   MastodonApiNotificationType get typeAsMastodonApi;
 
   String? get emoji;
 
-  PleromaNotificationPleromaPart? get pleroma;
+  PleromaApiNotificationPleromaPart? get pleroma;
 
   bool get isContainsChat;
 
@@ -71,7 +71,7 @@ abstract class INotification {
 
   bool get dismissed;
 
-  IPleromaAccount? get target;
+  IPleromaApiAccount? get target;
 
   INotification copyWith({
     int? localId,
@@ -80,7 +80,7 @@ abstract class INotification {
     DateTime? createdAt,
     IStatus? status,
     String? emoji,
-    PleromaNotificationPleromaPart? pleroma,
+    PleromaApiNotificationPleromaPart? pleroma,
     IAccount? account,
     MastodonApiNotificationType? type,
     bool? dismissed,
@@ -130,7 +130,7 @@ class DbNotificationPopulatedWrapper implements INotification {
   String? get emoji => dbNotificationPopulated.dbNotification.emoji;
 
   @override
-  PleromaNotificationPleromaPart? get pleroma =>
+  PleromaApiNotificationPleromaPart? get pleroma =>
       dbNotificationPopulated.dbNotification.pleroma;
 
   @override
@@ -138,7 +138,7 @@ class DbNotificationPopulatedWrapper implements INotification {
       type.toMastodonApiNotificationType();
 
   @override
-  PleromaNotificationType get typePleroma => type.toPleromaNotificationType();
+  PleromaApiNotificationType get typePleroma => type.toPleromaApiNotificationType();
 
   @override
   String get type => dbNotificationPopulated.dbNotification.type;
@@ -160,7 +160,7 @@ class DbNotificationPopulatedWrapper implements INotification {
     IStatus? status,
     IAccount? account,
     String? emoji,
-    PleromaNotificationPleromaPart? pleroma,
+    PleromaApiNotificationPleromaPart? pleroma,
     MastodonApiNotificationType? type,
     bool? dismissed,
   }) =>
@@ -220,15 +220,15 @@ class DbNotificationPopulatedWrapper implements INotification {
       dbNotificationPopulated.dbNotification.dismissed == true;
 
   @override
-  IPleromaChatMessage? get chatMessage =>
+  IPleromaApiChatMessage? get chatMessage =>
       dbNotificationPopulated.dbNotification.chatMessage;
 
   @override
-  IPleromaAccountReport? get report =>
+  IPleromaApiAccountReport? get report =>
       dbNotificationPopulated.dbNotification.report;
 
   @override
-  IPleromaAccount? get target => dbNotificationPopulated.dbNotification.target;
+  IPleromaApiAccount? get target => dbNotificationPopulated.dbNotification.target;
 }
 
 class DbNotificationPopulated {

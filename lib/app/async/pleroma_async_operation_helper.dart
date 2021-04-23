@@ -49,7 +49,7 @@ class PleromaAsyncOperationHelper {
     dynamic error,
     StackTrace stackTrace,
   ) {
-    if (error is PleromaThrottledRestException) {
+    if (error is PleromaApiThrottledRestException) {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
@@ -68,7 +68,7 @@ class PleromaAsyncOperationHelper {
     dynamic error,
     StackTrace stackTrace,
   ) {
-    if (error is PleromaForbiddenRestException) {
+    if (error is PleromaApiForbiddenRestException) {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
@@ -89,7 +89,7 @@ class PleromaAsyncOperationHelper {
     dynamic error,
     StackTrace stackTrace,
   ) {
-    if (error is PleromaRestException) {
+    if (error is PleromaApiRestException) {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,

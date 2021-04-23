@@ -311,45 +311,45 @@ class _NotificationListItemContentWidget extends StatelessWidget {
     String rawText;
 
     switch (notificationBloc.typePleroma) {
-      case PleromaNotificationType.follow:
+      case PleromaApiNotificationType.follow:
         rawText = S.of(context).app_notification_header_follow;
         break;
-      case PleromaNotificationType.favourite:
+      case PleromaApiNotificationType.favourite:
         rawText = S.of(context).app_notification_header_favourite;
         break;
-      case PleromaNotificationType.reblog:
+      case PleromaApiNotificationType.reblog:
         rawText = S.of(context).app_notification_header_reblog;
         break;
-      case PleromaNotificationType.mention:
+      case PleromaApiNotificationType.mention:
         rawText = S.of(context).app_notification_header_mention(
               _extractStatusRawContent(notificationBloc)!,
             );
         break;
-      case PleromaNotificationType.poll:
+      case PleromaApiNotificationType.poll:
         rawText = S.of(context).app_notification_header_poll;
         break;
-      case PleromaNotificationType.move:
+      case PleromaApiNotificationType.move:
         rawText = S.of(context).app_notification_header_move;
         break;
-      case PleromaNotificationType.followRequest:
+      case PleromaApiNotificationType.followRequest:
         rawText = S.of(context).app_notification_header_followRequest;
         break;
-      case PleromaNotificationType.pleromaEmojiReaction:
+      case PleromaApiNotificationType.pleromaEmojiReaction:
         rawText = S.of(context).app_notification_header_pleromaEmojiReaction(
               notificationBloc.notification.emoji!,
             );
         break;
-      case PleromaNotificationType.pleromaChatMention:
+      case PleromaApiNotificationType.pleromaChatMention:
         rawText = S.of(context).app_notification_header_pleromaChatMention(
               _extractChatMessageRawContent(notificationBloc)!,
             );
         break;
-      case PleromaNotificationType.pleromaReport:
+      case PleromaApiNotificationType.pleromaReport:
         rawText = S.of(context).app_notification_header_report(
               notificationBloc.account?.acct ?? "",
             );
         break;
-      case PleromaNotificationType.unknown:
+      case PleromaApiNotificationType.unknown:
         var isHaveStatus = notificationBloc.status != null;
         String? statusText;
         if (isHaveStatus) {
@@ -466,45 +466,45 @@ class _NotificationListItemIconWidget extends StatelessWidget {
     Color iconColor = IFediUiColorTheme.of(context).primary;
 
     switch (notificationBloc.typePleroma) {
-      case PleromaNotificationType.follow:
+      case PleromaApiNotificationType.follow:
         iconData = FediIcons.follow;
         iconColor = IFediUiColorTheme.of(context).primary;
         break;
-      case PleromaNotificationType.favourite:
+      case PleromaApiNotificationType.favourite:
         iconData = FediIcons.heart_active;
         iconColor = IFediUiColorTheme.of(context).secondary;
         break;
-      case PleromaNotificationType.reblog:
+      case PleromaApiNotificationType.reblog:
         iconData = FediIcons.reply;
         iconColor = IFediUiColorTheme.of(context).primary;
         break;
-      case PleromaNotificationType.mention:
+      case PleromaApiNotificationType.mention:
         iconData = null;
         break;
-      case PleromaNotificationType.poll:
+      case PleromaApiNotificationType.poll:
         iconData = FediIcons.poll;
         iconColor = IFediUiColorTheme.of(context).primary;
         break;
-      case PleromaNotificationType.move:
+      case PleromaApiNotificationType.move:
         iconData = FediIcons.forward;
         iconColor = IFediUiColorTheme.of(context).primary;
         break;
-      case PleromaNotificationType.pleromaReport:
+      case PleromaApiNotificationType.pleromaReport:
         iconData = FediIcons.report;
         iconColor = IFediUiColorTheme.of(context).error;
         break;
-      case PleromaNotificationType.followRequest:
+      case PleromaApiNotificationType.followRequest:
         iconData = FediIcons.add_user;
         iconColor = IFediUiColorTheme.of(context).primary;
         break;
-      case PleromaNotificationType.pleromaEmojiReaction:
+      case PleromaApiNotificationType.pleromaEmojiReaction:
         iconData = null;
         break;
-      case PleromaNotificationType.pleromaChatMention:
+      case PleromaApiNotificationType.pleromaChatMention:
         iconData = FediIcons.chat;
         iconColor = IFediUiColorTheme.of(context).primary;
         break;
-      case PleromaNotificationType.unknown:
+      case PleromaApiNotificationType.unknown:
         iconData = null;
         break;
     }

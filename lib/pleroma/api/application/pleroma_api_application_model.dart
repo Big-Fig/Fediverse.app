@@ -8,17 +8,17 @@ import 'package:json_annotation/json_annotation.dart';
 // ignore_for_file: no-magic-number
 part 'pleroma_api_application_model.g.dart';
 
-abstract class IPleromaApplication implements IMastodonApiApplication {}
+abstract class IPleromaApiApplication implements IMastodonApiApplication {}
 
-abstract class IPleromaClientApplication implements IMastodonApiClientApplication {
+abstract class IPleromaApiClientApplication implements IMastodonApiClientApplication {
 }
 
-extension IPleromaApplicationExtension on IPleromaApplication {
-  PleromaApplication toPleromaApplication() {
-    if (this is PleromaApplication) {
-      return this as PleromaApplication;
+extension IPleromaApiApplicationExtension on IPleromaApiApplication {
+  PleromaApiApplication toPleromaApiApplication() {
+    if (this is PleromaApiApplication) {
+      return this as PleromaApiApplication;
     } else {
-      return PleromaApplication(
+      return PleromaApiApplication(
         name: name,
         website: website,
         vapidKey: vapidKey,
@@ -28,7 +28,7 @@ extension IPleromaApplicationExtension on IPleromaApplication {
 }
 
 @JsonSerializable()
-class PleromaApplication implements IPleromaApplication {
+class PleromaApiApplication implements IPleromaApiApplication {
   @override
   final String? name;
   @override
@@ -38,32 +38,35 @@ class PleromaApplication implements IPleromaApplication {
   @HiveField(2)
   final String? vapidKey;
 
-  PleromaApplication({
+  PleromaApiApplication({
     required this.name,
     required this.website,
     required this.vapidKey,
   });
 
-  factory PleromaApplication.fromJson(Map<String, dynamic> json) =>
-      _$PleromaApplicationFromJson(json);
+  factory PleromaApiApplication.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiApplicationFromJson(json);
 
-  factory PleromaApplication.fromJsonString(String jsonString) =>
-      _$PleromaApplicationFromJson(jsonDecode(jsonString));
+  factory PleromaApiApplication.fromJsonString(String jsonString) =>
+      _$PleromaApiApplicationFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaApplicationToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiApplicationToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaApplicationToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiApplicationToJson(this));
 
   @override
   String toString() {
-    return 'PleromaApplication{name: $name, website: $website,'
-        ' vapidKey: $vapidKey}';
+    return 'PleromaApiApplication{'
+        'name: $name, '
+        'website: $website, '
+        'vapidKey: $vapidKey'
+        '}';
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaApplication &&
+      other is PleromaApiApplication &&
           runtimeType == other.runtimeType &&
           name == other.name &&
           website == other.website &&
@@ -73,12 +76,12 @@ class PleromaApplication implements IPleromaApplication {
   int get hashCode => name.hashCode ^ website.hashCode ^ vapidKey.hashCode;
 }
 
-extension IPleromaClientApplicationExtension on IPleromaClientApplication {
-  PleromaClientApplication toPleromaClientApplication() {
-    if (this is PleromaClientApplication) {
-      return this as PleromaClientApplication;
+extension IPleromaApiClientApplicationExtension on IPleromaApiClientApplication {
+  PleromaApiClientApplication toPleromaApiClientApplication() {
+    if (this is PleromaApiClientApplication) {
+      return this as PleromaApiClientApplication;
     } else {
-      return PleromaClientApplication(
+      return PleromaApiClientApplication(
         name: name,
         website: website,
         vapidKey: vapidKey,
@@ -95,8 +98,8 @@ extension IPleromaClientApplicationExtension on IPleromaClientApplication {
 //@HiveType()
 @HiveType(typeId: -32 + 52)
 @JsonSerializable(explicitToJson: true)
-class PleromaClientApplication
-    implements IPleromaClientApplication, IJsonObject {
+class PleromaApiClientApplication
+    implements IPleromaApiClientApplication, IJsonObject {
   @override
   @HiveField(0)
   final String? name;
@@ -116,7 +119,7 @@ class PleromaClientApplication
   @HiveField(4)
   final String? clientSecret;
 
-  PleromaClientApplication({
+  PleromaApiClientApplication({
     required this.name,
     required this.website,
     required this.vapidKey,
@@ -124,14 +127,44 @@ class PleromaClientApplication
     required this.clientSecret,
   });
 
-  factory PleromaClientApplication.fromJson(Map<String, dynamic> json) =>
-      _$PleromaClientApplicationFromJson(json);
+  factory PleromaApiClientApplication.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiClientApplicationFromJson(json);
 
-  factory PleromaClientApplication.fromJsonString(String jsonString) =>
-      _$PleromaClientApplicationFromJson(jsonDecode(jsonString));
+  factory PleromaApiClientApplication.fromJsonString(String jsonString) =>
+      _$PleromaApiClientApplicationFromJson(jsonDecode(jsonString));
 
   @override
-  Map<String, dynamic> toJson() => _$PleromaClientApplicationToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiClientApplicationToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaClientApplicationToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiClientApplicationToJson(this));
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiClientApplication &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          website == other.website &&
+          vapidKey == other.vapidKey &&
+          clientId == other.clientId &&
+          clientSecret == other.clientSecret;
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      website.hashCode ^
+      vapidKey.hashCode ^
+      clientId.hashCode ^
+      clientSecret.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaApiClientApplication{'
+        'name: $name, '
+        'website: $website, '
+        'vapidKey: $vapidKey, '
+        'clientId: $clientId, '
+        'clientSecret: $clientSecret'
+        '}';
+  }
 }

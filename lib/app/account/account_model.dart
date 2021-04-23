@@ -60,9 +60,9 @@ abstract class IAccount {
 
   DateTime? get lastStatusAt;
 
-  List<IPleromaField>? get fields;
+  List<IPleromaApiField>? get fields;
 
-  List<IPleromaEmoji>? get emojis;
+  List<IPleromaApiEmoji>? get emojis;
 
   // start pleroma related fields
 
@@ -77,11 +77,11 @@ abstract class IAccount {
   List<String>? get pleromaAlsoKnownAs;
 
   ///  Lists an array of tags for the user
-  List<PleromaTag>? get pleromaTags;
+  List<PleromaApiTag>? get pleromaTags;
 
   /// Includes fields as documented for
   /// Mastodon API https://docs.joinmastodon.org/entities/relationship/
-  PleromaAccountRelationship? get pleromaRelationship;
+  PleromaApiAccountRelationship? get pleromaRelationship;
 
   /// boolean, nullable, true if user is an admin
   bool? get pleromaIsAdmin;
@@ -137,10 +137,10 @@ abstract class IAccount {
     String? avatar,
     String? acct,
     DateTime? lastStatusAt,
-    List<PleromaField>? fields,
-    List<PleromaEmoji>? emojis,
-    List<PleromaTag>? pleromaTags,
-    IPleromaAccountRelationship? pleromaRelationship,
+    List<PleromaApiField>? fields,
+    List<PleromaApiEmoji>? emojis,
+    List<PleromaApiTag>? pleromaTags,
+    IPleromaApiAccountRelationship? pleromaRelationship,
     bool? pleromaIsAdmin,
     bool? pleromaIsModerator,
     bool? pleromaConfirmationPending,
@@ -208,10 +208,10 @@ class DbAccountPopulatedWrapper implements IAccount {
   String get displayName => dbAccount.displayName!;
 
   @override
-  List<IPleromaEmoji>? get emojis => dbAccount.emojis;
+  List<IPleromaApiEmoji>? get emojis => dbAccount.emojis;
 
   @override
-  List<IPleromaField>? get fields => dbAccount.fields;
+  List<IPleromaApiField>? get fields => dbAccount.fields;
 
   @override
   int get followersCount => dbAccount.followersCount;
@@ -271,7 +271,7 @@ class DbAccountPopulatedWrapper implements IAccount {
   bool? get pleromaAcceptsChatMessages => dbAccount.pleromaAcceptsChatMessages;
 
   @override
-  PleromaAccountRelationship? get pleromaRelationship =>
+  PleromaApiAccountRelationship? get pleromaRelationship =>
       dbAccount.pleromaRelationship;
 
   @override
@@ -279,7 +279,7 @@ class DbAccountPopulatedWrapper implements IAccount {
       dbAccount.pleromaSkipThreadContainment;
 
   @override
-  List<PleromaTag>? get pleromaTags => dbAccount.pleromaTags;
+  List<PleromaApiTag>? get pleromaTags => dbAccount.pleromaTags;
 
   @override
   String get remoteId => dbAccount.remoteId;
@@ -338,10 +338,10 @@ class DbAccountPopulatedWrapper implements IAccount {
     String? avatar,
     String? acct,
     DateTime? lastStatusAt,
-    List<PleromaField>? fields,
-    List<PleromaEmoji>? emojis,
-    List<PleromaTag>? pleromaTags,
-    IPleromaAccountRelationship? pleromaRelationship,
+    List<PleromaApiField>? fields,
+    List<PleromaApiEmoji>? emojis,
+    List<PleromaApiTag>? pleromaTags,
+    IPleromaApiAccountRelationship? pleromaRelationship,
     bool? pleromaIsAdmin,
     bool? pleromaIsModerator,
     bool? pleromaConfirmationPending,
@@ -380,7 +380,7 @@ class DbAccountPopulatedWrapper implements IAccount {
             fields: fields,
             emojis: emojis,
             pleromaRelationship:
-                pleromaRelationship?.toPleromaAccountRelationship() ??
+                pleromaRelationship?.toPleromaApiAccountRelationship() ??
                     this.pleromaRelationship,
             pleromaTags: pleromaTags ?? this.pleromaTags,
             pleromaIsAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
@@ -454,9 +454,9 @@ extension IAccountExtension on IAccount {
         avatar: avatar,
         acct: acct,
         lastStatusAt: lastStatusAt,
-        fields: fields?.toPleromaFields(),
-        emojis: emojis?.toPleromaEmojis(),
-        pleromaTags: pleroma.tags?.toPleromaTags(),
+        fields: fields?.toPleromaApiFields(),
+        emojis: emojis?.toPleromaApiEmojis(),
+        pleromaTags: pleroma.tags?.toPleromaApiTags(),
         pleromaRelationship: pleroma.relationship,
         pleromaIsAdmin: pleroma.isAdmin,
         pleromaIsModerator: pleroma.isModerator,
@@ -475,9 +475,9 @@ extension IAccountExtension on IAccount {
     }
   }
 
-  PleromaAccountPleromaPart get pleroma => PleromaAccountPleromaPart(
+  PleromaApiAccountPleromaPart get pleroma => PleromaApiAccountPleromaPart(
         backgroundImage: pleromaBackgroundImage,
-        tags: pleromaTags?.toPleromaTags(),
+        tags: pleromaTags?.toPleromaApiTags(),
         relationship: pleromaRelationship,
         isAdmin: pleromaIsAdmin,
         isModerator: pleromaIsModerator,

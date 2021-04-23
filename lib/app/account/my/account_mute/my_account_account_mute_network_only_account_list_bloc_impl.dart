@@ -11,15 +11,15 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     implements IMyAccountAccountMuteNetworkOnlyAccountListBloc {
-  final IPleromaAuthAccountService pleromaAuthAccountService;
-  final IPleromaMyAccountService pleromaMyAccountService;
+  final IPleromaApiAuthAccountService pleromaAuthAccountService;
+  final IPleromaApiMyAccountService pleromaMyAccountService;
   final IAccountRepository accountRepository;
 
   MyAccountAccountMuteNetworkOnlyAccountListBloc({
@@ -38,7 +38,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
         .copyWith(
           pleromaRelationship: accountRelationship,
         )
-        .toPleromaAccount();
+        .toPleromaApiAccount();
 
     await accountRepository.upsertInRemoteType(
       pleromaAccount,
@@ -57,7 +57,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
         .copyWith(
           pleromaRelationship: accountRelationship,
         )
-        .toPleromaAccount();
+        .toPleromaApiAccount();
 
     await accountRepository.upsertInRemoteType(
       pleromaAccount,
@@ -72,7 +72,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     String? maxId,
   }) async {
     var remoteAccounts = await pleromaMyAccountService.getAccountMutes(
-      pagination: PleromaPaginationRequest(
+      pagination: PleromaApiPaginationRequest(
         sinceId: minId,
         maxId: maxId,
         limit: itemsCountPerPage,
@@ -94,7 +94,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     BuildContext context,
   ) =>
       MyAccountAccountMuteNetworkOnlyAccountListBloc(
-        pleromaMyAccountService: IPleromaMyAccountService.of(
+        pleromaMyAccountService: IPleromaApiMyAccountService.of(
           context,
           listen: false,
         ),
@@ -102,7 +102,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
           context,
           listen: false,
         ),
-        pleromaAuthAccountService: IPleromaAuthAccountService.of(
+        pleromaAuthAccountService: IPleromaApiAuthAccountService.of(
           context,
           listen: false,
         ),
@@ -151,7 +151,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
         .copyWith(
           pleromaRelationship: accountRelationship,
         )
-        .toPleromaAccount();
+        .toPleromaApiAccount();
 
     await accountRepository.upsertInRemoteType(
       pleromaAccount,

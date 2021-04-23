@@ -7,7 +7,7 @@ import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_m
 class UploadedUploadMediaAttachmentBloc extends DisposableOwner
     implements IUploadMediaAttachmentBloc {
   @override
-  final IPleromaMediaAttachment pleromaMediaAttachment;
+  final IPleromaApiMediaAttachment pleromaMediaAttachment;
 
   UploadedUploadMediaAttachmentBloc({
     required this.pleromaMediaAttachment,

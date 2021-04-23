@@ -21,10 +21,10 @@ class StatusVisibilityMultiSelectFromListFormFieldWidget
 
   @override
   Widget build(BuildContext context) => ProxyProvider<IStatusVisibilityMultiSelectFromListFormFieldBloc,
-        IMultiSelectFromListValueFormFieldBloc<PleromaVisibility>>(
+        IMultiSelectFromListValueFormFieldBloc<PleromaApiVisibility>>(
       update: (context, value, _) => value,
       child:
-          MultiSelectFromListValueFormFieldBlocProxyProvider<PleromaVisibility>(
+          MultiSelectFromListValueFormFieldBlocProxyProvider<PleromaApiVisibility>(
         child: MultiSelectFromListValueFormFieldRowWidget(
           label: label,
           description: description,
@@ -39,7 +39,7 @@ class StatusVisibilityMultiSelectFromListFormFieldWidget
 
   String mapValueToTitle(
     BuildContext context,
-    PleromaVisibility visibility,
+    PleromaApiVisibility visibility,
   ) =>
       StatusVisibilityTitleWidget.mapVisibilityToTitle(
         context,

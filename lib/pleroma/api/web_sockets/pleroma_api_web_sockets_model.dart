@@ -11,9 +11,9 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_web_sockets_model.g.dart';
 
-class PleromaWebSocketsChannelConfig
-    extends WebSocketsChannelConfig<PleromaWebSocketsEvent> {
-  PleromaWebSocketsChannelConfig({
+class PleromaApiWebSocketsChannelConfig
+    extends WebSocketsChannelConfig<PleromaApiWebSocketsEvent> {
+  PleromaApiWebSocketsChannelConfig({
     required Uri baseUrl,
     required Map<String, String?> queryArgs,
     required IConnectionService connectionService,
@@ -24,59 +24,70 @@ class PleromaWebSocketsChannelConfig
         );
 
   @override
-  PleromaWebSocketsEvent eventParser(Map<String, dynamic> json) =>
-      PleromaWebSocketsEvent.fromJson(json);
+  PleromaApiWebSocketsEvent eventParser(Map<String, dynamic> json) =>
+      PleromaApiWebSocketsEvent.fromJson(json);
 }
 
 @JsonSerializable()
-class PleromaWebSocketsEvent extends WebSocketsEvent {
+class PleromaApiWebSocketsEvent extends WebSocketsEvent {
   final String event;
 
-  PleromaWebSocketsEventType get eventType =>
-      event.toPleromaWebSocketsEventType();
+  PleromaApiWebSocketsEventType get eventType =>
+      event.toPleromaApiWebSocketsEventType();
 
   /// Could be Status or Notification
   final String? payload;
 
-  PleromaWebSocketsEvent({
+  PleromaApiWebSocketsEvent({
     required this.event,
     required this.payload,
   });
 
   @override
   String toString() {
-    return 'PleromaWebSocketsEvent{'
+    return 'PleromaApiWebSocketsEvent{'
         'event: $event, '
         'payload: $payload'
         '}';
   }
 
-  factory PleromaWebSocketsEvent.fromJson(Map<String, dynamic> json) =>
-      _$PleromaWebSocketsEventFromJson(json);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiWebSocketsEvent &&
+          runtimeType == other.runtimeType &&
+          event == other.event &&
+          payload == other.payload;
 
-  factory PleromaWebSocketsEvent.fromJsonString(String jsonString) =>
-      _$PleromaWebSocketsEventFromJson(jsonDecode(jsonString));
+  @override
+  int get hashCode => event.hashCode ^ payload.hashCode;
 
-  Map<String, dynamic> toJson() => _$PleromaWebSocketsEventToJson(this);
+  factory PleromaApiWebSocketsEvent.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiWebSocketsEventFromJson(json);
 
-  String toJsonString() => jsonEncode(_$PleromaWebSocketsEventToJson(this));
+  factory PleromaApiWebSocketsEvent.fromJsonString(String jsonString) =>
+      _$PleromaApiWebSocketsEventFromJson(jsonDecode(jsonString));
 
-  PleromaStatus parsePayloadAsStatus() =>
-      PleromaStatus.fromJson(jsonDecode(payload!));
+  Map<String, dynamic> toJson() => _$PleromaApiWebSocketsEventToJson(this);
 
-  PleromaNotification parsePayloadAsNotification() =>
-      PleromaNotification.fromJson(jsonDecode(payload!));
+  String toJsonString() => jsonEncode(_$PleromaApiWebSocketsEventToJson(this));
 
-  PleromaChat parsePayloadAsChat() =>
-      PleromaChat.fromJson(jsonDecode(payload!));
+  PleromaApiStatus parsePayloadAsStatus() =>
+      PleromaApiStatus.fromJson(jsonDecode(payload!));
 
-  PleromaConversation parsePayloadAsConversation() =>
-      PleromaConversation.fromJson(jsonDecode(payload!));
+  PleromaApiNotification parsePayloadAsNotification() =>
+      PleromaApiNotification.fromJson(jsonDecode(payload!));
+
+  PleromaApiChat parsePayloadAsChat() =>
+      PleromaApiChat.fromJson(jsonDecode(payload!));
+
+  PleromaApiConversation parsePayloadAsConversation() =>
+      PleromaApiConversation.fromJson(jsonDecode(payload!));
 
   String? parsePayloadAsRemoteId() => payload;
 }
 
-enum PleromaWebSocketsEventType {
+enum PleromaApiWebSocketsEventType {
   /// update	A new status has appeared	Status
   update,
 
@@ -95,42 +106,44 @@ enum PleromaWebSocketsEventType {
   unknown,
 }
 
-const unknownPleromaWebSocketsEventType = PleromaWebSocketsEventType.unknown;
+const unknownPleromaApiWebSocketsEventType =
+    PleromaApiWebSocketsEventType.unknown;
 
-const _updatePleromaWebSocketsEventTypeJsonValue = "update";
-const _notificationPleromaWebSocketsEventTypeJsonValue = "notification";
-const _deletePleromaWebSocketsEventTypeJsonValue = "delete";
-const _filtersChangedPleromaWebSocketsEventTypeJsonValue = "filters_changed";
-const _conversationPleromaWebSocketsEventTypeJsonValue = "conversation";
-const _pleromaChatUpdatePleromaWebSocketsEventTypeJsonValue =
+const _updatePleromaApiWebSocketsEventTypeJsonValue = "update";
+const _notificationPleromaApiWebSocketsEventTypeJsonValue = "notification";
+const _deletePleromaApiWebSocketsEventTypeJsonValue = "delete";
+const _filtersChangedPleromaApiWebSocketsEventTypeJsonValue = "filters_changed";
+const _conversationPleromaApiWebSocketsEventTypeJsonValue = "conversation";
+const _pleromaChatUpdatePleromaApiWebSocketsEventTypeJsonValue =
     "pleroma:chat_update";
-const _unknownPleromaWebSocketsEventTypeJsonValue = "unknown";
+const _unknownPleromaApiWebSocketsEventTypeJsonValue = "unknown";
 
-extension PleromaWebSocketsEventTypeExtension on PleromaWebSocketsEventType {
+extension PleromaApiWebSocketsEventTypeExtension
+    on PleromaApiWebSocketsEventType {
   String toJsonValue() {
     String result;
 
     switch (this) {
-      case PleromaWebSocketsEventType.update:
-        result = _updatePleromaWebSocketsEventTypeJsonValue;
+      case PleromaApiWebSocketsEventType.update:
+        result = _updatePleromaApiWebSocketsEventTypeJsonValue;
         break;
-      case PleromaWebSocketsEventType.notification:
-        result = _notificationPleromaWebSocketsEventTypeJsonValue;
+      case PleromaApiWebSocketsEventType.notification:
+        result = _notificationPleromaApiWebSocketsEventTypeJsonValue;
         break;
-      case PleromaWebSocketsEventType.delete:
-        result = _deletePleromaWebSocketsEventTypeJsonValue;
+      case PleromaApiWebSocketsEventType.delete:
+        result = _deletePleromaApiWebSocketsEventTypeJsonValue;
         break;
-      case PleromaWebSocketsEventType.filtersChanged:
-        result = _filtersChangedPleromaWebSocketsEventTypeJsonValue;
+      case PleromaApiWebSocketsEventType.filtersChanged:
+        result = _filtersChangedPleromaApiWebSocketsEventTypeJsonValue;
         break;
-      case PleromaWebSocketsEventType.conversation:
-        result = _conversationPleromaWebSocketsEventTypeJsonValue;
+      case PleromaApiWebSocketsEventType.conversation:
+        result = _conversationPleromaApiWebSocketsEventTypeJsonValue;
         break;
-      case PleromaWebSocketsEventType.pleromaChatUpdate:
-        result = _pleromaChatUpdatePleromaWebSocketsEventTypeJsonValue;
+      case PleromaApiWebSocketsEventType.pleromaChatUpdate:
+        result = _pleromaChatUpdatePleromaApiWebSocketsEventTypeJsonValue;
         break;
-      case PleromaWebSocketsEventType.unknown:
-        result = _unknownPleromaWebSocketsEventTypeJsonValue;
+      case PleromaApiWebSocketsEventType.unknown:
+        result = _unknownPleromaApiWebSocketsEventTypeJsonValue;
         break;
     }
 
@@ -138,35 +151,35 @@ extension PleromaWebSocketsEventTypeExtension on PleromaWebSocketsEventType {
   }
 }
 
-extension PleromaWebSocketsEventTypeStringExtension on String {
-  PleromaWebSocketsEventType toPleromaWebSocketsEventType() {
-    PleromaWebSocketsEventType result;
+extension PleromaApiWebSocketsEventTypeStringExtension on String {
+  PleromaApiWebSocketsEventType toPleromaApiWebSocketsEventType() {
+    PleromaApiWebSocketsEventType result;
 
     switch (this) {
-      case _updatePleromaWebSocketsEventTypeJsonValue:
-        result = PleromaWebSocketsEventType.update;
+      case _updatePleromaApiWebSocketsEventTypeJsonValue:
+        result = PleromaApiWebSocketsEventType.update;
         break;
-      case _notificationPleromaWebSocketsEventTypeJsonValue:
-        result = PleromaWebSocketsEventType.notification;
+      case _notificationPleromaApiWebSocketsEventTypeJsonValue:
+        result = PleromaApiWebSocketsEventType.notification;
         break;
-      case _deletePleromaWebSocketsEventTypeJsonValue:
-        result = PleromaWebSocketsEventType.delete;
+      case _deletePleromaApiWebSocketsEventTypeJsonValue:
+        result = PleromaApiWebSocketsEventType.delete;
         break;
-      case _filtersChangedPleromaWebSocketsEventTypeJsonValue:
-        result = PleromaWebSocketsEventType.filtersChanged;
+      case _filtersChangedPleromaApiWebSocketsEventTypeJsonValue:
+        result = PleromaApiWebSocketsEventType.filtersChanged;
         break;
-      case _conversationPleromaWebSocketsEventTypeJsonValue:
-        result = PleromaWebSocketsEventType.conversation;
+      case _conversationPleromaApiWebSocketsEventTypeJsonValue:
+        result = PleromaApiWebSocketsEventType.conversation;
         break;
-      case _pleromaChatUpdatePleromaWebSocketsEventTypeJsonValue:
-        result = PleromaWebSocketsEventType.pleromaChatUpdate;
+      case _pleromaChatUpdatePleromaApiWebSocketsEventTypeJsonValue:
+        result = PleromaApiWebSocketsEventType.pleromaChatUpdate;
         break;
-      case _unknownPleromaWebSocketsEventTypeJsonValue:
-        result = PleromaWebSocketsEventType.unknown;
+      case _unknownPleromaApiWebSocketsEventTypeJsonValue:
+        result = PleromaApiWebSocketsEventType.unknown;
         break;
       // can't parse, default value
       default:
-        result = unknownPleromaWebSocketsEventType;
+        result = unknownPleromaApiWebSocketsEventType;
         break;
     }
 
@@ -174,14 +187,14 @@ extension PleromaWebSocketsEventTypeStringExtension on String {
   }
 }
 
-class PleromaWebSocketsEventTypeTypeConverter
-    implements JsonConverter<PleromaWebSocketsEventType, String> {
-  const PleromaWebSocketsEventTypeTypeConverter();
+class PleromaApiWebSocketsEventTypeTypeConverter
+    implements JsonConverter<PleromaApiWebSocketsEventType, String> {
+  const PleromaApiWebSocketsEventTypeTypeConverter();
 
   @override
-  PleromaWebSocketsEventType fromJson(String value) =>
-      value.toPleromaWebSocketsEventType();
+  PleromaApiWebSocketsEventType fromJson(String value) =>
+      value.toPleromaApiWebSocketsEventType();
 
   @override
-  String toJson(PleromaWebSocketsEventType value) => value.toJsonValue();
+  String toJson(PleromaApiWebSocketsEventType value) => value.toJsonValue();
 }

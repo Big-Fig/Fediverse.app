@@ -20,12 +20,12 @@ class TimelineSettingsOnlyFromAccountFormFieldRowWidget
   Widget build(BuildContext context) {
     var fieldBloc = ITimelineSettingsOnlyFromAccountFormFieldBloc.of(context);
 
-    return StreamBuilder<IPleromaAccount?>(
+    return StreamBuilder<IPleromaApiAccount?>(
       stream: fieldBloc.currentValueStream,
       initialData: fieldBloc.currentValue,
       builder: (context, snapshot) {
         var currentValue = snapshot.data;
-        return FediFormSingleChooseCustomFromListFieldRow<IPleromaAccount?>(
+        return FediFormSingleChooseCustomFromListFieldRow<IPleromaApiAccount?>(
           isNullValuePossible: fieldBloc.isNullValuePossible,
           isEnabled: fieldBloc.isEnabled,
           error: fieldBloc.isHaveAtLeastOneError
@@ -41,7 +41,7 @@ class TimelineSettingsOnlyFromAccountFormFieldRowWidget
               context,
               accountSelectedCallback: (context, account) {
                 fieldBloc.changeCurrentValue(
-                  account.toPleromaAccount(),
+                  account.toPleromaApiAccount(),
                 );
                 Navigator.of(context).pop();
               },

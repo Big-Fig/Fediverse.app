@@ -283,7 +283,7 @@ class _CustomListPageWrapper extends StatelessWidget {
   ) {
     var customListBloc = CustomListBloc(
       customList: customList,
-      pleromaListService: IPleromaListService.of(
+      pleromaListService: IPleromaApiListService.of(
         context,
         listen: false,
       ),

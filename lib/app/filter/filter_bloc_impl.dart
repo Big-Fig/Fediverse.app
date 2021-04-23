@@ -32,7 +32,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
     bool isNeedWatchLocalRepositoryForUpdates = true,
   }) =>
       FilterBloc(
-        pleromaFilterService: IPleromaFilterService.of(context, listen: false),
+        pleromaFilterService: IPleromaApiFilterService.of(context, listen: false),
         filterRepository: IFilterRepository.of(context, listen: false),
         filter: filter,
         needRefreshFromNetworkOnInit: false,
@@ -42,7 +42,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
 
   final BehaviorSubject<IFilter> _filterSubject;
 
-  final IPleromaFilterService pleromaFilterService;
+  final IPleromaApiFilterService pleromaFilterService;
   final IFilterRepository filterRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
@@ -98,7 +98,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
   }
 
   Future _updateByRemoteFilter(
-    IPleromaFilter remoteFilter, {
+    IPleromaApiFilter remoteFilter, {
     required Batch? batchTransaction,
   }) {
     return filterRepository.updateAppTypeByRemoteType(

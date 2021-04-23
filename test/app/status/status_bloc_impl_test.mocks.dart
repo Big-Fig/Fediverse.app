@@ -11,7 +11,7 @@ import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart' as _i6;
 import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart' as _i19;
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart'
     as _i11;
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart' as _i10;
+import 'package:fedi/pleroma/api/pleroma_api_service.dart' as _i10;
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart' as _i7;
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service_impl.dart'
     as _i21;
@@ -35,54 +35,56 @@ import 'package:rxdart/src/subjects/subject.dart' as _i17;
 // ignore_for_file: comment_references
 // ignore_for_file: unnecessary_parenthesis
 
-class _FakeIPleromaAuthRestService extends _i1.Fake
-    implements _i2.IPleromaAuthRestService {}
+class _FakeIPleromaApiAuthRestService extends _i1.Fake
+    implements _i2.IPleromaApiAuthRestService {}
 
-class _FakeIPleromaRestService extends _i1.Fake
-    implements _i3.IPleromaRestService {}
+class _FakeIPleromaApiRestService extends _i1.Fake
+    implements _i3.IPleromaApiRestService {}
 
-class _FakeIPleromaStatus extends _i1.Fake implements _i4.IPleromaStatus {}
+class _FakeIPleromaApiStatus extends _i1.Fake implements _i4.IPleromaApiStatus {
+}
 
-class _FakeIPleromaScheduledStatus extends _i1.Fake
-    implements _i4.IPleromaScheduledStatus {}
+class _FakeIPleromaApiScheduledStatus extends _i1.Fake
+    implements _i4.IPleromaApiScheduledStatus {}
 
-class _FakePleromaStatus extends _i1.Fake implements _i4.PleromaStatus {}
+class _FakePleromaApiStatus extends _i1.Fake implements _i4.PleromaApiStatus {}
 
-class _FakePleromaScheduledStatus extends _i1.Fake
-    implements _i4.PleromaScheduledStatus {}
+class _FakePleromaApiScheduledStatus extends _i1.Fake
+    implements _i4.PleromaApiScheduledStatus {}
 
-class _FakePleromaStatusContext extends _i1.Fake
-    implements _i5.PleromaStatusContext {}
+class _FakePleromaApiStatusContext extends _i1.Fake
+    implements _i5.PleromaApiStatusContext {}
 
-class _FakeIPleromaAccountRelationship extends _i1.Fake
-    implements _i6.IPleromaAccountRelationship {}
+class _FakeIPleromaApiAccountRelationship extends _i1.Fake
+    implements _i6.IPleromaApiAccountRelationship {}
 
-class _FakeIPleromaAccount extends _i1.Fake implements _i6.IPleromaAccount {}
+class _FakeIPleromaApiAccount extends _i1.Fake
+    implements _i6.IPleromaApiAccount {}
 
-class _FakeIPleromaStatusEmojiReaction extends _i1.Fake
-    implements _i4.IPleromaStatusEmojiReaction {}
+class _FakeIPleromaApiStatusEmojiReaction extends _i1.Fake
+    implements _i4.IPleromaApiStatusEmojiReaction {}
 
-class _FakePleromaStatusEmojiReaction extends _i1.Fake
-    implements _i4.PleromaStatusEmojiReaction {}
+class _FakePleromaApiStatusEmojiReaction extends _i1.Fake
+    implements _i4.PleromaApiStatusEmojiReaction {}
 
-class _FakeIPleromaPoll extends _i1.Fake implements _i7.IPleromaPoll {}
+class _FakeIPleromaApiPoll extends _i1.Fake implements _i7.IPleromaApiPoll {}
 
-class _FakePleromaPoll extends _i1.Fake implements _i7.PleromaPoll {}
+class _FakePleromaApiPoll extends _i1.Fake implements _i7.PleromaApiPoll {}
 
-/// A class which mocks [PleromaAuthStatusService].
+/// A class which mocks [PleromaApiAuthStatusService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPleromaAuthStatusService extends _i1.Mock
-    implements _i8.PleromaAuthStatusService {
-  MockPleromaAuthStatusService() {
+class MockPleromaApiAuthStatusService extends _i1.Mock
+    implements _i8.PleromaApiAuthStatusService {
+  MockPleromaApiAuthStatusService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.IPleromaAuthRestService get authRestService =>
+  _i2.IPleromaApiAuthRestService get authRestService =>
       (super.noSuchMethod(Invocation.getter(#authRestService),
-              returnValue: _FakeIPleromaAuthRestService())
-          as _i2.IPleromaAuthRestService);
+              returnValue: _FakeIPleromaApiAuthRestService())
+          as _i2.IPleromaApiAuthRestService);
   @override
   bool get isPleroma =>
       (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
@@ -96,9 +98,10 @@ class MockPleromaAuthStatusService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#statusRelativeUrlPath),
           returnValue: '') as String);
   @override
-  _i3.IPleromaRestService get restService =>
+  _i3.IPleromaApiRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
-          returnValue: _FakeIPleromaRestService()) as _i3.IPleromaRestService);
+              returnValue: _FakeIPleromaApiRestService())
+          as _i3.IPleromaApiRestService);
   @override
   _i9.Stream<_i10.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
@@ -131,7 +134,7 @@ class MockPleromaAuthStatusService extends _i1.Mock
               #deleteStatus, [], {#statusRemoteId: statusRemoteId}),
           returnValue: Future<dynamic>.value(null)) as _i9.Future<dynamic>);
   @override
-  _i9.Future<_i4.IPleromaStatus> muteStatus(
+  _i9.Future<_i4.IPleromaApiStatus> muteStatus(
           {String? statusRemoteId, int? expireDurationInSeconds}) =>
       (super.noSuchMethod(
               Invocation.method(#muteStatus, [], {
@@ -139,155 +142,159 @@ class MockPleromaAuthStatusService extends _i1.Mock
                 #expireDurationInSeconds: expireDurationInSeconds
               }),
               returnValue:
-                  Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus()))
-          as _i9.Future<_i4.IPleromaStatus>);
+                  Future<_i4.IPleromaApiStatus>.value(_FakeIPleromaApiStatus()))
+          as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i9.Future<_i4.IPleromaStatus> unMuteStatus({String? statusRemoteId}) =>
+  _i9.Future<_i4.IPleromaApiStatus> unMuteStatus({String? statusRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #unMuteStatus, [], {#statusRemoteId: statusRemoteId}),
               returnValue:
-                  Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus()))
-          as _i9.Future<_i4.IPleromaStatus>);
+                  Future<_i4.IPleromaApiStatus>.value(_FakeIPleromaApiStatus()))
+          as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i9.Future<_i4.IPleromaStatus> pinStatus({String? statusRemoteId}) =>
+  _i9.Future<_i4.IPleromaApiStatus> pinStatus({String? statusRemoteId}) =>
       (super.noSuchMethod(
           Invocation.method(#pinStatus, [], {#statusRemoteId: statusRemoteId}),
-          returnValue:
-              Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus())) as _i9
-          .Future<_i4.IPleromaStatus>);
+          returnValue: Future<_i4.IPleromaApiStatus>.value(
+              _FakeIPleromaApiStatus())) as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i9.Future<_i4.IPleromaStatus> unPinStatus({String? statusRemoteId}) =>
+  _i9.Future<_i4.IPleromaApiStatus> unPinStatus({String? statusRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #unPinStatus, [], {#statusRemoteId: statusRemoteId}),
               returnValue:
-                  Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus()))
-          as _i9.Future<_i4.IPleromaStatus>);
+                  Future<_i4.IPleromaApiStatus>.value(_FakeIPleromaApiStatus()))
+          as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i9.Future<List<_i6.IPleromaAccount>> favouritedBy(
+  _i9.Future<List<_i6.IPleromaApiAccount>> favouritedBy(
           {String? statusRemoteId,
-          _i11.IPleromaPaginationRequest? pagination}) =>
+          _i11.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#favouritedBy, [],
                   {#statusRemoteId: statusRemoteId, #pagination: pagination}),
-              returnValue: Future<List<_i6.IPleromaAccount>>.value(
-                  <_i6.IPleromaAccount>[]))
-          as _i9.Future<List<_i6.IPleromaAccount>>);
+              returnValue: Future<List<_i6.IPleromaApiAccount>>.value(
+                  <_i6.IPleromaApiAccount>[]))
+          as _i9.Future<List<_i6.IPleromaApiAccount>>);
   @override
-  _i9.Future<List<_i6.IPleromaAccount>> rebloggedBy(
+  _i9.Future<List<_i6.IPleromaApiAccount>> rebloggedBy(
           {String? statusRemoteId,
-          _i11.IPleromaPaginationRequest? pagination}) =>
+          _i11.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#rebloggedBy, [],
                   {#statusRemoteId: statusRemoteId, #pagination: pagination}),
-              returnValue: Future<List<_i6.IPleromaAccount>>.value(
-                  <_i6.IPleromaAccount>[]))
-          as _i9.Future<List<_i6.IPleromaAccount>>);
+              returnValue: Future<List<_i6.IPleromaApiAccount>>.value(
+                  <_i6.IPleromaApiAccount>[]))
+          as _i9.Future<List<_i6.IPleromaApiAccount>>);
   @override
-  _i9.Future<_i4.IPleromaStatus> reblogStatus({String? statusRemoteId}) =>
+  _i9.Future<_i4.IPleromaApiStatus> reblogStatus({String? statusRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #reblogStatus, [], {#statusRemoteId: statusRemoteId}),
               returnValue:
-                  Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus()))
-          as _i9.Future<_i4.IPleromaStatus>);
+                  Future<_i4.IPleromaApiStatus>.value(_FakeIPleromaApiStatus()))
+          as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i9.Future<_i4.IPleromaStatus> unReblogStatus({String? statusRemoteId}) =>
+  _i9.Future<_i4.IPleromaApiStatus> unReblogStatus({String? statusRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #unReblogStatus, [], {#statusRemoteId: statusRemoteId}),
               returnValue:
-                  Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus()))
-          as _i9.Future<_i4.IPleromaStatus>);
+                  Future<_i4.IPleromaApiStatus>.value(_FakeIPleromaApiStatus()))
+          as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i9.Future<_i4.IPleromaStatus> favouriteStatus({String? statusRemoteId}) =>
+  _i9.Future<_i4.IPleromaApiStatus> favouriteStatus({String? statusRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #favouriteStatus, [], {#statusRemoteId: statusRemoteId}),
               returnValue:
-                  Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus()))
-          as _i9.Future<_i4.IPleromaStatus>);
+                  Future<_i4.IPleromaApiStatus>.value(_FakeIPleromaApiStatus()))
+          as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i9.Future<_i4.IPleromaStatus> unFavouriteStatus({String? statusRemoteId}) =>
+  _i9.Future<_i4.IPleromaApiStatus> unFavouriteStatus(
+          {String? statusRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #unFavouriteStatus, [], {#statusRemoteId: statusRemoteId}),
               returnValue:
-                  Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus()))
-          as _i9.Future<_i4.IPleromaStatus>);
+                  Future<_i4.IPleromaApiStatus>.value(_FakeIPleromaApiStatus()))
+          as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i9.Future<_i4.IPleromaStatus> bookmarkStatus({String? statusRemoteId}) =>
+  _i9.Future<_i4.IPleromaApiStatus> bookmarkStatus({String? statusRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #bookmarkStatus, [], {#statusRemoteId: statusRemoteId}),
               returnValue:
-                  Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus()))
-          as _i9.Future<_i4.IPleromaStatus>);
+                  Future<_i4.IPleromaApiStatus>.value(_FakeIPleromaApiStatus()))
+          as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i9.Future<_i4.IPleromaStatus> unBookmarkStatus({String? statusRemoteId}) =>
+  _i9.Future<_i4.IPleromaApiStatus> unBookmarkStatus(
+          {String? statusRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #unBookmarkStatus, [], {#statusRemoteId: statusRemoteId}),
               returnValue:
-                  Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus()))
-          as _i9.Future<_i4.IPleromaStatus>);
+                  Future<_i4.IPleromaApiStatus>.value(_FakeIPleromaApiStatus()))
+          as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i9.Future<_i4.IPleromaStatus> postStatus({_i4.IPleromaPostStatus? data}) =>
+  _i9.Future<_i4.IPleromaApiStatus> postStatus(
+          {_i4.IPleromaApiPostStatus? data}) =>
       (super.noSuchMethod(Invocation.method(#postStatus, [], {#data: data}),
               returnValue:
-                  Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus()))
-          as _i9.Future<_i4.IPleromaStatus>);
+                  Future<_i4.IPleromaApiStatus>.value(_FakeIPleromaApiStatus()))
+          as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i9.Future<_i4.IPleromaScheduledStatus> scheduleStatus(
-          {_i4.IPleromaScheduleStatus? data}) =>
+  _i9.Future<_i4.IPleromaApiScheduledStatus> scheduleStatus(
+          {_i4.IPleromaApiScheduleStatus? data}) =>
       (super.noSuchMethod(Invocation.method(#scheduleStatus, [], {#data: data}),
-              returnValue: Future<_i4.IPleromaScheduledStatus>.value(
-                  _FakeIPleromaScheduledStatus()))
-          as _i9.Future<_i4.IPleromaScheduledStatus>);
+              returnValue: Future<_i4.IPleromaApiScheduledStatus>.value(
+                  _FakeIPleromaApiScheduledStatus()))
+          as _i9.Future<_i4.IPleromaApiScheduledStatus>);
   @override
   _i9.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
           returnValue: Future<dynamic>.value(null)) as _i9.Future<dynamic>);
   @override
-  _i9.Future<_i4.IPleromaStatus> getStatus({String? statusRemoteId}) =>
+  _i9.Future<_i4.IPleromaApiStatus> getStatus({String? statusRemoteId}) =>
       (super.noSuchMethod(
           Invocation.method(#getStatus, [], {#statusRemoteId: statusRemoteId}),
-          returnValue:
-              Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus())) as _i9
-          .Future<_i4.IPleromaStatus>);
+          returnValue: Future<_i4.IPleromaApiStatus>.value(
+              _FakeIPleromaApiStatus())) as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i4.PleromaStatus parseStatusResponse(_i12.Response? httpResponse) => (super
-      .noSuchMethod(Invocation.method(#parseStatusResponse, [httpResponse]),
-          returnValue: _FakePleromaStatus()) as _i4.PleromaStatus);
+  _i4.PleromaApiStatus parseStatusResponse(_i12.Response? httpResponse) =>
+      (super.noSuchMethod(
+          Invocation.method(#parseStatusResponse, [httpResponse]),
+          returnValue: _FakePleromaApiStatus()) as _i4.PleromaApiStatus);
   @override
-  _i4.PleromaScheduledStatus parseScheduledStatusResponse(
+  _i4.PleromaApiScheduledStatus parseScheduledStatusResponse(
           _i12.Response? httpResponse) =>
       (super.noSuchMethod(
               Invocation.method(#parseScheduledStatusResponse, [httpResponse]),
-              returnValue: _FakePleromaScheduledStatus())
-          as _i4.PleromaScheduledStatus);
+              returnValue: _FakePleromaApiScheduledStatus())
+          as _i4.PleromaApiScheduledStatus);
   @override
-  _i5.PleromaStatusContext parseStatusContextResponse(
+  _i5.PleromaApiStatusContext parseStatusContextResponse(
           _i12.Response? httpResponse) =>
       (super.noSuchMethod(
               Invocation.method(#parseStatusContextResponse, [httpResponse]),
-              returnValue: _FakePleromaStatusContext())
-          as _i5.PleromaStatusContext);
+              returnValue: _FakePleromaApiStatusContext())
+          as _i5.PleromaApiStatusContext);
   @override
-  List<_i6.PleromaAccount> parseAccountsResponse(_i12.Response? httpResponse) =>
+  List<_i6.PleromaApiAccount> parseAccountsResponse(
+          _i12.Response? httpResponse) =>
       (super.noSuchMethod(
-          Invocation.method(#parseAccountsResponse, [httpResponse]),
-          returnValue: <_i6.PleromaAccount>[]) as List<_i6.PleromaAccount>);
+              Invocation.method(#parseAccountsResponse, [httpResponse]),
+              returnValue: <_i6.PleromaApiAccount>[])
+          as List<_i6.PleromaApiAccount>);
   @override
-  _i9.Future<_i5.PleromaStatusContext> getStatusContext(
+  _i9.Future<_i5.PleromaApiStatusContext> getStatusContext(
           {String? statusRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #getStatusContext, [], {#statusRemoteId: statusRemoteId}),
-              returnValue: Future<_i5.PleromaStatusContext>.value(
-                  _FakePleromaStatusContext()))
-          as _i9.Future<_i5.PleromaStatusContext>);
+              returnValue: Future<_i5.PleromaApiStatusContext>.value(
+                  _FakePleromaApiStatusContext()))
+          as _i9.Future<_i5.PleromaApiStatusContext>);
   @override
   void addDisposable(
           {_i13.IDisposable? disposable,
@@ -314,12 +321,12 @@ class MockPleromaAuthStatusService extends _i1.Mock
           returnValueForMissingStub: null);
 }
 
-/// A class which mocks [PleromaAuthAccountService].
+/// A class which mocks [PleromaApiAuthAccountService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPleromaAuthAccountService extends _i1.Mock
-    implements _i18.PleromaAuthAccountService {
-  MockPleromaAuthAccountService() {
+class MockPleromaApiAuthAccountService extends _i1.Mock
+    implements _i18.PleromaApiAuthAccountService {
+  MockPleromaApiAuthAccountService() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -328,10 +335,10 @@ class MockPleromaAuthAccountService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#accountReportRelativeUrlPath),
           returnValue: '') as String);
   @override
-  _i2.IPleromaAuthRestService get authRestService =>
+  _i2.IPleromaApiAuthRestService get authRestService =>
       (super.noSuchMethod(Invocation.getter(#authRestService),
-              returnValue: _FakeIPleromaAuthRestService())
-          as _i2.IPleromaAuthRestService);
+              returnValue: _FakeIPleromaApiAuthRestService())
+          as _i2.IPleromaApiAuthRestService);
   @override
   bool get isPleroma =>
       (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
@@ -366,9 +373,10 @@ class MockPleromaAuthAccountService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#pleromaAccountRelativeUrlPath),
           returnValue: '') as String);
   @override
-  _i3.IPleromaRestService get restService =>
+  _i3.IPleromaApiRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
-          returnValue: _FakeIPleromaRestService()) as _i3.IPleromaRestService);
+              returnValue: _FakeIPleromaApiRestService())
+          as _i3.IPleromaApiRestService);
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
@@ -378,34 +386,35 @@ class MockPleromaAuthAccountService extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
           returnValueForMissingStub: null);
   @override
-  _i9.Future<List<_i6.IPleromaAccountRelationship>> getRelationshipWithAccounts(
-          {List<String>? remoteAccountIds}) =>
-      (super.noSuchMethod(
-              Invocation.method(#getRelationshipWithAccounts, [],
-                  {#remoteAccountIds: remoteAccountIds}),
-              returnValue: Future<List<_i6.IPleromaAccountRelationship>>.value(
-                  <_i6.IPleromaAccountRelationship>[]))
-          as _i9.Future<List<_i6.IPleromaAccountRelationship>>);
+  _i9.Future<List<_i6.IPleromaApiAccountRelationship>>
+      getRelationshipWithAccounts({List<String>? remoteAccountIds}) =>
+          (super.noSuchMethod(
+                  Invocation.method(#getRelationshipWithAccounts, [],
+                      {#remoteAccountIds: remoteAccountIds}),
+                  returnValue:
+                      Future<List<_i6.IPleromaApiAccountRelationship>>.value(
+                          <_i6.IPleromaApiAccountRelationship>[]))
+              as _i9.Future<List<_i6.IPleromaApiAccountRelationship>>);
   @override
-  _i9.Future<_i6.IPleromaAccountRelationship> blockAccount(
+  _i9.Future<_i6.IPleromaApiAccountRelationship> blockAccount(
           {String? accountRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #blockAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i6.IPleromaAccountRelationship>.value(
-                  _FakeIPleromaAccountRelationship()))
-          as _i9.Future<_i6.IPleromaAccountRelationship>);
+              returnValue: Future<_i6.IPleromaApiAccountRelationship>.value(
+                  _FakeIPleromaApiAccountRelationship()))
+          as _i9.Future<_i6.IPleromaApiAccountRelationship>);
   @override
-  _i9.Future<_i6.IPleromaAccountRelationship> followAccount(
+  _i9.Future<_i6.IPleromaApiAccountRelationship> followAccount(
           {String? accountRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #followAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i6.IPleromaAccountRelationship>.value(
-                  _FakeIPleromaAccountRelationship()))
-          as _i9.Future<_i6.IPleromaAccountRelationship>);
+              returnValue: Future<_i6.IPleromaApiAccountRelationship>.value(
+                  _FakeIPleromaApiAccountRelationship()))
+          as _i9.Future<_i6.IPleromaApiAccountRelationship>);
   @override
-  _i9.Future<_i6.IPleromaAccountRelationship> muteAccount(
+  _i9.Future<_i6.IPleromaApiAccountRelationship> muteAccount(
           {String? accountRemoteId,
           bool? notifications,
           int? expireDurationInSeconds}) =>
@@ -415,77 +424,80 @@ class MockPleromaAuthAccountService extends _i1.Mock
                 #notifications: notifications,
                 #expireDurationInSeconds: expireDurationInSeconds
               }),
-              returnValue: Future<_i6.IPleromaAccountRelationship>.value(
-                  _FakeIPleromaAccountRelationship()))
-          as _i9.Future<_i6.IPleromaAccountRelationship>);
+              returnValue: Future<_i6.IPleromaApiAccountRelationship>.value(
+                  _FakeIPleromaApiAccountRelationship()))
+          as _i9.Future<_i6.IPleromaApiAccountRelationship>);
   @override
-  _i9.Future<_i6.IPleromaAccountRelationship> pinAccount(
+  _i9.Future<_i6.IPleromaApiAccountRelationship> pinAccount(
           {String? accountRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #pinAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i6.IPleromaAccountRelationship>.value(
-                  _FakeIPleromaAccountRelationship()))
-          as _i9.Future<_i6.IPleromaAccountRelationship>);
+              returnValue: Future<_i6.IPleromaApiAccountRelationship>.value(
+                  _FakeIPleromaApiAccountRelationship()))
+          as _i9.Future<_i6.IPleromaApiAccountRelationship>);
   @override
-  _i9.Future<_i6.IPleromaAccountRelationship> unBlockAccount(
+  _i9.Future<_i6.IPleromaApiAccountRelationship> unBlockAccount(
           {String? accountRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #unBlockAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i6.IPleromaAccountRelationship>.value(
-                  _FakeIPleromaAccountRelationship()))
-          as _i9.Future<_i6.IPleromaAccountRelationship>);
+              returnValue: Future<_i6.IPleromaApiAccountRelationship>.value(
+                  _FakeIPleromaApiAccountRelationship()))
+          as _i9.Future<_i6.IPleromaApiAccountRelationship>);
   @override
-  _i9.Future<_i6.IPleromaAccountRelationship> unFollowAccount(
+  _i9.Future<_i6.IPleromaApiAccountRelationship> unFollowAccount(
           {String? accountRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #unFollowAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i6.IPleromaAccountRelationship>.value(
-                  _FakeIPleromaAccountRelationship()))
-          as _i9.Future<_i6.IPleromaAccountRelationship>);
+              returnValue: Future<_i6.IPleromaApiAccountRelationship>.value(
+                  _FakeIPleromaApiAccountRelationship()))
+          as _i9.Future<_i6.IPleromaApiAccountRelationship>);
   @override
-  _i9.Future<_i6.IPleromaAccountRelationship> unMuteAccount(
+  _i9.Future<_i6.IPleromaApiAccountRelationship> unMuteAccount(
           {String? accountRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #unMuteAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i6.IPleromaAccountRelationship>.value(
-                  _FakeIPleromaAccountRelationship()))
-          as _i9.Future<_i6.IPleromaAccountRelationship>);
+              returnValue: Future<_i6.IPleromaApiAccountRelationship>.value(
+                  _FakeIPleromaApiAccountRelationship()))
+          as _i9.Future<_i6.IPleromaApiAccountRelationship>);
   @override
-  _i9.Future<_i6.IPleromaAccountRelationship> unPinAccount(
+  _i9.Future<_i6.IPleromaApiAccountRelationship> unPinAccount(
           {String? accountRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #unPinAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i6.IPleromaAccountRelationship>.value(
-                  _FakeIPleromaAccountRelationship()))
-          as _i9.Future<_i6.IPleromaAccountRelationship>);
+              returnValue: Future<_i6.IPleromaApiAccountRelationship>.value(
+                  _FakeIPleromaApiAccountRelationship()))
+          as _i9.Future<_i6.IPleromaApiAccountRelationship>);
   @override
-  _i9.Future<List<_i6.IPleromaAccountIdentityProof>> getAccountIdentifyProofs(
-          {String? accountRemoteId}) =>
-      (super.noSuchMethod(
-              Invocation.method(#getAccountIdentifyProofs, [],
-                  {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<List<_i6.IPleromaAccountIdentityProof>>.value(
-                  <_i6.IPleromaAccountIdentityProof>[]))
-          as _i9.Future<List<_i6.IPleromaAccountIdentityProof>>);
+  _i9.Future<List<_i6.IPleromaApiAccountIdentityProof>>
+      getAccountIdentifyProofs({String? accountRemoteId}) => (super
+              .noSuchMethod(
+                  Invocation.method(#getAccountIdentifyProofs, [], {
+                    #accountRemoteId: accountRemoteId
+                  }),
+                  returnValue:
+                      Future<List<_i6.IPleromaApiAccountIdentityProof>>.value(
+                          <_i6.IPleromaApiAccountIdentityProof>[]))
+          as _i9.Future<List<_i6.IPleromaApiAccountIdentityProof>>);
   @override
-  _i9.Future<List<_i19.IPleromaList>> getListsWithAccount(
+  _i9.Future<List<_i19.IPleromaApiList>> getListsWithAccount(
           {String? accountRemoteId}) =>
       (super.noSuchMethod(
           Invocation.method(
               #getListsWithAccount, [], {#accountRemoteId: accountRemoteId}),
-          returnValue: Future<List<_i19.IPleromaList>>.value(
-              <_i19.IPleromaList>[])) as _i9.Future<List<_i19.IPleromaList>>);
+          returnValue: Future<List<_i19.IPleromaApiList>>.value(
+              <_i19.IPleromaApiList>[])) as _i9
+          .Future<List<_i19.IPleromaApiList>>);
   @override
-  _i9.Future<List<_i6.IPleromaAccount>> search(
+  _i9.Future<List<_i6.IPleromaApiAccount>> search(
           {String? query,
           bool? resolve,
           bool? following,
-          _i11.IPleromaPaginationRequest? pagination}) =>
+          _i11.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#search, [], {
                 #query: query,
@@ -493,12 +505,12 @@ class MockPleromaAuthAccountService extends _i1.Mock
                 #following: following,
                 #pagination: pagination
               }),
-              returnValue: Future<List<_i6.IPleromaAccount>>.value(
-                  <_i6.IPleromaAccount>[]))
-          as _i9.Future<List<_i6.IPleromaAccount>>);
+              returnValue: Future<List<_i6.IPleromaApiAccount>>.value(
+                  <_i6.IPleromaApiAccount>[]))
+          as _i9.Future<List<_i6.IPleromaApiAccount>>);
   @override
   _i9.Future<bool> reportAccount(
-          {_i6.IPleromaAccountReportRequest? reportRequest}) =>
+          {_i6.IPleromaApiAccountReportRequest? reportRequest}) =>
       (super.noSuchMethod(
           Invocation.method(
               #reportAccount, [], {#reportRequest: reportRequest}),
@@ -512,97 +524,100 @@ class MockPleromaAuthAccountService extends _i1.Mock
       Invocation.method(#unBlockDomain, [], {#domain: domain}),
       returnValue: Future<dynamic>.value(null)) as _i9.Future<dynamic>);
   @override
-  _i9.Future<_i6.IPleromaAccountRelationship> subscribeAccount(
+  _i9.Future<_i6.IPleromaApiAccountRelationship> subscribeAccount(
           {String? accountRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #subscribeAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i6.IPleromaAccountRelationship>.value(
-                  _FakeIPleromaAccountRelationship()))
-          as _i9.Future<_i6.IPleromaAccountRelationship>);
+              returnValue: Future<_i6.IPleromaApiAccountRelationship>.value(
+                  _FakeIPleromaApiAccountRelationship()))
+          as _i9.Future<_i6.IPleromaApiAccountRelationship>);
   @override
-  _i9.Future<_i6.IPleromaAccountRelationship> unSubscribeAccount(
+  _i9.Future<_i6.IPleromaApiAccountRelationship> unSubscribeAccount(
           {String? accountRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #unSubscribeAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i6.IPleromaAccountRelationship>.value(
-                  _FakeIPleromaAccountRelationship()))
-          as _i9.Future<_i6.IPleromaAccountRelationship>);
+              returnValue: Future<_i6.IPleromaApiAccountRelationship>.value(
+                  _FakeIPleromaApiAccountRelationship()))
+          as _i9.Future<_i6.IPleromaApiAccountRelationship>);
   @override
-  List<_i6.PleromaAccount> parseAccountListResponse(
+  List<_i6.PleromaApiAccount> parseAccountListResponse(
           _i12.Response? httpResponse) =>
       (super.noSuchMethod(
-          Invocation.method(#parseAccountListResponse, [httpResponse]),
-          returnValue: <_i6.PleromaAccount>[]) as List<_i6.PleromaAccount>);
+              Invocation.method(#parseAccountListResponse, [httpResponse]),
+              returnValue: <_i6.PleromaApiAccount>[])
+          as List<_i6.PleromaApiAccount>);
   @override
-  List<_i6.IPleromaAccountIdentityProof> parseAccountAccountIdentityProofList(
-          _i12.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #parseAccountAccountIdentityProofList, [httpResponse]),
-              returnValue: <_i6.IPleromaAccountIdentityProof>[])
-          as List<_i6.IPleromaAccountIdentityProof>);
+  List<_i6.IPleromaApiAccountIdentityProof>
+      parseAccountAccountIdentityProofList(_i12.Response? httpResponse) =>
+          (super.noSuchMethod(
+                  Invocation.method(
+                      #parseAccountAccountIdentityProofList, [httpResponse]),
+                  returnValue: <_i6.IPleromaApiAccountIdentityProof>[])
+              as List<_i6.IPleromaApiAccountIdentityProof>);
   @override
-  List<_i19.IPleromaList> parseListList(_i12.Response? httpResponse) =>
+  List<_i19.IPleromaApiList> parseListList(_i12.Response? httpResponse) =>
       (super.noSuchMethod(Invocation.method(#parseListList, [httpResponse]),
-          returnValue: <_i19.IPleromaList>[]) as List<_i19.IPleromaList>);
+          returnValue: <_i19.IPleromaApiList>[]) as List<_i19.IPleromaApiList>);
   @override
-  List<_i4.IPleromaStatus> parseStatusListResponse(
+  List<_i4.IPleromaApiStatus> parseStatusListResponse(
           _i12.Response? httpResponse) =>
       (super.noSuchMethod(
-          Invocation.method(#parseStatusListResponse, [httpResponse]),
-          returnValue: <_i4.IPleromaStatus>[]) as List<_i4.IPleromaStatus>);
+              Invocation.method(#parseStatusListResponse, [httpResponse]),
+              returnValue: <_i4.IPleromaApiStatus>[])
+          as List<_i4.IPleromaApiStatus>);
   @override
-  _i6.IPleromaAccountRelationship parseAccountRelationshipResponse(
+  _i6.IPleromaApiAccountRelationship parseAccountRelationshipResponse(
           _i12.Response? httpResponse) =>
       (super.noSuchMethod(
           Invocation.method(#parseAccountRelationshipResponse, [httpResponse]),
           returnValue:
-              _FakeIPleromaAccountRelationship()) as _i6
-          .IPleromaAccountRelationship);
+              _FakeIPleromaApiAccountRelationship()) as _i6
+          .IPleromaApiAccountRelationship);
   @override
-  List<_i6.IPleromaAccountRelationship> parseAccountRelationshipResponseList(
+  List<_i6.IPleromaApiAccountRelationship> parseAccountRelationshipResponseList(
           _i12.Response? httpResponse) =>
       (super.noSuchMethod(
               Invocation.method(
                   #parseAccountRelationshipResponseList, [httpResponse]),
-              returnValue: <_i6.IPleromaAccountRelationship>[])
-          as List<_i6.IPleromaAccountRelationship>);
+              returnValue: <_i6.IPleromaApiAccountRelationship>[])
+          as List<_i6.IPleromaApiAccountRelationship>);
   @override
-  _i6.IPleromaAccount parseAccountResponse(_i12.Response? httpResponse) =>
+  _i6.IPleromaApiAccount parseAccountResponse(_i12.Response? httpResponse) =>
       (super.noSuchMethod(
           Invocation.method(#parseAccountResponse, [httpResponse]),
-          returnValue: _FakeIPleromaAccount()) as _i6.IPleromaAccount);
+          returnValue: _FakeIPleromaApiAccount()) as _i6.IPleromaApiAccount);
   @override
-  _i9.Future<List<_i6.IPleromaAccount>> getAccountFollowings(
+  _i9.Future<List<_i6.IPleromaApiAccount>> getAccountFollowings(
           {String? accountRemoteId,
-          _i11.IPleromaPaginationRequest? pagination}) =>
+          _i11.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getAccountFollowings, [],
                   {#accountRemoteId: accountRemoteId, #pagination: pagination}),
-              returnValue: Future<List<_i6.IPleromaAccount>>.value(
-                  <_i6.IPleromaAccount>[]))
-          as _i9.Future<List<_i6.IPleromaAccount>>);
+              returnValue: Future<List<_i6.IPleromaApiAccount>>.value(
+                  <_i6.IPleromaApiAccount>[]))
+          as _i9.Future<List<_i6.IPleromaApiAccount>>);
   @override
-  _i9.Future<_i6.IPleromaAccount> getAccount({String? accountRemoteId}) =>
+  _i9.Future<_i6.IPleromaApiAccount> getAccount({String? accountRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #getAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue:
-                  Future<_i6.IPleromaAccount>.value(_FakeIPleromaAccount()))
-          as _i9.Future<_i6.IPleromaAccount>);
+              returnValue: Future<_i6.IPleromaApiAccount>.value(
+                  _FakeIPleromaApiAccount()))
+          as _i9.Future<_i6.IPleromaApiAccount>);
   @override
-  _i9.Future<List<_i6.PleromaAccount>> getAccountFollowers(
+  _i9.Future<List<_i6.PleromaApiAccount>> getAccountFollowers(
           {String? accountRemoteId,
-          _i11.IPleromaPaginationRequest? pagination}) =>
+          _i11.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
-          Invocation.method(#getAccountFollowers, [],
-              {#accountRemoteId: accountRemoteId, #pagination: pagination}),
-          returnValue: Future<List<_i6.PleromaAccount>>.value(
-              <_i6.PleromaAccount>[])) as _i9.Future<List<_i6.PleromaAccount>>);
+              Invocation.method(#getAccountFollowers, [],
+                  {#accountRemoteId: accountRemoteId, #pagination: pagination}),
+              returnValue: Future<List<_i6.PleromaApiAccount>>.value(
+                  <_i6.PleromaApiAccount>[]))
+          as _i9.Future<List<_i6.PleromaApiAccount>>);
   @override
-  _i9.Future<List<_i4.IPleromaStatus>> getAccountStatuses(
+  _i9.Future<List<_i4.IPleromaApiStatus>> getAccountStatuses(
           {String? accountRemoteId,
           String? tagged,
           bool? pinned,
@@ -611,30 +626,32 @@ class MockPleromaAuthAccountService extends _i1.Mock
           List<String>? excludeVisibilities,
           bool? withMuted,
           bool? onlyWithMedia,
-          _i11.IPleromaPaginationRequest? pagination}) =>
+          _i11.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
-          Invocation.method(#getAccountStatuses, [], {
-            #accountRemoteId: accountRemoteId,
-            #tagged: tagged,
-            #pinned: pinned,
-            #excludeReplies: excludeReplies,
-            #excludeReblogs: excludeReblogs,
-            #excludeVisibilities: excludeVisibilities,
-            #withMuted: withMuted,
-            #onlyWithMedia: onlyWithMedia,
-            #pagination: pagination
-          }),
-          returnValue: Future<List<_i4.IPleromaStatus>>.value(
-              <_i4.IPleromaStatus>[])) as _i9.Future<List<_i4.IPleromaStatus>>);
+              Invocation.method(#getAccountStatuses, [], {
+                #accountRemoteId: accountRemoteId,
+                #tagged: tagged,
+                #pinned: pinned,
+                #excludeReplies: excludeReplies,
+                #excludeReblogs: excludeReblogs,
+                #excludeVisibilities: excludeVisibilities,
+                #withMuted: withMuted,
+                #onlyWithMedia: onlyWithMedia,
+                #pagination: pagination
+              }),
+              returnValue: Future<List<_i4.IPleromaApiStatus>>.value(
+                  <_i4.IPleromaApiStatus>[]))
+          as _i9.Future<List<_i4.IPleromaApiStatus>>);
   @override
-  _i9.Future<List<_i4.IPleromaStatus>> getAccountFavouritedStatuses(
+  _i9.Future<List<_i4.IPleromaApiStatus>> getAccountFavouritedStatuses(
           {String? accountRemoteId,
-          _i11.IPleromaPaginationRequest? pagination}) =>
+          _i11.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
-          Invocation.method(#getAccountFavouritedStatuses, [],
-              {#accountRemoteId: accountRemoteId, #pagination: pagination}),
-          returnValue: Future<List<_i4.IPleromaStatus>>.value(
-              <_i4.IPleromaStatus>[])) as _i9.Future<List<_i4.IPleromaStatus>>);
+              Invocation.method(#getAccountFavouritedStatuses, [],
+                  {#accountRemoteId: accountRemoteId, #pagination: pagination}),
+              returnValue: Future<List<_i4.IPleromaApiStatus>>.value(
+                  <_i4.IPleromaApiStatus>[]))
+          as _i9.Future<List<_i4.IPleromaApiStatus>>);
   @override
   void addDisposable(
           {_i13.IDisposable? disposable,
@@ -665,12 +682,12 @@ class MockPleromaAuthAccountService extends _i1.Mock
           returnValue: Future<dynamic>.value(null)) as _i9.Future<dynamic>);
 }
 
-/// A class which mocks [PleromaStatusEmojiReactionService].
+/// A class which mocks [PleromaApiStatusEmojiReactionService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPleromaStatusEmojiReactionService extends _i1.Mock
-    implements _i20.PleromaStatusEmojiReactionService {
-  MockPleromaStatusEmojiReactionService() {
+class MockPleromaApiStatusEmojiReactionService extends _i1.Mock
+    implements _i20.PleromaApiStatusEmojiReactionService {
+  MockPleromaApiStatusEmojiReactionService() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -683,10 +700,10 @@ class MockPleromaStatusEmojiReactionService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#reactionsRelativeUrlPath),
           returnValue: '') as String);
   @override
-  _i2.IPleromaAuthRestService get restService =>
+  _i2.IPleromaApiAuthRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
-              returnValue: _FakeIPleromaAuthRestService())
-          as _i2.IPleromaAuthRestService);
+              returnValue: _FakeIPleromaApiAuthRestService())
+          as _i2.IPleromaApiAuthRestService);
   @override
   _i9.Stream<_i10.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
@@ -713,61 +730,62 @@ class MockPleromaStatusEmojiReactionService extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
           returnValueForMissingStub: null);
   @override
-  _i9.Future<_i4.IPleromaStatus> addReaction(
+  _i9.Future<_i4.IPleromaApiStatus> addReaction(
           {String? statusRemoteId, String? emoji}) =>
       (super.noSuchMethod(
               Invocation.method(#addReaction, [],
                   {#statusRemoteId: statusRemoteId, #emoji: emoji}),
               returnValue:
-                  Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus()))
-          as _i9.Future<_i4.IPleromaStatus>);
+                  Future<_i4.IPleromaApiStatus>.value(_FakeIPleromaApiStatus()))
+          as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i9.Future<_i4.IPleromaStatusEmojiReaction> getReaction(
+  _i9.Future<_i4.IPleromaApiStatusEmojiReaction> getReaction(
           {String? statusRemoteId, String? emoji}) =>
       (super.noSuchMethod(
               Invocation.method(#getReaction, [],
                   {#statusRemoteId: statusRemoteId, #emoji: emoji}),
-              returnValue: Future<_i4.IPleromaStatusEmojiReaction>.value(
-                  _FakeIPleromaStatusEmojiReaction()))
-          as _i9.Future<_i4.IPleromaStatusEmojiReaction>);
+              returnValue: Future<_i4.IPleromaApiStatusEmojiReaction>.value(
+                  _FakeIPleromaApiStatusEmojiReaction()))
+          as _i9.Future<_i4.IPleromaApiStatusEmojiReaction>);
   @override
-  _i9.Future<List<_i4.IPleromaStatusEmojiReaction>> getReactions(
+  _i9.Future<List<_i4.IPleromaApiStatusEmojiReaction>> getReactions(
           {String? statusRemoteId}) =>
       (super.noSuchMethod(
-              Invocation.method(
-                  #getReactions, [], {#statusRemoteId: statusRemoteId}),
-              returnValue: Future<List<_i4.IPleromaStatusEmojiReaction>>.value(
-                  <_i4.IPleromaStatusEmojiReaction>[]))
-          as _i9.Future<List<_i4.IPleromaStatusEmojiReaction>>);
+          Invocation.method(
+              #getReactions, [], {#statusRemoteId: statusRemoteId}),
+          returnValue: Future<List<_i4.IPleromaApiStatusEmojiReaction>>.value(
+              <_i4.IPleromaApiStatusEmojiReaction>[])) as _i9
+          .Future<List<_i4.IPleromaApiStatusEmojiReaction>>);
   @override
-  _i9.Future<_i4.IPleromaStatus> removeReaction(
+  _i9.Future<_i4.IPleromaApiStatus> removeReaction(
           {String? statusRemoteId, String? emoji}) =>
       (super.noSuchMethod(
               Invocation.method(#removeReaction, [],
                   {#statusRemoteId: statusRemoteId, #emoji: emoji}),
               returnValue:
-                  Future<_i4.IPleromaStatus>.value(_FakeIPleromaStatus()))
-          as _i9.Future<_i4.IPleromaStatus>);
+                  Future<_i4.IPleromaApiStatus>.value(_FakeIPleromaApiStatus()))
+          as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i4.PleromaStatus parseStatusResponse(_i12.Response? httpResponse) => (super
-      .noSuchMethod(Invocation.method(#parseStatusResponse, [httpResponse]),
-          returnValue: _FakePleromaStatus()) as _i4.PleromaStatus);
+  _i4.PleromaApiStatus parseStatusResponse(_i12.Response? httpResponse) =>
+      (super.noSuchMethod(
+          Invocation.method(#parseStatusResponse, [httpResponse]),
+          returnValue: _FakePleromaApiStatus()) as _i4.PleromaApiStatus);
   @override
-  _i4.PleromaStatusEmojiReaction parseEmojiReactionResponse(
+  _i4.PleromaApiStatusEmojiReaction parseEmojiReactionResponse(
           _i12.Response? httpResponse) =>
       (super.noSuchMethod(
               Invocation.method(#parseEmojiReactionResponse, [httpResponse]),
-              returnValue: _FakePleromaStatusEmojiReaction())
-          as _i4.PleromaStatusEmojiReaction);
+              returnValue: _FakePleromaApiStatusEmojiReaction())
+          as _i4.PleromaApiStatusEmojiReaction);
   @override
-  List<_i4.PleromaStatusEmojiReaction> parseEmojiReactionListResponse(
+  List<_i4.PleromaApiStatusEmojiReaction> parseEmojiReactionListResponse(
           _i12.Response? httpResponse) =>
       (super
               .noSuchMethod(
                   Invocation.method(
                       #parseEmojiReactionListResponse, [httpResponse]),
-                  returnValue: <_i4.PleromaStatusEmojiReaction>[])
-          as List<_i4.PleromaStatusEmojiReaction>);
+                  returnValue: <_i4.PleromaApiStatusEmojiReaction>[])
+          as List<_i4.PleromaApiStatusEmojiReaction>);
   @override
   void addDisposable(
           {_i13.IDisposable? disposable,
@@ -798,12 +816,12 @@ class MockPleromaStatusEmojiReactionService extends _i1.Mock
           returnValue: Future<dynamic>.value(null)) as _i9.Future<dynamic>);
 }
 
-/// A class which mocks [PleromaPollService].
+/// A class which mocks [PleromaApiPollService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPleromaPollService extends _i1.Mock
-    implements _i21.PleromaPollService {
-  MockPleromaPollService() {
+class MockPleromaApiPollService extends _i1.Mock
+    implements _i21.PleromaApiPollService {
+  MockPleromaApiPollService() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -812,10 +830,10 @@ class MockPleromaPollService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#pollRelativeUrlPath),
           returnValue: '') as String);
   @override
-  _i2.IPleromaAuthRestService get restService =>
+  _i2.IPleromaApiAuthRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
-              returnValue: _FakeIPleromaAuthRestService())
-          as _i2.IPleromaAuthRestService);
+              returnValue: _FakeIPleromaApiAuthRestService())
+          as _i2.IPleromaApiAuthRestService);
   @override
   _i9.Stream<_i10.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
@@ -846,23 +864,25 @@ class MockPleromaPollService extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#dispose, []),
           returnValue: Future<dynamic>.value(null)) as _i9.Future<dynamic>);
   @override
-  _i9.Future<_i7.IPleromaPoll> getPoll({String? pollRemoteId}) =>
+  _i9.Future<_i7.IPleromaApiPoll> getPoll({String? pollRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(#getPoll, [], {#pollRemoteId: pollRemoteId}),
-              returnValue: Future<_i7.IPleromaPoll>.value(_FakeIPleromaPoll()))
-          as _i9.Future<_i7.IPleromaPoll>);
+              returnValue:
+                  Future<_i7.IPleromaApiPoll>.value(_FakeIPleromaApiPoll()))
+          as _i9.Future<_i7.IPleromaApiPoll>);
   @override
-  _i9.Future<_i7.IPleromaPoll> vote(
+  _i9.Future<_i7.IPleromaApiPoll> vote(
           {String? pollRemoteId, List<int>? voteIndexes}) =>
       (super.noSuchMethod(
               Invocation.method(#vote, [],
                   {#pollRemoteId: pollRemoteId, #voteIndexes: voteIndexes}),
-              returnValue: Future<_i7.IPleromaPoll>.value(_FakeIPleromaPoll()))
-          as _i9.Future<_i7.IPleromaPoll>);
+              returnValue:
+                  Future<_i7.IPleromaApiPoll>.value(_FakeIPleromaApiPoll()))
+          as _i9.Future<_i7.IPleromaApiPoll>);
   @override
-  _i7.PleromaPoll parsePollResponse(_i12.Response? httpResponse) =>
+  _i7.PleromaApiPoll parsePollResponse(_i12.Response? httpResponse) =>
       (super.noSuchMethod(Invocation.method(#parsePollResponse, [httpResponse]),
-          returnValue: _FakePleromaPoll()) as _i7.PleromaPoll);
+          returnValue: _FakePleromaApiPoll()) as _i7.PleromaApiPoll);
   @override
   void addDisposable(
           {_i13.IDisposable? disposable,

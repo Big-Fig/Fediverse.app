@@ -14,7 +14,7 @@ abstract class INotificationRepository
         IAppRemoteReadWriteRepository<
             DbNotification,
             INotification,
-            IPleromaNotification,
+            IPleromaApiNotification,
             int,
             String,
             NotificationRepositoryFilters,
@@ -75,20 +75,20 @@ abstract class INotificationRepository
   Future<INotification?> getOldestOrderByRemoteId();
 
   Future upsertRemoteNotification(
-    IPleromaNotification remoteItem, {
+    IPleromaApiNotification remoteItem, {
     required bool unread,
     required Batch? batchTransaction,
   });
 
   Future upsertRemoteNotifications(
-    List<IPleromaNotification> pleromaNotifications, {
+    List<IPleromaApiNotification> pleromaNotifications, {
     required bool unread,
     required Batch? batchTransaction,
   });
 
   Future updateNotificationByRemoteType({
     required INotification appItem,
-    required IPleromaNotification remoteItem,
+    required IPleromaApiNotification remoteItem,
     required bool? unread,
     required Batch? batchTransaction,
   });

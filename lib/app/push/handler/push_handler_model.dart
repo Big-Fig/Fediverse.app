@@ -16,7 +16,7 @@ part 'push_handler_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class PushHandlerMessage {
   @HiveField(0)
-  final PleromaPushMessageBody body;
+  final PleromaApiPushMessageBody body;
   @HiveField(1)
   @JsonKey(name: "push_message")
   final PushMessage pushMessage;
@@ -43,7 +43,7 @@ class PushHandlerMessage {
           pushMessage == other.pushMessage;
 
   PushHandlerMessage copyWith({
-    PleromaPushMessageBody? body,
+    PleromaApiPushMessageBody? body,
     PushMessage? pushMessage,
   }) =>
       PushHandlerMessage(

@@ -22,8 +22,8 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
     required this.statusRepository,
     required this.filterRepository,
     required IStatus initialStatusToFetchThread,
-    required IPleromaMediaAttachment? initialMediaAttachment,
-    required IPleromaStatusService pleromaStatusService,
+    required IPleromaApiMediaAttachment? initialMediaAttachment,
+    required IPleromaApiStatusService pleromaStatusService,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           initialStatusToFetchThread: initialStatusToFetchThread,
@@ -33,12 +33,12 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
   static LocalStatusThreadBloc createFromContext(
     BuildContext context, {
     required IStatus initialStatusToFetchThread,
-    required IPleromaMediaAttachment? initialMediaAttachment,
+    required IPleromaApiMediaAttachment? initialMediaAttachment,
   }) =>
       LocalStatusThreadBloc(
         initialStatusToFetchThread: initialStatusToFetchThread,
         initialMediaAttachment: initialMediaAttachment,
-        pleromaStatusService: IPleromaStatusService.of(
+        pleromaStatusService: IPleromaApiStatusService.of(
           context,
           listen: false,
         ),
@@ -55,7 +55,7 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
   static Widget provideToContext(
     BuildContext context, {
     required IStatus initialStatusToFetchThread,
-    required IPleromaMediaAttachment initialMediaAttachment,
+    required IPleromaApiMediaAttachment initialMediaAttachment,
     required Widget child,
   }) {
     return DisposableProvider<IStatusThreadBloc>(
@@ -84,7 +84,7 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
   }
 
   @override
-  void onInitialStatusUpdated(IPleromaStatus updatedStartRemoteStatus) {
+  void onInitialStatusUpdated(IPleromaApiStatus updatedStartRemoteStatus) {
     unawaited(
       statusRepository.updateAppTypeByRemoteType(
         appItem: initialStatusToFetchThread,

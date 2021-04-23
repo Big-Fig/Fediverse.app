@@ -10,24 +10,24 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_poll_model.g.dart';
 
-Function eq = const ListEquality().equals;
+Function _listEq = const ListEquality().equals;
 
-abstract class IPleromaPoll implements IMastodonApiPoll {
+abstract class IPleromaApiPoll implements IMastodonApiPoll {
   @override
-  List<IPleromaPollOption> get options;
+  List<IPleromaApiPollOption> get options;
 }
 
-extension IPleromaPollExtension on IPleromaPoll {
-  PleromaPoll toPleromaPoll() {
-    if (this is PleromaPoll) {
-      return this as PleromaPoll;
+extension IPleromaApiPollExtension on IPleromaApiPoll {
+  PleromaApiPoll toPleromaApiPoll() {
+    if (this is PleromaApiPoll) {
+      return this as PleromaApiPoll;
     } else {
-      return PleromaPoll(
+      return PleromaApiPoll(
         expired: expired,
         expiresAt: expiresAt,
         id: id,
         multiple: multiple,
-        options: options.toPleromaPollOptions(),
+        options: options.toPleromaApiPollOptions(),
         ownVotes: ownVotes,
         voted: voted,
         votesCount: votesCount,
@@ -37,7 +37,7 @@ extension IPleromaPollExtension on IPleromaPoll {
   }
 
   PostStatusPoll toPostStatusPoll({
-    required PleromaInstancePollLimits limits,
+    required PleromaApiInstancePollLimits limits,
   }) {
     return PostStatusPoll(
       durationLength: expiresAt.calculatePostDurationLength(
@@ -46,17 +46,17 @@ extension IPleromaPollExtension on IPleromaPoll {
       // todo: implement  hideTotals
       hideTotals: false,
       multiple: multiple,
-      options: options.toPleromaPollOptionTitles(),
+      options: options.toPleromaApiPollOptionTitles(),
     );
   }
 
-  bool isOwnVote(IPleromaPollOption option) {
+  bool isOwnVote(IPleromaApiPollOption option) {
     var index = options.indexOf(option);
 
     return ownVotes.contains(index);
   }
 
-  double votesPercent(IPleromaPollOption option) {
+  double votesPercent(IPleromaApiPollOption option) {
     // votes count can be hidden until poll ends
     var votesCount = option.votesCount;
     double votesPercent;
@@ -71,7 +71,7 @@ extension IPleromaPollExtension on IPleromaPoll {
 
 extension DateTimePollExtension on DateTime {
   Duration calculatePostDurationLength({
-    required PleromaInstancePollLimits limits,
+    required PleromaApiInstancePollLimits limits,
   }) {
     DateTime expiresAt = this;
 
@@ -97,14 +97,14 @@ extension DateTimePollExtension on DateTime {
   }
 }
 
-abstract class IPleromaPollOption implements IMastodonPollOption {}
+abstract class IPleromaApiPollOption implements IMastodonPollOption {}
 
-extension IPleromaPollOptionExtension on IPleromaPollOption {
-  PleromaPollOption toPleromaPollOption() {
-    if (this is PleromaPollOption) {
-      return this as PleromaPollOption;
+extension IPleromaApiPollOptionExtension on IPleromaApiPollOption {
+  PleromaApiPollOption toPleromaApiPollOption() {
+    if (this is PleromaApiPollOption) {
+      return this as PleromaApiPollOption;
     } else {
-      return PleromaPollOption(
+      return PleromaApiPollOption(
         title: title,
         votesCount: votesCount,
       );
@@ -112,39 +112,39 @@ extension IPleromaPollOptionExtension on IPleromaPollOption {
   }
 }
 
-extension IPleromaPollOptionListExtension on List<IPleromaPollOption> {
-  List<PleromaPollOption> toPleromaPollOptions() {
-    if (this is List<PleromaPollOption>) {
-      return this as List<PleromaPollOption>;
+extension IPleromaApiPollOptionListExtension on List<IPleromaApiPollOption> {
+  List<PleromaApiPollOption> toPleromaApiPollOptions() {
+    if (this is List<PleromaApiPollOption>) {
+      return this as List<PleromaApiPollOption>;
     } else {
       return map(
-        (pollOption) => pollOption.toPleromaPollOption(),
+        (pollOption) => pollOption.toPleromaApiPollOption(),
       ).toList();
     }
   }
 
-  List<String> toPleromaPollOptionTitles() {
+  List<String> toPleromaApiPollOptionTitles() {
     return map(
       (pollOption) => pollOption.title,
     ).toList();
   }
 }
 
-extension StringPleromaPollOptionExtension on String {
-  PleromaPollOption toPleromaPollOption() => PleromaPollOption(
+extension StringPleromaApiPollOptionExtension on String {
+  PleromaApiPollOption toPleromaApiPollOption() => PleromaApiPollOption(
         title: this,
         votesCount: 0,
       );
 }
 
-extension StringListPleromaPollOptionExtension on List<String> {
-  List<PleromaPollOption> toPleromaPollOptions() => map(
-        (value) => value.toPleromaPollOption(),
+extension StringListPleromaApiPollOptionExtension on List<String> {
+  List<PleromaApiPollOption> toPleromaApiPollOptions() => map(
+        (value) => value.toPleromaApiPollOption(),
       ).toList();
 }
 
 @JsonSerializable()
-class PleromaPollOption implements IPleromaPollOption {
+class PleromaApiPollOption implements IPleromaApiPollOption {
   @override
   final String title;
 
@@ -152,7 +152,7 @@ class PleromaPollOption implements IPleromaPollOption {
   @JsonKey(name: "votes_count")
   final int votesCount;
 
-  PleromaPollOption({
+  PleromaApiPollOption({
     required this.title,
     required this.votesCount,
   });
@@ -160,7 +160,7 @@ class PleromaPollOption implements IPleromaPollOption {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaPollOption &&
+      other is PleromaApiPollOption &&
           runtimeType == other.runtimeType &&
           title == other.title &&
           votesCount == other.votesCount;
@@ -168,19 +168,19 @@ class PleromaPollOption implements IPleromaPollOption {
   @override
   int get hashCode => title.hashCode ^ votesCount.hashCode;
 
-  factory PleromaPollOption.fromJson(Map<String, dynamic> json) =>
-      _$PleromaPollOptionFromJson(json);
+  factory PleromaApiPollOption.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiPollOptionFromJson(json);
 
-  factory PleromaPollOption.fromJsonString(String jsonString) =>
-      _$PleromaPollOptionFromJson(jsonDecode(jsonString));
+  factory PleromaApiPollOption.fromJsonString(String jsonString) =>
+      _$PleromaApiPollOptionFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaPollOptionToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiPollOptionToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaPollOptionToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiPollOptionToJson(this));
 
   @override
   String toString() {
-    return 'PleromaPollOption{'
+    return 'PleromaApiPollOption{'
         'title: $title, '
         'votesCount: $votesCount'
         '}';
@@ -188,7 +188,7 @@ class PleromaPollOption implements IPleromaPollOption {
 }
 
 @JsonSerializable()
-class PleromaPoll implements IPleromaPoll {
+class PleromaApiPoll implements IPleromaApiPoll {
   @override
   final bool expired;
 
@@ -203,7 +203,7 @@ class PleromaPoll implements IPleromaPoll {
   final bool multiple;
 
   @override
-  final List<PleromaPollOption> options;
+  final List<PleromaApiPollOption> options;
 
   @override
   @JsonKey(name: "own_votes")
@@ -220,7 +220,7 @@ class PleromaPoll implements IPleromaPoll {
   @JsonKey(name: "votes_count")
   final int votesCount;
 
-  PleromaPoll({
+  PleromaApiPoll({
     required this.expired,
     required this.expiresAt,
     required this.id,
@@ -232,19 +232,19 @@ class PleromaPoll implements IPleromaPoll {
     required this.votesCount,
   });
 
-  factory PleromaPoll.fromJson(Map<String, dynamic> json) =>
-      _$PleromaPollFromJson(json);
+  factory PleromaApiPoll.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiPollFromJson(json);
 
-  factory PleromaPoll.fromJsonString(String jsonString) =>
-      _$PleromaPollFromJson(jsonDecode(jsonString));
+  factory PleromaApiPoll.fromJsonString(String jsonString) =>
+      _$PleromaApiPollFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaPollToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiPollToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaPollToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiPollToJson(this));
 
   @override
   String toString() {
-    return 'PleromaPoll{'
+    return 'PleromaApiPoll{'
         'expired: $expired, '
         'expiresAt: $expiresAt, '
         'id: $id, '
@@ -260,14 +260,14 @@ class PleromaPoll implements IPleromaPoll {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaPoll &&
+      other is PleromaApiPoll &&
           runtimeType == other.runtimeType &&
           expired == other.expired &&
           expiresAt == other.expiresAt &&
           id == other.id &&
           multiple == other.multiple &&
-          eq(options, other.options) &&
-          eq(ownVotes, other.ownVotes) &&
+          _listEq(options, other.options) &&
+          _listEq(ownVotes, other.ownVotes) &&
           voted == other.voted &&
           votersCount == other.votersCount &&
           votesCount == other.votesCount;
@@ -285,16 +285,16 @@ class PleromaPoll implements IPleromaPoll {
       votesCount.hashCode;
 }
 
-extension PleromaPostStatusPollExtension on PleromaPostStatusPoll {
-  PleromaPoll toPleromaPoll() {
-    return PleromaPoll(
+extension PleromaPostStatusPollExtension on PleromaApiPostStatusPoll {
+  PleromaApiPoll toPleromaApiPoll() {
+    return PleromaApiPoll(
       id: null,
       expired: false,
       voted: true,
       multiple: multiple,
       options: options
           .map(
-            (option) => PleromaPollOption(
+            (option) => PleromaApiPollOption(
               title: option,
               votesCount: 0,
             ),

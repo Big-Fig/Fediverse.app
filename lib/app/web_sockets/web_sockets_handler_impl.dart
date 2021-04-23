@@ -20,7 +20,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
 
   String get logTag;
 
-  final IWebSocketsChannel<PleromaWebSocketsEvent> webSocketsChannel;
+  final IWebSocketsChannel<PleromaApiWebSocketsEvent> webSocketsChannel;
   final IStatusRepository statusRepository;
   final INotificationRepository notificationRepository;
   final IConversationChatRepository conversationRepository;
@@ -54,9 +54,9 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
 
     addDisposable(
       disposable: webSocketsChannel.listenForEvents(
-        listener: WebSocketChannelListener<PleromaWebSocketsEvent>(
+        listener: WebSocketChannelListener<PleromaApiWebSocketsEvent>(
           listenType: listenType,
-          onEvent: (PleromaWebSocketsEvent event) {
+          onEvent: (PleromaApiWebSocketsEvent event) {
             handleEvent(event);
           },
         ),
@@ -64,7 +64,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     );
   }
 
-  Future handleEvent(PleromaWebSocketsEvent event) async {
+  Future handleEvent(PleromaApiWebSocketsEvent event) async {
     _logger.finest(() => "event $event");
 
     // todo: report bug to pleroma
@@ -74,7 +74,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     }
 
     switch (event.eventType) {
-      case PleromaWebSocketsEventType.update:
+      case PleromaApiWebSocketsEventType.update:
         await statusRepository.upsertRemoteStatusWithAllArguments(
           event.parsePayloadAsStatus(),
           isFromHomeTimeline: isFromHomeTimeline,
@@ -83,12 +83,12 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
           batchTransaction: null,
         );
         break;
-      case PleromaWebSocketsEventType.notification:
+      case PleromaApiWebSocketsEventType.notification:
         var notification = event.parsePayloadAsNotification();
 
         var pleromaNotificationType = notification.typePleroma;
         // refresh to update followRequestCount
-        if (pleromaNotificationType == PleromaNotificationType.followRequest) {
+        if (pleromaNotificationType == PleromaApiNotificationType.followRequest) {
           unawaited(
             myAccountBloc.refreshFromNetwork(
               isNeedPreFetchRelationship: false,
@@ -107,26 +107,26 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
           await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
         }
         break;
-      case PleromaWebSocketsEventType.delete:
+      case PleromaApiWebSocketsEventType.delete:
         var statusRemoteId = event.payload!;
 
         await statusRepository.markStatusAsDeleted(
           statusRemoteId: statusRemoteId,
         );
         break;
-      case PleromaWebSocketsEventType.filtersChanged:
+      case PleromaApiWebSocketsEventType.filtersChanged:
         // nothing
         break;
-      case PleromaWebSocketsEventType.conversation:
+      case PleromaApiWebSocketsEventType.conversation:
         await conversationChatNewMessagesHandlerBloc.handleChatUpdate(
           event.parsePayloadAsConversation(),
         );
         break;
-      case PleromaWebSocketsEventType.pleromaChatUpdate:
+      case PleromaApiWebSocketsEventType.pleromaChatUpdate:
         var chat = event.parsePayloadAsChat();
         await chatNewMessagesHandlerBloc.handleChatUpdate(chat);
         break;
-      case PleromaWebSocketsEventType.unknown:
+      case PleromaApiWebSocketsEventType.unknown:
         // TODO: Handle this case.
         break;
     }

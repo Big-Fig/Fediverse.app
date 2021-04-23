@@ -15,7 +15,7 @@ import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   static DurationDateTimeValueFormFieldBloc createDurationDateTimeLengthBloc(
-    PleromaInstancePollLimits pollLimit,
+    PleromaApiInstancePollLimits pollLimit,
   ) {
     Duration pollMinimumExpiration = pollLimit.minExpirationDurationOrDefault;
 
@@ -23,7 +23,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
     return DurationDateTimeValueFormFieldBloc(
       originValue: DurationDateTime(
-        duration: PleromaInstancePollLimits.defaultPollExpiration,
+        duration: PleromaApiInstancePollLimits.defaultPollExpiration,
         dateTime: null,
       ),
       minDuration: pollMinimumExpiration,
@@ -33,7 +33,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     );
   }
 
-  final PleromaInstancePollLimits pollLimits;
+  final PleromaApiInstancePollLimits pollLimits;
 
   int get pollMaximumOptionsCount => pollLimits.maxOptionsOrDefault;
 

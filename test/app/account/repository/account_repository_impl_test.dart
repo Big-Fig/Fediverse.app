@@ -85,7 +85,7 @@ void main() {
           acct: newAcct,
         ),
       ),
-    ).toPleromaAccount();
+    ).toPleromaApiAccount();
     await accountRepository.updateAppTypeByRemoteType(
       appItem: oldLocalAccount,
       remoteItem: newRemoteAccount,
@@ -116,7 +116,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaAccount(),
+      ).toPleromaApiAccount(),
     );
 
     expect(await accountRepository.countAll(), 1);
@@ -131,7 +131,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaAccount(),
+      ).toPleromaApiAccount(),
     );
     expect(await accountRepository.countAll(), 1);
   });
@@ -144,7 +144,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -161,12 +161,12 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -278,7 +278,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -292,12 +292,12 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -311,7 +311,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -349,7 +349,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -363,12 +363,12 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -382,7 +382,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -420,7 +420,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaAccount()
+        ).toPleromaApiAccount()
       ],
       batchTransaction: null,
     );
@@ -433,12 +433,12 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -476,7 +476,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaAccount()
+        ).toPleromaApiAccount()
       ],
       batchTransaction: null,
     );
@@ -489,12 +489,12 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaAccount(),
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -528,7 +528,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaAccount(),
+      ).toPleromaApiAccount(),
     );
     expect((await query.get()).length, 0);
 
@@ -538,7 +538,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaAccount(),
+      ).toPleromaApiAccount(),
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
     );
@@ -550,7 +550,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaAccount(),
+      ).toPleromaApiAccount(),
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
     );
@@ -563,7 +563,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount2,
         ),
-      ).toPleromaAccount(),
+      ).toPleromaApiAccount(),
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
     );
@@ -820,7 +820,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaAccount(),
+      ).toPleromaApiAccount(),
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
     );
@@ -867,7 +867,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaAccount(),
+      ).toPleromaApiAccount(),
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
     );
@@ -916,8 +916,8 @@ void main() {
     var account1 = await createTestAccount(seed: "seed1");
     var account1Copy = await createTestAccount(seed: "seed1");
 
-    var remoteAccount1 = account1.toPleromaAccount();
-    var remoteAccount1Copy = account1Copy.toPleromaAccount();
+    var remoteAccount1 = account1.toPleromaApiAccount();
+    var remoteAccount1Copy = account1Copy.toPleromaApiAccount();
 
     await accountRepository.batch((batch) {
       accountRepository.insertInRemoteTypeBatch(
@@ -940,8 +940,8 @@ void main() {
     var account1 = await createTestAccount(seed: "seed1");
     var account1Copy = await createTestAccount(seed: "seed1");
 
-    var remoteAccount1 = account1.toPleromaAccount();
-    var remoteAccount1Copy = account1Copy.toPleromaAccount();
+    var remoteAccount1 = account1.toPleromaApiAccount();
+    var remoteAccount1Copy = account1Copy.toPleromaApiAccount();
 
     await accountRepository.insertAllInRemoteType(
       [remoteAccount1, remoteAccount1Copy],

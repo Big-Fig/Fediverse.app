@@ -8,15 +8,15 @@ import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_model.dart';
 abstract class IAuthHostBloc extends IDisposable {
   bool get isHostApplicationRegistered;
 
-  PleromaClientApplication? get hostApplication;
+  PleromaApiClientApplication? get hostApplication;
 
-  Stream<PleromaClientApplication?> get hostApplicationStream;
+  Stream<PleromaApiClientApplication?> get hostApplicationStream;
 
   bool get isHostAccessTokenExist;
 
-  PleromaOAuthToken? get hostAccessToken;
+  PleromaApiOAuthToken? get hostAccessToken;
 
-  Stream<PleromaOAuthToken?> get hostAccessTokenStream;
+  Stream<PleromaApiOAuthToken?> get hostAccessTokenStream;
 
   Future<AuthInstance> loginWithAuthCode(String authCode);
 
@@ -27,7 +27,7 @@ abstract class IAuthHostBloc extends IDisposable {
   Future<AuthInstance?> launchLoginToAccount();
 
   Future<AuthHostRegistrationResult> registerAccount({
-    required IPleromaAccountRegisterRequest request,
+    required IPleromaApiAccountRegisterRequest request,
   });
 
   Future checkApplicationRegistration();

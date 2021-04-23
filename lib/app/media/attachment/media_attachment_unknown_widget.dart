@@ -11,7 +11,7 @@ class MediaAttachmentUnknownWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var mediaAttachment = Provider.of<IPleromaMediaAttachment>(context);
+    var mediaAttachment = Provider.of<IPleromaApiMediaAttachment>(context);
 
     return InkWell(
       onTap: () {

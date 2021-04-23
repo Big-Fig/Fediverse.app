@@ -40,7 +40,7 @@ abstract class IStatusListItemTimelineBloc implements IDisposable {
 
   bool get collapsible;
 
-  IPleromaMediaAttachment? get initialMediaAttachment;
+  IPleromaApiMediaAttachment? get initialMediaAttachment;
 
   bool get isFirstReplyAndDisplayReplyToStatus;
 

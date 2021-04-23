@@ -18,7 +18,7 @@ class RemoteAccountStatusesPinnedOnlyNetworkOnlyListBloc
 
   RemoteAccountStatusesPinnedOnlyNetworkOnlyListBloc({
     required IAccount? account,
-    required IPleromaAccountService pleromaAccountService,
+    required IPleromaApiAccountService pleromaAccountService,
     required this.instanceUri,
   }) : super(
           account: account,
@@ -31,7 +31,7 @@ class RemoteAccountStatusesPinnedOnlyNetworkOnlyListBloc
     required Uri instanceUri,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
-    var pleromaAccountService = PleromaAccountService(
+    var pleromaAccountService = PleromaApiAccountService(
       restService: remoteInstanceBloc.pleromaRestService,
     );
 

@@ -16,7 +16,7 @@ void main() {
   var accessToken = "accessToken";
 
   late IWebSocketsService webSocketsService;
-  late PleromaWebSocketsService pleromaWebSocketsService;
+  late PleromaApiWebSocketsService pleromaWebSocketsService;
   late MockConnectionService connectionServiceMock;
 
   setUp(() async {
@@ -28,7 +28,7 @@ void main() {
 
     connectionServiceMock = MockConnectionService();
 
-    pleromaWebSocketsService = PleromaWebSocketsService(
+    pleromaWebSocketsService = PleromaApiWebSocketsService(
       webSocketsService: webSocketsService,
       baseUri: Uri.parse(host),
       accessToken: accessToken,

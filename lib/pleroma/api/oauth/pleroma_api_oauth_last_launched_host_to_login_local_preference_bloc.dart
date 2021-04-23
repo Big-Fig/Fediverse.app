@@ -2,13 +2,13 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
+abstract class IPleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
     implements StringNullableLocalPreferenceBloc {
-  static IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc of(
+  static IPleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
+      Provider.of<IPleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
         context,
         listen: listen,
       );

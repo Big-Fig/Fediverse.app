@@ -3,7 +3,7 @@ import 'package:fedi/app/chat/conversation/status/list/cached/conversation_chat_
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:flutter/widgets.dart';
@@ -14,7 +14,7 @@ var _logger =
 
 class ConversationChatStatusListConversationApiBloc
     extends ConversationChatStatusListBloc {
-  final IPleromaConversationService pleromaConversationService;
+  final IPleromaApiConversationService pleromaConversationService;
 
   ConversationChatStatusListConversationApiBloc({
     required IConversationChat? conversation,
@@ -39,7 +39,7 @@ class ConversationChatStatusListConversationApiBloc
     var remoteStatuses =
         await pleromaConversationService.getConversationStatuses(
       conversationRemoteId: conversation!.remoteId,
-      pagination: PleromaPaginationRequest(
+      pagination: PleromaApiPaginationRequest(
         limit: limit,
         sinceId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
@@ -60,7 +60,7 @@ class ConversationChatStatusListConversationApiBloc
       ConversationChatStatusListConversationApiBloc(
         conversation: conversation,
         pleromaConversationService:
-            IPleromaConversationService.of(context, listen: false),
+            IPleromaApiConversationService.of(context, listen: false),
         statusRepository: IStatusRepository.of(
           context,
           listen: false,

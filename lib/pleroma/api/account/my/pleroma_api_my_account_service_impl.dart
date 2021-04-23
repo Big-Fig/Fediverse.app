@@ -5,7 +5,7 @@ import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_exception.dar
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_model.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
@@ -17,14 +17,14 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-var _logger = Logger("pleroma_my_account_service_impl.dart");
+var _logger = Logger("pleroma_api_my_account_service_impl.dart");
 
-class PleromaMyAccountService extends DisposableOwner
-    implements IPleromaMyAccountService {
+class PleromaApiMyAccountService extends DisposableOwner
+    implements IPleromaApiMyAccountService {
   final verifyProfileRelativeUrlPath = "/api/v1/accounts/verify_credentials";
   final editProfileRelativeUrlPath = "/api/v1/accounts/update_credentials";
   @override
-  final IPleromaAuthRestService restService;
+  final IPleromaApiAuthRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -39,50 +39,50 @@ class PleromaMyAccountService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaMyAccountService({required this.restService});
+  PleromaApiMyAccountService({required this.restService});
 
-  IPleromaMyAccount parseMyAccountResponse(Response httpResponse) {
+  IPleromaApiMyAccount parseMyAccountResponse(Response httpResponse) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaMyAccount.fromJsonString(
+      return PleromaApiMyAccount.fromJsonString(
         httpResponse.body,
       );
     } else {
-      throw PleromaMyAccountException(
+      throw PleromaApiMyAccountException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  IPleromaAccountRelationship parseAccountRelationshipResponse(
+  IPleromaApiAccountRelationship parseAccountRelationshipResponse(
     Response httpResponse,
   ) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaAccountRelationship.fromJsonString(httpResponse.body);
+      return PleromaApiAccountRelationship.fromJsonString(httpResponse.body);
     } else {
-      throw PleromaMyAccountException(
+      throw PleromaApiMyAccountException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  List<IPleromaStatus> parseStatusListResponse(Response httpResponse) {
+  List<IPleromaApiStatus> parseStatusListResponse(Response httpResponse) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaStatus.listFromJsonString(httpResponse.body);
+      return PleromaApiStatus.listFromJsonString(httpResponse.body);
     } else {
-      throw PleromaMyAccountException(
+      throw PleromaApiMyAccountException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  List<IPleromaAccount> parseAccountListResponse(Response httpResponse) {
+  List<IPleromaApiAccount> parseAccountListResponse(Response httpResponse) {
     if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaAccount.listFromJsonString(httpResponse.body);
+      return PleromaApiAccount.listFromJsonString(httpResponse.body);
     } else {
-      throw PleromaMyAccountException(
+      throw PleromaApiMyAccountException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -102,7 +102,7 @@ class PleromaMyAccountService extends DisposableOwner
       }
       return result;
     } else {
-      throw PleromaMyAccountException(
+      throw PleromaApiMyAccountException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -110,8 +110,8 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaMyAccount> updateCredentials(
-    IPleromaMyAccountEdit data,
+  Future<IPleromaApiMyAccount> updateCredentials(
+    IPleromaApiMyAccountEdit data,
   ) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.patch(
@@ -124,8 +124,8 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaMyAccount> updateFiles(
-    PleromaMyAccountFilesRequest accountFiles,
+  Future<IPleromaApiMyAccount> updateFiles(
+    PleromaApiMyAccountFilesRequest accountFiles,
   ) async {
     _logger.finest(() => "updateFiles $accountFiles");
     var httpResponse = await restService.uploadFileMultipartRequest(
@@ -144,7 +144,7 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaMyAccount> verifyCredentials() async {
+  Future<IPleromaApiMyAccount> verifyCredentials() async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(relativePath: verifyProfileRelativeUrlPath),
     );
@@ -153,8 +153,8 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaStatus>> getBookmarks({
-    IPleromaPaginationRequest? pagination,
+  Future<List<IPleromaApiStatus>> getBookmarks({
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -167,8 +167,8 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaStatus>> getFavourites({
-    IPleromaPaginationRequest? pagination,
+  Future<List<IPleromaApiStatus>> getFavourites({
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -181,8 +181,8 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaAccount>> getFollowRequests({
-    IPleromaPaginationRequest? pagination,
+  Future<List<IPleromaApiAccount>> getFollowRequests({
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -200,7 +200,7 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaAccountRelationship> acceptFollowRequest({
+  Future<IPleromaApiAccountRelationship> acceptFollowRequest({
     required String accountRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -217,7 +217,7 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaAccountRelationship> rejectFollowRequest({
+  Future<IPleromaApiAccountRelationship> rejectFollowRequest({
     required String accountRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -235,7 +235,7 @@ class PleromaMyAccountService extends DisposableOwner
 
   @override
   Future<List<String>> getDomainBlocks({
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -248,8 +248,8 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaAccount>> getAccountBlocks({
-    IPleromaPaginationRequest? pagination,
+  Future<List<IPleromaApiAccount>> getAccountBlocks({
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -262,8 +262,8 @@ class PleromaMyAccountService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaAccount>> getAccountMutes({
-    IPleromaPaginationRequest? pagination,
+  Future<List<IPleromaApiAccount>> getAccountMutes({
+    IPleromaApiPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(

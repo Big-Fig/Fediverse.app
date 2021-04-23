@@ -1,7 +1,7 @@
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_model.dart';
 
-class PleromaEmojiException extends PleromaRestException {
-  PleromaEmojiException({
+class PleromaApiEmojiException extends PleromaApiRestException {
+  PleromaApiEmojiException({
     required int statusCode,
     required String body,
   }) : super(

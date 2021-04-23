@@ -6,21 +6,22 @@ part of 'pleroma_api_status_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaScheduledStatus _$PleromaScheduledStatusFromJson(
+PleromaApiScheduledStatus _$PleromaApiScheduledStatusFromJson(
     Map<String, dynamic> json) {
-  return PleromaScheduledStatus(
+  return PleromaApiScheduledStatus(
     id: json['id'] as String,
     mediaAttachments: (json['media_attachments'] as List<dynamic>?)
-        ?.map((e) => PleromaMediaAttachment.fromJson(e as Map<String, dynamic>))
+        ?.map((e) =>
+            PleromaApiMediaAttachment.fromJson(e as Map<String, dynamic>))
         .toList(),
-    params: PleromaScheduledStatusParams.fromJson(
+    params: PleromaApiScheduledStatusParams.fromJson(
         json['params'] as Map<String, dynamic>),
     scheduledAt: DateTime.parse(json['scheduled_at'] as String),
   );
 }
 
-Map<String, dynamic> _$PleromaScheduledStatusToJson(
-        PleromaScheduledStatus instance) =>
+Map<String, dynamic> _$PleromaApiScheduledStatusToJson(
+        PleromaApiScheduledStatus instance) =>
     <String, dynamic>{
       'id': instance.id,
       'media_attachments': instance.mediaAttachments,
@@ -28,9 +29,9 @@ Map<String, dynamic> _$PleromaScheduledStatusToJson(
       'scheduled_at': instance.scheduledAt.toIso8601String(),
     };
 
-PleromaScheduledStatusParams _$PleromaScheduledStatusParamsFromJson(
+PleromaApiScheduledStatusParams _$PleromaApiScheduledStatusParamsFromJson(
     Map<String, dynamic> json) {
-  return PleromaScheduledStatusParams(
+  return PleromaApiScheduledStatusParams(
     text: json['text'] as String?,
     mediaIds:
         (json['media_ids'] as List<dynamic>?)?.map((e) => e as String).toList(),
@@ -40,7 +41,8 @@ PleromaScheduledStatusParams _$PleromaScheduledStatusParamsFromJson(
     scheduledAt: DateTime.parse(json['scheduled_at'] as String),
     poll: json['poll'] == null
         ? null
-        : PleromaPostStatusPoll.fromJson(json['poll'] as Map<String, dynamic>),
+        : PleromaApiPostStatusPoll.fromJson(
+            json['poll'] as Map<String, dynamic>),
     idempotency: json['idempotency'] as String?,
     inReplyToId: json['in_reply_to_id'] as String?,
     applicationId: json['application_id'],
@@ -51,8 +53,8 @@ PleromaScheduledStatusParams _$PleromaScheduledStatusParamsFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaScheduledStatusParamsToJson(
-        PleromaScheduledStatusParams instance) =>
+Map<String, dynamic> _$PleromaApiScheduledStatusParamsToJson(
+        PleromaApiScheduledStatusParams instance) =>
     <String, dynamic>{
       'expiresInSeconds': instance.expiresInSeconds,
       'text': instance.text,
@@ -70,8 +72,8 @@ Map<String, dynamic> _$PleromaScheduledStatusParamsToJson(
       'to': instance.to,
     };
 
-PleromaStatus _$PleromaStatusFromJson(Map<String, dynamic> json) {
-  return PleromaStatus(
+PleromaApiStatus _$PleromaApiStatusFromJson(Map<String, dynamic> json) {
+  return PleromaApiStatus(
     id: json['id'] as String,
     createdAt: DateTime.parse(json['created_at'] as String),
     inReplyToId: json['in_reply_to_id'] as String?,
@@ -91,40 +93,42 @@ PleromaStatus _$PleromaStatusFromJson(Map<String, dynamic> json) {
     content: json['content'] as String?,
     reblog: json['reblog'] == null
         ? null
-        : PleromaStatus.fromJson(json['reblog'] as Map<String, dynamic>),
+        : PleromaApiStatus.fromJson(json['reblog'] as Map<String, dynamic>),
     application: json['application'] == null
         ? null
-        : PleromaApplication.fromJson(
+        : PleromaApiApplication.fromJson(
             json['application'] as Map<String, dynamic>),
-    account: PleromaAccount.fromJson(json['account'] as Map<String, dynamic>),
+    account:
+        PleromaApiAccount.fromJson(json['account'] as Map<String, dynamic>),
     mediaAttachments: (json['media_attachments'] as List<dynamic>?)
-        ?.map((e) => PleromaMediaAttachment.fromJson(e as Map<String, dynamic>))
+        ?.map((e) =>
+            PleromaApiMediaAttachment.fromJson(e as Map<String, dynamic>))
         .toList(),
     mentions: (json['mentions'] as List<dynamic>?)
-        ?.map((e) => PleromaMention.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => PleromaApiMention.fromJson(e as Map<String, dynamic>))
         .toList(),
     tags: (json['tags'] as List<dynamic>?)
-        ?.map((e) => PleromaTag.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => PleromaApiTag.fromJson(e as Map<String, dynamic>))
         .toList(),
     emojis: (json['emojis'] as List<dynamic>?)
-        ?.map((e) => PleromaEmoji.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => PleromaApiEmoji.fromJson(e as Map<String, dynamic>))
         .toList(),
     poll: json['poll'] == null
         ? null
-        : PleromaPoll.fromJson(json['poll'] as Map<String, dynamic>),
+        : PleromaApiPoll.fromJson(json['poll'] as Map<String, dynamic>),
     card: json['card'] == null
         ? null
-        : PleromaCard.fromJson(json['card'] as Map<String, dynamic>),
+        : PleromaApiCard.fromJson(json['card'] as Map<String, dynamic>),
     pleroma: json['pleroma'] == null
         ? null
-        : PleromaStatusPleromaPart.fromJson(
+        : PleromaApiStatusPleromaPart.fromJson(
             json['pleroma'] as Map<String, dynamic>),
     visibility: json['visibility'] as String,
     language: json['language'] as String?,
   );
 }
 
-Map<String, dynamic> _$PleromaStatusToJson(PleromaStatus instance) =>
+Map<String, dynamic> _$PleromaApiStatusToJson(PleromaApiStatus instance) =>
     <String, dynamic>{
       'id': instance.id,
       'created_at': instance.createdAt.toIso8601String(),
@@ -158,32 +162,33 @@ Map<String, dynamic> _$PleromaStatusToJson(PleromaStatus instance) =>
       'visibility': instance.visibility,
     };
 
-PleromaStatusPleromaPart _$PleromaStatusPleromaPartFromJson(
+PleromaApiStatusPleromaPart _$PleromaApiStatusPleromaPartFromJson(
     Map<String, dynamic> json) {
-  return PleromaStatusPleromaPart(
+  return PleromaApiStatusPleromaPart(
     content: json['content'] == null
         ? null
-        : PleromaContent.fromJson(json['content'] as Map<String, dynamic>),
+        : PleromaApiContent.fromJson(json['content'] as Map<String, dynamic>),
     conversationId: json['conversation_id'] as int?,
     directConversationId: json['direct_conversation_id'] as int?,
     inReplyToAccountAcct: json['in_reply_to_account_acct'] as String?,
     local: json['local'] as bool?,
     spoilerText: json['spoiler_text'] == null
         ? null
-        : PleromaContent.fromJson(json['spoiler_text'] as Map<String, dynamic>),
+        : PleromaApiContent.fromJson(
+            json['spoiler_text'] as Map<String, dynamic>),
     expiresAt: json['expires_at'] == null
         ? null
         : DateTime.parse(json['expires_at'] as String),
     threadMuted: json['thread_muted'] as bool?,
     emojiReactions: (json['emoji_reactions'] as List<dynamic>?)
         ?.map((e) =>
-            PleromaStatusEmojiReaction.fromJson(e as Map<String, dynamic>))
+            PleromaApiStatusEmojiReaction.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
 
-Map<String, dynamic> _$PleromaStatusPleromaPartToJson(
-        PleromaStatusPleromaPart instance) =>
+Map<String, dynamic> _$PleromaApiStatusPleromaPartToJson(
+        PleromaApiStatusPleromaPart instance) =>
     <String, dynamic>{
       'content': instance.content?.toJson(),
       'conversation_id': instance.conversationId,
@@ -197,9 +202,9 @@ Map<String, dynamic> _$PleromaStatusPleromaPartToJson(
           instance.emojiReactions?.map((e) => e.toJson()).toList(),
     };
 
-PleromaPostStatusPoll _$PleromaPostStatusPollFromJson(
+PleromaApiPostStatusPoll _$PleromaApiPostStatusPollFromJson(
     Map<String, dynamic> json) {
-  return PleromaPostStatusPoll(
+  return PleromaApiPostStatusPoll(
     expiresInSeconds: json['expires_in'] as int,
     hideTotals: json['hide_totals'] as bool,
     multiple: json['multiple'] as bool,
@@ -208,8 +213,8 @@ PleromaPostStatusPoll _$PleromaPostStatusPollFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaPostStatusPollToJson(
-        PleromaPostStatusPoll instance) =>
+Map<String, dynamic> _$PleromaApiPostStatusPollToJson(
+        PleromaApiPostStatusPoll instance) =>
     <String, dynamic>{
       'expires_in': instance.expiresInSeconds,
       'hide_totals': instance.hideTotals,
@@ -217,8 +222,8 @@ Map<String, dynamic> _$PleromaPostStatusPollToJson(
       'options': instance.options,
     };
 
-PleromaPostStatus _$PleromaPostStatusFromJson(Map<String, dynamic> json) {
-  return PleromaPostStatus(
+PleromaApiPostStatus _$PleromaApiPostStatusFromJson(Map<String, dynamic> json) {
+  return PleromaApiPostStatus(
     contentType: json['content_type'] as String?,
     expiresInSeconds: json['expires_in'] as int?,
     inReplyToConversationId: json['in_reply_to_conversation_id'] as String?,
@@ -229,7 +234,8 @@ PleromaPostStatus _$PleromaPostStatusFromJson(Map<String, dynamic> json) {
         (json['media_ids'] as List<dynamic>?)?.map((e) => e as String).toList(),
     poll: json['poll'] == null
         ? null
-        : PleromaPostStatusPoll.fromJson(json['poll'] as Map<String, dynamic>),
+        : PleromaApiPostStatusPoll.fromJson(
+            json['poll'] as Map<String, dynamic>),
     preview: json['preview'] as bool?,
     sensitive: json['sensitive'] as bool,
     spoilerText: json['spoiler_text'] as String?,
@@ -238,7 +244,8 @@ PleromaPostStatus _$PleromaPostStatusFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaPostStatusToJson(PleromaPostStatus instance) {
+Map<String, dynamic> _$PleromaApiPostStatusToJson(
+    PleromaApiPostStatus instance) {
   final val = <String, dynamic>{
     'content_type': instance.contentType,
     'expires_in': instance.expiresInSeconds,
@@ -264,9 +271,9 @@ Map<String, dynamic> _$PleromaPostStatusToJson(PleromaPostStatus instance) {
   return val;
 }
 
-PleromaScheduleStatus _$PleromaScheduleStatusFromJson(
+PleromaApiScheduleStatus _$PleromaApiScheduleStatusFromJson(
     Map<String, dynamic> json) {
-  return PleromaScheduleStatus(
+  return PleromaApiScheduleStatus(
     contentType: json['content_type'] as String?,
     expiresInSeconds: json['expires_in'] as int?,
     inReplyToConversationId: json['in_reply_to_conversation_id'] as String?,
@@ -277,7 +284,8 @@ PleromaScheduleStatus _$PleromaScheduleStatusFromJson(
         (json['media_ids'] as List<dynamic>?)?.map((e) => e as String).toList(),
     poll: json['poll'] == null
         ? null
-        : PleromaPostStatusPoll.fromJson(json['poll'] as Map<String, dynamic>),
+        : PleromaApiPostStatusPoll.fromJson(
+            json['poll'] as Map<String, dynamic>),
     preview: json['preview'] as bool?,
     sensitive: json['sensitive'] as bool,
     spoilerText: json['spoiler_text'] as String?,
@@ -287,8 +295,8 @@ PleromaScheduleStatus _$PleromaScheduleStatusFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaScheduleStatusToJson(
-        PleromaScheduleStatus instance) =>
+Map<String, dynamic> _$PleromaApiScheduleStatusToJson(
+        PleromaApiScheduleStatus instance) =>
     <String, dynamic>{
       'content_type': instance.contentType,
       'expires_in': instance.expiresInSeconds,
@@ -304,23 +312,23 @@ Map<String, dynamic> _$PleromaScheduleStatusToJson(
       'status': instance.status,
       'to': instance.to,
       'scheduled_at':
-          PleromaScheduleStatus.toUTCIsoString(instance.scheduledAt),
+          PleromaApiScheduleStatus.toUTCIsoString(instance.scheduledAt),
     };
 
-PleromaStatusEmojiReaction _$PleromaStatusEmojiReactionFromJson(
+PleromaApiStatusEmojiReaction _$PleromaApiStatusEmojiReactionFromJson(
     Map<String, dynamic> json) {
-  return PleromaStatusEmojiReaction(
+  return PleromaApiStatusEmojiReaction(
     name: json['name'] as String,
     count: json['count'] as int,
     me: json['me'] as bool,
     accounts: (json['accounts'] as List<dynamic>?)
-        ?.map((e) => PleromaAccount.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => PleromaApiAccount.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
 
-Map<String, dynamic> _$PleromaStatusEmojiReactionToJson(
-        PleromaStatusEmojiReaction instance) =>
+Map<String, dynamic> _$PleromaApiStatusEmojiReactionToJson(
+        PleromaApiStatusEmojiReaction instance) =>
     <String, dynamic>{
       'name': instance.name,
       'count': instance.count,

@@ -18,7 +18,7 @@ const _cardBorderRadius = 8.0;
 class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaCard?>(context);
+    var card = Provider.of<IPleromaApiCard?>(context);
 
     if (card == null) {
       return const SizedBox.shrink();
@@ -27,7 +27,7 @@ class CardWidget extends StatelessWidget {
     var isHaveContent = card.isHaveContent;
     var isHaveImage = card.isHaveImage;
 
-    return ProxyProvider<IPleromaCard?, IPleromaCard>(
+    return ProxyProvider<IPleromaApiCard?, IPleromaApiCard>(
       update: (context, value, previous) => value!,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
@@ -69,7 +69,7 @@ class _CardContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaCard>(context);
+    var card = Provider.of<IPleromaApiCard>(context);
 
     return Expanded(
       child: Container(
@@ -107,7 +107,7 @@ class _CardImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaCard>(context);
+    var card = Provider.of<IPleromaApiCard>(context);
 
     return IFilesCacheService.of(context).createCachedNetworkImageWidget(
       width: _cardWithContentImageSize,
@@ -131,7 +131,7 @@ class _CardProviderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaCard>(context);
+    var card = Provider.of<IPleromaApiCard>(context);
 
     return Container(
       child: Text(
@@ -150,7 +150,7 @@ class _CardTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaCard>(context);
+    var card = Provider.of<IPleromaApiCard>(context);
 
     return Text(
       card.title!,
@@ -169,7 +169,7 @@ class _CardDescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaCard>(context);
+    var card = Provider.of<IPleromaApiCard>(context);
 
     return Expanded(
       child: Text(

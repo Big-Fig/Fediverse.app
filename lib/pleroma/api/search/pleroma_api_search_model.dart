@@ -8,33 +8,33 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_search_model.g.dart';
 
-abstract class IPleromaSearchRequest extends IMastodonApiSearchRequest {
+abstract class IPleromaApiSearchRequest extends IMastodonApiSearchRequest {
   Map<String, dynamic> toJson();
 }
 
-abstract class IPleromaSearchResult extends IMastodonSearchResult {
+abstract class IPleromaApiSearchResult extends IMastodonSearchResult {
   @override
-  List<IPleromaAccount> get accounts;
+  List<IPleromaApiAccount> get accounts;
 
   @override
-  List<IPleromaStatus> get statuses;
+  List<IPleromaApiStatus> get statuses;
 
   @override
-  List<IPleromaTag> get hashtags;
+  List<IPleromaApiTag> get hashtags;
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaSearchResult extends IPleromaSearchResult {
+class PleromaApiSearchResult extends IPleromaApiSearchResult {
   @override
-  List<PleromaAccount> accounts;
+  final List<PleromaApiAccount> accounts;
 
   @override
-  List<PleromaTag> hashtags;
+  final List<PleromaApiTag> hashtags;
 
   @override
-  List<PleromaStatus> statuses;
+  final List<PleromaApiStatus> statuses;
 
-  PleromaSearchResult({
+  PleromaApiSearchResult({
     required this.accounts,
     required this.hashtags,
     required this.statuses,
@@ -43,7 +43,7 @@ class PleromaSearchResult extends IPleromaSearchResult {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaSearchResult &&
+      other is PleromaApiSearchResult &&
           runtimeType == other.runtimeType &&
           accounts == other.accounts &&
           hashtags == other.hashtags &&
@@ -54,20 +54,20 @@ class PleromaSearchResult extends IPleromaSearchResult {
 
   @override
   String toString() {
-    return 'PleromaSearchResult{'
+    return 'PleromaApiSearchResult{'
         'accounts: $accounts, '
         'hashtags: $hashtags, '
         'statuses: $statuses'
         '}';
   }
 
-  factory PleromaSearchResult.fromJson(Map<String, dynamic> json) =>
-      _$PleromaSearchResultFromJson(json);
+  factory PleromaApiSearchResult.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiSearchResultFromJson(json);
 
-  factory PleromaSearchResult.fromJsonString(String jsonString) =>
-      _$PleromaSearchResultFromJson(jsonDecode(jsonString));
+  factory PleromaApiSearchResult.fromJsonString(String jsonString) =>
+      _$PleromaApiSearchResultFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaSearchResultToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiSearchResultToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaSearchResultToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiSearchResultToJson(this));
 }

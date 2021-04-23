@@ -4,13 +4,13 @@ import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
 
 class TimelineSettingsOnlyInCustomListFormFieldBloc
-    extends ValueFormFieldBloc<IPleromaList?>
+    extends ValueFormFieldBloc<IPleromaApiList?>
     implements ITimelineSettingsOnlyInCustomListFormFieldBloc {
   TimelineSettingsOnlyInCustomListFormFieldBloc({
     bool isNullValuePossible = true,
-    required IPleromaList? originValue,
+    required IPleromaApiList? originValue,
     bool isEnabled = true,
-    List<FormValueFieldValidation<IPleromaList>> validators = const [],
+    List<FormValueFieldValidation<IPleromaApiList>> validators = const [],
   }) : super(
           originValue: originValue,
           isEnabled: isEnabled,

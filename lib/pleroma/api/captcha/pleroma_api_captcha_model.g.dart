@@ -6,8 +6,8 @@ part of 'pleroma_api_captcha_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaCaptcha _$PleromaCaptchaFromJson(Map<String, dynamic> json) {
-  return PleromaCaptcha(
+PleromaApiCaptcha _$PleromaApiCaptchaFromJson(Map<String, dynamic> json) {
+  return PleromaApiCaptcha(
     answerData: json['answer_data'] as String?,
     secondsValid: json['seconds_valid'] as int?,
     token: json['token'] as String?,
@@ -16,7 +16,7 @@ PleromaCaptcha _$PleromaCaptchaFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaCaptchaToJson(PleromaCaptcha instance) =>
+Map<String, dynamic> _$PleromaApiCaptchaToJson(PleromaApiCaptcha instance) =>
     <String, dynamic>{
       'answer_data': instance.answerData,
       'seconds_valid': instance.secondsValid,

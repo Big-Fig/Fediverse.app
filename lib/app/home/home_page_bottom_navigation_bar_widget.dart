@@ -124,8 +124,8 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
               context,
               listen: false,
             ),
-            excludeTypes: <PleromaNotificationType>[
-              PleromaNotificationType.pleromaChatMention,
+            excludeTypes: <PleromaApiNotificationType>[
+              PleromaApiNotificationType.pleromaChatMention,
             ],
           ),
           child: FediBoolBadgeWidget(

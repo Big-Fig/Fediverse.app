@@ -5,13 +5,13 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_announcement_model.g.dart';
 
-abstract class IPleromaAnnouncement implements IMastodonApiAnnouncement {}
+abstract class IPleromaApiAnnouncement implements IMastodonApiAnnouncement {}
 
-abstract class IPleromaAnnouncementReaction
+abstract class IPleromaApiAnnouncementReaction
     implements IMastodonApiAnnouncementReaction {}
 
 @JsonSerializable(explicitToJson: true)
-class PleromaAnnouncement implements IPleromaAnnouncement {
+class PleromaApiAnnouncement implements IPleromaApiAnnouncement {
   @override
   final String? id;
 
@@ -37,7 +37,7 @@ class PleromaAnnouncement implements IPleromaAnnouncement {
   final bool? read;
 
   @override
-  final List<PleromaAnnouncementReaction>? reactions;
+  final List<PleromaApiAnnouncementReaction>? reactions;
 
   // nullable
   @override
@@ -54,7 +54,7 @@ class PleromaAnnouncement implements IPleromaAnnouncement {
   @JsonKey(name: "ends_at")
   final DateTime? endsAt;
 
-  PleromaAnnouncement({
+  PleromaApiAnnouncement({
     required this.id,
     required this.text,
     required this.published,
@@ -71,7 +71,7 @@ class PleromaAnnouncement implements IPleromaAnnouncement {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaAnnouncement &&
+      other is PleromaApiAnnouncement &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           text == other.text &&
@@ -101,31 +101,39 @@ class PleromaAnnouncement implements IPleromaAnnouncement {
 
   @override
   String toString() {
-    return 'PleromaAnnouncement{id: $id, text: $text, published: $published,'
-        ' allDay: $allDay, createdAt: $createdAt,'
-        ' updatedAt: $updatedAt, read: $read,'
-        ' reactions: $reactions, scheduledAt: $scheduledAt,'
-        ' startsAt: $startsAt, endsAt: $endsAt}';
+    return 'PleromaApiAnnouncement{'
+        'id: $id, '
+        'text: $text, '
+        'published: $published, '
+        'allDay: $allDay, '
+        'createdAt: $createdAt, '
+        'updatedAt: $updatedAt, '
+        'read: $read, '
+        'reactions: $reactions, '
+        'scheduledAt: $scheduledAt, '
+        'startsAt: $startsAt, '
+        'endsAt: $endsAt'
+        '}';
   }
 
-  factory PleromaAnnouncement.fromJson(Map<String, dynamic> json) =>
-      _$PleromaAnnouncementFromJson(json);
+  factory PleromaApiAnnouncement.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiAnnouncementFromJson(json);
 
-  factory PleromaAnnouncement.fromJsonString(String jsonString) =>
-      _$PleromaAnnouncementFromJson(jsonDecode(jsonString));
+  factory PleromaApiAnnouncement.fromJsonString(String jsonString) =>
+      _$PleromaApiAnnouncementFromJson(jsonDecode(jsonString));
 
-  static List<PleromaAnnouncement> listFromJsonString(String str) =>
-      List<PleromaAnnouncement>.from(
-        json.decode(str).map((x) => PleromaAnnouncement.fromJson(x)),
+  static List<PleromaApiAnnouncement> listFromJsonString(String str) =>
+      List<PleromaApiAnnouncement>.from(
+        json.decode(str).map((x) => PleromaApiAnnouncement.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$PleromaAnnouncementToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiAnnouncementToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaAnnouncementToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaApiAnnouncementToJson(this));
 }
 
 @JsonSerializable()
-class PleromaAnnouncementReaction implements IPleromaAnnouncementReaction {
+class PleromaApiAnnouncementReaction implements IPleromaApiAnnouncementReaction {
   @override
   final String? name;
 
@@ -142,7 +150,7 @@ class PleromaAnnouncementReaction implements IPleromaAnnouncementReaction {
   @JsonKey(name: "static_url")
   final String? staticUrl;
 
-  PleromaAnnouncementReaction({
+  PleromaApiAnnouncementReaction({
     required this.name,
     required this.count,
     required this.me,
@@ -153,7 +161,7 @@ class PleromaAnnouncementReaction implements IPleromaAnnouncementReaction {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaAnnouncementReaction &&
+      other is PleromaApiAnnouncementReaction &&
           runtimeType == other.runtimeType &&
           name == other.name &&
           count == other.count &&
@@ -171,24 +179,28 @@ class PleromaAnnouncementReaction implements IPleromaAnnouncementReaction {
 
   @override
   String toString() {
-    return 'PleromaAnnouncementReaction{name: $name,'
-        ' count: $count, me: $me, url: $url,'
-        ' staticUrl: $staticUrl}';
+    return 'PleromaApiAnnouncementReaction{'
+        'name: $name,'
+        'count: $count, '
+        'me: $me, '
+        'url: $url, '
+        'staticUrl: $staticUrl'
+        '}';
   }
 
-  factory PleromaAnnouncementReaction.fromJson(Map<String, dynamic> json) =>
-      _$PleromaAnnouncementReactionFromJson(json);
+  factory PleromaApiAnnouncementReaction.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiAnnouncementReactionFromJson(json);
 
-  factory PleromaAnnouncementReaction.fromJsonString(String jsonString) =>
-      _$PleromaAnnouncementReactionFromJson(jsonDecode(jsonString));
+  factory PleromaApiAnnouncementReaction.fromJsonString(String jsonString) =>
+      _$PleromaApiAnnouncementReactionFromJson(jsonDecode(jsonString));
 
-  static List<PleromaAnnouncementReaction> listFromJsonString(String str) =>
-      List<PleromaAnnouncementReaction>.from(
-        json.decode(str).map((x) => PleromaAnnouncementReaction.fromJson(x)),
+  static List<PleromaApiAnnouncementReaction> listFromJsonString(String str) =>
+      List<PleromaApiAnnouncementReaction>.from(
+        json.decode(str).map((x) => PleromaApiAnnouncementReaction.fromJson(x)),
       );
 
-  Map<String, dynamic> toJson() => _$PleromaAnnouncementReactionToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiAnnouncementReactionToJson(this);
 
   String toJsonString() =>
-      jsonEncode(_$PleromaAnnouncementReactionToJson(this));
+      jsonEncode(_$PleromaApiAnnouncementReactionToJson(this));
 }

@@ -23,7 +23,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     implements INotificationPushLoaderBloc {
   final AuthInstance currentInstance;
   final IPushHandlerBloc pushHandlerBloc;
-  final IPleromaNotificationService pleromaNotificationService;
+  final IPleromaApiNotificationService pleromaNotificationService;
 
   final INotificationRepository notificationRepository;
   final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
@@ -71,7 +71,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   // todo: refactor
   // ignore: long-method
   Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
-    PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
 
     var isForCurrentInstance = currentInstance.isInstanceWithHostAndAcct(
       host: pleromaPushMessage.server,
@@ -132,7 +132,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       var pleromaNotificationType = remoteNotification.typePleroma;
 
       // refresh to update followRequestCount
-      if (pleromaNotificationType == PleromaNotificationType.followRequest) {
+      if (pleromaNotificationType == PleromaApiNotificationType.followRequest) {
         unawaited(
           myAccountBloc.refreshFromNetwork(
             isNeedPreFetchRelationship: false,

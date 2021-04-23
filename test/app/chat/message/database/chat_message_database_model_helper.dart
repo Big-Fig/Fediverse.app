@@ -27,7 +27,7 @@ Future<DbChatMessage> createTestDbChatMessage({
   bool pleromaThreadMuted = false,
   String? remoteId,
   String? chatRemoteId,
-  PleromaCard? card,
+  PleromaApiCard? card,
 }) async {
   DbChatMessage dbChatMessage = DbChatMessage(
     id: null,

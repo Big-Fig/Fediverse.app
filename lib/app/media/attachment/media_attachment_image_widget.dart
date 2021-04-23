@@ -15,7 +15,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var mediaAttachment = Provider.of<IPleromaMediaAttachment>(context);
+    var mediaAttachment = Provider.of<IPleromaApiMediaAttachment>(context);
 
     return Container(
       color: IFediUiColorTheme.of(context).ultraLightGrey,

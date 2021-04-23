@@ -23,7 +23,7 @@ import 'package:pedantic/pedantic.dart';
 Future goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
   BuildContext context, {
   required IStatus remoteInstanceStatus,
-  required IPleromaMediaAttachment? remoteInstanceInitialMediaAttachment,
+  required IPleromaApiMediaAttachment? remoteInstanceInitialMediaAttachment,
 }) {
   return Navigator.push(
     context,
@@ -48,7 +48,7 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
     asyncCode: () async {
       IStatus? result;
       RemoteInstanceBloc? remoteInstanceBloc;
-      PleromaStatusService? pleromaStatusService;
+      PleromaApiStatusService? pleromaStatusService;
       try {
         var instanceUri = localInstanceRemoteStatus!.urlRemoteHostUri;
 
@@ -63,7 +63,7 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
           ),
         );
 
-        pleromaStatusService = PleromaStatusService(
+        pleromaStatusService = PleromaApiStatusService(
           restService: remoteInstanceBloc.pleromaRestService,
         );
 
@@ -84,7 +84,7 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
   IStatus? remoteInstanceStatus = remoteInstanceStatusDialogResult.result;
 
   if (remoteInstanceStatus != null) {
-    IPleromaMediaAttachment? remoteInstanceInitialMediaAttachment;
+    IPleromaApiMediaAttachment? remoteInstanceInitialMediaAttachment;
 
     if (localInstanceRemoteInitialMediaAttachment != null) {
       remoteInstanceInitialMediaAttachment =
@@ -108,7 +108,7 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
 
 MaterialPageRoute createRemoteStatusThreadPageRouteBasedOnRemoteInstanceStatus({
   required IStatus status,
-  required IPleromaMediaAttachment? initialMediaAttachment,
+  required IPleromaApiMediaAttachment? initialMediaAttachment,
 }) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IRemoteInstanceBloc>(

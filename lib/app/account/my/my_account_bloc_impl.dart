@@ -18,7 +18,7 @@ class MyAccountBloc extends IMyAccountBloc {
   static final selfActionError = const SelfActionNotPossibleException();
 
   final IMyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
-  final IPleromaMyAccountService pleromaMyAccountService;
+  final IPleromaApiMyAccountService pleromaMyAccountService;
   final IAccountRepository accountRepository;
 
   @override
@@ -38,7 +38,7 @@ class MyAccountBloc extends IMyAccountBloc {
         (myAccount) {
           if (myAccount != null) {
             accountRepository.upsertInRemoteType(
-              myAccount.toPleromaAccount(),
+              myAccount.toPleromaApiAccount(),
             );
           }
         },
@@ -62,12 +62,12 @@ class MyAccountBloc extends IMyAccountBloc {
   IAccount get account => myAccount!;
 
   @override
-  Future<IPleromaAccountRelationship> toggleBlock() {
+  Future<IPleromaApiAccountRelationship> toggleBlock() {
     throw selfActionError;
   }
 
   @override
-  Future<IPleromaAccountRelationship> toggleFollow() {
+  Future<IPleromaApiAccountRelationship> toggleFollow() {
     throw selfActionError;
   }
 
@@ -89,26 +89,26 @@ class MyAccountBloc extends IMyAccountBloc {
       myAccount!.remoteId == status.account.remoteId;
 
   @override
-  IPleromaAccountRelationship get relationship => throw selfActionError;
+  IPleromaApiAccountRelationship get relationship => throw selfActionError;
 
   @override
-  Stream<IPleromaAccountRelationship> get relationshipStream =>
+  Stream<IPleromaApiAccountRelationship> get relationshipStream =>
       throw selfActionError;
 
   @override
-  Future<IPleromaAccountRelationship> togglePin() => throw selfActionError;
+  Future<IPleromaApiAccountRelationship> togglePin() => throw selfActionError;
 
   @override
-  Future<IPleromaAccountRelationship> toggleBlockDomain() =>
+  Future<IPleromaApiAccountRelationship> toggleBlockDomain() =>
       throw selfActionError;
 
   @override
   Future updateMyAccountByMyPleromaAccount(
-    IPleromaMyAccount pleromaMyAccount,
+    IPleromaApiMyAccount pleromaMyAccount,
   ) async {
     await myAccountLocalPreferenceBloc.setValue(
       PleromaMyAccountWrapper(
-        pleromaAccount: pleromaMyAccount.toPleromaMyAccount(),
+        pleromaAccount: pleromaMyAccount.toPleromaApiMyAccount(),
       ),
     );
   }
@@ -117,7 +117,7 @@ class MyAccountBloc extends IMyAccountBloc {
   Future updateMyAccountByMyAccount(IMyAccount myAccount) async {
     await myAccountLocalPreferenceBloc.setValue(
       PleromaMyAccountWrapper(
-        pleromaAccount: myAccount.toPleromaMyAccount(),
+        pleromaAccount: myAccount.toPleromaApiMyAccount(),
       ),
     );
   }
@@ -130,7 +130,7 @@ class MyAccountBloc extends IMyAccountBloc {
           .copyWith(
             followRequestsCount: followRequestsCount! - 1,
           )
-          .toPleromaMyAccountWrapper(),
+          .toPleromaApiMyAccountWrapper(),
     );
   }
 
@@ -140,27 +140,27 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  Future<IPleromaAccountRelationship> mute({
+  Future<IPleromaApiAccountRelationship> mute({
     required bool notifications,
     required Duration? duration,
   }) =>
       throw selfActionError;
 
   @override
-  Future<IPleromaAccountRelationship> unMute() => throw selfActionError;
+  Future<IPleromaApiAccountRelationship> unMute() => throw selfActionError;
 
   @override
-  Future<IPleromaAccountRelationship> subscribe() => throw selfActionError;
+  Future<IPleromaApiAccountRelationship> subscribe() => throw selfActionError;
 
   @override
-  Future<IPleromaAccountRelationship> toggleMute() => throw selfActionError;
+  Future<IPleromaApiAccountRelationship> toggleMute() => throw selfActionError;
 
   @override
-  Future<IPleromaAccountRelationship> toggleSubscribe() =>
+  Future<IPleromaApiAccountRelationship> toggleSubscribe() =>
       throw selfActionError;
 
   @override
-  Future<IPleromaAccountRelationship> unSubscribe() => throw selfActionError;
+  Future<IPleromaApiAccountRelationship> unSubscribe() => throw selfActionError;
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

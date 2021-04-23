@@ -57,7 +57,7 @@ void main() {
         accountRemoteId: dbAccount.remoteId,
         createdAt: DateTime.now(),
         content: "content",
-        card: PleromaCard.only(title: pleromaCardTitle),
+        card: PleromaApiCard.only(title: pleromaCardTitle),
       ),
       mode: null,
     );

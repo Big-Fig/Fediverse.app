@@ -2,7 +2,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart';
 
-extension IPleromaFilterExtension on IPleromaFilter {
+extension IPleromaFilterExtension on IPleromaApiFilter {
   IFilter toDbFilterPopulatedWrapper() => DbFilterPopulatedWrapper(
         dbFilterPopulated: DbFilterPopulated(
           dbFilter: toDbFilter(),
@@ -21,8 +21,8 @@ extension IPleromaFilterExtension on IPleromaFilter {
 }
 
 extension IFilterExtension on IFilter {
-  PleromaFilter toPleromaFilter() {
-    return PleromaFilter(
+  PleromaApiFilter toPleromaFilter() {
+    return PleromaApiFilter(
       id: remoteId,
       phrase: phrase,
       context: context,

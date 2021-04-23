@@ -23,7 +23,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
   final List<IAccount> conversationAccountsWithoutMe;
 
   @override
-  Future onStatusPosted(IPleromaStatus remoteStatus) async {
+  Future onStatusPosted(IPleromaApiStatus remoteStatus) async {
     await super.onStatusPosted(remoteStatus);
     successCallback(
       remoteStatus.toDbStatusPopulatedWrapper(),
@@ -33,12 +33,12 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
   PostStatusStartConversationChatBloc({
     required this.conversationAccountsWithoutMe,
     required this.successCallback,
-    required IPleromaAuthStatusService pleromaAuthStatusService,
+    required IPleromaApiAuthStatusService pleromaAuthStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
     required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     required int? maximumMessageLength,
-    required PleromaInstancePollLimits? pleromaInstancePollLimits,
+    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required String? language,
@@ -49,7 +49,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
           scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibility: PleromaVisibility.direct.toJsonValue(),
+            visibility: PleromaApiVisibility.direct.toJsonValue(),
             language: language,
           ),
           initialAccountsToMention: conversationAccountsWithoutMe,
@@ -71,7 +71,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     return PostStatusStartConversationChatBloc(
       successCallback: successCallback,
       conversationAccountsWithoutMe: conversationAccountsWithoutMe,
-      pleromaAuthStatusService: IPleromaAuthStatusService.of(
+      pleromaAuthStatusService: IPleromaApiAuthStatusService.of(
         context,
         listen: false,
       ),

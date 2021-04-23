@@ -1,5 +1,5 @@
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/push/pleroma_api_push_exception.dart';
 import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 import 'package:fedi/pleroma/api/push/pleroma_api_push_service.dart';
@@ -8,12 +8,12 @@ import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
 import 'package:http/http.dart';
 
-class PleromaPushService extends DisposableOwner
-    implements IPleromaPushService {
+class PleromaApiPushService extends DisposableOwner
+    implements IPleromaApiPushService {
   final subscriptionRelativeUrlPath = "api/v1/push/subscription";
   @override
-  final IPleromaAuthRestService restService;
-  final PleromaPushSubscriptionKeys keys;
+  final IPleromaApiAuthRestService restService;
+  final PleromaApiPushSubscriptionKeys keys;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -28,27 +28,27 @@ class PleromaPushService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaPushService({required this.restService, required this.keys});
+  PleromaApiPushService({required this.restService, required this.keys});
 
   @override
   Future dispose() async {
     return await super.dispose();
   }
 
-  PleromaPushSubscription? parsePushSubscriptionResponse(
+  PleromaApiPushSubscription? parsePushSubscriptionResponse(
     Response httpResponse,
   ) {
-    RestResponse<PleromaPushSubscription> restResponse =
+    RestResponse<PleromaApiPushSubscription> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
       resultParser: (body) =>
-          PleromaPushSubscription.fromJsonString(httpResponse.body),
+          PleromaApiPushSubscription.fromJsonString(httpResponse.body),
     );
 
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw PleromaPushException(
+      throw PleromaApiPushException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
@@ -56,15 +56,15 @@ class PleromaPushService extends DisposableOwner
   }
 
   @override
-  Future<PleromaPushSubscription?> subscribe({
+  Future<PleromaApiPushSubscription?> subscribe({
     required String endpointCallbackUrl,
-    required PleromaPushSubscribeData data,
+    required PleromaApiPushSubscribeData data,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: subscriptionRelativeUrlPath,
-        bodyJson: PleromaPushSubscribeRequest(
-          subscription: PleromaPushSubscribeRequestSubscription(
+        bodyJson: PleromaApiPushSubscribeRequest(
+          subscription: PleromaApiPushSubscribeRequestSubscription(
             endpoint: endpointCallbackUrl,
             keys: keys,
           ),
@@ -77,7 +77,7 @@ class PleromaPushService extends DisposableOwner
   }
 
   @override
-  Future<PleromaPushSubscription?> retrieveCurrentSubscription() async {
+  Future<PleromaApiPushSubscription?> retrieveCurrentSubscription() async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: subscriptionRelativeUrlPath,

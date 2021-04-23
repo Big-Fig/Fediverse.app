@@ -1,38 +1,38 @@
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaChatService extends IPleromaAuthApi {
-  static IPleromaChatService of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IPleromaChatService>(context, listen: listen);
+abstract class IPleromaApiChatService extends IPleromaApiAuth {
+  static IPleromaApiChatService of(BuildContext context, {bool listen = true}) =>
+      Provider.of<IPleromaApiChatService>(context, listen: listen);
 
-  Future<List<IPleromaChat>> getChats({
-    IPleromaPaginationRequest? pagination,
+  Future<List<IPleromaApiChat>> getChats({
+    IPleromaApiPaginationRequest? pagination,
   });
 
-  Future<List<IPleromaChatMessage>> getChatMessages({
+  Future<List<IPleromaApiChatMessage>> getChatMessages({
     required String? chatId,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   });
 
-  Future<IPleromaChat> markChatAsRead({
+  Future<IPleromaApiChat> markChatAsRead({
     required String? chatId,
     required String? lastReadChatMessageId,
   });
 
-  Future<IPleromaChat> getChat({
+  Future<IPleromaApiChat> getChat({
     required String? id,
   });
 
-  Future<IPleromaChat> getOrCreateChatByAccountId({
+  Future<IPleromaApiChat> getOrCreateChatByAccountId({
     required String? accountId,
   });
 
-  Future<IPleromaChatMessage> sendMessage({
+  Future<IPleromaApiChatMessage> sendMessage({
     required String? chatId,
-    required IPleromaChatMessageSendData data,
+    required IPleromaApiChatMessageSendData data,
   });
 
   Future deleteChatMessage({

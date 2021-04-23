@@ -11,10 +11,10 @@ import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service_i
     as _i4;
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart'
     as _i7;
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart' as _i6;
+import 'package:fedi/pleroma/api/pleroma_api_service.dart' as _i6;
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart'
     as _i2;
-import 'package:fedi/pleroma/api/visi:bility/pleroma_api_visibility_model.dart'
+import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart'
     as _i8;
 import 'package:flutter/src/widgets/editable_text.dart' as _i11;
 import 'package:flutter/src/widgets/focus_manager.dart' as _i13;
@@ -26,21 +26,21 @@ import 'package:rxdart/src/subjects/subject.dart' as _i14;
 // ignore_for_file: comment_references
 // ignore_for_file: unnecessary_parenthesis
 
-class _FakeIPleromaAuthRestService extends _i1.Fake
-    implements _i2.IPleromaAuthRestService {}
+class _FakeIPleromaApiAuthRestService extends _i1.Fake
+    implements _i2.IPleromaApiAuthRestService {}
 
-class _FakeIPleromaNotification extends _i1.Fake
-    implements _i3.IPleromaNotification {}
+class _FakeIPleromaApiNotification extends _i1.Fake
+    implements _i3.IPleromaApiNotification {}
 
-class _FakePleromaNotification extends _i1.Fake
-    implements _i3.PleromaNotification {}
+class _FakePleromaApiNotification extends _i1.Fake
+    implements _i3.PleromaApiNotification {}
 
-/// A class which mocks [PleromaNotificationService].
+/// A class which mocks [PleromaApiNotificationService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPleromaNotificationService extends _i1.Mock
-    implements _i4.PleromaNotificationService {
-  MockPleromaNotificationService() {
+class MockPleromaApiNotificationService extends _i1.Mock
+    implements _i4.PleromaApiNotificationService {
+  MockPleromaApiNotificationService() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -53,10 +53,10 @@ class MockPleromaNotificationService extends _i1.Mock
       Invocation.getter(#pleromaNotificationRelativeUrlPath),
       returnValue: '') as String);
   @override
-  _i2.IPleromaAuthRestService get restService =>
+  _i2.IPleromaApiAuthRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
-              returnValue: _FakeIPleromaAuthRestService())
-          as _i2.IPleromaAuthRestService);
+              returnValue: _FakeIPleromaApiAuthRestService())
+          as _i2.IPleromaApiAuthRestService);
   @override
   _i5.Stream<_i6.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
@@ -95,39 +95,39 @@ class MockPleromaNotificationService extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#dispose, []),
           returnValue: Future<dynamic>.value(null)) as _i5.Future<dynamic>);
   @override
-  _i5.Future<_i3.IPleromaNotification> getNotification(
+  _i5.Future<_i3.IPleromaApiNotification> getNotification(
           {String? notificationRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(#getNotification, [],
                   {#notificationRemoteId: notificationRemoteId}),
-              returnValue: Future<_i3.IPleromaNotification>.value(
-                  _FakeIPleromaNotification()))
-          as _i5.Future<_i3.IPleromaNotification>);
+              returnValue: Future<_i3.IPleromaApiNotification>.value(
+                  _FakeIPleromaApiNotification()))
+          as _i5.Future<_i3.IPleromaApiNotification>);
   @override
-  _i5.Future<_i3.IPleromaNotification> markAsReadSingle(
+  _i5.Future<_i3.IPleromaApiNotification> markAsReadSingle(
           {String? notificationRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(#markAsReadSingle, [],
                   {#notificationRemoteId: notificationRemoteId}),
-              returnValue: Future<_i3.IPleromaNotification>.value(
-                  _FakeIPleromaNotification()))
-          as _i5.Future<_i3.IPleromaNotification>);
+              returnValue: Future<_i3.IPleromaApiNotification>.value(
+                  _FakeIPleromaApiNotification()))
+          as _i5.Future<_i3.IPleromaApiNotification>);
   @override
-  _i5.Future<List<_i3.IPleromaNotification>> markAsReadList(
+  _i5.Future<List<_i3.IPleromaApiNotification>> markAsReadList(
           {String? maxNotificationRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(#markAsReadList, [],
                   {#maxNotificationRemoteId: maxNotificationRemoteId}),
-              returnValue: Future<List<_i3.IPleromaNotification>>.value(
-                  <_i3.IPleromaNotification>[]))
-          as _i5.Future<List<_i3.IPleromaNotification>>);
+              returnValue: Future<List<_i3.IPleromaApiNotification>>.value(
+                  <_i3.IPleromaApiNotification>[]))
+          as _i5.Future<List<_i3.IPleromaApiNotification>>);
   @override
-  _i5.Future<List<_i3.IPleromaNotification>> getNotifications(
-          {_i7.IPleromaPaginationRequest? pagination,
-          List<_i3.PleromaNotificationType>? excludeTypes,
+  _i5.Future<List<_i3.IPleromaApiNotification>> getNotifications(
+          {_i7.IPleromaApiPaginationRequest? pagination,
+          List<_i3.PleromaApiNotificationType>? excludeTypes,
           String? onlyFromAccountRemoteId,
-          List<_i3.PleromaNotificationType>? includeTypes,
-          List<_i8.PleromaVisibility>? excludeVisibilities}) =>
+          List<_i3.PleromaApiNotificationType>? includeTypes,
+          List<_i8.PleromaApiVisibility>? excludeVisibilities}) =>
       (super.noSuchMethod(
               Invocation.method(#getNotifications, [], {
                 #pagination: pagination,
@@ -136,22 +136,23 @@ class MockPleromaNotificationService extends _i1.Mock
                 #includeTypes: includeTypes,
                 #excludeVisibilities: excludeVisibilities
               }),
-              returnValue: Future<List<_i3.IPleromaNotification>>.value(
-                  <_i3.IPleromaNotification>[]))
-          as _i5.Future<List<_i3.IPleromaNotification>>);
+              returnValue: Future<List<_i3.IPleromaApiNotification>>.value(
+                  <_i3.IPleromaApiNotification>[]))
+          as _i5.Future<List<_i3.IPleromaApiNotification>>);
   @override
-  _i3.PleromaNotification parseNotificationResponse(
+  _i3.PleromaApiNotification parseNotificationResponse(
           _i9.Response? httpResponse) =>
       (super.noSuchMethod(
-          Invocation.method(#parseNotificationResponse, [httpResponse]),
-          returnValue: _FakePleromaNotification()) as _i3.PleromaNotification);
+              Invocation.method(#parseNotificationResponse, [httpResponse]),
+              returnValue: _FakePleromaApiNotification())
+          as _i3.PleromaApiNotification);
   @override
-  List<_i3.PleromaNotification> parseNotificationListResponse(
+  List<_i3.PleromaApiNotification> parseNotificationListResponse(
           _i9.Response? httpResponse) =>
       (super.noSuchMethod(
               Invocation.method(#parseNotificationListResponse, [httpResponse]),
-              returnValue: <_i3.PleromaNotification>[])
-          as List<_i3.PleromaNotification>);
+              returnValue: <_i3.PleromaApiNotification>[])
+          as List<_i3.PleromaApiNotification>);
   @override
   _i5.Future<dynamic> dismissNotification({String? notificationRemoteId}) =>
       (super.noSuchMethod(

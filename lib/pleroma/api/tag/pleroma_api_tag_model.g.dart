@@ -6,25 +6,25 @@ part of 'pleroma_api_tag_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PleromaTagAdapter extends TypeAdapter<PleromaTag> {
+class PleromaApiTagAdapter extends TypeAdapter<PleromaApiTag> {
   @override
   final int typeId = 42;
 
   @override
-  PleromaTag read(BinaryReader reader) {
+  PleromaApiTag read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaTag(
+    return PleromaApiTag(
       name: fields[0] as String,
       url: fields[1] as String,
-      history: (fields[2] as List?)?.cast<PleromaTagHistory>(),
+      history: (fields[2] as List?)?.cast<PleromaApiTagHistory>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, PleromaTag obj) {
+  void write(BinaryWriter writer, PleromaApiTag obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -41,7 +41,7 @@ class PleromaTagAdapter extends TypeAdapter<PleromaTag> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaTagAdapter &&
+      other is PleromaApiTagAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -50,17 +50,17 @@ class PleromaTagAdapter extends TypeAdapter<PleromaTag> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaTag _$PleromaTagFromJson(Map<String, dynamic> json) {
-  return PleromaTag(
+PleromaApiTag _$PleromaApiTagFromJson(Map<String, dynamic> json) {
+  return PleromaApiTag(
     name: json['name'] as String,
     url: json['url'] as String,
     history: (json['history'] as List<dynamic>?)
-        ?.map((e) => PleromaTagHistory.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => PleromaApiTagHistory.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
 
-Map<String, dynamic> _$PleromaTagToJson(PleromaTag instance) =>
+Map<String, dynamic> _$PleromaApiTagToJson(PleromaApiTag instance) =>
     <String, dynamic>{
       'name': instance.name,
       'url': instance.url,

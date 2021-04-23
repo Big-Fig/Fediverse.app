@@ -15,7 +15,7 @@ abstract class IConversationChatRepository
         IAppRemoteReadWriteRepository<
             DbConversation,
             IConversationChat,
-            IPleromaConversation,
+            IPleromaApiConversation,
             int,
             String,
             ConversationChatRepositoryFilters,

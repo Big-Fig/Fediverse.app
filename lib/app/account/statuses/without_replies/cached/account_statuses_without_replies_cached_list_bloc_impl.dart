@@ -11,7 +11,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
@@ -34,7 +34,7 @@ class AccountStatusesWithoutRepliesListBloc
 
   AccountStatusesWithoutRepliesListBloc({
     required IAccount account,
-    required IPleromaAccountService pleromaAccountService,
+    required IPleromaApiAccountService pleromaAccountService,
     required IStatusRepository statusRepository,
     required IFilterRepository filterRepository,
     required IMyAccountBloc myAccountBloc,
@@ -57,7 +57,7 @@ class AccountStatusesWithoutRepliesListBloc
   }) {
     return AccountStatusesWithoutRepliesListBloc(
       account: account,
-      pleromaAccountService: IPleromaAccountService.of(context, listen: false),
+      pleromaAccountService: IPleromaApiAccountService.of(context, listen: false),
       webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
         context,
         listen: false,
@@ -125,7 +125,7 @@ class AccountStatusesWithoutRepliesListBloc
     var remoteStatuses = await pleromaAccountService.getAccountStatuses(
       excludeReplies: true,
       accountRemoteId: account.remoteId,
-      pagination: PleromaPaginationRequest(
+      pagination: PleromaApiPaginationRequest(
         limit: limit,
         sinceId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,

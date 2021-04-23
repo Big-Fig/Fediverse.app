@@ -106,8 +106,8 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
       ];
 
   @override
-  IPostPleromaFilter calculateFormValue() {
-    return PostPleromaFilter(
+  IPostPleromaApiFilter calculateFormValue() {
+    return PostPleromaApiFilter(
       phrase: phraseField.currentValue,
       irreversible: irreversibleField.currentValue ?? false,
       wholeWord: wholeWordField.currentValue ?? false,

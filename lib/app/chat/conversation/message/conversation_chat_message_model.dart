@@ -20,9 +20,9 @@ abstract class IConversationChatMessage extends IChatMessage {
     IAccount? account,
     String? content,
     DateTime? createdAt,
-    List<IPleromaMediaAttachment>? mediaAttachments,
-    List<PleromaEmoji>? emojis,
-    IPleromaCard? card,
+    List<IPleromaApiMediaAttachment>? mediaAttachments,
+    List<PleromaApiEmoji>? emojis,
+    IPleromaApiCard? card,
     PendingState? pendingState,
     String? oldPendingRemoteId,
     bool? deleted,
@@ -37,7 +37,7 @@ extension IStatusConversationChatMessageExtension on IStatus {
           ConversationChatMessageStatusAdapter(status: this);
 }
 
-extension IPleromaStatusConversationChatMessageExtension on IPleromaStatus {
+extension IPleromaStatusConversationChatMessageExtension on IPleromaApiStatus {
   ConversationChatMessageStatusAdapter
       toConversationChatMessageStatusAdapter() =>
           ConversationChatMessageStatusAdapter(
@@ -77,19 +77,19 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
   String? get content => status.content;
 
   @override
-  IPleromaCard? get card => status.card;
+  IPleromaApiCard? get card => status.card;
 
   @override
   DateTime get createdAt => status.createdAt;
 
   @override
-  List<IPleromaEmoji>? get emojis => status.emojis;
+  List<IPleromaApiEmoji>? get emojis => status.emojis;
 
   @override
   String get remoteId => status.remoteId!;
 
   @override
-  List<IPleromaMediaAttachment>? get mediaAttachments =>
+  List<IPleromaApiMediaAttachment>? get mediaAttachments =>
       status.mediaAttachments;
 
   @override
@@ -107,9 +107,9 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
     IAccount? account,
     String? content,
     DateTime? createdAt,
-    List<IPleromaMediaAttachment>? mediaAttachments,
-    List<PleromaEmoji>? emojis,
-    IPleromaCard? card,
+    List<IPleromaApiMediaAttachment>? mediaAttachments,
+    List<PleromaApiEmoji>? emojis,
+    IPleromaApiCard? card,
     PendingState? pendingState,
     String? oldPendingRemoteId,
     bool? deleted,
@@ -125,9 +125,9 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
         account: account,
         content: content,
         createdAt: createdAt,
-        mediaAttachments: mediaAttachments?.toPleromaMediaAttachments(),
+        mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
         emojis: emojis,
-        card: card?.toPleromaCard(),
+        card: card?.toPleromaApiCard(),
         pendingState: pendingState,
         oldPendingRemoteId: oldPendingRemoteId,
         deleted: deleted,

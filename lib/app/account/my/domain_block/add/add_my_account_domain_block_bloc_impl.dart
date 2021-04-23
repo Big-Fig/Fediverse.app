@@ -8,7 +8,7 @@ import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.d
 
 class AddMyAccountDomainBlockBloc extends FormBloc
     implements IAddMyAccountDomainBlockBloc {
-  final IPleromaAuthAccountService pleromaAuthAccountService;
+  final IPleromaApiAuthAccountService pleromaAuthAccountService;
 
   AddMyAccountDomainBlockBloc({
     required this.pleromaAuthAccountService,

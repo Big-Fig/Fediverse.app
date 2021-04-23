@@ -13,7 +13,7 @@ abstract class IUploadMediaAttachmentBloc implements IDisposable {
 
   int? get maximumFileSizeInBytes;
 
-  IPleromaMediaAttachment? get pleromaMediaAttachment;
+  IPleromaApiMediaAttachment? get pleromaMediaAttachment;
 
   UploadMediaAttachmentState? get uploadState;
 

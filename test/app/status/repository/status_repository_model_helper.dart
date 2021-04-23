@@ -16,10 +16,10 @@ Future<DbStatus> insertDbStatus(
   return dbStatus;
 }
 
-PleromaTag createTestPleromaTag({
+PleromaApiTag createTestPleromaTag({
   required String name,
 }) {
-  return PleromaTag.only(
+  return PleromaApiTag.only(
     name: name,
     url: "https://fedi.app/#$name",
   );

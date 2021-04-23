@@ -1,5 +1,5 @@
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
 import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_reaction_exception.dart';
 import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_reaction_service.dart';
@@ -11,12 +11,12 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaStatusEmojiReactionService extends DisposableOwner
-    implements IPleromaStatusEmojiReactionService {
+class PleromaApiStatusEmojiReactionService extends DisposableOwner
+    implements IPleromaApiStatusEmojiReactionService {
   final pleromaStatusesRelativeUrlPath = "/api/v1/pleroma/statuses/";
   final reactionsRelativeUrlPath = "reactions";
   @override
-  final IPleromaAuthRestService restService;
+  final IPleromaApiAuthRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -31,10 +31,10 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaStatusEmojiReactionService({required this.restService});
+  PleromaApiStatusEmojiReactionService({required this.restService});
 
   @override
-  Future<IPleromaStatus> addReaction({
+  Future<IPleromaApiStatus> addReaction({
     required String? statusRemoteId,
     required String? emoji,
   }) async {
@@ -52,7 +52,7 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaStatusEmojiReaction> getReaction({
+  Future<IPleromaApiStatusEmojiReaction> getReaction({
     required String statusRemoteId,
     required String emoji,
   }) async {
@@ -71,7 +71,7 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaStatusEmojiReaction>> getReactions({
+  Future<List<IPleromaApiStatusEmojiReaction>> getReactions({
     required String statusRemoteId,
   }) async {
     var request = RestRequest.get(
@@ -87,7 +87,7 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaStatus> removeReaction({
+  Future<IPleromaApiStatus> removeReaction({
     required String? statusRemoteId,
     required String? emoji,
   }) async {
@@ -104,10 +104,10 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
     return parseStatusResponse(httpResponse);
   }
 
-  PleromaStatus parseStatusResponse(Response httpResponse) {
-    RestResponse<PleromaStatus> restResponse = RestResponse.fromResponse(
+  PleromaApiStatus parseStatusResponse(Response httpResponse) {
+    RestResponse<PleromaApiStatus> restResponse = RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) => PleromaStatus.fromJsonString(
+      resultParser: (body) => PleromaApiStatus.fromJsonString(
         httpResponse.body,
       ),
     );
@@ -115,18 +115,18 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
     if (restResponse.isSuccess) {
       return restResponse.body!;
     } else {
-      throw PleromaStatusEmojiReactionException(
+      throw PleromaApiStatusEmojiReactionException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  PleromaStatusEmojiReaction parseEmojiReactionResponse(Response httpResponse) {
-    RestResponse<PleromaStatusEmojiReaction> restResponse =
+  PleromaApiStatusEmojiReaction parseEmojiReactionResponse(Response httpResponse) {
+    RestResponse<PleromaApiStatusEmojiReaction> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) => PleromaStatusEmojiReaction.fromJsonString(
+      resultParser: (body) => PleromaApiStatusEmojiReaction.fromJsonString(
         httpResponse.body,
       ),
     );
@@ -134,20 +134,20 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
     if (restResponse.isSuccess) {
       return restResponse.body!;
     } else {
-      throw PleromaStatusEmojiReactionException(
+      throw PleromaApiStatusEmojiReactionException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );
     }
   }
 
-  List<PleromaStatusEmojiReaction> parseEmojiReactionListResponse(
+  List<PleromaApiStatusEmojiReaction> parseEmojiReactionListResponse(
     Response httpResponse,
   ) {
-    RestResponse<List<PleromaStatusEmojiReaction>> restResponse =
+    RestResponse<List<PleromaApiStatusEmojiReaction>> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) => PleromaStatusEmojiReaction.listFromJsonString(
+      resultParser: (body) => PleromaApiStatusEmojiReaction.listFromJsonString(
         httpResponse.body,
       ),
     );
@@ -155,7 +155,7 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
     if (restResponse.isSuccess) {
       return restResponse.body!;
     } else {
-      throw PleromaStatusEmojiReactionException(
+      throw PleromaApiStatusEmojiReactionException(
         statusCode: httpResponse.statusCode,
         body: httpResponse.body,
       );

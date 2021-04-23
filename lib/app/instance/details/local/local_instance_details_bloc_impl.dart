@@ -11,10 +11,10 @@ import 'package:flutter/widgets.dart';
 class LocalInstanceDetailsBloc extends InstanceDetailsBloc
     implements IInstanceDetailsBloc {
   @override
-  final IPleromaInstanceService pleromaInstanceService;
+  final IPleromaApiInstanceService pleromaInstanceService;
 
   LocalInstanceDetailsBloc({
-    required IPleromaInstance? initialInstance,
+    required IPleromaApiInstance? initialInstance,
     required this.pleromaInstanceService,
   }) : super(
           instanceUri: pleromaInstanceService.restService.baseUri,
@@ -23,7 +23,7 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
 
   static LocalInstanceDetailsBloc createFromContext(BuildContext context) {
     var pleromaInstanceService =
-        IPleromaInstanceService.of(context, listen: false);
+        IPleromaApiInstanceService.of(context, listen: false);
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
     return LocalInstanceDetailsBloc(

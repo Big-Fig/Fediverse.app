@@ -34,7 +34,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
   @override
   final bool collapsible;
   @override
-  final IPleromaMediaAttachment? initialMediaAttachment;
+  final IPleromaApiMediaAttachment? initialMediaAttachment;
 
   @override
   final bool isCommentsActionEnabled;
@@ -71,7 +71,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
     bool isFirstReplyInThread = true,
     bool displayActions = true,
     required StatusAndContextCallback? statusCallback,
-    required IPleromaMediaAttachment? initialMediaAttachment,
+    required IPleromaApiMediaAttachment? initialMediaAttachment,
   }) : this._private(
           status: status,
           collapsible: collapsible,
@@ -93,7 +93,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
     required bool displayActions,
     required StatusAndContextCallback statusCallback,
     required AccountCallback accountMentionCallback,
-    required IPleromaMediaAttachment? initialMediaAttachment,
+    required IPleromaApiMediaAttachment? initialMediaAttachment,
     required bool isCommentsActionEnabled,
   }) : this._private(
           status: status,

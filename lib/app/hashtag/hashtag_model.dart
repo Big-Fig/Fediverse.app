@@ -5,7 +5,7 @@ abstract class IHashtag {
 
   String get url;
 
-  List<IPleromaTagHistory>? get history;
+  List<IPleromaApiTagHistory>? get history;
 }
 
 class Hashtag extends IHashtag {
@@ -13,7 +13,7 @@ class Hashtag extends IHashtag {
   final String name;
 
   @override
-  final List<IPleromaTagHistory>? history;
+  final List<IPleromaApiTagHistory>? history;
 
   @override
   final String url;

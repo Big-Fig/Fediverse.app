@@ -30,16 +30,16 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   final BehaviorSubject<IStatus> statusSubject;
 
-  final IPleromaStatusService pleromaStatusService;
-  final IPleromaAccountService pleromaAccountService;
-  final IPleromaStatusEmojiReactionService? pleromaStatusEmojiReactionService;
-  final IPleromaPollService? pleromaPollService;
+  final IPleromaApiStatusService pleromaStatusService;
+  final IPleromaApiAccountService pleromaAccountService;
+  final IPleromaApiStatusEmojiReactionService? PleromaApiStatusEmojiReactionService;
+  final IPleromaApiPollService? pleromaPollService;
 
   // todo: remove hack. Don't init when bloc quickly disposed. Help
   StatusBloc({
     required this.pleromaStatusService,
     required this.pleromaAccountService,
-    required this.pleromaStatusEmojiReactionService,
+    required this.PleromaApiStatusEmojiReactionService,
     required this.pleromaPollService,
     required IStatus status,
     required bool isNeedRefreshFromNetworkOnInit,
@@ -55,7 +55,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
       addDisposable(disposable: pollBloc);
       addDisposable(
         streamSubscription: pollBloc.pollStream.listen(
-          (IPleromaPoll? poll) {
+          (IPleromaApiPoll? poll) {
             // update status poll data if something changed in pollBloc
             var isChanged = this.poll == poll;
             if (!isChanged) {
@@ -145,11 +145,11 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
       reblogOrOriginalStream.map((status) => status.account);
 
   @override
-  List<IPleromaMediaAttachment>? get reblogOrOriginalMediaAttachments =>
+  List<IPleromaApiMediaAttachment>? get reblogOrOriginalMediaAttachments =>
       reblogOrOriginal.mediaAttachments;
 
   @override
-  Stream<List<IPleromaMediaAttachment>?>
+  Stream<List<IPleromaApiMediaAttachment>?>
       get reblogOrOriginalMediaAttachmentsStream =>
           reblogOrOriginalStream.map((status) => status.mediaAttachments);
 
@@ -164,20 +164,20 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
   String? get remoteId => status.remoteId;
 
   @override
-  List<IPleromaMention>? get mentions => status.mentions;
+  List<IPleromaApiMention>? get mentions => status.mentions;
 
   @override
-  List<IPleromaMention>? get reblogOrOriginalMentions =>
+  List<IPleromaApiMention>? get reblogOrOriginalMentions =>
       reblogOrOriginal.mentions;
 
   @override
-  List<IPleromaTag>? get tags => status.tags;
+  List<IPleromaApiTag>? get tags => status.tags;
 
   @override
-  List<IPleromaTag>? get reblogOrOriginalTags => reblogOrOriginal.tags;
+  List<IPleromaApiTag>? get reblogOrOriginalTags => reblogOrOriginal.tags;
 
   @override
-  Stream<List<IPleromaMention>?> get mentionsStream => statusStream.map(
+  Stream<List<IPleromaApiMention>?> get mentionsStream => statusStream.map(
         (status) => status.mentions,
       );
 
@@ -198,22 +198,22 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
       );
 
   @override
-  IPleromaCard? get card => status.card;
+  IPleromaApiCard? get card => status.card;
 
   @override
-  Stream<IPleromaCard?> get cardStream =>
+  Stream<IPleromaApiCard?> get cardStream =>
       statusStream.map((status) => status.card);
 
-  IPleromaCard? get reblogCard => reblog?.card;
+  IPleromaApiCard? get reblogCard => reblog?.card;
 
-  Stream<IPleromaCard?> get reblogCardStream =>
+  Stream<IPleromaApiCard?> get reblogCardStream =>
       reblogStream.map((status) => status?.card);
 
   @override
-  IPleromaCard? get reblogOrOriginalCard => reblogCard ?? card;
+  IPleromaApiCard? get reblogOrOriginalCard => reblogCard ?? card;
 
   @override
-  Stream<IPleromaCard?> get reblogOrOriginalCardStream => Rx.combineLatest2(
+  Stream<IPleromaApiCard?> get reblogOrOriginalCardStream => Rx.combineLatest2(
         cardStream,
         reblogCardStream,
         (dynamic originalCard, dynamic reblogCard) =>
@@ -221,18 +221,18 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
       );
 
   @override
-  List<IPleromaMediaAttachment>? get mediaAttachments =>
+  List<IPleromaApiMediaAttachment>? get mediaAttachments =>
       status.mediaAttachments;
 
   @override
-  Stream<List<IPleromaMediaAttachment>?> get mediaAttachmentsStream =>
+  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream =>
       statusStream.map((status) => status.mediaAttachments);
 
   @override
-  IPleromaPoll? get poll => status.poll;
+  IPleromaApiPoll? get poll => status.poll;
 
   @override
-  Stream<IPleromaPoll?> get pollStream => statusStream.map(
+  Stream<IPleromaApiPoll?> get pollStream => statusStream.map(
         (status) => status.poll,
       );
 
@@ -251,7 +251,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<bool> get favouritedStream =>
       statusStream.map((status) => status.favourited);
 
-  Future<IPleromaStatus> loadRemoteStatus() async {
+  Future<IPleromaApiStatus> loadRemoteStatus() async {
     var remoteStatus = await pleromaStatusService.getStatus(
       statusRemoteId: remoteId!,
     );
@@ -367,60 +367,60 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.repliesCount);
 
   @override
-  List<IPleromaStatusEmojiReaction>? get pleromaEmojiReactions =>
+  List<IPleromaApiStatusEmojiReaction>? get pleromaEmojiReactions =>
       status.pleromaEmojiReactions;
 
   @override
-  Stream<List<IPleromaStatusEmojiReaction>?> get pleromaEmojiReactionsStream =>
+  Stream<List<IPleromaApiStatusEmojiReaction>?> get pleromaEmojiReactionsStream =>
       statusStream.map((status) => status.pleromaEmojiReactions);
 
   @override
   int? get pleromaEmojiReactionsCount =>
-      pleromaEmojiReactions?.sumPleromaEmojiReactions();
+      pleromaEmojiReactions?.sumPleromaApiEmojiReactions();
 
   @override
   Stream<int?> get pleromaEmojiReactionsCountStream =>
       pleromaEmojiReactionsStream.map(
         (pleromaEmojiReactions) =>
-            pleromaEmojiReactions?.sumPleromaEmojiReactions(),
+            pleromaEmojiReactions?.sumPleromaApiEmojiReactions(),
       );
 
-  List<IPleromaStatusEmojiReaction>? get reblogPleromaEmojiReactions =>
+  List<IPleromaApiStatusEmojiReaction>? get reblogPleromaEmojiReactions =>
       reblog?.pleromaEmojiReactions;
 
-  Stream<List<IPleromaStatusEmojiReaction>?>
+  Stream<List<IPleromaApiStatusEmojiReaction>?>
       get reblogPleromaEmojiReactionsStream => reblogStream.map(
             (status) => status?.pleromaEmojiReactions,
           );
 
   @override
   int? get reblogPlusOriginalEmojiReactionsCount =>
-      reblogPlusOriginalPleromaEmojiReactions?.sumPleromaEmojiReactions();
+      reblogPlusOriginalPleromaEmojiReactions?.sumPleromaApiEmojiReactions();
 
   @override
   Stream<int?> get reblogPlusOriginalEmojiReactionsCountStream =>
       reblogPlusOriginalEmojiReactionsStream.map(
         (pleromaEmojiReactions) =>
-            pleromaEmojiReactions?.sumPleromaEmojiReactions(),
+            pleromaEmojiReactions?.sumPleromaApiEmojiReactions(),
       );
 
   @override
-  List<IPleromaStatusEmojiReaction>?
+  List<IPleromaApiStatusEmojiReaction>?
       get reblogPlusOriginalPleromaEmojiReactions =>
-          pleromaEmojiReactions?.mergeEmojiReactionsLists(
+          pleromaEmojiReactions?.mergePleromaApiEmojiReactionsLists(
             reblogPleromaEmojiReactions,
           );
 
   @override
-  Stream<List<IPleromaStatusEmojiReaction>?>
+  Stream<List<IPleromaApiStatusEmojiReaction>?>
       get reblogPlusOriginalEmojiReactionsStream => Rx.combineLatest2(
             pleromaEmojiReactionsStream,
             reblogPleromaEmojiReactionsStream,
             (
-              List<IPleromaStatusEmojiReaction>? emojiReactionsOriginal,
-              List<IPleromaStatusEmojiReaction>? emojiReactionsReblog,
+              List<IPleromaApiStatusEmojiReaction>? emojiReactionsOriginal,
+              List<IPleromaApiStatusEmojiReaction>? emojiReactionsReblog,
             ) =>
-                pleromaEmojiReactions?.mergeEmojiReactionsLists(
+                pleromaEmojiReactions?.mergePleromaApiEmojiReactionsLists(
               reblogPleromaEmojiReactions,
             ),
           );
@@ -478,9 +478,9 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
       );
 
   @override
-  Future<IStatus> onPollUpdated(IPleromaPoll? poll) async {
+  Future<IStatus> onPollUpdated(IPleromaApiPoll? poll) async {
     var updatedLocalStatus = status.copyWith(
-      poll: poll?.toPleromaPoll(),
+      poll: poll?.toPleromaApiPoll(),
     );
     statusSubject.add(updatedLocalStatus);
 

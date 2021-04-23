@@ -6,17 +6,17 @@ part of 'pleroma_api_field_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PleromaFieldAdapter extends TypeAdapter<PleromaField> {
+class PleromaApiFieldAdapter extends TypeAdapter<PleromaApiField> {
   @override
   final int typeId = 5;
 
   @override
-  PleromaField read(BinaryReader reader) {
+  PleromaApiField read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PleromaField(
+    return PleromaApiField(
       name: fields[0] as String?,
       value: fields[1] as String?,
       verifiedAt: fields[2] as DateTime?,
@@ -24,7 +24,7 @@ class PleromaFieldAdapter extends TypeAdapter<PleromaField> {
   }
 
   @override
-  void write(BinaryWriter writer, PleromaField obj) {
+  void write(BinaryWriter writer, PleromaApiField obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -41,7 +41,7 @@ class PleromaFieldAdapter extends TypeAdapter<PleromaField> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaFieldAdapter &&
+      other is PleromaApiFieldAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -50,8 +50,8 @@ class PleromaFieldAdapter extends TypeAdapter<PleromaField> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaField _$PleromaFieldFromJson(Map<String, dynamic> json) {
-  return PleromaField(
+PleromaApiField _$PleromaApiFieldFromJson(Map<String, dynamic> json) {
+  return PleromaApiField(
     name: json['name'] as String?,
     value: json['value'] as String?,
     verifiedAt: json['verified_at'] == null
@@ -60,7 +60,7 @@ PleromaField _$PleromaFieldFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaFieldToJson(PleromaField instance) =>
+Map<String, dynamic> _$PleromaApiFieldToJson(PleromaApiField instance) =>
     <String, dynamic>{
       'name': instance.name,
       'value': instance.value,

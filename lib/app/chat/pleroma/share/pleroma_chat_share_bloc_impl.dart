@@ -19,7 +19,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     implements IPleromaChatShareBloc {
   final IPleromaChatRepository chatRepository;
   final IPleromaChatMessageRepository chatMessageRepository;
-  final IPleromaChatService pleromaChatService;
+  final IPleromaApiChatService pleromaChatService;
 
   String? get message {
     String? message = shareMessageInputBloc.messageField.currentValue;
@@ -40,7 +40,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     required this.pleromaChatService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaAccountService pleromaAccountService,
+    required IPleromaApiAccountService pleromaAccountService,
   }) : super(
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
@@ -54,7 +54,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     var messageSendData = createPleromaChatMessageSendData();
 
     var targetAccounts = [account];
-    List<IPleromaChat> pleromaChatsByAccounts;
+    List<IPleromaApiChat> pleromaChatsByAccounts;
     if (targetAccounts.isNotEmpty) {
       var chatsByAccountsFuture = targetAccounts.map(
         (account) => pleromaChatService.getOrCreateChatByAccountId(
@@ -95,7 +95,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     return true;
   }
 
-  PleromaChatMessageSendData createPleromaChatMessageSendData();
+  PleromaApiChatMessageSendData createPleromaChatMessageSendData();
 
   @override
   Future<List<IAccount>> customLocalAccountListLoader({
@@ -120,7 +120,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
   }
 
   @override
-  Future<List<IPleromaAccount>> customRemoteAccountListLoader({
+  Future<List<IPleromaApiAccount>> customRemoteAccountListLoader({
     required int? limit,
     required IAccount? newerThan,
     required IAccount? olderThan,
@@ -129,7 +129,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
       return [];
     }
     var pleromaChats = await pleromaChatService.getChats(
-      pagination: PleromaPaginationRequest(
+      pagination: PleromaApiPaginationRequest(
         limit: limit,
       ),
     );

@@ -164,15 +164,15 @@ class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
     var statusBodyBloc = IStatusBodyBloc.of(context);
-    return StreamBuilder<List<IPleromaMediaAttachment>?>(
+    return StreamBuilder<List<IPleromaApiMediaAttachment>?>(
       stream: statusBloc.reblogOrOriginalMediaAttachmentsStream,
       builder: (context, snapshot) {
         var mediaAttachments = snapshot.data;
 
         if (mediaAttachments?.isNotEmpty == true) {
-          return Provider<List<IPleromaMediaAttachment>>.value(
+          return Provider<List<IPleromaApiMediaAttachment>>.value(
             value: mediaAttachments!,
-            child: DisposableProxyProvider<List<IPleromaMediaAttachment>,
+            child: DisposableProxyProvider<List<IPleromaApiMediaAttachment>,
                 IMediaAttachmentListBloc>(
               update: (context, value, _) => MediaAttachmentListBloc(
                 mediaAttachments: value,
@@ -209,7 +209,7 @@ class _StatusBodyCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
-    return StreamBuilder<IPleromaCard?>(
+    return StreamBuilder<IPleromaApiCard?>(
       stream: statusBloc.reblogOrOriginalCardStream,
       builder: (context, snapshot) {
         var card = snapshot.data;
@@ -217,7 +217,7 @@ class _StatusBodyCardWidget extends StatelessWidget {
         if (card == null) {
           return const SizedBox.shrink();
         }
-        return Provider<IPleromaCard?>.value(
+        return Provider<IPleromaApiCard?>.value(
           value: card,
           child: const CardWidget(),
         );

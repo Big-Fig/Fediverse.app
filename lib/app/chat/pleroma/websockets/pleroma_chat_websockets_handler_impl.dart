@@ -13,7 +13,7 @@ class PleromaChatWebSocketsHandler extends WebSocketsChannelHandler {
   String get logTag => "pleroma_chat_websockets_handler_impl.dart";
 
   PleromaChatWebSocketsHandler({
-    required IPleromaWebSocketsService pleromaWebSocketsService,
+    required IPleromaApiWebSocketsService pleromaWebSocketsService,
     required IStatusRepository statusRepository,
     required INotificationRepository notificationRepository,
     required IConversationChatRepository conversationRepository,

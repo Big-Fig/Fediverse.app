@@ -8,7 +8,7 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 
-extension IPleromaNotificationExtension on IPleromaNotification {
+extension IPleromaNotificationExtension on IPleromaApiNotification {
   DbNotification toDbNotification({
     required bool? unread,
   }) {
@@ -32,8 +32,8 @@ extension IPleromaNotificationExtension on IPleromaNotification {
       unread: unread == true,
       chatMessage: remoteNotification.chatMessage?.toPleromaChatMessage(),
       dismissed: null,
-      report: remoteNotification.report?.toPleromaAccountReport(),
-      target: remoteNotification.target?.toPleromaAccount(),
+      report: remoteNotification.report?.toPleromaApiAccountReport(),
+      target: remoteNotification.target?.toPleromaApiAccount(),
     );
   }
 
@@ -113,7 +113,7 @@ extension INotificationExtension on INotification {
         emoji: emoji,
         pleroma: pleroma,
         chatMessage: chatMessage?.toPleromaChatMessage(),
-        target: target?.toPleromaAccount(),
+        target: target?.toPleromaApiAccount(),
         unread: unread,
         type: type,
         createdAt: createdAt,
@@ -122,10 +122,10 @@ extension INotificationExtension on INotification {
     }
   }
 
-  PleromaNotification toPleromaNotification() {
+  PleromaApiNotification toPleromaNotification() {
     var localNotification = this;
 
-    PleromaNotificationPleromaPart? pleroma = localNotification.pleroma;
+    PleromaApiNotificationPleromaPart? pleroma = localNotification.pleroma;
 
     var unread = localNotification.unread ?? false;
 
@@ -134,22 +134,22 @@ extension INotificationExtension on INotification {
         isSeen: !unread,
       );
     } else {
-      pleroma = PleromaNotificationPleromaPart(
+      pleroma = PleromaApiNotificationPleromaPart(
         isSeen: !unread,
         isMuted: null,
       );
     }
 
-    return PleromaNotification(
+    return PleromaApiNotification(
       id: localNotification.remoteId,
       createdAt: localNotification.createdAt,
-      account: localNotification.account?.toPleromaAccount(),
+      account: localNotification.account?.toPleromaApiAccount(),
       type: localNotification.type,
       emoji: localNotification.emoji,
       pleroma: pleroma,
       chatMessage: localNotification.chatMessage?.toPleromaChatMessage(),
-      target: localNotification.target?.toPleromaAccount(),
-      report: localNotification.report?.toPleromaAccountReport(),
+      target: localNotification.target?.toPleromaApiAccount(),
+      report: localNotification.report?.toPleromaApiAccountReport(),
       status: localNotification.status?.toPleromaStatus(),
     );
   }

@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 
 class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     implements IStatusReplyLoaderBloc {
-  final IPleromaStatusService pleromaStatusService;
+  final IPleromaApiStatusService pleromaStatusService;
   final IStatusRepository statusRepository;
   @override
   final IStatus originalStatus;
@@ -19,7 +19,7 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     IStatus originalStatus,
   ) =>
       LocalStatusReplyLoaderBloc(
-        pleromaStatusService: IPleromaStatusService.of(context, listen: false),
+        pleromaStatusService: IPleromaApiStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         originalStatus: originalStatus,
       );

@@ -22,12 +22,12 @@ class CreateCustomListBloc extends EditCustomListBloc
     required Function(ICustomList)? onSubmit,
   }) {
     var createCustomListBloc = CreateCustomListBloc(
-      pleromaListService: IPleromaListService.of(
+      pleromaListService: IPleromaApiListService.of(
         context,
         listen: false,
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaAuthAccountService: IPleromaAuthAccountService.of(
+      pleromaAuthAccountService: IPleromaApiAuthAccountService.of(
         context,
         listen: false,
       ),
@@ -89,11 +89,11 @@ class CreateCustomListBloc extends EditCustomListBloc
   }
 
   CreateCustomListBloc({
-    required IPleromaListService pleromaListService,
+    required IPleromaApiListService pleromaListService,
     required IStatusRepository statusRepository,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaAuthAccountService pleromaAuthAccountService,
+    required IPleromaApiAuthAccountService pleromaAuthAccountService,
     required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
     required IPaginationSettingsBloc paginationSettingsBloc,
   }) : super(

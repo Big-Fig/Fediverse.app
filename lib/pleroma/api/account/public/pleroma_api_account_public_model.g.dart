@@ -6,9 +6,9 @@ part of 'pleroma_api_account_public_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaAccountRegisterRequest _$PleromaAccountRegisterRequestFromJson(
+PleromaApiAccountRegisterRequest _$PleromaApiAccountRegisterRequestFromJson(
     Map<String, dynamic> json) {
-  return PleromaAccountRegisterRequest(
+  return PleromaApiAccountRegisterRequest(
     agreement: json['agreement'] as bool?,
     email: json['email'] as String?,
     locale: json['locale'] as String?,
@@ -21,8 +21,8 @@ PleromaAccountRegisterRequest _$PleromaAccountRegisterRequestFromJson(
   );
 }
 
-Map<String, dynamic> _$PleromaAccountRegisterRequestToJson(
-    PleromaAccountRegisterRequest instance) {
+Map<String, dynamic> _$PleromaApiAccountRegisterRequestToJson(
+    PleromaApiAccountRegisterRequest instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {

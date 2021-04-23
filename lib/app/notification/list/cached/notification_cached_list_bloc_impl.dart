@@ -9,7 +9,7 @@ import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
@@ -18,10 +18,10 @@ import 'package:flutter/widgets.dart';
 
 class NotificationCachedListBloc extends AsyncInitLoadingBloc
     implements INotificationCachedListBloc {
-  final IPleromaNotificationService pleromaNotificationService;
+  final IPleromaApiNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
   final IFilterRepository filterRepository;
-  final List<PleromaNotificationType> excludeTypes;
+  final List<PleromaApiNotificationType> excludeTypes;
 
   NotificationRepositoryFilters get _notificationRepositoryFilters =>
       NotificationRepositoryFilters(
@@ -86,7 +86,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   }) async {
     // todo: don't exclude pleroma types on mastodon instances
     var remoteNotifications = await pleromaNotificationService.getNotifications(
-      pagination: PleromaPaginationRequest(
+      pagination: PleromaApiPaginationRequest(
         limit: limit,
         sinceId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
@@ -102,10 +102,10 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
 
   static NotificationCachedListBloc createFromContext(
     BuildContext context, {
-    required List<PleromaNotificationType> excludeTypes,
+    required List<PleromaApiNotificationType> excludeTypes,
   }) =>
       NotificationCachedListBloc(
-        pleromaNotificationService: IPleromaNotificationService.of(
+        pleromaNotificationService: IPleromaApiNotificationService.of(
           context,
           listen: false,
         ),
@@ -122,7 +122,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    required List<PleromaNotificationType> excludeTypes,
+    required List<PleromaApiNotificationType> excludeTypes,
     required Widget child,
   }) {
     return DisposableProvider<INotificationCachedListBloc>(

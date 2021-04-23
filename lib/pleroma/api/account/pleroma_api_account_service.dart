@@ -1,28 +1,28 @@
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaAccountService extends IPleromaApi {
-  static IPleromaAccountService of(
+abstract class IPleromaApiAccountService extends IPleromaApi {
+  static IPleromaApiAccountService of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IPleromaAccountService>(context, listen: listen);
+      Provider.of<IPleromaApiAccountService>(context, listen: listen);
 
-  Future<List<IPleromaAccount>> getAccountFollowings({
+  Future<List<IPleromaApiAccount>> getAccountFollowings({
     required String accountRemoteId,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   });
 
-  Future<List<IPleromaAccount>> getAccountFollowers({
+  Future<List<IPleromaApiAccount>> getAccountFollowers({
     required String accountRemoteId,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   });
 
-  Future<List<IPleromaStatus>> getAccountStatuses({
+  Future<List<IPleromaApiStatus>> getAccountStatuses({
     required String accountRemoteId,
     String? tagged,
     bool? pinned,
@@ -31,15 +31,15 @@ abstract class IPleromaAccountService extends IPleromaApi {
     List<String>? excludeVisibilities,
     bool? withMuted,
     bool? onlyWithMedia,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   });
 
-  Future<List<IPleromaStatus>> getAccountFavouritedStatuses({
+  Future<List<IPleromaApiStatus>> getAccountFavouritedStatuses({
     required String accountRemoteId,
-    IPleromaPaginationRequest? pagination,
+    IPleromaApiPaginationRequest? pagination,
   });
 
-  Future<IPleromaAccount> getAccount({
+  Future<IPleromaApiAccount> getAccount({
     required String accountRemoteId,
   });
 }

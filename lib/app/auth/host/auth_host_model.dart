@@ -26,8 +26,8 @@ class AuthHostRegistrationResult {
   bool? get approvalRequired => pleromaInstance.approvalRequired;
 
   final dynamic authInstanceFetchError;
-  final PleromaOAuthToken token;
-  final IPleromaInstance pleromaInstance;
+  final PleromaApiOAuthToken token;
+  final IPleromaApiInstance pleromaInstance;
   final AuthInstance? authInstance;
 
   AuthHostRegistrationResult({

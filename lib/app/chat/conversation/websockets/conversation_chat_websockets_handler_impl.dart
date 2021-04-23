@@ -13,7 +13,7 @@ class ConversationChatWebSocketsHandler extends WebSocketsChannelHandler {
   String get logTag => "conversation_chat_websockets_handler_impl.dart";
 
   ConversationChatWebSocketsHandler({
-    required IPleromaWebSocketsService pleromaWebSocketsService,
+    required IPleromaApiWebSocketsService pleromaWebSocketsService,
     required IStatusRepository statusRepository,
     required INotificationRepository notificationRepository,
     required IConversationChatRepository conversationRepository,

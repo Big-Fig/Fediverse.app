@@ -4,7 +4,7 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("pleroma_rest_exception.dart");
 
-class PleromaRestException implements Exception {
+class PleromaApiRestException implements Exception {
   static const jsonBodyErrorKey = "error";
 
   final int statusCode;
@@ -14,7 +14,7 @@ class PleromaRestException implements Exception {
 
   String get decodedErrorDescriptionOrBody => decodedErrorDescription ?? body;
 
-  PleromaRestException({required this.statusCode, required this.body}) {
+  PleromaApiRestException({required this.statusCode, required this.body}) {
     try {
       var jsonBody = jsonDecode(body);
       decodedErrorDescription = jsonBody[jsonBodyErrorKey];
@@ -25,31 +25,36 @@ class PleromaRestException implements Exception {
 
   @override
   String toString() {
-    return 'PleromaRestException{statusCode: $statusCode, body: $body}';
+    return 'PleromaApiRestException{statusCode: $statusCode, body: $body}';
   }
 }
 
-class PleromaThrottledRestException extends PleromaRestException {
+class PleromaApiThrottledRestException extends PleromaApiRestException {
   static const int httpStatusCode = 429;
 
-  PleromaThrottledRestException({
+  PleromaApiThrottledRestException({
     required int statusCode,
     required String body,
   }) : super(statusCode: statusCode, body: body);
 
   @override
   String toString() {
-    return 'PleromaThrottledRestException{}';
+    return 'PleromaApiThrottledRestException{}';
   }
 }
 
-class PleromaForbiddenRestException extends PleromaRestException {
-  PleromaForbiddenRestException({required int statusCode, required String body})
+class PleromaApiForbiddenRestException extends PleromaApiRestException {
+  PleromaApiForbiddenRestException({required int statusCode, required String body})
       : super(statusCode: statusCode, body: body);
+
+  @override
+  String toString() {
+    return 'PleromaApiForbiddenRestException{}';
+  }
 }
 
-class PleromaInvalidCredentialsForbiddenRestException
-    extends PleromaRestException {
+class PleromaApiInvalidCredentialsForbiddenRestException
+    extends PleromaApiRestException {
   static const pleromaInvalidCredentialsErrorValue = "Invalid credentials.";
   static const pleromaInvalidCredentialsStatusCode = 403;
 
@@ -57,13 +62,13 @@ class PleromaInvalidCredentialsForbiddenRestException
   static const mastodonInvalidCredentialsErrorValue =
       "The access token was revoked";
 
-  PleromaInvalidCredentialsForbiddenRestException({
+  PleromaApiInvalidCredentialsForbiddenRestException({
     required int statusCode,
     required String body,
   }) : super(statusCode: statusCode, body: body);
 
   @override
   String toString() {
-    return 'PleromaInvalidCredentialsForbiddenRestException{}';
+    return 'PleromaApiInvalidCredentialsForbiddenRestException{}';
   }
 }

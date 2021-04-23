@@ -12,7 +12,7 @@ import 'package:flutter/widgets.dart';
 Future goToLocalStatusThreadPage(
   BuildContext context, {
   required IStatus status,
-  required IPleromaMediaAttachment? initialMediaAttachment,
+  required IPleromaApiMediaAttachment? initialMediaAttachment,
 }) {
   return Navigator.push(
     context,
@@ -25,7 +25,7 @@ Future goToLocalStatusThreadPage(
 
 MaterialPageRoute createLocalStatusThreadPageRoute({
   required IStatus status,
-  required IPleromaMediaAttachment? initialMediaAttachment,
+  required IPleromaApiMediaAttachment? initialMediaAttachment,
 }) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IStatusThreadBloc>(

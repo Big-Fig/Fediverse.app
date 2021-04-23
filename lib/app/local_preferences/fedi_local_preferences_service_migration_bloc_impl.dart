@@ -91,7 +91,7 @@ class FediLocalPreferencesServiceMigrationBloc
       (lps) => AuthInstanceListLocalPreferenceBloc(lps),
       (lps) => CurrentAuthInstanceLocalPreferenceBloc(lps),
       (lps) => PushHandlerUnhandledLocalPreferencesBloc(lps),
-      (lps) => PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc(lps),
+      (lps) => PleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc(lps),
       (lps) => GlobalChatSettingsLocalPreferencesBloc(lps),
       (lps) => GlobalMediaSettingsLocalPreferencesBloc(lps),
       (lps) => GlobalToastSettingsLocalPreferencesBloc(lps),

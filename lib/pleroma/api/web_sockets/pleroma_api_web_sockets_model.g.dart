@@ -6,16 +6,16 @@ part of 'pleroma_api_web_sockets_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaWebSocketsEvent _$PleromaWebSocketsEventFromJson(
+PleromaApiWebSocketsEvent _$PleromaApiWebSocketsEventFromJson(
     Map<String, dynamic> json) {
-  return PleromaWebSocketsEvent(
+  return PleromaApiWebSocketsEvent(
     event: json['event'] as String,
     payload: json['payload'] as String?,
   );
 }
 
-Map<String, dynamic> _$PleromaWebSocketsEventToJson(
-        PleromaWebSocketsEvent instance) =>
+Map<String, dynamic> _$PleromaApiWebSocketsEventToJson(
+        PleromaApiWebSocketsEvent instance) =>
     <String, dynamic>{
       'event': instance.event,
       'payload': instance.payload,

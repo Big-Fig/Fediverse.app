@@ -48,19 +48,19 @@ void showEditGlobalPostStatusSettingsDialog({
           // ignore: no-equal-then-else
           pleromaVisibilityPossibleValues: isPleromaInstance
               ? [
-                  PleromaVisibility.public,
-                  PleromaVisibility.unlisted,
-                  PleromaVisibility.direct,
-                  PleromaVisibility.private,
+                  PleromaApiVisibility.public,
+                  PleromaApiVisibility.unlisted,
+                  PleromaApiVisibility.direct,
+                  PleromaApiVisibility.private,
                   // don't support pleroma-only visibility for global settings
                   // PleromaVisibility.list,
                   // PleromaVisibility.local,
                 ]
               : [
-                  PleromaVisibility.public,
-                  PleromaVisibility.unlisted,
-                  PleromaVisibility.direct,
-                  PleromaVisibility.private,
+                  PleromaApiVisibility.public,
+                  PleromaApiVisibility.unlisted,
+                  PleromaApiVisibility.direct,
+                  PleromaApiVisibility.private,
                 ],
         ),
         child: const EditPostStatusSettingsWidget(

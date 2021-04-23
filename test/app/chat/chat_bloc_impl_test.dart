@@ -22,7 +22,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -37,14 +37,14 @@ import 'message/chat_message_model_helper.dart';
 
 // ignore_for_file: no-magic-number
 @GenerateMocks([
-  PleromaChatService,
-  PleromaMyAccountService,
+  PleromaApiChatService,
+  PleromaApiMyAccountService,
 ])
 void main() {
   late IPleromaChat chat;
   late IPleromaChatBloc chatBloc;
-  late MockPleromaChatService pleromaChatServiceMock;
-  late MockPleromaMyAccountService pleromaMyAccountServiceMock;
+  late MockPleromaApiChatService pleromaChatServiceMock;
+  late MockPleromaApiMyAccountService pleromaMyAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IPleromaChatMessageRepository chatMessageRepository;
@@ -69,8 +69,8 @@ void main() {
       chatMessageRepository: chatMessageRepository,
     );
 
-    pleromaChatServiceMock = MockPleromaChatService();
-    pleromaMyAccountServiceMock = MockPleromaMyAccountService();
+    pleromaChatServiceMock = MockPleromaApiChatService();
+    pleromaMyAccountServiceMock = MockPleromaApiMyAccountService();
 
     preferencesService = MemoryLocalPreferencesService();
 
@@ -92,7 +92,7 @@ void main() {
     );
 
     await myAccountLocalPreferenceBloc.setValue(
-      myAccount.toPleromaMyAccountWrapper(),
+      myAccount.toPleromaApiMyAccountWrapper(),
     );
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -141,7 +141,7 @@ void main() {
     await accountRepository.upsertChatRemoteAccounts(
       accounts
           .map(
-            (account) => account.toPleromaAccount(),
+            (account) => account.toPleromaApiAccount(),
           )
           .toList(),
       chatRemoteId: chat.remoteId,

@@ -45,12 +45,12 @@ class ThreadPostStatusBloc extends PostStatusBloc
   ThreadPostStatusBloc({
     required IStatus inReplyToStatus,
     required this.statusThreadBloc,
-    required IPleromaAuthStatusService pleromaAuthStatusService,
+    required IPleromaApiAuthStatusService pleromaAuthStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
     required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     required int? maximumMessageLength,
-    required PleromaInstancePollLimits? pleromaInstancePollLimits,
+    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required String? language,
@@ -62,7 +62,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
           scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibility: PleromaVisibility.public.toJsonValue(),
+            visibility: PleromaApiVisibility.public.toJsonValue(),
             language: language,
             inReplyToPleromaStatus: inReplyToStatus.toPleromaStatus(),
           ),
@@ -86,7 +86,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
       inReplyToStatus: inReplyToStatus,
       statusThreadBloc: IStatusThreadBloc.of(context, listen: false),
       pleromaAuthStatusService:
-          IPleromaAuthStatusService.of(context, listen: false),
+          IPleromaApiAuthStatusService.of(context, listen: false),
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
           IPleromaMediaAttachmentService.of(context, listen: false),
@@ -130,7 +130,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
   bool get isPossibleToChangeVisibility => false;
 
   @override
-  Future onStatusPosted(IPleromaStatus remoteStatus) async {
+  Future onStatusPosted(IPleromaApiStatus remoteStatus) async {
     _logger.finest(() => "onStatusPosted $onStatusPosted");
     var status = await statusRepository.findByRemoteIdInAppType(remoteStatus.id);
     if (status != null) {
@@ -198,8 +198,8 @@ class ThreadPostStatusBloc extends PostStatusBloc
     // we should force DIRECT visibility if inReplyToStatus have DIRECT too
     var inReplyToStatus = notCanceledOriginInReplyToStatus;
     if (inReplyToStatus != null) {
-      if (inReplyToStatus.visibility == PleromaVisibility.direct) {
-        return PleromaVisibility.direct.toJsonValue();
+      if (inReplyToStatus.visibility == PleromaApiVisibility.direct) {
+        return PleromaApiVisibility.direct.toJsonValue();
       } else {
         return super.calculateVisibilityField();
       }

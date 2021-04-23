@@ -13,9 +13,9 @@ abstract class IStatusEmojiReactionBloc implements IDisposable {
         listen: listen,
       );
 
-  IPleromaStatusEmojiReaction get emojiReaction;
+  IPleromaApiStatusEmojiReaction get emojiReaction;
 
-  Stream<IPleromaStatusEmojiReaction> get emojiReactionStream;
+  Stream<IPleromaApiStatusEmojiReaction> get emojiReactionStream;
 
-  Future<IPleromaStatus> toggleEmojiReaction();
+  Future<IPleromaApiStatus> toggleEmojiReaction();
 }

@@ -38,8 +38,8 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   late ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>,
       IStatus> paginationListWithNewItemsBloc;
 
-  final IPleromaAccountService pleromaAccountService;
-  final IPleromaTimelineService pleromaTimelineService;
+  final IPleromaApiAccountService pleromaAccountService;
+  final IPleromaApiTimelineService pleromaTimelineService;
   final IStatusRepository statusRepository;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
@@ -154,9 +154,9 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
           listen: false,
         ),
         pleromaTimelineService:
-            IPleromaTimelineService.of(context, listen: false),
+            IPleromaApiTimelineService.of(context, listen: false),
         pleromaAccountService:
-            IPleromaAccountService.of(context, listen: false),
+            IPleromaApiAccountService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
         currentAuthInstanceBloc:

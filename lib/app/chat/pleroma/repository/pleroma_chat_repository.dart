@@ -16,7 +16,7 @@ abstract class IPleromaChatRepository
         IAppRemoteReadWriteRepository<
             DbChat,
             IPleromaChat,
-            pleroma_lib.IPleromaChat,
+            pleroma_lib.IPleromaApiChat,
             int,
             String,
             PleromaChatRepositoryFilters,

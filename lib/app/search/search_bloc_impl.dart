@@ -14,7 +14,7 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
   @override
   ISearchInputBloc searchInputBloc;
 
-  IPleromaSearchService pleromaSearchService;
+  IPleromaApiSearchService pleromaSearchService;
 
   SearchBloc({
     required this.pleromaSearchService,
@@ -46,7 +46,7 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
   }) =>
       SearchBloc(
         startTab: startTab,
-        pleromaSearchService: IPleromaSearchService.of(
+        pleromaSearchService: IPleromaApiSearchService.of(
           context,
           listen: false,
         ),

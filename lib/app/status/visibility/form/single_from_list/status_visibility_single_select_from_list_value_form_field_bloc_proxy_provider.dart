@@ -16,9 +16,9 @@ class StatusVisibilitySelectSingleFromListValueFormFieldBlocProxyProvider
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IStatusVisibilitySelectSingleFromListValueFormFieldBloc,
-          ISingleSelectFromListValueFormFieldBloc<PleromaVisibility>>(
+          ISingleSelectFromListValueFormFieldBloc<PleromaApiVisibility>>(
         update: (context, value, previous) => value,
-        child: SingleSelectFromListValueFormFieldBlocProxyProvider<PleromaVisibility>(
+        child: SingleSelectFromListValueFormFieldBlocProxyProvider<PleromaApiVisibility>(
           child: child,
         ),
       );

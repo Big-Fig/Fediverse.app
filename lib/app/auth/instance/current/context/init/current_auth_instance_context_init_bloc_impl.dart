@@ -8,7 +8,7 @@ import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service.dart';
@@ -25,17 +25,17 @@ var _logger = Logger("current_auth_instance_context_init_bloc_impl.dart");
 class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     implements ICurrentAuthInstanceContextInitBloc {
   final IMyAccountBloc myAccountBloc;
-  final IPleromaInstanceService pleromaInstanceService;
-  final IPleromaNotificationService pleromaNotificationService;
-  final IPleromaChatService pleromaChatService;
-  final IPleromaConversationService pleromaConversationService;
-  final IPleromaFilterService pleromaFilterService;
+  final IPleromaApiInstanceService pleromaInstanceService;
+  final IPleromaApiNotificationService pleromaNotificationService;
+  final IPleromaApiChatService pleromaChatService;
+  final IPleromaApiConversationService pleromaConversationService;
+  final IPleromaApiFilterService pleromaFilterService;
   final IFilterRepository filterRepository;
   final INotificationRepository notificationRepository;
   final IConversationChatRepository conversationChatRepository;
   final IPleromaChatRepository pleromaChatRepository;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
-  final IPleromaAuthRestService pleromaAuthRestService;
+  final IPleromaApiAuthRestService pleromaAuthRestService;
 
   CurrentAuthInstanceContextInitBloc({
     required this.myAccountBloc,
@@ -104,7 +104,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
         requiredDataRefreshSuccess = true;
       } catch (e, stackTrace) {
         _logger.warning(() => "failed to update instance info", e, stackTrace);
-        if (e is PleromaInvalidCredentialsForbiddenRestException) {
+        if (e is PleromaApiInvalidCredentialsForbiddenRestException) {
           stateSubject.add(
             CurrentAuthInstanceContextInitState.invalidCredentials,
           );
@@ -267,15 +267,15 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        pleromaChatService: IPleromaChatService.of(
+        pleromaChatService: IPleromaApiChatService.of(
           context,
           listen: false,
         ),
-        pleromaNotificationService: IPleromaNotificationService.of(
+        pleromaNotificationService: IPleromaApiNotificationService.of(
           context,
           listen: false,
         ),
-        pleromaConversationService: IPleromaConversationService.of(
+        pleromaConversationService: IPleromaApiConversationService.of(
           context,
           listen: false,
         ),
@@ -283,7 +283,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        pleromaInstanceService: IPleromaInstanceService.of(
+        pleromaInstanceService: IPleromaApiInstanceService.of(
           context,
           listen: false,
         ),
@@ -291,7 +291,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        pleromaAuthRestService: IPleromaAuthRestService.of(
+        pleromaAuthRestService: IPleromaApiAuthRestService.of(
           context,
           listen: false,
         ),
@@ -299,7 +299,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        pleromaFilterService: IPleromaFilterService.of(
+        pleromaFilterService: IPleromaApiFilterService.of(
           context,
           listen: false,
         ),

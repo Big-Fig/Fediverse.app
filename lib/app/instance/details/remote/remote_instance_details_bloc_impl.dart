@@ -14,11 +14,11 @@ class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
   final IRemoteInstanceBloc remoteInstanceBloc;
 
   @override
-  final IPleromaInstanceService pleromaInstanceService;
+  final IPleromaApiInstanceService pleromaInstanceService;
 
   RemoteInstanceDetailsBloc({
     required this.remoteInstanceBloc,
-  })  : pleromaInstanceService = PleromaInstanceService(
+  })  : pleromaInstanceService = PleromaApiInstanceService(
           restService: remoteInstanceBloc.pleromaRestService,
         ),
         super(

@@ -12,7 +12,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_api_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     implements IMyAccountFollowRequestNetworkOnlyAccountListBloc {
   final IMyAccountBloc myAccountBloc;
-  final IPleromaMyAccountService pleromaMyAccountService;
+  final IPleromaApiMyAccountService pleromaMyAccountService;
   final IAccountRepository accountRepository;
   final INotificationRepository notificationRepository;
 
@@ -47,13 +47,13 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
 
   Future _processFollowRequestAction(
     IAccount account,
-    IPleromaAccountRelationship accountRelationship,
+    IPleromaApiAccountRelationship accountRelationship,
   ) async {
     var pleromaAccount = account
         .copyWith(
           pleromaRelationship: accountRelationship,
         )
-        .toPleromaAccount();
+        .toPleromaApiAccount();
 
     await notificationRepository.batch((batch) {
       notificationRepository.dismissFollowRequestNotificationsFromAccount(
@@ -91,7 +91,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     String? maxId,
   }) async {
     var remoteAccounts = await pleromaMyAccountService.getFollowRequests(
-      pagination: PleromaPaginationRequest(
+      pagination: PleromaApiPaginationRequest(
         sinceId: minId,
         maxId: maxId,
         limit: itemsCountPerPage,
@@ -116,7 +116,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     BuildContext context,
   ) =>
       MyAccountFollowRequestNetworkOnlyAccountListBloc(
-        pleromaMyAccountService: IPleromaMyAccountService.of(
+        pleromaMyAccountService: IPleromaApiMyAccountService.of(
           context,
           listen: false,
         ),

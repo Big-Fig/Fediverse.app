@@ -4,8 +4,8 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 class NotificationRepositoryFilters {
-  final PleromaNotificationType? onlyWithType;
-  final List<PleromaNotificationType>? excludeTypes;
+  final PleromaApiNotificationType? onlyWithType;
+  final List<PleromaApiNotificationType>? excludeTypes;
   final bool onlyNotDismissed;
   final bool? onlyUnread;
   final List<StatusTextCondition>? excludeStatusTextConditions;

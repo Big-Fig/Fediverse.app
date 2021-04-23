@@ -45,10 +45,10 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     clear();
   }
 
-  PleromaChatMessageSendData calculateSendData() {
+  PleromaApiChatMessageSendData calculateSendData() {
     var mediaId = calculateMediaAttachmentId();
 
-    var data = PleromaChatMessageSendData(
+    var data = PleromaApiChatMessageSendData(
       content: inputText,
       mediaId: mediaId,
       idempotencyKey: idempotencyKey,
@@ -62,12 +62,12 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     return calculateMediaAttachment()?.id;
   }
 
-  IPleromaMediaAttachment? calculateMediaAttachment() {
+  IPleromaApiMediaAttachment? calculateMediaAttachment() {
     var mediaAttachmentBlocs = mediaAttachmentsBloc.mediaAttachmentBlocs?.where(
       (bloc) =>
           bloc.uploadState!.type == UploadMediaAttachmentStateType.uploaded,
     );
-    IPleromaMediaAttachment? mediaAttachment;
+    IPleromaApiMediaAttachment? mediaAttachment;
     if (mediaAttachmentBlocs?.isNotEmpty == true) {
       mediaAttachment = mediaAttachmentBlocs!.first.pleromaMediaAttachment;
     }

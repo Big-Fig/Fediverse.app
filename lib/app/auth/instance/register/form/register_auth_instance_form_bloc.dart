@@ -34,5 +34,5 @@ abstract class IRegisterAuthInstanceFormBloc implements IFormBloc {
 
   IPleromaFormCaptchaStringFieldBloc get captchaFieldBloc;
 
-  PleromaAccountRegisterRequest calculateRegisterFormData();
+  PleromaApiAccountRegisterRequest calculateRegisterFormData();
 }

@@ -16,7 +16,7 @@ abstract class IAccountRepository
         IAppRemoteReadWriteRepository<
             DbAccount,
             IAccount,
-            IPleromaAccount,
+            IPleromaApiAccount,
             int,
             String,
             AccountRepositoryFilters,
@@ -31,50 +31,50 @@ abstract class IAccountRepository
       );
 
   Future upsertConversationRemoteAccounts(
-    List<IPleromaAccount> remoteAccounts, {
+    List<IPleromaApiAccount> remoteAccounts, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertConversationRemoteAccount(
-    IPleromaAccount remoteAccount, {
+    IPleromaApiAccount remoteAccount, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertChatRemoteAccount(
-    IPleromaAccount remoteAccount, {
+    IPleromaApiAccount remoteAccount, {
     required String chatRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertChatRemoteAccounts(
-    List<IPleromaAccount> remoteAccounts, {
+    List<IPleromaApiAccount> remoteAccounts, {
     required String chatRemoteId,
     required Batch? batchTransaction,
   });
 
   Future addAccountFollowings({
     required String accountRemoteId,
-    required List<PleromaAccount> followings,
+    required List<PleromaApiAccount> followings,
     required Batch? batchTransaction,
   });
 
   Future addAccountFollowers({
     required String accountRemoteId,
-    required List<IPleromaAccount> followers,
+    required List<IPleromaApiAccount> followers,
     required Batch? batchTransaction,
   });
 
   Future updateStatusRebloggedBy({
     required String statusRemoteId,
-    required List<IPleromaAccount> rebloggedByAccounts,
+    required List<IPleromaApiAccount> rebloggedByAccounts,
     required Batch? batchTransaction,
   });
 
   Future updateStatusFavouritedBy({
     required String statusRemoteId,
-    required List<IPleromaAccount> favouritedByAccounts,
+    required List<IPleromaApiAccount> favouritedByAccounts,
     required Batch? batchTransaction,
   });
 

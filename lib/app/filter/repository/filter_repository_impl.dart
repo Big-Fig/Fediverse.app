@@ -13,7 +13,7 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbFilter,
     DbFilterPopulated,
     IFilter,
-    IPleromaFilter,
+    IPleromaApiFilter,
     int,
     String,
     $DbFiltersTable,
@@ -41,7 +41,7 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   DbFilter mapAppItemToDbItem(IFilter appItem) => appItem.toDbFilter();
 
   @override
-  IPleromaFilter mapAppItemToRemoteItem(IFilter appItem) =>
+  IPleromaApiFilter mapAppItemToRemoteItem(IFilter appItem) =>
       appItem.toPleromaFilter();
 
   @override
@@ -53,12 +53,12 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbPopulatedItem.toDbFilterPopulatedWrapper();
 
   @override
-  IPleromaFilter mapDbPopulatedItemToRemoteItem(
+  IPleromaApiFilter mapDbPopulatedItemToRemoteItem(
           DbFilterPopulated dbPopulatedItem) =>
       dbPopulatedItem.toDbFilterPopulatedWrapper().toPleromaFilter();
 
   @override
-  IFilter mapRemoteItemToAppItem(IPleromaFilter appItem) =>
+  IFilter mapRemoteItemToAppItem(IPleromaApiFilter appItem) =>
       appItem.toDbFilterPopulatedWrapper();
 
   @override
@@ -82,7 +82,7 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<int> insertInRemoteType(
-    IPleromaFilter remoteItem, {
+    IPleromaApiFilter remoteItem, {
     required InsertMode? mode,
   }) =>
       insertInDbType(
@@ -94,7 +94,7 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    IPleromaFilter remoteItem, {
+    IPleromaApiFilter remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) {
@@ -109,7 +109,7 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<void> updateAppTypeByRemoteType({
     required IFilter appItem,
-    required IPleromaFilter remoteItem,
+    required IPleromaApiFilter remoteItem,
     required Batch? batchTransaction,
   }) =>
       updateByDbIdInDbType(

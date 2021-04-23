@@ -4,18 +4,18 @@ import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
 
 class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc
-    extends SingleSelectFromListValueFormFieldBloc<PleromaReplyVisibilityFilter?>
+    extends SingleSelectFromListValueFormFieldBloc<PleromaApiReplyVisibilityFilter?>
     implements
         ITimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc {
   @override
-  final List<PleromaReplyVisibilityFilter> possibleValues;
+  final List<PleromaApiReplyVisibilityFilter> possibleValues;
 
   TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc({
     bool isNullValuePossible = false,
-    this.possibleValues = PleromaReplyVisibilityFilter.values,
-    required PleromaReplyVisibilityFilter? originValue,
+    this.possibleValues = PleromaApiReplyVisibilityFilter.values,
+    required PleromaApiReplyVisibilityFilter? originValue,
     bool isEnabled = true,
-    List<FormValueFieldValidation<PleromaReplyVisibilityFilter>> validators =
+    List<FormValueFieldValidation<PleromaApiReplyVisibilityFilter>> validators =
         const [],
   }) : super(
           originValue: originValue,

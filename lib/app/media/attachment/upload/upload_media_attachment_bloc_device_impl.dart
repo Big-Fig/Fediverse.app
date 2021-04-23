@@ -20,7 +20,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
 
   final IMediaDeviceFile mediaDeviceFile;
   @override
-  IPleromaMediaAttachment? pleromaMediaAttachment;
+  IPleromaApiMediaAttachment? pleromaMediaAttachment;
 
   // ignore: close_sinks
   BehaviorSubject<UploadMediaAttachmentState> uploadStateSubject =

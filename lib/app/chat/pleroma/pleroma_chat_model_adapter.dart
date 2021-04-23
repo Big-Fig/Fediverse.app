@@ -6,7 +6,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart' as pleroma_lib;
 
-extension IPleromaChatPleromaExtension on pleroma_lib.IPleromaChat {
+extension IPleromaChatPleromaExtension on pleroma_lib.IPleromaApiChat {
   DbChat toDbChat() {
     var updatedAt = this.updatedAt;
     // todo: hack
@@ -23,7 +23,7 @@ extension IPleromaChatPleromaExtension on pleroma_lib.IPleromaChat {
 }
 
 extension IPleromaChatExtension on IPleromaChat {
-  pleroma_lib.PleromaChat toPleromaChat({
+  pleroma_lib.PleromaApiChat toPleromaChat({
     required IPleromaChatMessage? lastChatMessage,
     required List<IAccount> accounts,
   }) {
@@ -31,11 +31,11 @@ extension IPleromaChatExtension on IPleromaChat {
     // ignore: no-magic-number
     var isSingleAccount = accounts.length < 2;
     assert(isSingleAccount, "only direct chats supported");
-    return pleroma_lib.PleromaChat(
+    return pleroma_lib.PleromaApiChat(
       unread: unread,
       lastMessage: lastChatMessage?.toPleromaChatMessage(),
       id: remoteId,
-      account: accounts.first.toPleromaAccount(),
+      account: accounts.first.toPleromaApiAccount(),
       updatedAt: updatedAt,
     );
   }

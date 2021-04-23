@@ -7,16 +7,16 @@ import 'package:logging/logging.dart';
 // ignore_for_file: no-magic-number
 part 'pleroma_api_field_model.g.dart';
 
-var _logger = Logger("pleroma_field_model.dart");
+var _logger = Logger("pleroma_api_field_model.dart");
 
-abstract class IPleromaField implements IMastodonApiField {}
+abstract class IPleromaApiField implements IMastodonApiField {}
 
-extension IPleromaFieldExtension on IPleromaField {
-  PleromaField toPleromaField() {
-    if (this is PleromaField) {
-      return this as PleromaField;
+extension IPleromaApiFieldExtension on IPleromaApiField {
+  PleromaApiField toPleromaApiField() {
+    if (this is PleromaApiField) {
+      return this as PleromaApiField;
     } else {
-      return PleromaField(
+      return PleromaApiField(
         name: name,
         value: value,
         verifiedAt: verifiedAt,
@@ -25,13 +25,13 @@ extension IPleromaFieldExtension on IPleromaField {
   }
 }
 
-extension IPleromaFieldListExtension on List<IPleromaField> {
-  List<PleromaField> toPleromaFields() {
-    if (this is List<PleromaField>) {
-      return this as List<PleromaField>;
+extension IPleromaApiFieldListExtension on List<IPleromaApiField> {
+  List<PleromaApiField> toPleromaApiFields() {
+    if (this is List<PleromaApiField>) {
+      return this as List<PleromaApiField>;
     } else {
       return map(
-        (field) => field.toPleromaField(),
+        (field) => field.toPleromaApiField(),
       ).toList();
     }
   }
@@ -43,7 +43,7 @@ extension IPleromaFieldListExtension on List<IPleromaField> {
 //@HiveType()
 @HiveType(typeId: -32 + 37)
 @JsonSerializable()
-class PleromaField implements IPleromaField {
+class PleromaApiField implements IPleromaApiField {
   @override
   @HiveField(0)
   final String? name;
@@ -55,21 +55,31 @@ class PleromaField implements IPleromaField {
   @JsonKey(name: "verified_at")
   final DateTime? verifiedAt;
 
-  PleromaField({
+  PleromaApiField({
     required this.name,
     required this.value,
     required this.verifiedAt,
   });
 
-  factory PleromaField.fromJson(Map<String, dynamic> json) =>
-      _$PleromaFieldFromJson(json);
+  factory PleromaApiField.fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiFieldFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PleromaFieldToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiFieldToJson(this);
+
+
+  @override
+  String toString() {
+    return 'PleromaApiField{'
+        'name: $name, '
+        'value: $value, '
+        'verifiedAt: $verifiedAt'
+        '}';
+  }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaField &&
+      other is PleromaApiField &&
           runtimeType == other.runtimeType &&
           name == other.name &&
           value == other.value &&
@@ -77,11 +87,6 @@ class PleromaField implements IPleromaField {
 
   @override
   int get hashCode => name.hashCode ^ value.hashCode ^ verifiedAt.hashCode;
-
-  @override
-  String toString() {
-    return 'PleromaField{name: $name, value: $value}';
-  }
 
   @override
   String? get valueAsRawUrl {
