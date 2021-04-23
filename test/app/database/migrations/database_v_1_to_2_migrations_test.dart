@@ -17,13 +17,12 @@ void main() {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v1.sqlite';
     var file = File(filePath);
     dbFile = await file.copy(filePath + ".temp");
-    database = AppDatabase(VmDatabase(dbFile, logStatements: true));
+    database = AppDatabase(VmDatabase(dbFile, logStatements: false));
   });
 
   tearDown(() async {
     await database.close();
     await dbFile.delete();
-
 
     // hack because we don't have too old v1 db dump
     // ignore: no-magic-number

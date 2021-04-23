@@ -889,7 +889,6 @@ void main() {
     expect(await conversationRepository.countAll(), 3);
 
     expect(await accountRepository.countAll(), 1);
-    print("${await accountRepository.conversationAccountsDao.getAll()}");
     expect(await accountRepository.conversationAccountsDao.countAll(), 3);
 
     expect(await statusRepository.countAll(), 3);
