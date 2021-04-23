@@ -24,7 +24,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
   String? get message {
     String? message = shareMessageInputBloc.messageField.currentValue;
 
-    if (message?.isNotEmpty != true) {
+    if (message.isNotEmpty != true) {
       message = null;
     }
 

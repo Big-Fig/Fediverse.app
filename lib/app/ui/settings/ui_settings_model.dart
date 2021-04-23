@@ -18,10 +18,10 @@ class UiSettings implements IJsonObject, ISettings<UiSettings> {
 
   @HiveField(1)
   @JsonKey(name: "status_font_size")
-  final String? statusFontSize;
+  final String statusFontSize;
 
-  UiSettingsFontSize? get statusFontSizeAsUiSettingsFontSize =>
-      statusFontSize?.toUiSettingsFontSize();
+  UiSettingsFontSize get statusFontSizeAsUiSettingsFontSize =>
+      statusFontSize.toUiSettingsFontSize();
 
   UiSettings({
     required this.themeId,
@@ -58,7 +58,10 @@ class UiSettings implements IJsonObject, ISettings<UiSettings> {
 
   @override
   String toString() {
-    return 'UiSettings{themeId: $themeId, statusFontSize: $statusFontSize}';
+    return 'UiSettings{'
+        'themeId: $themeId, '
+        'statusFontSize: $statusFontSize'
+        '}';
   }
 
   @override

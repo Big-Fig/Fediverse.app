@@ -14,7 +14,7 @@ class FediUiThemeSingleFromListValueFormFieldBloc
     required this.possibleValues,
     required IFediUiTheme? originValue,
     bool isEnabled = true,
-    List<FormValueFieldValidation<IFediUiTheme>> validators = const [],
+    List<FormValueFieldValidation<IFediUiTheme?>> validators = const [],
   }) : super(
           originValue: originValue,
           isEnabled: isEnabled,

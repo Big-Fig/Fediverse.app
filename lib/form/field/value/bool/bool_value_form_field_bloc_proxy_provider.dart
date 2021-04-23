@@ -4,7 +4,7 @@ import 'package:fedi/form/field/value/value_form_field_bloc_proxy_provider.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class BoolValueFormFieldBlocProxyProvider extends StatelessWidget {
+class BoolValueFormFieldBlocProxyProvider<T extends bool?> extends StatelessWidget {
   final Widget child;
 
   BoolValueFormFieldBlocProxyProvider({
@@ -13,9 +13,9 @@ class BoolValueFormFieldBlocProxyProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      ProxyProvider<IBoolValueFormFieldBloc, IValueFormFieldBloc<bool?>>(
+      ProxyProvider<IBoolValueFormFieldBloc<T>, IValueFormFieldBloc<T>>(
         update: (context, value, previous) => value,
-        child: ValueFormFieldBlocProxyProvider<bool?>(
+        child: ValueFormFieldBlocProxyProvider<T>(
           child: child,
         ),
       );

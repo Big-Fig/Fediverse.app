@@ -9,7 +9,7 @@ class ToastHandlingTypeSingleFromListValueFormFieldRowWidget
   @override
   Widget build(BuildContext context) =>
       ToastHandlingTypeSingleSelectFromListValueFormFieldBlocProxyProvider(
-        child: SingleSelectFromListValueFormFieldRowWidget<ToastHandlingType?>(
+        child: SingleSelectFromListValueFormFieldRowWidget<ToastHandlingType>(
           label: S.of(context).app_toast_settings_field_handling_type_label,
           valueTitleMapper: (context, value) =>
               mapToastHandlingTypeToLabel(context, value!),
@@ -29,6 +29,8 @@ String mapToastHandlingTypeToLabel(
   ToastHandlingType type,
 ) {
   switch (type) {
+    case ToastHandlingType.never:
+      return S.of(context).app_toast_handling_type_never;
     case ToastHandlingType.always:
       return S.of(context).app_toast_handling_type_always;
     case ToastHandlingType.onlyWhenInstanceNotSelected:

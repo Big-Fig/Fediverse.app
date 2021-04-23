@@ -4,7 +4,7 @@ import 'package:fedi/form/field/value/select_from_list/single/single_select_from
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 
 class PaginationPageSizeSingleFromListValueFormFieldBloc
-    extends SingleSelectFromListValueFormFieldBloc<PaginationPageSize?>
+    extends SingleSelectFromListValueFormFieldBloc<PaginationPageSize>
     implements IPaginationPageSizeSingleFromListValueFormFieldBloc {
   @override
   final List<PaginationPageSize> possibleValues;
@@ -12,7 +12,7 @@ class PaginationPageSizeSingleFromListValueFormFieldBloc
   PaginationPageSizeSingleFromListValueFormFieldBloc({
     bool isNullValuePossible = false,
     this.possibleValues = PaginationPageSize.values,
-    required PaginationPageSize? originValue,
+    required PaginationPageSize originValue,
     bool isEnabled = true,
     List<FormValueFieldValidation<PaginationPageSize>> validators =
         const [],
@@ -23,7 +23,4 @@ class PaginationPageSizeSingleFromListValueFormFieldBloc
           isNullValuePossible: isNullValuePossible,
         );
 
-  @override
-  PaginationPageSize get defaultValue =>
-      IPaginationPageSizeSingleFromListValueFormFieldBloc.defaultValue;
 }

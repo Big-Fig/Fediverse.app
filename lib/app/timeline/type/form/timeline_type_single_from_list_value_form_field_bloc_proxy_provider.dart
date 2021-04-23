@@ -16,9 +16,9 @@ class TimelineTypeSingleFromListValueFormFieldBlocProxyProvider
   @override
   Widget build(BuildContext context) => ProxyProvider<
           ITimelineTypeSingleFromListValueFormFieldBloc,
-          ISingleSelectFromListValueFormFieldBloc<TimelineType?>>(
+          ISingleSelectFromListValueFormFieldBloc<TimelineType>>(
         update: (context, value, previous) => value,
-        child: SingleSelectFromListValueFormFieldBlocProxyProvider<TimelineType?>(
+        child: SingleSelectFromListValueFormFieldBlocProxyProvider<TimelineType>(
           child: child,
         ),
       );

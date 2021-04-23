@@ -37,11 +37,11 @@ class EditChatSettingsBloc
           isGlobalForced: isGlobalForced,
         ) {
     countConversationsInChatsUnreadBadgesFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings?.countConversationsInChatsUnreadBadges,
+      originValue: currentSettings.countConversationsInChatsUnreadBadges,
       isEnabled: isEnabled,
     );
     replaceConversationsWithPleromaChatsFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings?.replaceConversationsWithPleromaChats,
+      originValue: currentSettings.replaceConversationsWithPleromaChats,
       isEnabled: isEnabled,
     );
 

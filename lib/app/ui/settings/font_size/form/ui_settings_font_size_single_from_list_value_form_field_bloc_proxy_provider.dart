@@ -16,10 +16,10 @@ class UiSettingsFontSizeSingleFromListValueFormFieldBlocProxyProvider
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IUiSettingsFontSizeSingleFromListValueFormFieldBloc,
-          ISingleSelectFromListValueFormFieldBloc<UiSettingsFontSize?>>(
+          ISingleSelectFromListValueFormFieldBloc<UiSettingsFontSize>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
-            UiSettingsFontSize?>(
+            UiSettingsFontSize>(
           child: child,
         ),
       );

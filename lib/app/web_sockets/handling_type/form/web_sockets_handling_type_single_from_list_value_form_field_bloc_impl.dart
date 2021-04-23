@@ -4,7 +4,7 @@ import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.d
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 
 class WebSocketsHandlingTypeSingleFromListValueFormFieldBloc
-    extends SingleSelectFromListValueFormFieldBloc<WebSocketsHandlingType?>
+    extends SingleSelectFromListValueFormFieldBloc<WebSocketsHandlingType>
     implements IWebSocketsHandlingTypeSingleFromListValueFormFieldBloc {
   @override
   final List<WebSocketsHandlingType> possibleValues;
@@ -12,7 +12,7 @@ class WebSocketsHandlingTypeSingleFromListValueFormFieldBloc
   WebSocketsHandlingTypeSingleFromListValueFormFieldBloc({
     bool isNullValuePossible = false,
     this.possibleValues = WebSocketsHandlingType.values,
-    required WebSocketsHandlingType? originValue,
+    required WebSocketsHandlingType originValue,
     bool isEnabled = true,
     List<FormValueFieldValidation<WebSocketsHandlingType>> validators =
         const [],

@@ -11,20 +11,15 @@ class AgeLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget
   Widget build(BuildContext context) {
     return AgeLimitFilesSelectCacheSingleSelectValueFormFieldBlocProxyProvider(
       child:
-          SingleSelectFromListValueFormFieldRowWidget<FilesCacheAgeLimitType?>(
+          SingleSelectFromListValueFormFieldRowWidget<FilesCacheAgeLimitType>(
         label: S.of(context).app_cache_files_settings_limitAge_label,
         description: null,
         descriptionOnDisabled: null,
         valueIconMapper: null,
         displayIconInDialog: false,
         displayIconInRow: false,
-        valueTitleMapper:
-            (BuildContext context, FilesCacheAgeLimitType? value) {
-          if (value == null) {
-            return S.of(context).app_cache_files_settings_limitAge_value_notSet;
-          }
-
-          switch (value) {
+        valueTitleMapper: (BuildContext context, FilesCacheAgeLimitType? value) {
+          switch (value!) {
             case FilesCacheAgeLimitType.notSet:
               return S
                   .of(context)

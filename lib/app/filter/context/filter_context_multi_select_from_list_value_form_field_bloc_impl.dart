@@ -34,7 +34,7 @@ class FilterContextMultiSelectFromListValueFormFieldBloc
 
   FilterContextMultiSelectFromListValueFormFieldBloc({
     required this.currentInstance,
-    required List<MastodonFilterContextType>? originValue,
+    required List<MastodonFilterContextType> originValue,
     bool isEnabled = true,
     bool isNullValuePossible = false,
     required

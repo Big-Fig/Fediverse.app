@@ -4,7 +4,7 @@ import 'package:fedi/form/field/value/select_from_list/single/single_select_from
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 
 class UiSettingsFontSizeSingleFromListValueFormFieldBloc
-    extends SingleSelectFromListValueFormFieldBloc<UiSettingsFontSize?>
+    extends SingleSelectFromListValueFormFieldBloc<UiSettingsFontSize>
     implements IUiSettingsFontSizeSingleFromListValueFormFieldBloc {
   @override
   final List<UiSettingsFontSize> possibleValues;
@@ -22,7 +22,4 @@ class UiSettingsFontSizeSingleFromListValueFormFieldBloc
           isNullValuePossible: isNullValuePossible,
         );
 
-  @override
-  UiSettingsFontSize get defaultValue =>
-      IUiSettingsFontSizeSingleFromListValueFormFieldBloc.defaultValue;
 }

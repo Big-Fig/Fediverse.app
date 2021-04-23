@@ -10,7 +10,7 @@ class WebSocketsHandlingTypeSingleFromListValueFormFieldRowWidget
   Widget build(BuildContext context) =>
       WebSocketsHandlingTypeSingleFromListValueFormFieldBlocProxyProvider(
         child:
-            SingleSelectFromListValueFormFieldRowWidget<WebSocketsHandlingType?>(
+            SingleSelectFromListValueFormFieldRowWidget<WebSocketsHandlingType>(
           label: S.of(context).app_web_sockets_settings_field_type_label,
           valueTitleMapper: (context, value) =>
               mapWebSocketsHandlingTypeToLabel(context, value!),

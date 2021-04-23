@@ -17,10 +17,10 @@ class SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBlocProxyProvide
   Widget build(BuildContext context) => ProxyProvider<
           ISizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc,
           ISingleSelectFromListValueFormFieldBloc<
-              FilesCacheSizeLimitCountType?>>(
+              FilesCacheSizeLimitCountType>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
-            FilesCacheSizeLimitCountType?>(
+            FilesCacheSizeLimitCountType>(
           child: child,
         ),
       );

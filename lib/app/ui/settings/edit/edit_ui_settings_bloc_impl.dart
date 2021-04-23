@@ -48,7 +48,7 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings?>
   @override
   UiSettings calculateCurrentFormFieldsSettings() => UiSettings(
         themeId: fediThemeFieldBloc.currentValue?.id,
-        statusFontSize: statusFontSizeBloc.currentValue?.toJsonValue(),
+        statusFontSize: statusFontSizeBloc.currentValue.toJsonValue(),
       );
 
   @override

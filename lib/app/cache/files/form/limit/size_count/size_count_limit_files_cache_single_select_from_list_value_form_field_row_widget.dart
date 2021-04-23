@@ -11,19 +11,13 @@ class SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget
   Widget build(BuildContext context) =>
       SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBlocProxyProvider(
         child: SingleSelectFromListValueFormFieldRowWidget<
-            FilesCacheSizeLimitCountType?>(
+            FilesCacheSizeLimitCountType>(
           label: S.of(context).app_cache_files_settings_sizeLimit_label,
           displayIconInRow: false,
           valueIconMapper: null,
           valueTitleMapper:
               (BuildContext context, FilesCacheSizeLimitCountType? value) {
-            if (value == null) {
-              return S
-                  .of(context)
-                  .app_cache_files_settings_sizeLimit_value_notSet;
-            }
-
-            switch (value) {
+            switch (value!) {
               case FilesCacheSizeLimitCountType.notSet:
                 return S
                     .of(context)
@@ -48,13 +42,11 @@ class SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget
                 return S
                     .of(context)
                     .app_cache_files_settings_sizeLimit_value_size1000;
-                case FilesCacheSizeLimitCountType.size10000:
+              case FilesCacheSizeLimitCountType.size10000:
                 return S
                     .of(context)
                     .app_cache_files_settings_sizeLimit_value_size10000;
             }
-
-
           },
           displayIconInDialog: false,
           description: null,

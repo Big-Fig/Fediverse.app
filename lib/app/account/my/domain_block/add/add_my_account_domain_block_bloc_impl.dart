@@ -16,7 +16,7 @@ class AddMyAccountDomainBlockBloc extends FormBloc
 
   @override
   IStringValueFormFieldBloc domainField = StringValueFormFieldBloc(
-    originValue: null,
+    originValue: "",
     validators: [
       StringValueFormFieldNonEmptyValidationError.createValidator(),
     ],
@@ -28,6 +28,6 @@ class AddMyAccountDomainBlockBloc extends FormBloc
 
   @override
   Future submit() => pleromaAuthAccountService.blockDomain(
-        domain: domainField.currentValue!,
+        domain: domainField.currentValue,
       );
 }

@@ -4,7 +4,7 @@ import 'package:fedi/form/field/value/select_from_list/single/single_select_from
 
 abstract class IPaginationPageSizeSingleFromListValueFormFieldBloc
     implements
-        ISingleSelectFromListValueFormFieldBloc<PaginationPageSize?> {
+        ISingleSelectFromListValueFormFieldBloc<PaginationPageSize> {
   static const PaginationPageSize defaultValue =
       IPaginationSettingsBloc.defaultPageSizeValue;
 }

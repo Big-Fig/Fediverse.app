@@ -11,7 +11,7 @@ class EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldRowWidget
   Widget build(BuildContext context) =>
       EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldBlocProxyProvider(
         child: SingleSelectFromListValueFormFieldRowWidget<
-            DatabaseCacheEntriesCountByTypeLimitType?>(
+            DatabaseCacheEntriesCountByTypeLimitType>(
           label: S
               .of(context)
               .app_cache_database_settings_limitEntriesCountByType_label,
@@ -21,13 +21,7 @@ class EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldRowWidget
             BuildContext context,
             DatabaseCacheEntriesCountByTypeLimitType? value,
           ) {
-            if (value == null) {
-              return S
-                  .of(context)
-                  .app_cache_database_settings_limitEntriesCountByType_value_notSet;
-            }
-
-            switch (value) {
+            switch (value!) {
               case DatabaseCacheEntriesCountByTypeLimitType.notSet:
                 return S
                     .of(context)

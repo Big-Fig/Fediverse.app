@@ -4,7 +4,7 @@ import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 
 class StatusVisibilitySelectSingleFromListValueFormFieldBloc
-    extends SingleSelectFromListValueFormFieldBloc<PleromaVisibility?>
+    extends SingleSelectFromListValueFormFieldBloc<PleromaVisibility>
     implements IStatusVisibilitySelectSingleFromListValueFormFieldBloc {
   @override
   final List<PleromaVisibility> possibleValues;

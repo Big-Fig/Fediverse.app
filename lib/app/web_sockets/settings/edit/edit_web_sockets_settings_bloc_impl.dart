@@ -33,7 +33,7 @@ class EditWebSocketsSettingsBloc
           isGlobalForced: isGlobalForced,
         ) {
     typeFieldBloc = WebSocketsHandlingTypeSingleFromListValueFormFieldBloc(
-      originValue: currentSettings?.type,
+      originValue: currentSettings.type,
       isEnabled: isEnabled,
     );
     addDisposable(disposable: typeFieldBloc);
@@ -42,7 +42,7 @@ class EditWebSocketsSettingsBloc
 
   @override
   WebSocketsSettings calculateCurrentFormFieldsSettings() => WebSocketsSettings(
-        typeString: typeFieldBloc.currentValue!.toJsonValue(),
+        typeString: typeFieldBloc.currentValue.toJsonValue(),
       );
 
   @override

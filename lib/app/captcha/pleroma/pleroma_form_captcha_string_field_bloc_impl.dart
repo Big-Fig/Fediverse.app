@@ -73,7 +73,7 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
 
   PleromaFormCaptchaStringFieldBloc({
     required this.pleromaCaptchaService,
-    required String? originValue,
+    required String originValue,
     required List<FormValueFieldValidation<String>> validators,
   })   : captchaSubject = BehaviorSubject(),
         errorSubject = BehaviorSubject(),

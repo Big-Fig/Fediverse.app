@@ -5,12 +5,12 @@ import 'package:fedi/form/field/value/value_form_field_validation.dart';
 
 class EntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
     extends SingleSelectFromListValueFormFieldBloc<
-        DatabaseCacheEntriesCountByTypeLimitType?>
+        DatabaseCacheEntriesCountByTypeLimitType>
     implements
         IEntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc {
   EntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc({
     bool isNullValuePossible = false,
-    required DatabaseCacheEntriesCountByTypeLimitType? originValue,
+    required DatabaseCacheEntriesCountByTypeLimitType originValue,
     bool isEnabled = true,
     List<FormValueFieldValidation<DatabaseCacheEntriesCountByTypeLimitType>>
         validators = const [],

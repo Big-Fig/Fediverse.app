@@ -88,10 +88,10 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   static StringValueFormFieldBloc createPollOptionBloc(
     int? maximumOptionLength,
   ) =>
-      createPollOptionFieldBloc(null, maximumOptionLength);
+      createPollOptionFieldBloc("", maximumOptionLength);
 
   static StringValueFormFieldBloc createPollOptionFieldBloc(
-    String? originValue,
+    String originValue,
     int? maximumOptionLength,
   ) {
     return StringValueFormFieldBloc(

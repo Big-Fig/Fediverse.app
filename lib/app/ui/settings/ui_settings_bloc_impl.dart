@@ -12,49 +12,50 @@ class UiSettingsBloc extends DisposableOwner implements IUiSettingsBloc {
   });
 
   @override
-  UiSettings? get settingsData => uiSettingsLocalPreferencesBloc.value;
+  UiSettings get settingsData => uiSettingsLocalPreferencesBloc.value;
 
   @override
-  Stream<UiSettings?> get settingsDataStream =>
+  Stream<UiSettings> get settingsDataStream =>
       uiSettingsLocalPreferencesBloc.stream;
 
   @override
-  String? get themeId => settingsData?.themeId;
+  String? get themeId => settingsData.themeId;
 
   @override
   Stream<String?> get themeIdStream =>
-      settingsDataStream.map((settings) => settings?.themeId);
+      settingsDataStream.map((settings) => settings.themeId);
 
   @override
   Future changeThemeId(String value) => updateSettings(
-      // copyWith don't set null values
-      UiSettings(themeId: value, statusFontSize: settingsData?.statusFontSize),
-    );
+        // copyWith don't set null values
+        UiSettings(
+          themeId: value,
+          statusFontSize: settingsData.statusFontSize,
+        ),
+      );
 
   @override
   UiSettingsFontSize get statusFontSize =>
-      settingsData?.statusFontSizeAsUiSettingsFontSize ??
-      IUiSettingsBloc.defaultStatusFontSettingsValue;
+      settingsData.statusFontSizeAsUiSettingsFontSize;
 
   @override
-  Stream<UiSettingsFontSize> get statusFontSizeStream =>
-      settingsDataStream.map((settings) =>
-          settings?.statusFontSizeAsUiSettingsFontSize ??
-          IUiSettingsBloc.defaultStatusFontSettingsValue);
+  Stream<UiSettingsFontSize> get statusFontSizeStream => settingsDataStream.map(
+        (settings) => settings.statusFontSizeAsUiSettingsFontSize,
+      );
 
   @override
   void changeStatusFontSize(UiSettingsFontSize? value) {
     updateSettings(
       // copyWith don't set null values
       UiSettings(
-        themeId: settingsData!.themeId,
+        themeId: settingsData.themeId,
         statusFontSize: value!.toJsonValue(),
       ),
     );
   }
 
   @override
-  Future updateSettings(UiSettings? newSettings) async {
+  Future updateSettings(UiSettings newSettings) async {
     await uiSettingsLocalPreferencesBloc.setValue(
       newSettings,
     );

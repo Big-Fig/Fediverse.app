@@ -5,9 +5,9 @@ import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ValueFormFieldBloc<T> extends FormFieldBloc
-    implements IValueFormFieldBloc<T?> {
+    implements IValueFormFieldBloc<T> {
   @override
-  late List<FormValueFieldValidation<T?>> validators;
+  late List<FormValueFieldValidation<T>> validators;
 
   final BehaviorSubject<List<ValueFormFieldValidationError>>
       _currentErrorSubject;
@@ -22,19 +22,15 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
   @override
   final T originValue;
 
-  final BehaviorSubject<T?> _currentValueSubject;
+  final BehaviorSubject<T> _currentValueSubject;
 
   @override
-  T? get currentValue => _currentValueSubject.value ?? defaultValue;
+  T get currentValue => _currentValueSubject.value as T;
 
   // distinct is important, we don't need new value in stream on each widget
   // build
   @override
-  Stream<T?> get currentValueStream => _currentValueSubject.stream
-      .map((currentValue) => currentValue ?? defaultValue)
-      .distinct();
-
-  T? get defaultValue => null;
+  Stream<T> get currentValueStream => _currentValueSubject.stream;
 
   @override
   final bool isNullValuePossible;
@@ -66,15 +62,15 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
     );
   }
 
-  bool isValueChanged(T? newValue, T originValue) => newValue != originValue;
+  bool isValueChanged(T newValue, T originValue) => newValue != originValue;
 
   @override
-  void changeCurrentValue(T? newValue) {
+  void changeCurrentValue(T newValue) {
     _currentValueSubject.add(newValue);
   }
 
   static List<ValueFormFieldValidationError> _validate<T>(
-    T? value,
+    T value,
     List<FormValueFieldValidation<T>> validators,
   ) {
     return validators

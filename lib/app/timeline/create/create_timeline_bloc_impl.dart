@@ -81,7 +81,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     addDisposable(
       streamSubscription: typeFieldBloc.currentValueStream.listen(
         (timelineType) {
-          _onTypeChanged(timelineType!);
+          _onTypeChanged(timelineType);
         },
       ),
     );
@@ -162,7 +162,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
         _createEditTimelineSettingsBloc(timelineType);
     timelineLocalPreferencesBloc.setValue(
       Timeline(
-        id: idFieldBloc.currentValue!,
+        id: idFieldBloc.currentValue,
         typeString: timelineType.toJsonValue(),
         settings: TimelineSettings.createDefaultSettings(
           timelineType,
@@ -213,9 +213,9 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   @override
   Future save() async {
     var timeline = Timeline(
-      id: idFieldBloc.currentValue!,
+      id: idFieldBloc.currentValue,
       label: nameFieldBloc.currentValue,
-      typeString: typeFieldBloc.currentValue!.toJsonValue(),
+      typeString: typeFieldBloc.currentValue.toJsonValue(),
       isPossibleToDelete: true,
       settings: editTimelineSettingsBloc!.currentSettings!,
     );

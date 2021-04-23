@@ -3,4 +3,4 @@ import 'package:fedi/form/field/value/select_from_list/single/single_select_from
 
 abstract class IAgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
     implements
-        ISingleSelectFromListValueFormFieldBloc<DatabaseCacheAgeLimitType?> {}
+        ISingleSelectFromListValueFormFieldBloc<DatabaseCacheAgeLimitType> {}

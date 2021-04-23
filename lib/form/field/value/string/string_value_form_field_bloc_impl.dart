@@ -4,7 +4,7 @@ import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:flutter/widgets.dart';
 
-class StringValueFormFieldBloc extends ValueFormFieldBloc<String?>
+class StringValueFormFieldBloc extends ValueFormFieldBloc<String>
     implements IStringValueFormFieldBloc {
   @override
   final TextEditingController textEditingController;
@@ -16,12 +16,12 @@ class StringValueFormFieldBloc extends ValueFormFieldBloc<String?>
   final int? maxLength;
 
   StringValueFormFieldBloc({
-    required String? originValue,
+    required String originValue,
     required List<FormValueFieldValidation<String>> validators,
     required this.maxLength,
     bool? isEnabled = true,
     bool isNullValuePossible = true,
-  })  : textEditingController = TextEditingController(text: originValue ?? ""),
+  })  : textEditingController = TextEditingController(text: originValue),
         super(
           originValue: originValue,
           validators: validators,
@@ -51,7 +51,7 @@ class StringValueFormFieldBloc extends ValueFormFieldBloc<String?>
 
   @override
   void clear() {
-    textEditingController.text = originValue ?? "";
+    textEditingController.text = originValue;
     super.clear();
   }
 }
