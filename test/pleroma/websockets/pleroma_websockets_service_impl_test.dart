@@ -1,5 +1,5 @@
 import 'package:fedi/connection/connection_service_impl.dart';
-import 'package:fedi/pleroma/api/web_sockets/pleroma_web_sockets_service_impl.dart';
+import 'package:fedi/pleroma/api/web_sockets/pleroma_api_web_sockets_service_impl.dart';
 import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 import 'package:fedi/web_sockets/service/config/web_sockets_service_config_bloc_impl.dart';
 import 'package:fedi/web_sockets/service/web_sockets_service.dart';

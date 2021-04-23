@@ -10,7 +10,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/date_time/date_time_dynamic_time_ago_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/mastodon/api/poll/mastodon_api_poll_model.dart';
-import 'package:fedi/pleroma/api/poll/pleroma_poll_model.dart';
+import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

@@ -3,7 +3,7 @@ import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/api/rest/pleroma_rest_model.dart';
+import 'package:fedi/pleroma/api/rest/pleroma_api_rest_model.dart';
 import 'package:flutter/widgets.dart';
 
 class PleromaAsyncOperationHelper {

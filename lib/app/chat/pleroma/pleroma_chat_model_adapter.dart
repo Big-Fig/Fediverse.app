@@ -4,7 +4,7 @@ import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_chat_model.dart' as pleroma_lib;
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart' as pleroma_lib;
 
 extension IPleromaChatPleromaExtension on pleroma_lib.IPleromaChat {
   DbChat toDbChat() {

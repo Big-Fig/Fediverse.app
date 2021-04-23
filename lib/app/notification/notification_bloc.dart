@@ -1,10 +1,10 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_chat_model.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/mastodon/api/notification/mastodon_api_notification_model.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_notification_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

@@ -5,13 +5,13 @@
 import 'dart:async' as _i5;
 
 import 'package:fedi/disposable/disposable.dart' as _i9;
-import 'package:fedi/pleroma/api/filter/pleroma_filter_model.dart' as _i3;
-import 'package:fedi/pleroma/api/filter/pleroma_filter_service_impl.dart'
+import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart' as _i3;
+import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service_impl.dart'
     as _i4;
-import 'package:fedi/pleroma/api/pagination/pleroma_pagination_model.dart'
+import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart'
     as _i8;
-import 'package:fedi/pleroma/api/pleroma_api_service.dart' as _i6;
-import 'package:fedi/pleroma/api/rest/pleroma_rest_service.dart' as _i2;
+import 'package:fedi/pleroma/api/pleroma_api_api_service.dart' as _i6;
+import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart' as _i2;
 import 'package:flutter/src/widgets/editable_text.dart' as _i10;
 import 'package:flutter/src/widgets/focus_manager.dart' as _i12;
 import 'package:flutter/src/widgets/scroll_controller.dart' as _i11;

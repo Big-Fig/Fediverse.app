@@ -2,9 +2,9 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/mastodon/api/notification/mastodon_api_notification_model.dart';
-import 'package:fedi/pleroma/api/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_chat_model.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_notification_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 
 class NotificationState {
   final bool? dismissed;

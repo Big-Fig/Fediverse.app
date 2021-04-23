@@ -7,7 +7,7 @@ import 'package:fedi/mastodon/api/mention/mastodon_api_mention_model.dart';
 import 'package:fedi/mastodon/api/poll/mastodon_api_poll_model.dart';
 import 'package:fedi/mastodon/api/tag/mastodon_api_tag_model.dart';
 import 'package:fedi/mastodon/api/visibility/mastodon_api_visibility_model.dart';
-import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 
 abstract class IMastodonApiStatus {
   String get id;

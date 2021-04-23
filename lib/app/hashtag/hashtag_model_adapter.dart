@@ -1,6 +1,6 @@
 import 'package:fedi/app/hashtag/hashtag_model.dart';
-import 'package:fedi/pleroma/api/tag/history/pleroma_tag_history_model.dart';
-import 'package:fedi/pleroma/api/tag/pleroma_tag_model.dart';
+import 'package:fedi/pleroma/api/tag/history/pleroma_api_tag_history_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 
 extension IPleromaTagExtension on IPleromaTag {
   Hashtag toHashtag() {

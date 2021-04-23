@@ -7,8 +7,8 @@ import 'package:fedi/app/media/attachment/upload/uploaded_upload_media_attachmen
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_service.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
 import 'package:rxdart/rxdart.dart';
 
 class UploadMediaAttachmentsCollectionBloc extends DisposableOwner

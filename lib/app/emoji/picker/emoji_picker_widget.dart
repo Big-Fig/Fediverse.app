@@ -13,7 +13,7 @@ import 'package:fedi/emoji_picker/custom_emoji_picker_bloc.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_bloc_impl.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_widget.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/api/emoji/pleroma_emoji_service.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

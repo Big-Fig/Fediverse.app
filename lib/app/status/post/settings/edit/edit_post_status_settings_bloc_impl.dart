@@ -10,7 +10,7 @@ import 'package:fedi/app/status/visibility/form/single_from_list/status_visibili
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 
 class EditPostStatusSettingsBloc
     extends EditGlobalOrInstanceSettingsBloc<PostStatusSettings>

@@ -12,7 +12,7 @@ import 'package:fedi/form/field/value/string/validation/string_value_form_field_
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
-import 'package:fedi/pleroma/api/filter/pleroma_filter_model.dart';
+import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart';
 
 final _wholeWordRegex = RegExp(r'^[a-zA-Z0-9_]+$');
 

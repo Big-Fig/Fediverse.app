@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fedi/pleroma/api/push/pleroma_push_model.dart';
+import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';

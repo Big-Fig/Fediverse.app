@@ -1,5 +1,5 @@
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
-import 'package:fedi/pleroma/api/application/pleroma_application_model.dart';
+import 'package:fedi/pleroma/api/application/pleroma_api_application_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

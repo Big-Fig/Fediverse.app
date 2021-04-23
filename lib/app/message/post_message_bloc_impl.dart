@@ -6,7 +6,7 @@ import 'package:fedi/app/message/post_message_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/form/form_item_validation.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_media_attachment_service.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 

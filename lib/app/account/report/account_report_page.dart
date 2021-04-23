@@ -10,7 +10,7 @@ import 'package:fedi/app/ui/button/fedi_text_button.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/api/account/auth/pleroma_auth_account_service.dart';
+import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

@@ -10,8 +10,8 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_b
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/api/account/auth/pleroma_auth_account_service.dart';
-import 'package:fedi/pleroma/api/list/pleroma_list_service.dart';
+import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
+import 'package:fedi/pleroma/api/list/pleroma_api_list_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

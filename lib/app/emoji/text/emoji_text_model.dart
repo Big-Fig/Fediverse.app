@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:fedi/pleroma/api/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 
 Function eq = const ListEquality().equals;
 

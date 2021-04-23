@@ -31,7 +31,7 @@ import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instanc
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc_impl.dart';
-import 'package:fedi/pleroma/api/oauth/pleroma_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
+import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
 
 class FediLocalPreferencesServiceMigrationBloc
     extends LocalPreferencesServiceMigrationBloc {

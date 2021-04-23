@@ -3,7 +3,7 @@ import 'package:fedi/app/share/share_with_message_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/mastodon/api/card/mastodon_api_card_model.dart';
-import 'package:fedi/pleroma/api/card/pleroma_card_model.dart';
+import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 

@@ -4,8 +4,8 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/api/poll/mastodon_api_poll_model.dart';
-import 'package:fedi/pleroma/api/poll/pleroma_poll_model.dart';
-import 'package:fedi/pleroma/api/poll/pleroma_poll_service.dart';
+import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
+import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PollBloc extends DisposableOwner implements IPollBloc {

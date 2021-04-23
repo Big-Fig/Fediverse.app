@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:fedi/duration/duration_extension.dart';
-import 'package:fedi/pleroma/api/poll/pleroma_poll_model.dart';
-import 'package:fedi/pleroma/api/status/pleroma_status_model.dart';
+import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_status_poll_model.g.dart';

@@ -14,7 +14,7 @@ import 'package:fedi/app/timeline/public/public_timeline_websockets_handler_impl
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/web_sockets/pleroma_web_sockets_service.dart';
+import 'package:fedi/pleroma/api/web_sockets/pleroma_api_web_sockets_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 
 class WebSocketsHandlerManagerBloc extends DisposableOwner
