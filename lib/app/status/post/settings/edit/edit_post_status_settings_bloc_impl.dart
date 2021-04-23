@@ -23,7 +23,7 @@ class EditPostStatusSettingsBloc
       defaultVisibilityFormFieldBloc;
 
   @override
-  late IBoolValueFormFieldBloc markMediaAsNsfwOnAttachFormFieldBloc;
+  late IBoolValueFormFieldBloc<bool> markMediaAsNsfwOnAttachFormFieldBloc;
 
   @override
   late LocalizationLocaleSingleFromListValueFormFieldBloc
@@ -51,18 +51,18 @@ class EditPostStatusSettingsBloc
         ) {
     defaultVisibilityFormFieldBloc =
         StatusVisibilitySelectSingleFromListValueFormFieldBloc(
-      originValue: currentSettings!.defaultVisibilityPleroma,
+      originValue: currentSettings.defaultVisibilityPleroma,
       isEnabled: isEnabled,
       possibleValues: pleromaVisibilityPossibleValues,
     );
     markMediaAsNsfwOnAttachFormFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings!.markMediaAsNsfwOnAttach,
+      originValue: currentSettings.markMediaAsNsfwOnAttach,
       isEnabled: isEnabled,
     );
 
     defaultStatusLocaleFormFieldBloc =
         LocalizationLocaleSingleFromListValueFormFieldBloc(
-      originValue: currentSettings!.defaultStatusLocale,
+      originValue: currentSettings.defaultStatusLocale,
       isEnabled: isEnabled,
       possibleValues: supportedLocalizationLocaleList,
     );
@@ -77,19 +77,19 @@ class EditPostStatusSettingsBloc
   @override
   PostStatusSettings calculateCurrentFormFieldsSettings() => PostStatusSettings(
         defaultVisibilityString:
-            defaultVisibilityFormFieldBloc.currentValue!.toJsonValue(),
+            defaultVisibilityFormFieldBloc.currentValue.toJsonValue(),
         markMediaAsNsfwOnAttach:
-            markMediaAsNsfwOnAttachFormFieldBloc.currentValue!,
+            markMediaAsNsfwOnAttachFormFieldBloc.currentValue,
         defaultStatusLocale: defaultStatusLocaleFormFieldBloc.currentValue,
       );
 
   @override
-  Future fillSettingsToFormFields(PostStatusSettings? settings) async {
+  Future fillSettingsToFormFields(PostStatusSettings settings) async {
     defaultVisibilityFormFieldBloc
-        .changeCurrentValue(settings?.defaultVisibilityPleroma);
+        .changeCurrentValue(settings.defaultVisibilityPleroma);
     markMediaAsNsfwOnAttachFormFieldBloc
-        .changeCurrentValue(settings?.markMediaAsNsfwOnAttach);
+        .changeCurrentValue(settings.markMediaAsNsfwOnAttach);
     defaultStatusLocaleFormFieldBloc
-        .changeCurrentValue(settings?.defaultStatusLocale);
+        .changeCurrentValue(settings.defaultStatusLocale);
   }
 }

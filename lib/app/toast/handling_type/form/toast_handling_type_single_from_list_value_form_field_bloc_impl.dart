@@ -4,7 +4,7 @@ import 'package:fedi/form/field/value/select_from_list/single/single_select_from
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 
 class ToastHandlingTypeSingleFromListValueFormFieldBloc
-    extends SingleSelectFromListValueFormFieldBloc<ToastHandlingType?>
+    extends SingleSelectFromListValueFormFieldBloc<ToastHandlingType>
     implements IToastHandlingTypeSingleFromListValueFormFieldBloc {
   @override
   final List<ToastHandlingType> possibleValues;
@@ -12,7 +12,7 @@ class ToastHandlingTypeSingleFromListValueFormFieldBloc
   ToastHandlingTypeSingleFromListValueFormFieldBloc({
     bool isNullValuePossible = false,
     this.possibleValues = ToastHandlingType.values,
-    required ToastHandlingType? originValue,
+    required ToastHandlingType originValue,
     bool isEnabled = true,
     List<FormValueFieldValidation<ToastHandlingType>> validators = const [],
   }) : super(

@@ -19,10 +19,10 @@ class ToastSettings implements IJsonObject, ISettings<ToastSettings> {
 
   @HiveField(4)
   @JsonKey(name: "handling_type_string")
-  final String? handlingTypeString;
+  final String handlingTypeString;
 
-  ToastHandlingType? get handlingType =>
-      handlingTypeString?.toToastHandlingType();
+  ToastHandlingType get handlingType =>
+      handlingTypeString.toToastHandlingType();
 
   ToastSettings({
     required this.pushSettings,

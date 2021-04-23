@@ -5,11 +5,11 @@ import 'package:fedi/form/field/value/value_form_field_validation.dart';
 
 class SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
     extends SingleSelectFromListValueFormFieldBloc<
-        FilesCacheSizeLimitCountType?>
+        FilesCacheSizeLimitCountType>
     implements ISizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc {
   SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc({
     bool isNullValuePossible = true,
-    required FilesCacheSizeLimitCountType? originValue,
+    required FilesCacheSizeLimitCountType originValue,
     bool isEnabled = true,
     List<FormValueFieldValidation<FilesCacheSizeLimitCountType>> validators =
         const [],

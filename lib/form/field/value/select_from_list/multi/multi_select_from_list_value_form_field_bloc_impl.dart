@@ -6,7 +6,7 @@ import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class MultiSelectFromListValueFormFieldBloc<T>
-    extends ValueFormFieldBloc<List<T>?>
+    extends ValueFormFieldBloc<List<T>>
     implements IMultiSelectFromListValueFormFieldBloc<T> {
   BehaviorSubject<bool> isNeedRebuildActionsSubject =
       BehaviorSubject.seeded(false);
@@ -16,7 +16,7 @@ abstract class MultiSelectFromListValueFormFieldBloc<T>
       isNeedRebuildActionsSubject.stream;
 
   MultiSelectFromListValueFormFieldBloc({
-    required List<T>? originValue,
+    required List<T> originValue,
     required bool isEnabled,
     required bool isNullValuePossible,
     required List<FormValueFieldValidation<List<T>>> validators,
@@ -39,7 +39,7 @@ abstract class MultiSelectFromListValueFormFieldBloc<T>
 
   @override
   void toggleValue(T value) {
-    var currentValueList = currentValue ?? [];
+    var currentValueList = currentValue;
     if (currentValueList.contains(value)) {
       currentValueList.remove(value);
     } else {

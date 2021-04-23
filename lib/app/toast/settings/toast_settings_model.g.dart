@@ -18,7 +18,7 @@ class ToastSettingsAdapter extends TypeAdapter<ToastSettings> {
     };
     return ToastSettings(
       pushSettings: fields[3] as PushSettings?,
-      handlingTypeString: fields[4] as String?,
+      handlingTypeString: fields[4] as String,
     );
   }
 
@@ -52,7 +52,7 @@ ToastSettings _$ToastSettingsFromJson(Map<String, dynamic> json) {
     pushSettings: json['push_settings'] == null
         ? null
         : PushSettings.fromJson(json['push_settings'] as Map<String, dynamic>),
-    handlingTypeString: json['handling_type_string'] as String?,
+    handlingTypeString: json['handling_type_string'] as String,
   );
 }
 

@@ -603,7 +603,8 @@ abstract class PostStatusBloc extends PostMessageBloc
             pollBloc.durationDateTimeLengthFieldBloc.currentValueDuration!,
         multiple: pollBloc.multiplyFieldBloc.currentValue!,
         options: pollBloc.pollOptionsGroupBloc.items
-            .map((item) => item.currentValue!)
+            .map((item) => item.currentValue)
+            .where((item) => item.isNotEmpty)
             .toList(),
         hideTotals: false,
       );
@@ -621,7 +622,8 @@ abstract class PostStatusBloc extends PostMessageBloc
         expiresInSeconds: expiresInSeconds,
         multiple: pollBloc.multiplyFieldBloc.currentValue!,
         options: pollBloc.pollOptionsGroupBloc.items
-            .map((item) => item.currentValue!)
+            .map((item) => item.currentValue)
+            .where((item) => item.isNotEmpty)
             .toList(),
         // todo: support hide totals
         hideTotals: false,

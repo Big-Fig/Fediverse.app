@@ -4,7 +4,7 @@ import 'package:fedi/form/field/value/select_from_list/single/single_select_from
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 
 class TimelineTypeSingleFromListValueFormFieldBloc
-    extends SingleSelectFromListValueFormFieldBloc<TimelineType?>
+    extends SingleSelectFromListValueFormFieldBloc<TimelineType>
     implements ITimelineTypeSingleFromListValueFormFieldBloc {
   @override
   final List<TimelineType> possibleValues;

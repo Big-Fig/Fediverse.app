@@ -735,5 +735,6 @@
     "app_chat_message_pending_failed_desc": "Ошибка отправления.",
     "app_chat_message_pending_tapToViewOptions": "Нажмите для действий.",
     "app_chat_action_delete": "Удалить",
-    "app_chat_selection_action_cancel": "Отмена"
+    "app_chat_selection_action_cancel": "Отмена",
+    "app_toast_handling_type_never": "Никогда"
 }

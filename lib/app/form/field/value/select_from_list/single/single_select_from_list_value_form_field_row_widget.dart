@@ -176,18 +176,18 @@ class _SingleSelectFromListValueFormFieldRowValueIconWidget<T>
     var fieldBloc = ISingleSelectFromListValueFormFieldBloc.of<T>(context);
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
-    return StreamBuilder<bool?>(
+    return StreamBuilder<bool>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
-        var isEnabled = snapshot.data;
+        var isEnabled = snapshot.data!;
         return StreamBuilder<T?>(
           stream: fieldBloc.currentValueStream,
           initialData: fieldBloc.currentValue,
           builder: (context, snapshot) {
             var currentValue = snapshot.data;
             return FediIconButton(
-              color: isEnabled!
+              color: isEnabled
                   ? fediUiColorTheme.darkGrey
                   : fediUiColorTheme.lightGrey,
               onPressed: () {
@@ -201,7 +201,7 @@ class _SingleSelectFromListValueFormFieldRowValueIconWidget<T>
                 );
               },
               icon: Icon(
-                valueIconMapper!(context, currentValue),
+                valueIconMapper!(context, currentValue!),
               ),
             );
           },
@@ -249,7 +249,6 @@ void _showDialog<T>({
     actions: actions,
   );
 }
-
 
 // todo: refactor long-parameter-list
 // ignore: long-parameter-list

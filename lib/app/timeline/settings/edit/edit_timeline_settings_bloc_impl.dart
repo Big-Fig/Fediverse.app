@@ -156,7 +156,7 @@ class EditTimelineSettingsBloc
           ],
         ),
         withRemoteHashtagFieldBloc = StringValueFormFieldBloc(
-          originValue: settingsBloc.settingsData?.withRemoteHashtag,
+          originValue: settingsBloc.settingsData?.withRemoteHashtag ?? "",
           // ignore: no-magic-number
           maxLength: 50,
           isEnabled:
@@ -176,7 +176,7 @@ class EditTimelineSettingsBloc
         ),
         excludeVisibilitiesFieldBloc =
             StatusVisibilityMultiSelectFromListFormFieldBloc(
-          originValue: settingsBloc.settingsData?.excludeVisibilities,
+          originValue: settingsBloc.settingsData?.excludeVisibilities ?? [],
           isEnabled: timelineType
               .isExcludeVisibilitiesFilterSupportedOnInstance(authInstance),
           validators: [],
@@ -190,7 +190,7 @@ class EditTimelineSettingsBloc
               webSocketsSettingsBloc.handlingType.isEnabled,
         ),
         onlyFromInstanceFieldBloc = StringValueFormFieldBloc(
-          originValue: settingsBloc.settingsData?.onlyFromInstance,
+          originValue: settingsBloc.settingsData?.onlyFromInstance ?? "",
           // ignore: no-magic-number
           maxLength: 50,
           isEnabled: timelineType
@@ -241,7 +241,7 @@ class EditTimelineSettingsBloc
     var oldPreferences = settingsBloc.settingsData;
 
     var onlyFromInstanceExist =
-        onlyFromInstanceFieldBloc.currentValue?.isNotEmpty == true;
+        onlyFromInstanceFieldBloc.currentValue.isNotEmpty == true;
 
     var oldOnlyRemote = oldPreferences?.onlyRemote;
     var oldOnlyLocal = oldPreferences?.onlyLocal;
@@ -275,7 +275,7 @@ class EditTimelineSettingsBloc
       onlyLocal: newOnlyLocal,
       withMuted: withMutedFieldBloc.currentValue,
       excludeVisibilitiesStrings: excludeVisibilitiesFieldBloc.currentValue
-          ?.toPleromaVisibilityStrings(),
+          .toPleromaVisibilityStrings(),
       onlyInRemoteList: onlyInCustomListFieldBloc.currentValue?.toPleromaList(),
       withRemoteHashtag: withRemoteHashtagFieldBloc.currentValue,
       replyVisibilityFilterString:
@@ -306,11 +306,11 @@ class EditTimelineSettingsBloc
 
     onlyFromAccountFieldBloc.changeCurrentValue(settings.onlyFromRemoteAccount);
     onlyFromAccountFieldBloc.changeCurrentValue(settings.onlyFromRemoteAccount);
-    withRemoteHashtagFieldBloc.changeCurrentValue(settings.withRemoteHashtag);
+    withRemoteHashtagFieldBloc.changeCurrentValue(settings.withRemoteHashtag ?? "");
     onlyInCustomListFieldBloc.changeCurrentValue(settings.onlyInRemoteList);
     replyVisibilityFilterFieldBloc
         .changeCurrentValue(settings.replyVisibilityFilter);
     excludeVisibilitiesFieldBloc
-        .changeCurrentValue(settings.excludeVisibilities);
+        .changeCurrentValue(settings.excludeVisibilities ?? []);
   }
 }

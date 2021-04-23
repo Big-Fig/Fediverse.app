@@ -16,10 +16,10 @@ class WebSocketsHandlingTypeSingleFromListValueFormFieldBlocProxyProvider
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IWebSocketsHandlingTypeSingleFromListValueFormFieldBloc,
-          ISingleSelectFromListValueFormFieldBloc<WebSocketsHandlingType?>>(
+          ISingleSelectFromListValueFormFieldBloc<WebSocketsHandlingType>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
-            WebSocketsHandlingType?>(
+            WebSocketsHandlingType>(
           child: child,
         ),
       );

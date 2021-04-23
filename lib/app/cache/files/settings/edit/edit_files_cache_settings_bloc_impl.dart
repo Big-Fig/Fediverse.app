@@ -43,12 +43,12 @@ class EditFilesCacheSettingsBloc
     ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc =
         AgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc(
       isEnabled: isEnabled,
-      originValue: currentSettings?.filesCacheAgeLimitType,
+      originValue: currentSettings.filesCacheAgeLimitType,
     );
     sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc =
         SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc(
       isEnabled: isEnabled,
-      originValue: currentSettings?.filesCacheSizeLimitCountType,
+      originValue: currentSettings.filesCacheSizeLimitCountType,
     );
 
     addDisposable(
@@ -66,18 +66,22 @@ class EditFilesCacheSettingsBloc
   FilesCacheSettings calculateCurrentFormFieldsSettings() => FilesCacheSettings(
         filesCacheSizeLimitCountTypeString:
             sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
-                .currentValue!
+                .currentValue
                 .toJsonValue(),
         filesCacheAgeLimitTypeString:
-            ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc.currentValue!
+            ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc.currentValue
                 .toJsonValue(),
       );
 
   @override
-  Future fillSettingsToFormFields(FilesCacheSettings? settings) async {
+  Future fillSettingsToFormFields(FilesCacheSettings settings) async {
     sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
         .changeCurrentValue(
-      settings?.filesCacheSizeLimitCountType,
+      settings.filesCacheSizeLimitCountType,
+    );
+    ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc
+        .changeCurrentValue(
+      settings.filesCacheAgeLimitType,
     );
   }
 }

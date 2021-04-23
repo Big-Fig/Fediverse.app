@@ -109,7 +109,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           maxLength: null,
         ),
         noteField = StringValueFormFieldBloc(
-          originValue: myAccountBloc.noteUnescaped,
+          originValue: myAccountBloc.noteUnescaped ?? "",
           validators: [],
           maxLength: noteMaxLength,
         ),
@@ -135,16 +135,16 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           // ignore: no-magic-number
           maximumFieldsCount: customFieldLimits?.maxFields ?? 20,
           newEmptyFieldCreator: () => LinkPairFormGroupBloc(
-            value: null,
-            name: null,
+            value: "",
+            name: "",
             nameMaxLength: customFieldLimits?.nameLength,
             valueMaxLength: customFieldLimits?.valueLength,
           ),
           originalItems: myAccountBloc.fields
               .map(
                 (field) => LinkPairFormGroupBloc(
-                  name: field.name,
-                  value: field.valueAsRawUrl,
+                  name: field.name ?? "",
+                  value: field.valueAsRawUrl ?? "",
                   nameMaxLength: customFieldLimits?.nameLength,
                   valueMaxLength: customFieldLimits?.valueLength,
                 ),

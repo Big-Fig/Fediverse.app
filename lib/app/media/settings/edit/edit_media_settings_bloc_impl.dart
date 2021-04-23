@@ -37,12 +37,12 @@ class EditMediaSettingsBloc
     isGlobalForced: isGlobalForced,
         ) {
     autoPlayFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings?.autoPlay,
+      originValue: currentSettings.autoPlay,
       isEnabled: isEnabled,
     );
 
     autoInitFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings?.autoInit,
+      originValue: currentSettings.autoInit,
       isEnabled: isEnabled,
     );
 

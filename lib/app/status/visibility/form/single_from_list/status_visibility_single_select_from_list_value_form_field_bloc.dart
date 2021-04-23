@@ -2,6 +2,6 @@ import 'package:fedi/form/field/value/select_from_list/single/single_select_from
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 
 abstract class IStatusVisibilitySelectSingleFromListValueFormFieldBloc
-    implements ISingleSelectFromListValueFormFieldBloc<PleromaVisibility?> {
+    implements ISingleSelectFromListValueFormFieldBloc<PleromaVisibility> {
 
 }

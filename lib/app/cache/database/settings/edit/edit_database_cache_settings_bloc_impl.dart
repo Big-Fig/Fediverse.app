@@ -59,13 +59,13 @@ class EditDatabaseCacheSettingsBloc
     ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc =
         AgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc(
       isEnabled: isEnabled,
-      originValue: currentSettings?.ageLimitType,
+      originValue: currentSettings.ageLimitType,
     );
 
     entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc =
         EntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc(
       isEnabled: isEnabled,
-      originValue: currentSettings?.entriesCountByTypeLimitType,
+      originValue: currentSettings.entriesCountByTypeLimitType,
     );
 
     currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc =
@@ -101,24 +101,24 @@ class EditDatabaseCacheSettingsBloc
       DatabaseCacheSettings(
         ageLimitTypeString:
             ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
-                .currentValue!
+                .currentValue
                 .toJsonValue(),
         entriesCountByTypeLimitTypeString:
             entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
-                .currentValue!
+                .currentValue
                 .toJsonValue(),
       );
 
   @override
-  Future fillSettingsToFormFields(DatabaseCacheSettings? settings) async {
+  Future fillSettingsToFormFields(DatabaseCacheSettings settings) async {
     ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
         .changeCurrentValue(
-      settings?.ageLimitType,
+      settings.ageLimitType,
     );
 
     entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
         .changeCurrentValue(
-      settings?.entriesCountByTypeLimitType,
+      settings.entriesCountByTypeLimitType,
     );
   }
 

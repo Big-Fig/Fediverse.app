@@ -4,11 +4,11 @@ import 'package:fedi/form/field/value/select_from_list/single/single_select_from
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 
 class AgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
-    extends SingleSelectFromListValueFormFieldBloc<DatabaseCacheAgeLimitType?>
+    extends SingleSelectFromListValueFormFieldBloc<DatabaseCacheAgeLimitType>
     implements IAgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc {
   AgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc({
     bool isNullValuePossible = false,
-    required DatabaseCacheAgeLimitType? originValue,
+    required DatabaseCacheAgeLimitType originValue,
     bool isEnabled = true,
     List<FormValueFieldValidation<DatabaseCacheAgeLimitType>> validators =
         const [],

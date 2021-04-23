@@ -7213,6 +7213,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Never`
+  String get app_toast_handling_type_never {
+    return Intl.message(
+      'Never',
+      name: 'app_toast_handling_type_never',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

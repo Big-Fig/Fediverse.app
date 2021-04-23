@@ -4,6 +4,7 @@ enum ToastHandlingType {
   onlyWhenInstanceSelected,
   onlyWhenInstanceNotSelected,
   always,
+  never,
 }
 
 extension ToastHandlingTypeExtension on ToastHandlingType {
@@ -28,6 +29,9 @@ extension ToastHandlingTypeExtension on ToastHandlingType {
       case ToastHandlingType.always:
         result = _alwaysToastHandlingTypeJsonValue;
         break;
+      case ToastHandlingType.never:
+        result = _neverToastHandlingTypeJsonValue;
+        break;
     }
 
     return result;
@@ -39,6 +43,7 @@ const _onlyWhenInstanceSelectedToastHandlingTypeJsonValue =
 const _onlyWhenInstanceNotSelectedToastHandlingTypeJsonValue =
     "onlyWhenInstanceNotSelected";
 const _alwaysToastHandlingTypeJsonValue = "always";
+const _neverToastHandlingTypeJsonValue = "never";
 
 extension ToastHandlingTypeListExtension on List<ToastHandlingType> {
   List<String> toToastHandlingTypeStrings() => map(
@@ -51,6 +56,9 @@ extension ToastHandlingTypeStringExtension on String {
     ToastHandlingType result;
 
     switch (this) {
+      case _neverToastHandlingTypeJsonValue:
+        result = ToastHandlingType.never;
+        break;
       case _alwaysToastHandlingTypeJsonValue:
         result = ToastHandlingType.always;
         break;

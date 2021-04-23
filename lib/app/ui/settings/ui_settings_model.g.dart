@@ -18,7 +18,7 @@ class UiSettingsAdapter extends TypeAdapter<UiSettings> {
     };
     return UiSettings(
       themeId: fields[0] as String?,
-      statusFontSize: fields[1] as String?,
+      statusFontSize: fields[1] as String,
     );
   }
 
@@ -50,7 +50,7 @@ class UiSettingsAdapter extends TypeAdapter<UiSettings> {
 UiSettings _$UiSettingsFromJson(Map<String, dynamic> json) {
   return UiSettings(
     themeId: json['theme_id'] as String?,
-    statusFontSize: json['status_font_size'] as String?,
+    statusFontSize: json['status_font_size'] as String,
   );
 }
 

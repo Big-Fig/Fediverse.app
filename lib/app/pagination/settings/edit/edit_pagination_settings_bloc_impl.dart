@@ -34,7 +34,7 @@ class EditPaginationSettingsBloc
         ) {
     pageSizeFieldBloc = PaginationPageSizeSingleFromListValueFormFieldBloc(
       isEnabled: isEnabled,
-      originValue: currentSettings?.pageSizeAsUiSettingsFontSize,
+      originValue: currentSettings.pageSizeAsUiSettingsFontSize,
     );
 
     addDisposable(disposable: pageSizeFieldBloc);
@@ -44,13 +44,13 @@ class EditPaginationSettingsBloc
 
   @override
   PaginationSettings calculateCurrentFormFieldsSettings() => PaginationSettings(
-        pageSize: pageSizeFieldBloc.currentValue!.toJsonValue(),
+        pageSize: pageSizeFieldBloc.currentValue.toJsonValue(),
       );
 
   @override
-  Future fillSettingsToFormFields(PaginationSettings? settings) async {
+  Future fillSettingsToFormFields(PaginationSettings settings) async {
     pageSizeFieldBloc.changeCurrentValue(
-      settings?.pageSizeAsUiSettingsFontSize,
+      settings.pageSizeAsUiSettingsFontSize,
     );
   }
 }

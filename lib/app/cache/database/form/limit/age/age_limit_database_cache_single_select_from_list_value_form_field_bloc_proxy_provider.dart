@@ -16,10 +16,10 @@ class AgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBlocProxyProvider
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IAgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc,
-          ISingleSelectFromListValueFormFieldBloc<DatabaseCacheAgeLimitType?>>(
+          ISingleSelectFromListValueFormFieldBloc<DatabaseCacheAgeLimitType>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
-            DatabaseCacheAgeLimitType?>(
+            DatabaseCacheAgeLimitType>(
           child: child,
         ),
       );

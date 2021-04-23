@@ -50,7 +50,7 @@ class EditToastSettingsBloc
         toastHandlingTypeSingleFromListValueFormFieldBloc,
       ];
 
-  PushSettings? get currentPushSettings => currentSettings?.pushSettings;
+  PushSettings? get currentPushSettings => currentSettings.pushSettings;
 
   EditToastSettingsBloc({
     required this.toastSettingsBloc,
@@ -105,7 +105,7 @@ class EditToastSettingsBloc
 
     toastHandlingTypeSingleFromListValueFormFieldBloc =
         ToastHandlingTypeSingleFromListValueFormFieldBloc(
-      originValue: currentSettings?.handlingType,
+      originValue: currentSettings.handlingType,
       isEnabled: isEnabled,
     );
 
@@ -137,7 +137,7 @@ class EditToastSettingsBloc
       ),
       handlingTypeString: toastHandlingTypeSingleFromListValueFormFieldBloc
           .currentValue
-          ?.toJsonValue(),
+          .toJsonValue(),
     );
   }
 

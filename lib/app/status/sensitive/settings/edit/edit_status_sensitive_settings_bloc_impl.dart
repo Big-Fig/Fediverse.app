@@ -43,18 +43,18 @@ class EditStatusSensitiveSettingsBloc
           isGlobalForced: isGlobalForced,
         ) {
     nsfwDisplayDelayDurationFieldBloc = DurationValueFormFieldBloc(
-      originValue: currentSettings?.nsfwDisplayDelayDuration,
+      originValue: currentSettings.nsfwDisplayDelayDuration,
       minDuration: Duration(minutes: 1),
       maxDuration: Duration(days: 1),
       isNullValuePossible: true,
       isEnabled: isEnabled,
     );
     isAlwaysShowSpoilerFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings?.isAlwaysShowSpoiler,
+      originValue: currentSettings.isAlwaysShowSpoiler,
       isEnabled: isEnabled,
     );
     isAlwaysShowNsfwFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings?.isAlwaysShowNsfw,
+      originValue: currentSettings.isAlwaysShowNsfw,
       isEnabled: isEnabled,
     );
 

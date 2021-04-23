@@ -155,11 +155,11 @@ class ToastSettingsBloc
   }
 
   @override
-  ToastHandlingType get handlingType => settingsData.handlingType!;
+  ToastHandlingType get handlingType => settingsData.handlingType;
 
   @override
   Stream<ToastHandlingType> get handlingTypeStream =>
-      settingsDataStream.map((settings) => settings.handlingType!);
+      settingsDataStream.map((settings) => settings.handlingType);
 
   @override
   void changeHandlingType(ToastHandlingType value) {

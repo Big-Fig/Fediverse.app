@@ -9,9 +9,9 @@ class LinkPairFormGroupBloc extends KeyValuePairFormGroupBloc<
     IStringValueFormFieldBloc,
     IStringValueFormFieldBloc> implements ILinkPairFormGroupBloc {
   LinkPairFormGroupBloc({
-    required String? name,
+    required String name,
     required int? nameMaxLength,
-    required String? value,
+    required String value,
     required int? valueMaxLength,
   }) : super(
           keyField: StringValueFormFieldBloc(

@@ -35,7 +35,7 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
         );
 
   @override
-  T? get currentSettings => _calculateCurrentSettings(
+  T get currentSettings => _calculateCurrentSettings(
         instanceSettingsData: globalOrInstanceSettingsBloc.instanceSettingsData,
         globalSettingsData: globalOrInstanceSettingsBloc.globalSettingsData,
       );
@@ -44,7 +44,7 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
   Stream<T?> get currentSettingsStream => Rx.combineLatest2(
         globalOrInstanceSettingsBloc.instanceSettingsDataStream,
         globalOrInstanceSettingsBloc.globalSettingsDataStream,
-        (T? instanceSettingsData, T? globalSettingsData) =>
+        (T? instanceSettingsData, T globalSettingsData) =>
             _calculateCurrentSettings(
           instanceSettingsData: instanceSettingsData,
           globalSettingsData: globalSettingsData,
@@ -66,13 +66,13 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
     }
   }
 
-  T? _calculateCurrentSettings({
+  T _calculateCurrentSettings({
     required T? instanceSettingsData,
-    required T? globalSettingsData,
+    required T globalSettingsData,
   }) {
     switch (globalOrInstanceSettingsType) {
       case GlobalOrInstanceSettingsType.instance:
-        return instanceSettingsData;
+        return instanceSettingsData!;
       case GlobalOrInstanceSettingsType.global:
         return globalSettingsData;
       default:

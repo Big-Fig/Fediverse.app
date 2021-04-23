@@ -9,10 +9,10 @@ class TimelineTypeSingleFromListValueFormFieldRowWidget
   @override
   Widget build(BuildContext context) =>
       TimelineTypeSingleFromListValueFormFieldBlocProxyProvider(
-        child: SingleSelectFromListValueFormFieldRowWidget<TimelineType?>(
+        child: SingleSelectFromListValueFormFieldRowWidget<TimelineType>(
           label: S.of(context).app_timeline_type_field_label,
           valueTitleMapper: (context, value) =>
-              mapTimelineTypeToLabel(context, value),
+              mapTimelineTypeToLabel(context, value!),
           description: null,
           descriptionOnDisabled: null,
           displayIconInRow: false,
@@ -24,10 +24,7 @@ class TimelineTypeSingleFromListValueFormFieldRowWidget
   const TimelineTypeSingleFromListValueFormFieldRowWidget();
 }
 
-String mapTimelineTypeToLabel(BuildContext context, TimelineType? type) {
-  if(type == null) {
-    return S.of(context).app_timeline_type_field_null;
-  }
+String mapTimelineTypeToLabel(BuildContext context, TimelineType type) {
   switch (type) {
     case TimelineType.public:
       return S.of(context).app_timeline_type_public;

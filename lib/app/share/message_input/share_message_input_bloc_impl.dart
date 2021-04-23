@@ -11,7 +11,7 @@ class ShareMessageInputBloc extends DisposableOwner
   ShareMessageInputBloc()
       : messageField = StringValueFormFieldBloc(
           validators: [],
-          originValue: null,
+          originValue: "",
           maxLength: null,
         ) {
     addDisposable(disposable: messageField);

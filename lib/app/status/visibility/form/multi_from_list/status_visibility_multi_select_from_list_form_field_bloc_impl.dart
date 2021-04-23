@@ -10,7 +10,7 @@ class StatusVisibilityMultiSelectFromListFormFieldBloc
   final List<PleromaVisibility> possibleValues;
 
   StatusVisibilityMultiSelectFromListFormFieldBloc({
-    required List<PleromaVisibility>? originValue,
+    required List<PleromaVisibility> originValue,
     bool isEnabled = true,
     bool isNullValuePossible = false,
     this.possibleValues = PleromaVisibility.values,

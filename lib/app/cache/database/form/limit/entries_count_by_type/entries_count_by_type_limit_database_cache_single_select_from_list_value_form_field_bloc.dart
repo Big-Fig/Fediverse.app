@@ -4,4 +4,4 @@ import 'package:fedi/form/field/value/select_from_list/single/single_select_from
 abstract class IEntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
     implements
         ISingleSelectFromListValueFormFieldBloc<
-            DatabaseCacheEntriesCountByTypeLimitType?> {}
+            DatabaseCacheEntriesCountByTypeLimitType> {}

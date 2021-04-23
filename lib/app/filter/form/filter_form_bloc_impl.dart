@@ -36,7 +36,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
     required IFilter? initialValue,
     required this.currentInstance,
   })   : phraseField = StringValueFormFieldBloc(
-          originValue: initialValue?.phrase,
+          originValue: initialValue?.phrase ?? "",
           validators: [
             StringValueFormFieldNonEmptyValidationError.createValidator(),
           ],
@@ -49,7 +49,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
           originValue: initialValue?.wholeWord ?? false,
         ),
         contextField = FilterContextMultiSelectFromListValueFormFieldBloc(
-          originValue: initialValue?.contextAsMastodonFilterContextType,
+          originValue: initialValue?.contextAsMastodonFilterContextType ?? [],
           validators: [
             MultiSelectFromListValueFormFieldNonNullAndNonEmptyValidationError
                 .createValidator(),
@@ -84,8 +84,12 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
     addDisposable(
       streamSubscription: phraseField.currentValueStream.listen(
         (phrase) {
-          var hasMatch = _wholeWordRegex.hasMatch(phrase ?? "");
-          wholeWordField.changeIsEnabled(hasMatch);
+          if (phrase.isNotEmpty) {
+            bool hasMatch = _wholeWordRegex.hasMatch(phrase);
+            wholeWordField.changeIsEnabled(hasMatch);
+          } else {
+            wholeWordField.changeIsEnabled(false);
+          }
         },
       ),
     );
@@ -104,20 +108,18 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
   @override
   IPostPleromaFilter calculateFormValue() {
     return PostPleromaFilter(
-      phrase: phraseField.currentValue ?? "",
+      phrase: phraseField.currentValue,
       irreversible: irreversibleField.currentValue ?? false,
       wholeWord: wholeWordField.currentValue ?? false,
       expiresInSeconds: expiresInField.currentValueDuration?.totalSeconds,
       context: contextField.currentValue
-              ?.where(
-                (contextType) =>
-                    contextType != MastodonFilterContextType.unknown,
-              )
-              .map(
-                (contextType) => contextType.toJsonValue(),
-              )
-              .toList() ??
-          [],
+          .where(
+            (contextType) => contextType != MastodonFilterContextType.unknown,
+          )
+          .map(
+            (contextType) => contextType.toJsonValue(),
+          )
+          .toList(),
     );
   }
 }

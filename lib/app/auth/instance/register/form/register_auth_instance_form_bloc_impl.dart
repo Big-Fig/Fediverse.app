@@ -44,7 +44,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
 
     captchaFieldBloc = PleromaFormCaptchaStringFieldBloc(
       pleromaCaptchaService: pleromaCaptchaService,
-      originValue: null,
+      originValue: "",
       validators: [
         StringValueFormFieldNonEmptyValidationError.createValidator(),
       ],
