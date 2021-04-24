@@ -1,25 +1,20 @@
-import 'dart:convert';
-
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_exception.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_model.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:fedi/rest/rest_response_model.dart';
-import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 
-var urlPath = path.Context(style: path.Style.url);
+var _urlPath = path.Context(style: path.Style.url);
 
 var _logger = Logger("pleroma_api_my_account_service_impl.dart");
 
-class PleromaApiMyAccountService extends DisposableOwner
+class PleromaApiMyAccountService extends BasePleromaApiService
+    with PleromaApiAuthMixinService
     implements IPleromaApiMyAccountService {
   final verifyProfileRelativeUrlPath = "/api/v1/accounts/verify_credentials";
   final editProfileRelativeUrlPath = "/api/v1/accounts/update_credentials";
@@ -27,87 +22,12 @@ class PleromaApiMyAccountService extends DisposableOwner
   final IPleromaApiAuthRestService restService;
 
   @override
-  Stream<PleromaApiState> get pleromaApiStateStream =>
-      restService.pleromaApiStateStream;
+  IPleromaApiAuthRestService get restApiAuthService => restService;
 
-  @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
-
-  @override
-  bool get isConnected => restService.isConnected;
-
-  @override
-  Stream<bool> get isConnectedStream => restService.isConnectedStream;
-
-  PleromaApiMyAccountService({required this.restService});
-
-  IPleromaApiMyAccount parseMyAccountResponse(Response httpResponse) {
-    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaApiMyAccount.fromJsonString(
-        httpResponse.body,
-      );
-    } else {
-      throw PleromaApiMyAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
-  }
-
-  IPleromaApiAccountRelationship parseAccountRelationshipResponse(
-    Response httpResponse,
-  ) {
-    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaApiAccountRelationship.fromJsonString(httpResponse.body);
-    } else {
-      throw PleromaApiMyAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
-  }
-
-  List<IPleromaApiStatus> parseStatusListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaApiStatus.listFromJsonString(httpResponse.body);
-    } else {
-      throw PleromaApiMyAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
-  }
-
-  List<IPleromaApiAccount> parseAccountListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaApiAccount.listFromJsonString(httpResponse.body);
-    } else {
-      throw PleromaApiMyAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
-  }
-
-  List<String> parseStringListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      var result = <String>[];
-      try {
-        var list = json.decode(httpResponse.body) as List;
-        list.forEach((element) {
-          result.add(element.toString());
-        });
-      } catch (e, stackTrace) {
-        _logger.severe(() => "failed to parse domain list", e, stackTrace);
-      }
-      return result;
-    } else {
-      throw PleromaApiMyAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
-  }
+  PleromaApiMyAccountService({required this.restService})
+      : super(
+          restService: restService,
+        );
 
   @override
   Future<IPleromaApiMyAccount> updateCredentials(
@@ -120,7 +40,10 @@ class PleromaApiMyAccountService extends DisposableOwner
       ),
     );
 
-    return parseMyAccountResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiMyAccount.fromJson,
+    );
   }
 
   @override
@@ -140,7 +63,10 @@ class PleromaApiMyAccountService extends DisposableOwner
       ),
     );
 
-    return parseMyAccountResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiMyAccount.fromJson,
+    );
   }
 
   @override
@@ -149,7 +75,10 @@ class PleromaApiMyAccountService extends DisposableOwner
       RestRequest.get(relativePath: verifyProfileRelativeUrlPath),
     );
 
-    return parseMyAccountResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiMyAccount.fromJson,
+    );
   }
 
   @override
@@ -158,12 +87,15 @@ class PleromaApiMyAccountService extends DisposableOwner
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join("api/v1/bookmarks"),
+        relativePath: _urlPath.join("api/v1/bookmarks"),
         queryArgs: pagination?.toQueryArgs(),
       ),
     );
 
-    return parseStatusListResponse(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -172,12 +104,15 @@ class PleromaApiMyAccountService extends DisposableOwner
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join("api/v1/favourites"),
+        relativePath: _urlPath.join("api/v1/favourites"),
         queryArgs: pagination?.toQueryArgs(),
       ),
     );
 
-    return parseStatusListResponse(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -186,17 +121,15 @@ class PleromaApiMyAccountService extends DisposableOwner
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join("api/v1/follow_requests"),
+        relativePath: _urlPath.join("api/v1/follow_requests"),
         queryArgs: pagination?.toQueryArgs(),
       ),
     );
 
-    return parseAccountListResponse(httpResponse);
-  }
-
-  @override
-  Future dispose() async {
-    return await super.dispose();
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiAccount.fromJson,
+    );
   }
 
   @override
@@ -205,7 +138,7 @@ class PleromaApiMyAccountService extends DisposableOwner
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           "api/v1/follow_requests",
           accountRemoteId,
           "authorize",
@@ -213,7 +146,10 @@ class PleromaApiMyAccountService extends DisposableOwner
       ),
     );
 
-    return parseAccountRelationshipResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiAccountRelationship.fromJson,
+    );
   }
 
   @override
@@ -222,7 +158,7 @@ class PleromaApiMyAccountService extends DisposableOwner
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           "api/v1/follow_requests",
           accountRemoteId,
           "reject",
@@ -230,7 +166,10 @@ class PleromaApiMyAccountService extends DisposableOwner
       ),
     );
 
-    return parseAccountRelationshipResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiAccountRelationship.fromJson,
+    );
   }
 
   @override
@@ -239,12 +178,14 @@ class PleromaApiMyAccountService extends DisposableOwner
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join("api/v1/domain_blocks"),
+        relativePath: _urlPath.join("api/v1/domain_blocks"),
         queryArgs: pagination?.toQueryArgs(),
       ),
     );
 
-    return parseStringListResponse(httpResponse);
+    return restService.processStringListResponse(
+      httpResponse,
+    );
   }
 
   @override
@@ -253,12 +194,15 @@ class PleromaApiMyAccountService extends DisposableOwner
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join("api/v1/blocks"),
+        relativePath: _urlPath.join("api/v1/blocks"),
         queryArgs: pagination?.toQueryArgs(),
       ),
     );
 
-    return parseAccountListResponse(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiAccount.fromJson,
+    );
   }
 
   @override
@@ -267,11 +211,14 @@ class PleromaApiMyAccountService extends DisposableOwner
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join("api/v1/mutes"),
+        relativePath: _urlPath.join("api/v1/mutes"),
         queryArgs: pagination?.toQueryArgs(),
       ),
     );
 
-    return parseAccountListResponse(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiAccount.fromJson,
+    );
   }
 }

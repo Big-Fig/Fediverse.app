@@ -1,6 +1,7 @@
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaApiRestService implements IRestService, IPleromaApi {
@@ -12,4 +13,26 @@ abstract class IPleromaApiRestService implements IRestService, IPleromaApi {
         context,
         listen: listen,
       );
+
+  void processEmptyResponse<T>(
+    Response response,
+  );
+
+  List<T> processJsonListResponse<T>(
+    Response response,
+    ResponseJsonParser<T> responseJsonParser,
+  );
+
+  T processJsonSingleResponse<T>(
+    Response response,
+    ResponseJsonParser<T> responseJsonParser,
+  );
+
+  String processStringResponse(
+    Response response,
+  );
+
+  List<String> processStringListResponse(
+    Response response,
+  );
 }

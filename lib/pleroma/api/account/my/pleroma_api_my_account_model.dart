@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:fedi/json/json_model.dart';
@@ -73,7 +72,10 @@ abstract class IPleromaApiMyAccountEdit extends IMastodonApiMyAccountEdit {
   Map<String, dynamic> toJson();
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(
+  explicitToJson: true,
+  includeIfNull: false,
+)
 class PleromaApiMyAccountEdit extends IPleromaApiMyAccountEdit {
   @override
   final bool? bot;
@@ -159,40 +161,35 @@ class PleromaApiMyAccountEdit extends IPleromaApiMyAccountEdit {
   final List<String>? alsoKnownAs;
 
   PleromaApiMyAccountEdit({
-    this.bot,
-    this.discoverable,
-    this.displayName,
-    this.fieldsAttributes,
-    this.locked,
-    this.note,
-    this.source,
-    this.actorType,
-    this.allowFollowingMove,
-    this.acceptsChatMessages,
-    this.defaultScope,
-    this.hideFavorites,
-    this.hideFollowers,
-    this.hideFollowersCount,
-    this.hideFollows,
-    this.hideFollowsCount,
-    this.noRichText,
-    this.pleromaBackgroundImage,
-    this.pleromaSettingsStore,
-    this.showRole,
-    this.skipThreadContainment,
-    this.alsoKnownAs,
+    required this.bot,
+    required this.discoverable,
+    required this.displayName,
+    required this.fieldsAttributes,
+    required this.locked,
+    required this.note,
+    required this.source,
+    required this.actorType,
+    required this.allowFollowingMove,
+    required this.acceptsChatMessages,
+    required this.defaultScope,
+    required this.hideFavorites,
+    required this.hideFollowers,
+    required this.hideFollowersCount,
+    required this.hideFollows,
+    required this.hideFollowsCount,
+    required this.noRichText,
+    required this.pleromaBackgroundImage,
+    required this.pleromaSettingsStore,
+    required this.showRole,
+    required this.skipThreadContainment,
+    required this.alsoKnownAs,
   });
 
-  factory PleromaApiMyAccountEdit.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiMyAccountEdit fromJson(Map<String, dynamic> json) =>
       _$PleromaApiMyAccountEditFromJson(json);
-
-  factory PleromaApiMyAccountEdit.fromJsonString(String jsonString) =>
-      _$PleromaApiMyAccountEditFromJson(jsonDecode(jsonString));
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiMyAccountEditToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiMyAccountEditToJson(this));
 
   @override
   // ignore: code-metrics
@@ -250,18 +247,28 @@ class PleromaApiMyAccountEdit extends IPleromaApiMyAccountEdit {
 
   @override
   String toString() => 'PleromaApiMyAccountEdit{'
-      'bot: $bot, discoverable: $discoverable, displayName: $displayName,'
-      ' fieldsAttributes: $fieldsAttributes, locked: $locked, note: $note,'
-      ' source: $source, actorType: $actorType,'
-      ' allowFollowingMove: $allowFollowingMove,'
-      ' acceptsChatMessages: $acceptsChatMessages, defaultScope: $defaultScope,'
-      ' hideFavorites: $hideFavorites, hideFollowers: $hideFollowers,'
-      ' hideFollowersCount: $hideFollowersCount, hideFollows: $hideFollows,'
-      ' hideFollowsCount: $hideFollowsCount, noRichText: $noRichText,'
-      ' pleromaBackgroundImage: $pleromaBackgroundImage,'
-      ' pleromaSettingsStore: $pleromaSettingsStore, showRole: $showRole,'
-      ' alsoKnownAs: $alsoKnownAs,'
-      ' skipThreadContainment: $skipThreadContainment'
+      'bot: $bot, '
+      'discoverable: $discoverable, '
+      'displayName: $displayName, '
+      'fieldsAttributes: $fieldsAttributes, '
+      'locked: $locked, '
+      'note: $note, '
+      'source: $source, '
+      'actorType: $actorType, '
+      'allowFollowingMove: $allowFollowingMove, '
+      'acceptsChatMessages: $acceptsChatMessages, '
+      'defaultScope: $defaultScope,'
+      'hideFavorites: $hideFavorites, '
+      'hideFollowers: $hideFollowers, '
+      'hideFollowersCount: $hideFollowersCount, '
+      'hideFollows: $hideFollows, '
+      'hideFollowsCount: $hideFollowsCount, '
+      'noRichText: $noRichText, '
+      'pleromaBackgroundImage: $pleromaBackgroundImage, '
+      'pleromaSettingsStore: $pleromaSettingsStore, '
+      'showRole: $showRole, '
+      'alsoKnownAs: $alsoKnownAs, '
+      'skipThreadContainment: $skipThreadContainment'
       '}';
 }
 
@@ -356,9 +363,9 @@ class PleromaApiMyAccountEditSource
   final bool? sensitive;
 
   PleromaApiMyAccountEditSource({
-    this.language,
-    this.privacy,
-    this.sensitive,
+    required this.language,
+    required this.privacy,
+    required this.sensitive,
   });
 
   @override
@@ -382,17 +389,11 @@ class PleromaApiMyAccountEditSource
         '}';
   }
 
-  factory PleromaApiMyAccountEditSource.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiMyAccountEditSource fromJson(Map<String, dynamic> json) =>
       _$PleromaApiMyAccountEditSourceFromJson(json);
-
-  factory PleromaApiMyAccountEditSource.fromJsonString(String jsonString) =>
-      _$PleromaApiMyAccountEditSourceFromJson(jsonDecode(jsonString));
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiMyAccountEditSourceToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiMyAccountEditSourceToJson(this));
 }
 
 abstract class IPleromaApiMyAccountSource
@@ -461,15 +462,10 @@ class PleromaApiMyAccountSource implements IPleromaApiMyAccountSource {
     required this.pleroma,
   });
 
-  factory PleromaApiMyAccountSource.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiMyAccountSource fromJson(Map<String, dynamic> json) =>
       _$PleromaApiMyAccountSourceFromJson(json);
 
-  factory PleromaApiMyAccountSource.fromJsonString(String jsonString) =>
-      _$PleromaApiMyAccountSourceFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiMyAccountSourceToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiMyAccountSourceToJson(this));
 
   @override
   bool operator ==(Object other) =>
@@ -535,30 +531,28 @@ class PleromaApiMyAccountSourcePleromaPart {
   final String? actorType;
 
   PleromaApiMyAccountSourcePleromaPart({
-    this.showRole,
-    this.noRichText,
-    this.discoverable,
-    this.actorType,
+    required this.showRole,
+    required this.noRichText,
+    required this.discoverable,
+    required this.actorType,
   });
 
-  factory PleromaApiMyAccountSourcePleromaPart.fromJson(
+  static PleromaApiMyAccountSourcePleromaPart fromJson(
     Map<String, dynamic> json,
   ) =>
       _$PleromaApiMyAccountSourcePleromaPartFromJson(json);
 
-  factory PleromaApiMyAccountSourcePleromaPart.fromJsonString(
-          String jsonString) =>
-      _$PleromaApiMyAccountSourcePleromaPartFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() =>
       _$PleromaApiMyAccountSourcePleromaPartToJson(this);
 
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiMyAccountSourcePleromaPartToJson(this));
-
   @override
   String toString() {
-    return 'PleromaApiMyAccountSourcePleromaPart{showRole: $showRole, noRichText: $noRichText, discoverable: $discoverable, actorType: $actorType}';
+    return 'PleromaApiMyAccountSourcePleromaPart{'
+        'showRole: $showRole, '
+        'noRichText: $noRichText, '
+        'discoverable: $discoverable, '
+        'actorType: $actorType'
+        '}';
   }
 
   @override
@@ -808,21 +802,11 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
     required this.fqn,
   });
 
-  factory PleromaApiMyAccount.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiMyAccount fromJson(Map<String, dynamic> json) =>
       _$PleromaApiMyAccountFromJson(json);
-
-  factory PleromaApiMyAccount.fromJsonString(String jsonString) =>
-      _$PleromaApiMyAccountFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiMyAccount> listFromJsonString(String str) =>
-      List<PleromaApiMyAccount>.from(
-        json.decode(str).map((x) => PleromaApiMyAccount.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiMyAccountToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiMyAccountToJson(this));
 
   @override
   // ignore: long-parameter-list, code-metrics
@@ -995,41 +979,21 @@ class PleromaApiMyAccountPleromaPartNotificationsSettings {
   final bool? hideNotificationContents;
 
   PleromaApiMyAccountPleromaPartNotificationsSettings({
-    this.followers,
-    this.follows,
-    this.nonFollowers,
-    this.nonFollows,
-    this.blockFromStrangers,
-    this.hideNotificationContents,
+    required this.followers,
+    required this.follows,
+    required this.nonFollowers,
+    required this.nonFollows,
+    required this.blockFromStrangers,
+    required this.hideNotificationContents,
   });
 
-  factory PleromaApiMyAccountPleromaPartNotificationsSettings.fromJson(
+  static PleromaApiMyAccountPleromaPartNotificationsSettings fromJson(
     Map<String, dynamic> json,
   ) =>
       _$PleromaApiMyAccountPleromaPartNotificationsSettingsFromJson(json);
 
-  factory PleromaApiMyAccountPleromaPartNotificationsSettings.fromJsonString(
-    String jsonString,
-  ) =>
-      _$PleromaApiMyAccountPleromaPartNotificationsSettingsFromJson(
-        jsonDecode(jsonString),
-      );
-
-  static List<PleromaApiMyAccountPleromaPartNotificationsSettings>
-      listFromJsonString(String str) =>
-          List<PleromaApiMyAccountPleromaPartNotificationsSettings>.from(json
-              .decode(str)
-              .map((x) =>
-                  PleromaApiMyAccountPleromaPartNotificationsSettings.fromJson(
-                    x,
-                  )));
-
   Map<String, dynamic> toJson() =>
       _$PleromaApiMyAccountPleromaPartNotificationsSettingsToJson(this);
-
-  String toJsonString() => jsonEncode(
-        _$PleromaApiMyAccountPleromaPartNotificationsSettingsToJson(this),
-      );
 
   @override
   bool operator ==(Object other) =>
@@ -1216,16 +1180,10 @@ class PleromaApiMyAccountPleromaPart
     required this.unreadNotificationsCount,
   });
 
-  factory PleromaApiMyAccountPleromaPart.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiMyAccountPleromaPart fromJson(Map<String, dynamic> json) =>
       _$PleromaApiMyAccountPleromaPartFromJson(json);
 
-  factory PleromaApiMyAccountPleromaPart.fromJsonString(String jsonString) =>
-      _$PleromaApiMyAccountPleromaPartFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiMyAccountPleromaPartToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiMyAccountPleromaPartToJson(this));
 
   @override
   // ignore: long-parameter-list, code-metrics

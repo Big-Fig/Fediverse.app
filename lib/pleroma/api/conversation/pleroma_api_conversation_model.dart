@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/mastodon/api/conversation/mastodon_api_conversation_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
@@ -24,7 +22,8 @@ abstract class IPleromaApiConversationPleromaPart {
 extension IPleromaApiConversationPleromaPartExtension
     on IPleromaApiConversationPleromaPart {
   PleromaApiConversationPleromaPart toPleromaApiConversationPleromaPart() {
-    if (PleromaApiConversationPleromaPart is PleromaApiConversationPleromaPart) {
+    if (PleromaApiConversationPleromaPart
+        is PleromaApiConversationPleromaPart) {
       return this as PleromaApiConversationPleromaPart;
     } else {
       return PleromaApiConversationPleromaPart(
@@ -35,7 +34,8 @@ extension IPleromaApiConversationPleromaPartExtension
 }
 
 @JsonSerializable()
-class PleromaApiConversationPleromaPart extends IPleromaApiConversationPleromaPart {
+class PleromaApiConversationPleromaPart
+    extends IPleromaApiConversationPleromaPart {
   @override
   final List<PleromaApiAccount>? recipients;
 
@@ -43,21 +43,12 @@ class PleromaApiConversationPleromaPart extends IPleromaApiConversationPleromaPa
     required this.recipients,
   });
 
-  factory PleromaApiConversationPleromaPart.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiConversationPleromaPart fromJson(
+          Map<String, dynamic> json) =>
       _$PleromaApiConversationPleromaPartFromJson(json);
 
-  factory PleromaApiConversationPleromaPart.fromJsonString(String jsonString) =>
-      _$PleromaApiConversationPleromaPartFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiConversationPleromaPart> listFromJsonString(String str) =>
-      List<PleromaApiConversationPleromaPart>.from(json
-          .decode(str)
-          .map((x) => PleromaApiConversationPleromaPart.fromJson(x)));
-
-  Map<String, dynamic> toJson() => _$PleromaApiConversationPleromaPartToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiConversationPleromaPartToJson(this));
+  Map<String, dynamic> toJson() =>
+      _$PleromaApiConversationPleromaPartToJson(this);
 }
 
 @JsonSerializable()
@@ -78,24 +69,15 @@ class PleromaApiConversation implements IPleromaApiConversation {
     required this.unread,
     required this.lastStatus,
     required this.id,
+    // todo: wtf? check
     required List<PleromaApiAccount>? accounts,
     required this.pleroma,
   }) : accounts = accounts ?? [];
 
-  factory PleromaApiConversation.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiConversation fromJson(Map<String, dynamic> json) =>
       _$PleromaApiConversationFromJson(json);
 
-  factory PleromaApiConversation.fromJsonString(String jsonString) =>
-      _$PleromaApiConversationFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiConversation> listFromJsonString(String str) =>
-      List<PleromaApiConversation>.from(
-        json.decode(str).map((x) => PleromaApiConversation.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiConversationToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiConversationToJson(this));
 
   @override
   bool operator ==(Object other) =>

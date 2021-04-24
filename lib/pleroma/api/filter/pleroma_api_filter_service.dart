@@ -13,11 +13,11 @@ abstract class IPleromaApiFilterService extends IPleromaApi {
   });
 
   Future<IPleromaApiFilter> getFilter({
-    required String? filterRemoteId,
+    required String filterRemoteId,
   });
 
   Future deleteFilter({
-    required String? filterRemoteId,
+    required String filterRemoteId,
   });
 
   Future<IPleromaApiFilter> createFilter({
@@ -25,7 +25,7 @@ abstract class IPleromaApiFilterService extends IPleromaApi {
   });
 
   Future<IPleromaApiFilter> updateFilter({
-    required String? filterRemoteId,
+    required String filterRemoteId,
     required IPostPleromaApiFilter postPleromaFilter,
   });
 }

@@ -1,41 +1,31 @@
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/api/search/mastodon_api_search_model.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
-import 'package:fedi/pleroma/api/search/pleroma_api_search_exception.dart';
 import 'package:fedi/pleroma/api/search/pleroma_api_search_model.dart';
 import 'package:fedi/pleroma/api/search/pleroma_api_search_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:fedi/rest/rest_response_model.dart';
 
-class PleromaApiSearchService extends DisposableOwner
+class PleromaApiSearchService extends BasePleromaApiService
+    with PleromaApiAuthMixinService
     implements IPleromaApiSearchService {
   @override
   final IPleromaApiAuthRestService restService;
 
+  @override
+  IPleromaApiAuthRestService get restApiAuthService => restService;
+
   PleromaApiSearchService({
     required this.restService,
-  });
-
-  @override
-  Stream<PleromaApiState> get pleromaApiStateStream =>
-      restService.pleromaApiStateStream;
-
-  @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
-
-  @override
-  bool get isConnected => restService.isConnected;
-
-  @override
-  Stream<bool> get isConnectedStream => restService.isConnectedStream;
+  }) : super(
+          restService: restService,
+        );
 
   @override
   // todo: refactor long-parameter-list
   // ignore: long-parameter-list, code-metrics
   Future<IPleromaApiSearchResult> search({
-    required String? query,
+    required String query,
     String? accountId,
     bool? excludeUnreviewed,
     bool? following,
@@ -89,13 +79,9 @@ class PleromaApiSearchService extends DisposableOwner
       ),
     );
 
-    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaApiSearchResult.fromJsonString(httpResponse.body);
-    } else {
-      throw PleromaApiSearchException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiSearchResult.fromJson,
+    );
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/mastodon/api/instance/mastodon_api_instance_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
@@ -117,20 +115,10 @@ class PleromaApiInstanceHistory extends IPleromaApiInstanceHistory {
         '}';
   }
 
-  factory PleromaApiInstanceHistory.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiInstanceHistory fromJson(Map<String, dynamic> json) =>
       _$PleromaApiInstanceHistoryFromJson(json);
 
-  factory PleromaApiInstanceHistory.fromJsonString(String jsonString) =>
-      _$PleromaApiInstanceHistoryFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiInstanceHistory> listFromJsonString(String str) =>
-      List<PleromaApiInstanceHistory>.from(
-        json.decode(str).map((x) => PleromaApiInstanceHistory.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiInstanceHistoryToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiInstanceHistoryToJson(this));
 }
 
 abstract class IPleromaApiInstance extends IMastodonApiInstance {
@@ -189,20 +177,10 @@ class PleromaApiInstancePleromaPart {
   @override
   int get hashCode => metadata.hashCode;
 
-  factory PleromaApiInstancePleromaPart.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiInstancePleromaPart fromJson(Map<String, dynamic> json) =>
       _$PleromaApiInstancePleromaPartFromJson(json);
 
-  factory PleromaApiInstancePleromaPart.fromJsonString(String jsonString) =>
-      _$PleromaApiInstancePleromaPartFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiInstancePleromaPart> listFromJsonString(String str) =>
-      List<PleromaApiInstancePleromaPart>.from(
-        json.decode(str).map((x) => PleromaApiInstancePleromaPart.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiInstancePleromaPartToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiInstancePleromaPartToJson(this));
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -232,31 +210,13 @@ class PleromaApiInstancePleromaPartMetadataFieldLimits {
     required this.valueLength,
   });
 
-  factory PleromaApiInstancePleromaPartMetadataFieldLimits.fromJson(
+  static PleromaApiInstancePleromaPartMetadataFieldLimits fromJson(
     Map<String, dynamic> json,
   ) =>
       _$PleromaApiInstancePleromaPartMetadataFieldLimitsFromJson(json);
 
-  factory PleromaApiInstancePleromaPartMetadataFieldLimits.fromJsonString(
-    String jsonString,
-  ) =>
-      _$PleromaApiInstancePleromaPartMetadataFieldLimitsFromJson(
-        jsonDecode(jsonString),
-      );
-
-  static List<PleromaApiInstancePleromaPartMetadataFieldLimits> listFromJsonString(
-    String str,
-  ) =>
-      List<PleromaApiInstancePleromaPartMetadataFieldLimits>.from(json
-          .decode(str)
-          .map((x) =>
-              PleromaApiInstancePleromaPartMetadataFieldLimits.fromJson(x)));
-
   Map<String, dynamic> toJson() =>
       _$PleromaApiInstancePleromaPartMetadataFieldLimitsToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiInstancePleromaPartMetadataFieldLimitsToJson(this));
 
   @override
   bool operator ==(Object other) =>
@@ -318,32 +278,14 @@ class PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge {
         '}';
   }
 
-  factory PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge.fromJson(
+  static PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge fromJson(
     Map<String, dynamic> json,
   ) =>
-      _$PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeFromJson(json);
-
-  factory PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge.fromJsonString(
-    String jsonString,
-  ) =>
       _$PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeFromJson(
-        jsonDecode(jsonString),
-      );
-
-  static List<PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge>
-      listFromJsonString(String str) =>
-          List<PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge>.from(
-            json.decode(str).map((x) =>
-                PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge
-                    .fromJson(x)),
-          );
+          json);
 
   Map<String, dynamic> toJson() =>
       _$PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeToJson(this);
-
-  String toJsonString() => jsonEncode(
-        _$PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeToJson(this),
-      );
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -355,7 +297,8 @@ class PleromaApiInstancePleromaPartMetadataFederation {
   final bool? exclusions;
   @HiveField(2)
   @JsonKey(name: "mrf_object_age")
-  final PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge? mrfObjectAge;
+  final PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge?
+      mrfObjectAge;
   @HiveField(3)
   @JsonKey(name: "mrf_policies")
   final List<String>? mrfPolicies;
@@ -401,32 +344,13 @@ class PleromaApiInstancePleromaPartMetadataFederation {
         '}';
   }
 
-  factory PleromaApiInstancePleromaPartMetadataFederation.fromJson(
+  static PleromaApiInstancePleromaPartMetadataFederation fromJson(
     Map<String, dynamic> json,
   ) =>
       _$PleromaApiInstancePleromaPartMetadataFederationFromJson(json);
 
-  factory PleromaApiInstancePleromaPartMetadataFederation.fromJsonString(
-    String jsonString,
-  ) =>
-      _$PleromaApiInstancePleromaPartMetadataFederationFromJson(
-        jsonDecode(jsonString),
-      );
-
-  static List<PleromaApiInstancePleromaPartMetadataFederation> listFromJsonString(
-    String str,
-  ) =>
-      List<PleromaApiInstancePleromaPartMetadataFederation>.from(
-        json.decode(str).map(
-              (x) => PleromaApiInstancePleromaPartMetadataFederation.fromJson(x),
-            ),
-      );
-
   Map<String, dynamic> toJson() =>
       _$PleromaApiInstancePleromaPartMetadataFederationToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiInstancePleromaPartMetadataFederationToJson(this));
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -489,28 +413,13 @@ class PleromaApiInstancePleromaPartMetadata {
         '}';
   }
 
-  factory PleromaApiInstancePleromaPartMetadata.fromJson(
+  static PleromaApiInstancePleromaPartMetadata fromJson(
     Map<String, dynamic> json,
   ) =>
       _$PleromaApiInstancePleromaPartMetadataFromJson(json);
 
-  factory PleromaApiInstancePleromaPartMetadata.fromJsonString(
-    String jsonString,
-  ) =>
-      _$PleromaApiInstancePleromaPartMetadataFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiInstancePleromaPartMetadata> listFromJsonString(
-    String str,
-  ) =>
-      List<PleromaApiInstancePleromaPartMetadata>.from(json
-          .decode(str)
-          .map((x) => PleromaApiInstancePleromaPartMetadata.fromJson(x)));
-
   Map<String, dynamic> toJson() =>
       _$PleromaApiInstancePleromaPartMetadataToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiInstancePleromaPartMetadataToJson(this));
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -563,20 +472,10 @@ class PleromaApiInstancePollLimits {
     required this.minExpiration,
   });
 
-  factory PleromaApiInstancePollLimits.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiInstancePollLimits fromJson(Map<String, dynamic> json) =>
       _$PleromaApiInstancePollLimitsFromJson(json);
 
-  factory PleromaApiInstancePollLimits.fromJsonString(String jsonString) =>
-      _$PleromaApiInstancePollLimitsFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiInstancePollLimits> listFromJsonString(String str) =>
-      List<PleromaApiInstancePollLimits>.from(
-        json.decode(str).map((x) => PleromaApiInstancePollLimits.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiInstancePollLimitsToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiInstancePollLimitsToJson(this));
 
   @override
   bool operator ==(Object other) =>
@@ -865,18 +764,8 @@ class PleromaApiInstance extends IPleromaApiInstance {
       descriptionLimit.hashCode ^
       invitesEnabled.hashCode;
 
-  factory PleromaApiInstance.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiInstance fromJson(Map<String, dynamic> json) =>
       _$PleromaApiInstanceFromJson(json);
 
-  factory PleromaApiInstance.fromJsonString(String jsonString) =>
-      _$PleromaApiInstanceFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiInstance> listFromJsonString(String str) =>
-      List<PleromaApiInstance>.from(
-        json.decode(str).map((x) => PleromaApiInstance.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiInstanceToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiInstanceToJson(this));
 }

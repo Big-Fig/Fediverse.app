@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:collection/collection.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/duration/duration_extension.dart';
@@ -168,15 +166,10 @@ class PleromaApiPollOption implements IPleromaApiPollOption {
   @override
   int get hashCode => title.hashCode ^ votesCount.hashCode;
 
-  factory PleromaApiPollOption.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiPollOption fromJson(Map<String, dynamic> json) =>
       _$PleromaApiPollOptionFromJson(json);
 
-  factory PleromaApiPollOption.fromJsonString(String jsonString) =>
-      _$PleromaApiPollOptionFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiPollOptionToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiPollOptionToJson(this));
 
   @override
   String toString() {
@@ -232,15 +225,10 @@ class PleromaApiPoll implements IPleromaApiPoll {
     required this.votesCount,
   });
 
-  factory PleromaApiPoll.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiPoll fromJson(Map<String, dynamic> json) =>
       _$PleromaApiPollFromJson(json);
 
-  factory PleromaApiPoll.fromJsonString(String jsonString) =>
-      _$PleromaApiPollFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiPollToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiPollToJson(this));
 
   @override
   String toString() {

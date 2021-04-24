@@ -1,17 +1,14 @@
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_api_notification_exception.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:fedi/rest/rest_response_model.dart';
-import 'package:http/http.dart';
 import 'package:path/path.dart';
 
-class PleromaApiNotificationService extends DisposableOwner
+class PleromaApiNotificationService extends BasePleromaApiService
+    with PleromaApiAuthMixinService
     implements IPleromaApiNotificationService {
   final notificationRelativeUrlPath = "api/v1/notifications";
   final pleromaNotificationRelativeUrlPath = "api/v1/pleroma/notifications";
@@ -19,28 +16,16 @@ class PleromaApiNotificationService extends DisposableOwner
   final IPleromaApiAuthRestService restService;
 
   @override
-  Stream<PleromaApiState> get pleromaApiStateStream =>
-      restService.pleromaApiStateStream;
+  IPleromaApiAuthRestService get restApiAuthService => restService;
 
-  @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
-
-  @override
-  bool get isConnected => restService.isConnected;
-
-  @override
-  Stream<bool> get isConnectedStream => restService.isConnectedStream;
-
-  PleromaApiNotificationService({required this.restService});
-
-  @override
-  Future dispose() async {
-    return await super.dispose();
-  }
+  PleromaApiNotificationService({required this.restService})
+      : super(
+          restService: restService,
+        );
 
   @override
   Future<IPleromaApiNotification> getNotification({
-    required String? notificationRemoteId,
+    required String notificationRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -51,7 +36,10 @@ class PleromaApiNotificationService extends DisposableOwner
       ),
     );
 
-    return parseNotificationResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiNotification.fromJson,
+    );
   }
 
   @override
@@ -75,7 +63,10 @@ class PleromaApiNotificationService extends DisposableOwner
       ),
     );
 
-    return parseNotificationResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiNotification.fromJson,
+    );
   }
 
   @override
@@ -100,7 +91,10 @@ class PleromaApiNotificationService extends DisposableOwner
       ),
     );
 
-    return parseNotificationListResponse(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiNotification.fromJson,
+    );
   }
 
   @override
@@ -151,7 +145,10 @@ class PleromaApiNotificationService extends DisposableOwner
       ),
     );
 
-    return parseNotificationListResponse(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiNotification.fromJson,
+    );
   }
 
   void _checkGetNotificationsOnlyFromAccountRemoteId(
@@ -222,47 +219,6 @@ class PleromaApiNotificationService extends DisposableOwner
     }
   }
 
-  PleromaApiNotification parseNotificationResponse(Response httpResponse) {
-    var body = httpResponse.body;
-
-    RestResponse<PleromaApiNotification> restResponse = RestResponse.fromResponse(
-      response: httpResponse,
-      resultParser: (body) {
-        return PleromaApiNotification.fromJsonString(body);
-      },
-    );
-
-    if (restResponse.isSuccess) {
-      return restResponse.body!;
-    } else {
-      throw PleromaApiNotificationException(
-        statusCode: httpResponse.statusCode,
-        body: body,
-      );
-    }
-  }
-
-  List<PleromaApiNotification> parseNotificationListResponse(
-    Response httpResponse,
-  ) {
-    RestResponse<List<PleromaApiNotification>> restResponse =
-        RestResponse.fromResponse(
-      response: httpResponse,
-      resultParser: (body) => PleromaApiNotification.listFromJsonString(
-        httpResponse.body,
-      ),
-    );
-
-    if (restResponse.isSuccess) {
-      return restResponse.body!;
-    } else {
-      throw PleromaApiNotificationException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
-  }
-
   @override
   Future dismissNotification({
     required String? notificationRemoteId,
@@ -277,12 +233,7 @@ class PleromaApiNotificationService extends DisposableOwner
       ),
     );
 
-    if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
-      throw PleromaApiNotificationException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
+    return restService.processEmptyResponse(httpResponse);
   }
 
   @override
@@ -296,17 +247,6 @@ class PleromaApiNotificationService extends DisposableOwner
       ),
     );
 
-    if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
-      throw PleromaApiNotificationException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
+    return restService.processEmptyResponse(httpResponse);
   }
-
-  @override
-  bool get isPleroma => restService.isPleroma;
-
-  @override
-  bool get isMastodon => restService.isMastodon;
 }

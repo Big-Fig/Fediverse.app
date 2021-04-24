@@ -27,11 +27,11 @@ abstract class IPleromaApiOAuthService extends IPleromaApi {
     required PleromaApiOAuthAccountTokenRequest tokenRequest,
   });
 
-  Future<PleromaApiOAuthToken?> retrieveAppAccessToken({
+  Future<PleromaApiOAuthToken> retrieveAppAccessToken({
     required PleromaApiOAuthAppTokenRequest tokenRequest,
   });
 
-  Future<bool> revokeToken({
+  Future revokeToken({
     required PleromaApiOAuthAppTokenRevokeRequest revokeRequest,
   });
 }

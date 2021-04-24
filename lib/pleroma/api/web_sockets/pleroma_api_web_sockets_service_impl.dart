@@ -25,7 +25,7 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
 
   IWebSocketsChannel<PleromaApiWebSocketsEvent> getOrCreateNewChannel({
     required String stream,
-    Map<String, String?>? queryArgs,
+    Map<String, String>? queryArgs,
   }) {
     var webSocketsScheme = mapHttpToWebSocketsScheme(baseUri.scheme);
     var host = baseUri.host;
@@ -59,7 +59,7 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
 
   @override
   IWebSocketsChannel<PleromaApiWebSocketsEvent> getHashtagChannel({
-    required String? hashtag,
+    required String hashtag,
     required bool? local,
   }) =>
       getOrCreateNewChannel(
@@ -69,7 +69,7 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
 
   @override
   IWebSocketsChannel<PleromaApiWebSocketsEvent> getListChannel({
-    required String? listId,
+    required String listId,
   }) =>
       getOrCreateNewChannel(
         stream: "list",
@@ -116,10 +116,10 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
 
   @override
   IWebSocketsChannel<PleromaApiWebSocketsEvent> getAccountChannel({
-    required String? accountId,
+    required String accountId,
     required bool notification,
   }) {
-    assert(accountId != null);
+    assert(accountId.isNotEmpty);
     return getOrCreateNewChannel(
       stream: notification ? "user:notification" : "user",
       queryArgs: {"accountId": accountId},

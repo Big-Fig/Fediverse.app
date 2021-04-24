@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_content_model.g.dart';
@@ -18,15 +16,10 @@ class PleromaApiContent implements IPleromaApiContent {
     this.textPlain,
   });
 
-  factory PleromaApiContent.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiContent fromJson(Map<String, dynamic> json) =>
       _$PleromaApiContentFromJson(json);
 
-  factory PleromaApiContent.fromJsonString(String jsonString) =>
-      _$PleromaApiContentFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiContentToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiContentToJson(this));
 
   @override
   bool operator ==(Object other) =>

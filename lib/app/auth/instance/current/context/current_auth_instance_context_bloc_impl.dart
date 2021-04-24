@@ -387,7 +387,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     addDisposable(disposable: pleromaAccountService);
     var pleromaTimelineService =
-        PleromaApiTimelineService(restService: pleromaAuthRestService);
+        PleromaApiTimelineService(authRestService: pleromaAuthRestService);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiTimelineService>(pleromaTimelineService);
     addDisposable(disposable: pleromaTimelineService);
@@ -401,12 +401,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     addDisposable(disposable: pleromaStatusService);
     var pleromaScheduledStatusService =
-        PleromaApiScheduledStatusService(restService: pleromaAuthRestService);
+        PleromaApiScheduledStatusService(authRestService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiScheduledStatusService>(pleromaScheduledStatusService);
     addDisposable(disposable: pleromaScheduledStatusService);
     var pleromaApiStatusEmojiReactionService =
-        PleromaApiStatusEmojiReactionService(restService: pleromaAuthRestService);
+        PleromaApiStatusEmojiReactionService(authRestService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiStatusEmojiReactionService>(pleromaApiStatusEmojiReactionService);
     addDisposable(disposable: pleromaApiStatusEmojiReactionService);

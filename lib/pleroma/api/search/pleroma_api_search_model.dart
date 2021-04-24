@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/mastodon/api/search/mastodon_api_search_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
@@ -61,13 +59,8 @@ class PleromaApiSearchResult extends IPleromaApiSearchResult {
         '}';
   }
 
-  factory PleromaApiSearchResult.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiSearchResult fromJson(Map<String, dynamic> json) =>
       _$PleromaApiSearchResultFromJson(json);
 
-  factory PleromaApiSearchResult.fromJsonString(String jsonString) =>
-      _$PleromaApiSearchResultFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiSearchResultToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiSearchResultToJson(this));
 }

@@ -10,7 +10,7 @@ abstract class IPleromaApiSearchService implements IPleromaApi {
       Provider.of<IPleromaApiSearchService>(context, listen: listen);
 
   Future<IPleromaApiSearchResult> search({
-    required String? query,
+    required String query,
     String? accountId,
     MastodonSearchRequestType? type,
     bool? excludeUnreviewed,

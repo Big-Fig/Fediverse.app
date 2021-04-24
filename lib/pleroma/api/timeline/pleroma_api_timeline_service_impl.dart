@@ -1,43 +1,35 @@
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_exception.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:fedi/rest/rest_response_model.dart';
 import 'package:path/path.dart';
 
-class PleromaApiTimelineService extends DisposableOwner
+class PleromaApiTimelineService extends BasePleromaApiService
+    with PleromaApiAuthMixinService
     implements IPleromaApiTimelineService {
   @override
   Uri get baseUrl => restService.baseUri;
 
   final timelineRelativeUrlPath = "/api/v1/timelines/";
-  @override
-  final IPleromaApiAuthRestService restService;
+
+  final IPleromaApiAuthRestService authRestService;
 
   @override
-  Stream<PleromaApiState> get pleromaApiStateStream =>
-      restService.pleromaApiStateStream;
+  IPleromaApiAuthRestService get restApiAuthService => authRestService;
 
-  @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
-
-  @override
-  bool get isConnected => restService.isConnected;
-
-  @override
-  Stream<bool> get isConnectedStream => restService.isConnectedStream;
-
-  PleromaApiTimelineService({required this.restService});
+  PleromaApiTimelineService({
+    required this.authRestService,
+  }) : super(
+          restService: authRestService,
+        );
 
   @override
   Future<List<IPleromaApiStatus>> getHashtagTimeline({
-    required String? hashtag,
+    required String hashtag,
     IPleromaApiPaginationRequest? pagination,
     bool? onlyWithMedia = false,
     bool onlyLocal = false,
@@ -46,7 +38,7 @@ class PleromaApiTimelineService extends DisposableOwner
       PleromaApiVisibility.direct,
     ],
   }) {
-    assert(hashtag != null);
+    assert(hashtag.isNotEmpty);
     return getTimeline(
       relativeTimeLineUrlPath: "tag/$hashtag",
       pagination: pagination,
@@ -85,7 +77,7 @@ class PleromaApiTimelineService extends DisposableOwner
 
   @override
   Future<List<IPleromaApiStatus>> getListTimeline({
-    required String? listId,
+    required String listId,
     IPleromaApiPaginationRequest? pagination,
     bool onlyLocal = false,
     bool withMuted = false,
@@ -93,7 +85,7 @@ class PleromaApiTimelineService extends DisposableOwner
       PleromaApiVisibility.direct,
     ],
   }) {
-    assert(listId != null);
+    assert(listId.isNotEmpty);
     return getTimeline(
       relativeTimeLineUrlPath: "list/$listId",
       pagination: pagination,
@@ -134,6 +126,7 @@ class PleromaApiTimelineService extends DisposableOwner
       onlyRemote: onlyRemote,
     );
   }
+
   // todo: refactor long-parameter-list
   // ignore: long-parameter-list
   Future<List<IPleromaApiStatus>> getTimeline({
@@ -174,19 +167,9 @@ class PleromaApiTimelineService extends DisposableOwner
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    RestResponse<List<IPleromaApiStatus>> restResponse = RestResponse.fromResponse(
-      response: httpResponse,
-      resultParser: (body) =>
-          PleromaApiStatus.listFromJsonString(httpResponse.body),
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
     );
-
-    if (restResponse.isSuccess) {
-      return restResponse.body!;
-    } else {
-      throw PleromaApiTimelineException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
   }
 }

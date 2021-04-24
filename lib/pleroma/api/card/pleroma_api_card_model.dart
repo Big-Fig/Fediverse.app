@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/mastodon/api/card/mastodon_api_card_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -109,20 +107,10 @@ class PleromaApiCard implements IPleromaApiCard {
     this.width,
   });
 
-  factory PleromaApiCard.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiCard fromJson(Map<String, dynamic> json) =>
       _$PleromaApiCardFromJson(json);
 
-  factory PleromaApiCard.fromJsonString(String jsonString) =>
-      _$PleromaApiCardFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiCard> listFromJsonString(String str) =>
-      List<PleromaApiCard>.from(
-        json.decode(str).map((x) => PleromaApiCard.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiCardToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiCardToJson(this));
 
   @override
   bool operator ==(Object other) =>

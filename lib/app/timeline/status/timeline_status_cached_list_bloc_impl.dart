@@ -186,7 +186,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenHashtagChannel(
             listenType: webSocketsListenType,
-            hashtag: timeline.withRemoteHashtag,
+            hashtag: timeline.withRemoteHashtag!,
             local: timeline.onlyLocal,
           );
           break;
@@ -286,7 +286,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   Future<List<IPleromaApiStatus>> _loadHashtagTimeline(
       PleromaApiPaginationRequest pagination) async {
     return await pleromaTimelineService.getHashtagTimeline(
-      hashtag: timeline.withRemoteHashtag,
+      hashtag: timeline.withRemoteHashtag!,
       pagination: pagination,
       onlyLocal: onlyLocal,
       onlyWithMedia: onlyWithMedia,

@@ -15,7 +15,7 @@ class PleromaAuthRestService extends PleromaApiRestService
   @override
   final bool isPleroma;
 
-  final String? accessToken;
+  final String accessToken;
 
   PleromaAuthRestService({
     required IRestService restService,
@@ -46,5 +46,6 @@ class PleromaAuthRestService extends PleromaApiRestService
   }
 
   @override
+  // todo: check when new backend type added
   bool get isMastodon => !isPleroma;
 }

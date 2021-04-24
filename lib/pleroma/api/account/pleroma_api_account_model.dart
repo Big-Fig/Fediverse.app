@@ -10,6 +10,7 @@ import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_account_model.g.dart';
+
 // ignore_for_file: no-magic-number
 Function _listEq = const ListEquality().equals;
 
@@ -271,20 +272,10 @@ class PleromaApiAccount implements IPleromaApiAccount {
     required this.fqn,
   });
 
-  factory PleromaApiAccount.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiAccount fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountFromJson(json);
 
-  factory PleromaApiAccount.fromJsonString(String jsonString) =>
-      _$PleromaApiAccountFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiAccount> listFromJsonString(String str) =>
-      List<PleromaApiAccount>.from(
-        json.decode(str).map((x) => PleromaApiAccount.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiAccountToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiAccountToJson(this));
 
   @override
   String toString() {
@@ -505,7 +496,8 @@ abstract class IPleromaApiAccountPleromaPart {
   });
 }
 
-extension IPleromaApiAccountPleromaPartExtension on IPleromaApiAccountPleromaPart {
+extension IPleromaApiAccountPleromaPartExtension
+    on IPleromaApiAccountPleromaPart {
   PleromaApiAccountPleromaPart toPleromaApiAccountPleromaPart() {
     if (this is PleromaApiAccountPleromaPart) {
       return this as PleromaApiAccountPleromaPart;
@@ -660,7 +652,8 @@ class PleromaApiAccountPleromaPart implements IPleromaApiAccountPleromaPart {
 
   Map<String, dynamic> toJson() => _$PleromaApiAccountPleromaPartToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaApiAccountPleromaPartToJson(this));
+  String toJsonString() =>
+      jsonEncode(_$PleromaApiAccountPleromaPartToJson(this));
 
   @override
   // ignore: long-parameter-list, code-metrics
@@ -688,8 +681,8 @@ class PleromaApiAccountPleromaPart implements IPleromaApiAccountPleromaPart {
       PleromaApiAccountPleromaPart(
         backgroundImage: backgroundImage ?? this.backgroundImage,
         tags: tags?.toPleromaApiTags() ?? this.tags,
-        relationship:
-            relationship?.toPleromaApiAccountRelationship() ?? this.relationship,
+        relationship: relationship?.toPleromaApiAccountRelationship() ??
+            this.relationship,
         isAdmin: isAdmin ?? this.isAdmin,
         isModerator: isModerator ?? this.isModerator,
         confirmationPending: confirmationPending ?? this.confirmationPending,
@@ -800,7 +793,8 @@ abstract class IPleromaApiAccountRelationship
   });
 }
 
-extension IPleromaApiAccountRelationshipExtension on IPleromaApiAccountRelationship {
+extension IPleromaApiAccountRelationshipExtension
+    on IPleromaApiAccountRelationship {
   PleromaApiAccountRelationship toPleromaApiAccountRelationship() {
     if (this is PleromaApiAccountRelationship) {
       return this as PleromaApiAccountRelationship;
@@ -982,20 +976,10 @@ class PleromaApiAccountRelationship implements IPleromaApiAccountRelationship {
         '}';
   }
 
-  factory PleromaApiAccountRelationship.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiAccountRelationship fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountRelationshipFromJson(json);
 
-  factory PleromaApiAccountRelationship.fromJsonString(String jsonString) =>
-      _$PleromaApiAccountRelationshipFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiAccountRelationship> listFromJsonString(String str) =>
-      List<PleromaApiAccountRelationship>.from(
-        json.decode(str).map((x) => PleromaApiAccountRelationship.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiAccountRelationshipToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiAccountRelationshipToJson(this));
 }
 
 abstract class IPleromaApiAccountIdentityProof
@@ -1028,26 +1012,19 @@ class PleromaApiAccountIdentityProof extends IPleromaApiAccountIdentityProof {
 
   @override
   String toString() {
-    return 'PleromaApiAccountIdentityProof{profileUrl: $profileUrl, proofUrl: $proofUrl,'
-        ' provider: $provider, providerUsername: $providerUsername,'
-        ' updatedAt: $updatedAt}';
+    return 'PleromaApiAccountIdentityProof{'
+        'profileUrl: $profileUrl, '
+        'proofUrl: $proofUrl, '
+        'provider: $provider, '
+        'providerUsername: $providerUsername, '
+        'updatedAt: $updatedAt'
+        '}';
   }
 
-  factory PleromaApiAccountIdentityProof.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiAccountIdentityProof fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountIdentityProofFromJson(json);
 
-  factory PleromaApiAccountIdentityProof.fromJsonString(String jsonString) =>
-      _$PleromaApiAccountIdentityProofFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiAccountIdentityProof> listFromJsonString(String str) =>
-      List<PleromaApiAccountIdentityProof>.from(
-          // ignore: prefer-trailing-comma
-          json.decode(str).map((x) => PleromaApiAccountIdentityProof.fromJson(x)));
-
   Map<String, dynamic> toJson() => _$PleromaApiAccountIdentityProofToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiAccountIdentityProofToJson(this));
 }
 
 abstract class IPleromaApiAccountReportRequest
@@ -1059,7 +1036,8 @@ abstract class IPleromaApiAccountReportRequest
   explicitToJson: true,
   includeIfNull: false,
 )
-class PleromaApiAccountReportRequest implements IPleromaApiAccountReportRequest {
+class PleromaApiAccountReportRequest
+    implements IPleromaApiAccountReportRequest {
   @JsonKey(name: "account_id")
   @override
   final String accountId;

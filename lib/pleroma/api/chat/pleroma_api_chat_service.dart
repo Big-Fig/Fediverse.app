@@ -13,30 +13,30 @@ abstract class IPleromaApiChatService extends IPleromaApiAuth {
   });
 
   Future<List<IPleromaApiChatMessage>> getChatMessages({
-    required String? chatId,
+    required String chatId,
     IPleromaApiPaginationRequest? pagination,
   });
 
   Future<IPleromaApiChat> markChatAsRead({
-    required String? chatId,
-    required String? lastReadChatMessageId,
+    required String chatId,
+    required String lastReadChatMessageId,
   });
 
   Future<IPleromaApiChat> getChat({
-    required String? id,
+    required String id,
   });
 
   Future<IPleromaApiChat> getOrCreateChatByAccountId({
-    required String? accountId,
+    required String accountId,
   });
 
   Future<IPleromaApiChatMessage> sendMessage({
-    required String? chatId,
+    required String chatId,
     required IPleromaApiChatMessageSendData data,
   });
 
   Future deleteChatMessage({
-    required String? chatMessageRemoteId,
-    required String? chatId,
+    required String chatMessageRemoteId,
+    required String chatId,
   });
 }

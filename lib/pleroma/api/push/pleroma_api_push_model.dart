@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,8 +6,8 @@ part 'pleroma_api_push_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class PleromaApiPushSubscribeRequest {
-  PleromaApiPushSubscribeData? data;
-  PleromaApiPushSubscribeRequestSubscription? subscription;
+  final PleromaApiPushSubscribeData? data;
+  final PleromaApiPushSubscribeRequestSubscription? subscription;
 
   PleromaApiPushSubscribeRequest({
     required this.data,
@@ -35,16 +33,10 @@ class PleromaApiPushSubscribeRequest {
         '}';
   }
 
-  factory PleromaApiPushSubscribeRequest.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiPushSubscribeRequest fromJson(Map<String, dynamic> json) =>
       _$PleromaApiPushSubscribeRequestFromJson(json);
 
-  factory PleromaApiPushSubscribeRequest.fromJsonString(String jsonString) =>
-      _$PleromaApiPushSubscribeRequestFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiPushSubscribeRequestToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiPushSubscribeRequestToJson(this));
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -55,7 +47,7 @@ class PleromaApiPushSubscription {
   final PleromaApiPushSubscribeRequestDataAlerts? alerts;
   @JsonKey(name: "server_key")
   final String? serverKey;
-  PleromaApiPushSubscribeRequestSubscription? subscription;
+  final PleromaApiPushSubscribeRequestSubscription? subscription;
 
   PleromaApiPushSubscription({
     required this.id,
@@ -94,15 +86,10 @@ class PleromaApiPushSubscription {
       serverKey.hashCode ^
       subscription.hashCode;
 
-  factory PleromaApiPushSubscription.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiPushSubscription fromJson(Map<String, dynamic> json) =>
       _$PleromaApiPushSubscriptionFromJson(json);
 
-  factory PleromaApiPushSubscription.fromJsonString(String jsonString) =>
-      _$PleromaApiPushSubscriptionFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiPushSubscriptionToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiPushSubscriptionToJson(this));
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -126,16 +113,10 @@ class PleromaApiPushSubscribeData {
     return 'PleromaApiPushSubscribeRequestData{alerts: $alerts}';
   }
 
-  factory PleromaApiPushSubscribeData.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiPushSubscribeData fromJson(Map<String, dynamic> json) =>
       _$PleromaApiPushSubscribeDataFromJson(json);
 
-  factory PleromaApiPushSubscribeData.fromJsonString(String jsonString) =>
-      _$PleromaApiPushSubscribeDataFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiPushSubscribeDataToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiPushSubscribeDataToJson(this));
 }
 
 @JsonSerializable(
@@ -215,20 +196,12 @@ class PleromaApiPushSubscribeRequestDataAlerts {
         '}';
   }
 
-  factory PleromaApiPushSubscribeRequestDataAlerts.fromJson(
+  static PleromaApiPushSubscribeRequestDataAlerts fromJson(
           Map<String, dynamic> json) =>
       _$PleromaApiPushSubscribeRequestDataAlertsFromJson(json);
 
-  factory PleromaApiPushSubscribeRequestDataAlerts.fromJsonString(
-          String jsonString) =>
-      _$PleromaApiPushSubscribeRequestDataAlertsFromJson(
-          jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() =>
       _$PleromaApiPushSubscribeRequestDataAlertsToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiPushSubscribeRequestDataAlertsToJson(this));
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -261,22 +234,13 @@ class PleromaApiPushSubscribeRequestSubscription {
   @override
   int get hashCode => endpoint.hashCode ^ keys.hashCode;
 
-  factory PleromaApiPushSubscribeRequestSubscription.fromJson(
+  static PleromaApiPushSubscribeRequestSubscription fromJson(
     Map<String, dynamic> json,
   ) =>
       _$PleromaApiPushSubscribeRequestSubscriptionFromJson(json);
 
-  factory PleromaApiPushSubscribeRequestSubscription.fromJsonString(
-    String jsonString,
-  ) =>
-      _$PleromaApiPushSubscribeRequestSubscriptionFromJson(
-          jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() =>
       _$PleromaApiPushSubscribeRequestSubscriptionToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiPushSubscribeRequestSubscriptionToJson(this));
 }
 
 @JsonSerializable()
@@ -310,16 +274,10 @@ class PleromaApiPushSubscriptionKeys {
         ' auth: $auth}';
   }
 
-  factory PleromaApiPushSubscriptionKeys.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiPushSubscriptionKeys fromJson(Map<String, dynamic> json) =>
       _$PleromaApiPushSubscriptionKeysFromJson(json);
 
-  factory PleromaApiPushSubscriptionKeys.fromJsonString(String jsonString) =>
-      _$PleromaApiPushSubscriptionKeysFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiPushSubscriptionKeysToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiPushSubscriptionKeysToJson(this));
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -347,15 +305,10 @@ class PleromaApiPushMessageBody {
     required this.notificationType,
   });
 
-  factory PleromaApiPushMessageBody.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiPushMessageBody fromJson(Map<String, dynamic> json) =>
       _$PleromaApiPushMessageBodyFromJson(json);
 
-  factory PleromaApiPushMessageBody.fromJsonString(String jsonString) =>
-      _$PleromaApiPushMessageBodyFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiPushMessageBodyToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiPushMessageBodyToJson(this));
 
   @override
   String toString() {

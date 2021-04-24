@@ -12,11 +12,11 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:fedi/pleroma/api/id/pleroma_api_fake_id_helper.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -220,12 +220,14 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
           lastReadChatMessageId = lastMessage?.remoteId;
         }
 
-        var updatedRemoteChat = await pleromaChatService.markChatAsRead(
-          chatId: chat.remoteId,
-          lastReadChatMessageId: lastReadChatMessageId,
-        );
+        if (lastReadChatMessageId != null) {
+          var updatedRemoteChat = await pleromaChatService.markChatAsRead(
+            chatId: chat.remoteId,
+            lastReadChatMessageId: lastReadChatMessageId,
+          );
 
-        await chatRepository.upsertInRemoteType(updatedRemoteChat);
+          await chatRepository.upsertInRemoteType(updatedRemoteChat);
+        }
       } else {
         // TODO: mark as read once app receive network connection
         await chatRepository.markAsRead(chat: chat, batchTransaction: null);
@@ -264,7 +266,8 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   // ignore: long-method
   Future postMessage({
     required IPleromaApiChatMessageSendData pleromaApiChatMessageSendData,
-    required IPleromaApiMediaAttachment? pleromaApiChatMessageSendDataMediaAttachment,
+    required IPleromaApiMediaAttachment?
+        pleromaApiChatMessageSendDataMediaAttachment,
     required IPleromaChatMessage? oldPendingFailedPleromaChatMessage,
   }) async {
     DbChatMessage dbChatMessage;

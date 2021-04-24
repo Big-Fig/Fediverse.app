@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/mastodon/api/history/mastodon_api_history_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -62,15 +60,10 @@ class PleromaApiTagHistory implements IPleromaApiTagHistory {
     required this.uses,
   });
 
-  factory PleromaApiTagHistory.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiTagHistory fromJson(Map<String, dynamic> json) =>
       _$PleromaApiTagHistoryFromJson(json);
 
-  factory PleromaApiTagHistory.fromJsonString(String jsonString) =>
-      _$PleromaApiTagHistoryFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiTagHistoryToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiTagHistoryToJson(this));
 
   @override
   bool operator ==(Object other) =>

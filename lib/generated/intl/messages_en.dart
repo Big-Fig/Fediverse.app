@@ -795,6 +795,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_timeline_type_customList" : MessageLookupByLibrary.simpleMessage("List"),
     "app_timeline_type_field_chooser_dialog_title" : MessageLookupByLibrary.simpleMessage("Choose timeline type"),
     "app_timeline_type_field_label" : MessageLookupByLibrary.simpleMessage("Type"),
+    "app_timeline_type_field_null" : MessageLookupByLibrary.simpleMessage("Not selected"),
     "app_timeline_type_hashtag" : MessageLookupByLibrary.simpleMessage("Hashtag"),
     "app_timeline_type_home" : MessageLookupByLibrary.simpleMessage("Home"),
     "app_timeline_type_public" : MessageLookupByLibrary.simpleMessage("Public"),

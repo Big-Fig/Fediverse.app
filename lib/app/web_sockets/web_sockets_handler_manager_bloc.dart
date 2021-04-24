@@ -18,7 +18,7 @@ abstract class IWebSocketsHandlerManagerBloc implements IDisposable {
 
   IDisposable listenAccountChannel({
     required WebSocketsListenType listenType,
-    required String? accountId,
+    required String accountId,
     required bool notification,
   });
 
@@ -40,12 +40,12 @@ abstract class IWebSocketsHandlerManagerBloc implements IDisposable {
 
   IDisposable listenHashtagChannel({
     required WebSocketsListenType listenType,
-    required String? hashtag,
+    required String hashtag,
     required bool? local,
   });
 
   IDisposable listenListChannel({
     required WebSocketsListenType listenType,
-    required String? listId,
+    required String listId,
   });
 }

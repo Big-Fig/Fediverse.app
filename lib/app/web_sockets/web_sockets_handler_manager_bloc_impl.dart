@@ -61,7 +61,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   @override
   IDisposable listenAccountChannel({
     required WebSocketsListenType listenType,
-    required String? accountId,
+    required String accountId,
     required bool notification,
   }) =>
       AccountWebSocketsHandler(
@@ -138,7 +138,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   @override
   IDisposable listenHashtagChannel({
     required WebSocketsListenType listenType,
-    required String? hashtag,
+    required String hashtag,
     required bool? local,
   }) =>
       HashtagStatusListWebSocketsHandler(
@@ -158,7 +158,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   @override
   IDisposable listenListChannel({
     required WebSocketsListenType listenType,
-    required String? listId,
+    required String listId,
   }) =>
       CustomListStatusListWebSocketsHandler(
         listenType: listenType,

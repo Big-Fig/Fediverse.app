@@ -405,32 +405,42 @@ PleromaApiMyAccountEdit _$PleromaApiMyAccountEditFromJson(
 }
 
 Map<String, dynamic> _$PleromaApiMyAccountEditToJson(
-        PleromaApiMyAccountEdit instance) =>
-    <String, dynamic>{
-      'bot': instance.bot,
-      'discoverable': instance.discoverable,
-      'display_name': instance.displayName,
-      'fields_attributes': instance.fieldsAttributes
-          ?.map((k, e) => MapEntry(k.toString(), e.toJson())),
-      'locked': instance.locked,
-      'note': instance.note,
-      'source': instance.source?.toJson(),
-      'actor_type': instance.actorType,
-      'allow_following_move': instance.allowFollowingMove,
-      'accepts_chat_messages': instance.acceptsChatMessages,
-      'default_scope': instance.defaultScope,
-      'hide_favorites': instance.hideFavorites,
-      'hide_followers': instance.hideFollowers,
-      'hide_followers_count': instance.hideFollowersCount,
-      'hide_follows': instance.hideFollows,
-      'hide_follows_count': instance.hideFollowsCount,
-      'no_rich_text': instance.noRichText,
-      'pleroma_background_image': instance.pleromaBackgroundImage,
-      'pleroma_settings_store': instance.pleromaSettingsStore,
-      'show_role': instance.showRole,
-      'skip_thread_containment': instance.skipThreadContainment,
-      'also_known_as': instance.alsoKnownAs,
-    };
+    PleromaApiMyAccountEdit instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('bot', instance.bot);
+  writeNotNull('discoverable', instance.discoverable);
+  writeNotNull('display_name', instance.displayName);
+  writeNotNull(
+      'fields_attributes',
+      instance.fieldsAttributes
+          ?.map((k, e) => MapEntry(k.toString(), e.toJson())));
+  writeNotNull('locked', instance.locked);
+  writeNotNull('note', instance.note);
+  writeNotNull('source', instance.source?.toJson());
+  writeNotNull('actor_type', instance.actorType);
+  writeNotNull('allow_following_move', instance.allowFollowingMove);
+  writeNotNull('accepts_chat_messages', instance.acceptsChatMessages);
+  writeNotNull('default_scope', instance.defaultScope);
+  writeNotNull('hide_favorites', instance.hideFavorites);
+  writeNotNull('hide_followers', instance.hideFollowers);
+  writeNotNull('hide_followers_count', instance.hideFollowersCount);
+  writeNotNull('hide_follows', instance.hideFollows);
+  writeNotNull('hide_follows_count', instance.hideFollowsCount);
+  writeNotNull('no_rich_text', instance.noRichText);
+  writeNotNull('pleroma_background_image', instance.pleromaBackgroundImage);
+  writeNotNull('pleroma_settings_store', instance.pleromaSettingsStore);
+  writeNotNull('show_role', instance.showRole);
+  writeNotNull('skip_thread_containment', instance.skipThreadContainment);
+  writeNotNull('also_known_as', instance.alsoKnownAs);
+  return val;
+}
 
 PleromaApiMyAccountEditSource _$PleromaApiMyAccountEditSourceFromJson(
     Map<String, dynamic> json) {

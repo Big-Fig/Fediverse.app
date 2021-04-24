@@ -28,7 +28,7 @@ abstract class IPleromaApiConversationService extends IPleromaApi {
     required String conversationRemoteId,
   });
 
-  Future<bool> deleteConversation({
+  Future deleteConversation({
     required String conversationRemoteId,
   });
 

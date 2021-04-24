@@ -4,17 +4,17 @@
 
 import 'dart:async' as _i9;
 
-import 'package:fedi/disposable/disposable.dart' as _i13;
+import 'package:fedi/disposable/disposable.dart' as _i12;
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service_impl.dart'
-    as _i18;
+    as _i17;
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart' as _i6;
-import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart' as _i19;
+import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart' as _i18;
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart'
     as _i11;
 import 'package:fedi/pleroma/api/pleroma_api_service.dart' as _i10;
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart' as _i7;
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service_impl.dart'
-    as _i21;
+    as _i20;
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart'
     as _i2;
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart' as _i3;
@@ -23,14 +23,13 @@ import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service_imp
 import 'package:fedi/pleroma/api/status/context/pleroma_api_status_context_model.dart'
     as _i5;
 import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_reaction_service_impl.dart'
-    as _i20;
+    as _i19;
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart' as _i4;
-import 'package:flutter/src/widgets/editable_text.dart' as _i14;
-import 'package:flutter/src/widgets/focus_manager.dart' as _i16;
-import 'package:flutter/src/widgets/scroll_controller.dart' as _i15;
-import 'package:http/src/response.dart' as _i12;
+import 'package:flutter/src/widgets/editable_text.dart' as _i13;
+import 'package:flutter/src/widgets/focus_manager.dart' as _i15;
+import 'package:flutter/src/widgets/scroll_controller.dart' as _i14;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:rxdart/src/subjects/subject.dart' as _i17;
+import 'package:rxdart/src/subjects/subject.dart' as _i16;
 
 // ignore_for_file: comment_references
 // ignore_for_file: unnecessary_parenthesis
@@ -47,11 +46,6 @@ class _FakeIPleromaApiStatus extends _i1.Fake implements _i4.IPleromaApiStatus {
 class _FakeIPleromaApiScheduledStatus extends _i1.Fake
     implements _i4.IPleromaApiScheduledStatus {}
 
-class _FakePleromaApiStatus extends _i1.Fake implements _i4.PleromaApiStatus {}
-
-class _FakePleromaApiScheduledStatus extends _i1.Fake
-    implements _i4.PleromaApiScheduledStatus {}
-
 class _FakePleromaApiStatusContext extends _i1.Fake
     implements _i5.PleromaApiStatusContext {}
 
@@ -64,12 +58,7 @@ class _FakeIPleromaApiAccount extends _i1.Fake
 class _FakeIPleromaApiStatusEmojiReaction extends _i1.Fake
     implements _i4.IPleromaApiStatusEmojiReaction {}
 
-class _FakePleromaApiStatusEmojiReaction extends _i1.Fake
-    implements _i4.PleromaApiStatusEmojiReaction {}
-
 class _FakeIPleromaApiPoll extends _i1.Fake implements _i7.IPleromaApiPoll {}
-
-class _FakePleromaApiPoll extends _i1.Fake implements _i7.PleromaApiPoll {}
 
 /// A class which mocks [PleromaApiAuthStatusService].
 ///
@@ -86,12 +75,17 @@ class MockPleromaApiAuthStatusService extends _i1.Mock
               returnValue: _FakeIPleromaApiAuthRestService())
           as _i2.IPleromaApiAuthRestService);
   @override
-  bool get isPleroma =>
-      (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
-          as bool);
+  _i2.IPleromaApiAuthRestService get restApiAuthService =>
+      (super.noSuchMethod(Invocation.getter(#restApiAuthService),
+              returnValue: _FakeIPleromaApiAuthRestService())
+          as _i2.IPleromaApiAuthRestService);
   @override
   bool get isMastodon =>
       (super.noSuchMethod(Invocation.getter(#isMastodon), returnValue: false)
+          as bool);
+  @override
+  bool get isPleroma =>
+      (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
           as bool);
   @override
   String get statusRelativeUrlPath =>
@@ -251,41 +245,11 @@ class MockPleromaApiAuthStatusService extends _i1.Mock
                   _FakeIPleromaApiScheduledStatus()))
           as _i9.Future<_i4.IPleromaApiScheduledStatus>);
   @override
-  _i9.Future<dynamic> dispose() =>
-      (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value(null)) as _i9.Future<dynamic>);
-  @override
   _i9.Future<_i4.IPleromaApiStatus> getStatus({String? statusRemoteId}) =>
       (super.noSuchMethod(
           Invocation.method(#getStatus, [], {#statusRemoteId: statusRemoteId}),
           returnValue: Future<_i4.IPleromaApiStatus>.value(
               _FakeIPleromaApiStatus())) as _i9.Future<_i4.IPleromaApiStatus>);
-  @override
-  _i4.PleromaApiStatus parseStatusResponse(_i12.Response? httpResponse) =>
-      (super.noSuchMethod(
-          Invocation.method(#parseStatusResponse, [httpResponse]),
-          returnValue: _FakePleromaApiStatus()) as _i4.PleromaApiStatus);
-  @override
-  _i4.PleromaApiScheduledStatus parseScheduledStatusResponse(
-          _i12.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(#parseScheduledStatusResponse, [httpResponse]),
-              returnValue: _FakePleromaApiScheduledStatus())
-          as _i4.PleromaApiScheduledStatus);
-  @override
-  _i5.PleromaApiStatusContext parseStatusContextResponse(
-          _i12.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(#parseStatusContextResponse, [httpResponse]),
-              returnValue: _FakePleromaApiStatusContext())
-          as _i5.PleromaApiStatusContext);
-  @override
-  List<_i6.PleromaApiAccount> parseAccountsResponse(
-          _i12.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(#parseAccountsResponse, [httpResponse]),
-              returnValue: <_i6.PleromaApiAccount>[])
-          as List<_i6.PleromaApiAccount>);
   @override
   _i9.Future<_i5.PleromaApiStatusContext> getStatusContext(
           {String? statusRemoteId}) =>
@@ -297,12 +261,12 @@ class MockPleromaApiAuthStatusService extends _i1.Mock
           as _i9.Future<_i5.PleromaApiStatusContext>);
   @override
   void addDisposable(
-          {_i13.IDisposable? disposable,
+          {_i12.IDisposable? disposable,
           _i9.StreamSubscription<dynamic>? streamSubscription,
-          _i14.TextEditingController? textEditingController,
-          _i15.ScrollController? scrollController,
-          _i16.FocusNode? focusNode,
-          _i17.Subject<dynamic>? subject,
+          _i13.TextEditingController? textEditingController,
+          _i14.ScrollController? scrollController,
+          _i15.FocusNode? focusNode,
+          _i16.Subject<dynamic>? subject,
           _i9.StreamController<dynamic>? streamController,
           _i9.Timer? timer,
           _i9.FutureOr<dynamic>? Function()? custom}) =>
@@ -319,13 +283,17 @@ class MockPleromaApiAuthStatusService extends _i1.Mock
             #custom: custom
           }),
           returnValueForMissingStub: null);
+  @override
+  _i9.Future<dynamic> dispose() =>
+      (super.noSuchMethod(Invocation.method(#dispose, []),
+          returnValue: Future<dynamic>.value(null)) as _i9.Future<dynamic>);
 }
 
 /// A class which mocks [PleromaApiAuthAccountService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPleromaApiAuthAccountService extends _i1.Mock
-    implements _i18.PleromaApiAuthAccountService {
+    implements _i17.PleromaApiAuthAccountService {
   MockPleromaApiAuthAccountService() {
     _i1.throwOnMissingStub(this);
   }
@@ -340,26 +308,14 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
               returnValue: _FakeIPleromaApiAuthRestService())
           as _i2.IPleromaApiAuthRestService);
   @override
+  _i2.IPleromaApiAuthRestService get restApiAuthService =>
+      (super.noSuchMethod(Invocation.getter(#restApiAuthService),
+              returnValue: _FakeIPleromaApiAuthRestService())
+          as _i2.IPleromaApiAuthRestService);
+  @override
   bool get isPleroma =>
       (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
           as bool);
-  @override
-  _i9.Stream<_i10.PleromaApiState> get pleromaApiStateStream =>
-      (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
-              returnValue: Stream<_i10.PleromaApiState>.empty())
-          as _i9.Stream<_i10.PleromaApiState>);
-  @override
-  _i10.PleromaApiState get pleromaApiState =>
-      (super.noSuchMethod(Invocation.getter(#pleromaApiState),
-          returnValue: _i10.PleromaApiState.validAuth) as _i10.PleromaApiState);
-  @override
-  bool get isConnected =>
-      (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
-          as bool);
-  @override
-  _i9.Stream<bool> get isConnectedStream =>
-      (super.noSuchMethod(Invocation.getter(#isConnectedStream),
-          returnValue: Stream<bool>.empty()) as _i9.Stream<bool>);
   @override
   bool get isMastodon =>
       (super.noSuchMethod(Invocation.getter(#isMastodon), returnValue: false)
@@ -377,6 +333,23 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#restService),
               returnValue: _FakeIPleromaApiRestService())
           as _i3.IPleromaApiRestService);
+  @override
+  _i9.Stream<_i10.PleromaApiState> get pleromaApiStateStream =>
+      (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
+              returnValue: Stream<_i10.PleromaApiState>.empty())
+          as _i9.Stream<_i10.PleromaApiState>);
+  @override
+  _i10.PleromaApiState get pleromaApiState =>
+      (super.noSuchMethod(Invocation.getter(#pleromaApiState),
+          returnValue: _i10.PleromaApiState.validAuth) as _i10.PleromaApiState);
+  @override
+  bool get isConnected =>
+      (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
+          as bool);
+  @override
+  _i9.Stream<bool> get isConnectedStream =>
+      (super.noSuchMethod(Invocation.getter(#isConnectedStream),
+          returnValue: Stream<bool>.empty()) as _i9.Stream<bool>);
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
@@ -484,14 +457,14 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
                           <_i6.IPleromaApiAccountIdentityProof>[]))
           as _i9.Future<List<_i6.IPleromaApiAccountIdentityProof>>);
   @override
-  _i9.Future<List<_i19.IPleromaApiList>> getListsWithAccount(
+  _i9.Future<List<_i18.IPleromaApiList>> getListsWithAccount(
           {String? accountRemoteId}) =>
       (super.noSuchMethod(
           Invocation.method(
               #getListsWithAccount, [], {#accountRemoteId: accountRemoteId}),
-          returnValue: Future<List<_i19.IPleromaApiList>>.value(
-              <_i19.IPleromaApiList>[])) as _i9
-          .Future<List<_i19.IPleromaApiList>>);
+          returnValue: Future<List<_i18.IPleromaApiList>>.value(
+              <_i18.IPleromaApiList>[])) as _i9
+          .Future<List<_i18.IPleromaApiList>>);
   @override
   _i9.Future<List<_i6.IPleromaApiAccount>> search(
           {String? query,
@@ -509,12 +482,12 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
                   <_i6.IPleromaApiAccount>[]))
           as _i9.Future<List<_i6.IPleromaApiAccount>>);
   @override
-  _i9.Future<bool> reportAccount(
+  _i9.Future<dynamic> reportAccount(
           {_i6.IPleromaApiAccountReportRequest? reportRequest}) =>
       (super.noSuchMethod(
           Invocation.method(
               #reportAccount, [], {#reportRequest: reportRequest}),
-          returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
+          returnValue: Future<dynamic>.value(null)) as _i9.Future<dynamic>);
   @override
   _i9.Future<dynamic> blockDomain({String? domain}) => (super.noSuchMethod(
       Invocation.method(#blockDomain, [], {#domain: domain}),
@@ -541,53 +514,6 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<_i6.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i9.Future<_i6.IPleromaApiAccountRelationship>);
-  @override
-  List<_i6.PleromaApiAccount> parseAccountListResponse(
-          _i12.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(#parseAccountListResponse, [httpResponse]),
-              returnValue: <_i6.PleromaApiAccount>[])
-          as List<_i6.PleromaApiAccount>);
-  @override
-  List<_i6.IPleromaApiAccountIdentityProof>
-      parseAccountAccountIdentityProofList(_i12.Response? httpResponse) =>
-          (super.noSuchMethod(
-                  Invocation.method(
-                      #parseAccountAccountIdentityProofList, [httpResponse]),
-                  returnValue: <_i6.IPleromaApiAccountIdentityProof>[])
-              as List<_i6.IPleromaApiAccountIdentityProof>);
-  @override
-  List<_i19.IPleromaApiList> parseListList(_i12.Response? httpResponse) =>
-      (super.noSuchMethod(Invocation.method(#parseListList, [httpResponse]),
-          returnValue: <_i19.IPleromaApiList>[]) as List<_i19.IPleromaApiList>);
-  @override
-  List<_i4.IPleromaApiStatus> parseStatusListResponse(
-          _i12.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(#parseStatusListResponse, [httpResponse]),
-              returnValue: <_i4.IPleromaApiStatus>[])
-          as List<_i4.IPleromaApiStatus>);
-  @override
-  _i6.IPleromaApiAccountRelationship parseAccountRelationshipResponse(
-          _i12.Response? httpResponse) =>
-      (super.noSuchMethod(
-          Invocation.method(#parseAccountRelationshipResponse, [httpResponse]),
-          returnValue:
-              _FakeIPleromaApiAccountRelationship()) as _i6
-          .IPleromaApiAccountRelationship);
-  @override
-  List<_i6.IPleromaApiAccountRelationship> parseAccountRelationshipResponseList(
-          _i12.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #parseAccountRelationshipResponseList, [httpResponse]),
-              returnValue: <_i6.IPleromaApiAccountRelationship>[])
-          as List<_i6.IPleromaApiAccountRelationship>);
-  @override
-  _i6.IPleromaApiAccount parseAccountResponse(_i12.Response? httpResponse) =>
-      (super.noSuchMethod(
-          Invocation.method(#parseAccountResponse, [httpResponse]),
-          returnValue: _FakeIPleromaApiAccount()) as _i6.IPleromaApiAccount);
   @override
   _i9.Future<List<_i6.IPleromaApiAccount>> getAccountFollowings(
           {String? accountRemoteId,
@@ -654,12 +580,12 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
           as _i9.Future<List<_i4.IPleromaApiStatus>>);
   @override
   void addDisposable(
-          {_i13.IDisposable? disposable,
+          {_i12.IDisposable? disposable,
           _i9.StreamSubscription<dynamic>? streamSubscription,
-          _i14.TextEditingController? textEditingController,
-          _i15.ScrollController? scrollController,
-          _i16.FocusNode? focusNode,
-          _i17.Subject<dynamic>? subject,
+          _i13.TextEditingController? textEditingController,
+          _i14.ScrollController? scrollController,
+          _i15.FocusNode? focusNode,
+          _i16.Subject<dynamic>? subject,
           _i9.StreamController<dynamic>? streamController,
           _i9.Timer? timer,
           _i9.FutureOr<dynamic>? Function()? custom}) =>
@@ -686,7 +612,7 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPleromaApiStatusEmojiReactionService extends _i1.Mock
-    implements _i20.PleromaApiStatusEmojiReactionService {
+    implements _i19.PleromaApiStatusEmojiReactionService {
   MockPleromaApiStatusEmojiReactionService() {
     _i1.throwOnMissingStub(this);
   }
@@ -700,10 +626,28 @@ class MockPleromaApiStatusEmojiReactionService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#reactionsRelativeUrlPath),
           returnValue: '') as String);
   @override
-  _i2.IPleromaApiAuthRestService get restService =>
-      (super.noSuchMethod(Invocation.getter(#restService),
+  _i2.IPleromaApiAuthRestService get authRestService =>
+      (super.noSuchMethod(Invocation.getter(#authRestService),
               returnValue: _FakeIPleromaApiAuthRestService())
           as _i2.IPleromaApiAuthRestService);
+  @override
+  _i2.IPleromaApiAuthRestService get restApiAuthService =>
+      (super.noSuchMethod(Invocation.getter(#restApiAuthService),
+              returnValue: _FakeIPleromaApiAuthRestService())
+          as _i2.IPleromaApiAuthRestService);
+  @override
+  bool get isPleroma =>
+      (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
+          as bool);
+  @override
+  bool get isMastodon =>
+      (super.noSuchMethod(Invocation.getter(#isMastodon), returnValue: false)
+          as bool);
+  @override
+  _i3.IPleromaApiRestService get restService =>
+      (super.noSuchMethod(Invocation.getter(#restService),
+              returnValue: _FakeIPleromaApiRestService())
+          as _i3.IPleromaApiRestService);
   @override
   _i9.Stream<_i10.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
@@ -766,34 +710,13 @@ class MockPleromaApiStatusEmojiReactionService extends _i1.Mock
                   Future<_i4.IPleromaApiStatus>.value(_FakeIPleromaApiStatus()))
           as _i9.Future<_i4.IPleromaApiStatus>);
   @override
-  _i4.PleromaApiStatus parseStatusResponse(_i12.Response? httpResponse) =>
-      (super.noSuchMethod(
-          Invocation.method(#parseStatusResponse, [httpResponse]),
-          returnValue: _FakePleromaApiStatus()) as _i4.PleromaApiStatus);
-  @override
-  _i4.PleromaApiStatusEmojiReaction parseEmojiReactionResponse(
-          _i12.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(#parseEmojiReactionResponse, [httpResponse]),
-              returnValue: _FakePleromaApiStatusEmojiReaction())
-          as _i4.PleromaApiStatusEmojiReaction);
-  @override
-  List<_i4.PleromaApiStatusEmojiReaction> parseEmojiReactionListResponse(
-          _i12.Response? httpResponse) =>
-      (super
-              .noSuchMethod(
-                  Invocation.method(
-                      #parseEmojiReactionListResponse, [httpResponse]),
-                  returnValue: <_i4.PleromaApiStatusEmojiReaction>[])
-          as List<_i4.PleromaApiStatusEmojiReaction>);
-  @override
   void addDisposable(
-          {_i13.IDisposable? disposable,
+          {_i12.IDisposable? disposable,
           _i9.StreamSubscription<dynamic>? streamSubscription,
-          _i14.TextEditingController? textEditingController,
-          _i15.ScrollController? scrollController,
-          _i16.FocusNode? focusNode,
-          _i17.Subject<dynamic>? subject,
+          _i13.TextEditingController? textEditingController,
+          _i14.ScrollController? scrollController,
+          _i15.FocusNode? focusNode,
+          _i16.Subject<dynamic>? subject,
           _i9.StreamController<dynamic>? streamController,
           _i9.Timer? timer,
           _i9.FutureOr<dynamic>? Function()? custom}) =>
@@ -820,7 +743,7 @@ class MockPleromaApiStatusEmojiReactionService extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPleromaApiPollService extends _i1.Mock
-    implements _i21.PleromaApiPollService {
+    implements _i20.PleromaApiPollService {
   MockPleromaApiPollService() {
     _i1.throwOnMissingStub(this);
   }
@@ -860,10 +783,6 @@ class MockPleromaApiPollService extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
           returnValueForMissingStub: null);
   @override
-  _i9.Future<dynamic> dispose() =>
-      (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value(null)) as _i9.Future<dynamic>);
-  @override
   _i9.Future<_i7.IPleromaApiPoll> getPoll({String? pollRemoteId}) =>
       (super.noSuchMethod(
               Invocation.method(#getPoll, [], {#pollRemoteId: pollRemoteId}),
@@ -880,17 +799,13 @@ class MockPleromaApiPollService extends _i1.Mock
                   Future<_i7.IPleromaApiPoll>.value(_FakeIPleromaApiPoll()))
           as _i9.Future<_i7.IPleromaApiPoll>);
   @override
-  _i7.PleromaApiPoll parsePollResponse(_i12.Response? httpResponse) =>
-      (super.noSuchMethod(Invocation.method(#parsePollResponse, [httpResponse]),
-          returnValue: _FakePleromaApiPoll()) as _i7.PleromaApiPoll);
-  @override
   void addDisposable(
-          {_i13.IDisposable? disposable,
+          {_i12.IDisposable? disposable,
           _i9.StreamSubscription<dynamic>? streamSubscription,
-          _i14.TextEditingController? textEditingController,
-          _i15.ScrollController? scrollController,
-          _i16.FocusNode? focusNode,
-          _i17.Subject<dynamic>? subject,
+          _i13.TextEditingController? textEditingController,
+          _i14.ScrollController? scrollController,
+          _i15.FocusNode? focusNode,
+          _i16.Subject<dynamic>? subject,
           _i9.StreamController<dynamic>? streamController,
           _i9.Timer? timer,
           _i9.FutureOr<dynamic>? Function()? custom}) =>
@@ -907,4 +822,8 @@ class MockPleromaApiPollService extends _i1.Mock
             #custom: custom
           }),
           returnValueForMissingStub: null);
+  @override
+  _i9.Future<dynamic> dispose() =>
+      (super.noSuchMethod(Invocation.method(#dispose, []),
+          returnValue: Future<dynamic>.value(null)) as _i9.Future<dynamic>);
 }

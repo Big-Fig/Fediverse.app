@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:collection/collection.dart';
 import 'package:fedi/mastodon/api/status/mastodon_api_status_model.dart';
 import 'package:fedi/mastodon/api/visibility/mastodon_api_visibility_model.dart';
@@ -147,20 +145,10 @@ class PleromaApiScheduledStatus extends IPleromaApiScheduledStatus {
     required this.scheduledAt,
   });
 
-  factory PleromaApiScheduledStatus.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiScheduledStatus fromJson(Map<String, dynamic> json) =>
       _$PleromaApiScheduledStatusFromJson(json);
 
-  factory PleromaApiScheduledStatus.fromJsonString(String jsonString) =>
-      _$PleromaApiScheduledStatusFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiScheduledStatus> listFromJsonString(String str) =>
-      List<PleromaApiScheduledStatus>.from(
-        json.decode(str).map((x) => PleromaApiScheduledStatus.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiScheduledStatusToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiScheduledStatusToJson(this));
 
   @override
   String toString() {
@@ -261,22 +249,11 @@ class PleromaApiScheduledStatusParams extends IPleromaApiScheduledStatusParams {
     this.inReplyToConversationId,
   });
 
-  factory PleromaApiScheduledStatusParams.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiScheduledStatusParams fromJson(Map<String, dynamic> json) =>
       _$PleromaApiScheduledStatusParamsFromJson(json);
-
-  factory PleromaApiScheduledStatusParams.fromJsonString(String jsonString) =>
-      _$PleromaApiScheduledStatusParamsFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiScheduledStatusParams> listFromJsonString(String str) =>
-      List<PleromaApiScheduledStatusParams>.from(json
-          .decode(str)
-          .map((x) => PleromaApiScheduledStatusParams.fromJson(x)));
 
   Map<String, dynamic> toJson() =>
       _$PleromaApiScheduledStatusParamsToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiScheduledStatusParamsToJson(this));
 
   @override
   bool operator ==(Object other) =>
@@ -448,20 +425,10 @@ class PleromaApiStatus extends IPleromaApiStatus {
     required this.language,
   });
 
-  factory PleromaApiStatus.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiStatus fromJson(Map<String, dynamic> json) =>
       _$PleromaApiStatusFromJson(json);
 
-  factory PleromaApiStatus.fromJsonString(String jsonString) =>
-      _$PleromaApiStatusFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiStatus> listFromJsonString(String str) =>
-      List<PleromaApiStatus>.from(
-        json.decode(str).map((x) => PleromaApiStatus.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiStatusToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiStatusToJson(this));
 
   @override
   // ignore: code-metrics
@@ -622,16 +589,10 @@ class PleromaApiStatusPleromaPart {
     required this.emojiReactions,
   });
 
-  factory PleromaApiStatusPleromaPart.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiStatusPleromaPart fromJson(Map<String, dynamic> json) =>
       _$PleromaApiStatusPleromaPartFromJson(json);
 
-  factory PleromaApiStatusPleromaPart.fromJsonString(String jsonString) =>
-      _$PleromaApiStatusPleromaPartFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiStatusPleromaPartToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiStatusPleromaPartToJson(this));
 
   @override
   bool operator ==(Object other) =>
@@ -740,15 +701,10 @@ class PleromaApiPostStatusPoll implements IPleromaApiPostStatusPoll {
     required this.options,
   });
 
-  factory PleromaApiPostStatusPoll.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiPostStatusPoll fromJson(Map<String, dynamic> json) =>
       _$PleromaApiPostStatusPollFromJson(json);
 
-  factory PleromaApiPostStatusPoll.fromJsonString(String jsonString) =>
-      _$PleromaApiPostStatusPollFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiPostStatusPollToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiPostStatusPollToJson(this));
 
   @override
   bool operator ==(Object other) =>
@@ -864,16 +820,11 @@ class PleromaApiPostStatus implements IPleromaApiPostStatus {
 //    assert(idempotencyKey != null);
   }
 
-  factory PleromaApiPostStatus.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiPostStatus fromJson(Map<String, dynamic> json) =>
       _$PleromaApiPostStatusFromJson(json);
-
-  factory PleromaApiPostStatus.fromJsonString(String jsonString) =>
-      _$PleromaApiPostStatusFromJson(jsonDecode(jsonString));
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiPostStatusToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiPostStatusToJson(this));
 
   @override
   String toString() {
@@ -950,7 +901,7 @@ class PleromaApiScheduleStatus implements IPleromaApiScheduleStatus {
 
   @JsonKey(name: "scheduled_at", toJson: toUTCIsoString)
   @override
-  DateTime scheduledAt;
+  final DateTime scheduledAt;
 
   PleromaApiScheduleStatus({
     required this.contentType,
@@ -984,16 +935,11 @@ class PleromaApiScheduleStatus implements IPleromaApiScheduleStatus {
 //    assert(idempotencyKey != null);
   }
 
-  factory PleromaApiScheduleStatus.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiScheduleStatus fromJson(Map<String, dynamic> json) =>
       _$PleromaApiScheduleStatusFromJson(json);
-
-  factory PleromaApiScheduleStatus.fromJsonString(String jsonString) =>
-      _$PleromaApiScheduleStatusFromJson(jsonDecode(jsonString));
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiScheduleStatusToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiScheduleStatusToJson(this));
 
   static String toUTCIsoString(DateTime scheduledAt) =>
       scheduledAt.toUtc().toIso8601String();
@@ -1140,21 +1086,10 @@ class PleromaApiStatusEmojiReaction implements IPleromaApiStatusEmojiReaction {
         accounts: accounts ?? this.accounts,
       );
 
-  factory PleromaApiStatusEmojiReaction.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiStatusEmojiReaction fromJson(Map<String, dynamic> json) =>
       _$PleromaApiStatusEmojiReactionFromJson(json);
 
   Map<String, dynamic> toJson() => _$PleromaApiStatusEmojiReactionToJson(this);
-
-  static List<PleromaApiStatusEmojiReaction> listFromJsonString(String str) =>
-      List<PleromaApiStatusEmojiReaction>.from(
-        json.decode(str).map((x) => PleromaApiStatusEmojiReaction.fromJson(x)),
-      );
-
-  factory PleromaApiStatusEmojiReaction.fromJsonString(String jsonString) =>
-      _$PleromaApiStatusEmojiReactionFromJson(jsonDecode(jsonString));
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiStatusEmojiReactionToJson(this));
 
   @override
   bool operator ==(Object other) =>

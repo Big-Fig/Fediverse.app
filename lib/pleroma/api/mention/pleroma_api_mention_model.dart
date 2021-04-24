@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/mastodon/api/mention/mastodon_api_mention_model.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -78,18 +76,13 @@ class PleromaApiMention implements IPleromaApiMention {
     required this.acct,
     required this.id,
     required this.url,
-     this.username,
+    this.username,
   });
 
-  factory PleromaApiMention.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiMention fromJson(Map<String, dynamic> json) =>
       _$PleromaApiMentionFromJson(json);
 
-  factory PleromaApiMention.fromJsonString(String jsonString) =>
-      _$PleromaApiMentionFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiMentionToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiMentionToJson(this));
 
   @override
   bool operator ==(Object other) =>

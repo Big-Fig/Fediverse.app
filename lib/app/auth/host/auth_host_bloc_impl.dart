@@ -98,7 +98,8 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     pleromaApplicationService =
         PleromaApiApplicationService(restService: pleromaRestService);
     addDisposable(disposable: pleromaApplicationService);
-    pleromaOAuthService = PleromaApiOAuthService(restService: pleromaRestService);
+    pleromaOAuthService =
+        PleromaApiOAuthService(restService: pleromaRestService);
     addDisposable(disposable: pleromaOAuthService);
     pleromaAccountPublicService =
         PleromaApiAccountPublicService(restService: pleromaRestService);
@@ -128,7 +129,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   bool get isHostApplicationRegistered => hostApplication != null;
 
   @override
-  Future<bool> registerApplication() async {
+  Future registerApplication() async {
     _logger.finest(() => "registerApplication");
     String redirectUri = await _calculateRedirectUri();
 
@@ -142,14 +143,9 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     );
 
     _logger.finest(() => "registerApplication application = $application");
-    if (application != null) {
-      await hostApplicationLocalPreferenceBloc.setValue(
-        application.toPleromaApiClientApplication(),
-      );
-      return true;
-    } else {
-      return false;
-    }
+    await hostApplicationLocalPreferenceBloc.setValue(
+      application.toPleromaApiClientApplication(),
+    );
   }
 
   Future<String> _calculateRedirectUri() async {
@@ -160,19 +156,23 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   @override
   Future<bool> retrieveAppAccessToken() async {
-    var accessToken = await pleromaOAuthService.retrieveAppAccessToken(
-      tokenRequest: PleromaApiOAuthAppTokenRequest(
-        redirectUri: await _calculateRedirectUri(),
-        scope: scopes,
-        clientSecret: hostApplication!.clientSecret,
-        clientId: hostApplication!.clientId,
-      ),
-    );
-
-    if (accessToken != null) {
+    try {
+      var accessToken = await pleromaOAuthService.retrieveAppAccessToken(
+        tokenRequest: PleromaApiOAuthAppTokenRequest(
+          redirectUri: await _calculateRedirectUri(),
+          scope: scopes,
+          clientSecret: hostApplication!.clientSecret,
+          clientId: hostApplication!.clientId,
+        ),
+      );
       await hostAccessTokenLocalPreferenceBloc.setValue(accessToken);
       return true;
-    } else {
+    } catch (e, stackTrace) {
+      _logger.severe(
+        () => "retrieveAppAccessToken error",
+        e,
+        stackTrace,
+      );
       return false;
     }
   }

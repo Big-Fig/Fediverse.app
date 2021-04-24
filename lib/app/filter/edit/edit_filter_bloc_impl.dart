@@ -23,7 +23,7 @@ import 'package:flutter/widgets.dart';
 class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   static EditFilterBloc createFromContext(
     BuildContext context, {
-    required IFilter? initialValue,
+    required IFilter initialValue,
     required Function(IFilter filter)? onSubmit,
     required VoidCallback? onDelete,
   }) {
@@ -74,7 +74,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-    required IFilter? initialValue,
+    required IFilter initialValue,
     required Function(IFilter filter) onSubmit,
     required VoidCallback onDelete,
   }) {
@@ -133,10 +133,10 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
 
   @override
   Future<IFilter> submit() async {
-    var listRemoteId = filter?.remoteId;
+    var filterRemoteId = filter?.remoteId;
     var postPleromaFilter = filterFormBloc.calculateFormValue();
     var remoteFilter =
-        await actuallySubmitFilter(listRemoteId, postPleromaFilter);
+        await actuallySubmitFilter(filterRemoteId, postPleromaFilter);
 
     var localFilter = remoteFilter.toDbFilterPopulatedWrapper();
 
@@ -146,11 +146,11 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   }
 
   Future<IPleromaApiFilter> actuallySubmitFilter(
-    String? listRemoteId,
+    String? filterRemoteId,
     IPostPleromaApiFilter postPleromaFilter,
   ) async {
     var remoteFilter = await pleromaFilterService.updateFilter(
-      filterRemoteId: listRemoteId,
+      filterRemoteId: filterRemoteId!,
       postPleromaFilter: postPleromaFilter,
     );
 
@@ -169,7 +169,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
         in timelinesHomeTabStorageBloc.timelineStorageItems) {
       var timeline = timelineStorageItem.timeline;
       var onlyInRemoteList = timeline.onlyInRemoteList;
-      if (onlyInRemoteList != null && onlyInRemoteList.id == filter!.remoteId) {
+      if (onlyInRemoteList != null && onlyInRemoteList.id == filter?.remoteId) {
         timelinesToRemove.add(timeline);
       }
     }

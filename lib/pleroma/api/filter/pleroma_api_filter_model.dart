@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -18,14 +16,10 @@ abstract class IPleromaApiFilter extends IMastodonApiFilter {
   });
 
   Map<String, dynamic> toJson();
-
-  String toJsonString();
 }
 
 abstract class IPostPleromaApiFilter implements IPostMastodonApiFilter {
   Map<String, dynamic> toJson();
-
-  String toJsonString();
 }
 
 @JsonSerializable(
@@ -124,22 +118,11 @@ class PleromaApiFilter extends IPleromaApiFilter {
         wholeWord: wholeWord ?? this.wholeWord,
       );
 
-  factory PleromaApiFilter.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiFilter fromJson(Map<String, dynamic> json) =>
       _$PleromaApiFilterFromJson(json);
-
-  factory PleromaApiFilter.fromJsonString(String jsonString) =>
-      _$PleromaApiFilterFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiFilter> listFromJsonString(String str) =>
-      List<PleromaApiFilter>.from(
-        json.decode(str).map((x) => PleromaApiFilter.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiFilterToJson(this);
-
-  @override
-  String toJsonString() => jsonEncode(_$PleromaApiFilterToJson(this));
 }
 
 @JsonSerializable(
@@ -224,20 +207,9 @@ class PostPleromaApiFilter extends IPostPleromaApiFilter {
         wholeWord: wholeWord ?? this.wholeWord,
       );
 
-  factory PostPleromaApiFilter.fromJson(Map<String, dynamic> json) =>
+  static PostPleromaApiFilter fromJson(Map<String, dynamic> json) =>
       _$PostPleromaApiFilterFromJson(json);
-
-  factory PostPleromaApiFilter.fromJsonString(String jsonString) =>
-      _$PostPleromaApiFilterFromJson(jsonDecode(jsonString));
-
-  static List<PostPleromaApiFilter> listFromJsonString(String str) =>
-      List<PostPleromaApiFilter>.from(
-        json.decode(str).map((x) => PleromaApiFilter.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$PostPleromaApiFilterToJson(this);
-
-  @override
-  String toJsonString() => jsonEncode(_$PostPleromaApiFilterToJson(this));
 }

@@ -5,41 +5,40 @@
 import 'dart:async' as _i12;
 
 import 'package:fedi/app/account/account_model.dart' as _i10;
-import 'package:fedi/app/account/my/my_account_bloc_impl.dart' as _i24;
+import 'package:fedi/app/account/my/my_account_bloc_impl.dart' as _i23;
 import 'package:fedi/app/account/my/my_account_local_preference_bloc.dart'
     as _i6;
-import 'package:fedi/app/account/my/my_account_model.dart' as _i25;
+import 'package:fedi/app/account/my/my_account_model.dart' as _i24;
 import 'package:fedi/app/account/repository/account_repository.dart' as _i8;
 import 'package:fedi/app/auth/instance/auth_instance_model.dart' as _i9;
-import 'package:fedi/app/chat/message/chat_message_model.dart' as _i29;
+import 'package:fedi/app/chat/message/chat_message_model.dart' as _i28;
 import 'package:fedi/app/instance/location/instance_location_model.dart'
-    as _i26;
-import 'package:fedi/app/status/status_model.dart' as _i27;
-import 'package:fedi/disposable/disposable.dart' as _i16;
+    as _i25;
+import 'package:fedi/app/status/status_model.dart' as _i26;
+import 'package:fedi/disposable/disposable.dart' as _i15;
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service_impl.dart'
-    as _i21;
+    as _i20;
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_model.dart'
-    as _i28;
+    as _i27;
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart'
     as _i7;
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart' as _i5;
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart' as _i3;
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service_impl.dart'
     as _i11;
-import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart' as _i22;
+import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart' as _i21;
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart'
-    as _i15;
+    as _i14;
 import 'package:fedi/pleroma/api/pleroma_api_service.dart' as _i13;
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart'
     as _i2;
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart' as _i4;
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart' as _i23;
-import 'package:flutter/src/widgets/editable_text.dart' as _i17;
-import 'package:flutter/src/widgets/focus_manager.dart' as _i19;
-import 'package:flutter/src/widgets/scroll_controller.dart' as _i18;
-import 'package:http/src/response.dart' as _i14;
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart' as _i22;
+import 'package:flutter/src/widgets/editable_text.dart' as _i16;
+import 'package:flutter/src/widgets/focus_manager.dart' as _i18;
+import 'package:flutter/src/widgets/scroll_controller.dart' as _i17;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:rxdart/src/subjects/subject.dart' as _i20;
+import 'package:rxdart/src/subjects/subject.dart' as _i19;
 
 // ignore_for_file: comment_references
 // ignore_for_file: unnecessary_parenthesis
@@ -93,6 +92,19 @@ class MockPleromaApiChatService extends _i1.Mock
               returnValue: _FakeIPleromaApiAuthRestService())
           as _i2.IPleromaApiAuthRestService);
   @override
+  _i2.IPleromaApiAuthRestService get restApiAuthService =>
+      (super.noSuchMethod(Invocation.getter(#restApiAuthService),
+              returnValue: _FakeIPleromaApiAuthRestService())
+          as _i2.IPleromaApiAuthRestService);
+  @override
+  bool get isPleroma =>
+      (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
+          as bool);
+  @override
+  bool get isMastodon =>
+      (super.noSuchMethod(Invocation.getter(#isMastodon), returnValue: false)
+          as bool);
+  @override
   _i12.Stream<_i13.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
               returnValue: Stream<_i13.PleromaApiState>.empty())
@@ -110,14 +122,6 @@ class MockPleromaApiChatService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#isConnectedStream),
           returnValue: Stream<bool>.empty()) as _i12.Stream<bool>);
   @override
-  bool get isMastodon =>
-      (super.noSuchMethod(Invocation.getter(#isMastodon), returnValue: false)
-          as bool);
-  @override
-  bool get isPleroma =>
-      (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
-          as bool);
-  @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
@@ -126,32 +130,8 @@ class MockPleromaApiChatService extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
           returnValueForMissingStub: null);
   @override
-  List<_i3.IPleromaApiChat> parseChatListResponse(
-          _i14.Response? httpResponse) =>
-      (super.noSuchMethod(
-          Invocation.method(#parseChatListResponse, [httpResponse]),
-          returnValue: <_i3.IPleromaApiChat>[]) as List<_i3.IPleromaApiChat>);
-  @override
-  _i3.IPleromaApiChat parseChatResponse(_i14.Response? httpResponse) =>
-      (super.noSuchMethod(Invocation.method(#parseChatResponse, [httpResponse]),
-          returnValue: _FakeIPleromaApiChat()) as _i3.IPleromaApiChat);
-  @override
-  List<_i3.IPleromaApiChatMessage> parseChatMessageListResponse(
-          _i14.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(#parseChatMessageListResponse, [httpResponse]),
-              returnValue: <_i3.IPleromaApiChatMessage>[])
-          as List<_i3.IPleromaApiChatMessage>);
-  @override
-  _i3.IPleromaApiChatMessage parseChatMessageResponse(
-          _i14.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(#parseChatMessageResponse, [httpResponse]),
-              returnValue: _FakeIPleromaApiChatMessage())
-          as _i3.IPleromaApiChatMessage);
-  @override
   _i12.Future<List<_i3.IPleromaApiChat>> getChats(
-          {_i15.IPleromaApiPaginationRequest? pagination}) =>
+          {_i14.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getChats, [], {#pagination: pagination}),
               returnValue: Future<List<_i3.IPleromaApiChat>>.value(
@@ -159,7 +139,7 @@ class MockPleromaApiChatService extends _i1.Mock
           as _i12.Future<List<_i3.IPleromaApiChat>>);
   @override
   _i12.Future<List<_i3.IPleromaApiChatMessage>> getChatMessages(
-          {String? chatId, _i15.IPleromaApiPaginationRequest? pagination}) =>
+          {String? chatId, _i14.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
           Invocation.method(
               #getChatMessages, [], {#chatId: chatId, #pagination: pagination}),
@@ -209,12 +189,12 @@ class MockPleromaApiChatService extends _i1.Mock
           returnValue: Future<dynamic>.value(null)) as _i12.Future<dynamic>);
   @override
   void addDisposable(
-          {_i16.IDisposable? disposable,
+          {_i15.IDisposable? disposable,
           _i12.StreamSubscription<dynamic>? streamSubscription,
-          _i17.TextEditingController? textEditingController,
-          _i18.ScrollController? scrollController,
-          _i19.FocusNode? focusNode,
-          _i20.Subject<dynamic>? subject,
+          _i16.TextEditingController? textEditingController,
+          _i17.ScrollController? scrollController,
+          _i18.FocusNode? focusNode,
+          _i19.Subject<dynamic>? subject,
           _i12.StreamController<dynamic>? streamController,
           _i12.Timer? timer,
           _i12.FutureOr<dynamic>? Function()? custom}) =>
@@ -241,7 +221,7 @@ class MockPleromaApiChatService extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPleromaApiAuthAccountService extends _i1.Mock
-    implements _i21.PleromaApiAuthAccountService {
+    implements _i20.PleromaApiAuthAccountService {
   MockPleromaApiAuthAccountService() {
     _i1.throwOnMissingStub(this);
   }
@@ -256,26 +236,14 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
               returnValue: _FakeIPleromaApiAuthRestService())
           as _i2.IPleromaApiAuthRestService);
   @override
+  _i2.IPleromaApiAuthRestService get restApiAuthService =>
+      (super.noSuchMethod(Invocation.getter(#restApiAuthService),
+              returnValue: _FakeIPleromaApiAuthRestService())
+          as _i2.IPleromaApiAuthRestService);
+  @override
   bool get isPleroma =>
       (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
           as bool);
-  @override
-  _i12.Stream<_i13.PleromaApiState> get pleromaApiStateStream =>
-      (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
-              returnValue: Stream<_i13.PleromaApiState>.empty())
-          as _i12.Stream<_i13.PleromaApiState>);
-  @override
-  _i13.PleromaApiState get pleromaApiState =>
-      (super.noSuchMethod(Invocation.getter(#pleromaApiState),
-          returnValue: _i13.PleromaApiState.validAuth) as _i13.PleromaApiState);
-  @override
-  bool get isConnected =>
-      (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
-          as bool);
-  @override
-  _i12.Stream<bool> get isConnectedStream =>
-      (super.noSuchMethod(Invocation.getter(#isConnectedStream),
-          returnValue: Stream<bool>.empty()) as _i12.Stream<bool>);
   @override
   bool get isMastodon =>
       (super.noSuchMethod(Invocation.getter(#isMastodon), returnValue: false)
@@ -293,6 +261,23 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#restService),
               returnValue: _FakeIPleromaApiRestService())
           as _i4.IPleromaApiRestService);
+  @override
+  _i12.Stream<_i13.PleromaApiState> get pleromaApiStateStream =>
+      (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
+              returnValue: Stream<_i13.PleromaApiState>.empty())
+          as _i12.Stream<_i13.PleromaApiState>);
+  @override
+  _i13.PleromaApiState get pleromaApiState =>
+      (super.noSuchMethod(Invocation.getter(#pleromaApiState),
+          returnValue: _i13.PleromaApiState.validAuth) as _i13.PleromaApiState);
+  @override
+  bool get isConnected =>
+      (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
+          as bool);
+  @override
+  _i12.Stream<bool> get isConnectedStream =>
+      (super.noSuchMethod(Invocation.getter(#isConnectedStream),
+          returnValue: Stream<bool>.empty()) as _i12.Stream<bool>);
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
@@ -400,20 +385,20 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
                           <_i5.IPleromaApiAccountIdentityProof>[]))
               as _i12.Future<List<_i5.IPleromaApiAccountIdentityProof>>);
   @override
-  _i12.Future<List<_i22.IPleromaApiList>> getListsWithAccount(
+  _i12.Future<List<_i21.IPleromaApiList>> getListsWithAccount(
           {String? accountRemoteId}) =>
       (super.noSuchMethod(
           Invocation.method(
               #getListsWithAccount, [], {#accountRemoteId: accountRemoteId}),
-          returnValue: Future<List<_i22.IPleromaApiList>>.value(
-              <_i22.IPleromaApiList>[])) as _i12
-          .Future<List<_i22.IPleromaApiList>>);
+          returnValue: Future<List<_i21.IPleromaApiList>>.value(
+              <_i21.IPleromaApiList>[])) as _i12
+          .Future<List<_i21.IPleromaApiList>>);
   @override
   _i12.Future<List<_i5.IPleromaApiAccount>> search(
           {String? query,
           bool? resolve,
           bool? following,
-          _i15.IPleromaApiPaginationRequest? pagination}) =>
+          _i14.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#search, [], {
                 #query: query,
@@ -425,12 +410,12 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
                   <_i5.IPleromaApiAccount>[]))
           as _i12.Future<List<_i5.IPleromaApiAccount>>);
   @override
-  _i12.Future<bool> reportAccount(
+  _i12.Future<dynamic> reportAccount(
           {_i5.IPleromaApiAccountReportRequest? reportRequest}) =>
       (super.noSuchMethod(
           Invocation.method(
               #reportAccount, [], {#reportRequest: reportRequest}),
-          returnValue: Future<bool>.value(false)) as _i12.Future<bool>);
+          returnValue: Future<dynamic>.value(null)) as _i12.Future<dynamic>);
   @override
   _i12.Future<dynamic> blockDomain({String? domain}) => (super.noSuchMethod(
       Invocation.method(#blockDomain, [], {#domain: domain}),
@@ -458,56 +443,9 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
                   _FakeIPleromaApiAccountRelationship()))
           as _i12.Future<_i5.IPleromaApiAccountRelationship>);
   @override
-  List<_i5.PleromaApiAccount> parseAccountListResponse(
-          _i14.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(#parseAccountListResponse, [httpResponse]),
-              returnValue: <_i5.PleromaApiAccount>[])
-          as List<_i5.PleromaApiAccount>);
-  @override
-  List<_i5.IPleromaApiAccountIdentityProof>
-      parseAccountAccountIdentityProofList(_i14.Response? httpResponse) =>
-          (super.noSuchMethod(
-                  Invocation.method(
-                      #parseAccountAccountIdentityProofList, [httpResponse]),
-                  returnValue: <_i5.IPleromaApiAccountIdentityProof>[])
-              as List<_i5.IPleromaApiAccountIdentityProof>);
-  @override
-  List<_i22.IPleromaApiList> parseListList(_i14.Response? httpResponse) =>
-      (super.noSuchMethod(Invocation.method(#parseListList, [httpResponse]),
-          returnValue: <_i22.IPleromaApiList>[]) as List<_i22.IPleromaApiList>);
-  @override
-  List<_i23.IPleromaApiStatus> parseStatusListResponse(
-          _i14.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(#parseStatusListResponse, [httpResponse]),
-              returnValue: <_i23.IPleromaApiStatus>[])
-          as List<_i23.IPleromaApiStatus>);
-  @override
-  _i5.IPleromaApiAccountRelationship parseAccountRelationshipResponse(
-          _i14.Response? httpResponse) =>
-      (super.noSuchMethod(
-          Invocation.method(#parseAccountRelationshipResponse, [httpResponse]),
-          returnValue:
-              _FakeIPleromaApiAccountRelationship()) as _i5
-          .IPleromaApiAccountRelationship);
-  @override
-  List<_i5.IPleromaApiAccountRelationship> parseAccountRelationshipResponseList(
-          _i14.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #parseAccountRelationshipResponseList, [httpResponse]),
-              returnValue: <_i5.IPleromaApiAccountRelationship>[])
-          as List<_i5.IPleromaApiAccountRelationship>);
-  @override
-  _i5.IPleromaApiAccount parseAccountResponse(_i14.Response? httpResponse) =>
-      (super.noSuchMethod(
-          Invocation.method(#parseAccountResponse, [httpResponse]),
-          returnValue: _FakeIPleromaApiAccount()) as _i5.IPleromaApiAccount);
-  @override
   _i12.Future<List<_i5.IPleromaApiAccount>> getAccountFollowings(
           {String? accountRemoteId,
-          _i15.IPleromaApiPaginationRequest? pagination}) =>
+          _i14.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getAccountFollowings, [],
                   {#accountRemoteId: accountRemoteId, #pagination: pagination}),
@@ -525,7 +463,7 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
   @override
   _i12.Future<List<_i5.PleromaApiAccount>> getAccountFollowers(
           {String? accountRemoteId,
-          _i15.IPleromaApiPaginationRequest? pagination}) =>
+          _i14.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getAccountFollowers, [],
                   {#accountRemoteId: accountRemoteId, #pagination: pagination}),
@@ -533,7 +471,7 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
                   <_i5.PleromaApiAccount>[]))
           as _i12.Future<List<_i5.PleromaApiAccount>>);
   @override
-  _i12.Future<List<_i23.IPleromaApiStatus>> getAccountStatuses(
+  _i12.Future<List<_i22.IPleromaApiStatus>> getAccountStatuses(
           {String? accountRemoteId,
           String? tagged,
           bool? pinned,
@@ -542,7 +480,7 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
           List<String>? excludeVisibilities,
           bool? withMuted,
           bool? onlyWithMedia,
-          _i15.IPleromaApiPaginationRequest? pagination}) =>
+          _i14.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getAccountStatuses, [], {
                 #accountRemoteId: accountRemoteId,
@@ -555,27 +493,27 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
                 #onlyWithMedia: onlyWithMedia,
                 #pagination: pagination
               }),
-              returnValue: Future<List<_i23.IPleromaApiStatus>>.value(
-                  <_i23.IPleromaApiStatus>[]))
-          as _i12.Future<List<_i23.IPleromaApiStatus>>);
+              returnValue: Future<List<_i22.IPleromaApiStatus>>.value(
+                  <_i22.IPleromaApiStatus>[]))
+          as _i12.Future<List<_i22.IPleromaApiStatus>>);
   @override
-  _i12.Future<List<_i23.IPleromaApiStatus>> getAccountFavouritedStatuses(
+  _i12.Future<List<_i22.IPleromaApiStatus>> getAccountFavouritedStatuses(
           {String? accountRemoteId,
-          _i15.IPleromaApiPaginationRequest? pagination}) =>
+          _i14.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getAccountFavouritedStatuses, [],
                   {#accountRemoteId: accountRemoteId, #pagination: pagination}),
-              returnValue: Future<List<_i23.IPleromaApiStatus>>.value(
-                  <_i23.IPleromaApiStatus>[]))
-          as _i12.Future<List<_i23.IPleromaApiStatus>>);
+              returnValue: Future<List<_i22.IPleromaApiStatus>>.value(
+                  <_i22.IPleromaApiStatus>[]))
+          as _i12.Future<List<_i22.IPleromaApiStatus>>);
   @override
   void addDisposable(
-          {_i16.IDisposable? disposable,
+          {_i15.IDisposable? disposable,
           _i12.StreamSubscription<dynamic>? streamSubscription,
-          _i17.TextEditingController? textEditingController,
-          _i18.ScrollController? scrollController,
-          _i19.FocusNode? focusNode,
-          _i20.Subject<dynamic>? subject,
+          _i16.TextEditingController? textEditingController,
+          _i17.ScrollController? scrollController,
+          _i18.FocusNode? focusNode,
+          _i19.Subject<dynamic>? subject,
           _i12.StreamController<dynamic>? streamController,
           _i12.Timer? timer,
           _i12.FutureOr<dynamic>? Function()? custom}) =>
@@ -601,7 +539,7 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
 /// A class which mocks [MyAccountBloc].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMyAccountBloc extends _i1.Mock implements _i24.MyAccountBloc {
+class MockMyAccountBloc extends _i1.Mock implements _i23.MyAccountBloc {
   MockMyAccountBloc() {
     _i1.throwOnMissingStub(this);
   }
@@ -629,10 +567,10 @@ class MockMyAccountBloc extends _i1.Mock implements _i24.MyAccountBloc {
       (super.noSuchMethod(Invocation.getter(#isLocalCacheExist),
           returnValue: false) as bool);
   @override
-  _i12.Stream<_i25.IMyAccount?> get myAccountStream =>
+  _i12.Stream<_i24.IMyAccount?> get myAccountStream =>
       (super.noSuchMethod(Invocation.getter(#myAccountStream),
-              returnValue: Stream<_i25.IMyAccount?>.empty())
-          as _i12.Stream<_i25.IMyAccount?>);
+              returnValue: Stream<_i24.IMyAccount?>.empty())
+          as _i12.Stream<_i24.IMyAccount?>);
   @override
   _i12.Stream<_i10.IAccount> get accountStream =>
       (super.noSuchMethod(Invocation.getter(#accountStream),
@@ -652,9 +590,9 @@ class MockMyAccountBloc extends _i1.Mock implements _i24.MyAccountBloc {
               returnValue: Stream<_i5.IPleromaApiAccountRelationship>.empty())
           as _i12.Stream<_i5.IPleromaApiAccountRelationship>);
   @override
-  _i26.InstanceLocation get instanceLocation =>
+  _i25.InstanceLocation get instanceLocation =>
       (super.noSuchMethod(Invocation.getter(#instanceLocation),
-          returnValue: _i26.InstanceLocation.local) as _i26.InstanceLocation);
+          returnValue: _i25.InstanceLocation.local) as _i25.InstanceLocation);
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
@@ -686,7 +624,7 @@ class MockMyAccountBloc extends _i1.Mock implements _i24.MyAccountBloc {
       (super.noSuchMethod(Invocation.method(#checkAccountIsMe, [account]),
           returnValue: false) as bool);
   @override
-  bool checkIsStatusFromMe(_i27.IStatus? status) =>
+  bool checkIsStatusFromMe(_i26.IStatus? status) =>
       (super.noSuchMethod(Invocation.method(#checkIsStatusFromMe, [status]),
           returnValue: false) as bool);
   @override
@@ -703,13 +641,13 @@ class MockMyAccountBloc extends _i1.Mock implements _i24.MyAccountBloc {
           as _i12.Future<_i5.IPleromaApiAccountRelationship>);
   @override
   _i12.Future<dynamic> updateMyAccountByMyPleromaAccount(
-          _i28.IPleromaApiMyAccount? pleromaMyAccount) =>
+          _i27.IPleromaApiMyAccount? pleromaMyAccount) =>
       (super.noSuchMethod(
           Invocation.method(
               #updateMyAccountByMyPleromaAccount, [pleromaMyAccount]),
           returnValue: Future<dynamic>.value(null)) as _i12.Future<dynamic>);
   @override
-  _i12.Future<dynamic> updateMyAccountByMyAccount(_i25.IMyAccount? myAccount) =>
+  _i12.Future<dynamic> updateMyAccountByMyAccount(_i24.IMyAccount? myAccount) =>
       (super.noSuchMethod(
           Invocation.method(#updateMyAccountByMyAccount, [myAccount]),
           returnValue: Future<dynamic>.value(null)) as _i12.Future<dynamic>);
@@ -718,7 +656,7 @@ class MockMyAccountBloc extends _i1.Mock implements _i24.MyAccountBloc {
       (super.noSuchMethod(Invocation.method(#decreaseFollowingRequestCount, []),
           returnValue: Future<dynamic>.value(null)) as _i12.Future<dynamic>);
   @override
-  bool checkIsChatMessageFromMe(_i29.IChatMessage? chatMessage) => (super
+  bool checkIsChatMessageFromMe(_i28.IChatMessage? chatMessage) => (super
       .noSuchMethod(Invocation.method(#checkIsChatMessageFromMe, [chatMessage]),
           returnValue: false) as bool);
   @override
@@ -762,12 +700,12 @@ class MockMyAccountBloc extends _i1.Mock implements _i24.MyAccountBloc {
           as _i12.Future<_i5.IPleromaApiAccountRelationship>);
   @override
   void addDisposable(
-          {_i16.IDisposable? disposable,
+          {_i15.IDisposable? disposable,
           _i12.StreamSubscription<dynamic>? streamSubscription,
-          _i17.TextEditingController? textEditingController,
-          _i18.ScrollController? scrollController,
-          _i19.FocusNode? focusNode,
-          _i20.Subject<dynamic>? subject,
+          _i16.TextEditingController? textEditingController,
+          _i17.ScrollController? scrollController,
+          _i18.FocusNode? focusNode,
+          _i19.Subject<dynamic>? subject,
           _i12.StreamController<dynamic>? streamController,
           _i12.Timer? timer,
           _i12.FutureOr<dynamic>? Function()? custom}) =>
