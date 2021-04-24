@@ -14,11 +14,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 
-import '../../account/database/account_database_model_helper.dart';
-import '../../conversation/conversation_model_helper.dart';
-import '../database/status_database_model_helper.dart';
-import '../status_model_helper.dart';
-import 'status_repository_model_helper.dart';
+import '../../../pleroma/api/media/pleroma_api_media_test_helper.dart';
+import '../../../pleroma/api/tag/pleroma_api_tag_test_helper.dart';
+import '../../account/database/account_database_test_helper.dart';
+import '../../conversation/conversation_test_helper.dart';
+import '../database/status_database_test_helper.dart';
+import '../status_test_helper.dart';
+import 'status_repository_test_helper.dart';
 
 // ignore_for_file: no-magic-number
 final String baseUrl = "https://pleroma.com";
@@ -41,7 +43,8 @@ void main() {
       accountRepository: accountRepository,
     );
 
-    dbAccount = await createTestDbAccount(seed: "seed1");
+    dbAccount =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed1");
 
     var accountId = await accountRepository.insertInDbType(
       dbAccount,
@@ -50,12 +53,13 @@ void main() {
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
-    dbStatus = await createTestDbStatus(
+    dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed3",
       dbAccount: dbAccount,
     );
 
-    dbStatusPopulated = await createTestDbStatusPopulated(
+    dbStatusPopulated =
+        await StatusDatabaseTestHelper.createTestDbStatusPopulated(
       dbStatus,
       accountRepository,
     );
@@ -73,7 +77,7 @@ void main() {
       mode: null,
     );
     assert(id > 0, true);
-    expectDbStatusPopulated(
+    StatusDatabaseTestHelper.expectDbStatusPopulated(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatusPopulated,
     );
@@ -84,19 +88,20 @@ void main() {
       mode: null,
     );
     assert(id > 0, true);
-    expectDbStatusPopulated(
+    StatusDatabaseTestHelper.expectDbStatusPopulated(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatusPopulated,
     );
   });
 
   test('reblog join', () async {
-    var reblogDbAccount = await createTestDbAccount(seed: "seed11");
+    var reblogDbAccount =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed11");
     await accountRepository.insertInDbType(
       reblogDbAccount,
       mode: null,
     );
-    var reblogDbStatus = await createTestDbStatus(
+    var reblogDbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed33",
       dbAccount: reblogDbAccount,
     );
@@ -123,7 +128,7 @@ void main() {
       mode: null,
     );
     assert(id > 0, true);
-    expectDbStatusPopulated(
+    StatusDatabaseTestHelper.expectDbStatusPopulated(
       await statusRepository.findByDbIdInAppType(id),
       dbStatusPopulated,
     );
@@ -143,11 +148,11 @@ void main() {
 
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
-    expectDbStatus(
+    StatusDatabaseTestHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
-    expectDbAccount(
+    AccountDatabaseTestHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
@@ -163,11 +168,11 @@ void main() {
     );
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
-    expectDbStatus(
+    StatusDatabaseTestHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
-    expectDbAccount(
+    AccountDatabaseTestHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
@@ -188,11 +193,11 @@ void main() {
 
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
-    expectDbStatus(
+    StatusDatabaseTestHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
-    expectDbAccount(
+    AccountDatabaseTestHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
@@ -211,24 +216,24 @@ void main() {
     // update item with same id
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
-    expectDbStatus(
+    StatusDatabaseTestHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
-    expectDbAccount(
+    AccountDatabaseTestHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
   });
 
   test('upsertAll', () async {
-    var dbStatus1 = (await createTestDbStatus(
+    var dbStatus1 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed5",
       dbAccount: dbAccount,
     ))
         .copyWith(remoteId: "remoteId1");
     // same remote id
-    var dbStatus2 = (await createTestDbStatus(
+    var dbStatus2 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed6",
       dbAccount: dbAccount,
     ))
@@ -247,9 +252,9 @@ void main() {
     );
     expect((await statusRepository.getAllInAppType()).length, 1);
 
-    expectDbStatusPopulated(
+    StatusDatabaseTestHelper.expectDbStatusPopulated(
       (await statusRepository.getAllInAppType()).first,
-      await createTestDbStatusPopulated(
+      await StatusDatabaseTestHelper.createTestDbStatusPopulated(
         dbStatus2,
         accountRepository,
       ),
@@ -334,7 +339,7 @@ void main() {
       dbStatus,
       mode: null,
     );
-    expectDbStatusPopulated(
+    StatusDatabaseTestHelper.expectDbStatusPopulated(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatusPopulated,
     );
@@ -347,9 +352,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -358,9 +363,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -378,9 +383,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -389,9 +394,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -401,9 +406,9 @@ void main() {
     expect((await query.get()).length, 1);
 
     // check several with seed
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed3",
         dbAccount: dbAccount,
       ))
@@ -412,9 +417,9 @@ void main() {
 
     // check local flag
     expect((await query.get()).length, 2);
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed4",
         dbAccount: dbAccount,
       ))
@@ -436,9 +441,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -447,9 +452,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -458,13 +463,17 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed3",
         dbAccount: dbAccount,
       ))
-          .copyWith(mediaAttachments: [createTestPleromaMediaAttachment()]),
+          .copyWith(
+        mediaAttachments: [
+          PleromaApiMediaTestHelper.createTestPleromaMediaAttachment(),
+        ],
+      ),
     );
 
     expect((await query.get()).length, 1);
@@ -479,9 +488,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
         pleromaThreadMuted: null,
@@ -491,9 +500,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
         pleromaThreadMuted: false,
@@ -503,9 +512,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed3",
         dbAccount: dbAccount,
         pleromaThreadMuted: true,
@@ -515,9 +524,9 @@ void main() {
 
     expect((await query.get()).length, 3);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed4",
         dbAccount: dbAccount,
         pleromaThreadMuted: true,
@@ -527,9 +536,9 @@ void main() {
 
     expect((await query.get()).length, 4);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed5",
         dbAccount: dbAccount,
         pleromaThreadMuted: false,
@@ -539,9 +548,9 @@ void main() {
 
     expect((await query.get()).length, 5);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed6",
         dbAccount: dbAccount,
         pleromaThreadMuted: null,
@@ -564,9 +573,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -575,9 +584,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -586,9 +595,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed3",
         dbAccount: dbAccount,
       ))
@@ -597,9 +606,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed4",
         dbAccount: dbAccount,
       ))
@@ -613,7 +622,7 @@ void main() {
     var query = statusRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination<IStatus>(
-        newerThanItem: await createTestStatus(
+        newerThanItem: await StatusTestHelper.createTestStatus(
           seed: "remoteId5",
           remoteId: "remoteId5",
         ),
@@ -621,9 +630,9 @@ void main() {
       orderingTermData: StatusRepositoryOrderingTermData.remoteIdAsc,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -632,9 +641,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -643,9 +652,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -653,9 +662,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -669,7 +678,7 @@ void main() {
     var query = statusRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination<IStatus>(
-        olderThanItem: await createTestStatus(
+        olderThanItem: await StatusTestHelper.createTestStatus(
           seed: "remoteId5",
           remoteId: "remoteId5",
         ),
@@ -677,9 +686,9 @@ void main() {
       orderingTermData: StatusRepositoryOrderingTermData.remoteIdAsc,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -687,9 +696,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -698,9 +707,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -709,9 +718,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -725,11 +734,11 @@ void main() {
     var query = statusRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination<IStatus>(
-        newerThanItem: await createTestStatus(
+        newerThanItem: await StatusTestHelper.createTestStatus(
           seed: "remoteId2",
           remoteId: "remoteId2",
         ),
-        olderThanItem: await createTestStatus(
+        olderThanItem: await StatusTestHelper.createTestStatus(
           seed: "remoteId5",
           remoteId: "remoteId5",
         ),
@@ -737,9 +746,9 @@ void main() {
       orderingTermData: StatusRepositoryOrderingTermData.remoteIdAsc,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -748,9 +757,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -758,9 +767,9 @@ void main() {
     );
 
     expect((await query.get()).length, 0);
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed3",
         dbAccount: dbAccount,
       ))
@@ -769,9 +778,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed4",
         dbAccount: dbAccount,
       ))
@@ -780,9 +789,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed5",
         dbAccount: dbAccount,
       ))
@@ -791,9 +800,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed6",
         dbAccount: dbAccount,
       ))
@@ -813,25 +822,25 @@ void main() {
       ),
     );
 
-    var status2 = await insertDbStatus(
+    var status2 = await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: "remoteId2"),
     );
-    var status1 = await insertDbStatus(
+    var status1 = await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: "remoteId1"),
     );
-    var status3 = await insertDbStatus(
+    var status3 = await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed3",
         dbAccount: dbAccount,
       ))
@@ -865,25 +874,25 @@ void main() {
       ),
     );
 
-    var status2 = await insertDbStatus(
+    var status2 = await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: "remoteId2"),
     );
-    var status1 = await insertDbStatus(
+    var status1 = await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: "remoteId1"),
     );
-    var status3 = await insertDbStatus(
+    var status3 = await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed3",
         dbAccount: dbAccount,
       ))
@@ -920,25 +929,25 @@ void main() {
       ),
     );
 
-    var status2 = await insertDbStatus(
+    var status2 = await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: "remoteId2"),
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: "remoteId1"),
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed3",
         dbAccount: dbAccount,
       ))
@@ -963,9 +972,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -974,9 +983,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -994,9 +1003,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -1005,7 +1014,7 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    var status2 = (await createTestDbStatus(
+    var status2 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed2",
       dbAccount: dbAccount,
     ));
@@ -1015,7 +1024,7 @@ void main() {
     status2Json["inReplyToRemoteId"] = null;
     status2 = DbStatus.fromJson(status2Json);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       status2,
     );
@@ -1032,9 +1041,9 @@ void main() {
       followings: [
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
-            dbAccount:
-                (await createTestDbAccount(seed: followingAccountRemoteId))
-                    .copyWith(
+            dbAccount: (await AccountDatabaseTestHelper.createTestDbAccount(
+                    seed: followingAccountRemoteId))
+                .copyWith(
               remoteId: followingAccountRemoteId,
             ),
           ),
@@ -1047,7 +1056,7 @@ void main() {
       filters: StatusRepositoryFilters(
         onlyFromAccountsFollowingByAccount: DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
-            dbAccount: await createTestDbAccount(
+            dbAccount: await AccountDatabaseTestHelper.createTestDbAccount(
               seed: followingAccountRemoteId,
               // ignore: no-equal-arguments
               remoteId: followingAccountRemoteId,
@@ -1059,9 +1068,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount.copyWith(remoteId: accountInvalidRemoteId),
       ))
@@ -1070,9 +1079,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount.copyWith(remoteId: accountRemoteId),
       ))
@@ -1091,7 +1100,7 @@ void main() {
       orderingTermData: null,
     );
 
-    var dbStatus1 = (await createTestDbStatus(
+    var dbStatus1 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
     ))
@@ -1101,11 +1110,12 @@ void main() {
       tags: dbStatus1.tags,
       batchTransaction: null,
     );
-    await insertDbStatus(statusRepository, dbStatus1);
+    await StatusRepositoryTestHelper.insertDbStatus(
+        statusRepository, dbStatus1);
 
     expect((await query.get()).length, 0);
 
-    var dbStatus2 = (await createTestDbStatus(
+    var dbStatus2 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed2",
       dbAccount: dbAccount,
     ))
@@ -1115,82 +1125,84 @@ void main() {
       tags: dbStatus2.tags,
       batchTransaction: null,
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus2,
     );
 
     expect((await query.get()).length, 0);
 
-    var dbStatus3 = (await createTestDbStatus(
+    var dbStatus3 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed3",
       dbAccount: dbAccount,
     ))
-        .copyWith(tags: [createTestPleromaTag(name: "#dogs")]);
+        .copyWith(tags: [
+      PleromaApiTagTestHelper.createTestPleromaApiTag(name: "#dogs")
+    ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus3.remoteId,
       tags: dbStatus3.tags,
       batchTransaction: null,
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus3,
     );
 
     expect((await query.get()).length, 0);
 
-    var dbStatus4 = (await createTestDbStatus(
+    var dbStatus4 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed4",
       dbAccount: dbAccount,
     ))
         .copyWith(tags: [
-      createTestPleromaTag(name: "#cats"),
+      PleromaApiTagTestHelper.createTestPleromaApiTag(name: "#cats"),
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus4.remoteId,
       tags: dbStatus4.tags,
       batchTransaction: null,
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus4,
     );
 
     expect((await query.get()).length, 1);
 
-    var dbStatus5 = (await createTestDbStatus(
+    var dbStatus5 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed5",
       dbAccount: dbAccount,
     ))
         .copyWith(tags: [
-      createTestPleromaTag(name: "#dogs"),
-      createTestPleromaTag(name: "#cats"),
+      PleromaApiTagTestHelper.createTestPleromaApiTag(name: "#dogs"),
+      PleromaApiTagTestHelper.createTestPleromaApiTag(name: "#cats"),
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus5.remoteId,
       tags: dbStatus5.tags,
       batchTransaction: null,
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus5,
     );
 
     expect((await query.get()).length, 2);
 
-    var dbStatus6 = (await createTestDbStatus(
+    var dbStatus6 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed6",
       dbAccount: dbAccount,
     ))
         .copyWith(tags: [
-      createTestPleromaTag(name: "#ca"),
+      PleromaApiTagTestHelper.createTestPleromaApiTag(name: "#ca"),
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus6.remoteId,
       tags: dbStatus6.tags,
       batchTransaction: null,
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus6,
     );
@@ -1208,24 +1220,25 @@ void main() {
       orderingTermData: null,
     );
 
-    var dbStatus1 = (await createTestDbStatus(
+    var dbStatus1 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
     ))
         .copyWith();
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus1,
     );
 
     expect((await query.get()).length, 0);
 
-    var dbStatus2 = (await createTestDbStatus(
+    var dbStatus2 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed2",
       dbAccount: dbAccount,
     ))
         .copyWith();
-    await insertDbStatus(statusRepository, dbStatus2);
+    await StatusRepositoryTestHelper.insertDbStatus(
+        statusRepository, dbStatus2);
     await statusRepository.addStatusesToList(
       statusRemoteIds: [dbStatus2.remoteId],
       listRemoteId: "invalidStatusRemoteId",
@@ -1234,12 +1247,12 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    var dbStatus3 = (await createTestDbStatus(
+    var dbStatus3 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed3",
       dbAccount: dbAccount,
     ))
         .copyWith();
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus3,
     );
@@ -1259,12 +1272,12 @@ void main() {
     );
     expect((await query.get()).length, 1);
 
-    var dbStatus4 = (await createTestDbStatus(
+    var dbStatus4 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed4",
       dbAccount: dbAccount,
     ))
         .copyWith();
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus4,
     );
@@ -1295,21 +1308,23 @@ void main() {
       orderingTermData: null,
     );
 
-    var dbStatus1 = (await createTestDbStatus(
+    var dbStatus1 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
     ))
         .copyWith();
-    await insertDbStatus(statusRepository, dbStatus1);
+    await StatusRepositoryTestHelper.insertDbStatus(
+        statusRepository, dbStatus1);
 
     expect((await query.get()).length, 0);
 
-    var dbStatus2 = (await createTestDbStatus(
+    var dbStatus2 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed2",
       dbAccount: dbAccount,
     ))
         .copyWith();
-    await insertDbStatus(statusRepository, dbStatus2);
+    await StatusRepositoryTestHelper.insertDbStatus(
+        statusRepository, dbStatus2);
     await statusRepository.addStatusesToConversation(
       statusRemoteIds: [dbStatus2.remoteId],
       conversationRemoteId: "invalidConversationId",
@@ -1318,12 +1333,13 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    var dbStatus3 = (await createTestDbStatus(
+    var dbStatus3 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed3",
       dbAccount: dbAccount,
     ))
         .copyWith();
-    await insertDbStatus(statusRepository, dbStatus3);
+    await StatusRepositoryTestHelper.insertDbStatus(
+        statusRepository, dbStatus3);
     await statusRepository.addStatusesToConversation(
       statusRemoteIds: [dbStatus3.remoteId],
       conversationRemoteId: conversationRemoteId,
@@ -1340,12 +1356,13 @@ void main() {
     );
     expect((await query.get()).length, 1);
 
-    var dbStatus4 = (await createTestDbStatus(
+    var dbStatus4 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed4",
       dbAccount: dbAccount,
     ))
         .copyWith();
-    await insertDbStatus(statusRepository, dbStatus4);
+    await StatusRepositoryTestHelper.insertDbStatus(
+        statusRepository, dbStatus4);
     await statusRepository.addStatusesToConversation(
       statusRemoteIds: [dbStatus4.remoteId],
       conversationRemoteId: conversationRemoteId,
@@ -1368,9 +1385,9 @@ void main() {
     );
 
     expect((await query.get()).length, 0);
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -1378,9 +1395,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -1389,9 +1406,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed3",
         dbAccount: dbAccount.copyWith(remoteId: "newAccountRemoteId"),
       ))
@@ -1403,7 +1420,7 @@ void main() {
   test('getConversationLastStatus', () async {
     var conversationRemoteId = "conversationRemoteId";
 
-    var conversation = await createTestConversation(
+    var conversation = await ConversationTestHelper.createTestConversation(
       seed: conversationRemoteId,
       // ignore: no-equal-arguments
       remoteId: conversationRemoteId,
@@ -1412,7 +1429,8 @@ void main() {
     // 1 is not related to conversation
     await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(
-        dbStatusPopulated: await createTestDbStatusPopulated(
+        dbStatusPopulated:
+            await StatusDatabaseTestHelper.createTestDbStatusPopulated(
           dbStatus.copyWith(remoteId: "status1"),
           accountRepository,
         ),
@@ -1433,7 +1451,8 @@ void main() {
     // 2 is related to conversation
     await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(
-        dbStatusPopulated: await createTestDbStatusPopulated(
+        dbStatusPopulated:
+            await StatusDatabaseTestHelper.createTestDbStatusPopulated(
           dbStatus.copyWith(
             remoteId: "status2",
             createdAt: DateTime(2002),
@@ -1458,7 +1477,8 @@ void main() {
     // 4 is newer than 2
     await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(
-        dbStatusPopulated: await createTestDbStatusPopulated(
+        dbStatusPopulated:
+            await StatusDatabaseTestHelper.createTestDbStatusPopulated(
           dbStatus.copyWith(
             remoteId: "status4",
             createdAt: DateTime(2004),
@@ -1482,7 +1502,8 @@ void main() {
     // remain 4
     await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(
-        dbStatusPopulated: await createTestDbStatusPopulated(
+        dbStatusPopulated:
+            await StatusDatabaseTestHelper.createTestDbStatusPopulated(
           dbStatus.copyWith(
             remoteId: "status3",
             createdAt: DateTime(2003),
@@ -1550,7 +1571,6 @@ void main() {
       batchTransaction: null,
     );
 
-
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expect(
@@ -1567,7 +1587,6 @@ void main() {
       batchTransaction: null,
       isFromHomeTimeline: null,
     );
-
 
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
@@ -1628,7 +1647,8 @@ void main() {
     expect(
       (await statusRepository.findAllInAppType(
         filters: StatusRepositoryFilters(
-          onlyInConversation: await createTestConversation(
+          onlyInConversation:
+              await ConversationTestHelper.createTestConversation(
             seed: "seed5",
             remoteId: conversationRemoteId,
           ),
@@ -1639,11 +1659,11 @@ void main() {
           .length,
       1,
     );
-    expectDbStatus(
+    StatusDatabaseTestHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
-    expectDbAccount(
+    AccountDatabaseTestHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
@@ -1652,13 +1672,14 @@ void main() {
   test('watch new by listRemoteId', () async {
     var listRemoteId = "listRemoteId";
 
-    var dbStatus1 = (await createTestDbStatus(
+    var dbStatus1 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
     ))
         .copyWith(remoteId: "1");
 
-    var status1Populated = await createTestDbStatusPopulated(
+    var status1Populated =
+        await StatusDatabaseTestHelper.createTestDbStatusPopulated(
       dbStatus1,
       accountRepository,
     );
@@ -1696,13 +1717,14 @@ void main() {
 
     expect(watchedStatuses.length, 0);
 
-    var dbStatus2 = (await createTestDbStatus(
+    var dbStatus2 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed2",
       dbAccount: dbAccount,
     ))
         .copyWith(remoteId: "2");
 
-    var status2Populated = await createTestDbStatusPopulated(
+    var status2Populated =
+        await StatusDatabaseTestHelper.createTestDbStatusPopulated(
       dbStatus2,
       accountRepository,
     );
@@ -1720,13 +1742,14 @@ void main() {
 
     expect(watchedStatuses.length, 1);
 
-    var dbStatus0 = (await createTestDbStatus(
+    var dbStatus0 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed0",
       dbAccount: dbAccount,
     ))
         .copyWith(remoteId: "0");
 
-    var status0Populated = await createTestDbStatusPopulated(
+    var status0Populated =
+        await StatusDatabaseTestHelper.createTestDbStatusPopulated(
       dbStatus0,
       accountRepository,
     );
@@ -1758,7 +1781,7 @@ void main() {
       orderingTermData: null,
     );
 
-    var dbStatus1 = (await createTestDbStatus(
+    var dbStatus1 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
     ))
@@ -1766,14 +1789,14 @@ void main() {
       spoilerText: "test",
       content: "",
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus1,
     );
 
     expect((await query.get()).length, 0);
 
-    var dbStatus2 = (await createTestDbStatus(
+    var dbStatus2 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed2",
       dbAccount: dbAccount,
     ))
@@ -1781,14 +1804,14 @@ void main() {
       spoilerText: "",
       content: "test",
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus2,
     );
 
     expect((await query.get()).length, 0);
 
-    var dbStatus3 = (await createTestDbStatus(
+    var dbStatus3 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed3",
       dbAccount: dbAccount,
     ))
@@ -1796,14 +1819,14 @@ void main() {
       spoilerText: "",
       content: "testing",
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus3,
     );
 
     expect((await query.get()).length, 0);
 
-    var dbStatus4 = (await createTestDbStatus(
+    var dbStatus4 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed4",
       dbAccount: dbAccount,
     ))
@@ -1811,7 +1834,8 @@ void main() {
       spoilerText: "",
       content: "aaaa",
     );
-    await insertDbStatus(statusRepository, dbStatus4);
+    await StatusRepositoryTestHelper.insertDbStatus(
+        statusRepository, dbStatus4);
 
     expect((await query.get()).length, 1);
   });
@@ -1827,7 +1851,7 @@ void main() {
       orderingTermData: null,
     );
 
-    var dbStatus1 = (await createTestDbStatus(
+    var dbStatus1 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
     ))
@@ -1835,14 +1859,14 @@ void main() {
       spoilerText: "test",
       content: "",
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus1,
     );
 
     expect((await query.get()).length, 0);
 
-    var dbStatus2 = (await createTestDbStatus(
+    var dbStatus2 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed2",
       dbAccount: dbAccount,
     ))
@@ -1850,14 +1874,14 @@ void main() {
       spoilerText: "",
       content: "test",
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus2,
     );
 
     expect((await query.get()).length, 0);
 
-    var dbStatus3 = (await createTestDbStatus(
+    var dbStatus3 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed3",
       dbAccount: dbAccount,
     ))
@@ -1865,11 +1889,12 @@ void main() {
       spoilerText: "",
       content: "testing",
     );
-    await insertDbStatus(statusRepository, dbStatus3);
+    await StatusRepositoryTestHelper.insertDbStatus(
+        statusRepository, dbStatus3);
 
     expect((await query.get()).length, 1);
 
-    var dbStatus4 = (await createTestDbStatus(
+    var dbStatus4 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed4",
       dbAccount: dbAccount,
     ))
@@ -1877,14 +1902,14 @@ void main() {
       spoilerText: "",
       content: "aaaa",
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus4,
     );
 
     expect((await query.get()).length, 2);
 
-    var dbStatus5 = (await createTestDbStatus(
+    var dbStatus5 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed5",
       dbAccount: dbAccount,
     ))
@@ -1892,7 +1917,7 @@ void main() {
       spoilerText: "",
       content: "one test one",
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus5,
     );
@@ -1911,7 +1936,7 @@ void main() {
       orderingTermData: null,
     );
 
-    var dbStatus1 = (await createTestDbStatus(
+    var dbStatus1 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
     ))
@@ -1919,14 +1944,14 @@ void main() {
       spoilerText: "test",
       content: "",
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus1,
     );
 
     expect((await query.get()).length, 0);
 
-    var dbStatus2 = (await createTestDbStatus(
+    var dbStatus2 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed2",
       dbAccount: dbAccount,
     ))
@@ -1934,14 +1959,14 @@ void main() {
       spoilerText: "aaa",
       content: "bbb",
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus2,
     );
 
     expect((await query.get()).length, 1);
 
-    var dbStatus3 = (await createTestDbStatus(
+    var dbStatus3 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed3",
       dbAccount: dbAccount,
     ))
@@ -1950,12 +1975,12 @@ void main() {
       content: "bbb",
     );
 
-    dbStatus3 = await insertDbStatus(
+    dbStatus3 = await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus3,
     );
 
-    var dbStatus4 = (await createTestDbStatus(
+    var dbStatus4 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed4",
       dbAccount: dbAccount,
     ))
@@ -1964,7 +1989,7 @@ void main() {
       content: "bbb",
       reblogStatusRemoteId: dbStatus3.remoteId,
     );
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus4,
     );
@@ -1996,7 +2021,7 @@ void main() {
     );
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
-      (await createTestRemoteStatus(
+      (await StatusDatabaseTestHelper.createTestRemoteStatus(
         seed: "seed1",
         dbAccount: dbAccount,
         accountRepository: accountRepository,
@@ -2010,7 +2035,7 @@ void main() {
     expect((await query.get()).length, 0);
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
-      (await createTestRemoteStatus(
+      (await StatusDatabaseTestHelper.createTestRemoteStatus(
         seed: "seed2",
         dbAccount: dbAccount,
         accountRepository: accountRepository,
@@ -2024,7 +2049,7 @@ void main() {
     expect((await query.get()).length, 1);
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
-      (await createTestRemoteStatus(
+      (await StatusDatabaseTestHelper.createTestRemoteStatus(
         seed: "seed3",
         dbAccount: dbAccount,
         accountRepository: accountRepository,
@@ -2038,7 +2063,7 @@ void main() {
     expect((await query.get()).length, 2);
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
-      (await createTestRemoteStatus(
+      (await StatusDatabaseTestHelper.createTestRemoteStatus(
         seed: "seed3",
         dbAccount: dbAccount,
         accountRepository: accountRepository,
@@ -2052,7 +2077,7 @@ void main() {
     expect((await query.get()).length, 2);
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
-      (await createTestRemoteStatus(
+      (await StatusDatabaseTestHelper.createTestRemoteStatus(
         seed: "seed2",
         dbAccount: dbAccount,
         accountRepository: accountRepository,
@@ -2075,9 +2100,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -2089,9 +2114,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -2104,9 +2129,9 @@ void main() {
     expect((await query.get()).length, 1);
 
     // check several with seed
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed3",
         dbAccount: dbAccount,
       ))
@@ -2118,9 +2143,9 @@ void main() {
 
     // check local flag
     expect((await query.get()).length, 1);
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed4",
         dbAccount: dbAccount,
       ))
@@ -2142,9 +2167,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -2156,9 +2181,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -2171,9 +2196,9 @@ void main() {
     expect((await query.get()).length, 1);
 
     // check several with seed
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed3",
         dbAccount: dbAccount,
       ))
@@ -2185,9 +2210,9 @@ void main() {
 
     // check local flag
     expect((await query.get()).length, 1);
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed4",
         dbAccount: dbAccount,
       ))
@@ -2241,9 +2266,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -2252,9 +2277,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -2272,9 +2297,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -2283,9 +2308,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -2303,9 +2328,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -2314,9 +2339,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -2326,8 +2351,10 @@ void main() {
   });
 
   test('createQuery replyVisibilityFilterCondition self', () async {
-    var myDbAccount = await createTestDbAccount(seed: "myAccount");
-    var dbAccount3 = await createTestDbAccount(seed: "seed3");
+    var myDbAccount =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "myAccount");
+    var dbAccount3 =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed3");
 
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
@@ -2340,21 +2367,21 @@ void main() {
       orderingTermData: null,
     );
 
-    var dbStatus1 = (await createTestDbStatus(
+    var dbStatus1 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
       inReplyToAccountRemoteId: null,
     ));
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus1,
     );
 
     expect((await query.get()).length, 1);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
         inReplyToAccountRemoteId: myDbAccount.remoteId,
@@ -2363,9 +2390,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed3",
         dbAccount: dbAccount,
         inReplyToAccountRemoteId: dbAccount3.remoteId,
@@ -2388,9 +2415,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed4",
         dbAccount: dbAccount,
         inReplyToAccountRemoteId: dbAccount3.remoteId,
@@ -2401,9 +2428,12 @@ void main() {
   });
 
   test('createQuery replyVisibilityFilterCondition following', () async {
-    var myDbAccount = await createTestDbAccount(seed: "myAccount");
-    var dbAccount3 = await createTestDbAccount(seed: "seed3");
-    var dbAccount4 = await createTestDbAccount(seed: "seed4");
+    var myDbAccount =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "myAccount");
+    var dbAccount3 =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed3");
+    var dbAccount4 =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed4");
 
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
@@ -2416,21 +2446,21 @@ void main() {
       orderingTermData: null,
     );
 
-    var dbStatus1 = (await createTestDbStatus(
+    var dbStatus1 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
       inReplyToAccountRemoteId: null,
     ));
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus1,
     );
 
     expect((await query.get()).length, 1);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
         inReplyToAccountRemoteId: myDbAccount.remoteId,
@@ -2439,9 +2469,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed3",
         dbAccount: dbAccount,
         inReplyToAccountRemoteId: dbAccount3.remoteId,
@@ -2464,9 +2494,9 @@ void main() {
 
     expect((await query.get()).length, 3);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed4",
         dbAccount: dbAccount,
         inReplyToAccountRemoteId: dbAccount4.remoteId,
@@ -2485,9 +2515,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed1",
         dbAccount: dbAccount,
       ))
@@ -2496,9 +2526,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
-      (await createTestDbStatus(
+      (await StatusDatabaseTestHelper.createTestDbStatus(
         seed: "seed2",
         dbAccount: dbAccount,
       ))
@@ -2516,11 +2546,11 @@ void main() {
       orderingTermData: null,
     );
 
-    var dbStatus1 = (await createTestDbStatus(
+    var dbStatus1 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
     ));
-    await insertDbStatus(
+    await StatusRepositoryTestHelper.insertDbStatus(
       statusRepository,
       dbStatus1,
     );
@@ -2536,12 +2566,13 @@ void main() {
     expect((await query.get()).length, 1);
   });
 
-
   test('insertInDbTypeBatch duplicated', () async {
     expect(await statusRepository.countAll(), 0);
 
-    var dbItem1 = await createTestDbStatus(seed: "seed1", dbAccount: dbAccount.copyWith());
-    var dbItem1copy = await createTestDbStatus(seed: "seed1", dbAccount: dbAccount.copyWith());
+    var dbItem1 = await StatusDatabaseTestHelper.createTestDbStatus(
+        seed: "seed1", dbAccount: dbAccount.copyWith());
+    var dbItem1copy = await StatusDatabaseTestHelper.createTestDbStatus(
+        seed: "seed1", dbAccount: dbAccount.copyWith());
 
     await statusRepository.batch((batch) {
       statusRepository.insertInDbTypeBatch(
@@ -2562,8 +2593,8 @@ void main() {
   test('insertInRemoteTypeBatch duplicated', () async {
     expect(await statusRepository.countAll(), 0);
 
-    var status1 = await createTestStatus(seed: "seed1");
-    var status1Copy = await createTestStatus(seed: "seed1");
+    var status1 = await StatusTestHelper.createTestStatus(seed: "seed1");
+    var status1Copy = await StatusTestHelper.createTestStatus(seed: "seed1");
 
     var remoteStatus1 = status1.toPleromaStatus();
     var remoteStatus1Copy = status1Copy.toPleromaStatus();
@@ -2586,8 +2617,8 @@ void main() {
   test('insertInRemoteTypeBatch duplicated', () async {
     expect(await statusRepository.countAll(), 0);
 
-    var status1 = await createTestStatus(seed: "seed1");
-    var status1Copy = await createTestStatus(seed: "seed1");
+    var status1 = await StatusTestHelper.createTestStatus(seed: "seed1");
+    var status1Copy = await StatusTestHelper.createTestStatus(seed: "seed1");
 
     var remoteStatus1 = status1.toPleromaStatus();
     var remoteStatus1Copy = status1Copy.toPleromaStatus();

@@ -12,13 +12,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 
-import '../../account/account_model_helper.dart';
-import '../../account/database/account_database_model_helper.dart';
-import '../../status/database/status_database_model_helper.dart';
-import '../../status/status_model_helper.dart';
-import '../conversation_model_helper.dart';
-import '../database/conversation_database_model_helper.dart';
-import 'conversation_repository_model_helper.dart';
+import '../../account/account_test_helper.dart';
+import '../../account/database/account_database_test_helper.dart';
+import '../../status/database/status_database_test_helper.dart';
+import '../../status/status_test_helper.dart';
+import '../conversation_test_helper.dart';
+import '../database/conversation_database_test_helper.dart';
+import 'conversation_repository_test_helper.dart';
+
 // ignore_for_file: no-magic-number
 void main() {
   late AppDatabase database;
@@ -46,7 +47,8 @@ void main() {
       accountRepository: accountRepository,
     );
 
-    dbAccount = await createTestDbAccount(seed: "seed1");
+    dbAccount =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed1");
     var accountId = await accountRepository.insertInDbType(
       dbAccount,
       mode: null,
@@ -54,22 +56,24 @@ void main() {
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
-    dbStatus = await createTestDbStatus(
+    dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed3",
       dbAccount: dbAccount,
     );
 
-    dbStatusPopulated = await createTestDbStatusPopulated(
+    dbStatusPopulated =
+        await StatusDatabaseTestHelper.createTestDbStatusPopulated(
       dbStatus,
       accountRepository,
     );
 
-    var reblogDbAccount = await createTestDbAccount(seed: "seed11");
+    var reblogDbAccount =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed11");
     await accountRepository.insertInDbType(
       reblogDbAccount,
       mode: null,
     );
-    var reblogDbStatus = await createTestDbStatus(
+    var reblogDbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed33",
       dbAccount: reblogDbAccount,
     );
@@ -98,7 +102,9 @@ void main() {
       mode: null,
     );
 
-    dbConversation = await createTestDbConversation(seed: "seed4");
+    dbConversation =
+        await ConversationDatabaseTestHelper.createTestDbConversation(
+            seed: "seed4");
   });
 
   tearDown(() async {
@@ -114,18 +120,22 @@ void main() {
       mode: null,
     );
     assert(id > 0, true);
-    expectDbConversation(
+    ConversationDatabaseTestHelper.expectDbConversation(
       await conversationRepository.findByDbIdInAppType(id),
       dbConversation,
     );
   });
 
   test('upsertAll', () async {
-    var dbConversation1 = (await createTestDbConversation(seed: "seed5"))
-        .copyWith(remoteId: "remoteId1");
+    var dbConversation1 =
+        (await ConversationDatabaseTestHelper.createTestDbConversation(
+                seed: "seed5"))
+            .copyWith(remoteId: "remoteId1");
     // same remote id
-    var dbConversation2 = (await createTestDbConversation(seed: "seed6"))
-        .copyWith(remoteId: "remoteId1");
+    var dbConversation2 =
+        (await ConversationDatabaseTestHelper.createTestDbConversation(
+                seed: "seed6"))
+            .copyWith(remoteId: "remoteId1");
 
     await conversationRepository.upsertAllInDbType(
       [dbConversation1],
@@ -140,7 +150,7 @@ void main() {
     );
     expect((await conversationRepository.getAllInAppType()).length, 1);
 
-    expectDbConversation(
+    ConversationDatabaseTestHelper.expectDbConversation(
       (await conversationRepository.getAllInAppType()).first,
       dbConversation2,
     );
@@ -236,7 +246,7 @@ void main() {
       dbConversation,
       mode: null,
     );
-    expectDbConversation(
+    ConversationDatabaseTestHelper.expectDbConversation(
       await conversationRepository
           .findByRemoteIdInAppType(dbConversation.remoteId),
       dbConversation,
@@ -268,16 +278,16 @@ void main() {
     // // with reblog
     // expect(await statusRepository.countAll(), 2);
     // expect(await accountRepository.countAll(), 2);
-    // expectDbConversation(
+    // ConversationDatabaseTestHelper.expectDbConversation(
     //   await conversationRepository
     //       .findByRemoteIdInAppType(dbConversation.remoteId),
     //   dbConversation,
     // );
-    // expectDbAccount(
+    // AccountDatabaseTestHelper.expectDbAccount(
     //   await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
     //   dbAccount,
     // );
-    // expectDbStatus(
+    // StatusDatabaseTestHelper.expectDbStatus(
     //   await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
     //   dbStatus,
     // );
@@ -308,16 +318,16 @@ void main() {
     // with reblog
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
-    expectDbConversation(
+    ConversationDatabaseTestHelper.expectDbConversation(
       await conversationRepository
           .findByRemoteIdInAppType(dbConversation.remoteId),
       dbConversation,
     );
-    expectDbAccount(
+    AccountDatabaseTestHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    expectDbStatus(
+    StatusDatabaseTestHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
@@ -353,16 +363,16 @@ void main() {
     // with reblog
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
-    expectDbConversation(
+    ConversationDatabaseTestHelper.expectDbConversation(
       await conversationRepository
           .findByRemoteIdInAppType(dbConversation.remoteId),
       dbConversation,
     );
-    expectDbAccount(
+    AccountDatabaseTestHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    expectDbStatus(
+    StatusDatabaseTestHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
@@ -394,16 +404,16 @@ void main() {
     // with reblog
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
-    expectDbConversation(
+    ConversationDatabaseTestHelper.expectDbConversation(
       await conversationRepository
           .findByRemoteIdInAppType(dbConversation.remoteId),
       dbConversation,
     );
-    expectDbAccount(
+    AccountDatabaseTestHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    expectDbStatus(
+    StatusDatabaseTestHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
@@ -419,21 +429,27 @@ void main() {
     expect((await query.get()).length, 0);
 
     await conversationRepository.insertInDbType(
-      (await createTestDbConversation(seed: "seed1")).copyWith(),
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed1"))
+          .copyWith(),
       mode: null,
     );
 
     expect((await query.get()).length, 1);
 
     await conversationRepository.insertInDbType(
-      (await createTestDbConversation(seed: "seed2")).copyWith(),
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed2"))
+          .copyWith(),
       mode: null,
     );
 
     expect((await query.get()).length, 2);
 
     await conversationRepository.insertInDbType(
-      (await createTestDbConversation(seed: "seed3")).copyWith(),
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed3"))
+          .copyWith(),
       mode: null,
     );
 
@@ -474,7 +490,7 @@ void main() {
       var query = conversationRepository.createQuery(
         filters: null,
         pagination: RepositoryPagination<IConversationChat>(
-          newerThanItem: await createTestConversation(
+          newerThanItem: await ConversationTestHelper.createTestConversation(
             seed: "remoteId5",
             remoteId: "remoteId5",
           ),
@@ -483,32 +499,36 @@ void main() {
             ConversationRepositoryChatOrderingTermData.updatedAtDesc,
       );
 
-      await insertDbConversation(
+      await ConversationRepositoryTestHelper.insertDbConversation(
         conversationRepository,
-        (await createTestDbConversation(seed: "seed2"))
+        (await ConversationDatabaseTestHelper.createTestDbConversation(
+                seed: "seed2"))
             .copyWith(remoteId: "remoteId4"),
       );
 
       expect((await query.get()).length, 0);
 
-      await insertDbConversation(
+      await ConversationRepositoryTestHelper.insertDbConversation(
         conversationRepository,
-        (await createTestDbConversation(seed: "seed2"))
+        (await ConversationDatabaseTestHelper.createTestDbConversation(
+                seed: "seed2"))
             .copyWith(remoteId: "remoteId5"),
       );
 
       expect((await query.get()).length, 0);
 
-      await insertDbConversation(
+      await ConversationRepositoryTestHelper.insertDbConversation(
         conversationRepository,
-        (await createTestDbConversation(seed: "seed1"))
+        (await ConversationDatabaseTestHelper.createTestDbConversation(
+                seed: "seed1"))
             .copyWith(remoteId: "remoteId6"),
       );
 
       expect((await query.get()).length, 1);
-      await insertDbConversation(
+      await ConversationRepositoryTestHelper.insertDbConversation(
         conversationRepository,
-        (await createTestDbConversation(seed: "seed1"))
+        (await ConversationDatabaseTestHelper.createTestDbConversation(
+                seed: "seed1"))
             .copyWith(remoteId: "remoteId7"),
       );
 
@@ -520,7 +540,7 @@ void main() {
     var query = conversationRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination<IConversationChat>(
-        olderThanItem: await createTestConversation(
+        olderThanItem: await ConversationTestHelper.createTestConversation(
           seed: "remoteId5",
           remoteId: "remoteId5",
         ),
@@ -529,32 +549,36 @@ void main() {
           ConversationRepositoryChatOrderingTermData.updatedAtDesc,
     );
 
-    await insertDbConversation(
+    await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed2"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed2"))
           .copyWith(remoteId: "remoteId3"),
     );
 
     expect((await query.get()).length, 1);
-    await insertDbConversation(
+    await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed2"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed2"))
           .copyWith(remoteId: "remoteId4"),
     );
 
     expect((await query.get()).length, 2);
 
-    await insertDbConversation(
+    await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed2"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed2"))
           .copyWith(remoteId: "remoteId5"),
     );
 
     expect((await query.get()).length, 2);
 
-    await insertDbConversation(
+    await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed1"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed1"))
           .copyWith(remoteId: "remoteId6"),
     );
 
@@ -565,11 +589,11 @@ void main() {
     var query = conversationRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination<IConversationChat>(
-        newerThanItem: await createTestConversation(
+        newerThanItem: await ConversationTestHelper.createTestConversation(
           seed: "remoteId2",
           remoteId: "remoteId2",
         ),
-        olderThanItem: await createTestConversation(
+        olderThanItem: await ConversationTestHelper.createTestConversation(
           seed: "remoteId5",
           remoteId: "remoteId5",
         ),
@@ -578,48 +602,54 @@ void main() {
           ConversationRepositoryChatOrderingTermData.updatedAtDesc,
     );
 
-    await insertDbConversation(
+    await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed1"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed1"))
           .copyWith(remoteId: "remoteId1"),
     );
 
     expect((await query.get()).length, 0);
 
-    await insertDbConversation(
+    await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed2"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed2"))
           .copyWith(remoteId: "remoteId2"),
     );
 
     expect((await query.get()).length, 0);
-    await insertDbConversation(
+    await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed3"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed3"))
           .copyWith(remoteId: "remoteId3"),
     );
 
     expect((await query.get()).length, 1);
 
-    await insertDbConversation(
+    await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed4"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed4"))
           .copyWith(remoteId: "remoteId4"),
     );
 
     expect((await query.get()).length, 2);
 
-    await insertDbConversation(
+    await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed5"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed5"))
           .copyWith(remoteId: "remoteId5"),
     );
 
     expect((await query.get()).length, 2);
 
-    await insertDbConversation(
+    await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed6"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed6"))
           .copyWith(remoteId: "remoteId6"),
     );
 
@@ -633,28 +663,37 @@ void main() {
       orderingTermData: ConversationRepositoryChatOrderingTermData.remoteIdAsc,
     );
 
-    var conversation2 = await insertDbConversation(
+    var conversation2 =
+        await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed2"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed2"))
           .copyWith(remoteId: "remoteId2"),
     );
-    var conversation1 = await insertDbConversation(
+    var conversation1 =
+        await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed1"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed1"))
           .copyWith(remoteId: "remoteId1"),
     );
-    var conversation3 = await insertDbConversation(
+    var conversation3 =
+        await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed3"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed3"))
           .copyWith(remoteId: "remoteId3"),
     );
 
     var actualList = (await query.get());
     expect(actualList.length, 3);
 
-    expectDbConversation(actualList[0], conversation1);
-    expectDbConversation(actualList[1], conversation2);
-    expectDbConversation(actualList[2], conversation3);
+    ConversationDatabaseTestHelper.expectDbConversation(
+        actualList[0], conversation1);
+    ConversationDatabaseTestHelper.expectDbConversation(
+        actualList[1], conversation2);
+    ConversationDatabaseTestHelper.expectDbConversation(
+        actualList[2], conversation3);
   });
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
@@ -664,28 +703,37 @@ void main() {
       orderingTermData: ConversationRepositoryChatOrderingTermData.remoteIdDesc,
     );
 
-    var conversation2 = await insertDbConversation(
+    var conversation2 =
+        await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed2"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed2"))
           .copyWith(remoteId: "remoteId2"),
     );
-    var conversation1 = await insertDbConversation(
+    var conversation1 =
+        await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed1"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed1"))
           .copyWith(remoteId: "remoteId1"),
     );
-    var conversation3 = await insertDbConversation(
+    var conversation3 =
+        await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed3"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed3"))
           .copyWith(remoteId: "remoteId3"),
     );
 
     var actualList = (await query.get());
     expect(actualList.length, 3);
 
-    expectDbConversation(actualList[0], conversation3);
-    expectDbConversation(actualList[1], conversation2);
-    expectDbConversation(actualList[2], conversation1);
+    ConversationDatabaseTestHelper.expectDbConversation(
+        actualList[0], conversation3);
+    ConversationDatabaseTestHelper.expectDbConversation(
+        actualList[1], conversation2);
+    ConversationDatabaseTestHelper.expectDbConversation(
+        actualList[2], conversation1);
   });
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
@@ -698,33 +746,41 @@ void main() {
       orderingTermData: ConversationRepositoryChatOrderingTermData.remoteIdDesc,
     );
 
-    var conversation2 = await insertDbConversation(
+    var conversation2 =
+        await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed2"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed2"))
           .copyWith(remoteId: "remoteId2"),
     );
-    await insertDbConversation(
+    await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed1"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed1"))
           .copyWith(remoteId: "remoteId1"),
     );
-    await insertDbConversation(
+    await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
-      (await createTestDbConversation(seed: "seed3"))
+      (await ConversationDatabaseTestHelper.createTestDbConversation(
+              seed: "seed3"))
           .copyWith(remoteId: "remoteId3"),
     );
 
     var actualList = (await query.get());
     expect(actualList.length, 1);
 
-    expectDbConversation(actualList[0], conversation2);
+    ConversationDatabaseTestHelper.expectDbConversation(
+        actualList[0], conversation2);
   });
 
   test('insertInDbTypeBatch duplicated', () async {
     expect(await conversationRepository.countAll(), 0);
 
-    var dbItem1 = await createTestDbConversation(seed: "seed1");
-    var dbItem1copy = await createTestDbConversation(seed: "seed1");
+    var dbItem1 = await ConversationDatabaseTestHelper.createTestDbConversation(
+        seed: "seed1");
+    var dbItem1copy =
+        await ConversationDatabaseTestHelper.createTestDbConversation(
+            seed: "seed1");
 
     await conversationRepository.batch((batch) {
       conversationRepository.insertInDbTypeBatch(
@@ -745,22 +801,24 @@ void main() {
   test('insertInRemoteTypeBatch duplicated', () async {
     expect(await conversationRepository.countAll(), 0);
 
-    var conversation1 = await createTestConversation(seed: "seed1");
-    var conversation1Copy = await createTestConversation(seed: "seed1");
+    var conversation1 =
+        await ConversationTestHelper.createTestConversation(seed: "seed1");
+    var conversation1Copy =
+        await ConversationTestHelper.createTestConversation(seed: "seed1");
 
     var remoteConversation1 = conversation1.toPleromaConversation(
       accounts: [
-        await createTestAccount(seed: "seed1"),
+        await AccountTestHelper.createTestAccount(seed: "seed1"),
       ],
-      lastStatus: await createTestStatus(
+      lastStatus: await StatusTestHelper.createTestStatus(
         seed: "seed1",
       ),
     );
     var remoteConversation1Copy = conversation1Copy.toPleromaConversation(
       accounts: [
-        await createTestAccount(seed: "seed1"),
+        await AccountTestHelper.createTestAccount(seed: "seed1"),
       ],
-      lastStatus: await createTestStatus(
+      lastStatus: await StatusTestHelper.createTestStatus(
         seed: "seed1",
       ),
     );
@@ -783,22 +841,24 @@ void main() {
   test('insertInRemoteTypeBatch duplicated', () async {
     expect(await conversationRepository.countAll(), 0);
 
-    var conversation1 = await createTestConversation(seed: "seed1");
-    var conversation1Copy = await createTestConversation(seed: "seed1");
+    var conversation1 =
+        await ConversationTestHelper.createTestConversation(seed: "seed1");
+    var conversation1Copy =
+        await ConversationTestHelper.createTestConversation(seed: "seed1");
 
     var remoteConversation1 = conversation1.toPleromaConversation(
       accounts: [
-        await createTestAccount(seed: "seed1"),
+        await AccountTestHelper.createTestAccount(seed: "seed1"),
       ],
-      lastStatus: await createTestStatus(
+      lastStatus: await StatusTestHelper.createTestStatus(
         seed: "seed1",
       ),
     );
     var remoteConversation1Copy = conversation1Copy.toPleromaConversation(
       accounts: [
-        await createTestAccount(seed: "seed1"),
+        await AccountTestHelper.createTestAccount(seed: "seed1"),
       ],
-      lastStatus: await createTestStatus(
+      lastStatus: await StatusTestHelper.createTestStatus(
         seed: "seed1",
       ),
     );
@@ -845,35 +905,38 @@ void main() {
     expect(await statusRepository.countAll(), 0);
     expect(await conversationRepository.countAll(), 0);
 
-    var conversation1 = await createTestConversation(seed: "seed1");
-    var conversation2 = await createTestConversation(seed: "seed2");
-    var conversation3 = await createTestConversation(seed: "seed3");
+    var conversation1 =
+        await ConversationTestHelper.createTestConversation(seed: "seed1");
+    var conversation2 =
+        await ConversationTestHelper.createTestConversation(seed: "seed2");
+    var conversation3 =
+        await ConversationTestHelper.createTestConversation(seed: "seed3");
 
     var remoteConversation1 = conversation1.toPleromaConversation(
       accounts: [
-        await createTestAccount(seed: "seed1"),
+        await AccountTestHelper.createTestAccount(seed: "seed1"),
       ],
-      lastStatus: await createTestStatus(
+      lastStatus: await StatusTestHelper.createTestStatus(
         seed: "seed1",
-        account: await createTestAccount(seed: "seed1"),
+        account: await AccountTestHelper.createTestAccount(seed: "seed1"),
       ),
     );
     var remoteConversation2 = conversation2.toPleromaConversation(
       accounts: [
-        await createTestAccount(seed: "seed1"),
+        await AccountTestHelper.createTestAccount(seed: "seed1"),
       ],
-      lastStatus: await createTestStatus(
+      lastStatus: await StatusTestHelper.createTestStatus(
         seed: "seed2",
-        account: await createTestAccount(seed: "seed1"),
+        account: await AccountTestHelper.createTestAccount(seed: "seed1"),
       ),
     );
     var remoteConversation3 = conversation3.toPleromaConversation(
       accounts: [
-        await createTestAccount(seed: "seed1"),
+        await AccountTestHelper.createTestAccount(seed: "seed1"),
       ],
-      lastStatus: await createTestStatus(
+      lastStatus: await StatusTestHelper.createTestStatus(
         seed: "seed3",
-        account: await createTestAccount(seed: "seed1"),
+        account: await AccountTestHelper.createTestAccount(seed: "seed1"),
       ),
     );
 

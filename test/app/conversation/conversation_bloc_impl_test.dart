@@ -20,19 +20,20 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service_impl.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
-import '../account/account_model_helper.dart';
-import '../account/my/my_account_model_helper.dart';
-import '../status/status_model_helper.dart';
+import '../account/account_test_helper.dart';
+import '../account/my/my_account_test_helper.dart';
+import '../status/status_test_helper.dart';
 import 'conversation_bloc_impl_test.mocks.dart';
-import 'conversation_model_helper.dart';
+import 'conversation_test_helper.dart';
+
 // ignore_for_file: no-magic-number
 @GenerateMocks([
   PleromaApiConversationService,
@@ -75,7 +76,8 @@ void main() {
       pleromaAuthStatusServiceMock = MockPleromaApiAuthStatusService();
       preferencesService = MemoryLocalPreferencesService();
 
-      myAccount = await createTestMyAccount(seed: "myAccount");
+      myAccount =
+          await MyAccountTestHelper.createTestMyAccount(seed: "myAccount");
       authInstance = AuthInstance(
         urlHost: "fedi.app",
         acct: myAccount.acct,
@@ -110,7 +112,8 @@ void main() {
         PleromaApiState.validAuth,
       );
 
-      conversation = await createTestConversation(seed: "seed1");
+      conversation =
+          await ConversationTestHelper.createTestConversation(seed: "seed1");
 
       conversationBloc = ConversationChatBloc(
         conversation: conversation,
@@ -152,12 +155,12 @@ void main() {
   }
 
   test('conversation', () async {
-    expectConversation(
+    ConversationTestHelper.expectConversation(
       conversationBloc.conversation,
       conversation,
     );
 
-    var newValue = await createTestConversation(
+    var newValue = await ConversationTestHelper.createTestConversation(
       seed: "seed2",
       remoteId: conversation.remoteId,
     );
@@ -169,18 +172,18 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectConversation(
+    ConversationTestHelper.expectConversation(
       listenedValue,
       conversation,
     );
 
     await _update(newValue, accounts: []);
 
-    expectConversation(
+    ConversationTestHelper.expectConversation(
       conversationBloc.conversation,
       newValue,
     );
-    expectConversation(
+    ConversationTestHelper.expectConversation(
       listenedValue,
       newValue,
     );
@@ -188,16 +191,16 @@ void main() {
   });
 
   test('lastStatus', () async {
-    var status1 = await createTestStatus(
+    var status1 = await StatusTestHelper.createTestStatus(
       seed: "status1",
       createdAt: DateTime(2001),
     );
-    var status2 = await createTestStatus(
+    var status2 = await StatusTestHelper.createTestStatus(
       seed: "status2",
       createdAt: DateTime(2002),
     );
 
-    var newValue = await createTestConversation(
+    var newValue = await ConversationTestHelper.createTestConversation(
       seed: "seed2",
       remoteId: conversation.remoteId,
     );
@@ -216,11 +219,11 @@ void main() {
       accounts: [],
     );
 
-    expectStatus(
+    StatusTestHelper.expectStatus(
       conversationBloc.lastStatus,
       status1,
     );
-    expectStatus(
+    StatusTestHelper.expectStatus(
       listenedValue,
       status1,
     );
@@ -231,11 +234,11 @@ void main() {
       accounts: [],
     );
 
-    expectStatus(
+    StatusTestHelper.expectStatus(
       conversationBloc.lastStatus,
       status2,
     );
-    expectStatus(
+    StatusTestHelper.expectStatus(
       listenedValue,
       status2,
     );
@@ -244,11 +247,11 @@ void main() {
   });
 
   test('accounts', () async {
-    var account1 = await createTestAccount(seed: "account1");
-    var account2 = await createTestAccount(seed: "account2");
-    var account3 = await createTestAccount(seed: "account3");
+    var account1 = await AccountTestHelper.createTestAccount(seed: "account1");
+    var account2 = await AccountTestHelper.createTestAccount(seed: "account2");
+    var account3 = await AccountTestHelper.createTestAccount(seed: "account3");
 
-    var newValue = await createTestConversation(
+    var newValue = await ConversationTestHelper.createTestConversation(
       seed: "seed2",
       remoteId: conversation.remoteId,
     );
@@ -266,11 +269,11 @@ void main() {
       accounts: [account1],
     );
 
-    expectAccount(
+    AccountTestHelper.expectAccount(
       conversationBloc.accounts[0],
       account1,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue[0],
       account1,
     );
@@ -280,27 +283,27 @@ void main() {
       accounts: [account2, account3],
     );
 
-    expectAccount(
+    AccountTestHelper.expectAccount(
       conversationBloc.accounts[0],
       account1,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       conversationBloc.accounts[1],
       account2,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       conversationBloc.accounts[2],
       account3,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue[0],
       account1,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue[1],
       account2,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue[2],
       account3,
     );
@@ -309,14 +312,14 @@ void main() {
   });
 
   test('accountsWithoutMe', () async {
-    var account1 = await createTestAccount(seed: "account1");
-    var account2 = await createTestAccount(
+    var account1 = await AccountTestHelper.createTestAccount(seed: "account1");
+    var account2 = await AccountTestHelper.createTestAccount(
       seed: "account2",
       remoteId: myAccount.remoteId,
     );
-    var account3 = await createTestAccount(seed: "account3");
+    var account3 = await AccountTestHelper.createTestAccount(seed: "account3");
 
-    var newValue = await createTestConversation(
+    var newValue = await ConversationTestHelper.createTestConversation(
       seed: "seed2",
       remoteId: conversation.remoteId,
     );
@@ -335,11 +338,11 @@ void main() {
       accounts: [account1],
     );
 
-    expectAccount(
+    AccountTestHelper.expectAccount(
       conversationBloc.accountsWithoutMe[0],
       account1,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue[0],
       account1,
     );
@@ -349,19 +352,19 @@ void main() {
       accounts: [account2, account3],
     );
 
-    expectAccount(
+    AccountTestHelper.expectAccount(
       conversationBloc.accountsWithoutMe[0],
       account1,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       conversationBloc.accountsWithoutMe[1],
       account3,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue[0],
       account1,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue[1],
       account3,
     );
@@ -370,12 +373,12 @@ void main() {
   });
 
   test('refreshFromNetwork', () async {
-    expectConversation(
+    ConversationTestHelper.expectConversation(
       conversationBloc.conversation,
       conversation,
     );
 
-    var newValue = await createTestConversation(
+    var newValue = await ConversationTestHelper.createTestConversation(
       seed: "seed2",
       remoteId: conversation.remoteId,
     );
@@ -387,7 +390,7 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectConversation(
+    ConversationTestHelper.expectConversation(
       listenedValue,
       conversation,
     );
@@ -405,8 +408,9 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expectConversation(conversationBloc.conversation, newValue);
-    expectConversation(listenedValue, newValue);
+    ConversationTestHelper.expectConversation(
+        conversationBloc.conversation, newValue);
+    ConversationTestHelper.expectConversation(listenedValue, newValue);
     await subscription.cancel();
   });
 }

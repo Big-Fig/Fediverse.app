@@ -271,7 +271,7 @@ class PleromaMyAccountWrapper extends IMyAccount {
   String? get fqn => pleromaAccount.fqn;
 
   @override
-  // ignore: long-parameter-list, code-metrics
+  // ignore: long-parameter-list, code-metrics, long-method
   IMyAccount copyWith({
     int? id,
     String? remoteId,

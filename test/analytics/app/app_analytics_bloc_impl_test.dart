@@ -72,7 +72,6 @@ void main() {
 
     await appAnalyticsBloc.onAppOpened();
 
-
     await Future.delayed(Duration(milliseconds: 100));
 
     expect(

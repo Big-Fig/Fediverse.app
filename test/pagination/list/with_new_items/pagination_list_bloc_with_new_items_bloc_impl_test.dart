@@ -5,8 +5,8 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../memory_cached_pagination_bloc_impl.dart';
-import '../../pagination_model_helper.dart';
+import '../../cached/memory_cached_pagination_bloc_impl.dart';
+import '../../pagination_model_test_impl.dart';
 import 'pagination_list_bloc_with_new_items_memory_impl.dart';
 
 const int storageSize = 30;
@@ -14,18 +14,18 @@ const int? maximumCachedPagesCount = null;
 const int itemsCountPerPage = 5;
 // ignore_for_file: no-magic-number
 void main() {
-  late ICachedPaginationBloc<CachedPaginationPage<TestPaginationItem>,
-      TestPaginationItem> paginationBloc;
+  late ICachedPaginationBloc<CachedPaginationPage<PaginationItemTest>,
+      PaginationItemTest> paginationBloc;
 
-  late IPaginationListBloc<CachedPaginationPage<TestPaginationItem>,
-      TestPaginationItem> paginationListBloc;
+  late IPaginationListBloc<CachedPaginationPage<PaginationItemTest>,
+      PaginationItemTest> paginationListBloc;
   late ICachedPaginationListWithNewItemsBloc<
-      CachedPaginationPage<TestPaginationItem>,
-      TestPaginationItem> paginationListWithNewItemsBloc;
+      CachedPaginationPage<PaginationItemTest>,
+      PaginationItemTest> paginationListWithNewItemsBloc;
   late MemoryCachedPaginationListWithNewItemsBloc<
-      CachedPaginationPage<TestPaginationItem>,
-      TestPaginationItem> memoryPaginationListWithNewItemsBloc;
-  late MemoryCachedPaginationBloc<TestPaginationItem> memoryPaginationBloc;
+      CachedPaginationPage<PaginationItemTest>,
+      PaginationItemTest> memoryPaginationListWithNewItemsBloc;
+  late MemoryCachedPaginationBloc<PaginationItemTest> memoryPaginationBloc;
 
   setUp(() {
     memoryPaginationBloc = MemoryCachedPaginationBloc.createTestWithSize(
@@ -42,8 +42,8 @@ void main() {
       mergeNewItemsImmediately: false,
       // todo: write tests when watchNewerItemsWhenLoadedPagesIsEmpty: false
       watchNewerItemsWhenLoadedPagesIsEmpty: true,
-      comparator: TestPaginationItem.compareItems,
-      equalTo: TestPaginationItem.equalItems,
+      comparator: PaginationItemTest.compareItems,
+      equalTo: PaginationItemTest.equalItems,
       mergeNewItemsImmediatelyWhenItemsIsEmpty: false,
     );
     paginationListWithNewItemsBloc = memoryPaginationListWithNewItemsBloc;
@@ -290,9 +290,9 @@ void main() {
   });
 
   test('unmergedNewItems', () async {
-    var testPaginationItem1 = TestPaginationItem(100);
-    var testPaginationItem2 = TestPaginationItem(200);
-    var testPaginationItem3 = TestPaginationItem(300);
+    var testPaginationItem1 = PaginationItemTest(100);
+    var testPaginationItem2 = PaginationItemTest(200);
+    var testPaginationItem3 = PaginationItemTest(300);
 
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems.length,
@@ -372,9 +372,9 @@ void main() {
   });
 
   test('unmergedNewItemsCount', () async {
-    var testPaginationItem1 = TestPaginationItem(100);
-    var testPaginationItem2 = TestPaginationItem(200);
-    var testPaginationItem3 = TestPaginationItem(300);
+    var testPaginationItem1 = PaginationItemTest(100);
+    var testPaginationItem2 = PaginationItemTest(200);
+    var testPaginationItem3 = PaginationItemTest(300);
 
     expect(
       paginationListWithNewItemsBloc.unmergedNewItemsCount,
@@ -433,9 +433,9 @@ void main() {
   });
 
   test('unmergedNewItems', () async {
-    var testPaginationItem1 = TestPaginationItem(100);
-    var testPaginationItem2 = TestPaginationItem(200);
-    var testPaginationItem3 = TestPaginationItem(300);
+    var testPaginationItem1 = PaginationItemTest(100);
+    var testPaginationItem2 = PaginationItemTest(200);
+    var testPaginationItem3 = PaginationItemTest(300);
 
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems.length,
@@ -524,9 +524,9 @@ void main() {
   });
 
   test('mergedNewItems', () async {
-    var testPaginationItem1 = TestPaginationItem(-1);
-    var testPaginationItem2 = TestPaginationItem(-2);
-    var testPaginationItem3 = TestPaginationItem(-3);
+    var testPaginationItem1 = PaginationItemTest(-1);
+    var testPaginationItem2 = PaginationItemTest(-2);
+    var testPaginationItem3 = PaginationItemTest(-3);
 
     expect(
       paginationListWithNewItemsBloc.mergedNewItems.length,
@@ -615,9 +615,9 @@ void main() {
   });
 
   test('mergedNewItems', () async {
-    var testPaginationItem1 = TestPaginationItem(-1);
-    var testPaginationItem2 = TestPaginationItem(-2);
-    var testPaginationItem3 = TestPaginationItem(-3);
+    var testPaginationItem1 = PaginationItemTest(-1);
+    var testPaginationItem2 = PaginationItemTest(-2);
+    var testPaginationItem3 = PaginationItemTest(-3);
 
     expect(
       paginationListWithNewItemsBloc.mergedNewItemsCount,
@@ -685,16 +685,16 @@ void main() {
       paginationBloc: paginationBloc,
       mergeNewItemsImmediately: true,
       watchNewerItemsWhenLoadedPagesIsEmpty: true,
-      comparator: TestPaginationItem.compareItems,
-      equalTo: TestPaginationItem.equalItems,
+      comparator: PaginationItemTest.compareItems,
+      equalTo: PaginationItemTest.equalItems,
       mergeNewItemsImmediatelyWhenItemsIsEmpty: false,
     );
     paginationListWithNewItemsBloc = memoryPaginationListWithNewItemsBloc;
     paginationListBloc = paginationListWithNewItemsBloc;
 
-    var testPaginationItem1 = TestPaginationItem(-1);
-    var testPaginationItem2 = TestPaginationItem(-2);
-    var testPaginationItem3 = TestPaginationItem(-3);
+    var testPaginationItem1 = PaginationItemTest(-1);
+    var testPaginationItem2 = PaginationItemTest(-2);
+    var testPaginationItem3 = PaginationItemTest(-3);
 
     expect(
       paginationListWithNewItemsBloc.mergedNewItemsCount,

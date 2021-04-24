@@ -5,9 +5,9 @@ import 'package:fedi/app/pending/pending_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
-import '../../account/database/account_database_model_helper.dart';
-import '../../chat/message/database/chat_message_database_model_helper.dart';
-import '../../status/database/status_database_model_helper.dart';
+import '../../account/database/account_database_test_helper.dart';
+import '../../chat/message/database/chat_message_database_test_helper.dart';
+import '../../status/database/status_database_test_helper.dart';
 
 void main() {
   late AppDatabase database;
@@ -20,7 +20,8 @@ void main() {
     var file = File(filePath);
     dbFile = await file.copy(filePath + ".temp");
     database = AppDatabase(VmDatabase(dbFile));
-    dbAccount = await createTestDbAccount(seed: "seed");
+    dbAccount =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed");
     await database.accountDao.insert(entity: dbAccount, mode: null);
   });
 
@@ -40,7 +41,7 @@ void main() {
 
     expect((await statusDao.getAll()).isNotEmpty, false);
 
-    var dbStatus = await createTestDbStatus(
+    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
     );
@@ -88,7 +89,7 @@ void main() {
 
     expect((await statusDao.getAll()).isNotEmpty, false);
 
-    var dbStatus = await createTestDbStatus(
+    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
     );
@@ -104,7 +105,7 @@ void main() {
     expect(all.length, 1);
 
     var findByRemoteId =
-    await statusDao.findByRemoteIdPopulated(dbStatus.remoteId);
+        await statusDao.findByRemoteIdPopulated(dbStatus.remoteId);
 
     var actual = findByRemoteId?.dbStatus;
     expect(
@@ -128,7 +129,7 @@ void main() {
       "oldPendingRemoteId2",
     );
   });
-  
+
   test('test dbMigration v10->v11 dbChatMessage pendingState', () async {
     var chatMessageDao = database.chatMessageDao;
 
@@ -136,7 +137,8 @@ void main() {
 
     expect((await chatMessageDao.getAll()).isNotEmpty, false);
 
-    var dbChatMessage = await createTestDbChatMessage(
+    var dbChatMessage =
+        await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
       seed: "seed1",
       dbAccount: dbAccount,
     );
@@ -184,7 +186,8 @@ void main() {
 
     expect((await chatMessageDao.getAll()).isNotEmpty, false);
 
-    var dbChatMessage = await createTestDbChatMessage(
+    var dbChatMessage =
+        await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
       seed: "seed1",
       dbAccount: dbAccount,
     );
@@ -200,7 +203,7 @@ void main() {
     expect(all.length, 1);
 
     var findByRemoteId =
-    await chatMessageDao.findByRemoteIdPopulated(dbChatMessage.remoteId);
+        await chatMessageDao.findByRemoteIdPopulated(dbChatMessage.remoteId);
 
     var actual = findByRemoteId?.dbChatMessage;
     expect(
@@ -224,5 +227,4 @@ void main() {
       "oldPendingRemoteId2",
     );
   });
-  
 }

@@ -4,7 +4,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
-import '../../account/database/account_database_model_helper.dart';
+import '../../account/database/account_database_test_helper.dart';
 
 void main() {
   late AppDatabase database;
@@ -25,14 +25,16 @@ void main() {
     expect(database.migrationsToExecuted, database.schemaVersion);
   });
 
-  test('test dbMigration v9->v10 dbAccounts pleromaAcceptsChatMessages', () async {
+  test('test dbMigration v9->v10 dbAccounts pleromaAcceptsChatMessages',
+      () async {
     var accountDao = database.accountDao;
 
     await accountDao.clear(batchTransaction: null);
 
     expect((await accountDao.getAll()).isNotEmpty, false);
 
-    var dbAccount = await createTestDbAccount(seed: "seed");
+    var dbAccount =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed");
 
     var pleromaAcceptsChatMessages = true;
     dbAccount = dbAccount.copyWith(

@@ -9,7 +9,6 @@ import 'package:hive/hive.dart';
 import 'app_analytics_model_test_helper.dart';
 
 void main() {
-
   test('equal & hashcode & toString', () async {
     var obj1 =
         AppAnalyticsModelTestHelper.createTestAppAnalyticsData(seed: "seed1");
@@ -78,12 +77,10 @@ void main() {
   });
 
   test('hive adapter', () async {
-
     var adapter1 = AppAnalyticsDataAdapter();
     var adapter2 = AppAnalyticsDataAdapter();
 
     expect(adapter1 == adapter2, true);
     expect(adapter1.hashCode == adapter2.hashCode, true);
-
   });
 }

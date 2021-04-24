@@ -12,19 +12,20 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
-import '../../status/database/status_database_model_helper.dart';
-import '../account_model_helper.dart';
-import '../database/account_database_model_helper.dart';
-import 'my_account_bloc_impl_test.mocks.dart';
-import 'my_account_model_helper.dart';
+import '../../status/database/status_database_test_helper.dart';
+import '../account_test_helper.dart';
+import '../database/account_database_test_helper.dart';
+import 'my_account_bloc_impl_test_mocks.dart';
+import 'my_account_test_helper.dart';
+
 // ignore_for_file: no-magic-number
 @GenerateMocks([PleromaApiMyAccountService])
 void main() {
@@ -51,7 +52,7 @@ void main() {
 
     preferencesService = MemoryLocalPreferencesService();
 
-    myAccount = await createTestMyAccount(seed: "seed1");
+    myAccount = await MyAccountTestHelper.createTestMyAccount(seed: "seed1");
     authInstance = AuthInstance(
       urlHost: "fedi.app",
       acct: myAccount.acct,
@@ -99,10 +100,10 @@ void main() {
   }
 
   test('account', () async {
-    expectAccount(myAccountBloc.account, myAccount);
+    AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
 
-    var newValue =
-        await createTestMyAccount(seed: "seed2", remoteId: myAccount.remoteId);
+    var newValue = await MyAccountTestHelper.createTestMyAccount(
+        seed: "seed2", remoteId: myAccount.remoteId);
 
     var listenedValue;
 
@@ -111,12 +112,12 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectAccount(listenedValue, myAccount);
+    AccountTestHelper.expectAccount(listenedValue, myAccount);
 
     await _update(newValue);
 
-    expectAccount(myAccountBloc.account, newValue);
-    expectAccount(listenedValue, newValue);
+    AccountTestHelper.expectAccount(myAccountBloc.account, newValue);
+    AccountTestHelper.expectAccount(listenedValue, newValue);
     await subscription.cancel();
   });
 
@@ -425,10 +426,10 @@ void main() {
   });
 
   test('refreshFromNetwork', () async {
-    expectAccount(myAccountBloc.account, myAccount);
+    AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
 
-    var newValue =
-        await createTestMyAccount(seed: "seed2", remoteId: myAccount.remoteId);
+    var newValue = await MyAccountTestHelper.createTestMyAccount(
+        seed: "seed2", remoteId: myAccount.remoteId);
 
     var listenedValue;
 
@@ -437,7 +438,7 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectAccount(listenedValue, myAccount);
+    AccountTestHelper.expectAccount(listenedValue, myAccount);
 
     when(pleromaMyAccountServiceMock.verifyCredentials()).thenAnswer(
       (_) async => newValue.pleromaAccount,
@@ -447,7 +448,7 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expectAccount(myAccountBloc.account, newValue);
+    AccountTestHelper.expectAccount(myAccountBloc.account, newValue);
     await subscription.cancel();
   });
 
@@ -494,15 +495,15 @@ void main() {
   });
 
   test('updateMyAccountByRemote', () async {
-    expectAccount(myAccountBloc.account, myAccount);
+    AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
 
-    var newValue =
-        await createTestMyAccount(seed: "seed2", remoteId: myAccount.remoteId);
+    var newValue = await MyAccountTestHelper.createTestMyAccount(
+        seed: "seed2", remoteId: myAccount.remoteId);
     await myAccountBloc
         .updateMyAccountByMyPleromaAccount(newValue.pleromaAccount);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectAccount(myAccountBloc.account, newValue);
+    AccountTestHelper.expectAccount(myAccountBloc.account, newValue);
   });
 
   test('checkAccountIsMe', () async {
@@ -513,7 +514,7 @@ void main() {
       false,
     );
     expect(
-      myAccountBloc.checkAccountIsMe((await createTestAccount(
+      myAccountBloc.checkAccountIsMe((await AccountTestHelper.createTestAccount(
         seed: "seed3",
         remoteId: myAccount.remoteId,
       ))),
@@ -522,9 +523,10 @@ void main() {
   });
 
   test('checkIsStatusFromMe', () async {
-    var dbAccount = await createTestDbAccount(seed: "seed3");
-    var dbStatus =
-        await createTestDbStatus(seed: "seed4", dbAccount: dbAccount);
+    var dbAccount =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed3");
+    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+        seed: "seed4", dbAccount: dbAccount);
 
     expect(
       myAccountBloc.checkIsStatusFromMe(

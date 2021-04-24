@@ -4,7 +4,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
-import '../../conversation/database/conversation_database_model_helper.dart';
+import '../../conversation/database/conversation_database_test_helper.dart';
 
 void main() {
   late AppDatabase database;
@@ -32,7 +32,9 @@ void main() {
 
     expect((await conversationDao.getAll()).isNotEmpty, false);
 
-    var dbConversation = await createTestDbConversation(seed: "seed");
+    var dbConversation =
+        await ConversationDatabaseTestHelper.createTestDbConversation(
+            seed: "seed");
 
     var dateTime = DateTime(
       // ignore: no-magic-number

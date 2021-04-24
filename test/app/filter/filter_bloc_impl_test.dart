@@ -5,15 +5,16 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service_impl.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
 import 'filter_bloc_impl_test.mocks.dart';
-import 'filter_model_helper.dart';
+import 'filter_test_helper.dart';
+
 // ignore_for_file: no-magic-number
 @GenerateMocks([
   PleromaApiFilterService,
@@ -37,7 +38,7 @@ void main() {
     when(pleromaFilterServiceMock.pleromaApiState)
         .thenReturn(PleromaApiState.validAuth);
 
-    filter = await createTestFilter(
+    filter = await FilterTestHelper.createTestFilter(
       seed: "seed1",
     );
 
@@ -64,9 +65,9 @@ void main() {
   }
 
   test('filter', () async {
-    expectFilter(filterBloc.filter, filter);
+    FilterTestHelper.expectFilter(filterBloc.filter, filter);
 
-    var newValue = await createTestFilter(
+    var newValue = await FilterTestHelper.createTestFilter(
       seed: "seed2",
       remoteId: filter.remoteId,
     );
@@ -78,18 +79,18 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectFilter(
+    FilterTestHelper.expectFilter(
       listenedValue,
       filter,
     );
 
     await _update(newValue);
 
-    expectFilter(
+    FilterTestHelper.expectFilter(
       filterBloc.filter,
       newValue,
     );
-    expectFilter(
+    FilterTestHelper.expectFilter(
       listenedValue,
       newValue,
     );

@@ -3,17 +3,17 @@ import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'memory_cached_pagination_bloc_impl.dart';
-import 'pagination_model_helper.dart';
+import 'cached/memory_cached_pagination_bloc_impl.dart';
+import 'pagination_model_test_impl.dart';
 
 const int storageSize = 37;
 const int? maximumCachedPagesCount = null;
 const int itemsCountPerPage = 5;
 // ignore_for_file: no-magic-number
 void main() {
-  late IPaginationBloc<CachedPaginationPage<TestPaginationItem>,
-      TestPaginationItem> paginationBloc;
-  MemoryCachedPaginationBloc<TestPaginationItem> memoryPaginationBloc;
+  late IPaginationBloc<CachedPaginationPage<PaginationItemTest>,
+      PaginationItemTest> paginationBloc;
+  MemoryCachedPaginationBloc<PaginationItemTest> memoryPaginationBloc;
 
   setUp(() {
     memoryPaginationBloc = MemoryCachedPaginationBloc.createTestWithSize(
@@ -366,7 +366,7 @@ void main() {
   });
 
   test('refresh', () async {
-    CachedPaginationPage<TestPaginationItem>? page;
+    CachedPaginationPage<PaginationItemTest>? page;
     page = await paginationBloc.requestPage(
       pageIndex: 0,
       forceToSkipCache: false,
@@ -408,7 +408,7 @@ void main() {
     );
   });
   test('requestPage', () async {
-    CachedPaginationPage<TestPaginationItem>? page;
+    CachedPaginationPage<PaginationItemTest>? page;
     page =
         await paginationBloc.requestPage(pageIndex: 0, forceToSkipCache: false);
     expect(

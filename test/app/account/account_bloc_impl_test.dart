@@ -10,9 +10,9 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service_impl.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/web_sockets/pleroma_api_web_sockets_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -20,7 +20,7 @@ import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
 import 'account_bloc_impl_test.mocks.dart';
-import 'account_model_helper.dart';
+import 'account_test_helper.dart';
 
 @GenerateMocks([
   PleromaApiAuthAccountService,
@@ -49,7 +49,7 @@ void main() {
     when(pleromaAuthAccountServiceMock.pleromaApiState)
         .thenReturn(PleromaApiState.validAuth);
 
-    account = await createTestAccount(seed: "seed1");
+    account = await AccountTestHelper.createTestAccount(seed: "seed1");
 
     pleromaWebSocketsService = MockPleromaApiWebSocketsService();
 
@@ -90,10 +90,10 @@ void main() {
   }
 
   test('account', () async {
-    expectAccount(accountBloc.account, account);
+    AccountTestHelper.expectAccount(accountBloc.account, account);
 
-    var newValue =
-        await createTestAccount(seed: "seed2", remoteId: account.remoteId);
+    var newValue = await AccountTestHelper.createTestAccount(
+        seed: "seed2", remoteId: account.remoteId);
 
     var listenedValue;
 
@@ -102,12 +102,12 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectAccount(listenedValue, account);
+    AccountTestHelper.expectAccount(listenedValue, account);
 
     await _update(newValue);
 
-    expectAccount(accountBloc.account, newValue);
-    expectAccount(listenedValue, newValue);
+    AccountTestHelper.expectAccount(accountBloc.account, newValue);
+    AccountTestHelper.expectAccount(listenedValue, newValue);
     await subscription.cancel();
   });
 
@@ -420,7 +420,8 @@ void main() {
   test('accountRelationship', () async {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    var newValue = createTestAccountRelationship(seed: "seed0");
+    var newValue =
+        AccountTestHelper.createTestAccountRelationship(seed: "seed0");
 
     var listenedValue;
 
@@ -439,10 +440,12 @@ void main() {
   });
 
   test('refreshFromNetwork', () async {
-    expectAccount(accountBloc.account, account);
+    AccountTestHelper.expectAccount(accountBloc.account, account);
 
-    var newValue =
-        await createTestAccount(seed: "seed2", remoteId: account.remoteId);
+    var newValue = await AccountTestHelper.createTestAccount(
+      seed: "seed2",
+      remoteId: account.remoteId,
+    );
 
     var listenedValue;
 
@@ -451,9 +454,10 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectAccount(listenedValue, account);
+    AccountTestHelper.expectAccount(listenedValue, account);
 
-    var newRelationship = createTestAccountRelationship(seed: "seed11");
+    var newRelationship =
+        AccountTestHelper.createTestAccountRelationship(seed: "seed11");
     when(pleromaAuthAccountServiceMock.getAccount(
       accountRemoteId: account.remoteId,
     )).thenAnswer((_) async => newValue.toPleromaApiAccount());
@@ -466,11 +470,11 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expectAccount(
+    AccountTestHelper.expectAccount(
       accountBloc.account,
       newValue.copyWith(pleromaRelationship: newRelationship),
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue,
       newValue.copyWith(pleromaRelationship: newRelationship),
     );
