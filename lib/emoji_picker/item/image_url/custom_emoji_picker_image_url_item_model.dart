@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -45,19 +43,8 @@ class CustomEmojiPickerImageUrlItem extends CustomEmojiPickerItem {
     return 'CustomEmojiPickerImageUrlItem{name: $name, imageUrl: $imageUrl}';
   }
 
-  factory CustomEmojiPickerImageUrlItem.fromJson(Map<String, dynamic> json) =>
+  static CustomEmojiPickerImageUrlItem fromJson(Map<String, dynamic> json) =>
       _$CustomEmojiPickerImageUrlItemFromJson(json);
 
-  factory CustomEmojiPickerImageUrlItem.fromJsonString(String jsonString) =>
-      _$CustomEmojiPickerImageUrlItemFromJson(jsonDecode(jsonString));
-
-  static List<CustomEmojiPickerImageUrlItem> listFromJsonString(String str) =>
-      List<CustomEmojiPickerImageUrlItem>.from(
-        json.decode(str).map((x) => CustomEmojiPickerImageUrlItem.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$CustomEmojiPickerImageUrlItemToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$CustomEmojiPickerImageUrlItemToJson(this));
 }

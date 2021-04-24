@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
@@ -129,8 +127,8 @@ class PostStatusData implements IPostStatusData {
     this.expiresInSeconds,
   });
 
-  PleromaApiVisibility get visibilityPleroma => visibility.toPleromaApiVisibility();
-
+  PleromaApiVisibility get visibilityPleroma =>
+      visibility.toPleromaApiVisibility();
 
   @override
   // ignore: long-parameter-list
@@ -212,15 +210,10 @@ class PostStatusData implements IPostStatusData {
       'isNsfwSensitiveEnabled: $isNsfwSensitiveEnabled'
       '}';
 
-  factory PostStatusData.fromJson(Map<String, dynamic> json) =>
+  static PostStatusData fromJson(Map<String, dynamic> json) =>
       _$PostStatusDataFromJson(json);
 
-  factory PostStatusData.fromJsonString(String jsonString) =>
-      _$PostStatusDataFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PostStatusDataToJson(this);
-
-  String toJsonString() => jsonEncode(_$PostStatusDataToJson(this));
 }
 
 extension IPostStatusDataExtension on IPostStatusData {

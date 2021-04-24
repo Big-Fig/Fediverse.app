@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/pagination/page_size/pagination_page_size_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
@@ -23,21 +21,11 @@ class PaginationSettings implements IJsonObject, ISettings<PaginationSettings> {
     required this.pageSize,
   });
 
-  factory PaginationSettings.fromJson(Map<String, dynamic> json) =>
+  static PaginationSettings fromJson(Map<String, dynamic> json) =>
       _$PaginationSettingsFromJson(json);
-
-  factory PaginationSettings.fromJsonString(String jsonString) =>
-      _$PaginationSettingsFromJson(jsonDecode(jsonString));
-
-  static List<PaginationSettings> listFromJsonString(String str) =>
-      List<PaginationSettings>.from(
-        json.decode(str).map((x) => PaginationSettings.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$PaginationSettingsToJson(this);
-
-  String toJsonString() => jsonEncode(_$PaginationSettingsToJson(this));
 
   @override
   PaginationSettings clone() => copyWith();

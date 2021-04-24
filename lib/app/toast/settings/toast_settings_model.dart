@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/app/toast/handling_type/toast_handling_type_model.dart';
@@ -29,21 +27,11 @@ class ToastSettings implements IJsonObject, ISettings<ToastSettings> {
     required this.handlingTypeString,
   });
 
-  factory ToastSettings.fromJson(Map<String, dynamic> json) =>
+  static ToastSettings fromJson(Map<String, dynamic> json) =>
       _$ToastSettingsFromJson(json);
-
-  factory ToastSettings.fromJsonString(String jsonString) =>
-      _$ToastSettingsFromJson(jsonDecode(jsonString));
-
-  static List<ToastSettings> listFromJsonString(String str) =>
-      List<ToastSettings>.from(
-        json.decode(str).map((x) => ToastSettings.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$ToastSettingsToJson(this);
-
-  String toJsonString() => jsonEncode(_$ToastSettingsToJson(this));
 
   @override
   ToastSettings clone() => copyWith();

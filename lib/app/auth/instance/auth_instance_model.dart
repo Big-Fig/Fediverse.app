@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/pleroma/api/application/pleroma_api_application_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
@@ -129,19 +127,9 @@ class AuthInstance extends IJsonObject {
     );
   }
 
-  factory AuthInstance.fromJson(Map<String, dynamic> json) =>
+  static AuthInstance fromJson(Map<String, dynamic> json) =>
       _$AuthInstanceFromJson(json);
-
-  factory AuthInstance.fromJsonString(String jsonString) =>
-      _$AuthInstanceFromJson(jsonDecode(jsonString));
-
-  static List<AuthInstance> listFromJsonString(String str) =>
-      List<AuthInstance>.from(
-        json.decode(str).map((x) => AuthInstance.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$AuthInstanceToJson(this);
-
-  String toJsonString() => jsonEncode(_$AuthInstanceToJson(this));
 }

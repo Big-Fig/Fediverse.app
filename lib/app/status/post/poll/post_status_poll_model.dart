@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
@@ -67,19 +65,15 @@ class PostStatusPoll implements IPostStatusPoll {
       multiple.hashCode ^
       options.hashCode;
 
-  factory PostStatusPoll.fromJson(Map<String, dynamic> json) =>
+  static PostStatusPoll fromJson(Map<String, dynamic> json) =>
       _$PostStatusPollFromJson(json);
 
-  factory PostStatusPoll.fromJsonString(String jsonString) =>
-      _$PostStatusPollFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PostStatusPollToJson(this);
-
-  String toJsonString() => jsonEncode(_$PostStatusPollToJson(this));
 }
 
 extension IPostStatusPollExtension on IPostStatusPoll {
-  PleromaApiPostStatusPoll toPleromaPostStatusPoll() => PleromaApiPostStatusPoll(
+  PleromaApiPostStatusPoll toPleromaPostStatusPoll() =>
+      PleromaApiPostStatusPoll(
         options: options,
         multiple: multiple,
         expiresInSeconds: durationLength.totalSeconds,

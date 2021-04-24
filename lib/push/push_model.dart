@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:moor/moor.dart' as moor;
@@ -54,20 +52,10 @@ class PushMessage {
         typeString: typeString ?? this.typeString,
       );
 
-  factory PushMessage.fromJson(Map<String, dynamic> json) =>
+  static PushMessage fromJson(Map<String, dynamic> json) =>
       _$PushMessageFromJson(json);
 
-  factory PushMessage.fromJsonString(String jsonString) =>
-      _$PushMessageFromJson(jsonDecode(jsonString));
-
-  static List<PushMessage> listFromJsonString(String str) =>
-      List<PushMessage>.from(
-        json.decode(str).map((x) => PushMessage.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PushMessageToJson(this);
-
-  String toJsonString() => jsonEncode(_$PushMessageToJson(this));
 
   @override
   bool operator ==(Object other) =>
@@ -107,8 +95,8 @@ class PushNotification {
 
   Map<String, dynamic> toJson() => _$PushNotificationToJson(this);
 
-  factory PushNotification.fromJson(Map<dynamic, dynamic> json) =>
-      _$PushNotificationFromJson(json as Map<String, dynamic>);
+  static PushNotification fromJson(Map<String, dynamic> json) =>
+      _$PushNotificationFromJson(json);
 }
 
 enum PushMessageType {

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -34,21 +32,11 @@ class LocalizationLocale implements IJsonObject {
     this.countryCode,
   });
 
-  factory LocalizationLocale.fromJson(Map<String, dynamic> json) =>
+  static LocalizationLocale fromJson(Map<String, dynamic> json) =>
       _$LocalizationLocaleFromJson(json);
-
-  factory LocalizationLocale.fromJsonString(String jsonString) =>
-      _$LocalizationLocaleFromJson(jsonDecode(jsonString));
-
-  static List<LocalizationLocale> listFromJsonString(String str) =>
-      List<LocalizationLocale>.from(
-        json.decode(str).map((x) => LocalizationLocale.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$LocalizationLocaleToJson(this);
-
-  String toJsonString() => jsonEncode(_$LocalizationLocaleToJson(this));
 
   @override
   bool operator ==(Object other) =>

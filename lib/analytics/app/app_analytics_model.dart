@@ -46,7 +46,7 @@ class AppAnalyticsData implements IJsonObject {
         isAppRated: isAppRated ?? this.isAppRated,
       );
 
-  factory AppAnalyticsData.fromJson(Map<String, dynamic> json) =>
+  static AppAnalyticsData fromJson(Map<String, dynamic> json) =>
       _$AppAnalyticsDataFromJson(json);
 
   @override

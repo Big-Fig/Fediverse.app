@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'mastodon_api_application_model.g.dart';
@@ -30,7 +28,6 @@ class MastodonApiApplicationRegistrationRequest {
     this.website,
   });
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -48,7 +45,6 @@ class MastodonApiApplicationRegistrationRequest {
       scopes.hashCode ^
       website.hashCode;
 
-
   @override
   String toString() {
     return 'MastodonApiApplicationRegistrationRequest{'
@@ -59,21 +55,13 @@ class MastodonApiApplicationRegistrationRequest {
         '}';
   }
 
-  factory MastodonApiApplicationRegistrationRequest.fromJson(
+  static MastodonApiApplicationRegistrationRequest fromJson(
     Map<String, dynamic> json,
   ) =>
       _$MastodonApiApplicationRegistrationRequestFromJson(json);
 
-  factory MastodonApiApplicationRegistrationRequest.fromJsonString(
-    String jsonString,
-  ) =>
-      _$MastodonApiApplicationRegistrationRequestFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() =>
       _$MastodonApiApplicationRegistrationRequestToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$MastodonApiApplicationRegistrationRequestToJson(this));
 }
 
 abstract class IMastodonApiApplication {

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
@@ -37,19 +35,9 @@ class PushHandlerUnhandledList implements IJsonObject {
   @override
   int get hashCode => messages.hashCode;
 
-  factory PushHandlerUnhandledList.fromJson(Map<String, dynamic> json) =>
+  static PushHandlerUnhandledList fromJson(Map<String, dynamic> json) =>
       _$PushHandlerUnhandledListFromJson(json);
-
-  factory PushHandlerUnhandledList.fromJsonString(String jsonString) =>
-      _$PushHandlerUnhandledListFromJson(jsonDecode(jsonString));
-
-  static List<PushHandlerUnhandledList> listFromJsonString(String str) =>
-      List<PushHandlerUnhandledList>.from(
-        json.decode(str).map((x) => PushHandlerUnhandledList.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$PushHandlerUnhandledListToJson(this);
-
-  String toJsonString() => jsonEncode(_$PushHandlerUnhandledListToJson(this));
 }

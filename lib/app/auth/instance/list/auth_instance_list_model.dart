@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
@@ -37,19 +35,9 @@ class AuthInstanceList extends IJsonObject {
     return 'AuthInstanceList{instances: $instances}';
   }
 
-  factory AuthInstanceList.fromJson(Map<String, dynamic> json) =>
+  static AuthInstanceList fromJson(Map<String, dynamic> json) =>
       _$AuthInstanceListFromJson(json);
-
-  factory AuthInstanceList.fromJsonString(String jsonString) =>
-      _$AuthInstanceListFromJson(jsonDecode(jsonString));
-
-  static List<AuthInstanceList> listFromJsonString(String str) =>
-      List<AuthInstanceList>.from(
-        json.decode(str).map((x) => AuthInstanceList.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$AuthInstanceListToJson(this);
-
-  String toJsonString() => jsonEncode(_$AuthInstanceListToJson(this));
 }

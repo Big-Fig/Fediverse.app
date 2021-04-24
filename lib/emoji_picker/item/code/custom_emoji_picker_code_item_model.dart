@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -34,22 +32,12 @@ class CustomEmojiPickerCodeItem extends CustomEmojiPickerItem {
         '}';
   }
 
-  factory CustomEmojiPickerCodeItem.fromJson(
+  static CustomEmojiPickerCodeItem fromJson(
     Map<String, dynamic> json,
   ) =>
       _$CustomEmojiPickerCodeItemFromJson(json);
 
-  factory CustomEmojiPickerCodeItem.fromJsonString(String jsonString) =>
-      _$CustomEmojiPickerCodeItemFromJson(jsonDecode(jsonString));
-
-  static List<CustomEmojiPickerCodeItem> listFromJsonString(String str) =>
-      List<CustomEmojiPickerCodeItem>.from(
-        json.decode(str).map((x) => CustomEmojiPickerCodeItem.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$CustomEmojiPickerCodeItemToJson(this);
-
-  String toJsonString() => jsonEncode(_$CustomEmojiPickerCodeItemToJson(this));
 
   @override
   bool operator ==(Object other) =>

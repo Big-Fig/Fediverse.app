@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/mastodon/api/account/mastodon_api_account_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -89,20 +87,10 @@ class MastodonApiInstanceStats {
         ' statusCount: $statusCount, domainCount: $domainCount}';
   }
 
-  factory MastodonApiInstanceStats.fromJson(Map<String, dynamic> json) =>
+  static MastodonApiInstanceStats fromJson(Map<String, dynamic> json) =>
       _$MastodonApiInstanceStatsFromJson(json);
 
-  factory MastodonApiInstanceStats.fromJsonString(String jsonString) =>
-      _$MastodonApiInstanceStatsFromJson(jsonDecode(jsonString));
-
-  static List<MastodonApiInstanceStats> listFromJsonString(String str) =>
-      List<MastodonApiInstanceStats>.from(
-        json.decode(str).map((x) => MastodonApiInstanceStats.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$MastodonApiInstanceStatsToJson(this);
-
-  String toJsonString() => jsonEncode(_$MastodonApiInstanceStatsToJson(this));
 }
 
 @JsonSerializable()
@@ -133,18 +121,8 @@ class MastodonApiUrls {
     return 'MastodonApiUrls{streamingApi: $streamingApi}';
   }
 
-  factory MastodonApiUrls.fromJson(Map<String, dynamic> json) =>
+  static MastodonApiUrls fromJson(Map<String, dynamic> json) =>
       _$MastodonApiUrlsFromJson(json);
 
-  factory MastodonApiUrls.fromJsonString(String jsonString) =>
-      _$MastodonApiUrlsFromJson(jsonDecode(jsonString));
-
-  static List<MastodonApiUrls> listFromJsonString(String str) =>
-      List<MastodonApiUrls>.from(
-        json.decode(str).map((x) => MastodonApiUrls.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$MastodonApiUrlsToJson(this);
-
-  String toJsonString() => jsonEncode(_$MastodonApiUrlsToJson(this));
 }

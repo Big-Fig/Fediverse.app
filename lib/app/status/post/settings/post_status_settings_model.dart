@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/localization/localization_model.dart';
@@ -56,21 +54,11 @@ class PostStatusSettings implements IJsonObject, ISettings<PostStatusSettings> {
       ' defaultStatusLocale: $defaultStatusLocale'
       '}';
 
-  factory PostStatusSettings.fromJson(Map<String, dynamic> json) =>
+  static PostStatusSettings fromJson(Map<String, dynamic> json) =>
       _$PostStatusSettingsFromJson(json);
-
-  factory PostStatusSettings.fromJsonString(String jsonString) =>
-      _$PostStatusSettingsFromJson(jsonDecode(jsonString));
-
-  static List<PostStatusSettings> listFromJsonString(String str) =>
-      List<PostStatusSettings>.from(
-        json.decode(str).map((x) => PostStatusSettings.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$PostStatusSettingsToJson(this);
-
-  String toJsonString() => jsonEncode(_$PostStatusSettingsToJson(this));
 
   @override
   PostStatusSettings clone() => copyWith();
