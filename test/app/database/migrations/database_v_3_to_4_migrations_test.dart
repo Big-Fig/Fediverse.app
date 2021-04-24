@@ -4,8 +4,8 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
-import '../../account/database/account_database_model_helper.dart';
-import '../../status/database/status_database_model_helper.dart';
+import '../../account/database/account_database_test_helper.dart';
+import '../../status/database/status_database_test_helper.dart';
 
 void main() {
   late AppDatabase database;
@@ -33,9 +33,10 @@ void main() {
 
     expect((await statusDao.getAll()).isNotEmpty, false);
 
-    var testDbStatus = await createTestDbStatus(
+    var testDbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
-      dbAccount: await createTestDbAccount(seed: "seed2"),
+      dbAccount:
+          await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed2"),
     );
     await statusDao.insert(
       entity: testDbStatus,

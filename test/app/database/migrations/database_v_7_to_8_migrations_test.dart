@@ -5,7 +5,7 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
-import '../../filter/database/filter_database_model_helper.dart';
+import '../../filter/database/filter_database_test_helper.dart';
 
 void main() {
   late AppDatabase database;
@@ -33,13 +33,14 @@ void main() {
 
     expect((await filterDao.getAll()).isNotEmpty, false);
 
-    var dbFilter = await createTestDbFilter(seed: "seed");
+    var dbFilter =
+        await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed");
 
     await filterDao.insert(entity: dbFilter, mode: null);
 
     expect((await filterDao.getAll()).length, 1);
 
-    expectDbFilter(
+    FilterDatabaseTestHelper.expectDbFilter(
       DbFilterPopulatedWrapper(
         dbFilterPopulated: (await filterDao.findByRemoteIdPopulated(
           dbFilter.remoteId,

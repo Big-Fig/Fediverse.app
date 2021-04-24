@@ -11,10 +11,10 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service_impl.dart';
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service_impl.dart';
 import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_reaction_service_impl.dart';
@@ -24,10 +24,10 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
-import '../account/account_model_helper.dart';
-import 'database/status_database_model_helper.dart';
+import '../../pleroma/api/media/pleroma_api_media_test_helper.dart';
+import '../account/account_test_helper.dart';
 import 'status_bloc_impl_test.mocks.dart';
-import 'status_model_helper.dart';
+import 'status_test_helper.dart';
 
 Function eq = const ListEquality().equals;
 // ignore_for_file: no-magic-number
@@ -75,7 +75,7 @@ Future<void> main() async {
     when(PleromaApiStatusEmojiReactionServiceMock.pleromaApiState)
         .thenReturn(PleromaApiState.validAuth);
 
-    status = await createTestStatus(seed: "seed1");
+    status = await StatusTestHelper.createTestStatus(seed: "seed1");
 
     statusBloc = LocalStatusBloc(
       status: status,
@@ -84,7 +84,8 @@ Future<void> main() async {
       delayInit: false,
       accountRepository: accountRepository,
       pleromaAccountService: pleromaAccountServiceMock,
-      PleromaApiStatusEmojiReactionService: PleromaApiStatusEmojiReactionServiceMock,
+      PleromaApiStatusEmojiReactionService:
+          PleromaApiStatusEmojiReactionServiceMock,
       pleromaPollService: pleromaPollServiceMock,
       isNeedWatchLocalRepositoryForUpdates: true,
       isNeedRefreshFromNetworkOnInit: false,
@@ -107,9 +108,9 @@ Future<void> main() async {
   }
 
   test('status', () async {
-    expectStatus(statusBloc.status, status);
+    StatusTestHelper.expectStatus(statusBloc.status, status);
 
-    var newValue = await createTestStatus(
+    var newValue = await StatusTestHelper.createTestStatus(
       seed: "seed2",
       remoteId: status.remoteId,
     );
@@ -121,18 +122,18 @@ Future<void> main() async {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectStatus(
+    StatusTestHelper.expectStatus(
       listenedValue,
       status,
     );
 
     await _update(newValue);
 
-    expectStatus(
+    StatusTestHelper.expectStatus(
       statusBloc.status,
       newValue,
     );
-    expectStatus(
+    StatusTestHelper.expectStatus(
       listenedValue,
       newValue,
     );
@@ -140,14 +141,14 @@ Future<void> main() async {
   });
 
   test('reblog', () async {
-    expectStatus(
+    StatusTestHelper.expectStatus(
       statusBloc.reblog,
       status.reblog,
     );
 
-    var reblog = await createTestStatus(seed: "reblog");
+    var reblog = await StatusTestHelper.createTestStatus(seed: "reblog");
 
-    var newValue = await createTestStatus(
+    var newValue = await StatusTestHelper.createTestStatus(
       seed: "seed2",
       remoteId: status.remoteId,
       reblog: reblog,
@@ -166,25 +167,26 @@ Future<void> main() async {
 
     await _update(newValue);
 
-    expectStatus(
+    StatusTestHelper.expectStatus(
       statusBloc.reblog,
       reblog,
     );
-    expectStatus(
+    StatusTestHelper.expectStatus(
       listenedValue,
       reblog,
     );
     await subscription.cancel();
   });
   test('reblogOrOriginal', () async {
-    expectStatus(
+    StatusTestHelper.expectStatus(
       statusBloc.reblogOrOriginal,
       status,
     );
 
-    var reblog = await createTestStatus(seed: "reblogOrOriginal");
+    var reblog =
+        await StatusTestHelper.createTestStatus(seed: "reblogOrOriginal");
 
-    var newValue = await createTestStatus(
+    var newValue = await StatusTestHelper.createTestStatus(
       seed: "seed2",
       remoteId: status.remoteId,
       reblog: reblog,
@@ -203,11 +205,11 @@ Future<void> main() async {
 
     await _update(newValue);
 
-    expectStatus(
+    StatusTestHelper.expectStatus(
       statusBloc.reblogOrOriginal,
       reblog,
     );
-    expectStatus(
+    StatusTestHelper.expectStatus(
       listenedValue,
       reblog,
     );
@@ -388,7 +390,8 @@ Future<void> main() async {
     var reblogValue = PleromaApiCard.only(url: "fedi_1.app");
     var newValue = PleromaApiCard.only(url: "fedi_2.app");
 
-    var reblog = await createTestStatus(seed: "reblogOrOriginalCard");
+    var reblog =
+        await StatusTestHelper.createTestStatus(seed: "reblogOrOriginalCard");
 
     var listenedValue;
 
@@ -429,7 +432,7 @@ Future<void> main() async {
       status.reblog != null,
     );
 
-    var reblog = await createTestStatus(seed: "isHaveReblog");
+    var reblog = await StatusTestHelper.createTestStatus(seed: "isHaveReblog");
 
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -444,12 +447,12 @@ Future<void> main() async {
   });
 
   test('account', () async {
-    expectAccount(
+    AccountTestHelper.expectAccount(
       statusBloc.account,
       status.account,
     );
 
-    var newValue = await createTestAccount(seed: "seed3");
+    var newValue = await AccountTestHelper.createTestAccount(seed: "seed3");
 
     var listenedValue;
 
@@ -458,18 +461,18 @@ Future<void> main() async {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue,
       status.account,
     );
 
     await _update(status.copyWith(account: newValue));
 
-    expectAccount(
+    AccountTestHelper.expectAccount(
       statusBloc.account,
       newValue,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue,
       newValue,
     );
@@ -477,15 +480,16 @@ Future<void> main() async {
   });
 
   test('reblogOrOriginalAccount', () async {
-    expectAccount(
+    AccountTestHelper.expectAccount(
       statusBloc.reblogOrOriginalAccount,
       status.account,
     );
 
-    var reblog = await createTestStatus(seed: "accountReblogOrOriginal");
+    var reblog = await StatusTestHelper.createTestStatus(
+        seed: "accountReblogOrOriginal");
 
-    var reblogValue = await createTestAccount(seed: "reblog");
-    var newValue = await createTestAccount(seed: "test");
+    var reblogValue = await AccountTestHelper.createTestAccount(seed: "reblog");
+    var newValue = await AccountTestHelper.createTestAccount(seed: "test");
 
     var listenedValue;
 
@@ -495,17 +499,17 @@ Future<void> main() async {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectAccount(listenedValue, status.account);
+    AccountTestHelper.expectAccount(listenedValue, status.account);
 
     await _update(
       status.copyWith(reblog: reblog.copyWith(account: reblogValue)),
     );
 
-    expectAccount(
+    AccountTestHelper.expectAccount(
       statusBloc.reblogOrOriginalAccount,
       reblogValue,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue,
       reblogValue,
     );
@@ -515,11 +519,11 @@ Future<void> main() async {
       reblog: reblog.copyWith(account: reblogValue),
     ));
 
-    expectAccount(
+    AccountTestHelper.expectAccount(
       statusBloc.reblogOrOriginalAccount,
       reblogValue,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue,
       reblogValue,
     );
@@ -701,7 +705,7 @@ Future<void> main() async {
       status.reblog != null,
     );
 
-    var reblog = await createTestStatus(seed: "isHaveReblog");
+    var reblog = await StatusTestHelper.createTestStatus(seed: "isHaveReblog");
 
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -717,7 +721,9 @@ Future<void> main() async {
       status.mediaAttachments,
     );
 
-    var newValue = [createTestPleromaMediaAttachment()];
+    var newValue = [
+      PleromaApiMediaTestHelper.createTestPleromaMediaAttachment()
+    ];
 
     var listenedValue;
 
@@ -790,12 +796,13 @@ Future<void> main() async {
       status.pleromaEmojiReactions,
     );
 
-    var reblog =
-        await createTestStatus(seed: "reblogPlusOriginalEmojiReactions");
+    var reblog = await StatusTestHelper.createTestStatus(
+        seed: "reblogPlusOriginalEmojiReactions");
 
     var reblogEmojiAccount =
-        await createTestAccount(seed: "reblogEmojiAccount");
-    var emojiAccount = await createTestAccount(seed: "emojiAccount");
+        await AccountTestHelper.createTestAccount(seed: "reblogEmojiAccount");
+    var emojiAccount =
+        await AccountTestHelper.createTestAccount(seed: "emojiAccount");
 
     var reblogValue = [
       PleromaApiStatusEmojiReaction(
@@ -934,7 +941,7 @@ Future<void> main() async {
       status.account.avatar,
     );
 
-    var newValue = await createTestAccount(seed: "seed3");
+    var newValue = await AccountTestHelper.createTestAccount(seed: "seed3");
 
     var listenedValue;
 
@@ -1239,7 +1246,8 @@ Future<void> main() async {
     var reblogValue = 4;
     var newValue = 3;
 
-    var reblog = await createTestStatus(seed: "favouritesCount");
+    var reblog =
+        await StatusTestHelper.createTestStatus(seed: "favouritesCount");
 
     var listenedValue;
 
@@ -1324,7 +1332,7 @@ Future<void> main() async {
     var reblogValue = 4;
     var newValue = 3;
 
-    var reblog = await createTestStatus(seed: "reblogsCount");
+    var reblog = await StatusTestHelper.createTestStatus(seed: "reblogsCount");
 
     var listenedValue;
 
@@ -1401,7 +1409,7 @@ Future<void> main() async {
   });
 
   test('refreshFromNetwork', () async {
-    expectStatus(
+    StatusTestHelper.expectStatus(
       statusBloc.status,
       status,
     );
@@ -1411,7 +1419,7 @@ Future<void> main() async {
     );
     status = status.copyWith(id: id);
 
-    var newValue = await createTestStatus(
+    var newValue = await StatusTestHelper.createTestStatus(
       seed: "seed2",
       remoteId: status.remoteId,
     );
@@ -1423,7 +1431,7 @@ Future<void> main() async {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectStatus(
+    StatusTestHelper.expectStatus(
       listenedValue,
       status,
     );
@@ -1438,7 +1446,7 @@ Future<void> main() async {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expectStatus(
+    StatusTestHelper.expectStatus(
       listenedValue,
       newValue,
     );
@@ -1462,7 +1470,7 @@ Future<void> main() async {
       ),
     ]));
 
-    var account = await createTestAccount(
+    var account = await AccountTestHelper.createTestAccount(
       seed: "loadAccountByMentionUrl",
       remoteId: accountId1,
     );
@@ -1476,20 +1484,21 @@ Future<void> main() async {
       await statusBloc.loadAccountByMentionUrl(url: "invalid url"),
       null,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       await statusBloc.loadAccountByMentionUrl(url: "url1"),
       account,
     );
   });
 
   test('inReplyToAccount', () async {
-    var account1 = await createTestAccount(seed: "inReplyToAccount");
+    var account1 =
+        await AccountTestHelper.createTestAccount(seed: "inReplyToAccount");
 
     await accountRepository.upsertInRemoteType(
       account1.toPleromaApiAccount(),
     );
 
-    expectAccount(
+    AccountTestHelper.expectAccount(
       await statusBloc.getInReplyToAccount(),
       null,
     );
@@ -1504,7 +1513,7 @@ Future<void> main() async {
 
     await _update(status.copyWith(inReplyToAccountRemoteId: account1.remoteId));
 
-    expectAccount(
+    AccountTestHelper.expectAccount(
       await statusBloc.getInReplyToAccount(),
       account1,
     );
@@ -1844,8 +1853,8 @@ Future<void> main() async {
     var emoji1 = "emoji1";
     var emoji2 = "emoji2";
 
-    var account1 = await createTestAccount(seed: "account1");
-    var account2 = await createTestAccount(seed: "account2");
+    var account1 = await AccountTestHelper.createTestAccount(seed: "account1");
+    var account2 = await AccountTestHelper.createTestAccount(seed: "account2");
 
     var reaction2 = PleromaApiStatusEmojiReaction(
       name: emoji2,

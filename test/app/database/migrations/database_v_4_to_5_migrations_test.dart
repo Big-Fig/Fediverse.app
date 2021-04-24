@@ -4,7 +4,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
-import '../../account/database/account_database_model_helper.dart';
+import '../../account/database/account_database_test_helper.dart';
 
 void main() {
   late AppDatabase database;
@@ -33,7 +33,8 @@ void main() {
     expect((await accountDao.getAll()).isNotEmpty, false);
 
     var pleromaBackgroundImage = "pleromaBackgroundImage11";
-    var testDbAccount = await createTestDbAccount(seed: "seed1");
+    var testDbAccount =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed1");
     testDbAccount =
         testDbAccount.copyWith(pleromaBackgroundImage: pleromaBackgroundImage);
     await accountDao.insert(

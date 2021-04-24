@@ -4,9 +4,9 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
-import '../../account/database/account_database_model_helper.dart';
-import '../../chat/message/database/chat_message_database_model_helper.dart';
-import '../../status/database/status_database_model_helper.dart';
+import '../../account/database/account_database_test_helper.dart';
+import '../../chat/message/database/chat_message_database_test_helper.dart';
+import '../../status/database/status_database_test_helper.dart';
 
 void main() {
   late AppDatabase database;
@@ -18,7 +18,8 @@ void main() {
     var file = File(filePath);
     dbFile = await file.copy(filePath + ".temp");
     database = AppDatabase(VmDatabase(dbFile, logStatements: false));
-    dbAccount = await createTestDbAccount(seed: "seed");
+    dbAccount =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed");
     await database.accountDao.insert(entity: dbAccount, mode: null);
   });
 
@@ -38,7 +39,7 @@ void main() {
 
     expect((await statusDao.getAll()).isNotEmpty, false);
 
-    var dbStatus = await createTestDbStatus(
+    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
     );
@@ -87,7 +88,7 @@ void main() {
 
     expect((await statusDao.getAll()).isNotEmpty, false);
 
-    var dbStatus = await createTestDbStatus(
+    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
       seed: "seed1",
       dbAccount: dbAccount,
     );
@@ -135,7 +136,8 @@ void main() {
 
     expect((await chatMessageDao.getAll()).isNotEmpty, false);
 
-    var dbChatMessage = await createTestDbChatMessage(
+    var dbChatMessage =
+        await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
       seed: "seed1",
       dbAccount: dbAccount,
     );
@@ -184,7 +186,8 @@ void main() {
 
     expect((await chatMessageDao.getAll()).isNotEmpty, false);
 
-    var dbChatMessage = await createTestDbChatMessage(
+    var dbChatMessage =
+        await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
       seed: "seed1",
       dbAccount: dbAccount,
     );

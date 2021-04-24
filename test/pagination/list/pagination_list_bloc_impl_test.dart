@@ -5,20 +5,20 @@ import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../memory_cached_pagination_bloc_impl.dart';
-import '../pagination_model_helper.dart';
+import '../cached/memory_cached_pagination_bloc_impl.dart';
+import '../pagination_model_test_impl.dart';
 
 const int storageSize = 30;
 const int? maximumCachedPagesCount = null;
 const int itemsCountPerPage = 5;
 // ignore_for_file: no-magic-number
 void main() {
-  late IPaginationBloc<CachedPaginationPage<TestPaginationItem>,
-      TestPaginationItem> paginationBloc;
+  late IPaginationBloc<CachedPaginationPage<PaginationItemTest>,
+      PaginationItemTest> paginationBloc;
 
-  late IPaginationListBloc<CachedPaginationPage<TestPaginationItem>,
-      TestPaginationItem> paginationListBloc;
-  MemoryCachedPaginationBloc<TestPaginationItem> memoryPaginationBloc;
+  late IPaginationListBloc<CachedPaginationPage<PaginationItemTest>,
+      PaginationItemTest> paginationListBloc;
+  MemoryCachedPaginationBloc<PaginationItemTest> memoryPaginationBloc;
 
   setUp(() {
     memoryPaginationBloc = MemoryCachedPaginationBloc.createTestWithSize(

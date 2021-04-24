@@ -12,17 +12,18 @@ import 'package:fedi/app/notification/repository/notification_repository_impl.da
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service_impl.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
-import '../account/account_model_helper.dart';
-import '../status/status_model_helper.dart';
+import '../account/account_test_helper.dart';
+import '../status/status_test_helper.dart';
 import 'notification_bloc_impl_test.mocks.dart';
-import 'notification_model_helper.dart';
+import 'notification_test_helper.dart';
+
 // ignore_for_file: no-magic-number
 @GenerateMocks([PleromaApiNotificationService])
 void main() {
@@ -60,9 +61,9 @@ void main() {
     when(pleromaNotificationServiceMock.pleromaApiState)
         .thenReturn(PleromaApiState.validAuth);
 
-    status = await createTestStatus(seed: "seed4");
+    status = await StatusTestHelper.createTestStatus(seed: "seed4");
 
-    notification = await createTestNotification(
+    notification = await NotificationTestHelper.createTestNotification(
       seed: "seed1",
       status: status.dbStatusPopulated,
     );
@@ -97,9 +98,10 @@ void main() {
   }
 
   test('notification', () async {
-    expectNotification(notificationBloc.notification, notification);
+    NotificationTestHelper.expectNotification(
+        notificationBloc.notification, notification);
 
-    var newValue = await createTestNotification(
+    var newValue = await NotificationTestHelper.createTestNotification(
       seed: "seed2",
       remoteId: notification.remoteId,
     );
@@ -111,18 +113,18 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectNotification(
+    NotificationTestHelper.expectNotification(
       listenedValue,
       notification,
     );
 
     await _update(newValue);
 
-    expectNotification(
+    NotificationTestHelper.expectNotification(
       notificationBloc.notification,
       newValue,
     );
-    expectNotification(
+    NotificationTestHelper.expectNotification(
       listenedValue,
       newValue,
     );
@@ -130,12 +132,12 @@ void main() {
   });
 
   test('account', () async {
-    expectAccount(
+    AccountTestHelper.expectAccount(
       notificationBloc.account,
       notification.account,
     );
 
-    var newValue = await createTestAccount(seed: "seed3");
+    var newValue = await AccountTestHelper.createTestAccount(seed: "seed3");
 
     var listenedValue;
 
@@ -144,18 +146,18 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue,
       notification.account,
     );
 
     await _update(notification.copyWith(account: newValue));
 
-    expectAccount(
+    AccountTestHelper.expectAccount(
       notificationBloc.account,
       newValue,
     );
-    expectAccount(
+    AccountTestHelper.expectAccount(
       listenedValue,
       newValue,
     );
@@ -163,12 +165,12 @@ void main() {
   });
 
   test('status', () async {
-    expectStatus(
+    StatusTestHelper.expectStatus(
       notificationBloc.status,
       notification.status,
     );
 
-    var newValue = await createTestStatus(seed: "seed3");
+    var newValue = await StatusTestHelper.createTestStatus(seed: "seed3");
 
     var listenedValue;
 
@@ -177,18 +179,18 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectStatus(
+    StatusTestHelper.expectStatus(
       listenedValue,
       notification.status,
     );
 
     await _update(notification.copyWith(status: newValue));
 
-    expectStatus(
+    StatusTestHelper.expectStatus(
       notificationBloc.status,
       newValue,
     );
-    expectStatus(
+    StatusTestHelper.expectStatus(
       listenedValue,
       newValue,
     );

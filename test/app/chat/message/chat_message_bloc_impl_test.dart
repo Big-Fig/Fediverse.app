@@ -15,17 +15,18 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.da
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service_impl.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
-import '../chat_model_helper.dart';
+import '../chat_test_helper.dart';
 import 'chat_message_bloc_impl_test.mocks.dart';
-import 'chat_message_model_helper.dart';
+import 'chat_message_test_helper.dart';
+
 // ignore_for_file: no-magic-number
 @GenerateMocks([
   PleromaApiChatService,
@@ -72,8 +73,8 @@ void main() {
         PleromaApiState.validAuth,
       );
 
-      chat = await createTestChat(seed: "seed1");
-      chatMessage = await createTestChatMessage(
+      chat = await ChatTestHelper.createTestChat(seed: "seed1");
+      chatMessage = await ChatMessageTestHelper.createTestChatMessage(
         seed: "seed1",
         chatRemoteId: chat.remoteId,
       );
@@ -122,9 +123,10 @@ void main() {
   }
 
   test('chatMessage', () async {
-    expectChatMessage(chatMessageBloc.chatMessage, chatMessage);
+    ChatMessageTestHelper.expectChatMessage(
+        chatMessageBloc.chatMessage, chatMessage);
 
-    var newValue = await createTestChatMessage(
+    var newValue = await ChatMessageTestHelper.createTestChatMessage(
       seed: "seed2",
       remoteId: chatMessage.remoteId,
     );
@@ -141,12 +143,13 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectChatMessage(listenedValue, chatMessage);
+    ChatMessageTestHelper.expectChatMessage(listenedValue, chatMessage);
 
     await _update(newValue);
 
-    expectChatMessage(chatMessageBloc.chatMessage, newValue);
-    expectChatMessage(listenedValue, newValue);
+    ChatMessageTestHelper.expectChatMessage(
+        chatMessageBloc.chatMessage, newValue);
+    ChatMessageTestHelper.expectChatMessage(listenedValue, newValue);
     await subscription.cancel();
   });
 
@@ -296,7 +299,7 @@ void main() {
   });
 
 //  test('refreshFromNetwork', () async {
-//    expectChatMessage(chatMessageBloc.chatMessage, chatMessage);
+//    ChatMessageTestHelper.expectChatMessage(chatMessageBloc.chatMessage, chatMessage);
 //
 //    var id = await chatMessageRepository.upsertRemoteChatMessage(
 //        mapLocalChatMessageToRemoteChatMessage(chatMessage),
@@ -304,7 +307,7 @@ void main() {
 //        conversationRemoteId: null);
 //    chatMessage = chatMessage.copyWith(id: id);
 //
-//    var newValue = await createTestChatMessage(
+//    var newValue = await ChatMessageTestHelper.createTestChatMessage(
 //        seed: "seed2", remoteId: chatMessage.remoteId);
 //
 //    var listenedValue;
@@ -314,7 +317,7 @@ void main() {
 //    });
 //    // hack to execute notify callbacks
 //    await Future.delayed(Duration(milliseconds: 1));
-//    expectChatMessage(listenedValue, chatMessage);
+//    ChatMessageTestHelper.expectChatMessage(listenedValue, chatMessage);
 //
 //    when(pleromaChatServiceMock.getChatMessage(
 //            chatMessageRemoteId: chatMessage.remoteId))
@@ -325,7 +328,7 @@ void main() {
 //    // hack to execute notify callbacks
 //    await Future.delayed(Duration(milliseconds: 1));
 //
-//    expectChatMessage(listenedValue, newValue);
+//    ChatMessageTestHelper.expectChatMessage(listenedValue, newValue);
 //    await subscription.cancel();
 //  });
 }

@@ -3,8 +3,8 @@ import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/pagination_bloc_impl.dart';
 
-import 'memory_cached_pagination_bloc_impl.dart';
-import 'pagination_model_helper.dart';
+import 'cached/memory_cached_pagination_bloc_impl.dart';
+import 'pagination_model_test_impl.dart';
 
 class MemoryPaginationBloc<TItem>
     extends PaginationBloc<CachedPaginationPage<TItem>, TItem> {
@@ -19,7 +19,7 @@ class MemoryPaginationBloc<TItem>
           paginationSettingsBloc: paginationSettingsBloc,
         );
 
-  static MemoryPaginationBloc<TestPaginationItem> createTestWithSize({
+  static MemoryPaginationBloc<PaginationItemTest> createTestWithSize({
     required int size,
     required int maximumCachedPagesCount,
     required PaginationPageSize paginationPageSize,
@@ -31,7 +31,7 @@ class MemoryPaginationBloc<TItem>
       ),
       items: List.generate(
         size,
-        (index) => TestPaginationItem(
+        (index) => PaginationItemTest(
           index,
         ),
       ),

@@ -4,8 +4,8 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
-import '../../account/database/account_database_model_helper.dart';
-import '../../notification/database/notification_database_model_helper.dart';
+import '../../account/database/account_database_test_helper.dart';
+import '../../notification/database/notification_database_test_helper.dart';
 
 void main() {
   late AppDatabase database;
@@ -33,9 +33,11 @@ void main() {
 
     expect((await notificationDao.getAll()).isNotEmpty, false);
 
-    var testDbNotification = await createTestDbNotification(
+    var testDbNotification =
+        await NotificationDatabaseTestHelper.createTestDbNotification(
       seed: "seed1",
-      dbAccount: await createTestDbAccount(seed: "seed2"),
+      dbAccount:
+          await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed2"),
     );
     await notificationDao.insert(
       entity: testDbNotification,

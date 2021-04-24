@@ -17,10 +17,10 @@ import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
-import '../../account/account_model_helper.dart';
-import '../../chat/message/chat_message_model_helper.dart';
-import '../../notification/database/notification_database_model_helper.dart';
-import '../../status/status_model_helper.dart';
+import '../../account/account_test_helper.dart';
+import '../../chat/message/chat_message_test_helper.dart';
+import '../../notification/database/notification_database_test_helper.dart';
+import '../../status/status_test_helper.dart';
 
 void main() {
   late AppDatabase database;
@@ -56,7 +56,8 @@ void main() {
       chatMessageRepository: pleromaChatMessageRepository,
     );
 
-    account1 = (await createTestAccount(seed: "reportAccount1"));
+    account1 =
+        (await AccountTestHelper.createTestAccount(seed: "reportAccount1"));
     await accountRepository.upsertInRemoteType(account1.toPleromaApiAccount());
   });
 
@@ -80,7 +81,8 @@ void main() {
 
     expect((await notificationDao.getAll()).isNotEmpty, false);
 
-    var testDbNotification = await createTestDbNotification(
+    var testDbNotification =
+        await NotificationDatabaseTestHelper.createTestDbNotification(
       seed: "seed1",
       dbAccount: account1.dbAccount,
     );
@@ -89,17 +91,20 @@ void main() {
       report: PleromaApiAccountReport(
         account: account1.toPleromaApiAccount(),
         statuses: [
-          (await createTestStatus(seed: "status1")).toPleromaStatus(),
-          (await createTestStatus(seed: "status2")).toPleromaStatus(),
+          (await StatusTestHelper.createTestStatus(seed: "status1"))
+              .toPleromaStatus(),
+          (await StatusTestHelper.createTestStatus(seed: "status2"))
+              .toPleromaStatus(),
         ],
-        user: (await createTestAccount(seed: "reportUser")).toPleromaApiAccount(),
+        user: (await AccountTestHelper.createTestAccount(seed: "reportUser"))
+            .toPleromaApiAccount(),
       ),
     );
     await notificationDao.insert(
       entity: testDbNotification,
       mode: null,
     );
-    expectDbNotification(
+    NotificationDatabaseTestHelper.expectDbNotification(
       (await notificationRepository
           .findByRemoteIdInAppType(testDbNotification.remoteId))!,
       testDbNotification,
@@ -113,7 +118,8 @@ void main() {
 
     expect((await notificationDao.getAll()).isNotEmpty, false);
 
-    var testDbNotification = await createTestDbNotification(
+    var testDbNotification =
+        await NotificationDatabaseTestHelper.createTestDbNotification(
       seed: "seed1",
       dbAccount: account1.dbAccount,
     );
@@ -125,7 +131,7 @@ void main() {
       entity: testDbNotification,
       mode: null,
     );
-    expectDbNotification(
+    NotificationDatabaseTestHelper.expectDbNotification(
       (await notificationRepository
           .findByRemoteIdInAppType(testDbNotification.remoteId))!,
       testDbNotification,
@@ -138,20 +144,22 @@ void main() {
 
     expect((await notificationDao.getAll()).isNotEmpty, false);
 
-    var testDbNotification = await createTestDbNotification(
+    var testDbNotification =
+        await NotificationDatabaseTestHelper.createTestDbNotification(
       seed: "seed1",
       dbAccount: account1.dbAccount,
     );
 
     testDbNotification = testDbNotification.copyWith(
       chatMessage:
-          (await createTestChatMessage(seed: "seed1")).toPleromaApiChatMessage(),
+          (await ChatMessageTestHelper.createTestChatMessage(seed: "seed1"))
+              .toPleromaApiChatMessage(),
     );
     await notificationDao.insert(
       entity: testDbNotification,
       mode: null,
     );
-    expectDbNotification(
+    NotificationDatabaseTestHelper.expectDbNotification(
       (await notificationRepository
           .findByRemoteIdInAppType(testDbNotification.remoteId))!,
       testDbNotification,

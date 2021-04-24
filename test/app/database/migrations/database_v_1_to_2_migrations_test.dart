@@ -7,7 +7,7 @@ import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
-import '../../account/database/account_database_model_helper.dart';
+import '../../account/database/account_database_test_helper.dart';
 
 void main() {
   late AppDatabase database;
@@ -41,7 +41,7 @@ void main() {
     var accountDao = database.accountDao;
     var updatedRemoteId = "updatedRemoteId1";
 
-    var dbAccount = await createTestDbAccount(
+    var dbAccount = await AccountDatabaseTestHelper.createTestDbAccount(
       seed: "seed",
       remoteId: "accountRemoteId",
     );
