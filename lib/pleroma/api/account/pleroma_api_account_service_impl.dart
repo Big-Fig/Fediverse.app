@@ -1,128 +1,22 @@
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_exception.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:fedi/rest/rest_response_model.dart';
-import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
-var urlPath = path.Context(style: path.Style.url);
+var _urlPath = path.Context(style: path.Style.url);
 
-class PleromaApiAccountService extends DisposableOwner
+class PleromaApiAccountService extends BasePleromaApiService
     implements IPleromaApiAccountService {
   final String accountRelativeUrlPath = "/api/v1/accounts/";
   final String pleromaAccountRelativeUrlPath = "/api/v1/pleroma/accounts/";
 
-  @override
-  final IPleromaApiRestService restService;
-
-  @override
-  Stream<PleromaApiState> get pleromaApiStateStream =>
-      restService.pleromaApiStateStream;
-
-  @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
-
-  @override
-  bool get isConnected => restService.isConnected;
-
-  @override
-  Stream<bool> get isConnectedStream => restService.isConnectedStream;
-
   PleromaApiAccountService({
-    required this.restService,
-  });
-
-  List<PleromaApiAccount> parseAccountListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaApiAccount.listFromJsonString(
-        httpResponse.body,
-      );
-    } else {
-      throw PleromaApiAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
-  }
-
-  List<IPleromaApiAccountIdentityProof> parseAccountAccountIdentityProofList(
-    Response httpResponse,
-  ) {
-    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaApiAccountIdentityProof.listFromJsonString(httpResponse.body);
-    } else {
-      throw PleromaApiAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
-  }
-
-  List<IPleromaApiList> parseListList(Response httpResponse) {
-    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaApiList.listFromJsonString(httpResponse.body);
-    } else {
-      throw PleromaApiAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
-  }
-
-  List<IPleromaApiStatus> parseStatusListResponse(Response httpResponse) {
-    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaApiStatus.listFromJsonString(httpResponse.body);
-    } else {
-      throw PleromaApiAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
-  }
-
-  IPleromaApiAccountRelationship parseAccountRelationshipResponse(
-    Response httpResponse,
-  ) {
-    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaApiAccountRelationship.fromJsonString(httpResponse.body);
-    } else {
-      throw PleromaApiAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
-  }
-
-  List<IPleromaApiAccountRelationship> parseAccountRelationshipResponseList(
-    Response httpResponse,
-  ) {
-    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaApiAccountRelationship.listFromJsonString(httpResponse.body);
-    } else {
-      throw PleromaApiAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
-  }
-
-  IPleromaApiAccount parseAccountResponse(Response httpResponse) {
-    if (httpResponse.statusCode == RestResponse.successResponseStatusCode) {
-      return PleromaApiAccount.fromJsonString(httpResponse.body);
-    } else {
-      throw PleromaApiAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
-  }
+    required IPleromaApiRestService restService,
+  }) : super(restService: restService);
 
   @override
   Future<List<IPleromaApiAccount>> getAccountFollowings({
@@ -132,15 +26,21 @@ class PleromaApiAccountService extends DisposableOwner
     assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath:
-            urlPath.join(accountRelativeUrlPath, accountRemoteId, "following"),
+        relativePath: _urlPath.join(
+          accountRelativeUrlPath,
+          accountRemoteId,
+          "following",
+        ),
         queryArgs: [
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],
       ),
     );
 
-    return parseAccountListResponse(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiAccount.fromJson,
+    );
   }
 
   @override
@@ -150,11 +50,17 @@ class PleromaApiAccountService extends DisposableOwner
     assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join(accountRelativeUrlPath, accountRemoteId),
+        relativePath: _urlPath.join(
+          accountRelativeUrlPath,
+          accountRemoteId,
+        ),
       ),
     );
 
-    return parseAccountResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiAccount.fromJson,
+    );
   }
 
   @override
@@ -164,15 +70,21 @@ class PleromaApiAccountService extends DisposableOwner
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath:
-            urlPath.join(accountRelativeUrlPath, accountRemoteId, "followers"),
+        relativePath: _urlPath.join(
+          accountRelativeUrlPath,
+          accountRemoteId,
+          "followers",
+        ),
         queryArgs: [
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],
       ),
     );
 
-    return parseAccountListResponse(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiAccount.fromJson,
+    );
   }
 
   @override
@@ -192,7 +104,7 @@ class PleromaApiAccountService extends DisposableOwner
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath:
-            urlPath.join(accountRelativeUrlPath, accountRemoteId, "statuses"),
+            _urlPath.join(accountRelativeUrlPath, accountRemoteId, "statuses"),
         queryArgs: [
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
           RestRequestQueryArg("pinned", pinned?.toString()),
@@ -211,7 +123,10 @@ class PleromaApiAccountService extends DisposableOwner
       ),
     );
 
-    return parseStatusListResponse(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -222,7 +137,7 @@ class PleromaApiAccountService extends DisposableOwner
     assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           pleromaAccountRelativeUrlPath,
           accountRemoteId,
           "favourites",
@@ -233,6 +148,9 @@ class PleromaApiAccountService extends DisposableOwner
       ),
     );
 
-    return parseStatusListResponse(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 }

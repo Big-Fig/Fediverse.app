@@ -115,5 +115,5 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
   }
 
   @override
-  String? get remoteId => filter.remoteId;
+  String get remoteId => filter.remoteId;
 }

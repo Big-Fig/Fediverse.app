@@ -75,10 +75,14 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
         currentChatBloc.currentChat?.remoteId == chatId;
 
     if (isMessageForOpenedChat) {
-      chat = await pleromaChatService.markChatAsRead(
-        chatId: chatId,
-        lastReadChatMessageId: chat.lastMessage?.id,
-      );
+      var lastReadChatMessageId = chat.lastMessage?.id;
+
+      if (lastReadChatMessageId != null) {
+        chat = await pleromaChatService.markChatAsRead(
+          chatId: chatId,
+          lastReadChatMessageId: lastReadChatMessageId,
+        );
+      }
     }
 
     return chatRepository.upsertInRemoteType(chat);

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/application/mastodon_api_application_model.dart';
 import 'package:hive/hive.dart';
@@ -10,8 +8,8 @@ part 'pleroma_api_application_model.g.dart';
 
 abstract class IPleromaApiApplication implements IMastodonApiApplication {}
 
-abstract class IPleromaApiClientApplication implements IMastodonApiClientApplication {
-}
+abstract class IPleromaApiClientApplication
+    implements IMastodonApiClientApplication {}
 
 extension IPleromaApiApplicationExtension on IPleromaApiApplication {
   PleromaApiApplication toPleromaApiApplication() {
@@ -30,8 +28,10 @@ extension IPleromaApiApplicationExtension on IPleromaApiApplication {
 @JsonSerializable()
 class PleromaApiApplication implements IPleromaApiApplication {
   @override
+  @HiveField(3)
   final String? name;
   @override
+  @HiveField(4)
   final String? website;
   @override
   @JsonKey(name: "vapid_key")
@@ -44,15 +44,10 @@ class PleromaApiApplication implements IPleromaApiApplication {
     required this.vapidKey,
   });
 
-  factory PleromaApiApplication.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiApplication fromJson(Map<String, dynamic> json) =>
       _$PleromaApiApplicationFromJson(json);
 
-  factory PleromaApiApplication.fromJsonString(String jsonString) =>
-      _$PleromaApiApplicationFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiApplicationToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiApplicationToJson(this));
 
   @override
   String toString() {
@@ -76,7 +71,8 @@ class PleromaApiApplication implements IPleromaApiApplication {
   int get hashCode => name.hashCode ^ website.hashCode ^ vapidKey.hashCode;
 }
 
-extension IPleromaApiClientApplicationExtension on IPleromaApiClientApplication {
+extension IPleromaApiClientApplicationExtension
+    on IPleromaApiClientApplication {
   PleromaApiClientApplication toPleromaApiClientApplication() {
     if (this is PleromaApiClientApplication) {
       return this as PleromaApiClientApplication;
@@ -127,16 +123,11 @@ class PleromaApiClientApplication
     required this.clientSecret,
   });
 
-  factory PleromaApiClientApplication.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiClientApplication fromJson(Map<String, dynamic> json) =>
       _$PleromaApiClientApplicationFromJson(json);
-
-  factory PleromaApiClientApplication.fromJsonString(String jsonString) =>
-      _$PleromaApiClientApplicationFromJson(jsonDecode(jsonString));
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiClientApplicationToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiClientApplicationToJson(this));
 
   @override
   bool operator ==(Object other) =>

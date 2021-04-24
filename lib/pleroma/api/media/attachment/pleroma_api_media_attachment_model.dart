@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -74,7 +72,7 @@ class PleromaApiMediaAttachment implements IPleromaApiMediaAttachment {
   @override
   final String url;
   @override
-  PleromaApiMediaAttachmentPleromaPart? pleroma;
+  final PleromaApiMediaAttachmentPleromaPart? pleroma;
 
   PleromaApiMediaAttachment({
     required this.description,
@@ -98,11 +96,10 @@ class PleromaApiMediaAttachment implements IPleromaApiMediaAttachment {
     this.pleroma,
   });
 
-  factory PleromaApiMediaAttachment.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiMediaAttachment fromJson(Map<String, dynamic> json) =>
       _$PleromaApiMediaAttachmentFromJson(json);
 
-  factory PleromaApiMediaAttachment.fromJsonString(String jsonString) =>
-      _$PleromaApiMediaAttachmentFromJson(jsonDecode(jsonString));
+  Map<String, dynamic> toJson() => _$PleromaApiMediaAttachmentToJson(this);
 
   bool get isImage => typeAsMastodonApi == MastodonApiMediaAttachmentType.image;
 
@@ -131,10 +128,6 @@ class PleromaApiMediaAttachment implements IPleromaApiMediaAttachment {
         return false;
     }
   }
-
-  Map<String, dynamic> toJson() => _$PleromaApiMediaAttachmentToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiMediaAttachmentToJson(this));
 
   @override
   bool operator ==(Object other) =>
@@ -199,19 +192,13 @@ class PleromaApiMediaAttachmentPleromaPart {
     this.mimeType,
   });
 
-  factory PleromaApiMediaAttachmentPleromaPart.fromJson(
+  static PleromaApiMediaAttachmentPleromaPart fromJson(
     Map<String, dynamic> json,
   ) =>
       _$PleromaApiMediaAttachmentPleromaPartFromJson(json);
 
-  factory PleromaApiMediaAttachmentPleromaPart.fromJsonString(String jsonString) =>
-      _$PleromaApiMediaAttachmentPleromaPartFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() =>
       _$PleromaApiMediaAttachmentPleromaPartToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiMediaAttachmentPleromaPartToJson(this));
 
   @override
   bool operator ==(Object other) =>

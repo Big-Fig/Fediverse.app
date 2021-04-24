@@ -32,7 +32,7 @@ class EditFilterPage extends StatelessWidget {
 
 void goToEditFilterPage({
   required BuildContext context,
-  required IFilter? filter,
+  required IFilter filter,
   required Function(IFilter filter) onSubmit,
   required VoidCallback onDelete,
 }) {
@@ -49,7 +49,7 @@ void goToEditFilterPage({
 
 MaterialPageRoute createEditFilterPageRoute({
   required BuildContext context,
-  required IFilter? filter,
+  required IFilter filter,
   required Function(IFilter filter) onSubmit,
   required VoidCallback onDelete,
 }) {

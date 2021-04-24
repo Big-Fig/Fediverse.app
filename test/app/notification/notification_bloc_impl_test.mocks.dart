@@ -4,7 +4,7 @@
 
 import 'dart:async' as _i5;
 
-import 'package:fedi/disposable/disposable.dart' as _i10;
+import 'package:fedi/disposable/disposable.dart' as _i9;
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart'
     as _i3;
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service_impl.dart'
@@ -16,12 +16,11 @@ import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart'
     as _i2;
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart'
     as _i8;
-import 'package:flutter/src/widgets/editable_text.dart' as _i11;
-import 'package:flutter/src/widgets/focus_manager.dart' as _i13;
-import 'package:flutter/src/widgets/scroll_controller.dart' as _i12;
-import 'package:http/src/response.dart' as _i9;
+import 'package:flutter/src/widgets/editable_text.dart' as _i10;
+import 'package:flutter/src/widgets/focus_manager.dart' as _i12;
+import 'package:flutter/src/widgets/scroll_controller.dart' as _i11;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:rxdart/src/subjects/subject.dart' as _i14;
+import 'package:rxdart/src/subjects/subject.dart' as _i13;
 
 // ignore_for_file: comment_references
 // ignore_for_file: unnecessary_parenthesis
@@ -31,9 +30,6 @@ class _FakeIPleromaApiAuthRestService extends _i1.Fake
 
 class _FakeIPleromaApiNotification extends _i1.Fake
     implements _i3.IPleromaApiNotification {}
-
-class _FakePleromaApiNotification extends _i1.Fake
-    implements _i3.PleromaApiNotification {}
 
 /// A class which mocks [PleromaApiNotificationService].
 ///
@@ -58,6 +54,19 @@ class MockPleromaApiNotificationService extends _i1.Mock
               returnValue: _FakeIPleromaApiAuthRestService())
           as _i2.IPleromaApiAuthRestService);
   @override
+  _i2.IPleromaApiAuthRestService get restApiAuthService =>
+      (super.noSuchMethod(Invocation.getter(#restApiAuthService),
+              returnValue: _FakeIPleromaApiAuthRestService())
+          as _i2.IPleromaApiAuthRestService);
+  @override
+  bool get isPleroma =>
+      (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
+          as bool);
+  @override
+  bool get isMastodon =>
+      (super.noSuchMethod(Invocation.getter(#isMastodon), returnValue: false)
+          as bool);
+  @override
   _i5.Stream<_i6.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
               returnValue: Stream<_i6.PleromaApiState>.empty())
@@ -75,14 +84,6 @@ class MockPleromaApiNotificationService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#isConnectedStream),
           returnValue: Stream<bool>.empty()) as _i5.Stream<bool>);
   @override
-  bool get isPleroma =>
-      (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
-          as bool);
-  @override
-  bool get isMastodon =>
-      (super.noSuchMethod(Invocation.getter(#isMastodon), returnValue: false)
-          as bool);
-  @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
@@ -90,10 +91,6 @@ class MockPleromaApiNotificationService extends _i1.Mock
   set isDisposed(bool? _isDisposed) =>
       super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
           returnValueForMissingStub: null);
-  @override
-  _i5.Future<dynamic> dispose() =>
-      (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value(null)) as _i5.Future<dynamic>);
   @override
   _i5.Future<_i3.IPleromaApiNotification> getNotification(
           {String? notificationRemoteId}) =>
@@ -140,20 +137,6 @@ class MockPleromaApiNotificationService extends _i1.Mock
                   <_i3.IPleromaApiNotification>[]))
           as _i5.Future<List<_i3.IPleromaApiNotification>>);
   @override
-  _i3.PleromaApiNotification parseNotificationResponse(
-          _i9.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(#parseNotificationResponse, [httpResponse]),
-              returnValue: _FakePleromaApiNotification())
-          as _i3.PleromaApiNotification);
-  @override
-  List<_i3.PleromaApiNotification> parseNotificationListResponse(
-          _i9.Response? httpResponse) =>
-      (super.noSuchMethod(
-              Invocation.method(#parseNotificationListResponse, [httpResponse]),
-              returnValue: <_i3.PleromaApiNotification>[])
-          as List<_i3.PleromaApiNotification>);
-  @override
   _i5.Future<dynamic> dismissNotification({String? notificationRemoteId}) =>
       (super.noSuchMethod(
           Invocation.method(#dismissNotification, [],
@@ -165,12 +148,12 @@ class MockPleromaApiNotificationService extends _i1.Mock
           returnValue: Future<dynamic>.value(null)) as _i5.Future<dynamic>);
   @override
   void addDisposable(
-          {_i10.IDisposable? disposable,
+          {_i9.IDisposable? disposable,
           _i5.StreamSubscription<dynamic>? streamSubscription,
-          _i11.TextEditingController? textEditingController,
-          _i12.ScrollController? scrollController,
-          _i13.FocusNode? focusNode,
-          _i14.Subject<dynamic>? subject,
+          _i10.TextEditingController? textEditingController,
+          _i11.ScrollController? scrollController,
+          _i12.FocusNode? focusNode,
+          _i13.Subject<dynamic>? subject,
           _i5.StreamController<dynamic>? streamController,
           _i5.Timer? timer,
           _i5.FutureOr<dynamic>? Function()? custom}) =>
@@ -187,4 +170,8 @@ class MockPleromaApiNotificationService extends _i1.Mock
             #custom: custom
           }),
           returnValueForMissingStub: null);
+  @override
+  _i5.Future<dynamic> dispose() =>
+      (super.noSuchMethod(Invocation.method(#dispose, []),
+          returnValue: Future<dynamic>.value(null)) as _i5.Future<dynamic>);
 }

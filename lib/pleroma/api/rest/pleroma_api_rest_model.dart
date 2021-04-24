@@ -4,7 +4,16 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("pleroma_rest_exception.dart");
 
-class PleromaApiRestException implements Exception {
+abstract class PleromaApiException implements Exception {
+  String get exceptionType;
+
+  @override
+  String toString() {
+    return '$exceptionType{' '}';
+  }
+}
+
+abstract class PleromaApiRestException implements PleromaApiException {
   static const jsonBodyErrorKey = "error";
 
   final int statusCode;
@@ -14,7 +23,10 @@ class PleromaApiRestException implements Exception {
 
   String get decodedErrorDescriptionOrBody => decodedErrorDescription ?? body;
 
-  PleromaApiRestException({required this.statusCode, required this.body}) {
+  PleromaApiRestException({
+    required this.statusCode,
+    required this.body,
+  }) {
     try {
       var jsonBody = jsonDecode(body);
       decodedErrorDescription = jsonBody[jsonBodyErrorKey];
@@ -25,32 +37,88 @@ class PleromaApiRestException implements Exception {
 
   @override
   String toString() {
-    return 'PleromaApiRestException{statusCode: $statusCode, body: $body}';
+    return '$exceptionType{'
+        'statusCode: $statusCode, '
+        'decodedErrorDescriptionOrBody: $decodedErrorDescriptionOrBody, '
+        'body: $body ,'
+        '}';
   }
 }
 
-class PleromaApiThrottledRestException extends PleromaApiRestException {
+class PleromaApiOAuthCantLaunchException extends PleromaApiException {
+  PleromaApiOAuthCantLaunchException() : super();
+
+  @override
+  String get exceptionType => "PleromaOAuthCantLaunchException";
+}
+
+class PleromaApiUnprocessableOrThrottledRestException
+    extends PleromaApiRestException {
   static const int httpStatusCode = 429;
 
-  PleromaApiThrottledRestException({
+  PleromaApiUnprocessableOrThrottledRestException({
     required int statusCode,
     required String body,
   }) : super(statusCode: statusCode, body: body);
 
   @override
-  String toString() {
-    return 'PleromaApiThrottledRestException{}';
-  }
+  String get exceptionType =>
+      'PleromaApiUnprocessableOrThrottledRestException{}';
 }
 
 class PleromaApiForbiddenRestException extends PleromaApiRestException {
-  PleromaApiForbiddenRestException({required int statusCode, required String body})
-      : super(statusCode: statusCode, body: body);
+  static const int httpStatusCode = 403;
+
+  PleromaApiForbiddenRestException({
+    required int statusCode,
+    required String body,
+  }) : super(
+          statusCode: statusCode,
+          body: body,
+        );
 
   @override
-  String toString() {
-    return 'PleromaApiForbiddenRestException{}';
-  }
+  String get exceptionType => 'PleromaApiForbiddenRestException{}';
+}
+
+class PleromaApiUnknownRestException extends PleromaApiRestException {
+  PleromaApiUnknownRestException({
+    required int statusCode,
+    required String body,
+  }) : super(
+          statusCode: statusCode,
+          body: body,
+        );
+
+  @override
+  String get exceptionType => 'PleromaApiUnknownRestException{}';
+}
+
+class PleromaApiNotJsonResponseRestException extends PleromaApiRestException {
+  PleromaApiNotJsonResponseRestException({
+    required int statusCode,
+    required String body,
+  }) : super(
+          statusCode: statusCode,
+          body: body,
+        );
+
+  @override
+  String get exceptionType => 'PleromaApiNotJsonResponseRestException{}';
+}
+
+class PleromaApiNotJsonListResponseRestException
+    extends PleromaApiRestException {
+  PleromaApiNotJsonListResponseRestException({
+    required int statusCode,
+    required String body,
+  }) : super(
+          statusCode: statusCode,
+          body: body,
+        );
+
+  @override
+  String get exceptionType => 'PleromaApiNotJsonListResponseRestException{}';
 }
 
 class PleromaApiInvalidCredentialsForbiddenRestException
@@ -65,10 +133,12 @@ class PleromaApiInvalidCredentialsForbiddenRestException
   PleromaApiInvalidCredentialsForbiddenRestException({
     required int statusCode,
     required String body,
-  }) : super(statusCode: statusCode, body: body);
+  }) : super(
+          statusCode: statusCode,
+          body: body,
+        );
 
   @override
-  String toString() {
-    return 'PleromaApiInvalidCredentialsForbiddenRestException{}';
-  }
+  String get exceptionType =>
+      'PleromaApiInvalidCredentialsForbiddenRestException{}';
 }

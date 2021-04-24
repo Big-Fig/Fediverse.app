@@ -208,21 +208,9 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
           ),
         ),
       );
-
-      success = subscription != null;
-    } catch (error, stackTrace) {
-      success = false;
-      _logger.warning(
-        () => "failed to update subscription ",
-        error,
-        stackTrace,
-      );
-    }
-
-    if (success) {
       await instanceLocalPreferencesBloc.setValue(
         PushSettings(
-          favourite: subscription!.alerts!.favourite ?? false,
+          favourite: subscription.alerts!.favourite ?? false,
           follow: subscription.alerts!.follow ?? false,
           mention: subscription.alerts!.mention ?? false,
           reblog: subscription.alerts!.reblog ?? false,
@@ -232,7 +220,17 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
               subscription.alerts!.pleromaEmojiReaction ?? false,
         ),
       );
+
+      success = true;
+    } catch (error, stackTrace) {
+      success = false;
+      _logger.warning(
+        () => "failed to update subscription ",
+        error,
+        stackTrace,
+      );
     }
+
     return success;
   }
 }

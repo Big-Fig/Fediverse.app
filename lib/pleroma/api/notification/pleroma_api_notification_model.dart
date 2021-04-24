@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/mastodon/api/notification/mastodon_api_notification_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
@@ -218,24 +216,12 @@ class PleromaApiNotificationPleromaPart {
         isMuted: isMuted ?? this.isMuted,
       );
 
-  factory PleromaApiNotificationPleromaPart.fromJson(
+  static PleromaApiNotificationPleromaPart fromJson(
           Map<String, dynamic> json) =>
       _$PleromaApiNotificationPleromaPartFromJson(json);
 
-  factory PleromaApiNotificationPleromaPart.fromJsonString(String jsonString) =>
-      _$PleromaApiNotificationPleromaPartFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiNotificationPleromaPart> listFromJsonString(
-          String str) =>
-      List<PleromaApiNotificationPleromaPart>.from(json
-          .decode(str)
-          .map((x) => PleromaApiNotificationPleromaPart.fromJson(x)));
-
   Map<String, dynamic> toJson() =>
       _$PleromaApiNotificationPleromaPartToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiNotificationPleromaPartToJson(this));
 
   @override
   String toString() {
@@ -297,20 +283,10 @@ class PleromaApiNotification extends IPleromaApiNotification {
     required this.target,
   });
 
-  factory PleromaApiNotification.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiNotification fromJson(Map<String, dynamic> json) =>
       _$PleromaApiNotificationFromJson(json);
 
-  factory PleromaApiNotification.fromJsonString(String jsonString) =>
-      _$PleromaApiNotificationFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiNotification> listFromJsonString(String str) =>
-      List<PleromaApiNotification>.from(
-        json.decode(str).map((x) => PleromaApiNotification.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiNotificationToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiNotificationToJson(this));
 
   @override
   String toString() {

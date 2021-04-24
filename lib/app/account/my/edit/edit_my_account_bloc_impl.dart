@@ -100,7 +100,8 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     required int? avatarUploadSizeInBytes,
     required int? headerUploadSizeInBytes,
     required int? backgroundUploadSizeInBytes,
-    required PleromaApiInstancePleromaPartMetadataFieldLimits? customFieldLimits,
+    required PleromaApiInstancePleromaPartMetadataFieldLimits?
+        customFieldLimits,
   })   : displayNameField = StringValueFormFieldBloc(
           originValue: myAccountBloc.displayNameEmojiText!.text,
           validators: [
@@ -342,6 +343,12 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
       showRole: isPleromaInstance ? showRoleField.currentValue : null,
       skipThreadContainment:
           isPleromaInstance ? skipThreadContainmentField.currentValue : null,
+      // todo: check
+      alsoKnownAs: null,
+      defaultScope: null,
+      source: null,
+      actorType: null,
+      pleromaSettingsStore: null,
     );
   }
 

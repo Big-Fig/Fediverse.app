@@ -44,7 +44,7 @@ class SearchResultItemNetworkOnlyListBloc
       var searchResult = await pleromaSearchService.search(
         offset: offset,
         resolve: true,
-        query: query,
+        query: query!,
         type: null,
         pagination: PleromaApiPaginationRequest(
           limit: itemsCountPerPage,

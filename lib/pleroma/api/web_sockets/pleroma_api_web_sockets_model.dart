@@ -62,15 +62,10 @@ class PleromaApiWebSocketsEvent extends WebSocketsEvent {
   @override
   int get hashCode => event.hashCode ^ payload.hashCode;
 
-  factory PleromaApiWebSocketsEvent.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiWebSocketsEvent fromJson(Map<String, dynamic> json) =>
       _$PleromaApiWebSocketsEventFromJson(json);
 
-  factory PleromaApiWebSocketsEvent.fromJsonString(String jsonString) =>
-      _$PleromaApiWebSocketsEventFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiWebSocketsEventToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiWebSocketsEventToJson(this));
 
   PleromaApiStatus parsePayloadAsStatus() =>
       PleromaApiStatus.fromJson(jsonDecode(payload!));

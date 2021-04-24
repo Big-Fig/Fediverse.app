@@ -61,7 +61,7 @@ class PleromaApiField implements IPleromaApiField {
     required this.verifiedAt,
   });
 
-  factory PleromaApiField.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiField fromJson(Map<String, dynamic> json) =>
       _$PleromaApiFieldFromJson(json);
 
   Map<String, dynamic> toJson() => _$PleromaApiFieldToJson(this);

@@ -18,7 +18,7 @@ abstract class IPleromaApiWebSocketsService extends DisposableOwner {
   /// Returns events that are relevant to the authorized user,
   /// i.e. home timeline and notifications
   IWebSocketsChannel<PleromaApiWebSocketsEvent> getAccountChannel({
-    required String? accountId,
+    required String accountId,
     required bool notification,
   });
 
@@ -39,12 +39,12 @@ abstract class IPleromaApiWebSocketsService extends DisposableOwner {
   /// Returns all public events for a particular hashtag
   /// local support mentioned in Mastodon docs but not implemented in Pleroma
   IWebSocketsChannel<PleromaApiWebSocketsEvent> getHashtagChannel({
-    required String? hashtag,
+    required String hashtag,
     required bool? local,
   });
 
   /// Return events for a list
   IWebSocketsChannel<PleromaApiWebSocketsEvent> getListChannel({
-    required String? listId,
+    required String listId,
   });
 }

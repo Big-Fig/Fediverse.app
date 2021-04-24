@@ -10,7 +10,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 
 class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
   CustomListStatusListWebSocketsHandler({
-    required String? customListRemoteId,
+    required String customListRemoteId,
     required IPleromaApiWebSocketsService pleromaWebSocketsService,
     required IStatusRepository statusRepository,
     required INotificationRepository notificationRepository,

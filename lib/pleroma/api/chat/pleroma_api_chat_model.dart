@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
@@ -61,20 +59,10 @@ class PleromaApiChat implements IPleromaApiChat {
         lastMessage: lastMessage ?? this.lastMessage,
       );
 
-  factory PleromaApiChat.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiChat fromJson(Map<String, dynamic> json) =>
       _$PleromaApiChatFromJson(json);
 
-  factory PleromaApiChat.fromJsonString(String jsonString) =>
-      _$PleromaApiChatFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiChat> listFromJsonString(String str) =>
-      List<PleromaApiChat>.from(
-        json.decode(str).map((x) => PleromaApiChat.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiChatToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiChatToJson(this));
 
   @override
   bool operator ==(Object other) =>
@@ -199,20 +187,10 @@ class PleromaApiChatMessage extends IPleromaApiChatMessage {
       mediaAttachment.hashCode ^
       card.hashCode;
 
-  factory PleromaApiChatMessage.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiChatMessage fromJson(Map<String, dynamic> json) =>
       _$PleromaApiChatMessageFromJson(json);
 
-  factory PleromaApiChatMessage.fromJsonString(String jsonString) =>
-      _$PleromaApiChatMessageFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiChatMessage> listFromJsonString(String str) =>
-      List<PleromaApiChatMessage>.from(
-        json.decode(str).map((x) => PleromaApiChatMessage.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiChatMessageToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiChatMessageToJson(this));
 }
 
 abstract class IPleromaApiChatMessageSendData {
@@ -280,19 +258,9 @@ class PleromaApiChatMessageSendData implements IPleromaApiChatMessageSendData {
         '}';
   }
 
-  factory PleromaApiChatMessageSendData.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiChatMessageSendData fromJson(Map<String, dynamic> json) =>
       _$PleromaApiChatMessageSendDataFromJson(json);
-
-  factory PleromaApiChatMessageSendData.fromJsonString(String jsonString) =>
-      _$PleromaApiChatMessageSendDataFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiChatMessageSendData> listFromJsonString(String str) =>
-      List<PleromaApiChatMessageSendData>.from(
-        json.decode(str).map((x) => PleromaApiChatMessageSendData.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiChatMessageSendDataToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiChatMessageSendDataToJson(this));
 }

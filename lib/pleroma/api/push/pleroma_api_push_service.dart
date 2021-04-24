@@ -12,13 +12,13 @@ abstract class IPleromaApiPushService extends IPleromaApi {
   /// If you create a new subscription, the old subscription is deleted.
   /// It's based on access token
   /// return success or not
-  Future<PleromaApiPushSubscription?> subscribe({
+  Future<PleromaApiPushSubscription> subscribe({
     required String endpointCallbackUrl,
     required PleromaApiPushSubscribeData data,
   });
 
-  Future<PleromaApiPushSubscription?> retrieveCurrentSubscription();
+  Future<PleromaApiPushSubscription> retrieveCurrentSubscription();
 
   /// Remove subscription for current access token
-  Future<bool> unsubscribe();
+  Future unsubscribe();
 }

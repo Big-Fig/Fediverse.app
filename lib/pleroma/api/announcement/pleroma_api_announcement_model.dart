@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/mastodon/api/announcement/mastodon_api_announcements_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -116,24 +114,15 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement {
         '}';
   }
 
-  factory PleromaApiAnnouncement.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiAnnouncement fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAnnouncementFromJson(json);
 
-  factory PleromaApiAnnouncement.fromJsonString(String jsonString) =>
-      _$PleromaApiAnnouncementFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiAnnouncement> listFromJsonString(String str) =>
-      List<PleromaApiAnnouncement>.from(
-        json.decode(str).map((x) => PleromaApiAnnouncement.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiAnnouncementToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiAnnouncementToJson(this));
 }
 
 @JsonSerializable()
-class PleromaApiAnnouncementReaction implements IPleromaApiAnnouncementReaction {
+class PleromaApiAnnouncementReaction
+    implements IPleromaApiAnnouncementReaction {
   @override
   final String? name;
 
@@ -188,19 +177,8 @@ class PleromaApiAnnouncementReaction implements IPleromaApiAnnouncementReaction 
         '}';
   }
 
-  factory PleromaApiAnnouncementReaction.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiAnnouncementReaction fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAnnouncementReactionFromJson(json);
 
-  factory PleromaApiAnnouncementReaction.fromJsonString(String jsonString) =>
-      _$PleromaApiAnnouncementReactionFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiAnnouncementReaction> listFromJsonString(String str) =>
-      List<PleromaApiAnnouncementReaction>.from(
-        json.decode(str).map((x) => PleromaApiAnnouncementReaction.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiAnnouncementReactionToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiAnnouncementReactionToJson(this));
 }

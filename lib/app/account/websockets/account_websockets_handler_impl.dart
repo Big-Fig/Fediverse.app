@@ -17,7 +17,7 @@ class AccountWebSocketsHandler extends WebSocketsChannelHandler {
     required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
     required IConversationChatNewMessagesHandlerBloc
         conversationChatNewMessagesHandlerBloc,
-    required String? accountId,
+    required String accountId,
     required bool notification,
     required WebSocketsListenType listenType,
     required IMyAccountBloc myAccountBloc,

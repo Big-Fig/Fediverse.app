@@ -26,7 +26,7 @@ abstract class IPleromaApiTimelineService implements IPleromaApi {
   });
 
   Future<List<IPleromaApiStatus>> getHashtagTimeline({
-    required String? hashtag,
+    required String hashtag,
     IPleromaApiPaginationRequest? pagination,
     bool? onlyWithMedia = false,
     bool onlyLocal = false,
@@ -47,7 +47,7 @@ abstract class IPleromaApiTimelineService implements IPleromaApi {
   });
 
   Future<List<IPleromaApiStatus>> getListTimeline({
-    required String? listId,
+    required String listId,
     IPleromaApiPaginationRequest? pagination,
     bool onlyLocal = false,
     bool withMuted = false,

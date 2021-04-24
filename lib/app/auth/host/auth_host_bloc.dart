@@ -20,7 +20,7 @@ abstract class IAuthHostBloc extends IDisposable {
 
   Future<AuthInstance> loginWithAuthCode(String authCode);
 
-  Future<bool> registerApplication();
+  Future registerApplication();
 
   Future<bool> retrieveAppAccessToken();
 

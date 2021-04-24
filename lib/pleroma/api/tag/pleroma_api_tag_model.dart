@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:collection/collection.dart';
 import 'package:fedi/mastodon/api/tag/mastodon_api_tag_model.dart';
 import 'package:fedi/pleroma/api/tag/history/pleroma_api_tag_history_model.dart';
@@ -71,15 +69,10 @@ class PleromaApiTag implements IPleromaApiTag {
     this.history,
   });
 
-  factory PleromaApiTag.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiTag fromJson(Map<String, dynamic> json) =>
       _$PleromaApiTagFromJson(json);
 
-  factory PleromaApiTag.fromJsonString(String jsonString) =>
-      _$PleromaApiTagFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiTagToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiTagToJson(this));
 
   @override
   bool operator ==(Object other) =>

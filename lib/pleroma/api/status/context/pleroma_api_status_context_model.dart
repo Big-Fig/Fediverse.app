@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/mastodon/api/status/context/mastodon_api_status_context_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -26,15 +24,10 @@ class PleromaApiStatusContext implements IPleromaApiStatusContext {
     required this.ancestors,
   });
 
-  factory PleromaApiStatusContext.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiStatusContext fromJson(Map<String, dynamic> json) =>
       _$PleromaApiStatusContextFromJson(json);
 
-  factory PleromaApiStatusContext.fromJsonString(String jsonString) =>
-      _$PleromaApiStatusContextFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiStatusContextToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiStatusContextToJson(this));
 
   @override
   String toString() {

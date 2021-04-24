@@ -1,5 +1,6 @@
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
@@ -8,11 +9,11 @@ import 'package:fedi/rest/rest_request_model.dart';
 import 'package:path/path.dart';
 
 class PleromaApiAuthStatusService extends PleromaApiStatusService
+    with PleromaApiAuthMixinService
     implements IPleromaApiAuthStatusService {
   final IPleromaApiAuthRestService authRestService;
-
   @override
-  bool get isPleroma => authRestService.isPleroma;
+  IPleromaApiAuthRestService get restApiAuthService => authRestService;
 
   PleromaApiAuthStatusService({
     required this.authRestService,
@@ -24,11 +25,13 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
   Future deleteStatus({
     required String statusRemoteId,
   }) async {
-    await restService.sendHttpRequest(
+    var httpResponse = await restService.sendHttpRequest(
       RestRequest.delete(
         relativePath: join(statusRelativeUrlPath, statusRemoteId),
       ),
     );
+
+    return restService.processEmptyResponse(httpResponse);
   }
 
   @override
@@ -52,7 +55,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseStatusResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -68,7 +74,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseStatusResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -84,7 +93,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseStatusResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -100,7 +112,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseStatusResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -118,7 +133,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseAccountsResponse(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiAccount.fromJson,
+    );
   }
 
   @override
@@ -136,7 +154,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseAccountsResponse(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiAccount.fromJson,
+    );
   }
 
   @override
@@ -152,7 +173,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseStatusResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -168,7 +192,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseStatusResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -184,7 +211,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseStatusResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -200,7 +230,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseStatusResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -216,7 +249,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseStatusResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -232,7 +268,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseStatusResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -252,7 +291,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
 
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseStatusResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
   }
 
   @override
@@ -268,7 +310,10 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
 
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseScheduledStatusResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiScheduledStatus.fromJson,
+    );
   }
 
   @override

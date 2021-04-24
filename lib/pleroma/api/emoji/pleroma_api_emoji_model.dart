@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/mastodon/api/emoji/mastodon_api_emoji_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -108,7 +106,7 @@ class PleromaApiEmoji implements IPleromaApiEmoji {
         '}';
   }
 
-  factory PleromaApiEmoji.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiEmoji fromJson(Map<String, dynamic> json) =>
       _$PleromaApiEmojiFromJson(json);
 
   Map<String, dynamic> toJson() => _$PleromaApiEmojiToJson(this);
@@ -160,13 +158,8 @@ class PleromaApiCustomEmoji implements IPleromaApiCustomEmoji {
         '}';
   }
 
-  factory PleromaApiCustomEmoji.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiCustomEmoji fromJson(Map<String, dynamic> json) =>
       _$PleromaApiCustomEmojiFromJson(json);
-
-  static List<PleromaApiCustomEmoji> listFromJsonString(String str) =>
-      List<PleromaApiCustomEmoji>.from(
-        json.decode(str).map((x) => PleromaApiCustomEmoji.fromJson(x)),
-      );
 
   Map<String, dynamic> toJson() => _$PleromaApiCustomEmojiToJson(this);
 }

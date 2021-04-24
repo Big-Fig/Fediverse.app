@@ -61,11 +61,8 @@ class PleromaApiOAuthToken implements IJsonObject {
       scope.hashCode ^
       createdAt.hashCode;
 
-  factory PleromaApiOAuthToken.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiOAuthToken fromJson(Map<String, dynamic> json) =>
       _$PleromaApiOAuthTokenFromJson(json);
-
-  factory PleromaApiOAuthToken.fromJsonString(String jsonString) =>
-      _$PleromaApiOAuthTokenFromJson(jsonDecode(jsonString));
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiOAuthTokenToJson(this);
@@ -73,28 +70,27 @@ class PleromaApiOAuthToken implements IJsonObject {
 
 @JsonSerializable()
 class PleromaApiOAuthAuthorizeRequest {
-  @JsonKey(name: "force_login")
-
   /// Forces the user to re-login,
   /// which is necessary for authorizing with multiple accounts from the same instance.
 
+  @JsonKey(name: "force_login")
   final bool? forceLogin;
-  @JsonKey(name: "response_type")
 
   ///  should be always code for this request
 
+  @JsonKey(name: "response_type")
   final String? responseType;
 
   /// from application object
   @JsonKey(name: "client_id")
   final String? clientId;
-  @JsonKey(name: "redirect_uri")
 
   /// Set a URI to redirect the user to.
   /// If this parameter is set to urn:ietf:wg:oauth:2.0:oob
   /// then the authorization code will be shown instead.
   /// Must match one of the redirect URIs declared during app registration.
 
+  @JsonKey(name: "redirect_uri")
   final String? redirectUri;
 
   /// List of requested OAuth scopes, separated by spaces (or by pluses,
@@ -107,6 +103,7 @@ class PleromaApiOAuthAuthorizeRequest {
     required this.clientId,
     required this.redirectUri,
     required this.scope,
+    // todo: check wtf?
     this.responseType = "code",
   });
 
@@ -116,7 +113,8 @@ class PleromaApiOAuthAuthorizeRequest {
   factory PleromaApiOAuthAuthorizeRequest.fromJson(Map<String, dynamic> json) =>
       _$PleromaApiOAuthAuthorizeRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PleromaApiOAuthAuthorizeRequestToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$PleromaApiOAuthAuthorizeRequestToJson(this);
 
   @override
   String toString() {
@@ -163,9 +161,9 @@ class PleromaApiOAuthAccountTokenRequest {
   final String? redirectUri;
 
   @JsonKey(name: "client_id")
-  String? clientId;
+  final String? clientId;
   @JsonKey(name: "client_secret")
-  String? clientSecret;
+  final String? clientSecret;
 
   PleromaApiOAuthAccountTokenRequest({
     required this.code,
@@ -173,6 +171,7 @@ class PleromaApiOAuthAccountTokenRequest {
     required this.redirectUri,
     required this.clientId,
     required this.clientSecret,
+    // todo: check wtf?
     this.grantType = "authorization_code",
   });
 
@@ -187,7 +186,6 @@ class PleromaApiOAuthAccountTokenRequest {
         'clientSecret: $clientSecret'
         '}';
   }
-
 
   @override
   bool operator ==(Object other) =>
@@ -210,11 +208,9 @@ class PleromaApiOAuthAccountTokenRequest {
       clientId.hashCode ^
       clientSecret.hashCode;
 
-  factory PleromaApiOAuthAccountTokenRequest.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiOAuthAccountTokenRequest fromJson(
+          Map<String, dynamic> json) =>
       _$PleromaApiOAuthAccountTokenRequestFromJson(json);
-
-  factory PleromaApiOAuthAccountTokenRequest.fromJsonString(String jsonString) =>
-      _$PleromaApiOAuthAccountTokenRequestFromJson(jsonDecode(jsonString));
 
   Map<String, dynamic> toJson() =>
       _$PleromaApiOAuthAccountTokenRequestToJson(this);
@@ -231,15 +227,16 @@ class PleromaApiOAuthAppTokenRequest {
   final String? redirectUri;
 
   @JsonKey(name: "client_id")
-  String? clientId;
+  final String? clientId;
   @JsonKey(name: "client_secret")
-  String? clientSecret;
+  final String? clientSecret;
 
   PleromaApiOAuthAppTokenRequest({
-    this.scope,
-    this.redirectUri,
-    this.clientId,
-    this.clientSecret,
+    required this.scope,
+    required this.redirectUri,
+    required this.clientId,
+    required this.clientSecret,
+    // todo: check wtf?
     this.grantType = "client_credentials",
   });
 
@@ -253,7 +250,6 @@ class PleromaApiOAuthAppTokenRequest {
         'clientSecret: $clientSecret'
         '}';
   }
-
 
   @override
   bool operator ==(Object other) =>
@@ -274,11 +270,8 @@ class PleromaApiOAuthAppTokenRequest {
       clientId.hashCode ^
       clientSecret.hashCode;
 
-  factory PleromaApiOAuthAppTokenRequest.fromJsonString(String jsonString) =>
+  static PleromaApiOAuthAppTokenRequest fromJsonString(String jsonString) =>
       _$PleromaApiOAuthAppTokenRequestFromJson(jsonDecode(jsonString));
-
-  factory PleromaApiOAuthAppTokenRequest.fromJson(Map<String, dynamic> json) =>
-      _$PleromaApiOAuthAppTokenRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$PleromaApiOAuthAppTokenRequestToJson(this);
 }
@@ -307,7 +300,6 @@ class PleromaApiOAuthAppTokenRevokeRequest {
         '}';
   }
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -321,10 +313,7 @@ class PleromaApiOAuthAppTokenRevokeRequest {
   int get hashCode =>
       clientId.hashCode ^ clientSecret.hashCode ^ token.hashCode;
 
-  factory PleromaApiOAuthAppTokenRevokeRequest.fromJsonString(String jsonString) =>
-      _$PleromaApiOAuthAppTokenRevokeRequestFromJson(jsonDecode(jsonString));
-
-  factory PleromaApiOAuthAppTokenRevokeRequest.fromJson(
+  static PleromaApiOAuthAppTokenRevokeRequest fromJson(
     Map<String, dynamic> json,
   ) =>
       _$PleromaApiOAuthAppTokenRevokeRequestFromJson(json);

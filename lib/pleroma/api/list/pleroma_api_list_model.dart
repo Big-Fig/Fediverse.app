@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/mastodon/api/list/mastodon_api_list_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -54,20 +52,10 @@ class PleromaApiList extends IPleromaApiList {
     required this.title,
   });
 
-  factory PleromaApiList.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiList fromJson(Map<String, dynamic> json) =>
       _$PleromaApiListFromJson(json);
 
-  factory PleromaApiList.fromJsonString(String jsonString) =>
-      _$PleromaApiListFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiList> listFromJsonString(String str) =>
-      List<PleromaApiList>.from(
-        json.decode(str).map((x) => PleromaApiList.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiListToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiListToJson(this));
 
   @override
   bool operator ==(Object other) =>

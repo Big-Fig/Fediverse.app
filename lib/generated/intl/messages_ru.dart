@@ -795,6 +795,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_timeline_type_customList" : MessageLookupByLibrary.simpleMessage("Список"),
     "app_timeline_type_field_chooser_dialog_title" : MessageLookupByLibrary.simpleMessage("Выберите тип"),
     "app_timeline_type_field_label" : MessageLookupByLibrary.simpleMessage("Тип"),
+    "app_timeline_type_field_null" : MessageLookupByLibrary.simpleMessage("Не выбранно"),
     "app_timeline_type_hashtag" : MessageLookupByLibrary.simpleMessage("Хэштэг"),
     "app_timeline_type_home" : MessageLookupByLibrary.simpleMessage("Подписки"),
     "app_timeline_type_public" : MessageLookupByLibrary.simpleMessage("Публичные"),

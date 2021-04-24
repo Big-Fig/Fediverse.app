@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_captcha_model.g.dart';
@@ -105,20 +103,10 @@ class PleromaApiCaptcha implements IPleromaApiCaptcha {
       type.hashCode ^
       url.hashCode;
 
-  factory PleromaApiCaptcha.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiCaptcha fromJson(Map<String, dynamic> json) =>
       _$PleromaApiCaptchaFromJson(json);
 
-  factory PleromaApiCaptcha.fromJsonString(String jsonString) =>
-      _$PleromaApiCaptchaFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiCaptcha> listFromJsonString(String str) =>
-      List<PleromaApiCaptcha>.from(
-        json.decode(str).map((x) => PleromaApiCaptcha.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiCaptchaToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiCaptchaToJson(this));
 }
 
 enum PleromaApiCaptchaType {

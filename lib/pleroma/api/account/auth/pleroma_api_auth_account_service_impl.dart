@@ -1,41 +1,28 @@
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_exception.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:fedi/rest/rest_response_model.dart';
 import 'package:path/path.dart' as path;
 
-var urlPath = path.Context(style: path.Style.url);
+var _urlPath = path.Context(style: path.Style.url);
 
 class PleromaApiAuthAccountService extends PleromaApiAccountService
+    with PleromaApiAuthMixinService
     implements IPleromaApiAuthAccountService {
   final String accountReportRelativeUrlPath = "/api/v1/reports";
 
   final IPleromaApiAuthRestService authRestService;
 
   @override
-  bool get isPleroma => authRestService.isPleroma;
+  IPleromaApiAuthRestService get restApiAuthService => authRestService;
 
-  @override
-  Stream<PleromaApiState> get pleromaApiStateStream =>
-      authRestService.pleromaApiStateStream;
-
-  @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
-
-  @override
-  bool get isConnected => restService.isConnected;
-
-  @override
-  Stream<bool> get isConnectedStream => restService.isConnectedStream;
-
-  PleromaApiAuthAccountService({required this.authRestService})
-      : super(
+  PleromaApiAuthAccountService({
+    required this.authRestService,
+  }) : super(
           restService: authRestService,
         );
 
@@ -45,7 +32,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join(accountRelativeUrlPath, "relationships"),
+        relativePath: _urlPath.join(accountRelativeUrlPath, "relationships"),
         queryArgs: remoteAccountIds
             .map(
               (id) => RestRequestQueryArg("id[]", id),
@@ -54,7 +41,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseAccountRelationshipResponseList(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiAccountRelationship.fromJson,
+    );
   }
 
   @override
@@ -63,7 +53,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
           "block",
@@ -71,7 +61,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseAccountRelationshipResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiAccountRelationship.fromJson,
+    );
   }
 
   @override
@@ -80,7 +73,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
           "follow",
@@ -88,7 +81,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseAccountRelationshipResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiAccountRelationship.fromJson,
+    );
   }
 
   @override
@@ -109,7 +105,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
     }
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
           "mute",
@@ -118,7 +114,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseAccountRelationshipResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiAccountRelationship.fromJson,
+    );
   }
 
   @override
@@ -127,7 +126,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
           "pin",
@@ -135,7 +134,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseAccountRelationshipResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiAccountRelationship.fromJson,
+    );
   }
 
   @override
@@ -144,7 +146,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
           "unblock",
@@ -152,7 +154,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseAccountRelationshipResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiAccountRelationship.fromJson,
+    );
   }
 
   @override
@@ -161,7 +166,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
           "unfollow",
@@ -169,7 +174,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseAccountRelationshipResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiAccountRelationship.fromJson,
+    );
   }
 
   @override
@@ -178,7 +186,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
           "unmute",
@@ -186,7 +194,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseAccountRelationshipResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiAccountRelationship.fromJson,
+    );
   }
 
   @override
@@ -195,7 +206,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
           "unpin",
@@ -203,7 +214,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseAccountRelationshipResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiAccountRelationship.fromJson,
+    );
   }
 
   @override
@@ -212,7 +226,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
           "identity_proofs",
@@ -220,7 +234,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseAccountAccountIdentityProofList(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiAccountIdentityProof.fromJson,
+    );
   }
 
   @override
@@ -229,7 +246,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
           "lists",
@@ -237,7 +254,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseListList(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiList.fromJson,
+    );
   }
 
   @override
@@ -249,7 +269,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join(accountRelativeUrlPath, "search"),
+        relativePath: _urlPath.join(accountRelativeUrlPath, "search"),
         queryArgs: [
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
           RestRequestQueryArg("q", query),
@@ -267,11 +287,14 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseAccountListResponse(httpResponse);
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiAccount.fromJson,
+    );
   }
 
   @override
-  Future<bool> reportAccount({
+  Future reportAccount({
     required IPleromaApiAccountReportRequest reportRequest,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -281,7 +304,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return httpResponse.statusCode == RestResponse.successResponseStatusCode;
+    return restService.processEmptyResponse(httpResponse);
   }
 
   @override
@@ -290,7 +313,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join("api/v1/domain_blocks"),
+        relativePath: _urlPath.join("api/v1/domain_blocks"),
         queryArgs: [
           RestRequestQueryArg(
             "domain",
@@ -300,12 +323,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
-      throw PleromaApiAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
+    return restService.processEmptyResponse(httpResponse);
   }
 
   @override
@@ -314,7 +332,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.delete(
-        relativePath: urlPath.join("api/v1/domain_blocks"),
+        relativePath: _urlPath.join("api/v1/domain_blocks"),
         queryArgs: [
           RestRequestQueryArg(
             "domain",
@@ -324,12 +342,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    if (httpResponse.statusCode != RestResponse.successResponseStatusCode) {
-      throw PleromaApiAccountException(
-        statusCode: httpResponse.statusCode,
-        body: httpResponse.body,
-      );
-    }
+    return restService.processEmptyResponse(httpResponse);
   }
 
   @override
@@ -338,7 +351,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           pleromaAccountRelativeUrlPath,
           accountRemoteId,
           "subscribe",
@@ -346,7 +359,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseAccountRelationshipResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiAccountRelationship.fromJson,
+    );
   }
 
   @override
@@ -355,7 +371,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(
+        relativePath: _urlPath.join(
           pleromaAccountRelativeUrlPath,
           accountRemoteId,
           "unsubscribe",
@@ -363,9 +379,9 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
       ),
     );
 
-    return parseAccountRelationshipResponse(httpResponse);
+    return restService.processJsonSingleResponse(
+      httpResponse,
+      PleromaApiAccountRelationship.fromJson,
+    );
   }
-
-  @override
-  bool get isMastodon => authRestService.isMastodon;
 }

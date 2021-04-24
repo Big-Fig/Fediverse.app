@@ -87,7 +87,7 @@ abstract class IPleromaApiAuthAccountService
     required String domain,
   });
 
-  Future<bool> reportAccount({
+  Future reportAccount({
     required IPleromaApiAccountReportRequest reportRequest,
   });
 }
