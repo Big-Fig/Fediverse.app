@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -92,18 +90,11 @@ class PushSettings extends ISettings<PushSettings> {
         ' pleromaChat: $pleromaChatMention, pleromaEmojiReaction: $pleromaEmojiReaction}';
   }
 
-  factory PushSettings.fromJson(Map<String, dynamic> json) =>
+  static PushSettings fromJson(Map<String, dynamic> json) =>
       _$PushSettingsFromJson(json);
-
-  factory PushSettings.fromJsonString(String jsonString) =>
-      _$PushSettingsFromJson(jsonDecode(jsonString));
 
   @override
   Map<String, dynamic> toJson() => _$PushSettingsToJson(this);
-
-  String toJsonString() => jsonEncode(_$PushSettingsToJson(this));
-
-
 
   // ignore: long-parameter-list
   PushSettings copyWith({

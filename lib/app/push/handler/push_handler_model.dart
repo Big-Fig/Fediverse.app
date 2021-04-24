@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
@@ -54,18 +52,8 @@ class PushHandlerMessage {
   @override
   int get hashCode => body.hashCode ^ pushMessage.hashCode;
 
-  factory PushHandlerMessage.fromJson(Map<String, dynamic> json) =>
+  static PushHandlerMessage fromJson(Map<String, dynamic> json) =>
       _$PushHandlerMessageFromJson(json);
 
-  factory PushHandlerMessage.fromJsonString(String jsonString) =>
-      _$PushHandlerMessageFromJson(jsonDecode(jsonString));
-
-  static List<PushHandlerMessage> listFromJsonString(String str) =>
-      List<PushHandlerMessage>.from(
-        json.decode(str).map((x) => PushHandlerMessage.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PushHandlerMessageToJson(this);
-
-  String toJsonString() => jsonEncode(_$PushHandlerMessageToJson(this));
 }

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:flutter/widgets.dart';
@@ -72,19 +70,9 @@ class TimelinesHomeTabStorage implements IJsonObject {
     return 'TimelinesHomeTabStorage{timelineIds: $timelineIds}';
   }
 
-  factory TimelinesHomeTabStorage.fromJson(Map<String, dynamic> json) =>
+  static TimelinesHomeTabStorage fromJson(Map<String, dynamic> json) =>
       _$TimelinesHomeTabStorageFromJson(json);
-
-  factory TimelinesHomeTabStorage.fromJsonString(String jsonString) =>
-      _$TimelinesHomeTabStorageFromJson(jsonDecode(jsonString));
-
-  static List<TimelinesHomeTabStorage> listFromJsonString(String str) =>
-      List<TimelinesHomeTabStorage>.from(
-        json.decode(str).map((x) => TimelinesHomeTabStorage.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$TimelinesHomeTabStorageToJson(this);
-
-  String toJsonString() => jsonEncode(_$TimelinesHomeTabStorageToJson(this));
 }

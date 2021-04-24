@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -107,10 +105,7 @@ class PleromaApiOAuthAuthorizeRequest {
     this.responseType = "code",
   });
 
-  factory PleromaApiOAuthAuthorizeRequest.fromJsonString(String jsonString) =>
-      _$PleromaApiOAuthAuthorizeRequestFromJson(jsonDecode(jsonString));
-
-  factory PleromaApiOAuthAuthorizeRequest.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiOAuthAuthorizeRequest fromJson(Map<String, dynamic> json) =>
       _$PleromaApiOAuthAuthorizeRequestFromJson(json);
 
   Map<String, dynamic> toJson() =>
@@ -270,8 +265,8 @@ class PleromaApiOAuthAppTokenRequest {
       clientId.hashCode ^
       clientSecret.hashCode;
 
-  static PleromaApiOAuthAppTokenRequest fromJsonString(String jsonString) =>
-      _$PleromaApiOAuthAppTokenRequestFromJson(jsonDecode(jsonString));
+  static PleromaApiOAuthAppTokenRequest fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiOAuthAppTokenRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$PleromaApiOAuthAppTokenRequestToJson(this);
 }

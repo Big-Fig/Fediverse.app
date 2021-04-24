@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_model.dart';
@@ -351,8 +349,9 @@ class PleromaMyAccountWrapper extends IMyAccount {
           followRequestsCount: followRequestsCount,
           pleroma: PleromaApiMyAccountPleromaPart(
             tags: pleromaTags?.toPleromaApiTags() ?? this.pleromaTags,
-            relationship: pleromaRelationship?.toPleromaApiAccountRelationship() ??
-                this.pleromaRelationship,
+            relationship:
+                pleromaRelationship?.toPleromaApiAccountRelationship() ??
+                    this.pleromaRelationship,
             isAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
             isModerator: pleromaIsModerator ?? this.pleromaIsModerator,
             confirmationPending:
@@ -431,21 +430,11 @@ class PleromaMyAccountWrapper extends IMyAccount {
   @override
   String? get pleromaBackgroundImage => pleromaAccount.pleroma?.backgroundImage;
 
-  factory PleromaMyAccountWrapper.fromJson(Map<String, dynamic> json) =>
+  static PleromaMyAccountWrapper fromJson(Map<String, dynamic> json) =>
       _$PleromaMyAccountWrapperFromJson(json);
-
-  factory PleromaMyAccountWrapper.fromJsonString(String jsonString) =>
-      _$PleromaMyAccountWrapperFromJson(jsonDecode(jsonString));
-
-  static List<PleromaMyAccountWrapper> listFromJsonString(String str) =>
-      List<PleromaMyAccountWrapper>.from(
-        json.decode(str).map((x) => PleromaMyAccountWrapper.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$PleromaMyAccountWrapperToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaMyAccountWrapperToJson(this));
 }
 
 class SelfActionNotPossibleException implements Exception {

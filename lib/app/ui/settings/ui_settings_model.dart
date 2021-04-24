@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/app/ui/settings/font_size/ui_settings_font_size_model.dart';
 import 'package:fedi/json/json_model.dart';
@@ -28,21 +26,11 @@ class UiSettings implements IJsonObject, ISettings<UiSettings> {
     required this.statusFontSize,
   });
 
-  factory UiSettings.fromJson(Map<String, dynamic> json) =>
+  static UiSettings fromJson(Map<String, dynamic> json) =>
       _$UiSettingsFromJson(json);
-
-  factory UiSettings.fromJsonString(String jsonString) =>
-      _$UiSettingsFromJson(jsonDecode(jsonString));
-
-  static List<UiSettings> listFromJsonString(String str) =>
-      List<UiSettings>.from(
-        json.decode(str).map((x) => UiSettings.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$UiSettingsToJson(this);
-
-  String toJsonString() => jsonEncode(_$UiSettingsToJson(this));
 
   @override
   UiSettings clone() => copyWith();

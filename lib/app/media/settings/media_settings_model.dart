@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
@@ -23,21 +21,11 @@ class MediaSettings implements IJsonObject, ISettings<MediaSettings> {
     required this.autoPlay,
   });
 
-  factory MediaSettings.fromJson(Map<String, dynamic> json) =>
+  static MediaSettings fromJson(Map<String, dynamic> json) =>
       _$MediaSettingsFromJson(json);
-
-  factory MediaSettings.fromJsonString(String jsonString) =>
-      _$MediaSettingsFromJson(jsonDecode(jsonString));
-
-  static List<MediaSettings> listFromJsonString(String str) =>
-      List<MediaSettings>.from(
-        json.decode(str).map((x) => MediaSettings.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$MediaSettingsToJson(this);
-
-  String toJsonString() => jsonEncode(_$MediaSettingsToJson(this));
 
   @override
   MediaSettings clone() => copyWith();

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:collection/collection.dart';
 import 'package:fedi/mastodon/api/account/mastodon_api_account_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
@@ -152,20 +150,10 @@ class PleromaApiAccountReport implements IPleromaApiAccountReport {
       'user: $user'
       '}';
 
-  factory PleromaApiAccountReport.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiAccountReport fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountReportFromJson(json);
 
-  factory PleromaApiAccountReport.fromJsonString(String jsonString) =>
-      _$PleromaApiAccountReportFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiAccountReport> listFromJsonString(String str) =>
-      List<PleromaApiAccountReport>.from(
-        json.decode(str).map((x) => PleromaApiAccountReport.fromJson(x)),
-      );
-
   Map<String, dynamic> toJson() => _$PleromaApiAccountReportToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaApiAccountReportToJson(this));
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -644,16 +632,10 @@ class PleromaApiAccountPleromaPart implements IPleromaApiAccountPleromaPart {
     required this.alsoKnownAs,
   });
 
-  factory PleromaApiAccountPleromaPart.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiAccountPleromaPart fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountPleromaPartFromJson(json);
 
-  factory PleromaApiAccountPleromaPart.fromJsonString(String jsonString) =>
-      _$PleromaApiAccountPleromaPartFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PleromaApiAccountPleromaPartToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiAccountPleromaPartToJson(this));
 
   @override
   // ignore: long-parameter-list, code-metrics
@@ -1076,15 +1058,9 @@ class PleromaApiAccountReportRequest
     this.statusIds,
   });
 
-  factory PleromaApiAccountReportRequest.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiAccountReportRequest fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountReportRequestFromJson(json);
-
-  factory PleromaApiAccountReportRequest.fromJsonString(String jsonString) =>
-      _$PleromaApiAccountReportRequestFromJson(jsonDecode(jsonString));
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiAccountReportRequestToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiAccountReportRequestToJson(this));
 }

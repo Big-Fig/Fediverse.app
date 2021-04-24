@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
@@ -36,29 +34,14 @@ class EmojiPickerRecentCategoryItemsList implements IJsonObject {
     this.recentImageItems,
   });
 
-  factory EmojiPickerRecentCategoryItemsList.fromJson(
+  static EmojiPickerRecentCategoryItemsList fromJson(
     Map<String, dynamic> json,
   ) =>
       _$EmojiPickerRecentCategoryItemsListFromJson(json);
 
-  factory EmojiPickerRecentCategoryItemsList.fromJsonString(
-    String jsonString,
-  ) =>
-      _$EmojiPickerRecentCategoryItemsListFromJson(jsonDecode(jsonString));
-
-  static List<EmojiPickerRecentCategoryItemsList> listFromJsonString(
-    String str,
-  ) =>
-      List<EmojiPickerRecentCategoryItemsList>.from(json
-          .decode(str)
-          .map((x) => EmojiPickerRecentCategoryItemsList.fromJson(x)));
-
   @override
   Map<String, dynamic> toJson() =>
       _$EmojiPickerRecentCategoryItemsListToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$EmojiPickerRecentCategoryItemsListToJson(this));
 
   @override
   bool operator ==(Object other) =>

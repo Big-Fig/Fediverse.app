@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:collection/collection.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
@@ -340,26 +338,17 @@ class TimelineSettings extends ISettings<TimelineSettings> {
         ' onlyPinned: $onlyPinned, excludeReblogs: $excludeReblogs}';
   }
 
-  factory TimelineSettings.fromJson(Map<String, dynamic> json) =>
+  static TimelineSettings fromJson(Map<String, dynamic> json) =>
       _$TimelineSettingsFromJson(json);
-
-  factory TimelineSettings.fromJsonString(String jsonString) =>
-      _$TimelineSettingsFromJson(jsonDecode(jsonString));
-
-  static List<TimelineSettings> listFromJsonString(String str) =>
-      List<TimelineSettings>.from(
-        json.decode(str).map((x) => TimelineSettings.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$TimelineSettingsToJson(this);
 
-  String toJsonString() => jsonEncode(_$TimelineSettingsToJson(this));
-
-  List<PleromaApiVisibility>? get excludeVisibilities => excludeVisibilitiesStrings
-      ?.map((excludeVisibilityString) =>
-          excludeVisibilityString.toPleromaApiVisibility())
-      .toList();
+  List<PleromaApiVisibility>? get excludeVisibilities =>
+      excludeVisibilitiesStrings
+          ?.map((excludeVisibilityString) =>
+              excludeVisibilityString.toPleromaApiVisibility())
+          .toList();
 
   PleromaApiReplyVisibilityFilter? get replyVisibilityFilter =>
       replyVisibilityFilterString?.toPleromaApiReplyVisibilityFilter();

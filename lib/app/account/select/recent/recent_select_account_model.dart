@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:hive/hive.dart';
@@ -35,19 +33,9 @@ class RecentSelectAccountList implements IJsonObject {
   @override
   int get hashCode => recentItems.hashCode;
 
-  factory RecentSelectAccountList.fromJson(Map<String, dynamic> json) =>
+  static RecentSelectAccountList fromJson(Map<String, dynamic> json) =>
       _$RecentSelectAccountListFromJson(json);
-
-  factory RecentSelectAccountList.fromJsonString(String jsonString) =>
-      _$RecentSelectAccountListFromJson(jsonDecode(jsonString));
-
-  static List<RecentSelectAccountList> listFromJsonString(String str) =>
-      List<RecentSelectAccountList>.from(
-        json.decode(str).map((x) => RecentSelectAccountList.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$RecentSelectAccountListToJson(this);
-
-  String toJsonString() => jsonEncode(_$RecentSelectAccountListToJson(this));
 }

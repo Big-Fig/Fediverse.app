@@ -1,11 +1,10 @@
-import 'dart:convert';
-
 import 'package:fedi/mastodon/api/account/public/mastodon_api_account_public_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_account_public_model.g.dart';
 
-abstract class IPleromaApiAccountRegisterRequest extends IMastodonApiAccountRegister {
+abstract class IPleromaApiAccountRegisterRequest
+    extends IMastodonApiAccountRegister {
   Map<String, dynamic> toJson();
 
   String? get captchaToken;
@@ -18,7 +17,8 @@ abstract class IPleromaApiAccountRegisterRequest extends IMastodonApiAccountRegi
 @JsonSerializable(
   includeIfNull: false,
 )
-class PleromaApiAccountRegisterRequest extends IPleromaApiAccountRegisterRequest {
+class PleromaApiAccountRegisterRequest
+    extends IPleromaApiAccountRegisterRequest {
   @override
   final bool? agreement;
 
@@ -101,20 +101,10 @@ class PleromaApiAccountRegisterRequest extends IPleromaApiAccountRegisterRequest
       captchaAnswerData.hashCode ^
       captchaSolution.hashCode;
 
-  factory PleromaApiAccountRegisterRequest.fromJson(Map<String, dynamic> json) =>
+  static PleromaApiAccountRegisterRequest fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountRegisterRequestFromJson(json);
 
-  factory PleromaApiAccountRegisterRequest.fromJsonString(String jsonString) =>
-      _$PleromaApiAccountRegisterRequestFromJson(jsonDecode(jsonString));
-
-  static List<PleromaApiAccountRegisterRequest> listFromJsonString(String str) =>
-      List<PleromaApiAccountRegisterRequest>.from(json
-          .decode(str)
-          .map((x) => PleromaApiAccountRegisterRequest.fromJson(x)));
-
   @override
-  Map<String, dynamic> toJson() => _$PleromaApiAccountRegisterRequestToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaApiAccountRegisterRequestToJson(this));
+  Map<String, dynamic> toJson() =>
+      _$PleromaApiAccountRegisterRequestToJson(this);
 }

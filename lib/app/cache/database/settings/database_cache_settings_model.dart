@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/cache/database/cache/limit/age/database_cache_age_limit_model.dart';
 import 'package:fedi/app/cache/database/cache/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
@@ -34,21 +32,11 @@ class DatabaseCacheSettings
     required this.ageLimitTypeString,
   });
 
-  factory DatabaseCacheSettings.fromJson(Map<String, dynamic> json) =>
+  static DatabaseCacheSettings fromJson(Map<String, dynamic> json) =>
       _$DatabaseCacheSettingsFromJson(json);
-
-  factory DatabaseCacheSettings.fromJsonString(String jsonString) =>
-      _$DatabaseCacheSettingsFromJson(jsonDecode(jsonString));
-
-  static List<DatabaseCacheSettings> listFromJsonString(String str) =>
-      List<DatabaseCacheSettings>.from(
-        json.decode(str).map((x) => DatabaseCacheSettings.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$DatabaseCacheSettingsToJson(this);
-
-  String toJsonString() => jsonEncode(_$DatabaseCacheSettingsToJson(this));
 
   @override
   DatabaseCacheSettings clone() => copyWith();

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
@@ -62,21 +60,11 @@ class StatusSensitiveSettings
         '}';
   }
 
-  factory StatusSensitiveSettings.fromJson(Map<String, dynamic> json) =>
+  static StatusSensitiveSettings fromJson(Map<String, dynamic> json) =>
       _$StatusSensitiveSettingsFromJson(json);
-
-  factory StatusSensitiveSettings.fromJsonString(String jsonString) =>
-      _$StatusSensitiveSettingsFromJson(jsonDecode(jsonString));
-
-  static List<StatusSensitiveSettings> listFromJsonString(String str) =>
-      List<StatusSensitiveSettings>.from(
-        json.decode(str).map((x) => StatusSensitiveSettings.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$StatusSensitiveSettingsToJson(this);
-
-  String toJsonString() => jsonEncode(_$StatusSensitiveSettingsToJson(this));
 
   @override
   StatusSensitiveSettings clone() => copyWith();

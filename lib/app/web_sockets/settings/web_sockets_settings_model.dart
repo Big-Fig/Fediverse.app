@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 import 'package:hive/hive.dart';
@@ -31,21 +29,11 @@ class WebSocketsSettings implements ISettings<WebSocketsSettings> {
   @override
   int get hashCode => type.hashCode;
 
-  factory WebSocketsSettings.fromJson(Map<String, dynamic> json) =>
+  static WebSocketsSettings fromJson(Map<String, dynamic> json) =>
       _$WebSocketsSettingsFromJson(json);
-
-  factory WebSocketsSettings.fromJsonString(String jsonString) =>
-      _$WebSocketsSettingsFromJson(jsonDecode(jsonString));
-
-  static List<WebSocketsSettings> listFromJsonString(String str) =>
-      List<WebSocketsSettings>.from(
-        json.decode(str).map((x) => WebSocketsSettings.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$WebSocketsSettingsToJson(this);
-
-  String toJsonString() => jsonEncode(_$WebSocketsSettingsToJson(this));
 
   @override
   WebSocketsSettings clone() => copyWith();

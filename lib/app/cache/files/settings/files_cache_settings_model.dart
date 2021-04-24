@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/cache/files/cache/limit/age/files_cache_age_limit_model.dart';
 import 'package:fedi/app/cache/files/cache/limit/size_count/files_cache_size_count_limit_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
@@ -32,21 +30,11 @@ class FilesCacheSettings implements IJsonObject, ISettings<FilesCacheSettings> {
     required this.filesCacheAgeLimitTypeString,
   });
 
-  factory FilesCacheSettings.fromJson(Map<String, dynamic> json) =>
+  static FilesCacheSettings fromJson(Map<String, dynamic> json) =>
       _$FilesCacheSettingsFromJson(json);
-
-  factory FilesCacheSettings.fromJsonString(String jsonString) =>
-      _$FilesCacheSettingsFromJson(jsonDecode(jsonString));
-
-  static List<FilesCacheSettings> listFromJsonString(String str) =>
-      List<FilesCacheSettings>.from(
-        json.decode(str).map((x) => FilesCacheSettings.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$FilesCacheSettingsToJson(this);
-
-  String toJsonString() => jsonEncode(_$FilesCacheSettingsToJson(this));
 
   @override
   FilesCacheSettings clone() => copyWith();

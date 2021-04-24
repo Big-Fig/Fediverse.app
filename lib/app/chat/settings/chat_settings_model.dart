@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
@@ -23,21 +21,11 @@ class ChatSettings implements IJsonObject, ISettings<ChatSettings> {
     required this.countConversationsInChatsUnreadBadges,
   });
 
-  factory ChatSettings.fromJson(Map<String, dynamic> json) =>
+  static ChatSettings fromJson(Map<String, dynamic> json) =>
       _$ChatSettingsFromJson(json);
-
-  factory ChatSettings.fromJsonString(String jsonString) =>
-      _$ChatSettingsFromJson(jsonDecode(jsonString));
-
-  static List<ChatSettings> listFromJsonString(String str) =>
-      List<ChatSettings>.from(
-        json.decode(str).map((x) => ChatSettings.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$ChatSettingsToJson(this);
-
-  String toJsonString() => jsonEncode(_$ChatSettingsToJson(this));
 
   @override
   ChatSettings clone() => copyWith();
@@ -72,9 +60,9 @@ class ChatSettings implements IJsonObject, ISettings<ChatSettings> {
 
   @override
   String toString() => 'ChatSettings{'
-        'replaceConversationsWithPleromaChats: '
-        '$replaceConversationsWithPleromaChats, '
-        'countConversationsInChatsUnreadBadges: '
-        '$countConversationsInChatsUnreadBadges'
-        '}';
+      'replaceConversationsWithPleromaChats: '
+      '$replaceConversationsWithPleromaChats, '
+      'countConversationsInChatsUnreadBadges: '
+      '$countConversationsInChatsUnreadBadges'
+      '}';
 }

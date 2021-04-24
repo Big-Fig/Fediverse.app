@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -34,19 +32,9 @@ class RecentSearchList implements IJsonObject {
   @override
   int get hashCode => recentItems.hashCode;
 
-  factory RecentSearchList.fromJson(Map<String, dynamic> json) =>
+  static RecentSearchList fromJson(Map<String, dynamic> json) =>
       _$RecentSearchListFromJson(json);
-
-  factory RecentSearchList.fromJsonString(String jsonString) =>
-      _$RecentSearchListFromJson(jsonDecode(jsonString));
-
-  static List<RecentSearchList> listFromJsonString(String str) =>
-      List<RecentSearchList>.from(
-        json.decode(str).map((x) => RecentSearchList.fromJson(x)),
-      );
 
   @override
   Map<String, dynamic> toJson() => _$RecentSearchListToJson(this);
-
-  String toJsonString() => jsonEncode(_$RecentSearchListToJson(this));
 }

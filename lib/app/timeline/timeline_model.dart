@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
@@ -151,19 +149,11 @@ class Timeline implements IJsonObject {
         ' typeString: $typeString, settings: $settings}';
   }
 
-  factory Timeline.fromJson(Map<String, dynamic> json) =>
+  static Timeline fromJson(Map<String, dynamic> json) =>
       _$TimelineFromJson(json);
-
-  factory Timeline.fromJsonString(String jsonString) =>
-      _$TimelineFromJson(jsonDecode(jsonString));
-
-  static List<Timeline> listFromJsonString(String str) =>
-      List<Timeline>.from(json.decode(str).map((x) => Timeline.fromJson(x)));
 
   @override
   Map<String, dynamic> toJson() => _$TimelineToJson(this);
-
-  String toJsonString() => jsonEncode(_$TimelineToJson(this));
 
   bool? get onlyWithMedia => settings.onlyWithMedia;
 
@@ -195,7 +185,8 @@ class Timeline implements IJsonObject {
   PleromaApiReplyVisibilityFilter? get replyVisibilityFilter =>
       settings.replyVisibilityFilter;
 
-  PleromaApiAccount? get onlyFromRemoteAccount => settings.onlyFromRemoteAccount;
+  PleromaApiAccount? get onlyFromRemoteAccount =>
+      settings.onlyFromRemoteAccount;
 
   String? get onlyFromInstance => settings.onlyFromInstance;
 
