@@ -14,7 +14,8 @@ import 'package:logging/logging.dart';
 final _logger = Logger("push_settings_bloc_impl.dart");
 
 class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
-  final IPushSettingsLocalPreferencesBloc instanceLocalPreferencesBloc;
+  final IPushSettingsLocalPreferencesBloc<PushSettings>
+      instanceLocalPreferencesBloc;
   final IPleromaApiPushService pleromaPushService;
   final IPushRelayService pushRelayService;
   final AuthInstance currentInstance;
@@ -37,117 +38,106 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
   }
 
   @override
-  PushSettings? get settingsData => instanceLocalPreferencesBloc.value;
+  PushSettings get settingsData => instanceLocalPreferencesBloc.value;
 
   @override
-  Stream<PushSettings?> get settingsDataStream =>
+  Stream<PushSettings> get settingsDataStream =>
       instanceLocalPreferencesBloc.stream;
 
   @override
-  void changeFavourite(bool value) {
-    updateSettings(settingsData!.copyWith(
-      favourite: value,
-    ));
-  }
+  Future changeFavourite(bool value) => updateSettings(settingsData.copyWith(
+        favourite: value,
+      ));
 
   @override
-  bool? get favourite => settingsData!.favourite;
+  bool get favourite => settingsData.favourite == true;
 
   @override
-  Stream<bool?> get favouriteStream =>
-      settingsDataStream.map((settings) => settings!.favourite);
+  Stream<bool> get favouriteStream =>
+      settingsDataStream.map((settings) => settings.favourite == true);
 
   @override
-  void changeFollow(bool value) {
-    updateSettings(settingsData!.copyWith(
-      follow: value,
-    ));
-  }
+  Future changeFollow(bool value) => updateSettings(settingsData.copyWith(
+        follow: value,
+      ));
 
   @override
-  bool? get follow => settingsData!.follow;
+  bool get follow => settingsData.follow == true;
 
   @override
-  Stream<bool?> get followStream =>
-      settingsDataStream.map((settings) => settings!.follow);
+  Stream<bool> get followStream =>
+      settingsDataStream.map((settings) => settings.follow == true);
 
   @override
-  bool? get mention => settingsData!.mention;
+  bool get mention => settingsData.mention == true;
 
   @override
-  Stream<bool?> get mentionStream =>
-      settingsDataStream.map((settings) => settings!.mention);
+  Stream<bool> get mentionStream =>
+      settingsDataStream.map((settings) => settings.mention == true);
 
   @override
-  void changeMention(bool value) {
-    updateSettings(settingsData!.copyWith(
-      mention: value,
-    ));
-  }
+  Future changeMention(bool value) => updateSettings(settingsData.copyWith(
+        mention: value,
+      ));
 
   @override
-  bool? get reblog => settingsData!.reblog;
+  bool get reblog => settingsData.reblog == true;
 
   @override
-  Stream<bool?> get reblogStream =>
-      settingsDataStream.map((settings) => settings!.reblog);
+  Stream<bool> get reblogStream =>
+      settingsDataStream.map((settings) => settings.reblog == true);
 
   @override
-  void changeReblog(bool value) {
-    updateSettings(settingsData!.copyWith(
-      reblog: value,
-    ));
-  }
+  Future changeReblog(bool value) => updateSettings(settingsData.copyWith(
+        reblog: value,
+      ));
 
   @override
-  bool? get poll => settingsData!.poll;
+  bool get poll => settingsData.poll == true;
 
   @override
-  Stream<bool?> get pollStream =>
-      settingsDataStream.map((settings) => settings!.poll);
+  Stream<bool> get pollStream =>
+      settingsDataStream.map((settings) => settings.poll == true);
 
   @override
-  void changePoll(bool value) {
-    updateSettings(settingsData!.copyWith(
-      poll: value,
-    ));
-  }
+  Future changePoll(bool value) => updateSettings(settingsData.copyWith(
+        poll: value,
+      ));
 
   @override
-  bool? get pleromaChatMention => settingsData!.pleromaChatMention;
+  bool get pleromaChatMention => settingsData.pleromaChatMention == true;
 
   @override
-  Stream<bool?> get pleromaChatMentionStream =>
-      settingsDataStream.map((settings) => settings!.pleromaChatMention);
+  Stream<bool> get pleromaChatMentionStream =>
+      settingsDataStream.map((settings) => settings.pleromaChatMention == true);
 
   @override
-  void changePleromaChatMention(bool value) {
-    updateSettings(settingsData!.copyWith(
-      pleromaChatMention: value,
-    ));
-  }
+  Future changePleromaChatMention(bool value) =>
+      updateSettings(settingsData.copyWith(
+        pleromaChatMention: value,
+      ));
 
   @override
-  bool? get pleromaEmojiReaction => settingsData!.pleromaEmojiReaction;
+  bool get pleromaEmojiReaction => settingsData.pleromaEmojiReaction == true;
 
   @override
-  Stream<bool?> get pleromaEmojiReactionStream =>
-      settingsDataStream.map((settings) => settings!.pleromaEmojiReaction);
+  Stream<bool> get pleromaEmojiReactionStream => settingsDataStream
+      .map((settings) => settings.pleromaEmojiReaction == true);
 
   @override
-  void changePleromaEmojiReaction(bool value) {
-    updateSettings(settingsData!.copyWith(
-      pleromaEmojiReaction: value,
-    ));
-  }
+  Future changePleromaEmojiReaction(bool value) =>
+      updateSettings(settingsData.copyWith(
+        pleromaEmojiReaction: value,
+      ));
 
   @override
   bool get isHaveSubscription =>
       instanceLocalPreferencesBloc.isSavedPreferenceExist;
 
   @override
-  Future subscribeAllEnabled() =>
-      updateSettings(PushSettings.defaultAllEnabled());
+  Future subscribeAllEnabled() => updateSettings(
+        PushSettings.defaultAllEnabled(),
+      );
 
   @override
   Future updateSettings(PushSettings? newSettings) async {
@@ -210,19 +200,20 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       );
       await instanceLocalPreferencesBloc.setValue(
         PushSettings(
-          favourite: subscription.alerts!.favourite ?? false,
-          follow: subscription.alerts!.follow ?? false,
-          mention: subscription.alerts!.mention ?? false,
-          reblog: subscription.alerts!.reblog ?? false,
-          poll: subscription.alerts!.poll ?? false,
-          pleromaChatMention: subscription.alerts!.pleromaChatMention ?? false,
+          favourite: subscription.alerts?.favourite ?? false,
+          follow: subscription.alerts?.follow ?? false,
+          mention: subscription.alerts?.mention ?? false,
+          reblog: subscription.alerts?.reblog ?? false,
+          poll: subscription.alerts?.poll ?? false,
+          pleromaChatMention: subscription.alerts?.pleromaChatMention ?? false,
           pleromaEmojiReaction:
-              subscription.alerts!.pleromaEmojiReaction ?? false,
+              subscription.alerts?.pleromaEmojiReaction ?? false,
         ),
       );
 
       success = true;
     } catch (error, stackTrace) {
+      // todo: we don't need try catch at this level
       success = false;
       _logger.warning(
         () => "failed to update subscription ",

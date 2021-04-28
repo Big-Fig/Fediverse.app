@@ -96,7 +96,9 @@ class PleromaApiPushSubscription {
 class PleromaApiPushSubscribeData {
   final PleromaApiPushSubscribeRequestDataAlerts? alerts;
 
-  PleromaApiPushSubscribeData({required this.alerts});
+  PleromaApiPushSubscribeData({
+    required this.alerts,
+  });
 
   @override
   bool operator ==(Object other) =>
