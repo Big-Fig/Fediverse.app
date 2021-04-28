@@ -6,15 +6,15 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
-import 'package:fedi/app/cache/database/cache/limit/age/database_cache_age_limit_model.dart';
-import 'package:fedi/app/cache/database/cache/limit/entries_count/database_cache_entries_count_limit_model.dart';
+import 'package:fedi/app/cache/database/limit/age/database_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/database/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc_impl.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/cache/files/cache/limit/age/files_cache_age_limit_model.dart';
-import 'package:fedi/app/cache/files/cache/limit/size_count/files_cache_size_count_limit_model.dart';
+import 'package:fedi/app/cache/files/limit/age/files_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/files/limit/size_count/files_cache_size_count_limit_model.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/cache/files/files_cache_service_impl.dart';
 import 'package:fedi/app/cache/files/settings/files_cache_settings_bloc.dart';
@@ -951,18 +951,18 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       connectionService: connectionService,
       key: userAtHost,
       stalePeriod:
-          filesCacheSettingsBloc.filesCacheAgeLimitType.toDurationOrNull(),
+          filesCacheSettingsBloc.ageLimitType.toDurationOrNull(),
       maxNrOfCacheObjects:
-          filesCacheSettingsBloc.filesCacheSizeLimitCountType.toCountOrNull(),
+          filesCacheSettingsBloc.sizeLimitCountType.toCountOrNull(),
     );
     addDisposable(disposable: filesCacheService);
     await globalProviderService
         .asyncInitAndRegister<IFilesCacheService>(filesCacheService);
 
     await moorDatabaseService.clearByLimits(
-      ageLimit: databaseCacheSettingsBloc.ageLimit.toDurationOrNull(),
+      ageLimit: databaseCacheSettingsBloc.ageLimitType.toDurationOrNull(),
       entriesCountByTypeLimit:
-          databaseCacheSettingsBloc.entriesCountByTypeLimit.toCountOrNull(),
+          databaseCacheSettingsBloc.entriesCountByTypeLimitType.toCountOrNull(),
     );
   }
 }

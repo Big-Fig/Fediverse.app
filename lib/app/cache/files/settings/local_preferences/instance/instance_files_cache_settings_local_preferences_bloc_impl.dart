@@ -11,6 +11,8 @@ class InstanceFilesCacheSettingsLocalPreferencesBloc
     required String userAtHost,
   }) : super(preferencesService, "cache.files.settings.instance.$userAtHost");
 
+  static const FilesCacheSettings? defaultValue = null;
+
   @override
-  FilesCacheSettings? get defaultPreferenceValue => null;
+  FilesCacheSettings? get defaultPreferenceValue => defaultValue;
 }

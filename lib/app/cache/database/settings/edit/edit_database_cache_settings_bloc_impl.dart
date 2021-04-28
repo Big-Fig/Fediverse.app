@@ -1,9 +1,9 @@
-import 'package:fedi/app/cache/database/cache/limit/age/database_cache_age_limit_model.dart';
-import 'package:fedi/app/cache/database/cache/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/cache/database/form/info/instance/current_max_age/current_max_age_instance_database_cache_info_form_field_bloc_impl.dart';
 import 'package:fedi/app/cache/database/form/info/instance/current_max_entries_count_by_type/current_max_entries_count_by_type_instance_database_cache_info_form_field_bloc_impl.dart';
 import 'package:fedi/app/cache/database/form/limit/age/age_limit_database_cache_single_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/cache/database/form/limit/entries_count_by_type/entries_count_by_type_limit_database_cache_single_select_from_list_value_form_field_bloc_impl.dart';
+import 'package:fedi/app/cache/database/limit/age/database_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/database/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_model.dart';
 import 'package:fedi/app/cache/database/settings/edit/edit_database_cache_settings_bloc.dart';
@@ -98,15 +98,12 @@ class EditDatabaseCacheSettingsBloc
 
   @override
   DatabaseCacheSettings calculateCurrentFormFieldsSettings() =>
-      DatabaseCacheSettings(
-        ageLimitTypeString:
-            ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
-                .currentValue
-                .toJsonValue(),
-        entriesCountByTypeLimitTypeString:
+      DatabaseCacheSettings.fromEnum(
+        ageLimitType: ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
+            .currentValue,
+        entriesCountByTypeLimitType:
             entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
-                .currentValue
-                .toJsonValue(),
+                .currentValue,
       );
 
   @override
@@ -132,9 +129,9 @@ class EditDatabaseCacheSettingsBloc
   @override
   Future clearByLimits() async {
     await databaseService.clearByLimits(
-      ageLimit: databaseCacheSettingsBloc.ageLimit.toDurationOrNull(),
+      ageLimit: databaseCacheSettingsBloc.ageLimitType.toDurationOrNull(),
       entriesCountByTypeLimit:
-          databaseCacheSettingsBloc.entriesCountByTypeLimit.toCountOrNull(),
+          databaseCacheSettingsBloc.entriesCountByTypeLimitType.toCountOrNull(),
     );
 
     await _recalculateInfoFields();

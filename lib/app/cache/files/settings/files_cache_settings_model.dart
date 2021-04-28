@@ -1,5 +1,5 @@
-import 'package:fedi/app/cache/files/cache/limit/age/files_cache_age_limit_model.dart';
-import 'package:fedi/app/cache/files/cache/limit/size_count/files_cache_size_count_limit_model.dart';
+import 'package:fedi/app/cache/files/limit/age/files_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/files/limit/size_count/files_cache_size_count_limit_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
@@ -13,22 +13,31 @@ part 'files_cache_settings_model.g.dart';
 class FilesCacheSettings implements IJsonObject, ISettings<FilesCacheSettings> {
   @HiveField(2)
   @JsonKey(name: "files_cache_size_limit_count_type_string")
-  final String filesCacheSizeLimitCountTypeString;
+  final String sizeLimitCountTypeString;
 
   @HiveField(3)
   @JsonKey(name: "files_cache_ageL_limit_type_string")
-  final String filesCacheAgeLimitTypeString;
+  final String ageLimitTypeString;
 
-  FilesCacheSizeLimitCountType get filesCacheSizeLimitCountType =>
-      filesCacheSizeLimitCountTypeString.toFilesCacheSizeLimitCountType();
+  FilesCacheSizeLimitCountType get sizeLimitCountType =>
+      sizeLimitCountTypeString.toFilesCacheSizeLimitCountType();
 
-  FilesCacheAgeLimitType get filesCacheAgeLimitType =>
-      filesCacheAgeLimitTypeString.toFilesCacheAgeLimitType();
+  FilesCacheAgeLimitType get ageLimitType =>
+      ageLimitTypeString.toFilesCacheAgeLimitType();
 
   FilesCacheSettings({
-    required this.filesCacheSizeLimitCountTypeString,
-    required this.filesCacheAgeLimitTypeString,
+    required this.sizeLimitCountTypeString,
+    required this.ageLimitTypeString,
   });
+
+  FilesCacheSettings.fromEnum({
+    required FilesCacheSizeLimitCountType sizeLimitCountType,
+    required FilesCacheAgeLimitType ageLimitType,
+  }) : this(
+          sizeLimitCountTypeString:
+          sizeLimitCountType.toJsonValue(),
+          ageLimitTypeString: ageLimitType.toJsonValue(),
+        );
 
   static FilesCacheSettings fromJson(Map<String, dynamic> json) =>
       _$FilesCacheSettingsFromJson(json);
@@ -40,22 +49,21 @@ class FilesCacheSettings implements IJsonObject, ISettings<FilesCacheSettings> {
   FilesCacheSettings clone() => copyWith();
 
   FilesCacheSettings copyWith({
-    String? filesCacheSizeLimitCountTypeString,
-    String? filesCacheAgeLimitTypeString,
+    FilesCacheSizeLimitCountType? sizeLimitCountType,
+    FilesCacheAgeLimitType? ageLimitType,
   }) =>
-      FilesCacheSettings(
-        filesCacheSizeLimitCountTypeString:
-            filesCacheSizeLimitCountTypeString ??
-                this.filesCacheSizeLimitCountTypeString,
-        filesCacheAgeLimitTypeString:
-            filesCacheAgeLimitTypeString ?? this.filesCacheAgeLimitTypeString,
+      FilesCacheSettings.fromEnum(
+        sizeLimitCountType:
+            sizeLimitCountType ?? this.sizeLimitCountType,
+        ageLimitType:
+            ageLimitType ?? this.ageLimitType,
       );
 
   @override
   String toString() => 'FilesCacheSettings{'
-      'filesCacheSizeLimitCountTypeString: '
-      '$filesCacheSizeLimitCountTypeString, '
-      'filesCacheAgeLimitTypeString: $filesCacheAgeLimitTypeString'
+      'sizeLimitCountTypeString: '
+      '$sizeLimitCountTypeString, '
+      'ageLimitTypeString: $ageLimitTypeString'
       '}';
 
   @override
@@ -63,12 +71,12 @@ class FilesCacheSettings implements IJsonObject, ISettings<FilesCacheSettings> {
       identical(this, other) ||
       other is FilesCacheSettings &&
           runtimeType == other.runtimeType &&
-          filesCacheSizeLimitCountTypeString ==
-              other.filesCacheSizeLimitCountTypeString &&
-          filesCacheAgeLimitTypeString == other.filesCacheAgeLimitTypeString;
+          sizeLimitCountTypeString ==
+              other.sizeLimitCountTypeString &&
+          ageLimitTypeString == other.ageLimitTypeString;
 
   @override
   int get hashCode =>
-      filesCacheSizeLimitCountTypeString.hashCode ^
-      filesCacheAgeLimitTypeString.hashCode;
+      sizeLimitCountTypeString.hashCode ^
+      ageLimitTypeString.hashCode;
 }

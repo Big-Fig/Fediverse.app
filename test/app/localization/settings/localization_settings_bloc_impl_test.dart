@@ -26,6 +26,9 @@ void main() {
         GlobalLocalizationSettingsLocalPreferencesBloc(
       memoryLocalPreferencesService,
     );
+
+    await globalLocalizationSettingsLocalPreferencesBloc.performAsyncInit();
+
     localizationSettingsBloc = LocalizationSettingsBloc(
       localizationSettingsLocalPreferencesBloc:
           globalLocalizationSettingsLocalPreferencesBloc,
@@ -80,7 +83,8 @@ void main() {
     var testLocalizationLocale =
         LocalizationModelTestHelper.createTestLocalizationLocale(seed: "seed");
 
-    localizationSettingsBloc.changeLocalizationLocale(testLocalizationLocale);
+    await localizationSettingsBloc
+        .changeLocalizationLocale(testLocalizationLocale);
     await Future.delayed(Duration(milliseconds: 100));
 
     expect(
@@ -103,7 +107,8 @@ void main() {
 
     var nullLocalizationLocale;
 
-    localizationSettingsBloc.changeLocalizationLocale(nullLocalizationLocale);
+    await localizationSettingsBloc
+        .changeLocalizationLocale(nullLocalizationLocale);
     await Future.delayed(Duration(milliseconds: 100));
 
     expect(

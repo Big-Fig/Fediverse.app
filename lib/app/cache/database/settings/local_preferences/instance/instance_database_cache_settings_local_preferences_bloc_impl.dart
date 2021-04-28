@@ -14,6 +14,8 @@ class InstanceDatabaseCacheSettingsLocalPreferencesBloc
           "cache.database.settings.instance.$userAtHost",
         );
 
+  static const DatabaseCacheSettings? defaultValue = null;
+
   @override
-  DatabaseCacheSettings? get defaultPreferenceValue => null;
+  DatabaseCacheSettings? get defaultPreferenceValue => defaultValue;
 }

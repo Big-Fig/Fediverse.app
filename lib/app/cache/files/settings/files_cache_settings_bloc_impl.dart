@@ -1,5 +1,5 @@
-import 'package:fedi/app/cache/files/cache/limit/age/files_cache_age_limit_model.dart';
-import 'package:fedi/app/cache/files/cache/limit/size_count/files_cache_size_count_limit_model.dart';
+import 'package:fedi/app/cache/files/limit/age/files_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/files/limit/size_count/files_cache_size_count_limit_model.dart';
 import 'package:fedi/app/cache/files/settings/files_cache_settings_bloc.dart';
 import 'package:fedi/app/cache/files/settings/files_cache_settings_model.dart';
 import 'package:fedi/app/cache/files/settings/local_preferences/files_cache_settings_local_preferences_bloc.dart';
@@ -19,43 +19,43 @@ class FilesCacheSettingsBloc
         );
 
   @override
-  FilesCacheSizeLimitCountType get filesCacheSizeLimitCountType =>
-      settingsData.filesCacheSizeLimitCountType;
+  FilesCacheSizeLimitCountType get sizeLimitCountType =>
+      settingsData.sizeLimitCountType;
 
   @override
-  Stream<FilesCacheSizeLimitCountType> get filesCacheSizeLimitCountTypeStream =>
+  Stream<FilesCacheSizeLimitCountType> get sizeLimitCountTypeStream =>
       settingsDataStream.map(
-        (settings) => settings.filesCacheSizeLimitCountType,
+        (settings) => settings.sizeLimitCountType,
       );
 
   @override
-  Future changeFilesCacheSizeLimitCountType(
+  Future changeSizeLimitCountType(
     FilesCacheSizeLimitCountType value,
   ) =>
       updateSettings(
-        FilesCacheSettings(
-          filesCacheSizeLimitCountTypeString: value.toJsonValue(),
-          filesCacheAgeLimitTypeString: filesCacheAgeLimitType.toJsonValue(),
+        FilesCacheSettings.fromEnum(
+          sizeLimitCountType: value,
+          ageLimitType: ageLimitType,
         ),
       );
 
   @override
-  FilesCacheAgeLimitType get filesCacheAgeLimitType =>
-      settingsData.filesCacheAgeLimitType;
+  FilesCacheAgeLimitType get ageLimitType =>
+      settingsData.ageLimitType;
 
   @override
-  Stream<FilesCacheAgeLimitType> get filesCacheAgeLimitTypeStream =>
+  Stream<FilesCacheAgeLimitType> get ageLimitTypeStream =>
       settingsDataStream.map(
-        (settings) => settings.filesCacheAgeLimitType,
+        (settings) => settings.ageLimitType,
       );
 
   @override
-  Future changeFilesCacheAgeLimitType(FilesCacheAgeLimitType value) =>
+  Future changeAgeLimitType(FilesCacheAgeLimitType value) =>
       updateSettings(
-        FilesCacheSettings(
-          filesCacheSizeLimitCountTypeString:
-              filesCacheSizeLimitCountType.toJsonValue(),
-          filesCacheAgeLimitTypeString: value.toJsonValue(),
+        FilesCacheSettings.fromEnum(
+          sizeLimitCountType:
+              sizeLimitCountType,
+          ageLimitType: value,
         ),
       );
 }
