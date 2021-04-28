@@ -60,7 +60,9 @@ class StatusDatabaseTestHelper {
       content: seed + "content",
       reblogStatusRemoteId: null,
       application:
-          PleromaApiApplicationTestHelper.createTestPleromaApiApplication(seed),
+          PleromaApiApplicationTestHelper.createTestPleromaApiApplication(
+        seed: seed,
+      ),
       accountRemoteId: dbAccount.remoteId,
       mediaAttachments: null,
       mentions: null,

@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/app/notification/list/notification_list_tap_to_load_overlay_widget.dart';

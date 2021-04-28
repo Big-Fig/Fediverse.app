@@ -6,12 +6,12 @@ import 'package:fedi/analytics/app/local_preferences/app_analytics_local_prefere
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_local_preference_bloc.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc.dart';
+import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc.dart';
-import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc.dart';
+import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preferences_bloc.dart';

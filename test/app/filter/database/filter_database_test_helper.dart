@@ -1,9 +1,7 @@
-import 'package:collection/collection.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/filter/filter_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-Function _eq = const ListEquality().equals;
 
 class FilterDatabaseTestHelper {
   static Future<DbFilter> createTestDbFilter({
@@ -48,7 +46,7 @@ class FilterDatabaseTestHelper {
       dbFilter.phrase,
     );
     expect(
-      _eq(actual.context, dbFilter.context),
+      listEquals(actual.context, dbFilter.context),
       true,
     );
     expect(

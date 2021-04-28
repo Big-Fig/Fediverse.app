@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_app_bar_text_action_widget.dart';
 import 'package:fedi/generated/l10n.dart';

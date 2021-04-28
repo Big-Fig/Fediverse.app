@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
-import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc.dart';
+import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:logging/logging.dart';
@@ -82,7 +82,7 @@ class AuthInstanceListBloc extends DisposableOwner
     required String acct,
   }) {
     var instanceList = instanceListLocalPreferenceBloc.value;
-    var foundInstance = instanceList?.instances?.firstWhereOrNull(
+    var foundInstance = instanceList?.instances.firstWhereOrNull(
       (instance) => instance.urlHost == host && instance.acct == acct,
     );
 

@@ -1,8 +1,8 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
-import 'package:fedi/app/account/my/my_account_local_preference_bloc.dart';
-import 'package:fedi/app/account/my/my_account_local_preference_bloc_impl.dart';
+import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc.dart';
+import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';

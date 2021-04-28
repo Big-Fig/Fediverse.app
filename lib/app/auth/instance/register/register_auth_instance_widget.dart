@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/auth_instance_pleroma_rest_error_data.dart';
 import 'package:fedi/app/auth/instance/register/form/register_auth_instance_form_widget.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';

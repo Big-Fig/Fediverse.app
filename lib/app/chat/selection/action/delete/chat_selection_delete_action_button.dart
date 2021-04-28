@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';

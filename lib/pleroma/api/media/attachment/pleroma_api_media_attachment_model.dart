@@ -189,7 +189,7 @@ class PleromaApiMediaAttachmentPleromaPart {
   final String? mimeType;
 
   PleromaApiMediaAttachmentPleromaPart({
-    this.mimeType,
+    required this.mimeType,
   });
 
   static PleromaApiMediaAttachmentPleromaPart fromJson(

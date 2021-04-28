@@ -1,17 +1,14 @@
-import 'package:collection/collection.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-Function _eq = const ListEquality().equals;
 
 class ChatMessageDatabaseTestHelper {
   static Future<DbChatMessagePopulated> createTestDbChatMessagePopulated(
-    DbChatMessage dbChatMessage,
-    AccountRepository accountRepository,
-  ) async {
+      DbChatMessage dbChatMessage,
+      AccountRepository accountRepository,) async {
     DbChatMessagePopulated dbChatMessagePopulated = DbChatMessagePopulated(
       dbChatMessage: dbChatMessage,
       dbAccount: (await accountRepository.findByRemoteIdInDbType(
@@ -43,10 +40,8 @@ class ChatMessageDatabaseTestHelper {
     return dbChatMessage;
   }
 
-  static void expectDbChatMessagePopulated(
-    IPleromaChatMessage? actual,
-    DbChatMessagePopulated? expected,
-  ) {
+  static void expectDbChatMessagePopulated(IPleromaChatMessage? actual,
+      DbChatMessagePopulated? expected,) {
     if (actual == null && expected == null) {
       return;
     }
@@ -56,8 +51,8 @@ class ChatMessageDatabaseTestHelper {
     ChatMessageDatabaseTestHelper.expectDbChatMessage(actual, dbChatMessage);
   }
 
-  static void expectDbChatMessage(
-      IPleromaChatMessage? actual, DbChatMessage? expected) {
+  static void expectDbChatMessage(IPleromaChatMessage? actual,
+      DbChatMessage? expected) {
     if (actual == null && expected == null) {
       return;
     }
@@ -71,12 +66,12 @@ class ChatMessageDatabaseTestHelper {
       expect(actual.emojis, expected.emojis);
 
       expect(
-        _eq(
+        listEquals(
           actual.mediaAttachments,
           expected.mediaAttachment != null
               ? [
-                  expected.mediaAttachment,
-                ]
+            expected.mediaAttachment,
+          ]
               : null,
         ),
         true,

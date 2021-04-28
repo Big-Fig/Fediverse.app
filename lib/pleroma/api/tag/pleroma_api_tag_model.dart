@@ -1,13 +1,12 @@
-import 'package:collection/collection.dart';
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/mastodon/api/tag/mastodon_api_tag_model.dart';
 import 'package:fedi/pleroma/api/tag/history/pleroma_api_tag_history_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 // ignore_for_file: no-magic-number
 part 'pleroma_api_tag_model.g.dart';
-
-final Function _listEq = const ListEquality().equals;
 
 abstract class IPleromaApiTag implements IMastodonApiTag {
   @override
@@ -45,7 +44,7 @@ extension IPleromaApiTagListExtension on List<IPleromaApiTag> {
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 74)
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PleromaApiTag implements IPleromaApiTag {
   @override
   @HiveField(0)
@@ -81,10 +80,10 @@ class PleromaApiTag implements IPleromaApiTag {
           runtimeType == other.runtimeType &&
           name == other.name &&
           url == other.url &&
-          _listEq(history, other.history);
+          listEquals(history, other.history);
 
   @override
-  int get hashCode => name.hashCode ^ url.hashCode ^ history.hashCode;
+  int get hashCode => name.hashCode ^ url.hashCode ^ listHash(history);
 
   @override
   String toString() {

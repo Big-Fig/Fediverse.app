@@ -1,5 +1,7 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/json/json_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -14,10 +16,10 @@ part 'auth_instance_list_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class AuthInstanceList extends IJsonObject {
   @HiveField(0)
-  final List<AuthInstance>? instances;
+  final List<AuthInstance> instances;
 
   AuthInstanceList({
-    this.instances,
+    required this.instances,
   });
 
   @override
@@ -25,10 +27,10 @@ class AuthInstanceList extends IJsonObject {
       identical(this, other) ||
       other is AuthInstanceList &&
           runtimeType == other.runtimeType &&
-          instances == other.instances;
+          listEquals(instances, other.instances);
 
   @override
-  int get hashCode => instances.hashCode;
+  int get hashCode => listHash(instances);
 
   @override
   String toString() {

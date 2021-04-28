@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
@@ -17,18 +16,17 @@ import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_model.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
 import 'package:fedi/pleroma/api/id/pleroma_api_fake_id_helper.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
-
-Function eq = const ListEquality().equals;
 
 final _logger = Logger("conversation_chat_bloc_impl.dart");
 
@@ -50,7 +48,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Stream<List<IAccount>> get accountsStream =>
-      _accountsSubject.stream.distinct((a, b) => eq(a, b));
+      _accountsSubject.stream.distinct((a, b) => listEquals(a, b));
 
   @override
   IConversationChat get chat => _chatSubject.value!;

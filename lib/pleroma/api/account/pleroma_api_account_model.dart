@@ -1,16 +1,16 @@
-import 'package:collection/collection.dart';
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/mastodon/api/account/mastodon_api_account_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_account_model.g.dart';
 
 // ignore_for_file: no-magic-number
-Function _listEq = const ListEquality().equals;
 
 abstract class IPleromaApiAccount implements IMastodonApiAccount {
   @override
@@ -137,11 +137,12 @@ class PleromaApiAccountReport implements IPleromaApiAccountReport {
       other is PleromaApiAccountReport &&
           runtimeType == other.runtimeType &&
           account == other.account &&
-          _listEq(statuses, other.statuses) &&
+          listEquals(statuses, other.statuses) &&
           user == other.user;
 
   @override
-  int get hashCode => account.hashCode ^ statuses.hashCode ^ user.hashCode;
+  int get hashCode =>
+      account.hashCode ^ listHash(statuses) ^ user.hashCode;
 
   @override
   String toString() => 'PleromaApiAccountReport{'
@@ -308,8 +309,8 @@ class PleromaApiAccount implements IPleromaApiAccount {
           header == other.header &&
           followingCount == other.followingCount &&
           followersCount == other.followersCount &&
-          _listEq(fields, other.fields) &&
-          _listEq(emojis, other.emojis) &&
+          listEquals(fields, other.fields) &&
+          listEquals(emojis, other.emojis) &&
           displayName == other.displayName &&
           createdAt == other.createdAt &&
           bot == other.bot &&
@@ -332,8 +333,8 @@ class PleromaApiAccount implements IPleromaApiAccount {
       header.hashCode ^
       followingCount.hashCode ^
       followersCount.hashCode ^
-      fields.hashCode ^
-      emojis.hashCode ^
+      listHash(fields) ^
+      listHash(emojis) ^
       displayName.hashCode ^
       createdAt.hashCode ^
       bot.hashCode ^
@@ -691,7 +692,7 @@ class PleromaApiAccountPleromaPart implements IPleromaApiAccountPleromaPart {
       other is PleromaApiAccountPleromaPart &&
           runtimeType == other.runtimeType &&
           backgroundImage == other.backgroundImage &&
-          tags == other.tags &&
+          listEquals(tags, other.tags) &&
           relationship == other.relationship &&
           isAdmin == other.isAdmin &&
           isModerator == other.isModerator &&
@@ -708,12 +709,12 @@ class PleromaApiAccountPleromaPart implements IPleromaApiAccountPleromaPart {
           isConfirmed == other.isConfirmed &&
           favicon == other.favicon &&
           apId == other.apId &&
-          alsoKnownAs == other.alsoKnownAs;
+          listEquals(alsoKnownAs, other.alsoKnownAs);
 
   @override
   int get hashCode =>
       backgroundImage.hashCode ^
-      tags.hashCode ^
+      listHash(tags) ^
       relationship.hashCode ^
       isAdmin.hashCode ^
       isModerator.hashCode ^
@@ -730,7 +731,7 @@ class PleromaApiAccountPleromaPart implements IPleromaApiAccountPleromaPart {
       isConfirmed.hashCode ^
       favicon.hashCode ^
       apId.hashCode ^
-      alsoKnownAs.hashCode;
+      listHash(alsoKnownAs);
 
   @override
   String toString() => 'PleromaApiAccountPleromaPart{'

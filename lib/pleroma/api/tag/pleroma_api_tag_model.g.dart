@@ -64,5 +64,5 @@ Map<String, dynamic> _$PleromaApiTagToJson(PleromaApiTag instance) =>
     <String, dynamic>{
       'name': instance.name,
       'url': instance.url,
-      'history': instance.history,
+      'history': instance.history?.map((e) => e.toJson()).toList(),
     };

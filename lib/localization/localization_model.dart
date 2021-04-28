@@ -9,27 +9,27 @@ part 'localization_model.g.dart';
 @HiveType(typeId: -32 + 82)
 class LocalizationLocale implements IJsonObject {
   @HiveField(0)
-  String? languageCode;
+  final String languageCode;
   @HiveField(1)
-  String? scriptCode;
+  final String? scriptCode;
   @HiveField(2)
-  String? countryCode;
+  final String? countryCode;
 
   String get localeString {
     var result = "$languageCode";
     if (scriptCode != null) {
-      result = "_$scriptCode";
+      result += "_$scriptCode";
     }
     if (countryCode != null) {
-      result = "_$countryCode";
+      result += "_$countryCode";
     }
     return result;
   }
 
   LocalizationLocale({
-    this.languageCode,
-    this.scriptCode,
-    this.countryCode,
+    required this.languageCode,
+    required this.scriptCode,
+    required this.countryCode,
   });
 
   static LocalizationLocale fromJson(Map<String, dynamic> json) =>

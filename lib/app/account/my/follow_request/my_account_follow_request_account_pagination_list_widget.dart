@@ -2,7 +2,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/list/account_big_list_item_widget.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_network_only_account_list_bloc.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
-import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/spacer/fedi_medium_horizontal_spacer.dart';

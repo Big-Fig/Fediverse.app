@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:fedi/app/auth/host/auth_host_access_token_local_preference_bloc.dart';
-import 'package:fedi/app/auth/host/auth_host_access_token_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/host/auth_host_application_local_preference_bloc.dart';
-import 'package:fedi/app/auth/host/auth_host_application_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_preference_bloc.dart';
+import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc.dart';
+import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
@@ -282,6 +282,8 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   }
 
   @override
+  // todo: fix long-method
+  // ignore: long-method
   Future<AuthHostRegistrationResult> registerAccount({
     required IPleromaApiAccountRegisterRequest request,
   }) async {
@@ -308,16 +310,18 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     var hostInstance = await pleromaInstanceService.getInstance();
 
     AuthHostRegistrationResult result;
-    if (hostInstance.approvalRequired!) {
-      result = AuthHostRegistrationResult(
+    if (hostInstance.approvalRequired == true) {
+      result = AuthHostRegistrationResult.noErrors(
         authInstance: null,
         token: token,
         pleromaInstance: hostInstance,
-        authInstanceFetchError: null,
       );
     } else {
+      EmailConfirmationRequiredAuthHostException?
+          emailConfirmationRequiredAuthHostException;
+      dynamic? unknownHostException;
+
       AuthInstance? instance;
-      var authInstanceFetchError;
       try {
         instance = await _createAuthInstance(
           pleromaAuthRestService: pleromaAuthRestService,
@@ -330,21 +334,27 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         if (e is PleromaApiRestException) {
           if (e.decodedErrorDescriptionOrBody ==
               emailConfirmationRequiredDescription) {
-            authInstanceFetchError =
+            emailConfirmationRequiredAuthHostException =
                 const EmailConfirmationRequiredAuthHostException();
           } else {
-            authInstanceFetchError = e;
+            unknownHostException = e;
           }
         } else {
-          authInstanceFetchError = e;
+          unknownHostException = e;
         }
       }
 
       result = AuthHostRegistrationResult(
-        authInstanceFetchError: authInstanceFetchError,
         authInstance: instance,
         token: token,
         pleromaInstance: hostInstance,
+        emailConfirmationRequiredAuthHostException:
+            emailConfirmationRequiredAuthHostException,
+        unknownHostException: unknownHostException,
+        cantRegisterAppAuthHostException: null,
+        cantRetrieveAppTokenAuthHostException: null,
+        invitesOnlyRegistrationAuthHostException: null,
+        disabledRegistrationAuthHostException: null,
       );
     }
 

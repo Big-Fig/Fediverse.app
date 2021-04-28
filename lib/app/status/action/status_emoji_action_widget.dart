@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/status/action/status_action_counter_widget.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';

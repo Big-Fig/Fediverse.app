@@ -4,14 +4,16 @@ import 'package:fedi/app/localization/settings/localization_settings_model.dart'
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class GlobalLocalizationSettingsLocalPreferencesBloc
-    extends LocalizationSettingsLocalPreferencesBloc
+    extends LocalizationSettingsLocalPreferencesBloc<LocalizationSettings>
     implements IGlobalLocalizationSettingsLocalPreferencesBloc {
   GlobalLocalizationSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
   ) : super(preferencesService, "localization.settings.global");
 
+  static const defaultValue = LocalizationSettings(
+    localizationLocale: null,
+  );
+
   @override
-  LocalizationSettings get defaultPreferenceValue => LocalizationSettings(
-        localizationLocale: null,
-      );
+  LocalizationSettings get defaultPreferenceValue => defaultValue;
 }

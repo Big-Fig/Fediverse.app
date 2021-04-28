@@ -5,16 +5,17 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+// ignore_for_file: no-magic-number
 class LocalPreferencesTestHelper {
-  static Future testSaveAndLoad<T, K extends ILocalPreferenceBloc>(
-  {
+  static Future testSaveAndLoad<T, K extends ILocalPreferenceBloc>({
     required T? defaultValue,
-    required K Function(ILocalPreferencesService localPreferencesService) blocCreator,
+    required K Function(ILocalPreferencesService localPreferencesService)
+        blocCreator,
     required T Function({
-    required String seed,
-    }) testObjectCreator,
-  }
-  ) async {
+      required String seed,
+    })
+        testObjectCreator,
+  }) async {
     var memoryLocalPreferencesService = MemoryLocalPreferencesService();
     var testLocalPreferenceBloc = blocCreator(
       memoryLocalPreferencesService,

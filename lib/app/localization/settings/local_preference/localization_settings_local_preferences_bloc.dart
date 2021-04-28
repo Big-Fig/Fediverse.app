@@ -3,8 +3,8 @@ import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ILocalizationSettingsLocalPreferencesBloc
-    implements ILocalPreferenceBloc<LocalizationSettings?> {
+abstract class ILocalizationSettingsLocalPreferencesBloc<
+    T extends LocalizationSettings?> implements ILocalPreferenceBloc<T> {
   static ILocalizationSettingsLocalPreferencesBloc of(
     BuildContext context, {
     bool listen = true,

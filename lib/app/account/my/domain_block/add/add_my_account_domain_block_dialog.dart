@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_bloc.dart';
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_bloc_impl.dart';
-import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/app/ui/dialog/fedi_dialog.dart';
 import 'package:fedi/dialog/base_dialog.dart';

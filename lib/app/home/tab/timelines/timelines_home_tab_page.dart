@@ -1,4 +1,4 @@
-import 'package:collection/collection.dart';
+
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
@@ -45,12 +45,12 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-Function eq = const ListEquality().equals;
 
 final _logger = Logger("timelines_home_tab_page.dart");
 
@@ -81,7 +81,7 @@ class TimelinesHomeTabPage extends StatelessWidget {
               List<String> value,
               ITimelineTabListBloc? previous,
             ) {
-              if (eq(value, previous?.timelineIds)) {
+              if (listEquals(value, previous?.timelineIds)) {
                 return previous!;
               }
 

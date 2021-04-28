@@ -1,9 +1,7 @@
-import 'package:collection/collection.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
-
-Function eq = const ListEquality().equals;
+import 'package:flutter/foundation.dart';
 
 class MediaAttachmentListBloc extends DisposableOwner
     implements IMediaAttachmentListBloc {
@@ -13,16 +11,16 @@ class MediaAttachmentListBloc extends DisposableOwner
   final IPleromaApiMediaAttachment? initialMediaAttachment;
 
   MediaAttachmentListBloc({
-    required  List<IPleromaApiMediaAttachment>? mediaAttachments,
+    required List<IPleromaApiMediaAttachment>? mediaAttachments,
     required this.initialMediaAttachment,
-  }): mediaAttachments = mediaAttachments ?? [];
+  }) : mediaAttachments = mediaAttachments ?? [];
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is MediaAttachmentListBloc &&
           runtimeType == other.runtimeType &&
-          eq(mediaAttachments, other.mediaAttachments) &&
+          listEquals(mediaAttachments, other.mediaAttachments) &&
           initialMediaAttachment == other.initialMediaAttachment;
 
   @override

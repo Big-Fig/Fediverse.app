@@ -1,17 +1,15 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rxdart/rxdart.dart';
-
-Function eq = const ListEquality().equals;
 
 var _logger = Logger("pagination_list_bloc_impl.dart");
 
@@ -88,7 +86,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Stream<List<TItem>> get itemsDistinctStream =>
-      itemsStream.distinct((a, b) => eq(a, b));
+      itemsStream.distinct((a, b) => listEquals(a, b));
 
   @override
   List<TItem> get items => mapToItemsList(sortedPages);

@@ -1,12 +1,10 @@
-import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../account/account_test_helper.dart';
 import 'database/chat_message_database_test_helper.dart';
-
-Function _eq = const ListEquality().equals;
 
 class ChatMessageTestHelper {
   static Future<DbPleromaChatMessagePopulatedWrapper> createTestChatMessage({
@@ -52,7 +50,7 @@ class ChatMessageTestHelper {
 
       expect(actual.emojis, expected.emojis);
       expect(
-        _eq(
+        listEquals(
           actual.mediaAttachments,
           expected.mediaAttachments,
         ),

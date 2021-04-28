@@ -435,6 +435,16 @@ class PleromaMyAccountWrapper extends IMyAccount {
 
   @override
   Map<String, dynamic> toJson() => _$PleromaMyAccountWrapperToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaMyAccountWrapper &&
+          runtimeType == other.runtimeType &&
+          pleromaAccount == other.pleromaAccount;
+
+  @override
+  int get hashCode => pleromaAccount.hashCode;
 }
 
 class SelfActionNotPossibleException implements Exception {

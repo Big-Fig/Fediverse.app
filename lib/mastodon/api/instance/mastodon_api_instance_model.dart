@@ -63,9 +63,9 @@ class MastodonApiInstanceStats {
   final int? domainCount;
 
   MastodonApiInstanceStats({
-    this.userCount,
-    this.statusCount,
-    this.domainCount,
+    required this.userCount,
+    required this.statusCount,
+    required this.domainCount,
   });
 
   @override
@@ -83,8 +83,11 @@ class MastodonApiInstanceStats {
 
   @override
   String toString() {
-    return 'MastodonApiInstanceStats{userCount: $userCount,'
-        ' statusCount: $statusCount, domainCount: $domainCount}';
+    return 'MastodonApiInstanceStats{'
+        'userCount: $userCount, '
+        'statusCount: $statusCount,'
+        'domainCount: $domainCount'
+        '}';
   }
 
   static MastodonApiInstanceStats fromJson(Map<String, dynamic> json) =>
@@ -104,7 +107,9 @@ class MastodonApiUrls {
   @HiveField(0)
   final String? streamingApi;
 
-  MastodonApiUrls({this.streamingApi});
+  MastodonApiUrls({
+    required this.streamingApi,
+  });
 
   @override
   bool operator ==(Object other) =>

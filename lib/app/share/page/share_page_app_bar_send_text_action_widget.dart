@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/share/share_bloc.dart';
 import 'package:fedi/app/ui/button/fedi_text_button.dart';
 import 'package:fedi/generated/l10n.dart';

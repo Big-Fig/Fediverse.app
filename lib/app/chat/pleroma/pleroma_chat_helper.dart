@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';

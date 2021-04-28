@@ -2,7 +2,7 @@ import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
-import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_instance_list_item_bloc.dart';
+import 'package:fedi/app/auth/instance/chooser/instance_list/auth_instance_chooser_instance_list_item_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';

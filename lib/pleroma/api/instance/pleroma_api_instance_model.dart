@@ -1,6 +1,8 @@
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/mastodon/api/instance/mastodon_api_instance_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logging/logging.dart';
@@ -265,10 +267,10 @@ class PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge {
       other is PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge &&
           runtimeType == other.runtimeType &&
           threshold == other.threshold &&
-          actions == other.actions;
+          listEquals(actions, other.actions);
 
   @override
-  int get hashCode => threshold.hashCode ^ actions.hashCode;
+  int get hashCode => threshold.hashCode ^ listHash(actions);
 
   @override
   String toString() {
@@ -322,16 +324,16 @@ class PleromaApiInstancePleromaPartMetadataFederation {
           enabled == other.enabled &&
           exclusions == other.exclusions &&
           mrfObjectAge == other.mrfObjectAge &&
-          mrfPolicies == other.mrfPolicies &&
-          quarantinedInstances == other.quarantinedInstances;
+          listEquals(mrfPolicies, other.mrfPolicies) &&
+          listEquals(quarantinedInstances, other.quarantinedInstances);
 
   @override
   int get hashCode =>
       enabled.hashCode ^
       exclusions.hashCode ^
       mrfObjectAge.hashCode ^
-      mrfPolicies.hashCode ^
-      quarantinedInstances.hashCode;
+      listHash(mrfPolicies) ^
+      listHash(quarantinedInstances);
 
   @override
   String toString() {
@@ -388,17 +390,17 @@ class PleromaApiInstancePleromaPartMetadata {
       identical(this, other) ||
       other is PleromaApiInstancePleromaPartMetadata &&
           runtimeType == other.runtimeType &&
-          features == other.features &&
+          listEquals(features, other.features) &&
           federation == other.federation &&
-          postFormats == other.postFormats &&
+          listEquals(postFormats, other.postFormats) &&
           accountActivationRequired == other.accountActivationRequired &&
           fieldsLimits == other.fieldsLimits;
 
   @override
   int get hashCode =>
-      features.hashCode ^
+      listHash(features) ^
       federation.hashCode ^
-      postFormats.hashCode ^
+      listHash(postFormats) ^
       accountActivationRequired.hashCode ^
       fieldsLimits.hashCode;
 
@@ -673,6 +675,34 @@ class PleromaApiInstance extends IPleromaApiInstance {
     required this.invitesEnabled,
   });
 
+  PleromaApiInstance.only({
+    this.approvalRequired,
+    this.avatarUploadLimit,
+    this.backgroundUploadLimit,
+    this.bannerUploadLimit,
+    this.contactAccount,
+    this.email,
+    this.languages,
+    this.maxTootChars,
+    this.pleroma,
+    this.pollLimits,
+    this.registrations,
+    this.shortDescription,
+    this.stats,
+    this.thumbnail,
+    this.title,
+    this.uploadLimit,
+    this.uri,
+    this.urls,
+    this.vapidPublicKey,
+    this.version,
+    this.backgroundImage,
+    this.chatLimit,
+    this.description,
+    this.descriptionLimit,
+    this.invitesEnabled,
+  });
+
   @override
   String toString() {
     return 'PleromaApiInstance{'
@@ -716,7 +746,7 @@ class PleromaApiInstance extends IPleromaApiInstance {
           bannerUploadLimit == other.bannerUploadLimit &&
           contactAccount == other.contactAccount &&
           email == other.email &&
-          languages == other.languages &&
+          listEquals(languages, other.languages) &&
           maxTootChars == other.maxTootChars &&
           pleroma == other.pleroma &&
           pollLimits == other.pollLimits &&
@@ -744,7 +774,7 @@ class PleromaApiInstance extends IPleromaApiInstance {
       bannerUploadLimit.hashCode ^
       contactAccount.hashCode ^
       email.hashCode ^
-      languages.hashCode ^
+      listHash(languages) ^
       maxTootChars.hashCode ^
       pleroma.hashCode ^
       pollLimits.hashCode ^
