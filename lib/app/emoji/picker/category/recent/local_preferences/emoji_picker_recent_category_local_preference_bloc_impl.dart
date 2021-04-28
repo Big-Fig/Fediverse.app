@@ -1,5 +1,5 @@
-import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_model.dart';
+import 'package:fedi/app/emoji/picker/category/recent/local_preferences/emoji_picker_recent_category_local_preference_bloc.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
@@ -17,7 +17,9 @@ class EmojiPickerRecentCategoryLocalPreferenceBloc
               EmojiPickerRecentCategoryItemsList.fromJson(json),
         );
 
+  static const EmojiPickerRecentCategoryItemsList? defaultValue = null;
+
   @override
-  // TODO: implement defaultValue
-  EmojiPickerRecentCategoryItemsList? get defaultPreferenceValue => null;
+  EmojiPickerRecentCategoryItemsList? get defaultPreferenceValue =>
+      defaultValue;
 }

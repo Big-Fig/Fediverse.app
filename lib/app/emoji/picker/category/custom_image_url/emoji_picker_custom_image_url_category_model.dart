@@ -1,5 +1,7 @@
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
 import 'package:fedi/json/json_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -14,10 +16,10 @@ part 'emoji_picker_custom_image_url_category_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class EmojiPickerCustomImageUrlCategoryItems implements IJsonObject {
   @HiveField(0)
-  final List<CustomEmojiPickerImageUrlItem>? items;
+  final List<CustomEmojiPickerImageUrlItem> items;
 
   EmojiPickerCustomImageUrlCategoryItems({
-    this.items,
+    required this.items,
   });
 
   @override
@@ -30,10 +32,10 @@ class EmojiPickerCustomImageUrlCategoryItems implements IJsonObject {
       identical(this, other) ||
       other is EmojiPickerCustomImageUrlCategoryItems &&
           runtimeType == other.runtimeType &&
-          items == other.items;
+          listEquals(items, other.items);
 
   @override
-  int get hashCode => items.hashCode;
+  int get hashCode => listHash(items);
 
   static EmojiPickerCustomImageUrlCategoryItems fromJson(
     Map<String, dynamic> json,
