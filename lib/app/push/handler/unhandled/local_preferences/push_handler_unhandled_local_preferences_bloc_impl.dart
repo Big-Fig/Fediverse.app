@@ -1,7 +1,7 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
-import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
-import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
+import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preferences_bloc.dart';
+import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:logging/logging.dart';
@@ -9,7 +9,7 @@ import 'package:logging/logging.dart';
 var _logger = Logger("push_handler_unhandled_local_preferences_bloc_impl.dart");
 
 class PushHandlerUnhandledLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<PushHandlerUnhandledList?>
+    extends ObjectLocalPreferenceBloc<PushHandlerUnhandledList>
     implements IPushHandlerUnhandledLocalPreferencesBloc {
   PushHandlerUnhandledLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
@@ -21,13 +21,14 @@ class PushHandlerUnhandledLocalPreferencesBloc
           jsonConverter: (json) => PushHandlerUnhandledList.fromJson(json),
         );
 
+  static const defaultValue = PushHandlerUnhandledList(messages: []);
+
   @override
-  PushHandlerUnhandledList get defaultPreferenceValue =>
-      PushHandlerUnhandledList(messages: []);
+  PushHandlerUnhandledList get defaultPreferenceValue => defaultValue;
 
   @override
   Future addUnhandledMessage(PushHandlerMessage pushHandlerMessage) async {
-    var pleromaUnhandledList = value!;
+    var pleromaUnhandledList = value;
 
     pleromaUnhandledList.messages.add(pushHandlerMessage);
     _logger.finest(() => "loadUnhandledMessagesForInstance \n"
@@ -41,7 +42,7 @@ class PushHandlerUnhandledLocalPreferencesBloc
   List<PushHandlerMessage> loadUnhandledMessagesForInstance(
     AuthInstance instance,
   ) {
-    var pleromaUnhandledList = value!;
+    var pleromaUnhandledList = value;
 
     var messagesForInstances = pleromaUnhandledList.messages
         .where(
@@ -61,7 +62,7 @@ class PushHandlerUnhandledLocalPreferencesBloc
 
   @override
   Future<bool> markAsHandled(List<PushHandlerMessage> messages) async {
-    var pleromaUnhandledList = value!;
+    var pleromaUnhandledList = value;
 
     var cleanedMessages = pleromaUnhandledList.messages
         .where(
