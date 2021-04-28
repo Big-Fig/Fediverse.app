@@ -14,7 +14,7 @@ import 'package:fedi/app/media/settings/local_preferences/global/global_media_se
 import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/instance/instance_pagination_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/push/fcm/fcm_push_permission_asked_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc_impl.dart';
