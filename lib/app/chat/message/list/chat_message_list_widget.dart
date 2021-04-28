@@ -6,7 +6,7 @@ import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc_impl.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_widget.dart';
-import 'package:fedi/app/date/date_utils.dart';
+import 'package:fedi/date/date_utils.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
