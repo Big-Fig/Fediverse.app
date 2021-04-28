@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/async_smart_refresher_helper.dart';
+import 'package:fedi/app/async/smart_refresher/async_smart_refresher_helper.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_item_model.dart';

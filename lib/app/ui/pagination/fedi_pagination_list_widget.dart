@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/async_smart_refresher_helper.dart';
+import 'package:fedi/app/async/smart_refresher/async_smart_refresher_helper.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/list/list_refresh_header_widget.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';

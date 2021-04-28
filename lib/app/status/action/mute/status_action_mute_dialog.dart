@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/form/field/value/duration/date_time/duration_date_time_form_field_row_widget.dart';
 import 'package:fedi/app/status/action/mute/status_action_mute_bloc.dart';
 import 'package:fedi/app/status/action/mute/status_action_mute_bloc_impl.dart';

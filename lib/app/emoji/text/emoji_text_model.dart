@@ -1,7 +1,6 @@
-import 'package:collection/collection.dart';
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
-
-Function eq = const ListEquality().equals;
+import 'package:flutter/foundation.dart';
 
 class EmojiText {
   final String text;
@@ -18,14 +17,14 @@ class EmojiText {
       other is EmojiText &&
           runtimeType == other.runtimeType &&
           text == other.text &&
-          eq(emojis, other.emojis);
+          listEquals(emojis, other.emojis);
 
   @override
-  int get hashCode => text.hashCode ^ emojis.hashCode;
+  int get hashCode => text.hashCode ^ listHash(emojis);
 
   @override
   String toString() => 'EmojiText{'
-        'text: $text, '
-        'emojis: $emojis'
-        '}';
+      'text: $text, '
+      'emojis: $emojis'
+      '}';
 }

@@ -1,9 +1,9 @@
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc_impl.dart';
-import 'package:fedi/app/account/my/my_account_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/host/auth_host_access_token_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/host/auth_host_application_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc_impl.dart';
+import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
@@ -55,7 +55,7 @@ class FediLocalPreferencesServiceMigrationBloc
 
     var authInstancesBlocCreators = <LocalPreferencesBlocCreator>[];
 
-    for (var authInstance in authInstanceList.instances!) {
+    for (var authInstance in authInstanceList.instances) {
       var host = authInstance.urlHost;
       var userAtHost = authInstance.userAtHost;
 

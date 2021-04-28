@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/mastodon/api/status/mastodon_api_status_model.dart';
 import 'package:fedi/mastodon/api/visibility/mastodon_api_visibility_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
@@ -11,11 +12,10 @@ import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_status_model.g.dart';
-
-Function eq = const ListEquality().equals;
 
 abstract class IPleromaApiStatus implements IMastodonApiStatus {
   @override
@@ -262,7 +262,7 @@ class PleromaApiScheduledStatusParams extends IPleromaApiScheduledStatusParams {
           runtimeType == other.runtimeType &&
           expiresInSeconds == other.expiresInSeconds &&
           text == other.text &&
-          eq(mediaIds, other.mediaIds) &&
+          listEquals(mediaIds, other.mediaIds) &&
           sensitive == other.sensitive &&
           spoilerText == other.spoilerText &&
           visibility == other.visibility &&
@@ -273,13 +273,13 @@ class PleromaApiScheduledStatusParams extends IPleromaApiScheduledStatusParams {
           inReplyToId == other.inReplyToId &&
           applicationId == other.applicationId &&
           inReplyToConversationId == other.inReplyToConversationId &&
-          eq(to, other.to);
+          listEquals(to, other.to);
 
   @override
   int get hashCode =>
       expiresInSeconds.hashCode ^
       text.hashCode ^
-      mediaIds.hashCode ^
+      listHash(mediaIds) ^
       sensitive.hashCode ^
       spoilerText.hashCode ^
       visibility.hashCode ^
@@ -290,7 +290,7 @@ class PleromaApiScheduledStatusParams extends IPleromaApiScheduledStatusParams {
       inReplyToId.hashCode ^
       applicationId.hashCode ^
       inReplyToConversationId.hashCode ^
-      to.hashCode;
+      listHash(to);
 
   @override
   String toString() {
@@ -456,10 +456,10 @@ class PleromaApiStatus extends IPleromaApiStatus {
           reblog == other.reblog &&
           application == other.application &&
           account == other.account &&
-          eq(mediaAttachments, other.mediaAttachments) &&
-          eq(mentions, other.mentions) &&
-          eq(tags, other.tags) &&
-          eq(emojis, other.emojis) &&
+          listEquals(mediaAttachments, other.mediaAttachments) &&
+          listEquals(mentions, other.mentions) &&
+          listEquals(tags, other.tags) &&
+          listEquals(emojis, other.emojis) &&
           poll == other.poll &&
           card == other.card &&
           pleroma == other.pleroma &&
@@ -488,10 +488,10 @@ class PleromaApiStatus extends IPleromaApiStatus {
       reblog.hashCode ^
       application.hashCode ^
       account.hashCode ^
-      mediaAttachments.hashCode ^
-      mentions.hashCode ^
-      tags.hashCode ^
-      emojis.hashCode ^
+      listHash(mediaAttachments) ^
+      listHash(mentions) ^
+      listHash(tags) ^
+      listHash(emojis) ^
       poll.hashCode ^
       card.hashCode ^
       pleroma.hashCode ^
@@ -607,7 +607,7 @@ class PleromaApiStatusPleromaPart {
           spoilerText == other.spoilerText &&
           expiresAt == other.expiresAt &&
           threadMuted == other.threadMuted &&
-          eq(emojiReactions, other.emojiReactions);
+          listEquals(emojiReactions, other.emojiReactions);
 
   @override
   int get hashCode =>
@@ -619,7 +619,7 @@ class PleromaApiStatusPleromaPart {
       spoilerText.hashCode ^
       expiresAt.hashCode ^
       threadMuted.hashCode ^
-      emojiReactions.hashCode;
+      listHash(emojiReactions);
 
   @override
   String toString() {
@@ -1099,11 +1099,11 @@ class PleromaApiStatusEmojiReaction implements IPleromaApiStatusEmojiReaction {
           name == other.name &&
           count == other.count &&
           me == other.me &&
-          eq(accounts, other.accounts);
+          listEquals(accounts, other.accounts);
 
   @override
   int get hashCode =>
-      name.hashCode ^ count.hashCode ^ me.hashCode ^ accounts.hashCode;
+      name.hashCode ^ count.hashCode ^ me.hashCode ^ listHash(accounts);
 
   @override
   String toString() {

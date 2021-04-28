@@ -471,7 +471,9 @@ void main() {
       ))
           .copyWith(
         mediaAttachments: [
-          PleromaApiMediaTestHelper.createTestPleromaMediaAttachment(),
+          PleromaApiMediaTestHelper.createTestPleromaMediaAttachment(
+            seed: "seed",
+          ),
         ],
       ),
     );
@@ -1137,7 +1139,7 @@ void main() {
       dbAccount: dbAccount,
     ))
         .copyWith(tags: [
-      PleromaApiTagTestHelper.createTestPleromaApiTag(name: "#dogs")
+      PleromaApiTagTestHelper.createTestPleromaApiTag(seed: "#dogs")
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus3.remoteId,
@@ -1156,7 +1158,7 @@ void main() {
       dbAccount: dbAccount,
     ))
         .copyWith(tags: [
-      PleromaApiTagTestHelper.createTestPleromaApiTag(name: "#cats"),
+      PleromaApiTagTestHelper.createTestPleromaApiTag(seed: "#cats"),
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus4.remoteId,
@@ -1175,8 +1177,8 @@ void main() {
       dbAccount: dbAccount,
     ))
         .copyWith(tags: [
-      PleromaApiTagTestHelper.createTestPleromaApiTag(name: "#dogs"),
-      PleromaApiTagTestHelper.createTestPleromaApiTag(name: "#cats"),
+      PleromaApiTagTestHelper.createTestPleromaApiTag(seed: "#dogs"),
+      PleromaApiTagTestHelper.createTestPleromaApiTag(seed: "#cats"),
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus5.remoteId,
@@ -1195,7 +1197,7 @@ void main() {
       dbAccount: dbAccount,
     ))
         .copyWith(tags: [
-      PleromaApiTagTestHelper.createTestPleromaApiTag(name: "#ca"),
+      PleromaApiTagTestHelper.createTestPleromaApiTag(seed: "#ca"),
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus6.remoteId,

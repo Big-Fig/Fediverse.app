@@ -74,16 +74,15 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
                       registrationResult.authInstance!,
                     );
                   } else {
-                    if (registrationResult.approvalRequired!) {
+                    if (registrationResult.approvalRequired) {
                       _showApprovalRequiredToast(context);
                     } else if (registrationResult.emailConfirmationRequired) {
                       _showEmailConfirmationRequiredToast(context);
                     } else {
                       _showCantLoginToast(
                         context,
-                        errorDescription: registrationResult
-                            .authInstanceFetchError
-                            ?.toString(),
+                        errorDescription:
+                            registrationResult.anyError?.toString(),
                       );
                     }
                   }

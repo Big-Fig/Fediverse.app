@@ -15,7 +15,7 @@ class LocalizationSettings
   @JsonKey(name: "localization_locale")
   final LocalizationLocale? localizationLocale;
 
-  LocalizationSettings({
+  const LocalizationSettings({
     required this.localizationLocale,
   });
 

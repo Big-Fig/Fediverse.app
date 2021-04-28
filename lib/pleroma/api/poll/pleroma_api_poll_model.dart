@@ -1,14 +1,13 @@
-import 'package:collection/collection.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/mastodon/api/poll/mastodon_api_poll_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_poll_model.g.dart';
-
-Function _listEq = const ListEquality().equals;
 
 abstract class IPleromaApiPoll implements IMastodonApiPoll {
   @override
@@ -116,28 +115,30 @@ extension IPleromaApiPollOptionListExtension on List<IPleromaApiPollOption> {
       return this as List<PleromaApiPollOption>;
     } else {
       return map(
-        (pollOption) => pollOption.toPleromaApiPollOption(),
+            (pollOption) => pollOption.toPleromaApiPollOption(),
       ).toList();
     }
   }
 
   List<String> toPleromaApiPollOptionTitles() {
     return map(
-      (pollOption) => pollOption.title,
+          (pollOption) => pollOption.title,
     ).toList();
   }
 }
 
 extension StringPleromaApiPollOptionExtension on String {
-  PleromaApiPollOption toPleromaApiPollOption() => PleromaApiPollOption(
+  PleromaApiPollOption toPleromaApiPollOption() =>
+      PleromaApiPollOption(
         title: this,
         votesCount: 0,
       );
 }
 
 extension StringListPleromaApiPollOptionExtension on List<String> {
-  List<PleromaApiPollOption> toPleromaApiPollOptions() => map(
-        (value) => value.toPleromaApiPollOption(),
+  List<PleromaApiPollOption> toPleromaApiPollOptions() =>
+      map(
+            (value) => value.toPleromaApiPollOption(),
       ).toList();
 }
 
@@ -158,10 +159,10 @@ class PleromaApiPollOption implements IPleromaApiPollOption {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaApiPollOption &&
-          runtimeType == other.runtimeType &&
-          title == other.title &&
-          votesCount == other.votesCount;
+          other is PleromaApiPollOption &&
+              runtimeType == other.runtimeType &&
+              title == other.title &&
+              votesCount == other.votesCount;
 
   @override
   int get hashCode => title.hashCode ^ votesCount.hashCode;
@@ -248,17 +249,17 @@ class PleromaApiPoll implements IPleromaApiPoll {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaApiPoll &&
-          runtimeType == other.runtimeType &&
-          expired == other.expired &&
-          expiresAt == other.expiresAt &&
-          id == other.id &&
-          multiple == other.multiple &&
-          _listEq(options, other.options) &&
-          _listEq(ownVotes, other.ownVotes) &&
-          voted == other.voted &&
-          votersCount == other.votersCount &&
-          votesCount == other.votesCount;
+          other is PleromaApiPoll &&
+              runtimeType == other.runtimeType &&
+              expired == other.expired &&
+              expiresAt == other.expiresAt &&
+              id == other.id &&
+              multiple == other.multiple &&
+              listEquals(options, other.options) &&
+              listEquals(ownVotes, other.ownVotes) &&
+              voted == other.voted &&
+              votersCount == other.votersCount &&
+              votesCount == other.votesCount;
 
   @override
   int get hashCode =>
@@ -266,8 +267,8 @@ class PleromaApiPoll implements IPleromaApiPoll {
       expiresAt.hashCode ^
       id.hashCode ^
       multiple.hashCode ^
-      options.hashCode ^
-      ownVotes.hashCode ^
+      listHash(options) ^
+      listHash(ownVotes) ^
       voted.hashCode ^
       votersCount.hashCode ^
       votesCount.hashCode;
@@ -282,11 +283,12 @@ extension PleromaPostStatusPollExtension on PleromaApiPostStatusPoll {
       multiple: multiple,
       options: options
           .map(
-            (option) => PleromaApiPollOption(
+            (option) =>
+            PleromaApiPollOption(
               title: option,
               votesCount: 0,
             ),
-          )
+      )
           .toList(),
       ownVotes: [],
       votersCount: 0,

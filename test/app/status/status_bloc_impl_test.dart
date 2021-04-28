@@ -19,6 +19,7 @@ import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service_impl.dart';
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service_impl.dart';
 import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_reaction_service_impl.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -29,7 +30,6 @@ import '../account/account_test_helper.dart';
 import 'status_bloc_impl_test.mocks.dart';
 import 'status_test_helper.dart';
 
-Function eq = const ListEquality().equals;
 // ignore_for_file: no-magic-number
 @GenerateMocks([
   PleromaApiAuthStatusService,
@@ -722,7 +722,9 @@ Future<void> main() async {
     );
 
     var newValue = [
-      PleromaApiMediaTestHelper.createTestPleromaMediaAttachment()
+      PleromaApiMediaTestHelper.createTestPleromaMediaAttachment(
+        seed: "seed",
+      )
     ];
 
     var listenedValue;
@@ -1880,7 +1882,7 @@ Future<void> main() async {
       status.pleromaEmojiReactions,
     );
     expect(
-      eq(
+      listEquals(
         statusBloc.pleromaEmojiReactions,
         status.pleromaEmojiReactions,
       ),

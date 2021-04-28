@@ -484,9 +484,9 @@ Map<String, dynamic> _$PleromaApiMyAccountSourceToJson(
       'sensitive': instance.sensitive,
       'language': instance.language,
       'note': instance.note,
-      'fields': instance.fields,
+      'fields': instance.fields?.map((e) => e.toJson()).toList(),
       'follow_requests_count': instance.followRequestsCount,
-      'pleroma': instance.pleroma,
+      'pleroma': instance.pleroma?.toJson(),
     };
 
 PleromaApiMyAccountSourcePleromaPart

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:fedi/analytics/app/app_analytics_bloc_impl.dart';
 import 'package:fedi/analytics/app/app_analytics_model.dart';
-import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc_impl.dart';
+import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preferences_bloc_impl.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
-  late AppAnalyticsLocalPreferenceBloc appAnalyticsLocalPreferenceBloc;
+  late AppAnalyticsLocalPreferencesBloc appAnalyticsLocalPreferenceBloc;
   late AppAnalyticsBloc appAnalyticsBloc;
 
   AppAnalyticsData? listenValue;
@@ -18,7 +18,7 @@ void main() {
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
 
-    appAnalyticsLocalPreferenceBloc = AppAnalyticsLocalPreferenceBloc(
+    appAnalyticsLocalPreferenceBloc = AppAnalyticsLocalPreferencesBloc(
       memoryLocalPreferencesService,
     );
 

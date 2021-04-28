@@ -9,7 +9,7 @@ import 'package:fedi/app/account/select/single/single_select_account_widget.dart
 import 'package:fedi/app/account/select/suggestion/suggestion_select_account_bloc.dart';
 import 'package:fedi/app/account/select/suggestion/suggestion_select_account_bloc_impl.dart';
 import 'package:fedi/app/account/select/suggestion/suggestion_select_account_widget.dart';
-import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/custom_list/account_list/custom_list_account_list_widget.dart';
 import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc.dart';
 import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc_proxy_provider.dart';

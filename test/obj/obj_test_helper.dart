@@ -13,7 +13,7 @@ class ObjTestHelper {
 
     expect(obj1 == obj1copy, true);
     expect(obj1 == obj2, false);
-    expect(obj1.hashCode == obj1copy.hashCode, true);
+    expect(obj1.hashCode, obj1copy.hashCode);
     expect(obj1.hashCode == obj2.hashCode, false);
     expect(obj1.toString() == obj1copy.toString(), true);
     expect(obj1.toString() == obj2.toString(), false);

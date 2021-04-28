@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -11,11 +10,11 @@ import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_m
 import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-Function eq = const ListEquality().equals;
 var _logger = Logger("status_thread_bloc_impl.dart");
 
 abstract class StatusThreadBloc extends DisposableOwner
@@ -71,7 +70,7 @@ abstract class StatusThreadBloc extends DisposableOwner
 
   @override
   Stream<List<IStatus>> get statusesDistinctStream => statusesStream.distinct(
-        (a, b) => eq(a, b),
+        (a, b) => listEquals(a, b),
       );
 
   @override

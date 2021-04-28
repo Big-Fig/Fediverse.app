@@ -6,7 +6,7 @@ import 'package:fedi/localization/localization_model.dart';
 
 class LocalizationSettingsBloc extends DisposableOwner
     implements ILocalizationSettingsBloc {
-  ILocalizationSettingsLocalPreferencesBloc
+  final ILocalizationSettingsLocalPreferencesBloc<LocalizationSettings>
       localizationSettingsLocalPreferencesBloc;
 
   LocalizationSettingsBloc({
@@ -14,25 +14,25 @@ class LocalizationSettingsBloc extends DisposableOwner
   });
 
   @override
-  LocalizationSettings? get settingsData =>
+  LocalizationSettings get settingsData =>
       localizationSettingsLocalPreferencesBloc.value;
 
   @override
-  Stream<LocalizationSettings?> get settingsDataStream =>
+  Stream<LocalizationSettings> get settingsDataStream =>
       localizationSettingsLocalPreferencesBloc.stream;
 
   @override
   LocalizationLocale? get localizationLocale =>
-      settingsData?.localizationLocale;
+      settingsData.localizationLocale;
 
   @override
   Stream<LocalizationLocale?> get localizationLocaleStream =>
       settingsDataStream.map(
-        (settings) => settings?.localizationLocale,
+        (settings) => settings.localizationLocale,
       );
 
   @override
-  void changeLocalizationLocale(LocalizationLocale value) {
+  void changeLocalizationLocale(LocalizationLocale? value) {
     updateSettings(
       LocalizationSettings(localizationLocale: value),
       // copyWith don't set null values
@@ -41,7 +41,7 @@ class LocalizationSettingsBloc extends DisposableOwner
   }
 
   @override
-  Future updateSettings(LocalizationSettings? newSettings) async {
+  Future updateSettings(LocalizationSettings newSettings) async {
     await localizationSettingsLocalPreferencesBloc.setValue(
       newSettings,
     );

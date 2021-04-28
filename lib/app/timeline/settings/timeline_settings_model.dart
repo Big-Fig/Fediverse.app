@@ -1,17 +1,16 @@
-import 'package:collection/collection.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 // ignore_for_file: no-magic-number
 part 'timeline_settings_model.g.dart';
-
-Function eq = const ListEquality().equals;
 
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
@@ -291,7 +290,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyRemote == other.onlyRemote &&
           onlyLocal == other.onlyLocal &&
           withMuted == other.withMuted &&
-          eq(excludeVisibilitiesStrings, other.excludeVisibilitiesStrings) &&
+          listEquals(excludeVisibilitiesStrings, other.excludeVisibilitiesStrings) &&
           onlyInRemoteList == other.onlyInRemoteList &&
           withRemoteHashtag == other.withRemoteHashtag &&
           replyVisibilityFilterString == other.replyVisibilityFilterString &&
@@ -309,7 +308,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
       onlyRemote.hashCode ^
       onlyLocal.hashCode ^
       withMuted.hashCode ^
-      excludeVisibilitiesStrings.hashCode ^
+      listHash(excludeVisibilitiesStrings) ^
       onlyInRemoteList.hashCode ^
       withRemoteHashtag.hashCode ^
       replyVisibilityFilterString.hashCode ^

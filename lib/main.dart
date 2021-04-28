@@ -469,7 +469,7 @@ class FediApp extends StatelessWidget {
                 Locale? locale;
                 if (localizationLocale != null) {
                   locale = Locale.fromSubtags(
-                    languageCode: localizationLocale.languageCode!,
+                    languageCode: localizationLocale.languageCode,
                     countryCode: localizationLocale.countryCode,
                     scriptCode: localizationLocale.scriptCode,
                   );

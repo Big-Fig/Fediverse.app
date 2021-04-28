@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/account/my/mastodon_api_my_account_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
@@ -7,6 +8,7 @@ import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
 import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -427,7 +429,7 @@ extension IPleromaApiMyAccountSourceExtension on IPleromaApiMyAccountSource {
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 43)
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PleromaApiMyAccountSource implements IPleromaApiMyAccountSource {
   @override
   @HiveField(1)
@@ -476,7 +478,7 @@ class PleromaApiMyAccountSource implements IPleromaApiMyAccountSource {
           sensitive == other.sensitive &&
           language == other.language &&
           note == other.note &&
-          fields == other.fields &&
+          listEquals(fields, other.fields) &&
           followRequestsCount == other.followRequestsCount &&
           pleroma == other.pleroma;
 
@@ -486,7 +488,7 @@ class PleromaApiMyAccountSource implements IPleromaApiMyAccountSource {
       sensitive.hashCode ^
       language.hashCode ^
       note.hashCode ^
-      fields.hashCode ^
+      listHash(fields) ^
       followRequestsCount.hashCode ^
       pleroma.hashCode;
 
@@ -837,7 +839,9 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
     int? followRequestsCount,
     IPleromaApiMyAccountSource? source,
   }) {
-    assert(pleroma != null, "use myAccountPleroma");
+    if (pleroma != null) {
+      assert(true, "use myAccountPleroma");
+    }
     return PleromaApiMyAccount(
       id: id ?? this.id,
       username: username ?? this.username,
@@ -883,8 +887,8 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
           header == other.header &&
           followingCount == other.followingCount &&
           followersCount == other.followersCount &&
-          fields == other.fields &&
-          emojis == other.emojis &&
+          listEquals(fields, other.fields) &&
+          listEquals(emojis, other.emojis) &&
           displayName == other.displayName &&
           createdAt == other.createdAt &&
           bot == other.bot &&
@@ -910,8 +914,8 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
       header.hashCode ^
       followingCount.hashCode ^
       followersCount.hashCode ^
-      fields.hashCode ^
-      emojis.hashCode ^
+      listHash(fields) ^
+      listHash(emojis) ^
       displayName.hashCode ^
       createdAt.hashCode ^
       bot.hashCode ^
@@ -1281,7 +1285,7 @@ class PleromaApiMyAccountPleromaPart
       other is PleromaApiMyAccountPleromaPart &&
           runtimeType == other.runtimeType &&
           backgroundImage == other.backgroundImage &&
-          tags == other.tags &&
+          listEquals(tags, other.tags) &&
           relationship == other.relationship &&
           isAdmin == other.isAdmin &&
           isModerator == other.isModerator &&
@@ -1291,7 +1295,7 @@ class PleromaApiMyAccountPleromaPart
           hideFollows == other.hideFollows &&
           hideFollowersCount == other.hideFollowersCount &&
           hideFollowsCount == other.hideFollowsCount &&
-          settingsStore == other.settingsStore &&
+          mapEquals(settingsStore, other.settingsStore) &&
           chatToken == other.chatToken &&
           deactivated == other.deactivated &&
           allowFollowingMove == other.allowFollowingMove &&
@@ -1302,13 +1306,13 @@ class PleromaApiMyAccountPleromaPart
           isConfirmed == other.isConfirmed &&
           favicon == other.favicon &&
           apId == other.apId &&
-          alsoKnownAs == other.alsoKnownAs &&
+          listEquals(alsoKnownAs, other.alsoKnownAs) &&
           unreadNotificationsCount == other.unreadNotificationsCount;
 
   @override
   int get hashCode =>
       backgroundImage.hashCode ^
-      tags.hashCode ^
+      listHash(tags) ^
       relationship.hashCode ^
       isAdmin.hashCode ^
       isModerator.hashCode ^
@@ -1318,7 +1322,7 @@ class PleromaApiMyAccountPleromaPart
       hideFollows.hashCode ^
       hideFollowersCount.hashCode ^
       hideFollowsCount.hashCode ^
-      settingsStore.hashCode ^
+      mapHash(settingsStore) ^
       chatToken.hashCode ^
       deactivated.hashCode ^
       allowFollowingMove.hashCode ^
@@ -1329,6 +1333,6 @@ class PleromaApiMyAccountPleromaPart
       isConfirmed.hashCode ^
       favicon.hashCode ^
       apId.hashCode ^
-      alsoKnownAs.hashCode ^
+      listHash(alsoKnownAs) ^
       unreadNotificationsCount.hashCode;
 }
