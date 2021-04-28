@@ -15,11 +15,11 @@ abstract class IMediaSettingsBloc
 
   Stream<bool> get autoInitStream;
 
-  void changeAutoInit(bool value);
+  Future changeAutoInit(bool value);
 
   bool get autoPlay;
 
   Stream<bool> get autoPlayStream;
 
-  void changeAutoPlay(bool value);
+  Future changeAutoPlay(bool value);
 }
