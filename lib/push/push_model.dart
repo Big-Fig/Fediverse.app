@@ -1,3 +1,5 @@
+import 'package:fedi/collection/collection_hash_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:moor/moor.dart' as moor;
@@ -63,12 +65,12 @@ class PushMessage {
       other is PushMessage &&
           runtimeType == other.runtimeType &&
           notification == other.notification &&
-          data == other.data &&
+          mapEquals(data, other.data) &&
           typeString == other.typeString;
 
   @override
   int get hashCode =>
-      notification.hashCode ^ data.hashCode ^ typeString.hashCode;
+      notification.hashCode ^ mapHash(data) ^ typeString.hashCode;
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -97,6 +99,17 @@ class PushNotification {
 
   static PushNotification fromJson(Map<String, dynamic> json) =>
       _$PushNotificationFromJson(json);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PushNotification &&
+          runtimeType == other.runtimeType &&
+          title == other.title &&
+          body == other.body;
+
+  @override
+  int get hashCode => title.hashCode ^ body.hashCode;
 }
 
 enum PushMessageType {

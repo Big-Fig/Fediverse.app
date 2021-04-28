@@ -5,8 +5,8 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
-import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
-import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
+import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preferences_bloc.dart';
+import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
@@ -118,7 +118,7 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
 
   @override
   Future markAsLaunchMessage(PushHandlerMessage message) async {
-    var unhandledList = unhandledLocalPreferencesBloc.value!;
+    var unhandledList = unhandledLocalPreferencesBloc.value;
 
     unhandledList.messages.remove(message);
 

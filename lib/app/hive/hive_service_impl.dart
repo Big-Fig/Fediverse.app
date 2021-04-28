@@ -14,7 +14,7 @@ import 'package:fedi/app/localization/settings/localization_settings_model.dart'
 import 'package:fedi/app/media/settings/media_settings_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_model.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
-import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
+import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_model.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';

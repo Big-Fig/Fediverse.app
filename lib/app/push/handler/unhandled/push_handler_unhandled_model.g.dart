@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'push_handler_unhandled_local_preferences_model.dart';
+part of 'push_handler_unhandled_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
