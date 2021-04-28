@@ -10,9 +10,11 @@ class GlobalMediaSettingsLocalPreferencesBloc
     ILocalPreferencesService preferencesService,
   ) : super(preferencesService, "media.settings.global");
 
+  static const MediaSettings defaultValue = MediaSettings(
+    autoInit: false,
+    autoPlay: false,
+  );
+
   @override
-  MediaSettings get defaultPreferenceValue => MediaSettings(
-        autoInit: false,
-        autoPlay: false,
-      );
+  MediaSettings get defaultPreferenceValue => defaultValue;
 }

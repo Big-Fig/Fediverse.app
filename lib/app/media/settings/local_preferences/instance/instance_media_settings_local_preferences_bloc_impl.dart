@@ -11,6 +11,8 @@ class InstanceMediaSettingsLocalPreferencesBloc
     required String userAtHost,
   }) : super(preferencesService, "media.settings.instance.$userAtHost");
 
+  static const MediaSettings? defaultValue = null;
+
   @override
-  MediaSettings? get defaultPreferenceValue => null;
+  MediaSettings? get defaultPreferenceValue => defaultValue;
 }

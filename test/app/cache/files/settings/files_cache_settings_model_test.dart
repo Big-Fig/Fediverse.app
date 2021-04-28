@@ -35,13 +35,21 @@ void main() {
     );
   });
 
-  test('copyWith', () async {
-    var obj1 =
-        FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
+  test('clone', () async {
+    var obj1 = FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
       seed: "seed1",
     );
-    var obj2 =
-        FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
+
+    var obj1Clone = obj1.clone();
+
+    expect(obj1, obj1Clone);
+  });
+
+  test('copyWith', () async {
+    var obj1 = FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
+      seed: "seed1",
+    );
+    var obj2 = FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
       seed: "seed2",
     );
 

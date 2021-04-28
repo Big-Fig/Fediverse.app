@@ -16,7 +16,7 @@ class MediaSettings implements IJsonObject, ISettings<MediaSettings> {
   @JsonKey(name: "auto_play")
   final bool autoPlay;
 
-  MediaSettings({
+  const MediaSettings({
     required this.autoInit,
     required this.autoPlay,
   });
@@ -46,4 +46,15 @@ class MediaSettings implements IJsonObject, ISettings<MediaSettings> {
         'autoPlay: $autoPlay'
         '}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MediaSettings &&
+          runtimeType == other.runtimeType &&
+          autoInit == other.autoInit &&
+          autoPlay == other.autoPlay;
+
+  @override
+  int get hashCode => autoInit.hashCode ^ autoPlay.hashCode;
 }
