@@ -4,7 +4,7 @@ import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class InstancePushSettingsLocalPreferencesBloc
-    extends PushSettingsLocalPreferencesBloc
+    extends PushSettingsLocalPreferencesBloc<PushSettings>
     implements IInstancePushSettingsLocalPreferencesBloc {
   InstancePushSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService, {
@@ -14,7 +14,8 @@ class InstancePushSettingsLocalPreferencesBloc
           "$userAtHost.push.subscription",
         );
 
+  static final defaultValue = PushSettings.defaultAllDisabled();
+
   @override
-  PushSettings get defaultPreferenceValue =>
-      PushSettings.defaultAllDisabled();
+  PushSettings get defaultPreferenceValue => defaultValue;
 }

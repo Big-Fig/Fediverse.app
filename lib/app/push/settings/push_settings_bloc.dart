@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPushSettingsBloc
-    implements IInstanceSettingsBloc<PushSettings?> {
+    implements IInstanceSettingsBloc<PushSettings> {
   static IPushSettingsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPushSettingsBloc>(context, listen: listen);
 
@@ -14,45 +14,45 @@ abstract class IPushSettingsBloc
 
   Stream<Exception> get failedToUpdateStream;
 
-  bool? get favourite;
+  bool get favourite;
 
-  Stream<bool?> get favouriteStream;
+  Stream<bool> get favouriteStream;
 
-  void changeFavourite(bool value);
+  Future changeFavourite(bool value);
 
-  bool? get follow;
+  bool get follow;
 
-  Stream<bool?> get followStream;
+  Stream<bool> get followStream;
 
-  void changeFollow(bool value);
+  Future changeFollow(bool value);
 
-  bool? get mention;
+  bool get mention;
 
-  Stream<bool?> get mentionStream;
+  Stream<bool> get mentionStream;
 
-  void changeMention(bool value);
+  Future changeMention(bool value);
 
-  bool? get reblog;
+  bool get reblog;
 
-  Stream<bool?> get reblogStream;
+  Stream<bool> get reblogStream;
 
-  void changeReblog(bool value);
+  Future changeReblog(bool value);
 
-  bool? get poll;
+  bool get poll;
 
-  Stream<bool?> get pollStream;
+  Stream<bool> get pollStream;
 
-  void changePoll(bool value);
+  Future changePoll(bool value);
 
-  bool? get pleromaChatMention;
+  bool get pleromaChatMention;
 
-  Stream<bool?> get pleromaChatMentionStream;
+  Stream<bool> get pleromaChatMentionStream;
 
-  void changePleromaChatMention(bool value);
+  Future changePleromaChatMention(bool value);
 
-  bool? get pleromaEmojiReaction;
+  bool get pleromaEmojiReaction;
 
-  Stream<bool?> get pleromaEmojiReactionStream;
+  Stream<bool> get pleromaEmojiReactionStream;
 
-  void changePleromaEmojiReaction(bool value);
+  Future changePleromaEmojiReaction(bool value);
 }
