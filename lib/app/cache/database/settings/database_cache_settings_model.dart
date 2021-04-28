@@ -1,5 +1,5 @@
-import 'package:fedi/app/cache/database/cache/limit/age/database_cache_age_limit_model.dart';
-import 'package:fedi/app/cache/database/cache/limit/entries_count/database_cache_entries_count_limit_model.dart';
+import 'package:fedi/app/cache/database/limit/age/database_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/database/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
@@ -27,10 +27,20 @@ class DatabaseCacheSettings
   DatabaseCacheAgeLimitType get ageLimitType =>
       ageLimitTypeString.toDatabaseCacheAgeLimitType();
 
-  DatabaseCacheSettings({
+  const DatabaseCacheSettings({
     required this.entriesCountByTypeLimitTypeString,
     required this.ageLimitTypeString,
   });
+
+  DatabaseCacheSettings.fromEnum({
+    required DatabaseCacheEntriesCountByTypeLimitType
+        entriesCountByTypeLimitType,
+    required DatabaseCacheAgeLimitType ageLimitType,
+  }) : this(
+          entriesCountByTypeLimitTypeString:
+              entriesCountByTypeLimitType.toJsonValue(),
+          ageLimitTypeString: ageLimitType.toJsonValue(),
+        );
 
   static DatabaseCacheSettings fromJson(Map<String, dynamic> json) =>
       _$DatabaseCacheSettingsFromJson(json);
@@ -42,13 +52,13 @@ class DatabaseCacheSettings
   DatabaseCacheSettings clone() => copyWith();
 
   DatabaseCacheSettings copyWith({
-    String? entriesCountByTypeLimitTypeString,
-    String? ageLimitTypeString,
+    DatabaseCacheEntriesCountByTypeLimitType? entriesCountByTypeLimitType,
+    DatabaseCacheAgeLimitType? ageLimitType,
   }) =>
-      DatabaseCacheSettings(
-        entriesCountByTypeLimitTypeString: entriesCountByTypeLimitTypeString ??
-            this.entriesCountByTypeLimitTypeString,
-        ageLimitTypeString: ageLimitTypeString ?? this.ageLimitTypeString,
+      DatabaseCacheSettings.fromEnum(
+        entriesCountByTypeLimitType: entriesCountByTypeLimitType ??
+            this.entriesCountByTypeLimitType,
+        ageLimitType: ageLimitType ?? this.ageLimitType,
       );
 
   @override

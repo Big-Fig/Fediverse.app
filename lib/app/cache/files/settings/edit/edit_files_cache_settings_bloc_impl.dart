@@ -1,5 +1,3 @@
-import 'package:fedi/app/cache/files/cache/limit/age/files_cache_age_limit_model.dart';
-import 'package:fedi/app/cache/files/cache/limit/size_count/files_cache_size_count_limit_model.dart';
 import 'package:fedi/app/cache/files/form/limit/age/age_limit_files_cache_single_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/cache/files/form/limit/size_count/size_count_limit_files_cache_single_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/cache/files/settings/edit/edit_files_cache_settings_bloc.dart';
@@ -43,12 +41,12 @@ class EditFilesCacheSettingsBloc
     ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc =
         AgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc(
       isEnabled: isEnabled,
-      originValue: currentSettings.filesCacheAgeLimitType,
+      originValue: currentSettings.ageLimitType,
     );
     sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc =
         SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc(
       isEnabled: isEnabled,
-      originValue: currentSettings.filesCacheSizeLimitCountType,
+      originValue: currentSettings.sizeLimitCountType,
     );
 
     addDisposable(
@@ -63,25 +61,23 @@ class EditFilesCacheSettingsBloc
   }
 
   @override
-  FilesCacheSettings calculateCurrentFormFieldsSettings() => FilesCacheSettings(
-        filesCacheSizeLimitCountTypeString:
+  FilesCacheSettings calculateCurrentFormFieldsSettings() => FilesCacheSettings.fromEnum(
+        sizeLimitCountType:
             sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
-                .currentValue
-                .toJsonValue(),
-        filesCacheAgeLimitTypeString:
-            ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc.currentValue
-                .toJsonValue(),
+                .currentValue,
+        ageLimitType:
+            ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc.currentValue,
       );
 
   @override
   Future fillSettingsToFormFields(FilesCacheSettings settings) async {
     sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
         .changeCurrentValue(
-      settings.filesCacheSizeLimitCountType,
+      settings.sizeLimitCountType,
     );
     ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc
         .changeCurrentValue(
-      settings.filesCacheAgeLimitType,
+      settings.ageLimitType,
     );
   }
 }

@@ -17,8 +17,8 @@ class FilesCacheSettingsAdapter extends TypeAdapter<FilesCacheSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return FilesCacheSettings(
-      filesCacheSizeLimitCountTypeString: fields[2] as String,
-      filesCacheAgeLimitTypeString: fields[3] as String,
+      sizeLimitCountTypeString: fields[2] as String,
+      ageLimitTypeString: fields[3] as String,
     );
   }
 
@@ -27,9 +27,9 @@ class FilesCacheSettingsAdapter extends TypeAdapter<FilesCacheSettings> {
     writer
       ..writeByte(2)
       ..writeByte(2)
-      ..write(obj.filesCacheSizeLimitCountTypeString)
+      ..write(obj.sizeLimitCountTypeString)
       ..writeByte(3)
-      ..write(obj.filesCacheAgeLimitTypeString);
+      ..write(obj.ageLimitTypeString);
   }
 
   @override
@@ -49,17 +49,15 @@ class FilesCacheSettingsAdapter extends TypeAdapter<FilesCacheSettings> {
 
 FilesCacheSettings _$FilesCacheSettingsFromJson(Map<String, dynamic> json) {
   return FilesCacheSettings(
-    filesCacheSizeLimitCountTypeString:
+    sizeLimitCountTypeString:
         json['files_cache_size_limit_count_type_string'] as String,
-    filesCacheAgeLimitTypeString:
-        json['files_cache_ageL_limit_type_string'] as String,
+    ageLimitTypeString: json['files_cache_ageL_limit_type_string'] as String,
   );
 }
 
 Map<String, dynamic> _$FilesCacheSettingsToJson(FilesCacheSettings instance) =>
     <String, dynamic>{
       'files_cache_size_limit_count_type_string':
-          instance.filesCacheSizeLimitCountTypeString,
-      'files_cache_ageL_limit_type_string':
-          instance.filesCacheAgeLimitTypeString,
+          instance.sizeLimitCountTypeString,
+      'files_cache_ageL_limit_type_string': instance.ageLimitTypeString,
     };

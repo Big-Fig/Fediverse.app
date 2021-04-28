@@ -16,5 +16,5 @@ abstract class ILocalizationSettingsBloc
 
   Stream<LocalizationLocale?> get localizationLocaleStream;
 
-  void changeLocalizationLocale(LocalizationLocale? value);
+  Future changeLocalizationLocale(LocalizationLocale? value);
 }

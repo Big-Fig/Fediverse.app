@@ -1,5 +1,5 @@
-import 'package:fedi/app/cache/database/cache/limit/age/database_cache_age_limit_model.dart';
-import 'package:fedi/app/cache/database/cache/limit/entries_count/database_cache_entries_count_limit_model.dart';
+import 'package:fedi/app/cache/database/limit/age/database_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/database/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
 import 'package:flutter/widgets.dart';
@@ -16,18 +16,18 @@ abstract class IDatabaseCacheSettingsBloc
         listen: listen,
       );
 
-  DatabaseCacheEntriesCountByTypeLimitType get entriesCountByTypeLimit;
+  DatabaseCacheEntriesCountByTypeLimitType get entriesCountByTypeLimitType;
 
   Stream<DatabaseCacheEntriesCountByTypeLimitType>
-      get entriesCountByTypeLimitStream;
+      get entriesCountByTypeLimitTypeStream;
 
   Future changeEntriesCountByTypeLimit(
     DatabaseCacheEntriesCountByTypeLimitType value,
   );
 
-  DatabaseCacheAgeLimitType get ageLimit;
+  DatabaseCacheAgeLimitType get ageLimitType;
 
-  Stream<DatabaseCacheAgeLimitType> get ageLimitStream;
+  Stream<DatabaseCacheAgeLimitType> get ageLimitTypeStream;
 
-  Future changeAgeLimit(DatabaseCacheAgeLimitType value);
+  Future changeAgeLimitType(DatabaseCacheAgeLimitType value);
 }
