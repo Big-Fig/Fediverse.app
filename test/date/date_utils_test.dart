@@ -1,6 +1,7 @@
 import 'package:fedi/date/date_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+// ignore_for_file: no-magic-number
 void main() {
   test('isToday', () async {
     expect(
@@ -57,6 +58,7 @@ void main() {
 
   test('isSameDay', () async {
     expect(
+      // ignore: no-equal-arguments
       CustomDateUtils.isSameDay(DateTime.now(), DateTime.now()),
       true,
     );
@@ -85,6 +87,7 @@ void main() {
 
   test('isSameMinute', () async {
     expect(
+      // ignore: no-equal-arguments
       CustomDateUtils.isSameMinute(DateTime.now(), DateTime.now()),
       true,
     );
@@ -101,6 +104,7 @@ void main() {
 
     expect(
       CustomDateUtils.isSameMinute(
+          // ignore: no-equal-arguments
           DateTime(2000, 1, 1, 1, 0), DateTime(2000, 1, 1, 1, 0)),
       true,
     );

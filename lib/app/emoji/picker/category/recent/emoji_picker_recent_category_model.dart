@@ -1,7 +1,9 @@
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
 import 'package:fedi/json/json_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -17,21 +19,21 @@ part 'emoji_picker_recent_category_model.g.dart';
 class EmojiPickerRecentCategoryItemsList implements IJsonObject {
   List<CustomEmojiPickerItem> get recentItems {
     var result = <CustomEmojiPickerItem>[];
-    result.addAll(recentCodeItems!);
-    result.addAll(recentImageItems!);
+    result.addAll(recentCodeItems);
+    result.addAll(recentImageItems);
     return result;
   }
 
   @HiveField(2)
   @JsonKey(name: "recent_code_items")
-  final List<CustomEmojiPickerCodeItem>? recentCodeItems;
+  final List<CustomEmojiPickerCodeItem> recentCodeItems;
   @HiveField(3)
   @JsonKey(name: "recent_image_items")
-  final List<CustomEmojiPickerImageUrlItem>? recentImageItems;
+  final List<CustomEmojiPickerImageUrlItem> recentImageItems;
 
   EmojiPickerRecentCategoryItemsList({
-    this.recentCodeItems,
-    this.recentImageItems,
+    required this.recentCodeItems,
+    required this.recentImageItems,
   });
 
   static EmojiPickerRecentCategoryItemsList fromJson(
@@ -48,13 +50,17 @@ class EmojiPickerRecentCategoryItemsList implements IJsonObject {
       identical(this, other) ||
       other is EmojiPickerRecentCategoryItemsList &&
           runtimeType == other.runtimeType &&
-          recentItems == other.recentItems;
+          listEquals(recentCodeItems, other.recentCodeItems) &&
+          listEquals(recentImageItems, other.recentImageItems);
 
   @override
-  int get hashCode => recentItems.hashCode;
+  int get hashCode => listHash(recentCodeItems) ^ listHash(recentImageItems);
 
   @override
   String toString() {
-    return 'EmojiPickerRecentCategoryItemsList{recentItems: $recentItems}';
+    return 'EmojiPickerRecentCategoryItemsList{'
+        'recentCodeItems: $recentCodeItems, '
+        'recentImageItems: $recentImageItems'
+        '}';
   }
 }
