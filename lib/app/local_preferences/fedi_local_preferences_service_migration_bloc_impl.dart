@@ -20,8 +20,8 @@ import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_
 import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/instance/instance_post_status_settings_local_preference_bloc_impl.dart';
-import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preferences_bloc_impl.dart';
@@ -95,8 +95,8 @@ class FediLocalPreferencesServiceMigrationBloc
       (lps) => GlobalChatSettingsLocalPreferencesBloc(lps),
       (lps) => GlobalMediaSettingsLocalPreferencesBloc(lps),
       (lps) => GlobalToastSettingsLocalPreferencesBloc(lps),
-      (lps) => GlobalPostStatusSettingsLocalPreferencesBloc(lps),
-      (lps) => GlobalStatusSensitiveSettingsLocalPreferencesBloc(lps),
+      (lps) => GlobalPostStatusSettingsLocalPreferenceBloc(lps),
+      (lps) => GlobalStatusSensitiveSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalWebSocketsSettingsLocalPreferencesBloc(lps),
       (lps) => GlobalLocalizationSettingsLocalPreferencesBloc(lps),
       (lps) => GlobalUiSettingsLocalPreferencesBloc(lps),
@@ -143,11 +143,11 @@ class FediLocalPreferencesServiceMigrationBloc
                   lps,
                   userAtHost: userAtHost,
                 ),
-            (lps) => InstancePostStatusSettingsLocalPreferencesBloc(
+            (lps) => InstancePostStatusSettingsLocalPreferenceBloc(
                   lps,
                   userAtHost: userAtHost,
                 ),
-            (lps) => InstanceStatusSensitiveSettingsLocalPreferencesBloc(
+            (lps) => InstanceStatusSensitiveSettingsLocalPreferenceBloc(
                   lps,
                   userAtHost: userAtHost,
                 ),

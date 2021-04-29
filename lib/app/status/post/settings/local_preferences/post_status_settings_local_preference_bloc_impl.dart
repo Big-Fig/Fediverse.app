@@ -3,10 +3,10 @@ import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-abstract class PostStatusSettingsLocalPreferencesBloc<
+abstract class PostStatusSettingsLocalPreferenceBloc<
         T extends PostStatusSettings?> extends ObjectLocalPreferenceBloc<T>
-    implements IPostStatusSettingsLocalPreferencesBloc<T> {
-  PostStatusSettingsLocalPreferencesBloc(
+    implements IPostStatusSettingsLocalPreferenceBloc<T> {
+  PostStatusSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
     String key,
   ) : super(

@@ -14,9 +14,9 @@ import 'post_status_settings_model_test_helper.dart';
 // ignore_for_file: no-magic-number
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
-  late GlobalPostStatusSettingsLocalPreferencesBloc
+  late GlobalPostStatusSettingsLocalPreferenceBloc
       globalPostStatusSettingsLocalPreferencesBloc;
-  late InstancePostStatusSettingsLocalPreferencesBloc
+  late InstancePostStatusSettingsLocalPreferenceBloc
       instancePostStatusSettingsLocalPreferencesBloc;
   late PostStatusSettingsBloc postStatusSettingsBloc;
 
@@ -27,14 +27,14 @@ void main() {
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
     globalPostStatusSettingsLocalPreferencesBloc =
-        GlobalPostStatusSettingsLocalPreferencesBloc(
+        GlobalPostStatusSettingsLocalPreferenceBloc(
       memoryLocalPreferencesService,
     );
 
     await globalPostStatusSettingsLocalPreferencesBloc.performAsyncInit();
 
     instancePostStatusSettingsLocalPreferencesBloc =
-        InstancePostStatusSettingsLocalPreferencesBloc(
+        InstancePostStatusSettingsLocalPreferenceBloc(
       memoryLocalPreferencesService,
       userAtHost: 'user@host',
     );
@@ -73,7 +73,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 100));
 
     var defaultValue =
-        GlobalPostStatusSettingsLocalPreferencesBloc.defaultValue;
+        GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.markMediaAsNsfwOnAttach,
@@ -135,7 +135,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 100));
 
     var defaultValue =
-        GlobalPostStatusSettingsLocalPreferencesBloc.defaultValue;
+        GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.defaultVisibilityAsPleromaApi,
@@ -199,7 +199,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 100));
 
     var defaultValue =
-        GlobalPostStatusSettingsLocalPreferencesBloc.defaultValue;
+        GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.defaultStatusLocale,

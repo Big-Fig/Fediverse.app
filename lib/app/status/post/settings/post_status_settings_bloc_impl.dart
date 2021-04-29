@@ -9,9 +9,9 @@ class PostStatusSettingsBloc
     extends GlobalOrInstanceSettingsLocalPreferencesBloc<PostStatusSettings>
     implements IPostStatusSettingsBloc {
   PostStatusSettingsBloc({
-    required IPostStatusSettingsLocalPreferencesBloc<PostStatusSettings>
+    required IPostStatusSettingsLocalPreferenceBloc<PostStatusSettings>
         globalLocalPreferencesBloc,
-    required IPostStatusSettingsLocalPreferencesBloc<PostStatusSettings?>
+    required IPostStatusSettingsLocalPreferenceBloc<PostStatusSettings?>
         instanceLocalPreferencesBloc,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,

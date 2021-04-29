@@ -3,8 +3,8 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_widget.dart';
-import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preference_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -21,12 +21,12 @@ void showEditGlobalStatusSensitiveSettingsDialog({
     child: DisposableProvider<IStatusSensitiveSettingsBloc>(
       create: (context) => StatusSensitiveSettingsBloc(
         instanceLocalPreferencesBloc:
-            IInstanceStatusSensitiveSettingsLocalPreferencesBloc.of(
+            IInstanceStatusSensitiveSettingsLocalPreferenceBloc.of(
           context,
           listen: false,
         ),
         globalLocalPreferencesBloc:
-            IGlobalStatusSensitiveSettingsLocalPreferencesBloc.of(
+            IGlobalStatusSensitiveSettingsLocalPreferenceBloc.of(
           context,
           listen: false,
         ),

@@ -15,17 +15,17 @@ abstract class IStatusSensitiveSettingsBloc
 
   Stream<bool> get isAlwaysShowSpoilerStream;
 
-  void changeIsAlwaysShowSpoiler(bool value);
+  Future changeIsAlwaysShowSpoiler(bool value);
 
   bool get isAlwaysShowNsfw;
 
   Stream<bool> get isAlwaysShowNsfwStream;
 
-  void changeIsAlwaysShowNsfw(bool value);
+  Future changeIsAlwaysShowNsfw(bool value);
 
   Duration? get nsfwDisplayDelayDuration;
 
   Stream<Duration?> get nsfwDisplayDelayDurationStream;
 
-  void changeNsfwDisplayDelayDuration(Duration? value);
+  Future changeNsfwDisplayDelayDuration(Duration? value);
 }

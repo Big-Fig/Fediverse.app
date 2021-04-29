@@ -98,9 +98,9 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_impl.dart';
 import 'package:fedi/app/status/sensitive/display_time_storage/status_sensitive_display_time_storage_bloc.dart';
 import 'package:fedi/app/status/sensitive/display_time_storage/status_sensitive_display_time_storage_bloc_impl.dart';
-import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preference_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
@@ -697,25 +697,25 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: instanceToastSettingsLocalPreferencesBloc);
 
     var instancePostStatusSettingsLocalPreferencesBloc =
-        InstancePostStatusSettingsLocalPreferencesBloc(
+        InstancePostStatusSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
     );
 
     await globalProviderService
-        .asyncInitAndRegister<IInstancePostStatusSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IInstancePostStatusSettingsLocalPreferenceBloc>(
       instancePostStatusSettingsLocalPreferencesBloc,
     );
     addDisposable(disposable: instancePostStatusSettingsLocalPreferencesBloc);
 
     var instanceStatusSensitiveSettingsLocalPreferencesBloc =
-        InstanceStatusSensitiveSettingsLocalPreferencesBloc(
+        InstanceStatusSensitiveSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
     );
 
     await globalProviderService.asyncInitAndRegister<
-        IInstanceStatusSensitiveSettingsLocalPreferencesBloc>(
+        IInstanceStatusSensitiveSettingsLocalPreferenceBloc>(
       instanceStatusSensitiveSettingsLocalPreferencesBloc,
     );
     addDisposable(
@@ -805,7 +805,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       instanceLocalPreferencesBloc:
           instancePostStatusSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
-          appContextBloc.get<IGlobalPostStatusSettingsLocalPreferencesBloc>(),
+          appContextBloc.get<IGlobalPostStatusSettingsLocalPreferenceBloc>(),
     );
 
     await globalProviderService
@@ -816,7 +816,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       instanceLocalPreferencesBloc:
           instanceStatusSensitiveSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc: appContextBloc
-          .get<IGlobalStatusSensitiveSettingsLocalPreferencesBloc>(),
+          .get<IGlobalStatusSensitiveSettingsLocalPreferenceBloc>(),
     );
 
     await globalProviderService.asyncInitAndRegister<

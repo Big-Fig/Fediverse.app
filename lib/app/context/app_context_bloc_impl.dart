@@ -45,8 +45,8 @@ import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:fedi/app/share/external/external_share_service_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc_impl.dart';
-import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preferences_bloc.dart';
@@ -381,23 +381,23 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     addDisposable(disposable: globalToastSettingsLocalPreferencesBloc);
 
     var globalPostStatusSettingsLocalPreferencesBloc =
-        GlobalPostStatusSettingsLocalPreferencesBloc(
+        GlobalPostStatusSettingsLocalPreferenceBloc(
       hiveLocalPreferencesService,
     );
 
     await globalProviderService
-        .asyncInitAndRegister<IGlobalPostStatusSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IGlobalPostStatusSettingsLocalPreferenceBloc>(
       globalPostStatusSettingsLocalPreferencesBloc,
     );
     addDisposable(disposable: globalPostStatusSettingsLocalPreferencesBloc);
 
     var globalStatusSensitiveSettingsLocalPreferencesBloc =
-        GlobalStatusSensitiveSettingsLocalPreferencesBloc(
+        GlobalStatusSensitiveSettingsLocalPreferenceBloc(
       hiveLocalPreferencesService,
     );
 
     await globalProviderService.asyncInitAndRegister<
-        IGlobalStatusSensitiveSettingsLocalPreferencesBloc>(
+        IGlobalStatusSensitiveSettingsLocalPreferenceBloc>(
       globalStatusSensitiveSettingsLocalPreferencesBloc,
     );
     addDisposable(
