@@ -12,8 +12,8 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_l
 import 'package:fedi/app/localization/settings/local_preference/global/global_localization_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preference_bloc_impl.dart';
-import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/pagination/settings/local_preferences/instance/instance_pagination_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/pagination/settings/local_preferences/instance/instance_pagination_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
@@ -100,7 +100,7 @@ class FediLocalPreferencesServiceMigrationBloc
       (lps) => GlobalWebSocketsSettingsLocalPreferencesBloc(lps),
       (lps) => GlobalLocalizationSettingsLocalPreferencesBloc(lps),
       (lps) => GlobalUiSettingsLocalPreferencesBloc(lps),
-      (lps) => GlobalPaginationSettingsLocalPreferencesBloc(lps),
+      (lps) => GlobalPaginationSettingsLocalPreferenceBloc(lps),
       (lps) => AppAnalyticsLocalPreferenceBloc(lps),
       ...authInstancesBlocCreators,
     ];
@@ -155,7 +155,7 @@ class FediLocalPreferencesServiceMigrationBloc
                   lps,
                   userAtHost: userAtHost,
                 ),
-            (lps) => InstancePaginationSettingsLocalPreferencesBloc(
+            (lps) => InstancePaginationSettingsLocalPreferenceBloc(
                   lps,
                   userAtHost: userAtHost,
                 ),

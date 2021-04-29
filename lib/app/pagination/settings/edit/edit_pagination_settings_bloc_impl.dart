@@ -1,5 +1,4 @@
 import 'package:fedi/app/pagination/page_size/form/pagination_page_size_single_from_list_value_form_field_bloc_impl.dart';
-import 'package:fedi/app/pagination/page_size/pagination_page_size_model.dart';
 import 'package:fedi/app/pagination/settings/edit/edit_pagination_settings_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_model.dart';
@@ -34,7 +33,7 @@ class EditPaginationSettingsBloc
         ) {
     pageSizeFieldBloc = PaginationPageSizeSingleFromListValueFormFieldBloc(
       isEnabled: isEnabled,
-      originValue: currentSettings.pageSizeAsUiSettingsFontSize,
+      originValue: currentSettings.pageSize,
     );
 
     addDisposable(disposable: pageSizeFieldBloc);
@@ -43,14 +42,14 @@ class EditPaginationSettingsBloc
   }
 
   @override
-  PaginationSettings calculateCurrentFormFieldsSettings() => PaginationSettings(
-        pageSize: pageSizeFieldBloc.currentValue.toJsonValue(),
+  PaginationSettings calculateCurrentFormFieldsSettings() => PaginationSettings.fromEnum(
+        pageSize: pageSizeFieldBloc.currentValue,
       );
 
   @override
   Future fillSettingsToFormFields(PaginationSettings settings) async {
     pageSizeFieldBloc.changeCurrentValue(
-      settings.pageSizeAsUiSettingsFontSize,
+      settings.pageSize,
     );
   }
 }
