@@ -63,7 +63,7 @@ void main() {
         id: null,
         updatedAt: DateTime.now(),
         data: PostStatusData.only(
-          visibility: PleromaApiVisibility.private.toJsonValue(),
+          visibilityString: PleromaApiVisibility.private.toJsonValue(),
           isNsfwSensitiveEnabled: true,
         ),
       ),

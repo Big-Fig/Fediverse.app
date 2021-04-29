@@ -18,7 +18,7 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
     $DbDraftStatusesTable,
     $DbDraftStatusesTable,
     DraftStatusRepositoryFilters,
-    DraftStatusOrderingTermData> implements IDraftStatusRepository {
+    DraftStatusRepositoryOrderingTermData> implements IDraftStatusRepository {
   @override
   late DraftStatusDao dao;
 
@@ -34,7 +34,7 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
       $DbDraftStatusesTable,
       $DbDraftStatusesTable,
       DraftStatusRepositoryFilters,
-      DraftStatusOrderingTermData> get populatedDao => dao;
+      DraftStatusRepositoryOrderingTermData> get populatedDao => dao;
 
   @override
   Future addDraftStatus({
@@ -65,8 +65,8 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
       DraftStatusRepositoryFilters.empty;
 
   @override
-  List<DraftStatusOrderingTermData> get defaultOrderingTerms =>
-      DraftStatusOrderingTermData.defaultTerms;
+  List<DraftStatusRepositoryOrderingTermData> get defaultOrderingTerms =>
+      DraftStatusRepositoryOrderingTermData.defaultTerms;
 
   @override
   Future<void> insertInDbTypeBatch(

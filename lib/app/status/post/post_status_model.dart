@@ -22,7 +22,7 @@ abstract class IPostStatusData {
 
   DateTime? get scheduledAt;
 
-  String get visibility;
+  String get visibilityString;
 
   String? get language;
 
@@ -46,7 +46,7 @@ abstract class IPostStatusData {
     String? subject,
     String? text,
     DateTime? scheduledAt,
-    String? visibility,
+    String? visibilityString,
     String? language,
     List<String>? to,
     List<IPleromaApiMediaAttachment>? mediaAttachments,
@@ -76,7 +76,8 @@ class PostStatusData implements IPostStatusData {
   @JsonKey(name: "scheduled_at")
   final DateTime? scheduledAt;
   @override
-  final String visibility;
+  @JsonKey(name: "visibility")
+  final String visibilityString;
   @override
   final List<String>? to;
   @override
@@ -106,7 +107,7 @@ class PostStatusData implements IPostStatusData {
     required this.subject,
     required this.text,
     required this.scheduledAt,
-    required this.visibility,
+    required this.visibilityString,
     required this.to,
     required this.mediaAttachments,
     required this.poll,
@@ -121,7 +122,7 @@ class PostStatusData implements IPostStatusData {
     this.subject,
     this.text,
     this.scheduledAt,
-    required this.visibility,
+    required this.visibilityString,
     this.to,
     this.mediaAttachments,
     this.poll,
@@ -133,7 +134,7 @@ class PostStatusData implements IPostStatusData {
   });
 
   PleromaApiVisibility get visibilityPleroma =>
-      visibility.toPleromaApiVisibility();
+      visibilityString.toPleromaApiVisibility();
 
   @override
   // ignore: long-parameter-list
@@ -141,7 +142,7 @@ class PostStatusData implements IPostStatusData {
     String? subject,
     String? text,
     DateTime? scheduledAt,
-    String? visibility,
+    String? visibilityString,
     String? language,
     List<String>? to,
     List<IPleromaApiMediaAttachment>? mediaAttachments,
@@ -156,7 +157,7 @@ class PostStatusData implements IPostStatusData {
         text: text ?? this.text,
         scheduledAt: scheduledAt ?? this.scheduledAt,
         expiresInSeconds: expiresInSeconds ?? this.expiresInSeconds,
-        visibility: visibility ?? this.visibility,
+        visibilityString: visibilityString ?? this.visibilityString,
         language: language ?? this.language,
         to: to ?? this.to,
         mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
@@ -177,7 +178,7 @@ class PostStatusData implements IPostStatusData {
           subject == other.subject &&
           text == other.text &&
           scheduledAt == other.scheduledAt &&
-          visibility == other.visibility &&
+          visibilityString == other.visibilityString &&
           listEquals(to, other.to) &&
           listEquals(mediaAttachments, other.mediaAttachments) &&
           poll == other.poll &&
@@ -191,7 +192,7 @@ class PostStatusData implements IPostStatusData {
       subject.hashCode ^
       text.hashCode ^
       scheduledAt.hashCode ^
-      visibility.hashCode ^
+      visibilityString.hashCode ^
       listHash(to) ^
       listHash(mediaAttachments) ^
       poll.hashCode ^
@@ -205,7 +206,7 @@ class PostStatusData implements IPostStatusData {
       'subject: $subject, '
       'text: $text, '
       'scheduledAt: $scheduledAt, '
-      'visibility: $visibility, '
+      'visibility: $visibilityString, '
       'attachments: $mediaAttachments, '
       'poll: $poll, '
       'inReplyToStatus: $inReplyToPleromaStatus, '
@@ -229,7 +230,7 @@ extension IPostStatusDataExtension on IPostStatusData {
     return PleromaApiScheduleStatus(
       inReplyToConversationId: inReplyToConversationId,
       inReplyToId: inReplyToPleromaStatus?.id,
-      visibility: visibility,
+      visibility: visibilityString,
       mediaIds: mediaAttachments?.toPleromaApiMediaAttachmentIds(),
       sensitive: isNsfwSensitiveEnabled,
       spoilerText: subject,
@@ -253,7 +254,7 @@ extension IPostStatusDataExtension on IPostStatusData {
         subject: subject,
         text: text,
         scheduledAt: scheduledAt,
-        visibility: visibility,
+        visibilityString: visibilityString,
         to: to,
         mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
         poll: poll?.toPostStatusPoll(),
@@ -276,7 +277,7 @@ extension IPostStatusDataExtension on IPostStatusData {
       expiresInSeconds: expiresInSeconds,
       inReplyToConversationId: inReplyToConversationId,
       inReplyToId: inReplyToPleromaStatus?.id,
-      visibility: visibility,
+      visibility: visibilityString,
       mediaIds: mediaAttachments?.toPleromaApiMediaAttachmentIds(),
       sensitive: isNsfwSensitiveEnabled,
       language: language,
@@ -298,7 +299,7 @@ extension PostStatusDataStatusExtension on IStatus {
         subject: spoilerText,
         text: content,
         scheduledAt: null,
-        visibility: visibility.toJsonValue(),
+        visibilityString: visibility.toJsonValue(),
         to: mentions?.toAccts(),
         mediaAttachments: mediaAttachments,
         poll: poll?.toPostStatusPoll(

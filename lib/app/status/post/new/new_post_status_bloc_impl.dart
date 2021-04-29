@@ -63,7 +63,7 @@ class NewPostStatusBloc extends PostStatusBloc {
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           maximumMessageLength: maximumMessageLength,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibility: initialVisibility.toJsonValue(),
+            visibilityString: initialVisibility.toJsonValue(),
             language: initialLanguage,
             text: initialText,
             subject: initialSubject,

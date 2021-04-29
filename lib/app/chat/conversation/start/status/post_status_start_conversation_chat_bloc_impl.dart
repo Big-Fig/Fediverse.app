@@ -49,7 +49,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
           scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibility: PleromaApiVisibility.direct.toJsonValue(),
+            visibilityString: PleromaApiVisibility.direct.toJsonValue(),
             language: language,
           ),
           initialAccountsToMention: conversationAccountsWithoutMe,

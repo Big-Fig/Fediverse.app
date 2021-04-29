@@ -24,7 +24,7 @@ class ShareStatusWithMessageWidget extends StatelessWidget {
           authorName: status.account.displayName,
           authorUrl: status.account.url,
           url: status.url,
-          type: MastodonApiCardType.link,
+          type: MastodonApiCardType.link.toJsonValue(),
           title: status.spoilerText,
           description: status.content,
           image: status.mediaAttachments?.isNotEmpty == true

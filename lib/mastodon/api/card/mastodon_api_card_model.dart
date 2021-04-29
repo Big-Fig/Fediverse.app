@@ -8,7 +8,9 @@ abstract class IMastodonApiCard {
 
   String? get description;
 
-  MastodonApiCardType? get type;
+  String? get type;
+
+  MastodonApiCardType? get typeAsMastodonApi;
 
   String? get authorName;
 
@@ -87,7 +89,7 @@ extension MastodonApiCardTypeExtension on MastodonApiCardType {
 }
 
 extension MastodonApiCardTypeStringExtension on String {
-  MastodonApiCardType toMastodonCardType() {
+  MastodonApiCardType toMastodonApiCardType() {
     MastodonApiCardType result;
 
     switch (this) {
@@ -117,7 +119,7 @@ extension MastodonApiCardTypeStringExtension on String {
 
 extension MastodonApiCardTypeStringListExtension on List<String> {
   List<MastodonApiCardType> toPleromaVisibilities() => map(
-        (visibilityString) => visibilityString.toMastodonCardType(),
+        (visibilityString) => visibilityString.toMastodonApiCardType(),
       ).toList();
 }
 
@@ -129,7 +131,7 @@ class MastodonApiCardTypeTypeConverter
 
   @override
   MastodonApiCardType fromJson(String? value) =>
-      value?.toMastodonCardType() ?? unknownMastodonApiCardType;
+      value?.toMastodonApiCardType() ?? unknownMastodonApiCardType;
 
   @override
   String? toJson(MastodonApiCardType? value) => value?.toJsonValue();

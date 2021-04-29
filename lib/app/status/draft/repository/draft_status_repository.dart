@@ -10,7 +10,7 @@ abstract class IDraftStatusRepository
     implements
         IDisposable,
         IAppReadWriteRepository<DbDraftStatus, IDraftStatus, int,
-            DraftStatusRepositoryFilters, DraftStatusOrderingTermData> {
+            DraftStatusRepositoryFilters, DraftStatusRepositoryOrderingTermData> {
   static IDraftStatusRepository of(
     BuildContext context, {
     bool listen = true,

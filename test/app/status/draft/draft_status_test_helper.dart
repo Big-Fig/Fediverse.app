@@ -6,20 +6,19 @@ import 'database/draft_status_database_test_helper.dart';
 class DraftStatusTestHelper {
   static Future<DbDraftStatusPopulatedWrapper> createTestDraftStatus({
     required String seed,
-    String? remoteId,
+    DateTime? updatedAt,
   }) async =>
       DbDraftStatusPopulatedWrapper(
         dbDraftStatusPopulated: DbDraftStatusPopulated(
-          dbDraftStatus: await DraftStatusDatabaseTestHelper
-              .createTestDbDraftStatus(
+          dbDraftStatus:
+              await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
             seed: seed,
-            remoteId: remoteId,
+            updatedAt: updatedAt,
           ),
         ),
       );
 
-  static void expectDraftStatus(
-      IDraftStatus? actual, IDraftStatus? expected) {
+  static void expectDraftStatus(IDraftStatus? actual, IDraftStatus? expected) {
     if (actual == null && expected == null) {
       return;
     }

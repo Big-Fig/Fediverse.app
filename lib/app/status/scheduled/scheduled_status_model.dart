@@ -108,7 +108,7 @@ extension IScheduledStatusExtension on IScheduledStatus {
         subject: params.spoilerText,
         text: params.text,
         scheduledAt: scheduledAt,
-        visibility: params.visibility,
+        visibilityString: params.visibility,
         mediaAttachments: mediaAttachments,
         poll: params.poll?.toPostStatusPoll(),
         to: params.to,
