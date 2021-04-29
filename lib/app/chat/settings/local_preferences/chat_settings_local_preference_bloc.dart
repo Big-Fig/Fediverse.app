@@ -3,11 +3,11 @@ import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatSettingsLocalPreferencesBloc<T extends ChatSettings?>
+abstract class IChatSettingsLocalPreferenceBloc<T extends ChatSettings?>
     implements ILocalPreferenceBloc<T> {
-  static IChatSettingsLocalPreferencesBloc of(
+  static IChatSettingsLocalPreferenceBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IChatSettingsLocalPreferencesBloc>(context, listen: listen);
+      Provider.of<IChatSettingsLocalPreferenceBloc>(context, listen: listen);
 }

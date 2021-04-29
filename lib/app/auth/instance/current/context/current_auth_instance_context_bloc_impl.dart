@@ -42,9 +42,9 @@ import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_
 import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository_impl.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc_impl.dart';
-import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc.dart';
+import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preference_bloc.dart';
+import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preferences/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
@@ -662,13 +662,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         IFcmPushPermissionCheckerBloc>(fcmPushPermissionCheckerBloc);
 
     var instanceChatSettingsLocalPreferencesBloc =
-        InstanceChatSettingsLocalPreferencesBloc(
+        InstanceChatSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
     );
 
     await globalProviderService
-        .asyncInitAndRegister<IInstanceChatSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IInstanceChatSettingsLocalPreferenceBloc>(
       instanceChatSettingsLocalPreferencesBloc,
     );
     addDisposable(disposable: instanceChatSettingsLocalPreferencesBloc);
@@ -775,7 +775,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var chatSettingsBloc = ChatSettingsBloc(
       instanceLocalPreferencesBloc: instanceChatSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
-          appContextBloc.get<IGlobalChatSettingsLocalPreferencesBloc>(),
+          appContextBloc.get<IGlobalChatSettingsLocalPreferenceBloc>(),
     );
 
     await globalProviderService

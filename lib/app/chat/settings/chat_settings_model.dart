@@ -16,7 +16,7 @@ class ChatSettings implements IJsonObject, ISettings<ChatSettings> {
   @JsonKey(name: "count_conversations_in_chats_unread_badges")
   final bool countConversationsInChatsUnreadBadges;
 
-  ChatSettings({
+  const ChatSettings({
     required this.replaceConversationsWithPleromaChats,
     required this.countConversationsInChatsUnreadBadges,
   });

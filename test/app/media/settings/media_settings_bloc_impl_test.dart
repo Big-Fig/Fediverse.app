@@ -152,7 +152,7 @@ void main() {
         MediaSettingsModelTestHelper.createTestMediaSettings(seed: "seed")
             .autoInit;
 
-    await mediaSettingsBloc.changeAutoPlay(testAutoPlay);
+    await mediaSettingsBloc.changeAutoInit(testAutoPlay);
     await Future.delayed(Duration(milliseconds: 100));
 
     expect(

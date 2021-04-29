@@ -16,8 +16,8 @@ import 'package:fedi/app/cache/database/settings/local_preferences/global/global
 import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc.dart';
+import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/hive/hive_service.dart';
@@ -349,12 +349,12 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     addDisposable(disposable: localizationSettingsBloc);
 
     var globalChatSettingsLocalPreferencesBloc =
-        GlobalChatSettingsLocalPreferencesBloc(
+        GlobalChatSettingsLocalPreferenceBloc(
       hiveLocalPreferencesService,
     );
 
     await globalProviderService
-        .asyncInitAndRegister<IGlobalChatSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IGlobalChatSettingsLocalPreferenceBloc>(
       globalChatSettingsLocalPreferencesBloc,
     );
     addDisposable(disposable: globalChatSettingsLocalPreferencesBloc);

@@ -4,8 +4,8 @@ import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_pre
 import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
-import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preferences/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/recent/local_preferences/emoji_picker_recent_category_local_preference_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc_impl.dart';
@@ -92,7 +92,7 @@ class FediLocalPreferencesServiceMigrationBloc
       (lps) => CurrentAuthInstanceLocalPreferenceBloc(lps),
       (lps) => PushHandlerUnhandledLocalPreferenceBloc(lps),
       (lps) => PleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc(lps),
-      (lps) => GlobalChatSettingsLocalPreferencesBloc(lps),
+      (lps) => GlobalChatSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalMediaSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalToastSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalPostStatusSettingsLocalPreferenceBloc(lps),
@@ -131,7 +131,7 @@ class FediLocalPreferencesServiceMigrationBloc
                   lps,
                   userAtHost: userAtHost,
                 ),
-            (lps) => InstanceChatSettingsLocalPreferencesBloc(
+            (lps) => InstanceChatSettingsLocalPreferenceBloc(
                   lps,
                   userAtHost: userAtHost,
                 ),
