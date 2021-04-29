@@ -1,6 +1,7 @@
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/date_time/date_time_extension.dart';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
@@ -9,6 +10,7 @@ import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_status_model.g.dart';
@@ -56,7 +58,10 @@ abstract class IPostStatusData {
   });
 }
 
-@JsonSerializable(includeIfNull: false)
+@JsonSerializable(
+  includeIfNull: false,
+  explicitToJson: true,
+)
 class PostStatusData implements IPostStatusData {
   @override
   bool get isScheduled => scheduledAt != null;
@@ -173,8 +178,8 @@ class PostStatusData implements IPostStatusData {
           text == other.text &&
           scheduledAt == other.scheduledAt &&
           visibility == other.visibility &&
-          to == other.to &&
-          mediaAttachments == other.mediaAttachments &&
+          listEquals(to, other.to) &&
+          listEquals(mediaAttachments, other.mediaAttachments) &&
           poll == other.poll &&
           inReplyToPleromaStatus == other.inReplyToPleromaStatus &&
           inReplyToConversationId == other.inReplyToConversationId &&
@@ -187,8 +192,8 @@ class PostStatusData implements IPostStatusData {
       text.hashCode ^
       scheduledAt.hashCode ^
       visibility.hashCode ^
-      to.hashCode ^
-      mediaAttachments.hashCode ^
+      listHash(to) ^
+      listHash(mediaAttachments) ^
       poll.hashCode ^
       inReplyToPleromaStatus.hashCode ^
       inReplyToConversationId.hashCode ^
