@@ -8,9 +8,9 @@ class WebSocketsSettingsBloc
     extends GlobalOrInstanceSettingsLocalPreferencesBloc<WebSocketsSettings>
     implements IWebSocketsSettingsBloc {
   WebSocketsSettingsBloc({
-    required IWebSocketsSettingsLocalPreferencesBloc<WebSocketsSettings>
+    required IWebSocketsSettingsLocalPreferenceBloc<WebSocketsSettings>
         globalLocalPreferencesBloc,
-    required IWebSocketsSettingsLocalPreferencesBloc<WebSocketsSettings?>
+    required IWebSocketsSettingsLocalPreferenceBloc<WebSocketsSettings?>
         instanceLocalPreferencesBloc,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
@@ -25,11 +25,10 @@ class WebSocketsSettingsBloc
       settingsDataStream.map((settings) => settings.type);
 
   @override
-  void changeHandlingType(WebSocketsHandlingType value) {
-    updateInstanceSettings(
-      settingsData.copyWith(
-        typeString: value.toJsonValue(),
-      ),
-    );
-  }
+  Future changeHandlingType(WebSocketsHandlingType value) =>
+      updateInstanceSettings(
+        settingsData.copyWith(
+          handlingType: value,
+        ),
+      );
 }

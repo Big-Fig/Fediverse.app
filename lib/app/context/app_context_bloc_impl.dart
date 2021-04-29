@@ -58,8 +58,8 @@ import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc_impl.dart';
 import 'package:fedi/app/ui/theme/dark/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
-import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preference_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
 import 'package:fedi/in_app_review/in_app_review_bloc.dart';
@@ -405,12 +405,12 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     );
 
     var globalWebSocketsSettingsLocalPreferencesBloc =
-        GlobalWebSocketsSettingsLocalPreferencesBloc(
+        GlobalWebSocketsSettingsLocalPreferenceBloc(
       hiveLocalPreferencesService,
     );
 
     await globalProviderService
-        .asyncInitAndRegister<IGlobalWebSocketsSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IGlobalWebSocketsSettingsLocalPreferenceBloc>(
       globalWebSocketsSettingsLocalPreferencesBloc,
     );
     addDisposable(disposable: globalWebSocketsSettingsLocalPreferencesBloc);

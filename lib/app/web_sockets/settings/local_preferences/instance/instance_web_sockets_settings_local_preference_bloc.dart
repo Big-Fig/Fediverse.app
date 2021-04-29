@@ -3,13 +3,13 @@ import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IInstanceWebSocketsSettingsLocalPreferencesBloc
-    implements IWebSocketsSettingsLocalPreferencesBloc<WebSocketsSettings?> {
-  static IInstanceWebSocketsSettingsLocalPreferencesBloc of(
+abstract class IInstanceWebSocketsSettingsLocalPreferenceBloc
+    implements IWebSocketsSettingsLocalPreferenceBloc<WebSocketsSettings?> {
+  static IInstanceWebSocketsSettingsLocalPreferenceBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IInstanceWebSocketsSettingsLocalPreferencesBloc>(
+      Provider.of<IInstanceWebSocketsSettingsLocalPreferenceBloc>(
         context,
         listen: listen,
       );

@@ -15,5 +15,5 @@ abstract class IWebSocketsSettingsBloc
   }) =>
       Provider.of<IWebSocketsSettingsBloc>(context, listen: listen);
 
-  void changeHandlingType(WebSocketsHandlingType value);
+  Future changeHandlingType(WebSocketsHandlingType value);
 }

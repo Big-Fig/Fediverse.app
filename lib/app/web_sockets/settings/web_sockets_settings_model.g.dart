@@ -17,7 +17,7 @@ class WebSocketsSettingsAdapter extends TypeAdapter<WebSocketsSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return WebSocketsSettings(
-      typeString: fields[0] as String,
+      handlingTypeString: fields[0] as String,
     );
   }
 
@@ -26,7 +26,7 @@ class WebSocketsSettingsAdapter extends TypeAdapter<WebSocketsSettings> {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.typeString);
+      ..write(obj.handlingTypeString);
   }
 
   @override
@@ -46,11 +46,11 @@ class WebSocketsSettingsAdapter extends TypeAdapter<WebSocketsSettings> {
 
 WebSocketsSettings _$WebSocketsSettingsFromJson(Map<String, dynamic> json) {
   return WebSocketsSettings(
-    typeString: json['type_string'] as String,
+    handlingTypeString: json['type_string'] as String,
   );
 }
 
 Map<String, dynamic> _$WebSocketsSettingsToJson(WebSocketsSettings instance) =>
     <String, dynamic>{
-      'type_string': instance.typeString,
+      'type_string': instance.handlingTypeString,
     };

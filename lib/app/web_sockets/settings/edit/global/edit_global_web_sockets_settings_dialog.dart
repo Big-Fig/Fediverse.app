@@ -3,8 +3,8 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_widget.dart';
-import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preference_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preference_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -21,12 +21,12 @@ void showEditGlobalWebSocketsSettingsDialog({
     child: DisposableProvider<IWebSocketsSettingsBloc>(
       create: (context) => WebSocketsSettingsBloc(
         instanceLocalPreferencesBloc:
-            IInstanceWebSocketsSettingsLocalPreferencesBloc.of(
+            IInstanceWebSocketsSettingsLocalPreferenceBloc.of(
           context,
           listen: false,
         ),
         globalLocalPreferencesBloc:
-            IGlobalWebSocketsSettingsLocalPreferencesBloc.of(
+            IGlobalWebSocketsSettingsLocalPreferenceBloc.of(
           context,
           listen: false,
         ),
