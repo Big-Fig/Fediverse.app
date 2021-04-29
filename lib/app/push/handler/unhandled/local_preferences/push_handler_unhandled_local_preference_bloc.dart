@@ -5,13 +5,13 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPushHandlerUnhandledLocalPreferencesBloc
+abstract class IPushHandlerUnhandledLocalPreferenceBloc
     implements LocalPreferenceBloc<PushHandlerUnhandledList> {
-  static IPushHandlerUnhandledLocalPreferencesBloc of(
+  static IPushHandlerUnhandledLocalPreferenceBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IPushHandlerUnhandledLocalPreferencesBloc>(
+      Provider.of<IPushHandlerUnhandledLocalPreferenceBloc>(
         context,
         listen: listen,
       );

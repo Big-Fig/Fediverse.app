@@ -1,4 +1,6 @@
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/json/json_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -13,9 +15,11 @@ part 'recent_search_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class RecentSearchList implements IJsonObject {
   @HiveField(0)
-  final List<String>? recentItems;
+  final List<String> recentItems;
 
-  RecentSearchList({this.recentItems});
+  RecentSearchList({
+    required this.recentItems,
+  });
 
   @override
   String toString() {
@@ -27,10 +31,10 @@ class RecentSearchList implements IJsonObject {
       identical(this, other) ||
       other is RecentSearchList &&
           runtimeType == other.runtimeType &&
-          recentItems == other.recentItems;
+          listEquals(recentItems, other.recentItems);
 
   @override
-  int get hashCode => recentItems.hashCode;
+  int get hashCode => listHash(recentItems);
 
   static RecentSearchList fromJson(Map<String, dynamic> json) =>
       _$RecentSearchListFromJson(json);

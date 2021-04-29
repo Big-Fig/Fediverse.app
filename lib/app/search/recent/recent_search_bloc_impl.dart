@@ -1,6 +1,6 @@
 import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_bloc.dart';
-import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
+import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 
@@ -33,7 +33,7 @@ class RecentSearchBloc extends DisposableOwner implements IRecentSearchBloc {
         (confirmedSearchTerm) {
           var oldValue = recentSearchList ?? RecentSearchList(recentItems: []);
 
-          var recentItems = oldValue.recentItems!;
+          var recentItems = oldValue.recentItems;
           if (recentItems.length > recentCountLimit) {
             recentItems = recentItems
                 .sublist(

@@ -22,7 +22,7 @@ class RecentSearchWidget extends StatelessWidget {
         var recentSearchList = snapshot.data;
 
         var recentItems = recentSearchList?.recentItems
-            ?.where((item) => item.isNotEmpty == true)
+            .where((item) => item.isNotEmpty == true)
             .toList();
 
         var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
