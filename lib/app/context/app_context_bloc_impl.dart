@@ -32,8 +32,8 @@ import 'package:fedi/app/logging/logging_service.dart';
 import 'package:fedi/app/logging/logging_service_impl.dart';
 import 'package:fedi/app/media/camera/camera_media_service.dart';
 import 'package:fedi/app/media/camera/camera_media_service_impl.dart';
-import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc.dart';
+import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preferences_bloc_impl.dart';
@@ -47,8 +47,8 @@ import 'package:fedi/app/status/post/settings/local_preferences/global/global_po
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc_impl.dart';
-import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc.dart';
+import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/ui/settings/local_preference/ui_settings_local_preferences_bloc.dart';
@@ -360,22 +360,22 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     addDisposable(disposable: globalChatSettingsLocalPreferencesBloc);
 
     var globalMediaSettingsLocalPreferencesBloc =
-        GlobalMediaSettingsLocalPreferencesBloc(
+        GlobalMediaSettingsLocalPreferenceBloc(
       hiveLocalPreferencesService,
     );
     await globalProviderService
-        .asyncInitAndRegister<IGlobalMediaSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IGlobalMediaSettingsLocalPreferenceBloc>(
       globalMediaSettingsLocalPreferencesBloc,
     );
     addDisposable(disposable: globalMediaSettingsLocalPreferencesBloc);
 
     var globalToastSettingsLocalPreferencesBloc =
-        GlobalToastSettingsLocalPreferencesBloc(
+        GlobalToastSettingsLocalPreferenceBloc(
       hiveLocalPreferencesService,
     );
 
     await globalProviderService
-        .asyncInitAndRegister<IGlobalToastSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IGlobalToastSettingsLocalPreferenceBloc>(
       globalToastSettingsLocalPreferencesBloc,
     );
     addDisposable(disposable: globalToastSettingsLocalPreferencesBloc);

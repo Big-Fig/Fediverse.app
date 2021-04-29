@@ -10,8 +10,8 @@ import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/app/toast/handler/toast_handler_bloc.dart';
 import 'package:fedi/app/toast/handling_type/toast_handling_type_model.dart';
-import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc.dart';
+import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc_impl.dart';
 import 'package:fedi/app/toast/toast_service.dart';
@@ -48,7 +48,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
         currentInstanceNotificationPushLoaderBloc:
             INotificationPushLoaderBloc.of(context, listen: false),
         globalToastSettingsLocalPreferencesBloc:
-            IGlobalToastSettingsLocalPreferencesBloc.of(context, listen: false),
+            IGlobalToastSettingsLocalPreferenceBloc.of(context, listen: false),
       );
 
   AuthInstance? get currentInstance => currentAuthInstanceBloc.currentInstance;
@@ -64,7 +64,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   final IConversationChatCurrentBloc currentInstanceConversationChatCurrentBloc;
   final IPleromaChatCurrentBloc currentInstancePleromaChatCurrentBloc;
   final INotificationPushLoaderBloc currentInstanceNotificationPushLoaderBloc;
-  final IGlobalToastSettingsLocalPreferencesBloc
+  final IGlobalToastSettingsLocalPreferenceBloc
       globalToastSettingsLocalPreferencesBloc;
 
   ToastHandlerBloc({
@@ -127,9 +127,10 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
 
     var notificationType = pleromaPushMessage.notificationType;
 
-    var pleromaNotificationType = notificationType.toPleromaApiNotificationType();
+    var pleromaNotificationType =
+        notificationType.toPleromaApiNotificationType();
     var enabled = currentInstanceToastSettingsBloc
-        .isNotificationTypeEnabled(pleromaNotificationType)!;
+        .isNotificationTypeEnabled(pleromaNotificationType);
 
     var isEnabledWhenInstanceSelected = currentInstanceToastSettingsBloc
         .handlingType.isEnabledWhenInstanceSelected;
@@ -199,10 +200,10 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
 
     var notificationType = pleromaPushMessage.notificationType;
 
-    var pleromaNotificationType = notificationType.toPleromaApiNotificationType();
+    var pleromaNotificationType =
+        notificationType.toPleromaApiNotificationType();
 
-    var instanceLocalPreferencesBloc =
-        InstanceToastSettingsLocalPreferencesBloc(
+    var instanceLocalPreferencesBloc = InstanceToastSettingsLocalPreferenceBloc(
       localPreferencesService,
       userAtHost: "${pleromaPushMessage.account}@${pleromaPushMessage.server}",
     );
@@ -215,7 +216,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     );
 
     var isEnabled =
-        toastSettingsBloc.isNotificationTypeEnabled(pleromaNotificationType)!;
+        toastSettingsBloc.isNotificationTypeEnabled(pleromaNotificationType);
 
     var isEnabledWhenInstanceNotSelected = currentInstanceToastSettingsBloc
         .handlingType.isEnabledWhenInstanceNotSelected;

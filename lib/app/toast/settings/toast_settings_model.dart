@@ -13,7 +13,7 @@ part 'toast_settings_model.g.dart';
 class ToastSettings implements IJsonObject, ISettings<ToastSettings> {
   @HiveField(3)
   @JsonKey(name: "push_settings")
-  final PushSettings? pushSettings;
+  final PushSettings pushSettings;
 
   @HiveField(4)
   @JsonKey(name: "handling_type_string")
@@ -27,6 +27,14 @@ class ToastSettings implements IJsonObject, ISettings<ToastSettings> {
     required this.handlingTypeString,
   });
 
+  ToastSettings.fromEnum({
+    required PushSettings pushSettings,
+    required ToastHandlingType handlingType,
+  }) : this(
+          pushSettings: pushSettings,
+          handlingTypeString: handlingType.toJsonValue(),
+        );
+
   static ToastSettings fromJson(Map<String, dynamic> json) =>
       _$ToastSettingsFromJson(json);
 
@@ -38,11 +46,11 @@ class ToastSettings implements IJsonObject, ISettings<ToastSettings> {
 
   ToastSettings copyWith({
     PushSettings? pushSettings,
-    String? handlingTypeString,
+    ToastHandlingType? handlingType,
   }) =>
-      ToastSettings(
+      ToastSettings.fromEnum(
         pushSettings: pushSettings ?? this.pushSettings,
-        handlingTypeString: handlingTypeString ?? this.handlingTypeString,
+        handlingType: handlingType ?? this.handlingType,
       );
 
   @override

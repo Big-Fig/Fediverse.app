@@ -58,9 +58,9 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_b
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
-import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc.dart';
+import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preference_bloc.dart';
+import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/media/settings/media_settings_bloc.dart';
 import 'package:fedi/app/media/settings/media_settings_bloc_impl.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
@@ -77,8 +77,8 @@ import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_as
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
-import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc_impl.dart';
 import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc.dart';
@@ -106,9 +106,9 @@ import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_blo
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc.dart';
+import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preference_bloc.dart';
+import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc.dart';
@@ -510,13 +510,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     );
 
     var instancePushSettingsLocalPreferenceBloc =
-        InstancePushSettingsLocalPreferencesBloc(
+        InstancePushSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
     );
     addDisposable(disposable: instancePushSettingsLocalPreferenceBloc);
     await globalProviderService
-        .asyncInitAndRegister<IPushSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IPushSettingsLocalPreferenceBloc>(
       instancePushSettingsLocalPreferenceBloc,
     );
 
@@ -674,24 +674,24 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: instanceChatSettingsLocalPreferencesBloc);
 
     var instanceMediaSettingsLocalPreferencesBloc =
-        InstanceMediaSettingsLocalPreferencesBloc(
+        InstanceMediaSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
     );
     await globalProviderService
-        .asyncInitAndRegister<IInstanceMediaSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IInstanceMediaSettingsLocalPreferenceBloc>(
       instanceMediaSettingsLocalPreferencesBloc,
     );
     addDisposable(disposable: instanceMediaSettingsLocalPreferencesBloc);
 
     var instanceToastSettingsLocalPreferencesBloc =
-        InstanceToastSettingsLocalPreferencesBloc(
+        InstanceToastSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
     );
 
     await globalProviderService
-        .asyncInitAndRegister<IInstanceToastSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IInstanceToastSettingsLocalPreferenceBloc>(
       instanceToastSettingsLocalPreferencesBloc,
     );
     addDisposable(disposable: instanceToastSettingsLocalPreferencesBloc);
@@ -785,7 +785,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var mediaSettingsBloc = MediaSettingsBloc(
       instanceLocalPreferencesBloc: instanceMediaSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
-          appContextBloc.get<IGlobalMediaSettingsLocalPreferencesBloc>(),
+          appContextBloc.get<IGlobalMediaSettingsLocalPreferenceBloc>(),
     );
     await globalProviderService
         .asyncInitAndRegister<IMediaSettingsBloc>(mediaSettingsBloc);
@@ -794,7 +794,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var toastSettingsBloc = ToastSettingsBloc(
       instanceLocalPreferencesBloc: instanceToastSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
-          appContextBloc.get<IGlobalToastSettingsLocalPreferencesBloc>(),
+          appContextBloc.get<IGlobalToastSettingsLocalPreferenceBloc>(),
     );
 
     await globalProviderService

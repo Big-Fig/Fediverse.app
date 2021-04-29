@@ -3,11 +3,11 @@ import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IMediaSettingsLocalPreferencesBloc<T extends MediaSettings?>
+abstract class IMediaSettingsLocalPreferenceBloc<T extends MediaSettings?>
     implements ILocalPreferenceBloc<T> {
-  static IMediaSettingsLocalPreferencesBloc of(
+  static IMediaSettingsLocalPreferenceBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IMediaSettingsLocalPreferencesBloc>(context, listen: listen);
+      Provider.of<IMediaSettingsLocalPreferenceBloc>(context, listen: listen);
 }

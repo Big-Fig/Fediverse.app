@@ -10,21 +10,21 @@ import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preference
 import 'package:fedi/app/emoji/picker/category/recent/local_preferences/emoji_picker_recent_category_local_preference_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/localization/settings/local_preference/global/global_localization_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/instance/instance_pagination_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preference_bloc_impl.dart';
-import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/instance/instance_post_status_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preferences_bloc_impl.dart';
@@ -93,8 +93,8 @@ class FediLocalPreferencesServiceMigrationBloc
       (lps) => PushHandlerUnhandledLocalPreferenceBloc(lps),
       (lps) => PleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc(lps),
       (lps) => GlobalChatSettingsLocalPreferencesBloc(lps),
-      (lps) => GlobalMediaSettingsLocalPreferencesBloc(lps),
-      (lps) => GlobalToastSettingsLocalPreferencesBloc(lps),
+      (lps) => GlobalMediaSettingsLocalPreferenceBloc(lps),
+      (lps) => GlobalToastSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalPostStatusSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalStatusSensitiveSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalWebSocketsSettingsLocalPreferencesBloc(lps),
@@ -127,7 +127,7 @@ class FediLocalPreferencesServiceMigrationBloc
                   lps,
                   userAtHost: userAtHost,
                 ),
-            (lps) => InstancePushSettingsLocalPreferencesBloc(
+            (lps) => InstancePushSettingsLocalPreferenceBloc(
                   lps,
                   userAtHost: userAtHost,
                 ),
@@ -135,11 +135,11 @@ class FediLocalPreferencesServiceMigrationBloc
                   lps,
                   userAtHost: userAtHost,
                 ),
-            (lps) => InstanceMediaSettingsLocalPreferencesBloc(
+            (lps) => InstanceMediaSettingsLocalPreferenceBloc(
                   lps,
                   userAtHost: userAtHost,
                 ),
-            (lps) => InstanceToastSettingsLocalPreferencesBloc(
+            (lps) => InstanceToastSettingsLocalPreferenceBloc(
                   lps,
                   userAtHost: userAtHost,
                 ),

@@ -1,4 +1,4 @@
-import 'package:fedi/app/media/settings/local_preferences/media_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/media/settings/local_preferences/media_settings_local_preference_bloc.dart';
 import 'package:fedi/app/media/settings/media_settings_bloc.dart';
 import 'package:fedi/app/media/settings/media_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
@@ -7,9 +7,9 @@ class MediaSettingsBloc
     extends GlobalOrInstanceSettingsLocalPreferencesBloc<MediaSettings>
     implements IMediaSettingsBloc {
   MediaSettingsBloc({
-    required IMediaSettingsLocalPreferencesBloc<MediaSettings>
+    required IMediaSettingsLocalPreferenceBloc<MediaSettings>
         globalLocalPreferencesBloc,
-    required IMediaSettingsLocalPreferencesBloc<MediaSettings?>
+    required IMediaSettingsLocalPreferenceBloc<MediaSettings?>
         instanceLocalPreferencesBloc,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
