@@ -19,26 +19,24 @@ class PleromaApiOAuthToken implements IJsonObject {
   @JsonKey(name: "token_type")
   final String tokenType;
 
-  @HiveField(2)
-  final dynamic scope;
-  @JsonKey(name: "created_at")
-  @HiveField(3)
-  final dynamic createdAt;
+  // I am not sure about types, so fields temporary ignored
+  // todo: improve
+  // @HiveField(2)
+  // final dynamic scope;
+  // @JsonKey(name: "created_at")
+  // @HiveField(3)
+  // final dynamic createdAt;
 
   PleromaApiOAuthToken({
     required this.accessToken,
     required this.tokenType,
-    required this.scope,
-    required this.createdAt,
   });
 
   @override
   String toString() {
     return 'PleromaApiOAuthToken{'
         'accessToken: $accessToken, '
-        'tokenType: $tokenType, '
-        'scope: $scope, '
-        'createdAt: $createdAt'
+        'tokenType: $tokenType,'
         '}';
   }
 
@@ -48,16 +46,12 @@ class PleromaApiOAuthToken implements IJsonObject {
       other is PleromaApiOAuthToken &&
           runtimeType == other.runtimeType &&
           accessToken == other.accessToken &&
-          tokenType == other.tokenType &&
-          scope == other.scope &&
-          createdAt == other.createdAt;
+          tokenType == other.tokenType;
 
   @override
   int get hashCode =>
       accessToken.hashCode ^
-      tokenType.hashCode ^
-      scope.hashCode ^
-      createdAt.hashCode;
+      tokenType.hashCode;
 
   static PleromaApiOAuthToken fromJson(Map<String, dynamic> json) =>
       _$PleromaApiOAuthTokenFromJson(json);

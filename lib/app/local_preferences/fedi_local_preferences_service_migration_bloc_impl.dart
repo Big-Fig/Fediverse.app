@@ -25,7 +25,7 @@ import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/in
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preference_bloc_impl.dart';
-import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -98,8 +98,8 @@ class FediLocalPreferencesServiceMigrationBloc
       (lps) => GlobalPostStatusSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalStatusSensitiveSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalWebSocketsSettingsLocalPreferencesBloc(lps),
-      (lps) => GlobalLocalizationSettingsLocalPreferencesBloc(lps),
-      (lps) => GlobalUiSettingsLocalPreferencesBloc(lps),
+      (lps) => GlobalLocalizationSettingsLocalPreferenceBloc(lps),
+      (lps) => GlobalUiSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalPaginationSettingsLocalPreferenceBloc(lps),
       (lps) => AppAnalyticsLocalPreferenceBloc(lps),
       ...authInstancesBlocCreators,

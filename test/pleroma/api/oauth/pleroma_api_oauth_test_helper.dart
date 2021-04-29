@@ -8,8 +8,8 @@ class PleromaApiOAuthTestHelper {
     return PleromaApiOAuthToken(
       accessToken: seed + "accessToken",
       tokenType: seed + "tokenType",
-      scope: seed + "tokenType",
-      createdAt: DateTime(seed.hashCode % 2001),
+      // scope: seed + "tokenType",
+      // createdAt: DateTime(seed.hashCode % 2001),
     );
   }
 }

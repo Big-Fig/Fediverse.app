@@ -3,13 +3,13 @@ import 'package:fedi/app/localization/settings/localization_settings_model.dart'
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IGlobalLocalizationSettingsLocalPreferencesBloc
-    implements ILocalizationSettingsLocalPreferencesBloc<LocalizationSettings> {
-  static IGlobalLocalizationSettingsLocalPreferencesBloc of(
+abstract class IGlobalLocalizationSettingsLocalPreferenceBloc
+    implements ILocalizationSettingsLocalPreferenceBloc<LocalizationSettings> {
+  static IGlobalLocalizationSettingsLocalPreferenceBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IGlobalLocalizationSettingsLocalPreferencesBloc>(
+      Provider.of<IGlobalLocalizationSettingsLocalPreferenceBloc>(
         context,
         listen: listen,
       );

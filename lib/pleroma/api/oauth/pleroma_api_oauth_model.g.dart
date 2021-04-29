@@ -19,23 +19,17 @@ class PleromaApiOAuthTokenAdapter extends TypeAdapter<PleromaApiOAuthToken> {
     return PleromaApiOAuthToken(
       accessToken: fields[0] as String,
       tokenType: fields[1] as String,
-      scope: fields[2] as dynamic,
-      createdAt: fields[3] as dynamic,
     );
   }
 
   @override
   void write(BinaryWriter writer, PleromaApiOAuthToken obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.accessToken)
       ..writeByte(1)
-      ..write(obj.tokenType)
-      ..writeByte(2)
-      ..write(obj.scope)
-      ..writeByte(3)
-      ..write(obj.createdAt);
+      ..write(obj.tokenType);
   }
 
   @override
@@ -57,8 +51,6 @@ PleromaApiOAuthToken _$PleromaApiOAuthTokenFromJson(Map<String, dynamic> json) {
   return PleromaApiOAuthToken(
     accessToken: json['access_token'] as String,
     tokenType: json['token_type'] as String,
-    scope: json['scope'],
-    createdAt: json['created_at'],
   );
 }
 
@@ -67,8 +59,6 @@ Map<String, dynamic> _$PleromaApiOAuthTokenToJson(
     <String, dynamic>{
       'access_token': instance.accessToken,
       'token_type': instance.tokenType,
-      'scope': instance.scope,
-      'created_at': instance.createdAt,
     };
 
 PleromaApiOAuthAuthorizeRequest _$PleromaApiOAuthAuthorizeRequestFromJson(

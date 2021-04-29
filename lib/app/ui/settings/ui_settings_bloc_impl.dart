@@ -1,11 +1,11 @@
 import 'package:fedi/app/ui/settings/font_size/ui_settings_font_size_model.dart';
-import 'package:fedi/app/ui/settings/local_preference/ui_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/ui/settings/local_preference/ui_settings_local_preference_bloc.dart';
 import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
 import 'package:fedi/app/ui/settings/ui_settings_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 
 class UiSettingsBloc extends DisposableOwner implements IUiSettingsBloc {
-  final IUiSettingsLocalPreferencesBloc uiSettingsLocalPreferencesBloc;
+  final IUiSettingsLocalPreferenceBloc uiSettingsLocalPreferencesBloc;
 
   UiSettingsBloc({
     required this.uiSettingsLocalPreferencesBloc,
@@ -26,30 +26,29 @@ class UiSettingsBloc extends DisposableOwner implements IUiSettingsBloc {
       settingsDataStream.map((settings) => settings.themeId);
 
   @override
-  Future changeThemeId(String value) => updateSettings(
+  Future changeThemeId(String? value) => updateSettings(
         // copyWith don't set null values
-        UiSettings(
+        UiSettings.fromEnum(
           themeId: value,
           statusFontSize: settingsData.statusFontSize,
         ),
       );
 
   @override
-  UiSettingsFontSize get statusFontSize =>
-      settingsData.statusFontSizeAsUiSettingsFontSize;
+  UiSettingsFontSize get statusFontSize => settingsData.statusFontSize;
 
   @override
   Stream<UiSettingsFontSize> get statusFontSizeStream => settingsDataStream.map(
-        (settings) => settings.statusFontSizeAsUiSettingsFontSize,
+        (settings) => settings.statusFontSize,
       );
 
   @override
-  void changeStatusFontSize(UiSettingsFontSize? value) {
-    updateSettings(
+  Future changeStatusFontSize(UiSettingsFontSize value) {
+    return updateSettings(
       // copyWith don't set null values
-      UiSettings(
+      UiSettings.fromEnum(
         themeId: settingsData.themeId,
-        statusFontSize: value!.toJsonValue(),
+        statusFontSize: value,
       ),
     );
   }
