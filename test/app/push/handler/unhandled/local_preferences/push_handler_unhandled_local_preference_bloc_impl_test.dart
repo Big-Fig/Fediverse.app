@@ -1,4 +1,4 @@
-import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,10 +10,10 @@ import '../push_handler_unhandled_model_test_helper.dart';
 void main() {
   test('save & load', () async {
     await LocalPreferencesTestHelper.testSaveAndLoad<PushHandlerUnhandledList,
-        PushHandlerUnhandledLocalPreferencesBloc>(
-      defaultValue: PushHandlerUnhandledLocalPreferencesBloc.defaultValue,
+        PushHandlerUnhandledLocalPreferenceBloc>(
+      defaultValue: PushHandlerUnhandledLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
-          PushHandlerUnhandledLocalPreferencesBloc(localPreferencesService),
+          PushHandlerUnhandledLocalPreferenceBloc(localPreferencesService),
       testObjectCreator: ({required String seed}) =>
           PushHandlerUnhandledModelTestHelper
               .createTestPushHandlerUnhandledList(

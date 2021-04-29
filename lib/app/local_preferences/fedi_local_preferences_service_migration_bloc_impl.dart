@@ -15,9 +15,9 @@ import 'package:fedi/app/media/settings/local_preferences/instance/instance_medi
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/instance/instance_pagination_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/search/recent/recent_search_local_preference_bloc_impl.dart';
+import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/instance/instance_post_status_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preferences_bloc_impl.dart';
@@ -90,7 +90,7 @@ class FediLocalPreferencesServiceMigrationBloc
     return [
       (lps) => AuthInstanceListLocalPreferenceBloc(lps),
       (lps) => CurrentAuthInstanceLocalPreferenceBloc(lps),
-      (lps) => PushHandlerUnhandledLocalPreferencesBloc(lps),
+      (lps) => PushHandlerUnhandledLocalPreferenceBloc(lps),
       (lps) => PleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc(lps),
       (lps) => GlobalChatSettingsLocalPreferencesBloc(lps),
       (lps) => GlobalMediaSettingsLocalPreferencesBloc(lps),

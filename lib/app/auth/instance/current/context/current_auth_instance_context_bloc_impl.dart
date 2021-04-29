@@ -81,8 +81,8 @@ import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_
 import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc_impl.dart';
-import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
-import 'package:fedi/app/search/recent/recent_search_local_preference_bloc_impl.dart';
+import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc.dart';
+import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc_impl.dart';
 import 'package:fedi/app/share/select_account/recent/local_preferences/recent_share_select_account_local_preference_bloc.dart';
 import 'package:fedi/app/share/select_account/recent/local_preferences/recent_share_select_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';

@@ -1,4 +1,4 @@
-import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
+import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -16,7 +16,8 @@ class RecentSearchLocalPreferenceBloc
           jsonConverter: (json) => RecentSearchList.fromJson(json),
         );
 
+  static const RecentSearchList? defaultValue = null;
+
   @override
-  // TODO: implement defaultValue
-  RecentSearchList? get defaultPreferenceValue => null;
+  RecentSearchList? get defaultPreferenceValue => defaultValue;
 }

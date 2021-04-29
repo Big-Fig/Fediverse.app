@@ -2,7 +2,7 @@ import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/search/input/search_input_widget.dart';
 import 'package:fedi/app/search/recent/recent_search_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_bloc_impl.dart';
-import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
+import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/result/list/search_result_item_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/search/result/pagination/search_result_item_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/search/result/pagination/search_result_item_pagination_list_bloc.dart';
