@@ -101,7 +101,7 @@ class NewPostStatusBloc extends PostStatusBloc {
         listen: false,
       ),
       initialLanguage: postStatusSettingsBloc.defaultStatusLocale?.localeString,
-      initialVisibility: postStatusSettingsBloc.defaultVisibility,
+      initialVisibility: postStatusSettingsBloc.defaultVisibilityAsPleromaApi,
       initialText: initialText,
       initialSubject: initialSubject,
       initialMediaAttachments: initialMediaAttachments,

@@ -17,17 +17,17 @@ abstract class IPostStatusSettingsBloc
 
   Stream<bool> get markMediaAsNsfwOnAttachStream;
 
-  void changeMarkMediaAsNsfwOnAttach(bool value);
+  Future changeMarkMediaAsNsfwOnAttach(bool value);
 
-  PleromaApiVisibility get defaultVisibility;
+  PleromaApiVisibility get defaultVisibilityAsPleromaApi;
 
-  Stream<PleromaApiVisibility> get defaultVisibilityStream;
+  Stream<PleromaApiVisibility> get defaultVisibilityAsPleromaApiStream;
 
-  void changeDefaultVisibility(PleromaApiVisibility value);
+  Future changeDefaultVisibilityAsPleromaApi(PleromaApiVisibility value);
 
   LocalizationLocale? get defaultStatusLocale;
 
   Stream<LocalizationLocale?> get defaultStatusLocaleStream;
 
-  void changeDefaultStatusLocale(LocalizationLocale? value);
+  Future changeDefaultStatusLocale(LocalizationLocale? value);
 }

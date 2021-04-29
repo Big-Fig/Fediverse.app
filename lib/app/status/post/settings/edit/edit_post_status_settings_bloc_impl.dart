@@ -51,7 +51,7 @@ class EditPostStatusSettingsBloc
         ) {
     defaultVisibilityFormFieldBloc =
         StatusVisibilitySelectSingleFromListValueFormFieldBloc(
-      originValue: currentSettings.defaultVisibilityPleroma,
+      originValue: currentSettings.defaultVisibilityAsPleromaApi,
       isEnabled: isEnabled,
       possibleValues: pleromaVisibilityPossibleValues,
     );
@@ -86,7 +86,7 @@ class EditPostStatusSettingsBloc
   @override
   Future fillSettingsToFormFields(PostStatusSettings settings) async {
     defaultVisibilityFormFieldBloc
-        .changeCurrentValue(settings.defaultVisibilityPleroma);
+        .changeCurrentValue(settings.defaultVisibilityAsPleromaApi);
     markMediaAsNsfwOnAttachFormFieldBloc
         .changeCurrentValue(settings.markMediaAsNsfwOnAttach);
     defaultStatusLocaleFormFieldBloc

@@ -23,7 +23,7 @@ class PostStatusSettings implements IJsonObject, ISettings<PostStatusSettings> {
   @JsonKey(name: "default_status_locale")
   final LocalizationLocale? defaultStatusLocale;
 
-  PleromaApiVisibility get defaultVisibilityPleroma =>
+  PleromaApiVisibility get defaultVisibilityAsPleromaApi =>
       defaultVisibilityString.toPleromaApiVisibility();
 
   PostStatusSettings({
@@ -49,9 +49,9 @@ class PostStatusSettings implements IJsonObject, ISettings<PostStatusSettings> {
 
   @override
   String toString() => 'PostStatusSettings{'
-      'markMediaAsNsfwOnAttach: $markMediaAsNsfwOnAttach,'
-      ' defaultVisibilityString: $defaultVisibilityString,'
-      ' defaultStatusLocale: $defaultStatusLocale'
+      'markMediaAsNsfwOnAttach: $markMediaAsNsfwOnAttach, '
+      'defaultVisibilityString: $defaultVisibilityString, '
+      'defaultStatusLocale: $defaultStatusLocale'
       '}';
 
   static PostStatusSettings fromJson(Map<String, dynamic> json) =>
