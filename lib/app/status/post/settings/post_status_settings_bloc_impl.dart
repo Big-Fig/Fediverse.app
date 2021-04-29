@@ -1,5 +1,5 @@
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
-import 'package:fedi/app/status/post/settings/local_preferences/post_status_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/status/post/settings/local_preferences/post_status_settings_local_preference_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
 import 'package:fedi/localization/localization_model.dart';
@@ -26,30 +26,27 @@ class PostStatusSettingsBloc
       settingsDataStream.map((settings) => settings.markMediaAsNsfwOnAttach);
 
   @override
-  void changeMarkMediaAsNsfwOnAttach(bool value) {
-    updateInstanceSettings(
-      settingsData.copyWith(
-        markMediaAsNsfwOnAttach: value,
-      ),
-    );
-  }
+  Future changeMarkMediaAsNsfwOnAttach(bool value) => updateInstanceSettings(
+        settingsData.copyWith(
+          markMediaAsNsfwOnAttach: value,
+        ),
+      );
 
   @override
-  PleromaApiVisibility get defaultVisibility =>
-      settingsData.defaultVisibilityPleroma;
+  PleromaApiVisibility get defaultVisibilityAsPleromaApi =>
+      settingsData.defaultVisibilityAsPleromaApi;
 
   @override
-  Stream<PleromaApiVisibility> get defaultVisibilityStream =>
-      settingsDataStream.map((settings) => settings.defaultVisibilityPleroma);
+  Stream<PleromaApiVisibility> get defaultVisibilityAsPleromaApiStream =>
+      settingsDataStream.map((settings) => settings.defaultVisibilityAsPleromaApi);
 
   @override
-  void changeDefaultVisibility(PleromaApiVisibility value) {
-    updateInstanceSettings(
-      settingsData.copyWith(
-        defaultVisibilityString: value.toJsonValue(),
-      ),
-    );
-  }
+  Future changeDefaultVisibilityAsPleromaApi(PleromaApiVisibility value) =>
+      updateInstanceSettings(
+        settingsData.copyWith(
+          defaultVisibilityString: value.toJsonValue(),
+        ),
+      );
 
   @override
   LocalizationLocale? get defaultStatusLocale =>
@@ -60,16 +57,15 @@ class PostStatusSettingsBloc
       settingsDataStream.map((settings) => settings.defaultStatusLocale);
 
   @override
-  void changeDefaultStatusLocale(LocalizationLocale? value) {
-    updateInstanceSettings(PostStatusSettings(
-      markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
-      defaultStatusLocale: value,
-      defaultVisibilityString: defaultVisibility.toJsonValue(),
-    )
-        // copy with don't support null
-        // settingsData?.copyWith(
-        //   defaultStatusLocale: value,
-        // ),
-        );
-  }
+  Future changeDefaultStatusLocale(LocalizationLocale? value) =>
+      updateInstanceSettings(PostStatusSettings(
+        markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
+        defaultStatusLocale: value,
+        defaultVisibilityString: defaultVisibilityAsPleromaApi.toJsonValue(),
+      )
+          // copy with don't support null
+          // settingsData?.copyWith(
+          //   defaultStatusLocale: value,
+          // ),
+          );
 }

@@ -4,8 +4,8 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/status/post/settings/edit/edit_post_status_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/edit/edit_post_status_settings_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/edit/edit_post_status_settings_widget.dart';
-import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/status/post/settings/local_preferences/instance/instance_post_status_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc.dart';
+import 'package:fedi/app/status/post/settings/local_preferences/instance/instance_post_status_settings_local_preference_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
