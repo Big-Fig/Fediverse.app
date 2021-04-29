@@ -12,14 +12,18 @@ part 'pagination_settings_model.g.dart';
 class PaginationSettings implements IJsonObject, ISettings<PaginationSettings> {
   @HiveField(0)
   @JsonKey(name: "page_size")
-  final String pageSize;
+  final String pageSizeString;
 
-  PaginationPageSize get pageSizeAsUiSettingsFontSize =>
-      pageSize.toPaginationPageSize();
+  PaginationPageSize get pageSize =>
+      pageSizeString.toPaginationPageSize();
 
   PaginationSettings({
-    required this.pageSize,
+    required this.pageSizeString,
   });
+
+  PaginationSettings.fromEnum({
+    required PaginationPageSize pageSize,
+  }) : this(pageSizeString: pageSize.toJsonValue());
 
   static PaginationSettings fromJson(Map<String, dynamic> json) =>
       _$PaginationSettingsFromJson(json);
@@ -31,9 +35,9 @@ class PaginationSettings implements IJsonObject, ISettings<PaginationSettings> {
   PaginationSettings clone() => copyWith();
 
   PaginationSettings copyWith({
-    String? pageSize,
+    PaginationPageSize? pageSize,
   }) =>
-      PaginationSettings(
+      PaginationSettings.fromEnum(
         pageSize: pageSize ?? this.pageSize,
       );
 
@@ -42,8 +46,13 @@ class PaginationSettings implements IJsonObject, ISettings<PaginationSettings> {
       identical(this, other) ||
       other is PaginationSettings &&
           runtimeType == other.runtimeType &&
-          pageSize == other.pageSize;
+          pageSizeString == other.pageSizeString;
 
   @override
-  int get hashCode => pageSize.hashCode;
+  int get hashCode => pageSizeString.hashCode;
+
+  @override
+  String toString() {
+    return 'PaginationSettings{pageSizeString: $pageSizeString}';
+  }
 }
