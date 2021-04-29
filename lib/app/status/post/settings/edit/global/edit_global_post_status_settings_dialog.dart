@@ -28,12 +28,12 @@ void showEditGlobalPostStatusSettingsDialog({
     child: DisposableProvider<IPostStatusSettingsBloc>(
       create: (context) => PostStatusSettingsBloc(
         instanceLocalPreferencesBloc:
-            IInstancePostStatusSettingsLocalPreferencesBloc.of(
+            IInstancePostStatusSettingsLocalPreferenceBloc.of(
           context,
           listen: false,
         ),
         globalLocalPreferencesBloc:
-            IGlobalPostStatusSettingsLocalPreferencesBloc.of(
+            IGlobalPostStatusSettingsLocalPreferenceBloc.of(
           context,
           listen: false,
         ),

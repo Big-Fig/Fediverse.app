@@ -1,12 +1,12 @@
-import 'package:fedi/app/status/sensitive/settings/local_preferences/status_sensitive_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/status_sensitive_settings_local_preference_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-abstract class StatusSensitiveSettingsLocalPreferencesBloc<
+abstract class StatusSensitiveSettingsLocalPreferenceBloc<
         T extends StatusSensitiveSettings?> extends ObjectLocalPreferenceBloc<T>
-    implements IStatusSensitiveSettingsLocalPreferencesBloc<T> {
-  StatusSensitiveSettingsLocalPreferencesBloc(
+    implements IStatusSensitiveSettingsLocalPreferenceBloc<T> {
+  StatusSensitiveSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
     String key,
   ) : super(

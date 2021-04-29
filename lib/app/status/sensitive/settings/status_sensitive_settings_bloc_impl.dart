@@ -1,5 +1,5 @@
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
-import 'package:fedi/app/status/sensitive/settings/local_preferences/status_sensitive_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/status_sensitive_settings_local_preference_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_model.dart';
 
@@ -7,10 +7,10 @@ class StatusSensitiveSettingsBloc
     extends GlobalOrInstanceSettingsLocalPreferencesBloc<
         StatusSensitiveSettings> implements IStatusSensitiveSettingsBloc {
   StatusSensitiveSettingsBloc({
-    required IStatusSensitiveSettingsLocalPreferencesBloc<
+    required IStatusSensitiveSettingsLocalPreferenceBloc<
             StatusSensitiveSettings>
         globalLocalPreferencesBloc,
-    required IStatusSensitiveSettingsLocalPreferencesBloc<
+    required IStatusSensitiveSettingsLocalPreferenceBloc<
             StatusSensitiveSettings?>
         instanceLocalPreferencesBloc,
   }) : super(
@@ -19,8 +19,8 @@ class StatusSensitiveSettingsBloc
         );
 
   @override
-  void changeIsAlwaysShowNsfw(bool value) {
-    updateInstanceSettings(
+  Future changeIsAlwaysShowNsfw(bool value) {
+    return updateInstanceSettings(
       settingsData.copyWith(
         isAlwaysShowNsfw: value,
       ),
@@ -28,8 +28,8 @@ class StatusSensitiveSettingsBloc
   }
 
   @override
-  void changeIsAlwaysShowSpoiler(bool value) {
-    updateInstanceSettings(
+  Future changeIsAlwaysShowSpoiler(bool value) {
+    return updateInstanceSettings(
       settingsData.copyWith(
         isAlwaysShowSpoiler: value,
       ),
@@ -37,8 +37,8 @@ class StatusSensitiveSettingsBloc
   }
 
   @override
-  void changeNsfwDisplayDelayDuration(Duration? value) {
-    updateInstanceSettings(
+  Future changeNsfwDisplayDelayDuration(Duration? value) {
+    return updateInstanceSettings(
       StatusSensitiveSettings(
         isAlwaysShowNsfw: isAlwaysShowNsfw,
         isAlwaysShowSpoiler: isAlwaysShowSpoiler,

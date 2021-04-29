@@ -3,13 +3,13 @@ import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IInstancePostStatusSettingsLocalPreferencesBloc
-    implements IPostStatusSettingsLocalPreferencesBloc<PostStatusSettings?> {
-  static IInstancePostStatusSettingsLocalPreferencesBloc of(
+abstract class IInstancePostStatusSettingsLocalPreferenceBloc
+    implements IPostStatusSettingsLocalPreferenceBloc<PostStatusSettings?> {
+  static IInstancePostStatusSettingsLocalPreferenceBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IInstancePostStatusSettingsLocalPreferencesBloc>(
+      Provider.of<IInstancePostStatusSettingsLocalPreferenceBloc>(
         context,
         listen: listen,
       );
