@@ -7,7 +7,7 @@ import 'package:fedi/web_sockets/service/web_sockets_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 
-import 'pleroma_api_websockets_service_impl_test.mocks.dart';
+import 'pleroma_api_web_sockets_service_impl_test.mocks.dart';
 
 @GenerateMocks([ConnectionService])
 void main() {

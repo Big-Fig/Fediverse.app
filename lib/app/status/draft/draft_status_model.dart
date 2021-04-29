@@ -3,6 +3,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 class DbDraftStatusPopulated {
   final DbDraftStatus dbDraftStatus;
@@ -84,8 +85,6 @@ class DraftStatusAdapterToStatus extends PostStatusDataStatusStatusAdapter {
   bool get hiddenLocallyOnDevice => false;
 }
 
-enum DraftStatusState { draft, canceled, alreadyPosted }
-
 extension IDraftStatusExtension on IDraftStatus {
   DbDraftStatusPopulatedWrapper toDbDraftStatusPopulatedWrapper() {
     if (this is DbDraftStatusPopulatedWrapper) {
@@ -131,4 +130,67 @@ extension DbDraftStatusPopulatedExtension on DbDraftStatusPopulated {
 extension DbDraftStatusPopulatedListExtension on List<DbDraftStatusPopulated> {
   List<DbDraftStatusPopulatedWrapper> toDbDraftStatusPopulatedWrapperList() =>
       map((item) => item.toDbDraftStatusPopulatedWrapper()).toList();
+}
+
+enum DraftStatusState {
+  draft,
+  canceled,
+  alreadyPosted,
+}
+
+const _draftDraftStatusStateJsonValue = "draft";
+const _canceledDraftStatusStateJsonValue = "canceled";
+const _alreadyPostedDraftStatusStateJsonValue = "alreadyPosted";
+
+extension DraftStatusStateExtension on DraftStatusState {
+  String toJsonValue() {
+    String result;
+
+    switch (this) {
+      case DraftStatusState.canceled:
+        result = _canceledDraftStatusStateJsonValue;
+        break;
+      case DraftStatusState.draft:
+        result = _draftDraftStatusStateJsonValue;
+        break;
+      case DraftStatusState.alreadyPosted:
+        result = _alreadyPostedDraftStatusStateJsonValue;
+        break;
+    }
+
+    return result;
+  }
+}
+
+extension DraftStatusStateStringExtension on String {
+  DraftStatusState toDraftStatusState() {
+    DraftStatusState result;
+
+    switch (this) {
+      case _draftDraftStatusStateJsonValue:
+        result = DraftStatusState.draft;
+        break;
+      case _canceledDraftStatusStateJsonValue:
+        result = DraftStatusState.canceled;
+        break;
+      case _alreadyPostedDraftStatusStateJsonValue:
+        result = DraftStatusState.alreadyPosted;
+        break;
+      // can't parse
+      default:
+        throw "Invalid DraftStatusState $DraftStatusState";
+    }
+
+    return result;
+  }
+}
+
+class DraftStatusStateTypeConverter implements JsonConverter<DraftStatusState, String> {
+  const DraftStatusStateTypeConverter();
+
+  @override
+  DraftStatusState fromJson(String value) => value.toDraftStatusState();
+
+  @override
+  String toJson(DraftStatusState value) => value.toJsonValue();
 }

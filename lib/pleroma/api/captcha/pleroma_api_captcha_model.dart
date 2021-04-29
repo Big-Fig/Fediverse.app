@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:moor/moor.dart' as moor;
 
 part 'pleroma_api_captcha_model.g.dart';
 
@@ -11,7 +12,7 @@ abstract class IPleromaApiCaptcha {
 
   String? get type;
 
-  PleromaApiCaptchaType get typeAsPleromaApi;
+  PleromaApiCaptchaType? get typeAsPleromaApi;
 
   String? get url;
 }
@@ -52,18 +53,8 @@ class PleromaApiCaptcha implements IPleromaApiCaptcha {
   final String? url;
 
   @override
-  PleromaApiCaptchaType get typeAsPleromaApi {
-    switch (type) {
-      case "native":
-        return PleromaApiCaptchaType.native;
-      case "none":
-        return PleromaApiCaptchaType.none;
-      case "kocaptcha":
-        return PleromaApiCaptchaType.kocaptcha;
-    }
-
-    return PleromaApiCaptchaType.unknown;
-  }
+  PleromaApiCaptchaType? get typeAsPleromaApi =>
+      type?.toPleromaApiCaptchaType();
 
   PleromaApiCaptcha({
     required this.answerData,
@@ -114,4 +105,86 @@ enum PleromaApiCaptchaType {
   native,
   kocaptcha,
   none,
+}
+
+const unknownPleromaApiCaptchaType = PleromaApiCaptchaType.unknown;
+
+const _nativePleromaApiCaptchaTypeJsonValue = "native";
+const _kocaptchaPleromaApiCaptchaTypeJsonValue = "kocaptcha";
+const _nonePleromaApiCaptchaTypeJsonValue = "none";
+const _unknownPleromaApiCaptchaTypeJsonValue = "unknown";
+
+extension PleromaApiCaptchaTypeExtension on PleromaApiCaptchaType {
+  String toJsonValue() {
+    String result;
+
+    switch (this) {
+      case PleromaApiCaptchaType.native:
+        result = _nativePleromaApiCaptchaTypeJsonValue;
+        break;
+      case PleromaApiCaptchaType.kocaptcha:
+        result = _kocaptchaPleromaApiCaptchaTypeJsonValue;
+        break;
+      case PleromaApiCaptchaType.none:
+        result = _nonePleromaApiCaptchaTypeJsonValue;
+        break;
+      case PleromaApiCaptchaType.unknown:
+        result = _unknownPleromaApiCaptchaTypeJsonValue;
+        break;
+    }
+
+    return result;
+  }
+}
+
+extension PleromaApiCaptchaTypeStringExtension on String {
+  PleromaApiCaptchaType toPleromaApiCaptchaType() {
+    PleromaApiCaptchaType result;
+
+    switch (this) {
+      case _kocaptchaPleromaApiCaptchaTypeJsonValue:
+        result = PleromaApiCaptchaType.kocaptcha;
+        break;
+      case _nativePleromaApiCaptchaTypeJsonValue:
+        result = PleromaApiCaptchaType.native;
+        break;
+      case _nonePleromaApiCaptchaTypeJsonValue:
+        result = PleromaApiCaptchaType.none;
+        break;
+      case _unknownPleromaApiCaptchaTypeJsonValue:
+        result = PleromaApiCaptchaType.unknown;
+        break;
+      default:
+        result = unknownPleromaApiCaptchaType;
+        break;
+    }
+
+    return result;
+  }
+}
+
+extension PleromaApiCaptchaTypeStringListExtension on List<String> {
+  List<PleromaApiCaptchaType> toPleromaVisibilities() => map(
+        (visibilityString) => visibilityString.toPleromaApiCaptchaType(),
+      ).toList();
+}
+
+class PleromaApiCaptchaTypeTypeConverter
+    implements
+        JsonConverter<PleromaApiCaptchaType, String?>,
+        moor.TypeConverter<PleromaApiCaptchaType, String?> {
+  const PleromaApiCaptchaTypeTypeConverter();
+
+  @override
+  PleromaApiCaptchaType fromJson(String? value) =>
+      value?.toPleromaApiCaptchaType() ?? unknownPleromaApiCaptchaType;
+
+  @override
+  String? toJson(PleromaApiCaptchaType? value) => value?.toJsonValue();
+
+  @override
+  PleromaApiCaptchaType? mapToDart(String? fromDb) => fromJson(fromDb);
+
+  @override
+  String? mapToSql(PleromaApiCaptchaType? value) => toJson(value);
 }
