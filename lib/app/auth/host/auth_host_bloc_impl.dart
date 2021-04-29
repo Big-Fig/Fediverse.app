@@ -370,12 +370,8 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       () => "checkApplicationRegistration $isHostApplicationRegistered",
     );
     if (!isHostApplicationRegistered) {
-      var success = await registerApplication();
-      _logger.finest(() => "checkApplicationRegistration "
-          "success=$success");
-      if (!success) {
-        throw const CantRegisterAppAuthHostException();
-      }
+      await registerApplication();
+      _logger.finest(() => "checkApplicationRegistration");
     }
   }
 

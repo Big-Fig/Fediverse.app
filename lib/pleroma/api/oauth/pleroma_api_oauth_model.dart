@@ -23,7 +23,7 @@ class PleromaApiOAuthToken implements IJsonObject {
   final dynamic scope;
   @JsonKey(name: "created_at")
   @HiveField(3)
-  final DateTime createdAt;
+  final dynamic createdAt;
 
   PleromaApiOAuthToken({
     required this.accessToken,

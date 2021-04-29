@@ -20,7 +20,7 @@ class PleromaApiOAuthTokenAdapter extends TypeAdapter<PleromaApiOAuthToken> {
       accessToken: fields[0] as String,
       tokenType: fields[1] as String,
       scope: fields[2] as dynamic,
-      createdAt: fields[3] as DateTime,
+      createdAt: fields[3] as dynamic,
     );
   }
 
@@ -58,7 +58,7 @@ PleromaApiOAuthToken _$PleromaApiOAuthTokenFromJson(Map<String, dynamic> json) {
     accessToken: json['access_token'] as String,
     tokenType: json['token_type'] as String,
     scope: json['scope'],
-    createdAt: DateTime.parse(json['created_at'] as String),
+    createdAt: json['created_at'],
   );
 }
 
@@ -68,7 +68,7 @@ Map<String, dynamic> _$PleromaApiOAuthTokenToJson(
       'access_token': instance.accessToken,
       'token_type': instance.tokenType,
       'scope': instance.scope,
-      'created_at': instance.createdAt.toIso8601String(),
+      'created_at': instance.createdAt,
     };
 
 PleromaApiOAuthAuthorizeRequest _$PleromaApiOAuthAuthorizeRequestFromJson(
