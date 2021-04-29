@@ -62,7 +62,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
           scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibility: PleromaApiVisibility.public.toJsonValue(),
+            visibilityString: PleromaApiVisibility.public.toJsonValue(),
             language: language,
             inReplyToPleromaStatus: inReplyToStatus.toPleromaStatus(),
           ),

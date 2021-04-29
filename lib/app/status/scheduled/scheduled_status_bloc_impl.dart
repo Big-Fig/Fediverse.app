@@ -240,7 +240,7 @@ class ScheduledStatusBloc extends DisposableOwner
             postStatusData.mediaAttachments?.toPleromaApiMediaAttachmentIds(),
         status: postStatusData.text,
         sensitive: postStatusData.isNsfwSensitiveEnabled,
-        visibility: postStatusData.visibility,
+        visibility: postStatusData.visibilityString,
         inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
         inReplyToConversationId: postStatusData.inReplyToConversationId,
         idempotencyKey: null,
@@ -270,7 +270,7 @@ class ScheduledStatusBloc extends DisposableOwner
       subject: scheduledStatus.params.spoilerText,
       text: scheduledStatus.params.text,
       scheduledAt: scheduledStatus.scheduledAt,
-      visibility: scheduledStatus.params.visibilityPleroma.toJsonValue(),
+      visibilityString: scheduledStatus.params.visibilityPleroma.toJsonValue(),
       mediaAttachments: scheduledStatus.mediaAttachments,
       poll: scheduledStatus.params.poll?.toPostStatusPoll(),
       inReplyToPleromaStatus:

@@ -52,7 +52,7 @@ extension PleromaStatusDbExtension on IPleromaApiStatus {
       inReplyToAccountRemoteId: remoteStatus.inReplyToAccountId,
       sensitive: remoteStatus.sensitive,
       spoilerText: remoteStatus.spoilerText,
-      visibility: remoteStatus.visibilityPleroma,
+      visibility: remoteStatus.visibilityAsPleromaApi,
       uri: remoteStatus.uri,
       url: remoteStatus.url,
       repliesCount: remoteStatus.repliesCount ?? 0,

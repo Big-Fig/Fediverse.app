@@ -47,7 +47,7 @@ abstract class IPleromaApiStatus implements IMastodonApiStatus {
 
   PleromaApiStatusPleromaPart? get pleroma;
 
-  PleromaApiVisibility get visibilityPleroma;
+  PleromaApiVisibility get visibilityAsPleromaApi;
 }
 
 extension IPleromaApiStatusListExtension on List<IPleromaApiStatus> {
@@ -390,7 +390,7 @@ class PleromaApiStatus extends IPleromaApiStatus {
       visibility.toMastodonApiVisibility();
 
   @override
-  PleromaApiVisibility get visibilityPleroma =>
+  PleromaApiVisibility get visibilityAsPleromaApi =>
       visibility.toPleromaApiVisibility();
 
   PleromaApiStatus({

@@ -72,7 +72,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     initialData = initialData ?? defaultInitData;
     this.initialData = initialData;
     visibilitySubject = BehaviorSubject.seeded(
-      initialData.visibility.toPleromaApiVisibility(),
+      initialData.visibilityString.toPleromaApiVisibility(),
     );
     nsfwSensitiveSubject = BehaviorSubject.seeded(
       initialData.isNsfwSensitiveEnabled,
@@ -243,7 +243,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     subject: null,
     text: null,
     scheduledAt: null,
-    visibility: PleromaApiVisibility.public.toJsonValue(),
+    visibilityString: PleromaApiVisibility.public.toJsonValue(),
     mediaAttachments: null,
     poll: null,
     inReplyToPleromaStatus: null,
@@ -524,7 +524,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   void clear() {
     super.clear();
 
-    visibilitySubject.add(initialData.visibility.toPleromaApiVisibility());
+    visibilitySubject.add(initialData.visibilityString.toPleromaApiVisibility());
     alreadyMarkMediaNsfwByDefault = false;
     nsfwSensitiveSubject.add(false);
 
@@ -739,7 +739,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         subject: _calculateSpoilerTextField(),
         text: calculateStatusTextField(),
         scheduledAt: scheduledAt,
-        visibility: visibility.toJsonValue(),
+        visibilityString: visibility.toJsonValue(),
         mediaAttachments: _calculateMediaAttachmentsField()
             ?.map(
               (mediaAttachment) => PleromaApiMediaAttachment(

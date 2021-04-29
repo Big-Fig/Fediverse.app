@@ -20,7 +20,7 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
     $DbDraftStatusesTable,
     $DbDraftStatusesTable,
     DraftStatusRepositoryFilters,
-    DraftStatusOrderingTermData> with _$DraftStatusDaoMixin {
+    DraftStatusRepositoryOrderingTermData> with _$DraftStatusDaoMixin {
   final AppDatabase db;
 
 // Called by the AppDatabase class
@@ -28,7 +28,7 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
 
   SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> orderBy(
     SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
-    List<DraftStatusOrderingTermData> orderTerms,
+    List<DraftStatusRepositoryOrderingTermData> orderTerms,
   ) =>
       query
         ..orderBy(orderTerms
@@ -59,30 +59,25 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
     return typedResult.readTable(db.dbDraftStatuses);
   }
 
-  /// remote ids are strings but it is possible to compare them in
-  /// chronological order
   SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus>
       addUpdatedAtBoundsWhere(
     SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query, {
-    required DateTime? minimumUpdatedAtExcluding,
-    required DateTime? maximumUpdatedAtExcluding,
+    required DateTime? minimumUpdatedAt,
+    required DateTime? maximumUpdatedAt,
   }) {
-    // todo: use parent common method
-    var minimumExist = minimumUpdatedAtExcluding != null;
-    var maximumExist = maximumUpdatedAtExcluding != null;
+    var minimumExist = minimumUpdatedAt != null;
+    var maximumExist = maximumUpdatedAt != null;
     assert(minimumExist || maximumExist);
 
     if (minimumExist) {
-      var biggerExp = CustomExpression<bool>(
-        "db_draft_statuses.updated_at > '$minimumUpdatedAtExcluding'",
-      );
-      query = query..where((draftStatus) => biggerExp);
+      query = query
+        ..where((notification) =>
+            notification.updatedAt.isBiggerThanValue(minimumUpdatedAt));
     }
     if (maximumExist) {
-      var smallerExp = CustomExpression<bool>(
-        "db_draft_statuses.updated_at < '$maximumUpdatedAtExcluding'",
-      );
-      query = query..where((draftStatus) => smallerExp);
+      query = query
+        ..where((notification) =>
+            notification.updatedAt.isSmallerThanValue(maximumUpdatedAt));
     }
 
     return query;
@@ -96,7 +91,7 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   void addFiltersToQuery({
     required SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
     required DraftStatusRepositoryFilters? filters,
-  // ignore: no-empty-block
+    // ignore: no-empty-block
   }) {
     // nothing
   }
@@ -105,7 +100,7 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   void addNewerOlderDbItemPagination({
     required SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
     required RepositoryPagination<DbDraftStatus>? pagination,
-    required List<DraftStatusOrderingTermData>? orderingTerms,
+    required List<DraftStatusRepositoryOrderingTermData>? orderingTerms,
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
@@ -116,8 +111,8 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
       );
       query = addUpdatedAtBoundsWhere(
         query,
-        maximumUpdatedAtExcluding: pagination?.olderThanItem?.updatedAt,
-        minimumUpdatedAtExcluding: pagination?.newerThanItem?.updatedAt,
+        maximumUpdatedAt: pagination?.olderThanItem?.updatedAt,
+        minimumUpdatedAt: pagination?.newerThanItem?.updatedAt,
       );
     }
   }
@@ -125,7 +120,7 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   @override
   void addOrderingToQuery({
     required SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
-    required List<DraftStatusOrderingTermData>? orderingTerms,
+    required List<DraftStatusRepositoryOrderingTermData>? orderingTerms,
   }) {
     orderBy(
       query,

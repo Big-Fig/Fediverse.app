@@ -13,38 +13,38 @@ enum DraftStatusRepositoryOrderType {
   updatedAt,
 }
 
-class DraftStatusOrderingTermData extends RepositoryOrderingTerm {
+class DraftStatusRepositoryOrderingTermData extends RepositoryOrderingTerm {
   final DraftStatusRepositoryOrderType orderType;
   @override
   final OrderingMode orderingMode;
 
-  const DraftStatusOrderingTermData({
+  const DraftStatusRepositoryOrderingTermData({
     required this.orderType,
     required this.orderingMode,
   });
 
-  static const DraftStatusOrderingTermData localIdDesc =
-      DraftStatusOrderingTermData(
+  static const DraftStatusRepositoryOrderingTermData localIdDesc =
+      DraftStatusRepositoryOrderingTermData(
     orderingMode: OrderingMode.desc,
     orderType: DraftStatusRepositoryOrderType.localId,
   );
-  static const DraftStatusOrderingTermData localIdAsc =
-      DraftStatusOrderingTermData(
+  static const DraftStatusRepositoryOrderingTermData localIdAsc =
+      DraftStatusRepositoryOrderingTermData(
     orderingMode: OrderingMode.asc,
     orderType: DraftStatusRepositoryOrderType.localId,
   );
-  static const DraftStatusOrderingTermData updatedAtDesc =
-      DraftStatusOrderingTermData(
+  static const DraftStatusRepositoryOrderingTermData updatedAtDesc =
+      DraftStatusRepositoryOrderingTermData(
     orderingMode: OrderingMode.desc,
     orderType: DraftStatusRepositoryOrderType.updatedAt,
   );
-  static const DraftStatusOrderingTermData updatedAtAsc =
-      DraftStatusOrderingTermData(
+  static const DraftStatusRepositoryOrderingTermData updatedAtAsc =
+      DraftStatusRepositoryOrderingTermData(
     orderingMode: OrderingMode.asc,
     orderType: DraftStatusRepositoryOrderType.updatedAt,
   );
 
-  static const List<DraftStatusOrderingTermData> defaultTerms = [
+  static const List<DraftStatusRepositoryOrderingTermData> defaultTerms = [
     updatedAtDesc,
   ];
 

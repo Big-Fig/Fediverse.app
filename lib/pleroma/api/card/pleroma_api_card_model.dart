@@ -67,7 +67,10 @@ class PleromaApiCard implements IPleromaApiCard {
   final String? title;
 
   @override
-  final MastodonApiCardType? type;
+  final String? type;
+
+  @override
+  MastodonApiCardType? get typeAsMastodonApi => type?.toMastodonApiCardType();
 
   @override
   final String? url;

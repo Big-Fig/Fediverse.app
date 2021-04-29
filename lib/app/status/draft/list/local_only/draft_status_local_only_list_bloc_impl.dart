@@ -51,7 +51,7 @@ class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
         limit: itemsCountPerPage,
       ),
       orderingTerms: [
-        DraftStatusOrderingTermData.updatedAtDesc,
+        DraftStatusRepositoryOrderingTermData.updatedAtDesc,
       ],
     );
 

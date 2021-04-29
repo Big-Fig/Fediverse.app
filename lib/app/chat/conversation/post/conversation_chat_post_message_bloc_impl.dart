@@ -36,7 +36,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
           scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibility: PleromaApiVisibility.private.toJsonValue(),
+            visibilityString: PleromaApiVisibility.private.toJsonValue(),
             language: language,
             inReplyToConversationId:
                 conversationChatBloc.conversation.remoteId,

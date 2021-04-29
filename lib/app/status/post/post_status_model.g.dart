@@ -13,7 +13,7 @@ PostStatusData _$PostStatusDataFromJson(Map<String, dynamic> json) {
     scheduledAt: json['scheduled_at'] == null
         ? null
         : DateTime.parse(json['scheduled_at'] as String),
-    visibility: json['visibility'] as String,
+    visibilityString: json['visibility'] as String,
     to: (json['to'] as List<dynamic>?)?.map((e) => e as String).toList(),
     mediaAttachments: (json['media_attachments'] as List<dynamic>?)
         ?.map((e) =>
@@ -45,11 +45,12 @@ Map<String, dynamic> _$PostStatusDataToJson(PostStatusData instance) {
   writeNotNull('subject', instance.subject);
   writeNotNull('text', instance.text);
   writeNotNull('scheduled_at', instance.scheduledAt?.toIso8601String());
-  val['visibility'] = instance.visibility;
+  val['visibility'] = instance.visibilityString;
   writeNotNull('to', instance.to);
-  writeNotNull('media_attachments', instance.mediaAttachments);
-  writeNotNull('poll', instance.poll);
-  writeNotNull('in_reply_to_status', instance.inReplyToPleromaStatus);
+  writeNotNull('media_attachments',
+      instance.mediaAttachments?.map((e) => e.toJson()).toList());
+  writeNotNull('poll', instance.poll?.toJson());
+  writeNotNull('in_reply_to_status', instance.inReplyToPleromaStatus?.toJson());
   writeNotNull('in_reply_to_conversation_id', instance.inReplyToConversationId);
   val['is_nsfw_sensitive_enabled'] = instance.isNsfwSensitiveEnabled;
   writeNotNull('language', instance.language);
