@@ -1,6 +1,8 @@
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_status_poll_model.g.dart';
@@ -56,14 +58,14 @@ class PostStatusPoll implements IPostStatusPoll {
           durationLength == other.durationLength &&
           hideTotals == other.hideTotals &&
           multiple == other.multiple &&
-          options == other.options;
+          listEquals(options, other.options);
 
   @override
   int get hashCode =>
       durationLength.hashCode ^
       hideTotals.hashCode ^
       multiple.hashCode ^
-      options.hashCode;
+      listHash(options);
 
   static PostStatusPoll fromJson(Map<String, dynamic> json) =>
       _$PostStatusPollFromJson(json);
