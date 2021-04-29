@@ -3,10 +3,10 @@ import 'package:fedi/app/localization/settings/localization_settings_model.dart'
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-abstract class LocalizationSettingsLocalPreferencesBloc<T extends LocalizationSettings?>
+abstract class LocalizationSettingsLocalPreferenceBloc<T extends LocalizationSettings?>
     extends ObjectLocalPreferenceBloc<T>
-    implements ILocalizationSettingsLocalPreferencesBloc<T> {
-  LocalizationSettingsLocalPreferencesBloc(
+    implements ILocalizationSettingsLocalPreferenceBloc<T> {
+  LocalizationSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
     String key,
   ) : super(

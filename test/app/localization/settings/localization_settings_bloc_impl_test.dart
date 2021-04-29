@@ -12,7 +12,7 @@ import '../../../localization/localization_model_test_helper.dart';
 // ignore_for_file: no-magic-number
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
-  late GlobalLocalizationSettingsLocalPreferencesBloc
+  late GlobalLocalizationSettingsLocalPreferenceBloc
       globalLocalizationSettingsLocalPreferencesBloc;
   late LocalizationSettingsBloc localizationSettingsBloc;
 
@@ -23,7 +23,7 @@ void main() {
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
     globalLocalizationSettingsLocalPreferencesBloc =
-        GlobalLocalizationSettingsLocalPreferencesBloc(
+        GlobalLocalizationSettingsLocalPreferenceBloc(
       memoryLocalPreferencesService,
     );
 
@@ -60,7 +60,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 100));
 
     var defaultValue =
-        GlobalLocalizationSettingsLocalPreferencesBloc.defaultValue;
+        GlobalLocalizationSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.localizationLocale,

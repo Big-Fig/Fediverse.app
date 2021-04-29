@@ -16,15 +16,23 @@ class UiSettings implements IJsonObject, ISettings<UiSettings> {
 
   @HiveField(1)
   @JsonKey(name: "status_font_size")
-  final String statusFontSize;
+  final String statusFontSizeString;
 
-  UiSettingsFontSize get statusFontSizeAsUiSettingsFontSize =>
-      statusFontSize.toUiSettingsFontSize();
+  UiSettingsFontSize get statusFontSize =>
+      statusFontSizeString.toUiSettingsFontSize();
 
   UiSettings({
     required this.themeId,
-    required this.statusFontSize,
+    required this.statusFontSizeString,
   });
+
+  UiSettings.fromEnum({
+    required String? themeId,
+    required UiSettingsFontSize statusFontSize,
+  }) : this(
+          themeId: themeId,
+          statusFontSizeString: statusFontSize.toJsonValue(),
+        );
 
   static UiSettings fromJson(Map<String, dynamic> json) =>
       _$UiSettingsFromJson(json);
@@ -37,9 +45,9 @@ class UiSettings implements IJsonObject, ISettings<UiSettings> {
 
   UiSettings copyWith({
     String? themeId,
-    String? statusFontSize,
+    UiSettingsFontSize? statusFontSize,
   }) =>
-      UiSettings(
+      UiSettings.fromEnum(
         themeId: themeId ?? this.themeId,
         statusFontSize: statusFontSize ?? this.statusFontSize,
       );
@@ -48,7 +56,7 @@ class UiSettings implements IJsonObject, ISettings<UiSettings> {
   String toString() {
     return 'UiSettings{'
         'themeId: $themeId, '
-        'statusFontSize: $statusFontSize'
+        'statusFontSize: $statusFontSizeString'
         '}';
   }
 
@@ -58,8 +66,8 @@ class UiSettings implements IJsonObject, ISettings<UiSettings> {
       other is UiSettings &&
           runtimeType == other.runtimeType &&
           themeId == other.themeId &&
-          statusFontSize == other.statusFontSize;
+          statusFontSizeString == other.statusFontSizeString;
 
   @override
-  int get hashCode => themeId.hashCode ^ statusFontSize.hashCode;
+  int get hashCode => themeId.hashCode ^ statusFontSizeString.hashCode;
 }

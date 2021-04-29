@@ -18,7 +18,7 @@ class UiSettingsAdapter extends TypeAdapter<UiSettings> {
     };
     return UiSettings(
       themeId: fields[0] as String?,
-      statusFontSize: fields[1] as String,
+      statusFontSizeString: fields[1] as String,
     );
   }
 
@@ -29,7 +29,7 @@ class UiSettingsAdapter extends TypeAdapter<UiSettings> {
       ..writeByte(0)
       ..write(obj.themeId)
       ..writeByte(1)
-      ..write(obj.statusFontSize);
+      ..write(obj.statusFontSizeString);
   }
 
   @override
@@ -50,12 +50,12 @@ class UiSettingsAdapter extends TypeAdapter<UiSettings> {
 UiSettings _$UiSettingsFromJson(Map<String, dynamic> json) {
   return UiSettings(
     themeId: json['theme_id'] as String?,
-    statusFontSize: json['status_font_size'] as String,
+    statusFontSizeString: json['status_font_size'] as String,
   );
 }
 
 Map<String, dynamic> _$UiSettingsToJson(UiSettings instance) =>
     <String, dynamic>{
       'theme_id': instance.themeId,
-      'status_font_size': instance.statusFontSize,
+      'status_font_size': instance.statusFontSizeString,
     };

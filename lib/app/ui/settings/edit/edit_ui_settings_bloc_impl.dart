@@ -1,7 +1,6 @@
 import 'package:fedi/app/settings/global/edit/edit_global_settings_bloc_impl.dart';
 import 'package:fedi/app/ui/settings/edit/edit_ui_settings_bloc.dart';
 import 'package:fedi/app/ui/settings/font_size/form/ui_settings_font_size_single_from_list_value_form_field_bloc_impl.dart';
-import 'package:fedi/app/ui/settings/font_size/ui_settings_font_size_model.dart';
 import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
 import 'package:fedi/app/ui/settings/ui_settings_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -34,7 +33,7 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings?>
           possibleValues: availableThemes,
         ),
         statusFontSizeBloc = UiSettingsFontSizeSingleFromListValueFormFieldBloc(
-          originValue: uiSettingBloc.statusFontSize!,
+          originValue: uiSettingBloc.statusFontSize,
         ),
         super(
           isEnabled: isEnabled,
@@ -46,9 +45,9 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings?>
   }
 
   @override
-  UiSettings calculateCurrentFormFieldsSettings() => UiSettings(
+  UiSettings calculateCurrentFormFieldsSettings() => UiSettings.fromEnum(
         themeId: fediThemeFieldBloc.currentValue?.id,
-        statusFontSize: statusFontSizeBloc.currentValue.toJsonValue(),
+        statusFontSize: statusFontSizeBloc.currentValue,
       );
 
   @override
@@ -61,7 +60,7 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings?>
     );
 
     statusFontSizeBloc.changeCurrentValue(
-      settings.statusFontSizeAsUiSettingsFontSize,
+      settings.statusFontSize,
     );
   }
 }

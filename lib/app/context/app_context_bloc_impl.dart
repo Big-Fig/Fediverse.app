@@ -49,9 +49,9 @@ import 'package:fedi/app/status/sensitive/settings/local_preferences/global/glob
 import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc_impl.dart';
-import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/ui/settings/local_preference/ui_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preference_bloc.dart';
+import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/ui/settings/local_preference/ui_settings_local_preference_bloc.dart';
 import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
 import 'package:fedi/app/ui/settings/ui_settings_bloc_impl.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
@@ -283,14 +283,14 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     addDisposable(disposable: pushHandlerBloc);
 
     var globalUiSettingsLocalPreferencesBloc =
-        GlobalUiSettingsLocalPreferencesBloc(hiveLocalPreferencesService);
+        GlobalUiSettingsLocalPreferenceBloc(hiveLocalPreferencesService);
 
     await globalProviderService
-        .asyncInitAndRegister<IGlobalUiSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IGlobalUiSettingsLocalPreferenceBloc>(
       globalUiSettingsLocalPreferencesBloc,
     );
     await globalProviderService.asyncInitAndRegister<
-        IUiSettingsLocalPreferencesBloc>(globalUiSettingsLocalPreferencesBloc);
+        IUiSettingsLocalPreferenceBloc>(globalUiSettingsLocalPreferencesBloc);
     addDisposable(disposable: globalUiSettingsLocalPreferencesBloc);
 
     var uiSettingsBloc = UiSettingsBloc(
@@ -324,16 +324,16 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     addDisposable(disposable: currentFediUiThemeBloc);
 
     var globalLocalizationSettingsLocalPreferencesBloc =
-        GlobalLocalizationSettingsLocalPreferencesBloc(
+        GlobalLocalizationSettingsLocalPreferenceBloc(
       hiveLocalPreferencesService,
     );
 
     await globalProviderService
-        .asyncInitAndRegister<ILocalizationSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<ILocalizationSettingsLocalPreferenceBloc>(
       globalLocalizationSettingsLocalPreferencesBloc,
     );
     await globalProviderService
-        .asyncInitAndRegister<IGlobalLocalizationSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IGlobalLocalizationSettingsLocalPreferenceBloc>(
       globalLocalizationSettingsLocalPreferencesBloc,
     );
     addDisposable(disposable: globalLocalizationSettingsLocalPreferencesBloc);

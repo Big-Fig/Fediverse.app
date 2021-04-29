@@ -6,7 +6,7 @@ import 'package:fedi/localization/localization_model.dart';
 
 class LocalizationSettingsBloc extends DisposableOwner
     implements ILocalizationSettingsBloc {
-  final ILocalizationSettingsLocalPreferencesBloc<LocalizationSettings>
+  final ILocalizationSettingsLocalPreferenceBloc<LocalizationSettings>
       localizationSettingsLocalPreferencesBloc;
 
   LocalizationSettingsBloc({
