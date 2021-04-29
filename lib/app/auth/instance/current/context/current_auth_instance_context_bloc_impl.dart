@@ -111,9 +111,9 @@ import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toas
 import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc_impl.dart';
-import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preference_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preference_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
@@ -723,13 +723,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     );
 
     var instanceWebSocketsSettingsLocalPreferencesBloc =
-        InstanceWebSocketsSettingsLocalPreferencesBloc(
+        InstanceWebSocketsSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
     );
 
     await globalProviderService
-        .asyncInitAndRegister<IInstanceWebSocketsSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IInstanceWebSocketsSettingsLocalPreferenceBloc>(
       instanceWebSocketsSettingsLocalPreferencesBloc,
     );
     addDisposable(disposable: instanceWebSocketsSettingsLocalPreferencesBloc);
@@ -827,7 +827,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       instanceLocalPreferencesBloc:
           instanceWebSocketsSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
-          appContextBloc.get<IGlobalWebSocketsSettingsLocalPreferencesBloc>(),
+          appContextBloc.get<IGlobalWebSocketsSettingsLocalPreferenceBloc>(),
     );
 
     await globalProviderService

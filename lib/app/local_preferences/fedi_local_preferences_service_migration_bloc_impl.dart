@@ -26,8 +26,8 @@ import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preference_bloc_impl.dart';
-import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc_impl.dart';
@@ -97,7 +97,7 @@ class FediLocalPreferencesServiceMigrationBloc
       (lps) => GlobalToastSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalPostStatusSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalStatusSensitiveSettingsLocalPreferenceBloc(lps),
-      (lps) => GlobalWebSocketsSettingsLocalPreferencesBloc(lps),
+      (lps) => GlobalWebSocketsSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalLocalizationSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalUiSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalPaginationSettingsLocalPreferenceBloc(lps),
@@ -151,7 +151,7 @@ class FediLocalPreferencesServiceMigrationBloc
                   lps,
                   userAtHost: userAtHost,
                 ),
-            (lps) => InstanceWebSocketsSettingsLocalPreferencesBloc(
+            (lps) => InstanceWebSocketsSettingsLocalPreferenceBloc(
                   lps,
                   userAtHost: userAtHost,
                 ),

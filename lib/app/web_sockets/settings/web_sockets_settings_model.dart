@@ -11,13 +11,23 @@ part 'web_sockets_settings_model.g.dart';
 class WebSocketsSettings implements ISettings<WebSocketsSettings> {
   @HiveField(0)
   @JsonKey(name: "type_string")
-  final String typeString;
+  final String handlingTypeString;
+
+  WebSocketsHandlingType get handlingType =>
+      handlingTypeString.toWebSocketsHandlingType();
 
   WebSocketsSettings({
-    required this.typeString,
+    required this.handlingTypeString,
   });
 
-  WebSocketsHandlingType get type => typeString.toWebSocketsHandlingType();
+  WebSocketsSettings.fromEnum({
+    required WebSocketsHandlingType handlingType,
+  }) : this(
+          handlingTypeString: handlingType.toJsonValue(),
+        );
+
+  WebSocketsHandlingType get type =>
+      handlingTypeString.toWebSocketsHandlingType();
 
   @override
   bool operator ==(Object other) =>
@@ -39,9 +49,14 @@ class WebSocketsSettings implements ISettings<WebSocketsSettings> {
   WebSocketsSettings clone() => copyWith();
 
   WebSocketsSettings copyWith({
-    String? typeString,
+    WebSocketsHandlingType? handlingType,
   }) =>
-      WebSocketsSettings(
-        typeString: typeString ?? this.typeString,
+      WebSocketsSettings.fromEnum(
+        handlingType: handlingType ?? this.handlingType,
       );
+
+  @override
+  String toString() {
+    return 'WebSocketsSettings{handlingTypeString: $handlingTypeString}';
+  }
 }

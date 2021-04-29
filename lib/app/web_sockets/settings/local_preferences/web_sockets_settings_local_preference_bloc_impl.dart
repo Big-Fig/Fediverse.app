@@ -3,10 +3,10 @@ import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-abstract class WebSocketsSettingsLocalPreferencesBloc<
+abstract class WebSocketsSettingsLocalPreferenceBloc<
         T extends WebSocketsSettings?> extends ObjectLocalPreferenceBloc<T>
-    implements IWebSocketsSettingsLocalPreferencesBloc<T> {
-  WebSocketsSettingsLocalPreferencesBloc(
+    implements IWebSocketsSettingsLocalPreferenceBloc<T> {
+  WebSocketsSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
     String key,
   ) : super(

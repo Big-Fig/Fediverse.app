@@ -5,7 +5,6 @@ import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_blo
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 
 class EditWebSocketsSettingsBloc
     extends EditGlobalOrInstanceSettingsBloc<WebSocketsSettings>
@@ -41,8 +40,9 @@ class EditWebSocketsSettingsBloc
   }
 
   @override
-  WebSocketsSettings calculateCurrentFormFieldsSettings() => WebSocketsSettings(
-        typeString: typeFieldBloc.currentValue.toJsonValue(),
+  WebSocketsSettings calculateCurrentFormFieldsSettings() =>
+      WebSocketsSettings.fromEnum(
+        handlingType: typeFieldBloc.currentValue,
       );
 
   @override
