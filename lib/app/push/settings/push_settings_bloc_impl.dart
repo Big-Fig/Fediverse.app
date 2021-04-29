@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -14,7 +14,7 @@ import 'package:logging/logging.dart';
 final _logger = Logger("push_settings_bloc_impl.dart");
 
 class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
-  final IPushSettingsLocalPreferencesBloc<PushSettings>
+  final IPushSettingsLocalPreferenceBloc<PushSettings>
       instanceLocalPreferencesBloc;
   final IPleromaApiPushService pleromaPushService;
   final IPushRelayService pushRelayService;

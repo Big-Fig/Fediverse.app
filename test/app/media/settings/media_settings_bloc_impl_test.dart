@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/media/settings/media_settings_bloc_impl.dart';
 import 'package:fedi/app/media/settings/media_settings_model.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
@@ -12,9 +12,9 @@ import 'media_settings_model_test_helper.dart';
 // ignore_for_file: no-magic-number
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
-  late GlobalMediaSettingsLocalPreferencesBloc
+  late GlobalMediaSettingsLocalPreferenceBloc
       globalMediaSettingsLocalPreferencesBloc;
-  late InstanceMediaSettingsLocalPreferencesBloc
+  late InstanceMediaSettingsLocalPreferenceBloc
       instanceMediaSettingsLocalPreferencesBloc;
   late MediaSettingsBloc mediaSettingsBloc;
 
@@ -25,14 +25,14 @@ void main() {
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
     globalMediaSettingsLocalPreferencesBloc =
-        GlobalMediaSettingsLocalPreferencesBloc(
+        GlobalMediaSettingsLocalPreferenceBloc(
       memoryLocalPreferencesService,
     );
 
     await globalMediaSettingsLocalPreferencesBloc.performAsyncInit();
 
     instanceMediaSettingsLocalPreferencesBloc =
-        InstanceMediaSettingsLocalPreferencesBloc(
+        InstanceMediaSettingsLocalPreferenceBloc(
       memoryLocalPreferencesService,
       userAtHost: 'user@host',
     );
@@ -69,7 +69,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue = GlobalMediaSettingsLocalPreferencesBloc.defaultValue;
+    var defaultValue = GlobalMediaSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.autoPlay,
@@ -128,7 +128,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue = GlobalMediaSettingsLocalPreferencesBloc.defaultValue;
+    var defaultValue = GlobalMediaSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.autoInit,

@@ -1,4 +1,4 @@
-import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/media/settings/media_settings_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,10 +10,10 @@ import '../../media_settings_model_test_helper.dart';
 void main() {
   test('save & load', () async {
     await LocalPreferencesTestHelper.testSaveAndLoad<MediaSettings,
-        GlobalMediaSettingsLocalPreferencesBloc>(
-      defaultValue: GlobalMediaSettingsLocalPreferencesBloc.defaultValue,
+        GlobalMediaSettingsLocalPreferenceBloc>(
+      defaultValue: GlobalMediaSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
-          GlobalMediaSettingsLocalPreferencesBloc(
+          GlobalMediaSettingsLocalPreferenceBloc(
         localPreferencesService,
       ),
       testObjectCreator: ({required String seed}) =>

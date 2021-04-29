@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc_impl.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
@@ -23,7 +23,7 @@ import '../../auth/instance/auth_instance_model_test_helper.dart';
 ])
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
-  late InstancePushSettingsLocalPreferencesBloc
+  late InstancePushSettingsLocalPreferenceBloc
       instancePushSettingsLocalPreferencesBloc;
   late PushSettingsBloc pushSettingsBloc;
 
@@ -34,7 +34,7 @@ void main() {
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
     instancePushSettingsLocalPreferencesBloc =
-        InstancePushSettingsLocalPreferencesBloc(
+        InstancePushSettingsLocalPreferenceBloc(
       memoryLocalPreferencesService,
       userAtHost: 'user@host',
     );
@@ -102,7 +102,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue = InstancePushSettingsLocalPreferencesBloc.defaultValue;
+    var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.follow,
@@ -182,7 +182,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue = InstancePushSettingsLocalPreferencesBloc.defaultValue;
+    var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.pleromaEmojiReaction,
@@ -262,7 +262,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue = InstancePushSettingsLocalPreferencesBloc.defaultValue;
+    var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.pleromaChatMention,
@@ -342,7 +342,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue = InstancePushSettingsLocalPreferencesBloc.defaultValue;
+    var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.poll,
@@ -422,7 +422,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue = InstancePushSettingsLocalPreferencesBloc.defaultValue;
+    var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.mention,
@@ -503,7 +503,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue = InstancePushSettingsLocalPreferencesBloc.defaultValue;
+    var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.favourite,
@@ -584,7 +584,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue = InstancePushSettingsLocalPreferencesBloc.defaultValue;
+    var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.reblog,

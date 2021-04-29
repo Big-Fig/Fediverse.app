@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
 import 'package:fedi/app/toast/handling_type/toast_handling_type_model.dart';
-import 'package:fedi/app/toast/settings/local_preferences/toast_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/toast/settings/local_preferences/toast_settings_local_preference_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
@@ -15,22 +15,25 @@ class ToastSettingsBloc
     extends GlobalOrInstanceSettingsLocalPreferencesBloc<ToastSettings>
     implements IToastSettingsBloc {
   ToastSettingsBloc({
-    required IToastSettingsLocalPreferencesBloc<ToastSettings>
+    required IToastSettingsLocalPreferenceBloc<ToastSettings>
         globalLocalPreferencesBloc,
-    required IToastSettingsLocalPreferencesBloc<ToastSettings?>
+    required IToastSettingsLocalPreferenceBloc<ToastSettings?>
         instanceLocalPreferencesBloc,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
         );
 
-  PushSettings? get pushSettingsData => settingsData.pushSettings;
+  @override
+  PushSettings get pushSettings => settingsData.pushSettings;
 
-  Stream<PushSettings?> get pushSettingsDataStream =>
+  @override
+  Stream<PushSettings> get pushSettingsStream =>
       settingsDataStream.map((settingsData) => settingsData.pushSettings);
 
-  Future updatePushSettings(PushSettings newPushSettings) async {
-    if (pushSettingsData == newPushSettings) {
+  @override
+  Future changePushSettings(PushSettings newPushSettings) async {
+    if (pushSettings == newPushSettings) {
       _logger.finest(() => "Same settings");
       return;
     }
@@ -43,112 +46,112 @@ class ToastSettingsBloc
   }
 
   @override
-  void changeFavourite(bool value) {
-    updatePushSettings(
-      pushSettingsData!.copyWith(
+  Future changeFavourite(bool value) {
+    return changePushSettings(
+      pushSettings.copyWith(
         favourite: value,
       ),
     );
   }
 
   @override
-  bool? get favourite => pushSettingsData!.favourite;
+  bool get favourite => pushSettings.favourite == true;
 
   @override
-  Stream<bool?> get favouriteStream =>
-      pushSettingsDataStream.map((settings) => settings!.favourite);
+  Stream<bool> get favouriteStream =>
+      pushSettingsStream.map((settings) => settings.favourite == true);
 
   @override
-  void changeFollow(bool value) {
-    updatePushSettings(
-      pushSettingsData!.copyWith(
+  Future changeFollow(bool value) {
+    return changePushSettings(
+      pushSettings.copyWith(
         follow: value,
       ),
     );
   }
 
   @override
-  bool? get follow => pushSettingsData!.follow;
+  bool get follow => pushSettings.follow == true;
 
   @override
-  Stream<bool?> get followStream =>
-      pushSettingsDataStream.map((settings) => settings!.follow);
+  Stream<bool> get followStream =>
+      pushSettingsStream.map((settings) => settings.follow == true);
 
   @override
-  bool? get mention => pushSettingsData!.mention;
+  bool get mention => pushSettings.mention == true;
 
   @override
-  Stream<bool?> get mentionStream =>
-      pushSettingsDataStream.map((settings) => settings!.mention);
+  Stream<bool> get mentionStream =>
+      pushSettingsStream.map((settings) => settings.mention == true);
 
   @override
-  void changeMention(bool value) {
-    updatePushSettings(
-      pushSettingsData!.copyWith(
+  Future changeMention(bool value) {
+    return changePushSettings(
+      pushSettings.copyWith(
         mention: value,
       ),
     );
   }
 
   @override
-  bool? get reblog => pushSettingsData!.reblog;
+  bool get reblog => pushSettings.reblog == true;
 
   @override
-  Stream<bool?> get reblogStream =>
-      pushSettingsDataStream.map((settings) => settings!.reblog);
+  Stream<bool> get reblogStream =>
+      pushSettingsStream.map((settings) => settings.reblog == true);
 
   @override
-  void changeReblog(bool value) {
-    updatePushSettings(
-      pushSettingsData!.copyWith(
+  Future changeReblog(bool value) {
+    return changePushSettings(
+      pushSettings.copyWith(
         reblog: value,
       ),
     );
   }
 
   @override
-  bool? get poll => pushSettingsData!.poll;
+  bool get poll => pushSettings.poll == true;
 
   @override
-  Stream<bool?> get pollStream =>
-      pushSettingsDataStream.map((settings) => settings!.poll);
+  Stream<bool> get pollStream =>
+      pushSettingsStream.map((settings) => settings.poll == true);
 
   @override
-  void changePoll(bool value) {
-    updatePushSettings(
-      pushSettingsData!.copyWith(
+  Future changePoll(bool value) {
+    return changePushSettings(
+      pushSettings.copyWith(
         poll: value,
       ),
     );
   }
 
   @override
-  bool? get pleromaChatMention => pushSettingsData!.pleromaChatMention;
+  bool get pleromaChatMention => pushSettings.pleromaChatMention == true;
 
   @override
-  Stream<bool?> get pleromaChatMentionStream =>
-      pushSettingsDataStream.map((settings) => settings!.pleromaChatMention);
+  Stream<bool> get pleromaChatMentionStream =>
+      pushSettingsStream.map((settings) => settings.pleromaChatMention == true);
 
   @override
-  void changePleromaChatMention(bool value) {
-    updatePushSettings(
-      pushSettingsData!.copyWith(
+  Future changePleromaChatMention(bool value) {
+    return changePushSettings(
+      pushSettings.copyWith(
         pleromaChatMention: value,
       ),
     );
   }
 
   @override
-  bool? get pleromaEmojiReaction => pushSettingsData!.pleromaEmojiReaction;
+  bool get pleromaEmojiReaction => pushSettings.pleromaEmojiReaction == true;
 
   @override
-  Stream<bool?> get pleromaEmojiReactionStream =>
-      pushSettingsDataStream.map((settings) => settings!.pleromaEmojiReaction);
+  Stream<bool> get pleromaEmojiReactionStream => pushSettingsStream
+      .map((settings) => settings.pleromaEmojiReaction == true);
 
   @override
-  void changePleromaEmojiReaction(bool value) {
-    updatePushSettings(
-      pushSettingsData!.copyWith(
+  Future changePleromaEmojiReaction(bool value) {
+    return changePushSettings(
+      pushSettings.copyWith(
         pleromaEmojiReaction: value,
       ),
     );
@@ -162,10 +165,10 @@ class ToastSettingsBloc
       settingsDataStream.map((settings) => settings.handlingType);
 
   @override
-  void changeHandlingType(ToastHandlingType value) {
-    updateSettings(
+  Future changeHandlingType(ToastHandlingType value) {
+    return updateSettings(
       settingsData.copyWith(
-        handlingTypeString: value.toJsonValue(),
+        handlingType: value,
       ),
     );
   }
@@ -183,7 +186,7 @@ class ToastSettingsBloc
   }
 
   @override
-  bool? isNotificationTypeEnabled(
+  bool isNotificationTypeEnabled(
     PleromaApiNotificationType pleromaNotificationType,
   ) {
     switch (pleromaNotificationType) {

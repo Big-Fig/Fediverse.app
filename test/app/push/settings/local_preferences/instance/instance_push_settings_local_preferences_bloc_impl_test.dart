@@ -1,5 +1,5 @@
-import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -11,10 +11,10 @@ import '../../push_settings_model_test_helper.dart';
 void main() {
   test('save & load', () async {
     await LocalPreferencesTestHelper.testSaveAndLoad<PushSettings,
-        PushSettingsLocalPreferencesBloc>(
-      defaultValue: InstancePushSettingsLocalPreferencesBloc.defaultValue,
+        PushSettingsLocalPreferenceBloc>(
+      defaultValue: InstancePushSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
-          InstancePushSettingsLocalPreferencesBloc(
+          InstancePushSettingsLocalPreferenceBloc(
         localPreferencesService,
         userAtHost: 'user@host',
       ),

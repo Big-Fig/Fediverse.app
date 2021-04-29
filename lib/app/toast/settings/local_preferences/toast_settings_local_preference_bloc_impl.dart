@@ -1,12 +1,12 @@
-import 'package:fedi/app/toast/settings/local_preferences/toast_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/toast/settings/local_preferences/toast_settings_local_preference_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-abstract class ToastSettingsLocalPreferencesBloc<T extends ToastSettings?>
+abstract class ToastSettingsLocalPreferenceBloc<T extends ToastSettings?>
     extends ObjectLocalPreferenceBloc<T>
-    implements IToastSettingsLocalPreferencesBloc<T> {
-  ToastSettingsLocalPreferencesBloc(
+    implements IToastSettingsLocalPreferenceBloc<T> {
+  ToastSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
     String key,
   ) : super(

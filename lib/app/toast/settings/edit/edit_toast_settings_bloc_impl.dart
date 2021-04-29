@@ -4,7 +4,6 @@ import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instanc
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/toast/handling_type/form/toast_handling_type_single_from_list_value_form_field_bloc.dart';
 import 'package:fedi/app/toast/handling_type/form/toast_handling_type_single_from_list_value_form_field_bloc_impl.dart';
-import 'package:fedi/app/toast/handling_type/toast_handling_type_model.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
@@ -125,7 +124,7 @@ class EditToastSettingsBloc
 
   @override
   ToastSettings calculateCurrentFormFieldsSettings() {
-    return ToastSettings(
+    return ToastSettings.fromEnum(
       pushSettings: PushSettings(
         favourite: favouriteFieldBloc.currentValue,
         follow: followFieldBloc.currentValue,
@@ -135,15 +134,14 @@ class EditToastSettingsBloc
         pleromaChatMention: pleromaChatMentionFieldBloc.currentValue,
         pleromaEmojiReaction: pleromaEmojiReactionFieldBloc.currentValue,
       ),
-      handlingTypeString: toastHandlingTypeSingleFromListValueFormFieldBloc
-          .currentValue
-          .toJsonValue(),
+      handlingType: toastHandlingTypeSingleFromListValueFormFieldBloc
+          .currentValue,
     );
   }
 
   @override
-  Future fillSettingsToFormFields(ToastSettings? settings) async {
-    var pushSettings = settings!.pushSettings!;
+  Future fillSettingsToFormFields(ToastSettings settings) async {
+    var pushSettings = settings.pushSettings;
     var isNotGlobal =
         globalOrInstanceSettingsType != GlobalOrInstanceSettingsType.global;
 
