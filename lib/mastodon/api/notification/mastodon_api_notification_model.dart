@@ -1,7 +1,5 @@
 import 'package:fedi/mastodon/api/account/mastodon_api_account_model.dart';
 import 'package:fedi/mastodon/api/status/mastodon_api_status_model.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:moor/moor.dart';
 
 abstract class IMastodonApiNotification {
   IMastodonApiAccount? get account;
@@ -38,13 +36,6 @@ const _pollMastodonApiNotificationTypeJsonValue = "poll";
 const _moveMastodonApiNotificationTypeJsonValue = "move";
 const _followRequestMastodonApiNotificationTypeJsonValue = "follow_request";
 const _unknownRequestMastodonApiNotificationTypeJsonValue = "unknown";
-
-extension MastodonApiNotificationTypeListExtension
-    on List<MastodonApiNotificationType> {
-  List<String> toMastodonApiNotificationTypeStrings() => map(
-        (notificationType) => notificationType.toJsonValue(),
-      ).toList();
-}
 
 extension MastodonApiNotificationTypeExtension on MastodonApiNotificationType {
   String toJsonValue() {
@@ -118,32 +109,4 @@ extension MastodonApiNotificationTypeStringExtension on String {
 
     return result;
   }
-}
-
-extension MastodonApiNotificationTypeStringPollExtension on List<String> {
-  List<MastodonApiNotificationType> toPleromaVisibilities() => map(
-        (notificationTypeString) =>
-            notificationTypeString.toMastodonApiNotificationType(),
-      ).toList();
-}
-
-class MastodonApiNotificationTypeTypeConverter
-    implements
-        JsonConverter<MastodonApiNotificationType, String?>,
-        TypeConverter<MastodonApiNotificationType, String?> {
-  const MastodonApiNotificationTypeTypeConverter();
-
-  @override
-  MastodonApiNotificationType fromJson(String? value) =>
-      value?.toMastodonApiNotificationType() ??
-      unknownMastodonApiNotificationType;
-
-  @override
-  String? toJson(MastodonApiNotificationType? value) => value?.toJsonValue();
-
-  @override
-  MastodonApiNotificationType? mapToDart(String? fromDb) => fromJson(fromDb);
-
-  @override
-  String? mapToSql(MastodonApiNotificationType? value) => toJson(value);
 }

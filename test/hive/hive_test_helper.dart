@@ -19,23 +19,29 @@ class HiveTestHelper {
     T Function({
       required String seed,
     })
-        testHiveObjectCreator,
-  ) async {
+        testHiveObjectCreator, {
+    bool skipHiveInit = false,
+  }) async {
     late HiveLocalPreferencesService hiveLocalPreferencesService;
 
     var systemTemp = Directory.systemTemp;
 
-    HiveService.registerAdapters();
-    Hive.init(systemTemp.path);
+    if (!skipHiveInit) {
+      HiveService.registerAdapters();
+      Hive.init(systemTemp.path);
+    }
 
-    var boxName = 'testHiveSaveAndLoad';
+    var obj = testHiveObjectCreator(seed: "seed1");
+
+    // ignore: no-magic-number
+    var uniquePrefix = obj.toString().substring(0, 3);
+    var boxName = 'testHiveSaveAndLoad' + uniquePrefix;
 
     hiveLocalPreferencesService = HiveLocalPreferencesService(
       boxName: boxName,
     );
     await hiveLocalPreferencesService.performAsyncInit();
 
-    var obj = testHiveObjectCreator(seed: "seed1");
 
     var key = "key";
     await hiveLocalPreferencesService.setObjectPreference(key, obj);

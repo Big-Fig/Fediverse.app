@@ -34,6 +34,7 @@ import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/application/pleroma_api_application_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
+import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_model.dart';
@@ -116,5 +117,6 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(
       PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeAdapter(),
     );
+    Hive.registerAdapter(PleromaApiFilterAdapter());
   }
 }

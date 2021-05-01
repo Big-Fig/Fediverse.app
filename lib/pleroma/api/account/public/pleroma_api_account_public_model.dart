@@ -1,9 +1,10 @@
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/account/public/mastodon_api_account_public_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_account_public_model.g.dart';
 
-abstract class IPleromaApiAccountRegisterRequest
+abstract class IPleromaApiAccountPublicRegisterRequest
     extends IMastodonApiAccountRegister {
   Map<String, dynamic> toJson();
 
@@ -17,8 +18,8 @@ abstract class IPleromaApiAccountRegisterRequest
 @JsonSerializable(
   includeIfNull: false,
 )
-class PleromaApiAccountRegisterRequest
-    extends IPleromaApiAccountRegisterRequest {
+class PleromaApiAccountPublicRegisterRequest
+    extends IPleromaApiAccountPublicRegisterRequest implements IJsonObject {
   @override
   final bool? agreement;
 
@@ -47,12 +48,12 @@ class PleromaApiAccountRegisterRequest
   @JsonKey(name: "captcha_solution")
   final String? captchaSolution;
 
-  PleromaApiAccountRegisterRequest({
+  PleromaApiAccountPublicRegisterRequest({
     required this.agreement,
     required this.email,
     required this.locale,
     required this.password,
-    this.reason,
+    required this.reason,
     required this.username,
     required this.captchaToken,
     required this.captchaAnswerData,
@@ -77,7 +78,7 @@ class PleromaApiAccountRegisterRequest
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaApiAccountRegisterRequest &&
+      other is PleromaApiAccountPublicRegisterRequest &&
           runtimeType == other.runtimeType &&
           agreement == other.agreement &&
           email == other.email &&
@@ -101,7 +102,7 @@ class PleromaApiAccountRegisterRequest
       captchaAnswerData.hashCode ^
       captchaSolution.hashCode;
 
-  static PleromaApiAccountRegisterRequest fromJson(Map<String, dynamic> json) =>
+  static PleromaApiAccountPublicRegisterRequest fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountRegisterRequestFromJson(json);
 
   @override

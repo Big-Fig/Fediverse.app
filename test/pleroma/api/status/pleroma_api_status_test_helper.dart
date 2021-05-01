@@ -2,6 +2,9 @@ import 'package:fedi/pleroma/api/content/pleroma_api_content_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 
+import '../../../date_time/date_time_test_helper.dart';
+import '../../../duration/duration_test_helper.dart';
+import '../../../enum/enum_test_helper.dart';
 import '../account/pleroma_api_account_test_helper.dart';
 import '../application/pleroma_api_application_test_helper.dart';
 import '../card/pleroma_api_card_test_helper.dart';
@@ -54,6 +57,69 @@ class PleromaApiStatusTestHelper {
         ],
       );
 
+  static PleromaApiPostStatusPoll createTestPleromaApiPostStatusPoll({
+    required String seed,
+  }) =>
+      PleromaApiPostStatusPoll(
+        expiresInSeconds: DurationTestHelper.createTestDurationSeconds(seed: seed),
+        hideTotals: seed.hashCode % 2 == 0,
+        multiple: seed.hashCode % 2 == 1,
+        options: [
+          seed + "1",
+          seed + "2",
+        ],
+      );
+
+  static PleromaApiScheduledStatusParams
+      createTestPleromaApiScheduledStatusParams({
+    required String seed,
+  }) =>
+          PleromaApiScheduledStatusParams(
+            text: seed + "text1",
+            mediaIds: [
+              seed + "mediaIds1",
+              seed + "mediaIds2",
+            ],
+            sensitive: seed.hashCode % 2 == 0,
+            spoilerText: seed + "spoilerText1",
+            visibility: EnumTestHelper.createTestEnum(
+              seed: seed,
+              values: PleromaApiVisibility.values,
+            ).toJsonValue(),
+            scheduledAt: DateTime(seed.hashCode % 10),
+            poll: createTestPleromaApiPostStatusPoll(seed: seed),
+            idempotency: seed + "idempotency1",
+            inReplyToId: seed + "inReplyToId1",
+            applicationId: seed + "textId1",
+            to: [
+              seed + "1",
+              seed + "2",
+            ],
+            expiresInSeconds:
+                DurationTestHelper.createTestDurationSeconds(seed: seed),
+            language: seed + "language",
+            inReplyToConversationId: seed + "inReplyToConversationId",
+          );
+
+  static PleromaApiScheduledStatus createTestPleromaApiScheduledStatus({
+    required String seed,
+  }) =>
+      PleromaApiScheduledStatus(
+        id: seed + "id",
+        mediaAttachments: [
+          PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
+            seed: seed + "1",
+          ),
+          PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
+            seed: seed + "2",
+          ),
+        ],
+        params: createTestPleromaApiScheduledStatusParams(seed: seed),
+        scheduledAt: DateTimeTestHelper.createTestDateTime(
+          seed: seed,
+        ),
+      );
+
   static PleromaApiStatus createTestPleromaApiStatus({
     required String seed,
   }) =>
@@ -86,18 +152,18 @@ class PleromaApiStatusTestHelper {
           seed: seed + "account",
         ),
         mediaAttachments: [
-          PleromaApiMediaTestHelper.createTestPleromaMediaAttachment(
+          PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
             seed: seed + "1",
           ),
-          PleromaApiMediaTestHelper.createTestPleromaMediaAttachment(
+          PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
             seed: seed + "2",
           ),
         ],
         mentions: [
-          PleromaApiMentionTestHelper.createTestPleromaMention(
+          PleromaApiMentionTestHelper.createTestPleromaApiMention(
             seed: seed + "mention1",
           ),
-          PleromaApiMentionTestHelper.createTestPleromaMention(
+          PleromaApiMentionTestHelper.createTestPleromaApiMention(
             seed: seed + "mention2",
           ),
         ],
@@ -111,8 +177,8 @@ class PleromaApiStatusTestHelper {
           PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(
               seed: seed + "emoji2"),
         ],
-        poll: PleromaApiPollTestHelper.createTestPleromaPoll(seed: seed),
-        card: PleromaApiCardTestHelper.createTestPleromaCard(seed: seed),
+        poll: PleromaApiPollTestHelper.createTestPleromaApiPoll(seed: seed),
+        card: PleromaApiCardTestHelper.createTestPleromaApiCard(seed: seed),
         pleroma: createTestPleromaApiStatusPleromaPart(seed: seed),
         visibility:
             PleromaApiVisibilityTestHelper.createTestPleromaApiVisibility(

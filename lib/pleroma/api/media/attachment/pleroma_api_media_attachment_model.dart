@@ -1,3 +1,4 @@
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,8 +9,9 @@ abstract class IPleromaApiMediaAttachment extends IMastodonApiMediaAttachment {
 }
 
 extension IPleromaApiMediaAttachmentExtension on IPleromaApiMediaAttachment {
-  PleromaApiMediaAttachment toPleromaApiMediaAttachment() {
-    if (this is PleromaApiMediaAttachment) {
+  PleromaApiMediaAttachment toPleromaApiMediaAttachment(
+      {bool forceNewObject = false}) {
+    if (this is PleromaApiMediaAttachment && !forceNewObject) {
       return this as PleromaApiMediaAttachment;
     } else {
       return PleromaApiMediaAttachment(
@@ -28,12 +30,15 @@ extension IPleromaApiMediaAttachmentExtension on IPleromaApiMediaAttachment {
 
 extension IPleromaApiMediaAttachmentListExtension
     on List<IPleromaApiMediaAttachment> {
-  List<PleromaApiMediaAttachment> toPleromaApiMediaAttachments() {
-    if (this is List<PleromaApiMediaAttachment>) {
+  List<PleromaApiMediaAttachment> toPleromaApiMediaAttachments(
+      {bool forceNewObject = false}) {
+    if (this is List<PleromaApiMediaAttachment> && !forceNewObject) {
       return this as List<PleromaApiMediaAttachment>;
     } else {
       return map(
-        (mediaAttachment) => mediaAttachment.toPleromaApiMediaAttachment(),
+        (mediaAttachment) => mediaAttachment.toPleromaApiMediaAttachment(
+          forceNewObject: forceNewObject,
+        ),
       ).toList();
     }
   }
@@ -45,8 +50,9 @@ extension IPleromaApiMediaAttachmentListExtension
   }
 }
 
-@JsonSerializable()
-class PleromaApiMediaAttachment implements IPleromaApiMediaAttachment {
+@JsonSerializable(explicitToJson: true)
+class PleromaApiMediaAttachment
+    implements IPleromaApiMediaAttachment, IJsonObject {
   @override
   final String? description;
   @override
@@ -99,6 +105,7 @@ class PleromaApiMediaAttachment implements IPleromaApiMediaAttachment {
   static PleromaApiMediaAttachment fromJson(Map<String, dynamic> json) =>
       _$PleromaApiMediaAttachmentFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiMediaAttachmentToJson(this);
 
   bool get isImage => typeAsMastodonApi == MastodonApiMediaAttachmentType.image;

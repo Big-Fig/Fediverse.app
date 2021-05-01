@@ -33,10 +33,26 @@ class PleromaApiPaginationRequest implements IPleromaApiPaginationRequest {
   @override
   List<RestRequestQueryArg> toQueryArgs() {
     return [
-      if (minId != null) RestRequestQueryArg("min_id", minId),
-      if (maxId != null) RestRequestQueryArg("max_id", maxId),
-      if (sinceId != null) RestRequestQueryArg("since_id", sinceId),
-      if (limit != null) RestRequestQueryArg("limit", limit.toString()),
+      if (minId != null)
+        RestRequestQueryArg(
+          key: "min_id",
+          value: minId,
+        ),
+      if (maxId != null)
+        RestRequestQueryArg(
+          key: "max_id",
+          value: maxId,
+        ),
+      if (sinceId != null)
+        RestRequestQueryArg(
+          key: "since_id",
+          value: sinceId,
+        ),
+      if (limit != null)
+        RestRequestQueryArg(
+          key: "limit",
+          value: limit.toString(),
+        ),
     ];
   }
 

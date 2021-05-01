@@ -4,7 +4,7 @@ import 'package:fedi/app/init/deep_link/deep_link_init_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_service.dart';
 import 'package:logging/logging.dart';
 import 'package:uni_links2/uni_links.dart';
@@ -13,7 +13,7 @@ var _logger = Logger("deep_link_init_bloc_impl.dart");
 
 class DeepLinkInitBloc extends AsyncInitLoadingBloc
     implements IDeepLinkInitBloc {
-  final IPleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
+  final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;

@@ -144,24 +144,36 @@ class PleromaApiTimelineService extends BasePleromaApiService
       relativePath: join("/api/v1/timelines/", relativeTimeLineUrlPath),
       queryArgs: [
         ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
-        if (onlyLocal == true) RestRequestQueryArg("local", "true"),
-        if (onlyRemote == true) RestRequestQueryArg("remote", "true"),
+        if (onlyLocal == true)
+          RestRequestQueryArg(
+            key: "local",
+            value: "true",
+          ),
+        if (onlyRemote == true)
+          RestRequestQueryArg(
+            key: "remote",
+            value: "true",
+          ),
         if (onlyWithMedia != null)
-          RestRequestQueryArg("only_media", onlyWithMedia.toString()),
+          RestRequestQueryArg(
+            key: "only_media",
+            value: onlyWithMedia.toString(),
+          ),
         if (onlyFromInstance != null)
-          RestRequestQueryArg("instance", onlyFromInstance),
+          RestRequestQueryArg(
+            key: "instance",
+            value: onlyFromInstance,
+          ),
         if (pleromaReplyVisibilityFilter != null)
           RestRequestQueryArg(
-            "reply_visibility",
-            pleromaReplyVisibilityFilter.toJsonValue(),
+            key: "reply_visibility",
+            value: pleromaReplyVisibilityFilter.toJsonValue(),
           ),
         // array
-        ...(excludeVisibilities?.map((visibility) {
-              return RestRequestQueryArg(
-                "exclude_visibilities[]",
-                visibility.toJsonValue(),
-              );
-            }) ??
+        ...(excludeVisibilities?.map((visibility) => RestRequestQueryArg(
+                  key: "exclude_visibilities[]",
+                  value: visibility.toJsonValue(),
+                )) ??
             []),
       ],
     );

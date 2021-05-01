@@ -133,4 +133,52 @@ class PleromaApiMyAccountTestHelper {
         ),
         discoverable: seed.hashCode % 2 == 0,
       );
+
+  static PleromaApiMyAccountEditSource createTestPleromaApiMyAccountEditSource({
+    required String seed,
+  }) =>
+      PleromaApiMyAccountEditSource(
+        language: seed + "language",
+        privacy: seed + "privacy",
+        sensitive: seed.hashCode % 2 == 1,
+      );
+
+  static PleromaApiMyAccountEdit createTestPleromaApiMyAccountEdit({
+    required String seed,
+  }) =>
+      PleromaApiMyAccountEdit(
+        bot: seed.hashCode % 2 == 0,
+        discoverable: seed.hashCode % 2 == 1,
+        displayName: seed + "displayName",
+        fieldsAttributes: {
+          0: PleromaApiFieldTestHelper.createTestPleromaApiField(
+              seed: seed + "1"),
+          1: PleromaApiFieldTestHelper.createTestPleromaApiField(
+              seed: seed + "2"),
+        },
+        locked: seed.hashCode % 2 == 0,
+        note: seed + "note",
+        source: createTestPleromaApiMyAccountEditSource(seed: seed + "source"),
+        actorType: seed + "actorType",
+        allowFollowingMove: seed.hashCode % 2 == 0,
+        acceptsChatMessages: seed.hashCode % 2 == 1,
+        defaultScope: seed + "defaultScope",
+        hideFavorites: seed.hashCode % 2 == 0,
+        hideFollowers: seed.hashCode % 2 == 1,
+        hideFollowersCount: seed.hashCode % 2 == 0,
+        hideFollows: seed.hashCode % 2 == 1,
+        hideFollowsCount: seed.hashCode % 2 == 0,
+        noRichText: seed.hashCode % 2 == 1,
+        pleromaBackgroundImage: seed + "pleromaBackgroundImage",
+        pleromaSettingsStore: {
+          "seed1": seed + "1",
+          "seed2": seed + "2",
+        },
+        showRole: seed.hashCode % 2 == 0,
+        skipThreadContainment: seed.hashCode % 2 == 1,
+        alsoKnownAs: [
+          seed + "1",
+          seed + "2",
+        ],
+      );
 }

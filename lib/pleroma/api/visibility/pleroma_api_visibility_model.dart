@@ -87,12 +87,6 @@ extension PleromaApiVisibilityStringExtension on String {
   }
 }
 
-extension PleromaApiVisibilityStringListExtension on List<String> {
-  List<PleromaApiVisibility> toPleromaVisibilities() => map(
-        (visibilityString) => visibilityString.toPleromaApiVisibility(),
-      ).toList();
-}
-
 class PleromaApiVisibilityTypeConverter
     implements
         JsonConverter<PleromaApiVisibility, String>,

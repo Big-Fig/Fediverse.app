@@ -1,7 +1,10 @@
+import 'package:fedi/collection/collection_hash_utils.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_chat_model.g.dart';
@@ -19,7 +22,7 @@ abstract class IPleromaApiChat {
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaApiChat implements IPleromaApiChat {
+class PleromaApiChat implements IPleromaApiChat, IJsonObject {
   @override
   final String id;
   @override
@@ -46,14 +49,14 @@ class PleromaApiChat implements IPleromaApiChat {
 
   PleromaApiChat copyWith({
     String? id,
-    bool? unread,
+    int? unread,
     PleromaApiAccount? account,
     DateTime? updatedAt,
     PleromaApiChatMessage? lastMessage,
   }) =>
       PleromaApiChat(
         id: id ?? this.id,
-        unread: unread as int? ?? this.unread,
+        unread: unread ?? this.unread,
         account: account ?? this.account,
         updatedAt: updatedAt ?? this.updatedAt,
         lastMessage: lastMessage ?? this.lastMessage,
@@ -62,6 +65,7 @@ class PleromaApiChat implements IPleromaApiChat {
   static PleromaApiChat fromJson(Map<String, dynamic> json) =>
       _$PleromaApiChatFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiChatToJson(this);
 
   @override
@@ -114,7 +118,8 @@ abstract class IPleromaApiChatMessage {
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaApiChatMessage extends IPleromaApiChatMessage {
+class PleromaApiChatMessage extends IPleromaApiChatMessage
+    implements IJsonObject {
   @override
   final String id;
   @override
@@ -172,7 +177,7 @@ class PleromaApiChatMessage extends IPleromaApiChatMessage {
           accountId == other.accountId &&
           content == other.content &&
           createdAt == other.createdAt &&
-          emojis == other.emojis &&
+          listEquals(emojis, other.emojis) &&
           mediaAttachment == other.mediaAttachment &&
           card == other.card;
 
@@ -183,13 +188,14 @@ class PleromaApiChatMessage extends IPleromaApiChatMessage {
       accountId.hashCode ^
       content.hashCode ^
       createdAt.hashCode ^
-      emojis.hashCode ^
+      listHash(emojis) ^
       mediaAttachment.hashCode ^
       card.hashCode;
 
   static PleromaApiChatMessage fromJson(Map<String, dynamic> json) =>
       _$PleromaApiChatMessageFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiChatMessageToJson(this);
 }
 
@@ -210,7 +216,8 @@ abstract class IPleromaApiChatMessageSendData {
 }
 
 @JsonSerializable()
-class PleromaApiChatMessageSendData implements IPleromaApiChatMessageSendData {
+class PleromaApiChatMessageSendData
+    implements IPleromaApiChatMessageSendData, IJsonObject {
   @override
   final String? content;
   @override

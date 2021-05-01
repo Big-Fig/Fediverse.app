@@ -2,7 +2,7 @@
 import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
 
 class PleromaApiMentionTestHelper {
-  static PleromaApiMention createTestPleromaMention({
+  static PleromaApiMention createTestPleromaApiMention({
     required String seed,
   }) =>
       PleromaApiMention(

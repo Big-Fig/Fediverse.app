@@ -21,6 +21,6 @@ PleromaApiStatusContext _$PleromaApiStatusContextFromJson(
 Map<String, dynamic> _$PleromaApiStatusContextToJson(
         PleromaApiStatusContext instance) =>
     <String, dynamic>{
-      'descendants': instance.descendants,
-      'ancestors': instance.ancestors,
+      'descendants': instance.descendants.map((e) => e.toJson()).toList(),
+      'ancestors': instance.ancestors.map((e) => e.toJson()).toList(),
     };

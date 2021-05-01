@@ -107,18 +107,33 @@ class PleromaApiAccountService extends BasePleromaApiService
             _urlPath.join(accountRelativeUrlPath, accountRemoteId, "statuses"),
         queryArgs: [
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
-          RestRequestQueryArg("pinned", pinned?.toString()),
-          RestRequestQueryArg("exclude_replies", excludeReplies?.toString()),
-          RestRequestQueryArg("exclude_reblogs", excludeReblogs?.toString()),
+          RestRequestQueryArg(
+            key: "pinned",
+            value: pinned?.toString(),
+          ),
+          RestRequestQueryArg(
+            key: "exclude_replies",
+            value: excludeReplies?.toString(),
+          ),
+          RestRequestQueryArg(
+            key: "exclude_reblogs",
+            value: excludeReblogs?.toString(),
+          ),
           if (excludeVisibilities?.isNotEmpty == true)
             ...excludeVisibilities!.map(
               (excludeVisibility) => RestRequestQueryArg(
-                "exclude_visibilities[]",
-                excludeVisibility.toString(),
+                key: "exclude_visibilities[]",
+                value: excludeVisibility.toString(),
               ),
             ),
-          RestRequestQueryArg("with_muted", withMuted?.toString()),
-          RestRequestQueryArg("only_media", onlyWithMedia?.toString()),
+          RestRequestQueryArg(
+            key: "with_muted",
+            value: withMuted?.toString(),
+          ),
+          RestRequestQueryArg(
+            key: "only_media",
+            value: onlyWithMedia?.toString(),
+          ),
         ],
       ),
     );

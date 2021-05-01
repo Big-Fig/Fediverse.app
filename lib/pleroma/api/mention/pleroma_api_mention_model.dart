@@ -1,4 +1,5 @@
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/mention/mastodon_api_mention_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -22,8 +23,8 @@ extension IPleromaApiMentionStatusListExtension on List<IStatus> {
 }
 
 extension IPleromaApiMentionExtension on IPleromaApiMention {
-  PleromaApiMention toPleromaApiMention() {
-    if (this is PleromaApiMention) {
+  PleromaApiMention toPleromaApiMention({bool forceNewObject = false}) {
+    if (this is PleromaApiMention && !forceNewObject) {
       return this as PleromaApiMention;
     } else {
       return PleromaApiMention(
@@ -37,12 +38,13 @@ extension IPleromaApiMentionExtension on IPleromaApiMention {
 }
 
 extension IPleromaApiMentionListExtension on List<IPleromaApiMention> {
-  List<PleromaApiMention> toPleromaApiMentions() {
-    if (this is List<PleromaApiMention>) {
+  List<PleromaApiMention> toPleromaApiMentions({bool forceNewObject = false}) {
+    if (this is List<PleromaApiMention> && !forceNewObject) {
       return this as List<PleromaApiMention>;
     } else {
       return map(
-        (pleromaApiMention) => pleromaApiMention.toPleromaApiMention(),
+        (pleromaApiMention) => pleromaApiMention.toPleromaApiMention(
+            forceNewObject: forceNewObject),
       ).toList();
     }
   }
@@ -54,8 +56,8 @@ extension IPleromaApiMentionListExtension on List<IPleromaApiMention> {
   }
 }
 
-@JsonSerializable()
-class PleromaApiMention implements IPleromaApiMention {
+@JsonSerializable(explicitToJson: true)
+class PleromaApiMention implements IPleromaApiMention, IJsonObject {
   @override
   final String acct;
   @override
@@ -82,6 +84,7 @@ class PleromaApiMention implements IPleromaApiMention {
   static PleromaApiMention fromJson(Map<String, dynamic> json) =>
       _$PleromaApiMentionFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiMentionToJson(this);
 
   @override

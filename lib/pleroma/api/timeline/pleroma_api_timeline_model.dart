@@ -1,6 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:moor/moor.dart' as moor;
-
 enum PleromaApiReplyVisibilityFilter {
   following,
   self,
@@ -8,13 +5,6 @@ enum PleromaApiReplyVisibilityFilter {
 
 const _followingPleromaApiReplyVisibilityFilterJsonValue = "following";
 const _selfPleromaApiReplyVisibilityFilterJsonValue = "self";
-
-extension PleromaApiReplyVisibilityFilterListExtension
-    on List<PleromaApiReplyVisibilityFilter> {
-  List<String> toPleromaApiReplyVisibilityFilterStrings() => map(
-        (visibility) => visibility.toJsonValue(),
-      ).toList();
-}
 
 extension PleromaApiReplyVisibilityFilterExtension
     on PleromaApiReplyVisibilityFilter {
@@ -51,33 +41,4 @@ extension PleromaApiReplyVisibilityFilterStringExtension on String {
 
     return result;
   }
-}
-
-extension PleromaApiReplyVisibilityFilterStringListExtension on List<String> {
-  List<PleromaApiReplyVisibilityFilter> toPleromaVisibilities() => map(
-        (visibilityString) =>
-            visibilityString.toPleromaApiReplyVisibilityFilter(),
-      ).toList();
-}
-
-class PleromaApiReplyVisibilityFilterTypeConverter
-    implements
-        JsonConverter<PleromaApiReplyVisibilityFilter, String?>,
-        moor.TypeConverter<PleromaApiReplyVisibilityFilter, String?> {
-  const PleromaApiReplyVisibilityFilterTypeConverter();
-
-  @override
-  PleromaApiReplyVisibilityFilter fromJson(String? value) =>
-      value!.toPleromaApiReplyVisibilityFilter();
-
-  @override
-  String? toJson(PleromaApiReplyVisibilityFilter? value) =>
-      value?.toJsonValue();
-
-  @override
-  PleromaApiReplyVisibilityFilter? mapToDart(String? fromDb) =>
-      fromJson(fromDb);
-
-  @override
-  String? mapToSql(PleromaApiReplyVisibilityFilter? value) => toJson(value);
 }

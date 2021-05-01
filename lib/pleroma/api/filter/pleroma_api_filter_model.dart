@@ -1,4 +1,7 @@
+import 'package:fedi/collection/collection_hash_utils.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -26,8 +29,8 @@ abstract class IPostPleromaApiFilter implements IPostMastodonApiFilter {
   explicitToJson: true,
   includeIfNull: false,
 )
-@HiveType(typeId: -32 + 95)
-class PleromaApiFilter extends IPleromaApiFilter {
+@HiveType(typeId: -32 + 100)
+class PleromaApiFilter extends IPleromaApiFilter implements IJsonObject {
   @override
   @HiveField(0)
   final List<String> context;
@@ -72,7 +75,7 @@ class PleromaApiFilter extends IPleromaApiFilter {
       identical(this, other) ||
       other is PleromaApiFilter &&
           runtimeType == other.runtimeType &&
-          context == other.context &&
+          listEquals(context, other.context) &&
           expiresAt == other.expiresAt &&
           id == other.id &&
           irreversible == other.irreversible &&
@@ -81,7 +84,7 @@ class PleromaApiFilter extends IPleromaApiFilter {
 
   @override
   int get hashCode =>
-      context.hashCode ^
+      listHash(context) ^
       expiresAt.hashCode ^
       id.hashCode ^
       irreversible.hashCode ^
@@ -129,7 +132,8 @@ class PleromaApiFilter extends IPleromaApiFilter {
   explicitToJson: true,
   includeIfNull: false,
 )
-class PostPleromaApiFilter extends IPostPleromaApiFilter {
+class PostPleromaApiFilter extends IPostPleromaApiFilter
+    implements IJsonObject {
   @override
   final List<String> context;
 
@@ -167,7 +171,7 @@ class PostPleromaApiFilter extends IPostPleromaApiFilter {
       identical(this, other) ||
       other is PostPleromaApiFilter &&
           runtimeType == other.runtimeType &&
-          context == other.context &&
+          listEquals(context, other.context) &&
           expiresInSeconds == other.expiresInSeconds &&
           irreversible == other.irreversible &&
           phrase == other.phrase &&
@@ -175,7 +179,7 @@ class PostPleromaApiFilter extends IPostPleromaApiFilter {
 
   @override
   int get hashCode =>
-      context.hashCode ^
+      listHash(context) ^
       expiresInSeconds.hashCode ^
       irreversible.hashCode ^
       phrase.hashCode ^

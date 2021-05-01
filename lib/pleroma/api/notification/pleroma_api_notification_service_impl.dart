@@ -120,24 +120,24 @@ class PleromaApiNotificationService extends BasePleromaApiService
           if (excludeTypes?.isNotEmpty == true)
             ...excludeTypes?.map(
                   (excludeType) => RestRequestQueryArg(
-                    "exclude_types[]",
-                    excludeType.toJsonValue(),
+                    key: "exclude_types[]",
+                    value: excludeType.toJsonValue(),
                   ),
                 ) ??
                 [],
           if (includeTypes?.isNotEmpty == true)
             ...includeTypes?.map(
                   (includeType) => RestRequestQueryArg(
-                    "include_types[]",
-                    includeType.toJsonValue(),
+                    key: "include_types[]",
+                    value: includeType.toJsonValue(),
                   ),
                 ) ??
                 [],
           if (excludeVisibilities?.isNotEmpty == true)
             ...excludeVisibilities?.map(
                   (excludeVisibility) => RestRequestQueryArg(
-                    "exclude_visibilities[]",
-                    excludeVisibility.toJsonValue(),
+                    key: "exclude_visibilities[]",
+                    value: excludeVisibility.toJsonValue(),
                   ),
                 ) ??
                 [],

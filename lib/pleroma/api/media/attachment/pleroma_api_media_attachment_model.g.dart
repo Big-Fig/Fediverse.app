@@ -33,7 +33,7 @@ Map<String, dynamic> _$PleromaApiMediaAttachmentToJson(
       'text_url': instance.textUrl,
       'type': instance.type,
       'url': instance.url,
-      'pleroma': instance.pleroma,
+      'pleroma': instance.pleroma?.toJson(),
     };
 
 PleromaApiMediaAttachmentPleromaPart

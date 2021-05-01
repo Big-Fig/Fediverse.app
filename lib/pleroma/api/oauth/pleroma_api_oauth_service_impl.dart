@@ -84,8 +84,8 @@ class PleromaApiOAuthService extends BasePleromaApiService
         .entries
         .map(
           (entry) => RestRequestQueryArg(
-            entry.key,
-            entry.value,
+            key: entry.key,
+            value: entry.value,
           ),
         )
         .toList();

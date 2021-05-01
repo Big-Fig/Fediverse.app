@@ -2,8 +2,10 @@
 import 'package:fedi/mastodon/api/card/mastodon_api_card_model.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 
+import '../../../enum/enum_test_helper.dart';
+
 class PleromaApiCardTestHelper {
-  static PleromaApiCard createTestPleromaCard({
+  static PleromaApiCard createTestPleromaApiCard({
     required String seed,
   }) =>
       PleromaApiCard(
@@ -18,9 +20,10 @@ class PleromaApiCardTestHelper {
         providerName: seed + "providerName",
         providerUrl: seed + "providerUrl",
         title: seed + "title",
-        type: MastodonApiCardType
-            .values[seed.hashCode % MastodonApiCardType.values.length]
-            .toJsonValue(),
+        type: EnumTestHelper.createTestEnum(
+          seed: seed,
+          values: MastodonApiCardType.values,
+        ).toJsonValue(),
         url: seed + "url",
       );
 }

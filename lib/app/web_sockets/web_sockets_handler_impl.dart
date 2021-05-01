@@ -86,7 +86,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
       case PleromaApiWebSocketsEventType.notification:
         var notification = event.parsePayloadAsNotification();
 
-        var pleromaNotificationType = notification.typePleroma;
+        var pleromaNotificationType = notification.typeAsPleromaApi;
         // refresh to update followRequestCount
         if (pleromaNotificationType == PleromaApiNotificationType.followRequest) {
           unawaited(

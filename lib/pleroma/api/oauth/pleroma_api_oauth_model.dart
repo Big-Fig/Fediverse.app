@@ -61,7 +61,7 @@ class PleromaApiOAuthToken implements IJsonObject {
 }
 
 @JsonSerializable()
-class PleromaApiOAuthAuthorizeRequest {
+class PleromaApiOAuthAuthorizeRequest implements IJsonObject {
   /// Forces the user to re-login,
   /// which is necessary for authorizing with multiple accounts from the same instance.
 
@@ -102,6 +102,7 @@ class PleromaApiOAuthAuthorizeRequest {
   static PleromaApiOAuthAuthorizeRequest fromJson(Map<String, dynamic> json) =>
       _$PleromaApiOAuthAuthorizeRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() =>
       _$PleromaApiOAuthAuthorizeRequestToJson(this);
 
@@ -137,7 +138,7 @@ class PleromaApiOAuthAuthorizeRequest {
 }
 
 @JsonSerializable()
-class PleromaApiOAuthAccountTokenRequest {
+class PleromaApiOAuthAccountTokenRequest implements IJsonObject {
   @JsonKey(name: "grant_type")
   final String? grantType;
 
@@ -201,12 +202,13 @@ class PleromaApiOAuthAccountTokenRequest {
           Map<String, dynamic> json) =>
       _$PleromaApiOAuthAccountTokenRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() =>
       _$PleromaApiOAuthAccountTokenRequestToJson(this);
 }
 
 @JsonSerializable()
-class PleromaApiOAuthAppTokenRequest {
+class PleromaApiOAuthAppTokenRequest implements IJsonObject {
   @JsonKey(name: "grant_type")
   final String? grantType;
 
@@ -262,11 +264,12 @@ class PleromaApiOAuthAppTokenRequest {
   static PleromaApiOAuthAppTokenRequest fromJson(Map<String, dynamic> json) =>
       _$PleromaApiOAuthAppTokenRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiOAuthAppTokenRequestToJson(this);
 }
 
 @JsonSerializable()
-class PleromaApiOAuthAppTokenRevokeRequest {
+class PleromaApiOAuthAppTokenRevokeRequest implements IJsonObject {
   @JsonKey(name: "client_id")
   final String? clientId;
   @JsonKey(name: "client_secret")
@@ -307,6 +310,7 @@ class PleromaApiOAuthAppTokenRevokeRequest {
   ) =>
       _$PleromaApiOAuthAppTokenRevokeRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() =>
       _$PleromaApiOAuthAppTokenRevokeRequestToJson(this);
 }

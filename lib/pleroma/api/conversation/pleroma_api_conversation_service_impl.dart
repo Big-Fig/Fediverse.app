@@ -79,8 +79,8 @@ class PleromaApiConversationService extends BasePleromaApiService
       queryArgs.addAll(
         recipientsIds!.map(
           (id) => RestRequestQueryArg(
-            "recipients[]",
-            id,
+            key: "recipients[]",
+            value: id,
           ),
         ),
       );

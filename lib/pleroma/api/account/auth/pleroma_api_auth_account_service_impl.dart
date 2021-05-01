@@ -35,7 +35,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(accountRelativeUrlPath, "relationships"),
         queryArgs: remoteAccountIds
             .map(
-              (id) => RestRequestQueryArg("id[]", id),
+              (id) => RestRequestQueryArg(key: "id[]", value: id),
             )
             .toList(),
       ),
@@ -272,16 +272,19 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(accountRelativeUrlPath, "search"),
         queryArgs: [
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
-          RestRequestQueryArg("q", query),
+          RestRequestQueryArg(
+            key: "q",
+            value: query,
+          ),
           if (resolve != null)
             RestRequestQueryArg(
-              "resolve",
-              resolve.toString(),
+              key: "resolve",
+              value: resolve.toString(),
             ),
           if (following != null)
             RestRequestQueryArg(
-              "following",
-              following.toString(),
+              key: "following",
+              value: following.toString(),
             ),
         ],
       ),
@@ -316,8 +319,8 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join("api/v1/domain_blocks"),
         queryArgs: [
           RestRequestQueryArg(
-            "domain",
-            domain,
+            key: "domain",
+            value: domain,
           ),
         ],
       ),
@@ -335,8 +338,8 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join("api/v1/domain_blocks"),
         queryArgs: [
           RestRequestQueryArg(
-            "domain",
-            domain,
+            key: "domain",
+            value: domain,
           ),
         ],
       ),

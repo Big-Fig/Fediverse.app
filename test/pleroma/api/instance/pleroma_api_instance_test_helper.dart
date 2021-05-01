@@ -1,17 +1,10 @@
 // ignore_for_file: no-magic-number
-import 'package:fedi/mastodon/api/instance/mastodon_api_instance_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 
+import '../../../mastodon/api/instance/mastodon_api_instance_test_helper.dart';
 import '../account/pleroma_api_account_test_helper.dart';
 
 class PleromaApiInstanceTestHelper {
-  static MastodonApiUrls createTestMastodonApiUrls({
-    required String seed,
-  }) {
-    return MastodonApiUrls(
-      streamingApi: seed + 'streamingApi',
-    );
-  }
 
   static PleromaApiInstancePleromaPart createTestPleromaApiInstancePleromaPart({
     required String seed,
@@ -100,14 +93,6 @@ class PleromaApiInstanceTestHelper {
         minExpiration: seed.hashCode + 4,
       );
 
-  static MastodonApiInstanceStats createTestMastodonApiInstanceStats({
-    required String seed,
-  }) =>
-      MastodonApiInstanceStats(
-        userCount: seed.hashCode + 1,
-        statusCount: seed.hashCode + 2,
-        domainCount: seed.hashCode + 3,
-      );
 
   static PleromaApiInstance createTestPleromaApiInstance({
     required String seed,
@@ -132,12 +117,12 @@ class PleromaApiInstanceTestHelper {
       ),
       registrations: seed.hashCode % 2 == 1,
       shortDescription: seed + "shortDescription",
-      stats: createTestMastodonApiInstanceStats(seed: seed),
+      stats: MastodonApiInstanceTestHelper.createTestMastodonApiInstanceStats(seed: seed),
       thumbnail: seed + "thumbnail",
       title: seed + "title",
       uploadLimit: seed.hashCode + 7,
       uri: seed + "uri",
-      urls: createTestMastodonApiUrls(
+      urls: MastodonApiInstanceTestHelper.createTestMastodonApiUrls(
         seed: seed,
       ),
       vapidPublicKey: seed + "vapidPublicKey",

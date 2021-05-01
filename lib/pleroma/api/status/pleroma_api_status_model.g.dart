@@ -24,8 +24,9 @@ Map<String, dynamic> _$PleromaApiScheduledStatusToJson(
         PleromaApiScheduledStatus instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'media_attachments': instance.mediaAttachments,
-      'params': instance.params,
+      'media_attachments':
+          instance.mediaAttachments?.map((e) => e.toJson()).toList(),
+      'params': instance.params.toJson(),
       'scheduled_at': instance.scheduledAt.toIso8601String(),
     };
 
@@ -333,5 +334,5 @@ Map<String, dynamic> _$PleromaApiStatusEmojiReactionToJson(
       'name': instance.name,
       'count': instance.count,
       'me': instance.me,
-      'accounts': instance.accounts,
+      'accounts': instance.accounts?.map((e) => e.toJson()).toList(),
     };

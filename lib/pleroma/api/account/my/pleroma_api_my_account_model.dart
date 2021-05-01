@@ -7,18 +7,12 @@ import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
 import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 // ignore_for_file: no-magic-number
 part 'pleroma_api_my_account_model.g.dart';
-
-extension IPleromaApiMyAccountEditExtension on IPleromaApiMyAccountEdit {
-  PleromaApiVisibility? get defaultScopePleroma =>
-      defaultScope?.toPleromaApiVisibility();
-}
 
 abstract class IPleromaApiMyAccountEdit extends IMastodonApiMyAccountEdit {
   @override
@@ -78,7 +72,8 @@ abstract class IPleromaApiMyAccountEdit extends IMastodonApiMyAccountEdit {
   explicitToJson: true,
   includeIfNull: false,
 )
-class PleromaApiMyAccountEdit extends IPleromaApiMyAccountEdit {
+class PleromaApiMyAccountEdit extends IPleromaApiMyAccountEdit
+    implements IJsonObject {
   @override
   final bool? bot;
 
@@ -202,7 +197,7 @@ class PleromaApiMyAccountEdit extends IPleromaApiMyAccountEdit {
           bot == other.bot &&
           discoverable == other.discoverable &&
           displayName == other.displayName &&
-          fieldsAttributes == other.fieldsAttributes &&
+          mapEquals(fieldsAttributes, other.fieldsAttributes) &&
           locked == other.locked &&
           note == other.note &&
           source == other.source &&
@@ -217,9 +212,9 @@ class PleromaApiMyAccountEdit extends IPleromaApiMyAccountEdit {
           hideFollowsCount == other.hideFollowsCount &&
           noRichText == other.noRichText &&
           pleromaBackgroundImage == other.pleromaBackgroundImage &&
-          pleromaSettingsStore == other.pleromaSettingsStore &&
+          mapEquals(pleromaSettingsStore, other.pleromaSettingsStore) &&
           showRole == other.showRole &&
-          alsoKnownAs == other.alsoKnownAs &&
+          listEquals(alsoKnownAs, other.alsoKnownAs) &&
           skipThreadContainment == other.skipThreadContainment;
 
   @override
@@ -227,7 +222,7 @@ class PleromaApiMyAccountEdit extends IPleromaApiMyAccountEdit {
       bot.hashCode ^
       discoverable.hashCode ^
       displayName.hashCode ^
-      fieldsAttributes.hashCode ^
+      mapHash(fieldsAttributes) ^
       locked.hashCode ^
       note.hashCode ^
       source.hashCode ^
@@ -242,9 +237,9 @@ class PleromaApiMyAccountEdit extends IPleromaApiMyAccountEdit {
       hideFollowsCount.hashCode ^
       noRichText.hashCode ^
       pleromaBackgroundImage.hashCode ^
-      pleromaSettingsStore.hashCode ^
+      mapHash(pleromaSettingsStore) ^
       showRole.hashCode ^
-      alsoKnownAs.hashCode ^
+      listHash(alsoKnownAs) ^
       skipThreadContainment.hashCode;
 
   @override
@@ -272,6 +267,58 @@ class PleromaApiMyAccountEdit extends IPleromaApiMyAccountEdit {
       'alsoKnownAs: $alsoKnownAs, '
       'skipThreadContainment: $skipThreadContainment'
       '}';
+
+  // ignore: long-parameter-list, code-metrics
+  PleromaApiMyAccountEdit copyWith({
+    bool? bot,
+    bool? discoverable,
+    String? displayName,
+    Map<int, PleromaApiField>? fieldsAttributes,
+    bool? locked,
+    String? note,
+    PleromaApiMyAccountEditSource? source,
+    dynamic actorType,
+    bool? allowFollowingMove,
+    bool? acceptsChatMessages,
+    String? defaultScope,
+    bool? hideFavorites,
+    bool? hideFollowers,
+    bool? hideFollowersCount,
+    bool? hideFollows,
+    bool? hideFollowsCount,
+    bool? noRichText,
+    String? pleromaBackgroundImage,
+    Map<String, dynamic>? pleromaSettingsStore,
+    bool? showRole,
+    bool? skipThreadContainment,
+    List<String>? alsoKnownAs,
+  }) =>
+      PleromaApiMyAccountEdit(
+        bot: bot ?? this.bot,
+        discoverable: discoverable ?? this.discoverable,
+        displayName: displayName ?? this.displayName,
+        fieldsAttributes: fieldsAttributes ?? this.fieldsAttributes,
+        locked: locked ?? this.locked,
+        note: note ?? this.note,
+        source: source ?? this.source,
+        actorType: actorType ?? this.actorType,
+        allowFollowingMove: allowFollowingMove ?? this.allowFollowingMove,
+        acceptsChatMessages: acceptsChatMessages ?? this.acceptsChatMessages,
+        defaultScope: defaultScope ?? this.defaultScope,
+        hideFavorites: hideFavorites ?? this.hideFavorites,
+        hideFollowers: hideFollowers ?? this.hideFollowers,
+        hideFollowersCount: hideFollowersCount ?? this.hideFollowersCount,
+        hideFollows: hideFollows ?? this.hideFollows,
+        hideFollowsCount: hideFollowsCount ?? this.hideFollowsCount,
+        noRichText: noRichText ?? this.noRichText,
+        pleromaBackgroundImage:
+            pleromaBackgroundImage ?? this.pleromaBackgroundImage,
+        pleromaSettingsStore: pleromaSettingsStore ?? this.pleromaSettingsStore,
+        showRole: showRole ?? this.showRole,
+        skipThreadContainment:
+            skipThreadContainment ?? this.skipThreadContainment,
+        alsoKnownAs: alsoKnownAs ?? this.alsoKnownAs,
+      );
 }
 
 abstract class IPleromaApiMyAccount
@@ -315,8 +362,8 @@ abstract class IPleromaApiMyAccount
 }
 
 extension IPleromaApiMyAccountExtension on IPleromaApiMyAccount {
-  PleromaApiMyAccount toPleromaApiMyAccount() {
-    if (this is PleromaApiMyAccount) {
+  PleromaApiMyAccount toPleromaApiMyAccount({bool forceNewObject = false}) {
+    if (this is PleromaApiMyAccount && !forceNewObject) {
       return this as PleromaApiMyAccount;
     } else {
       return PleromaApiMyAccount(
@@ -330,17 +377,19 @@ extension IPleromaApiMyAccountExtension on IPleromaApiMyAccount {
         id: id,
         followingCount: followingCount,
         followersCount: followersCount,
-        fields: fields?.toPleromaApiFields(),
-        emojis: emojis?.toPleromaApiEmojis(),
+        fields: fields?.toPleromaApiFields(forceNewObject: forceNewObject),
+        emojis: emojis?.toPleromaApiEmojis(forceNewObject: forceNewObject),
         displayName: displayName,
         createdAt: createdAt,
         bot: bot,
         avatarStatic: avatarStatic,
         avatar: avatar,
         acct: acct,
-        pleroma: pleroma?.toPleromaApiMyAccountPleromaPart(),
+        pleroma: pleroma?.toPleromaApiMyAccountPleromaPart(
+            forceNewObject: forceNewObject),
         lastStatusAt: lastStatusAt,
-        source: source?.toPleromaApiMyAccountSource(),
+        source:
+            source?.toPleromaApiMyAccountSource(forceNewObject: forceNewObject),
         discoverable: discoverable,
         followRequestsCount: followRequestsCount,
         fqn: fqn,
@@ -407,8 +456,9 @@ abstract class IPleromaApiMyAccountSource
 }
 
 extension IPleromaApiMyAccountSourceExtension on IPleromaApiMyAccountSource {
-  PleromaApiMyAccountSource toPleromaApiMyAccountSource() {
-    if (this is PleromaApiMyAccountSource) {
+  PleromaApiMyAccountSource toPleromaApiMyAccountSource(
+      {bool forceNewObject = false}) {
+    if (this is PleromaApiMyAccountSource && !forceNewObject) {
       return this as PleromaApiMyAccountSource;
     } else {
       return PleromaApiMyAccountSource(
@@ -416,7 +466,7 @@ extension IPleromaApiMyAccountSourceExtension on IPleromaApiMyAccountSource {
         sensitive: sensitive,
         language: language,
         note: note,
-        fields: fields?.toPleromaApiFields(),
+        fields: fields?.toPleromaApiFields(forceNewObject: forceNewObject),
         followRequestsCount: followRequestsCount,
         pleroma: pleroma,
       );
@@ -430,7 +480,7 @@ extension IPleromaApiMyAccountSourceExtension on IPleromaApiMyAccountSource {
 //@HiveType()
 @HiveType(typeId: -32 + 43)
 @JsonSerializable(explicitToJson: true)
-class PleromaApiMyAccountSource implements IPleromaApiMyAccountSource {
+class PleromaApiMyAccountSource implements IPleromaApiMyAccountSource, IJsonObject {
   @override
   @HiveField(1)
   final String? privacy;
@@ -467,6 +517,7 @@ class PleromaApiMyAccountSource implements IPleromaApiMyAccountSource {
   static PleromaApiMyAccountSource fromJson(Map<String, dynamic> json) =>
       _$PleromaApiMyAccountSourceFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiMyAccountSourceToJson(this);
 
   @override
@@ -512,7 +563,7 @@ class PleromaApiMyAccountSource implements IPleromaApiMyAccountSource {
 //@HiveType()
 @HiveType(typeId: -32 + 44)
 @JsonSerializable()
-class PleromaApiMyAccountSourcePleromaPart {
+class PleromaApiMyAccountSourcePleromaPart implements IJsonObject {
   //  show_role: boolean, nullable, true when the user wants his role (e.g admin, moderator) to be shown
   @HiveField(1)
   @JsonKey(name: "show_role")
@@ -544,6 +595,7 @@ class PleromaApiMyAccountSourcePleromaPart {
   ) =>
       _$PleromaApiMyAccountSourcePleromaPartFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() =>
       _$PleromaApiMyAccountSourcePleromaPartToJson(this);
 
@@ -652,8 +704,9 @@ abstract class IPleromaApiMyAccountPleromaPart
 
 extension IPleromaApiMyAccountPleromaPartExtension
     on IPleromaApiMyAccountPleromaPart {
-  PleromaApiMyAccountPleromaPart toPleromaApiMyAccountPleromaPart() {
-    if (this is PleromaApiMyAccountPleromaPart) {
+  PleromaApiMyAccountPleromaPart toPleromaApiMyAccountPleromaPart(
+      {bool forceNewObject = false}) {
+    if (this is PleromaApiMyAccountPleromaPart && !forceNewObject) {
       return this as PleromaApiMyAccountPleromaPart;
     } else {
       return PleromaApiMyAccountPleromaPart(

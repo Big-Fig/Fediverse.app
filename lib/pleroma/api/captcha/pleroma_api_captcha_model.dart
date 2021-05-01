@@ -1,5 +1,5 @@
+import 'package:fedi/json/json_model.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:moor/moor.dart' as moor;
 
 part 'pleroma_api_captcha_model.g.dart';
 
@@ -18,8 +18,8 @@ abstract class IPleromaApiCaptcha {
 }
 
 extension IPleromaApiCaptchaExtension on IPleromaApiCaptcha {
-  PleromaApiCaptcha toPleromaApiCaptcha() {
-    if (this is PleromaApiCaptcha) {
+  PleromaApiCaptcha toPleromaApiCaptcha({bool forceNewObject = false}) {
+    if (this is PleromaApiCaptcha && !forceNewObject) {
       return this as PleromaApiCaptcha;
     } else {
       return PleromaApiCaptcha(
@@ -34,7 +34,7 @@ extension IPleromaApiCaptchaExtension on IPleromaApiCaptcha {
 }
 
 @JsonSerializable()
-class PleromaApiCaptcha implements IPleromaApiCaptcha {
+class PleromaApiCaptcha implements IPleromaApiCaptcha, IJsonObject {
   @override
   @JsonKey(name: "answer_data")
   final String? answerData;
@@ -97,6 +97,7 @@ class PleromaApiCaptcha implements IPleromaApiCaptcha {
   static PleromaApiCaptcha fromJson(Map<String, dynamic> json) =>
       _$PleromaApiCaptchaFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiCaptchaToJson(this);
 }
 
@@ -161,30 +162,4 @@ extension PleromaApiCaptchaTypeStringExtension on String {
 
     return result;
   }
-}
-
-extension PleromaApiCaptchaTypeStringListExtension on List<String> {
-  List<PleromaApiCaptchaType> toPleromaVisibilities() => map(
-        (visibilityString) => visibilityString.toPleromaApiCaptchaType(),
-      ).toList();
-}
-
-class PleromaApiCaptchaTypeTypeConverter
-    implements
-        JsonConverter<PleromaApiCaptchaType, String?>,
-        moor.TypeConverter<PleromaApiCaptchaType, String?> {
-  const PleromaApiCaptchaTypeTypeConverter();
-
-  @override
-  PleromaApiCaptchaType fromJson(String? value) =>
-      value?.toPleromaApiCaptchaType() ?? unknownPleromaApiCaptchaType;
-
-  @override
-  String? toJson(PleromaApiCaptchaType? value) => value?.toJsonValue();
-
-  @override
-  PleromaApiCaptchaType? mapToDart(String? fromDb) => fromJson(fromDb);
-
-  @override
-  String? mapToSql(PleromaApiCaptchaType? value) => toJson(value);
 }

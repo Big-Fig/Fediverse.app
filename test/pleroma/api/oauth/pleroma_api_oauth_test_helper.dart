@@ -12,4 +12,48 @@ class PleromaApiOAuthTestHelper {
       // createdAt: DateTime(seed.hashCode % 2001),
     );
   }
+
+  static PleromaApiOAuthAppTokenRevokeRequest
+      createTestPleromaApiOAuthAppTokenRevokeRequest({
+    required String seed,
+  }) =>
+          PleromaApiOAuthAppTokenRevokeRequest(
+            clientId: seed + "clientId",
+            clientSecret: seed + "clientSecret",
+            token: seed + "token",
+          );
+
+  static PleromaApiOAuthAppTokenRequest
+      createTestPleromaApiOAuthAppTokenRequest({
+    required String seed,
+  }) =>
+          PleromaApiOAuthAppTokenRequest(
+            scope: seed + "scope",
+            redirectUri: seed + "redirectUri",
+            clientId: seed + "clientId",
+            clientSecret: seed + "clientSecret",
+          );
+
+  static PleromaApiOAuthAccountTokenRequest
+      createTestPleromaApiOAuthAccountTokenRequest({
+    required String seed,
+  }) =>
+          PleromaApiOAuthAccountTokenRequest(
+            code: seed + "code",
+            scope: seed + "scope",
+            redirectUri: seed + "redirectUri",
+            clientId: seed + "clientId",
+            clientSecret: seed + "clientSecret",
+          );
+
+  static PleromaApiOAuthAuthorizeRequest
+      createTestPleromaApiOAuthAuthorizeRequest({
+    required String seed,
+  }) =>
+          PleromaApiOAuthAuthorizeRequest(
+            forceLogin: seed.hashCode % 2 == 0,
+            clientId: seed + "clientId",
+            redirectUri: seed + "redirectUri",
+            scope: seed + "scope",
+          );
 }

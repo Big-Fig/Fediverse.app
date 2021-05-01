@@ -1,3 +1,4 @@
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/field/mastodon_api_field_model.dart';
 import 'package:flutter_html/html_parser.dart';
 import 'package:hive/hive.dart';
@@ -12,8 +13,8 @@ var _logger = Logger("pleroma_api_field_model.dart");
 abstract class IPleromaApiField implements IMastodonApiField {}
 
 extension IPleromaApiFieldExtension on IPleromaApiField {
-  PleromaApiField toPleromaApiField() {
-    if (this is PleromaApiField) {
+  PleromaApiField toPleromaApiField({bool forceNewObject = false}) {
+    if (this is PleromaApiField && !forceNewObject) {
       return this as PleromaApiField;
     } else {
       return PleromaApiField(
@@ -26,12 +27,12 @@ extension IPleromaApiFieldExtension on IPleromaApiField {
 }
 
 extension IPleromaApiFieldListExtension on List<IPleromaApiField> {
-  List<PleromaApiField> toPleromaApiFields() {
-    if (this is List<PleromaApiField>) {
+  List<PleromaApiField> toPleromaApiFields({bool forceNewObject = false}) {
+    if (this is List<PleromaApiField> && !forceNewObject) {
       return this as List<PleromaApiField>;
     } else {
       return map(
-        (field) => field.toPleromaApiField(),
+        (field) => field.toPleromaApiField(forceNewObject:forceNewObject),
       ).toList();
     }
   }
@@ -43,7 +44,7 @@ extension IPleromaApiFieldListExtension on List<IPleromaApiField> {
 //@HiveType()
 @HiveType(typeId: -32 + 37)
 @JsonSerializable()
-class PleromaApiField implements IPleromaApiField {
+class PleromaApiField implements IPleromaApiField, IJsonObject {
   @override
   @HiveField(0)
   final String? name;
@@ -64,6 +65,7 @@ class PleromaApiField implements IPleromaApiField {
   static PleromaApiField fromJson(Map<String, dynamic> json) =>
       _$PleromaApiFieldFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiFieldToJson(this);
 
 

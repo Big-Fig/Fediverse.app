@@ -185,12 +185,26 @@ class RestRequestQueryArg {
   final String key;
   final String? value;
 
-  RestRequestQueryArg(this.key, this.value);
+  RestRequestQueryArg({
+    required this.key,
+    required this.value,
+  });
 
   @override
   String toString() {
     return 'RestRequestQueryArg{key: $key, value: $value}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RestRequestQueryArg &&
+          runtimeType == other.runtimeType &&
+          key == other.key &&
+          value == other.value;
+
+  @override
+  int get hashCode => key.hashCode ^ value.hashCode;
 
   static List<RestRequestQueryArg> listFromJson(Map<String, dynamic> json) {
     List<RestRequestQueryArg> queryArgs = [];
@@ -203,16 +217,16 @@ class RestRequestQueryArg {
           queryArgs.addAll(
             iterable.map(
               (item) => RestRequestQueryArg(
-                entry.key,
-                item.toString(),
+                key: entry.key,
+                value: item.toString(),
               ),
             ),
           );
         } else {
           queryArgs.add(
             RestRequestQueryArg(
-              entry.key,
-              entry.value.toString(),
+              key: entry.key,
+              value: entry.value.toString(),
             ),
           );
         }

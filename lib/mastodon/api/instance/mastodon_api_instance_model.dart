@@ -1,3 +1,4 @@
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/account/mastodon_api_account_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -51,7 +52,7 @@ abstract class IMastodonApiInstance {
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 61)
-class MastodonApiInstanceStats {
+class MastodonApiInstanceStats implements IJsonObject {
   @JsonKey(name: "user_count")
   @HiveField(0)
   final int? userCount;
@@ -93,6 +94,7 @@ class MastodonApiInstanceStats {
   static MastodonApiInstanceStats fromJson(Map<String, dynamic> json) =>
       _$MastodonApiInstanceStatsFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$MastodonApiInstanceStatsToJson(this);
 }
 
@@ -102,7 +104,7 @@ class MastodonApiInstanceStats {
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 62)
-class MastodonApiUrls {
+class MastodonApiUrls implements IJsonObject {
   @JsonKey(name: "streaming_api")
   @HiveField(0)
   final String? streamingApi;
@@ -129,5 +131,6 @@ class MastodonApiUrls {
   static MastodonApiUrls fromJson(Map<String, dynamic> json) =>
       _$MastodonApiUrlsFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$MastodonApiUrlsToJson(this);
 }

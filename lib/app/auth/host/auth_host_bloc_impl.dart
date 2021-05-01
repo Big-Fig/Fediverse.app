@@ -8,6 +8,7 @@ import 'package:fedi/app/auth/host/auth_host_bloc.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
@@ -22,7 +23,7 @@ import 'package:fedi/pleroma/api/application/pleroma_api_application_service.dar
 import 'package:fedi/pleroma/api/application/pleroma_api_application_service_impl.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service_impl.dart';
-import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_model.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_service.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_service_impl.dart';
@@ -63,7 +64,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   late IAuthHostAccessTokenLocalPreferenceBloc
       hostAccessTokenLocalPreferenceBloc;
   late ICurrentAuthInstanceBloc currentInstanceBloc;
-  final IPleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
+  final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final IConnectionService connectionService;
 
@@ -285,7 +286,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   // todo: fix long-method
   // ignore: long-method
   Future<AuthHostRegistrationResult> registerAccount({
-    required IPleromaApiAccountRegisterRequest request,
+    required IPleromaApiAccountPublicRegisterRequest request,
   }) async {
     await checkApplicationRegistration();
     await checkHostAccessTokenRegistration();
@@ -428,7 +429,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         currentInstanceBloc:
             ICurrentAuthInstanceBloc.of(context, listen: false),
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-            IPleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
+            IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
           context,
           listen: false,
         ),

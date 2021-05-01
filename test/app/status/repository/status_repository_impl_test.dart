@@ -471,7 +471,7 @@ void main() {
       ))
           .copyWith(
         mediaAttachments: [
-          PleromaApiMediaTestHelper.createTestPleromaMediaAttachment(
+          PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
             seed: "seed",
           ),
         ],
