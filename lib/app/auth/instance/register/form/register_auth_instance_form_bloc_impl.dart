@@ -131,7 +131,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
       ];
 
   @override
-  PleromaApiAccountRegisterRequest calculateRegisterFormData() {
+  PleromaApiAccountPublicRegisterRequest calculateRegisterFormData() {
     final validUsername = usernameFieldBloc.currentValue;
     final validEmail = emailFieldBloc.currentValue;
     final validPassword = passwordFieldBloc.currentValue;
@@ -143,7 +143,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
 
     final reason = reasonFieldBloc.currentValue;
 
-    var request = PleromaApiAccountRegisterRequest(
+    var request = PleromaApiAccountPublicRegisterRequest(
       agreement: agreeTermsOfService,
       email: validEmail,
       locale: locale?.localeString,

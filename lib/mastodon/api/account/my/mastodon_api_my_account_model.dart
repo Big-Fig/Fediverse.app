@@ -56,7 +56,3 @@ abstract class IMastodonApiMyAccountEditSource {
   /// The default posting language for new statuses.
   String? get language;
 }
-
-extension IMastodonMyAccountEditSourceExtension
-    on IMastodonApiMyAccountEditSource {
-}

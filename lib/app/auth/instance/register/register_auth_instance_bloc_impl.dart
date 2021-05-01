@@ -14,7 +14,7 @@ import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service_impl.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service_impl.dart';
-import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service_impl.dart';
 import 'package:fedi/rest/rest_service.dart';
@@ -26,7 +26,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
-  final IPleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
+  final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalizationSettingsBloc localizationSettingsBloc;
 

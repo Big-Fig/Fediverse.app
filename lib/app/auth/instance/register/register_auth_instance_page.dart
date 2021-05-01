@@ -11,7 +11,7 @@ import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -54,7 +54,7 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
                 listen: false,
               ),
               pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-                  IPleromaApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
+                  IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
                 context,
                 listen: false,
               ),

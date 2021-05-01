@@ -1,6 +1,7 @@
 import 'package:fedi/localization/localization_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../hive/hive_test_helper.dart';
 import '../obj/obj_test_helper.dart';
 import 'localization_model_test_helper.dart';
 
@@ -31,6 +32,12 @@ void main() {
               scriptCode: "Hant", languageCode: "zh", countryCode: "TW")
           .localeString,
       "zh_Hant_TW",
+    );
+  });
+
+  test('hive adapter', () async {
+    HiveTestHelper.testAdapter(
+          () => LocalizationLocaleAdapter(),
     );
   });
 }

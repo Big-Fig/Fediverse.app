@@ -8,7 +8,7 @@ part of 'pleroma_api_filter_model.dart';
 
 class PleromaApiFilterAdapter extends TypeAdapter<PleromaApiFilter> {
   @override
-  final int typeId = 63;
+  final int typeId = 68;
 
   @override
   PleromaApiFilter read(BinaryReader reader) {

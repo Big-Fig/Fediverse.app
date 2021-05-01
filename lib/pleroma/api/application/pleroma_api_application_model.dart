@@ -12,8 +12,8 @@ abstract class IPleromaApiClientApplication
     implements IMastodonApiClientApplication {}
 
 extension IPleromaApiApplicationExtension on IPleromaApiApplication {
-  PleromaApiApplication toPleromaApiApplication() {
-    if (this is PleromaApiApplication) {
+  PleromaApiApplication toPleromaApiApplication({bool forceNewObject = false}) {
+    if (this is PleromaApiApplication && !forceNewObject) {
       return this as PleromaApiApplication;
     } else {
       return PleromaApiApplication(
@@ -26,7 +26,7 @@ extension IPleromaApiApplicationExtension on IPleromaApiApplication {
 }
 
 @JsonSerializable()
-class PleromaApiApplication implements IPleromaApiApplication {
+class PleromaApiApplication implements IPleromaApiApplication, IJsonObject {
   @override
   @HiveField(3)
   final String? name;
@@ -47,6 +47,7 @@ class PleromaApiApplication implements IPleromaApiApplication {
   static PleromaApiApplication fromJson(Map<String, dynamic> json) =>
       _$PleromaApiApplicationFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiApplicationToJson(this);
 
   @override
@@ -73,8 +74,9 @@ class PleromaApiApplication implements IPleromaApiApplication {
 
 extension IPleromaApiClientApplicationExtension
     on IPleromaApiClientApplication {
-  PleromaApiClientApplication toPleromaApiClientApplication() {
-    if (this is PleromaApiClientApplication) {
+  PleromaApiClientApplication toPleromaApiClientApplication(
+      {bool forceNewObject = false}) {
+    if (this is PleromaApiClientApplication && !forceNewObject) {
       return this as PleromaApiClientApplication;
     } else {
       return PleromaApiClientApplication(

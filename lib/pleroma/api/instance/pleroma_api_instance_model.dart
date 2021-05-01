@@ -1,5 +1,6 @@
 import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/duration/duration_extension.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/instance/mastodon_api_instance_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:flutter/foundation.dart';
@@ -17,8 +18,8 @@ abstract class IPleromaApiInstanceHistory extends IMastodonApiInstanceHistory {}
 enum PleromaApiInstanceVersionType { pleroma, mastodon, unknown }
 
 extension IPleromaApiInstanceExtension on IPleromaApiInstance {
-  PleromaApiInstance toPleromaApiInstance() {
-    if (this is PleromaApiInstance) {
+  PleromaApiInstance toPleromaApiInstance({bool forceNewObject = false}) {
+    if (this is PleromaApiInstance && !forceNewObject) {
       return this as PleromaApiInstance;
     } else {
       return PleromaApiInstance(
@@ -513,7 +514,7 @@ class PleromaApiInstancePollLimits {
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 59)
-class PleromaApiInstance extends IPleromaApiInstance {
+class PleromaApiInstance extends IPleromaApiInstance implements IJsonObject {
   @override
   @HiveField(0)
   @JsonKey(name: "approval_required")
@@ -797,5 +798,6 @@ class PleromaApiInstance extends IPleromaApiInstance {
   static PleromaApiInstance fromJson(Map<String, dynamic> json) =>
       _$PleromaApiInstanceFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiInstanceToJson(this);
 }

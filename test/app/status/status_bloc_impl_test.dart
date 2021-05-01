@@ -722,7 +722,7 @@ Future<void> main() async {
     );
 
     var newValue = [
-      PleromaApiMediaTestHelper.createTestPleromaMediaAttachment(
+      PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
         seed: "seed",
       )
     ];

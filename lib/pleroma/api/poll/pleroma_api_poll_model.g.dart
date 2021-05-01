@@ -43,7 +43,7 @@ Map<String, dynamic> _$PleromaApiPollToJson(PleromaApiPoll instance) =>
       'expires_at': instance.expiresAt.toIso8601String(),
       'id': instance.id,
       'multiple': instance.multiple,
-      'options': instance.options,
+      'options': instance.options.map((e) => e.toJson()).toList(),
       'own_votes': instance.ownVotes,
       'voted': instance.voted,
       'voters_count': instance.votersCount,

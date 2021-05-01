@@ -25,7 +25,7 @@ void main() {
       RestService.createUrl(
         baseUri: Uri.parse("https://pleroma.com"),
         relativeUrlPath: "one",
-        queryArgs: [RestRequestQueryArg("arg1", "value1")],
+        queryArgs: [RestRequestQueryArg(key: "arg1", value: "value1")],
       ),
       Uri.parse("https://pleroma.com/one?arg1=value1"),
     );
@@ -36,8 +36,8 @@ void main() {
         baseUri: Uri.parse("https://pleroma.com"),
         relativeUrlPath: "one",
         queryArgs: [
-          RestRequestQueryArg("arg1", "value1"),
-          RestRequestQueryArg("arg2", null),
+          RestRequestQueryArg(key: "arg1", value: "value1"),
+          RestRequestQueryArg(key: "arg2", value: null),
         ],
       ),
       Uri.parse("https://pleroma.com/one?arg1=value1"),
@@ -49,8 +49,8 @@ void main() {
         baseUri: Uri.parse("https://pleroma.com"),
         relativeUrlPath: "one",
         queryArgs: [
-          RestRequestQueryArg("arg1", "value1"),
-          RestRequestQueryArg("arg2", "value2"),
+          RestRequestQueryArg(key: "arg1", value: "value1"),
+          RestRequestQueryArg(key: "arg2", value: "value2"),
         ],
       ),
       Uri.parse("https://pleroma.com/one?arg1=value1&arg2=value2"),
@@ -62,9 +62,9 @@ void main() {
         baseUri: Uri.parse("https://pleroma.com"),
         relativeUrlPath: "one",
         queryArgs: [
-          RestRequestQueryArg("arg1", "value1"),
-          RestRequestQueryArg("arg2", "value2"),
-          RestRequestQueryArg("arg2", "value2"),
+          RestRequestQueryArg(key: "arg1", value: "value1"),
+          RestRequestQueryArg(key: "arg2", value: "value2"),
+          RestRequestQueryArg(key: "arg2", value: "value2"),
         ],
       ),
       Uri.parse("https://pleroma.com/one?arg1=value1&arg2=value2&arg2=value2"),

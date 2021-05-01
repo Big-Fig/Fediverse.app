@@ -129,7 +129,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
       }
 
-      var pleromaNotificationType = remoteNotification.typePleroma;
+      var pleromaNotificationType = remoteNotification.typeAsPleromaApi;
 
       // refresh to update followRequestCount
       if (pleromaNotificationType == PleromaApiNotificationType.followRequest) {

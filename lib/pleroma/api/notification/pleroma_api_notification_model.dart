@@ -1,3 +1,4 @@
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/notification/mastodon_api_notification_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
@@ -18,7 +19,7 @@ abstract class IPleromaApiNotification extends IMastodonApiNotification {
 
   IPleromaApiChatMessage? get chatMessage;
 
-  PleromaApiNotificationType? get typePleroma;
+  PleromaApiNotificationType get typeAsPleromaApi;
 
   String? get emoji;
 
@@ -60,9 +61,6 @@ const _unknownRequestPleromaApiNotificationTypeJsonValue = "unknown";
 
 extension PleromaApiNotificationTypeListExtension
     on List<PleromaApiNotificationType> {
-  List<String> toPleromaApiNotificationTypeStrings() => map(
-        (notificationType) => notificationType.toJsonValue(),
-      ).toList();
 
   List<PleromaApiNotificationType> valuesWithoutSelected(
     List<PleromaApiNotificationType> valuesToExclude,
@@ -244,7 +242,8 @@ class PleromaApiNotificationPleromaPart {
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaApiNotification extends IPleromaApiNotification {
+class PleromaApiNotification extends IPleromaApiNotification
+    implements IJsonObject {
   @override
   final PleromaApiAccount? account;
   @override
@@ -286,6 +285,7 @@ class PleromaApiNotification extends IPleromaApiNotification {
   static PleromaApiNotification fromJson(Map<String, dynamic> json) =>
       _$PleromaApiNotificationFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiNotificationToJson(this);
 
   @override
@@ -304,6 +304,35 @@ class PleromaApiNotification extends IPleromaApiNotification {
       type.toMastodonApiNotificationType();
 
   @override
-  PleromaApiNotificationType? get typePleroma =>
+  PleromaApiNotificationType get typeAsPleromaApi =>
       type.toPleromaApiNotificationType();
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiNotification &&
+          runtimeType == other.runtimeType &&
+          account == other.account &&
+          target == other.target &&
+          createdAt == other.createdAt &&
+          id == other.id &&
+          type == other.type &&
+          status == other.status &&
+          emoji == other.emoji &&
+          pleroma == other.pleroma &&
+          chatMessage == other.chatMessage &&
+          report == other.report;
+
+  @override
+  int get hashCode =>
+      account.hashCode ^
+      target.hashCode ^
+      createdAt.hashCode ^
+      id.hashCode ^
+      type.hashCode ^
+      status.hashCode ^
+      emoji.hashCode ^
+      pleroma.hashCode ^
+      chatMessage.hashCode ^
+      report.hashCode;
 }

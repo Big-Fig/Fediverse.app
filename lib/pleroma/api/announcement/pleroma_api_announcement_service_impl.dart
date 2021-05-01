@@ -27,7 +27,10 @@ class PleromaApiAnnouncementService extends BasePleromaApiService
       RestRequest.get(
         relativePath: announcementRelativeUrlPath,
         queryArgs: [
-          RestRequestQueryArg("with_dismissed", withDismissed.toString()),
+          RestRequestQueryArg(
+            key: "with_dismissed",
+            value: withDismissed.toString(),
+          ),
         ],
       ),
     );

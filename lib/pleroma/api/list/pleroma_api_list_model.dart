@@ -1,3 +1,4 @@
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/list/mastodon_api_list_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -8,8 +9,8 @@ part 'pleroma_api_list_model.g.dart';
 abstract class IPleromaApiList extends IMastodonApiList {}
 
 extension IPleromaApiListExtension on IPleromaApiList {
-  PleromaApiList toPleromaApiList() {
-    if (this is PleromaApiList) {
+  PleromaApiList toPleromaApiList({bool forceNewObject = false}) {
+    if (this is PleromaApiList && !forceNewObject) {
       return this as PleromaApiList;
     } else {
       return PleromaApiList(
@@ -20,17 +21,6 @@ extension IPleromaApiListExtension on IPleromaApiList {
   }
 }
 
-extension IPleromaApiListListExtension on List<IPleromaApiList> {
-  List<PleromaApiList> toPleromaApiListList() {
-    if (this is List<PleromaApiList>) {
-      return this as List<PleromaApiList>;
-    } else {
-      return map(
-        (list) => list.toPleromaApiList(),
-      ).toList();
-    }
-  }
-}
 
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
@@ -38,7 +28,7 @@ extension IPleromaApiListListExtension on List<IPleromaApiList> {
 //@HiveType()
 @HiveType(typeId: -32 + 80)
 @JsonSerializable()
-class PleromaApiList extends IPleromaApiList {
+class PleromaApiList extends IPleromaApiList implements IJsonObject {
   @override
   @HiveField(0)
   String id;
@@ -55,6 +45,7 @@ class PleromaApiList extends IPleromaApiList {
   static PleromaApiList fromJson(Map<String, dynamic> json) =>
       _$PleromaApiListFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiListToJson(this);
 
   @override

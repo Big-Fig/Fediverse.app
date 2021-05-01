@@ -1,5 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-
 abstract class IMastodonApiMediaAttachment {
   String? get description;
 
@@ -26,7 +24,8 @@ enum MastodonApiMediaAttachmentType {
   audio, // Audio track
 }
 
-const unknownMastodonApiMediaAttachmentType = MastodonApiMediaAttachmentType.unknown;
+const unknownMastodonApiMediaAttachmentType =
+    MastodonApiMediaAttachmentType.unknown;
 
 const _imageMastodonApiMediaAttachmentTypeJsonValue = "image";
 const _gifvMastodonApiMediaAttachmentTypeJsonValue = "gifv";
@@ -34,7 +33,8 @@ const _videoMastodonApiMediaAttachmentTypeJsonValue = "video";
 const _audioMastodonApiMediaAttachmentTypeJsonValue = "audio";
 const _unknownMastodonApiMediaAttachmentTypeJsonValue = "unknown";
 
-extension MastodonApiMediaAttachmentTypeExtension on MastodonApiMediaAttachmentType {
+extension MastodonApiMediaAttachmentTypeExtension
+    on MastodonApiMediaAttachmentType {
   String toJsonValue() {
     String result;
 
@@ -88,16 +88,4 @@ extension MastodonApiMediaAttachmentTypeStringExtension on String? {
 
     return result;
   }
-}
-
-class MastodonApiMediaAttachmentTypeTypeConverter
-    implements JsonConverter<MastodonApiMediaAttachmentType, String?> {
-  const MastodonApiMediaAttachmentTypeTypeConverter();
-
-  @override
-  MastodonApiMediaAttachmentType fromJson(String? value) =>
-      value.toMastodonApiMediaAttachmentType();
-
-  @override
-  String toJson(MastodonApiMediaAttachmentType value) => value.toJsonValue();
 }

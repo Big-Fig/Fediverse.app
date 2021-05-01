@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/status/mastodon_api_status_model.dart';
 import 'package:fedi/mastodon/api/visibility/mastodon_api_visibility_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
@@ -63,8 +64,8 @@ extension IPleromaApiStatusListExtension on List<IPleromaApiStatus> {
 }
 
 extension IPleromaApiStatusExtension on IPleromaApiStatus {
-  PleromaApiStatus toPleromaApiStatus() {
-    if (this is PleromaApiStatus) {
+  PleromaApiStatus toPleromaApiStatus({bool forceNewObject = false}) {
+    if (this is PleromaApiStatus && !forceNewObject) {
       return this as PleromaApiStatus;
     } else {
       return PleromaApiStatus(
@@ -84,15 +85,18 @@ extension IPleromaApiStatusExtension on IPleromaApiStatus {
         muted: muted,
         bookmarked: bookmarked,
         pinned: pinned,
-        reblog: reblog?.toPleromaApiStatus(),
-        application: application?.toPleromaApiApplication(),
-        account: account.toPleromaApiAccount(),
-        mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
-        mentions: mentions?.toPleromaApiMentions(),
+        reblog: reblog?.toPleromaApiStatus(forceNewObject: forceNewObject),
+        application: application?.toPleromaApiApplication(
+            forceNewObject: forceNewObject),
+        account: account.toPleromaApiAccount(forceNewObject: forceNewObject),
+        mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(
+            forceNewObject: forceNewObject),
+        mentions:
+            mentions?.toPleromaApiMentions(forceNewObject: forceNewObject),
         tags: tags?.toPleromaApiTags(),
-        emojis: emojis?.toPleromaApiEmojis(),
-        poll: poll?.toPleromaApiPoll(),
-        card: card?.toPleromaApiCard(),
+        emojis: emojis?.toPleromaApiEmojis(forceNewObject: forceNewObject),
+        poll: poll?.toPleromaApiPoll(forceNewObject: forceNewObject),
+        card: card?.toPleromaApiCard(forceNewObject: forceNewObject),
         pleroma: pleroma,
         visibility: visibility,
         language: language,
@@ -122,8 +126,9 @@ abstract class IPleromaApiScheduledStatusParams
       visibility.toPleromaApiVisibility();
 }
 
-@JsonSerializable()
-class PleromaApiScheduledStatus extends IPleromaApiScheduledStatus {
+@JsonSerializable(explicitToJson: true)
+class PleromaApiScheduledStatus extends IPleromaApiScheduledStatus
+    implements IJsonObject {
   @override
   final String id;
 
@@ -148,6 +153,7 @@ class PleromaApiScheduledStatus extends IPleromaApiScheduledStatus {
   static PleromaApiScheduledStatus fromJson(Map<String, dynamic> json) =>
       _$PleromaApiScheduledStatusFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiScheduledStatusToJson(this);
 
   @override
@@ -159,6 +165,23 @@ class PleromaApiScheduledStatus extends IPleromaApiScheduledStatus {
         'scheduledAt: $scheduledAt'
         '}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiScheduledStatus &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          listEquals(mediaAttachments, other.mediaAttachments) &&
+          params == other.params &&
+          scheduledAt == other.scheduledAt;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      listHash(mediaAttachments) ^
+      params.hashCode ^
+      scheduledAt.hashCode;
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -314,7 +337,7 @@ class PleromaApiScheduledStatusParams extends IPleromaApiScheduledStatusParams {
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaApiStatus extends IPleromaApiStatus {
+class PleromaApiStatus extends IPleromaApiStatus implements IJsonObject {
   @override
   final String id;
   @override
@@ -428,6 +451,7 @@ class PleromaApiStatus extends IPleromaApiStatus {
   static PleromaApiStatus fromJson(Map<String, dynamic> json) =>
       _$PleromaApiStatusFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiStatusToJson(this);
 
   @override
@@ -714,14 +738,14 @@ class PleromaApiPostStatusPoll implements IPleromaApiPostStatusPoll {
           expiresInSeconds == other.expiresInSeconds &&
           hideTotals == other.hideTotals &&
           multiple == other.multiple &&
-          options == other.options;
+          listEquals(options, other.options);
 
   @override
   int get hashCode =>
       expiresInSeconds.hashCode ^
       hideTotals.hashCode ^
       multiple.hashCode ^
-      options.hashCode;
+      listHash(options);
 
   @override
   String toString() {
@@ -1047,7 +1071,7 @@ extension IPleromaApiStatusEmojiReactionExtension
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PleromaApiStatusEmojiReaction implements IPleromaApiStatusEmojiReaction {
   @override
   final String name;

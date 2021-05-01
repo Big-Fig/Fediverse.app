@@ -1,5 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-
 enum MastodonApiVisibility {
   public,
   private,
@@ -62,15 +60,4 @@ extension MastodonApiVisibilityStringExtension on String {
 
     return result;
   }
-}
-
-class MastodonApiVisibilityTypeConverter
-    implements JsonConverter<MastodonApiVisibility, String> {
-  const MastodonApiVisibilityTypeConverter();
-
-  @override
-  MastodonApiVisibility fromJson(String value) => value.toMastodonApiVisibility();
-
-  @override
-  String toJson(MastodonApiVisibility value) => value.toJsonValue();
 }

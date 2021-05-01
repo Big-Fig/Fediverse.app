@@ -1,3 +1,4 @@
+import 'package:fedi/json/json_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_content_model.g.dart';
@@ -7,18 +8,19 @@ abstract class IPleromaApiContent {
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaApiContent implements IPleromaApiContent {
+class PleromaApiContent implements IPleromaApiContent, IJsonObject {
   @override
   @JsonKey(name: "text/plain")
   final String? textPlain;
 
   PleromaApiContent({
-    this.textPlain,
+    required this.textPlain,
   });
 
   static PleromaApiContent fromJson(Map<String, dynamic> json) =>
       _$PleromaApiContentFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiContentToJson(this);
 
   @override

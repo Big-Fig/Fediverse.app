@@ -1,8 +1,6 @@
 import 'package:fedi/mastodon/api/account/mastodon_api_account_model.dart';
 import 'package:fedi/mastodon/api/status/mastodon_api_status_model.dart';
 import 'package:fedi/mastodon/api/tag/mastodon_api_tag_model.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:moor/moor.dart' as moor;
 
 abstract class IMastodonApiSearchRequest {
   String get query;
@@ -13,7 +11,9 @@ abstract class IMastodonApiSearchRequest {
 
   String get minId;
 
-  MastodonSearchRequestType get type;
+  String get type;
+
+  MastodonApiSearchRequestType get typeAsMastodonApi;
 
   bool get excludeUnreviewed;
 
@@ -26,13 +26,13 @@ abstract class IMastodonApiSearchRequest {
   bool get resolve;
 }
 
-enum MastodonSearchRequestType {
+enum MastodonApiSearchRequestType {
   accounts,
   hashtags,
   statuses,
 }
 
-abstract class IMastodonSearchResult {
+abstract class IMastodonApiSearchResult {
   List<IMastodonApiAccount> get accounts;
 
   List<IMastodonApiStatus> get statuses;
@@ -44,24 +44,19 @@ const _accountsMastodonSearchRequestTypeJsonValue = "accounts";
 const _hashtagsMastodonSearchRequestTypeJsonValue = "hashtags";
 const _statusesMastodonSearchRequestTypeJsonValue = "statuses";
 
-extension MastodonSearchRequestTypeListExtension on List<MastodonSearchRequestType> {
-  List<String> toMastodonSearchRequestTypeStrings() => map(
-        (visibility) => visibility.toJsonValue(),
-  ).toList();
-}
-
-extension MastodonSearchRequestTypeExtension on MastodonSearchRequestType {
+extension MastodonApiSearchRequestTypeExtension
+    on MastodonApiSearchRequestType {
   String toJsonValue() {
     String result;
 
     switch (this) {
-      case MastodonSearchRequestType.accounts:
+      case MastodonApiSearchRequestType.accounts:
         result = _accountsMastodonSearchRequestTypeJsonValue;
         break;
-      case MastodonSearchRequestType.statuses:
+      case MastodonApiSearchRequestType.statuses:
         result = _statusesMastodonSearchRequestTypeJsonValue;
         break;
-      case MastodonSearchRequestType.hashtags:
+      case MastodonApiSearchRequestType.hashtags:
         result = _hashtagsMastodonSearchRequestTypeJsonValue;
         break;
     }
@@ -70,19 +65,19 @@ extension MastodonSearchRequestTypeExtension on MastodonSearchRequestType {
   }
 }
 
-extension MastodonSearchRequestTypeStringExtension on String {
-  MastodonSearchRequestType toMastodonSearchRequestType() {
-    MastodonSearchRequestType result;
+extension MastodonApiSearchRequestTypeStringExtension on String {
+  MastodonApiSearchRequestType toMastodonApiSearchRequestType() {
+    MastodonApiSearchRequestType result;
 
     switch (this) {
       case _statusesMastodonSearchRequestTypeJsonValue:
-        result = MastodonSearchRequestType.statuses;
+        result = MastodonApiSearchRequestType.statuses;
         break;
       case _accountsMastodonSearchRequestTypeJsonValue:
-        result = MastodonSearchRequestType.accounts;
+        result = MastodonApiSearchRequestType.accounts;
         break;
       case _hashtagsMastodonSearchRequestTypeJsonValue:
-        result = MastodonSearchRequestType.hashtags;
+        result = MastodonApiSearchRequestType.hashtags;
         break;
       default:
         throw "Invalid MastodonSearchRequestType $this";
@@ -91,24 +86,3 @@ extension MastodonSearchRequestTypeStringExtension on String {
     return result;
   }
 }
-
-class MastodonSearchRequestTypeTypeConverter
-    implements
-        JsonConverter<MastodonSearchRequestType, String?>,
-        moor.TypeConverter<MastodonSearchRequestType, String?> {
-  const MastodonSearchRequestTypeTypeConverter();
-
-  @override
-  MastodonSearchRequestType fromJson(String? value) =>
-      value!.toMastodonSearchRequestType();
-
-  @override
-  String? toJson(MastodonSearchRequestType? value) => value?.toJsonValue();
-
-  @override
-  MastodonSearchRequestType? mapToDart(String? fromDb) => fromJson(fromDb);
-
-  @override
-  String? mapToSql(MastodonSearchRequestType? value) => toJson(value);
-}
-

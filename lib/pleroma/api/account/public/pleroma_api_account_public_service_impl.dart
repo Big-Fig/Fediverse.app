@@ -22,7 +22,7 @@ class PleromaApiAccountPublicService extends BasePleromaApiService
 
   @override
   Future<PleromaApiOAuthToken> registerAccount({
-    required IPleromaApiAccountRegisterRequest request,
+    required IPleromaApiAccountPublicRegisterRequest request,
     required String? appAccessToken,
   }) async {
     var httpResponse = await restService.sendHttpRequest(

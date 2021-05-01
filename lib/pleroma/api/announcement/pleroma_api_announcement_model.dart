@@ -1,4 +1,7 @@
+import 'package:fedi/collection/collection_hash_utils.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/announcement/mastodon_api_announcements_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_announcement_model.g.dart';
@@ -9,7 +12,7 @@ abstract class IPleromaApiAnnouncementReaction
     implements IMastodonApiAnnouncementReaction {}
 
 @JsonSerializable(explicitToJson: true)
-class PleromaApiAnnouncement implements IPleromaApiAnnouncement {
+class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
   @override
   final String? id;
 
@@ -78,7 +81,7 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement {
           createdAt == other.createdAt &&
           updatedAt == other.updatedAt &&
           read == other.read &&
-          reactions == other.reactions &&
+          listEquals(reactions, other.reactions) &&
           scheduledAt == other.scheduledAt &&
           startsAt == other.startsAt &&
           endsAt == other.endsAt;
@@ -92,10 +95,38 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement {
       createdAt.hashCode ^
       updatedAt.hashCode ^
       read.hashCode ^
-      reactions.hashCode ^
+      listHash(reactions) ^
       scheduledAt.hashCode ^
       startsAt.hashCode ^
       endsAt.hashCode;
+
+  // ignore: long-parameter-list
+  PleromaApiAnnouncement copyWith({
+    String? id,
+    String? text,
+    bool? published,
+    bool? allDay,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    bool? read,
+    List<PleromaApiAnnouncementReaction>? reactions,
+    DateTime? scheduledAt,
+    DateTime? startsAt,
+    DateTime? endsAt,
+  }) =>
+      PleromaApiAnnouncement(
+        id: id ?? this.id,
+        text: text ?? this.text,
+        published: published ?? this.published,
+        allDay: allDay ?? this.allDay,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        read: read ?? this.read,
+        reactions: reactions ?? this.reactions,
+        scheduledAt: scheduledAt ?? this.scheduledAt,
+        startsAt: startsAt ?? this.startsAt,
+        endsAt: endsAt ?? this.endsAt,
+      );
 
   @override
   String toString() {
@@ -117,6 +148,7 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement {
   static PleromaApiAnnouncement fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAnnouncementFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiAnnouncementToJson(this);
 }
 

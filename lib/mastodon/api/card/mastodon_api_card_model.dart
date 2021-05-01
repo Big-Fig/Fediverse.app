@@ -1,6 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:moor/moor.dart';
-
 abstract class IMastodonApiCard {
   String? get url;
 
@@ -56,12 +53,6 @@ const _videoMastodonApiCardTypeJsonValue = "video";
 const _richMastodonApiCardTypeJsonValue = "rich";
 const _unknownMastodonApiCardTypeJsonValue = "unknown";
 
-extension MastodonApiCardTypeListExtension on List<MastodonApiCardType> {
-  List<String> toMastodonCardTypeStrings() => map(
-        (visibility) => visibility.toJsonValue(),
-      ).toList();
-}
-
 extension MastodonApiCardTypeExtension on MastodonApiCardType {
   String toJsonValue() {
     String result;
@@ -115,30 +106,4 @@ extension MastodonApiCardTypeStringExtension on String {
 
     return result;
   }
-}
-
-extension MastodonApiCardTypeStringListExtension on List<String> {
-  List<MastodonApiCardType> toPleromaVisibilities() => map(
-        (visibilityString) => visibilityString.toMastodonApiCardType(),
-      ).toList();
-}
-
-class MastodonApiCardTypeTypeConverter
-    implements
-        JsonConverter<MastodonApiCardType, String?>,
-        TypeConverter<MastodonApiCardType, String?> {
-  const MastodonApiCardTypeTypeConverter();
-
-  @override
-  MastodonApiCardType fromJson(String? value) =>
-      value?.toMastodonApiCardType() ?? unknownMastodonApiCardType;
-
-  @override
-  String? toJson(MastodonApiCardType? value) => value?.toJsonValue();
-
-  @override
-  MastodonApiCardType? mapToDart(String? fromDb) => fromJson(fromDb);
-
-  @override
-  String? mapToSql(MastodonApiCardType? value) => toJson(value);
 }

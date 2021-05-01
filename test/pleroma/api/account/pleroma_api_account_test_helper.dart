@@ -2,7 +2,9 @@ import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 
 import '../emoji/pleroma_api_emoji_test_helper.dart';
 import '../field/pleroma_api_field_test_helper.dart';
+import '../status/pleroma_api_status_test_helper.dart';
 import '../tag/pleroma_api_tag_test_helper.dart';
+
 // ignore_for_file: no-magic-number
 class PleromaApiAccountTestHelper {
   static PleromaApiAccountRelationship createTestPleromaApiAccountRelationship({
@@ -22,6 +24,18 @@ class PleromaApiAccountTestHelper {
         subscribing: seed.hashCode % 2 == 0,
         blockedBy: seed.hashCode % 2 == 1,
         note: seed + "note",
+      );
+
+  static PleromaApiAccountReport createTestPleromaApiAccountReport({
+    required String seed,
+  }) =>
+      PleromaApiAccountReport(
+        account: createTestPleromaApiAccount(seed: seed + "account"),
+        statuses: [
+          PleromaApiStatusTestHelper.createTestPleromaApiStatus(seed: seed + "1"),
+          PleromaApiStatusTestHelper.createTestPleromaApiStatus(seed: seed + "2"),
+        ],
+        user: createTestPleromaApiAccount(seed: seed + "user"),
       );
 
   static PleromaApiAccountPleromaPart createTestPleromaApiAccountPleromaPart({

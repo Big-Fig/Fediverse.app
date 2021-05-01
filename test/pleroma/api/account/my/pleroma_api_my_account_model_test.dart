@@ -7,7 +7,15 @@ import '../../../../obj/obj_test_helper.dart';
 import 'pleroma_api_my_account_test_helper.dart';
 
 void main() {
-  test('equal & hashcode & toString', () async {
+  test('PleromaApiMyAccount toPleromaApiMyAccount', () async {
+    var original = PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccount(
+      seed: "seed",
+    );
+    var obj = original.toPleromaApiMyAccount(forceNewObject: true);
+
+    expect(original, obj);
+  });
+  test('PleromaApiMyAccount equal & hashcode & toString', () async {
     ObjTestHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
           PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccount(
@@ -16,7 +24,7 @@ void main() {
     );
   });
 
-  test('toJson & fromJson', () async {
+  test('PleromaApiMyAccount toJson & fromJson', () async {
     JsonTestHelper.testFromJsonToJson(
       ({required String seed}) =>
           PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccount(
@@ -26,7 +34,7 @@ void main() {
     );
   });
 
-  test('hive save&load', () async {
+  test('PleromaApiMyAccount hive save&load', () async {
     await HiveTestHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
           PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccount(
@@ -35,13 +43,13 @@ void main() {
     );
   });
 
-  test('hive adapter', () async {
+  test('PleromaApiMyAccount hive adapter', () async {
     HiveTestHelper.testAdapter(
       () => PleromaApiMyAccountAdapter(),
     );
   });
 
-  test('copyWith', () async {
+  test('PleromaApiMyAccount copyWith', () async {
     var obj1 = PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccount(
       seed: "seed1",
     );
@@ -83,9 +91,137 @@ void main() {
     expect(obj2, obj2Obj1CopyWith);
   });
 
-  test('hive adapter', () async {
+  test('PleromaApiMyAccount hive adapter', () async {
     HiveTestHelper.testAdapter(
       () => PleromaApiMyAccountAdapter(),
+    );
+  });
+
+  test('PleromaApiMyAccountEdit equal & hashcode & toString', () async {
+    ObjTestHelper.testEqualsHashcodeToString(
+      ({required String seed}) =>
+          PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccountEdit(
+        seed: seed,
+      ),
+    );
+  });
+
+  test('PleromaApiMyAccountEdit toJson & fromJson', () async {
+    JsonTestHelper.testFromJsonToJson(
+      ({required String seed}) =>
+          PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccountEdit(
+        seed: seed,
+      ),
+      PleromaApiMyAccountEdit.fromJson,
+    );
+  });
+
+  test('PleromaApiMyAccountEdit copyWith', () async {
+    var obj1 = PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccountEdit(
+      seed: "seed1",
+    );
+    var obj2 = PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccountEdit(
+      seed: "seed2",
+    );
+
+    var obj2Obj1CopyWith = obj1.copyWith(
+      bot: obj2.bot,
+      discoverable: obj2.discoverable,
+      displayName: obj2.displayName,
+      fieldsAttributes: obj2.fieldsAttributes,
+      locked: obj2.locked,
+      note: obj2.note,
+      source: obj2.source,
+      actorType: obj2.actorType,
+      allowFollowingMove: obj2.allowFollowingMove,
+      acceptsChatMessages: obj2.acceptsChatMessages,
+      defaultScope: obj2.defaultScope,
+      hideFavorites: obj2.hideFavorites,
+      hideFollowers: obj2.hideFollowers,
+      hideFollowersCount: obj2.hideFollowersCount,
+      hideFollows: obj2.hideFollows,
+      hideFollowsCount: obj2.hideFollowsCount,
+      pleromaBackgroundImage: obj2.pleromaBackgroundImage,
+      pleromaSettingsStore: obj2.pleromaSettingsStore,
+      showRole: obj2.showRole,
+      skipThreadContainment: obj2.skipThreadContainment,
+      alsoKnownAs: obj2.alsoKnownAs,
+      noRichText: obj2.noRichText,
+    );
+
+    expect(obj1 == obj2, false);
+    expect(obj2, obj2Obj1CopyWith);
+  });
+  test('PleromaApiMyAccountPleromaPart copyWith', () async {
+    var obj1 =
+        PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccountPleromaPart(
+      seed: "seed1",
+    );
+    var obj2 =
+        PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccountPleromaPart(
+      seed: "seed2",
+    );
+
+    var obj2Obj1CopyWith = obj1.copyWith(
+      backgroundImage: obj2.backgroundImage,
+      tags: obj2.tags,
+      relationship: obj2.relationship,
+      isAdmin: obj2.isAdmin,
+      isModerator: obj2.isModerator,
+      confirmationPending: obj2.confirmationPending,
+      hideFavorites: obj2.hideFavorites,
+      hideFollowers: obj2.hideFollowers,
+      hideFollows: obj2.hideFollows,
+      hideFollowersCount: obj2.hideFollowersCount,
+      hideFollowsCount: obj2.hideFollowsCount,
+      settingsStore: obj2.settingsStore,
+      chatToken: obj2.chatToken,
+      deactivated: obj2.deactivated,
+      allowFollowingMove: obj2.allowFollowingMove,
+      unreadConversationCount: obj2.unreadConversationCount,
+      notificationSettings: obj2.notificationSettings,
+      skipThreadContainment: obj2.skipThreadContainment,
+      acceptsChatMessages: obj2.acceptsChatMessages,
+      isConfirmed: obj2.isConfirmed,
+      favicon: obj2.favicon,
+      apId: obj2.apId,
+      alsoKnownAs: obj2.alsoKnownAs,
+      unreadNotificationsCount: obj2.unreadNotificationsCount,
+    );
+
+    expect(obj1 == obj2, false);
+    expect(obj2, obj2Obj1CopyWith);
+  });
+
+  test('PleromaApiMyAccountSource hive save&load', () async {
+    await HiveTestHelper.testHiveSaveAndLoad(
+      ({required String seed}) =>
+          PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccountSource(
+        seed: seed,
+      ),
+      skipHiveInit: true,
+    );
+  });
+
+  test('PleromaApiMyAccountSource hive adapter', () async {
+    HiveTestHelper.testAdapter(
+      () => PleromaApiMyAccountSourceAdapter(),
+    );
+  });
+
+  test('PleromaApiMyAccountSourcePleromaPart hive save&load', () async {
+    await HiveTestHelper.testHiveSaveAndLoad(
+      ({required String seed}) => PleromaApiMyAccountTestHelper
+          .createTestPleromaApiMyAccountSourcePleromaPart(
+        seed: seed,
+      ),
+      skipHiveInit: true,
+    );
+  });
+
+  test('PleromaApiMyAccountSourcePleromaPart hive adapter', () async {
+    HiveTestHelper.testAdapter(
+      () => PleromaApiMyAccountSourcePleromaPartAdapter(),
     );
   });
 }

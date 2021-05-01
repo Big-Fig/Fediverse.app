@@ -10,7 +10,7 @@ class PleromaApiPollTestHelper {
         votesCount: seed.hashCode % 5,
       );
 
-  static PleromaApiPoll createTestPleromaPoll({
+  static PleromaApiPoll createTestPleromaApiPoll({
     required String seed,
   }) =>
       PleromaApiPoll(

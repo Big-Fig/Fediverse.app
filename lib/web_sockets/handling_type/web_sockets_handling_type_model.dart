@@ -13,7 +13,7 @@ const _foregroundAndBackgroundWebSocketsHandlingTypeJsonValue =
     "foregroundAndBackground";
 
 extension WebSocketsHandlingTypeListExtension on List<WebSocketsHandlingType> {
-  List<String> toWebSocketsHandlingTypeStrings() => map(
+  List<String> toJsonStrings() => map(
         (type) => type.toJsonValue(),
       ).toList();
 }
@@ -63,27 +63,29 @@ extension WebSocketsHandlingTypeStringExtension on String {
 }
 
 extension WebSocketsHandlingTypeStringListExtension on List<String> {
-  List<WebSocketsHandlingType> toPleromaVisibilities() => map(
+  List<WebSocketsHandlingType> toWebSocketsHandlingTypes() => map(
         (visibilityString) => visibilityString.toWebSocketsHandlingType(),
       ).toList();
 }
 
 class WebSocketsHandlingTypeTypeConverter
     implements
-        JsonConverter<WebSocketsHandlingType, String?>,
-        moor.TypeConverter<WebSocketsHandlingType, String?> {
+        JsonConverter<WebSocketsHandlingType, String>,
+        moor.TypeConverter<WebSocketsHandlingType, String> {
   const WebSocketsHandlingTypeTypeConverter();
 
   @override
-  WebSocketsHandlingType fromJson(String? value) =>
-      value!.toWebSocketsHandlingType();
+  WebSocketsHandlingType fromJson(String value) =>
+      value.toWebSocketsHandlingType();
 
   @override
-  String? toJson(WebSocketsHandlingType? value) => value?.toJsonValue();
+  String toJson(WebSocketsHandlingType value) => value.toJsonValue();
 
   @override
-  WebSocketsHandlingType? mapToDart(String? fromDb) => fromJson(fromDb);
+  WebSocketsHandlingType? mapToDart(String? fromDb) =>
+      fromDb != null ? fromJson(fromDb) : null;
 
   @override
-  String? mapToSql(WebSocketsHandlingType? value) => toJson(value);
+  String? mapToSql(WebSocketsHandlingType? value) =>
+      value != null ? toJson(value) : null;
 }

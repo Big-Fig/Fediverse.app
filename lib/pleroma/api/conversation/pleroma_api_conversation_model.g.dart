@@ -18,7 +18,7 @@ PleromaApiConversationPleromaPart _$PleromaApiConversationPleromaPartFromJson(
 Map<String, dynamic> _$PleromaApiConversationPleromaPartToJson(
         PleromaApiConversationPleromaPart instance) =>
     <String, dynamic>{
-      'recipients': instance.recipients,
+      'recipients': instance.recipients?.map((e) => e.toJson()).toList(),
     };
 
 PleromaApiConversation _$PleromaApiConversationFromJson(
@@ -44,8 +44,8 @@ Map<String, dynamic> _$PleromaApiConversationToJson(
         PleromaApiConversation instance) =>
     <String, dynamic>{
       'unread': instance.unread,
-      'last_status': instance.lastStatus,
+      'last_status': instance.lastStatus?.toJson(),
       'id': instance.id,
-      'accounts': instance.accounts,
-      'pleroma': instance.pleroma,
+      'accounts': instance.accounts.map((e) => e.toJson()).toList(),
+      'pleroma': instance.pleroma?.toJson(),
     };

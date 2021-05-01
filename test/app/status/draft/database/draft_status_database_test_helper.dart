@@ -29,10 +29,10 @@ class DraftStatusDatabaseTestHelper {
             seed + "2",
           ],
           mediaAttachments: [
-            PleromaApiMediaTestHelper.createTestPleromaMediaAttachment(
+            PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
               seed: seed + "1",
             ),
-            PleromaApiMediaTestHelper.createTestPleromaMediaAttachment(
+            PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
               seed: seed + "2",
             ),
           ],

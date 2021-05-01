@@ -1,4 +1,5 @@
 import 'package:fedi/collection/collection_hash_utils.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/tag/mastodon_api_tag_model.dart';
 import 'package:fedi/pleroma/api/tag/history/pleroma_api_tag_history_model.dart';
 import 'package:flutter/foundation.dart';
@@ -45,7 +46,7 @@ extension IPleromaApiTagListExtension on List<IPleromaApiTag> {
 //@HiveType()
 @HiveType(typeId: -32 + 74)
 @JsonSerializable(explicitToJson: true)
-class PleromaApiTag implements IPleromaApiTag {
+class PleromaApiTag implements IPleromaApiTag, IJsonObject {
   @override
   @HiveField(0)
   final String name;
@@ -71,6 +72,7 @@ class PleromaApiTag implements IPleromaApiTag {
   static PleromaApiTag fromJson(Map<String, dynamic> json) =>
       _$PleromaApiTagFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiTagToJson(this);
 
   @override

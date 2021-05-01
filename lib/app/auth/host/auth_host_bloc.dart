@@ -27,7 +27,7 @@ abstract class IAuthHostBloc extends IDisposable {
   Future<AuthInstance?> launchLoginToAccount();
 
   Future<AuthHostRegistrationResult> registerAccount({
-    required IPleromaApiAccountRegisterRequest request,
+    required IPleromaApiAccountPublicRegisterRequest request,
   });
 
   Future checkApplicationRegistration();

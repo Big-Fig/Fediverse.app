@@ -1,3 +1,4 @@
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/card/mastodon_api_card_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -6,8 +7,8 @@ part 'pleroma_api_card_model.g.dart';
 abstract class IPleromaApiCard implements IMastodonApiCard {}
 
 extension IPleromaApiCardExtension on IPleromaApiCard {
-  PleromaApiCard toPleromaApiCard() {
-    if (this is PleromaApiCard) {
+  PleromaApiCard toPleromaApiCard({bool forceNewObject = false}) {
+    if (this is PleromaApiCard && !forceNewObject) {
       return this as PleromaApiCard;
     } else {
       return PleromaApiCard(
@@ -30,7 +31,7 @@ extension IPleromaApiCardExtension on IPleromaApiCard {
 }
 
 @JsonSerializable()
-class PleromaApiCard implements IPleromaApiCard {
+class PleromaApiCard implements IPleromaApiCard, IJsonObject {
   @override
   @JsonKey(name: "author_name")
   final String? authorName;
@@ -113,6 +114,7 @@ class PleromaApiCard implements IPleromaApiCard {
   static PleromaApiCard fromJson(Map<String, dynamic> json) =>
       _$PleromaApiCardFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiCardToJson(this);
 
   @override

@@ -1,3 +1,4 @@
+import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -5,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'pleroma_api_push_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class PleromaApiPushSubscribeRequest {
+class PleromaApiPushSubscribeRequest implements IJsonObject {
   final PleromaApiPushSubscribeData? data;
   final PleromaApiPushSubscribeRequestSubscription? subscription;
 
@@ -36,6 +37,7 @@ class PleromaApiPushSubscribeRequest {
   static PleromaApiPushSubscribeRequest fromJson(Map<String, dynamic> json) =>
       _$PleromaApiPushSubscribeRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiPushSubscribeRequestToJson(this);
 }
 
@@ -272,8 +274,10 @@ class PleromaApiPushSubscriptionKeys {
 
   @override
   String toString() {
-    return 'PleromaApiPushSubscriptionKeys{p256dh: $p256dh,'
-        ' auth: $auth}';
+    return 'PleromaApiPushSubscriptionKeys{'
+        'p256dh: $p256dh, '
+        'auth: $auth'
+        '}';
   }
 
   static PleromaApiPushSubscriptionKeys fromJson(Map<String, dynamic> json) =>
@@ -288,7 +292,7 @@ class PleromaApiPushSubscriptionKeys {
 //@HiveType()
 @HiveType(typeId: -32 + 56)
 @JsonSerializable()
-class PleromaApiPushMessageBody {
+class PleromaApiPushMessageBody implements IJsonObject {
   @HiveField(0)
   @JsonKey(name: "notification_id")
   final String notificationId;
@@ -310,6 +314,7 @@ class PleromaApiPushMessageBody {
   static PleromaApiPushMessageBody fromJson(Map<String, dynamic> json) =>
       _$PleromaApiPushMessageBodyFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiPushMessageBodyToJson(this);
 
   @override

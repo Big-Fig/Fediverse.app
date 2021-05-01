@@ -1,4 +1,7 @@
+import 'package:fedi/collection/collection_hash_utils.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/emoji/mastodon_api_emoji_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -16,8 +19,8 @@ abstract class IPleromaApiCustomEmoji {
 }
 
 extension IPleromaApiEmojiExtension on IPleromaApiEmoji {
-  PleromaApiEmoji toPleromaApiEmoji() {
-    if (this is PleromaApiEmoji) {
+  PleromaApiEmoji toPleromaApiEmoji({bool forceNewObject = false}) {
+    if (this is PleromaApiEmoji && !forceNewObject) {
       return this as PleromaApiEmoji;
     } else {
       return PleromaApiEmoji(
@@ -32,12 +35,12 @@ extension IPleromaApiEmojiExtension on IPleromaApiEmoji {
 }
 
 extension IPleromaEmojiListExtension on List<IPleromaApiEmoji> {
-  List<PleromaApiEmoji> toPleromaApiEmojis() {
-    if (this is List<PleromaApiEmoji>) {
+  List<PleromaApiEmoji> toPleromaApiEmojis({bool forceNewObject = false}) {
+    if (this is List<PleromaApiEmoji> && !forceNewObject) {
       return this as List<PleromaApiEmoji>;
     } else {
       return map(
-        (emoji) => emoji.toPleromaApiEmoji(),
+        (emoji) => emoji.toPleromaApiEmoji(forceNewObject: forceNewObject),
       ).toList();
     }
   }
@@ -49,7 +52,7 @@ extension IPleromaEmojiListExtension on List<IPleromaApiEmoji> {
 //@HiveType()
 @HiveType(typeId: -32 + 38)
 @JsonSerializable()
-class PleromaApiEmoji implements IPleromaApiEmoji {
+class PleromaApiEmoji implements IPleromaApiEmoji, IJsonObject {
   @override
   @HiveField(0)
   final String? shortcode;
@@ -109,6 +112,7 @@ class PleromaApiEmoji implements IPleromaApiEmoji {
   static PleromaApiEmoji fromJson(Map<String, dynamic> json) =>
       _$PleromaApiEmojiFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiEmojiToJson(this);
 }
 
@@ -118,7 +122,7 @@ class PleromaApiEmoji implements IPleromaApiEmoji {
 //@HiveType()
 @HiveType(typeId: -32 + 76)
 @JsonSerializable()
-class PleromaApiCustomEmoji implements IPleromaApiCustomEmoji {
+class PleromaApiCustomEmoji implements IPleromaApiCustomEmoji, IJsonObject {
   @override
   @HiveField(0)
   final List<String>? tags;
@@ -142,12 +146,12 @@ class PleromaApiCustomEmoji implements IPleromaApiCustomEmoji {
       identical(this, other) ||
       other is PleromaApiCustomEmoji &&
           runtimeType == other.runtimeType &&
-          tags == other.tags &&
+          listEquals(tags, other.tags) &&
           imageUrl == other.imageUrl &&
           name == other.name;
 
   @override
-  int get hashCode => tags.hashCode ^ imageUrl.hashCode ^ name.hashCode;
+  int get hashCode => listHash(tags) ^ imageUrl.hashCode ^ name.hashCode;
 
   @override
   String toString() {
@@ -161,5 +165,6 @@ class PleromaApiCustomEmoji implements IPleromaApiCustomEmoji {
   static PleromaApiCustomEmoji fromJson(Map<String, dynamic> json) =>
       _$PleromaApiCustomEmojiFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiCustomEmojiToJson(this);
 }

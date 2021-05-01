@@ -31,7 +31,7 @@ class PleromaApiSearchService extends BasePleromaApiService
     bool? following,
     bool? resolve,
     int? offset,
-    MastodonSearchRequestType? type,
+    MastodonApiSearchRequestType? type,
     IPleromaApiPaginationRequest? pagination,
   }) async {
     if (pagination?.limit != null) {
@@ -43,36 +43,39 @@ class PleromaApiSearchService extends BasePleromaApiService
       RestRequest.get(
         relativePath: "/api/v2/search",
         queryArgs: [
-          RestRequestQueryArg("q", query),
+          RestRequestQueryArg(
+            key: "q",
+            value: query,
+          ),
           if (type != null)
             RestRequestQueryArg(
-              "type",
-              type.toJsonValue(),
+              key: "type",
+              value: type.toJsonValue(),
             ),
           if (accountId != null)
             RestRequestQueryArg(
-              "account_id",
-              accountId,
+              key: "account_id",
+              value: accountId,
             ),
           if (excludeUnreviewed != null)
             RestRequestQueryArg(
-              "exclude_unreviewed",
-              excludeUnreviewed.toString(),
+              key: "exclude_unreviewed",
+              value: excludeUnreviewed.toString(),
             ),
           if (following != null)
             RestRequestQueryArg(
-              "following",
-              following.toString(),
+              key: "following",
+              value: following.toString(),
             ),
           if (resolve != null)
             RestRequestQueryArg(
-              "resolve",
-              resolve.toString(),
+              key: "resolve",
+              value: resolve.toString(),
             ),
           if (accountId != null)
             RestRequestQueryArg(
-              "account_id",
-              accountId,
+              key: "account_id",
+              value: accountId,
             ),
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],

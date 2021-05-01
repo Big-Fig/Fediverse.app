@@ -1,4 +1,5 @@
 import 'package:fedi/collection/collection_hash_utils.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/account/mastodon_api_account_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
@@ -49,12 +50,14 @@ abstract class IPleromaApiAccount implements IMastodonApiAccount {
 }
 
 extension IPleromaApiAccountExtension on IPleromaApiAccount {
-  PleromaApiAccount toPleromaApiAccount() {
-    if (this is PleromaApiAccount) {
+  PleromaApiAccount toPleromaApiAccount({bool forceNewObject = false}) {
+    if (this is PleromaApiAccount && !forceNewObject) {
       return this as PleromaApiAccount;
     } else {
       return PleromaApiAccount(
-        pleroma: pleroma?.toPleromaApiAccountPleromaPart(),
+        pleroma: pleroma?.toPleromaApiAccountPleromaPart(
+          forceNewObject: forceNewObject,
+        ),
         id: id,
         username: username,
         url: url,
@@ -72,8 +75,8 @@ extension IPleromaApiAccountExtension on IPleromaApiAccount {
         avatar: avatar,
         acct: acct,
         lastStatusAt: lastStatusAt,
-        fields: fields?.toPleromaApiFields(),
-        emojis: emojis?.toPleromaApiEmojis(),
+        fields: fields?.toPleromaApiFields(forceNewObject: forceNewObject),
+        emojis: emojis?.toPleromaApiEmojis(forceNewObject: forceNewObject),
         fqn: fqn,
       );
     }
@@ -81,12 +84,13 @@ extension IPleromaApiAccountExtension on IPleromaApiAccount {
 }
 
 extension IPleromaApiAccountListExtension on List<IPleromaApiAccount> {
-  List<PleromaApiAccount> toPleromaApiAccounts() {
-    if (this is List<PleromaApiAccount>) {
+  List<PleromaApiAccount> toPleromaApiAccounts({bool forceNewObject = false}) {
+    if (this is List<PleromaApiAccount> && !forceNewObject) {
       return this as List<PleromaApiAccount>;
     } else {
       return map(
-        (account) => account.toPleromaApiAccount(),
+        (account) =>
+            account.toPleromaApiAccount(forceNewObject: forceNewObject),
       ).toList();
     }
   }
@@ -101,8 +105,9 @@ abstract class IPleromaApiAccountReport {
 }
 
 extension IPleromaApiAccountReportExtension on IPleromaApiAccountReport {
-  PleromaApiAccountReport toPleromaApiAccountReport() {
-    if (this is PleromaApiAccountReport) {
+  PleromaApiAccountReport toPleromaApiAccountReport(
+      {bool forceNewObject = false}) {
+    if (this is PleromaApiAccountReport && !forceNewObject) {
       return this as PleromaApiAccountReport;
     } else {
       return PleromaApiAccountReport(
@@ -141,8 +146,7 @@ class PleromaApiAccountReport implements IPleromaApiAccountReport {
           user == other.user;
 
   @override
-  int get hashCode =>
-      account.hashCode ^ listHash(statuses) ^ user.hashCode;
+  int get hashCode => account.hashCode ^ listHash(statuses) ^ user.hashCode;
 
   @override
   String toString() => 'PleromaApiAccountReport{'
@@ -163,7 +167,7 @@ class PleromaApiAccountReport implements IPleromaApiAccountReport {
 //@HiveType()
 @HiveType(typeId: -32 + 64)
 @JsonSerializable(explicitToJson: true)
-class PleromaApiAccount implements IPleromaApiAccount {
+class PleromaApiAccount implements IPleromaApiAccount, IJsonObject {
   @override
   @HiveField(0)
   final String username;
@@ -264,6 +268,7 @@ class PleromaApiAccount implements IPleromaApiAccount {
   static PleromaApiAccount fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiAccountToJson(this);
 
   @override
@@ -369,58 +374,30 @@ class PleromaApiAccount implements IPleromaApiAccount {
     IPleromaApiAccountPleromaPart? pleroma,
     DateTime? lastStatusAt,
     String? fqn,
-  }) {
-    if ((username == null || identical(username, this.username)) &&
-        (url == null || identical(url, this.url)) &&
-        (statusesCount == null ||
-            identical(statusesCount, this.statusesCount)) &&
-        (note == null || identical(note, this.note)) &&
-        (locked == null || identical(locked, this.locked)) &&
-        (id == null || identical(id, this.id)) &&
-        (headerStatic == null || identical(headerStatic, this.headerStatic)) &&
-        (header == null || identical(header, this.header)) &&
-        (followingCount == null ||
-            identical(followingCount, this.followingCount)) &&
-        (followersCount == null ||
-            identical(followersCount, this.followersCount)) &&
-        (fields == null || identical(fields, this.fields)) &&
-        (emojis == null || identical(emojis, this.emojis)) &&
-        (displayName == null || identical(displayName, this.displayName)) &&
-        (createdAt == null || identical(createdAt, this.createdAt)) &&
-        (bot == null || identical(bot, this.bot)) &&
-        (avatarStatic == null || identical(avatarStatic, this.avatarStatic)) &&
-        (avatar == null || identical(avatar, this.avatar)) &&
-        (acct == null || identical(acct, this.acct)) &&
-        (pleroma == null || identical(pleroma, this.pleroma)) &&
-        (lastStatusAt == null || identical(lastStatusAt, this.lastStatusAt)) &&
-        (fqn == null || identical(fqn, this.fqn))) {
-      return this;
-    }
-
-    return PleromaApiAccount(
-      username: username ?? this.username,
-      url: url ?? this.url,
-      statusesCount: statusesCount ?? this.statusesCount,
-      note: note ?? this.note,
-      locked: locked ?? this.locked,
-      id: id ?? this.id,
-      headerStatic: headerStatic ?? this.headerStatic,
-      header: header ?? this.header,
-      followingCount: followingCount ?? this.followingCount,
-      followersCount: followersCount ?? this.followersCount,
-      fields: fields?.toPleromaApiFields() ?? this.fields,
-      emojis: emojis?.toPleromaApiEmojis() ?? this.emojis,
-      displayName: displayName ?? this.displayName,
-      createdAt: createdAt ?? this.createdAt,
-      bot: bot ?? this.bot,
-      avatarStatic: avatarStatic ?? this.avatarStatic,
-      avatar: avatar ?? this.avatar,
-      acct: acct ?? this.acct,
-      pleroma: pleroma?.toPleromaApiAccountPleromaPart() ?? this.pleroma,
-      lastStatusAt: lastStatusAt ?? this.lastStatusAt,
-      fqn: fqn ?? this.fqn,
-    );
-  }
+  }) =>
+      PleromaApiAccount(
+        username: username ?? this.username,
+        url: url ?? this.url,
+        statusesCount: statusesCount ?? this.statusesCount,
+        note: note ?? this.note,
+        locked: locked ?? this.locked,
+        id: id ?? this.id,
+        headerStatic: headerStatic ?? this.headerStatic,
+        header: header ?? this.header,
+        followingCount: followingCount ?? this.followingCount,
+        followersCount: followersCount ?? this.followersCount,
+        fields: fields?.toPleromaApiFields() ?? this.fields,
+        emojis: emojis?.toPleromaApiEmojis() ?? this.emojis,
+        displayName: displayName ?? this.displayName,
+        createdAt: createdAt ?? this.createdAt,
+        bot: bot ?? this.bot,
+        avatarStatic: avatarStatic ?? this.avatarStatic,
+        avatar: avatar ?? this.avatar,
+        acct: acct ?? this.acct,
+        pleroma: pleroma?.toPleromaApiAccountPleromaPart() ?? this.pleroma,
+        lastStatusAt: lastStatusAt ?? this.lastStatusAt,
+        fqn: fqn ?? this.fqn,
+      );
 }
 
 abstract class IPleromaApiAccountPleromaPart {
@@ -487,14 +464,17 @@ abstract class IPleromaApiAccountPleromaPart {
 
 extension IPleromaApiAccountPleromaPartExtension
     on IPleromaApiAccountPleromaPart {
-  PleromaApiAccountPleromaPart toPleromaApiAccountPleromaPart() {
-    if (this is PleromaApiAccountPleromaPart) {
+  PleromaApiAccountPleromaPart toPleromaApiAccountPleromaPart(
+      {bool forceNewObject = false}) {
+    if (this is PleromaApiAccountPleromaPart && !forceNewObject) {
       return this as PleromaApiAccountPleromaPart;
     } else {
       return PleromaApiAccountPleromaPart(
         backgroundImage: backgroundImage,
         tags: tags,
-        relationship: relationship,
+        relationship: relationship?.toPleromaApiAccountRelationship(
+          forceNewObject: forceNewObject,
+        ),
         isAdmin: isAdmin,
         isModerator: isModerator,
         confirmationPending: confirmationPending,
@@ -522,7 +502,8 @@ extension IPleromaApiAccountPleromaPartExtension
 //@HiveType()
 @HiveType(typeId: -32 + 75)
 @JsonSerializable(explicitToJson: true)
-class PleromaApiAccountPleromaPart implements IPleromaApiAccountPleromaPart {
+class PleromaApiAccountPleromaPart
+    implements IPleromaApiAccountPleromaPart, IJsonObject {
   // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
   @override
   @HiveField(1)
@@ -636,6 +617,7 @@ class PleromaApiAccountPleromaPart implements IPleromaApiAccountPleromaPart {
   static PleromaApiAccountPleromaPart fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountPleromaPartFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiAccountPleromaPartToJson(this);
 
   @override
@@ -778,8 +760,9 @@ abstract class IPleromaApiAccountRelationship
 
 extension IPleromaApiAccountRelationshipExtension
     on IPleromaApiAccountRelationship {
-  PleromaApiAccountRelationship toPleromaApiAccountRelationship() {
-    if (this is PleromaApiAccountRelationship) {
+  PleromaApiAccountRelationship toPleromaApiAccountRelationship(
+      {bool forceNewObject = false}) {
+    if (this is PleromaApiAccountRelationship && !forceNewObject) {
       return this as PleromaApiAccountRelationship;
     } else {
       return PleromaApiAccountRelationship(
@@ -807,7 +790,8 @@ extension IPleromaApiAccountRelationshipExtension
 //@HiveType()
 @HiveType(typeId: -32 + 42)
 @JsonSerializable()
-class PleromaApiAccountRelationship implements IPleromaApiAccountRelationship {
+class PleromaApiAccountRelationship
+    implements IPleromaApiAccountRelationship, IJsonObject {
   @override
   @HiveField(1)
   final bool? blocking;
@@ -962,6 +946,7 @@ class PleromaApiAccountRelationship implements IPleromaApiAccountRelationship {
   static PleromaApiAccountRelationship fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountRelationshipFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiAccountRelationshipToJson(this);
 }
 
@@ -1011,9 +996,7 @@ class PleromaApiAccountIdentityProof extends IPleromaApiAccountIdentityProof {
 }
 
 abstract class IPleromaApiAccountReportRequest
-    implements IMastodonApiAccountReportRequest {
-  Map<String, dynamic> toJson();
-}
+    implements IMastodonApiAccountReportRequest, IJsonObject {}
 
 @JsonSerializable(
   explicitToJson: true,
@@ -1043,20 +1026,20 @@ class PleromaApiAccountReportRequest
           accountId == other.accountId &&
           comment == other.comment &&
           forward == other.forward &&
-          statusIds == other.statusIds;
+          listEquals(statusIds, other.statusIds);
 
   @override
   int get hashCode =>
       accountId.hashCode ^
       comment.hashCode ^
       forward.hashCode ^
-      statusIds.hashCode;
+      listHash(statusIds);
 
   PleromaApiAccountReportRequest({
     required this.accountId,
-    this.comment,
-    this.forward,
-    this.statusIds,
+    required this.comment,
+    required this.forward,
+    required this.statusIds,
   });
 
   static PleromaApiAccountReportRequest fromJson(Map<String, dynamic> json) =>

@@ -12,7 +12,7 @@ abstract class IPleromaApiSearchService implements IPleromaApi {
   Future<IPleromaApiSearchResult> search({
     required String query,
     String? accountId,
-    MastodonSearchRequestType? type,
+    MastodonApiSearchRequestType? type,
     bool? excludeUnreviewed,
     bool? following,
     bool? resolve,
