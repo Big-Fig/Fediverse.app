@@ -7,7 +7,7 @@ import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc_impl
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc.dart';
 import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc_impl.dart';
@@ -41,7 +41,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   @override
   late List<IFormItemBloc> currentItems = [];
 
-  late TimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
+  late TimelineLocalPreferenceBloc timelineLocalPreferencesBloc;
 
   @override
   late ITimelineSettingsBloc timelineSettingsBloc;
@@ -107,12 +107,12 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     );
   }
 
-  TimelineLocalPreferencesBloc _createTimelineLocalPreferencesBloc({
+  TimelineLocalPreferenceBloc _createTimelineLocalPreferencesBloc({
     required ILocalPreferencesService localPreferencesService,
     required String timelineId,
     required TimelineType startType,
   }) {
-    return TimelineLocalPreferencesBloc.byId(
+    return TimelineLocalPreferenceBloc.byId(
       localPreferencesService,
       userAtHost: authInstance.userAtHost,
       timelineId: timelineId,

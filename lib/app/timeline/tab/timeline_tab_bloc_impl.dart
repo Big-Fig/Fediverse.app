@@ -9,8 +9,8 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -32,7 +32,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   late TimelineStatusCachedListBloc statusCachedListBloc;
   late IStatusCachedPaginationBloc statusCachedPaginationBloc;
   @override
-  late ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
+  late ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc;
 
   @override
   late ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>,
@@ -68,7 +68,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   }) {
     _logger.finest(() => "TimelineTabBloc timelineId $timelineId");
 
-    timelineLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
+    timelineLocalPreferencesBloc = TimelineLocalPreferenceBloc.byId(
       preferencesService,
       userAtHost: currentAuthInstanceBloc.currentInstance!.userAtHost,
       timelineId: timelineId,

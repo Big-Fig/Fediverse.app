@@ -4,8 +4,8 @@ import 'package:fedi/app/cache/database/limit/age/database_cache_age_limit_model
 import 'package:fedi/app/cache/database/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc_impl.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_model.dart';
-import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -14,9 +14,9 @@ import 'database_cache_settings_model_test_helper.dart';
 // ignore_for_file: no-magic-number
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
-  late GlobalDatabaseCacheSettingsLocalPreferencesBloc
+  late GlobalDatabaseCacheSettingsLocalPreferenceBloc
       globalDatabaseCacheSettingsLocalPreferencesBloc;
-  late InstanceDatabaseCacheSettingsLocalPreferencesBloc
+  late InstanceDatabaseCacheSettingsLocalPreferenceBloc
       instanceDatabaseCacheSettingsLocalPreferencesBloc;
   late DatabaseCacheSettingsBloc databaseCacheSettingsBloc;
 
@@ -27,14 +27,14 @@ void main() {
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
     globalDatabaseCacheSettingsLocalPreferencesBloc =
-        GlobalDatabaseCacheSettingsLocalPreferencesBloc(
+        GlobalDatabaseCacheSettingsLocalPreferenceBloc(
       memoryLocalPreferencesService,
     );
 
     await globalDatabaseCacheSettingsLocalPreferencesBloc.performAsyncInit();
 
     instanceDatabaseCacheSettingsLocalPreferencesBloc =
-        InstanceDatabaseCacheSettingsLocalPreferencesBloc(
+        InstanceDatabaseCacheSettingsLocalPreferenceBloc(
       memoryLocalPreferencesService,
       userAtHost: 'user@host',
     );
@@ -74,7 +74,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 100));
 
     var defaultValue =
-        GlobalDatabaseCacheSettingsLocalPreferencesBloc.defaultValue;
+        GlobalDatabaseCacheSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.ageLimitType,
@@ -139,7 +139,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 100));
 
     var defaultValue =
-        GlobalDatabaseCacheSettingsLocalPreferencesBloc.defaultValue;
+        GlobalDatabaseCacheSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.entriesCountByTypeLimitType,

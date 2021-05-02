@@ -2,16 +2,16 @@ import 'package:fedi/app/cache/database/limit/age/database_cache_age_limit_model
 import 'package:fedi/app/cache/database/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_model.dart';
-import 'package:fedi/app/cache/database/settings/local_preferences/database_cache_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/database_cache_settings_local_preference_bloc.dart';
+import 'package:fedi/app/settings/global_or_instance/local_preferences/global_or_instance_settings_bloc_local_preference_impl.dart';
 
 class DatabaseCacheSettingsBloc
-    extends GlobalOrInstanceSettingsLocalPreferencesBloc<DatabaseCacheSettings>
+    extends GlobalOrInstanceSettingsLocalPreferenceBloc<DatabaseCacheSettings>
     implements IDatabaseCacheSettingsBloc {
   DatabaseCacheSettingsBloc({
-    required IDatabaseCacheSettingsLocalPreferencesBloc<DatabaseCacheSettings>
+    required IDatabaseCacheSettingsLocalPreferenceBloc<DatabaseCacheSettings>
         globalLocalPreferencesBloc,
-    required IDatabaseCacheSettingsLocalPreferencesBloc<DatabaseCacheSettings?>
+    required IDatabaseCacheSettingsLocalPreferenceBloc<DatabaseCacheSettings?>
         instanceLocalPreferencesBloc,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,

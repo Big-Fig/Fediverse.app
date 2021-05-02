@@ -1,7 +1,7 @@
 
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
-import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
+import 'package:fedi/app/home/tab/timelines/storage/local_preferences/timelines_home_tab_storage_local_preference_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_page.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
@@ -19,7 +19,7 @@ import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_tab_controller_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_tab_controller_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_text_tab_indicator_item_widget.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
@@ -62,7 +62,7 @@ class TimelinesHomeTabPage extends StatelessWidget {
     _logger.finest(() => "build");
 
     var timelinesHomeTabStorageLocalPreferencesBloc =
-        ITimelinesHomeTabStorageLocalPreferencesBloc.of(context);
+        ITimelinesHomeTabStorageLocalPreferenceBloc.of(context);
 
     return StreamBuilder<TimelinesHomeTabStorage?>(
       stream: timelinesHomeTabStorageLocalPreferencesBloc.stream,
@@ -225,7 +225,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
 
     return Provider<ITimelineTabBloc>.value(
       value: tabBloc,
-      child: ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferencesBloc>(
+      child: ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferenceBloc>(
         update: (context, value, previous) =>
             value.timelineLocalPreferencesBloc,
         // value: tabBloc.timelineLocalPreferencesBloc,

@@ -8,13 +8,13 @@ import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_sett
 import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preferences/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/recent/local_preferences/emoji_picker_recent_category_local_preference_bloc_impl.dart';
-import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/localization/settings/local_preference/global/global_localization_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/home/tab/timelines/storage/local_preferences/timelines_home_tab_storage_local_preference_bloc_impl.dart';
+import 'package:fedi/app/localization/settings/local_preferences/global/global_localization_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/instance/instance_pagination_settings_local_preference_bloc_impl.dart';
-import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc_impl.dart';
@@ -22,7 +22,7 @@ import 'package:fedi/app/status/post/settings/local_preferences/global/global_po
 import 'package:fedi/app/status/post/settings/local_preferences/instance/instance_post_status_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preference_bloc_impl.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preference_bloc_impl.dart';
@@ -67,7 +67,7 @@ class FediLocalPreferencesServiceMigrationBloc
           .addAll(calculateUserAtHostLocalPreferencesBlocCreators(userAtHost));
 
       var timelinesHomeTabStorageLocalPreferencesBloc =
-          TimelinesHomeTabStorageLocalPreferencesBloc(
+          TimelinesHomeTabStorageLocalPreferenceBloc(
         inputService,
         userAtHost: userAtHost,
       );
@@ -75,7 +75,7 @@ class FediLocalPreferencesServiceMigrationBloc
 
       authInstancesBlocCreators.addAll(
         timelinesHomeTabStorageLocalPreferencesBloc.value.timelineIds.map(
-              (timelineId) => (lps) => TimelineLocalPreferencesBloc.byId(
+              (timelineId) => (lps) => TimelineLocalPreferenceBloc.byId(
                     lps,
                     userAtHost: userAtHost,
                     timelineId: timelineId,
@@ -119,11 +119,11 @@ class FediLocalPreferencesServiceMigrationBloc
             (lps) => MyAccountLocalPreferenceBloc(lps, userAtHost: userAtHost),
             (lps) =>
                 RecentSearchLocalPreferenceBloc(lps, userAtHost: userAtHost),
-            (lps) => FcmPushPermissionAskedLocalPreferencesBloc(
+            (lps) => FcmPushPermissionAskedLocalPreferenceBloc(
                   lps,
                   userAtHost: userAtHost,
                 ),
-            (lps) => TimelinesHomeTabStorageLocalPreferencesBloc(
+            (lps) => TimelinesHomeTabStorageLocalPreferenceBloc(
                   lps,
                   userAtHost: userAtHost,
                 ),

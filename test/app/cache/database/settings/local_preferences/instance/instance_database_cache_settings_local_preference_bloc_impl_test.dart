@@ -1,5 +1,5 @@
 import 'package:fedi/app/cache/database/settings/database_cache_settings_model.dart';
-import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preference_bloc_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../../../local_preferences/local_preferences_test_helper.dart';
@@ -10,11 +10,11 @@ import '../../database_cache_settings_model_test_helper.dart';
 void main() {
   test('save & load', () async {
     await LocalPreferencesTestHelper.testSaveAndLoad<DatabaseCacheSettings,
-        InstanceDatabaseCacheSettingsLocalPreferencesBloc>(
+        InstanceDatabaseCacheSettingsLocalPreferenceBloc>(
       defaultValue:
-          InstanceDatabaseCacheSettingsLocalPreferencesBloc.defaultValue,
+          InstanceDatabaseCacheSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
-          InstanceDatabaseCacheSettingsLocalPreferencesBloc(
+          InstanceDatabaseCacheSettingsLocalPreferenceBloc(
         localPreferencesService,
         userAtHost: 'user@host',
       ),

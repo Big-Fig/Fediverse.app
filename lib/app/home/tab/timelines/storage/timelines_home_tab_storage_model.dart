@@ -1,5 +1,7 @@
 import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/json/json_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -44,7 +46,7 @@ class TimelinesHomeTabStorage implements IJsonObject {
   @JsonKey(name: "timeline_ids")
   final List<String> timelineIds;
 
-  TimelinesHomeTabStorage({
+  const TimelinesHomeTabStorage({
     required this.timelineIds,
   });
 
@@ -53,10 +55,10 @@ class TimelinesHomeTabStorage implements IJsonObject {
       identical(this, other) ||
       other is TimelinesHomeTabStorage &&
           runtimeType == other.runtimeType &&
-          timelineIds == other.timelineIds;
+          listEquals(timelineIds, other.timelineIds);
 
   @override
-  int get hashCode => timelineIds.hashCode;
+  int get hashCode => listHash(timelineIds);
 
   TimelinesHomeTabStorage copyWith({
     List<String>? timelineIds,

@@ -10,8 +10,8 @@ import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_ti
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/dialog/actions/fedi_actions_dialog.dart';
@@ -167,10 +167,10 @@ MaterialPageRoute createHashtagPageRoute({
 
   return MaterialPageRoute(
     builder: (context) {
-      return DisposableProvider<ITimelineLocalPreferencesBloc>(
+      return DisposableProvider<ITimelineLocalPreferenceBloc>(
         create: (context) {
           var timelineLocalPreferencesBloc =
-              TimelineLocalPreferencesBloc.hashtag(
+              TimelineLocalPreferenceBloc.hashtag(
             ILocalPreferencesService.of(context, listen: false),
             userAtHost: currentAuthInstanceBloc.currentInstance!.userAtHost,
             hashtag: hashtag,
@@ -196,7 +196,7 @@ class _HashtagPageWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     var hashtag = Provider.of<IHashtag>(context);
     return FediAsyncInitLoadingWidget(
-      asyncInitLoadingBloc: ITimelineLocalPreferencesBloc.of(
+      asyncInitLoadingBloc: ITimelineLocalPreferenceBloc.of(
         context,
         listen: false,
       ),
@@ -207,7 +207,7 @@ class _HashtagPageWrapper extends StatelessWidget {
                 TimelineStatusCachedListBloc.createFromContext(
               context,
               webSocketsListenType: WebSocketsListenType.foreground,
-              timelineLocalPreferencesBloc: ITimelineLocalPreferencesBloc.of(
+              timelineLocalPreferencesBloc: ITimelineLocalPreferenceBloc.of(
                 context,
                 listen: false,
               ),

@@ -1,5 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-
 enum PendingState {
   notSentYet,
   published,
@@ -59,14 +57,4 @@ extension PendingStateStringExtension on String {
 
     return result;
   }
-}
-
-class PendingStateTypeConverter implements JsonConverter<PendingState, String> {
-  const PendingStateTypeConverter();
-
-  @override
-  PendingState fromJson(String value) => value.toPendingState();
-
-  @override
-  String toJson(PendingState value) => value.toJsonValue();
 }

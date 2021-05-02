@@ -11,7 +11,7 @@ import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
@@ -39,7 +39,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
-  final ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
+  final ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final IMyAccountBloc myAccountBloc;
 
@@ -364,7 +364,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   static TimelineStatusCachedListBloc createFromContext(
     BuildContext context, {
     required WebSocketsListenType webSocketsListenType,
-    required ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc,
+    required ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc,
   }) =>
       TimelineStatusCachedListBloc(
         pleromaAccountService: IPleromaApiAccountService.of(

@@ -1,4 +1,4 @@
-import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preferences_bloc.dart';
+import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preference_bloc.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -11,7 +11,7 @@ final _logger = Logger("fcm_push_permission_checker_bloc_impl.dart");
 class FcmPushPermissionCheckerBloc extends DisposableOwner
     implements IFcmPushPermissionCheckerBloc {
   final IFcmPushService fcmPushService;
-  final IFcmPushPermissionAskedLocalPreferencesBloc
+  final IFcmPushPermissionAskedLocalPreferenceBloc
       fcmPushPermissionAskedLocalPreferencesBloc;
   final IPushSettingsBloc pushSettingsBloc;
 

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:fedi/app/push/settings/push_settings_model.dart';
-import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
+import 'package:fedi/app/settings/global_or_instance/local_preferences/global_or_instance_settings_bloc_local_preference_impl.dart';
 import 'package:fedi/app/toast/handling_type/toast_handling_type_model.dart';
 import 'package:fedi/app/toast/settings/local_preferences/toast_settings_local_preference_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
@@ -12,7 +12,7 @@ import 'package:logging/logging.dart';
 final _logger = Logger("toast_settings_bloc_impl.dart");
 
 class ToastSettingsBloc
-    extends GlobalOrInstanceSettingsLocalPreferencesBloc<ToastSettings>
+    extends GlobalOrInstanceSettingsLocalPreferenceBloc<ToastSettings>
     implements IToastSettingsBloc {
   ToastSettingsBloc({
     required IToastSettingsLocalPreferenceBloc<ToastSettings>

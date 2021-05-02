@@ -1,6 +1,6 @@
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -16,7 +16,7 @@ abstract class ITimelineTabBloc implements IAsyncInitLoadingBloc, IDisposable {
 
   Timeline get timeline;
 
-  ITimelineLocalPreferencesBloc get timelineLocalPreferencesBloc;
+  ITimelineLocalPreferenceBloc get timelineLocalPreferencesBloc;
 
   String get timelineId;
 
