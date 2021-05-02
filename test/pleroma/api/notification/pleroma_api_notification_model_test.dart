@@ -17,6 +17,23 @@ void main() {
       expect(value, objFromJsonValue);
     }
   });
+  test('PleromaApiNotificationType valuesWithoutSelected', () async {
+    expect(
+      [
+        PleromaApiNotificationType.favourite,
+        PleromaApiNotificationType.follow,
+        PleromaApiNotificationType.reblog,
+      ].valuesWithoutSelected(
+        [
+          PleromaApiNotificationType.reblog,
+          PleromaApiNotificationType.follow,
+        ],
+      ),
+      [
+        PleromaApiNotificationType.favourite,
+      ],
+    );
+  });
 
   test('PleromaApiNotification equal & hashcode & toString', () async {
     ObjTestHelper.testEqualsHashcodeToString(

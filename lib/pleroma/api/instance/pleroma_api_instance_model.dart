@@ -71,7 +71,8 @@ extension IPleromaApiInstanceExtension on IPleromaApiInstance {
 }
 
 @JsonSerializable()
-class PleromaApiInstanceHistory extends IPleromaApiInstanceHistory {
+class PleromaApiInstanceHistory extends IPleromaApiInstanceHistory
+    implements IJsonObject {
   @override
   final String? logins;
 
@@ -121,6 +122,7 @@ class PleromaApiInstanceHistory extends IPleromaApiInstanceHistory {
   static PleromaApiInstanceHistory fromJson(Map<String, dynamic> json) =>
       _$PleromaApiInstanceHistoryFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiInstanceHistoryToJson(this);
 }
 
@@ -157,7 +159,7 @@ abstract class IPleromaApiInstance extends IMastodonApiInstance {
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 58)
-class PleromaApiInstancePleromaPart {
+class PleromaApiInstancePleromaPart implements IJsonObject {
   @HiveField(0)
   final PleromaApiInstancePleromaPartMetadata? metadata;
 
@@ -183,6 +185,7 @@ class PleromaApiInstancePleromaPart {
   static PleromaApiInstancePleromaPart fromJson(Map<String, dynamic> json) =>
       _$PleromaApiInstancePleromaPartFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiInstancePleromaPartToJson(this);
 }
 
@@ -192,7 +195,7 @@ class PleromaApiInstancePleromaPart {
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 72)
-class PleromaApiInstancePleromaPartMetadataFieldLimits {
+class PleromaApiInstancePleromaPartMetadataFieldLimits implements IJsonObject {
   @HiveField(0)
   @JsonKey(name: "max_fields")
   final int? maxFields;
@@ -218,6 +221,7 @@ class PleromaApiInstancePleromaPartMetadataFieldLimits {
   ) =>
       _$PleromaApiInstancePleromaPartMetadataFieldLimitsFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() =>
       _$PleromaApiInstancePleromaPartMetadataFieldLimitsToJson(this);
 
@@ -251,7 +255,8 @@ class PleromaApiInstancePleromaPartMetadataFieldLimits {
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: -32 + 98)
-class PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge {
+class PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge
+    implements IJsonObject {
   @HiveField(0)
   final int? threshold;
   @HiveField(1)
@@ -287,13 +292,14 @@ class PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge {
       _$PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeFromJson(
           json);
 
+  @override
   Map<String, dynamic> toJson() =>
       _$PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: -32 + 99)
-class PleromaApiInstancePleromaPartMetadataFederation {
+class PleromaApiInstancePleromaPartMetadataFederation implements IJsonObject {
   @HiveField(0)
   final bool? enabled;
   @HiveField(1)
@@ -352,6 +358,7 @@ class PleromaApiInstancePleromaPartMetadataFederation {
   ) =>
       _$PleromaApiInstancePleromaPartMetadataFederationFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() =>
       _$PleromaApiInstancePleromaPartMetadataFederationToJson(this);
 }
@@ -362,7 +369,7 @@ class PleromaApiInstancePleromaPartMetadataFederation {
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 60)
-class PleromaApiInstancePleromaPartMetadata {
+class PleromaApiInstancePleromaPartMetadata implements IJsonObject {
   @HiveField(0)
   final List<String>? features;
 
@@ -421,6 +428,7 @@ class PleromaApiInstancePleromaPartMetadata {
   ) =>
       _$PleromaApiInstancePleromaPartMetadataFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() =>
       _$PleromaApiInstancePleromaPartMetadataToJson(this);
 }

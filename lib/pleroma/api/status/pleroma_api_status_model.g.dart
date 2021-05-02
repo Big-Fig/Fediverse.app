@@ -241,7 +241,7 @@ PleromaApiPostStatus _$PleromaApiPostStatusFromJson(Map<String, dynamic> json) {
     sensitive: json['sensitive'] as bool,
     spoilerText: json['spoiler_text'] as String?,
     status: json['status'] as String?,
-    to: (json['to'] as List<dynamic>?)?.map((e) => e as String?).toList(),
+    to: (json['to'] as List<dynamic>?)?.map((e) => e as String).toList(),
   );
 }
 
@@ -263,7 +263,7 @@ Map<String, dynamic> _$PleromaApiPostStatusToJson(
   val['language'] = instance.language;
   val['visibility'] = instance.visibility;
   val['media_ids'] = instance.mediaIds;
-  val['poll'] = instance.poll;
+  val['poll'] = instance.poll?.toJson();
   val['preview'] = instance.preview;
   val['sensitive'] = instance.sensitive;
   val['spoiler_text'] = instance.spoilerText;
@@ -291,8 +291,9 @@ PleromaApiScheduleStatus _$PleromaApiScheduleStatusFromJson(
     sensitive: json['sensitive'] as bool,
     spoilerText: json['spoiler_text'] as String?,
     status: json['status'] as String?,
-    to: (json['to'] as List<dynamic>?)?.map((e) => e as String?).toList(),
-    scheduledAt: DateTime.parse(json['scheduled_at'] as String),
+    to: (json['to'] as List<dynamic>?)?.map((e) => e as String).toList(),
+    scheduledAt: PleromaApiScheduleStatus.fromUTCIsoString(
+        json['scheduled_at'] as String),
   );
 }
 
@@ -306,7 +307,7 @@ Map<String, dynamic> _$PleromaApiScheduleStatusToJson(
       'language': instance.language,
       'visibility': instance.visibility,
       'media_ids': instance.mediaIds,
-      'poll': instance.poll,
+      'poll': instance.poll?.toJson(),
       'preview': instance.preview,
       'sensitive': instance.sensitive,
       'spoiler_text': instance.spoilerText,

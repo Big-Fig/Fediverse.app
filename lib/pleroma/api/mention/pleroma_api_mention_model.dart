@@ -1,4 +1,4 @@
-import 'package:fedi/app/status/status_model.dart';
+
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/mention/mastodon_api_mention_model.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -7,20 +7,6 @@ part 'pleroma_api_mention_model.g.dart';
 
 abstract class IPleromaApiMention implements IMastodonApiMention {}
 
-extension IPleromaApiMentionStatusListExtension on List<IStatus> {
-  List<IPleromaApiMention> findAllMentions() {
-    List<IStatus> statuses = this;
-    Set<IPleromaApiMention> mentions = {};
-
-    statuses.forEach(
-      (status) {
-        mentions.addAll(status.mentions ?? []);
-      },
-    );
-
-    return mentions.toList();
-  }
-}
 
 extension IPleromaApiMentionExtension on IPleromaApiMention {
   PleromaApiMention toPleromaApiMention({bool forceNewObject = false}) {

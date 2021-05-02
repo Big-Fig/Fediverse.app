@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/connection/connection_service.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
@@ -29,7 +30,7 @@ class PleromaApiWebSocketsChannelConfig
 }
 
 @JsonSerializable()
-class PleromaApiWebSocketsEvent extends WebSocketsEvent {
+class PleromaApiWebSocketsEvent extends WebSocketsEvent implements IJsonObject {
   final String event;
 
   PleromaApiWebSocketsEventType get eventType =>
@@ -65,6 +66,7 @@ class PleromaApiWebSocketsEvent extends WebSocketsEvent {
   static PleromaApiWebSocketsEvent fromJson(Map<String, dynamic> json) =>
       _$PleromaApiWebSocketsEventFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiWebSocketsEventToJson(this);
 
   PleromaApiStatus parsePayloadAsStatus() =>
@@ -180,16 +182,4 @@ extension PleromaApiWebSocketsEventTypeStringExtension on String {
 
     return result;
   }
-}
-
-class PleromaApiWebSocketsEventTypeTypeConverter
-    implements JsonConverter<PleromaApiWebSocketsEventType, String> {
-  const PleromaApiWebSocketsEventTypeTypeConverter();
-
-  @override
-  PleromaApiWebSocketsEventType fromJson(String value) =>
-      value.toPleromaApiWebSocketsEventType();
-
-  @override
-  String toJson(PleromaApiWebSocketsEventType value) => value.toJsonValue();
 }

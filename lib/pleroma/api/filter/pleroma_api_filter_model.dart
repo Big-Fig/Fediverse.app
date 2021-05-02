@@ -66,6 +66,15 @@ class PleromaApiFilter extends IPleromaApiFilter implements IJsonObject {
     required this.wholeWord,
   });
 
+  PleromaApiFilter.only({
+    required this.context,
+    required this.phrase,
+    this.expiresAt,
+    required this.id,
+    required this.irreversible,
+    required this.wholeWord,
+  });
+
   @override
   List<MastodonApiFilterContextType> get contextAsMastodonApiType =>
       context.toMastodonApiFilterContextTypes();

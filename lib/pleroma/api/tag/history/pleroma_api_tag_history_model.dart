@@ -1,3 +1,4 @@
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/history/mastodon_api_history_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -39,7 +40,7 @@ extension IPleromaApiTagHistoryListExtension on List<IPleromaApiTagHistory> {
 //@HiveType()
 @HiveType(typeId: -32 + 77)
 @JsonSerializable()
-class PleromaApiTagHistory implements IPleromaApiTagHistory {
+class PleromaApiTagHistory implements IPleromaApiTagHistory, IJsonObject {
   @override
   @HiveField(0)
   // int(pleroma) or String(mastodon)
@@ -63,6 +64,7 @@ class PleromaApiTagHistory implements IPleromaApiTagHistory {
   static PleromaApiTagHistory fromJson(Map<String, dynamic> json) =>
       _$PleromaApiTagHistoryFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiTagHistoryToJson(this);
 
   @override

@@ -61,6 +61,11 @@ class PleromaApiField implements IPleromaApiField, IJsonObject {
     required this.value,
     required this.verifiedAt,
   });
+  PleromaApiField.only({
+    this.name,
+    this.value,
+    this.verifiedAt,
+  });
 
   static PleromaApiField fromJson(Map<String, dynamic> json) =>
       _$PleromaApiFieldFromJson(json);

@@ -1,7 +1,6 @@
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 import '../../../hive/hive_test_helper.dart';
 import '../../../json/json_test_helper.dart';
 import '../../../obj/obj_test_helper.dart';
@@ -17,7 +16,8 @@ void main() {
     expect(original, obj);
   });
   test('PleromaApiAccountReport toPleromaApiAccountReport', () async {
-    var original = PleromaApiAccountTestHelper.createTestPleromaApiAccountReport(
+    var original =
+        PleromaApiAccountTestHelper.createTestPleromaApiAccountReport(
       seed: "seed",
     );
     var obj = original.toPleromaApiAccountReport(forceNewObject: true);
@@ -40,6 +40,25 @@ void main() {
         seed: seed,
       ),
       PleromaApiAccount.fromJson,
+    );
+  });
+
+  test('PleromaApiAccountReport equal & hashcode & toString', () async {
+    ObjTestHelper.testEqualsHashcodeToString(
+      ({required String seed}) =>
+          PleromaApiAccountTestHelper.createTestPleromaApiAccountReport(
+        seed: seed,
+      ),
+    );
+  });
+
+  test('PleromaApiAccountReport toJson & fromJson', () async {
+    JsonTestHelper.testFromJsonToJson(
+      ({required String seed}) =>
+          PleromaApiAccountTestHelper.createTestPleromaApiAccountReport(
+        seed: seed,
+      ),
+      PleromaApiAccountReport.fromJson,
     );
   });
 
@@ -89,41 +108,35 @@ void main() {
       lastStatusAt: obj2.lastStatusAt,
       fqn: obj2.fqn,
     );
+    var obj1Clone = obj1.copyWith();
 
     expect(obj1 == obj2, false);
     expect(obj2, obj2Obj1CopyWith);
+    expect(obj1, obj1Clone);
   });
-
 
   test('PleromaApiAccountPleromaPart hive save&load', () async {
     await HiveTestHelper.testHiveSaveAndLoad(
-          ({required String seed}) =>
-          PleromaApiAccountTestHelper.createTestPleromaApiAccountPleromaPart(
-            seed: seed,
-          ),
-      skipHiveInit: true
-    );
+        ({required String seed}) =>
+            PleromaApiAccountTestHelper.createTestPleromaApiAccountPleromaPart(
+              seed: seed,
+            ),
+        skipHiveInit: true);
   });
 
   test('PleromaApiAccountPleromaPart hive adapter', () async {
-    HiveTestHelper.testAdapter(
-          () => PleromaApiAccountPleromaPartAdapter()
-    );
+    HiveTestHelper.testAdapter(() => PleromaApiAccountPleromaPartAdapter());
   });
   test('PleromaApiAccountRelationship hive save&load', () async {
     await HiveTestHelper.testHiveSaveAndLoad(
-          ({required String seed}) =>
-          PleromaApiAccountTestHelper.createTestPleromaApiAccountRelationship(
-            seed: seed,
-          ),
-      skipHiveInit: true
-    );
+        ({required String seed}) =>
+            PleromaApiAccountTestHelper.createTestPleromaApiAccountRelationship(
+              seed: seed,
+            ),
+        skipHiveInit: true);
   });
 
   test('PleromaApiAccountRelationship hive adapter', () async {
-    HiveTestHelper.testAdapter(
-          () => PleromaApiAccountRelationshipAdapter()
-    );
+    HiveTestHelper.testAdapter(() => PleromaApiAccountRelationshipAdapter());
   });
-
 }

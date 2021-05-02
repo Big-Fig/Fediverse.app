@@ -89,6 +89,7 @@ void main() {
 
     expect(obj1 == obj2, false);
     expect(obj2, obj2Obj1CopyWith);
+    expect(obj1, obj1.copyWith());
   });
 
   test('PleromaApiMyAccount hive adapter', () async {
@@ -151,7 +152,9 @@ void main() {
 
     expect(obj1 == obj2, false);
     expect(obj2, obj2Obj1CopyWith);
+    expect(obj1, obj1.copyWith());
   });
+
   test('PleromaApiMyAccountPleromaPart copyWith', () async {
     var obj1 =
         PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccountPleromaPart(
@@ -191,6 +194,7 @@ void main() {
 
     expect(obj1 == obj2, false);
     expect(obj2, obj2Obj1CopyWith);
+    expect(obj1, obj1.copyWith());
   });
 
   test('PleromaApiMyAccountSource hive save&load', () async {
@@ -223,5 +227,24 @@ void main() {
     HiveTestHelper.testAdapter(
       () => PleromaApiMyAccountSourcePleromaPartAdapter(),
     );
+  });
+
+  test(
+      'PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter hive save&load',
+      () async {
+    await HiveTestHelper.testHiveSaveAndLoad(
+      ({required String seed}) => PleromaApiMyAccountTestHelper
+          .createTestPleromaApiMyAccountPleromaPartNotificationsSettings(
+        seed: seed,
+      ),
+      skipHiveInit: true,
+    );
+  });
+
+  test(
+      'PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter hive adapter',
+      () async {
+    HiveTestHelper.testAdapter(
+        () => PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter());
   });
 }

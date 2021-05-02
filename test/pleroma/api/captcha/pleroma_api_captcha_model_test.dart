@@ -7,6 +7,17 @@ import 'pleroma_api_captcha_test_helper.dart';
 
 // ignore_for_file: no-magic-number
 void main() {
+  test('PleromaApiCaptchaType toPleromaApiCaptchaType', () async {
+    var values = PleromaApiCaptchaType.values;
+    for (var value in values) {
+      var jsonValue = value.toJsonValue();
+
+      var objFromJsonValue = jsonValue.toPleromaApiCaptchaType();
+
+      expect(value, objFromJsonValue);
+    }
+  });
+
   test('PleromaApiCaptcha toPleromaApiCaptcha', () async {
     var original = PleromaApiCaptchaTestHelper.createTestPleromaApiCaptcha(
       seed: "seed",

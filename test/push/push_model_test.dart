@@ -27,6 +27,26 @@ void main() {
     );
   });
 
+  test('PostPleromaApiFilter copyWith', () async {
+    var obj1 = PushModelTestHelper.createTestPushMessage(
+      seed: "seed1",
+    );
+    var obj2 = PushModelTestHelper.createTestPushMessage(
+      seed: "seed2",
+    );
+
+    var obj2Obj1CopyWith = obj1.copyWith(
+      notification: obj2.notification,
+      data: obj2.data,
+      typeString: obj2.typeString,
+    );
+
+    expect(obj1 == obj2, false);
+    expect(obj2, obj2Obj1CopyWith);
+    expect(obj1, obj1.copyWith());
+  });
+
+
   test('PushNotification toJson & fromJson', () async {
     JsonTestHelper.testFromJsonToJson(
       ({required String seed}) =>

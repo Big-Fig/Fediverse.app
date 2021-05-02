@@ -1,9 +1,10 @@
+import 'package:fedi/json/json_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'mastodon_api_application_model.g.dart';
 
 @JsonSerializable()
-class MastodonApiApplicationRegistrationRequest {
+class MastodonApiApplicationRegistrationRequest implements IJsonObject {
   /// A name for your application
   @JsonKey(name: "client_name")
   final String? clientName;
@@ -24,8 +25,8 @@ class MastodonApiApplicationRegistrationRequest {
   MastodonApiApplicationRegistrationRequest({
     required this.clientName,
     required this.redirectUris,
-    this.scopes,
-    this.website,
+    required this.scopes,
+    required this.website,
   });
 
   @override
@@ -60,6 +61,7 @@ class MastodonApiApplicationRegistrationRequest {
   ) =>
       _$MastodonApiApplicationRegistrationRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() =>
       _$MastodonApiApplicationRegistrationRequestToJson(this);
 }

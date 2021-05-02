@@ -120,7 +120,7 @@ extension IPleromaApiAccountReportExtension on IPleromaApiAccountReport {
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaApiAccountReport implements IPleromaApiAccountReport {
+class PleromaApiAccountReport implements IPleromaApiAccountReport, IJsonObject {
   @override
   final PleromaApiAccount? account;
 
@@ -158,6 +158,7 @@ class PleromaApiAccountReport implements IPleromaApiAccountReport {
   static PleromaApiAccountReport fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountReportFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaApiAccountReportToJson(this);
 }
 

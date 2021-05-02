@@ -4,7 +4,6 @@ import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:moor/moor.dart' as moor;
 
 part 'pleroma_api_notification_model.g.dart';
 
@@ -163,34 +162,6 @@ extension PleromaApiNotificationTypeStringExtension on String {
 
     return result;
   }
-}
-
-extension PleromaApiNotificationTypeStringPollExtension on List<String> {
-  List<PleromaApiNotificationType> toPleromaApiVisibilities() => map(
-        (notificationTypeString) =>
-            notificationTypeString.toPleromaApiNotificationType(),
-      ).toList();
-}
-
-class PleromaApiNotificationTypeTypeConverter
-    implements
-        JsonConverter<PleromaApiNotificationType, String?>,
-        moor.TypeConverter<PleromaApiNotificationType, String?> {
-  const PleromaApiNotificationTypeTypeConverter();
-
-  @override
-  PleromaApiNotificationType fromJson(String? value) =>
-      value?.toPleromaApiNotificationType() ??
-      unknownPleromaApiNotificationType;
-
-  @override
-  String? toJson(PleromaApiNotificationType? value) => value?.toJsonValue();
-
-  @override
-  PleromaApiNotificationType? mapToDart(String? fromDb) => fromJson(fromDb);
-
-  @override
-  String? mapToSql(PleromaApiNotificationType? value) => toJson(value);
 }
 
 @JsonSerializable()

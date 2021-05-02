@@ -845,3 +845,18 @@ class CantExtractStatusRemoteIdFromStatusUrlException implements Exception {
         '}';
   }
 }
+extension IPleromaApiMentionStatusListExtension on List<IStatus> {
+  List<IPleromaApiMention> findAllMentions() {
+    List<IStatus> statuses = this;
+    Set<IPleromaApiMention> mentions = {};
+
+    statuses.forEach(
+          (status) {
+        mentions.addAll(status.mentions ?? []);
+      },
+    );
+
+    return mentions.toList();
+  }
+}
+

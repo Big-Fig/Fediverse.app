@@ -32,6 +32,42 @@ void main() {
       PleromaApiStatus.fromJson,
     );
   });
+  test('PleromaApiPostStatus equal & hashcode & toString', () async {
+    ObjTestHelper.testEqualsHashcodeToString(
+      ({required String seed}) =>
+          PleromaApiStatusTestHelper.createTestPleromaApiPostStatus(
+        seed: seed,
+      ),
+    );
+  });
+
+  test('PleromaApiPostStatus toJson & fromJson', () async {
+    JsonTestHelper.testFromJsonToJson(
+      ({required String seed}) =>
+          PleromaApiStatusTestHelper.createTestPleromaApiPostStatus(
+        seed: seed,
+      ),
+      PleromaApiPostStatus.fromJson,
+    );
+  });
+  test('PleromaApiScheduleStatus equal & hashcode & toString', () async {
+    ObjTestHelper.testEqualsHashcodeToString(
+      ({required String seed}) =>
+          PleromaApiStatusTestHelper.createTestPleromaApiScheduleStatus(
+        seed: seed,
+      ),
+    );
+  });
+
+  test('PleromaApiScheduleStatus toJson & fromJson', () async {
+    JsonTestHelper.testFromJsonToJson(
+      ({required String seed}) =>
+          PleromaApiStatusTestHelper.createTestPleromaApiScheduleStatus(
+        seed: seed,
+      ),
+      PleromaApiScheduleStatus.fromJson,
+    );
+  });
   test('PleromaApiScheduledStatus equal & hashcode & toString', () async {
     ObjTestHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
