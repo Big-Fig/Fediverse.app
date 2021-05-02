@@ -1,6 +1,7 @@
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../hive/hive_test_helper.dart';
 import '../../../json/json_test_helper.dart';
 import '../../../obj/obj_test_helper.dart';
 import 'pleroma_api_instance_test_helper.dart';
@@ -33,5 +34,67 @@ void main() {
       ),
       PleromaApiInstance.fromJson,
     );
+  });
+
+  test('PleromaApiInstanceHistory equal & hashcode & toString', () async {
+    ObjTestHelper.testEqualsHashcodeToString(
+      ({required String seed}) =>
+          PleromaApiInstanceTestHelper.createTestPleromaApiInstanceHistory(
+        seed: seed,
+      ),
+    );
+  });
+
+  test('PleromaApiInstanceHistory toJson & fromJson', () async {
+    JsonTestHelper.testFromJsonToJson(
+      ({required String seed}) =>
+          PleromaApiInstanceTestHelper.createTestPleromaApiInstanceHistory(
+        seed: seed,
+      ),
+      PleromaApiInstanceHistory.fromJson,
+    );
+  });
+
+  test('PleromaApiInstancePleromaPartAdapter hive save&load', () async {
+    await HiveTestHelper.testHiveSaveAndLoad(
+      ({required String seed}) =>
+          PleromaApiInstanceTestHelper.createTestPleromaApiInstancePleromaPart(
+        seed: seed,
+      ),
+    );
+  });
+
+  test('PleromaApiInstancePleromaPartAdapter hive adapter', () async {
+    HiveTestHelper.testAdapter(() => PleromaApiInstancePleromaPartAdapter());
+  });
+  test('PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter hive save&load',
+      () async {
+    await HiveTestHelper.testHiveSaveAndLoad(
+      ({required String seed}) => PleromaApiInstanceTestHelper
+          .createTestPleromaApiInstancePleromaPartMetadataFieldLimits(
+        seed: seed,
+      ),
+      skipHiveInit: true,
+    );
+  });
+
+  test('PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter hive adapter',
+      () async {
+    HiveTestHelper.testAdapter(
+        () => PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter());
+  });
+  test('PleromaApiInstancePleromaPartMetadata hive save&load', () async {
+    await HiveTestHelper.testHiveSaveAndLoad(
+      ({required String seed}) => PleromaApiInstanceTestHelper
+          .createTestPleromaApiInstancePleromaPartMetadata(
+        seed: seed,
+      ),
+      skipHiveInit: true,
+    );
+  });
+
+  test('PleromaApiInstancePleromaPartMetadataAdapter hive adapter', () async {
+    HiveTestHelper.testAdapter(
+        () => PleromaApiInstancePleromaPartMetadataAdapter());
   });
 }

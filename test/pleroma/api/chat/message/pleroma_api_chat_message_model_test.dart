@@ -62,5 +62,6 @@ void main() {
 
     expect(obj1 == obj2, false);
     expect(obj2, obj2Obj1CopyWith);
+    expect(obj1, obj1.copyWith());
   });
 }

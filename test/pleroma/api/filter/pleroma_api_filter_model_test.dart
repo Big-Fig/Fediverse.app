@@ -1,3 +1,4 @@
+import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -27,6 +28,18 @@ void main() {
     );
   });
 
+  test('PleromaApiFilter toJson & fromJson', () async {
+    expect(
+      PleromaApiFilterTestHelper.createTestPleromaApiFilter(
+        seed: "seed",
+      ).copyWith(context: ["public", "thread"]).contextAsMastodonApiType,
+      [
+        MastodonApiFilterContextType.public,
+        MastodonApiFilterContextType.thread,
+      ],
+    );
+  });
+
   test('PleromaApiFilter copyWith', () async {
     var obj1 = PleromaApiFilterTestHelper.createTestPleromaApiFilter(
       seed: "seed1",
@@ -46,6 +59,7 @@ void main() {
 
     expect(obj1 == obj2, false);
     expect(obj2, obj2Obj1CopyWith);
+    expect(obj1, obj1.copyWith());
   });
 
   test('PleromaApiFilter hive save&load', () async {
@@ -82,6 +96,7 @@ void main() {
 
     expect(obj1 == obj2, false);
     expect(obj2, obj2Obj1CopyWith);
+    expect(obj1, obj1.copyWith());
   });
 
   test('PostPleromaApiFilter equal & hashcode & toString', () async {
@@ -121,6 +136,7 @@ void main() {
 
     expect(obj1 == obj2, false);
     expect(obj2, obj2Obj1CopyWith);
+    expect(obj1, obj1.copyWith());
   });
 
   test('PostPleromaApiFilter copyWith', () async {
@@ -141,5 +157,6 @@ void main() {
 
     expect(obj1 == obj2, false);
     expect(obj2, obj2Obj1CopyWith);
+    expect(obj1, obj1.copyWith());
   });
 }

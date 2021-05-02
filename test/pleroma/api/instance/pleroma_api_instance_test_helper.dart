@@ -5,6 +5,15 @@ import '../../../mastodon/api/instance/mastodon_api_instance_test_helper.dart';
 import '../account/pleroma_api_account_test_helper.dart';
 
 class PleromaApiInstanceTestHelper {
+  static PleromaApiInstanceHistory createTestPleromaApiInstanceHistory({
+    required String seed,
+  }) =>
+      PleromaApiInstanceHistory(
+        logins: seed + "logins",
+        registrations: seed + "registrations",
+        statuses: seed + "statuses",
+        week: seed + "week",
+      );
 
   static PleromaApiInstancePleromaPart createTestPleromaApiInstancePleromaPart({
     required String seed,
@@ -93,7 +102,6 @@ class PleromaApiInstanceTestHelper {
         minExpiration: seed.hashCode + 4,
       );
 
-
   static PleromaApiInstance createTestPleromaApiInstance({
     required String seed,
     bool? approvalRequired,
@@ -117,7 +125,8 @@ class PleromaApiInstanceTestHelper {
       ),
       registrations: seed.hashCode % 2 == 1,
       shortDescription: seed + "shortDescription",
-      stats: MastodonApiInstanceTestHelper.createTestMastodonApiInstanceStats(seed: seed),
+      stats: MastodonApiInstanceTestHelper.createTestMastodonApiInstanceStats(
+          seed: seed),
       thumbnail: seed + "thumbnail",
       title: seed + "title",
       uploadLimit: seed.hashCode + 7,

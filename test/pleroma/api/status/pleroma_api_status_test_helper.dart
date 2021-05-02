@@ -17,6 +17,65 @@ import '../visibility/pleroma_api_visibility_test_helper.dart';
 
 // ignore_for_file: no-magic-number
 class PleromaApiStatusTestHelper {
+  static PleromaApiPostStatus createTestPleromaApiPostStatus({
+    required String seed,
+  }) =>
+      PleromaApiPostStatus(
+        contentType: seed + "contentType",
+        expiresInSeconds:
+            DurationTestHelper.createTestDurationSeconds(seed: seed),
+        inReplyToConversationId: seed + "inReplyToConversationId",
+        inReplyToId: seed + "inReplyToId",
+        language: seed + "language",
+        visibility:
+            PleromaApiVisibilityTestHelper.createTestPleromaApiVisibility(
+                    seed: seed)
+                .toJsonValue(),
+        mediaIds: [
+          seed + "1",
+          seed + "2",
+        ],
+        poll: createTestPleromaApiPostStatusPoll(seed: seed),
+        preview: seed.hashCode % 2 == 0,
+        sensitive: seed.hashCode % 2 == 1,
+        spoilerText: seed + "spoilerText",
+        status: seed + "status",
+        to: [
+          seed + "11",
+          seed + "22",
+        ],
+      );
+
+  static PleromaApiScheduleStatus createTestPleromaApiScheduleStatus({
+    required String seed,
+  }) =>
+      PleromaApiScheduleStatus(
+        contentType: seed + "contentType",
+        expiresInSeconds:
+            DurationTestHelper.createTestDurationSeconds(seed: seed),
+        inReplyToConversationId: seed + "inReplyToConversationId",
+        inReplyToId: seed + "inReplyToId",
+        language: seed + "language",
+        visibility:
+            PleromaApiVisibilityTestHelper.createTestPleromaApiVisibility(
+                    seed: seed)
+                .toJsonValue(),
+        mediaIds: [
+          seed + "1",
+          seed + "2",
+        ],
+        poll: createTestPleromaApiPostStatusPoll(seed: seed),
+        preview: seed.hashCode % 2 == 0,
+        sensitive: seed.hashCode % 2 == 1,
+        spoilerText: seed + "spoilerText",
+        status: seed + "status",
+        to: [
+          seed + "11",
+          seed + "22",
+        ],
+        scheduledAt: DateTimeTestHelper.createTestDateTime(seed: seed),
+      );
+
   static PleromaApiStatusEmojiReaction createTestPleromaApiStatusEmojiReaction({
     required String seed,
   }) =>
@@ -61,7 +120,8 @@ class PleromaApiStatusTestHelper {
     required String seed,
   }) =>
       PleromaApiPostStatusPoll(
-        expiresInSeconds: DurationTestHelper.createTestDurationSeconds(seed: seed),
+        expiresInSeconds:
+            DurationTestHelper.createTestDurationSeconds(seed: seed),
         hideTotals: seed.hashCode % 2 == 0,
         multiple: seed.hashCode % 2 == 1,
         options: [

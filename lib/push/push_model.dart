@@ -3,7 +3,6 @@ import 'package:fedi/json/json_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:moor/moor.dart' as moor;
 
 // ignore_for_file: no-magic-number
 part 'push_model.g.dart';
@@ -123,12 +122,6 @@ enum PushMessageType {
 const _foregroundPushMessageTypeJsonValue = "foreground";
 const _launchPushMessageTypeJsonValue = "launch";
 
-extension PushMessageTypeListExtension on List<PushMessageType> {
-  List<String> toPushMessageTypeStrings() => map(
-        (visibility) => visibility.toJsonValue(),
-      ).toList();
-}
-
 extension PushMessageTypeExtension on PushMessageType {
   String toJsonValue() {
     String result;
@@ -163,29 +156,4 @@ extension PushMessageTypeStringExtension on String {
 
     return result;
   }
-}
-
-extension PushMessageTypeStringListExtension on List<String> {
-  List<PushMessageType> toPleromaVisibilities() => map(
-        (visibilityString) => visibilityString.toPushMessageType(),
-      ).toList();
-}
-
-class PushMessageTypeTypeConverter
-    implements
-        JsonConverter<PushMessageType, String?>,
-        moor.TypeConverter<PushMessageType, String?> {
-  const PushMessageTypeTypeConverter();
-
-  @override
-  PushMessageType fromJson(String? value) => value!.toPushMessageType();
-
-  @override
-  String? toJson(PushMessageType? value) => value?.toJsonValue();
-
-  @override
-  PushMessageType? mapToDart(String? fromDb) => fromJson(fromDb);
-
-  @override
-  String? mapToSql(PushMessageType? value) => toJson(value);
 }

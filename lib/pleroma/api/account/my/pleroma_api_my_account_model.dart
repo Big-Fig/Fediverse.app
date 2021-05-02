@@ -1017,7 +1017,7 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
 //@HiveType()
 @HiveType(typeId: -32 + 41)
 @JsonSerializable()
-class PleromaApiMyAccountPleromaPartNotificationsSettings {
+class PleromaApiMyAccountPleromaPartNotificationsSettings implements IJsonObject {
   @HiveField(0)
   final bool? followers;
   @HiveField(1)
@@ -1049,6 +1049,7 @@ class PleromaApiMyAccountPleromaPartNotificationsSettings {
   ) =>
       _$PleromaApiMyAccountPleromaPartNotificationsSettingsFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() =>
       _$PleromaApiMyAccountPleromaPartNotificationsSettingsToJson(this);
 

@@ -676,7 +676,7 @@ abstract class IPleromaApiPostStatusBase
   /// A list of nicknames (like lain@soykaf.club or lain on the local server)
   /// that will be used to determine who is going to be addressed by this post.
   /// Using this will disable the implicit addressing by mentioned names in the status body, only the people in the to list will be addressed. The normal rules for for post visibility are not affected by this and will still apply.
-  List<String?>? get to;
+  List<String>? get to;
 
   /// if set to true the post won't be actually posted, but the status
   /// entity would still be rendered back.
@@ -764,8 +764,8 @@ abstract class IPleromaApiPostStatus
 abstract class IPleromaApiScheduleStatus
     implements IPleromaApiPostStatusBase, IMastodonApiScheduleStatusRequest {}
 
-@JsonSerializable()
-class PleromaApiPostStatus implements IPleromaApiPostStatus {
+@JsonSerializable(explicitToJson: true)
+class PleromaApiPostStatus implements IPleromaApiPostStatus, IJsonObject {
   @JsonKey(name: "content_type")
   @override
   final String? contentType;
@@ -814,7 +814,7 @@ class PleromaApiPostStatus implements IPleromaApiPostStatus {
   @override
   final String? status;
   @override
-  final List<String?>? to;
+  final List<String>? to;
 
   PleromaApiPostStatus({
     required this.contentType,
@@ -869,10 +869,48 @@ class PleromaApiPostStatus implements IPleromaApiPostStatus {
         'to: $to'
         '}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiPostStatus &&
+          runtimeType == other.runtimeType &&
+          contentType == other.contentType &&
+          expiresInSeconds == other.expiresInSeconds &&
+          idempotencyKey == other.idempotencyKey &&
+          inReplyToConversationId == other.inReplyToConversationId &&
+          inReplyToId == other.inReplyToId &&
+          language == other.language &&
+          visibility == other.visibility &&
+          listEquals(mediaIds, other.mediaIds) &&
+          poll == other.poll &&
+          preview == other.preview &&
+          sensitive == other.sensitive &&
+          spoilerText == other.spoilerText &&
+          status == other.status &&
+          listEquals(to, other.to);
+
+  @override
+  int get hashCode =>
+      contentType.hashCode ^
+      expiresInSeconds.hashCode ^
+      idempotencyKey.hashCode ^
+      inReplyToConversationId.hashCode ^
+      inReplyToId.hashCode ^
+      language.hashCode ^
+      visibility.hashCode ^
+      listHash(mediaIds) ^
+      poll.hashCode ^
+      preview.hashCode ^
+      sensitive.hashCode ^
+      spoilerText.hashCode ^
+      status.hashCode ^
+      listHash(to);
 }
 
-@JsonSerializable()
-class PleromaApiScheduleStatus implements IPleromaApiScheduleStatus {
+@JsonSerializable(explicitToJson: true)
+class PleromaApiScheduleStatus
+    implements IPleromaApiScheduleStatus, IJsonObject {
   @JsonKey(name: "content_type")
   @override
   final String? contentType;
@@ -921,9 +959,9 @@ class PleromaApiScheduleStatus implements IPleromaApiScheduleStatus {
   @override
   final String? status;
   @override
-  final List<String?>? to;
+  final List<String>? to;
 
-  @JsonKey(name: "scheduled_at", toJson: toUTCIsoString)
+  @JsonKey(name: "scheduled_at", toJson: toUTCIsoString, fromJson: fromUTCIsoString)
   @override
   final DateTime scheduledAt;
 
@@ -968,6 +1006,9 @@ class PleromaApiScheduleStatus implements IPleromaApiScheduleStatus {
   static String toUTCIsoString(DateTime scheduledAt) =>
       scheduledAt.toUtc().toIso8601String();
 
+  static DateTime fromUTCIsoString(String dateString) =>
+      DateTime.parse(dateString).toLocal();
+
   @override
   String toString() {
     return 'PleromaApiScheduleStatus{'
@@ -988,6 +1029,45 @@ class PleromaApiScheduleStatus implements IPleromaApiScheduleStatus {
         'scheduledAt: $scheduledAt'
         '}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaApiScheduleStatus &&
+          runtimeType == other.runtimeType &&
+          contentType == other.contentType &&
+          expiresInSeconds == other.expiresInSeconds &&
+          idempotencyKey == other.idempotencyKey &&
+          inReplyToConversationId == other.inReplyToConversationId &&
+          inReplyToId == other.inReplyToId &&
+          language == other.language &&
+          visibility == other.visibility &&
+          listEquals(mediaIds, other.mediaIds) &&
+          poll == other.poll &&
+          preview == other.preview &&
+          sensitive == other.sensitive &&
+          spoilerText == other.spoilerText &&
+          status == other.status &&
+          listEquals(to, other.to) &&
+          scheduledAt == other.scheduledAt;
+
+  @override
+  int get hashCode =>
+      contentType.hashCode ^
+      expiresInSeconds.hashCode ^
+      idempotencyKey.hashCode ^
+      inReplyToConversationId.hashCode ^
+      inReplyToId.hashCode ^
+      language.hashCode ^
+      visibility.hashCode ^
+      listHash(mediaIds) ^
+      poll.hashCode ^
+      preview.hashCode ^
+      sensitive.hashCode ^
+      spoilerText.hashCode ^
+      status.hashCode ^
+      listHash(to) ^
+      scheduledAt.hashCode;
 }
 
 abstract class IPleromaApiStatusEmojiReaction {

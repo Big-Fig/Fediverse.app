@@ -2,14 +2,11 @@ import 'package:fedi/mastodon/api/pagination/mastodon_api_pagination_model.dart'
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'pleroma_api_pagination_model.g.dart';
-
 abstract class IPleromaApiPaginationRequest
     implements IMastodonApiPaginationRequest {
   List<RestRequestQueryArg> toQueryArgs();
 }
 
-@JsonSerializable()
 class PleromaApiPaginationRequest implements IPleromaApiPaginationRequest {
   @override
   final int? limit;
