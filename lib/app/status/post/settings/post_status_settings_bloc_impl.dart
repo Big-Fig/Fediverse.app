@@ -1,4 +1,4 @@
-import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
+import 'package:fedi/app/settings/global_or_instance/local_preferences/global_or_instance_settings_bloc_local_preference_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/post_status_settings_local_preference_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
@@ -6,7 +6,7 @@ import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 
 class PostStatusSettingsBloc
-    extends GlobalOrInstanceSettingsLocalPreferencesBloc<PostStatusSettings>
+    extends GlobalOrInstanceSettingsLocalPreferenceBloc<PostStatusSettings>
     implements IPostStatusSettingsBloc {
   PostStatusSettingsBloc({
     required IPostStatusSettingsLocalPreferenceBloc<PostStatusSettings>

@@ -1,8 +1,8 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
-import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
+import 'package:fedi/app/home/tab/timelines/storage/local_preferences/timelines_home_tab_storage_local_preference_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -17,7 +17,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
     implements ITimelinesHomeTabStorageBloc {
   final ILocalPreferencesService preferencesService;
   final AuthInstance authInstance;
-  final ITimelinesHomeTabStorageLocalPreferencesBloc preferences;
+  final ITimelinesHomeTabStorageLocalPreferenceBloc preferences;
 
   final BehaviorSubject<TimelinesHomeTabStorageUiState> uiStateSubject =
   BehaviorSubject.seeded(
@@ -51,7 +51,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   Future updateTimelines() async {
     var timelines = <Timeline>[];
     for (var timelineId in timelineIds) {
-      var bloc = TimelineLocalPreferencesBloc.byId(
+      var bloc = TimelineLocalPreferenceBloc.byId(
         preferencesService,
         userAtHost: authInstance.userAtHost,
         timelineId: timelineId,
@@ -132,7 +132,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
 
   @override
   Future add(Timeline timeline) async {
-    var settingsLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
+    var settingsLocalPreferencesBloc = TimelineLocalPreferenceBloc.byId(
       preferencesService,
       userAtHost: authInstance.userAtHost,
       timelineId: timeline.id,
@@ -153,7 +153,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
     timelines.remove(timeline);
     await onItemsUpdated(timelines);
 
-    var settingsLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
+    var settingsLocalPreferencesBloc = TimelineLocalPreferenceBloc.byId(
       preferencesService,
       userAtHost: authInstance.userAtHost,
       timelineId: timeline.id,

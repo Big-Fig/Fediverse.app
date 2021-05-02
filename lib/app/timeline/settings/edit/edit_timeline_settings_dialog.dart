@@ -6,8 +6,8 @@ import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_widget.da
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_label_extension.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
@@ -30,16 +30,16 @@ void showEditTimelineSettingsDialog({
         ),
     child: Provider<Timeline>.value(
       value: timeline,
-      child: DisposableProxyProvider<Timeline, ITimelineLocalPreferencesBloc>(
+      child: DisposableProxyProvider<Timeline, ITimelineLocalPreferenceBloc>(
         update: (context, timeline, _) {
           return _createTimelinePreferencesBloc(context, timeline);
         },
         child: Builder(
           builder: (context) => FediAsyncInitLoadingWidget(
             asyncInitLoadingBloc:
-                ITimelineLocalPreferencesBloc.of(context, listen: false),
+                ITimelineLocalPreferenceBloc.of(context, listen: false),
             loadingFinishedBuilder: (context) => DisposableProxyProvider<
-                ITimelineLocalPreferencesBloc, ITimelineSettingsBloc>(
+                ITimelineLocalPreferenceBloc, ITimelineSettingsBloc>(
               update: (context, timelineLocalPreferencesBloc, _) =>
                   TimelineSettingsBloc(
                 timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
@@ -73,7 +73,7 @@ void showEditTimelineSettingsDialog({
   );
 }
 
-TimelineLocalPreferencesBloc _createTimelinePreferencesBloc(
+TimelineLocalPreferenceBloc _createTimelinePreferencesBloc(
   BuildContext context,
   Timeline timeline,
 ) {
@@ -81,7 +81,7 @@ TimelineLocalPreferencesBloc _createTimelinePreferencesBloc(
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
   var currentInstance = currentAuthInstanceBloc.currentInstance!;
-  return TimelineLocalPreferencesBloc.byId(
+  return TimelineLocalPreferenceBloc.byId(
     localPreferencesService,
     userAtHost: currentInstance.userAtHost,
     timelineId: timeline.id,

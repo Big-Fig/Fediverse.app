@@ -13,8 +13,8 @@ import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_ti
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_app_bar_text_action_widget.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
@@ -192,9 +192,9 @@ MaterialPageRoute createCustomListPageRoute({
     builder: (context) {
       return Provider<ICustomList>.value(
         value: customList,
-        child: DisposableProvider<ITimelineLocalPreferencesBloc>(
+        child: DisposableProvider<ITimelineLocalPreferenceBloc>(
           create: (context) {
-            var bloc = TimelineLocalPreferencesBloc.customList(
+            var bloc = TimelineLocalPreferenceBloc.customList(
               ILocalPreferencesService.of(context, listen: false),
               userAtHost: currentAuthInstanceBloc.currentInstance!.userAtHost,
               customList: customList,
@@ -228,7 +228,7 @@ class _CustomListPageWrapper extends StatelessWidget {
     var customList = Provider.of<ICustomList>(context);
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc:
-          ITimelineLocalPreferencesBloc.of(context, listen: false),
+          ITimelineLocalPreferenceBloc.of(context, listen: false),
       loadingFinishedBuilder: (BuildContext context) {
         return DisposableProvider<IStatusCachedListBloc>(
           create: (BuildContext context) {
@@ -236,7 +236,7 @@ class _CustomListPageWrapper extends StatelessWidget {
                 TimelineStatusCachedListBloc.createFromContext(
               context,
               webSocketsListenType: WebSocketsListenType.foreground,
-              timelineLocalPreferencesBloc: ITimelineLocalPreferencesBloc.of(
+              timelineLocalPreferencesBloc: ITimelineLocalPreferenceBloc.of(
                 context,
                 listen: false,
               ),

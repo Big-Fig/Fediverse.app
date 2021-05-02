@@ -1,6 +1,6 @@
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_media_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
@@ -15,7 +15,7 @@ class TimelineWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var timelineLocalPreferencesBloc =
-        ITimelineLocalPreferencesBloc.of(context, listen: false);
+        ITimelineLocalPreferenceBloc.of(context, listen: false);
 
     return Container(
       color: IFediUiColorTheme.of(context).offWhite,

@@ -14,7 +14,7 @@ class AccountActionMuteBloc extends DisposableOwner
   final IAccountBloc accountBloc;
 
   @override
-  IAccount? get accountForMute => accountBloc.account;
+  IAccount get accountForMute => accountBloc.account;
 
   @override
   final IDurationDateTimeValueFormFieldBloc expireDurationFieldBloc =

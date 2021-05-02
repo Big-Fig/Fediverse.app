@@ -1,11 +1,11 @@
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 
 class TimelineSettingsBloc extends DisposableOwner
     implements ITimelineSettingsBloc {
-  final ITimelineLocalPreferencesBloc? timelineLocalPreferencesBloc;
+  final ITimelineLocalPreferenceBloc? timelineLocalPreferencesBloc;
 
   TimelineSettingsBloc({
     required this.timelineLocalPreferencesBloc,

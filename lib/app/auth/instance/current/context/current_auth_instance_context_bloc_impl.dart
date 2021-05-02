@@ -10,18 +10,18 @@ import 'package:fedi/app/cache/database/limit/age/database_cache_age_limit_model
 import 'package:fedi/app/cache/database/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc_impl.dart';
-import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preference_bloc.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preference_bloc.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/cache/files/limit/age/files_cache_age_limit_model.dart';
 import 'package:fedi/app/cache/files/limit/size_count/files_cache_size_count_limit_model.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/cache/files/files_cache_service_impl.dart';
 import 'package:fedi/app/cache/files/settings/files_cache_settings_bloc.dart';
 import 'package:fedi/app/cache/files/settings/files_cache_settings_bloc_impl.dart';
-import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/cache/files/settings/local_preferences/instance/instance_files_cache_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/cache/files/settings/local_preferences/instance/instance_files_cache_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preference_bloc.dart';
+import 'package:fedi/app/cache/files/settings/local_preferences/instance/instance_files_cache_settings_local_preference_bloc.dart';
+import 'package:fedi/app/cache/files/settings/local_preferences/instance/instance_files_cache_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
@@ -55,8 +55,8 @@ import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc_impl.dart';
-import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
-import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/home/tab/timelines/storage/local_preferences/timelines_home_tab_storage_local_preference_bloc.dart';
+import 'package:fedi/app/home/tab/timelines/storage/local_preferences/timelines_home_tab_storage_local_preference_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc.dart';
 import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preference_bloc.dart';
@@ -72,8 +72,8 @@ import 'package:fedi/app/pagination/settings/local_preferences/instance/instance
 import 'package:fedi/app/pagination/settings/local_preferences/instance/instance_pagination_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc_impl.dart';
-import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preferences_bloc.dart';
-import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preference_bloc.dart';
+import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
@@ -104,7 +104,7 @@ import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/in
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc.dart';
 import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preference_bloc.dart';
@@ -210,14 +210,14 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var userAtHost = currentInstance.userAtHost;
 
     var fcmPushPermissionAskedLocalPreferencesBloc =
-        FcmPushPermissionAskedLocalPreferencesBloc(
+        FcmPushPermissionAskedLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
     );
 
     addDisposable(disposable: fcmPushPermissionAskedLocalPreferencesBloc);
     await globalProviderService
-        .asyncInitAndRegister<IFcmPushPermissionAskedLocalPreferencesBloc>(
+        .asyncInitAndRegister<IFcmPushPermissionAskedLocalPreferenceBloc>(
       fcmPushPermissionAskedLocalPreferencesBloc,
     );
 
@@ -499,13 +499,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     );
 
     var timelinesHomeTabStorageLocalPreferencesBloc =
-        TimelinesHomeTabStorageLocalPreferencesBloc(
+        TimelinesHomeTabStorageLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
     );
     addDisposable(disposable: timelinesHomeTabStorageLocalPreferencesBloc);
     await globalProviderService
-        .asyncInitAndRegister<ITimelinesHomeTabStorageLocalPreferencesBloc>(
+        .asyncInitAndRegister<ITimelinesHomeTabStorageLocalPreferenceBloc>(
       timelinesHomeTabStorageLocalPreferencesBloc,
     );
 
@@ -636,7 +636,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       );
 
       for (var timeline in timelines) {
-        var timelineLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
+        var timelineLocalPreferencesBloc = TimelineLocalPreferenceBloc.byId(
           preferencesService,
           userAtHost: currentInstance.userAtHost,
           timelineId: timeline.id,
@@ -747,25 +747,25 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: instancePaginationSettingsLocalPreferencesBloc);
 
     var instanceFilesCacheSettingsLocalPreferencesBloc =
-        InstanceFilesCacheSettingsLocalPreferencesBloc(
+        InstanceFilesCacheSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
     );
 
     await globalProviderService
-        .asyncInitAndRegister<IInstanceFilesCacheSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IInstanceFilesCacheSettingsLocalPreferenceBloc>(
       instanceFilesCacheSettingsLocalPreferencesBloc,
     );
     addDisposable(disposable: instanceFilesCacheSettingsLocalPreferencesBloc);
 
     var instanceDatabaseCacheSettingsLocalPreferencesBloc =
-        InstanceDatabaseCacheSettingsLocalPreferencesBloc(
+        InstanceDatabaseCacheSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
     );
 
     await globalProviderService.asyncInitAndRegister<
-        IInstanceDatabaseCacheSettingsLocalPreferencesBloc>(
+        IInstanceDatabaseCacheSettingsLocalPreferenceBloc>(
       instanceDatabaseCacheSettingsLocalPreferencesBloc,
     );
     addDisposable(
@@ -849,7 +849,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       instanceLocalPreferencesBloc:
           instanceDatabaseCacheSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc: appContextBloc
-          .get<IGlobalDatabaseCacheSettingsLocalPreferencesBloc>(),
+          .get<IGlobalDatabaseCacheSettingsLocalPreferenceBloc>(),
     );
 
     await globalProviderService.asyncInitAndRegister<

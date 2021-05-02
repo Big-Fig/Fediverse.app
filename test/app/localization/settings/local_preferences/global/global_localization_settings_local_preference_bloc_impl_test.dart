@@ -1,5 +1,5 @@
-import 'package:fedi/app/localization/settings/local_preference/global/global_localization_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/localization/settings/local_preference/localization_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/localization/settings/local_preferences/global/global_localization_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/localization/settings/local_preferences/localization_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 

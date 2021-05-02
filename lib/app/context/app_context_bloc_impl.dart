@@ -12,10 +12,10 @@ import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
-import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preference_bloc.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preference_bloc.dart';
+import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
@@ -23,9 +23,9 @@ import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/hive/hive_service.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
 import 'package:fedi/app/local_preferences/fedi_local_preferences_service_migration_bloc_impl.dart';
-import 'package:fedi/app/localization/settings/local_preference/global/global_localization_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/localization/settings/local_preference/global/global_localization_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/localization/settings/local_preference/localization_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/localization/settings/local_preferences/global/global_localization_settings_local_preference_bloc.dart';
+import 'package:fedi/app/localization/settings/local_preferences/global/global_localization_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/localization/settings/local_preferences/localization_settings_local_preference_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc_impl.dart';
 import 'package:fedi/app/logging/logging_service.dart';
@@ -427,18 +427,18 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     addDisposable(disposable: globalPaginationSettingsLocalPreferencesBloc);
 
     var globalDatabaseCacheSettingsLocalPreferencesBloc =
-        GlobalDatabaseCacheSettingsLocalPreferencesBloc(
+        GlobalDatabaseCacheSettingsLocalPreferenceBloc(
       hiveLocalPreferencesService,
     );
 
     await globalProviderService
-        .asyncInitAndRegister<IGlobalDatabaseCacheSettingsLocalPreferencesBloc>(
+        .asyncInitAndRegister<IGlobalDatabaseCacheSettingsLocalPreferenceBloc>(
       globalDatabaseCacheSettingsLocalPreferencesBloc,
     );
     addDisposable(disposable: globalDatabaseCacheSettingsLocalPreferencesBloc);
 
     var globalFilesCacheSettingsLocalPreferencesBloc =
-        GlobalFilesCacheSettingsLocalPreferencesBloc(
+        GlobalFilesCacheSettingsLocalPreferenceBloc(
       hiveLocalPreferencesService,
     );
 
