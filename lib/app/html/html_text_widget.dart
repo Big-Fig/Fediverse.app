@@ -66,7 +66,9 @@ class HtmlTextWidget extends StatelessWidget {
       shrinkWrap: htmlTextBloc.settings.shrinkWrap,
       customImageRenders: {
         networkSourceMatcher(): networkImageRender(
-          loadingWidget: () => const FediCircularProgressIndicator(),
+          loadingWidget: () => const FediCircularProgressIndicator(
+            size: 18.0,
+          ),
         ),
       },
       onImageTap: (
