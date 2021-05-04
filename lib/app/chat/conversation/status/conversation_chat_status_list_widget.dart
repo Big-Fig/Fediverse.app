@@ -1,5 +1,6 @@
 import 'package:fedi/app/async/smart_refresher/async_smart_refresher_helper.dart';
 import 'package:fedi/app/chat/conversation/status/conversation_chat_status_list_item_widget.dart';
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_refresh_indicator.dart';
 import 'package:fedi/date/date_utils.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/status/local_status_bloc_impl.dart';
@@ -54,7 +55,7 @@ class ConversationChatStatusListWidget
         enablePullDown: true,
         enablePullUp: true,
 // water drop header bugged (inverted with reverse)
-        header: const MaterialClassicHeader(),
+        header: const FediListSmartRefresherRefreshIndicator(),
         footer: const ListLoadingFooterWidget(),
         controller: refreshController,
         reverse: true,
