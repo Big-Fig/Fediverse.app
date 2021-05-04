@@ -41,9 +41,9 @@ dependencies:
   uni_links2: ^0.6.0+2
 
   # launch browser to view links
-  url_launcher: ^6.0.2
+  url_launcher: ^6.0.3
   # object serialization
-  hive: ^2.0.0
+  hive: ^2.0.4
   hive_flutter: ^1.0.0
 
   #  flutter_html: ^2.0.0-nullsafety.0
@@ -230,7 +230,7 @@ dev_dependencies:
   moor_generator: ^4.1.0
 
   # object serialization generator
-  hive_generator: ^1.0.0
+  hive_generator: ^1.1.0
 
   # additional linter
   dart_code_metrics: ^3.0.0
