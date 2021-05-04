@@ -304,6 +304,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
     );
   }
 
+  // ignore: long-method
   String _mapToRawText(
     BuildContext context,
     INotificationBloc notificationBloc,
@@ -321,7 +322,9 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         rawText = S.of(context).app_notification_header_reblog;
         break;
       case PleromaApiNotificationType.mention:
-        rawText = S.of(context).app_notification_header_mention(
+        rawText =
+            "<b>${S.of(context).app_notification_header_mention_prefix}</b>";
+        rawText += S.of(context).app_notification_header_mention_postfix(
               _extractStatusRawContent(notificationBloc)!,
             );
         break;
@@ -340,9 +343,13 @@ class _NotificationListItemContentWidget extends StatelessWidget {
             );
         break;
       case PleromaApiNotificationType.pleromaChatMention:
-        rawText = S.of(context).app_notification_header_pleromaChatMention(
-              _extractChatMessageRawContent(notificationBloc)!,
-            );
+        rawText =
+            "<b>${S.of(context).app_notification_header_pleromaChatMention_prefix}</b>";
+        rawText +=
+            S.of(context).app_notification_header_pleromaChatMention_postfix(
+                  _extractChatMessageRawContent(notificationBloc)!,
+                );
+
         break;
       case PleromaApiNotificationType.pleromaReport:
         rawText = S.of(context).app_notification_header_report(

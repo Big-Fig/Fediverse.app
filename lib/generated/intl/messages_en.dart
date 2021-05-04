@@ -90,9 +90,9 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m32(formattedFileSize, formattedMaxFileSize) =>
       "File size is ${formattedFileSize} MB, but max is ${formattedMaxFileSize} MB";
 
-  static String m33(status) => "Mentioned you: ${status}.";
+  static String m33(status) => "${status}.";
 
-  static String m34(status) => "Chat: ${status}.";
+  static String m34(status) => "${status}.";
 
   static String m35(emoji) => "${emoji} for your post.";
 
@@ -1095,10 +1095,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Followed you."),
         "app_notification_header_followRequest":
             MessageLookupByLibrary.simpleMessage("Follow request."),
-        "app_notification_header_mention": m33,
+        "app_notification_header_mention_postfix": m33,
+        "app_notification_header_mention_prefix":
+            MessageLookupByLibrary.simpleMessage("Mentioned you: "),
         "app_notification_header_move":
             MessageLookupByLibrary.simpleMessage("Moved."),
-        "app_notification_header_pleromaChatMention": m34,
+        "app_notification_header_pleromaChatMention_postfix": m34,
+        "app_notification_header_pleromaChatMention_prefix":
+            MessageLookupByLibrary.simpleMessage("Chat: "),
         "app_notification_header_pleromaEmojiReaction": m35,
         "app_notification_header_poll":
             MessageLookupByLibrary.simpleMessage("Voted poll ended."),

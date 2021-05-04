@@ -1944,11 +1944,21 @@ class S {
     );
   }
 
-  /// `Mentioned you: {status}.`
-  String app_notification_header_mention(Object status) {
+  /// `Mentioned you: `
+  String get app_notification_header_mention_prefix {
     return Intl.message(
-      'Mentioned you: $status.',
-      name: 'app_notification_header_mention',
+      'Mentioned you: ',
+      name: 'app_notification_header_mention_prefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{status}.`
+  String app_notification_header_mention_postfix(Object status) {
+    return Intl.message(
+      '$status.',
+      name: 'app_notification_header_mention_postfix',
       desc: '',
       args: [status],
     );
@@ -2004,11 +2014,21 @@ class S {
     );
   }
 
-  /// `Chat: {status}.`
-  String app_notification_header_pleromaChatMention(Object status) {
+  /// `Chat: `
+  String get app_notification_header_pleromaChatMention_prefix {
     return Intl.message(
-      'Chat: $status.',
-      name: 'app_notification_header_pleromaChatMention',
+      'Chat: ',
+      name: 'app_notification_header_pleromaChatMention_prefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{status}.`
+  String app_notification_header_pleromaChatMention_postfix(Object status) {
+    return Intl.message(
+      '$status.',
+      name: 'app_notification_header_pleromaChatMention_postfix',
       desc: '',
       args: [status],
     );
