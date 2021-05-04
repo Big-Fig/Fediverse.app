@@ -10,7 +10,7 @@ import 'intl/messages_all.dart';
 
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values
+// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
 class S {
   S();
@@ -18,28 +18,31 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null, 'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(_current != null,
+        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
-  static const AppLocalizationDelegate delegate =
-    AppLocalizationDelegate();
+  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name); 
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       final instance = S();
       S._current = instance;
- 
+
       return instance;
     });
-  } 
+  }
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null, 'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(instance != null,
+        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -921,7 +924,8 @@ class S {
   }
 
   /// `File size is {formattedFileSize} MB, but max is {formattedMaxFileSize} MB`
-  String app_media_upload_failed_notification_exceedSize_content(Object formattedFileSize, Object formattedMaxFileSize) {
+  String app_media_upload_failed_notification_exceedSize_content(
+      Object formattedFileSize, Object formattedMaxFileSize) {
     return Intl.message(
       'File size is $formattedFileSize MB, but max is $formattedMaxFileSize MB',
       name: 'app_media_upload_failed_notification_exceedSize_content',
@@ -1241,7 +1245,8 @@ class S {
   }
 
   /// `{userAtHost}`
-  String app_auth_instance_current_context_loading_loading_content(Object userAtHost) {
+  String app_auth_instance_current_context_loading_loading_content(
+      Object userAtHost) {
     return Intl.message(
       '$userAtHost',
       name: 'app_auth_instance_current_context_loading_loading_content',
@@ -1251,7 +1256,8 @@ class S {
   }
 
   /// `Can't load {userAtHost} instance.\nApp error or session expired`
-  String app_auth_instance_current_context_loading_cantLoad_content(Object userAtHost) {
+  String app_auth_instance_current_context_loading_cantLoad_content(
+      Object userAtHost) {
     return Intl.message(
       'Can\'t load $userAtHost instance.\nApp error or session expired',
       name: 'app_auth_instance_current_context_loading_cantLoad_content',
@@ -1271,10 +1277,12 @@ class S {
   }
 
   /// `Choose different account`
-  String get app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount {
+  String
+      get app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount {
     return Intl.message(
       'Choose different account',
-      name: 'app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount',
+      name:
+          'app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount',
       desc: '',
       args: [],
     );
@@ -1936,10 +1944,10 @@ class S {
     );
   }
 
-  /// `<b>Mentioned you:</b> {status}.`
+  /// `Mentioned you: {status}.`
   String app_notification_header_mention(Object status) {
     return Intl.message(
-      '<b>Mentioned you:</b> $status.',
+      'Mentioned you: $status.',
       name: 'app_notification_header_mention',
       desc: '',
       args: [status],
@@ -1996,10 +2004,10 @@ class S {
     );
   }
 
-  /// `<b>Chat:</b> {status}.`
+  /// `Chat: {status}.`
   String app_notification_header_pleromaChatMention(Object status) {
     return Intl.message(
-      '<b>Chat:</b> $status.',
+      'Chat: $status.',
       name: 'app_notification_header_pleromaChatMention',
       desc: '',
       args: [status],
@@ -3649,7 +3657,8 @@ class S {
   }
 
   /// `Must be between {minCharactersCount} and {maxCharactersCount} characters`
-  String form_field_text_error_length_minAndMax_desc(Object minCharactersCount, Object maxCharactersCount) {
+  String form_field_text_error_length_minAndMax_desc(
+      Object minCharactersCount, Object maxCharactersCount) {
     return Intl.message(
       'Must be between $minCharactersCount and $maxCharactersCount characters',
       name: 'form_field_text_error_length_minAndMax_desc',
@@ -4105,30 +4114,36 @@ class S {
   }
 
   /// `Remember "Tap to view"`
-  String get app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label {
+  String
+      get app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label {
     return Intl.message(
       'Remember "Tap to view"',
-      name: 'app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label',
+      name:
+          'app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Count conversations in unread badges`
-  String get app_chat_settings_field_countConversationsInChatsUnreadBadges_label {
+  String
+      get app_chat_settings_field_countConversationsInChatsUnreadBadges_label {
     return Intl.message(
       'Count conversations in unread badges',
-      name: 'app_chat_settings_field_countConversationsInChatsUnreadBadges_label',
+      name:
+          'app_chat_settings_field_countConversationsInChatsUnreadBadges_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Replace "Conversations" with "Chats"`
-  String get app_chat_settings_field_replaceConversationsWithPleromaChats_label {
+  String
+      get app_chat_settings_field_replaceConversationsWithPleromaChats_label {
     return Intl.message(
       'Replace "Conversations" with "Chats"',
-      name: 'app_chat_settings_field_replaceConversationsWithPleromaChats_label',
+      name:
+          'app_chat_settings_field_replaceConversationsWithPleromaChats_label',
       desc: '',
       args: [],
     );
@@ -4305,10 +4320,12 @@ class S {
   }
 
   /// `Disabled in account settings`
-  String get app_timeline_settings_field_enableWebSockets_description_instance_disabled {
+  String
+      get app_timeline_settings_field_enableWebSockets_description_instance_disabled {
     return Intl.message(
       'Disabled in account settings',
-      name: 'app_timeline_settings_field_enableWebSockets_description_instance_disabled',
+      name:
+          'app_timeline_settings_field_enableWebSockets_description_instance_disabled',
       desc: '',
       args: [],
     );
@@ -5375,7 +5392,8 @@ class S {
   }
 
   /// `{count}`
-  String app_cache_database_settings_currentEntriesCountByType_value(Object count) {
+  String app_cache_database_settings_currentEntriesCountByType_value(
+      Object count) {
     return Intl.message(
       '$count',
       name: 'app_cache_database_settings_currentEntriesCountByType_value',
@@ -5485,40 +5503,48 @@ class S {
   }
 
   /// `1000 entries`
-  String get app_cache_database_settings_limitEntriesCountByType_value_limit1000 {
+  String
+      get app_cache_database_settings_limitEntriesCountByType_value_limit1000 {
     return Intl.message(
       '1000 entries',
-      name: 'app_cache_database_settings_limitEntriesCountByType_value_limit1000',
+      name:
+          'app_cache_database_settings_limitEntriesCountByType_value_limit1000',
       desc: '',
       args: [],
     );
   }
 
   /// `5000 entries`
-  String get app_cache_database_settings_limitEntriesCountByType_value_limit5000 {
+  String
+      get app_cache_database_settings_limitEntriesCountByType_value_limit5000 {
     return Intl.message(
       '5000 entries',
-      name: 'app_cache_database_settings_limitEntriesCountByType_value_limit5000',
+      name:
+          'app_cache_database_settings_limitEntriesCountByType_value_limit5000',
       desc: '',
       args: [],
     );
   }
 
   /// `10000 entries`
-  String get app_cache_database_settings_limitEntriesCountByType_value_limit10000 {
+  String
+      get app_cache_database_settings_limitEntriesCountByType_value_limit10000 {
     return Intl.message(
       '10000 entries',
-      name: 'app_cache_database_settings_limitEntriesCountByType_value_limit10000',
+      name:
+          'app_cache_database_settings_limitEntriesCountByType_value_limit10000',
       desc: '',
       args: [],
     );
   }
 
   /// `100000 entries`
-  String get app_cache_database_settings_limitEntriesCountByType_value_limit100000 {
+  String
+      get app_cache_database_settings_limitEntriesCountByType_value_limit100000 {
     return Intl.message(
       '100000 entries',
-      name: 'app_cache_database_settings_limitEntriesCountByType_value_limit100000',
+      name:
+          'app_cache_database_settings_limitEntriesCountByType_value_limit100000',
       desc: '',
       args: [],
     );
@@ -5995,10 +6021,12 @@ class S {
   }
 
   /// `Ignore broken threads`
-  String get app_account_my_edit_field_pleroma_skipThreadContainment_description {
+  String
+      get app_account_my_edit_field_pleroma_skipThreadContainment_description {
     return Intl.message(
       'Ignore broken threads',
-      name: 'app_account_my_edit_field_pleroma_skipThreadContainment_description',
+      name:
+          'app_account_my_edit_field_pleroma_skipThreadContainment_description',
       desc: '',
       args: [],
     );
@@ -6025,7 +6053,8 @@ class S {
   }
 
   /// `{domain}`
-  String app_auth_instance_register_field_acceptTermsOfService_description(Object domain) {
+  String app_auth_instance_register_field_acceptTermsOfService_description(
+      Object domain) {
     return Intl.message(
       '$domain',
       name: 'app_auth_instance_register_field_acceptTermsOfService_description',
@@ -6055,20 +6084,24 @@ class S {
   }
 
   /// `Success registration`
-  String get app_auth_instance_register_emailConfirmationRequired_notification_title {
+  String
+      get app_auth_instance_register_emailConfirmationRequired_notification_title {
     return Intl.message(
       'Success registration',
-      name: 'app_auth_instance_register_emailConfirmationRequired_notification_title',
+      name:
+          'app_auth_instance_register_emailConfirmationRequired_notification_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Please confirm email before login`
-  String get app_auth_instance_register_emailConfirmationRequired_notification_content {
+  String
+      get app_auth_instance_register_emailConfirmationRequired_notification_content {
     return Intl.message(
       'Please confirm email before login',
-      name: 'app_auth_instance_register_emailConfirmationRequired_notification_content',
+      name:
+          'app_auth_instance_register_emailConfirmationRequired_notification_content',
       desc: '',
       args: [],
     );
@@ -6085,7 +6118,8 @@ class S {
   }
 
   /// `Error during login: {errorDescription}`
-  String app_auth_instance_register_cantLogin_notification_content(Object errorDescription) {
+  String app_auth_instance_register_cantLogin_notification_content(
+      Object errorDescription) {
     return Intl.message(
       'Error during login: $errorDescription',
       name: 'app_auth_instance_register_cantLogin_notification_content',
@@ -6135,7 +6169,8 @@ class S {
   }
 
   /// `Maximum {selectionCountLimit}`
-  String file_picker_multi_selectionCountLimitReached_notification_content(Object selectionCountLimit) {
+  String file_picker_multi_selectionCountLimitReached_notification_content(
+      Object selectionCountLimit) {
     return Intl.message(
       'Maximum $selectionCountLimit',
       name: 'file_picker_multi_selectionCountLimitReached_notification_content',
@@ -6425,40 +6460,48 @@ class S {
   }
 
   /// `Max fields count`
-  String get app_instance_details_field_pleroma_metadata_fields_maxFields_label {
+  String
+      get app_instance_details_field_pleroma_metadata_fields_maxFields_label {
     return Intl.message(
       'Max fields count',
-      name: 'app_instance_details_field_pleroma_metadata_fields_maxFields_label',
+      name:
+          'app_instance_details_field_pleroma_metadata_fields_maxFields_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Max remote fields count`
-  String get app_instance_details_field_pleroma_metadata_fields_maxRemoteFields_label {
+  String
+      get app_instance_details_field_pleroma_metadata_fields_maxRemoteFields_label {
     return Intl.message(
       'Max remote fields count',
-      name: 'app_instance_details_field_pleroma_metadata_fields_maxRemoteFields_label',
+      name:
+          'app_instance_details_field_pleroma_metadata_fields_maxRemoteFields_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Max name length`
-  String get app_instance_details_field_pleroma_metadata_fields_nameLength_label {
+  String
+      get app_instance_details_field_pleroma_metadata_fields_nameLength_label {
     return Intl.message(
       'Max name length',
-      name: 'app_instance_details_field_pleroma_metadata_fields_nameLength_label',
+      name:
+          'app_instance_details_field_pleroma_metadata_fields_nameLength_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Max value length`
-  String get app_instance_details_field_pleroma_metadata_fields_valueLength_label {
+  String
+      get app_instance_details_field_pleroma_metadata_fields_valueLength_label {
     return Intl.message(
       'Max value length',
-      name: 'app_instance_details_field_pleroma_metadata_fields_valueLength_label',
+      name:
+          'app_instance_details_field_pleroma_metadata_fields_valueLength_label',
       desc: '',
       args: [],
     );
@@ -6485,40 +6528,48 @@ class S {
   }
 
   /// `Mastodon`
-  String get app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon {
+  String
+      get app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon {
     return Intl.message(
       'Mastodon',
-      name: 'app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon',
+      name:
+          'app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon',
       desc: '',
       args: [],
     );
   }
 
   /// `Pleroma`
-  String get app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma {
+  String
+      get app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma {
     return Intl.message(
       'Pleroma',
-      name: 'app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma',
+      name:
+          'app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma',
       desc: '',
       args: [],
     );
   }
 
   /// `Unknown`
-  String get app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown {
+  String
+      get app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown {
     return Intl.message(
       'Unknown',
-      name: 'app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown',
+      name:
+          'app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown',
       desc: '',
       args: [],
     );
   }
 
   /// `Post formats`
-  String get app_instance_details_field_pleroma_metadata_fields_postFormats_label {
+  String
+      get app_instance_details_field_pleroma_metadata_fields_postFormats_label {
     return Intl.message(
       'Post formats',
-      name: 'app_instance_details_field_pleroma_metadata_fields_postFormats_label',
+      name:
+          'app_instance_details_field_pleroma_metadata_fields_postFormats_label',
       desc: '',
       args: [],
     );
@@ -6625,10 +6676,12 @@ class S {
   }
 
   /// `MFR Object Age Threshold`
-  String get app_instance_details_field_federation_mrfObjectAge_threshold_label {
+  String
+      get app_instance_details_field_federation_mrfObjectAge_threshold_label {
     return Intl.message(
       'MFR Object Age Threshold',
-      name: 'app_instance_details_field_federation_mrfObjectAge_threshold_label',
+      name:
+          'app_instance_details_field_federation_mrfObjectAge_threshold_label',
       desc: '',
       args: [],
     );
@@ -7025,7 +7078,8 @@ class S {
   }
 
   /// `Open on {localDomain} inside app`
-  String app_hashtag_remoteInstance_dialog_action_openOnLocal(Object localDomain) {
+  String app_hashtag_remoteInstance_dialog_action_openOnLocal(
+      Object localDomain) {
     return Intl.message(
       'Open on $localDomain inside app',
       name: 'app_hashtag_remoteInstance_dialog_action_openOnLocal',
@@ -7035,7 +7089,8 @@ class S {
   }
 
   /// `Open on {remoteDomain} in browser`
-  String app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser(Object remoteDomain) {
+  String app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser(
+      Object remoteDomain) {
     return Intl.message(
       'Open on $remoteDomain in browser',
       name: 'app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser',
