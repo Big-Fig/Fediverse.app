@@ -175,22 +175,22 @@ dependencies:
   shared_preferences: ^2.0.5
 
   # extended text fields with highlight mentions support
-  extended_text_field: ^6.0.1
+  extended_text_field: ^7.0.1
 
   # detect keyboard visibility
-  flutter_keyboard_visibility: ^5.0.0
+  flutter_keyboard_visibility: ^5.0.1
 
   # list view item slide actions
   flutter_slidable: ^0.6.0
 
   # disable wakelock for video player
-  wakelock: ^0.4.0
+  wakelock: ^0.5.1
 
   # ask for review inside app
-  in_app_review: ^2.0.1
+  in_app_review: ^2.0.2
 
   # better dateTime manipulation (especially for add duration to dateTime)
-  jiffy: ^4.0.0
+  jiffy: ^4.1.0
 
   # collections extensions
   collection: ^1.15.0
