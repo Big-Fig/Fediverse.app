@@ -93,24 +93,19 @@ dependencies:
   pedantic: ^1.11.0
 
   # customizable datetime picker
-  # null-safety fork from original
-  #  flutter_datetime_picker: ^1.5.0
-  flutter_datetime_picker:
-    git:
-      url: https://github.com/figengungor/flutter_datetime_picker.git
-      ref: f4d2bd02f5c1f5563fc7c521b7a7bf6a4f172c37
+  flutter_datetime_picker: ^1.5.1
 
   # annotations to generate json from & to methods
-  json_annotation: ^4.0.0
+  json_annotation: ^4.0.1
 
   # advanced logging
-  logging: ^1.0.0
+  logging: ^1.0.1
 
   # dependency injection framework
   provider: ^5.0.0
 
   # fancy permission handler
-  permission_handler: ^6.1.0
+  permission_handler: ^7.1.0
 
   # native kotlin/swift image convert & compress
   flutter_image_compress: ^1.0.0
