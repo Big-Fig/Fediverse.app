@@ -1,6 +1,7 @@
 import 'package:fedi/ui/switch/custom_switch_bloc.dart';
 import 'package:flutter/material.dart';
-// todo: refactor, cant change value outside this widget
+import 'package:flutter_switch/flutter_switch.dart';
+
 // ignore_for_file: no-magic-number
 class CustomSwitch extends StatelessWidget {
   final double width;
@@ -13,7 +14,6 @@ class CustomSwitch extends StatelessWidget {
   final Color indicatorInactiveColor;
   final Color indicatorDisabledColor;
   final double indicatorSize;
-  final EdgeInsets indicatorPadding;
   final double borderWidth;
   final Color borderColor;
   final bool enabled;
@@ -32,134 +32,45 @@ class CustomSwitch extends StatelessWidget {
     this.borderWidth = 1.0,
     this.indicatorSize = 25.0,
     this.backgroundBorderRadius = 20.0,
-    this.indicatorPadding = const EdgeInsets.all(8.0),
     this.enabled = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var customSwitchBloc = ICustomSwitchBloc.of(context, listen: false);
+    var customSwitchBloc = ICustomSwitchBloc.of(context);
     return StreamBuilder<bool>(
       stream: customSwitchBloc.currentValueStream,
       initialData: customSwitchBloc.currentValue,
       builder: (context, snapshot) {
-        var currentValue = snapshot.data;
-        return _CustomSwitchIndicator(
-          value: currentValue,
-          backgroundActiveColor: backgroundActiveColor,
-          backgroundInactiveColor: backgroundInactiveColor,
-          backgroundDisabledColor: backgroundDisabledColor,
-          indicatorActiveColor: indicatorActiveColor,
-          indicatorInactiveColor: indicatorInactiveColor,
-          indicatorDisabledColor: indicatorDisabledColor,
-          borderColor: borderColor,
+        var currentValue = snapshot.data == true;
+
+        return FlutterSwitch(
+          disabled: !enabled,
           width: width,
           height: height,
-          borderWidth: borderWidth,
-          indicatorSize: indicatorSize,
-          backgroundBorderRadius: backgroundBorderRadius,
-          indicatorPadding: indicatorPadding,
-          onChanged: (bool value) {
+          switchBorder: Border.all(
+            color: borderColor,
+            width: borderWidth,
+          ),
+          activeColor:
+              enabled ? backgroundActiveColor : backgroundDisabledColor,
+          inactiveColor:
+              enabled ? backgroundInactiveColor : backgroundDisabledColor,
+          toggleSize: indicatorSize,
+          toggleColor: indicatorActiveColor,
+          activeToggleColor:
+              enabled ? indicatorActiveColor : indicatorDisabledColor,
+          inactiveToggleColor:
+              enabled ? indicatorInactiveColor : indicatorDisabledColor,
+          value: currentValue,
+          borderRadius: backgroundBorderRadius,
+          // padding: 8.0,
+          showOnOff: false,
+          onToggle: (value) {
             customSwitchBloc.changeValue(value);
           },
-          enabled: enabled,
         );
       },
     );
   }
-}
-
-class _CustomSwitchIndicator extends StatelessWidget {
-  final bool? value;
-  final double width;
-  final double height;
-  final ValueChanged<bool> onChanged;
-  final double backgroundBorderRadius;
-  final Color backgroundActiveColor;
-  final Color backgroundInactiveColor;
-  final Color backgroundDisabledColor;
-  final Color indicatorActiveColor;
-  final Color indicatorInactiveColor;
-  final Color indicatorDisabledColor;
-  final double indicatorSize;
-  final EdgeInsets indicatorPadding;
-  final double borderWidth;
-  final Color borderColor;
-  final bool enabled;
-
-  _CustomSwitchIndicator({
-    Key? key,
-    required this.value,
-    required this.onChanged,
-    this.backgroundActiveColor = Colors.transparent,
-    this.backgroundInactiveColor = Colors.transparent,
-    this.backgroundDisabledColor = Colors.transparent,
-    this.indicatorActiveColor = Colors.blue,
-    this.indicatorInactiveColor = Colors.grey,
-    this.indicatorDisabledColor = Colors.white24,
-    this.borderColor = Colors.black,
-    this.width = 70.0,
-    this.height = 35.0,
-    this.borderWidth = 1.0,
-    this.indicatorSize = 25.0,
-    this.backgroundBorderRadius = 20.0,
-    this.indicatorPadding = const EdgeInsets.all(4.0),
-    this.enabled = true,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var child = Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: 6.0,
-        horizontal: 4.0,
-      ),
-      child: Container(
-        width: width,
-        height: height,
-        padding: indicatorPadding,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(backgroundBorderRadius),
-          border: Border.all(
-            color: borderColor,
-            width: borderWidth,
-          ),
-          color: enabled
-              ? value!
-                  ? backgroundActiveColor
-                  : backgroundInactiveColor
-              : backgroundDisabledColor,
-        ),
-        child: Align(
-          alignment: value! ? Alignment.centerRight : Alignment.centerLeft,
-          child: _buildIndicator(value),
-        ),
-      ),
-    );
-
-    if (enabled) {
-      return InkWell(
-        onTap: () {
-          onChanged(!value!);
-        },
-        child: child,
-      );
-    } else {
-      return child;
-    }
-  }
-
-  Widget _buildIndicator(bool? isActive) => Container(
-        width: indicatorSize,
-        height: indicatorSize,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: enabled
-              ? isActive!
-                  ? indicatorActiveColor
-                  : indicatorInactiveColor
-              : Colors.transparent,
-          border: enabled ? null : Border.all(color: indicatorDisabledColor),
-        ),
-      );
 }
