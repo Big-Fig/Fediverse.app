@@ -8,6 +8,7 @@ import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
 import 'package:fedi/rest/rest_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -91,13 +92,13 @@ class PleromaApiRestService extends DisposableOwner
   }
 
   @override
-  List<String> processStringListResponse(
+  Future<List<String>> processStringListResponse(
     Response response,
-  ) {
+  ) async {
     var statusCode = response.statusCode;
 
     if (statusCode == RestResponse.successResponseStatusCode) {
-      var json = jsonDecode(response.body);
+      var json = await compute(jsonDecode, response.body);
       if (json is Iterable<String>) {
         return json.toList();
       } else {
@@ -112,22 +113,24 @@ class PleromaApiRestService extends DisposableOwner
   }
 
   @override
-  List<T> processJsonListResponse<T>(
+  Future<List<T>> processJsonListResponse<T>(
     Response response,
     ResponseJsonParser<T> responseJsonParser,
-  ) {
+  ) async {
     var statusCode = response.statusCode;
 
     if (statusCode == RestResponse.successResponseStatusCode) {
-      var json = parseJson(response);
+      var json = await parseJson(response);
 
       if (json is Iterable) {
-        return json
-            .map(
-              (jsonItem) =>
-                  responseJsonParser(jsonItem as Map<String, dynamic>),
-            )
-            .toList();
+        var _jsonListRequest = _JsonListRequest(
+          jsonIterable: json,
+          responseJsonParser: responseJsonParser,
+        );
+        return await compute(
+          _processJsonListRequest,
+          _jsonListRequest,
+        );
       } else {
         throw PleromaApiNotJsonListResponseRestException(
           statusCode: response.statusCode,
@@ -140,17 +143,17 @@ class PleromaApiRestService extends DisposableOwner
   }
 
   @override
-  T processJsonSingleResponse<T>(
+  Future<T> processJsonSingleResponse<T>(
     Response response,
     ResponseJsonParser<T> responseJsonParser,
-  ) {
+  ) async {
     var statusCode = response.statusCode;
 
     if (statusCode == RestResponse.successResponseStatusCode) {
-      var json = parseJson(response);
+      var json = await parseJson(response);
 
       if (json is Map<String, dynamic>) {
-        return responseJsonParser(json);
+        return await compute(responseJsonParser, json);
       } else {
         throw PleromaApiNotJsonListResponseRestException(
           statusCode: response.statusCode,
@@ -162,13 +165,12 @@ class PleromaApiRestService extends DisposableOwner
     }
   }
 
-  dynamic parseJson(Response response) {
+  Future<dynamic> parseJson(Response response) async {
     // todo: support not only json
     var body = response.body;
 
     try {
-      var json = jsonDecode(body);
-      return json;
+      return compute(jsonDecode, body);
     } catch (e, stackTrace) {
       _logger.severe(() => "Cant parse json from: $body", e, stackTrace);
 
@@ -234,4 +236,42 @@ class PleromaApiRestService extends DisposableOwner
         }
     }
   }
+}
+
+class _JsonListRequest<T> {
+  final Iterable jsonIterable;
+  final ResponseJsonParser<T> responseJsonParser;
+
+  _JsonListRequest({
+    required this.jsonIterable,
+    required this.responseJsonParser,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _JsonListRequest &&
+          runtimeType == other.runtimeType &&
+          jsonIterable == other.jsonIterable &&
+          responseJsonParser == other.responseJsonParser;
+
+  @override
+  int get hashCode => jsonIterable.hashCode ^ responseJsonParser.hashCode;
+
+  @override
+  String toString() {
+    return '_JsonListRequest{'
+        'jsonIterable: $jsonIterable, '
+        'responseJsonParser: $responseJsonParser'
+        '}';
+  }
+}
+
+List<T> _processJsonListRequest<T>(_JsonListRequest<T> _jsonListRequest) {
+  return _jsonListRequest.jsonIterable
+      .map(
+        (jsonItem) => _jsonListRequest
+            .responseJsonParser(jsonItem as Map<String, dynamic>),
+      )
+      .toList();
 }
