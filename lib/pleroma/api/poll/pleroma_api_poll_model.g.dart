@@ -9,7 +9,7 @@ part of 'pleroma_api_poll_model.dart';
 PleromaApiPollOption _$PleromaApiPollOptionFromJson(Map<String, dynamic> json) {
   return PleromaApiPollOption(
     title: json['title'] as String,
-    votesCount: json['votes_count'] as int,
+    votesCount: json['votes_count'] as int?,
   );
 }
 

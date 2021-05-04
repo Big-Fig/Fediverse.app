@@ -1317,6 +1317,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Вы потеряете данные если откажетесь"),
         "app_status_post_new_unsaved_dialog_title":
             MessageLookupByLibrary.simpleMessage("Сохранить как черновик?"),
+        "app_status_post_poll_field_hideTotals_label":
+            MessageLookupByLibrary.simpleMessage("Скрыть результаты"),
         "app_status_post_poll_field_length_label":
             MessageLookupByLibrary.simpleMessage("Истекает"),
         "app_status_post_poll_field_multiply_label":

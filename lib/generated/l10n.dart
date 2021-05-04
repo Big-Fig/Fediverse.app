@@ -3166,6 +3166,16 @@ class S {
     );
   }
 
+  /// `Hide totals`
+  String get app_status_post_poll_field_hideTotals_label {
+    return Intl.message(
+      'Hide totals',
+      name: 'app_status_post_poll_field_hideTotals_label',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Poll length`
   String get app_status_post_poll_field_length_label {
     return Intl.message(

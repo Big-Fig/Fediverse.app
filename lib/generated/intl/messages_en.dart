@@ -1296,6 +1296,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "If you discard now, you’ll lose this post."),
         "app_status_post_new_unsaved_dialog_title":
             MessageLookupByLibrary.simpleMessage("Save this post as draft?"),
+        "app_status_post_poll_field_hideTotals_label":
+            MessageLookupByLibrary.simpleMessage("Hide totals"),
         "app_status_post_poll_field_length_label":
             MessageLookupByLibrary.simpleMessage("Poll length"),
         "app_status_post_poll_field_multiply_label":
