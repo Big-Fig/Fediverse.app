@@ -113,7 +113,7 @@ dependencies:
   # commandline script to pull database from emulator
   # adb exec-out run-as com.fediverse.app cat ./databases/jffdev@fedi.app.sqlite > database.sqlite
   # sqlite orm
-  moor: ^4.1.0
+  moor: ^4.2.1
 
   # sqlite3_flutter_libs required for moor ffi
   sqlite3_flutter_libs: ^0.4.1
@@ -127,9 +127,7 @@ dependencies:
   # WebSockets API mobile implementation
   web_socket_channel: ^2.0.0
 
-
   # save photo and video to gallery
-  # null-safety fork from original
   gallery_saver: ^2.1.0
 
   # share actions via native API
@@ -145,19 +143,13 @@ dependencies:
   package_info: ^2.0.0
 
   # better scroll controller for nested scroll
-  # null-safety fork from original
-  #  nested_scroll_controller: ^0.2.1
-  nested_scroll_controller:
-    git:
-      url: https://github.com/xal/nested_scroll_controller.git
-      ref: 36de920ca5841bfacefa75ee246a757f6ea9e18c
-
+  nested_scroll_controller: ^1.0.0
 
   # media attachments carousel
   carousel_slider: ^4.0.0-nullsafety.0
 
   # video/audio players
-  video_player: ^2.0.2
+  video_player: ^2.1.1
 
   # pull to refresh and pull to load more
   # null-safety fork from original
@@ -171,16 +163,16 @@ dependencies:
   extended_nested_scroll_view: ^3.0.0
 
   # error overlay
-  overlay_support: ^1.2.0
+  overlay_support: ^1.2.1
 
   # file picker for media attachment
-  file_picker: ^3.0.0
+  file_picker: ^3.0.1
 
   # unenscape account not field
   html_unescape: ^2.0.0
 
   # shared preferences support. temporary required by custom emoji picker Todo: refactor and remove
-  shared_preferences: ^2.0.4
+  shared_preferences: ^2.0.5
 
   # extended text fields with highlight mentions support
   extended_text_field: ^6.0.1
