@@ -5,7 +5,7 @@ import 'package:flutter/material.dart'
     hide RefreshIndicator, RefreshIndicatorState;
 import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
+// ignore_for_file: no-magic-number
 /// mostly use flutter inner's RefreshIndicator
 class FediListSmartRefresherRefreshIndicator extends RefreshIndicator {
   /// see flutter RefreshIndicator documents,the meaning same with that
@@ -63,6 +63,7 @@ class _FediListSmartRefresherRefreshIndicatorState
     _valueAni.addListener(() {
       // frequently setState will decline the performance
       if (mounted && Scrollable.of(context)!.position.pixels <= 0) {
+      // ignore: no-empty-block
         setState(() {});
       }
     });
