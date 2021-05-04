@@ -79,8 +79,8 @@ abstract class PostStatusBloc extends PostMessageBloc
     );
 
     pollBloc = PostStatusPollBloc(
-      pollLimits:
-          pleromaInstancePollLimits ?? PleromaApiInstancePollLimits.defaultLimits,
+      pollLimits: pleromaInstancePollLimits ??
+          PleromaApiInstancePollLimits.defaultLimits,
     );
 
     addDisposable(subject: selectedActionSubject);
@@ -524,7 +524,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   void clear() {
     super.clear();
 
-    visibilitySubject.add(initialData.visibilityString.toPleromaApiVisibility());
+    visibilitySubject
+        .add(initialData.visibilityString.toPleromaApiVisibility());
     alreadyMarkMediaNsfwByDefault = false;
     nsfwSensitiveSubject.add(false);
 
@@ -601,12 +602,12 @@ abstract class PostStatusBloc extends PostMessageBloc
       poll = PostStatusPoll(
         durationLength:
             pollBloc.durationDateTimeLengthFieldBloc.currentValueDuration!,
-        multiple: pollBloc.multiplyFieldBloc.currentValue!,
+        multiple: pollBloc.multiplyFieldBloc.currentValue,
         options: pollBloc.pollOptionsGroupBloc.items
             .map((item) => item.currentValue)
             .where((item) => item.isNotEmpty)
             .toList(),
-        hideTotals: false,
+        hideTotals: pollBloc.hideTotalsFieldBloc.currentValue,
       );
     }
     return poll;
@@ -620,13 +621,12 @@ abstract class PostStatusBloc extends PostMessageBloc
 
       poll = PleromaApiPostStatusPoll(
         expiresInSeconds: expiresInSeconds,
-        multiple: pollBloc.multiplyFieldBloc.currentValue!,
+        multiple: pollBloc.multiplyFieldBloc.currentValue,
         options: pollBloc.pollOptionsGroupBloc.items
             .map((item) => item.currentValue)
             .where((item) => item.isNotEmpty)
             .toList(),
-        // todo: support hide totals
-        hideTotals: false,
+        hideTotals: pollBloc.hideTotalsFieldBloc.currentValue,
       );
     }
     return poll;

@@ -311,6 +311,7 @@
     "app_status_rebloggedBy_title": "Поделились:",
     "app_status_post_poll_field_option_hint": "Ответ {optionNumber}",
     "app_status_post_poll_field_multiply_label": "Мульти-выбор",
+    "app_status_post_poll_field_hideTotals_label": "Скрыть результаты",
     "app_status_post_poll_field_length_label": "Истекает",
     "app_status_post_schedule_error_notInFuture_dialog_title": "Неправильная дата или время",
     "app_status_post_schedule_error_notInFuture_dialog_content": "Запланированная запись должна быть хотя бы через 5 минут в будущем",

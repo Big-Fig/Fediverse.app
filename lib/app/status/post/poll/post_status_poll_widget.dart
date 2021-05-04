@@ -34,6 +34,10 @@ class PostStatusPollWidget extends StatelessWidget {
           update: (context, pollBloc, _) => pollBloc.multiplyFieldBloc,
           child: const _PostStatusPollMultiplyFieldWidget(),
         ),
+        ProxyProvider<IPostStatusPollBloc, IBoolValueFormFieldBloc>(
+          update: (context, pollBloc, _) => pollBloc.hideTotalsFieldBloc,
+          child: const _PostStatusPollHideTotalsFieldWidget(),
+        ),
         ProxyProvider<IPostStatusPollBloc, IDurationDateTimeValueFormFieldBloc>(
           update: (context, pollBloc, _) =>
               pollBloc.durationDateTimeLengthFieldBloc,
@@ -228,6 +232,18 @@ class _PostStatusPollMultiplyFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BoolValueFormFieldRowWidget(
       label: S.of(context).app_status_post_poll_field_multiply_label,
+    );
+  }
+}
+class _PostStatusPollHideTotalsFieldWidget extends StatelessWidget {
+  const _PostStatusPollHideTotalsFieldWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BoolValueFormFieldRowWidget(
+      label: S.of(context).app_status_post_poll_field_hideTotals_label,
     );
   }
 }

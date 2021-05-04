@@ -25,5 +25,5 @@ extension IMastodonPollExtension on IMastodonApiPoll {
 abstract class IMastodonPollOption {
   String get title;
 
-  int get votesCount;
+  int? get votesCount;
 }

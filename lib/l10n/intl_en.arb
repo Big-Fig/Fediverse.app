@@ -311,6 +311,7 @@
     "app_status_rebloggedBy_title": "Reblogged by",
     "app_status_post_poll_field_option_hint": "Option {optionNumber}",
     "app_status_post_poll_field_multiply_label": "Multiple selection",
+    "app_status_post_poll_field_hideTotals_label": "Hide totals",
     "app_status_post_poll_field_length_label": "Poll length",
     "app_status_post_schedule_error_notInFuture_dialog_title": "Invalid date or time",
     "app_status_post_schedule_error_notInFuture_dialog_content": "Schedule time must be at least 5 minutes in the future",

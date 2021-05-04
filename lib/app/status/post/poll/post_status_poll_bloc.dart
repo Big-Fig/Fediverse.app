@@ -20,7 +20,8 @@ abstract class IPostStatusPollBloc implements IFormBloc, IDisposable {
 
   IOneTypeFormGroupBloc<IStringValueFormFieldBloc> get pollOptionsGroupBloc;
 
-  IBoolValueFormFieldBloc get multiplyFieldBloc;
+  IBoolValueFormFieldBloc<bool> get multiplyFieldBloc;
+  IBoolValueFormFieldBloc<bool> get hideTotalsFieldBloc;
 
   IDurationDateTimeValueFormFieldBloc get durationDateTimeLengthFieldBloc;
 

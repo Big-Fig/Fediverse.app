@@ -59,7 +59,7 @@ extension IPleromaApiPollExtension on IPleromaApiPoll {
     // votes count can be hidden until poll ends
     var votesCount = option.votesCount;
     double votesPercent;
-    if (votesCount == 0) {
+    if (votesCount == 0 || votesCount == null) {
       votesPercent = 0.0;
     } else {
       votesPercent = votesCount / this.votesCount;
@@ -152,7 +152,7 @@ class PleromaApiPollOption implements IPleromaApiPollOption {
 
   @override
   @JsonKey(name: "votes_count")
-  final int votesCount;
+  final int? votesCount;
 
   PleromaApiPollOption({
     required this.title,

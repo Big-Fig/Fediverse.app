@@ -58,19 +58,28 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
         ),
         durationDateTimeLengthFieldBloc =
             createDurationDateTimeLengthBloc(pollLimits),
-        super(isAllItemsInitialized: true);
+        super(isAllItemsInitialized: true) {
+    addDisposable(disposable: durationDateTimeLengthFieldBloc);
+    addDisposable(disposable: multiplyFieldBloc);
+    addDisposable(disposable: hideTotalsFieldBloc);
+    addDisposable(disposable: pollOptionsGroupBloc);
+  }
 
   @override
   List<IFormItemBloc> get currentItems => [
         durationDateTimeLengthFieldBloc,
         multiplyFieldBloc,
+        hideTotalsFieldBloc,
         pollOptionsGroupBloc,
       ];
 
   @override
   late DurationDateTimeValueFormFieldBloc durationDateTimeLengthFieldBloc;
   @override
-  late IBoolValueFormFieldBloc multiplyFieldBloc =
+  late IBoolValueFormFieldBloc<bool> multiplyFieldBloc =
+      BoolValueFormFieldBloc(originValue: false);
+  @override
+  late IBoolValueFormFieldBloc<bool> hideTotalsFieldBloc =
       BoolValueFormFieldBloc(originValue: false);
 
   @override
@@ -105,6 +114,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
   @override
   void fillFormData(IPostStatusPoll poll) {
+    hideTotalsFieldBloc.changeCurrentValue(poll.hideTotals);
     multiplyFieldBloc.changeCurrentValue(poll.multiple);
 
     durationDateTimeLengthFieldBloc
@@ -135,5 +145,6 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
     multiplyFieldBloc.clear();
     durationDateTimeLengthFieldBloc.clear();
+    hideTotalsFieldBloc.clear();
   }
 }
