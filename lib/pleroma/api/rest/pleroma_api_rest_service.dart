@@ -18,12 +18,12 @@ abstract class IPleromaApiRestService implements IRestService, IPleromaApi {
     Response response,
   );
 
-  List<T> processJsonListResponse<T>(
+  Future<List<T>> processJsonListResponse<T>(
     Response response,
     ResponseJsonParser<T> responseJsonParser,
   );
 
-  T processJsonSingleResponse<T>(
+  Future<T> processJsonSingleResponse<T>(
     Response response,
     ResponseJsonParser<T> responseJsonParser,
   );
@@ -32,7 +32,7 @@ abstract class IPleromaApiRestService implements IRestService, IPleromaApi {
     Response response,
   );
 
-  List<String> processStringListResponse(
+  Future<List<String>> processStringListResponse(
     Response response,
   );
 }

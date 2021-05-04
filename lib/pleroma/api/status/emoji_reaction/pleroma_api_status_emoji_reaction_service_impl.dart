@@ -59,12 +59,12 @@ class PleromaApiStatusEmojiReactionService extends BasePleromaApiService
     var httpResponse = await restService.sendHttpRequest(request);
 
     // pleroma returns array even when we specify emoji
-    return restService
-        .processJsonListResponse(
-          httpResponse,
-          PleromaApiStatusEmojiReaction.fromJson,
-        )
-        .first;
+    // todo: check implementation
+    var listResponse = await restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiStatusEmojiReaction.fromJson,
+    );
+    return listResponse.first;
   }
 
   @override
