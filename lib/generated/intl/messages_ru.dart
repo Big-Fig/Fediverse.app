@@ -91,9 +91,9 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m32(formattedFileSize, formattedMaxFileSize) =>
       "Размер файла ${formattedFileSize} MB, но максимум ${formattedMaxFileSize} MB";
 
-  static String m33(status) => "Упоминул вас: ${status}.";
+  static String m33(status) => "${status}.";
 
-  static String m34(status) => "Чат: ${status}.";
+  static String m34(status) => "${status}.";
 
   static String m35(emoji) => "Оценил вашу запись: ${emoji}.";
 
@@ -1106,10 +1106,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Подписался на вас."),
         "app_notification_header_followRequest":
             MessageLookupByLibrary.simpleMessage("Хочет подписаться на вас."),
-        "app_notification_header_mention": m33,
+        "app_notification_header_mention_postfix": m33,
+        "app_notification_header_mention_prefix":
+            MessageLookupByLibrary.simpleMessage("Упоминул вас: "),
         "app_notification_header_move":
             MessageLookupByLibrary.simpleMessage("Перемещен."),
-        "app_notification_header_pleromaChatMention": m34,
+        "app_notification_header_pleromaChatMention_postfix": m34,
+        "app_notification_header_pleromaChatMention_prefix":
+            MessageLookupByLibrary.simpleMessage("Чат: "),
         "app_notification_header_pleromaEmojiReaction": m35,
         "app_notification_header_poll":
             MessageLookupByLibrary.simpleMessage("Опрос окончен."),
