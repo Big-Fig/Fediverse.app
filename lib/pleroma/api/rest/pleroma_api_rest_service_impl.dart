@@ -98,17 +98,21 @@ class PleromaApiRestService extends DisposableOwner
     var statusCode = response.statusCode;
 
     if (statusCode == RestResponse.successResponseStatusCode) {
-      var json = await compute(jsonDecode, response.body);
-      if (json is Iterable<String>) {
-        return json.toList();
-      } else {
-        throw PleromaApiNotJsonResponseRestException(
-          statusCode: response.statusCode,
-          body: response.body,
-        );
-      }
+      return await compute(_parseJsonStringList, response);
     } else {
       throw createException(response);
+    }
+  }
+
+  Future<List<String>> _parseJsonStringList(Response response) async {
+    var json = await compute(jsonDecode, response.body);
+    if (json is Iterable<String>) {
+      return json.toList();
+    } else {
+      throw PleromaApiNotJsonResponseRestException(
+        statusCode: response.statusCode,
+        body: response.body,
+      );
     }
   }
 
@@ -120,23 +124,12 @@ class PleromaApiRestService extends DisposableOwner
     var statusCode = response.statusCode;
 
     if (statusCode == RestResponse.successResponseStatusCode) {
-      var json = await parseJson(response);
+      var request = _ParseJsonRequest<T>(
+        jsonString: response.body,
+        responseJsonParser: responseJsonParser,
+      );
 
-      if (json is Iterable) {
-        var _jsonListRequest = _JsonListRequest(
-          jsonIterable: json,
-          responseJsonParser: responseJsonParser,
-        );
-        return await compute(
-          _processJsonListRequest,
-          _jsonListRequest,
-        );
-      } else {
-        throw PleromaApiNotJsonListResponseRestException(
-          statusCode: response.statusCode,
-          body: response.body,
-        );
-      }
+      return await compute(_parseJsonRequestAsList, request);
     } else {
       throw createException(response);
     }
@@ -150,34 +143,13 @@ class PleromaApiRestService extends DisposableOwner
     var statusCode = response.statusCode;
 
     if (statusCode == RestResponse.successResponseStatusCode) {
-      var json = await parseJson(response);
-
-      if (json is Map<String, dynamic>) {
-        return await compute(responseJsonParser, json);
-      } else {
-        throw PleromaApiNotJsonListResponseRestException(
-          statusCode: response.statusCode,
-          body: response.body,
-        );
-      }
+      var request = _ParseJsonRequest<T>(
+        jsonString: response.body,
+        responseJsonParser: responseJsonParser,
+      );
+      return await compute(_parseJsonRequestAsSingle, request);
     } else {
       throw createException(response);
-    }
-  }
-
-  Future<dynamic> parseJson(Response response) async {
-    // todo: support not only json
-    var body = response.body;
-
-    try {
-      return compute(jsonDecode, body);
-    } catch (e, stackTrace) {
-      _logger.severe(() => "Cant parse json from: $body", e, stackTrace);
-
-      throw PleromaApiNotJsonResponseRestException(
-        statusCode: response.statusCode,
-        body: body,
-      );
     }
   }
 
@@ -238,40 +210,60 @@ class PleromaApiRestService extends DisposableOwner
   }
 }
 
-class _JsonListRequest<T> {
-  final Iterable jsonIterable;
+class _ParseJsonRequest<T> {
+  final String jsonString;
   final ResponseJsonParser<T> responseJsonParser;
 
-  _JsonListRequest({
-    required this.jsonIterable,
+  _ParseJsonRequest({
+    required this.jsonString,
     required this.responseJsonParser,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _JsonListRequest &&
+      other is _ParseJsonRequest &&
           runtimeType == other.runtimeType &&
-          jsonIterable == other.jsonIterable &&
+          jsonString == other.jsonString &&
           responseJsonParser == other.responseJsonParser;
 
   @override
-  int get hashCode => jsonIterable.hashCode ^ responseJsonParser.hashCode;
+  int get hashCode => jsonString.hashCode ^ responseJsonParser.hashCode;
 
   @override
   String toString() {
-    return '_JsonListRequest{'
-        'jsonIterable: $jsonIterable, '
+    return '_ParseJsonRequest{'
+        'jsonString: $jsonString, '
         'responseJsonParser: $responseJsonParser'
         '}';
   }
 }
 
-List<T> _processJsonListRequest<T>(_JsonListRequest<T> _jsonListRequest) {
-  return _jsonListRequest.jsonIterable
-      .map(
-        (jsonItem) => _jsonListRequest
-            .responseJsonParser(jsonItem as Map<String, dynamic>),
-      )
-      .toList();
+List<T> _parseJsonRequestAsList<T>(_ParseJsonRequest<T> request) {
+  var json = jsonDecode(request.jsonString);
+
+  if (json is List) {
+    List<T> result = List.generate(
+      json.length,
+      (index) {
+        var jsonItem = json[index];
+        T item = request.responseJsonParser(jsonItem);
+        return item;
+      },
+      growable: false,
+    );
+
+    return result;
+  } else {
+    throw PleromaApiNotJsonListResponseRestException(
+      statusCode: 200,
+      body: request.jsonString,
+    );
+  }
+}
+
+T _parseJsonRequestAsSingle<T>(_ParseJsonRequest<T> request) {
+  var json = jsonDecode(request.jsonString);
+
+  return request.responseJsonParser(json);
 }
