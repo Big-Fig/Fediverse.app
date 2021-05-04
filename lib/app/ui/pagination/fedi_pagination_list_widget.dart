@@ -1,9 +1,9 @@
 import 'package:fedi/app/async/smart_refresher/async_smart_refresher_helper.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
-import 'package:fedi/app/list/list_refresh_header_widget.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_refresh_indicator.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -69,7 +69,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
       //      key: key,
       enablePullDown: true,
       enablePullUp: true,
-      header: const ListRefreshHeaderWidget(),
+      header: const FediListSmartRefresherRefreshIndicator(),
       footer: const ListLoadingFooterWidget(),
       controller: refreshController,
       scrollController: scrollController,

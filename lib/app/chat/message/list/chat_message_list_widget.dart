@@ -6,6 +6,7 @@ import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc_impl.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_widget.dart';
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_refresh_indicator.dart';
 import 'package:fedi/date/date_utils.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -70,7 +71,7 @@ class ChatMessageListWidget<T extends IChatMessage>
         enablePullDown: true,
         enablePullUp: true,
 // water drop header bugged (inverted with reverse)
-        header: const MaterialClassicHeader(),
+        header: const FediListSmartRefresherRefreshIndicator(),
         footer: const ListLoadingFooterWidget(),
         controller: refreshController,
         reverse: true,
