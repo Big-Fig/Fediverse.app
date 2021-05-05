@@ -19,7 +19,7 @@ abstract class AppRemoteDatabaseDao<
 
   Future<int> deleteByRemoteId(RemoteId remoteId) => customUpdate(
         'DELETE FROM $tableName '
-        'WHERE ${createFindByRemoteIdWhereExpression(remoteId)}',
+        'WHERE ${createFindByRemoteIdWhereExpressionContent(remoteId)}',
         updates: {table},
         updateKind: UpdateKind.delete,
       );
