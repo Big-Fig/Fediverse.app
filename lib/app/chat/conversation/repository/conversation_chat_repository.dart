@@ -30,45 +30,6 @@ abstract class IConversationChatRepository
         listen: listen,
       );
 
-  // Future upsertRemoteConversations(
-  //   List<IPleromaConversation> remoteConversations,
-  // );
-  //
-  // Future upsertRemoteConversation(
-  //   IPleromaConversation remoteConversation,
-  // );
-  //
-  // Future<List<DbConversationChatPopulatedWrapper>> getConversations({
-  //   required ConversationChatRepositoryFilters? filters,
-  //   required RepositoryPagination<IConversationChat>? pagination,
-  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
-  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  // });
-  //
-  // Stream<List<DbConversationChatPopulatedWrapper>> watchConversations({
-  //   required ConversationChatRepositoryFilters? filters,
-  //   required RepositoryPagination<IConversationChat>? pagination,
-  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
-  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  // });
-  //
-  // Future<DbConversationChatPopulatedWrapper?> getConversation({
-  //   required ConversationChatRepositoryFilters? filters,
-  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
-  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  // });
-  //
-  // Stream<DbConversationChatPopulatedWrapper?> watchConversation({
-  //   required ConversationChatRepositoryFilters? filters,
-  //   ConversationRepositoryChatOrderingTermData? orderingTermData =
-  //       ConversationRepositoryChatOrderingTermData.updatedAtDesc,
-  // });
-  //
-  // Future updateLocalConversationByRemoteConversation({
-  //   required IConversationChat oldLocalConversation,
-  //   required IPleromaConversation newRemoteConversation,
-  // });
-
   Future markAsRead({
     required IConversationChat conversation,
     required Batch? batchTransaction,

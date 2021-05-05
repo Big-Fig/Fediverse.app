@@ -29,7 +29,38 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
       );
     }
 
-    return conversationRepository.upsertInRemoteType(
+    if (conversation.accounts.isEmpty) {
+      // sometimes accounts is empty
+      // but if we fetch conversation by ID it will have accounts
+      // usually it happens when user just started new conversation
+      if (conversationChatService.isPleroma) {
+        await _updateConversationById(conversationRemoteId);
+      } else {
+        if (conversation.lastStatus != null) {
+          conversation = conversation.copyWith(
+            accounts: [
+              conversation.lastStatus!.account,
+            ],
+          );
+        }
+        await conversationRepository.upsertInRemoteType(
+          conversation,
+        );
+      }
+    } else {
+      await conversationRepository.upsertInRemoteType(
+        conversation,
+      );
+    }
+  }
+
+  Future _updateConversationById(String conversationRemoteId) async {
+    IPleromaApiConversation conversation =
+        await conversationChatService.getConversation(
+      conversationRemoteId: conversationRemoteId,
+    );
+
+    await conversationRepository.upsertInRemoteType(
       conversation,
     );
   }
