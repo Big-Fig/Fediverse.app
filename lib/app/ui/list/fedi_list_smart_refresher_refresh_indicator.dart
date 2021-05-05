@@ -5,6 +5,7 @@ import 'package:flutter/material.dart'
     hide RefreshIndicator, RefreshIndicatorState;
 import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 // ignore_for_file: no-magic-number
 /// mostly use flutter inner's RefreshIndicator
 class FediListSmartRefresherRefreshIndicator extends RefreshIndicator {
@@ -63,7 +64,7 @@ class _FediListSmartRefresherRefreshIndicatorState
     _valueAni.addListener(() {
       // frequently setState will decline the performance
       if (mounted && Scrollable.of(context)!.position.pixels <= 0) {
-      // ignore: no-empty-block
+        // ignore: no-empty-block
         setState(() {});
       }
     });
@@ -94,23 +95,19 @@ class _FediListSmartRefresherRefreshIndicatorState
           alignment: Alignment.topCenter,
           child: Container(
             decoration: BoxDecoration(
-              color: IFediUiColorTheme.of(context).white.withOpacity(0.6),
+              color: IFediUiColorTheme.of(context).white,
               shape: BoxShape.circle,
+              border: Border.all(
+                color: IFediUiColorTheme.of(context).ultraLightGrey,
+              ),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: const FediCircularProgressIndicator(),
+              padding: const EdgeInsets.all(8.0),
+              child: const FediCircularProgressIndicator(
+                size: 26.0,
+              ),
             ),
           ),
-          // child: RefreshProgressIndicator(
-          //   semanticsLabel: widget.semanticsLabel ??
-          //       MaterialLocalizations?.of(context)
-          //           .refreshIndicatorSemanticLabel,
-          //   semanticsValue: widget.semanticsValue,
-          //   value: floating ? null : _valueAni.value,
-          //   valueColor: _valueColor,
-          //   backgroundColor: outerColor,
-          // ),
         ),
       ),
     );
