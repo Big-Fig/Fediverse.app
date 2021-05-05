@@ -2,6 +2,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/mastodon/api/notification/mastodon_api_notification_model.dart';
+import 'package:fedi/obj/equal_comparable_obj.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
@@ -32,7 +33,7 @@ class NotificationState {
   }
 }
 
-abstract class INotification {
+abstract class INotification implements IEqualComparableObj<INotification> {
   int? get localId;
 
   String get remoteId;
@@ -236,6 +237,27 @@ class DbNotificationPopulatedWrapper implements INotification {
   @override
   IPleromaApiAccount? get target =>
       dbNotificationPopulated.dbNotification.target;
+
+  @override
+  int compareTo(INotification b) => compareItemsToSort(this, b);
+
+  @override
+  bool isEqualTo(INotification b) => isItemsEqual(this, b);
+
+  int compareItemsToSort(INotification? a, INotification? b) {
+    if (a == null && b == null) {
+      return 0;
+    } else if (a != null && b == null) {
+      return 1;
+    } else if (a == null && b != null) {
+      return -1;
+    } else {
+      return a!.createdAt.compareTo(b!.createdAt);
+    }
+  }
+
+  bool isItemsEqual(INotification a, INotification b) =>
+      a.remoteId == b.remoteId;
 }
 
 class DbNotificationPopulated {

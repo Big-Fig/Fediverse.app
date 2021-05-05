@@ -115,8 +115,9 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
     superItems.removeWhere(
       (currentItem) {
         return hiddenItems.firstWhereOrNull(
-              (hiddenItem) => isItemsEqual(hiddenItem, currentItem),
-            ) != null;
+              (hiddenItem) => hiddenItem.isEqualTo(currentItem),
+            ) !=
+            null;
       },
     );
 
@@ -130,29 +131,6 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
     return chatMessageCachedListService.watchLocalItemsNewerThanItem(item);
   }
-
-  @override
-  int compareItemsToSort(
-    IConversationChatMessage? a,
-    IConversationChatMessage? b,
-  ) {
-    if (a?.createdAt == null && b?.createdAt == null) {
-      return 0;
-    } else if (a?.createdAt != null && b?.createdAt == null) {
-      return 1;
-    } else if (a?.createdAt == null && b?.createdAt != null) {
-      return -1;
-    } else {
-      return a!.createdAt.compareTo(b!.createdAt);
-    }
-  }
-
-  @override
-  bool isItemsEqual(
-    IConversationChatMessage a,
-    IConversationChatMessage b,
-  ) =>
-      a.remoteId == b.remoteId;
 
   static ConversationChatMessageCachedPaginationListWithNewItemsBloc
       createFromContext(

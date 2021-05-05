@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/obj/equal_comparable_obj.dart';
 import 'package:fedi/pleroma/api/application/pleroma_api_application_model.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:fedi/pleroma/api/content/pleroma_api_content_model.dart';
@@ -23,7 +24,21 @@ typedef StatusAndContextCallback = Function(
 );
 typedef StatusCallback = Function(IStatus? status);
 
-abstract class IStatus {
+abstract class IStatus implements IEqualComparableObj<IStatus> {
+  static bool isItemsEqual(IStatus a, IStatus b) => a.remoteId == b.remoteId;
+
+  static int compareItemsToSort(IStatus? a, IStatus? b) {
+    if (a == null && b == null) {
+      return 0;
+    } else if (a != null && b == null) {
+      return 1;
+    } else if (a == null && b != null) {
+      return -1;
+    } else {
+      return a!.remoteId!.compareTo(b!.remoteId!);
+    }
+  }
+
   IStatus? get reblog;
 
   int? get localId;
@@ -351,7 +366,8 @@ class DbStatusPopulatedWrapper extends IStatus {
       );
 
   @override
-  PleromaApiApplication? get application => dbStatusPopulated.dbStatus.application;
+  PleromaApiApplication? get application =>
+      dbStatusPopulated.dbStatus.application;
 
   @override
   bool get bookmarked => dbStatusPopulated.dbStatus.bookmarked == true;
@@ -698,6 +714,12 @@ class DbStatusPopulatedWrapper extends IStatus {
   @override
   String? get wasSentWithIdempotencyKey =>
       dbStatusPopulated.dbStatus.wasSentWithIdempotencyKey;
+
+  @override
+  int compareTo(IStatus b) => IStatus.compareItemsToSort(this, b);
+
+  @override
+  bool isEqualTo(IStatus b) => IStatus.isItemsEqual(this, b);
 }
 
 class DbStatusPopulated {
@@ -845,13 +867,14 @@ class CantExtractStatusRemoteIdFromStatusUrlException implements Exception {
         '}';
   }
 }
+
 extension IPleromaApiMentionStatusListExtension on List<IStatus> {
   List<IPleromaApiMention> findAllMentions() {
     List<IStatus> statuses = this;
     Set<IPleromaApiMention> mentions = {};
 
     statuses.forEach(
-          (status) {
+      (status) {
         mentions.addAll(status.mentions ?? []);
       },
     );
@@ -859,4 +882,3 @@ extension IPleromaApiMentionStatusListExtension on List<IStatus> {
     return mentions.toList();
   }
 }
-

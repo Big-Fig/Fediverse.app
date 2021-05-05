@@ -4,11 +4,13 @@ import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
+import 'package:fedi/obj/equal_comparable_obj.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-abstract class IScheduledStatus {
+abstract class IScheduledStatus
+    implements IEqualComparableObj<IScheduledStatus> {
   int? get localId;
 
   String? get remoteId;
@@ -29,6 +31,21 @@ abstract class IScheduledStatus {
     bool? canceled,
     List<PleromaApiMediaAttachment>? mediaAttachments,
   });
+
+  static int compareItemsToSort(IScheduledStatus? a, IScheduledStatus? b) {
+    if (a == null && b == null) {
+      return 0;
+    } else if (a != null && b == null) {
+      return 1;
+    } else if (a == null && b != null) {
+      return -1;
+    } else {
+      return a!.remoteId!.compareTo(b!.remoteId!);
+    }
+  }
+
+  static bool isItemsEqual(IScheduledStatus a, IScheduledStatus b) =>
+      a.remoteId == b.remoteId;
 }
 
 extension DbScheduledStatusPopulatedExtension on DbScheduledStatusPopulated {
@@ -212,6 +229,13 @@ class DbScheduledStatusPopulatedWrapper implements IScheduledStatus {
 
   @override
   bool get canceled => dbScheduledStatus.canceled == true;
+
+  @override
+  int compareTo(IScheduledStatus b) =>
+      IScheduledStatus.compareItemsToSort(this, b);
+
+  @override
+  bool isEqualTo(IScheduledStatus b) => IScheduledStatus.isItemsEqual(this, b);
 }
 
 class ScheduledStatusAdapterToStatus extends PostStatusDataStatusStatusAdapter {
@@ -232,6 +256,7 @@ class ScheduledStatusAdapterToStatus extends PostStatusDataStatusStatusAdapter {
 
   @override
   bool get hiddenLocallyOnDevice => false;
+
 }
 
 enum ScheduledStatusState {

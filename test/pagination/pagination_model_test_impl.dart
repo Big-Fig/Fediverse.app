@@ -1,4 +1,6 @@
-class PaginationItemTest {
+import 'package:fedi/obj/equal_comparable_obj.dart';
+
+class PaginationItemTest implements IEqualComparableObj<PaginationItemTest> {
   final int index;
 
   PaginationItemTest(this.index);
@@ -32,4 +34,10 @@ class PaginationItemTest {
 
   static bool equalItems(PaginationItemTest a, PaginationItemTest b) =>
       a.index == b.index;
+
+  @override
+  int compareTo(PaginationItemTest b) => compareItems(this, b);
+
+  @override
+  bool isEqualTo(PaginationItemTest b) => equalItems(this, b);
 }

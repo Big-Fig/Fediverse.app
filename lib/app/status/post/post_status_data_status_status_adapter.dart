@@ -275,4 +275,10 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   }) {
     throw UnsupportedError("Not supported for non-published statuses");
   }
+
+  @override
+  int compareTo(IStatus b) => IStatus.compareItemsToSort(this, b);
+
+  @override
+  bool isEqualTo(IStatus b) => IStatus.isItemsEqual(this, b);
 }

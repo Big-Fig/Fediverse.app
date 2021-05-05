@@ -35,23 +35,6 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
     return scheduledStatusCachedListService.watchLocalItemsNewerThanItem(item);
   }
 
-  @override
-  int compareItemsToSort(IScheduledStatus? a, IScheduledStatus? b) {
-    if (a == null && b == null) {
-      return 0;
-    } else if (a != null && b == null) {
-      return 1;
-    } else if (a == null && b != null) {
-      return -1;
-    } else {
-      return a!.remoteId!.compareTo(b!.remoteId!);
-    }
-  }
-
-  @override
-  bool isItemsEqual(IScheduledStatus a, IScheduledStatus b) =>
-      a.remoteId == b.remoteId;
-
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,

@@ -108,7 +108,7 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
 
     superItems.removeWhere((currentItem) =>
         hiddenItems.firstWhereOrNull(
-          (hiddenItem) => isItemsEqual(hiddenItem, currentItem),
+          (hiddenItem) => hiddenItem.isEqualTo(currentItem),
         ) !=
         null);
 
@@ -122,23 +122,6 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
     return chatMessageCachedListService.watchLocalItemsNewerThanItem(item);
   }
-
-  @override
-  int compareItemsToSort(IPleromaChatMessage? a, IPleromaChatMessage? b) {
-    if (a?.createdAt == null && b?.createdAt == null) {
-      return 0;
-    } else if (a?.createdAt != null && b?.createdAt == null) {
-      return 1;
-    } else if (a?.createdAt == null && b?.createdAt != null) {
-      return -1;
-    } else {
-      return a!.createdAt.compareTo(b!.createdAt);
-    }
-  }
-
-  @override
-  bool isItemsEqual(IPleromaChatMessage a, IPleromaChatMessage b) =>
-      a.remoteId == b.remoteId;
 
   static PleromaChatMessageCachedPaginationListWithNewItemsBloc
       createFromContext(
