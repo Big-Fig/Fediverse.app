@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
@@ -331,6 +332,12 @@ Future handleLaunchPushLoaderNotification(
         initialMediaAttachment: null,
       ),
     );
+  } else if (notification.isContainsTargetAccount) {
+    await navigatorKey.currentState!.push(
+      createLocalAccountDetailsPageRoute(
+        notification.target!.toDbAccountWrapper(),
+      ),
+    );
   } else if (notification.isContainsAccount) {
     await navigatorKey.currentState!.push(
       createLocalAccountDetailsPageRoute(
@@ -410,7 +417,8 @@ HomeTab calculateHomeTabForNotification(
       homeTab = HomeTab.chat;
     } else if (notification.isContainsStatus) {
       homeTab = HomeTab.notifications;
-    } else if (notification.isContainsAccount) {
+    } else if (notification.isContainsAccount ||
+        notification.isContainsTargetAccount) {
       homeTab = HomeTab.notifications;
     } else {
       homeTab = HomeTab.timelines;

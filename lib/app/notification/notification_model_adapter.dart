@@ -48,11 +48,11 @@ extension IPleromaNotificationExtension on IPleromaApiNotification {
       dbStatus: status?.toDbStatus(),
       reblogDbStatus: status?.reblog?.toDbStatus(),
       reblogDbStatusAccount: status?.reblog?.account.toDbAccount(),
+      dbStatusAccount: status?.account.toDbAccount(),
       replyDbStatus: null,
-      replyReblogDbStatusAccount: null,
-      replyReblogDbStatus: null,
-      dbStatusAccount: null,
       replyDbStatusAccount: null,
+      replyReblogDbStatus: null,
+      replyReblogDbStatusAccount: null,
     );
   }
 
