@@ -240,6 +240,12 @@ abstract class CachedPaginationListWithNewItemsBloc<
           actuallyNewRequest,
         );
 
+        // if newerItem already changed we shouldn't apply calculated changes
+        // because new changes coming
+        if (this.newerItem != newerItem) {
+          return;
+        }
+
         _logger.finest(() => "watchItemsNewerThanItem "
             "\n"
             "\t newItems ${newItems.length} \n"
