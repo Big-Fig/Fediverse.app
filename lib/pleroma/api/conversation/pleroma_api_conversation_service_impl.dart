@@ -52,7 +52,7 @@ class PleromaApiConversationService extends BasePleromaApiService
   }) async {
     var request = RestRequest.get(
       relativePath: join(
-        conversationRelativeUrlPath,
+        pleromaConversationRelativeUrlPath,
         conversationRemoteId,
       ),
     );

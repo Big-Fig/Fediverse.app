@@ -16,6 +16,14 @@ abstract class IPleromaApiConversation extends IMastodonApiConversation {
   List<IPleromaApiAccount> get accounts;
 
   IPleromaApiConversationPleromaPart? get pleroma;
+
+  PleromaApiConversation copyWith({
+    bool? unread,
+    IPleromaApiStatus? lastStatus,
+    String? id,
+    List<IPleromaApiAccount>? accounts,
+    IPleromaApiConversationPleromaPart? pleroma,
+  });
 }
 
 abstract class IPleromaApiConversationPleromaPart {
@@ -95,6 +103,23 @@ class PleromaApiConversation implements IPleromaApiConversation, IJsonObject {
     required List<PleromaApiAccount>? accounts,
     required this.pleroma,
   }) : accounts = accounts ?? [];
+
+  @override
+  PleromaApiConversation copyWith({
+    bool? unread,
+    IPleromaApiStatus? lastStatus,
+    String? id,
+    List<IPleromaApiAccount>? accounts,
+    IPleromaApiConversationPleromaPart? pleroma,
+  }) {
+    return PleromaApiConversation(
+      unread: unread ?? this.unread,
+      lastStatus: lastStatus?.toPleromaApiStatus() ?? this.lastStatus,
+      id: id ?? this.id,
+      accounts: accounts?.toPleromaApiAccounts() ?? this.accounts,
+      pleroma: pleroma?.toPleromaApiConversationPleromaPart() ?? this.pleroma,
+    );
+  }
 
   static PleromaApiConversation fromJson(Map<String, dynamic> json) =>
       _$PleromaApiConversationFromJson(json);

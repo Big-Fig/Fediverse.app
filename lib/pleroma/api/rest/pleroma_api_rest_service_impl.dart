@@ -256,6 +256,7 @@ List<T> _parseJsonRequestAsList<T>(_ParseJsonRequest<T> request) {
     return result;
   } else {
     throw PleromaApiNotJsonListResponseRestException(
+      // ignore: no-magic-number
       statusCode: 200,
       body: request.jsonString,
     );
