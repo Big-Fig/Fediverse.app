@@ -69,6 +69,8 @@ abstract class INotification {
 
   bool get isContainsAccount;
 
+  bool get isContainsTargetAccount;
+
   bool get dismissed;
 
   IPleromaApiAccount? get target;
@@ -98,6 +100,9 @@ class DbNotificationPopulatedWrapper implements INotification {
 
   @override
   bool get isContainsAccount => account != null;
+
+  @override
+  bool get isContainsTargetAccount => target != null;
 
   DbNotificationPopulatedWrapper({
     required this.dbNotificationPopulated,
@@ -138,7 +143,8 @@ class DbNotificationPopulatedWrapper implements INotification {
       type.toMastodonApiNotificationType();
 
   @override
-  PleromaApiNotificationType get typePleroma => type.toPleromaApiNotificationType();
+  PleromaApiNotificationType get typePleroma =>
+      type.toPleromaApiNotificationType();
 
   @override
   String get type => dbNotificationPopulated.dbNotification.type;
@@ -228,7 +234,8 @@ class DbNotificationPopulatedWrapper implements INotification {
       dbNotificationPopulated.dbNotification.report;
 
   @override
-  IPleromaApiAccount? get target => dbNotificationPopulated.dbNotification.target;
+  IPleromaApiAccount? get target =>
+      dbNotificationPopulated.dbNotification.target;
 }
 
 class DbNotificationPopulated {
