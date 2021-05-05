@@ -17,6 +17,27 @@ abstract class IConversationChat implements IChat {
     DateTime? updatedAt,
     List<IAccount>? accounts,
   });
+
+  static int compareItemsToSort(
+    IConversationChat? a,
+    IConversationChat? b,
+  ) {
+    if (a?.updatedAt == null && b?.updatedAt == null) {
+      return 0;
+    } else if (a?.updatedAt != null && b?.updatedAt == null) {
+      return 1;
+    } else if (a?.updatedAt == null && b?.updatedAt != null) {
+      return -1;
+    } else {
+      return a!.updatedAt!.compareTo(b!.updatedAt!);
+    }
+  }
+
+  static bool isItemsEqual(
+    IConversationChat a,
+    IConversationChat b,
+  ) =>
+      a.remoteId == b.remoteId;
 }
 
 class DbConversationPopulated {
@@ -163,6 +184,14 @@ class DbConversationChatWithLastMessagePopulatedWrapper
               ),
             )
           : null;
+
+  @override
+  int compareTo(IConversationChatWithLastMessage b) =>
+      IConversationChat.compareItemsToSort(chat, b.chat);
+
+  @override
+  bool isEqualTo(IConversationChatWithLastMessage b) =>
+      IConversationChat.isItemsEqual(chat, b.chat);
 }
 
 extension IConversationChatExtension on IConversationChat {

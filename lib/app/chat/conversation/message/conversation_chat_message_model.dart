@@ -4,12 +4,14 @@ import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
+import 'package:fedi/obj/equal_comparable_obj.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 
-abstract class IConversationChatMessage extends IChatMessage {
+abstract class IConversationChatMessage extends IChatMessage
+    implements IEqualComparableObj<IConversationChatMessage> {
   IStatus get status;
 
   @override
@@ -158,4 +160,16 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
 
   @override
   String get accountRemoteId => status.account.remoteId;
+
+  @override
+  int compareTo(IConversationChatMessage b) => IStatus.compareItemsToSort(
+        status,
+        b.status,
+      );
+
+  @override
+  bool isEqualTo(IConversationChatMessage b) => IStatus.isItemsEqual(
+        status,
+        b.status,
+      );
 }

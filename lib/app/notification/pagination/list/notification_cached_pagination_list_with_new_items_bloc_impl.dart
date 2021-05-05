@@ -32,23 +32,6 @@ class NotificationCachedPaginationListWithNewItemsBloc<
     return cachedListBloc.watchLocalItemsNewerThanItem(item);
   }
 
-  @override
-  int compareItemsToSort(INotification? a, INotification? b) {
-    if (a == null && b == null) {
-      return 0;
-    } else if (a != null && b == null) {
-      return 1;
-    } else if (a == null && b != null) {
-      return -1;
-    } else {
-      return a!.createdAt.compareTo(b!.createdAt);
-    }
-  }
-
-  @override
-  bool isItemsEqual(INotification a, INotification b) =>
-      a.remoteId == b.remoteId;
-
   static Widget
       provideToContext<TPage extends CachedPaginationPage<INotification>>(
     BuildContext context, {

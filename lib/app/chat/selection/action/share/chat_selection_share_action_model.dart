@@ -233,4 +233,10 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
 
   @override
   String? get wasSentWithIdempotencyKey => throw UnimplementedError();
+
+  @override
+  int compareTo(IStatus b) => IStatus.compareItemsToSort(this, b);
+
+  @override
+  bool isEqualTo(IStatus b) => IStatus.isItemsEqual(this, b);
 }

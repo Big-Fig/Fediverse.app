@@ -65,22 +65,6 @@ class StatusCachedPaginationListWithNewItemsBloc<
     return statusCachedListBloc.watchLocalItemsNewerThanItem(item);
   }
 
-  @override
-  int compareItemsToSort(IStatus? a, IStatus? b) {
-    if (a == null && b == null) {
-      return 0;
-    } else if (a != null && b == null) {
-      return 1;
-    } else if (a == null && b != null) {
-      return -1;
-    } else {
-      return a!.remoteId!.compareTo(b!.remoteId!);
-    }
-  }
-
-  @override
-  bool isItemsEqual(IStatus a, IStatus b) => a.remoteId == b.remoteId;
-
   static Widget provideToContext<TPage extends CachedPaginationPage<IStatus>>(
     BuildContext context, {
     required bool mergeNewItemsImmediately,

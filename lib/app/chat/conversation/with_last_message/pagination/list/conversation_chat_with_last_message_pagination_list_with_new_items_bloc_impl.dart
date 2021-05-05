@@ -25,27 +25,4 @@ class ConversationChatWithLastMessagePaginationListWithNewItemsBloc<
     IConversationChatWithLastMessage? item,
   ) =>
       cachedListBloc.watchLocalItemsNewerThanItem(item);
-
-  @override
-  int compareItemsToSort(
-    IConversationChatWithLastMessage? a,
-    IConversationChatWithLastMessage? b,
-  ) {
-    if (a?.chat.updatedAt == null && b?.chat.updatedAt == null) {
-      return 0;
-    } else if (a?.chat.updatedAt != null && b?.chat.updatedAt == null) {
-      return 1;
-    } else if (a?.chat.updatedAt == null && b?.chat.updatedAt != null) {
-      return -1;
-    } else {
-      return a!.chat.updatedAt!.compareTo(b!.chat.updatedAt!);
-    }
-  }
-
-  @override
-  bool isItemsEqual(
-    IConversationChatWithLastMessage a,
-    IConversationChatWithLastMessage b,
-  ) =>
-      a.chat.remoteId == b.chat.remoteId;
 }

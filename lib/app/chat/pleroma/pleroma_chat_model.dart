@@ -14,6 +14,27 @@ abstract class IPleromaChat implements IChat {
     DateTime? updatedAt,
     List<IAccount>? accounts,
   });
+
+  static int compareItemsToSort(
+    IPleromaChat? a,
+    IPleromaChat? b,
+  ) {
+    if (a?.updatedAt == null && b?.updatedAt == null) {
+      return 0;
+    } else if (a?.updatedAt != null && b?.updatedAt == null) {
+      return 1;
+    } else if (a?.updatedAt == null && b?.updatedAt != null) {
+      return -1;
+    } else {
+      return a!.updatedAt!.compareTo(b!.updatedAt!);
+    }
+  }
+
+  static bool isItemsEqual(
+    IPleromaChat a,
+    IPleromaChat b,
+  ) =>
+      a.remoteId == b.remoteId;
 }
 
 class DbPleromaChatPopulated {
@@ -126,6 +147,19 @@ class DbPleromaChatWithLastMessagePopulatedWrapper
         '$dbPleromaChatWithLastMessagePopulated'
         '}';
   }
+
+  @override
+  int compareTo(IPleromaChatWithLastMessage b) =>
+      IPleromaChat.compareItemsToSort(
+        chat,
+        b.chat,
+      );
+
+  @override
+  bool isEqualTo(IPleromaChatWithLastMessage b) => IPleromaChat.isItemsEqual(
+        chat,
+        b.chat,
+      );
 }
 
 class DbPleromaChatPopulatedWrapper implements IPleromaChat {

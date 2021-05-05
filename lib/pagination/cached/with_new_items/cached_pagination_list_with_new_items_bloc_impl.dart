@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
+import 'package:fedi/obj/equal_comparable_obj.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -13,8 +15,17 @@ var _logger = Logger("cached_pagination_list_with_new_items_bloc_impl.dart");
 
 abstract class CachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<TItem>,
-        TItem> extends CachedPaginationListBloc<TPage, TItem>
+        TItem extends IEqualComparableObj<TItem>>
+    extends CachedPaginationListBloc<TPage, TItem>
     implements ICachedPaginationListWithNewItemsBloc<TPage, TItem> {
+  late BehaviorSubject<List<TItem>> superItemsWithNewItemsSubject;
+
+  @override
+  List<TItem> get items => superItemsWithNewItemsSubject.value!;
+
+  @override
+  Stream<List<TItem>> get itemsStream => superItemsWithNewItemsSubject.stream;
+
   @override
   TItem? get newerItem => items.isNotEmpty == true ? items.first : null;
 
@@ -50,8 +61,13 @@ abstract class CachedPaginationListWithNewItemsBloc<
     this.watchNewerItemsWhenLoadedPagesIsEmpty = false,
     required ICachedPaginationBloc<TPage, TItem> paginationBloc,
   }) : super(cachedPaginationBloc: paginationBloc) {
+    superItemsWithNewItemsSubject = BehaviorSubject.seeded(
+      super.items,
+    );
+
     addDisposable(subject: mergedNewItemsSubject);
     addDisposable(subject: unmergedNewItemsSubject);
+    addDisposable(subject: superItemsWithNewItemsSubject);
 
     addDisposable(
       streamSubscription: newerItemStream.listen(
@@ -72,75 +88,34 @@ abstract class CachedPaginationListWithNewItemsBloc<
         ),
       );
     }
-  }
 
-  List<TItem> removeDuplicatesAndUpdate({
-    required List<TItem> actuallyNew,
-    required List<TItem> currentItems,
-  }) {
-    return actuallyNew.where(
-      (newItem) {
-        bool isAlreadyExist;
-        if (currentItems.isNotEmpty == true) {
-          var found = currentItems.firstWhereOrNull(
-            (oldItem) => isItemsEqual(newItem, oldItem),
+    addDisposable(
+      streamSubscription: super.itemsStream.listen(
+        (superItems) async {
+          var calculateNewItemsRequest = _CalculateNewItemsRequest<TItem>(
+            superItems: superItems,
+            mergedNewItems: mergedNewItems,
           );
 
-          isAlreadyExist = found != null;
-        } else {
-          isAlreadyExist = false;
-        }
-        var isNeedToAdd = !isAlreadyExist;
-        return isNeedToAdd;
-      },
-    ).toList();
-  }
+          var newItems = _calculateNewItems(calculateNewItemsRequest);
 
-  @override
-  List<TItem> get items => _calculateNewItems(
-        items: super.items,
-        mergedNewItems: mergedNewItems,
-      );
+          superItemsWithNewItemsSubject.add(newItems);
+        },
+      ),
+    );
+    addDisposable(
+      streamSubscription: mergedNewItemsStream.listen(
+        (mergedNewItems) async {
+          var calculateNewItemsRequest = _CalculateNewItemsRequest<TItem>(
+            superItems: super.items,
+            mergedNewItems: mergedNewItems,
+          );
 
-  @override
-  Stream<List<TItem>> get itemsStream => Rx.combineLatest2(
-        mergedNewItemsStream,
-        super.itemsStream,
-        (dynamic mergedNewItems, dynamic items) => _calculateNewItems(
-          items: items,
-          mergedNewItems: mergedNewItems,
-        ),
-      );
-
-  List<TItem> _calculateNewItems({
-    required List<TItem>? items,
-    required List<TItem>? mergedNewItems,
-  }) {
-    List<TItem>? result;
-
-    if (items == null && mergedNewItems == null) {
-      result = null;
-    }
-    if (items == null) {
-      if (mergedNewItems?.isNotEmpty == true) {
-        result = mergedNewItems;
-      } else {
-        result = null;
-      }
-    } else {
-      result = [
-        ...(mergedNewItems ?? []),
-        ...items,
-      ];
-    }
-
-    _logger.finest(() => "_calculateNewItems"
-        " \n"
-        "\t items = ${items?.length} \n"
-        "\t mergedNewItems = ${mergedNewItems!.length} \n"
-        "\t result = ${result?.length}");
-
-    return result!;
+          var newItems = _calculateNewItems(calculateNewItemsRequest);
+          superItemsWithNewItemsSubject.add(newItems);
+        },
+      ),
+    );
   }
 
   bool get isHaveUnmergedNewItems => unmergedNewItemsCount > 0;
@@ -216,10 +191,6 @@ abstract class CachedPaginationListWithNewItemsBloc<
     }
   }
 
-  int compareItemsToSort(TItem a, TItem b);
-
-  bool isItemsEqual(TItem a, TItem b);
-
   void checkWatchNewItemsSubscription(TItem? newerItem) {
     // don't watch new items before we something actually loaded
     if (paginationBloc.loadedPagesCount == 0 &&
@@ -235,7 +206,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
     var bothItemsNotNull = previousNeverItem != null && newerItem != null;
     if (bothItemsNotNull) {
-      var isEqual = isItemsEqual(previousNeverItem!, newerItem!);
+      var isEqual = previousNeverItem!.isEqualTo(newerItem!);
       if (isEqual) {
         return;
       }
@@ -249,32 +220,24 @@ abstract class CachedPaginationListWithNewItemsBloc<
     addDisposable(streamSubscription: newItemsSubscription);
   }
 
-  StreamSubscription<List> createWatchNewItemsSubscription(newerItem) {
+  StreamSubscription<List<TItem>> createWatchNewItemsSubscription(newerItem) {
     return watchItemsNewerThanItem(newerItem)
         .skipWhile((newItems) => newItems.isNotEmpty != true)
         .listen(
-      (newItems) {
-        // we need to filter again to be sure that newerItem is no
-        // changed during sql request execute time
-        List<TItem> actuallyNew = newItems.where(
-          (newItem) {
-            if (newerItem != null) {
-              return compareItemsToSort(newItem, newerItem) > 0;
-            } else {
-              return true;
-            }
-          },
-        ).toList();
-
+      (newItems) async {
         var currentItems = items;
 
-        // remove duplicates
-        // sometimes local storage sqlite returns duplicated items
-        // sometimes item is newer but already exist
-        // for example chat updateAt updated
-        actuallyNew = removeDuplicatesAndUpdate(
-          actuallyNew: actuallyNew,
+        // changed during sql request execute time
+        // we need to filter again to be sure that newerItem is no
+
+        var actuallyNewRequest = _CalculateActuallyNewRequest<TItem>(
+          newItems: newItems,
+          newerItem: newerItem,
           currentItems: currentItems,
+        );
+        List<TItem> actuallyNew = await compute(
+          _calculateActuallyNew,
+          actuallyNewRequest,
         );
 
         _logger.finest(() => "watchItemsNewerThanItem "
@@ -294,4 +257,120 @@ abstract class CachedPaginationListWithNewItemsBloc<
       },
     );
   }
+}
+
+class _CalculateNewItemsRequest<TItem> {
+  final List<TItem>? superItems;
+  final List<TItem>? mergedNewItems;
+
+  _CalculateNewItemsRequest({
+    required this.superItems,
+    required this.mergedNewItems,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _CalculateNewItemsRequest &&
+          runtimeType == other.runtimeType &&
+          superItems == other.superItems &&
+          mergedNewItems == other.mergedNewItems;
+
+  @override
+  int get hashCode => superItems.hashCode ^ mergedNewItems.hashCode;
+
+  @override
+  String toString() {
+    return '_CalculateNewItemsRequest{'
+        'superItems: $superItems, '
+        'mergedNewItems: $mergedNewItems'
+        '}';
+  }
+}
+
+List<TItem> _calculateNewItems<TItem>(
+  _CalculateNewItemsRequest<TItem> request,
+) {
+  List<TItem>? result;
+
+  var items = request.superItems;
+  var mergedNewItems = request.mergedNewItems;
+
+  if (items == null && mergedNewItems == null) {
+    result = null;
+  }
+  if (items == null) {
+    if (mergedNewItems?.isNotEmpty == true) {
+      result = mergedNewItems;
+    } else {
+      result = null;
+    }
+  } else {
+    result = [
+      ...(mergedNewItems ?? []),
+      ...items,
+    ];
+  }
+
+  _logger.finest(() => "_calculateNewItems"
+      " \n"
+      "\t items = ${items?.length} \n"
+      "\t mergedNewItems = ${mergedNewItems!.length} \n"
+      "\t result = ${result?.length}");
+
+  return result!;
+}
+
+class _CalculateActuallyNewRequest<TItem> {
+  final TItem? newerItem;
+  final List<TItem> newItems;
+  final List<TItem> currentItems;
+
+  _CalculateActuallyNewRequest({
+    required this.newItems,
+    required this.currentItems,
+    required this.newerItem,
+  });
+}
+
+List<TItem> _calculateActuallyNew<TItem extends IEqualComparableObj<TItem>>(
+  _CalculateActuallyNewRequest<TItem> request,
+) {
+  var newItems = request.newItems;
+  var currentItems = request.currentItems;
+  var newerItem = request.newerItem;
+
+  // changed during sql request execute time
+  // we need to filter again to be sure that newerItem is no
+  List<TItem> actuallyNew = newItems.where(
+    (newItem) {
+      if (newerItem != null) {
+        return newItem.compareTo(newerItem) > 0;
+      } else {
+        return true;
+      }
+    },
+  ).toList();
+
+  // remove duplicates
+  // sometimes local storage sqlite returns duplicated items
+  // sometimes item is newer but already exist
+  // for example chat updateAt updated
+  actuallyNew = actuallyNew.where(
+    (newItem) {
+      bool isAlreadyExist;
+      if (currentItems.isNotEmpty == true) {
+        var found = currentItems.firstWhereOrNull(
+          (oldItem) => newItem.isEqualTo(oldItem),
+        );
+
+        isAlreadyExist = found != null;
+      } else {
+        isAlreadyExist = false;
+      }
+      var isNeedToAdd = !isAlreadyExist;
+      return isNeedToAdd;
+    },
+  ).toList();
+  return actuallyNew;
 }

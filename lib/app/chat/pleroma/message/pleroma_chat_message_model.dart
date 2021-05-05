@@ -3,11 +3,13 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/obj/equal_comparable_obj.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 
-abstract class IPleromaChatMessage extends IChatMessage {
+abstract class IPleromaChatMessage extends IChatMessage
+    implements IEqualComparableObj<IPleromaChatMessage> {
   @override
   IPleromaChatMessage copyWith({
     int? localId,
@@ -25,6 +27,22 @@ abstract class IPleromaChatMessage extends IChatMessage {
     bool? hiddenLocallyOnDevice,
     String? wasSentWithIdempotencyKey,
   });
+
+  static int compareItemsToSort(
+      IPleromaChatMessage? a, IPleromaChatMessage? b) {
+    if (a?.createdAt == null && b?.createdAt == null) {
+      return 0;
+    } else if (a?.createdAt != null && b?.createdAt == null) {
+      return 1;
+    } else if (a?.createdAt == null && b?.createdAt != null) {
+      return -1;
+    } else {
+      return a!.createdAt.compareTo(b!.createdAt);
+    }
+  }
+
+  static bool isItemsEqual(IPleromaChatMessage a, IPleromaChatMessage b) =>
+      a.remoteId == b.remoteId;
 }
 
 extension IPleromaChatDbMessage on IPleromaChatMessage {
@@ -209,7 +227,16 @@ class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
       dbChatMessagePopulated.dbChatMessage.hiddenLocallyOnDevice == true;
 
   @override
-  String get accountRemoteId => dbChatMessagePopulated.dbChatMessage.accountRemoteId;
+  String get accountRemoteId =>
+      dbChatMessagePopulated.dbChatMessage.accountRemoteId;
+
+  @override
+  int compareTo(IPleromaChatMessage b) =>
+      IPleromaChatMessage.compareItemsToSort(this, b);
+
+  @override
+  bool isEqualTo(IPleromaChatMessage b) =>
+      IPleromaChatMessage.isItemsEqual(this, b);
 }
 
 class DbChatMessagePopulated {
