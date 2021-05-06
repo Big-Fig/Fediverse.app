@@ -32,41 +32,47 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
 
         _logger.finest(() => "updateItemsCount $updateItemsCount");
 
-        if (updateItemsCount > 0) {
-          var scrollControllerBloc =
-              IScrollControllerBloc.of(context, listen: false);
+        var scrollControllerBloc =
+            IScrollControllerBloc.of(context, listen: false);
 
-          return StreamBuilder<bool>(
-            stream: Rx.combineLatest2(
-              scrollControllerBloc.scrollDirectionStream.distinct(),
-              scrollControllerBloc.scrolledToTopStream,
-              (dynamic scrollDirection, dynamic scrolledToTop) =>
-                  isNeedShowMergeItems(scrollDirection, scrolledToTop),
-            ),
-            initialData: isNeedShowMergeItems(
-              scrollControllerBloc.scrollDirection,
-              scrollControllerBloc.scrolledToTop,
-            ),
-            builder: (context, snapshot) {
-              var isNeedShowMergeItems = snapshot.data!;
+        return StreamBuilder<bool>(
+          stream: Rx.combineLatest2(
+            scrollControllerBloc.scrollDirectionStream.distinct(),
+            scrollControllerBloc.scrolledToTopStream,
+            (dynamic scrollDirection, dynamic scrolledToTop) =>
+                isNeedShowMergeItems(scrollDirection, scrolledToTop),
+          ),
+          initialData: isNeedShowMergeItems(
+            scrollControllerBloc.scrollDirection,
+            scrollControllerBloc.scrolledToTop,
+          ),
+          builder: (context, snapshot) {
+            var isNeedShowMergeItems = snapshot.data!;
 
-              _logger
-                  .finest(() => "isNeedShowMergeItems $isNeedShowMergeItems");
+            _logger.finest(() => "isNeedShowMergeItems $isNeedShowMergeItems");
 
-              if (isNeedShowMergeItems) {
-                return buildMergeNewItemsButton(
-                  context: context,
-                  paginationWithUpdatesListBloc: paginationWithUpdatesListBloc,
-                  updateItemsCount: updateItemsCount,
-                );
-              } else {
-                return SizedBox.shrink();
-              }
-            },
-          );
-        } else {
-          return SizedBox.shrink();
-        }
+            Widget child;
+
+            if (isNeedShowMergeItems && updateItemsCount > 0) {
+              child = buildMergeNewItemsButton(
+                context: context,
+                paginationWithUpdatesListBloc: paginationWithUpdatesListBloc,
+                updateItemsCount: updateItemsCount,
+              );
+            } else {
+              child = SizedBox.shrink();
+            }
+
+            return AnimatedSwitcher(
+              duration: Duration(milliseconds: 500),
+              transitionBuilder: (child, animation) => ScaleTransition(
+                  scale: animation,
+                  child: child,
+                ),
+              child: child,
+            );
+          },
+        );
       },
     );
   }
