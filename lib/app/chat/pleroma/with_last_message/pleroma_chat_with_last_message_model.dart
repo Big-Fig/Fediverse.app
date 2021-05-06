@@ -8,3 +8,29 @@ abstract class IPleromaChatWithLastMessage
 
   IPleromaChatMessage? get lastChatMessage;
 }
+
+class SimplePleromaChatWithLastMessage implements IPleromaChatWithLastMessage {
+  @override
+  final IPleromaChat chat;
+
+  @override
+  final IPleromaChatMessage? lastChatMessage;
+
+  SimplePleromaChatWithLastMessage({
+    required this.chat,
+    required this.lastChatMessage,
+  });
+
+  @override
+  int compareTo(IPleromaChatWithLastMessage b) =>
+      IPleromaChat.compareItemsToSort(
+        chat,
+        b.chat,
+      );
+
+  @override
+  bool isEqualTo(IPleromaChatWithLastMessage b) => IPleromaChat.isItemsEqual(
+        chat,
+        b.chat,
+      );
+}

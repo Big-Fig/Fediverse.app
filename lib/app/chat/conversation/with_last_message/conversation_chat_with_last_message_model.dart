@@ -8,3 +8,31 @@ abstract class IConversationChatWithLastMessage
 
   IConversationChatMessage? get lastChatMessage;
 }
+
+class SimpleConversationChatWithLastMessage
+    implements IConversationChatWithLastMessage {
+  @override
+  final IConversationChat chat;
+
+  @override
+  final IConversationChatMessage? lastChatMessage;
+
+  SimpleConversationChatWithLastMessage({
+    required this.chat,
+    required this.lastChatMessage,
+  });
+
+  @override
+  int compareTo(IConversationChatWithLastMessage b) =>
+      IConversationChat.compareItemsToSort(
+        chat,
+        b.chat,
+      );
+
+  @override
+  bool isEqualTo(IConversationChatWithLastMessage b) =>
+      IConversationChat.isItemsEqual(
+        chat,
+        b.chat,
+      );
+}

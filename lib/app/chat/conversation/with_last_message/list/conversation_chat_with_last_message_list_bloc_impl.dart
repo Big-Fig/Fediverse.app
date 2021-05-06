@@ -6,12 +6,12 @@ import 'package:fedi/app/chat/conversation/with_last_message/list/cached/convers
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/pagination/conversation_chat_with_last_message_pagination_bloc.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/pagination/conversation_chat_with_last_message_pagination_bloc_impl.dart';
+import 'package:fedi/app/chat/conversation/with_last_message/pagination/list/conversation_chat_with_last_message_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/pagination/list/conversation_chat_with_last_message_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
-import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
@@ -35,9 +35,9 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
       get chatPaginationListBloc => paginationListWithNewItemsBloc;
 
   @override
-  late ICachedPaginationListWithNewItemsBloc<
-      CachedPaginationPage<IConversationChatWithLastMessage>,
-      IConversationChatWithLastMessage> paginationListWithNewItemsBloc;
+  late IConversationChatWithLastMessagePaginationListWithNewItemsBloc<
+          CachedPaginationPage<IConversationChatWithLastMessage>>
+      paginationListWithNewItemsBloc;
 
   final IConversationChatRepository conversationRepository;
   final IConversationChatWithLastMessageRepository

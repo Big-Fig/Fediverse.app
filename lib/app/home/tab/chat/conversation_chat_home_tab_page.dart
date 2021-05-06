@@ -5,6 +5,7 @@ import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_c
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_widget.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/pagination/conversation_chat_with_last_message_pagination_bloc.dart';
+import 'package:fedi/app/chat/conversation/with_last_message/pagination/list/conversation_chat_with_last_message_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/unread/pleroma_chat_unread_badge_bloc_impl.dart';
@@ -77,6 +78,10 @@ class ConversationChatHomeTabPage extends StatelessWidget {
             Provider<IConversationChatWithLastMessagePaginationBloc>.value(value: chatsListBloc.paginationBloc),
             Provider<IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
                 IConversationChatWithLastMessage>>.value(value: chatsListBloc.chatPaginationListBloc),
+            Provider<IConversationChatWithLastMessagePaginationListWithNewItemsBloc<
+                CachedPaginationPage<IConversationChatWithLastMessage>>>.value(
+              value: chatsListBloc.paginationListWithNewItemsBloc,
+            ),
             Provider<ICachedPaginationListWithNewItemsBloc<
                 CachedPaginationPage<IConversationChatWithLastMessage>,
                 IConversationChatWithLastMessage>>.value(

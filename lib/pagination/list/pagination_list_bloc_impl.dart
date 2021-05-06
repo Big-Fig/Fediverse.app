@@ -78,18 +78,30 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     addDisposable(subject: loadMoreStateSubject);
     addDisposable(streamController: refreshErrorStreamController);
     addDisposable(streamController: loadMoreErrorStreamController);
+
+    itemsSubject = BehaviorSubject.seeded(mapToItemsList(sortedPages));
+
+    addDisposable(
+      streamSubscription: sortedPagesStream.listen(
+        (sortedPages) {
+          itemsSubject.add(mapToItemsList(sortedPages));
+        },
+      ),
+    );
+    addDisposable(subject: itemsSubject);
   }
 
+  late BehaviorSubject<List<TItem>> itemsSubject;
+
   @override
-  Stream<List<TItem>> get itemsStream =>
-      sortedPagesStream.map((sortedPages) => mapToItemsList(sortedPages));
+  Stream<List<TItem>> get itemsStream => itemsSubject.stream;
+
+  @override
+  List<TItem> get items => itemsSubject.value!;
 
   @override
   Stream<List<TItem>> get itemsDistinctStream =>
       itemsStream.distinct((a, b) => listEquals(a, b));
-
-  @override
-  List<TItem> get items => mapToItemsList(sortedPages);
 
   @override
   int? get itemsCountPerPage => paginationBloc.itemsCountPerPage;
