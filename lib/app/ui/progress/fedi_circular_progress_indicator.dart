@@ -15,6 +15,22 @@ class FediCircularProgressIndicator extends StatefulWidget {
     this.size = 30.0,
   });
 
+  static Widget buildForRefreshIndicator(BuildContext context) => Container(
+      decoration: BoxDecoration(
+        color: IFediUiColorTheme.of(context).white,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: IFediUiColorTheme.of(context).ultraLightGrey,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: const FediCircularProgressIndicator(
+          size: 26.0,
+        ),
+      ),
+    );
+
   @override
   _FediCircularProgressIndicatorState createState() =>
       _FediCircularProgressIndicatorState();
