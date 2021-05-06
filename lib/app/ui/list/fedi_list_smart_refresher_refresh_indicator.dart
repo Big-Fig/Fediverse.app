@@ -93,21 +93,7 @@ class _FediListSmartRefresherRefreshIndicatorState
         scale: _scaleFactor,
         child: Align(
           alignment: Alignment.topCenter,
-          child: Container(
-            decoration: BoxDecoration(
-              color: IFediUiColorTheme.of(context).white,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: IFediUiColorTheme.of(context).ultraLightGrey,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: const FediCircularProgressIndicator(
-                size: 26.0,
-              ),
-            ),
-          ),
+          child: FediCircularProgressIndicator.buildForRefreshIndicator(context),
         ),
       ),
     );
