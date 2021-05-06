@@ -72,11 +72,13 @@ void main() {
     var subscription = paginationListBloc.itemsStream.listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened, []);
 
     await paginationListBloc.refreshWithoutController();
 
+    await Future.delayed(Duration(milliseconds: 10));
+
     expect(
       paginationListBloc.items.length,
       itemsCountPerPage,
@@ -89,7 +91,7 @@ void main() {
       paginationListBloc.items.last.index,
       itemsCountPerPage - 1,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened.length,
       itemsCountPerPage,
@@ -105,6 +107,8 @@ void main() {
 
     await paginationListBloc.loadMoreWithoutController();
 
+    await Future.delayed(Duration(milliseconds: 10));
+
     expect(
       paginationListBloc.items.length,
       itemsCountPerPage * 2,
@@ -117,7 +121,7 @@ void main() {
       paginationListBloc.items.last.index,
       itemsCountPerPage * 2 - 1,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened.length,
       itemsCountPerPage * 2,
@@ -132,6 +136,8 @@ void main() {
     );
 
     await paginationListBloc.loadMoreWithoutController();
+
+    await Future.delayed(Duration(milliseconds: 10));
 
     expect(
       paginationListBloc.items.length,
@@ -145,7 +151,7 @@ void main() {
       paginationListBloc.items.last.index,
       itemsCountPerPage * 3 - 1,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened.length,
       itemsCountPerPage * 3,
@@ -161,6 +167,8 @@ void main() {
 
     await paginationListBloc.refreshWithoutController();
 
+    await Future.delayed(Duration(milliseconds: 10));
+
     expect(
       paginationListBloc.items.length,
       itemsCountPerPage,
@@ -173,7 +181,7 @@ void main() {
       paginationListBloc.items.last.index,
       itemsCountPerPage - 1,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened.length,
       itemsCountPerPage,
@@ -193,6 +201,8 @@ void main() {
       await paginationListBloc.loadMoreWithoutController();
     }
 
+    await Future.delayed(Duration(milliseconds: 10));
+
     expect(
       paginationListBloc.items.length,
       storageSize,
@@ -205,7 +215,7 @@ void main() {
       paginationListBloc.items.last.index,
       storageSize - 1,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened.length,
       storageSize,
@@ -221,6 +231,8 @@ void main() {
 
     await paginationListBloc.loadMoreWithoutController();
 
+    await Future.delayed(Duration(milliseconds: 10));
+
     expect(
       paginationListBloc.items.length,
       storageSize,
@@ -233,7 +245,7 @@ void main() {
       paginationListBloc.items.last.index,
       storageSize - 1,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened.length,
       storageSize,
@@ -261,26 +273,31 @@ void main() {
         paginationListWithNewItemsBloc.newerItemStream.listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened, null);
 
     await paginationListWithNewItemsBloc.refreshWithoutController();
+    await Future.delayed(Duration(milliseconds: 10));
+
     expect(
       paginationListWithNewItemsBloc.newerItem!.index,
       0,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened.index,
       0,
     );
 
     await paginationListWithNewItemsBloc.loadMoreWithoutController();
+
+    await Future.delayed(Duration(milliseconds: 10));
+
     expect(
       paginationListWithNewItemsBloc.newerItem!.index,
       0,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened.index,
       0,
@@ -308,11 +325,11 @@ void main() {
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     expect(
       paginationListWithNewItemsBloc.items,
@@ -326,7 +343,7 @@ void main() {
       paginationListWithNewItemsBloc.unmergedNewItems[0],
       testPaginationItem1,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened.length,
       1,
@@ -337,9 +354,12 @@ void main() {
     );
 
     memoryPaginationListWithNewItemsBloc.addNewItems(
-      [testPaginationItem2, testPaginationItem3],
+      [
+        testPaginationItem2,
+        testPaginationItem3,
+      ],
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     expect(
       paginationListWithNewItemsBloc.items,
@@ -357,7 +377,7 @@ void main() {
       paginationListWithNewItemsBloc.unmergedNewItems[1],
       testPaginationItem3,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 2);
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems[0],
@@ -391,14 +411,14 @@ void main() {
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened,
       0,
     );
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     expect(
       paginationListWithNewItemsBloc.items,
@@ -408,7 +428,7 @@ void main() {
       paginationListWithNewItemsBloc.unmergedNewItemsCount,
       1,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened,
       1,
@@ -416,7 +436,7 @@ void main() {
 
     memoryPaginationListWithNewItemsBloc
         .addNewItems([testPaginationItem2, testPaginationItem3]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     expect(
       paginationListWithNewItemsBloc.items,
@@ -426,7 +446,7 @@ void main() {
       paginationListWithNewItemsBloc.unmergedNewItemsCount,
       2,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened, 2);
 
     await subscription.cancel();
@@ -451,11 +471,11 @@ void main() {
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     expect(
       paginationListWithNewItemsBloc.items,
@@ -469,7 +489,7 @@ void main() {
       paginationListWithNewItemsBloc.unmergedNewItems[0],
       testPaginationItem1,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 1);
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems[0],
@@ -478,7 +498,7 @@ void main() {
 
     memoryPaginationListWithNewItemsBloc
         .addNewItems([testPaginationItem2, testPaginationItem3]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     expect(
       paginationListWithNewItemsBloc.items,
@@ -496,7 +516,7 @@ void main() {
       paginationListWithNewItemsBloc.unmergedNewItems[1],
       testPaginationItem3,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 2);
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems[0],
@@ -508,13 +528,13 @@ void main() {
     );
 
     memoryPaginationListWithNewItemsBloc.mergeNewItems();
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
 
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems.length,
       0,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened.length,
       0,
@@ -542,15 +562,15 @@ void main() {
         paginationListWithNewItemsBloc.mergedNewItemsStream.listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
     expect(listened.length, 0);
 
     memoryPaginationListWithNewItemsBloc.mergeNewItems();
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 1000));
 
     expect(
       paginationListWithNewItemsBloc.items.length,
@@ -562,7 +582,7 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItems[0],
       testPaginationItem1,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 1);
     expect(
       paginationListWithNewItemsBloc.mergedNewItems[0],
@@ -571,10 +591,10 @@ void main() {
 
     memoryPaginationListWithNewItemsBloc
         .addNewItems([testPaginationItem2, testPaginationItem3]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     memoryPaginationListWithNewItemsBloc.mergeNewItems();
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     expect(
       paginationListWithNewItemsBloc.items.length,
@@ -596,7 +616,7 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItems[2],
       testPaginationItem1,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 3);
     expect(
       paginationListWithNewItemsBloc.mergedNewItems[0],
@@ -633,15 +653,15 @@ void main() {
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
     expect(listened, 0);
 
     memoryPaginationListWithNewItemsBloc.mergeNewItems();
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     expect(
       paginationListWithNewItemsBloc.items.length,
@@ -652,15 +672,15 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItemsCount,
       1,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened, 1);
 
     memoryPaginationListWithNewItemsBloc
         .addNewItems([testPaginationItem2, testPaginationItem3]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     memoryPaginationListWithNewItemsBloc.mergeNewItems();
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     expect(
       paginationListWithNewItemsBloc.items.length,
@@ -670,7 +690,7 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItemsCount,
       3,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened,
       3,
@@ -710,12 +730,12 @@ void main() {
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     expect(
       paginationListWithNewItemsBloc.items.length,
@@ -726,12 +746,12 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItemsCount,
       1,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened, 1);
 
     memoryPaginationListWithNewItemsBloc
         .addNewItems([testPaginationItem2, testPaginationItem3]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     expect(
       paginationListWithNewItemsBloc.items.length,
@@ -741,7 +761,7 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItemsCount,
       3,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(
       listened,
       3,
