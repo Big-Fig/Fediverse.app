@@ -7,6 +7,7 @@ import 'package:fedi/app/chat/pleroma/with_last_message/list/cached/pleroma_chat
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_widget.dart';
+import 'package:fedi/app/chat/pleroma/with_last_message/pagination/list/pleroma_chat_with_last_message_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pagination/pleroma_chat_with_last_message_pagination_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
@@ -80,13 +81,24 @@ class PleromaChatHomeTabPage extends StatelessWidget {
 
         return MultiProvider(
           providers: [
-            Provider<IPleromaChatWithLastMessageCachedListBloc>.value(value: chatsListBloc.chatListBloc),
-            Provider<IPleromaChatWithLastMessagePaginationBloc>.value(value: chatsListBloc.chatPaginationBloc),
-            Provider<IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
-                IPleromaChatWithLastMessage>>.value(value: chatsListBloc.chatPaginationListBloc),
-            Provider< ICachedPaginationListWithNewItemsBloc<
-                CachedPaginationPage<IPleromaChatWithLastMessage>,
-                IPleromaChatWithLastMessage>>.value(
+            Provider<IPleromaChatWithLastMessageCachedListBloc>.value(
+                value: chatsListBloc.chatListBloc),
+            Provider<IPleromaChatWithLastMessagePaginationBloc>.value(
+                value: chatsListBloc.chatPaginationBloc),
+            Provider<
+                    IPaginationListBloc<
+                        PaginationPage<IPleromaChatWithLastMessage>,
+                        IPleromaChatWithLastMessage>>.value(
+                value: chatsListBloc.chatPaginationListBloc),
+            Provider<
+                ICachedPaginationListWithNewItemsBloc<
+                    CachedPaginationPage<IPleromaChatWithLastMessage>,
+                    IPleromaChatWithLastMessage>>.value(
+              value: chatsListBloc.chatPaginationListWithNewItemsBloc,
+            ),
+            Provider<
+                IPleromaChatWithLastMessagePaginationListWithNewItemsBloc<
+                    CachedPaginationPage<IPleromaChatWithLastMessage>>>.value(
               value: chatsListBloc.chatPaginationListWithNewItemsBloc,
             ),
             Provider<ICachedPaginationListWithNewItemsBloc>.value(

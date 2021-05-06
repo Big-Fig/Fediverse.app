@@ -3,6 +3,7 @@ import 'package:fedi/app/chat/list/chat_list_item_widget.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
+import 'package:fedi/app/chat/pleroma/with_last_message/pagination/list/pleroma_chat_with_last_message_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
@@ -59,11 +60,29 @@ class PleromaChatWithLastMessageListWidget
                   oldBloc.chat.remoteId == chatWithLastMessage.chat.remoteId) {
                 return oldBloc;
               } else {
-                return PleromaChatBloc.createFromContext(
+                var pleromaChatBloc = PleromaChatBloc.createFromContext(
                   context,
                   chat: chatWithLastMessage.chat,
                   lastChatMessage: chatWithLastMessage.lastChatMessage,
                 );
+
+                var pleromaChatWithLastMessagePaginationListWithNewItemsBloc =
+                    IPleromaChatWithLastMessagePaginationListWithNewItemsBloc
+                        .of(context, listen: false);
+                pleromaChatBloc.addDisposable(
+                  streamSubscription: pleromaChatBloc.chatStream.listen(
+                    (chat) {
+                      pleromaChatWithLastMessagePaginationListWithNewItemsBloc
+                          .onItemUpdated(
+                        SimplePleromaChatWithLastMessage(
+                          chat: pleromaChatBloc.chat,
+                          lastChatMessage: pleromaChatBloc.lastChatMessage,
+                        ),
+                      );
+                    },
+                  ),
+                );
+                return pleromaChatBloc;
               }
             },
             child: ProxyProvider<IPleromaChatBloc, IChatBloc>(

@@ -1,4 +1,5 @@
 import 'package:fedi/app/chat/pleroma/with_last_message/list/cached/pleroma_chat_with_last_message_cached_list_bloc.dart';
+import 'package:fedi/app/chat/pleroma/with_last_message/pagination/list/pleroma_chat_with_last_message_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -7,7 +8,9 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 class PleromaChatWithLastMessagePaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IPleromaChatWithLastMessage>>
     extends CachedPaginationListWithNewItemsBloc<TPage,
-        IPleromaChatWithLastMessage> {
+        IPleromaChatWithLastMessage>
+    implements
+        IPleromaChatWithLastMessagePaginationListWithNewItemsBloc<TPage> {
   final IPleromaChatWithLastMessageCachedListBloc cachedListBloc;
 
   PleromaChatWithLastMessagePaginationListWithNewItemsBloc({
@@ -25,5 +28,4 @@ class PleromaChatWithLastMessagePaginationListWithNewItemsBloc<
     IPleromaChatWithLastMessage? item,
   ) =>
       cachedListBloc.watchLocalItemsNewerThanItem(item);
-
 }

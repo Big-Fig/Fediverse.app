@@ -38,4 +38,6 @@ abstract class ICachedPaginationListWithNewItemsBloc<
   void mergeNewItems();
 
   bool get mergeNewItemsImmediately;
+
+  void onItemUpdated(TItem item);
 }
