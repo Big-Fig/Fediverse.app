@@ -19,7 +19,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
   const StatusListItemMediaWidget() : super();
 
   Container mediaAttachmentPreviewUrlWidget(
-    String? previewUrl,
+    String previewUrl,
     BuildContext context,
   ) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
@@ -46,13 +46,15 @@ class StatusListItemMediaWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context);
     var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
 
-    _logger.finest(() =>
-        "build ${statusBloc.remoteId} media ${statusBloc.reblogOrOriginalMediaAttachments?.length}");
+    _logger.finest(
+      () => "build ${statusBloc.remoteId} "
+          "media ${statusBloc.reblogOrOriginalMediaAttachments?.length}",
+    );
 
     var mediaAttachment = Provider.of<IPleromaApiMediaAttachment>(context);
     var previewUrl = mediaAttachment.previewUrl;
 
-    var child = mediaAttachmentPreviewUrlWidget(previewUrl, context);
+    var child = mediaAttachmentPreviewUrlWidget(previewUrl!, context);
     var body = buildBody(
       child: child,
       statusBloc: statusBloc,

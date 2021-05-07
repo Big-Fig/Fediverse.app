@@ -78,7 +78,7 @@ class _FediInstanceImageBackgroundCachedNetworkImageWidget
       return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           return IFilesCacheService.of(context).createCachedNetworkImageWidget(
-            imageUrl: backgroundImageAbsolutePath,
+            imageUrl: backgroundImageAbsolutePath!,
             width: constraints.maxWidth,
             memCacheWidth: constraints.maxWidth.toInt(),
             errorWidget: (BuildContext context, String url, Object? error) =>

@@ -4,6 +4,7 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc_proxy_provider.dart';
+import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/share/media/share_media_bloc.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -22,8 +23,11 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
   @override
   final IPleromaApiMediaAttachment mediaAttachment;
 
+  final IMediaAttachmentReuploadService mediaAttachmentReuploadService;
+
   ConversationChatShareMediaBloc({
     required this.mediaAttachment,
+    required this.mediaAttachmentReuploadService,
     required IConversationChatRepository conversationRepository,
     required IStatusRepository statusRepository,
     required IPleromaApiConversationService pleromaConversationService,
@@ -42,10 +46,14 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
         );
 
   @override
-  IPleromaApiPostStatus createSendData({
+  Future<IPleromaApiPostStatus> createSendData({
     required String to,
     required PleromaApiVisibility visibility,
-  }) {
+  }) async {
+    var reploadedMediaAttachment = await mediaAttachmentReuploadService.reuploadMediaAttachment(
+      originalMediaAttachment: mediaAttachment,
+    );
+
     var messageSendData = PleromaApiPostStatus(
       contentType: null,
       expiresInSeconds: null,
@@ -53,13 +61,15 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
       inReplyToConversationId: null,
       inReplyToId: null,
       language: null,
-      mediaIds: null,
+      mediaIds: [
+        reploadedMediaAttachment.id,
+      ],
       poll: null,
       preview: null,
       sensitive: false,
       spoilerText: null,
       to: null,
-      status: "${mediaAttachment.url} ${message ?? ""} $to".trim(),
+      status: "${message ?? ""} $to".trim(),
       visibility: visibility.toJsonValue(),
     );
     return messageSendData;
@@ -95,6 +105,10 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
   ) =>
       ConversationChatShareMediaBloc(
         mediaAttachment: mediaAttachment,
+        mediaAttachmentReuploadService: IMediaAttachmentReuploadService.of(
+          context,
+          listen: false,
+        ),
         conversationRepository: IConversationChatRepository.of(
           context,
           listen: false,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/connection/connection_service.dart';
@@ -105,4 +107,9 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
 
   @override
   Future clear() => cacheManager.emptyCache();
+
+  @override
+  Future<File> getImageByUrl({
+    required String imageUrl,
+  }) => cacheManager.getSingleFile(imageUrl);
 }

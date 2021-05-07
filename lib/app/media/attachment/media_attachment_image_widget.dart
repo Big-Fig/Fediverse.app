@@ -20,7 +20,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
     return Container(
       color: IFediUiColorTheme.of(context).ultraLightGrey,
       child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
-        imageUrl: mediaAttachment.previewUrl,
+        imageUrl: mediaAttachment.previewUrl!,
         fit: BoxFit.cover,
         placeholder: (context, url) =>
             const _MediaAttachmentImageLoadingWidget(),

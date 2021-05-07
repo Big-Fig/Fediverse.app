@@ -42,10 +42,10 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
         );
 
   @override
-  IPleromaApiPostStatus createSendData({
+  Future<IPleromaApiPostStatus> createSendData({
     required String to,
     required PleromaApiVisibility visibility,
-  }) {
+  }) async {
     var url = status!.url ?? "";
     var content = message == null ? url : "${message ?? ""} $url".trim();
     var messageSendData = PleromaApiPostStatus(

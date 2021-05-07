@@ -61,7 +61,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     final pleromaVisibility = PleromaApiVisibility.direct;
 
     var targetAccounts = [account];
-    var sendData = createSendData(
+    var sendData = await createSendData(
       to: "${targetAccounts.map((account) => "@${account.acct}").join(", ")}",
       visibility: pleromaVisibility,
     );
@@ -76,7 +76,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     return true;
   }
 
-  IPleromaApiPostStatus createSendData({
+  Future<IPleromaApiPostStatus> createSendData({
     required String to,
     required PleromaApiVisibility visibility,
   });

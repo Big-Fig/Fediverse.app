@@ -113,7 +113,7 @@ class _CardImageWidget extends StatelessWidget {
       width: _cardWithContentImageSize,
       // ignore: no-equal-arguments
       height: _cardWithContentImageSize,
-      imageUrl: card.image,
+      imageUrl: card.image!,
       fit: BoxFit.cover,
       placeholder: (context, url) => Padding(
         padding: FediPadding.allBigPadding,

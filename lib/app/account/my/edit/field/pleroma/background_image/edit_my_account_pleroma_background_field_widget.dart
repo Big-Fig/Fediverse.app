@@ -54,8 +54,8 @@ class EditMyAccountPleromaBackgroundFieldImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imageSource.url != null) {
       var url = imageSource.url;
+    if (url != null) {
       return IFilesCacheService.of(context).createCachedNetworkImageWidget(
         imageUrl: url,
         fit: BoxFit.cover,
