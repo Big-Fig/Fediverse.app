@@ -37,7 +37,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   bool get isAnyDataEntered {
     return inputText?.isNotEmpty == true ||
         subjectText?.isNotEmpty == true ||
-        mediaAttachmentsBloc.mediaAttachmentBlocs!.isNotEmpty ||
+        mediaAttachmentsBloc.mediaAttachmentBlocs.isNotEmpty ||
         pollBloc.isSomethingChanged;
   }
 
@@ -167,7 +167,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         streamSubscription:
             mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
           (blocs) {
-            if (!alreadyMarkMediaNsfwByDefault && blocs!.isNotEmpty) {
+            if (!alreadyMarkMediaNsfwByDefault && blocs.isNotEmpty) {
               alreadyMarkMediaNsfwByDefault = true;
               nsfwSensitiveSubject.add(true);
             }
@@ -506,15 +506,16 @@ abstract class PostStatusBloc extends PostMessageBloc
       .toList();
 
   List<IPleromaApiMediaAttachment>? _calculateMediaAttachmentsField() {
-    var mediaAttachments = mediaAttachmentsBloc.mediaAttachmentBlocs
-        ?.where(
+    List<IPleromaApiMediaAttachment>? mediaAttachments = mediaAttachmentsBloc
+        .mediaAttachmentBlocs
+        .where(
           (bloc) =>
               bloc.uploadState!.type == UploadMediaAttachmentStateType.uploaded,
         )
         .map((bloc) => bloc.pleromaMediaAttachment!)
         .toList();
     // media ids shouldn't be empty (should be null in this case)
-    if (mediaAttachments?.isNotEmpty != true) {
+    if (mediaAttachments.isNotEmpty != true) {
       mediaAttachments = null;
     }
     return mediaAttachments;

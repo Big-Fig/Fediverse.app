@@ -25,6 +25,7 @@ import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc_proxy_provid
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/app/instance/fedi_instance_image_background_widget.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
+import 'package:fedi/app/status/post/new/new_post_status_bloc_impl.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -287,16 +288,28 @@ class _HomePageTimelineTabWidget extends StatelessWidget {
 
         _logger.finest(() => "create timelinesHomeTabBloc");
 
-        timelinesHomeTabBloc.addDisposable(streamSubscription:
-            homeBloc.reselectedTabStream.listen((reselectedTab) {
-          if (reselectedTab == HomeTab.timelines) {
-            timelinesHomeTabBloc.scrollToTop();
-          }
-        }));
+        timelinesHomeTabBloc.addDisposable(
+          streamSubscription: homeBloc.reselectedTabStream.listen(
+            (reselectedTab) {
+              if (reselectedTab == HomeTab.timelines) {
+                timelinesHomeTabBloc.scrollToTop();
+              }
+            },
+          ),
+        );
         return timelinesHomeTabBloc;
       },
       child: TimelinesHomeTabBlocProxyProvider(
-        child: const TimelinesHomeTabPage(),
+        // post status timeline header widget
+        // we should provide it here to avoid disposing
+        // when navigating to pick image page
+        child: NewPostStatusBloc.provideToContextWithInitial(
+          context,
+          child: TimelinesHomeTabPage(),
+          initialMediaAttachments: null,
+          initialText: null,
+          initialSubject: null,
+        ),
       ),
     );
   }

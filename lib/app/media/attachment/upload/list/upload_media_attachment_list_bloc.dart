@@ -32,7 +32,7 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
 
   Stream<int?> get maximumMediaAttachmentCountLeftStream;
 
-  bool? get isAllAttachedMediaUploaded;
+  bool get isAllAttachedMediaUploaded;
 
   Stream<bool> get isAllAttachedMediaUploadedStream;
 
@@ -44,13 +44,13 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
 
   Stream<bool> get isPossibleToAttachMediaStream;
 
-  List<IUploadMediaAttachmentBloc>? get mediaAttachmentBlocs;
+  List<IUploadMediaAttachmentBloc> get mediaAttachmentBlocs;
 
-  Stream<List<IUploadMediaAttachmentBloc>?> get mediaAttachmentBlocsStream;
+  Stream<List<IUploadMediaAttachmentBloc>> get mediaAttachmentBlocsStream;
 
   Future attachMedia(IMediaDeviceFile mediaDeviceFile);
 
-  Future attachMedias(List<IMediaDeviceFile>? mediaDeviceFiles);
+  Future attachMedias(List<IMediaDeviceFile> mediaDeviceFiles);
 
   void detachMediaAttachmentBloc(
     IUploadMediaAttachmentBloc mediaAttachmentBloc,

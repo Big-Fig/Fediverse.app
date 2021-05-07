@@ -37,7 +37,8 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     unawaited(
       pleromaChatBloc.postMessage(
         pleromaApiChatMessageSendData: calculateSendData(),
-        pleromaApiChatMessageSendDataMediaAttachment: calculateMediaAttachment(),
+        pleromaApiChatMessageSendDataMediaAttachment:
+            calculateMediaAttachment(),
         oldPendingFailedPleromaChatMessage: null,
       ),
     );
@@ -63,13 +64,13 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
   }
 
   IPleromaApiMediaAttachment? calculateMediaAttachment() {
-    var mediaAttachmentBlocs = mediaAttachmentsBloc.mediaAttachmentBlocs?.where(
+    var mediaAttachmentBlocs = mediaAttachmentsBloc.mediaAttachmentBlocs.where(
       (bloc) =>
           bloc.uploadState!.type == UploadMediaAttachmentStateType.uploaded,
     );
     IPleromaApiMediaAttachment? mediaAttachment;
-    if (mediaAttachmentBlocs?.isNotEmpty == true) {
-      mediaAttachment = mediaAttachmentBlocs!.first.pleromaMediaAttachment;
+    if (mediaAttachmentBlocs.isNotEmpty) {
+      mediaAttachment = mediaAttachmentBlocs.first.pleromaMediaAttachment;
     }
     return mediaAttachment;
   }
