@@ -29,12 +29,20 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   }) {
     addDisposable(subject: mediaAttachmentBlocsSubject);
     addDisposable(subject: isAllAttachedMediaUploadedSubject);
-    addDisposable(disposable: CustomDisposable(() async {
-      await clear();
-    }));
-    addDisposable(disposable: CustomDisposable(() async {
-      await uploadedSubscription?.dispose();
-    }));
+    addDisposable(
+      disposable: CustomDisposable(
+        () async {
+          await clear();
+        },
+      ),
+    );
+    addDisposable(
+      disposable: CustomDisposable(
+        () async {
+          await uploadedSubscription?.dispose();
+        },
+      ),
+    );
 
     addDisposable(
       streamSubscription: mediaAttachmentBlocsStream.listen(
@@ -59,15 +67,17 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   // ignore: close_sinks
   BehaviorSubject<List<IUploadMediaAttachmentBloc>>
-      mediaAttachmentBlocsSubject = BehaviorSubject.seeded([]);
+      mediaAttachmentBlocsSubject = BehaviorSubject.seeded(
+    [],
+  );
 
   // ignore: close_sinks
   BehaviorSubject<bool> isAllAttachedMediaUploadedSubject =
       BehaviorSubject.seeded(true);
 
   @override
-  bool? get isAllAttachedMediaUploaded =>
-      isAllAttachedMediaUploadedSubject.value;
+  bool get isAllAttachedMediaUploaded =>
+      isAllAttachedMediaUploadedSubject.value!;
 
   @override
   Stream<bool> get isAllAttachedMediaUploadedStream =>
@@ -75,23 +85,36 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   @override
   List<IUploadMediaAttachmentBloc> get onlyMediaAttachmentBlocs =>
-      mediaAttachmentBlocs.where((bloc) => bloc.isMedia).toList();
+      mediaAttachmentBlocs
+          .where(
+            (bloc) => bloc.isMedia,
+          )
+          .toList();
 
   @override
-  Stream<List<IUploadMediaAttachmentBloc>>
-      get onlyMediaAttachmentBlocsStream =>
-          mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
-              mediaAttachmentBlocs.where((bloc) => bloc.isMedia).toList());
+  Stream<List<IUploadMediaAttachmentBloc>> get onlyMediaAttachmentBlocsStream =>
+      mediaAttachmentBlocsSubject.stream
+          .map((mediaAttachmentBlocs) => mediaAttachmentBlocs
+              .where(
+                (bloc) => bloc.isMedia,
+              )
+              .toList());
 
   @override
   List<IUploadMediaAttachmentBloc> get onlyNonMediaAttachmentBlocs =>
-      mediaAttachmentBlocs.where((bloc) => !bloc.isMedia).toList();
+      mediaAttachmentBlocs
+          .where(
+            (bloc) => !bloc.isMedia,
+          )
+          .toList();
 
   @override
   Stream<List<IUploadMediaAttachmentBloc>>
       get onlyNonMediaAttachmentBlocsStream =>
-          mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
-              mediaAttachmentBlocs.where((bloc) => !bloc.isMedia).toList());
+          mediaAttachmentBlocsSubject.stream.map(
+            (mediaAttachmentBlocs) =>
+                mediaAttachmentBlocs.where((bloc) => !bloc.isMedia).toList(),
+          );
 
   @override
   bool get isMaximumMediaAttachmentCountReached =>
@@ -130,7 +153,9 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   @override
   Stream<bool> get isPossibleToAttachMediaStream =>
-      isMaximumMediaAttachmentCountReachedStream.map((value) => !value);
+      isMaximumMediaAttachmentCountReachedStream.map(
+        (value) => !value,
+      );
 
   @override
   List<IUploadMediaAttachmentBloc> get mediaAttachmentBlocs =>
@@ -150,16 +175,21 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
         pleromaMediaAttachmentService: pleromaMediaAttachmentService,
         maximumFileSizeInBytes: maximumFileSizeInBytes,
       );
-      mediaAttachmentBlocs.add(uploadMediaAttachmentBloc);
-      mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
+      mediaAttachmentBlocsSubject.add(
+        [
+          ...mediaAttachmentBlocs,
+          uploadMediaAttachmentBloc,
+        ],
+      );
       await uploadMediaAttachmentBloc.startUpload();
     }
   }
 
   @override
-  Future attachMedias(List<IMediaDeviceFile>? mediaDeviceFiles) async {
-    var futures = mediaDeviceFiles!
-        .map((mediaDeviceFile) => attachMedia(mediaDeviceFile));
+  Future attachMedias(List<IMediaDeviceFile> mediaDeviceFiles) async {
+    var futures = mediaDeviceFiles.map(
+      (mediaDeviceFile) => attachMedia(mediaDeviceFile),
+    );
 
     await Future.wait(futures);
   }
@@ -170,22 +200,28 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   ) {
     mediaAttachmentBloc.dispose();
     mediaAttachmentBlocs.remove(mediaAttachmentBloc);
-    mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
+    mediaAttachmentBlocsSubject.add(
+      [
+        ...mediaAttachmentBlocs,
+      ],
+    );
   }
 
   IUploadMediaAttachmentBloc? findMediaAttachmentBlocByFilePickerFile(
     IMediaDeviceFile mediaDeviceFile,
   ) =>
-      mediaAttachmentBlocs.firstWhereOrNull((bloc) {
-        if (bloc is UploadMediaAttachmentBlocDevice) {
-          return bloc.mediaDeviceFile == mediaDeviceFile;
-        } else {
-          return false;
-        }
-      });
+      mediaAttachmentBlocs.firstWhereOrNull(
+        (bloc) {
+          if (bloc is UploadMediaAttachmentBlocDevice) {
+            return bloc.mediaDeviceFile == mediaDeviceFile;
+          } else {
+            return false;
+          }
+        },
+      );
 
   static bool calculateIsMaximumAttachmentReached({
-    required List<IUploadMediaAttachmentBloc>? mediaAttachmentBlocs,
+    required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
     required int maximumMediaAttachmentCount,
   }) {
     var maximumMediaAttachmentCountLeft =
@@ -215,7 +251,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   Future clear() async {
     mediaAttachmentBlocs.clear();
     if (!mediaAttachmentBlocsSubject.isClosed) {
-      mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
+      mediaAttachmentBlocsSubject.add([]);
     }
 
     for (var mediaAttachmentBloc in mediaAttachmentBlocs) {

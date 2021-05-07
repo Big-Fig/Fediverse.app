@@ -214,7 +214,7 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryActionWidget
         );
 
         if (mediaDeviceFiles?.isNotEmpty == true) {
-          await attachmentsCollectionBloc.attachMedias(mediaDeviceFiles);
+          await attachmentsCollectionBloc.attachMedias(mediaDeviceFiles!);
         }
       },
     );
