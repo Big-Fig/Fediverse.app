@@ -731,7 +731,7 @@ class _InstanceDetailsThumbnailWidget extends StatelessWidget {
         if (thumbnail?.isNotEmpty == true) {
           var filesCacheService = IFilesCacheService.of(context);
           return filesCacheService.createCachedNetworkImageWidget(
-            imageUrl: thumbnail,
+            imageUrl: thumbnail!,
           );
         } else {
           return const SizedBox.shrink();

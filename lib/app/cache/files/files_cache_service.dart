@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
@@ -9,9 +11,13 @@ abstract class IFilesCacheService implements IDisposable {
 
   Future clear();
 
+  Future<File> getImageByUrl({
+    required String imageUrl,
+  });
+
   Widget createCachedNetworkImageWidget({
     String? stringKey,
-    required String? imageUrl,
+    required String imageUrl,
     Map<String, String>? httpHeaders,
     ImageWidgetBuilder? imageBuilder,
     PlaceholderWidgetBuilder? placeholder,

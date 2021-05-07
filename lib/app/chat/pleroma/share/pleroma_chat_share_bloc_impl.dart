@@ -51,7 +51,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
 
   @override
   Future<bool> actuallyShareToAccount(IAccount account) async {
-    var messageSendData = createPleromaChatMessageSendData();
+    var messageSendData = await createPleromaChatMessageSendData();
 
     var targetAccounts = [account];
     List<IPleromaApiChat> pleromaChatsByAccounts;
@@ -95,7 +95,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     return true;
   }
 
-  PleromaApiChatMessageSendData createPleromaChatMessageSendData();
+  Future<PleromaApiChatMessageSendData> createPleromaChatMessageSendData();
 
   @override
   Future<List<IAccount>> customLocalAccountListLoader({
