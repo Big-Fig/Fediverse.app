@@ -441,7 +441,10 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
                   );
                 }
               },
-              child: const MediaAttachmentListCarouselWidget(),
+              child: Padding(
+                padding: const EdgeInsets.only(top:8.0),
+                child: const MediaAttachmentListCarouselWidget(),
+              ),
             ),
           ),
         );
@@ -488,6 +491,8 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
                     emojis: emojiText.emojis,
                   ),
                   settings: HtmlTextSettings(
+                    textAlign:
+                        isChatMessageFromMe ? TextAlign.right : TextAlign.left,
                     shrinkWrap: true,
                     color: isChatMessageFromMe
                         ? fediUiColorTheme.white
