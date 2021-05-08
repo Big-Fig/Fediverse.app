@@ -4,6 +4,7 @@ import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
@@ -88,6 +89,23 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
     required List<IChatMessage?>? currentChatMessagesSelection,
   }) =>
       currentChatMessagesSelection?.length ?? 0;
+
+  @override
+  List<IPleromaApiMediaAttachment>? calculateSelectionAsMediaAttachments() {
+    List<IPleromaApiMediaAttachment> mediaAttachments = [];
+
+    currentSelection.forEach((chatMessage) {
+      if (chatMessage.mediaAttachments?.isNotEmpty == true) {
+        mediaAttachments.addAll(chatMessage.mediaAttachments!);
+      }
+    });
+
+    if (mediaAttachments.isEmpty) {
+      return null;
+    } else {
+      return mediaAttachments;
+    }
+  }
 
   @override
   String calculateSelectionAsRawText() {
