@@ -26,6 +26,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -407,6 +408,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
     var messageBloc = IChatMessageBloc.of(context);
     return StreamBuilder<List<IPleromaApiMediaAttachment>?>(
       stream: messageBloc.mediaAttachmentsStream,
+      initialData: messageBloc.mediaAttachments,
       builder: (context, snapshot) {
         var mediaAttachments = snapshot.data;
         if (mediaAttachments?.isNotEmpty != true) {
@@ -425,10 +427,20 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
             },
             child: ProxyProvider<List<IPleromaApiMediaAttachment>?,
                 IMediaAttachmentListBloc>(
-              update: (context, mediaAttachments, _) => MediaAttachmentListBloc(
-                initialMediaAttachment: null,
-                mediaAttachments: mediaAttachments,
-              ),
+              update: (context, mediaAttachments, previous) {
+                if (previous != null &&
+                    listEquals(
+                      previous.mediaAttachments,
+                      mediaAttachments ?? [],
+                    )) {
+                  return previous;
+                } else {
+                  return MediaAttachmentListBloc(
+                    initialMediaAttachment: null,
+                    mediaAttachments: mediaAttachments,
+                  );
+                }
+              },
               child: const MediaAttachmentListCarouselWidget(),
             ),
           ),
@@ -462,7 +474,14 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
           return Provider<EmojiText>.value(
             value: contentWithEmojis!,
             child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
-              update: (context, emojiText, _) {
+              update: (context, emojiText, previous) {
+                // if (previous != null &&
+                //     EmojiText(
+                //             emojis: previous.inputData.emojis,
+                //             text: previous.inputData.input ?? "") ==
+                //         emojiText) {
+                //   return previous;
+                // }
                 var htmlTextBloc = HtmlTextBloc(
                   inputData: HtmlTextInputData(
                     input: emojiText.text,

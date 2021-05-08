@@ -1,3 +1,5 @@
+import 'package:fedi/app/chat/message/chat_message_model.dart';
+import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +10,10 @@ abstract class IChatSelectionItemBloc implements IDisposable {
     bool listen = true,
   }) =>
       Provider.of<IChatSelectionItemBloc>(context, listen: listen);
+
+  IChatSelectionBloc get chatSelectionBloc;
+
+  IChatMessage get chatMessage;
 
   bool get isSelected;
 
