@@ -2,13 +2,13 @@ import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChatSelectionItemBloc extends DisposableOwner
     implements IChatSelectionItemBloc {
+  @override
   final IChatSelectionBloc chatSelectionBloc;
+  @override
   final IChatMessage chatMessage;
 
   final BehaviorSubject<bool> isSelectionPossibleSubject;
@@ -58,35 +58,4 @@ class ChatSelectionItemBloc extends DisposableOwner
   void unSelect() {
     chatSelectionBloc.removeItemFromSelection(chatMessage);
   }
-
-  static ChatSelectionItemBloc createFromContext(
-    BuildContext context, {
-    required IChatMessage chatMessage,
-    required bool isSelectionPossible,
-  }) {
-    var chatSelectionBloc = IChatSelectionBloc.of(
-      context,
-      listen: false,
-    );
-    return ChatSelectionItemBloc(
-      chatSelectionBloc: chatSelectionBloc,
-      chatMessage: chatMessage,
-      isSelectionPossible: isSelectionPossible,
-    );
-  }
-
-  static Widget provideToContext(
-    BuildContext context, {
-    required Widget child,
-    required IChatMessage chatMessage,
-    required bool isSelectionPossible,
-  }) =>
-      DisposableProvider<IChatSelectionItemBloc>(
-        create: (context) => ChatSelectionItemBloc.createFromContext(
-          context,
-          chatMessage: chatMessage,
-          isSelectionPossible: isSelectionPossible,
-        ),
-        child: child,
-      );
 }

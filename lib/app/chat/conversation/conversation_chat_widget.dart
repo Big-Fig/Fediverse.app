@@ -60,11 +60,16 @@ Widget _itemContextBuilder(
 }) {
   return DisposableProxyProvider<IConversationChatMessage,
       IConversationChatMessageBloc>(
-    update: (context, chatMessage, _) =>
-        ConversationChatMessageBloc.createFromContext(
-      context,
-      chatMessage,
-    ),
+    update: (context, chatMessage, previous) {
+      if (previous != null && chatMessage.remoteId == previous.remoteId) {
+        return previous;
+      } else {
+        return ConversationChatMessageBloc.createFromContext(
+          context,
+          chatMessage,
+        );
+      }
+    },
     child: ProxyProvider<IConversationChatMessageBloc, IChatMessageBloc>(
       update: (context, value, _) => value,
       child: child,

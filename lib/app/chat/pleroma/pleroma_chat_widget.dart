@@ -55,11 +55,16 @@ Widget _itemContextBuilder(
   required Widget child,
 }) {
   return DisposableProxyProvider<IPleromaChatMessage, IPleromaChatMessageBloc>(
-    update: (context, chatMessage, _) =>
-        PleromaChatMessageBloc.createFromContext(
-      context,
-      chatMessage,
-    ),
+    update: (context, chatMessage, previous) {
+      if (previous != null && previous.remoteId == chatMessage.remoteId) {
+        return previous;
+      } else {
+        return PleromaChatMessageBloc.createFromContext(
+          context,
+          chatMessage,
+        );
+      }
+    },
     child: ProxyProvider<IPleromaChatMessageBloc, IChatMessageBloc>(
       update: (context, value, _) => value,
       child: child,

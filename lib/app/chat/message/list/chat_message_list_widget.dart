@@ -6,13 +6,13 @@ import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc_impl.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_widget.dart';
-import 'package:fedi/app/ui/list/fedi_list_smart_refresher_refresh_indicator.dart';
-import 'package:fedi/date/date_utils.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_refresh_indicator.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/date/date_utils.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -138,29 +138,35 @@ class ChatMessageListWidget<T extends IChatMessage>
                   context,
                   child: DisposableProxyProvider<IChatMessageBloc,
                       IChatSelectionItemBloc>(
-                    update: (context, chatMessageBloc, _) {
-                      var chatMessage = chatMessageBloc.chatMessage;
-                      var chatSelectionItemBloc = ChatSelectionItemBloc(
-                        chatSelectionBloc: IChatSelectionBloc.of(
-                          context,
-                          listen: false,
-                        ),
-                        chatMessage: chatMessage,
-                        isSelectionPossible: chatMessageBloc.isNotPending,
-                      );
+                    update: (context, chatMessageBloc, previous) {
+                      if (previous != null &&
+                          previous.chatMessage.remoteId ==
+                              chatMessageBloc.chatMessage.remoteId) {
+                        return previous;
+                      } else {
+                        var chatMessage = chatMessageBloc.chatMessage;
+                        var chatSelectionItemBloc = ChatSelectionItemBloc(
+                          chatSelectionBloc: IChatSelectionBloc.of(
+                            context,
+                            listen: false,
+                          ),
+                          chatMessage: chatMessage,
+                          isSelectionPossible: chatMessageBloc.isNotPending,
+                        );
 
-                      chatSelectionItemBloc.addDisposable(
-                        streamSubscription:
-                            chatMessageBloc.isNotPendingStream.listen(
-                          (isNotPending) {
-                            chatSelectionItemBloc.changeSelectionPossible(
-                              isNotPending,
-                            );
-                          },
-                        ),
-                      );
+                        chatSelectionItemBloc.addDisposable(
+                          streamSubscription:
+                              chatMessageBloc.isNotPendingStream.listen(
+                            (isNotPending) {
+                              chatSelectionItemBloc.changeSelectionPossible(
+                                isNotPending,
+                              );
+                            },
+                          ),
+                        );
 
-                      return chatSelectionItemBloc;
+                        return chatSelectionItemBloc;
+                      }
                     },
                     child: ChatSelectionItemWidget(
                       child: _ChatMessageListItemWidget(

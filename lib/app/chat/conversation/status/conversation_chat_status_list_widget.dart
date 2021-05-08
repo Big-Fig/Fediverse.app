@@ -1,15 +1,15 @@
 import 'package:fedi/app/async/smart_refresher/async_smart_refresher_helper.dart';
 import 'package:fedi/app/chat/conversation/status/conversation_chat_status_list_item_widget.dart';
-import 'package:fedi/app/ui/list/fedi_list_smart_refresher_refresh_indicator.dart';
-import 'package:fedi/date/date_utils.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/status/local_status_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_base_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_refresh_indicator.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/date/date_utils.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -162,11 +162,16 @@ class ConversationChatStatusListWidget
         var statusWidget = Provider<IStatus>.value(
           value: currentMessage,
           child: DisposableProxyProvider<IStatus, IStatusBloc>(
-            update: (context, value, previous) =>
-                LocalStatusBloc.createFromContext(
-              context,
-              status: value,
-            ),
+            update: (context, value, previous) {
+              if (previous != null && value.remoteId == previous.remoteId) {
+                return previous;
+              } else {
+                return LocalStatusBloc.createFromContext(
+                  context,
+                  status: value,
+                );
+              }
+            },
             child: ConversationChatStatusListItemWidget(
               isLastInMinuteGroup: isLastInMinuteGroup,
               isFirstInMinuteGroup: isFirstInMinuteGroup,
