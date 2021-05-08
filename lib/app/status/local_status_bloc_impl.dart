@@ -42,7 +42,8 @@ class LocalStatusBloc extends StatusBloc {
   }) : super(
           pleromaStatusService: pleromaAuthStatusService,
           pleromaAccountService: pleromaAccountService,
-          PleromaApiStatusEmojiReactionService: PleromaApiStatusEmojiReactionService,
+          PleromaApiStatusEmojiReactionService:
+              PleromaApiStatusEmojiReactionService,
           pleromaPollService: pleromaPollService,
           status: status,
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
@@ -127,17 +128,23 @@ class LocalStatusBloc extends StatusBloc {
     var account;
     if (foundMention != null) {
       var accountRemoteId = foundMention.id;
-      if (pleromaAccountService.isApiReadyToUse) {
-        var remoteAccount = await pleromaAccountService.getAccount(
-          accountRemoteId: accountRemoteId,
-        );
-        await accountRepository.upsertInRemoteType(
-          remoteAccount,
-        );
-      }
+
       account = await accountRepository.findByRemoteIdInAppType(
         accountRemoteId,
       );
+      if (account == null) {
+        if (pleromaAccountService.isApiReadyToUse) {
+          var remoteAccount = await pleromaAccountService.getAccount(
+            accountRemoteId: accountRemoteId,
+          );
+          await accountRepository.upsertInRemoteType(
+            remoteAccount,
+          );
+        }
+        account = await accountRepository.findByRemoteIdInAppType(
+          accountRemoteId,
+        );
+      }
     }
 
     return account;
