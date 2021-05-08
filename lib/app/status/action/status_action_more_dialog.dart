@@ -7,6 +7,7 @@ import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_status_page.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart';
+import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/share/external/external_share_status_page.dart';
@@ -317,8 +318,10 @@ class StatusActionMoreDialogBody extends StatelessWidget {
                 reuploadedMediaAttachments?.length) {
               goToNewPostStatusPageWithInitial(
                 parentContext,
-                initialText: (status.content ?? ""),
-                initialSubject: status.spoilerText,
+                initialText:
+                    (status.content?.extractRawStringFromHtmlString() ?? ""),
+                initialSubject:
+                    status.spoilerText?.extractRawStringFromHtmlString(),
                 initialMediaAttachments:
                     reuploadedMediaAttachments?.toPleromaApiMediaAttachments(),
               );
