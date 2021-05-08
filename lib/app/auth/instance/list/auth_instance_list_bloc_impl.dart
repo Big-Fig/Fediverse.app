@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
-import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
+import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:logging/logging.dart';
 
@@ -44,14 +44,18 @@ class AuthInstanceListBloc extends DisposableOwner
   @override
   Future addInstance(AuthInstance instance) async {
     _logger.finest(() => "addInstance $instance");
-    var instances = availableInstances.toList(growable: true);
+    var instances = availableInstances;
     if (!instances.contains(instance)) {
-      instances.add(instance);
+      _logger.finest(() => "addInstance before setValue");
       await instanceListLocalPreferenceBloc.setValue(
         AuthInstanceList(
-          instances: instances,
+          instances: [
+            ...instances,
+            instance,
+          ],
         ),
       );
+      _logger.finest(() => "addInstance after setValue");
     }
   }
 

@@ -20,6 +20,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:logging/logging.dart';
+
+final _logger = Logger("join_auth_instance_widget.dart");
 
 class JoinAuthInstanceWidget extends StatelessWidget {
   const JoinAuthInstanceWidget();
@@ -402,13 +405,18 @@ Future logInToInstance(BuildContext context) async {
 
   var authInstance = dialogResult.result;
   if (authInstance != null) {
+    _logger.finest(() =>"before pop");
     if (!joinInstanceBloc.isFromScratch) {
       Navigator.pop(context);
       Navigator.pop(context);
     }
+
+    _logger.finest(() =>"after pop before change auth");
+
     await ICurrentAuthInstanceBloc.of(context, listen: false)
         .changeCurrentInstance(
       authInstance,
     );
+    _logger.finest(() =>"after auth");
   }
 }

@@ -36,8 +36,9 @@ class CurrentAuthInstanceBloc extends DisposableOwner
     if (found == null) {
       await instanceListBloc.addInstance(instance);
     }
-
+    _logger.finest(() => "changeCurrentInstance before setValue");
     await currentLocalPreferenceBloc.setValue(instance);
+    _logger.finest(() => "changeCurrentInstance after setValue");
   }
 
   @override
@@ -46,7 +47,9 @@ class CurrentAuthInstanceBloc extends DisposableOwner
   @override
   Future logoutCurrentInstance() async {
     _logger.finest(() => "logoutCurrentInstance $currentInstance");
-    await instanceListBloc.removeInstance(currentInstance!);
+    if (currentInstance != null) {
+      await instanceListBloc.removeInstance(currentInstance!);
+    }
 
     if (instanceListBloc.isHaveInstances == true) {
       await currentLocalPreferenceBloc

@@ -1,8 +1,8 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
@@ -111,11 +111,24 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
                   var instance =
                       Provider.of<AuthInstance>(context, listen: false);
 
+                  // todo: remove hack
+                  // sometimes IPleromaApiMyAccountService is not accessible
+                  // during account switching
+                  try {
+                    Provider.of<IPleromaApiMyAccountService>(context);
+                  } catch (e) {
+                    _logger.finest(
+                      () => "error fetching IPleromaApiMyAccountService",
+                    );
+                    return const SizedBox.shrink();
+                  }
+
                   return DisposableProvider<IAccountBloc>(
                     create: (context) => MyAccountBloc(
                       instance: instance,
-                      pleromaMyAccountService:
-                          IPleromaApiMyAccountService.of(context, listen: false),
+                      pleromaMyAccountService: IPleromaApiMyAccountService.of(
+                          context,
+                          listen: false),
                       accountRepository:
                           IAccountRepository.of(context, listen: false),
                       myAccountLocalPreferenceBloc:
@@ -157,12 +170,10 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
     // sometimes IMyAccountBloc is not accessible during account switching
     try {
       Provider.of<IMyAccountBloc>(context);
-    } catch (e, stackTrace) {
+    } catch (e) {
       _logger.finest(
         () => "_AuthInstanceChooserSelectedInstanceRowWidget "
             "error fetching myAccountBloc",
-        e,
-        stackTrace,
       );
       return const SizedBox.shrink();
     }
@@ -174,7 +185,7 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var authInstance = snapshot.data;
 
-          if(authInstance == null) {
+          if (authInstance == null) {
             return const SizedBox.shrink();
           }
           return Provider<AuthInstance>.value(
