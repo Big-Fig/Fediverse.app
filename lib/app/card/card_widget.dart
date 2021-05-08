@@ -1,4 +1,8 @@
 import 'package:fedi/app/cache/files/files_cache_service.dart';
+import 'package:fedi/app/html/html_text_bloc.dart';
+import 'package:fedi/app/html/html_text_bloc_impl.dart';
+import 'package:fedi/app/html/html_text_model.dart';
+import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -168,14 +172,44 @@ class _CardDescriptionWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaApiCard>(context);
-
-    return Expanded(
-      child: Text(
-        card.description!,
-        style: IFediUiTextTheme.of(context).bigTallDarkGrey,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<IPleromaApiCard, String?>(
+        update: (BuildContext context, IPleromaApiCard value, previous) =>
+            value.description,
+        child: ProxyProvider<String?, IHtmlTextBloc>(
+          update:
+              (BuildContext context, String? value, IHtmlTextBloc? previous) {
+            return HtmlTextBloc(
+              inputData: HtmlTextInputData(
+                input: value,
+                emojis: null,
+              ),
+              settings: HtmlTextSettings(
+                color: IFediUiColorTheme.of(
+                  context,
+                  listen: false,
+                ).darkGrey,
+                linkColor: IFediUiColorTheme.of(
+                  context,
+                  listen: false,
+                ).primary,
+                shrinkWrap: true,
+                // todo: refactor
+                // ignore: no-magic-number
+                fontSize: 16.0,
+                // todo: refactor
+                // ignore: no-magic-number
+                lineHeight: 1.5,
+                drawNewLines: false,
+                textMaxLines: 1,
+                textOverflow: TextOverflow.ellipsis,
+                fontWeight: FontWeight.w300,
+                textScaleFactor: 1.0,
+              ),
+            );
+          },
+          child: Expanded(
+            child: HtmlTextWidget(),
+          ),
+        ),
+      );
 }
