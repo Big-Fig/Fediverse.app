@@ -1,5 +1,6 @@
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +35,8 @@ abstract class IChatSelectionBloc implements IDisposable {
   Stream<bool> isItemSelectedStream(IChatMessage chatMessage);
 
   String calculateSelectionAsRawText();
+
+  List<IPleromaApiMediaAttachment>? calculateSelectionAsMediaAttachments();
 
   void clearSelection();
 }

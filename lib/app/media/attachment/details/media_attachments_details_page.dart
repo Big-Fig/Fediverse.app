@@ -1,9 +1,11 @@
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_media_page.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_media_page.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_exception.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_helper.dart';
+import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/media/settings/media_settings_bloc.dart';
 import 'package:fedi/app/share/external/external_share_media_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
@@ -251,6 +253,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var parentContext = context;
     return FediIconButton(
       icon: Icon(
         FediIcons.share,
@@ -282,13 +285,31 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
               mediaAttachment: mediaAttachment,
             );
           },
-          newStatusShareAction: (context) {
-            Navigator.of(context).pop();
+          newStatusShareAction: (context) async {
+            Navigator.of(parentContext).pop();
 
-            goToNewPostStatusPageWithInitial(
-              context,
-              initialText: mediaAttachment.url,
+            var dialogResult = await PleromaAsyncOperationHelper
+                .performPleromaAsyncOperation<IPleromaApiMediaAttachment>(
+              context: parentContext,
+              asyncCode: () async {
+                var mediaAttachmentReuploadService =
+                    IMediaAttachmentReuploadService.of(context, listen: false);
+                return await mediaAttachmentReuploadService
+                    .reuploadMediaAttachment(
+                  originalMediaAttachment: mediaAttachment,
+                );
+              },
             );
+
+            if (dialogResult.success) {
+              var reuploadedMediaAttachment = dialogResult.result!;
+              goToNewPostStatusPageWithInitial(
+                parentContext,
+                initialMediaAttachments: [
+                  reuploadedMediaAttachment.toPleromaApiMediaAttachment(),
+                ],
+              );
+            }
           },
         );
       },

@@ -19,11 +19,14 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
   final IAccount account;
   @override
   final PleromaApiVisibility visibility;
+  @override
+  final List<PleromaApiMediaAttachment>? mediaAttachments;
 
   ChatSelectionShareActionStatusAdapter({
     required this.content,
     required this.account,
     required this.visibility,
+    required this.mediaAttachments,
   });
 
   @override
@@ -31,6 +34,7 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
     return 'ChatSelectionShareActionStatusAdapter{'
         'content: $content, '
         'account: $account, '
+        'mediaAttachments: $mediaAttachments, '
         'visibility: $visibility'
         '}';
   }
@@ -42,6 +46,7 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
           runtimeType == other.runtimeType &&
           content == other.content &&
           account == other.account &&
+          mediaAttachments == other.mediaAttachments &&
           visibility == other.visibility;
 
   @override
@@ -147,10 +152,6 @@ class ChatSelectionShareActionStatusAdapter implements IStatus {
 
   @override
   int? get localId => throw UnimplementedError();
-
-  @override
-  List<PleromaApiMediaAttachment>? get mediaAttachments =>
-      throw UnimplementedError();
 
   @override
   List<PleromaApiMention>? get mentions => throw UnimplementedError();

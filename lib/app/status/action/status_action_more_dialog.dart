@@ -8,6 +8,7 @@ import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_status_page.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/share/external/external_share_status_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/status/action/delete/status_action_delete_dialog.dart';
@@ -26,6 +27,7 @@ import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -248,6 +250,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: false);
     var instanceLocation = statusBloc.instanceLocation;
     var status = statusBloc.status;
+    var parentContext = context;
     return DialogAction(
       icon: FediIcons.share,
       label: S.of(context).app_share_action_share,
@@ -279,24 +282,47 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               instanceLocation: instanceLocation,
             );
           },
-          newStatusShareAction: (context) {
-            Navigator.of(context).pop();
+          newStatusShareAction: (context) async {
+            Navigator.of(parentContext).pop();
 
-            var mediaAttachmentsString = status.mediaAttachments
-                ?.map(
-                  (mediaAttachment) => mediaAttachment.url,
-                )
-                .join(", ");
+            var originalMediaAttachments = status.mediaAttachments;
+            List<IPleromaApiMediaAttachment>? reuploadedMediaAttachments;
 
-            if (mediaAttachmentsString != null) {
-              mediaAttachmentsString = "[$mediaAttachmentsString]";
+            if (originalMediaAttachments?.isNotEmpty == true) {
+              var dialogResult = await PleromaAsyncOperationHelper
+                  .performPleromaAsyncOperation<
+                      List<IPleromaApiMediaAttachment>>(
+                context: parentContext,
+                asyncCode: () async {
+                  var mediaAttachmentReuploadService =
+                      IMediaAttachmentReuploadService.of(
+                    context,
+                    listen: false,
+                  );
+
+                  var futures = originalMediaAttachments!.map(
+                      (mediaAttachment) => mediaAttachmentReuploadService
+                              .reuploadMediaAttachment(
+                            originalMediaAttachment: mediaAttachment,
+                          ));
+
+                  return Future.wait(futures);
+                },
+              );
+
+              reuploadedMediaAttachments = dialogResult.result;
             }
-            goToNewPostStatusPageWithInitial(
-              context,
-              initialText:
-                  (status.content ?? "") + (mediaAttachmentsString ?? ""),
-              initialSubject: status.spoilerText,
-            );
+
+            if (originalMediaAttachments?.length ==
+                reuploadedMediaAttachments?.length) {
+              goToNewPostStatusPageWithInitial(
+                parentContext,
+                initialText: (status.content ?? ""),
+                initialSubject: status.spoilerText,
+                initialMediaAttachments:
+                    reuploadedMediaAttachments?.toPleromaApiMediaAttachments(),
+              );
+            }
           },
         );
       },
