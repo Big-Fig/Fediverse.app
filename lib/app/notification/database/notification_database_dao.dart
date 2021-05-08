@@ -334,7 +334,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     var joinQuery = query.join(populateNotificationJoin());
 
-    // move to filters
+    // TODO: move to filters
     var excludeStatusTextConditions = filters?.excludeStatusTextConditions;
     if (excludeStatusTextConditions != null) {
       for (var condition in excludeStatusTextConditions) {

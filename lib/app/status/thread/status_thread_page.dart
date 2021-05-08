@@ -17,6 +17,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_widget.dart';
+import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -31,13 +32,17 @@ import 'package:provider/provider.dart';
 class StatusThreadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var statusThreadBloc = IStatusThreadBloc.of(context);
     return Scaffold(
       appBar: FediPageCustomAppBar(
         leading: const FediBackIconButton(),
         child: const _StatusThreadAppBarStarterAccountWidget(),
       ),
-      body: const SafeArea(
-        child: StatusThreadWidget(),
+      body: SafeArea(
+        child: FediAsyncInitLoadingWidget(
+          asyncInitLoadingBloc: statusThreadBloc,
+          loadingFinishedBuilder: (context) => const StatusThreadWidget(),
+        ),
       ),
     );
   }
