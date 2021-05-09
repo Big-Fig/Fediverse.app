@@ -41,7 +41,7 @@ class PleromaApiScheduledStatusService extends BasePleromaApiService
   }
 
   @override
-  Future cancelScheduledStatus({
+  Future<void> cancelScheduledStatus({
     required String scheduledStatusRemoteId,
   }) async {
     var request = RestRequest.delete(
@@ -52,7 +52,7 @@ class PleromaApiScheduledStatusService extends BasePleromaApiService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return restService.processEmptyResponse(httpResponse);
+    restService.processEmptyResponse(httpResponse);
   }
 
   @override
