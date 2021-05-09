@@ -81,14 +81,14 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
             },
           ),
         ),
-        if (cancelable)
-          _FediMultiSelectChooserDialogBodyActionWidget(
-            action: BaseDialog.createDefaultCancelAction(
-              context: context,
-            ),
-            isSelected: true,
-            isCancelAction: true,
+        _FediMultiSelectChooserDialogBodyActionWidget(
+          action: BaseDialog.createDefaultOkAction(
+            context: context,
+            action: null,
           ),
+          isSelected: true,
+          isCancelAction: true,
+        ),
       ],
     );
   }
