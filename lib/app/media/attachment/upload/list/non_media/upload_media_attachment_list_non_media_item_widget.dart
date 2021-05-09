@@ -66,8 +66,8 @@ class _UploadMediaAttachmentListNonMediaItemWidgetState
                 uploadState?.type == UploadMediaAttachmentStateType.uploaded;
 
             if (isUploaded) {
-              return Provider<String?>.value(
-                value: filePath,
+              return Provider<String>.value(
+                value: filePath ?? "",
                 child: DisposableProxyProvider<String, IMediaFilePathBloc>(
                   update: (context, filePath, _) =>
                       MediaFilePathBloc(path: filePath),
