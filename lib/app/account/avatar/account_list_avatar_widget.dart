@@ -17,6 +17,7 @@ class AccountListAvatarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: baseAvatarSize,
+      // ignore: no-equal-arguments
       height: baseAvatarSize,
       child: _AccountListAvatarBodyWidget(baseAvatarSize: baseAvatarSize),
     );
@@ -350,6 +351,7 @@ class _AccountListAvatarMultiAccountImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: baseAvatarSize * sizeMultiplier,
+      // ignore: no-equal-arguments
       height: baseAvatarSize * sizeMultiplier,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(

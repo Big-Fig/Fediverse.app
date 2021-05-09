@@ -109,6 +109,7 @@ class FediListRefreshIndicator extends StatefulWidget {
   const FediListRefreshIndicator({
     Key? key,
     required this.child,
+    // ignore: no-magic-number
     this.displacement = 40.0,
     required this.onRefresh,
     this.color,
@@ -116,6 +117,7 @@ class FediListRefreshIndicator extends StatefulWidget {
     this.notificationPredicate = defaultScrollNotificationPredicate,
     this.semanticsLabel,
     this.semanticsValue,
+    // ignore: no-magic-number
     this.strokeWidth = 2.0,
     this.triggerMode = RefreshIndicatorTriggerMode.onEdge,
   }) : super(key: key);
@@ -262,6 +264,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
         _start(notification.metrics.axisDirection);
   }
 
+  // ignore: code-metrics
   bool _handleScrollNotification(ScrollNotification notification) {
     if (!widget.notificationPredicate(notification)) return false;
     if (_shouldStart(notification)) {
@@ -370,6 +373,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
     _positionController.value =
         newValue.clamp(0.0, 1.0); // this triggers various rebuilds
     if (_mode == _RefreshIndicatorMode.drag &&
+        // ignore: no-magic-number
         _valueColor.value!.alpha == 0xFF) {
       _mode = _RefreshIndicatorMode.armed;
     }

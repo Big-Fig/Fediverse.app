@@ -21,7 +21,9 @@ class FediSwitch extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Provider<bool>.value(
+  Widget build(BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    return Provider<bool>.value(
         value: value,
         child: DisposableProxyProvider<bool, ICustomSwitchBloc>(
           update: (context, value, previous) {
@@ -40,15 +42,17 @@ class FediSwitch extends StatelessWidget {
             height: 19.0,
             indicatorSize: 11.0,
             backgroundBorderRadius: 19.0,
-            indicatorActiveColor: IFediUiColorTheme.of(context).primary,
-            indicatorInactiveColor: IFediUiColorTheme.of(context).lightGrey,
-            indicatorDisabledColor: IFediUiColorTheme.of(context).ultraLightGrey,
-            backgroundActiveColor: IFediUiColorTheme.of(context).transparent,
-            backgroundInactiveColor: IFediUiColorTheme.of(context).transparent,
-            backgroundDisabledColor: IFediUiColorTheme.of(context).transparent,
-            borderColor: IFediUiColorTheme.of(context).black,
+            indicatorActiveColor: fediUiColorTheme.primary,
+            indicatorInactiveColor: fediUiColorTheme.lightGrey,
+            indicatorDisabledColor: fediUiColorTheme.ultraLightGrey,
+            backgroundActiveColor: fediUiColorTheme.transparent,
+            backgroundInactiveColor: fediUiColorTheme.transparent,
+            // ignore: no-equal-arguments
+            backgroundDisabledColor: fediUiColorTheme.transparent,
+            borderColor: fediUiColorTheme.black,
             enabled: enabled,
           ),
         ),
       );
+  }
 }

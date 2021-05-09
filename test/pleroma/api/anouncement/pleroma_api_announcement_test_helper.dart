@@ -3,6 +3,8 @@ import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dar
 
 import '../../../date_time/date_time_test_helper.dart';
 
+// ignore_for_file: no-equal-arguments
+
 class PleromaApiAnnouncementTestHelper {
   static PleromaApiAnnouncement createTestPleromaApiAnnouncement({
     required String seed,

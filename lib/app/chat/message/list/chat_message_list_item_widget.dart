@@ -285,12 +285,14 @@ class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
                         topLeft: _borderRadius,
                         topRight:
                             isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                        // ignore: no-equal-arguments
                         bottomLeft: _borderRadius,
                       )
                     : BorderRadius.only(
                         topLeft:
                             isLastInMinuteGroup ? _borderRadius : Radius.zero,
                         topRight: _borderRadius,
+                        // ignore: no-equal-arguments
                         bottomRight: _borderRadius,
                       )
                 : BorderRadius.zero,
@@ -311,6 +313,7 @@ class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
                             topRight: isLastInMinuteGroup
                                 ? _borderRadius
                                 : Radius.zero,
+                            // ignore: no-equal-arguments
                             bottomLeft: _borderRadius,
                           )
                         : BorderRadius.only(
@@ -318,6 +321,7 @@ class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
                                 ? _borderRadius
                                 : Radius.zero,
                             topRight: _borderRadius,
+                            // ignore: no-equal-arguments
                             bottomRight: _borderRadius,
                           ),
                     child: const _ChatMessageListItemContentWidget(),

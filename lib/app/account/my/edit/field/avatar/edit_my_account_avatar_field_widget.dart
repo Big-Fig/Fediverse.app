@@ -197,6 +197,7 @@ class _EditMyAccountAvatarFieldImageContainerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: avatarSize,
+      // ignore: no-equal-arguments
       width: avatarSize,
       child: ClipRRect(
         borderRadius:

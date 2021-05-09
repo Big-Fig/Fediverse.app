@@ -50,6 +50,7 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
                     limitMinWidth: true,
                     expanded: false,
                     enabledBorderColor: fediUiColorTheme.transparent,
+                    // ignore: no-equal-arguments
                     disabledBorderColor: fediUiColorTheme.transparent,
                     onPressed: buttonAction,
                   ),

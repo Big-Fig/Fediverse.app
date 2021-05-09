@@ -1,6 +1,8 @@
 // ignore_for_file: no-magic-number
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 
+// ignore_for_file: no-equal-arguments
+
 class PleromaApiPollTestHelper {
   static PleromaApiPollOption createTestPleromaApiPollOption({
     required String seed,

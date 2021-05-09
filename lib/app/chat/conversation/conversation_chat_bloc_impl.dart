@@ -393,6 +393,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         createdAt: createdAt,
         pendingState: PendingState.pending,
         oldPendingRemoteId: fakeUniqueRemoteRemoteId,
+        // ignore: no-equal-arguments
         wasSentWithIdempotencyKey: fakeUniqueRemoteRemoteId,
       );
 

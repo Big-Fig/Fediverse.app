@@ -54,6 +54,7 @@ class AccountAvatarUrlWidget extends StatelessWidget {
     if (avatarUrl == null) {
       return Container(
         width: imageSize,
+        // ignore: no-equal-arguments
         height: imageSize,
         child: _AccountAvatarLoadingWidget(
           progressSize: progressSize,
@@ -63,6 +64,7 @@ class AccountAvatarUrlWidget extends StatelessWidget {
 
     return Container(
       width: imageSize,
+      // ignore: no-equal-arguments
       height: imageSize,
       child: Center(
         child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
@@ -72,6 +74,7 @@ class AccountAvatarUrlWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(imageSize / 2),
               child: Image(
                 width: imageSize,
+                // ignore: no-equal-arguments
                 height: imageSize,
                 image: imageProvider,
               ),

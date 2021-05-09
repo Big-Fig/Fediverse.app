@@ -21,6 +21,8 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  // todo: refactor
+  // ignore: long-method
   Widget build(BuildContext context) {
     var instanceLocation = InstanceLocation.local;
     var mediaAttachmentReuploadService = IMediaAttachmentReuploadService.of(

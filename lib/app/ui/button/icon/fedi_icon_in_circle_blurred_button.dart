@@ -26,7 +26,7 @@ class FediIconInCircleBlurredButton extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         // ignore: no-magic-number
         width: size + borderWidth * 2,
-        // ignore: no-magic-number
+        // ignore: no-magic-number, no-equal-arguments
         height: size + borderWidth * 2,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(size),

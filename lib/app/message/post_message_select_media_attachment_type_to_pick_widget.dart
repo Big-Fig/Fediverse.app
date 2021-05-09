@@ -244,6 +244,7 @@ class _PostMessageSelectMediaAttachmentTypeToPickActionWidget
         children: [
           Container(
             width: _typeContainerSize,
+            // ignore: no-equal-arguments
             height: _typeContainerSize,
             decoration: BoxDecoration(
               border: Border.all(color: IFediUiColorTheme.of(context).darkGrey),

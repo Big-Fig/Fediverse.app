@@ -27,6 +27,7 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
                 left: FediSizes.bigPadding,
                 right: FediSizes.bigPadding,
                 top: FediSizes.smallPadding,
+                // ignore: no-equal-arguments
                 bottom: FediSizes.bigPadding,
               ),
               child: Container(
@@ -53,10 +54,12 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(
                         left: FediSizes.smallPadding,
+                        // ignore: no-equal-arguments
                         top: FediSizes.smallPadding,
                       ),
                       child: Container(
                         width: _mediaAttachmentRowItemSize,
+                        // ignore: no-equal-arguments
                         height: _mediaAttachmentRowItemSize,
                         child: Provider<IUploadMediaAttachmentBloc>.value(
                           value: mediaItemBloc,

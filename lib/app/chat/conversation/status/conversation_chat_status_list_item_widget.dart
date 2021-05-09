@@ -64,6 +64,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                             topRight: isLastInMinuteGroup
                                 ? _borderRadius
                                 : Radius.zero,
+                            // ignore: no-equal-arguments
                             bottomLeft: _borderRadius,
                           )
                         : BorderRadius.only(
@@ -71,6 +72,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                                 ? _borderRadius
                                 : Radius.zero,
                             topRight: _borderRadius,
+                            // ignore: no-equal-arguments
                             bottomRight: _borderRadius,
                           )
                     : BorderRadius.zero,
@@ -103,6 +105,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                                 topRight: isLastInMinuteGroup
                                     ? _borderRadius
                                     : Radius.zero,
+                                // ignore: no-equal-arguments
                                 bottomLeft: _borderRadius,
                               )
                             : BorderRadius.only(
@@ -110,6 +113,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                                     ? _borderRadius
                                     : Radius.zero,
                                 topRight: _borderRadius,
+                                // ignore: no-equal-arguments
                                 bottomRight: _borderRadius,
                               ),
                         child: buildContent(

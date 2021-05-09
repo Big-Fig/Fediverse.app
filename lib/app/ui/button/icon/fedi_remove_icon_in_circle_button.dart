@@ -21,6 +21,7 @@ class FediRemoveIconInCircleButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(size),
         child: Container(
           width: size,
+          // ignore: no-equal-arguments
           height: size,
           // ignore: no-magic-number
           color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.8),

@@ -51,6 +51,7 @@ class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
               children: [
                 Image(
                   width: double.infinity,
+                  // ignore: no-equal-arguments
                   height: double.infinity,
                   fit: BoxFit.cover,
                   image: imageProvider,

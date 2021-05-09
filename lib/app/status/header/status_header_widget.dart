@@ -71,6 +71,7 @@ class StatusHeaderWidget extends StatelessWidget {
             imageUrl: account.avatar,
             placeholder: (context, url) => Container(
               width: FediSizes.accountAvatarSmallSize,
+              // ignore: no-equal-arguments
               height: FediSizes.accountAvatarSmallSize,
               child: const FediCircularProgressIndicator(
                 size: FediSizes.accountAvatarSmallSize,

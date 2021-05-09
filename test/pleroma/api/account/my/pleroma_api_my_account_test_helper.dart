@@ -5,7 +5,7 @@ import '../../field/pleroma_api_field_test_helper.dart';
 import '../../tag/pleroma_api_tag_test_helper.dart';
 import '../pleroma_api_account_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, no-equal-arguments
 class PleromaApiMyAccountTestHelper {
   static PleromaApiMyAccountPleromaPartNotificationsSettings
       createTestPleromaApiMyAccountPleromaPartNotificationsSettings({

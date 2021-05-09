@@ -15,6 +15,7 @@ class FediIndicatorWidget extends StatelessWidget {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     return Container(
       width: _size,
+      // ignore: no-equal-arguments
       height: _size,
       margin: EdgeInsets.symmetric(
         vertical: FediSizes.mediumPadding,

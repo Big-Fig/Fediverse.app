@@ -34,6 +34,7 @@ class AccountWidget extends StatelessWidget {
                 top: FediSizes.bigPadding,
                 bottom: FediSizes.smallPadding,
                 left: FediSizes.bigPadding,
+                // ignore: no-equal-arguments
                 right: FediSizes.bigPadding,
               ),
               child: Column(

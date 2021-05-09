@@ -1,6 +1,8 @@
 // ignore_for_file: no-magic-number
 import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 
+// ignore_for_file: no-equal-arguments
+
 class PleromaApiPushTestHelper {
   static PleromaApiPushMessageBody createTestPleromaApiPushMessageBody({
     required String seed,

@@ -90,6 +90,7 @@ class _FediVideoPlayerPlayPauseControlsWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(size),
         child: Container(
           width: size,
+          // ignore: no-equal-arguments
           height: size,
           decoration: BoxDecoration(
             shape: BoxShape.circle,

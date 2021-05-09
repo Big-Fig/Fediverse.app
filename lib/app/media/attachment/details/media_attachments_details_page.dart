@@ -339,8 +339,9 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
         ),
         onPressed: onPressed,
       ),
-      successToastMessage:
-          S.of(context).app_media_attachment_addToGallery_progress_content,
+      // todo: add localizaed message
+      // successToastMessage:
+      //     S.of(context).app_media_attachment_addToGallery_,
       asyncButtonAction: () async {
         var saved = await addMediaAttachmentToGallery(
           context: context,

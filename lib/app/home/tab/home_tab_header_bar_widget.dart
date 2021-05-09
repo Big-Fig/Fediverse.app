@@ -18,6 +18,7 @@ class FediTabMainHeaderBarWidget extends StatelessWidget {
       padding: const EdgeInsets.only(
         left: FediSizes.bigPadding,
         top: FediSizes.bigPadding,
+        // ignore: no-equal-arguments
         right: FediSizes.bigPadding,
         bottom: FediSizes.bigPadding + FediSizes.smallPadding,
       ),

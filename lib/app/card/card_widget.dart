@@ -80,6 +80,7 @@ class _CardContentWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(_cardBorderRadius),
+            // ignore: no-equal-arguments
             bottomRight: Radius.circular(_cardBorderRadius),
           ),
           border:

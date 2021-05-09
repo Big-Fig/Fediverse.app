@@ -28,11 +28,13 @@ class EditMyAccountHeaderFieldWidget extends StatelessWidget {
       children: <Widget>[
         Container(
           width: double.infinity,
+          // ignore: no-equal-arguments
           height: double.infinity,
           child: const EditMyAccountHeaderFieldImageWidget(),
         ),
         Positioned(
           bottom: FediSizes.bigPadding,
+          // ignore: no-equal-arguments
           right: FediSizes.bigPadding,
           child: const EditMyAccountHeaderFieldEditButtonWidget(),
         ),
