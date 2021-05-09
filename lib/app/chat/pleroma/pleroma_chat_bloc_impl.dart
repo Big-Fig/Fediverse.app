@@ -308,6 +308,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
             ?.toPleromaApiMediaAttachment(),
         card: null,
         pendingState: PendingState.pending,
+        // ignore: no-equal-arguments
         oldPendingRemoteId: fakeUniqueRemoteRemoteId,
         deleted: false,
         hiddenLocallyOnDevice: false,

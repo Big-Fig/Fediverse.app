@@ -414,6 +414,7 @@ class _PollOptionSelectionWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(left: FediSizes.bigPadding),
                 child: Container(
                   width: size,
+                  // ignore: no-equal-arguments
                   height: size,
                   decoration: BoxDecoration(
                     color: backgroundColor,

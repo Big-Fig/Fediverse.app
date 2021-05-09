@@ -108,6 +108,7 @@ class _JoinAuthInstanceLoginButtonWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
         left: FediSizes.smallPadding,
+        // ignore: no-equal-arguments
         right: FediSizes.smallPadding,
       ),
       child: FediTransparentTextButtonWithBorder(
@@ -132,6 +133,7 @@ class _JoinAuthInstanceSignUpButtonWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
         left: FediSizes.smallPadding,
+        // ignore: no-equal-arguments
         right: FediSizes.smallPadding,
       ),
       child: FediTransparentTextButtonWithBorder(

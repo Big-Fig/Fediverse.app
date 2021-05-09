@@ -77,6 +77,7 @@ class _FediCircularProgressIndicatorState
       },
       child: Container(
         width: size,
+        // ignore: no-equal-arguments
         height: size,
         child: Icon(
           FediIcons.loading,

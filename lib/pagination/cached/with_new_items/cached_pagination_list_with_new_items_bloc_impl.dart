@@ -64,6 +64,8 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
   final bool watchNewerItemsWhenLoadedPagesIsEmpty;
 
+  // todo: refactor
+  // ignore: long-method
   CachedPaginationListWithNewItemsBloc({
     required this.mergeNewItemsImmediately,
     this.mergeNewItemsImmediatelyWhenItemsIsEmpty = true,

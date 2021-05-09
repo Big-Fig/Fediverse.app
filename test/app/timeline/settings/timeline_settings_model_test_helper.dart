@@ -5,7 +5,7 @@ import '../../../enum/enum_test_helper.dart';
 import '../../../pleroma/api/account/pleroma_api_account_test_helper.dart';
 import '../../../pleroma/api/list/pleroma_api_list_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, no-equal-arguments
 class TimelineSettingsModelTestHelper {
   static TimelineSettings createTestTimelineSettings({
     required String seed,

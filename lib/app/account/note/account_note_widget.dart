@@ -29,6 +29,7 @@ class AccountNoteWidget extends StatelessWidget {
       padding: const EdgeInsets.only(
         bottom: FediSizes.smallPadding,
         left: FediSizes.bigPadding,
+        // ignore: no-equal-arguments
         right: FediSizes.bigPadding,
       ),
       child: StreamProvider<EmojiText?>.value(

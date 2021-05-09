@@ -30,7 +30,7 @@ class FediIconInCircleTransparentButton extends StatelessWidget {
     return Container(
       // ignore: no-magic-number
       width: size + borderWidth * 2,
-      // ignore: no-magic-number
+      // ignore: no-magic-number, no-equal-arguments
       height: size + borderWidth * 2,
       decoration: BoxDecoration(
         shape: BoxShape.circle,

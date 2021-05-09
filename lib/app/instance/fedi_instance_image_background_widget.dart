@@ -122,6 +122,7 @@ class _FediInstanceImageBackgroundPlaceholderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      // ignore: no-equal-arguments
       height: double.infinity,
       color: IFediUiColorTheme.of(context).primaryDark,
     );
@@ -141,6 +142,7 @@ class _FediInstanceImageBackgroundImageProviderWidget extends StatelessWidget {
         children: [
           Image(
             width: double.infinity,
+            // ignore: no-equal-arguments
             height: double.infinity,
             fit: BoxFit.cover,
             image: imageProvider,

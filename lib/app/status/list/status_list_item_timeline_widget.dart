@@ -298,6 +298,7 @@ class _StatusListItemTimelineStatusHeaderWidget extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(
         FediSizes.bigPadding,
         FediSizes.bigPadding,
+        // ignore: no-equal-arguments
         FediSizes.bigPadding,
         0.0,
       ),

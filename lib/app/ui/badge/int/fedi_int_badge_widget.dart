@@ -31,9 +31,11 @@ class FediIntBadgeWidget extends StatelessWidget {
               child,
               Positioned(
                 right: offset,
+                // ignore: no-equal-arguments
                 top: offset,
                 child: Container(
                   width: badgeSize,
+                  // ignore: no-equal-arguments
                   height: badgeSize,
                   decoration: BoxDecoration(
                     color: IFediUiColorTheme.of(context).secondary,

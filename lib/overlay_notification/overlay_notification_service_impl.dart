@@ -39,6 +39,7 @@ class OverlayNotificationService extends DisposableOwner
                 child: ListTileTheme(
                   textColor: foreground ??
                       Theme.of(context).accentTextTheme.headline6?.color,
+                  // ignore: no-equal-arguments
                   iconColor: foreground ??
                       Theme.of(context).accentTextTheme.headline6?.color,
                   child: ListTile(

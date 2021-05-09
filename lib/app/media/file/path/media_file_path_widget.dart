@@ -109,6 +109,7 @@ class _MediaFilePathIconWidget extends StatelessWidget {
     var mediaFilePathBloc = IMediaFilePathBloc.of(context);
     return Container(
       width: _nonMediaIconSize,
+      // ignore: no-equal-arguments
       height: _nonMediaIconSize,
       decoration: BoxDecoration(
         border: Border(

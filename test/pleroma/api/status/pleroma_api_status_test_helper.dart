@@ -15,7 +15,7 @@ import '../poll/pleroma_api_poll_test_helper.dart';
 import '../tag/pleroma_api_tag_test_helper.dart';
 import '../visibility/pleroma_api_visibility_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, no-equal-arguments
 class PleromaApiStatusTestHelper {
   static PleromaApiPostStatus createTestPleromaApiPostStatus({
     required String seed,

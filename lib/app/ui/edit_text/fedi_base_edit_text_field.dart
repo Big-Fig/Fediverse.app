@@ -84,9 +84,11 @@ class FediBaseEditTextField extends StatelessWidget {
       },
       decoration: InputDecoration(
         border: displayBorder ? border : InputBorder.none,
+        // ignore: no-equal-arguments
         enabledBorder: displayBorder ? border : InputBorder.none,
         focusedBorder: displayBorder ? focusedBorder : InputBorder.none,
         errorBorder: displayBorder ? errorBorder : InputBorder.none,
+        // ignore: no-equal-arguments
         focusedErrorBorder: displayBorder ? errorBorder : InputBorder.none,
         errorStyle: textStyle.copyWith(
           color: IFediUiColorTheme.of(context).error,
@@ -129,9 +131,11 @@ class FediBaseEditTextField extends StatelessWidget {
       },
       decoration: InputDecoration(
         border: displayBorder ? border : InputBorder.none,
+        // ignore: no-equal-arguments
         enabledBorder: displayBorder ? border : InputBorder.none,
         focusedBorder: displayBorder ? focusedBorder : InputBorder.none,
         errorBorder: displayBorder ? errorBorder : InputBorder.none,
+        // ignore: no-equal-arguments
         focusedErrorBorder: displayBorder ? errorBorder : InputBorder.none,
         errorStyle: textStyle.copyWith(
           color: IFediUiColorTheme.of(context).error,
@@ -174,6 +178,7 @@ class _MentionSpecialText extends SpecialText {
 
     return SpecialTextSpan(
       text: mentionText,
+      // ignore: no-equal-arguments
       actualText: mentionText,
       start: start,
       style: textStyle,

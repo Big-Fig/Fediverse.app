@@ -135,6 +135,7 @@ Map<String, Style> _calculateHtmlStyles({
     "html": Style(
       display: settings.shrinkWrap ? Display.INLINE : Display.BLOCK,
       padding: EdgeInsets.zero,
+      // ignore: no-equal-arguments
       margin: EdgeInsets.zero,
       // textOverflow: settings.textOverflow,
       // textMaxLines: settings.textMaxLines,
@@ -146,6 +147,7 @@ Map<String, Style> _calculateHtmlStyles({
     "body": Style(
       display: settings.shrinkWrap ? Display.INLINE : Display.BLOCK,
       padding: EdgeInsets.zero,
+      // ignore: no-equal-arguments
       margin: EdgeInsets.zero,
       // textOverflow: settings.textOverflow,
       // textMaxLines: settings.textMaxLines,
@@ -154,13 +156,16 @@ Map<String, Style> _calculateHtmlStyles({
     "img": Style(
       display: Display.INLINE,
       width: settings.imageSize,
+      // ignore: no-equal-arguments
       height: settings.imageSize,
       padding: EdgeInsets.zero,
+      // ignore: no-equal-arguments
       margin: EdgeInsets.zero,
       textAlign: settings.textAlign,
     ),
     "p": Style(
       padding: EdgeInsets.zero,
+      // ignore: no-equal-arguments
       margin: EdgeInsets.zero,
       // lineHeight: settings.lineHeight,
       display: settings.paragraphDisplay,
@@ -176,6 +181,7 @@ Map<String, Style> _calculateHtmlStyles({
     ),
     "text": Style(
       padding: EdgeInsets.zero,
+      // ignore: no-equal-arguments
       margin: EdgeInsets.zero,
       // lineHeight: settings.lineHeight,
       display: Display.INLINE,

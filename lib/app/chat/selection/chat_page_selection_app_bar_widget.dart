@@ -32,6 +32,7 @@ class ChatPageSelectionAppBarWidget extends StatelessWidget
                 },
               ),
             ],
+            // ignore: no-equal-arguments
             child: const SizedBox.shrink(),
           );
         } else {

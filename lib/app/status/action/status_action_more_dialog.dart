@@ -247,6 +247,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
     );
   }
 
+  // todoL refactor
+  // ignore: long-method, code-metrics
   static DialogAction buildShareAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
     var instanceLocation = statusBloc.instanceLocation;

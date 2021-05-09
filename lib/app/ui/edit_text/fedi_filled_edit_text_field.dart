@@ -92,6 +92,7 @@ class FediFilledEditTextField extends StatelessWidget {
                 contentPadding: EdgeInsets.symmetric(vertical: 10.0),
                 border: InputBorder.none,
                 errorBorder: InputBorder.none,
+                // ignore: no-equal-arguments
                 focusedBorder: InputBorder.none,
                 displayBorder: false,
               ),

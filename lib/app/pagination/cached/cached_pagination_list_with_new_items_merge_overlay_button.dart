@@ -64,6 +64,8 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
             }
 
             return AnimatedSwitcher(
+              // todo: refactor magic number
+              // ignore: no-magic-number
               duration: Duration(milliseconds: 500),
               transitionBuilder: (child, animation) => ScaleTransition(
                   scale: animation,

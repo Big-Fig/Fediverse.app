@@ -46,6 +46,7 @@ class MediaPickerFileGridItemWidget extends StatelessWidget {
             if (isFileSelected)
               Positioned(
                 right: FediSizes.smallPadding,
+                // ignore: no-equal-arguments
                 bottom: FediSizes.smallPadding,
                 child: Icon(
                   FediIcons.check_circle_solid,
@@ -128,6 +129,7 @@ class _MediaPickerFileGridItemPreviewWidget extends StatelessWidget {
           thumbImageData,
           fit: BoxFit.cover,
           width: double.infinity,
+          // ignore: no-equal-arguments
           height: double.infinity,
         ),
         const _MediaPickerFileGridItemIconWidget(),

@@ -210,6 +210,7 @@ class _CustomEmojiPickerSelectedCategoryItemsWidget extends StatelessWidget {
           },
           child: Container(
             width: size,
+            // ignore: no-equal-arguments
             height: size,
             child: Center(child: child),
           ),

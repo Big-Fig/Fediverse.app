@@ -109,12 +109,14 @@ class EditMyAccountPleromaBackgroundFieldValueWidget extends StatelessWidget {
               ),
               Positioned(
                 bottom: FediSizes.bigPadding,
+                // ignore: no-equal-arguments
                 right: FediSizes.bigPadding,
                 child:
                     const EditMyAccountPleromaBackgroundFieldEditButtonWidget(),
               ),
               Positioned(
                 top: FediSizes.bigPadding,
+                // ignore: no-equal-arguments
                 right: FediSizes.bigPadding,
                 child:
                     const EditMyAccountPleromaBackgroundFieldDeleteButtonWidget(),

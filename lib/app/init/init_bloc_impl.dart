@@ -21,6 +21,7 @@ class InitBloc extends AsyncInitLoadingBloc implements IInitBloc {
           appContextBloc.get(),
       localPreferencesService: appContextBloc.get(),
       connectionService: appContextBloc.get(),
+      // ignore: no-equal-arguments
       currentAuthInstanceBloc: appContextBloc.get(),
     );
 

@@ -185,6 +185,7 @@ class _FileGalleryFolderPickFromCameraHeaderItemWidget extends StatelessWidget {
       child: Container(
         color: fediUiColorTheme.white,
         width: double.infinity,
+        // ignore: no-equal-arguments
         height: double.infinity,
         child: Icon(
           FediIcons.camera,
