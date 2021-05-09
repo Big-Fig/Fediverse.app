@@ -14,7 +14,7 @@ abstract class IPleromaApiScheduledStatusService implements IPleromaApi {
         listen: listen,
       );
 
-  Future cancelScheduledStatus({
+  Future<void> cancelScheduledStatus({
     required String scheduledStatusRemoteId,
   });
 

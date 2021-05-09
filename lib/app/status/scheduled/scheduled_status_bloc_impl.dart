@@ -147,16 +147,14 @@ class ScheduledStatusBloc extends DisposableOwner
 
   @override
   Future cancelSchedule() async {
-    var success = await pleromaScheduledStatusService.cancelScheduledStatus(
+    await pleromaScheduledStatusService.cancelScheduledStatus(
       scheduledStatusRemoteId: remoteId!,
     );
 
-    if (success) {
-      await scheduledStatusRepository.markAsCanceled(
-        scheduledStatus: scheduledStatus,
-        batchTransaction: null,
-      );
-    }
+    await scheduledStatusRepository.markAsCanceled(
+      scheduledStatus: scheduledStatus,
+      batchTransaction: null,
+    );
   }
 
   @override
@@ -256,7 +254,6 @@ class ScheduledStatusBloc extends DisposableOwner
     );
 
     await scheduledStatusRepository.upsertInRemoteType(pleromaScheduledStatus);
-
   }
 
   @override
@@ -273,8 +270,8 @@ class ScheduledStatusBloc extends DisposableOwner
       visibilityString: scheduledStatus.params.visibilityPleroma.toJsonValue(),
       mediaAttachments: scheduledStatus.mediaAttachments,
       poll: scheduledStatus.params.poll?.toPostStatusPoll(),
-      inReplyToPleromaStatus:
-          scheduledStatus.params.inReplyToPleromaApiStatus?.toPleromaApiStatus(),
+      inReplyToPleromaStatus: scheduledStatus.params.inReplyToPleromaApiStatus
+          ?.toPleromaApiStatus(),
       inReplyToConversationId: scheduledStatus.params.inReplyToConversationId,
       isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
       to: scheduledStatus.params.to,
