@@ -1,15 +1,14 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
+import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-abstract class IStatusThreadBloc
-    implements IAsyncInitLoadingBloc, IStatusListBloc {
+abstract class IStatusThreadBloc implements IDisposable, IStatusListBloc {
   static IStatusThreadBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusThreadBloc>(context, listen: listen);
 

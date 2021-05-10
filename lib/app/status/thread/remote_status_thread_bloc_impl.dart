@@ -2,7 +2,9 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_impl.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_service.dart';
@@ -46,17 +48,30 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
     return remoteStatusThreadBloc;
   }
 
-  @override
-  Future<List<IFilter>> loadFilters() async => [];
+  static Widget provideToContext(
+    BuildContext context, {
+    required IStatus initialStatusToFetchThread,
+    required IPleromaApiMediaAttachment initialMediaAttachment,
+    required Widget child,
+  }) {
+    return DisposableProvider<IStatusThreadBloc>(
+      create: (context) => RemoteStatusThreadBloc.createFromContext(
+        context,
+        initialStatusToFetchThread: initialStatusToFetchThread,
+        initialMediaAttachment: initialMediaAttachment,
+      ),
+      child: child,
+    );
+  }
 
   @override
-  Stream<List<IFilter>> watchFilters() => Stream.value([]);
+  Future<List<IFilter>> loadFilters() async => [];
 
   @override
   // ignore: no-empty-block
   Future<void> onInitialStatusUpdated(
     IPleromaApiStatus updatedStartRemoteStatus,
-    // ignore: no-empty-block
+  // ignore: no-empty-block
   ) async {
     // nothing
   }

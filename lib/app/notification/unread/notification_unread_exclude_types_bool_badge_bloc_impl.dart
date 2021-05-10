@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
@@ -10,7 +8,6 @@ import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
 class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
@@ -35,51 +32,21 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
   @override
   Stream<bool> get badgeStream => badgeSubject.stream;
 
-  StreamSubscription? countSubscription;
-
-  FilterRepositoryFilters get filterRepositoryFilters =>
-      FilterRepositoryFilters(
+  @override
+  Future internalAsyncInit() async {
+    filters = await filterRepository.findAllInAppType(
+      filters: FilterRepositoryFilters(
         onlyWithContextTypes: [
           MastodonApiFilterContextType.notifications,
         ],
         notExpired: true,
-      );
-
-  @override
-  Future internalAsyncInit() async {
-    filters = await filterRepository.findAllInAppType(
-      filters: filterRepositoryFilters,
+      ),
       pagination: null,
       orderingTerms: null,
     );
 
-    addDisposable(
-      streamSubscription: filterRepository
-          .watchFindAllInAppType(
-            filters: filterRepositoryFilters,
-            pagination: null,
-            orderingTerms: null,
-          )
-          .listen(
-            (newFilters) {
-              if(listEquals(filters, newFilters) != true) {
-                filters = newFilters;
-                reSubscribeForCount();
-              }
-            },
-          ),
-    );
-
-    reSubscribeForCount();
-    addDisposable(custom: () {
-      countSubscription?.cancel();
-    });
-  }
-
-  void reSubscribeForCount() {
-    countSubscription?.cancel();
     if (!isDisposed) {
-      countSubscription = notificationRepository
+      notificationRepository
           .watchFindCount(
             filters: NotificationRepositoryFilters(
               onlyUnread: true,

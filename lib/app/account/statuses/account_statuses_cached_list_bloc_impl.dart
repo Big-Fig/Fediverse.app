@@ -12,7 +12,6 @@ import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
-import 'package:flutter/foundation.dart';
 
 abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
     implements IStatusCachedListBloc {
@@ -53,46 +52,22 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
   @override
   Stream<bool> get settingsChangedStream => Stream.empty();
 
-
-  FilterRepositoryFilters get filterRepositoryFilters =>
-      FilterRepositoryFilters(
-        notExpired: true,
-        onlyWithContextTypes: [
-          MastodonApiFilterContextType.account,
-        ],
-      );
-
-
   @override
   Future internalAsyncInit() async {
     var isAccountIsMe = myAccountBloc.checkAccountIsMe(account);
     if (isAccountIsMe) {
       filters = [];
     } else {
-
       filters = await filterRepository.findAllInAppType(
-        filters: filterRepositoryFilters,
+        filters: FilterRepositoryFilters(
+          notExpired: true,
+          onlyWithContextTypes: [
+            MastodonApiFilterContextType.account,
+          ],
+        ),
         pagination: null,
         orderingTerms: null,
       );
-
-      addDisposable(
-        streamSubscription: filterRepository
-            .watchFindAllInAppType(
-          filters: filterRepositoryFilters,
-          pagination: null,
-          orderingTerms: null,
-        )
-            .listen(
-              (newFilters) {
-            if (listEquals(filters, newFilters) != true) {
-              // perhaps we should refresh UI list after this?
-              filters = newFilters;
-            }
-          },
-        ),
-      );
-
     }
   }
 }
