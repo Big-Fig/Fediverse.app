@@ -5,7 +5,7 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
-import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
@@ -17,7 +17,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 var _logger = Logger("status_thread_bloc_impl.dart");
 
-abstract class StatusThreadBloc extends AsyncInitLoadingBloc
+abstract class StatusThreadBloc extends DisposableOwner
     implements IStatusThreadBloc {
   final IPleromaApiStatusService pleromaStatusService;
 
@@ -41,8 +41,6 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   @override
   final ItemPositionsListener itemPositionListener =
       ItemPositionsListener.create();
-
-  late List<IFilter> filters;
 
   @override
   bool isJumpedToStartState = false;
@@ -99,6 +97,8 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
     try {
       _logger.finest(() => "refresh");
 
+      List<IFilter> filters = await loadFilters();
+
       // update start status
       var updatedStartRemoteStatus = await pleromaStatusService.getStatus(
         statusRemoteId: initialStatusToFetchThread.remoteId!,
@@ -154,8 +154,6 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   }
 
   Future<List<IFilter>> loadFilters();
-
-  Stream<List<IFilter>> watchFilters();
 
   void onInitialStatusUpdated(IPleromaApiStatus updatedStartRemoteStatus);
 
@@ -272,21 +270,5 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
     }
 
     return !filtered;
-  }
-
-  @override
-  Future internalAsyncInit() async {
-    filters = await loadFilters();
-
-    addDisposable(
-      streamSubscription: watchFilters().listen(
-        (newFilters) {
-          if (listEquals(filters, newFilters) != true) {
-            filters = newFilters;
-            refresh();
-          }
-        },
-      ),
-    );
   }
 }
