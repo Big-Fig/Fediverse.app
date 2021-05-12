@@ -886,7 +886,7 @@ void main() {
 
   test('countUnread', () async {
     expect(
-      (await notificationRepository.findCount(
+      (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
           onlyUnread: true,
         ),
@@ -906,7 +906,7 @@ void main() {
     );
 
     expect(
-      (await notificationRepository.findCount(
+      (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
           onlyWithType: PleromaApiNotificationType.reblog,
           onlyUnread: true,
@@ -915,7 +915,7 @@ void main() {
       0,
     );
     expect(
-      (await notificationRepository.findCount(
+      (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
           onlyWithType: PleromaApiNotificationType.follow,
           onlyUnread: true,
@@ -924,7 +924,7 @@ void main() {
       1,
     );
     expect(
-      (await notificationRepository.findCount(
+      (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
           onlyUnread: true,
         ),
@@ -945,7 +945,7 @@ void main() {
     );
 
     expect(
-      (await notificationRepository.findCount(
+      (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
           onlyWithType: PleromaApiNotificationType.reblog,
           onlyUnread: true,
@@ -954,7 +954,7 @@ void main() {
       0,
     );
     expect(
-      (await notificationRepository.findCount(
+      (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
           onlyWithType: PleromaApiNotificationType.follow,
           onlyUnread: true,
@@ -963,7 +963,7 @@ void main() {
       1,
     );
     expect(
-      (await notificationRepository.findCount(
+      (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
           onlyUnread: true,
         ),
@@ -984,7 +984,7 @@ void main() {
     );
 
     expect(
-      (await notificationRepository.findCount(
+      (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
           onlyWithType: PleromaApiNotificationType.reblog,
           onlyUnread: true,
@@ -993,7 +993,7 @@ void main() {
       1,
     );
     expect(
-      (await notificationRepository.findCount(
+      (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
           onlyWithType: PleromaApiNotificationType.follow,
           onlyUnread: true,
@@ -1002,7 +1002,7 @@ void main() {
       1,
     );
     expect(
-      (await notificationRepository.findCount(
+      (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
           onlyUnread: true,
         ),

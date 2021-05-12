@@ -80,7 +80,7 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
     countSubscription?.cancel();
     if (!isDisposed) {
       countSubscription = notificationRepository
-          .watchFindCount(
+          .watchCalculateCount(
         filters: NotificationRepositoryFilters(
           onlyUnread: true,
           excludeTypes: excludeTypes,

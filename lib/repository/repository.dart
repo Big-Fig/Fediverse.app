@@ -18,14 +18,6 @@ abstract class IDbReadRepository<DbItem extends DataClass, DbId, Filters,
 
   Stream<DbItem?> watchByDbIdInDbType(DbId dbId);
 
-  Future<int> findCount({
-    required Filters? filters,
-  });
-
-  Stream<int> watchFindCount({
-    required Filters? filters,
-  });
-
   Future<DbItem?> findInDbType({
     required RepositoryPagination<DbItem>? pagination,
     required Filters? filters,
