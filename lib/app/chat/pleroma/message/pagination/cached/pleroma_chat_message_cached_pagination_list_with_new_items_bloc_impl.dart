@@ -33,6 +33,8 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
   }) : super(
           mergeNewItemsImmediately: mergeNewItemsImmediately,
           paginationBloc: cachedPaginationBloc,
+          asyncCalculateNewItems: false,
+          asyncCalculateActuallyNew: false,
         ) {
     addDisposable(
       streamSubscription: pleromaChatBloc.onMessageLocallyHiddenStream.listen(
