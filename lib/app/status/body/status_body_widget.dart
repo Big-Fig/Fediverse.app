@@ -65,7 +65,8 @@ class _StatusBodyChildWithWarningsWidget extends StatelessWidget {
     return StreamBuilder<StatusSensitiveWarningState>(
       stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
       builder: (context, snapshot) {
-        var statusWarningState = snapshot.data ?? statusSensitiveBloc.statusWarningState;
+        var statusWarningState =
+            snapshot.data ?? statusSensitiveBloc.statusWarningState;
 
         _logger.finest(
           () => "StreamBuilder statusWarningState $statusWarningState",
@@ -447,12 +448,17 @@ class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
         }
 
         return DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
-          update: (context, contentWithEmojis, _) {
+          update: (context, contentWithEmojis, previous) {
+            var htmlTextInputData = HtmlTextInputData(
+              input: contentWithEmojis?.text ?? "",
+              emojis: contentWithEmojis?.emojis,
+            );
+            if (previous?.inputData == htmlTextInputData) {
+              return previous!;
+            }
+
             var htmlTextBloc = HtmlTextBloc(
-              inputData: HtmlTextInputData(
-                input: contentWithEmojis?.text ?? "",
-                emojis: contentWithEmojis?.emojis,
-              ),
+              inputData: htmlTextInputData,
               settings: HtmlTextSettings(
                 color: textStyle.color,
                 lineHeight: textStyle.height,

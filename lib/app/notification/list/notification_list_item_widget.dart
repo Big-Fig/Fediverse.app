@@ -295,8 +295,40 @@ class _NotificationListItemContentWidget extends StatelessWidget {
     return Provider<EmojiText>.value(
       value: EmojiText(text: rawText, emojis: emojis),
       child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
-        update: (context, emojiText, _) {
-          HtmlTextBloc htmlTextBloc = _createHtmlTextBloc(context, emojiText);
+        update: (context, emojiText, previous) {
+          var htmlTextInputData = HtmlTextInputData(
+            input: emojiText.text,
+            emojis: emojiText.emojis,
+          );
+          if (previous?.inputData == htmlTextInputData) {
+            return previous!;
+          }
+
+          var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+          var fediUiColorTheme = IFediUiColorTheme.of(
+            context,
+            listen: false,
+          );
+          var htmlTextBloc = HtmlTextBloc(
+            inputData: htmlTextInputData,
+            settings: HtmlTextSettings(
+              // ignore: no-magic-number
+              textMaxLines: 3,
+              textOverflow: TextOverflow.ellipsis,
+              color: fediUiColorTheme.mediumGrey,
+              // todo: refactor
+              // ignore: no-magic-number
+              fontSize: 14,
+              // todo: refactor
+              // ignore: no-magic-number
+              lineHeight: 1.5,
+              fontWeight: FontWeight.w300,
+              shrinkWrap: true,
+              linkColor: fediUiColorTheme.primary,
+              drawNewLines: false,
+              textScaleFactor: textScaleFactor,
+            ),
+          );
           return htmlTextBloc;
         },
         child: const HtmlTextWidget(),
@@ -378,38 +410,6 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
     }
     return rawText;
-  }
-
-  HtmlTextBloc _createHtmlTextBloc(BuildContext context, EmojiText emojiText) {
-    var fediUiColorTheme = IFediUiColorTheme.of(
-      context,
-      listen: false,
-    );
-    var textScaleFactor = MediaQuery.of(context).textScaleFactor;
-    var htmlTextBloc = HtmlTextBloc(
-      inputData: HtmlTextInputData(
-        input: emojiText.text,
-        emojis: emojiText.emojis,
-      ),
-      settings: HtmlTextSettings(
-        // ignore: no-magic-number
-        textMaxLines: 3,
-        textOverflow: TextOverflow.ellipsis,
-        color: fediUiColorTheme.mediumGrey,
-        // todo: refactor
-        // ignore: no-magic-number
-        fontSize: 14,
-        // todo: refactor
-        // ignore: no-magic-number
-        lineHeight: 1.5,
-        fontWeight: FontWeight.w300,
-        shrinkWrap: true,
-        linkColor: fediUiColorTheme.primary,
-        drawNewLines: false,
-        textScaleFactor: textScaleFactor,
-      ),
-    );
-    return htmlTextBloc;
   }
 
   String? _extractStatusRawContent(INotificationBloc notificationBloc) {

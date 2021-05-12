@@ -45,12 +45,17 @@ class StatusSpoilerWidget extends StatelessWidget {
                   _mapToTextStyle(fediUiTextTheme, statusFontSize);
 
               return DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
-                update: (context, spoilerWithEmojis, _) {
+                update: (context, spoilerWithEmojis, previous) {
+                  var htmlTextInputData = HtmlTextInputData(
+                    input: spoilerWithEmojis?.text ?? "",
+                    emojis: spoilerWithEmojis?.emojis,
+                  );
+                  if (previous?.inputData == htmlTextInputData) {
+                    return previous!;
+                  }
+
                   var htmlTextBloc = HtmlTextBloc(
-                    inputData: HtmlTextInputData(
-                      input: spoilerWithEmojis?.text ?? "",
-                      emojis: spoilerWithEmojis?.emojis,
-                    ),
+                    inputData: htmlTextInputData,
                     settings: HtmlTextSettings(
                       color: textStyle.color,
                       lineHeight: textStyle.height,

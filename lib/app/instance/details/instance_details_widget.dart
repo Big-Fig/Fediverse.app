@@ -333,12 +333,17 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
           return Provider<String>.value(
             value: descriptionOrShortDescription!,
             child: DisposableProxyProvider<String, IHtmlTextBloc>(
-              update: (context, descriptionOrShortDescription, _) {
+              update: (context, descriptionOrShortDescription, previous) {
+                var htmlTextInputData = HtmlTextInputData(
+                  input: descriptionOrShortDescription,
+                  emojis: null,
+                );
+                if (previous?.inputData == htmlTextInputData) {
+                  return previous!;
+                }
+
                 var htmlTextBloc = HtmlTextBloc(
-                  inputData: HtmlTextInputData(
-                    input: descriptionOrShortDescription,
-                    emojis: null,
-                  ),
+                  inputData: htmlTextInputData,
                   settings: HtmlTextSettings(
                     paragraphDisplay: Display.BLOCK,
                     fontSize: textStyle.fontSize,
@@ -1285,7 +1290,8 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isHaveFederationFields = snapshot.data!;
         if (isHaveFederationFields) {
-          return StreamBuilder<PleromaApiInstancePleromaPartMetadataFederation?>(
+          return StreamBuilder<
+              PleromaApiInstancePleromaPartMetadataFederation?>(
             stream: instanceDetailsBloc.pleromaMetadataFederationStream,
             initialData: instanceDetailsBloc.pleromaMetadataFederation,
             builder: (context, snapshot) {
@@ -1341,7 +1347,8 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
 
 class _InstanceDetailsPleromaMetadataFederationMfrObjectAgeActionsWidget
     extends StatelessWidget {
-  final PleromaApiInstancePleromaPartMetadataFederation pleromaMetadataFederation;
+  final PleromaApiInstancePleromaPartMetadataFederation
+      pleromaMetadataFederation;
 
   const _InstanceDetailsPleromaMetadataFederationMfrObjectAgeActionsWidget({
     Key? key,
@@ -1366,7 +1373,8 @@ class _InstanceDetailsPleromaMetadataFederationQuarantinedInstancesWidget
     required this.pleromaMetadataFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation pleromaMetadataFederation;
+  final PleromaApiInstancePleromaPartMetadataFederation
+      pleromaMetadataFederation;
 
   @override
   Widget build(BuildContext context) {
@@ -1386,7 +1394,8 @@ class _InstanceDetailsPleromaMetadataFederationMfrObjectAgeThresholdWidget
     required this.pleromaMetadataFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation pleromaMetadataFederation;
+  final PleromaApiInstancePleromaPartMetadataFederation
+      pleromaMetadataFederation;
 
   @override
   Widget build(BuildContext context) {
@@ -1411,7 +1420,8 @@ class _InstanceDetailsPleromaMetadataFederationMfrPoliciesWidget
     required this.pleromaMetadataFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation pleromaMetadataFederation;
+  final PleromaApiInstancePleromaPartMetadataFederation
+      pleromaMetadataFederation;
 
   @override
   Widget build(BuildContext context) {
@@ -1430,7 +1440,8 @@ class __InstanceDetailsPleromaMetadataFederationExclusionsWidget
     required this.pleromaMetadataFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation pleromaMetadataFederation;
+  final PleromaApiInstancePleromaPartMetadataFederation
+      pleromaMetadataFederation;
 
   @override
   Widget build(BuildContext context) {
@@ -1451,7 +1462,8 @@ class _InstanceDetailsPleromaMetadataFederationEnabledFieldWidget
     required this.pleromaMetadataFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation pleromaMetadataFederation;
+  final PleromaApiInstancePleromaPartMetadataFederation
+      pleromaMetadataFederation;
 
   @override
   Widget build(BuildContext context) {
@@ -1495,7 +1507,8 @@ class _InstanceDetailsPleromaMetadataFieldsLimitsWidget
         var isHaveMessagesLimitsFields = snapshot.data!;
 
         if (isHaveMessagesLimitsFields) {
-          return StreamBuilder<PleromaApiInstancePleromaPartMetadataFieldLimits?>(
+          return StreamBuilder<
+              PleromaApiInstancePleromaPartMetadataFieldLimits?>(
             stream: instanceDetailsBloc.pleromaMetadataFieldsLimitsStream,
             initialData: instanceDetailsBloc.pleromaMetadataFieldsLimits,
             builder: (context, snapshot) {

@@ -446,7 +446,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
                 }
               },
               child: Padding(
-                padding: const EdgeInsets.only(top:8.0),
+                padding: const EdgeInsets.only(top: 8.0),
                 child: const MediaAttachmentListCarouselWidget(),
               ),
             ),
@@ -482,18 +482,16 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
             value: contentWithEmojis!,
             child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
               update: (context, emojiText, previous) {
-                // if (previous != null &&
-                //     EmojiText(
-                //             emojis: previous.inputData.emojis,
-                //             text: previous.inputData.input ?? "") ==
-                //         emojiText) {
-                //   return previous;
-                // }
+                var htmlTextInputData = HtmlTextInputData(
+                  input: emojiText.text,
+                  emojis: emojiText.emojis,
+                );
+                if (previous?.inputData == htmlTextInputData) {
+                  return previous!;
+                }
+
                 var htmlTextBloc = HtmlTextBloc(
-                  inputData: HtmlTextInputData(
-                    input: emojiText.text,
-                    emojis: emojiText.emojis,
-                  ),
+                  inputData: htmlTextInputData,
                   settings: HtmlTextSettings(
                     textAlign:
                         isChatMessageFromMe ? TextAlign.right : TextAlign.left,

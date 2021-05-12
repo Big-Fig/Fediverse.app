@@ -179,11 +179,16 @@ class _CardDescriptionWidget extends StatelessWidget {
         child: ProxyProvider<String?, IHtmlTextBloc>(
           update:
               (BuildContext context, String? value, IHtmlTextBloc? previous) {
+            var htmlTextInputData = HtmlTextInputData(
+              input: value,
+              emojis: null,
+            );
+            if (previous?.inputData == htmlTextInputData) {
+              return previous!;
+            }
+
             return HtmlTextBloc(
-              inputData: HtmlTextInputData(
-                input: value,
-                emojis: null,
-              ),
+              inputData: htmlTextInputData,
               settings: HtmlTextSettings(
                 color: IFediUiColorTheme.of(
                   context,
