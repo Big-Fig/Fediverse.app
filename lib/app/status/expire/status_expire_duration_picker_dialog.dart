@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("status_duration_picker_dialog.dart");
+var _logger = Logger("status_expire_duration_picker_dialog.dart");
 
-Future<Duration?> showStatusDurationPickerDialog({
+Future<Duration?> showStatusExpireDurationPickerDialog({
   required BuildContext context,
   Duration? oldValue,
   String? pickerTitle,
@@ -22,7 +22,7 @@ Future<Duration?> showStatusDurationPickerDialog({
     minDuration: minimumExpireDuration,
     currentDuration: oldValue ?? minimumExpireDuration,
     maxDuration: null,
-    isDeletePossible: true,
+    isDeletePossible: oldValue != null,
   );
 
   _logger.finest(() => "showStatusDateTimePickerDialog result "

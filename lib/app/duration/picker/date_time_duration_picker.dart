@@ -57,7 +57,7 @@ Future<DurationPickerResult> showDateTimeDurationPicker({
     onDelete: () {
       deleted = true;
     },
-    isDeletePossible: isDeletePossible,
+    isDeletePossible: isDeletePossible && currentDuration != null,
     onConfirm: null,
   );
 

@@ -45,7 +45,7 @@ void showPostStatusScheduleDialog({
       deleted = true;
     },
     onConfirm: null,
-    isDeletePossible: true,
+    isDeletePossible: postStatusBloc.scheduledAt != null,
   );
 
   if (deleted) {
