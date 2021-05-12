@@ -19,14 +19,15 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -52,7 +53,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   List<StatusTextCondition> get excludeTextConditions => filters
       .map(
         (filter) => filter.toStatusTextCondition(),
-      )
+  )
       .toList();
 
   StatusOnlyLocalCondition? get onlyLocalCondition {
@@ -89,16 +90,16 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         excludeTextConditions: excludeTextConditions,
         replyVisibilityFilterCondition: timeline.replyVisibilityFilter != null
             ? PleromaReplyVisibilityFilterCondition(
-                myAccountRemoteId: myAccountBloc.myAccount!.remoteId,
-                replyVisibilityFilter: timeline.replyVisibilityFilter,
-              )
+          myAccountRemoteId: myAccountBloc.myAccount!.remoteId,
+          replyVisibilityFilter: timeline.replyVisibilityFilter,
+        )
             : null,
         onlyFromInstance: timeline.onlyFromInstance,
         onlyRemoteCondition: onlyRemoteCondition,
       );
 
   final StreamController settingsChangedStreamController =
-      StreamController.broadcast();
+  StreamController.broadcast();
 
   @override
   Stream get settingsChangedStream => settingsChangedStreamController.stream;
@@ -120,9 +121,9 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
     addDisposable(
       streamSubscription: timelineLocalPreferencesBloc.stream.listen(
-        (Timeline? timeline) {
+            (Timeline? timeline) {
           _logger.finest(
-            () => "timelineLocalPreferencesBloc timeline $timeline",
+                () => "timelineLocalPreferencesBloc timeline $timeline",
           );
           if (currentTimelineData != timeline) {
             currentTimelineData = timeline;
@@ -143,8 +144,8 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   IDisposable? webSocketsListenerDisposable;
 
   void resubscribeWebSocketsUpdates(
-    WebSocketsListenType webSocketsListenType,
-  ) {
+      WebSocketsListenType webSocketsListenType,
+      ) {
     webSocketsListenerDisposable?.dispose();
 
     var isWebSocketsUpdatesEnabled =
@@ -158,45 +159,45 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         case TimelineType.public:
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenPublicChannel(
-            listenType: webSocketsListenType,
-            onlyLocal: timeline.onlyLocal,
-            onlyMedia: timeline.onlyWithMedia,
-            onlyRemote: timeline.onlyRemote,
-            onlyFromInstance: timeline.onlyFromInstance,
-          );
+                listenType: webSocketsListenType,
+                onlyLocal: timeline.onlyLocal,
+                onlyMedia: timeline.onlyWithMedia,
+                onlyRemote: timeline.onlyRemote,
+                onlyFromInstance: timeline.onlyFromInstance,
+              );
           break;
         case TimelineType.home:
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenMyAccountChannel(
-            listenType: webSocketsListenType,
-            notification: false,
-            chat: false,
-          );
+                listenType: webSocketsListenType,
+                notification: false,
+                chat: false,
+              );
 
           break;
         case TimelineType.customList:
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenListChannel(
-            listenType: webSocketsListenType,
-            listId: timeline.onlyInRemoteList!.id,
-          );
+                listenType: webSocketsListenType,
+                listId: timeline.onlyInRemoteList!.id,
+              );
           break;
 
         case TimelineType.hashtag:
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenHashtagChannel(
-            listenType: webSocketsListenType,
-            hashtag: timeline.withRemoteHashtag!,
-            local: timeline.onlyLocal,
-          );
+                listenType: webSocketsListenType,
+                hashtag: timeline.withRemoteHashtag!,
+                local: timeline.onlyLocal,
+              );
           break;
         case TimelineType.account:
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenAccountChannel(
-            listenType: webSocketsListenType,
-            accountId: timeline.onlyFromRemoteAccount!.id,
-            notification: false,
-          );
+                listenType: webSocketsListenType,
+                accountId: timeline.onlyFromRemoteAccount!.id,
+                notification: false,
+              );
           break;
       }
     }
@@ -362,10 +363,10 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   }
 
   static TimelineStatusCachedListBloc createFromContext(
-    BuildContext context, {
-    required WebSocketsListenType webSocketsListenType,
-    required ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc,
-  }) =>
+      BuildContext context, {
+        required WebSocketsListenType webSocketsListenType,
+        required ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc,
+      }) =>
       TimelineStatusCachedListBloc(
         pleromaAccountService: IPleromaApiAccountService.of(
           context,
@@ -399,8 +400,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         ),
       );
 
-  @override
-  Future internalAsyncInit() async {
+  FilterRepositoryFilters get filterRepositoryFilters {
     List<MastodonApiFilterContextType>? onlyWithContextTypes;
 
     switch (timelineType) {
@@ -425,21 +425,40 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         break;
     }
 
-    var countAll = await filterRepository.countAll();
-    _logger.finest(() => "filterRepository countAll $countAll");
+    return FilterRepositoryFilters(
+      onlyWithContextTypes: onlyWithContextTypes,
+      notExpired: true,
+    );
+  }
 
+  @override
+  Future internalAsyncInit() async {
     filters = await filterRepository.findAllInAppType(
-      filters: FilterRepositoryFilters(
-        onlyWithContextTypes: onlyWithContextTypes,
-        notExpired: true,
-      ),
+      filters: filterRepositoryFilters,
       pagination: null,
       orderingTerms: null,
     );
 
-    _logger.finest(() => "timelineType $timelineType, "
-        "onlyWithContextTypes $onlyWithContextTypes,"
-        " filters $filters");
+    addDisposable(
+      streamSubscription: filterRepository
+          .watchFindAllInAppType(
+        filters: filterRepositoryFilters,
+        pagination: null,
+        orderingTerms: null,
+      )
+          .listen(
+            (newFilters) {
+          if (listEquals(filters, newFilters) != true) {
+            // perhaps we should refresh UI list after this?
+            filters = newFilters;
+          }
+        },
+      ),
+    );
+
+    _logger.finest(
+          () => "timelineType $timelineType,  filters $filters",
+    );
   }
 
   @override
