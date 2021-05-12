@@ -2,6 +2,8 @@ library flutter_datetime_picker;
 
 import 'dart:async';
 
+import 'package:fedi/app/localization/locale/supported_localization_locale_list.dart';
+import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -11,6 +13,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_datetime_picker/src/date_model.dart';
 import 'package:flutter_datetime_picker/src/i18n_model.dart';
 
@@ -149,11 +152,33 @@ class FediDatePicker {
     DateChangedCallback? onConfirm,
     DateDeletedCallback? onDelete,
     DateCancelledCallback? onCancel,
-    locale = LocaleType.en,
+    LocaleType? locale,
     DateTime? currentDateTime,
     FediDatePickerTheme? theme,
     required bool isDeletePossible,
   }) async {
+    if (locale == null) {
+      var localizationSettingsBloc = ILocalizationSettingsBloc.of(
+        context,
+        listen: false,
+      );
+
+      var localizationLocale =
+          localizationSettingsBloc.localizationLocale ?? defaultLocale;
+
+      switch (localizationLocale.languageCode.toLowerCase()) {
+        // todo: improve
+        case "ru":
+          locale = LocaleType.ru;
+          break;
+        case "en":
+          locale = LocaleType.en;
+          break;
+        default:
+          throw "Invalid locale $locale";
+      }
+    }
+
     return _showDatePickerPopup(
       isDeletePossible: isDeletePossible,
       showTitleActions: showTitleActions,
