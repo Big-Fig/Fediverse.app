@@ -1427,7 +1427,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_timeline_settings_replyVisibilityFilter_field_null":
             MessageLookupByLibrary.simpleMessage("Not selected"),
         "app_timeline_settings_replyVisibilityFilter_following":
-            MessageLookupByLibrary.simpleMessage("Following & Self"),
+            MessageLookupByLibrary.simpleMessage("Self & Following"),
         "app_timeline_settings_replyVisibilityFilter_self":
             MessageLookupByLibrary.simpleMessage("Self"),
         "app_timeline_settings_title":
@@ -1552,7 +1552,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "form_field_text_email_error_invalid_desc":
             MessageLookupByLibrary.simpleMessage("Invalid email"),
         "form_field_text_error_empty_desc":
-            MessageLookupByLibrary.simpleMessage("Must be not empty"),
+            MessageLookupByLibrary.simpleMessage("Empty"),
         "form_field_text_error_length_maxOnly_desc": m61,
         "form_field_text_error_length_minAndMax_desc": m62,
         "form_field_text_error_length_minOnly_desc": m63,

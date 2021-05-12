@@ -314,7 +314,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_my_action_draftPosts":
             MessageLookupByLibrary.simpleMessage("Черновики"),
         "app_account_my_action_edit":
-            MessageLookupByLibrary.simpleMessage("Редактировать профиль"),
+            MessageLookupByLibrary.simpleMessage("Изменить"),
         "app_account_my_action_favourited":
             MessageLookupByLibrary.simpleMessage("Избранное"),
         "app_account_my_action_filters":
@@ -1447,8 +1447,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_timeline_settings_replyVisibilityFilter_field_null":
             MessageLookupByLibrary.simpleMessage("Не выбрано"),
         "app_timeline_settings_replyVisibilityFilter_following":
-            MessageLookupByLibrary.simpleMessage(
-                "Только ко мне & к моим подпискам"),
+            MessageLookupByLibrary.simpleMessage("Свои & подписки"),
         "app_timeline_settings_replyVisibilityFilter_self":
             MessageLookupByLibrary.simpleMessage("Свои"),
         "app_timeline_settings_title":
@@ -1571,7 +1570,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "form_field_text_email_error_invalid_desc":
             MessageLookupByLibrary.simpleMessage("Неправильный email"),
         "form_field_text_error_empty_desc":
-            MessageLookupByLibrary.simpleMessage("Не может быть пустым"),
+            MessageLookupByLibrary.simpleMessage("Пустое"),
         "form_field_text_error_length_maxOnly_desc": m61,
         "form_field_text_error_length_minAndMax_desc": m62,
         "form_field_text_error_length_minOnly_desc": m63,
