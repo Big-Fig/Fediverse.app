@@ -11,7 +11,8 @@ var _urlPath = path.Context(style: path.Style.url);
 class PleromaApiChatService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiChatService {
-  final chatRelativeUrlPath = "/api/v1/pleroma/chats";
+  final v1ChatRelativeUrlPath = "/api/v1/pleroma/chats";
+  final v2ChatRelativeUrlPath = "/api/v2/pleroma/chats";
   @override
   final IPleromaApiAuthRestService restService;
 
@@ -30,10 +31,10 @@ class PleromaApiChatService extends BasePleromaApiService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: chatRelativeUrlPath,
+        relativePath: v2ChatRelativeUrlPath,
         // todo: pagination not supported yet and API send error if pagination args exist
         // https://git.pleroma.social/pleroma/pleroma/-/issues/2140
-        // queryArgs: pagination?.toQueryArgs(),
+        queryArgs: pagination?.toQueryArgs(),
       ),
     );
 
@@ -52,7 +53,7 @@ class PleromaApiChatService extends BasePleromaApiService
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: _urlPath.join(
-          chatRelativeUrlPath,
+          v1ChatRelativeUrlPath,
           chatId,
           "messages",
         ),
@@ -78,7 +79,7 @@ class PleromaApiChatService extends BasePleromaApiService
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: _urlPath.join(
-          chatRelativeUrlPath,
+          v1ChatRelativeUrlPath,
           chatId,
           "read",
         ),
@@ -102,7 +103,7 @@ class PleromaApiChatService extends BasePleromaApiService
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: _urlPath.join(
-          chatRelativeUrlPath,
+          v1ChatRelativeUrlPath,
           "by-account-id",
           accountId,
         ),
@@ -123,7 +124,7 @@ class PleromaApiChatService extends BasePleromaApiService
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: _urlPath.join(
-          chatRelativeUrlPath,
+          v1ChatRelativeUrlPath,
           id,
         ),
       ),
@@ -144,7 +145,7 @@ class PleromaApiChatService extends BasePleromaApiService
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: _urlPath.join(
-          chatRelativeUrlPath,
+          v1ChatRelativeUrlPath,
           chatId,
           "messages",
         ),
@@ -173,7 +174,7 @@ class PleromaApiChatService extends BasePleromaApiService
     await restService.sendHttpRequest(
       RestRequest.delete(
         relativePath: _urlPath.join(
-          chatRelativeUrlPath,
+          v1ChatRelativeUrlPath,
           chatId,
           "messages",
           chatMessageRemoteId,
