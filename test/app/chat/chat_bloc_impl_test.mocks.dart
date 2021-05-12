@@ -56,8 +56,12 @@ class MockPleromaApiChatService extends _i1.Mock
   }
 
   @override
-  String get chatRelativeUrlPath =>
-      (super.noSuchMethod(Invocation.getter(#chatRelativeUrlPath),
+  String get v1ChatRelativeUrlPath =>
+      (super.noSuchMethod(Invocation.getter(#v1ChatRelativeUrlPath),
+          returnValue: '') as String);
+  @override
+  String get v2ChatRelativeUrlPath =>
+      (super.noSuchMethod(Invocation.getter(#v2ChatRelativeUrlPath),
           returnValue: '') as String);
   @override
   _i2.IPleromaApiAuthRestService get restService =>
