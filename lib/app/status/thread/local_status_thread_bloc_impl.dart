@@ -4,9 +4,7 @@ import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_impl.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
@@ -25,16 +23,16 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
     required IPleromaApiMediaAttachment? initialMediaAttachment,
     required IPleromaApiStatusService pleromaStatusService,
   }) : super(
-          pleromaStatusService: pleromaStatusService,
-          initialStatusToFetchThread: initialStatusToFetchThread,
-          initialMediaAttachment: initialMediaAttachment,
-        );
+    pleromaStatusService: pleromaStatusService,
+    initialStatusToFetchThread: initialStatusToFetchThread,
+    initialMediaAttachment: initialMediaAttachment,
+  );
 
   static LocalStatusThreadBloc createFromContext(
-    BuildContext context, {
-    required IStatus initialStatusToFetchThread,
-    required IPleromaApiMediaAttachment? initialMediaAttachment,
-  }) =>
+      BuildContext context, {
+        required IStatus initialStatusToFetchThread,
+        required IPleromaApiMediaAttachment? initialMediaAttachment,
+      }) =>
       LocalStatusThreadBloc(
         initialStatusToFetchThread: initialStatusToFetchThread,
         initialMediaAttachment: initialMediaAttachment,
@@ -52,36 +50,31 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
         ),
       );
 
-  static Widget provideToContext(
-    BuildContext context, {
-    required IStatus initialStatusToFetchThread,
-    required IPleromaApiMediaAttachment initialMediaAttachment,
-    required Widget child,
-  }) {
-    return DisposableProvider<IStatusThreadBloc>(
-      create: (context) => LocalStatusThreadBloc.createFromContext(
-        context,
-        initialStatusToFetchThread: initialStatusToFetchThread,
-        initialMediaAttachment: initialMediaAttachment,
-      ),
-      child: child,
-    );
-  }
-
-  @override
-  Future<List<IFilter>> loadFilters() async {
-    var filters = await filterRepository.findAllInAppType(
-      filters: FilterRepositoryFilters(
+  FilterRepositoryFilters get filterRepositoryFilters =>
+      FilterRepositoryFilters(
         onlyWithContextTypes: [
           MastodonApiFilterContextType.thread,
         ],
         notExpired: true,
-      ),
+      );
+
+  @override
+  Future<List<IFilter>> loadFilters() async {
+    var filters = await filterRepository.findAllInAppType(
+      filters: filterRepositoryFilters,
       pagination: null,
       orderingTerms: null,
     );
     return filters;
   }
+
+  @override
+  Stream<List<IFilter>> watchFilters() =>
+      filterRepository.watchFindAllInAppType(
+        filters: filterRepositoryFilters,
+        pagination: null,
+        orderingTerms: null,
+      );
 
   @override
   void onInitialStatusUpdated(IPleromaApiStatus updatedStartRemoteStatus) {
