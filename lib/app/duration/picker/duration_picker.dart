@@ -29,7 +29,7 @@ Future<DurationPickerResult> showDurationPicker({
       cancelCallback: () {
         canceled = true;
       },
-      isDeletePossible: isDeletePossible,
+      isDeletePossible: isDeletePossible && currentDuration != null,
     ),
   );
 
