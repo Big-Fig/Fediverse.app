@@ -5,7 +5,7 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
@@ -17,7 +17,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 var _logger = Logger("status_thread_bloc_impl.dart");
 
-abstract class StatusThreadBloc extends DisposableOwner
+abstract class StatusThreadBloc extends AsyncInitLoadingBloc
     implements IStatusThreadBloc {
   final IPleromaApiStatusService pleromaStatusService;
 
@@ -27,7 +27,7 @@ abstract class StatusThreadBloc extends DisposableOwner
 
   final BehaviorSubject<bool> firstStatusInThreadSubject;
   final StreamController<IStatus> onNewStatusAddedStreamController =
-      StreamController.broadcast();
+  StreamController.broadcast();
 
   @override
   Stream<IStatus> get onNewStatusAddedStream =>
@@ -40,7 +40,9 @@ abstract class StatusThreadBloc extends DisposableOwner
   final ItemScrollController itemScrollController = ItemScrollController();
   @override
   final ItemPositionsListener itemPositionListener =
-      ItemPositionsListener.create();
+  ItemPositionsListener.create();
+
+  late List<IFilter> filters;
 
   @override
   bool isJumpedToStartState = false;
@@ -50,12 +52,12 @@ abstract class StatusThreadBloc extends DisposableOwner
     required this.initialStatusToFetchThread,
     required this.initialMediaAttachment,
   })   : statusesSubject = BehaviorSubject.seeded(
-          [
-            initialStatusToFetchThread,
-          ],
-        ),
+    [
+      initialStatusToFetchThread,
+    ],
+  ),
         firstStatusInThreadSubject =
-            BehaviorSubject.seeded(!initialStatusToFetchThread.isReply) {
+        BehaviorSubject.seeded(!initialStatusToFetchThread.isReply) {
     addDisposable(subject: statusesSubject);
     addDisposable(subject: firstStatusInThreadSubject);
     addDisposable(streamController: onNewStatusAddedStreamController);
@@ -71,7 +73,7 @@ abstract class StatusThreadBloc extends DisposableOwner
   @override
   Stream<List<IStatus>> get statusesDistinctStream => statusesStream.distinct(
         (a, b) => listEquals(a, b),
-      );
+  );
 
   @override
   List<IPleromaApiMention> get mentions => statuses.findAllMentions();
@@ -86,7 +88,7 @@ abstract class StatusThreadBloc extends DisposableOwner
   @override
   Stream<List<String?>> get mentionAcctsStream => mentionsStream.map(
         (mentions) => mentions.toAccts(),
-      );
+  );
 
   @override
   String get mentionAcctsListString =>
@@ -96,8 +98,6 @@ abstract class StatusThreadBloc extends DisposableOwner
   Future<bool> refresh() async {
     try {
       _logger.finest(() => "refresh");
-
-      List<IFilter> filters = await loadFilters();
 
       // update start status
       var updatedStartRemoteStatus = await pleromaStatusService.getStatus(
@@ -109,7 +109,7 @@ abstract class StatusThreadBloc extends DisposableOwner
           updatedStartRemoteStatus.toDbStatusPopulatedWrapper();
 
       _logger.finest(
-        () => "refresh getStatus startStatus $initialStatusToFetchThread ",
+            () => "refresh getStatus startStatus $initialStatusToFetchThread ",
       );
 
       // update context
@@ -117,13 +117,13 @@ abstract class StatusThreadBloc extends DisposableOwner
         statusRemoteId: initialStatusToFetchThread.remoteId!,
       );
       var ancestors = remoteStatusContext.ancestors.where(
-        (remoteStatus) => isNotFiltered(
+            (remoteStatus) => isNotFiltered(
           remoteStatus: remoteStatus,
           filters: filters,
         ),
       );
       var descendants = remoteStatusContext.descendants.where(
-        (remoteStatus) => isNotFiltered(
+            (remoteStatus) => isNotFiltered(
           remoteStatus: remoteStatus,
           filters: filters,
         ),
@@ -132,17 +132,17 @@ abstract class StatusThreadBloc extends DisposableOwner
       List<IStatus> newStatuses = [];
       newStatuses.addAll(
         ancestors.map(
-          (remoteStatus) => remoteStatus.toDbStatusPopulatedWrapper(),
+              (remoteStatus) => remoteStatus.toDbStatusPopulatedWrapper(),
         ),
       );
       newStatuses.add(initialStatusToFetchThread);
       newStatuses.addAll(
         descendants.map(
-          (remoteStatus) => remoteStatus.toDbStatusPopulatedWrapper(),
+              (remoteStatus) => remoteStatus.toDbStatusPopulatedWrapper(),
         ),
       );
       _logger.finest(
-        () => "refresh getStatusContext newStatuses ${newStatuses.length} ",
+            () => "refresh getStatusContext newStatuses ${newStatuses.length} ",
       );
       statusesSubject.add(newStatuses);
       firstStatusInThreadSubject.add(true);
@@ -154,6 +154,8 @@ abstract class StatusThreadBloc extends DisposableOwner
   }
 
   Future<List<IFilter>> loadFilters();
+
+  Stream<List<IFilter>> watchFilters();
 
   void onInitialStatusUpdated(IPleromaApiStatus updatedStartRemoteStatus);
 
@@ -167,7 +169,7 @@ abstract class StatusThreadBloc extends DisposableOwner
   @override
   Stream<IAccount?> get firstStatusAccountInThreadStream =>
       firstStatusInThreadStream.map(
-        (firstStatusInThread) => firstStatusInThread?.account,
+            (firstStatusInThread) => firstStatusInThread?.account,
       );
 
   @override
@@ -176,14 +178,14 @@ abstract class StatusThreadBloc extends DisposableOwner
 
   @override
   Stream<IStatus?> get firstStatusInThreadStream => Rx.combineLatest2(
-        statusesStream,
-        firstStatusInThreadLoadedStream,
+    statusesStream,
+    firstStatusInThreadLoadedStream,
         (List<IStatus> statuses, bool threadContextLoaded) =>
-            _calculateFirstStatus(
+        _calculateFirstStatus(
           statuses,
           threadContextLoaded,
         ),
-      );
+  );
 
   @override
   bool get firstStatusInThreadLoaded => firstStatusInThreadSubject.value!;
@@ -193,9 +195,9 @@ abstract class StatusThreadBloc extends DisposableOwner
       firstStatusInThreadSubject.stream;
 
   IStatus? _calculateFirstStatus(
-    List<IStatus> statuses,
-    bool threadContextLoaded,
-  ) {
+      List<IStatus> statuses,
+      bool threadContextLoaded,
+      ) {
     if (threadContextLoaded) {
       return statuses.first;
     } else {
@@ -270,5 +272,21 @@ abstract class StatusThreadBloc extends DisposableOwner
     }
 
     return !filtered;
+  }
+
+  @override
+  Future internalAsyncInit() async {
+    filters = await loadFilters();
+
+    addDisposable(
+      streamSubscription: watchFilters().listen(
+            (newFilters) {
+          if (listEquals(filters, newFilters) != true) {
+            filters = newFilters;
+            refresh();
+          }
+        },
+      ),
+    );
   }
 }
