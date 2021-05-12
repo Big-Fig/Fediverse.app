@@ -63,6 +63,8 @@ abstract class CachedPaginationListWithNewItemsBloc<
   TItem? previousNeverItem;
 
   final bool watchNewerItemsWhenLoadedPagesIsEmpty;
+  final bool asyncCalculateNewItems;
+  final bool asyncCalculateActuallyNew;
 
   // todo: refactor
   // ignore: long-method
@@ -70,6 +72,8 @@ abstract class CachedPaginationListWithNewItemsBloc<
     required this.mergeNewItemsImmediately,
     this.mergeNewItemsImmediatelyWhenItemsIsEmpty = true,
     this.watchNewerItemsWhenLoadedPagesIsEmpty = false,
+    this.asyncCalculateNewItems = false,
+    this.asyncCalculateActuallyNew = true,
     required ICachedPaginationBloc<TPage, TItem> paginationBloc,
   }) : super(cachedPaginationBloc: paginationBloc) {
     combinedItemsResultSubject = BehaviorSubject.seeded(
@@ -158,13 +162,18 @@ abstract class CachedPaginationListWithNewItemsBloc<
       inputData: calculateNewItemsInputData,
       result: oldResult,
     );
-    // _CombinedItemsResult<TItem> newResult = await compute(
-    //   _calculateNewItems,
-    //   request,
-    // );
-    var newResult = _calculateNewItems(
-      request,
-    );
+
+    _CombinedItemsResult<TItem> newResult;
+    if (asyncCalculateNewItems) {
+      newResult = await compute(
+        _calculateNewItems,
+        request,
+      );
+    } else {
+      newResult = _calculateNewItems(
+        request,
+      );
+    }
 
     if (newResult.resultItems != oldResult.resultItems) {
       combinedItemsResultSubject.add(newResult);
@@ -295,10 +304,18 @@ abstract class CachedPaginationListWithNewItemsBloc<
           newerItem: newerItem,
           currentItems: currentItems,
         );
-        List<TItem> actuallyNew = await compute(
-          _calculateActuallyNew,
-          actuallyNewRequest,
-        );
+
+        List<TItem> actuallyNew;
+        if (asyncCalculateActuallyNew) {
+          actuallyNew = await compute(
+            _calculateActuallyNew,
+            actuallyNewRequest,
+          );
+        } else {
+          actuallyNew = _calculateActuallyNew(
+            actuallyNewRequest,
+          );
+        }
 
         // if newerItem already changed we shouldn't apply calculated changes
         // because new changes coming

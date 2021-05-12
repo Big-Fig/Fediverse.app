@@ -421,7 +421,11 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         data: pleromaPostStatus,
       );
 
-      //
+      onMessageLocallyHiddenStreamController.add(
+        pleromaStatus.toConversationChatMessageStatusAdapter().copyWith(
+              remoteId: dbStatus.remoteId,
+            ),
+      );
 
       await statusRepository.updateByDbIdInDbType(
         dbId: localStatusId,
@@ -430,12 +434,6 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
           pendingState: PendingState.published,
         ),
         batchTransaction: null,
-      );
-
-      onMessageLocallyHiddenStreamController.add(
-        pleromaStatus.toConversationChatMessageStatusAdapter().copyWith(
-              remoteId: dbStatus.remoteId,
-            ),
       );
 
       await statusRepository.upsertRemoteStatusForConversation(

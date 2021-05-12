@@ -37,6 +37,8 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
   }) : super(
           mergeNewItemsImmediately: mergeNewItemsImmediately,
           paginationBloc: cachedPaginationBloc,
+          asyncCalculateNewItems: false,
+          asyncCalculateActuallyNew: false,
         ) {
     addDisposable(
       streamSubscription:
