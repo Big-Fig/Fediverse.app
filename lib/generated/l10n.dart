@@ -2314,10 +2314,10 @@ class S {
     );
   }
 
-  /// `Following & Self`
+  /// `Self & Following`
   String get app_timeline_settings_replyVisibilityFilter_following {
     return Intl.message(
-      'Following & Self',
+      'Self & Following',
       name: 'app_timeline_settings_replyVisibilityFilter_following',
       desc: '',
       args: [],
@@ -3656,10 +3656,10 @@ class S {
     );
   }
 
-  /// `Must be not empty`
+  /// `Empty`
   String get form_field_text_error_empty_desc {
     return Intl.message(
-      'Must be not empty',
+      'Empty',
       name: 'form_field_text_error_empty_desc',
       desc: '',
       args: [],
