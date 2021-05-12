@@ -27,6 +27,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_bloc.dart';
@@ -72,7 +73,8 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
       update: (context, statusListItemTimelineBloc, oldValue) {
         if (isLocal) {
           if (statusListItemTimelineBloc.status.remoteId ==
-              oldValue?.remoteId && oldValue != null) {
+                  oldValue?.remoteId &&
+              oldValue != null) {
             return oldValue;
           } else {
             return LocalStatusBloc.createFromContext(
@@ -311,16 +313,17 @@ class _StatusListItemTimelineStatusHeaderWidget extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.only(left: FediSizes.smallPadding),
+                child: StatusCreatedAtWidget(),
+              ),
+              const FediSmallHorizontalSpacer(),
               Icon(
                 StatusVisibilityIconWidget.mapVisibilityToIconData(
                   status.visibility,
                 ),
                 size: FediSizes.mediumIconSize,
                 color: IFediUiColorTheme.of(context).darkGrey,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: FediSizes.smallPadding),
-                child: StatusCreatedAtWidget(),
               ),
             ],
           ),
