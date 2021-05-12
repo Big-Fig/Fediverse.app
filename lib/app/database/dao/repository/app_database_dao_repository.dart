@@ -200,32 +200,6 @@ abstract class AppDatabaseDaoRepository<
     }
   }
 
-  @override
-  Future<int> findCount({
-    required Filters? filters,
-  }) async {
-    // todo: rework with COUNT * only
-    var query = dao.startSelectQuery();
-    dao.addFiltersToQuery(query: query, filters: filters);
-
-    var items = await query.get();
-
-    return items.length;
-  }
-
-  @override
-  Stream<int> watchFindCount({
-    required Filters? filters,
-  }) {
-    // todo: rework with COUNT * only
-    var query = dao.startSelectQuery();
-    dao.addFiltersToQuery(query: query, filters: filters);
-
-    var stream = query.watch();
-
-    return stream.map((items) => items.length);
-  }
-
   Selectable<AppItem> createFindInAppTypeSelectable({
     RepositoryPagination<AppItem>? pagination,
     Filters? filters,

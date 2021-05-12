@@ -92,4 +92,12 @@ abstract class INotificationRepository
     required bool? unread,
     required Batch? batchTransaction,
   });
+
+  Future<int> calculateCount({
+    required NotificationRepositoryFilters? filters,
+  });
+
+  Stream<int> watchCalculateCount({
+    required NotificationRepositoryFilters? filters,
+  });
 }

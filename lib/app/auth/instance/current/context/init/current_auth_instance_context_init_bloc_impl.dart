@@ -146,7 +146,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     var isPleroma = currentAuthInstanceBloc.currentInstance!.isPleroma;
     var isMastodon = currentAuthInstanceBloc.currentInstance!.isMastodon;
 
-    var actualNotificationUnreadCount = await notificationRepository.findCount(
+    var actualNotificationUnreadCount = await notificationRepository.calculateCount(
       filters: NotificationRepositoryFilters(onlyUnread: true),
     );
     var actualConversationChatUnreadCount =
