@@ -187,12 +187,17 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
             return Provider<EmojiText?>.value(
               value: contentWithEmojis,
               child: DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
-                update: (context, emojiText, _) {
+                update: (context, emojiText, previous) {
+                  var htmlTextInputData = HtmlTextInputData(
+                    input: emojiText?.text ?? "",
+                    emojis: emojiText?.emojis,
+                  );
+                  if (previous?.inputData == htmlTextInputData) {
+                    return previous!;
+                  }
+
                   var htmlTextBloc = HtmlTextBloc(
-                    inputData: HtmlTextInputData(
-                      input: emojiText?.text ?? "",
-                      emojis: emojiText?.emojis,
-                    ),
+                    inputData: htmlTextInputData,
                     settings: HtmlTextSettings(
                       shrinkWrap: true,
                       color: isStatusFromMe

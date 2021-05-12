@@ -36,12 +36,17 @@ class AccountNoteWidget extends StatelessWidget {
         value: accountBloc.noteEmojiTextStream,
         initialData: accountBloc.noteEmojiText,
         child: DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
-          update: (context, noteEmojiText, _) {
+          update: (context, noteEmojiText, previous) {
+            var htmlTextInputData = HtmlTextInputData(
+              input: noteEmojiText?.text,
+              emojis: noteEmojiText?.emojis,
+            );
+            if (previous?.inputData == htmlTextInputData) {
+              return previous!;
+            }
+
             var htmlTextBloc = HtmlTextBloc(
-              inputData: HtmlTextInputData(
-                input: noteEmojiText?.text,
-                emojis: noteEmojiText?.emojis,
-              ),
+              inputData: htmlTextInputData,
               settings: HtmlTextSettings(
                 paragraphDisplay: Display.BLOCK,
                 fontSize: textStyle.fontSize,

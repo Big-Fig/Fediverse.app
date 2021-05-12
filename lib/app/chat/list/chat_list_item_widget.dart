@@ -240,12 +240,17 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
               Provider<EmojiText>.value(
                 value: EmojiText(text: content, emojis: lastMessage.emojis),
                 child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
-                  update: (context, emojiText, _) {
+                  update: (context, emojiText, previous) {
+                    var htmlTextInputData = HtmlTextInputData(
+                      input: emojiText.text,
+                      emojis: emojiText.emojis,
+                    );
+                    if (previous?.inputData == htmlTextInputData) {
+                      return previous!;
+                    }
+
                     return HtmlTextBloc(
-                      inputData: HtmlTextInputData(
-                        input: emojiText.text,
-                        emojis: emojiText.emojis,
-                      ),
+                      inputData: htmlTextInputData,
                       settings: HtmlTextSettings(
                         drawNewLines: false,
                         textMaxLines: 1,
@@ -288,7 +293,6 @@ String _extractContent({
 
   return formattedText;
 }
-
 
 class _ChatListItemDeleteActionWidget extends StatelessWidget {
   const _ChatListItemDeleteActionWidget({
