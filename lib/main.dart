@@ -56,6 +56,7 @@ import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
+import 'app/notification/repository/notification_repository.dart';
 import 'generated/l10n.dart';
 
 var _logger = Logger("main.dart");
@@ -345,6 +346,17 @@ Future handleLaunchPushLoaderNotification(
       ),
     );
   }
+
+  var notificationRepository =
+      currentInstanceContextBloc!.get<INotificationRepository>();
+  Future.delayed(
+    Duration(seconds: 1),
+    () {
+      notificationRepository.markAsRead(
+        notification: notification,
+      );
+    },
+  );
 }
 
 Widget buildAuthInstanceContextInitWidget({
