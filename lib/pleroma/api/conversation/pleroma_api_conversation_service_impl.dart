@@ -3,9 +3,13 @@ import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.d
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
+import 'package:fedi/pleroma/api/rest/pleroma_api_rest_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:logging/logging.dart';
 import 'package:path/path.dart';
+
+final _logger = Logger("pleroma_api_conversation_service_impl.dart");
 
 class PleromaApiConversationService extends BasePleromaApiService
     with PleromaApiAuthMixinService
@@ -111,7 +115,16 @@ class PleromaApiConversationService extends BasePleromaApiService
 
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return restService.processEmptyResponse(httpResponse);
+    try {
+      restService.processEmptyResponse(httpResponse);
+    } catch (e) {
+      if (e is PleromaApiRecordNotFoundRestException) {
+        // nothing because already deleted on backend
+        _logger.finest(() => "already deleted");
+      } else {
+        rethrow;
+      }
+    }
   }
 
   @override

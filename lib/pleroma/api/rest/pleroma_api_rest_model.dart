@@ -123,12 +123,11 @@ class PleromaApiNotJsonListResponseRestException
 
 class PleromaApiInvalidCredentialsForbiddenRestException
     extends PleromaApiRestException {
-  static const pleromaInvalidCredentialsErrorValue = "Invalid credentials.";
-  static const pleromaInvalidCredentialsStatusCode = 403;
+  static const pleromaErrorValue = "Invalid credentials.";
+  static const pleromaStatusCode = 403;
 
-  static const mastodonInvalidCredentialsStatusCode = 401;
-  static const mastodonInvalidCredentialsErrorValue =
-      "The access token was revoked";
+  static const mastodonStatusCode = 401;
+  static const mastodonErrorValue = "The access token was revoked";
 
   PleromaApiInvalidCredentialsForbiddenRestException({
     required int statusCode,
@@ -141,4 +140,20 @@ class PleromaApiInvalidCredentialsForbiddenRestException
   @override
   String get exceptionType =>
       'PleromaApiInvalidCredentialsForbiddenRestException{}';
+}
+
+class PleromaApiRecordNotFoundRestException extends PleromaApiRestException {
+  static const pleromaErrorValue = "Record not found";
+  static const pleromaStatusCode = 404;
+
+  PleromaApiRecordNotFoundRestException({
+    required int statusCode,
+    required String body,
+  }) : super(
+          statusCode: statusCode,
+          body: body,
+        );
+
+  @override
+  String get exceptionType => 'PleromaApiRecordNotFoundRestException{}';
 }

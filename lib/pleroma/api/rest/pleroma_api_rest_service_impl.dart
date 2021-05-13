@@ -171,23 +171,30 @@ class PleromaApiRestService extends DisposableOwner
 
       default:
         var body = response.body;
-        var isInvalidCredentials;
+        // todo: refactor parsing custom errors
+        var isInvalidCredentials = false;
+        var isRecordNotFound  = false;
         try {
           Map<String, dynamic> jsonBody = jsonDecode(body);
 
           var error = jsonBody[PleromaApiRestException.jsonBodyErrorKey];
+          isRecordNotFound = error ==
+                  PleromaApiRecordNotFoundRestException.pleromaErrorValue &&
+              statusCode ==
+                  PleromaApiRecordNotFoundRestException.pleromaStatusCode;
+
           var isPleromaInvalidCredentials = error ==
                   PleromaApiInvalidCredentialsForbiddenRestException
-                      .pleromaInvalidCredentialsErrorValue &&
+                      .pleromaErrorValue &&
               statusCode ==
                   PleromaApiInvalidCredentialsForbiddenRestException
-                      .pleromaInvalidCredentialsStatusCode;
+                      .pleromaStatusCode;
           var isMastodonInvalidCredentials = error ==
                   PleromaApiInvalidCredentialsForbiddenRestException
-                      .mastodonInvalidCredentialsErrorValue &&
+                      .mastodonErrorValue &&
               statusCode ==
                   PleromaApiInvalidCredentialsForbiddenRestException
-                      .mastodonInvalidCredentialsStatusCode;
+                      .mastodonStatusCode;
           isInvalidCredentials =
               isPleromaInvalidCredentials || isMastodonInvalidCredentials;
         } catch (e) {
@@ -197,6 +204,11 @@ class PleromaApiRestService extends DisposableOwner
           _pleromaApiStateSubject.add(PleromaApiState.brokenAuth);
           _logger.finest(() => "pleromaApiState $pleromaApiState");
           throw PleromaApiInvalidCredentialsForbiddenRestException(
+            statusCode: response.statusCode,
+            body: body,
+          );
+        } else if (isRecordNotFound) {
+          throw PleromaApiRecordNotFoundRestException(
             statusCode: response.statusCode,
             body: body,
           );

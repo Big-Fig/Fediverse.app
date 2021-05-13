@@ -3,10 +3,13 @@ import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
+import 'package:fedi/pleroma/api/rest/pleroma_api_rest_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 
 var _urlPath = path.Context(style: path.Style.url);
+final _logger = Logger("pleroma_api_chat_service_impl.dart");
 
 class PleromaApiChatService extends BasePleromaApiService
     with PleromaApiAuthMixinService
@@ -171,7 +174,7 @@ class PleromaApiChatService extends BasePleromaApiService
     assert(chatMessageRemoteId.isNotEmpty);
     assert(chatId.isNotEmpty);
 
-    await restService.sendHttpRequest(
+    var httpResponse = await restService.sendHttpRequest(
       RestRequest.delete(
         relativePath: _urlPath.join(
           v1ChatRelativeUrlPath,
@@ -181,5 +184,16 @@ class PleromaApiChatService extends BasePleromaApiService
         ),
       ),
     );
+
+    try {
+      restService.processEmptyResponse(httpResponse);
+    } catch (e) {
+      if (e is PleromaApiRecordNotFoundRestException) {
+        // nothing because already deleted on backend
+        _logger.finest(() => "already deleted");
+      } else {
+        rethrow;
+      }
+    }
   }
 }
