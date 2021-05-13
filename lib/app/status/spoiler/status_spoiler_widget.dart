@@ -15,6 +15,8 @@ import 'package:provider/provider.dart';
 
 class StatusSpoilerWidget extends StatelessWidget {
   @override
+  // todo: refactor
+  // ignore: long-method, code-metrics
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
 

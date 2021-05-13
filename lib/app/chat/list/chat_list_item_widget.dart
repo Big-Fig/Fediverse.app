@@ -198,6 +198,8 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  // todo: refactor
+  // ignore: long-method
   Widget build(BuildContext context) {
     var chatBloc = IChatBloc.of(context);
 

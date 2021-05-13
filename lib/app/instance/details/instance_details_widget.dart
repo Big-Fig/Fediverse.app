@@ -1497,6 +1497,8 @@ class _InstanceDetailsPleromaMetadataFieldsLimitsWidget
   }) : super(key: key);
 
   @override
+  // todo: refactor
+  // ignore: long-method
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
