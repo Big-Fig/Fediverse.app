@@ -9,9 +9,12 @@ import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_dialog.dart';
 import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/dialog/actions/fedi_actions_dialog.dart';
@@ -59,6 +62,7 @@ class _HashtagPageState extends State<HashtagPage> {
           title: "#${hashtag.name}",
           actions: <Widget>[
             const _HashtagPageOpenInBrowserAction(),
+            const _HashtagPageAppBarSettingsActionWidget(),
           ],
         ),
         body: SafeArea(
@@ -94,6 +98,44 @@ class _HashtagPageOpenInBrowserAction extends StatelessWidget {
         UrlHelper.handleUrlClickOnLocalInstanceLocation(
           context: context,
           url: hashtag.url,
+        );
+      },
+    );
+  }
+}
+
+
+class _HashtagPageAppBarSettingsActionWidget extends StatelessWidget {
+  const _HashtagPageAppBarSettingsActionWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediIconButton(
+      icon: Icon(
+        FediIcons.settings,
+        color: IFediUiColorTheme.of(context).darkGrey,
+      ),
+      onPressed: () {
+        var timeline = ITimelineLocalPreferenceBloc.of(
+          context,
+          listen: false,
+        ).value!;
+        var hashtag = Provider.of<IHashtag>(
+          context,
+          listen: false,
+        );
+        showEditTimelineSettingsDialog(
+          context: context,
+          timeline: Timeline.byType(
+            id: timeline.id,
+            isPossibleToDelete: false,
+            label: hashtag.name,
+            type: TimelineType.hashtag,
+            settings: timeline.settings,
+          ),
+          lockedSource: true,
         );
       },
     );

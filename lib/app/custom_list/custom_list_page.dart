@@ -12,10 +12,15 @@ import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_dialog.dart';
+import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_app_bar_text_action_widget.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -88,6 +93,7 @@ class _CustomListPageAppBar extends StatelessWidget
           title: "",
           actions: [
             const _CustomListPageAppBarEditActionWidget(),
+            const _CustomListPageAppBarSettingsActionWidget(),
           ],
         ),
         Expanded(
@@ -156,6 +162,43 @@ class _CustomListPageAppBarEditActionWidget extends StatelessWidget {
             customListBloc.updateList(null);
             Navigator.of(context).pop();
           },
+        );
+      },
+    );
+  }
+}
+
+class _CustomListPageAppBarSettingsActionWidget extends StatelessWidget {
+  const _CustomListPageAppBarSettingsActionWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediIconButton(
+      icon: Icon(
+        FediIcons.settings,
+        color: IFediUiColorTheme.of(context).darkGrey,
+      ),
+      onPressed: () {
+        var timeline = ITimelineLocalPreferenceBloc.of(
+          context,
+          listen: false,
+        ).value!;
+        var customList = Provider.of<ICustomList>(
+          context,
+          listen: false,
+        );
+        showEditTimelineSettingsDialog(
+          context: context,
+          timeline: Timeline.byType(
+            id: timeline.id,
+            isPossibleToDelete: false,
+            label: customList.title,
+            type: TimelineType.customList,
+            settings: timeline.settings,
+          ),
+          lockedSource: true,
         );
       },
     );
