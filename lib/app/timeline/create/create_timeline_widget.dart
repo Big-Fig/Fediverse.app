@@ -85,6 +85,7 @@ class _CreateItemTimelinesHomeTabStorageSettingsWidget extends StatelessWidget {
           value: editBloc,
           child: const EditTimelineSettingsWidget(
             shrinkWrap: false,
+            lockedSource: false,
           ),
         );
       },

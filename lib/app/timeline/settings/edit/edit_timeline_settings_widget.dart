@@ -19,16 +19,20 @@ import 'package:provider/provider.dart';
 
 class EditTimelineSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
+  final bool lockedSource;
 
   const EditTimelineSettingsWidget({
     required this.shrinkWrap,
+    required this.lockedSource,
   });
 
   @override
   Widget build(BuildContext context) {
     var children = ProxyProvider<IEditTimelineSettingsBloc, TimelineType>(
       update: (context, value, previous) => value.timelineType,
-      child: const _EditTimelineSettingsChildrenWidget(),
+      child: _EditTimelineSettingsChildrenWidget(
+        lockedSource: lockedSource,
+      ),
     );
 
     if (shrinkWrap) {
@@ -42,7 +46,11 @@ class EditTimelineSettingsWidget extends StatelessWidget {
 }
 
 class _EditTimelineSettingsChildrenWidget extends StatelessWidget {
-  const _EditTimelineSettingsChildrenWidget();
+  final bool lockedSource;
+
+  const _EditTimelineSettingsChildrenWidget({
+    required this.lockedSource,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +64,20 @@ class _EditTimelineSettingsChildrenWidget extends StatelessWidget {
         children = const _EditTimelineSettingsChildrenPublicTypeWidget();
         break;
       case TimelineType.customList:
-        children = const _EditTimelineSettingsChildrenCustomListTypeWidget();
+        children = _EditTimelineSettingsChildrenCustomListTypeWidget(
+          lockedSource: lockedSource,
+        );
         break;
 
       case TimelineType.hashtag:
-        children = const _EditTimelineSettingsChildrenHashtagTypeWidget();
+        children = _EditTimelineSettingsChildrenHashtagTypeWidget(
+          lockedSource: lockedSource,
+        );
         break;
       case TimelineType.account:
-        children = const _EditTimelineSettingsChildrenAccountTypeWidget();
+        children = _EditTimelineSettingsChildrenAccountTypeWidget(
+          lockedSource: lockedSource,
+        );
         break;
 
       default:
@@ -113,7 +127,11 @@ class _EditTimelineSettingsChildrenPublicTypeWidget extends StatelessWidget {
 }
 
 class _EditTimelineSettingsChildrenHashtagTypeWidget extends StatelessWidget {
-  const _EditTimelineSettingsChildrenHashtagTypeWidget();
+  final bool lockedSource;
+
+  const _EditTimelineSettingsChildrenHashtagTypeWidget({
+    required this.lockedSource,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +139,7 @@ class _EditTimelineSettingsChildrenHashtagTypeWidget extends StatelessWidget {
       children: [
         const _EditTimelineSettingsFieldOnlyLocalWidget(),
         const _EditTimelineSettingsFieldOnlyRemoteWidget(),
-        const _EditTimelineSettingsFieldHashtagWidget(),
+        if (lockedSource) const _EditTimelineSettingsFieldHashtagWidget(),
         const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
         const _EditTimelineSettingsFieldOnlyMediaWidget(),
         const _EditTimelineSettingsFieldWithMutedWidget(),
@@ -133,7 +151,11 @@ class _EditTimelineSettingsChildrenHashtagTypeWidget extends StatelessWidget {
 
 class _EditTimelineSettingsChildrenCustomListTypeWidget
     extends StatelessWidget {
-  const _EditTimelineSettingsChildrenCustomListTypeWidget();
+  final bool lockedSource;
+
+  const _EditTimelineSettingsChildrenCustomListTypeWidget({
+    required this.lockedSource,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +163,7 @@ class _EditTimelineSettingsChildrenCustomListTypeWidget
       children: [
         const _EditTimelineSettingsFieldOnlyLocalWidget(),
         const _EditTimelineSettingsFieldOnlyRemoteWidget(),
-        const _EditTimelineSettingsFieldCustomListWidget(),
+        if (!lockedSource) const _EditTimelineSettingsFieldCustomListWidget(),
         const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
         const _EditTimelineSettingsFieldOnlyMediaWidget(),
         const _EditTimelineSettingsFieldWithMutedWidget(),
@@ -152,13 +174,17 @@ class _EditTimelineSettingsChildrenCustomListTypeWidget
 }
 
 class _EditTimelineSettingsChildrenAccountTypeWidget extends StatelessWidget {
-  const _EditTimelineSettingsChildrenAccountTypeWidget();
+  final bool lockedSource;
+
+  const _EditTimelineSettingsChildrenAccountTypeWidget({
+    required this.lockedSource,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const _EditTimelineSettingsFieldAccountWidget(),
+        if (!lockedSource) const _EditTimelineSettingsFieldAccountWidget(),
         const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
         const _EditTimelineSettingsFieldOnlyMediaWidget(),
         const _EditTimelineSettingsFieldHashtagWidget(),

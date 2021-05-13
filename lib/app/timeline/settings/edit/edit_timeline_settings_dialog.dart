@@ -1,13 +1,13 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/settings/settings_dialog.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_widget.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_label_extension.dart';
-import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
-import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
@@ -21,6 +21,7 @@ import 'package:provider/provider.dart';
 void showEditTimelineSettingsDialog({
   required BuildContext context,
   required Timeline timeline,
+  required bool lockedSource,
 }) {
   showSettingsDialog(
     context: context,
@@ -63,6 +64,7 @@ void showEditTimelineSettingsDialog({
                 ),
                 child: const EditTimelineSettingsWidget(
                   shrinkWrap: true,
+                  lockedSource: false,
                 ),
               ),
             ),

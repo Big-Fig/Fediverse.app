@@ -192,7 +192,11 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
       onTap: () {
         var uiState = timelinesHomeTabStorageBloc.uiState;
         if (uiState == TimelinesHomeTabStorageUiState.view) {
-          showEditTimelineSettingsDialog(context: context, timeline: timeline);
+          showEditTimelineSettingsDialog(
+            context: context,
+            timeline: timeline,
+            lockedSource: false,
+          );
         }
       },
       child: FediSelectionItemRowWidget(
@@ -222,6 +226,7 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
         showEditTimelineSettingsDialog(
           context: context,
           timeline: timeline,
+          lockedSource: false,
         );
       },
       child: Row(
@@ -271,6 +276,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
                 showEditTimelineSettingsDialog(
                   context: context,
                   timeline: Provider.of(context, listen: false),
+                  lockedSource: false,
                 );
               },
             );
