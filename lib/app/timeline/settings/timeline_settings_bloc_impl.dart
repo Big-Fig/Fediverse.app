@@ -5,7 +5,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 
 class TimelineSettingsBloc extends DisposableOwner
     implements ITimelineSettingsBloc {
-  final ITimelineLocalPreferenceBloc? timelineLocalPreferencesBloc;
+  final ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc;
 
   TimelineSettingsBloc({
     required this.timelineLocalPreferencesBloc,
@@ -13,18 +13,18 @@ class TimelineSettingsBloc extends DisposableOwner
 
   @override
   TimelineSettings? get settingsData =>
-      timelineLocalPreferencesBloc!.value?.settings;
+      timelineLocalPreferencesBloc.value?.settings;
 
   @override
   Stream<TimelineSettings?> get settingsDataStream =>
-      timelineLocalPreferencesBloc!.stream.map((event) => null);
+      timelineLocalPreferencesBloc.stream.map((event) => null);
 
   @override
   Future updateSettings(TimelineSettings? newSettings) async {
-    var currentTimeline = timelineLocalPreferencesBloc!.value;
+    var currentTimeline = timelineLocalPreferencesBloc.value;
     var currentTimelineSettings = currentTimeline?.settings;
     if (currentTimelineSettings != newSettings && currentTimeline != null) {
-      await timelineLocalPreferencesBloc!.setValue(
+      await timelineLocalPreferencesBloc.setValue(
         currentTimeline.copyWith(settings: newSettings),
       );
     }
