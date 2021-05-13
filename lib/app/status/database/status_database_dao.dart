@@ -573,7 +573,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
             filters?.onlyRemoteCondition != null),
         "onlyLocalCondition && onlyRemoteCondition  can't be set both");
 
-    if (filters?.onlyFromInstance != null) {
+    if (filters?.onlyFromInstance?.isNotEmpty == true) {
       assert(filters?.onlyRemoteCondition != null,
           "onlyRemoteCondition should be notNull if onlyFromInstance was set");
 
