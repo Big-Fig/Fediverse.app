@@ -216,7 +216,7 @@ class _HashtagPageWrapper extends StatelessWidget {
           },
           child: StatusCachedListBlocProxyProvider(
             child: ProxyProvider<IStatusCachedListBloc,
-                IPleromaCachedListBloc<IStatus?>>(
+                IPleromaCachedListBloc<IStatus>>(
               update: (context, value, previous) => value,
               child: StatusCachedListBlocLoadingWidget(
                 child: StatusCachedPaginationBloc.provideToContext(
