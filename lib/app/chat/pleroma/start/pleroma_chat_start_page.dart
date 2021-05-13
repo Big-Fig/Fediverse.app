@@ -3,15 +3,10 @@ import 'package:fedi/app/account/pagination/cached/account_cached_pagination_blo
 import 'package:fedi/app/account/select/select_account_list_bloc_impl.dart';
 import 'package:fedi/app/account/select/select_account_pagination_list_bloc.dart';
 import 'package:fedi/app/account/select/single/single_select_account_widget.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
-import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
 import 'package:fedi/app/search/input/search_input_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -37,35 +32,10 @@ class PleromaChatStartPage extends StatelessWidget {
 }
 
 void _accountSelectedCallback(BuildContext context, IAccount account) async {
-  var dialogResult = await PleromaAsyncOperationHelper
-      .performPleromaAsyncOperation<IPleromaChat?>(
+  goToPleromaChatWithAccount(
     context: context,
-    asyncCode: () async {
-      var chatRepository = IPleromaChatRepository.of(context, listen: false);
-
-      var chat = await chatRepository.findByAccount(account: account);
-
-      if (chat == null) {
-        var pleromaChatService = IPleromaApiChatService.of(context, listen: false);
-
-        var remoteChat = await pleromaChatService.getOrCreateChatByAccountId(
-          accountId: account.remoteId,
-        );
-
-        await chatRepository.upsertInRemoteType(remoteChat);
-        chat = await chatRepository.findByRemoteIdInAppType(remoteChat.id);
-      }
-
-      return chat;
-    },
+    account: account,
   );
-
-  var chat = dialogResult.result;
-  if (chat != null) {
-    goToPleromaChatPage(context, chat: chat);
-  } else {
-    await FediSimpleAlertDialog(context: context).show(context);
-  }
 }
 
 void goToPleromaChatStartPage(BuildContext context) {
