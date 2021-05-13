@@ -18,7 +18,7 @@ abstract class IEditTimelineSettingsBloc
   }) =>
       Provider.of<IEditTimelineSettingsBloc>(context, listen: listen);
 
-  TimelineType? get timelineType;
+  TimelineType get timelineType;
 
   bool get isNullableValuesPossible;
 
