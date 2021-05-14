@@ -42,7 +42,7 @@ dart_code_metrics:
     - no-magic-number
     - prefer-trailing-comma
     - no-boolean-literal-compare
-    - avoid-returning-widgets
+#    - avoid-returning-widgets
 #    - no-object-declaration
 #    - newline-before-return
 #    - avoid-unused-parameters
