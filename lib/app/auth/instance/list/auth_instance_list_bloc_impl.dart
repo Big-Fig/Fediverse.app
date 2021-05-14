@@ -35,11 +35,11 @@ class AuthInstanceListBloc extends DisposableOwner
       instanceRemovedStreamController.stream;
 
   @override
-  bool get isHaveInstances => availableInstances.isNotEmpty == true;
+  bool get isHaveInstances => availableInstances.isNotEmpty;
 
   @override
   Stream<bool> get isHaveInstancesStream => availableInstancesStream
-      .map((availableInstances) => availableInstances.isNotEmpty == true);
+      .map((availableInstances) => availableInstances.isNotEmpty);
 
   @override
   Future addInstance(AuthInstance instance) async {

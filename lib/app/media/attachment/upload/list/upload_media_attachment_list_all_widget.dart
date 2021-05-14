@@ -35,7 +35,7 @@ class UploadMediaAttachmentListAllWidget extends StatelessWidget {
     if (heightOnKeyboardOpen != null) {
       return KeyboardVisibilityBuilder(
         builder: (context, isKeyboardVisible) {
-          if (isKeyboardVisible == true) {
+          if (isKeyboardVisible) {
             return ConstrainedBox(
               //                height: heightOnKeyboardOpen,
               constraints: BoxConstraints(maxHeight: heightOnKeyboardOpen!),

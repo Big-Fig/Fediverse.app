@@ -517,7 +517,7 @@ class FediApp extends StatelessWidget {
                         // it is important to init ToastHandlerBloc
                         // as MaterialApp child
                         // to have access to context suitable for Navigator
-                        if (instanceInitialized == true) {
+                        if (instanceInitialized) {
                           return DisposableProxyProvider<IToastService,
                               IToastHandlerBloc>(
                             lazy: false,

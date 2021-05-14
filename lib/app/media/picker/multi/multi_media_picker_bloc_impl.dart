@@ -108,7 +108,7 @@ class MultiMediaPickerBloc extends MediaPickerBloc
   @override
   Stream<bool> get isSomethingSelectedStream =>
       currentFilesMetadataSelectionStream.map(
-        (currentFilesSelection) => currentFilesSelection.isNotEmpty == true,
+        (currentFilesSelection) => currentFilesSelection.isNotEmpty,
       );
 
   @override

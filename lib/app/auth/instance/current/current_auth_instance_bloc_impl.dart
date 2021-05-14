@@ -51,7 +51,7 @@ class CurrentAuthInstanceBloc extends DisposableOwner
       await instanceListBloc.removeInstance(currentInstance!);
     }
 
-    if (instanceListBloc.isHaveInstances == true) {
+    if (instanceListBloc.isHaveInstances) {
       await currentLocalPreferenceBloc
           .setValue(instanceListBloc.availableInstances.first);
     } else {

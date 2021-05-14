@@ -65,7 +65,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var deleted = snapshot.data ?? false;
 
-        if (deleted == true) {
+        if (deleted) {
           return Stack(
             children: [
               body,
@@ -93,8 +93,8 @@ class StatusListItemMediaWidget extends StatelessWidget {
             snapshot.data ?? statusSensitiveBloc.statusWarningState;
 
         var nsfwSensitiveAndDisplayNsfwContentEnabled =
-            statusWarningState.nsfwSensitive != true ||
-                statusWarningState.displayEnabled == true;
+            !statusWarningState.nsfwSensitive ||
+                statusWarningState.displayEnabled;
 
         if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
           // todo: display all medias in list

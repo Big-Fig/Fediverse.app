@@ -385,7 +385,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     List<PleromaApiVisibility> excludeVisibilities,
   ) {
-    assert(excludeVisibilities.isNotEmpty == true);
+    assert(excludeVisibilities.isNotEmpty);
 
     List<String?> excludeVisibilityStrings = excludeVisibilities
         .map((visibility) => visibility.toJsonValue())

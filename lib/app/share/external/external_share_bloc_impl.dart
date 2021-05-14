@@ -16,7 +16,7 @@ abstract class ExternalShareBloc extends DisposableOwner
   String? get message {
     String? message = shareMessageInputBloc.messageField.currentValue;
 
-    if (message.isNotEmpty != true) {
+    if (message.isEmpty) {
       message = null;
     }
 

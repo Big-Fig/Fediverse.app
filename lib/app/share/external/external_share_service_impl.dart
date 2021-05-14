@@ -58,15 +58,17 @@ class ExternalShareService extends DisposableOwner
       var url = firstUrlFileToShareAsFiles.url;
       var nonFirstUrlFileToShareAsBytes = urlFiles
           .where((attachment) => attachment != firstUrlFileToShareAsFiles);
-      if (nonFirstUrlFileToShareAsBytes.isNotEmpty == true) {
-        text +=
-            "[${nonFirstUrlFileToShareAsBytes.map((attachment) => attachment.url).join(", ")}]";
+      if (nonFirstUrlFileToShareAsBytes.isNotEmpty) {
+        text += "[${nonFirstUrlFileToShareAsBytes.map(
+              (attachment) => attachment.url,
+            ).join(", ")}]";
       }
 
       var file = await TempFileHelper.downloadFileToTempFolder(
         request: DownloadTempFileRequest(
           url: url,
-          filenameWithExtension: firstUrlFileToShareAsFiles.filenameWithExtension,
+          filenameWithExtension:
+              firstUrlFileToShareAsFiles.filenameWithExtension,
         ),
       );
 

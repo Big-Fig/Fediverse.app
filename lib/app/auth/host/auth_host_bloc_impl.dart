@@ -76,8 +76,8 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     required this.connectionService,
     required this.currentInstanceBloc,
   }) {
-    assert(instanceBaseUriScheme.isNotEmpty == true);
-    assert(instanceBaseUriHost.isNotEmpty == true);
+    assert(instanceBaseUriScheme.isNotEmpty);
+    assert(instanceBaseUriHost.isNotEmpty);
     hostApplicationLocalPreferenceBloc = AuthHostApplicationLocalPreferenceBloc(
       preferencesService,
       host: instanceBaseUriHost,

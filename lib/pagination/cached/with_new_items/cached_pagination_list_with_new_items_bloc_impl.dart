@@ -36,11 +36,11 @@ abstract class CachedPaginationListWithNewItemsBloc<
       );
 
   @override
-  TItem? get newerItem => items.isNotEmpty == true ? items.first : null;
+  TItem? get newerItem => items.isNotEmpty ? items.first : null;
 
   @override
   Stream<TItem?> get newerItemStream =>
-      itemsStream.map((items) => items.isNotEmpty == true ? items.first : null);
+      itemsStream.map((items) => items.isNotEmpty ? items.first : null);
 
   Stream<List<TItem>> watchItemsNewerThanItem(TItem? item);
 
@@ -105,7 +105,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
       addDisposable(
         streamSubscription: unmergedNewItemsStream.listen(
           (unmergedNewItems) {
-            if (unmergedNewItems.isNotEmpty == true) {
+            if (unmergedNewItems.isNotEmpty) {
               mergeNewItems();
             }
           },
@@ -291,7 +291,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
   StreamSubscription<List<TItem>> createWatchNewItemsSubscription(newerItem) {
     return watchItemsNewerThanItem(newerItem)
-        .skipWhile((newItems) => newItems.isNotEmpty != true)
+        .skipWhile((newItems) => !newItems.isNotEmpty)
         .listen(
       (newItems) async {
         var currentItems = items;
@@ -328,8 +328,8 @@ abstract class CachedPaginationListWithNewItemsBloc<
             "\t newItems ${newItems.length} \n"
             "\t actuallyNew = ${actuallyNew.length}");
 
-        if (actuallyNew.isNotEmpty == true) {
-          if (currentItems.isNotEmpty != true &&
+        if (actuallyNew.isNotEmpty) {
+          if (!currentItems.isNotEmpty &&
               mergeNewItemsImmediatelyWhenItemsIsEmpty) {
             // merge immediately
             mergedNewItemsSubject.add(actuallyNew);
@@ -508,7 +508,7 @@ List<TItem> _calculateActuallyNew<TItem extends IEqualComparableObj<TItem>>(
   actuallyNew = actuallyNew.where(
     (newItem) {
       bool isAlreadyExist;
-      if (currentItems.isNotEmpty == true) {
+      if (currentItems.isNotEmpty) {
         var found = currentItems.firstWhereOrNull(
           (oldItem) => newItem.isEqualTo(oldItem),
         );

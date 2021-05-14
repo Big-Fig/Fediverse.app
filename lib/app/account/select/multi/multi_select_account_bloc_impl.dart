@@ -34,11 +34,11 @@ class MultiSelectAccountBloc extends DisposableOwner
       );
 
   @override
-  bool get isSomethingSelected => selectedAccounts.isNotEmpty == true;
+  bool get isSomethingSelected => selectedAccounts.isNotEmpty;
 
   @override
   Stream<bool> get isSomethingSelectedStream => selectedAccountsStream
-      .map((selectedAccounts) => selectedAccounts.isNotEmpty == true);
+      .map((selectedAccounts) => selectedAccounts.isNotEmpty);
 
   @override
   List<IAccount> get selectedAccounts => selectedAccountsSubject.value!;

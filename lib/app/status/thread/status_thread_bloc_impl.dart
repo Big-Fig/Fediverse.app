@@ -281,7 +281,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
     addDisposable(
       streamSubscription: watchFilters().listen(
             (newFilters) {
-          if (listEquals(filters, newFilters) != true) {
+          if (!listEquals(filters, newFilters)) {
             filters = newFilters;
             refresh();
           }

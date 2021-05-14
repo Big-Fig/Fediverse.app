@@ -12,6 +12,7 @@ class PostStatusPollActionBadgeBloc extends DisposableOwner
 
   @override
   Stream<bool> get badgeStream =>
-      postStatusPollBloc.pollOptionsGroupBloc.itemsStream
-          .map((items) => items.isNotEmpty == true);
+      postStatusPollBloc.pollOptionsGroupBloc.itemsStream.map(
+        (items) => items.isNotEmpty,
+      );
 }

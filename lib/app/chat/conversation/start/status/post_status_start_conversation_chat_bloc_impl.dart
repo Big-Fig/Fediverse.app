@@ -116,7 +116,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
 
   @override
   bool get isReadyToPost =>
-      super.isReadyToPost && mentionedAccts.isNotEmpty == true;
+      super.isReadyToPost && mentionedAccts.isNotEmpty;
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest6(

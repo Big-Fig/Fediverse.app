@@ -131,7 +131,7 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
     required bool notification,
     required bool chat,
   }) {
-    assert(!(notification == true && chat == true));
+    assert(!(notification && chat));
     return getOrCreateNewChannel(
       stream: notification
           ? "user:notification"

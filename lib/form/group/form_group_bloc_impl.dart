@@ -50,14 +50,14 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
       errorsSubject.stream;
 
   @override
-  bool get isHaveAtLeastOneError => errors.isNotEmpty == true;
+  bool get isHaveAtLeastOneError => errors.isNotEmpty;
 
   DisposableOwner? itemsErrorSubscription;
   DisposableOwner? isSomethingChangedSubscription;
 
   @override
   Stream<bool> get isHaveAtLeastOneErrorStream =>
-      errorsStream.map((fieldsErrors) => fieldsErrors.isNotEmpty == true);
+      errorsStream.map((fieldsErrors) => fieldsErrors.isNotEmpty);
 
   void _subscribeForErrors(List<T>? newItems) {
     itemsErrorSubscription?.dispose();
@@ -107,7 +107,7 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
   void recalculateErrors() {
     var errors =
         items.fold(<FormItemValidationError>[], (dynamic errors, item) {
-      if (item.errors.isNotEmpty == true) {
+      if (item.errors.isNotEmpty) {
         errors.addAll(item.errors);
       }
 

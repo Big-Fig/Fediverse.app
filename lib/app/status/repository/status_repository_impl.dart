@@ -67,7 +67,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required String listRemoteId,
     required Batch? batchTransaction,
   }) async {
-    if (statusRemoteIds.isNotEmpty == true) {
+    if (statusRemoteIds.isNotEmpty) {
       await listsDao.insertAll(
         entities: statusRemoteIds
             .map(
@@ -90,7 +90,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required String conversationRemoteId,
     required Batch? batchTransaction,
   }) async {
-    if (statusRemoteIds.isNotEmpty == true) {
+    if (statusRemoteIds.isNotEmpty) {
       var items = statusRemoteIds
           .map(
             (statusRemoteId) => DbConversationStatus(

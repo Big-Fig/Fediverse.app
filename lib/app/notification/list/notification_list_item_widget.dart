@@ -103,9 +103,9 @@ class _NotificationListItemBodyWidget extends StatelessWidget {
             // ignore: no-magic-number
             actionExtentRatio: 0.25,
             secondaryActions: <Widget>[
-              if (unread == true)
+              if (unread)
                 const _NotificationListItemBodyMarkAsReadActionWidget(),
-              if (dismissed != true)
+              if (!dismissed)
                 const _NotificationListItemBodyDismissActionWidget(),
             ],
             child: const _NotificationListItemBodySlidableChildWidget(),
@@ -255,7 +255,7 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
       child: FediChooserDialogBody(
         title: S.of(context).app_notification_action_popup_title,
         actions: [
-          if (notificationBloc.unread == true)
+          if (notificationBloc.unread)
             DialogAction(
               icon: FediIcons.check,
               label: S.of(context).app_notification_action_markAsRead,
@@ -264,7 +264,7 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
                 Navigator.of(context).pop();
               },
             ),
-          if (notificationBloc.dismissed != true)
+          if (!notificationBloc.dismissed)
             DialogAction(
               icon: FediIcons.delete,
               label: S.of(context).app_notification_action_dismiss,

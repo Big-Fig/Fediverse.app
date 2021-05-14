@@ -85,7 +85,7 @@ class SelectAccountListBloc extends DisposableOwner
 
     var searchTermExist = searchText?.isNotEmpty == true;
     if (searchTermExist) {
-      var following = followingsOnly == true;
+      var following = followingsOnly;
       remoteAccounts = await pleromaAuthAccountService.search(
         query: searchText!,
         resolve: true,
@@ -169,7 +169,7 @@ class SelectAccountListBloc extends DisposableOwner
     var searchTermExist = searchText?.isNotEmpty == true;
     if (searchTermExist) {
       var onlyInAccountFollowing;
-      if (followingsOnly == true) {
+      if (followingsOnly) {
         onlyInAccountFollowing = myAccountBloc.account;
       }
       accounts = await accountRepository.findAllInAppType(

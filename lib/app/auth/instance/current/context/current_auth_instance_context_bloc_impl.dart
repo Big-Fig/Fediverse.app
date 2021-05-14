@@ -599,9 +599,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         INotificationPushLoaderBloc>(notificationPushLoaderBloc);
 
-    if (timelinesHomeTabStorageLocalPreferencesBloc
-            .value.timelineIds.isNotEmpty !=
-        true) {
+    if (!timelinesHomeTabStorageLocalPreferencesBloc
+            .value.timelineIds.isNotEmpty) {
       var remoteLists = await pleromaListService.getLists();
 
       var timelines = [
@@ -625,7 +624,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
             onlyLocal: false,
           ),
         ),
-        if (remoteLists.isNotEmpty == true)
+        if (remoteLists.isNotEmpty)
           ...remoteLists.map(
             (remoteList) => Timeline.customList(
               remoteList: remoteList,

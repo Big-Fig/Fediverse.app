@@ -260,11 +260,11 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   @override
-  bool get isHaveMentionedAccts => mentionedAccts.isNotEmpty == true;
+  bool get isHaveMentionedAccts => mentionedAccts.isNotEmpty;
 
   @override
   Stream<bool> get isHaveMentionedAcctsStream => mentionedAcctsStream
-      .map((mentionedAccts) => mentionedAccts.isNotEmpty == true);
+      .map((mentionedAccts) => mentionedAccts.isNotEmpty);
 
   // ignore: close_sinks
   BehaviorSubject<List<String>> mentionedAcctsSubject =
@@ -515,7 +515,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         .map((bloc) => bloc.pleromaMediaAttachment!)
         .toList();
     // media ids shouldn't be empty (should be null in this case)
-    if (mediaAttachments.isNotEmpty != true) {
+    if (mediaAttachments.isEmpty) {
       mediaAttachments = null;
     }
     return mediaAttachments;

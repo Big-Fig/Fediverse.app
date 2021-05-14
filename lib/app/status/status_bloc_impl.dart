@@ -439,7 +439,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.reblog);
 
   @override
-  bool get nsfwSensitive => reblogOrOriginal.nsfwSensitive == true;
+  bool get nsfwSensitive => reblogOrOriginal.nsfwSensitive;
 
   @override
   Stream<bool> get nsfwSensitiveStream =>
@@ -470,11 +470,11 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
       .map((spoilerText) => spoilerText?.isNotEmpty == true);
 
   @override
-  bool get deleted => status.deleted == true;
+  bool get deleted => status.deleted;
 
   @override
   Stream<bool> get deletedStream => statusStream.map(
-        (status) => status.deleted == true,
+        (status) => status.deleted,
       );
 
   @override

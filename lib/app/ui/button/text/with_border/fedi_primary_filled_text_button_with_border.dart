@@ -62,7 +62,7 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
       child: ConstrainedBox(
         constraints: BoxConstraints(
           // ignore: no-magic-number
-          minWidth: limitMinWidth == true ? 120.0 : 0.0,
+          minWidth: limitMinWidth ? 120.0 : 0.0,
         ),
         child: Container(
           height: calculatedHeight,

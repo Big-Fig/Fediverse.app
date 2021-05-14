@@ -205,7 +205,7 @@ class _JoinAuthInstanceLogoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
       double width;
-      if (isKeyboardVisible == true) {
+      if (isKeyboardVisible) {
         // todo: refactor
         // ignore: no-magic-number
         width = 75.0;

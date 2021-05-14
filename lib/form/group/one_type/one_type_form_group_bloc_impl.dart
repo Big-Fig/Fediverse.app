@@ -171,7 +171,7 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   bool isLast(T? item) {
-    if (items.isNotEmpty == true) {
+    if (items.isNotEmpty) {
       return items.last == item;
     } else {
       return false;

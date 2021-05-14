@@ -124,7 +124,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
       );
     }
 
-    if (items.isNotEmpty == true) {
+    if (items.isNotEmpty) {
       return buildItemsCollectionView(
         context: context,
         items: items,

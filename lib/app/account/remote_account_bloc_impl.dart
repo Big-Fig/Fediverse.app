@@ -81,7 +81,7 @@ class RemoteAccountBloc extends AccountBloc {
     required IAccount account,
     required bool isNeedRefreshFromNetworkOnInit,
   }) async {
-    if (isNeedRefreshFromNetworkOnInit == true) {
+    if (isNeedRefreshFromNetworkOnInit) {
       await refreshFromNetwork(isNeedPreFetchRelationship: false);
     }
   }

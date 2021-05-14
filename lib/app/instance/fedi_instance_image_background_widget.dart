@@ -42,7 +42,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
         // backgroundImage maybe relative path or absolute path]
         if (backgroundImage != null) {
           var backgroundImageUri = Uri.parse(backgroundImage);
-          var isRelative = backgroundImageUri.host.isNotEmpty != true;
+          var isRelative = backgroundImageUri.host.isEmpty;
           if (isRelative) {
             var hostPath = currentInstance!.uri.toString();
             backgroundImageAbsolutePath = hostPath + backgroundImage;

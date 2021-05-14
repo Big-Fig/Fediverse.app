@@ -101,7 +101,7 @@ class PleromaApiField implements IPleromaApiField, IJsonObject {
       try {
         var parsed = HtmlParser.parseHTML(value!);
         var allLinkElements = parsed.getElementsByTagName("a");
-        if (allLinkElements.isNotEmpty == true) {
+        if (allLinkElements.isNotEmpty) {
           return allLinkElements.first.attributes["href"];
         } else {
           return value;

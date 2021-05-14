@@ -133,7 +133,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   ) {
     var oldVideoPlayerValue = this.videoPlayerValue;
     var videoPlayerValue = videoPlayerController.value;
-    if (videoPlayerValue.hasError == true) {
+    if (videoPlayerValue.hasError) {
       if (error == null && videoPlayerValue.errorDescription != null) {
         error == videoPlayerValue.errorDescription;
       }

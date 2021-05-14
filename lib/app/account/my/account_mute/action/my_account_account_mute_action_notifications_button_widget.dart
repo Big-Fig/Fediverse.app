@@ -26,7 +26,7 @@ class MyAccountAccountMuteActionNotificationsButtonWidget
       builder: (context, snapshot) {
         var relationshipMuting = snapshot.data ?? defaultMuting;
 
-        if (relationshipMuting == true) {
+        if (relationshipMuting) {
           return const _MyAccountAccountMuteActionNotificationsButtonBodyWidget();
         } else {
           return const SizedBox.shrink();

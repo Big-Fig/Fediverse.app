@@ -43,7 +43,7 @@ class RecentSearchBloc extends DisposableOwner implements IRecentSearchBloc {
                 .toList();
           }
 
-          if (confirmedSearchTerm.isNotEmpty == true) {
+          if (confirmedSearchTerm.isNotEmpty) {
             if (!recentItems.contains(confirmedSearchTerm)) {
               recentItems.add(confirmedSearchTerm);
             }
