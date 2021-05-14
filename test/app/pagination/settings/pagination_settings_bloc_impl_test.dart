@@ -93,8 +93,8 @@ void main() {
 
     var testPageSize =
         PaginationSettingsModelTestHelper.createTestPaginationSettings(
-                seed: "seed")
-            .pageSize;
+      seed: "seed",
+    ).pageSize;
 
     await paginationSettingsBloc.changePageSize(testPageSize);
     await Future.delayed(Duration(milliseconds: 100));

@@ -60,16 +60,17 @@ class StatusThreadWidget extends StatelessWidget {
               ),
               if (isLocal) ...[
                 StreamBuilder<bool>(
-                    stream: postMessageBloc.isInputFocusedStream,
-                    initialData: postMessageBloc.isInputFocused,
-                    builder: (context, snapshot) {
-                      var isInputFocused = snapshot.data!;
-                      if (isInputFocused) {
-                        return const _StatusThreadInReplyToStatusWidget();
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    }),
+                  stream: postMessageBloc.isInputFocusedStream,
+                  initialData: postMessageBloc.isInputFocused,
+                  builder: (context, snapshot) {
+                    var isInputFocused = snapshot.data!;
+                    if (isInputFocused) {
+                      return const _StatusThreadInReplyToStatusWidget();
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  },
+                ),
                 const FediUltraLightGreyDivider(),
                 Container(
                   decoration: BoxDecoration(

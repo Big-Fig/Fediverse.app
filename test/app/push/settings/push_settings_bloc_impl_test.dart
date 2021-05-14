@@ -47,10 +47,10 @@ void main() {
 
     when(fcmPushService.deviceToken).thenReturn("testDeviceToken");
     when(pushRelayService.createPushRelayEndPointUrl(
-            account: anyNamed('account'),
-            baseServerUrl: anyNamed('baseServerUrl'),
-            fcmDeviceToken: anyNamed('fcmDeviceToken')))
-        .thenReturn("testUrl");
+      account: anyNamed('account'),
+      baseServerUrl: anyNamed('baseServerUrl'),
+      fcmDeviceToken: anyNamed('fcmDeviceToken'),
+    )).thenReturn("testUrl");
     when(fcmPushService.askPermissions()).thenAnswer((_) async => true);
     when(pleromaPushService.subscribe(
       endpointCallbackUrl: anyNamed('endpointCallbackUrl'),

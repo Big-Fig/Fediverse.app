@@ -92,7 +92,9 @@ class StatusSpoilerWidget extends StatelessWidget {
   }
 
   TextStyle _mapToTextStyle(
-      IFediUiTextTheme fediUiTextTheme, UiSettingsFontSize statusFontSize) {
+    IFediUiTextTheme fediUiTextTheme,
+    UiSettingsFontSize statusFontSize,
+  ) {
     TextStyle textStyle = fediUiTextTheme.bigTallDarkGrey;
 
     switch (statusFontSize) {

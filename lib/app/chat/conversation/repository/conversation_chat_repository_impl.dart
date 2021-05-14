@@ -192,7 +192,9 @@ class ConversationChatRepository
   }
 
   @override
-  IConversationChat mapRemoteItemToAppItem(IPleromaApiConversation remoteItem) =>
+  IConversationChat mapRemoteItemToAppItem(
+    IPleromaApiConversation remoteItem,
+  ) =>
       DbConversationChatPopulatedWrapper(
         dbConversationPopulated: DbConversationPopulated(
           dbConversation: remoteItem.toDbConversation(),
@@ -201,17 +203,20 @@ class ConversationChatRepository
 
   @override
   DbConversationPopulated mapAppItemToDbPopulatedItem(
-          IConversationChat appItem) =>
+    IConversationChat appItem,
+  ) =>
       appItem.toDbConversationPopulated();
 
   @override
   IConversationChat mapDbPopulatedItemToAppItem(
-          DbConversationPopulated dbPopulatedItem) =>
+    DbConversationPopulated dbPopulatedItem,
+  ) =>
       dbPopulatedItem.toDbConversationChatPopulatedWrapper();
 
   @override
   IPleromaApiConversation mapDbPopulatedItemToRemoteItem(
-      DbConversationPopulated dbPopulatedItem) {
+    DbConversationPopulated dbPopulatedItem,
+  ) {
     // todo: improve
     return dbPopulatedItem
         .toDbConversationChatPopulatedWrapper()

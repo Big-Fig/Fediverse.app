@@ -50,8 +50,10 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
           vertical: FediSizes.smallPadding,
           horizontal: FediSizes.bigPadding,
         ),
-        child: Text(label,
-            style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey),
+        child: Text(
+          label,
+          style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
+        ),
       ),
     );
   }
@@ -87,7 +89,7 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
                     ),
             expanded: false,
             enabledBackgroundColor:
-            // ignore: no-magic-number
+                // ignore: no-magic-number
                 IFediUiColorTheme.of(context).primary.withOpacity(0.8),
           );
         } else {

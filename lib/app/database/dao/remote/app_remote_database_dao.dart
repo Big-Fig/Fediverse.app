@@ -85,7 +85,8 @@ abstract class AppRemoteDatabaseDao<
       ).map(table.mapFromRow);
 
   CustomExpression<bool> createFindByRemoteIdWhereExpression(
-          RemoteId remoteId) =>
+    RemoteId remoteId,
+  ) =>
       createMainTableEqualWhereExpression(
         fieldName: remoteIdFieldName,
         value: remoteId,
@@ -120,7 +121,8 @@ abstract class AppRemoteDatabaseDao<
     if (maximumExist) {
       query = query
         ..where(
-            (status) => column.isSmallerThanValue(maximumDateTimeExcluding));
+          (status) => column.isSmallerThanValue(maximumDateTimeExcluding),
+        );
     }
 
     return query;
@@ -157,8 +159,9 @@ abstract class AppRemoteDatabaseDao<
   Stream<DbItem?> watchGetNewestOrderByRemoteId({required int? offset}) =>
       getNewestOrderByRemoteIdSelectable(offset: offset).watchSingleOrNull();
 
-  Selectable<DbItem> getNewestOrderByRemoteIdSelectable(
-          {required int? offset}) =>
+  Selectable<DbItem> getNewestOrderByRemoteIdSelectable({
+    required int? offset,
+  }) =>
       customSelect(
         'SELECT * FROM $tableName '
                 'ORDER BY $remoteIdFieldName ASC '
@@ -173,8 +176,9 @@ abstract class AppRemoteDatabaseDao<
   Stream<DbItem?> watchGetOldestOrderByRemoteId({required int? offset}) =>
       getOldestOrderByRemoteIdSelectable(offset: offset).watchSingleOrNull();
 
-  Selectable<DbItem> getOldestOrderByRemoteIdSelectable(
-          {required int? offset}) =>
+  Selectable<DbItem> getOldestOrderByRemoteIdSelectable({
+    required int? offset,
+  }) =>
       customSelect(
         'SELECT * FROM $tableName '
                 'ORDER BY $remoteIdFieldName DESC '

@@ -181,23 +181,29 @@ class PleromaChatMessageRepository
 
   @override
   IPleromaApiChatMessage mapAppItemToRemoteItem(
-          IPleromaChatMessage appItem) =>
+    IPleromaChatMessage appItem,
+  ) =>
       appItem.toPleromaApiChatMessage();
 
   @override
   DbChatMessagePopulated mapAppItemToDbPopulatedItem(
-          IPleromaChatMessage appItem) =>
+    IPleromaChatMessage appItem,
+  ) =>
       appItem.toDbChatMessagePopulated();
 
   @override
   IPleromaChatMessage mapDbPopulatedItemToAppItem(
-          DbChatMessagePopulated dbPopulatedItem) =>
+    DbChatMessagePopulated dbPopulatedItem,
+  ) =>
       dbPopulatedItem.toDbChatMessagePopulatedWrapper();
 
   @override
   IPleromaApiChatMessage mapDbPopulatedItemToRemoteItem(
-          DbChatMessagePopulated dbPopulatedItem) =>
-      dbPopulatedItem.toDbChatMessagePopulatedWrapper().toPleromaApiChatMessage();
+    DbChatMessagePopulated dbPopulatedItem,
+  ) =>
+      dbPopulatedItem
+          .toDbChatMessagePopulatedWrapper()
+          .toPleromaApiChatMessage();
 
   @override
   IPleromaChatMessage mapRemoteItemToAppItem(
@@ -232,14 +238,13 @@ class PleromaChatMessageRepository
   Future<int> insertInRemoteType(
     IPleromaApiChatMessage remoteItem, {
     required InsertMode? mode,
-  })  =>
+  }) =>
       insertInDbType(
         mapRemoteItemToDbItem(
           remoteItem,
         ),
         mode: mode,
       );
-
 
   @override
   Future<void> insertInRemoteTypeBatch(
@@ -260,7 +265,7 @@ class PleromaChatMessageRepository
     required IPleromaChatMessage appItem,
     required IPleromaApiChatMessage remoteItem,
     required Batch? batchTransaction,
-  })  =>
+  }) =>
       updateByDbIdInDbType(
         dbId: appItem.localId!,
         dbItem: remoteItem.toDbChatMessage(),

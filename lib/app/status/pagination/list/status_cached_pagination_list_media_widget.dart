@@ -104,7 +104,8 @@ class StatusCachedPaginationListMediaWidget
   }
 
   static List<_StatusWithMediaAttachment> mapToStatusesWithAttachments(
-      List<IStatus> items) {
+    List<IStatus> items,
+  ) {
     var statusesWithMediaAttachment = <_StatusWithMediaAttachment>[];
 
     items.forEach(

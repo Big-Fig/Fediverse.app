@@ -13,8 +13,8 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -173,18 +173,19 @@ class SelectAccountListBloc extends DisposableOwner
         onlyInAccountFollowing = myAccountBloc.account;
       }
       accounts = await accountRepository.findAllInAppType(
-          filters: AccountRepositoryFilters(
-            onlyInAccountFollowing: onlyInAccountFollowing,
-            searchQuery: searchText,
-          ),
-          pagination: RepositoryPagination<IAccount>(
-            olderThanItem: olderThan,
-            newerThanItem: newerThan,
-            limit: limit,
-          ),
-          orderingTerms: [
-            AccountRepositoryOrderingTermData.remoteIdDesc,
-          ]);
+        filters: AccountRepositoryFilters(
+          onlyInAccountFollowing: onlyInAccountFollowing,
+          searchQuery: searchText,
+        ),
+        pagination: RepositoryPagination<IAccount>(
+          olderThanItem: olderThan,
+          newerThanItem: newerThan,
+          limit: limit,
+        ),
+        orderingTerms: [
+          AccountRepositoryOrderingTermData.remoteIdDesc,
+        ],
+      );
     } else {
       if (customEmptySearchLocalAccountListLoader != null) {
         accounts = await customEmptySearchLocalAccountListLoader!(

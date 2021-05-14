@@ -74,7 +74,10 @@ class TempFileHelper {
       return file;
     } catch (e, stackTrace) {
       _logger.warning(
-          () => "error during downloadFileToTempFolder", e, stackTrace);
+        () => "error during downloadFileToTempFolder",
+        e,
+        stackTrace,
+      );
       await httpRequest?.close();
       rethrow;
     }

@@ -64,23 +64,31 @@ void main() {
     );
     expect(
       CustomDateUtils.isSameDay(
-          DateTime.now().subtract(Duration(days: 1)), DateTime.now()),
+        DateTime.now().subtract(Duration(days: 1)),
+        DateTime.now(),
+      ),
       false,
     );
     expect(
       CustomDateUtils.isSameDay(
-          DateTime.now().add(Duration(days: 1)), DateTime.now()),
+        DateTime.now().add(Duration(days: 1)),
+        DateTime.now(),
+      ),
       false,
     );
 
     expect(
       CustomDateUtils.isSameDay(
-          DateTime(2000, 1, 1, 1), DateTime(2000, 1, 1, 2)),
+        DateTime(2000, 1, 1, 1),
+        DateTime(2000, 1, 1, 2),
+      ),
       true,
     );
     expect(
       CustomDateUtils.isSameDay(
-          DateTime(2000, 1, 1, 1), DateTime(2000, 1, 2, 2)),
+        DateTime(2000, 1, 1, 1),
+        DateTime(2000, 1, 2, 2),
+      ),
       false,
     );
   });
@@ -93,24 +101,45 @@ void main() {
     );
     expect(
       CustomDateUtils.isSameMinute(
-          DateTime.now().subtract(Duration(minutes: 1)), DateTime.now()),
+        DateTime.now().subtract(Duration(minutes: 1)),
+        DateTime.now(),
+      ),
       false,
     );
     expect(
       CustomDateUtils.isSameMinute(
-          DateTime.now().add(Duration(minutes: 1)), DateTime.now()),
+        DateTime.now().add(Duration(minutes: 1)),
+        DateTime.now(),
+      ),
       false,
     );
 
     expect(
       CustomDateUtils.isSameMinute(
-          // ignore: no-equal-arguments
-          DateTime(2000, 1, 1, 1, 0), DateTime(2000, 1, 1, 1, 0)),
+        // ignore: no-equal-arguments
+        DateTime(
+          2000,
+          1,
+          1,
+          1,
+          0,
+        ),
+        // ignore: no-equal-arguments
+        DateTime(
+          2000,
+          1,
+          1,
+          1,
+          0,
+        ),
+      ),
       true,
     );
     expect(
       CustomDateUtils.isSameMinute(
-          DateTime(2000, 1, 1, 1, 0), DateTime(2000, 1, 1, 1, 1)),
+        DateTime(2000, 1, 1, 1, 0),
+        DateTime(2000, 1, 1, 1, 1),
+      ),
       false,
     );
   });

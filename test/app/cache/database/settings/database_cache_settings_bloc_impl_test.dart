@@ -96,8 +96,8 @@ void main() {
 
     var testDatabaseCacheAgeLimitType =
         DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
-                seed: "seed")
-            .ageLimitType;
+      seed: "seed",
+    ).ageLimitType;
 
     await databaseCacheSettingsBloc
         .changeAgeLimitType(testDatabaseCacheAgeLimitType);
@@ -161,11 +161,12 @@ void main() {
 
     var testDatabaseCacheEntriesCountByTypeLimitType =
         DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
-                seed: "seed")
-            .entriesCountByTypeLimitType;
+      seed: "seed",
+    ).entriesCountByTypeLimitType;
 
     await databaseCacheSettingsBloc.changeEntriesCountByTypeLimit(
-        testDatabaseCacheEntriesCountByTypeLimitType);
+      testDatabaseCacheEntriesCountByTypeLimitType,
+    );
     await Future.delayed(Duration(milliseconds: 100));
 
     expect(

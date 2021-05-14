@@ -3,6 +3,7 @@ import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'database/account_database_test_helper.dart';
+
 // ignore_for_file: no-magic-number, no-equal-arguments
 class AccountTestHelper {
   static Future<DbAccountPopulatedWrapper> createTestAccount({
@@ -76,11 +77,15 @@ class AccountTestHelper {
     expect(actual.pleromaHideFollowers, expected.pleromaHideFollowers);
     expect(actual.pleromaHideFollows, expected.pleromaHideFollows);
     expect(
-        actual.pleromaHideFollowersCount, expected.pleromaHideFollowersCount);
+      actual.pleromaHideFollowersCount,
+      expected.pleromaHideFollowersCount,
+    );
     expect(actual.pleromaHideFollowsCount, expected.pleromaHideFollowsCount);
     expect(actual.pleromaDeactivated, expected.pleromaDeactivated);
     expect(
-        actual.pleromaAllowFollowingMove, expected.pleromaAllowFollowingMove);
+      actual.pleromaAllowFollowingMove,
+      expected.pleromaAllowFollowingMove,
+    );
     expect(
       actual.pleromaSkipThreadContainment,
       expected.pleromaSkipThreadContainment,

@@ -99,7 +99,9 @@ void main() {
 
   test('notification', () async {
     NotificationTestHelper.expectNotification(
-        notificationBloc.notification, notification);
+      notificationBloc.notification,
+      notification,
+    );
 
     var newValue = await NotificationTestHelper.createTestNotification(
       seed: "seed2",

@@ -16,7 +16,9 @@ typedef ErrorDataBuilder = ErrorData? Function(
 );
 
 typedef ErrorCallback = void Function(
-    BuildContext? context, ErrorData errorData);
+  BuildContext? context,
+  ErrorData errorData,
+);
 
 // todo: refactor long-parameter-list, long-method
 // ignore: long-parameter-list, long-method

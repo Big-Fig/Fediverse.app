@@ -32,8 +32,9 @@ abstract class IPleromaApiConversationPleromaPart {
 
 extension IPleromaApiConversationPleromaPartExtension
     on IPleromaApiConversationPleromaPart {
-  PleromaApiConversationPleromaPart toPleromaApiConversationPleromaPart(
-      {bool forceNewObject = false}) {
+  PleromaApiConversationPleromaPart toPleromaApiConversationPleromaPart({
+    bool forceNewObject = false,
+  }) {
     if (PleromaApiConversationPleromaPart
             is PleromaApiConversationPleromaPart &&
         !forceNewObject) {
@@ -74,7 +75,8 @@ class PleromaApiConversationPleromaPart
   }
 
   static PleromaApiConversationPleromaPart fromJson(
-          Map<String, dynamic> json) =>
+    Map<String, dynamic> json,
+  ) =>
       _$PleromaApiConversationPleromaPartFromJson(json);
 
   Map<String, dynamic> toJson() =>

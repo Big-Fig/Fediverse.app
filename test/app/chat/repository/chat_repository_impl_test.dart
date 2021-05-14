@@ -357,9 +357,10 @@ void main() {
             .toPleromaApiChat(
           accounts: [
             DbAccountPopulatedWrapper(
-                dbAccountPopulated: DbAccountPopulated(
-              dbAccount: dbAccount,
-            )),
+              dbAccountPopulated: DbAccountPopulated(
+                dbAccount: dbAccount,
+              ),
+            ),
           ],
           lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
             dbChatMessagePopulated: dbChatMessagePopulated,
@@ -778,11 +779,13 @@ void main() {
     );
 
     expect(
-        (await chatRepository.findByRemoteIdInAppType(chat2.remoteId))!.unread,
-        2);
+      (await chatRepository.findByRemoteIdInAppType(chat2.remoteId))!.unread,
+      2,
+    );
     expect(
-        (await chatRepository.findByRemoteIdInAppType(chat3.remoteId))!.unread,
-        1);
+      (await chatRepository.findByRemoteIdInAppType(chat3.remoteId))!.unread,
+      1,
+    );
   });
 
   test('incrementUnreadCount', () async {

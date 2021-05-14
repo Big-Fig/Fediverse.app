@@ -15,7 +15,8 @@ void main() {
       defaultValue: GlobalLocalizationSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
           GlobalLocalizationSettingsLocalPreferenceBloc(
-              localPreferencesService),
+        localPreferencesService,
+      ),
       testObjectCreator: ({required String seed}) =>
           LocalizationSettingsModelTestHelper.createTestLocalizationSettings(
         seed: seed,

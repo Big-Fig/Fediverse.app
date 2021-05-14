@@ -28,39 +28,31 @@ void main() {
     );
   });
 
-  test(
-      'PleromaApiTag hive save&load',
-          () async {
-        await HiveTestHelper.testHiveSaveAndLoad(
-              ({required String seed}) => PleromaApiTagTestHelper
-              .createTestPleromaApiTag(
-            seed: seed,
-          ),
-        );
-      });
+  test('PleromaApiTag hive save&load', () async {
+    await HiveTestHelper.testHiveSaveAndLoad(
+      ({
+        required String seed,
+      }) =>
+          PleromaApiTagTestHelper.createTestPleromaApiTag(
+        seed: seed,
+      ),
+    );
+  });
 
-  test(
-      'PleromaApiTagAdapter hive adapter',
-          () async {
-        HiveTestHelper.testAdapter(
-                () => PleromaApiTagAdapter());
-      });
-  test(
-      'PleromaApiTagHistory hive save&load',
-          () async {
-        await HiveTestHelper.testHiveSaveAndLoad(
-              ({required String seed}) => PleromaApiTagTestHelper
-              .createTestPleromaApiTagHistory(
-            seed: seed,
-          ),
-          skipHiveInit: true,
-        );
-      });
+  test('PleromaApiTagAdapter hive adapter', () async {
+    HiveTestHelper.testAdapter(() => PleromaApiTagAdapter());
+  });
+  test('PleromaApiTagHistory hive save&load', () async {
+    await HiveTestHelper.testHiveSaveAndLoad(
+      ({required String seed}) =>
+          PleromaApiTagTestHelper.createTestPleromaApiTagHistory(
+        seed: seed,
+      ),
+      skipHiveInit: true,
+    );
+  });
 
-  test(
-      'PleromaApiTagHistoryAdapter hive adapter',
-          () async {
-        HiveTestHelper.testAdapter(
-                () => PleromaApiTagHistoryAdapter());
-      });
+  test('PleromaApiTagHistoryAdapter hive adapter', () async {
+    HiveTestHelper.testAdapter(() => PleromaApiTagHistoryAdapter());
+  });
 }

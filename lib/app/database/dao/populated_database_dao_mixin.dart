@@ -21,7 +21,8 @@ mixin PopulatedDatabaseDaoMixin<
   DbPopulatedItem mapTypedResultToDbPopulatedItem(TypedResult typedResult);
 
   List<DbPopulatedItem> mapTypedResultListToDbPopulatedItemList(
-          List<TypedResult> typedResults) =>
+    List<TypedResult> typedResults,
+  ) =>
       typedResults.map(mapTypedResultToDbPopulatedItem).toList();
 
   Future<List<DbPopulatedItem>> getAllPopulated() =>
@@ -102,16 +103,17 @@ mixin PopulatedDatabaseDaoMixin<
     return joinedQuery.map(mapTypedResultToDbPopulatedItem);
   }
 
-
   Future<DbPopulatedItem?> getNewestPopulatedOrderByRemoteId({
     required int? offset,
   }) =>
-      getNewestPopulatedOrderByRemoteIdSelectable(offset: offset).getSingleOrNull();
+      getNewestPopulatedOrderByRemoteIdSelectable(offset: offset)
+          .getSingleOrNull();
 
   Stream<DbPopulatedItem?> watchGetNewestPopulatedOrderByRemoteId({
     required int? offset,
   }) =>
-      getNewestPopulatedOrderByRemoteIdSelectable(offset: offset).watchSingleOrNull();
+      getNewestPopulatedOrderByRemoteIdSelectable(offset: offset)
+          .watchSingleOrNull();
 
   Selectable<DbPopulatedItem> getNewestPopulatedOrderByRemoteIdSelectable({
     required int? offset,
@@ -119,9 +121,9 @@ mixin PopulatedDatabaseDaoMixin<
     var query = startSelectQuery();
     query.orderBy(
       [
-            (tbl) => moor.OrderingTerm.desc(
-          CustomExpression("$tableName.$idFieldName"),
-        ),
+        (tbl) => moor.OrderingTerm.desc(
+              CustomExpression("$tableName.$idFieldName"),
+            ),
       ],
     );
     var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(
@@ -143,7 +145,8 @@ mixin PopulatedDatabaseDaoMixin<
   Stream<DbPopulatedItem?> watchGetOldestPopulatedOrderByRemoteId({
     required int? offset,
   }) =>
-      getOldestPopulatedOrderByRemoteIdSelectable(offset: offset).watchSingleOrNull();
+      getOldestPopulatedOrderByRemoteIdSelectable(offset: offset)
+          .watchSingleOrNull();
 
   Selectable<DbPopulatedItem> getOldestPopulatedOrderByRemoteIdSelectable({
     required int? offset,
@@ -151,9 +154,9 @@ mixin PopulatedDatabaseDaoMixin<
     var query = startSelectQuery();
     query.orderBy(
       [
-            (tbl) => moor.OrderingTerm.asc(
-          CustomExpression("$tableName.$idFieldName"),
-        ),
+        (tbl) => moor.OrderingTerm.asc(
+              CustomExpression("$tableName.$idFieldName"),
+            ),
       ],
     );
     var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(

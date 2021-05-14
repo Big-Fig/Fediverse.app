@@ -93,7 +93,9 @@ void main() {
     AccountTestHelper.expectAccount(accountBloc.account, account);
 
     var newValue = await AccountTestHelper.createTestAccount(
-        seed: "seed2", remoteId: account.remoteId);
+      seed: "seed2",
+      remoteId: account.remoteId,
+    );
 
     var listenedValue;
 

@@ -27,7 +27,8 @@ abstract class PopulatedAppRemoteDatabaseDao<
       findByRemoteIdPopulatedSelectable(remoteId).watchSingleOrNull();
 
   Selectable<DbPopulatedItem> findByRemoteIdPopulatedSelectable(
-      RemoteId remoteId) {
+    RemoteId remoteId,
+  ) {
     var query = startSelectQuery();
     var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(
       query: query,

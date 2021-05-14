@@ -67,22 +67,30 @@ void main() {
   test('PleromaApiInstancePleromaPartAdapter hive adapter', () async {
     HiveTestHelper.testAdapter(() => PleromaApiInstancePleromaPartAdapter());
   });
-  test('PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter hive save&load',
-      () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
-      ({required String seed}) => PleromaApiInstanceTestHelper
-          .createTestPleromaApiInstancePleromaPartMetadataFieldLimits(
-        seed: seed,
-      ),
-      skipHiveInit: true,
-    );
-  });
+  test(
+    'PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter hive save&load',
+    () async {
+      await HiveTestHelper.testHiveSaveAndLoad(
+        ({
+          required String seed,
+        }) =>
+            PleromaApiInstanceTestHelper
+                .createTestPleromaApiInstancePleromaPartMetadataFieldLimits(
+          seed: seed,
+        ),
+        skipHiveInit: true,
+      );
+    },
+  );
 
-  test('PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter hive adapter',
-      () async {
-    HiveTestHelper.testAdapter(
-        () => PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter());
-  });
+  test(
+    'PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter hive adapter',
+    () async {
+      HiveTestHelper.testAdapter(
+        () => PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter(),
+      );
+    },
+  );
   test('PleromaApiInstancePleromaPartMetadata hive save&load', () async {
     await HiveTestHelper.testHiveSaveAndLoad(
       ({required String seed}) => PleromaApiInstanceTestHelper
@@ -95,6 +103,7 @@ void main() {
 
   test('PleromaApiInstancePleromaPartMetadataAdapter hive adapter', () async {
     HiveTestHelper.testAdapter(
-        () => PleromaApiInstancePleromaPartMetadataAdapter());
+      () => PleromaApiInstancePleromaPartMetadataAdapter(),
+    );
   });
 }

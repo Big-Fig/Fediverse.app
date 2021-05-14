@@ -105,8 +105,9 @@ abstract class IPleromaApiAccountReport {
 }
 
 extension IPleromaApiAccountReportExtension on IPleromaApiAccountReport {
-  PleromaApiAccountReport toPleromaApiAccountReport(
-      {bool forceNewObject = false}) {
+  PleromaApiAccountReport toPleromaApiAccountReport({
+    bool forceNewObject = false,
+  }) {
     if (this is PleromaApiAccountReport && !forceNewObject) {
       return this as PleromaApiAccountReport;
     } else {
@@ -465,8 +466,9 @@ abstract class IPleromaApiAccountPleromaPart {
 
 extension IPleromaApiAccountPleromaPartExtension
     on IPleromaApiAccountPleromaPart {
-  PleromaApiAccountPleromaPart toPleromaApiAccountPleromaPart(
-      {bool forceNewObject = false}) {
+  PleromaApiAccountPleromaPart toPleromaApiAccountPleromaPart({
+    bool forceNewObject = false,
+  }) {
     if (this is PleromaApiAccountPleromaPart && !forceNewObject) {
       return this as PleromaApiAccountPleromaPart;
     } else {
@@ -761,8 +763,9 @@ abstract class IPleromaApiAccountRelationship
 
 extension IPleromaApiAccountRelationshipExtension
     on IPleromaApiAccountRelationship {
-  PleromaApiAccountRelationship toPleromaApiAccountRelationship(
-      {bool forceNewObject = false}) {
+  PleromaApiAccountRelationship toPleromaApiAccountRelationship({
+    bool forceNewObject = false,
+  }) {
     if (this is PleromaApiAccountRelationship && !forceNewObject) {
       return this as PleromaApiAccountRelationship;
     } else {

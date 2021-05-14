@@ -126,7 +126,8 @@ class PleromaApiInstanceTestHelper {
       registrations: seed.hashCode % 2 == 1,
       shortDescription: seed + "shortDescription",
       stats: MastodonApiInstanceTestHelper.createTestMastodonApiInstanceStats(
-          seed: seed),
+        seed: seed,
+      ),
       thumbnail: seed + "thumbnail",
       title: seed + "title",
       uploadLimit: seed.hashCode + 7,

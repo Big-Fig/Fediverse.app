@@ -38,7 +38,8 @@ class PostStatusSettingsBloc
 
   @override
   Stream<PleromaApiVisibility> get defaultVisibilityAsPleromaApiStream =>
-      settingsDataStream.map((settings) => settings.defaultVisibilityAsPleromaApi);
+      settingsDataStream
+          .map((settings) => settings.defaultVisibilityAsPleromaApi);
 
   @override
   Future changeDefaultVisibilityAsPleromaApi(PleromaApiVisibility value) =>
@@ -58,14 +59,15 @@ class PostStatusSettingsBloc
 
   @override
   Future changeDefaultStatusLocale(LocalizationLocale? value) =>
-      updateInstanceSettings(PostStatusSettings(
-        markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
-        defaultStatusLocale: value,
-        defaultVisibilityString: defaultVisibilityAsPleromaApi.toJsonValue(),
-      )
-          // copy with don't support null
-          // settingsData?.copyWith(
-          //   defaultStatusLocale: value,
-          // ),
-          );
+      updateInstanceSettings(
+        PostStatusSettings(
+          markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
+          defaultStatusLocale: value,
+          defaultVisibilityString: defaultVisibilityAsPleromaApi.toJsonValue(),
+        ),
+        // copy with don't support null
+        // settingsData?.copyWith(
+        //   defaultStatusLocale: value,
+        // ),
+      );
 }

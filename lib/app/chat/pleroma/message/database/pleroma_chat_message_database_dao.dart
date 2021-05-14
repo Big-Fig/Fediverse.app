@@ -246,7 +246,8 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   DbChatMessagePopulated mapTypedResultToDbPopulatedItem(
-          TypedResult typedResult) =>
+    TypedResult typedResult,
+  ) =>
       typedResult.toDbChatMessagePopulated(dao: this);
 
   @override
@@ -284,7 +285,6 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
         );
       }
     }
-
   }
 
   @override
@@ -327,7 +327,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     var joinedSelectStatement = query.join(populateChatMessageJoin());
 
-    if(filters?.groupByChatId == true) {
+    if (filters?.groupByChatId == true) {
       addGroupByChatId(joinedSelectStatement);
     }
     return joinedSelectStatement;

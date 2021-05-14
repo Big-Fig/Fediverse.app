@@ -45,7 +45,8 @@ class HomeTimelineStatusesDao extends DatabaseDao<
   }
 
   CustomExpression<bool> _createAccountRemoteIdEqualExpression(
-      String accountRemoteId) {
+    String accountRemoteId,
+  ) {
     return createMainTableEqualWhereExpression(
       fieldName: table.accountRemoteId.$name,
       value: accountRemoteId,

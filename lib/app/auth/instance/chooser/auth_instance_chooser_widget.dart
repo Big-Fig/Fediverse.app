@@ -127,8 +127,9 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
                     create: (context) => MyAccountBloc(
                       instance: instance,
                       pleromaMyAccountService: IPleromaApiMyAccountService.of(
-                          context,
-                          listen: false),
+                        context,
+                        listen: false,
+                      ),
                       accountRepository:
                           IAccountRepository.of(context, listen: false),
                       myAccountLocalPreferenceBloc:

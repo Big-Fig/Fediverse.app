@@ -48,7 +48,9 @@ class NotificationDatabaseTestHelper {
   }
 
   static void expectDbNotification(
-      INotification actual, DbNotification dbNotification) {
+    INotification actual,
+    DbNotification dbNotification,
+  ) {
     expect(
       actual.remoteId,
       dbNotification.remoteId,

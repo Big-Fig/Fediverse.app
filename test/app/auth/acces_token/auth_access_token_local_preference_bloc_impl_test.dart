@@ -13,8 +13,10 @@ void main() {
         AuthHostAccessTokenLocalPreferenceBloc>(
       defaultValue: AuthHostAccessTokenLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
-          AuthHostAccessTokenLocalPreferenceBloc(localPreferencesService,
-              host: "host"),
+          AuthHostAccessTokenLocalPreferenceBloc(
+        localPreferencesService,
+        host: "host",
+      ),
       testObjectCreator: ({required String seed}) =>
           PleromaApiOAuthTestHelper.createTestPleromaApiOAuthToken(
         seed: seed,

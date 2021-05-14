@@ -34,7 +34,8 @@ void main() {
 
     var dbConversation =
         await ConversationDatabaseTestHelper.createTestDbConversation(
-            seed: "seed");
+      seed: "seed",
+    );
 
     var dateTime = DateTime(
       // ignore: no-magic-number

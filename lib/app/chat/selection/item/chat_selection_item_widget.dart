@@ -19,60 +19,70 @@ class ChatSelectionItemWidget extends StatelessWidget {
     var chatSelectionItemBloc = IChatSelectionItemBloc.of(context);
 
     return StreamBuilder<bool>(
-        stream: chatSelectionItemBloc.isSelectedStream,
-        builder: (context, snapshot) {
-          var isSelected = snapshot.data ?? false;
-          return Container(
-            color: isSelected
-            // todo: refactor
-            // ignore: no-magic-number
-                ? IFediUiColorTheme.of(context).primaryDark.withOpacity(0.1)
-                : null,
-            child: StreamBuilder<bool>(
-              stream: chatSelectionItemBloc.isSelectionPossibleStream,
-              builder: (context, snapshot) {
-                var isSelectionPossible = snapshot.data ?? false;
+      stream: chatSelectionItemBloc.isSelectedStream,
+      builder: (
+        context,
+        snapshot,
+      ) {
+        var isSelected = snapshot.data ?? false;
+        return Container(
+          color: isSelected
+              // todo: refactor
+              // ignore: no-magic-number
+              ? IFediUiColorTheme.of(context).primaryDark.withOpacity(0.1)
+              : null,
+          child: StreamBuilder<bool>(
+            stream: chatSelectionItemBloc.isSelectionPossibleStream,
+            builder: (
+              context,
+              snapshot,
+            ) {
+              var isSelectionPossible = snapshot.data ?? false;
 
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    StreamBuilder<bool>(
-                      stream: chatSelectionBloc.isSomethingSelectedStream,
-                      builder: (context, snapshot) {
-                        var isSomethingSelected = snapshot.data ?? false;
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  StreamBuilder<bool>(
+                    stream: chatSelectionBloc.isSomethingSelectedStream,
+                    builder: (
+                      context,
+                      snapshot,
+                    ) {
+                      var isSomethingSelected = snapshot.data ?? false;
 
-                        if (isSomethingSelected) {
-                          return const ChatSelectionItemToggleButtonWidget();
-                        } else {
-                          return const SizedBox.shrink();
-                        }
-                      },
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onLongPress: isSelectionPossible
-                            ? () {
-                                var isSomethingSelected =
-                                    chatSelectionBloc.isSomethingSelected;
+                      if (isSomethingSelected) {
+                        return const ChatSelectionItemToggleButtonWidget();
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    },
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onLongPress: isSelectionPossible
+                          ? () {
+                              var isSomethingSelected =
+                                  chatSelectionBloc.isSomethingSelected;
 
-                                if (!isSomethingSelected) {
-                                  var chatSelectionItemBloc =
-                                      IChatSelectionItemBloc.of(
-                                    context,
-                                    listen: false,
-                                  );
-                                  chatSelectionItemBloc.select();
-                                }
+                              if (!isSomethingSelected) {
+                                var chatSelectionItemBloc =
+                                    IChatSelectionItemBloc.of(
+                                  context,
+                                  listen: false,
+                                );
+                                chatSelectionItemBloc.select();
                               }
-                            : null,
-                        child: child,
-                      ),
+                            }
+                          : null,
+                      child: child,
                     ),
-                  ],
-                );
-              },
-            ),
-          );
-        });
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 }

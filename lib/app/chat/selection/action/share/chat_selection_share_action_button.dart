@@ -87,10 +87,11 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
                 context: context,
                 asyncCode: () async {
                   var futures = originalMediaAttachments!.map(
-                      (mediaAttachment) => mediaAttachmentReuploadService
-                              .reuploadMediaAttachment(
-                            originalMediaAttachment: mediaAttachment,
-                          ));
+                    (mediaAttachment) =>
+                        mediaAttachmentReuploadService.reuploadMediaAttachment(
+                      originalMediaAttachment: mediaAttachment,
+                    ),
+                  );
 
                   return Future.wait(futures);
                 },

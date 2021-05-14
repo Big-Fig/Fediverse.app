@@ -230,21 +230,27 @@ void main() {
   });
 
   test(
-      'PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter hive save&load',
-      () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
-      ({required String seed}) => PleromaApiMyAccountTestHelper
-          .createTestPleromaApiMyAccountPleromaPartNotificationsSettings(
-        seed: seed,
-      ),
-      skipHiveInit: true,
-    );
-  });
+    'PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter hive save&load',
+    () async {
+      await HiveTestHelper.testHiveSaveAndLoad(
+        ({
+          required String seed,
+        }) =>
+            PleromaApiMyAccountTestHelper
+                .createTestPleromaApiMyAccountPleromaPartNotificationsSettings(
+          seed: seed,
+        ),
+        skipHiveInit: true,
+      );
+    },
+  );
 
   test(
-      'PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter hive adapter',
-      () async {
-    HiveTestHelper.testAdapter(
-        () => PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter());
-  });
+    'PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter hive adapter',
+    () async {
+      HiveTestHelper.testAdapter(
+        () => PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter(),
+      );
+    },
+  );
 }

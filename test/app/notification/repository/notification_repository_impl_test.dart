@@ -246,8 +246,9 @@ void main() {
       newType.toJsonValue(),
     );
     expect(
-        (await notificationRepository.findByDbIdInAppType(id))!.account!.acct,
-        newAcct);
+      (await notificationRepository.findByDbIdInAppType(id))!.account!.acct,
+      newAcct,
+    );
   });
 
   test('findByRemoteId', () async {
@@ -621,7 +622,9 @@ void main() {
       await NotificationRepositoryTestHelper.insertDbNotification(
         notificationRepository,
         (await NotificationDatabaseTestHelper.createTestDbNotification(
-                seed: "seed2", dbAccount: dbAccount))
+          seed: "seed2",
+          dbAccount: dbAccount,
+        ))
             .copyWith(
           remoteId: "remoteId2",
           createdAt: DateTime(2),

@@ -109,7 +109,9 @@ class StatusDatabaseTestHelper {
   }
 
   static void expectDbStatusPopulated(
-      IStatus? actual, DbStatusPopulated? expected) {
+    IStatus? actual,
+    DbStatusPopulated? expected,
+  ) {
     if (actual == null && expected == null) {
       return;
     }
@@ -119,11 +121,17 @@ class StatusDatabaseTestHelper {
     StatusDatabaseTestHelper.expectDbStatus(actual, dbStatus);
 
     AccountDatabaseTestHelper.expectDbAccount(
-        actual.account, expected.dbAccount);
+      actual.account,
+      expected.dbAccount,
+    );
     StatusDatabaseTestHelper.expectDbStatus(
-        actual.reblog, expected.reblogDbStatus);
+      actual.reblog,
+      expected.reblogDbStatus,
+    );
     AccountDatabaseTestHelper.expectDbAccount(
-        actual.reblog?.account, expected.reblogDbStatusAccount);
+      actual.reblog?.account,
+      expected.reblogDbStatusAccount,
+    );
   }
 
   static void expectDbStatus(IStatus? actual, DbStatus? expected) {

@@ -19,7 +19,9 @@ class ScheduledStatusTestHelper {
       );
 
   static void expectScheduledStatus(
-      IScheduledStatus? actual, IScheduledStatus? expected) {
+    IScheduledStatus? actual,
+    IScheduledStatus? expected,
+  ) {
     if (actual == null && expected == null) {
       return;
     }

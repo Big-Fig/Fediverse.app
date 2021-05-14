@@ -152,9 +152,11 @@ class PleromaApiMyAccountTestHelper {
         displayName: seed + "displayName",
         fieldsAttributes: {
           0: PleromaApiFieldTestHelper.createTestPleromaApiField(
-              seed: seed + "1"),
+            seed: seed + "1",
+          ),
           1: PleromaApiFieldTestHelper.createTestPleromaApiField(
-              seed: seed + "2"),
+            seed: seed + "2",
+          ),
         },
         locked: seed.hashCode % 2 == 0,
         note: seed + "note",

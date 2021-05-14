@@ -2,12 +2,12 @@ import 'dart:developer';
 
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
-import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc.dart';
 import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc_impl.dart';
@@ -138,7 +138,8 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   }
 
   TimelineTypeSingleFromListValueFormFieldBloc _createTypeField(
-      TimelineType startType) {
+    TimelineType startType,
+  ) {
     return TimelineTypeSingleFromListValueFormFieldBloc(
       originValue: startType,
       validators: [],

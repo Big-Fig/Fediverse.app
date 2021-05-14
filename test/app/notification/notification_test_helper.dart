@@ -33,7 +33,9 @@ class NotificationTestHelper {
   }
 
   static void expectNotification(
-      INotification? actual, INotification? expected) {
+    INotification? actual,
+    INotification? expected,
+  ) {
     if (actual == null && expected == null) {
       return;
     }

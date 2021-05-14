@@ -117,11 +117,12 @@ void main() {
 
   test('PleromaApiAccountPleromaPart hive save&load', () async {
     await HiveTestHelper.testHiveSaveAndLoad(
-        ({required String seed}) =>
-            PleromaApiAccountTestHelper.createTestPleromaApiAccountPleromaPart(
-              seed: seed,
-            ),
-        skipHiveInit: true);
+      ({required String seed}) =>
+          PleromaApiAccountTestHelper.createTestPleromaApiAccountPleromaPart(
+        seed: seed,
+      ),
+      skipHiveInit: true,
+    );
   });
 
   test('PleromaApiAccountPleromaPart hive adapter', () async {
@@ -129,11 +130,12 @@ void main() {
   });
   test('PleromaApiAccountRelationship hive save&load', () async {
     await HiveTestHelper.testHiveSaveAndLoad(
-        ({required String seed}) =>
-            PleromaApiAccountTestHelper.createTestPleromaApiAccountRelationship(
-              seed: seed,
-            ),
-        skipHiveInit: true);
+      ({required String seed}) =>
+          PleromaApiAccountTestHelper.createTestPleromaApiAccountRelationship(
+        seed: seed,
+      ),
+      skipHiveInit: true,
+    );
   });
 
   test('PleromaApiAccountRelationship hive adapter', () async {

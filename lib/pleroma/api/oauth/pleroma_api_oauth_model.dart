@@ -49,9 +49,7 @@ class PleromaApiOAuthToken implements IJsonObject {
           tokenType == other.tokenType;
 
   @override
-  int get hashCode =>
-      accessToken.hashCode ^
-      tokenType.hashCode;
+  int get hashCode => accessToken.hashCode ^ tokenType.hashCode;
 
   static PleromaApiOAuthToken fromJson(Map<String, dynamic> json) =>
       _$PleromaApiOAuthTokenFromJson(json);
@@ -199,7 +197,8 @@ class PleromaApiOAuthAccountTokenRequest implements IJsonObject {
       clientSecret.hashCode;
 
   static PleromaApiOAuthAccountTokenRequest fromJson(
-          Map<String, dynamic> json) =>
+    Map<String, dynamic> json,
+  ) =>
       _$PleromaApiOAuthAccountTokenRequestFromJson(json);
 
   @override

@@ -12,9 +12,11 @@ class PleromaApiSearchTestHelper {
       PleromaApiSearchResult(
         accounts: [
           PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-              seed: seed + "1"),
+            seed: seed + "1",
+          ),
           PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-              seed: seed + "2"),
+            seed: seed + "2",
+          ),
         ],
         hashtags: [
           PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + "1"),
@@ -22,9 +24,11 @@ class PleromaApiSearchTestHelper {
         ],
         statuses: [
           PleromaApiStatusTestHelper.createTestPleromaApiStatus(
-              seed: seed + "1"),
+            seed: seed + "1",
+          ),
           PleromaApiStatusTestHelper.createTestPleromaApiStatus(
-              seed: seed + "2"),
+            seed: seed + "2",
+          ),
         ],
       );
 }

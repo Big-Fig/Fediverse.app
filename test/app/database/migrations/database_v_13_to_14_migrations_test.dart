@@ -80,151 +80,157 @@ void main() {
     );
   });
 
-  test('test dbMigration v13->v14 dbStatus wasSentWithIdempotencyKey',
-      () async {
-    var statusDao = database.statusDao;
+  test(
+    'test dbMigration v13->v14 dbStatus wasSentWithIdempotencyKey',
+    () async {
+      var statusDao = database.statusDao;
 
-    await statusDao.clear(batchTransaction: null);
+      await statusDao.clear(batchTransaction: null);
 
-    expect((await statusDao.getAll()).isNotEmpty, false);
+      expect((await statusDao.getAll()).isNotEmpty, false);
 
-    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
-      seed: "seed1",
-      dbAccount: dbAccount,
-    );
+      var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+        seed: "seed1",
+        dbAccount: dbAccount,
+      );
 
-    var wasSentWithIdempotencyKey = "wasSentWithIdempotencyKey1";
-    dbStatus = dbStatus.copyWith(
-      wasSentWithIdempotencyKey: wasSentWithIdempotencyKey,
-    );
+      var wasSentWithIdempotencyKey = "wasSentWithIdempotencyKey1";
+      dbStatus = dbStatus.copyWith(
+        wasSentWithIdempotencyKey: wasSentWithIdempotencyKey,
+      );
 
-    await statusDao.insert(entity: dbStatus, mode: null);
+      await statusDao.insert(entity: dbStatus, mode: null);
 
-    var all = (await statusDao.getAll());
-    expect(all.length, 1);
+      var all = (await statusDao.getAll());
+      expect(all.length, 1);
 
-    var findByRemoteId =
-        await statusDao.findByRemoteIdPopulated(dbStatus.remoteId);
+      var findByRemoteId =
+          await statusDao.findByRemoteIdPopulated(dbStatus.remoteId);
 
-    var actual = findByRemoteId?.dbStatus;
-    expect(
-      actual?.wasSentWithIdempotencyKey,
-      wasSentWithIdempotencyKey,
-    );
+      var actual = findByRemoteId?.dbStatus;
+      expect(
+        actual?.wasSentWithIdempotencyKey,
+        wasSentWithIdempotencyKey,
+      );
 
-    await statusDao.updateByRemoteId(
-      dbStatus.remoteId,
-      dbStatus.copyWith(
-        wasSentWithIdempotencyKey: "wasSentWithIdempotencyKey2",
-      ),
-    );
+      await statusDao.updateByRemoteId(
+        dbStatus.remoteId,
+        dbStatus.copyWith(
+          wasSentWithIdempotencyKey: "wasSentWithIdempotencyKey2",
+        ),
+      );
 
-    expect((await statusDao.getAll()).length, 1);
+      expect((await statusDao.getAll()).length, 1);
 
-    expect(
-      (await statusDao.findByRemoteIdPopulated(dbStatus.remoteId))
-          ?.dbStatus
-          .wasSentWithIdempotencyKey,
-      "wasSentWithIdempotencyKey2",
-    );
-  });
-  test('test dbMigration v13->v14 dbChatMessage hiddenLocallyOnDevice',
-      () async {
-    var chatMessageDao = database.chatMessageDao;
+      expect(
+        (await statusDao.findByRemoteIdPopulated(dbStatus.remoteId))
+            ?.dbStatus
+            .wasSentWithIdempotencyKey,
+        "wasSentWithIdempotencyKey2",
+      );
+    },
+  );
+  test(
+    'test dbMigration v13->v14 dbChatMessage hiddenLocallyOnDevice',
+    () async {
+      var chatMessageDao = database.chatMessageDao;
 
-    await chatMessageDao.clear(batchTransaction: null);
+      await chatMessageDao.clear(batchTransaction: null);
 
-    expect((await chatMessageDao.getAll()).isNotEmpty, false);
+      expect((await chatMessageDao.getAll()).isNotEmpty, false);
 
-    var dbChatMessage =
-        await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
-      seed: "seed1",
-      dbAccount: dbAccount,
-    );
+      var dbChatMessage =
+          await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
+        seed: "seed1",
+        dbAccount: dbAccount,
+      );
 
-    var hiddenLocallyOnDevice = false;
-    dbChatMessage = dbChatMessage.copyWith(
-      hiddenLocallyOnDevice: hiddenLocallyOnDevice,
-    );
+      var hiddenLocallyOnDevice = false;
+      dbChatMessage = dbChatMessage.copyWith(
+        hiddenLocallyOnDevice: hiddenLocallyOnDevice,
+      );
 
-    await chatMessageDao.insert(entity: dbChatMessage, mode: null);
+      await chatMessageDao.insert(entity: dbChatMessage, mode: null);
 
-    var all = (await chatMessageDao.getAll());
-    expect(all.length, 1);
+      var all = (await chatMessageDao.getAll());
+      expect(all.length, 1);
 
-    var findByRemoteId =
-        await chatMessageDao.findByRemoteIdPopulated(dbChatMessage.remoteId);
+      var findByRemoteId =
+          await chatMessageDao.findByRemoteIdPopulated(dbChatMessage.remoteId);
 
-    var actual = findByRemoteId?.dbChatMessage;
-    expect(
-      actual?.hiddenLocallyOnDevice,
-      hiddenLocallyOnDevice,
-    );
+      var actual = findByRemoteId?.dbChatMessage;
+      expect(
+        actual?.hiddenLocallyOnDevice,
+        hiddenLocallyOnDevice,
+      );
 
-    await chatMessageDao.updateByRemoteId(
-      dbChatMessage.remoteId,
-      dbChatMessage.copyWith(
-        hiddenLocallyOnDevice: true,
-      ),
-    );
+      await chatMessageDao.updateByRemoteId(
+        dbChatMessage.remoteId,
+        dbChatMessage.copyWith(
+          hiddenLocallyOnDevice: true,
+        ),
+      );
 
-    expect((await chatMessageDao.getAll()).length, 1);
+      expect((await chatMessageDao.getAll()).length, 1);
 
-    expect(
-      (await chatMessageDao.findByRemoteIdPopulated(dbChatMessage.remoteId))
-          ?.dbChatMessage
-          .hiddenLocallyOnDevice,
-      true,
-    );
-  });
+      expect(
+        (await chatMessageDao.findByRemoteIdPopulated(dbChatMessage.remoteId))
+            ?.dbChatMessage
+            .hiddenLocallyOnDevice,
+        true,
+      );
+    },
+  );
 
-  test('test dbMigration v13->v14 dbChatMessage wasSentWithIdempotencyKey',
-      () async {
-    var chatMessageDao = database.chatMessageDao;
+  test(
+    'test dbMigration v13->v14 dbChatMessage wasSentWithIdempotencyKey',
+    () async {
+      var chatMessageDao = database.chatMessageDao;
 
-    await chatMessageDao.clear(batchTransaction: null);
+      await chatMessageDao.clear(batchTransaction: null);
 
-    expect((await chatMessageDao.getAll()).isNotEmpty, false);
+      expect((await chatMessageDao.getAll()).isNotEmpty, false);
 
-    var dbChatMessage =
-        await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
-      seed: "seed1",
-      dbAccount: dbAccount,
-    );
+      var dbChatMessage =
+          await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
+        seed: "seed1",
+        dbAccount: dbAccount,
+      );
 
-    var wasSentWithIdempotencyKey = "wasSentWithIdempotencyKey1";
-    dbChatMessage = dbChatMessage.copyWith(
-      wasSentWithIdempotencyKey: wasSentWithIdempotencyKey,
-    );
+      var wasSentWithIdempotencyKey = "wasSentWithIdempotencyKey1";
+      dbChatMessage = dbChatMessage.copyWith(
+        wasSentWithIdempotencyKey: wasSentWithIdempotencyKey,
+      );
 
-    await chatMessageDao.insert(entity: dbChatMessage, mode: null);
+      await chatMessageDao.insert(entity: dbChatMessage, mode: null);
 
-    var all = (await chatMessageDao.getAll());
-    expect(all.length, 1);
+      var all = (await chatMessageDao.getAll());
+      expect(all.length, 1);
 
-    var findByRemoteId =
-        await chatMessageDao.findByRemoteIdPopulated(dbChatMessage.remoteId);
+      var findByRemoteId =
+          await chatMessageDao.findByRemoteIdPopulated(dbChatMessage.remoteId);
 
-    var actual = findByRemoteId?.dbChatMessage;
-    expect(
-      actual?.wasSentWithIdempotencyKey,
-      wasSentWithIdempotencyKey,
-    );
+      var actual = findByRemoteId?.dbChatMessage;
+      expect(
+        actual?.wasSentWithIdempotencyKey,
+        wasSentWithIdempotencyKey,
+      );
 
-    await chatMessageDao.updateByRemoteId(
-      dbChatMessage.remoteId,
-      dbChatMessage.copyWith(
-        wasSentWithIdempotencyKey: "wasSentWithIdempotencyKey2",
-      ),
-    );
+      await chatMessageDao.updateByRemoteId(
+        dbChatMessage.remoteId,
+        dbChatMessage.copyWith(
+          wasSentWithIdempotencyKey: "wasSentWithIdempotencyKey2",
+        ),
+      );
 
-    expect((await chatMessageDao.getAll()).length, 1);
+      expect((await chatMessageDao.getAll()).length, 1);
 
-    expect(
-      (await chatMessageDao.findByRemoteIdPopulated(dbChatMessage.remoteId))
-          ?.dbChatMessage
-          .wasSentWithIdempotencyKey,
-      "wasSentWithIdempotencyKey2",
-    );
-  });
+      expect(
+        (await chatMessageDao.findByRemoteIdPopulated(dbChatMessage.remoteId))
+            ?.dbChatMessage
+            .wasSentWithIdempotencyKey,
+        "wasSentWithIdempotencyKey2",
+      );
+    },
+  );
 }

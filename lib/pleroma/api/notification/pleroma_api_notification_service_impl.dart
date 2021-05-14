@@ -206,7 +206,8 @@ class PleromaApiNotificationService extends BasePleromaApiService
   }
 
   void _checkGetNotificationsIncludeTypes(
-      List<PleromaApiNotificationType>? includeTypes) {
+    List<PleromaApiNotificationType>? includeTypes,
+  ) {
     if (includeTypes?.isNotEmpty == true) {
       assert(restService.isPleroma);
       for (PleromaApiNotificationType includeType in includeTypes!) {

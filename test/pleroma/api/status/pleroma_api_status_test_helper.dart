@@ -29,8 +29,8 @@ class PleromaApiStatusTestHelper {
         language: seed + "language",
         visibility:
             PleromaApiVisibilityTestHelper.createTestPleromaApiVisibility(
-                    seed: seed)
-                .toJsonValue(),
+          seed: seed,
+        ).toJsonValue(),
         mediaIds: [
           seed + "1",
           seed + "2",
@@ -58,8 +58,8 @@ class PleromaApiStatusTestHelper {
         language: seed + "language",
         visibility:
             PleromaApiVisibilityTestHelper.createTestPleromaApiVisibility(
-                    seed: seed)
-                .toJsonValue(),
+          seed: seed,
+        ).toJsonValue(),
         mediaIds: [
           seed + "1",
           seed + "2",
@@ -233,9 +233,11 @@ class PleromaApiStatusTestHelper {
         ],
         emojis: [
           PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(
-              seed: seed + "emoji1"),
+            seed: seed + "emoji1",
+          ),
           PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(
-              seed: seed + "emoji2"),
+            seed: seed + "emoji2",
+          ),
         ],
         poll: PleromaApiPollTestHelper.createTestPleromaApiPoll(seed: seed),
         card: PleromaApiCardTestHelper.createTestPleromaApiCard(seed: seed),

@@ -400,7 +400,8 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   IPleromaApiAccount mapDbPopulatedItemToRemoteItem(
-          DbAccountPopulated dbPopulatedItem) =>
+    DbAccountPopulated dbPopulatedItem,
+  ) =>
       mapDbPopulatedItemToAppItem(dbPopulatedItem).toPleromaApiAccount();
 
   @override

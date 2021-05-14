@@ -63,12 +63,14 @@ class _AuthInstanceChooserInstanceListItemAccountInfoWidget
       onTap: () {
         if (!instanceListItemBloc.isSelected) {
           Navigator.of(context).pop();
-          Future.delayed(Duration(milliseconds: msToWaitBeforeChangeInstance),
-              () {
-            instanceChooserBloc.chooseInstance(
-              instanceListItemBloc.instance,
-            );
-          });
+          Future.delayed(
+            Duration(milliseconds: msToWaitBeforeChangeInstance),
+            () {
+              instanceChooserBloc.chooseInstance(
+                instanceListItemBloc.instance,
+              );
+            },
+          );
         }
       },
       child: Row(

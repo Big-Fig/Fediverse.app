@@ -6,8 +6,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaApiListService implements IPleromaApi {
-  static IPleromaApiListService of(BuildContext context,
-          {bool listen = true}) =>
+  static IPleromaApiListService of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IPleromaApiListService>(context, listen: listen);
 
   Future<List<IPleromaApiList>> getLists();

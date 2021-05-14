@@ -27,11 +27,13 @@ abstract class PopulatedAppRemoteDatabaseDaoRepository<
   RemoteItem mapDbPopulatedItemToRemoteItem(DbPopulatedItem dbPopulatedItem);
 
   List<RemoteItem> mapDbPopulatedItemListToRemoteItemList(
-          List<DbPopulatedItem> dbPopulatedItems) =>
+    List<DbPopulatedItem> dbPopulatedItems,
+  ) =>
       dbPopulatedItems.map(mapDbPopulatedItemToRemoteItem).toList();
 
   RemoteItem? mapDbPopulatedItemToRemoteItemNullable(
-      DbPopulatedItem? dbPopulatedItem) {
+    DbPopulatedItem? dbPopulatedItem,
+  ) {
     if (dbPopulatedItem != null) {
       return mapDbPopulatedItemToRemoteItem(dbPopulatedItem);
     } else {
@@ -48,5 +50,4 @@ abstract class PopulatedAppRemoteDatabaseDaoRepository<
   Future<AppItem?> findByRemoteIdInAppType(RemoteId remoteId) => dao
       .findByRemoteIdPopulated(remoteId)
       .then(mapDbPopulatedItemToAppItemNullable);
-
 }

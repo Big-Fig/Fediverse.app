@@ -22,15 +22,15 @@ class ConversationStatusesDao extends DatabaseDao<
   $DbConversationStatusesTable get table => dbConversationStatuses;
 
   Selectable<DbConversationStatus> findByConversationRemoteId(
-      String conversationRemoteId) {
+    String conversationRemoteId,
+  ) {
     return customSelect(
-        'SELECT * FROM $tableName WHERE conversation_remote_id = :conversationRemoteId;',
-        variables: [
-          Variable<String>(conversationRemoteId)
-        ],
-        readsFrom: {
-          dbConversationStatuses
-        }).map(dbConversationStatuses.mapFromRow);
+      'SELECT * FROM $tableName WHERE conversation_remote_id = :conversationRemoteId;',
+      variables: [
+        Variable<String>(conversationRemoteId),
+      ],
+      readsFrom: {dbConversationStatuses},
+    ).map(dbConversationStatuses.mapFromRow);
   }
 
   Future<int> deleteByConversationRemoteId(String conversationRemoteId) =>
@@ -57,7 +57,8 @@ class ConversationStatusesDao extends DatabaseDao<
   }
 
   CustomExpression<bool> _createConversationRemoteIdEqualExpression(
-      String conversationRemoteId) {
+    String conversationRemoteId,
+  ) {
     return createMainTableEqualWhereExpression(
       fieldName: table.conversationRemoteId.$name,
       value: conversationRemoteId,
@@ -65,7 +66,8 @@ class ConversationStatusesDao extends DatabaseDao<
   }
 
   CustomExpression<bool> _createStatusRemoteIdEqualExpression(
-      String statusRemoteId) {
+    String statusRemoteId,
+  ) {
     return createMainTableEqualWhereExpression(
       fieldName: table.statusRemoteId.$name,
       value: statusRemoteId,

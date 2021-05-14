@@ -87,10 +87,12 @@ extension IPleromaApiStatusExtension on IPleromaApiStatus {
         pinned: pinned,
         reblog: reblog?.toPleromaApiStatus(forceNewObject: forceNewObject),
         application: application?.toPleromaApiApplication(
-            forceNewObject: forceNewObject),
+          forceNewObject: forceNewObject,
+        ),
         account: account.toPleromaApiAccount(forceNewObject: forceNewObject),
         mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(
-            forceNewObject: forceNewObject),
+          forceNewObject: forceNewObject,
+        ),
         mentions:
             mentions?.toPleromaApiMentions(forceNewObject: forceNewObject),
         tags: tags?.toPleromaApiTags(),
@@ -961,7 +963,11 @@ class PleromaApiScheduleStatus
   @override
   final List<String>? to;
 
-  @JsonKey(name: "scheduled_at", toJson: toUTCIsoString, fromJson: fromUTCIsoString)
+  @JsonKey(
+    name: "scheduled_at",
+    toJson: toUTCIsoString,
+    fromJson: fromUTCIsoString,
+  )
   @override
   final DateTime scheduledAt;
 

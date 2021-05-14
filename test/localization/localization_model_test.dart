@@ -17,27 +17,33 @@ void main() {
   test('localeString', () async {
     expect(
       LocalizationLocale(
-              scriptCode: null, languageCode: "en", countryCode: null)
-          .localeString,
+        scriptCode: null,
+        languageCode: "en",
+        countryCode: null,
+      ).localeString,
       "en",
     );
     expect(
       LocalizationLocale(
-              scriptCode: null, languageCode: "en", countryCode: "US")
-          .localeString,
+        scriptCode: null,
+        languageCode: "en",
+        countryCode: "US",
+      ).localeString,
       "en_US",
     );
     expect(
       LocalizationLocale(
-              scriptCode: "Hant", languageCode: "zh", countryCode: "TW")
-          .localeString,
+        scriptCode: "Hant",
+        languageCode: "zh",
+        countryCode: "TW",
+      ).localeString,
       "zh_Hant_TW",
     );
   });
 
   test('hive adapter', () async {
     HiveTestHelper.testAdapter(
-          () => LocalizationLocaleAdapter(),
+      () => LocalizationLocaleAdapter(),
     );
   });
 }

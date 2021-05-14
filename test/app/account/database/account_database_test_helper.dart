@@ -89,11 +89,15 @@ class AccountDatabaseTestHelper {
     expect(actual.pleromaHideFollowers, expected.pleromaHideFollowers);
     expect(actual.pleromaHideFollows, expected.pleromaHideFollows);
     expect(
-        actual.pleromaHideFollowersCount, expected.pleromaHideFollowersCount);
+      actual.pleromaHideFollowersCount,
+      expected.pleromaHideFollowersCount,
+    );
     expect(actual.pleromaHideFollowsCount, expected.pleromaHideFollowsCount);
     expect(actual.pleromaDeactivated, expected.pleromaDeactivated);
     expect(
-        actual.pleromaAllowFollowingMove, expected.pleromaAllowFollowingMove);
+      actual.pleromaAllowFollowingMove,
+      expected.pleromaAllowFollowingMove,
+    );
     expect(
       actual.pleromaSkipThreadContainment,
       expected.pleromaSkipThreadContainment,

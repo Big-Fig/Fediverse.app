@@ -44,6 +44,7 @@ class PleromaApiNotificationTestHelper {
           seed: seed,
         ),
         target: PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-            seed: seed + "report"),
+          seed: seed + "report",
+        ),
       );
 }

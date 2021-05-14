@@ -93,8 +93,8 @@ void main() {
 
     var testHandlingType =
         WebSocketsSettingsModelTestHelper.createTestWebSocketsSettings(
-                seed: "seed")
-            .handlingType;
+      seed: "seed",
+    ).handlingType;
 
     await webSocketsSettingsBloc.changeHandlingType(testHandlingType);
     await Future.delayed(Duration(milliseconds: 100));
