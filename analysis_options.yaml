@@ -24,7 +24,7 @@ dart_code_metrics:
     cyclomatic-complexity: 20
     lines-of-code: 100
     lines-of-executable-code: 65
-#    lines-of-executable-code: 50
+    #    lines-of-executable-code: 50
     maximum-nesting: 5
     weight-of-class: 0.33
     number-of-arguments: 6
@@ -42,9 +42,16 @@ dart_code_metrics:
     - no-magic-number
     - prefer-trailing-comma
     - no-boolean-literal-compare
+    - avoid-returning-widgets
+#    - no-object-declaration
 #    - newline-before-return
 #    - avoid-unused-parameters
+#    - avoid-non-null-assertion
+#    - binary-expression-operand-order
 #    - member-ordering
+#    - member-ordering-extended
+#    - avoid-late-keyword
+#    - double-literal-format
 
 linter:
   rules:
