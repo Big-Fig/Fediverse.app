@@ -35,7 +35,7 @@ class _AccountListAvatarBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accounts = Provider.of<List<IAccount>>(context);
-    if (accounts.isNotEmpty != true) {
+    if (accounts.isEmpty) {
       return const SizedBox.shrink();
     }
 

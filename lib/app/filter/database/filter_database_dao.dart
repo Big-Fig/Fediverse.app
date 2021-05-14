@@ -32,7 +32,7 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
     SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
     List<MastodonApiFilterContextType> contextTypes,
   ) {
-    assert(contextTypes.isNotEmpty == true);
+    assert(contextTypes.isNotEmpty);
 
     List<String> contextTypesStrings = contextTypes
         .map(

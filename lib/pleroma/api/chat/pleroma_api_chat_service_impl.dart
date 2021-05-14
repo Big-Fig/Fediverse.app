@@ -77,8 +77,8 @@ class PleromaApiChatService extends BasePleromaApiService
     required String chatId,
     required String lastReadChatMessageId,
   }) async {
-    assert(chatId.isNotEmpty == true);
-    assert(lastReadChatMessageId.isNotEmpty == true);
+    assert(chatId.isNotEmpty);
+    assert(lastReadChatMessageId.isNotEmpty);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: _urlPath.join(
@@ -102,7 +102,7 @@ class PleromaApiChatService extends BasePleromaApiService
   Future<IPleromaApiChat> getOrCreateChatByAccountId({
     required String accountId,
   }) async {
-    assert(accountId.isNotEmpty == true);
+    assert(accountId.isNotEmpty);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: _urlPath.join(
@@ -123,7 +123,7 @@ class PleromaApiChatService extends BasePleromaApiService
   Future<IPleromaApiChat> getChat({
     required String id,
   }) async {
-    assert(id.isNotEmpty == true);
+    assert(id.isNotEmpty);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: _urlPath.join(
@@ -144,7 +144,7 @@ class PleromaApiChatService extends BasePleromaApiService
     required String chatId,
     required IPleromaApiChatMessageSendData data,
   }) async {
-    assert(chatId.isNotEmpty == true);
+    assert(chatId.isNotEmpty);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: _urlPath.join(

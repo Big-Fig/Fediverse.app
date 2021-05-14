@@ -62,7 +62,7 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
       )
           .listen(
             (newFilters) {
-          if(listEquals(filters, newFilters) != true) {
+          if(!listEquals(filters, newFilters)) {
             filters = newFilters;
             reSubscribeForCount();
           }

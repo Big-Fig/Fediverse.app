@@ -19,7 +19,7 @@ abstract class IMastodonApiPoll {
 }
 
 extension IMastodonPollExtension on IMastodonApiPoll {
-  bool get isPossibleToVote => expired != true && voted != true;
+  bool get isPossibleToVote => !expired && !voted;
 }
 
 abstract class IMastodonPollOption {

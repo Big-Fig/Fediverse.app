@@ -39,11 +39,11 @@ class StatusCachedPaginationListWithNewItemsBloc<
       ),
     );
 
-    if (mergeOwnStatusesImmediately == true) {
+    if (mergeOwnStatusesImmediately) {
       addDisposable(
         streamSubscription: unmergedNewItemsStream.distinct().listen(
           (unmergedNewItems) {
-            if (unmergedNewItems.isNotEmpty == true) {
+            if (unmergedNewItems.isNotEmpty) {
               var firstUnmergedItem = unmergedNewItems.first;
 
               var isOwnFirstUnmergedItem =

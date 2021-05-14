@@ -62,7 +62,7 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   Future<bool> send() async {
     var accountReportRequest = PleromaApiAccountReportRequest(
       accountId: account.remoteId,
-      statusIds: statuses.isNotEmpty == true
+      statusIds: statuses.isNotEmpty
           ? statuses.map((status) => status.remoteId!).toList()
           : null,
       comment: messageStringValueFormFieldBloc.currentValue,

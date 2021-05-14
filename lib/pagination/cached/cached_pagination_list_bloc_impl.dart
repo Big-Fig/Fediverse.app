@@ -27,10 +27,10 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
         pageIndex: nextPageIndex,
         forceToSkipCache: true,
       );
-      if (nextPage.items.isNotEmpty == true) {
+      if (nextPage.items.isNotEmpty) {
         state = FediListSmartRefresherLoadingState.loaded;
       } else {
-        if (nextPage.isActuallyRefreshedFromRemote == true) {
+        if (nextPage.isActuallyRefreshedFromRemote) {
           state = FediListSmartRefresherLoadingState.noData;
         } else {
           state = FediListSmartRefresherLoadingState.failed;
@@ -78,8 +78,8 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
       CachedPaginationPage newPage =
           await paginationBloc.refreshWithoutController();
 
-      if (newPage.items.isNotEmpty == true) {
-        if (newPage.isActuallyRefreshedFromRemote == true) {
+      if (newPage.items.isNotEmpty) {
+        if (newPage.isActuallyRefreshedFromRemote) {
           state = FediListSmartRefresherLoadingState.loaded;
         } else {
           state = FediListSmartRefresherLoadingState.failed;
@@ -93,7 +93,7 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
           }
         }
       } else {
-        if (newPage.isActuallyRefreshedFromRemote == true) {
+        if (newPage.isActuallyRefreshedFromRemote) {
           state = FediListSmartRefresherLoadingState.noData;
         } else {
           state = FediListSmartRefresherLoadingState.failed;

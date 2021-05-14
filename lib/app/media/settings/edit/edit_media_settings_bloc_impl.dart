@@ -61,11 +61,11 @@ class EditMediaSettingsBloc
     bool? newMediaAutoInit = autoInitFieldBloc.currentValue!;
     bool? newMediaAutoPlay = autoPlayFieldBloc.currentValue!;
 
-    if (newMediaAutoPlay == true && oldMediaAutoPlay == false) {
+    if (newMediaAutoPlay && !oldMediaAutoPlay) {
       newMediaAutoInit = true;
       autoInitFieldBloc.changeCurrentValue(newMediaAutoInit);
     }
-    if (newMediaAutoInit == false && oldMediaAutoInit == true) {
+    if (!newMediaAutoInit && oldMediaAutoInit) {
       newMediaAutoPlay = false;
       autoPlayFieldBloc.changeCurrentValue(newMediaAutoPlay);
     }

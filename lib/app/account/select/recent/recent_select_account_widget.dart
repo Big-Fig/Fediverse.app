@@ -123,7 +123,7 @@ class _RecentSelectAccountListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var recentItems = Provider.of<List<IAccount>>(context);
 
-    var recentItemsIsNotEmpty = recentItems.isNotEmpty == true;
+    var recentItemsIsNotEmpty = recentItems.isNotEmpty;
 
     if (recentItemsIsNotEmpty) {
       return ListView(

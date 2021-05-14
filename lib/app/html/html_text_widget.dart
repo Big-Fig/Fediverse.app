@@ -49,7 +49,7 @@ class HtmlTextWidget extends StatelessWidget {
       overflow: settings.textOverflow,
       maxLines: settings.textMaxLines,
     );
-    if (settings.shrinkWrap == true) {
+    if (settings.shrinkWrap) {
       return text;
     } else {
       return Align(

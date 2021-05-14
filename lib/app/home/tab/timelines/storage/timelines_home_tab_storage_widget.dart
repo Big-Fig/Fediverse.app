@@ -352,7 +352,7 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
     var timeline = Provider.of<Timeline>(context);
 
-    var isPossibleToDelete = timeline.isPossibleToDelete == true;
+    var isPossibleToDelete = timeline.isPossibleToDelete;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

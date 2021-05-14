@@ -63,7 +63,7 @@ class RestService extends DisposableOwner implements IRestService {
     var requestType = request.type;
     Map<String, dynamic>? bodyJson = request.bodyJson;
     bodyJson.removeWhere((key, value) => value == null);
-    if (bodyJson.isEmpty == true) {
+    if (bodyJson.isEmpty) {
       bodyJson = null;
     }
     String? requestBodyJson;
@@ -74,7 +74,7 @@ class RestService extends DisposableOwner implements IRestService {
     var requestHeaders = <String, String>{};
     requestHeaders.addAll(request.headers);
     Encoding? encoding;
-    if (request.bodyJson.isNotEmpty == true) {
+    if (request.bodyJson.isNotEmpty) {
       requestHeaders["Content-Type"] = "application/json";
       encoding = _defaultEncoding;
     }
@@ -114,7 +114,7 @@ class RestService extends DisposableOwner implements IRestService {
           rq.body = requestBodyJson!;
           rq.encoding = encoding!;
         }
-        if (requestHeaders.isNotEmpty == true) {
+        if (requestHeaders.isNotEmpty) {
           rq.headers.addAll(requestHeaders);
         }
         responseFuture = http.Client().send(rq).then(http.Response.fromStream);

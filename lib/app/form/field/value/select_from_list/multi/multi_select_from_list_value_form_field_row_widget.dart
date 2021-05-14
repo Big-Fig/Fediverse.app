@@ -139,7 +139,7 @@ class _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>
           builder: (context, snapshot) {
             var currentValueList = snapshot.data ?? [];
             return Text(
-              currentValueList.isNotEmpty == true
+              currentValueList.isNotEmpty
                   ? currentValueList
                       .map(
                         (currentValue) =>

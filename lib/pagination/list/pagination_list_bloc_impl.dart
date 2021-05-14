@@ -151,7 +151,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
         forceToSkipCache: true,
       );
 
-      if (nextPage.items.isNotEmpty == true) {
+      if (nextPage.items.isNotEmpty) {
         state = FediListSmartRefresherLoadingState.loaded;
       } else {
         state = FediListSmartRefresherLoadingState.noData;
@@ -189,7 +189,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       }
       var newPage = await paginationBloc.refreshWithoutController();
 
-      if (newPage.items.isNotEmpty == true) {
+      if (newPage.items.isNotEmpty) {
         state = FediListSmartRefresherLoadingState.loaded;
       } else {
         state = FediListSmartRefresherLoadingState.noData;

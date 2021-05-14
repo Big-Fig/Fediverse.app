@@ -241,7 +241,7 @@ class EditTimelineSettingsBloc
     var oldPreferences = settingsBloc.settingsData;
 
     var onlyFromInstanceExist =
-        onlyFromInstanceFieldBloc.currentValue.isNotEmpty == true;
+        onlyFromInstanceFieldBloc.currentValue.isNotEmpty;
 
     var oldOnlyRemote = oldPreferences?.onlyRemote;
     var oldOnlyLocal = oldPreferences?.onlyLocal;

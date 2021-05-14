@@ -159,7 +159,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
     IStatus? result;
     if (originInReplyToStatus != null && originInReplyToStatusCanceled!) {
       var statuses = statusThreadBloc.statuses;
-      if (mentionedAccts.isNotEmpty == true) {
+      if (mentionedAccts.isNotEmpty) {
         IStatus? statusToReply;
         for (var acct in mentionedAccts) {
 

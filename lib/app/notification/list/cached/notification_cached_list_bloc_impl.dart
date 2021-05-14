@@ -71,7 +71,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
       )
           .listen(
             (newFilters) {
-          if (listEquals(filters, newFilters) != true) {
+          if (!listEquals(filters, newFilters)) {
             // perhaps we should refresh UI list after this?
             filters = newFilters;
           }

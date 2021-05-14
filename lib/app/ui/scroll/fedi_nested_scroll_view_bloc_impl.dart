@@ -21,8 +21,8 @@ class FediNestedScrollViewBloc extends DisposableOwner
       nestedScrollControllerBloc.nestedScrollController;
 
   @override
-  bool? get isNestedScrollViewBodyStartedScroll =>
-      isNestedScrollViewBodyStartedScrollSubject.value;
+  bool get isNestedScrollViewBodyStartedScroll =>
+      isNestedScrollViewBodyStartedScrollSubject.value!;
 
   @override
   Stream<bool> get isNestedScrollViewBodyStartedScrollStream =>
@@ -30,13 +30,13 @@ class FediNestedScrollViewBloc extends DisposableOwner
 
   @override
   bool get isNestedScrollViewBodyNotStartedScroll =>
-      isNestedScrollViewBodyStartedScroll != true;
+      !isNestedScrollViewBodyStartedScroll;
 
   @override
   Stream<bool> get isNestedScrollViewBodyNotStartedScrollStream =>
       isNestedScrollViewBodyStartedScrollStream.map(
         (isNestedScrollViewBodyStartedScroll) =>
-            isNestedScrollViewBodyStartedScroll != true,
+            !isNestedScrollViewBodyStartedScroll,
       );
 
   @override

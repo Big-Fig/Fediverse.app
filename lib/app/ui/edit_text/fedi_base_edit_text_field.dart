@@ -205,7 +205,7 @@ class _SpecialTextSpanBuilder extends SpecialTextSpanBuilder {
     required int index,
   }) {
     // index is end index of start flag, so text start index should be index-(flag.length-1)
-    if (flag.isNotEmpty == true && isStart(flag, _MentionSpecialText.flag)) {
+    if (flag.isNotEmpty && isStart(flag, _MentionSpecialText.flag)) {
       return _MentionSpecialText(
         // todo: why !
         textStyle: textStyle!.copyWith(

@@ -77,7 +77,7 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
 
   T? _mapChannelData(data) {
     if (data is String) {
-      if (data.isNotEmpty == true) {
+      if (data.isNotEmpty) {
         try {
           var json = jsonDecode(data);
           var event = eventParser(json);

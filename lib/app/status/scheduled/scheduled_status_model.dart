@@ -228,7 +228,7 @@ class DbScheduledStatusPopulatedWrapper implements IScheduledStatus {
   DateTime get scheduledAt => dbScheduledStatus.scheduledAt;
 
   @override
-  bool get canceled => dbScheduledStatus.canceled == true;
+  bool get canceled => dbScheduledStatus.canceled;
 
   @override
   int compareTo(IScheduledStatus b) =>

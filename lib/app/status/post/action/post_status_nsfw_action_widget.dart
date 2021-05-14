@@ -25,7 +25,7 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
 
           return FediIconButton(
             icon: Icon(
-              nsfwSensitive == true ? FediIcons.hide : FediIcons.show,
+              nsfwSensitive ? FediIcons.hide : FediIcons.show,
               color: calculateColor(
                 context,
                 nsfwSensitive,

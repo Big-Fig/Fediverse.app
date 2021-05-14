@@ -144,7 +144,7 @@ class PleromaApiTimelineService extends BasePleromaApiService
       relativePath: join("/api/v1/timelines/", relativeTimeLineUrlPath),
       queryArgs: [
         ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
-        if (onlyLocal == true)
+        if (onlyLocal)
           RestRequestQueryArg(
             key: "local",
             value: "true",

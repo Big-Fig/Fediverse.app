@@ -53,7 +53,7 @@ class FcmPushPermissionCheckerBloc extends DisposableOwner
 
   @override
   bool get isNeedCheckPermission =>
-      fcmPushPermissionAskedLocalPreferencesBloc.value != true &&
+      !fcmPushPermissionAskedLocalPreferencesBloc.value &&
       !pushSettingsBloc.isHaveSubscription;
 
   @override

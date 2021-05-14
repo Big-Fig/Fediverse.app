@@ -41,7 +41,7 @@ dart_code_metrics:
     - no-object-declaration
     - no-magic-number
     - prefer-trailing-comma
-#    - no-boolean-literal-compare
+    - no-boolean-literal-compare
 #    - newline-before-return
 #    - avoid-unused-parameters
 #    - member-ordering

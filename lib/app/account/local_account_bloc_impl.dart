@@ -152,7 +152,7 @@ class LocalAccountBloc extends AccountBloc {
       );
     }
 
-    if (isNeedRefreshFromNetworkOnInit == true) {
+    if (isNeedRefreshFromNetworkOnInit) {
       await refreshFromNetwork(
         isNeedPreFetchRelationship: isNeedPreFetchRelationship,
       );
@@ -428,7 +428,7 @@ class LocalAccountBloc extends AccountBloc {
     _logger.finest(() => "refreshAccountRelationship "
         "refreshAccountRelationshipInProgress="
         "$_refreshAccountRelationshipInProgress");
-    if (_refreshAccountRelationshipInProgress != true) {
+    if (!_refreshAccountRelationshipInProgress) {
       _refreshAccountRelationshipInProgress = true;
       var relationships =
           await pleromaAuthAccountService.getRelationshipWithAccounts(
@@ -448,7 +448,7 @@ class LocalAccountBloc extends AccountBloc {
     _logger.finest(() => "requestRefreshFromNetwork start");
 
     var remoteAccount = await loadRemoteAccount();
-    if (isNeedPreFetchRelationship == true) {
+    if (isNeedPreFetchRelationship) {
       await _refreshAccountRelationship(
         remoteAccount.toDbAccountWrapper(),
       );
