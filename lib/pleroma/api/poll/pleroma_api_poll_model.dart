@@ -112,8 +112,9 @@ extension IPleromaApiPollOptionExtension on IPleromaApiPollOption {
 }
 
 extension IPleromaApiPollOptionListExtension on List<IPleromaApiPollOption> {
-  List<PleromaApiPollOption> toPleromaApiPollOptions(
-      {bool forceNewObject = false}) {
+  List<PleromaApiPollOption> toPleromaApiPollOptions({
+    bool forceNewObject = false,
+  }) {
     if (this is List<PleromaApiPollOption> && !forceNewObject) {
       return this as List<PleromaApiPollOption>;
     } else {

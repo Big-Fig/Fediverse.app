@@ -45,7 +45,8 @@ class StatusRebloggedAccountsDao extends DatabaseDao<
   }
 
   CustomExpression<bool> _createStatusRemoteIdEqualExpression(
-      String statusRemoteId) {
+    String statusRemoteId,
+  ) {
     return createMainTableEqualWhereExpression(
       fieldName: table.statusRemoteId.$name,
       value: statusRemoteId,

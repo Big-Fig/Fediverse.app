@@ -72,8 +72,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue =
-        GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
+    var defaultValue = GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.markMediaAsNsfwOnAttach,
@@ -95,8 +94,8 @@ void main() {
 
     var testMarkMediaAsNsfwOnAttach =
         PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
-                seed: "seed")
-            .markMediaAsNsfwOnAttach;
+      seed: "seed",
+    ).markMediaAsNsfwOnAttach;
 
     await postStatusSettingsBloc
         .changeMarkMediaAsNsfwOnAttach(testMarkMediaAsNsfwOnAttach);
@@ -134,8 +133,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue =
-        GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
+    var defaultValue = GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.defaultVisibilityAsPleromaApi,
@@ -157,8 +155,8 @@ void main() {
 
     var testDefaultVisibilityPleroma =
         PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
-                seed: "seed")
-            .defaultVisibilityAsPleromaApi;
+      seed: "seed",
+    ).defaultVisibilityAsPleromaApi;
 
     await postStatusSettingsBloc
         .changeDefaultVisibilityAsPleromaApi(testDefaultVisibilityPleroma);
@@ -185,21 +183,19 @@ void main() {
     await subscriptionListenedPostStatusAgeLimitType.cancel();
   });
 
-
   test('defaultStatusLocale', () async {
     LocalizationLocale? listenedDefaultStatusLocale;
 
     StreamSubscription subscriptionListenedPostStatusAgeLimitType =
-    postStatusSettingsBloc.defaultStatusLocaleStream.listen(
-          (data) {
+        postStatusSettingsBloc.defaultStatusLocaleStream.listen(
+      (data) {
         listenedDefaultStatusLocale = data;
       },
     );
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue =
-        GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
+    var defaultValue = GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.defaultStatusLocale,
@@ -221,8 +217,8 @@ void main() {
 
     var testDefaultStatusLocale =
         PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
-            seed: "seed")
-            .defaultStatusLocale;
+      seed: "seed",
+    ).defaultStatusLocale;
 
     await postStatusSettingsBloc
         .changeDefaultStatusLocale(testDefaultStatusLocale);
@@ -269,7 +265,6 @@ void main() {
       postStatusSettingsBloc.defaultStatusLocale,
       testDefaultStatusLocale,
     );
-
 
     await subscriptionListenedPostStatusAgeLimitType.cancel();
   });

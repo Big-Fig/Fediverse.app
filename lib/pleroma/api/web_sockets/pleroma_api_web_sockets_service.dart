@@ -5,8 +5,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaApiWebSocketsService extends DisposableOwner {
-  static IPleromaApiWebSocketsService of(BuildContext context,
-          {listen = true}) =>
+  static IPleromaApiWebSocketsService of(
+    BuildContext context, {
+    listen = true,
+  }) =>
       Provider.of(context, listen: listen);
 
   /// Returns events that are relevant to user with accountId

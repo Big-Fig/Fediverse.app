@@ -25,7 +25,6 @@ void main() {
     );
   });
 
-
   test('PleromaApiChat copyWith', () async {
     var obj1 = PleromaApiChatTestHelper.createTestPleromaApiChat(
       seed: "seed1",
@@ -39,13 +38,11 @@ void main() {
       unread: obj2.unread,
       account: obj2.account,
       updatedAt: obj2.updatedAt,
-      lastMessage: obj2.lastMessage
+      lastMessage: obj2.lastMessage,
     );
 
     expect(obj1 == obj2, false);
     expect(obj2, obj2Obj1CopyWith);
     expect(obj1, obj1.copyWith());
   });
-
-
 }

@@ -110,18 +110,19 @@ class DbConversationChatPopulatedWrapper implements IConversationChat {
     }
     return DbConversationChatPopulatedWrapper(
       dbConversationPopulated: DbConversationPopulated(
-          dbConversation: dbConversationPopulated.dbConversation.copyWith(
-        id: id ?? localId,
-        remoteId: remoteId ?? this.remoteId,
-        unread: unread != null
-            ? unread > 0
-                ? true
-                : false
-            : this.unread > 0
-                ? true
-                : false,
-        updatedAt: updatedAt ?? this.updatedAt,
-      )),
+        dbConversation: dbConversationPopulated.dbConversation.copyWith(
+          id: id ?? localId,
+          remoteId: remoteId ?? this.remoteId,
+          unread: unread != null
+              ? unread > 0
+                  ? true
+                  : false
+              : this.unread > 0
+                  ? true
+                  : false,
+          updatedAt: updatedAt ?? this.updatedAt,
+        ),
+      ),
     );
   }
 

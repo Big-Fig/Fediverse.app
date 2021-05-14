@@ -233,12 +233,14 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   IPleromaChat mapDbPopulatedItemToAppItem(
-          DbPleromaChatPopulated dbPopulatedItem) =>
+    DbPleromaChatPopulated dbPopulatedItem,
+  ) =>
       dbPopulatedItem.toDbPleromaChatPopulatedWrapper();
 
   @override
   IPleromaApiChat mapDbPopulatedItemToRemoteItem(
-          DbPleromaChatPopulated dbPopulatedItem) =>
+    DbPleromaChatPopulated dbPopulatedItem,
+  ) =>
       dbPopulatedItem.toDbPleromaChatPopulatedWrapper().toPleromaApiChat(
         lastChatMessage: null,
         accounts: [],

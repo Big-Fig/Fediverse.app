@@ -94,7 +94,8 @@ void main() {
             .countConversationsInChatsUnreadBadges;
 
     await chatSettingsBloc.changeCountConversationsInChatsUnreadBadges(
-        testCountConversationsInChatsUnreadBadges);
+      testCountConversationsInChatsUnreadBadges,
+    );
     await Future.delayed(Duration(milliseconds: 100));
 
     expect(
@@ -154,7 +155,8 @@ void main() {
             .replaceConversationsWithPleromaChats;
 
     await chatSettingsBloc.changeReplaceConversationsWithPleromaChats(
-        testCountConversationsInChatsUnreadBadges);
+      testCountConversationsInChatsUnreadBadges,
+    );
     await Future.delayed(Duration(milliseconds: 100));
 
     expect(

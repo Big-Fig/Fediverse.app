@@ -7,8 +7,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 class ChatMessageDatabaseTestHelper {
   static Future<DbChatMessagePopulated> createTestDbChatMessagePopulated(
-      DbChatMessage dbChatMessage,
-      AccountRepository accountRepository,) async {
+    DbChatMessage dbChatMessage,
+    AccountRepository accountRepository,
+  ) async {
     DbChatMessagePopulated dbChatMessagePopulated = DbChatMessagePopulated(
       dbChatMessage: dbChatMessage,
       dbAccount: (await accountRepository.findByRemoteIdInDbType(
@@ -40,8 +41,10 @@ class ChatMessageDatabaseTestHelper {
     return dbChatMessage;
   }
 
-  static void expectDbChatMessagePopulated(IPleromaChatMessage? actual,
-      DbChatMessagePopulated? expected,) {
+  static void expectDbChatMessagePopulated(
+    IPleromaChatMessage? actual,
+    DbChatMessagePopulated? expected,
+  ) {
     if (actual == null && expected == null) {
       return;
     }
@@ -51,8 +54,10 @@ class ChatMessageDatabaseTestHelper {
     ChatMessageDatabaseTestHelper.expectDbChatMessage(actual, dbChatMessage);
   }
 
-  static void expectDbChatMessage(IPleromaChatMessage? actual,
-      DbChatMessage? expected) {
+  static void expectDbChatMessage(
+    IPleromaChatMessage? actual,
+    DbChatMessage? expected,
+  ) {
     if (actual == null && expected == null) {
       return;
     }
@@ -70,8 +75,8 @@ class ChatMessageDatabaseTestHelper {
           actual.mediaAttachments,
           expected.mediaAttachment != null
               ? [
-            expected.mediaAttachment,
-          ]
+                  expected.mediaAttachment,
+                ]
               : null,
         ),
         true,

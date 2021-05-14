@@ -74,8 +74,9 @@ class PleromaApiApplication implements IPleromaApiApplication, IJsonObject {
 
 extension IPleromaApiClientApplicationExtension
     on IPleromaApiClientApplication {
-  PleromaApiClientApplication toPleromaApiClientApplication(
-      {bool forceNewObject = false}) {
+  PleromaApiClientApplication toPleromaApiClientApplication({
+    bool forceNewObject = false,
+  }) {
     if (this is PleromaApiClientApplication && !forceNewObject) {
       return this as PleromaApiClientApplication;
     } else {

@@ -313,8 +313,8 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
 }
 
 Future handleLaunchPushLoaderNotification(
-    NotificationPushLoaderNotification
-        launchOrResumePushLoaderNotification) async {
+  NotificationPushLoaderNotification launchOrResumePushLoaderNotification,
+) async {
   var notification = launchOrResumePushLoaderNotification.notification;
   if (notification.isContainsChat) {
     await navigatorKey.currentState!.push(

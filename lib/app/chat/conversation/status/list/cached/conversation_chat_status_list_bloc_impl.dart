@@ -38,13 +38,14 @@ abstract class ConversationChatStatusListBloc extends AsyncInitLoadingBloc
     required IStatus? olderThan,
   }) async {
     var statuses = await statusRepository.findAllInAppType(
-        filters: _statusRepositoryFilters,
-        pagination: RepositoryPagination<IStatus>(
-          olderThanItem: olderThan,
-          newerThanItem: newerThan,
-          limit: limit,
-        ),
-        orderingTerms: [orderingTermData]);
+      filters: _statusRepositoryFilters,
+      pagination: RepositoryPagination<IStatus>(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
+        limit: limit,
+      ),
+      orderingTerms: [orderingTermData],
+    );
 
     return statuses;
   }

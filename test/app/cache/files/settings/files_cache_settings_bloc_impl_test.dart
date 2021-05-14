@@ -41,8 +41,7 @@ void main() {
 
     await instanceFilesCacheSettingsLocalPreferencesBloc.performAsyncInit();
     filesCacheSettingsBloc = FilesCacheSettingsBloc(
-      globalLocalPreferencesBloc:
-          globalFilesCacheSettingsLocalPreferencesBloc,
+      globalLocalPreferencesBloc: globalFilesCacheSettingsLocalPreferencesBloc,
       instanceLocalPreferencesBloc:
           instanceFilesCacheSettingsLocalPreferencesBloc,
     );
@@ -73,8 +72,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue =
-        GlobalFilesCacheSettingsLocalPreferenceBloc.defaultValue;
+    var defaultValue = GlobalFilesCacheSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.ageLimitType,
@@ -96,11 +94,10 @@ void main() {
 
     var testFilesCacheAgeLimitType =
         FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
-                seed: "seed")
-            .ageLimitType;
+      seed: "seed",
+    ).ageLimitType;
 
-    await filesCacheSettingsBloc
-        .changeAgeLimitType(testFilesCacheAgeLimitType);
+    await filesCacheSettingsBloc.changeAgeLimitType(testFilesCacheAgeLimitType);
     await Future.delayed(Duration(milliseconds: 100));
 
     expect(
@@ -125,11 +122,9 @@ void main() {
   });
 
   test('changeFilesCacheSizeLimitCountType', () async {
-    FilesCacheSizeLimitCountType?
-        listenedFilesCacheSizeLimitCountType;
+    FilesCacheSizeLimitCountType? listenedFilesCacheSizeLimitCountType;
 
-    StreamSubscription
-        subscriptionListenedFilesCacheSizeLimitCountType =
+    StreamSubscription subscriptionListenedFilesCacheSizeLimitCountType =
         filesCacheSettingsBloc.sizeLimitCountTypeStream.listen(
       (data) {
         listenedFilesCacheSizeLimitCountType = data;
@@ -138,8 +133,7 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 100));
 
-    var defaultValue =
-        GlobalFilesCacheSettingsLocalPreferenceBloc.defaultValue;
+    var defaultValue = GlobalFilesCacheSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
       listenedSettingsData?.sizeLimitCountType,
@@ -161,11 +155,11 @@ void main() {
 
     var testFilesCacheSizeLimitCountType =
         FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
-                seed: "seed")
-            .sizeLimitCountType;
+      seed: "seed",
+    ).sizeLimitCountType;
 
-    await filesCacheSettingsBloc.changeSizeLimitCountType(
-        testFilesCacheSizeLimitCountType);
+    await filesCacheSettingsBloc
+        .changeSizeLimitCountType(testFilesCacheSizeLimitCountType);
     await Future.delayed(Duration(milliseconds: 100));
 
     expect(

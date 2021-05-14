@@ -9,8 +9,9 @@ abstract class IPleromaApiMediaAttachment extends IMastodonApiMediaAttachment {
 }
 
 extension IPleromaApiMediaAttachmentExtension on IPleromaApiMediaAttachment {
-  PleromaApiMediaAttachment toPleromaApiMediaAttachment(
-      {bool forceNewObject = false}) {
+  PleromaApiMediaAttachment toPleromaApiMediaAttachment({
+    bool forceNewObject = false,
+  }) {
     if (this is PleromaApiMediaAttachment && !forceNewObject) {
       return this as PleromaApiMediaAttachment;
     } else {
@@ -30,8 +31,9 @@ extension IPleromaApiMediaAttachmentExtension on IPleromaApiMediaAttachment {
 
 extension IPleromaApiMediaAttachmentListExtension
     on List<IPleromaApiMediaAttachment> {
-  List<PleromaApiMediaAttachment> toPleromaApiMediaAttachments(
-      {bool forceNewObject = false}) {
+  List<PleromaApiMediaAttachment> toPleromaApiMediaAttachments({
+    bool forceNewObject = false,
+  }) {
     if (this is List<PleromaApiMediaAttachment> && !forceNewObject) {
       return this as List<PleromaApiMediaAttachment>;
     } else {

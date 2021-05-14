@@ -66,5 +66,6 @@ abstract class IToastSettingsBloc
   Future changePleromaEmojiReaction(bool value);
 
   bool isNotificationTypeEnabled(
-      PleromaApiNotificationType pleromaNotificationType);
+    PleromaApiNotificationType pleromaNotificationType,
+  );
 }

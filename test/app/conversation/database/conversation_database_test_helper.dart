@@ -14,7 +14,9 @@ class ConversationDatabaseTestHelper {
       );
 
   static void expectDbConversation(
-      IConversationChat? actual, DbConversation? expected) {
+    IConversationChat? actual,
+    DbConversation? expected,
+  ) {
     if (actual == null && expected == null) {
       return;
     }

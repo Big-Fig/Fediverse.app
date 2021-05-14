@@ -1044,7 +1044,8 @@ void main() {
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: (await AccountDatabaseTestHelper.createTestDbAccount(
-                    seed: followingAccountRemoteId))
+              seed: followingAccountRemoteId,
+            ))
                 .copyWith(
               remoteId: followingAccountRemoteId,
             ),
@@ -1113,7 +1114,9 @@ void main() {
       batchTransaction: null,
     );
     await StatusRepositoryTestHelper.insertDbStatus(
-        statusRepository, dbStatus1);
+      statusRepository,
+      dbStatus1,
+    );
 
     expect((await query.get()).length, 0);
 
@@ -1139,7 +1142,7 @@ void main() {
       dbAccount: dbAccount,
     ))
         .copyWith(tags: [
-      PleromaApiTagTestHelper.createTestPleromaApiTag(seed: "#dogs")
+      PleromaApiTagTestHelper.createTestPleromaApiTag(seed: "#dogs"),
     ]);
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus3.remoteId,
@@ -1240,7 +1243,9 @@ void main() {
     ))
         .copyWith();
     await StatusRepositoryTestHelper.insertDbStatus(
-        statusRepository, dbStatus2);
+      statusRepository,
+      dbStatus2,
+    );
     await statusRepository.addStatusesToList(
       statusRemoteIds: [dbStatus2.remoteId],
       listRemoteId: "invalidStatusRemoteId",
@@ -1316,7 +1321,9 @@ void main() {
     ))
         .copyWith();
     await StatusRepositoryTestHelper.insertDbStatus(
-        statusRepository, dbStatus1);
+      statusRepository,
+      dbStatus1,
+    );
 
     expect((await query.get()).length, 0);
 
@@ -1326,7 +1333,9 @@ void main() {
     ))
         .copyWith();
     await StatusRepositoryTestHelper.insertDbStatus(
-        statusRepository, dbStatus2);
+      statusRepository,
+      dbStatus2,
+    );
     await statusRepository.addStatusesToConversation(
       statusRemoteIds: [dbStatus2.remoteId],
       conversationRemoteId: "invalidConversationId",
@@ -1341,7 +1350,9 @@ void main() {
     ))
         .copyWith();
     await StatusRepositoryTestHelper.insertDbStatus(
-        statusRepository, dbStatus3);
+      statusRepository,
+      dbStatus3,
+    );
     await statusRepository.addStatusesToConversation(
       statusRemoteIds: [dbStatus3.remoteId],
       conversationRemoteId: conversationRemoteId,
@@ -1364,7 +1375,9 @@ void main() {
     ))
         .copyWith();
     await StatusRepositoryTestHelper.insertDbStatus(
-        statusRepository, dbStatus4);
+      statusRepository,
+      dbStatus4,
+    );
     await statusRepository.addStatusesToConversation(
       statusRemoteIds: [dbStatus4.remoteId],
       conversationRemoteId: conversationRemoteId,
@@ -1378,9 +1391,10 @@ void main() {
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
         onlyFromAccount: DbAccountPopulatedWrapper(
-            dbAccountPopulated: DbAccountPopulated(
-          dbAccount: dbAccount,
-        )),
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount,
+          ),
+        ),
       ),
       pagination: null,
       orderingTermData: null,
@@ -1837,7 +1851,9 @@ void main() {
       content: "aaaa",
     );
     await StatusRepositoryTestHelper.insertDbStatus(
-        statusRepository, dbStatus4);
+      statusRepository,
+      dbStatus4,
+    );
 
     expect((await query.get()).length, 1);
   });
@@ -1892,7 +1908,9 @@ void main() {
       content: "testing",
     );
     await StatusRepositoryTestHelper.insertDbStatus(
-        statusRepository, dbStatus3);
+      statusRepository,
+      dbStatus3,
+    );
 
     expect((await query.get()).length, 1);
 
@@ -2572,9 +2590,13 @@ void main() {
     expect(await statusRepository.countAll(), 0);
 
     var dbItem1 = await StatusDatabaseTestHelper.createTestDbStatus(
-        seed: "seed1", dbAccount: dbAccount.copyWith());
+      seed: "seed1",
+      dbAccount: dbAccount.copyWith(),
+    );
     var dbItem1copy = await StatusDatabaseTestHelper.createTestDbStatus(
-        seed: "seed1", dbAccount: dbAccount.copyWith());
+      seed: "seed1",
+      dbAccount: dbAccount.copyWith(),
+    );
 
     await statusRepository.batch((batch) {
       statusRepository.insertInDbTypeBatch(

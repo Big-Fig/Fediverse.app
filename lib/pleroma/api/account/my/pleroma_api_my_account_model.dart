@@ -386,7 +386,8 @@ extension IPleromaApiMyAccountExtension on IPleromaApiMyAccount {
         avatar: avatar,
         acct: acct,
         pleroma: pleroma?.toPleromaApiMyAccountPleromaPart(
-            forceNewObject: forceNewObject),
+          forceNewObject: forceNewObject,
+        ),
         lastStatusAt: lastStatusAt,
         source:
             source?.toPleromaApiMyAccountSource(forceNewObject: forceNewObject),
@@ -456,8 +457,9 @@ abstract class IPleromaApiMyAccountSource
 }
 
 extension IPleromaApiMyAccountSourceExtension on IPleromaApiMyAccountSource {
-  PleromaApiMyAccountSource toPleromaApiMyAccountSource(
-      {bool forceNewObject = false}) {
+  PleromaApiMyAccountSource toPleromaApiMyAccountSource({
+    bool forceNewObject = false,
+  }) {
     if (this is PleromaApiMyAccountSource && !forceNewObject) {
       return this as PleromaApiMyAccountSource;
     } else {
@@ -480,7 +482,8 @@ extension IPleromaApiMyAccountSourceExtension on IPleromaApiMyAccountSource {
 //@HiveType()
 @HiveType(typeId: -32 + 43)
 @JsonSerializable(explicitToJson: true)
-class PleromaApiMyAccountSource implements IPleromaApiMyAccountSource, IJsonObject {
+class PleromaApiMyAccountSource
+    implements IPleromaApiMyAccountSource, IJsonObject {
   @override
   @HiveField(1)
   final String? privacy;
@@ -704,8 +707,9 @@ abstract class IPleromaApiMyAccountPleromaPart
 
 extension IPleromaApiMyAccountPleromaPartExtension
     on IPleromaApiMyAccountPleromaPart {
-  PleromaApiMyAccountPleromaPart toPleromaApiMyAccountPleromaPart(
-      {bool forceNewObject = false}) {
+  PleromaApiMyAccountPleromaPart toPleromaApiMyAccountPleromaPart({
+    bool forceNewObject = false,
+  }) {
     if (this is PleromaApiMyAccountPleromaPart && !forceNewObject) {
       return this as PleromaApiMyAccountPleromaPart;
     } else {
@@ -1017,7 +1021,8 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
 //@HiveType()
 @HiveType(typeId: -32 + 41)
 @JsonSerializable()
-class PleromaApiMyAccountPleromaPartNotificationsSettings implements IJsonObject {
+class PleromaApiMyAccountPleromaPartNotificationsSettings
+    implements IJsonObject {
   @HiveField(0)
   final bool? followers;
   @HiveField(1)

@@ -8,7 +8,6 @@ import 'pleroma_api_list_test_helper.dart';
 
 // ignore_for_file: no-magic-number
 void main() {
-
   test('PleromaApiList toPleromaApiList', () async {
     var original = PleromaApiListTestHelper.createTestPleromaApiList(
       seed: "seed",
@@ -36,21 +35,21 @@ void main() {
       PleromaApiList.fromJson,
     );
   });
-  test(
-      'PleromaApiList hive save&load',
-          () async {
-        await HiveTestHelper.testHiveSaveAndLoad(
-              ({required String seed}) => PleromaApiListTestHelper
-              .createTestPleromaApiList(
-            seed: seed,
-          ),
-        );
-      });
+  test('PleromaApiList hive save&load', () async {
+    await HiveTestHelper.testHiveSaveAndLoad(
+      ({
+        required String seed,
+      }) =>
+          PleromaApiListTestHelper.createTestPleromaApiList(
+        seed: seed,
+      ),
+    );
+  });
 
   test(
-      'PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter hive adapter',
-          () async {
-        HiveTestHelper.testAdapter(
-                () => PleromaApiListAdapter());
-      });
+    'PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter hive adapter',
+    () async {
+      HiveTestHelper.testAdapter(() => PleromaApiListAdapter());
+    },
+  );
 }

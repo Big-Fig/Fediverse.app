@@ -124,7 +124,9 @@ void main() {
 
   test('chatMessage', () async {
     ChatMessageTestHelper.expectChatMessage(
-        chatMessageBloc.chatMessage, chatMessage);
+      chatMessageBloc.chatMessage,
+      chatMessage,
+    );
 
     var newValue = await ChatMessageTestHelper.createTestChatMessage(
       seed: "seed2",
@@ -148,7 +150,9 @@ void main() {
     await _update(newValue);
 
     ChatMessageTestHelper.expectChatMessage(
-        chatMessageBloc.chatMessage, newValue);
+      chatMessageBloc.chatMessage,
+      newValue,
+    );
     ChatMessageTestHelper.expectChatMessage(listenedValue, newValue);
     await subscription.cancel();
   });

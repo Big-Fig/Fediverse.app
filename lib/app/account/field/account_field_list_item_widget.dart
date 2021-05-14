@@ -37,7 +37,8 @@ class AccountFieldListItemWidget extends StatelessWidget {
         children: [
           Icon(
             _calculateIconData(
-                valueAsRawUrlWithoutSchema: valueAsRawUrlWithoutSchema),
+              valueAsRawUrlWithoutSchema: valueAsRawUrlWithoutSchema,
+            ),
             color: brightness == Brightness.dark
                 ? IFediUiColorTheme.of(context).mediumGrey
                 : IFediUiColorTheme.of(context).white,

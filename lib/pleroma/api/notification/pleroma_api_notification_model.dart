@@ -60,7 +60,6 @@ const _unknownRequestPleromaApiNotificationTypeJsonValue = "unknown";
 
 extension PleromaApiNotificationTypeListExtension
     on List<PleromaApiNotificationType> {
-
   List<PleromaApiNotificationType> valuesWithoutSelected(
     List<PleromaApiNotificationType> valuesToExclude,
   ) =>
@@ -186,7 +185,8 @@ class PleromaApiNotificationPleromaPart {
       );
 
   static PleromaApiNotificationPleromaPart fromJson(
-          Map<String, dynamic> json) =>
+    Map<String, dynamic> json,
+  ) =>
       _$PleromaApiNotificationPleromaPartFromJson(json);
 
   Map<String, dynamic> toJson() =>

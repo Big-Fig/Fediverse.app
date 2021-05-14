@@ -227,7 +227,8 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
         begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
         end: (widget.color ?? theme.accentColor).withOpacity(1.0),
       ).chain(
-          CurveTween(curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit))),
+        CurveTween(curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit)),
+      ),
     );
     super.didChangeDependencies();
   }
@@ -242,7 +243,8 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
           begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
           end: (widget.color ?? theme.accentColor).withOpacity(1.0),
         ).chain(CurveTween(
-            curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit))),
+          curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit),
+        )),
       );
     }
   }
@@ -392,12 +394,16 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
     });
     switch (_mode) {
       case _RefreshIndicatorMode.done:
-        await _scaleController.animateTo(1.0,
-            duration: _kIndicatorScaleDuration);
+        await _scaleController.animateTo(
+          1.0,
+          duration: _kIndicatorScaleDuration,
+        );
         break;
       case _RefreshIndicatorMode.canceled:
-        await _positionController.animateTo(0.0,
-            duration: _kIndicatorScaleDuration);
+        await _positionController.animateTo(
+          0.0,
+          duration: _kIndicatorScaleDuration,
+        );
         break;
       default:
         assert(false);
@@ -418,8 +424,10 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
     _pendingRefreshFuture = completer.future;
     _mode = _RefreshIndicatorMode.snap;
     _positionController
-        .animateTo(1.0 / _kDragSizeFactorLimit,
-            duration: _kIndicatorSnapDuration)
+        .animateTo(
+      1.0 / _kDragSizeFactorLimit,
+      duration: _kIndicatorSnapDuration,
+    )
         .then<void>((void value) {
       if (mounted && _mode == _RefreshIndicatorMode.snap) {
         setState(() {
@@ -488,7 +496,6 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
       return true;
     }());
 
-
     return Stack(
       children: <Widget>[
         child,
@@ -514,7 +521,8 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
                     animation: _positionController,
                     builder: (BuildContext context, Widget? child) =>
                         FediCircularProgressIndicator.buildForRefreshIndicator(
-                            context),
+                      context,
+                    ),
                   ),
                 ),
               ),

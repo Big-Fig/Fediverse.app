@@ -486,7 +486,8 @@ Future<void> main() async {
     );
 
     var reblog = await StatusTestHelper.createTestStatus(
-        seed: "accountReblogOrOriginal");
+      seed: "accountReblogOrOriginal",
+    );
 
     var reblogValue = await AccountTestHelper.createTestAccount(seed: "reblog");
     var newValue = await AccountTestHelper.createTestAccount(seed: "test");
@@ -724,7 +725,7 @@ Future<void> main() async {
     var newValue = [
       PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
         seed: "seed",
-      )
+      ),
     ];
 
     var listenedValue;
@@ -799,7 +800,8 @@ Future<void> main() async {
     );
 
     var reblog = await StatusTestHelper.createTestStatus(
-        seed: "reblogPlusOriginalEmojiReactions");
+      seed: "reblogPlusOriginalEmojiReactions",
+    );
 
     var reblogEmojiAccount =
         await AccountTestHelper.createTestAccount(seed: "reblogEmojiAccount");

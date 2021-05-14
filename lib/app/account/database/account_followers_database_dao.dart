@@ -23,9 +23,10 @@ class AccountFollowersDao extends DatabaseDao<
 
   Selectable<DbAccountFollower> findByAccountRemoteId(String accountRemoteId) {
     return customSelect(
-        'SELECT * FROM $tableName WHERE account_remote_id = :accountRemoteId;',
-        variables: [Variable<String>(accountRemoteId)],
-        readsFrom: {dbAccountFollowers}).map(dbAccountFollowers.mapFromRow);
+      'SELECT * FROM $tableName WHERE account_remote_id = :accountRemoteId;',
+      variables: [Variable<String>(accountRemoteId)],
+      readsFrom: {dbAccountFollowers},
+    ).map(dbAccountFollowers.mapFromRow);
   }
 
   Future<int> deleteByAccountRemoteIdAndFollowerAccountRemoteId({
@@ -47,11 +48,13 @@ class AccountFollowersDao extends DatabaseDao<
   }) async {
     if (batchTransaction != null) {
       batchTransaction.deleteWhere(
-          table,
-          (tbl) =>
-              _createAccountRemoteIdEqualExpression(accountRemoteId) &
-              _createFollowerAccountRemoteIdEqualExpression(
-                  followerAccountRemoteId));
+        table,
+        (tbl) =>
+            _createAccountRemoteIdEqualExpression(accountRemoteId) &
+            _createFollowerAccountRemoteIdEqualExpression(
+              followerAccountRemoteId,
+            ),
+      );
     } else {
       return await deleteByAccountRemoteIdAndFollowerAccountRemoteId(
         accountRemoteId: accountRemoteId,
@@ -82,7 +85,8 @@ class AccountFollowersDao extends DatabaseDao<
   }
 
   CustomExpression<bool> _createAccountRemoteIdEqualExpression(
-      String accountRemoteId) {
+    String accountRemoteId,
+  ) {
     return createMainTableEqualWhereExpression(
       fieldName: table.accountRemoteId.$name,
       value: accountRemoteId,
@@ -105,7 +109,8 @@ class AccountFollowersDao extends DatabaseDao<
       batchTransaction.deleteWhere(
         table,
         (tbl) => _createFollowerAccountRemoteIdEqualExpression(
-            followerAccountRemoteId),
+          followerAccountRemoteId,
+        ),
       );
     } else {
       return await deleteByFollowerAccountRemoteId(followerAccountRemoteId);
@@ -113,7 +118,8 @@ class AccountFollowersDao extends DatabaseDao<
   }
 
   CustomExpression<bool> _createFollowerAccountRemoteIdEqualExpression(
-      String followerAccountRemoteId) {
+    String followerAccountRemoteId,
+  ) {
     return createMainTableEqualWhereExpression(
       fieldName: table.followerAccountRemoteId.$name,
       value: followerAccountRemoteId,

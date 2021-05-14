@@ -29,7 +29,9 @@ abstract class IPleromaChatMessage extends IChatMessage
   });
 
   static int compareItemsToSort(
-      IPleromaChatMessage? a, IPleromaChatMessage? b) {
+    IPleromaChatMessage? a,
+    IPleromaChatMessage? b,
+  ) {
     if (a?.createdAt == null && b?.createdAt == null) {
       return 0;
     } else if (a?.createdAt != null && b?.createdAt == null) {

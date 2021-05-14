@@ -22,7 +22,8 @@ class PleromaApiChatMessageTestHelper {
         ],
         mediaAttachment:
             PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
-                seed: seed),
+          seed: seed,
+        ),
         card: PleromaApiCardTestHelper.createTestPleromaApiCard(
           seed: seed,
         ),

@@ -104,7 +104,8 @@ void main() {
 
     dbConversation =
         await ConversationDatabaseTestHelper.createTestDbConversation(
-            seed: "seed4");
+      seed: "seed4",
+    );
   });
 
   tearDown(() async {
@@ -129,12 +130,14 @@ void main() {
   test('upsertAll', () async {
     var dbConversation1 =
         (await ConversationDatabaseTestHelper.createTestDbConversation(
-                seed: "seed5"))
+      seed: "seed5",
+    ))
             .copyWith(remoteId: "remoteId1");
     // same remote id
     var dbConversation2 =
         (await ConversationDatabaseTestHelper.createTestDbConversation(
-                seed: "seed6"))
+      seed: "seed6",
+    ))
             .copyWith(remoteId: "remoteId1");
 
     await conversationRepository.upsertAllInDbType(
@@ -169,8 +172,10 @@ void main() {
       batchTransaction: null,
     );
 
-    expect((await conversationRepository.findByDbIdInAppType(id))!.remoteId,
-        "newRemoteId");
+    expect(
+      (await conversationRepository.findByDbIdInAppType(id))!.remoteId,
+      "newRemoteId",
+    );
   });
 
   test('updateLocalConversationByRemoteConversation', () async {
@@ -227,8 +232,10 @@ void main() {
       batchTransaction: null,
     );
 
-    expect((await conversationRepository.findByDbIdInAppType(id))!.remoteId,
-        newRemoteId);
+    expect(
+      (await conversationRepository.findByDbIdInAppType(id))!.remoteId,
+      newRemoteId,
+    );
     expect(
       (await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId))!
           .acct,
@@ -430,7 +437,8 @@ void main() {
 
     await conversationRepository.insertInDbType(
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed1"))
+        seed: "seed1",
+      ))
           .copyWith(),
       mode: null,
     );
@@ -439,7 +447,8 @@ void main() {
 
     await conversationRepository.insertInDbType(
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed2"))
+        seed: "seed2",
+      ))
           .copyWith(),
       mode: null,
     );
@@ -448,7 +457,8 @@ void main() {
 
     await conversationRepository.insertInDbType(
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed3"))
+        seed: "seed3",
+      ))
           .copyWith(),
       mode: null,
     );
@@ -502,8 +512,11 @@ void main() {
       await ConversationRepositoryTestHelper.insertDbConversation(
         conversationRepository,
         (await ConversationDatabaseTestHelper.createTestDbConversation(
-                seed: "seed2"))
-            .copyWith(remoteId: "remoteId4"),
+          seed: "seed2",
+        ))
+            .copyWith(
+          remoteId: "remoteId4",
+        ),
       );
 
       expect((await query.get()).length, 0);
@@ -511,8 +524,11 @@ void main() {
       await ConversationRepositoryTestHelper.insertDbConversation(
         conversationRepository,
         (await ConversationDatabaseTestHelper.createTestDbConversation(
-                seed: "seed2"))
-            .copyWith(remoteId: "remoteId5"),
+          seed: "seed2",
+        ))
+            .copyWith(
+          remoteId: "remoteId5",
+        ),
       );
 
       expect((await query.get()).length, 0);
@@ -520,7 +536,8 @@ void main() {
       await ConversationRepositoryTestHelper.insertDbConversation(
         conversationRepository,
         (await ConversationDatabaseTestHelper.createTestDbConversation(
-                seed: "seed1"))
+          seed: "seed1",
+        ))
             .copyWith(remoteId: "remoteId6"),
       );
 
@@ -528,7 +545,8 @@ void main() {
       await ConversationRepositoryTestHelper.insertDbConversation(
         conversationRepository,
         (await ConversationDatabaseTestHelper.createTestDbConversation(
-                seed: "seed1"))
+          seed: "seed1",
+        ))
             .copyWith(remoteId: "remoteId7"),
       );
 
@@ -552,7 +570,8 @@ void main() {
     await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed2"))
+        seed: "seed2",
+      ))
           .copyWith(remoteId: "remoteId3"),
     );
 
@@ -560,8 +579,11 @@ void main() {
     await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed2"))
-          .copyWith(remoteId: "remoteId4"),
+        seed: "seed2",
+      ))
+          .copyWith(
+        remoteId: "remoteId4",
+      ),
     );
 
     expect((await query.get()).length, 2);
@@ -569,8 +591,11 @@ void main() {
     await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed2"))
-          .copyWith(remoteId: "remoteId5"),
+        seed: "seed2",
+      ))
+          .copyWith(
+        remoteId: "remoteId5",
+      ),
     );
 
     expect((await query.get()).length, 2);
@@ -578,8 +603,11 @@ void main() {
     await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed1"))
-          .copyWith(remoteId: "remoteId6"),
+        seed: "seed1",
+      ))
+          .copyWith(
+        remoteId: "remoteId6",
+      ),
     );
 
     expect((await query.get()).length, 2);
@@ -605,8 +633,11 @@ void main() {
     await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed1"))
-          .copyWith(remoteId: "remoteId1"),
+        seed: "seed1",
+      ))
+          .copyWith(
+        remoteId: "remoteId1",
+      ),
     );
 
     expect((await query.get()).length, 0);
@@ -614,16 +645,22 @@ void main() {
     await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed2"))
-          .copyWith(remoteId: "remoteId2"),
+        seed: "seed2",
+      ))
+          .copyWith(
+        remoteId: "remoteId2",
+      ),
     );
 
     expect((await query.get()).length, 0);
     await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed3"))
-          .copyWith(remoteId: "remoteId3"),
+        seed: "seed3",
+      ))
+          .copyWith(
+        remoteId: "remoteId3",
+      ),
     );
 
     expect((await query.get()).length, 1);
@@ -631,8 +668,11 @@ void main() {
     await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed4"))
-          .copyWith(remoteId: "remoteId4"),
+        seed: "seed4",
+      ))
+          .copyWith(
+        remoteId: "remoteId4",
+      ),
     );
 
     expect((await query.get()).length, 2);
@@ -640,8 +680,11 @@ void main() {
     await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed5"))
-          .copyWith(remoteId: "remoteId5"),
+        seed: "seed5",
+      ))
+          .copyWith(
+        remoteId: "remoteId5",
+      ),
     );
 
     expect((await query.get()).length, 2);
@@ -649,8 +692,11 @@ void main() {
     await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed6"))
-          .copyWith(remoteId: "remoteId6"),
+        seed: "seed6",
+      ))
+          .copyWith(
+        remoteId: "remoteId6",
+      ),
     );
 
     expect((await query.get()).length, 2);
@@ -667,33 +713,51 @@ void main() {
         await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed2"))
-          .copyWith(remoteId: "remoteId2"),
+        seed: "seed2",
+      ))
+          .copyWith(
+        remoteId: "remoteId2",
+      ),
     );
     var conversation1 =
         await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed1"))
-          .copyWith(remoteId: "remoteId1"),
+        seed: "seed1",
+      ))
+          .copyWith(
+        remoteId: "remoteId1",
+      ),
     );
     var conversation3 =
         await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed3"))
-          .copyWith(remoteId: "remoteId3"),
+        seed: "seed3",
+      ))
+          .copyWith(
+        remoteId: "remoteId3",
+      ),
     );
 
     var actualList = (await query.get());
-    expect(actualList.length, 3);
+    expect(
+      actualList.length,
+      3,
+    );
 
     ConversationDatabaseTestHelper.expectDbConversation(
-        actualList[0], conversation1);
+      actualList[0],
+      conversation1,
+    );
     ConversationDatabaseTestHelper.expectDbConversation(
-        actualList[1], conversation2);
+      actualList[1],
+      conversation2,
+    );
     ConversationDatabaseTestHelper.expectDbConversation(
-        actualList[2], conversation3);
+      actualList[2],
+      conversation3,
+    );
   });
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
@@ -707,33 +771,48 @@ void main() {
         await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed2"))
-          .copyWith(remoteId: "remoteId2"),
+        seed: "seed2",
+      ))
+          .copyWith(
+        remoteId: "remoteId2",
+      ),
     );
     var conversation1 =
         await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed1"))
-          .copyWith(remoteId: "remoteId1"),
+        seed: "seed1",
+      ))
+          .copyWith(
+        remoteId: "remoteId1",
+      ),
     );
     var conversation3 =
         await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed3"))
-          .copyWith(remoteId: "remoteId3"),
+        seed: "seed3",
+      ))
+          .copyWith(
+        remoteId: "remoteId3",
+      ),
     );
 
     var actualList = (await query.get());
     expect(actualList.length, 3);
 
     ConversationDatabaseTestHelper.expectDbConversation(
-        actualList[0], conversation3);
+      actualList[0],
+      conversation3,
+    );
     ConversationDatabaseTestHelper.expectDbConversation(
-        actualList[1], conversation2);
+      actualList[1],
+      conversation2,
+    );
     ConversationDatabaseTestHelper.expectDbConversation(
-        actualList[2], conversation1);
+      actualList[2],
+      conversation1,
+    );
   });
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
@@ -750,19 +829,22 @@ void main() {
         await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed2"))
+        seed: "seed2",
+      ))
           .copyWith(remoteId: "remoteId2"),
     );
     await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed1"))
+        seed: "seed1",
+      ))
           .copyWith(remoteId: "remoteId1"),
     );
     await ConversationRepositoryTestHelper.insertDbConversation(
       conversationRepository,
       (await ConversationDatabaseTestHelper.createTestDbConversation(
-              seed: "seed3"))
+        seed: "seed3",
+      ))
           .copyWith(remoteId: "remoteId3"),
     );
 
@@ -770,17 +852,21 @@ void main() {
     expect(actualList.length, 1);
 
     ConversationDatabaseTestHelper.expectDbConversation(
-        actualList[0], conversation2);
+      actualList[0],
+      conversation2,
+    );
   });
 
   test('insertInDbTypeBatch duplicated', () async {
     expect(await conversationRepository.countAll(), 0);
 
     var dbItem1 = await ConversationDatabaseTestHelper.createTestDbConversation(
-        seed: "seed1");
+      seed: "seed1",
+    );
     var dbItem1copy =
         await ConversationDatabaseTestHelper.createTestDbConversation(
-            seed: "seed1");
+      seed: "seed1",
+    );
 
     await conversationRepository.batch((batch) {
       conversationRepository.insertInDbTypeBatch(
@@ -876,22 +962,25 @@ void main() {
     await accountRepository.conversationAccountsDao.batch((batch) {
       accountRepository.conversationAccountsDao.upsertBatch(
         entity: DbConversationAccount(
-            conversationRemoteId: "conversationRemoteId",
-            accountRemoteId: "accountRemoteId"),
+          conversationRemoteId: "conversationRemoteId",
+          accountRemoteId: "accountRemoteId",
+        ),
         // mode: InsertMode.insertOrReplace,
         batchTransaction: batch,
       );
       accountRepository.conversationAccountsDao.upsertBatch(
         entity: DbConversationAccount(
-            conversationRemoteId: "conversationRemoteId",
-            accountRemoteId: "accountRemoteId"),
+          conversationRemoteId: "conversationRemoteId",
+          accountRemoteId: "accountRemoteId",
+        ),
         // mode: InsertMode.insertOrReplace,
         batchTransaction: batch,
       );
       accountRepository.conversationAccountsDao.upsertBatch(
         entity: DbConversationAccount(
-            conversationRemoteId: "conversationRemoteId",
-            accountRemoteId: "accountRemoteId"),
+          conversationRemoteId: "conversationRemoteId",
+          accountRemoteId: "accountRemoteId",
+        ),
         // mode: InsertMode.insertOrReplace,
         batchTransaction: batch,
       );

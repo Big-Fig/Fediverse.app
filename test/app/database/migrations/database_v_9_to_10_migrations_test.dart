@@ -25,47 +25,49 @@ void main() {
     expect(database.migrationsToExecuted, database.schemaVersion);
   });
 
-  test('test dbMigration v9->v10 dbAccounts pleromaAcceptsChatMessages',
-      () async {
-    var accountDao = database.accountDao;
+  test(
+    'test dbMigration v9->v10 dbAccounts pleromaAcceptsChatMessages',
+    () async {
+      var accountDao = database.accountDao;
 
-    await accountDao.clear(batchTransaction: null);
+      await accountDao.clear(batchTransaction: null);
 
-    expect((await accountDao.getAll()).isNotEmpty, false);
+      expect((await accountDao.getAll()).isNotEmpty, false);
 
-    var dbAccount =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed");
+      var dbAccount =
+          await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed");
 
-    var pleromaAcceptsChatMessages = true;
-    dbAccount = dbAccount.copyWith(
-      pleromaAcceptsChatMessages: pleromaAcceptsChatMessages,
-    );
+      var pleromaAcceptsChatMessages = true;
+      dbAccount = dbAccount.copyWith(
+        pleromaAcceptsChatMessages: pleromaAcceptsChatMessages,
+      );
 
-    await accountDao.insert(entity: dbAccount, mode: null);
+      await accountDao.insert(entity: dbAccount, mode: null);
 
-    expect((await accountDao.getAll()).length, 1);
+      expect((await accountDao.getAll()).length, 1);
 
-    expect(
-      (await accountDao.findByRemoteIdPopulated(dbAccount.remoteId))
-          ?.dbAccount
-          .pleromaAcceptsChatMessages,
-      pleromaAcceptsChatMessages,
-    );
+      expect(
+        (await accountDao.findByRemoteIdPopulated(dbAccount.remoteId))
+            ?.dbAccount
+            .pleromaAcceptsChatMessages,
+        pleromaAcceptsChatMessages,
+      );
 
-    await accountDao.updateByRemoteId(
-      dbAccount.remoteId,
-      dbAccount.copyWith(
-        pleromaAcceptsChatMessages: false,
-      ),
-    );
+      await accountDao.updateByRemoteId(
+        dbAccount.remoteId,
+        dbAccount.copyWith(
+          pleromaAcceptsChatMessages: false,
+        ),
+      );
 
-    expect((await accountDao.getAll()).length, 1);
+      expect((await accountDao.getAll()).length, 1);
 
-    expect(
-      (await accountDao.findByRemoteIdPopulated(dbAccount.remoteId))
-          ?.dbAccount
-          .pleromaAcceptsChatMessages,
-      false,
-    );
-  });
+      expect(
+        (await accountDao.findByRemoteIdPopulated(dbAccount.remoteId))
+            ?.dbAccount
+            .pleromaAcceptsChatMessages,
+        false,
+      );
+    },
+  );
 }

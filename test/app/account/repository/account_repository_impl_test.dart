@@ -47,7 +47,9 @@ void main() {
     );
     assert(id > 0, true);
     AccountDatabaseTestHelper.expectDbAccount(
-        await accountRepository.findByDbIdInAppType(id), dbAccount1);
+      await accountRepository.findByDbIdInAppType(id),
+      dbAccount1,
+    );
   });
 
   test('updateById', () async {
@@ -63,7 +65,9 @@ void main() {
       batchTransaction: null,
     );
     AccountDatabaseTestHelper.expectDbAccount(
-        await accountRepository.findByDbIdInAppType(id), dbAccount2);
+      await accountRepository.findByDbIdInAppType(id),
+      dbAccount2,
+    );
   });
 
   test('updateLocalAccountByRemoteAccount', () async {
@@ -267,9 +271,13 @@ void main() {
     );
 
     var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
-        seed: "seedStatus", dbAccount: dbAccount1);
+      seed: "seedStatus",
+      dbAccount: dbAccount1,
+    );
     var status = await StatusDatabaseTestHelper.createTestDbStatusPopulated(
-        dbStatus, accountRepository);
+      dbStatus,
+      accountRepository,
+    );
     var query = accountRepository.createQuery(
       filters: AccountRepositoryFilters(
         onlyInStatusFavouritedBy:
@@ -339,9 +347,13 @@ void main() {
     );
 
     var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
-        seed: "seedStatus", dbAccount: dbAccount1);
+      seed: "seedStatus",
+      dbAccount: dbAccount1,
+    );
     var status = await StatusDatabaseTestHelper.createTestDbStatusPopulated(
-        dbStatus, accountRepository);
+      dbStatus,
+      accountRepository,
+    );
     var query = accountRepository.createQuery(
       filters: AccountRepositoryFilters(
         onlyInStatusRebloggedBy:
@@ -431,7 +443,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaApiAccount()
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -487,7 +499,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaApiAccount()
+        ).toPleromaApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -587,7 +599,9 @@ void main() {
       filters: null,
       pagination: RepositoryPagination<IAccount>(
         newerThanItem: await AccountTestHelper.createTestAccount(
-            seed: "seed5", remoteId: "remoteId5"),
+          seed: "seed5",
+          remoteId: "remoteId5",
+        ),
       ),
       orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
     );
@@ -673,9 +687,13 @@ void main() {
       filters: null,
       pagination: RepositoryPagination<IAccount>(
         olderThanItem: await AccountTestHelper.createTestAccount(
-            seed: "seed5", remoteId: "remoteId5"),
+          seed: "seed5",
+          remoteId: "remoteId5",
+        ),
         newerThanItem: await AccountTestHelper.createTestAccount(
-            seed: "seed2", remoteId: "remoteId2"),
+          seed: "seed2",
+          remoteId: "remoteId2",
+        ),
       ),
       orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
     );
@@ -683,7 +701,9 @@ void main() {
     await AccountRepositoryTestHelper.insertDbAccount(
       accountRepository,
       (await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed1"))
-          .copyWith(remoteId: "remoteId1"),
+          .copyWith(
+        remoteId: "remoteId1",
+      ),
     );
 
     expect((await query.get()).length, 0);

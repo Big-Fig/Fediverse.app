@@ -10,8 +10,8 @@ part 'status_lists_database_dao.g.dart';
     DbStatusLists,
   ],
 )
-class StatusListsDao extends DatabaseDao<DbStatusList, int,
-    $DbStatusListsTable, $DbStatusListsTable> with _$StatusListsDaoMixin {
+class StatusListsDao extends DatabaseDao<DbStatusList, int, $DbStatusListsTable,
+    $DbStatusListsTable> with _$StatusListsDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
@@ -22,9 +22,10 @@ class StatusListsDao extends DatabaseDao<DbStatusList, int,
 
   Selectable<DbStatusList> findByListRemoteId(String listRemoteId) {
     return customSelect(
-        'SELECT * FROM $tableName WHERE list_remote_id = :listRemoteId;',
-        variables: [Variable<String>(listRemoteId)],
-        readsFrom: {dbStatusLists}).map(dbStatusLists.mapFromRow);
+      'SELECT * FROM $tableName WHERE list_remote_id = :listRemoteId;',
+      variables: [Variable<String>(listRemoteId)],
+      readsFrom: {dbStatusLists},
+    ).map(dbStatusLists.mapFromRow);
   }
 
   Future<int> deleteByListRemoteId(String listRemoteId) => customUpdate(
@@ -49,7 +50,8 @@ class StatusListsDao extends DatabaseDao<DbStatusList, int,
   }
 
   CustomExpression<bool> _createListRemoteIdEqualExpression(
-      String listRemoteId) {
+    String listRemoteId,
+  ) {
     return createMainTableEqualWhereExpression(
       fieldName: table.listRemoteId.$name,
       value: listRemoteId,

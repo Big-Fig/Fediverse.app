@@ -29,7 +29,9 @@ class FilterDatabaseTestHelper {
   }
 
   static void expectDbFilterPopulated(
-      IFilter actual, DbFilterPopulated expected) {
+    IFilter actual,
+    DbFilterPopulated expected,
+  ) {
     expect(actual.localId != null, true);
     var dbFilter = expected.dbFilter;
     FilterDatabaseTestHelper.expectDbFilter(actual, dbFilter);
@@ -64,7 +66,8 @@ class FilterDatabaseTestHelper {
   }
 
   static Future<DbFilterPopulated> createTestFilterPopulated(
-      DbFilter dbFilter) async {
+    DbFilter dbFilter,
+  ) async {
     DbFilterPopulated dbFilterPopulated = DbFilterPopulated(
       dbFilter: dbFilter,
     );

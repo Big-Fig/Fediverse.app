@@ -57,7 +57,8 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
 
   @override
   IDraftStatus mapDbPopulatedItemToAppItem(
-          DbDraftStatusPopulated dbPopulatedItem) =>
+    DbDraftStatusPopulated dbPopulatedItem,
+  ) =>
       dbPopulatedItem.toDbDraftStatusPopulatedWrapper();
 
   @override
@@ -85,11 +86,12 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
     required int dbId,
     required DbDraftStatus dbItem,
     required Batch? batchTransaction,
-  }) => insertInDbTypeBatch(
-      dbItem.copyWith(
-        id: dbId,
-      ),
-      mode: InsertMode.insertOrReplace,
-      batchTransaction: batchTransaction,
-    );
+  }) =>
+      insertInDbTypeBatch(
+        dbItem.copyWith(
+          id: dbId,
+        ),
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
+      );
 }

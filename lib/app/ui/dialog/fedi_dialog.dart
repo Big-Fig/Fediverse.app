@@ -40,15 +40,18 @@ abstract class FediDialog extends BaseDialog {
       builder: (context, snapshot) {
         var enabled = snapshot.data!;
         return StreamBuilder<bool>(
-            initialData: action.isActionVisibleFetcher != null
-                ? action.isActionVisibleFetcher!(context)
-                : true,
-            stream: action.isActionVisibleStreamFetcher != null
-                ? action.isActionVisibleStreamFetcher!(context)
-                : Stream.value(true),
-          builder: (context, snapshot) {
+          initialData: action.isActionVisibleFetcher != null
+              ? action.isActionVisibleFetcher!(context)
+              : true,
+          stream: action.isActionVisibleStreamFetcher != null
+              ? action.isActionVisibleStreamFetcher!(context)
+              : Stream.value(true),
+          builder: (
+            context,
+            snapshot,
+          ) {
             var visible = snapshot.data!;
-            if(!visible) {
+            if (!visible) {
               return SizedBox.shrink();
             }
             return FediTransparentTextButtonWithBorder(
@@ -63,7 +66,7 @@ abstract class FediDialog extends BaseDialog {
               color: action.customColor ?? (enabled ? color : disabledColor),
               expanded: true,
             );
-          }
+          },
         );
       },
     );

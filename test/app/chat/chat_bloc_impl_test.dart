@@ -1,9 +1,9 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
-import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
@@ -248,7 +248,9 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
 
     ChatMessageTestHelper.expectChatMessage(
-        chatBloc.lastChatMessage, chatMessage1);
+      chatBloc.lastChatMessage,
+      chatMessage1,
+    );
     ChatMessageTestHelper.expectChatMessage(listenedValue, chatMessage1);
 
     await chatMessageRepository.upsertInRemoteType(
@@ -265,7 +267,9 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
 
     ChatMessageTestHelper.expectChatMessage(
-        chatBloc.lastChatMessage, chatMessage2);
+      chatBloc.lastChatMessage,
+      chatMessage2,
+    );
     ChatMessageTestHelper.expectChatMessage(listenedValue, chatMessage2);
 
     await subscription.cancel();
@@ -277,7 +281,9 @@ void main() {
     var account2 = await AccountTestHelper.createTestAccount(seed: "account2");
 
     var newValue = await ChatTestHelper.createTestChat(
-        seed: "seed2", remoteId: chat.remoteId);
+      seed: "seed2",
+      remoteId: chat.remoteId,
+    );
 
     late var listenedValue;
 

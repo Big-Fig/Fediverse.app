@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
-import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
@@ -23,8 +23,8 @@ import 'package:moor/ffi.dart';
 import '../../status/database/status_database_test_helper.dart';
 import '../account_test_helper.dart';
 import '../database/account_database_test_helper.dart';
-import 'my_account_bloc_impl_test_mocks.dart';
 import 'my_account_test_helper.dart';
+import 'my_account_bloc_impl_test.mocks.dart';
 
 // ignore_for_file: no-magic-number
 @GenerateMocks([PleromaApiMyAccountService])
@@ -103,7 +103,9 @@ void main() {
     AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
 
     var newValue = await MyAccountTestHelper.createTestMyAccount(
-        seed: "seed2", remoteId: myAccount.remoteId);
+      seed: "seed2",
+      remoteId: myAccount.remoteId,
+    );
 
     var listenedValue;
 
@@ -429,7 +431,9 @@ void main() {
     AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
 
     var newValue = await MyAccountTestHelper.createTestMyAccount(
-        seed: "seed2", remoteId: myAccount.remoteId);
+      seed: "seed2",
+      remoteId: myAccount.remoteId,
+    );
 
     var listenedValue;
 
@@ -498,7 +502,9 @@ void main() {
     AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
 
     var newValue = await MyAccountTestHelper.createTestMyAccount(
-        seed: "seed2", remoteId: myAccount.remoteId);
+      seed: "seed2",
+      remoteId: myAccount.remoteId,
+    );
     await myAccountBloc
         .updateMyAccountByMyPleromaAccount(newValue.pleromaAccount);
     // hack to execute notify callbacks
@@ -526,7 +532,9 @@ void main() {
     var dbAccount =
         await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed3");
     var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
-        seed: "seed4", dbAccount: dbAccount);
+      seed: "seed4",
+      dbAccount: dbAccount,
+    );
 
     expect(
       myAccountBloc.checkIsStatusFromMe(

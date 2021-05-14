@@ -201,7 +201,8 @@ class PleromaApiPushSubscribeRequestDataAlerts {
   }
 
   static PleromaApiPushSubscribeRequestDataAlerts fromJson(
-          Map<String, dynamic> json) =>
+    Map<String, dynamic> json,
+  ) =>
       _$PleromaApiPushSubscribeRequestDataAlertsFromJson(json);
 
   Map<String, dynamic> toJson() =>

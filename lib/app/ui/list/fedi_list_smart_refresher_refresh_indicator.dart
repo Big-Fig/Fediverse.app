@@ -55,11 +55,12 @@ class _FediListSmartRefresherRefreshIndicatorState
   @override
   void initState() {
     _valueAni = AnimationController(
-        vsync: this,
-        value: 0.0,
-        lowerBound: 0.0,
-        upperBound: 1.0,
-        duration: Duration(milliseconds: 500));
+      vsync: this,
+      value: 0.0,
+      lowerBound: 0.0,
+      upperBound: 1.0,
+      duration: Duration(milliseconds: 500),
+    );
     _valueAni.addListener(() {
       // frequently setState will decline the performance
       if (mounted && Scrollable.of(context)!.position.pixels <= 0) {
@@ -70,13 +71,16 @@ class _FediListSmartRefresherRefreshIndicatorState
     _positionController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     _scaleFactor = AnimationController(
-        vsync: this,
-        value: 1.0,
-        lowerBound: 0.0,
-        upperBound: 1.0,
-        duration: Duration(milliseconds: 300));
+      vsync: this,
+      value: 1.0,
+      lowerBound: 0.0,
+      upperBound: 1.0,
+      duration: Duration(milliseconds: 300),
+    );
     _positionFactor = _positionController.drive(Tween<Offset>(
-        begin: Offset(0.0, -1.0), end: Offset(0.0, widget.height / 44.0)));
+      begin: Offset(0.0, -1.0),
+      end: Offset(0.0, widget.height / 44.0),
+    ));
     super.initState();
   }
 
@@ -92,7 +96,8 @@ class _FediListSmartRefresherRefreshIndicatorState
         scale: _scaleFactor,
         child: Align(
           alignment: Alignment.topCenter,
-          child: FediCircularProgressIndicator.buildForRefreshIndicator(context),
+          child:
+              FediCircularProgressIndicator.buildForRefreshIndicator(context),
         ),
       ),
     );

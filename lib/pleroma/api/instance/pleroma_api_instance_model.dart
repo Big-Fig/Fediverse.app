@@ -290,7 +290,8 @@ class PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge
     Map<String, dynamic> json,
   ) =>
       _$PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeFromJson(
-          json);
+        json,
+      );
 
   @override
   Map<String, dynamic> toJson() =>

@@ -4,23 +4,24 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 mixin PopulatedDatabaseDaoRepositoryMixin<
-DbItem extends DataClass,
-DbPopulatedItem,
-AppItem,
-DbId,
-TableDsl extends Table,
-TableInfoDsl extends TableInfo<TableDsl, DbItem>,
-Filters,
-OrderingTerm extends RepositoryOrderingTerm>
-on AppDatabaseDaoRepository<DbItem, AppItem, DbId, TableDsl, TableInfoDsl,
-    Filters, OrderingTerm> {
+        DbItem extends DataClass,
+        DbPopulatedItem,
+        AppItem,
+        DbId,
+        TableDsl extends Table,
+        TableInfoDsl extends TableInfo<TableDsl, DbItem>,
+        Filters,
+        OrderingTerm extends RepositoryOrderingTerm>
+    on AppDatabaseDaoRepository<DbItem, AppItem, DbId, TableDsl, TableInfoDsl,
+        Filters, OrderingTerm> {
   PopulatedDatabaseDaoMixin<DbItem, DbPopulatedItem, DbId, TableDsl,
       TableInfoDsl, Filters, OrderingTerm> get populatedDao;
 
   DbPopulatedItem mapAppItemToDbPopulatedItem(AppItem appItem);
 
   List<DbPopulatedItem> mapAppItemListToDbPopulatedItemList(
-      List<AppItem> appItems) =>
+    List<AppItem> appItems,
+  ) =>
       appItems.map(mapAppItemToDbPopulatedItem).toList();
 
   DbPopulatedItem? mapAppItemToDbPopulatedItemNullable(AppItem? appItem) {
@@ -34,11 +35,13 @@ on AppDatabaseDaoRepository<DbItem, AppItem, DbId, TableDsl, TableInfoDsl,
   AppItem mapDbPopulatedItemToAppItem(DbPopulatedItem dbPopulatedItem);
 
   List<AppItem> mapDbPopulatedItemListToAppItemList(
-      List<DbPopulatedItem> dbPopulatedItems) =>
+    List<DbPopulatedItem> dbPopulatedItems,
+  ) =>
       dbPopulatedItems.map(mapDbPopulatedItemToAppItem).toList();
 
   AppItem? mapDbPopulatedItemToAppItemNullable(
-      DbPopulatedItem? dbPopulatedItem) {
+    DbPopulatedItem? dbPopulatedItem,
+  ) {
     if (dbPopulatedItem != null) {
       return mapDbPopulatedItemToAppItem(dbPopulatedItem);
     } else {
@@ -76,7 +79,7 @@ on AppDatabaseDaoRepository<DbItem, AppItem, DbId, TableDsl, TableInfoDsl,
       orderingTerms: orderingTerms,
     );
     var joinedQuery =
-    populatedDao.convertSimpleSelectStatementToJoinedSelectStatement(
+        populatedDao.convertSimpleSelectStatementToJoinedSelectStatement(
       query: query,
       filters: filters,
     );

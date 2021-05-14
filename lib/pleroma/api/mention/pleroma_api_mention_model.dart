@@ -1,4 +1,3 @@
-
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/mention/mastodon_api_mention_model.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -6,7 +5,6 @@ import 'package:json_annotation/json_annotation.dart';
 part 'pleroma_api_mention_model.g.dart';
 
 abstract class IPleromaApiMention implements IMastodonApiMention {}
-
 
 extension IPleromaApiMentionExtension on IPleromaApiMention {
   PleromaApiMention toPleromaApiMention({bool forceNewObject = false}) {
@@ -30,7 +28,8 @@ extension IPleromaApiMentionListExtension on List<IPleromaApiMention> {
     } else {
       return map(
         (pleromaApiMention) => pleromaApiMention.toPleromaApiMention(
-            forceNewObject: forceNewObject),
+          forceNewObject: forceNewObject,
+        ),
       ).toList();
     }
   }

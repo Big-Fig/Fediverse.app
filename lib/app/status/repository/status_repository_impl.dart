@@ -233,13 +233,14 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     bool onlyPendingStatePublishedOrNull = false,
   }) async {
     var query = createFindInTypedResultSelectable(
-        filters: StatusRepositoryFilters.createForMustBeConversationItem(
-          onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
-        ),
-        pagination: null,
-        orderingTerms: [
-          StatusRepositoryOrderingTermData.createdAtDesc,
-        ]);
+      filters: StatusRepositoryFilters.createForMustBeConversationItem(
+        onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
+      ),
+      pagination: null,
+      orderingTerms: [
+        StatusRepositoryOrderingTermData.createdAtDesc,
+      ],
+    );
 
     var typedResultList = await query.get();
 
@@ -332,7 +333,8 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   IPleromaApiStatus mapDbPopulatedItemToRemoteItem(
-          DbStatusPopulated dbPopulatedItem) =>
+    DbStatusPopulated dbPopulatedItem,
+  ) =>
       dbPopulatedItem.toDbStatusPopulatedWrapper().toPleromaStatus();
 
   @override

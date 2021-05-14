@@ -67,17 +67,20 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   DbScheduledStatusPopulated mapAppItemToDbPopulatedItem(
-          IScheduledStatus appItem) =>
+    IScheduledStatus appItem,
+  ) =>
       appItem.toDbScheduledStatusPopulated();
 
   @override
   IScheduledStatus mapDbPopulatedItemToAppItem(
-          DbScheduledStatusPopulated dbPopulatedItem) =>
+    DbScheduledStatusPopulated dbPopulatedItem,
+  ) =>
       dbPopulatedItem.toDbScheduledStatusPopulatedWrapper();
 
   @override
   IPleromaApiScheduledStatus mapDbPopulatedItemToRemoteItem(
-          DbScheduledStatusPopulated dbPopulatedItem) =>
+    DbScheduledStatusPopulated dbPopulatedItem,
+  ) =>
       dbPopulatedItem
           .toDbScheduledStatusPopulatedWrapper()
           .toPleromaScheduledStatus();

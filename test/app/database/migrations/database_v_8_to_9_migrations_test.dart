@@ -26,28 +26,30 @@ void main() {
     expect(database.migrationsToExecuted, database.schemaVersion);
   });
 
-  test('test dbMigration v8->v9 dbFilters again after table recreate',
-      () async {
-    var filterDao = database.filterDao;
+  test(
+    'test dbMigration v8->v9 dbFilters again after table recreate',
+    () async {
+      var filterDao = database.filterDao;
 
-    await filterDao.clear(batchTransaction: null);
+      await filterDao.clear(batchTransaction: null);
 
-    expect((await filterDao.getAll()).isNotEmpty, false);
+      expect((await filterDao.getAll()).isNotEmpty, false);
 
-    var dbFilter =
-        await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed");
+      var dbFilter =
+          await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed");
 
-    await filterDao.insert(entity: dbFilter, mode: null);
+      await filterDao.insert(entity: dbFilter, mode: null);
 
-    expect((await filterDao.getAll()).length, 1);
+      expect((await filterDao.getAll()).length, 1);
 
-    FilterDatabaseTestHelper.expectDbFilter(
-      DbFilterPopulatedWrapper(
-        dbFilterPopulated: (await filterDao.findByRemoteIdPopulated(
-          dbFilter.remoteId,
-        ))!,
-      ),
-      dbFilter,
-    );
-  });
+      FilterDatabaseTestHelper.expectDbFilter(
+        DbFilterPopulatedWrapper(
+          dbFilterPopulated: (await filterDao.findByRemoteIdPopulated(
+            dbFilter.remoteId,
+          ))!,
+        ),
+        dbFilter,
+      );
+    },
+  );
 }

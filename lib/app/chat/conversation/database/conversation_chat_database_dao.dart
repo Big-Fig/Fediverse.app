@@ -181,7 +181,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
   void addFiltersToQuery({
     required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
     required ConversationChatRepositoryFilters? filters,
-  // ignore: no-empty-block
+    // ignore: no-empty-block
   }) {
     // nothing by now
   }
@@ -243,7 +243,8 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   DbConversationPopulated mapTypedResultToDbPopulatedItem(
-          TypedResult typedResult) =>
+    TypedResult typedResult,
+  ) =>
       typedResult.toDbConversationPopulated(dao: this);
 }
 

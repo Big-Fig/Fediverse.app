@@ -82,14 +82,16 @@ class PleromaChatHomeTabPage extends StatelessWidget {
         return MultiProvider(
           providers: [
             Provider<IPleromaChatWithLastMessageCachedListBloc>.value(
-                value: chatsListBloc.chatListBloc),
+              value: chatsListBloc.chatListBloc,
+            ),
             Provider<IPleromaChatWithLastMessagePaginationBloc>.value(
-                value: chatsListBloc.chatPaginationBloc),
+              value: chatsListBloc.chatPaginationBloc,
+            ),
             Provider<
-                    IPaginationListBloc<
-                        PaginationPage<IPleromaChatWithLastMessage>,
-                        IPleromaChatWithLastMessage>>.value(
-                value: chatsListBloc.chatPaginationListBloc),
+                IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
+                    IPleromaChatWithLastMessage>>.value(
+              value: chatsListBloc.chatPaginationListBloc,
+            ),
             Provider<
                 ICachedPaginationListWithNewItemsBloc<
                     CachedPaginationPage<IPleromaChatWithLastMessage>,
