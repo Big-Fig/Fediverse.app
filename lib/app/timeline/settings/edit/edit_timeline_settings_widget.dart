@@ -139,7 +139,7 @@ class _EditTimelineSettingsChildrenHashtagTypeWidget extends StatelessWidget {
       children: [
         const _EditTimelineSettingsFieldOnlyLocalWidget(),
         const _EditTimelineSettingsFieldOnlyRemoteWidget(),
-        if (lockedSource) const _EditTimelineSettingsFieldHashtagWidget(),
+        if (!lockedSource) const _EditTimelineSettingsFieldHashtagWidget(),
         const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
         const _EditTimelineSettingsFieldOnlyMediaWidget(),
         const _EditTimelineSettingsFieldWithMutedWidget(),
