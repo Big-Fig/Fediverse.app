@@ -575,7 +575,6 @@ class _AccountDetailsPageTabIndicatorWidget extends StatelessWidget {
       padding: EdgeInsets.only(
         // ignore: no-magic-number
         top: 3.0,
-        right: FediSizes.bigPadding,
       ),
       child: AccountTabTextTabIndicatorItemWidget(
         accountTabs: tabs,
