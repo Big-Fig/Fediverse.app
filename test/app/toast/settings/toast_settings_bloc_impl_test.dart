@@ -92,7 +92,7 @@ void main() {
     );
 
     var testPushSettings =
-        ToastSettingsModelTestHelper.createTestToastSettings(seed: "seed")
+        ToastSettingsModelTestHelper.createTestToastSettings(seed: 'seed')
             .pushSettings;
 
     await toastSettingsBloc.changePushSettings(testPushSettings);
@@ -152,7 +152,7 @@ void main() {
     );
 
     var testHandlingType =
-        ToastSettingsModelTestHelper.createTestToastSettings(seed: "seed")
+        ToastSettingsModelTestHelper.createTestToastSettings(seed: 'seed')
             .handlingType;
 
     await toastSettingsBloc.changeHandlingType(testHandlingType);

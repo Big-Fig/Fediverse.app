@@ -38,11 +38,11 @@ void main() {
   test('copyWith', () async {
     var obj1 = StatusSensitiveSettingsModelTestHelper
         .createTestStatusSensitiveSettings(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 = StatusSensitiveSettingsModelTestHelper
         .createTestStatusSensitiveSettings(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(
@@ -60,7 +60,7 @@ void main() {
   test('clone', () async {
     var obj1 = StatusSensitiveSettingsModelTestHelper
         .createTestStatusSensitiveSettings(
-      seed: "seed1",
+      seed: 'seed1',
     );
 
     var obj1Clone = obj1.clone();

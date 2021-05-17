@@ -9,7 +9,7 @@ class InstanceFilesCacheSettingsLocalPreferenceBloc
   InstanceFilesCacheSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
-  }) : super(preferencesService, "cache.files.settings.instance.$userAtHost");
+  }) : super(preferencesService, 'cache.files.settings.instance.$userAtHost');
 
   static const FilesCacheSettings? defaultValue = null;
 

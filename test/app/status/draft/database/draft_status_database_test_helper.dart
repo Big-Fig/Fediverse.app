@@ -18,32 +18,32 @@ class DraftStatusDatabaseTestHelper {
         id: null,
         updatedAt: updatedAt ?? DateTime(2000 + seed.hashCode % 10),
         data: PostStatusData(
-          subject: seed + "subject",
-          text: seed + "text",
+          subject: seed + 'subject',
+          text: seed + 'text',
           scheduledAt: DateTime(2000 + seed.hashCode % 7),
           visibilityString: PleromaApiVisibility
               .values[seed.hashCode % PleromaApiVisibility.values.length]
               .toJsonValue(),
           to: [
-            seed + "1",
-            seed + "2",
+            seed + '1',
+            seed + '2',
           ],
           mediaAttachments: [
             PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
-              seed: seed + "1",
+              seed: seed + '1',
             ),
             PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
-              seed: seed + "2",
+              seed: seed + '2',
             ),
           ],
           poll: PostStatusModelTestHelper.createTestPostStatusPoll(seed: seed),
           inReplyToPleromaStatus:
               PleromaApiStatusTestHelper.createTestPleromaApiStatus(
-            seed: seed + "inReplyToPleromaStatus",
+            seed: seed + 'inReplyToPleromaStatus',
           ),
-          inReplyToConversationId: seed + "inReplyToConversationId",
+          inReplyToConversationId: seed + 'inReplyToConversationId',
           isNsfwSensitiveEnabled: seed.hashCode % 2 == 0,
-          language: seed + "language",
+          language: seed + 'language',
           expiresInSeconds: seed.hashCode % 60,
         ),
       );

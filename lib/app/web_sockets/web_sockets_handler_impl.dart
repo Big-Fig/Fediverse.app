@@ -50,7 +50,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
   }) {
     _logger = Logger(logTag);
     _logger.finest(() =>
-        "Start listen to ${webSocketsChannel.config.calculateWebSocketsUrl()}");
+        'Start listen to ${webSocketsChannel.config.calculateWebSocketsUrl()}');
 
     addDisposable(
       disposable: webSocketsChannel.listenForEvents(
@@ -65,11 +65,11 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
   }
 
   Future handleEvent(PleromaApiWebSocketsEvent event) async {
-    _logger.finest(() => "event $event");
+    _logger.finest(() => 'event $event');
 
     // todo: report bug to pleroma
-    if (event.payload == null || event.payload == "null") {
-      _logger.warning(() => "event payload is empty");
+    if (event.payload == null || event.payload == 'null') {
+      _logger.warning(() => 'event payload is empty');
 
       return;
     }

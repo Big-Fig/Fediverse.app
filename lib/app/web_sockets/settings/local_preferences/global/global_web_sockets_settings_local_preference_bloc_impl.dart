@@ -9,7 +9,7 @@ class GlobalWebSocketsSettingsLocalPreferenceBloc
     implements IGlobalWebSocketsSettingsLocalPreferenceBloc {
   GlobalWebSocketsSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
-  ) : super(preferencesService, "webSockets.settings.global");
+  ) : super(preferencesService, 'webSockets.settings.global');
 
   static final WebSocketsSettings defaultValue = WebSocketsSettings.fromEnum(
     handlingType: WebSocketsHandlingType.foregroundAndBackground,

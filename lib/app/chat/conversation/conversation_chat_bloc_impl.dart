@@ -28,7 +28,7 @@ import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
-final _logger = Logger("conversation_chat_bloc_impl.dart");
+final _logger = Logger('conversation_chat_bloc_impl.dart');
 
 class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   // ignore: close_sinks
@@ -119,7 +119,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     required IConversationChatMessage? lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
     bool isNeedWatchLocalRepositoryForUpdates =
-        true, // todo: remove hack. Don't init when bloc quickly disposed. Help
+        true, // todo: remove hack. Dont init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
   })  : _accountsSubject = BehaviorSubject.seeded([]),
@@ -131,7 +131,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
               isNeedWatchLocalRepositoryForUpdates,
           delayInit: delayInit,
         ) {
-    _logger.finest(() => "conversation chat bloc");
+    _logger.finest(() => 'conversation chat bloc');
 
     addDisposable(subject: _chatSubject);
     addDisposable(subject: _lastMessageSubject);
@@ -442,7 +442,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         batchTransaction: null,
       );
     } catch (e, stackTrace) {
-      _logger.warning(() => "postMessage error", e, stackTrace);
+      _logger.warning(() => 'postMessage error', e, stackTrace);
       await statusRepository.updateByDbIdInDbType(
         dbId: localStatusId,
         dbItem: dbStatus.copyWith(

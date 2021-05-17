@@ -1,7 +1,7 @@
 import 'package:fedi/app/moor/moor_converters.dart';
 import 'package:moor/moor.dart';
 
-@DataClassName("DbDraftStatus")
+@DataClassName('DbDraftStatus')
 class DbDraftStatuses extends Table {
   // integer ids works better in SQLite
   IntColumn? get id => integer().nullable().autoIncrement()();

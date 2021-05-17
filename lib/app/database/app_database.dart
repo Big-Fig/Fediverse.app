@@ -170,7 +170,7 @@ class AppDatabase extends _$AppDatabase {
                 await _migrate14to15(m);
                 break;
               default:
-                throw "invalid currentVersion $currentVersion";
+                throw 'invalid currentVersion $currentVersion';
             }
             currentVersion++;
           }

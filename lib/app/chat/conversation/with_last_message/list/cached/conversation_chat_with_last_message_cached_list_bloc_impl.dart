@@ -12,7 +12,7 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 
 var _logger =
-    Logger("pleroma_chat_with_last_message_cached_list_bloc_impl.dart");
+    Logger('pleroma_chat_with_last_message_cached_list_bloc_impl.dart');
 
 class ConversationChatWithLastMessageCachedListBloc
     extends IConversationChatWithLastMessageCachedListBloc {
@@ -36,9 +36,9 @@ class ConversationChatWithLastMessageCachedListBloc
     required IConversationChatWithLastMessage? newerThan,
     required IConversationChatWithLastMessage? olderThan,
   }) async {
-    _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t newerThan = $newerThan"
-        "\t olderThan = $olderThan");
+    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
+        '\t newerThan = $newerThan'
+        '\t olderThan = $olderThan');
 
     List<IPleromaApiConversation>? remoteConversations;
 
@@ -62,9 +62,9 @@ class ConversationChatWithLastMessageCachedListBloc
     required IConversationChatWithLastMessage? newerThan,
     required IConversationChatWithLastMessage? olderThan,
   }) async {
-    _logger.finest(() => "start loadLocalItems \n"
-        "\t newerThan=$newerThan"
-        "\t olderThan=$olderThan");
+    _logger.finest(() => 'start loadLocalItems \n'
+        '\t newerThan=$newerThan'
+        '\t olderThan=$olderThan');
 
     var chats =
         await chatWithLastMessageRepository.getConversationsWithLastMessage(
@@ -78,7 +78,7 @@ class ConversationChatWithLastMessageCachedListBloc
           ConversationRepositoryChatOrderingTermData.updatedAtDesc,
     );
 
-    _logger.finer(() => "finish loadLocalItems chats ${chats.length}");
+    _logger.finer(() => 'finish loadLocalItems chats ${chats.length}');
 
     return chats;
   }

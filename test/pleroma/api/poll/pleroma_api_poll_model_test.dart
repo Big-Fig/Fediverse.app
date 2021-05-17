@@ -29,20 +29,20 @@ void main() {
   test('PleromaApiPollOption toPleromaApiPollOptionTitles', () async {
     expect(
       [
-        PleromaApiPollOption(title: "title1", votesCount: 0),
-        PleromaApiPollOption(title: "title2", votesCount: 0),
+        PleromaApiPollOption(title: 'title1', votesCount: 0),
+        PleromaApiPollOption(title: 'title2', votesCount: 0),
       ].toPleromaApiPollOptionTitles(),
       [
-        "title1",
-        "title2",
+        'title1',
+        'title2',
       ],
     );
   });
   test('PleromaApiPollOption toJson & fromJson', () async {
     expect(
-      "title1".toPleromaApiPollOption(),
+      'title1'.toPleromaApiPollOption(),
       PleromaApiPollOption(
-        title: "title1",
+        title: 'title1',
         votesCount: 0,
       ),
     );
@@ -51,12 +51,12 @@ void main() {
   test('PleromaApiPollOption toJson & fromJson', () async {
     expect(
       [
-        "title1",
-        "title2",
+        'title1',
+        'title2',
       ].toPleromaApiPollOptions(),
       [
-        PleromaApiPollOption(title: "title1", votesCount: 0),
-        PleromaApiPollOption(title: "title2", votesCount: 0),
+        PleromaApiPollOption(title: 'title1', votesCount: 0),
+        PleromaApiPollOption(title: 'title2', votesCount: 0),
       ],
     );
   });

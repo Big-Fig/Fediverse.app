@@ -13,7 +13,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("status_list_item_media_widget.dart");
+var _logger = Logger('status_list_item_media_widget.dart');
 
 class StatusListItemMediaWidget extends StatelessWidget {
   const StatusListItemMediaWidget() : super();
@@ -48,8 +48,8 @@ class StatusListItemMediaWidget extends StatelessWidget {
     var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
 
     _logger.finest(
-      () => "build ${statusBloc.remoteId} "
-          "media ${statusBloc.reblogOrOriginalMediaAttachments?.length}",
+      () => 'build ${statusBloc.remoteId} '
+          'media ${statusBloc.reblogOrOriginalMediaAttachments?.length}',
     );
 
     var mediaAttachment = Provider.of<IPleromaApiMediaAttachment>(context);

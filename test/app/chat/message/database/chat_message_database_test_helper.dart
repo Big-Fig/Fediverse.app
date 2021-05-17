@@ -31,13 +31,13 @@ class ChatMessageDatabaseTestHelper {
   }) async {
     DbChatMessage dbChatMessage = DbChatMessage(
       id: null,
-      remoteId: remoteId ?? seed + "remoteId",
+      remoteId: remoteId ?? seed + 'remoteId',
       createdAt: createdAt ?? DateTime(1),
-      content: seed + "content",
+      content: seed + 'content',
       accountRemoteId: dbAccount.remoteId,
       emojis: null,
       card: card,
-      chatRemoteId: chatRemoteId ?? seed + "chatRemoteId",
+      chatRemoteId: chatRemoteId ?? seed + 'chatRemoteId',
     );
 
     return dbChatMessage;

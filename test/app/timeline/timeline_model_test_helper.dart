@@ -10,7 +10,7 @@ class TimelineModelTestHelper {
     required String seed,
   }) =>
       Timeline(
-        id: seed + "id",
+        id: seed + 'id',
         typeString: EnumTestHelper.createTestEnum(
           seed: seed,
           values: TimelineType.values,
@@ -18,7 +18,7 @@ class TimelineModelTestHelper {
         settings: TimelineSettingsModelTestHelper.createTestTimelineSettings(
           seed: seed,
         ),
-        label: seed + "label",
+        label: seed + 'label',
         isPossibleToDelete: seed.hashCode % 2 == 0,
       );
 }

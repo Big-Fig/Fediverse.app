@@ -12,7 +12,7 @@ part 'localization_settings_model.g.dart';
 class LocalizationSettings
     implements IJsonObject, ISettings<LocalizationSettings> {
   @HiveField(0)
-  @JsonKey(name: "localization_locale")
+  @JsonKey(name: 'localization_locale')
   final LocalizationLocale? localizationLocale;
 
   const LocalizationSettings({

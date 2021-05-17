@@ -16,7 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("fedi_video_player_widget.dart");
+final _logger = Logger('fedi_video_player_widget.dart');
 
 class FediVideoPlayerWidget extends StatelessWidget {
   @override
@@ -155,8 +155,8 @@ class _FediVideoPlayerBodyWidget extends StatelessWidget {
       stream: videoMediaPlayerBloc.isInitializedStream,
       builder: (context, snapshot) {
         var isInitialized = snapshot.data ?? false;
-        _logger.finest(() => "isInitialized $isInitialized, "
-            "playerState  ${videoMediaPlayerBloc.playerState}");
+        _logger.finest(() => 'isInitialized $isInitialized, '
+            'playerState  ${videoMediaPlayerBloc.playerState}');
         // todo: remove hack
         // sometimes  videoMediaPlayerBloc.isInitialized already false
         // but isInitialized contains old true value

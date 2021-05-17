@@ -52,11 +52,11 @@ class PleromaChatMessageBloc extends ChatMessageBloc
     required this.chatMessageRepository,
     required this.accountRepository,
     required this.pleromaChatBloc,
-    required IPleromaChatMessage chatMessage, // for better performance we don't
+    required IPleromaChatMessage chatMessage, // for better performance we dont
     // update
     // account too often
     bool needRefreshFromNetworkOnInit =
-        false, // todo: remove hack. Don't init when bloc quickly disposed. Help
+        false, // todo: remove hack. Dont init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
     bool isNeedWatchLocalRepositoryForUpdates = true,
@@ -112,7 +112,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
 
   @override
   Future refreshFromNetwork() async {
-    throw "not supported by API yet";
+    throw 'not supported by API yet';
   }
 
   @override

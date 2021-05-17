@@ -90,7 +90,7 @@ MaterialPageRoute createConversationChatPageRoute({
           lastChatMessage: lastChatMessage,
         );
 
-        // we don't need to await
+        // we dont need to await
         chatBloc.markAsRead();
 
         chatBloc.addDisposable(

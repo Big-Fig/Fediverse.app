@@ -189,16 +189,16 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   int get repliesCount => 0;
 
   @override
-  String get spoilerText => postStatusData.subject ?? "";
+  String get spoilerText => postStatusData.subject ?? '';
 
   @override
   List<PleromaApiTag> get tags => [];
 
   @override
-  String get uri => "";
+  String get uri => '';
 
   @override
-  String get url => "";
+  String get url => '';
 
   @override
   PleromaApiVisibility get visibility => postStatusData.visibilityPleroma;
@@ -273,7 +273,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
     bool? hiddenLocallyOnDevice,
     String? wasSentWithIdempotencyKey,
   }) {
-    throw UnsupportedError("Not supported for non-published statuses");
+    throw UnsupportedError('Not supported for non-published statuses');
   }
 
   @override

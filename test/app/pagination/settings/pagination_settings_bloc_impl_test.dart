@@ -93,7 +93,7 @@ void main() {
 
     var testPageSize =
         PaginationSettingsModelTestHelper.createTestPaginationSettings(
-      seed: "seed",
+      seed: 'seed',
     ).pageSize;
 
     await paginationSettingsBloc.changePageSize(testPageSize);

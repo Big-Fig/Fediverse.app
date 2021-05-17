@@ -7,8 +7,8 @@ class RecentSearchModelTestHelper {
   }) =>
       RecentSearchList(
         recentItems: [
-          seed + "1",
-          seed + "2",
+          seed + '1',
+          seed + '2',
         ],
       );
 }

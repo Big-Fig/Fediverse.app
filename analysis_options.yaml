@@ -55,6 +55,5 @@ dart_code_metrics:
 
 linter:
   rules:
-    prefer_single_quotes: false
     omit_local_variable_types: false
     prefer_generic_function_type_aliases: false

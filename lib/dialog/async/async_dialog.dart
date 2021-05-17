@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-Logger _logger = Logger("async_dialog.dart");
+Logger _logger = Logger('async_dialog.dart');
 
 typedef ErrorDataBuilder = ErrorData? Function(
   BuildContext context,
@@ -76,15 +76,15 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
 
     if (needRethrow) {
       _logger.severe(
-        () => "rethrow error during "
-            "doAsyncOperationWithFediDialog",
+        () => 'rethrow error during '
+            'doAsyncOperationWithFediDialog',
         error,
         stackTrace,
       );
     } else {
       _logger.warning(
-        () => "handled error during "
-            "doAsyncOperationWithFediDialog",
+        () => 'handled error during '
+            'doAsyncOperationWithFediDialog',
         error,
         stackTrace,
       );
@@ -104,7 +104,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
   AsyncDialogResult<T> dialogResult;
   if (progressDialog?.isCanceled == true) {
     dialogResult = AsyncDialogResult<T>.canceled();
-    _logger.fine(() => "canceled doAsyncOperationWithFediDialog");
+    _logger.fine(() => 'canceled doAsyncOperationWithFediDialog');
   } else if (error != null) {
     if (errorData != null) {
       if (errorCallback != null) {
@@ -117,7 +117,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
     }
     dialogResult = AsyncDialogResult<T>.withError(error);
   } else {
-    _logger.finest(() => "success doAsyncOperationWithFediDialog =$result}");
+    _logger.finest(() => 'success doAsyncOperationWithFediDialog =$result}');
     dialogResult = AsyncDialogResult<T>.success(result);
   }
 

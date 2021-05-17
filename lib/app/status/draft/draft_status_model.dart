@@ -141,9 +141,9 @@ enum DraftStatusState {
   alreadyPosted,
 }
 
-const _draftDraftStatusStateJsonValue = "draft";
-const _canceledDraftStatusStateJsonValue = "canceled";
-const _alreadyPostedDraftStatusStateJsonValue = "alreadyPosted";
+const _draftDraftStatusStateJsonValue = 'draft';
+const _canceledDraftStatusStateJsonValue = 'canceled';
+const _alreadyPostedDraftStatusStateJsonValue = 'alreadyPosted';
 
 extension DraftStatusStateExtension on DraftStatusState {
   String toJsonValue() {
@@ -179,9 +179,9 @@ extension DraftStatusStateStringExtension on String {
       case _alreadyPostedDraftStatusStateJsonValue:
         result = DraftStatusState.alreadyPosted;
         break;
-      // can't parse
+      // cant parse
       default:
-        throw "Invalid DraftStatusState $DraftStatusState";
+        throw 'Invalid DraftStatusState $DraftStatusState';
     }
 
     return result;

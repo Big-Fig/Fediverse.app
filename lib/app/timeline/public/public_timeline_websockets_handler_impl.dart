@@ -45,5 +45,5 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
         );
 
   @override
-  String get logTag => "public_timeline_websockets_handler_impl.dart";
+  String get logTag => 'public_timeline_websockets_handler_impl.dart';
 }

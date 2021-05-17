@@ -87,7 +87,7 @@ abstract class ObjectLocalPreferenceBloc<T extends IJsonObject?>
     required this.jsonConverter,
   }) : super(
           preferencesService: preferencesService,
-          key: "$key.$schemaVersion",
+          key: '$key.$schemaVersion',
         );
 
   @override

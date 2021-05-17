@@ -69,7 +69,7 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
       sensitive: false,
       spoilerText: null,
       to: null,
-      status: "${message ?? ""} $to".trim(),
+      status: '${message ?? ''} $to'.trim(),
       visibility: visibility.toJsonValue(),
     );
 

@@ -1,14 +1,14 @@
 import 'package:package_info/package_info.dart';
 
 class FediPackageInfoHelper {
-  static const prodPackageId = "com.fediverse.app";
-  static const devPackageId = "com.fediverse.app2";
+  static const prodPackageId = 'com.fediverse.app';
+  static const devPackageId = 'com.fediverse.app2';
 
-  static const prodAppName = "Fedi";
-  static const devAppName = "Fedi2(dev)";
+  static const prodAppName = 'Fedi';
+  static const devAppName = 'Fedi2(dev)';
 
-  static const prodAppAppleId = "1478806281";
-  static const devAppAppleId = "1514926758";
+  static const prodAppAppleId = '1478806281';
+  static const devAppAppleId = '1514926758';
 
   static PackageInfo? _packageInfo;
 
@@ -19,7 +19,7 @@ class FediPackageInfoHelper {
       return devAppName;
     } else {
       var packageName = await getPackageId();
-      throw "Invalid package name $packageName";
+      throw 'Invalid package name $packageName';
     }
   }
 
@@ -36,7 +36,7 @@ class FediPackageInfoHelper {
       return devAppAppleId;
     } else {
       var packageName = await getPackageId();
-      throw "Invalid package name $packageName";
+      throw 'Invalid package name $packageName';
     }
   }
 

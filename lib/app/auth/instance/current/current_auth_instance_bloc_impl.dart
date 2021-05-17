@@ -6,7 +6,7 @@ import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("current_auth_instance_bloc_impl.dart");
+var _logger = Logger('current_auth_instance_bloc_impl.dart');
 
 class CurrentAuthInstanceBloc extends DisposableOwner
     implements ICurrentAuthInstanceBloc {
@@ -27,7 +27,7 @@ class CurrentAuthInstanceBloc extends DisposableOwner
 
   @override
   Future changeCurrentInstance(AuthInstance instance) async {
-    _logger.finest(() => "changeCurrentInstance $instance");
+    _logger.finest(() => 'changeCurrentInstance $instance');
 
     var found = instanceListBloc.availableInstances.firstWhereOrNull(
       (existInstance) => existInstance.userAtHost == instance.userAtHost,
@@ -36,9 +36,9 @@ class CurrentAuthInstanceBloc extends DisposableOwner
     if (found == null) {
       await instanceListBloc.addInstance(instance);
     }
-    _logger.finest(() => "changeCurrentInstance before setValue");
+    _logger.finest(() => 'changeCurrentInstance before setValue');
     await currentLocalPreferenceBloc.setValue(instance);
-    _logger.finest(() => "changeCurrentInstance after setValue");
+    _logger.finest(() => 'changeCurrentInstance after setValue');
   }
 
   @override
@@ -46,7 +46,7 @@ class CurrentAuthInstanceBloc extends DisposableOwner
 
   @override
   Future logoutCurrentInstance() async {
-    _logger.finest(() => "logoutCurrentInstance $currentInstance");
+    _logger.finest(() => 'logoutCurrentInstance $currentInstance');
     if (currentInstance != null) {
       await instanceListBloc.removeInstance(currentInstance!);
     }

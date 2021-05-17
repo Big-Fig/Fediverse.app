@@ -30,7 +30,7 @@ class ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget
       builder: (context, snapshot) {
         var currentValue = snapshot.data;
 
-        // _logger.finest(() => "currentValue $currentValue");
+        // _logger.finest(() => 'currentValue $currentValue');
         return FediFormRow(
           child: Row(
             mainAxisSize: MainAxisSize.max,

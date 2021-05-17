@@ -8,7 +8,7 @@ import 'package:flutter_html/style.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("html_text_bloc_impl.dart");
+final _logger = Logger('html_text_bloc_impl.dart');
 
 class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
   @override
@@ -59,7 +59,7 @@ class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
   int get hashCode => inputData.hashCode ^ settings.hashCode;
 }
 
-final RegExp findHtmlFragmentsRegex = RegExp(r"</?\s*[a-z-][^>]*\s*>");
+final RegExp findHtmlFragmentsRegex = RegExp(r'</?\s*[a-z-][^>]*\s*>');
 final HtmlUnescape _unescape = HtmlUnescape();
 
 HtmlTextResultData _calculateHtmlData({
@@ -80,7 +80,7 @@ HtmlTextResultData _calculateHtmlData({
         String? url = emoji.url;
 
         text = text.replaceAll(
-          ":$shortcode:",
+          ':$shortcode:',
           '<img src="$url" '
               'width="${settings.customEmojiImageSize}"'
               'height="${settings.customEmojiImageSize}"'
@@ -95,11 +95,11 @@ HtmlTextResultData _calculateHtmlData({
 
     if (settings.drawNewLines) {
       if (isActuallyHaveHtmlInData) {
-        text = text.replaceAll("\n", "</br>");
+        text = text.replaceAll('\n', '</br>');
       }
     } else {
-      text = text.replaceAll("\n", "");
-      text = text.replaceAll("<(/)*br>", "");
+      text = text.replaceAll('\n', '');
+      text = text.replaceAll('<(/)*br>', '');
     }
 
     if (!isActuallyHaveHtmlInData) {
@@ -117,9 +117,9 @@ HtmlTextResultData _calculateHtmlData({
     );
   }
 
-  _logger.finest(() => "_calculateHtmlData \n"
-      "inputData $inputData \n"
-      "resultData $resultData");
+  _logger.finest(() => '_calculateHtmlData \n'
+      'inputData $inputData \n'
+      'resultData $resultData');
 
   return resultData;
 }
@@ -133,7 +133,7 @@ Map<String, Style> _calculateHtmlStyles({
   var fontSizeObject = FontSize(fontSizeValue);
 
   return {
-    "html": Style(
+    'html': Style(
       display: settings.shrinkWrap ? Display.INLINE : Display.BLOCK,
       padding: EdgeInsets.zero,
       // ignore: no-equal-arguments
@@ -145,7 +145,7 @@ Map<String, Style> _calculateHtmlStyles({
       color: settings.color,
       textAlign: settings.textAlign,
     ),
-    "body": Style(
+    'body': Style(
       display: settings.shrinkWrap ? Display.INLINE : Display.BLOCK,
       padding: EdgeInsets.zero,
       // ignore: no-equal-arguments
@@ -154,7 +154,7 @@ Map<String, Style> _calculateHtmlStyles({
       // textMaxLines: settings.textMaxLines,
       textAlign: settings.textAlign,
     ),
-    "img": Style(
+    'img': Style(
       display: Display.INLINE,
       width: settings.imageSize,
       // ignore: no-equal-arguments
@@ -164,7 +164,7 @@ Map<String, Style> _calculateHtmlStyles({
       margin: EdgeInsets.zero,
       textAlign: settings.textAlign,
     ),
-    "p": Style(
+    'p': Style(
       padding: EdgeInsets.zero,
       // ignore: no-equal-arguments
       margin: EdgeInsets.zero,
@@ -177,10 +177,10 @@ Map<String, Style> _calculateHtmlStyles({
       textMaxLines: settings.textMaxLines,
       textAlign: settings.textAlign,
     ),
-    "a": Style(
+    'a': Style(
       color: settings.linkColor,
     ),
-    "text": Style(
+    'text': Style(
       padding: EdgeInsets.zero,
       // ignore: no-equal-arguments
       margin: EdgeInsets.zero,

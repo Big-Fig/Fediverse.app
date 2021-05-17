@@ -12,7 +12,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 
-var _logger = Logger("chat_post_message_bloc_impl.dart");
+var _logger = Logger('chat_post_message_bloc_impl.dart');
 
 class PleromaChatPostMessageBloc extends PostMessageBloc
     implements IPleromaChatPostMessageBloc {
@@ -54,7 +54,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
       mediaId: mediaId,
       idempotencyKey: idempotencyKey,
     );
-    _logger.finest(() => "calculateSendData data=$data");
+    _logger.finest(() => 'calculateSendData data=$data');
 
     return data;
   }

@@ -12,11 +12,11 @@ extension PleromaApiNativeCaptchaImageExtension on IPleromaApiCaptcha {
     // actually encoded url looks like 'data:image/png;base64,R0lGODlhyABGAIMA'
     // in this case we should cut header data and make plain base64 string
     // Otherwise wi think it is plain base64 text
-    // if url field don't have ','
-    if (encoded.contains(",")) {
-      var split = encoded.split(",");
+    // if url field dont have ','
+    if (encoded.contains(',')) {
+      var split = encoded.split(',');
       // ignore: no-magic-number
-      assert(split.length == 2, "Invalid encoded url $encoded");
+      assert(split.length == 2, 'Invalid encoded url $encoded');
 
       var base64Part = split[1];
 

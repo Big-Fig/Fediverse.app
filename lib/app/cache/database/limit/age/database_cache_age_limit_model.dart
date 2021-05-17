@@ -12,12 +12,12 @@ enum DatabaseCacheAgeLimitType {
 const defaultDatabaseCacheAgeLimitType =
     DatabaseCacheAgeLimitType.notSet;
 
-const _notSetDatabaseCacheAgeLimitTypeJsonValue = "notSet";
-const _days7DatabaseCacheAgeLimitTypeJsonValue = "days7";
-const _days30DatabaseCacheAgeLimitTypeJsonValue = "days30";
-const _days90DatabaseCacheAgeLimitTypeJsonValue = "days90";
-const _days180DatabaseCacheAgeLimitTypeJsonValue = "days180";
-const _days365DatabaseCacheAgeLimitTypeJsonValue = "days365";
+const _notSetDatabaseCacheAgeLimitTypeJsonValue = 'notSet';
+const _days7DatabaseCacheAgeLimitTypeJsonValue = 'days7';
+const _days30DatabaseCacheAgeLimitTypeJsonValue = 'days30';
+const _days90DatabaseCacheAgeLimitTypeJsonValue = 'days90';
+const _days180DatabaseCacheAgeLimitTypeJsonValue = 'days180';
+const _days365DatabaseCacheAgeLimitTypeJsonValue = 'days365';
 
 extension DatabaseCacheAgeLimitTypeExtension on DatabaseCacheAgeLimitType {
   String toJsonValue() {
@@ -98,7 +98,7 @@ extension DatabaseCacheAgeLimitTypeStringExtension on String {
       case _days365DatabaseCacheAgeLimitTypeJsonValue:
         result = DatabaseCacheAgeLimitType.days365;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
         result = defaultDatabaseCacheAgeLimitType;
         break;

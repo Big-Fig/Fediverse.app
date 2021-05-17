@@ -91,7 +91,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               } else {
                 return RemoteAccountBloc(
                   // todo: remove hack
-                  // actually we don't need pleromaAccountService here
+                  // actually we dont need pleromaAccountService here
                   // should be refactored
                   pleromaAccountService: null,
                   account: statusBloc.account,
@@ -326,7 +326,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               goToNewPostStatusPageWithInitial(
                 parentContext,
                 initialText:
-                    (status.content?.extractRawStringFromHtmlString() ?? ""),
+                    (status.content?.extractRawStringFromHtmlString() ?? ''),
                 initialSubject:
                     status.spoilerText?.extractRawStringFromHtmlString(),
                 initialMediaAttachments:

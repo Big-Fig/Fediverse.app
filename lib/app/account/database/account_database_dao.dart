@@ -8,13 +8,13 @@ import 'package:moor/moor.dart';
 
 part 'account_database_dao.g.dart';
 
-var _accountAliasId = "account";
-var _accountFollowingsAliasId = "accountFollowings";
-var _accountFollowersAliasId = "accountFollowers";
-var _statusRebloggedAccounts = "statusRebloggedAccounts";
-var _statusFavouritedAccounts = "statusFavouritedAccounts";
-var _conversationAccountsAliasId = "conversationAccounts";
-var _chatAccountsAliasId = "chatAccountsAliasId";
+var _accountAliasId = 'account';
+var _accountFollowingsAliasId = 'accountFollowings';
+var _accountFollowersAliasId = 'accountFollowers';
+var _statusRebloggedAccounts = 'statusRebloggedAccounts';
+var _statusFavouritedAccounts = 'statusFavouritedAccounts';
+var _conversationAccountsAliasId = 'conversationAccounts';
+var _chatAccountsAliasId = 'chatAccountsAliasId';
 
 @UseDao(
   tables: [DbAccounts],
@@ -151,7 +151,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
     String? searchQuery,
   ) =>
-      query..where((account) => account.acct.like("%$searchQuery%"));
+      query..where((account) => account.acct.like('%$searchQuery%'));
 
   JoinedSelectStatement addConversationWhere(
     JoinedSelectStatement query,
@@ -159,8 +159,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(CustomExpression<bool>(
-          "$_conversationAccountsAliasId.conversation_remote_id"
-          " = '$conversationRemoteId'",
+          '$_conversationAccountsAliasId.conversation_remote_id'
+          ' = "$conversationRemoteId"',
         ));
 
   JoinedSelectStatement addChatWhere(
@@ -168,8 +168,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     String? chatRemoteId,
   ) =>
       query
-        ..where(CustomExpression<bool>("$_chatAccountsAliasId.chat_remote_id"
-            " = '$chatRemoteId'"));
+        ..where(CustomExpression<bool>('$_chatAccountsAliasId.chat_remote_id'
+            ' = "$chatRemoteId"'));
 
   JoinedSelectStatement addStatusFavouritedByWhere(
     JoinedSelectStatement query,
@@ -177,8 +177,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(
-          CustomExpression<bool>("$_statusFavouritedAccounts.status_remote_id"
-              " = '$statusRemoteId'"),
+          CustomExpression<bool>('$_statusFavouritedAccounts.status_remote_id'
+              ' = "$statusRemoteId"'),
         );
 
   JoinedSelectStatement addStatusRebloggedByWhere(
@@ -187,8 +187,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(
-          CustomExpression<bool>("$_statusRebloggedAccounts.status_remote_id"
-              " = '$statusRemoteId'"),
+          CustomExpression<bool>('$_statusRebloggedAccounts.status_remote_id'
+              ' = "$statusRemoteId"'),
         );
 
   // todo: rework with single relationship table
@@ -198,8 +198,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(CustomExpression<bool>(
-          "$_accountFollowingsAliasId.account_remote_id"
-          " = '$followingAccountRemoteId'",
+          '$_accountFollowingsAliasId.account_remote_id'
+          ' = "$followingAccountRemoteId"',
         ));
 
   // todo: rework with single relationship table
@@ -209,8 +209,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(
-          CustomExpression<bool>("$_accountFollowersAliasId.account_remote_id"
-              " = '$followerAccountRemoteId'"),
+          CustomExpression<bool>('$_accountFollowersAliasId.account_remote_id'
+              ' = "$followerAccountRemoteId"'),
         );
 
   @override

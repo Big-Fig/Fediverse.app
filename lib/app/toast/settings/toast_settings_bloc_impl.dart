@@ -9,7 +9,7 @@ import 'package:fedi/app/toast/settings/toast_settings_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("toast_settings_bloc_impl.dart");
+final _logger = Logger('toast_settings_bloc_impl.dart');
 
 class ToastSettingsBloc
     extends GlobalOrInstanceSettingsLocalPreferenceBloc<ToastSettings>
@@ -34,7 +34,7 @@ class ToastSettingsBloc
   @override
   Future changePushSettings(PushSettings newPushSettings) async {
     if (pushSettings == newPushSettings) {
-      _logger.finest(() => "Same settings");
+      _logger.finest(() => 'Same settings');
 
       return;
     }
@@ -177,7 +177,7 @@ class ToastSettingsBloc
   @override
   Future updateSettings(ToastSettings? newSettings) async {
     if (settingsData == newSettings) {
-      _logger.finest(() => "Same settings");
+      _logger.finest(() => 'Same settings');
 
       return;
     }

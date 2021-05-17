@@ -31,7 +31,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-final _logger = Logger("edit_custom_list_bloc_impl.dart");
+final _logger = Logger('edit_custom_list_bloc_impl.dart');
 
 class EditCustomListBloc extends DisposableOwner
     implements IEditCustomListBloc {
@@ -325,7 +325,7 @@ class EditCustomListBloc extends DisposableOwner
 
   bool _calculateIsListContainsAccounts(List<IAccount>? items) {
     _logger.finest(
-      () => "_calculateIsListContainsAccounts items size ${items?.length}",
+      () => '_calculateIsListContainsAccounts items size ${items?.length}',
     );
 
     return items?.isNotEmpty == true;

@@ -41,7 +41,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
             inReplyToConversationId:
                 conversationChatBloc.conversation.remoteId,
           ),
-          // we don't need mentions if we have inReplyToConversationId
+          // we dont need mentions if we have inReplyToConversationId
           initialAccountsToMention: null,
           maximumMessageLength: maximumMessageLength,
           pleromaInstancePollLimits: pleromaInstancePollLimits,

@@ -153,7 +153,7 @@ class PleromaApiPollOption implements IPleromaApiPollOption {
   final String title;
 
   @override
-  @JsonKey(name: "votes_count")
+  @JsonKey(name: 'votes_count')
   final int? votesCount;
 
   PleromaApiPollOption({
@@ -192,7 +192,7 @@ class PleromaApiPoll implements IPleromaApiPoll, IJsonObject {
   final bool expired;
 
   @override
-  @JsonKey(name: "expires_at")
+  @JsonKey(name: 'expires_at')
   final DateTime expiresAt;
 
   @override
@@ -205,18 +205,18 @@ class PleromaApiPoll implements IPleromaApiPoll, IJsonObject {
   final List<PleromaApiPollOption> options;
 
   @override
-  @JsonKey(name: "own_votes")
+  @JsonKey(name: 'own_votes')
   final List<int> ownVotes;
 
   @override
   final bool voted;
 
   @override
-  @JsonKey(name: "voters_count")
+  @JsonKey(name: 'voters_count')
   final int votersCount;
 
   @override
-  @JsonKey(name: "votes_count")
+  @JsonKey(name: 'votes_count')
   final int votesCount;
 
   PleromaApiPoll({

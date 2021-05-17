@@ -148,7 +148,7 @@ class _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>
                         (currentValue) =>
                             valueTitleMapper(context, currentValue),
                       )
-                      .join("\n")
+                      .join('\n')
                   : S.of(context).app_filter_context_empty,
               textAlign: TextAlign.end,
               style: isEnabled!

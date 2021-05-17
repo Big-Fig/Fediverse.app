@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-final _logger = Logger("captcha_string_value_form_field_row_widget.dart");
+final _logger = Logger('captcha_string_value_form_field_row_widget.dart');
 
 class FormCaptchaStringFormFieldRowWidget extends StatelessWidget {
   final String label;
@@ -79,7 +79,7 @@ class _FormCaptchaStringFormFieldRowContentWidget extends StatelessWidget {
 
     var isExist = Provider.of<bool>(context);
 
-    _logger.finest(() => "build isExist $isExist");
+    _logger.finest(() => 'build isExist $isExist');
 
     if (isExist) {
       return StreamBuilder<List<FormItemValidationError>>(

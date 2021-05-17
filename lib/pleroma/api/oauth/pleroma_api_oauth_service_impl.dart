@@ -11,11 +11,11 @@ import 'package:path/path.dart';
 import 'package:uni_links2/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-var _logger = Logger("pleroma_api_oauth_service_impl.dart");
+var _logger = Logger('pleroma_api_oauth_service_impl.dart');
 
 class PleromaApiOAuthService extends BasePleromaApiService
     implements IPleromaApiOAuthService {
-  final oauthRelativeUrlPath = "/oauth/";
+  final oauthRelativeUrlPath = '/oauth/';
   @override
   final IPleromaApiRestService restService;
 
@@ -28,24 +28,24 @@ class PleromaApiOAuthService extends BasePleromaApiService
   Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
     required PleromaApiOAuthAuthorizeRequest authorizeRequest,
   }) async {
-    _logger.finest(() => "launchAuthorizeFormAndExtractAuthorizationCode");
+    _logger.finest(() => 'launchAuthorizeFormAndExtractAuthorizationCode');
     var host = restService.baseUri;
-    var baseUrl = join(oauthRelativeUrlPath, "authorize");
+    var baseUrl = join(oauthRelativeUrlPath, 'authorize');
 
     var keyValueMap = authorizeRequest.toJson();
 
     var queryArgs = keyValueMap.entries
-        .map((entry) => "${entry.key}=${entry.value}")
-        .join("&");
+        .map((entry) => '${entry.key}=${entry.value}')
+        .join('&');
 
-    queryArgs = queryArgs.replaceAll(" ", "%20");
+    queryArgs = queryArgs.replaceAll(' ', '%20');
 
-    var url = "$host/$baseUrl?$queryArgs";
+    var url = '$host/$baseUrl?$queryArgs';
     var isCanLaunch = await canLaunch(url);
 
-    _logger.finest(() => "launchAuthorizeFormAndExtractAuthorizationCode \n"
-        "\t url = $url\n"
-        "\t canLaunch=$isCanLaunch");
+    _logger.finest(() => 'launchAuthorizeFormAndExtractAuthorizationCode \n'
+        '\t url = $url\n'
+        '\t canLaunch=$isCanLaunch');
 
     var completer = Completer<String>();
     if (isCanLaunch) {
@@ -63,7 +63,7 @@ class PleromaApiOAuthService extends BasePleromaApiService
           completer.completeError(e);
         },
       );
-      _logger.finest(() => "launch url=$url");
+      _logger.finest(() => 'launch url=$url');
       await launch(url);
     } else {
       completer.completeError(PleromaApiOAuthCantLaunchException());
@@ -91,7 +91,7 @@ class PleromaApiOAuthService extends BasePleromaApiService
         .toList();
 
     var request = RestRequest.post(
-      relativePath: join(oauthRelativeUrlPath, "token"), queryArgs: queryArgs,
+      relativePath: join(oauthRelativeUrlPath, 'token'), queryArgs: queryArgs,
 //        bodyJson: tokenRequest.toJson()
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -107,7 +107,7 @@ class PleromaApiOAuthService extends BasePleromaApiService
     required PleromaApiOAuthAppTokenRequest tokenRequest,
   }) async {
     var request = RestRequest.post(
-      relativePath: join(oauthRelativeUrlPath, "token"),
+      relativePath: join(oauthRelativeUrlPath, 'token'),
       bodyJson: tokenRequest.toJson(),
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -123,7 +123,7 @@ class PleromaApiOAuthService extends BasePleromaApiService
     required PleromaApiOAuthAppTokenRevokeRequest revokeRequest,
   }) async {
     var request = RestRequest.post(
-      relativePath: join(oauthRelativeUrlPath, "revoke"),
+      relativePath: join(oauthRelativeUrlPath, 'revoke'),
       bodyJson: revokeRequest.toJson(),
     );
     var httpResponse = await restService.sendHttpRequest(request);

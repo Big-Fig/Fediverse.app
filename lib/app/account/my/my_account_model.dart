@@ -139,7 +139,7 @@ extension IMyAccountExtension on IMyAccount {
 @JsonSerializable(explicitToJson: true)
 class PleromaMyAccountWrapper extends IMyAccount {
   @HiveField(0)
-  @JsonKey(name: "remote_account")
+  @JsonKey(name: 'remote_account')
   final PleromaApiMyAccount pleromaAccount;
 
   PleromaMyAccountWrapper({
@@ -453,6 +453,6 @@ class SelfActionNotPossibleException implements Exception {
   @override
   String toString() {
     return 'SelfActionNotPossibleException: '
-        '"You cant retrieve or perform actions with yourself"';
+        'You cant retrieve or perform actions with yourself';
   }
 }

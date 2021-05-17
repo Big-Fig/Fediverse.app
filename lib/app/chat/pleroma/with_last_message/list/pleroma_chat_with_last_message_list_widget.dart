@@ -54,7 +54,7 @@ class PleromaChatWithLastMessageListWidget
           child: DisposableProxyProvider<IPleromaChatWithLastMessage,
               IPleromaChatBloc>(
             update: (context, chatWithLastMessage, oldBloc) {
-              // don't recreate bloc if it is already crated for this chat
+              // dont recreate bloc if it is already crated for this chat
               // all data updates handled inside bloc
               if (oldBloc != null &&
                   oldBloc.chat.remoteId == chatWithLastMessage.chat.remoteId) {

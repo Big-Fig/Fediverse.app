@@ -178,7 +178,7 @@ class PleromaApiAccount implements IPleromaApiAccount, IJsonObject {
   final String url;
   @override
   @HiveField(2)
-  @JsonKey(name: "statuses_count")
+  @JsonKey(name: 'statuses_count')
   final int statusesCount;
   @override
   @HiveField(3)
@@ -191,18 +191,18 @@ class PleromaApiAccount implements IPleromaApiAccount, IJsonObject {
   final String id;
   @override
   @HiveField(6)
-  @JsonKey(name: "header_static")
+  @JsonKey(name: 'header_static')
   final String headerStatic;
   @override
   @HiveField(7)
   final String header;
   @override
   @HiveField(8)
-  @JsonKey(name: "following_count")
+  @JsonKey(name: 'following_count')
   final int followingCount;
   @override
   @HiveField(9)
-  @JsonKey(name: "followers_count")
+  @JsonKey(name: 'followers_count')
   final int followersCount;
   @override
   @HiveField(10)
@@ -212,18 +212,18 @@ class PleromaApiAccount implements IPleromaApiAccount, IJsonObject {
   final List<PleromaApiEmoji>? emojis;
   @override
   @HiveField(12)
-  @JsonKey(name: "display_name")
+  @JsonKey(name: 'display_name')
   final String? displayName;
   @override
   @HiveField(13)
-  @JsonKey(name: "created_at")
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @override
   @HiveField(14)
   final bool? bot;
   @override
   @HiveField(15)
-  @JsonKey(name: "avatar_static")
+  @JsonKey(name: 'avatar_static')
   final String avatarStatic;
   @override
   @HiveField(16)
@@ -236,7 +236,7 @@ class PleromaApiAccount implements IPleromaApiAccount, IJsonObject {
   final PleromaApiAccountPleromaPart? pleroma;
   @override
   @HiveField(20)
-  @JsonKey(name: "last_status_at")
+  @JsonKey(name: 'last_status_at')
   final DateTime? lastStatusAt;
 
   @HiveField(21)
@@ -510,7 +510,7 @@ class PleromaApiAccountPleromaPart
   // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
   @override
   @HiveField(1)
-  @JsonKey(name: "background_image")
+  @JsonKey(name: 'background_image')
   final String? backgroundImage;
 
   @override
@@ -524,37 +524,37 @@ class PleromaApiAccountPleromaPart
   final PleromaApiAccountRelationship? relationship;
   @override
   @HiveField(4)
-  @JsonKey(name: "is_admin")
+  @JsonKey(name: 'is_admin')
   final bool? isAdmin;
   @override
   @HiveField(5)
-  @JsonKey(name: "is_moderator")
+  @JsonKey(name: 'is_moderator')
   final bool? isModerator;
 
   @override
   @HiveField(7)
-  @JsonKey(name: "confirmation_pending")
+  @JsonKey(name: 'confirmation_pending')
   final bool? confirmationPending;
 
   @override
   @HiveField(8)
-  @JsonKey(name: "hide_favorites")
+  @JsonKey(name: 'hide_favorites')
   final bool? hideFavorites;
   @override
   @HiveField(9)
-  @JsonKey(name: "hide_followers")
+  @JsonKey(name: 'hide_followers')
   final bool? hideFollowers;
   @override
   @HiveField(11)
-  @JsonKey(name: "hide_follows")
+  @JsonKey(name: 'hide_follows')
   final bool? hideFollows;
   @override
   @HiveField(12)
-  @JsonKey(name: "hide_followers_count")
+  @JsonKey(name: 'hide_followers_count')
   final bool? hideFollowersCount;
   @override
   @HiveField(13)
-  @JsonKey(name: "hide_follows_count")
+  @JsonKey(name: 'hide_follows_count')
   final bool? hideFollowsCount;
 
   @override
@@ -565,22 +565,22 @@ class PleromaApiAccountPleromaPart
   ///  following accounts
   @override
   @HiveField(17)
-  @JsonKey(name: "allow_following_move")
+  @JsonKey(name: 'allow_following_move')
   final bool? allowFollowingMove;
 
   @override
   @HiveField(18)
-  @JsonKey(name: "skip_thread_containment")
+  @JsonKey(name: 'skip_thread_containment')
   final bool? skipThreadContainment;
 
   @override
   @HiveField(19)
-  @JsonKey(name: "accepts_chat_messages")
+  @JsonKey(name: 'accepts_chat_messages')
   final bool? acceptsChatMessages;
 
   @override
   @HiveField(20)
-  @JsonKey(name: "is_confirmed")
+  @JsonKey(name: 'is_confirmed')
   final bool? isConfirmed;
 
   @override
@@ -592,7 +592,7 @@ class PleromaApiAccountPleromaPart
   final String? apId;
   @override
   @HiveField(23)
-  @JsonKey(name: "also_known_as")
+  @JsonKey(name: 'also_known_as')
   final List<String>? alsoKnownAs;
 
   PleromaApiAccountPleromaPart({
@@ -800,7 +800,7 @@ class PleromaApiAccountRelationship
   @HiveField(1)
   final bool? blocking;
   @override
-  @JsonKey(name: "domain_blocking")
+  @JsonKey(name: 'domain_blocking')
   @HiveField(2)
   final bool? domainBlocking;
   @override
@@ -808,7 +808,7 @@ class PleromaApiAccountRelationship
   final bool? endorsed;
   @override
   @HiveField(4)
-  @JsonKey(name: "followed_by")
+  @JsonKey(name: 'followed_by')
   final bool? followedBy;
   @override
   @HiveField(5)
@@ -821,14 +821,14 @@ class PleromaApiAccountRelationship
   final bool? muting;
   @override
   @HiveField(8)
-  @JsonKey(name: "muting_notifications")
+  @JsonKey(name: 'muting_notifications')
   @HiveField(9)
   final bool? mutingNotifications;
   @override
   @HiveField(10)
   final bool? requested;
   @override
-  @JsonKey(name: "showing_reblogs")
+  @JsonKey(name: 'showing_reblogs')
   @HiveField(11)
   final bool? showingReblogs;
   @override
@@ -837,7 +837,7 @@ class PleromaApiAccountRelationship
 
   @override
   @HiveField(13)
-  @JsonKey(name: "blocked_by")
+  @JsonKey(name: 'blocked_by')
   final bool? blockedBy;
 
   @override
@@ -1008,7 +1008,7 @@ abstract class IPleromaApiAccountReportRequest
 )
 class PleromaApiAccountReportRequest
     implements IPleromaApiAccountReportRequest {
-  @JsonKey(name: "account_id")
+  @JsonKey(name: 'account_id')
   @override
   final String accountId;
 
@@ -1018,7 +1018,7 @@ class PleromaApiAccountReportRequest
   @override
   final bool? forward;
 
-  @JsonKey(name: "status_ids")
+  @JsonKey(name: 'status_ids')
   @override
   final List<String>? statusIds;
 

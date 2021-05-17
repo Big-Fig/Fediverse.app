@@ -13,7 +13,7 @@ void main() {
   setUp(() async {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v2.sqlite';
     var file = File(filePath);
-    dbFile = await file.copy(filePath + ".temp");
+    dbFile = await file.copy(filePath + '.temp');
     database = AppDatabase(VmDatabase(dbFile));
   });
 
@@ -39,7 +39,7 @@ void main() {
         scheduledAt: DateTime.now(),
         canceled: false,
         id: null,
-        remoteId: "asda",
+        remoteId: 'asda',
         params: PleromaApiScheduledStatusParams.only(
           sensitive: true,
           visibility: PleromaApiVisibility.private.toJsonValue(),

@@ -33,9 +33,9 @@ import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-final _logger = Logger("pleroma_oauth_service_impl.dart");
+final _logger = Logger('pleroma_oauth_service_impl.dart');
 
-final _mbSizeNumberFormat = NumberFormat("#.#");
+final _mbSizeNumberFormat = NumberFormat('#.#');
 
 class InstanceDetailsWidget extends StatelessWidget {
   const InstanceDetailsWidget();
@@ -56,7 +56,7 @@ class InstanceDetailsWidget extends StatelessWidget {
               return FediListSmartRefresherLoadingState.loaded;
             } catch (e, stackTrace) {
               _logger.warning(
-                    () => "instanceDetailsBloc.refresh",
+                    () => 'instanceDetailsBloc.refresh',
                 e,
                 stackTrace,
               );
@@ -487,7 +487,7 @@ class _InstanceDetailsEmailWidget extends StatelessWidget {
                     onTap: () {
                       UrlHelper.handleUrlClick(
                         context: context,
-                        url: "mailto:$email",
+                        url: 'mailto:$email',
                       );
                     },
                     child: _InstanceDetailsRowValueWidget(
@@ -807,7 +807,7 @@ class _InstanceDetailsLanguagesWidget extends StatelessWidget {
             label: S
                 .of(context)
                 .app_instance_details_field_languages_label,
-            value: languages?.join("\n") ?? "",
+            value: languages?.join('\n') ?? '',
           );
         } else {
           return const SizedBox.shrink();
@@ -1345,7 +1345,7 @@ class _InstanceDetailsPleromaMetadataFeaturesWidget extends StatelessWidget {
             label: S
                 .of(context)
                 .app_instance_details_field_pleroma_metadata_features_label,
-            value: pleromaMetadataFeatures?.join("\n") ?? "",
+            value: pleromaMetadataFeatures?.join('\n') ?? '',
           );
         } else {
           return const SizedBox.shrink();
@@ -1443,7 +1443,7 @@ class _InstanceDetailsPleromaMetadataFederationMfrObjectAgeActionsWidget
       label: S
           .of(context)
           .app_instance_details_field_federation_mrfObjectAge_actions_label,
-      value: pleromaMetadataFederation.mrfObjectAge!.actions!.join("\n"),
+      value: pleromaMetadataFederation.mrfObjectAge!.actions!.join('\n'),
     );
   }
 }
@@ -1464,7 +1464,7 @@ class _InstanceDetailsPleromaMetadataFederationQuarantinedInstancesWidget
       label: S
           .of(context)
           .app_instance_details_field_federation_quarantinedInstances_label,
-      value: pleromaMetadataFederation.quarantinedInstances!.join("\n"),
+      value: pleromaMetadataFederation.quarantinedInstances!.join('\n'),
     );
   }
 }
@@ -1512,7 +1512,7 @@ class _InstanceDetailsPleromaMetadataFederationMfrPoliciesWidget
       S
           .of(context)
           .app_instance_details_field_federation_mrfPolicies_label,
-      value: pleromaMetadataFederation.mrfPolicies!.join("\n"),
+      value: pleromaMetadataFederation.mrfPolicies!.join('\n'),
     );
   }
 }
@@ -1690,7 +1690,7 @@ class _InstanceDetailsPleromaMetadataPostFormatsWidget extends StatelessWidget {
             label: S
                 .of(context)
                 .app_instance_details_field_pleroma_metadata_fields_postFormats_label,
-            value: pleromaMetadataPostFormats?.join("\n").toString() ?? "",
+            value: pleromaMetadataPostFormats?.join('\n').toString() ?? '',
           );
         } else {
           return const SizedBox.shrink();

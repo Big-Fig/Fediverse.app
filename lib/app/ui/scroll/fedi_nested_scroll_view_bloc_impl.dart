@@ -6,7 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("fedi_nested_scroll_view_bloc_impl.dart");
+var _logger = Logger('fedi_nested_scroll_view_bloc_impl.dart');
 
 class FediNestedScrollViewBloc extends DisposableOwner
     implements IFediNestedScrollViewBloc {
@@ -53,7 +53,7 @@ class FediNestedScrollViewBloc extends DisposableOwner
       try {
         onScroll();
       } catch (e, stackTrace) {
-        _logger.warning(() => "failed to onScroll", e, stackTrace);
+        _logger.warning(() => 'failed to onScroll', e, stackTrace);
       }
     };
     scrollController!.addListener(listener);
@@ -63,8 +63,8 @@ class FediNestedScrollViewBloc extends DisposableOwner
         scrollController!.removeListener(listener);
       } catch (e) {
         _logger.warning(
-          () => "failed to unsubscribe scrollController"
-              ".removeListener(listener);",
+          () => 'failed to unsubscribe scrollController'
+              '.removeListener(listener);',
         );
       }
     });

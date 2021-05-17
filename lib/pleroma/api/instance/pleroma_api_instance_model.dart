@@ -11,7 +11,7 @@ import 'package:logging/logging.dart';
 // ignore_for_file: no-magic-number
 part 'pleroma_api_instance_model.g.dart';
 
-final _logger = Logger("pleroma_instance_model.dart");
+final _logger = Logger('pleroma_instance_model.dart');
 
 abstract class IPleromaApiInstanceHistory extends IMastodonApiInstanceHistory {}
 
@@ -52,7 +52,7 @@ extension IPleromaApiInstanceExtension on IPleromaApiInstance {
     }
   }
 
-  static const pleromaVersionPart = "(compatible; Pleroma";
+  static const pleromaVersionPart = '(compatible; Pleroma';
 
   PleromaApiInstanceVersionType get versionType {
     // todo: better type detection
@@ -197,15 +197,15 @@ class PleromaApiInstancePleromaPart implements IJsonObject {
 @HiveType(typeId: -32 + 72)
 class PleromaApiInstancePleromaPartMetadataFieldLimits implements IJsonObject {
   @HiveField(0)
-  @JsonKey(name: "max_fields")
+  @JsonKey(name: 'max_fields')
   final int? maxFields;
-  @JsonKey(name: "max_remote_fields")
+  @JsonKey(name: 'max_remote_fields')
   @HiveField(1)
   final int? maxRemoteFields;
-  @JsonKey(name: "name_length")
+  @JsonKey(name: 'name_length')
   @HiveField(2)
   final int? nameLength;
-  @JsonKey(name: "value_length")
+  @JsonKey(name: 'value_length')
   @HiveField(3)
   final int? valueLength;
 
@@ -306,14 +306,14 @@ class PleromaApiInstancePleromaPartMetadataFederation implements IJsonObject {
   @HiveField(1)
   final bool? exclusions;
   @HiveField(2)
-  @JsonKey(name: "mrf_object_age")
+  @JsonKey(name: 'mrf_object_age')
   final PleromaApiInstancePleromaPartMetadataFederationMfrObjectAge?
       mrfObjectAge;
   @HiveField(3)
-  @JsonKey(name: "mrf_policies")
+  @JsonKey(name: 'mrf_policies')
   final List<String>? mrfPolicies;
   @HiveField(4)
-  @JsonKey(name: "quarantined_instances")
+  @JsonKey(name: 'quarantined_instances')
   final List<String>? quarantinedInstances;
 
   PleromaApiInstancePleromaPartMetadataFederation({
@@ -375,13 +375,13 @@ class PleromaApiInstancePleromaPartMetadata implements IJsonObject {
   final List<String>? features;
 
   @HiveField(2)
-  @JsonKey(name: "post_formats")
+  @JsonKey(name: 'post_formats')
   final List<String>? postFormats;
   @HiveField(3)
-  @JsonKey(name: "account_activation_required")
+  @JsonKey(name: 'account_activation_required')
   final bool? accountActivationRequired;
   @HiveField(4)
-  @JsonKey(name: "fields_limits")
+  @JsonKey(name: 'fields_limits')
   final PleromaApiInstancePleromaPartMetadataFieldLimits? fieldsLimits;
   @HiveField(5)
   final PleromaApiInstancePleromaPartMetadataFederation? federation;
@@ -465,16 +465,16 @@ class PleromaApiInstancePollLimits {
   int get maxOptionCharsOrDefault => maxOptionChars ?? defaultMaxOptionChars;
 
   @HiveField(0)
-  @JsonKey(name: "max_expiration")
+  @JsonKey(name: 'max_expiration')
   final int? maxExpiration;
   @HiveField(1)
-  @JsonKey(name: "max_option_chars")
+  @JsonKey(name: 'max_option_chars')
   final int? maxOptionChars;
   @HiveField(2)
-  @JsonKey(name: "max_options")
+  @JsonKey(name: 'max_options')
   final int? maxOptions;
   @HiveField(3)
-  @JsonKey(name: "min_expiration")
+  @JsonKey(name: 'min_expiration')
   final int? minExpiration;
 
   const PleromaApiInstancePollLimits({
@@ -526,27 +526,27 @@ class PleromaApiInstancePollLimits {
 class PleromaApiInstance extends IPleromaApiInstance implements IJsonObject {
   @override
   @HiveField(0)
-  @JsonKey(name: "approval_required")
+  @JsonKey(name: 'approval_required')
   final bool? approvalRequired;
 
   @override
   @HiveField(1)
-  @JsonKey(name: "avatar_upload_limit")
+  @JsonKey(name: 'avatar_upload_limit')
   final int? avatarUploadLimit;
 
   @override
   @HiveField(2)
-  @JsonKey(name: "background_upload_limit")
+  @JsonKey(name: 'background_upload_limit')
   final int? backgroundUploadLimit;
 
   @override
   @HiveField(3)
-  @JsonKey(name: "banner_upload_limit")
+  @JsonKey(name: 'banner_upload_limit')
   final int? bannerUploadLimit;
 
   @override
   @HiveField(4)
-  @JsonKey(name: "contact_account")
+  @JsonKey(name: 'contact_account')
   final PleromaApiAccount? contactAccount;
 
   @override
@@ -560,7 +560,7 @@ class PleromaApiInstance extends IPleromaApiInstance implements IJsonObject {
   @override
   @HiveField(7)
   @JsonKey(
-    name: "max_toot_chars",
+    name: 'max_toot_chars',
     fromJson: PleromaApiInstance.parseMaxTootChars,
   )
   final int? maxTootChars;
@@ -575,7 +575,7 @@ class PleromaApiInstance extends IPleromaApiInstance implements IJsonObject {
       try {
         return int.parse(json.toString());
       } catch (e, stackTrace) {
-        _logger.warning(() => "error during parseMaxTootChars", e, stackTrace);
+        _logger.warning(() => 'error during parseMaxTootChars', e, stackTrace);
 
         return null;
       }
@@ -588,7 +588,7 @@ class PleromaApiInstance extends IPleromaApiInstance implements IJsonObject {
 
   @override
   @HiveField(9)
-  @JsonKey(name: "poll_limits")
+  @JsonKey(name: 'poll_limits')
   final PleromaApiInstancePollLimits? pollLimits;
 
   @override
@@ -597,7 +597,7 @@ class PleromaApiInstance extends IPleromaApiInstance implements IJsonObject {
 
   @override
   @HiveField(11)
-  @JsonKey(name: "short_description")
+  @JsonKey(name: 'short_description')
   final String? shortDescription;
 
   @override
@@ -614,7 +614,7 @@ class PleromaApiInstance extends IPleromaApiInstance implements IJsonObject {
 
   @override
   @HiveField(15)
-  @JsonKey(name: "upload_limit")
+  @JsonKey(name: 'upload_limit')
   final int? uploadLimit;
 
   @override
@@ -627,7 +627,7 @@ class PleromaApiInstance extends IPleromaApiInstance implements IJsonObject {
 
   @override
   @HiveField(18)
-  @JsonKey(name: "vapid_public_key")
+  @JsonKey(name: 'vapid_public_key')
   final String? vapidPublicKey;
 
   @override
@@ -636,12 +636,12 @@ class PleromaApiInstance extends IPleromaApiInstance implements IJsonObject {
 
   @override
   @HiveField(20)
-  @JsonKey(name: "background_image")
+  @JsonKey(name: 'background_image')
   final String? backgroundImage;
 
   @override
   @HiveField(21)
-  @JsonKey(name: "chat_limit")
+  @JsonKey(name: 'chat_limit')
   final int? chatLimit;
 
   @override
@@ -650,12 +650,12 @@ class PleromaApiInstance extends IPleromaApiInstance implements IJsonObject {
 
   @override
   @HiveField(23)
-  @JsonKey(name: "description_limit")
+  @JsonKey(name: 'description_limit')
   final int? descriptionLimit;
 
   @override
   @HiveField(24)
-  @JsonKey(name: "invites_enabled")
+  @JsonKey(name: 'invites_enabled')
   final bool? invitesEnabled;
 
   PleromaApiInstance({

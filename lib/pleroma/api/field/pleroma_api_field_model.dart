@@ -8,7 +8,7 @@ import 'package:logging/logging.dart';
 // ignore_for_file: no-magic-number
 part 'pleroma_api_field_model.g.dart';
 
-var _logger = Logger("pleroma_api_field_model.dart");
+var _logger = Logger('pleroma_api_field_model.dart');
 
 abstract class IPleromaApiField implements IMastodonApiField {}
 
@@ -53,7 +53,7 @@ class PleromaApiField implements IPleromaApiField, IJsonObject {
   final String? value;
   @override
   @HiveField(2)
-  @JsonKey(name: "verified_at")
+  @JsonKey(name: 'verified_at')
   final DateTime? verifiedAt;
 
   PleromaApiField({
@@ -100,14 +100,14 @@ class PleromaApiField implements IPleromaApiField, IJsonObject {
     if (value?.isNotEmpty == true) {
       try {
         var parsed = HtmlParser.parseHTML(value!);
-        var allLinkElements = parsed.getElementsByTagName("a");
+        var allLinkElements = parsed.getElementsByTagName('a');
         if (allLinkElements.isNotEmpty) {
-          return allLinkElements.first.attributes["href"];
+          return allLinkElements.first.attributes['href'];
         } else {
           return value;
         }
       } catch (e, stackTrace) {
-        _logger.warning(() => "failed to parse URL from $value", e, stackTrace);
+        _logger.warning(() => 'failed to parse URL from $value', e, stackTrace);
 
         return value;
       }
@@ -125,10 +125,10 @@ class PleromaApiField implements IPleromaApiField, IJsonObject {
     try {
       var uri = Uri.parse(rawUrl);
 
-      return "${uri.host}${uri.path}";
+      return '${uri.host}${uri.path}';
     } catch (e, stackTrace) {
       _logger.warning(
-        () => "valueAsRawUrlWithoutSchema $rawUrl",
+        () => 'valueAsRawUrlWithoutSchema $rawUrl',
         e,
         stackTrace,
       );

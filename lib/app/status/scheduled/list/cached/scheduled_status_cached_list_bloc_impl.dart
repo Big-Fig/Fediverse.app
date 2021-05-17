@@ -13,7 +13,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("scheduled_status_cached_list_bloc_impl.dart");
+var _logger = Logger('scheduled_status_cached_list_bloc_impl.dart');
 
 final _excludeCanceled = true;
 final _excludeScheduleAtExpired = true;
@@ -101,10 +101,10 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
     required IScheduledStatus? newerThan,
     required IScheduledStatus? olderThan,
   }) async {
-    _logger.finest(() => "refreshItemsFromRemoteForPage \n"
-        "\t limit=$limit"
-        "\t newerThan=$newerThan"
-        "\t olderThan=$olderThan");
+    _logger.finest(() => 'refreshItemsFromRemoteForPage \n'
+        '\t limit=$limit'
+        '\t newerThan=$newerThan'
+        '\t olderThan=$olderThan');
 
     var remoteStatuses =
         await pleromaScheduledStatusService.getScheduledStatuses(

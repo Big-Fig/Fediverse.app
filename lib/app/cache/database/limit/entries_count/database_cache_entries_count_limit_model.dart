@@ -10,13 +10,13 @@ enum DatabaseCacheEntriesCountByTypeLimitType {
 const defaultDatabaseCacheEntriesCountByTypeLimitType =
     DatabaseCacheEntriesCountByTypeLimitType.notSet;
 
-const _notSetDatabaseCacheEntriesCountByTypeLimitTypeJsonValue = "notSet";
-const _limit1000DatabaseCacheEntriesCountByTypeLimitTypeJsonValue = "limit1000";
-const _limit5000DatabaseCacheEntriesCountByTypeLimitTypeJsonValue = "limit5000";
+const _notSetDatabaseCacheEntriesCountByTypeLimitTypeJsonValue = 'notSet';
+const _limit1000DatabaseCacheEntriesCountByTypeLimitTypeJsonValue = 'limit1000';
+const _limit5000DatabaseCacheEntriesCountByTypeLimitTypeJsonValue = 'limit5000';
 const _limit10000DatabaseCacheEntriesCountByTypeLimitTypeJsonValue =
-    "limit10000";
+    'limit10000';
 const _limit100000DatabaseCacheEntriesCountByTypeLimitTypeJsonValue =
-    "limit100000";
+    'limit100000';
 
 extension DatabaseCacheEntriesCountByTypeLimitTypeExtension
     on DatabaseCacheEntriesCountByTypeLimitType {
@@ -90,7 +90,7 @@ extension DatabaseCacheEntriesCountByTypeLimitTypeStringExtension on String {
       case _limit100000DatabaseCacheEntriesCountByTypeLimitTypeJsonValue:
         result = DatabaseCacheEntriesCountByTypeLimitType.limit100000;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
         result = defaultDatabaseCacheEntriesCountByTypeLimitType;
         break;

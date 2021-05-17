@@ -9,7 +9,7 @@ import 'package:logging/logging.dart';
 typedef Future<T> AsyncButtonAction<T>();
 typedef Widget ButtonBuilder(BuildContext context, VoidCallback? onPressed);
 
-var _logger = Logger("async_button_widget.dart");
+var _logger = Logger('async_button_widget.dart');
 
 class AsyncOperationButtonBuilderWidget<T> extends StatefulWidget {
   final AsyncButtonAction<T> asyncButtonAction;
@@ -89,7 +89,7 @@ class _AsyncOperationButtonBuilderWidgetState
               }).catchError(
                 (error, stacktrace) {
                   _logger.severe(
-                    () => "Fail to execute async operation",
+                    () => 'Fail to execute async operation',
                     error,
                     stacktrace,
                   );

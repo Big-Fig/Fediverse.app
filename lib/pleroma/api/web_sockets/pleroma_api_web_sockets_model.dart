@@ -106,14 +106,14 @@ enum PleromaApiWebSocketsEventType {
 const unknownPleromaApiWebSocketsEventType =
     PleromaApiWebSocketsEventType.unknown;
 
-const _updatePleromaApiWebSocketsEventTypeJsonValue = "update";
-const _notificationPleromaApiWebSocketsEventTypeJsonValue = "notification";
-const _deletePleromaApiWebSocketsEventTypeJsonValue = "delete";
-const _filtersChangedPleromaApiWebSocketsEventTypeJsonValue = "filters_changed";
-const _conversationPleromaApiWebSocketsEventTypeJsonValue = "conversation";
+const _updatePleromaApiWebSocketsEventTypeJsonValue = 'update';
+const _notificationPleromaApiWebSocketsEventTypeJsonValue = 'notification';
+const _deletePleromaApiWebSocketsEventTypeJsonValue = 'delete';
+const _filtersChangedPleromaApiWebSocketsEventTypeJsonValue = 'filters_changed';
+const _conversationPleromaApiWebSocketsEventTypeJsonValue = 'conversation';
 const _pleromaChatUpdatePleromaApiWebSocketsEventTypeJsonValue =
-    "pleroma:chat_update";
-const _unknownPleromaApiWebSocketsEventTypeJsonValue = "unknown";
+    'pleroma:chat_update';
+const _unknownPleromaApiWebSocketsEventTypeJsonValue = 'unknown';
 
 extension PleromaApiWebSocketsEventTypeExtension
     on PleromaApiWebSocketsEventType {
@@ -174,7 +174,7 @@ extension PleromaApiWebSocketsEventTypeStringExtension on String {
       case _unknownPleromaApiWebSocketsEventTypeJsonValue:
         result = PleromaApiWebSocketsEventType.unknown;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
         result = unknownPleromaApiWebSocketsEventType;
         break;

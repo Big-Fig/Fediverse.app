@@ -63,7 +63,7 @@ class _AccountFollowingAccountListBodyWidget extends StatelessWidget {
         const Expanded(
           child: AccountPaginationListWidget(
             accountSelectedCallback: _goToAccountFollowingAccountListPage,
-            key: PageStorageKey("AccountFollowingAccountListPage"),
+            key: PageStorageKey('AccountFollowingAccountListPage'),
           ),
         ),
       ],
@@ -82,7 +82,7 @@ void _goToAccountFollowingAccountListPage(BuildContext context, IAccount account
     );
   } else {
     throw UnsupportedError(
-      "Account following list supported only for local accounts",
+      'Account following list supported only for local accounts',
     );
   }
 }

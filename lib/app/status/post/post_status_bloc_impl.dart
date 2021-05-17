@@ -24,9 +24,9 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("post_status_bloc_impl.dart");
+var _logger = Logger('post_status_bloc_impl.dart');
 
-final findAcctsRegex = RegExp(r"\B\@(([\w.@\-]+))");
+final findAcctsRegex = RegExp(r'\B\@(([\w.@\-]+))');
 
 abstract class PostStatusBloc extends PostMessageBloc
     implements IPostStatusBloc {
@@ -199,13 +199,13 @@ abstract class PostStatusBloc extends PostMessageBloc
   void _checkPollEmptyInputError() {
     var isSomethingChangedPollBloc = pollBloc.isSomethingChanged;
 
-    // _logger.finest(() => "_checkPollEmptyInputError "
-    //     "isSomethingChangedPollBloc $isSomethingChangedPollBloc");
+    // _logger.finest(() => '_checkPollEmptyInputError '
+    //     'isSomethingChangedPollBloc $isSomethingChangedPollBloc');
     var currentInputTextErrors = inputTextErrors;
     if (isSomethingChangedPollBloc) {
       var textIsNotEmpty = inputText?.isNotEmpty == true;
-      _logger.finest(() => "_checkPollEmptyInputError "
-          "textIsNotEmpty $textIsNotEmpty");
+      _logger.finest(() => '_checkPollEmptyInputError '
+          'textIsNotEmpty $textIsNotEmpty');
       if (textIsNotEmpty) {
         currentInputTextErrors!.remove(postMessagePollEmptyInputTextError);
         inputTextErrorsSubject.add([...currentInputTextErrors]);
@@ -215,8 +215,8 @@ abstract class PostStatusBloc extends PostMessageBloc
           currentInputTextErrors.add(postMessagePollEmptyInputTextError);
           inputTextErrorsSubject.add([...currentInputTextErrors]);
         }
-        _logger.finest(() => "_checkPollEmptyInputError "
-            "add inputTextErrors $currentInputTextErrors");
+        _logger.finest(() => '_checkPollEmptyInputError '
+            'add inputTextErrors $currentInputTextErrors');
       }
     } else {
       currentInputTextErrors!.remove(postMessagePollEmptyInputTextError);
@@ -374,7 +374,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   void onMentionedAccountsChanged() {
     var mentionedAccts = this.mentionedAccts;
     mentionedAcctsSubject.add(mentionedAccts);
-    _logger.finest(() => "onMentionedAccountsChanged $mentionedAccts");
+    _logger.finest(() => 'onMentionedAccountsChanged $mentionedAccts');
     var text = inputTextController.text;
     var textAccts = findAcctMentionsInText(text);
 
@@ -385,7 +385,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     if (acctsToAdd.isNotEmpty || acctsToRemove.isNotEmpty) {
       String? newText = prependAccts(text, acctsToAdd);
       newText = removeAcctsFromText(newText, acctsToRemove);
-      _logger.finest(() => "onMentionedAccountsChanged newText $newText");
+      _logger.finest(() => 'onMentionedAccountsChanged newText $newText');
       inputTextController.text = newText!;
       inputTextSubject.add(newText);
     }
@@ -406,9 +406,9 @@ abstract class PostStatusBloc extends PostMessageBloc
       var acctsToRemove =
           mentionedAccts.where((acct) => !textAccts.contains(acct)).toList();
       if (acctsToAdd.isNotEmpty || acctsToRemove.isNotEmpty) {
-        _logger.finest(() => "onInputTextChanged \n"
-            "\t acctsToAdd=$acctsToAdd"
-            "\t acctsToRemove=$acctsToRemove");
+        _logger.finest(() => 'onInputTextChanged \n'
+            '\t acctsToAdd=$acctsToAdd'
+            '\t acctsToRemove=$acctsToRemove');
         mentionedAccts.addAll(acctsToAdd);
         acctsToRemove.forEach((acct) => mentionedAccts.remove(acct));
         mentionedAcctsSubject.add(mentionedAccts);
@@ -430,9 +430,9 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   static String prependAccts(String text, List<String?> accts) {
     if (accts.isNotEmpty) {
-      var acctsString = accts.map((acct) => "@$acct").join(", ");
+      var acctsString = accts.map((acct) => '@$acct').join(', ');
 
-      return "$acctsString $text";
+      return '$acctsString $text';
     } else {
       return text;
     }
@@ -514,7 +514,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         )
         .map((bloc) => bloc.pleromaMediaAttachment!)
         .toList();
-    // media ids shouldn't be empty (should be null in this case)
+    // media ids shouldnt be empty (should be null in this case)
     if (mediaAttachments.isEmpty) {
       mediaAttachments = null;
     }
@@ -548,10 +548,10 @@ abstract class PostStatusBloc extends PostMessageBloc
     // todo: better performance via Regex
     mentionedAccts?.forEach(
       (acctToRemove) {
-        newText = newText!.replaceAll("@$acctToRemove, ", "");
-        newText = newText!.replaceAll("@$acctToRemove,", "");
-        newText = newText!.replaceAll(" @$acctToRemove ", "");
-        newText = newText!.replaceAll("@$acctToRemove", "");
+        newText = newText!.replaceAll('@$acctToRemove, ', '');
+        newText = newText!.replaceAll('@$acctToRemove,', '');
+        newText = newText!.replaceAll(' @$acctToRemove ', '');
+        newText = newText!.replaceAll('@$acctToRemove', '');
       },
     );
 
@@ -588,7 +588,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       if (originInReplyToStatus != null) {
         var inReplyToStatusAcct = originInReplyToStatus!.account.acct;
 
-        return "@$inReplyToStatusAcct $inputText";
+        return '@$inReplyToStatusAcct $inputText';
       } else {
         return inputText;
       }
@@ -723,7 +723,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         );
       } catch (e, stackTrace) {
         _logger.warning(
-          () => "failed to incrementRepliesCount $inReplyToStatusRemoteId",
+          () => 'failed to incrementRepliesCount $inReplyToStatusRemoteId',
           e,
           stackTrace,
         );

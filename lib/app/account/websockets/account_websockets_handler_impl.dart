@@ -40,5 +40,5 @@ class AccountWebSocketsHandler extends WebSocketsChannelHandler {
         );
 
   @override
-  String get logTag => "account_websockets_handler_impl.dart";
+  String get logTag => 'account_websockets_handler_impl.dart';
 }

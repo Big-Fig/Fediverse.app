@@ -19,7 +19,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("conversation_chat_with_last_message_list_bloc_impl.dart");
+var _logger = Logger('conversation_chat_with_last_message_list_bloc_impl.dart');
 
 class ConversationChatWithLastMessageListBloc extends DisposableOwner
     implements IConversationChatWithLastMessageListBloc {
@@ -57,7 +57,7 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
               conversationChatWithLastMessageRepository,
           conversationRepository: conversationRepository,
         ) {
-    _logger.finest(() => "constructor");
+    _logger.finest(() => 'constructor');
 
     addDisposable(
       disposable: cachedListBloc,

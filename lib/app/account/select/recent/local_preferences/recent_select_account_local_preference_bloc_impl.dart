@@ -12,7 +12,7 @@ abstract class RecentSelectAccountLocalPreferenceBloc
     required String type,
   }) : super(
           preferencesService: preferencesService,
-          key: "$userAtHost.account.select.recent.$type",
+          key: '$userAtHost.account.select.recent.$type',
           schemaVersion: 1,
           jsonConverter: (json) => RecentSelectAccountList.fromJson(json),
         );

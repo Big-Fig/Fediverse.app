@@ -13,7 +13,7 @@ const _lightFediUiTextTheme =
 
 class LightFediUiTheme implements IFediUiTheme {
   @override
-  String get id => "light";
+  String get id => 'light';
   @override
   final IFediUiColorTheme colorTheme = _lightFediUiColorTheme;
 

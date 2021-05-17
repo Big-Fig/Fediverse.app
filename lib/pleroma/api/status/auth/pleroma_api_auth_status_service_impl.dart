@@ -10,7 +10,7 @@ import 'package:fedi/rest/rest_request_model.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 
-final _logger = Logger("pleroma_api_auth_status_service_impl.dart");
+final _logger = Logger('pleroma_api_auth_status_service_impl.dart');
 
 class PleromaApiAuthStatusService extends PleromaApiStatusService
     with PleromaApiAuthMixinService
@@ -40,7 +40,7 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
     } catch(e) {
       if(e is PleromaApiRecordNotFoundRestException) {
         // nothing because already deleted on backend
-        _logger.finest(() => "already deleted");
+        _logger.finest(() => 'already deleted');
       } else {
         rethrow;
       }
@@ -55,15 +55,15 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
   }) async {
     var bodyJson = <String, dynamic>{};
     if (expireDurationInSeconds != null) {
-      assert(isPleroma, "expireDurationInSeconds supported only on Pleroma");
-      bodyJson["expire_in"] = expireDurationInSeconds;
+      assert(isPleroma, 'expireDurationInSeconds supported only on Pleroma');
+      bodyJson['expire_in'] = expireDurationInSeconds;
     }
 
     var request = RestRequest.post(
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
-        "mute",
+        'mute',
       ),
       bodyJson: bodyJson,
     );
@@ -83,7 +83,7 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
-        "unmute",
+        'unmute',
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -102,7 +102,7 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
-        "pin",
+        'pin',
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -121,7 +121,7 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
-        "unpin",
+        'unpin',
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -142,7 +142,7 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
-        "favourited_by",
+        'favourited_by',
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -163,7 +163,7 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
-        "reblogged_by",
+        'reblogged_by',
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -182,7 +182,7 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
-        "reblog",
+        'reblog',
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -201,7 +201,7 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
-        "unreblog",
+        'unreblog',
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -220,7 +220,7 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
-        "favourite",
+        'favourite',
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -239,7 +239,7 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
-        "unfavourite",
+        'unfavourite',
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -258,7 +258,7 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
-        "bookmark",
+        'bookmark',
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -277,7 +277,7 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
-        "unbookmark",
+        'unbookmark',
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -298,7 +298,7 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
       relativePath: statusRelativeUrlPath,
       headers: {
         if (data.idempotencyKey?.isNotEmpty == true)
-          "Idempotency-Key": data.idempotencyKey!,
+          'Idempotency-Key': data.idempotencyKey!,
       },
       bodyJson: json,
     );

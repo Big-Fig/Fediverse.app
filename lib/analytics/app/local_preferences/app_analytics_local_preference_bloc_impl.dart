@@ -15,7 +15,7 @@ class AppAnalyticsLocalPreferenceBloc
     ILocalPreferencesService preferencesService,
   ) : super(
           preferencesService: preferencesService,
-          key: "analytics.app",
+          key: 'analytics.app',
           schemaVersion: 1,
           jsonConverter: (json) => AppAnalyticsData.fromJson(json),
         );

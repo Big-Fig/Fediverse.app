@@ -27,11 +27,11 @@ class Timeline implements IJsonObject {
   @HiveField(1)
   final String? label;
   @HiveField(2)
-  @JsonKey(name: "is_possible_to_delete")
+  @JsonKey(name: 'is_possible_to_delete')
   final bool isPossibleToDelete;
 
   @HiveField(3)
-  @JsonKey(name: "type_string")
+  @JsonKey(name: 'type_string')
   final String typeString;
 
   TimelineType get type => typeString.toTimelineType();
@@ -211,25 +211,25 @@ class Timeline implements IJsonObject {
 }
 
 extension TimelineIdPleromaListExtension on IPleromaApiList {
-  String calculateTimelineId() => "list.$id";
+  String calculateTimelineId() => 'list.$id';
 }
 
 extension TimelineIdPleromaTagExtension on IPleromaApiTag {
-  String calculateTimelineId() => "hashtag.$name";
+  String calculateTimelineId() => 'hashtag.$name';
 }
 
 extension TimelineIdPleromaAccountExtension on IPleromaApiAccount {
-  String calculateTimelineId() => "account.$id";
+  String calculateTimelineId() => 'account.$id';
 }
 
 extension TimelineIdCustomListExtension on ICustomList {
-  String calculateTimelineId() => "list.$remoteId";
+  String calculateTimelineId() => 'list.$remoteId';
 }
 
 extension TimelineIdHashTagExtension on IHashtag {
-  String calculateTimelineId() => "hashtag.$name";
+  String calculateTimelineId() => 'hashtag.$name';
 }
 
 extension TimelineIdAccountExtension on IAccount {
-  String calculateTimelineId() => "account.$remoteId";
+  String calculateTimelineId() => 'account.$remoteId';
 }

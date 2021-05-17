@@ -9,7 +9,7 @@ import 'package:path/path.dart' as path;
 var urlPath = path.posix;
 
 class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
-  static final _relativePath = "/api/v1/streaming";
+  static final _relativePath = '/api/v1/streaming';
   final IWebSocketsService? webSocketsService;
 
   final Uri baseUri;
@@ -40,8 +40,8 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
         connectionService: connectionService,
         baseUrl: baseUrl,
         queryArgs: {
-          "access_token": accessToken,
-          "stream": stream,
+          'access_token': accessToken,
+          'stream': stream,
           ...(queryArgs ?? {}),
         },
       ),
@@ -50,12 +50,12 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
 
   String mapHttpToWebSocketsScheme(String scheme) {
     switch (scheme) {
-      case "http":
-        return "ws";
-      case "https":
-        return "wss";
+      case 'http':
+        return 'ws';
+      case 'https':
+        return 'wss';
     }
-    throw "Invalid http protocol $scheme";
+    throw 'Invalid http protocol $scheme';
   }
 
   @override
@@ -64,8 +64,8 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
     required bool? local,
   }) =>
       getOrCreateNewChannel(
-        stream: local! ? "hashtag:local" : "hashtag",
-        queryArgs: {"tag": hashtag},
+        stream: local! ? 'hashtag:local' : 'hashtag',
+        queryArgs: {'tag': hashtag},
       );
 
   @override
@@ -73,8 +73,8 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
     required String listId,
   }) =>
       getOrCreateNewChannel(
-        stream: "list",
-        queryArgs: {"list": listId},
+        stream: 'list',
+        queryArgs: {'list': listId},
       );
 
   @override
@@ -84,31 +84,31 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
     required bool? onlyMedia,
     required String? onlyFromInstance,
   }) {
-    var stream = "public";
+    var stream = 'public';
 
     assert(
       !(onlyLocal == true && onlyRemote == true),
-      "it is not possible to set onlyLocal and onlyRemote at same time",
+      'it is not possible to set onlyLocal and onlyRemote at same time',
     );
 
     if (onlyFromInstance != null) {
       assert(
         onlyRemote == true,
-        "onlyRemote should be true if instance != null",
+        'onlyRemote should be true if instance != null',
       );
     }
 
     if (onlyLocal == true) {
-      stream += ":local";
+      stream += ':local';
     }
     if (onlyRemote == true) {
-      stream += ":remote";
+      stream += ':remote';
     }
     if (onlyMedia == true) {
-      stream += ":media";
+      stream += ':media';
     }
     if (onlyFromInstance != null) {
-      stream += "?instance=$onlyFromInstance";
+      stream += '?instance=$onlyFromInstance';
     }
 
     return getOrCreateNewChannel(
@@ -124,8 +124,8 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
     assert(accountId.isNotEmpty);
 
     return getOrCreateNewChannel(
-      stream: notification ? "user:notification" : "user",
-      queryArgs: {"accountId": accountId},
+      stream: notification ? 'user:notification' : 'user',
+      queryArgs: {'accountId': accountId},
     );
   }
 
@@ -138,10 +138,10 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
 
     return getOrCreateNewChannel(
       stream: notification
-          ? "user:notification"
+          ? 'user:notification'
           : chat
-              ? "user:pleroma_chat"
-              : "user",
+              ? 'user:pleroma_chat'
+              : 'user',
     );
   }
 
@@ -151,11 +151,11 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
   }) {
     Map<String, String> queryArgs = {};
     if (accountId != null) {
-      queryArgs.addAll({"accountId": accountId});
+      queryArgs.addAll({'accountId': accountId});
     }
 
     return getOrCreateNewChannel(
-      stream: "direct",
+      stream: 'direct',
       queryArgs: queryArgs,
     );
   }

@@ -15,7 +15,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-final _logger = Logger("app_database_service_impl.dart");
+final _logger = Logger('app_database_service_impl.dart');
 
 class AppDatabaseService extends AsyncInitLoadingBloc
     implements IDatabaseService {
@@ -163,9 +163,9 @@ class AppDatabaseService extends AsyncInitLoadingBloc
     required Duration? ageLimit,
     required int? entriesCountByTypeLimit,
   }) async {
-    _logger.finest(() => "clearByLimits \n"
-        "ageLimit $ageLimit \n"
-        "entriesCountByTypeLimit $entriesCountByTypeLimit \n");
+    _logger.finest(() => 'clearByLimits \n'
+        'ageLimit $ageLimit \n'
+        'entriesCountByTypeLimit $entriesCountByTypeLimit \n');
 
     // todo: clear related tables too
 

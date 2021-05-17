@@ -81,7 +81,7 @@ void main() {
     );
 
     var testLocalizationLocale =
-        LocalizationModelTestHelper.createTestLocalizationLocale(seed: "seed");
+        LocalizationModelTestHelper.createTestLocalizationLocale(seed: 'seed');
 
     await localizationSettingsBloc
         .changeLocalizationLocale(testLocalizationLocale);

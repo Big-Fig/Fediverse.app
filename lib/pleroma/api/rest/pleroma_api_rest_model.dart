@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:logging/logging.dart';
 
-var _logger = Logger("pleroma_rest_exception.dart");
+var _logger = Logger('pleroma_rest_exception.dart');
 
 abstract class PleromaApiException implements Exception {
   String get exceptionType;
@@ -14,7 +14,7 @@ abstract class PleromaApiException implements Exception {
 }
 
 abstract class PleromaApiRestException implements PleromaApiException {
-  static const jsonBodyErrorKey = "error";
+  static const jsonBodyErrorKey = 'error';
 
   final int statusCode;
   final String body;
@@ -30,8 +30,12 @@ abstract class PleromaApiRestException implements PleromaApiException {
     try {
       var jsonBody = jsonDecode(body);
       decodedErrorDescription = jsonBody[jsonBodyErrorKey];
-    } catch (e) {
-      _logger.warning(() => "error during parse 'error' from API response");
+    } catch (e, stackTrace) {
+      _logger.warning(
+        () => 'error during parse error from API response',
+        e,
+        stackTrace,
+      );
     }
   }
 
@@ -49,7 +53,7 @@ class PleromaApiOAuthCantLaunchException extends PleromaApiException {
   PleromaApiOAuthCantLaunchException() : super();
 
   @override
-  String get exceptionType => "PleromaOAuthCantLaunchException";
+  String get exceptionType => 'PleromaOAuthCantLaunchException';
 }
 
 class PleromaApiUnprocessableOrThrottledRestException
@@ -123,11 +127,11 @@ class PleromaApiNotJsonListResponseRestException
 
 class PleromaApiInvalidCredentialsForbiddenRestException
     extends PleromaApiRestException {
-  static const pleromaErrorValue = "Invalid credentials.";
+  static const pleromaErrorValue = 'Invalid credentials.';
   static const pleromaStatusCode = 403;
 
   static const mastodonStatusCode = 401;
-  static const mastodonErrorValue = "The access token was revoked";
+  static const mastodonErrorValue = 'The access token was revoked';
 
   PleromaApiInvalidCredentialsForbiddenRestException({
     required int statusCode,
@@ -143,7 +147,7 @@ class PleromaApiInvalidCredentialsForbiddenRestException
 }
 
 class PleromaApiRecordNotFoundRestException extends PleromaApiRestException {
-  static const pleromaErrorValue = "Record not found";
+  static const pleromaErrorValue = 'Record not found';
   static const pleromaStatusCode = 404;
 
   PleromaApiRecordNotFoundRestException({

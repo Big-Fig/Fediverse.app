@@ -6,9 +6,9 @@ class MastodonApiApplicationTestHelper {
     required String seed,
   }) =>
           MastodonApiApplicationRegistrationRequest(
-            clientName: seed + "clientName",
-            redirectUris: seed + "redirectUris",
-            scopes: seed + "scopes",
-            website: seed + "website",
+            clientName: seed + 'clientName',
+            redirectUris: seed + 'redirectUris',
+            scopes: seed + 'scopes',
+            website: seed + 'website',
           );
 }

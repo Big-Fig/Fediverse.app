@@ -22,7 +22,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("join_auth_instance_widget.dart");
+final _logger = Logger('join_auth_instance_widget.dart');
 
 class JoinAuthInstanceWidget extends StatelessWidget {
   const JoinAuthInstanceWidget();
@@ -216,7 +216,7 @@ class _JoinAuthInstanceLogoWidget extends StatelessWidget {
       }
 
       return Image(
-        image: AssetImage("assets/images/theme/logo.png"),
+        image: AssetImage('assets/images/theme/logo.png'),
         width: width,
       );
     });
@@ -245,7 +245,7 @@ class _JoinAuthInstanceTermsOfServiceButtonWidget extends StatelessWidget {
               style: textStyle,
             ),
             TextSpan(
-              text: " ",
+              text: ' ',
               style: textStyle,
             ),
             TextSpan(
@@ -408,18 +408,18 @@ Future logInToInstance(BuildContext context) async {
 
   var authInstance = dialogResult.result;
   if (authInstance != null) {
-    _logger.finest(() =>"before pop");
+    _logger.finest(() =>'before pop');
     if (!joinInstanceBloc.isFromScratch) {
       Navigator.pop(context);
       Navigator.pop(context);
     }
 
-    _logger.finest(() =>"after pop before change auth");
+    _logger.finest(() =>'after pop before change auth');
 
     await ICurrentAuthInstanceBloc.of(context, listen: false)
         .changeCurrentInstance(
       authInstance,
     );
-    _logger.finest(() =>"after auth");
+    _logger.finest(() =>'after auth');
   }
 }

@@ -12,7 +12,7 @@ void main() {
   setUp(() async {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v6.sqlite';
     var file = File(filePath);
-    dbFile = await file.copy(filePath + ".temp");
+    dbFile = await file.copy(filePath + '.temp');
     database = AppDatabase(VmDatabase(dbFile));
   });
 
@@ -34,7 +34,7 @@ void main() {
 
     var dbConversation =
         await ConversationDatabaseTestHelper.createTestDbConversation(
-      seed: "seed",
+      seed: 'seed',
     );
 
     var dateTime = DateTime(

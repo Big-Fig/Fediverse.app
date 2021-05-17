@@ -5,10 +5,10 @@ enum PendingState {
   fail,
 }
 
-const _notSenYetPendingStateJsonValue = "notSentYet";
-const _publishedPendingStateJsonValue = "published";
-const _pendingPendingStateJsonValue = "pending";
-const _failPendingStateJsonValue = "fail";
+const _notSenYetPendingStateJsonValue = 'notSentYet';
+const _publishedPendingStateJsonValue = 'published';
+const _pendingPendingStateJsonValue = 'pending';
+const _failPendingStateJsonValue = 'fail';
 
 extension PendingStateExtension on PendingState {
   String toJsonValue() {
@@ -50,9 +50,9 @@ extension PendingStateStringExtension on String {
       case _failPendingStateJsonValue:
         result = PendingState.fail;
         break;
-      // can't parse
+      // cant parse
       default:
-        throw "Invalid PendingState $PendingState";
+        throw 'Invalid PendingState $PendingState';
     }
 
     return result;

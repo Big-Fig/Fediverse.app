@@ -193,7 +193,7 @@ import 'package:fedi/web_sockets/service/web_sockets_service.dart';
 import 'package:fedi/web_sockets/service/web_sockets_service_impl.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("current_auth_instance_context_bloc_imp.dart");
+var _logger = Logger('current_auth_instance_context_bloc_imp.dart');
 
 class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     implements ICurrentAuthInstanceContextBloc {
@@ -211,7 +211,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
   // todo: refactor
   // ignore: long-method
   Future internalAsyncInit() async {
-    _logger.fine(() => "internalAsyncInit");
+    _logger.fine(() => 'internalAsyncInit');
 
     ILocalPreferencesService preferencesService = appContextBloc.get();
     IConnectionService connectionService = appContextBloc.get();
@@ -511,8 +511,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var pleromaPushService = PleromaApiPushService(
       keys: PleromaApiPushSubscriptionKeys(
         p256dh:
-            "BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8quUowlrPyfXlMa6tABLqqcSpOpMnC1-o_UB_s4R8NQsqMLbASjnqSbqw=",
-        auth: "T5bhIIyre5TDC1LyX4mFAQ==",
+            'BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8quUowlrPyfXlMa6tABLqqcSpOpMnC1-o_UB_s4R8NQsqMLbASjnqSbqw=',
+        auth: 'T5bhIIyre5TDC1LyX4mFAQ==',
       ),
       restService: pleromaAuthRestService,
     );
@@ -654,20 +654,20 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       var timelines = [
         Timeline.home(
           label: null,
-          id: "home",
+          id: 'home',
           isPossibleToDelete: false,
           settings: TimelineSettings.createDefaultHomeSettings(),
         ),
         Timeline.public(
           label: null,
-          id: "local",
+          id: 'local',
           settings: TimelineSettings.createDefaultPublicSettings().copyWith(
             onlyLocal: true,
           ),
         ),
         Timeline.public(
           label: null,
-          id: "public",
+          id: 'public',
           settings: TimelineSettings.createDefaultPublicSettings().copyWith(
             onlyLocal: false,
           ),

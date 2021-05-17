@@ -9,7 +9,7 @@ class FcmPushPermissionAskedLocalPreferenceBloc extends BoolLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService: preferencesService,
-          key: "$userAtHost.fcm.push.permission_asked",
+          key: '$userAtHost.fcm.push.permission_asked',
         );
 
   static const defaultValue = false;

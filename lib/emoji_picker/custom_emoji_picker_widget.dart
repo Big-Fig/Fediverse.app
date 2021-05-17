@@ -203,7 +203,7 @@ class _CustomEmojiPickerSelectedCategoryItemsWidget extends StatelessWidget {
             item: item,
           );
         } else {
-          throw "Unsupported $item";
+          throw 'Unsupported $item';
         }
 
         var size = selectedCategoryItemsGridHeight / rowsCount;
@@ -353,10 +353,10 @@ IconData mapCategoryToIcon({
       case CustomEmojiPickerCodeCategoryType.flags:
         return Icons.flag;
       default:
-        throw "emojiPickerCodeCategoryType $emojiPickerCodeCategoryType not supported";
+        throw 'emojiPickerCodeCategoryType $emojiPickerCodeCategoryType not supported';
     }
   } else {
-    throw "category $category not supported";
+    throw 'category $category not supported';
   }
 }
 

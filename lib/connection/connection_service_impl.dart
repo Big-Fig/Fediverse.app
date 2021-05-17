@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("connection_service_impl.dart");
+var _logger = Logger('connection_service_impl.dart');
 
 class ConnectionService extends AsyncInitLoadingBloc
     implements IConnectionService {
@@ -66,7 +66,7 @@ class ConnectionService extends AsyncInitLoadingBloc
   }
 
   void _updateConnectivity(ConnectivityResult newState) {
-    _logger.fine(() => "newState $newState");
+    _logger.fine(() => 'newState $newState');
 
     _connectionStateSubject.add(newState);
   }

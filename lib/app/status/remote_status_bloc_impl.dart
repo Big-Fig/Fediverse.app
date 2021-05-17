@@ -116,7 +116,7 @@ class RemoteStatusBloc extends StatusBloc {
   }
 
   Future _checkIsInReplyToAccountLoaded() async {
-    // todo: don't load account if inReplyToStatus already loaded
+    // todo: dont load account if inReplyToStatus already loaded
     var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
     if (inReplyToAccountRemoteId != null) {
       var remoteAccount = await pleromaAccountService.getAccount(

@@ -11,13 +11,13 @@ import 'package:path/path.dart' as path;
 
 var _urlPath = path.Context(style: path.Style.url);
 
-var _logger = Logger("pleroma_api_my_account_service_impl.dart");
+var _logger = Logger('pleroma_api_my_account_service_impl.dart');
 
 class PleromaApiMyAccountService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiMyAccountService {
-  final verifyProfileRelativeUrlPath = "/api/v1/accounts/verify_credentials";
-  final editProfileRelativeUrlPath = "/api/v1/accounts/update_credentials";
+  final verifyProfileRelativeUrlPath = '/api/v1/accounts/verify_credentials';
+  final editProfileRelativeUrlPath = '/api/v1/accounts/update_credentials';
   @override
   final IPleromaApiAuthRestService restService;
 
@@ -50,15 +50,15 @@ class PleromaApiMyAccountService extends BasePleromaApiService
   Future<IPleromaApiMyAccount> updateFiles(
     PleromaApiMyAccountFilesRequest accountFiles,
   ) async {
-    _logger.finest(() => "updateFiles $accountFiles");
+    _logger.finest(() => 'updateFiles $accountFiles');
     var httpResponse = await restService.uploadFileMultipartRequest(
       UploadMultipartRestRequest.patch(
         relativePath: editProfileRelativeUrlPath,
         files: {
-          if (accountFiles.header != null) "header": accountFiles.header!,
-          if (accountFiles.avatar != null) "avatar": accountFiles.avatar!,
+          if (accountFiles.header != null) 'header': accountFiles.header!,
+          if (accountFiles.avatar != null) 'avatar': accountFiles.avatar!,
           if (accountFiles.pleromaBackgroundImage != null)
-            "pleroma_background_image": accountFiles.pleromaBackgroundImage!,
+            'pleroma_background_image': accountFiles.pleromaBackgroundImage!,
         },
       ),
     );
@@ -87,7 +87,7 @@ class PleromaApiMyAccountService extends BasePleromaApiService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: _urlPath.join("api/v1/bookmarks"),
+        relativePath: _urlPath.join('api/v1/bookmarks'),
         queryArgs: pagination?.toQueryArgs(),
       ),
     );
@@ -104,7 +104,7 @@ class PleromaApiMyAccountService extends BasePleromaApiService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: _urlPath.join("api/v1/favourites"),
+        relativePath: _urlPath.join('api/v1/favourites'),
         queryArgs: pagination?.toQueryArgs(),
       ),
     );
@@ -121,7 +121,7 @@ class PleromaApiMyAccountService extends BasePleromaApiService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: _urlPath.join("api/v1/follow_requests"),
+        relativePath: _urlPath.join('api/v1/follow_requests'),
         queryArgs: pagination?.toQueryArgs(),
       ),
     );
@@ -139,9 +139,9 @@ class PleromaApiMyAccountService extends BasePleromaApiService
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: _urlPath.join(
-          "api/v1/follow_requests",
+          'api/v1/follow_requests',
           accountRemoteId,
-          "authorize",
+          'authorize',
         ),
       ),
     );
@@ -159,9 +159,9 @@ class PleromaApiMyAccountService extends BasePleromaApiService
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: _urlPath.join(
-          "api/v1/follow_requests",
+          'api/v1/follow_requests',
           accountRemoteId,
-          "reject",
+          'reject',
         ),
       ),
     );
@@ -178,7 +178,7 @@ class PleromaApiMyAccountService extends BasePleromaApiService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: _urlPath.join("api/v1/domain_blocks"),
+        relativePath: _urlPath.join('api/v1/domain_blocks'),
         queryArgs: pagination?.toQueryArgs(),
       ),
     );
@@ -194,7 +194,7 @@ class PleromaApiMyAccountService extends BasePleromaApiService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: _urlPath.join("api/v1/blocks"),
+        relativePath: _urlPath.join('api/v1/blocks'),
         queryArgs: pagination?.toQueryArgs(),
       ),
     );
@@ -211,7 +211,7 @@ class PleromaApiMyAccountService extends BasePleromaApiService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: _urlPath.join("api/v1/mutes"),
+        relativePath: _urlPath.join('api/v1/mutes'),
         queryArgs: pagination?.toQueryArgs(),
       ),
     );

@@ -5,7 +5,7 @@ import 'package:fedi/app/ui/dialog/alert/fedi_base_alert_dialog.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("fcm_push_permission_checker_widget.dart");
+var _logger = Logger('fcm_push_permission_checker_widget.dart');
 
 class FcmPushPermissionCheckerWidget extends StatefulWidget {
   final Widget child;
@@ -34,7 +34,7 @@ class _FcmPushPermissionCheckerWidgetState
 
     var isNeedCheckPermission =
         fcmPushPermissionCheckerBloc.isNeedCheckPermission;
-    _logger.finest(() => "isNeedCheckPermission $isNeedCheckPermission");
+    _logger.finest(() => 'isNeedCheckPermission $isNeedCheckPermission');
 
     if (isNeedCheckPermission) {
       // todo: refactor

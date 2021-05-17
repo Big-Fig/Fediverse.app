@@ -74,7 +74,7 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
         var isConnected = snapshot.data ?? true;
 
         return CachedNetworkImage(
-          key: ValueKey(stringKey! + "+" + isConnected.toString()),
+          key: ValueKey(stringKey! + '+' + isConnected.toString()),
           imageUrl: imageUrl!,
           httpHeaders: httpHeaders,
           imageBuilder: imageBuilder,

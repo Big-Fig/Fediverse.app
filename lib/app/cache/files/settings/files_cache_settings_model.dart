@@ -12,11 +12,11 @@ part 'files_cache_settings_model.g.dart';
 @HiveType(typeId: -32 + 97)
 class FilesCacheSettings implements IJsonObject, ISettings<FilesCacheSettings> {
   @HiveField(2)
-  @JsonKey(name: "files_cache_size_limit_count_type_string")
+  @JsonKey(name: 'files_cache_size_limit_count_type_string')
   final String sizeLimitCountTypeString;
 
   @HiveField(3)
-  @JsonKey(name: "files_cache_ageL_limit_type_string")
+  @JsonKey(name: 'files_cache_ageL_limit_type_string')
   final String ageLimitTypeString;
 
   FilesCacheSizeLimitCountType get sizeLimitCountType =>

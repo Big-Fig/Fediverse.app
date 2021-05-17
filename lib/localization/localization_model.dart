@@ -16,12 +16,12 @@ class LocalizationLocale implements IJsonObject {
   final String? countryCode;
 
   String get localeString {
-    var result = "$languageCode";
+    var result = '$languageCode';
     if (scriptCode != null) {
-      result += "_$scriptCode";
+      result += '_$scriptCode';
     }
     if (countryCode != null) {
-      result += "_$countryCode";
+      result += '_$countryCode';
     }
 
     return result;

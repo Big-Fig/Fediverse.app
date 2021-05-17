@@ -146,8 +146,8 @@ class DbConversationChatPopulatedWrapper implements IConversationChat {
 
   @override
   List<IAccount> get accounts => throw Exception(
-        "accounts not included in ConversationChat "
-        "and should be manually fetched from repository",
+        'accounts not included in ConversationChat '
+        'and should be manually fetched from repository',
       );
 }
 

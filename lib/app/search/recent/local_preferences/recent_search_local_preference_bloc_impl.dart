@@ -11,7 +11,7 @@ class RecentSearchLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService: preferencesService,
-          key: "$userAtHost.search.recent",
+          key: '$userAtHost.search.recent',
           schemaVersion: 1,
           jsonConverter: (json) => RecentSearchList.fromJson(json),
         );

@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("edit_my_account_avatar_field_widget.dart");
+final _logger = Logger('edit_my_account_avatar_field_widget.dart');
 
 class EditMyAccountAvatarFieldWidget extends StatelessWidget {
   final double avatarSize;
@@ -68,7 +68,7 @@ void _startChoosingFileToUploadAvatar(BuildContext context) async {
       try {
         await editMyAccountBloc.avatarField.pickNewFile(filePickerFile);
       } catch (e, stackTrace) {
-        _logger.warning("startChoosingFileToUploadAvatar error", e, stackTrace);
+        _logger.warning('startChoosingFileToUploadAvatar error', e, stackTrace);
         showMediaAttachmentFailedNotificationOverlay(context, e);
       }
     }

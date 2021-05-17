@@ -9,7 +9,7 @@ import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_s
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("device_upload_media_attachment_bloc_impl.dart");
+var _logger = Logger('device_upload_media_attachment_bloc_impl.dart');
 
 class UploadMediaAttachmentBlocDevice extends DisposableOwner
     implements IUploadMediaAttachmentBloc {
@@ -90,7 +90,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
         ),
       );
     }).catchError((error, stackTrace) {
-      _logger.severe(() => "error during uploading", error, stackTrace);
+      _logger.severe(() => 'error during uploading', error, stackTrace);
       uploadStateSubject.add(
         UploadMediaAttachmentState(
           type: UploadMediaAttachmentStateType.failed,

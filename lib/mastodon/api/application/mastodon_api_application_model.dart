@@ -6,14 +6,14 @@ part 'mastodon_api_application_model.g.dart';
 @JsonSerializable()
 class MastodonApiApplicationRegistrationRequest implements IJsonObject {
   /// A name for your application
-  @JsonKey(name: "client_name")
+  @JsonKey(name: 'client_name')
   final String? clientName;
 
   /// Where the user should be redirected after authorization.
   /// To display the authorization code to the
   /// user instead of redirecting to a web page,
   /// use urn:ietf:wg:oauth:2.0:oob in this parameter.
-  @JsonKey(name: "redirect_uris")
+  @JsonKey(name: 'redirect_uris')
   final String? redirectUris;
 
   /// Space separated list of scopes. If none is provided, defaults to read.

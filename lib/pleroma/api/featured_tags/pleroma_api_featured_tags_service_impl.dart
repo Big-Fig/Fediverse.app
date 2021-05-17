@@ -11,7 +11,7 @@ var _urlPath = path.Context(style: path.Style.url);
 class PleromaApiFeaturedTagsService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiFeaturedTagsService {
-  final featuredTagsRelativeUrlPath = "/api/v1/featured_tags";
+  final featuredTagsRelativeUrlPath = '/api/v1/featured_tags';
 
   @override
   final IPleromaApiAuthRestService restService;
@@ -48,7 +48,7 @@ class PleromaApiFeaturedTagsService extends BasePleromaApiService
       RestRequest.get(
         relativePath: _urlPath.join(
           featuredTagsRelativeUrlPath,
-          "suggestions",
+          'suggestions',
         ),
       ),
     );
@@ -69,7 +69,7 @@ class PleromaApiFeaturedTagsService extends BasePleromaApiService
           featuredTagsRelativeUrlPath,
         ),
         bodyJson: {
-          "name": name,
+          'name': name,
         },
       ),
     );

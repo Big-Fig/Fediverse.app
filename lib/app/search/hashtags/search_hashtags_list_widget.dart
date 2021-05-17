@@ -5,7 +5,7 @@ class SearchHashtagsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const
   SearchHashtagsPaginationListWidget(
-        key: PageStorageKey("SearchHashtagsListWidget"),
+        key: PageStorageKey('SearchHashtagsListWidget'),
       );
   const SearchHashtagsListWidget();
 }

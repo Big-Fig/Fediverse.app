@@ -20,7 +20,7 @@ import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:pedantic/pedantic.dart';
 
-var _logger = Logger("status_repository_impl.dart");
+var _logger = Logger('status_repository_impl.dart');
 
 class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbStatus,
@@ -273,7 +273,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Future<IStatus?> findByOldPendingRemoteId(
     String oldPendingRemoteId,
   ) async {
-    _logger.finest(() => "findByOldPendingRemoteId $oldPendingRemoteId");
+    _logger.finest(() => 'findByOldPendingRemoteId $oldPendingRemoteId');
 
     return (await dao.findByOldPendingRemoteId(oldPendingRemoteId))
         ?.toDbStatusPopulatedWrapper();
@@ -283,7 +283,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Stream<IStatus?> watchByOldPendingRemoteId(
     String oldPendingRemoteId,
   ) {
-    _logger.finest(() => "watchByOldPendingRemoteId $oldPendingRemoteId");
+    _logger.finest(() => 'watchByOldPendingRemoteId $oldPendingRemoteId');
 
     return dao.watchByOldPendingRemoteId(oldPendingRemoteId).map(
           (value) => value?.toDbStatusPopulatedWrapper(),
@@ -669,10 +669,10 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       conversationRemoteId = conversationRemoteId ??
           remoteStatus.pleroma?.directConversationId?.toString();
 
-      _logger.finer(() => "upsertRemoteStatus $remoteStatus "
-          "listRemoteId => $listRemoteId "
-          "conversationRemoteId => $conversationRemoteId "
-          "isFromHomeTimeline => $isFromHomeTimeline ");
+      _logger.finer(() => 'upsertRemoteStatus $remoteStatus '
+          'listRemoteId => $listRemoteId '
+          'conversationRemoteId => $conversationRemoteId '
+          'isFromHomeTimeline => $isFromHomeTimeline ');
 
       var remoteAccount = remoteStatus.account;
 
@@ -745,7 +745,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
       var reblog = remoteStatus.reblog;
       if (reblog != null) {
-        // list & conversation should be null. We don't need reblogs in
+        // list & conversation should be null. We dont need reblogs in
         // conversations & lists
         unawaited(
           upsertInRemoteTypeBatch(

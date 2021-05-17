@@ -9,7 +9,7 @@ var _urlPath = path.Context(style: path.Style.url);
 
 class PleromaApiInstanceService extends BasePleromaApiService
     implements IPleromaApiInstanceService {
-  final instanceRelativeUrlPath = "/api/v1/instance";
+  final instanceRelativeUrlPath = '/api/v1/instance';
   @override
   final IPleromaApiRestService restService;
 
@@ -25,7 +25,7 @@ class PleromaApiInstanceService extends BasePleromaApiService
       RestRequest.get(
         relativePath: _urlPath.join(
           instanceRelativeUrlPath,
-          "activity",
+          'activity',
         ),
       ),
     );
@@ -56,7 +56,7 @@ class PleromaApiInstanceService extends BasePleromaApiService
       RestRequest.get(
         relativePath: _urlPath.join(
           instanceRelativeUrlPath,
-          "peers",
+          'peers',
         ),
       ),
     );

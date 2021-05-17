@@ -30,9 +30,9 @@ void main() {
     expect(request.toQueryArgs().length, 0);
 
     limit = 1;
-    maxId = "maxId";
-    minId = "minId";
-    sinceId = "sinceId";
+    maxId = 'maxId';
+    minId = 'minId';
+    sinceId = 'sinceId';
 
     request = PleromaApiPaginationRequest(
       limit: limit,

@@ -12,7 +12,7 @@ void main() {
   setUp(() async {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v4.sqlite';
     var file = File(filePath);
-    dbFile = await file.copy(filePath + ".temp");
+    dbFile = await file.copy(filePath + '.temp');
     database = AppDatabase(VmDatabase(dbFile));
   });
 
@@ -32,9 +32,9 @@ void main() {
 
     expect((await accountDao.getAll()).isNotEmpty, false);
 
-    var pleromaBackgroundImage = "pleromaBackgroundImage11";
+    var pleromaBackgroundImage = 'pleromaBackgroundImage11';
     var testDbAccount =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed1");
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1');
     testDbAccount =
         testDbAccount.copyWith(pleromaBackgroundImage: pleromaBackgroundImage);
     await accountDao.insert(

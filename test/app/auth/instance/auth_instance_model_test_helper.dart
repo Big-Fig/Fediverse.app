@@ -10,13 +10,13 @@ class AuthInstanceModelTestHelper {
     required String seed,
   }) =>
       AuthInstance(
-        urlSchema: seed + "urlSchema",
-        urlHost: seed + "urlHost",
-        acct: seed + "acct",
+        urlSchema: seed + 'urlSchema',
+        urlHost: seed + 'urlHost',
+        acct: seed + 'acct',
         token: PleromaApiOAuthTestHelper.createTestPleromaApiOAuthToken(
           seed: seed,
         ),
-        authCode: seed + "authCode",
+        authCode: seed + 'authCode',
         isPleroma: seed.hashCode % 2 == 0,
         application: PleromaApiApplicationTestHelper
             .createTestPleromaApiClientApplication(

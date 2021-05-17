@@ -30,7 +30,7 @@ void main() {
     expect(
       PleromaApiField.only(value: '<a href="https://test.com">test</a>')
           .valueAsRawUrl,
-      "https://test.com",
+      'https://test.com',
     );
   });
 
@@ -38,7 +38,7 @@ void main() {
     expect(
       PleromaApiField.only(value: '<a href="https://test.com">test</a>')
           .valueAsRawUrlWithoutSchema,
-      "test.com",
+      'test.com',
     );
   });
 

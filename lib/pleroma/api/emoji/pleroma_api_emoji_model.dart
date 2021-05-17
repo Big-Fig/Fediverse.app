@@ -61,10 +61,10 @@ class PleromaApiEmoji implements IPleromaApiEmoji, IJsonObject {
   final String? url;
   @override
   @HiveField(2)
-  @JsonKey(name: "static_url")
+  @JsonKey(name: 'static_url')
   final String? staticUrl;
   @override
-  @JsonKey(name: "visible_in_picker")
+  @JsonKey(name: 'visible_in_picker')
   @HiveField(3)
   final bool? visibleInPicker;
   @override
@@ -128,7 +128,7 @@ class PleromaApiCustomEmoji implements IPleromaApiCustomEmoji, IJsonObject {
   final List<String>? tags;
   @override
   @HiveField(1)
-  @JsonKey(name: "image_url")
+  @JsonKey(name: 'image_url')
   final String imageUrl;
 
   @override

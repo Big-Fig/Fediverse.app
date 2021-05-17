@@ -39,13 +39,13 @@ class PleromaApiAccountPublicRegisterRequest
   final String? username;
 
   @override
-  @JsonKey(name: "captcha_token")
+  @JsonKey(name: 'captcha_token')
   final String? captchaToken;
   @override
-  @JsonKey(name: "captcha_answer_data")
+  @JsonKey(name: 'captcha_answer_data')
   final String? captchaAnswerData;
   @override
-  @JsonKey(name: "captcha_solution")
+  @JsonKey(name: 'captcha_solution')
   final String? captchaSolution;
 
   PleromaApiAccountPublicRegisterRequest({

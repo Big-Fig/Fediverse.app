@@ -11,6 +11,6 @@ class RecentShareSelectAccountLocalPreferenceBloc
   }) : super(
           preferencesService,
           userAtHost: userAtHost,
-          type: "share",
+          type: 'share',
         );
 }

@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("date_time_duration_picker.dart");
+final _logger = Logger('date_time_duration_picker.dart');
 
 Future<DurationPickerResult> showDateTimeDurationPicker({
   required BuildContext context,
@@ -88,7 +88,7 @@ Future<DurationPickerResult> showDateTimeDurationPicker({
   );
 
   _logger.finest(() =>
-      "showDateTimeDurationPicker durationPickerResult $durationPickerResult");
+      'showDateTimeDurationPicker durationPickerResult $durationPickerResult');
 
   return durationPickerResult;
 }

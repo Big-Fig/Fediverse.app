@@ -10,20 +10,20 @@ class PleromaApiAnnouncementTestHelper {
     required String seed,
   }) =>
       PleromaApiAnnouncement(
-        id: seed + "id",
-        text: seed + "text",
+        id: seed + 'id',
+        text: seed + 'text',
         published: seed.hashCode % 2 == 0,
         allDay: seed.hashCode % 2 == 0,
-        createdAt: DateTimeTestHelper.createTestDateTime(seed: seed + "1"),
-        updatedAt: DateTimeTestHelper.createTestDateTime(seed: seed + "2"),
+        createdAt: DateTimeTestHelper.createTestDateTime(seed: seed + '1'),
+        updatedAt: DateTimeTestHelper.createTestDateTime(seed: seed + '2'),
         read: seed.hashCode % 2 == 1,
         reactions: [
-          createTestPleromaPleromaApiAnnouncementReaction(seed: seed + "1"),
-          createTestPleromaPleromaApiAnnouncementReaction(seed: seed + "1"),
+          createTestPleromaPleromaApiAnnouncementReaction(seed: seed + '1'),
+          createTestPleromaPleromaApiAnnouncementReaction(seed: seed + '1'),
         ],
-        scheduledAt: DateTimeTestHelper.createTestDateTime(seed: seed + "3"),
-        startsAt: DateTimeTestHelper.createTestDateTime(seed: seed + "4"),
-        endsAt: DateTimeTestHelper.createTestDateTime(seed: seed + "5"),
+        scheduledAt: DateTimeTestHelper.createTestDateTime(seed: seed + '3'),
+        startsAt: DateTimeTestHelper.createTestDateTime(seed: seed + '4'),
+        endsAt: DateTimeTestHelper.createTestDateTime(seed: seed + '5'),
       );
 
   static PleromaApiAnnouncementReaction
@@ -31,11 +31,11 @@ class PleromaApiAnnouncementTestHelper {
     required String seed,
   }) =>
           PleromaApiAnnouncementReaction(
-            name: seed + "name",
+            name: seed + 'name',
             count: seed.hashCode,
             me: seed.hashCode % 2 == 0,
-            url: seed + "url",
-            staticUrl: seed + "staticUrl",
+            url: seed + 'url',
+            staticUrl: seed + 'staticUrl',
           );
 
 }

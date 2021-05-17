@@ -38,8 +38,8 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
     required this.statusRepository,
     required this.scheduledStatusRepository,
     required this.draftStatusRepository,
-    required IDraftStatus draftStatus, // for better performance we don't
-    // todo: remove hack. Don't init when bloc quickly disposed. Help
+    required IDraftStatus draftStatus, // for better performance we dont
+    // todo: remove hack. Dont init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
     this.isNeedWatchLocalRepositoryForUpdates = true,

@@ -26,10 +26,10 @@ class EmojiPickerRecentCategoryItemsList implements IJsonObject {
   }
 
   @HiveField(2)
-  @JsonKey(name: "recent_code_items")
+  @JsonKey(name: 'recent_code_items')
   final List<CustomEmojiPickerCodeItem> recentCodeItems;
   @HiveField(3)
-  @JsonKey(name: "recent_image_items")
+  @JsonKey(name: 'recent_image_items')
   final List<CustomEmojiPickerImageUrlItem> recentImageItems;
 
   EmojiPickerRecentCategoryItemsList({

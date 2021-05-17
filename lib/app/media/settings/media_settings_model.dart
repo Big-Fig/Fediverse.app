@@ -10,10 +10,10 @@ part 'media_settings_model.g.dart';
 @HiveType(typeId: -32 + 88)
 class MediaSettings implements IJsonObject, ISettings<MediaSettings> {
   @HiveField(0)
-  @JsonKey(name: "auto_init")
+  @JsonKey(name: 'auto_init')
   final bool autoInit;
   @HiveField(1)
-  @JsonKey(name: "auto_play")
+  @JsonKey(name: 'auto_play')
   final bool autoPlay;
 
   const MediaSettings({

@@ -8,7 +8,7 @@ class GlobalStatusSensitiveSettingsLocalPreferenceBloc
     implements IGlobalStatusSensitiveSettingsLocalPreferenceBloc {
   GlobalStatusSensitiveSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
-  ) : super(preferencesService, "statusSensitive.settings.global");
+  ) : super(preferencesService, 'statusSensitive.settings.global');
 
   static final StatusSensitiveSettings defaultValue = StatusSensitiveSettings(
     isAlwaysShowNsfw: false,

@@ -9,7 +9,7 @@ class GlobalPaginationSettingsLocalPreferenceBloc
     implements IGlobalPaginationSettingsLocalPreferenceBloc {
   GlobalPaginationSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
-  ) : super(preferencesService, "pagination.settings.global");
+  ) : super(preferencesService, 'pagination.settings.global');
 
   static final PaginationSettings defaultValue = PaginationSettings.fromEnum(
     pageSize: IPaginationSettingsBloc.defaultPageSizeValue,

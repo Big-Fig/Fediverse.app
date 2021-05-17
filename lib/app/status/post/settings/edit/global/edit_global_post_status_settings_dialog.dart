@@ -52,7 +52,7 @@ void showEditGlobalPostStatusSettingsDialog({
                   PleromaApiVisibility.unlisted,
                   PleromaApiVisibility.direct,
                   PleromaApiVisibility.private,
-                  // don't support pleroma-only visibility for global settings
+                  // dont support pleroma-only visibility for global settings
                   // PleromaVisibility.list,
                   // PleromaVisibility.local,
                 ]

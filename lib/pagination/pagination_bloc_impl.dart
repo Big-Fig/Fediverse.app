@@ -8,7 +8,7 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("pagination_bloc_impl.dart");
+var _logger = Logger('pagination_bloc_impl.dart');
 
 abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     extends DisposableOwner implements IPaginationBloc<TPage, TItem> {
@@ -94,12 +94,12 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   }) {
     assert(itemsCountPerPage != null && itemsCountPerPage! > 0);
     addDisposable(subject: pagesSubject);
-    _logger.finest(() => "constructor");
+    _logger.finest(() => 'constructor');
   }
 
   @override
   Future dispose() {
-    _logger.finest(() => "dispose");
+    _logger.finest(() => 'dispose');
 
     return super.dispose();
   }
@@ -110,7 +110,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     required bool forceToSkipCache,
   }) async {
     _logger.finest(() =>
-        "requestPage $pageIndex, forceToUpdateFromNetwork $forceToSkipCache");
+        'requestPage $pageIndex, forceToUpdateFromNetwork $forceToSkipCache');
 
     TPage page;
     if (isPageCacheEnabled) {
@@ -169,10 +169,10 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   void onPagesChanged(List<TPage> pages) {
-    _logger.finer(() => "onPagesChanged pages ${pages.length}");
+    _logger.finer(() => 'onPagesChanged pages ${pages.length}');
     pages.sort((a, b) => a.pageIndex.compareTo(b.pageIndex));
     _logger.finest(() =>
-        "onPagesChanged pagesSubject.isClosed = ${pagesSubject.isClosed}");
+        'onPagesChanged pagesSubject.isClosed = ${pagesSubject.isClosed}');
     if (!pagesSubject.isClosed) {
       pagesSubject.add(pages);
     }

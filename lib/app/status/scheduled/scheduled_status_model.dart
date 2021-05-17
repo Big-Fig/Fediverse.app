@@ -268,9 +268,9 @@ enum ScheduledStatusState {
   alreadyPosted,
 }
 
-const _scheduledScheduledStatusStateJsonValue = "scheduled";
-const _canceledScheduledStatusStateJsonValue = "canceled";
-const _alreadyPostedScheduledStatusStateJsonValue = "alreadyPosted";
+const _scheduledScheduledStatusStateJsonValue = 'scheduled';
+const _canceledScheduledStatusStateJsonValue = 'canceled';
+const _alreadyPostedScheduledStatusStateJsonValue = 'alreadyPosted';
 
 extension ScheduledStatusStateExtension on ScheduledStatusState {
   String toJsonValue() {
@@ -306,9 +306,9 @@ extension ScheduledStatusStateStringExtension on String {
       case _alreadyPostedScheduledStatusStateJsonValue:
         result = ScheduledStatusState.alreadyPosted;
         break;
-      // can't parse
+      // cant parse
       default:
-        throw "Invalid ScheduledStatusState $ScheduledStatusState";
+        throw 'Invalid ScheduledStatusState $ScheduledStatusState';
     }
 
     return result;

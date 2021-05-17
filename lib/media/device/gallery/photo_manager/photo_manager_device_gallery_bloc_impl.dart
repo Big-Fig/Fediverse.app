@@ -57,8 +57,8 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
   ) {
     // TODO: refactor for different languages
     // or wait until photo_manager lib will return album type
-    const List<String> iosLatestEnNames = ["Recently Added", "Recents"];
-    const List<String> androidLatestEnNames = ["Recent"];
+    const List<String> iosLatestEnNames = ['Recently Added', 'Recents'];
+    const List<String> androidLatestEnNames = ['Recent'];
     List<String> featuredNames = [...iosLatestEnNames, ...androidLatestEnNames];
 
     var isANameFeatured = featuredNames.contains(aName);
@@ -92,6 +92,6 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
       return RequestType.audio;
     }
 
-    throw "fileTypesToPick should containe image or video type";
+    throw 'fileTypesToPick should containe image or video type';
   }
 }

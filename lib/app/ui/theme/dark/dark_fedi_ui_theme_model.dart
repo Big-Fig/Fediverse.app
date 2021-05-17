@@ -15,7 +15,7 @@ const _darkFediUiTextTheme = FediUiTextTheme(colorTheme: _darkFediUiColorTheme);
 
 class DarkFediUiTheme implements IFediUiTheme {
   @override
-  String get id => "dark";
+  String get id => 'dark';
   @override
   final IFediUiColorTheme colorTheme = _darkFediUiColorTheme;
 

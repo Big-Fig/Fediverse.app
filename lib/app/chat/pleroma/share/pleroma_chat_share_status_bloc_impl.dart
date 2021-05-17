@@ -45,7 +45,7 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
   Future<PleromaApiChatMessageSendData>
       createPleromaChatMessageSendData() async {
     var accountAcctAndDisplayName =
-        status.account.acct + " (${status.account.displayName})";
+        status.account.acct + ' (${status.account.displayName})';
 
     var statusSpoiler = status.spoilerText;
     var statusContent = status.content?.isNotEmpty == true
@@ -63,11 +63,11 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
     } else {
       statusMediaAttachmentsString = status.mediaAttachments
           ?.map((mediaAttachment) => mediaAttachment.url)
-          .join(", ");
+          .join(', ');
     }
 
     if (statusMediaAttachmentsString != null) {
-      statusMediaAttachmentsString = "[$statusMediaAttachmentsString]";
+      statusMediaAttachmentsString = '[$statusMediaAttachmentsString]';
     }
     var additionalMessage = message;
 
@@ -80,7 +80,7 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
       statusUrl,
     ].where((element) => element?.isNotEmpty == true).toList();
 
-    var content = contentParts.join("\n\n");
+    var content = contentParts.join('\n\n');
     var messageSendData = PleromaApiChatMessageSendData(
       content: content.trim(),
       mediaId: mediaId,

@@ -68,7 +68,7 @@ class _UploadMediaAttachmentListNonMediaItemWidgetState
 
             if (isUploaded) {
               return Provider<String>.value(
-                value: filePath ?? "",
+                value: filePath ?? '',
                 child: DisposableProxyProvider<String, IMediaFilePathBloc>(
                   update: (context, filePath, _) =>
                       MediaFilePathBloc(path: filePath),
@@ -135,7 +135,7 @@ class _UploadMediaAttachmentListNonMediaItemActionsWidget
               ],
             );
           default:
-            throw "Invalid state uploadState $uploadState";
+            throw 'Invalid state uploadState $uploadState';
         }
       },
     );

@@ -24,7 +24,7 @@ class HashtagListItemWidget extends StatelessWidget {
           Padding(
             padding: FediPadding.allBigPadding,
             child: Text(
-              "#${hashtag.name}",
+              '#${hashtag.name}',
               textAlign: TextAlign.left,
               style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
             ),

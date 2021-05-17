@@ -6,7 +6,7 @@ import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("fcm_push_permission_checker_bloc_impl.dart");
+final _logger = Logger('fcm_push_permission_checker_bloc_impl.dart');
 
 class FcmPushPermissionCheckerBloc extends DisposableOwner
     implements IFcmPushPermissionCheckerBloc {
@@ -26,17 +26,17 @@ class FcmPushPermissionCheckerBloc extends DisposableOwner
     await fcmPushPermissionAskedLocalPreferencesBloc.setValue(true);
     var success = await fcmPushService.askPermissions();
 
-    _logger.finest(() => "checkAndSubscribe success $success");
+    _logger.finest(() => 'checkAndSubscribe success $success');
 
     var result;
     if (success) {
       try {
-        _logger.finest(() => "checkAndSubscribe subscribeAllEnabled");
+        _logger.finest(() => 'checkAndSubscribe subscribeAllEnabled');
         await pushSettingsBloc.subscribeAllEnabled();
         result = true;
       } catch (e, stackTrace) {
         _logger.warning(
-          () => "failed to subscribeWithDefaultPreferences",
+          () => 'failed to subscribeWithDefaultPreferences',
           e,
           stackTrace,
         );
@@ -46,7 +46,7 @@ class FcmPushPermissionCheckerBloc extends DisposableOwner
       result = false;
     }
 
-    _logger.finest(() => "checkAndSubscribe result $result");
+    _logger.finest(() => 'checkAndSubscribe result $result');
 
     return result;
   }

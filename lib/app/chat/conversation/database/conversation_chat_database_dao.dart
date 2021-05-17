@@ -9,17 +9,17 @@ import 'package:moor/moor.dart';
 
 part 'conversation_chat_database_dao.g.dart';
 
-var _accountAliasId = "account";
-var _conversationAccountsAliasId = "conversationAccount";
-var _conversationStatusesAliasId = "conversationStatus";
-var _statusAliasId = "status";
-var _statusAccountAliasId = "statusAccount";
-var _statusReblogAliasId = "statusReblog";
-var _statusReblogAccountAliasId = "statusReblogAccount";
-var _statusReplyAliasId = "statusReply";
-var _statusReplyAccountAliasId = "statusReplyAccount";
-var _statusReplyReblogAliasId = "statusReplyReblog";
-var _statusReplyReblogAccountAliasId = "statusReplyReblogAccount";
+var _accountAliasId = 'account';
+var _conversationAccountsAliasId = 'conversationAccount';
+var _conversationStatusesAliasId = 'conversationStatus';
+var _statusAliasId = 'status';
+var _statusAccountAliasId = 'statusAccount';
+var _statusReblogAliasId = 'statusReblog';
+var _statusReblogAccountAliasId = 'statusReblogAccount';
+var _statusReplyAliasId = 'statusReply';
+var _statusReplyAccountAliasId = 'statusReplyAccount';
+var _statusReplyReblogAliasId = 'statusReplyReblog';
+var _statusReplyReblogAccountAliasId = 'statusReplyReblogAccount';
 
 @UseDao(
   tables: [
@@ -103,7 +103,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
       query
         ..where((status) =>
             status.mediaAttachments.isNotNull() |
-            status.mediaAttachments.equals(""));
+            status.mediaAttachments.equals(''));
 
   Future<int> getTotalAmountUnread() => totalAmountUnreadQuery().getSingle();
 
@@ -230,7 +230,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
       // todo: rework with moor-like code
       var fieldName = statusAlias.createdAt.$name;
       var aliasName = statusAlias.$tableName;
-      var having = CustomExpression<bool>("MAX($aliasName.$fieldName)");
+      var having = CustomExpression<bool>('MAX($aliasName.$fieldName)');
       joinQuery.groupBy(
         [
           dbConversations.remoteId,

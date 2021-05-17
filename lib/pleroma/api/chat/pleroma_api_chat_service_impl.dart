@@ -9,13 +9,13 @@ import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 
 var _urlPath = path.Context(style: path.Style.url);
-final _logger = Logger("pleroma_api_chat_service_impl.dart");
+final _logger = Logger('pleroma_api_chat_service_impl.dart');
 
 class PleromaApiChatService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiChatService {
-  final v1ChatRelativeUrlPath = "/api/v1/pleroma/chats";
-  final v2ChatRelativeUrlPath = "/api/v2/pleroma/chats";
+  final v1ChatRelativeUrlPath = '/api/v1/pleroma/chats';
+  final v2ChatRelativeUrlPath = '/api/v2/pleroma/chats';
   @override
   final IPleromaApiAuthRestService restService;
 
@@ -58,7 +58,7 @@ class PleromaApiChatService extends BasePleromaApiService
         relativePath: _urlPath.join(
           v1ChatRelativeUrlPath,
           chatId,
-          "messages",
+          'messages',
         ),
         queryArgs: [
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
@@ -84,10 +84,10 @@ class PleromaApiChatService extends BasePleromaApiService
         relativePath: _urlPath.join(
           v1ChatRelativeUrlPath,
           chatId,
-          "read",
+          'read',
         ),
         bodyJson: {
-          "last_read_id": lastReadChatMessageId,
+          'last_read_id': lastReadChatMessageId,
         },
       ),
     );
@@ -107,7 +107,7 @@ class PleromaApiChatService extends BasePleromaApiService
       RestRequest.post(
         relativePath: _urlPath.join(
           v1ChatRelativeUrlPath,
-          "by-account-id",
+          'by-account-id',
           accountId,
         ),
       ),
@@ -150,11 +150,11 @@ class PleromaApiChatService extends BasePleromaApiService
         relativePath: _urlPath.join(
           v1ChatRelativeUrlPath,
           chatId,
-          "messages",
+          'messages',
         ),
         headers: {
           if (data.idempotencyKey?.isNotEmpty == true)
-            "Idempotency-Key": data.idempotencyKey!,
+            'Idempotency-Key': data.idempotencyKey!,
         },
         bodyJson: data.toJson(),
       ),
@@ -179,7 +179,7 @@ class PleromaApiChatService extends BasePleromaApiService
         relativePath: _urlPath.join(
           v1ChatRelativeUrlPath,
           chatId,
-          "messages",
+          'messages',
           chatMessageRemoteId,
         ),
       ),
@@ -190,7 +190,7 @@ class PleromaApiChatService extends BasePleromaApiService
     } catch (e) {
       if (e is PleromaApiRecordNotFoundRestException) {
         // nothing because already deleted on backend
-        _logger.finest(() => "already deleted");
+        _logger.finest(() => 'already deleted');
       } else {
         rethrow;
       }

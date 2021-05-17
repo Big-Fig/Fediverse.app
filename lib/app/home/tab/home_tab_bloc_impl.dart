@@ -7,7 +7,7 @@ import 'package:fedi/ui/scroll/nested_scroll_controller_bloc_impl.dart';
 import 'package:logging/logging.dart';
 import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 
-var _logger = Logger("home_tab_bloc_impl.dart");
+var _logger = Logger('home_tab_bloc_impl.dart');
 
 abstract class HomeTabBloc extends DisposableOwner implements IHomeTabBloc {
   @override
@@ -37,7 +37,7 @@ abstract class HomeTabBloc extends DisposableOwner implements IHomeTabBloc {
           nestedScrollController.dispose();
         } catch (e) {
           _logger
-              .warning(() => "error during nestedScrollController.dispose()");
+              .warning(() => 'error during nestedScrollController.dispose()');
         }
       },
     );

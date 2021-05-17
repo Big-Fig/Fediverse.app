@@ -9,7 +9,7 @@ import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_service.dart';
 import 'package:logging/logging.dart';
 import 'package:uni_links2/uni_links.dart';
 
-var _logger = Logger("deep_link_init_bloc_impl.dart");
+var _logger = Logger('deep_link_init_bloc_impl.dart');
 
 class DeepLinkInitBloc extends AsyncInitLoadingBloc
     implements IDeepLinkInitBloc {
@@ -39,8 +39,8 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
     var lastLaunchedHost =
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc.value;
 
-    _logger.finest(() => "initialUri = $initialUri "
-        "lastLaunchedHost = $lastLaunchedHost");
+    _logger.finest(() => 'initialUri = $initialUri '
+        'lastLaunchedHost = $lastLaunchedHost');
     if (lastLaunchedHost != null) {
       var authHostBloc = AuthHostBloc(
         instanceBaseUri: Uri.parse(lastLaunchedHost),
@@ -49,7 +49,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
         currentInstanceBloc: currentAuthInstanceBloc,
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
             pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
-        // doesn't matter here
+        // doesnt matter here
         isPleroma: false,
       );
       await authHostBloc.performAsyncInit();
@@ -61,7 +61,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
         await currentAuthInstanceBloc.changeCurrentInstance(authInstance);
       } catch (e, stackTrace) {
         _logger.warning(
-          () => "Failed to _handleLoginOnAndroidWithoutChrome ",
+          () => 'Failed to _handleLoginOnAndroidWithoutChrome ',
           e,
           stackTrace,
         );

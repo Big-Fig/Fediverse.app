@@ -73,26 +73,26 @@ class PostStatusData implements IPostStatusData {
   @JsonKey()
   final String? text;
   @override
-  @JsonKey(name: "scheduled_at")
+  @JsonKey(name: 'scheduled_at')
   final DateTime? scheduledAt;
   @override
-  @JsonKey(name: "visibility")
+  @JsonKey(name: 'visibility')
   final String visibilityString;
   @override
   final List<String>? to;
   @override
-  @JsonKey(name: "media_attachments")
+  @JsonKey(name: 'media_attachments')
   final List<PleromaApiMediaAttachment>? mediaAttachments;
   @override
   final PostStatusPoll? poll;
   @override
-  @JsonKey(name: "in_reply_to_status")
+  @JsonKey(name: 'in_reply_to_status')
   final PleromaApiStatus? inReplyToPleromaStatus;
   @override
-  @JsonKey(name: "in_reply_to_conversation_id")
+  @JsonKey(name: 'in_reply_to_conversation_id')
   final String? inReplyToConversationId;
   @override
-  @JsonKey(name: "is_nsfw_sensitive_enabled")
+  @JsonKey(name: 'is_nsfw_sensitive_enabled')
   final bool isNsfwSensitiveEnabled;
 
   @override
@@ -100,7 +100,7 @@ class PostStatusData implements IPostStatusData {
   final String? language;
 
   @override
-  @JsonKey(name: "expires_in_seconds")
+  @JsonKey(name: 'expires_in_seconds')
   final int? expiresInSeconds;
 
   const PostStatusData({

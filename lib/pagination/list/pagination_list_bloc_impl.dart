@@ -11,7 +11,7 @@ import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("pagination_list_bloc_impl.dart");
+var _logger = Logger('pagination_list_bloc_impl.dart');
 
 class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     extends AsyncInitLoadingBloc implements IPaginationListBloc<TPage, TItem> {
@@ -63,13 +63,13 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     required this.paginationBloc,
     this.loadFromCacheDuringInit = true,
   }) {
-    _logger.finest(() => "PaginationListBloc constructor");
+    _logger.finest(() => 'PaginationListBloc constructor');
     addDisposable(
       streamSubscription: paginationBloc.isLoadedPagesInSequenceStream.listen(
         (isLoadedInSequence) {
           if (!isLoadedInSequence) {
-            throw "PaginationListBloc don't work with direct access "
-                "pagination blocs";
+            throw 'PaginationListBloc dont work with direct access '
+                'pagination blocs';
           }
         },
       ),
@@ -109,14 +109,14 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   Future internalAsyncInit() async {
     _logger.finest(() =>
-        "internalAsyncInit loadFromCacheDuringInit $loadFromCacheDuringInit");
+        'internalAsyncInit loadFromCacheDuringInit $loadFromCacheDuringInit');
 
     if (loadFromCacheDuringInit) {
       try {
         await loadFirstPageOnInit();
       } catch (e, stackTrace) {
         _logger.severe(
-          () => "failed to internalAsyncInit",
+          () => 'failed to internalAsyncInit',
           e,
           stackTrace,
         );
@@ -140,7 +140,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future<FediListSmartRefresherLoadingState> loadMoreWithoutController() async {
-    _logger.finest(() => "loadMoreWithoutController");
+    _logger.finest(() => 'loadMoreWithoutController');
     loadMoreStateSubject.add(FediListSmartRefresherLoadingState.loading);
 
     try {
@@ -171,7 +171,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       }
 
       _logger.warning(
-        () => "error during loadMoreWithoutController",
+        () => 'error during loadMoreWithoutController',
         e,
         stackTrace,
       );
@@ -181,7 +181,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future<FediListSmartRefresherLoadingState> refreshWithoutController() async {
-    _logger.finest(() => "refreshWithoutController");
+    _logger.finest(() => 'refreshWithoutController');
     try {
       FediListSmartRefresherLoadingState state;
       if (!refreshStateSubject.isClosed) {
@@ -208,7 +208,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
             .add(PaginationListLoadingError(error: e, stackTrace: stackTrace));
       }
       _logger.warning(
-        () => "error during refreshWithoutController",
+        () => 'error during refreshWithoutController',
         e,
         stackTrace,
       );
@@ -229,7 +229,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future refreshWithController() async {
-    _logger.finest(() => "refreshWithController");
+    _logger.finest(() => 'refreshWithController');
     // refresh controller if it attached
     if (refreshController.position != null) {
       try {
@@ -239,7 +239,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
         // internal wrong logic
         _logger.warning(
           () =>
-              "error during refreshController.requestRefresh(needMove:false);",
+              'error during refreshController.requestRefresh(needMove:false);',
           e,
           stackTrace,
         );

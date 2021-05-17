@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("edit_my_account_header_field_widget.dart");
+final _logger = Logger('edit_my_account_header_field_widget.dart');
 
 class EditMyAccountHeaderFieldWidget extends StatelessWidget {
   const EditMyAccountHeaderFieldWidget({
@@ -117,7 +117,7 @@ void _startChoosingFileToUploadHeader(BuildContext context) async {
       try {
         await editMyAccountBloc.headerField.pickNewFile(filePickerFile);
       } catch (e, stackTrace) {
-        _logger.warning("startChoosingFileToUploadHeader error", e, stackTrace);
+        _logger.warning('startChoosingFileToUploadHeader error', e, stackTrace);
         showMediaAttachmentFailedNotificationOverlay(context, e);
       }
     }

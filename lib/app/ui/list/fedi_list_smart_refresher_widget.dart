@@ -4,7 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-var _logger = Logger("fedi_list_smart_refresher_widget.dart");
+var _logger = Logger('fedi_list_smart_refresher_widget.dart');
 
 class FediListSmartRefresherWidget extends StatelessWidget {
   final Widget? child;
@@ -62,13 +62,13 @@ class FediListSmartRefresherWidget extends StatelessWidget {
         onRefresh: () async {
           if (onRefresh != null) {
             var state = await onRefresh!();
-            _logger.finest(() => "onRefresh $state");
+            _logger.finest(() => 'onRefresh $state');
           }
         },
         onLoading: () async {
           if (onLoading != null) {
             var state = await onLoading!();
-            _logger.finest(() => "onLoading $state");
+            _logger.finest(() => 'onLoading $state');
           }
         },
         onTwoLevel: onTwoLevel,

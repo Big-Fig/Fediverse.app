@@ -20,7 +20,7 @@ class NotificationRepositoryFilters {
     this.onlyUnread,
     this.excludeStatusTextConditions,
   }) : assert(!(onlyWithType != null && excludeTypes?.isNotEmpty == true),
-            "onlyWithType and excludeTypes can be set both");
+            'onlyWithType and excludeTypes can be set both');
 
   @override
   String toString() {

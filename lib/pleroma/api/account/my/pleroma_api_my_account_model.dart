@@ -81,11 +81,11 @@ class PleromaApiMyAccountEdit extends IPleromaApiMyAccountEdit
   final bool? discoverable;
 
   @override
-  @JsonKey(name: "display_name")
+  @JsonKey(name: 'display_name')
   final String? displayName;
 
   @override
-  @JsonKey(name: "fields_attributes")
+  @JsonKey(name: 'fields_attributes')
   final Map<int, PleromaApiField>? fieldsAttributes;
 
   @override
@@ -98,63 +98,63 @@ class PleromaApiMyAccountEdit extends IPleromaApiMyAccountEdit
   final PleromaApiMyAccountEditSource? source;
 
   @override
-  @JsonKey(name: "actor_type")
+  @JsonKey(name: 'actor_type')
   final dynamic actorType;
 
   @override
-  @JsonKey(name: "allow_following_move")
+  @JsonKey(name: 'allow_following_move')
   final bool? allowFollowingMove;
 
   @override
-  @JsonKey(name: "accepts_chat_messages")
+  @JsonKey(name: 'accepts_chat_messages')
   final bool? acceptsChatMessages;
 
   @override
-  @JsonKey(name: "default_scope")
+  @JsonKey(name: 'default_scope')
   final String? defaultScope;
 
   @override
-  @JsonKey(name: "hide_favorites")
+  @JsonKey(name: 'hide_favorites')
   final bool? hideFavorites;
 
   @override
-  @JsonKey(name: "hide_followers")
+  @JsonKey(name: 'hide_followers')
   final bool? hideFollowers;
 
   @override
-  @JsonKey(name: "hide_followers_count")
+  @JsonKey(name: 'hide_followers_count')
   final bool? hideFollowersCount;
 
   @override
-  @JsonKey(name: "hide_follows")
+  @JsonKey(name: 'hide_follows')
   final bool? hideFollows;
 
   @override
-  @JsonKey(name: "hide_follows_count")
+  @JsonKey(name: 'hide_follows_count')
   final bool? hideFollowsCount;
 
   @override
-  @JsonKey(name: "no_rich_text")
+  @JsonKey(name: 'no_rich_text')
   final bool? noRichText;
 
   @override
-  @JsonKey(name: "pleroma_background_image")
+  @JsonKey(name: 'pleroma_background_image')
   final String? pleromaBackgroundImage;
 
   @override
-  @JsonKey(name: "pleroma_settings_store")
+  @JsonKey(name: 'pleroma_settings_store')
   final Map<String, dynamic>? pleromaSettingsStore;
 
   @override
-  @JsonKey(name: "show_role")
+  @JsonKey(name: 'show_role')
   final bool? showRole;
 
   @override
-  @JsonKey(name: "skip_thread_containment")
+  @JsonKey(name: 'skip_thread_containment')
   final bool? skipThreadContainment;
 
   @override
-  @JsonKey(name: "also_known_as")
+  @JsonKey(name: 'also_known_as')
   final List<String>? alsoKnownAs;
 
   PleromaApiMyAccountEdit({
@@ -501,7 +501,7 @@ class PleromaApiMyAccountSource
   final List<PleromaApiField>? fields;
   @override
   @HiveField(6)
-  @JsonKey(name: "follow_requests_count")
+  @JsonKey(name: 'follow_requests_count')
   final int? followRequestsCount;
   @override
   @HiveField(7)
@@ -569,12 +569,12 @@ class PleromaApiMyAccountSource
 class PleromaApiMyAccountSourcePleromaPart implements IJsonObject {
   //  show_role: boolean, nullable, true when the user wants his role (e.g admin, moderator) to be shown
   @HiveField(1)
-  @JsonKey(name: "show_role")
+  @JsonKey(name: 'show_role')
   final bool? showRole;
 
   //  no_rich_text - boolean, nullable, true when html tags are stripped from all statuses requested from the API
   @HiveField(2)
-  @JsonKey(name: "no_rich_text")
+  @JsonKey(name: 'no_rich_text')
   final bool? noRichText;
 
   //  discoverable: boolean, true when the user allows discovery of the account in search results and other services.
@@ -583,7 +583,7 @@ class PleromaApiMyAccountSourcePleromaPart implements IJsonObject {
 
   // actor_type: string, the type of this account.
   @HiveField(4)
-  @JsonKey(name: "actor_type")
+  @JsonKey(name: 'actor_type')
   final String? actorType;
 
   PleromaApiMyAccountSourcePleromaPart({
@@ -758,7 +758,7 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
   final String url;
   @override
   @HiveField(2)
-  @JsonKey(name: "statuses_count")
+  @JsonKey(name: 'statuses_count')
   final int statusesCount;
   @override
   @HiveField(3)
@@ -771,18 +771,18 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
   final String id;
   @override
   @HiveField(6)
-  @JsonKey(name: "header_static")
+  @JsonKey(name: 'header_static')
   final String headerStatic;
   @override
   @HiveField(7)
   final String header;
   @override
   @HiveField(8)
-  @JsonKey(name: "following_count")
+  @JsonKey(name: 'following_count')
   final int followingCount;
   @override
   @HiveField(9)
-  @JsonKey(name: "followers_count")
+  @JsonKey(name: 'followers_count')
   final int followersCount;
   @override
   @HiveField(10)
@@ -792,18 +792,18 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
   final List<PleromaApiEmoji>? emojis;
   @override
   @HiveField(12)
-  @JsonKey(name: "display_name")
+  @JsonKey(name: 'display_name')
   final String? displayName;
   @override
   @HiveField(13)
-  @JsonKey(name: "created_at")
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @override
   @HiveField(14)
   final bool? bot;
   @override
   @HiveField(15)
-  @JsonKey(name: "avatar_static")
+  @JsonKey(name: 'avatar_static')
   final String avatarStatic;
   @override
   @HiveField(16)
@@ -816,7 +816,7 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
   final PleromaApiMyAccountPleromaPart? pleroma;
   @override
   @HiveField(20)
-  @JsonKey(name: "last_status_at")
+  @JsonKey(name: 'last_status_at')
   final DateTime? lastStatusAt;
   @override
   @HiveField(21)
@@ -827,7 +827,7 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
 
   @override
   @HiveField(23)
-  @JsonKey(name: "follow_requests_count")
+  @JsonKey(name: 'follow_requests_count')
   final int? followRequestsCount;
 
   @override
@@ -897,7 +897,7 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
     IPleromaApiMyAccountSource? source,
   }) {
     if (pleroma != null) {
-      assert(true, "use myAccountPleroma");
+      assert(true, 'use myAccountPleroma');
     }
 
     return PleromaApiMyAccount(
@@ -1028,16 +1028,16 @@ class PleromaApiMyAccountPleromaPartNotificationsSettings
   final bool? followers;
   @HiveField(1)
   final bool? follows;
-  @JsonKey(name: "non_followers")
+  @JsonKey(name: 'non_followers')
   @HiveField(2)
   final bool? nonFollowers;
-  @JsonKey(name: "non_follows")
+  @JsonKey(name: 'non_follows')
   @HiveField(3)
   final bool? nonFollows;
-  @JsonKey(name: "block_from_strangers")
+  @JsonKey(name: 'block_from_strangers')
   @HiveField(4)
   final bool? blockFromStrangers;
-  @JsonKey(name: "hide_notification_contents")
+  @JsonKey(name: 'hide_notification_contents')
   @HiveField(5)
   final bool? hideNotificationContents;
 
@@ -1103,7 +1103,7 @@ class PleromaApiMyAccountPleromaPart
     implements IPleromaApiMyAccountPleromaPart {
   @override
   @HiveField(1)
-  @JsonKey(name: "background_image")
+  @JsonKey(name: 'background_image')
   final String? backgroundImage;
 
   @override
@@ -1115,38 +1115,38 @@ class PleromaApiMyAccountPleromaPart
   final PleromaApiAccountRelationship? relationship;
   @override
   @HiveField(4)
-  @JsonKey(name: "is_admin")
+  @JsonKey(name: 'is_admin')
   final bool? isAdmin;
   @override
   @HiveField(5)
-  @JsonKey(name: "is_moderator")
+  @JsonKey(name: 'is_moderator')
   final bool? isModerator;
 
   @override
   @HiveField(7)
-  @JsonKey(name: "confirmation_pending")
+  @JsonKey(name: 'confirmation_pending')
   final bool? confirmationPending;
 
   @override
   @HiveField(8)
-  @JsonKey(name: "hide_favorites")
+  @JsonKey(name: 'hide_favorites')
   final bool? hideFavorites;
 
   @override
   @HiveField(9)
-  @JsonKey(name: "hide_followers")
+  @JsonKey(name: 'hide_followers')
   final bool? hideFollowers;
   @override
   @HiveField(11)
-  @JsonKey(name: "hide_follows")
+  @JsonKey(name: 'hide_follows')
   final bool? hideFollows;
   @override
   @HiveField(12)
-  @JsonKey(name: "hide_followers_count")
+  @JsonKey(name: 'hide_followers_count')
   final bool? hideFollowersCount;
   @override
   @HiveField(13)
-  @JsonKey(name: "hide_follows_count")
+  @JsonKey(name: 'hide_follows_count')
   final bool? hideFollowsCount;
 
   ///  A generic map of settings for frontends.
@@ -1154,13 +1154,13 @@ class PleromaApiMyAccountPleromaPart
   ///  Only returned in verify_credentials and update_credentials
   @override
   @HiveField(14)
-  @JsonKey(name: "settings_store")
+  @JsonKey(name: 'settings_store')
   final Map<String, dynamic>? settingsStore;
 
   /// The token needed for Pleroma chat. Only returned in verify_credentials
   @override
   @HiveField(15)
-  @JsonKey(name: "chat_token")
+  @JsonKey(name: 'chat_token')
   final String? chatToken;
   @override
   @HiveField(16)
@@ -1170,34 +1170,34 @@ class PleromaApiMyAccountPleromaPart
   ///  following accounts
   @override
   @HiveField(17)
-  @JsonKey(name: "allow_following_move")
+  @JsonKey(name: 'allow_following_move')
   final bool? allowFollowingMove;
 
   /// The count of unread conversations. Only returned to the account owner.
   @override
   @HiveField(18)
-  @JsonKey(name: "unread_conversation_count")
+  @JsonKey(name: 'unread_conversation_count')
   final int? unreadConversationCount;
 
   @override
   @HiveField(19)
-  @JsonKey(name: "notifications_settings")
+  @JsonKey(name: 'notifications_settings')
   final PleromaApiMyAccountPleromaPartNotificationsSettings?
       notificationSettings;
 
   @override
   @HiveField(20)
-  @JsonKey(name: "skip_thread_containment")
+  @JsonKey(name: 'skip_thread_containment')
   final bool? skipThreadContainment;
 
   @override
   @HiveField(21)
-  @JsonKey(name: "accepts_chat_messages")
+  @JsonKey(name: 'accepts_chat_messages')
   final bool? acceptsChatMessages;
 
   @override
   @HiveField(22)
-  @JsonKey(name: "is_confirmed")
+  @JsonKey(name: 'is_confirmed')
   final bool? isConfirmed;
 
   @override
@@ -1209,12 +1209,12 @@ class PleromaApiMyAccountPleromaPart
   final String? apId;
   @override
   @HiveField(25)
-  @JsonKey(name: "also_known_as")
+  @JsonKey(name: 'also_known_as')
   final List<String>? alsoKnownAs;
 
   @override
   @HiveField(26)
-  @JsonKey(name: "unread_notifications_count")
+  @JsonKey(name: 'unread_notifications_count')
   final int? unreadNotificationsCount;
 
   PleromaApiMyAccountPleromaPart({

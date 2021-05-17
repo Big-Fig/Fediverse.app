@@ -10,11 +10,11 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
 
   // ignore: close_sinks
   final BehaviorSubject<String> confirmedSearchTermSubject =
-      BehaviorSubject.seeded("");
+      BehaviorSubject.seeded('');
 
   // ignore: close_sinks
   final BehaviorSubject<String> currentInputSubject =
-      BehaviorSubject.seeded("");
+      BehaviorSubject.seeded('');
 
   @override
   String? get currentInput => currentInputSubject.value;
@@ -76,7 +76,7 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
 
   @override
   void clearSearch() {
-    searchTextEditingController.text = "";
+    searchTextEditingController.text = '';
     confirmSearch();
   }
 

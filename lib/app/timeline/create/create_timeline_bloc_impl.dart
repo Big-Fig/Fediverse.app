@@ -128,7 +128,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
 
   StringValueFormFieldBloc _createNameField() {
     return StringValueFormFieldBloc(
-      originValue: "",
+      originValue: '',
       validators: [
         StringValueFormFieldNonEmptyValidationError.createValidator(),
       ],

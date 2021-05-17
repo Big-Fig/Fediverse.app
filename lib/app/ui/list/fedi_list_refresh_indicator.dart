@@ -38,7 +38,7 @@ typedef RefreshCallback = Future<void> Function();
 enum _RefreshIndicatorMode {
   drag, // Pointer is down.
   armed, // Dragged far enough that an up event will run the onRefresh callback.
-  snap, // Animating to the indicator's final "displacement".
+  snap, // Animating to the indicator's final 'displacement'.
   refresh, // Running the refresh callback.
   done, // Animating the indicator's fade-out after refreshing.
   canceled, // Animating the indicator's fade-out after not arming.
@@ -55,7 +55,7 @@ enum RefreshIndicatorTriggerMode {
   onEdge,
 }
 
-/// A widget that supports the Material "swipe to refresh" idiom.
+/// A widget that supports the Material 'swipe to refresh' idiom.
 ///
 /// When the child's [Scrollable] descendant overscrolls, an animated circular
 /// progress indicator is faded into view. When the scroll ends, if the
@@ -307,7 +307,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
       if (_mode == _RefreshIndicatorMode.armed &&
           notification.dragDetails == null) {
         // On iOS start the refresh when the Scrollable bounces back from the
-        // overscroll (ScrollNotification indicating this don't have dragDetails
+        // overscroll (ScrollNotification indicating this dont have dragDetails
         // because the scroll activity is not directly triggered by a drag).
         _show();
       }

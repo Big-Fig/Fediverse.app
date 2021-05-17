@@ -27,11 +27,11 @@ enum MastodonApiMediaAttachmentType {
 const unknownMastodonApiMediaAttachmentType =
     MastodonApiMediaAttachmentType.unknown;
 
-const _imageMastodonApiMediaAttachmentTypeJsonValue = "image";
-const _gifvMastodonApiMediaAttachmentTypeJsonValue = "gifv";
-const _videoMastodonApiMediaAttachmentTypeJsonValue = "video";
-const _audioMastodonApiMediaAttachmentTypeJsonValue = "audio";
-const _unknownMastodonApiMediaAttachmentTypeJsonValue = "unknown";
+const _imageMastodonApiMediaAttachmentTypeJsonValue = 'image';
+const _gifvMastodonApiMediaAttachmentTypeJsonValue = 'gifv';
+const _videoMastodonApiMediaAttachmentTypeJsonValue = 'video';
+const _audioMastodonApiMediaAttachmentTypeJsonValue = 'audio';
+const _unknownMastodonApiMediaAttachmentTypeJsonValue = 'unknown';
 
 extension MastodonApiMediaAttachmentTypeExtension
     on MastodonApiMediaAttachmentType {
@@ -80,7 +80,7 @@ extension MastodonApiMediaAttachmentTypeStringExtension on String? {
       case _unknownMastodonApiMediaAttachmentTypeJsonValue:
         result = MastodonApiMediaAttachmentType.unknown;
         break;
-      // can't parse, unknown value
+      // cant parse, unknown value
       default:
         result = unknownMastodonApiMediaAttachmentType;
         break;

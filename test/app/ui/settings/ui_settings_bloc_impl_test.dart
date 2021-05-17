@@ -77,7 +77,7 @@ void main() {
     );
 
     var testStatusFontSize =
-        UiSettingsModelTestHelper.createTestUiSettings(seed: "seed")
+        UiSettingsModelTestHelper.createTestUiSettings(seed: 'seed')
             .statusFontSize;
 
     await uiSettingsBloc.changeStatusFontSize(testStatusFontSize);
@@ -137,7 +137,7 @@ void main() {
     );
 
     var testThemeId =
-        UiSettingsModelTestHelper.createTestUiSettings(seed: "seed").themeId;
+        UiSettingsModelTestHelper.createTestUiSettings(seed: 'seed').themeId;
 
     await uiSettingsBloc.changeThemeId(testThemeId);
     await Future.delayed(Duration(milliseconds: 100));

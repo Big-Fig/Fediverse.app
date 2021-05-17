@@ -72,63 +72,63 @@ class TimelineSettings extends ISettings<TimelineSettings> {
       );
 
   @HiveField(1)
-  @JsonKey(name: "only_with_media")
+  @JsonKey(name: 'only_with_media')
   final bool? onlyWithMedia;
 
   @HiveField(2)
-  @JsonKey(name: "exclude_replies")
+  @JsonKey(name: 'exclude_replies')
   final bool? excludeReplies;
 
   @HiveField(3)
-  @JsonKey(name: "exclude_nsfw_sensitive")
+  @JsonKey(name: 'exclude_nsfw_sensitive')
   final bool? excludeNsfwSensitive;
 
   @HiveField(4)
-  @JsonKey(name: "only_remote")
+  @JsonKey(name: 'only_remote')
   final bool? onlyRemote;
 
   @HiveField(5)
-  @JsonKey(name: "only_local")
+  @JsonKey(name: 'only_local')
   final bool? onlyLocal;
 
   @HiveField(6)
-  @JsonKey(name: "with_muted")
+  @JsonKey(name: 'with_muted')
   final bool? withMuted;
 
   @HiveField(7)
-  @JsonKey(name: "exclude_visibilities_strings")
+  @JsonKey(name: 'exclude_visibilities_strings')
   final List<String>? excludeVisibilitiesStrings;
 
   @HiveField(9)
-  @JsonKey(name: "only_in_list")
+  @JsonKey(name: 'only_in_list')
   final PleromaApiList? onlyInRemoteList;
 
   @HiveField(10)
-  @JsonKey(name: "with_remote_hashtag")
+  @JsonKey(name: 'with_remote_hashtag')
   final String? withRemoteHashtag;
 
   @HiveField(11)
-  @JsonKey(name: "reply_visibility_filter_string")
+  @JsonKey(name: 'reply_visibility_filter_string')
   final String? replyVisibilityFilterString;
 
   @HiveField(13)
-  @JsonKey(name: "only_from_remote_account")
+  @JsonKey(name: 'only_from_remote_account')
   final PleromaApiAccount? onlyFromRemoteAccount;
 
   @HiveField(14)
-  @JsonKey(name: "only_pinned")
+  @JsonKey(name: 'only_pinned')
   final bool? onlyPinned;
 
   @HiveField(15)
-  @JsonKey(name: "exclude_reblogs")
+  @JsonKey(name: 'exclude_reblogs')
   final bool? excludeReblogs;
 
   @HiveField(16)
-  @JsonKey(name: "web_sockets_updates")
+  @JsonKey(name: 'web_sockets_updates')
   final bool? webSocketsUpdates;
 
   @HiveField(17)
-  @JsonKey(name: "instance")
+  @JsonKey(name: 'instance')
   final String? onlyFromInstance;
 
   TimelineSettings({
@@ -353,7 +353,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
       replyVisibilityFilterString?.toPleromaApiReplyVisibilityFilter();
 
   static String generateUniqueTimelineId() =>
-      "${DateTime.now().millisecondsSinceEpoch}";
+      '${DateTime.now().millisecondsSinceEpoch}';
 
   @override
   TimelineSettings clone() => copyWith();

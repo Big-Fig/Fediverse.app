@@ -16,7 +16,7 @@ class AddMyAccountDomainBlockBloc extends FormBloc
 
   @override
   IStringValueFormFieldBloc domainField = StringValueFormFieldBloc(
-    originValue: "",
+    originValue: '',
     validators: [
       StringValueFormFieldNonEmptyValidationError.createValidator(),
     ],

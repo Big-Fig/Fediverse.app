@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-final secondsFormat = NumberFormat("00");
+final secondsFormat = NumberFormat('00');
 
 class FediPlayerControlDurationWidget extends StatelessWidget {
   const FediPlayerControlDurationWidget();
@@ -23,7 +23,7 @@ class FediPlayerControlDurationWidget extends StatelessWidget {
     var seconds = duration?.inSeconds ?? 0;
 
     return Text(
-      "$totalMinutes:${secondsFormat.format(seconds)}",
+      '$totalMinutes:${secondsFormat.format(seconds)}',
       style: durationExist
           ? IFediUiTextTheme.of(context).smallShortBoldWhite
           : IFediUiTextTheme.of(context).smallShortBoldGrey,

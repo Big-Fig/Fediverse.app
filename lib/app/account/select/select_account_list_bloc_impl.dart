@@ -31,7 +31,7 @@ typedef PleromaAccountListLoader = Future<List<IPleromaApiAccount>> Function({
   required IAccount? olderThan,
 });
 
-var _logger = Logger("select_account_list_bloc_impl.dart");
+var _logger = Logger('select_account_list_bloc_impl.dart');
 
 class SelectAccountListBloc extends DisposableOwner
     implements ISelectAccountListBloc {
@@ -77,9 +77,9 @@ class SelectAccountListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t newerThan = $newerThan"
-        "\t olderThan = $olderThan");
+    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
+        '\t newerThan = $newerThan'
+        '\t olderThan = $olderThan');
 
     List<IPleromaApiAccount> remoteAccounts;
 
@@ -161,9 +161,9 @@ class SelectAccountListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.finest(() => "start loadLocalItems \n"
-        "\t newerThan=$newerThan"
-        "\t olderThan=$olderThan");
+    _logger.finest(() => 'start loadLocalItems \n'
+        '\t newerThan=$newerThan'
+        '\t olderThan=$olderThan');
 
     List<IAccount> accounts;
     var searchTermExist = searchText?.isNotEmpty == true;
@@ -219,7 +219,7 @@ class SelectAccountListBloc extends DisposableOwner
       }).toList();
     }
 
-    _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");
+    _logger.finer(() => 'finish loadLocalItems accounts ${accounts.length}');
 
     return accounts;
   }

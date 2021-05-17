@@ -13,7 +13,7 @@ abstract class AppRemoteDatabaseDao<
         OrderingTerm extends RepositoryOrderingTerm>
     extends AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl, Filters,
         OrderingTerm> {
-  String get remoteIdFieldName => "remote_id";
+  String get remoteIdFieldName => 'remote_id';
 
   AppRemoteDatabaseDao(AppDatabase db) : super(db);
 
@@ -139,13 +139,13 @@ abstract class AppRemoteDatabaseDao<
 
     if (minimumExist) {
       var biggerExp = CustomExpression<bool>(
-        "$tableName.$remoteIdFieldName > '$minimumRemoteIdExcluding'",
+        '$tableName.$remoteIdFieldName > "$minimumRemoteIdExcluding"',
       );
       query = query..where((filter) => biggerExp);
     }
     if (maximumExist) {
       var smallerExp = CustomExpression<bool>(
-        "$tableName.$remoteIdFieldName < '$maximumRemoteIdExcluding'",
+        '$tableName.$remoteIdFieldName < "$maximumRemoteIdExcluding"',
       );
       query = query..where((filter) => smallerExp);
     }

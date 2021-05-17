@@ -10,7 +10,7 @@ var _urlPath = path.Context(style: path.Style.url);
 class PleromaApiSuggestionsService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiSuggestionsService {
-  final suggestionsRelativeUrlPath = "/api/v1/suggestions";
+  final suggestionsRelativeUrlPath = '/api/v1/suggestions';
 
   @override
   final IPleromaApiAuthRestService restService;
@@ -33,7 +33,7 @@ class PleromaApiSuggestionsService extends BasePleromaApiService
         ),
         queryArgs: [
           RestRequestQueryArg(
-            key: "limit",
+            key: 'limit',
             value: limit.toString(),
           ),
         ],

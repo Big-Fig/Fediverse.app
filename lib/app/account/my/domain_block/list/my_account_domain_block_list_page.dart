@@ -70,7 +70,7 @@ class _MyAccountDomainBlockListPageBody extends StatelessWidget {
       child: MyAccountDomainBlockPaginationListWidget(
         customEmptyWidget: customEmptyWidget,
         customLoadingWidget: customLoadingWidget,
-        key: PageStorageKey("MyAccountDomainBlockListPage"),
+        key: PageStorageKey('MyAccountDomainBlockListPage'),
         domainBlockSelectedCallback: null,
         domainBlockActions: <Widget>[
           const _MyAccountDomainBlockListPageRemoveItemAction(),

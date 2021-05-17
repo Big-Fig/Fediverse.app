@@ -77,9 +77,9 @@ void main() {
       preferencesService = MemoryLocalPreferencesService();
 
       myAccount =
-          await MyAccountTestHelper.createTestMyAccount(seed: "myAccount");
+          await MyAccountTestHelper.createTestMyAccount(seed: 'myAccount');
       authInstance = AuthInstance(
-        urlHost: "fedi.app",
+        urlHost: 'fedi.app',
         acct: myAccount.acct,
         token: null,
         authCode: null,
@@ -113,7 +113,7 @@ void main() {
       );
 
       conversation =
-          await ConversationTestHelper.createTestConversation(seed: "seed1");
+          await ConversationTestHelper.createTestConversation(seed: 'seed1');
 
       conversationBloc = ConversationChatBloc(
         conversation: conversation,
@@ -161,7 +161,7 @@ void main() {
     );
 
     var newValue = await ConversationTestHelper.createTestConversation(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: conversation.remoteId,
     );
 
@@ -192,16 +192,16 @@ void main() {
 
   test('lastStatus', () async {
     var status1 = await StatusTestHelper.createTestStatus(
-      seed: "status1",
+      seed: 'status1',
       createdAt: DateTime(2001),
     );
     var status2 = await StatusTestHelper.createTestStatus(
-      seed: "status2",
+      seed: 'status2',
       createdAt: DateTime(2002),
     );
 
     var newValue = await ConversationTestHelper.createTestConversation(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: conversation.remoteId,
     );
 
@@ -247,12 +247,12 @@ void main() {
   });
 
   test('accounts', () async {
-    var account1 = await AccountTestHelper.createTestAccount(seed: "account1");
-    var account2 = await AccountTestHelper.createTestAccount(seed: "account2");
-    var account3 = await AccountTestHelper.createTestAccount(seed: "account3");
+    var account1 = await AccountTestHelper.createTestAccount(seed: 'account1');
+    var account2 = await AccountTestHelper.createTestAccount(seed: 'account2');
+    var account3 = await AccountTestHelper.createTestAccount(seed: 'account3');
 
     var newValue = await ConversationTestHelper.createTestConversation(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: conversation.remoteId,
     );
 
@@ -312,15 +312,15 @@ void main() {
   });
 
   test('accountsWithoutMe', () async {
-    var account1 = await AccountTestHelper.createTestAccount(seed: "account1");
+    var account1 = await AccountTestHelper.createTestAccount(seed: 'account1');
     var account2 = await AccountTestHelper.createTestAccount(
-      seed: "account2",
+      seed: 'account2',
       remoteId: myAccount.remoteId,
     );
-    var account3 = await AccountTestHelper.createTestAccount(seed: "account3");
+    var account3 = await AccountTestHelper.createTestAccount(seed: 'account3');
 
     var newValue = await ConversationTestHelper.createTestConversation(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: conversation.remoteId,
     );
 
@@ -379,7 +379,7 @@ void main() {
     );
 
     var newValue = await ConversationTestHelper.createTestConversation(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: conversation.remoteId,
     );
 

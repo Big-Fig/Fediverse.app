@@ -8,7 +8,7 @@ import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_service.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 
-var _logger = Logger("emoji_picker_custom_image_url_category_bloc_impl.dart");
+var _logger = Logger('emoji_picker_custom_image_url_category_bloc_impl.dart');
 
 class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     implements ICustomEmojiPickerImageUrlCategoryBloc {
@@ -37,7 +37,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
             var emojiItems = customEmojis
                 .map(
                   (customEmoji) => CustomEmojiPickerImageUrlItem(
-                    imageUrl: "$urlSchema://$urlHost/${customEmoji.imageUrl}",
+                    imageUrl: '$urlSchema://$urlHost/${customEmoji.imageUrl}',
                     name: customEmoji.name,
                   ),
                 )
@@ -51,8 +51,8 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
         ).catchError(
           (e, stackTrace) {
             _logger.warning(
-              () => "internalAsyncInit error: fetch remote emoji "
-                  "list",
+              () => 'internalAsyncInit error: fetch remote emoji '
+                  'list',
               e,
               stackTrace,
             );

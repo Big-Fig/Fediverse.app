@@ -20,7 +20,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("current_auth_instance_context_init_bloc_impl.dart");
+var _logger = Logger('current_auth_instance_context_init_bloc_impl.dart');
 
 class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     implements ICurrentAuthInstanceContextInitBloc {
@@ -56,10 +56,10 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     addDisposable(
       streamSubscription: pleromaAuthRestService.pleromaApiStateStream.listen(
         (pleromaApiState) {
-          _logger.finest(() => "pleromaApiState $pleromaApiState");
+          _logger.finest(() => 'pleromaApiState $pleromaApiState');
           if (pleromaApiState == PleromaApiState.brokenAuth) {
             _logger.finest(() =>
-                " stateSubject.add(CurrentAuthInstanceContextInitState.invalidCredentials)");
+                ' stateSubject.add(CurrentAuthInstanceContextInitState.invalidCredentials)');
             stateSubject
                 .add(CurrentAuthInstanceContextInitState.invalidCredentials);
           }
@@ -77,7 +77,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     instanceInfoUpdatedDuringRequiredDataUpdate = false;
     stateSubject.add(CurrentAuthInstanceContextInitState.loading);
     var isConnected = pleromaInstanceService.isConnected;
-    _logger.finest(() => "refresh isApiReadyToUse $isConnected");
+    _logger.finest(() => 'refresh isApiReadyToUse $isConnected');
 
     bool? requiredDataRefreshSuccess;
 
@@ -103,7 +103,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
         }
         requiredDataRefreshSuccess = true;
       } catch (e, stackTrace) {
-        _logger.warning(() => "failed to update instance info", e, stackTrace);
+        _logger.warning(() => 'failed to update instance info', e, stackTrace);
         if (e is PleromaApiInvalidCredentialsForbiddenRestException) {
           stateSubject.add(
             CurrentAuthInstanceContextInitState.invalidCredentials,

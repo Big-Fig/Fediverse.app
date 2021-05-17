@@ -12,7 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("cached_pagination_list_with_new_items_bloc_impl.dart");
+var _logger = Logger('cached_pagination_list_with_new_items_bloc_impl.dart');
 
 abstract class CachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<TItem>,
@@ -219,9 +219,9 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
   @override
   void mergeNewItems() {
-    _logger.finest(() => "mergeNewItems \n"
-        "\t unmergedNewItems = ${unmergedNewItems.length}\n"
-        "\t mergedNewItems = ${mergedNewItems.length}\n");
+    _logger.finest(() => 'mergeNewItems \n'
+        '\t unmergedNewItems = ${unmergedNewItems.length}\n'
+        '\t mergedNewItems = ${mergedNewItems.length}\n');
     mergedNewItemsSubject.add(
       [
         ...unmergedNewItems,
@@ -230,9 +230,9 @@ abstract class CachedPaginationListWithNewItemsBloc<
     );
     unmergedNewItemsSubject.add([]);
 
-    _logger.finest(() => "mergeNewItems after "
-        "\t unmergedNewItems = ${unmergedNewItems.length}\n"
-        "\t mergedNewItems = ${mergedNewItems.length}\n");
+    _logger.finest(() => 'mergeNewItems after '
+        '\t unmergedNewItems = ${unmergedNewItems.length}\n'
+        '\t mergedNewItems = ${mergedNewItems.length}\n');
   }
 
   @override
@@ -262,7 +262,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
   }
 
   void checkWatchNewItemsSubscription(TItem? newerItem) {
-    // don't watch new items before we something actually loaded
+    // dont watch new items before we something actually loaded
     if (paginationBloc.loadedPagesCount == 0 &&
         !watchNewerItemsWhenLoadedPagesIsEmpty) {
       return;
@@ -282,7 +282,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
       }
     }
 
-    _logger.finest(() => "newerItem $newerItem");
+    _logger.finest(() => 'newerItem $newerItem');
     newItemsSubscription?.cancel();
 
     newItemsSubscription = createWatchNewItemsSubscription(newerItem);
@@ -318,16 +318,16 @@ abstract class CachedPaginationListWithNewItemsBloc<
           );
         }
 
-        // if newerItem already changed we shouldn't apply calculated changes
+        // if newerItem already changed we shouldnt apply calculated changes
         // because new changes coming
         if (this.newerItem != newerItem) {
           return;
         }
 
-        _logger.finest(() => "watchItemsNewerThanItem "
-            "\n"
-            "\t newItems ${newItems.length} \n"
-            "\t actuallyNew = ${actuallyNew.length}");
+        _logger.finest(() => 'watchItemsNewerThanItem '
+            '\n'
+            '\t newItems ${newItems.length} \n'
+            '\t actuallyNew = ${actuallyNew.length}');
 
         if (actuallyNew.isNotEmpty) {
           if (!currentItems.isNotEmpty &&
@@ -420,12 +420,12 @@ _CombinedItemsResult<TItem>
     ];
   }
 
-  _logger.finest(() => "_calculateNewItems"
-      " \n"
-      "\t items = ${items?.length} \n"
-      "\t mergedNewItems = ${mergedNewItems?.length} \n"
-      "\t updatedItems = ${updatedItems.length} \n"
-      "\t resultList = ${resultList.length}");
+  _logger.finest(() => '_calculateNewItems'
+      ' \n'
+      '\t items = ${items?.length} \n'
+      '\t mergedNewItems = ${mergedNewItems?.length} \n'
+      '\t updatedItems = ${updatedItems.length} \n'
+      '\t resultList = ${resultList.length}');
 
   if (updatedItems.isNotEmpty) {
     resultList = resultList.map((resultListItem) {

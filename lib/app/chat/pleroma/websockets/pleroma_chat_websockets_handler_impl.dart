@@ -10,7 +10,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 
 class PleromaChatWebSocketsHandler extends WebSocketsChannelHandler {
   @override
-  String get logTag => "pleroma_chat_websockets_handler_impl.dart";
+  String get logTag => 'pleroma_chat_websockets_handler_impl.dart';
 
   PleromaChatWebSocketsHandler({
     required IPleromaApiWebSocketsService pleromaWebSocketsService,

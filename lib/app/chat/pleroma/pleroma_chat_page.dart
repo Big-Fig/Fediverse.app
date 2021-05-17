@@ -86,7 +86,7 @@ MaterialPageRoute createPleromaChatPageRoute(IPleromaChat chat) {
           lastChatMessage: null,
         );
 
-        // we don't need to await
+        // we dont need to await
         chatBloc.markAsRead();
 
         var currentChatBloc =

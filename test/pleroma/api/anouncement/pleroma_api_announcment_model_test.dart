@@ -28,11 +28,11 @@ void main() {
   test('PleromaApiAnnouncement copyWith', () async {
     var obj1 =
         PleromaApiAnnouncementTestHelper.createTestPleromaApiAnnouncement(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 =
         PleromaApiAnnouncementTestHelper.createTestPleromaApiAnnouncement(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(

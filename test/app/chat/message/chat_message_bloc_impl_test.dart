@@ -73,9 +73,9 @@ void main() {
         PleromaApiState.validAuth,
       );
 
-      chat = await ChatTestHelper.createTestChat(seed: "seed1");
+      chat = await ChatTestHelper.createTestChat(seed: 'seed1');
       chatMessage = await ChatMessageTestHelper.createTestChatMessage(
-        seed: "seed1",
+        seed: 'seed1',
         chatRemoteId: chat.remoteId,
       );
 
@@ -129,7 +129,7 @@ void main() {
     );
 
     var newValue = await ChatMessageTestHelper.createTestChatMessage(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: chatMessage.remoteId,
     );
     await accountRepository.upsertChatRemoteAccount(
@@ -160,7 +160,7 @@ void main() {
   test('content', () async {
     expect(chatMessageBloc.content, chatMessage.content);
 
-    var newValue = "newContent";
+    var newValue = 'newContent';
 
     var listenedValue;
 
@@ -179,7 +179,7 @@ void main() {
   });
 
   test('contentHtmlWithEmojis', () async {
-    var newValue = "newContent :emoji: :emoji1: :emoji2:";
+    var newValue = 'newContent :emoji: :emoji1: :emoji2:';
 
     var listenedValue;
 
@@ -216,15 +216,15 @@ void main() {
         content: newValue,
         emojis: [
           PleromaApiEmoji(
-            shortcode: "emoji1",
-            url: "https://fedi.app/emoji1.png",
+            shortcode: 'emoji1',
+            url: 'https://fedi.app/emoji1.png',
             category: null,
             staticUrl: null,
             visibleInPicker: null,
           ),
           PleromaApiEmoji(
-            shortcode: "emoji2",
-            url: "https://fedi.app/emoji2.png",
+            shortcode: 'emoji2',
+            url: 'https://fedi.app/emoji2.png',
             category: null,
             staticUrl: null,
             visibleInPicker: null,
@@ -236,18 +236,18 @@ void main() {
     expect(
       chatMessageBloc.contentWithEmojis,
       EmojiText(
-        text: "newContent :emoji: :emoji1: :emoji2:",
+        text: 'newContent :emoji: :emoji1: :emoji2:',
         emojis: [
           PleromaApiEmoji(
-            shortcode: "emoji1",
-            url: "https://fedi.app/emoji1.png",
+            shortcode: 'emoji1',
+            url: 'https://fedi.app/emoji1.png',
             staticUrl: null,
             visibleInPicker: null,
             category: null,
           ),
           PleromaApiEmoji(
-            shortcode: "emoji2",
-            url: "https://fedi.app/emoji2.png",
+            shortcode: 'emoji2',
+            url: 'https://fedi.app/emoji2.png',
             staticUrl: null,
             visibleInPicker: null,
             category: null,
@@ -258,18 +258,18 @@ void main() {
     expect(
       listenedValue,
       EmojiText(
-        text: "newContent :emoji: :emoji1: :emoji2:",
+        text: 'newContent :emoji: :emoji1: :emoji2:',
         emojis: [
           PleromaApiEmoji(
-            shortcode: "emoji1",
-            url: "https://fedi.app/emoji1.png",
+            shortcode: 'emoji1',
+            url: 'https://fedi.app/emoji1.png',
             staticUrl: null,
             visibleInPicker: null,
             category: null,
           ),
           PleromaApiEmoji(
-            shortcode: "emoji2",
-            url: "https://fedi.app/emoji2.png",
+            shortcode: 'emoji2',
+            url: 'https://fedi.app/emoji2.png',
             staticUrl: null,
             visibleInPicker: null,
             category: null,
@@ -312,7 +312,7 @@ void main() {
 //    chatMessage = chatMessage.copyWith(id: id);
 //
 //    var newValue = await ChatMessageTestHelper.createTestChatMessage(
-//        seed: "seed2", remoteId: chatMessage.remoteId);
+//        seed: 'seed2', remoteId: chatMessage.remoteId);
 //
 //    var listenedValue;
 //

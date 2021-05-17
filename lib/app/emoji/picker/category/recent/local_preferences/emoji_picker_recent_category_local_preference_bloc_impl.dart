@@ -11,7 +11,7 @@ class EmojiPickerRecentCategoryLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService: preferencesService,
-          key: "$userAtHost.emoji.recent",
+          key: '$userAtHost.emoji.recent',
           schemaVersion: 1,
           jsonConverter: (json) =>
               EmojiPickerRecentCategoryItemsList.fromJson(json),

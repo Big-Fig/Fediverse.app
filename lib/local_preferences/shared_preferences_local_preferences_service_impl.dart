@@ -7,9 +7,9 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-var _logger = Logger("shared_preferences_local_preferences_service_impl.dart");
+var _logger = Logger('shared_preferences_local_preferences_service_impl.dart');
 
-const _specialStorageKeyCreatedKey = "_specialStorageKeyCreatedKey";
+const _specialStorageKeyCreatedKey = '_specialStorageKeyCreatedKey';
 const _specialStorageKeyCreatedValue = _specialStorageKeyCreatedKey;
 
 class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
@@ -20,7 +20,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    _logger.fine(() => "internalAsyncInit");
+    _logger.fine(() => 'internalAsyncInit');
     preferences = await SharedPreferences.getInstance();
   }
 
@@ -47,7 +47,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   @override
   bool isKeyExist(String key) {
     var contains = preferences.containsKey(key);
-    _logger.fine(() => "isKeyExist $key => $contains");
+    _logger.fine(() => 'isKeyExist $key => $contains');
 
     return contains;
   }

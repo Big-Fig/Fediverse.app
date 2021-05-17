@@ -25,7 +25,7 @@ class PasswordMatchStringValueFormFieldBloc extends StringValueFormFieldBloc {
   PasswordMatchStringValueFormFieldBloc({
     required int? maxLength,
   }) : super(
-          originValue: "",
+          originValue: '',
           validators: [],
           maxLength: maxLength,
         );

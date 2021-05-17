@@ -14,7 +14,7 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("account_following_account_cached_list_bloc_impl.dart");
+var _logger = Logger('account_following_account_cached_list_bloc_impl.dart');
 
 class AccountFollowingAccountCachedListBloc extends DisposableOwner
     implements IAccountCachedListBloc {
@@ -42,9 +42,9 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t newerThanAccount = $newerThan"
-        "\t olderThanAccount = $olderThan");
+    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
+        '\t newerThanAccount = $newerThan'
+        '\t olderThanAccount = $olderThan');
 
     List<IPleromaApiAccount> remoteAccounts;
 
@@ -77,9 +77,9 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.finest(() => "start loadLocalItems \n"
-        "\t newerThanAccount=$newerThan"
-        "\t olderThanAccount=$olderThan");
+    _logger.finest(() => 'start loadLocalItems \n'
+        '\t newerThanAccount=$newerThan'
+        '\t olderThanAccount=$olderThan');
 
     var accounts = await accountRepository.findAllInAppType(
       pagination: RepositoryPagination<IAccount>(
@@ -91,7 +91,7 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
       filters: _accountRepositoryFilters,
     );
 
-    _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");
+    _logger.finer(() => 'finish loadLocalItems accounts ${accounts.length}');
 
     return accounts;
   }

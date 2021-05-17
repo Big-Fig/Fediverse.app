@@ -116,7 +116,7 @@ class _AccountHomeTabPageBody extends StatelessWidget {
           const _AccountHomeTabMyAccountWidget(),
           const _AccountHomeTabTextIndicatorWidget(),
         ],
-        tabKeyPrefix: "AccountHomeTabPage",
+        tabKeyPrefix: 'AccountHomeTabPage',
         tabBodyProviderBuilder:
             (BuildContext context, int index, Widget child) =>
                 _AccountHomeTabPageBodyProviderWidget(

@@ -9,7 +9,7 @@ import 'package:moor/moor.dart';
 
 part 'pleroma_chat_message_database_dao.g.dart';
 
-var _accountAliasId = "account";
+var _accountAliasId = 'account';
 
 @UseDao(
   tables: [DbChatMessages],
@@ -114,7 +114,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
       query
         ..where(
           (_) => CustomExpression<bool>(
-            "db_chat_messages.chat_remote_id = '$chatRemoteId'",
+            'db_chat_messages.chat_remote_id = "$chatRemoteId"',
           ),
         );
 
@@ -125,8 +125,8 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
       query
         ..where(
           (_) => CustomExpression<bool>(
-            "db_chat_messages.chat_remote_id IN ("
-            "${chatRemoteIds.join(", ")})",
+            'db_chat_messages.chat_remote_id IN ('
+            '${chatRemoteIds.join(', ')})',
           ),
         );
 
@@ -194,7 +194,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   void addGroupByChatId(JoinedSelectStatement<Table, DataClass> query) {
     query.groupBy(
       [dbChatMessages.chatRemoteId],
-      having: CustomExpression("MAX(db_chat_messages.created_at)"),
+      having: CustomExpression('MAX(db_chat_messages.created_at)'),
     );
   }
 
@@ -214,9 +214,9 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     //   });
     // }
 
-    var update = "UPDATE db_chat_messages "
-        "SET deleted = 1 "
-        "WHERE remote_id = '$remoteId'";
+    var update = 'UPDATE db_chat_messages '
+        'SET deleted = 1 '
+        'WHERE remote_id = "$remoteId"';
     var query = db.customUpdate(update, updates: {dbChatMessages});
 
     return query;
@@ -227,9 +227,9 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     // required Batch? batchTransaction,
   }) {
     // todo: support batch
-    var update = "UPDATE db_chat_messages "
-        "SET hidden_locally_on_device = 1 "
-        "WHERE id = '$localId'";
+    var update = 'UPDATE db_chat_messages '
+        'SET hidden_locally_on_device = 1 '
+        'WHERE id = "$localId"';
     var query = db.customUpdate(update, updates: {dbChatMessages});
 
     return query;

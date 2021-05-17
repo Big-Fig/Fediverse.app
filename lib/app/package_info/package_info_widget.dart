@@ -21,7 +21,7 @@ class VersionPackageInfoWidget extends StatelessWidget {
                 future: FediPackageInfoHelper.getAppName(),
                 builder: (context, snapshot) {
                   return Text(
-                    snapshot.data ?? "",
+                    snapshot.data ?? '',
                     style: textStyle,
                   );
                 },

@@ -34,7 +34,7 @@ class LocalPreferencesTestHelper {
     expect(testLocalPreferenceBloc.value, defaultValue);
     expect(listenValue, defaultValue);
 
-    var newValue = testObjectCreator(seed: "seed1");
+    var newValue = testObjectCreator(seed: 'seed1');
 
     await testLocalPreferenceBloc.setValue(newValue);
 

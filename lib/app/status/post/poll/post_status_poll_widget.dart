@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-final _logger = Logger("post_status_poll_widget.dart");
+final _logger = Logger('post_status_poll_widget.dart');
 
 class PostStatusPollWidget extends StatelessWidget {
   const PostStatusPollWidget();
@@ -155,7 +155,7 @@ class _PostStatusPollOptionsFieldItemFieldWidget extends StatelessWidget {
     return PostStatusPollOptionFormStringFieldFormRowWidget(
       formStringFieldBloc: pollItemBloc,
       onSubmitted: (String value) {
-        _logger.finest(() => "onSubmitted $value");
+        _logger.finest(() => 'onSubmitted $value');
         var nextItem = pollOptionsGroupBloc.findNextItemFor(pollItemBloc);
         nextItem?.focusNode.requestFocus();
       },

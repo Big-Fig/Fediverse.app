@@ -44,7 +44,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
 
     captchaFieldBloc = PleromaFormCaptchaStringFieldBloc(
       pleromaCaptchaService: pleromaCaptchaService,
-      originValue: "",
+      originValue: '',
       validators: [
         StringValueFormFieldNonEmptyValidationError.createValidator(),
       ],
@@ -71,7 +71,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
 
   @override
   final StringValueFormFieldBloc usernameFieldBloc = StringValueFormFieldBloc(
-    originValue: "",
+    originValue: '',
     validators: [StringValueFormFieldNonEmptyValidationError.createValidator()],
     maxLength: null,
   );
@@ -86,21 +86,21 @@ class RegisterAuthInstanceFormBloc extends FormBloc
 
   @override
   final StringValueFormFieldBloc emailFieldBloc = StringValueFormFieldBloc(
-    originValue: "",
+    originValue: '',
     validators: [EmailStringValueFormFieldValidationError.createValidator()],
     maxLength: null,
   );
 
   @override
   final StringValueFormFieldBloc reasonFieldBloc = StringValueFormFieldBloc(
-    originValue: "",
+    originValue: '',
     validators: [],
     maxLength: null,
   );
 
   @override
   final StringValueFormFieldBloc passwordFieldBloc = StringValueFormFieldBloc(
-    originValue: "",
+    originValue: '',
     validators: [
       StringValueFormFieldLengthValidationError.createValidator(
         // todo: refactor

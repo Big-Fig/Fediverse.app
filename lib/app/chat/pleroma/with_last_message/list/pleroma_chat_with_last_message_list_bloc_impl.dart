@@ -20,7 +20,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("pleroma_chat_with_last_message_list_bloc_impl.dart");
+var _logger = Logger('pleroma_chat_with_last_message_list_bloc_impl.dart');
 
 class PleromaChatWithLastMessageListBloc extends DisposableOwner
     implements IPleromaChatWithLastMessageListBloc {
@@ -54,7 +54,7 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
     required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
     required WebSocketsListenType webSocketsListenType,
   }) {
-    _logger.finest(() => "constructor");
+    _logger.finest(() => 'constructor');
     chatListBloc = PleromaChatWithLastMessageCachedListBloc(
       pleromaChatService: pleromaChatService,
       chatWithLastMessageRepository: chatWithLastMessageRepository,

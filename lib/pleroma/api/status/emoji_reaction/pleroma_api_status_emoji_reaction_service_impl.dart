@@ -10,8 +10,8 @@ var _urlPath = path.Context(style: path.Style.url);
 class PleromaApiStatusEmojiReactionService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiStatusEmojiReactionService {
-  final pleromaStatusesRelativeUrlPath = "/api/v1/pleroma/statuses/";
-  final reactionsRelativeUrlPath = "reactions";
+  final pleromaStatusesRelativeUrlPath = '/api/v1/pleroma/statuses/';
+  final reactionsRelativeUrlPath = 'reactions';
   final IPleromaApiAuthRestService authRestService;
 
   @override
