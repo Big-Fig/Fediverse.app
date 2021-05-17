@@ -34,14 +34,13 @@ class HiveTestHelper {
     var obj = testHiveObjectCreator(seed: 'seed1');
 
     // ignore: no-magic-number
-    var uniquePrefix = obj.toString().substring(0, 3);
+    var uniquePrefix = obj.toString().substring(0, 3) + obj.hashCode.toString();
     var boxName = 'testHiveSaveAndLoad' + uniquePrefix;
 
     hiveLocalPreferencesService = HiveLocalPreferencesService(
       boxName: boxName,
     );
     await hiveLocalPreferencesService.performAsyncInit();
-
 
     var key = 'key';
     await hiveLocalPreferencesService.setObjectPreference(key, obj);
