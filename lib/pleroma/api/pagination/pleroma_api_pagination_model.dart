@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 abstract class IPleromaApiPaginationRequest
     implements IMastodonApiPaginationRequest {
-  List<RestRequestQueryArg> toQueryArgs();
+
 }
 
 class PleromaApiPaginationRequest implements IPleromaApiPaginationRequest {
