@@ -26,6 +26,7 @@ class NotificationDatabaseTestHelper {
       type: type,
       dismissed: false,
     );
+
     return dbNotification;
   }
 
@@ -115,6 +116,7 @@ class NotificationDatabaseTestHelper {
       dbStatus: null,
       replyDbStatusAccount: null,
     );
+
     return dbNotificationPopulated;
   }
 }

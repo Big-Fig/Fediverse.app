@@ -147,6 +147,7 @@ class PleromaApiRestService extends DisposableOwner
         jsonString: response.body,
         responseJsonParser: responseJsonParser,
       );
+
       return await compute(_parseJsonRequestAsSingle, request);
     } else {
       throw createException(response);
@@ -260,6 +261,7 @@ List<T> _parseJsonRequestAsList<T>(_ParseJsonRequest<T> request) {
       (index) {
         var jsonItem = json[index];
         T item = request.responseJsonParser(jsonItem);
+
         return item;
       },
       growable: false,

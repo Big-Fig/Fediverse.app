@@ -131,6 +131,7 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
     IConversationChatMessage? item,
   ) {
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
+
     return chatMessageCachedListService.watchLocalItemsNewerThanItem(item);
   }
 

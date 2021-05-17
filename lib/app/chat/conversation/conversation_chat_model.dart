@@ -108,6 +108,7 @@ class DbConversationChatPopulatedWrapper implements IConversationChat {
     if (accounts != null) {
       throw UnimplementedError();
     }
+
     return DbConversationChatPopulatedWrapper(
       dbConversationPopulated: DbConversationPopulated(
         dbConversation: dbConversationPopulated.dbConversation.copyWith(
@@ -210,6 +211,7 @@ extension IConversationChatExtension on IConversationChat {
     if (this is DbConversationPopulated) {
       var dbConversationChatPopulatedWrapper =
           this as DbConversationChatPopulatedWrapper;
+
       return dbConversationChatPopulatedWrapper.dbConversationPopulated;
     } else {
       return DbConversationPopulated(
@@ -222,6 +224,7 @@ extension IConversationChatExtension on IConversationChat {
     if (this is DbConversationPopulated) {
       var dbConversationChatPopulatedWrapper =
           this as DbConversationChatPopulatedWrapper;
+
       return dbConversationChatPopulatedWrapper
           .dbConversationPopulated.dbConversation;
     } else {

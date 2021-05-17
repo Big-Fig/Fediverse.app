@@ -83,6 +83,7 @@ class _EditTimelineSettingsChildrenWidget extends StatelessWidget {
       default:
         throw "Invalid timelineType $timelineType";
     }
+
     return children;
   }
 }

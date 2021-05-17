@@ -32,12 +32,14 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   @override
   Future<bool> clearAllValues() async {
     var clearedKeysCount = await _box.clear();
+
     return clearedKeysCount > 0;
   }
 
   @override
   Future<bool> delete() async {
     await _box.deleteFromDisk();
+
     return true;
   }
 
@@ -45,30 +47,35 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   bool isKeyExist(String key) {
     var contains = _box.containsKey(key);
     _logger.fine(() => "isKeyExist $key => $contains");
+
     return contains;
   }
 
   @override
   Future<bool> clearValue(String key) async {
     await _box.delete(key);
+
     return true;
   }
 
   @override
   Future<bool> setString(String key, String? value) async {
     await _box.put(key, value);
+
     return true;
   }
 
   @override
   Future<bool> setIntPreference(String key, int? value) async {
     await _box.put(key, value);
+
     return true;
   }
 
   @override
   Future<bool> setBoolPreference(String key, bool? value) async {
     await _box.put(key, value);
+
     return true;
   }
 
@@ -78,6 +85,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     IJsonObject? preferencesObject,
   ) async {
     await _box.put(key, preferencesObject);
+
     return true;
   }
 

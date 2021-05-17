@@ -13,6 +13,7 @@ class ConversationRepositoryTestHelper {
     );
     assert(id > 0, true);
     var dbConversation = conversationData.copyWith(id: id);
+
     return dbConversation;
   }
 }

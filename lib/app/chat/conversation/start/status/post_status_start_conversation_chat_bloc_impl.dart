@@ -68,6 +68,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance!
         .info!;
+
     return PostStatusStartConversationChatBloc(
       successCallback: successCallback,
       conversationAccountsWithoutMe: conversationAccountsWithoutMe,

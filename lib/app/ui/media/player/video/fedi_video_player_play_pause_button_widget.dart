@@ -85,6 +85,7 @@ class _FediVideoPlayerPlayPauseControlsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
+
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(size),
@@ -101,6 +102,7 @@ class _FediVideoPlayerPlayPauseControlsWidget extends StatelessWidget {
             stream: videoMediaPlayerBloc.isPlayingStream,
             builder: (context, snapshot) {
               var isPlaying = snapshot.data ?? false;
+
               return AsyncOperationButtonBuilderWidget(
                 showProgressDialog: false,
                 builder: (BuildContext context, void Function()? onPressed) {

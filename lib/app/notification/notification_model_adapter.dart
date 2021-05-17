@@ -79,6 +79,7 @@ extension INotificationExtension on INotification {
     if (this is DbNotificationPopulated) {
       var dbNotificationPopulatedWrapper =
           this as DbNotificationPopulatedWrapper;
+
       return dbNotificationPopulatedWrapper.dbNotificationPopulated;
     } else {
       return DbNotificationPopulated(
@@ -100,6 +101,7 @@ extension INotificationExtension on INotification {
     if (this is DbNotificationPopulated) {
       var dbNotificationPopulatedWrapper =
           this as DbNotificationPopulatedWrapper;
+
       return dbNotificationPopulatedWrapper
           .dbNotificationPopulated.dbNotification;
     } else {

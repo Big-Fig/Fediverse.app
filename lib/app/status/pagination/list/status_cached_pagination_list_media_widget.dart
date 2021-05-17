@@ -43,6 +43,7 @@ class StatusCachedPaginationListMediaWidget
       context,
       listen: listen,
     );
+
     return timelinePaginationListBloc;
   }
 
@@ -125,6 +126,7 @@ class StatusCachedPaginationListMediaWidget
         );
       },
     );
+
     return statusesWithMediaAttachment;
   }
 
@@ -136,6 +138,7 @@ class StatusCachedPaginationListMediaWidget
                 .isNotEmpty ==
             true)
         .toList();
+
     return items;
   }
 

@@ -30,6 +30,7 @@ class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     );
 
     bloc.addDisposable(disposable: bloc);
+
     return bloc;
   }
 

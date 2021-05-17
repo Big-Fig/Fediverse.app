@@ -44,6 +44,7 @@ class PushRelayService extends DisposableOwner implements IPushRelayService {
       throw "Unsupported platform ${Platform.operatingSystem}";
     }
     _logger.finest("createPushRelayEndPointUrl endpoint=$endpoint");
+
     return endpoint;
   }
 }

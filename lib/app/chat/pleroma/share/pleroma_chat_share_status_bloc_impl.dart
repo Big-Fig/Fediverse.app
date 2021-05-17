@@ -86,6 +86,7 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
       mediaId: mediaId,
       idempotencyKey: null,
     );
+
     return messageSendData;
   }
 

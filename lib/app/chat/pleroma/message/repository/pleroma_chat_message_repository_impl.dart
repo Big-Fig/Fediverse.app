@@ -54,6 +54,7 @@ class PleromaChatMessageRepository
     String oldPendingRemoteId,
   ) async {
     _logger.finest(() => "findByOldPendingRemoteId $oldPendingRemoteId");
+
     return (await dao.findByOldPendingRemoteId(oldPendingRemoteId))
         ?.toDbChatMessagePopulatedWrapper();
   }
@@ -63,6 +64,7 @@ class PleromaChatMessageRepository
     String? oldPendingRemoteId,
   ) {
     _logger.finest(() => "watchByOldPendingRemoteId $oldPendingRemoteId");
+
     return dao.watchByOldPendingRemoteId(oldPendingRemoteId).map(
           (item) => item?.toDbChatMessagePopulatedWrapper(),
         );

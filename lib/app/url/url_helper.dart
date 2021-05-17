@@ -132,6 +132,7 @@ class UrlHelper {
     var urlSchema = remoteInstanceUriOrNull.scheme;
 
     url = "$urlSchema://$urlHost$url";
+
     return url;
   }
 
@@ -146,6 +147,7 @@ class UrlHelper {
     var urlSchema = currentAuthInstanceBloc.currentInstance!.urlSchema;
 
     url = "$urlSchema://$urlHost$url";
+
     return url;
   }
 
@@ -188,6 +190,7 @@ class UrlHelper {
   static String extractUrl(String value) {
     // TODO: rework url regex
     String string = value.replaceAll(RegExp("</a>"), "");
+
     return string.replaceAll(RegExp("<a[^>]*>"), "");
   }
 }

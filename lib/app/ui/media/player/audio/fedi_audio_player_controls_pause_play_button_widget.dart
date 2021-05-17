@@ -11,6 +11,7 @@ class FediAudioPlayerControlsPausePlayButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: mediaPlayerBloc.isInitializingStream,
       builder: (context, snapshot) {
@@ -42,6 +43,7 @@ class _FediAudioPlayerControlsPausePlayButtonBodyWidget
       stream: mediaPlayerBloc.isPlayingStream,
       builder: (context, snapshot) {
         var isPlaying = snapshot.data ?? false;
+        
         return AsyncOperationButtonBuilderWidget(
           showProgressDialog: false,
           builder: (BuildContext context, void Function()? onPressed) {

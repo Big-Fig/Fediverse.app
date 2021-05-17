@@ -35,6 +35,7 @@ class ToastSettingsBloc
   Future changePushSettings(PushSettings newPushSettings) async {
     if (pushSettings == newPushSettings) {
       _logger.finest(() => "Same settings");
+
       return;
     }
 
@@ -177,6 +178,7 @@ class ToastSettingsBloc
   Future updateSettings(ToastSettings? newSettings) async {
     if (settingsData == newSettings) {
       _logger.finest(() => "Same settings");
+
       return;
     }
 

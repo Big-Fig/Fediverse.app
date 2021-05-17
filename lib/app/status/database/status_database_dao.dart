@@ -411,6 +411,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
                       expression = item.createdAt;
                       break;
                   }
+
                   return OrderingTerm(
                     expression: expression,
                     mode: orderTerm.orderingMode,
@@ -797,6 +798,7 @@ extension TypedResultDbStatusPopulatedExtension on TypedResult {
     required StatusDao dao,
   }) {
     TypedResult typedResult = this;
+
     return DbStatusPopulated(
       reblogDbStatus: typedResult.readTableOrNull(dao.reblogAlias),
       reblogDbStatusAccount:

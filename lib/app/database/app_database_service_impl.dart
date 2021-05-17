@@ -84,6 +84,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
       dbFolder.path,
       path,
     );
+    
     return filePath;
   }
 

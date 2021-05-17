@@ -30,6 +30,7 @@ class EditGlobalOrInstanceToastSettingsBloc extends EditToastSettingsBloc {
         null) {
       return true;
     }
+
     return super.isPossibleToSaveSettingsToBloc;
   }
 }

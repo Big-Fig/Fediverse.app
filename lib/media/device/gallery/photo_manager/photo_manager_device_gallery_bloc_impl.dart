@@ -29,6 +29,7 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
     );
     assetPathEntities.sort(PhotoManagerMediaDeviceGalleryBloc
         .compareAlbumsAlphabeticallyAndFeatured);
+
     return assetPathEntities
         .map(
           (assetPathEntity) => PhotoManagerMediaDeviceFolder(

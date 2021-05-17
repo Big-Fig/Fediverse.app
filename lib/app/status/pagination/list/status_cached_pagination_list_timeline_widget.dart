@@ -33,6 +33,7 @@ class StatusCachedPaginationListTimelineWidget
       context,
       listen: listen,
     );
+
     return timelinePaginationListBloc;
   }
 
@@ -69,6 +70,7 @@ class StatusCachedPaginationListTimelineWidget
     var statusListBloc = IStatusListBloc.of(context);
     var instanceLocation = statusListBloc.instanceLocation;
     var isLocal = instanceLocation == InstanceLocation.local;
+
     return PaginationListWidget.buildItemsListView(
       context: context,
       keyboardDismissBehavior: keyboardDismissBehavior,
@@ -77,6 +79,7 @@ class StatusCachedPaginationListTimelineWidget
       footer: footer,
       itemBuilder: (context, index) {
         var status = items[index];
+
         return Provider<IStatus>.value(
           value: status,
           child: FediListTile(

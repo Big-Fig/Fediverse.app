@@ -16,6 +16,7 @@ class ChatMessageDatabaseTestHelper {
         dbChatMessage.accountRemoteId,
       ))!,
     );
+
     return dbChatMessagePopulated;
   }
 
@@ -38,6 +39,7 @@ class ChatMessageDatabaseTestHelper {
       card: card,
       chatRemoteId: chatRemoteId ?? seed + "chatRemoteId",
     );
+
     return dbChatMessage;
   }
 

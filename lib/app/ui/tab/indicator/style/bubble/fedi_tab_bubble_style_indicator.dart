@@ -43,6 +43,7 @@ class FediTabBubbleStyleIndicator extends Decoration {
         tabBarIndicatorSize: a.tabBarIndicatorSize,
       );
     }
+
     return super.lerpFrom(a, t);
   }
 
@@ -58,6 +59,7 @@ class FediTabBubbleStyleIndicator extends Decoration {
         tabBarIndicatorSize: b.tabBarIndicatorSize,
       );
     }
+
     return super.lerpTo(b, t);
   }
 
@@ -90,6 +92,7 @@ class _BubblePainter extends BoxPainter {
     if (tabBarIndicatorSize == TabBarIndicatorSize.tab) {
       indicator = insets.resolve(textDirection).deflateRect(rect);
     }
+
     return Rect.fromLTWH(
       indicator.left,
       indicator.top,

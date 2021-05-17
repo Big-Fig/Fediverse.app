@@ -42,11 +42,13 @@ class BoolValueFormFieldRowValueWidget extends StatelessWidget {
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data ?? false;
+
         return StreamBuilder<bool?>(
           stream: fieldBloc.currentValueStream,
           initialData: fieldBloc.currentValue,
           builder: (context, snapshot) {
             var currentValue = snapshot.data ?? false;
+
             return FediSwitch(
               value: currentValue,
               onChanged: (newValue) {

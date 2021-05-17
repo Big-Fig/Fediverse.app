@@ -42,6 +42,7 @@ class ChatListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var chatBloc = IChatBloc.of(context);
+
     return Slidable(
       actionPane: const SlidableDrawerActionPane(),
       // ignore: no-magic-number
@@ -305,6 +306,7 @@ class _ChatListItemDeleteActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var chatBloc = IChatBloc.of(context);
     var paginationListBloc = IPaginationListBloc.of(context);
+
     return IconSlideAction(
       icon: FediIcons.delete,
       color: IFediUiColorTheme.of(context).error,

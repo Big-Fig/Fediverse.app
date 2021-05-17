@@ -39,6 +39,7 @@ class PleromaApiTimelineService extends BasePleromaApiService
     ],
   }) {
     assert(hashtag.isNotEmpty);
+
     return getTimeline(
       relativeTimeLineUrlPath: "tag/$hashtag",
       pagination: pagination,
@@ -86,6 +87,7 @@ class PleromaApiTimelineService extends BasePleromaApiService
     ],
   }) {
     assert(listId.isNotEmpty);
+
     return getTimeline(
       relativeTimeLineUrlPath: "list/$listId",
       pagination: pagination,

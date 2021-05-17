@@ -232,6 +232,7 @@ class RestRequestQueryArg {
         }
       }
     });
+
     return queryArgs;
   }
 }

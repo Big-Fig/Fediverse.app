@@ -82,6 +82,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance!
         .info!;
+
     return ThreadPostStatusBloc(
       inReplyToStatus: inReplyToStatus,
       statusThreadBloc: IStatusThreadBloc.of(context, listen: false),
@@ -190,6 +191,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
       result = super.calculateInReplyToStatusField();
     }
     _logger.finest(() => "calculateInReplyToStatusRemoteId $result");
+
     return result!;
   }
 
@@ -219,6 +221,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
         if (!toField.contains(inReplyToStatusAcct)) {
           toField.add(inReplyToStatusAcct);
         }
+
         return toField;
       } else {
         return mentionedAccts;

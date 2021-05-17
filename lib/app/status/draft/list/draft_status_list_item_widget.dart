@@ -35,6 +35,7 @@ class DraftStatusListItemWidget extends StatelessWidget {
           initialData: draftStatusBloc.draftStatus,
           builder: (context, snapshot) {
             var draftStatus = snapshot.data;
+
             return Provider<IDraftStatus>.value(
               value: draftStatus!,
               child: ProxyProvider<IDraftStatus, IStatus>(
@@ -75,6 +76,7 @@ class _DraftStatusListItemHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var draftStatusBloc = IDraftStatusBloc.of(context);
+
     return StreamBuilder<DraftStatusState?>(
       stream: draftStatusBloc.stateStream,
       builder: (context, snapshot) {
@@ -208,11 +210,13 @@ class _DraftStatusListItemDraftAtWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var draftStatusBloc = IDraftStatusBloc.of(context);
+
     return StreamBuilder<DateTime?>(
       stream: draftStatusBloc.updatedAtStream,
       initialData: draftStatusBloc.updatedAt,
       builder: (context, snapshot) {
         var draftAt = snapshot.data!;
+
         return Text(
           dateFormat.format(draftAt),
           style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,

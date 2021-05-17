@@ -13,6 +13,7 @@ class ShareMediaWithMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaQueryData = MediaQuery.of(context);
+
     return ShareWithMessageWidget(
       footer: footer,
       child: ConstrainedBox(

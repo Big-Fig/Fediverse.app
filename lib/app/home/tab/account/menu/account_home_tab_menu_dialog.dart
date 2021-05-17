@@ -133,6 +133,7 @@ class _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget
   @override
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+
     return InkWell(
       onTap: () {
         goToInstanceSettingsPage(context);

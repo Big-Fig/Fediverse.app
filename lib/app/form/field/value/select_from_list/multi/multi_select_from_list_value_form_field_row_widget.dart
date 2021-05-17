@@ -128,16 +128,19 @@ class _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>
     var fieldBloc = IMultiSelectFromListValueFormFieldBloc.of<T>(context);
     //
     var fediUiTextTheme = IFediUiTextTheme.of(context);
+
     return StreamBuilder<bool?>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data;
+
         return StreamBuilder<List<T>?>(
           stream: fieldBloc.currentValueStream,
           initialData: fieldBloc.currentValue,
           builder: (context, snapshot) {
             var currentValueList = snapshot.data ?? [];
+
             return Text(
               currentValueList.isNotEmpty
                   ? currentValueList
@@ -179,16 +182,19 @@ class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
     var fieldBloc = IMultiSelectFromListValueFormFieldBloc.of<T>(context);
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return StreamBuilder<bool?>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data;
+
         return StreamBuilder<List<T>?>(
           stream: fieldBloc.currentValueStream,
           initialData: fieldBloc.currentValue,
           builder: (context, snapshot) {
             var currentValueList = snapshot.data;
+
             return Column(
               children: currentValueList
                       ?.map(
@@ -289,6 +295,7 @@ List<SelectionDialogAction> _calculateActions<T>({
       ),
     ),
   ];
+
   return result;
 }
 

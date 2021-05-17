@@ -152,6 +152,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
                       expression = item.createdAt;
                       break;
                   }
+
                   return OrderingTerm(
                     expression: expression,
                     mode: orderTerm.orderingMode,

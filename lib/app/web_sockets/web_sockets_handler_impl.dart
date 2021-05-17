@@ -70,6 +70,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     // todo: report bug to pleroma
     if (event.payload == null || event.payload == "null") {
       _logger.warning(() => "event payload is empty");
+
       return;
     }
 

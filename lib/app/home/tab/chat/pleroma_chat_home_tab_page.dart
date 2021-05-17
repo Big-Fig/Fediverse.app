@@ -132,6 +132,7 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
     var isSupportChats = currentInstance.isSupportChats;
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return FediDarkStatusBarStyleArea(
       child: ClipRRect(
         borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
@@ -188,6 +189,7 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
     var isPleromaInstance = currentInstance.isPleroma;
 
     var isSupportChats = currentInstance.isSupportChats;
+
     return FediTabMainHeaderBarWidget(
       leadingWidgets: [
         FediHeaderText(

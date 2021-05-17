@@ -84,6 +84,7 @@ class EmojiPickerWidget extends StatelessWidget {
         customEmojiPickerBloc.addDisposable(custom: () {
           allCategoriesBlocs.forEach((categoryBloc) => categoryBloc.dispose());
         });
+
         return customEmojiPickerBloc;
       },
       child: CustomEmojiPickerWidget(
@@ -98,6 +99,7 @@ class EmojiPickerWidget extends StatelessWidget {
           } else {
             text = S.of(context).app_emoji_category_empty;
           }
+
           return Text(
             text,
             style: IFediUiTextTheme.of(context).mediumTallDarkGrey,

@@ -255,6 +255,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
     var remoteStatus = await pleromaStatusService.getStatus(
       statusRemoteId: remoteId!,
     );
+
     return remoteStatus;
   }
 
@@ -302,6 +303,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
         // todo: ask user open on local instance or remote
         var pleromaHashtagUrl = pleromaHashtag.url.toLowerCase();
         var success = url.toLowerCase().contains(pleromaHashtagUrl);
+
         return success;
       },
     );
@@ -428,6 +430,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Future dispose() {
     _logger.finest(() => "dispose");
+
     return super.dispose();
   }
 

@@ -31,6 +31,7 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
         IFediNestedScrollViewBloc.of(context, listen: false);
     var nestedScrollController =
         fediNestedScrollViewBloc.nestedScrollController;
+
     return NestedScrollView(
       // we use custom nested scroll controller to achieve scroll callbacks
       // from body scrollables

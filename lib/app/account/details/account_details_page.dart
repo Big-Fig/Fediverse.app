@@ -58,6 +58,7 @@ class AccountDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountDetailsBloc = IAccountDetailsBloc.of(context);
+
     return TabControllerProvider(
       tabControllerCreator: (context, tickerProvider) => TabController(
         vsync: tickerProvider,
@@ -269,6 +270,7 @@ class _AccountDetailsPageBodyTabWithRepliesProvider extends StatelessWidget {
       );
     } else {
       var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
+
       return RemoteAccountStatusesWithRepliesNetworkOnlyListBloc
           .provideToContext(
         context,
@@ -327,6 +329,7 @@ class _AccountDetailsPageBodyTabWithoutRepliesProvider extends StatelessWidget {
       );
     } else {
       var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
+
       return RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
           .provideToContext(
         context,
@@ -385,6 +388,7 @@ class _AccountDetailsPageBodyTabMediaProvider extends StatelessWidget {
       );
     } else {
       var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
+
       return RemoteAccountStatusesMediaOnlyNetworkOnlyListBloc.provideToContext(
         context,
         account: accountBloc.account,
@@ -449,6 +453,7 @@ class _AccountDetailsPageBodyTabPinnedProvider extends StatelessWidget {
       );
     } else {
       var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
+
       return RemoteAccountStatusesPinnedOnlyNetworkOnlyListBloc
           .provideToContext(
         context,
@@ -508,6 +513,7 @@ class _AccountDetailsPageBodyTabFavouritesProvider extends StatelessWidget {
         );
       } else {
         var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
+
         return RemoteAccountStatusesFavouritesNetworkOnlyListBloc
             .provideToContext(
           context,
@@ -569,6 +575,7 @@ class _AccountDetailsPageTabIndicatorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountDetailsBloc = IAccountDetailsBloc.of(context);
     var tabs = accountDetailsBloc.tabs;
+
     return Padding(
       // ignore: no-magic-number
       padding: EdgeInsets.only(

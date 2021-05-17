@@ -37,6 +37,7 @@ class MediaPickerFileGridWidget
     var mediaDeviceGalleryBloc =
         IMediaDeviceGalleryBloc.of(context, listen: false);
     await mediaDeviceGalleryBloc.refreshFoldersInformation();
+
     return true;
   }
 
@@ -56,6 +57,7 @@ class MediaPickerFileGridWidget
     if (headerItemBuilder != null) {
       itemCount++;
     }
+
     return GridView.builder(
       gridDelegate:
           // ignore: no-magic-number
@@ -69,6 +71,7 @@ class MediaPickerFileGridWidget
             index--;
           }
         }
+
         return Provider<IMediaDeviceFileMetadata>.value(
           value: items[index],
           child: const _MediaPickerFileGridItemWidget(),
@@ -100,6 +103,7 @@ class _MediaPickerFileGridItemWidget extends StatelessWidget {
             photoManagerMediaDeviceFileMetadata: fileMetadata,
           );
           mediaDeviceFileBloc.performAsyncInit();
+
           return mediaDeviceFileBloc;
         } else {
           throw "IMediaDeviceFile file type not supported $fileMetadata";

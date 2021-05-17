@@ -81,6 +81,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
       itemBuilder: (context, index) {
         var item = items[index];
         _logger.finest(() => "itemBuilder ${item.remoteId}");
+
         return Provider<IAccount>.value(
           value: item,
           child: DisposableProxyProvider<IAccount, IAccountBloc>(
@@ -128,6 +129,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
       retrievePaginationListBloc(BuildContext context, {required bool listen}) {
     var accountPaginationListBloc =
         IAccountPaginationListBloc.of(context, listen: listen);
+
     return accountPaginationListBloc;
   }
 }

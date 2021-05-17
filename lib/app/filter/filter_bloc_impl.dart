@@ -111,6 +111,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
   @override
   Future dispose() {
     _logger.finest(() => "dispose");
+
     return super.dispose();
   }
 

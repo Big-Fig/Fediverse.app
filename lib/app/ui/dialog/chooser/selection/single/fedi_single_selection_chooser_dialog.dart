@@ -132,6 +132,7 @@ class _FediSingleSelectionChooserDialogBodyContentAction
   @override
   Widget build(BuildContext context) {
     var actionExist = action.onAction != null;
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -145,6 +146,7 @@ class _FediSingleSelectionChooserDialogBodyContentAction
               : Stream.value(true),
           builder: (context, snapshot) {
             var enabled = snapshot.data!;
+
             return StreamBuilder<bool>(
               initialData: action.isActionVisibleFetcher != null
                   ? action.isActionVisibleFetcher!(context)
@@ -157,6 +159,7 @@ class _FediSingleSelectionChooserDialogBodyContentAction
                 if (!visible) {
                   return SizedBox.shrink();
                 }
+
                 return _FediSingleSelectionChooserDialogBodyContentActionBody(
                   enabled: enabled,
                   actionExist: actionExist,
@@ -191,6 +194,7 @@ class _FediSingleSelectionChooserDialogBodyContentActionBody
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     var fediUiTextTheme = IFediUiTextTheme.of(context);
+
     return InkWell(
       onTap: enabled
           ? () {

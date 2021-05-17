@@ -61,6 +61,7 @@ class HtmlTextWidget extends StatelessWidget {
 
   Widget buildHtmlWidget(IHtmlTextBloc htmlTextBloc) {
     var htmlData = htmlTextBloc.htmlData;
+
     return Html(
       data: htmlData.text!,
       shrinkWrap: htmlTextBloc.settings.shrinkWrap,
@@ -117,6 +118,7 @@ class HtmlTextWidget extends StatelessWidget {
       default:
         alignment = Alignment.centerLeft;
     }
+
     return alignment;
   }
 }

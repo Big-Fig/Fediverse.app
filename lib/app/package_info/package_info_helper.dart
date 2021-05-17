@@ -25,6 +25,7 @@ class FediPackageInfoHelper {
 
   static Future<String> getPackageId() async {
     await _calculatePackageInfo();
+
     return _packageInfo!.packageName;
   }
 
@@ -41,11 +42,13 @@ class FediPackageInfoHelper {
 
   static Future<bool> isProdPackageId() async {
     await _calculatePackageInfo();
+
     return (await getPackageId()) == prodPackageId;
   }
 
   static Future<bool> isDevPackageId() async {
     await _calculatePackageInfo();
+
     return (await getPackageId()) == devPackageId;
   }
 

@@ -25,6 +25,7 @@ class SearchHashtagPaginationBloc
         .map((searchResultItem) => searchResultItem.hashtag)
         .whereNotNull()
         .toList();
+
     return PaginationPage(
       requestedLimitPerPage: page.requestedLimitPerPage,
       items: items,

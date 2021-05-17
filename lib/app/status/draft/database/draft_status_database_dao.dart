@@ -42,6 +42,7 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
                       expression = item.id;
                       break;
                   }
+
                   return OrderingTerm(
                     expression: expression,
                     mode: orderTerm.orderingMode,

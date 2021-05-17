@@ -80,6 +80,7 @@ class PleromaChatWithLastMessageCachedListBloc
     );
 
     _logger.finer(() => "finish loadLocalItems chats ${chats.length}");
+
     return chats;
   }
 

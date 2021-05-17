@@ -169,6 +169,7 @@ extension IFilterExtension on IFilter {
   DbFilterPopulated toDbFilterPopulated() {
     if (this is DbFilterPopulatedWrapper) {
       var dbFilterPopulatedWrapper = this as DbFilterPopulatedWrapper;
+
       return dbFilterPopulatedWrapper.dbFilterPopulated;
     } else {
       return DbFilterPopulated(
@@ -180,6 +181,7 @@ extension IFilterExtension on IFilter {
   DbFilter toDbFilter() {
     if (this is DbFilterPopulatedWrapper) {
       var dbFilterPopulatedWrapper = this as DbFilterPopulatedWrapper;
+
       return dbFilterPopulatedWrapper.dbFilterPopulated.dbFilter;
     } else {
       return DbFilter(

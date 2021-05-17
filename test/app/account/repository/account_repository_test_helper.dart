@@ -13,6 +13,7 @@ class AccountRepositoryTestHelper {
     );
     assert(id > 0, true);
     var dbAccount = accountData.copyWith(id: id);
+
     return dbAccount;
   }
 }

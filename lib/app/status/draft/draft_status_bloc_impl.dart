@@ -113,6 +113,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   @override
   Future cancelDraft() {
     _stateSubject.add(DraftStatusState.canceled);
+
     return draftStatusRepository.deleteById(
       draftStatus.localId!,
       batchTransaction: null,

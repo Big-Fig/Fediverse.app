@@ -12,6 +12,7 @@ extension IPleromaApiChatPleromaExtension on IPleromaApiChat {
     // todo: hack
     // sometimes updatedAt not exposed on server side
     updatedAt ??= lastMessage?.createdAt;
+
     return DbChat(
       id: null,
       remoteId: id,
@@ -31,6 +32,7 @@ extension IPleromaChatExtension on IPleromaChat {
     // ignore: no-magic-number
     var isSingleAccount = accounts.length < 2;
     assert(isSingleAccount, "only direct chats supported");
+
     return PleromaApiChat(
       unread: unread,
       lastMessage: lastChatMessage?.toPleromaApiChatMessage(),

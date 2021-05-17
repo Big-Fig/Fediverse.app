@@ -37,6 +37,7 @@ class SearchStatusPaginationListTimelineWidget
       context,
       listen: listen,
     );
+
     return timelinePaginationListBloc;
   }
 }

@@ -61,6 +61,7 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
 
     var providers =
         _storage.values.map((entry) => entry.providerBuilder()).toList();
+
     return provider_lib.MultiProvider(
       providers: providers,
       child: child,

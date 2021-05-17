@@ -14,6 +14,7 @@ class StatusActionCounterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var value = Provider.of<int>(context);
+
     return InkWell(
       onTap: () {
         if (onClick != null) {

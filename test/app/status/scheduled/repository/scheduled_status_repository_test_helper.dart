@@ -15,6 +15,7 @@ class ScheduledStatusRepositoryTestHelper {
     );
     assert(id > 0, true);
     var dbScheduledStatus = scheduledStatusData.copyWith(id: id);
+
     return dbScheduledStatus;
   }
 }

@@ -16,10 +16,12 @@ class AccountHeaderStatusesCountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+
     return StreamBuilder<int?>(
       stream: accountBloc.statusesCountStream,
       builder: (context, snapshot) {
         var count = snapshot.data;
+
         return Provider<int?>.value(
           value: count,
           child: InkWell(

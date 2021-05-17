@@ -18,12 +18,14 @@ class InAppReviewBloc extends DisposableOwner implements IInAppReviewBloc {
   Future<bool> isAvailable() async {
     var available = await inAppReview.isAvailable();
     _logger.finest(() => " isAvailable $available");
+
     return available;
   }
 
   @override
   Future<void> openStoreListing() {
     _logger.finest(() => "openStoreListing");
+
     return inAppReview.openStoreListing(
       appStoreId: appStoreId,
     );

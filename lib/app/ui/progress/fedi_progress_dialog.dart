@@ -109,6 +109,7 @@ abstract class FediProgressDialog extends BaseDialog {
                     }
                   };
                 }
+
                 return InkWell(
                   onTap: onPressed,
                   child: Text(

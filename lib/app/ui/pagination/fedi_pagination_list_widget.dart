@@ -76,6 +76,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
       primary: scrollController != null ? false : true,
       onRefresh: () {
         _logger.finest(() => "refresh");
+
         return AsyncSmartRefresherHelper.doAsyncRefresh(
           controller: refreshController,
           action: () async {
@@ -96,6 +97,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
             _logger.finest(
               () => "paginationListBloc.refreshWithoutController() $state",
             );
+
             return state;
           },
         );
@@ -117,6 +119,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
     _logger.finest(() => "buildSmartRefresherBody ${items?.length}");
     if (items == null) {
       _logger.finest(() => "build loading");
+
       return buildNotListBody(
         const Center(
           child: FediCircularProgressIndicator(),
@@ -133,6 +136,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
       );
     } else {
       _logger.finest(() => "build empty");
+
       return buildNotListBody(
         StreamBuilder<FediListSmartRefresherLoadingState>(
           stream: paginationListBloc.refreshStateStream,

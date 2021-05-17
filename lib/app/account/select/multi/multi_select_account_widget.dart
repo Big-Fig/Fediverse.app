@@ -49,6 +49,7 @@ class _MultiSelectAccountItemActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var multiSelectAccountBloc = IMultiSelectAccountBloc.of(context);
     var account = Provider.of<IAccount>(context);
+
     return StreamBuilder<bool>(
       stream: multiSelectAccountBloc.isAccountSelectedStream(account),
       builder: (context, snapshot) {

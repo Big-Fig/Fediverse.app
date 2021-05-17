@@ -136,6 +136,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
             ]
           : null,
     );
+
     return (await query.get())
         .toDbPleromaChatWithLastMessagePopulatedList(dao: dao)
         .toDbPleromaChatWithLastMessagePopulatedWrapperList();

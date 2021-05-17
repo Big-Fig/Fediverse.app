@@ -146,6 +146,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     var timelinesHomeTabBloc = ITimelinesHomeTabBloc.of(context);
     var timelineTabListBloc = ITimelineTabListBloc.of(context);
+
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc: timelineTabListBloc,
       loadingFinishedBuilder: (context) =>
@@ -157,6 +158,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
             timelineTabListBloc: timelineTabListBloc,
             homeBloc: homeBloc,
           );
+
           return TimelineListTabControllerBloc(
             timelineTabListBloc: value,
             vsync: this,

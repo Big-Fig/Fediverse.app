@@ -42,6 +42,7 @@ class AuthInstanceChooserBloc extends DisposableOwner
     _logger.finest(() => "filterNotSelected \n"
         "\t availableInstances = ${availableInstances.length} \n"
         "\t filtered = ${filtered.length} \n");
+
     return filtered;
   }
 

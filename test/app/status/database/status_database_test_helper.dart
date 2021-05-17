@@ -27,6 +27,7 @@ class StatusDatabaseTestHelper {
       replyReblogDbStatusAccount: null,
       replyDbStatus: null,
     );
+
     return dbStatusPopulated;
   }
 
@@ -81,6 +82,7 @@ class StatusDatabaseTestHelper {
       pleromaThreadMuted: pleromaThreadMuted,
       pleromaEmojiReactions: null,
     );
+
     return dbStatus;
   }
 
@@ -104,6 +106,7 @@ class StatusDatabaseTestHelper {
       dbStatus,
       accountRepository,
     );
+
     return DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
         .toPleromaStatus();
   }

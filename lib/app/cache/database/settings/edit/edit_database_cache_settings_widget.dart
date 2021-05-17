@@ -72,6 +72,7 @@ class _EditDatabaseCacheSettingsClearAllButtonWidget extends StatelessWidget {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
     var editDatabaseCacheSettingsBloc =
         IEditDatabaseCacheSettingsBloc.of(context);
+
     return PleromaAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () => editDatabaseCacheSettingsBloc.clearAll(),
       builder: (context, onPressed) => FediPrimaryFilledTextButtonWithBorder(
@@ -96,6 +97,7 @@ class _EditDatabaseCacheSettingsClearByLimitsButtonWidget
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
     var editDatabaseCacheSettingsBloc =
         IEditDatabaseCacheSettingsBloc.of(context);
+
     return PleromaAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () => editDatabaseCacheSettingsBloc.clearByLimits(),
       builder: (context, onPressed) => FediPrimaryFilledTextButtonWithBorder(

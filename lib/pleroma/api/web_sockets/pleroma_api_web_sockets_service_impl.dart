@@ -34,6 +34,7 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
       host: host,
       path: _relativePath,
     );
+
     return webSocketsService!.getOrCreateWebSocketsChannel(
       config: PleromaApiWebSocketsChannelConfig(
         connectionService: connectionService,
@@ -109,6 +110,7 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
     if (onlyFromInstance != null) {
       stream += "?instance=$onlyFromInstance";
     }
+
     return getOrCreateNewChannel(
       stream: stream,
     );
@@ -120,6 +122,7 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
     required bool notification,
   }) {
     assert(accountId.isNotEmpty);
+
     return getOrCreateNewChannel(
       stream: notification ? "user:notification" : "user",
       queryArgs: {"accountId": accountId},
@@ -132,6 +135,7 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
     required bool chat,
   }) {
     assert(!(notification && chat));
+
     return getOrCreateNewChannel(
       stream: notification
           ? "user:notification"
@@ -149,6 +153,7 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
     if (accountId != null) {
       queryArgs.addAll({"accountId": accountId});
     }
+
     return getOrCreateNewChannel(
       stream: "direct",
       queryArgs: queryArgs,

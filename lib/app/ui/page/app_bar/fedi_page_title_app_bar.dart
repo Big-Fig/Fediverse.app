@@ -28,6 +28,7 @@ class FediPageTitleAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

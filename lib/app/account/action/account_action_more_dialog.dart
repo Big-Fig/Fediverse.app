@@ -63,6 +63,7 @@ class AccountActionMoreDialog extends StatelessWidget {
       builder: (context, snapshot) {
         var accountRelationship = snapshot.data;
         var isRelationshipLoaded = accountRelationship != null;
+
         return FediChooserDialogBody(
           title: S.of(context).app_account_action_popup_title,
           content: "${accountBloc.acct}",
@@ -93,6 +94,7 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountReportAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     var statusBloc = IStatusBloc.of(context, listen: false);
+
     return DialogAction(
       icon: FediIcons.report,
       label: S.of(context).app_account_action_report_label,
@@ -110,6 +112,7 @@ class AccountActionMoreDialog extends StatelessWidget {
 
   static DialogAction buildAccountBlockAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
+
     return DialogAction(
       icon: accountBloc.relationship?.blocking == true
           ? FediIcons.unblock
@@ -130,6 +133,7 @@ class AccountActionMoreDialog extends StatelessWidget {
 
   static DialogAction buildAccountBlockDomainAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
+
     return DialogAction(
       icon: accountBloc.relationship!.domainBlocking == true
           ? FediIcons.domain_block
@@ -190,6 +194,7 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountMuteAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     var muting = accountBloc.relationship?.muting == true;
+
     return DialogAction(
       icon: muting ? FediIcons.unmute : FediIcons.mute,
       label: muting
@@ -216,6 +221,7 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountSubscribeAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     var muting = accountBloc.relationship?.subscribing == true;
+
     return DialogAction(
       icon: muting ? FediIcons.unsubscribe : FediIcons.subscribe,
       label: muting
@@ -234,6 +240,7 @@ class AccountActionMoreDialog extends StatelessWidget {
 
   static DialogAction buildAccountFollowAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
+
     return DialogAction(
       icon: accountBloc.relationship?.following == true
           ? FediIcons.unfollow
@@ -264,6 +271,7 @@ class AccountActionMoreDialog extends StatelessWidget {
 
   static DialogAction buildAccountOpenInBrowserAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
+
     return DialogAction(
       icon: FediIcons.browser,
       label: S.of(context).app_account_action_openInBrowser,
@@ -281,6 +289,7 @@ class AccountActionMoreDialog extends StatelessWidget {
 
   static DialogAction buildAccountOpenOnRemoteInstance(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
+
     return DialogAction(
       icon: FediIcons.instance,
       label: S.of(context).app_account_action_openOnRemoteInstance(

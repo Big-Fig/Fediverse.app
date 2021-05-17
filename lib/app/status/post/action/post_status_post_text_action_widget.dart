@@ -45,6 +45,7 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
           errorAlertDialogBuilders: [
             (context, error, stackTrace) {
               var isScheduled = postStatusBloc.isScheduledAtExist;
+
               return ErrorData(
                 error: error,
                 stackTrace: stackTrace,

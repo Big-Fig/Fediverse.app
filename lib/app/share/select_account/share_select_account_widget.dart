@@ -81,6 +81,7 @@ class _ShareSelectAccountBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var searchInputBloc = ISearchInputBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: searchInputBloc.confirmedSearchTermIsEmptyStream,
       builder: (context, snapshot) {

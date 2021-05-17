@@ -12,6 +12,7 @@ class CameraMediaService extends DisposableOwner
   Future<File?> pickImageFromCamera() async {
     var pickerImage = await imagePicker.getImage(source: ImageSource.camera);
     var file = fileFromImage(pickerImage);
+
     return file;
   }
 
@@ -19,6 +20,7 @@ class CameraMediaService extends DisposableOwner
   Future<File?> pickVideoFromCamera() async {
     var pickerImage = await imagePicker.getVideo(source: ImageSource.camera);
     var file = fileFromImage(pickerImage);
+
     return file;
   }
 
@@ -28,6 +30,7 @@ class CameraMediaService extends DisposableOwner
     if (path != null) {
       file = File(path);
     }
+
     return file;
   }
 

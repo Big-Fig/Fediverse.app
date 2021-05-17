@@ -80,6 +80,7 @@ Future<T?> _showFolderChooserModalBottomSheet<T>(
   IMediaDeviceGalleryBloc mediaDeviceGalleryBloc,
 ) {
   var fediUiTextTheme = IFediUiTextTheme.of(context, listen: false);
+
   return showFediModalBottomSheetDialog<T>(
     context: context,
     child: Provider<IMediaDeviceGalleryBloc>.value(

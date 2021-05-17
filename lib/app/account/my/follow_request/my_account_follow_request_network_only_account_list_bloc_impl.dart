@@ -102,6 +102,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
       remoteAccounts,
       batchTransaction: null,
     );
+
     return remoteAccounts
         .map(
           (pleromaAccount) => pleromaAccount.toDbAccountWrapper(),

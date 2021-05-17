@@ -899,6 +899,7 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
     if (pleroma != null) {
       assert(true, "use myAccountPleroma");
     }
+
     return PleromaApiMyAccount(
       id: id ?? this.id,
       username: username ?? this.username,

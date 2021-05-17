@@ -44,6 +44,7 @@ class ExternalShareStatusBloc extends ExternalShareBloc
 
       text += " $content";
     }
+
     return externalShareService.share(
       popupTitle: popupTitle,
       text: text,

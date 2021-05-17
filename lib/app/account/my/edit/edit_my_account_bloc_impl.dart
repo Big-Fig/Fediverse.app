@@ -365,6 +365,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance!
         .info;
+    
     return EditMyAccountBloc(
       currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
         context,

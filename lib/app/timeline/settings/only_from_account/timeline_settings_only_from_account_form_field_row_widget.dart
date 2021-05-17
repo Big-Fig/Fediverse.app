@@ -25,6 +25,7 @@ class TimelineSettingsOnlyFromAccountFormFieldRowWidget
       initialData: fieldBloc.currentValue,
       builder: (context, snapshot) {
         var currentValue = snapshot.data;
+
         return FediFormSingleChooseCustomFromListFieldRow<IPleromaApiAccount?>(
           isNullValuePossible: fieldBloc.isNullValuePossible,
           isEnabled: fieldBloc.isEnabled,

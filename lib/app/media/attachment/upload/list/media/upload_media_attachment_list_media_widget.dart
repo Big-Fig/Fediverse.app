@@ -15,6 +15,7 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaAttachmentsCollectionBloc =
         IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
+
     return StreamBuilder<List<IUploadMediaAttachmentBloc>?>(
       stream: mediaAttachmentsCollectionBloc.onlyMediaAttachmentBlocsStream,
       builder: (context, snapshot) {

@@ -131,6 +131,7 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
             .join(", ");
         chatMessageText += "]";
       }
+
       return chatMessageText;
     }).join("\n\n");
 

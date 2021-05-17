@@ -52,6 +52,7 @@ class CustomListAccountListNetworkOnlyListBloc extends DisposableOwner
     _logger.finest(() => "loadItemsFromRemoteForPage \n"
         "customList ${customList?.remoteId} \n"
         "result ${result.length} ");
+
     return result;
   }
 }

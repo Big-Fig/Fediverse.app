@@ -44,6 +44,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   }) {
     var isSomethingChanged = addedItems.isNotEmpty || removedItems.isNotEmpty;
     _logger.finest(() => " isSomethingChanged $isSomethingChanged");
+
     return isSomethingChanged;
   }
 
@@ -159,6 +160,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       items.remove(foundInRemoved);
 
       removedItemsSubject.add(items);
+
       return;
     }
 
@@ -198,6 +200,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       items.remove(foundInAdded);
 
       addedItemsSubject.add(items);
+
       return;
     }
 

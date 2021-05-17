@@ -84,6 +84,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
       // don't need batch because we have only one transaction
       batchTransaction: null,
     );
+
     return remoteAccounts.toDbAccountPopulatedWrappers();
   }
 

@@ -10,6 +10,7 @@ class SharePageAppBarSendTextActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var shareBloc = IShareBloc.of(context, listen: false);
+
     return StreamBuilder<bool>(
       stream: shareBloc.isPossibleToShareStream,
       initialData: shareBloc.isPossibleToShare,

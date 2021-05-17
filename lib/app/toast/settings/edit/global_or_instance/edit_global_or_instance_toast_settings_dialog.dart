@@ -53,6 +53,7 @@ void showEditGlobalOrInstanceToastSettingsDialog({
             listen: false,
           ),
         );
+
         return editToastSettingsBloc;
       },
       child: ProxyProvider<IEditToastSettingsBloc,

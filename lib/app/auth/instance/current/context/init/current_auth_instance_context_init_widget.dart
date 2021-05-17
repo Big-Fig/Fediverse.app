@@ -262,6 +262,7 @@ class _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget
   @override
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+
     return Text(
       S.of(context).app_auth_instance_current_context_loading_cantLoad_content(
             currentAuthInstanceBloc.currentInstance!.userAtHost,

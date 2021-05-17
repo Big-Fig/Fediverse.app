@@ -254,6 +254,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var parentContext = context;
+
     return FediIconButton(
       icon: Icon(
         FediIcons.share,
@@ -294,6 +295,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
               asyncCode: () async {
                 var mediaAttachmentReuploadService =
                     IMediaAttachmentReuploadService.of(context, listen: false);
+
                 return await mediaAttachmentReuploadService
                     .reuploadMediaAttachment(
                   originalMediaAttachment: mediaAttachment,

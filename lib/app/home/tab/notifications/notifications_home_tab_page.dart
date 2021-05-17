@@ -211,6 +211,7 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
   @override
   Widget build(BuildContext context) {
     var notificationsHomeTabBloc = INotificationsHomeTabBloc.of(context);
+
     return FediIconInCircleBlurredButton(
       FediIcons.menu_vertical,
       onPressed: () {

@@ -48,6 +48,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   bool isKeyExist(String key) {
     var contains = preferences.containsKey(key);
     _logger.fine(() => "isKeyExist $key => $contains");
+
     return contains;
   }
 
@@ -55,6 +56,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> clearValue(String key) async {
     var result = await preferences.remove(key);
     notifyKeyValueChanged(key, null);
+
     return result;
   }
 
@@ -62,6 +64,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> setString(String key, String? value) async {
     var result = await preferences.setString(key, value!);
     notifyKeyValueChanged(key, value);
+
     return result;
   }
 
@@ -69,6 +72,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> setIntPreference(String key, int? value) async {
     var result = await preferences.setInt(key, value!);
     notifyKeyValueChanged(key, value);
+
     return result;
   }
 
@@ -76,6 +80,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> setBoolPreference(String key, bool? value) async {
     var result = await preferences.setBool(key, value!);
     notifyKeyValueChanged(key, value);
+
     return result;
   }
 
@@ -86,6 +91,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   ) async {
     var result = await setJsonObjectAsString(key, preferencesObject?.toJson());
     notifyKeyValueChanged(key, preferencesObject);
+
     return result;
   }
 
@@ -111,6 +117,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
       return null;
     }
     var jsonObject = json.decode(stringPreference!);
+
     return jsonObject != null ? jsonConverter(jsonObject) : null;
   }
 

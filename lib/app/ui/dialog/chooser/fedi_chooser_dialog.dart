@@ -102,6 +102,7 @@ class FediChooserDialogBody extends StatelessWidget {
     required DialogAction action,
   }) {
     var enabled = action.onAction != null;
+
     return Padding(
       padding: FediPadding.horizontalBigPadding,
       child: Row(

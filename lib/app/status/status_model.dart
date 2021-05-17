@@ -218,6 +218,7 @@ extension IStatusDbExtension on IStatus {
   DbStatusPopulated toDbStatusPopulated() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated;
     } else {
       return DbStatusPopulated(
@@ -236,6 +237,7 @@ extension IStatusDbExtension on IStatus {
   DbStatus toDbStatus() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.dbStatus;
     } else {
       return DbStatus(
@@ -289,6 +291,7 @@ extension IStatusDbExtension on IStatus {
   DbAccount toDbAccount() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.dbAccount;
     } else {
       return account.toDbAccount();
@@ -298,6 +301,7 @@ extension IStatusDbExtension on IStatus {
   DbStatus? toReblogDbStatus() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.reblogDbStatus;
     } else {
       return reblog?.toDbStatus();
@@ -307,6 +311,7 @@ extension IStatusDbExtension on IStatus {
   DbAccount? toReblogStatusDbAccount() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.reblogDbStatusAccount;
     } else {
       return reblog?.account.toDbAccount();
@@ -316,6 +321,7 @@ extension IStatusDbExtension on IStatus {
   DbStatus? toReplyDbStatus() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.replyDbStatus;
     } else {
       return inReplyToStatus?.toDbStatus();
@@ -325,6 +331,7 @@ extension IStatusDbExtension on IStatus {
   DbAccount? toReplyStatusDbAccount() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.replyDbStatusAccount;
     } else {
       return inReplyToStatus?.account.toDbAccount();
@@ -334,6 +341,7 @@ extension IStatusDbExtension on IStatus {
   DbStatus? toReplyReblogDbStatus() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.replyReblogDbStatus;
     } else {
       return reblog?.inReplyToStatus?.toDbStatus();
@@ -343,6 +351,7 @@ extension IStatusDbExtension on IStatus {
   DbAccount? toReplyReblogStatusDbAccount() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper
           .dbStatusPopulated.replyReblogDbStatusAccount;
     } else {
@@ -812,6 +821,7 @@ extension IStatusExtension on IStatus {
     var uri = Uri.parse(url ?? this.uri);
 
     var resultUrl = "${uri.scheme}://${uri.host}";
+
     return Uri.parse(resultUrl);
   }
 
@@ -826,6 +836,7 @@ extension IStatusExtension on IStatus {
       } else {
         // ignore: no-magic-number
         var middleIndex = splitResult.length - 2;
+
         return splitResult[middleIndex];
       }
     } catch (e, stackTrace) {

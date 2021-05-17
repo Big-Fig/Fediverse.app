@@ -36,6 +36,7 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
     var label = tabToTextMapper(context, fediTabIndicatorItemBloc.item);
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Container(
       decoration: BoxDecoration(
         border: Border(

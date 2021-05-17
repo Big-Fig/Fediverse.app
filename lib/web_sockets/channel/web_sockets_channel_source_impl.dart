@@ -90,6 +90,7 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
                 "$data, ",
             e,
           );
+
           return null;
         }
       } else {
@@ -98,6 +99,7 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
     } else {
       _logger.severe(() => "$url: failed to parse event from not String: "
           "$data");
+
       return null;
     }
   }

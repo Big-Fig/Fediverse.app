@@ -37,6 +37,7 @@ class MyAccountWidget extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context, listen: true);
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     var isNotMyAccount = !myAccountBloc.checkAccountIsMe(accountBloc.account);
+
     return Column(
       children: [
         Stack(

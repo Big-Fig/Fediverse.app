@@ -29,6 +29,7 @@ class HashtagPaginationListWidget extends FediPaginationListWidget<IHashtag> {
       footer: footer,
       itemBuilder: (context, index) {
         var item = items[index];
+
         return Provider<IHashtag>.value(
           value: item,
           child: const HashtagListItemWidget(),

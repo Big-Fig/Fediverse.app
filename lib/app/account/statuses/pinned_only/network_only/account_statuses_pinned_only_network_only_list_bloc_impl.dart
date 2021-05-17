@@ -32,6 +32,7 @@ abstract class AccountStatusesPinnedOnlyNetworkOnlyListBloc
         maxId: maxId,
       ),
     );
+
     return pleromaStatuses
         .map((pleromaStatus) => pleromaStatus.toDbStatusPopulatedWrapper())
         .toList();

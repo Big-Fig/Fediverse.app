@@ -44,6 +44,7 @@ class _FediVideoPlayerErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: mediaPlayerBloc.isHaveErrorStream,
       builder: (context, snapshot) {
@@ -149,6 +150,7 @@ class _FediVideoPlayerBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: videoMediaPlayerBloc.isInitializedStream,
       builder: (context, snapshot) {
@@ -182,6 +184,7 @@ class _FediVideoPlayerInitializedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
+
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -200,6 +203,7 @@ class _FediVideoPlayerNotInitializedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context);
+
     return Stack(
       children: [
         Container(
@@ -214,6 +218,7 @@ class _FediVideoPlayerNotInitializedWidget extends StatelessWidget {
             if (isInitializing) {
               return const SizedBox.shrink();
             }
+
             return Center(
               child: FediIconInCircleTransparentButton(
                 FediIcons.play,

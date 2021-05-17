@@ -35,6 +35,7 @@ abstract class BaseDialog extends DisposableOwner implements IDialog {
       builder: (BuildContext context) => buildDialogBody(context),
     );
     await dispose();
+
     return result;
   }
 

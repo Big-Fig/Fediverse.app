@@ -131,6 +131,7 @@ class _MyAccountDomainBlockListPageRemoveItemAction extends StatelessWidget {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
     var blocking = true;
+
     return PleromaAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () async {
         var domain = Provider.of<DomainBlock>(context, listen: false);

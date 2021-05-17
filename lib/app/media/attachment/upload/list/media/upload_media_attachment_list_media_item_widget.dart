@@ -62,6 +62,7 @@ class _UploadMediaAttachmentListMediaItemWidgetState
   Widget build(BuildContext context) {
     var bloc = IUploadMediaAttachmentBloc.of(context);
     const previewWidget = _UploadMediaAttachmentListMediaItemPreviewWidget();
+
     return ClipRRect(
       borderRadius: BorderRadius.all(
         Radius.circular(FediSizes.borderRadiusBigSize),
@@ -153,6 +154,7 @@ class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
           default:
             throw "Non-media not supported";
         }
+
         return preview;
       },
     );
@@ -168,6 +170,7 @@ class _UploadMediaAttachmentListMediaItemTopLeftActionWidget
   @override
   Widget build(BuildContext context) {
     var uploadMediaAttachmentBloc = IUploadMediaAttachmentBloc.of(context);
+
     return StreamBuilder<UploadMediaAttachmentState>(
       stream: uploadMediaAttachmentBloc.uploadStateStream,
       builder: (context, snapshot) {
@@ -195,6 +198,7 @@ class _UploadMediaAttachmentListMediaItemTopRightActionWidget
   @override
   Widget build(BuildContext context) {
     var uploadMediaAttachmentBloc = IUploadMediaAttachmentBloc.of(context);
+
     return StreamBuilder<UploadMediaAttachmentState>(
       stream: uploadMediaAttachmentBloc.uploadStateStream,
       initialData: uploadMediaAttachmentBloc.uploadState,
@@ -252,6 +256,7 @@ class _UploadMediaAttachmentListMediaItemErrorButtonWidget
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return InkWell(
       onTap: () {
         var uploadMediaAttachmentBloc = IUploadMediaAttachmentBloc.of(

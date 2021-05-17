@@ -61,6 +61,7 @@ class PleromaApiConversationService extends BasePleromaApiService
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);
+
     return restService.processJsonSingleResponse(
       httpResponse,
       PleromaApiConversation.fromJson,

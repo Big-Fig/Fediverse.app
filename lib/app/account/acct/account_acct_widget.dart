@@ -12,6 +12,7 @@ class AccountAcctWidget extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context);
     var textStyle =
         this.textStyle ?? IFediUiTextTheme.of(context).mediumShortDarkGrey;
+
     return StreamBuilder<String?>(
       stream: accountBloc.acctWithForcedRemoteInstanceHostStream,
       builder: (context, snapshot) {

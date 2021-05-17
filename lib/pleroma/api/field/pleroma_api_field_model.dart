@@ -108,6 +108,7 @@ class PleromaApiField implements IPleromaApiField, IJsonObject {
         }
       } catch (e, stackTrace) {
         _logger.warning(() => "failed to parse URL from $value", e, stackTrace);
+
         return value;
       }
     } else {
@@ -123,6 +124,7 @@ class PleromaApiField implements IPleromaApiField, IJsonObject {
     }
     try {
       var uri = Uri.parse(rawUrl);
+
       return "${uri.host}${uri.path}";
     } catch (e, stackTrace) {
       _logger.warning(
@@ -130,6 +132,7 @@ class PleromaApiField implements IPleromaApiField, IJsonObject {
         e,
         stackTrace,
       );
+
       return rawUrl;
     }
   }

@@ -82,6 +82,7 @@ class PleromaChatWithLastMessageListWidget
                     },
                   ),
                 );
+
                 return pleromaChatBloc;
               }
             },
@@ -105,6 +106,7 @@ class PleromaChatWithLastMessageListWidget
     var paginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
             IPleromaChatWithLastMessage>>(context, listen: listen);
+
     return paginationListBloc;
   }
 }

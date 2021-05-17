@@ -10,6 +10,7 @@ class InstanceSettingsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
     var currentInstance = currentAuthInstanceBloc.currentInstance!;
+
     return Scaffold(
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_account_home_tab_menu_action_instance_settings(

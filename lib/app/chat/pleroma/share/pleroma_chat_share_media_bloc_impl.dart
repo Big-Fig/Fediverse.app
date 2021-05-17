@@ -54,6 +54,7 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
       idempotencyKey: null,
       mediaId: reploadedMediaAttachment.id,
     );
+
     return messageSendData;
   }
 

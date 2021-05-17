@@ -62,6 +62,7 @@ class ImageFilePickerOrUrlFormFieldBloc extends FilePickerOrUrlFormFieldBloc
     } else if (url != null && !isOriginalDeleted) {
       result = MediaImageSource(url: url);
     }
+
     return result;
   }
 }

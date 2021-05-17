@@ -14,6 +14,7 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusEmojiReactionBloc = IStatusEmojiReactionBloc.of(context);
+
     return StreamBuilder<IPleromaApiStatusEmojiReaction>(
       stream: statusEmojiReactionBloc.emojiReactionStream,
       builder: (context, snapshot) {
@@ -82,6 +83,7 @@ class _StatusEmojiReactionListItemContentWidget extends StatelessWidget {
     var color = emojiReaction.me
         ? IFediUiColorTheme.of(context).primary
         : IFediUiColorTheme.of(context).lightGrey;
+
     return Container(
       // todo: refactor
       // ignore: no-magic-number

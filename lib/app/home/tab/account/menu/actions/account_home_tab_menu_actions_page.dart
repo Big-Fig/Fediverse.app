@@ -131,6 +131,7 @@ class _MyAccountSettingsFollowRequestsButton extends StatelessWidget {
     var onClick = () {
       goToMyAccountFollowRequestListPage(context);
     };
+
     return InkWell(
       onTap: onClick,
       child: FediSelectionItemRowWidget(

@@ -75,6 +75,7 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
     } else {
       _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
           "accounts is null");
+
       return false;
     }
   }
@@ -102,6 +103,7 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
     );
 
     _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");
+
     return accounts;
   }
 

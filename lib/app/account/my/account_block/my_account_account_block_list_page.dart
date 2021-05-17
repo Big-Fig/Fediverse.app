@@ -64,6 +64,7 @@ class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
       context,
     );
     var paginationListBloc = IPaginationListBloc.of(context);
+
     return FediPrimaryFilledTextButtonWithBorder(
       S.of(context).app_account_my_accountBlock_action_add,
       expanded: false,

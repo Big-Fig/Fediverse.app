@@ -64,6 +64,7 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
       spoilerText: null,
       to: null,
     );
+
     return messageSendData;
   }
 

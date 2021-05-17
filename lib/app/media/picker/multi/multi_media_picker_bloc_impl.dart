@@ -131,6 +131,7 @@ class MultiMediaPickerBloc extends MediaPickerBloc
     );
     _logger.fine(() => "isFileMetadataSelected $selected "
         "mediaDeviceFileMetadata = $mediaDeviceFileMetadata");
+
     return selected;
   }
 
@@ -141,6 +142,7 @@ class MultiMediaPickerBloc extends MediaPickerBloc
     var found = selectedFilesMetadata.firstWhereOrNull(
       (selectedFileMetadata) => selectedFileMetadata == mediaDeviceFileMetadata,
     );
+
     return found != null;
   }
 

@@ -38,6 +38,7 @@ class ExternalShareMediaBloc extends ExternalShareBloc
         text += " ${mediaAttachment.url}";
       }
     }
+
     return externalShareService.share(
       popupTitle: popupTitle,
       text: text,

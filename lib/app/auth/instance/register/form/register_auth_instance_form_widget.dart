@@ -19,6 +19,7 @@ class RegisterAuthInstanceFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var registerAuthInstanceBloc = IRegisterAuthInstanceFormBloc.of(context);
+
     return Padding(
       padding: FediPadding.horizontalBigPadding,
       child: ListView(
@@ -83,6 +84,7 @@ class _RegisterAuthInstanceFormUsernameFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var registerAuthInstanceBloc = IRegisterAuthInstanceFormBloc.of(context);
+
     return _buildTextField(
       context: context,
       formStringFieldBloc: registerAuthInstanceBloc.usernameFieldBloc,
@@ -103,6 +105,7 @@ class _RegisterAuthInstanceFormEmailFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var registerAuthInstanceBloc = IRegisterAuthInstanceFormBloc.of(context);
+
     return _buildTextField(
       context: context,
       formStringFieldBloc: registerAuthInstanceBloc.emailFieldBloc,
@@ -123,6 +126,7 @@ class _RegisterAuthInstanceFormReasonFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var registerAuthInstanceBloc = IRegisterAuthInstanceFormBloc.of(context);
+
     return _buildTextField(
       context: context,
       formStringFieldBloc: registerAuthInstanceBloc.reasonFieldBloc,
@@ -143,6 +147,7 @@ class _RegisterAuthInstanceFormPasswordFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var registerAuthInstanceBloc = IRegisterAuthInstanceFormBloc.of(context);
+
     return _buildTextField(
       context: context,
       formStringFieldBloc: registerAuthInstanceBloc.passwordFieldBloc,
@@ -165,6 +170,7 @@ class _RegisterAuthInstanceFormConfirmPasswordFieldWidget
   @override
   Widget build(BuildContext context) {
     var registerAuthInstanceBloc = IRegisterAuthInstanceFormBloc.of(context);
+
     return _buildTextField(
       context: context,
       formStringFieldBloc: registerAuthInstanceBloc.confirmPasswordFieldBloc,
@@ -189,6 +195,7 @@ class _RegisterAuthInstanceFormAcceptTermsOfServiceFieldWidget
   Widget build(BuildContext context) {
     var registerAuthInstanceFormBloc =
         IRegisterAuthInstanceFormBloc.of(context);
+
     return ProxyProvider<IRegisterAuthInstanceFormBloc,
         IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.agreeTermsOfServiceFieldBloc,

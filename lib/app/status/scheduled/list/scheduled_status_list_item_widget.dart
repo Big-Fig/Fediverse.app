@@ -69,6 +69,7 @@ class _ScheduledStatusListItemHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var scheduledStatusBloc = IScheduledStatusBloc.of(context);
+
     return StreamBuilder<ScheduledStatusState?>(
       stream: scheduledStatusBloc.stateStream,
       builder: (context, snapshot) {
@@ -127,11 +128,13 @@ class _ScheduledStatusListItemScheduledAtWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var scheduledStatusBloc = IScheduledStatusBloc.of(context);
+
     return StreamBuilder<DateTime?>(
       stream: scheduledStatusBloc.scheduledAtStream,
       initialData: scheduledStatusBloc.scheduledAt,
       builder: (context, snapshot) {
         var scheduledAt = snapshot.data!;
+
         return Text(
           dateFormat.format(scheduledAt),
           style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,

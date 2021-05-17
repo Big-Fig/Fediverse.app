@@ -30,6 +30,7 @@ class TempFileHelper {
     );
 
     await uniqueDirectory.create();
+
     return uniqueDirectory;
   }
 
@@ -71,6 +72,7 @@ class TempFileHelper {
       );
 
       await file.writeAsBytes(bytes);
+
       return file;
     } catch (e, stackTrace) {
       _logger.warning(

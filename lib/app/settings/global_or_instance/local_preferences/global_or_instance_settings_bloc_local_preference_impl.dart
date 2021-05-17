@@ -89,6 +89,7 @@ class GlobalOrInstanceSettingsLocalPreferenceBloc<T extends ISettings>
     } else {
       throw "At least globalSettings or instanceSettings should exist";
     }
+
     return result;
   }
 

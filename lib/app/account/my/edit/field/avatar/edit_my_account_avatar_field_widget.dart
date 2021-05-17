@@ -141,6 +141,7 @@ class _EditMyAccountAvatarFieldImageMediaSourceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
+
     return StreamBuilder<MediaImageSource?>(
       stream: editMyAccountBloc.avatarField.imageSourceStream,
       builder: (context, snapshot) {

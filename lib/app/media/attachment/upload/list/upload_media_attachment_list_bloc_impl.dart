@@ -244,6 +244,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     if (maximumMediaAttachmentCount == null) {
       return null;
     }
+
     return maximumMediaAttachmentCount - mediaAttachmentBlocs!.length;
   }
 
