@@ -57,9 +57,17 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
   ) {
     // TODO: refactor for different languages
     // or wait until photo_manager lib will return album type
-    const iosLatestEnNames = <String>['Recently Added', 'Recent'];
-    const androidLatestEnNames = <String>['Recent'];
-    var featuredNames = <String>[...iosLatestEnNames, ...androidLatestEnNames];
+    const iosLatestEnNames = <String>[
+      'Recently Added',
+      'Recent',
+    ];
+    const androidLatestEnNames = <String>[
+      'Recent',
+    ];
+    var featuredNames = <String>[
+      ...iosLatestEnNames,
+      ...androidLatestEnNames,
+    ];
 
     var isANameFeatured = featuredNames.contains(aName);
     var isBNameFeatured = featuredNames.contains(bName);

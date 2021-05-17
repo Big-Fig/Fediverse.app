@@ -24,21 +24,21 @@ void main() {
   test('compareAlbumTitlesAlphabeticallyAndFeatured Featured', () {
     expect(
       PhotoManagerMediaDeviceGalleryBloc
-          .compareAlbumTitlesAlphabeticallyAndFeatured('A', 'Recents'),
+          .compareAlbumTitlesAlphabeticallyAndFeatured('A', 'Recent'),
       1,
     );
     expect(
       PhotoManagerMediaDeviceGalleryBloc
-          .compareAlbumTitlesAlphabeticallyAndFeatured('Z', 'Recents'),
+          .compareAlbumTitlesAlphabeticallyAndFeatured('Z', 'Recent'),
       1,
     );
     expect(
       PhotoManagerMediaDeviceGalleryBloc
           .compareAlbumTitlesAlphabeticallyAndFeatured(
         'Recently Added',
-        'Recents',
+        'Recent',
       ),
-      -1,
+      1,
     );
   });
 }
