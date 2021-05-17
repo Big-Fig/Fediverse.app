@@ -31,7 +31,7 @@ class HiveTestHelper {
       Hive.init(systemTemp.path);
     }
 
-    var obj = testHiveObjectCreator(seed: "seed1");
+    var obj = testHiveObjectCreator(seed: 'seed1');
 
     // ignore: no-magic-number
     var uniquePrefix = obj.toString().substring(0, 3);
@@ -43,7 +43,7 @@ class HiveTestHelper {
     await hiveLocalPreferencesService.performAsyncInit();
 
 
-    var key = "key";
+    var key = 'key';
     await hiveLocalPreferencesService.setObjectPreference(key, obj);
 
     await hiveLocalPreferencesService.dispose();

@@ -110,7 +110,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           maxLength: null,
         ),
         noteField = StringValueFormFieldBloc(
-          originValue: myAccountBloc.noteUnescaped ?? "",
+          originValue: myAccountBloc.noteUnescaped ?? '',
           validators: [],
           maxLength: noteMaxLength,
         ),
@@ -136,16 +136,16 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           // ignore: no-magic-number
           maximumFieldsCount: customFieldLimits?.maxFields ?? 20,
           newEmptyFieldCreator: () => LinkPairFormGroupBloc(
-            value: "",
-            name: "",
+            value: '',
+            name: '',
             nameMaxLength: customFieldLimits?.nameLength,
             valueMaxLength: customFieldLimits?.valueLength,
           ),
           originalItems: myAccountBloc.fields
               .map(
                 (field) => LinkPairFormGroupBloc(
-                  name: field.name ?? "",
-                  value: field.valueAsRawUrl ?? "",
+                  name: field.name ?? '',
+                  value: field.valueAsRawUrl ?? '',
                   nameMaxLength: customFieldLimits?.nameLength,
                   valueMaxLength: customFieldLimits?.valueLength,
                 ),
@@ -314,7 +314,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     if (backgroundImageOriginalDeleted) {
       // API logic
       // We should set pleromaBackgroundImage to empty string to delete it
-      pleromaBackgroundImage = "";
+      pleromaBackgroundImage = '';
     }
 
     var isPleromaInstance = currentAuthInstanceBloc.currentInstance!.isPleroma;

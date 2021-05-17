@@ -6,9 +6,9 @@ class PleromaApiMentionTestHelper {
     required String seed,
   }) =>
       PleromaApiMention(
-        acct: seed + "acct",
-        id: seed + "id",
-        url: seed + "url",
-        username: seed + "username",
+        acct: seed + 'acct',
+        id: seed + 'id',
+        url: seed + 'url',
+        username: seed + 'username',
       );
 }

@@ -10,8 +10,8 @@ class PostStatusModelTestHelper {
         hideTotals: seed.hashCode % 2 == 0,
         multiple: seed.hashCode % 2 == 1,
         options: [
-          seed + "option1",
-          seed + "option2",
+          seed + 'option1',
+          seed + 'option2',
         ],
       );
 }

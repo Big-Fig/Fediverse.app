@@ -81,7 +81,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
 
     await accountRepository.upsertAllInRemoteType(
       remoteAccounts,
-      // don't need batch because we have only one transaction
+      // dont need batch because we have only one transaction
       batchTransaction: null,
     );
 

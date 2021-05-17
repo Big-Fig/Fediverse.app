@@ -111,4 +111,4 @@ Future<T?> _showFolderChooserModalBottomSheet<T>(
 }
 
 String _calculateFolderTitle(IMediaDeviceFolder selectedFolder) =>
-    "${selectedFolder.name} (${selectedFolder.assetCount})";
+    '${selectedFolder.name} (${selectedFolder.assetCount})';

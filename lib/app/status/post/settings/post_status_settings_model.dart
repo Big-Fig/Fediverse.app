@@ -12,15 +12,15 @@ part 'post_status_settings_model.g.dart';
 @HiveType(typeId: -32 + 84)
 class PostStatusSettings implements IJsonObject, ISettings<PostStatusSettings> {
   @HiveField(0)
-  @JsonKey(name: "mark_media_as_nsfw_on_attach")
+  @JsonKey(name: 'mark_media_as_nsfw_on_attach')
   final bool markMediaAsNsfwOnAttach;
 
   @HiveField(1)
-  @JsonKey(name: "default_visibility")
+  @JsonKey(name: 'default_visibility')
   final String defaultVisibilityString;
 
   @HiveField(2)
-  @JsonKey(name: "default_status_locale")
+  @JsonKey(name: 'default_status_locale')
   final LocalizationLocale? defaultStatusLocale;
 
   PleromaApiVisibility get defaultVisibilityAsPleromaApi =>

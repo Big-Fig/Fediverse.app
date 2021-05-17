@@ -87,7 +87,7 @@ class PleromaApiConversationPleromaPart
 class PleromaApiConversation implements IPleromaApiConversation, IJsonObject {
   @override
   final bool? unread;
-  @JsonKey(name: "last_status")
+  @JsonKey(name: 'last_status')
   @override
   final PleromaApiStatus? lastStatus;
   @override

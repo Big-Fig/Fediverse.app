@@ -39,7 +39,7 @@ void main() {
         .thenReturn(PleromaApiState.validAuth);
 
     filter = await FilterTestHelper.createTestFilter(
-      seed: "seed1",
+      seed: 'seed1',
     );
 
     filterBloc = FilterBloc(
@@ -68,7 +68,7 @@ void main() {
     FilterTestHelper.expectFilter(filterBloc.filter, filter);
 
     var newValue = await FilterTestHelper.createTestFilter(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: filter.remoteId,
     );
 

@@ -46,10 +46,10 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
     required String to,
     required PleromaApiVisibility visibility,
   }) async {
-    var url = status!.url ?? "";
-    var content = message == null ? url : "${message ?? ""} $url".trim();
+    var url = status!.url ?? '';
+    var content = message == null ? url : '${message ?? ''} $url'.trim();
     var messageSendData = PleromaApiPostStatus(
-      status: "$content $to",
+      status: '$content $to',
       visibility: visibility.toJsonValue(),
       contentType: null,
       expiresInSeconds: null,

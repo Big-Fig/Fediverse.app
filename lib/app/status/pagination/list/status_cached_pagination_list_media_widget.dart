@@ -24,7 +24,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("status_cached_pagination_list_media_widget.dart");
+var _logger = Logger('status_cached_pagination_list_media_widget.dart');
 
 class StatusCachedPaginationListMediaWidget
     extends StatusCachedPaginationListBaseWidget {
@@ -53,7 +53,7 @@ class StatusCachedPaginationListMediaWidget
     required Widget? header,
     required Widget? footer,
   }) {
-    _logger.finest(() => "buildStaggeredGridView ${items.length}");
+    _logger.finest(() => 'buildStaggeredGridView ${items.length}');
     var statusListBloc = IStatusListBloc.of(context);
     var instanceLocation = statusListBloc.instanceLocation;
     var isLocal = instanceLocation == InstanceLocation.local;
@@ -87,7 +87,7 @@ class StatusCachedPaginationListMediaWidget
           itemIndex -= 1;
         }
 
-        _logger.finest(() => "itemBuilder itemIndex=$itemIndex");
+        _logger.finest(() => 'itemBuilder itemIndex=$itemIndex');
 
         var statusWithMediaAttachment = statusesWithMediaAttachment[itemIndex];
 

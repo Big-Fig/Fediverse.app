@@ -14,10 +14,10 @@ class LoggingService extends AsyncInitLoadingBloc implements ILoggingService {
         print('${record.level.name}(${record.loggerName}): ${record.time}: '
             '${record.message}');
         if (record.error != null) {
-          print("\n${record.error}");
+          print('\n${record.error}');
         }
         if (record.stackTrace != null) {
-          print("\n${record.stackTrace}");
+          print('\n${record.stackTrace}');
         }
       });
     }

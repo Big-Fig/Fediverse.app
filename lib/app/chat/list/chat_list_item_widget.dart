@@ -229,7 +229,7 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
                 return path.basename(mediaAttachment.url);
               }
             },
-          ).join(", ");
+          ).join(', ');
         }
 
         var fediUiColorTheme = IFediUiColorTheme.of(context);
@@ -286,7 +286,7 @@ String _extractContent({
   required IChatMessage chatMessage,
   required String? content,
 }) {
-  String formattedText = content?.extractRawStringFromHtmlString() ?? "";
+  String formattedText = content?.extractRawStringFromHtmlString() ?? '';
 
   var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 

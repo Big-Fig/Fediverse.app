@@ -11,11 +11,11 @@ part 'ui_settings_model.g.dart';
 @HiveType(typeId: -32 + 91)
 class UiSettings implements IJsonObject, ISettings<UiSettings> {
   @HiveField(0)
-  @JsonKey(name: "theme_id")
+  @JsonKey(name: 'theme_id')
   final String? themeId;
 
   @HiveField(1)
-  @JsonKey(name: "status_font_size")
+  @JsonKey(name: 'status_font_size')
   final String statusFontSizeString;
 
   UiSettingsFontSize get statusFontSize =>

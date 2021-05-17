@@ -5,19 +5,19 @@ class PleromaApiApplicationTestHelper {
     required String seed,
   }) =>
       PleromaApiApplication(
-        name: seed + "name",
-        website: seed + "website",
-        vapidKey: seed + "vapidKey",
+        name: seed + 'name',
+        website: seed + 'website',
+        vapidKey: seed + 'vapidKey',
       );
 
   static PleromaApiClientApplication createTestPleromaApiClientApplication({
     required String seed,
   }) =>
       PleromaApiClientApplication(
-        name: seed + "name",
-        website: seed + "website",
-        vapidKey: seed + "vapidKey",
-        clientId: seed + "clientId",
-        clientSecret: seed + "clientSecret",
+        name: seed + 'name',
+        website: seed + 'website',
+        vapidKey: seed + 'vapidKey',
+        clientId: seed + 'clientId',
+        clientSecret: seed + 'clientSecret',
       );
 }

@@ -6,7 +6,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-final _logger = Logger("timeline_tab_list_bloc_impl.dart");
+final _logger = Logger('timeline_tab_list_bloc_impl.dart');
 
 class TimelineTabListBloc extends AsyncInitLoadingBloc
     implements ITimelineTabListBloc {
@@ -57,8 +57,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     int initialIndex = timelineIds.indexOf(selectedTimelineId);
 
     if (initialIndex <= 0) {
-      _logger.warning(() => "initialIndex $initialIndex \n"
-          "oldSelectedTimelineId $oldSelectedTimelineId");
+      _logger.warning(() => 'initialIndex $initialIndex \n'
+          'oldSelectedTimelineId $oldSelectedTimelineId');
       initialIndex = 0;
     }
 

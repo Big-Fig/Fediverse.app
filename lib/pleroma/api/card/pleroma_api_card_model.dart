@@ -33,18 +33,18 @@ extension IPleromaApiCardExtension on IPleromaApiCard {
 @JsonSerializable()
 class PleromaApiCard implements IPleromaApiCard, IJsonObject {
   @override
-  @JsonKey(name: "author_name")
+  @JsonKey(name: 'author_name')
   final String? authorName;
 
   @override
-  @JsonKey(name: "author_url")
+  @JsonKey(name: 'author_url')
   final String? authorUrl;
 
   @override
   final String? description;
 
   @override
-  @JsonKey(name: "embed_url")
+  @JsonKey(name: 'embed_url')
   final String? embedUrl;
 
   @override
@@ -57,11 +57,11 @@ class PleromaApiCard implements IPleromaApiCard, IJsonObject {
   final String? image;
 
   @override
-  @JsonKey(name: "provider_name")
+  @JsonKey(name: 'provider_name')
   final String? providerName;
 
   @override
-  @JsonKey(name: "provider_url")
+  @JsonKey(name: 'provider_url')
   final String? providerUrl;
 
   @override

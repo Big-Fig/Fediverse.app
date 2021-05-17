@@ -18,7 +18,7 @@ class GlobalDatabaseCacheSettingsLocalPreferenceBloc
     ILocalPreferencesService preferencesService,
   ) : super(
           preferencesService,
-          "cache.database.settings.global",
+          'cache.database.settings.global',
         );
 
   @override

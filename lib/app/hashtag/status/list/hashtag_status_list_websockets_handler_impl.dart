@@ -41,5 +41,5 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
         );
 
   @override
-  String get logTag => "hashtag_timeline_websockets_handler_impl.dart";
+  String get logTag => 'hashtag_timeline_websockets_handler_impl.dart';
 }

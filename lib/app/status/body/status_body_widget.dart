@@ -38,7 +38,7 @@ import 'package:provider/provider.dart';
 
 const _defaultPadding = FediPadding.horizontalBigPadding;
 
-final _logger = Logger("status_body_widget.dart");
+final _logger = Logger('status_body_widget.dart');
 
 class StatusBodyWidget extends StatelessWidget {
   const StatusBodyWidget();
@@ -70,7 +70,7 @@ class _StatusBodyChildWithWarningsWidget extends StatelessWidget {
             snapshot.data ?? statusSensitiveBloc.statusWarningState;
 
         _logger.finest(
-          () => "StreamBuilder statusWarningState $statusWarningState",
+          () => 'StreamBuilder statusWarningState $statusWarningState',
         );
 
         Widget child;
@@ -350,7 +350,7 @@ class _StatusBodyContentWithEmojisWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var contentWithEmojis = snapshot.data;
 
-        _logger.finest(() => "contentWithEmojis $contentWithEmojis");
+        _logger.finest(() => 'contentWithEmojis $contentWithEmojis');
 
         if (contentWithEmojis?.text.isNotEmpty == true) {
           return Provider<EmojiText?>.value(
@@ -378,8 +378,8 @@ class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
     var statusBodyBloc = IStatusBodyBloc.of(context);
     var collapsible = statusBodyBloc.collapsible;
 
-    _logger.finest(() => "build collapsible $collapsible "
-        "statusBloc ${statusBloc.remoteId}");
+    _logger.finest(() => 'build collapsible $collapsible '
+        'statusBloc ${statusBloc.remoteId}');
 
     var isNeedCollapse =
         collapsible && statusCollapsibleItemBloc.isPossibleToCollapse;
@@ -458,7 +458,7 @@ class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
         return DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
           update: (context, contentWithEmojis, previous) {
             var htmlTextInputData = HtmlTextInputData(
-              input: contentWithEmojis?.text ?? "",
+              input: contentWithEmojis?.text ?? '',
               emojis: contentWithEmojis?.emojis,
             );
             if (previous?.inputData == htmlTextInputData) {
@@ -471,7 +471,7 @@ class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
                 color: textStyle.color,
                 lineHeight: textStyle.height,
                 fontSize: textStyle.fontSize,
-                // todo: 1000 is hack, actually it should be null, but don't
+                // todo: 1000 is hack, actually it should be null, but dont
                 //  work as expected
                 // ignore: no-magic-number
                 textMaxLines: 1000,

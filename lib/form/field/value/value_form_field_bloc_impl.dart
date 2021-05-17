@@ -27,7 +27,7 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
   @override
   T get currentValue => _currentValueSubject.value as T;
 
-  // distinct is important, we don't need new value in stream on each widget
+  // distinct is important, we dont need new value in stream on each widget
   // build
   @override
   Stream<T> get currentValueStream => _currentValueSubject.stream;

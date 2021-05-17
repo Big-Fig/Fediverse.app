@@ -9,8 +9,8 @@ import 'package:http/http.dart';
 
 class PleromaAuthRestService extends PleromaApiRestService
     implements IPleromaApiAuthRestService {
-  static final authHeaderKey = "authorization";
-  static final authHeaderValuePrefix = "Bearer";
+  static final authHeaderKey = 'authorization';
+  static final authHeaderValuePrefix = 'Bearer';
 
   @override
   final bool isPleroma;
@@ -28,7 +28,7 @@ class PleromaAuthRestService extends PleromaApiRestService
         );
 
   Map<String, String> createAuthHeaders() =>
-      {HttpHeaders.authorizationHeader: "Bearer $accessToken"};
+      {HttpHeaders.authorizationHeader: 'Bearer $accessToken'};
 
   @override
   Future<Response> sendHttpRequest<T extends RestRequest, K>(T request) {

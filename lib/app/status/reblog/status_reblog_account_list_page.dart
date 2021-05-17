@@ -29,7 +29,7 @@ class StatusReblogAccountListPage extends StatelessWidget {
             const Expanded(
               child: AccountPaginationListWidget(
                 accountSelectedCallback: _goToAccountDetailsPage,
-                key: PageStorageKey("StatusReblogAccountListPage"),
+                key: PageStorageKey('StatusReblogAccountListPage'),
               ),
             ),
           ],

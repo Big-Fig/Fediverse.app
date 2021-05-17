@@ -13,7 +13,7 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("pleroma_chat_message_repository_impl.dart");
+var _logger = Logger('pleroma_chat_message_repository_impl.dart');
 
 class PleromaChatMessageRepository
     extends PopulatedAppRemoteDatabaseDaoRepository<
@@ -53,7 +53,7 @@ class PleromaChatMessageRepository
   Future<IPleromaChatMessage?> findByOldPendingRemoteId(
     String oldPendingRemoteId,
   ) async {
-    _logger.finest(() => "findByOldPendingRemoteId $oldPendingRemoteId");
+    _logger.finest(() => 'findByOldPendingRemoteId $oldPendingRemoteId');
 
     return (await dao.findByOldPendingRemoteId(oldPendingRemoteId))
         ?.toDbChatMessagePopulatedWrapper();
@@ -63,7 +63,7 @@ class PleromaChatMessageRepository
   Stream<IPleromaChatMessage?> watchByOldPendingRemoteId(
     String? oldPendingRemoteId,
   ) {
-    _logger.finest(() => "watchByOldPendingRemoteId $oldPendingRemoteId");
+    _logger.finest(() => 'watchByOldPendingRemoteId $oldPendingRemoteId');
 
     return dao.watchByOldPendingRemoteId(oldPendingRemoteId).map(
           (item) => item?.toDbChatMessagePopulatedWrapper(),

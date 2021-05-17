@@ -16,7 +16,7 @@ abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   ChatBloc({
     required bool needRefreshFromNetworkOnInit,
     required this.isNeedWatchLocalRepositoryForUpdates,
-    // todo: remove hack. Don't init when bloc quickly disposed. Help
+    // todo: remove hack. Dont init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     required bool delayInit,
   }) {

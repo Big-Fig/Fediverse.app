@@ -8,13 +8,13 @@ import 'package:flutter/widgets.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("media_attachment_add_to_gallery_helper.dart");
+var _logger = Logger('media_attachment_add_to_gallery_helper.dart');
 
 Future<bool> addMediaAttachmentToGallery({
   required BuildContext context,
   required IPleromaApiMediaAttachment mediaAttachment,
 }) async {
-  _logger.finest(() => "addMediaAttachmentToGallery start");
+  _logger.finest(() => 'addMediaAttachmentToGallery start');
 
   var result;
   if (Platform.isAndroid) {
@@ -45,7 +45,7 @@ Future<bool?> _save(IPleromaApiMediaAttachment mediaAttachment) async {
   } else {
     saved = false;
   }
-  _logger.finest(() => "addMediaAttachmentToGallery saved =  $saved");
+  _logger.finest(() => 'addMediaAttachmentToGallery saved =  $saved');
 
   return saved;
 }

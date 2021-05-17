@@ -94,9 +94,9 @@ class _EditMyAccountPageAppBarSaveAction extends StatelessWidget {
             // todo: handle specific cases by error code
 //                          (context, error) => SimpleAlertDialog(
 //                          title: of(context)
-//                              .tr("app.status.post.dialog.error.title"),
+//                              .tr('app.status.post.dialog.error.title'),
 //                          content: tr(
-//                              "app.status.post.dialog.error.content",
+//                              'app.status.post.dialog.error.content',
 //                              args: [error.toString()]),
 //                          context: context)
           ],

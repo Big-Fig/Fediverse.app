@@ -8,7 +8,7 @@ import 'pleroma_api_status_test_helper.dart';
 void main() {
   test('PleromaApiStatus toPleromaApiStatus', () async {
     var original = PleromaApiStatusTestHelper.createTestPleromaApiStatus(
-      seed: "seed",
+      seed: 'seed',
     );
     var obj = original.toPleromaApiStatus(forceNewObject: true);
 

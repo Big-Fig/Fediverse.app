@@ -27,10 +27,10 @@ void main() {
 
   test('PleromaApiChat copyWith', () async {
     var obj1 = PleromaApiChatTestHelper.createTestPleromaApiChat(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 = PleromaApiChatTestHelper.createTestPleromaApiChat(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(

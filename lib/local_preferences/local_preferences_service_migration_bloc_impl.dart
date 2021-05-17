@@ -2,7 +2,7 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("local_preferences_service_migration_bloc_impl.dart");
+final _logger = Logger('local_preferences_service_migration_bloc_impl.dart');
 
 abstract class LocalPreferencesServiceMigrationBloc
     implements ILocalPreferencesServiceMigrationBloc {
@@ -20,7 +20,7 @@ abstract class LocalPreferencesServiceMigrationBloc
         await calculateAllMigrationLocalPreferencesBlocCreators(inputService);
 
     _logger.finest(
-      () => "migrateData ${migrationLocalPreferencesBlocCreators.length}",
+      () => 'migrateData ${migrationLocalPreferencesBlocCreators.length}',
     );
 
     for (var creator in migrationLocalPreferencesBlocCreators) {
@@ -39,7 +39,7 @@ abstract class LocalPreferencesServiceMigrationBloc
 
     var currentValue = inputBloc.value;
     if (currentValue != null) {
-      _logger.finest(() => "migrateData currentValue $currentValue");
+      _logger.finest(() => 'migrateData currentValue $currentValue');
       await outputBloc.setValue(currentValue);
     }
 

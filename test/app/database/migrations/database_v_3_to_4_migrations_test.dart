@@ -13,7 +13,7 @@ void main() {
   setUp(() async {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v3.sqlite';
     var file = File(filePath);
-    dbFile = await file.copy(filePath + ".temp");
+    dbFile = await file.copy(filePath + '.temp');
     database = AppDatabase(VmDatabase(dbFile));
   });
 
@@ -34,9 +34,9 @@ void main() {
     expect((await statusDao.getAll()).isNotEmpty, false);
 
     var testDbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
-      seed: "seed1",
+      seed: 'seed1',
       dbAccount:
-          await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed2"),
+          await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'),
     );
     await statusDao.insert(
       entity: testDbStatus,

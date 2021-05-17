@@ -94,7 +94,7 @@ void main() {
     );
 
     var testIsAlwaysShowNsfw = StatusSensitiveSettingsModelTestHelper
-            .createTestStatusSensitiveSettings(seed: "seed")
+            .createTestStatusSensitiveSettings(seed: 'seed')
         .isAlwaysShowNsfw;
 
     await statusSensitiveSettingsBloc
@@ -156,7 +156,7 @@ void main() {
     );
 
     var testIsAlwaysShowSpoiler = StatusSensitiveSettingsModelTestHelper
-            .createTestStatusSensitiveSettings(seed: "seed")
+            .createTestStatusSensitiveSettings(seed: 'seed')
         .isAlwaysShowSpoiler;
 
     await statusSensitiveSettingsBloc
@@ -218,7 +218,7 @@ void main() {
     );
 
     var testNsfwDisplayDelayDuration = StatusSensitiveSettingsModelTestHelper
-            .createTestStatusSensitiveSettings(seed: "seed")
+            .createTestStatusSensitiveSettings(seed: 'seed')
         .nsfwDisplayDelayDuration;
 
     await statusSensitiveSettingsBloc

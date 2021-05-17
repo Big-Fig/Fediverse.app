@@ -25,9 +25,9 @@ class PleromaMediaAttachmentService extends BasePleromaApiService
   }) async {
     var httpResponse = await restService.uploadFileMultipartRequest(
       UploadMultipartRestRequest.post(
-        relativePath: "/api/v1/media",
+        relativePath: '/api/v1/media',
         files: {
-          "file": file,
+          'file': file,
         },
       ),
     );

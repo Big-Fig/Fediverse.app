@@ -13,19 +13,19 @@ class PleromaApiFilterTestHelper {
       PleromaApiFilter(
         context: [
           EnumTestHelper.createTestEnum(
-            seed: seed + "1",
+            seed: seed + '1',
             values: MastodonApiFilterContextType.values,
           ).toJsonValue(),
           EnumTestHelper.createTestEnum(
-            seed: seed + "2",
+            seed: seed + '2',
             values: MastodonApiFilterContextType.values,
           ).toJsonValue(),
         ],
-        phrase: seed + "phrase",
+        phrase: seed + 'phrase',
         expiresAt: DateTimeTestHelper.createTestDateTime(
           seed: seed,
         ),
-        id: seed + "id",
+        id: seed + 'id',
         irreversible: seed.hashCode % 2 == 0,
         wholeWord: seed.hashCode % 2 == 1,
       );
@@ -36,15 +36,15 @@ class PleromaApiFilterTestHelper {
       PostPleromaApiFilter(
         context: [
           EnumTestHelper.createTestEnum(
-            seed: seed + "1",
+            seed: seed + '1',
             values: MastodonApiFilterContextType.values,
           ).toJsonValue(),
           EnumTestHelper.createTestEnum(
-            seed: seed + "2",
+            seed: seed + '2',
             values: MastodonApiFilterContextType.values,
           ).toJsonValue(),
         ],
-        phrase: seed + "phrase",
+        phrase: seed + 'phrase',
         irreversible: seed.hashCode % 2 == 0,
         wholeWord: seed.hashCode % 2 == 1,
         expiresInSeconds: DurationTestHelper.createTestDurationSeconds(

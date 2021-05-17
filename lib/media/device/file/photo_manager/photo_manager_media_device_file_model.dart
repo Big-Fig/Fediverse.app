@@ -8,9 +8,9 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-var _logger = Logger("photo_manager_media_device_file_model.dart");
+var _logger = Logger('photo_manager_media_device_file_model.dart');
 
-const _heicExtension = ".heic";
+const _heicExtension = '.heic';
 const int _jpegQuality = 88;
 
 class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
@@ -46,8 +46,8 @@ class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
 
     if (type == MediaDeviceFileType.image) {
       var filePath = file!.absolute.path;
-      _logger.fine(() => "retrieveFile \n"
-          "\t file $filePath");
+      _logger.fine(() => 'retrieveFile \n'
+          '\t file $filePath');
       var extension = path.extension(filePath);
       if (extension == _heicExtension || Platform.isIOS) {
         // gallery may return photos in HEIC format
@@ -78,15 +78,15 @@ class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
     var originPath = file.absolute.path;
     final Directory extDir = await getTemporaryDirectory();
     var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    final String dirPath = path.join(extDir.path, "gallery_picker", timestamp);
+    final String dirPath = path.join(extDir.path, 'gallery_picker', timestamp);
     await Directory(dirPath).create(recursive: true);
     var originalFileNameWithoutExtension =
         path.basenameWithoutExtension(file.path);
     final String resultPath =
-        path.join(dirPath, "$originalFileNameWithoutExtension.jpg");
-    _logger.fine(() => "_compressToJpeg \n"
-        "\t originPath $originPath"
-        "\t resultPath $resultPath");
+        path.join(dirPath, '$originalFileNameWithoutExtension.jpg');
+    _logger.fine(() => '_compressToJpeg \n'
+        '\t originPath $originPath'
+        '\t resultPath $resultPath');
     var result = await FlutterImageCompress.compressAndGetFile(
       originPath,
       resultPath,

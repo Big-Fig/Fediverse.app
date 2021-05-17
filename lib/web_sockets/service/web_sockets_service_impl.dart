@@ -9,7 +9,7 @@ import 'package:fedi/web_sockets/web_sockets_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("web_sockets_service_impl.dart");
+var _logger = Logger('web_sockets_service_impl.dart');
 
 class WebSocketsService extends DisposableOwner implements IWebSocketsService {
   final IWebSocketsServiceConfigBloc configBloc;
@@ -47,7 +47,7 @@ class WebSocketsService extends DisposableOwner implements IWebSocketsService {
   IWebSocketsChannel createChannel<T extends WebSocketsEvent>(
     IWebSocketsChannelConfig<T> config,
   ) {
-    _logger.finest(() => "createChannel $config");
+    _logger.finest(() => 'createChannel $config');
 
     return WebSocketsChannel<T>(
       config: config,

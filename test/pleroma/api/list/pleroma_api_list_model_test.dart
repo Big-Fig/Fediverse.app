@@ -10,7 +10,7 @@ import 'pleroma_api_list_test_helper.dart';
 void main() {
   test('PleromaApiList toPleromaApiList', () async {
     var original = PleromaApiListTestHelper.createTestPleromaApiList(
-      seed: "seed",
+      seed: 'seed',
     );
     var obj = original.toPleromaApiList(forceNewObject: true);
 

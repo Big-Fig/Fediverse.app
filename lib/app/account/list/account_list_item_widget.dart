@@ -10,7 +10,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("account_list_item_widget.dart");
+var _logger = Logger('account_list_item_widget.dart');
 
 class AccountListItemWidget extends StatelessWidget {
   final AccountCallback? accountSelectedCallback;
@@ -26,7 +26,7 @@ class AccountListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
-    _logger.finest(() => "build ${accountBloc.acct}");
+    _logger.finest(() => 'build ${accountBloc.acct}');
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,

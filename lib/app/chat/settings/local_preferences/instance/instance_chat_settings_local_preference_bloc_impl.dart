@@ -9,7 +9,7 @@ class InstanceChatSettingsLocalPreferenceBloc
   InstanceChatSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
-  }) : super(preferencesService, "chat.settings.instance.$userAtHost");
+  }) : super(preferencesService, 'chat.settings.instance.$userAtHost');
 
   static const ChatSettings? defaultValue = null;
 

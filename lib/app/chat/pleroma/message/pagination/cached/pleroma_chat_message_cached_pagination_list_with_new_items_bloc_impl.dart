@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger(
-  "pleroma_chat_message_cached_pagination_list_with_new_items_bloc_impl.dart",
+  'pleroma_chat_message_cached_pagination_list_with_new_items_bloc_impl.dart',
 );
 
 class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
@@ -121,7 +121,7 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
   Stream<List<IPleromaChatMessage>> watchItemsNewerThanItem(
     IPleromaChatMessage? item,
   ) {
-    _logger.finest(() => "watchItemsNewerThanItem item = $item");
+    _logger.finest(() => 'watchItemsNewerThanItem item = $item');
 
     return chatMessageCachedListService.watchLocalItemsNewerThanItem(item);
   }

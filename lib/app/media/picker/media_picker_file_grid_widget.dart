@@ -15,7 +15,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-final _logger = Logger("media_picker_file_grid_widget.dart");
+final _logger = Logger('media_picker_file_grid_widget.dart');
 
 class MediaPickerFileGridWidget
     extends FediPaginationListWidget<IMediaDeviceFileMetadata> {
@@ -49,9 +49,9 @@ class MediaPickerFileGridWidget
     required Widget? footer,
   }) {
     assert(header == null && footer == null,
-        "Grid view don't support header or footer");
+        'Grid view dont support header or footer');
 
-    _logger.finest(() => "buildItemsCollectionView");
+    _logger.finest(() => 'buildItemsCollectionView');
 
     var itemCount = items.length;
     if (headerItemBuilder != null) {
@@ -106,7 +106,7 @@ class _MediaPickerFileGridItemWidget extends StatelessWidget {
 
           return mediaDeviceFileBloc;
         } else {
-          throw "IMediaDeviceFile file type not supported $fileMetadata";
+          throw 'IMediaDeviceFile file type not supported $fileMetadata';
         }
       },
       child: const MediaPickerFileGridItemWidget(),

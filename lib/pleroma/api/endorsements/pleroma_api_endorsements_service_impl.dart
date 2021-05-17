@@ -11,7 +11,7 @@ var _urlPath = path.Context(style: path.Style.url);
 class PleromaApiEndorsementsService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiEndorsementsService {
-  final endorsementsRelativeUrlPath = "/api/v1/endorsements";
+  final endorsementsRelativeUrlPath = '/api/v1/endorsements';
 
   @override
   final IPleromaApiAuthRestService restService;

@@ -6,6 +6,6 @@ class PleromaApiContentTestHelper {
     required String seed,
   }) =>
       PleromaApiContent(
-        textPlain: seed + "textPlain",
+        textPlain: seed + 'textPlain',
       );
 }

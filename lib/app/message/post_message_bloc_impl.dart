@@ -134,7 +134,7 @@ abstract class PostMessageBloc extends DisposableOwner
       );
 
   // ignore: close_sinks
-  BehaviorSubject<String?> inputTextSubject = BehaviorSubject.seeded("");
+  BehaviorSubject<String?> inputTextSubject = BehaviorSubject.seeded('');
 
   @override
   String? get inputText => inputTextSubject.value;
@@ -181,7 +181,7 @@ abstract class PostMessageBloc extends DisposableOwner
 
   @override
   void appendText(String? textToAppend, {bool requestFocus = true}) {
-    var newText = "$inputText$textToAppend";
+    var newText = '$inputText$textToAppend';
     inputTextController.value = TextEditingValue(
       text: newText,
       selection: TextSelection.collapsed(offset: newText.length),

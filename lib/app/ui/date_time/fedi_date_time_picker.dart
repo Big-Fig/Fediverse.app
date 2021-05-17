@@ -168,14 +168,14 @@ class FediDatePicker {
 
       switch (localizationLocale.languageCode.toLowerCase()) {
         // todo: improve
-        case "ru":
+        case 'ru':
           locale = LocaleType.ru;
           break;
-        case "en":
+        case 'en':
           locale = LocaleType.en;
           break;
         default:
-          throw "Invalid locale $locale";
+          throw 'Invalid locale $locale';
       }
     }
 

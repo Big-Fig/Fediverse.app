@@ -229,7 +229,7 @@ class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
                 children: [
                   Text(
                     S.of(context).app_chat_message_pending_failed_desc +
-                        " " +
+                        ' ' +
                         S.of(context).app_chat_message_pending_tapToViewOptions,
                     style: IFediUiTextTheme.of(context).smallShortGrey,
                   ),

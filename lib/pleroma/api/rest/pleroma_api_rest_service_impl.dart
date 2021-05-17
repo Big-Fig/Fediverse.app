@@ -13,7 +13,7 @@ import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-final _logger = Logger("pleroma_rest_service_impl.dart");
+final _logger = Logger('pleroma_rest_service_impl.dart');
 
 class PleromaApiRestService extends DisposableOwner
     implements IPleromaApiRestService {
@@ -203,7 +203,7 @@ class PleromaApiRestService extends DisposableOwner
         }
         if (isInvalidCredentials) {
           _pleromaApiStateSubject.add(PleromaApiState.brokenAuth);
-          _logger.finest(() => "pleromaApiState $pleromaApiState");
+          _logger.finest(() => 'pleromaApiState $pleromaApiState');
           throw PleromaApiInvalidCredentialsForbiddenRestException(
             statusCode: response.statusCode,
             body: body,

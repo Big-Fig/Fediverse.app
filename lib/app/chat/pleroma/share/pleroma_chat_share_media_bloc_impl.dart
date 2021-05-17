@@ -50,7 +50,7 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
     );
 
     var messageSendData = PleromaApiChatMessageSendData(
-      content: "${message ?? ""}".trim(),
+      content: '${message ?? ''}'.trim(),
       idempotencyKey: null,
       mediaId: reploadedMediaAttachment.id,
     );

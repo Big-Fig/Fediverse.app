@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("multi_select_account_page.dart");
+var _logger = Logger('multi_select_account_page.dart');
 
 class MultiSelectAccountBloc extends DisposableOwner
     implements IMultiSelectAccountBloc {
@@ -91,19 +91,19 @@ class MultiSelectAccountBloc extends DisposableOwner
   void addAccountSelection(IAccount account) {
     selectedAccounts.add(account);
 
-    _logger.finest(() => "addAccountSelection $account");
+    _logger.finest(() => 'addAccountSelection $account');
     onSelectionChanged();
   }
 
   void onSelectionChanged() {
     selectedAccountsSubject.add(selectedAccounts);
     _logger.finest(() =>
-        "onSelectionChanged ${selectedAccounts.length} $selectedAccounts");
+        'onSelectionChanged ${selectedAccounts.length} $selectedAccounts');
   }
 
   @override
   void removeAccountSelection(IAccount account) {
-    _logger.finest(() => "removeAccountSelection $account");
+    _logger.finest(() => 'removeAccountSelection $account');
     selectedAccounts
         .removeWhere((currentAccount) => account.remoteId == account.remoteId);
     onSelectionChanged();

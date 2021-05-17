@@ -6,7 +6,7 @@ class TimelinesHomeTabStorageModelTestHelper {
     required String seed,
   }) =>
       TimelinesHomeTabStorage(timelineIds: [
-        seed + "1",
-        seed + "2",
+        seed + '1',
+        seed + '2',
       ]);
 }

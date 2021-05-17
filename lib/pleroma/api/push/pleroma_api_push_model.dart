@@ -47,7 +47,7 @@ class PleromaApiPushSubscription {
   final dynamic id;
   final String? endpoint;
   final PleromaApiPushSubscribeRequestDataAlerts? alerts;
-  @JsonKey(name: "server_key")
+  @JsonKey(name: 'server_key')
   final String? serverKey;
   final PleromaApiPushSubscribeRequestSubscription? subscription;
 
@@ -138,9 +138,9 @@ class PleromaApiPushSubscribeRequestDataAlerts {
 
   final bool? poll;
 
-  @JsonKey(name: "pleroma:chat_mention")
+  @JsonKey(name: 'pleroma:chat_mention')
   final bool? pleromaChatMention;
-  @JsonKey(name: "pleroma:emoji_reaction")
+  @JsonKey(name: 'pleroma:emoji_reaction')
   final bool? pleromaEmojiReaction;
 
   PleromaApiPushSubscribeRequestDataAlerts({
@@ -295,13 +295,13 @@ class PleromaApiPushSubscriptionKeys {
 @JsonSerializable()
 class PleromaApiPushMessageBody implements IJsonObject {
   @HiveField(0)
-  @JsonKey(name: "notification_id")
+  @JsonKey(name: 'notification_id')
   final String notificationId;
   @HiveField(1)
   final String server;
   @HiveField(2)
   final String account;
-  @JsonKey(name: "notification_type")
+  @JsonKey(name: 'notification_type')
   @HiveField(3)
   final String notificationType;
 

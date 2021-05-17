@@ -24,7 +24,7 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
     required this.defaultPreferenceValue,
   }) : super(
           preferencesService: preferencesService,
-          key: "$userAtHost.timeline.$timelineId",
+          key: '$userAtHost.timeline.$timelineId',
           schemaVersion: 1,
           jsonConverter: (json) => Timeline.fromJson(json),
         );

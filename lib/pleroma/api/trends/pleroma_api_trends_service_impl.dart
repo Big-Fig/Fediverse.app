@@ -9,7 +9,7 @@ var _urlPath = path.Context(style: path.Style.url);
 
 class PleromaApiTrendsService extends BasePleromaApiService
     implements IPleromaApiTrendsService {
-  final trendsRelativeUrlPath = "/api/v1/trends";
+  final trendsRelativeUrlPath = '/api/v1/trends';
 
   PleromaApiTrendsService({
     required IPleromaApiRestService restService,
@@ -27,7 +27,7 @@ class PleromaApiTrendsService extends BasePleromaApiService
         ),
         queryArgs: [
           RestRequestQueryArg(
-            key: "limit",
+            key: 'limit',
             value: limit.toString(),
           ),
         ],

@@ -11,12 +11,12 @@ abstract class IPleromaApiMarker implements IMastodonApiMarker {
 @JsonSerializable(explicitToJson: true)
 class PleromaApiMarker implements IPleromaApiMarker, IJsonObject {
   @override
-  @JsonKey(name: "updated_last_read_id")
+  @JsonKey(name: 'updated_last_read_id')
   final String? lastReadId;
   @override
   final int version;
   @override
-  @JsonKey(name: "updated_at")
+  @JsonKey(name: 'updated_at')
   final DateTime? updatedAt;
 
   @override
@@ -63,7 +63,7 @@ class PleromaApiMarker implements IPleromaApiMarker, IJsonObject {
 
 @JsonSerializable(explicitToJson: true)
 class PleromaApiMarkerPleromaPart implements IJsonObject {
-  @JsonKey(name: "unread_count")
+  @JsonKey(name: 'unread_count')
   final int? unreadCount;
 
   PleromaApiMarkerPleromaPart({

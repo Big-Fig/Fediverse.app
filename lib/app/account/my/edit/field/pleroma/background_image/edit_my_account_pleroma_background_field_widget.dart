@@ -19,7 +19,7 @@ import 'package:fedi/media/media_image_source_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("edit_my_account_pleroma_background_image_widget.dart");
+final _logger = Logger('edit_my_account_pleroma_background_image_widget.dart');
 
 class EditMyAccountPleromaBackgroundFieldWidget extends StatelessWidget {
   final double backgroundHeight;
@@ -73,7 +73,7 @@ class EditMyAccountPleromaBackgroundFieldImageWidget extends StatelessWidget {
         fit: BoxFit.cover,
       );
     } else {
-      throw "MediaImageSource imageSource is invalid $imageSource";
+      throw 'MediaImageSource imageSource is invalid $imageSource';
     }
   }
 }
@@ -201,7 +201,7 @@ class EditMyAccountPleromaBackgroundFieldEditButtonWidget
                   .pickNewFile(filePickerFile);
             } catch (e, stackTrace) {
               _logger.warning(
-                "startChoosingFileToUploadBackground error",
+                'startChoosingFileToUploadBackground error',
                 e,
                 stackTrace,
               );
@@ -256,7 +256,7 @@ void startChoosingFileToUploadBackground(
         await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
       } catch (e, stackTrace) {
         _logger.warning(
-          "startChoosingFileToUploadBackground error",
+          'startChoosingFileToUploadBackground error',
           e,
           stackTrace,
         );

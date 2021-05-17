@@ -94,7 +94,7 @@ void main() {
 
     var testFilesCacheAgeLimitType =
         FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
-      seed: "seed",
+      seed: 'seed',
     ).ageLimitType;
 
     await filesCacheSettingsBloc.changeAgeLimitType(testFilesCacheAgeLimitType);
@@ -155,7 +155,7 @@ void main() {
 
     var testFilesCacheSizeLimitCountType =
         FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
-      seed: "seed",
+      seed: 'seed',
     ).sizeLimitCountType;
 
     await filesCacheSettingsBloc

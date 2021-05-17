@@ -9,7 +9,7 @@ import 'package:path/path.dart';
 class PleromaApiScheduledStatusService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiScheduledStatusService {
-  final scheduledStatusesRelativeUrlPath = "/api/v1/scheduled_statuses/";
+  final scheduledStatusesRelativeUrlPath = '/api/v1/scheduled_statuses/';
 
   final IPleromaApiAuthRestService authRestService;
 
@@ -82,7 +82,7 @@ class PleromaApiScheduledStatusService extends BasePleromaApiService
         scheduledStatusRemoteId,
       ),
       bodyJson: {
-        "scheduled_at": scheduledAt,
+        'scheduled_at': scheduledAt,
       },
     );
     var httpResponse = await restService.sendHttpRequest(request);

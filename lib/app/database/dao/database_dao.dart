@@ -11,7 +11,7 @@ abstract class DatabaseDao<
 
   String get tableName => table.$tableName;
 
-  String get idFieldName => "id";
+  String get idFieldName => 'id';
 
   DatabaseDao(AppDatabase db) : super(db);
 
@@ -170,7 +170,7 @@ abstract class DatabaseDao<
       ).map(table.mapFromRow);
 
   String createOffsetContent(int? offset) =>
-      (offset != null ? " OFFSET :offset" : "");
+      (offset != null ? ' OFFSET :offset' : '');
 
   Future<DbItem?> findById(DbId id) => findByIdSelectable(id).getSingleOrNull();
 
@@ -321,19 +321,19 @@ abstract class DatabaseDao<
     required String fieldName,
     required String stringValue,
   }) =>
-      CustomExpression<bool>("$tableName.$fieldName < $stringValue");
+      CustomExpression<bool>('$tableName.$fieldName < $stringValue');
 
   CustomExpression<bool> createOlderThanIntWhereExpression({
     required String fieldName,
     required int intValue,
   }) =>
-      CustomExpression<bool>("$tableName.$fieldName < $intValue");
+      CustomExpression<bool>('$tableName.$fieldName < $intValue');
 
   CustomExpression<bool> createOlderThanDateTimeWhereExpression({
     required String fieldName,
     required DateTime dateTimeValue,
   }) =>
-      CustomExpression<bool>("$tableName.$fieldName < $dateTimeValue");
+      CustomExpression<bool>('$tableName.$fieldName < $dateTimeValue');
 
   void addFindByDbIdWhereToSimpleSelectStatement({
     required SimpleSelectStatement simpleSelectStatement,
@@ -359,5 +359,5 @@ abstract class DatabaseDao<
     required String fieldName,
     required dynamic value,
   }) =>
-      CustomExpression<bool>("$tableName.$fieldName = '${value.toString()}'");
+      CustomExpression<bool>('$tableName.$fieldName = "${value.toString()}"');
 }

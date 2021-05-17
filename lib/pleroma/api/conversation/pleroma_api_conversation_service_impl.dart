@@ -9,14 +9,14 @@ import 'package:fedi/rest/rest_request_model.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 
-final _logger = Logger("pleroma_api_conversation_service_impl.dart");
+final _logger = Logger('pleroma_api_conversation_service_impl.dart');
 
 class PleromaApiConversationService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiConversationService {
-  final conversationRelativeUrlPath = "/api/v1/conversations/";
-  final pleromaConversationRelativeUrlPath = "/api/v1/pleroma/conversations/";
-  final conversationStatusesRelativeUrlPath = "statuses";
+  final conversationRelativeUrlPath = '/api/v1/conversations/';
+  final pleromaConversationRelativeUrlPath = '/api/v1/pleroma/conversations/';
+  final conversationStatusesRelativeUrlPath = 'statuses';
   @override
   final IPleromaApiAuthRestService restService;
 
@@ -84,7 +84,7 @@ class PleromaApiConversationService extends BasePleromaApiService
       queryArgs.addAll(
         recipientsIds!.map(
           (id) => RestRequestQueryArg(
-            key: "recipients[]",
+            key: 'recipients[]',
             value: id,
           ),
         ),
@@ -121,7 +121,7 @@ class PleromaApiConversationService extends BasePleromaApiService
     } catch (e) {
       if (e is PleromaApiRecordNotFoundRestException) {
         // nothing because already deleted on backend
-        _logger.finest(() => "already deleted");
+        _logger.finest(() => 'already deleted');
       } else {
         rethrow;
       }
@@ -136,7 +136,7 @@ class PleromaApiConversationService extends BasePleromaApiService
       relativePath: join(
         conversationRelativeUrlPath,
         conversationRemoteId,
-        "read",
+        'read',
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);

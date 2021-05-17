@@ -23,15 +23,15 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
   final bool? published;
 
   @override
-  @JsonKey(name: "all_day")
+  @JsonKey(name: 'all_day')
   final bool? allDay;
 
   @override
-  @JsonKey(name: "created_at")
+  @JsonKey(name: 'created_at')
   final DateTime? createdAt;
 
   @override
-  @JsonKey(name: "updated_at")
+  @JsonKey(name: 'updated_at')
   final DateTime? updatedAt;
 
   @override
@@ -42,17 +42,17 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
 
   // nullable
   @override
-  @JsonKey(name: "scheduled_at")
+  @JsonKey(name: 'scheduled_at')
   final DateTime? scheduledAt;
 
   // nullable
   @override
-  @JsonKey(name: "starts_at")
+  @JsonKey(name: 'starts_at')
   final DateTime? startsAt;
 
   // nullable
   @override
-  @JsonKey(name: "ends_at")
+  @JsonKey(name: 'ends_at')
   final DateTime? endsAt;
 
   PleromaApiAnnouncement({
@@ -168,7 +168,7 @@ class PleromaApiAnnouncementReaction
   final String? url;
 
   @override
-  @JsonKey(name: "static_url")
+  @JsonKey(name: 'static_url')
   final String? staticUrl;
 
   PleromaApiAnnouncementReaction({

@@ -10,7 +10,7 @@ part 'web_sockets_settings_model.g.dart';
 @HiveType(typeId: -32 + 89)
 class WebSocketsSettings implements ISettings<WebSocketsSettings> {
   @HiveField(0)
-  @JsonKey(name: "type_string")
+  @JsonKey(name: 'type_string')
   final String handlingTypeString;
 
   WebSocketsHandlingType get handlingType =>

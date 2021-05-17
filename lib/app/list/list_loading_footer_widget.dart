@@ -19,7 +19,7 @@ Widget _builder(BuildContext context, LoadStatus? mode) {
   switch (mode) {
     case null:
     case LoadStatus.idle:
-      body = Text("");
+      body = Text('');
       break;
     case LoadStatus.canLoading:
       body = Text(

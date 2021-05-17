@@ -49,7 +49,7 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
                 //              shrinkWrap: true,
                 children: [
                   ...mediaItemBlocs.map((mediaItemBloc) {
-                    // don't dispose media bloc here
+                    // dont dispose media bloc here
                     // it is disposed in parent Status bloc
 
                     return Padding(

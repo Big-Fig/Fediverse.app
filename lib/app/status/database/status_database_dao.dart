@@ -11,20 +11,20 @@ import 'package:moor/moor.dart';
 
 part 'status_database_dao.g.dart';
 
-var _accountAliasId = "account";
-var _reblogAliasId = "reblog";
-var _reblogAccountAliasId = "reblogAccount";
-var _replyAliasId = "reply";
-var _replyAccountAliasId = "replyAccount";
-var _replyReblogAliasId = "replyReblog";
-var _replyReblogAccountAliasId = "replyReblogAccount";
-var _statusAliasId = "status";
-var _accountFollowingsAliasId = "accountFollowings";
-var _replyToAccountFollowingsAliasId = "replyToAccountFollowings";
-var _statusHashtagsAliasId = "statusHashtags";
-var _statusListsAliasId = "statusLists";
-var _conversationStatusesAliasId = "conversationStatuses";
-var _homeTimelineStatusesAliasId = "homeTimelineStatuses";
+var _accountAliasId = 'account';
+var _reblogAliasId = 'reblog';
+var _reblogAccountAliasId = 'reblogAccount';
+var _replyAliasId = 'reply';
+var _replyAccountAliasId = 'replyAccount';
+var _replyReblogAliasId = 'replyReblog';
+var _replyReblogAccountAliasId = 'replyReblogAccount';
+var _statusAliasId = 'status';
+var _accountFollowingsAliasId = 'accountFollowings';
+var _replyToAccountFollowingsAliasId = 'replyToAccountFollowings';
+var _statusHashtagsAliasId = 'statusHashtags';
+var _statusListsAliasId = 'statusLists';
+var _conversationStatusesAliasId = 'conversationStatuses';
+var _homeTimelineStatusesAliasId = 'homeTimelineStatuses';
 
 @UseDao(
   tables: [
@@ -143,7 +143,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         ..where(
           (status) => status.mediaAttachments.isNotNull(),
 //            |
-//            status.mediaAttachments.equals("").not()
+//            status.mediaAttachments.equals('').not()
         );
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
@@ -154,7 +154,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
       query
         ..where((status) =>
             status.pleromaLocal.equals(true) |
-            status.url.like("%$localDomain%"));
+            status.url.like('%$localDomain%'));
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyRemoteWhere(
@@ -163,14 +163,14 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where((status) => (status.pleromaLocal.equals(true).not() &
-            status.url.like("%$localDomain%").not()));
+            status.url.like('%$localDomain%').not()));
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromInstanceWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     String? instance,
   ) =>
-      query..where((status) => status.url.like("%$instance%"));
+      query..where((status) => status.url.like('%$instance%'));
 
   void addExcludeTextWhere(
     JoinedSelectStatement<Table, DataClass> query, {
@@ -179,14 +179,14 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     addExcludeTextConditionWhere(
       query,
-      tableName: "db_statuses",
+      tableName: 'db_statuses',
       fieldName: dbStatuses.content.$name,
       phrase: phrase,
       wholeWord: wholeWord,
     );
     addExcludeTextConditionWhere(
       query,
-      tableName: "db_statuses",
+      tableName: 'db_statuses',
       fieldName: dbStatuses.spoilerText.$name,
       phrase: phrase,
       wholeWord: wholeWord,
@@ -217,17 +217,17 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     String expressionCondition;
     if (wholeWord) {
-      final regex = r"\b" + phrase! + r"\b";
-      expressionCondition = "NOT REGEXP '$regex'";
+      final regex = r'\b' + phrase! + r'\b';
+      expressionCondition = 'NOT REGEXP "$regex"';
     } else {
-      expressionCondition = "NOT LIKE '%$phrase%'";
+      expressionCondition = 'NOT LIKE "%$phrase%"';
     }
-    String expressionContent = "$tableName.$fieldName $expressionCondition";
+    String expressionContent = '$tableName.$fieldName $expressionCondition';
 
     return query
       ..where(
         CustomExpression<bool>(expressionContent) |
-            CustomExpression<bool>("$tableName.$fieldName IS NULL"),
+            CustomExpression<bool>('$tableName.$fieldName IS NULL'),
       );
   }
 
@@ -237,7 +237,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(CustomExpression<bool>(
-          "$_accountFollowingsAliasId.account_remote_id = '$accountRemoteId'",
+          '$_accountFollowingsAliasId.account_remote_id = "$accountRemoteId"',
         ));
 
   JoinedSelectStatement addHashtagWhere(
@@ -246,7 +246,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(CustomExpression<bool>(
-          "$_statusHashtagsAliasId.hashtag = '$hashtag'",
+          '$_statusHashtagsAliasId.hashtag = "$hashtag"',
         ));
 
   JoinedSelectStatement addListWhere(
@@ -255,7 +255,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(CustomExpression<bool>(
-          "$_statusListsAliasId.list_remote_id = '$listRemoteId'",
+          '$_statusListsAliasId.list_remote_id = "$listRemoteId"',
         ));
 
   JoinedSelectStatement addConversationWhere(
@@ -264,8 +264,8 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(CustomExpression<bool>(
-          "$_conversationStatusesAliasId.conversation_remote_id"
-          " = '$conversationRemoteId'",
+          '$_conversationStatusesAliasId.conversation_remote_id'
+          ' = "$conversationRemoteId"',
         ));
 
   JoinedSelectStatement addReplyToAccountSelfOrFollowingWhere(
@@ -275,15 +275,15 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
       query
         ..where(
           CustomExpression<bool>(
-                "db_statuses.in_reply_to_account_remote_id IS NULL",
+                'db_statuses.in_reply_to_account_remote_id IS NULL',
               ) |
               CustomExpression<bool>(
-                "db_statuses.in_reply_to_account_remote_id = '$myAccountRemoteId'",
+                'db_statuses.in_reply_to_account_remote_id = "$myAccountRemoteId"',
               ) |
               CustomExpression<bool>(
-                "$_replyToAccountFollowingsAliasId.account_remote_id = "
-                // "$_replyToAccountFollowingsAliasId.following_account_remote_id = "
-                "'$myAccountRemoteId'",
+                '$_replyToAccountFollowingsAliasId.account_remote_id = '
+                // '$_replyToAccountFollowingsAliasId.following_account_remote_id = '
+                '"$myAccountRemoteId"',
               ),
         );
 
@@ -520,27 +520,27 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   Future incrementRepliesCount({required String? remoteId}) {
-    var update = "UPDATE db_statuses "
-        "SET replies_count = replies_count + 1 "
-        "WHERE remote_id = '$remoteId'";
+    var update = 'UPDATE db_statuses '
+        'SET replies_count = replies_count + 1 '
+        'WHERE remote_id = "$remoteId"';
     var query = db.customUpdate(update, updates: {dbStatuses});
 
     return query;
   }
 
   Future markAsDeleted({required String? remoteId}) {
-    var update = "UPDATE db_statuses "
-        "SET deleted = 1 "
-        "WHERE remote_id = '$remoteId'";
+    var update = 'UPDATE db_statuses '
+        'SET deleted = 1 '
+        'WHERE remote_id = "$remoteId"';
     var query = db.customUpdate(update, updates: {dbStatuses});
 
     return query;
   }
 
   Future markAsHiddenLocallyOnDevice({required int? localId}) {
-    var update = "UPDATE db_statuses "
-        "SET hidden_locally_on_device = 1 "
-        "WHERE id = '$localId'";
+    var update = 'UPDATE db_statuses '
+        'SET hidden_locally_on_device = 1 '
+        'WHERE id = "$localId"';
     var query = db.customUpdate(update, updates: {dbStatuses});
 
     return query;
@@ -572,11 +572,11 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     assert(
         !(filters?.onlyLocalCondition != null &&
             filters?.onlyRemoteCondition != null),
-        "onlyLocalCondition && onlyRemoteCondition  can't be set both");
+        'onlyLocalCondition && onlyRemoteCondition  cant be set both');
 
     if (filters?.onlyFromInstance?.isNotEmpty == true) {
       assert(filters?.onlyRemoteCondition != null,
-          "onlyRemoteCondition should be notNull if onlyFromInstance was set");
+          'onlyRemoteCondition should be notNull if onlyFromInstance was set');
 
       addOnlyFromInstanceWhere(
         query,

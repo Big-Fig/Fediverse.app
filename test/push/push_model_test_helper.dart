@@ -7,8 +7,8 @@ class PushModelTestHelper {
   }) =>
       PushMessage(
         data: {
-          "seed1": seed + "1",
-          "seed2": seed + "2",
+          'seed1': seed + '1',
+          'seed2': seed + '2',
         },
         typeString: PushMessageType
             .values[seed.hashCode % PushMessageType.values.length]
@@ -20,7 +20,7 @@ class PushModelTestHelper {
     required String seed,
   }) =>
       PushNotification(
-        title: seed + "title",
-        body: seed + "body",
+        title: seed + 'title',
+        body: seed + 'body',
       );
 }

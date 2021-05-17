@@ -33,9 +33,9 @@ class ExternalShareMediaBloc extends ExternalShareBloc
     String? text;
     var asLink = asLinkBoolField.currentValue == true;
     if (message?.isNotEmpty == true || asLink) {
-      text = message ?? "";
+      text = message ?? '';
       if (asLink) {
-        text += " ${mediaAttachment.url}";
+        text += ' ${mediaAttachment.url}';
       }
     }
 

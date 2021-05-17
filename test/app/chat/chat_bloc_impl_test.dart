@@ -75,11 +75,11 @@ void main() {
     preferencesService = MemoryLocalPreferencesService();
 
     myAccount =
-        await MyAccountTestHelper.createTestMyAccount(seed: "myAccount");
+        await MyAccountTestHelper.createTestMyAccount(seed: 'myAccount');
     authInstance = AuthInstance(
-      urlHost: "fedi.app",
+      urlHost: 'fedi.app',
       acct: myAccount.acct,
-      urlSchema: "https",
+      urlSchema: 'https',
       token: null,
       authCode: null,
       isPleroma: false,
@@ -110,7 +110,7 @@ void main() {
       PleromaApiState.validAuth,
     );
 
-    chat = await ChatTestHelper.createTestChat(seed: "seed1");
+    chat = await ChatTestHelper.createTestChat(seed: 'seed1');
 
     chatBloc = PleromaChatBloc(
       chat: chat,
@@ -160,7 +160,7 @@ void main() {
     ChatTestHelper.expectChat(chatBloc.chat, chat);
 
     var newValue = await ChatTestHelper.createTestChat(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: chat.remoteId,
     );
 
@@ -173,7 +173,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     ChatTestHelper.expectChat(listenedValue, chat);
 
-    var account1 = await AccountTestHelper.createTestAccount(seed: "account1");
+    var account1 = await AccountTestHelper.createTestAccount(seed: 'account1');
 
     await _update(newValue, accounts: [account1]);
 
@@ -205,27 +205,27 @@ void main() {
 
   test('lastChatMessage', () async {
     var account1 = await AccountTestHelper.createTestAccount(
-      seed: "chatMessage1",
+      seed: 'chatMessage1',
     );
     var account2 = await AccountTestHelper.createTestAccount(
-      seed: "chatMessage1",
+      seed: 'chatMessage1',
     );
 
     var chatMessage1 = await ChatMessageTestHelper.createTestChatMessage(
-      seed: "chatMessage1",
+      seed: 'chatMessage1',
       chatRemoteId: chat.remoteId,
       createdAt: DateTime(2001),
       account: account1,
     );
     var chatMessage2 = await ChatMessageTestHelper.createTestChatMessage(
-      seed: "chatMessage2",
+      seed: 'chatMessage2',
       chatRemoteId: chat.remoteId,
       createdAt: DateTime(2002),
       account: account2,
     );
 
     var newValue = await ChatTestHelper.createTestChat(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: chat.remoteId,
       account: account2,
     );
@@ -277,11 +277,11 @@ void main() {
 
 // todo: rework after backend chats with several accounts rework
   test('accounts', () async {
-    var account1 = await AccountTestHelper.createTestAccount(seed: "account1");
-    var account2 = await AccountTestHelper.createTestAccount(seed: "account2");
+    var account1 = await AccountTestHelper.createTestAccount(seed: 'account1');
+    var account2 = await AccountTestHelper.createTestAccount(seed: 'account2');
 
     var newValue = await ChatTestHelper.createTestChat(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: chat.remoteId,
     );
 
@@ -315,11 +315,11 @@ void main() {
 
 //
 //  test('accounts', () async {
-//    var account1 = await AccountTestHelper.createTestAccount(seed: "account1");
-//    var account2 = await AccountTestHelper.createTestAccount(seed: "account2");
-////    var account3 = await AccountTestHelper.createTestAccount(seed: "account3");
+//    var account1 = await AccountTestHelper.createTestAccount(seed: 'account1');
+//    var account2 = await AccountTestHelper.createTestAccount(seed: 'account2');
+////    var account3 = await AccountTestHelper.createTestAccount(seed: 'account3');
 //
-//    var newValue = await ChatTestHelper.createTestChat(seed: "seed2", remoteId: chat.remoteId);
+//    var newValue = await ChatTestHelper.createTestChat(seed: 'seed2', remoteId: chat.remoteId);
 //
 //    var listenedValue;
 //
@@ -355,7 +355,7 @@ void main() {
 //    ChatTestHelper.expectChat(chatBloc.chat, chat);
 //
 //    var newValue = await ChatTestHelper.createTestChat(
-//        seed: "seed2", remoteId: chat.remoteId);
+//        seed: 'seed2', remoteId: chat.remoteId);
 //
 //    var listenedValue;
 //

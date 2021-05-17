@@ -14,11 +14,11 @@ class NotificationDatabaseTestHelper {
     DbStatus? dbStatus,
     bool unread = false,
     DateTime? createdAt,
-    String type = "reblog",
+    String type = 'reblog',
   }) async {
     DbNotification dbNotification = DbNotification(
       id: null,
-      remoteId: remoteId ?? seed + "remoteId",
+      remoteId: remoteId ?? seed + 'remoteId',
       createdAt: createdAt ?? DateTime(1),
       accountRemoteId: dbAccount.remoteId,
       statusRemoteId: dbStatus?.remoteId,

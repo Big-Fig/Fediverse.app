@@ -16,9 +16,9 @@ abstract class ChatMessageBloc extends DisposableOwner
   final bool isNeedWatchLocalRepositoryForUpdates;
 
   ChatMessageBloc({
-//for better performance we don't update
+//for better performance we dont update
     // account too often
-    required bool needRefreshFromNetworkOnInit, // todo: remove hack. Don't
+    required bool needRefreshFromNetworkOnInit, // todo: remove hack. Dont
     // init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     required bool delayInit,

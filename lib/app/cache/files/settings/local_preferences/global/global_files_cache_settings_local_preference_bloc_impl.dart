@@ -10,7 +10,7 @@ class GlobalFilesCacheSettingsLocalPreferenceBloc
     implements IGlobalFilesCacheSettingsLocalPreferencesBloc {
   GlobalFilesCacheSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
-  ) : super(preferencesService, "cache.files.settings.global");
+  ) : super(preferencesService, 'cache.files.settings.global');
 
   static final FilesCacheSettings defaultValue = FilesCacheSettings.fromEnum(
     sizeLimitCountType:

@@ -21,7 +21,7 @@ import 'package:flutter_reorderable_list/flutter_reorderable_list.dart'
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("timelines_home_tab_storage_widget.dart");
+var _logger = Logger('timelines_home_tab_storage_widget.dart');
 
 class TimelinesHomeTabStorageWidget extends StatelessWidget {
   @override
@@ -112,7 +112,7 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
     int oldIndex = timelinesHomeTabStorageBloc.indexOfKey(item);
     int newIndex = timelinesHomeTabStorageBloc.indexOfKey(newPosition);
 
-    _logger.finest(() => "onReorder oldIndex $oldIndex newIndex $newIndex");
+    _logger.finest(() => 'onReorder oldIndex $oldIndex newIndex $newIndex');
 
     timelinesHomeTabStorageBloc.swapItemsAt(oldIndex, newIndex);
 
@@ -123,7 +123,7 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
     ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
     Key item,
   ) {
-    _logger.finest(() => "_onReorderDone $item");
+    _logger.finest(() => '_onReorderDone $item');
   }
 }
 
@@ -316,12 +316,12 @@ class _TimelinesHomeTabStorageListItemLeadingWidget extends StatelessWidget {
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
             child = _TimelinesHomeTabStorageListItemRemoveButtonWidget(
-              key: ValueKey("${timeline.id}.remove_body"),
+              key: ValueKey('${timeline.id}.remove_body'),
             );
             break;
           case TimelinesHomeTabStorageUiState.view:
             child = SizedBox.shrink(
-              key: ValueKey("${timeline.id}.remove_empty"),
+              key: ValueKey('${timeline.id}.remove_empty'),
             );
             break;
         }

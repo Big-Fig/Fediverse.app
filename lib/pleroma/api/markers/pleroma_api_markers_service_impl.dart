@@ -10,7 +10,7 @@ var _urlPath = path.Context(style: path.Style.url);
 class PleromaApiMarkersService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiMarkersService {
-  final markersRelativeUrlPath = "/api/v1/markers";
+  final markersRelativeUrlPath = '/api/v1/markers';
 
   @override
   final IPleromaApiAuthRestService restService;
@@ -40,7 +40,7 @@ class PleromaApiMarkersService extends BasePleromaApiService
                 .map(
                   (timeline) => '"$timeline"',
                 )
-                .join(","),
+                .join(','),
           ),
         ],
       ),
@@ -62,7 +62,7 @@ class PleromaApiMarkersService extends BasePleromaApiService
 
     timelinesLastReadIds.entries.forEach(
       (pair) {
-        bodyJson["${pair.key}[last_read_id]"] = pair.value;
+        bodyJson['${pair.key}[last_read_id]'] = pair.value;
       },
     );
 

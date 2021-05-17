@@ -14,7 +14,7 @@ import 'package:rxdart/rxdart.dart';
 // ignore: no-magic-number
 const checkCaptchaExpiredDuration = Duration(seconds: 5);
 
-final _logger = Logger("pleroma_form_captcha_string_field_bloc_impl.dart");
+final _logger = Logger('pleroma_form_captcha_string_field_bloc_impl.dart');
 
 class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
     implements IPleromaFormCaptchaStringFieldBloc {
@@ -100,7 +100,7 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
   }
 
   void _checkForReload() {
-    _logger.finest(() => "_checkForReload isExist $isExist");
+    _logger.finest(() => '_checkForReload isExist $isExist');
     if (isExist) {
       var difference = captchaLoadedDateTime!.difference(
         DateTime.now(),
@@ -113,10 +113,10 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
           differenceAbsInSeconds + checkCaptchaExpiredDurationInSeconds;
       var secondsValid = captcha?.secondsValid;
       var isNeedReload = secondsValid == null || totalSeconds > secondsValid;
-      _logger.finest(() => "_checkForReload "
-          "isNeedReload $isNeedReload "
-          "totalSeconds $totalSeconds "
-          "secondsValid $secondsValid");
+      _logger.finest(() => '_checkForReload '
+          'isNeedReload $isNeedReload '
+          'totalSeconds $totalSeconds '
+          'secondsValid $secondsValid');
       if (isNeedReload) {
         reloadCaptcha();
       }
@@ -140,16 +140,16 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
 
   @override
   Future reloadCaptcha() async {
-    _logger.finest(() => "reloadCaptcha START");
+    _logger.finest(() => 'reloadCaptcha START');
     captchaSubject.add(null);
     captchaLoadedDateTimeSubject.add(DateTime.now());
     errorSubject.add(null);
     try {
       var captcha = await pleromaCaptchaService.getCaptcha();
       captchaSubject.add(captcha.toPleromaApiCaptcha());
-      _logger.finest(() => "reloadCaptcha FINISH $captcha");
+      _logger.finest(() => 'reloadCaptcha FINISH $captcha');
     } catch (e, stackTrace) {
-      _logger.warning(() => "reloadCaptcha ERROR", e, stackTrace);
+      _logger.warning(() => 'reloadCaptcha ERROR', e, stackTrace);
       errorSubject.add(e);
     }
   }
@@ -195,7 +195,7 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
       }
     }
 
-    _logger.finest(() => "isExist $isExist captcha $captcha error $error");
+    _logger.finest(() => 'isExist $isExist captcha $captcha error $error');
 
     return isExist;
   }

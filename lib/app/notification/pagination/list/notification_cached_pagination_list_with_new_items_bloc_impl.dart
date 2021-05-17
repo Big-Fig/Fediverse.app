@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-final _logger = Logger("notification_cached_pagination_list_with_new_items_bloc_impl.dart");
+final _logger = Logger('notification_cached_pagination_list_with_new_items_bloc_impl.dart');
 
 class NotificationCachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<INotification>>
@@ -28,7 +28,7 @@ class NotificationCachedPaginationListWithNewItemsBloc<
 
   @override
   Stream<List<INotification>> watchItemsNewerThanItem(INotification? item) {
-    _logger.finest(() => "watchItemsNewerThanItem $item");
+    _logger.finest(() => 'watchItemsNewerThanItem $item');
 
     return cachedListBloc.watchLocalItemsNewerThanItem(item);
   }

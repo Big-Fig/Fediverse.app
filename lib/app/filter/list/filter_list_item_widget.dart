@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("filter_list_item_widget.dart");
+var _logger = Logger('filter_list_item_widget.dart');
 
 class FilterListItemWidget extends StatelessWidget {
   const FilterListItemWidget();
@@ -19,7 +19,7 @@ class FilterListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var filterBloc = IFilterBloc.of(context);
 
-    _logger.finest(() => "build ${filterBloc.remoteId}");
+    _logger.finest(() => 'build ${filterBloc.remoteId}');
 
     return InkWell(
       onTap: () {
@@ -95,7 +95,7 @@ class _FilterListItemPhraseWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var filterBloc = IFilterBloc.of(context);
 
-    _logger.finest(() => "build ${filterBloc.remoteId}");
+    _logger.finest(() => 'build ${filterBloc.remoteId}');
     var fediUiTextTheme = IFediUiTextTheme.of(context);
 
     return Text(

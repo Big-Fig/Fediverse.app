@@ -87,14 +87,14 @@ import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc_
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 
-var _logger = Logger("app_context_bloc_impl.dart");
+var _logger = Logger('app_context_bloc_impl.dart');
 
 class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
   @override
   // todo:divide into small methods
   // ignore: long-method
   Future internalAsyncInit() async {
-    _logger.fine(() => "internalAsyncInit");
+    _logger.fine(() => 'internalAsyncInit');
 
     AppContextBloc globalProviderService = this;
 
@@ -121,7 +121,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IPermissionsService>(PermissionsService());
 
     var hiveLocalPreferencesService =
-        HiveLocalPreferencesService(boxName: "local_preferences_v2");
+        HiveLocalPreferencesService(boxName: 'local_preferences_v2');
     await hiveLocalPreferencesService.performAsyncInit();
     var hiveLocalPreferencesServiceExist =
         await hiveLocalPreferencesService.isStorageExist();
@@ -134,12 +134,12 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
       final sharedPreferencesStorageExist =
           await sharedPreferencesLocalPreferencesService.isStorageExist();
       _logger.finest(() =>
-          "sharedPreferencesStorageExist == $sharedPreferencesStorageExist}");
+          'sharedPreferencesStorageExist == $sharedPreferencesStorageExist}');
 
       var sharedPreferencesLocalPreferencesServiceExist =
           await sharedPreferencesLocalPreferencesService.isStorageExist();
-      _logger.finest(() => "sharedPreferencesLocalPreferencesServiceExist =="
-          " $sharedPreferencesLocalPreferencesServiceExist");
+      _logger.finest(() => 'sharedPreferencesLocalPreferencesServiceExist =='
+          ' $sharedPreferencesLocalPreferencesServiceExist');
       if (sharedPreferencesLocalPreferencesServiceExist) {
         var migrationBloc = FediLocalPreferencesServiceMigrationBloc(
           inputService: sharedPreferencesLocalPreferencesService,
@@ -195,7 +195,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     instanceListBloc.addDisposable(
       streamSubscription: instanceListBloc.instanceRemovedStream.listen(
         (removedInstance) {
-          _logger.finest(() => "removedInstance $removedInstance");
+          _logger.finest(() => 'removedInstance $removedInstance');
 
           Future.delayed(
             Duration(seconds: 1),
@@ -207,7 +207,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
               );
               var file = File(databaseFilePath);
               _logger.finest(
-                () => "removedInstance delete database $databaseFilePath",
+                () => 'removedInstance delete database $databaseFilePath',
               );
               await file.delete();
 
@@ -247,12 +247,12 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     String pushRelayBaseUrl;
     if (await FediPackageInfoHelper.isProdPackageId()) {
-      pushRelayBaseUrl = "https://pushrelay3.your.org/push/";
+      pushRelayBaseUrl = 'https://pushrelay3.your.org/push/';
     } else if (await FediPackageInfoHelper.isDevPackageId()) {
-      pushRelayBaseUrl = "https://pushrelay.jff.name/push/";
+      pushRelayBaseUrl = 'https://pushrelay.jff.name/push/';
     } else {
       var packageName = await FediPackageInfoHelper.getPackageId();
-      throw "Invalid packageName $packageName";
+      throw 'Invalid packageName $packageName';
     }
 
     var pushRelayService = PushRelayService(pushRelayBaseUrl: pushRelayBaseUrl);
@@ -492,11 +492,11 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         (!isAppRated && appOpenedCount >= appOpenedCountToShowAppReview) &&
             isProdPackageId;
     _logger.finest(
-      () => " appOpenedCountToShowAppReview $appOpenedCountToShowAppReview \n"
-          " isAppRated $isAppRated \n"
-          " appOpenedCount $appOpenedCount \n"
-          " isProdPackageId $isProdPackageId \n"
-          " isNeedRequestReview $isNeedRequestReview",
+      () => ' appOpenedCountToShowAppReview $appOpenedCountToShowAppReview \n'
+          ' isAppRated $isAppRated \n'
+          ' appOpenedCount $appOpenedCount \n'
+          ' isProdPackageId $isProdPackageId \n'
+          ' isNeedRequestReview $isNeedRequestReview',
     );
     if (isNeedRequestReview) {
       var inAppReviewBlocAvailable = await inAppReviewBloc.isAvailable();

@@ -16,7 +16,7 @@ import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("status_model.dart");
+final _logger = Logger('status_model.dart');
 
 typedef StatusAndContextCallback = Function(
   BuildContext context,
@@ -128,13 +128,13 @@ abstract class IStatus implements IEqualComparableObj<IStatus> {
 
   /// a datetime (iso8601) that states when
   /// the post will expire (be deleted automatically),
-  /// or empty if the post won't expire
+  /// or empty if the post wont expire
   DateTime? get pleromaExpiresAt;
 
   bool? get pleromaThreadMuted;
 
   /// A list with emoji / reaction maps. The format is
-  /// {name: "☕", count: 1, me: true}.
+  /// {name: '☕', count: 1, me: true}.
   /// Contains no information about the reacting users,
   /// for that use the /statuses/:id/reactions endpoint.
   List<PleromaApiStatusEmojiReaction>? get pleromaEmojiReactions;
@@ -820,7 +820,7 @@ extension IStatusExtension on IStatus {
   Uri get urlRemoteHostUri {
     var uri = Uri.parse(url ?? this.uri);
 
-    var resultUrl = "${uri.scheme}://${uri.host}";
+    var resultUrl = '${uri.scheme}://${uri.host}';
 
     return Uri.parse(resultUrl);
   }
@@ -828,7 +828,7 @@ extension IStatusExtension on IStatus {
   String get urlRemoteId {
     try {
       // todo: perhaps need improvements
-      var splitResult = (url ?? uri).split("/");
+      var splitResult = (url ?? uri).split('/');
 
       var isHaveEndingSlash = splitResult.last.isNotEmpty;
       if (isHaveEndingSlash) {
@@ -844,7 +844,7 @@ extension IStatusExtension on IStatus {
         e: e,
         status: this,
       );
-      _logger.shout(() => "$exception", stackTrace);
+      _logger.shout(() => '$exception', stackTrace);
       throw exception;
     }
   }

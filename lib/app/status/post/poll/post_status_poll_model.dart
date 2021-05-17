@@ -20,11 +20,11 @@ abstract class IPostStatusPoll {
 @JsonSerializable()
 class PostStatusPoll implements IPostStatusPoll {
   @override
-  @JsonKey(name: "duration_length")
+  @JsonKey(name: 'duration_length')
   final Duration durationLength;
 
   @override
-  @JsonKey(name: "hide_totals")
+  @JsonKey(name: 'hide_totals')
   final bool hideTotals;
 
   @override

@@ -8,7 +8,7 @@ import 'pleroma_api_conversation_test_helper.dart';
 void main() {
   test('PleromaApiConversationPleromaPart toPleromaApiAccount', () async {
     var original = PleromaApiConversationTestHelper.createTestPleromaApiConversationPleromaPart(
-      seed: "seed",
+      seed: 'seed',
     );
     var obj = original.toPleromaApiConversationPleromaPart(forceNewObject: true);
 

@@ -61,16 +61,16 @@ class PleromaApiMediaAttachment
   final String id;
 
   @override
-  @JsonKey(name: "preview_url")
+  @JsonKey(name: 'preview_url')
   final String? previewUrl;
   @override
-  @JsonKey(name: "remote_url")
+  @JsonKey(name: 'remote_url')
   final String? remoteUrl;
   @override
-  @JsonKey(name: "text_url")
+  @JsonKey(name: 'text_url')
   final String? textUrl;
   @override
-  @JsonKey(name: "type")
+  @JsonKey(name: 'type')
   final String type;
 
   @override
@@ -194,7 +194,7 @@ class PleromaApiMediaAttachment
 
 @JsonSerializable()
 class PleromaApiMediaAttachmentPleromaPart {
-  @JsonKey(name: "mime_type")
+  @JsonKey(name: 'mime_type')
   final String? mimeType;
 
   PleromaApiMediaAttachmentPleromaPart({

@@ -11,7 +11,7 @@ class EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService: preferencesService,
-          key: "$userAtHost.emoji.custom",
+          key: '$userAtHost.emoji.custom',
           schemaVersion: 1,
           jsonConverter: (json) =>
               EmojiPickerCustomImageUrlCategoryItems.fromJson(json),

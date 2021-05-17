@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'account_header_bloc.dart';
 
-final _numberFormat = NumberFormat("#,###");
+final _numberFormat = NumberFormat('#,###');
 
 class AccountHeaderStatisticWidget extends StatelessWidget {
   final String label;

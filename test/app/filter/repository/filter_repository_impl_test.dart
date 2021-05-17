@@ -12,7 +12,7 @@ import '../database/filter_database_test_helper.dart';
 import '../filter_test_helper.dart';
 import 'filter_repository_test_helper.dart';
 
-final String baseUrl = "https://pleroma.com";
+final String baseUrl = 'https://pleroma.com';
 // ignore_for_file: no-magic-number
 void main() {
   late AppDatabase database;
@@ -32,7 +32,7 @@ void main() {
     );
 
     dbFilter = await FilterDatabaseTestHelper.createTestDbFilter(
-      seed: "seed4",
+      seed: 'seed4',
     );
 
     dbFilterPopulated = DbFilterPopulated(
@@ -59,12 +59,12 @@ void main() {
 
   test('upsertAll', () async {
     var dbFilter1 =
-        (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed5"))
-            .copyWith(remoteId: "remoteId1");
+        (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed5'))
+            .copyWith(remoteId: 'remoteId1');
     // same remote id
     var dbFilter2 =
-        (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed6"))
-            .copyWith(remoteId: "remoteId1");
+        (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed6'))
+            .copyWith(remoteId: 'remoteId1');
 
     await filterRepository.upsertAllInDbType(
       [dbFilter1],
@@ -94,19 +94,19 @@ void main() {
 
     await filterRepository.updateByDbIdInDbType(
       dbId: id,
-      dbItem: dbFilter.copyWith(remoteId: "newRemoteId"),
+      dbItem: dbFilter.copyWith(remoteId: 'newRemoteId'),
       batchTransaction: null,
     );
 
     expect(
       (await filterRepository.findByDbIdInAppType(id))!.remoteId,
-      "newRemoteId",
+      'newRemoteId',
     );
   });
 
   test('updateLocalFilterByRemoteFilter', () async {
     var id = await filterRepository.insertInDbType(
-      dbFilter.copyWith(phrase: "phrase2"),
+      dbFilter.copyWith(phrase: 'phrase2'),
       mode: null,
     );
     assert(id > 0, true);
@@ -118,7 +118,7 @@ void main() {
     );
     var newRemoteFilter = DbFilterPopulatedWrapper(
       dbFilterPopulated: DbFilterPopulated(
-        dbFilter: dbFilter.copyWith(id: id, phrase: "phrase3"),
+        dbFilter: dbFilter.copyWith(id: id, phrase: 'phrase3'),
       ),
     ).toPleromaFilter();
     await filterRepository.updateAppTypeByRemoteType(
@@ -127,7 +127,7 @@ void main() {
       batchTransaction: null,
     );
 
-    expect((await filterRepository.findByDbIdInAppType(id))!.phrase, "phrase3");
+    expect((await filterRepository.findByDbIdInAppType(id))!.phrase, 'phrase3');
   });
 
   test('findByRemoteId', () async {
@@ -211,7 +211,7 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed1"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed1'))
           .copyWith(),
     );
 
@@ -219,7 +219,7 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed2"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed2'))
           .copyWith(),
     );
     expect((await query.get()).length, 2);
@@ -238,7 +238,7 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed1"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed1'))
           .copyWith(
         context: [],
       ),
@@ -248,29 +248,29 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed2"))
-          .copyWith(context: ["home", "notifications"]),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed2'))
+          .copyWith(context: ['home', 'notifications']),
     );
     expect((await query.get()).length, 1);
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed3"))
-          .copyWith(context: ["public"]),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed3'))
+          .copyWith(context: ['public']),
     );
     expect((await query.get()).length, 1);
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed4"))
-          .copyWith(context: ["public", "home", "unknown"]),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed4'))
+          .copyWith(context: ['public', 'home', 'unknown']),
     );
     expect((await query.get()).length, 2);
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed5"))
-          .copyWith(context: ["unknown"]),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed5'))
+          .copyWith(context: ['unknown']),
     );
     expect((await query.get()).length, 2);
   });
@@ -289,7 +289,7 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed1"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed1'))
           .copyWith(
         context: [],
       ),
@@ -299,29 +299,29 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed2"))
-          .copyWith(context: ["home", "notifications"]),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed2'))
+          .copyWith(context: ['home', 'notifications']),
     );
     expect((await query.get()).length, 1);
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed3"))
-          .copyWith(context: ["public"]),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed3'))
+          .copyWith(context: ['public']),
     );
     expect((await query.get()).length, 2);
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed4"))
-          .copyWith(context: ["public", "home", "unknown"]),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed4'))
+          .copyWith(context: ['public', 'home', 'unknown']),
     );
     expect((await query.get()).length, 3);
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed5"))
-          .copyWith(context: ["unknown"]),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed5'))
+          .copyWith(context: ['unknown']),
     );
     expect((await query.get()).length, 3);
   });
@@ -341,7 +341,7 @@ void main() {
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
       (await FilterDatabaseTestHelper.createTestDbFilter(
-        seed: "seed1",
+        seed: 'seed1',
         expiresAt: null,
       )),
     );
@@ -350,7 +350,7 @@ void main() {
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
       (await FilterDatabaseTestHelper.createTestDbFilter(
-        seed: "seed2",
+        seed: 'seed2',
         expiresAt: DateTime(3000),
       )),
     );
@@ -360,7 +360,7 @@ void main() {
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
       (await FilterDatabaseTestHelper.createTestDbFilter(
-        seed: "seed3",
+        seed: 'seed3',
         expiresAt: DateTime(1990),
       )),
     );
@@ -373,8 +373,8 @@ void main() {
       filters: null,
       pagination: RepositoryPagination(
         newerThanItem: await FilterTestHelper.createTestFilter(
-          seed: "remoteId5",
-          remoteId: "remoteId5",
+          seed: 'remoteId5',
+          remoteId: 'remoteId5',
         ),
       ),
       orderingTermData: FilterOrderingTermData.remoteIdDesc,
@@ -382,9 +382,9 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed2"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed2'))
           .copyWith(
-        remoteId: "remoteId4",
+        remoteId: 'remoteId4',
       ),
     );
 
@@ -392,9 +392,9 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed2"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed2'))
           .copyWith(
-        remoteId: "remoteId5",
+        remoteId: 'remoteId5',
       ),
     );
 
@@ -402,18 +402,18 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed1"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed1'))
           .copyWith(
-        remoteId: "remoteId6",
+        remoteId: 'remoteId6',
       ),
     );
 
     expect((await query.get()).length, 1);
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed1"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed1'))
           .copyWith(
-        remoteId: "remoteId7",
+        remoteId: 'remoteId7',
       ),
     );
 
@@ -425,8 +425,8 @@ void main() {
       filters: null,
       pagination: RepositoryPagination(
         olderThanItem: await FilterTestHelper.createTestFilter(
-          seed: "remoteId5",
-          remoteId: "remoteId5",
+          seed: 'remoteId5',
+          remoteId: 'remoteId5',
         ),
       ),
       orderingTermData: FilterOrderingTermData.remoteIdDesc,
@@ -434,18 +434,18 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed2"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed2'))
           .copyWith(
-        remoteId: "remoteId3",
+        remoteId: 'remoteId3',
       ),
     );
 
     expect((await query.get()).length, 1);
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed2"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed2'))
           .copyWith(
-        remoteId: "remoteId4",
+        remoteId: 'remoteId4',
       ),
     );
 
@@ -453,9 +453,9 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed2"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed2'))
           .copyWith(
-        remoteId: "remoteId5",
+        remoteId: 'remoteId5',
       ),
     );
 
@@ -463,9 +463,9 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed1"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed1'))
           .copyWith(
-        remoteId: "remoteId6",
+        remoteId: 'remoteId6',
       ),
     );
 
@@ -477,12 +477,12 @@ void main() {
       filters: null,
       pagination: RepositoryPagination(
         olderThanItem: await FilterTestHelper.createTestFilter(
-          seed: "remoteId5",
-          remoteId: "remoteId5",
+          seed: 'remoteId5',
+          remoteId: 'remoteId5',
         ),
         newerThanItem: await FilterTestHelper.createTestFilter(
-          seed: "remoteId2",
-          remoteId: "remoteId2",
+          seed: 'remoteId2',
+          remoteId: 'remoteId2',
         ),
       ),
       orderingTermData: FilterOrderingTermData.remoteIdDesc,
@@ -490,9 +490,9 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed1"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed1'))
           .copyWith(
-        remoteId: "remoteId1",
+        remoteId: 'remoteId1',
       ),
     );
 
@@ -500,9 +500,9 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed2"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed2'))
           .copyWith(
-        remoteId: "remoteId2",
+        remoteId: 'remoteId2',
       ),
     );
 
@@ -510,10 +510,10 @@ void main() {
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
       (await FilterDatabaseTestHelper.createTestDbFilter(
-        seed: "seed3",
+        seed: 'seed3',
       ))
           .copyWith(
-        remoteId: "remoteId3",
+        remoteId: 'remoteId3',
       ),
     );
 
@@ -521,9 +521,9 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed4"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed4'))
           .copyWith(
-        remoteId: "remoteId4",
+        remoteId: 'remoteId4',
       ),
     );
 
@@ -531,9 +531,9 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed5"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed5'))
           .copyWith(
-        remoteId: "remoteId5",
+        remoteId: 'remoteId5',
       ),
     );
 
@@ -541,9 +541,9 @@ void main() {
 
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed6"))
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed6'))
           .copyWith(
-        remoteId: "remoteId6",
+        remoteId: 'remoteId6',
       ),
     );
 
@@ -559,18 +559,18 @@ void main() {
 
     var filter2 = await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed2"))
-          .copyWith(remoteId: "remoteId2"),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed2'))
+          .copyWith(remoteId: 'remoteId2'),
     );
     var filter1 = await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed1"))
-          .copyWith(remoteId: "remoteId1"),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed1'))
+          .copyWith(remoteId: 'remoteId1'),
     );
     var filter3 = await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed3"))
-          .copyWith(remoteId: "remoteId3"),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed3'))
+          .copyWith(remoteId: 'remoteId3'),
     );
 
     List<IFilter> actualList = await query.get();
@@ -612,18 +612,18 @@ void main() {
 
     var filter2 = await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed2"))
-          .copyWith(remoteId: "remoteId2"),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed2'))
+          .copyWith(remoteId: 'remoteId2'),
     );
     var filter1 = await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed1"))
-          .copyWith(remoteId: "remoteId1"),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed1'))
+          .copyWith(remoteId: 'remoteId1'),
     );
     var filter3 = await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed3"))
-          .copyWith(remoteId: "remoteId3"),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed3'))
+          .copyWith(remoteId: 'remoteId3'),
     );
 
     List<IFilter> actualList = await query.get();
@@ -667,18 +667,18 @@ void main() {
 
     var filter2 = await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed2"))
-          .copyWith(remoteId: "remoteId2"),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed2'))
+          .copyWith(remoteId: 'remoteId2'),
     );
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed1"))
-          .copyWith(remoteId: "remoteId1"),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed1'))
+          .copyWith(remoteId: 'remoteId1'),
     );
     await FilterRepositoryTestHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed3"))
-          .copyWith(remoteId: "remoteId3"),
+      (await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed3'))
+          .copyWith(remoteId: 'remoteId3'),
     );
 
     List<IFilter> actualList = await query.get();

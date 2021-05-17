@@ -75,7 +75,7 @@ Future<void> main() async {
     when(PleromaApiStatusEmojiReactionServiceMock.pleromaApiState)
         .thenReturn(PleromaApiState.validAuth);
 
-    status = await StatusTestHelper.createTestStatus(seed: "seed1");
+    status = await StatusTestHelper.createTestStatus(seed: 'seed1');
 
     statusBloc = LocalStatusBloc(
       status: status,
@@ -111,7 +111,7 @@ Future<void> main() async {
     StatusTestHelper.expectStatus(statusBloc.status, status);
 
     var newValue = await StatusTestHelper.createTestStatus(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: status.remoteId,
     );
 
@@ -146,10 +146,10 @@ Future<void> main() async {
       status.reblog,
     );
 
-    var reblog = await StatusTestHelper.createTestStatus(seed: "reblog");
+    var reblog = await StatusTestHelper.createTestStatus(seed: 'reblog');
 
     var newValue = await StatusTestHelper.createTestStatus(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: status.remoteId,
       reblog: reblog,
     );
@@ -184,10 +184,10 @@ Future<void> main() async {
     );
 
     var reblog =
-        await StatusTestHelper.createTestStatus(seed: "reblogOrOriginal");
+        await StatusTestHelper.createTestStatus(seed: 'reblogOrOriginal');
 
     var newValue = await StatusTestHelper.createTestStatus(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: status.remoteId,
       reblog: reblog,
     );
@@ -222,7 +222,7 @@ Future<void> main() async {
       status.content,
     );
 
-    var newValue = "newContent";
+    var newValue = 'newContent';
 
     var listenedValue;
 
@@ -250,7 +250,7 @@ Future<void> main() async {
   });
 
   test('contentHtmlWithEmojis', () async {
-    var newValue = "newContent :emoji: :emoji1: :emoji2:";
+    var newValue = 'newContent :emoji: :emoji1: :emoji2:';
 
     var listenedValue;
 
@@ -286,15 +286,15 @@ Future<void> main() async {
       content: newValue,
       emojis: [
         PleromaApiEmoji(
-          shortcode: "emoji1",
-          url: "https://fedi.app/emoji1.png",
+          shortcode: 'emoji1',
+          url: 'https://fedi.app/emoji1.png',
           visibleInPicker: null,
           category: null,
           staticUrl: null,
         ),
         PleromaApiEmoji(
-          shortcode: "emoji2",
-          url: "https://fedi.app/emoji2.png",
+          shortcode: 'emoji2',
+          url: 'https://fedi.app/emoji2.png',
           visibleInPicker: null,
           category: null,
           staticUrl: null,
@@ -304,18 +304,18 @@ Future<void> main() async {
     expect(
       statusBloc.contentWithEmojis,
       EmojiText(
-        text: "newContent :emoji: :emoji1: :emoji2:",
+        text: 'newContent :emoji: :emoji1: :emoji2:',
         emojis: [
           PleromaApiEmoji(
-            shortcode: "emoji1",
-            url: "https://fedi.app/emoji1.png",
+            shortcode: 'emoji1',
+            url: 'https://fedi.app/emoji1.png',
             staticUrl: null,
             visibleInPicker: null,
             category: null,
           ),
           PleromaApiEmoji(
-            shortcode: "emoji2",
-            url: "https://fedi.app/emoji2.png",
+            shortcode: 'emoji2',
+            url: 'https://fedi.app/emoji2.png',
             staticUrl: null,
             visibleInPicker: null,
             category: null,
@@ -326,18 +326,18 @@ Future<void> main() async {
     expect(
       listenedValue,
       EmojiText(
-        text: "newContent :emoji: :emoji1: :emoji2:",
+        text: 'newContent :emoji: :emoji1: :emoji2:',
         emojis: [
           PleromaApiEmoji(
-            shortcode: "emoji1",
-            url: "https://fedi.app/emoji1.png",
+            shortcode: 'emoji1',
+            url: 'https://fedi.app/emoji1.png',
             staticUrl: null,
             visibleInPicker: null,
             category: null,
           ),
           PleromaApiEmoji(
-            shortcode: "emoji2",
-            url: "https://fedi.app/emoji2.png",
+            shortcode: 'emoji2',
+            url: 'https://fedi.app/emoji2.png',
             staticUrl: null,
             visibleInPicker: null,
             category: null,
@@ -354,7 +354,7 @@ Future<void> main() async {
       status.card,
     );
 
-    var newValue = PleromaApiCard.only(url: "fedi.app");
+    var newValue = PleromaApiCard.only(url: 'fedi.app');
 
     var listenedValue;
 
@@ -387,11 +387,11 @@ Future<void> main() async {
       status.card,
     );
 
-    var reblogValue = PleromaApiCard.only(url: "fedi_1.app");
-    var newValue = PleromaApiCard.only(url: "fedi_2.app");
+    var reblogValue = PleromaApiCard.only(url: 'fedi_1.app');
+    var newValue = PleromaApiCard.only(url: 'fedi_2.app');
 
     var reblog =
-        await StatusTestHelper.createTestStatus(seed: "reblogOrOriginalCard");
+        await StatusTestHelper.createTestStatus(seed: 'reblogOrOriginalCard');
 
     var listenedValue;
 
@@ -432,7 +432,7 @@ Future<void> main() async {
       status.reblog != null,
     );
 
-    var reblog = await StatusTestHelper.createTestStatus(seed: "isHaveReblog");
+    var reblog = await StatusTestHelper.createTestStatus(seed: 'isHaveReblog');
 
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -452,7 +452,7 @@ Future<void> main() async {
       status.account,
     );
 
-    var newValue = await AccountTestHelper.createTestAccount(seed: "seed3");
+    var newValue = await AccountTestHelper.createTestAccount(seed: 'seed3');
 
     var listenedValue;
 
@@ -486,11 +486,11 @@ Future<void> main() async {
     );
 
     var reblog = await StatusTestHelper.createTestStatus(
-      seed: "accountReblogOrOriginal",
+      seed: 'accountReblogOrOriginal',
     );
 
-    var reblogValue = await AccountTestHelper.createTestAccount(seed: "reblog");
-    var newValue = await AccountTestHelper.createTestAccount(seed: "test");
+    var reblogValue = await AccountTestHelper.createTestAccount(seed: 'reblog');
+    var newValue = await AccountTestHelper.createTestAccount(seed: 'test');
 
     var listenedValue;
 
@@ -690,7 +690,7 @@ Future<void> main() async {
       status.inReplyToAccountRemoteId?.isNotEmpty == true,
     );
 
-    var newValue = "inReplyToRemoteId";
+    var newValue = 'inReplyToRemoteId';
 
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -706,7 +706,7 @@ Future<void> main() async {
       status.reblog != null,
     );
 
-    var reblog = await StatusTestHelper.createTestStatus(seed: "isHaveReblog");
+    var reblog = await StatusTestHelper.createTestStatus(seed: 'isHaveReblog');
 
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -724,7 +724,7 @@ Future<void> main() async {
 
     var newValue = [
       PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
-        seed: "seed",
+        seed: 'seed',
       ),
     ];
 
@@ -761,7 +761,7 @@ Future<void> main() async {
 
     var newValue = [
       PleromaApiStatusEmojiReaction.only(
-        name: "newName",
+        name: 'newName',
         count: 1,
         me: true,
       ),
@@ -800,17 +800,17 @@ Future<void> main() async {
     );
 
     var reblog = await StatusTestHelper.createTestStatus(
-      seed: "reblogPlusOriginalEmojiReactions",
+      seed: 'reblogPlusOriginalEmojiReactions',
     );
 
     var reblogEmojiAccount =
-        await AccountTestHelper.createTestAccount(seed: "reblogEmojiAccount");
+        await AccountTestHelper.createTestAccount(seed: 'reblogEmojiAccount');
     var emojiAccount =
-        await AccountTestHelper.createTestAccount(seed: "emojiAccount");
+        await AccountTestHelper.createTestAccount(seed: 'emojiAccount');
 
     var reblogValue = [
       PleromaApiStatusEmojiReaction(
-        name: "emoji",
+        name: 'emoji',
         count: 2,
         me: false,
         accounts: [
@@ -818,7 +818,7 @@ Future<void> main() async {
         ],
       ),
       PleromaApiStatusEmojiReaction(
-        name: "emojiReblog",
+        name: 'emojiReblog',
         count: 1,
         me: true,
         accounts: [],
@@ -826,7 +826,7 @@ Future<void> main() async {
     ];
     var newValue = [
       PleromaApiStatusEmojiReaction(
-        name: "emoji",
+        name: 'emoji',
         count: 3,
         me: true,
         accounts: [
@@ -834,7 +834,7 @@ Future<void> main() async {
         ],
       ),
       PleromaApiStatusEmojiReaction(
-        name: "emojiOriginal",
+        name: 'emojiOriginal',
         count: 1,
         me: true,
         accounts: [],
@@ -880,13 +880,13 @@ Future<void> main() async {
 
     var expected = [
       PleromaApiStatusEmojiReaction(
-        name: "emojiOriginal",
+        name: 'emojiOriginal',
         count: 1,
         me: true,
         accounts: [],
       ),
       PleromaApiStatusEmojiReaction(
-        name: "emoji",
+        name: 'emoji',
         count: 5,
         me: true,
         accounts: [
@@ -895,7 +895,7 @@ Future<void> main() async {
         ],
       ),
       PleromaApiStatusEmojiReaction(
-        name: "emojiReblog",
+        name: 'emojiReblog',
         count: 1,
         me: true,
         accounts: [],
@@ -945,7 +945,7 @@ Future<void> main() async {
       status.account.avatar,
     );
 
-    var newValue = await AccountTestHelper.createTestAccount(seed: "seed3");
+    var newValue = await AccountTestHelper.createTestAccount(seed: 'seed3');
 
     var listenedValue;
 
@@ -980,7 +980,7 @@ Future<void> main() async {
 
     var newValue = [
       PleromaApiMention.only(
-        username: "newUsername",
+        username: 'newUsername',
         url: 'url',
         id: 'id',
         acct: 'acct',
@@ -1018,7 +1018,7 @@ Future<void> main() async {
       status.spoilerText,
     );
 
-    var newValue = "newSpoilerText";
+    var newValue = 'newSpoilerText';
 
     var listenedValue;
 
@@ -1117,7 +1117,7 @@ Future<void> main() async {
       status.spoilerText?.isNotEmpty == true,
     );
 
-    var newValue = "newSpoilerText";
+    var newValue = 'newSpoilerText';
 
     var listenedValue;
 
@@ -1136,7 +1136,7 @@ Future<void> main() async {
     expect(statusBloc.containsSpoiler, true);
     expect(listenedValue, true);
 
-    await _update(status.copyWith(spoilerText: ""));
+    await _update(status.copyWith(spoilerText: ''));
 
     expect(statusBloc.containsSpoiler, false);
     expect(listenedValue, false);
@@ -1153,7 +1153,7 @@ Future<void> main() async {
   //   // hack to execute notify callbacks
   //   await Future.delayed(Duration(milliseconds: 1));
   //
-  //   await _update(status.copyWith(spoilerText: "newSpoilerText"));
+  //   await _update(status.copyWith(spoilerText: 'newSpoilerText'));
   //
   //   expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
   //   expect(listenedValue, false);
@@ -1251,7 +1251,7 @@ Future<void> main() async {
     var newValue = 3;
 
     var reblog =
-        await StatusTestHelper.createTestStatus(seed: "favouritesCount");
+        await StatusTestHelper.createTestStatus(seed: 'favouritesCount');
 
     var listenedValue;
 
@@ -1336,7 +1336,7 @@ Future<void> main() async {
     var reblogValue = 4;
     var newValue = 3;
 
-    var reblog = await StatusTestHelper.createTestStatus(seed: "reblogsCount");
+    var reblog = await StatusTestHelper.createTestStatus(seed: 'reblogsCount');
 
     var listenedValue;
 
@@ -1424,7 +1424,7 @@ Future<void> main() async {
     status = status.copyWith(id: id);
 
     var newValue = await StatusTestHelper.createTestStatus(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: status.remoteId,
     );
 
@@ -1458,24 +1458,24 @@ Future<void> main() async {
   });
 
   test('loadAccountByMentionUrl', () async {
-    var accountId1 = "accountId1";
+    var accountId1 = 'accountId1';
     await _update(status.copyWith(mentions: [
       PleromaApiMention(
         id: accountId1,
-        url: "url1",
-        acct: "acct1",
-        username: "name1",
+        url: 'url1',
+        acct: 'acct1',
+        username: 'name1',
       ),
       PleromaApiMention(
-        id: "accountId2",
-        url: "url2",
-        acct: "acct2",
-        username: "name2",
+        id: 'accountId2',
+        url: 'url2',
+        acct: 'acct2',
+        username: 'name2',
       ),
     ]));
 
     var account = await AccountTestHelper.createTestAccount(
-      seed: "loadAccountByMentionUrl",
+      seed: 'loadAccountByMentionUrl',
       remoteId: accountId1,
     );
 
@@ -1485,18 +1485,18 @@ Future<void> main() async {
     );
 
     expect(
-      await statusBloc.loadAccountByMentionUrl(url: "invalid url"),
+      await statusBloc.loadAccountByMentionUrl(url: 'invalid url'),
       null,
     );
     AccountTestHelper.expectAccount(
-      await statusBloc.loadAccountByMentionUrl(url: "url1"),
+      await statusBloc.loadAccountByMentionUrl(url: 'url1'),
       account,
     );
   });
 
   test('inReplyToAccount', () async {
     var account1 =
-        await AccountTestHelper.createTestAccount(seed: "inReplyToAccount");
+        await AccountTestHelper.createTestAccount(seed: 'inReplyToAccount');
 
     await accountRepository.upsertInRemoteType(
       account1.toPleromaApiAccount(),
@@ -1854,11 +1854,11 @@ Future<void> main() async {
   });
 
   test('requestToggleEmojiReaction', () async {
-    var emoji1 = "emoji1";
-    var emoji2 = "emoji2";
+    var emoji1 = 'emoji1';
+    var emoji2 = 'emoji2';
 
-    var account1 = await AccountTestHelper.createTestAccount(seed: "account1");
-    var account2 = await AccountTestHelper.createTestAccount(seed: "account2");
+    var account1 = await AccountTestHelper.createTestAccount(seed: 'account1');
+    var account2 = await AccountTestHelper.createTestAccount(seed: 'account2');
 
     var reaction2 = PleromaApiStatusEmojiReaction(
       name: emoji2,

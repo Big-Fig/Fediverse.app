@@ -23,7 +23,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("timeline_tab_bloc_impl.dart");
+var _logger = Logger('timeline_tab_bloc_impl.dart');
 
 class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   @override
@@ -66,7 +66,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     required this.filterRepository,
     required this.paginationSettingsBloc,
   }) {
-    _logger.finest(() => "TimelineTabBloc timelineId $timelineId");
+    _logger.finest(() => 'TimelineTabBloc timelineId $timelineId');
 
     timelineLocalPreferencesBloc = TimelineLocalPreferenceBloc.byId(
       preferencesService,

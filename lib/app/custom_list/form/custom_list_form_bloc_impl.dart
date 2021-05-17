@@ -10,7 +10,7 @@ class CustomListFormBloc extends FormBloc implements ICustomListFormBloc {
 
   CustomListFormBloc({required String? initialTitleValue})
       : titleField = StringValueFormFieldBloc(
-          originValue: initialTitleValue ?? "",
+          originValue: initialTitleValue ?? '',
           validators: [
             StringValueFormFieldNonEmptyValidationError.createValidator(),
           ],

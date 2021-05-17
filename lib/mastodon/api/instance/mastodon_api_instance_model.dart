@@ -53,13 +53,13 @@ abstract class IMastodonApiInstance {
 //@HiveType()
 @HiveType(typeId: -32 + 61)
 class MastodonApiInstanceStats implements IJsonObject {
-  @JsonKey(name: "user_count")
+  @JsonKey(name: 'user_count')
   @HiveField(0)
   final int? userCount;
-  @JsonKey(name: "status_count")
+  @JsonKey(name: 'status_count')
   @HiveField(1)
   final int? statusCount;
-  @JsonKey(name: "domain_count")
+  @JsonKey(name: 'domain_count')
   @HiveField(2)
   final int? domainCount;
 
@@ -105,7 +105,7 @@ class MastodonApiInstanceStats implements IJsonObject {
 //@HiveType()
 @HiveType(typeId: -32 + 62)
 class MastodonApiUrls implements IJsonObject {
-  @JsonKey(name: "streaming_api")
+  @JsonKey(name: 'streaming_api')
   @HiveField(0)
   final String? streamingApi;
 

@@ -39,5 +39,5 @@ class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
         );
 
   @override
-  String get logTag => "custom_list_timeline_websockets_handler_impl.dart";
+  String get logTag => 'custom_list_timeline_websockets_handler_impl.dart';
 }

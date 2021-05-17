@@ -32,7 +32,7 @@ class StatusActionCounterWidget extends StatelessWidget {
           // ignore: no-magic-number
           constraints: BoxConstraints(minWidth: 10),
           child: Text(
-            value == 0 ? "" : value.toString(),
+            value == 0 ? '' : value.toString(),
             style: onClick != null
                 ? IFediUiTextTheme.of(context).smallShortDarkGrey
                 : IFediUiTextTheme.of(context).smallShortLightGrey,

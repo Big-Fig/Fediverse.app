@@ -32,7 +32,7 @@ class _TosPageBodyWigdet extends StatelessWidget {
           child: FutureBuilder<String>(
             // TODO: Should be localized
             future: DefaultAssetBundle.of(context)
-                .loadString("assets/terms/terms.rtf"),
+                .loadString('assets/terms/terms.rtf'),
             builder: (context, snapshot) {
               return Text(
                 snapshot.data ?? '',

@@ -169,7 +169,7 @@ class _PollMetadataDotSeparatorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      " · ",
+      ' · ',
       style: IFediUiTextTheme.of(context).mediumShortGrey,
     );
   }
@@ -494,14 +494,14 @@ class PollOptionVotesCountWidget extends StatelessWidget {
     var poll = Provider.of<IPleromaApiPoll>(context);
 
     return Text(
-      "(${poll.votesCount.toString()})",
+      '(${poll.votesCount.toString()})',
       style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
     );
   }
 }
 
 class PollOptionVotesPercentWidget extends StatelessWidget {
-  static final NumberFormat _format = NumberFormat("#%");
+  static final NumberFormat _format = NumberFormat('#%');
 
   const PollOptionVotesPercentWidget();
 

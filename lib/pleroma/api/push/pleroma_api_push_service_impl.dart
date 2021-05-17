@@ -6,7 +6,7 @@ import 'package:fedi/rest/rest_request_model.dart';
 
 class PleromaApiPushService extends BasePleromaApiService
     implements IPleromaApiPushService {
-  final subscriptionRelativeUrlPath = "api/v1/push/subscription";
+  final subscriptionRelativeUrlPath = 'api/v1/push/subscription';
   @override
   final IPleromaApiAuthRestService restService;
   final PleromaApiPushSubscriptionKeys keys;

@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("domainBlock_pagination_list_widget.dart");
+var _logger = Logger('domainBlock_pagination_list_widget.dart');
 
 class MyAccountDomainBlockPaginationListWidget
     extends FediPaginationListWidget<DomainBlock> {
@@ -59,7 +59,7 @@ class MyAccountDomainBlockPaginationListWidget
         footer: footer,
         itemBuilder: (context, index) {
           var item = items[index];
-          _logger.finest(() => "itemBuilder ${item.domain}");
+          _logger.finest(() => 'itemBuilder ${item.domain}');
 
           return Provider<DomainBlock>.value(
             value: item,

@@ -30,7 +30,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("notification_list_item_widget.dart");
+var _logger = Logger('notification_list_item_widget.dart');
 
 class NotificationListItemWidget extends StatelessWidget {
   const NotificationListItemWidget();
@@ -39,7 +39,7 @@ class NotificationListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
 
-    _logger.finest(() => "build ${notificationBloc.remoteId}");
+    _logger.finest(() => 'build ${notificationBloc.remoteId}');
 
     var bodyWidget = const _NotificationListItemBodyWidget();
 
@@ -362,7 +362,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
       case PleromaApiNotificationType.mention:
         rawText =
-            "<b>${S.of(context).app_notification_header_mention_prefix}</b>";
+            '<b>${S.of(context).app_notification_header_mention_prefix}</b>';
         rawText += S.of(context).app_notification_header_mention_postfix(
               _extractStatusRawContent(notificationBloc)!,
             );
@@ -383,7 +383,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
       case PleromaApiNotificationType.pleromaChatMention:
         rawText =
-            "<b>${S.of(context).app_notification_header_pleromaChatMention_prefix}</b>";
+            '<b>${S.of(context).app_notification_header_pleromaChatMention_prefix}</b>';
         rawText +=
             S.of(context).app_notification_header_pleromaChatMention_postfix(
                   _extractChatMessageRawContent(notificationBloc)!,
@@ -392,7 +392,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
       case PleromaApiNotificationType.pleromaReport:
         rawText = S.of(context).app_notification_header_report(
-              notificationBloc.account?.acct ?? "",
+              notificationBloc.account?.acct ?? '',
             );
         break;
       case PleromaApiNotificationType.unknown:
@@ -401,7 +401,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         if (isHaveStatus) {
           statusText = _extractStatusRawContent(notificationBloc);
         } else {
-          statusText = "";
+          statusText = '';
         }
 
         var isHaveEmoji = notificationBloc.notification.emoji != null;
@@ -409,10 +409,10 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         if (isHaveEmoji) {
           emojiText = notificationBloc.notification.emoji;
         } else {
-          emojiText = "";
+          emojiText = '';
         }
         rawText = S.of(context).app_notification_header_unknown(
-              "${notificationBloc.type}: $emojiText $statusText",
+              '${notificationBloc.type}: $emojiText $statusText',
             );
         break;
     }
@@ -433,7 +433,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
               (mediaAttachment) =>
                   mediaAttachment.description ?? mediaAttachment.url,
             )
-            .join(", ");
+            .join(', ');
       }
     }
 

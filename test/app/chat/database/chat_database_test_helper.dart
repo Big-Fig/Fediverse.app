@@ -14,7 +14,7 @@ class ChatDatabaseTestHelper {
   }) async =>
       DbChat(
         id: null,
-        remoteId: remoteId ?? seed + "remoteId1",
+        remoteId: remoteId ?? seed + 'remoteId1',
         unread: unread ?? seed.hashCode,
         updatedAt: updatedAt ?? DateTime(seed.hashCode % 2000),
         accountRemoteId: dbAccount.remoteId,

@@ -14,7 +14,7 @@ class FediIconTabIndicatorItemWidget<T> extends StatelessWidget {
   const FediIconTabIndicatorItemWidget({
     required this.tabToIconMapper,
     required this.style,
-  }) : assert(style == FediTabStyle.bubble, "Only bubble supported for now");
+  }) : assert(style == FediTabStyle.bubble, 'Only bubble supported for now');
 
   @override
   Widget build(BuildContext context) {

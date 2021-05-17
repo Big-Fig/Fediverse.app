@@ -11,7 +11,7 @@ import 'package:fedi/web_sockets/service/config/web_sockets_service_config_bloc.
 import 'package:fedi/web_sockets/web_sockets_model.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("web_sockets_channel_impl.dart");
+var _logger = Logger('web_sockets_channel_impl.dart');
 
 class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
     implements IWebSocketsChannel<T> {
@@ -29,7 +29,7 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
     required this.config,
     required this.serviceConfigBloc,
   }) {
-    _logger.finest(() => "constructor $config");
+    _logger.finest(() => 'constructor $config');
 
     handlingType = serviceConfigBloc.handlingType;
 
@@ -55,7 +55,7 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
 
   void _onCancel() {
     listening = false;
-    _logger.finest(() => "_onCancel");
+    _logger.finest(() => '_onCancel');
     _source?.dispose();
     _sourceSubscription?.cancel();
     _source = null;
@@ -64,13 +64,13 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
 
   void _onListen() {
     listening = true;
-    _logger.finest(() => "_onListen called");
+    _logger.finest(() => '_onListen called');
     _source = config.createChannelSource();
     var eventsStream = _source!.eventsStream;
     _sourceSubscription =
         eventsStream.listen(
       (event) {
-        _logger.finest(() => "newEvent event");
+        _logger.finest(() => 'newEvent event');
         listeners.forEach(
           (listener) {
             // todo: think about cast
@@ -85,7 +85,7 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
   IDisposable listenForEvents({
     required WebSocketChannelListener<T> listener,
   }) {
-    _logger.finest(() => "listenForEvents");
+    _logger.finest(() => 'listenForEvents');
     listeners.add(listener);
     _recheckSubscription();
 
@@ -134,10 +134,10 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
       }
     }
 
-    _logger.finest(() => "_recheckSubscription \n"
-        "handlingType $handlingType \n"
-        "isNeedListen $isNeedListen \n"
-        "listening $listening \n");
+    _logger.finest(() => '_recheckSubscription \n'
+        'handlingType $handlingType \n'
+        'isNeedListen $isNeedListen \n'
+        'listening $listening \n');
 
     if (isNeedListen && !listening) {
       _onListen();

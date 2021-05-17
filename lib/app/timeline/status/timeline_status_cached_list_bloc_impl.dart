@@ -31,7 +31,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("timeline_status_cached_list_bloc_impl.dart");
+var _logger = Logger('timeline_status_cached_list_bloc_impl.dart');
 
 class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     implements IStatusCachedListBloc {
@@ -125,7 +125,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       streamSubscription: timelineLocalPreferencesBloc.stream.listen(
         (Timeline? timeline) {
           _logger.finest(
-            () => "timelineLocalPreferencesBloc timeline $timeline",
+            () => 'timelineLocalPreferencesBloc timeline $timeline',
           );
           if (currentTimelineData != timeline) {
             currentTimelineData = timeline;
@@ -152,10 +152,10 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
     var isWebSocketsUpdatesEnabled =
         timeline.isWebSocketsUpdatesEnabled ?? true;
-    _logger.finest(() => "resubscribeWebSocketsUpdates "
-        "isWebSocketsUpdatesEnabled $isWebSocketsUpdatesEnabled "
-        "webSocketsListenType $webSocketsListenType "
-        "timelineType $timelineType ");
+    _logger.finest(() => 'resubscribeWebSocketsUpdates '
+        'isWebSocketsUpdatesEnabled $isWebSocketsUpdatesEnabled '
+        'webSocketsListenType $webSocketsListenType '
+        'timelineType $timelineType ');
     if (isWebSocketsUpdatesEnabled) {
       switch (timelineType) {
         case TimelineType.public:
@@ -232,10 +232,10 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t _timeline = $timeline"
-        "\t newerThan = $newerThan"
-        "\t olderThan = $olderThan");
+    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
+        '\t _timeline = $timeline'
+        '\t newerThan = $newerThan'
+        '\t olderThan = $olderThan');
 
     List<IPleromaApiStatus>? remoteStatuses;
 
@@ -273,8 +273,8 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
       return true;
     } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "statuses is null");
+      _logger.severe(() => 'error during refreshItemsFromRemoteForPage: '
+          'statuses is null');
 
       return false;
     }
@@ -464,7 +464,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     );
 
     _logger.finest(
-      () => "timelineType $timelineType,  filters $filters",
+      () => 'timelineType $timelineType,  filters $filters',
     );
   }
 

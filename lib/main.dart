@@ -59,7 +59,7 @@ import 'package:provider/provider.dart';
 import 'app/notification/repository/notification_repository.dart';
 import 'generated/l10n.dart';
 
-var _logger = Logger("main.dart");
+var _logger = Logger('main.dart');
 
 CurrentAuthInstanceContextBloc? currentInstanceContextBloc;
 
@@ -95,8 +95,8 @@ void main() async {
 
       initBloc.initLoadingStateStream.listen(
         (newState) async {
-          _logger.fine(() => "appContextBloc.initLoadingStateStream.newState "
-              "$newState");
+          _logger.fine(() => 'appContextBloc.initLoadingStateStream.newState '
+              '$newState');
 
           if (newState == AsyncInitLoadingState.finished) {
             var currentInstanceBloc =
@@ -139,7 +139,7 @@ void runNotInitializedSplashApp() {
 }
 
 void runInitFailedApp() {
-  _logger.severe(() => "failed to init App");
+  _logger.severe(() => 'failed to init App');
   runZonedGuarded(
     () async {
       runApp(
@@ -197,7 +197,7 @@ void runInitializedApp({
   required AuthInstance? currentInstance,
   required String appTitle,
 }) {
-  _logger.finest(() => "runInitializedApp $runInitializedApp");
+  _logger.finest(() => 'runInitializedApp $runInitializedApp');
   runZonedGuarded(
     () async {
       if (currentInstance != null) {
@@ -239,7 +239,7 @@ Future runInitializedCurrentInstanceApp({
           currentInstanceContextBloc!.get();
 
       _logger.finest(
-        () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage",
+        () => 'buildCurrentInstanceApp CurrentInstanceContextLoadingPage',
       );
       runApp(
         appContextBloc.provideContextToChild(
@@ -270,7 +270,7 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
   required BuildContext context,
   required INotificationPushLoaderBloc pushLoaderBloc,
 }) {
-  _logger.finest(() => "createCurrentInstanceContextBloc");
+  _logger.finest(() => 'createCurrentInstanceContextBloc');
   var currentAuthInstanceContextLoadingBloc =
       CurrentAuthInstanceContextInitBloc.createFromContext(context);
   currentAuthInstanceContextLoadingBloc.performAsyncInit();
@@ -478,8 +478,8 @@ class FediApp extends StatelessWidget {
                   ? ThemeMode.dark
                   : ThemeMode.light;
 
-          _logger.finest(() => "currentTheme $currentTheme "
-              "themeMode $themeMode");
+          _logger.finest(() => 'currentTheme $currentTheme '
+              'themeMode $themeMode');
 
           return provideCurrentTheme(
             currentTheme: currentTheme ?? lightFediUiTheme,
@@ -496,7 +496,7 @@ class FediApp extends StatelessWidget {
                     scriptCode: localizationLocale.scriptCode,
                   );
                 }
-                _logger.finest(() => "locale $locale");
+                _logger.finest(() => 'locale $locale');
 
                 return OverlayNotificationServiceProvider(
                   child: ToastServiceProvider(
@@ -515,7 +515,7 @@ class FediApp extends StatelessWidget {
                       theme: lightFediUiTheme.themeData,
                       darkTheme: darkFediUiTheme.themeData,
                       themeMode: themeMode,
-                      initialRoute: "/",
+                      initialRoute: '/',
                       home: Builder(builder: (context) {
                         // it is important to init ToastHandlerBloc
                         // as MaterialApp child

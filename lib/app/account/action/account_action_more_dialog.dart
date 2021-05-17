@@ -66,7 +66,7 @@ class AccountActionMoreDialog extends StatelessWidget {
 
         return FediChooserDialogBody(
           title: S.of(context).app_account_action_popup_title,
-          content: "${accountBloc.acct}",
+          content: '${accountBloc.acct}',
           actions: [
             if (isLocal && accountBloc.isAcctRemoteDomainExist)
               AccountActionMoreDialog.buildAccountOpenOnRemoteInstance(context),
@@ -178,9 +178,9 @@ class AccountActionMoreDialog extends StatelessWidget {
         if (isLocal) {
           goToLocalInstanceDetailsPage(context);
         } else {
-          // todo: https shouldn't be hardcoded
+          // todo: https shouldnt be hardcoded
           var remoteInstanceUri = Uri.parse(
-            "https://$remoteDomainOrNull",
+            'https://$remoteDomainOrNull',
           );
           goToRemoteInstanceDetailsPage(
             context,

@@ -6,7 +6,7 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("hive_local_preferences_service_impl.dart");
+var _logger = Logger('hive_local_preferences_service_impl.dart');
 
 class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
@@ -22,7 +22,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    _logger.fine(() => "internalAsyncInit");
+    _logger.fine(() => 'internalAsyncInit');
     _box = await Hive.openBox(
       boxName,
       path: path,
@@ -46,7 +46,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   @override
   bool isKeyExist(String key) {
     var contains = _box.containsKey(key);
-    _logger.fine(() => "isKeyExist $key => $contains");
+    _logger.fine(() => 'isKeyExist $key => $contains');
 
     return contains;
   }

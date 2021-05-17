@@ -9,7 +9,7 @@ import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("filter_bloc_impl.dart");
+var _logger = Logger('filter_bloc_impl.dart');
 
 class FilterBloc extends DisposableOwner implements IFilterBloc {
   @override
@@ -52,7 +52,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
     required IFilter filter,
     bool needRefreshFromNetworkOnInit = false,
     this.isNeedWatchLocalRepositoryForUpdates =
-        true, // todo: remove hack. Don't init when bloc quickly disposed. Help
+        true, // todo: remove hack. Dont init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
   }) : _filterSubject = BehaviorSubject.seeded(filter) {
@@ -110,7 +110,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
 
   @override
   Future dispose() {
-    _logger.finest(() => "dispose");
+    _logger.finest(() => 'dispose');
 
     return super.dispose();
   }

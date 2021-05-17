@@ -11,7 +11,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("timelines_home_tab_storage_bloc_impl.dart");
+var _logger = Logger('timelines_home_tab_storage_bloc_impl.dart');
 
 class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
     implements ITimelinesHomeTabStorageBloc {
@@ -125,7 +125,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   @override
   Future onItemsUpdated(List<Timeline> timelines) async {
     var newTimelineIds = timelines.map((timeline) => timeline.id).toList();
-    _logger.finest(() => "onItemsChanged $newTimelineIds");
+    _logger.finest(() => 'onItemsChanged $newTimelineIds');
     var updatedStorage = storage!.copyWith(timelineIds: newTimelineIds);
     await preferences.setValue(updatedStorage);
   }
@@ -185,7 +185,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
     final oldValue = timelines.removeAt(oldIndex);
     timelines.insert(newIndex, oldValue);
 
-    _logger.finest(() => "swapItemsAt afterItems $timelines");
+    _logger.finest(() => 'swapItemsAt afterItems $timelines');
 
     onItemsUpdated(timelines);
   }

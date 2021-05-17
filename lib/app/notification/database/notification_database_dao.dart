@@ -9,11 +9,11 @@ import 'package:moor/moor.dart';
 
 part 'notification_database_dao.g.dart';
 
-var _accountAliasId = "account";
-var _statusAliasId = "status";
-var _statusAccountAliasId = "status_account";
-var _statusReblogAliasId = "status_reblog";
-var _statusReblogAccountAliasId = "status_reblog_account";
+var _accountAliasId = 'account';
+var _statusAliasId = 'status';
+var _statusAccountAliasId = 'status_account';
+var _statusReblogAliasId = 'status_reblog';
+var _statusReblogAccountAliasId = 'status_reblog_account';
 
 @UseDao(
   tables: [
@@ -79,7 +79,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     required String phrase,
     required bool wholeWord,
   }) {
-    final regex = r"\b" + phrase + r"\b";
+    final regex = r'\b' + phrase + r'\b';
     if (wholeWord) {
       return query
         ..where(
@@ -88,7 +88,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     } else {
       return query
         ..where(
-          statusAlias.content.like("%$phrase%").not(),
+          statusAlias.content.like('%$phrase%').not(),
         );
     }
   }
@@ -98,7 +98,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     required String phrase,
     required bool wholeWord,
   }) {
-    final regex = r"\b" + phrase + r"\b";
+    final regex = r'\b' + phrase + r'\b';
     if (wholeWord) {
       return query
         ..where(
@@ -107,7 +107,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     } else {
       return query
         ..where(
-          statusAlias.spoilerText.like("%$phrase%").not(),
+          statusAlias.spoilerText.like('%$phrase%').not(),
         );
     }
   }
@@ -161,25 +161,25 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
             .toList());
 
   Future markAsRead({required String remoteId}) {
-    var update = "UPDATE db_notifications "
-        "SET unread = 0 "
-        "WHERE remote_id = '$remoteId'";
+    var update = 'UPDATE db_notifications '
+        'SET unread = 0 '
+        'WHERE remote_id = "$remoteId"';
     var query = db.customUpdate(update, updates: {dbNotifications});
 
     return query;
   }
 
   Future markAllAsRead() {
-    var update = "UPDATE db_notifications SET unread = 0";
+    var update = 'UPDATE db_notifications SET unread = 0';
     var query = db.customUpdate(update, updates: {dbNotifications});
 
     return query;
   }
 
   Future markAsDismissed({required String? remoteId}) {
-    var update = "UPDATE db_notifications "
-        "SET dismissed = 1 "
-        "WHERE remote_id = '$remoteId'";
+    var update = 'UPDATE db_notifications '
+        'SET dismissed = 1 '
+        'WHERE remote_id = "$remoteId"';
     var query = db.customUpdate(update, updates: {dbNotifications});
 
     return query;
@@ -189,18 +189,18 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     required String? accountRemoteId,
     required PleromaApiNotificationType type,
   }) {
-    var update = "UPDATE db_notifications "
-        "SET dismissed = 1 "
-        "WHERE account_remote_id = '$accountRemoteId' "
-        "AND type = '${type.toJsonValue()}'";
+    var update = 'UPDATE db_notifications '
+        'SET dismissed = 1 '
+        'WHERE account_remote_id = "$accountRemoteId" '
+        'AND type = "${type.toJsonValue()}"';
     var query = db.customUpdate(update, updates: {dbNotifications});
 
     return query;
   }
 
   Future markAllAsDismissed() {
-    var update = "UPDATE db_notifications "
-        "SET dismissed = 1 ";
+    var update = 'UPDATE db_notifications '
+        'SET dismissed = 1 ';
     var query = db.customUpdate(update, updates: {dbNotifications});
 
     return query;
@@ -312,7 +312,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
           minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
         );
       } else {
-        throw "Unsupported orderingTermData $orderingTermData";
+        throw 'Unsupported orderingTermData $orderingTermData';
       }
 
 

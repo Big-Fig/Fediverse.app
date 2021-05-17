@@ -7,8 +7,8 @@ class PleromaApiPaginationTestHelper {
   }) =>
       PleromaApiPaginationRequest(
         limit: seed.hashCode,
-        maxId: seed + "maxId",
-        minId: seed + "minId",
-        sinceId: seed + "sinceId",
+        maxId: seed + 'maxId',
+        minId: seed + 'minId',
+        sinceId: seed + 'sinceId',
       );
 }

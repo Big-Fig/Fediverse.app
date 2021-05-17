@@ -44,8 +44,8 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
       ..where(
         (filter) => CustomExpression<bool>(
           contextTypesStrings
-              .map((type) => "db_filters.context LIKE '%$type%'")
-              .join(" OR "),
+              .map((type) => 'db_filters.context LIKE "%$type%"')
+              .join(' OR '),
         ),
       );
   }

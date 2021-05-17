@@ -43,7 +43,7 @@ class FediIntBadgeWidget extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      "$count",
+                      '$count',
                       style: IFediUiTextTheme.of(context).smallWhite,
                     ),
                   ),

@@ -8,11 +8,11 @@ enum UiSettingsFontSize {
   largest,
 }
 
-const _smallestUiSettingsFontSizeJsonValue = "smallest";
-const _smallUiSettingsFontSizeJsonValue = "small";
-const _mediumUiSettingsFontSizeJsonValue = "medium";
-const _largeUiSettingsFontSizeJsonValue = "large";
-const _largestUiSettingsFontSizeJsonValue = "largest";
+const _smallestUiSettingsFontSizeJsonValue = 'smallest';
+const _smallUiSettingsFontSizeJsonValue = 'small';
+const _mediumUiSettingsFontSizeJsonValue = 'medium';
+const _largeUiSettingsFontSizeJsonValue = 'large';
+const _largestUiSettingsFontSizeJsonValue = 'largest';
 
 extension UiSettingsFontSizeListExtension on List<UiSettingsFontSize> {
   List<String> toUiSettingsFontSizeStrings() => map(
@@ -67,7 +67,7 @@ extension UiSettingsFontSizeStringExtension on String {
         result = UiSettingsFontSize.largest;
         break;
       default:
-        throw "Invalid UiSettingsFontSize $this";
+        throw 'Invalid UiSettingsFontSize $this';
     }
 
     return result;

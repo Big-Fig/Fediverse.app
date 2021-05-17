@@ -8,8 +8,8 @@ void main() {
   test('equal & hashcode & toString', () async {
     ObjTestHelper.testEqualsHashcodeToString(
       ({required String seed}) => RepositoryPagination(
-        newerThanItem: seed + "1",
-        olderThanItem: seed + "2",
+        newerThanItem: seed + '1',
+        olderThanItem: seed + '2',
         limit: seed.hashCode % 5,
         offset: seed.hashCode % 3,
       ),

@@ -1,7 +1,7 @@
 import 'package:moor/moor.dart';
 
 // todo: add foreign keys
-@DataClassName("DbStatusRebloggedAccount")
+@DataClassName('DbStatusRebloggedAccount')
 class DbStatusRebloggedAccounts extends Table {
   // integer ids works better in SQLite
   IntColumn? get id => integer().nullable().autoIncrement()();

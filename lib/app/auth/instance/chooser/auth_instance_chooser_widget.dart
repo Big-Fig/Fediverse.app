@@ -22,14 +22,14 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("auth_instance_chooser_widget.dart");
+var _logger = Logger('auth_instance_chooser_widget.dart');
 
 class AuthInstanceChooserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var instanceChooserBloc = IAuthInstanceChooserBloc.of(context);
 
-    _logger.finest(() => "build");
+    _logger.finest(() => 'build');
 
     return StreamBuilder<List<AuthInstance>>(
       stream: instanceChooserBloc.instancesAvailableToChooseStream,
@@ -52,8 +52,8 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                 if (instancesAvailableToChoose == null) {
                   return const SizedBox.shrink();
                 }
-                _logger.finest(() => "build instancesAvailableToChoose "
-                    "${instancesAvailableToChoose.length}");
+                _logger.finest(() => 'build instancesAvailableToChoose '
+                    '${instancesAvailableToChoose.length}');
 
                 return Provider<List<AuthInstance>>.value(
                   value: instancesAvailableToChoose,
@@ -119,7 +119,7 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
                     Provider.of<IPleromaApiMyAccountService>(context);
                   } catch (e) {
                     _logger.finest(
-                      () => "error fetching IPleromaApiMyAccountService",
+                      () => 'error fetching IPleromaApiMyAccountService',
                     );
 
                     return const SizedBox.shrink();
@@ -175,8 +175,8 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
       Provider.of<IMyAccountBloc>(context);
     } catch (e) {
       _logger.finest(
-        () => "_AuthInstanceChooserSelectedInstanceRowWidget "
-            "error fetching myAccountBloc",
+        () => '_AuthInstanceChooserSelectedInstanceRowWidget '
+            'error fetching myAccountBloc',
       );
 
       return const SizedBox.shrink();

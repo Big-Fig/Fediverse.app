@@ -16,7 +16,7 @@ abstract class IMyAccountBloc extends IAccountBloc {
       var unescaped = _unescape.convert(note!);
       // todo: remove hack
       // on Mastodon instances note wrapped in <p></p>
-      if (unescaped.startsWith("<p>") && unescaped.endsWith("</p>")) {
+      if (unescaped.startsWith('<p>') && unescaped.endsWith('</p>')) {
         // ignore: no-magic-number
         unescaped = unescaped.substring(3, unescaped.length - 4);
       }

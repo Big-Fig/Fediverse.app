@@ -3,12 +3,12 @@ import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:moor/moor.dart';
 
 // todo: add foreign keys
-@DataClassName("DbStatus")
+@DataClassName('DbStatus')
 class DbStatuses extends Table {
   // integer ids works much better in SQLite
   IntColumn? get id => integer().nullable().autoIncrement()();
 
-  TextColumn? get remoteId => text().customConstraint("UNIQUE NOT NULL")();
+  TextColumn? get remoteId => text().customConstraint('UNIQUE NOT NULL')();
 
   DateTimeColumn? get createdAt => dateTime()();
 

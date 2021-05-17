@@ -22,7 +22,7 @@ abstract class WebSocketsChannelConfig<T extends WebSocketsEvent>
 
   T eventParser(Map<String, dynamic> json);
 
-  // todo: connection service shouldn't be here
+  // todo: connection service shouldnt be here
   final IConnectionService connectionService;
 
   WebSocketsChannelConfig({
@@ -42,8 +42,8 @@ abstract class WebSocketsChannelConfig<T extends WebSocketsEvent>
   Uri calculateWebSocketsUrl() {
     var queryArgsString = queryArgs.combineQueryArguments();
 
-    var webSocketPath = baseUrl.toString() + "?$queryArgsString";
-    // _logger.finest(() => "calculateUrl $webSocketPath");
+    var webSocketPath = baseUrl.toString() + '?$queryArgsString';
+    // _logger.finest(() => 'calculateUrl $webSocketPath');
 
     return Uri.parse(webSocketPath);
   }

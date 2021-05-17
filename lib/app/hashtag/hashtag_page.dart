@@ -60,7 +60,7 @@ class _HashtagPageState extends State<HashtagPage> {
       child: Scaffold(
         appBar: FediPageTitleAppBar(
           centerTitle: false,
-          title: "#${hashtag.name}",
+          title: '#${hashtag.name}',
           actions: <Widget>[
             const _HashtagPageOpenInBrowserAction(),
             const _HashtagPageAppBarSettingsActionWidget(),

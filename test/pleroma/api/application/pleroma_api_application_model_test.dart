@@ -10,7 +10,7 @@ void main() {
   test('PleromaApiApplication toPleromaApiApplication', () async {
     var original =
         PleromaApiApplicationTestHelper.createTestPleromaApiApplication(
-      seed: "seed",
+      seed: 'seed',
     );
     var obj = original.toPleromaApiApplication(forceNewObject: true);
 
@@ -39,7 +39,7 @@ void main() {
   test('PleromaApiClientApplication toPleromaApiClientApplication', () async {
     var original =
         PleromaApiApplicationTestHelper.createTestPleromaApiClientApplication(
-      seed: "seed",
+      seed: 'seed',
     );
     var obj = original.toPleromaApiClientApplication(forceNewObject: true);
 

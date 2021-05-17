@@ -52,9 +52,9 @@ void main() {
 
     preferencesService = MemoryLocalPreferencesService();
 
-    myAccount = await MyAccountTestHelper.createTestMyAccount(seed: "seed1");
+    myAccount = await MyAccountTestHelper.createTestMyAccount(seed: 'seed1');
     authInstance = AuthInstance(
-      urlHost: "fedi.app",
+      urlHost: 'fedi.app',
       acct: myAccount.acct,
       urlSchema: null,
       token: null,
@@ -103,7 +103,7 @@ void main() {
     AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
 
     var newValue = await MyAccountTestHelper.createTestMyAccount(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: myAccount.remoteId,
     );
 
@@ -126,7 +126,7 @@ void main() {
   test('acct', () async {
     expect(myAccountBloc.acct, myAccount.acct);
 
-    var newValue = "newAcct";
+    var newValue = 'newAcct';
 
     var listenedValue;
 
@@ -146,7 +146,7 @@ void main() {
   test('note', () async {
     expect(myAccountBloc.note, myAccount.note);
 
-    var newValue = "newNote";
+    var newValue = 'newNote';
 
     var listenedValue;
 
@@ -166,7 +166,7 @@ void main() {
   test('header', () async {
     expect(myAccountBloc.header, myAccount.header);
 
-    var newValue = "newHeader";
+    var newValue = 'newHeader';
 
     var listenedValue;
 
@@ -186,7 +186,7 @@ void main() {
   test('avatar', () async {
     expect(myAccountBloc.avatar, myAccount.avatar);
 
-    var newValue = "newAvatar";
+    var newValue = 'newAvatar';
 
     var listenedValue;
 
@@ -206,7 +206,7 @@ void main() {
   test('displayName', () async {
     expect(myAccountBloc.displayName, myAccount.displayName);
 
-    var newValue = "newDisplayName";
+    var newValue = 'newDisplayName';
 
     var listenedValue;
 
@@ -228,8 +228,8 @@ void main() {
 
     var newValue = [
       PleromaApiField(
-        name: "newName",
-        value: "newValue",
+        name: 'newName',
+        value: 'newValue',
         verifiedAt: null,
       ),
     ];
@@ -340,7 +340,7 @@ void main() {
       ),
     );
 
-    var newDisplayNameValue = "newDisplayName";
+    var newDisplayNameValue = 'newDisplayName';
 
     var listenedValue;
 
@@ -382,8 +382,8 @@ void main() {
 
     var newEmojis = [
       PleromaApiEmoji(
-        url: "url",
-        staticUrl: "staticUrl",
+        url: 'url',
+        staticUrl: 'staticUrl',
         visibleInPicker: null,
         shortcode: null,
         category: null,
@@ -431,7 +431,7 @@ void main() {
     AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
 
     var newValue = await MyAccountTestHelper.createTestMyAccount(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: myAccount.remoteId,
     );
 
@@ -502,7 +502,7 @@ void main() {
     AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
 
     var newValue = await MyAccountTestHelper.createTestMyAccount(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: myAccount.remoteId,
     );
     await myAccountBloc
@@ -516,12 +516,12 @@ void main() {
     expect(myAccountBloc.checkAccountIsMe(myAccount), true);
     expect(
       myAccountBloc
-          .checkAccountIsMe(myAccount.copyWith(remoteId: "invalidRemoteId")),
+          .checkAccountIsMe(myAccount.copyWith(remoteId: 'invalidRemoteId')),
       false,
     );
     expect(
       myAccountBloc.checkAccountIsMe((await AccountTestHelper.createTestAccount(
-        seed: "seed3",
+        seed: 'seed3',
         remoteId: myAccount.remoteId,
       ))),
       true,
@@ -530,9 +530,9 @@ void main() {
 
   test('checkIsStatusFromMe', () async {
     var dbAccount =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed3");
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3');
     var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
-      seed: "seed4",
+      seed: 'seed4',
       dbAccount: dbAccount,
     );
 
@@ -558,7 +558,7 @@ void main() {
       myAccountBloc.checkIsStatusFromMe(DbStatusPopulatedWrapper(
         dbStatusPopulated: DbStatusPopulated(
           dbStatus: dbStatus,
-          dbAccount: dbAccount.copyWith(remoteId: "invalidRemoteId"),
+          dbAccount: dbAccount.copyWith(remoteId: 'invalidRemoteId'),
           reblogDbStatus: null,
           reblogDbStatusAccount: null,
           replyReblogDbStatusAccount: null,

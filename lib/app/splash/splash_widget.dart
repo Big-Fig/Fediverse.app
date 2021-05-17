@@ -47,7 +47,7 @@ class _SplashLogoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Image(
-        image: AssetImage("assets/images/theme/logo.png"),
+        image: AssetImage('assets/images/theme/logo.png'),
         // ignore: no-magic-number
         width: 200,
       ),

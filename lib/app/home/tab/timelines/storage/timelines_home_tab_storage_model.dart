@@ -16,7 +16,7 @@ class TimelinesHomeTabStorageListItem {
   final Key key;
 
   TimelinesHomeTabStorageListItem(this.timeline)
-      : key = ValueKey("timeline.${timeline.id}");
+      : key = ValueKey('timeline.${timeline.id}');
 
   @override
   bool operator ==(Object other) =>
@@ -43,7 +43,7 @@ class TimelinesHomeTabStorageListItem {
 @JsonSerializable()
 class TimelinesHomeTabStorage implements IJsonObject {
   @HiveField(0)
-  @JsonKey(name: "timeline_ids")
+  @JsonKey(name: 'timeline_ids')
   final List<String> timelineIds;
 
   const TimelinesHomeTabStorage({

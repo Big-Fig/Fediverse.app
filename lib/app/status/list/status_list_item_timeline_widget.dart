@@ -282,7 +282,7 @@ class _StatusListItemTimelineReplyToStatusWidget extends StatelessWidget {
           statusReplyLoaderBloc =
               RemoteStatusReplyLoaderBloc.createFromContext(context, value);
         }
-        // don't await
+        // dont await
         statusReplyLoaderBloc.performAsyncInit();
 
         return statusReplyLoaderBloc;

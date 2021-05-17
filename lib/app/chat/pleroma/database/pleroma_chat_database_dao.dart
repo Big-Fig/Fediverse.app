@@ -9,10 +9,10 @@ import 'package:moor/moor.dart';
 
 part 'pleroma_chat_database_dao.g.dart';
 
-var _accountAliasId = "account";
-var _chatAccountsAliasId = "chatAccounts";
-var _chatMessageAliasId = "chatMessage";
-var _chatMessageAccountAliasId = "chatMessageAccount";
+var _accountAliasId = 'account';
+var _chatAccountsAliasId = 'chatAccounts';
+var _chatMessageAliasId = 'chatMessage';
+var _chatMessageAccountAliasId = 'chatMessageAccount';
 
 @UseDao(
   tables: [
@@ -72,10 +72,10 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     required String? chatRemoteId,
     required DateTime updatedAt,
   }) {
-    var update = "UPDATE db_chats "
-        "SET unread = unread + 1,"
-        " updated_at = ${updatedAt.millisecondsSinceEpoch ~/ Duration.millisecondsPerSecond} "
-        "WHERE remote_id = '$chatRemoteId'";
+    var update = 'UPDATE db_chats '
+        'SET unread = unread + 1,'
+        ' updated_at = ${updatedAt.millisecondsSinceEpoch ~/ Duration.millisecondsPerSecond} '
+        'WHERE remote_id = "$chatRemoteId"';
     var query = db.customUpdate(update, updates: {
       dbChats,
     });
@@ -206,7 +206,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
       // todo: rework with moor-like code
       var fieldName = chatMessageAlias.createdAt.$name;
       var aliasName = chatMessageAlias.$tableName;
-      var having = CustomExpression<bool>("MAX($aliasName.$fieldName)");
+      var having = CustomExpression<bool>('MAX($aliasName.$fieldName)');
       join.groupBy(
         [
           dbChats.remoteId,

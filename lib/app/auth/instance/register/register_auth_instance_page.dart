@@ -133,7 +133,7 @@ void _showCantLoginToast(
         S.of(context).app_auth_instance_register_cantLogin_notification_title,
     content:
         S.of(context).app_auth_instance_register_cantLogin_notification_content(
-              errorDescription ?? "",
+              errorDescription ?? '',
             ),
   );
 }

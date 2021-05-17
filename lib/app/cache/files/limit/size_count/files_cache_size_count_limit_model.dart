@@ -11,13 +11,13 @@ enum FilesCacheSizeLimitCountType {
 
 const defaultFilesCacheSizeLimitCountType = FilesCacheSizeLimitCountType.notSet;
 
-const _notSetFilesCacheSizeLimitCountType = "notSet";
-const _size50FilesCacheSizeLimitCountType = "size50";
-const _size100FilesCacheSizeLimitCountType = "size100";
-const _size200FilesCacheSizeLimitCountType = "size200";
-const _size500FilesCacheSizeLimitCountType = "size500";
-const _size1000FilesCacheSizeLimitCountType = "size1000";
-const _size10000FilesCacheSizeLimitCountType = "size10000";
+const _notSetFilesCacheSizeLimitCountType = 'notSet';
+const _size50FilesCacheSizeLimitCountType = 'size50';
+const _size100FilesCacheSizeLimitCountType = 'size100';
+const _size200FilesCacheSizeLimitCountType = 'size200';
+const _size500FilesCacheSizeLimitCountType = 'size500';
+const _size1000FilesCacheSizeLimitCountType = 'size1000';
+const _size10000FilesCacheSizeLimitCountType = 'size10000';
 
 extension FilesCacheSizeLimitCountTypeExtension
     on FilesCacheSizeLimitCountType {
@@ -108,7 +108,7 @@ extension FilesCacheSizeLimitCountTypeStringExtension on String {
       case _size10000FilesCacheSizeLimitCountType:
         result = FilesCacheSizeLimitCountType.size10000;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
         result = defaultFilesCacheSizeLimitCountType;
         break;

@@ -9,16 +9,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-final _logger = Logger("url_helper.dart");
+final _logger = Logger('url_helper.dart');
 
 class UrlHelper {
   static const _mastodonTagUrlParts = [
-    "/tags/",
-    "/tag/",
+    '/tags/',
+    '/tag/',
   ];
 
   static const _pleromaTagUrlParts = [
-    "/tag/",
+    '/tag/',
   ];
 
   static const _tagUrlParts = [
@@ -131,7 +131,7 @@ class UrlHelper {
     var urlHost = remoteInstanceUriOrNull.host;
     var urlSchema = remoteInstanceUriOrNull.scheme;
 
-    url = "$urlSchema://$urlHost$url";
+    url = '$urlSchema://$urlHost$url';
 
     return url;
   }
@@ -146,7 +146,7 @@ class UrlHelper {
     var urlHost = currentAuthInstanceBloc.currentInstance!.urlHost;
     var urlSchema = currentAuthInstanceBloc.currentInstance!.urlSchema;
 
-    url = "$urlSchema://$urlHost$url";
+    url = '$urlSchema://$urlHost$url';
 
     return url;
   }
@@ -174,10 +174,10 @@ class UrlHelper {
     required String url,
   }) async {
     var isCanLaunch = await canLaunch(url);
-    _logger.finest(() => "handleUrlClick isCanLaunch $isCanLaunch $url");
+    _logger.finest(() => 'handleUrlClick isCanLaunch $isCanLaunch $url');
     if (isCanLaunch) {
       var launched = await launch(url);
-      _logger.finest(() => "handleUrlClick launched $launched $url");
+      _logger.finest(() => 'handleUrlClick launched $launched $url');
     } else {
       await FediSimpleAlertDialog(
         context: context,
@@ -189,8 +189,8 @@ class UrlHelper {
 
   static String extractUrl(String value) {
     // TODO: rework url regex
-    String string = value.replaceAll(RegExp("</a>"), "");
+    String string = value.replaceAll(RegExp('</a>'), '');
 
-    return string.replaceAll(RegExp("<a[^>]*>"), "");
+    return string.replaceAll(RegExp('<a[^>]*>'), '');
   }
 }

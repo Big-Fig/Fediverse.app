@@ -4,7 +4,7 @@ import 'package:fedi/pagination/pagination_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("local_only_pagination_bloc_impl.dart");
+var _logger = Logger('local_only_pagination_bloc_impl.dart');
 
 abstract class LocalOnlyPaginationBloc<TPage extends PaginationPage<TItem>,
         TItem> extends PaginationBloc<TPage, TItem>
@@ -24,10 +24,10 @@ abstract class LocalOnlyPaginationBloc<TPage extends PaginationPage<TItem>,
     required TPage? previousPage,
     required TPage? nextPage,
   }) async {
-    _logger.finest(() => "loadPage \n"
-        "\t pageIndex=$pageIndex"
-        "\t previousPage=$previousPage"
-        "\t nextPage=$nextPage");
+    _logger.finest(() => 'loadPage \n'
+        '\t pageIndex=$pageIndex'
+        '\t previousPage=$previousPage'
+        '\t nextPage=$nextPage');
 
     List<TItem> loadedItems = await loadItemsFromLocalForPage(
       pageIndex: pageIndex,

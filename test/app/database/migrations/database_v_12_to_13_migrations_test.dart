@@ -13,7 +13,7 @@ void main() {
   setUp(() async {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v12.sqlite';
     var file = File(filePath);
-    dbFile = await file.copy(filePath + ".temp");
+    dbFile = await file.copy(filePath + '.temp');
     database = AppDatabase(VmDatabase(dbFile));
   });
 
@@ -35,9 +35,9 @@ void main() {
 
     var testDbChatMessage =
         await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
-      seed: "seed1",
+      seed: 'seed1',
       dbAccount:
-          await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed2"),
+          await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'),
     );
     await chatMessageDao.insert(
       entity: testDbChatMessage,

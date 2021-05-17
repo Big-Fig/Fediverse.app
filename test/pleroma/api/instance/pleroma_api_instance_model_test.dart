@@ -10,7 +10,7 @@ import 'pleroma_api_instance_test_helper.dart';
 void main() {
   test('PleromaApiInstance toPleromaApiInstance', () async {
     var original = PleromaApiInstanceTestHelper.createTestPleromaApiInstance(
-      seed: "seed",
+      seed: 'seed',
     );
     var obj = original.toPleromaApiInstance(forceNewObject: true);
 

@@ -7,7 +7,7 @@ import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("timeline_widget.dart");
+var _logger = Logger('timeline_widget.dart');
 
 class TimelineWidget extends StatelessWidget {
   const TimelineWidget({Key? key}) : super(key: key);
@@ -34,9 +34,9 @@ class TimelineWidget extends StatelessWidget {
           var timeline = timelineLocalPreferencesBloc.value;
           // var onlyWithMedia = timeline?.onlyWithMedia == true;
 
-          _logger.finest(() => "timeline $timeline");
-          _logger.finest(() => "onlyWithMedia $onlyWithMedia");
-          // _logger.finest(() => "onlyWithMedia timeline $timeline");
+          _logger.finest(() => 'timeline $timeline');
+          _logger.finest(() => 'onlyWithMedia $onlyWithMedia');
+          // _logger.finest(() => 'onlyWithMedia timeline $timeline');
 
           Widget bodyWidget;
 
@@ -51,7 +51,7 @@ class TimelineWidget extends StatelessWidget {
             );
           }
 
-          _logger.fine(() => "build onlyWithMedia=$onlyWithMedia");
+          _logger.fine(() => 'build onlyWithMedia=$onlyWithMedia');
 
           return bodyWidget;
         },

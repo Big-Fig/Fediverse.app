@@ -90,7 +90,7 @@ void main() {
     );
 
     var testAutoPlay =
-        MediaSettingsModelTestHelper.createTestMediaSettings(seed: "seed")
+        MediaSettingsModelTestHelper.createTestMediaSettings(seed: 'seed')
             .autoPlay;
 
     await mediaSettingsBloc.changeAutoPlay(testAutoPlay);
@@ -149,7 +149,7 @@ void main() {
     );
 
     var testAutoPlay =
-        MediaSettingsModelTestHelper.createTestMediaSettings(seed: "seed")
+        MediaSettingsModelTestHelper.createTestMediaSettings(seed: 'seed')
             .autoInit;
 
     await mediaSettingsBloc.changeAutoInit(testAutoPlay);

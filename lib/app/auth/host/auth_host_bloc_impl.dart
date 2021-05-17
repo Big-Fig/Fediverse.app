@@ -36,14 +36,14 @@ import 'package:fedi/rest/rest_service_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 
-final scopes = "read write follow push";
+final scopes = 'read write follow push';
 
-var _logger = Logger("auth_host_bloc_impl.dart");
+var _logger = Logger('auth_host_bloc_impl.dart');
 
 // todo: report to mastodon/pleroma.
 //  It's should be error code instead of string handling
 const emailConfirmationRequiredDescription =
-    "Your login is missing a confirmed e-mail address";
+    'Your login is missing a confirmed e-mail address';
 
 class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   final Uri instanceBaseUri;
@@ -131,19 +131,19 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   @override
   Future registerApplication() async {
-    _logger.finest(() => "registerApplication");
+    _logger.finest(() => 'registerApplication');
     String redirectUri = await _calculateRedirectUri();
 
     var application = await pleromaApplicationService.registerApp(
       registrationRequest: MastodonApiApplicationRegistrationRequest(
-        clientName: "Fedi",
+        clientName: 'Fedi',
         redirectUris: redirectUri,
         scopes: scopes,
-        website: "https://www.fediapp.com/",
+        website: 'https://www.fediapp.com/',
       ),
     );
 
-    _logger.finest(() => "registerApplication application = $application");
+    _logger.finest(() => 'registerApplication application = $application');
     await hostApplicationLocalPreferenceBloc.setValue(
       application.toPleromaApiClientApplication(),
     );
@@ -151,7 +151,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   Future<String> _calculateRedirectUri() async {
     var packageId = await FediPackageInfoHelper.getPackageId();
-    var redirectUri = "$packageId://addNewInstance";
+    var redirectUri = '$packageId://addNewInstance';
 
     return redirectUri;
   }
@@ -172,7 +172,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       return true;
     } catch (e, stackTrace) {
       _logger.severe(
-        () => "retrieveAppAccessToken error",
+        () => 'retrieveAppAccessToken error',
         e,
         stackTrace,
       );
@@ -183,7 +183,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   @override
   Future<AuthInstance?> launchLoginToAccount() async {
-    _logger.finest(() => "launchLoginToAccount");
+    _logger.finest(() => 'launchLoginToAccount');
     await checkApplicationRegistration();
 
     var baseUrl = pleromaOAuthService.restService.baseUri;
@@ -335,7 +335,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
           hostInstance: hostInstance,
         );
       } catch (e, stackTrace) {
-        _logger.warning(() => "error during registerAccount", e, stackTrace);
+        _logger.warning(() => 'error during registerAccount', e, stackTrace);
         if (e is PleromaApiRestException) {
           if (e.decodedErrorDescriptionOrBody ==
               emailConfirmationRequiredDescription) {
@@ -372,17 +372,17 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   @override
   Future checkApplicationRegistration() async {
     _logger.finest(
-      () => "checkApplicationRegistration $isHostApplicationRegistered",
+      () => 'checkApplicationRegistration $isHostApplicationRegistered',
     );
     if (!isHostApplicationRegistered) {
       await registerApplication();
-      _logger.finest(() => "checkApplicationRegistration");
+      _logger.finest(() => 'checkApplicationRegistration');
     }
   }
 
   @override
   Future checkIsRegistrationsEnabled() async {
-    _logger.finest(() => "checkIsRegistrationsEnabled");
+    _logger.finest(() => 'checkIsRegistrationsEnabled');
 
     var result = false;
 

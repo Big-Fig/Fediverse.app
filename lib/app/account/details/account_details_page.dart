@@ -130,7 +130,7 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
             topSliverWidgets: [
               const _AccountDetailsNestedScrollViewHeader(),
             ],
-            tabKeyPrefix: "AccountDetailsPage",
+            tabKeyPrefix: 'AccountDetailsPage',
             tabBodyProviderBuilder:
                 (BuildContext context, int index, Widget child) =>
                     buildBodyProvider(

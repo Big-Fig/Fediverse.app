@@ -36,7 +36,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
     required IFilter? initialValue,
     required this.currentInstance,
   })   : phraseField = StringValueFormFieldBloc(
-          originValue: initialValue?.phrase ?? "",
+          originValue: initialValue?.phrase ?? '',
           validators: [
             StringValueFormFieldNonEmptyValidationError.createValidator(),
           ],

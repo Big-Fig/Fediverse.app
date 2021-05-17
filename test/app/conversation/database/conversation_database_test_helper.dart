@@ -9,7 +9,7 @@ class ConversationDatabaseTestHelper {
   }) async =>
       DbConversation(
         id: null,
-        remoteId: remoteId ?? seed + "remoteId1",
+        remoteId: remoteId ?? seed + 'remoteId1',
         unread: false,
       );
 

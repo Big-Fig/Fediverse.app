@@ -8,7 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("pagination_list_with_new_items_header_widget.dart");
+var _logger = Logger('pagination_list_with_new_items_header_widget.dart');
 
 class CachedPaginationListWithNewItemsMergeOverlayButton
     extends StatelessWidget {
@@ -30,7 +30,7 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
       builder: (context, snapshot) {
         var updateItemsCount = snapshot.data ?? 0;
 
-        _logger.finest(() => "updateItemsCount $updateItemsCount");
+        _logger.finest(() => 'updateItemsCount $updateItemsCount');
 
         var scrollControllerBloc =
             IScrollControllerBloc.of(context, listen: false);
@@ -49,7 +49,7 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
           builder: (context, snapshot) {
             var isNeedShowMergeItems = snapshot.data!;
 
-            _logger.finest(() => "isNeedShowMergeItems $isNeedShowMergeItems");
+            _logger.finest(() => 'isNeedShowMergeItems $isNeedShowMergeItems');
 
             Widget child;
 

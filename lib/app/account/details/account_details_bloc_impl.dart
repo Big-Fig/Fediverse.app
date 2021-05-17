@@ -9,7 +9,7 @@ import 'package:fedi/ui/scroll/nested_scroll_controller_bloc_impl.dart';
 import 'package:logging/logging.dart';
 import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 
-var _logger = Logger("account_details_bloc_impl.dart");
+var _logger = Logger('account_details_bloc_impl.dart');
 
 class AccountDetailsBloc extends DisposableOwner
     implements IAccountDetailsBloc {
@@ -53,7 +53,7 @@ class AccountDetailsBloc extends DisposableOwner
       try {
         nestedScrollController.dispose();
       } catch (e) {
-        _logger.warning(() => "error during nestedScrollController.dispose()");
+        _logger.warning(() => 'error during nestedScrollController.dispose()');
       }
     });
   }

@@ -19,7 +19,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-final dateFormat = DateFormat("dd MMM, HH:mm a");
+final dateFormat = DateFormat('dd MMM, HH:mm a');
 
 class ScheduledStatusListItemWidget extends StatelessWidget {
   final VoidCallback successCallback;

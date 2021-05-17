@@ -57,12 +57,12 @@ enum MastodonApiFilterContextType {
 
 const unknownMastodonApiFilterContextType = MastodonApiFilterContextType.unknown;
 
-const _homeSetMastodonApiFilterContextTypeValue = "home";
-const _notificationsSetMastodonApiFilterContextTypeValue = "notifications";
-const _publicSetMastodonApiFilterContextTypeValue = "public";
-const _threadSetMastodonApiFilterContextTypeValue = "thread";
-const _accountSetMastodonApiFilterContextTypeValue = "account";
-const _unknownSetMastodonApiFilterContextTypeValue = "unknown";
+const _homeSetMastodonApiFilterContextTypeValue = 'home';
+const _notificationsSetMastodonApiFilterContextTypeValue = 'notifications';
+const _publicSetMastodonApiFilterContextTypeValue = 'public';
+const _threadSetMastodonApiFilterContextTypeValue = 'thread';
+const _accountSetMastodonApiFilterContextTypeValue = 'account';
+const _unknownSetMastodonApiFilterContextTypeValue = 'unknown';
 
 extension MastodonApiFilterContextTypeJsonValueExtension
     on MastodonApiFilterContextType {
@@ -117,7 +117,7 @@ extension MastodonApiFilterContextTypeStringExtension on String {
       case _unknownSetMastodonApiFilterContextTypeValue:
         result = MastodonApiFilterContextType.unknown;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
         result = unknownMastodonApiFilterContextType;
         break;

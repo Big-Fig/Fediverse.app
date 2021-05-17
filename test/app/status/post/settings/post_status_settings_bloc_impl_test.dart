@@ -94,7 +94,7 @@ void main() {
 
     var testMarkMediaAsNsfwOnAttach =
         PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
-      seed: "seed",
+      seed: 'seed',
     ).markMediaAsNsfwOnAttach;
 
     await postStatusSettingsBloc
@@ -155,7 +155,7 @@ void main() {
 
     var testDefaultVisibilityPleroma =
         PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
-      seed: "seed",
+      seed: 'seed',
     ).defaultVisibilityAsPleromaApi;
 
     await postStatusSettingsBloc
@@ -217,7 +217,7 @@ void main() {
 
     var testDefaultStatusLocale =
         PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
-      seed: "seed",
+      seed: 'seed',
     ).defaultStatusLocale;
 
     await postStatusSettingsBloc

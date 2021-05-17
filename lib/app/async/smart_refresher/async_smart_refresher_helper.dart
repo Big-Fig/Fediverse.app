@@ -4,22 +4,22 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 typedef Future<FediListSmartRefresherLoadingState> AsyncAction();
 
-var _logger = Logger("async_smart_refresher_helper.dart");
+var _logger = Logger('async_smart_refresher_helper.dart');
 
 class AsyncSmartRefresherHelper {
   static Future<FediListSmartRefresherLoadingState> doAsyncRefresh({
     required RefreshController controller,
     required AsyncAction action,
   }) async {
-    _logger.finest(() => "doAsyncRefresh");
+    _logger.finest(() => 'doAsyncRefresh');
     FediListSmartRefresherLoadingState state;
     try {
       state = await action();
     } catch (error, stackTrace) {
-      _logger.severe(() => "doAsyncRefresh fail", error, stackTrace);
+      _logger.severe(() => 'doAsyncRefresh fail', error, stackTrace);
       state = FediListSmartRefresherLoadingState.failed;
     }
-    _logger.finest(() => "doAsyncRefresh state = $state");
+    _logger.finest(() => 'doAsyncRefresh state = $state');
 
     switch (state) {
       case FediListSmartRefresherLoadingState.failed:
@@ -29,14 +29,14 @@ class AsyncSmartRefresherHelper {
       case FediListSmartRefresherLoadingState.noData:
         controller.refreshCompleted();
         // hack, because it is not possible to load more after refresh
-        // if old "no data" state was saved
+        // if old 'no data' state was saved
         controller.loadComplete();
         break;
 
       case FediListSmartRefresherLoadingState.loading:
       case FediListSmartRefresherLoadingState.initialized:
       default:
-        throw "invalid state $state";
+        throw 'invalid state $state';
     }
 
     return state;
@@ -46,17 +46,17 @@ class AsyncSmartRefresherHelper {
     required RefreshController controller,
     required AsyncAction action,
   }) async {
-    _logger.finest(() => "doAsyncLoading");
+    _logger.finest(() => 'doAsyncLoading');
     FediListSmartRefresherLoadingState state;
     try {
       state = await action();
     } catch (error, stackTrace) {
-      _logger.severe(() => "doAsyncLoading fail", error, stackTrace);
+      _logger.severe(() => 'doAsyncLoading fail', error, stackTrace);
       controller.loadFailed();
       state = FediListSmartRefresherLoadingState.failed;
     }
 
-    _logger.finest(() => "doAsyncLoading state = $state");
+    _logger.finest(() => 'doAsyncLoading state = $state');
 
     switch (state) {
       case FediListSmartRefresherLoadingState.failed:
@@ -72,7 +72,7 @@ class AsyncSmartRefresherHelper {
       case FediListSmartRefresherLoadingState.loading:
       case FediListSmartRefresherLoadingState.initialized:
       default:
-        throw "invalid state $state";
+        throw 'invalid state $state';
     }
 
     return state;

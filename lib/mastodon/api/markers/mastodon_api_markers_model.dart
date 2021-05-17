@@ -14,12 +14,12 @@ abstract class IMastodonApiMarker {
 @JsonSerializable(explicitToJson: true)
 class MastodonApiMarker implements IMastodonApiMarker, IJsonObject {
   @override
-  @JsonKey(name: "updated_last_read_id")
+  @JsonKey(name: 'updated_last_read_id')
   final String? lastReadId;
   @override
   final int version;
   @override
-  @JsonKey(name: "updated_at")
+  @JsonKey(name: 'updated_at')
   final DateTime? updatedAt;
 
   MastodonApiMarker({

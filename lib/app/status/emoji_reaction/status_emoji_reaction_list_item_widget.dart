@@ -115,7 +115,7 @@ class _StatusEmojiReactionListItemContentWidget extends StatelessWidget {
             ),
             const FediSmallHorizontalSpacer(),
             Text(
-              "${emojiReaction.count}",
+              '${emojiReaction.count}',
               style: IFediUiTextTheme.of(context)
                   .mediumShortDarkGrey
                   .copyWith(color: color),

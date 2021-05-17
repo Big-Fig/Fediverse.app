@@ -105,7 +105,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
     required INotification? newerThan,
     required INotification? olderThan,
   }) async {
-    // todo: don't exclude pleroma types on mastodon instances
+    // todo: dont exclude pleroma types on mastodon instances
     var remoteNotifications = await pleromaNotificationService.getNotifications(
       pagination: PleromaApiPaginationRequest(
         limit: limit,

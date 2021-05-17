@@ -16,7 +16,7 @@ void main() {
   setUp(() async {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v1.sqlite';
     var file = File(filePath);
-    dbFile = await file.copy(filePath + ".temp");
+    dbFile = await file.copy(filePath + '.temp');
     database = AppDatabase(VmDatabase(dbFile, logStatements: false));
   });
 
@@ -31,7 +31,7 @@ void main() {
   });
 
   test('test dbMigration v1->v2 updated chat message schema', () async {
-    var pleromaCardTitle = "pleromaCardTitle";
+    var pleromaCardTitle = 'pleromaCardTitle';
     var chatMessageDao = database.chatMessageDao;
     var accountRepository = AccountRepository(appDatabase: database);
     var pleromaChatMessageRepository = PleromaChatMessageRepository(
@@ -39,11 +39,11 @@ void main() {
       appDatabase: database,
     );
     var accountDao = database.accountDao;
-    var updatedRemoteId = "updatedRemoteId1";
+    var updatedRemoteId = 'updatedRemoteId1';
 
     var dbAccount = await AccountDatabaseTestHelper.createTestDbAccount(
-      seed: "seed",
-      remoteId: "accountRemoteId",
+      seed: 'seed',
+      remoteId: 'accountRemoteId',
     );
 
     await accountDao.upsert(entity: dbAccount);
@@ -52,10 +52,10 @@ void main() {
       entity: DbChatMessage(
         id: null,
         remoteId: updatedRemoteId,
-        chatRemoteId: "chatRemoteId",
+        chatRemoteId: 'chatRemoteId',
         accountRemoteId: dbAccount.remoteId,
         createdAt: DateTime.now(),
-        content: "content",
+        content: 'content',
         card: PleromaApiCard.only(title: pleromaCardTitle),
       ),
       mode: null,

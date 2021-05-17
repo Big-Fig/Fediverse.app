@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart' hide NestedScrollView;
 import 'package:logging/logging.dart';
 
 var _logger =
-    Logger("fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart");
+    Logger('fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart');
 
 typedef TabBarViewContainerBuilder = Widget Function(
   BuildContext context,
@@ -168,7 +168,7 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
         fediNestedScrollViewWithNestedScrollableTabsBloc.tabController;
 
     _logger.finest(
-      () => "_buildTabBarView tabController ${tabController.hashCode}",
+      () => '_buildTabBarView tabController ${tabController.hashCode}',
     );
 
     if (tabController.length == 0) {
@@ -261,5 +261,5 @@ class _NestedBodyTabItemWidgetState extends State<_NestedBodyTabItemWidget>
   bool get wantKeepAlive => true;
 }
 
-Key _calculateTabKey(String tabKeyPrefix, int index) => Key("$tabKeyPrefix"
-    ".$index");
+Key _calculateTabKey(String tabKeyPrefix, int index) => Key('$tabKeyPrefix'
+    '.$index');

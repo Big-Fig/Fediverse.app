@@ -11,9 +11,9 @@ import 'pleroma_api_web_sockets_service_impl_test.mocks.dart';
 
 @GenerateMocks([ConnectionService])
 void main() {
-  var host = "https://fedi.app";
-  var wssHost = "wss://fedi.app/api/v1/streaming";
-  var accessToken = "accessToken";
+  var host = 'https://fedi.app';
+  var wssHost = 'wss://fedi.app/api/v1/streaming';
+  var accessToken = 'accessToken';
 
   late IWebSocketsService webSocketsService;
   late PleromaApiWebSocketsService pleromaWebSocketsService;
@@ -45,26 +45,26 @@ void main() {
     expect(
       pleromaWebSocketsService
           .getHashtagChannel(
-            hashtag: "hashtag1",
+            hashtag: 'hashtag1',
             local: true,
           )
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=hashtag:local"
-      "&tag=hashtag1",
+      '$wssHost?access_token=$accessToken&stream=hashtag:local'
+      '&tag=hashtag1',
     );
     expect(
       pleromaWebSocketsService
           .getHashtagChannel(
-            hashtag: "hashtag1",
+            hashtag: 'hashtag1',
             local: false,
           )
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=hashtag"
-      "&tag=hashtag1",
+      '$wssHost?access_token=$accessToken&stream=hashtag'
+      '&tag=hashtag1',
     );
   });
 
@@ -80,7 +80,7 @@ void main() {
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=public:local",
+      '$wssHost?access_token=$accessToken&stream=public:local',
     );
     expect(
       pleromaWebSocketsService
@@ -93,7 +93,7 @@ void main() {
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=public",
+      '$wssHost?access_token=$accessToken&stream=public',
     );
     expect(
       pleromaWebSocketsService
@@ -106,7 +106,7 @@ void main() {
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=public:local:media",
+      '$wssHost?access_token=$accessToken&stream=public:local:media',
     );
     expect(
       pleromaWebSocketsService
@@ -119,7 +119,7 @@ void main() {
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=public:media",
+      '$wssHost?access_token=$accessToken&stream=public:media',
     );
 
     expect(
@@ -133,20 +133,20 @@ void main() {
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=public:remote:media",
+      '$wssHost?access_token=$accessToken&stream=public:remote:media',
     );
     expect(
       pleromaWebSocketsService
           .getPublicChannel(
             onlyLocal: false,
             onlyMedia: true,
-            onlyFromInstance: "lain.com",
+            onlyFromInstance: 'lain.com',
             onlyRemote: true,
           )
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=public:remote:media?instance=lain.com",
+      '$wssHost?access_token=$accessToken&stream=public:remote:media?instance=lain.com',
     );
   });
 
@@ -154,39 +154,39 @@ void main() {
     expect(
       pleromaWebSocketsService
           .getListChannel(
-            listId: "list1",
+            listId: 'list1',
           )
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=list"
-      "&list=list1",
+      '$wssHost?access_token=$accessToken&stream=list'
+      '&list=list1',
     );
   });
   test('getAccountChannel', () async {
     expect(
       pleromaWebSocketsService
           .getAccountChannel(
-            accountId: "user1",
+            accountId: 'user1',
             notification: false,
           )
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=user"
-      "&accountId=user1",
+      '$wssHost?access_token=$accessToken&stream=user'
+      '&accountId=user1',
     );
     expect(
       pleromaWebSocketsService
           .getAccountChannel(
-            accountId: "user1",
+            accountId: 'user1',
             notification: true,
           )
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=user:notification"
-      "&accountId=user1",
+      '$wssHost?access_token=$accessToken&stream=user:notification'
+      '&accountId=user1',
     );
   });
 
@@ -200,7 +200,7 @@ void main() {
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=user",
+      '$wssHost?access_token=$accessToken&stream=user',
     );
     expect(
       pleromaWebSocketsService
@@ -211,20 +211,20 @@ void main() {
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=user:notification",
+      '$wssHost?access_token=$accessToken&stream=user:notification',
     );
   });
   test('getDirectChannel', () async {
     expect(
       pleromaWebSocketsService
           .getDirectChannel(
-            accountId: "direct1",
+            accountId: 'direct1',
           )
           .config
           .calculateWebSocketsUrl()
           .toString(),
-      "$wssHost?access_token=$accessToken&stream=direct"
-      "&accountId=direct1",
+      '$wssHost?access_token=$accessToken&stream=direct'
+      '&accountId=direct1',
     );
   });
 }

@@ -17,7 +17,7 @@ import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("notification_push_loader_bloc_impl.dart");
+var _logger = Logger('notification_push_loader_bloc_impl.dart');
 
 class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     implements INotificationPushLoaderBloc {
@@ -78,9 +78,9 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       acct: pleromaPushMessage.account,
     );
 
-    _logger.finest(() => "handlePush \n"
-        "\t isForCurrentInstance = $isForCurrentInstance"
-        "\t pleromaPushMessage = $pleromaPushMessage");
+    _logger.finest(() => 'handlePush \n'
+        '\t isForCurrentInstance = $isForCurrentInstance'
+        '\t pleromaPushMessage = $pleromaPushMessage');
     bool handled;
     if (isForCurrentInstance) {
       String remoteNotificationId = pleromaPushMessage.notificationId;
@@ -90,17 +90,17 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
 
       handled = true;
       var all = await notificationRepository.countAll();
-      _logger.finest(() => "all $all");
+      _logger.finest(() => 'all $all');
 
       var alreadyExistNotification = await notificationRepository
           .findByRemoteIdInAppType(remoteNotificationId);
 
-      _logger.finest(() => "handlePush \n"
-          "\t remoteNotification = $remoteNotification");
+      _logger.finest(() => 'handlePush \n'
+          '\t remoteNotification = $remoteNotification');
 
-      _logger.finest(() => "handlePush \n"
-          "\t remoteNotificationId = $remoteNotificationId \n"
-          "\t alreadyExistNotification = $alreadyExistNotification");
+      _logger.finest(() => 'handlePush \n'
+          '\t remoteNotificationId = $remoteNotificationId \n'
+          '\t alreadyExistNotification = $alreadyExistNotification');
 
       var unread = alreadyExistNotification?.unread ?? true;
 

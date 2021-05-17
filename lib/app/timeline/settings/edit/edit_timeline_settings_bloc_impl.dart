@@ -156,7 +156,7 @@ class EditTimelineSettingsBloc
           ],
         ),
         withRemoteHashtagFieldBloc = StringValueFormFieldBloc(
-          originValue: settingsBloc.settingsData?.withRemoteHashtag ?? "",
+          originValue: settingsBloc.settingsData?.withRemoteHashtag ?? '',
           // ignore: no-magic-number
           maxLength: 50,
           isEnabled:
@@ -190,7 +190,7 @@ class EditTimelineSettingsBloc
               webSocketsSettingsBloc.handlingType.isEnabled,
         ),
         onlyFromInstanceFieldBloc = StringValueFormFieldBloc(
-          originValue: settingsBloc.settingsData?.onlyFromInstance ?? "",
+          originValue: settingsBloc.settingsData?.onlyFromInstance ?? '',
           // ignore: no-magic-number
           maxLength: 50,
           isEnabled: timelineType
@@ -251,7 +251,7 @@ class EditTimelineSettingsBloc
 
     if (newOnlyLocal == true && oldOnlyLocal == false) {
       onlyFromInstanceExist = false;
-      onlyFromInstanceFieldBloc.textEditingController.text = "";
+      onlyFromInstanceFieldBloc.textEditingController.text = '';
       newOnlyRemote = false;
       onlyRemoteFieldBloc.changeCurrentValue(newOnlyRemote);
     }
@@ -306,7 +306,7 @@ class EditTimelineSettingsBloc
 
     onlyFromAccountFieldBloc.changeCurrentValue(settings.onlyFromRemoteAccount);
     onlyFromAccountFieldBloc.changeCurrentValue(settings.onlyFromRemoteAccount);
-    withRemoteHashtagFieldBloc.changeCurrentValue(settings.withRemoteHashtag ?? "");
+    withRemoteHashtagFieldBloc.changeCurrentValue(settings.withRemoteHashtag ?? '');
     onlyInCustomListFieldBloc.changeCurrentValue(settings.onlyInRemoteList);
     replyVisibilityFilterFieldBloc
         .changeCurrentValue(settings.replyVisibilityFilter);

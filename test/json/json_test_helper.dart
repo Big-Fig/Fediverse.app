@@ -9,7 +9,7 @@ class JsonTestHelper {
         testObjectCreator,
     T Function(Map<String, dynamic> json) fromJson,
   ) {
-    var obj = testObjectCreator(seed: "seed1");
+    var obj = testObjectCreator(seed: 'seed1');
 
     var json = obj.toJson();
 

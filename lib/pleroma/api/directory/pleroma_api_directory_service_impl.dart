@@ -10,7 +10,7 @@ var _urlPath = path.Context(style: path.Style.url);
 
 class PleromaApiDirectoryService extends BasePleromaApiService
     implements IPleromaApiDirectoryService {
-  final directoryRelativeUrlPath = "/api/v1/directory";
+  final directoryRelativeUrlPath = '/api/v1/directory';
 
   PleromaApiDirectoryService({
     required IPleromaApiRestService restService,

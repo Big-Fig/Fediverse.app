@@ -11,7 +11,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("status_pagination_list_with_new_items_bloc_impl.dart");
+var _logger = Logger('status_pagination_list_with_new_items_bloc_impl.dart');
 
 class StatusCachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IStatus>>
@@ -33,7 +33,7 @@ class StatusCachedPaginationListWithNewItemsBloc<
     addDisposable(
       streamSubscription: statusCachedListBloc.settingsChangedStream.listen(
         (_) async {
-          _logger.finest(() => "settingsChangedStream ");
+          _logger.finest(() => 'settingsChangedStream ');
           await refreshWithController();
         },
       ),
@@ -61,7 +61,7 @@ class StatusCachedPaginationListWithNewItemsBloc<
 
   @override
   Stream<List<IStatus>> watchItemsNewerThanItem(IStatus? item) {
-    _logger.finest(() => "watchItemsNewerThanItem item = $item");
+    _logger.finest(() => 'watchItemsNewerThanItem item = $item');
 
     return statusCachedListBloc.watchLocalItemsNewerThanItem(item);
   }

@@ -10,7 +10,7 @@ abstract class IPleromaApiContent {
 @JsonSerializable(explicitToJson: true)
 class PleromaApiContent implements IPleromaApiContent, IJsonObject {
   @override
-  @JsonKey(name: "text/plain")
+  @JsonKey(name: 'text/plain')
   final String? textPlain;
 
   PleromaApiContent({

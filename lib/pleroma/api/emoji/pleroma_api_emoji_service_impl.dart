@@ -7,7 +7,7 @@ import 'package:fedi/rest/rest_request_model.dart';
 class PleromaApiEmojiService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiEmojiService {
-  final emojiRelativeUrlPath = "/api/pleroma/emoji";
+  final emojiRelativeUrlPath = '/api/pleroma/emoji';
   @override
   final IPleromaApiAuthRestService restService;
 

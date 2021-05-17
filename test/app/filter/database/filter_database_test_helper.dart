@@ -7,10 +7,10 @@ class FilterDatabaseTestHelper {
   static Future<DbFilter> createTestDbFilter({
     required String seed,
     String? remoteId,
-    String phrase = "phrase",
+    String phrase = 'phrase',
     List<String> context = const [
-      "home",
-      "public",
+      'home',
+      'public',
     ],
     bool irreversible = true,
     bool wholeWord = true,
@@ -18,7 +18,7 @@ class FilterDatabaseTestHelper {
   }) async {
     DbFilter dbFilter = DbFilter(
       id: null,
-      remoteId: remoteId ?? seed + "remoteId",
+      remoteId: remoteId ?? seed + 'remoteId',
       phrase: phrase,
       context: context,
       irreversible: irreversible,

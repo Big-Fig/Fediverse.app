@@ -7,7 +7,7 @@ import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as path_provider;
 
-final _logger = Logger("temp_file_helper.dart");
+final _logger = Logger('temp_file_helper.dart');
 
 var pathPosix = path.posix;
 
@@ -76,7 +76,7 @@ class TempFileHelper {
       return file;
     } catch (e, stackTrace) {
       _logger.warning(
-        () => "error during downloadFileToTempFolder",
+        () => 'error during downloadFileToTempFolder',
         e,
         stackTrace,
       );

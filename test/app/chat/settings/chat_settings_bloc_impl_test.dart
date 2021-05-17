@@ -90,7 +90,7 @@ void main() {
     );
 
     var testCountConversationsInChatsUnreadBadges =
-        ChatSettingsModelTestHelper.createTestChatSettings(seed: "seed")
+        ChatSettingsModelTestHelper.createTestChatSettings(seed: 'seed')
             .countConversationsInChatsUnreadBadges;
 
     await chatSettingsBloc.changeCountConversationsInChatsUnreadBadges(
@@ -151,7 +151,7 @@ void main() {
     );
 
     var testCountConversationsInChatsUnreadBadges =
-        ChatSettingsModelTestHelper.createTestChatSettings(seed: "seed")
+        ChatSettingsModelTestHelper.createTestChatSettings(seed: 'seed')
             .replaceConversationsWithPleromaChats;
 
     await chatSettingsBloc.changeReplaceConversationsWithPleromaChats(
