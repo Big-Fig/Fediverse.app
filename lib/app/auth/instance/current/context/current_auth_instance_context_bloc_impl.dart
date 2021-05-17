@@ -138,14 +138,22 @@ import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service_impl.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service_impl.dart';
+import 'package:fedi/pleroma/api/directory/pleroma_api_directory_service.dart';
+import 'package:fedi/pleroma/api/directory/pleroma_api_directory_service_impl.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_service.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_service_impl.dart';
+import 'package:fedi/pleroma/api/endorsements/pleroma_api_endorsements_service.dart';
+import 'package:fedi/pleroma/api/endorsements/pleroma_api_endorsements_service_impl.dart';
+import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
+import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service_impl.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service_impl.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service_impl.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_service.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_service_impl.dart';
+import 'package:fedi/pleroma/api/markers/pleroma_api_markers_service.dart';
+import 'package:fedi/pleroma/api/markers/pleroma_api_markers_service_impl.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service_impl.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
@@ -168,8 +176,12 @@ import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_
 import 'package:fedi/pleroma/api/status/pleroma_api_status_service.dart';
 import 'package:fedi/pleroma/api/status/scheduled/pleroma_api_scheduled_status_service.dart';
 import 'package:fedi/pleroma/api/status/scheduled/pleroma_api_scheduled_status_service_impl.dart';
+import 'package:fedi/pleroma/api/suggestions/pleroma_api_suggestions_service.dart';
+import 'package:fedi/pleroma/api/suggestions/pleroma_api_suggestions_service_impl.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service_impl.dart';
+import 'package:fedi/pleroma/api/trends/pleroma_api_trends_service.dart';
+import 'package:fedi/pleroma/api/trends/pleroma_api_trends_service_impl.dart';
 import 'package:fedi/pleroma/api/web_sockets/pleroma_api_web_sockets_service.dart';
 import 'package:fedi/pleroma/api/web_sockets/pleroma_api_web_sockets_service_impl.dart';
 import 'package:fedi/provider/provider_context_bloc_impl.dart';
@@ -447,6 +459,42 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiNotificationService>(pleromaNotificationService);
     addDisposable(disposable: pleromaNotificationService);
+
+    var pleromaDirectoryService =
+        PleromaApiDirectoryService(restService: pleromaAuthRestService);
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaApiDirectoryService>(pleromaDirectoryService);
+    addDisposable(disposable: pleromaDirectoryService);
+    
+    var pleromaEndorsementsService =
+        PleromaApiEndorsementsService(restService: pleromaAuthRestService);
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaApiEndorsementsService>(pleromaEndorsementsService);
+    addDisposable(disposable: pleromaEndorsementsService);
+    
+   var pleromaFeaturedTagsService =
+        PleromaApiFeaturedTagsService(restService: pleromaAuthRestService);
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaApiFeaturedTagsService>(pleromaFeaturedTagsService);
+    addDisposable(disposable: pleromaFeaturedTagsService);
+    
+   var pleromaMarkersService =
+        PleromaApiMarkersService(restService: pleromaAuthRestService);
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaApiMarkersService>(pleromaMarkersService);
+    addDisposable(disposable: pleromaMarkersService);
+    
+   var pleromaSuggestionsService =
+        PleromaApiSuggestionsService(restService: pleromaAuthRestService);
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaApiSuggestionsService>(pleromaSuggestionsService);
+    addDisposable(disposable: pleromaSuggestionsService);
+    
+   var pleromaTrendsService =
+        PleromaApiTrendsService(restService: pleromaAuthRestService);
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaApiTrendsService>(pleromaTrendsService);
+    addDisposable(disposable: pleromaTrendsService);
 
     var pleromaPollService =
         PleromaApiPollService(restService: pleromaAuthRestService);

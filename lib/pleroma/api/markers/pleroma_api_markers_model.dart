@@ -62,7 +62,7 @@ class PleromaApiMarker implements IPleromaApiMarker, IJsonObject {
 }
 
 @JsonSerializable(explicitToJson: true)
-class PleromaApiMarkerPleromaPart {
+class PleromaApiMarkerPleromaPart implements IJsonObject {
   @JsonKey(name: "unread_count")
   final int? unreadCount;
 
@@ -84,4 +84,10 @@ class PleromaApiMarkerPleromaPart {
   String toString() => 'PleromaApiMarkerPleromaPart{'
       'unreadCount: $unreadCount'
       '}';
+
+  static PleromaApiMarkerPleromaPart fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiMarkerPleromaPartFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$PleromaApiMarkerPleromaPartToJson(this);
 }
