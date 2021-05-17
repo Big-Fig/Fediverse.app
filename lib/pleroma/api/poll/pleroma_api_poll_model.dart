@@ -73,7 +73,7 @@ extension DateTimePollExtension on DateTime {
   Duration calculatePostDurationLength({
     required PleromaApiInstancePollLimits limits,
   }) {
-    DateTime expiresAt = this;
+    var expiresAt = this;
 
     var now = DateTime.now();
 

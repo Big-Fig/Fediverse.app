@@ -286,7 +286,7 @@ String _extractContent({
   required IChatMessage chatMessage,
   required String? content,
 }) {
-  String formattedText = content?.extractRawStringFromHtmlString() ?? '';
+  var formattedText = content?.extractRawStringFromHtmlString() ?? '';
 
   var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 

@@ -54,7 +54,7 @@ class HiveTestHelper {
     );
     await hiveLocalPreferencesService.performAsyncInit();
 
-    T? objFromHive = hiveLocalPreferencesService.getObjectPreference<T>(
+    var objFromHive = hiveLocalPreferencesService.getObjectPreference<T>(
       key,
       // hack, code is unused inside
       (jsonData) => obj,

@@ -244,11 +244,11 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
     var typedResultList = await query.get();
 
-    Map<IConversationChat, IStatus?> result = {};
+    var result = <IConversationChat, IStatus?>{};
 
     conversations.forEach(
       (conversation) {
-        TypedResult? typedResult = typedResultList.firstWhereOrNull(
+        var typedResult = typedResultList.firstWhereOrNull(
           (typedResult) {
             var conversationStatuses =
                 typedResult.readTable(dao.conversationStatusesAlias);

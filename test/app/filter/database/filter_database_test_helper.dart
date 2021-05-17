@@ -16,7 +16,7 @@ class FilterDatabaseTestHelper {
     bool wholeWord = true,
     DateTime? expiresAt,
   }) async {
-    DbFilter dbFilter = DbFilter(
+    var dbFilter = DbFilter(
       id: null,
       remoteId: remoteId ?? seed + 'remoteId',
       phrase: phrase,
@@ -69,7 +69,7 @@ class FilterDatabaseTestHelper {
   static Future<DbFilterPopulated> createTestFilterPopulated(
     DbFilter dbFilter,
   ) async {
-    DbFilterPopulated dbFilterPopulated = DbFilterPopulated(
+    var dbFilterPopulated = DbFilterPopulated(
       dbFilter: dbFilter,
     );
 

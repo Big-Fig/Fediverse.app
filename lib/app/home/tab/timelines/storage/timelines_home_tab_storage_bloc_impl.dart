@@ -60,7 +60,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
 
       await bloc.performAsyncInit();
 
-      Timeline timeline = bloc.value!;
+      var timeline = bloc.value!;
       timelines.add(timeline);
       await bloc.dispose();
     }

@@ -55,7 +55,7 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
       pushMessage: pushMessage,
       body: body,
     );
-    bool handled = false;
+    var handled = false;
     for (var handler in realTimeHandlers) {
       handled = await handler(pushMessageHandler);
       if (handled) {

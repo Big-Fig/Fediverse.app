@@ -1895,8 +1895,8 @@ Future<void> main() async {
       emoji: emoji1,
       statusRemoteId: status.remoteId,
     )).thenAnswer((_) async {
-      List<PleromaApiStatusEmojiReaction> reactions =
-          status.pleromaEmojiReactions ?? [];
+      var reactions =
+          status.pleromaEmojiReactions ?? <PleromaApiStatusEmojiReaction>[];
 
       var reaction = reactions.firstWhereOrNull(
         (reaction) => reaction.name == emoji1,
@@ -1935,8 +1935,8 @@ Future<void> main() async {
       emoji: emoji1,
       statusRemoteId: status.remoteId,
     )).thenAnswer((_) async {
-      List<PleromaApiStatusEmojiReaction> reactions =
-          status.pleromaEmojiReactions ?? [];
+      var reactions =
+          status.pleromaEmojiReactions ?? <PleromaApiStatusEmojiReaction>[];
 
       var reaction = reactions.firstWhereOrNull(
         (reaction) => reaction.name == emoji1,

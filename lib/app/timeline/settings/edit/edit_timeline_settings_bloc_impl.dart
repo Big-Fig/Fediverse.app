@@ -246,8 +246,8 @@ class EditTimelineSettingsBloc
     var oldOnlyRemote = oldPreferences?.onlyRemote;
     var oldOnlyLocal = oldPreferences?.onlyLocal;
 
-    bool? newOnlyRemote = onlyRemoteFieldBloc.currentValue;
-    bool? newOnlyLocal = onlyLocalFieldBloc.currentValue;
+    var newOnlyRemote = onlyRemoteFieldBloc.currentValue;
+    var newOnlyLocal = onlyLocalFieldBloc.currentValue;
 
     if (newOnlyLocal == true && oldOnlyLocal == false) {
       onlyFromInstanceExist = false;

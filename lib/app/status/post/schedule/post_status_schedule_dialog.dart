@@ -22,10 +22,10 @@ void showPostStatusScheduleDialog({
       .add(IPostStatusBloc.requiredDurationToScheduleDateTime)
       .add(approximateDurationForSelection);
 
-  bool deleted = false;
-  bool canceled = false;
+  var deleted = false;
+  var canceled = false;
 
-  DateTime? newTime = await FediDatePicker.showDateTimePicker(
+  var newTime = await FediDatePicker.showDateTimePicker(
     context,
     showTitleActions: true,
     minDateTime: now,

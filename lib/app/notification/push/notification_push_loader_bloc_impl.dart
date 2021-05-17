@@ -12,7 +12,6 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
-import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
@@ -71,7 +70,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   // todo: refactor
   // ignore: long-method
   Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
-    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    var pleromaPushMessage = pushHandlerMessage.body;
 
     var isForCurrentInstance = currentInstance.isInstanceWithHostAndAcct(
       host: pleromaPushMessage.server,
@@ -83,7 +82,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         '\t pleromaPushMessage = $pleromaPushMessage');
     bool handled;
     if (isForCurrentInstance) {
-      String remoteNotificationId = pleromaPushMessage.notificationId;
+      var remoteNotificationId = pleromaPushMessage.notificationId;
       var remoteNotification = await pleromaNotificationService.getNotification(
         notificationRemoteId: remoteNotificationId,
       );

@@ -29,7 +29,7 @@ abstract class LocalOnlyPaginationBloc<TPage extends PaginationPage<TItem>,
         '\t previousPage=$previousPage'
         '\t nextPage=$nextPage');
 
-    List<TItem> loadedItems = await loadItemsFromLocalForPage(
+    var loadedItems = await loadItemsFromLocalForPage(
       pageIndex: pageIndex,
       itemsCountPerPage: itemsCountPerPage,
       olderPage: nextPage,

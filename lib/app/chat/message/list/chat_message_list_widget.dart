@@ -247,9 +247,9 @@ ChatMessageListItem<T> _calculateChatMessageListItem<T extends IChatMessage>({
   }
   var currentMessage = items[index];
 
-  DateTime? currentCreatedAt = currentMessage.createdAt;
-  DateTime? previousCreatedAt = previousMessage?.createdAt;
-  DateTime? nextCreatedAt = nextMessage?.createdAt;
+  var currentCreatedAt = currentMessage.createdAt;
+  var previousCreatedAt = previousMessage?.createdAt;
+  var nextCreatedAt = nextMessage?.createdAt;
 
   bool isFirstInDayGroup;
   bool isLastInDayGroup;

@@ -32,7 +32,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   Future<List<DbChatMessagePopulated>> findAll() async {
-    JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAllQuery();
+    var chatMessageQuery = _findAllQuery();
 
     var typedResults = await chatMessageQuery.get();
 
@@ -42,7 +42,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   Stream<List<DbChatMessagePopulated>> watchAll() {
-    JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAllQuery();
+    var chatMessageQuery = _findAllQuery();
 
     return chatMessageQuery.watch().map(
           (typedResults) => typedResults.toDbChatMessagePopulatedList(

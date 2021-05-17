@@ -103,7 +103,7 @@ class UrlHelper {
       } else {
         // status or account note with hashtag fetched from remote instance
 
-        String remoteInstanceDomain =
+        var remoteInstanceDomain =
             instanceLocationBloc.remoteInstanceUriOrNull!.host;
 
         return showRemoteInstanceHashtagActionsDialog(
@@ -189,7 +189,7 @@ class UrlHelper {
 
   static String extractUrl(String value) {
     // TODO: rework url regex
-    String string = value.replaceAll(RegExp('</a>'), '');
+    var string = value.replaceAll(RegExp('</a>'), '');
 
     return string.replaceAll(RegExp('<a[^>]*>'), '');
   }

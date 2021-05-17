@@ -23,7 +23,7 @@ class AccountFieldListItemWidget extends StatelessWidget {
       onTap: () {
         var valueAsRawUrl = field.valueAsRawUrl;
         if (valueAsRawUrl?.isNotEmpty == true) {
-          String url = UrlHelper.extractUrl(valueAsRawUrl!);
+          var url = UrlHelper.extractUrl(valueAsRawUrl!);
           var accountBloc = IAccountBloc.of(context, listen: false);
           UrlHelper.handleUrlClickWithInstanceLocation(
             context: context,

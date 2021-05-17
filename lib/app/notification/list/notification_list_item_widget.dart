@@ -478,7 +478,7 @@ class _NotificationListItemIconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     IconData? iconData;
     var notificationBloc = INotificationBloc.of(context);
-    Color iconColor = IFediUiColorTheme.of(context).primary;
+    var iconColor = IFediUiColorTheme.of(context).primary;
 
     switch (notificationBloc.typePleroma) {
       case PleromaApiNotificationType.follow:

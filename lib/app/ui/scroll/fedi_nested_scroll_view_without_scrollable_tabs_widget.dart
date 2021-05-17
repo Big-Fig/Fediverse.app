@@ -27,7 +27,7 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
 
   @override
   Widget buildNestedScrollView(BuildContext context) {
-    IFediNestedScrollViewBloc fediNestedScrollViewBloc =
+    var fediNestedScrollViewBloc =
         IFediNestedScrollViewBloc.of(context, listen: false);
     var nestedScrollController =
         fediNestedScrollViewBloc.nestedScrollController;

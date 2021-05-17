@@ -295,7 +295,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   }
 
   PleromaApiMyAccountEdit _calculatePleromaMyAccountEdit() {
-    Map<int, PleromaApiField> fieldsAttributes = {};
+    var fieldsAttributes = <int, PleromaApiField>{};
 
     customFieldsGroupBloc.items.asMap().entries.forEach(
       (entry) {

@@ -15,7 +15,7 @@ class ChatAvatarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IChatBloc chatBloc = IChatBloc.of(context);
+    var chatBloc = IChatBloc.of(context);
 
     return StreamBuilder<List<IAccount>>(
       stream: chatBloc.accountsStream,

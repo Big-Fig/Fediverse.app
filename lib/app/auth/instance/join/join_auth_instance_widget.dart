@@ -13,7 +13,6 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
-import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -269,7 +268,7 @@ class _JoinAuthInstanceTermsOfServiceButtonWidget extends StatelessWidget {
 Future signUpToInstance(BuildContext context) async {
   var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
   var hostUri = joinInstanceBloc.extractCurrentUri();
-  AsyncDialogResult<void> asyncDialogResult =
+  var asyncDialogResult =
       await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
     context: context,
     contentMessage:

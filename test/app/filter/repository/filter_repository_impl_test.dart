@@ -573,7 +573,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    List<IFilter> actualList = await query.get();
+    var actualList = await query.get();
 
     expect(actualList.length, 3);
 
@@ -626,7 +626,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    List<IFilter> actualList = await query.get();
+    var actualList = await query.get();
     expect(actualList.length, 3);
 
     FilterDatabaseTestHelper.expectDbFilter(
@@ -681,7 +681,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    List<IFilter> actualList = await query.get();
+    var actualList = await query.get();
     expect(actualList.length, 1);
 
     FilterDatabaseTestHelper.expectDbFilter(

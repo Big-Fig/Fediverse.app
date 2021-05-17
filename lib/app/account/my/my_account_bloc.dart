@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 abstract class IMyAccountBloc extends IAccountBloc {
   String? get noteUnescaped {
-    final HtmlUnescape _unescape = HtmlUnescape();
+    final _unescape = HtmlUnescape();
     if (note != null) {
       var unescaped = _unescape.convert(note!);
       // todo: remove hack

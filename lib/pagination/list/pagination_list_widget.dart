@@ -92,7 +92,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
+    var paginationListBloc =
         retrievePaginationListBloc(context, listen: true);
     _logger.finest(() => 'build '
         'paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.refreshState}');
@@ -168,7 +168,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       () {
         _logger.finest(() => 'askToRefresh delayed');
 
-        IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
+        var paginationListBloc =
             retrievePaginationListBloc(context, listen: false);
 
         final refreshState = paginationListBloc.refreshState;

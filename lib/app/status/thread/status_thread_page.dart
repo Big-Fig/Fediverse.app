@@ -68,7 +68,7 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
         var status = snapshot.data;
 
         if (status != null) {
-          IAccount account = status.reblog?.account ?? status.account;
+          var account = status.reblog?.account ?? status.account;
 
           return Provider<IStatus>.value(
             value: status,

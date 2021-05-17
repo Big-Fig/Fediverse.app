@@ -127,7 +127,7 @@ extension INotificationExtension on INotification {
   PleromaApiNotification toPleromaNotification() {
     var localNotification = this;
 
-    PleromaApiNotificationPleromaPart? pleroma = localNotification.pleroma;
+    var pleroma = localNotification.pleroma;
 
     var unread = localNotification.unread ?? false;
 

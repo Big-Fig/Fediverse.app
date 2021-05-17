@@ -175,7 +175,7 @@ class _MentionSpecialText extends SpecialText {
 
   @override
   InlineSpan finishText() {
-    final String mentionText = toString();
+    final mentionText = toString();
 
     return SpecialTextSpan(
       text: mentionText,

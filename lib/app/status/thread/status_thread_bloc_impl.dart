@@ -129,7 +129,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
         ),
       );
 
-      List<IStatus> newStatuses = [];
+      var newStatuses = <IStatus>[];
       newStatuses.addAll(
         ancestors.map(
               (remoteStatus) => remoteStatus.toDbStatusPopulatedWrapper(),
@@ -247,7 +247,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
     var spoilerText = remoteStatus.spoilerText;
     var content = remoteStatus.content;
 
-    bool filtered = false;
+    var filtered = false;
     for (var filter in filters) {
       var phrase = filter.phrase;
       if (filter.wholeWord) {

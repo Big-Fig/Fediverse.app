@@ -7,7 +7,7 @@ extension PleromaApiNativeCaptchaImageExtension on IPleromaApiCaptcha {
   Image decodeUrlAsBase64Image() {
     assert(typeAsPleromaApi == PleromaApiCaptchaType.native);
 
-    String encoded = url!;
+    var encoded = url!;
 
     // actually encoded url looks like 'data:image/png;base64,R0lGODlhyABGAIMA'
     // in this case we should cut header data and make plain base64 string

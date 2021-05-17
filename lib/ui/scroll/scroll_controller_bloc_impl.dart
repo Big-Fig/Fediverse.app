@@ -82,7 +82,7 @@ class ScrollControllerBloc extends DisposableOwner
   }
 
   void onScrollDirectionContinued(ScrollDirection currentScrollDirection) {
-    bool longScroll = isLongScroll();
+    var longScroll = isLongScroll();
     if (longScroll) {
       longScrollDirectionSubject.add(currentScrollDirection);
     }

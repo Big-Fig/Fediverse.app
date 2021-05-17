@@ -24,7 +24,7 @@ class LocalPreferencesTestHelper {
     await testLocalPreferenceBloc.performAsyncInit();
 
     T? listenValue;
-    StreamSubscription streamSubscription =
+    var streamSubscription =
         testLocalPreferenceBloc.stream.listen((data) {
       listenValue = data;
     });

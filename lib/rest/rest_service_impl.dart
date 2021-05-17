@@ -148,7 +148,7 @@ class RestService extends DisposableOwner implements IRestService {
       ),
     );
 
-    http.Response response = await responseFuture;
+    var response = await responseFuture;
 
     var log = () => 'response sendHttpRequest \n'
         '\t url($requestType): $url \n'

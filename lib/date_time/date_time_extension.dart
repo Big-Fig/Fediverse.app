@@ -2,7 +2,7 @@ extension DateTimeExtension on DateTime {
   Duration get durationFromNow => difference(DateTime.now());
 
   Duration? calculateExpiresInDurationOrNull() {
-    DateTime expiresAtDateTime = this;
+    var expiresAtDateTime = this;
     var now = DateTime.now();
 
     if (now.isAfter(expiresAtDateTime)) {

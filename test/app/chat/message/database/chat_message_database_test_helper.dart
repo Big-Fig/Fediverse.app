@@ -10,7 +10,7 @@ class ChatMessageDatabaseTestHelper {
     DbChatMessage dbChatMessage,
     AccountRepository accountRepository,
   ) async {
-    DbChatMessagePopulated dbChatMessagePopulated = DbChatMessagePopulated(
+    var dbChatMessagePopulated = DbChatMessagePopulated(
       dbChatMessage: dbChatMessage,
       dbAccount: (await accountRepository.findByRemoteIdInDbType(
         dbChatMessage.accountRemoteId,
@@ -29,7 +29,7 @@ class ChatMessageDatabaseTestHelper {
     String? chatRemoteId,
     PleromaApiCard? card,
   }) async {
-    DbChatMessage dbChatMessage = DbChatMessage(
+    var dbChatMessage = DbChatMessage(
       id: null,
       remoteId: remoteId ?? seed + 'remoteId',
       createdAt: createdAt ?? DateTime(1),

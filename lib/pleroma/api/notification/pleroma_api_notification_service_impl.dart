@@ -196,7 +196,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
   ) {
     if (excludeVisibilities?.isNotEmpty == true) {
       assert(restService.isPleroma);
-      for (PleromaApiVisibility excludeVisibility in excludeVisibilities!) {
+      for (var excludeVisibility in excludeVisibilities!) {
         assert(
           IPleromaApiNotificationService.validPleromaVisibilityToExclude
               .contains(excludeVisibility),
@@ -211,7 +211,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
   ) {
     if (includeTypes?.isNotEmpty == true) {
       assert(restService.isPleroma);
-      for (PleromaApiNotificationType includeType in includeTypes!) {
+      for (var includeType in includeTypes!) {
         assert(
           IPleromaApiNotificationService.validPleromaTypesToInclude
               .contains(includeType),

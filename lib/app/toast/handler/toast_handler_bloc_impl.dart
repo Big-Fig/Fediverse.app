@@ -19,7 +19,6 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
-import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -101,7 +100,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   }
 
   Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
-    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    var pleromaPushMessage = pushHandlerMessage.body;
     var isForCurrentInstance = currentInstance!.isInstanceWithHostAndAcct(
       host: pleromaPushMessage.server,
       acct: pleromaPushMessage.account,
@@ -123,7 +122,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     NotificationPushLoaderNotification handledNotification,
   ) {
     var pushHandlerMessage = handledNotification.pushHandlerMessage;
-    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    var pleromaPushMessage = pushHandlerMessage.body;
 
     var notificationType = pleromaPushMessage.notificationType;
 
@@ -180,7 +179,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     required PushHandlerMessage pushHandlerMessage,
     required VoidCallback onClick,
   }) {
-    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    var pleromaPushMessage = pushHandlerMessage.body;
 
     var title = '${pleromaPushMessage.account}@${pleromaPushMessage.server}'
         ' '
@@ -196,7 +195,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   Future _handleNonCurrentInstancePushMessage(
     PushHandlerMessage pushHandlerMessage,
   ) async {
-    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    var pleromaPushMessage = pushHandlerMessage.body;
 
     var notificationType = pleromaPushMessage.notificationType;
 

@@ -132,7 +132,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   @override
   Future registerApplication() async {
     _logger.finest(() => 'registerApplication');
-    String redirectUri = await _calculateRedirectUri();
+    var redirectUri = await _calculateRedirectUri();
 
     var application = await pleromaApplicationService.registerApp(
       registrationRequest: MastodonApiApplicationRegistrationRequest(
@@ -205,7 +205,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       await pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
           .setValue(baseUrl.toString());
 
-      AuthInstance instance = await loginWithAuthCode(authCode);
+      var instance = await loginWithAuthCode(authCode);
 
       return instance;
     } else {
@@ -248,7 +248,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
     var hostInstance = await pleromaInstanceService.getInstance();
 
-    AuthInstance instance = await _createAuthInstance(
+    var instance = await _createAuthInstance(
       pleromaAuthRestService: pleromaAuthRestService,
       authCode: authCode,
       token: token,

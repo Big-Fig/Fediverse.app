@@ -103,7 +103,7 @@ void main() {
 
     var lastPageIndex = storageSize ~/ itemsCountPerPage;
 
-    for (int i = 0; i < lastPageIndex; i++) {
+    for (var i = 0; i < lastPageIndex; i++) {
       await paginationListBloc.loadMoreWithoutController();
     }
 

@@ -33,8 +33,8 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
   bool cancelable = false,
 }) async {
   T? result;
-  CancelableOperation<T> cancelableOperation =
-      CancelableOperation.fromFuture(asyncCode());
+  var cancelableOperation =
+      CancelableOperation<T>.fromFuture(asyncCode());
 
   late var progressDialog;
   if (showProgressDialog) {
@@ -55,7 +55,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
     result = await cancelableOperation.valueOrCancellation(null);
   } catch (e, stackTrace) {
     error = e;
-    for (ErrorDataBuilder builder in errorDataBuilders) {
+    for (var builder in errorDataBuilders) {
       errorData = builder(context, e, stackTrace);
       if (errorData != null) {
         needRethrow = false;

@@ -85,7 +85,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
       streamSubscription: phraseField.currentValueStream.listen(
         (phrase) {
           if (phrase.isNotEmpty) {
-            bool hasMatch = _wholeWordRegex.hasMatch(phrase);
+            var hasMatch = _wholeWordRegex.hasMatch(phrase);
             wholeWordField.changeIsEnabled(hasMatch);
           } else {
             wholeWordField.changeIsEnabled(false);

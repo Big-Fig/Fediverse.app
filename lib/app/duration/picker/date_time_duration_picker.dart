@@ -37,8 +37,8 @@ Future<DurationPickerResult> showDateTimeDurationPicker({
     currentDateTime = currentDateTimeJiffy.dateTime;
   }
 
-  bool deleted = false;
-  bool canceled = false;
+  var deleted = false;
+  var canceled = false;
 
   var pickedDateTime = await FediDatePicker.showDateTimePicker(
     context,

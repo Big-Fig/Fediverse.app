@@ -706,7 +706,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    List<IPleromaChat> actualList = (await query.get());
+    var actualList = (await query.get());
     expect(actualList.length, 3);
 
     expect(actualList[0].toDbChat(), chat3);

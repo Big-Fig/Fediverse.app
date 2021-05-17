@@ -73,7 +73,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
 
   @override
   Future<bool> askPermissions() async {
-    NotificationSettings settings = await _fcm.requestPermission(
+    var settings = await _fcm.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -141,8 +141,8 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
     required RemoteMessage message,
     required PushMessageType type,
   }) {
-    Map<String, dynamic> data = message.data;
-    RemoteNotification? notification = message.notification;
+    var data = message.data;
+    var notification = message.notification;
     _logger.finest(() => '_createPushMessage \n'
         'type $type \n'
         'notification $notification \n'

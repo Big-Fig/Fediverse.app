@@ -19,7 +19,7 @@ class SearchAccountPaginationBloc
   @override
   PaginationPage<IAccount> mapPage(PaginationPage<ISearchResultItem> page) {
     // IterableExtension
-    List<IAccount> items = page.items
+    var items = page.items
         .where((searchResultItem) =>
             searchResultItem.type == SearchResultItemType.account)
         .map((searchResultItem) => searchResultItem.account)

@@ -16,7 +16,7 @@ class StatusDatabaseTestHelper {
     DbStatus dbStatus,
     AccountRepository accountRepository,
   ) async {
-    DbStatusPopulated dbStatusPopulated = DbStatusPopulated(
+    var dbStatusPopulated = DbStatusPopulated(
       dbStatus: dbStatus,
       dbAccount: (await accountRepository
           .findByRemoteIdInDbType(dbStatus.accountRemoteId))!,
@@ -39,7 +39,7 @@ class StatusDatabaseTestHelper {
     String? remoteId,
     String? inReplyToAccountRemoteId = 'inReplyToAccountRemoteId',
   }) async {
-    DbStatus dbStatus = DbStatus(
+    var dbStatus = DbStatus(
       id: null,
       remoteId: remoteId ?? seed + 'remoteId',
       createdAt: createdAt ?? DateTime(1),
@@ -94,7 +94,7 @@ class StatusDatabaseTestHelper {
     String? remoteId,
     required AccountRepository accountRepository,
   }) async {
-    DbStatus dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
       seed: seed,
       dbAccount: dbAccount,
       createdAt: createdAt,
