@@ -43,12 +43,12 @@ dart_code_metrics:
     - prefer-trailing-comma
     - no-boolean-literal-compare
     - newline-before-return
-#    - avoid-returning-widgets
-#    - no-object-declaration
-#    - avoid-unused-parameters
+    - double-literal-format
+    - binary-expression-operand-order
+    - no-object-declaration
 #    - avoid-non-null-assertion
-#    - binary-expression-operand-order
+#    - avoid-returning-widgets
+#    - avoid-unused-parameters
 #    - member-ordering
 #    - member-ordering-extended
 #    - avoid-late-keyword
-#    - double-literal-format
