@@ -6,8 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-typedef Future<T> AsyncButtonAction<T>();
-typedef Widget ButtonBuilder(BuildContext context, VoidCallback? onPressed);
+typedef AsyncButtonAction<T> = Future<T> Function();
+typedef ButtonBuilder = Widget Function(BuildContext context, VoidCallback? onPressed);
 
 var _logger = Logger('async_button_widget.dart');
 

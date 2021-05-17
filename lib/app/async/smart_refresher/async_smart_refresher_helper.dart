@@ -2,7 +2,7 @@ import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-typedef Future<FediListSmartRefresherLoadingState> AsyncAction();
+typedef AsyncAction = Future<FediListSmartRefresherLoadingState> Function();
 
 var _logger = Logger('async_smart_refresher_helper.dart');
 

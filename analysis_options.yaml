@@ -52,7 +52,3 @@ dart_code_metrics:
 #    - member-ordering-extended
 #    - avoid-late-keyword
 #    - double-literal-format
-
-linter:
-  rules:
-    prefer_generic_function_type_aliases: false
