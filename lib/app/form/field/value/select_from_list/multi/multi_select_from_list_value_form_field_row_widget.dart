@@ -237,8 +237,8 @@ Future<T?> _showDialog<T>({
 }) async {
   var isNeedRebuildActionsStream = fieldBloc.isNeedRebuildActionsStream;
 
-  BehaviorSubject<List<SelectionDialogAction>> actionsSubject =
-      BehaviorSubject.seeded(
+  var actionsSubject =
+      BehaviorSubject<List<SelectionDialogAction>>.seeded(
     _calculateActions(
       fieldBloc: fieldBloc,
       context: context,

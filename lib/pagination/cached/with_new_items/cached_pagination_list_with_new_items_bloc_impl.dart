@@ -391,8 +391,8 @@ _CombinedItemsResult<TItem>
     _calculateNewItems<TItem extends IEqualComparableObj<TItem>>(
   _CalculateNewItemsRequest<TItem> request,
 ) {
-  _CalculateNewItemsInputData<TItem> inputData = request.inputData;
-  _CombinedItemsResult<TItem> oldResult = request.result;
+  var inputData = request.inputData;
+  var oldResult = request.result;
 
   if (oldResult.request == inputData) {
     return oldResult;
@@ -492,7 +492,7 @@ List<TItem> _calculateActuallyNew<TItem extends IEqualComparableObj<TItem>>(
 
   // changed during sql request execute time
   // we need to filter again to be sure that newerItem is no
-  List<TItem> actuallyNew = newItems.where(
+  var actuallyNew = newItems.where(
     (newItem) {
       if (newerItem != null) {
         return newItem.compareTo(newerItem) > 0;

@@ -34,7 +34,7 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
   ) {
     assert(contextTypes.isNotEmpty);
 
-    List<String> contextTypesStrings = contextTypes
+    var contextTypesStrings = contextTypes
         .map(
           (visibility) => '${visibility.toJsonValue()}',
         )

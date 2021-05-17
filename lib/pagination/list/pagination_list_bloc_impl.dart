@@ -219,7 +219,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   static List<TItem> mapToItemsList<TPage extends PaginationPage<TItem>, TItem>(
     List<TPage> sortedPages,
   ) {
-    List<TItem> items = [];
+    var items = <TItem>[];
     sortedPages.forEach((page) {
       items.addAll(page.items);
     });

@@ -207,7 +207,7 @@ class RestRequestQueryArg {
   int get hashCode => key.hashCode ^ value.hashCode;
 
   static List<RestRequestQueryArg> listFromJson(Map<String, dynamic> json) {
-    List<RestRequestQueryArg> queryArgs = [];
+    var queryArgs = <RestRequestQueryArg>[];
 
     json.entries.forEach((entry) {
       var value = entry.value;

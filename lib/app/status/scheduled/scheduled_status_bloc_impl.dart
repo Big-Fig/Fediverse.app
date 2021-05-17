@@ -211,11 +211,11 @@ class ScheduledStatusBloc extends DisposableOwner
 
   void _updateState() {
     _logger.finest(() => '_updateState isCanceled ${scheduledStatus.canceled}');
-    bool isCanceled = scheduledStatus.canceled;
+    var isCanceled = scheduledStatus.canceled;
     if (isCanceled) {
       _stateSubject.add(ScheduledStatusState.canceled);
     } else {
-      DateTime scheduledAt = scheduledStatus.scheduledAt;
+      var scheduledAt = scheduledStatus.scheduledAt;
 
       var isExpired = scheduledAt.isBefore(DateTime.now());
 

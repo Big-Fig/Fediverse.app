@@ -87,7 +87,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     required includeConversationAccounts,
     required includeChatAccounts,
   }) {
-    List<Join<Table, DataClass>> allJoins = [
+    var allJoins = <Join<Table, DataClass>>[
       ...(includeAccountFollowings
           ? [
               innerJoin(

@@ -435,7 +435,7 @@ class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        TextStyle textStyle = fediUiTextTheme.bigTallDarkGrey;
+        var textStyle = fediUiTextTheme.bigTallDarkGrey;
 
         switch (statusFontSize) {
           case UiSettingsFontSize.smallest:

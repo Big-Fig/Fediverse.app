@@ -129,7 +129,7 @@ class PleromaChatMessageRepository
 
     var chatMessages = await query.get();
 
-    Map<IPleromaChat, IPleromaChatMessage?> result = {};
+    var result = <IPleromaChat, IPleromaChatMessage?>{};
 
     chats.forEach(
       (chat) {
@@ -137,7 +137,7 @@ class PleromaChatMessageRepository
           (chatMessage) => chatMessage.chatRemoteId == chat.remoteId,
         );
 
-        IPleromaChatMessage? chatMessage = currentChatMessages.fold(
+        var chatMessage = currentChatMessages.fold(
           null,
           (IPleromaChatMessage? previousValue, IPleromaChatMessage element) {
             if (previousValue == null) {

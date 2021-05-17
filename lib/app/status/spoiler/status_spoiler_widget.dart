@@ -44,7 +44,7 @@ class StatusSpoilerWidget extends StatelessWidget {
                 return const SizedBox.shrink();
               }
 
-              TextStyle textStyle =
+              var textStyle =
                   _mapToTextStyle(fediUiTextTheme, statusFontSize);
 
               return DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
@@ -97,7 +97,7 @@ class StatusSpoilerWidget extends StatelessWidget {
     IFediUiTextTheme fediUiTextTheme,
     UiSettingsFontSize statusFontSize,
   ) {
-    TextStyle textStyle = fediUiTextTheme.bigTallDarkGrey;
+    var textStyle = fediUiTextTheme.bigTallDarkGrey;
 
     switch (statusFontSize) {
       case UiSettingsFontSize.smallest:

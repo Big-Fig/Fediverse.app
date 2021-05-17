@@ -54,7 +54,7 @@ class SearchResultItemPaginationListWidget
   }) {
     SearchResultItemType? previousType;
 
-    List<_ItemOrSeparator<ISearchResultItem>> itemWithSeparators =
+    var itemWithSeparators =
         <_ItemOrSeparator<ISearchResultItem>>[];
     items.forEach((item) {
       if (item.type != previousType) {

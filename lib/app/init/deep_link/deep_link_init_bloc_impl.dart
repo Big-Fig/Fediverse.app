@@ -53,7 +53,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
         isPleroma: false,
       );
       await authHostBloc.performAsyncInit();
-      String authCode = IPleromaApiOAuthService.extractAuthCodeFromUri(initialUri);
+      var authCode = IPleromaApiOAuthService.extractAuthCodeFromUri(initialUri);
 
       try {
         var authInstance = await authHostBloc.loginWithAuthCode(authCode);

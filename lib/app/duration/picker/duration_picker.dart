@@ -15,9 +15,9 @@ Future<DurationPickerResult> showDurationPicker({
   required Duration? maxDuration,
   required bool isDeletePossible,
 }) async {
-  bool canceled = false;
-  bool deleted = false;
-  Duration? pickedDuration = await showFediModalBottomSheetDialog<Duration>(
+  var canceled = false;
+  var deleted = false;
+  var pickedDuration = await showFediModalBottomSheetDialog<Duration>(
     context: context,
     // isScrollControlled: false,
     enableDrag: false,

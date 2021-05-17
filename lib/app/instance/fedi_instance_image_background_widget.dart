@@ -31,7 +31,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var accountBackgroundImage = snapshot.data;
 
-        String? backgroundImage = accountBackgroundImage;
+        var backgroundImage = accountBackgroundImage;
 
         if (backgroundImage?.isNotEmpty != true) {
           backgroundImage = currentInstance?.info?.backgroundImage;
@@ -72,7 +72,7 @@ class _FediInstanceImageBackgroundCachedNetworkImageWidget
 
   @override
   Widget build(BuildContext context) {
-    String? backgroundImageAbsolutePath = Provider.of<String?>(context);
+    var backgroundImageAbsolutePath = Provider.of<String?>(context);
 
     if (backgroundImageAbsolutePath?.isNotEmpty == true) {
       return LayoutBuilder(

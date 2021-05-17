@@ -256,11 +256,11 @@ List<T> _parseJsonRequestAsList<T>(_ParseJsonRequest<T> request) {
   var json = jsonDecode(request.jsonString);
 
   if (json is List) {
-    List<T> result = List.generate(
+    var result = List<T>.generate(
       json.length,
       (index) {
         var jsonItem = json[index];
-        T item = request.responseJsonParser(jsonItem);
+        var item = request.responseJsonParser(jsonItem);
 
         return item;
       },

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:fedi/file/temp/temp_file_model.dart';
 import 'package:flutter/foundation.dart';
@@ -45,7 +44,7 @@ class TempFileHelper {
         )
         .toList();
 
-    List<File> files = await Future.wait(futures);
+    var files = await Future.wait(futures);
 
     return files;
   }
@@ -53,15 +52,15 @@ class TempFileHelper {
   static Future<File> downloadFileToTempFolder({
     required DownloadTempFileRequest request,
   }) async {
-    String url = request.url;
-    String filename = request.filenameWithExtension;
+    var url = request.url;
+    var filename = request.filenameWithExtension;
 
     // todo: auth header?
     HttpClientRequest? httpRequest;
     try {
       httpRequest = await HttpClient().getUrl(Uri.parse(url));
       var response = await httpRequest.close();
-      Uint8List bytes = await consolidateHttpClientResponseBytes(response);
+      var bytes = await consolidateHttpClientResponseBytes(response);
 
       var directory = await createUniqueTemporaryDirectory();
       var file = File(

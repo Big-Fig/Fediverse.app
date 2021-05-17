@@ -40,7 +40,7 @@ class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String header = Provider.of<String>(context);
+    var header = Provider.of<String>(context);
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {

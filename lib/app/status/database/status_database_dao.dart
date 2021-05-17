@@ -222,7 +222,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     } else {
       expressionCondition = 'NOT LIKE "%$phrase%"';
     }
-    String expressionContent = '$tableName.$fieldName $expressionCondition';
+    var expressionContent = '$tableName.$fieldName $expressionCondition';
 
     return query
       ..where(
@@ -797,7 +797,7 @@ extension TypedResultDbStatusPopulatedExtension on TypedResult {
   DbStatusPopulated toDbStatusPopulated({
     required StatusDao dao,
   }) {
-    TypedResult typedResult = this;
+    var typedResult = this;
 
     return DbStatusPopulated(
       reblogDbStatus: typedResult.readTableOrNull(dao.reblogAlias),

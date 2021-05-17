@@ -22,7 +22,7 @@ class PostMessageContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IPostMessageBloc postMessageBloc = IPostMessageBloc.of(context);
+    var postMessageBloc = IPostMessageBloc.of(context);
 
     return StreamBuilder<List<FormItemValidationError>>(
       stream: postMessageBloc.inputTextErrorsStream,

@@ -82,7 +82,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   Future _actualInit() async {
     playerStateSubject.add(MediaPlayerState.initializing);
 
-    VideoPlayerController videoPlayerController = createVideoPlayerController();
+    var videoPlayerController = createVideoPlayerController();
 
     var listener = () {
       _onVideoPlayerStateChanged(videoPlayerController);

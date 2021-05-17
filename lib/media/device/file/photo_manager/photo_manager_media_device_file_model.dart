@@ -76,13 +76,13 @@ class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
 
   Future<File?> _compressToJpeg(File file) async {
     var originPath = file.absolute.path;
-    final Directory extDir = await getTemporaryDirectory();
+    final extDir = await getTemporaryDirectory();
     var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    final String dirPath = path.join(extDir.path, 'gallery_picker', timestamp);
+    final dirPath = path.join(extDir.path, 'gallery_picker', timestamp);
     await Directory(dirPath).create(recursive: true);
     var originalFileNameWithoutExtension =
         path.basenameWithoutExtension(file.path);
-    final String resultPath =
+    final resultPath =
         path.join(dirPath, '$originalFileNameWithoutExtension.jpg');
     _logger.fine(() => '_compressToJpeg \n'
         '\t originPath $originPath'

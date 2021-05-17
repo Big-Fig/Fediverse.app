@@ -54,7 +54,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
 
       timelineTabBlocs.add(timelineTabBloc);
     }
-    int initialIndex = timelineIds.indexOf(selectedTimelineId);
+    var initialIndex = timelineIds.indexOf(selectedTimelineId);
 
     if (initialIndex <= 0) {
       _logger.warning(() => 'initialIndex $initialIndex \n'

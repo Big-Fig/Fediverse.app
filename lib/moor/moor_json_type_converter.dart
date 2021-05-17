@@ -25,7 +25,7 @@ abstract class JsonDatabaseConverter<T> extends TypeConverter<T, String> {
       return null;
     }
 
-    Map<String, dynamic> jsonMap = toJson(value);
+    var jsonMap = toJson(value);
 
     return json.encode(jsonMap);
   }

@@ -36,7 +36,7 @@ class HtmlTextWidget extends StatelessWidget {
   Widget buildTextWidget(IHtmlTextBloc htmlTextBloc) {
     var htmlData = htmlTextBloc.htmlData;
     var settings = htmlTextBloc.settings;
-    Alignment alignment = mapToAligment(settings);
+    var alignment = mapToAligment(settings);
     var text = Text(
       htmlData.text!,
       style: TextStyle(

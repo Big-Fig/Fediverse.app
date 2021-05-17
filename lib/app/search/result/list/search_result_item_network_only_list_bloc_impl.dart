@@ -33,7 +33,7 @@ class SearchResultItemNetworkOnlyListBloc
     required String? maxId,
   }) async {
     var query = searchInputBloc.confirmedSearchTerm;
-    List<ISearchResultItem> resultItems = [];
+    var resultItems = <ISearchResultItem>[];
 
     if (query?.isNotEmpty == true) {
       var offset = pageIndex * itemsCountPerPage!;

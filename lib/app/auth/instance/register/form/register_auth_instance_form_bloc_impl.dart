@@ -13,7 +13,6 @@ import 'package:fedi/form/field/value/string/validation/string_value_form_field_
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/pleroma/api/account/public/pleroma_api_account_public_model.dart';
 import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service.dart';
 
@@ -139,7 +138,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
     final captcha = captchaFieldBloc.captcha;
     final captchaSolution = captchaFieldBloc.currentValue;
     final agreeTermsOfService = agreeTermsOfServiceFieldBloc.currentValue;
-    LocalizationLocale? locale = localeFieldBloc.currentValue;
+    var locale = localeFieldBloc.currentValue;
 
     final reason = reasonFieldBloc.currentValue;
 

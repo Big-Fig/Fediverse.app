@@ -17,9 +17,9 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   static DurationDateTimeValueFormFieldBloc createDurationDateTimeLengthBloc(
     PleromaApiInstancePollLimits pollLimit,
   ) {
-    Duration pollMinimumExpiration = pollLimit.minExpirationDurationOrDefault;
+    var pollMinimumExpiration = pollLimit.minExpirationDurationOrDefault;
 
-    Duration pollMaximumExpiration = pollLimit.maxExpirationDurationOrDefault;
+    var pollMaximumExpiration = pollLimit.maxExpirationDurationOrDefault;
 
     return DurationDateTimeValueFormFieldBloc(
       originValue: DurationDateTime(

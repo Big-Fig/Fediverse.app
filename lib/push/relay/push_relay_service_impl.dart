@@ -25,9 +25,9 @@ class PushRelayService extends DisposableOwner implements IPushRelayService {
         '\t webPushSubscriptionUrl=$baseServerUrl'
         '\t accessToken=$fcmDeviceToken');
 
-    String host = baseServerUrl.host;
+    var host = baseServerUrl.host;
 
-    String endpoint = urlPath.join(
+    var endpoint = urlPath.join(
       pushRelayBaseUrl,
       '$fcmDeviceToken'
       '?account=$account'

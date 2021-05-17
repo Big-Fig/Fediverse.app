@@ -61,8 +61,7 @@ class StatusCachedPaginationListMediaWidget
     // all statuses should be already with media attachments
     items = filterItemsWithMedia(items);
 
-    List<_StatusWithMediaAttachment> statusesWithMediaAttachment =
-        mapToStatusesWithAttachments(items);
+    var statusesWithMediaAttachment = mapToStatusesWithAttachments(items);
 
     var length = statusesWithMediaAttachment.length;
     if (header != null) {
@@ -111,9 +110,12 @@ class StatusCachedPaginationListMediaWidget
 
     items.forEach(
       (status) {
-        Iterable<PleromaApiMediaAttachment> mediaAttachments =
-            (status.reblog?.mediaAttachments ?? status.mediaAttachments ?? [])
-                .where((mediaAttachment) => mediaAttachment.isImageOrGif);
+        var mediaAttachments = (status.reblog?.mediaAttachments ??
+                status.mediaAttachments ??
+                <PleromaApiMediaAttachment>[])
+            .where(
+          (mediaAttachment) => mediaAttachment.isImageOrGif,
+        );
         mediaAttachments.forEach(
           (mediaAttachment) {
             statusesWithMediaAttachment.add(

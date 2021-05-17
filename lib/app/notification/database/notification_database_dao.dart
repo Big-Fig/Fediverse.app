@@ -378,7 +378,7 @@ extension DbNotificationPopulatedTypedResultExtension on TypedResult {
   DbNotificationPopulated toDbNotificationPopulated({
     required NotificationDao dao,
   }) {
-    TypedResult typedResult = this;
+    var typedResult = this;
     var notificationAccount = typedResult.readTable(dao.accountAlias);
     var notificationStatus = typedResult.readTableOrNull(dao.statusAlias);
 

@@ -55,7 +55,7 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
   }
 
   Future _updateConversationById(String conversationRemoteId) async {
-    IPleromaApiConversation conversation =
+    var conversation =
         await conversationChatService.getConversation(
       conversationRemoteId: conversationRemoteId,
     );

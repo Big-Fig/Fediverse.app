@@ -74,10 +74,10 @@ HtmlTextResultData _calculateHtmlData({
 
     var alreadyHaveHtmlInText = false;
     if (inputData.isHaveEmojis) {
-      for (int i = 0; i < inputData.emojis!.length; i++) {
+      for (var i = 0; i < inputData.emojis!.length; i++) {
         var emoji = inputData.emojis![i];
-        String? shortcode = emoji.shortcode;
-        String? url = emoji.url;
+        var shortcode = emoji.shortcode;
+        var url = emoji.url;
 
         text = text.replaceAll(
           ':$shortcode:',

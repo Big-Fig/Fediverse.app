@@ -92,7 +92,7 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
 
   @override
   List<IPleromaApiMediaAttachment>? calculateSelectionAsMediaAttachments() {
-    List<IPleromaApiMediaAttachment> mediaAttachments = [];
+    var mediaAttachments = <IPleromaApiMediaAttachment>[];
 
     currentSelection.forEach((chatMessage) {
       if (chatMessage.mediaAttachments?.isNotEmpty == true) {

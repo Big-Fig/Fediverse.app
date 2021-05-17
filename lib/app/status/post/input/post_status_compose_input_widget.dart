@@ -23,7 +23,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IPostStatusBloc postStatusBloc = IPostStatusBloc.of(context);
+    var postStatusBloc = IPostStatusBloc.of(context);
 
     return StreamBuilder<List<FormItemValidationError>>(
       stream: postStatusBloc.inputTextErrorsStream,

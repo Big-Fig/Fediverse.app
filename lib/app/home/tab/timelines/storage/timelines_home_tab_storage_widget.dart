@@ -109,8 +109,8 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
     Key item,
     Key newPosition,
   ) {
-    int oldIndex = timelinesHomeTabStorageBloc.indexOfKey(item);
-    int newIndex = timelinesHomeTabStorageBloc.indexOfKey(newPosition);
+    var oldIndex = timelinesHomeTabStorageBloc.indexOfKey(item);
+    var newIndex = timelinesHomeTabStorageBloc.indexOfKey(newPosition);
 
     _logger.finest(() => 'onReorder oldIndex $oldIndex newIndex $newIndex');
 

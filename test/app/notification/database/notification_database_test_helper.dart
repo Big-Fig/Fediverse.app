@@ -16,7 +16,7 @@ class NotificationDatabaseTestHelper {
     DateTime? createdAt,
     String type = 'reblog',
   }) async {
-    DbNotification dbNotification = DbNotification(
+    var dbNotification = DbNotification(
       id: null,
       remoteId: remoteId ?? seed + 'remoteId',
       createdAt: createdAt ?? DateTime(1),
@@ -102,7 +102,7 @@ class NotificationDatabaseTestHelper {
     DbNotification dbNotification,
     AccountRepository accountRepository,
   ) async {
-    DbNotificationPopulated dbNotificationPopulated = DbNotificationPopulated(
+    var dbNotificationPopulated = DbNotificationPopulated(
       dbNotification: dbNotification,
       dbAccount: (await accountRepository.findByRemoteIdInDbType(
         dbNotification.accountRemoteId!,

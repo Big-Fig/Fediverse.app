@@ -213,13 +213,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
   Future internalAsyncInit() async {
     _logger.fine(() => 'internalAsyncInit');
 
-    ILocalPreferencesService preferencesService = appContextBloc.get();
-    IConnectionService connectionService = appContextBloc.get();
-    IPushRelayService pushRelayService = appContextBloc.get();
-    IFcmPushService fcmPushService = appContextBloc.get();
-    IPushHandlerBloc pushHandlerBloc = appContextBloc.get();
+    var preferencesService = appContextBloc.get<ILocalPreferencesService>();
+    var connectionService = appContextBloc.get<IConnectionService>();
+    var pushRelayService = appContextBloc.get<IPushRelayService>();
+    var fcmPushService = appContextBloc.get<IFcmPushService>();
+    var pushHandlerBloc = appContextBloc.get<IPushHandlerBloc>();
 
-    CurrentAuthInstanceContextBloc globalProviderService = this;
+    var globalProviderService = this;
 
     var userAtHost = currentInstance.userAtHost;
 
@@ -465,35 +465,35 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiDirectoryService>(pleromaDirectoryService);
     addDisposable(disposable: pleromaDirectoryService);
-    
+
     var pleromaEndorsementsService =
         PleromaApiEndorsementsService(restService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiEndorsementsService>(pleromaEndorsementsService);
     addDisposable(disposable: pleromaEndorsementsService);
-    
-   var pleromaFeaturedTagsService =
+
+    var pleromaFeaturedTagsService =
         PleromaApiFeaturedTagsService(restService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiFeaturedTagsService>(pleromaFeaturedTagsService);
     addDisposable(disposable: pleromaFeaturedTagsService);
-    
-   var pleromaMarkersService =
+
+    var pleromaMarkersService =
         PleromaApiMarkersService(restService: pleromaAuthRestService);
-    await globalProviderService.asyncInitAndRegister<
-        IPleromaApiMarkersService>(pleromaMarkersService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaApiMarkersService>(pleromaMarkersService);
     addDisposable(disposable: pleromaMarkersService);
-    
-   var pleromaSuggestionsService =
+
+    var pleromaSuggestionsService =
         PleromaApiSuggestionsService(restService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiSuggestionsService>(pleromaSuggestionsService);
     addDisposable(disposable: pleromaSuggestionsService);
-    
-   var pleromaTrendsService =
+
+    var pleromaTrendsService =
         PleromaApiTrendsService(restService: pleromaAuthRestService);
-    await globalProviderService.asyncInitAndRegister<
-        IPleromaApiTrendsService>(pleromaTrendsService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaApiTrendsService>(pleromaTrendsService);
     addDisposable(disposable: pleromaTrendsService);
 
     var pleromaPollService =
@@ -648,7 +648,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         INotificationPushLoaderBloc>(notificationPushLoaderBloc);
 
     if (!timelinesHomeTabStorageLocalPreferencesBloc
-            .value.timelineIds.isNotEmpty) {
+        .value.timelineIds.isNotEmpty) {
       var remoteLists = await pleromaListService.getLists();
 
       var timelines = [

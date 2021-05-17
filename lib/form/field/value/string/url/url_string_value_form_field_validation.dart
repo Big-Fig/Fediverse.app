@@ -14,7 +14,7 @@ class UrlStringValueFormFieldValidationError
       S.of(context).form_field_text_url_error_invalid_desc;
 
   static FormValueFieldValidation createValidator() => (currentValue) {
-        bool emailValid = urlRegex.hasMatch(currentValue ?? '');
+        var emailValid = urlRegex.hasMatch(currentValue ?? '');
         if (emailValid) {
           return null;
         } else {

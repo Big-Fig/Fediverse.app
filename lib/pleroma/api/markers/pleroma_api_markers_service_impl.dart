@@ -58,7 +58,7 @@ class PleromaApiMarkersService extends BasePleromaApiService
   }) async {
     assert(timelinesLastReadIds.isNotEmpty);
 
-    Map<String, String> bodyJson = {};
+    var bodyJson = <String, String>{};
 
     timelinesLastReadIds.entries.forEach(
       (pair) {

@@ -292,7 +292,7 @@ extension DbConversationChatWithLastMessagePopulatedTypedResultExtension
       toDbConversationChatWithLastMessagePopulated({
     required ConversationDao dao,
   }) {
-    TypedResult typedResult = this;
+    var typedResult = this;
     var dbStatus = typedResult.readTableOrNull(dao.statusAlias);
     var dbStatusAccount = typedResult.readTableOrNull(dao.statusAccountAlias);
     DbStatusPopulated? dbStatusPopulated;

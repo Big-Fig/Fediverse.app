@@ -122,7 +122,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
 
   @override
   Future resendPendingFailed() {
-    String? mediaId = chatMessage.mediaAttachments?.singleOrNull?.id;
+    var mediaId = chatMessage.mediaAttachments?.singleOrNull?.id;
 
     var pleromaApiChatMessageSendData = PleromaApiChatMessageSendData(
       content: chatMessage.content,

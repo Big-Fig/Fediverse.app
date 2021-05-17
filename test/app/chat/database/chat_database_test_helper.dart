@@ -24,7 +24,7 @@ class ChatDatabaseTestHelper {
     DbChat dbChat,
     AccountRepository accountRepository,
   ) async {
-    DbPleromaChatPopulated dbChatPopulated = DbPleromaChatPopulated(
+    var dbChatPopulated = DbPleromaChatPopulated(
       dbChat: dbChat,
       dbAccount: (await accountRepository.findByRemoteIdInDbType(
         dbChat.accountRemoteId,

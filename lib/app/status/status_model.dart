@@ -618,14 +618,14 @@ class DbStatusPopulatedWrapper extends IStatus {
     bool? hiddenLocallyOnDevice,
     String? wasSentWithIdempotencyKey,
   }) {
-    DbStatus? reblogStatus = reblog?.toDbStatus();
-    DbAccount? reblogStatusAccount = reblog?.account.toDbAccount();
+    var reblogStatus = reblog?.toDbStatus();
+    var reblogStatusAccount = reblog?.account.toDbAccount();
 
-    DbStatus? replyStatus = inReplyToStatus?.toDbStatus();
-    DbAccount? replyStatusAccount = inReplyToStatus?.account.toDbAccount();
+    var replyStatus = inReplyToStatus?.toDbStatus();
+    var replyStatusAccount = inReplyToStatus?.account.toDbAccount();
 
-    DbStatus? replyReblogStatus = inReplyToStatus?.reblog?.toDbStatus();
-    DbAccount? replyReblogStatusAccount =
+    var replyReblogStatus = inReplyToStatus?.reblog?.toDbStatus();
+    var replyReblogStatusAccount =
         inReplyToStatus?.reblog?.account.toDbAccount();
 
     return DbStatusPopulatedWrapper(
@@ -881,8 +881,8 @@ class CantExtractStatusRemoteIdFromStatusUrlException implements Exception {
 
 extension IPleromaApiMentionStatusListExtension on List<IStatus> {
   List<IPleromaApiMention> findAllMentions() {
-    List<IStatus> statuses = this;
-    Set<IPleromaApiMention> mentions = {};
+    var statuses = this;
+    var mentions = <IPleromaApiMention>{};
 
     statuses.forEach(
       (status) {

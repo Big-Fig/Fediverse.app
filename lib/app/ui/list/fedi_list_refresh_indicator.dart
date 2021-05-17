@@ -221,7 +221,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
 
   @override
   void didChangeDependencies() {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
     _valueColor = _positionController.drive(
       ColorTween(
         begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
@@ -237,7 +237,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
   void didUpdateWidget(covariant FediListRefreshIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.color != widget.color) {
-      final ThemeData theme = Theme.of(context);
+      final theme = Theme.of(context);
       _valueColor = _positionController.drive(
         ColorTween(
           begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
@@ -372,7 +372,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
   void _checkDragOffset(double containerExtent) {
     assert(_mode == _RefreshIndicatorMode.drag ||
         _mode == _RefreshIndicatorMode.armed);
-    double newValue =
+    var newValue =
         _dragOffset! / (containerExtent * _kDragContainerExtentPercentage);
     if (_mode == _RefreshIndicatorMode.armed) {
       newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
@@ -425,7 +425,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
   void _show() {
     assert(_mode != _RefreshIndicatorMode.refresh);
     assert(_mode != _RefreshIndicatorMode.snap);
-    final Completer<void> completer = Completer<void>();
+    final completer = Completer<void>();
     _pendingRefreshFuture = completer.future;
     _mode = _RefreshIndicatorMode.snap;
     _positionController
@@ -440,7 +440,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
           _mode = _RefreshIndicatorMode.refresh;
         });
 
-        final Future<void> refreshResult = widget.onRefresh();
+        final refreshResult = widget.onRefresh();
         // `refreshResult` has a non-nullable type, but might be null when
         // running with weak checking, so we need to null check it anyway (and
         // ignore the warning that the null-handling logic is dead code).

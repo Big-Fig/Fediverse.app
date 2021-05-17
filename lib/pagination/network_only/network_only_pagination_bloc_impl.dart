@@ -31,7 +31,7 @@ abstract class NetworkOnlyPaginationBloc<TPage extends PaginationPage<TItem>,
         '\t previousPage=$previousPage'
         '\t nextPage=$nextPage');
 
-    List<TItem> loadedItems = await loadItemsFromRemoteForPage(
+    var loadedItems = await loadItemsFromRemoteForPage(
       pageIndex: pageIndex,
       itemsCountPerPage: itemsCountPerPage,
       olderPage: nextPage,

@@ -235,8 +235,8 @@ Future runInitializedCurrentInstanceApp({
       );
       await currentInstanceContextBloc!.performAsyncInit();
 
-      INotificationPushLoaderBloc pushLoaderBloc =
-          currentInstanceContextBloc!.get();
+      var pushLoaderBloc =
+          currentInstanceContextBloc!.get<INotificationPushLoaderBloc>();
 
       _logger.finest(
         () => 'buildCurrentInstanceApp CurrentInstanceContextLoadingPage',

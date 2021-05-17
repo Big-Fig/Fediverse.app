@@ -149,7 +149,7 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
   IWebSocketsChannel<PleromaApiWebSocketsEvent> getDirectChannel({
     required String? accountId,
   }) {
-    Map<String, String> queryArgs = {};
+    var queryArgs = <String, String>{};
     if (accountId != null) {
       queryArgs.addAll({'accountId': accountId});
     }
