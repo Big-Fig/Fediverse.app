@@ -100,6 +100,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   Future dispose() {
     _logger.finest(() => "dispose");
+
     return super.dispose();
   }
 

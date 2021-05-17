@@ -14,10 +14,12 @@ class EditMyAccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
+
     return WillPopScope(
       // override back button
       onWillPop: () async {
         handleBackPressed(context, editMyAccountBloc);
+
         return true;
       },
       child: Scaffold(
@@ -73,6 +75,7 @@ class _EditMyAccountPageAppBarSaveAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: editMyAccountBloc.isHaveChangesAndNoErrorsStream,
       initialData: editMyAccountBloc.isHaveChangesAndNoErrors,

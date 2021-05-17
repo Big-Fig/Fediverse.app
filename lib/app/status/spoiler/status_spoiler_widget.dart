@@ -32,6 +32,7 @@ class StatusSpoilerWidget extends StatelessWidget {
         if (spoilerEmojiText?.text.isNotEmpty != true) {
           return const SizedBox.shrink();
         }
+
         return Provider<EmojiText?>.value(
           value: spoilerEmojiText,
           child: StreamBuilder<UiSettingsFontSize?>(
@@ -80,6 +81,7 @@ class StatusSpoilerWidget extends StatelessWidget {
                       },
                     ),
                   );
+
                   return htmlTextBloc;
                 },
                 child: const HtmlTextWidget(),
@@ -114,6 +116,7 @@ class StatusSpoilerWidget extends StatelessWidget {
         textStyle = fediUiTextTheme.headerDarkGrey;
         break;
     }
+
     return textStyle;
   }
 

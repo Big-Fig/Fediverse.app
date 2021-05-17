@@ -62,6 +62,7 @@ class _StatusBodyChildWithWarningsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
+
     return StreamBuilder<StatusSensitiveWarningState>(
       stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
       builder: (context, snapshot) {
@@ -131,6 +132,7 @@ class _StatusBodyContentWidget extends StatelessWidget {
     var statusCollapsibleItemBloc = IStatusCollapsibleItemBloc.of(context);
 
     var statusBodyBloc = IStatusBodyBloc.of(context);
+
     return Column(
       children: <Widget>[
         Padding(
@@ -165,6 +167,7 @@ class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
     var statusBodyBloc = IStatusBodyBloc.of(context);
+
     return StreamBuilder<List<IPleromaApiMediaAttachment>?>(
       stream: statusBloc.reblogOrOriginalMediaAttachmentsStream,
       builder: (context, snapshot) {
@@ -210,6 +213,7 @@ class _StatusBodyCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
+
     return StreamBuilder<IPleromaApiCard?>(
       stream: statusBloc.reblogOrOriginalCardStream,
       builder: (context, snapshot) {
@@ -218,6 +222,7 @@ class _StatusBodyCardWidget extends StatelessWidget {
         if (card == null) {
           return const SizedBox.shrink();
         }
+
         return Provider<IPleromaApiCard?>.value(
           value: card,
           child: const CardWidget(),
@@ -235,6 +240,7 @@ class _StatusBodyCollapsibleButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusCollapsibleItemBloc = IStatusCollapsibleItemBloc.of(context);
+
     return Column(
       children: [
         const FediSmallVerticalSpacer(),
@@ -243,6 +249,7 @@ class _StatusBodyCollapsibleButtonWidget extends StatelessWidget {
             stream: statusCollapsibleItemBloc.isCollapsedStream,
             builder: (context, snapshot) {
               var isCollapsed = snapshot.data ?? true;
+
               return FediPrimaryFilledTextButtonWithBorder(
                 isCollapsed
                     ? S.of(context).app_status_collapsible_action_expand
@@ -377,6 +384,7 @@ class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
     var isNeedCollapse =
         collapsible && statusCollapsibleItemBloc.isPossibleToCollapse;
     const htmlTextWidget = _StatusBodyContentWithEmojisHtmlTextWidget();
+
     return StreamBuilder<bool>(
       stream: statusCollapsibleItemBloc.isCollapsedStream.distinct(),
       builder: (context, snapshot) {
@@ -481,6 +489,7 @@ class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
                 },
               ),
             );
+
             return htmlTextBloc;
           },
           child: const HtmlTextWidget(),

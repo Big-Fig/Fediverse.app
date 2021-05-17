@@ -343,6 +343,7 @@ class LocalStatusBloc extends StatusBloc {
     var result = await statusRepository.findByRemoteIdInAppType(
       reblogOrOriginal.remoteId!,
     );
+
     return result!;
   }
 
@@ -368,6 +369,7 @@ class LocalStatusBloc extends StatusBloc {
     var result = await statusRepository.findByRemoteIdInAppType(
       reblogOrOriginal.remoteId!,
     );
+
     return result!;
   }
 
@@ -400,6 +402,7 @@ class LocalStatusBloc extends StatusBloc {
     var result = await statusRepository.findByRemoteIdInAppType(
       reblogOrOriginal.remoteId!,
     );
+
     return result!;
   }
 

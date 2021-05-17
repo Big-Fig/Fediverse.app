@@ -60,6 +60,7 @@ class MyAccountDomainBlockPaginationListWidget
         itemBuilder: (context, index) {
           var item = items[index];
           _logger.finest(() => "itemBuilder ${item.domain}");
+
           return Provider<DomainBlock>.value(
             value: item,
             child: MyAccountDomainBlockListItemWidget(
@@ -75,6 +76,7 @@ class MyAccountDomainBlockPaginationListWidget
       retrievePaginationListBloc(BuildContext context, {required bool listen}) {
     var domainBlockPaginationListBloc =
         IMyAccountDomainBlockPaginationListBloc.of(context, listen: listen);
+
     return domainBlockPaginationListBloc;
   }
 }

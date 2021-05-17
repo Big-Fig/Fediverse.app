@@ -32,6 +32,7 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
     IScheduledStatus? item,
   ) {
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
+
     return scheduledStatusCachedListService.watchLocalItemsNewerThanItem(item);
   }
 

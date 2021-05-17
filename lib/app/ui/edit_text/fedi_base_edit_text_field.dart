@@ -68,6 +68,7 @@ class FediBaseEditTextField extends StatelessWidget {
     } else {
       child = buildTextField(actualTextInputAction, context);
     }
+
     return child;
   }
 

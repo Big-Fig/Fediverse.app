@@ -26,11 +26,13 @@ class FileGalleryFolderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var folderBloc = IMediaDeviceFolderBloc.of(context);
     _logger.finest(() => "build");
+
     return AsyncInitLoadingWidget(
       loadingFinishedBuilder: (context) => permissionButtonBuilder(
         context,
         (context) {
           _logger.finest(() => "async finished build");
+
           return MediaPickerFileGridWidget(
             headerItemBuilder: headerItemBuilder,
           );

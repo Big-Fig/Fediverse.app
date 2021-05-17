@@ -71,6 +71,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                       expression = item.remoteId;
                       break;
                   }
+
                   return OrderingTerm(
                     expression: expression,
                     mode: orderTerm.orderingMode,
@@ -142,6 +143,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
             ]
           : []),
     ];
+
     return allJoins;
   }
 
@@ -317,6 +319,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
         filters?.onlyInChat?.remoteId,
       );
     }
+
     return joinQuery;
   }
 

@@ -7,6 +7,7 @@ extension DateTimeExtension on DateTime {
 
     if (now.isAfter(expiresAtDateTime)) {
       var difference = now.difference(expiresAtDateTime);
+
       return difference.abs();
     } else {
       return null;

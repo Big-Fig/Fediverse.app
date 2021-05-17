@@ -576,6 +576,7 @@ class PleromaApiInstance extends IPleromaApiInstance implements IJsonObject {
         return int.parse(json.toString());
       } catch (e, stackTrace) {
         _logger.warning(() => "error during parseMaxTootChars", e, stackTrace);
+
         return null;
       }
     }

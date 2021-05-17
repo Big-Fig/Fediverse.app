@@ -189,6 +189,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   @override
   Future dispose() {
     _logger.finest(() => "dispose");
+
     return super.dispose();
   }
 

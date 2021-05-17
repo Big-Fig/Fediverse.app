@@ -56,6 +56,7 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
                       expression = item.remoteId;
                       break;
                   }
+
                   return OrderingTerm(
                     expression: expression,
                     mode: orderTerm.orderingMode,

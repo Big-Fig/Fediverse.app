@@ -53,6 +53,7 @@ class ChatMessageListWidget<T extends IChatMessage>
       context,
       listen: listen,
     );
+
     return timelinePaginationListBloc;
   }
 
@@ -95,6 +96,7 @@ class ChatMessageListWidget<T extends IChatMessage>
               _logger.finest(() => "additionalRefreshAction $success");
               var state = await paginationListBloc.refreshWithoutController();
               _logger.finest(() => "paginationListBloc.refresh() $state");
+
               return state;
             },
           );
@@ -218,6 +220,7 @@ class _ChatMessageListDaySeparatorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var message = Provider.of<IChatMessage>(context);
+
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: Center(
@@ -294,5 +297,6 @@ ChatMessageListItem<T> _calculateChatMessageListItem<T extends IChatMessage>({
     isFirstInDayGroup: isFirstInDayGroup,
     isLastInDayGroup: isLastInDayGroup,
   );
+
   return item;
 }

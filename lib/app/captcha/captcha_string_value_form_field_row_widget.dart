@@ -31,11 +31,13 @@ class FormCaptchaStringFormFieldRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var captchaStringFieldBloc = ICaptchaStringValueFormFieldBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: captchaStringFieldBloc.isExistStream,
       initialData: captchaStringFieldBloc.isExist,
       builder: (context, snapshot) {
         var isExist = snapshot.data;
+
         return Provider<bool>.value(
           value: isExist!,
           child: _FormCaptchaStringFormFieldRowContentWidget(

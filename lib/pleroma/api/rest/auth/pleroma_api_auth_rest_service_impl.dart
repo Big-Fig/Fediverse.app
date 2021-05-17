@@ -33,6 +33,7 @@ class PleromaAuthRestService extends PleromaApiRestService
   @override
   Future<Response> sendHttpRequest<T extends RestRequest, K>(T request) {
     request.headers.addAll(createAuthHeaders());
+
     return super.sendHttpRequest(request);
   }
 
@@ -42,6 +43,7 @@ class PleromaAuthRestService extends PleromaApiRestService
     T request,
   ) {
     request.headers.addAll(createAuthHeaders());
+
     return super.uploadFileMultipartRequest(request);
   }
 

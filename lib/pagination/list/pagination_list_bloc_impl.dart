@@ -197,6 +197,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       if (!refreshStateSubject.isClosed) {
         refreshStateSubject.add(state);
       }
+
       return state;
     } catch (e, stackTrace) {
       if (!refreshStateSubject.isClosed) {
@@ -222,6 +223,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     sortedPages.forEach((page) {
       items.addAll(page.items);
     });
+
     return items;
   }
 

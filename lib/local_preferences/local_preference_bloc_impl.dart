@@ -49,6 +49,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
   Future<bool> clearValue() {
     var future = preferencesService.clearValue(key);
     _subject.add(defaultPreferenceValue);
+
     return future;
   }
 
@@ -58,6 +59,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
     if (!_subject.isClosed) {
       _subject.add(newValue);
     }
+
     return future;
   }
 

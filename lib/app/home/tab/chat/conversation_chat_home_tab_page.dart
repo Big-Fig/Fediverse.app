@@ -109,6 +109,7 @@ class _ConversationMessagesHomeTabPageContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return FediDarkStatusBarStyleArea(
       child: ClipRRect(
         borderRadius: FediBorderRadius.topOnlyBigBorderRadius,

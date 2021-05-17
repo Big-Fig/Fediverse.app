@@ -53,6 +53,7 @@ class _HashtagPageState extends State<HashtagPage> {
   @override
   Widget build(BuildContext context) {
     var hashtag = Provider.of<IHashtag>(context);
+
     return DisposableProvider<IScrollControllerBloc>(
       create: (context) =>
           ScrollControllerBloc(scrollController: scrollController),
@@ -91,6 +92,7 @@ class _HashtagPageOpenInBrowserAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var hashtag = Provider.of<IHashtag>(context);
+
     return FediIconButton(
       color: IFediUiColorTheme.of(context).darkGrey,
       icon: Icon(FediIcons.external_icon),
@@ -218,6 +220,7 @@ MaterialPageRoute createHashtagPageRoute({
             hashtag: hashtag,
           );
           timelineLocalPreferencesBloc.performAsyncInit();
+
           return timelineLocalPreferencesBloc;
         },
         child: Provider<IHashtag>.value(
@@ -237,6 +240,7 @@ class _HashtagPageWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var hashtag = Provider.of<IHashtag>(context);
+
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc: ITimelineLocalPreferenceBloc.of(
         context,
@@ -254,6 +258,7 @@ class _HashtagPageWrapper extends StatelessWidget {
                 listen: false,
               ),
             );
+
             return hashtagTimelineStatusCachedListBloc;
           },
           child: StatusCachedListBlocProxyProvider(

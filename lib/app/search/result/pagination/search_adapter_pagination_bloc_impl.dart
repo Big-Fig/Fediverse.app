@@ -65,6 +65,7 @@ abstract class SearchAdapterPaginationBloc<T> extends DisposableOwner
   @override
   Future<PaginationPage<T>> refreshWithoutController() async {
     var page = await searchResultItemPaginationBloc.refreshWithoutController();
+
     return mapPage(page);
   }
 
@@ -77,6 +78,7 @@ abstract class SearchAdapterPaginationBloc<T> extends DisposableOwner
       pageIndex: pageIndex,
       forceToSkipCache: forceToSkipCache,
     );
+
     return mapPage(page);
   }
 

@@ -97,6 +97,7 @@ class ConversationChatRepository
             ]
           : null,
     );
+
     return (await query.get())
         .toDbConversationChatWithLastMessagePopulatedList(dao: dao)
         .toDbConversationChatWithLastMessagePopulatedWrapperList();

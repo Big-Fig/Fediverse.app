@@ -241,6 +241,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
     if (state == FediListSmartRefresherLoadingState.loaded) {
       clearNewItems();
     }
+
     return state;
   }
 
@@ -518,6 +519,7 @@ List<TItem> _calculateActuallyNew<TItem extends IEqualComparableObj<TItem>>(
         isAlreadyExist = false;
       }
       var isNeedToAdd = !isAlreadyExist;
+
       return isNeedToAdd;
     },
   ).toList();

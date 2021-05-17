@@ -98,6 +98,7 @@ class _AccountHomeTabPageBody extends StatelessWidget {
     var accountHomeTabBloc = IAccountHomeTabBloc.of(context);
     var tabController = Provider.of<TabController>(context);
     var tabs = accountHomeTabBloc.tabs;
+
     return DisposableProvider<
         IFediNestedScrollViewWithNestedScrollableTabsBloc>(
       create: (context) => FediNestedScrollViewWithNestedScrollableTabsBloc(
@@ -266,6 +267,7 @@ class _AccountHomeTabProviderWithRepliesTabProviderWidget
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+
     return AccountStatusesWithRepliesCachedListBloc.provideToContext(
       context,
       account: accountBloc.account,
@@ -296,6 +298,7 @@ class _AccountHomeTabProviderWithoutRepliesTabProviderWidget
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+
     return AccountStatusesWithoutRepliesListBloc.provideToContext(
       context,
       account: accountBloc.account,
@@ -325,6 +328,7 @@ class _AccountHomeTabProviderMediaTabProviderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+
     return AccountStatusesMediaOnlyCachedListBloc.provideToContext(
       context,
       account: accountBloc.account,
@@ -354,6 +358,7 @@ class _AccountHomeTabProviderPinnedTabProviderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+
     return LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc.provideToContext(
       context,
       account: accountBloc.account,

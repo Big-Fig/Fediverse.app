@@ -39,6 +39,7 @@ class StringValueFormFieldRowWidget extends StatelessWidget {
           initialData: formFieldBloc.isEnabled,
           builder: (context, snapshot) {
             var isEnabled = snapshot.data;
+
             return FediFormEditTextRow(
               enabled: isEnabled,
               maxLength: formFieldBloc.maxLength,

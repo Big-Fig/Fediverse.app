@@ -82,6 +82,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
       provisional: false,
       sound: true,
     );
+
     return settings.authorizationStatus == AuthorizationStatus.authorized;
   }
 
@@ -157,6 +158,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
           : null,
       data: data,
     );
+
     return pushMessage;
   }
 

@@ -35,6 +35,7 @@ abstract class PermissionBloc extends DisposableOwner
     var permissionStatus =
         await permissionsService.checkPermissionStatus(permission);
     _permissionStatusSubject.add(permissionStatus);
+
     return permissionStatus;
   }
 
@@ -43,6 +44,7 @@ abstract class PermissionBloc extends DisposableOwner
     var permissionStatus =
         (await permissionsService.requestPermissions([permission]))[permission];
     _permissionStatusSubject.add(permissionStatus);
+
     return permissionStatus;
   }
 }

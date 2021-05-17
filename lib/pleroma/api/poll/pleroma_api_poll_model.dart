@@ -64,6 +64,7 @@ extension IPleromaApiPollExtension on IPleromaApiPoll {
     } else {
       votesPercent = votesCount / this.votesCount;
     }
+
     return votesPercent;
   }
 }

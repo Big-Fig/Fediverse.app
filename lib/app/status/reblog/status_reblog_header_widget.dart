@@ -19,6 +19,7 @@ class StatusReblogHeaderWidget extends StatelessWidget {
         initialData: statusBloc.account,
         builder: (context, snapshot) {
           var account = snapshot.data;
+
           return Provider<IAccount>.value(
             value: account!,
             child: StatusHeaderWidget(

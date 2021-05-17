@@ -98,6 +98,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     if (registrationResult.isPossibleToLogin) {
       successRegistrationStreamController.add(registrationResult);
     }
+
     return registrationResult;
   }
 

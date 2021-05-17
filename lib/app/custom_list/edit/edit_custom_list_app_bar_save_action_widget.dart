@@ -8,10 +8,12 @@ class EditCustomListAppBarSaveActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editCustomListBloc = IEditCustomListBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: editCustomListBloc.isReadyToSubmitStream,
       builder: (context, snapshot) {
         var isReadyToSave = snapshot.data ?? false;
+
         return FediPageAppBarTextActionWidget(
           text: S.of(context).app_acccount_my_customList_edit_action_save,
           onPressed: isReadyToSave

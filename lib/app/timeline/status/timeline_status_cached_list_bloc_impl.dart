@@ -59,6 +59,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   StatusOnlyLocalCondition? get onlyLocalCondition {
     if (timeline.onlyLocal == true) {
       var localUrlHost = currentInstanceBloc.currentInstance!.urlHost;
+
       return StatusOnlyLocalCondition(localUrlHost);
     } else {
       return null;
@@ -68,6 +69,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   StatusOnlyRemoteCondition? get onlyRemoteCondition {
     if (timeline.onlyRemote == true) {
       var localUrlHost = currentInstanceBloc.currentInstance!.urlHost;
+
       return StatusOnlyRemoteCondition(localUrlHost);
     } else {
       return null;
@@ -273,6 +275,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     } else {
       _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
           "statuses is null");
+
       return false;
     }
   }

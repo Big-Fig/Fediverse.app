@@ -25,6 +25,7 @@ class FilterDatabaseTestHelper {
       wholeWord: wholeWord,
       expiresAt: expiresAt,
     );
+
     return dbFilter;
   }
 
@@ -71,6 +72,7 @@ class FilterDatabaseTestHelper {
     DbFilterPopulated dbFilterPopulated = DbFilterPopulated(
       dbFilter: dbFilter,
     );
+
     return dbFilterPopulated;
   }
 }

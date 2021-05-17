@@ -62,6 +62,7 @@ class StatusCachedPaginationListWithNewItemsBloc<
   @override
   Stream<List<IStatus>> watchItemsNewerThanItem(IStatus? item) {
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
+
     return statusCachedListBloc.watchLocalItemsNewerThanItem(item);
   }
 

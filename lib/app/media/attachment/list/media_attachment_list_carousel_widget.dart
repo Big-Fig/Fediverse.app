@@ -81,6 +81,7 @@ class MediaAttachmentListItemWidget extends StatelessWidget {
         child: child,
       );
     }
+
     return child;
   }
 

@@ -37,6 +37,7 @@ class ConversationChatStatusListWidget
       context,
       listen: listen,
     );
+
     return timelinePaginationListBloc;
   }
 
@@ -81,6 +82,7 @@ class ConversationChatStatusListWidget
               _logger.finest(
                 () => "paginationListBloc.refreshWithoutController() $state",
               );
+
               return state;
             },
           );

@@ -28,6 +28,7 @@ class AccountDisplayNameWidget extends StatelessWidget {
     var textStyle = this.textStyle ?? fediUiTextTheme.bigShortBoldDarkGrey;
 
     var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+
     return StreamProvider<EmojiText?>.value(
       value: accountBloc.displayNameEmojiTextStream,
       initialData: accountBloc.displayNameEmojiText,
@@ -45,6 +46,7 @@ class AccountDisplayNameWidget extends StatelessWidget {
           if (previous?.inputData == htmlTextInputData) {
             return previous!;
           }
+
           return HtmlTextBloc(
             inputData: htmlTextInputData,
             settings: HtmlTextSettings(

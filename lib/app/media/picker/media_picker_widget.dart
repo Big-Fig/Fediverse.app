@@ -80,6 +80,7 @@ class _MediaPickerPageFoldersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaDeviceGalleryBloc = IMediaDeviceGalleryBloc.of(context);
+
     return StreamBuilder<MediaDeviceGallerySelectedFolderData?>(
       stream: mediaDeviceGalleryBloc.selectedFolderDataStream
           .distinct((old, current) => old?.folder.id == current?.folder.id),
@@ -164,6 +165,7 @@ class _FileGalleryFolderPickFromCameraHeaderItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return InkWell(
       onTap: () async {
         var cameraMediaService = ICameraMediaService.of(context, listen: false);

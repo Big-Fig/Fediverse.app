@@ -137,6 +137,7 @@ class _FediInstanceImageBackgroundImageProviderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var imageProvider = Provider.of<ImageProvider>(context);
+
     return RepaintBoundary(
       child: Stack(
         children: [

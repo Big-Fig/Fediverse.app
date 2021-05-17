@@ -83,6 +83,7 @@ TimelineLocalPreferenceBloc _createTimelinePreferencesBloc(
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
   var currentInstance = currentAuthInstanceBloc.currentInstance!;
+
   return TimelineLocalPreferenceBloc.byId(
     localPreferencesService,
     userAtHost: currentInstance.userAtHost,

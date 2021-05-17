@@ -13,6 +13,7 @@ class HashtagListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var hashtag = Provider.of<IHashtag>(context);
+
     return InkWell(
       onTap: () {
         goToHashtagPage(context: context, hashtag: hashtag);

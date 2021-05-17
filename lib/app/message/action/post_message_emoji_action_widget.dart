@@ -18,6 +18,7 @@ class PostMessageEmojiActionWidget extends StatelessWidget {
       initialData: postMessageBloc.selectedAction,
       builder: (context, snapshot) {
         var selectedAction = snapshot.data;
+
         return FediIconButton(
           icon: Icon(
             FediIcons.emoji,

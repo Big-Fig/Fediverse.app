@@ -20,6 +20,7 @@ abstract class IMyAccountBloc extends IAccountBloc {
         // ignore: no-magic-number
         unescaped = unescaped.substring(3, unescaped.length - 4);
       }
+
       return unescaped;
     } else {
       return null;

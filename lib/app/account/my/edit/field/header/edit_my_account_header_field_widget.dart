@@ -51,6 +51,7 @@ class EditMyAccountHeaderFieldImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
+
     return StreamBuilder<MediaImageSource?>(
       stream: editMyAccountBloc.headerField.imageSourceStream,
       builder: (context, snapshot) {

@@ -49,6 +49,7 @@ class MyAccountWebSocketsHandler extends WebSocketsChannelHandler {
     // other handlers
     // ignore: no-magic-number
     await Future.delayed(Duration(milliseconds: 500));
+
     return super.handleEvent(event);
   }
 

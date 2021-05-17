@@ -55,6 +55,7 @@ class EditPostStatusBloc extends PostStatusBloc {
         .info!;
     var postStatusSettingsBloc =
         IPostStatusSettingsBloc.of(context, listen: false);
+
     return EditPostStatusBloc(
       pleromaAuthStatusService: IPleromaApiAuthStatusService.of(
         context,

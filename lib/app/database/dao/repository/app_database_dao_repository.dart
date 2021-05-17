@@ -180,6 +180,7 @@ abstract class AppDatabaseDaoRepository<
       pagination: pagination,
       orderingTerms: orderingTerms,
     );
+
     return query;
   }
 

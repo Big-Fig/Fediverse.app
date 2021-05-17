@@ -52,6 +52,7 @@ class InstanceDetailsWidget extends StatelessWidget {
           onRefresh: () async {
             try {
               await instanceDetailsBloc.refresh();
+
               return FediListSmartRefresherLoadingState.loaded;
             } catch (e, stackTrace) {
               _logger.warning(
@@ -59,6 +60,7 @@ class InstanceDetailsWidget extends StatelessWidget {
                 e,
                 stackTrace,
               );
+
               return FediListSmartRefresherLoadingState.failed;
             }
           },
@@ -124,6 +126,7 @@ class _InstanceDetailsBodyMetadataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: instanceDetailsBloc.isHaveMetadataFieldsStream,
       initialData: instanceDetailsBloc.isHaveMetadataFields,
@@ -158,6 +161,7 @@ class _InstanceDetailsPleromaUploadLimitsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: instanceDetailsBloc.isHaveUploadLimitsFieldsStream,
       initialData: instanceDetailsBloc.isHaveUploadLimitsFields,
@@ -194,6 +198,7 @@ class _InstanceDetailsBodyMessagesLimitsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: instanceDetailsBloc.isHaveMessagesLimitsFieldsStream,
       initialData: instanceDetailsBloc.isHaveMessagesLimitsFields,
@@ -229,6 +234,7 @@ class _InstanceDetailsBodyRegistrationsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: instanceDetailsBloc.isHaveRegistrationsFieldsStream,
       initialData: instanceDetailsBloc.isHaveRegistrationsFields,
@@ -265,6 +271,7 @@ class _InstanceDetailsBodyDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: instanceDetailsBloc.isHaveDetailsFieldsStream,
       initialData: instanceDetailsBloc.isHaveDetailsFields,
@@ -384,6 +391,7 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
                     },
                   ),
                 );
+
                 return htmlTextBloc;
               },
               child: const HtmlTextWidget(),
@@ -432,6 +440,7 @@ class _InstanceDetailsVersionTypeWidget extends StatelessWidget {
                   .app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown;
               break;
           }
+
           return Text(
             versionTypeString.toUpperCase(),
             style: IFediUiTextTheme
@@ -674,6 +683,7 @@ class _InstanceDetailsStatsWidget extends StatelessWidget {
             initialData: instanceDetailsBloc.stats,
             builder: (context, snapshot) {
               var stats = snapshot.data!;
+
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -765,6 +775,7 @@ class _InstanceDetailsThumbnailWidget extends StatelessWidget {
 
         if (thumbnail?.isNotEmpty == true) {
           var filesCacheService = IFilesCacheService.of(context);
+
           return filesCacheService.createCachedNetworkImageWidget(
             imageUrl: thumbnail!,
           );
@@ -937,6 +948,7 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
 
         if (contactAccount != null) {
           var account = contactAccount.toDbAccountWrapper();
+
           return _BaseInstanceDetailsRowWidget(
             label:
             S

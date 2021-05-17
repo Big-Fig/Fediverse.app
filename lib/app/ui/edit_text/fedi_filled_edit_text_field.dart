@@ -54,6 +54,7 @@ class FediFilledEditTextField extends StatelessWidget {
         this.backgroundColor ?? IFediUiColorTheme.of(context).ultraLightGrey;
     var containLeading = leading != null;
     var containEnding = ending != null;
+
     return Container(
       decoration: filled
           ? BoxDecoration(

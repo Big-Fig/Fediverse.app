@@ -23,6 +23,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
     BuildContext context,
   ) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Container(
       // todo: refactor
       // ignore: no-magic-number
@@ -60,6 +61,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
       statusBloc: statusBloc,
       statusSensitiveBloc: statusSensitiveBloc,
     );
+
     return StreamBuilder<bool>(
       stream: statusBloc.deletedStream.distinct(),
       builder: (context, snapshot) {

@@ -71,6 +71,7 @@ class RecentSelectAccountBloc extends DisposableOwner
   ) {
     var recentItems = list?.recentItems;
     var isEmpty = !(recentItems?.isNotEmpty == true);
+
     return isEmpty;
   }
 

@@ -391,6 +391,7 @@ Widget buildAuthInstanceContextInitWidget({
               },
             ),
           );
+
           return homeBloc;
         },
         child: const FcmPushPermissionCheckerWidget(
@@ -438,6 +439,7 @@ HomeTab calculateHomeTabForNotification(
   } else {
     homeTab = HomeTab.timelines;
   }
+
   return homeTab;
 }
 
@@ -495,6 +497,7 @@ class FediApp extends StatelessWidget {
                   );
                 }
                 _logger.finest(() => "locale $locale");
+
                 return OverlayNotificationServiceProvider(
                   child: ToastServiceProvider(
                     child: MaterialApp(

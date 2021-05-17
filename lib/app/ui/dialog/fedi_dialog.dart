@@ -39,6 +39,7 @@ abstract class FediDialog extends BaseDialog {
           : Stream.value(true),
       builder: (context, snapshot) {
         var enabled = snapshot.data!;
+
         return StreamBuilder<bool>(
           initialData: action.isActionVisibleFetcher != null
               ? action.isActionVisibleFetcher!(context)
@@ -54,6 +55,7 @@ abstract class FediDialog extends BaseDialog {
             if (!visible) {
               return SizedBox.shrink();
             }
+
             return FediTransparentTextButtonWithBorder(
               action.label,
               borderVisible: actionsBorderVisible,
@@ -84,6 +86,7 @@ abstract class FediDialog extends BaseDialog {
   Widget buildDialogBody(BuildContext context) {
     var content = buildContentWidget(context);
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Dialog(
       backgroundColor: fediUiColorTheme.transparent,
       child: Container(
@@ -138,6 +141,7 @@ abstract class FediDialog extends BaseDialog {
                 var index = entry.key;
                 var action = entry.value;
                 var isLast = actions!.length - 1 == index;
+
                 return Expanded(
                   child: buildButton(
                     context: context,
@@ -158,6 +162,7 @@ abstract class FediDialog extends BaseDialog {
         children: <Widget>[
           ...actions?.asMap().entries.map((entry) {
                 var action = entry.value;
+
                 return Padding(
                   padding: FediPadding.verticalSmallPadding,
                   child: buildButton(

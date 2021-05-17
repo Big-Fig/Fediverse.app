@@ -60,6 +60,7 @@ class MultiSelectAccountBloc extends DisposableOwner
         accountsListSelectedCallback(context, selectedAccounts);
       }));
     }
+
     return multiSelectAccountBloc;
   }
 

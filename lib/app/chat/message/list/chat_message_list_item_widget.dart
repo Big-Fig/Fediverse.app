@@ -39,6 +39,7 @@ class ChatMessageListItemWidget<T extends IChatMessage>
   @override
   Widget build(BuildContext context) {
     var chatMessageBloc = IChatMessageBloc.of(context);
+
     return StreamBuilder<bool?>(
       stream: chatMessageBloc.isHiddenLocallyOnDeviceStream,
       initialData: chatMessageBloc.isHiddenLocallyOnDevice,
@@ -64,6 +65,7 @@ class _ChatMessageListItemDeletedOrNotWrapperWidget<T extends IChatMessage>
   @override
   Widget build(BuildContext context) {
     var chatMessageBloc = IChatMessageBloc.of(context);
+
     return StreamBuilder<bool?>(
       stream: chatMessageBloc.isDeletedStream,
       builder: (context, snapshot) {
@@ -126,6 +128,7 @@ class _ChatMessageListItemBodyWidget<T extends IChatMessage>
     );
     var isPendingFailedOrPending = chatMessage.isPendingFailedOrPending;
     var isPendingFailed = chatMessage.isPendingFailed;
+
     return Align(
       alignment: alignment,
       child: InkWell(
@@ -186,6 +189,7 @@ class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var chatMessageBloc = IChatMessageBloc.of(context);
+
     return StreamBuilder<PendingState?>(
       stream: chatMessageBloc.pendingStateStream,
       initialData: chatMessageBloc.pendingState,
@@ -265,11 +269,13 @@ class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
 
     var isLastInMinuteGroup = chatMessageListItem.isLastInMinuteGroup;
     var isHaveTextContent = messageBloc.content?.isNotEmpty == true;
+
     return StreamBuilder<bool>(
       stream: messageBloc.isPendingFailedStream,
       initialData: messageBloc.isPendingFailed,
       builder: (context, snapshot) {
         var isPendingFailed = snapshot.data!;
+
         return Container(
           decoration: BoxDecoration(
             color: isHaveTextContent
@@ -341,6 +347,7 @@ class _ChatMessageListItemMetadataCreatedAtWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var messageBloc = IChatMessageBloc.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2.0),
       child: Text(
@@ -359,6 +366,7 @@ class _ChatMessageListItemCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var messageBloc = IChatMessageBloc.of(context);
+
     return StreamBuilder<IPleromaApiCard?>(
       stream: messageBloc.cardStream,
       initialData: messageBloc.card,
@@ -410,6 +418,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var messageBloc = IChatMessageBloc.of(context);
+
     return StreamBuilder<List<IPleromaApiMediaAttachment>?>(
       stream: messageBloc.mediaAttachmentsStream,
       initialData: messageBloc.mediaAttachments,
@@ -478,6 +487,7 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
         if (contentWithEmojis?.text.isNotEmpty == true) {
           var fediUiColorTheme = IFediUiColorTheme.of(context);
           var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+
           return Provider<EmojiText>.value(
             value: contentWithEmojis!,
             child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
@@ -525,6 +535,7 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
                     },
                   ),
                 );
+
                 return htmlTextBloc;
               },
               child: const HtmlTextWidget(),

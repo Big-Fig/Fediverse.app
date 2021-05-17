@@ -187,6 +187,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
             .toList();
       }
     }
+
     return excludeTypes;
   }
 

@@ -55,6 +55,7 @@ class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
         // in this case we should re-compress them to jpg
 
         var reCompressedFile = await _compressToJpeg(file);
+
         return PhotoManagerMediaDeviceFile(
           metadata: this,
           reCompressedFile: reCompressedFile,

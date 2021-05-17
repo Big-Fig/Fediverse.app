@@ -39,6 +39,7 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
           (visibility) => '${visibility.toJsonValue()}',
         )
         .toList();
+
     return query
       ..where(
         (filter) => CustomExpression<bool>(
@@ -74,6 +75,7 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
                       expression = item.remoteId;
                       break;
                   }
+
                   return OrderingTerm(
                     expression: expression,
                     mode: orderTerm.orderingMode,

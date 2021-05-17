@@ -108,6 +108,7 @@ class ConversationChatWithLastMessageListWidget
     var paginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
             IConversationChatWithLastMessage>>(context, listen: listen);
+
     return paginationListBloc;
   }
 }

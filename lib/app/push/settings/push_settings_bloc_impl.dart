@@ -143,6 +143,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
   Future updateSettings(PushSettings? newSettings) async {
     if (settingsData == newSettings) {
       _logger.finest(() => "Same settings");
+
       return;
     }
     var deviceToken = fcmPushService.deviceToken;

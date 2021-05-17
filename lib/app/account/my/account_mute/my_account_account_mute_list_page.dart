@@ -64,6 +64,7 @@ class _MyAccountAccountMuteListPageAddButton extends StatelessWidget {
     var myAccountAccountMuteNetworkOnlyAccountListBloc =
         IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(context);
     var paginationListBloc = IPaginationListBloc.of(context);
+
     return FediPrimaryFilledTextButtonWithBorder(
       S.of(context).app_account_my_accountMute_action_add,
       expanded: false,

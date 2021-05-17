@@ -72,6 +72,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     if (mediaAttachmentBlocs.isNotEmpty) {
       mediaAttachment = mediaAttachmentBlocs.first.pleromaMediaAttachment;
     }
+
     return mediaAttachment;
   }
 
@@ -82,6 +83,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance!
         .info!;
+
     return PleromaChatPostMessageBloc(
       pleromaChatBloc: IPleromaChatBloc.of(
         context,

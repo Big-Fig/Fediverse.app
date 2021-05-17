@@ -39,6 +39,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   bool isKeyExist(String key) {
     var contains = preferences.containsKey(key);
     _logger.fine(() => "isKeyExist $key => $contains");
+
     return contains;
   }
 
@@ -46,6 +47,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> clearValue(String key) async {
     await preferences.remove(key);
     notifyKeyValueChanged(key, null);
+
     return true;
   }
 
@@ -53,6 +55,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> setString(String key, String? value) async {
     preferences[key] = value;
     notifyKeyValueChanged(key, value);
+
     return true;
   }
 
@@ -60,6 +63,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> setIntPreference(String key, int? value) async {
     preferences[key] = value;
     notifyKeyValueChanged(key, value);
+
     return true;
   }
 
@@ -67,6 +71,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> setBoolPreference(String key, bool? value) async {
     preferences[key] = value;
     notifyKeyValueChanged(key, value);
+
     return true;
   }
 
@@ -84,6 +89,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     preferences[key] = str;
 
     notifyKeyValueChanged(key, preferencesObject);
+
     return true;
   }
 

@@ -60,6 +60,7 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
           if (customTabBuilder != null) {
             tabWidget = customTabBuilder!(context, tabWidget, tab);
           }
+
           return tabWidget;
         },
       ).toList(),

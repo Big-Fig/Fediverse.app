@@ -141,6 +141,7 @@ extension IScheduledStatusExtension on IScheduledStatus {
     if (this is DbScheduledStatusPopulatedWrapper) {
       var dbScheduledStatusPopulatedWrapper =
           this as DbScheduledStatusPopulatedWrapper;
+
       return dbScheduledStatusPopulatedWrapper;
     } else {
       return DbScheduledStatusPopulatedWrapper(
@@ -153,6 +154,7 @@ extension IScheduledStatusExtension on IScheduledStatus {
     if (this is DbScheduledStatusPopulatedWrapper) {
       var dbScheduledStatusPopulatedWrapper =
           this as DbScheduledStatusPopulatedWrapper;
+
       return dbScheduledStatusPopulatedWrapper.dbScheduledStatusPopulated;
     } else {
       return DbScheduledStatusPopulated(
@@ -165,6 +167,7 @@ extension IScheduledStatusExtension on IScheduledStatus {
     if (this is DbScheduledStatusPopulatedWrapper) {
       var dbScheduledStatusPopulatedWrapper =
           this as DbScheduledStatusPopulatedWrapper;
+
       return dbScheduledStatusPopulatedWrapper
           .dbScheduledStatusPopulated.dbScheduledStatus;
     } else {

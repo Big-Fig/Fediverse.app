@@ -518,6 +518,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     if (mediaAttachments.isEmpty) {
       mediaAttachments = null;
     }
+
     return mediaAttachments;
   }
 
@@ -611,6 +612,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         hideTotals: pollBloc.hideTotalsFieldBloc.currentValue,
       );
     }
+
     return poll;
   }
 
@@ -630,6 +632,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         hideTotals: pollBloc.hideTotalsFieldBloc.currentValue,
       );
     }
+    
     return poll;
   }
 

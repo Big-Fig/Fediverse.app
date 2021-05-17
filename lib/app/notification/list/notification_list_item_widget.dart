@@ -42,6 +42,7 @@ class NotificationListItemWidget extends StatelessWidget {
     _logger.finest(() => "build ${notificationBloc.remoteId}");
 
     var bodyWidget = const _NotificationListItemBodyWidget();
+
     return StreamBuilder<bool?>(
       stream: notificationBloc.dismissedStream,
       builder: (context, snapshot) {
@@ -98,6 +99,7 @@ class _NotificationListItemBodyWidget extends StatelessWidget {
           var notificationState = snapshot.data;
           var unread = notificationState?.unread ?? true;
           var dismissed = notificationState?.dismissed ?? false;
+
           return Slidable(
             actionPane: const SlidableDrawerActionPane(),
             // ignore: no-magic-number
@@ -124,6 +126,7 @@ class _NotificationListItemBodyDismissActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
+
     return IconSlideAction(
       icon: FediIcons.delete,
       caption: S.of(context).app_notification_action_dismiss,
@@ -143,6 +146,7 @@ class _NotificationListItemBodyMarkAsReadActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
+
     return IconSlideAction(
       icon: FediIcons.check,
       caption: S.of(context).app_notification_action_markAsRead,
@@ -167,6 +171,7 @@ class _NotificationListItemBodySlidableChildWidget extends StatelessWidget {
       stream: notificationBloc.unreadStream,
       builder: (context, snapshot) {
         var unread = snapshot.data ?? true;
+
         return Opacity(
           // ignore: no-magic-number
           opacity: unread ? 1.0 : 0.6,
@@ -292,6 +297,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
     var rawText = _mapToRawText(context, notificationBloc);
 
     var emojis = notificationBloc.status?.emojis;
+
     return Provider<EmojiText>.value(
       value: EmojiText(text: rawText, emojis: emojis),
       child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
@@ -329,6 +335,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
               textScaleFactor: textScaleFactor,
             ),
           );
+
           return htmlTextBloc;
         },
         child: const HtmlTextWidget(),
@@ -409,6 +416,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
             );
         break;
     }
+
     return rawText;
   }
 
@@ -538,6 +546,7 @@ class _NotificationListItemAvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
+
     return InkWell(
       onTap: () {
         goToLocalAccountDetailsPage(
@@ -562,11 +571,13 @@ class _NotificationListItemCreatedAtWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
     var fediUiTextTheme = IFediUiTextTheme.of(context);
+
     return StreamBuilder<bool?>(
       stream: notificationBloc.unreadStream,
       initialData: notificationBloc.unread,
       builder: (context, snapshot) {
         var unread = snapshot.data!;
+
         return NotificationCreatedAtWidget(
           textStyle: unread
               ? fediUiTextTheme.smallShortPrimaryDark

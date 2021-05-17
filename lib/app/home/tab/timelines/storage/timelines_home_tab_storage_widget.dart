@@ -36,6 +36,7 @@ class TimelinesHomeTabStorageWidget extends StatelessWidget {
         if (list == null) {
           return const SizedBox.shrink();
         }
+
         return Provider<List<TimelinesHomeTabStorageListItem>>.value(
           value: list,
           child: const _TimelinesHomeTabStorageListWidget(),
@@ -88,6 +89,7 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
           ),
         )
         .toList();
+
     return flutter_reorderable_list.ReorderableList(
       onReorder: (Key item, Key newPosition) =>
           _onReorder(timelinesHomeTabStorageBloc, item, newPosition),
@@ -113,6 +115,7 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
     _logger.finest(() => "onReorder oldIndex $oldIndex newIndex $newIndex");
 
     timelinesHomeTabStorageBloc.swapItemsAt(oldIndex, newIndex);
+
     return true;
   }
 
@@ -172,6 +175,7 @@ class _TimelinesHomeTabStorageListAddTimelineItemWidget
             );
             break;
         }
+
         return child;
       },
     );
@@ -221,6 +225,7 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
     var timeline = Provider.of<Timeline>(context);
 
     var label = timeline.calculateLabel(context);
+
     return InkWell(
       onTap: () {
         showEditTimelineSettingsDialog(
@@ -249,6 +254,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
+
     return StreamBuilder<TimelinesHomeTabStorageUiState>(
       stream: timelinesHomeTabStorageBloc.uiStateStream,
       initialData: timelinesHomeTabStorageBloc.uiState,
@@ -282,6 +288,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
             );
             break;
         }
+
         return child;
       },
     );
@@ -297,6 +304,7 @@ class _TimelinesHomeTabStorageListItemLeadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
     var timeline = Provider.of<Timeline>(context);
+
     return StreamBuilder<TimelinesHomeTabStorageUiState>(
       stream: timelinesHomeTabStorageBloc.uiStateStream,
       initialData: timelinesHomeTabStorageBloc.uiState,
@@ -325,6 +333,7 @@ class _TimelinesHomeTabStorageListItemLeadingWidget extends StatelessWidget {
               begin: Offset(-1.0, 0.0),
               end: Offset(0.0, 0.0),
             ).animate(animation);
+
             return SizeTransition(
               axis: Axis.horizontal,
               sizeFactor: animation,
@@ -353,6 +362,7 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
     var timeline = Provider.of<Timeline>(context);
 
     var isPossibleToDelete = timeline.isPossibleToDelete;
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

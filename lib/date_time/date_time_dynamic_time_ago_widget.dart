@@ -76,6 +76,7 @@ class _DateTimeDynamicTimeAgoWidgetState
       locale: _customLocale,
       allowFromNow: true,
     );
+
     return Text(
       widget.customTextBuilder != null
           ? widget.customTextBuilder!(timeAgoString)

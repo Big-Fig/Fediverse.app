@@ -51,6 +51,7 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     } else {
       _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
           "messages is null");
+
       return false;
     }
   }
@@ -74,6 +75,7 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     _logger.finer(
       () => "finish loadLocalItems for $chat messages ${statuses.length}",
     );
+
     return statuses
         .map(
           (status) => status.toConversationChatMessageStatusAdapter(),
@@ -111,6 +113,7 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
       conversationChatStatusListBloc: chatStatusListBloc,
     );
     chatMessageCachedListBloc.addDisposable(disposable: chatStatusListBloc);
+
     return chatMessageCachedListBloc;
   }
 

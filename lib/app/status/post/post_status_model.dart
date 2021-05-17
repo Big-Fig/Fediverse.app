@@ -227,6 +227,7 @@ extension IPostStatusDataExtension on IPostStatusData {
     required String? idempotencyKey,
   }) {
     assert(isScheduled);
+
     return PleromaApiScheduleStatus(
       inReplyToConversationId: inReplyToConversationId,
       inReplyToId: inReplyToPleromaStatus?.id,

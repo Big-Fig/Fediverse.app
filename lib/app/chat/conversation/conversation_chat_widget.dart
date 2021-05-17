@@ -26,6 +26,7 @@ class ConversationChatWidget extends StatelessWidget {
       asyncInitLoadingBloc: chatBloc,
       loadingFinishedBuilder: (context) {
         var lastPublishedChatMessage = chatBloc.lastPublishedChatMessage;
+
         return ConversationChatMessageCachedListBloc.provideToContext(
           context,
           conversation: chatBloc.chat,

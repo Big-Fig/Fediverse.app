@@ -188,6 +188,7 @@ class MemoryCachedPaginationBloc<TItem>
       values =
           items.sublist(requiredStartItemIndex, requiredEndItemIndex).toList();
     }
+
     return values;
   }
 

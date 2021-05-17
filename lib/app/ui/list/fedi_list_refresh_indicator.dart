@@ -273,6 +273,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
       setState(() {
         _mode = _RefreshIndicatorMode.drag;
       });
+
       return false;
     }
     bool? indicatorAtTopNow;
@@ -329,6 +330,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
           break;
       }
     }
+
     return false;
   }
 
@@ -336,8 +338,10 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
     if (notification.depth != 0 || !notification.leading) return false;
     if (_mode == _RefreshIndicatorMode.drag) {
       notification.disallowGlow();
+
       return true;
     }
+
     return false;
   }
 
@@ -361,6 +365,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
     _dragOffset = 0.0;
     _scaleController.value = 0.0;
     _positionController.value = 0.0;
+
     return true;
   }
 
@@ -472,6 +477,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
       if (_mode == null) _start(atTop ? AxisDirection.down : AxisDirection.up);
       _show();
     }
+
     return _pendingRefreshFuture;
   }
 
@@ -493,6 +499,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
         assert(_dragOffset != null);
         assert(_isIndicatorAtTop != null);
       }
+
       return true;
     }());
 

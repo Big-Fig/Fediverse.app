@@ -89,6 +89,7 @@ extension IDraftStatusExtension on IDraftStatus {
   DbDraftStatusPopulatedWrapper toDbDraftStatusPopulatedWrapper() {
     if (this is DbDraftStatusPopulatedWrapper) {
       var dbDraftStatusPopulatedWrapper = this as DbDraftStatusPopulatedWrapper;
+
       return dbDraftStatusPopulatedWrapper;
     } else {
       return DbDraftStatusPopulatedWrapper(
@@ -100,6 +101,7 @@ extension IDraftStatusExtension on IDraftStatus {
   DbDraftStatusPopulated toDbDraftStatusPopulated() {
     if (this is DbDraftStatusPopulatedWrapper) {
       var dbDraftStatusPopulatedWrapper = this as DbDraftStatusPopulatedWrapper;
+
       return dbDraftStatusPopulatedWrapper.dbDraftStatusPopulated;
     } else {
       return DbDraftStatusPopulated(
@@ -111,6 +113,7 @@ extension IDraftStatusExtension on IDraftStatus {
   DbDraftStatus toDbDraftStatus() {
     if (this is DbDraftStatusPopulatedWrapper) {
       var dbDraftStatusPopulatedWrapper = this as DbDraftStatusPopulatedWrapper;
+
       return dbDraftStatusPopulatedWrapper.dbDraftStatusPopulated.dbDraftStatus;
     } else {
       return DbDraftStatus(

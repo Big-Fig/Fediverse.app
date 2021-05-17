@@ -513,6 +513,7 @@ extension IAccountExtension on IAccount {
     var uri = Uri.parse(url);
 
     var resultUrl = "${uri.scheme}://${uri.host}";
+
     return Uri.parse(resultUrl);
   }
 

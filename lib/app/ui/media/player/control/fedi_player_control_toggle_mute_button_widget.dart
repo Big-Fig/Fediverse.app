@@ -37,6 +37,7 @@ class _FediPlayerControlToggleMuteButtonInitializedWidget
   @override
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: mediaPlayerBloc.isMutedStream,
       builder: (context, snapshot) {

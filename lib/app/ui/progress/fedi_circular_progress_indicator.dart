@@ -67,6 +67,7 @@ class _FediCircularProgressIndicatorState
 
     var color = widget.color ?? IFediUiColorTheme.of(context).darkGrey;
     var size = widget.size;
+
     return AnimatedBuilder(
       animation: _controller,
       builder: (_, child) {

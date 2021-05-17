@@ -82,6 +82,7 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
     var nestedScrollController =
         fediNestedScrollViewBloc.nestedScrollController;
     // extended_nested_scroll_view required to fix nested scrollables sync issue
+
     return extended_nested_scroll_view.NestedScrollView(
       // we use custom nested scroll controller to achieve scroll callbacks
       // from body scrollables
@@ -196,6 +197,7 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
     if (widget.tabBarViewContainerBuilder != null) {
       child = widget.tabBarViewContainerBuilder!(context, child);
     }
+
     return Expanded(
       child: child,
     );

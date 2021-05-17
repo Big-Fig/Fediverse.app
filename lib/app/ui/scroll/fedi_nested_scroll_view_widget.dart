@@ -132,6 +132,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
     var mediaQueryTopPadding = MediaQuery.of(context).padding.top;
 
     var child = tabBodyOverlayBuilder(context);
+
     return StreamBuilder<bool>(
       stream: Rx.combineLatest2(
         scrollControllerBloc.longScrollDirectionStream,
@@ -144,6 +145,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
               longScrollDirection == ScrollDirection.forward;
           var expandedAppBarShowed = isAtLeastStartExpand == true;
           var isInSafeArea = collapsedAppBarShowed || expandedAppBarShowed;
+
           return isInSafeArea;
         },
       ).distinct(),

@@ -88,6 +88,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
                         expression = item.updatedAt;
                         break;
                     }
+
                     return OrderingTerm(
                       expression: expression,
                       mode: orderTerm.orderingMode,

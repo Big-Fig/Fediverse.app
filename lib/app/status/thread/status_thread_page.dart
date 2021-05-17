@@ -33,6 +33,7 @@ class StatusThreadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusThreadBloc = IStatusThreadBloc.of(context);
+
     return Scaffold(
       appBar: FediPageCustomAppBar(
         leading: const FediBackIconButton(),

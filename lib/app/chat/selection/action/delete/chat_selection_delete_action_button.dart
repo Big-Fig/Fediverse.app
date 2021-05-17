@@ -23,6 +23,7 @@ class ChatSelectionDeleteActionButtonWidget extends StatelessWidget {
       stream: chatSelectionBloc.isAllSelectedItemsFromMeStream,
       builder: (context, snapshot) {
         var isAllSelectedItemsFromMe = snapshot.data ?? true;
+
         return FediIconButton(
           icon: Icon(FediIcons.delete),
           color: isAllSelectedItemsFromMe

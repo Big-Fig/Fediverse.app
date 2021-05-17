@@ -161,6 +161,7 @@ class RestService extends DisposableOwner implements IRestService {
     }
 
     _logger.fine(() => "response $response");
+
     return response;
   }
 

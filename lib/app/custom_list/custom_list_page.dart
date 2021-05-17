@@ -127,6 +127,7 @@ class _CustomListPageAppBarTitleWidget extends StatelessWidget {
       initialData: customListBloc.customList,
       builder: (context, snapshot) {
         var customList = snapshot.data!;
+
         return Text(
           customList.title,
           style: fediUiTextTheme.giantTitleShortBoldDarkGrey,
@@ -244,6 +245,7 @@ MaterialPageRoute createCustomListPageRoute({
             );
 
             bloc.performAsyncInit();
+
             return bloc;
           },
           child: _CustomListPageWrapper(
@@ -269,6 +271,7 @@ class _CustomListPageWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var customList = Provider.of<ICustomList>(context);
+
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc:
           ITimelineLocalPreferenceBloc.of(context, listen: false),
@@ -284,6 +287,7 @@ class _CustomListPageWrapper extends StatelessWidget {
                 listen: false,
               ),
             );
+
             return customListTimelineStatusCachedListBloc;
           },
           child: StatusCachedListBlocProxyProvider(
@@ -350,6 +354,7 @@ class _CustomListPageWrapper extends StatelessWidget {
         ),
       );
     }
+
     return customListBloc;
   }
 }

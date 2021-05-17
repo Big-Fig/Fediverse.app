@@ -370,6 +370,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
         ],
       );
     }
+
     return Container(child: itemView);
   }
 
@@ -400,6 +401,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
               final int currentItemIndex = metrics.itemIndex;
               selectedChangedWhenScrollEnd(currentItemIndex);
             }
+
             return false;
           },
           child: CupertinoPicker.builder(
@@ -417,6 +419,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
               if (content == null) {
                 return null;
               }
+
               return Container(
                 height: theme.itemHeight,
                 alignment: Alignment.center,

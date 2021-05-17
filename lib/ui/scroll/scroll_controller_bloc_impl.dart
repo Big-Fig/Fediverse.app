@@ -93,6 +93,7 @@ class ScrollControllerBloc extends DisposableOwner
     var differenceWithNow = now.difference(lastDirectionSwitchDateTime);
     var isLong = differenceWithNow.compareTo(longScrollMinimumDuration) > 0;
     // _logger.finest(() => "differenceWithNow $differenceWithNow isLong $isLong");
+
     return isLong;
   }
 

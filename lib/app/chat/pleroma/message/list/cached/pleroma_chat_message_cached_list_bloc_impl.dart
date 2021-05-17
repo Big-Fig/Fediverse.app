@@ -91,6 +91,7 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
     _logger.finer(
       () => "finish loadLocalItems for $chat messages ${messages.length}",
     );
+
     return messages;
   }
 

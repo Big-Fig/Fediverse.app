@@ -64,6 +64,7 @@ class PleromaApiStatusEmojiReactionService extends BasePleromaApiService
       httpResponse,
       PleromaApiStatusEmojiReaction.fromJson,
     );
+
     return listResponse.first;
   }
 

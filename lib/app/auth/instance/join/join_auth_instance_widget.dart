@@ -231,6 +231,7 @@ class _JoinAuthInstanceTermsOfServiceButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textStyle = IFediUiTextTheme.of(context).mediumShortWhite;
+
     return InkWell(
       onTap: () {
         goToTosPage(context);

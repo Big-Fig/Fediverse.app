@@ -25,6 +25,7 @@ class SearchAccountPaginationBloc
         .map((searchResultItem) => searchResultItem.account)
         .whereNotNull()
         .toList();
+
     return PaginationPage(
       requestedLimitPerPage: page.requestedLimitPerPage,
       items: items,

@@ -21,6 +21,7 @@ class SearchStatusPaginationBloc extends SearchAdapterPaginationBloc<IStatus> {
             searchResultItem.type == SearchResultItemType.status)
         .map((searchResultItem) => searchResultItem.status!)
         .toList();
+
     return PaginationPage(
       requestedLimitPerPage: page.requestedLimitPerPage,
       items: items,

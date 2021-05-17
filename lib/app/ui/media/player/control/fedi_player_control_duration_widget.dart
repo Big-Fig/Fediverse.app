@@ -21,6 +21,7 @@ class FediPlayerControlDurationWidget extends StatelessWidget {
       totalMinutes = 0;
     }
     var seconds = duration?.inSeconds ?? 0;
+
     return Text(
       "$totalMinutes:${secondsFormat.format(seconds)}",
       style: durationExist

@@ -95,6 +95,7 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
       itemCount: instancesAvailableToChoose.length,
       itemBuilder: (BuildContext context, int index) {
         var instance = instancesAvailableToChoose[index];
+
         return Provider<AuthInstance>.value(
           value: instance,
           child: DisposableProxyProvider<AuthInstance,
@@ -120,6 +121,7 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
                     _logger.finest(
                       () => "error fetching IPleromaApiMyAccountService",
                     );
+
                     return const SizedBox.shrink();
                   }
 
@@ -176,6 +178,7 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
         () => "_AuthInstanceChooserSelectedInstanceRowWidget "
             "error fetching myAccountBloc",
       );
+
       return const SizedBox.shrink();
     }
 
@@ -189,6 +192,7 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
           if (authInstance == null) {
             return const SizedBox.shrink();
           }
+
           return Provider<AuthInstance>.value(
             value: authInstance,
             child: DisposableProxyProvider<AuthInstance,

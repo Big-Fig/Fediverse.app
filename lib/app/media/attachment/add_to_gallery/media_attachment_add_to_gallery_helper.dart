@@ -30,6 +30,7 @@ Future<bool> addMediaAttachmentToGallery({
   } else {
     result = await _save(mediaAttachment);
   }
+
   return result;
 }
 
@@ -45,5 +46,6 @@ Future<bool?> _save(IPleromaApiMediaAttachment mediaAttachment) async {
     saved = false;
   }
   _logger.finest(() => "addMediaAttachmentToGallery saved =  $saved");
+
   return saved;
 }

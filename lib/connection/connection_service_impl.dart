@@ -61,6 +61,7 @@ class ConnectionService extends AsyncInitLoadingBloc
   Future<ConnectivityResult> _checkConnectivity() async {
     var newState = await connectivity.checkConnectivity();
     _updateConnectivity(newState);
+
     return newState;
   }
 

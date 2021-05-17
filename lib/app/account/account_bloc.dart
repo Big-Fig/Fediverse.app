@@ -77,6 +77,7 @@ extension IAccountBlocExtension on IAccountBloc {
         return acct;
       } else {
         var remoteDomain = account.urlRemoteHostUri.host;
+
         return "$acct@$remoteDomain";
       }
     }

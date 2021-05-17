@@ -131,6 +131,7 @@ Map<String, Style> _calculateHtmlStyles({
   var fontSizeValue = settings.fontSize;
 
   var fontSizeObject = FontSize(fontSizeValue);
+
   return {
     "html": Style(
       display: settings.shrinkWrap ? Display.INLINE : Display.BLOCK,

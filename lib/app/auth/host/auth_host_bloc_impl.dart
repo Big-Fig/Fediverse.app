@@ -152,6 +152,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   Future<String> _calculateRedirectUri() async {
     var packageId = await FediPackageInfoHelper.getPackageId();
     var redirectUri = "$packageId://addNewInstance";
+
     return redirectUri;
   }
 
@@ -167,6 +168,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         ),
       );
       await hostAccessTokenLocalPreferenceBloc.setValue(accessToken);
+
       return true;
     } catch (e, stackTrace) {
       _logger.severe(
@@ -174,6 +176,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         e,
         stackTrace,
       );
+
       return false;
     }
   }
@@ -254,6 +257,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
     await pleromaInstanceService.dispose();
     await pleromaAuthRestService.dispose();
+
     return instance;
   }
 

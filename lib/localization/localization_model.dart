@@ -23,6 +23,7 @@ class LocalizationLocale implements IJsonObject {
     if (countryCode != null) {
       result += "_$countryCode";
     }
+
     return result;
   }
 

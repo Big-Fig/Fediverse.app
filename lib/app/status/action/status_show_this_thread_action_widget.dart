@@ -15,6 +15,7 @@ class StatusShowThisThreadActionWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: false);
 
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+
     return InkWell(
       onTap: () {
         if (isLocal) {

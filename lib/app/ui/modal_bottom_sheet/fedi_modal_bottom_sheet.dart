@@ -14,6 +14,7 @@ Future<T?> showFediModalBottomSheetDialog<T>({
   bool enableDrag = true,
 }) {
   var fediUiColorTheme = IFediUiColorTheme.of(context, listen: false);
+
   return showModalBottomSheet<T>(
     context: context,
     isScrollControlled:isScrollControlled,

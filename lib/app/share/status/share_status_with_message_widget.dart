@@ -17,6 +17,7 @@ class ShareStatusWithMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaQueryData = MediaQuery.of(context);
+
     return ShareWithMessageWidget(
       footer: footer,
       child: ProxyProvider<IStatus, IPleromaApiCard?>(

@@ -89,6 +89,7 @@ class EditMyAccountPleromaBackgroundFieldValueWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
+
     return StreamBuilder<MediaImageSource?>(
       stream: editMyAccountBloc.backgroundField.imageSourceStream,
       builder: (context, snapshot) {
@@ -142,6 +143,7 @@ class _EditMyAccountPleromaBackgroundAddButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
+
     return FediPrimaryFilledTextButtonWithBorder(
       S.of(context).app_account_my_edit_field_backgroundImage_action_add,
       onPressed: () {

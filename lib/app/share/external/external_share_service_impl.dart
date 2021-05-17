@@ -86,6 +86,7 @@ class ExternalShareService extends DisposableOwner
       text +=
           "[${urlFilesPossibleToShareAsBytes.map((urlFile) => urlFile.url).join(", ")}]";
     }
+
     return text;
   }
 

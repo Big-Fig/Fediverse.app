@@ -30,11 +30,13 @@ class ChatDatabaseTestHelper {
         dbChat.accountRemoteId,
       ))!,
     );
+
     return dbChatPopulated;
   }
 
   static void expectDbChat(IPleromaChat? actual, DbChat? expected) {
     if (actual == null && expected == null) {
+
       return;
     }
 

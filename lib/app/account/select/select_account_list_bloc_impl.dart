@@ -214,11 +214,13 @@ class SelectAccountListBloc extends DisposableOwner
         if (valid && searchText != null) {
           valid &= account.acct.contains(searchText!);
         }
+
         return valid;
       }).toList();
     }
 
     _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");
+
     return accounts;
   }
 

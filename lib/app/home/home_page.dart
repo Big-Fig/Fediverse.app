@@ -258,6 +258,7 @@ class _HomePageMessagesTabWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var chatSettingsBloc = IChatSettingsBloc.of(context);
+
     return StreamBuilder<bool?>(
       stream: chatSettingsBloc.replaceConversationsWithPleromaChatsStream,
       initialData: chatSettingsBloc.replaceConversationsWithPleromaChats,
@@ -297,6 +298,7 @@ class _HomePageTimelineTabWidget extends StatelessWidget {
             },
           ),
         );
+
         return timelinesHomeTabBloc;
       },
       child: TimelinesHomeTabBlocProxyProvider(

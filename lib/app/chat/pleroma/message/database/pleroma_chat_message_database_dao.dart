@@ -35,6 +35,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAllQuery();
 
     var typedResults = await chatMessageQuery.get();
+
     return typedResults.toDbChatMessagePopulatedList(
       dao: this,
     );
@@ -55,6 +56,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   ) async {
     var typedResult = await _findByOldPendingRemoteIdQuery(oldPendingRemoteId)
         .getSingleOrNull();
+
     return typedResult?.toDbChatMessagePopulated(
       dao: this,
     );
@@ -75,6 +77,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     var sqlQuery = (select(db.dbChatMessages).join(
       populateChatMessageJoin(),
     ));
+
     return sqlQuery;
   }
 
@@ -170,6 +173,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
                     expression = item.createdAt;
                     break;
                 }
+
                 return OrderingTerm(
                   expression: expression,
                   mode: orderTerm.orderingMode,
@@ -330,6 +334,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     if (filters?.groupByChatId == true) {
       addGroupByChatId(joinedSelectStatement);
     }
+
     return joinedSelectStatement;
   }
 }

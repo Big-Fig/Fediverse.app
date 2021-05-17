@@ -94,6 +94,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     final query = selectOnly(dbChats)..addColumns([unreadCount]);
 
     var mapped = query.map((row) => row.read(unreadCount));
+
     return mapped.map((value) => value!.toInt());
   }
 
@@ -116,6 +117,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
                     expression = item.updatedAt;
                     break;
                 }
+
                 return OrderingTerm(
                   expression: expression,
                   mode: orderTerm.orderingMode,

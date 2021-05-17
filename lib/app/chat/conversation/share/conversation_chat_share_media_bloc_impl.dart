@@ -72,6 +72,7 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
       status: "${message ?? ""} $to".trim(),
       visibility: visibility.toJsonValue(),
     );
+
     return messageSendData;
   }
 

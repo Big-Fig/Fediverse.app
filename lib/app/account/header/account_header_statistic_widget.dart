@@ -23,6 +23,7 @@ class AccountHeaderStatisticWidget extends StatelessWidget {
       return const SizedBox.shrink();
     }
     var valueString = _numberFormat.format(value);
+
     return AccountHeaderStatisticBodyWidget(
       valueString: valueString,
       label: label,
@@ -44,6 +45,7 @@ class AccountHeaderStatisticBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var fediUiTextTheme = IFediUiTextTheme.of(context);
     var accountHeaderBloc = IAccountHeaderBloc.of(context);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

@@ -274,6 +274,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     String oldPendingRemoteId,
   ) async {
     _logger.finest(() => "findByOldPendingRemoteId $oldPendingRemoteId");
+
     return (await dao.findByOldPendingRemoteId(oldPendingRemoteId))
         ?.toDbStatusPopulatedWrapper();
   }
@@ -798,6 +799,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         StatusRepositoryOrderingTermData.remoteIdDesc,
       ],
     );
+
     return statusesStream.map((list) => list.length);
   }
 }
