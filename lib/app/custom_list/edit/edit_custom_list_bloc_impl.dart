@@ -110,16 +110,20 @@ class EditCustomListBloc extends DisposableOwner
   final IPleromaApiListService pleromaListService;
 
   @override
+  // ignore: avoid-late-keyword
   late ICustomListAccountListNetworkOnlyListBloc
       customListAccountListNetworkOnlyListBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IAccountNetworkOnlyPaginationBloc
       customListAccountListNetworkOnlyPaginationBloc;
 
+  // ignore: avoid-late-keyword
   late IAccountPaginationListBloc accountPaginationListBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IEditCustomListAccountListPaginationListBloc
       editCustomListAccountListPaginationListBloc;
 

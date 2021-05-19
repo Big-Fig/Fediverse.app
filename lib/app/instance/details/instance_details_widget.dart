@@ -421,7 +421,7 @@ class _InstanceDetailsVersionTypeWidget extends StatelessWidget {
         var versionType = snapshot.data;
 
         if (versionType != null) {
-          late String versionTypeString;
+          String versionTypeString;
 
           switch (versionType) {
             case PleromaApiInstanceVersionType.pleroma:

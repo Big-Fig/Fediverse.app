@@ -74,11 +74,14 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
       ];
 
   @override
+  // ignore: avoid-late-keyword
   late DurationDateTimeValueFormFieldBloc durationDateTimeLengthFieldBloc;
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc<bool> multiplyFieldBloc =
       BoolValueFormFieldBloc(originValue: false);
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc<bool> hideTotalsFieldBloc =
       BoolValueFormFieldBloc(originValue: false);
 

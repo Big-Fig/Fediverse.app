@@ -29,12 +29,16 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   @override
   Timeline get timeline => timelineLocalPreferencesBloc.value!;
   @override
+  // ignore: avoid-late-keyword
   late TimelineStatusCachedListBloc statusCachedListBloc;
+  // ignore: avoid-late-keyword
   late IStatusCachedPaginationBloc statusCachedPaginationBloc;
   @override
+  // ignore: avoid-late-keyword
   late ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>,
       IStatus> paginationListWithNewItemsBloc;
 

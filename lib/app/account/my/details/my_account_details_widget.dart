@@ -18,13 +18,13 @@ class MyAccountDetailsWidget extends StatefulWidget {
 }
 
 class _MyAccountDetailsWidgetState extends State<MyAccountDetailsWidget> {
+  final ScrollController scrollController =  ScrollController();
+  // ignore: avoid-late-keyword
   late ScrollControllerBloc scrollControllerBloc;
-  late ScrollController scrollController;
 
   @override
   void initState() {
     super.initState();
-    scrollController = ScrollController();
     scrollControllerBloc =
         ScrollControllerBloc(scrollController: scrollController);
   }

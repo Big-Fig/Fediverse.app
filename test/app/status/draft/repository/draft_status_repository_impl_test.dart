@@ -9,7 +9,7 @@ import '../database/draft_status_database_test_helper.dart';
 import '../draft_status_test_helper.dart';
 import 'draft_status_repository_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
   late AppDatabase database;
   late DraftStatusRepository draftStatusRepository;

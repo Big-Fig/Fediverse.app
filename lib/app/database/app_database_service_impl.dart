@@ -25,11 +25,15 @@ class AppDatabaseService extends AsyncInitLoadingBloc
     required this.dbName,
   });
 
+  // ignore: avoid-late-keyword
   late AppDatabase appDatabase;
 
+  // ignore: avoid-late-keyword
   late MoorInspector inspector;
 
+  // ignore: avoid-late-keyword
   late String filePath;
+  // ignore: avoid-late-keyword
   late File file;
 
   @override

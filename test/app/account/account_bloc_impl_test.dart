@@ -21,6 +21,7 @@ import 'package:moor/ffi.dart';
 
 import 'account_bloc_impl_test.mocks.dart';
 import 'account_test_helper.dart';
+// ignore_for_file: avoid-late-keyword
 
 @GenerateMocks([
   PleromaApiAuthAccountService,

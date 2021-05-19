@@ -18,6 +18,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     this.path,
   });
 
+  // ignore: avoid-late-keyword
   late Box _box;
 
   @override

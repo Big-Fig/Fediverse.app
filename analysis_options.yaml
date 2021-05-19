@@ -46,9 +46,9 @@ dart_code_metrics:
     - double-literal-format
     - binary-expression-operand-order
     - no-object-declaration
-#    - avoid-non-null-assertion
-#    - avoid-returning-widgets
+    - avoid-late-keyword
 #    - avoid-unused-parameters
+#    - avoid-returning-widgets
+#    - avoid-non-null-assertion
 #    - member-ordering
 #    - member-ordering-extended
-#    - avoid-late-keyword

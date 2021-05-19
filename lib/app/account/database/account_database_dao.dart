@@ -29,12 +29,19 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     AccountRepositoryFilters,
     AccountRepositoryOrderingTermData> with _$AccountDaoMixin {
   final AppDatabase db;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable? accountAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountFollowingsTable accountFollowingsAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountFollowersTable accountFollowersAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusRebloggedAccountsTable statusRebloggedAccountsAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusFavouritedAccountsTable statusFavouritedAccountsAlias;
+  // ignore: avoid-late-keyword
   late $DbConversationAccountsTable conversationAccountsAlias;
+  // ignore: avoid-late-keyword
   late $DbChatAccountsTable chatAccountsAlias;
 
   @override

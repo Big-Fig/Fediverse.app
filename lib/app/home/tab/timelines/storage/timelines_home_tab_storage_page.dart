@@ -62,7 +62,7 @@ class _TimelinesHomeTabStoragePagePageAppBarActionWidget
           return const SizedBox.shrink();
         }
 
-        late var child;
+        Widget child;
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
             child = _TimelinesHomeTabStoragePagePageAppBarActionDoneWidget();

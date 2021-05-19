@@ -19,8 +19,10 @@ abstract class CachedPaginationListWithNewItemsBloc<
         TItem extends IEqualComparableObj<TItem>>
     extends CachedPaginationListBloc<TPage, TItem>
     implements ICachedPaginationListWithNewItemsBloc<TPage, TItem> {
-  late BehaviorSubject<List<TItem>> updatedItemsSubject;
+  final BehaviorSubject<List<TItem>> updatedItemsSubject =
+      BehaviorSubject.seeded([]);
 
+  // ignore: avoid-late-keyword
   late BehaviorSubject<_CombinedItemsResult<TItem>> combinedItemsResultSubject;
 
   List<TItem> get updatedItems => updatedItemsSubject.value!;
@@ -86,7 +88,6 @@ abstract class CachedPaginationListWithNewItemsBloc<
         resultItems: [],
       ),
     );
-    updatedItemsSubject = BehaviorSubject.seeded([]);
 
     addDisposable(subject: mergedNewItemsSubject);
     addDisposable(subject: unmergedNewItemsSubject);

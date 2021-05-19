@@ -16,6 +16,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
       .toList();
 
   @override
+  // ignore: avoid-late-keyword
   late List<ITimelineTabBloc> timelineTabBlocs;
 
   @override
@@ -23,6 +24,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         (timelineTabBloc) => timelineTabBloc.timeline.type == TimelineType.home,
       );
 
+  // ignore: avoid-late-keyword
   late BehaviorSubject<ITimelineTabBloc> selectedTimelineTabBlocSubject;
 
   @override
@@ -39,7 +41,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     required ITimelineTabBloc Function(
       String timelineId,
       WebSocketsListenType webSocketsListenType,
-    ) timelineTabBlocCreator,
+    )
+        timelineTabBlocCreator,
   }) {
     var selectedTimelineId = oldSelectedTimelineId ?? timelineIds.first;
 

@@ -20,18 +20,22 @@ class EditDatabaseCacheSettingsBloc
   final IDatabaseService databaseService;
 
   @override
+  // ignore: avoid-late-keyword
   late AgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
       ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late EntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
       entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc
       currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc
       currentMaxAgeDatabaseCacheInfoFormFieldBloc;
 

@@ -29,7 +29,7 @@ class StatusSensitiveBloc extends DisposableOwner
 
   Stream<bool> get containsSpoilerStream => statusBloc.containsSpoilerStream;
 
-  // ignore: close_sinks
+  // ignore: close_sinks, avoid-late-keyword
   late BehaviorSubject<bool> _displayEnabledSubject;
 
   StatusSensitiveBloc({

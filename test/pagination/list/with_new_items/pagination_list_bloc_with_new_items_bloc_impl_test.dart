@@ -12,7 +12,7 @@ import 'pagination_list_bloc_with_new_items_memory_impl.dart';
 const int storageSize = 30;
 const int? maximumCachedPagesCount = null;
 const int itemsCountPerPage = 5;
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
   late ICachedPaginationBloc<CachedPaginationPage<PaginationItemTest>,
       PaginationItemTest> paginationBloc;

@@ -16,6 +16,7 @@ import 'package:pedantic/pedantic.dart';
 
 abstract class WebSocketsChannelHandler extends DisposableOwner
     implements IWebSocketsHandler {
+  // ignore: avoid-late-keyword
   late Logger _logger;
 
   String get logTag;

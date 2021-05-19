@@ -18,7 +18,9 @@ import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.d
 class NotificationTabBloc extends AsyncInitLoadingBloc
     implements INotificationTabBloc {
   final NotificationTab tab;
+  // ignore: avoid-late-keyword
   late INotificationCachedListBloc notificationCachedListBloc;
+  // ignore: avoid-late-keyword
   late INotificationCachedPaginationBloc notificationCachedPaginationBloc;
 
   final INotificationRepository notificationRepository;
@@ -27,6 +29,7 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<INotification>,
       INotification> paginationListWithNewItemsBloc;
 
@@ -51,14 +54,12 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
   Future internalAsyncInit() async {
     notificationCachedListBloc = createListService();
     await notificationCachedListBloc.performAsyncInit();
-    addDisposable(disposable: notificationCachedListBloc);
 
     notificationCachedPaginationBloc = NotificationCachedPaginationBloc(
       maximumCachedPagesCount: null,
       notificationListService: notificationCachedListBloc,
       paginationSettingsBloc: paginationSettingsBloc,
     );
-    addDisposable(disposable: notificationCachedPaginationBloc);
 
     paginationListWithNewItemsBloc =
         NotificationCachedPaginationListWithNewItemsBloc<
@@ -67,6 +68,9 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
       mergeNewItemsImmediately: false,
       cachedListBloc: notificationCachedListBloc,
     );
+
+    addDisposable(disposable: notificationCachedListBloc);
+    addDisposable(disposable: notificationCachedPaginationBloc);
     addDisposable(
       disposable: paginationListWithNewItemsBloc,
     );

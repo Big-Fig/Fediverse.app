@@ -13,9 +13,11 @@ class EditMediaSettingsBloc
   final IMediaSettingsBloc mediaSettingsBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc autoPlayFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc autoInitFieldBloc;
 
   @override

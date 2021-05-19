@@ -39,6 +39,7 @@ class ScrollControllerBloc extends DisposableOwner
   @override
   ScrollDirection? get longScrollDirection => longScrollDirectionSubject.value;
 
+  // ignore: avoid-late-keyword
   late DateTime lastDirectionSwitchDateTime;
 
   ScrollControllerBloc({required this.scrollController})

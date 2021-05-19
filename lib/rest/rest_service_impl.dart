@@ -59,6 +59,7 @@ class RestService extends DisposableOwner implements IRestService {
 
     String? body;
 
+    // ignore: avoid-late-keyword
     late Future<http.Response> responseFuture;
     var requestType = request.type;
     Map<String, dynamic>? bodyJson = request.bodyJson;

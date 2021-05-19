@@ -193,13 +193,19 @@ class FediListRefreshIndicator extends StatefulWidget {
 /// programmatically show the refresh indicator, see the [show] method.
 class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
     with TickerProviderStateMixin<FediListRefreshIndicator> {
+  // ignore: avoid-late-keyword
   late AnimationController _positionController;
+  // ignore: avoid-late-keyword
   late AnimationController _scaleController;
+  // ignore: avoid-late-keyword
   late Animation<double> _positionFactor;
+  // ignore: avoid-late-keyword
   late Animation<double> _scaleFactor;
+  // ignore: avoid-late-keyword
   late Animation<Color?> _valueColor;
 
   _RefreshIndicatorMode? _mode;
+  // ignore: avoid-late-keyword
   late Future<void> _pendingRefreshFuture;
   bool? _isIndicatorAtTop;
   double? _dragOffset;

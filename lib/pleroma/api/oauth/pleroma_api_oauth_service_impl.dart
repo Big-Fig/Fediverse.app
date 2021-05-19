@@ -49,6 +49,7 @@ class PleromaApiOAuthService extends BasePleromaApiService
 
     var completer = Completer<String>();
     if (isCanLaunch) {
+      // ignore: avoid-late-keyword
       late StreamSubscription<Uri?> subscription;
       subscription = uriLinkStream.listen(
         (Uri? uri) {

@@ -10,7 +10,7 @@ import '../channel/web_sockets_channel_source_mock.dart';
 import '../service/web_sockets_service_impl_test.mocks.dart';
 import '../websockets_model_test_impl.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
   ConnectionService,
 ])

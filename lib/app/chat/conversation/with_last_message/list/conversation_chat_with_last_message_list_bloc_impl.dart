@@ -17,16 +17,15 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
-
-var _logger = Logger('conversation_chat_with_last_message_list_bloc_impl.dart');
 
 class ConversationChatWithLastMessageListBloc extends DisposableOwner
     implements IConversationChatWithLastMessageListBloc {
   @override
+  // ignore: avoid-late-keyword
   late IConversationChatWithLastMessageCachedListBloc cachedListBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IConversationChatWithLastMessagePaginationBloc paginationBloc;
 
   @override
@@ -35,6 +34,7 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
       get chatPaginationListBloc => paginationListWithNewItemsBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IConversationChatWithLastMessagePaginationListWithNewItemsBloc<
           CachedPaginationPage<IConversationChatWithLastMessage>>
       paginationListWithNewItemsBloc;
@@ -57,25 +57,23 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
               conversationChatWithLastMessageRepository,
           conversationRepository: conversationRepository,
         ) {
-    _logger.finest(() => 'constructor');
 
-    addDisposable(
-      disposable: cachedListBloc,
-    );
     paginationBloc = ConversationChatWithLastMessagePaginationBloc(
       paginationSettingsBloc: paginationSettingsBloc,
       listService: cachedListBloc,
       maximumCachedPagesCount: null,
     );
-    addDisposable(disposable: cachedListBloc);
+
     paginationListWithNewItemsBloc =
         ConversationChatWithLastMessagePaginationListWithNewItemsBloc(
       paginationBloc: paginationBloc,
       cachedListBloc: cachedListBloc,
       mergeNewItemsImmediately: true,
     );
-    addDisposable(disposable: paginationListWithNewItemsBloc);
 
+    addDisposable(disposable: cachedListBloc);
+    addDisposable(disposable: paginationBloc);
+    addDisposable(disposable: paginationListWithNewItemsBloc);
     addDisposable(
       disposable: webSocketsHandlerManagerBloc.listenConversationChannel(
         listenType: WebSocketsListenType.foreground,

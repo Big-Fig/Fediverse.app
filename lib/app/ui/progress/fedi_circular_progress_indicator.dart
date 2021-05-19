@@ -39,6 +39,7 @@ class FediCircularProgressIndicator extends StatefulWidget {
 class _FediCircularProgressIndicatorState
     extends State<FediCircularProgressIndicator>
     with SingleTickerProviderStateMixin {
+  // ignore: avoid-late-keyword
   late AnimationController _controller;
 
   @override

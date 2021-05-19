@@ -34,11 +34,11 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     StatusRepositoryFilters,
     StatusRepositoryOrderingTermData> implements IStatusRepository {
   @override
-  late StatusDao dao;
-  late StatusHashtagsDao hashtagsDao;
-  late StatusListsDao listsDao;
-  late HomeTimelineStatusesDao homeTimelineStatusesDao;
-  late ConversationStatusesDao conversationStatusesDao;
+  final StatusDao dao;
+  final StatusHashtagsDao hashtagsDao;
+  final StatusListsDao listsDao;
+  final HomeTimelineStatusesDao homeTimelineStatusesDao;
+  final ConversationStatusesDao conversationStatusesDao;
   final IAccountRepository accountRepository;
 
   @override
@@ -54,13 +54,11 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   StatusRepository({
     required AppDatabase appDatabase,
     required this.accountRepository,
-  }) {
-    dao = appDatabase.statusDao;
-    hashtagsDao = appDatabase.statusHashtagsDao;
-    listsDao = appDatabase.statusListsDao;
-    homeTimelineStatusesDao = appDatabase.homeTimelineStatusesDao;
-    conversationStatusesDao = appDatabase.conversationStatusesDao;
-  }
+  })   : dao = appDatabase.statusDao,
+        hashtagsDao = appDatabase.statusHashtagsDao,
+        listsDao = appDatabase.statusListsDao,
+        homeTimelineStatusesDao = appDatabase.homeTimelineStatusesDao,
+        conversationStatusesDao = appDatabase.conversationStatusesDao;
 
   Future addStatusesToList({
     required List<String> statusRemoteIds,

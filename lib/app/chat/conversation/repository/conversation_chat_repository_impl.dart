@@ -45,7 +45,7 @@ class ConversationChatRepository
       ConversationRepositoryChatOrderingTermData> get populatedDao => dao;
 
   @override
-  late ConversationDao dao;
+  final ConversationDao dao;
 
   final IAccountRepository accountRepository;
   final IStatusRepository statusRepository;
@@ -54,9 +54,7 @@ class ConversationChatRepository
     required AppDatabase appDatabase,
     required this.accountRepository,
     required this.statusRepository,
-  }) {
-    dao = appDatabase.conversationDao;
-  }
+  }) : dao = appDatabase.conversationDao;
 
   @override
   Future markAsRead({

@@ -12,8 +12,10 @@ import '../database/filter_database_test_helper.dart';
 import '../filter_test_helper.dart';
 import 'filter_repository_test_helper.dart';
 
+// ignore_for_file: no-magic-number, avoid-late-keyword
+
 final String baseUrl = 'https://pleroma.com';
-// ignore_for_file: no-magic-number
+
 void main() {
   late AppDatabase database;
   late FilterRepository filterRepository;

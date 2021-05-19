@@ -41,19 +41,33 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     StatusRepositoryFilters,
     StatusRepositoryOrderingTermData> with _$StatusDaoMixin {
   final AppDatabase db;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusesTable reblogAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable reblogAccountAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusesTable replyAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable replyAccountAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusesTable replyReblogAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable replyReblogAccountAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusHashtagsTable statusHashtagsAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusListsTable statusListsAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountFollowingsTable accountFollowingsAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountFollowingsTable replyToAccountFollowingsAlias;
+  // ignore: avoid-late-keyword
   late $DbConversationStatusesTable conversationStatusesAlias;
+  // ignore: avoid-late-keyword
   late $DbHomeTimelineStatusesTable homeTimelineStatusesAlias;
 
   // Called by the AppDatabase class

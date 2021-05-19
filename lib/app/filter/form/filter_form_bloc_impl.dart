@@ -25,6 +25,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
   @override
   final BoolValueFormFieldBloc wholeWordField;
   @override
+  // ignore: avoid-late-keyword
   late DurationDateTimeValueFormFieldBloc expiresInField;
 
   @override

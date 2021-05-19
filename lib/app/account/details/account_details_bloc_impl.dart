@@ -19,17 +19,20 @@ class AccountDetailsBloc extends DisposableOwner
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
 
   @override
-  late NestedScrollController nestedScrollController;
+  final NestedScrollController nestedScrollController;
 
   @override
+  // ignore: avoid-late-keyword
   late INestedScrollControllerBloc nestedScrollControllerBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IFediNestedScrollViewBloc fediNestedScrollViewBloc;
 
   AccountDetailsBloc({
     required this.currentAuthInstanceBloc,
-  }) : tabs = <AccountStatusesTab>[
+  })   : nestedScrollController = NestedScrollController(centerScroll: false),
+        tabs = <AccountStatusesTab>[
           AccountStatusesTab.withoutReplies,
           AccountStatusesTab.pinned,
           AccountStatusesTab.media,
@@ -38,8 +41,6 @@ class AccountDetailsBloc extends DisposableOwner
               .currentInstance!.isAccountFavouritesFeatureSupported!)
             AccountStatusesTab.favourites,
         ] {
-    nestedScrollController = NestedScrollController(centerScroll: false);
-
     nestedScrollControllerBloc = NestedScrollControllerBloc(
       nestedScrollController: nestedScrollController,
     );
@@ -47,8 +48,6 @@ class AccountDetailsBloc extends DisposableOwner
       nestedScrollControllerBloc: nestedScrollControllerBloc,
     );
 
-    addDisposable(disposable: fediNestedScrollViewBloc);
-    addDisposable(disposable: nestedScrollControllerBloc);
     addDisposable(custom: () {
       try {
         nestedScrollController.dispose();
@@ -56,6 +55,8 @@ class AccountDetailsBloc extends DisposableOwner
         _logger.warning(() => 'error during nestedScrollController.dispose()');
       }
     });
+    addDisposable(disposable: fediNestedScrollViewBloc);
+    addDisposable(disposable: nestedScrollControllerBloc);
   }
 
   @override

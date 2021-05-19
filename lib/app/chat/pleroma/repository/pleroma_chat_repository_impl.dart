@@ -35,8 +35,8 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     PleromaChatRepositoryFilters,
     PleromaChatRepositoryOrderingTermData> implements IPleromaChatRepository {
   @override
-  late ChatDao dao;
-  late ChatAccountsDao chatAccountsDao;
+  final ChatDao dao;
+  final ChatAccountsDao chatAccountsDao;
 
   @override
   PopulatedDatabaseDaoMixin<
@@ -55,10 +55,8 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required AppDatabase appDatabase,
     required this.accountRepository,
     required this.chatMessageRepository,
-  }) {
-    dao = appDatabase.chatDao;
-    chatAccountsDao = appDatabase.chatAccountsDao;
-  }
+  })   : dao = appDatabase.chatDao,
+        chatAccountsDao = appDatabase.chatAccountsDao;
 
   @override
   Future<IPleromaChat?> findByAccount({
