@@ -13,17 +13,17 @@ class RemoteInstanceBloc extends DisposableOwner
 
   final IConnectionService connectionService;
 
-  late RestService restService;
+  final RestService restService;
   @override
+  // ignore: avoid-late-keyword
   late PleromaApiRestService pleromaRestService;
 
   RemoteInstanceBloc({
     required this.instanceUri,
     required this.connectionService,
-  }) {
-    restService = RestService(
-      baseUri: instanceUri,
-    );
+  }) : restService = RestService(
+          baseUri: instanceUri,
+        ) {
     pleromaRestService = PleromaApiRestService(
       connectionService: connectionService,
       restService: restService,

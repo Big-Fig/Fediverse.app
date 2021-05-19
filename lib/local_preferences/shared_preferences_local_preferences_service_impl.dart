@@ -14,6 +14,7 @@ const _specialStorageKeyCreatedValue = _specialStorageKeyCreatedKey;
 
 class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
+  // ignore: avoid-late-keyword
   late SharedPreferences preferences;
 
   final Map<String, List<ValueCallback>> listeners = {};

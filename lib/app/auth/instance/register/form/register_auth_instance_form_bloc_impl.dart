@@ -19,6 +19,7 @@ import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service.dart';
 class RegisterAuthInstanceFormBloc extends FormBloc
     implements IRegisterAuthInstanceFormBloc {
   @override
+  // ignore: avoid-late-keyword
   late IPleromaFormCaptchaStringFieldBloc captchaFieldBloc;
 
   final ILocalizationSettingsBloc localizationSettingsBloc;
@@ -81,6 +82,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
   ]);
 
   @override
+  // ignore: avoid-late-keyword
   late LocalizationLocaleSingleFromListValueFormFieldBloc localeFieldBloc;
 
   @override

@@ -7,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 class ValueFormFieldBloc<T> extends FormFieldBloc
     implements IValueFormFieldBloc<T> {
   @override
+  // ignore: avoid-late-keyword
   late List<FormValueFieldValidation<T>> validators;
 
   final BehaviorSubject<List<ValueFormFieldValidationError>>

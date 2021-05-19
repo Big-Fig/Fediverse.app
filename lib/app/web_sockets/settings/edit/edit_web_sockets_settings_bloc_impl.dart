@@ -12,6 +12,7 @@ class EditWebSocketsSettingsBloc
   final IWebSocketsSettingsBloc webSocketsSettingsBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late WebSocketsHandlingTypeSingleFromListValueFormFieldBloc typeFieldBloc;
 
   @override

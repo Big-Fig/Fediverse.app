@@ -6,6 +6,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:pedantic/pedantic.dart';
 
 Logger _logger = Logger('async_dialog.dart');
 
@@ -36,14 +37,15 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
   var cancelableOperation =
       CancelableOperation<T>.fromFuture(asyncCode());
 
-  late var progressDialog;
+  // ignore: avoid-late-keyword
+  late FediIndeterminateProgressDialog progressDialog;
   if (showProgressDialog) {
     progressDialog = FediIndeterminateProgressDialog(
       cancelable: cancelable,
       contentMessage: contentMessage,
       cancelableOperation: cancelableOperation,
     );
-    progressDialog.show(context);
+    unawaited(progressDialog.show(context));
   }
 
   var error;
@@ -90,7 +92,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
       );
     }
   } finally {
-    progressDialog?.hide(context);
+    unawaited(progressDialog.hide(context));
   }
 
   // wait until progress dialog actually hides
@@ -102,7 +104,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
   );
 
   AsyncDialogResult<T> dialogResult;
-  if (progressDialog?.isCanceled == true) {
+  if (progressDialog.isCanceled == true) {
     dialogResult = AsyncDialogResult<T>.canceled();
     _logger.fine(() => 'canceled doAsyncOperationWithFediDialog');
   } else if (error != null) {

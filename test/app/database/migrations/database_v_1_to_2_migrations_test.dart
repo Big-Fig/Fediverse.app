@@ -9,6 +9,8 @@ import 'package:moor/ffi.dart';
 
 import '../../account/database/account_database_test_helper.dart';
 
+// ignore_for_file: no-magic-number, avoid-late-keyword
+
 void main() {
   late AppDatabase database;
 
@@ -25,7 +27,6 @@ void main() {
     await dbFile.delete();
 
     // hack because we don't have too old v1 db dump
-    // ignore: no-magic-number
     expect(database.migrationsFromExecuted, 3);
     expect(database.migrationsToExecuted, database.schemaVersion);
   });

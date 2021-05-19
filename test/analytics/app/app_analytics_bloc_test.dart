@@ -9,13 +9,18 @@ import 'package:flutter_test/flutter_test.dart';
 // ignore_for_file: no-magic-number
 
 void main() {
+  // ignore: avoid-late-keyword
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
+  // ignore: avoid-late-keyword
   late AppAnalyticsLocalPreferenceBloc appAnalyticsLocalPreferenceBloc;
+  // ignore: avoid-late-keyword
   late IAppAnalyticsBloc appAnalyticsBloc;
 
   int? listenAppOpenedCount;
   bool? listenIsAppRated;
+  // ignore: avoid-late-keyword
   late StreamSubscription streamSubscription1;
+  // ignore: avoid-late-keyword
   late StreamSubscription streamSubscription2;
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();

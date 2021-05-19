@@ -48,6 +48,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   TimelineType get timelineType => timeline.type;
 
+  // ignore: avoid-late-keyword
   late List<IFilter> filters;
 
   List<StatusTextCondition> get excludeTextConditions => filters

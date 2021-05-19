@@ -8,12 +8,12 @@ import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_model.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -146,7 +146,8 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     var isPleroma = currentAuthInstanceBloc.currentInstance!.isPleroma;
     var isMastodon = currentAuthInstanceBloc.currentInstance!.isMastodon;
 
-    var actualNotificationUnreadCount = await notificationRepository.calculateCount(
+    var actualNotificationUnreadCount =
+        await notificationRepository.calculateCount(
       filters: NotificationRepositoryFilters(onlyUnread: true),
     );
     var actualConversationChatUnreadCount =
@@ -154,8 +155,8 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     var actualPleromaChatUnreadCount =
         await pleromaChatRepository.getTotalUnreadCount();
 
-    late int myAccountUnreadNotificationsCount;
-    late int myAccountUnreadConversationCount;
+    var myAccountUnreadNotificationsCount = 0;
+    var myAccountUnreadConversationCount = 0;
 
     if (isPleroma) {
       myAccountUnreadConversationCount =

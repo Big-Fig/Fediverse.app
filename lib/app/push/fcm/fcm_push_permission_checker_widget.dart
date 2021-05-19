@@ -44,6 +44,7 @@ class _FcmPushPermissionCheckerWidgetState
         // ignore: no-magic-number
         Duration(milliseconds: 100),
         () async {
+          // ignore: avoid-late-keyword
           late FediBaseAlertDialog askFcmPushPermissionDialog;
           askFcmPushPermissionDialog = createAskFcmPushPermissionDialog(
             context: context,

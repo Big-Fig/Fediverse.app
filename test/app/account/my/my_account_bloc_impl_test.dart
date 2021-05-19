@@ -26,7 +26,8 @@ import '../database/account_database_test_helper.dart';
 import 'my_account_test_helper.dart';
 import 'my_account_bloc_impl_test.mocks.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
+
 @GenerateMocks([PleromaApiMyAccountService])
 void main() {
   late IMyAccount myAccount;

@@ -143,7 +143,7 @@ class _TimelinesHomeTabStorageListAddTimelineItemWidget
       builder: (context, snapshot) {
         var uiState = snapshot.data ?? TimelinesHomeTabStorageUiState.view;
 
-        late Widget child;
+        Widget child;
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
             child = const SizedBox.shrink();
@@ -261,7 +261,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var uiState = snapshot.data ?? TimelinesHomeTabStorageUiState.view;
 
-        late Widget child;
+        Widget child;
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
             child = flutter_reorderable_list.ReorderableListener(

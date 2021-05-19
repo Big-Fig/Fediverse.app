@@ -14,10 +14,10 @@ import '../../chat_test_helper.dart';
 import '../chat_message_test_helper.dart';
 import '../database/chat_message_database_test_helper.dart';
 import 'chat_message_repository_test_helper.dart';
+// ignore_for_file: no-magic-number, avoid-late-keyword, no-equal-arguments
 
 final String baseUrl = 'https://pleroma.com';
-// ignore_for_file: no-equal-arguments
-// ignore_for_file: no-magic-number
+
 void main() {
   late AppDatabase database;
   late AccountRepository accountRepository;

@@ -19,21 +19,29 @@ class EditToastSettingsBloc
   final AuthInstance? currentInstance;
 
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc favouriteFieldBloc;
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc followFieldBloc;
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc mentionFieldBloc;
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc reblogFieldBloc;
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc pollFieldBloc;
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc pleromaChatMentionFieldBloc;
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc pleromaEmojiReactionFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IToastHandlingTypeSingleFromListValueFormFieldBloc
       toastHandlingTypeSingleFromListValueFormFieldBloc;
 

@@ -235,8 +235,10 @@ abstract class PostStatusBloc extends PostMessageBloc
   String? get inReplyToStatusRemoteId => originInReplyToStatus?.remoteId;
 
   @override
+  // ignore: avoid-late-keyword
   late IPostStatusPollBloc pollBloc;
 
+  // ignore: avoid-late-keyword
   late IPostStatusData initialData;
 
   static final defaultInitData = PostStatusData(
@@ -292,7 +294,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   @override
   Stream<DateTime?> get scheduledAtStream => scheduledAtSubject.stream;
 
-  // ignore: close_sinks
+  // ignore: close_sinks, avoid-late-keyword
   late BehaviorSubject<PleromaApiVisibility> visibilitySubject;
 
   @override
@@ -301,7 +303,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   @override
   Stream<PleromaApiVisibility> get visibilityStream => visibilitySubject.stream;
 
-  // ignore: close_sinks
+  // ignore: close_sinks, avoid-late-keyword
   late BehaviorSubject<bool> nsfwSensitiveSubject;
 
   @override

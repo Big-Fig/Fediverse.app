@@ -13,6 +13,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class AddMyAccountDomainBlockDialog extends FediDialog {
+  // ignore: avoid-late-keyword
   late IAddMyAccountDomainBlockBloc addMyAccountDomainBlockBloc;
 
   AddMyAccountDomainBlockDialog.createFromContext({

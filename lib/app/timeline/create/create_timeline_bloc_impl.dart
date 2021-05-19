@@ -35,15 +35,19 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   Stream<IEditTimelineSettingsBloc?> get editTimelineSettingsBlocStream =>
       editTimelineSettingsBlocSubject.stream;
 
+  // ignore: avoid-late-keyword
   late BehaviorSubject<IEditTimelineSettingsBloc?>
       editTimelineSettingsBlocSubject;
 
   @override
+  // ignore: avoid-late-keyword
   late List<IFormItemBloc> currentItems = [];
 
+  // ignore: avoid-late-keyword
   late TimelineLocalPreferenceBloc timelineLocalPreferencesBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late ITimelineSettingsBloc timelineSettingsBloc;
 
   final IWebSocketsSettingsBloc webSocketsSettingsBloc;
@@ -197,12 +201,15 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   }
 
   @override
+  // ignore: avoid-late-keyword
   late IStringValueFormFieldBloc idFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IStringValueFormFieldBloc nameFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late ITimelineTypeSingleFromListValueFormFieldBloc typeFieldBloc;
 
   @override

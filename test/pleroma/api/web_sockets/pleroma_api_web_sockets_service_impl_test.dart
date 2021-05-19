@@ -9,6 +9,7 @@ import 'package:mockito/annotations.dart';
 
 import 'pleroma_api_web_sockets_service_impl_test.mocks.dart';
 
+// ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([ConnectionService])
 void main() {
   var host = 'https://fedi.app';

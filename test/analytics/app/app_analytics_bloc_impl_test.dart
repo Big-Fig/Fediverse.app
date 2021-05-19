@@ -6,7 +6,7 @@ import 'package:fedi/analytics/app/local_preferences/app_analytics_local_prefere
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;

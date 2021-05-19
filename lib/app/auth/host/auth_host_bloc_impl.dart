@@ -54,15 +54,23 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   String get instanceBaseUriHost => instanceBaseUri.host;
 
   String get instanceBaseUriScheme => instanceBaseUri.scheme;
+  // ignore: avoid-late-keyword
   late IPleromaApiApplicationService pleromaApplicationService;
+  // ignore: avoid-late-keyword
   late IRestService restService;
+  // ignore: avoid-late-keyword
   late IPleromaApiRestService pleromaRestService;
+  // ignore: avoid-late-keyword
   late IPleromaApiOAuthService pleromaOAuthService;
+  // ignore: avoid-late-keyword
   late IPleromaApiAccountPublicService pleromaAccountPublicService;
+  // ignore: avoid-late-keyword
   late IAuthHostApplicationLocalPreferenceBloc
       hostApplicationLocalPreferenceBloc;
+  // ignore: avoid-late-keyword
   late IAuthHostAccessTokenLocalPreferenceBloc
       hostAccessTokenLocalPreferenceBloc;
+  // ignore: avoid-late-keyword
   late ICurrentAuthInstanceBloc currentInstanceBloc;
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;

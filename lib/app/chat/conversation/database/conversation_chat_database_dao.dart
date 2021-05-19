@@ -36,18 +36,29 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
     ConversationChatRepositoryFilters,
     ConversationRepositoryChatOrderingTermData> with _$ConversationDaoMixin {
   final AppDatabase db;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
+  // ignore: avoid-late-keyword
   late $DbConversationAccountsTable conversationAccountsAlias;
+  // ignore: avoid-late-keyword
   late $DbConversationStatusesTable conversationStatusesAlias;
 
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable statusAccountAlias;
 
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusReblogAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable statusReblogAccountAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusReplyAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable statusReplyAccountAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusReplyReblogAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable statusReplyReblogAccountAlias;
 
   // Called by the AppDatabase class

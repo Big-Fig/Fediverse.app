@@ -29,8 +29,8 @@ class PleromaChatMessageRepository
         PleromaChatMessageRepositoryOrderingTermData>
     implements IPleromaChatMessageRepository {
   @override
-  late ChatMessageDao dao;
-  late IAccountRepository accountRepository;
+  final ChatMessageDao dao;
+  final IAccountRepository accountRepository;
 
   @override
   PopulatedDatabaseDaoMixin<
@@ -45,9 +45,7 @@ class PleromaChatMessageRepository
   PleromaChatMessageRepository({
     required AppDatabase appDatabase,
     required this.accountRepository,
-  }) {
-    dao = appDatabase.chatMessageDao;
-  }
+  }) : dao = appDatabase.chatMessageDao;
 
   @override
   Future<IPleromaChatMessage?> findByOldPendingRemoteId(

@@ -30,14 +30,20 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalizationSettingsBloc localizationSettingsBloc;
 
+  // ignore: avoid-late-keyword
   late IPleromaApiInstance pleromaInstance;
+  // ignore: avoid-late-keyword
   late IRestService restService;
+  // ignore: avoid-late-keyword
   late IPleromaApiRestService pleromaRestService;
+  // ignore: avoid-late-keyword
   late IPleromaApiCaptchaService pleromaCaptchaService;
 
+  // ignore: avoid-late-keyword
   late IPleromaApiInstanceService pleromaInstanceService;
 
   @override
+  // ignore: avoid-late-keyword
   late RegisterAuthInstanceFormBloc registerAuthInstanceFormBloc;
 
   RegisterAuthInstanceBloc({

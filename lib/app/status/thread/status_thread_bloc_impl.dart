@@ -22,6 +22,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   final IPleromaApiStatusService pleromaStatusService;
 
   @override
+  // ignore: avoid-late-keyword
   late IStatus initialStatusToFetchThread;
   final BehaviorSubject<List<IStatus>> statusesSubject;
 
@@ -42,6 +43,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   final ItemPositionsListener itemPositionListener =
   ItemPositionsListener.create();
 
+  // ignore: avoid-late-keyword
   late List<IFilter> filters;
 
   @override

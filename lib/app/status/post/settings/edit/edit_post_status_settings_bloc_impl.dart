@@ -19,13 +19,16 @@ class EditPostStatusSettingsBloc
 
   final List<PleromaApiVisibility> pleromaVisibilityPossibleValues;
   @override
+  // ignore: avoid-late-keyword
   late IStatusVisibilitySelectSingleFromListValueFormFieldBloc
       defaultVisibilityFormFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc<bool> markMediaAsNsfwOnAttachFormFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late LocalizationLocaleSingleFromListValueFormFieldBloc
       defaultStatusLocaleFormFieldBloc;
 

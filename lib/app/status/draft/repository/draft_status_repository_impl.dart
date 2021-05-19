@@ -20,11 +20,10 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
     DraftStatusRepositoryFilters,
     DraftStatusRepositoryOrderingTermData> implements IDraftStatusRepository {
   @override
-  late DraftStatusDao dao;
+  final DraftStatusDao dao;
 
-  DraftStatusRepository({required AppDatabase appDatabase}) {
-    dao = appDatabase.draftStatusDao;
-  }
+  DraftStatusRepository({required AppDatabase appDatabase})
+      : dao = appDatabase.draftStatusDao;
 
   @override
   PopulatedDatabaseDaoMixin<

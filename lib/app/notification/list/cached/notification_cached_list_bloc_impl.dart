@@ -44,6 +44,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
     required this.excludeTypes,
   });
 
+  // ignore: avoid-late-keyword
   late List<IFilter> filters;
 
   FilterRepositoryFilters get filterRepositoryFilters =>

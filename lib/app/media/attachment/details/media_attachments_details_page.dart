@@ -72,6 +72,7 @@ class _MediaAttachmentDetailsPageState
 
   IPleromaApiMediaAttachment? get selectedMediaAttachment =>
       selectedMediaAttachmentSubject.value;
+  // ignore: avoid-late-keyword
   late VoidCallback listener;
 
   _MediaAttachmentDetailsPageState(

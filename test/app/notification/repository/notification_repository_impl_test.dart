@@ -18,8 +18,9 @@ import '../database/notification_database_test_helper.dart';
 import '../notification_test_helper.dart';
 import 'notification_repository_test_helper.dart';
 
+// ignore_for_file: no-magic-number, avoid-late-keyword
+
 final String baseUrl = 'https://pleroma.com';
-// ignore_for_file: no-magic-number
 void main() {
   late AppDatabase database;
   late AccountRepository accountRepository;

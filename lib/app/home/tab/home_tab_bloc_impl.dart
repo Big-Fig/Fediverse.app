@@ -11,16 +11,17 @@ var _logger = Logger('home_tab_bloc_impl.dart');
 
 abstract class HomeTabBloc extends DisposableOwner implements IHomeTabBloc {
   @override
-  late NestedScrollController nestedScrollController;
+  final NestedScrollController nestedScrollController = NestedScrollController(centerScroll: false);
 
   @override
+  // ignore: avoid-late-keyword
   late INestedScrollControllerBloc nestedScrollControllerBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IFediNestedScrollViewBloc fediNestedScrollViewBloc;
 
   HomeTabBloc() {
-    nestedScrollController = NestedScrollController(centerScroll: false);
 
     nestedScrollControllerBloc = NestedScrollControllerBloc(
       nestedScrollController: nestedScrollController,
@@ -29,8 +30,6 @@ abstract class HomeTabBloc extends DisposableOwner implements IHomeTabBloc {
       nestedScrollControllerBloc: nestedScrollControllerBloc,
     );
 
-    addDisposable(disposable: fediNestedScrollViewBloc);
-    addDisposable(disposable: nestedScrollControllerBloc);
     addDisposable(
       custom: () {
         try {
@@ -41,6 +40,8 @@ abstract class HomeTabBloc extends DisposableOwner implements IHomeTabBloc {
         }
       },
     );
+    addDisposable(disposable: nestedScrollControllerBloc);
+    addDisposable(disposable: fediNestedScrollViewBloc);
   }
 
   @override

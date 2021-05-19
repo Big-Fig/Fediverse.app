@@ -11,7 +11,7 @@ var _logger = Logger('connection_service_impl.dart');
 
 class ConnectionService extends AsyncInitLoadingBloc
     implements IConnectionService {
-  late Connectivity connectivity;
+  final Connectivity connectivity = Connectivity();
 
   final BehaviorSubject<ConnectivityResult> _connectionStateSubject =
       BehaviorSubject.seeded(ConnectivityResult.none);
@@ -35,7 +35,6 @@ class ConnectionService extends AsyncInitLoadingBloc
   bool get isConnected => _mapConnectivityResult(connectionState);
 
   ConnectionService() {
-    connectivity = Connectivity();
 
     var observer = LifecycleEventHandler((state) {
       if (state == AppLifecycleState.resumed) {

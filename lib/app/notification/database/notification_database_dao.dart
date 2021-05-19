@@ -30,10 +30,15 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     NotificationRepositoryFilters,
     NotificationRepositoryOrderingTermData> with _$NotificationDaoMixin {
   final AppDatabase db;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable statusAccountAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusReblogAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable statusReblogAccountAlias;
 
   // Called by the AppDatabase class

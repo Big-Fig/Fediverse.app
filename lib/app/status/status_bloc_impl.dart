@@ -26,6 +26,7 @@ var _logger = Logger('status_bloc_impl.dart');
 
 abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
+  // ignore: avoid-late-keyword
   late IPollBloc pollBloc;
 
   final BehaviorSubject<IStatus> statusSubject;

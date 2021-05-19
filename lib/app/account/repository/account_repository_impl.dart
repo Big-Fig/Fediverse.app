@@ -30,13 +30,13 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     AccountRepositoryFilters,
     AccountRepositoryOrderingTermData> implements IAccountRepository {
   @override
-  late AccountDao dao;
-  late AccountFollowingsDao accountFollowingsDao;
-  late AccountFollowersDao accountFollowersDao;
-  late StatusFavouritedAccountsDao statusFavouritedAccountsDao;
-  late StatusRebloggedAccountsDao statusRebloggedAccountsDao;
-  late ConversationAccountsDao conversationAccountsDao;
-  late ChatAccountsDao chatAccountsDao;
+  final AccountDao dao;
+  final AccountFollowingsDao accountFollowingsDao;
+  final AccountFollowersDao accountFollowersDao;
+  final StatusFavouritedAccountsDao statusFavouritedAccountsDao;
+  final StatusRebloggedAccountsDao statusRebloggedAccountsDao;
+  final ConversationAccountsDao conversationAccountsDao;
+  final ChatAccountsDao chatAccountsDao;
 
   @override
   PopulatedDatabaseDaoMixin<
@@ -50,15 +50,13 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   AccountRepository({
     required AppDatabase appDatabase,
-  }) {
-    dao = appDatabase.accountDao;
-    accountFollowingsDao = appDatabase.accountFollowingsDao;
-    accountFollowersDao = appDatabase.accountFollowersDao;
-    statusFavouritedAccountsDao = appDatabase.statusFavouritedAccountsDao;
-    statusRebloggedAccountsDao = appDatabase.statusRebloggedAccountsDao;
-    conversationAccountsDao = appDatabase.conversationAccountsDao;
-    chatAccountsDao = appDatabase.chatAccountsDao;
-  }
+  })   : dao = appDatabase.accountDao,
+        accountFollowingsDao = appDatabase.accountFollowingsDao,
+        accountFollowersDao = appDatabase.accountFollowersDao,
+        statusFavouritedAccountsDao = appDatabase.statusFavouritedAccountsDao,
+        statusRebloggedAccountsDao = appDatabase.statusRebloggedAccountsDao,
+        conversationAccountsDao = appDatabase.conversationAccountsDao,
+        chatAccountsDao = appDatabase.chatAccountsDao;
 
   Future upsertRemoteAccount(
     IPleromaApiAccount pleromaAccount, {

@@ -91,6 +91,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     addDisposable(subject: itemsSubject);
   }
 
+  // ignore: avoid-late-keyword
   late BehaviorSubject<List<TItem>> itemsSubject;
 
   @override

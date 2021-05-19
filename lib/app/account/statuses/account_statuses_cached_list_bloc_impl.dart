@@ -22,6 +22,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
   final IMyAccountBloc myAccountBloc;
+  // ignore: avoid-late-keyword
   late List<IFilter> filters;
 
   List<StatusTextCondition> get excludeTextConditions => filters

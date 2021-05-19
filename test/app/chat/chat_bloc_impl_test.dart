@@ -35,7 +35,7 @@ import 'chat_bloc_impl_test.mocks.dart';
 import 'chat_test_helper.dart';
 import 'message/chat_message_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
   PleromaApiChatService,
   PleromaApiMyAccountService,

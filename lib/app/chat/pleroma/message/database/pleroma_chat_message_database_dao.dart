@@ -24,6 +24,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     PleromaChatMessageRepositoryFilters,
     PleromaChatMessageRepositoryOrderingTermData> with _$ChatMessageDaoMixin {
   final AppDatabase db;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
 
   // Called by the AppDatabase class

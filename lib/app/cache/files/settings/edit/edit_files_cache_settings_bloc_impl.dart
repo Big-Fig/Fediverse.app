@@ -13,10 +13,12 @@ class EditFilesCacheSettingsBloc
   final IFilesCacheSettingsBloc filesCacheSettingsBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
       sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late AgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc
       ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc;
 
