@@ -41,32 +41,46 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     StatusRepositoryFilters,
     StatusRepositoryOrderingTermData> with _$StatusDaoMixin {
   final AppDatabase db;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
+
   // ignore: avoid-late-keyword
   late $DbStatusesTable reblogAlias;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable reblogAccountAlias;
+
   // ignore: avoid-late-keyword
   late $DbStatusesTable replyAlias;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable replyAccountAlias;
+
   // ignore: avoid-late-keyword
   late $DbStatusesTable replyReblogAlias;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable replyReblogAccountAlias;
+
   // ignore: avoid-late-keyword
   late $DbStatusesTable statusAlias;
+
   // ignore: avoid-late-keyword
   late $DbStatusHashtagsTable statusHashtagsAlias;
+
   // ignore: avoid-late-keyword
   late $DbStatusListsTable statusListsAlias;
+
   // ignore: avoid-late-keyword
   late $DbAccountFollowingsTable accountFollowingsAlias;
+
   // ignore: avoid-late-keyword
   late $DbAccountFollowingsTable replyToAccountFollowingsAlias;
+
   // ignore: avoid-late-keyword
   late $DbConversationStatusesTable conversationStatusesAlias;
+
   // ignore: avoid-late-keyword
   late $DbHomeTimelineStatusesTable homeTimelineStatusesAlias;
 
@@ -157,7 +171,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         ..where(
           (status) => status.mediaAttachments.isNotNull(),
 //            |
-//            status.mediaAttachments.equals('').not()
+//            status.mediaAttachments.equals("").not()
         );
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
@@ -232,9 +246,9 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     String expressionCondition;
     if (wholeWord) {
       final regex = r'\b' + phrase! + r'\b';
-      expressionCondition = 'NOT REGEXP "$regex"';
+      expressionCondition = "NOT REGEXP '$regex'";
     } else {
-      expressionCondition = 'NOT LIKE "%$phrase%"';
+      expressionCondition = "NOT LIKE '%$phrase%'";
     }
     var expressionContent = '$tableName.$fieldName $expressionCondition';
 
@@ -251,7 +265,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(CustomExpression<bool>(
-          '$_accountFollowingsAliasId.account_remote_id = "$accountRemoteId"',
+          "$_accountFollowingsAliasId.account_remote_id = '$accountRemoteId'",
         ));
 
   JoinedSelectStatement addHashtagWhere(
@@ -260,7 +274,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(CustomExpression<bool>(
-          '$_statusHashtagsAliasId.hashtag = "$hashtag"',
+          "$_statusHashtagsAliasId.hashtag = '$hashtag'",
         ));
 
   JoinedSelectStatement addListWhere(
@@ -269,7 +283,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(CustomExpression<bool>(
-          '$_statusListsAliasId.list_remote_id = "$listRemoteId"',
+          "$_statusListsAliasId.list_remote_id = '$listRemoteId'",
         ));
 
   JoinedSelectStatement addConversationWhere(
@@ -279,7 +293,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
       query
         ..where(CustomExpression<bool>(
           '$_conversationStatusesAliasId.conversation_remote_id'
-          ' = "$conversationRemoteId"',
+          " = '$conversationRemoteId'",
         ));
 
   JoinedSelectStatement addReplyToAccountSelfOrFollowingWhere(
@@ -292,12 +306,12 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
                 'db_statuses.in_reply_to_account_remote_id IS NULL',
               ) |
               CustomExpression<bool>(
-                'db_statuses.in_reply_to_account_remote_id = "$myAccountRemoteId"',
+                "db_statuses.in_reply_to_account_remote_id = '$myAccountRemoteId'",
               ) |
               CustomExpression<bool>(
                 '$_replyToAccountFollowingsAliasId.account_remote_id = '
-                // '$_replyToAccountFollowingsAliasId.following_account_remote_id = '
-                '"$myAccountRemoteId"',
+                // "$_replyToAccountFollowingsAliasId.following_account_remote_id = "
+                "'$myAccountRemoteId'",
               ),
         );
 
@@ -536,7 +550,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   Future incrementRepliesCount({required String? remoteId}) {
     var update = 'UPDATE db_statuses '
         'SET replies_count = replies_count + 1 '
-        'WHERE remote_id = "$remoteId"';
+        "WHERE remote_id = '$remoteId'";
     var query = db.customUpdate(update, updates: {dbStatuses});
 
     return query;
@@ -545,7 +559,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   Future markAsDeleted({required String? remoteId}) {
     var update = 'UPDATE db_statuses '
         'SET deleted = 1 '
-        'WHERE remote_id = "$remoteId"';
+        "WHERE remote_id = '$remoteId'";
     var query = db.customUpdate(update, updates: {dbStatuses});
 
     return query;
@@ -554,7 +568,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   Future markAsHiddenLocallyOnDevice({required int? localId}) {
     var update = 'UPDATE db_statuses '
         'SET hidden_locally_on_device = 1 '
-        'WHERE id = "$localId"';
+        "WHERE id = '$localId'";
     var query = db.customUpdate(update, updates: {dbStatuses});
 
     return query;
@@ -586,7 +600,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     assert(
         !(filters?.onlyLocalCondition != null &&
             filters?.onlyRemoteCondition != null),
-        'onlyLocalCondition && onlyRemoteCondition  cant be set both');
+        "onlyLocalCondition && onlyRemoteCondition  can't be set both");
 
     if (filters?.onlyFromInstance?.isNotEmpty == true) {
       assert(filters?.onlyRemoteCondition != null,
@@ -804,7 +818,6 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
     return joinQuery;
   }
-
 }
 
 extension TypedResultDbStatusPopulatedExtension on TypedResult {
