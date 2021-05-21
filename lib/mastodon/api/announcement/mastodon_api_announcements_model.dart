@@ -1,19 +1,27 @@
+import 'package:fedi/mastodon/api/mention/mastodon_api_mention_model.dart';
+import 'package:fedi/mastodon/api/status/mastodon_api_status_model.dart';
+import 'package:fedi/mastodon/api/tag/mastodon_api_tag_model.dart';
+
 abstract class IMastodonApiAnnouncement {
   String get id;
 
-  String get text;
-
-  bool get published;
+  String get content;
 
   bool get allDay;
 
-  DateTime get createdAt;
+  DateTime get publishedAt;
 
   DateTime get updatedAt;
 
   bool get read;
 
-  List<IMastodonApiAnnouncementReaction> get reactions;
+  List<IMastodonApiAnnouncementReaction>? get reactions;
+
+  List<IMastodonApiMention>? get mentions;
+
+  List<IMastodonApiStatus>? get statuses;
+
+  List<IMastodonApiTag>? get tags;
 
   DateTime? get scheduledAt;
 

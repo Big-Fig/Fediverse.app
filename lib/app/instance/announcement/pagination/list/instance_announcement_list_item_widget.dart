@@ -15,33 +15,15 @@ class InstanceAnnouncementListItemWidget extends StatelessWidget {
 
     _logger.finest(() => 'build ${instanceAnnouncementBloc.remoteId}');
 
-    return InkWell(
-      onTap: () {
-        // goToEditInstanceAnnouncementPage(
-        //   context: context,
-        //   instanceAnnouncement: instanceAnnouncementBloc.instanceAnnouncement,
-        //   onSubmit: (IInstanceAnnouncement instanceAnnouncement) {
-        //     _refresh(context);
-        //   },
-        //   onDelete: () async {
-        //     await IInstanceAnnouncementRepository.of(context, listen: false).deleteById(
-        //       instanceAnnouncementBloc.instanceAnnouncement.localId!,
-        //       batchTransaction: null,
-        //     );
-        //     _refresh(context);
-        //   },
-        // );
-      },
-      child: Padding(
-        padding: FediPadding.allBigPadding,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('asd'),
-            // const _InstanceAnnouncementListItemPhraseWidget(),
-            // const _InstanceAnnouncementListItemExpiredWidget(),
-          ],
-        ),
+    return Padding(
+      padding: FediPadding.allBigPadding,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(instanceAnnouncementBloc.content),
+          // const _InstanceAnnouncementListItemPhraseWidget(),
+          // const _InstanceAnnouncementListItemExpiredWidget(),
+        ],
       ),
     );
   }

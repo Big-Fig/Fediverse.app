@@ -1,6 +1,9 @@
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart';
+import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -19,11 +22,13 @@ abstract class IInstanceAnnouncementBloc implements IDisposable {
 
   String get remoteId;
 
-  String get text;
+  String get content;
 
-  bool get published;
+  List<IPleromaApiStatus>? get statuses;
 
-  Stream<bool> get publishedStream;
+  List<IPleromaApiMention>? get mentions;
+
+  List<IPleromaApiTag>? get tags;
 
   bool get dismissed;
 
@@ -31,7 +36,7 @@ abstract class IInstanceAnnouncementBloc implements IDisposable {
 
   bool get allDay;
 
-  DateTime get createdAt;
+  DateTime get publishedAt;
 
   DateTime get updatedAt;
 
@@ -39,9 +44,9 @@ abstract class IInstanceAnnouncementBloc implements IDisposable {
 
   Stream<bool> get readStream;
 
-  List<IPleromaApiAnnouncementReaction> get reactions;
+  List<IPleromaApiAnnouncementReaction>? get reactions;
 
-  Stream<List<IPleromaApiAnnouncementReaction>> get reactionsStream;
+  Stream<List<IPleromaApiAnnouncementReaction>?> get reactionsStream;
 
   DateTime? get scheduledAt;
 

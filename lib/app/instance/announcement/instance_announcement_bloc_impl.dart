@@ -5,6 +5,9 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart';
 import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_service.dart';
+import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -45,8 +48,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
     required this.pleromaApiAnnouncementService,
     required this.instanceAnnouncementRepository,
     required IInstanceAnnouncement instanceAnnouncement,
-    this.isNeedWatchLocalRepositoryForUpdates =
-        true,
+    this.isNeedWatchLocalRepositoryForUpdates = true,
     // todo: remove hack. Dont init when bloc quickly disposed. Help
     bool delayInit = true,
     bool initialDismissed = false,
@@ -89,20 +91,14 @@ class InstanceAnnouncementBloc extends DisposableOwner
   bool get allDay => instanceAnnouncement.allDay;
 
   @override
-  DateTime get createdAt => instanceAnnouncement.createdAt;
-
-  @override
   DateTime? get endsAt => instanceAnnouncement.endsAt;
 
   @override
-  bool get published => instanceAnnouncement.published;
-
-  @override
-  List<IPleromaApiAnnouncementReaction> get reactions =>
+  List<IPleromaApiAnnouncementReaction>? get reactions =>
       instanceAnnouncement.reactions;
 
   @override
-  bool get read => instanceAnnouncement.published;
+  bool get read => instanceAnnouncement.read;
 
   @override
   DateTime? get scheduledAt => instanceAnnouncement.scheduledAt;
@@ -111,7 +107,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
   DateTime? get startsAt => instanceAnnouncement.startsAt;
 
   @override
-  String get text => instanceAnnouncement.text;
+  String get content => instanceAnnouncement.content;
 
   @override
   DateTime get updatedAt => instanceAnnouncement.updatedAt;
@@ -120,7 +116,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
   Future addEmojiReaction({
     required String emojiName,
   }) async {
-    var foundReaction = reactions.firstWhereOrNull(
+    var foundReaction = reactions?.firstWhereOrNull(
       (reaction) => reaction.name == emojiName,
     );
 
@@ -147,10 +143,11 @@ class InstanceAnnouncementBloc extends DisposableOwner
       }
 
       var newReactionsList = reactions
-          .where(
-            (reaction) => reaction.name == foundReaction!.name,
-          )
-          .toList();
+              ?.where(
+                (reaction) => reaction.name == foundReaction!.name,
+              )
+              .toList() ??
+          [];
 
       newReactionsList.add(foundReaction!);
 
@@ -160,7 +157,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
 
   @override
   Future removeEmojiReaction({required String emojiName}) async {
-    var foundReaction = reactions.firstWhereOrNull(
+    var foundReaction = reactions?.firstWhereOrNull(
       (reaction) => reaction.name == emojiName,
     );
 
@@ -182,10 +179,11 @@ class InstanceAnnouncementBloc extends DisposableOwner
       }
 
       var newReactionsList = reactions
-          .where(
-            (reaction) => reaction.name == foundReaction!.name,
-          )
-          .toList();
+              ?.where(
+                (reaction) => reaction.name == foundReaction!.name,
+              )
+              .toList() ??
+          [];
 
       if (foundReaction != null) {
         newReactionsList.add(foundReaction!);
@@ -213,12 +211,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
   Stream<bool> get dismissedStream => dismissedSubject.stream;
 
   @override
-  Stream<bool> get publishedStream => instanceAnnouncementStream.map(
-        (instanceAnnouncement) => instanceAnnouncement.published,
-      );
-
-  @override
-  Stream<List<IPleromaApiAnnouncementReaction>> get reactionsStream =>
+  Stream<List<IPleromaApiAnnouncementReaction>?> get reactionsStream =>
       instanceAnnouncementStream.map(
         (instanceAnnouncement) => instanceAnnouncement.reactions,
       );
@@ -240,4 +233,16 @@ class InstanceAnnouncementBloc extends DisposableOwner
 
   @override
   int? get localId => instanceAnnouncement.localId;
+
+  @override
+  List<IPleromaApiMention>? get mentions => instanceAnnouncement.mentions;
+
+  @override
+  DateTime get publishedAt => instanceAnnouncement.publishedAt;
+
+  @override
+  List<IPleromaApiStatus>? get statuses => instanceAnnouncement.statuses;
+
+  @override
+  List<IPleromaApiTag>? get tags => instanceAnnouncement.tags;
 }

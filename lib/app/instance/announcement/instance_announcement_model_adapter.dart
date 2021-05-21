@@ -1,6 +1,9 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
 import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart';
+import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 
 extension IPleromaInstanceAnnouncementExtension on IPleromaApiAnnouncement {
   IInstanceAnnouncement toDbInstanceAnnouncementPopulatedWrapper() =>
@@ -14,12 +17,14 @@ extension IPleromaInstanceAnnouncementExtension on IPleromaApiAnnouncement {
         id: null,
         remoteId: id,
         allDay: allDay,
-        published: published,
-        createdAt: createdAt,
+        publishedAt: publishedAt,
         updatedAt: updatedAt,
         read: read,
-        content: text,
-        reactions: reactions.toPleromaApiAnnouncementReactionList(),
+        content: content,
+        reactions: reactions?.toPleromaApiAnnouncementReactions(),
+        mentions: mentions?.toPleromaApiMentions(),
+        statuses: statuses?.toPleromaApiStatuses(),
+        tags: tags?.toPleromaApiTags(),
       );
 }
 
@@ -27,13 +32,15 @@ extension IInstanceAnnouncementExtension on IInstanceAnnouncement {
   PleromaApiAnnouncement toPleromaInstanceAnnouncement() {
     return PleromaApiAnnouncement(
       id: remoteId,
-      text: text,
-      published: published,
+      content: content,
       allDay: allDay,
-      createdAt: createdAt,
+      publishedAt: publishedAt,
       updatedAt: updatedAt,
       read: read,
-      reactions: reactions.toPleromaApiAnnouncementReactionList(),
+      reactions: reactions?.toPleromaApiAnnouncementReactions(),
+      statuses: statuses?.toPleromaApiStatuses(),
+      mentions: mentions?.toPleromaApiMentions(),
+      tags: tags?.toPleromaApiTags(),
       scheduledAt: scheduledAt,
       startsAt: startsAt,
       endsAt: endsAt,

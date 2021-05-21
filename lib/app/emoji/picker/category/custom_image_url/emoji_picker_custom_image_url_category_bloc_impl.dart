@@ -11,7 +11,7 @@ import 'package:pedantic/pedantic.dart';
 
 var _urlPath = path.Context(style: path.Style.url);
 
-var _logger = Logger("emoji_picker_custom_image_url_category_bloc_impl.dart");
+var _logger = Logger('emoji_picker_custom_image_url_category_bloc_impl.dart');
 
 class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     implements ICustomEmojiPickerImageUrlCategoryBloc {
@@ -45,6 +45,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
                 if (baseUrl.endsWith('/') && imageUrl.startsWith('/')) {
                   baseUrl = baseUrl.substring(0, baseUrl.length - 1);
                 }
+
                 return CustomEmojiPickerImageUrlItem(
                   imageUrl: _urlPath.join(
                     baseUrl,
@@ -63,8 +64,8 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
         ).catchError(
           (e, stackTrace) {
             _logger.warning(
-              () => "internalAsyncInit error: fetch remote emoji "
-                  "list",
+              () => 'internalAsyncInit error: fetch remote emoji '
+                  'list',
               e,
               stackTrace,
             );

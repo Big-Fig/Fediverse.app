@@ -37,13 +37,15 @@ void main() {
 
     var obj2Obj1CopyWith = obj1.copyWith(
       id: obj2.id,
-      text: obj2.text,
-      published: obj2.published,
+      content: obj2.content,
       allDay: obj2.allDay,
-      createdAt: obj2.createdAt,
+      publishedAt: obj2.publishedAt,
       updatedAt: obj2.updatedAt,
       read: obj2.read,
       reactions: obj2.reactions,
+      statuses: obj2.statuses,
+      mentions: obj2.mentions,
+      tags: obj2.tags,
       scheduledAt: obj2.scheduledAt,
       startsAt: obj2.startsAt,
       endsAt: obj2.endsAt,

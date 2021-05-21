@@ -244,6 +244,30 @@ class PleromaApiTagListDatabaseConverter
   Map<String, dynamic> toJson(PleromaApiTag obj) => obj.toJson();
 }
 
+class PleromaApiStatusListDatabaseConverter
+    extends JsonListDatabaseConverter<PleromaApiStatus> {
+  const PleromaApiStatusListDatabaseConverter() : super();
+
+  @override
+  PleromaApiStatus fromJson(Map<String, dynamic> json) =>
+      PleromaApiStatus.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(PleromaApiStatus obj) => obj.toJson();
+}
+
+class PleromaApiMentionListDatabaseConverter
+    extends JsonListDatabaseConverter<PleromaApiMention> {
+  const PleromaApiMentionListDatabaseConverter() : super();
+
+  @override
+  PleromaApiMention fromJson(Map<String, dynamic> json) =>
+      PleromaApiMention.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(PleromaApiMention obj) => obj.toJson();
+}
+
 class PleromaApiEmojiListDatabaseConverter
     extends JsonListDatabaseConverter<PleromaApiEmoji> {
   const PleromaApiEmojiListDatabaseConverter() : super();
