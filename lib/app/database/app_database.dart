@@ -18,6 +18,8 @@ import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_data
 import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_database_model.dart';
 import 'package:fedi/app/filter/database/filter_database_dao.dart';
 import 'package:fedi/app/filter/database/filter_database_model.dart';
+import 'package:fedi/app/instance/announcement/database/instance_announcement_database_dao.dart';
+import 'package:fedi/app/instance/announcement/database/instance_announcement_database_model.dart';
 import 'package:fedi/app/moor/moor_converters.dart';
 import 'package:fedi/app/notification/database/notification_database_dao.dart';
 import 'package:fedi/app/notification/database/notification_database_model.dart';
@@ -54,6 +56,7 @@ import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart';
 import 'package:moor/moor.dart';
 
 part 'app_database.g.dart';
@@ -82,6 +85,7 @@ part 'app_database.g.dart';
 //  DbChatAccounts,
 //  DbChatMessages,
     DbHomeTimelineStatuses, DbDraftStatuses, //  DbAccountRelationships
+    // DbInstanceAnnouncements,
   ],
   daos: [
     StatusDao,
@@ -103,6 +107,7 @@ part 'app_database.g.dart';
     HomeTimelineStatusesDao,
     DraftStatusDao,
     FilterDao,
+    InstanceAnnouncementDao,
 
 //  AccountRelationshipsDao
   ],
@@ -112,7 +117,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 15;
+  int get schemaVersion => 16;
 
   int? migrationsFromExecuted;
   int? migrationsToExecuted;
@@ -169,6 +174,9 @@ class AppDatabase extends _$AppDatabase {
               case 14:
                 await _migrate14to15(m);
                 break;
+              case 15:
+                await _migrate15to16(m);
+                break;
               default:
                 throw 'invalid currentVersion $currentVersion';
             }
@@ -176,6 +184,10 @@ class AppDatabase extends _$AppDatabase {
           }
         },
       );
+
+  Future<void> _migrate15to16(Migrator m) async {
+    await m.createTable(dbInstanceAnnouncements);
+  }
 
   Future<void> _migrate14to15(Migrator m) async {
     await m.addColumn(dbNotifications, dbNotifications.chatMessage);

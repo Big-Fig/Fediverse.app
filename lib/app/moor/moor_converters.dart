@@ -3,6 +3,7 @@ import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/moor/moor_json_type_converter.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart';
 import 'package:fedi/pleroma/api/application/pleroma_api_application_model.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
@@ -98,7 +99,8 @@ class PleromaScheduledStatusParamsDatabaseConverter
       PleromaApiScheduledStatusParams.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiScheduledStatusParams obj) => obj.toJson();
+  Map<String, dynamic> toJson(PleromaApiScheduledStatusParams obj) =>
+      obj.toJson();
 }
 
 class PostStatusDataDatabaseConverter
@@ -141,7 +143,8 @@ class PleromaApiAccountRelationshipDatabaseConverter
       PleromaApiAccountRelationship.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiAccountRelationship obj) => obj.toJson();
+  Map<String, dynamic> toJson(PleromaApiAccountRelationship obj) =>
+      obj.toJson();
 }
 
 class PleromaMyAccountSourceDatabaseConverter
@@ -178,6 +181,19 @@ class PleromaMediaAttachmentListDatabaseConverter
 
   @override
   Map<String, dynamic> toJson(PleromaApiMediaAttachment obj) => obj.toJson();
+}
+
+class PleromaApiAnnouncementReactionListDatabaseConverter
+    extends JsonListDatabaseConverter<PleromaApiAnnouncementReaction> {
+  const PleromaApiAnnouncementReactionListDatabaseConverter() : super();
+
+  @override
+  PleromaApiAnnouncementReaction fromJson(Map<String, dynamic> json) =>
+      PleromaApiAnnouncementReaction.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(PleromaApiAnnouncementReaction obj) =>
+      obj.toJson();
 }
 
 class PleromaMediaAttachmentDatabaseConverter
@@ -221,7 +237,8 @@ class PleromaApiTagListDatabaseConverter
   const PleromaApiTagListDatabaseConverter() : super();
 
   @override
-  PleromaApiTag fromJson(Map<String, dynamic> json) => PleromaApiTag.fromJson(json);
+  PleromaApiTag fromJson(Map<String, dynamic> json) =>
+      PleromaApiTag.fromJson(json);
 
   @override
   Map<String, dynamic> toJson(PleromaApiTag obj) => obj.toJson();
@@ -239,7 +256,8 @@ class PleromaApiEmojiListDatabaseConverter
   Map<String, dynamic> toJson(PleromaApiEmoji obj) => obj.toJson();
 }
 
-class PleromaPollDatabaseConverter extends JsonDatabaseConverter<PleromaApiPoll> {
+class PleromaPollDatabaseConverter
+    extends JsonDatabaseConverter<PleromaApiPoll> {
   const PleromaPollDatabaseConverter() : super();
 
   @override
@@ -250,7 +268,8 @@ class PleromaPollDatabaseConverter extends JsonDatabaseConverter<PleromaApiPoll>
   Map<String, dynamic> toJson(PleromaApiPoll obj) => obj.toJson();
 }
 
-class PleromaCardDatabaseConverter extends JsonDatabaseConverter<PleromaApiCard> {
+class PleromaCardDatabaseConverter
+    extends JsonDatabaseConverter<PleromaApiCard> {
   const PleromaCardDatabaseConverter() : super();
 
   @override
@@ -282,5 +301,6 @@ class PleromaEmojiReactionsListDatabaseConverter
       PleromaApiStatusEmojiReaction.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiStatusEmojiReaction obj) => obj.toJson();
+  Map<String, dynamic> toJson(PleromaApiStatusEmojiReaction obj) =>
+      obj.toJson();
 }

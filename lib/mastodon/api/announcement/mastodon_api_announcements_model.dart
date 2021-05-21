@@ -1,38 +1,43 @@
 abstract class IMastodonApiAnnouncement {
-  String? get id;
+  String get id;
 
-  String? get text;
+  String get text;
 
-  bool? get published;
+  bool get published;
 
-  bool? get allDay;
+  bool get allDay;
 
-  DateTime? get createdAt;
+  DateTime get createdAt;
 
-  DateTime? get updatedAt;
+  DateTime get updatedAt;
 
-  bool? get read;
+  bool get read;
 
-  List<IMastodonApiAnnouncementReaction>? get reactions;
+  List<IMastodonApiAnnouncementReaction> get reactions;
 
-  // nullable
   DateTime? get scheduledAt;
 
-  // nullable
   DateTime? get startsAt;
 
-  // nullable
   DateTime? get endsAt;
 }
 
 abstract class IMastodonApiAnnouncementReaction {
-  String? get name;
+  String get name;
 
-  int? get count;
+  int get count;
 
-  bool? get me;
+  bool get me;
 
   String? get url;
 
   String? get staticUrl;
+
+  IMastodonApiAnnouncementReaction copyWith({
+    String? name,
+    int? count,
+    bool? me,
+    String? url,
+    String? staticUrl,
+  });
 }
