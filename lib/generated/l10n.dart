@@ -793,6 +793,16 @@ class S {
     );
   }
 
+  /// `Announcements`
+  String get app_account_home_tab_menu_action_instance_announcements {
+    return Intl.message(
+      'Announcements',
+      name: 'app_account_home_tab_menu_action_instance_announcements',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Account`
   String get app_account_my_menu_account_subpage_title {
     return Intl.message(
@@ -7304,6 +7314,26 @@ class S {
     return Intl.message(
       'Never',
       name: 'app_toast_handling_type_never',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Instance announcements`
+  String get app_instance_announcement_list_title {
+    return Intl.message(
+      'Instance announcements',
+      name: 'app_instance_announcement_list_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Instance don't have active announcements.`
+  String get app_instance_announcement_list_empty {
+    return Intl.message(
+      'Instance don\'t have active announcements.',
+      name: 'app_instance_announcement_list_empty',
       desc: '',
       args: [],
     );

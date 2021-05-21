@@ -201,7 +201,7 @@ class _AnnouncementsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget
       },
       child: _SimpleAccountHomeTabMenuDialogBodyItem(
         iconData: FediIcons.message,
-        text: S.of(context).app_account_home_tab_menu_action_lists,
+        text: S.of(context).app_account_home_tab_menu_action_instance_announcements,
       ),
     );
   }

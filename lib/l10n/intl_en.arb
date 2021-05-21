@@ -75,6 +75,7 @@
     "app_account_home_tab_menu_action_global_settings": "Settings: global",
     "app_account_home_tab_menu_action_bookmarks": "Bookmarks",
     "app_account_home_tab_menu_action_lists": "Lists",
+    "app_account_home_tab_menu_action_instance_announcements": "Announcements",
     "app_account_my_menu_account_subpage_title": "Account",
     "app_settings_global_title": "Settings: global",
     "app_account_my_action_scheduledPosts": "Scheduled posts",
@@ -739,5 +740,7 @@
     "app_chat_message_pending_tapToViewOptions": "Tap to view options.",
     "app_chat_action_delete": "Delete",
     "app_chat_selection_action_cancel": "Cancel",
-    "app_toast_handling_type_never": "Never"
+    "app_toast_handling_type_never": "Never",
+    "app_instance_announcement_list_title": "Instance announcements",
+    "app_instance_announcement_list_empty": "Instance don't have active announcements."
 }
