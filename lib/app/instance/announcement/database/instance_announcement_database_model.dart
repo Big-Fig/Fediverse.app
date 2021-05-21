@@ -10,9 +10,7 @@ class DbInstanceAnnouncements extends Table {
 
   BoolColumn get allDay => boolean()();
 
-  BoolColumn get published => boolean()();
-
-  DateTimeColumn? get createdAt => dateTime()();
+  DateTimeColumn? get publishedAt => dateTime()();
 
   DateTimeColumn? get updatedAt => dateTime()();
 
@@ -21,7 +19,15 @@ class DbInstanceAnnouncements extends Table {
   TextColumn get content => text()();
 
   TextColumn? get reactions =>
-      text().map(PleromaApiAnnouncementReactionListDatabaseConverter())();
+      text().map(PleromaApiAnnouncementReactionListDatabaseConverter()).nullable()();
+
+  TextColumn? get mentions =>
+      text().map(PleromaApiMentionListDatabaseConverter()).nullable()();
+
+  TextColumn? get tags => text().map(PleromaApiTagListDatabaseConverter()).nullable()();
+
+  TextColumn? get statuses =>
+      text().map(PleromaApiStatusListDatabaseConverter()).nullable()();
 
   DateTimeColumn? get scheduledAt => dateTime().nullable()();
 

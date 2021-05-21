@@ -49,7 +49,7 @@ class InstanceAnnouncementCachedListBloc
     required IInstanceAnnouncement? newerThan,
     required IInstanceAnnouncement? olderThan,
   }) async {
-    if (newerThan != null || olderThan != null) {
+    if (newerThan == null && olderThan == null) {
       // todo: don't exclude pleroma types on mastodon instances
       var remoteInstanceAnnouncements =
           await pleromaApiAnnouncementService.getAnnouncements(

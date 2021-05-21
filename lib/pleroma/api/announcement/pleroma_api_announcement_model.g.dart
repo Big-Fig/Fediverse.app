@@ -10,15 +10,23 @@ PleromaApiAnnouncement _$PleromaApiAnnouncementFromJson(
     Map<String, dynamic> json) {
   return PleromaApiAnnouncement(
     id: json['id'] as String,
-    text: json['text'] as String,
-    published: json['published'] as bool,
+    content: json['content'] as String,
     allDay: json['all_day'] as bool,
-    createdAt: DateTime.parse(json['created_at'] as String),
+    publishedAt: DateTime.parse(json['published_at'] as String),
     updatedAt: DateTime.parse(json['updated_at'] as String),
     read: json['read'] as bool,
-    reactions: (json['reactions'] as List<dynamic>)
-        .map((e) =>
+    reactions: (json['reactions'] as List<dynamic>?)
+        ?.map((e) =>
             PleromaApiAnnouncementReaction.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    mentions: (json['mentions'] as List<dynamic>?)
+        ?.map((e) => PleromaApiMention.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    statuses: (json['statuses'] as List<dynamic>?)
+        ?.map((e) => PleromaApiStatus.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    tags: (json['tags'] as List<dynamic>?)
+        ?.map((e) => PleromaApiTag.fromJson(e as Map<String, dynamic>))
         .toList(),
     scheduledAt: json['scheduled_at'] == null
         ? null
@@ -36,13 +44,15 @@ Map<String, dynamic> _$PleromaApiAnnouncementToJson(
         PleromaApiAnnouncement instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'text': instance.text,
-      'published': instance.published,
+      'content': instance.content,
       'all_day': instance.allDay,
-      'created_at': instance.createdAt.toIso8601String(),
+      'published_at': instance.publishedAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
       'read': instance.read,
-      'reactions': instance.reactions.map((e) => e.toJson()).toList(),
+      'reactions': instance.reactions?.map((e) => e.toJson()).toList(),
+      'mentions': instance.mentions?.map((e) => e.toJson()).toList(),
+      'statuses': instance.statuses?.map((e) => e.toJson()).toList(),
+      'tags': instance.tags?.map((e) => e.toJson()).toList(),
       'scheduled_at': instance.scheduledAt?.toIso8601String(),
       'starts_at': instance.startsAt?.toIso8601String(),
       'ends_at': instance.endsAt?.toIso8601String(),

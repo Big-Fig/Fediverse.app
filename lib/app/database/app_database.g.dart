@@ -9096,12 +9096,14 @@ class DbInstanceAnnouncement extends DataClass
   final int? id;
   final String remoteId;
   final bool allDay;
-  final bool published;
-  final DateTime createdAt;
+  final DateTime publishedAt;
   final DateTime updatedAt;
   final bool read;
   final String content;
-  final List<PleromaApiAnnouncementReaction> reactions;
+  final List<PleromaApiAnnouncementReaction>? reactions;
+  final List<PleromaApiMention>? mentions;
+  final List<PleromaApiTag>? tags;
+  final List<PleromaApiStatus>? statuses;
   final DateTime? scheduledAt;
   final DateTime? startsAt;
   final DateTime? endsAt;
@@ -9109,12 +9111,14 @@ class DbInstanceAnnouncement extends DataClass
       {this.id,
       required this.remoteId,
       required this.allDay,
-      required this.published,
-      required this.createdAt,
+      required this.publishedAt,
       required this.updatedAt,
       required this.read,
       required this.content,
-      required this.reactions,
+      this.reactions,
+      this.mentions,
+      this.tags,
+      this.statuses,
       this.scheduledAt,
       this.startsAt,
       this.endsAt});
@@ -9132,17 +9136,21 @@ class DbInstanceAnnouncement extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}remote_id'])!,
       allDay:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}all_day'])!,
-      published: boolType
-          .mapFromDatabaseResponse(data['${effectivePrefix}published'])!,
-      createdAt: dateTimeType
-          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+      publishedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}published_at'])!,
       updatedAt: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
       read: boolType.mapFromDatabaseResponse(data['${effectivePrefix}read'])!,
       content: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}content'])!,
       reactions: $DbInstanceAnnouncementsTable.$converter0.mapToDart(stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}reactions']))!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}reactions'])),
+      mentions: $DbInstanceAnnouncementsTable.$converter1.mapToDart(stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}mentions'])),
+      tags: $DbInstanceAnnouncementsTable.$converter2.mapToDart(
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}tags'])),
+      statuses: $DbInstanceAnnouncementsTable.$converter3.mapToDart(stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}statuses'])),
       scheduledAt: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}scheduled_at']),
       startsAt: dateTimeType
@@ -9159,14 +9167,25 @@ class DbInstanceAnnouncement extends DataClass
     }
     map['remote_id'] = Variable<String>(remoteId);
     map['all_day'] = Variable<bool>(allDay);
-    map['published'] = Variable<bool>(published);
-    map['created_at'] = Variable<DateTime>(createdAt);
+    map['published_at'] = Variable<DateTime>(publishedAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     map['read'] = Variable<bool>(read);
     map['content'] = Variable<String>(content);
-    {
+    if (!nullToAbsent || reactions != null) {
       final converter = $DbInstanceAnnouncementsTable.$converter0;
-      map['reactions'] = Variable<String>(converter.mapToSql(reactions)!);
+      map['reactions'] = Variable<String?>(converter.mapToSql(reactions));
+    }
+    if (!nullToAbsent || mentions != null) {
+      final converter = $DbInstanceAnnouncementsTable.$converter1;
+      map['mentions'] = Variable<String?>(converter.mapToSql(mentions));
+    }
+    if (!nullToAbsent || tags != null) {
+      final converter = $DbInstanceAnnouncementsTable.$converter2;
+      map['tags'] = Variable<String?>(converter.mapToSql(tags));
+    }
+    if (!nullToAbsent || statuses != null) {
+      final converter = $DbInstanceAnnouncementsTable.$converter3;
+      map['statuses'] = Variable<String?>(converter.mapToSql(statuses));
     }
     if (!nullToAbsent || scheduledAt != null) {
       map['scheduled_at'] = Variable<DateTime?>(scheduledAt);
@@ -9185,12 +9204,20 @@ class DbInstanceAnnouncement extends DataClass
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       remoteId: Value(remoteId),
       allDay: Value(allDay),
-      published: Value(published),
-      createdAt: Value(createdAt),
+      publishedAt: Value(publishedAt),
       updatedAt: Value(updatedAt),
       read: Value(read),
       content: Value(content),
-      reactions: Value(reactions),
+      reactions: reactions == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reactions),
+      mentions: mentions == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mentions),
+      tags: tags == null && nullToAbsent ? const Value.absent() : Value(tags),
+      statuses: statuses == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statuses),
       scheduledAt: scheduledAt == null && nullToAbsent
           ? const Value.absent()
           : Value(scheduledAt),
@@ -9209,13 +9236,15 @@ class DbInstanceAnnouncement extends DataClass
       id: serializer.fromJson<int?>(json['id']),
       remoteId: serializer.fromJson<String>(json['remoteId']),
       allDay: serializer.fromJson<bool>(json['allDay']),
-      published: serializer.fromJson<bool>(json['published']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      publishedAt: serializer.fromJson<DateTime>(json['publishedAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       read: serializer.fromJson<bool>(json['read']),
       content: serializer.fromJson<String>(json['content']),
       reactions: serializer
-          .fromJson<List<PleromaApiAnnouncementReaction>>(json['reactions']),
+          .fromJson<List<PleromaApiAnnouncementReaction>?>(json['reactions']),
+      mentions: serializer.fromJson<List<PleromaApiMention>?>(json['mentions']),
+      tags: serializer.fromJson<List<PleromaApiTag>?>(json['tags']),
+      statuses: serializer.fromJson<List<PleromaApiStatus>?>(json['statuses']),
       scheduledAt: serializer.fromJson<DateTime?>(json['scheduledAt']),
       startsAt: serializer.fromJson<DateTime?>(json['startsAt']),
       endsAt: serializer.fromJson<DateTime?>(json['endsAt']),
@@ -9228,13 +9257,15 @@ class DbInstanceAnnouncement extends DataClass
       'id': serializer.toJson<int?>(id),
       'remoteId': serializer.toJson<String>(remoteId),
       'allDay': serializer.toJson<bool>(allDay),
-      'published': serializer.toJson<bool>(published),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'publishedAt': serializer.toJson<DateTime>(publishedAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'read': serializer.toJson<bool>(read),
       'content': serializer.toJson<String>(content),
       'reactions':
-          serializer.toJson<List<PleromaApiAnnouncementReaction>>(reactions),
+          serializer.toJson<List<PleromaApiAnnouncementReaction>?>(reactions),
+      'mentions': serializer.toJson<List<PleromaApiMention>?>(mentions),
+      'tags': serializer.toJson<List<PleromaApiTag>?>(tags),
+      'statuses': serializer.toJson<List<PleromaApiStatus>?>(statuses),
       'scheduledAt': serializer.toJson<DateTime?>(scheduledAt),
       'startsAt': serializer.toJson<DateTime?>(startsAt),
       'endsAt': serializer.toJson<DateTime?>(endsAt),
@@ -9245,12 +9276,14 @@ class DbInstanceAnnouncement extends DataClass
           {int? id,
           String? remoteId,
           bool? allDay,
-          bool? published,
-          DateTime? createdAt,
+          DateTime? publishedAt,
           DateTime? updatedAt,
           bool? read,
           String? content,
           List<PleromaApiAnnouncementReaction>? reactions,
+          List<PleromaApiMention>? mentions,
+          List<PleromaApiTag>? tags,
+          List<PleromaApiStatus>? statuses,
           DateTime? scheduledAt,
           DateTime? startsAt,
           DateTime? endsAt}) =>
@@ -9258,12 +9291,14 @@ class DbInstanceAnnouncement extends DataClass
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
         allDay: allDay ?? this.allDay,
-        published: published ?? this.published,
-        createdAt: createdAt ?? this.createdAt,
+        publishedAt: publishedAt ?? this.publishedAt,
         updatedAt: updatedAt ?? this.updatedAt,
         read: read ?? this.read,
         content: content ?? this.content,
         reactions: reactions ?? this.reactions,
+        mentions: mentions ?? this.mentions,
+        tags: tags ?? this.tags,
+        statuses: statuses ?? this.statuses,
         scheduledAt: scheduledAt ?? this.scheduledAt,
         startsAt: startsAt ?? this.startsAt,
         endsAt: endsAt ?? this.endsAt,
@@ -9274,12 +9309,14 @@ class DbInstanceAnnouncement extends DataClass
           ..write('id: $id, ')
           ..write('remoteId: $remoteId, ')
           ..write('allDay: $allDay, ')
-          ..write('published: $published, ')
-          ..write('createdAt: $createdAt, ')
+          ..write('publishedAt: $publishedAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('read: $read, ')
           ..write('content: $content, ')
           ..write('reactions: $reactions, ')
+          ..write('mentions: $mentions, ')
+          ..write('tags: $tags, ')
+          ..write('statuses: $statuses, ')
           ..write('scheduledAt: $scheduledAt, ')
           ..write('startsAt: $startsAt, ')
           ..write('endsAt: $endsAt')
@@ -9295,21 +9332,27 @@ class DbInstanceAnnouncement extends DataClass
           $mrjc(
               allDay.hashCode,
               $mrjc(
-                  published.hashCode,
+                  publishedAt.hashCode,
                   $mrjc(
-                      createdAt.hashCode,
+                      updatedAt.hashCode,
                       $mrjc(
-                          updatedAt.hashCode,
+                          read.hashCode,
                           $mrjc(
-                              read.hashCode,
+                              content.hashCode,
                               $mrjc(
-                                  content.hashCode,
+                                  reactions.hashCode,
                                   $mrjc(
-                                      reactions.hashCode,
+                                      mentions.hashCode,
                                       $mrjc(
-                                          scheduledAt.hashCode,
-                                          $mrjc(startsAt.hashCode,
-                                              endsAt.hashCode))))))))))));
+                                          tags.hashCode,
+                                          $mrjc(
+                                              statuses.hashCode,
+                                              $mrjc(
+                                                  scheduledAt.hashCode,
+                                                  $mrjc(
+                                                      startsAt.hashCode,
+                                                      endsAt
+                                                          .hashCode))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -9317,12 +9360,14 @@ class DbInstanceAnnouncement extends DataClass
           other.id == this.id &&
           other.remoteId == this.remoteId &&
           other.allDay == this.allDay &&
-          other.published == this.published &&
-          other.createdAt == this.createdAt &&
+          other.publishedAt == this.publishedAt &&
           other.updatedAt == this.updatedAt &&
           other.read == this.read &&
           other.content == this.content &&
           other.reactions == this.reactions &&
+          other.mentions == this.mentions &&
+          other.tags == this.tags &&
+          other.statuses == this.statuses &&
           other.scheduledAt == this.scheduledAt &&
           other.startsAt == this.startsAt &&
           other.endsAt == this.endsAt);
@@ -9333,12 +9378,14 @@ class DbInstanceAnnouncementsCompanion
   final Value<int?> id;
   final Value<String> remoteId;
   final Value<bool> allDay;
-  final Value<bool> published;
-  final Value<DateTime> createdAt;
+  final Value<DateTime> publishedAt;
   final Value<DateTime> updatedAt;
   final Value<bool> read;
   final Value<String> content;
-  final Value<List<PleromaApiAnnouncementReaction>> reactions;
+  final Value<List<PleromaApiAnnouncementReaction>?> reactions;
+  final Value<List<PleromaApiMention>?> mentions;
+  final Value<List<PleromaApiTag>?> tags;
+  final Value<List<PleromaApiStatus>?> statuses;
   final Value<DateTime?> scheduledAt;
   final Value<DateTime?> startsAt;
   final Value<DateTime?> endsAt;
@@ -9346,12 +9393,14 @@ class DbInstanceAnnouncementsCompanion
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
     this.allDay = const Value.absent(),
-    this.published = const Value.absent(),
-    this.createdAt = const Value.absent(),
+    this.publishedAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.read = const Value.absent(),
     this.content = const Value.absent(),
     this.reactions = const Value.absent(),
+    this.mentions = const Value.absent(),
+    this.tags = const Value.absent(),
+    this.statuses = const Value.absent(),
     this.scheduledAt = const Value.absent(),
     this.startsAt = const Value.absent(),
     this.endsAt = const Value.absent(),
@@ -9360,33 +9409,35 @@ class DbInstanceAnnouncementsCompanion
     this.id = const Value.absent(),
     required String remoteId,
     required bool allDay,
-    required bool published,
-    required DateTime createdAt,
+    required DateTime publishedAt,
     required DateTime updatedAt,
     required bool read,
     required String content,
-    required List<PleromaApiAnnouncementReaction> reactions,
+    this.reactions = const Value.absent(),
+    this.mentions = const Value.absent(),
+    this.tags = const Value.absent(),
+    this.statuses = const Value.absent(),
     this.scheduledAt = const Value.absent(),
     this.startsAt = const Value.absent(),
     this.endsAt = const Value.absent(),
   })  : remoteId = Value(remoteId),
         allDay = Value(allDay),
-        published = Value(published),
-        createdAt = Value(createdAt),
+        publishedAt = Value(publishedAt),
         updatedAt = Value(updatedAt),
         read = Value(read),
-        content = Value(content),
-        reactions = Value(reactions);
+        content = Value(content);
   static Insertable<DbInstanceAnnouncement> custom({
     Expression<int?>? id,
     Expression<String>? remoteId,
     Expression<bool>? allDay,
-    Expression<bool>? published,
-    Expression<DateTime>? createdAt,
+    Expression<DateTime>? publishedAt,
     Expression<DateTime>? updatedAt,
     Expression<bool>? read,
     Expression<String>? content,
-    Expression<List<PleromaApiAnnouncementReaction>>? reactions,
+    Expression<List<PleromaApiAnnouncementReaction>?>? reactions,
+    Expression<List<PleromaApiMention>?>? mentions,
+    Expression<List<PleromaApiTag>?>? tags,
+    Expression<List<PleromaApiStatus>?>? statuses,
     Expression<DateTime?>? scheduledAt,
     Expression<DateTime?>? startsAt,
     Expression<DateTime?>? endsAt,
@@ -9395,12 +9446,14 @@ class DbInstanceAnnouncementsCompanion
       if (id != null) 'id': id,
       if (remoteId != null) 'remote_id': remoteId,
       if (allDay != null) 'all_day': allDay,
-      if (published != null) 'published': published,
-      if (createdAt != null) 'created_at': createdAt,
+      if (publishedAt != null) 'published_at': publishedAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (read != null) 'read': read,
       if (content != null) 'content': content,
       if (reactions != null) 'reactions': reactions,
+      if (mentions != null) 'mentions': mentions,
+      if (tags != null) 'tags': tags,
+      if (statuses != null) 'statuses': statuses,
       if (scheduledAt != null) 'scheduled_at': scheduledAt,
       if (startsAt != null) 'starts_at': startsAt,
       if (endsAt != null) 'ends_at': endsAt,
@@ -9411,12 +9464,14 @@ class DbInstanceAnnouncementsCompanion
       {Value<int?>? id,
       Value<String>? remoteId,
       Value<bool>? allDay,
-      Value<bool>? published,
-      Value<DateTime>? createdAt,
+      Value<DateTime>? publishedAt,
       Value<DateTime>? updatedAt,
       Value<bool>? read,
       Value<String>? content,
-      Value<List<PleromaApiAnnouncementReaction>>? reactions,
+      Value<List<PleromaApiAnnouncementReaction>?>? reactions,
+      Value<List<PleromaApiMention>?>? mentions,
+      Value<List<PleromaApiTag>?>? tags,
+      Value<List<PleromaApiStatus>?>? statuses,
       Value<DateTime?>? scheduledAt,
       Value<DateTime?>? startsAt,
       Value<DateTime?>? endsAt}) {
@@ -9424,12 +9479,14 @@ class DbInstanceAnnouncementsCompanion
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
       allDay: allDay ?? this.allDay,
-      published: published ?? this.published,
-      createdAt: createdAt ?? this.createdAt,
+      publishedAt: publishedAt ?? this.publishedAt,
       updatedAt: updatedAt ?? this.updatedAt,
       read: read ?? this.read,
       content: content ?? this.content,
       reactions: reactions ?? this.reactions,
+      mentions: mentions ?? this.mentions,
+      tags: tags ?? this.tags,
+      statuses: statuses ?? this.statuses,
       scheduledAt: scheduledAt ?? this.scheduledAt,
       startsAt: startsAt ?? this.startsAt,
       endsAt: endsAt ?? this.endsAt,
@@ -9448,11 +9505,8 @@ class DbInstanceAnnouncementsCompanion
     if (allDay.present) {
       map['all_day'] = Variable<bool>(allDay.value);
     }
-    if (published.present) {
-      map['published'] = Variable<bool>(published.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
+    if (publishedAt.present) {
+      map['published_at'] = Variable<DateTime>(publishedAt.value);
     }
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
@@ -9465,7 +9519,19 @@ class DbInstanceAnnouncementsCompanion
     }
     if (reactions.present) {
       final converter = $DbInstanceAnnouncementsTable.$converter0;
-      map['reactions'] = Variable<String>(converter.mapToSql(reactions.value)!);
+      map['reactions'] = Variable<String?>(converter.mapToSql(reactions.value));
+    }
+    if (mentions.present) {
+      final converter = $DbInstanceAnnouncementsTable.$converter1;
+      map['mentions'] = Variable<String?>(converter.mapToSql(mentions.value));
+    }
+    if (tags.present) {
+      final converter = $DbInstanceAnnouncementsTable.$converter2;
+      map['tags'] = Variable<String?>(converter.mapToSql(tags.value));
+    }
+    if (statuses.present) {
+      final converter = $DbInstanceAnnouncementsTable.$converter3;
+      map['statuses'] = Variable<String?>(converter.mapToSql(statuses.value));
     }
     if (scheduledAt.present) {
       map['scheduled_at'] = Variable<DateTime?>(scheduledAt.value);
@@ -9485,12 +9551,14 @@ class DbInstanceAnnouncementsCompanion
           ..write('id: $id, ')
           ..write('remoteId: $remoteId, ')
           ..write('allDay: $allDay, ')
-          ..write('published: $published, ')
-          ..write('createdAt: $createdAt, ')
+          ..write('publishedAt: $publishedAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('read: $read, ')
           ..write('content: $content, ')
           ..write('reactions: $reactions, ')
+          ..write('mentions: $mentions, ')
+          ..write('tags: $tags, ')
+          ..write('statuses: $statuses, ')
           ..write('scheduledAt: $scheduledAt, ')
           ..write('startsAt: $startsAt, ')
           ..write('endsAt: $endsAt')
@@ -9531,23 +9599,13 @@ class $DbInstanceAnnouncementsTable extends DbInstanceAnnouncements
     );
   }
 
-  final VerificationMeta _publishedMeta = const VerificationMeta('published');
+  final VerificationMeta _publishedAtMeta =
+      const VerificationMeta('publishedAt');
   @override
-  late final GeneratedBoolColumn published = _constructPublished();
-  GeneratedBoolColumn _constructPublished() {
-    return GeneratedBoolColumn(
-      'published',
-      $tableName,
-      false,
-    );
-  }
-
-  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
-  @override
-  late final GeneratedDateTimeColumn createdAt = _constructCreatedAt();
-  GeneratedDateTimeColumn _constructCreatedAt() {
+  late final GeneratedDateTimeColumn publishedAt = _constructPublishedAt();
+  GeneratedDateTimeColumn _constructPublishedAt() {
     return GeneratedDateTimeColumn(
-      'created_at',
+      'published_at',
       $tableName,
       false,
     );
@@ -9593,7 +9651,40 @@ class $DbInstanceAnnouncementsTable extends DbInstanceAnnouncements
     return GeneratedTextColumn(
       'reactions',
       $tableName,
-      false,
+      true,
+    );
+  }
+
+  final VerificationMeta _mentionsMeta = const VerificationMeta('mentions');
+  @override
+  late final GeneratedTextColumn mentions = _constructMentions();
+  GeneratedTextColumn _constructMentions() {
+    return GeneratedTextColumn(
+      'mentions',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _tagsMeta = const VerificationMeta('tags');
+  @override
+  late final GeneratedTextColumn tags = _constructTags();
+  GeneratedTextColumn _constructTags() {
+    return GeneratedTextColumn(
+      'tags',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _statusesMeta = const VerificationMeta('statuses');
+  @override
+  late final GeneratedTextColumn statuses = _constructStatuses();
+  GeneratedTextColumn _constructStatuses() {
+    return GeneratedTextColumn(
+      'statuses',
+      $tableName,
+      true,
     );
   }
 
@@ -9636,12 +9727,14 @@ class $DbInstanceAnnouncementsTable extends DbInstanceAnnouncements
         id,
         remoteId,
         allDay,
-        published,
-        createdAt,
+        publishedAt,
         updatedAt,
         read,
         content,
         reactions,
+        mentions,
+        tags,
+        statuses,
         scheduledAt,
         startsAt,
         endsAt
@@ -9673,17 +9766,13 @@ class $DbInstanceAnnouncementsTable extends DbInstanceAnnouncements
     } else if (isInserting) {
       context.missing(_allDayMeta);
     }
-    if (data.containsKey('published')) {
-      context.handle(_publishedMeta,
-          published.isAcceptableOrUnknown(data['published']!, _publishedMeta));
+    if (data.containsKey('published_at')) {
+      context.handle(
+          _publishedAtMeta,
+          publishedAt.isAcceptableOrUnknown(
+              data['published_at']!, _publishedAtMeta));
     } else if (isInserting) {
-      context.missing(_publishedMeta);
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    } else if (isInserting) {
-      context.missing(_createdAtMeta);
+      context.missing(_publishedAtMeta);
     }
     if (data.containsKey('updated_at')) {
       context.handle(_updatedAtMeta,
@@ -9704,6 +9793,9 @@ class $DbInstanceAnnouncementsTable extends DbInstanceAnnouncements
       context.missing(_contentMeta);
     }
     context.handle(_reactionsMeta, const VerificationResult.success());
+    context.handle(_mentionsMeta, const VerificationResult.success());
+    context.handle(_tagsMeta, const VerificationResult.success());
+    context.handle(_statusesMeta, const VerificationResult.success());
     if (data.containsKey('scheduled_at')) {
       context.handle(
           _scheduledAtMeta,
@@ -9736,6 +9828,12 @@ class $DbInstanceAnnouncementsTable extends DbInstanceAnnouncements
 
   static TypeConverter<List<PleromaApiAnnouncementReaction>, String>
       $converter0 = PleromaApiAnnouncementReactionListDatabaseConverter();
+  static TypeConverter<List<PleromaApiMention>, String> $converter1 =
+      PleromaApiMentionListDatabaseConverter();
+  static TypeConverter<List<PleromaApiTag>, String> $converter2 =
+      PleromaApiTagListDatabaseConverter();
+  static TypeConverter<List<PleromaApiStatus>, String> $converter3 =
+      PleromaApiStatusListDatabaseConverter();
 }
 
 class DbHomeTimelineStatus extends DataClass

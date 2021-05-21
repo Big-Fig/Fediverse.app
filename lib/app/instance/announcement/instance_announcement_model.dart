@@ -1,5 +1,8 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart';
+import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 
 // ignore_for_file: no-magic-number
 
@@ -8,19 +11,23 @@ abstract class IInstanceAnnouncement {
 
   String get remoteId;
 
-  String get text;
-
-  bool get published;
+  String get content;
 
   bool get allDay;
 
-  DateTime get createdAt;
+  DateTime get publishedAt;
 
   DateTime get updatedAt;
 
   bool get read;
 
-  List<IPleromaApiAnnouncementReaction> get reactions;
+  List<IPleromaApiAnnouncementReaction>? get reactions;
+
+  List<IPleromaApiStatus>? get statuses;
+
+  List<IPleromaApiMention>? get mentions;
+
+  List<IPleromaApiTag>? get tags;
 
   DateTime? get scheduledAt;
 
@@ -32,12 +39,14 @@ abstract class IInstanceAnnouncement {
     int? localId,
     String? remoteId,
     String? text,
-    bool? published,
     bool? allDay,
-    DateTime? createdAt,
+    DateTime? publishedAt,
     DateTime? updatedAt,
     bool? read,
     List<IPleromaApiAnnouncementReaction>? reactions,
+    List<IPleromaApiMention>? mentions,
+    List<IPleromaApiStatus>? statuses,
+    List<IPleromaApiTag>? tags,
     DateTime? scheduledAt,
     DateTime? startsAt,
     DateTime? endsAt,
@@ -81,19 +90,13 @@ class DbInstanceAnnouncementPopulatedWrapper implements IInstanceAnnouncement {
   bool get allDay => dbInstanceAnnouncement.allDay;
 
   @override
-  DateTime get createdAt => dbInstanceAnnouncement.createdAt;
-
-  @override
   DateTime? get endsAt => dbInstanceAnnouncement.endsAt;
 
   @override
   int? get localId => dbInstanceAnnouncement.id;
 
   @override
-  bool get published => dbInstanceAnnouncement.published;
-
-  @override
-  List<IPleromaApiAnnouncementReaction> get reactions =>
+  List<IPleromaApiAnnouncementReaction>? get reactions =>
       dbInstanceAnnouncement.reactions;
 
   @override
@@ -109,10 +112,22 @@ class DbInstanceAnnouncementPopulatedWrapper implements IInstanceAnnouncement {
   DateTime? get startsAt => dbInstanceAnnouncement.startsAt;
 
   @override
-  String get text => dbInstanceAnnouncement.content;
+  String get content => dbInstanceAnnouncement.content;
 
   @override
   DateTime get updatedAt => dbInstanceAnnouncement.updatedAt;
+
+  @override
+  List<IPleromaApiMention>? get mentions => dbInstanceAnnouncement.mentions;
+
+  @override
+  DateTime get publishedAt => dbInstanceAnnouncement.publishedAt;
+
+  @override
+  List<IPleromaApiStatus>? get statuses => dbInstanceAnnouncement.statuses;
+
+  @override
+  List<IPleromaApiTag>? get tags => dbInstanceAnnouncement.tags;
 
   @override
   // ignore: long-parameter-list
@@ -120,12 +135,14 @@ class DbInstanceAnnouncementPopulatedWrapper implements IInstanceAnnouncement {
     int? localId,
     String? remoteId,
     String? text,
-    bool? published,
     bool? allDay,
-    DateTime? createdAt,
+    DateTime? publishedAt,
     DateTime? updatedAt,
     bool? read,
     List<IPleromaApiAnnouncementReaction>? reactions,
+    List<IPleromaApiMention>? mentions,
+    List<IPleromaApiStatus>? statuses,
+    List<IPleromaApiTag>? tags,
     DateTime? scheduledAt,
     DateTime? startsAt,
     DateTime? endsAt,
@@ -136,12 +153,14 @@ class DbInstanceAnnouncementPopulatedWrapper implements IInstanceAnnouncement {
             id: localId,
             remoteId: remoteId,
             content: text,
-            published: published,
             allDay: allDay,
-            createdAt: createdAt,
+            publishedAt: publishedAt,
             updatedAt: updatedAt,
             read: read,
-            reactions: reactions?.toPleromaApiAnnouncementReactionList(),
+            reactions: reactions?.toPleromaApiAnnouncementReactions(),
+            tags: tags?.toPleromaApiTags(),
+            mentions: mentions?.toPleromaApiMentions(),
+            statuses: statuses?.toPleromaApiStatuses(),
             scheduledAt: scheduledAt,
             startsAt: startsAt,
             endsAt: endsAt,
@@ -187,12 +206,14 @@ extension IInstanceAnnouncementExtension on IInstanceAnnouncement {
       return DbInstanceAnnouncement(
         remoteId: remoteId,
         allDay: allDay,
-        published: published,
-        createdAt: createdAt,
+        publishedAt: publishedAt,
         updatedAt: updatedAt,
         read: read,
-        content: text,
-        reactions: reactions.toPleromaApiAnnouncementReactionList(),
+        content: content,
+        reactions: reactions?.toPleromaApiAnnouncementReactions(),
+        mentions: mentions?.toPleromaApiMentions(),
+        statuses: statuses?.toPleromaApiStatuses(),
+        tags: tags?.toPleromaApiTags(),
       );
     }
   }
