@@ -6,39 +6,95 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_announcement_model.g.dart';
 
-abstract class IPleromaApiAnnouncement implements IMastodonApiAnnouncement {}
+abstract class IPleromaApiAnnouncement implements IMastodonApiAnnouncement {
+  @override
+  List<IPleromaApiAnnouncementReaction> get reactions;
+
+  IPleromaApiAnnouncement copyWith({
+    String? id,
+    String? text,
+    bool? published,
+    bool? allDay,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    bool? read,
+    List<IPleromaApiAnnouncementReaction>? reactions,
+    DateTime? scheduledAt,
+    DateTime? startsAt,
+    DateTime? endsAt,
+  });
+}
 
 abstract class IPleromaApiAnnouncementReaction
-    implements IMastodonApiAnnouncementReaction {}
+    implements IMastodonApiAnnouncementReaction {
+  @override
+  IPleromaApiAnnouncementReaction copyWith({
+    String? name,
+    int? count,
+    bool? me,
+    String? url,
+    String? staticUrl,
+  });
+}
+
+extension IPleromaApiAnnouncementReactionExtension
+    on IPleromaApiAnnouncementReaction {
+  PleromaApiAnnouncementReaction toPleromaApiAnnouncementReaction() {
+    if (this is PleromaApiAnnouncementReaction) {
+      return this as PleromaApiAnnouncementReaction;
+    } else {
+      return PleromaApiAnnouncementReaction(
+        name: name,
+        count: count,
+        me: me,
+        url: url,
+        staticUrl: staticUrl,
+      );
+    }
+  }
+}
+
+extension IPleromaApiAnnouncementReactionListExtension
+    on List<IPleromaApiAnnouncementReaction> {
+  List<PleromaApiAnnouncementReaction> toPleromaApiAnnouncementReactionList() {
+    if (this is List<PleromaApiAnnouncementReaction>) {
+      return this as List<PleromaApiAnnouncementReaction>;
+    } else {
+      return map(
+        (reaction) => reaction.toPleromaApiAnnouncementReaction(),
+      ).toList();
+    }
+  }
+}
 
 @JsonSerializable(explicitToJson: true)
 class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
   @override
-  final String? id;
+  final String id;
 
   @override
-  final String? text;
+  final String text;
 
   @override
-  final bool? published;
+  final bool published;
 
   @override
   @JsonKey(name: 'all_day')
-  final bool? allDay;
+  final bool allDay;
 
   @override
   @JsonKey(name: 'created_at')
-  final DateTime? createdAt;
+  final DateTime createdAt;
 
   @override
   @JsonKey(name: 'updated_at')
-  final DateTime? updatedAt;
+  final DateTime updatedAt;
 
   @override
-  final bool? read;
+  final bool read;
 
   @override
-  final List<PleromaApiAnnouncementReaction>? reactions;
+  final List<PleromaApiAnnouncementReaction> reactions;
 
   // nullable
   @override
@@ -100,6 +156,7 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
       startsAt.hashCode ^
       endsAt.hashCode;
 
+  @override
   // ignore: long-parameter-list
   PleromaApiAnnouncement copyWith({
     String? id,
@@ -109,7 +166,7 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
     DateTime? createdAt,
     DateTime? updatedAt,
     bool? read,
-    List<PleromaApiAnnouncementReaction>? reactions,
+    List<IPleromaApiAnnouncementReaction>? reactions,
     DateTime? scheduledAt,
     DateTime? startsAt,
     DateTime? endsAt,
@@ -122,12 +179,14 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         read: read ?? this.read,
-        reactions: reactions ?? this.reactions,
+        reactions:
+            reactions?.toPleromaApiAnnouncementReactionList() ?? this.reactions,
         scheduledAt: scheduledAt ?? this.scheduledAt,
         startsAt: startsAt ?? this.startsAt,
         endsAt: endsAt ?? this.endsAt,
       );
 
+  // ignore: long-parameter-list
   @override
   String toString() {
     return 'PleromaApiAnnouncement{'
@@ -156,13 +215,13 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
 class PleromaApiAnnouncementReaction
     implements IPleromaApiAnnouncementReaction {
   @override
-  final String? name;
+  final String name;
 
   @override
-  final int? count;
+  final int count;
 
   @override
-  final bool? me;
+  final bool me;
 
   @override
   final String? url;
@@ -178,6 +237,22 @@ class PleromaApiAnnouncementReaction
     required this.url,
     required this.staticUrl,
   });
+
+  @override
+  PleromaApiAnnouncementReaction copyWith({
+    String? name,
+    int? count,
+    bool? me,
+    String? url,
+    String? staticUrl,
+  }) =>
+      PleromaApiAnnouncementReaction(
+        name: name ?? this.name,
+        count: count ?? this.count,
+        me: me ?? this.me,
+        url: url ?? this.url,
+        staticUrl: staticUrl ?? this.staticUrl,
+      );
 
   @override
   bool operator ==(Object other) =>

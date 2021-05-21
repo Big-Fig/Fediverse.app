@@ -9091,6 +9091,653 @@ class $DbFiltersTable extends DbFilters
       StringListDatabaseConverter();
 }
 
+class DbInstanceAnnouncement extends DataClass
+    implements Insertable<DbInstanceAnnouncement> {
+  final int? id;
+  final String remoteId;
+  final bool allDay;
+  final bool published;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final bool read;
+  final String content;
+  final List<PleromaApiAnnouncementReaction> reactions;
+  final DateTime? scheduledAt;
+  final DateTime? startsAt;
+  final DateTime? endsAt;
+  DbInstanceAnnouncement(
+      {this.id,
+      required this.remoteId,
+      required this.allDay,
+      required this.published,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.read,
+      required this.content,
+      required this.reactions,
+      this.scheduledAt,
+      this.startsAt,
+      this.endsAt});
+  factory DbInstanceAnnouncement.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return DbInstanceAnnouncement(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}remote_id'])!,
+      allDay:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}all_day'])!,
+      published: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}published'])!,
+      createdAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+      updatedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+      read: boolType.mapFromDatabaseResponse(data['${effectivePrefix}read'])!,
+      content: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}content'])!,
+      reactions: $DbInstanceAnnouncementsTable.$converter0.mapToDart(stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}reactions']))!,
+      scheduledAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}scheduled_at']),
+      startsAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}starts_at']),
+      endsAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}ends_at']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int?>(id);
+    }
+    map['remote_id'] = Variable<String>(remoteId);
+    map['all_day'] = Variable<bool>(allDay);
+    map['published'] = Variable<bool>(published);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['read'] = Variable<bool>(read);
+    map['content'] = Variable<String>(content);
+    {
+      final converter = $DbInstanceAnnouncementsTable.$converter0;
+      map['reactions'] = Variable<String>(converter.mapToSql(reactions)!);
+    }
+    if (!nullToAbsent || scheduledAt != null) {
+      map['scheduled_at'] = Variable<DateTime?>(scheduledAt);
+    }
+    if (!nullToAbsent || startsAt != null) {
+      map['starts_at'] = Variable<DateTime?>(startsAt);
+    }
+    if (!nullToAbsent || endsAt != null) {
+      map['ends_at'] = Variable<DateTime?>(endsAt);
+    }
+    return map;
+  }
+
+  DbInstanceAnnouncementsCompanion toCompanion(bool nullToAbsent) {
+    return DbInstanceAnnouncementsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      remoteId: Value(remoteId),
+      allDay: Value(allDay),
+      published: Value(published),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      read: Value(read),
+      content: Value(content),
+      reactions: Value(reactions),
+      scheduledAt: scheduledAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(scheduledAt),
+      startsAt: startsAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startsAt),
+      endsAt:
+          endsAt == null && nullToAbsent ? const Value.absent() : Value(endsAt),
+    );
+  }
+
+  factory DbInstanceAnnouncement.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DbInstanceAnnouncement(
+      id: serializer.fromJson<int?>(json['id']),
+      remoteId: serializer.fromJson<String>(json['remoteId']),
+      allDay: serializer.fromJson<bool>(json['allDay']),
+      published: serializer.fromJson<bool>(json['published']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      read: serializer.fromJson<bool>(json['read']),
+      content: serializer.fromJson<String>(json['content']),
+      reactions: serializer
+          .fromJson<List<PleromaApiAnnouncementReaction>>(json['reactions']),
+      scheduledAt: serializer.fromJson<DateTime?>(json['scheduledAt']),
+      startsAt: serializer.fromJson<DateTime?>(json['startsAt']),
+      endsAt: serializer.fromJson<DateTime?>(json['endsAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int?>(id),
+      'remoteId': serializer.toJson<String>(remoteId),
+      'allDay': serializer.toJson<bool>(allDay),
+      'published': serializer.toJson<bool>(published),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'read': serializer.toJson<bool>(read),
+      'content': serializer.toJson<String>(content),
+      'reactions':
+          serializer.toJson<List<PleromaApiAnnouncementReaction>>(reactions),
+      'scheduledAt': serializer.toJson<DateTime?>(scheduledAt),
+      'startsAt': serializer.toJson<DateTime?>(startsAt),
+      'endsAt': serializer.toJson<DateTime?>(endsAt),
+    };
+  }
+
+  DbInstanceAnnouncement copyWith(
+          {int? id,
+          String? remoteId,
+          bool? allDay,
+          bool? published,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          bool? read,
+          String? content,
+          List<PleromaApiAnnouncementReaction>? reactions,
+          DateTime? scheduledAt,
+          DateTime? startsAt,
+          DateTime? endsAt}) =>
+      DbInstanceAnnouncement(
+        id: id ?? this.id,
+        remoteId: remoteId ?? this.remoteId,
+        allDay: allDay ?? this.allDay,
+        published: published ?? this.published,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        read: read ?? this.read,
+        content: content ?? this.content,
+        reactions: reactions ?? this.reactions,
+        scheduledAt: scheduledAt ?? this.scheduledAt,
+        startsAt: startsAt ?? this.startsAt,
+        endsAt: endsAt ?? this.endsAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DbInstanceAnnouncement(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('allDay: $allDay, ')
+          ..write('published: $published, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('read: $read, ')
+          ..write('content: $content, ')
+          ..write('reactions: $reactions, ')
+          ..write('scheduledAt: $scheduledAt, ')
+          ..write('startsAt: $startsAt, ')
+          ..write('endsAt: $endsAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          remoteId.hashCode,
+          $mrjc(
+              allDay.hashCode,
+              $mrjc(
+                  published.hashCode,
+                  $mrjc(
+                      createdAt.hashCode,
+                      $mrjc(
+                          updatedAt.hashCode,
+                          $mrjc(
+                              read.hashCode,
+                              $mrjc(
+                                  content.hashCode,
+                                  $mrjc(
+                                      reactions.hashCode,
+                                      $mrjc(
+                                          scheduledAt.hashCode,
+                                          $mrjc(startsAt.hashCode,
+                                              endsAt.hashCode))))))))))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is DbInstanceAnnouncement &&
+          other.id == this.id &&
+          other.remoteId == this.remoteId &&
+          other.allDay == this.allDay &&
+          other.published == this.published &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.read == this.read &&
+          other.content == this.content &&
+          other.reactions == this.reactions &&
+          other.scheduledAt == this.scheduledAt &&
+          other.startsAt == this.startsAt &&
+          other.endsAt == this.endsAt);
+}
+
+class DbInstanceAnnouncementsCompanion
+    extends UpdateCompanion<DbInstanceAnnouncement> {
+  final Value<int?> id;
+  final Value<String> remoteId;
+  final Value<bool> allDay;
+  final Value<bool> published;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<bool> read;
+  final Value<String> content;
+  final Value<List<PleromaApiAnnouncementReaction>> reactions;
+  final Value<DateTime?> scheduledAt;
+  final Value<DateTime?> startsAt;
+  final Value<DateTime?> endsAt;
+  const DbInstanceAnnouncementsCompanion({
+    this.id = const Value.absent(),
+    this.remoteId = const Value.absent(),
+    this.allDay = const Value.absent(),
+    this.published = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.read = const Value.absent(),
+    this.content = const Value.absent(),
+    this.reactions = const Value.absent(),
+    this.scheduledAt = const Value.absent(),
+    this.startsAt = const Value.absent(),
+    this.endsAt = const Value.absent(),
+  });
+  DbInstanceAnnouncementsCompanion.insert({
+    this.id = const Value.absent(),
+    required String remoteId,
+    required bool allDay,
+    required bool published,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required bool read,
+    required String content,
+    required List<PleromaApiAnnouncementReaction> reactions,
+    this.scheduledAt = const Value.absent(),
+    this.startsAt = const Value.absent(),
+    this.endsAt = const Value.absent(),
+  })  : remoteId = Value(remoteId),
+        allDay = Value(allDay),
+        published = Value(published),
+        createdAt = Value(createdAt),
+        updatedAt = Value(updatedAt),
+        read = Value(read),
+        content = Value(content),
+        reactions = Value(reactions);
+  static Insertable<DbInstanceAnnouncement> custom({
+    Expression<int?>? id,
+    Expression<String>? remoteId,
+    Expression<bool>? allDay,
+    Expression<bool>? published,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<bool>? read,
+    Expression<String>? content,
+    Expression<List<PleromaApiAnnouncementReaction>>? reactions,
+    Expression<DateTime?>? scheduledAt,
+    Expression<DateTime?>? startsAt,
+    Expression<DateTime?>? endsAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (remoteId != null) 'remote_id': remoteId,
+      if (allDay != null) 'all_day': allDay,
+      if (published != null) 'published': published,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (read != null) 'read': read,
+      if (content != null) 'content': content,
+      if (reactions != null) 'reactions': reactions,
+      if (scheduledAt != null) 'scheduled_at': scheduledAt,
+      if (startsAt != null) 'starts_at': startsAt,
+      if (endsAt != null) 'ends_at': endsAt,
+    });
+  }
+
+  DbInstanceAnnouncementsCompanion copyWith(
+      {Value<int?>? id,
+      Value<String>? remoteId,
+      Value<bool>? allDay,
+      Value<bool>? published,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<bool>? read,
+      Value<String>? content,
+      Value<List<PleromaApiAnnouncementReaction>>? reactions,
+      Value<DateTime?>? scheduledAt,
+      Value<DateTime?>? startsAt,
+      Value<DateTime?>? endsAt}) {
+    return DbInstanceAnnouncementsCompanion(
+      id: id ?? this.id,
+      remoteId: remoteId ?? this.remoteId,
+      allDay: allDay ?? this.allDay,
+      published: published ?? this.published,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      read: read ?? this.read,
+      content: content ?? this.content,
+      reactions: reactions ?? this.reactions,
+      scheduledAt: scheduledAt ?? this.scheduledAt,
+      startsAt: startsAt ?? this.startsAt,
+      endsAt: endsAt ?? this.endsAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int?>(id.value);
+    }
+    if (remoteId.present) {
+      map['remote_id'] = Variable<String>(remoteId.value);
+    }
+    if (allDay.present) {
+      map['all_day'] = Variable<bool>(allDay.value);
+    }
+    if (published.present) {
+      map['published'] = Variable<bool>(published.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (read.present) {
+      map['read'] = Variable<bool>(read.value);
+    }
+    if (content.present) {
+      map['content'] = Variable<String>(content.value);
+    }
+    if (reactions.present) {
+      final converter = $DbInstanceAnnouncementsTable.$converter0;
+      map['reactions'] = Variable<String>(converter.mapToSql(reactions.value)!);
+    }
+    if (scheduledAt.present) {
+      map['scheduled_at'] = Variable<DateTime?>(scheduledAt.value);
+    }
+    if (startsAt.present) {
+      map['starts_at'] = Variable<DateTime?>(startsAt.value);
+    }
+    if (endsAt.present) {
+      map['ends_at'] = Variable<DateTime?>(endsAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbInstanceAnnouncementsCompanion(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('allDay: $allDay, ')
+          ..write('published: $published, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('read: $read, ')
+          ..write('content: $content, ')
+          ..write('reactions: $reactions, ')
+          ..write('scheduledAt: $scheduledAt, ')
+          ..write('startsAt: $startsAt, ')
+          ..write('endsAt: $endsAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DbInstanceAnnouncementsTable extends DbInstanceAnnouncements
+    with TableInfo<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $DbInstanceAnnouncementsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedIntColumn id = _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, true,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
+  @override
+  late final GeneratedTextColumn remoteId = _constructRemoteId();
+  GeneratedTextColumn _constructRemoteId() {
+    return GeneratedTextColumn('remote_id', $tableName, false,
+        $customConstraints: 'UNIQUE NOT NULL');
+  }
+
+  final VerificationMeta _allDayMeta = const VerificationMeta('allDay');
+  @override
+  late final GeneratedBoolColumn allDay = _constructAllDay();
+  GeneratedBoolColumn _constructAllDay() {
+    return GeneratedBoolColumn(
+      'all_day',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _publishedMeta = const VerificationMeta('published');
+  @override
+  late final GeneratedBoolColumn published = _constructPublished();
+  GeneratedBoolColumn _constructPublished() {
+    return GeneratedBoolColumn(
+      'published',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedDateTimeColumn createdAt = _constructCreatedAt();
+  GeneratedDateTimeColumn _constructCreatedAt() {
+    return GeneratedDateTimeColumn(
+      'created_at',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedDateTimeColumn updatedAt = _constructUpdatedAt();
+  GeneratedDateTimeColumn _constructUpdatedAt() {
+    return GeneratedDateTimeColumn(
+      'updated_at',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _readMeta = const VerificationMeta('read');
+  @override
+  late final GeneratedBoolColumn read = _constructRead();
+  GeneratedBoolColumn _constructRead() {
+    return GeneratedBoolColumn(
+      'read',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contentMeta = const VerificationMeta('content');
+  @override
+  late final GeneratedTextColumn content = _constructContent();
+  GeneratedTextColumn _constructContent() {
+    return GeneratedTextColumn(
+      'content',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _reactionsMeta = const VerificationMeta('reactions');
+  @override
+  late final GeneratedTextColumn reactions = _constructReactions();
+  GeneratedTextColumn _constructReactions() {
+    return GeneratedTextColumn(
+      'reactions',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _scheduledAtMeta =
+      const VerificationMeta('scheduledAt');
+  @override
+  late final GeneratedDateTimeColumn scheduledAt = _constructScheduledAt();
+  GeneratedDateTimeColumn _constructScheduledAt() {
+    return GeneratedDateTimeColumn(
+      'scheduled_at',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _startsAtMeta = const VerificationMeta('startsAt');
+  @override
+  late final GeneratedDateTimeColumn startsAt = _constructStartsAt();
+  GeneratedDateTimeColumn _constructStartsAt() {
+    return GeneratedDateTimeColumn(
+      'starts_at',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _endsAtMeta = const VerificationMeta('endsAt');
+  @override
+  late final GeneratedDateTimeColumn endsAt = _constructEndsAt();
+  GeneratedDateTimeColumn _constructEndsAt() {
+    return GeneratedDateTimeColumn(
+      'ends_at',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        remoteId,
+        allDay,
+        published,
+        createdAt,
+        updatedAt,
+        read,
+        content,
+        reactions,
+        scheduledAt,
+        startsAt,
+        endsAt
+      ];
+  @override
+  $DbInstanceAnnouncementsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'db_instance_announcements';
+  @override
+  final String actualTableName = 'db_instance_announcements';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<DbInstanceAnnouncement> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('remote_id')) {
+      context.handle(_remoteIdMeta,
+          remoteId.isAcceptableOrUnknown(data['remote_id']!, _remoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_remoteIdMeta);
+    }
+    if (data.containsKey('all_day')) {
+      context.handle(_allDayMeta,
+          allDay.isAcceptableOrUnknown(data['all_day']!, _allDayMeta));
+    } else if (isInserting) {
+      context.missing(_allDayMeta);
+    }
+    if (data.containsKey('published')) {
+      context.handle(_publishedMeta,
+          published.isAcceptableOrUnknown(data['published']!, _publishedMeta));
+    } else if (isInserting) {
+      context.missing(_publishedMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('read')) {
+      context.handle(
+          _readMeta, read.isAcceptableOrUnknown(data['read']!, _readMeta));
+    } else if (isInserting) {
+      context.missing(_readMeta);
+    }
+    if (data.containsKey('content')) {
+      context.handle(_contentMeta,
+          content.isAcceptableOrUnknown(data['content']!, _contentMeta));
+    } else if (isInserting) {
+      context.missing(_contentMeta);
+    }
+    context.handle(_reactionsMeta, const VerificationResult.success());
+    if (data.containsKey('scheduled_at')) {
+      context.handle(
+          _scheduledAtMeta,
+          scheduledAt.isAcceptableOrUnknown(
+              data['scheduled_at']!, _scheduledAtMeta));
+    }
+    if (data.containsKey('starts_at')) {
+      context.handle(_startsAtMeta,
+          startsAt.isAcceptableOrUnknown(data['starts_at']!, _startsAtMeta));
+    }
+    if (data.containsKey('ends_at')) {
+      context.handle(_endsAtMeta,
+          endsAt.isAcceptableOrUnknown(data['ends_at']!, _endsAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbInstanceAnnouncement map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DbInstanceAnnouncement.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $DbInstanceAnnouncementsTable createAlias(String alias) {
+    return $DbInstanceAnnouncementsTable(_db, alias);
+  }
+
+  static TypeConverter<List<PleromaApiAnnouncementReaction>, String>
+      $converter0 = PleromaApiAnnouncementReactionListDatabaseConverter();
+}
+
 class DbHomeTimelineStatus extends DataClass
     implements Insertable<DbHomeTimelineStatus> {
   final int? id;
@@ -9633,6 +10280,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DbFiltersTable dbFilters = $DbFiltersTable(this);
   late final Index dbFilterRemoteIdIndex = Index('db_filter_remote_id_index',
       'CREATE UNIQUE INDEX db_filter_remote_id_index ON db_filters (remote_id);');
+  late final $DbInstanceAnnouncementsTable dbInstanceAnnouncements =
+      $DbInstanceAnnouncementsTable(this);
+  late final Index dbInstanceAnnouncementRemoteIdIndex = Index(
+      'db_instance_announcement_remote_id_index',
+      'CREATE UNIQUE INDEX db_instance_announcement_remote_id_index ON db_instance_announcements (remote_id);');
   late final $DbHomeTimelineStatusesTable dbHomeTimelineStatuses =
       $DbHomeTimelineStatusesTable(this);
   late final $DbDraftStatusesTable dbDraftStatuses =
@@ -9671,6 +10323,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final DraftStatusDao draftStatusDao =
       DraftStatusDao(this as AppDatabase);
   late final FilterDao filterDao = FilterDao(this as AppDatabase);
+  late final InstanceAnnouncementDao instanceAnnouncementDao =
+      InstanceAnnouncementDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -9710,6 +10364,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         dbChatAccountsIndex,
         dbFilters,
         dbFilterRemoteIdIndex,
+        dbInstanceAnnouncements,
+        dbInstanceAnnouncementRemoteIdIndex,
         dbHomeTimelineStatuses,
         dbDraftStatuses
       ];

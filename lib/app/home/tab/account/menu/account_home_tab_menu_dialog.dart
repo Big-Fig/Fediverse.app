@@ -4,6 +4,7 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/home/tab/account/menu/actions/account_home_tab_menu_actions_page.dart';
 import 'package:fedi/app/home/tab/account/menu/actions/badge/account_home_tab_menu_actions_int_badge_bloc_impl.dart';
+import 'package:fedi/app/instance/announcement/list/instance_announcement_list_page.dart';
 import 'package:fedi/app/instance/details/local/local_instance_details_page.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/settings/global/list/global_settings_list_page.dart';
@@ -41,6 +42,7 @@ class AccountHomeTabMenuDialogBodyWidget extends StatelessWidget {
         const _AccountHomeTabMenuDialogBodyAccountItemWidget(),
         const _BookmarksHomeTabMenuDialogBodyBookmarksItemWidget(),
         const _ListsHomeTabMenuDialogBodyListsItemWidget(),
+        const _AnnouncementsHomeTabMenuDialogBodyListsItemWidget(),
         const _RateAppHomeTabMenuDialogBodyListsItemWidget(),
       ],
     );
@@ -181,6 +183,24 @@ class _ListsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
       },
       child: _SimpleAccountHomeTabMenuDialogBodyItem(
         iconData: FediIcons.lists,
+        text: S.of(context).app_account_home_tab_menu_action_lists,
+      ),
+    );
+  }
+}
+class _AnnouncementsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
+  const _AnnouncementsHomeTabMenuDialogBodyListsItemWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        goToInstanceAnnouncementListPage(context);
+      },
+      child: _SimpleAccountHomeTabMenuDialogBodyItem(
+        iconData: FediIcons.message,
         text: S.of(context).app_account_home_tab_menu_action_lists,
       ),
     );

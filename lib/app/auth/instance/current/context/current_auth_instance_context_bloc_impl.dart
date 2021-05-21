@@ -58,6 +58,8 @@ import 'package:fedi/app/home/tab/timelines/storage/local_preferences/timelines_
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
+import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
+import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository_impl.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service_impl.dart';
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc.dart';
@@ -1002,6 +1004,14 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: filterRepository);
     await globalProviderService
         .asyncInitAndRegister<IFilterRepository>(filterRepository);
+
+    var instanceAnnouncementRepository = InstanceAnnouncementRepository(
+      appDatabase: moorDatabaseService.appDatabase,
+    );
+
+    addDisposable(disposable: instanceAnnouncementRepository);
+    await globalProviderService.asyncInitAndRegister<
+        IInstanceAnnouncementRepository>(instanceAnnouncementRepository);
 
     var filesCacheService = FilesCacheService(
       connectionService: connectionService,

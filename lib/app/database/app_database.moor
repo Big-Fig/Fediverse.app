@@ -15,6 +15,7 @@ import 'package:fedi/app/chat/conversation/database/conversation_chat_accounts_d
 import 'package:fedi/app/chat/conversation/database/conversation_chat_database_model.dart';
 import 'package:fedi/app/chat/conversation/database/conversation_chat_statuses_database_model.dart';
 import 'package:fedi/app/filter/database/filter_database_model.dart';
+import 'package:fedi/app/instance/announcement/database/instance_announcement_database_model.dart';
 
 CREATE UNIQUE INDEX db_status_remote_id_index ON db_statuses (remote_id);
 CREATE UNIQUE INDEX db_account_remote_id_index ON db_accounts (remote_id);
@@ -34,3 +35,4 @@ CREATE UNIQUE INDEX db_chat_messages_remote_id_index ON db_chat_messages(remote_
 CREATE INDEX db_chat_messages_chat_remote_id_index ON db_chat_messages(chat_remote_id);
 CREATE UNIQUE INDEX db_chat_accounts_index ON db_chat_accounts(chat_remote_id, account_remote_id);
 CREATE UNIQUE INDEX db_filter_remote_id_index ON db_filters (remote_id);
+CREATE UNIQUE INDEX db_instance_announcement_remote_id_index ON db_instance_announcements (remote_id);

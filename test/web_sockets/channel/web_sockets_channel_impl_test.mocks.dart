@@ -38,10 +38,6 @@ class MockConnectionService extends _i1.Mock implements _i3.ConnectionService {
       (super.noSuchMethod(Invocation.getter(#connectivity),
           returnValue: _FakeConnectivity()) as _i2.Connectivity);
   @override
-  set connectivity(_i2.Connectivity? _connectivity) =>
-      super.noSuchMethod(Invocation.setter(#connectivity, _connectivity),
-          returnValueForMissingStub: null);
-  @override
   _i4.Stream<_i5.ConnectivityResult> get connectionStateStream =>
       (super.noSuchMethod(Invocation.getter(#connectionStateStream),
               returnValue: Stream<_i5.ConnectivityResult>.empty())
