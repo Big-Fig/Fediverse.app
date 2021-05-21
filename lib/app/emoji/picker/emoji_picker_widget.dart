@@ -108,7 +108,7 @@ class EmojiPickerWidget extends StatelessWidget {
         useImageEmoji: useImageEmoji,
         customCategoryIconBuilder: (category) {
           if (category is EmojiPickerCustomImageUrlCategoryBloc) {
-            return FediIcons.heart;
+            return FediIcons.instance;
           } else if (category is EmojiPickerRecentCategoryBloc) {
             return FediIcons.refresh;
           } else {
