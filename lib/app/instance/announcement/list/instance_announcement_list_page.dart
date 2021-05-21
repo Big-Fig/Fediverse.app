@@ -13,7 +13,7 @@ class InstanceAnnouncementListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediPageTitleAppBar(
-        title: S.of(context).app_filter_list_title,
+        title: S.of(context).app_instance_announcement_list_title,
       ),
       body: const SafeArea(
         child: InstanceAnnouncementPaginationListWidget(
@@ -39,7 +39,7 @@ class _InstanceAnnouncementListPagePageEmptyWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         FediEmptyWidget(
-          title: s.app_filter_list_empty,
+          title: s.app_instance_announcement_list_empty,
         ),
       ],
     );

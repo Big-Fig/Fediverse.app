@@ -253,6 +253,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Закладки"),
         "app_account_home_tab_menu_action_global_settings":
             MessageLookupByLibrary.simpleMessage("Настройки: глобальные"),
+        "app_account_home_tab_menu_action_instance_announcements":
+            MessageLookupByLibrary.simpleMessage("Объявления"),
         "app_account_home_tab_menu_action_instance_settings": m6,
         "app_account_home_tab_menu_action_lists":
             MessageLookupByLibrary.simpleMessage("Списки"),
@@ -917,6 +919,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Чаты"),
         "app_init_fail": MessageLookupByLibrary.simpleMessage(
             "Ошибка при инициализации.\nПерезапустите или переустановите приложение"),
+        "app_instance_announcement_list_empty":
+            MessageLookupByLibrary.simpleMessage(
+                "Сервер не имеет активных объявлений."),
+        "app_instance_announcement_list_title":
+            MessageLookupByLibrary.simpleMessage("Объявления сервера"),
         "app_instance_details_field_approvalRequired_label":
             MessageLookupByLibrary.simpleMessage("Необходимо подтверждение"),
         "app_instance_details_field_chatLimit_label":

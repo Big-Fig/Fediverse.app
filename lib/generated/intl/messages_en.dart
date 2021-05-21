@@ -251,6 +251,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Bookmarks"),
         "app_account_home_tab_menu_action_global_settings":
             MessageLookupByLibrary.simpleMessage("Settings: global"),
+        "app_account_home_tab_menu_action_instance_announcements":
+            MessageLookupByLibrary.simpleMessage("Announcements"),
         "app_account_home_tab_menu_action_instance_settings": m6,
         "app_account_home_tab_menu_action_lists":
             MessageLookupByLibrary.simpleMessage("Lists"),
@@ -908,6 +910,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Chats"),
         "app_init_fail": MessageLookupByLibrary.simpleMessage(
             "Failed to start app.\nTry restart or re-install app."),
+        "app_instance_announcement_list_empty":
+            MessageLookupByLibrary.simpleMessage(
+                "Instance don\'t have active announcements."),
+        "app_instance_announcement_list_title":
+            MessageLookupByLibrary.simpleMessage("Instance announcements"),
         "app_instance_details_field_approvalRequired_label":
             MessageLookupByLibrary.simpleMessage("Approval required"),
         "app_instance_details_field_chatLimit_label":

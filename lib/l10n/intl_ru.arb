@@ -75,6 +75,7 @@
     "app_account_home_tab_menu_action_global_settings": "Настройки: глобальные",
     "app_account_home_tab_menu_action_bookmarks": "Закладки",
     "app_account_home_tab_menu_action_lists": "Списки",
+    "app_account_home_tab_menu_action_instance_announcements": "Объявления",
     "app_account_my_menu_account_subpage_title": "Аккаунт",
     "app_settings_global_title": "Настройки: глобальные",
     "app_account_my_action_scheduledPosts": "Запланированны записи",
@@ -739,5 +740,7 @@
     "app_chat_message_pending_tapToViewOptions": "Нажмите для действий.",
     "app_chat_action_delete": "Удалить",
     "app_chat_selection_action_cancel": "Отмена",
-    "app_toast_handling_type_never": "Никогда"
+    "app_toast_handling_type_never": "Никогда",
+    "app_instance_announcement_list_title": "Объявления сервера",
+    "app_instance_announcement_list_empty": "Сервер не имеет активных объявлений."
 }
