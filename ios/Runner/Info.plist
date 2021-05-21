@@ -60,7 +60,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Required for video recording</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Save photo and video to your gallery</string>
+	<string>Upload media content for statuses and your profile</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
