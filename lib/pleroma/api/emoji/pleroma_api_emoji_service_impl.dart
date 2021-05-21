@@ -27,9 +27,26 @@ class PleromaApiEmojiService extends BasePleromaApiService
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return restService.processJsonListResponse(
+    return restService.processJsonSingleResponse(
       httpResponse,
-      PleromaApiCustomEmoji.fromJson,
+      _parseEmojiListResponse,
     );
+  }
+}
+
+List<IPleromaApiCustomEmoji> _parseEmojiListResponse(
+  Map<String, dynamic> json,
+) {
+  // hack due to Map inside response but should be list
+  // {"8b_a":{"image_url":"/emoji/8bfont/8b_a.png","tags":["pack:8bfont"]}}
+  if (json is Map<String, dynamic>) {
+    return json.entries.map((e) {
+      var valueMap = e.value as Map<String, dynamic>;
+      valueMap["name"] = e.key;
+
+      return PleromaApiCustomEmoji.fromJson(valueMap);
+    }).toList();
+  } else {
+    return [];
   }
 }
