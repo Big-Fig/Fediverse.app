@@ -915,6 +915,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Instance don\'t have active announcements."),
         "app_instance_announcement_list_title":
             MessageLookupByLibrary.simpleMessage("Instance announcements"),
+        "app_instance_announcement_settings_field_withDismissed_label":
+            MessageLookupByLibrary.simpleMessage("Show already read"),
+        "app_instance_announcement_settings_title":
+            MessageLookupByLibrary.simpleMessage("Announcements settings"),
         "app_instance_details_field_approvalRequired_label":
             MessageLookupByLibrary.simpleMessage("Approval required"),
         "app_instance_details_field_chatLimit_label":

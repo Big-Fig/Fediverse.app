@@ -7338,6 +7338,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Announcements settings`
+  String get app_instance_announcement_settings_title {
+    return Intl.message(
+      'Announcements settings',
+      name: 'app_instance_announcement_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show already read`
+  String get app_instance_announcement_settings_field_withDismissed_label {
+    return Intl.message(
+      'Show already read',
+      name: 'app_instance_announcement_settings_field_withDismissed_label',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

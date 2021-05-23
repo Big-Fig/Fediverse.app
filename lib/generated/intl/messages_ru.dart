@@ -924,6 +924,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Сервер не имеет активных объявлений."),
         "app_instance_announcement_list_title":
             MessageLookupByLibrary.simpleMessage("Объявления сервера"),
+        "app_instance_announcement_settings_field_withDismissed_label":
+            MessageLookupByLibrary.simpleMessage("Показать прочитанные"),
+        "app_instance_announcement_settings_title":
+            MessageLookupByLibrary.simpleMessage("Настройки объявлений"),
         "app_instance_details_field_approvalRequired_label":
             MessageLookupByLibrary.simpleMessage("Необходимо подтверждение"),
         "app_instance_details_field_chatLimit_label":

@@ -60,6 +60,9 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_b
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository_impl.dart';
+import 'package:fedi/app/instance/announcement/settings/local_preferences/instance/instance_instance_announcement_settings_local_preference_bloc.dart';
+import 'package:fedi/app/instance/announcement/settings/local_preferences/instance/instance_instance_announcement_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/instance/announcement/settings/local_preferences/instance_announcement_settings_local_preference_bloc.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service_impl.dart';
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc.dart';
@@ -1037,6 +1040,23 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       ageLimit: databaseCacheSettingsBloc.ageLimitType.toDurationOrNull(),
       entriesCountByTypeLimit:
           databaseCacheSettingsBloc.entriesCountByTypeLimitType.toCountOrNull(),
+    );
+
+    var instanceInstanceAnnouncementSettingsLocalPreferenceBloc =
+        InstanceInstanceAnnouncementSettingsLocalPreferenceBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+
+    addDisposable(
+        disposable: instanceInstanceAnnouncementSettingsLocalPreferenceBloc);
+    await globalProviderService.asyncInitAndRegister<
+        IInstanceAnnouncementSettingsLocalPreferenceBloc>(
+      instanceInstanceAnnouncementSettingsLocalPreferenceBloc,
+    );
+    await globalProviderService.asyncInitAndRegister<
+        IInstanceInstanceAnnouncementSettingsLocalPreferenceBloc>(
+      instanceInstanceAnnouncementSettingsLocalPreferenceBloc,
     );
   }
 }

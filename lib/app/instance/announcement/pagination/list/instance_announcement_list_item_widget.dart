@@ -18,15 +18,26 @@ class InstanceAnnouncementListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var instanceAnnouncementBloc = IInstanceAnnouncementBloc.of(context);
     return Padding(
       padding: FediPadding.allBigPadding,
-      child: Row(
-        children: [
-          Expanded(
-            child: const _InstanceAnnouncementListItemContentWidget(),
-          ),
-          const _InstanceAnnouncementListItemWidget(),
-        ],
+      child: StreamBuilder<bool>(
+        stream: instanceAnnouncementBloc.readStream,
+        initialData: instanceAnnouncementBloc.read,
+        builder: (context, snapshot) {
+          var read = snapshot.data!;
+          return Opacity(
+            opacity: read ? 0.6 : 1,
+            child: Row(
+              children: [
+                Expanded(
+                  child: const _InstanceAnnouncementListItemContentWidget(),
+                ),
+                const _InstanceAnnouncementListItemWidget(),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -41,20 +52,31 @@ class _InstanceAnnouncementListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var instanceAnnouncementBloc = IInstanceAnnouncementBloc.of(context);
 
-    return FediIconButton(
-      icon: Icon(
-        FediIcons.delete,
-        color: IFediUiColorTheme.of(context).darkGrey,
-      ),
-      onPressed: () {
-        PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-          context: context,
-          asyncCode: () async {
-            await instanceAnnouncementBloc.dismiss();
-          },
-        );
-      },
-    );
+    return StreamBuilder<bool>(
+        stream: instanceAnnouncementBloc.readStream,
+        initialData: instanceAnnouncementBloc.read,
+        builder: (context, snapshot) {
+          var read = snapshot.data!;
+
+          if (read) {
+            return const SizedBox.shrink();
+          } else {
+            return FediIconButton(
+              icon: Icon(
+                FediIcons.check,
+                color: IFediUiColorTheme.of(context).darkGrey,
+              ),
+              onPressed: () {
+                PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                  context: context,
+                  asyncCode: () async {
+                    await instanceAnnouncementBloc.dismiss();
+                  },
+                );
+              },
+            );
+          }
+        });
   }
 }
 

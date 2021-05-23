@@ -742,5 +742,7 @@
     "app_chat_selection_action_cancel": "Cancel",
     "app_toast_handling_type_never": "Never",
     "app_instance_announcement_list_title": "Instance announcements",
-    "app_instance_announcement_list_empty": "Instance don't have active announcements."
+    "app_instance_announcement_list_empty": "Instance don't have active announcements.",
+    "app_instance_announcement_settings_title": "Announcements settings",
+    "app_instance_announcement_settings_field_withDismissed_label": "Show already read"
 }
