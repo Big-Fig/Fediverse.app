@@ -35,18 +35,18 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
   ) {
     var now = DateTime.now();
     var startOfCurrentDay = CustomDateUtils.dayStartOf(now);
-    var startOfNextDay = startOfCurrentDay.add(Duration(days: 1));
+
     return query
       ..where(
         (instanceAnnouncement) {
           return instanceAnnouncement.endsAt.isNull() |
               (instanceAnnouncement.allDay.equals(false) &
-                  instanceAnnouncement.endsAt.isSmallerThanValue(
+                  instanceAnnouncement.endsAt.isBiggerThanValue(
                     now,
                   )) |
               (instanceAnnouncement.allDay.equals(true) &
-                  instanceAnnouncement.endsAt.isSmallerThanValue(
-                    startOfNextDay,
+                  instanceAnnouncement.endsAt.isBiggerThanValue(
+                    startOfCurrentDay,
                   ));
         },
       );
@@ -59,17 +59,19 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
   ) {
     var now = DateTime.now();
     var startOfCurrentDay = CustomDateUtils.dayStartOf(now);
+    var startOfNextDay = startOfCurrentDay.add(Duration(days: 1));
+
     return query
       ..where(
         (instanceAnnouncement) {
-          return instanceAnnouncement.endsAt.isNull() |
+          return instanceAnnouncement.startsAt.isNull() |
               (instanceAnnouncement.allDay.equals(false) &
-                  instanceAnnouncement.endsAt.isBiggerThanValue(
+                  instanceAnnouncement.startsAt.isSmallerThanValue(
                     now,
                   )) |
               (instanceAnnouncement.allDay.equals(true) &
-                  instanceAnnouncement.endsAt.isBiggerThanValue(
-                    startOfCurrentDay,
+                  instanceAnnouncement.startsAt.isSmallerThanValue(
+                    startOfNextDay,
                   ));
         },
       );
