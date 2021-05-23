@@ -2,33 +2,45 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 class InstanceAnnouncementRepositoryFilters {
-  final bool? notDismissed;
+  final bool? withDismissed;
+  final bool? withExpired;
+  final bool? withNotStartedYet;
 
   static const InstanceAnnouncementRepositoryFilters empty =
       InstanceAnnouncementRepositoryFilters();
 
   const InstanceAnnouncementRepositoryFilters({
-    this.notDismissed,
+    this.withDismissed,
+    this.withExpired,
+    this.withNotStartedYet,
   });
+
+  @override
+  String toString() => 'InstanceAnnouncementRepositoryFilters{'
+      'withDismissed: $withDismissed, '
+      'withExpired: $withExpired, '
+      'withNotStartedYet: $withNotStartedYet'
+      '}';
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is InstanceAnnouncementRepositoryFilters &&
           runtimeType == other.runtimeType &&
-          notDismissed == other.notDismissed;
+          withDismissed == other.withDismissed &&
+          withExpired == other.withExpired &&
+          withNotStartedYet == other.withNotStartedYet;
 
   @override
-  int get hashCode => notDismissed.hashCode;
-
-  @override
-  String toString() => 'InstanceAnnouncementRepositoryFilters{'
-      'notDismissed: $notDismissed'
-      '}';
+  int get hashCode =>
+      withDismissed.hashCode ^
+      withExpired.hashCode ^
+      withNotStartedYet.hashCode;
 }
 
 enum InstanceAnnouncementOrderType {
   remoteId,
+  updatedAt,
 }
 
 class InstanceAnnouncementOrderingTermData extends RepositoryOrderingTerm {
@@ -46,6 +58,16 @@ class InstanceAnnouncementOrderingTermData extends RepositoryOrderingTerm {
     orderingMode: OrderingMode.asc,
     orderType: InstanceAnnouncementOrderType.remoteId,
   );
+  static const InstanceAnnouncementOrderingTermData updatedAtDesc =
+      InstanceAnnouncementOrderingTermData(
+    orderingMode: OrderingMode.desc,
+    orderType: InstanceAnnouncementOrderType.updatedAt,
+  );
+  static const InstanceAnnouncementOrderingTermData updatedAtAsc =
+      InstanceAnnouncementOrderingTermData(
+    orderingMode: OrderingMode.asc,
+    orderType: InstanceAnnouncementOrderType.updatedAt,
+  );
 
   const InstanceAnnouncementOrderingTermData({
     required this.orderType,
@@ -53,7 +75,7 @@ class InstanceAnnouncementOrderingTermData extends RepositoryOrderingTerm {
   });
 
   static const List<InstanceAnnouncementOrderingTermData> defaultTerms = [
-    remoteIdDesc,
+    updatedAtDesc,
   ];
 
   @override

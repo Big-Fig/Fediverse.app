@@ -30,10 +30,6 @@ abstract class IInstanceAnnouncementBloc implements IDisposable {
 
   List<IPleromaApiTag>? get tags;
 
-  bool get dismissed;
-
-  Stream<bool> get dismissedStream;
-
   bool get allDay;
 
   DateTime get publishedAt;

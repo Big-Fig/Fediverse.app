@@ -21,8 +21,6 @@ class InstanceAnnouncementBloc extends DisposableOwner
   Stream<IInstanceAnnouncement> get instanceAnnouncementStream =>
       _instanceAnnouncementSubject.stream.distinct();
 
-  final BehaviorSubject<bool> dismissedSubject;
-
   static InstanceAnnouncementBloc createFromContext(
     BuildContext context,
     IInstanceAnnouncement instanceAnnouncement, {
@@ -51,12 +49,9 @@ class InstanceAnnouncementBloc extends DisposableOwner
     this.isNeedWatchLocalRepositoryForUpdates = true,
     // todo: remove hack. Dont init when bloc quickly disposed. Help
     bool delayInit = true,
-    bool initialDismissed = false,
-  })  : _instanceAnnouncementSubject =
-            BehaviorSubject.seeded(instanceAnnouncement),
-        dismissedSubject = BehaviorSubject.seeded(initialDismissed) {
+  }) : _instanceAnnouncementSubject =
+            BehaviorSubject.seeded(instanceAnnouncement) {
     addDisposable(subject: _instanceAnnouncementSubject);
-    addDisposable(subject: dismissedSubject);
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
         _init(instanceAnnouncement);
@@ -200,15 +195,9 @@ class InstanceAnnouncementBloc extends DisposableOwner
       announcementId: instanceAnnouncement.remoteId,
     )
         .then((_) {
-      dismissedSubject.add(true);
+      updateDismissed(true);
     });
   }
-
-  @override
-  bool get dismissed => dismissedSubject.value!;
-
-  @override
-  Stream<bool> get dismissedStream => dismissedSubject.stream;
 
   @override
   Stream<List<IPleromaApiAnnouncementReaction>?> get reactionsStream =>
@@ -224,10 +213,24 @@ class InstanceAnnouncementBloc extends DisposableOwner
   Future updateReactions(
     List<IPleromaApiAnnouncementReaction> newReactionsList,
   ) async {
+    var updatedInstanceAnnouncements = instanceAnnouncement.copyWith(
+      reactions: newReactionsList,
+    );
+    _updateAnnouncement(updatedInstanceAnnouncements);
+  }
+
+  Future updateDismissed(
+    bool dismissed,
+  ) async {
+    var updatedInstanceAnnouncements = instanceAnnouncement.copyWith(
+      read: dismissed,
+    );
+    _updateAnnouncement(updatedInstanceAnnouncements);
+  }
+
+  void _updateAnnouncement(IInstanceAnnouncement updatedInstanceAnnouncements) {
     _instanceAnnouncementSubject.add(
-      instanceAnnouncement.copyWith(
-        reactions: newReactionsList,
-      ),
+      updatedInstanceAnnouncements,
     );
   }
 
