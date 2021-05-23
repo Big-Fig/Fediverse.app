@@ -3,6 +3,7 @@ import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.d
 import 'package:fedi/app/instance/announcement/database/instance_announcement_database_model.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository_model.dart';
+import 'package:fedi/date/date_utils.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
@@ -27,43 +28,64 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
   // Called by the AppDatabase class
   InstanceAnnouncementDao(this.db) : super(db);
 
-  // SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
-  //     addContextTypesWhere(
-  //   SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
-  //       query,
-  //   List<MastodonApiInstanceAnnouncementContextType> contextTypes,
-  // ) {
-  //   assert(contextTypes.isNotEmpty);
-  //
-  //   var contextTypesStrings = contextTypes
-  //       .map(
-  //         (visibility) => '${visibility.toJsonValue()}',
-  //       )
-  //       .toList();
-  //
-  //   return query
-  //     ..where(
-  //       (instanceAnnouncement) => CustomExpression<bool>(
-  //         contextTypesStrings
-  //             .map((type) => "db_instanceAnnouncements.context LIKE '%$type%'")
-  //             .join(' OR '),
-  //       ),
-  //     );
-  // }
-  //
-  // SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
-  //     addNotExpiredWhere(
-  //   SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
-  //       query,
-  // ) =>
-  //         query
-  //           ..where(
-  //             (instanceAnnouncement) =>
-  //                 instanceAnnouncement.expiresAt.isNull() |
-  //                 instanceAnnouncement.expiresAt.isBiggerThanValue(
-  //                   DateTime.now(),
-  //                 ),
-  //           );
+  SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
+      addNotExpiredWhere(
+    SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
+        query,
+  ) {
+    var now = DateTime.now();
+    var startOfCurrentDay = CustomDateUtils.dayStartOf(now);
+    var startOfNextDay = startOfCurrentDay.add(Duration(days: 1));
+    return query
+      ..where(
+        (instanceAnnouncement) {
+          return instanceAnnouncement.endsAt.isNull() |
+              (instanceAnnouncement.allDay.equals(false) &
+                  instanceAnnouncement.endsAt.isSmallerThanValue(
+                    now,
+                  )) |
+              (instanceAnnouncement.allDay.equals(true) &
+                  instanceAnnouncement.endsAt.isSmallerThanValue(
+                    startOfNextDay,
+                  ));
+        },
+      );
+  }
+
+  SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
+      addAlreadyStartedYetWhere(
+    SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
+        query,
+  ) {
+    var now = DateTime.now();
+    var startOfCurrentDay = CustomDateUtils.dayStartOf(now);
+    return query
+      ..where(
+        (instanceAnnouncement) {
+          return instanceAnnouncement.endsAt.isNull() |
+              (instanceAnnouncement.allDay.equals(false) &
+                  instanceAnnouncement.endsAt.isBiggerThanValue(
+                    now,
+                  )) |
+              (instanceAnnouncement.allDay.equals(true) &
+                  instanceAnnouncement.endsAt.isBiggerThanValue(
+                    startOfCurrentDay,
+                  ));
+        },
+      );
+  }
+
+  SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
+      addNotDismissedWhere(
+    SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
+        query,
+  ) =>
+          query
+            ..where(
+              (instanceAnnouncement) =>
+                  instanceAnnouncement.read.isNull() |
+                  instanceAnnouncement.read.equals(false),
+            );
 
   SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
       orderBy(
@@ -79,6 +101,9 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
                         case InstanceAnnouncementOrderType.remoteId:
                           expression = item.remoteId;
                           break;
+                        case InstanceAnnouncementOrderType.updatedAt:
+                          expression = item.updatedAt;
+                          break;
                       }
 
                       return OrderingTerm(
@@ -88,31 +113,13 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
                     })
                 .toList());
 
-  List<Join<Table, DataClass>> populateInstanceAnnouncementJoin() {
+  List<Join<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>>
+      populateInstanceAnnouncementJoin() {
     return [];
   }
 
   @override
   $DbInstanceAnnouncementsTable get table => dbInstanceAnnouncements;
-
-  // @override
-  // void addInstanceAnnouncementsToQuery({
-  //   required SimpleSelectStatement<$DbInstanceAnnouncementsTable,
-  //           DbInstanceAnnouncement>
-  //       query,
-  //   required InstanceAnnouncementRepositoryFilters? instanceAnnouncements,
-  // }) {
-  //   if (instanceAnnouncements?.onlyWithContextTypes?.isNotEmpty == true) {
-  //     addContextTypesWhere(
-  //       query,
-  //       instanceAnnouncements!.onlyWithContextTypes!,
-  //     );
-  //   }
-  //
-  //   if (instanceAnnouncements?.notExpired == true) {
-  //     addNotExpiredWhere(query);
-  //   }
-  // }
 
   @override
   void addNewerOlderDbItemPagination({
@@ -127,13 +134,28 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
       assert(orderingTerms?.length == 1);
       var orderingTermData = orderingTerms!.first;
       assert(
-        orderingTermData.orderType == InstanceAnnouncementOrderType.remoteId,
+        orderingTermData.orderType == InstanceAnnouncementOrderType.remoteId ||
+            orderingTermData.orderType ==
+                InstanceAnnouncementOrderType.updatedAt,
       );
-      addRemoteIdBoundsWhere(
-        query,
-        maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
-        minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
-      );
+
+      switch (orderingTermData.orderType) {
+        case InstanceAnnouncementOrderType.remoteId:
+          addRemoteIdBoundsWhere(
+            query,
+            maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
+            minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
+          );
+          break;
+        case InstanceAnnouncementOrderType.updatedAt:
+          addDateTimeBoundsWhere(
+            query,
+            column: dbInstanceAnnouncements.updatedAt,
+            maximumDateTimeExcluding: pagination?.olderThanItem?.updatedAt,
+            minimumDateTimeExcluding: pagination?.newerThanItem?.updatedAt,
+          );
+          break;
+      }
     }
   }
 
@@ -153,14 +175,13 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
-      convertSimpleSelectStatementToJoinedSelectStatement({
+  JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbInstanceAnnouncementsTable,
             DbInstanceAnnouncement>
         query,
     required InstanceAnnouncementRepositoryFilters? filters,
   }) =>
-          query.join(populateInstanceAnnouncementJoin());
+      query.join(populateInstanceAnnouncementJoin());
 
   @override
   DbInstanceAnnouncementPopulated mapTypedResultToDbPopulatedItem(
@@ -175,7 +196,17 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
         query,
     required InstanceAnnouncementRepositoryFilters? filters,
   }) {
-    // TODO: implement addFiltersToQuery
+    if (filters?.withDismissed != true) {
+      addNotDismissedWhere(query);
+    }
+
+    if (filters?.withExpired != true) {
+      addNotExpiredWhere(query);
+    }
+
+    if (filters?.withNotStartedYet != true) {
+      addAlreadyStartedYetWhere(query);
+    }
   }
 }
 
