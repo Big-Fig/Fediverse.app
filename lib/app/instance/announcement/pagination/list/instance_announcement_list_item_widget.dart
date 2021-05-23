@@ -40,6 +40,7 @@ class _InstanceAnnouncementListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var instanceAnnouncementBloc = IInstanceAnnouncementBloc.of(context);
+
     return FediIconButton(
       icon: Icon(
         FediIcons.delete,

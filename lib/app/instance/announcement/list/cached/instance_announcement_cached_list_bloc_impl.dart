@@ -38,7 +38,7 @@ class InstanceAnnouncementCachedListBloc
           // notExpired: false,
           ),
       orderingTerms: [
-        InstanceAnnouncementOrderingTermData.remoteIdDesc,
+        InstanceAnnouncementOrderingTermData.updatedAtDesc,
       ],
     );
   }
@@ -64,14 +64,15 @@ class InstanceAnnouncementCachedListBloc
         remoteInstanceAnnouncements,
         batchTransaction: null,
       );
-    // ignore: no-empty-block
+      // ignore: no-empty-block
     } else {
       // nothing we don't support pagination
     }
   }
 
   static InstanceAnnouncementCachedListBloc createFromContext(
-          BuildContext context,) =>
+    BuildContext context,
+  ) =>
       InstanceAnnouncementCachedListBloc(
         pleromaApiAnnouncementService: IPleromaApiAnnouncementService.of(
           context,

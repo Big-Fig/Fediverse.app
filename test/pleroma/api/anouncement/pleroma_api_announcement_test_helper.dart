@@ -21,7 +21,7 @@ class PleromaApiAnnouncementTestHelper {
         read: seed.hashCode % 2 == 1,
         reactions: [
           createTestPleromaPleromaApiAnnouncementReaction(seed: seed + '1'),
-          createTestPleromaPleromaApiAnnouncementReaction(seed: seed + '1'),
+          createTestPleromaPleromaApiAnnouncementReaction(seed: seed + '2'),
         ],
         tags: [
           PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + '1'),
