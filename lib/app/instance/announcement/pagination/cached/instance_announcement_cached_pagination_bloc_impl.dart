@@ -64,8 +64,10 @@ class InstanceAnnouncementCachedPaginationBloc
   }) =>
       InstanceAnnouncementCachedPaginationBloc(
         instanceAnnouncementListService:
-            Provider.of<IInstanceAnnouncementCachedListBloc>(context,
-                listen: false,),
+            Provider.of<IInstanceAnnouncementCachedListBloc>(
+          context,
+          listen: false,
+        ),
         paginationSettingsBloc: IPaginationSettingsBloc.of(
           context,
           listen: false,

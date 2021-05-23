@@ -742,5 +742,7 @@
     "app_chat_selection_action_cancel": "Отмена",
     "app_toast_handling_type_never": "Никогда",
     "app_instance_announcement_list_title": "Объявления сервера",
-    "app_instance_announcement_list_empty": "Сервер не имеет активных объявлений."
+    "app_instance_announcement_list_empty": "Сервер не имеет активных объявлений.",
+    "app_instance_announcement_settings_title": "Настройки объявлений",
+    "app_instance_announcement_settings_field_withDismissed_label": "Показать прочитанные"
 }

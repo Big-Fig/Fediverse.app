@@ -2,6 +2,7 @@ import 'package:fedi/app/instance/announcement/instance_announcement_model.dart'
 import 'package:fedi/app/instance/announcement/list/cached/instance_announcement_cached_list_bloc.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository_model.dart';
+import 'package:fedi/app/instance/announcement/settings/instance_announcement_settings_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_service.dart';
@@ -13,6 +14,7 @@ class InstanceAnnouncementCachedListBloc
     extends IInstanceAnnouncementCachedListBloc {
   final IPleromaApiAnnouncementService pleromaApiAnnouncementService;
   final IInstanceAnnouncementRepository instanceAnnouncementRepository;
+  final InstanceAnnouncementSettings instanceAnnouncementSettings;
 
   @override
   IPleromaApi get pleromaApi => pleromaApiAnnouncementService;
@@ -20,6 +22,7 @@ class InstanceAnnouncementCachedListBloc
   InstanceAnnouncementCachedListBloc({
     required this.pleromaApiAnnouncementService,
     required this.instanceAnnouncementRepository,
+    required this.instanceAnnouncementSettings,
   });
 
   @override
@@ -35,8 +38,8 @@ class InstanceAnnouncementCachedListBloc
         limit: limit,
       ),
       filters: InstanceAnnouncementRepositoryFilters(
-          // notExpired: false,
-          ),
+        withDismissed: instanceAnnouncementSettings.withDismissed,
+      ),
       orderingTerms: [
         InstanceAnnouncementOrderingTermData.updatedAtDesc,
       ],
@@ -50,15 +53,10 @@ class InstanceAnnouncementCachedListBloc
     required IInstanceAnnouncement? olderThan,
   }) async {
     if (newerThan == null && olderThan == null) {
-      // todo: don't exclude pleroma types on mastodon instances
       var remoteInstanceAnnouncements =
           await pleromaApiAnnouncementService.getAnnouncements(
-              // pagination: PleromaApiPaginationRequest(
-              // maxId: olderThan?.remoteId,
-              // sinceId: newerThan?.remoteId,
-              //   limit: limit,
-              // ),
-              );
+        withDismissed: instanceAnnouncementSettings.withDismissed,
+      );
 
       await instanceAnnouncementRepository.upsertAllInRemoteType(
         remoteInstanceAnnouncements,
@@ -71,8 +69,9 @@ class InstanceAnnouncementCachedListBloc
   }
 
   static InstanceAnnouncementCachedListBloc createFromContext(
-    BuildContext context,
-  ) =>
+    BuildContext context, {
+    required InstanceAnnouncementSettings instanceAnnouncementSettings,
+  }) =>
       InstanceAnnouncementCachedListBloc(
         pleromaApiAnnouncementService: IPleromaApiAnnouncementService.of(
           context,
@@ -82,15 +81,18 @@ class InstanceAnnouncementCachedListBloc
           context,
           listen: false,
         ),
+        instanceAnnouncementSettings: instanceAnnouncementSettings,
       );
 
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
+    required InstanceAnnouncementSettings instanceAnnouncementSettings,
   }) {
     return DisposableProvider<IInstanceAnnouncementCachedListBloc>(
       create: (context) => InstanceAnnouncementCachedListBloc.createFromContext(
         context,
+        instanceAnnouncementSettings: instanceAnnouncementSettings,
       ),
       child: child,
     );
