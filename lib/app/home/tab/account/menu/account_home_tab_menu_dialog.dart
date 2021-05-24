@@ -4,6 +4,7 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/home/tab/account/menu/actions/account_home_tab_menu_actions_page.dart';
 import 'package:fedi/app/home/tab/account/menu/actions/badge/account_home_tab_menu_actions_int_badge_bloc_impl.dart';
+import 'package:fedi/app/instance/announcement/badge/instance_announcement_count_int_badge_bloc_impl.dart';
 import 'package:fedi/app/instance/announcement/list/instance_announcement_list_page.dart';
 import 'package:fedi/app/instance/details/local/local_instance_details_page.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
@@ -199,9 +200,20 @@ class _AnnouncementsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget
       onTap: () {
         goToInstanceAnnouncementListPage(context);
       },
-      child: _SimpleAccountHomeTabMenuDialogBodyItem(
-        iconData: FediIcons.message,
-        text: S.of(context).app_account_home_tab_menu_action_instance_announcements,
+      child:
+      InstanceAnnouncementCountIntBadgeBloc.provideToContext(
+        context,
+        child: _AccountHomeTabMenuDialogBodyItem(
+          iconWidget: FediIntBadgeWidget(
+            offset: 0.0,
+            child: _AccountHomeTabMenuDialogBodyItemIcon(
+              iconData: FediIcons.message,
+            ),
+          ),
+          textWidget: _AccountHomeTabMenuDialogBodyItemText(
+            text: S.of(context).app_account_home_tab_menu_action_instance_announcements,
+          ),
+        ),
       ),
     );
   }

@@ -29,30 +29,6 @@ abstract class INotificationRepository
         listen: listen,
       );
 
-  // Future upsertRemoteNotifications(
-  //   List<IPleromaNotification> remoteNotifications, {
-  //   required bool? unread,
-  // });
-  //
-  // Future updateLocalNotificationByRemoteNotification({
-  //   required INotification oldLocalNotification,
-  //   required IPleromaNotification newRemoteNotification,
-  //   required bool? unread,
-  // });
-
-  // Future upsertRemoteNotification(
-  //   IPleromaNotification remoteNotification, {
-  //   required bool? unread,
-  // });
-
-  // Future<int> getCount({
-  //   required NotificationRepositoryFilters? filters,
-  // });
-  //
-  // Stream<int> watchCount({
-  //   required NotificationRepositoryFilters? filters,
-  // });
-
   Future markAsRead({
     required INotification notification,
   });

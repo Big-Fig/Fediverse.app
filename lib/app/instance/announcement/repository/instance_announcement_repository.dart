@@ -23,4 +23,12 @@ abstract class IInstanceAnnouncementRepository
     bool listen = true,
   }) =>
       Provider.of<IInstanceAnnouncementRepository>(context, listen: listen);
+
+  Future<int> calculateCount({
+    required InstanceAnnouncementRepositoryFilters? filters,
+  });
+
+  Stream<int> watchCalculateCount({
+    required InstanceAnnouncementRepositoryFilters? filters,
+  });
 }

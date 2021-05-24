@@ -143,6 +143,48 @@ class InstanceAnnouncementRepository
         entity: dbItem.copyWith(id: dbId),
         batchTransaction: batchTransaction,
       );
+
+
+
+  @override
+  Future<int> calculateCount({
+    required InstanceAnnouncementRepositoryFilters? filters,
+  }) async {
+    // todo: rework with COUNT * only
+    var query = dao.startSelectQuery();
+    dao.addFiltersToQuery(query: query, filters: filters);
+
+    // required because some filters added during join
+    var joinedQuery =
+    populatedDao.convertSimpleSelectStatementToJoinedSelectStatement(
+      query: query,
+      filters: filters,
+    );
+
+    var items = await joinedQuery.get();
+
+    return items.length;
+  }
+
+  @override
+  Stream<int> watchCalculateCount({
+    required InstanceAnnouncementRepositoryFilters? filters,
+  }) {
+    // todo: rework with COUNT * only
+    var query = dao.startSelectQuery();
+    dao.addFiltersToQuery(query: query, filters: filters);
+
+    // required because some filters added during join
+    var joinedQuery =
+    populatedDao.convertSimpleSelectStatementToJoinedSelectStatement(
+      query: query,
+      filters: filters,
+    );
+
+    var stream = joinedQuery.watch();
+
+    return stream.map((items) => items.length);
+  }
 }
 
 extension DbInstanceAnnouncementPopulatedListExtension
