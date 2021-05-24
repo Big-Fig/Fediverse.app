@@ -187,6 +187,12 @@ class InstanceAnnouncementBloc extends DisposableOwner
   }
 
   @override
+  Stream<DateTime> get updatedAtStream =>
+      instanceAnnouncementStream.map(
+        (instanceAnnouncement) => instanceAnnouncement.updatedAt,
+      );
+
+  @override
   Stream<List<IPleromaApiAnnouncementReaction>?> get reactionsStream =>
       instanceAnnouncementStream.map(
         (instanceAnnouncement) => instanceAnnouncement.reactions,

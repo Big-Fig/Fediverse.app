@@ -36,6 +36,8 @@ abstract class IInstanceAnnouncementBloc implements IDisposable {
 
   DateTime get updatedAt;
 
+  Stream<DateTime> get updatedAtStream;
+
   bool get read;
 
   Stream<bool> get readStream;
