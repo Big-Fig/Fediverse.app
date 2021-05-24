@@ -19,7 +19,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-final dateFormat = DateFormat('dd MMM, HH:mm a');
+final _dateFormat = DateFormat('dd MMM, HH:mm a');
 
 class DraftStatusListItemWidget extends StatelessWidget {
   @override
@@ -218,7 +218,7 @@ class _DraftStatusListItemDraftAtWidget extends StatelessWidget {
         var draftAt = snapshot.data!;
 
         return Text(
-          dateFormat.format(draftAt),
+          _dateFormat.format(draftAt),
           style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
         );
       },
