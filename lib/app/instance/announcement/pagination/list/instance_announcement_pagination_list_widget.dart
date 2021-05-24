@@ -76,9 +76,14 @@ class InstanceAnnouncementPaginationListWidget
 
   @override
   IPaginationListBloc<PaginationPage<IInstanceAnnouncement>,
-      IInstanceAnnouncement> retrievePaginationListBloc(BuildContext context,
-          {bool? listen,}) =>
+      IInstanceAnnouncement> retrievePaginationListBloc(
+    BuildContext context, {
+    bool? listen,
+  }) =>
       Provider.of<
           ICachedPaginationListBloc<CachedPaginationPage<IInstanceAnnouncement>,
-              IInstanceAnnouncement>>(context, listen: false);
+              IInstanceAnnouncement>>(
+        context,
+        listen: false,
+      );
 }

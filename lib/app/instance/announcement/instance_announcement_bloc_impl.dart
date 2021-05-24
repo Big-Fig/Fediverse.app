@@ -117,75 +117,65 @@ class InstanceAnnouncementBloc extends DisposableOwner
 
     assert(foundReaction == null || !foundReaction.me);
 
-    await pleromaApiAnnouncementService
-        .addAnnouncementReaction(
+    await pleromaApiAnnouncementService.addAnnouncementReaction(
       announcementId: instanceAnnouncement.remoteId,
       name: emojiName,
-    )
-        .then((_) {
-      if (foundReaction != null) {
-        foundReaction = foundReaction!.copyWith(
-          count: foundReaction!.count + 1,
-        );
-      } else {
-        foundReaction = PleromaApiAnnouncementReaction(
-          name: emojiName,
-          count: 1,
-          me: true,
-          url: null,
-          staticUrl: null,
-        );
-      }
+    );
+    if (foundReaction != null) {
+      foundReaction = foundReaction.copyWith(
+        count: foundReaction.count + 1,
+      );
+    } else {
+      foundReaction = PleromaApiAnnouncementReaction(
+        name: emojiName,
+        count: 1,
+        me: true,
+        url: null,
+        staticUrl: null,
+      );
+    }
 
-      var newReactionsList = reactions
-              ?.where(
-                (reaction) => reaction.name == foundReaction!.name,
-              )
-              .toList() ??
-          [];
+    var newReactionsList = reactions
+            ?.where(
+              (reaction) => reaction.name != foundReaction!.name,
+            )
+            .toList() ??
+        [];
 
-      newReactionsList.add(foundReaction!);
+    newReactionsList.add(foundReaction);
 
-      updateReactions(newReactionsList);
-    });
+    await updateReactions(newReactionsList);
   }
 
   @override
-  Future removeEmojiReaction({required String emojiName}) async {
+  Future removeEmojiReaction({
+    required String emojiName,
+  }) async {
     var foundReaction = reactions?.firstWhereOrNull(
       (reaction) => reaction.name == emojiName,
     );
 
     assert(foundReaction?.me == true);
 
-    await pleromaApiAnnouncementService
-        .removeAnnouncementReaction(
+    await pleromaApiAnnouncementService.removeAnnouncementReaction(
       announcementId: instanceAnnouncement.remoteId,
       name: emojiName,
-    )
-        .then((_) {
-      // ignore: no-magic-number
-      if (foundReaction!.count > 2) {
-        foundReaction = foundReaction!.copyWith(
-          count: foundReaction!.count - 1,
-        );
-      } else {
-        foundReaction = null;
-      }
+    );
 
-      var newReactionsList = reactions
-              ?.where(
-                (reaction) => reaction.name == foundReaction!.name,
-              )
-              .toList() ??
-          [];
+    var newReactionsList = reactions!.toList();
 
-      if (foundReaction != null) {
-        newReactionsList.add(foundReaction!);
-      }
+    newReactionsList.remove(foundReaction);
 
-      updateReactions(newReactionsList);
-    });
+    // ignore: no-magic-number
+    if (foundReaction!.count > 2) {
+      var newReaction = foundReaction.copyWith(
+        count: foundReaction.count - 1,
+      );
+
+      newReactionsList.add(newReaction);
+    }
+
+    await updateReactions(newReactionsList);
   }
 
   @override
@@ -216,7 +206,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
     var updatedInstanceAnnouncements = instanceAnnouncement.copyWith(
       reactions: newReactionsList,
     );
-    _updateAnnouncement(updatedInstanceAnnouncements);
+    await _updateAnnouncement(updatedInstanceAnnouncements);
   }
 
   Future updateDismissed(
@@ -225,12 +215,15 @@ class InstanceAnnouncementBloc extends DisposableOwner
     var updatedInstanceAnnouncements = instanceAnnouncement.copyWith(
       read: dismissed,
     );
-    _updateAnnouncement(updatedInstanceAnnouncements);
+    await _updateAnnouncement(updatedInstanceAnnouncements);
   }
 
-  void _updateAnnouncement(IInstanceAnnouncement updatedInstanceAnnouncements) {
-    _instanceAnnouncementSubject.add(
-      updatedInstanceAnnouncements,
+  Future _updateAnnouncement(
+      IInstanceAnnouncement updatedInstanceAnnouncements) async {
+    await instanceAnnouncementRepository.updateByDbIdInDbType(
+      dbId: updatedInstanceAnnouncements.localId!,
+      dbItem: updatedInstanceAnnouncements.toDbInstanceAnnouncement(),
+      batchTransaction: null,
     );
   }
 
@@ -248,4 +241,18 @@ class InstanceAnnouncementBloc extends DisposableOwner
 
   @override
   List<IPleromaApiTag>? get tags => instanceAnnouncement.tags;
+
+  @override
+  Future toggleEmojiReaction({
+    required String emojiName,
+  }) async {
+    var found =
+        reactions?.firstWhereOrNull((reaction) => reaction.name == emojiName);
+
+    if (found != null) {
+      await removeEmojiReaction(emojiName: emojiName);
+    } else {
+      await addEmojiReaction(emojiName: emojiName);
+    }
+  }
 }

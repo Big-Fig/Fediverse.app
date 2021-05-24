@@ -9,12 +9,22 @@ import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_service.d
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rxdart/rxdart.dart';
 
 class InstanceAnnouncementCachedListBloc
     extends IInstanceAnnouncementCachedListBloc {
   final IPleromaApiAnnouncementService pleromaApiAnnouncementService;
   final IInstanceAnnouncementRepository instanceAnnouncementRepository;
-  final InstanceAnnouncementSettings instanceAnnouncementSettings;
+  final BehaviorSubject<InstanceAnnouncementSettings>
+      instanceAnnouncementSettingsSubject;
+
+  @override
+  InstanceAnnouncementSettings get instanceAnnouncementSettings =>
+      instanceAnnouncementSettingsSubject.value!;
+
+  @override
+  Stream<InstanceAnnouncementSettings> get instanceAnnouncementSettingsStream =>
+      instanceAnnouncementSettingsSubject.stream;
 
   @override
   IPleromaApi get pleromaApi => pleromaApiAnnouncementService;
@@ -22,8 +32,11 @@ class InstanceAnnouncementCachedListBloc
   InstanceAnnouncementCachedListBloc({
     required this.pleromaApiAnnouncementService,
     required this.instanceAnnouncementRepository,
-    required this.instanceAnnouncementSettings,
-  });
+    required InstanceAnnouncementSettings instanceAnnouncementSettings,
+  }) : instanceAnnouncementSettingsSubject =
+            BehaviorSubject.seeded(instanceAnnouncementSettings) {
+    addDisposable(subject: instanceAnnouncementSettingsSubject);
+  }
 
   @override
   Future<List<IInstanceAnnouncement>> loadLocalItems({
@@ -103,4 +116,12 @@ class InstanceAnnouncementCachedListBloc
 
   @override
   Uri? get remoteInstanceUriOrNull => null;
+
+  @override
+  Future changeInstanceAnnouncementSettings(
+      InstanceAnnouncementSettings settings) async {
+    if (instanceAnnouncementSettings != settings) {
+      instanceAnnouncementSettingsSubject.add(settings);
+    }
+  }
 }
