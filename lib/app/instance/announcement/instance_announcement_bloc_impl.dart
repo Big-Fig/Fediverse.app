@@ -180,13 +180,10 @@ class InstanceAnnouncementBloc extends DisposableOwner
 
   @override
   Future dismiss() async {
-    await pleromaApiAnnouncementService
-        .dismissAnnouncement(
+    await pleromaApiAnnouncementService.dismissAnnouncement(
       announcementId: instanceAnnouncement.remoteId,
-    )
-        .then((_) {
-      updateDismissed(true);
-    });
+    );
+    await updateDismissed(true);
   }
 
   @override
@@ -209,9 +206,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
     await _updateAnnouncement(updatedInstanceAnnouncements);
   }
 
-  Future updateDismissed(
-    bool dismissed,
-  ) async {
+  Future updateDismissed(bool dismissed) async {
     var updatedInstanceAnnouncements = instanceAnnouncement.copyWith(
       read: dismissed,
     );
