@@ -1049,9 +1049,10 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     );
 
     addDisposable(
-        disposable: instanceInstanceAnnouncementSettingsLocalPreferenceBloc);
-    await globalProviderService.asyncInitAndRegister<
-        IInstanceAnnouncementSettingsLocalPreferenceBloc>(
+      disposable: instanceInstanceAnnouncementSettingsLocalPreferenceBloc,
+    );
+    await globalProviderService
+        .asyncInitAndRegister<IInstanceAnnouncementSettingsLocalPreferenceBloc>(
       instanceInstanceAnnouncementSettingsLocalPreferenceBloc,
     );
     await globalProviderService.asyncInitAndRegister<

@@ -3,8 +3,10 @@ import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_bloc_impl.dart';
 import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
+import 'package:fedi/app/instance/announcement/emoji_reaction/instance_announcement_emoji_reaction_list_widget.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_bloc.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
+import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -19,6 +21,7 @@ class InstanceAnnouncementListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var instanceAnnouncementBloc = IInstanceAnnouncementBloc.of(context);
+
     return Padding(
       padding: FediPadding.allBigPadding,
       child: StreamBuilder<bool>(
@@ -26,14 +29,23 @@ class InstanceAnnouncementListItemWidget extends StatelessWidget {
         initialData: instanceAnnouncementBloc.read,
         builder: (context, snapshot) {
           var read = snapshot.data!;
+
           return Opacity(
+            // ignore: no-magic-number
             opacity: read ? 0.6 : 1,
-            child: Row(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
-                  child: const _InstanceAnnouncementListItemContentWidget(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: const _InstanceAnnouncementListItemContentWidget(),
+                    ),
+                    const _InstanceAnnouncementListItemWidget(),
+                  ],
                 ),
-                const _InstanceAnnouncementListItemWidget(),
+                const InstanceAnnouncementEmojiReactionListWidget(),
+                const _InstanceAnnouncementListItemAddEmojiButtonWidget(),
               ],
             ),
           );
@@ -41,6 +53,53 @@ class InstanceAnnouncementListItemWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class _InstanceAnnouncementListItemAddEmojiButtonWidget
+    extends StatelessWidget {
+  const _InstanceAnnouncementListItemAddEmojiButtonWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        FediIconButton(
+          icon: Icon(
+            FediIcons.emoji,
+            color: IFediUiColorTheme.of(context).darkGrey,
+          ),
+          onPressed: () {
+            _showEmojiPicker(context);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+void _showEmojiPicker(BuildContext context) {
+  var instanceAnnouncementBloc = IInstanceAnnouncementBloc.of(
+    context,
+    listen: false,
+  );
+  showEmojiPickerModalPopup(
+    context,
+    emojiReactionSelectedCallback: (
+      context,
+      String emojiName,
+      String emoji,
+    ) {
+      PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        context: context,
+        asyncCode: () => instanceAnnouncementBloc.toggleEmojiReaction(
+          emojiName: emoji,
+        ),
+      );
+    },
+  );
 }
 
 class _InstanceAnnouncementListItemWidget extends StatelessWidget {
@@ -53,30 +112,31 @@ class _InstanceAnnouncementListItemWidget extends StatelessWidget {
     var instanceAnnouncementBloc = IInstanceAnnouncementBloc.of(context);
 
     return StreamBuilder<bool>(
-        stream: instanceAnnouncementBloc.readStream,
-        initialData: instanceAnnouncementBloc.read,
-        builder: (context, snapshot) {
-          var read = snapshot.data!;
+      stream: instanceAnnouncementBloc.readStream,
+      initialData: instanceAnnouncementBloc.read,
+      builder: (context, snapshot) {
+        var read = snapshot.data!;
 
-          if (read) {
-            return const SizedBox.shrink();
-          } else {
-            return FediIconButton(
-              icon: Icon(
-                FediIcons.check,
-                color: IFediUiColorTheme.of(context).darkGrey,
-              ),
-              onPressed: () {
-                PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-                  context: context,
-                  asyncCode: () async {
-                    await instanceAnnouncementBloc.dismiss();
-                  },
-                );
-              },
-            );
-          }
-        });
+        if (read) {
+          return const SizedBox.shrink();
+        } else {
+          return FediIconButton(
+            icon: Icon(
+              FediIcons.check,
+              color: IFediUiColorTheme.of(context).darkGrey,
+            ),
+            onPressed: () {
+              PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context,
+                asyncCode: () async {
+                  await instanceAnnouncementBloc.dismiss();
+                },
+              );
+            },
+          );
+        }
+      },
+    );
   }
 }
 
