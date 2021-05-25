@@ -8,7 +8,7 @@ import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
-import 'package:uni_links2/uni_links.dart';
+import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 var _logger = Logger('pleroma_api_oauth_service_impl.dart');
