@@ -102,7 +102,9 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
   final DateTime updatedAt;
 
   @override
-  final bool read;
+  // todo: report to mastodon
+  // sometimes field is null but shouldn't be null
+  final bool? read;
 
   @override
   final List<PleromaApiAnnouncementReaction>? reactions;

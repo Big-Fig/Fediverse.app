@@ -19,7 +19,7 @@ extension IPleromaInstanceAnnouncementExtension on IPleromaApiAnnouncement {
         allDay: allDay,
         publishedAt: publishedAt,
         updatedAt: updatedAt,
-        read: read,
+        read: read ?? false,
         content: content,
         reactions: reactions?.toPleromaApiAnnouncementReactions(),
         mentions: mentions?.toPleromaApiMentions(),

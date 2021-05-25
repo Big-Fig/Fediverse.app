@@ -13,7 +13,7 @@ abstract class IMastodonApiAnnouncement {
 
   DateTime get updatedAt;
 
-  bool get read;
+  bool? get read;
 
   List<IMastodonApiAnnouncementReaction>? get reactions;
 
