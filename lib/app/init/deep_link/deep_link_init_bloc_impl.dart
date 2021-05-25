@@ -7,7 +7,7 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_service.dart';
 import 'package:logging/logging.dart';
-import 'package:uni_links2/uni_links.dart';
+import 'package:uni_links/uni_links.dart';
 
 var _logger = Logger("deep_link_init_bloc_impl.dart");
 
