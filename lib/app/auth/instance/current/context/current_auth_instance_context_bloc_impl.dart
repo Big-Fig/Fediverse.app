@@ -955,10 +955,19 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       pleromaWebSocketsService,
     );
 
+    var instanceAnnouncementRepository = InstanceAnnouncementRepository(
+      appDatabase: moorDatabaseService.appDatabase,
+    );
+
+    addDisposable(disposable: instanceAnnouncementRepository);
+    await globalProviderService.asyncInitAndRegister<
+        IInstanceAnnouncementRepository>(instanceAnnouncementRepository);
+
     var webSocketsHandlerManagerBloc = WebSocketsHandlerManagerBloc(
       pleromaWebSocketsService: pleromaWebSocketsService,
       conversationRepository: conversationRepository,
       notificationRepository: notificationRepository,
+      instanceAnnouncementRepository: instanceAnnouncementRepository,
       statusRepository: statusRepository,
       chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
       conversationChatNewMessagesHandlerBloc:
@@ -1007,14 +1016,6 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: filterRepository);
     await globalProviderService
         .asyncInitAndRegister<IFilterRepository>(filterRepository);
-
-    var instanceAnnouncementRepository = InstanceAnnouncementRepository(
-      appDatabase: moorDatabaseService.appDatabase,
-    );
-
-    addDisposable(disposable: instanceAnnouncementRepository);
-    await globalProviderService.asyncInitAndRegister<
-        IInstanceAnnouncementRepository>(instanceAnnouncementRepository);
 
     var filesCacheService = FilesCacheService(
       connectionService: connectionService,

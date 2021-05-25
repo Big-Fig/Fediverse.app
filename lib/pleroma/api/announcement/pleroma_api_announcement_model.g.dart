@@ -14,7 +14,7 @@ PleromaApiAnnouncement _$PleromaApiAnnouncementFromJson(
     allDay: json['all_day'] as bool,
     publishedAt: DateTime.parse(json['published_at'] as String),
     updatedAt: DateTime.parse(json['updated_at'] as String),
-    read: json['read'] as bool,
+    read: json['read'] as bool?,
     reactions: (json['reactions'] as List<dynamic>?)
         ?.map((e) =>
             PleromaApiAnnouncementReaction.fromJson(e as Map<String, dynamic>))

@@ -8,6 +8,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dar
 import 'package:fedi/app/chat/pleroma/websockets/pleroma_chat_websockets_handler_impl.dart';
 import 'package:fedi/app/custom_list/status/list/custom_list_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/hashtag/status/list/hashtag_status_list_websockets_handler_impl.dart';
+import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/public/public_timeline_websockets_handler_impl.dart';
@@ -22,6 +23,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   final IPleromaApiWebSocketsService pleromaWebSocketsService;
   final IConversationChatRepository conversationRepository;
   final INotificationRepository notificationRepository;
+  final IInstanceAnnouncementRepository instanceAnnouncementRepository;
   final IStatusRepository statusRepository;
   final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
   final IConversationChatNewMessagesHandlerBloc
@@ -32,6 +34,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
     required this.pleromaWebSocketsService,
     required this.conversationRepository,
     required this.notificationRepository,
+    required this.instanceAnnouncementRepository,
     required this.statusRepository,
     required this.chatNewMessagesHandlerBloc,
     required this.conversationChatNewMessagesHandlerBloc,
@@ -53,6 +56,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
+        instanceAnnouncementRepository: instanceAnnouncementRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
@@ -70,6 +74,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
+        instanceAnnouncementRepository: instanceAnnouncementRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
@@ -85,6 +90,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
       PleromaChatWebSocketsHandler(
         listenType: listenType,
         notificationRepository: notificationRepository,
+        instanceAnnouncementRepository: instanceAnnouncementRepository,
         conversationRepository: conversationRepository,
         statusRepository: statusRepository,
         pleromaWebSocketsService: pleromaWebSocketsService,
@@ -103,6 +109,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
+        instanceAnnouncementRepository: instanceAnnouncementRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
@@ -129,6 +136,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
+        instanceAnnouncementRepository: instanceAnnouncementRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
@@ -149,6 +157,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
+        instanceAnnouncementRepository: instanceAnnouncementRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
@@ -167,6 +176,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
+        instanceAnnouncementRepository: instanceAnnouncementRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
