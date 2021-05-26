@@ -1,4 +1,4 @@
-import 'package:fedi/app/instance/details/instance_details_app_bar_widget.dart';
+import 'package:fedi/app/instance/app_bar/instance_host_app_bar_widget.dart';
 import 'package:fedi/app/instance/details/instance_details_widget.dart';
 import 'package:fedi/app/instance/details/local/local_instance_details_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +10,7 @@ class LocalInstanceDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: InstanceDetailsPageAppBarWidget(),
+      appBar: InstanceHostAppBarWidget(),
       body: const SafeArea(
         child: InstanceDetailsWidget(),
       ),

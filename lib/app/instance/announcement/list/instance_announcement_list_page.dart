@@ -86,6 +86,7 @@ void goToInstanceAnnouncementListPage(
   );
 }
 
+// ignore: long-method
 MaterialPageRoute createInstanceAnnouncementListPageRoute({
   required BuildContext context,
 }) =>
@@ -113,6 +114,7 @@ MaterialPageRoute createInstanceAnnouncementListPageRoute({
               },
             ),
           );
+
           return bloc;
         },
         child: InstanceAnnouncementCachedPaginationBloc.provideToContext(
@@ -126,8 +128,10 @@ MaterialPageRoute createInstanceAnnouncementListPageRoute({
                   .createFromContext(context);
 
               var instanceAnnouncementCachedListBloc =
-                  IInstanceAnnouncementCachedListBloc.of(context,
-                      listen: false);
+                  IInstanceAnnouncementCachedListBloc.of(
+                context,
+                listen: false,
+              );
 
               bloc.addDisposable(
                 streamSubscription: instanceAnnouncementCachedListBloc

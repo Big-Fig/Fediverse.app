@@ -81,9 +81,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m28(hashtag) => "#${hashtag}";
 
-  static String m29(sizeInMb) => "${sizeInMb} MB";
+  static String m29(instanceDomain) => "Instance: ${instanceDomain}";
 
-  static String m30(instanceDomain) => "Instance: ${instanceDomain}";
+  static String m30(sizeInMb) => "${sizeInMb} MB";
 
   static String m31(mediaType) => "Not supported type ${mediaType}";
 
@@ -927,6 +927,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Contact"),
         "app_instance_details_field_details_title":
             MessageLookupByLibrary.simpleMessage("Details"),
+        "app_instance_details_field_directory_label":
+            MessageLookupByLibrary.simpleMessage("Accounts"),
+        "app_instance_details_field_directory_value":
+            MessageLookupByLibrary.simpleMessage("Directory"),
         "app_instance_details_field_email_label":
             MessageLookupByLibrary.simpleMessage("Email"),
         "app_instance_details_field_federation_enabled_label":
@@ -1012,12 +1016,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Vapid public key"),
         "app_instance_details_field_version_label":
             MessageLookupByLibrary.simpleMessage("Version"),
+        "app_instance_details_title": m29,
         "app_instance_details_value_bool_false":
             MessageLookupByLibrary.simpleMessage("False"),
         "app_instance_details_value_bool_true":
             MessageLookupByLibrary.simpleMessage("True"),
-        "app_instance_details_value_sizeInMb": m29,
-        "app_instance_detials_title": m30,
+        "app_instance_details_value_sizeInMb": m30,
         "app_instance_remote_error_failed_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Remote host don\'t support this feature or network error"),

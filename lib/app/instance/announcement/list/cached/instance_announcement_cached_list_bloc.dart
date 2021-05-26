@@ -25,7 +25,8 @@ abstract class IInstanceAnnouncementCachedListBloc extends DisposableOwner
   Stream<InstanceAnnouncementSettings> get instanceAnnouncementSettingsStream;
 
   Future changeInstanceAnnouncementSettings(
-      InstanceAnnouncementSettings settings);
+    InstanceAnnouncementSettings settings,
+  );
 
   @override
   IPleromaApi get pleromaApi;

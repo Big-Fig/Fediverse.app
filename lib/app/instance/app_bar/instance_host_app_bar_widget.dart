@@ -1,21 +1,21 @@
-import 'package:fedi/app/instance/details/instance_details_bloc.dart';
+import 'package:fedi/app/instance/instance_bloc.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/widgets.dart';
 
-class InstanceDetailsPageAppBarWidget extends StatelessWidget
+class InstanceHostAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
-  const InstanceDetailsPageAppBarWidget({
+  const InstanceHostAppBarWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
+    var instanceBloc = IInstanceBloc.of(context);
 
     return FediPageTitleAppBar(
-      title: S.of(context).app_instance_detials_title(
-            instanceDetailsBloc.instanceUriDomain,
+      title: S.of(context).app_instance_details_title(
+            instanceBloc.instanceUriDomain,
           ),
     );
   }

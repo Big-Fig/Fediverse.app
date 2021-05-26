@@ -68,6 +68,8 @@ extension IPleromaApiInstanceExtension on IPleromaApiInstance {
   }
 
   bool get isPleroma => versionType == PleromaApiInstanceVersionType.pleroma;
+
+  bool get isMastodon => versionType == PleromaApiInstanceVersionType.mastodon;
 }
 
 @JsonSerializable()

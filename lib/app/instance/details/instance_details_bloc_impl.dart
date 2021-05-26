@@ -36,6 +36,8 @@ abstract class InstanceDetailsBloc extends AsyncInitLoadingBloc
 
   @override
   bool get isPleroma => instance!.isPleroma;
+  @override
+  bool get isMastodon => instance!.isMastodon;
 
   @override
   Future<IPleromaApiInstance> refresh() async{

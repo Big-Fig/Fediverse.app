@@ -49,11 +49,12 @@ class AccountHomeTabMenuIntBadgeBloc extends DisposableOwner
     BuildContext context,
   ) {
     return AccountHomeTabMenuIntBadgeBloc(
-        myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        instanceAnnouncementRepository: IInstanceAnnouncementRepository.of(
-          context,
-          listen: false,
-        ));
+      myAccountBloc: IMyAccountBloc.of(context, listen: false),
+      instanceAnnouncementRepository: IInstanceAnnouncementRepository.of(
+        context,
+        listen: false,
+      ),
+    );
   }
 
   static Widget provideToContext(

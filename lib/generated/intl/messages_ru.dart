@@ -82,9 +82,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m28(hashtag) => "#${hashtag}";
 
-  static String m29(sizeInMb) => "${sizeInMb} MB";
+  static String m29(instanceDomain) => "Сервер: ${instanceDomain}";
 
-  static String m30(instanceDomain) => "Сервер: ${instanceDomain}";
+  static String m30(sizeInMb) => "${sizeInMb} MB";
 
   static String m31(mediaType) => "Не поддерживается ${mediaType}";
 
@@ -937,6 +937,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Контакт"),
         "app_instance_details_field_details_title":
             MessageLookupByLibrary.simpleMessage("Детали"),
+        "app_instance_details_field_directory_label":
+            MessageLookupByLibrary.simpleMessage("Аккаунты"),
+        "app_instance_details_field_directory_value":
+            MessageLookupByLibrary.simpleMessage("Все"),
         "app_instance_details_field_email_label":
             MessageLookupByLibrary.simpleMessage("Email"),
         "app_instance_details_field_federation_enabled_label":
@@ -1023,12 +1027,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Vapid public key"),
         "app_instance_details_field_version_label":
             MessageLookupByLibrary.simpleMessage("Версия"),
+        "app_instance_details_title": m29,
         "app_instance_details_value_bool_false":
             MessageLookupByLibrary.simpleMessage("Нет"),
         "app_instance_details_value_bool_true":
             MessageLookupByLibrary.simpleMessage("Да"),
-        "app_instance_details_value_sizeInMb": m29,
-        "app_instance_detials_title": m30,
+        "app_instance_details_value_sizeInMb": m30,
         "app_instance_remote_error_failed_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Удаленный сервер не поддерживает или проблемы с соединением"),

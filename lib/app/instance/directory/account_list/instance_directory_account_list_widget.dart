@@ -3,24 +3,19 @@ import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/cupertino.dart';
 
-class CustomListAccountListWidget extends StatelessWidget {
-  final List<Widget> itemActions;
-
-  const CustomListAccountListWidget({
-    required this.itemActions,
-  });
+class InstanceDirectoryAccountListWidget extends StatelessWidget {
+  const InstanceDirectoryAccountListWidget();
 
   @override
   Widget build(BuildContext context) {
     return AccountPaginationListWidget(
       itemPadding: FediPadding.verticalMediumPadding,
-      accountActions: itemActions,
       accountSelectedCallback: (context, account) =>
           goToLocalAccountDetailsPage(
         context,
         account: account,
       ),
-      key: PageStorageKey('CustomListAccountListWidget'),
+      key: PageStorageKey('InstanceDirectoryAccountListWidget'),
     );
   }
 }

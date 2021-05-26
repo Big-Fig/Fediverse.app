@@ -6220,10 +6220,10 @@ class S {
   }
 
   /// `Instance: {instanceDomain}`
-  String app_instance_detials_title(Object instanceDomain) {
+  String app_instance_details_title(Object instanceDomain) {
     return Intl.message(
       'Instance: $instanceDomain',
-      name: 'app_instance_detials_title',
+      name: 'app_instance_details_title',
       desc: '',
       args: [instanceDomain],
     );
@@ -6236,6 +6236,26 @@ class S {
       name: 'app_account_action_instanceDetails',
       desc: '',
       args: [instanceDomain],
+    );
+  }
+
+  /// `Accounts`
+  String get app_instance_details_field_directory_label {
+    return Intl.message(
+      'Accounts',
+      name: 'app_instance_details_field_directory_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Directory`
+  String get app_instance_details_field_directory_value {
+    return Intl.message(
+      'Directory',
+      name: 'app_instance_details_field_directory_value',
+      desc: '',
+      args: [],
     );
   }
 
