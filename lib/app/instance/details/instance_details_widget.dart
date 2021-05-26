@@ -12,6 +12,8 @@ import 'package:fedi/app/instance/details/instance_details_bloc.dart';
 import 'package:fedi/app/instance/directory/local/local_instance_directory_page.dart';
 import 'package:fedi/app/instance/directory/remote/remote_instance_directory_page.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/instance/trends/local/local_instance_trends_page.dart';
+import 'package:fedi/app/instance/trends/remote/remote_instance_trends_page.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -106,6 +108,7 @@ class _InstanceDetailsBodyWidget extends StatelessWidget {
           ),
           const _InstanceDetailsContactAccountWidget(),
           const _InstanceDetailsDirectoryWidget(),
+          const _InstanceDetailsTrendsWidget(),
           const _InstanceDetailsBodyDetailsWidget(),
           const _InstanceDetailsBodyRegistrationsWidget(),
           const _InstanceDetailsStatsWidget(),
@@ -992,6 +995,57 @@ class _InstanceDetailsDirectoryWidget extends StatelessWidget {
       goToLocalInstanceDirectoryPage(context);
     } else {
       goToRemoteInstanceDirectoryPage(
+        context,
+        remoteInstanceUri: instanceDetailsBloc.instanceUri,
+      );
+    }
+  }
+}
+class _InstanceDetailsTrendsWidget extends StatelessWidget {
+  const _InstanceDetailsTrendsWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
+
+    var instanceLocation = instanceDetailsBloc.instanceLocation;
+
+    var isLocal = instanceLocation == InstanceLocation.local;
+
+    var isTrendsSupported = instanceDetailsBloc.isMastodon;
+
+    if (isTrendsSupported) {
+      return _BaseInstanceDetailsRowWidget(
+        label: S.of(context).app_instance_details_field_trends_label,
+        valueIcon: Icon(
+          FediIcons.chevron_right,
+          color: IFediUiColorTheme.of(context).darkGrey,
+        ),
+        valueOnClick: (BuildContext context) {
+          _goToTrends(
+            context: context,
+            isLocal: isLocal,
+            instanceDetailsBloc: instanceDetailsBloc,
+          );
+        },
+        value: S.of(context).app_instance_details_field_trends_value,
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
+  void _goToTrends({
+    required BuildContext context,
+    required bool isLocal,
+    required IInstanceDetailsBloc instanceDetailsBloc,
+  }) {
+    if (isLocal) {
+      goToLocalInstanceTrendsPage(context);
+    } else {
+      goToRemoteInstanceTrendsPage(
         context,
         remoteInstanceUri: instanceDetailsBloc.instanceUri,
       );

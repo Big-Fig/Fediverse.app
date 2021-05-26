@@ -1002,6 +1002,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Statistic"),
         "app_instance_details_field_stats_userCount_label":
             MessageLookupByLibrary.simpleMessage("Users"),
+        "app_instance_details_field_trends_label":
+            MessageLookupByLibrary.simpleMessage("Trends"),
+        "app_instance_details_field_trends_value":
+            MessageLookupByLibrary.simpleMessage("Hashtags"),
         "app_instance_details_field_uploadAvatar_label":
             MessageLookupByLibrary.simpleMessage("Upload avatar limit"),
         "app_instance_details_field_uploadBackground_label":

@@ -18,7 +18,7 @@ class PleromaApiTrendsService extends BasePleromaApiService
   @override
   Future<List<IPleromaApiTag>> getTrendingTags({
     // ignore: no-magic-number
-    int limit = 10,
+    int? limit = 10,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -28,7 +28,7 @@ class PleromaApiTrendsService extends BasePleromaApiService
         queryArgs: [
           RestRequestQueryArg(
             key: 'limit',
-            value: limit.toString(),
+            value: (limit ?? 10).toString(),
           ),
         ],
       ),
