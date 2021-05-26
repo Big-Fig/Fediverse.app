@@ -187,8 +187,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
   }
 
   @override
-  Stream<DateTime> get updatedAtStream =>
-      instanceAnnouncementStream.map(
+  Stream<DateTime> get updatedAtStream => instanceAnnouncementStream.map(
         (instanceAnnouncement) => instanceAnnouncement.updatedAt,
       );
 
@@ -220,7 +219,8 @@ class InstanceAnnouncementBloc extends DisposableOwner
   }
 
   Future _updateAnnouncement(
-      IInstanceAnnouncement updatedInstanceAnnouncements) async {
+    IInstanceAnnouncement updatedInstanceAnnouncements,
+  ) async {
     await instanceAnnouncementRepository.updateByDbIdInDbType(
       dbId: updatedInstanceAnnouncements.localId!,
       dbItem: updatedInstanceAnnouncements.toDbInstanceAnnouncement(),

@@ -119,7 +119,8 @@ class InstanceAnnouncementCachedListBloc
 
   @override
   Future changeInstanceAnnouncementSettings(
-      InstanceAnnouncementSettings settings) async {
+    InstanceAnnouncementSettings settings,
+  ) async {
     if (instanceAnnouncementSettings != settings) {
       instanceAnnouncementSettingsSubject.add(settings);
     }
