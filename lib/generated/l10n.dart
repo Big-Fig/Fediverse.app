@@ -6259,6 +6259,26 @@ class S {
     );
   }
 
+  /// `Trends`
+  String get app_instance_details_field_trends_label {
+    return Intl.message(
+      'Trends',
+      name: 'app_instance_details_field_trends_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hashtags`
+  String get app_instance_details_field_trends_value {
+    return Intl.message(
+      'Hashtags',
+      name: 'app_instance_details_field_trends_value',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Email`
   String get app_instance_details_field_email_label {
     return Intl.message(

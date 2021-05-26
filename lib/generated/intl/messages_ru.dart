@@ -1013,6 +1013,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Статистика"),
         "app_instance_details_field_stats_userCount_label":
             MessageLookupByLibrary.simpleMessage("Пользователи"),
+        "app_instance_details_field_trends_label":
+            MessageLookupByLibrary.simpleMessage("Тренды"),
+        "app_instance_details_field_trends_value":
+            MessageLookupByLibrary.simpleMessage("Хэштеги"),
         "app_instance_details_field_uploadAvatar_label":
             MessageLookupByLibrary.simpleMessage("Лимит: загрузка аватара"),
         "app_instance_details_field_uploadBackground_label":
