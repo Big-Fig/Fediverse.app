@@ -32,7 +32,7 @@ class AuthHostRegistrationResult {
   final CantRetrieveAppTokenAuthHostException?
       cantRetrieveAppTokenAuthHostException;
   final CantRegisterAppAuthHostException? cantRegisterAppAuthHostException;
-  final dynamic? unknownHostException;
+  final dynamic unknownHostException;
   final PleromaApiOAuthToken token;
   final IPleromaApiInstance pleromaInstance;
   final AuthInstance? authInstance;

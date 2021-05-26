@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';

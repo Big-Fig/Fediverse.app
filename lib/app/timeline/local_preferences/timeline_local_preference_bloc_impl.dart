@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
