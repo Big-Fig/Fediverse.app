@@ -83,16 +83,16 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   bool get multiple => poll.multiple;
 
   @override
-  int get votesCount => poll.votesCount;
+  int? get votesCount => poll.votesCount;
 
   @override
-  Stream<int> get votesCountStream => pollStream.map((poll) => poll.votesCount);
+  Stream<int?> get votesCountStream => pollStream.map((poll) => poll.votesCount);
 
   @override
-  int get votersCount => poll.votersCount;
+  int? get votersCount => poll.votersCount;
 
   @override
-  Stream<int> get votersCountStream => pollStream.map(
+  Stream<int?> get votersCountStream => pollStream.map(
         (poll) => poll.votersCount,
       );
 

@@ -183,7 +183,7 @@ class PollMetadataTotalVotesCountWidget extends StatelessWidget {
     var poll = Provider.of<IPleromaApiPoll>(context);
 
     return Text(
-      S.of(context).app_poll_metadata_totalVotes(poll.votesCount),
+      S.of(context).app_poll_metadata_totalVotes(poll.votesCount ?? 0),
       style: IFediUiTextTheme.of(context).mediumShortGrey,
     );
   }

@@ -7,9 +7,9 @@ abstract class IMastodonApiPoll {
 
   bool get multiple;
 
-  int get votesCount;
+  int? get votesCount;
 
-  int get votersCount;
+  int? get votersCount;
 
   bool get voted;
 
