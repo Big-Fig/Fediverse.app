@@ -31,13 +31,13 @@ abstract class IPollBloc implements IDisposable {
 
   bool get multiple;
 
-  int get votesCount;
+  int? get votesCount;
 
-  Stream<int> get votesCountStream;
+  Stream<int?> get votesCountStream;
 
-  int get votersCount;
+  int? get votersCount;
 
-  Stream<int> get votersCountStream;
+  Stream<int?> get votersCountStream;
 
   void onPollOptionSelected(IPleromaApiPollOption pollOption);
 

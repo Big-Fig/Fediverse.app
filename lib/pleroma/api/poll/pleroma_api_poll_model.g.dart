@@ -32,8 +32,8 @@ PleromaApiPoll _$PleromaApiPollFromJson(Map<String, dynamic> json) {
     ownVotes:
         (json['own_votes'] as List<dynamic>).map((e) => e as int).toList(),
     voted: json['voted'] as bool,
-    votersCount: json['voters_count'] as int,
-    votesCount: json['votes_count'] as int,
+    votersCount: json['voters_count'] as int?,
+    votesCount: json['votes_count'] as int?,
   );
 }
 
