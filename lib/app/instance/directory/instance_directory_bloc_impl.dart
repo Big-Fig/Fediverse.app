@@ -46,7 +46,8 @@ abstract class InstanceDirectoryBloc extends DisposableOwner
 
     addDisposable(disposable: instanceDirectoryAccountListNetworkOnlyListBloc);
     addDisposable(
-        disposable: instanceDirectoryAccountListNetworkOnlyPaginationBloc);
+      disposable: instanceDirectoryAccountListNetworkOnlyPaginationBloc,
+    );
     addDisposable(disposable: accountPaginationListBloc);
 
     unawaited(accountPaginationListBloc.refreshWithoutController());
@@ -76,7 +77,7 @@ abstract class InstanceDirectoryBloc extends DisposableOwner
   late IAccountNetworkOnlyPaginationBloc
       instanceDirectoryAccountListNetworkOnlyPaginationBloc;
 
-  // ignore: avoid-late-keyword
   @override
+  // ignore: avoid-late-keyword
   late IAccountPaginationListBloc accountPaginationListBloc;
 }

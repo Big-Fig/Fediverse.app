@@ -332,7 +332,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     } else {
       EmailConfirmationRequiredAuthHostException?
           emailConfirmationRequiredAuthHostException;
-      dynamic? unknownHostException;
+      dynamic unknownHostException;
 
       AuthInstance? instance;
       try {
