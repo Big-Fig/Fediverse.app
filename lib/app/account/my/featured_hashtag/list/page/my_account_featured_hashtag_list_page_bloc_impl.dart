@@ -63,7 +63,8 @@ class AccountFeaturedHashtagListPageBloc extends DisposableOwner
   late IAccountFeaturedHashtagPaginationListBloc hashtagPaginationListBloc;
 
   static AccountFeaturedHashtagListPageBloc createFromContext(
-      BuildContext context) {
+    BuildContext context,
+  ) {
     var pleromaApiFeaturedTagsService =
         IPleromaApiFeaturedTagsService.of(context, listen: false);
 

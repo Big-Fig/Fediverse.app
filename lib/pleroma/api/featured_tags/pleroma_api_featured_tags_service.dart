@@ -2,6 +2,7 @@ import 'package:fedi/mastodon/api/featured_tags/mastodon_api_featured_tags_servi
 import 'package:fedi/mastodon/api/pagination/mastodon_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -18,15 +19,15 @@ abstract class IPleromaApiFeaturedTagsService
 
   // /api/v1/featured_tags
   @override
-  Future<List<IPleromaFeaturedTag>> getFeaturedTags({
+  Future<List<IPleromaApiFeaturedTag>> getFeaturedTags({
     IMastodonApiPaginationRequest? pagination,
   });
 
   @override
-  Future<List<IPleromaFeaturedTag>> getSuggestedTags();
+  Future<List<IPleromaApiTag>> getSuggestedTags();
 
   @override
-  Future<IPleromaFeaturedTag> featureTag({
+  Future<IPleromaApiFeaturedTag> featureTag({
     required String name,
   });
 }

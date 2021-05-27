@@ -3,6 +3,7 @@ import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_model.d
 import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:path/path.dart' as path;
 
@@ -24,7 +25,7 @@ class PleromaApiFeaturedTagsService extends BasePleromaApiService
   }) : super(restService: restService);
 
   @override
-  Future<List<IPleromaFeaturedTag>> getFeaturedTags({
+  Future<List<IPleromaApiFeaturedTag>> getFeaturedTags({
     IMastodonApiPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -38,12 +39,12 @@ class PleromaApiFeaturedTagsService extends BasePleromaApiService
 
     return restService.processJsonListResponse(
       httpResponse,
-      PleromaFeaturedTag.fromJson,
+      PleromaApiFeaturedTag.fromJson,
     );
   }
 
   @override
-  Future<List<IPleromaFeaturedTag>> getSuggestedTags() async {
+  Future<List<IPleromaApiTag>> getSuggestedTags() async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: _urlPath.join(
@@ -55,12 +56,12 @@ class PleromaApiFeaturedTagsService extends BasePleromaApiService
 
     return restService.processJsonListResponse(
       httpResponse,
-      PleromaFeaturedTag.fromJson,
+      PleromaApiTag.fromJson,
     );
   }
 
   @override
-  Future<IPleromaFeaturedTag> featureTag({
+  Future<IPleromaApiFeaturedTag> featureTag({
     required String name,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
@@ -76,7 +77,7 @@ class PleromaApiFeaturedTagsService extends BasePleromaApiService
 
     return restService.processJsonSingleResponse(
       httpResponse,
-      PleromaFeaturedTag.fromJson,
+      PleromaApiFeaturedTag.fromJson,
     );
   }
 

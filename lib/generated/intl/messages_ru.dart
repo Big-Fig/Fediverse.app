@@ -451,6 +451,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Удалить изменения"),
         "app_account_my_edit_unsaved_dialog_title":
             MessageLookupByLibrary.simpleMessage("Не сохраненные данные"),
+        "app_account_my_featuredTags_action_suggestions":
+            MessageLookupByLibrary.simpleMessage("Вам понравится"),
+        "app_account_my_featuredTags_suggestions_title":
+            MessageLookupByLibrary.simpleMessage("Вам понравится"),
         "app_account_my_featuredTags_title":
             MessageLookupByLibrary.simpleMessage("Избранные тэги"),
         "app_account_my_followRequest_action_add":
