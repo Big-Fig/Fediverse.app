@@ -32,7 +32,9 @@ class HashtagPaginationListWidget extends FediPaginationListWidget<IHashtag> {
 
         return Provider<IHashtag>.value(
           value: item,
-          child: const HashtagListItemWidget(),
+          child: const HashtagListItemWidget(
+            displayHistory: true,
+          ),
         );
       },
     );

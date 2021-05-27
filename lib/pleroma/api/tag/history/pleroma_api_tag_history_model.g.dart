@@ -17,9 +17,9 @@ class PleromaApiTagHistoryAdapter extends TypeAdapter<PleromaApiTagHistory> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaApiTagHistory(
-      accounts: fields[0] as dynamic,
+      accounts: fields[0] as int,
       dayInUnixTimestamp: fields[1] as int?,
-      uses: fields[2] as dynamic,
+      uses: fields[2] as int,
     );
   }
 
@@ -52,9 +52,9 @@ class PleromaApiTagHistoryAdapter extends TypeAdapter<PleromaApiTagHistory> {
 
 PleromaApiTagHistory _$PleromaApiTagHistoryFromJson(Map<String, dynamic> json) {
   return PleromaApiTagHistory(
-    accounts: json['accounts'],
+    accounts: int.parse(json['accounts'] as String),
     dayInUnixTimestamp: json['dayInUnixTimestamp'] as int?,
-    uses: json['uses'],
+    uses: int.parse(json['uses'] as String),
   );
 }
 

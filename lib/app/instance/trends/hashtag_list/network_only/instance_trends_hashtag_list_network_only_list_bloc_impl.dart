@@ -41,9 +41,7 @@ class InstanceTrendsHashtagListNetworkOnlyListBloc extends DisposableOwner
       return [];
     }
 
-    var pleromaHashtags = await pleromaApiTrendsService.getTrendingTags(
-      limit: itemsCountPerPage,
-    );
+    var pleromaHashtags = await pleromaApiTrendsService.getTrendingTags();
     List<IHashtag> result = pleromaHashtags
         .map(
           (pleromaHashtag) => pleromaHashtag.toHashtag(),

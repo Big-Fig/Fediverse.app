@@ -54,8 +54,7 @@ class SearchResultItemPaginationListWidget
   }) {
     SearchResultItemType? previousType;
 
-    var itemWithSeparators =
-        <_ItemOrSeparator<ISearchResultItem>>[];
+    var itemWithSeparators = <_ItemOrSeparator<ISearchResultItem>>[];
     items.forEach((item) {
       if (item.type != previousType) {
         switch (item.type) {
@@ -129,7 +128,9 @@ class SearchResultItemPaginationListWidget
       value: item.hashtag!,
       child: FediListTile(
         isFirstInList: index == 0, //                isFirstInList: false,
-        child: const HashtagListItemWidget(),
+        child: const HashtagListItemWidget(
+          displayHistory: false,
+        ),
       ),
     );
   }

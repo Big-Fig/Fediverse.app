@@ -900,6 +900,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Красивый и легкий клиент Pleroma и Mastodon: - поддержка push-уведомлений; - эмоджи реакции к записям; - Поддержка личных сообщений Mastodon и чатов Pleroma; - загрузка медиафайлов; - оффлайн кешированние данных; - поддержка нескольких учетных записей."),
         "app_googlePlay_shortDescription": MessageLookupByLibrary.simpleMessage(
             "Клиент для серверов социальных сетей Pleroma и Mastodon."),
+        "app_hashtag_history_accounts":
+            MessageLookupByLibrary.simpleMessage("Аккаунты"),
+        "app_hashtag_history_statuses":
+            MessageLookupByLibrary.simpleMessage("Записи"),
         "app_hashtag_remoteInstance_dialog_action_openOnLocal": m26,
         "app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser": m27,
         "app_hashtag_remoteInstance_dialog_title": m28,

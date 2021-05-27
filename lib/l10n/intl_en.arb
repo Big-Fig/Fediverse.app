@@ -748,5 +748,7 @@
     "app_instance_announcement_list_title": "Instance announcements",
     "app_instance_announcement_list_empty": "Instance don't have active announcements.",
     "app_instance_announcement_settings_title": "Announcements settings",
-    "app_instance_announcement_settings_field_withDismissed_label": "Show already read"
+    "app_instance_announcement_settings_field_withDismissed_label": "Show already read",
+    "app_hashtag_history_accounts": "Accounts",
+    "app_hashtag_history_statuses": "Statuses"
 }
