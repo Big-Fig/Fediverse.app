@@ -7398,6 +7398,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Accounts`
+  String get app_hashtag_history_accounts {
+    return Intl.message(
+      'Accounts',
+      name: 'app_hashtag_history_accounts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statuses`
+  String get app_hashtag_history_statuses {
+    return Intl.message(
+      'Statuses',
+      name: 'app_hashtag_history_statuses',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

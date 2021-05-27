@@ -748,5 +748,7 @@
     "app_instance_announcement_list_title": "Объявления сервера",
     "app_instance_announcement_list_empty": "Сервер не имеет активных объявлений.",
     "app_instance_announcement_settings_title": "Настройки объявлений",
-    "app_instance_announcement_settings_field_withDismissed_label": "Показать прочитанные"
+    "app_instance_announcement_settings_field_withDismissed_label": "Показать прочитанные",
+    "app_hashtag_history_accounts": "Аккаунты",
+    "app_hashtag_history_statuses": "Записи"
 }

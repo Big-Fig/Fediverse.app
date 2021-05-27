@@ -891,6 +891,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "A client for Pleroma and Mastodon social network instances"),
         "app_googlePlay_shortDescription": MessageLookupByLibrary.simpleMessage(
             "A client for Pleroma and Mastodon social network instances"),
+        "app_hashtag_history_accounts":
+            MessageLookupByLibrary.simpleMessage("Accounts"),
+        "app_hashtag_history_statuses":
+            MessageLookupByLibrary.simpleMessage("Statuses"),
         "app_hashtag_remoteInstance_dialog_action_openOnLocal": m26,
         "app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser": m27,
         "app_hashtag_remoteInstance_dialog_title": m28,
