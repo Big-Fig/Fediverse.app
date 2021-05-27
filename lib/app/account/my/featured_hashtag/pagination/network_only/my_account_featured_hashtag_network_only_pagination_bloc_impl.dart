@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
-import 'package:fedi/app/account/featured_hashtag/account_featured_hashtag_model.dart';
-import 'package:fedi/app/account/featured_hashtag/pagination/network_only/account_featured_hashtag_network_only_pagination_bloc.dart';
+import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
+import 'package:fedi/app/account/my/featured_hashtag/pagination/network_only/my_account_featured_hashtag_network_only_pagination_bloc.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';

@@ -1,4 +1,4 @@
-import 'package:fedi/app/account/featured_hashtag/list/page/account_featured_hashtag_list_page.dart';
+import 'package:fedi/app/account/my/featured_hashtag/list/page/my_account_featured_hashtag_list_page.dart';
 import 'package:fedi/app/account/my/account_block/my_account_account_block_list_page.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_list_page.dart';
 import 'package:fedi/app/account/my/domain_block/list/my_account_domain_block_list_page.dart';

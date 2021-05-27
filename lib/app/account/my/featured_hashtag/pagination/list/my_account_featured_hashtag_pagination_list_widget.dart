@@ -1,5 +1,5 @@
-import 'package:fedi/app/account/featured_hashtag/account_featured_hashtag_model.dart';
-import 'package:fedi/app/account/featured_hashtag/list/account_featured_hashtag_list_item_widget.dart';
+import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
+import 'package:fedi/app/account/my/featured_hashtag/list/my_account_featured_hashtag_list_item_widget.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';

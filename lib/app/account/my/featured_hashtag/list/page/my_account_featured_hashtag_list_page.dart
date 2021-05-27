@@ -1,5 +1,5 @@
-import 'package:fedi/app/account/featured_hashtag/list/account_featured_hashtag_list_widget.dart';
-import 'package:fedi/app/account/featured_hashtag/list/page/account_featured_hashtag_list_page_bloc_impl.dart';
+import 'package:fedi/app/account/my/featured_hashtag/list/my_account_featured_hashtag_list_widget.dart';
+import 'package:fedi/app/account/my/featured_hashtag/list/page/my_account_featured_hashtag_list_page_bloc_impl.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

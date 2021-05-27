@@ -1,4 +1,4 @@
-import 'package:fedi/app/account/featured_hashtag/account_featured_hashtag_model.dart';
+import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_model.dart';
 
 extension IPleromaFeaturedTagExtension on IPleromaFeaturedTag {
