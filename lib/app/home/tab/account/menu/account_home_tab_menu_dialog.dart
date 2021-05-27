@@ -57,13 +57,11 @@ class _AccountHomeTabMenuDialogBodyAccountItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
       onTap: () {
         goAccountHomeTabMenuActionsPage(context);
       },
-      child:
-      AccountHomeTabMenuActionsIntBadgeBloc.provideToContext(
+      child: AccountHomeTabMenuActionsIntBadgeBloc.provideToContext(
         context,
         child: _AccountHomeTabMenuDialogBodyItem(
           iconWidget: FediIntBadgeWidget(
@@ -189,7 +187,9 @@ class _ListsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
     );
   }
 }
-class _AnnouncementsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
+
+class _AnnouncementsHomeTabMenuDialogBodyListsItemWidget
+    extends StatelessWidget {
   const _AnnouncementsHomeTabMenuDialogBodyListsItemWidget({
     Key? key,
   }) : super(key: key);
@@ -200,8 +200,7 @@ class _AnnouncementsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget
       onTap: () {
         goToInstanceAnnouncementListPage(context);
       },
-      child:
-      InstanceAnnouncementCountIntBadgeBloc.provideToContext(
+      child: InstanceAnnouncementCountIntBadgeBloc.provideToContext(
         context,
         child: _AccountHomeTabMenuDialogBodyItem(
           iconWidget: FediIntBadgeWidget(
@@ -211,7 +210,9 @@ class _AnnouncementsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget
             ),
           ),
           textWidget: _AccountHomeTabMenuDialogBodyItemText(
-            text: S.of(context).app_account_home_tab_menu_action_instance_announcements,
+            text: S
+                .of(context)
+                .app_account_home_tab_menu_action_instance_announcements,
           ),
         ),
       ),

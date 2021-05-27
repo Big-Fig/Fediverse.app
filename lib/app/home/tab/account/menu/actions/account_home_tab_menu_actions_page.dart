@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/featured_hashtag/list/page/account_featured_hashtag_list_page.dart';
 import 'package:fedi/app/account/my/account_block/my_account_account_block_list_page.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_list_page.dart';
 import 'package:fedi/app/account/my/domain_block/list/my_account_domain_block_list_page.dart';
@@ -52,6 +53,7 @@ class _AccountHomeTabMenuActionsBody extends StatelessWidget {
         const _MyAccountSettingsAccountBlocksButton(),
         const _MyAccountSettingsAccountMutesButton(),
         const _MyAccountSettingsDomainBlocksButton(),
+        const _MyAccountSettingsFeaturedTagsButton(),
       ],
     );
   }
@@ -116,6 +118,22 @@ class _MyAccountSettingsFavouritedButton extends StatelessWidget {
       title: S.of(context).app_account_my_action_favourited,
       onClick: () {
         goToMyAccountFavouritedStatusesPage(context);
+      },
+    );
+  }
+}
+
+class _MyAccountSettingsFeaturedTagsButton extends StatelessWidget {
+  const _MyAccountSettingsFeaturedTagsButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_account_my_action_featuredTags,
+      onClick: () {
+        goToAccountFeaturedHashtagListPage(context);
       },
     );
   }

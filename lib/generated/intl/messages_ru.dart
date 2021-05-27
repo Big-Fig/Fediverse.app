@@ -319,6 +319,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Изменить"),
         "app_account_my_action_favourited":
             MessageLookupByLibrary.simpleMessage("Избранное"),
+        "app_account_my_action_featuredTags":
+            MessageLookupByLibrary.simpleMessage("Избранные тэги"),
         "app_account_my_action_filters":
             MessageLookupByLibrary.simpleMessage("Фильтры"),
         "app_account_my_action_followRequests":
@@ -449,6 +451,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Удалить изменения"),
         "app_account_my_edit_unsaved_dialog_title":
             MessageLookupByLibrary.simpleMessage("Не сохраненные данные"),
+        "app_account_my_featuredTags_title":
+            MessageLookupByLibrary.simpleMessage("Избранные тэги"),
         "app_account_my_followRequest_action_add":
             MessageLookupByLibrary.simpleMessage("Добавить"),
         "app_account_my_followRequest_action_ignore":

@@ -7418,6 +7418,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Featured tags`
+  String get app_account_my_action_featuredTags {
+    return Intl.message(
+      'Featured tags',
+      name: 'app_account_my_action_featuredTags',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Featured tags`
+  String get app_account_my_featuredTags_title {
+    return Intl.message(
+      'Featured tags',
+      name: 'app_account_my_featuredTags_title',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
