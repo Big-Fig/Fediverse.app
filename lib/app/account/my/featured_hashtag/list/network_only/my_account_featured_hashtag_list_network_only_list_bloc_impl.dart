@@ -1,6 +1,6 @@
-import 'package:fedi/app/account/featured_hashtag/account_featured_hashtag_model.dart';
-import 'package:fedi/app/account/featured_hashtag/account_featured_hashtag_model_adapter.dart';
-import 'package:fedi/app/account/featured_hashtag/list/network_only/account_featured_hashtag_list_network_only_list_bloc.dart';
+import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
+import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model_adapter.dart';
+import 'package:fedi/app/account/my/featured_hashtag/list/network_only/my_account_featured_hashtag_list_network_only_list_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
