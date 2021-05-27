@@ -317,6 +317,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Edit profile"),
         "app_account_my_action_favourited":
             MessageLookupByLibrary.simpleMessage("Favourites"),
+        "app_account_my_action_featuredTags":
+            MessageLookupByLibrary.simpleMessage("Featured tags"),
         "app_account_my_action_filters":
             MessageLookupByLibrary.simpleMessage("Filters"),
         "app_account_my_action_followRequests":
@@ -445,6 +447,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Discard"),
         "app_account_my_edit_unsaved_dialog_title":
             MessageLookupByLibrary.simpleMessage("You have unsaved changes"),
+        "app_account_my_featuredTags_title":
+            MessageLookupByLibrary.simpleMessage("Featured tags"),
         "app_account_my_followRequest_action_add":
             MessageLookupByLibrary.simpleMessage("Add"),
         "app_account_my_followRequest_action_ignore":

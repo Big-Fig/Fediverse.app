@@ -5,15 +5,5 @@ class InstanceTrendsHashtagListWidget extends StatelessWidget {
   const InstanceTrendsHashtagListWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return HashtagPaginationListWidget(
-        // itemPadding: FediPadding.verticalMediumPadding,
-        // hashtagSelectedCallback: (context, hashtag) =>
-        //     goToLocalHashtagDetailsPage(
-        //   context,
-        //   hashtag: hashtag,
-        // ),
-        // key: PageStorageKey('InstanceTrendsHashtagListWidget'),
-        );
-  }
+  Widget build(BuildContext context) => HashtagPaginationListWidget();
 }
