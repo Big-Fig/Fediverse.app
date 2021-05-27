@@ -752,5 +752,7 @@
     "app_hashtag_history_accounts": "Аккаунты",
     "app_hashtag_history_statuses": "Записи",
     "app_account_my_action_featuredTags": "Избранные тэги",
-    "app_account_my_featuredTags_title": "Избранные тэги"
+    "app_account_my_featuredTags_title": "Избранные тэги",
+    "app_account_my_featuredTags_action_suggestions": "Вам понравится",
+    "app_account_my_featuredTags_suggestions_title": "Вам понравится"
 }

@@ -9,6 +9,8 @@ abstract class IAccountFeaturedHashtagNetworkOnlyPaginationBloc
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IAccountFeaturedHashtagNetworkOnlyPaginationBloc>(context,
-          listen: listen);
+      Provider.of<IAccountFeaturedHashtagNetworkOnlyPaginationBloc>(
+        context,
+        listen: listen,
+      );
 }

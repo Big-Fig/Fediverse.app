@@ -10,10 +10,10 @@ part 'pleroma_api_featured_tags_model.g.dart';
 // 'statuses_count': 36,
 // 'last_status_at': '2019-11-15T07:14:43.524Z'
 
-abstract class IPleromaFeaturedTag implements IMastodonFeaturedTag {}
+abstract class IPleromaApiFeaturedTag implements IMastodonApiFeaturedTag {}
 
 @JsonSerializable()
-class PleromaFeaturedTag implements IJsonObject, IPleromaFeaturedTag {
+class PleromaApiFeaturedTag implements IJsonObject, IPleromaApiFeaturedTag {
   @override
   final String id;
 
@@ -28,23 +28,23 @@ class PleromaFeaturedTag implements IJsonObject, IPleromaFeaturedTag {
   @override
   final String name;
 
-  PleromaFeaturedTag({
+  PleromaApiFeaturedTag({
     required this.id,
     required this.lastStatusAt,
     required this.statusesCount,
     required this.name,
   });
 
-  static PleromaFeaturedTag fromJson(Map<String, dynamic> json) =>
-      _$PleromaFeaturedTagFromJson(json);
+  static PleromaApiFeaturedTag fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiFeaturedTagFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$PleromaFeaturedTagToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiFeaturedTagToJson(this);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaFeaturedTag &&
+      other is PleromaApiFeaturedTag &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           lastStatusAt == other.lastStatusAt &&
@@ -59,7 +59,7 @@ class PleromaFeaturedTag implements IJsonObject, IPleromaFeaturedTag {
       name.hashCode;
 
   @override
-  String toString() => 'PleromaFeaturedTag{'
+  String toString() => 'PleromaApiFeaturedTag{'
       'id: $id, '
       'lastStatusAt: $lastStatusAt, '
       'statusesCount: $statusesCount, '

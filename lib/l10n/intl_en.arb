@@ -752,5 +752,7 @@
   "app_hashtag_history_accounts": "Accounts",
   "app_hashtag_history_statuses": "Statuses",
   "app_account_my_action_featuredTags": "Featured tags",
-  "app_account_my_featuredTags_title": "Featured tags"
+  "app_account_my_featuredTags_title": "Featured tags",
+  "app_account_my_featuredTags_action_suggestions": "Suggestions",
+  "app_account_my_featuredTags_suggestions_title": "Suggestions"
 }

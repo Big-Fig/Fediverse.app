@@ -1,16 +1,17 @@
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/mastodon/api/featured_tags/mastodon_api_featured_tags_model.dart';
 import 'package:fedi/mastodon/api/pagination/mastodon_api_pagination_model.dart';
+import 'package:fedi/mastodon/api/tag/mastodon_api_tag_model.dart';
 
 abstract class IMastodonApiFeaturedTagsService implements IDisposable {
   // /api/v1/endorsements
-  Future<List<IMastodonFeaturedTag>> getFeaturedTags({
+  Future<List<IMastodonApiFeaturedTag>> getFeaturedTags({
     IMastodonApiPaginationRequest? pagination,
   });
 
-  Future<List<IMastodonFeaturedTag>> getSuggestedTags();
+  Future<List<IMastodonApiTag>> getSuggestedTags();
 
-  Future<IMastodonFeaturedTag> featureTag({
+  Future<IMastodonApiFeaturedTag> featureTag({
     required String name,
   });
 

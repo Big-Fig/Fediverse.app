@@ -6,8 +6,9 @@ part of 'pleroma_api_featured_tags_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaFeaturedTag _$PleromaFeaturedTagFromJson(Map<String, dynamic> json) {
-  return PleromaFeaturedTag(
+PleromaApiFeaturedTag _$PleromaApiFeaturedTagFromJson(
+    Map<String, dynamic> json) {
+  return PleromaApiFeaturedTag(
     id: json['id'] as String,
     lastStatusAt: json['last_status_at'] == null
         ? null
@@ -17,7 +18,8 @@ PleromaFeaturedTag _$PleromaFeaturedTagFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaFeaturedTagToJson(PleromaFeaturedTag instance) =>
+Map<String, dynamic> _$PleromaApiFeaturedTagToJson(
+        PleromaApiFeaturedTag instance) =>
     <String, dynamic>{
       'id': instance.id,
       'last_status_at': instance.lastStatusAt?.toIso8601String(),
