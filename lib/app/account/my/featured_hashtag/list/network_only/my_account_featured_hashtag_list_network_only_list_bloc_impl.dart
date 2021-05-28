@@ -28,7 +28,7 @@ class AccountFeaturedHashtagListNetworkOnlyListBloc extends DisposableOwner
   });
 
   @override
-  Future<List<IAccountFeaturedHashtag>> loadItemsFromRemoteForPage({
+  Future<List<IMyAccountFeaturedHashtag>> loadItemsFromRemoteForPage({
     required int pageIndex,
     required int? itemsCountPerPage,
     required String? minId,
@@ -43,10 +43,10 @@ class AccountFeaturedHashtagListNetworkOnlyListBloc extends DisposableOwner
         await pleromaApiFeaturedTagsService.getFeaturedTags(
       pagination: null,
     );
-    List<IAccountFeaturedHashtag> result = pleromaFeaturedHashtags
+    List<IMyAccountFeaturedHashtag> result = pleromaFeaturedHashtags
         .map(
           (pleromaFeaturedHashtag) =>
-              pleromaFeaturedHashtag.toAccountFeaturedHashtag(),
+              pleromaFeaturedHashtag.toMyAccountFeaturedHashtag(),
         )
         .toList();
 

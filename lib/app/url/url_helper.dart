@@ -98,6 +98,7 @@ class UrlHelper {
               url: url,
               history: null,
             ),
+            myAccountFeaturedHashtag: null,
           );
         }
       } else {

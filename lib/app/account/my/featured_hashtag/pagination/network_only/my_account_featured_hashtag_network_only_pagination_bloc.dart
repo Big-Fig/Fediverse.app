@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IAccountFeaturedHashtagNetworkOnlyPaginationBloc
-    implements INetworkOnlyPleromaPaginationBloc<IAccountFeaturedHashtag> {
+    implements INetworkOnlyPleromaPaginationBloc<IMyAccountFeaturedHashtag> {
   static IAccountFeaturedHashtagNetworkOnlyPaginationBloc of(
     BuildContext context, {
     bool listen = true,

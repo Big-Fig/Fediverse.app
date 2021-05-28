@@ -17,8 +17,8 @@ class AccountFeaturedHashtagPaginationListBlocProxyProvider
   Widget build(BuildContext context) {
     return ProxyProvider<
         IAccountFeaturedHashtagPaginationListBloc,
-        IPaginationListBloc<PaginationPage<IAccountFeaturedHashtag>,
-            IAccountFeaturedHashtag>>(
+        IPaginationListBloc<PaginationPage<IMyAccountFeaturedHashtag>,
+            IMyAccountFeaturedHashtag>>(
       update: (context, value, previous) => value,
       child: ProxyProvider<IAccountFeaturedHashtagPaginationListBloc,
           IPaginationListBloc>(

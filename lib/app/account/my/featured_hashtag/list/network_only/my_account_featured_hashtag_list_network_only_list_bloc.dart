@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IAccountFeaturedHashtagListNetworkOnlyListBloc
-    extends INetworkOnlyListBloc<IAccountFeaturedHashtag>
+    extends INetworkOnlyListBloc<IMyAccountFeaturedHashtag>
     implements IAccountFeaturedHashtagListBloc {
   static IAccountFeaturedHashtagListNetworkOnlyListBloc of(
     BuildContext context, {

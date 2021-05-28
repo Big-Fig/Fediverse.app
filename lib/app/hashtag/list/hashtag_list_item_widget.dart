@@ -10,10 +10,10 @@ import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fedi/generated/l10n.dart';
 
 class HashtagListItemWidget extends StatelessWidget {
   final bool displayHistory;
@@ -28,7 +28,11 @@ class HashtagListItemWidget extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        goToHashtagPage(context: context, hashtag: hashtag);
+        goToHashtagPage(
+          context: context,
+          hashtag: hashtag,
+          myAccountFeaturedHashtag: null,
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,14 +104,12 @@ class _HashtagListItemHistoryAccountsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     var hashtag = Provider.of<IHashtag>(context);
     var history = hashtag.history;
 
     if (history?.isNotEmpty != true) {
       return const SizedBox.shrink();
     }
-
 
     return AccountHeaderStatisticBodyWidget(
       valueString: history!.first.accounts.toString(),

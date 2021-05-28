@@ -754,5 +754,9 @@
   "app_account_my_action_featuredTags": "Featured tags",
   "app_account_my_featuredTags_title": "Featured tags",
   "app_account_my_featuredTags_action_suggestions": "Suggestions",
-  "app_account_my_featuredTags_suggestions_title": "Suggestions"
+  "app_account_my_featuredTags_suggestions_title": "Suggestions",
+  "app_account_my_featuredTags_metadata_statusesCount": "Statuses",
+  "app_account_my_featuredTags_metadata_lastStatusAt": "Last",
+  "app_account_my_featuredTags_action_unfeature": "Unfeature",
+  "app_account_my_featuredTags_action_feature": "Feature"
 }

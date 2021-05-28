@@ -10,9 +10,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class AccountFeaturedHashtagNetworkOnlyPaginationBloc
-    extends NetworkOnlyPleromaPaginationBloc<IAccountFeaturedHashtag>
+    extends NetworkOnlyPleromaPaginationBloc<IMyAccountFeaturedHashtag>
     implements IAccountFeaturedHashtagNetworkOnlyPaginationBloc {
-  final INetworkOnlyListBloc<IAccountFeaturedHashtag> listBloc;
+  final INetworkOnlyListBloc<IMyAccountFeaturedHashtag> listBloc;
 
   AccountFeaturedHashtagNetworkOnlyPaginationBloc({
     required this.listBloc,
@@ -36,18 +36,18 @@ class AccountFeaturedHashtagNetworkOnlyPaginationBloc
           context,
           listen: false,
         ),
-        listBloc: Provider.of<INetworkOnlyListBloc<IAccountFeaturedHashtag>>(
+        listBloc: Provider.of<INetworkOnlyListBloc<IMyAccountFeaturedHashtag>>(
           context,
           listen: false,
         ),
       );
 
   @override
-  Future<List<IAccountFeaturedHashtag>> loadItemsFromRemoteForPage({
+  Future<List<IMyAccountFeaturedHashtag>> loadItemsFromRemoteForPage({
     required int pageIndex,
     required int? itemsCountPerPage,
-    required PaginationPage<IAccountFeaturedHashtag>? olderPage,
-    required PaginationPage<IAccountFeaturedHashtag>? newerPage,
+    required PaginationPage<IMyAccountFeaturedHashtag>? olderPage,
+    required PaginationPage<IMyAccountFeaturedHashtag>? newerPage,
   }) {
     return listBloc.loadItemsFromRemoteForPage(
       itemsCountPerPage: itemsCountPerPage,

@@ -7458,6 +7458,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Statuses`
+  String get app_account_my_featuredTags_metadata_statusesCount {
+    return Intl.message(
+      'Statuses',
+      name: 'app_account_my_featuredTags_metadata_statusesCount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last`
+  String get app_account_my_featuredTags_metadata_lastStatusAt {
+    return Intl.message(
+      'Last',
+      name: 'app_account_my_featuredTags_metadata_lastStatusAt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unfeature`
+  String get app_account_my_featuredTags_action_unfeature {
+    return Intl.message(
+      'Unfeature',
+      name: 'app_account_my_featuredTags_action_unfeature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Feature`
+  String get app_account_my_featuredTags_action_feature {
+    return Intl.message(
+      'Feature',
+      name: 'app_account_my_featuredTags_action_feature',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

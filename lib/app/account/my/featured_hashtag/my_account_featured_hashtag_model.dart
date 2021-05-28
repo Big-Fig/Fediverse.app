@@ -1,4 +1,4 @@
-abstract class IAccountFeaturedHashtag {
+abstract class IMyAccountFeaturedHashtag {
   String get remoteId;
 
   String get name;
@@ -8,7 +8,7 @@ abstract class IAccountFeaturedHashtag {
   DateTime? get lastStatusAt;
 }
 
-class AccountFeaturedHashtag extends IAccountFeaturedHashtag {
+class MyAccountFeaturedHashtag extends IMyAccountFeaturedHashtag {
   @override
   final String remoteId;
 
@@ -21,7 +21,7 @@ class AccountFeaturedHashtag extends IAccountFeaturedHashtag {
   @override
   final DateTime? lastStatusAt;
 
-  AccountFeaturedHashtag({
+  MyAccountFeaturedHashtag({
     required this.remoteId,
     required this.name,
     required this.statusesCount,
@@ -31,7 +31,7 @@ class AccountFeaturedHashtag extends IAccountFeaturedHashtag {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AccountFeaturedHashtag &&
+      other is MyAccountFeaturedHashtag &&
           runtimeType == other.runtimeType &&
           remoteId == other.remoteId &&
           name == other.name &&
@@ -46,7 +46,7 @@ class AccountFeaturedHashtag extends IAccountFeaturedHashtag {
       lastStatusAt.hashCode;
 
   @override
-  String toString() => 'AccountFeaturedHashtag{'
+  String toString() => 'MyAccountFeaturedHashtag{'
       'remoteId: $remoteId, '
       'name: $name, '
       'statusesCount: $statusesCount, '
