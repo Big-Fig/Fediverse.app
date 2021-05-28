@@ -943,6 +943,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Chats"),
         "app_init_fail": MessageLookupByLibrary.simpleMessage(
             "Failed to start app.\nTry restart or re-install app."),
+        "app_instance_activity_logins":
+            MessageLookupByLibrary.simpleMessage("Logins"),
+        "app_instance_activity_registrations":
+            MessageLookupByLibrary.simpleMessage("Registrations"),
+        "app_instance_activity_statuses":
+            MessageLookupByLibrary.simpleMessage("Statuses"),
         "app_instance_announcement_list_empty":
             MessageLookupByLibrary.simpleMessage(
                 "Instance don\'t have active announcements."),
@@ -952,6 +958,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Show already read"),
         "app_instance_announcement_settings_title":
             MessageLookupByLibrary.simpleMessage("Announcements settings"),
+        "app_instance_details_field_activity_label":
+            MessageLookupByLibrary.simpleMessage("Activity"),
+        "app_instance_details_field_activity_value":
+            MessageLookupByLibrary.simpleMessage("Statistic"),
         "app_instance_details_field_approvalRequired_label":
             MessageLookupByLibrary.simpleMessage("Approval required"),
         "app_instance_details_field_chatLimit_label":

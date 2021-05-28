@@ -8,6 +8,8 @@ import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_bloc_impl.dart';
 import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
+import 'package:fedi/app/instance/activity/local/local_instance_activity_page.dart';
+import 'package:fedi/app/instance/activity/remote/remote_instance_activity_page.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc.dart';
 import 'package:fedi/app/instance/directory/local/local_instance_directory_page.dart';
 import 'package:fedi/app/instance/directory/remote/remote_instance_directory_page.dart';
@@ -109,6 +111,7 @@ class _InstanceDetailsBodyWidget extends StatelessWidget {
           const _InstanceDetailsContactAccountWidget(),
           const _InstanceDetailsDirectoryWidget(),
           const _InstanceDetailsTrendsWidget(),
+          const _InstanceDetailsActivityWidget(),
           const _InstanceDetailsBodyDetailsWidget(),
           const _InstanceDetailsBodyRegistrationsWidget(),
           const _InstanceDetailsStatsWidget(),
@@ -1001,6 +1004,7 @@ class _InstanceDetailsDirectoryWidget extends StatelessWidget {
     }
   }
 }
+
 class _InstanceDetailsTrendsWidget extends StatelessWidget {
   const _InstanceDetailsTrendsWidget({
     Key? key,
@@ -1052,6 +1056,59 @@ class _InstanceDetailsTrendsWidget extends StatelessWidget {
     }
   }
 }
+
+class _InstanceDetailsActivityWidget extends StatelessWidget {
+  const _InstanceDetailsActivityWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
+
+    var instanceLocation = instanceDetailsBloc.instanceLocation;
+
+    var isLocal = instanceLocation == InstanceLocation.local;
+
+    var isActivitySupported = instanceDetailsBloc.isMastodon;
+
+    if (isActivitySupported) {
+      return _BaseInstanceDetailsRowWidget(
+        label: S.of(context).app_instance_details_field_activity_label,
+        valueIcon: Icon(
+          FediIcons.chevron_right,
+          color: IFediUiColorTheme.of(context).darkGrey,
+        ),
+        valueOnClick: (BuildContext context) {
+          _goToActivity(
+            context: context,
+            isLocal: isLocal,
+            instanceDetailsBloc: instanceDetailsBloc,
+          );
+        },
+        value: S.of(context).app_instance_details_field_activity_value,
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
+  void _goToActivity({
+    required BuildContext context,
+    required bool isLocal,
+    required IInstanceDetailsBloc instanceDetailsBloc,
+  }) {
+    if (isLocal) {
+      goToLocalInstanceActivityPage(context);
+    } else {
+      goToRemoteInstanceActivityPage(
+        context,
+        remoteInstanceUri: instanceDetailsBloc.instanceUri,
+      );
+    }
+  }
+}
+
 
 class _InstanceDetailsPleromaMaxTootCharsLimitWidget extends StatelessWidget {
   const _InstanceDetailsPleromaMaxTootCharsLimitWidget({

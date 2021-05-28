@@ -378,18 +378,18 @@ class PleromaApiInstanceAdapter extends TypeAdapter<PleromaApiInstance> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaApiInstanceHistory _$PleromaApiInstanceHistoryFromJson(
+PleromaApiInstanceActivityItem _$PleromaApiInstanceActivityItemFromJson(
     Map<String, dynamic> json) {
-  return PleromaApiInstanceHistory(
-    logins: json['logins'] as String?,
-    registrations: json['registrations'] as String?,
-    statuses: json['statuses'] as String?,
-    week: json['week'] as String?,
+  return PleromaApiInstanceActivityItem(
+    logins: int.parse(json['logins'] as String),
+    registrations: int.parse(json['registrations'] as String),
+    statuses: int.parse(json['statuses'] as String),
+    week: int.parse(json['week'] as String),
   );
 }
 
-Map<String, dynamic> _$PleromaApiInstanceHistoryToJson(
-        PleromaApiInstanceHistory instance) =>
+Map<String, dynamic> _$PleromaApiInstanceActivityItemToJson(
+        PleromaApiInstanceActivityItem instance) =>
     <String, dynamic>{
       'logins': instance.logins,
       'registrations': instance.registrations,

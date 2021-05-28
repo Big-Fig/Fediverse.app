@@ -14,5 +14,5 @@ abstract class IPleromaApiInstanceService implements IPleromaApi {
 
   Future<List<String>> getPeers();
 
-  Future<List<IPleromaApiInstanceHistory>> getHistory();
+  Future<List<IPleromaApiInstanceActivityItem>> getActivity();
 }

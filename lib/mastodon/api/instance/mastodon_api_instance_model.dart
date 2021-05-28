@@ -6,14 +6,14 @@ import 'package:json_annotation/json_annotation.dart';
 // ignore_for_file: no-magic-number
 part 'mastodon_api_instance_model.g.dart';
 
-abstract class IMastodonApiInstanceHistory {
-  String? get week;
+abstract class IMastodonApiInstanceActivityItem {
+  int get week;
 
-  String? get statuses;
+  int get statuses;
 
-  String? get logins;
+  int get logins;
 
-  String? get registrations;
+  int get registrations;
 }
 
 abstract class IMastodonApiInstance {

@@ -20,7 +20,7 @@ class PleromaApiInstanceService extends BasePleromaApiService
         );
 
   @override
-  Future<List<IPleromaApiInstanceHistory>> getHistory() async {
+  Future<List<IPleromaApiInstanceActivityItem>> getActivity() async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: _urlPath.join(
@@ -32,7 +32,7 @@ class PleromaApiInstanceService extends BasePleromaApiService
 
     return restService.processJsonListResponse(
       httpResponse,
-      PleromaApiInstanceHistory.fromJson,
+      PleromaApiInstanceActivityItem.fromJson,
     );
   }
 

@@ -1,14 +1,12 @@
 import 'dart:math';
 
-import 'package:fedi/app/account/header/account_header_bloc.dart';
-import 'package:fedi/app/account/header/account_header_bloc_impl.dart';
-import 'package:fedi/app/account/header/account_header_statistic_widget.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/hashtag_page.dart';
 import 'package:fedi/app/ui/chart/fedi_chart_line_graph_painter.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
+import 'package:fedi/app/ui/statistic/fedi_statistic_item_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -83,16 +81,14 @@ class _HashtagListItemHistoryWidget extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Provider<IAccountHeaderBloc>.value(
-      value: AccountHeaderBloc(brightness: Brightness.dark),
-      child: Row(
-        children: [
-          const _HashtagListItemStatusesWidget(),
-          const FediSmallHorizontalSpacer(),
-          const _HashtagListItemHistoryAccountsWidget(),
-          const _HashtagListItemHistoryGraphWidget(),
-        ],
-      ),
+    return Row(
+      children: [
+        const _HashtagListItemStatusesWidget(),
+        const FediSmallHorizontalSpacer(),
+        const _HashtagListItemHistoryAccountsWidget(),
+        const FediSmallHorizontalSpacer(),
+        const _HashtagListItemHistoryGraphWidget(),
+      ],
     );
   }
 }
@@ -111,9 +107,10 @@ class _HashtagListItemHistoryAccountsWidget extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return AccountHeaderStatisticBodyWidget(
+    return FediStatisticItemWidget(
       valueString: history!.first.accounts.toString(),
       label: S.of(context).app_hashtag_history_accounts,
+      color: IFediUiColorTheme.of(context).darkGrey,
     );
   }
 }
@@ -132,9 +129,10 @@ class _HashtagListItemStatusesWidget extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return AccountHeaderStatisticBodyWidget(
+    return FediStatisticItemWidget(
       valueString: history!.first.uses.toString(),
       label: S.of(context).app_hashtag_history_statuses,
+      color: IFediUiColorTheme.of(context).darkGrey,
     );
   }
 }
@@ -168,18 +166,21 @@ class _HashtagListItemHistoryGraphWidget extends StatelessWidget {
 
     var labels = featureUses.data.map((d) => '').toList();
 
-    return CustomPaint(
-      // ignore: no-magic-number
-      size: Size(100, 50),
-      painter: FediChartLineGraphPainter(
-        features: [featureUses],
-        labelY: labels,
-        // ignore: no-equal-arguments
-        labelX: labels,
-        fontFamily: null,
-        graphColor: IFediUiColorTheme.of(context).white,
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: CustomPaint(
         // ignore: no-magic-number
-        graphOpacity: 0.2,
+        size: Size(90, 45),
+        painter: FediChartLineGraphPainter(
+          features: [featureUses],
+          labelY: labels,
+          // ignore: no-equal-arguments
+          labelX: labels,
+          fontFamily: null,
+          graphColor: IFediUiColorTheme.of(context).white,
+          // ignore: no-magic-number
+          graphOpacity: 0.2,
+        ),
       ),
     );
   }

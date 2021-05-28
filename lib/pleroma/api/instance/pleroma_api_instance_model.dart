@@ -13,7 +13,7 @@ part 'pleroma_api_instance_model.g.dart';
 
 final _logger = Logger('pleroma_instance_model.dart');
 
-abstract class IPleromaApiInstanceHistory extends IMastodonApiInstanceHistory {}
+abstract class IPleromaApiInstanceActivityItem extends IMastodonApiInstanceActivityItem {}
 
 enum PleromaApiInstanceVersionType { pleroma, mastodon, unknown }
 
@@ -73,21 +73,25 @@ extension IPleromaApiInstanceExtension on IPleromaApiInstance {
 }
 
 @JsonSerializable()
-class PleromaApiInstanceHistory extends IPleromaApiInstanceHistory
+class PleromaApiInstanceActivityItem extends IPleromaApiInstanceActivityItem
     implements IJsonObject {
   @override
-  final String? logins;
+  @JsonKey(fromJson: int.parse)
+  final int logins;
 
   @override
-  final String? registrations;
+  @JsonKey(fromJson: int.parse)
+  final int registrations;
 
   @override
-  final String? statuses;
+  @JsonKey(fromJson: int.parse)
+  final int statuses;
 
   @override
-  final String? week;
+  @JsonKey(fromJson: int.parse)
+  final int week;
 
-  PleromaApiInstanceHistory({
+  PleromaApiInstanceActivityItem({
     required this.logins,
     required this.registrations,
     required this.statuses,
@@ -97,7 +101,7 @@ class PleromaApiInstanceHistory extends IPleromaApiInstanceHistory
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaApiInstanceHistory &&
+      other is PleromaApiInstanceActivityItem &&
           runtimeType == other.runtimeType &&
           logins == other.logins &&
           registrations == other.registrations &&
@@ -113,7 +117,7 @@ class PleromaApiInstanceHistory extends IPleromaApiInstanceHistory
 
   @override
   String toString() {
-    return 'PleromaApiInstanceHistory{'
+    return 'PleromaApiInstanceActivityItem{'
         'logins: $logins, '
         'registrations: $registrations, '
         'statuses: $statuses, '
@@ -121,11 +125,11 @@ class PleromaApiInstanceHistory extends IPleromaApiInstanceHistory
         '}';
   }
 
-  static PleromaApiInstanceHistory fromJson(Map<String, dynamic> json) =>
-      _$PleromaApiInstanceHistoryFromJson(json);
+  static PleromaApiInstanceActivityItem fromJson(Map<String, dynamic> json) =>
+      _$PleromaApiInstanceActivityItemFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$PleromaApiInstanceHistoryToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaApiInstanceActivityItemToJson(this);
 }
 
 abstract class IPleromaApiInstance extends IMastodonApiInstance {

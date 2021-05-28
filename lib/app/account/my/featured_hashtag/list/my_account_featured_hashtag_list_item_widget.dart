@@ -1,6 +1,3 @@
-import 'package:fedi/app/account/header/account_header_bloc.dart';
-import 'package:fedi/app/account/header/account_header_bloc_impl.dart';
-import 'package:fedi/app/account/header/account_header_statistic_widget.dart';
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_bloc.dart';
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
@@ -10,6 +7,7 @@ import 'package:fedi/app/hashtag/hashtag_page.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/statistic/fedi_statistic_item_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -109,12 +107,10 @@ class _AccountFeaturedHashtagListItemStatusesCountWidget
     var accountFeaturedHashtag =
         Provider.of<IMyAccountFeaturedHashtag>(context);
 
-    return Provider<IAccountHeaderBloc>.value(
-      value: AccountHeaderBloc(brightness: Brightness.dark),
-      child: AccountHeaderStatisticBodyWidget(
-        valueString: accountFeaturedHashtag.statusesCount.toString(),
-        label: S.of(context).app_account_my_featuredTags_metadata_statusesCount,
-      ),
+    return FediStatisticItemWidget(
+      label: S.of(context).app_account_my_featuredTags_metadata_statusesCount,
+      valueString: accountFeaturedHashtag.statusesCount.toString(),
+      color: IFediUiColorTheme.of(context).darkGrey,
     );
   }
 }
