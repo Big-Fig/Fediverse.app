@@ -120,36 +120,44 @@ class _HashtagPageAppBarFeaturedAction extends StatelessWidget {
   Widget build(BuildContext context) {
     var hashtagBloc = Provider.of<IHashtagBloc>(context);
 
-    return StreamBuilder<bool>(
-      stream: hashtagBloc.isLoadingFeaturedHashtagStateStream,
-      initialData: hashtagBloc.isLoadingFeaturedHashtagState,
-      builder: (context, snapshot) {
-        var isLoadingFeaturedHashtagState = snapshot.data!;
 
-        return StreamBuilder<bool>(
-          stream: hashtagBloc.featuredStream,
-          initialData: hashtagBloc.featured,
-          builder: (context, snapshot) {
-            var featured = snapshot.data!;
+    var isInstanceSupportFeaturedTags = hashtagBloc.isInstanceSupportFeaturedTags;
 
-            return AsyncOperationButtonBuilderWidget(
-              builder: (context, onPressed) => FediIconButton(
-                color: IFediUiColorTheme.of(context).darkGrey,
-                icon: Icon(featured ? FediIcons.heart_active : FediIcons.heart),
-                onPressed: isLoadingFeaturedHashtagState ? null : onPressed,
-              ),
-              asyncButtonAction: () async {
-                if (featured) {
-                  await hashtagBloc.unFeature();
-                } else {
-                  await hashtagBloc.feature();
-                }
-              },
-            );
-          },
-        );
-      },
-    );
+    if (isInstanceSupportFeaturedTags) {
+      return StreamBuilder<bool>(
+        stream: hashtagBloc.isLoadingFeaturedHashtagStateStream,
+        initialData: hashtagBloc.isLoadingFeaturedHashtagState,
+        builder: (context, snapshot) {
+          var isLoadingFeaturedHashtagState = snapshot.data!;
+
+          return StreamBuilder<bool>(
+            stream: hashtagBloc.featuredStream,
+            initialData: hashtagBloc.featured,
+            builder: (context, snapshot) {
+              var featured = snapshot.data!;
+
+              return AsyncOperationButtonBuilderWidget(
+                builder: (context, onPressed) => FediIconButton(
+                  color: IFediUiColorTheme.of(context).darkGrey,
+                  icon:
+                  Icon(featured ? FediIcons.heart_active : FediIcons.heart),
+                  onPressed: isLoadingFeaturedHashtagState ? null : onPressed,
+                ),
+                asyncButtonAction: () async {
+                  if (featured) {
+                    await hashtagBloc.unFeature();
+                  } else {
+                    await hashtagBloc.feature();
+                  }
+                },
+              );
+            },
+          );
+        },
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }
 

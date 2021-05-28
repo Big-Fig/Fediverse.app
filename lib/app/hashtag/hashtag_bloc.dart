@@ -28,6 +28,8 @@ abstract class IHashtagBloc implements IDisposable {
 
   Stream<bool> get featuredStream;
 
+  bool get isInstanceSupportFeaturedTags;
+
   Future feature();
 
   Future unFeature();

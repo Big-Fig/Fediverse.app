@@ -1,11 +1,12 @@
-import 'package:fedi/app/account/my/featured_hashtag/list/page/my_account_featured_hashtag_list_page.dart';
 import 'package:fedi/app/account/my/account_block/my_account_account_block_list_page.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_list_page.dart';
 import 'package:fedi/app/account/my/domain_block/list/my_account_domain_block_list_page.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_page.dart';
+import 'package:fedi/app/account/my/featured_hashtag/list/page/my_account_featured_hashtag_list_page.dart';
 import 'package:fedi/app/account/my/follow_request/badge/my_account_follow_request_count_int_badge_bloc_impl.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_page.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/list/filter_list_page.dart';
 import 'package:fedi/app/status/draft/list/draft_status_list_page.dart';
 import 'package:fedi/app/status/scheduled/list/scheduled_status_list_page.dart';
@@ -130,12 +131,19 @@ class _MyAccountSettingsFeaturedTagsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_action_featuredTags,
-      onClick: () {
-        goToAccountFeaturedHashtagListPage(context);
-      },
-    );
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var authInstance = currentAuthInstanceBloc.currentInstance!;
+
+    if (authInstance.isFeaturedTagsSupported) {
+      return SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_account_my_action_featuredTags,
+        onClick: () {
+          goToAccountFeaturedHashtagListPage(context);
+        },
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }
 

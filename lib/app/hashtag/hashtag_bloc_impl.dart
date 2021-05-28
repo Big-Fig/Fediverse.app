@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model_adapter.dart';
+import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -15,10 +17,16 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
   final IPleromaApiFeaturedTagsService pleromaApiFeaturedTagsService;
   final bool needLoadFeaturedState;
 
+  final AuthInstance authInstance;
+
+  @override
+  bool get isInstanceSupportFeaturedTags => authInstance.isFeaturedTagsSupported;
+
   HashtagBloc({
     required this.hashtag,
     required this.pleromaApiFeaturedTagsService,
     required this.needLoadFeaturedState,
+    required this.authInstance,
     required IMyAccountFeaturedHashtag? featuredHashtag,
   }) : featuredHashtagSubject = BehaviorSubject.seeded(featuredHashtag) {
     addDisposable(subject: featuredHashtagSubject);
@@ -93,6 +101,8 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
     return HashtagBloc(
       pleromaApiFeaturedTagsService: pleromaApiFeaturedTagsService,
       hashtag: hashtag,
+      authInstance:
+          ICurrentAuthInstanceBloc.of(context, listen: false).currentInstance!,
       featuredHashtag: myAccountFeaturedHashtag,
       needLoadFeaturedState: needLoadFeaturedState,
     );
@@ -117,6 +127,11 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
   }
 
   Future loadFeaturedState() async {
+    if (!isInstanceSupportFeaturedTags) {
+      return;
+    }
+
+    isLoadingFeaturedHashtagStateSubject.add(true);
     var pleromaApiFeaturedTags =
         await pleromaApiFeaturedTagsService.getFeaturedTags();
 
@@ -130,5 +145,7 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
         );
 
     featuredHashtagSubject.add(found);
+
+    isLoadingFeaturedHashtagStateSubject.add(false);
   }
 }
