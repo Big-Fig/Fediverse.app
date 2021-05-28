@@ -6299,6 +6299,26 @@ class S {
     );
   }
 
+  /// `Activity`
+  String get app_instance_details_field_activity_label {
+    return Intl.message(
+      'Activity',
+      name: 'app_instance_details_field_activity_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statistic`
+  String get app_instance_details_field_activity_value {
+    return Intl.message(
+      'Statistic',
+      name: 'app_instance_details_field_activity_value',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Email`
   String get app_instance_details_field_email_label {
     return Intl.message(
@@ -7564,6 +7584,36 @@ class S {
     return Intl.message(
       'Remove',
       name: 'app_account_my_suggestion_action_remove',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statuses`
+  String get app_instance_activity_statuses {
+    return Intl.message(
+      'Statuses',
+      name: 'app_instance_activity_statuses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logins`
+  String get app_instance_activity_logins {
+    return Intl.message(
+      'Logins',
+      name: 'app_instance_activity_logins',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registrations`
+  String get app_instance_activity_registrations {
+    return Intl.message(
+      'Registrations',
+      name: 'app_instance_activity_registrations',
       desc: '',
       args: [],
     );

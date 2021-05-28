@@ -953,6 +953,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Чаты"),
         "app_init_fail": MessageLookupByLibrary.simpleMessage(
             "Ошибка при инициализации.\nПерезапустите или переустановите приложение"),
+        "app_instance_activity_logins":
+            MessageLookupByLibrary.simpleMessage("Пользователи"),
+        "app_instance_activity_registrations":
+            MessageLookupByLibrary.simpleMessage("Регистрации"),
+        "app_instance_activity_statuses":
+            MessageLookupByLibrary.simpleMessage("Записи"),
         "app_instance_announcement_list_empty":
             MessageLookupByLibrary.simpleMessage(
                 "Сервер не имеет активных объявлений."),
@@ -962,6 +968,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Показать прочитанные"),
         "app_instance_announcement_settings_title":
             MessageLookupByLibrary.simpleMessage("Настройки объявлений"),
+        "app_instance_details_field_activity_label":
+            MessageLookupByLibrary.simpleMessage("Активность"),
+        "app_instance_details_field_activity_value":
+            MessageLookupByLibrary.simpleMessage("Статистика"),
         "app_instance_details_field_approvalRequired_label":
             MessageLookupByLibrary.simpleMessage("Необходимо подтверждение"),
         "app_instance_details_field_chatLimit_label":

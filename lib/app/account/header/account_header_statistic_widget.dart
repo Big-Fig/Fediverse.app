@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/statistic/fedi_statistic_item_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,26 +44,15 @@ class AccountHeaderStatisticBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var fediUiTextTheme = IFediUiTextTheme.of(context);
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
     var accountHeaderBloc = IAccountHeaderBloc.of(context);
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          valueString,
-          style: accountHeaderBloc.brightness == Brightness.dark
-              ? fediUiTextTheme.bigShortBoldDarkGrey
-              : fediUiTextTheme.bigShortBoldWhite,
-        ),
-        Text(
-          label,
-          style: accountHeaderBloc.brightness == Brightness.dark
-              ? fediUiTextTheme.mediumTallDarkGrey
-              : fediUiTextTheme.mediumTallWhite,
-        ),
-      ],
+    return FediStatisticItemWidget(
+      label: label,
+      valueString: valueString,
+      color: accountHeaderBloc.brightness == Brightness.dark
+          ? fediUiColorTheme.darkGrey
+          : fediUiColorTheme.white,
     );
   }
 }

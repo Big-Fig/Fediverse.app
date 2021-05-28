@@ -334,12 +334,16 @@ class MockPleromaApiMyAccountService extends _i1.Mock
           .Future<List<_i5.IPleromaApiAccount>>);
   @override
   _i7.Future<List<_i5.IPleromaApiAccount>> getAccountMutes(
-          {_i9.IPleromaApiPaginationRequest? pagination}) =>
+          {_i9.IPleromaApiPaginationRequest? pagination,
+          bool? withRelationship}) =>
       (super.noSuchMethod(
-          Invocation.method(#getAccountMutes, [], {#pagination: pagination}),
-          returnValue: Future<List<_i5.IPleromaApiAccount>>.value(
-              <_i5.IPleromaApiAccount>[])) as _i7
-          .Future<List<_i5.IPleromaApiAccount>>);
+              Invocation.method(#getAccountMutes, [], {
+                #pagination: pagination,
+                #withRelationship: withRelationship
+              }),
+              returnValue: Future<List<_i5.IPleromaApiAccount>>.value(
+                  <_i5.IPleromaApiAccount>[]))
+          as _i7.Future<List<_i5.IPleromaApiAccount>>);
   @override
   void addDisposable(
           {_i10.IDisposable? disposable,

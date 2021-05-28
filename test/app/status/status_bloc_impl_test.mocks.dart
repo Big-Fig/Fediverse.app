@@ -521,28 +521,39 @@ class MockPleromaApiAuthAccountService extends _i1.Mock
   @override
   _i9.Future<List<_i6.IPleromaApiAccount>> getAccountFollowings(
           {String? accountRemoteId,
+          bool? withRelationship,
           _i11.IPleromaApiPaginationRequest? pagination}) =>
       (super.noSuchMethod(
-              Invocation.method(#getAccountFollowings, [],
-                  {#accountRemoteId: accountRemoteId, #pagination: pagination}),
+              Invocation.method(#getAccountFollowings, [], {
+                #accountRemoteId: accountRemoteId,
+                #withRelationship: withRelationship,
+                #pagination: pagination
+              }),
               returnValue: Future<List<_i6.IPleromaApiAccount>>.value(
                   <_i6.IPleromaApiAccount>[]))
           as _i9.Future<List<_i6.IPleromaApiAccount>>);
   @override
-  _i9.Future<_i6.IPleromaApiAccount> getAccount({String? accountRemoteId}) =>
+  _i9.Future<_i6.IPleromaApiAccount> getAccount(
+          {String? accountRemoteId, bool? withRelationship}) =>
       (super.noSuchMethod(
-              Invocation.method(
-                  #getAccount, [], {#accountRemoteId: accountRemoteId}),
+              Invocation.method(#getAccount, [], {
+                #accountRemoteId: accountRemoteId,
+                #withRelationship: withRelationship
+              }),
               returnValue: Future<_i6.IPleromaApiAccount>.value(
                   _FakeIPleromaApiAccount()))
           as _i9.Future<_i6.IPleromaApiAccount>);
   @override
   _i9.Future<List<_i6.PleromaApiAccount>> getAccountFollowers(
           {String? accountRemoteId,
-          _i11.IPleromaApiPaginationRequest? pagination}) =>
+          _i11.IPleromaApiPaginationRequest? pagination,
+          bool? withRelationship}) =>
       (super.noSuchMethod(
-              Invocation.method(#getAccountFollowers, [],
-                  {#accountRemoteId: accountRemoteId, #pagination: pagination}),
+              Invocation.method(#getAccountFollowers, [], {
+                #accountRemoteId: accountRemoteId,
+                #pagination: pagination,
+                #withRelationship: withRelationship
+              }),
               returnValue: Future<List<_i6.PleromaApiAccount>>.value(
                   <_i6.PleromaApiAccount>[]))
           as _i9.Future<List<_i6.PleromaApiAccount>>);
