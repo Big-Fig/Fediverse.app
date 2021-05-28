@@ -1,3 +1,4 @@
+import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/emoji_picker_custom_image_url_category_model.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preferences/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
@@ -35,76 +36,82 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     var currentInstance = currentAuthInstanceBloc.currentInstance!;
     if (currentInstance.isPleroma) {
       // old instances may not have this API
-      var urlHost = currentInstance.urlHost;
-      var urlSchema = currentInstance.urlSchema;
-      unawaited(
-        pleromaApiEmojiService.getCustomEmojis().then(
-          (customEmojis) async {
-            var emojiItems = customEmojis.map(
-              (customEmoji) {
-                var baseUrl = '$urlSchema://$urlHost';
-                var imageUrl = '${customEmoji.imageUrl}';
-
-                if (baseUrl.endsWith('/') && imageUrl.startsWith('/')) {
-                  baseUrl = baseUrl.substring(0, baseUrl.length - 1);
-                }
-
-                return CustomEmojiPickerImageUrlItem(
-                  imageUrl: _urlPath.join(
-                    baseUrl,
-                    imageUrl,
-                  ),
-                  name: customEmoji.name,
-                );
-              },
-            ).toList();
-            await preferenceBloc.setValue(
-              EmojiPickerCustomImageUrlCategoryItems(
-                items: emojiItems,
-              ),
-            );
-          },
-        ).catchError(
-          (e, stackTrace) {
-            _logger.warning(
-              () => 'internalAsyncInit error: fetch remote emoji '
-                  'list',
-              e,
-              stackTrace,
-            );
-          },
-        ),
-      );
+      unawaited(_loadPleroma(currentInstance));
     } else if (currentInstance.isMastodon) {
-      unawaited(
-        mastodonApiEmojiService.getCustomEmojis().then(
-          (customEmojis) async {
-            var emojiItems = customEmojis.map(
-              (customEmoji) {
-                return CustomEmojiPickerImageUrlItem(
-                  imageUrl: customEmoji.staticUrl!,
-                  name: customEmoji.shortcode!,
-                );
-              },
-            ).toList();
-            await preferenceBloc.setValue(
-              EmojiPickerCustomImageUrlCategoryItems(
-                items: emojiItems,
-              ),
-            );
-          },
-        ).catchError(
-          (e, stackTrace) {
-            _logger.warning(
-              () => 'internalAsyncInit error: fetch remote emoji '
-                  'list',
-              e,
-              stackTrace,
-            );
-          },
-        ),
-      );
+      unawaited(_loadMastodon());
     }
+  }
+
+  Future<void> _loadMastodon() async {
+    await mastodonApiEmojiService.getCustomEmojis().then(
+      (customEmojis) async {
+        var emojiItems = customEmojis.map(
+          (customEmoji) {
+            return CustomEmojiPickerImageUrlItem(
+              imageUrl: customEmoji.staticUrl!,
+              name: customEmoji.shortcode!,
+            );
+          },
+        ).toList();
+        await preferenceBloc.setValue(
+          EmojiPickerCustomImageUrlCategoryItems(
+            items: emojiItems,
+          ),
+        );
+      },
+    ).catchError(
+      (e, stackTrace) {
+        _logger.warning(
+          () => 'internalAsyncInit error: fetch remote emoji '
+              'list',
+          e,
+          stackTrace,
+        );
+      },
+    );
+  }
+
+  Future<void> _loadPleroma(AuthInstance currentInstance) async {
+    // old instances may not have this API
+    var urlHost = currentInstance.urlHost;
+    var urlSchema = currentInstance.urlSchema;
+
+    await pleromaApiEmojiService.getCustomEmojis().then(
+      (customEmojis) async {
+        var emojiItems = customEmojis.map(
+          (customEmoji) {
+            var baseUrl = '$urlSchema://$urlHost';
+            var imageUrl = '${customEmoji.imageUrl}';
+
+            if (baseUrl.endsWith('/') && imageUrl.startsWith('/')) {
+              baseUrl = baseUrl.substring(0, baseUrl.length - 1);
+            }
+
+            return CustomEmojiPickerImageUrlItem(
+              imageUrl: _urlPath.join(
+                baseUrl,
+                imageUrl,
+              ),
+              name: customEmoji.name,
+            );
+          },
+        ).toList();
+        await preferenceBloc.setValue(
+          EmojiPickerCustomImageUrlCategoryItems(
+            items: emojiItems,
+          ),
+        );
+      },
+    ).catchError(
+      (e, stackTrace) {
+        _logger.warning(
+          () => 'internalAsyncInit error: fetch remote emoji '
+              'list',
+          e,
+          stackTrace,
+        );
+      },
+    );
   }
 
   @override

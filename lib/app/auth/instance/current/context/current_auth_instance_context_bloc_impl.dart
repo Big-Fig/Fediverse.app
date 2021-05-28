@@ -518,7 +518,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var mastodonApiEmojiService =
         MastodonApiEmojiService(restService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<IMastodonApiEmojiService>(
-        mastodonApiEmojiService);
+      mastodonApiEmojiService,
+    );
     addDisposable(disposable: mastodonApiEmojiService);
 
     var pleromaPushService = PleromaApiPushService(

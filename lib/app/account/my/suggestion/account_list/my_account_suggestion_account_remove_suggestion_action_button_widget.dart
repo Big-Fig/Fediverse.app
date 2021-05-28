@@ -31,6 +31,7 @@ class MyAccountSuggestionAccountRemoveSuggestionActionButtonWidget
         if (suggestionRemoved) {
           return const SizedBox.shrink();
         }
+
         return PleromaAsyncOperationButtonBuilderWidget(
           asyncButtonAction: () async {
             await myAccountSuggestionAccountListNetworkOnlyListBloc
