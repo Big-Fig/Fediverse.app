@@ -4,6 +4,7 @@ import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preference
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/emoji_picker/category/image_url/custom_emoji_picker_image_url_category_bloc.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
+import 'package:fedi/mastodon/api/emoji/mastodon_api_custom_emoji_service.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_service.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
@@ -16,12 +17,14 @@ var _logger = Logger('emoji_picker_custom_image_url_category_bloc_impl.dart');
 class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     implements ICustomEmojiPickerImageUrlCategoryBloc {
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
-  final IPleromaApiEmojiService pleromaEmojiService;
+  final IPleromaApiEmojiService pleromaApiEmojiService;
+  final IMastodonApiEmojiService mastodonApiEmojiService;
   final IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc
       preferenceBloc;
 
   EmojiPickerCustomImageUrlCategoryBloc({
-    required this.pleromaEmojiService,
+    required this.pleromaApiEmojiService,
+    required this.mastodonApiEmojiService,
     required this.currentAuthInstanceBloc,
     required this.preferenceBloc,
   });
@@ -35,7 +38,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
       var urlHost = currentInstance.urlHost;
       var urlSchema = currentInstance.urlSchema;
       unawaited(
-        pleromaEmojiService.getCustomEmojis().then(
+        pleromaApiEmojiService.getCustomEmojis().then(
           (customEmojis) async {
             var emojiItems = customEmojis.map(
               (customEmoji) {
@@ -52,6 +55,35 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
                     imageUrl,
                   ),
                   name: customEmoji.name,
+                );
+              },
+            ).toList();
+            await preferenceBloc.setValue(
+              EmojiPickerCustomImageUrlCategoryItems(
+                items: emojiItems,
+              ),
+            );
+          },
+        ).catchError(
+          (e, stackTrace) {
+            _logger.warning(
+              () => 'internalAsyncInit error: fetch remote emoji '
+                  'list',
+              e,
+              stackTrace,
+            );
+          },
+        ),
+      );
+    } else if (currentInstance.isMastodon) {
+      unawaited(
+        mastodonApiEmojiService.getCustomEmojis().then(
+          (customEmojis) async {
+            var emojiItems = customEmojis.map(
+              (customEmoji) {
+                return CustomEmojiPickerImageUrlItem(
+                  imageUrl: customEmoji.staticUrl!,
+                  name: customEmoji.shortcode!,
                 );
               },
             ).toList();
