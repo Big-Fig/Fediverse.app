@@ -761,6 +761,9 @@
   "app_account_my_featuredTags_metadata_lastStatusAt": "Last",
   "app_account_my_featuredTags_action_unfeature": "Unfeature",
   "app_account_my_featuredTags_action_feature": "Feature",
-  "app_account_my_action_endorsement": "Endorsement",
-  "app_account_my_endorsement_title": "Endorsement"
+  "app_account_my_action_endorsement": "Endorsements",
+  "app_account_my_endorsement_title": "Endorsements",
+  "app_account_my_action_suggestion": "Suggestions",
+  "app_account_my_suggestion_title": "Suggestions",
+  "app_account_my_suggestion_action_remove": "Remove"
 }

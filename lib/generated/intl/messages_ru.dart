@@ -335,6 +335,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Списки"),
         "app_account_my_action_scheduledPosts":
             MessageLookupByLibrary.simpleMessage("Запланированны записи"),
+        "app_account_my_action_suggestion":
+            MessageLookupByLibrary.simpleMessage("Вам понравится"),
         "app_account_my_customList_list_title":
             MessageLookupByLibrary.simpleMessage("Списки"),
         "app_account_my_domainBlock_action_add":
@@ -523,6 +525,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Они появятся здесь, как только вы их добавите."),
         "app_account_my_statuses_scheduled_title":
             MessageLookupByLibrary.simpleMessage("Очередь"),
+        "app_account_my_suggestion_action_remove":
+            MessageLookupByLibrary.simpleMessage("Удалить"),
+        "app_account_my_suggestion_title":
+            MessageLookupByLibrary.simpleMessage("Вам понравится"),
         "app_account_report_action_send":
             MessageLookupByLibrary.simpleMessage("Отправить"),
         "app_account_report_description": MessageLookupByLibrary.simpleMessage(

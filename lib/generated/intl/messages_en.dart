@@ -319,7 +319,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_my_action_edit":
             MessageLookupByLibrary.simpleMessage("Edit profile"),
         "app_account_my_action_endorsement":
-            MessageLookupByLibrary.simpleMessage("Endorsement"),
+            MessageLookupByLibrary.simpleMessage("Endorsements"),
         "app_account_my_action_favourited":
             MessageLookupByLibrary.simpleMessage("Favourites"),
         "app_account_my_action_featuredTags":
@@ -332,6 +332,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Lists"),
         "app_account_my_action_scheduledPosts":
             MessageLookupByLibrary.simpleMessage("Scheduled posts"),
+        "app_account_my_action_suggestion":
+            MessageLookupByLibrary.simpleMessage("Suggestions"),
         "app_account_my_customList_list_title":
             MessageLookupByLibrary.simpleMessage("Lists"),
         "app_account_my_domainBlock_action_add":
@@ -453,7 +455,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_my_edit_unsaved_dialog_title":
             MessageLookupByLibrary.simpleMessage("You have unsaved changes"),
         "app_account_my_endorsement_title":
-            MessageLookupByLibrary.simpleMessage("Endorsement"),
+            MessageLookupByLibrary.simpleMessage("Endorsements"),
         "app_account_my_featuredTags_action_feature":
             MessageLookupByLibrary.simpleMessage("Feature"),
         "app_account_my_featuredTags_action_suggestions":
@@ -519,6 +521,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "When you do, they will show up here."),
         "app_account_my_statuses_scheduled_title":
             MessageLookupByLibrary.simpleMessage("Queue"),
+        "app_account_my_suggestion_action_remove":
+            MessageLookupByLibrary.simpleMessage("Remove"),
+        "app_account_my_suggestion_title":
+            MessageLookupByLibrary.simpleMessage("Suggestions"),
         "app_account_report_action_send":
             MessageLookupByLibrary.simpleMessage("Send"),
         "app_account_report_description": MessageLookupByLibrary.simpleMessage(
