@@ -54,7 +54,7 @@ class AccountActionMoreDialog extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context);
     var isAcctRemoteDomainExist = accountBloc.isAcctRemoteDomainExist;
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-    var currentInstance = currentAuthInstanceBloc.currentInstance;
+    var currentInstance = currentAuthInstanceBloc.currentInstance!;
 
     var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
 
@@ -75,12 +75,16 @@ class AccountActionMoreDialog extends StatelessWidget {
               AccountActionMoreDialog.buildAccountMuteAction(context),
             if (isLocal && isRelationshipLoaded)
               AccountActionMoreDialog.buildAccountBlockAction(context),
+            if (isLocal &&
+                isRelationshipLoaded &&
+                currentInstance.isEndorsementSupported)
+              AccountActionMoreDialog.buildAccountPinAction(context),
             if (isLocal && isAcctRemoteDomainExist && isRelationshipLoaded)
               AccountActionMoreDialog.buildAccountBlockDomainAction(context),
             if (isLocal && showReportAction)
               AccountActionMoreDialog.buildAccountReportAction(context),
             if (isLocal &&
-                currentInstance!.isSubscribeToAccountFeatureSupported! &&
+                currentInstance.isSubscribeToAccountFeatureSupported! &&
                 isRelationshipLoaded)
               AccountActionMoreDialog.buildAccountSubscribeAction(context),
             buildAccountInstanceInfoAction(context),
@@ -124,6 +128,27 @@ class AccountActionMoreDialog extends StatelessWidget {
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
           context: context,
           asyncCode: () async => accountBloc.toggleBlock(),
+        );
+
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  static DialogAction buildAccountPinAction(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+
+    return DialogAction(
+      icon: accountBloc.relationship?.endorsed == true
+          ? FediIcons.pin
+          : FediIcons.unpin,
+      label: accountBloc.relationship?.endorsed == true
+          ? S.of(context).app_account_action_unpin
+          : S.of(context).app_account_action_pin,
+      onAction: (context) async {
+        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          context: context,
+          asyncCode: () async => accountBloc.togglePin(),
         );
 
         Navigator.of(context).pop();

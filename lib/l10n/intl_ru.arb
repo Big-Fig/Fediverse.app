@@ -47,6 +47,8 @@
     "app_account_following_title": "{accountAcct} подписки",
     "app_account_action_follow": "Подписаться",
     "app_account_action_unfollow": "Отписаться",
+    "app_account_action_pin": "Рекомендовать",
+    "app_account_action_unpin": "Не рекомендовать",
     "app_account_action_followRequested": "Подверждение...",
     "app_account_action_message": "Сообщение",
     "app_account_action_block": "Блокировать",

@@ -224,6 +224,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_action_openInBrowser":
             MessageLookupByLibrary.simpleMessage("Open in browser"),
         "app_account_action_openOnRemoteInstance": m2,
+        "app_account_action_pin": MessageLookupByLibrary.simpleMessage("Pin"),
         "app_account_action_popup_title":
             MessageLookupByLibrary.simpleMessage("More actions for:"),
         "app_account_action_report_label":
@@ -237,6 +238,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Unfollow"),
         "app_account_action_unmute":
             MessageLookupByLibrary.simpleMessage("Unmute"),
+        "app_account_action_unpin":
+            MessageLookupByLibrary.simpleMessage("Unpin"),
         "app_account_action_unsubscribe":
             MessageLookupByLibrary.simpleMessage("Unsubscribe"),
         "app_account_block_description": MessageLookupByLibrary.simpleMessage(

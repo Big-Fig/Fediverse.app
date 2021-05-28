@@ -226,6 +226,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_action_openInBrowser":
             MessageLookupByLibrary.simpleMessage("Открыть в браузере"),
         "app_account_action_openOnRemoteInstance": m2,
+        "app_account_action_pin":
+            MessageLookupByLibrary.simpleMessage("Рекомендовать"),
         "app_account_action_popup_title":
             MessageLookupByLibrary.simpleMessage("Больше действий:"),
         "app_account_action_report_label":
@@ -239,6 +241,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Отписаться"),
         "app_account_action_unmute":
             MessageLookupByLibrary.simpleMessage("Показывать обновления"),
+        "app_account_action_unpin":
+            MessageLookupByLibrary.simpleMessage("Не рекомендовать"),
         "app_account_action_unsubscribe":
             MessageLookupByLibrary.simpleMessage("Не получать уведомления"),
         "app_account_block_description": MessageLookupByLibrary.simpleMessage(

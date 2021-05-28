@@ -513,6 +513,26 @@ class S {
     );
   }
 
+  /// `Pin`
+  String get app_account_action_pin {
+    return Intl.message(
+      'Pin',
+      name: 'app_account_action_pin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unpin`
+  String get app_account_action_unpin {
+    return Intl.message(
+      'Unpin',
+      name: 'app_account_action_unpin',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Requested`
   String get app_account_action_followRequested {
     return Intl.message(
