@@ -35,6 +35,8 @@ class AuthInstance extends IJsonObject {
 
   bool get isMastodon => !isPleroma;
 
+  bool get isSupportFeaturedTags => isMastodon;
+
   @HiveField(6)
   final PleromaApiClientApplication? application;
 
@@ -63,6 +65,8 @@ class AuthInstance extends IJsonObject {
   bool? get isSubscribeToAccountFeatureSupported => isPleroma;
 
   bool? get isAccountFavouritesFeatureSupported => isPleroma;
+
+  bool get isFeaturedTagsSupported => isMastodon;
 
   @override
   bool operator ==(Object other) =>
