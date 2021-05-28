@@ -60,6 +60,7 @@ abstract class AccountBloc extends IAccountBloc {
   Future<IPleromaApiAccount> loadRemoteAccount() async {
     return pleromaAccountService!.getAccount(
       accountRemoteId: account.remoteId,
+      withRelationship: false,
     );
   }
 }

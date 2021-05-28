@@ -89,6 +89,7 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           // load in Pleroma way. Use username as id
           var pleromaAccount = await pleromaAccountService.getAccount(
             accountRemoteId: localInstanceRemoteAccount.username,
+            withRelationship: false,
           );
           result = pleromaAccount.toDbAccountWrapper();
         }

@@ -208,11 +208,19 @@ class PleromaApiMyAccountService extends BasePleromaApiService
   @override
   Future<List<IPleromaApiAccount>> getAccountMutes({
     IPleromaApiPaginationRequest? pagination,
+    required bool withRelationship,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: _urlPath.join('api/v1/mutes'),
-        queryArgs: pagination?.toQueryArgs(),
+        queryArgs: [
+          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
+          if (withRelationship && restService.isPleroma)
+            RestRequestQueryArg(
+              key: 'with_relationship',
+              value: 'true',
+            ),
+        ],
       ),
     );
 
