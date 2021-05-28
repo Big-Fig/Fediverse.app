@@ -121,6 +121,7 @@ class RemoteStatusBloc extends StatusBloc {
     if (inReplyToAccountRemoteId != null) {
       var remoteAccount = await pleromaAccountService.getAccount(
         accountRemoteId: inReplyToAccountRemoteId,
+        withRelationship: false,
       );
 
       inReplyToAccountSubject.add(
@@ -185,6 +186,7 @@ class RemoteStatusBloc extends StatusBloc {
       if (pleromaAccountService.isApiReadyToUse) {
         var remoteAccount = await pleromaAccountService.getAccount(
           accountRemoteId: accountRemoteId,
+          withRelationship: false,
         );
 
         account = remoteAccount.toDbAccountWrapper();

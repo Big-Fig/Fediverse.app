@@ -77,6 +77,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
         maxId: maxId,
         limit: itemsCountPerPage,
       ),
+      withRelationship: false,
     );
 
     await accountRepository.upsertAllInRemoteType(

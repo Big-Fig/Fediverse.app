@@ -55,6 +55,7 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
         sinceId: newerThan?.remoteId,
         limit: limit,
       ),
+      withRelationship: false,
     );
 
     if (remoteAccounts.isNotEmpty) {

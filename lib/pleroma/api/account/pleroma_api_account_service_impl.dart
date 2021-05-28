@@ -21,6 +21,7 @@ class PleromaApiAccountService extends BasePleromaApiService
   @override
   Future<List<IPleromaApiAccount>> getAccountFollowings({
     required String? accountRemoteId,
+    required bool withRelationship,
     IPleromaApiPaginationRequest? pagination,
   }) async {
     assert(accountRemoteId?.isNotEmpty == true);
@@ -33,6 +34,11 @@ class PleromaApiAccountService extends BasePleromaApiService
         ),
         queryArgs: [
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
+          if (withRelationship)
+            RestRequestQueryArg(
+              key: 'with_relationship',
+              value: 'true',
+            ),
         ],
       ),
     );
@@ -45,15 +51,23 @@ class PleromaApiAccountService extends BasePleromaApiService
 
   @override
   Future<IPleromaApiAccount> getAccount({
-    required String? accountRemoteId,
+    required String accountRemoteId,
+    required bool withRelationship,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
+    assert(accountRemoteId.isNotEmpty);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
         ),
+        queryArgs: [
+          if (withRelationship)
+            RestRequestQueryArg(
+              key: 'with_relationship',
+              value: 'true',
+            ),
+        ],
       ),
     );
 
@@ -67,6 +81,7 @@ class PleromaApiAccountService extends BasePleromaApiService
   Future<List<PleromaApiAccount>> getAccountFollowers({
     required String accountRemoteId,
     IPleromaApiPaginationRequest? pagination,
+    required bool withRelationship,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -77,6 +92,11 @@ class PleromaApiAccountService extends BasePleromaApiService
         ),
         queryArgs: [
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
+          if (withRelationship)
+            RestRequestQueryArg(
+              key: 'with_relationship',
+              value: 'true',
+            ),
         ],
       ),
     );

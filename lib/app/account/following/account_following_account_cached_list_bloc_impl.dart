@@ -55,6 +55,7 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
         sinceId: newerThan?.remoteId,
         limit: limit,
       ),
+      withRelationship: false,
     );
 
     await accountRepository.batch((batch) {

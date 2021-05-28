@@ -136,6 +136,7 @@ class LocalStatusBloc extends StatusBloc {
         if (pleromaAccountService.isApiReadyToUse) {
           var remoteAccount = await pleromaAccountService.getAccount(
             accountRemoteId: accountRemoteId,
+            withRelationship: false,
           );
           await accountRepository.upsertInRemoteType(
             remoteAccount,
