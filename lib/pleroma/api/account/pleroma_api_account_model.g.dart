@@ -214,13 +214,14 @@ class PleromaApiAccountRelationshipAdapter
       subscribing: fields[12] as bool?,
       blockedBy: fields[13] as bool?,
       note: fields[14] as String?,
+      notifying: fields[15] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, PleromaApiAccountRelationship obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(1)
       ..write(obj.blocking)
       ..writeByte(2)
@@ -246,7 +247,9 @@ class PleromaApiAccountRelationshipAdapter
       ..writeByte(13)
       ..write(obj.blockedBy)
       ..writeByte(14)
-      ..write(obj.note);
+      ..write(obj.note)
+      ..writeByte(15)
+      ..write(obj.notifying);
   }
 
   @override
@@ -419,6 +422,7 @@ PleromaApiAccountRelationship _$PleromaApiAccountRelationshipFromJson(
     subscribing: json['subscribing'] as bool?,
     blockedBy: json['blocked_by'] as bool?,
     note: json['note'] as String?,
+    notifying: json['notifying'] as bool?,
   );
 }
 
@@ -438,6 +442,7 @@ Map<String, dynamic> _$PleromaApiAccountRelationshipToJson(
       'subscribing': instance.subscribing,
       'blocked_by': instance.blockedBy,
       'note': instance.note,
+      'notifying': instance.notifying,
     };
 
 PleromaApiAccountIdentityProof _$PleromaApiAccountIdentityProofFromJson(

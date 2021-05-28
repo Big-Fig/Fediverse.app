@@ -54,6 +54,8 @@ abstract class IMastodonAccountRelationship {
 
   bool? get following;
 
+  bool? get notifying;
+
   String? get id;
 
   bool? get muting;

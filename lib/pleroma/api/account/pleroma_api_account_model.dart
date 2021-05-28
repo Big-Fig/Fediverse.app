@@ -783,6 +783,7 @@ extension IPleromaApiAccountRelationshipExtension
         subscribing: subscribing,
         blockedBy: blockedBy,
         note: note,
+        notifying: notifying,
       );
     }
   }
@@ -844,6 +845,10 @@ class PleromaApiAccountRelationship
   @HiveField(14)
   final String? note;
 
+  @override
+  @HiveField(15)
+  final bool? notifying;
+
   PleromaApiAccountRelationship({
     required this.blocking,
     required this.domainBlocking,
@@ -858,6 +863,7 @@ class PleromaApiAccountRelationship
     required this.subscribing,
     required this.blockedBy,
     required this.note,
+    required this.notifying,
   });
 
   @override
@@ -876,6 +882,7 @@ class PleromaApiAccountRelationship
     bool? subscribing,
     bool? blockedBy,
     String? note,
+    bool? notifying,
   }) =>
       PleromaApiAccountRelationship(
         blocking: blocking ?? this.blocking,
@@ -891,6 +898,7 @@ class PleromaApiAccountRelationship
         subscribing: subscribing ?? this.subscribing,
         blockedBy: blockedBy ?? this.blockedBy,
         note: note ?? this.note,
+        notifying: notifying ?? this.notifying,
       );
 
   @override
@@ -910,6 +918,7 @@ class PleromaApiAccountRelationship
           showingReblogs == other.showingReblogs &&
           subscribing == other.subscribing &&
           blockedBy == other.blockedBy &&
+          notifying == other.notifying &&
           note == other.note;
 
   @override
@@ -926,6 +935,7 @@ class PleromaApiAccountRelationship
       showingReblogs.hashCode ^
       subscribing.hashCode ^
       blockedBy.hashCode ^
+      notifying.hashCode ^
       note.hashCode;
 
   @override
@@ -944,6 +954,7 @@ class PleromaApiAccountRelationship
         'subscribing: $subscribing, '
         'note: $note, '
         'blockedBy: $blockedBy'
+        'notifying: $notifying'
         '}';
   }
 
