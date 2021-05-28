@@ -34,8 +34,8 @@ class AccountFeaturedBlocProxyProvider extends StatelessWidget {
                   bloc.hashtagPaginationListBloc,
               child: ProxyProvider<
                   IAccountFeaturedHashtagListPageBloc,
-                  IPaginationListBloc<PaginationPage<IAccountFeaturedHashtag>,
-                      IAccountFeaturedHashtag>>(
+                  IPaginationListBloc<PaginationPage<IMyAccountFeaturedHashtag>,
+                      IMyAccountFeaturedHashtag>>(
                 update: (context, bloc, previous) =>
                     bloc.hashtagPaginationListBloc,
                 child: child,

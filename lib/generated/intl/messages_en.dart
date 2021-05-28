@@ -447,8 +447,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Discard"),
         "app_account_my_edit_unsaved_dialog_title":
             MessageLookupByLibrary.simpleMessage("You have unsaved changes"),
+        "app_account_my_featuredTags_action_feature":
+            MessageLookupByLibrary.simpleMessage("Feature"),
         "app_account_my_featuredTags_action_suggestions":
             MessageLookupByLibrary.simpleMessage("Suggestions"),
+        "app_account_my_featuredTags_action_unfeature":
+            MessageLookupByLibrary.simpleMessage("Unfeature"),
+        "app_account_my_featuredTags_metadata_lastStatusAt":
+            MessageLookupByLibrary.simpleMessage("Last"),
+        "app_account_my_featuredTags_metadata_statusesCount":
+            MessageLookupByLibrary.simpleMessage("Statuses"),
         "app_account_my_featuredTags_suggestions_title":
             MessageLookupByLibrary.simpleMessage("Suggestions"),
         "app_account_my_featuredTags_title":

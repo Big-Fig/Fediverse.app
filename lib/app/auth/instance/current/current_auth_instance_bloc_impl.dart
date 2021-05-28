@@ -58,4 +58,20 @@ class CurrentAuthInstanceBloc extends DisposableOwner
       await currentLocalPreferenceBloc.setValue(null);
     }
   }
+
+  @override
+  String createHashtagUrl({
+    required String hashtag,
+  }) {
+    var urlHost = currentInstance!.urlHost;
+    var urlSchema = currentInstance!.urlSchema;
+    if (currentInstance!.isMastodon) {
+      return '$urlSchema://$urlHost/tag/$hashtag';
+    } else if (currentInstance!.isPleroma) {
+      return '$urlSchema://$urlHost/tags/$hashtag';
+    } else {
+      // TODO: implement createHashtagUrl
+      throw UnimplementedError();
+    }
+  }
 }

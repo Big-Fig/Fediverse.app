@@ -1,4 +1,8 @@
+import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
+import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/hashtag/hashtag_bloc.dart';
+import 'package:fedi/app/hashtag/hashtag_bloc_impl.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
@@ -9,10 +13,10 @@ import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_dialog.dart';
-import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_dialog.dart';
+import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
@@ -62,7 +66,8 @@ class _HashtagPageState extends State<HashtagPage> {
           centerTitle: false,
           title: '#${hashtag.name}',
           actions: <Widget>[
-            const _HashtagPageOpenInBrowserAction(),
+            const _HashtagPageAppBarFeaturedAction(),
+            const _HashtagPageAppBarOpenInBrowserAction(),
             const _HashtagPageAppBarSettingsActionWidget(),
           ],
         ),
@@ -84,8 +89,8 @@ class _HashtagPageState extends State<HashtagPage> {
   }
 }
 
-class _HashtagPageOpenInBrowserAction extends StatelessWidget {
-  const _HashtagPageOpenInBrowserAction({
+class _HashtagPageAppBarOpenInBrowserAction extends StatelessWidget {
+  const _HashtagPageAppBarOpenInBrowserAction({
     Key? key,
   }) : super(key: key);
 
@@ -106,6 +111,47 @@ class _HashtagPageOpenInBrowserAction extends StatelessWidget {
   }
 }
 
+class _HashtagPageAppBarFeaturedAction extends StatelessWidget {
+  const _HashtagPageAppBarFeaturedAction({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var hashtagBloc = Provider.of<IHashtagBloc>(context);
+
+    return StreamBuilder<bool>(
+      stream: hashtagBloc.isLoadingFeaturedHashtagStateStream,
+      initialData: hashtagBloc.isLoadingFeaturedHashtagState,
+      builder: (context, snapshot) {
+        var isLoadingFeaturedHashtagState = snapshot.data!;
+
+        return StreamBuilder<bool>(
+          stream: hashtagBloc.featuredStream,
+          initialData: hashtagBloc.featured,
+          builder: (context, snapshot) {
+            var featured = snapshot.data!;
+
+            return AsyncOperationButtonBuilderWidget(
+              builder: (context, onPressed) => FediIconButton(
+                color: IFediUiColorTheme.of(context).darkGrey,
+                icon: Icon(featured ? FediIcons.heart_active : FediIcons.heart),
+                onPressed: isLoadingFeaturedHashtagState ? null : onPressed,
+              ),
+              asyncButtonAction: () async {
+                if (featured) {
+                  await hashtagBloc.unFeature();
+                } else {
+                  await hashtagBloc.feature();
+                }
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+}
 
 class _HashtagPageAppBarSettingsActionWidget extends StatelessWidget {
   const _HashtagPageAppBarSettingsActionWidget({
@@ -170,6 +216,7 @@ Future showRemoteInstanceHashtagActionsDialog({
                 url: url,
                 history: null,
               ),
+              myAccountFeaturedHashtag: null,
             );
           },
         ),
@@ -193,18 +240,21 @@ Future showRemoteInstanceHashtagActionsDialog({
 Future goToHashtagPage({
   required BuildContext context,
   required IHashtag hashtag,
+  required IMyAccountFeaturedHashtag? myAccountFeaturedHashtag,
 }) =>
     Navigator.push(
       context,
       createHashtagPageRoute(
         context: context,
         hashtag: hashtag,
+        myAccountFeaturedHashtag: myAccountFeaturedHashtag,
       ),
     );
 
 MaterialPageRoute createHashtagPageRoute({
   required BuildContext context,
   required IHashtag hashtag,
+  required IMyAccountFeaturedHashtag? myAccountFeaturedHashtag,
 }) {
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
@@ -225,7 +275,15 @@ MaterialPageRoute createHashtagPageRoute({
         },
         child: Provider<IHashtag>.value(
           value: hashtag,
-          child: const _HashtagPageWrapper(),
+          child: DisposableProxyProvider<IHashtag, IHashtagBloc>(
+            update: (context, value, previous) => HashtagBloc.createFromContext(
+              context,
+              hashtag: value,
+              myAccountFeaturedHashtag: myAccountFeaturedHashtag,
+              needLoadFeaturedState: true,
+            ),
+            child: const _HashtagPageWrapper(),
+          ),
         ),
       );
     },

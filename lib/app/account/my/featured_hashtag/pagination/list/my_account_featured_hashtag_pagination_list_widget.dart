@@ -1,6 +1,9 @@
-import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:fedi/app/account/my/featured_hashtag/list/my_account_featured_hashtag_list_item_widget.dart';
+import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_bloc.dart';
+import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_bloc_impl.dart';
+import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -8,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class AccountFeaturedHashtagPaginationListWidget
-    extends FediPaginationListWidget<IAccountFeaturedHashtag> {
+    extends FediPaginationListWidget<IMyAccountFeaturedHashtag> {
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const AccountFeaturedHashtagPaginationListWidget({
@@ -18,7 +21,7 @@ class AccountFeaturedHashtagPaginationListWidget
   @override
   ScrollView buildItemsCollectionView({
     BuildContext? context,
-    required List<IAccountFeaturedHashtag> items,
+    required List<IMyAccountFeaturedHashtag> items,
     Widget? header,
     Widget? footer,
   }) {
@@ -31,23 +34,31 @@ class AccountFeaturedHashtagPaginationListWidget
       itemBuilder: (context, index) {
         var item = items[index];
 
-        return Provider<IAccountFeaturedHashtag>.value(
+        return Provider<IMyAccountFeaturedHashtag>.value(
           value: item,
-          child: const AccountFeaturedHashtagListItemWidget(),
+          child: DisposableProxyProvider<IMyAccountFeaturedHashtag,
+              IMyAccountFeaturedHashtagBloc>(
+            update: (context, value, previous) =>
+                MyAccountFeaturedHashtagBloc.createFromContext(
+              context,
+              featuredHashtag: value,
+            ),
+            child: const AccountFeaturedHashtagListItemWidget(),
+          ),
         );
       },
     );
   }
 
   @override
-  IPaginationListBloc<PaginationPage<IAccountFeaturedHashtag>,
-      IAccountFeaturedHashtag> retrievePaginationListBloc(
+  IPaginationListBloc<PaginationPage<IMyAccountFeaturedHashtag>,
+      IMyAccountFeaturedHashtag> retrievePaginationListBloc(
     BuildContext context, {
     bool listen = false,
   }) =>
       Provider.of<
-          IPaginationListBloc<PaginationPage<IAccountFeaturedHashtag>,
-              IAccountFeaturedHashtag>>(
+          IPaginationListBloc<PaginationPage<IMyAccountFeaturedHashtag>,
+              IMyAccountFeaturedHashtag>>(
         context,
         listen: listen,
       );

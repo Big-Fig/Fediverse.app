@@ -2,11 +2,11 @@ import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag
 import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_model.dart';
 
 extension IPleromaFeaturedTagExtension on IPleromaApiFeaturedTag {
-  AccountFeaturedHashtag toAccountFeaturedHashtag() {
-    if (this is AccountFeaturedHashtag) {
-      return this as AccountFeaturedHashtag;
+  MyAccountFeaturedHashtag toMyAccountFeaturedHashtag() {
+    if (this is MyAccountFeaturedHashtag) {
+      return this as MyAccountFeaturedHashtag;
     } else {
-      return AccountFeaturedHashtag(
+      return MyAccountFeaturedHashtag(
         name: name,
         remoteId: id,
         statusesCount: statusesCount,
@@ -16,7 +16,7 @@ extension IPleromaFeaturedTagExtension on IPleromaApiFeaturedTag {
   }
 }
 
-extension IAccountFeaturedHashtagExtension on IAccountFeaturedHashtag {
+extension IAccountFeaturedHashtagExtension on IMyAccountFeaturedHashtag {
   PleromaApiFeaturedTag toPleromaFeaturedTag() {
     if (this is PleromaApiFeaturedTag) {
       return this as PleromaApiFeaturedTag;

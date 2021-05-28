@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 
 abstract class IAccountFeaturedHashtagPaginationListBloc
     implements
-        IPaginationListBloc<PaginationPage<IAccountFeaturedHashtag>,
-            IAccountFeaturedHashtag> {
+        IPaginationListBloc<PaginationPage<IMyAccountFeaturedHashtag>,
+            IMyAccountFeaturedHashtag> {
   static IAccountFeaturedHashtagPaginationListBloc of(
     BuildContext context, {
     bool listen = true,

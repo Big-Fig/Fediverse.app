@@ -9,11 +9,11 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class AccountFeaturedHashtagPaginationListBloc extends PaginationListBloc<
-        PaginationPage<IAccountFeaturedHashtag>, IAccountFeaturedHashtag>
+        PaginationPage<IMyAccountFeaturedHashtag>, IMyAccountFeaturedHashtag>
     implements IAccountFeaturedHashtagPaginationListBloc {
   AccountFeaturedHashtagPaginationListBloc({
-    required IPaginationBloc<PaginationPage<IAccountFeaturedHashtag>,
-            IAccountFeaturedHashtag>
+    required IPaginationBloc<PaginationPage<IMyAccountFeaturedHashtag>,
+            IMyAccountFeaturedHashtag>
         paginationBloc,
     bool loadFromCacheDuringInit = true,
   }) : super(
@@ -27,8 +27,8 @@ class AccountFeaturedHashtagPaginationListBloc extends PaginationListBloc<
   }) {
     return AccountFeaturedHashtagPaginationListBloc(
       paginationBloc: Provider.of<
-          IPaginationBloc<PaginationPage<IAccountFeaturedHashtag>,
-              IAccountFeaturedHashtag>>(
+          IPaginationBloc<PaginationPage<IMyAccountFeaturedHashtag>,
+              IMyAccountFeaturedHashtag>>(
         context,
         listen: false,
       ),

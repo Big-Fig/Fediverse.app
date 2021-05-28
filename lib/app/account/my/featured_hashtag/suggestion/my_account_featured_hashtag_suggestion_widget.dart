@@ -6,5 +6,6 @@ class MyAccountFeaturedHashtagSuggestionWidget extends StatelessWidget {
   const MyAccountFeaturedHashtagSuggestionWidget();
 
   @override
-  Widget build(BuildContext context) => const MyAccountFeaturedHashtagSuggestionHashtagListWidget();
+  Widget build(BuildContext context) =>
+      const MyAccountFeaturedHashtagSuggestionHashtagListWidget();
 }

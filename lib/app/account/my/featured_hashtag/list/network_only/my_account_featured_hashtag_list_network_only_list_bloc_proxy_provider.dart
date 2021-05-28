@@ -16,7 +16,7 @@ class AccountFeaturedHashtagListNetworkOnlyListBlocProxyProvider
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IAccountFeaturedHashtagListNetworkOnlyListBloc,
-        INetworkOnlyListBloc<IAccountFeaturedHashtag>>(
+        INetworkOnlyListBloc<IMyAccountFeaturedHashtag>>(
       update: (context, value, previous) => value,
       child: AccountFeaturedHashtagPaginationListBlocProxyProvider(
         child: child,
