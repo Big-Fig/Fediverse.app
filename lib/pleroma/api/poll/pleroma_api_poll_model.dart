@@ -52,7 +52,7 @@ extension IPleromaApiPollExtension on IPleromaApiPoll {
   bool isOwnVote(IPleromaApiPollOption option) {
     var index = options.indexOf(option);
 
-    return ownVotes.contains(index);
+    return ownVotes != null && ownVotes!.contains(index);
   }
 
   double votesPercent(IPleromaApiPollOption option) {
@@ -208,10 +208,10 @@ class PleromaApiPoll implements IPleromaApiPoll, IJsonObject {
 
   @override
   @JsonKey(name: 'own_votes')
-  final List<int> ownVotes;
+  final List<int>? ownVotes;
 
   @override
-  final bool voted;
+  final bool? voted;
 
   @override
   @JsonKey(name: 'voters_count')

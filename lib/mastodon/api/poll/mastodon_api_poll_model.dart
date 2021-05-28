@@ -11,15 +11,15 @@ abstract class IMastodonApiPoll {
 
   int? get votersCount;
 
-  bool get voted;
+  bool? get voted;
 
-  List<int> get ownVotes;
+  List<int>? get ownVotes;
 
   List<IMastodonPollOption> get options;
 }
 
 extension IMastodonPollExtension on IMastodonApiPoll {
-  bool get isPossibleToVote => !expired && !voted;
+  bool get isPossibleToVote => !expired && voted == false;
 }
 
 abstract class IMastodonPollOption {
