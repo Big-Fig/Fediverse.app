@@ -50,6 +50,7 @@ class AccountActionMoreDialog extends StatelessWidget {
   });
 
   @override
+  // ignore: code-metrics
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
     var isAcctRemoteDomainExist = accountBloc.isAcctRemoteDomainExist;

@@ -7519,21 +7519,51 @@ class S {
     );
   }
 
-  /// `Endorsement`
+  /// `Endorsements`
   String get app_account_my_action_endorsement {
     return Intl.message(
-      'Endorsement',
+      'Endorsements',
       name: 'app_account_my_action_endorsement',
       desc: '',
       args: [],
     );
   }
 
-  /// `Endorsement`
+  /// `Endorsements`
   String get app_account_my_endorsement_title {
     return Intl.message(
-      'Endorsement',
+      'Endorsements',
       name: 'app_account_my_endorsement_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Suggestions`
+  String get app_account_my_action_suggestion {
+    return Intl.message(
+      'Suggestions',
+      name: 'app_account_my_action_suggestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Suggestions`
+  String get app_account_my_suggestion_title {
+    return Intl.message(
+      'Suggestions',
+      name: 'app_account_my_suggestion_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove`
+  String get app_account_my_suggestion_action_remove {
+    return Intl.message(
+      'Remove',
+      name: 'app_account_my_suggestion_action_remove',
       desc: '',
       args: [],
     );

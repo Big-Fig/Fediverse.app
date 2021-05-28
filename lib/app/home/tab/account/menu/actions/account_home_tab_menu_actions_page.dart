@@ -7,6 +7,7 @@ import 'package:fedi/app/account/my/featured_hashtag/list/page/my_account_featur
 import 'package:fedi/app/account/my/follow_request/badge/my_account_follow_request_count_int_badge_bloc_impl.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_page.dart';
+import 'package:fedi/app/account/my/suggestion/my_account_suggestion_page.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/list/filter_list_page.dart';
 import 'package:fedi/app/status/draft/list/draft_status_list_page.dart';
@@ -57,6 +58,7 @@ class _AccountHomeTabMenuActionsBody extends StatelessWidget {
         const _MyAccountSettingsDomainBlocksButton(),
         const _MyAccountSettingsFeaturedTagsButton(),
         const _MyAccountSettingsEndorsementsButton(),
+        const _MyAccountSettingsSuggestionsButton(),
       ],
     );
   }
@@ -164,6 +166,28 @@ class _MyAccountSettingsEndorsementsButton extends StatelessWidget {
         title: S.of(context).app_account_my_action_endorsement,
         onClick: () {
           goToMyAccountEndorsementPage(context);
+        },
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+}
+class _MyAccountSettingsSuggestionsButton extends StatelessWidget {
+  const _MyAccountSettingsSuggestionsButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var authInstance = currentAuthInstanceBloc.currentInstance!;
+
+    if (authInstance.isSuggestionSupported) {
+      return SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_account_my_action_suggestion,
+        onClick: () {
+          goToMyAccountSuggestionPage(context);
         },
       );
     } else {

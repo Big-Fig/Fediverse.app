@@ -24,7 +24,7 @@ class PleromaApiSuggestionsService extends BasePleromaApiService
 
   @override
   Future<List<IPleromaApiAccount>> getSuggestions({
-    required int limit,
+    required int? limit,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -34,7 +34,7 @@ class PleromaApiSuggestionsService extends BasePleromaApiService
         queryArgs: [
           RestRequestQueryArg(
             key: 'limit',
-            value: limit.toString(),
+            value: (limit ?? 40).toString(),
           ),
         ],
       ),
