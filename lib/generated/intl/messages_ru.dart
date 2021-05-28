@@ -317,6 +317,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Черновики"),
         "app_account_my_action_edit":
             MessageLookupByLibrary.simpleMessage("Изменить"),
+        "app_account_my_action_endorsement":
+            MessageLookupByLibrary.simpleMessage("Рекомендации"),
         "app_account_my_action_favourited":
             MessageLookupByLibrary.simpleMessage("Избранное"),
         "app_account_my_action_featuredTags":
@@ -451,6 +453,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Удалить изменения"),
         "app_account_my_edit_unsaved_dialog_title":
             MessageLookupByLibrary.simpleMessage("Не сохраненные данные"),
+        "app_account_my_endorsement_title":
+            MessageLookupByLibrary.simpleMessage("Рекомендации"),
         "app_account_my_featuredTags_action_feature":
             MessageLookupByLibrary.simpleMessage("Добавить"),
         "app_account_my_featuredTags_action_suggestions":

@@ -315,6 +315,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Draft posts"),
         "app_account_my_action_edit":
             MessageLookupByLibrary.simpleMessage("Edit profile"),
+        "app_account_my_action_endorsement":
+            MessageLookupByLibrary.simpleMessage("Endorsement"),
         "app_account_my_action_favourited":
             MessageLookupByLibrary.simpleMessage("Favourites"),
         "app_account_my_action_featuredTags":
@@ -447,6 +449,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Discard"),
         "app_account_my_edit_unsaved_dialog_title":
             MessageLookupByLibrary.simpleMessage("You have unsaved changes"),
+        "app_account_my_endorsement_title":
+            MessageLookupByLibrary.simpleMessage("Endorsement"),
         "app_account_my_featuredTags_action_feature":
             MessageLookupByLibrary.simpleMessage("Feature"),
         "app_account_my_featuredTags_action_suggestions":

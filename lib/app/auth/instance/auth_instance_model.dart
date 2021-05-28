@@ -68,6 +68,8 @@ class AuthInstance extends IJsonObject {
 
   bool get isFeaturedTagsSupported => isMastodon;
 
+  bool get isEndorsementSupported => isMastodon;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

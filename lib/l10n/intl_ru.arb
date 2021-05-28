@@ -758,5 +758,7 @@
     "app_account_my_featuredTags_metadata_statusesCount": "Записей",
     "app_account_my_featuredTags_metadata_lastStatusAt": "Последняя",
     "app_account_my_featuredTags_action_unfeature": "Удалить",
-    "app_account_my_featuredTags_action_feature": "Добавить"
+    "app_account_my_featuredTags_action_feature": "Добавить",
+    "app_account_my_action_endorsement": "Рекомендации",
+    "app_account_my_endorsement_title": "Рекомендации"
 }

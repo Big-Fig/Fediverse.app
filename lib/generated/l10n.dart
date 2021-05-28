@@ -7498,6 +7498,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Endorsement`
+  String get app_account_my_action_endorsement {
+    return Intl.message(
+      'Endorsement',
+      name: 'app_account_my_action_endorsement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Endorsement`
+  String get app_account_my_endorsement_title {
+    return Intl.message(
+      'Endorsement',
+      name: 'app_account_my_endorsement_title',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

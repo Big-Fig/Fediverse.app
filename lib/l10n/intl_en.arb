@@ -758,5 +758,7 @@
   "app_account_my_featuredTags_metadata_statusesCount": "Statuses",
   "app_account_my_featuredTags_metadata_lastStatusAt": "Last",
   "app_account_my_featuredTags_action_unfeature": "Unfeature",
-  "app_account_my_featuredTags_action_feature": "Feature"
+  "app_account_my_featuredTags_action_feature": "Feature",
+  "app_account_my_action_endorsement": "Endorsement",
+  "app_account_my_endorsement_title": "Endorsement"
 }
