@@ -47,6 +47,8 @@
   "app_account_following_title": "{accountAcct} followings",
   "app_account_action_follow": "Follow",
   "app_account_action_unfollow": "Unfollow",
+  "app_account_action_pin": "Pin",
+  "app_account_action_unpin": "Unpin",
   "app_account_action_followRequested": "Requested",
   "app_account_action_message": "Message",
   "app_account_action_block": "Block",
