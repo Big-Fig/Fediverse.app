@@ -128,6 +128,8 @@ import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc_impl.dart'
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/database/database_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fedi/mastodon/api/emoji/mastodon_api_custom_emoji_service.dart';
+import 'package:fedi/mastodon/api/emoji/mastodon_api_custom_emoji_service_impl.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service_impl.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
@@ -512,6 +514,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiEmojiService>(pleromaEmojiService);
     addDisposable(disposable: pleromaEmojiService);
+
+    var mastodonApiEmojiService =
+        MastodonApiEmojiService(restService: pleromaAuthRestService);
+    await globalProviderService.asyncInitAndRegister<IMastodonApiEmojiService>(
+        mastodonApiEmojiService);
+    addDisposable(disposable: mastodonApiEmojiService);
 
     var pleromaPushService = PleromaApiPushService(
       keys: PleromaApiPushSubscriptionKeys(
