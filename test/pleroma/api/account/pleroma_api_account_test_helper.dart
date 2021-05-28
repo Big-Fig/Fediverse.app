@@ -23,6 +23,7 @@ class PleromaApiAccountTestHelper {
         showingReblogs: seed.hashCode % 2 == 1,
         subscribing: seed.hashCode % 2 == 0,
         blockedBy: seed.hashCode % 2 == 1,
+        notifying: seed.hashCode % 5 == 1,
         note: seed + 'note',
       );
 
