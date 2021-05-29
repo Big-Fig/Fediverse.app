@@ -1,7 +1,10 @@
 import 'dart:math';
 
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/hashtag_page.dart';
+import 'package:fedi/app/hashtag/list/hashtag_list_bloc.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/ui/chart/fedi_chart_line_graph_painter.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -26,11 +29,38 @@ class HashtagListItemWidget extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        goToHashtagPage(
-          context: context,
-          hashtag: hashtag,
-          myAccountFeaturedHashtag: null,
+        var hashtagListBloc = IHashtagListBloc.of(
+          context,
+          listen: false,
         );
+
+        var isLocal =
+            hashtagListBloc.instanceLocation == InstanceLocation.local;
+        if (isLocal) {
+          goToHashtagPage(
+            context: context,
+            hashtag: hashtag,
+            myAccountFeaturedHashtag: null,
+          );
+        } else {
+          var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(
+            context,
+            listen: false,
+          );
+
+          var remoteInstanceDomain =
+              hashtagListBloc.remoteInstanceUriOrNull!.host;
+          var localInstanceDomain =
+              currentAuthInstanceBloc.currentInstance!.urlHost;
+
+          showRemoteInstanceHashtagActionsDialog(
+            context: context,
+            url: hashtag.url,
+            remoteInstanceDomain: remoteInstanceDomain,
+            localInstanceDomain: localInstanceDomain,
+            hashtag: hashtag.name,
+          );
+        }
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
