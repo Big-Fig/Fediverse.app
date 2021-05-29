@@ -16,7 +16,6 @@ class FediListSmartRefresherWidget extends StatelessWidget {
   final Future<FediListSmartRefresherLoadingState> Function()? onRefresh;
   final Future<FediListSmartRefresherLoadingState> Function()? onLoading;
   final Future<bool> Function()? onTwoLevel;
-  final OnOffsetChange? onOffsetChange;
   final RefreshController controller;
   final Axis? scrollDirection;
   final bool? reverse;
@@ -39,7 +38,6 @@ class FediListSmartRefresherWidget extends StatelessWidget {
     required this.onRefresh,
     required this.onLoading,
     this.onTwoLevel,
-    this.onOffsetChange,
     this.dragStartBehavior,
     this.primary,
     this.cacheExtent,
@@ -71,8 +69,6 @@ class FediListSmartRefresherWidget extends StatelessWidget {
             _logger.finest(() => 'onLoading $state');
           }
         },
-        onTwoLevel: onTwoLevel,
-        onOffsetChange: onOffsetChange,
         dragStartBehavior: dragStartBehavior,
         primary: primary,
         cacheExtent: cacheExtent,

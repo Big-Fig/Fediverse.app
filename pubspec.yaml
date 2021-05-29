@@ -152,12 +152,7 @@ dependencies:
   video_player: ^2.1.1
 
   # pull to refresh and pull to load more
-  # null-safety fork from original
-  #  pull_to_refresh: ^1.6.4
-  pull_to_refresh:
-    git:
-      url: https://github.com/fzyzcjy/flutter_pulltorefresh.git
-      ref: 0bb4f70dd7540ffe032bbc2a6994df388b4f1c39
+  pull_to_refresh: ^2.0.0
 
   # custom scroll view which fix bugs related to inner scrollables sync
   extended_nested_scroll_view: ^3.0.0
