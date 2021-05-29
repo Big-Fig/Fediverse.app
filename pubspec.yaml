@@ -193,12 +193,6 @@ dependencies:
   # customizable switch widget
   flutter_switch: ^0.3.1
 
-dependency_overrides:
-  # dev_dependencies conflict:
-  # hive_generator 1.0.0 which is null-safe uses web_socket_channel: ^2.0.0
-  # build_runner: ^1.11.5 which is not null-safe uses web_socket_channel: ^1.0.0
-  web_socket_channel: ^2.0.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -208,8 +202,7 @@ dev_dependencies:
   # build tools runner
   # usage example
   # flutter pub run build_runner build --delete-conflicting-outputs
-#  build_runner: ^1.11.5
-  build_runner: ^2.0.2
+  build_runner: ^2.0.4
   # build tool to generate json from & to methods
   json_serializable: ^4.1.1
   # sql orm generator
