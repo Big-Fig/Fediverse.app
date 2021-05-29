@@ -14,10 +14,13 @@ class SearchHashtagsPaginationListBloc
     required this.searchInputBloc,
     required IPaginationBloc<PaginationPage<IHashtag>, IHashtag> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
-    addDisposable(streamSubscription:
-        searchInputBloc.confirmedSearchTermStream.listen((newText) {
-      refreshWithController();
-    }));
+    addDisposable(
+      streamSubscription: searchInputBloc.confirmedSearchTermStream.listen(
+        (newText) {
+          refreshWithController();
+        },
+      ),
+    );
   }
 
   static SearchHashtagsPaginationListBloc createFromContext(

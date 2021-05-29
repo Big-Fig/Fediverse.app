@@ -3,9 +3,10 @@ import 'package:flutter/widgets.dart';
 
 class SearchHashtagsListWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => const
-  SearchHashtagsPaginationListWidget(
+  Widget build(BuildContext context) =>
+      const SearchHashtagsPaginationListWidget(
         key: PageStorageKey('SearchHashtagsListWidget'),
       );
+
   const SearchHashtagsListWidget();
 }
