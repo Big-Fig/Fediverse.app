@@ -1479,8 +1479,10 @@ Future<void> main() async {
       remoteId: accountId1,
     );
 
-    when(pleromaAccountServiceMock.getAccount(accountRemoteId: accountId1))
-        .thenAnswer(
+    when(pleromaAccountServiceMock.getAccount(
+      accountRemoteId: accountId1,
+      withRelationship: false,
+    )).thenAnswer(
       (_) async => account.toPleromaApiAccount(),
     );
 

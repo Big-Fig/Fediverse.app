@@ -391,10 +391,12 @@ PleromaApiInstanceActivityItem _$PleromaApiInstanceActivityItemFromJson(
 Map<String, dynamic> _$PleromaApiInstanceActivityItemToJson(
         PleromaApiInstanceActivityItem instance) =>
     <String, dynamic>{
-      'logins': instance.logins,
-      'registrations': instance.registrations,
-      'statuses': instance.statuses,
-      'week': instance.week,
+      'logins': PleromaApiInstanceActivityItem._intToString(instance.logins),
+      'registrations':
+          PleromaApiInstanceActivityItem._intToString(instance.registrations),
+      'statuses':
+          PleromaApiInstanceActivityItem._intToString(instance.statuses),
+      'week': PleromaApiInstanceActivityItem._intToString(instance.week),
     };
 
 PleromaApiInstancePleromaPart _$PleromaApiInstancePleromaPartFromJson(

@@ -61,7 +61,7 @@ PleromaApiTagHistory _$PleromaApiTagHistoryFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$PleromaApiTagHistoryToJson(
         PleromaApiTagHistory instance) =>
     <String, dynamic>{
-      'accounts': instance.accounts,
+      'accounts': PleromaApiTagHistory._intToString(instance.accounts),
       'dayInUnixTimestamp': instance.dayInUnixTimestamp,
-      'uses': instance.uses,
+      'uses': PleromaApiTagHistory._intToString(instance.uses),
     };

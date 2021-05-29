@@ -13,7 +13,8 @@ part 'pleroma_api_instance_model.g.dart';
 
 final _logger = Logger('pleroma_instance_model.dart');
 
-abstract class IPleromaApiInstanceActivityItem extends IMastodonApiInstanceActivityItem {}
+abstract class IPleromaApiInstanceActivityItem
+    extends IMastodonApiInstanceActivityItem {}
 
 enum PleromaApiInstanceVersionType { pleroma, mastodon, unknown }
 
@@ -76,19 +77,19 @@ extension IPleromaApiInstanceExtension on IPleromaApiInstance {
 class PleromaApiInstanceActivityItem extends IPleromaApiInstanceActivityItem
     implements IJsonObject {
   @override
-  @JsonKey(fromJson: int.parse)
+  @JsonKey(fromJson: int.parse, toJson: _intToString)
   final int logins;
 
   @override
-  @JsonKey(fromJson: int.parse)
+  @JsonKey(fromJson: int.parse, toJson: _intToString)
   final int registrations;
 
   @override
-  @JsonKey(fromJson: int.parse)
+  @JsonKey(fromJson: int.parse, toJson: _intToString)
   final int statuses;
 
   @override
-  @JsonKey(fromJson: int.parse)
+  @JsonKey(fromJson: int.parse, toJson: _intToString)
   final int week;
 
   PleromaApiInstanceActivityItem({
@@ -130,6 +131,8 @@ class PleromaApiInstanceActivityItem extends IPleromaApiInstanceActivityItem
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiInstanceActivityItemToJson(this);
+
+  static String _intToString(int val) => val.toString();
 }
 
 abstract class IPleromaApiInstance extends IMastodonApiInstance {

@@ -463,11 +463,16 @@ void main() {
         AccountTestHelper.createTestAccountRelationship(seed: 'seed11');
     when(pleromaAuthAccountServiceMock.getAccount(
       accountRemoteId: account.remoteId,
+      withRelationship: false,
     )).thenAnswer((_) async => newValue.toPleromaApiAccount());
 
-    when(pleromaAuthAccountServiceMock
-            .getRelationshipWithAccounts(remoteAccountIds: [account.remoteId]))
-        .thenAnswer((_) async => [newRelationship]);
+    when(
+      pleromaAuthAccountServiceMock.getRelationshipWithAccounts(
+        remoteAccountIds: [
+          account.remoteId,
+        ],
+      ),
+    ).thenAnswer((_) async => [newRelationship]);
 
     await accountBloc.refreshFromNetwork(isNeedPreFetchRelationship: true);
     // hack to execute notify callbacks
