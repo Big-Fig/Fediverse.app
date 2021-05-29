@@ -334,9 +334,13 @@ abstract class CachedPaginationListWithNewItemsBloc<
           if (!currentItems.isNotEmpty &&
               mergeNewItemsImmediatelyWhenItemsIsEmpty) {
             // merge immediately
-            mergedNewItemsSubject.add(actuallyNew);
+            if (!mergedNewItemsSubject.isClosed) {
+              mergedNewItemsSubject.add(actuallyNew);
+            }
           } else {
-            unmergedNewItemsSubject.add(actuallyNew);
+            if (!unmergedNewItemsSubject.isClosed) {
+              unmergedNewItemsSubject.add(actuallyNew);
+            }
           }
         }
       },
