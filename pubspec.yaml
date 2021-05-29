@@ -93,7 +93,12 @@ dependencies:
   pedantic: ^1.11.0
 
   # customizable datetime picker
-  flutter_datetime_picker: ^1.5.1
+  # flutter_datetime_picker: ^1.5.1
+  # it is 1.5.1 with fixes for null-safty compile warnings
+  flutter_datetime_picker:
+    git:
+      url: https://github.com/AlexHartford/flutter_datetime_picker.git
+      ref: master
 
   # annotations to generate json from & to methods
   json_annotation: ^4.0.1
@@ -166,7 +171,8 @@ dependencies:
   # unenscape account not field
   html_unescape: ^2.0.0
 
-  # shared preferences support. temporary required by custom emoji picker Todo: refactor and remove
+  # shared preferences support. temporary required by custom emoji picker
+  # Todo: refactor and remove
   shared_preferences: ^2.0.5
 
   # extended text fields with highlight mentions support
