@@ -185,8 +185,9 @@ import 'package:fedi/pleroma/api/status/scheduled/pleroma_api_scheduled_status_s
 import 'package:fedi/pleroma/api/status/scheduled/pleroma_api_scheduled_status_service_impl.dart';
 import 'package:fedi/pleroma/api/suggestions/pleroma_api_suggestions_service.dart';
 import 'package:fedi/pleroma/api/suggestions/pleroma_api_suggestions_service_impl.dart';
+import 'package:fedi/pleroma/api/timeline/auth/pleroma_api_auth_timeline_service.dart';
+import 'package:fedi/pleroma/api/timeline/auth/pleroma_api_auth_timeline_service_impl.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service_impl.dart';
 import 'package:fedi/pleroma/api/trends/pleroma_api_trends_service.dart';
 import 'package:fedi/pleroma/api/trends/pleroma_api_trends_service_impl.dart';
 import 'package:fedi/pleroma/api/web_sockets/pleroma_api_web_sockets_service.dart';
@@ -406,13 +407,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IPleromaApiAccountService>(pleromaAccountService);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiAuthAccountService>(pleromaAccountService);
-
     addDisposable(disposable: pleromaAccountService);
-    var pleromaTimelineService =
-        PleromaApiTimelineService(authRestService: pleromaAuthRestService);
+
+    var pleromaApiAuthTimelineService =
+        PleromaApiAuthTimelineService(authRestService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiTimelineService>(pleromaTimelineService);
-    addDisposable(disposable: pleromaTimelineService);
+        IPleromaApiAuthTimelineService>(pleromaApiAuthTimelineService);
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaApiTimelineService>(pleromaApiAuthTimelineService);
+    addDisposable(disposable: pleromaApiAuthTimelineService);
 
     var pleromaStatusService =
         PleromaApiAuthStatusService(authRestService: pleromaAuthRestService);
