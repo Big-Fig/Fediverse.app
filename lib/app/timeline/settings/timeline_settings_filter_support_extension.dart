@@ -1,8 +1,9 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 
 extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
-  bool isOnlyWithMediaFilterSupportedOnInstance(AuthInstance authInstance) {
+  bool isOnlyWithMediaFilterSupportedOnInstance(
+      IPleromaApiInstance pleromaApiInstance) {
     switch (this) {
       case TimelineType.public:
         return true;
@@ -17,7 +18,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
     }
   }
 
-  bool isExcludeRepliesFilterSupportedOnInstance(AuthInstance authInstance) {
+  bool isExcludeRepliesFilterSupportedOnInstance(
+      IPleromaApiInstance pleromaApiInstance) {
     switch (this) {
       case TimelineType.public:
         return false;
@@ -33,7 +35,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isExcludeNsfwSensitiveFilterSupportedOnInstance(
-    AuthInstance authInstance,
+    IPleromaApiInstance pleromaApiInstance,
   ) {
     // actually we can filter on client-side but this will
     // require additional pagination handling
@@ -41,81 +43,84 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isWebSocketsUpdatesFilterSupportedOnInstance(
-    AuthInstance? authInstance,
+    IPleromaApiInstance? pleromaApiInstance,
   ) {
     // actually we can filter on client-side but this will
     // require additional pagination handling
     return true;
   }
 
-  bool isOnlyRemoteFilterSupportedOnInstance(AuthInstance authInstance) {
+  bool isOnlyRemoteFilterSupportedOnInstance(
+      IPleromaApiInstance pleromaApiInstance) {
     switch (this) {
       case TimelineType.public:
         return true;
 
       case TimelineType.customList:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
 
       case TimelineType.home:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
 
       case TimelineType.hashtag:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
 
       case TimelineType.account:
         return false;
     }
   }
 
-  bool isOnlyLocalFilterSupportedOnInstance(AuthInstance authInstance) {
+  bool isOnlyLocalFilterSupportedOnInstance(
+      IPleromaApiInstance pleromaApiInstance) {
     switch (this) {
       case TimelineType.public:
         return true;
       case TimelineType.customList:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
       case TimelineType.home:
         return true;
       case TimelineType.hashtag:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
       case TimelineType.account:
         return false;
     }
   }
 
-  bool isWithMutedFilterSupportedOnInstance(AuthInstance authInstance) {
+  bool isWithMutedFilterSupportedOnInstance(
+      IPleromaApiInstance pleromaApiInstance) {
     switch (this) {
       case TimelineType.public:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
       case TimelineType.home:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
       case TimelineType.customList:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
       case TimelineType.hashtag:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
       case TimelineType.account:
         return false;
     }
   }
 
   bool isExcludeVisibilitiesFilterSupportedOnInstance(
-    AuthInstance authInstance,
+    IPleromaApiInstance pleromaApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
       case TimelineType.home:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
       case TimelineType.customList:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
       case TimelineType.hashtag:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
       case TimelineType.account:
         return false;
     }
   }
 
   bool isOnlyInListWithRemoteIdFilterSupportedOnInstance(
-    AuthInstance? authInstance,
+    IPleromaApiInstance? pleromaApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
@@ -132,7 +137,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isOnlyFromAccountWithRemoteIdFilterSupportedOnInstance(
-    AuthInstance authInstance,
+    IPleromaApiInstance pleromaApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
@@ -148,7 +153,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
     }
   }
 
-  bool isWithHashtagFilterSupportedOnInstance(AuthInstance authInstance) {
+  bool isWithHashtagFilterSupportedOnInstance(
+      IPleromaApiInstance pleromaApiInstance) {
     switch (this) {
       case TimelineType.public:
         return false;
@@ -163,10 +169,11 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
     }
   }
 
-  bool isOnlyFromInstanceFilterSupportedOnInstance(AuthInstance authInstance) {
+  bool isOnlyFromInstanceFilterSupportedOnInstance(
+      IPleromaApiInstance pleromaApiInstance) {
     switch (this) {
       case TimelineType.public:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
       case TimelineType.customList:
         return false;
       case TimelineType.home:
@@ -178,12 +185,13 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
     }
   }
 
-  bool isReplyVisibilityFilterSupportedOnInstance(AuthInstance authInstance) {
+  bool isReplyVisibilityFilterSupportedOnInstance(
+      IPleromaApiInstance pleromaApiInstance) {
     switch (this) {
       case TimelineType.public:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
       case TimelineType.home:
-        return authInstance.isPleroma;
+        return pleromaApiInstance.isPleroma;
       case TimelineType.customList:
         return false;
       case TimelineType.hashtag:
@@ -193,7 +201,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
     }
   }
 
-  bool isOnlyPinnedFilterSupportedOnInstance(AuthInstance? authInstance) {
+  bool isOnlyPinnedFilterSupportedOnInstance(
+      IPleromaApiInstance? pleromaApiInstance) {
     switch (this) {
       case TimelineType.public:
         return false;
@@ -208,7 +217,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
     }
   }
 
-  bool isExcludeReblogsSupportedOnInstance(AuthInstance authInstance) {
+  bool isExcludeReblogsSupportedOnInstance(
+      IPleromaApiInstance pleromaApiInstance) {
     switch (this) {
       case TimelineType.public:
         return false;

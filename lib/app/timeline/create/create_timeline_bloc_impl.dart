@@ -102,7 +102,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     return EditTimelineSettingsBloc(
       settingsBloc: timelineSettingsBloc,
       timelineType: startType,
-      authInstance: authInstance,
+      pleromaApiInstance: authInstance.info!,
       isNullableValuesPossible: true,
       isEnabled: true,
       webSocketsSettingsBloc: webSocketsSettingsBloc,

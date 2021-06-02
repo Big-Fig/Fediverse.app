@@ -124,9 +124,11 @@ class RemoteStatusBloc extends StatusBloc {
         withRelationship: false,
       );
 
-      inReplyToAccountSubject.add(
-        remoteAccount.toDbAccountWrapper(),
-      );
+      if (!inReplyToAccountSubject.isClosed) {
+        inReplyToAccountSubject.add(
+          remoteAccount.toDbAccountWrapper(),
+        );
+      }
     }
   }
 

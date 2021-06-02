@@ -1,4 +1,3 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/settings/instance/edit/edit_instance_settings_bloc_impl.dart';
 import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibility_multi_select_from_list_form_field_bloc.dart';
 import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibility_multi_select_from_list_form_field_bloc_impl.dart';
@@ -21,6 +20,7 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.d
 import 'package:fedi/form/field/value/validation/value_form_field_non_null_validation.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
@@ -29,7 +29,7 @@ import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.d
 class EditTimelineSettingsBloc
     extends EditInstanceSettingsBloc<TimelineSettings?>
     implements IEditTimelineSettingsBloc {
-  final AuthInstance authInstance;
+  final IPleromaApiInstance pleromaApiInstance;
   @override
   final TimelineType timelineType;
   @override
@@ -87,49 +87,50 @@ class EditTimelineSettingsBloc
   EditTimelineSettingsBloc({
     required this.settingsBloc,
     required this.timelineType,
-    required this.authInstance,
+    required this.pleromaApiInstance,
     required this.isNullableValuesPossible,
     required bool isEnabled,
     required this.webSocketsSettingsBloc,
-  })   : excludeRepliesFieldBloc = BoolValueFormFieldBloc(
+  })  : excludeRepliesFieldBloc = BoolValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.excludeReplies ?? false,
           isEnabled: timelineType
-              .isExcludeRepliesFilterSupportedOnInstance(authInstance),
+              .isExcludeRepliesFilterSupportedOnInstance(pleromaApiInstance),
         ),
         onlyWithMediaFieldBloc = BoolValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyWithMedia ?? false,
           isEnabled: timelineType
-              .isOnlyWithMediaFilterSupportedOnInstance(authInstance),
+              .isOnlyWithMediaFilterSupportedOnInstance(pleromaApiInstance),
         ),
         excludeNsfwSensitiveFieldBloc = BoolValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.excludeNsfwSensitive ?? false,
-          isEnabled: timelineType
-              .isExcludeNsfwSensitiveFilterSupportedOnInstance(authInstance),
+          isEnabled:
+              timelineType.isExcludeNsfwSensitiveFilterSupportedOnInstance(
+                  pleromaApiInstance),
         ),
         onlyRemoteFieldBloc = BoolValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyRemote ?? false,
-          isEnabled:
-              timelineType.isOnlyRemoteFilterSupportedOnInstance(authInstance),
+          isEnabled: timelineType
+              .isOnlyRemoteFilterSupportedOnInstance(pleromaApiInstance),
         ),
         onlyLocalFieldBloc = BoolValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyLocal ?? false,
-          isEnabled:
-              timelineType.isOnlyLocalFilterSupportedOnInstance(authInstance),
+          isEnabled: timelineType
+              .isOnlyLocalFilterSupportedOnInstance(pleromaApiInstance),
         ),
         onlyPinnedFieldBloc = BoolValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyPinned ?? false,
-          isEnabled:
-              timelineType.isOnlyPinnedFilterSupportedOnInstance(authInstance),
+          isEnabled: timelineType
+              .isOnlyPinnedFilterSupportedOnInstance(pleromaApiInstance),
         ),
         excludeReblogsFieldBloc = BoolValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.excludeReblogs ?? false,
-          isEnabled:
-              timelineType.isExcludeReblogsSupportedOnInstance(authInstance),
+          isEnabled: timelineType
+              .isExcludeReblogsSupportedOnInstance(pleromaApiInstance),
         ),
         withMutedFieldBloc = BoolValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.withMuted ?? false,
-          isEnabled:
-              timelineType.isWithMutedFilterSupportedOnInstance(authInstance),
+          isEnabled: timelineType
+              .isWithMutedFilterSupportedOnInstance(pleromaApiInstance),
         ),
         onlyFromAccountFieldBloc = TimelineSettingsOnlyFromAccountFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyFromRemoteAccount,
@@ -137,7 +138,7 @@ class EditTimelineSettingsBloc
               isNullableValuesPossible || timelineType != TimelineType.account,
           isEnabled: timelineType
               .isOnlyFromAccountWithRemoteIdFilterSupportedOnInstance(
-            authInstance,
+            pleromaApiInstance,
           ),
           validators: [
             if (timelineType == TimelineType.account)
@@ -148,8 +149,9 @@ class EditTimelineSettingsBloc
             TimelineSettingsOnlyInCustomListFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyInRemoteList,
           isNullValuePossible: isNullableValuesPossible,
-          isEnabled: timelineType
-              .isOnlyInListWithRemoteIdFilterSupportedOnInstance(authInstance),
+          isEnabled:
+              timelineType.isOnlyInListWithRemoteIdFilterSupportedOnInstance(
+                  pleromaApiInstance),
           validators: [
             if (timelineType == TimelineType.customList)
               ValueFormFieldNonNullValidationError.createValidator(),
@@ -159,8 +161,8 @@ class EditTimelineSettingsBloc
           originValue: settingsBloc.settingsData?.withRemoteHashtag ?? '',
           // ignore: no-magic-number
           maxLength: 50,
-          isEnabled:
-              timelineType.isWithHashtagFilterSupportedOnInstance(authInstance),
+          isEnabled: timelineType
+              .isWithHashtagFilterSupportedOnInstance(pleromaApiInstance),
           validators: [
             if (timelineType == TimelineType.hashtag)
               ValueFormFieldNonNullValidationError.createValidator(),
@@ -170,23 +172,24 @@ class EditTimelineSettingsBloc
             TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.replyVisibilityFilter,
           isEnabled: timelineType
-              .isReplyVisibilityFilterSupportedOnInstance(authInstance),
+              .isReplyVisibilityFilterSupportedOnInstance(pleromaApiInstance),
           validators: [],
           isNullValuePossible: true,
         ),
         excludeVisibilitiesFieldBloc =
             StatusVisibilityMultiSelectFromListFormFieldBloc(
           originValue: settingsBloc.settingsData?.excludeVisibilities ?? [],
-          isEnabled: timelineType
-              .isExcludeVisibilitiesFilterSupportedOnInstance(authInstance),
+          isEnabled:
+              timelineType.isExcludeVisibilitiesFilterSupportedOnInstance(
+                  pleromaApiInstance),
           validators: [],
           isNullValuePossible: true,
         ),
         webSocketsUpdatesFieldBloc = BoolValueFormFieldBloc(
           originValue: (settingsBloc.settingsData?.webSocketsUpdates ?? true) &&
               webSocketsSettingsBloc.handlingType.isEnabled,
-          isEnabled: timelineType
-                  .isWebSocketsUpdatesFilterSupportedOnInstance(authInstance) &&
+          isEnabled: timelineType.isWebSocketsUpdatesFilterSupportedOnInstance(
+                  pleromaApiInstance) &&
               webSocketsSettingsBloc.handlingType.isEnabled,
         ),
         onlyFromInstanceFieldBloc = StringValueFormFieldBloc(
@@ -194,7 +197,7 @@ class EditTimelineSettingsBloc
           // ignore: no-magic-number
           maxLength: 50,
           isEnabled: timelineType
-              .isOnlyFromInstanceFilterSupportedOnInstance(authInstance),
+              .isOnlyFromInstanceFilterSupportedOnInstance(pleromaApiInstance),
           validators: [],
         ),
         super(
@@ -276,7 +279,8 @@ class EditTimelineSettingsBloc
       withMuted: withMutedFieldBloc.currentValue,
       excludeVisibilitiesStrings: excludeVisibilitiesFieldBloc.currentValue
           .toPleromaApiVisibilityStrings(),
-      onlyInRemoteList: onlyInCustomListFieldBloc.currentValue?.toPleromaApiList(),
+      onlyInRemoteList:
+          onlyInCustomListFieldBloc.currentValue?.toPleromaApiList(),
       withRemoteHashtag: withRemoteHashtagFieldBloc.currentValue,
       replyVisibilityFilterString:
           replyVisibilityFilterFieldBloc.currentValue?.toJsonValue(),
@@ -306,7 +310,8 @@ class EditTimelineSettingsBloc
 
     onlyFromAccountFieldBloc.changeCurrentValue(settings.onlyFromRemoteAccount);
     onlyFromAccountFieldBloc.changeCurrentValue(settings.onlyFromRemoteAccount);
-    withRemoteHashtagFieldBloc.changeCurrentValue(settings.withRemoteHashtag ?? '');
+    withRemoteHashtagFieldBloc
+        .changeCurrentValue(settings.withRemoteHashtag ?? '');
     onlyInCustomListFieldBloc.changeCurrentValue(settings.onlyInRemoteList);
     replyVisibilityFilterFieldBloc
         .changeCurrentValue(settings.replyVisibilityFilter);

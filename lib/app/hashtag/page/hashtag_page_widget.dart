@@ -12,6 +12,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -139,39 +140,36 @@ class _HashtagPageAppBarSettingsActionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var hashtagPageBloc = IHashtagPageBloc.of(context);
-    var isLocal = hashtagPageBloc.instanceLocation == InstanceLocation.local;
-
-    if (isLocal) {
-      return FediIconButton(
-        icon: Icon(
-          FediIcons.settings,
-          color: IFediUiColorTheme.of(context).darkGrey,
-        ),
-        onPressed: () {
-          var timeline = ITimelineLocalPreferenceBloc.of(
-            context,
-            listen: false,
-          ).value!;
-          var hashtag = Provider.of<IHashtag>(
-            context,
-            listen: false,
-          );
-          showEditTimelineSettingsDialog(
-            context: context,
-            timeline: Timeline.byType(
-              id: timeline.id,
-              isPossibleToDelete: false,
-              label: hashtag.name,
-              type: TimelineType.hashtag,
-              settings: timeline.settings,
-            ),
-            lockedSource: true,
-          );
-        },
-      );
-    } else {
-      return const SizedBox.shrink();
-    }
+    return FediIconButton(
+      icon: Icon(
+        FediIcons.settings,
+        color: IFediUiColorTheme.of(context).darkGrey,
+      ),
+      onPressed: () {
+        var timelineLocalPreferenceBloc = ITimelineLocalPreferenceBloc.of(
+          context,
+          listen: false,
+        );
+        var timeline = timelineLocalPreferenceBloc.value!;
+        var hashtag = Provider.of<IHashtag>(
+          context,
+          listen: false,
+        );
+        showEditTimelineLocalPreferenceBlocSettingsDialog(
+          context: context,
+          timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
+          timeline: Timeline.byType(
+            id: timeline.id,
+            isPossibleToDelete: false,
+            label: hashtag.name,
+            type: TimelineType.hashtag,
+            settings: timeline.settings,
+          ),
+          lockedSource: true,
+          pleromaApiInstance:
+              Provider.of<IPleromaApiInstance>(context, listen: false),
+        );
+      },
+    );
   }
 }

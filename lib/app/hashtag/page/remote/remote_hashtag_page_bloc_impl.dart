@@ -25,6 +25,7 @@ import 'package:provider/provider.dart';
 
 class RemoteHashtagPageBloc extends HashtagPageBloc
     implements IRemoteHashtagPageBloc {
+  @override
   final IRemoteInstanceBloc remoteInstanceBloc;
   @override
   final IPleromaApiTimelineService pleromaApiTimelineService;
@@ -70,7 +71,8 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
   }) =>
       Provider<IHashtag>.value(
         value: hashtag,
-        child: DisposableProxyProvider<IRemoteInstanceBloc, IRemoteHashtagPageBloc>(
+        child: DisposableProxyProvider<IRemoteInstanceBloc,
+            IRemoteHashtagPageBloc>(
           update: (context, value, previous) =>
               RemoteHashtagPageBloc.createFromContext(
             context,
@@ -115,7 +117,7 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
     statusNetworkOnlyListBloc = HashtagStatusListNetworkOnlyListBloc(
       pleromaApiTimelineService: pleromaApiTimelineService,
       instanceUri: instanceUri,
-      hashtagName: hashtag.name,
+      timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
     );
     addDisposable(disposable: statusNetworkOnlyListBloc);
 
@@ -130,6 +132,14 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
       paginationBloc: statusNetworkOnlyPaginationBloc,
     );
     addDisposable(disposable: statusPaginationListBloc);
+
+    addDisposable(
+      streamSubscription: timelineLocalPreferenceBloc.stream.listen(
+        (_) {
+          statusPaginationListBloc.refreshWithController();
+        },
+      ),
+    );
   }
 
   @override

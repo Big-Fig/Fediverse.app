@@ -214,6 +214,15 @@ class LocalHashtagPageBloc extends HashtagPageBloc
       paginationBloc: statusCachedPaginationBloc,
     );
     addDisposable(disposable: statusCachedPaginationListWithNewItemsBloc);
+
+
+    addDisposable(
+      streamSubscription: timelineLocalPreferenceBloc.stream.listen(
+            (_) {
+              statusCachedPaginationListWithNewItemsBloc.refreshWithController();
+        },
+      ),
+    );
   }
 
   @override

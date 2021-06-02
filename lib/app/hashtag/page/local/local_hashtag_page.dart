@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/page/hashtag_page_widget.dart';
 import 'package:fedi/app/hashtag/page/local/local_hashtag_page_bloc.dart';
@@ -17,6 +18,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,7 +48,10 @@ MaterialPageRoute createLocalHashtagPageRoute({
         context,
         hashtag: hashtag,
         myAccountFeaturedHashtag: myAccountFeaturedHashtag,
-        child: const LocalHashtagPage(),
+        child: ProxyProvider<ICurrentAuthInstanceBloc, IPleromaApiInstance>(
+          update: (context, value, previous) => value.currentInstance!.info!,
+          child: const LocalHashtagPage(),
+        ),
       ),
     );
 
@@ -76,7 +81,8 @@ class LocalHashtagPageBodyWidget extends StatelessWidget {
       loadingFinishedBuilder: (context) =>
           DisposableProxyProvider<ILocalHashtagPageBloc, IScrollControllerBloc>(
         update: (context, hashtagPageBloc, _) => ScrollControllerBloc(
-            scrollController: hashtagPageBloc.scrollController),
+          scrollController: hashtagPageBloc.scrollController,
+        ),
         child: ProxyProvider<ILocalHashtagPageBloc, IStatusCachedListBloc>(
           update: (context, hashtagPageBloc, _) =>
               hashtagPageBloc.statusCachedListBloc,

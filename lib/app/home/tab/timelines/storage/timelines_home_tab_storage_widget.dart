@@ -1,3 +1,4 @@
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_page.dart';
@@ -200,6 +201,10 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
             context: context,
             timeline: timeline,
             lockedSource: false,
+            pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+              context,
+              listen: false,
+            ).currentInstance!.info!,
           );
         }
       },
@@ -232,6 +237,10 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
           context: context,
           timeline: timeline,
           lockedSource: false,
+          pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+            context,
+            listen: false,
+          ).currentInstance!.info!,
         );
       },
       child: Row(
@@ -283,6 +292,10 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
                   context: context,
                   timeline: Provider.of(context, listen: false),
                   lockedSource: false,
+                  pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+                    context,
+                    listen: false,
+                  ).currentInstance!.info!,
                 );
               },
             );

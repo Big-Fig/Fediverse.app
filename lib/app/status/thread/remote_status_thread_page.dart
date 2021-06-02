@@ -59,7 +59,7 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
           connectionService: IConnectionService.of(
             context,
             listen: false,
-          ),
+          ), pleromaApiInstance: null,
         );
 
         pleromaStatusService = PleromaApiStatusService(
@@ -119,7 +119,7 @@ MaterialPageRoute createRemoteStatusThreadPageRouteBasedOnRemoteInstanceStatus({
           connectionService: IConnectionService.of(
             context,
             listen: false,
-          ),
+          ), pleromaApiInstance: null,
         );
       },
       child: DisposableProvider<IStatusThreadBloc>(

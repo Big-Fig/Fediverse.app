@@ -41,7 +41,8 @@ Future showHashtagPageChooserDialog({
             S.of(context).app_hashtag_remoteInstance_dialog_action_openOnRemote(
                   remoteInstanceUri.host,
                 ),
-        onAction: (context) {
+        onAction: (_) {
+          // don't use context from this action we need parent context
           Navigator.of(context).pop();
           goToRemoteHashtagPage(
             context,

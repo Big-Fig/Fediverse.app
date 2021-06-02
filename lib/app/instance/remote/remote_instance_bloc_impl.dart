@@ -1,12 +1,14 @@
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service_impl.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service_impl.dart';
 import 'package:fedi/rest/rest_service_impl.dart';
 import 'package:flutter/widgets.dart';
 
-class RemoteInstanceBloc extends DisposableOwner
+class RemoteInstanceBloc extends AsyncInitLoadingBloc
     implements IRemoteInstanceBloc {
   @override
   final Uri instanceUri;
@@ -21,6 +23,7 @@ class RemoteInstanceBloc extends DisposableOwner
   RemoteInstanceBloc({
     required this.instanceUri,
     required this.connectionService,
+    required this.pleromaApiInstance,
   }) : restService = RestService(
           baseUri: instanceUri,
         ) {
@@ -43,6 +46,7 @@ class RemoteInstanceBloc extends DisposableOwner
           context,
           listen: false,
         ),
+        pleromaApiInstance: null,
       );
 
   static Widget provideToContext(
@@ -57,4 +61,19 @@ class RemoteInstanceBloc extends DisposableOwner
         ),
         child: child,
       );
+
+  @override
+  IPleromaApiInstance? pleromaApiInstance;
+
+  @override
+  Future internalAsyncInit() async {
+    if (pleromaApiInstance == null) {
+      var pleromaApiInstanceService =
+          PleromaApiInstanceService(restService: pleromaRestService);
+
+      pleromaApiInstance = await pleromaApiInstanceService.getInstance();
+
+      await pleromaApiInstanceService.dispose();
+    }
+  }
 }

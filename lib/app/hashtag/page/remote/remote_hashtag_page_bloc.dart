@@ -1,4 +1,6 @@
+
 import 'package:fedi/app/hashtag/page/hashtag_page_bloc.dart';
+import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc.dart';
 import 'package:fedi/app/status/pagination/network_only/status_network_only_pagination_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -20,4 +22,6 @@ abstract class IRemoteHashtagPageBloc implements IHashtagPageBloc {
 
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
       get statusPaginationListBloc;
+
+  IRemoteInstanceBloc get remoteInstanceBloc;
 }
