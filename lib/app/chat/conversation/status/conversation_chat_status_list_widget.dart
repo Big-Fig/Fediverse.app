@@ -2,7 +2,7 @@ import 'package:fedi/app/async/smart_refresher/async_smart_refresher_helper.dart
 import 'package:fedi/app/chat/conversation/status/conversation_chat_status_list_item_widget.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/status/local_status_bloc_impl.dart';
-import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_base_widget.dart';
+import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_base_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';

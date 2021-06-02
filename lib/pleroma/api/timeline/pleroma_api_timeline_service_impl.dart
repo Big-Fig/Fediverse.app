@@ -125,6 +125,7 @@ class PleromaApiTimelineService extends BasePleromaApiService
             []),
       ],
     );
+
     return await sendAndProcessPleromaApiStatusResponse(request);
   }
 

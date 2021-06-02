@@ -1,0 +1,40 @@
+import 'package:fedi/app/hashtag/hashtag_model.dart';
+import 'package:fedi/app/hashtag/page/hashtag_page_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+abstract class HashtagPageBloc extends AsyncInitLoadingBloc
+    implements IHashtagPageBloc {
+  final Uri instanceUri;
+
+  @override
+  final RefreshController refreshController;
+
+  String get userAtHost;
+
+  @override
+  final ScrollController scrollController = ScrollController();
+
+  IPleromaApiTimelineService get pleromaApiTimelineService;
+
+  @override
+  final IHashtag hashtag;
+
+  @override
+  ITimelineLocalPreferenceBloc get timelineLocalPreferenceBloc;
+
+  HashtagPageBloc({
+    required this.instanceUri,
+    required this.hashtag,
+  }) : refreshController = RefreshController() {
+    addDisposable(scrollController: scrollController);
+    addDisposable(
+      custom: () {
+        refreshController.dispose();
+      },
+    );
+  }
+}

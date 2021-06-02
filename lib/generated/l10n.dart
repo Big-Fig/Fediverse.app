@@ -7197,23 +7197,23 @@ class S {
     );
   }
 
-  /// `Open on {localDomain} inside app`
+  /// `Open on {localDomain}`
   String app_hashtag_remoteInstance_dialog_action_openOnLocal(
       Object localDomain) {
     return Intl.message(
-      'Open on $localDomain inside app',
+      'Open on $localDomain',
       name: 'app_hashtag_remoteInstance_dialog_action_openOnLocal',
       desc: '',
       args: [localDomain],
     );
   }
 
-  /// `Open on {remoteDomain} in browser`
-  String app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser(
+  /// `Open on {remoteDomain}`
+  String app_hashtag_remoteInstance_dialog_action_openOnRemote(
       Object remoteDomain) {
     return Intl.message(
-      'Open on $remoteDomain in browser',
-      name: 'app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser',
+      'Open on $remoteDomain',
+      name: 'app_hashtag_remoteInstance_dialog_action_openOnRemote',
       desc: '',
       args: [remoteDomain],
     );

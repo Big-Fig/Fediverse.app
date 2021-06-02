@@ -76,9 +76,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m25(count) => "Отмечено (${count})";
 
-  static String m26(localDomain) => "Открыть на ${localDomain} в приложения";
+  static String m26(localDomain) => "Открыть на ${localDomain}";
 
-  static String m27(remoteDomain) => "Открыть на ${remoteDomain} в браузере";
+  static String m27(remoteDomain) => "Открыть на ${remoteDomain}";
 
   static String m28(hashtag) => "#${hashtag}";
 
@@ -935,7 +935,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_hashtag_history_statuses":
             MessageLookupByLibrary.simpleMessage("Записи"),
         "app_hashtag_remoteInstance_dialog_action_openOnLocal": m26,
-        "app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser": m27,
+        "app_hashtag_remoteInstance_dialog_action_openOnRemote": m27,
         "app_hashtag_remoteInstance_dialog_title": m28,
         "app_home_tab_chat_conversation_action_switchToChats":
             MessageLookupByLibrary.simpleMessage("В чаты"),

@@ -2,9 +2,9 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
+import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
-import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
@@ -91,7 +91,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
         pleromaApiAuthTimelineService: pleromaApiAuthTimelineService,
         statusRepository: statusRepository,
         currentInstanceBloc: currentAuthInstanceBloc,
-        timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
+        timelineLocalPreferenceBloc: timelineLocalPreferencesBloc,
         webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
         webSocketsListenType: webSocketsListenType,
         filterRepository: filterRepository,

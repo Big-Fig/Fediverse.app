@@ -3,7 +3,7 @@ import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
-import 'package:fedi/app/hashtag/hashtag_page.dart';
+import 'package:fedi/app/hashtag/page/local/local_hashtag_page.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -32,7 +32,7 @@ class AccountFeaturedHashtagListItemWidget extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                goToHashtagPage(
+                goToLocalHashtagPage(
                   context: context,
                   hashtag: Hashtag(
                     name: accountFeaturedHashtag.name,
