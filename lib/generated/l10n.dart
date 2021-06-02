@@ -4379,11 +4379,11 @@ class S {
     );
   }
 
-  /// `Disabled in account settings`
+  /// `Not supported or disabled in settings`
   String
       get app_timeline_settings_field_enableWebSockets_description_instance_disabled {
     return Intl.message(
-      'Disabled in account settings',
+      'Not supported or disabled in settings',
       name:
           'app_timeline_settings_field_enableWebSockets_description_instance_disabled',
       desc: '',

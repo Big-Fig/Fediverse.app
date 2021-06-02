@@ -1,6 +1,7 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_page.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_dialog.dart';
 import 'package:fedi/app/timeline/timeline_label_extension.dart';
@@ -198,6 +199,7 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
         var uiState = timelinesHomeTabStorageBloc.uiState;
         if (uiState == TimelinesHomeTabStorageUiState.view) {
           showEditTimelineSettingsDialog(
+            instanceLocation: InstanceLocation.local,
             context: context,
             timeline: timeline,
             lockedSource: false,
@@ -235,6 +237,7 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
       onTap: () {
         showEditTimelineSettingsDialog(
           context: context,
+          instanceLocation: InstanceLocation.local,
           timeline: timeline,
           lockedSource: false,
           pleromaApiInstance: ICurrentAuthInstanceBloc.of(
@@ -290,6 +293,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
               onClick: () {
                 showEditTimelineSettingsDialog(
                   context: context,
+                  instanceLocation: InstanceLocation.local,
                   timeline: Provider.of(context, listen: false),
                   lockedSource: false,
                   pleromaApiInstance: ICurrentAuthInstanceBloc.of(

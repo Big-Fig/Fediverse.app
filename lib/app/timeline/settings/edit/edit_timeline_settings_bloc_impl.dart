@@ -1,3 +1,4 @@
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/settings/instance/edit/edit_instance_settings_bloc_impl.dart';
 import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibility_multi_select_from_list_form_field_bloc.dart';
 import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibility_multi_select_from_list_form_field_bloc_impl.dart';
@@ -84,11 +85,15 @@ class EditTimelineSettingsBloc
   @override
   final IStringValueFormFieldBloc onlyFromInstanceFieldBloc;
 
+  @override
+  final InstanceLocation instanceLocation;
+
   EditTimelineSettingsBloc({
     required this.settingsBloc,
     required this.timelineType,
     required this.pleromaApiInstance,
     required this.isNullableValuesPossible,
+    required this.instanceLocation,
     required bool isEnabled,
     required this.webSocketsSettingsBloc,
   })  : excludeRepliesFieldBloc = BoolValueFormFieldBloc(
@@ -105,7 +110,8 @@ class EditTimelineSettingsBloc
           originValue: settingsBloc.settingsData?.excludeNsfwSensitive ?? false,
           isEnabled:
               timelineType.isExcludeNsfwSensitiveFilterSupportedOnInstance(
-                  pleromaApiInstance),
+            pleromaApiInstance,
+          ),
         ),
         onlyRemoteFieldBloc = BoolValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyRemote ?? false,
@@ -151,7 +157,8 @@ class EditTimelineSettingsBloc
           isNullValuePossible: isNullableValuesPossible,
           isEnabled:
               timelineType.isOnlyInListWithRemoteIdFilterSupportedOnInstance(
-                  pleromaApiInstance),
+            pleromaApiInstance,
+          ),
           validators: [
             if (timelineType == TimelineType.customList)
               ValueFormFieldNonNullValidationError.createValidator(),
@@ -181,7 +188,8 @@ class EditTimelineSettingsBloc
           originValue: settingsBloc.settingsData?.excludeVisibilities ?? [],
           isEnabled:
               timelineType.isExcludeVisibilitiesFilterSupportedOnInstance(
-                  pleromaApiInstance),
+            pleromaApiInstance,
+          ),
           validators: [],
           isNullValuePossible: true,
         ),
@@ -189,8 +197,10 @@ class EditTimelineSettingsBloc
           originValue: (settingsBloc.settingsData?.webSocketsUpdates ?? true) &&
               webSocketsSettingsBloc.handlingType.isEnabled,
           isEnabled: timelineType.isWebSocketsUpdatesFilterSupportedOnInstance(
-                  pleromaApiInstance) &&
-              webSocketsSettingsBloc.handlingType.isEnabled,
+                pleromaApiInstance,
+              ) &&
+              webSocketsSettingsBloc.handlingType.isEnabled &&
+              instanceLocation == InstanceLocation.local,
         ),
         onlyFromInstanceFieldBloc = StringValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyFromInstance ?? '',
