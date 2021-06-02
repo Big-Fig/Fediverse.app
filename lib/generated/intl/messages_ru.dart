@@ -1470,7 +1470,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Disable to reduce battery usage"),
         "app_timeline_settings_field_enableWebSockets_description_instance_disabled":
             MessageLookupByLibrary.simpleMessage(
-                "Отключено в настройках аккаунта"),
+                "Не поддерживается или отключено в настройках"),
         "app_timeline_settings_field_enableWebSockets_label":
             MessageLookupByLibrary.simpleMessage("WebSockets обновления"),
         "app_timeline_settings_field_excludeNsfw_label":

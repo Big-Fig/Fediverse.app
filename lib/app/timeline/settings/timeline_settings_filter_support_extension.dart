@@ -3,7 +3,8 @@ import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 
 extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   bool isOnlyWithMediaFilterSupportedOnInstance(
-      IPleromaApiInstance pleromaApiInstance) {
+    IPleromaApiInstance pleromaApiInstance,
+  ) {
     switch (this) {
       case TimelineType.public:
         return true;
@@ -19,7 +20,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isExcludeRepliesFilterSupportedOnInstance(
-      IPleromaApiInstance pleromaApiInstance) {
+    IPleromaApiInstance pleromaApiInstance,
+  ) {
     switch (this) {
       case TimelineType.public:
         return false;
@@ -51,7 +53,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isOnlyRemoteFilterSupportedOnInstance(
-      IPleromaApiInstance pleromaApiInstance) {
+    IPleromaApiInstance pleromaApiInstance,
+  ) {
     switch (this) {
       case TimelineType.public:
         return true;
@@ -71,7 +74,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isOnlyLocalFilterSupportedOnInstance(
-      IPleromaApiInstance pleromaApiInstance) {
+    IPleromaApiInstance pleromaApiInstance,
+  ) {
     switch (this) {
       case TimelineType.public:
         return true;
@@ -87,7 +91,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isWithMutedFilterSupportedOnInstance(
-      IPleromaApiInstance pleromaApiInstance) {
+    IPleromaApiInstance pleromaApiInstance,
+  ) {
     switch (this) {
       case TimelineType.public:
         return pleromaApiInstance.isPleroma;
@@ -154,7 +159,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isWithHashtagFilterSupportedOnInstance(
-      IPleromaApiInstance pleromaApiInstance) {
+    IPleromaApiInstance pleromaApiInstance,
+  ) {
     switch (this) {
       case TimelineType.public:
         return false;
@@ -170,7 +176,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isOnlyFromInstanceFilterSupportedOnInstance(
-      IPleromaApiInstance pleromaApiInstance) {
+    IPleromaApiInstance pleromaApiInstance,
+  ) {
     switch (this) {
       case TimelineType.public:
         return pleromaApiInstance.isPleroma;
@@ -186,7 +193,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isReplyVisibilityFilterSupportedOnInstance(
-      IPleromaApiInstance pleromaApiInstance) {
+    IPleromaApiInstance pleromaApiInstance,
+  ) {
     switch (this) {
       case TimelineType.public:
         return pleromaApiInstance.isPleroma;
@@ -202,7 +210,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isOnlyPinnedFilterSupportedOnInstance(
-      IPleromaApiInstance? pleromaApiInstance) {
+    IPleromaApiInstance? pleromaApiInstance,
+  ) {
     switch (this) {
       case TimelineType.public:
         return false;
@@ -218,7 +227,8 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isExcludeReblogsSupportedOnInstance(
-      IPleromaApiInstance pleromaApiInstance) {
+    IPleromaApiInstance pleromaApiInstance,
+  ) {
     switch (this) {
       case TimelineType.public:
         return false;

@@ -1,3 +1,4 @@
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/settings/instance/edit/edit_instance_settings_bloc.dart';
 import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibility_multi_select_from_list_form_field_bloc.dart';
 import 'package:fedi/app/timeline/reply_visibility_filter/timeline_reply_visibility_single_select_from_list_value_form_field_bloc.dart';
@@ -21,6 +22,8 @@ abstract class IEditTimelineSettingsBloc
   TimelineType get timelineType;
 
   bool get isNullableValuesPossible;
+
+  InstanceLocation get instanceLocation;
 
   IBoolValueFormFieldBloc get excludeRepliesFieldBloc;
 

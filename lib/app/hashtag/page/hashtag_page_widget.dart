@@ -160,6 +160,9 @@ class _HashtagPageAppBarSettingsActionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var hashtagPageBloc = IHashtagPageBloc.of(context);
+    var instanceLocation = hashtagPageBloc.instanceLocation;
+
     return FediIconButton(
       icon: Icon(
         FediIcons.settings,
@@ -177,6 +180,7 @@ class _HashtagPageAppBarSettingsActionWidget extends StatelessWidget {
         );
         showEditTimelineLocalPreferenceBlocSettingsDialog(
           context: context,
+          instanceLocation: instanceLocation,
           timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
           timeline: Timeline.byType(
             id: timeline.id,

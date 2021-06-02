@@ -1,4 +1,5 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/settings/settings_dialog.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
@@ -24,6 +25,7 @@ void showEditTimelineSettingsDialog({
   required Timeline timeline,
   required bool lockedSource,
   required IPleromaApiInstance pleromaApiInstance,
+  required InstanceLocation instanceLocation,
 }) {
   showEditTimelineLocalPreferenceBlocSettingsDialog(
     context: context,
@@ -34,6 +36,7 @@ void showEditTimelineSettingsDialog({
     ),
     lockedSource: lockedSource,
     pleromaApiInstance: pleromaApiInstance,
+    instanceLocation: instanceLocation,
   );
 }
 
@@ -43,6 +46,7 @@ void showEditTimelineLocalPreferenceBlocSettingsDialog({
   required bool lockedSource,
   required IPleromaApiInstance pleromaApiInstance,
   required ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc,
+  required InstanceLocation instanceLocation,
 }) {
   showSettingsDialog(
     context: context,
@@ -68,6 +72,7 @@ void showEditTimelineLocalPreferenceBlocSettingsDialog({
                   IEditTimelineSettingsBloc>(
                 update: (context, timelineSettingsBloc, _) =>
                     EditTimelineSettingsBloc(
+                  instanceLocation: instanceLocation,
                   timelineType: timeline.type,
                   isEnabled: true,
                   isNullableValuesPossible: false,
