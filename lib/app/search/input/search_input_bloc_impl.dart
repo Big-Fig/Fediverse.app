@@ -5,8 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   @override
-  final TextEditingController searchTextEditingController =
-      TextEditingController();
+  final TextEditingController searchTextEditingController;
 
   // ignore: close_sinks
   final BehaviorSubject<String> confirmedSearchTermSubject =
@@ -36,7 +35,7 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   @override
   Stream<bool> get confirmedSearchTermIsNotEmptyStream =>
       confirmedSearchTermStream.map(
-        (confirmedSearchTerm) => confirmedSearchTerm.isNotEmpty ,
+        (confirmedSearchTerm) => confirmedSearchTerm.isNotEmpty,
       );
 
   @override
@@ -54,7 +53,11 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
     confirmedSearchTermSubject.add(search);
   }
 
-  SearchInputBloc() {
+  SearchInputBloc({
+    required String? initialQuery,
+  }) : searchTextEditingController = TextEditingController(
+          text: initialQuery,
+        ) {
     addDisposable(subject: currentInputSubject);
     addDisposable(subject: confirmedSearchTermSubject);
     addDisposable(textEditingController: searchTextEditingController);
@@ -65,6 +68,10 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
     addDisposable(custom: () {
       searchTextEditingController.removeListener(listener);
     });
+
+    if(initialQuery?.isNotEmpty == true) {
+      confirmSearch();
+    }
   }
 
   @override
