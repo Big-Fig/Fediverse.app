@@ -1,9 +1,11 @@
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/page/hashtag_page_widget.dart';
 import 'package:fedi/app/hashtag/page/local/local_hashtag_page_bloc.dart';
 import 'package:fedi/app/hashtag/page/remote/remote_hashtag_page_bloc.dart';
 import 'package:fedi/app/hashtag/page/remote/remote_hashtag_page_bloc_impl.dart';
 import 'package:fedi/app/hashtag/status_list/network_only/hashtag_status_list_network_only_list_timeline_widget.dart';
+import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc.dart';
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc_proxy_provider.dart';
@@ -15,6 +17,7 @@ import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,31 +41,53 @@ class RemoteHashtagPage extends StatelessWidget {
 MaterialPageRoute createRemoteHashtagPageRoute({
   required Uri remoteInstanceUri,
   required IHashtag hashtag,
+  required IRemoteInstanceBloc remoteInstanceBloc,
 }) =>
     MaterialPageRoute(
-      builder: (context) => RemoteInstanceBloc.provideToContext(
-        context,
-        instanceUri: remoteInstanceUri,
-        child: RemoteHashtagPageBloc.provideToContext(
-          context,
-          hashtag: hashtag,
-          child: const RemoteHashtagPage(),
+      builder: (context) => Provider.value(
+        value: remoteInstanceBloc,
+        child: ProxyProvider<IRemoteInstanceBloc, IPleromaApiInstance>(
+          update: (context, value, previous) => value.pleromaApiInstance!,
+          child: RemoteHashtagPageBloc.provideToContext(
+            context,
+            hashtag: hashtag,
+            child: const RemoteHashtagPage(),
+          ),
         ),
       ),
     );
 
-void goToRemoteHashtagPage(
+Future goToRemoteHashtagPage(
   BuildContext context, {
   required Uri remoteInstanceUri,
   required IHashtag hashtag,
-}) {
-  Navigator.push(
-    context,
-    createRemoteHashtagPageRoute(
-      remoteInstanceUri: remoteInstanceUri,
-      hashtag: hashtag,
-    ),
+}) async {
+  var dialogResult = await PleromaAsyncOperationHelper
+      .performPleromaAsyncOperation<IRemoteInstanceBloc>(
+    context: context,
+    asyncCode: () async {
+      var remoteInstanceBloc = RemoteInstanceBloc.createFromContext(
+        context,
+        instanceUri: remoteInstanceUri,
+      );
+
+      await remoteInstanceBloc.performAsyncInit();
+
+      return remoteInstanceBloc;
+    },
   );
+
+  var remoteInstanceBloc = dialogResult.result;
+  if (remoteInstanceBloc != null) {
+    await Navigator.push(
+      context,
+      createRemoteHashtagPageRoute(
+        remoteInstanceUri: remoteInstanceUri,
+        hashtag: hashtag,
+        remoteInstanceBloc: remoteInstanceBloc,
+      ),
+    );
+  }
 }
 
 class RemoteHashtagPageBodyWidget extends StatelessWidget {
@@ -77,7 +102,8 @@ class RemoteHashtagPageBodyWidget extends StatelessWidget {
       loadingFinishedBuilder: (context) =>
           DisposableProxyProvider<ILocalHashtagPageBloc, IScrollControllerBloc>(
         update: (context, hashtagPageBloc, _) => ScrollControllerBloc(
-            scrollController: hashtagPageBloc.scrollController),
+          scrollController: hashtagPageBloc.scrollController,
+        ),
         child:
             ProxyProvider<IRemoteHashtagPageBloc, IStatusNetworkOnlyListBloc>(
           update: (context, hashtagPageBloc, _) =>

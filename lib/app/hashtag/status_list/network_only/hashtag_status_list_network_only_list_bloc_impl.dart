@@ -5,6 +5,7 @@ import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc.
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -15,18 +16,18 @@ import 'package:provider/provider.dart';
 
 class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
   final Uri instanceUri;
-  final String hashtagName;
   final IPleromaApiTimelineService pleromaApiTimelineService;
+  final ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
 
   HashtagStatusListNetworkOnlyListBloc({
     required this.instanceUri,
     required this.pleromaApiTimelineService,
-    required this.hashtagName,
+    required this.timelineLocalPreferenceBloc,
   });
 
   static HashtagStatusListNetworkOnlyListBloc createFromContext(
     BuildContext context, {
-    required String hashtagName,
+    required ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc,
     required Uri instanceUri,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
@@ -35,7 +36,7 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
     );
 
     var bloc = HashtagStatusListNetworkOnlyListBloc(
-      hashtagName: hashtagName,
+      timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
       instanceUri: instanceUri,
       pleromaApiTimelineService: pleromaApiTimelineService,
     );
@@ -47,7 +48,7 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    required String hashtagName,
+    required ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc,
     required Widget child,
     required Uri instanceUri,
   }) {
@@ -55,7 +56,7 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
       create: (context) =>
           HashtagStatusListNetworkOnlyListBloc.createFromContext(
         context,
-        hashtagName: hashtagName,
+        timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
         instanceUri: instanceUri,
       ),
       child: ProxyProvider<IStatusNetworkOnlyListBloc, INetworkOnlyListBloc>(
@@ -84,8 +85,11 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
     required String? minId,
     required String? maxId,
   }) async {
+    var timeline = timelineLocalPreferenceBloc.value!;
     var pleromaStatuses = await pleromaApiTimelineService.getHashtagTimeline(
-      hashtag: hashtagName,
+      hashtag: timeline.withRemoteHashtag!,
+      onlyLocal: timeline.onlyLocal == true,
+      onlyWithMedia: timeline.onlyWithMedia == true,
       pagination: PleromaApiPaginationRequest(
         limit: itemsCountPerPage,
         sinceId: minId,

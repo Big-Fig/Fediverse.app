@@ -200,6 +200,10 @@ class _CustomListPageAppBarSettingsActionWidget extends StatelessWidget {
             settings: timeline.settings,
           ),
           lockedSource: true,
+          pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+            context,
+            listen: false,
+          ).currentInstance!.info!,
         );
       },
     );

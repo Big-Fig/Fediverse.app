@@ -14,6 +14,7 @@ import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,26 @@ void showEditTimelineSettingsDialog({
   required BuildContext context,
   required Timeline timeline,
   required bool lockedSource,
+  required IPleromaApiInstance pleromaApiInstance,
+}) {
+  showEditTimelineLocalPreferenceBlocSettingsDialog(
+    context: context,
+    timeline: timeline,
+    timelineLocalPreferenceBloc: _createTimelinePreferencesBloc(
+      context,
+      timeline,
+    ),
+    lockedSource: lockedSource,
+    pleromaApiInstance: pleromaApiInstance,
+  );
+}
+
+void showEditTimelineLocalPreferenceBlocSettingsDialog({
+  required BuildContext context,
+  required Timeline timeline,
+  required bool lockedSource,
+  required IPleromaApiInstance pleromaApiInstance,
+  required ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc,
 }) {
   showSettingsDialog(
     context: context,
@@ -31,10 +52,8 @@ void showEditTimelineSettingsDialog({
         ),
     child: Provider<Timeline>.value(
       value: timeline,
-      child: DisposableProxyProvider<Timeline, ITimelineLocalPreferenceBloc>(
-        update: (context, timeline, _) {
-          return _createTimelinePreferencesBloc(context, timeline);
-        },
+      child: Provider<ITimelineLocalPreferenceBloc>.value(
+        value: timelineLocalPreferenceBloc,
         child: Builder(
           builder: (context) => FediAsyncInitLoadingWidget(
             asyncInitLoadingBloc:
@@ -52,19 +71,16 @@ void showEditTimelineSettingsDialog({
                   timelineType: timeline.type,
                   isEnabled: true,
                   isNullableValuesPossible: false,
-                  authInstance: ICurrentAuthInstanceBloc.of(
-                    context,
-                    listen: false,
-                  ).currentInstance!,
+                  pleromaApiInstance: pleromaApiInstance,
                   settingsBloc: timelineSettingsBloc,
                   webSocketsSettingsBloc: IWebSocketsSettingsBloc.of(
                     context,
                     listen: false,
                   ),
                 ),
-                child: const EditTimelineSettingsWidget(
+                child: EditTimelineSettingsWidget(
                   shrinkWrap: true,
-                  lockedSource: false,
+                  lockedSource: lockedSource,
                 ),
               ),
             ),
