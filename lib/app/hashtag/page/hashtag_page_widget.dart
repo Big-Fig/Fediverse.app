@@ -2,6 +2,7 @@ import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/hashtag/hashtag_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/page/hashtag_page_bloc.dart';
+import 'package:fedi/app/hashtag/page/local/local_hashtag_page.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_dialog.dart';
@@ -42,7 +43,8 @@ class HashtagPageAppBarWidget extends StatelessWidget
       centerTitle: false,
       title: title,
       actions: <Widget>[
-        const _HashtagPageAppBarFeaturedAction(),
+        if (!isLocal) const _HashtagPageAppBarSearchOnLocalInstanceAction(),
+        if (isLocal) const _HashtagPageAppBarFeaturedAction(),
         const _HashtagPageAppBarSettingsActionWidget(),
         const _HashtagPageAppBarOpenInBrowserAction(),
       ],
@@ -82,54 +84,72 @@ class _HashtagPageAppBarFeaturedAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var hashtagPageBloc = IHashtagPageBloc.of(context);
-    var isLocal = hashtagPageBloc.instanceLocation == InstanceLocation.local;
+    var hashtagBloc = Provider.of<IHashtagBloc>(context);
 
-    if (isLocal) {
-      var hashtagBloc = Provider.of<IHashtagBloc>(context);
+    var isInstanceSupportFeaturedTags =
+        hashtagBloc.isInstanceSupportFeaturedTags;
 
-      var isInstanceSupportFeaturedTags =
-          hashtagBloc.isInstanceSupportFeaturedTags;
+    if (isInstanceSupportFeaturedTags) {
+      return StreamBuilder<bool>(
+        stream: hashtagBloc.isLoadingFeaturedHashtagStateStream,
+        initialData: hashtagBloc.isLoadingFeaturedHashtagState,
+        builder: (context, snapshot) {
+          var isLoadingFeaturedHashtagState = snapshot.data!;
 
-      if (isInstanceSupportFeaturedTags) {
-        return StreamBuilder<bool>(
-          stream: hashtagBloc.isLoadingFeaturedHashtagStateStream,
-          initialData: hashtagBloc.isLoadingFeaturedHashtagState,
-          builder: (context, snapshot) {
-            var isLoadingFeaturedHashtagState = snapshot.data!;
+          return StreamBuilder<bool>(
+            stream: hashtagBloc.featuredStream,
+            initialData: hashtagBloc.featured,
+            builder: (context, snapshot) {
+              var featured = snapshot.data!;
 
-            return StreamBuilder<bool>(
-              stream: hashtagBloc.featuredStream,
-              initialData: hashtagBloc.featured,
-              builder: (context, snapshot) {
-                var featured = snapshot.data!;
-
-                return AsyncOperationButtonBuilderWidget(
-                  builder: (context, onPressed) => FediIconButton(
-                    color: IFediUiColorTheme.of(context).darkGrey,
-                    icon: Icon(
-                      featured ? FediIcons.heart_active : FediIcons.heart,
-                    ),
-                    onPressed: isLoadingFeaturedHashtagState ? null : onPressed,
+              return AsyncOperationButtonBuilderWidget(
+                builder: (context, onPressed) => FediIconButton(
+                  color: IFediUiColorTheme.of(context).darkGrey,
+                  icon: Icon(
+                    featured ? FediIcons.heart_active : FediIcons.heart,
                   ),
-                  asyncButtonAction: () async {
-                    if (featured) {
-                      await hashtagBloc.unFeature();
-                    } else {
-                      await hashtagBloc.feature();
-                    }
-                  },
-                );
-              },
-            );
-          },
-        );
-      } else {
-        return const SizedBox.shrink();
-      }
+                  onPressed: isLoadingFeaturedHashtagState ? null : onPressed,
+                ),
+                asyncButtonAction: () async {
+                  if (featured) {
+                    await hashtagBloc.unFeature();
+                  } else {
+                    await hashtagBloc.feature();
+                  }
+                },
+              );
+            },
+          );
+        },
+      );
     } else {
       return const SizedBox.shrink();
     }
+  }
+}
+
+class _HashtagPageAppBarSearchOnLocalInstanceAction extends StatelessWidget {
+  const _HashtagPageAppBarSearchOnLocalInstanceAction({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var hashtag = Provider.of<IHashtag>(context);
+
+    return FediIconButton(
+      color: IFediUiColorTheme.of(context).darkGrey,
+      icon: Icon(
+        FediIcons.instance,
+      ),
+      onPressed: () {
+        goToLocalHashtagPage(
+          context: context,
+          hashtag: hashtag,
+          myAccountFeaturedHashtag: null,
+        );
+      },
+    );
   }
 }
 

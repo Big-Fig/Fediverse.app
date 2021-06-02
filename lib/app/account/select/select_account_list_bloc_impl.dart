@@ -63,7 +63,9 @@ class SelectAccountListBloc extends DisposableOwner
     required this.customEmptySearchRemoteAccountListLoader,
     required this.customEmptySearchLocalAccountListLoader,
     required this.followingsOnly,
-  }) : searchInputBloc = SearchInputBloc() {
+  }) : searchInputBloc = SearchInputBloc(
+          initialQuery: null,
+        ) {
     addDisposable(disposable: searchInputBloc);
     addDisposable(streamController: accountSelectedStreamController);
   }
