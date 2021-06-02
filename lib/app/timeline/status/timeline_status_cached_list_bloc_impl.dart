@@ -40,11 +40,11 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
-  final ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc;
+  final ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final IMyAccountBloc myAccountBloc;
 
-  Timeline get timeline => timelineLocalPreferencesBloc.value!;
+  Timeline get timeline => timelineLocalPreferenceBloc.value!;
 
   TimelineType get timelineType => timeline.type;
 
@@ -115,7 +115,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     required this.statusRepository,
     required this.filterRepository,
     required this.currentInstanceBloc,
-    required this.timelineLocalPreferencesBloc,
+    required this.timelineLocalPreferenceBloc,
     required this.webSocketsHandlerManagerBloc,
     required this.myAccountBloc,
     required WebSocketsListenType webSocketsListenType,
@@ -123,7 +123,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     addDisposable(streamController: settingsChangedStreamController);
 
     addDisposable(
-      streamSubscription: timelineLocalPreferencesBloc.stream.listen(
+      streamSubscription: timelineLocalPreferenceBloc.stream.listen(
         (Timeline? timeline) {
           _logger.finest(
             () => 'timelineLocalPreferencesBloc timeline $timeline',
@@ -392,7 +392,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
+        timelineLocalPreferenceBloc: timelineLocalPreferencesBloc,
         webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
           context,
           listen: false,

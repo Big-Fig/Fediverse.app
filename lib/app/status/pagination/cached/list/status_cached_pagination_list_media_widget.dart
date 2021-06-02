@@ -2,7 +2,7 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_media_widget.dart';
 import 'package:fedi/app/status/local_status_bloc_impl.dart';
-import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_base_widget.dart';
+import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_base_widget.dart';
 import 'package:fedi/app/status/remote_status_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_bloc_impl.dart';
