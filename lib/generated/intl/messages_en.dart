@@ -1033,6 +1033,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Min expiration"),
         "app_instance_details_field_pollLimit_title":
             MessageLookupByLibrary.simpleMessage("Poll limits"),
+        "app_instance_details_field_publicTimeline_label":
+            MessageLookupByLibrary.simpleMessage("Public timeline"),
+        "app_instance_details_field_publicTimeline_value":
+            MessageLookupByLibrary.simpleMessage("Statuses"),
         "app_instance_details_field_registrationsLimits_title":
             MessageLookupByLibrary.simpleMessage("Registration limits"),
         "app_instance_details_field_registrations_label":

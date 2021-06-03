@@ -6299,6 +6299,26 @@ class S {
     );
   }
 
+  /// `Public timeline`
+  String get app_instance_details_field_publicTimeline_label {
+    return Intl.message(
+      'Public timeline',
+      name: 'app_instance_details_field_publicTimeline_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statuses`
+  String get app_instance_details_field_publicTimeline_value {
+    return Intl.message(
+      'Statuses',
+      name: 'app_instance_details_field_publicTimeline_value',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Activity`
   String get app_instance_details_field_activity_label {
     return Intl.message(
