@@ -9,6 +9,7 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 
 class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
     implements ITimelineLocalPreferenceBloc {
@@ -43,6 +44,22 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
               onlyInRemoteList: customList.toPleromaList(),
             ),
             typeString: TimelineType.customList.toJsonValue(),
+          ),
+        );
+
+  TimelineLocalPreferenceBloc.instancePublicTimeline(
+    ILocalPreferencesService preferencesService, {
+    required IPleromaApiInstance pleromaApiInstance,
+  }) : this.byId(
+          preferencesService,
+          userAtHost: "userAtHost",
+          timelineId: "customList.calculateTimelineId()",
+          defaultPreferenceValue: Timeline(
+            id: "customList.calculateTimelineId()",
+            label: "customList.title",
+            isPossibleToDelete: true,
+            settings: TimelineSettings.createDefaultPublicSettings(),
+            typeString: TimelineType.public.toJsonValue(),
           ),
         );
 

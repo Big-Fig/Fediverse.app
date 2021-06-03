@@ -86,10 +86,14 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc extends IStatusNetwork
     required String? maxId,
   }) async {
     var timeline = timelineLocalPreferenceBloc.value!;
-    var pleromaStatuses = await pleromaApiTimelineService.getHashtagTimeline(
-      hashtag: timeline.withRemoteHashtag!,
+    var pleromaStatuses = await pleromaApiTimelineService.getPublicTimeline(
       onlyLocal: timeline.onlyLocal == true,
+      onlyRemote: timeline.onlyRemote == true,
       onlyWithMedia: timeline.onlyWithMedia == true,
+      withMuted: timeline.withMuted == true,
+      onlyFromInstance: timeline.onlyFromInstance,
+      excludeVisibilities: timeline.excludeVisibilities,
+      pleromaReplyVisibilityFilter: timeline.replyVisibilityFilter,
       pagination: PleromaApiPaginationRequest(
         limit: itemsCountPerPage,
         sinceId: minId,
