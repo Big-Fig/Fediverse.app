@@ -5,30 +5,34 @@ import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
-import 'package:moor_ffi/moor_ffi.dart';
 
-import '../../conversation/conversation_model_helper.dart';
-import '../../status/database/status_database_model_helper.dart';
-import '../account_model_helper.dart';
-import '../database/account_database_model_helper.dart';
-import 'account_repository_model_helper.dart';
+import '../../conversation/conversation_test_helper.dart';
+import '../../status/database/status_database_test_helper.dart';
+import '../account_test_helper.dart';
+import '../database/account_database_test_helper.dart';
+import 'account_repository_test_helper.dart';
 
+// ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
 //  initTestLog();
 
-  AppDatabase database;
-  AccountRepository accountRepository;
+  late AppDatabase database;
+  late AccountRepository accountRepository;
 
-  DbAccount dbAccount1;
-  DbAccount dbAccount2;
+  late DbAccount dbAccount1;
+  late DbAccount dbAccount2;
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory(logStatements: false));
     accountRepository = AccountRepository(appDatabase: database);
-    dbAccount1 = await createTestDbAccount(seed: "seed1");
-    dbAccount2 = await createTestDbAccount(seed: "seed2");
+    dbAccount1 =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1');
+    dbAccount2 =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2');
   });
 
   tearDown(() async {
@@ -37,710 +41,949 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await accountRepository.insert(dbAccount1);
-    assert(id != null, true);
-    expectDbAccount(await accountRepository.findById(id), dbAccount1);
+    var id = await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
+    assert(id > 0, true);
+    AccountDatabaseTestHelper.expectDbAccount(
+      await accountRepository.findByDbIdInAppType(id),
+      dbAccount1,
+    );
   });
 
   test('updateById', () async {
-    var id = await accountRepository.insert(dbAccount1);
-    assert(id != null, true);
+    var id = await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
+    assert(id > 0, true);
 
-    await accountRepository.updateById(id, dbAccount2);
-    expectDbAccount(await accountRepository.findById(id), dbAccount2);
+    await accountRepository.updateByDbIdInDbType(
+      dbId: id,
+      dbItem: dbAccount2,
+      batchTransaction: null,
+    );
+    AccountDatabaseTestHelper.expectDbAccount(
+      await accountRepository.findByDbIdInAppType(id),
+      dbAccount2,
+    );
   });
 
   test('updateLocalAccountByRemoteAccount', () async {
-    var id =
-        await accountRepository.insert(dbAccount1.copyWith(acct: "oldAcct"));
-    assert(id != null, true);
+    var id = await accountRepository.insertInDbType(
+      dbAccount1.copyWith(
+        acct: 'oldAcct',
+      ),
+      mode: null,
+    );
+    assert(id > 0, true);
 
-    var oldLocalAccount = DbAccountWrapper(dbAccount1.copyWith(id: id));
-    var newAcct = "newAcct";
-    var newRemoteAccount = mapLocalAccountToRemoteAccount(
-        DbAccountWrapper(dbAccount1.copyWith(id: id, acct: newAcct)));
-    await accountRepository.updateLocalAccountByRemoteAccount(
-      oldLocalAccount: oldLocalAccount,
-      newRemoteAccount: newRemoteAccount,
+    var oldLocalAccount = DbAccountPopulatedWrapper(
+      dbAccountPopulated: DbAccountPopulated(
+        dbAccount: dbAccount1.copyWith(id: id),
+      ),
+    );
+    var newAcct = 'newAcct';
+    var newRemoteAccount = DbAccountPopulatedWrapper(
+      dbAccountPopulated: DbAccountPopulated(
+        dbAccount: dbAccount1.copyWith(
+          id: id,
+          acct: newAcct,
+        ),
+      ),
+    ).toPleromaApiAccount();
+    await accountRepository.updateAppTypeByRemoteType(
+      appItem: oldLocalAccount,
+      remoteItem: newRemoteAccount,
+      batchTransaction: null,
     );
 
-    expect((await accountRepository.findById(id)).acct, newAcct);
+    expect((await accountRepository.findByDbIdInAppType(id))!.acct, newAcct);
   });
 
   test('findByRemoteId', () async {
-    var id = await accountRepository.insert(dbAccount1);
-    assert(id != null, true);
+    var id = await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
+    assert(id > 0, true);
 
-    expectDbAccount(await accountRepository.findByRemoteId(dbAccount1.remoteId),
-        dbAccount1);
+    AccountDatabaseTestHelper.expectDbAccount(
+      await accountRepository.findByRemoteIdInAppType(dbAccount1.remoteId),
+      dbAccount1,
+    );
   });
 
   test('upsertRemoteAccount', () async {
     expect(await accountRepository.countAll(), 0);
 
-    await accountRepository.upsertRemoteAccount(
-        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: null,
-        chatRemoteId: null);
+    await accountRepository.upsertInRemoteType(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaApiAccount(),
+    );
 
     expect(await accountRepository.countAll(), 1);
-    expectDbAccount(await accountRepository.findByRemoteId(dbAccount1.remoteId),
-        dbAccount1);
+    AccountDatabaseTestHelper.expectDbAccount(
+      await accountRepository.findByRemoteIdInAppType(dbAccount1.remoteId),
+      dbAccount1,
+    );
 
     // item with same id updated
-    await accountRepository.upsertRemoteAccount(
-        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: null,
-        chatRemoteId: null);
+    await accountRepository.upsertInRemoteType(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaApiAccount(),
+    );
     expect(await accountRepository.countAll(), 1);
   });
 
   test('upsertRemoteAccounts', () async {
     expect(await accountRepository.countAll(), 0);
-    await accountRepository.upsertRemoteAccounts([
-      mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-    ], conversationRemoteId: null, chatRemoteId: null);
+    await accountRepository.upsertAllInRemoteType(
+      [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaApiAccount(),
+      ],
+      batchTransaction: null,
+    );
 
     expect(await accountRepository.countAll(), 1);
-    expectDbAccount(await accountRepository.findByRemoteId(dbAccount1.remoteId),
-        dbAccount1);
+    AccountDatabaseTestHelper.expectDbAccount(
+      await accountRepository.findByRemoteIdInAppType(dbAccount1.remoteId),
+      dbAccount1,
+    );
 
-    await accountRepository.upsertRemoteAccounts([
-      mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-      mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2)),
-    ], conversationRemoteId: null, chatRemoteId: null);
+    await accountRepository.upsertAllInRemoteType(
+      [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaApiAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaApiAccount(),
+      ],
+      batchTransaction: null,
+    );
 
     // update item with same id
     expect(await accountRepository.countAll(), 2);
-    expectDbAccount(await accountRepository.findByRemoteId(dbAccount1.remoteId),
-        dbAccount1);
-    expectDbAccount(await accountRepository.findByRemoteId(dbAccount2.remoteId),
-        dbAccount2);
+    AccountDatabaseTestHelper.expectDbAccount(
+      await accountRepository.findByRemoteIdInAppType(dbAccount1.remoteId),
+      dbAccount1,
+    );
+    AccountDatabaseTestHelper.expectDbAccount(
+      await accountRepository.findByRemoteIdInAppType(dbAccount2.remoteId),
+      dbAccount2,
+    );
   });
 
   test('createQuery empty', () async {
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
-    await accountRepository
-        .insert((await createTestDbAccount(seed: "seed1")).copyWith());
+    await accountRepository.insertInDbType(
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+          .copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 1);
 
-    await accountRepository
-        .insert((await createTestDbAccount(seed: "seed2")).copyWith());
+    await accountRepository.insertInDbType(
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+          .copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 2);
 
-    await accountRepository
-        .insert((await createTestDbAccount(seed: "seed3")).copyWith());
+    await accountRepository.insertInDbType(
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3'))
+          .copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 3);
   });
 
   test('createQuery searchQuery', () async {
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: "qu",
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      filters: AccountRepositoryFilters(
+        searchQuery: 'qu',
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
-    await accountRepository.insert(
-        (await createTestDbAccount(seed: "seed1")).copyWith(acct: "qu"));
+    await accountRepository.insertInDbType(
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+          .copyWith(acct: 'qu'),
+      mode: null,
+    );
 
     expect((await query.get()).length, 1);
 
-    await accountRepository.insert(
-        (await createTestDbAccount(seed: "seed2")).copyWith(acct: "qur"));
+    await accountRepository.insertInDbType(
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+          .copyWith(acct: 'qur'),
+      mode: null,
+    );
 
     expect((await query.get()).length, 2);
 
-    await accountRepository
-        .insert((await createTestDbAccount(seed: "seed3")).copyWith(acct: "q"));
+    await accountRepository.insertInDbType(
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3'))
+          .copyWith(acct: 'q'),
+      mode: null,
+    );
 
     expect((await query.get()).length, 2);
   });
 
   test('createQuery onlyInStatusFavouritedBy', () async {
-    await accountRepository.insert(dbAccount1);
-    await accountRepository.insert(dbAccount2);
+    await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
+    await accountRepository.insertInDbType(
+      dbAccount2,
+      mode: null,
+    );
 
-    var dbStatus =
-        await createTestDbStatus(seed: "seedStatus", dbAccount: dbAccount1);
-    var status = await createTestDbStatusPopulated(dbStatus, accountRepository);
+    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+      seed: 'seedStatus',
+      dbAccount: dbAccount1,
+    );
+    var status = await StatusDatabaseTestHelper.createTestDbStatusPopulated(
+      dbStatus,
+      accountRepository,
+    );
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
-        onlyInConversation: null,
-        onlyInStatusFavouritedBy: DbStatusPopulatedWrapper(status),
-        onlyInStatusRebloggedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      filters: AccountRepositoryFilters(
+        onlyInStatusFavouritedBy:
+            DbStatusPopulatedWrapper(dbStatusPopulated: status),
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
     await accountRepository.updateStatusFavouritedBy(
-        statusRemoteId: dbStatus.remoteId,
-        favouritedByAccounts: [
-          mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1))
-        ]);
+      statusRemoteId: dbStatus.remoteId,
+      favouritedByAccounts: [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaApiAccount(),
+      ],
+      batchTransaction: null,
+    );
 
     expect((await query.get()).length, 1);
 
     await accountRepository.updateStatusFavouritedBy(
-        statusRemoteId: dbStatus.remoteId,
-        favouritedByAccounts: [
-          mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-          mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
-        ]);
+      statusRemoteId: dbStatus.remoteId,
+      favouritedByAccounts: [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaApiAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaApiAccount(),
+      ],
+      batchTransaction: null,
+    );
 
     expect((await query.get()).length, 2);
 
     await accountRepository.updateStatusFavouritedBy(
-        statusRemoteId: dbStatus.remoteId,
-        favouritedByAccounts: [
-          mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
-        ]);
+      statusRemoteId: dbStatus.remoteId,
+      favouritedByAccounts: [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaApiAccount(),
+      ],
+      batchTransaction: null,
+    );
     expect((await query.get()).length, 1);
   });
 
   test('createQuery onlyInStatusRebloggedBy', () async {
-    await accountRepository.insert(dbAccount1);
-    await accountRepository.insert(dbAccount2);
+    await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
+    await accountRepository.insertInDbType(
+      dbAccount2,
+      mode: null,
+    );
 
-    var dbStatus =
-        await createTestDbStatus(seed: "seedStatus", dbAccount: dbAccount1);
-    var status = await createTestDbStatusPopulated(dbStatus, accountRepository);
+    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+      seed: 'seedStatus',
+      dbAccount: dbAccount1,
+    );
+    var status = await StatusDatabaseTestHelper.createTestDbStatusPopulated(
+      dbStatus,
+      accountRepository,
+    );
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
-        onlyInConversation: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInStatusRebloggedBy: DbStatusPopulatedWrapper(status),
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      filters: AccountRepositoryFilters(
+        onlyInStatusRebloggedBy:
+            DbStatusPopulatedWrapper(dbStatusPopulated: status),
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
     await accountRepository.updateStatusRebloggedBy(
-        statusRemoteId: dbStatus.remoteId,
-        rebloggedByAccounts: [
-          mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1))
-        ]);
+      statusRemoteId: dbStatus.remoteId,
+      rebloggedByAccounts: [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaApiAccount(),
+      ],
+      batchTransaction: null,
+    );
 
     expect((await query.get()).length, 1);
 
     await accountRepository.updateStatusRebloggedBy(
-        statusRemoteId: dbStatus.remoteId,
-        rebloggedByAccounts: [
-          mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-          mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
-        ]);
+      statusRemoteId: dbStatus.remoteId,
+      rebloggedByAccounts: [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaApiAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaApiAccount(),
+      ],
+      batchTransaction: null,
+    );
 
     expect((await query.get()).length, 2);
 
     await accountRepository.updateStatusRebloggedBy(
-        statusRemoteId: dbStatus.remoteId,
-        rebloggedByAccounts: [
-          mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
-        ]);
+      statusRemoteId: dbStatus.remoteId,
+      rebloggedByAccounts: [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaApiAccount(),
+      ],
+      batchTransaction: null,
+    );
     expect((await query.get()).length, 1);
   });
 
   test('createQuery onlyInAccountFollowers', () async {
-    await accountRepository.insert(dbAccount1);
-    await accountRepository.insert(dbAccount2);
+    await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
+    await accountRepository.insertInDbType(
+      dbAccount2,
+      mode: null,
+    );
 
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
-        onlyInConversation: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInAccountFollowers: DbAccountWrapper(dbAccount1),
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      filters: AccountRepositoryFilters(
+        onlyInAccountFollowers: DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ),
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
-    await accountRepository.addAccountFollowers(dbAccount1.remoteId,
-        [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))]);
+    await accountRepository.addAccountFollowers(
+      accountRemoteId: dbAccount1.remoteId,
+      followers: [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaApiAccount(),
+      ],
+      batchTransaction: null,
+    );
     expect((await query.get()).length, 1);
 
-    await accountRepository.addAccountFollowers(dbAccount1.remoteId, [
-      mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-      mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
-    ]);
+    await accountRepository.addAccountFollowers(
+      accountRemoteId: dbAccount1.remoteId,
+      followers: [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaApiAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaApiAccount(),
+      ],
+      batchTransaction: null,
+    );
     expect((await query.get()).length, 2);
   });
 
   test('createQuery onlyInAccountFollowing', () async {
-    await accountRepository.insert(dbAccount1);
-    await accountRepository.insert(dbAccount2);
+    await accountRepository.insertInDbType(
+      dbAccount1,
+      mode: null,
+    );
+    await accountRepository.insertInDbType(
+      dbAccount2,
+      mode: null,
+    );
 
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
-        onlyInConversation: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: DbAccountWrapper(dbAccount1),
-        searchQuery: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      filters: AccountRepositoryFilters(
+        onlyInAccountFollowing: DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ),
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
-    await accountRepository.addAccountFollowings(dbAccount1.remoteId,
-        [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))]);
+    await accountRepository.addAccountFollowings(
+      accountRemoteId: dbAccount1.remoteId,
+      followings: [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaApiAccount(),
+      ],
+      batchTransaction: null,
+    );
     expect((await query.get()).length, 1);
 
-    await accountRepository.addAccountFollowings(dbAccount1.remoteId, [
-      mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-      mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
-    ]);
+    await accountRepository.addAccountFollowings(
+      accountRemoteId: dbAccount1.remoteId,
+      followings: [
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount1,
+          ),
+        ).toPleromaApiAccount(),
+        DbAccountPopulatedWrapper(
+          dbAccountPopulated: DbAccountPopulated(
+            dbAccount: dbAccount2,
+          ),
+        ).toPleromaApiAccount(),
+      ],
+      batchTransaction: null,
+    );
     expect((await query.get()).length, 2);
   });
 
   test('createQuery onlyInConversation', () async {
-    var conversationRemoteId = "conversationRemoteId";
-    var conversation = DbConversationChatWrapper(DbConversation(
-        id: null, remoteId: conversationRemoteId, unread: false));
+    var conversationRemoteId = 'conversationRemoteId';
+
+    var conversation = DbConversationChatPopulatedWrapper(
+      dbConversationPopulated: DbConversationPopulated(
+        dbConversation: DbConversation(
+          id: null,
+          remoteId: conversationRemoteId,
+          unread: false,
+        ),
+      ),
+    );
 
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
+      filters: AccountRepositoryFilters(
         onlyInConversation: conversation,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
     // not associated with conversation
-    await accountRepository.upsertRemoteAccount(
-        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: null,
-        chatRemoteId: null);
+    await accountRepository.upsertInRemoteType(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaApiAccount(),
+    );
     expect((await query.get()).length, 0);
 
     // associated with conversation
-    await accountRepository.upsertRemoteAccount(
-        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: conversationRemoteId,
-        chatRemoteId: null);
+    await accountRepository.upsertConversationRemoteAccount(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaApiAccount(),
+      conversationRemoteId: conversationRemoteId,
+      batchTransaction: null,
+    );
     expect((await query.get()).length, 1);
 
     // duplicated
-    await accountRepository.upsertRemoteAccount(
-        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: conversationRemoteId,
-        chatRemoteId: null);
+    await accountRepository.upsertConversationRemoteAccount(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaApiAccount(),
+      conversationRemoteId: conversationRemoteId,
+      batchTransaction: null,
+    );
 
     expect((await query.get()).length, 1);
 
     // additional account associated with conversation
-    await accountRepository.upsertRemoteAccount(
-        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2)),
-        conversationRemoteId: conversationRemoteId,
-        chatRemoteId: null);
+    await accountRepository.upsertConversationRemoteAccount(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount2,
+        ),
+      ).toPleromaApiAccount(),
+      conversationRemoteId: conversationRemoteId,
+      batchTransaction: null,
+    );
 
     expect((await query.get()).length, 2);
   });
 
   test('createQuery newerThanAccount', () async {
     var query = accountRepository.createQuery(
-      onlyInConversation: null,
-      onlyInStatusRebloggedBy: null,
-      onlyInStatusFavouritedBy: null,
-      onlyInAccountFollowers: null,
-      onlyInAccountFollowing: null,
-      searchQuery: null,
-      newerThanAccount:
-          await createTestAccount(seed: "seed5", remoteId: "remoteId5"),
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      olderThanAccount: null,
-      onlyInChat: null,
+      filters: null,
+      pagination: RepositoryPagination<IAccount>(
+        newerThanItem: await AccountTestHelper.createTestAccount(
+          seed: 'seed5',
+          remoteId: 'remoteId5',
+        ),
+      ),
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
     );
 
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed2"))
-            .copyWith(remoteId: "remoteId4"));
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+          .copyWith(remoteId: 'remoteId4'),
+    );
 
     expect((await query.get()).length, 0);
 
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed2"))
-            .copyWith(remoteId: "remoteId5"));
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+          .copyWith(remoteId: 'remoteId5'),
+    );
 
     expect((await query.get()).length, 0);
 
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed1"))
-            .copyWith(remoteId: "remoteId6"));
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+          .copyWith(remoteId: 'remoteId6'),
+    );
 
     expect((await query.get()).length, 1);
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed1"))
-            .copyWith(remoteId: "remoteId7"));
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+          .copyWith(remoteId: 'remoteId7'),
+    );
 
     expect((await query.get()).length, 2);
   });
 
-  test('createQuery notNewerThanAccount', () async {
+  test('createQuery olderThanItem', () async {
     var query = accountRepository.createQuery(
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        newerThanAccount: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThanAccount:
-            await createTestAccount(seed: "seed5", remoteId: "remoteId5"),
-        onlyInChat: null);
+      filters: null,
+      pagination: RepositoryPagination<IAccount>(
+        olderThanItem: await AccountTestHelper.createTestAccount(
+          seed: 'seed5',
+          remoteId: 'remoteId5',
+        ),
+      ),
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
+    );
 
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed2"))
-            .copyWith(remoteId: "remoteId3"));
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+          .copyWith(remoteId: 'remoteId3'),
+    );
 
     expect((await query.get()).length, 1);
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed2"))
-            .copyWith(remoteId: "remoteId4"));
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+          .copyWith(remoteId: 'remoteId4'),
+    );
 
     expect((await query.get()).length, 2);
 
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed2"))
-            .copyWith(remoteId: "remoteId5"));
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+          .copyWith(remoteId: 'remoteId5'),
+    );
 
     expect((await query.get()).length, 2);
 
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed1"))
-            .copyWith(remoteId: "remoteId6"));
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+          .copyWith(remoteId: 'remoteId6'),
+    );
 
     expect((await query.get()).length, 2);
   });
 
   test('createQuery notNewerThanAccount & newerThanAccount', () async {
     var query = accountRepository.createQuery(
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        newerThanAccount:
-            await createTestAccount(seed: "seed2", remoteId: "remoteId2"),
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThanAccount:
-            await createTestAccount(seed: "seed5", remoteId: "remoteId5"),
-        onlyInChat: null);
+      filters: null,
+      pagination: RepositoryPagination<IAccount>(
+        olderThanItem: await AccountTestHelper.createTestAccount(
+          seed: 'seed5',
+          remoteId: 'remoteId5',
+        ),
+        newerThanItem: await AccountTestHelper.createTestAccount(
+          seed: 'seed2',
+          remoteId: 'remoteId2',
+        ),
+      ),
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
+    );
 
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed1"))
-            .copyWith(remoteId: "remoteId1"));
-
-    expect((await query.get()).length, 0);
-
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed2"))
-            .copyWith(remoteId: "remoteId2"));
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+          .copyWith(
+        remoteId: 'remoteId1',
+      ),
+    );
 
     expect((await query.get()).length, 0);
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed3"))
-            .copyWith(remoteId: "remoteId3"));
+
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+          .copyWith(remoteId: 'remoteId2'),
+    );
+
+    expect((await query.get()).length, 0);
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3'))
+          .copyWith(remoteId: 'remoteId3'),
+    );
 
     expect((await query.get()).length, 1);
 
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed4"))
-            .copyWith(remoteId: "remoteId4"));
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed4'))
+          .copyWith(remoteId: 'remoteId4'),
+    );
 
     expect((await query.get()).length, 2);
 
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed5"))
-            .copyWith(remoteId: "remoteId5"));
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed5'))
+          .copyWith(remoteId: 'remoteId5'),
+    );
 
     expect((await query.get()).length, 2);
 
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed6"))
-            .copyWith(remoteId: "remoteId6"));
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed6'))
+          .copyWith(remoteId: 'remoteId6'),
+    );
 
     expect((await query.get()).length, 2);
   });
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = accountRepository.createQuery(
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        newerThanAccount: null,
-        limit: null,
-        offset: null,
-        orderingTermData: AccountOrderingTermData(
-            orderByType: AccountOrderByType.remoteId,
-            orderingMode: OrderingMode.asc),
-        olderThanAccount: null,
-        onlyInChat: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
+    );
 
-    var account2 = await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed2"))
-            .copyWith(remoteId: "remoteId2"));
-    var account1 = await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed1"))
-            .copyWith(remoteId: "remoteId1"));
-    var account3 = await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed3"))
-            .copyWith(remoteId: "remoteId3"));
+    var account2 = await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+          .copyWith(remoteId: 'remoteId2'),
+    );
+    var account1 = await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+          .copyWith(remoteId: 'remoteId1'),
+    );
+    var account3 = await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3'))
+          .copyWith(remoteId: 'remoteId3'),
+    );
 
-    var actualList = (await query
-        .map(accountRepository.dao.typedResultToPopulated)
-        .map((dbAccount) => DbAccountWrapper(dbAccount))
-        .get());
+    var actualList = (await query.get());
+
     expect(actualList.length, 3);
 
-    expectDbAccount(actualList[0], account1);
-    expectDbAccount(actualList[1], account2);
-    expectDbAccount(actualList[2], account3);
+    AccountDatabaseTestHelper.expectDbAccount(actualList[0], account1);
+    AccountDatabaseTestHelper.expectDbAccount(actualList[1], account2);
+    AccountDatabaseTestHelper.expectDbAccount(actualList[2], account3);
   });
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
     var query = accountRepository.createQuery(
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        newerThanAccount: null,
-        limit: null,
-        offset: null,
-        orderingTermData: AccountOrderingTermData(
-            orderByType: AccountOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThanAccount: null,
-        onlyInChat: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+    );
 
-    var account2 = await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed2"))
-            .copyWith(remoteId: "remoteId2"));
-    var account1 = await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed1"))
-            .copyWith(remoteId: "remoteId1"));
-    var account3 = await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed3"))
-            .copyWith(remoteId: "remoteId3"));
+    var account2 = await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+          .copyWith(remoteId: 'remoteId2'),
+    );
+    var account1 = await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+          .copyWith(remoteId: 'remoteId1'),
+    );
+    var account3 = await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3'))
+          .copyWith(remoteId: 'remoteId3'),
+    );
 
-    var actualList = (await query
-        .map(accountRepository.dao.typedResultToPopulated)
-        .map((dbAccount) => DbAccountWrapper(dbAccount))
-        .get());
+    var actualList = (await query.get());
     expect(actualList.length, 3);
 
-    expectDbAccount(actualList[0], account3);
-    expectDbAccount(actualList[1], account2);
-    expectDbAccount(actualList[2], account1);
+    AccountDatabaseTestHelper.expectDbAccount(actualList[0], account3);
+    AccountDatabaseTestHelper.expectDbAccount(actualList[1], account2);
+    AccountDatabaseTestHelper.expectDbAccount(actualList[2], account1);
   });
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = accountRepository.createQuery(
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        newerThanAccount: null,
+      filters: null,
+      pagination: RepositoryPagination<IAccount>(
         limit: 1,
         offset: 1,
-        orderingTermData: AccountOrderingTermData(
-            orderByType: AccountOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThanAccount: null,
-        onlyInChat: null);
+      ),
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+    );
 
-    var account2 = await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed2"))
-            .copyWith(remoteId: "remoteId2"));
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed1"))
-            .copyWith(remoteId: "remoteId1"));
-    await insertDbAccount(
-        accountRepository,
-        (await createTestDbAccount(seed: "seed3"))
-            .copyWith(remoteId: "remoteId3"));
+    var account2 = await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+          .copyWith(remoteId: 'remoteId2'),
+    );
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+          .copyWith(remoteId: 'remoteId1'),
+    );
+    await AccountRepositoryTestHelper.insertDbAccount(
+      accountRepository,
+      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3'))
+          .copyWith(remoteId: 'remoteId3'),
+    );
 
-    var actualList = (await query
-        .map(accountRepository.dao.typedResultToPopulated)
-        .map((dbAccount) => DbAccountWrapper(dbAccount))
-        .get());
+    var actualList = (await query.get());
     expect(actualList.length, 1);
 
-    expectDbAccount(actualList[0], account2);
+    AccountDatabaseTestHelper.expectDbAccount(actualList[0], account2);
   });
 
   test('upsertRemoteAccount conversationRemoteId', () async {
-    var conversationRemoteId = "conversationRemoteId123";
+    var conversationRemoteId = 'conversationRemoteId123';
 
     expect(await accountRepository.countAll(), 0);
 
-    await accountRepository.upsertRemoteAccount(
-        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: conversationRemoteId,
-        chatRemoteId: null);
+    await accountRepository.upsertConversationRemoteAccount(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaApiAccount(),
+      conversationRemoteId: conversationRemoteId,
+      batchTransaction: null,
+    );
 
-    var conversation = await createTestConversation(
-        seed: "seed1", remoteId: conversationRemoteId);
+    var conversation = await ConversationTestHelper.createTestConversation(
+      seed: 'seed1',
+      remoteId: conversationRemoteId,
+    );
 
     expect(await accountRepository.countAll(), 1);
     expect(
-        (await accountRepository.getAccounts(
-                olderThanAccount: null,
-                newerThanAccount: null,
-                onlyInConversation: null,
-                onlyInStatusRebloggedBy: null,
-                onlyInStatusFavouritedBy: null,
-                onlyInAccountFollowers: null,
-                onlyInAccountFollowing: null,
-                searchQuery: null,
-                limit: null,
-                offset: null,
-                orderingTermData: null,
-                onlyInChat: null))
-            .length,
-        1);
+      (await accountRepository.findAllInAppType(
+        pagination: null,
+        filters: null,
+        orderingTerms: null,
+      ))
+          .length,
+      1,
+    );
     expect(
-        (await accountRepository.conversationAccountsDao.getAll().get()).length, 1);
+      (await accountRepository.conversationAccountsDao.getAll()).length,
+      1,
+    );
 
     expect(
-        (await accountRepository.getAccounts(
-                olderThanAccount: null,
-                newerThanAccount: null,
-                onlyInConversation: conversation,
-                onlyInStatusRebloggedBy: null,
-                onlyInStatusFavouritedBy: null,
-                onlyInAccountFollowers: null,
-                onlyInAccountFollowing: null,
-                searchQuery: null,
-                limit: null,
-                offset: null,
-                orderingTermData: null,
-                onlyInChat: null))
-            .length,
-        1);
+      (await accountRepository.findAllInAppType(
+        filters: AccountRepositoryFilters.createForOnlyInConversation(
+          conversation: conversation,
+        ),
+        pagination: null,
+        orderingTerms: null,
+      ))
+          .length,
+      1,
+    );
 
     var accounts = (await accountRepository.getConversationAccounts(
-        conversation: conversation));
+      conversation: conversation,
+    ));
     expect(accounts.length, 1);
 
-    await accountRepository.upsertRemoteAccount(
-        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: conversationRemoteId,
-        chatRemoteId: null);
+    await accountRepository.upsertConversationRemoteAccount(
+      DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: dbAccount1,
+        ),
+      ).toPleromaApiAccount(),
+      conversationRemoteId: conversationRemoteId,
+      batchTransaction: null,
+    );
     expect(await accountRepository.countAll(), 1);
     expect(
-        (await accountRepository.getAccounts(
-                olderThanAccount: null,
-                newerThanAccount: null,
-                onlyInConversation: null,
-                onlyInStatusRebloggedBy: null,
-                onlyInStatusFavouritedBy: null,
-                onlyInAccountFollowers: null,
-                onlyInAccountFollowing: null,
-                searchQuery: null,
-                limit: null,
-                offset: null,
-                orderingTermData: null,
-                onlyInChat: null))
-            .length,
-        1);
+      (await accountRepository.getAllInAppType()).length,
+      1,
+    );
     expect(
-        (await accountRepository.getConversationAccounts(
-                conversation: await createTestConversation(
-                    seed: "seed2", remoteId: conversationRemoteId)))
-            .length,
-        1);
+      (await accountRepository.getConversationAccounts(
+        conversation: await ConversationTestHelper.createTestConversation(
+          seed: 'seed2',
+          remoteId: conversationRemoteId,
+        ),
+      ))
+          .length,
+      1,
+    );
+  });
+
+  test('insertInDbTypeBatch duplicated', () async {
+    expect(await accountRepository.countAll(), 0);
+
+    var dbItem1 =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1');
+    var dbItem1copy =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1');
+
+    await accountRepository.batch((batch) {
+      accountRepository.insertInDbTypeBatch(
+        dbItem1,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+      accountRepository.insertInDbTypeBatch(
+        dbItem1copy,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+    });
+
+    expect(await accountRepository.countAll(), 1);
+  });
+
+  test('insertInRemoteTypeBatch duplicated', () async {
+    expect(await accountRepository.countAll(), 0);
+
+    var account1 = await AccountTestHelper.createTestAccount(seed: 'seed1');
+    var account1Copy = await AccountTestHelper.createTestAccount(seed: 'seed1');
+
+    var remoteAccount1 = account1.toPleromaApiAccount();
+    var remoteAccount1Copy = account1Copy.toPleromaApiAccount();
+
+    await accountRepository.batch((batch) {
+      accountRepository.insertInRemoteTypeBatch(
+        remoteAccount1,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+      accountRepository.insertInRemoteTypeBatch(
+        remoteAccount1Copy,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batch,
+      );
+    });
+
+    expect(await accountRepository.countAll(), 1);
+  });
+  test('insertInRemoteTypeBatch duplicated', () async {
+    expect(await accountRepository.countAll(), 0);
+
+    var account1 = await AccountTestHelper.createTestAccount(seed: 'seed1');
+    var account1Copy = await AccountTestHelper.createTestAccount(seed: 'seed1');
+
+    var remoteAccount1 = account1.toPleromaApiAccount();
+    var remoteAccount1Copy = account1Copy.toPleromaApiAccount();
+
+    await accountRepository.insertAllInRemoteType(
+      [remoteAccount1, remoteAccount1Copy],
+      mode: InsertMode.insertOrReplace,
+      batchTransaction: null,
+    );
+
+    expect(await accountRepository.countAll(), 1);
   });
 }

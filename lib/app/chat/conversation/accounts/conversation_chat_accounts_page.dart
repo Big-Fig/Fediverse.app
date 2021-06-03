@@ -27,7 +27,9 @@ class ConversationChatAccountsPage extends StatelessWidget {
 }
 
 void goToConversationChatAccountsPage(
-    BuildContext context, IConversationChat conversation) {
+  BuildContext context,
+  IConversationChat conversation,
+) {
   Navigator.push(
     context,
     MaterialPageRoute(

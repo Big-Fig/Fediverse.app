@@ -4,17 +4,19 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class ICurrentFediUiThemeBloc implements IDisposable {
-  static ICurrentFediUiThemeBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static ICurrentFediUiThemeBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<ICurrentFediUiThemeBloc>(context, listen: listen);
 
-  IFediUiTheme get adaptiveBrightnessCurrentTheme;
+  IFediUiTheme? get adaptiveBrightnessCurrentTheme;
 
-  Stream<IFediUiTheme> get adaptiveBrightnessCurrentThemeStream;
+  Stream<IFediUiTheme?> get adaptiveBrightnessCurrentThemeStream;
 
-  IFediUiTheme get currentTheme;
+  IFediUiTheme? get currentTheme;
 
-  Stream<IFediUiTheme> get currentThemeStream;
+  Stream<IFediUiTheme?> get currentThemeStream;
 
   Future changeTheme(IFediUiTheme theme);
 }

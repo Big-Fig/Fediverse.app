@@ -9,9 +9,11 @@ abstract class IWebSocketsSettingsBloc
     implements
         IGlobalOrInstanceSettingsBloc<WebSocketsSettings>,
         IWebSocketsServiceConfigBloc {
-  static IWebSocketsSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IWebSocketsSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IWebSocketsSettingsBloc>(context, listen: listen);
 
-  void changeHandlingType(WebSocketsHandlingType value);
+  Future changeHandlingType(WebSocketsHandlingType value);
 }

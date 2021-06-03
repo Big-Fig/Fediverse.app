@@ -22,12 +22,15 @@ import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_but
 import 'package:fedi/app/ui/chip/fedi_grey_chip.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/settings/font_size/ui_settings_font_size_model.dart';
+import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
+import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -35,7 +38,7 @@ import 'package:provider/provider.dart';
 
 const _defaultPadding = FediPadding.horizontalBigPadding;
 
-final _logger = Logger("status_body_widget.dart");
+final _logger = Logger('status_body_widget.dart');
 
 class StatusBodyWidget extends StatelessWidget {
   const StatusBodyWidget();
@@ -53,47 +56,47 @@ class StatusBodyWidget extends StatelessWidget {
 
 class _StatusBodyChildWithWarningsWidget extends StatelessWidget {
   const _StatusBodyChildWithWarningsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
+
     return StreamBuilder<StatusSensitiveWarningState>(
-        stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
-        builder: (context, snapshot) {
-          var statusWarningState = snapshot.data;
+      stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
+      builder: (context, snapshot) {
+        var statusWarningState =
+            snapshot.data ?? statusSensitiveBloc.statusWarningState;
 
-          _logger.finest(
-              () => "StreamBuilder statusWarningState $statusWarningState");
+        _logger.finest(
+          () => 'StreamBuilder statusWarningState $statusWarningState',
+        );
 
-          if (statusWarningState == null) {
-            return const SizedBox.shrink();
-          }
+        Widget child;
+        if (statusWarningState.containsSpoilerAndDisplayEnabled) {
+          child = const _StatusBodyContentWidget(
+            showSpoiler: true,
+          );
+        } else {
+          child = const _StatusBodyWithoutContentWidget();
+        }
 
-          Widget child;
-          if (statusWarningState.containsSpoilerAndDisplayEnabled) {
-            child = const _StatusBodyContentWidget(
-              showSpoiler: true,
-            );
-          } else {
-            child = const _StatusBodyWithoutContentWidget();
-          }
-
-          if (statusWarningState.nsfwSensitiveAndDisplayEnabled) {
-            return child;
-          } else {
-            return StatusSensitiveNsfwWarningOverlayWidget(
-              child: child,
-            );
-          }
-        });
+        if (statusWarningState.nsfwSensitiveAndDisplayEnabled) {
+          return child;
+        } else {
+          return StatusSensitiveNsfwWarningOverlayWidget(
+            child: child,
+          );
+        }
+      },
+    );
   }
 }
 
 class _StatusBodyWithoutContentWidget extends StatelessWidget {
   const _StatusBodyWithoutContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -119,8 +122,8 @@ class _StatusBodyContentWidget extends StatelessWidget {
   final bool showSpoiler;
 
   const _StatusBodyContentWidget({
-    Key key,
-    @required this.showSpoiler,
+    Key? key,
+    required this.showSpoiler,
   }) : super(key: key);
 
   @override
@@ -129,6 +132,7 @@ class _StatusBodyContentWidget extends StatelessWidget {
     var statusCollapsibleItemBloc = IStatusCollapsibleItemBloc.of(context);
 
     var statusBodyBloc = IStatusBodyBloc.of(context);
+
     return Column(
       children: <Widget>[
         Padding(
@@ -145,7 +149,7 @@ class _StatusBodyContentWidget extends StatelessWidget {
           ),
         ),
         if (statusBloc.poll != null) const _StatusBodyPollWidget(),
-        if (statusBloc.mediaAttachments?.isNotEmpty == true &&
+        if (statusBloc.reblogOrOriginalMediaAttachments?.isNotEmpty == true &&
             (statusBloc.content?.isNotEmpty == true || statusBloc.poll != null))
           const FediSmallVerticalSpacer(),
         const _StatusBodyContentMediaAttachmentsWidget(),
@@ -156,28 +160,33 @@ class _StatusBodyContentWidget extends StatelessWidget {
 
 class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
   const _StatusBodyContentMediaAttachmentsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
     var statusBodyBloc = IStatusBodyBloc.of(context);
-    return StreamBuilder<List<IPleromaMediaAttachment>>(
-      stream: statusBloc.mediaAttachmentsStream,
+
+    return StreamBuilder<List<IPleromaApiMediaAttachment>?>(
+      stream: statusBloc.reblogOrOriginalMediaAttachmentsStream,
       builder: (context, snapshot) {
         var mediaAttachments = snapshot.data;
 
         if (mediaAttachments?.isNotEmpty == true) {
-          return DisposableProvider<IMediaAttachmentListBloc>(
-            create: (context) => MediaAttachmentListBloc(
-              mediaAttachments: snapshot.data,
-              initialMediaAttachment: statusBodyBloc.initialMediaAttachment,
+          return Provider<List<IPleromaApiMediaAttachment>>.value(
+            value: mediaAttachments!,
+            child: DisposableProxyProvider<List<IPleromaApiMediaAttachment>,
+                IMediaAttachmentListBloc>(
+              update: (context, value, _) => MediaAttachmentListBloc(
+                mediaAttachments: value,
+                initialMediaAttachment: statusBodyBloc.initialMediaAttachment,
+              ),
+              child: const MediaAttachmentListCarouselWidget(),
             ),
-            child: const MediaAttachmentListCarouselWidget(),
           );
         } else {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
       },
     );
@@ -186,7 +195,7 @@ class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
 
 class _StatusBodyPollWidget extends StatelessWidget {
   const _StatusBodyPollWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -198,59 +207,69 @@ class _StatusBodyPollWidget extends StatelessWidget {
 
 class _StatusBodyCardWidget extends StatelessWidget {
   const _StatusBodyCardWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
-    return StreamBuilder<IPleromaCard>(
-        stream: statusBloc.reblogOrOriginalCardStream,
-        builder: (context, snapshot) {
-          var card = snapshot.data;
 
-          if (card == null) {
-            return const SizedBox.shrink();
-          }
-          return Provider.value(
-            value: card,
-            child: const CardWidget(),
-          );
-        });
+    return StreamBuilder<IPleromaApiCard?>(
+      stream: statusBloc.reblogOrOriginalCardStream,
+      builder: (context, snapshot) {
+        var card = snapshot.data;
+
+        if (card == null) {
+          return const SizedBox.shrink();
+        }
+
+        return Provider<IPleromaApiCard?>.value(
+          value: card,
+          child: const CardWidget(),
+        );
+      },
+    );
   }
 }
 
 class _StatusBodyCollapsibleButtonWidget extends StatelessWidget {
   const _StatusBodyCollapsibleButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusCollapsibleItemBloc = IStatusCollapsibleItemBloc.of(context);
-    return Center(
-      child: StreamBuilder<bool>(
-        stream: statusCollapsibleItemBloc.isCollapsedStream,
-        builder: (context, snapshot) {
-          var isCollapsed = snapshot.data ?? true;
-          return FediPrimaryFilledTextButtonWithBorder(
-            isCollapsed
-                ? S.of(context).app_status_collapsible_action_expand
-                : S.of(context).app_status_collapsible_action_collapse,
-            onPressed: () {
-              statusCollapsibleItemBloc.toggleCollapseExpand();
+
+    return Column(
+      children: [
+        const FediSmallVerticalSpacer(),
+        Center(
+          child: StreamBuilder<bool>(
+            stream: statusCollapsibleItemBloc.isCollapsedStream,
+            builder: (context, snapshot) {
+              var isCollapsed = snapshot.data ?? true;
+
+              return FediPrimaryFilledTextButtonWithBorder(
+                isCollapsed
+                    ? S.of(context).app_status_collapsible_action_expand
+                    : S.of(context).app_status_collapsible_action_collapse,
+                onPressed: () {
+                  statusCollapsibleItemBloc.toggleCollapseExpand();
+                },
+                expanded: false,
+              );
             },
-            expanded: false,
-          );
-        },
-      ),
+          ),
+        ),
+      ],
     );
   }
 }
 
 class _StatusBodySpoilerChipWidget extends StatelessWidget {
   const _StatusBodySpoilerChipWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -266,7 +285,7 @@ class _StatusBodySpoilerChipWidget extends StatelessWidget {
 
 class _StatusBodyChipsWidget extends StatelessWidget {
   const _StatusBodyChipsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -293,7 +312,7 @@ class _StatusBodyChipsWidget extends StatelessWidget {
 
 class _StatusBodyNsfwChipWidget extends StatelessWidget {
   const _StatusBodyNsfwChipWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -314,7 +333,7 @@ void _onLinkTap(
   await handleStatusBodyLinkClick(
     context: context,
     statusBloc: IStatusBloc.of(context, listen: false),
-    link: url,
+    url: url,
   );
 }
 
@@ -325,29 +344,30 @@ class _StatusBodyContentWithEmojisWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
 
-    return StreamBuilder<EmojiText>(
-        stream: statusBloc.contentWithEmojisStream.distinct(),
-        initialData: statusBloc.contentWithEmojis,
-        builder: (context, snapshot) {
-          var contentWithEmojis = snapshot.data;
+    return StreamBuilder<EmojiText?>(
+      stream: statusBloc.contentWithEmojisStream.distinct(),
+      initialData: statusBloc.contentWithEmojis,
+      builder: (context, snapshot) {
+        var contentWithEmojis = snapshot.data;
 
-          _logger.finest(() => "contentWithEmojis $contentWithEmojis");
+        _logger.finest(() => 'contentWithEmojis $contentWithEmojis');
 
-          if (contentWithEmojis?.text?.isNotEmpty == true) {
-            return Provider<EmojiText>.value(
-              value: contentWithEmojis,
-              child: const _StatusBodyContentWithEmojisCollapsibleWidget(),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+        if (contentWithEmojis?.text.isNotEmpty == true) {
+          return Provider<EmojiText?>.value(
+            value: contentWithEmojis,
+            child: const _StatusBodyContentWithEmojisCollapsibleWidget(),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
 class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
   const _StatusBodyContentWithEmojisCollapsibleWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -358,20 +378,32 @@ class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
     var statusBodyBloc = IStatusBodyBloc.of(context);
     var collapsible = statusBodyBloc.collapsible;
 
-    _logger.finest(() => "build collapsible $collapsible "
-        "statusBloc ${statusBloc.remoteId}");
+    _logger.finest(() => 'build collapsible $collapsible '
+        'statusBloc ${statusBloc.remoteId}');
 
     var isNeedCollapse =
         collapsible && statusCollapsibleItemBloc.isPossibleToCollapse;
     const htmlTextWidget = _StatusBodyContentWithEmojisHtmlTextWidget();
+
     return StreamBuilder<bool>(
       stream: statusCollapsibleItemBloc.isCollapsedStream.distinct(),
       builder: (context, snapshot) {
         var isCollapsed = snapshot.data ?? false;
         if (isCollapsed && isNeedCollapse) {
-          return Container(
-            height: 200,
-            child: htmlTextWidget,
+          return FediFadeShaderMask(
+            fadingColor: IFediUiColorTheme.of(context).white,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            onlyEnd: true,
+            // todo: refactor
+            // ignore: no-magic-number
+            fadingPercent: 0.2,
+            child: Container(
+              // todo: refactor
+              // ignore: no-magic-number
+              height: 200,
+              child: htmlTextWidget,
+            ),
           );
         } else {
           return htmlTextWidget;
@@ -383,45 +415,86 @@ class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
 
 class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
   const _StatusBodyContentWithEmojisHtmlTextWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+    var fediUiTextTheme = IFediUiTextTheme.of(context);
     var textScaleFactor = MediaQuery.of(context).textScaleFactor;
 
-    return DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
-      update: (context, contentWithEmojis, _) {
-        var htmlTextBloc = HtmlTextBloc(
-          inputData: HtmlTextInputData(
-            input: contentWithEmojis?.text,
-            emojis: contentWithEmojis?.emojis,
-          ),
-          settings: HtmlTextSettings(
-            lineHeight: 1.5,
-            fontSize: 16.0,
-            // todo: 1000 is hack, actually it should be null, but don't
-            //  work as expected
-            textMaxLines: 1000,
-            textOverflow: TextOverflow.ellipsis,
-            linkColor: fediUiColorTheme.primary,
-            color: fediUiColorTheme.darkGrey,
-            textScaleFactor: textScaleFactor,
-            fontWeight: FontWeight.normal,
-            drawNewLines: false,
-          ),
+    var uiSettingsBloc = IUiSettingsBloc.of(context);
+
+    return StreamBuilder<UiSettingsFontSize?>(
+      stream: uiSettingsBloc.statusFontSizeStream,
+      builder: (context, snapshot) {
+        var statusFontSize = snapshot.data;
+
+        if (statusFontSize == null) {
+          return const SizedBox.shrink();
+        }
+
+        var textStyle = fediUiTextTheme.bigTallDarkGrey;
+
+        switch (statusFontSize) {
+          case UiSettingsFontSize.smallest:
+            textStyle = fediUiTextTheme.smallTallDarkGrey;
+            break;
+          case UiSettingsFontSize.small:
+            textStyle = fediUiTextTheme.mediumTallDarkGrey;
+            break;
+          case UiSettingsFontSize.medium:
+            textStyle = fediUiTextTheme.bigTallDarkGrey;
+            break;
+          case UiSettingsFontSize.large:
+            textStyle = fediUiTextTheme.subHeaderTallDarkGrey;
+            break;
+          case UiSettingsFontSize.largest:
+            textStyle = fediUiTextTheme.headerDarkGrey;
+            break;
+        }
+
+        return DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
+          update: (context, contentWithEmojis, previous) {
+            var htmlTextInputData = HtmlTextInputData(
+              input: contentWithEmojis?.text ?? '',
+              emojis: contentWithEmojis?.emojis,
+            );
+            if (previous?.inputData == htmlTextInputData) {
+              return previous!;
+            }
+
+            var htmlTextBloc = HtmlTextBloc(
+              inputData: htmlTextInputData,
+              settings: HtmlTextSettings(
+                color: textStyle.color,
+                lineHeight: textStyle.height,
+                fontSize: textStyle.fontSize,
+                // todo: 1000 is hack, actually it should be null, but dont
+                //  work as expected
+                // ignore: no-magic-number
+                textMaxLines: 1000,
+                textOverflow: TextOverflow.ellipsis,
+                linkColor: fediUiColorTheme.primary,
+                textScaleFactor: textScaleFactor,
+                fontWeight: FontWeight.normal,
+                drawNewLines: false,
+              ),
+            );
+            htmlTextBloc.addDisposable(
+              streamSubscription: htmlTextBloc.linkClickedStream.listen(
+                (url) {
+                  _onLinkTap(context, url);
+                },
+              ),
+            );
+
+            return htmlTextBloc;
+          },
+          child: const HtmlTextWidget(),
         );
-        htmlTextBloc.addDisposable(
-          streamSubscription: htmlTextBloc.linkClickedStream.listen(
-            (url) {
-              _onLinkTap(context, url);
-            },
-          ),
-        );
-        return htmlTextBloc;
       },
-      child: const HtmlTextWidget(),
     );
   }
 }

@@ -2,25 +2,26 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_b
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_page.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_dialog.dart';
+import 'package:fedi/app/timeline/timeline_label_extension.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
+import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/app/ui/fedi_animations.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/selection/fedi_selection_item_row_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
+import 'package:flutter_reorderable_list/flutter_reorderable_list.dart'
+    as flutter_reorderable_list;
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:fedi/app/timeline/timeline_label_extension.dart';
 
-var _logger = Logger("timelines_home_tab_storage_widget.dart");
+var _logger = Logger('timelines_home_tab_storage_widget.dart');
 
 class TimelinesHomeTabStorageWidget extends StatelessWidget {
   @override
@@ -35,6 +36,7 @@ class TimelinesHomeTabStorageWidget extends StatelessWidget {
         if (list == null) {
           return const SizedBox.shrink();
         }
+
         return Provider<List<TimelinesHomeTabStorageListItem>>.value(
           value: list,
           child: const _TimelinesHomeTabStorageListWidget(),
@@ -48,7 +50,7 @@ class TimelinesHomeTabStorageWidget extends StatelessWidget {
 
 class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
   const _TimelinesHomeTabStorageListWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -57,34 +59,38 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
 
     var items = Provider.of<List<TimelinesHomeTabStorageListItem>>(context);
 
-    if (items == null) {
-      return const FediCircularProgressIndicator();
-    }
-
     if (items.isEmpty) {
       return Center(
-        child: Text(
-          S.of(context).app_timeline_storage_empty,
+        child: FediEmptyWidget(
+          title: S.of(context).app_timeline_storage_empty,
         ),
       );
     }
 
     var children = items
         .map(
-          (item) => ReorderableItem(
+          (item) => flutter_reorderable_list.ReorderableItem(
             key: item.key,
-            childBuilder: (BuildContext context, ReorderableItemState state) =>
+            childBuilder: (
+              BuildContext context,
+              flutter_reorderable_list.ReorderableItemState state,
+            ) =>
                 Provider<Timeline>.value(
               value: item.timeline,
               child: Opacity(
-                opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
+                opacity: state ==
+                        flutter_reorderable_list
+                            .ReorderableItemState.placeholder
+                    ? 0.0
+                    : 1.0,
                 child: const _TimelinesHomeTabStorageListItemWidget(),
               ),
             ),
           ),
         )
         .toList();
-    return ReorderableList(
+
+    return flutter_reorderable_list.ReorderableList(
       onReorder: (Key item, Key newPosition) =>
           _onReorder(timelinesHomeTabStorageBloc, item, newPosition),
       onReorderDone: (Key item) =>
@@ -98,28 +104,33 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
     );
   }
 
-  bool _onReorder(ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
-      Key item, Key newPosition) {
-    int oldIndex = timelinesHomeTabStorageBloc.indexOfKey(item);
-    int newIndex = timelinesHomeTabStorageBloc.indexOfKey(newPosition);
+  bool _onReorder(
+    ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
+    Key item,
+    Key newPosition,
+  ) {
+    var oldIndex = timelinesHomeTabStorageBloc.indexOfKey(item);
+    var newIndex = timelinesHomeTabStorageBloc.indexOfKey(newPosition);
 
-    _logger.finest(() => "onReorder oldIndex $oldIndex newIndex $newIndex");
+    _logger.finest(() => 'onReorder oldIndex $oldIndex newIndex $newIndex');
 
     timelinesHomeTabStorageBloc.swapItemsAt(oldIndex, newIndex);
+
     return true;
   }
 
   void _onReorderDone(
-      ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc, Key item) {
-    final draggedItem = timelinesHomeTabStorageBloc.timelineOfKey(item);
-    debugPrint("Reordering finished for ${draggedItem}}");
+    ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
+    Key item,
+  ) {
+    _logger.finest(() => '_onReorderDone $item');
   }
 }
 
 class _TimelinesHomeTabStorageListAddTimelineItemWidget
     extends StatelessWidget {
   const _TimelinesHomeTabStorageListAddTimelineItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -130,7 +141,7 @@ class _TimelinesHomeTabStorageListAddTimelineItemWidget
       stream: timelinesHomeTabStorageBloc.uiStateStream,
       initialData: timelinesHomeTabStorageBloc.uiState,
       builder: (context, snapshot) {
-        var uiState = snapshot.data;
+        var uiState = snapshot.data ?? TimelinesHomeTabStorageUiState.view;
 
         Widget child;
         switch (uiState) {
@@ -149,6 +160,7 @@ class _TimelinesHomeTabStorageListAddTimelineItemWidget
                   children: [
                     Icon(
                       FediIcons.add,
+                      // ignore: no-magic-number
                       size: 20.0,
                       color: IFediUiColorTheme.of(context).primary,
                     ),
@@ -163,6 +175,7 @@ class _TimelinesHomeTabStorageListAddTimelineItemWidget
             );
             break;
         }
+
         return child;
       },
     );
@@ -171,7 +184,7 @@ class _TimelinesHomeTabStorageListAddTimelineItemWidget
 
 class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
   const _TimelinesHomeTabStorageListItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -183,7 +196,11 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
       onTap: () {
         var uiState = timelinesHomeTabStorageBloc.uiState;
         if (uiState == TimelinesHomeTabStorageUiState.view) {
-          showEditTimelineSettingsDialog(context: context, timeline: timeline);
+          showEditTimelineSettingsDialog(
+            context: context,
+            timeline: timeline,
+            lockedSource: false,
+          );
         }
       },
       child: FediSelectionItemRowWidget(
@@ -200,7 +217,7 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
 
 class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
   const _TimelinesHomeTabStorageListItemTitleWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -208,11 +225,13 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
     var timeline = Provider.of<Timeline>(context);
 
     var label = timeline.calculateLabel(context);
+
     return InkWell(
       onTap: () {
         showEditTimelineSettingsDialog(
           context: context,
           timeline: timeline,
+          lockedSource: false,
         );
       },
       child: Row(
@@ -229,26 +248,28 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
 
 class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
   const _TimelinesHomeTabStorageListItemEndingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
+
     return StreamBuilder<TimelinesHomeTabStorageUiState>(
       stream: timelinesHomeTabStorageBloc.uiStateStream,
       initialData: timelinesHomeTabStorageBloc.uiState,
       builder: (context, snapshot) {
-        var uiState = snapshot.data;
+        var uiState = snapshot.data ?? TimelinesHomeTabStorageUiState.view;
 
         Widget child;
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
-            child = ReorderableListener(
+            child = flutter_reorderable_list.ReorderableListener(
               child: Padding(
                 padding: FediPadding.allSmallPadding,
                 child: Icon(
                   FediIcons.sort,
+                  // ignore: no-magic-number
                   size: 16.0,
                   color: IFediUiColorTheme.of(context).lightGrey,
                 ),
@@ -261,11 +282,13 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
                 showEditTimelineSettingsDialog(
                   context: context,
                   timeline: Provider.of(context, listen: false),
+                  lockedSource: false,
                 );
               },
             );
             break;
         }
+
         return child;
       },
     );
@@ -274,60 +297,63 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
 
 class _TimelinesHomeTabStorageListItemLeadingWidget extends StatelessWidget {
   const _TimelinesHomeTabStorageListItemLeadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
     var timeline = Provider.of<Timeline>(context);
+
     return StreamBuilder<TimelinesHomeTabStorageUiState>(
-        stream: timelinesHomeTabStorageBloc.uiStateStream,
-        initialData: timelinesHomeTabStorageBloc.uiState,
-        builder: (context, snapshot) {
-          var uiState = snapshot.data;
+      stream: timelinesHomeTabStorageBloc.uiStateStream,
+      initialData: timelinesHomeTabStorageBloc.uiState,
+      builder: (context, snapshot) {
+        var uiState = snapshot.data ?? TimelinesHomeTabStorageUiState.view;
 
-          var child;
+        var child;
 
-          switch (uiState) {
-            case TimelinesHomeTabStorageUiState.edit:
-              child = _TimelinesHomeTabStorageListItemRemoveButtonWidget(
-                key: ValueKey("${timeline.id}.remove_body"),
-              );
-              break;
-            case TimelinesHomeTabStorageUiState.view:
-              child = SizedBox.shrink(
-                key: ValueKey("${timeline.id}.remove_empty"),
-              );
-              break;
-          }
+        switch (uiState) {
+          case TimelinesHomeTabStorageUiState.edit:
+            child = _TimelinesHomeTabStorageListItemRemoveButtonWidget(
+              key: ValueKey('${timeline.id}.remove_body'),
+            );
+            break;
+          case TimelinesHomeTabStorageUiState.view:
+            child = SizedBox.shrink(
+              key: ValueKey('${timeline.id}.remove_empty'),
+            );
+            break;
+        }
 
-          return AnimatedSwitcher(
-            duration: FediAnimations.defaultAnimationSwitcherDuration,
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              final offsetAnimation = Tween<Offset>(
-                begin: Offset(-1.0, 0.0),
-                end: Offset(0.0, 0.0),
-              ).animate(animation);
-              return SizeTransition(
-                axis: Axis.horizontal,
-                sizeFactor: animation,
-                child: SlideTransition(
-                  position: offsetAnimation,
-                  child: child,
-                ),
-              );
-            },
-            child: child,
-          );
-        });
+        return AnimatedSwitcher(
+          duration: FediAnimations.defaultAnimationSwitcherDuration,
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            final offsetAnimation = Tween<Offset>(
+              begin: Offset(-1.0, 0.0),
+              end: Offset(0.0, 0.0),
+            ).animate(animation);
+
+            return SizeTransition(
+              axis: Axis.horizontal,
+              sizeFactor: animation,
+              child: SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              ),
+            );
+          },
+          child: child,
+        );
+      },
+    );
   }
 }
 
 class _TimelinesHomeTabStorageListItemRemoveButtonWidget
     extends StatelessWidget {
   const _TimelinesHomeTabStorageListItemRemoveButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -335,7 +361,8 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
     var timeline = Provider.of<Timeline>(context);
 
-    var isPossibleToDelete = timeline.isPossibleToDelete == true;
+    var isPossibleToDelete = timeline.isPossibleToDelete;
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -347,10 +374,10 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
                 FediConfirmAlertDialog(
                   context: context,
                   title: S.of(context).app_timeline_storage_delete_dialog_title,
-                  contentText: S
-                      .of(context)
-                      .app_timeline_storage_delete_dialog_content(
-                          timeline.calculateLabel(context)),
+                  contentText:
+                      S.of(context).app_timeline_storage_delete_dialog_content(
+                            timeline.calculateLabel(context),
+                          ),
                   okActionLabel: S
                       .of(context)
                       .app_timeline_storage_delete_dialog_action_delete,
@@ -374,7 +401,9 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
             ),
           ),
         if (!isPossibleToDelete)
-          SizedBox(
+          const SizedBox(
+            // todo: refactor
+            // ignore: no-magic-number
             width: 48,
           ),
       ],

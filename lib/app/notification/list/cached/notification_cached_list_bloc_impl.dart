@@ -1,84 +1,152 @@
+import 'package:fedi/app/filter/filter_model.dart';
+import 'package:fedi/app/filter/repository/filter_repository.dart';
+import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
+import 'package:fedi/app/status/repository/status_repository_model.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/mastodon/notification/mastodon_notification_model.dart';
+import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
+import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
-import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
+import 'package:fedi/repository/repository_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 
-class NotificationCachedListBloc extends INotificationCachedListBloc {
-  final IPleromaNotificationService pleromaNotificationService;
+class NotificationCachedListBloc extends AsyncInitLoadingBloc
+    implements INotificationCachedListBloc {
+  final IPleromaApiNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
-  final List<PleromaNotificationType> excludeTypes;
+  final IFilterRepository filterRepository;
+  final List<PleromaApiNotificationType> excludeTypes;
+
+  NotificationRepositoryFilters get _notificationRepositoryFilters =>
+      NotificationRepositoryFilters(
+        excludeTypes: excludeTypes,
+        excludeStatusTextConditions: filters
+            .map(
+              (filter) => filter.toStatusTextCondition(),
+        )
+            .toList(),
+      );
 
   @override
   IPleromaApi get pleromaApi => pleromaNotificationService;
 
-  NotificationCachedListBloc(
-      {@required this.pleromaNotificationService,
-      @required this.notificationRepository,
-      this.excludeTypes});
+  NotificationCachedListBloc({
+    required this.pleromaNotificationService,
+    required this.notificationRepository,
+    required this.filterRepository,
+    required this.excludeTypes,
+  });
+
+  // ignore: avoid-late-keyword
+  late List<IFilter> filters;
+
+  FilterRepositoryFilters get filterRepositoryFilters =>
+      FilterRepositoryFilters(
+        onlyWithContextTypes: [
+          MastodonApiFilterContextType.notifications,
+        ],
+        notExpired: true,
+      );
 
   @override
-  Future<List<INotification>> loadLocalItems(
-      {@required int limit,
-      @required INotification newerThan,
-      @required INotification olderThan}) {
-    return notificationRepository.getNotifications(
-        excludeTypes: excludeTypes,
-        olderThanNotification: olderThan,
-        newerThanNotification: newerThan,
+  Future internalAsyncInit() async {
+    filters = await filterRepository.findAllInAppType(
+      filters: filterRepositoryFilters,
+      pagination: null,
+      orderingTerms: null,
+    );
+
+    addDisposable(
+      streamSubscription: filterRepository
+          .watchFindAllInAppType(
+        filters: filterRepositoryFilters,
+        pagination: null,
+        orderingTerms: null,
+      )
+          .listen(
+            (newFilters) {
+          if (!listEquals(filters, newFilters)) {
+            // perhaps we should refresh UI list after this?
+            filters = newFilters;
+          }
+        },
+      ),
+    );
+  }
+
+  @override
+  Future<List<INotification>> loadLocalItems({
+    required int? limit,
+    required INotification? newerThan,
+    required INotification? olderThan,
+  }) {
+    return notificationRepository.findAllInAppType(
+      filters: _notificationRepositoryFilters,
+      pagination: RepositoryPagination<INotification>(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
         limit: limit,
-        offset: null,
-        orderingTermData: NotificationOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: NotificationOrderByType.createdAt));
+      ),
+      orderingTerms: [
+        NotificationRepositoryOrderingTermData.createdAtDesc,
+      ],
+    );
   }
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required INotification newerThan,
-      @required INotification olderThan}) async {
-    // todo: don't exclude pleroma types on mastodon instances
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required INotification? newerThan,
+    required INotification? olderThan,
+  }) async {
+    // todo: dont exclude pleroma types on mastodon instances
     var remoteNotifications = await pleromaNotificationService.getNotifications(
-        request: MastodonNotificationsRequest(
-            excludeTypes: excludeTypes
-                ?.map(
-                  (type) => type.toJsonValue(),
-                )
-                ?.toList(),
-            maxId: olderThan?.remoteId,
-            sinceId: newerThan?.remoteId,
-            limit: limit));
+      pagination: PleromaApiPaginationRequest(
+        limit: limit,
+        sinceId: newerThan?.remoteId,
+        maxId: olderThan?.remoteId,
+      ),
+      excludeTypes: excludeTypes,
+    );
 
-    if (remoteNotifications != null) {
-      await notificationRepository
-          .upsertRemoteNotifications(remoteNotifications, unread: false);
-      return true;
-    } else {
-      return false;
-    }
+    await notificationRepository.upsertAllInRemoteType(
+      remoteNotifications,
+      batchTransaction: null,
+    );
   }
 
-  static NotificationCachedListBloc createFromContext(BuildContext context,
-          {@required List<PleromaNotificationType> excludeTypes}) =>
+  static NotificationCachedListBloc createFromContext(
+      BuildContext context, {
+        required List<PleromaApiNotificationType> excludeTypes,
+      }) =>
       NotificationCachedListBloc(
-          pleromaNotificationService:
-              IPleromaNotificationService.of(context, listen: false),
-          excludeTypes: excludeTypes,
-          notificationRepository:
-              INotificationRepository.of(context, listen: false));
+        pleromaNotificationService: IPleromaApiNotificationService.of(
+          context,
+          listen: false,
+        ),
+        excludeTypes: excludeTypes,
+        notificationRepository: INotificationRepository.of(
+          context,
+          listen: false,
+        ),
+        filterRepository: IFilterRepository.of(
+          context,
+          listen: false,
+        ),
+      );
 
   static Widget provideToContext(
-    BuildContext context, {
-    @required List<PleromaNotificationType> excludeTypes,
-    @required Widget child,
-  }) {
+      BuildContext context, {
+        required List<PleromaApiNotificationType> excludeTypes,
+        required Widget child,
+      }) {
     return DisposableProvider<INotificationCachedListBloc>(
       create: (context) => NotificationCachedListBloc.createFromContext(
         context,
@@ -90,16 +158,17 @@ class NotificationCachedListBloc extends INotificationCachedListBloc {
 
   @override
   Stream<List<INotification>> watchLocalItemsNewerThanItem(
-          INotification item) =>
-      notificationRepository.watchNotifications(
-          excludeTypes: excludeTypes,
-          olderThanNotification: null,
-          newerThanNotification: item,
-          limit: null,
-          offset: null,
-          orderingTermData: NotificationOrderingTermData(
-              orderingMode: OrderingMode.desc,
-              orderByType: NotificationOrderByType.createdAt));
+      INotification? item,
+      ) =>
+      notificationRepository.watchFindAllInAppType(
+        filters: _notificationRepositoryFilters,
+        pagination: RepositoryPagination<INotification>(
+          newerThanItem: item,
+        ),
+        orderingTerms: [
+          NotificationRepositoryOrderingTermData.createdAtDesc,
+        ],
+      );
 
   @override
   Future dismissAll() async {

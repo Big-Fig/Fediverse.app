@@ -1,10 +1,13 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/acct/account_acct_widget.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
+import 'package:fedi/app/account/details/remote_account_details_page.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
+import 'package:fedi/app/account/local_account_bloc_impl.dart';
+import 'package:fedi/app/account/remote_account_bloc_impl.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
@@ -19,30 +22,67 @@ class StatusAccountWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: true);
 
     return StreamBuilder<IAccount>(
-        stream: statusBloc.reblogOrOriginalAccountStream,
-        initialData: statusBloc.reblogOrOriginalAccount,
-        builder: (context, snapshot) {
-          var reblogOrOriginalAccount = snapshot.data;
-          return buildBody(context, reblogOrOriginalAccount, statusBloc);
-        });
+      stream: statusBloc.reblogOrOriginalAccountStream,
+      initialData: statusBloc.reblogOrOriginalAccount,
+      builder: (context, snapshot) {
+        var reblogOrOriginalAccount = snapshot.data!;
+
+        return buildBody(
+          context: context,
+          reblogOrOriginalAccount: reblogOrOriginalAccount,
+          statusBloc: statusBloc,
+        );
+      },
+    );
   }
 
-  Widget buildBody(BuildContext context, IAccount reblogOrOriginalAccount,
-      IStatusBloc statusBloc) {
+  Widget buildBody({
+    required BuildContext context,
+    required IAccount reblogOrOriginalAccount,
+    required IStatusBloc statusBloc,
+  }) {
+    var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+
     return Provider<IAccount>.value(
       value: reblogOrOriginalAccount,
       child: DisposableProxyProvider<IAccount, IAccountBloc>(
-        update: (context, account, oldValue) => AccountBloc.createFromContext(
-          context,
-          account: account,
-          isNeedWatchLocalRepositoryForUpdates: false,
-          isNeedRefreshFromNetworkOnInit: false,
-          isNeedWatchWebSocketsEvents: false,
-          isNeedPreFetchRelationship: false,
-        ),
+        update: (context, account, oldValue) {
+          var isNeedWatchLocalRepositoryForUpdates = false;
+          var isNeedRefreshFromNetworkOnInit = false;
+          var isNeedWatchWebSocketsEvents = false;
+          var isNeedPreFetchRelationship = false;
+
+          if (isLocal) {
+            return LocalAccountBloc.createFromContext(
+              context,
+              account: account,
+              isNeedWatchLocalRepositoryForUpdates:
+                  isNeedWatchLocalRepositoryForUpdates,
+              isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+              isNeedWatchWebSocketsEvents: isNeedWatchWebSocketsEvents,
+              isNeedPreFetchRelationship: isNeedPreFetchRelationship,
+            );
+          } else {
+            return RemoteAccountBloc.createFromContext(
+              context,
+              account: account,
+              isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+            );
+          }
+        },
         child: GestureDetector(
           onTap: () {
-            goToAccountDetailsPage(context, reblogOrOriginalAccount);
+            if (isLocal) {
+              goToLocalAccountDetailsPage(
+                context,
+                account: reblogOrOriginalAccount,
+              );
+            } else {
+              goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
+                context,
+                remoteInstanceAccount: reblogOrOriginalAccount,
+              );
+            }
           },
           behavior: HitTestBehavior.translucent,
           child: Row(
@@ -58,7 +98,7 @@ class StatusAccountWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const AccountDisplayNameWidget(),
-                    const AccountAcctWidget()
+                    const AccountAcctWidget(),
                   ],
                 ),
               ),

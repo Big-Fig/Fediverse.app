@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
@@ -9,13 +10,16 @@ import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_widget.dart';
 import 'package:fedi/app/status/post/thread/thread_post_status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/thread/local_status_thread_page.dart';
+import 'package:fedi/app/status/thread/remote_status_thread_page.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_model.dart';
-import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/list/fedi_list_refresh_indicator.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -23,7 +27,6 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as material;
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -34,25 +37,40 @@ class StatusThreadWidget extends StatelessWidget {
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
-    return StreamBuilder<bool>(
-        stream: postMessageBloc.isExpandedStream,
-        builder: (context, snapshot) {
-          var isPostMessageExpanded = snapshot.data ?? false;
+    var statusThreadBloc = IStatusThreadBloc.of(context);
+    var isLocal = statusThreadBloc.instanceLocation == InstanceLocation.local;
 
-          if (isPostMessageExpanded) {
-            return const _StatusThreadPostStatusWidget();
-          } else {
-            return Column(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    color: IFediUiColorTheme.of(context).offWhite,
-                    child: const UnfocusOnScrollAreaWidget(
-                      child: _StatusThreadStatusesWidget(),
-                    ),
+    return StreamBuilder<bool>(
+      stream: postMessageBloc.isExpandedStream,
+      builder: (context, snapshot) {
+        var isPostMessageExpanded = snapshot.data ?? false;
+
+        if (isPostMessageExpanded) {
+          return const _StatusThreadPostStatusWidget();
+        } else {
+          return Column(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  color: IFediUiColorTheme.of(context).offWhite,
+                  child: const UnfocusOnScrollAreaWidget(
+                    child: _StatusThreadStatusesWidget(),
                   ),
                 ),
-                const _StatusThreadInReplyToStatusWidget(),
+              ),
+              if (isLocal) ...[
+                StreamBuilder<bool>(
+                  stream: postMessageBloc.isInputFocusedStream,
+                  initialData: postMessageBloc.isInputFocused,
+                  builder: (context, snapshot) {
+                    var isInputFocused = snapshot.data!;
+                    if (isInputFocused) {
+                      return const _StatusThreadInReplyToStatusWidget();
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  },
+                ),
                 const FediUltraLightGreyDivider(),
                 Container(
                   decoration: BoxDecoration(
@@ -60,11 +78,13 @@ class StatusThreadWidget extends StatelessWidget {
                     boxShadow: [FediShadows.forBottomBar],
                   ),
                   child: const _StatusThreadPostStatusWidget(),
-                )
+                ),
               ],
-            );
-          }
-        });
+            ],
+          );
+        }
+      },
+    );
   }
 
   const StatusThreadWidget();
@@ -72,7 +92,7 @@ class StatusThreadWidget extends StatelessWidget {
 
 class _StatusThreadStatusesWidget extends StatelessWidget {
   const _StatusThreadStatusesWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -88,9 +108,10 @@ class _StatusThreadStatusesWidget extends StatelessWidget {
             child: FediCircularProgressIndicator(),
           );
         }
+
         return Provider<List<IStatus>>.value(
           value: statuses,
-          child: material.RefreshIndicator(
+          child: FediListRefreshIndicator(
             onRefresh: () => statusThreadBloc.refresh(),
             child: const _StatusThreadStatusesListWidget(),
           ),
@@ -102,64 +123,72 @@ class _StatusThreadStatusesWidget extends StatelessWidget {
 
 class _StatusThreadInReplyToStatusWidget extends StatelessWidget {
   const _StatusThreadInReplyToStatusWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IThreadPostStatusBloc.of(context);
-    return StreamBuilder<IStatus>(
-        stream: postStatusBloc.notCanceledOriginInReplyToStatusStream,
-        builder: (context, snapshot) {
-          var notCanceledOriginInReplyToStatus = snapshot.data;
 
-          if (notCanceledOriginInReplyToStatus != null) {
-            return Container(
-              color: IFediUiColorTheme.of(context).ultraLightGrey,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: FediSizes.mediumPadding,
-                  horizontal: FediSizes.bigPadding,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      S.of(context).app_status_reply_replyingTo(
-                          notCanceledOriginInReplyToStatus.account.acct),
-                      style: IFediUiTextTheme.of(context)
-                          .mediumShortGrey
-                          .copyWith(height: 1),
-                    ),
-                    InkWell(
-                      child: Icon(Icons.cancel),
-                      onTap: () {
-                        postStatusBloc.cancelOriginInReplyToStatus();
-                      },
-                    ),
-                  ],
-                ),
+    return StreamBuilder<IStatus?>(
+      stream: postStatusBloc.notCanceledOriginInReplyToStatusStream,
+      builder: (context, snapshot) {
+        var notCanceledOriginInReplyToStatus = snapshot.data;
+
+        if (notCanceledOriginInReplyToStatus != null) {
+          return Container(
+            color: IFediUiColorTheme.of(context).ultraLightGrey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: FediSizes.mediumPadding,
+                horizontal: FediSizes.bigPadding,
               ),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    S.of(context).app_status_reply_replyingTo(
+                          notCanceledOriginInReplyToStatus.account.acct,
+                        ),
+                    style: IFediUiTextTheme.of(context)
+                        .mediumShortGrey
+                        .copyWith(height: 1),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      postStatusBloc.cancelOriginInReplyToStatus();
+                    },
+                    child: Icon(
+                      Icons.close,
+                      color: IFediUiColorTheme.of(context).darkGrey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
 class _StatusThreadPostStatusWidget extends StatelessWidget {
   const _StatusThreadPostStatusWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusThreadBloc = IStatusThreadBloc.of(context);
+
     return PostStatusWidget(
       hintText: S.of(context).app_status_thread_post_hint(
-            statusThreadBloc.initialStatusToFetchThread.account.acct,
+            statusThreadBloc.initialStatusToFetchThread!.account.acct,
           ),
+      showActionsOnlyWhenFocused: true,
     );
   }
 }
@@ -174,7 +203,7 @@ class _StatusThreadStatusesListWidget extends StatefulWidget {
 
 class _StatusThreadStatusesListWidgetState
     extends State<_StatusThreadStatusesListWidget> {
-  StreamSubscription newItemsJumpSubscription;
+  StreamSubscription? newItemsJumpSubscription;
 
   @override
   void didChangeDependencies() {
@@ -182,14 +211,15 @@ class _StatusThreadStatusesListWidgetState
 
     var statusThreadBloc = IStatusThreadBloc.of(context, listen: false);
 
-    newItemsJumpSubscription =
-        statusThreadBloc.onNewStatusAddedStream.listen((newItem) {
-      var index = statusThreadBloc.statuses.indexOf(newItem);
+    newItemsJumpSubscription = statusThreadBloc.onNewStatusAddedStream.listen(
+      (newItem) {
+        var index = statusThreadBloc.statuses.indexOf(newItem);
 
-      if (index > 0) {
-        statusThreadBloc.scrollToIndex(index);
-      }
-    });
+        if (index > 0) {
+          statusThreadBloc.jumpToIndex(index);
+        }
+      },
+    );
   }
 
   @override
@@ -211,9 +241,11 @@ class _StatusThreadStatusesListWidgetState
           !statusThreadBloc.isJumpedToStartState && statuses.length > 1;
       if (isNeedJumpToStartState) {
         Future.delayed(
+          // todo: refactor
+          // ignore: no-magic-number
           Duration(milliseconds: 1000),
           () {
-            statusThreadBloc.scrollToStartIndex();
+            statusThreadBloc.jumpToStartIndex();
           },
         );
       }
@@ -250,7 +282,7 @@ class _StatusThreadStatusesListWidgetState
 
 class _StatusThreadStatusesListItemWidget extends StatelessWidget {
   const _StatusThreadStatusesListItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -262,13 +294,20 @@ class _StatusThreadStatusesListItemWidget extends StatelessWidget {
     var status = statusAtIndex.status;
     var isFirstInList = index == 0;
     var isInFocus = index == statusThreadBloc.initialStatusToFetchThreadIndex;
-    var firstStatusInThread = statusThreadBloc.isFirstStatusInThread(status);
+    var isFirstStatusInThread = statusThreadBloc.isFirstStatusInThread(status);
+
     return Padding(
       padding: isFirstInList
+          // todo: refactor
+          // ignore: no-magic-number
           ? const EdgeInsets.only(bottom: 3.0)
+          // todo: refactor
+          // ignore: no-magic-number
           : const EdgeInsets.symmetric(vertical: 4.0),
       child: Container(
         color: isInFocus
+            // todo: refactor
+            // ignore: no-magic-number
             ? IFediUiColorTheme.of(context).ultraLightGrey.withOpacity(0.5)
             : IFediUiColorTheme.of(context).white,
         child: Column(
@@ -278,19 +317,30 @@ class _StatusThreadStatusesListItemWidget extends StatelessWidget {
                 status: status,
                 statusCallback: (context, status) {
                   if (status.remoteId !=
-                      statusThreadBloc.initialStatusToFetchThread.remoteId) {
-                    goToStatusThreadPage(
-                      context,
-                      status: status,
-                      initialMediaAttachment: null,
-                    );
+                      statusThreadBloc.initialStatusToFetchThread!.remoteId) {
+                    var isLocal = statusThreadBloc.instanceLocation ==
+                        InstanceLocation.local;
+                    if (isLocal) {
+                      goToLocalStatusThreadPage(
+                        context,
+                        status: status,
+                        initialMediaAttachment: null,
+                      );
+                    } else {
+                      goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
+                        context,
+                        remoteInstanceStatus: status,
+                        remoteInstanceInitialMediaAttachment: null,
+                      );
+                    }
                   }
                 },
                 collapsible: false,
-                displayAccountHeader: !firstStatusInThread,
-                displayActions: firstStatusInThread || isInFocus,
+                displayAccountHeader: !isFirstStatusInThread,
+                isCommentsActionEnabled: !isInFocus,
+                displayActions: true,
                 accountMentionCallback:
-                    (BuildContext context, IAccount account) {
+                    (BuildContext context, IAccount? account) {
                   IPostStatusBloc.of(context, listen: false)
                       .addAccountMentions([account]);
                 },
@@ -308,11 +358,11 @@ class _StatusThreadStatusesListItemWidget extends StatelessWidget {
 
 class _StatusThreadStatusesListEmptyWidget extends StatelessWidget {
   const _StatusThreadStatusesListEmptyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Text(S.of(context).app_list_empty);
-  }
+  Widget build(BuildContext context) => FediEmptyWidget(
+        title: S.of(context).app_list_empty,
+      );
 }

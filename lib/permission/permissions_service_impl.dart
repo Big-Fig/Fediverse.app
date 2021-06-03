@@ -11,7 +11,8 @@ class PermissionsService extends DisposableOwner
 
   @override
   Future<Map<Permission, PermissionStatus>> requestPermissions(
-      List<Permission> list) {
+    List<Permission> list,
+  ) {
     return list.request();
   }
 }

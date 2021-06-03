@@ -10,5 +10,6 @@ abstract class IPermissionsService implements IDisposable {
   Future<PermissionStatus> checkPermissionStatus(Permission permission);
 
   Future<Map<Permission, PermissionStatus>> requestPermissions(
-      List<Permission> list);
+    List<Permission> list,
+  );
 }

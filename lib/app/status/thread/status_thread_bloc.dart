@@ -1,37 +1,39 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-abstract class IStatusThreadBloc implements IDisposable {
+abstract class IStatusThreadBloc
+    implements IAsyncInitLoadingBloc, IStatusListBloc {
   static IStatusThreadBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusThreadBloc>(context, listen: listen);
 
-  List<IPleromaMention> get mentions;
+  List<IPleromaApiMention> get mentions;
 
-  Stream<List<IPleromaMention>> get mentionsStream;
+  Stream<List<IPleromaApiMention>> get mentionsStream;
 
-  IStatus get initialStatusToFetchThread;
+  IStatus? get initialStatusToFetchThread;
 
-  IPleromaMediaAttachment get initialMediaAttachment;
+  IPleromaApiMediaAttachment? get initialMediaAttachment;
 
   int get initialStatusToFetchThreadIndex;
 
-  bool get firstStatusInThreadLoaded;
+  bool? get firstStatusInThreadLoaded;
 
   Stream<bool> get firstStatusInThreadLoadedStream;
 
-  IStatus get firstStatusInThread;
+  IStatus? get firstStatusInThread;
 
-  Stream<IStatus> get firstStatusInThreadStream;
+  Stream<IStatus?> get firstStatusInThreadStream;
 
-  IAccount get firstStatusAccountInThread;
+  IAccount? get firstStatusAccountInThread;
 
-  Stream<IAccount> get firstStatusAccountInThreadStream;
+  Stream<IAccount?> get firstStatusAccountInThreadStream;
 
   List<IStatus> get statuses;
 
@@ -39,9 +41,9 @@ abstract class IStatusThreadBloc implements IDisposable {
 
   Stream<List<IStatus>> get statusesDistinctStream;
 
-  List<String> get mentionAccts;
+  List<String?> get mentionAccts;
 
-  Stream<List<String>> get mentionAcctsStream;
+  Stream<List<String?>> get mentionAcctsStream;
 
   String get mentionAcctsListString;
 
@@ -59,7 +61,7 @@ abstract class IStatusThreadBloc implements IDisposable {
 
   bool get isJumpedToStartState;
 
-  void scrollToIndex(int startStatusIndex);
+  void jumpToIndex(int startStatusIndex);
 
-  void scrollToStartIndex();
+  void jumpToStartIndex();
 }

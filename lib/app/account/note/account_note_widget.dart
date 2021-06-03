@@ -1,7 +1,5 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
-import 'package:fedi/app/hashtag/hashtag_model.dart';
-import 'package:fedi/app/hashtag/hashtag_page.dart';
 import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_bloc_impl.dart';
 import 'package:fedi/app/html/html_text_model.dart';
@@ -18,7 +16,7 @@ import 'package:provider/provider.dart';
 class AccountNoteWidget extends StatelessWidget {
   final TextStyle textStyle;
 
-  AccountNoteWidget({@required this.textStyle});
+  AccountNoteWidget({required this.textStyle});
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +26,27 @@ class AccountNoteWidget extends StatelessWidget {
     var textScaleFactor = MediaQuery.of(context).textScaleFactor;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
-      child: StreamProvider.value(
+      padding: const EdgeInsets.only(
+        bottom: FediSizes.smallPadding,
+        left: FediSizes.bigPadding,
+        // ignore: no-equal-arguments
+        right: FediSizes.bigPadding,
+      ),
+      child: StreamProvider<EmojiText?>.value(
         value: accountBloc.noteEmojiTextStream,
-        child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
-          update: (context, noteEmojiText, _) {
+        initialData: accountBloc.noteEmojiText,
+        child: DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
+          update: (context, noteEmojiText, previous) {
+            var htmlTextInputData = HtmlTextInputData(
+              input: noteEmojiText?.text,
+              emojis: noteEmojiText?.emojis,
+            );
+            if (previous?.inputData == htmlTextInputData) {
+              return previous!;
+            }
+
             var htmlTextBloc = HtmlTextBloc(
-              inputData: HtmlTextInputData(
-                input: noteEmojiText?.text,
-                emojis: noteEmojiText?.emojis,
-              ),
+              inputData: htmlTextInputData,
               settings: HtmlTextSettings(
                 paragraphDisplay: Display.BLOCK,
                 fontSize: textStyle.fontSize,
@@ -49,13 +58,21 @@ class AccountNoteWidget extends StatelessWidget {
                 textMaxLines: null,
                 textScaleFactor: textScaleFactor,
                 drawNewLines: true,
-                textOverflow: TextOverflow.ellipsis,
+                textOverflow: null,
               ),
             );
-            htmlTextBloc.addDisposable(streamSubscription:
-                htmlTextBloc.linkClickedStream.listen((url) {
-              _onLinkClick(url, noteEmojiText, context);
-            }));
+            htmlTextBloc.addDisposable(
+              streamSubscription: htmlTextBloc.linkClickedStream.listen(
+                (url) {
+                  _onLinkClick(
+                    url: url,
+                    noteEmojiText: noteEmojiText!,
+                    context: context,
+                  );
+                },
+              ),
+            );
+
             return htmlTextBloc;
           },
           child: const HtmlTextWidget(),
@@ -64,22 +81,17 @@ class AccountNoteWidget extends StatelessWidget {
     );
   }
 
-  void _onLinkClick(String url, EmojiText noteEmojiText, BuildContext context) {
-    var tagUrlPart = "/tag/";
-    var tagUrlPartIndex = url.indexOf(tagUrlPart);
-    if (tagUrlPartIndex > 0) {
-      var tag = url.substring(tagUrlPartIndex + tagUrlPart.length);
+  void _onLinkClick({
+    required BuildContext context,
+    required String url,
+    required EmojiText noteEmojiText,
+  }) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
 
-      if (noteEmojiText.text.contains("#$tag")) {
-        goToHashtagPage(
-          context: context,
-          hashtag: Hashtag(name: tag, url: url, history: []),
-        );
-      } else {
-        UrlHelper.handleUrlClick(context, url);
-      }
-    } else {
-      UrlHelper.handleUrlClick(context, url);
-    }
+    UrlHelper.handleUrlClickWithInstanceLocation(
+      context: context,
+      url: url,
+      instanceLocationBloc: accountBloc,
+    );
   }
 }

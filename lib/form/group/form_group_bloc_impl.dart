@@ -7,7 +7,6 @@ import 'package:rxdart/rxdart.dart';
 
 typedef NewFieldCreator<T> = T Function();
 
-
 abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
     implements IFormGroupBloc<T> {
   BehaviorSubject<bool> isSomethingChangedSubject =
@@ -35,7 +34,7 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
   }
 
   @override
-  bool get isSomethingChanged => isSomethingChangedSubject.value;
+  bool get isSomethingChanged => isSomethingChangedSubject.value!;
 
   @override
   Stream<bool> get isSomethingChangedStream => isSomethingChangedSubject.stream;
@@ -44,34 +43,34 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
       BehaviorSubject.seeded([]);
 
   @override
-  List<FormItemValidationError> get errors => errorsSubject.value;
+  List<FormItemValidationError> get errors => errorsSubject.value!;
 
   @override
   Stream<List<FormItemValidationError>> get errorsStream =>
       errorsSubject.stream;
 
   @override
-  bool get isHaveAtLeastOneError => errors?.isNotEmpty == true;
+  bool get isHaveAtLeastOneError => errors.isNotEmpty;
 
-  DisposableOwner itemsErrorSubscription;
-  DisposableOwner isSomethingChangedSubscription;
+  DisposableOwner? itemsErrorSubscription;
+  DisposableOwner? isSomethingChangedSubscription;
 
   @override
   Stream<bool> get isHaveAtLeastOneErrorStream =>
-      errorsStream.map((fieldsErrors) => fieldsErrors?.isNotEmpty == true);
+      errorsStream.map((fieldsErrors) => fieldsErrors.isNotEmpty);
 
-  void _subscribeForErrors(List<T> newItems) {
+  void _subscribeForErrors(List<T>? newItems) {
     itemsErrorSubscription?.dispose();
     itemsErrorSubscription = DisposableOwner();
 
     if (!errorsSubject.isClosed) {
-      errorsSubject.add(null);
+      errorsSubject.add([]);
     }
 
     if (newItems?.isNotEmpty == true) {
-      newItems.forEach(
+      newItems!.forEach(
         (IFormItemBloc item) {
-          itemsErrorSubscription.addDisposable(
+          itemsErrorSubscription!.addDisposable(
             streamSubscription: item.errorsStream.listen(
               (_) {
                 recalculateErrors();
@@ -83,7 +82,7 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
     }
   }
 
-  void _subscribeForIsSomethingChanged(List<T> newItems) {
+  void _subscribeForIsSomethingChanged(List<T>? newItems) {
     isSomethingChangedSubscription = DisposableOwner();
 
     if (!isSomethingChangedSubject.isClosed) {
@@ -91,9 +90,9 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
     }
 
     if (newItems?.isNotEmpty == true) {
-      newItems.forEach(
+      newItems!.forEach(
         (IFormItemBloc item) {
-          isSomethingChangedSubscription.addDisposable(
+          isSomethingChangedSubscription!.addDisposable(
             streamSubscription: item.isSomethingChangedStream.listen(
               (_) {
                 recalculateIsSomethingChanged();
@@ -106,8 +105,9 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
   }
 
   void recalculateErrors() {
-    var errors = items.fold(<FormItemValidationError>[], (errors, item) {
-      if (item.errors?.isNotEmpty == true) {
+    var errors =
+        items.fold(<FormItemValidationError>[], (dynamic errors, item) {
+      if (item.errors.isNotEmpty) {
         errors.addAll(item.errors);
       }
 
@@ -122,7 +122,7 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
   void recalculateIsSomethingChanged() {
     var isSomethingChanged = items.map((item) => item.isSomethingChanged).fold(
       false,
-      (previousValue, element) {
+      (dynamic previousValue, element) {
         return previousValue || element;
       },
     );

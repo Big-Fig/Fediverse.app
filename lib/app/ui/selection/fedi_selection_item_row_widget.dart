@@ -9,9 +9,9 @@ class SimpleFediSelectionItemRowWidget extends StatelessWidget {
   final VoidCallback onClick;
 
   const SimpleFediSelectionItemRowWidget({
-    Key key,
-    @required this.title,
-    @required this.onClick,
+    Key? key,
+    required this.title,
+    required this.onClick,
   }) : super(key: key);
 
   @override
@@ -23,13 +23,29 @@ class SimpleFediSelectionItemRowWidget extends StatelessWidget {
         ending: FediSelectionItemIconWidget(
           onClick: onClick,
         ),
-        title: Padding(
-          padding: FediPadding.horizontalSmallPadding,
-          child: Text(
-            title,
-            style: IFediUiTextTheme.of(context).bigTallMediumGrey,
-          ),
+        title: SimpleFediSelectionItemRowTitleWidget(
+          title: title,
         ),
+      ),
+    );
+  }
+}
+
+class SimpleFediSelectionItemRowTitleWidget extends StatelessWidget {
+  const SimpleFediSelectionItemRowTitleWidget({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: FediPadding.allSmallPadding,
+      child: Text(
+        title,
+        style: IFediUiTextTheme.of(context).bigTallMediumGrey,
       ),
     );
   }
@@ -37,19 +53,21 @@ class SimpleFediSelectionItemRowWidget extends StatelessWidget {
 
 class FediSelectionItemRowWidget extends StatelessWidget {
   final Widget title;
-  final Widget leading;
-  final Widget ending;
+  final Widget? leading;
+  final Widget? ending;
 
   const FediSelectionItemRowWidget({
-    Key key,
-    @required this.title,
-    @required this.leading,
-    @required this.ending,
+    Key? key,
+    required this.title,
+    required this.leading,
+    required this.ending,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      // todo: refactor
+      // ignore: no-magic-number
       height: 24.0 + 16.0 + 16.0,
       child: Padding(
         padding: FediPadding.horizontalBigPadding,
@@ -61,11 +79,11 @@ class FediSelectionItemRowWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (leading != null) leading,
+                if (leading != null) leading!,
                 title,
               ],
             ),
-            if (ending != null) ending,
+            if (ending != null) ending!,
           ],
         ),
       ),
@@ -75,8 +93,8 @@ class FediSelectionItemRowWidget extends StatelessWidget {
 
 class FediSelectionItemIconWidget extends StatelessWidget {
   const FediSelectionItemIconWidget({
-    Key key,
-    @required this.onClick,
+    Key? key,
+    required this.onClick,
   }) : super(key: key);
 
   final VoidCallback onClick;
@@ -88,6 +106,7 @@ class FediSelectionItemIconWidget extends StatelessWidget {
       child: Icon(
         FediIcons.chevron_right,
         color: IFediUiColorTheme.of(context).darkGrey,
+        // ignore: no-magic-number
         size: 14.0,
       ),
     );

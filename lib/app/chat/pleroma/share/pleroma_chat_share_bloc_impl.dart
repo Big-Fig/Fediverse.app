@@ -8,23 +8,23 @@ import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc.dart';
 import 'package:fedi/app/share/message_input/share_message_input_bloc.dart';
 import 'package:fedi/app/share/message_input/share_message_input_bloc_impl.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc_impl.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
-import 'package:flutter/widgets.dart';
-import 'package:moor/moor.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
+import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 
 abstract class PleromaChatShareBloc extends ShareToAccountBloc
     implements IPleromaChatShareBloc {
   final IPleromaChatRepository chatRepository;
   final IPleromaChatMessageRepository chatMessageRepository;
-  final IPleromaChatService pleromaChatService;
+  final IPleromaApiChatService pleromaChatService;
 
-  String get message {
-    var message = shareMessageInputBloc.messageField.currentValue;
+  String? get message {
+    String? message = shareMessageInputBloc.messageField.currentValue;
 
-    if (message?.isNotEmpty != true) {
+    if (message.isNotEmpty) {
       message = null;
     }
 
@@ -35,12 +35,12 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
   IShareMessageInputBloc shareMessageInputBloc = ShareMessageInputBloc();
 
   PleromaChatShareBloc({
-    @required this.chatRepository,
-    @required this.chatMessageRepository,
-    @required this.pleromaChatService,
-    @required IMyAccountBloc myAccountBloc,
-    @required IAccountRepository accountRepository,
-    @required IPleromaAccountService pleromaAccountService,
+    required this.chatRepository,
+    required this.chatMessageRepository,
+    required this.pleromaChatService,
+    required IMyAccountBloc myAccountBloc,
+    required IAccountRepository accountRepository,
+    required IPleromaApiAccountService pleromaAccountService,
   }) : super(
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
@@ -50,74 +50,100 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
   }
 
   @override
-  Future share() async {
-    var messageSendData = createSendData();
+  Future<bool> actuallyShareToAccount(IAccount account) async {
+    var messageSendData = await createPleromaChatMessageSendData();
 
-    var targetAccounts = shareSelectAccountBloc.targetAccounts;
-    List<IPleromaChat> pleromaChatsByAccounts;
-    if (targetAccounts?.isNotEmpty == true) {
-      var chatsByAccountsFuture = targetAccounts.map((account) =>
-          pleromaChatService.getOrCreateChatByAccountId(
-              accountId: account.remoteId));
+    var targetAccounts = [account];
+    List<IPleromaApiChat> pleromaChatsByAccounts;
+    if (targetAccounts.isNotEmpty) {
+      var chatsByAccountsFuture = targetAccounts.map(
+        (account) => pleromaChatService.getOrCreateChatByAccountId(
+          accountId: account.remoteId,
+        ),
+      );
 
       pleromaChatsByAccounts = await Future.wait(chatsByAccountsFuture);
-      await chatRepository.upsertRemoteChats(pleromaChatsByAccounts);
+      await chatRepository.upsertAllInRemoteType(
+        pleromaChatsByAccounts,
+        batchTransaction: null,
+      );
     } else {
       pleromaChatsByAccounts = [];
     }
 
-    var allChatsId =
-        pleromaChatsByAccounts.map((pleromaChat) => pleromaChat.id).toList();
+    var allChatsIds = pleromaChatsByAccounts
+        .map(
+          (pleromaChat) => pleromaChat.id,
+        )
+        .toList();
 
-    var pleromaChatMessagesFuture = allChatsId.map((chatId) {
-      return pleromaChatService.sendMessage(
-          chatId: chatId, data: messageSendData);
-    });
+    var pleromaChatMessagesFuture = allChatsIds.map(
+      (chatId) {
+        return pleromaChatService.sendMessage(
+          chatId: chatId,
+          data: messageSendData,
+        );
+      },
+    );
 
     var pleromaChatMessages = await Future.wait(pleromaChatMessagesFuture);
 
-    await chatMessageRepository.upsertRemoteChatMessages(pleromaChatMessages);
+    await chatMessageRepository.upsertAllInRemoteType(
+      pleromaChatMessages,
+      batchTransaction: null,
+    );
+
+    return true;
   }
 
-  PleromaChatMessageSendData createSendData();
+  Future<PleromaApiChatMessageSendData> createPleromaChatMessageSendData();
 
   @override
   Future<List<IAccount>> customLocalAccountListLoader({
-    @required int limit,
-    @required IAccount newerThan,
-    @required IAccount olderThan,
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
   }) async {
     if (newerThan != null || olderThan != null) {
       return [];
     }
-    var chats = await chatRepository.getChats(
-      olderThan: null,
-      newerThan: null,
-      limit: limit,
-      offset: null,
-      orderingTermData: PleromaChatOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderByType: PleromaChatOrderByType.updatedAt),
+    var chats = await chatRepository.findAllInAppType(
+      filters: null,
+      pagination: RepositoryPagination(
+        limit: limit,
+      ),
+      orderingTerms: [
+        PleromaChatRepositoryOrderingTermData.updatedAtDesc,
+      ],
     );
 
     return chats.map((chat) => chat.accounts.first).toList();
   }
 
   @override
-  Future<List<IPleromaAccount>> customRemoteAccountListLoader({
-    @required int limit,
-    @required IAccount newerThan,
-    @required IAccount olderThan,
+  Future<List<IPleromaApiAccount>> customRemoteAccountListLoader({
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
   }) async {
     if (newerThan != null || olderThan != null) {
       return [];
     }
     var pleromaChats = await pleromaChatService.getChats(
-      limit: limit,
+      pagination: PleromaApiPaginationRequest(
+        limit: limit,
+      ),
     );
 
-    await chatRepository.upsertRemoteChats(pleromaChats);
+    await chatRepository.upsertAllInRemoteType(
+      pleromaChats,
+      batchTransaction: null,
+    );
 
-    return pleromaChats.map((pleromaChat) => pleromaChat.account).toList();
+    return pleromaChats
+        .map(
+          (pleromaChat) => pleromaChat.account,
+        )
+        .toList();
   }
 }

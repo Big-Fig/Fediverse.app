@@ -1,339 +1,66 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/account_model_adapter.dart';
-import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/account/my/my_account_model.dart';
-import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
-import 'package:flutter/widgets.dart';
-import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("account_bloc_impl.dart");
+abstract class AccountBloc extends IAccountBloc {
+  final BehaviorSubject<IAccount> accountSubject;
 
-class AccountBloc extends IAccountBloc {
-  final IMyAccount myAccount;
+  final IPleromaApiAccountService? pleromaAccountService;
 
-  final BehaviorSubject<IPleromaAccountRelationship>
-      _accountRelationshipSubject;
-  final BehaviorSubject<IAccount> _accountSubject;
-
-  @override
-  IPleromaAccountRelationship get relationship =>
-      _accountRelationshipSubject.value ?? account.pleromaRelationship;
-
-  @override
-  Stream<IPleromaAccountRelationship> get relationshipStream =>
-      Rx.combineLatest2(
-        _accountRelationshipSubject.stream,
-        accountStream,
-        (
-          IPleromaAccountRelationship relationship,
-          IAccount account,
-        ) =>
-            relationship ?? account.pleromaRelationship,
-      );
-
-  final IPleromaAccountService pleromaAccountService;
-  final IAccountRepository accountRepository;
-  final IStatusRepository statusRepository;
-  final IPleromaWebSocketsService pleromaWebSocketsService;
-  final bool isNeedPreFetchRelationship;
-  final bool isNeedWatchLocalRepositoryForUpdates;
-  bool _refreshAccountRelationshipInProgress = false;
-
+  // todo: remove hack. Dont init when bloc quickly disposed. Help
   AccountBloc({
-    @required this.myAccount,
-    @required this.accountRepository,
-    @required this.pleromaWebSocketsService,
-    @required this.statusRepository,
-    @required this.pleromaAccountService,
-    @required
-        IAccount account, // for better performance we don't update account
-    // too often
-    bool isNeedRefreshFromNetworkOnInit =
-        false, // sometimes we don't need relationship
-    this.isNeedPreFetchRelationship =
-        true, // todo: remove hack. Don't init when bloc quickly disposed. Help
-    //  improve performance in timeline unnecessary recreations
-    bool delayInit = true,
-    this.isNeedWatchLocalRepositoryForUpdates = true,
-  })  : _accountSubject = BehaviorSubject.seeded(account),
-        _accountRelationshipSubject =
-            BehaviorSubject.seeded(account.pleromaRelationship) {
-    assert(account != null);
-    // _logger.finest(() => "AccountBloc constructor ${account.remoteId}");
-    addDisposable(subject: _accountSubject);
-    addDisposable(subject: _accountRelationshipSubject);
-    addDisposable(streamSubscription: _accountSubject.stream.listen((account) {
-      var pleromaRelationship = account?.pleromaRelationship;
-      // _logger.finest(() => "pleromaRelationship $pleromaRelationship");
-      if (pleromaRelationship?.following != null) {
-        _accountRelationshipSubject.add(pleromaRelationship);
-      }
-    }));
+    required this.pleromaAccountService,
+    required IAccount account,
+    required bool isNeedRefreshFromNetworkOnInit,
+    required bool delayInit,
+  }) : accountSubject = BehaviorSubject.seeded(account) {
+    // _logger.finest(() => 'AccountBloc constructor ${account.remoteId}');
+    addDisposable(subject: accountSubject);
+
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
-        _init(account, isNeedRefreshFromNetworkOnInit);
-      });
-    } else {
-      _init(account, isNeedRefreshFromNetworkOnInit);
-    }
-  }
-
-  void _init(IAccount account, bool needRefreshFromNetworkOnInit) {
-    if (!disposed) {
-      if (isNeedWatchLocalRepositoryForUpdates) {
-        addDisposable(
-          streamSubscription:
-              accountRepository.watchByRemoteId(account.remoteId).listen(
-            (updatedAccount) {
-              if (updatedAccount != null) {
-                _accountSubject.add(updatedAccount);
-              }
-            },
-          ),
-        );
-      }
-
-      if (needRefreshFromNetworkOnInit == true) {
-        refreshFromNetwork(
-            isNeedPreFetchRelationship: isNeedPreFetchRelationship);
-      } else {
-        if (isNeedPreFetchRelationship && relationship?.following == null) {
-          _refreshAccountRelationship(account);
-        }
-      }
-    }
-  }
-
-  Future _refreshAccountRelationship(IAccount account) async {
-    _logger.finest(() => "refreshAccountRelationship "
-        "refreshAccountRelationshipInProgress="
-        "$_refreshAccountRelationshipInProgress");
-    if (_refreshAccountRelationshipInProgress != true) {
-      _refreshAccountRelationshipInProgress = true;
-      var relationships = await pleromaAccountService
-          .getRelationshipWithAccounts(remoteAccountIds: [account.remoteId]);
-      await _updateRelationship(account, relationships.first);
-      _refreshAccountRelationshipInProgress = false;
-    }
-  }
-
-  @override
-  IAccount get account => _accountSubject.value;
-
-  @override
-  Stream<IAccount> get accountStream => _accountSubject.stream.distinct();
-
-  @override
-  Future report() => pleromaAccountService.reportAccount(
-      reportRequest: PleromaAccountReportRequest(accountId: account.remoteId));
-
-  @override
-  Future<IPleromaAccountRelationship> toggleBlock() async {
-    assert(relationship != null);
-    var newRelationship;
-    if (relationship.blocking) {
-      newRelationship = await pleromaAccountService.unBlockAccount(
-          accountRemoteId: account.remoteId);
-    } else {
-      newRelationship = await pleromaAccountService.blockAccount(
-          accountRemoteId: account.remoteId);
-    }
-    await _updateRelationship(account, newRelationship);
-
-    return newRelationship;
-  }
-
-  Future _updateRelationship(
-      IAccount account, IPleromaAccountRelationship newRelationship) async {
-    if (!_accountRelationshipSubject.isClosed) {
-      _accountRelationshipSubject.add(newRelationship);
-    }
-    var newAccount = account.copyWith(pleromaRelationship: newRelationship);
-    var newRemoteAccount = mapLocalAccountToRemoteAccount(newAccount);
-
-    _logger.finest(() => "_updateRelationship "
-        "newRelationship=$newRelationship");
-    _logger.finest(() => "_updateRelationship newRemoteAccount.relationship"
-        "${newRemoteAccount?.pleroma?.relationship}");
-    if (account.localId != null) {
-      await accountRepository.updateLocalAccountByRemoteAccount(
-          oldLocalAccount: account, newRemoteAccount: newRemoteAccount);
-    } else {
-      // sometimes we don't have local account id, for example go from search
-      // to account page
-      await accountRepository.upsertRemoteAccount(newRemoteAccount,
-          conversationRemoteId: null, chatRemoteId: null);
-    }
-  }
-
-  @override
-  Future<IPleromaAccountRelationship> toggleFollow() async {
-    assert(relationship != null);
-    var newRelationship;
-    if (relationship.requested == true || relationship.following == true) {
-      newRelationship = await pleromaAccountService.unFollowAccount(
-          accountRemoteId: account.remoteId);
-      await accountRepository.updateLocalAccountByRemoteAccount(
-          oldLocalAccount: account,
-          newRemoteAccount: mapLocalAccountToRemoteAccount(account.copyWith(
-              followersCount: account.followersCount - 1,
-              pleromaRelationship: newRelationship)));
-
-      if (myAccount != null) {
-        await accountRepository.removeAccountFollower(
-            accountRemoteId: account.remoteId,
-            followerAccountId: myAccount.remoteId);
-
-        await accountRepository.removeAccountFollowing(
-            accountRemoteId: myAccount.remoteId,
-            followingAccountId: account.remoteId);
-      }
-
-      await statusRepository.removeAccountStatusesFromHome(
-          accountRemoteId: account.remoteId);
-    } else {
-      newRelationship = await pleromaAccountService.followAccount(
-          accountRemoteId: account.remoteId);
-      await accountRepository.updateLocalAccountByRemoteAccount(
-          oldLocalAccount: account,
-          newRemoteAccount: mapLocalAccountToRemoteAccount(account.copyWith(
-              followersCount: account.followersCount + 1,
-              pleromaRelationship: newRelationship)));
-    }
-
-    return newRelationship;
-  }
-
-  @override
-  Future<IPleromaAccountRelationship> toggleMute() async {
-    assert(relationship != null);
-    var newRelationship;
-    if (relationship.muting == true) {
-      newRelationship = await pleromaAccountService.unMuteAccount(
-          accountRemoteId: account.remoteId);
-    } else {
-      newRelationship = await pleromaAccountService.muteAccount(
-          accountRemoteId: account.remoteId);
-    }
-    await _updateRelationship(account, newRelationship);
-
-    return newRelationship;
-  }
-
-  @override
-  Future<IPleromaAccountRelationship> togglePin() async {
-    assert(relationship != null);
-    var newRelationship;
-    // todo: fix
-    if (relationship.muting == true) {
-      newRelationship = await pleromaAccountService.unPinAccount(
-          accountRemoteId: account.remoteId);
-    } else {
-      newRelationship = await pleromaAccountService.pinAccount(
-          accountRemoteId: account.remoteId);
-    }
-    await _updateRelationship(account, newRelationship);
-
-    return newRelationship;
-  }
-
-  @override
-  Future<IPleromaAccountRelationship> toggleBlockDomain() async {
-    assert(relationship != null);
-    var newRelationship;
-    var domainBlocking = relationship.domainBlocking == true;
-    var domain = remoteDomainOrNull;
-    if (domainBlocking) {
-      await pleromaAccountService.unBlockDomain(domain: domain);
-    } else {
-      await pleromaAccountService.blockDomain(domain: domain);
-    }
-    newRelationship = relationship.copyWith(domainBlocking: !domainBlocking);
-    await _updateRelationship(account, newRelationship);
-
-    return newRelationship;
-  }
-
-  @override
-  Future<bool> refreshFromNetwork(
-      {@required bool isNeedPreFetchRelationship}) async {
-    _logger.finest(() => "requestRefreshFromNetwork start");
-
-    IPleromaAccount remoteAccount;
-    try {
-      remoteAccount = await pleromaAccountService.getAccount(
-          accountRemoteId: account.remoteId);
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "requestRefreshFromNetwork exception ", e, stackTrace);
-    }
-
-    if (remoteAccount != null) {
-      if (isNeedPreFetchRelationship == true) {
-        await _refreshAccountRelationship(
-            mapRemoteAccountToLocalAccount(remoteAccount));
-      } else {
-        if (remoteAccount != null) {
-          _logger.finest(
-              () => "requestRefreshFromNetwork remoteAccount  $remoteAccount");
-
-          remoteAccount = mapLocalAccountToRemoteAccount(
-              mapRemoteAccountToLocalAccount(remoteAccount)
-                  .copyWith(pleromaRelationship: relationship));
-
-          if (account.localId != null) {
-            await accountRepository.updateLocalAccountByRemoteAccount(
-                oldLocalAccount: account, newRemoteAccount: remoteAccount);
-          } else {
-            // sometimes we don't have local account id, for example go from search
-            // to account page
-            await accountRepository.upsertRemoteAccount(remoteAccount,
-                conversationRemoteId: null, chatRemoteId: null);
-          }
-        } else {
-          _logger.severe(
-              () => "requestRefreshFromNetwork remoteAccount  $remoteAccount");
-        }
-      }
-    }
-
-    return remoteAccount != null;
-  }
-
-  static AccountBloc createFromContext(BuildContext context,
-          {@required IAccount account,
-          @required bool isNeedWatchWebSocketsEvents,
-          @required bool isNeedRefreshFromNetworkOnInit,
-          @required bool isNeedPreFetchRelationship,
-          @required bool isNeedWatchLocalRepositoryForUpdates}) =>
-      AccountBloc(
-          isNeedPreFetchRelationship: isNeedPreFetchRelationship,
-          pleromaWebSocketsService:
-              IPleromaWebSocketsService.of(context, listen: false),
-          statusRepository: IStatusRepository.of(context, listen: false),
+        _init(
           account: account,
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
-          isNeedWatchLocalRepositoryForUpdates:
-              isNeedWatchLocalRepositoryForUpdates,
-          accountRepository: IAccountRepository.of(context, listen: false),
-          pleromaAccountService:
-              IPleromaAccountService.of(context, listen: false),
-          myAccount: IMyAccountBloc.of(context, listen: false).account);
+        );
+      });
+    } else {
+      _init(
+        account: account,
+        isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+      );
+    }
+  }
+
+  void _init({
+    required IAccount account,
+    required bool isNeedRefreshFromNetworkOnInit,
+  }) {
+    if (!isDisposed) {
+      actualInit(
+        account: account,
+        isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+      );
+    }
+  }
+
+  Future actualInit({
+    required IAccount account,
+    required bool isNeedRefreshFromNetworkOnInit,
+  });
 
   @override
-  String get remoteDomainOrNull {
-    var usernameWithAt = "${account.username}@";
-    if (acct.contains(usernameWithAt)) {
-      return acct.replaceAll(usernameWithAt, "");
-    } else {
-      return null;
-    }
+  IAccount get account => accountSubject.value!;
+
+  @override
+  Stream<IAccount> get accountStream => accountSubject.stream.distinct();
+
+  Future<IPleromaApiAccount> loadRemoteAccount() async {
+    return pleromaAccountService!.getAccount(
+      accountRemoteId: account.remoteId,
+      withRelationship: false,
+    );
   }
 }

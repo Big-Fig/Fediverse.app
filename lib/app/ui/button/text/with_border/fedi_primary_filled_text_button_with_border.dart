@@ -9,22 +9,22 @@ import 'package:flutter/widgets.dart';
 
 class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double height;
   final double borderWidth;
   final bool expanded;
-  final Color enabledBackgroundColor;
-  final Color disabledBackgroundColor;
-  final Color enabledBorderColor;
-  final Color disabledBorderColor;
+  final Color? enabledBackgroundColor;
+  final Color? disabledBackgroundColor;
+  final Color? enabledBorderColor;
+  final Color? disabledBorderColor;
 
   final bool limitMinWidth;
 
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   FediPrimaryFilledTextButtonWithBorder(
     this.text, {
-    @required this.onPressed,
+    required this.onPressed,
     this.enabledBackgroundColor,
     this.disabledBackgroundColor,
     this.enabledBorderColor,
@@ -32,7 +32,7 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
     this.height = FediSizes.textButtonHeight,
     this.textStyle,
     this.borderWidth = 1,
-    @required this.expanded,
+    required this.expanded,
     this.limitMinWidth = false,
   });
 
@@ -50,39 +50,44 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
     var disabledBorderColor =
         this.disabledBorderColor ?? IFediUiColorTheme.of(context).white;
 
+    // ignore: no-magic-number
     var calculatedHeight = height + borderWidth * 2;
+    // ignore: no-magic-number
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
+
+    // todo: copy-pasted code
 
     var button = InkWell(
       onTap: onPressed,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          minWidth: limitMinWidth == true ? 120.0 : 0.0,
+          // ignore: no-magic-number
+          minWidth: limitMinWidth ? 120.0 : 0.0,
         ),
         child: Container(
-            height: calculatedHeight,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: onPressed != null
-                  ? enabledBackgroundColor
-                  : disabledBackgroundColor,
-              borderRadius: borderRadius,
-              border: Border.all(
-                color: onPressed != null
-                    ? enabledBorderColor
-                    : disabledBorderColor,
-                width: borderWidth,
+          height: calculatedHeight,
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: onPressed != null
+                ? enabledBackgroundColor
+                : disabledBackgroundColor,
+            borderRadius: borderRadius,
+            border: Border.all(
+              color:
+                  onPressed != null ? enabledBorderColor : disabledBorderColor,
+              width: borderWidth,
+            ),
+          ),
+          child: Padding(
+            padding: FediPadding.buttonHorizontalPadding,
+            child: Center(
+              child: Text(
+                text, textAlign: TextAlign.center, // 80% transparency
+                style: textStyle,
               ),
             ),
-            child: Padding(
-              padding: FediPadding.buttonHorizontalPadding,
-              child: Center(
-                child: Text(
-                  text, textAlign: TextAlign.center, // 80% transparency
-                  style: textStyle,
-                ),
-              ),
-            )),
+          ),
+        ),
       ),
     );
 
@@ -91,7 +96,9 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
     } else {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [button],
+        children: [
+          button,
+        ],
       );
     }
   }

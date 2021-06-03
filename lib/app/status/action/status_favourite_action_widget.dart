@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/action/status_action_counter_widget.dart';
 import 'package:fedi/app/status/favourite/status_favourite_account_list_page.dart';
 import 'package:fedi/app/status/status_bloc.dart';
@@ -28,43 +28,48 @@ class StatusFavouriteActionWidget extends StatelessWidget {
 
 class _StatusFavouriteActionButtonWidget extends StatelessWidget {
   const _StatusFavouriteActionButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
-    return StreamBuilder<bool>(
-        stream: statusBloc.favouritedStream,
-        initialData: statusBloc.favourited,
-        builder: (context, snapshot) {
-          var favourited = snapshot.data;
-          return PleromaAsyncOperationButtonBuilderWidget(
-              showProgressDialog: false,
-              builder: (context, onPressed) => FediIconButton(
-                    iconSize: FediSizes.bigIconSize,
-                    color: favourited
-                        ? IFediUiColorTheme.of(context).secondary
-                        : IFediUiColorTheme.of(context).darkGrey,
-                    icon: favourited
-                        ? Icon(FediIcons.heart_active)
-                        : Icon(FediIcons.heart),
-                    onPressed: onPressed,
-                  ),
-              asyncButtonAction: statusBloc.toggleFavourite);
-        });
+
+    return StreamBuilder<bool?>(
+      stream: statusBloc.favouritedStream,
+      initialData: statusBloc.favourited,
+      builder: (context, snapshot) {
+        var favourited = snapshot.data;
+
+        return PleromaAsyncOperationButtonBuilderWidget(
+          showProgressDialog: false,
+          builder: (context, onPressed) => FediIconButton(
+            iconSize: FediSizes.bigIconSize,
+            color: favourited!
+                ? IFediUiColorTheme.of(context).secondary
+                : IFediUiColorTheme.of(context).darkGrey,
+            icon: favourited
+                ? Icon(FediIcons.heart_active)
+                : Icon(FediIcons.heart),
+            onPressed: onPressed,
+          ),
+          asyncButtonAction: statusBloc.toggleFavourite,
+        );
+      },
+    );
   }
 }
 
 class _StatusFavouriteActionCounterWidget extends StatelessWidget {
   const _StatusFavouriteActionCounterWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
-    return StreamBuilder<int>(
+
+    return StreamBuilder<int?>(
       stream: statusBloc.reblogPlusOriginalFavouritesCountStream,
       builder: (context, snapshot) {
         var favouritesCount = snapshot.data;
@@ -72,7 +77,7 @@ class _StatusFavouriteActionCounterWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Provider.value(
+        return Provider<int>.value(
           value: favouritesCount,
           child: StatusActionCounterWidget(
             onClick: _onCounterClick,

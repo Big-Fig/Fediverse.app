@@ -5,13 +5,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/material/theme_data.dart';
 
+// ignore_for_file: no-magic-number
+// ignore_for_file: no-equal-arguments
+// ignore_for_file: long-method
+
 const darkFediUiTheme = DarkFediUiTheme();
 const _darkFediUiColorTheme = DarkFediUiColorTheme();
 const _darkFediUiTextTheme = FediUiTextTheme(colorTheme: _darkFediUiColorTheme);
 
 class DarkFediUiTheme implements IFediUiTheme {
   @override
-  String get id => "dark";
+  String get id => 'dark';
   @override
   final IFediUiColorTheme colorTheme = _darkFediUiColorTheme;
 
@@ -43,9 +47,11 @@ class DarkFediUiTheme implements IFediUiTheme {
         buttonColor: Color(0xff1e88e5),
         toggleableActiveColor: Color(0xff64ffda),
         secondaryHeaderColor: Color(0xff616161),
-        textSelectionColor: Color(0xff64ffda),
-        cursorColor: Color(0xff4285f4),
-        textSelectionHandleColor: Color(0xff1de9b6),
+        textSelectionTheme: TextSelectionThemeData(
+          selectionColor: Color(0xff64ffda),
+          cursorColor: Color(0xff4285f4),
+          selectionHandleColor: Color(0xff1de9b6),
+        ),
         backgroundColor: Color(0xff616161),
         dialogBackgroundColor: Color(0xff424242),
         indicatorColor: Color(0xff64ffda),
@@ -476,21 +482,23 @@ class DarkFediUiTheme implements IFediUiTheme {
           secondarySelectedColor: Color(0x3d212121),
           selectedColor: Color(0x3dffffff),
           shape: StadiumBorder(
-              side: BorderSide(
-            color: Color(0xff000000),
-            width: 0,
-            style: BorderStyle.none,
-          )),
+            side: BorderSide(
+              color: Color(0xff000000),
+              width: 0,
+              style: BorderStyle.none,
+            ),
+          ),
         ),
         dialogTheme: DialogTheme(
-            shape: RoundedRectangleBorder(
-          side: BorderSide(
-            color: Color(0xff000000),
-            width: 0,
-            style: BorderStyle.none,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Color(0xff000000),
+              width: 0,
+              style: BorderStyle.none,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(0.0)),
           ),
-          borderRadius: BorderRadius.all(Radius.circular(0.0)),
-        )),
+        ),
         cupertinoOverrideTheme: CupertinoThemeData(
           primaryColor: _darkFediUiColorTheme.primary,
 //      textTheme: CupertinoTextThemeData(

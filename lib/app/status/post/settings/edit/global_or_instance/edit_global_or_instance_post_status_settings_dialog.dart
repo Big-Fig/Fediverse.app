@@ -1,3 +1,4 @@
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_dialog.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_bloc.dart';
@@ -9,13 +10,21 @@ import 'package:fedi/app/status/post/settings/edit/global/edit_global_post_statu
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// todo: refactor
+// ignore: long-method
 void showEditGlobalOrInstancePostStatusSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
+  var isPleromaInstance = ICurrentAuthInstanceBloc.of(
+    context,
+    listen: false,
+  ).currentInstance!.isPleroma;
+
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
     subTitle: S.of(context).app_status_post_settings_title,
@@ -23,24 +32,41 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
       shrinkWrap: true,
     ),
     childContextBuilder: ({
-      @required BuildContext context,
-      @required Widget child,
+      required BuildContext context,
+      required Widget child,
     }) =>
         DisposableProxyProvider<GlobalOrInstanceSettingsType,
             IEditPostStatusSettingsBloc>(
       update: (context, globalOrInstanceType, previous) {
         var isUseGlobalSettingsFormBoolFieldBloc =
             ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(
-                context,
-                listen: false);
+          context,
+          listen: false,
+        );
 
         var isEnabled =
             globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
         var editPostStatusSettingsBloc = EditPostStatusSettingsBloc(
+          isGlobalForced: false,
           postStatusSettingsBloc: IPostStatusSettingsBloc.of(
             context,
             listen: false,
           ),
+          pleromaVisibilityPossibleValues: isPleromaInstance
+              ? [
+                  PleromaApiVisibility.public,
+                  PleromaApiVisibility.unlisted,
+                  PleromaApiVisibility.direct,
+                  PleromaApiVisibility.private,
+                  PleromaApiVisibility.list,
+                  PleromaApiVisibility.local,
+                ]
+              : [
+                  PleromaApiVisibility.public,
+                  PleromaApiVisibility.unlisted,
+                  PleromaApiVisibility.direct,
+                  PleromaApiVisibility.private,
+                ],
           globalOrInstanceSettingsType: globalOrInstanceType,
           isEnabled: isEnabled,
         );
@@ -49,10 +75,11 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
           streamSubscription:
               isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
             (isUseGlobalSettings) {
-              editPostStatusSettingsBloc.changeEnabled(!isUseGlobalSettings);
+              editPostStatusSettingsBloc.changeEnabled(!isUseGlobalSettings!);
             },
           ),
         );
+
         return editPostStatusSettingsBloc;
       },
       child: ProxyProvider<IEditPostStatusSettingsBloc,

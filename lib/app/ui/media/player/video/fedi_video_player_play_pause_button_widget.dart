@@ -42,9 +42,9 @@ class FediVideoPlayerPlayPauseButtonWidget extends StatelessWidget {
 
 class _FediVideoPlayerPlayPauseButtonInitializedWidget extends StatelessWidget {
   const _FediVideoPlayerPlayPauseButtonInitializedWidget({
-    Key key,
-    @required this.size,
-    @required this.iconSize,
+    Key? key,
+    required this.size,
+    required this.iconSize,
   }) : super(key: key);
 
   final double size;
@@ -55,27 +55,28 @@ class _FediVideoPlayerPlayPauseButtonInitializedWidget extends StatelessWidget {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
 
     return StreamBuilder<bool>(
-        stream: videoMediaPlayerBloc.isControlsVisibleStream,
-        builder: (context, snapshot) {
-          var isControlsVisible = snapshot.data ?? false;
+      stream: videoMediaPlayerBloc.isControlsVisibleStream,
+      builder: (context, snapshot) {
+        var isControlsVisible = snapshot.data ?? false;
 
-          if (isControlsVisible) {
-            return _FediVideoPlayerPlayPauseControlsWidget(
-              size: size,
-              iconSize: iconSize,
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+        if (isControlsVisible) {
+          return _FediVideoPlayerPlayPauseControlsWidget(
+            size: size,
+            iconSize: iconSize,
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
 class _FediVideoPlayerPlayPauseControlsWidget extends StatelessWidget {
   const _FediVideoPlayerPlayPauseControlsWidget({
-    Key key,
-    @required this.size,
-    @required this.iconSize,
+    Key? key,
+    required this.size,
+    required this.iconSize,
   }) : super(key: key);
 
   final double size;
@@ -84,23 +85,27 @@ class _FediVideoPlayerPlayPauseControlsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
+
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(size),
         child: Container(
           width: size,
+          // ignore: no-equal-arguments
           height: size,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
+            // ignore: no-magic-number
             color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.6),
           ),
           child: StreamBuilder<bool>(
             stream: videoMediaPlayerBloc.isPlayingStream,
             builder: (context, snapshot) {
               var isPlaying = snapshot.data ?? false;
+
               return AsyncOperationButtonBuilderWidget(
                 showProgressDialog: false,
-                builder: (BuildContext context, void Function() onPressed) {
+                builder: (BuildContext context, void Function()? onPressed) {
                   return Container(
                     child: FediIconButton(
                       padding: EdgeInsets.zero,
@@ -127,7 +132,7 @@ class _FediVideoPlayerPlayPauseControlsWidget extends StatelessWidget {
 
 class _FediVideoPlayerPlayPauseButtonLoadingWidget extends StatelessWidget {
   const _FediVideoPlayerPlayPauseButtonLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -5,8 +5,6 @@ import 'package:fedi/app/share/message_input/share_message_input_bloc_impl.dart'
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
-import 'package:flutter/widgets.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 
 abstract class ExternalShareBloc extends DisposableOwner
     implements IExternalShareBloc {
@@ -15,10 +13,10 @@ abstract class ExternalShareBloc extends DisposableOwner
   @override
   IBoolValueFormFieldBloc asLinkBoolField = BoolValueFormFieldBloc(originValue: false);
 
-  String get message {
-    var message = shareMessageInputBloc.messageField.currentValue;
+  String? get message {
+    String? message = shareMessageInputBloc.messageField.currentValue;
 
-    if (message?.isNotEmpty != true) {
+    if (message.isEmpty) {
       message = null;
     }
 
@@ -29,7 +27,7 @@ abstract class ExternalShareBloc extends DisposableOwner
   IShareMessageInputBloc shareMessageInputBloc = ShareMessageInputBloc();
 
   ExternalShareBloc({
-    @required this.externalShareService,
+    required this.externalShareService,
   }) {
     addDisposable(disposable: shareMessageInputBloc);
     addDisposable(disposable: asLinkBoolField);

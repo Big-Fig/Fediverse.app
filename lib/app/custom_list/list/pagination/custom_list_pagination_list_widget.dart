@@ -13,15 +13,20 @@ import 'package:provider/provider.dart';
 
 class CustomListPaginationListWidget
     extends FediPaginationListWidget<ICustomList> {
+
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
   const CustomListPaginationListWidget({
-    Key key,
-    ScrollController scrollController,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    Widget customEmptyWidget,
-    Widget customLoadingWidget,
+    Key? key,
+    ScrollController? scrollController,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
+    Widget? customEmptyWidget,
+    Widget? customLoadingWidget,
+    bool refreshOnFirstLoad = true,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
           key: key,
           scrollController: scrollController,
@@ -31,22 +36,25 @@ class CustomListPaginationListWidget
           alwaysShowFooter: alwaysShowFooter,
           customEmptyWidget: customEmptyWidget,
           customLoadingWidget: customLoadingWidget,
+          refreshOnFirstLoad: refreshOnFirstLoad,
         );
 
   @override
   ScrollView buildItemsCollectionView({
-    BuildContext context,
-    List<ICustomList> items,
-    Widget header,
-    Widget footer,
+    BuildContext? context,
+    required List<ICustomList> items,
+    Widget? header,
+    Widget? footer,
   }) {
     return PaginationListWidget.buildItemsListView(
       context: context,
+      keyboardDismissBehavior: keyboardDismissBehavior,
       items: items,
       header: header,
       footer: footer,
       itemBuilder: (context, index) {
         var item = items[index];
+
         return Provider<ICustomList>.value(
           value: item,
           child: DisposableProxyProvider<ICustomList, ICustomListBloc>(
@@ -66,7 +74,7 @@ class CustomListPaginationListWidget
 
   @override
   IPaginationListBloc<PaginationPage<ICustomList>, ICustomList>
-      retrievePaginationListBloc(BuildContext context, {bool listen}) =>
+      retrievePaginationListBloc(BuildContext context, {bool? listen}) =>
           Provider.of<
               IPaginationListBloc<PaginationPage<ICustomList>,
                   ICustomList>>(context, listen: false);

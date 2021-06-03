@@ -9,7 +9,7 @@ abstract class IDialog {
 
   bool get cancelable;
 
-  Future show(BuildContext context);
+  Future<T?> show<T>(BuildContext context);
 
   Future hide(BuildContext context);
 }
@@ -26,14 +26,17 @@ abstract class BaseDialog extends DisposableOwner implements IDialog {
   bool get isShowing => _isShowing;
 
   @override
-  Future show(BuildContext context) {
+  Future<T?> show<T>(BuildContext context) async {
     assert(!isShowing);
     _isShowing = true;
-    return showDialog(
+    var result = await showDialog<T>(
       barrierDismissible: cancelable,
       context: context,
       builder: (BuildContext context) => buildDialogBody(context),
     );
+    await dispose();
+
+    return result;
   }
 
   @override
@@ -47,7 +50,7 @@ abstract class BaseDialog extends DisposableOwner implements IDialog {
   Widget buildDialogBody(BuildContext context);
 
   static DialogAction createDefaultCancelAction({
-    @required BuildContext context,
+    required BuildContext context,
   }) =>
       DialogAction(
         onAction: (context) {
@@ -57,10 +60,10 @@ abstract class BaseDialog extends DisposableOwner implements IDialog {
       );
 
   static DialogAction createDefaultOkAction({
-    @required BuildContext context,
-    @required DialogActionCallback action,
-    DialogActionEnabledFetcher isActionEnabledFetcher,
-    DialogActionEnabledStreamFetcher isActionEnabledStreamFetcher,
+    required BuildContext context,
+    required DialogActionCallback? action,
+    DialogActionEnabledFetcher? isActionEnabledFetcher,
+    DialogActionEnabledStreamFetcher? isActionEnabledStreamFetcher,
   }) =>
       DialogAction(
         onAction: (context) {

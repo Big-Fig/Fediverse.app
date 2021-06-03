@@ -8,19 +8,25 @@ abstract class ISearchInputBloc extends IDisposable {
 
   TextEditingController get searchTextEditingController;
 
-  String get confirmedSearchTerm;
+  String? get confirmedSearchTerm;
 
   Stream<String> get confirmedSearchTermStream;
-  String get currentInput;
+
+  String? get currentInput;
 
   Stream<String> get currentInputStream;
 
   bool get currentInputIsNotEmpty;
 
   Stream<bool> get currentInputIsNotEmptyStream;
+
   bool get confirmedSearchTermIsNotEmpty;
 
   Stream<bool> get confirmedSearchTermIsNotEmptyStream;
+
+  bool get confirmedSearchTermIsEmpty;
+
+  Stream<bool> get confirmedSearchTermIsEmptyStream;
 
   void clearSearch();
 

@@ -13,34 +13,36 @@ typedef ValueToIconMapper<T> = IconData Function(T value);
 typedef ValueChangedCallback<T> = Function(T oldValue, T newValue);
 
 class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
-  final bool isEnabled;
+  final bool? isEnabled;
   final bool isNullValuePossible;
   final String label;
-  final String description;
-  final String descriptionOnDisabled;
-  final String error;
+  final String? description;
+  final String? descriptionOnDisabled;
+  final String? error;
   final T value;
-  final ValueToTextMapper<T> valueToTextMapper;
-  final ValueToIconMapper<T> valueToIconMapper;
+  final ValueToTextMapper<T>? valueToTextMapper;
+  final ValueToIconMapper<T>? valueToIconMapper;
   final VoidCallback startCustomSelectCallback;
   final VoidCallback clearCallback;
 
   FediFormSingleChooseCustomFromListFieldRow({
-    @required this.isEnabled,
-    @required this.isNullValuePossible,
-    @required this.label,
-    @required this.description,
-    @required this.descriptionOnDisabled,
-    @required this.error,
-    @required this.value,
-    @required this.valueToTextMapper,
-    @required this.valueToIconMapper,
-    @required this.startCustomSelectCallback,
-    @required this.clearCallback,
+    required this.isEnabled,
+    required this.isNullValuePossible,
+    required this.label,
+    required this.description,
+    required this.descriptionOnDisabled,
+    required this.error,
+    required this.value,
+    required this.valueToTextMapper,
+    required this.valueToIconMapper,
+    required this.startCustomSelectCallback,
+    required this.clearCallback,
   });
 
   @override
+  // ignore: long-method
   Widget build(BuildContext context) {
+    // todo: copy-pasted code
     return FediFormRow(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -55,7 +57,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   InkWell(
-                    onTap: isEnabled ? startCustomSelectCallback : null,
+                    onTap: isEnabled! ? startCustomSelectCallback : null,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -63,8 +65,8 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                           Padding(
                             padding: FediPadding.horizontalSmallPadding,
                             child: Icon(
-                              valueToIconMapper(value),
-                              color: isEnabled
+                              valueToIconMapper!(value),
+                              color: isEnabled!
                                   ? IFediUiColorTheme.of(context).darkGrey
                                   : IFediUiColorTheme.of(context).lightGrey,
                             ),
@@ -73,8 +75,8 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                           Padding(
                             padding: FediPadding.horizontalSmallPadding,
                             child: Text(
-                              valueToTextMapper(value),
-                              style: isEnabled
+                              valueToTextMapper!(value),
+                              style: isEnabled!
                                   ? IFediUiTextTheme.of(context)
                                       .mediumShortDarkGrey
                                   : IFediUiTextTheme.of(context)
@@ -85,7 +87,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                           padding: FediPadding.horizontalSmallPadding,
                           child: Icon(
                             FediIcons.pen,
-                            color: isEnabled
+                            color: isEnabled!
                                 ? IFediUiColorTheme.of(context).darkGrey
                                 : IFediUiColorTheme.of(context).lightGrey,
                           ),
@@ -94,6 +96,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                     ),
                   ),
                   if (isNullValuePossible && value != null)
+
                     InkWell(
                       onTap: () {
                         clearCallback();
@@ -102,7 +105,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                         padding: FediPadding.horizontalSmallPadding,
                         child: Icon(
                           FediIcons.delete,
-                          color: isEnabled
+                          color: isEnabled!
                               ? IFediUiColorTheme.of(context).darkGrey
                               : IFediUiColorTheme.of(context).lightGrey,
                         ),
@@ -120,7 +123,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
   }
 
   Widget _buildDescription() {
-    if (isEnabled) {
+    if (isEnabled!) {
       if (description != null) {
         return FediFormColumnDesc(description);
       } else {

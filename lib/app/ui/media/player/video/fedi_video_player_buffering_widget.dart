@@ -27,7 +27,7 @@ class FediVideoPlayerBufferingWidget extends StatelessWidget {
 
 class _FediVideoPlayerBufferingLoadingWidget extends StatelessWidget {
   const _FediVideoPlayerBufferingLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

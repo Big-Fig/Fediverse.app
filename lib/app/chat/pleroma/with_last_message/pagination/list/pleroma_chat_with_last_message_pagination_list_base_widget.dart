@@ -7,27 +7,32 @@ import 'package:provider/provider.dart';
 
 abstract class PleromaChatPaginationListBaseWidget
     extends FediPaginationListWidget<IPleromaChatWithLastMessage> {
-  PleromaChatPaginationListBaseWidget(
-      {@required Key key,
-      Widget header,
-      Widget footer,
-      bool alwaysShowHeader,
-      bool alwaysShowFooter})
-      : super(
-            key: key,
-            header: header,
-            footer: footer,
-            alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter);
+  PleromaChatPaginationListBaseWidget({
+    required Key key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
+    bool refreshOnFirstLoad = true,
+  }) : super(
+          key: key,
+          header: header,
+          footer: footer,
+          alwaysShowHeader: alwaysShowHeader,
+          alwaysShowFooter: alwaysShowFooter,
+          refreshOnFirstLoad: refreshOnFirstLoad,
+        );
 
   @override
   IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
-          IPleromaChatWithLastMessage>
-      retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
+      IPleromaChatWithLastMessage> retrievePaginationListBloc(
+    BuildContext context, {
+    required bool listen,
+  }) {
     var chatPaginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
             IPleromaChatWithLastMessage>>(context, listen: listen);
+
     return chatPaginationListBloc;
   }
 }

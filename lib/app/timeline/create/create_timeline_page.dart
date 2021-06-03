@@ -25,6 +25,7 @@ class CreateItemTimelinesHomeTabStoragePage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         createTimelineBloc.handleBackPressed();
+
         return false;
       },
       child: Scaffold(
@@ -58,8 +59,8 @@ class CreateItemTimelinesHomeTabStoragePage extends StatelessWidget {
 class _CreateItemTimelinesHomeTabStoragePageSaveActionWidget
     extends StatelessWidget {
   const _CreateItemTimelinesHomeTabStoragePageSaveActionWidget({
-    Key key,
-    @required this.createTimelineBloc,
+    Key? key,
+    required this.createTimelineBloc,
   }) : super(key: key);
 
   final ICreateTimelineBloc createTimelineBloc;
@@ -67,19 +68,21 @@ class _CreateItemTimelinesHomeTabStoragePageSaveActionWidget
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
-        stream: createTimelineBloc.isReadyToSubmitStream,
-        initialData: createTimelineBloc.isReadyToSubmit,
-        builder: (context, snapshot) {
-          var isReadyToSubmit = snapshot.data;
-          return AsyncOperationButtonBuilderWidget(
-            builder: (context, onPressed) => FediIconButton(
-              icon: Icon(Icons.check),
-              color: IFediUiColorTheme.of(context).darkGrey,
-              onPressed: isReadyToSubmit ? onPressed : null,
-            ),
-            asyncButtonAction: createTimelineBloc.save,
-          );
-        });
+      stream: createTimelineBloc.isHaveChangesAndNoErrorsStream,
+      initialData: createTimelineBloc.isHaveChangesAndNoErrors,
+      builder: (context, snapshot) {
+        var isReadyToSubmit = snapshot.data;
+
+        return AsyncOperationButtonBuilderWidget(
+          builder: (context, onPressed) => FediIconButton(
+            icon: Icon(Icons.check),
+            color: IFediUiColorTheme.of(context).darkGrey,
+            onPressed: isReadyToSubmit! ? onPressed : null,
+          ),
+          asyncButtonAction: createTimelineBloc.save,
+        );
+      },
+    );
   }
 }
 
@@ -93,7 +96,8 @@ void goToCreateItemTimelinesHomeTabStoragePage(
 }
 
 MaterialPageRoute createCreateItemTimelinesHomeTabStoragePageRoute(
-    BuildContext context) {
+  BuildContext context,
+) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<ICreateTimelineBloc>(
       create: (context) => CreateTimelineBloc(
@@ -103,8 +107,8 @@ MaterialPageRoute createCreateItemTimelinesHomeTabStoragePageRoute(
           timelinesHomeTabStorageBloc.add(timeline);
           Navigator.of(context).pop();
         },
-        authInstance:
-            ICurrentAuthInstanceBloc.of(context, listen: false).currentInstance,
+        authInstance: ICurrentAuthInstanceBloc.of(context, listen: false)
+            .currentInstance!,
         localPreferencesService: ILocalPreferencesService.of(
           context,
           listen: false,

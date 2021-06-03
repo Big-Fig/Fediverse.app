@@ -6,21 +6,24 @@ import 'package:provider/provider.dart';
 abstract class IOneTypeFormGroupBloc<T extends IFormItemBloc>
     extends IFormGroupBloc<T> {
   static IOneTypeFormGroupBloc<T> of<T extends IFormItemBloc>(
-          BuildContext context,
-          {bool listen = true}) =>
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IOneTypeFormGroupBloc<T>>(context, listen: listen);
 
   T addNewEmptyField();
 
   void removeField(T field);
 
-  int get maximumFieldsCount;
+  void changeFields(List<T> fields);
+
+  int? get maximumFieldsCount;
 
   bool get isMaximumFieldsCountReached;
 
   Stream<bool> get isMaximumFieldsCountReachedStream;
 
-  int get minimumFieldsCount;
+  int? get minimumFieldsCount;
 
   bool get isMinimumFieldsCountReached;
 
@@ -40,7 +43,7 @@ abstract class IOneTypeFormGroupBloc<T extends IFormItemBloc>
 
   bool isLast(T item);
 
-  T findNextItemFor(T item);
+  T? findNextItemFor(T item);
 
   int indexOf(T item);
 }

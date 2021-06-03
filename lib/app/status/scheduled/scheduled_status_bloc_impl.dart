@@ -7,16 +7,16 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
-import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:fedi/pleroma/api/status/scheduled/pleroma_api_scheduled_status_service.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("scheduled_status_bloc_impl.dart");
+var _logger = Logger('scheduled_status_bloc_impl.dart');
 
 class ScheduledStatusBloc extends DisposableOwner
     implements IScheduledStatusBloc {
@@ -24,31 +24,32 @@ class ScheduledStatusBloc extends DisposableOwner
   final BehaviorSubject<IScheduledStatus> _scheduledStatusSubject;
 
   // ignore: close_sinks
-  final BehaviorSubject<ScheduledStatusState> _stateSubject = BehaviorSubject();
+  final BehaviorSubject<ScheduledStatusState?> _stateSubject =
+      BehaviorSubject();
 
   @override
-  ScheduledStatusState get state => _stateSubject.value;
+  ScheduledStatusState? get state => _stateSubject.value;
 
   @override
-  Stream<ScheduledStatusState> get stateStream => _stateSubject.stream;
+  Stream<ScheduledStatusState?> get stateStream => _stateSubject.stream;
 
-  final IPleromaStatusService pleromaStatusService;
-  final IPleromaScheduledStatusService pleromaScheduledStatusService;
+  final IPleromaApiAuthStatusService pleromaAuthStatusService;
+  final IPleromaApiScheduledStatusService pleromaScheduledStatusService;
   final IScheduledStatusRepository scheduledStatusRepository;
   final IStatusRepository statusRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
   ScheduledStatusBloc({
-    @required this.pleromaStatusService,
-    @required this.pleromaScheduledStatusService,
-    @required this.statusRepository,
-    @required this.scheduledStatusRepository,
-    @required
-        IScheduledStatus scheduledStatus, // for better performance we don't
+    required this.pleromaAuthStatusService,
+    required this.pleromaScheduledStatusService,
+    required this.statusRepository,
+    required this.scheduledStatusRepository,
+    required IScheduledStatus
+        scheduledStatus, // for better performance we dont
     // update
     // account too often
     bool needRefreshFromNetworkOnInit =
-        false, // todo: remove hack. Don't init when bloc quickly disposed. Help
+        false, // todo: remove hack. Dont init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
     this.isNeedWatchLocalRepositoryForUpdates = true,
@@ -58,18 +59,24 @@ class ScheduledStatusBloc extends DisposableOwner
 
     _updateState();
     // _checkCanceled
-    addDisposable(streamSubscription: scheduledStatusStream.listen((_) {
-      _updateState();
-    }));
+    addDisposable(
+      streamSubscription: scheduledStatusStream.listen(
+        (_) {
+          _updateState();
+        },
+      ),
+    );
 
     // check expired
     addDisposable(
-        timer: Timer.periodic(Duration(minutes: 1), (_) {
-      _updateState();
-    }));
+      timer: Timer.periodic(
+        Duration(minutes: 1),
+        (_) {
+          _updateState();
+        },
+      ),
+    );
 
-    assert(needRefreshFromNetworkOnInit != null);
-    assert(isNeedWatchLocalRepositoryForUpdates != null);
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
         _init(scheduledStatus, needRefreshFromNetworkOnInit);
@@ -80,17 +87,22 @@ class ScheduledStatusBloc extends DisposableOwner
   }
 
   void _init(
-      IScheduledStatus scheduledStatus, bool needRefreshFromNetworkOnInit) {
-    if (!disposed) {
+    IScheduledStatus scheduledStatus,
+    bool needRefreshFromNetworkOnInit,
+  ) {
+    if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
-            streamSubscription: scheduledStatusRepository
-                .watchByRemoteId(scheduledStatus.remoteId)
-                .listen((updatedStatus) {
-          if (updatedStatus != null) {
-            _scheduledStatusSubject.add(updatedStatus);
-          }
-        }));
+          streamSubscription: scheduledStatusRepository
+              .watchByDbIdInAppType(scheduledStatus.localId!)
+              .listen(
+            (updatedStatus) {
+              if (updatedStatus != null) {
+                _scheduledStatusSubject.add(updatedStatus);
+              }
+            },
+          ),
+        );
       }
       if (needRefreshFromNetworkOnInit) {
         refreshFromNetwork();
@@ -99,70 +111,81 @@ class ScheduledStatusBloc extends DisposableOwner
   }
 
   @override
-  IScheduledStatus get scheduledStatus => _scheduledStatusSubject.value;
+  IScheduledStatus get scheduledStatus => _scheduledStatusSubject.value!;
 
   @override
   Stream<IScheduledStatus> get scheduledStatusStream =>
       _scheduledStatusSubject.stream;
 
   @override
-  String get remoteId => scheduledStatus.remoteId;
+  String? get remoteId => scheduledStatus.remoteId;
 
   @override
   DateTime get scheduledAt => scheduledStatus.scheduledAt;
 
   @override
-  Stream<DateTime> get scheduledAtStream => scheduledStatusStream
-      .map((scheduledStatus) => scheduledStatus.scheduledAt);
+  Stream<DateTime> get scheduledAtStream => scheduledStatusStream.map(
+        (scheduledStatus) => scheduledStatus.scheduledAt,
+      );
 
   @override
-  String get spoilerText => scheduledStatus.params.spoilerText;
+  String? get spoilerText => scheduledStatus.params.spoilerText;
 
   @override
-  Stream<String> get spoilerTextStream => scheduledStatusStream
-      .map((scheduledStatus) => scheduledStatus.params.spoilerText);
+  Stream<String?> get spoilerTextStream => scheduledStatusStream.map(
+        (scheduledStatus) => scheduledStatus.params.spoilerText,
+      );
 
   @override
-  List<IPleromaMediaAttachment> get mediaAttachments =>
+  List<IPleromaApiMediaAttachment>? get mediaAttachments =>
       scheduledStatus.mediaAttachments;
 
   @override
-  Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream =>
+  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream =>
       scheduledStatusStream
           .map((scheduledStatus) => scheduledStatus.mediaAttachments);
 
   @override
   Future cancelSchedule() async {
-    var success = await pleromaScheduledStatusService.cancelScheduledStatus(
-        scheduledStatusRemoteId: remoteId);
+    await pleromaScheduledStatusService.cancelScheduledStatus(
+      scheduledStatusRemoteId: remoteId!,
+    );
 
-    if (success) {
-      await scheduledStatusRepository.markAsCanceled(
-          scheduledStatus: scheduledStatus);
-    }
+    await scheduledStatusRepository.markAsCanceled(
+      scheduledStatus: scheduledStatus,
+      batchTransaction: null,
+    );
   }
 
   @override
-  Future reSchedule({@required DateTime scheduledAt}) async {
+  Future reSchedule({
+    required DateTime scheduledAt,
+  }) async {
     var newScheduledStatus =
         await pleromaScheduledStatusService.reScheduleStatus(
-            scheduledStatusRemoteId: remoteId, scheduledAt: scheduledAt);
+      scheduledStatusRemoteId: remoteId!,
+      scheduledAt: scheduledAt,
+    );
 
-    await scheduledStatusRepository
-        .updateLocalScheduledStatusByRemoteScheduledStatus(
-            oldLocalScheduledStatus: scheduledStatus,
-            newRemoteScheduledStatus: newScheduledStatus);
+    await scheduledStatusRepository.updateAppTypeByRemoteType(
+      appItem: scheduledStatus,
+      remoteItem: newScheduledStatus,
+      batchTransaction: null,
+    );
   }
 
   @override
   Future refreshFromNetwork() async {
-    var newScheduledStatus = await pleromaScheduledStatusService
-        .getScheduledStatus(scheduledStatusRemoteId: remoteId);
+    var newScheduledStatus =
+        await pleromaScheduledStatusService.getScheduledStatus(
+      scheduledStatusRemoteId: remoteId!,
+    );
 
-    await scheduledStatusRepository
-        .updateLocalScheduledStatusByRemoteScheduledStatus(
-            oldLocalScheduledStatus: scheduledStatus,
-            newRemoteScheduledStatus: newScheduledStatus);
+    await scheduledStatusRepository.updateAppTypeByRemoteType(
+      appItem: scheduledStatus,
+      remoteItem: newScheduledStatus,
+      batchTransaction: null,
+    );
   }
 
   static ScheduledStatusBloc createFromContext(
@@ -172,9 +195,10 @@ class ScheduledStatusBloc extends DisposableOwner
     bool delayInit = true,
   }) =>
       ScheduledStatusBloc(
-        pleromaStatusService: IPleromaStatusService.of(context, listen: false),
+        pleromaAuthStatusService:
+            IPleromaApiAuthStatusService.of(context, listen: false),
         pleromaScheduledStatusService:
-            IPleromaScheduledStatusService.of(context, listen: false),
+            IPleromaApiScheduledStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         scheduledStatusRepository:
             IScheduledStatusRepository.of(context, listen: false),
@@ -186,16 +210,16 @@ class ScheduledStatusBloc extends DisposableOwner
       );
 
   void _updateState() {
-    _logger.finest(() => "_updateState isCanceled ${scheduledStatus.canceled}");
-    bool isCanceled = scheduledStatus.canceled;
+    _logger.finest(() => '_updateState isCanceled ${scheduledStatus.canceled}');
+    var isCanceled = scheduledStatus.canceled;
     if (isCanceled) {
       _stateSubject.add(ScheduledStatusState.canceled);
     } else {
-      DateTime scheduledAt = scheduledStatus.scheduledAt;
+      var scheduledAt = scheduledStatus.scheduledAt;
 
       var isExpired = scheduledAt.isBefore(DateTime.now());
 
-      _logger.finest(() => "_updateState isExpired $isExpired");
+      _logger.finest(() => '_updateState isExpired $isExpired');
       if (isExpired) {
         _stateSubject.add(ScheduledStatusState.alreadyPosted);
       } else {
@@ -205,70 +229,54 @@ class ScheduledStatusBloc extends DisposableOwner
   }
 
   @override
-  Future<bool> postScheduledPost(PostStatusData postStatusData) async {
+  Future postScheduledPost(PostStatusData postStatusData) async {
     await cancelSchedule();
 
-    var pleromaScheduledStatus = await pleromaStatusService.scheduleStatus(
-        data: PleromaScheduleStatus(
-      mediaIds: postStatusData.mediaAttachments
-          ?.map((mediaAttachment) => mediaAttachment.id)
-          ?.toList(),
-      status: postStatusData.text,
-      sensitive: postStatusData.isNsfwSensitiveEnabled,
-      visibility: postStatusData.visibility,
-      inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
-      inReplyToConversationId: postStatusData.inReplyToConversationId,
-      idempotencyKey: null,
-      scheduledAt: postStatusData.scheduledAt,
-      to: postStatusData.to,
-      poll: postStatusData.poll != null
-          ? PleromaPostStatusPoll(
-              expiresInSeconds:
-                  (postStatusData.poll.durationLength.inMicroseconds /
-                          Duration.microsecondsPerSecond)
-                      .floor(),
-              multiple: postStatusData.poll.multiple,
-              options: postStatusData.poll.options,
-              hideTotals: postStatusData.poll.hideTotals,
-            )
-          : null,
-      spoilerText: postStatusData.subject,
-    ));
+    var pleromaScheduledStatus = await pleromaAuthStatusService.scheduleStatus(
+      data: PleromaApiScheduleStatus(
+        mediaIds:
+            postStatusData.mediaAttachments?.toPleromaApiMediaAttachmentIds(),
+        status: postStatusData.text,
+        sensitive: postStatusData.isNsfwSensitiveEnabled,
+        visibility: postStatusData.visibilityString,
+        inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
+        inReplyToConversationId: postStatusData.inReplyToConversationId,
+        idempotencyKey: null,
+        scheduledAt: postStatusData.scheduledAt!,
+        to: postStatusData.to,
+        poll: postStatusData.poll?.toPleromaPostStatusPoll(),
+        spoilerText: postStatusData.subject,
+        language: postStatusData.language,
+        expiresInSeconds: postStatusData.expiresInSeconds,
+        preview: null,
+        contentType: null,
+      ),
+    );
 
-    await scheduledStatusRepository
-        .upsertRemoteScheduledStatus(pleromaScheduledStatus);
-
-    return true;
+    await scheduledStatusRepository.upsertInRemoteType(pleromaScheduledStatus);
   }
 
   @override
   IPostStatusData calculatePostStatusData() {
     assert(
       scheduledStatus.params.inReplyToId == null,
-      "inReplyToId not supported",
+      'inReplyToId not supported',
     );
 
     return PostStatusData(
       subject: scheduledStatus.params.spoilerText,
       text: scheduledStatus.params.text,
       scheduledAt: scheduledStatus.scheduledAt,
-      visibility: scheduledStatus.params.visibilityPleroma.toJsonValue(),
+      visibilityString: scheduledStatus.params.visibilityPleroma.toJsonValue(),
       mediaAttachments: scheduledStatus.mediaAttachments,
-      poll: scheduledStatus.params?.poll != null
-          ? PostStatusPoll(
-              durationLength: Duration(
-                  seconds: scheduledStatus.params.poll.expiresInSeconds),
-              hideTotals: scheduledStatus.params.poll.hideTotals,
-              multiple: scheduledStatus.params.poll.multiple,
-              options: scheduledStatus.params.poll.options,
-            )
-          : null,
-      inReplyToPleromaStatus: null,
-      inReplyToConversationId: null,
+      poll: scheduledStatus.params.poll?.toPostStatusPoll(),
+      inReplyToPleromaStatus: scheduledStatus.params.inReplyToPleromaApiStatus
+          ?.toPleromaApiStatus(),
+      inReplyToConversationId: scheduledStatus.params.inReplyToConversationId,
       isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
-      // actually to should be extracted fro
-      to: null,
+      to: scheduledStatus.params.to,
+      language: scheduledStatus.params.language,
+      expiresInSeconds: scheduledStatus.params.expiresInSeconds,
     );
   }
-
 }

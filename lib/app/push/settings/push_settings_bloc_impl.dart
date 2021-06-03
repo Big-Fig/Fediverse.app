@@ -1,22 +1,22 @@
 import 'dart:async';
 
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/push/pleroma_push_model.dart';
-import 'package:fedi/pleroma/push/pleroma_push_service.dart';
+import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
+import 'package:fedi/pleroma/api/push/pleroma_api_push_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("push_settings_bloc_impl.dart");
+final _logger = Logger('push_settings_bloc_impl.dart');
 
 class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
-  final IPushSettingsLocalPreferencesBloc instanceLocalPreferencesBloc;
-  final IPleromaPushService pleromaPushService;
+  final IPushSettingsLocalPreferenceBloc<PushSettings>
+      instanceLocalPreferencesBloc;
+  final IPleromaApiPushService pleromaPushService;
   final IPushRelayService pushRelayService;
   final AuthInstance currentInstance;
   final IFcmPushService fcmPushService;
@@ -28,11 +28,11 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       failedToUpdateStreamController.stream;
 
   PushSettingsBloc({
-    @required this.instanceLocalPreferencesBloc,
-    @required this.pleromaPushService,
-    @required this.pushRelayService,
-    @required this.currentInstance,
-    @required this.fcmPushService,
+    required this.instanceLocalPreferencesBloc,
+    required this.pleromaPushService,
+    required this.pushRelayService,
+    required this.currentInstance,
+    required this.fcmPushService,
   }) {
     addDisposable(streamController: failedToUpdateStreamController);
   }
@@ -45,115 +45,105 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       instanceLocalPreferencesBloc.stream;
 
   @override
-  void changeFavourite(bool value) {
-    updateSettings(settingsData.copyWith(
-      favourite: value,
-    ));
-  }
+  Future changeFavourite(bool value) => updateSettings(settingsData.copyWith(
+        favourite: value,
+      ));
 
   @override
-  bool get favourite => settingsData.favourite;
+  bool get favourite => settingsData.favourite == true;
 
   @override
   Stream<bool> get favouriteStream =>
-      settingsDataStream.map((settings) => settings.favourite);
+      settingsDataStream.map((settings) => settings.favourite == true);
 
   @override
-  void changeFollow(bool value) {
-    updateSettings(settingsData.copyWith(
-      follow: value,
-    ));
-  }
+  Future changeFollow(bool value) => updateSettings(settingsData.copyWith(
+        follow: value,
+      ));
 
   @override
-  bool get follow => settingsData.follow;
+  bool get follow => settingsData.follow == true;
 
   @override
   Stream<bool> get followStream =>
-      settingsDataStream.map((settings) => settings.follow);
+      settingsDataStream.map((settings) => settings.follow == true);
 
   @override
-  bool get mention => settingsData.mention;
+  bool get mention => settingsData.mention == true;
 
   @override
   Stream<bool> get mentionStream =>
-      settingsDataStream.map((settings) => settings.mention);
+      settingsDataStream.map((settings) => settings.mention == true);
 
   @override
-  void changeMention(bool value) {
-    updateSettings(settingsData.copyWith(
-      mention: value,
-    ));
-  }
+  Future changeMention(bool value) => updateSettings(settingsData.copyWith(
+        mention: value,
+      ));
 
   @override
-  bool get reblog => settingsData.reblog;
+  bool get reblog => settingsData.reblog == true;
 
   @override
   Stream<bool> get reblogStream =>
-      settingsDataStream.map((settings) => settings.reblog);
+      settingsDataStream.map((settings) => settings.reblog == true);
 
   @override
-  void changeReblog(bool value) {
-    updateSettings(settingsData.copyWith(
-      reblog: value,
-    ));
-  }
+  Future changeReblog(bool value) => updateSettings(settingsData.copyWith(
+        reblog: value,
+      ));
 
   @override
-  bool get poll => settingsData.poll;
+  bool get poll => settingsData.poll == true;
 
   @override
   Stream<bool> get pollStream =>
-      settingsDataStream.map((settings) => settings.poll);
+      settingsDataStream.map((settings) => settings.poll == true);
 
   @override
-  void changePoll(bool value) {
-    updateSettings(settingsData.copyWith(
-      poll: value,
-    ));
-  }
+  Future changePoll(bool value) => updateSettings(settingsData.copyWith(
+        poll: value,
+      ));
 
   @override
-  bool get pleromaChatMention => settingsData.pleromaChatMention;
+  bool get pleromaChatMention => settingsData.pleromaChatMention == true;
 
   @override
   Stream<bool> get pleromaChatMentionStream =>
-      settingsDataStream.map((settings) => settings.pleromaChatMention);
+      settingsDataStream.map((settings) => settings.pleromaChatMention == true);
 
   @override
-  void changePleromaChatMention(bool value) {
-    updateSettings(settingsData.copyWith(
-      pleromaChatMention: value,
-    ));
-  }
+  Future changePleromaChatMention(bool value) =>
+      updateSettings(settingsData.copyWith(
+        pleromaChatMention: value,
+      ));
 
   @override
-  bool get pleromaEmojiReaction => settingsData.pleromaEmojiReaction;
+  bool get pleromaEmojiReaction => settingsData.pleromaEmojiReaction == true;
 
   @override
-  Stream<bool> get pleromaEmojiReactionStream =>
-      settingsDataStream.map((settings) => settings.pleromaEmojiReaction);
+  Stream<bool> get pleromaEmojiReactionStream => settingsDataStream
+      .map((settings) => settings.pleromaEmojiReaction == true);
 
   @override
-  void changePleromaEmojiReaction(bool value) {
-    updateSettings(settingsData.copyWith(
-      pleromaEmojiReaction: value,
-    ));
-  }
+  Future changePleromaEmojiReaction(bool value) =>
+      updateSettings(settingsData.copyWith(
+        pleromaEmojiReaction: value,
+      ));
 
   @override
   bool get isHaveSubscription =>
       instanceLocalPreferencesBloc.isSavedPreferenceExist;
 
   @override
-  Future subscribeAllEnabled() =>
-      updateSettings(PushSettings.defaultAllEnabled());
+  Future subscribeAllEnabled() => updateSettings(
+        PushSettings.defaultAllEnabled(),
+      );
 
   @override
-  Future updateSettings(PushSettings newSettings) async {
+  Future updateSettings(PushSettings? newSettings) async {
     if (settingsData == newSettings) {
-      _logger.finest(() => "Same settings");
+      _logger.finest(() => 'Same settings');
+
       return;
     }
     var deviceToken = fcmPushService.deviceToken;
@@ -161,64 +151,76 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
 
     bool success;
 
-    _logger.finest(() => "updateSubscriptionPreferences "
-        "deviceToken $deviceToken permissionGranted $permissionGranted");
+    _logger.finest(() => 'updateSubscriptionPreferences '
+        'deviceToken $deviceToken permissionGranted $permissionGranted');
     if (deviceToken != null && permissionGranted) {
-      PleromaPushSubscription subscription;
-      try {
-        subscription = await pleromaPushService.subscribe(
-          endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
-              account: currentInstance.acct,
-              baseServerUrl: currentInstance.url,
-              fcmDeviceToken: deviceToken),
-          data: PleromaPushSubscribeData(
-            alerts: PleromaPushSettingsDataAlerts(
-              favourite: newSettings.favourite,
-              follow: newSettings.follow,
-              mention: newSettings.mention,
-              reblog: newSettings.reblog,
-              poll: newSettings.poll,
-              pleromaChatMention: newSettings.pleromaChatMention,
-              pleromaEmojiReaction: newSettings.pleromaEmojiReaction,
-            ),
-          ),
-        );
-
-        success = subscription != null;
-      } catch (error, stackTrace) {
-        success = false;
-        _logger.warning(
-            () => "failed to update subscription ", error, stackTrace);
-      }
-
-      if (success) {
-        await instanceLocalPreferencesBloc.setValue(
-          PushSettings(
-            favourite: subscription.alerts.favourite ?? false,
-            follow: subscription.alerts.follow ?? false,
-            mention: subscription.alerts.mention ?? false,
-            reblog: subscription.alerts.reblog ?? false,
-            poll: subscription.alerts.poll ?? false,
-            pleromaChatMention: subscription.alerts.pleromaChatMention ?? false,
-            pleromaEmojiReaction:
-                subscription.alerts.pleromaEmojiReaction ?? false,
-          ),
-        );
-      }
+      success = await _trySubscribe(deviceToken, newSettings);
     } else {
       success = false;
     }
 
     if (success) {
-      _logger.finest(() => "updateSubscriptionPreferences \n"
-          "\t newPreferences = $newSettings"
-          "\t deviceToken = $deviceToken"
-          "\t success = $success");
+      _logger.finest(() => 'updateSubscriptionPreferences \n'
+          '\t newPreferences = $newSettings'
+          '\t deviceToken = $deviceToken'
+          '\t success = $success');
     } else {
-      _logger.severe(() => "updateSubscriptionPreferences \n"
-          "\t newPreferences = $newSettings"
-          "\t deviceToken = $deviceToken"
-          "\t success = $success");
+      _logger.severe(() => 'updateSubscriptionPreferences \n'
+          '\t newPreferences = $newSettings'
+          '\t deviceToken = $deviceToken'
+          '\t success = $success');
+    }
+
+    return success;
+  }
+
+  Future<bool> _trySubscribe(
+    String deviceToken,
+    PushSettings? newSettings,
+  ) async {
+    bool success;
+    PleromaApiPushSubscription? subscription;
+    try {
+      subscription = await pleromaPushService.subscribe(
+        endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
+          account: currentInstance.acct,
+          baseServerUrl: currentInstance.uri,
+          fcmDeviceToken: deviceToken,
+        ),
+        data: PleromaApiPushSubscribeData(
+          alerts: PleromaApiPushSubscribeRequestDataAlerts(
+            favourite: newSettings!.favourite,
+            follow: newSettings.follow,
+            mention: newSettings.mention,
+            reblog: newSettings.reblog,
+            poll: newSettings.poll,
+            pleromaChatMention: newSettings.pleromaChatMention,
+            pleromaEmojiReaction: newSettings.pleromaEmojiReaction,
+          ),
+        ),
+      );
+      await instanceLocalPreferencesBloc.setValue(
+        PushSettings(
+          favourite: subscription.alerts?.favourite ?? false,
+          follow: subscription.alerts?.follow ?? false,
+          mention: subscription.alerts?.mention ?? false,
+          reblog: subscription.alerts?.reblog ?? false,
+          poll: subscription.alerts?.poll ?? false,
+          pleromaChatMention: subscription.alerts?.pleromaChatMention ?? false,
+          pleromaEmojiReaction:
+              subscription.alerts?.pleromaEmojiReaction ?? false,
+        ),
+      );
+
+      success = true;
+    } catch (error, stackTrace) {
+      // todo: we dont need try catch at this level
+      success = false;
+      _logger.warning(
+        () => 'failed to update subscription ',
+        error,
+        stackTrace,
+      );
     }
 
     return success;

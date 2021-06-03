@@ -3,29 +3,30 @@ import 'package:fedi/app/account/select/single/single_select_account_page.dart';
 import 'package:fedi/app/timeline/settings/only_from_account/timeline_settings_only_from_account_form_field_bloc.dart';
 import 'package:fedi/app/ui/form/fedi_form_single_choose_custom_field_row.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class TimelineSettingsOnlyFromAccountFormFieldRowWidget
     extends StatelessWidget {
-  final String description;
+  final String? description;
   final String descriptionOnDisabled;
 
   TimelineSettingsOnlyFromAccountFormFieldRowWidget({
-    @required this.description,
-    @required this.descriptionOnDisabled,
+    required this.description,
+    required this.descriptionOnDisabled,
   });
 
   @override
   Widget build(BuildContext context) {
     var fieldBloc = ITimelineSettingsOnlyFromAccountFormFieldBloc.of(context);
 
-    return StreamBuilder<IPleromaAccount>(
+    return StreamBuilder<IPleromaApiAccount?>(
       stream: fieldBloc.currentValueStream,
       initialData: fieldBloc.currentValue,
       builder: (context, snapshot) {
         var currentValue = snapshot.data;
-        return FediFormSingleChooseCustomFromListFieldRow<IPleromaAccount>(
+
+        return FediFormSingleChooseCustomFromListFieldRow<IPleromaApiAccount?>(
           isNullValuePossible: fieldBloc.isNullValuePossible,
           isEnabled: fieldBloc.isEnabled,
           error: fieldBloc.isHaveAtLeastOneError
@@ -41,7 +42,8 @@ class TimelineSettingsOnlyFromAccountFormFieldRowWidget
               context,
               accountSelectedCallback: (context, account) {
                 fieldBloc.changeCurrentValue(
-                    mapLocalAccountToRemoteAccount(account));
+                  account.toPleromaApiAccount(),
+                );
                 Navigator.of(context).pop();
               },
               excludeMyAccount: true,

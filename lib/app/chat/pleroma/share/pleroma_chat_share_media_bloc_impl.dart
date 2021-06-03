@@ -5,29 +5,33 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc_proxy_provider.dart';
+import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/share/media/share_media_bloc.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class PleromaChatShareMediaBloc extends PleromaChatShareBloc
     implements IPleromaChatShareBloc, IShareMediaBloc {
   @override
-  final IPleromaMediaAttachment mediaAttachment;
+  final IPleromaApiMediaAttachment mediaAttachment;
+
+  final IMediaAttachmentReuploadService mediaAttachmentReuploadService;
 
   PleromaChatShareMediaBloc({
-    @required this.mediaAttachment,
-    @required IPleromaChatRepository chatRepository,
-    @required IPleromaChatMessageRepository chatMessageRepository,
-    @required IPleromaChatService pleromaChatService,
-    @required IMyAccountBloc myAccountBloc,
-    @required IAccountRepository accountRepository,
-    @required IPleromaAccountService pleromaAccountService,
+    required this.mediaAttachment,
+    required this.mediaAttachmentReuploadService,
+    required IPleromaChatRepository chatRepository,
+    required IPleromaChatMessageRepository chatMessageRepository,
+    required IPleromaApiChatService pleromaChatService,
+    required IMyAccountBloc myAccountBloc,
+    required IAccountRepository accountRepository,
+    required IPleromaApiAccountService pleromaAccountService,
   }) : super(
           chatRepository: chatRepository,
           chatMessageRepository: chatMessageRepository,
@@ -38,16 +42,27 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
         );
 
   @override
-  PleromaChatMessageSendData createSendData() {
-    var messageSendData = PleromaChatMessageSendData(
-      content: "${mediaAttachment.url} ${message ?? ""}".trim(),
+  Future<PleromaApiChatMessageSendData>
+      createPleromaChatMessageSendData() async {
+    var reploadedMediaAttachment =
+        await mediaAttachmentReuploadService.reuploadMediaAttachment(
+      originalMediaAttachment: mediaAttachment,
     );
+
+    var messageSendData = PleromaApiChatMessageSendData(
+      content: '${message ?? ''}'.trim(),
+      idempotencyKey: null,
+      mediaId: reploadedMediaAttachment.id,
+    );
+
     return messageSendData;
   }
 
-  static Widget provideToContext(BuildContext context,
-      {@required IPleromaMediaAttachment mediaAttachment,
-      @required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required IPleromaApiMediaAttachment mediaAttachment,
+    required Widget child,
+  }) {
     return DisposableProvider<PleromaChatShareMediaBloc>(
       create: (context) => createFromContext(context, mediaAttachment),
       child: ProxyProvider<PleromaChatShareMediaBloc, IPleromaChatShareBloc>(
@@ -64,9 +79,15 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
   }
 
   static PleromaChatShareMediaBloc createFromContext(
-          BuildContext context, IPleromaMediaAttachment mediaAttachment) =>
+    BuildContext context,
+    IPleromaApiMediaAttachment mediaAttachment,
+  ) =>
       PleromaChatShareMediaBloc(
         mediaAttachment: mediaAttachment,
+        mediaAttachmentReuploadService: IMediaAttachmentReuploadService.of(
+          context,
+          listen: false,
+        ),
         chatRepository: IPleromaChatRepository.of(
           context,
           listen: false,
@@ -75,12 +96,12 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        pleromaChatService: IPleromaChatService.of(
+        pleromaChatService: IPleromaApiChatService.of(
           context,
           listen: false,
         ),
         accountRepository: IAccountRepository.of(context, listen: false),
-        pleromaAccountService: IPleromaAccountService.of(
+        pleromaAccountService: IPleromaApiAccountService.of(
           context,
           listen: false,
         ),
@@ -89,11 +110,4 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
           listen: false,
         ),
       );
-
-  @override
-  bool get isPossibleToShare => shareSelectAccountBloc.isTargetAccountsNotEmpty;
-
-  @override
-  Stream<bool> get isPossibleToShareStream =>
-      shareSelectAccountBloc.isTargetAccountsNotEmptyStream;
 }

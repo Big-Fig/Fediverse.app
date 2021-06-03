@@ -6,7 +6,7 @@ import 'package:fedi/app/account/my/domain_block/list/network_only/my_account_do
 import 'package:fedi/app/account/my/domain_block/list/pagination/my_account_domain_block_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/account/my/domain_block/list/pagination/my_account_domain_block_pagination_list_widget.dart';
 import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
-import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
@@ -55,11 +55,11 @@ class MyAccountDomainBlockListPage extends StatelessWidget {
 }
 
 class _MyAccountDomainBlockListPageBody extends StatelessWidget {
-  final Widget customEmptyWidget;
-  final Widget customLoadingWidget;
+  final Widget? customEmptyWidget;
+  final Widget? customLoadingWidget;
 
   const _MyAccountDomainBlockListPageBody({
-    Key key,
+    Key? key,
     this.customEmptyWidget,
     this.customLoadingWidget,
   }) : super(key: key);
@@ -70,7 +70,7 @@ class _MyAccountDomainBlockListPageBody extends StatelessWidget {
       child: MyAccountDomainBlockPaginationListWidget(
         customEmptyWidget: customEmptyWidget,
         customLoadingWidget: customLoadingWidget,
-        key: PageStorageKey("MyAccountDomainBlockListPage"),
+        key: PageStorageKey('MyAccountDomainBlockListPage'),
         domainBlockSelectedCallback: null,
         domainBlockActions: <Widget>[
           const _MyAccountDomainBlockListPageRemoveItemAction(),
@@ -82,7 +82,7 @@ class _MyAccountDomainBlockListPageBody extends StatelessWidget {
 
 class _MyAccountDomainBlockListPageAddButton extends StatelessWidget {
   const _MyAccountDomainBlockListPageAddButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -105,20 +105,20 @@ class _MyAccountDomainBlockListPageAddButton extends StatelessWidget {
 
 class _MyAccountDomainBlockListPageWarningWidget extends StatelessWidget {
   const _MyAccountDomainBlockListPageWarningWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FediNoteDescriptionWidget(
-      S.of(context).app_account_my_domainBlock_description,
+      S.of(context).app_account_domainBlock_description,
     );
   }
 }
 
 class _MyAccountDomainBlockListPageRemoveItemAction extends StatelessWidget {
   const _MyAccountDomainBlockListPageRemoveItemAction({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -131,6 +131,7 @@ class _MyAccountDomainBlockListPageRemoveItemAction extends StatelessWidget {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
     var blocking = true;
+
     return PleromaAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () async {
         var domain = Provider.of<DomainBlock>(context, listen: false);
@@ -138,7 +139,7 @@ class _MyAccountDomainBlockListPageRemoveItemAction extends StatelessWidget {
           domain: domain.domain,
         );
         blocking = false;
-        paginationListBloc.refreshWithController();
+        await paginationListBloc.refreshWithController();
       },
       builder: (context, onPressed) => FediTransparentTextButtonWithBorder(
         blocking
@@ -167,7 +168,8 @@ MaterialPageRoute createMyAccountDomainBlockListPage() {
       child: DisposableProvider<IMyAccountDomainBlockNetworkOnlyPaginationBloc>(
         create: (context) =>
             MyAccountDomainBlockNetworkOnlyPaginationBloc.createFromContext(
-                context),
+          context,
+        ),
         child: ProxyProvider<IMyAccountDomainBlockNetworkOnlyPaginationBloc,
             INetworkOnlyPleromaPaginationBloc<DomainBlock>>(
           update: (context, value, previous) => value,
@@ -180,6 +182,7 @@ MaterialPageRoute createMyAccountDomainBlockListPage() {
                 PaginationPage<DomainBlock>, DomainBlock>(
               child: MyAccountDomainBlockPaginationListBloc.provideToContext(
                 context,
+                loadFromCacheDuringInit: false,
                 child: MyAccountDomainBlockListPage(),
               ),
             ),

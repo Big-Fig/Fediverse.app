@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void showEditGlobalOrInstanceMediaSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
@@ -23,8 +23,8 @@ void showEditGlobalOrInstanceMediaSettingsDialog({
       shrinkWrap: true,
     ),
     childContextBuilder: ({
-      @required BuildContext context,
-      @required Widget child,
+      required BuildContext context,
+      required Widget child,
     }) =>
         DisposableProxyProvider<GlobalOrInstanceSettingsType,
             IEditMediaSettingsBloc>(
@@ -35,6 +35,7 @@ void showEditGlobalOrInstanceMediaSettingsDialog({
             var enabled =
                 globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
             var editMediaSettingsBloc = EditMediaSettingsBloc(
+              isGlobalForced: false,
               mediaSettingsBloc: IMediaSettingsBloc.of(
                 context,
                 listen: false,
@@ -47,10 +48,11 @@ void showEditGlobalOrInstanceMediaSettingsDialog({
               streamSubscription:
               isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
                     (isUseGlobalSettings) {
-                  editMediaSettingsBloc.changeEnabled(!isUseGlobalSettings);
+                  editMediaSettingsBloc.changeEnabled(!isUseGlobalSettings!);
                 },
               ),
             );
+
             return editMediaSettingsBloc;
           },
           child: ProxyProvider<IEditMediaSettingsBloc,

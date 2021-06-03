@@ -13,12 +13,13 @@ class CustomListListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var customListBloc = ICustomListBloc.of(context);
+
     return InkWell(
       onTap: () {
         goToCustomListPage(
           context: context,
-          customList: customListBloc.customList,
-          onChanged: (ICustomList customList) {
+          customList: customListBloc.customList!,
+          onChanged: (ICustomList? customList) {
             _refresh(context);
           },
           onDeleted: () {
@@ -48,17 +49,19 @@ class CustomListListItemWidget extends StatelessWidget {
 
 class _CustomListListItemTitleWidget extends StatelessWidget {
   const _CustomListListItemTitleWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var customListBloc = ICustomListBloc.of(context);
-    return StreamBuilder<String>(
+
+    return StreamBuilder<String?>(
       stream: customListBloc.titleStream,
       initialData: customListBloc.title,
       builder: (context, snapshot) {
-        var title = snapshot.data;
+        var title = snapshot.data!;
+
         return Text(
           title,
           textAlign: TextAlign.left,

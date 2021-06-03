@@ -4,8 +4,8 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_widget.dart';
-import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc.dart';
+import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preference_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -14,7 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void showEditGlobalToastSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   showEditGlobalSettingsDialog(
     context: context,
@@ -27,12 +27,13 @@ DisposableProvider<IToastSettingsBloc> _buildBody() {
   return DisposableProvider<IToastSettingsBloc>(
     create: (context) => ToastSettingsBloc(
       instanceLocalPreferencesBloc:
-          IInstanceToastSettingsLocalPreferencesBloc.of(context, listen: false),
+          IInstanceToastSettingsLocalPreferenceBloc.of(context, listen: false),
       globalLocalPreferencesBloc:
-          IGlobalToastSettingsLocalPreferencesBloc.of(context, listen: false),
+          IGlobalToastSettingsLocalPreferenceBloc.of(context, listen: false),
     ),
     child: DisposableProxyProvider<IToastSettingsBloc, IEditToastSettingsBloc>(
       update: (context, value, previous) => EditToastSettingsBloc(
+        isGlobalForced: true,
         toastSettingsBloc: value,
         globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
         isEnabled: true,

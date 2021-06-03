@@ -5,31 +5,40 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StatusActionCounterWidget extends StatelessWidget {
-  final OnClickUiCallback onClick;
+  final OnClickUiCallback? onClick;
 
   const StatusActionCounterWidget({
-    @required this.onClick,
+    required this.onClick,
   });
 
   @override
   Widget build(BuildContext context) {
     var value = Provider.of<int>(context);
+
     return InkWell(
-        onTap: () {
-          onClick(context);
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(
-            right: 4.0,
-          ),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minWidth: 10),
-            child: Text(
-              value == 0 ? "" : value.toString(),
-              style: IFediUiTextTheme.of(context).smallShortDarkGrey,
-            ),
+      onTap: () {
+        if (onClick != null) {
+          onClick!(context);
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(
+          // todo: refactor
+          // ignore: no-magic-number
+          right: 4.0,
+        ),
+        child: ConstrainedBox(
+          // todo: refactor
+          // ignore: no-magic-number
+          constraints: BoxConstraints(minWidth: 10),
+          child: Text(
+            value == 0 ? '' : value.toString(),
+            style: onClick != null
+                ? IFediUiTextTheme.of(context).smallShortDarkGrey
+                : IFediUiTextTheme.of(context).smallShortLightGrey,
           ),
         ),
-      );
+      ),
+    );
   }
 }

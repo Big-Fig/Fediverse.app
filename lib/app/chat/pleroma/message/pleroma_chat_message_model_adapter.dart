@@ -1,46 +1,81 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
+import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 
-DbChatMessagePopulatedWrapper mapRemoteChatMessageToLocalPleromaChatMessage(
-    pleroma_lib.IPleromaChatMessage remoteChatMessage, DbAccount dbAccount) {
-  return DbChatMessagePopulatedWrapper(DbChatMessagePopulated(
-    dbChatMessage:
-        mapRemoteChatMessageToDbPleromaChatMessage(remoteChatMessage),
-    dbAccount: dbAccount,
-  ));
-}
-
-DbChatMessage mapRemoteChatMessageToDbPleromaChatMessage(
-    pleroma_lib.IPleromaChatMessage remoteChatMessage) {
-  return DbChatMessage(
-    id: null,
-    remoteId: remoteChatMessage.id,
-    createdAt: remoteChatMessage.createdAt,
-    content: remoteChatMessage.content,
-    emojis: remoteChatMessage.emojis,
-    card: remoteChatMessage.card,
-    mediaAttachment: remoteChatMessage.mediaAttachment,
-    accountRemoteId: remoteChatMessage.accountId,
-    chatRemoteId: remoteChatMessage.chatId,
-  );
-}
-
-pleroma_lib.PleromaChatMessage mapLocalPleromaChatMessageToRemoteChatMessage(
-    IPleromaChatMessage localChatMessage) {
-  if (localChatMessage == null) {
-    return null;
+extension IPleromaApiChatMessageExtension on IPleromaApiChatMessage {
+  DbPleromaChatMessagePopulatedWrapper toDbChatMessagePopulatedWrapper({
+    required DbAccount? dbAccount,
+  }) {
+    return DbPleromaChatMessagePopulatedWrapper(
+      dbChatMessagePopulated: toDbChatMessagePopulated(
+        dbAccount: dbAccount,
+      ),
+    );
   }
-  return pleroma_lib.PleromaChatMessage(
-    id: localChatMessage.remoteId,
-    createdAt: localChatMessage.createdAt,
-    content: localChatMessage.content,
-    emojis: localChatMessage.emojis,
-    mediaAttachment: localChatMessage.mediaAttachments?.isNotEmpty == true
-        ? localChatMessage.mediaAttachments?.first
-        : null,
-    accountId: localChatMessage.account.remoteId,
-    chatId: localChatMessage.chatRemoteId,
-    card: localChatMessage.card,
-  );
+
+  DbChatMessagePopulated toDbChatMessagePopulated({
+    required DbAccount? dbAccount,
+  }) {
+    return DbChatMessagePopulated(
+      dbChatMessage: toDbChatMessage(),
+      dbAccount: dbAccount,
+    );
+  }
+
+  DbChatMessage toDbChatMessage() {
+    return DbChatMessage(
+      id: null,
+      remoteId: id,
+      createdAt: createdAt,
+      content: content,
+      emojis: emojis?.toPleromaApiEmojis(),
+      card: card?.toPleromaApiCard(),
+      mediaAttachment: mediaAttachment?.toPleromaApiMediaAttachment(),
+      accountRemoteId: accountId,
+      chatRemoteId: chatId,
+      hiddenLocallyOnDevice: false,
+      deleted: false,
+      pendingState: null,
+      wasSentWithIdempotencyKey: null,
+      oldPendingRemoteId: null,
+    );
+  }
+
+  PleromaApiChatMessage toPleromaApiChatMessage() {
+    if (this is PleromaApiChatMessage) {
+      return this as PleromaApiChatMessage;
+    } else {
+      return PleromaApiChatMessage(
+        id: id,
+        createdAt: createdAt,
+        content: content,
+        emojis: emojis?.toPleromaApiEmojis(),
+        mediaAttachment:
+            mediaAttachment?.toPleromaApiMediaAttachment(),
+        accountId: accountId,
+        chatId: chatId,
+        card: card?.toPleromaApiCard(),
+      );
+    }
+  }
+}
+
+extension IPleromaChatMessagePleromaExtension on IPleromaChatMessage {
+  PleromaApiChatMessage toPleromaApiChatMessage() {
+    return PleromaApiChatMessage(
+      id: remoteId,
+      createdAt: createdAt,
+      content: content,
+      emojis: emojis?.toPleromaApiEmojis(),
+      mediaAttachment:
+          mediaAttachments?.singleOrNull?.toPleromaApiMediaAttachment(),
+      accountId: accountRemoteId,
+      chatId: chatRemoteId,
+      card: card?.toPleromaApiCard(),
+    );
+  }
 }

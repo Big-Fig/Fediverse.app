@@ -1,35 +1,37 @@
+import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
-import 'package:fedi/pleroma/application/pleroma_application_model.dart';
-import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/pleroma/api/account/public/pleroma_api_account_public_model.dart';
+import 'package:fedi/pleroma/api/application/pleroma_api_application_model.dart';
+import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_model.dart';
 
 abstract class IAuthHostBloc extends IDisposable {
   bool get isHostApplicationRegistered;
 
-  PleromaClientApplication get hostApplication;
+  PleromaApiClientApplication? get hostApplication;
 
-  Stream<PleromaClientApplication> get hostApplicationStream;
+  Stream<PleromaApiClientApplication?> get hostApplicationStream;
 
   bool get isHostAccessTokenExist;
 
-  PleromaOAuthToken get hostAccessToken;
+  PleromaApiOAuthToken? get hostAccessToken;
 
-  Stream<PleromaOAuthToken> get hostAccessTokenStream;
+  Stream<PleromaApiOAuthToken?> get hostAccessTokenStream;
 
   Future<AuthInstance> loginWithAuthCode(String authCode);
 
-  Future<bool> registerApplication();
+  Future registerApplication();
 
   Future<bool> retrieveAppAccessToken();
 
-  Future<AuthInstance> launchLoginToAccount();
+  Future<AuthInstance?> launchLoginToAccount();
 
-  Future<AuthInstance> registerAccount(
-      {@required IPleromaAccountRegisterRequest request});
+  Future<AuthHostRegistrationResult> registerAccount({
+    required IPleromaApiAccountPublicRegisterRequest request,
+  });
 
   Future checkApplicationRegistration();
+
   Future checkIsRegistrationsEnabled();
 
   Future logout();

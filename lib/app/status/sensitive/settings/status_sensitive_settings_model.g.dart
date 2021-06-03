@@ -20,7 +20,7 @@ class StatusSensitiveSettingsAdapter
     return StatusSensitiveSettings(
       isAlwaysShowSpoiler: fields[0] as bool,
       isAlwaysShowNsfw: fields[1] as bool,
-      nsfwDisplayDelayDurationMicrosecondsTotal: fields[2] as int,
+      nsfwDisplayDelayDurationMicrosecondsTotal: fields[2] as int?,
     );
   }
 
@@ -57,7 +57,7 @@ StatusSensitiveSettings _$StatusSensitiveSettingsFromJson(
     isAlwaysShowSpoiler: json['is_always_show_spoiler'] as bool,
     isAlwaysShowNsfw: json['is_always_show_nsfw'] as bool,
     nsfwDisplayDelayDurationMicrosecondsTotal:
-        json['nsfw_display_delay_duration_seconds_total'] as int,
+        json['nsfw_display_delay_duration_seconds_total'] as int?,
   );
 }
 

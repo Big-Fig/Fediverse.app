@@ -1,6 +1,7 @@
 import 'package:fedi/app/search/recent/recent_search_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
@@ -14,37 +15,40 @@ class RecentSearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var recentSearchBloc = IRecentSearchBloc.of(context);
-    return StreamBuilder<RecentSearchList>(
-        stream: recentSearchBloc.recentSearchListStream,
-        initialData: recentSearchBloc.recentSearchList,
-        builder: (context, snapshot) {
-          var recentSearchList = snapshot.data;
 
-          var recentItems = recentSearchList?.recentItems
-              ?.where((item) => item?.isNotEmpty == true)
-              ?.toList();
+    return StreamBuilder<RecentSearchList?>(
+      stream: recentSearchBloc.recentSearchListStream,
+      initialData: recentSearchBloc.recentSearchList,
+      builder: (context, snapshot) {
+        var recentSearchList = snapshot.data;
 
-          var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
-          return Provider<List<String>>.value(
-            value: recentItems,
-            child: Padding(
-              padding: FediPadding.allBigPadding,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const _RecentSearchHeaderWidget(),
-                  const FediSmallVerticalSpacer(),
-                  const FediUltraLightGreyDivider(),
-                  Expanded(
-                    child: recentItemsIsNotEmpty
-                        ? _RecentSearchListWidget()
-                        : const _RecentSearchEmptyWidget(),
-                  ),
-                ],
-              ),
+        var recentItems = recentSearchList?.recentItems
+            .where((item) => item.isNotEmpty)
+            .toList();
+
+        var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
+
+        return Provider<List<String>>.value(
+          value: recentItems ?? [],
+          child: Padding(
+            padding: FediPadding.allBigPadding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _RecentSearchHeaderWidget(),
+                const FediSmallVerticalSpacer(),
+                const FediUltraLightGreyDivider(),
+                Expanded(
+                  child: recentItemsIsNotEmpty
+                      ? _RecentSearchListWidget()
+                      : const _RecentSearchEmptyWidget(),
+                ),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   const RecentSearchWidget();
@@ -52,14 +56,15 @@ class RecentSearchWidget extends StatelessWidget {
 
 class _RecentSearchHeaderWidget extends StatelessWidget {
   const _RecentSearchHeaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var recentItems = Provider.of<List<String>>(context);
 
-    var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
+    var recentItemsIsNotEmpty = recentItems.isNotEmpty;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -75,7 +80,7 @@ class _RecentSearchHeaderWidget extends StatelessWidget {
 
 class _RecentSearchClearButtonWidget extends StatelessWidget {
   const _RecentSearchClearButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -98,7 +103,7 @@ class _RecentSearchClearButtonWidget extends StatelessWidget {
 
 class _RecentSearchListWidget extends StatelessWidget {
   const _RecentSearchListWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -132,15 +137,14 @@ class _RecentSearchListWidget extends StatelessWidget {
 
 class _RecentSearchEmptyWidget extends StatelessWidget {
   const _RecentSearchEmptyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
-        S.of(context).app_search_recent_empty,
-        style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
+      child: FediEmptyWidget(
+        title: S.of(context).app_search_recent_empty,
       ),
     );
   }

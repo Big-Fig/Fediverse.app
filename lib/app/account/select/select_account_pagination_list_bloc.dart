@@ -13,9 +13,8 @@ class SelectAccountPaginationListBloc extends AccountPaginationListBloc {
   final ISearchInputBloc searchInputBloc;
 
   SelectAccountPaginationListBloc({
-    @required this.searchInputBloc,
-    @required
-        IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
+    required this.searchInputBloc,
+    required IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
     addDisposable(
       streamSubscription: searchInputBloc.confirmedSearchTermStream.listen(
@@ -28,16 +27,21 @@ class SelectAccountPaginationListBloc extends AccountPaginationListBloc {
   }
 
   static SelectAccountPaginationListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       SelectAccountPaginationListBloc(
-          paginationBloc:
-              Provider.of<IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
-                  context,
-                  listen: false),
-          searchInputBloc: ISearchInputBloc.of(context, listen: false));
+        paginationBloc:
+            Provider.of<IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
+          context,
+          listen: false,
+        ),
+        searchInputBloc: ISearchInputBloc.of(context, listen: false),
+      );
 
-  static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) {
     return DisposableProvider<IAccountPaginationListBloc>(
       create: (context) =>
           SelectAccountPaginationListBloc.createFromContext(context),

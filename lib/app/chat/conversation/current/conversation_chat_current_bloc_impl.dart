@@ -3,30 +3,42 @@ import 'package:fedi/app/chat/conversation/current/conversation_chat_current_blo
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:rxdart/rxdart.dart';
 
+// todo: refactor with similar pleroma chat class
 class ConversationChatCurrentBloc extends DisposableOwner
     implements IConversationChatCurrentBloc {
-  BehaviorSubject<IConversationChat> currentChatSubject = BehaviorSubject();
+  final List<IConversationChat?> openedChats = [];
+
+  BehaviorSubject<IConversationChat?> currentChatSubject = BehaviorSubject();
 
   ConversationChatCurrentBloc() {
     addDisposable(subject: currentChatSubject);
   }
 
   @override
-  IConversationChat get currentChat => currentChatSubject.value;
+  IConversationChat? get currentChat => currentChatSubject.value;
 
   @override
-  Stream<IConversationChat> get currentChatStream => currentChatSubject.stream;
+  Stream<IConversationChat?> get currentChatStream => currentChatSubject.stream;
 
   @override
-  void onChatOpened(IConversationChat chat) {
-    assert(currentChat == null);
+  void onChatOpened(IConversationChat? chat) {
     currentChatSubject.add(chat);
+    openedChats.add(chat);
   }
 
   @override
-  void onChatClosed(IConversationChat chat) {
-    assert(currentChat != null);
-    assert(currentChat.remoteId == chat.remoteId);
-    currentChatSubject.add(null);
+  void onChatClosed(IConversationChat? chat) {
+    var indexToRemove = openedChats.lastIndexWhere(
+      (currentChat) => currentChat!.remoteId == chat!.remoteId,
+    );
+
+    if (indexToRemove >= 0) {
+      openedChats.removeAt(indexToRemove);
+    }
+    if (openedChats.isNotEmpty) {
+      currentChatSubject.add(openedChats.last);
+    } else {
+      currentChatSubject.add(null);
+    }
   }
 }

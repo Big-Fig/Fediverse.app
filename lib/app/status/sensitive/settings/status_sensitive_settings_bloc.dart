@@ -5,26 +5,27 @@ import 'package:provider/provider.dart';
 
 abstract class IStatusSensitiveSettingsBloc
     implements IGlobalOrInstanceSettingsBloc<StatusSensitiveSettings> {
-  static IStatusSensitiveSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IStatusSensitiveSettingsBloc>(context,
-          listen: listen);
+  static IStatusSensitiveSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IStatusSensitiveSettingsBloc>(context, listen: listen);
 
   bool get isAlwaysShowSpoiler;
 
   Stream<bool> get isAlwaysShowSpoilerStream;
 
-  void changeIsAlwaysShowSpoiler(bool value);
+  Future changeIsAlwaysShowSpoiler(bool value);
 
   bool get isAlwaysShowNsfw;
 
   Stream<bool> get isAlwaysShowNsfwStream;
 
-  void changeIsAlwaysShowNsfw(bool value);
+  Future changeIsAlwaysShowNsfw(bool value);
 
-  Duration get nsfwDisplayDelayDuration;
+  Duration? get nsfwDisplayDelayDuration;
 
-  Stream<Duration> get nsfwDisplayDelayDurationStream;
+  Stream<Duration?> get nsfwDisplayDelayDurationStream;
 
-  void changeNsfwDisplayDelayDuration(Duration value);
+  Future changeNsfwDisplayDelayDuration(Duration? value);
 }

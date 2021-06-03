@@ -13,13 +13,15 @@ class ScheduledStatusPaginationListTimelineWidget
     extends ScheduledStatusPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
   final VoidCallback successCallback;
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   ScheduledStatusPaginationListTimelineWidget({
-    @required Key key,
-    @required this.needWatchLocalRepositoryForUpdates,
-    @required this.successCallback,
-    Widget customEmptyWidget,
-    Widget customLoadingWidget,
+    required Key key,
+    required this.needWatchLocalRepositoryForUpdates,
+    required this.successCallback,
+    Widget? customEmptyWidget,
+    Widget? customLoadingWidget,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
           key: key,
           customEmptyWidget: customEmptyWidget,
@@ -27,30 +29,36 @@ class ScheduledStatusPaginationListTimelineWidget
         );
 
   @override
-  ScrollView buildItemsCollectionView(
-          {@required BuildContext context,
-          @required List<IScheduledStatus> items,
-          @required Widget header,
-          @required Widget footer}) =>
+  ScrollView buildItemsCollectionView({
+    required BuildContext context,
+    required List<IScheduledStatus> items,
+    required Widget? header,
+    required Widget? footer,
+  }) =>
       PaginationListWidget.buildItemsListView(
-          context: context,
-          items: items,
-          header: header,
-          footer: footer,
-          itemBuilder: (context, index) => Provider<IScheduledStatus>.value(
-                value: items[index],
-                child: DisposableProxyProvider<IScheduledStatus,
-                        IScheduledStatusBloc>(
-                    update: (context, scheduledStatus, oldValue) =>
-                        ScheduledStatusBloc.createFromContext(
-                            context, scheduledStatus,
-                            isNeedWatchLocalRepositoryForUpdates:
-                                needWatchLocalRepositoryForUpdates),
-                    child: FediListTile(
-                      isFirstInList: index == 0,
-                      child: ScheduledStatusListItemWidget(
-                        successCallback: successCallback,
-                      ),
-                    )),
-              ));
+        context: context,
+        keyboardDismissBehavior: keyboardDismissBehavior,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) => Provider<IScheduledStatus>.value(
+          value: items[index],
+          child:
+              DisposableProxyProvider<IScheduledStatus, IScheduledStatusBloc>(
+            update: (context, scheduledStatus, oldValue) =>
+                ScheduledStatusBloc.createFromContext(
+              context,
+              scheduledStatus,
+              isNeedWatchLocalRepositoryForUpdates:
+                  needWatchLocalRepositoryForUpdates,
+            ),
+            child: FediListTile(
+              isFirstInList: index == 0,
+              child: ScheduledStatusListItemWidget(
+                successCallback: successCallback,
+              ),
+            ),
+          ),
+        ),
+      );
 }

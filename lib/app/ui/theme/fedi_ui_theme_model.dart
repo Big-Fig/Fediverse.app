@@ -2,9 +2,9 @@ import 'package:fedi/ui/theme/ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-
+// ignore_for_file: no-magic-number
 ThemeData createBaseFediThemeData(Color primaryColor) => ThemeData(
-      fontFamily: "Rubik",
+      fontFamily: 'Rubik',
       primarySwatch: MaterialColor(primaryColor.value, {
         50: primaryColor.withOpacity(0.1),
         100: primaryColor.withOpacity(0.2),
@@ -420,6 +420,8 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
 
   TextStyle get subHeaderTallBoldMediumGrey;
 
+  TextStyle get headerDarkGrey;
+
   TextStyle get headerBoldWhite;
 
   TextStyle get dialogTitleBoldDarkGrey;
@@ -460,7 +462,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   Color get _errorColor => colorTheme.error;
 
   const FediUiTextTheme({
-    @required this.colorTheme,
+    required this.colorTheme,
   });
 
   @override
@@ -1997,6 +1999,13 @@ class FediUiTextTheme implements IFediUiTextTheme {
         fontSize: _subHeaderSize,
         height: _tallHeight,
         fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get headerDarkGrey => TextStyle(
+        fontSize: _headerSize,
+        fontWeight: _normalWeight,
+        color: _darkGreyColor,
       );
 
   @override

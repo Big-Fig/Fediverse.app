@@ -28,7 +28,7 @@ class UploadMediaAttachmentListNonMediaItemWidget extends StatefulWidget {
 
 class _UploadMediaAttachmentListNonMediaItemWidgetState
     extends State<UploadMediaAttachmentListNonMediaItemWidget> {
-  StreamSubscription streamSubscription;
+  StreamSubscription? streamSubscription;
 
   @override
   void didChangeDependencies() {
@@ -58,16 +58,17 @@ class _UploadMediaAttachmentListNonMediaItemWidgetState
       stream: mediaItemBloc.uploadStateStream,
       builder: (context, snapshot) {
         var uploadState = snapshot.data;
+
         return FutureBuilder(
           future: mediaItemBloc.calculateFilePath(),
-          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
             var filePath = snapshot.data;
             var isUploaded =
                 uploadState?.type == UploadMediaAttachmentStateType.uploaded;
 
             if (isUploaded) {
               return Provider<String>.value(
-                value: filePath,
+                value: filePath ?? '',
                 child: DisposableProxyProvider<String, IMediaFilePathBloc>(
                   update: (context, filePath, _) =>
                       MediaFilePathBloc(path: filePath),
@@ -94,8 +95,10 @@ class _UploadMediaAttachmentListNonMediaItemWidgetState
     );
   }
 
-  Widget buildActionsWidget(IUploadMediaAttachmentBloc mediaItemBloc,
-      IUploadMediaAttachmentsCollectionBloc mediaAttachmentsCollectionBloc) {
+  Widget buildActionsWidget(
+    IUploadMediaAttachmentBloc mediaItemBloc,
+    IUploadMediaAttachmentsCollectionBloc mediaAttachmentsCollectionBloc,
+  ) {
     return _UploadMediaAttachmentListNonMediaItemActionsWidget();
   }
 }
@@ -103,47 +106,46 @@ class _UploadMediaAttachmentListNonMediaItemWidgetState
 class _UploadMediaAttachmentListNonMediaItemActionsWidget
     extends StatelessWidget {
   const _UploadMediaAttachmentListNonMediaItemActionsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var mediaItemBloc = IUploadMediaAttachmentBloc.of(context);
-    return StreamBuilder<UploadMediaAttachmentState>(
-        stream: mediaItemBloc.uploadStateStream,
-        initialData: mediaItemBloc.uploadState,
-        builder: (context, snapshot) {
-          var uploadState = snapshot.data;
 
-          switch (
-              uploadState.type ?? UploadMediaAttachmentStateType.uploading) {
-            case UploadMediaAttachmentStateType.uploading:
-              return const _UploadMediaAttachmentListNonMediaItemLoadingWidget();
-              break;
-            case UploadMediaAttachmentStateType.notUploaded:
-            case UploadMediaAttachmentStateType.uploaded:
-              return const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget();
-            case UploadMediaAttachmentStateType.failed:
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const _UploadMediaAttachmentListNonMediaItemErrorWidget(),
-                  const FediSmallHorizontalSpacer(),
-                  const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget(),
-                ],
-              );
-            default:
-              throw "Invalid state uploadState ${uploadState}";
-              break;
-          }
-        });
+    return StreamBuilder<UploadMediaAttachmentState?>(
+      stream: mediaItemBloc.uploadStateStream,
+      initialData: mediaItemBloc.uploadState,
+      builder: (context, snapshot) {
+        var uploadState = snapshot.data;
+
+        switch (uploadState?.type ?? UploadMediaAttachmentStateType.uploading) {
+          case UploadMediaAttachmentStateType.uploading:
+            return const _UploadMediaAttachmentListNonMediaItemLoadingWidget();
+          case UploadMediaAttachmentStateType.notUploaded:
+          case UploadMediaAttachmentStateType.uploaded:
+            return const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget();
+          case UploadMediaAttachmentStateType.failed:
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const _UploadMediaAttachmentListNonMediaItemErrorWidget(),
+                const FediSmallHorizontalSpacer(),
+                const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget(),
+              ],
+            );
+          default:
+            throw 'Invalid state uploadState $uploadState';
+        }
+      },
+    );
   }
 }
 
 class _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget
     extends StatelessWidget {
   const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -159,19 +161,25 @@ class _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget
 class _UploadMediaAttachmentListNonMediaItemLoadingWidget
     extends StatelessWidget {
   const _UploadMediaAttachmentListNonMediaItemLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
+      // todo: refactor
+      // ignore: no-magic-number
       borderRadius: BorderRadius.circular(24.0),
       child: Container(
+        // ignore: no-magic-number
         width: 24,
+        // ignore: no-magic-number
         height: 24,
+        // ignore: no-magic-number
         color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.8),
         child: FediCircularProgressIndicator(
           color: IFediUiColorTheme.of(context).white,
+          // ignore: no-magic-number
           size: 20.0,
         ),
       ),
@@ -182,7 +190,7 @@ class _UploadMediaAttachmentListNonMediaItemLoadingWidget
 class _UploadMediaAttachmentListNonMediaItemErrorWidget
     extends StatelessWidget {
   const _UploadMediaAttachmentListNonMediaItemErrorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -194,14 +202,20 @@ class _UploadMediaAttachmentListNonMediaItemErrorWidget
         mediaItemBloc.startUpload();
       },
       child: ClipRRect(
+        // todo: refactor
+        // ignore: no-magic-number
         borderRadius: BorderRadius.circular(24.0),
         child: Container(
+          // ignore: no-magic-number
           width: 24,
+          // ignore: no-magic-number
           height: 24,
+          // ignore: no-magic-number
           color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
           child: Icon(
             FediIcons.failed,
             color: IFediUiColorTheme.of(context).white,
+            // ignore: no-magic-number
             size: 14.0,
           ),
         ),

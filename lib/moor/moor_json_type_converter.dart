@@ -5,25 +5,28 @@ import 'package:moor/moor.dart';
 abstract class JsonDatabaseConverter<T> extends TypeConverter<T, String> {
   const JsonDatabaseConverter();
 
-  T fromJson(Map<String, dynamic> json);
+  T fromJson(Map<String, dynamic>? json);
 
   Map<String, dynamic> toJson(T obj);
 
   @override
-  T mapToDart(String fromDb) {
+  T? mapToDart(String? fromDb) {
     if (fromDb == null) {
       return null;
     }
-    return fromJson(json.decode(fromDb) as Map<String, dynamic>);
+    // todo: check
+
+    return fromJson(json.decode(fromDb) as Map<String, dynamic>?);
   }
 
   @override
-  String mapToSql(T value) {
+  String? mapToSql(T? value) {
     if (value == null) {
       return null;
     }
 
-    Map<String, dynamic> jsonMap = toJson(value);
+    var jsonMap = toJson(value);
+
     return json.encode(jsonMap);
   }
 }
@@ -37,18 +40,19 @@ abstract class JsonListDatabaseConverter<T>
   Map<String, dynamic> toJson(T obj);
 
   @override
-  List<T> mapToDart(String fromDb) {
+  List<T>? mapToDart(String? fromDb) {
     if (fromDb == null) {
       return null;
     }
     var list = json.decode(fromDb) as List;
+
     return list.map((jsonObject) => fromJson(jsonObject)).toList();
   }
 
   @override
-  String mapToSql(List<T> list) {
+  String? mapToSql(List<T>? list) {
     if (list?.isNotEmpty == true) {
-      return json.encode(list.map((item) => toJson(item)).toList());
+      return json.encode(list!.map((item) => toJson(item)).toList());
     } else {
       return null;
     }
@@ -59,16 +63,18 @@ class StringListDatabaseConverter extends TypeConverter<List<String>, String> {
   const StringListDatabaseConverter();
 
   @override
-  List<String> mapToDart(String fromDb) {
+  List<String>? mapToDart(String? fromDb) {
     if (fromDb == null) {
       return null;
     }
     var list = json.decode(fromDb) as List;
+    // todo: rework
+
     return list.map((i) => i as String).toList();
   }
 
   @override
-  String mapToSql(List<String> list) {
+  String? mapToSql(List<String>? list) {
     if (list == null) {
       return null;
     }

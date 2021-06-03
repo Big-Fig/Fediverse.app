@@ -1,259 +1,126 @@
-import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
-import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
-import 'package:fedi/app/timeline/tab/timeline_tab_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
-import 'package:fedi/app/timeline/tab/timeline_tab_list_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
-import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
-import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
-import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-final _logger = Logger("timeline_tab_list_bloc_impl.dart");
+final _logger = Logger('timeline_tab_list_bloc_impl.dart');
 
 class TimelineTabListBloc extends AsyncInitLoadingBloc
     implements ITimelineTabListBloc {
-  BehaviorSubject<TimelineTabBlocsList> timelineTabBlocsListSubject =
-      BehaviorSubject();
+  @override
+  List<String> get timelineIds => timelineTabBlocs
+      .map((timelineTabBloc) => timelineTabBloc.timelineId)
+      .toList();
 
   @override
-  Stream<TimelineTabBlocsList> get timelineTabBlocsListStream =>
-      timelineTabBlocsListSubject.stream;
+  // ignore: avoid-late-keyword
+  late List<ITimelineTabBloc> timelineTabBlocs;
 
   @override
-  TimelineTabBlocsList get timelineTabBlocsList =>
-      timelineTabBlocsListSubject.value;
+  ITimelineTabBloc get homeTimelineTabBloc => timelineTabBlocs.firstWhere(
+        (timelineTabBloc) => timelineTabBloc.timeline.type == TimelineType.home,
+      );
+
+  // ignore: avoid-late-keyword
+  late BehaviorSubject<ITimelineTabBloc> selectedTimelineTabBlocSubject;
 
   @override
-  Stream<ITimelineTabBloc> get mainTimelineTabBlocStream =>
-      timelineTabBlocsListStream.map((timelineTabBlocsList) {
-        var mainTimelineTabBloc;
+  ITimelineTabBloc get selectedTimelineTabBloc =>
+      selectedTimelineTabBlocSubject.value!;
 
-        if (timelineTabBlocsList != null) {
-          mainTimelineTabBloc =
-              timelineTabBlocsList.timelineTabBlocs.firstWhere(
-            (timelineTabBloc) =>
-                timelineTabBloc.timeline.type == TimelineType.home,
-            orElse: () => null,
-          );
-        }
-        return mainTimelineTabBloc;
-      });
-
-  final ITimelinesHomeTabStorageLocalPreferencesBloc
-      timelinesHomeTabStorageLocalPreferences;
-  final IPleromaTimelineService pleromaTimelineService;
-  final IPleromaAccountService pleromaAccountService;
-  final IStatusRepository statusRepository;
-  final IMyAccountBloc myAccountBloc;
-  final IWebSocketsSettingsBloc webSocketsSettingsBloc;
-  final ICurrentAuthInstanceBloc currentInstanceBloc;
-  final IPleromaWebSocketsService pleromaWebSocketsService;
-  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
-  final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
-  final ILocalPreferencesService preferencesService;
-  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
-  final TickerProvider vsync;
-  VoidCallback tabControllerListener;
+  @override
+  Stream<ITimelineTabBloc> get selectedTimelineTabBlocStream =>
+      selectedTimelineTabBlocSubject.stream;
 
   TimelineTabListBloc({
-    @required this.preferencesService,
-    @required this.currentAuthInstanceBloc,
-    @required this.pleromaTimelineService,
-    @required this.pleromaAccountService,
-    @required this.statusRepository,
-    @required this.myAccountBloc,
-    @required this.webSocketsSettingsBloc,
-    @required this.currentInstanceBloc,
-    @required this.timelinesHomeTabStorageLocalPreferences,
-    @required this.pleromaWebSocketsService,
-    @required this.chatNewMessagesHandlerBloc,
-    @required this.webSocketsHandlerManagerBloc,
-    @required this.vsync,
+    required List<String> timelineIds,
+    required String? oldSelectedTimelineId,
+    required ITimelineTabBloc Function(
+      String timelineId,
+      WebSocketsListenType webSocketsListenType,
+    )
+        timelineTabBlocCreator,
   }) {
-    addDisposable(subject: timelineTabBlocsListSubject);
+    var selectedTimelineId = oldSelectedTimelineId ?? timelineIds.first;
 
-    addDisposable(streamSubscription:
-        timelinesHomeTabStorageLocalPreferences.stream.listen((_) {
-      updateTabBlocs();
-    }));
-
-    addDisposable(custom: () async {
-      await disposeTabControllerListener();
-    });
-  }
-
-  Future disposeTabControllerListener() async {
-    if (tabControllerListener != null &&
-        timelineTabBlocsList?.tabController != null) {
-      timelineTabBlocsList.tabController.removeListener(tabControllerListener);
-      tabControllerListener = null;
-    }
-
-    for (ITimelineTabBloc bloc
-        in timelineTabBlocsList?.timelineTabBlocs ?? []) {
-      await bloc.dispose();
-    }
-  }
-
-  @override
-  Future internalAsyncInit() async {
-    await updateTabBlocs();
-  }
-
-  bool updateTabBlocsInProgress = false;
-
-  Future updateTabBlocs() async {
-    _logger.finest(() => "updateTabBlocs "
-        "updateTabBlocsInProgress $updateTabBlocsInProgress");
-
-    if (updateTabBlocsInProgress) {
-      return;
-    }
-
-    updateTabBlocsInProgress = true;
-
-    var oldTimelineIds = timelineTabBlocsList?.timelineTabBlocs
-            ?.map((timelineTabBloc) => timelineTabBloc.timelineId)
-            ?.toList() ??
-        [];
-
-    var newTimelineIds =
-        timelinesHomeTabStorageLocalPreferences.value.timelineIds;
-
-    if (listEquals(oldTimelineIds, newTimelineIds)) {
-      return;
-    }
-
-    await disposeTabControllerListener();
-
-    var oldBlocs = timelineTabBlocsList?.timelineTabBlocs;
-    var oldTabController = timelineTabBlocsList?.tabController;
-
-    timelineTabBlocsListSubject.add(null);
-
-    var oldSelectedIndex = oldTabController?.index;
-
-    ITimelineTabBloc oldSelectedBloc;
-    if (oldBlocs != null && oldSelectedIndex != null) {
-      oldSelectedBloc = oldBlocs[oldSelectedIndex];
-    }
-
-    var newTabBlocs = <ITimelineTabBloc>[];
-    var selectedTimelineId = oldSelectedBloc?.timelineId ?? newTimelineIds.first;
-
-    for (var timelineId in newTimelineIds) {
-      var timelineTabBloc = TimelineTabBloc(
-        preferencesService: preferencesService,
-        timelineId: timelineId,
-        pleromaTimelineService: pleromaTimelineService,
-        statusRepository: statusRepository,
-        pleromaAccountService: pleromaAccountService,
-        webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
-        currentAuthInstanceBloc: currentAuthInstanceBloc,
-        myAccountBloc: myAccountBloc,
-        webSocketsListenType: selectedTimelineId == timelineId
+    timelineTabBlocs = [];
+    for (var timelineId in timelineIds) {
+      var timelineTabBloc = timelineTabBlocCreator(
+        timelineId,
+        selectedTimelineId == timelineId
             ? WebSocketsListenType.foreground
             : WebSocketsListenType.background,
       );
 
-      await timelineTabBloc.performAsyncInit();
-      newTabBlocs.add(timelineTabBloc);
+      timelineTabBlocs.add(timelineTabBloc);
     }
-    int initialIndex;
+    var initialIndex = timelineIds.indexOf(selectedTimelineId);
 
-    if (oldSelectedBloc != null) {
-      initialIndex = newTabBlocs
-          .indexWhere((bloc) => bloc.timelineId == oldSelectedBloc.timelineId);
-
-      if (initialIndex == -1) {
-        initialIndex = null;
-      }
+    if (initialIndex <= 0) {
+      _logger.warning(() => 'initialIndex $initialIndex \n'
+          'oldSelectedTimelineId $oldSelectedTimelineId');
+      initialIndex = 0;
     }
 
-    var tabController = TabController(
-      length: newTabBlocs.length, vsync: vsync,
-      // initialIndex: initialIndex ?? 0,
+    selectedTimelineTabBlocSubject = BehaviorSubject.seeded(
+      timelineTabBlocs[initialIndex],
     );
 
-    tabController.animateTo(initialIndex ?? 0);
-
-    tabControllerListener = () {
-      var index = tabController.index;
-      var tabBloc = newTabBlocs[index];
-
-      // merge unmerged on selection
-      var paginationListBloc = tabBloc.paginationListWithNewItemsBloc;
-      if (paginationListBloc.unmergedNewItemsCount > 0) {
-        paginationListBloc.mergeNewItems();
+    addDisposable(custom: () async {
+      for (var bloc in timelineTabBlocs) {
+        await bloc.dispose();
       }
-      for (var bloc in newTabBlocs) {
-        bloc.resubscribeWebSocketsUpdates(
-          bloc == tabBloc
-              ? WebSocketsListenType.foreground
-              : WebSocketsListenType.background,
-        );
-      }
-    };
-    tabController.addListener(tabControllerListener);
-
-    timelineTabBlocsListSubject.add(
-      TimelineTabBlocsList(
-        tabController: tabController,
-        timelineTabBlocs: newTabBlocs,
-      ),
-    );
-
-    updateTabBlocsInProgress = false;
-
-    Future.delayed(Duration(seconds: 1), () {
-      oldBlocs?.forEach((bloc) => bloc.dispose());
-      oldTabController?.dispose();
     });
   }
 
-  static TimelineTabListBloc createFromContext(
-    BuildContext context, {
-    @required TickerProvider vsync,
-  }) =>
-      TimelineTabListBloc(
-        vsync: vsync,
-        pleromaTimelineService:
-            IPleromaTimelineService.of(context, listen: false),
-        currentInstanceBloc:
-            ICurrentAuthInstanceBloc.of(context, listen: false),
-        pleromaAccountService:
-            IPleromaAccountService.of(context, listen: false),
-        pleromaWebSocketsService:
-            IPleromaWebSocketsService.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        webSocketsSettingsBloc:
-            IWebSocketsSettingsBloc.of(context, listen: false),
-        chatNewMessagesHandlerBloc:
-            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
-        currentAuthInstanceBloc:
-            ICurrentAuthInstanceBloc.of(context, listen: false),
-        preferencesService: ILocalPreferencesService.of(context, listen: false),
-        webSocketsHandlerManagerBloc:
-            IWebSocketsHandlerManagerBloc.of(context, listen: false),
-        timelinesHomeTabStorageLocalPreferences:
-            ITimelinesHomeTabStorageLocalPreferencesBloc.of(
-          context,
-          listen: false,
-        ),
+  @override
+  Future internalAsyncInit() async {
+    for (var timelineTabBloc in timelineTabBlocs) {
+      await timelineTabBloc.performAsyncInit();
+    }
+  }
+
+  @override
+  void changeSelectedTimelineTabBloc(ITimelineTabBloc selectedTimelineTabBloc) {
+    if (this.selectedTimelineTabBloc.timelineId ==
+        selectedTimelineTabBloc.timelineId) {
+      return;
+    }
+
+    // merge unmerged on selection
+    var paginationListBloc =
+        selectedTimelineTabBloc.paginationListWithNewItemsBloc;
+    if (paginationListBloc.unmergedNewItemsCount > 0) {
+      paginationListBloc.mergeNewItems();
+    }
+    for (var bloc in timelineTabBlocs) {
+      bloc.resubscribeWebSocketsUpdates(
+        bloc == selectedTimelineTabBloc
+            ? WebSocketsListenType.foreground
+            : WebSocketsListenType.background,
+      );
+    }
+
+    selectedTimelineTabBlocSubject.add(selectedTimelineTabBloc);
+  }
+
+  @override
+  void changeSelectedTimelineTabBlocIndex(int selectedTimelineTabBlocIndex) =>
+      changeSelectedTimelineTabBloc(
+        timelineTabBlocs[selectedTimelineTabBlocIndex],
+      );
+
+  @override
+  int get selectedTimelineTabBlocIndex =>
+      timelineTabBlocs.indexOf(selectedTimelineTabBloc);
+
+  @override
+  Stream<int> get selectedTimelineTabBlocIndexStream =>
+      selectedTimelineTabBlocStream.map(
+        (selectedTimelineTabBloc) =>
+            timelineTabBlocs.indexOf(selectedTimelineTabBloc),
       );
 }

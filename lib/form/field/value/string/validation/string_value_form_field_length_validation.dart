@@ -5,11 +5,13 @@ import 'package:flutter/widgets.dart';
 
 class StringValueFormFieldLengthValidationError
     extends StringValueFormFieldValidationError {
-  final int minLength;
-  final int maxLength;
+  final int? minLength;
+  final int? maxLength;
 
-  StringValueFormFieldLengthValidationError(
-      {@required this.minLength, @required this.maxLength}) {
+  StringValueFormFieldLengthValidationError({
+    required this.minLength,
+    required this.maxLength,
+  }) {
     assert(minLength != null || maxLength != null);
   }
 
@@ -18,16 +20,25 @@ class StringValueFormFieldLengthValidationError
     if (minLength != null && maxLength != null) {
       return S
           .of(context)
-          .form_field_text_error_length_minAndMax_desc(minLength, maxLength);
+          .form_field_text_error_length_minAndMax_desc(minLength!, maxLength!);
     } else if (minLength != null) {
-      return S.of(context).form_field_text_error_length_minOnly_desc(minLength);
-    } else if (maxLength != null) {}
-    return S.of(context).form_field_text_error_length_maxOnly_desc(maxLength);
+      return S
+          .of(context)
+          .form_field_text_error_length_minOnly_desc(minLength!);
+    } else if (maxLength != null) {
+      return S
+          .of(context)
+          .form_field_text_error_length_maxOnly_desc(maxLength!);
+    } else {
+      throw 'Invalid minLength $minLength || maxLength $maxLength';
+    }
   }
 
-  static FormValueFieldValidation createValidator(
-          {@required int minLength, @required int maxLength}) =>
-      (currentValue) {
+  static FormValueFieldValidation<String> createValidator({
+    required int? minLength,
+    required int? maxLength,
+  }) =>
+      (String? currentValue) {
         assert(minLength != null || maxLength != null);
         var length = currentValue?.length ?? 0;
         bool moreThanMin;
@@ -47,7 +58,9 @@ class StringValueFormFieldLengthValidationError
           return null;
         } else {
           return StringValueFormFieldLengthValidationError(
-              minLength: minLength, maxLength: maxLength);
+            minLength: minLength,
+            maxLength: maxLength,
+          );
         }
       };
 }

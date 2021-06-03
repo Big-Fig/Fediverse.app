@@ -6,11 +6,13 @@ import 'package:provider/provider.dart';
 
 abstract class ICustomEmojiPickerCategoryBloc
     implements IAsyncInitLoadingBloc, IDisposable {
-  static ICustomEmojiPickerCategoryBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static ICustomEmojiPickerCategoryBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<ICustomEmojiPickerCategoryBloc>(context, listen: listen);
 
   List<CustomEmojiPickerItem> get items;
 
-  Stream<List<CustomEmojiPickerItem>> get itemsStream;
+  Stream<List<CustomEmojiPickerItem>?> get itemsStream;
 }

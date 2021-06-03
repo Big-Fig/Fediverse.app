@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void showEditGlobalOrInstanceChatSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
@@ -23,8 +23,8 @@ void showEditGlobalOrInstanceChatSettingsDialog({
       shrinkWrap: true,
     ),
     childContextBuilder: ({
-      @required BuildContext context,
-      @required Widget child,
+      required BuildContext context,
+      required Widget child,
     }) =>
         DisposableProxyProvider<GlobalOrInstanceSettingsType,
             IEditChatSettingsBloc>(
@@ -35,6 +35,7 @@ void showEditGlobalOrInstanceChatSettingsDialog({
         var enabled =
             globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
         var editChatSettingsBloc = EditChatSettingsBloc(
+          isGlobalForced: false,
           chatSettingsBloc: IChatSettingsBloc.of(
             context,
             listen: false,
@@ -47,10 +48,11 @@ void showEditGlobalOrInstanceChatSettingsDialog({
           streamSubscription:
               isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
             (isUseGlobalSettings) {
-              editChatSettingsBloc.changeEnabled(!isUseGlobalSettings);
+              editChatSettingsBloc.changeEnabled(!isUseGlobalSettings!);
             },
           ),
         );
+
         return editChatSettingsBloc;
       },
       child: ProxyProvider<IEditChatSettingsBloc,

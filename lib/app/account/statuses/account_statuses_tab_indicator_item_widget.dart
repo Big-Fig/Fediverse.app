@@ -1,9 +1,8 @@
 import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
-import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc.dart';
-import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc_impl.dart';
-import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc_impl.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_model.dart';
+import 'package:fedi/app/ui/tab/indicator/text/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -14,16 +13,14 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
   final List<AccountStatusesTab> accountTabs;
 
   const AccountTabTextTabIndicatorItemWidget({
-    @required this.accountTabs,
+    required this.accountTabs,
   });
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
-          return FediFadeShaderMask(
-            fadingPercent: fadingPercent,
-            fadingColor: IFediUiColorTheme.of(context).darkGrey,
+          return Container(
+            color:  IFediUiColorTheme.of(context).white,
             child: DisposableProxyProvider<TabController,
                 IFediTabIndicatorBloc<AccountStatusesTab>>(
               update: (context, tabController, _) =>
@@ -32,14 +29,18 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
                 tabController: tabController,
               ),
               child: FediTextTabIndicatorWidget<AccountStatusesTab>(
-                customTabBuilder: (BuildContext context, Widget child,
-                    AccountStatusesTab tab) {
+                style: FediTabStyle.underline,
+                customTabBuilder: (
+                  BuildContext context,
+                  Widget child,
+                  AccountStatusesTab tab,
+                ) {
                   return child;
                 },
                 isTransparent: true,
                 tabToTextMapper:
-                    (BuildContext context, AccountStatusesTab tab) =>
-                        mapTabToTitle(context, tab),
+                    (BuildContext context, AccountStatusesTab? tab) =>
+                        mapTabToTitle(context, tab!),
               ),
             ),
           );
@@ -50,18 +51,14 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
     switch (tab) {
       case AccountStatusesTab.withReplies:
         return S.of(context).app_account_statuses_tab_withReplies;
-        break;
       case AccountStatusesTab.withoutReplies:
         return S.of(context).app_account_statuses_tab_withoutReplies;
-        break;
       case AccountStatusesTab.pinned:
         return S.of(context).app_account_statuses_tab_pinned;
-        break;
       case AccountStatusesTab.media:
         return S.of(context).app_account_statuses_tab_media;
-        break;
+      case AccountStatusesTab.favourites:
+        return S.of(context).app_account_statuses_tab_favourites;
     }
-
-    throw "Invalid tab $tab";
   }
 }

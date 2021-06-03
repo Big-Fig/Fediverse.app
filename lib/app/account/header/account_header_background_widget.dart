@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -14,7 +14,8 @@ class AccountHeaderBackgroundWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
-    return StreamBuilder<String>(
+
+    return StreamBuilder<String?>(
       stream: accountBloc.headerStream.distinct(),
       builder: (context, snapshot) {
         var header = snapshot.data;
@@ -25,7 +26,7 @@ class AccountHeaderBackgroundWidget extends StatelessWidget {
 
         return Provider<String>.value(
           value: header,
-          child: RepaintBoundary(child: const _AccountHeaderBackgroundImageWidget()),
+          child: const _AccountHeaderBackgroundImageWidget(),
         );
       },
     );
@@ -34,15 +35,16 @@ class AccountHeaderBackgroundWidget extends StatelessWidget {
 
 class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
   const _AccountHeaderBackgroundImageWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String header = Provider.of<String>(context);
+    var header = Provider.of<String>(context);
+
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        return CachedNetworkImage(
+        return IFilesCacheService.of(context).createCachedNetworkImageWidget(
           imageUrl: header,
           width: constraints.maxWidth,
           memCacheWidth: constraints.maxWidth.toInt(),
@@ -51,6 +53,7 @@ class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
               children: [
                 Image(
                   width: double.infinity,
+                  // ignore: no-equal-arguments
                   height: double.infinity,
                   fit: BoxFit.cover,
                   image: imageProvider,
@@ -62,7 +65,7 @@ class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
           progressIndicatorBuilder: (context, url, progress) =>
               const _AccountHeaderBackgroundProgressWidget(),
           errorWidget: (context, url, error) =>
-              _AccountHeaderBackgroundErrorWidget(),
+              const _AccountHeaderBackgroundErrorWidget(),
         );
       },
     );
@@ -71,46 +74,49 @@ class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
 
 class _AccountHeaderBackgroundErrorWidget extends StatelessWidget {
   const _AccountHeaderBackgroundErrorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return _AccountHeaderBackgroundDarkOverlayWidget(
-        child: Center(
-      child: Icon(
-        FediIcons.warning,
-        color: IFediUiColorTheme.of(context).error,
+      child: Center(
+        child: Icon(
+          FediIcons.warning,
+          color: IFediUiColorTheme.of(context).error,
+        ),
       ),
-    ));
+    );
   }
 }
 
 class _AccountHeaderBackgroundProgressWidget extends StatelessWidget {
   const _AccountHeaderBackgroundProgressWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
       const _AccountHeaderBackgroundDarkOverlayWidget(
-          child: Center(
-        child: FediCircularProgressIndicator(),
-      ));
+        child: Center(
+          child: FediCircularProgressIndicator(),
+        ),
+      );
 }
 
 class _AccountHeaderBackgroundDarkOverlayWidget extends StatelessWidget {
   const _AccountHeaderBackgroundDarkOverlayWidget({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) => Container(
-        child: child,
         decoration: BoxDecoration(
-            color: IFediUiColorTheme.of(context).imageDarkOverlay),
+          color: IFediUiColorTheme.of(context).imageDarkOverlay,
+        ),
+        child: child,
       );
 }

@@ -6,14 +6,16 @@ import 'package:provider/provider.dart';
 
 abstract class INotificationPushLoaderBloc extends IDisposable
     implements IAsyncInitLoadingBloc {
-  static INotificationPushLoaderBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static INotificationPushLoaderBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<INotificationPushLoaderBloc>(context, listen: listen);
 
-  NotificationPushLoaderNotification get launchOrResumePushLoaderNotification;
+  NotificationPushLoaderNotification? get launchPushLoaderNotification;
 
-  Stream<NotificationPushLoaderNotification>
-      get launchOrResumePushLoaderNotificationStream;
+  Stream<NotificationPushLoaderNotification?>
+      get launchPushLoaderNotificationStream;
 
   Stream<NotificationPushLoaderNotification> get handledNotificationsStream;
 }

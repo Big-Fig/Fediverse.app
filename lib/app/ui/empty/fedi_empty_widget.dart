@@ -4,17 +4,19 @@ import 'package:flutter/cupertino.dart';
 
 class FediEmptyWidget extends StatelessWidget {
   final String title;
-  final String subTitle;
+  final String? subTitle;
 
   FediEmptyWidget({
-    @required this.title,
+    required this.title,
     this.subTitle,
   });
 
   @override
   Widget build(BuildContext context) {
     var fediUiTextTheme = IFediUiTextTheme.of(context);
+
     return Padding(
+      // ignore: no-magic-number
       padding: EdgeInsets.all(40.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -28,7 +30,7 @@ class FediEmptyWidget extends StatelessWidget {
           if (subTitle != null) const FediSmallVerticalSpacer(),
           if (subTitle != null)
             Text(
-              subTitle,
+              subTitle!,
               textAlign: TextAlign.center,
               style: fediUiTextTheme.bigTallDarkGrey,
             ),

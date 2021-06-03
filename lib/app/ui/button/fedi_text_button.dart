@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 
 class FediTextButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
-  final Color color;
+  final VoidCallback? onPressed;
+  final Color? color;
   final EdgeInsets padding;
 
   FediTextButton({
-    @required this.text,
-    @required this.onPressed,
+    required this.text,
+    required this.onPressed,
     this.color,
     this.padding = FediPadding.allBigPadding,
   });
@@ -24,6 +24,7 @@ class FediTextButton extends StatelessWidget {
             ? fediUiTextTheme.bigPrimary.copyWith(color: color)
             : fediUiTextTheme.bigPrimary
         : fediUiTextTheme.bigGrey;
+
     return Padding(
       padding: padding,
       child: InkWell(

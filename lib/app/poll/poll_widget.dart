@@ -9,8 +9,8 @@ import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/date_time/date_time_dynamic_time_ago_widget.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
-import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
+import 'package:fedi/mastodon/api/poll/mastodon_api_poll_model.dart';
+import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -20,36 +20,39 @@ class PollWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
+
     return Padding(
       padding: FediPadding.horizontalBigPadding,
-      child: StreamBuilder<IPleromaPoll>(
-          initialData: pollBloc.poll,
-          stream: pollBloc.pollStream,
-          builder: (context, snapshot) {
-            var poll = snapshot.data;
-            return Provider<IPleromaPoll>.value(
-              value: poll,
-              child: const _PollBodyWidget(),
-            );
-          }),
+      child: StreamBuilder<IPleromaApiPoll>(
+        initialData: pollBloc.poll,
+        stream: pollBloc.pollStream,
+        builder: (context, snapshot) {
+          var poll = snapshot.data!;
+
+          return Provider<IPleromaApiPoll>.value(
+            value: poll,
+            child: const _PollBodyWidget(),
+          );
+        },
+      ),
     );
   }
 }
 
 class _PollBodyWidget extends StatelessWidget {
   const _PollBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
 
     return Column(
       children: [
         ...poll.options
-            .map((pollOption) => Provider<IPleromaPollOption>.value(
+            .map((pollOption) => Provider<IPleromaApiPollOption>.value(
                   value: pollOption,
                   child: const _PollBodyOptionWidget(),
                 ))
@@ -64,7 +67,7 @@ class _PollBodyWidget extends StatelessWidget {
 
 class _PollBodyVoteButtonBuilderWidget extends StatelessWidget {
   const _PollBodyVoteButtonBuilderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -72,46 +75,49 @@ class _PollBodyVoteButtonBuilderWidget extends StatelessWidget {
     var pollBloc = IPollBloc.of(context);
 
     return StreamBuilder<bool>(
-        stream: pollBloc.isPossibleToVoteStream,
-        builder: (context, snapshot) {
-          var isPossibleToVote = snapshot.data ?? false;
+      stream: pollBloc.isPossibleToVoteStream,
+      builder: (context, snapshot) {
+        var isPossibleToVote = snapshot.data ?? false;
 
-          if (isPossibleToVote) {
-            return StreamBuilder<bool>(
-                stream: pollBloc.isVotedStream,
-                builder: (context, snapshot) {
-                  var isSelectedVotesNotEmpty = snapshot.data ?? false;
-                  return Padding(
-                    padding: FediPadding.allSmallPadding,
-                    child: AsyncOperationButtonBuilderWidget(
-                      builder: (context, onPressed) =>
-                          FediPrimaryFilledTextButtonWithBorder(
-                        S.of(context).app_poll_vote,
-                        expanded: false,
-                        limitMinWidth: true,
-                        onPressed: isSelectedVotesNotEmpty ? onPressed : null,
-                      ),
-                      asyncButtonAction: () => pollBloc.vote(),
-                    ),
-                  );
-                });
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+        if (isPossibleToVote) {
+          return StreamBuilder<bool>(
+            stream: pollBloc.isVotedStream,
+            builder: (context, snapshot) {
+              var isSelectedVotesNotEmpty = snapshot.data ?? false;
+
+              return Padding(
+                padding: FediPadding.allSmallPadding,
+                child: AsyncOperationButtonBuilderWidget(
+                  builder: (context, onPressed) =>
+                      FediPrimaryFilledTextButtonWithBorder(
+                    S.of(context).app_poll_vote,
+                    expanded: false,
+                    limitMinWidth: true,
+                    onPressed: isSelectedVotesNotEmpty ? onPressed : null,
+                  ),
+                  asyncButtonAction: () => pollBloc.vote(),
+                ),
+              );
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
 class _PollBodyOptionWidget extends StatelessWidget {
   const _PollBodyOptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
-    var poll = Provider.of<IPleromaPoll>(context);
-    var pollOption = Provider.of<IPleromaPollOption>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+    var pollOption = Provider.of<IPleromaApiPollOption>(context);
 
     return Padding(
       padding: const EdgeInsets.only(top: FediSizes.mediumPadding),
@@ -140,15 +146,16 @@ class PollMetadataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         const PollMetadataTotalVotesCountWidget(),
         const _PollMetadataDotSeparatorWidget(),
-        if (poll.expiresAt != null) const PollMetadataExpiresAtWidget(),
+        const PollMetadataExpiresAtWidget(),
         if (poll.isPossibleToVote) const _PollMetadataDotSeparatorWidget(),
-        if (poll.isPossibleToVote) const PollMetadataShowHideResultsWidget()
+        if (poll.isPossibleToVote) const PollMetadataShowHideResultsWidget(),
       ],
     );
   }
@@ -156,13 +163,13 @@ class PollMetadataWidget extends StatelessWidget {
 
 class _PollMetadataDotSeparatorWidget extends StatelessWidget {
   const _PollMetadataDotSeparatorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      " · ",
+      ' · ',
       style: IFediUiTextTheme.of(context).mediumShortGrey,
     );
   }
@@ -173,9 +180,10 @@ class PollMetadataTotalVotesCountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+
     return Text(
-      S.of(context).app_poll_metadata_totalVotes(poll.votesCount),
+      S.of(context).app_poll_metadata_totalVotes(poll.votesCount ?? 0),
       style: IFediUiTextTheme.of(context).mediumShortGrey,
     );
   }
@@ -187,27 +195,30 @@ class PollMetadataShowHideResultsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
+
     return StreamBuilder<bool>(
-        stream: pollBloc.isNeedShowResultsWithoutVoteStream,
-        initialData: pollBloc.isNeedShowResultsWithoutVote,
-        builder: (context, snapshot) {
-          var isNeedShowResultsWithoutVote = snapshot.data;
-          return InkWell(
-            onTap: () {
-              if (isNeedShowResultsWithoutVote) {
-                pollBloc.hideResultsWithoutVote();
-              } else {
-                pollBloc.showResultsWithoutVote();
-              }
-            },
-            child: Text(
-              isNeedShowResultsWithoutVote
-                  ? S.of(context).app_poll_metadata_hideResults
-                  : S.of(context).app_poll_metadata_showResults,
-              style: IFediUiTextTheme.of(context).mediumShortPrimary,
-            ),
-          );
-        });
+      stream: pollBloc.isNeedShowResultsWithoutVoteStream,
+      initialData: pollBloc.isNeedShowResultsWithoutVote,
+      builder: (context, snapshot) {
+        var isNeedShowResultsWithoutVote = snapshot.data!;
+
+        return InkWell(
+          onTap: () {
+            if (isNeedShowResultsWithoutVote) {
+              pollBloc.hideResultsWithoutVote();
+            } else {
+              pollBloc.showResultsWithoutVote();
+            }
+          },
+          child: Text(
+            isNeedShowResultsWithoutVote
+                ? S.of(context).app_poll_metadata_hideResults
+                : S.of(context).app_poll_metadata_showResults,
+            style: IFediUiTextTheme.of(context).mediumShortPrimary,
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -216,7 +227,8 @@ class PollMetadataExpiresAtWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+
     return poll.expired
         ? const _PollMetadataExpiresAtExpiredWidget()
         : const _PollMetadataExpiresAtNotExpiredWidget();
@@ -225,7 +237,7 @@ class PollMetadataExpiresAtWidget extends StatelessWidget {
 
 class _PollMetadataExpiresAtExpiredWidget extends StatelessWidget {
   const _PollMetadataExpiresAtExpiredWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -239,12 +251,13 @@ class _PollMetadataExpiresAtExpiredWidget extends StatelessWidget {
 
 class _PollMetadataExpiresAtNotExpiredWidget extends StatelessWidget {
   const _PollMetadataExpiresAtNotExpiredWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+
     return DateTimeDynamicTimeAgoWidget(
       dateTime: poll.expiresAt,
       textStyle: IFediUiTextTheme.of(context).mediumShortGrey,
@@ -254,6 +267,8 @@ class _PollMetadataExpiresAtNotExpiredWidget extends StatelessWidget {
   }
 }
 
+// todo: refactor
+// ignore: no-magic-number
 final borderRadius = BorderRadius.circular(8.0);
 
 class PollOptionWidget extends StatelessWidget {
@@ -277,28 +292,31 @@ class PollOptionWidget extends StatelessWidget {
 
 class _PollOptionBodyWidget extends StatelessWidget {
   const _PollOptionBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var backgroundColor = IFediUiColorTheme.of(context).white;
-    var poll = Provider.of<IPleromaPoll>(context);
-    var pollOption = Provider.of<IPleromaPollOption>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+    var pollOption = Provider.of<IPleromaApiPollOption>(context);
 
     var isOwnVote = poll.isOwnVote(pollOption);
 
     return Container(
+      // todo: refactor
+      // ignore: no-magic-number
       height: 40,
       decoration: BoxDecoration(
         borderRadius: borderRadius,
         color: backgroundColor,
         border: Border.all(
-            color: poll.isPossibleToVote
-                ? IFediUiColorTheme.of(context).primaryDark
-                : isOwnVote
-                    ? IFediUiColorTheme.of(context).primaryDark
-                    : IFediUiColorTheme.of(context).ultraLightGrey),
+          color: poll.isPossibleToVote
+              ? IFediUiColorTheme.of(context).primaryDark
+              : isOwnVote
+                  ? IFediUiColorTheme.of(context).primaryDark
+                  : IFediUiColorTheme.of(context).ultraLightGrey,
+        ),
       ),
       child: Stack(
         alignment: Alignment.centerLeft,
@@ -313,13 +331,13 @@ class _PollOptionBodyWidget extends StatelessWidget {
 
 class _PollOptionBodyFillerWidget extends StatelessWidget {
   const _PollOptionBodyFillerWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
-    var pollOption = Provider.of<IPleromaPollOption>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+    var pollOption = Provider.of<IPleromaApiPollOption>(context);
 
     var isOwnVote = poll.isOwnVote(pollOption);
 
@@ -346,19 +364,20 @@ class _PollOptionBodyFillerWidget extends StatelessWidget {
 
 class _PollOptionResultsWidget extends StatelessWidget {
   _PollOptionResultsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: pollBloc.isNeedShowResultsWithoutVoteStream,
       initialData: pollBloc.isNeedShowResultsWithoutVote,
       builder: (context, snapshot) {
         var isNeedShowResultsWithoutVote = snapshot.data;
 
-        if (!pollBloc.isPossibleToVote || isNeedShowResultsWithoutVote) {
+        if (!pollBloc.isPossibleToVote || isNeedShowResultsWithoutVote!) {
           return PollOptionVotesPercentWidget();
         } else {
           return const SizedBox.shrink();
@@ -370,76 +389,87 @@ class _PollOptionResultsWidget extends StatelessWidget {
 
 class _PollOptionSelectionWidget extends StatelessWidget {
   const _PollOptionSelectionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
-    var poll = Provider.of<IPleromaPoll>(context);
-    var pollOption = Provider.of<IPleromaPollOption>(context);
-    return StreamBuilder<bool>(
-        stream: pollBloc.isPossibleToVoteStream,
-        initialData: pollBloc.isPossibleToVote,
-        builder: (context, snapshot) {
-          var isPossibleToVote = snapshot.data;
-          if (isPossibleToVote) {
-            return StreamBuilder<List<IPleromaPollOption>>(
-                stream: pollBloc.selectedVotesStream,
-                initialData: pollBloc.selectedVotes,
-                builder: (context, snapshot) {
-                  var selectedVotes = snapshot.data;
-                  var multiple = poll.multiple;
+    var poll = Provider.of<IPleromaApiPoll>(context);
+    var pollOption = Provider.of<IPleromaApiPollOption>(context);
 
-                  var isSelected = selectedVotes.contains(pollOption);
-                  var borderColor = isSelected
-                      ? IFediUiColorTheme.of(context).primary
-                      : IFediUiColorTheme.of(context).grey;
-                  var backgroundColor = isSelected
-                      ? IFediUiColorTheme.of(context).primary
-                      : IFediUiColorTheme.of(context).white;
-                  var size = 28.0;
-                  return Padding(
-                    padding: const EdgeInsets.only(left: FediSizes.bigPadding),
-                    child: Container(
-                      width: size,
-                      height: size,
-                      decoration: BoxDecoration(
-                        color: backgroundColor,
-                        border: Border.all(
-                          color: borderColor,
-                        ),
-                        borderRadius: multiple
-                            ? borderRadius
-                            : BorderRadius.circular(size / 2),
-                      ),
-                      child: isSelected
-                          ? Center(
-                              child: Icon(
-                                FediIcons.check,
-                                color: IFediUiColorTheme.of(context).white,
-                                size: 16.0,
-                              ),
-                            )
-                          : const SizedBox.shrink(),
+    return StreamBuilder<bool>(
+      stream: pollBloc.isPossibleToVoteStream,
+      initialData: pollBloc.isPossibleToVote,
+      builder: (context, snapshot) {
+        var isPossibleToVote = snapshot.data!;
+        if (isPossibleToVote) {
+          return StreamBuilder<List<IPleromaApiPollOption>?>(
+            stream: pollBloc.selectedVotesStream,
+            initialData: pollBloc.selectedVotes,
+            builder: (context, snapshot) {
+              var selectedVotes = snapshot.data!;
+              var multiple = poll.multiple;
+
+              var isSelected = selectedVotes.contains(pollOption);
+              var borderColor = isSelected
+                  ? IFediUiColorTheme.of(context).primary
+                  : IFediUiColorTheme.of(context).grey;
+              var backgroundColor = isSelected
+                  ? IFediUiColorTheme.of(context).primary
+                  : IFediUiColorTheme.of(context).white;
+              // todo: refactor
+              // ignore: no-magic-number
+              var size = 28.0;
+
+              return Padding(
+                padding: const EdgeInsets.only(left: FediSizes.bigPadding),
+                child: Container(
+                  width: size,
+                  // ignore: no-equal-arguments
+                  height: size,
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    border: Border.all(
+                      color: borderColor,
                     ),
-                  );
-                });
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+                    borderRadius: multiple
+                        ? borderRadius
+                        // ignore: no-magic-number
+                        : BorderRadius.circular(size / 2),
+                  ),
+                  child: isSelected
+                      ? Center(
+                          child: Icon(
+                            FediIcons.check,
+                            color: IFediUiColorTheme.of(context).white,
+                            // todo: refactor
+                            // ignore: no-magic-number
+                            size: 16.0,
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ),
+              );
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
 class _PollOptionContentWidget extends StatelessWidget {
   const _PollOptionContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: FediSizes.mediumPadding,
@@ -461,28 +491,32 @@ class PollOptionVotesCountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+
     return Text(
-      "(${poll.votesCount.toString()})",
+      '(${poll.votesCount.toString()})',
       style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
     );
   }
 }
 
 class PollOptionVotesPercentWidget extends StatelessWidget {
-  static final NumberFormat _format = NumberFormat("#%");
+  static final NumberFormat _format = NumberFormat('#%');
 
   const PollOptionVotesPercentWidget();
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
-    var pollOption = Provider.of<IPleromaPollOption>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+    var pollOption = Provider.of<IPleromaApiPollOption>(context);
 
     var isOwnVote = poll.isOwnVote(pollOption);
 
     var votesPercent = poll.votesPercent(pollOption);
+
     return Container(
+      // todo: refactor
+      // ignore: no-magic-number
       width: 60,
       child: Center(
         child: Text(
@@ -501,12 +535,13 @@ class PollOptionTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var poll = Provider.of<IPleromaPoll>(context);
-    var pollOption = Provider.of<IPleromaPollOption>(context);
+    var poll = Provider.of<IPleromaApiPoll>(context);
+    var pollOption = Provider.of<IPleromaApiPollOption>(context);
 
     var isOwnVote = poll.isOwnVote(pollOption);
 
     var votesPercent = poll.votesPercent(pollOption);
+
     return Text(
       pollOption.title,
       style: poll.isPossibleToVote

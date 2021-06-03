@@ -1,12 +1,10 @@
-import 'package:fedi/app/account/my/account_mute/my_account_account_mute_action_button_widget.dart';
-import 'package:fedi/app/account/my/account_mute/my_account_account_mute_network_only_account_list_bloc.dart';
+import 'package:fedi/app/account/my/account_mute/action/my_account_account_mute_action_list_widget.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
-import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
-  final Widget customLoadingWidget;
-  final Widget customEmptyWidget;
+  final Widget? customLoadingWidget;
+  final Widget? customEmptyWidget;
 
   const MyAccountAccountMuteAccountPaginationListWidget({
     this.customEmptyWidget,
@@ -18,11 +16,12 @@ class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
     return AccountPaginationListWidget(
       customEmptyWidget: customEmptyWidget,
       customLoadingWidget: customLoadingWidget,
+      isNeedPreFetchRelationship: true,
       accountActions: <Widget>[
         _MyAccountAccountMuteAccountPaginationListRemoveActionWidget(),
       ],
       accountSelectedCallback: null,
-      key: PageStorageKey("MyAccountAccountMuteAccountPaginationListWidget"),
+      key: PageStorageKey('MyAccountAccountMuteAccountPaginationListWidget'),
     );
   }
 }
@@ -30,19 +29,12 @@ class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
 class _MyAccountAccountMuteAccountPaginationListRemoveActionWidget
     extends StatelessWidget {
   const _MyAccountAccountMuteAccountPaginationListRemoveActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var myAccountAccountMuteNetworkOnlyAccountListBloc =
-        IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(context);
-
-    var paginationListBloc = IPaginationListBloc.of(context);
-
-    return MyAccountAccountMuteActionButtonWidget(
-      listBloc: myAccountAccountMuteNetworkOnlyAccountListBloc,
-      paginationListBloc: paginationListBloc,
+    return const MyAccountAccountMuteActionListWidget(
       defaultMuting: true,
     );
   }

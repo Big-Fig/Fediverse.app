@@ -1,10 +1,9 @@
-import 'dart:convert';
-
-import 'package:fedi/pleroma/push/pleroma_push_model.dart';
+import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'push_handler_model.g.dart';
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -15,19 +14,22 @@ part 'push_handler_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class PushHandlerMessage {
   @HiveField(0)
-  final PleromaPushMessageBody body;
+  final PleromaApiPushMessageBody body;
   @HiveField(1)
-  @JsonKey(name: "push_message")
+  @JsonKey(name: 'push_message')
   final PushMessage pushMessage;
 
   PushHandlerMessage({
-    this.body,
-    this.pushMessage,
+    required this.body,
+    required this.pushMessage,
   });
 
   @override
   String toString() {
-    return 'PushHandlerMessage{body: $body, pushMessage: $pushMessage}';
+    return 'PushHandlerMessage{'
+        'body: $body, '
+        'pushMessage: $pushMessage'
+        '}';
   }
 
   @override
@@ -39,8 +41,8 @@ class PushHandlerMessage {
           pushMessage == other.pushMessage;
 
   PushHandlerMessage copyWith({
-    PleromaPushMessageBody body,
-    PushMessage pushMessage,
+    PleromaApiPushMessageBody? body,
+    PushMessage? pushMessage,
   }) =>
       PushHandlerMessage(
         body: body ?? this.body,
@@ -50,17 +52,8 @@ class PushHandlerMessage {
   @override
   int get hashCode => body.hashCode ^ pushMessage.hashCode;
 
-  factory PushHandlerMessage.fromJson(Map<String, dynamic> json) =>
+  static PushHandlerMessage fromJson(Map<String, dynamic> json) =>
       _$PushHandlerMessageFromJson(json);
 
-  factory PushHandlerMessage.fromJsonString(String jsonString) =>
-      _$PushHandlerMessageFromJson(jsonDecode(jsonString));
-
-  static List<PushHandlerMessage> listFromJsonString(String str) =>
-      List<PushHandlerMessage>.from(
-          json.decode(str).map((x) => PushHandlerMessage.fromJson(x)));
-
   Map<String, dynamic> toJson() => _$PushHandlerMessageToJson(this);
-
-  String toJsonString() => jsonEncode(_$PushHandlerMessageToJson(this));
 }

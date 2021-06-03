@@ -1,5 +1,6 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_local_only_list_bloc.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_pagination_bloc.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_pagination_list_bloc.dart';
@@ -10,7 +11,8 @@ import 'package:fedi/permission/permission_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class MediaDeviceGallerySelectedFolderData implements IDisposable {
+class MediaDeviceGallerySelectedFolderData extends DisposableOwner
+    implements IDisposable {
   final IMediaDeviceFolder folder;
 
   final IMediaDeviceFolderBloc folderBloc;
@@ -22,11 +24,11 @@ class MediaDeviceGallerySelectedFolderData implements IDisposable {
   final IMediaDeviceFilePaginationListBloc filesPaginationListBloc;
 
   MediaDeviceGallerySelectedFolderData({
-    @required this.folder,
-    @required this.folderBloc,
-    @required this.filesListBloc,
-    @required this.filesPaginationBloc,
-    @required this.filesPaginationListBloc,
+    required this.folder,
+    required this.folderBloc,
+    required this.filesListBloc,
+    required this.filesPaginationBloc,
+    required this.filesPaginationListBloc,
   });
 
   @override
@@ -46,30 +48,33 @@ class MediaDeviceGallerySelectedFolderData implements IDisposable {
 
   @override
   Future dispose() async {
-    await folderBloc?.dispose();
-    await filesListBloc?.dispose();
-    await filesPaginationBloc?.dispose();
-    await filesPaginationListBloc?.dispose();
+    await super.dispose();
+    await folderBloc.dispose();
+    await filesListBloc.dispose();
+    await filesPaginationBloc.dispose();
+    await filesPaginationListBloc.dispose();
   }
 }
 
 abstract class IMediaDeviceGalleryBloc
     implements IDisposable, IPermissionBloc, IAsyncInitLoadingBloc {
-  static IMediaDeviceGalleryBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IMediaDeviceGalleryBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IMediaDeviceGalleryBloc>(context, listen: listen);
 
   Stream<MediaDeviceGalleryState> get galleryStateStream;
 
-  MediaDeviceGalleryState get galleryState;
+  MediaDeviceGalleryState? get galleryState;
 
   Stream<List<IMediaDeviceFolder>> get foldersStream;
 
-  List<IMediaDeviceFolder> get folders;
+  List<IMediaDeviceFolder>? get folders;
 
-  MediaDeviceGallerySelectedFolderData get selectedFolderData;
+  MediaDeviceGallerySelectedFolderData? get selectedFolderData;
 
-  Stream<MediaDeviceGallerySelectedFolderData> get selectedFolderDataStream;
+  Stream<MediaDeviceGallerySelectedFolderData?> get selectedFolderDataStream;
 
   Future selectFolder(IMediaDeviceFolder folder);
 

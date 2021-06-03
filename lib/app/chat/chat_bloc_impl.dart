@@ -1,18 +1,26 @@
+import 'dart:async';
+
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:flutter/widgets.dart';
 
 abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   final bool isNeedWatchLocalRepositoryForUpdates;
 
+  final StreamController<bool> chatDeletedStreamController =
+      StreamController.broadcast();
+
+  @override
+  Stream<bool> get chatDeletedStream => chatDeletedStreamController.stream;
+
   ChatBloc({
-    @required bool needRefreshFromNetworkOnInit,
-    @required this.isNeedWatchLocalRepositoryForUpdates,
-    // todo: remove hack. Don't init when bloc quickly disposed. Help
+    required bool needRefreshFromNetworkOnInit,
+    required this.isNeedWatchLocalRepositoryForUpdates,
+    // todo: remove hack. Dont init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
-    @required bool delayInit,
+    required bool delayInit,
   }) {
+    addDisposable(streamController: chatDeletedStreamController);
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
         _init(needRefreshFromNetworkOnInit);
@@ -25,7 +33,7 @@ abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   void watchLocalRepositoryForUpdates();
 
   void _init(bool needRefreshFromNetworkOnInit) {
-    if (!disposed) {
+    if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         watchLocalRepositoryForUpdates();
       }
@@ -43,25 +51,34 @@ abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
       chatStream.map((chat) => chat.accounts);
 
   @override
-  DateTime get updatedAt => chat.updatedAt;
+  DateTime? get updatedAt => chat.updatedAt;
 
   @override
-  Stream<DateTime> get updatedAtStream =>
+  Stream<DateTime?> get updatedAtStream =>
       chatStream.map((chat) => chat.updatedAt);
 
   @override
   Future refreshFromNetwork();
 
   @override
-  bool get isHaveUnread => unreadCount > 0;
+  bool get isHaveUnread => unreadCount! > 0;
 
   @override
   Stream<bool> get isHaveUnreadStream =>
-      unreadCountStream.map((unreadCount) => unreadCount > 0);
+      unreadCountStream.map((unreadCount) => unreadCount! > 0);
 
   @override
-  int get unreadCount => chat.unread;
+  int? get unreadCount => chat.unread;
 
   @override
-  Stream<int> get unreadCountStream => chatStream.map((chat) => chat.unread);
+  Stream<int?> get unreadCountStream => chatStream.map((chat) => chat.unread);
+
+  @override
+  Future delete() async {
+    await performActualDelete();
+
+    chatDeletedStreamController.add(true);
+  }
+
+  Future performActualDelete();
 }

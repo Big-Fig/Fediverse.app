@@ -18,9 +18,9 @@ abstract class ICreateTimelineBloc implements IFormBloc {
 
   ITimelineSettingsBloc get timelineSettingsBloc;
 
-  IEditTimelineSettingsBloc get editTimelineSettingsBloc;
+  IEditTimelineSettingsBloc? get editTimelineSettingsBloc;
 
-  Stream<IEditTimelineSettingsBloc> get editTimelineSettingsBlocStream;
+  Stream<IEditTimelineSettingsBloc?> get editTimelineSettingsBlocStream;
 
   Future save();
 

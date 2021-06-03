@@ -9,7 +9,8 @@ class InstanceSettingsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-    var currentInstance = currentAuthInstanceBloc.currentInstance;
+    var currentInstance = currentAuthInstanceBloc.currentInstance!;
+
     return Scaffold(
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_account_home_tab_menu_action_instance_settings(
@@ -25,7 +26,7 @@ class InstanceSettingsListPage extends StatelessWidget {
 
 class _InstanceSettingsBody extends StatelessWidget {
   const _InstanceSettingsBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

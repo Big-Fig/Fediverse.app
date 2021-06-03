@@ -1,5 +1,5 @@
-import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
 import 'package:fedi/app/account/my/domain_block/list/pagination/my_account_domain_block_pagination_list_bloc.dart';
+import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,7 +9,7 @@ class MyAccountDomainBlockPaginationListBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  MyAccountDomainBlockPaginationListBlocProxyProvider({@required this.child});
+  MyAccountDomainBlockPaginationListBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,10 @@ class MyAccountDomainBlockPaginationListBlocProxyProvider
         IPaginationListBloc<PaginationPage<DomainBlock>, DomainBlock>>(
       update: (context, value, previous) => value,
       child: ProxyProvider<IMyAccountDomainBlockPaginationListBloc,
-              IPaginationListBloc>(
-          update: (context, value, previous) => value, child: child),
+          IPaginationListBloc>(
+        update: (context, value, previous) => value,
+        child: child,
+      ),
     );
   }
 }

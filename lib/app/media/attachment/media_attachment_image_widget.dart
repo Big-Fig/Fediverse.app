@@ -1,33 +1,33 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MediaAttachmentImageWidget extends StatelessWidget {
-  final double maxHeight;
+  final double? maxHeight;
 
   const MediaAttachmentImageWidget({this.maxHeight});
 
   @override
   Widget build(BuildContext context) {
-    var mediaAttachment = Provider.of<IPleromaMediaAttachment>(context);
+    var mediaAttachment = Provider.of<IPleromaApiMediaAttachment>(context);
 
     return Container(
       color: IFediUiColorTheme.of(context).ultraLightGrey,
-      child: CachedNetworkImage(
-        imageUrl: mediaAttachment.previewUrl,
+      child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
+        imageUrl: mediaAttachment.previewUrl!,
         fit: BoxFit.cover,
         placeholder: (context, url) =>
             const _MediaAttachmentImageLoadingWidget(),
         imageBuilder: (context, imageProvider) {
           if (maxHeight != null) {
             return LimitedBox(
-              maxHeight: maxHeight,
+              maxHeight: maxHeight!,
               child: Image(
                 fit: BoxFit.cover,
                 image: imageProvider,
@@ -49,7 +49,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
 
 class _MediaAttachmentImageLoadingWidget extends StatelessWidget {
   const _MediaAttachmentImageLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -58,7 +58,10 @@ class _MediaAttachmentImageLoadingWidget extends StatelessWidget {
       padding: FediPadding.allBigPadding,
       child: Center(
         child: Container(
+          // todo: refactor
+          // ignore: no-magic-number
           width: 30,
+          // ignore: no-magic-number
           height: 30,
           child: const FediCircularProgressIndicator(),
         ),
@@ -69,11 +72,14 @@ class _MediaAttachmentImageLoadingWidget extends StatelessWidget {
 
 class _MediaAttachmentImageErrorWidget extends StatelessWidget {
   const _MediaAttachmentImageErrorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Icon(FediIcons.warning);
+    return Padding(
+      padding: FediPadding.allBigPadding,
+      child: Icon(FediIcons.warning),
+    );
   }
 }

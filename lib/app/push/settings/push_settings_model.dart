@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'push_settings_model.g.dart';
 
 @JsonSerializable()
@@ -15,28 +13,28 @@ part 'push_settings_model.g.dart';
 @HiveType(typeId: -32 + 47)
 class PushSettings extends ISettings<PushSettings> {
   @HiveField(1)
-  final bool favourite;
+  final bool? favourite;
   @HiveField(2)
-  final bool follow;
+  final bool? follow;
   @HiveField(3)
-  final bool mention;
+  final bool? mention;
   @HiveField(4)
-  final bool reblog;
+  final bool? reblog;
   @HiveField(5)
-  final bool poll;
+  final bool? poll;
   @HiveField(6)
-  final bool pleromaChatMention;
+  final bool? pleromaChatMention;
   @HiveField(7)
-  final bool pleromaEmojiReaction;
+  final bool? pleromaEmojiReaction;
 
   PushSettings({
-    @required this.favourite,
-    @required this.follow,
-    @required this.mention,
-    @required this.reblog,
-    @required this.poll,
-    @required this.pleromaChatMention,
-    @required this.pleromaEmojiReaction,
+    required this.favourite,
+    required this.follow,
+    required this.mention,
+    required this.reblog,
+    required this.poll,
+    required this.pleromaChatMention,
+    required this.pleromaEmojiReaction,
   });
 
   PushSettings.defaultAllEnabled()
@@ -92,25 +90,21 @@ class PushSettings extends ISettings<PushSettings> {
         ' pleromaChat: $pleromaChatMention, pleromaEmojiReaction: $pleromaEmojiReaction}';
   }
 
-  factory PushSettings.fromJson(Map<String, dynamic> json) =>
+  static PushSettings fromJson(Map<String, dynamic> json) =>
       _$PushSettingsFromJson(json);
-
-  factory PushSettings.fromJsonString(String jsonString) =>
-      _$PushSettingsFromJson(jsonDecode(jsonString));
 
   @override
   Map<String, dynamic> toJson() => _$PushSettingsToJson(this);
 
-  String toJsonString() => jsonEncode(_$PushSettingsToJson(this));
-
+  // ignore: long-parameter-list
   PushSettings copyWith({
-    bool favourite,
-    bool follow,
-    bool mention,
-    bool reblog,
-    bool poll,
-    bool pleromaChatMention,
-    bool pleromaEmojiReaction,
+    bool? favourite,
+    bool? follow,
+    bool? mention,
+    bool? reblog,
+    bool? poll,
+    bool? pleromaChatMention,
+    bool? pleromaEmojiReaction,
   }) =>
       PushSettings(
         favourite: favourite ?? this.favourite,

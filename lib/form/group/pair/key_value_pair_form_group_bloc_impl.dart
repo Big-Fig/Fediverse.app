@@ -2,7 +2,6 @@ import 'package:fedi/form/field/value/value_form_field_bloc.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/form_group_bloc_impl.dart';
 import 'package:fedi/form/group/pair/key_value_pair_form_group_bloc.dart';
-import 'package:flutter/widgets.dart';
 
 class KeyValuePairFormGroupBloc<K extends IValueFormFieldBloc,
         V extends IValueFormFieldBloc> extends FormGroupBloc
@@ -12,16 +11,20 @@ class KeyValuePairFormGroupBloc<K extends IValueFormFieldBloc,
   @override
   final V valueField;
 
-  KeyValuePairFormGroupBloc(
-      {@required this.keyField, @required this.valueField}) {
+  KeyValuePairFormGroupBloc({
+    required this.keyField,
+    required this.valueField,
+  }) {
     addDisposable(disposable: keyField);
     addDisposable(disposable: valueField);
   }
 
   @override
   String toString() {
-    return 'FormKeyValuePairFieldBloc{keyField: $keyField,'
-        ' valueField: $valueField}';
+    return 'FormKeyValuePairFieldBloc{'
+        'keyField: $keyField, '
+        'valueField: $valueField'
+        '}';
   }
 
   @override

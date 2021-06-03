@@ -8,11 +8,12 @@ abstract class IRestService extends IDisposable {
   static IRestService of(BuildContext context, {listen = true}) =>
       Provider.of<IRestService>(context, listen: listen);
 
-  Uri get baseUrl;
+  Uri get baseUri;
 
   Future<Response> sendHttpRequest<T extends RestRequest, K>(T request);
 
   Future<Response>
       uploadFileMultipartRequest<T extends UploadMultipartRestRequest, K>(
-          T request);
+    T request,
+  );
 }

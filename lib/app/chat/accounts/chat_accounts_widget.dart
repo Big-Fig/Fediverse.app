@@ -1,8 +1,8 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/list/account_list_item_widget.dart';
+import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
@@ -27,18 +27,20 @@ class ChatAccountsWidget extends StatelessWidget {
         return ListView.builder(
           itemCount: items.length,
           itemBuilder: (context, index) => DisposableProvider<IAccountBloc>(
-            create: (context) => AccountBloc.createFromContext(context,
-                isNeedWatchLocalRepositoryForUpdates: false,
-                account: items[index],
-                isNeedRefreshFromNetworkOnInit: false,
-                isNeedWatchWebSocketsEvents: false,
-                isNeedPreFetchRelationship: false),
+            create: (context) => LocalAccountBloc.createFromContext(
+              context,
+              isNeedWatchLocalRepositoryForUpdates: false,
+              account: items[index],
+              isNeedRefreshFromNetworkOnInit: false,
+              isNeedWatchWebSocketsEvents: false,
+              isNeedPreFetchRelationship: false,
+            ),
             child: Column(
               children: [
                 const AccountListItemWidget(
                   accountSelectedCallback: _accountSelectedCallback,
                 ),
-                const FediUltraLightGreyDivider()
+                const FediUltraLightGreyDivider(),
               ],
             ),
           ),
@@ -52,7 +54,7 @@ class ChatAccountsWidget extends StatelessWidget {
 
 class _ChatAccountsLoadingWidget extends StatelessWidget {
   const _ChatAccountsLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -62,5 +64,5 @@ class _ChatAccountsLoadingWidget extends StatelessWidget {
 }
 
 void _accountSelectedCallback(BuildContext context, IAccount account) {
-  goToAccountDetailsPage(context, account);
+  goToLocalAccountDetailsPage(context, account: account);
 }

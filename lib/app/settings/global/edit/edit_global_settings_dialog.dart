@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void showEditGlobalSettingsDialog({
-  @required BuildContext context,
-  @required String subTitle,
-  StringBuilderFromContext subTitleBuilder,
-  @required Widget child,
+  required BuildContext context,
+  required String? subTitle,
+  StringBuilderFromContext? subTitleBuilder,
+  required Widget child,
 }) {
   showSettingsDialog(
     context: context,

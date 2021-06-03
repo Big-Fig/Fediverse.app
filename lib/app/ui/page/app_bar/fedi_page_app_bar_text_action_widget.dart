@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 
 class FediPageAppBarTextActionWidget extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
-  final Color color;
+  final VoidCallback? onPressed;
+  final Color? color;
 
   FediPageAppBarTextActionWidget({
-    @required this.text,
-    @required this.onPressed,
+    required this.text,
+    required this.onPressed,
     this.color,
   });
 

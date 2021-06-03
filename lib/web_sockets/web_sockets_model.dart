@@ -1,4 +1,5 @@
-typedef T WebSocketsEventParser<T extends WebSocketsEvent>(
-    Map<String, dynamic> json);
+typedef WebSocketsEventParser<T extends WebSocketsEvent> = T Function(
+  Map<String, dynamic> json,
+);
 
 class WebSocketsEvent {}

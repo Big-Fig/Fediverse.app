@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 class FediDarkStatusBarStyleArea extends StatelessWidget {
   final Widget child;
 
-  FediDarkStatusBarStyleArea({@required this.child});
+  FediDarkStatusBarStyleArea({required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +14,11 @@ class FediDarkStatusBarStyleArea extends StatelessWidget {
 
     if (fediUiColorTheme.brightness == Brightness.light) {
       return AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.dark.copyWith(
-            statusBarColor: IFediUiColorTheme.of(context).white,
-          ),
-          child: child);
+        value: SystemUiOverlayStyle.dark.copyWith(
+          statusBarColor: IFediUiColorTheme.of(context).white,
+        ),
+        child: child,
+      );
     } else {
       return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light.copyWith(

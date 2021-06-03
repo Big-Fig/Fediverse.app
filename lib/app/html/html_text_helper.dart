@@ -1,15 +1,10 @@
-//import 'package:html/parser.dart';
-
 import 'package:html/parser.dart';
 
-class HtmlTextHelper {
-  static String extractRawStringFromHtmlString(String htmlText) {
-    if(htmlText == null) {
-      return null;
-    }
-    var document = parse(htmlText);
+extension RawStringFromHtmlStringExtension on String {
+  String extractRawStringFromHtmlString() {
+    var document = parse(this);
 
-    String parsedString = parse(document.body.text).documentElement.text;
+    var parsedString = document.body?.text ?? document.text ?? this;
 
     return parsedString;
   }

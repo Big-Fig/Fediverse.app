@@ -4,30 +4,30 @@ import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("device_upload_media_attachment_bloc_impl.dart");
+var _logger = Logger('device_upload_media_attachment_bloc_impl.dart');
 
 class UploadMediaAttachmentBlocDevice extends DisposableOwner
     implements IUploadMediaAttachmentBloc {
   final IPleromaMediaAttachmentService pleromaMediaAttachmentService;
 
   @override
-  final int maximumFileSizeInBytes;
+  final int? maximumFileSizeInBytes;
 
   final IMediaDeviceFile mediaDeviceFile;
   @override
-  IPleromaMediaAttachment pleromaMediaAttachment;
+  IPleromaApiMediaAttachment? pleromaMediaAttachment;
 
   // ignore: close_sinks
   BehaviorSubject<UploadMediaAttachmentState> uploadStateSubject =
       BehaviorSubject.seeded(
     UploadMediaAttachmentState(
-        type: UploadMediaAttachmentStateType.notUploaded),
+      type: UploadMediaAttachmentStateType.notUploaded,
+    ),
   );
 
   @override
@@ -35,14 +35,13 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
       uploadStateSubject.stream;
 
   @override
-  UploadMediaAttachmentState get uploadState => uploadStateSubject.value;
+  UploadMediaAttachmentState? get uploadState => uploadStateSubject.value;
 
   UploadMediaAttachmentBlocDevice({
-    @required this.pleromaMediaAttachmentService,
-    @required this.mediaDeviceFile,
-    @required this.maximumFileSizeInBytes,
+    required this.pleromaMediaAttachmentService,
+    required this.mediaDeviceFile,
+    required this.maximumFileSizeInBytes,
   }) {
-    assert(pleromaMediaAttachmentService != null);
     addDisposable(subject: uploadStateSubject);
     addDisposable(disposable: CustomDisposable(() async {
       if (mediaDeviceFile.isNeedDeleteAfterUsage) {
@@ -53,15 +52,15 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
 
   @override
   Future startUpload() async {
-    assert(uploadState.type == UploadMediaAttachmentStateType.notUploaded ||
-        uploadState.type == UploadMediaAttachmentStateType.failed);
+    assert(uploadState!.type == UploadMediaAttachmentStateType.notUploaded ||
+        uploadState!.type == UploadMediaAttachmentStateType.failed);
 
     var file = await mediaDeviceFile.loadFile();
     var fileLength = await file.length();
 
     if (maximumFileSizeInBytes != null &&
         maximumFileSizeInBytes != 0 &&
-        fileLength > maximumFileSizeInBytes) {
+        fileLength > maximumFileSizeInBytes!) {
       uploadStateSubject.add(
         UploadMediaAttachmentState(
           type: UploadMediaAttachmentStateType.failed,
@@ -91,7 +90,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
         ),
       );
     }).catchError((error, stackTrace) {
-      _logger.severe(() => "error during uploading", error, stackTrace);
+      _logger.severe(() => 'error during uploading', error, stackTrace);
       uploadStateSubject.add(
         UploadMediaAttachmentState(
           type: UploadMediaAttachmentStateType.failed,
@@ -103,8 +102,8 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
   }
 
   @override
-  Future<String>  calculateFilePath() => mediaDeviceFile.calculateFilePath();
+  Future<String> calculateFilePath() => mediaDeviceFile.calculateFilePath();
 
   @override
-  bool get isMedia => mediaDeviceFile.isMedia;
+  bool get isMedia => mediaDeviceFile.metadata.isMedia;
 }

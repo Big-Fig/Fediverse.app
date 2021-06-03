@@ -18,41 +18,41 @@ abstract class IPushSettingsBloc
 
   Stream<bool> get favouriteStream;
 
-  void changeFavourite(bool value);
+  Future changeFavourite(bool value);
 
   bool get follow;
 
   Stream<bool> get followStream;
 
-  void changeFollow(bool value);
+  Future changeFollow(bool value);
 
   bool get mention;
 
   Stream<bool> get mentionStream;
 
-  void changeMention(bool value);
+  Future changeMention(bool value);
 
   bool get reblog;
 
   Stream<bool> get reblogStream;
 
-  void changeReblog(bool value);
+  Future changeReblog(bool value);
 
   bool get poll;
 
   Stream<bool> get pollStream;
 
-  void changePoll(bool value);
+  Future changePoll(bool value);
 
   bool get pleromaChatMention;
 
   Stream<bool> get pleromaChatMentionStream;
 
-  void changePleromaChatMention(bool value);
+  Future changePleromaChatMention(bool value);
 
   bool get pleromaEmojiReaction;
 
   Stream<bool> get pleromaEmojiReactionStream;
 
-  void changePleromaEmojiReaction(bool value);
+  Future changePleromaEmojiReaction(bool value);
 }

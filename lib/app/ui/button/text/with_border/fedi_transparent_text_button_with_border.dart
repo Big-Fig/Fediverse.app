@@ -8,15 +8,15 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
 class FediTransparentTextButtonWithBorder extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
+  final String? text;
+  final VoidCallback? onPressed;
 
-  final double width;
+  final double? width;
   final double height;
 
   final double borderWidth;
 
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   final Color color;
 
@@ -27,13 +27,13 @@ class FediTransparentTextButtonWithBorder extends StatelessWidget {
 
   FediTransparentTextButtonWithBorder(
     this.text, {
-    @required this.onPressed,
+    required this.onPressed,
     this.width,
     this.height = FediSizes.textButtonHeight,
     this.textStyle,
     this.borderWidth = 1,
-    @required this.color,
-    @required this.expanded,
+    required this.color,
+    required this.expanded,
     this.borderVisible = true,
     this.limitMinWidth = false,
   });
@@ -42,39 +42,44 @@ class FediTransparentTextButtonWithBorder extends StatelessWidget {
   Widget build(BuildContext context) {
     var textStyle = this.textStyle ??
         IFediUiTextTheme.of(context).mediumShortBoldMediumGrey;
+    // todo: copy-pasted code
+    // ignore: no-magic-number
     var calculatedHeight = height + borderWidth * 2;
+    // ignore: no-magic-number
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
     var button = InkWell(
       onTap: onPressed,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          minWidth: limitMinWidth == true ? 120.0 : 0.0,
+          // ignore: no-magic-number
+          minWidth: limitMinWidth ? 120.0 : 0.0,
         ),
         child: Container(
-            width: width,
-            height: calculatedHeight,
-            decoration: borderVisible
-                ? BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: borderRadius,
-                    border: Border.all(
-                      color: color,
-                      width: borderWidth,
-                    ),
-                  )
-                : null,
-            child: Center(
-              child: Padding(
-                padding: FediPadding.buttonHorizontalPadding,
-                child: Text(
-                  text,
-                  textAlign: TextAlign.center,
-                  style: textStyle.copyWith(
+          width: width,
+          height: calculatedHeight,
+          decoration: borderVisible
+              ? BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: borderRadius,
+                  border: Border.all(
                     color: color,
+                    width: borderWidth,
                   ),
+                )
+              : null,
+          child: Center(
+            child: Padding(
+              padding: FediPadding.buttonHorizontalPadding,
+              child: Text(
+                text!,
+                textAlign: TextAlign.center,
+                style: textStyle.copyWith(
+                  color: color,
                 ),
               ),
-            )),
+            ),
+          ),
+        ),
       ),
     );
     if (expanded) {

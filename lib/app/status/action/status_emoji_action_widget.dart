@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/status/action/status_action_counter_widget.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
@@ -28,33 +28,35 @@ class StatusEmojiActionWidget extends StatelessWidget {
 
 class _StatusEmojiActionCounterWidget extends StatelessWidget {
   const _StatusEmojiActionCounterWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
-    return StreamBuilder<int>(
-        stream: statusBloc.reblogPlusOriginalEmojiReactionsCountStream,
-        builder: (context, snapshot) {
-          var emojiCount = snapshot.data;
-          if (emojiCount == null) {
-            return const SizedBox.shrink();
-          }
 
-          return Provider<int>.value(
-            value: emojiCount,
-            child: StatusActionCounterWidget(
-              onClick: _showEmojiPicker,
-            ),
-          );
-        });
+    return StreamBuilder<int?>(
+      stream: statusBloc.reblogPlusOriginalEmojiReactionsCountStream,
+      builder: (context, snapshot) {
+        var emojiCount = snapshot.data;
+        if (emojiCount == null) {
+          return const SizedBox.shrink();
+        }
+
+        return Provider<int>.value(
+          value: emojiCount,
+          child: StatusActionCounterWidget(
+            onClick: _showEmojiPicker,
+          ),
+        );
+      },
+    );
   }
 }
 
 class _StatusEmojiActionButtonWidget extends StatelessWidget {
   const _StatusEmojiActionButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -72,13 +74,18 @@ class _StatusEmojiActionButtonWidget extends StatelessWidget {
 
 void _showEmojiPicker(BuildContext context) {
   var statusBloc = IStatusBloc.of(context, listen: false);
-  showEmojiPickerModalPopup(context,
-      emojiReactionSelectedCallback: (String emojiName, String emoji) {
-    PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+  showEmojiPickerModalPopup(
+    context,
+    emojiReactionSelectedCallback: (
+      context,
+      String emojiName,
+      String emoji,
+    ) {
+      PleromaAsyncOperationHelper.performPleromaAsyncOperation(
         context: context,
         asyncCode: () => statusBloc.toggleEmojiReaction(emoji: emoji),
         errorDataBuilders: [
-          (BuildContext context, dynamic error, StackTrace stackTrace) =>
+          (BuildContext? context, dynamic error, StackTrace stackTrace) =>
               ErrorData(
                 error: error,
                 stackTrace: stackTrace,
@@ -88,7 +95,9 @@ void _showEmojiPicker(BuildContext context) {
                     S.of(context).app_status_emoji_error_cantAdd_dialog_content(
                           error.toString(),
                         ),
-              )
-        ]);
-  });
+              ),
+        ],
+      );
+    },
+  );
 }

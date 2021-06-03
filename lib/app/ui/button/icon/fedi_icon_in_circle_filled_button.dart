@@ -9,20 +9,20 @@ import 'package:flutter/widgets.dart';
 
 class FediIconInCircleFilledButton extends StatelessWidget {
   final IconData iconData;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double iconSize;
   final double borderWidth;
   final double size;
-  final Color enabledBackgroundColor;
-  final Color disabledBackgroundColor;
-  final Color enabledBorderColor;
-  final Color disabledBorderColor;
-  final Color enabledIconColor;
-  final Color disabledIconColor;
+  final Color? enabledBackgroundColor;
+  final Color? disabledBackgroundColor;
+  final Color? enabledBorderColor;
+  final Color? disabledBorderColor;
+  final Color? enabledIconColor;
+  final Color? disabledIconColor;
 
   const FediIconInCircleFilledButton(
     this.iconData, {
-    @required this.onPressed,
+    required this.onPressed,
     this.enabledBackgroundColor,
     this.disabledBackgroundColor,
     this.enabledBorderColor,
@@ -36,7 +36,6 @@ class FediIconInCircleFilledButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     var enabledBackgroundColor =
         this.enabledBackgroundColor ?? fediUiColorTheme.primary;
@@ -54,26 +53,30 @@ class FediIconInCircleFilledButton extends StatelessWidget {
     var borderColor =
         onPressed != null ? enabledBorderColor : disabledBorderColor;
     var iconColor = onPressed != null ? enabledIconColor : disabledIconColor;
+
     return Container(
-        width: size + borderWidth * 2,
-        height: size + borderWidth * 2,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: backgroundColor,
-          border: Border.all(
-            color: borderColor,
-            width: borderWidth,
-          ),
+      // ignore: no-magic-number
+      width: size + borderWidth * 2,
+      // ignore: no-magic-number, no-equal-arguments
+      height: size + borderWidth * 2,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: backgroundColor,
+        border: Border.all(
+          color: borderColor,
+          width: borderWidth,
         ),
-        child: FediIconButton(
-          padding: EdgeInsets.zero,
+      ),
+      child: FediIconButton(
+        padding: EdgeInsets.zero,
+        color: iconColor,
+        icon: Icon(
+          iconData,
+          size: iconSize,
           color: iconColor,
-          icon: Icon(
-            iconData,
-            size: iconSize,
-            color: iconColor,
-          ),
-          onPressed: onPressed,
-        ));
+        ),
+        onPressed: onPressed,
+      ),
+    );
   }
 }

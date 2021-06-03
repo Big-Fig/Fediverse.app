@@ -6,7 +6,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("auth_instance_chooser_bloc_impl.dart");
+var _logger = Logger('auth_instance_chooser_bloc_impl.dart');
 
 class AuthInstanceChooserBloc extends DisposableOwner
     implements IAuthInstanceChooserBloc {
@@ -14,11 +14,14 @@ class AuthInstanceChooserBloc extends DisposableOwner
 
   final ICurrentAuthInstanceBloc currentInstanceBloc;
 
-  AuthInstanceChooserBloc(
-      {@required this.instanceListBloc, @required this.currentInstanceBloc});
+  AuthInstanceChooserBloc({
+    required this.instanceListBloc,
+    required this.currentInstanceBloc,
+  });
 
   @override
-  Future chooseInstance(AuthInstance instance) => currentInstanceBloc.changeCurrentInstance(instance);
+  Future chooseInstance(AuthInstance instance) =>
+      currentInstanceBloc.changeCurrentInstance(instance);
 
   @override
   List<AuthInstance> get instancesAvailableToChoose =>
@@ -29,22 +32,25 @@ class AuthInstanceChooserBloc extends DisposableOwner
       instanceListBloc.availableInstancesStream
           .map((availableInstances) => filterNotSelected(availableInstances));
 
-  List<AuthInstance> filterNotSelected(List<AuthInstance> availableInstances) {
+  List<AuthInstance> filterNotSelected(
+    List<AuthInstance> availableInstances,
+  ) {
     var selectedInstance = this.selectedInstance;
     var filtered = availableInstances.where((instance) {
-      return instance.userAtHost != selectedInstance.userAtHost;
+      return instance.userAtHost != selectedInstance!.userAtHost;
     }).toList();
-    _logger.finest(() => "filterNotSelected \n"
-        "\t availableInstances = ${availableInstances.length} \n"
-        "\t filtered = ${filtered.length} \n");
+    _logger.finest(() => 'filterNotSelected \n'
+        '\t availableInstances = ${availableInstances.length} \n'
+        '\t filtered = ${filtered.length} \n');
+
     return filtered;
   }
 
   @override
-  AuthInstance get selectedInstance => currentInstanceBloc.currentInstance;
+  AuthInstance? get selectedInstance => currentInstanceBloc.currentInstance;
 
   @override
-  Stream<AuthInstance> get selectedInstanceStream =>
+  Stream<AuthInstance?> get selectedInstanceStream =>
       currentInstanceBloc.currentInstanceStream;
 
   @override
@@ -53,7 +59,8 @@ class AuthInstanceChooserBloc extends DisposableOwner
 
   static AuthInstanceChooserBloc createFromContext(BuildContext context) =>
       AuthInstanceChooserBloc(
-          instanceListBloc: IAuthInstanceListBloc.of(context, listen: false),
-          currentInstanceBloc:
-              ICurrentAuthInstanceBloc.of(context, listen: false));
+        instanceListBloc: IAuthInstanceListBloc.of(context, listen: false),
+        currentInstanceBloc:
+            ICurrentAuthInstanceBloc.of(context, listen: false),
+      );
 }

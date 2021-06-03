@@ -8,7 +8,7 @@ class EditWebSocketsSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditWebSocketsSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override

@@ -1,15 +1,19 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
-  static IUploadMediaAttachmentsCollectionBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IUploadMediaAttachmentsCollectionBloc>(context,
-          listen: listen);
+  static IUploadMediaAttachmentsCollectionBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IUploadMediaAttachmentsCollectionBloc>(
+        context,
+        listen: listen,
+      );
 
   List<IUploadMediaAttachmentBloc> get onlyMediaAttachmentBlocs;
 
@@ -24,13 +28,17 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
 
   Stream<bool> get isMaximumMediaAttachmentCountReachedStream;
 
+  int? get maximumMediaAttachmentCountLeft;
+
+  Stream<int?> get maximumMediaAttachmentCountLeftStream;
+
   bool get isAllAttachedMediaUploaded;
 
   Stream<bool> get isAllAttachedMediaUploadedStream;
 
   int get maximumMediaAttachmentCount;
 
-  int get maximumFileSizeInBytes;
+  int? get maximumFileSizeInBytes;
 
   bool get isPossibleToAttachMedia;
 
@@ -42,10 +50,13 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
 
   Future attachMedia(IMediaDeviceFile mediaDeviceFile);
 
+  Future attachMedias(List<IMediaDeviceFile> mediaDeviceFiles);
+
   void detachMediaAttachmentBloc(
-      IUploadMediaAttachmentBloc mediaAttachmentBloc);
+    IUploadMediaAttachmentBloc mediaAttachmentBloc,
+  );
 
   Future clear();
 
-  void addUploadedAttachment(IPleromaMediaAttachment attachment);
+  void addUploadedAttachment(IPleromaApiMediaAttachment attachment);
 }

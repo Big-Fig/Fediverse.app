@@ -1,7 +1,6 @@
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/form_group_bloc_impl.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
-import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 typedef NewEmptyFieldCreator<T> = T Function();
@@ -9,9 +8,9 @@ typedef NewEmptyFieldCreator<T> = T Function();
 class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     implements IOneTypeFormGroupBloc<T> {
   @override
-  final int maximumFieldsCount;
+  final int? maximumFieldsCount;
   @override
-  final int minimumFieldsCount;
+  final int? minimumFieldsCount;
   final NewEmptyFieldCreator<T> newEmptyFieldCreator;
 
   final List<T> originalItems;
@@ -19,10 +18,10 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   bool isGroupChanged = false;
 
   OneTypeFormGroupBloc({
-    @required this.maximumFieldsCount,
-    @required this.minimumFieldsCount,
-    @required this.newEmptyFieldCreator,
-    @required this.originalItems,
+    required this.maximumFieldsCount,
+    required this.minimumFieldsCount,
+    required this.newEmptyFieldCreator,
+    required this.originalItems,
   }) : _itemsSubject = BehaviorSubject.seeded([
           ...originalItems,
         ]) {
@@ -30,9 +29,10 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     addDisposable(subject: _isChangedSubject);
     originalItems.forEach((field) {
       addDisposable(
-          streamSubscription: field.isSomethingChangedStream.listen((_) {
-        checkIsSomethingChanged();
-      }));
+        streamSubscription: field.isSomethingChangedStream.listen((_) {
+          checkIsSomethingChanged();
+        }),
+      );
     });
   }
 
@@ -41,22 +41,22 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   bool get isMaximumFieldsCountReached =>
-      maximumFieldsCount != null ? items.length >= maximumFieldsCount : false;
+      maximumFieldsCount != null ? items.length >= maximumFieldsCount! : false;
 
   @override
   bool get isMinimumFieldsCountReached =>
-      minimumFieldsCount != null ? items.length <= minimumFieldsCount : false;
+      minimumFieldsCount != null ? items.length <= minimumFieldsCount! : false;
 
   @override
   Stream<bool> get isMaximumFieldsCountReachedStream =>
       itemsStream.map((customFields) => maximumFieldsCount != null
-          ? items.length >= maximumFieldsCount
+          ? items.length >= maximumFieldsCount!
           : false);
 
   @override
   Stream<bool> get isMinimumFieldsCountReachedStream =>
       itemsStream.map((customFields) => minimumFieldsCount != null
-          ? items.length <= minimumFieldsCount
+          ? items.length <= minimumFieldsCount!
           : false);
 
   @override
@@ -76,24 +76,27 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   bool get isPossibleToAddFields => !isMaximumFieldsCountReached;
 
   @override
-  List<T> get items => _itemsSubject.value;
+  List<T> get items => _itemsSubject.value!;
 
   @override
   Stream<List<T>> get itemsStream => _itemsSubject.stream;
 
   @override
-  bool get isSomethingChanged => _isChangedSubject.value;
+  bool get isSomethingChanged => _isChangedSubject.value!;
 
   @override
   Stream<bool> get isSomethingChangedStream => _isChangedSubject.stream;
 
   bool checkIsSomethingChanged() {
     var isChanged = isGroupChanged ||
-        items.map((field) => field.isSomethingChanged).fold(false,
-            (previousValue, element) {
-          return previousValue | element;
-        });
+        items.map((field) => field.isSomethingChanged).fold(
+          false,
+          (previousValue, element) {
+            return previousValue | element;
+          },
+        );
     _isChangedSubject.add(isChanged);
+
     return isChanged;
   }
 
@@ -112,15 +115,32 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   }
 
   @override
-  void removeField(T field) {
+  void removeField(T? field) {
     items.remove(field);
     _itemsSubject.add(items);
     isGroupChanged = true;
     checkIsSomethingChanged();
     recalculateErrors();
     Future.delayed(Duration(seconds: 1), () {
-      field.dispose();
+      field!.dispose();
     });
+  }
+
+  @override
+  void changeFields(List<T> fields) {
+    var oldFields = items;
+    _itemsSubject.add(fields);
+    isGroupChanged = false;
+    checkIsSomethingChanged();
+    recalculateErrors();
+    Future.delayed(
+      Duration(seconds: 1),
+      () {
+        for (var field in oldFields) {
+          field.dispose();
+        }
+      },
+    );
   }
 
   @override
@@ -151,8 +171,8 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   }
 
   @override
-  bool isLast(T item) {
-    if (items.isNotEmpty == true) {
+  bool isLast(T? item) {
+    if (items.isNotEmpty) {
       return items.last == item;
     } else {
       return false;
@@ -160,7 +180,7 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   }
 
   @override
-  T findNextItemFor(T item) {
+  T? findNextItemFor(T item) {
     var index = items.indexOf(item);
 
     if (index >= 0 && index + 1 < items.length) {

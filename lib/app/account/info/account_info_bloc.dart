@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 abstract class IAccountInfoBloc implements IDisposable {
- static IAccountInfoBloc of(BuildContext context,
-     {bool listen = true}) =>
-     Provider.of<IAccountInfoBloc>(context, listen: listen);
+  static IAccountInfoBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IAccountInfoBloc>(context, listen: listen);
 
+  Brightness get brightness;
 
- Brightness get brightness;
- OnClickUiCallback get onStatusesTapCallback;
+  OnClickUiCallback? get onStatusesTapCallback;
 }

@@ -5,13 +5,14 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 
 class InitBloc extends AsyncInitLoadingBloc implements IInitBloc {
   @override
-  AppContextBloc appContextBloc;
+  final AppContextBloc appContextBloc = AppContextBloc();
 
-  DeepLinkInitBloc deepLinkInitBloc;
+  // ignore: avoid-late-keyword
+  late DeepLinkInitBloc deepLinkInitBloc;
 
   @override
   Future internalAsyncInit() async {
-    appContextBloc = AppContextBloc();
+
     addDisposable(disposable: appContextBloc);
 
     await appContextBloc.performAsyncInit();
@@ -21,6 +22,7 @@ class InitBloc extends AsyncInitLoadingBloc implements IInitBloc {
           appContextBloc.get(),
       localPreferencesService: appContextBloc.get(),
       connectionService: appContextBloc.get(),
+      // ignore: no-equal-arguments
       currentAuthInstanceBloc: appContextBloc.get(),
     );
 

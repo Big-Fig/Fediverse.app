@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 
 abstract class IEditMediaSettingsBloc
     implements IEditGlobalOrInstanceSettingsBloc<MediaSettings> {
-  static IEditMediaSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IEditMediaSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IEditMediaSettingsBloc>(context, listen: listen);
 
   IBoolValueFormFieldBloc get autoPlayFieldBloc;

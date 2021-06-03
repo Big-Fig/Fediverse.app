@@ -17,13 +17,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("current_auth_instance_context_init_widget.dart");
+var _logger = Logger('current_auth_instance_context_init_widget.dart');
 
 class CurrentAuthInstanceContextInitWidget extends StatefulWidget {
   final Widget child;
 
   const CurrentAuthInstanceContextInitWidget({
-    @required this.child,
+    required this.child,
   });
 
   @override
@@ -33,8 +33,8 @@ class CurrentAuthInstanceContextInitWidget extends StatefulWidget {
 
 class _CurrentAuthInstanceContextInitWidgetState
     extends State<CurrentAuthInstanceContextInitWidget> {
-  FediIndeterminateProgressDialog loadingInstanceProgressDialog;
-  StreamSubscription subscription;
+  FediIndeterminateProgressDialog? loadingInstanceProgressDialog;
+  StreamSubscription? subscription;
 
   var disposed = false;
 
@@ -47,32 +47,41 @@ class _CurrentAuthInstanceContextInitWidgetState
 
     var isLoading = currentInstanceContextLoadingBloc.state ==
         CurrentAuthInstanceContextInitState.loading;
-    _logger.finest(() => "didChangeDependencies "
-        "isLoading $isLoading disposed $disposed");
-    Future.delayed(Duration(milliseconds: 100), () {
-      if (isLoading && !disposed) {
-        showProgressDialog(context, currentInstanceContextLoadingBloc);
-      }
-    });
+    _logger.finest(() => 'didChangeDependencies '
+        'isLoading $isLoading disposed $disposed');
+    Future.delayed(
+      // todo: refactor
+      // ignore: no-magic-number
+      Duration(milliseconds: 100),
+      () {
+        if (isLoading && !disposed) {
+          showProgressDialog(context, currentInstanceContextLoadingBloc);
+        }
+      },
+    );
   }
 
-  void showProgressDialog(BuildContext context,
-      ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc) {
+  void showProgressDialog(
+    BuildContext context,
+    ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc,
+  ) {
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     var isAlreadyShown = loadingInstanceProgressDialog?.isShowing == true;
-    _logger.finest(() => "showProgressDialog isAlreadyShown = $isAlreadyShown");
+    _logger.finest(() => 'showProgressDialog isAlreadyShown = $isAlreadyShown');
     if (!isAlreadyShown) {
       loadingInstanceProgressDialog = FediIndeterminateProgressDialog(
-          cancelableOperation: null,
-          titleMessage: S
-              .of(context)
-              .app_auth_instance_current_context_loading_loading_title,
-          contentMessage: S
-              .of(context)
-              .app_auth_instance_current_context_loading_loading_content(
-                  myAccountBloc.instance.userAtHost));
+        cancelableOperation: null,
+        titleMessage: S
+            .of(context)
+            .app_auth_instance_current_context_loading_loading_title,
+        contentMessage: S
+            .of(context)
+            .app_auth_instance_current_context_loading_loading_content(
+              myAccountBloc.instance.userAtHost,
+            ),
+      );
 
-      loadingInstanceProgressDialog.show(context);
+      loadingInstanceProgressDialog!.show(context);
 
       subscription =
           currentInstanceContextLoadingBloc.stateStream.listen((state) {
@@ -82,10 +91,11 @@ class _CurrentAuthInstanceContextInitWidgetState
   }
 
   void onStateChanged(
-      ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc) {
+    ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc,
+  ) {
     var state = CurrentAuthInstanceContextInitState.loading;
     var isNotLoading = currentInstanceContextLoadingBloc.state != state;
-    _logger.finest(() => "onStateChanged $state isNotLoading $isNotLoading");
+    _logger.finest(() => 'onStateChanged $state isNotLoading $isNotLoading');
     if (isNotLoading) {
       hideDialog();
     }
@@ -101,9 +111,9 @@ class _CurrentAuthInstanceContextInitWidgetState
 
   void hideDialog() {
     var isShowing = loadingInstanceProgressDialog?.isShowing == true;
-    _logger.finest(() => "hideDialog isShowing $isShowing");
+    _logger.finest(() => 'hideDialog isShowing $isShowing');
     if (isShowing) {
-      loadingInstanceProgressDialog.hide(context);
+      loadingInstanceProgressDialog!.hide(context);
     }
   }
 
@@ -112,35 +122,35 @@ class _CurrentAuthInstanceContextInitWidgetState
     var currentInstanceContextLoadingBloc =
         ICurrentAuthInstanceContextInitBloc.of(context, listen: false);
 
-    _logger.finest(() => "build");
+    _logger.finest(() => 'build');
 
     return StreamBuilder<CurrentAuthInstanceContextInitState>(
-        stream: currentInstanceContextLoadingBloc.stateStream.distinct(),
-        initialData: currentInstanceContextLoadingBloc.state,
-        builder: (context, snapshot) {
-          var state = snapshot.data;
-          _logger.finest(() => "state $state");
+      stream: currentInstanceContextLoadingBloc.stateStream.distinct(),
+      initialData: currentInstanceContextLoadingBloc.state,
+      builder: (context, snapshot) {
+        var state = snapshot.data;
+        _logger.finest(() => 'state $state');
 
-          switch (state) {
-            case CurrentAuthInstanceContextInitState.localCacheExist:
-              return widget.child;
-            case CurrentAuthInstanceContextInitState
-                .cantFetchAndLocalCacheNotExist:
-              return const _CurrentAuthInstanceContextInitSessionExpiredWidget();
-              break;
-            case CurrentAuthInstanceContextInitState.loading:
-            default:
-              return const SplashPage();
-              break;
-          }
-        });
+        switch (state) {
+          case CurrentAuthInstanceContextInitState.localCacheExist:
+            return widget.child;
+          case CurrentAuthInstanceContextInitState
+              .cantFetchAndLocalCacheNotExist:
+          case CurrentAuthInstanceContextInitState.invalidCredentials:
+            return const _CurrentAuthInstanceContextInitSessionExpiredWidget();
+          case CurrentAuthInstanceContextInitState.loading:
+          case null:
+            return const SplashPage();
+        }
+      },
+    );
   }
 }
 
 class _CurrentAuthInstanceContextInitSessionExpiredWidget
     extends StatelessWidget {
   const _CurrentAuthInstanceContextInitSessionExpiredWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -177,7 +187,7 @@ class _CurrentAuthInstanceContextInitSessionExpiredWidget
 class _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget
     extends StatelessWidget {
   const _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -199,7 +209,7 @@ class _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget
 class _CurrentAuthInstanceContextInitSessionExpiredChooseAccountButtonWidget
     extends StatelessWidget {
   const _CurrentAuthInstanceContextInitSessionExpiredChooseAccountButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -220,7 +230,7 @@ class _CurrentAuthInstanceContextInitSessionExpiredChooseAccountButtonWidget
 class _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget
     extends StatelessWidget {
   const _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -233,7 +243,9 @@ class _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget
           .of(context)
           .app_auth_instance_current_context_loading_cantLoad_action_refresh,
       onPressed: () {
-        currentInstanceContextLoadingBloc.refreshFromNetwork();
+        currentInstanceContextLoadingBloc.refreshFromNetwork(
+          isNeedWaitForOptionalData: false,
+        );
       },
       color: IFediUiColorTheme.of(context).white,
       expanded: false,
@@ -244,15 +256,17 @@ class _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget
 class _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget
     extends StatelessWidget {
   const _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+
     return Text(
       S.of(context).app_auth_instance_current_context_loading_cantLoad_content(
-          currentAuthInstanceBloc.currentInstance.userAtHost),
+            currentAuthInstanceBloc.currentInstance!.userAtHost,
+          ),
       textAlign: TextAlign.center,
       style: IFediUiTextTheme.of(context).mediumShortBoldWhite,
     );

@@ -8,23 +8,26 @@ import 'package:provider/provider.dart';
 
 class SearchAccountsPaginationListBloc extends AccountPaginationListBloc {
   final ISearchInputBloc searchInputBloc;
+
   SearchAccountsPaginationListBloc({
-    @required this.searchInputBloc,
-    @required
-        IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
+    required this.searchInputBloc,
+    required IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
     addDisposable(streamSubscription:
-    searchInputBloc.confirmedSearchTermStream.listen((newText) {
+        searchInputBloc.confirmedSearchTermStream.listen((newText) {
       refreshWithController();
     }));
   }
 
   static SearchAccountsPaginationListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       SearchAccountsPaginationListBloc(
-          paginationBloc:
-              Provider.of<IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
-                  context,
-                  listen: false),
-          searchInputBloc: ISearchInputBloc.of(context, listen: false));
+        paginationBloc:
+            Provider.of<IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
+          context,
+          listen: false,
+        ),
+        searchInputBloc: ISearchInputBloc.of(context, listen: false),
+      );
 }

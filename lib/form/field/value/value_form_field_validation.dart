@@ -1,6 +1,9 @@
 import 'package:fedi/form/field/form_field_validation.dart';
 
-typedef ValueFormFieldValidationError FormValueFieldValidation<T>(
-    T currentValue);
+typedef FormValueFieldValidation<T> = ValueFormFieldValidationError? Function(
+  T? currentValue,
+);
 
-abstract class ValueFormFieldValidationError extends FormFieldValidationError {}
+abstract class ValueFormFieldValidationError extends FormFieldValidationError {
+  const ValueFormFieldValidationError();
+}

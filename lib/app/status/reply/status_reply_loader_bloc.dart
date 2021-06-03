@@ -6,11 +6,13 @@ import 'package:provider/provider.dart';
 
 abstract class IStatusReplyLoaderBloc
     implements IAsyncInitLoadingBloc, IDisposable {
-  static IStatusReplyLoaderBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IStatusReplyLoaderBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IStatusReplyLoaderBloc>(context, listen: listen);
 
   IStatus get originalStatus;
 
-  IStatus get inReplyToStatus;
+  IStatus? get inReplyToStatus;
 }

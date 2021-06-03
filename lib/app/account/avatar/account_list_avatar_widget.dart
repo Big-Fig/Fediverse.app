@@ -17,6 +17,7 @@ class AccountListAvatarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: baseAvatarSize,
+      // ignore: no-equal-arguments
       height: baseAvatarSize,
       child: _AccountListAvatarBodyWidget(baseAvatarSize: baseAvatarSize),
     );
@@ -25,8 +26,8 @@ class AccountListAvatarWidget extends StatelessWidget {
 
 class _AccountListAvatarBodyWidget extends StatelessWidget {
   const _AccountListAvatarBodyWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -34,12 +35,13 @@ class _AccountListAvatarBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accounts = Provider.of<List<IAccount>>(context);
-    if (accounts?.isNotEmpty != true) {
+    if (accounts.isEmpty) {
       return const SizedBox.shrink();
     }
 
     if (accounts.length == 1) {
       var account = accounts.first;
+
       return Provider<IAccount>.value(
         value: account,
         child: _AccountListAvatarSingleAccountWidget(
@@ -56,8 +58,8 @@ class _AccountListAvatarBodyWidget extends StatelessWidget {
 
 class _AccountListAvatarSingleAccountWidget extends StatelessWidget {
   const _AccountListAvatarSingleAccountWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -65,10 +67,12 @@ class _AccountListAvatarSingleAccountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
+      // ignore: no-magic-number
       borderRadius: BorderRadius.circular(baseAvatarSize / 2),
-      child: ProxyProvider<IAccount, String>(
+      child: ProxyProvider<IAccount, String?>(
         update: (context, account, _) => account.avatar,
         child: AccountAvatarUrlWidget(
+          // ignore: no-magic-number
           progressSize: baseAvatarSize / 2,
           imageSize: baseAvatarSize,
         ),
@@ -79,8 +83,8 @@ class _AccountListAvatarSingleAccountWidget extends StatelessWidget {
 
 class _AccountListAvatarMultiAccountWidget extends StatelessWidget {
   const _AccountListAvatarMultiAccountWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -89,28 +93,33 @@ class _AccountListAvatarMultiAccountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accounts = Provider.of<List<IAccount>>(context);
     switch (accounts.length) {
+      // ignore: no-magic-number
       case 2:
         return _AccountListAvatarMultiAccountTwoWidget(
-            baseAvatarSize: baseAvatarSize);
-        break;
+          baseAvatarSize: baseAvatarSize,
+        );
+      // ignore: no-magic-number
       case 3:
         return _AccountListAvatarMultiAccountThreeWidget(
-            baseAvatarSize: baseAvatarSize);
-        break;
+          baseAvatarSize: baseAvatarSize,
+        );
+      // ignore: no-magic-number
       case 4:
         return _AccountListAvatarMultiAccountFourWidget(
-            baseAvatarSize: baseAvatarSize);
+          baseAvatarSize: baseAvatarSize,
+        );
       default:
         return _AccountListAvatarMultiAccountFiveAndMoreWidget(
-            baseAvatarSize: baseAvatarSize);
+          baseAvatarSize: baseAvatarSize,
+        );
     }
   }
 }
 
 class _AccountListAvatarMultiAccountTwoWidget extends StatelessWidget {
   const _AccountListAvatarMultiAccountTwoWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -119,11 +128,12 @@ class _AccountListAvatarMultiAccountTwoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const sizeMultiplier = 0.7;
     var accounts = Provider.of<List<IAccount>>(context);
+
     return Stack(
       children: [
         Align(
           alignment: Alignment.bottomLeft,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[0],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -133,7 +143,7 @@ class _AccountListAvatarMultiAccountTwoWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.topRight,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[1],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -148,8 +158,8 @@ class _AccountListAvatarMultiAccountTwoWidget extends StatelessWidget {
 
 class _AccountListAvatarMultiAccountThreeWidget extends StatelessWidget {
   const _AccountListAvatarMultiAccountThreeWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -158,11 +168,12 @@ class _AccountListAvatarMultiAccountThreeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const sizeMultiplier = 0.65;
     var accounts = Provider.of<List<IAccount>>(context);
+
     return Stack(
       children: [
         Align(
           alignment: Alignment.topLeft,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[0],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -172,7 +183,7 @@ class _AccountListAvatarMultiAccountThreeWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.topRight,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[1],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -182,7 +193,8 @@ class _AccountListAvatarMultiAccountThreeWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
+            // ignore: no-magic-number
             value: accounts[2],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -197,8 +209,8 @@ class _AccountListAvatarMultiAccountThreeWidget extends StatelessWidget {
 
 class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
   const _AccountListAvatarMultiAccountFourWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -207,11 +219,12 @@ class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const sizeMultiplier = 0.6;
     var accounts = Provider.of<List<IAccount>>(context);
+
     return Stack(
       children: [
         Align(
           alignment: Alignment.topLeft,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[0],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -221,7 +234,7 @@ class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.topRight,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[1],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -231,7 +244,8 @@ class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomLeft,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
+            // ignore: no-magic-number
             value: accounts[2],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -241,7 +255,8 @@ class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomRight,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
+            // ignore: no-magic-number
             value: accounts[3],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -256,8 +271,8 @@ class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
 
 class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
   const _AccountListAvatarMultiAccountFiveAndMoreWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -266,11 +281,12 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const sizeMultiplier = 0.55;
     var accounts = Provider.of<List<IAccount>>(context);
+
     return Stack(
       children: [
         Align(
           alignment: Alignment.topLeft,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[0],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -280,7 +296,7 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.topRight,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
             value: accounts[1],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -290,7 +306,8 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomLeft,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
+            // ignore: no-magic-number
             value: accounts[2],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -300,7 +317,8 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomRight,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
+            // ignore: no-magic-number
             value: accounts[3],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -310,7 +328,8 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.center,
-          child: Provider.value(
+          child: Provider<IAccount>.value(
+            // ignore: no-magic-number
             value: accounts[4],
             child: _AccountListAvatarMultiAccountImageWidget(
               sizeMultiplier: sizeMultiplier,
@@ -325,9 +344,9 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
 
 class _AccountListAvatarMultiAccountImageWidget extends StatelessWidget {
   const _AccountListAvatarMultiAccountImageWidget({
-    Key key,
-    @required this.baseAvatarSize,
-    @required this.sizeMultiplier,
+    Key? key,
+    required this.baseAvatarSize,
+    required this.sizeMultiplier,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -337,22 +356,29 @@ class _AccountListAvatarMultiAccountImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: baseAvatarSize * sizeMultiplier,
+      // ignore: no-equal-arguments
       height: baseAvatarSize * sizeMultiplier,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
+          // todo: refactor
+          // ignore: no-magic-number
           Radius.circular(baseAvatarSize * sizeMultiplier / 2),
         ),
         border: Border.all(
+          // ignore: no-magic-number
           color: IFediUiColorTheme.of(context).white.withOpacity(0.5),
+          // ignore: no-magic-number
           width: 2.0,
         ),
       ),
       child: ClipRRect(
         borderRadius:
+            // ignore: no-magic-number
             BorderRadius.circular(baseAvatarSize / 2 * sizeMultiplier),
-        child: ProxyProvider<IAccount, String>(
+        child: ProxyProvider<IAccount, String?>(
           update: (context, account, _) => account.avatar,
           child: AccountAvatarUrlWidget(
+            // ignore: no-magic-number
             progressSize: baseAvatarSize / 2 * sizeMultiplier,
             imageSize: baseAvatarSize * sizeMultiplier,
           ),

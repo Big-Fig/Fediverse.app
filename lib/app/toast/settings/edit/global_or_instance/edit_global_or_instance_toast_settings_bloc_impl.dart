@@ -3,23 +3,24 @@ import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_glo
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
-import 'package:flutter/widgets.dart';
 
 class EditGlobalOrInstanceToastSettingsBloc extends EditToastSettingsBloc {
   ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
       switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc;
 
   EditGlobalOrInstanceToastSettingsBloc({
-    @required IToastSettingsBloc toastSettingsBloc,
-    @required AuthInstance currentInstance,
-    @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool isEnabled,
-    @required this.switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc,
+    required IToastSettingsBloc toastSettingsBloc,
+    required AuthInstance? currentInstance,
+    required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
+    required bool isEnabled,
+    required bool isGlobalForced,
+    required this.switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc,
   }) : super(
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           toastSettingsBloc: toastSettingsBloc,
           currentInstance: currentInstance,
           isEnabled: isEnabled,
+          isGlobalForced: isGlobalForced,
         );
 
   @override
@@ -29,6 +30,7 @@ class EditGlobalOrInstanceToastSettingsBloc extends EditToastSettingsBloc {
         null) {
       return true;
     }
+
     return super.isPossibleToSaveSettingsToBloc;
   }
 }

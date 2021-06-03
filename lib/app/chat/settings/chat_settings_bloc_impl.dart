@@ -1,15 +1,16 @@
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/chat/settings/chat_settings_model.dart';
-import 'package:fedi/app/chat/settings/local_preferences/chat_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/app/chat/settings/local_preferences/chat_settings_local_preference_bloc.dart';
+import 'package:fedi/app/settings/global_or_instance/local_preferences/global_or_instance_settings_bloc_local_preference_impl.dart';
 
 class ChatSettingsBloc
-    extends GlobalOrInstanceSettingsLocalPreferencesBloc<ChatSettings>
+    extends GlobalOrInstanceSettingsLocalPreferenceBloc<ChatSettings>
     implements IChatSettingsBloc {
   ChatSettingsBloc({
-    @required IChatSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
-    @required IChatSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
+    required IChatSettingsLocalPreferenceBloc<ChatSettings>
+        globalLocalPreferencesBloc,
+    required IChatSettingsLocalPreferenceBloc<ChatSettings?>
+        instanceLocalPreferencesBloc,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
@@ -45,6 +46,7 @@ class ChatSettingsBloc
       settingsData.replaceConversationsWithPleromaChats;
 
   @override
-  Stream<bool> get replaceConversationsWithPleromaChatsStream => settingsDataStream
-      .map((settings) => settings.replaceConversationsWithPleromaChats);
+  Stream<bool> get replaceConversationsWithPleromaChatsStream =>
+      settingsDataStream
+          .map((settings) => settings.replaceConversationsWithPleromaChats);
 }

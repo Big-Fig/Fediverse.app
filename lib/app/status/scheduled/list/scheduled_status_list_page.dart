@@ -24,7 +24,7 @@ class ScheduledStatusListPage extends StatelessWidget {
 
   Widget buildBody(BuildContext context) =>
       ScheduledStatusPaginationListTimelineWidget(
-        key: PageStorageKey("ScheduledStatusPaginationListTimelineWidget"),
+        key: PageStorageKey('ScheduledStatusPaginationListTimelineWidget'),
         customEmptyWidget: const _ScheduledStatusListPageEmptyWidget(),
         needWatchLocalRepositoryForUpdates: true,
         successCallback: () {
@@ -34,7 +34,7 @@ class ScheduledStatusListPage extends StatelessWidget {
         },
       );
 
-  const ScheduledStatusListPage({Key key}) : super(key: key);
+  const ScheduledStatusListPage({Key? key}) : super(key: key);
 }
 
 class _ScheduledStatusListPageEmptyWidget extends StatelessWidget {
@@ -59,6 +59,8 @@ void goToScheduledStatusListPage(BuildContext context) {
         context,
         child: ScheduledStatusCachedPaginationBloc.provideToContext(
           context,
+          // todo: refactor
+          // ignore: no-magic-number
           itemsCountPerPage: 20,
           maximumCachedPagesCount: null,
           child: ScheduledStatusPaginationListWithNewItemsBloc.provideToContext(

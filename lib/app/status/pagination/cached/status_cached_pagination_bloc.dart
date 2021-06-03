@@ -5,7 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class IStatusCachedPaginationBloc
     implements ICachedPleromaPaginationBloc<IStatus> {
-  static IStatusCachedPaginationBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IStatusCachedPaginationBloc>(context, listen: listen);
+  static IStatusCachedPaginationBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IStatusCachedPaginationBloc>(
+        context,
+        listen: listen,
+      );
 }

@@ -1,18 +1,18 @@
 import 'package:fedi/app/status/visibility/status_visibility_ui.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StatusVisibilityIconWidget extends StatelessWidget {
-  final PleromaVisibility visibility;
+  final PleromaApiVisibility visibility;
   final bool isPossibleToChangeVisibility;
   final bool isSelectedVisibility;
 
   StatusVisibilityIconWidget({
-    @required this.visibility,
-    @required this.isPossibleToChangeVisibility,
-    @required this.isSelectedVisibility,
+    required this.visibility,
+    required this.isPossibleToChangeVisibility,
+    required this.isSelectedVisibility,
   });
 
   @override
@@ -23,11 +23,12 @@ class StatusVisibilityIconWidget extends StatelessWidget {
         isSelectedVisibility: isSelectedVisibility,
       );
 
-  static Icon buildVisibilityIcon(
-          {@required BuildContext context,
-          @required PleromaVisibility visibility,
-          @required isPossibleToChangeVisibility,
-          @required isSelectedVisibility}) =>
+  static Icon buildVisibilityIcon({
+    required BuildContext context,
+    required PleromaApiVisibility visibility,
+    required isPossibleToChangeVisibility,
+    required isSelectedVisibility,
+  }) =>
       Icon(
         mapVisibilityToIconData(visibility),
         color: calculateVisibilityColor(
@@ -37,24 +38,20 @@ class StatusVisibilityIconWidget extends StatelessWidget {
         ),
       );
 
-  static IconData mapVisibilityToIconData(PleromaVisibility visibility) {
+  static IconData mapVisibilityToIconData(PleromaApiVisibility visibility) {
     switch (visibility) {
-      case PleromaVisibility.public:
+      case PleromaApiVisibility.public:
         return FediIcons.world;
-        break;
-      case PleromaVisibility.unlisted:
+      case PleromaApiVisibility.local:
+        return FediIcons.instance;
+      case PleromaApiVisibility.unlisted:
         return FediIcons.unlisted;
-        break;
-      case PleromaVisibility.direct:
+      case PleromaApiVisibility.direct:
         return FediIcons.message;
-        break;
-      case PleromaVisibility.list:
+      case PleromaApiVisibility.list:
         return FediIcons.lists;
-        break;
-      case PleromaVisibility.private:
+      case PleromaApiVisibility.private:
         return FediIcons.private;
-        break;
     }
-    throw "Not supported visibility $visibility";
   }
 }

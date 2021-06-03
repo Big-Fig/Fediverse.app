@@ -2,7 +2,7 @@ import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/cupertino.dart';
 
-const _defaultInstanceDomain = "fedi.app";
+const _defaultInstanceDomain = 'fedi.app';
 
 class JoinAuthInstanceBloc extends DisposableOwner
     implements IJoinAuthInstanceBloc {
@@ -11,7 +11,9 @@ class JoinAuthInstanceBloc extends DisposableOwner
   @override
   final TextEditingController hostTextController = TextEditingController();
 
-  JoinAuthInstanceBloc({@required this.isFromScratch}) {
+  JoinAuthInstanceBloc({
+    required this.isFromScratch,
+  }) {
     addDisposable(textEditingController: hostTextController);
   }
 
@@ -19,7 +21,7 @@ class JoinAuthInstanceBloc extends DisposableOwner
   Uri extractCurrentUri() {
     var uriText = hostTextController.text;
 
-    if (uriText?.isNotEmpty != true) {
+    if (!uriText.isNotEmpty) {
       uriText = _defaultInstanceDomain;
     }
 
@@ -27,8 +29,8 @@ class JoinAuthInstanceBloc extends DisposableOwner
 
     Uri uri;
     var scheme = parsedUri.scheme;
-    if (scheme?.isNotEmpty != true) {
-      uri = Uri.parse("https://$uriText");
+    if (!scheme.isNotEmpty) {
+      uri = Uri.parse('https://$uriText');
     } else {
       uri = parsedUri;
     }

@@ -5,6 +5,8 @@ class FediPadding {
   static const allBigPadding = EdgeInsets.all(FediSizes.bigPadding);
   static const horizontalBigPadding =
       EdgeInsets.symmetric(horizontal: FediSizes.bigPadding);
+  static const horizontalMediumPadding =
+  EdgeInsets.symmetric(horizontal: FediSizes.mediumPadding);
   static const verticalBigPadding =
       EdgeInsets.symmetric(vertical: FediSizes.bigPadding);
   static const allSmallPadding = EdgeInsets.all(FediSizes.smallPadding);

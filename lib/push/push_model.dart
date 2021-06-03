@@ -1,12 +1,13 @@
-import 'dart:convert';
-
-import 'package:fedi/enum/enum_values.dart';
+import 'package:fedi/collection/collection_hash_utils.dart';
+import 'package:fedi/json/json_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'push_model.g.dart';
 
-typedef dynamic PushMessageListener(PushMessage message);
+typedef PushMessageListener = dynamic Function(PushMessage message);
 
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
@@ -14,53 +15,50 @@ typedef dynamic PushMessageListener(PushMessage message);
 //@HiveType()
 @HiveType(typeId: -32 + 67)
 @JsonSerializable(explicitToJson: true)
-class PushMessage {
-  PushMessageType get type =>
-      _pushMessageTypeEnumValues.valueToEnumMap[typeString];
+class PushMessage implements IJsonObject {
+  PushMessageType get type => typeString.toPushMessageType();
 
   @HiveField(1)
-  final PushNotification notification;
+  final PushNotification? notification;
   @HiveField(2)
-  final Map<String, dynamic> data;
+  final Map<String, dynamic>? data;
 
   @HiveField(3)
   final String typeString;
 
-  bool get isLaunchOrResume =>
-      type == PushMessageType.launch || type == PushMessageType.resume;
+  bool get isLaunch => type == PushMessageType.launch;
 
-  PushMessage({this.typeString, this.notification, this.data});
+  PushMessage({
+    required this.typeString,
+    required this.notification,
+    required this.data,
+  });
 
   @override
   String toString() {
-    return 'PushMessage{type: $type,'
-        ' notification: $notification,'
-        ' data: $data}';
+    return 'PushMessage{'
+        'type: $type, '
+        'notification: $notification, '
+        'data: $data'
+        '}';
   }
 
   PushMessage copyWith({
-    PushNotification notification,
-    Map<String, dynamic> data,
-    String typeString,
-  }) => PushMessage(
-      notification: notification ?? this.notification,
-      data: data ?? this.data,
-      typeString: typeString ?? this.typeString,
-    );
+    PushNotification? notification,
+    Map<String, dynamic>? data,
+    String? typeString,
+  }) =>
+      PushMessage(
+        notification: notification ?? this.notification,
+        data: data ?? this.data,
+        typeString: typeString ?? this.typeString,
+      );
 
-  factory PushMessage.fromJson(Map<String, dynamic> json) =>
+  static PushMessage fromJson(Map<String, dynamic> json) =>
       _$PushMessageFromJson(json);
 
-  factory PushMessage.fromJsonString(String jsonString) =>
-      _$PushMessageFromJson(jsonDecode(jsonString));
-
-  static List<PushMessage> listFromJsonString(String str) =>
-      List<PushMessage>.from(
-          json.decode(str).map((x) => PushMessage.fromJson(x)));
-
+  @override
   Map<String, dynamic> toJson() => _$PushMessageToJson(this);
-
-  String toJsonString() => jsonEncode(_$PushMessageToJson(this));
 
   @override
   bool operator ==(Object other) =>
@@ -68,38 +66,13 @@ class PushMessage {
       other is PushMessage &&
           runtimeType == other.runtimeType &&
           notification == other.notification &&
-          data == other.data &&
+          mapEquals(data, other.data) &&
           typeString == other.typeString;
 
   @override
   int get hashCode =>
-      notification.hashCode ^ data.hashCode ^ typeString.hashCode;
+      notification.hashCode ^ mapHash(data) ^ typeString.hashCode;
 }
-
-enum PushMessageType {
-  foreground,
-  launch,
-  resume,
-}
-
-extension PushMessageTypeJsonValueExtension on PushMessageType {
-  String toJsonValue() => _pushMessageTypeEnumValues.enumToValueMap[this];
-}
-
-extension PushMessageTypeStringExtension on String {
-  PushMessageType toPushMessageType() {
-    var visibility = _pushMessageTypeEnumValues.valueToEnumMap[this];
-    assert(visibility != null, "invalid visibility $this");
-    return visibility;
-  }
-}
-
-
-EnumValues<PushMessageType> _pushMessageTypeEnumValues = EnumValues({
-  "foreground": PushMessageType.foreground,
-  "launch": PushMessageType.launch,
-  "resume": PushMessageType.resume,
-});
 
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
@@ -107,21 +80,80 @@ EnumValues<PushMessageType> _pushMessageTypeEnumValues = EnumValues({
 //@HiveType()
 @HiveType(typeId: -32 + 73)
 @JsonSerializable(explicitToJson: true)
-class PushNotification {
+class PushNotification implements IJsonObject {
   @HiveField(0)
-  final String title;
+  final String? title;
   @HiveField(1)
-  final String body;
+  final String? body;
 
-  PushNotification({this.title, this.body});
+  PushNotification({
+    required this.title,
+    required this.body,
+  });
 
   @override
   String toString() {
     return 'PushNotification{title: $title, body: $body}';
   }
 
+  @override
   Map<String, dynamic> toJson() => _$PushNotificationToJson(this);
 
-  factory PushNotification.fromJson(Map<dynamic, dynamic> json) =>
+  static PushNotification fromJson(Map<String, dynamic> json) =>
       _$PushNotificationFromJson(json);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PushNotification &&
+          runtimeType == other.runtimeType &&
+          title == other.title &&
+          body == other.body;
+
+  @override
+  int get hashCode => title.hashCode ^ body.hashCode;
+}
+
+enum PushMessageType {
+  foreground,
+  launch,
+}
+
+const _foregroundPushMessageTypeJsonValue = 'foreground';
+const _launchPushMessageTypeJsonValue = 'launch';
+
+extension PushMessageTypeExtension on PushMessageType {
+  String toJsonValue() {
+    String result;
+
+    switch (this) {
+      case PushMessageType.foreground:
+        result = _foregroundPushMessageTypeJsonValue;
+        break;
+      case PushMessageType.launch:
+        result = _launchPushMessageTypeJsonValue;
+        break;
+    }
+
+    return result;
+  }
+}
+
+extension PushMessageTypeStringExtension on String {
+  PushMessageType toPushMessageType() {
+    PushMessageType result;
+
+    switch (this) {
+      case _foregroundPushMessageTypeJsonValue:
+        result = PushMessageType.foreground;
+        break;
+      case _launchPushMessageTypeJsonValue:
+        result = PushMessageType.launch;
+        break;
+      default:
+        throw 'Invalid PushMessageTypeStringExtension $this';
+    }
+
+    return result;
+  }
 }

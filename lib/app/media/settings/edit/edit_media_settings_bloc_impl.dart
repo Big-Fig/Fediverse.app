@@ -6,7 +6,6 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:flutter/widgets.dart';
 
 class EditMediaSettingsBloc
     extends EditGlobalOrInstanceSettingsBloc<MediaSettings>
@@ -14,10 +13,12 @@ class EditMediaSettingsBloc
   final IMediaSettingsBloc mediaSettingsBloc;
 
   @override
-  IBoolValueFormFieldBloc autoPlayFieldBloc;
+  // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc autoPlayFieldBloc;
 
   @override
-  IBoolValueFormFieldBloc autoInitFieldBloc;
+  // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc autoInitFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -26,14 +27,16 @@ class EditMediaSettingsBloc
       ];
 
   EditMediaSettingsBloc({
-    @required this.mediaSettingsBloc,
-    @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool isEnabled,
+    required this.mediaSettingsBloc,
+    required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
+    required bool isEnabled,
+    required bool isGlobalForced,
   }) : super(
           globalOrInstanceSettingsBloc: mediaSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           isEnabled: isEnabled,
           isAllItemsInitialized: false,
+    isGlobalForced: isGlobalForced,
         ) {
     autoPlayFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.autoPlay,
@@ -45,7 +48,7 @@ class EditMediaSettingsBloc
       isEnabled: isEnabled,
     );
 
-    onItemsChanged();
+    onFormItemsChanged();
 
     addDisposable(disposable: autoPlayFieldBloc);
     addDisposable(disposable: autoInitFieldBloc);
@@ -53,18 +56,18 @@ class EditMediaSettingsBloc
 
   @override
   MediaSettings calculateCurrentFormFieldsSettings() {
-    var oldPreferences = settingsBloc.settingsData;
-    var oldMediaAutoInit = oldPreferences?.autoInit ?? false;
-    var oldMediaAutoPlay = oldPreferences?.autoPlay ?? false;
+    MediaSettings? oldPreferences = settingsBloc.settingsData;
+    var oldMediaAutoInit = oldPreferences.autoInit;
+    var oldMediaAutoPlay = oldPreferences.autoPlay;
 
-    var newMediaAutoInit = autoInitFieldBloc.currentValue;
-    var newMediaAutoPlay = autoPlayFieldBloc.currentValue;
+    bool? newMediaAutoInit = autoInitFieldBloc.currentValue!;
+    bool? newMediaAutoPlay = autoPlayFieldBloc.currentValue!;
 
-    if (newMediaAutoPlay == true && oldMediaAutoPlay == false) {
+    if (newMediaAutoPlay && !oldMediaAutoPlay) {
       newMediaAutoInit = true;
       autoInitFieldBloc.changeCurrentValue(newMediaAutoInit);
     }
-    if (newMediaAutoInit == false && oldMediaAutoInit == true) {
+    if (!newMediaAutoInit && oldMediaAutoInit) {
       newMediaAutoPlay = false;
       autoPlayFieldBloc.changeCurrentValue(newMediaAutoPlay);
     }
@@ -76,12 +79,12 @@ class EditMediaSettingsBloc
   }
 
   @override
-  Future fillSettingsToFormFields(MediaSettings settings) async {
+  Future fillSettingsToFormFields(MediaSettings? settings) async {
     autoInitFieldBloc.changeCurrentValue(
-      settings.autoInit,
+      settings?.autoInit,
     );
     autoPlayFieldBloc.changeCurrentValue(
-      settings.autoPlay,
+      settings?.autoPlay,
     );
   }
 }

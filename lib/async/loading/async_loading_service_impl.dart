@@ -2,7 +2,7 @@ import 'package:fedi/async/loading/async_loading_service.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:rxdart/rxdart.dart';
 
-typedef Future LoadingFunction();
+typedef LoadingFunction = Future Function();
 
 abstract class AsyncLoadingService extends DisposableOwner
     implements IAsyncLoadingService {
@@ -14,7 +14,7 @@ abstract class AsyncLoadingService extends DisposableOwner
   Stream<bool> get isLoadingStream => _isLoadingSubject.stream;
 
   @override
-  bool get isLoading => _isLoadingSubject.value;
+  bool? get isLoading => _isLoadingSubject.value;
 
   AsyncLoadingService() {
     addDisposable(subject: _isLoadingSubject);

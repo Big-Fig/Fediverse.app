@@ -1,3 +1,4 @@
+import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc_impl.dart';
 import 'package:fedi/app/notification/notification_model.dart';
@@ -8,50 +9,70 @@ import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/tab/notification_tab_bloc.dart';
 import 'package:fedi/app/notification/tab/notification_tab_exclude_helper.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
 
-class NotificationTabBloc extends DisposableOwner
+class NotificationTabBloc extends AsyncInitLoadingBloc
     implements INotificationTabBloc {
   final NotificationTab tab;
-  INotificationCachedListBloc notificationCachedListBloc;
-  INotificationCachedPaginationBloc notificationCachedPaginationBloc;
+  // ignore: avoid-late-keyword
+  late INotificationCachedListBloc notificationCachedListBloc;
+  // ignore: avoid-late-keyword
+  late INotificationCachedPaginationBloc notificationCachedPaginationBloc;
 
-  INotificationRepository notificationRepository;
-  IPleromaNotificationService pleromaNotificationService;
+  final INotificationRepository notificationRepository;
+  final IPleromaApiNotificationService pleromaNotificationService;
+  final IFilterRepository filterRepository;
+  final IPaginationSettingsBloc paginationSettingsBloc;
 
   @override
-  ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<INotification>,
+  // ignore: avoid-late-keyword
+  late ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<INotification>,
       INotification> paginationListWithNewItemsBloc;
 
   NotificationTabBloc({
-    @required this.tab,
-    @required this.notificationRepository,
-    @required this.pleromaNotificationService,
-  }) {
+    required this.tab,
+    required this.notificationRepository,
+    required this.pleromaNotificationService,
+    required this.filterRepository,
+    required this.paginationSettingsBloc,
+  });
+
+  INotificationCachedListBloc createListService() => NotificationCachedListBloc(
+        notificationRepository: notificationRepository,
+        pleromaNotificationService: pleromaNotificationService,
+        excludeTypes: NotificationTabExcludeHelper.mapTabToExcludeTypes(
+          tab: tab,
+        ),
+        filterRepository: filterRepository,
+      );
+
+  @override
+  Future internalAsyncInit() async {
     notificationCachedListBloc = createListService();
-    addDisposable(disposable: notificationCachedListBloc);
+    await notificationCachedListBloc.performAsyncInit();
 
     notificationCachedPaginationBloc = NotificationCachedPaginationBloc(
-        itemsCountPerPage: 20,
-        maximumCachedPagesCount: null,
-        notificationListService: notificationCachedListBloc);
-    addDisposable(disposable: notificationCachedPaginationBloc);
+      maximumCachedPagesCount: null,
+      notificationListService: notificationCachedListBloc,
+      paginationSettingsBloc: paginationSettingsBloc,
+    );
 
     paginationListWithNewItemsBloc =
         NotificationCachedPaginationListWithNewItemsBloc<
-                CachedPaginationPage<INotification>>(
-            paginationBloc: notificationCachedPaginationBloc,
-            mergeNewItemsImmediately: false,
-            cachedListBloc: notificationCachedListBloc);
-    addDisposable(disposable: paginationListWithNewItemsBloc);
-  }
+            CachedPaginationPage<INotification>>(
+      cachedPaginationBloc: notificationCachedPaginationBloc,
+      mergeNewItemsImmediately: false,
+      cachedListBloc: notificationCachedListBloc,
+    );
 
-  INotificationCachedListBloc createListService() => NotificationCachedListBloc(
-      notificationRepository: notificationRepository,
-      pleromaNotificationService: pleromaNotificationService,
-      excludeTypes: NotificationTabExcludeHelper.mapTabToExcludeTypes(tab));
+    addDisposable(disposable: notificationCachedListBloc);
+    addDisposable(disposable: notificationCachedPaginationBloc);
+    addDisposable(
+      disposable: paginationListWithNewItemsBloc,
+    );
+  }
 }

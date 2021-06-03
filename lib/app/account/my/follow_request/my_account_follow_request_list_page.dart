@@ -42,12 +42,10 @@ class _MyAccountFollowRequestListPageEmptyWidget extends StatelessWidget {
   const _MyAccountFollowRequestListPageEmptyWidget();
 }
 
-void goToMyAccountFollowRequestListPage(BuildContext context) {
-  Navigator.push(
+Future goToMyAccountFollowRequestListPage(BuildContext context) => Navigator.push(
     context,
     createMyAccountFollowRequestListPage(),
   );
-}
 
 MaterialPageRoute createMyAccountFollowRequestListPage() {
   return MaterialPageRoute(
@@ -64,6 +62,7 @@ MaterialPageRoute createMyAccountFollowRequestListPage() {
               PaginationPage<IAccount>, IAccount>(
             child: AccountPaginationListBloc.provideToContext(
               context,
+              loadFromCacheDuringInit: false,
               child: const MyAccountFollowRequestListPage(),
             ),
           ),

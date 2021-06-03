@@ -9,15 +9,15 @@ abstract class IMediaPlayerBloc implements IDisposable, IAsyncInitLoadingBloc {
   static IMediaPlayerBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IMediaPlayerBloc>(context, listen: listen);
 
-  bool get autoInit;
+  bool? get autoInit;
 
-  bool get autoPlay;
+  bool? get autoPlay;
 
   MediaPlayerSource get mediaPlayerSource;
 
-  VideoPlayerController get videoPlayerController;
+  VideoPlayerController? get videoPlayerController;
 
-  MediaPlayerState get playerState;
+  MediaPlayerState? get playerState;
 
   Stream<MediaPlayerState> get playerStateStream;
 
@@ -25,25 +25,25 @@ abstract class IMediaPlayerBloc implements IDisposable, IAsyncInitLoadingBloc {
 
   Stream<bool> get isMutedStream;
 
-  bool get isBuffering;
+  bool? get isBuffering;
 
   Stream<bool> get isBufferingStream;
 
-  Duration get lengthDuration;
+  Duration? get lengthDuration;
 
   Stream<Duration> get lengthDurationStream;
 
-  Duration get positionDuration;
+  Duration? get positionDuration;
 
   Stream<Duration> get positionDurationStream;
 
-  double get currentPlaybackPercent;
+  double? get currentPlaybackPercent;
 
   Stream<double> get currentPlaybackPercentStream;
 
   dynamic get error;
 
-  StackTrace get stackTrace;
+  StackTrace? get stackTrace;
 
   Future seekToDuration(Duration position);
 
@@ -60,7 +60,7 @@ abstract class IMediaPlayerBloc implements IDisposable, IAsyncInitLoadingBloc {
   Future reloadAfterError();
 }
 
-extension MediaPlayerStateExtensions on MediaPlayerState {
+extension MediaPlayerStateExtensions on MediaPlayerState? {
   bool mapToInitialized() {
     var currentState = this;
     if (currentState == null) {
@@ -70,30 +70,21 @@ extension MediaPlayerStateExtensions on MediaPlayerState {
     switch (currentState) {
       case MediaPlayerState.initializing:
         return false;
-        break;
       case MediaPlayerState.initialized:
         return true;
-        break;
       case MediaPlayerState.paused:
         return true;
-        break;
       case MediaPlayerState.playing:
         return true;
-        break;
       case MediaPlayerState.finished:
         return true;
-        break;
       case MediaPlayerState.disposed:
         return false;
-        break;
       case MediaPlayerState.error:
         return false;
-        break;
       case MediaPlayerState.notInitialized:
         return false;
-        break;
     }
-    throw "Unsupported playerState $currentState";
   }
 }
 

@@ -5,7 +5,7 @@ class FediGreyChip extends StatelessWidget {
   final String label;
 
   FediGreyChip({
-    @required this.label,
+    required this.label,
   });
 
   @override

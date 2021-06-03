@@ -6,13 +6,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FediCircularProgressIndicator extends StatefulWidget {
-  final Color color;
+  final Color? color;
   final double size;
 
   const FediCircularProgressIndicator({
     this.color,
+    // ignore: no-magic-number
     this.size = 30.0,
   });
+
+  static Widget buildForRefreshIndicator(BuildContext context) => Container(
+      decoration: BoxDecoration(
+        color: IFediUiColorTheme.of(context).white,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: IFediUiColorTheme.of(context).ultraLightGrey,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: const FediCircularProgressIndicator(
+          size: 26.0,
+        ),
+      ),
+    );
 
   @override
   _FediCircularProgressIndicatorState createState() =>
@@ -22,7 +39,8 @@ class FediCircularProgressIndicator extends StatefulWidget {
 class _FediCircularProgressIndicatorState
     extends State<FediCircularProgressIndicator>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  // ignore: avoid-late-keyword
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -31,8 +49,10 @@ class _FediCircularProgressIndicatorState
     _controller = AnimationController(
       vsync: this,
       duration: Duration(
+        // ignore: no-magic-number
         seconds: 2,
       ),
+      // ignore: no-magic-number
       upperBound: pi * 2,
     )..repeat();
   }
@@ -48,6 +68,7 @@ class _FediCircularProgressIndicatorState
 
     var color = widget.color ?? IFediUiColorTheme.of(context).darkGrey;
     var size = widget.size;
+
     return AnimatedBuilder(
       animation: _controller,
       builder: (_, child) {
@@ -58,6 +79,7 @@ class _FediCircularProgressIndicatorState
       },
       child: Container(
         width: size,
+        // ignore: no-equal-arguments
         height: size,
         child: Icon(
           FediIcons.loading,

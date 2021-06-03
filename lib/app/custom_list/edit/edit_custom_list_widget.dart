@@ -1,22 +1,23 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
-import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
-import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/select/select_account_pagination_list_bloc.dart';
 import 'package:fedi/app/account/select/single/single_select_account_widget.dart';
-import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/account/select/suggestion/suggestion_select_account_bloc.dart';
+import 'package:fedi/app/account/select/suggestion/suggestion_select_account_bloc_impl.dart';
+import 'package:fedi/app/account/select/suggestion/suggestion_select_account_widget.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/custom_list/account_list/custom_list_account_list_widget.dart';
 import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc.dart';
 import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc_proxy_provider.dart';
+import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_list_item_add_remove_action_widget.dart';
 import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_list_pagination_list_bloc.dart';
 import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_list_pagination_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc.dart';
 import 'package:fedi/app/custom_list/form/custom_list_form_widget.dart';
-import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/search/input/search_input_widget.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
@@ -25,11 +26,11 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/form/fedi_form_header_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'account_list/edit_custom_list_account_list_item_add_remove_action_widget.dart';
 
 class EditCustomListWidget extends StatelessWidget {
   const EditCustomListWidget();
@@ -37,6 +38,7 @@ class EditCustomListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editCustomListBloc = IEditCustomListBloc.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -46,7 +48,7 @@ class EditCustomListWidget extends StatelessWidget {
             padding: FediPadding.allBigPadding,
             child: const _EditCustomListDeleteButton(),
           ),
-        _EditCustomListAccountDescriptionWidget(),
+        const _EditCustomListAccountDescriptionWidget(),
         Expanded(
           child: const _EditCustomListBodyWidget(),
         ),
@@ -57,7 +59,7 @@ class EditCustomListWidget extends StatelessWidget {
 
 class _EditCustomListAccountDescriptionWidget extends StatelessWidget {
   const _EditCustomListAccountDescriptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -68,29 +70,31 @@ class _EditCustomListAccountDescriptionWidget extends StatelessWidget {
 
 class _EditCustomListDeleteButton extends StatelessWidget {
   const _EditCustomListDeleteButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var editCustomListBloc = IEditCustomListBloc.of(context);
+
     return PleromaAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () async {
         await editCustomListBloc.deleteList();
         Navigator.of(context).pop();
       },
       builder: (context, onPressed) => FediTransparentTextButtonWithBorder(
-          S.of(context).app_acccount_my_customList_edit_action_delete_list,
-          expanded: false,
-          onPressed: onPressed,
-          color: IFediUiColorTheme.of(context).error),
+        S.of(context).app_acccount_my_customList_edit_action_delete_list,
+        expanded: false,
+        onPressed: onPressed,
+        color: IFediUiColorTheme.of(context).error,
+      ),
     );
   }
 }
 
 class _EditCustomListBodyWidget extends StatelessWidget {
   const _EditCustomListBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -102,7 +106,7 @@ class _EditCustomListBodyWidget extends StatelessWidget {
 
 class _EditCustomListEmptySearchChildWidget extends StatelessWidget {
   const _EditCustomListEmptySearchChildWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -122,7 +126,25 @@ class _EditCustomListEmptySearchChildWidget extends StatelessWidget {
         if (isListContainsAccounts) {
           return const _EditCustomListBodyAlreadyAddedAccountsWidget();
         } else {
-          return const _EditCustomListBodySuggestionAccountsWidget();
+          return DisposableProvider<ISuggestionSelectAccountBloc>(
+            create: (context) => SuggestionSelectAccountBloc(
+              accountCachedListBloc: editCustomListBloc.selectAccountListBloc,
+            ),
+            child: SuggestionSelectAccountWidget(
+              itemActions: [
+                const CustomListAccountListItemAddRemoveActionWidget(),
+              ],
+              accountSelectedCallback:
+                  (BuildContext context, IAccount account) {
+                goToLocalAccountDetailsPage(
+                  context,
+                  account: account,
+                );
+              },
+              itemPadding: FediPadding.verticalSmallPadding,
+              headerPadding: EdgeInsets.zero,
+            ),
+          );
         }
       },
     );
@@ -131,7 +153,7 @@ class _EditCustomListEmptySearchChildWidget extends StatelessWidget {
 
 class _EditCustomListBodyAlreadyAddedAccountsWidget extends StatelessWidget {
   const _EditCustomListBodyAlreadyAddedAccountsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -170,33 +192,46 @@ class _EditCustomListBodyAlreadyAddedAccountsWidget extends StatelessWidget {
   }
 }
 
-class _EditCustomListBodySuggestionAccountsWidget extends StatelessWidget {
-  const _EditCustomListBodySuggestionAccountsWidget({
-    Key key,
+class _EditCustomListBodyAddedHeaderWidget extends StatelessWidget {
+  const _EditCustomListBodyAddedHeaderWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => FediFormHeaderWidget(
+        text: S.of(context).app_acccount_my_customList_edit_added_header,
+        isNeedAddDivider: true,
+      );
+}
+
+class _EditCustomListBodySearchToAddAccountsWidget extends StatelessWidget {
+  final Widget emptySearchChild;
+
+  const _EditCustomListBodySearchToAddAccountsWidget({
+    Key? key,
+    required this.emptySearchChild,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IEditCustomListBloc, IPleromaCachedListBloc<IAccount>>(
-      update: (context, editCustomListBloc, previous) =>
+    return ProxyProvider<IEditCustomListBloc, ISelectAccountListBloc>(
+      update: (context, editCustomListBloc, _) =>
           editCustomListBloc.selectAccountListBloc,
-      child: AccountCachedPaginationBloc.provideToContext(
-        context,
-        child: AccountPaginationListBloc.provideToContext(
-          context,
+      child: SelectAccountListBlocProxyProvider(
+        child: ProxyProvider<ISelectAccountListBloc, ISearchInputBloc>(
+          update: (context, selectAccountListBloc, _) =>
+              selectAccountListBloc.searchInputBloc,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const _EditCustomListBodySuggestionHeaderWidget(),
+              const _EditCustomListBodySearchHeader(),
+              const SearchInputWidget(
+                padding: EdgeInsets.zero,
+              ),
+              const FediBigVerticalSpacer(),
               Expanded(
-                child: AccountPaginationListWidget(
-                  itemPadding: FediPadding.verticalMediumPadding,
-                  accountActions: [
-                    CustomListAccountListItemAddRemoveActionWidget(),
-                  ],
-                  accountSelectedCallback:
-                      (BuildContext context, IAccount account) {
-                    goToAccountDetailsPage(context, account);
-                  },
+                child: _EditCustomListBodySearchToAddAccountsBodyWidget(
+                  emptySearchChild: emptySearchChild,
                 ),
               ),
             ],
@@ -207,70 +242,10 @@ class _EditCustomListBodySuggestionAccountsWidget extends StatelessWidget {
   }
 }
 
-class _EditCustomListBodyAddedHeaderWidget extends StatelessWidget {
-  const _EditCustomListBodyAddedHeaderWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => FediFormHeaderWidget(
-        text: S.of(context).app_acccount_my_customList_edit_added_header,
-        isNeedAddDivider: true,
-      );
-}
-
-class _EditCustomListBodySuggestionHeaderWidget extends StatelessWidget {
-  const _EditCustomListBodySuggestionHeaderWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => FediFormHeaderWidget(
-        text: S.of(context).app_acccount_my_customList_edit_search_suggestion,
-        isNeedAddDivider: true,
-      );
-}
-
-class _EditCustomListBodySearchToAddAccountsWidget extends StatelessWidget {
-  final Widget emptySearchChild;
-
-  const _EditCustomListBodySearchToAddAccountsWidget({
-    Key key,
-    @required this.emptySearchChild,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditCustomListBloc, ISelectAccountListBloc>(
-      update: (context, editCustomListBloc, _) =>
-          editCustomListBloc.selectAccountListBloc,
-      child: ProxyProvider<ISelectAccountListBloc, ISearchInputBloc>(
-        update: (context, selectAccountListBloc, _) =>
-            selectAccountListBloc.searchInputBloc,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const _EditCustomListBodySearchHeader(),
-            const SearchInputWidget(
-              padding: EdgeInsets.zero,
-            ),
-            const FediBigVerticalSpacer(),
-            Expanded(
-              child: _EditCustomListBodySearchToAddAccountsBodyWidget(
-                emptySearchChild: emptySearchChild,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _EditCustomListBodySearchToAddAccountsBodyWidget extends StatelessWidget {
   const _EditCustomListBodySearchToAddAccountsBodyWidget({
-    Key key,
-    @required this.emptySearchChild,
+    Key? key,
+    required this.emptySearchChild,
   }) : super(key: key);
 
   final Widget emptySearchChild;
@@ -278,6 +253,7 @@ class _EditCustomListBodySearchToAddAccountsBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var searchInputBloc = ISearchInputBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: searchInputBloc.confirmedSearchTermIsNotEmptyStream,
       builder: (context, snapshot) {
@@ -306,13 +282,14 @@ class _EditCustomListBodySearchToAddAccountsBodyWidget extends StatelessWidget {
   }
 }
 
+  // ignore: no-empty-block
 void _accountSelectedCallback(BuildContext context, IAccount account) {
   // nothing
 }
 
 class _EditCustomListBodySearchHeader extends StatelessWidget {
   const _EditCustomListBodySearchHeader({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

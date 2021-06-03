@@ -10,20 +10,21 @@ class ToggleCollapsibleOverlayWidget extends StatelessWidget {
     var collapsibleBloc = ICollapsibleOwnerBloc.of(context, listen: true);
 
     return StreamBuilder<bool>(
-        stream: collapsibleBloc.isAtLeastOneVisibleItemExpandedStream,
-        initialData: collapsibleBloc.isAtLeastOneVisibleItemExpanded,
-        builder: (context, snapshot) {
-          var isAtLeastOneVisibleItemExpanded = snapshot.data;
+      stream: collapsibleBloc.isAtLeastOneVisibleItemExpandedStream,
+      initialData: collapsibleBloc.isAtLeastOneVisibleItemExpanded,
+      builder: (context, snapshot) {
+        var isAtLeastOneVisibleItemExpanded = snapshot.data!;
 
-          if (isAtLeastOneVisibleItemExpanded) {
-            return FediIconInCircleFilledButton(
-              FediIcons.chevron_down,
-              onPressed: collapsibleBloc.collapseAllVisibleItems,
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+        if (isAtLeastOneVisibleItemExpanded) {
+          return FediIconInCircleFilledButton(
+            FediIcons.chevron_up,
+            onPressed: collapsibleBloc.collapseAllVisibleItems,
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 
   const ToggleCollapsibleOverlayWidget();

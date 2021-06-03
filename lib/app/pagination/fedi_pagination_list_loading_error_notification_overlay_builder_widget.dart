@@ -3,11 +3,13 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
+import 'package:fedi/pleroma/api/rest/pleroma_api_rest_model.dart';
 import 'package:flutter/cupertino.dart';
 
 DateTime _lastRefreshErrorShowedDateTime = DateTime.now();
 DateTime _lastLoadMoreErrorShowedDateTime = DateTime.now();
 
+// ignore: no-magic-number
 final Duration _throttleDuration = Duration(seconds: 2);
 
 class FediPaginationListLoadingErrorNotificationOverlayBuilderWidget<T>
@@ -40,7 +42,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
             _lastRefreshErrorShowedDateTime = now;
             IToastService.of(context, listen: false).showErrorToast(
               context: context,
-              content: "${_errorToString(paginationListLoadingError)}",
+              content: '${_errorToString(paginationListLoadingError)}',
               title: S.of(context).app_list_refresh_unableToFetch,
             );
           }
@@ -56,7 +58,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
             _lastLoadMoreErrorShowedDateTime = now;
             IToastService.of(context, listen: false).showErrorToast(
               context: context,
-              content: "${_errorToString(paginationListLoadingError)}",
+              content: '${_errorToString(paginationListLoadingError)}',
               title: S.of(context).app_list_loading_state_failed,
             );
           }
@@ -66,10 +68,16 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
   }
 
   String _errorToString(PaginationListLoadingError paginationListLoadingError) {
-    if (paginationListLoadingError.error is CantUpdateFromNetworkException) {
+    var error = paginationListLoadingError.error;
+    if (error is CantUpdateFromNetworkException) {
       return S.of(context).app_list_cantUpdateFromNetwork;
     } else {
-      return paginationListLoadingError.error.toString();
+      if (error is PleromaApiRestException &&
+          error.decodedErrorDescriptionOrBody.isNotEmpty) {
+        return error.decodedErrorDescriptionOrBody;
+      } else {
+        return error.toString();
+      }
     }
   }
 

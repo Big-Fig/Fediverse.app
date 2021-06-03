@@ -1,19 +1,20 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/form/field/form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ValueFormFieldBloc<T> extends FormFieldBloc
     implements IValueFormFieldBloc<T> {
   @override
-  List<FormValueFieldValidation<T>> validators;
+  // ignore: avoid-late-keyword
+  late List<FormValueFieldValidation<T>> validators;
 
   final BehaviorSubject<List<ValueFormFieldValidationError>>
       _currentErrorSubject;
 
   @override
-  List<ValueFormFieldValidationError> get errors => _currentErrorSubject.value;
+  List<ValueFormFieldValidationError> get errors => _currentErrorSubject.value!;
 
   @override
   Stream<List<ValueFormFieldValidationError>> get errorsStream =>
@@ -25,20 +26,20 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
   final BehaviorSubject<T> _currentValueSubject;
 
   @override
-  T get currentValue => _currentValueSubject.value;
+  T get currentValue => _currentValueSubject.value as T;
 
-  // distinct is important, we don't need new value in stream on each widget
+  // distinct is important, we dont need new value in stream on each widget
   // build
   @override
-  Stream<T> get currentValueStream => _currentValueSubject.stream.distinct();
+  Stream<T> get currentValueStream => _currentValueSubject.stream;
 
   @override
   final bool isNullValuePossible;
 
   ValueFormFieldBloc({
-    @required this.originValue,
-    @required this.validators,
-    @required this.isNullValuePossible,
+    required this.originValue,
+    required this.validators,
+    required this.isNullValuePossible,
     bool isEnabled = true,
   })  : _currentValueSubject = BehaviorSubject.seeded(originValue),
         _currentErrorSubject =
@@ -70,16 +71,24 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
   }
 
   static List<ValueFormFieldValidationError> _validate<T>(
-      T value, List<FormValueFieldValidation<T>> validators) {
+    T value,
+    List<FormValueFieldValidation<T>> validators,
+  ) {
     return validators
-            ?.map((validator) => validator(value))
-            ?.where((error) => error != null)
-            ?.toList() ??
-        [];
+        .map(
+          (validator) => validator(value),
+        )
+        .whereNotNull()
+        .toList();
   }
 
   void revalidate() {
-    _currentErrorSubject.add(_validate(currentValue, validators));
+    _currentErrorSubject.add(
+      _validate(
+        currentValue,
+        validators,
+      ),
+    );
   }
 
   @override
@@ -90,7 +99,7 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
   }
 
   @override
-  void updateValidators(List<FormValueFieldValidation<T>> validators) {
+  void updateValidators(List<FormValueFieldValidation<T?>> validators) {
     this.validators = validators;
     revalidate();
   }

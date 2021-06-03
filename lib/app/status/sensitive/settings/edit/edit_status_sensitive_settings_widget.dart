@@ -1,4 +1,3 @@
-import 'package:fedi/app/duration/picker/duration_picker_model.dart';
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/app/form/field/value/duration/duration_value_form_field_row_widget.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_bloc.dart';
@@ -12,7 +11,7 @@ class EditStatusSensitiveSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditStatusSensitiveSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override
@@ -31,7 +30,7 @@ class EditStatusSensitiveSettingsWidget extends StatelessWidget {
 class _EditStatusSensitiveSettingsNsfwDisplayDurationWidget
     extends StatelessWidget {
   const _EditStatusSensitiveSettingsNsfwDisplayDurationWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -43,7 +42,6 @@ class _EditStatusSensitiveSettingsNsfwDisplayDurationWidget
         label: S
             .of(context)
             .app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label,
-        pickerType: DurationPickerType.duration,
       ),
     );
   }
@@ -52,7 +50,7 @@ class _EditStatusSensitiveSettingsNsfwDisplayDurationWidget
 class _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget
     extends StatelessWidget {
   const _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -72,7 +70,7 @@ class _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget
 class _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget
     extends StatelessWidget {
   const _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

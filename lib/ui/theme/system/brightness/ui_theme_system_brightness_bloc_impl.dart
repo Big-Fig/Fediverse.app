@@ -18,7 +18,7 @@ class UiThemeSystemBrightnessBloc extends DisposableOwner
   }
 
   @override
-  Brightness get systemBrightness => systemBrightnessSubject.value;
+  Brightness? get systemBrightness => systemBrightnessSubject.value;
 
   @override
   Stream<Brightness> get systemBrightnessStream =>

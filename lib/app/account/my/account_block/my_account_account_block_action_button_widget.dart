@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/my/account_block/my_account_account_block_network_only_account_list_bloc.dart';
-import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -13,10 +13,10 @@ class MyAccountAccountBlockActionButtonWidget extends StatelessWidget {
   final bool defaultBlocking;
 
   const MyAccountAccountBlockActionButtonWidget({
-    Key key,
-    @required this.listBloc,
-    @required this.paginationListBloc,
-    @required this.defaultBlocking,
+    Key? key,
+    required this.listBloc,
+    required this.paginationListBloc,
+    required this.defaultBlocking,
   }) : super(key: key);
 
   @override
@@ -25,7 +25,7 @@ class MyAccountAccountBlockActionButtonWidget extends StatelessWidget {
 
     var accountBloc = IAccountBloc.of(context);
 
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: accountBloc.relationshipBlockingStream,
       initialData: accountBloc.relationshipBlocking,
       builder: (context, snapshot) {

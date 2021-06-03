@@ -1,42 +1,94 @@
+import 'package:fedi/app/duration/picker/duration_picker_model.dart';
 import 'package:fedi/app/ui/date_time/fedi_date_time_picker.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jiffy/jiffy.dart';
+import 'package:logging/logging.dart';
 
-Future<Duration> showDateTimeDurationPicker({
-  @required BuildContext context,
-  @required String popupTitle,
-  @required Duration minDuration,
-  @required Duration currentDuration,
-  @required Duration maxDuration,
+final _logger = Logger('date_time_duration_picker.dart');
+
+Future<DurationPickerResult> showDateTimeDurationPicker({
+  required BuildContext context,
+  required String? popupTitle,
+  required Duration? minDuration,
+  required Duration? currentDuration,
+  required Duration? maxDuration,
+  required bool isDeletePossible,
 }) async {
-  var now = DateTime.now();
-  var dateTime = await FediDatePicker.showDateTimePicker(
+  var minDateTimeJiffy = Jiffy();
+  var maxDateTimeJiffy = Jiffy();
+  var currentDateTimeJiffy = Jiffy();
+
+  DateTime? minDateTime;
+  DateTime? maxDateTime;
+  DateTime? currentDateTime;
+
+  if (minDuration != null) {
+    minDateTimeJiffy.add(duration: minDuration);
+    minDateTime = minDateTimeJiffy.dateTime;
+  }
+
+  if (maxDuration != null) {
+    maxDateTimeJiffy.add(duration: maxDuration);
+    maxDateTime = maxDateTimeJiffy.dateTime;
+  }
+
+  if (currentDuration != null) {
+    currentDateTimeJiffy.add(duration: currentDuration);
+    currentDateTime = currentDateTimeJiffy.dateTime;
+  }
+
+  var deleted = false;
+  var canceled = false;
+
+  var pickedDateTime = await FediDatePicker.showDateTimePicker(
     context,
     showTitleActions: true,
-    minDateTime: minDuration != null ? now.add(minDuration) : null,
-    maxDateTime: maxDuration != null ? now.add(maxDuration) : null,
-    currentDateTime: now.add(currentDuration ?? now),
+    minDateTime: minDateTime,
+    maxDateTime: maxDateTime,
+    currentDateTime: currentDateTime,
     theme: FediDatePickerTheme.byDefault(
       context: context,
       customTitle: popupTitle,
     ),
-    onCancel: () {},
-    onConfirm: (date) {},
+    // todo: rework callbacks to better future result
+    onCancel: () {
+      canceled = true;
+    },
+    onDelete: () {
+      deleted = true;
+    },
+    isDeletePossible: isDeletePossible && currentDuration != null,
+    onConfirm: null,
   );
 
-  if (dateTime != null) {
-    var diffDuration = dateTime.difference(now).abs();
+  Duration? resultDuration;
+
+  var now = DateTime.now();
+  if (pickedDateTime != null) {
+    var diffDuration = pickedDateTime.difference(now).abs();
 
     if ((maxDuration == null || diffDuration < maxDuration) &&
         (minDuration == null || diffDuration > minDuration)) {
-      return diffDuration;
+      resultDuration = diffDuration;
     } else {
-      if ((maxDuration == null || diffDuration > maxDuration)) {
-        return maxDuration;
+      if (maxDuration != null && diffDuration > maxDuration) {
+        resultDuration = maxDuration;
       } else {
-        return minDuration;
+        resultDuration = minDuration!;
       }
     }
   } else {
-    return null;
+    resultDuration = null;
   }
+
+  var durationPickerResult = DurationPickerResult(
+    deleted: deleted,
+    canceled: canceled,
+    duration: resultDuration,
+  );
+
+  _logger.finest(() =>
+      'showDateTimeDurationPicker durationPickerResult $durationPickerResult');
+
+  return durationPickerResult;
 }

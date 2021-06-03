@@ -4,27 +4,26 @@ import 'package:fedi/app/init/deep_link/deep_link_init_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/pleroma/oauth/pleroma_oauth_last_launched_host_to_login_local_preference_bloc.dart';
-import 'package:fedi/pleroma/oauth/pleroma_oauth_service.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_service.dart';
 import 'package:logging/logging.dart';
 import 'package:uni_links/uni_links.dart';
 
-var _logger = Logger("deep_link_init_bloc_impl.dart");
+var _logger = Logger('deep_link_init_bloc_impl.dart');
 
 class DeepLinkInitBloc extends AsyncInitLoadingBloc
     implements IDeepLinkInitBloc {
-  final IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
-  pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
+  final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
+      pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
 
   DeepLinkInitBloc({
-    @required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
-    @required this.localPreferencesService,
-    @required this.connectionService,
-    @required this.currentAuthInstanceBloc,
+    required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
+    required this.localPreferencesService,
+    required this.connectionService,
+    required this.currentAuthInstanceBloc,
   });
 
   @override
@@ -36,35 +35,36 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
     }
   }
 
-  void _handleLoginOnAndroidWithoutChrome(Uri initialUri) async {
+  Future _handleLoginOnAndroidWithoutChrome(Uri initialUri) async {
     var lastLaunchedHost =
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc.value;
 
-    _logger.finest(() => "initialUri = $initialUri "
-        "lastLaunchedHost = $lastLaunchedHost");
+    _logger.finest(() => 'initialUri = $initialUri '
+        'lastLaunchedHost = $lastLaunchedHost');
     if (lastLaunchedHost != null) {
       var authHostBloc = AuthHostBloc(
-        instanceBaseUrl: Uri.parse(lastLaunchedHost),
+        instanceBaseUri: Uri.parse(lastLaunchedHost),
         preferencesService: localPreferencesService,
         connectionService: connectionService,
         currentInstanceBloc: currentAuthInstanceBloc,
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
             pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
-        // doesn't matter here
-        isPleromaInstance: false,
+        // doesnt matter here
+        isPleroma: false,
       );
       await authHostBloc.performAsyncInit();
-      String authCode = IPleromaOAuthService.extractAuthCodeFromUri(initialUri);
+      var authCode = IPleromaApiOAuthService.extractAuthCodeFromUri(initialUri);
 
       try {
         var authInstance = await authHostBloc.loginWithAuthCode(authCode);
 
-        if (authInstance != null) {
-          await currentAuthInstanceBloc.changeCurrentInstance(authInstance);
-        }
+        await currentAuthInstanceBloc.changeCurrentInstance(authInstance);
       } catch (e, stackTrace) {
-        _logger.warning(() => "Failed to _handleLoginOnAndroidWithoutChrome ",
-            e, stackTrace);
+        _logger.warning(
+          () => 'Failed to _handleLoginOnAndroidWithoutChrome ',
+          e,
+          stackTrace,
+        );
       }
     }
   }

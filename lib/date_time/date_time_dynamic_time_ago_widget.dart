@@ -10,13 +10,13 @@ typedef DateTimeAgoTextBuilder = String Function(String timeAgoString);
 const _customLocale = 'custom';
 
 class DateTimeDynamicTimeAgoWidget extends StatefulWidget {
-  final DateTime dateTime;
+  final DateTime? dateTime;
   final TextStyle textStyle;
-  final DateTimeAgoTextBuilder customTextBuilder;
+  final DateTimeAgoTextBuilder? customTextBuilder;
 
   DateTimeDynamicTimeAgoWidget({
-    @required this.dateTime,
-    @required this.textStyle,
+    required this.dateTime,
+    required this.textStyle,
     this.customTextBuilder,
   });
 
@@ -27,23 +27,33 @@ class DateTimeDynamicTimeAgoWidget extends StatefulWidget {
 
 class _DateTimeDynamicTimeAgoWidgetState
     extends State<DateTimeDynamicTimeAgoWidget> {
-  Timer timer;
+  Timer? timer;
   bool disposed = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    var timeToFirstUpdate = 60 - widget.dateTime.second;
+    // ignore: no-magic-number
+    final secondsInMinute = 60;
+    var timeToFirstUpdate = secondsInMinute - widget.dateTime!.second;
     // synchronize redraw at 00 seconds for each minute
-    Future.delayed(Duration(seconds: timeToFirstUpdate), () {
-      if (!disposed) {
-        timer = Timer.periodic(Duration(minutes: 1), (_) {
-          // redraw timeago each minute
-          setState(() {});
-        });
-      }
-    });
+    Future.delayed(
+      Duration(seconds: timeToFirstUpdate),
+      () {
+        if (!disposed) {
+          timer = Timer.periodic(
+            Duration(seconds: secondsInMinute),
+            (_) {
+              // redraw timeago each minute
+              // todo: rework with stateless widget
+              // ignore: no-empty-block
+              setState(() {});
+            },
+          );
+        }
+      },
+    );
   }
 
   @override
@@ -62,13 +72,14 @@ class _DateTimeDynamicTimeAgoWidgetState
       ),
     );
     var timeAgoString = timeago.format(
-      widget.dateTime,
+      widget.dateTime!,
       locale: _customLocale,
       allowFromNow: true,
     );
+
     return Text(
       widget.customTextBuilder != null
-          ? widget.customTextBuilder(timeAgoString)
+          ? widget.customTextBuilder!(timeAgoString)
           : timeAgoString,
       style: widget.textStyle,
     );

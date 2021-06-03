@@ -6,19 +6,20 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ListLoadingFooterWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => const CustomFooter(
+  Widget build(BuildContext context) => CustomFooter(
         builder: _builder,
       );
 
   const ListLoadingFooterWidget();
 }
 
-Widget _builder(BuildContext context, LoadStatus mode) {
-  Widget body;
+Widget _builder(BuildContext context, LoadStatus? mode) {
+  Widget? body;
 
   switch (mode) {
+    case null:
     case LoadStatus.idle:
-      body = Text("");
+      body = Text('');
       break;
     case LoadStatus.canLoading:
       body = Text(
@@ -41,6 +42,8 @@ Widget _builder(BuildContext context, LoadStatus mode) {
   }
 
   return Container(
+    // todo: refactor
+    // ignore: no-magic-number
     height: 55.0,
     child: Center(child: body),
   );

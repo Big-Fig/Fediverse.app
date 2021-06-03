@@ -1,33 +1,91 @@
-import 'package:fedi/enum/enum_values.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:moor/moor.dart' as moor;
 
 enum WebSocketsHandlingType {
   disabled,
   onlyForeground,
-  foregroundAndBackground
+  foregroundAndBackground,
+}
+
+const _disabledWebSocketsHandlingTypeJsonValue = 'disabled';
+const _onlyForegroundWebSocketsHandlingTypeJsonValue = 'onlyForeground';
+const _foregroundAndBackgroundWebSocketsHandlingTypeJsonValue =
+    'foregroundAndBackground';
+
+extension WebSocketsHandlingTypeListExtension on List<WebSocketsHandlingType> {
+  List<String> toJsonStrings() => map(
+        (type) => type.toJsonValue(),
+      ).toList();
 }
 
 extension WebSocketsHandlingTypeExtension on WebSocketsHandlingType {
   bool get isEnabled => this != WebSocketsHandlingType.disabled;
-}
 
-extension WebSocketsHandlingTypeJsonValueExtension on WebSocketsHandlingType {
-  String toJsonValue() =>
-      _WebSocketsHandlingTypeEnumValues.enumToValueMap[this];
+  String toJsonValue() {
+    String result;
+
+    switch (this) {
+      case WebSocketsHandlingType.disabled:
+        result = _disabledWebSocketsHandlingTypeJsonValue;
+        break;
+      case WebSocketsHandlingType.onlyForeground:
+        result = _onlyForegroundWebSocketsHandlingTypeJsonValue;
+        break;
+      case WebSocketsHandlingType.foregroundAndBackground:
+        result = _foregroundAndBackgroundWebSocketsHandlingTypeJsonValue;
+        break;
+    }
+
+    return result;
+  }
 }
 
 extension WebSocketsHandlingTypeStringExtension on String {
   WebSocketsHandlingType toWebSocketsHandlingType() {
-    var type = _WebSocketsHandlingTypeEnumValues.valueToEnumMap[this];
-    assert(type != null, "invalid type $this");
-    return type;
+    WebSocketsHandlingType result;
+
+    switch (this) {
+      case _disabledWebSocketsHandlingTypeJsonValue:
+        result = WebSocketsHandlingType.disabled;
+        break;
+      case _onlyForegroundWebSocketsHandlingTypeJsonValue:
+        result = WebSocketsHandlingType.onlyForeground;
+        break;
+      case _foregroundAndBackgroundWebSocketsHandlingTypeJsonValue:
+        result = WebSocketsHandlingType.foregroundAndBackground;
+        break;
+      default:
+        throw 'Invalid WebSocketsHandlingTypeStringExtension $this';
+    }
+
+    return result;
   }
 }
 
-EnumValues<WebSocketsHandlingType> _WebSocketsHandlingTypeEnumValues =
-    EnumValues(
-  {
-    "disabled": WebSocketsHandlingType.disabled,
-    "onlyForeground": WebSocketsHandlingType.onlyForeground,
-    "foregroundAndBackground": WebSocketsHandlingType.foregroundAndBackground,
-  },
-);
+extension WebSocketsHandlingTypeStringListExtension on List<String> {
+  List<WebSocketsHandlingType> toWebSocketsHandlingTypes() => map(
+        (visibilityString) => visibilityString.toWebSocketsHandlingType(),
+      ).toList();
+}
+
+class WebSocketsHandlingTypeTypeConverter
+    implements
+        JsonConverter<WebSocketsHandlingType, String>,
+        moor.TypeConverter<WebSocketsHandlingType, String> {
+  const WebSocketsHandlingTypeTypeConverter();
+
+  @override
+  WebSocketsHandlingType fromJson(String value) =>
+      value.toWebSocketsHandlingType();
+
+  @override
+  String toJson(WebSocketsHandlingType value) => value.toJsonValue();
+
+  @override
+  WebSocketsHandlingType? mapToDart(String? fromDb) =>
+      fromDb != null ? fromJson(fromDb) : null;
+
+  @override
+  String? mapToSql(WebSocketsHandlingType? value) =>
+      value != null ? toJson(value) : null;
+}

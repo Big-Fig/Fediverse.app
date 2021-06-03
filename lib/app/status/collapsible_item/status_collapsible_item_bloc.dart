@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 
 abstract class IStatusCollapsibleItemBloc
     implements IDisposable, ICollapsibleItemBloc {
-  static IStatusCollapsibleItemBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IStatusCollapsibleItemBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IStatusCollapsibleItemBloc>(context, listen: listen);
 }

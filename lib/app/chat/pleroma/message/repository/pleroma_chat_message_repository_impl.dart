@@ -6,340 +6,128 @@ import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_re
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
-import 'package:flutter/widgets.dart';
+import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
+import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("pleroma_chat_message_repository_impl.dart");
+var _logger = Logger('pleroma_chat_message_repository_impl.dart');
 
-class PleromaChatMessageRepository extends AsyncInitLoadingBloc
+class PleromaChatMessageRepository
+    extends PopulatedAppRemoteDatabaseDaoRepository<
+        DbChatMessage,
+        DbChatMessagePopulated,
+        IPleromaChatMessage,
+        IPleromaApiChatMessage,
+        int,
+        String,
+        $DbChatMessagesTable,
+        $DbChatMessagesTable,
+        PleromaChatMessageRepositoryFilters,
+        PleromaChatMessageRepositoryOrderingTermData>
     implements IPleromaChatMessageRepository {
-  ChatMessageDao dao;
-  IAccountRepository accountRepository;
+  @override
+  final ChatMessageDao dao;
+  final IAccountRepository accountRepository;
 
-  PleromaChatMessageRepository(
-      {@required AppDatabase appDatabase, @required this.accountRepository}) {
-    dao = appDatabase.chatMessageDao;
+  @override
+  PopulatedDatabaseDaoMixin<
+      DbChatMessage,
+      DbChatMessagePopulated,
+      int,
+      $DbChatMessagesTable,
+      $DbChatMessagesTable,
+      PleromaChatMessageRepositoryFilters,
+      PleromaChatMessageRepositoryOrderingTermData> get populatedDao => dao;
+
+  PleromaChatMessageRepository({
+    required AppDatabase appDatabase,
+    required this.accountRepository,
+  }) : dao = appDatabase.chatMessageDao;
+
+  @override
+  Future<IPleromaChatMessage?> findByOldPendingRemoteId(
+    String oldPendingRemoteId,
+  ) async {
+    _logger.finest(() => 'findByOldPendingRemoteId $oldPendingRemoteId');
+
+    return (await dao.findByOldPendingRemoteId(oldPendingRemoteId))
+        ?.toDbChatMessagePopulatedWrapper();
   }
 
   @override
-  Future internalAsyncInit() async {
-    // nothing to init now
-    return null;
-  }
+  Stream<IPleromaChatMessage?> watchByOldPendingRemoteId(
+    String? oldPendingRemoteId,
+  ) {
+    _logger.finest(() => 'watchByOldPendingRemoteId $oldPendingRemoteId');
 
-  @override
-  Future upsertRemoteChatMessage(
-      pleroma_lib.IPleromaChatMessage remoteChatMessage) async {
-    _logger.finer(() => "upsertRemoteChatMessage $remoteChatMessage");
-//    var remoteAccount = remoteChatMessage.account;
-//
-//    await accountRepository.upsertRemoteAccount(remoteAccount,
-//        chatRemoteId: chatRemoteId);
-//
-    await upsert(mapRemoteChatMessageToDbPleromaChatMessage(remoteChatMessage));
-  }
-
-  @override
-  Future upsertRemoteChatMessages(
-      List<pleroma_lib.IPleromaChatMessage> remoteChatMessages) async {
-    _logger
-        .finer(() => "upsertRemoteChatMessages ${remoteChatMessages.length}");
-    if (remoteChatMessages.isEmpty) {
-      return;
-    }
-
-//
-//    List<IPleromaAccount> remoteAccounts = remoteChatMessages
-//        .map((remoteChatMessage) => remoteChatMessage.account)
-//        .toList();
-//
-//    await accountRepository.upsertRemoteAccounts(remoteAccounts,
-//        chatRemoteId: chatRemoteId);
-
-    await upsertAll(remoteChatMessages
-        .map(mapRemoteChatMessageToDbPleromaChatMessage)
-        .toList());
-  }
-
-  @override
-  Future<DbChatMessagePopulatedWrapper> findByRemoteId(String remoteId) async =>
-      mapDataClassToItem(await dao.findByRemoteId(remoteId));
-
-  @override
-  Future<List<DbChatMessagePopulatedWrapper>> getChatMessages({
-    @required List<IPleromaChat> onlyInChats,
-    @required IPleromaChatMessage olderThanChatMessage,
-    @required IPleromaChatMessage newerThanChatMessage,
-    @required int limit,
-    @required int offset,
-    @required PleromaChatMessageOrderingTermData orderingTermData,
-  }) async {
-    var query = createQuery(
-        olderThanChatMessage: olderThanChatMessage,
-        newerThanChatMessage: newerThanChatMessage,
-        limit: limit,
-        offset: offset,
-        orderingTermData: orderingTermData,
-        onlyInChats: onlyInChats);
-
-    return dao
-        .typedResultListToPopulated(await query.get())
-        .map(mapDataClassToItem)
-        .toList();
-  }
-
-  @override
-  Stream<List<DbChatMessagePopulatedWrapper>> watchChatMessages(
-      {@required List<IPleromaChat> onlyInChats,
-      @required IPleromaChatMessage olderThanChatMessage,
-      @required IPleromaChatMessage newerThanChatMessage,
-      @required int limit,
-      @required int offset,
-      @required PleromaChatMessageOrderingTermData orderingTermData}) {
-    var query = createQuery(
-        onlyInChats: onlyInChats,
-        olderThanChatMessage: olderThanChatMessage,
-        newerThanChatMessage: newerThanChatMessage,
-        limit: limit,
-        offset: offset,
-        orderingTermData: orderingTermData);
-
-    Stream<List<DbChatMessagePopulated>> stream =
-        query.watch().map(dao.typedResultListToPopulated);
-    return stream.map((list) => list.map(mapDataClassToItem).toList());
-  }
-
-  JoinedSelectStatement createQuery(
-      {@required List<IPleromaChat> onlyInChats,
-      @required IPleromaChatMessage olderThanChatMessage,
-      @required IPleromaChatMessage newerThanChatMessage,
-      @required int limit,
-      @required int offset,
-      @required PleromaChatMessageOrderingTermData orderingTermData}) {
-    _logger.fine(() => "createQuery \n"
-        "\t onlyInChats=$onlyInChats\n"
-        "\t olderThanChatMessage=$olderThanChatMessage\n"
-        "\t newerThanChatMessage=$newerThanChatMessage\n"
-        "\t limit=$limit\n"
-        "\t offset=$offset\n"
-        "\t orderingTermData=$orderingTermData\n");
-
-    var query = dao.startSelectQuery();
-
-    if (olderThanChatMessage != null || newerThanChatMessage != null) {
-      assert(orderingTermData?.orderByType == ChatMessageOrderByType.createdAt);
-      dao.addCreatedAtBoundsWhere(query,
-          maximumDateTimeExcluding: olderThanChatMessage?.createdAt,
-          minimumDateTimeExcluding: newerThanChatMessage?.createdAt);
-    }
-
-    if (orderingTermData != null) {
-      dao.orderBy(query, [orderingTermData]);
-    }
-    var joinQuery = query.join(
-      dao.populateChatMessageJoin(),
-    );
-
-    var finalQuery = joinQuery;
-
-    if (onlyInChats != null) {
-      if (onlyInChats.length == 1) {
-        finalQuery = dao.addChatWhere(finalQuery, onlyInChats.first.remoteId);
-      } else {
-        finalQuery = dao.addChatsWhere(
-          finalQuery,
-          onlyInChats.map(
-            (chat) => chat.remoteId,
-          ),
+    return dao.watchByOldPendingRemoteId(oldPendingRemoteId).map(
+          (item) => item?.toDbChatMessagePopulatedWrapper(),
         );
-      }
-    }
-
-    assert(!(limit == null && offset != null));
-    if (limit != null) {
-      finalQuery.limit(limit, offset: offset);
-    }
-    return finalQuery;
   }
 
   @override
-  Future upsertAll(Iterable<DbChatMessage> items) async {
-    // insertOrReplace
-    // if a row with the same primary or unique key already
-    // exists, it will be deleted and re-created with the row being inserted.
-    // We declared remoteId as unique so it possible to insertOrReplace by it too
-    await dao.insertAll(items, InsertMode.insertOrReplace);
-  }
-
-  @override
-  Future insertAll(Iterable<DbChatMessage> items) async {
-    // if item already exist rollback changes
-    // call this only if you sure that items not exist instead user upsertAll
-    return await dao.insertAll(items, InsertMode.insertOrRollback);
-  }
-
-  @override
-  Future clear() => dao.clear();
-
-  @override
-  Future<bool> deleteById(int id) async {
-    var affectedRows = await dao.deleteById(id);
-    assert(affectedRows == 0 || affectedRows == 1);
-    return (affectedRows) == 1;
-  }
-
-  @override
-  Future<IPleromaChatMessage> findById(int id) async =>
-      mapDataClassToItem(await dao.findById(id));
-
-  @override
-  Stream<DbChatMessagePopulatedWrapper> watchById(int id) =>
-      (dao.watchById(id)).map(mapDataClassToItem);
-
-  @override
-  Stream<IPleromaChatMessage> watchByRemoteId(String remoteId) {
-    _logger.finest(() => "watchByRemoteId $remoteId");
-    return (dao.watchByRemoteId(remoteId)).map(mapDataClassToItem);
-  }
-
-  @override
-  Future<bool> isExistWithId(int id) =>
-      dao.countById(id).map((count) => count > 0).getSingle();
-
-  @override
-  Future<List<DbChatMessagePopulatedWrapper>> getAll() async =>
-      (await dao.findAll()).map(mapDataClassToItem).toList();
-
-  @override
-  Future<int> countAll() => dao.countAll().getSingle();
-
-  @override
-  Stream<List<DbChatMessagePopulatedWrapper>> watchAll() =>
-      (dao.watchAll()).map((list) => list.map(mapDataClassToItem).toList());
-
-  @override
-  Future<int> insert(DbChatMessage item) => dao.insert(item);
-
-  @override
-  Future<int> upsert(DbChatMessage item) => dao.upsert(item);
-
-  @override
-  Future<bool> updateById(int id, DbChatMessage dbChatMessage) {
-    if (dbChatMessage.id != id) {
-      dbChatMessage = dbChatMessage.copyWith(id: id);
-    }
-    return dao.replace(dbChatMessage);
-  }
-
-  DbChatMessagePopulatedWrapper mapDataClassToItem(
-      DbChatMessagePopulated dataClass) {
-    if (dataClass == null) {
-      return null;
-    }
-    return DbChatMessagePopulatedWrapper(dataClass);
-  }
-
-  Insertable<DbChatMessage> mapItemToDataClass(
-      DbChatMessagePopulatedWrapper item) {
-    if (item == null) {
-      return null;
-    }
-    return item.dbChatMessagePopulated.dbChatMessage;
-  }
-
-  @override
-  Future updateLocalChatMessageByRemoteChatMessage(
-      {@required IPleromaChatMessage oldLocalChatMessage,
-      @required pleroma_lib.IPleromaChatMessage newRemoteChatMessage}) async {
-    _logger.finer(() => "updateLocalChatMessageByRemoteChatMessage \n"
-        "\t old: $oldLocalChatMessage \n"
-        "\t newRemoteChatMessage: $newRemoteChatMessage");
-
-//    var remoteAccount = newRemoteChatMessage.account;
-//
-//    await accountRepository.upsertRemoteAccount(remoteAccount,
-//        chatRemoteId: oldLocalChatMessage.remoteId, conversationRemoteId: null);
-
-    await updateById(oldLocalChatMessage.localId,
-        mapRemoteChatMessageToDbPleromaChatMessage(newRemoteChatMessage));
-  }
-
-  @override
-  Future<DbChatMessagePopulatedWrapper> getChatMessage(
-      {@required List<IPleromaChat> onlyInChats,
-      @required IPleromaChatMessage olderThanChatMessage,
-      @required IPleromaChatMessage newerThanChatMessage,
-      @required PleromaChatMessageOrderingTermData orderingTermData}) async {
-    var query = createQuery(
-        olderThanChatMessage: olderThanChatMessage,
-        newerThanChatMessage: newerThanChatMessage,
-        limit: 1,
-        offset: null,
-        orderingTermData: orderingTermData,
-        onlyInChats: onlyInChats);
-
-    return mapDataClassToItem(
-        dao.typedResultToPopulated(await query.getSingle()));
-  }
-
-  @override
-  Stream<DbChatMessagePopulatedWrapper> watchChatMessage(
-      {@required List<IPleromaChat> onlyInChats,
-      @required IPleromaChatMessage olderThanChatMessage,
-      @required IPleromaChatMessage newerThanChatMessage,
-      @required PleromaChatMessageOrderingTermData orderingTermData}) {
-    var query = createQuery(
-        onlyInChats: onlyInChats,
-        olderThanChatMessage: olderThanChatMessage,
-        newerThanChatMessage: newerThanChatMessage,
-        limit: 1,
-        offset: null,
-        orderingTermData: orderingTermData);
-
-    Stream<DbChatMessagePopulated> stream = query
-        .watchSingle()
-        .map((typedResult) => dao.typedResultToPopulated(typedResult));
-    return stream.map((dbChatMessage) => mapDataClassToItem(dbChatMessage));
-  }
-
-  @override
-  Future<IPleromaChatMessage> getChatLastChatMessage(
-          {@required IPleromaChat chat}) =>
-      getChatMessage(
-        onlyInChats: [chat],
-        olderThanChatMessage: null,
-        newerThanChatMessage: null,
-        orderingTermData: PleromaChatMessageOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderByType: ChatMessageOrderByType.createdAt,
+  Future<IPleromaChatMessage?> getChatLastChatMessage({
+    required IPleromaChat chat,
+    bool onlyPendingStatePublishedOrNull = false,
+  }) =>
+      findInAppType(
+        filters: PleromaChatMessageRepositoryFilters(
+          onlyInChats: [
+            chat,
+          ],
+          onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
+          onlyNotDeleted: true,
+          onlyNotHiddenLocallyOnDevice: true,
         ),
+        orderingTerms: [
+          PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+        ],
+        pagination: RepositoryPagination(limit: 1),
       );
 
   @override
-  Future<Map<IPleromaChat, IPleromaChatMessage>> getChatsLastChatMessage(
-      {@required List<IPleromaChat> chats}) async {
+  Stream<IPleromaChatMessage?> watchChatLastChatMessage({
+    required IPleromaChat chat,
+    bool onlyPendingStatePublishedOrNull = false,
+  }) =>
+      watchFindInAppType(
+        filters: PleromaChatMessageRepositoryFilters(
+          onlyInChats: [
+            chat,
+          ],
+          onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
+          onlyNotDeleted: true,
+          onlyNotHiddenLocallyOnDevice: true,
+        ),
+        orderingTerms: [
+          PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+        ],
+        pagination: RepositoryPagination(limit: 1),
+      );
+
+  @override
+  Future<Map<IPleromaChat, IPleromaChatMessage?>> getChatsLastChatMessage({
+    required List<IPleromaChat> chats,
+    bool onlyPendingStatePublishedOrNull = false,
+  }) async {
     var query = createQuery(
-      olderThanChatMessage: null,
-      newerThanChatMessage: null,
-      orderingTermData: PleromaChatMessageOrderingTermData(
-        orderingMode: OrderingMode.desc,
-        orderByType: ChatMessageOrderByType.createdAt,
+      filters: PleromaChatMessageRepositoryFilters(
+        onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
+        onlyNotDeleted: true,
+        onlyNotHiddenLocallyOnDevice: true,
+        groupByChatId: true,
       ),
-      onlyInChats: null,
-      limit: null,
-      offset: null,
+      pagination: null,
+      orderingTermData:
+          PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
     );
-    dao.addGroupByChatId(query);
 
-    var chatMessages = dao
-        .typedResultListToPopulated(await query.get())
-        .map(mapDataClassToItem)
-        .toList();
+    var chatMessages = await query.get();
 
-    Map<IPleromaChat, IPleromaChatMessage> result = {};
+    var result = <IPleromaChat, IPleromaChatMessage?>{};
 
     chats.forEach(
       (chat) {
@@ -347,13 +135,15 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
           (chatMessage) => chatMessage.chatRemoteId == chat.remoteId,
         );
 
-        IPleromaChatMessage chatMessage = currentChatMessages?.fold(
+        var chatMessage = currentChatMessages.fold(
           null,
-          (IPleromaChatMessage previousValue, IPleromaChatMessage element) {
+          (IPleromaChatMessage? previousValue, IPleromaChatMessage element) {
             if (previousValue == null) {
               return element;
             } else {
-              if (previousValue.createdAt.isBefore(element.createdAt)) {
+              if (previousValue.createdAt.isBefore(
+                element.createdAt,
+              )) {
                 return element;
               } else {
                 return previousValue;
@@ -370,15 +160,141 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<IPleromaChatMessage> watchChatLastChatMessage(
-          {@required IPleromaChat chat}) =>
-      watchChatMessage(
-        onlyInChats: [chat],
-        olderThanChatMessage: null,
-        newerThanChatMessage: null,
-        orderingTermData: PleromaChatMessageOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderByType: ChatMessageOrderByType.createdAt,
+  Future markChatMessageAsDeleted({
+    required String chatMessageRemoteId,
+  }) =>
+      dao.markAsDeleted(
+        remoteId: chatMessageRemoteId,
+      );
+
+  @override
+  Future markChatMessageAsHiddenLocallyOnDevice({
+    required int chatMessageLocalId,
+  }) =>
+      dao.markAsHiddenLocallyOnDevice(
+        localId: chatMessageLocalId,
+      );
+
+  @override
+  DbChatMessage mapAppItemToDbItem(IPleromaChatMessage appItem) =>
+      appItem.toDbChatMessage();
+
+  @override
+  IPleromaApiChatMessage mapAppItemToRemoteItem(
+    IPleromaChatMessage appItem,
+  ) =>
+      appItem.toPleromaApiChatMessage();
+
+  @override
+  DbChatMessagePopulated mapAppItemToDbPopulatedItem(
+    IPleromaChatMessage appItem,
+  ) =>
+      appItem.toDbChatMessagePopulated();
+
+  @override
+  IPleromaChatMessage mapDbPopulatedItemToAppItem(
+    DbChatMessagePopulated dbPopulatedItem,
+  ) =>
+      dbPopulatedItem.toDbChatMessagePopulatedWrapper();
+
+  @override
+  IPleromaApiChatMessage mapDbPopulatedItemToRemoteItem(
+    DbChatMessagePopulated dbPopulatedItem,
+  ) =>
+      dbPopulatedItem
+          .toDbChatMessagePopulatedWrapper()
+          .toPleromaApiChatMessage();
+
+  @override
+  IPleromaChatMessage mapRemoteItemToAppItem(
+    IPleromaApiChatMessage appItem,
+  ) {
+    return appItem.toDbChatMessagePopulatedWrapper(
+      dbAccount: null,
+    );
+  }
+
+  @override
+  PleromaChatMessageRepositoryFilters get emptyFilters =>
+      PleromaChatMessageRepositoryFilters.empty;
+
+  @override
+  List<PleromaChatMessageRepositoryOrderingTermData> get defaultOrderingTerms =>
+      PleromaChatMessageRepositoryOrderingTermData.defaultTerms;
+
+  @override
+  Future<void> insertInDbTypeBatch(
+    Insertable<DbChatMessage> dbItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) =>
+      dao.insertBatch(
+        entity: dbItem,
+        mode: mode,
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  Future<int> insertInRemoteType(
+    IPleromaApiChatMessage remoteItem, {
+    required InsertMode? mode,
+  }) =>
+      insertInDbType(
+        mapRemoteItemToDbItem(
+          remoteItem,
         ),
+        mode: mode,
+      );
+
+  @override
+  Future<void> insertInRemoteTypeBatch(
+    IPleromaApiChatMessage remoteItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  }) {
+    return upsertInDbTypeBatch(
+      mapRemoteItemToDbItem(
+        remoteItem,
+      ),
+      batchTransaction: batchTransaction,
+    );
+  }
+
+  @override
+  Future<void> updateAppTypeByRemoteType({
+    required IPleromaChatMessage appItem,
+    required IPleromaApiChatMessage remoteItem,
+    required Batch? batchTransaction,
+  }) =>
+      updateByDbIdInDbType(
+        dbId: appItem.localId!,
+        dbItem: remoteItem.toDbChatMessage(),
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  Future<void> updateByDbIdInDbType({
+    required int dbId,
+    required DbChatMessage dbItem,
+    required Batch? batchTransaction,
+  }) =>
+      dao.upsertBatch(
+        entity: dbItem.copyWith(id: dbId),
+        batchTransaction: batchTransaction,
+      );
+}
+
+extension DbChatMessagePopulatedListExtension on List<DbChatMessagePopulated> {
+  List<DbPleromaChatMessagePopulatedWrapper>
+      toDbChatMessagePopulatedWrappers() => map(
+            (dbChatMessagePopulated) =>
+                dbChatMessagePopulated.toDbChatMessagePopulatedWrapper(),
+          ).toList();
+}
+
+extension DbChatMessagePopulatedExtension on DbChatMessagePopulated {
+  DbPleromaChatMessagePopulatedWrapper toDbChatMessagePopulatedWrapper() =>
+      DbPleromaChatMessagePopulatedWrapper(
+        dbChatMessagePopulated: this,
       );
 }

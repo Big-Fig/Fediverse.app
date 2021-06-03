@@ -1,10 +1,9 @@
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_media_bloc_impl.dart';
 import 'package:fedi/app/share/media/share_media_with_message_widget.dart';
-import 'package:fedi/app/share/select/share_select_account_widget.dart';
-import 'package:fedi/app/share/to_account/share_to_account_icon_button_widget.dart';
+import 'package:fedi/app/share/select_account/share_select_account_widget.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,9 +16,6 @@ class ConversationChatShareMediaPage extends StatelessWidget {
     return Scaffold(
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_chat_conversation_share_title,
-        actions: [
-          const ShareToAccountIconButtonWidget(),
-        ],
       ),
       body: const ShareSelectAccountWidget(
         header: ShareMediaWithMessageWidget(
@@ -31,9 +27,10 @@ class ConversationChatShareMediaPage extends StatelessWidget {
   }
 }
 
-void goToConversationShareMediaPage(
-    {@required BuildContext context,
-    @required IPleromaMediaAttachment mediaAttachment}) {
+void goToConversationShareMediaPage({
+  required BuildContext context,
+  required IPleromaApiMediaAttachment mediaAttachment,
+}) {
   Navigator.push(
     context,
     createConversationShareMediaPageRoute(
@@ -44,15 +41,17 @@ void goToConversationShareMediaPage(
 }
 
 MaterialPageRoute createConversationShareMediaPageRoute({
-  @required BuildContext context,
-  @required IPleromaMediaAttachment mediaAttachment,
+  required BuildContext context,
+  required IPleromaApiMediaAttachment mediaAttachment,
 }) {
   return MaterialPageRoute(
-    builder: (context) => ConversationChatShareMediaBloc.provideToContext(context,
-        mediaAttachment: mediaAttachment,
-        child: Provider<IPleromaMediaAttachment>.value(
-          value: mediaAttachment,
-          child: const ConversationChatShareMediaPage(),
-        )),
+    builder: (context) => ConversationChatShareMediaBloc.provideToContext(
+      context,
+      mediaAttachment: mediaAttachment,
+      child: Provider<IPleromaApiMediaAttachment>.value(
+        value: mediaAttachment,
+        child: const ConversationChatShareMediaPage(),
+      ),
+    ),
   );
 }

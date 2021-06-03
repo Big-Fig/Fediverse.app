@@ -6,24 +6,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-typedef Future AsyncButtonAction();
-typedef Widget ButtonBuilder(BuildContext context, VoidCallback onPressed);
+typedef AsyncButtonAction<T> = Future<T> Function();
+typedef ButtonBuilder = Widget Function(BuildContext context, VoidCallback? onPressed);
 
-var _logger = Logger("async_button_widget.dart");
+var _logger = Logger('async_button_widget.dart');
 
-class AsyncOperationButtonBuilderWidget extends StatefulWidget {
-  final AsyncButtonAction asyncButtonAction;
+class AsyncOperationButtonBuilderWidget<T> extends StatefulWidget {
+  final AsyncButtonAction<T> asyncButtonAction;
   final ButtonBuilder builder;
   final bool showProgressDialog;
-  final String progressContentMessage;
-  final String successToastMessage;
-  final ErrorCallback errorCallback;
+  final String? progressContentMessage;
+  final String? successToastMessage;
+  final ErrorCallback? errorCallback;
 
   final List<ErrorDataBuilder> errorDataBuilders;
 
   AsyncOperationButtonBuilderWidget({
-    @required this.builder,
-    @required this.asyncButtonAction,
+    required this.builder,
+    required this.asyncButtonAction,
     this.showProgressDialog = true,
     this.progressContentMessage,
     this.successToastMessage,
@@ -35,15 +35,17 @@ class AsyncOperationButtonBuilderWidget extends StatefulWidget {
   _AsyncOperationButtonBuilderWidgetState createState() =>
       _AsyncOperationButtonBuilderWidgetState();
 
-  Future<AsyncDialogResult<T>> performAsyncOperation<T>(
-      {BuildContext context}) {
+  Future<AsyncDialogResult<T?>> performAsyncOperation({
+    required BuildContext context,
+  }) {
     return AsyncOperationHelper.performAsyncOperation(
-        context: context,
-        errorCallback: errorCallback,
-        contentMessage: progressContentMessage,
-        errorDataBuilders: errorDataBuilders,
-        showProgressDialog: showProgressDialog,
-        asyncCode: asyncButtonAction);
+      context: context,
+      errorCallback: errorCallback,
+      contentMessage: progressContentMessage,
+      errorDataBuilders: errorDataBuilders,
+      showProgressDialog: showProgressDialog,
+      asyncCode: asyncButtonAction,
+    );
   }
 }
 
@@ -86,8 +88,11 @@ class _AsyncOperationButtonBuilderWidgetState
                 }
               }).catchError(
                 (error, stacktrace) {
-                  _logger.severe(() => "Fail to execute async operation", error,
-                      stacktrace);
+                  _logger.severe(
+                    () => 'Fail to execute async operation',
+                    error,
+                    stacktrace,
+                  );
                   if (!disposed) {
                     setState(
                       () {

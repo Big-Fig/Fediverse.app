@@ -2,16 +2,16 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
-import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("status_pagination_list_with_new_items_bloc_impl.dart");
+var _logger = Logger('status_pagination_list_with_new_items_bloc_impl.dart');
 
 class StatusCachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IStatus>>
@@ -21,29 +21,29 @@ class StatusCachedPaginationListWithNewItemsBloc<
   final bool mergeOwnStatusesImmediately;
 
   StatusCachedPaginationListWithNewItemsBloc({
-    @required bool mergeNewItemsImmediately,
-    @required this.statusCachedListBloc,
-    @required this.myAccountBloc,
-    @required this.mergeOwnStatusesImmediately,
-    @required IPaginationBloc<TPage, IStatus> paginationBloc,
+    required bool mergeNewItemsImmediately,
+    required this.statusCachedListBloc,
+    required this.myAccountBloc,
+    required this.mergeOwnStatusesImmediately,
+    required ICachedPaginationBloc<TPage, IStatus> paginationBloc,
   }) : super(
-            mergeNewItemsImmediately: mergeNewItemsImmediately,
-            paginationBloc: paginationBloc) {
+          mergeNewItemsImmediately: mergeNewItemsImmediately,
+          paginationBloc: paginationBloc,
+        ) {
     addDisposable(
       streamSubscription: statusCachedListBloc.settingsChangedStream.listen(
-        (changed) async {
-          if (changed == true) {
-            refreshWithController();
-          }
+        (_) async {
+          _logger.finest(() => 'settingsChangedStream ');
+          await refreshWithController();
         },
       ),
     );
 
-    if (mergeOwnStatusesImmediately == true) {
+    if (mergeOwnStatusesImmediately) {
       addDisposable(
         streamSubscription: unmergedNewItemsStream.distinct().listen(
           (unmergedNewItems) {
-            if (unmergedNewItems?.isNotEmpty == true) {
+            if (unmergedNewItems.isNotEmpty) {
               var firstUnmergedItem = unmergedNewItems.first;
 
               var isOwnFirstUnmergedItem =
@@ -60,34 +60,17 @@ class StatusCachedPaginationListWithNewItemsBloc<
   }
 
   @override
-  Stream<List<IStatus>> watchItemsNewerThanItem(IStatus item) {
-    _logger.finest(() => "watchItemsNewerThanItem item = $item");
+  Stream<List<IStatus>> watchItemsNewerThanItem(IStatus? item) {
+    _logger.finest(() => 'watchItemsNewerThanItem item = $item');
+
     return statusCachedListBloc.watchLocalItemsNewerThanItem(item);
   }
 
-  @override
-  int compareItemsToSort(IStatus a, IStatus b) {
-    if (a == null && b == null) {
-      return 0;
-    }
-
-    if (a != null && b == null) {
-      return 1;
-    }
-    if (a == null && b != null) {
-      return -1;
-    }
-    return a.remoteId.compareTo(b.remoteId);
-  }
-
-  @override
-  bool isItemsEqual(IStatus a, IStatus b) => a.remoteId == b.remoteId;
-
   static Widget provideToContext<TPage extends CachedPaginationPage<IStatus>>(
     BuildContext context, {
-    @required bool mergeNewItemsImmediately,
-    @required bool mergeOwnStatusesImmediately,
-    @required Widget child,
+    required bool mergeNewItemsImmediately,
+    required bool mergeOwnStatusesImmediately,
+    required Widget child,
   }) {
     return DisposableProvider<
         ICachedPaginationListWithNewItemsBloc<TPage, IStatus>>(
@@ -103,7 +86,8 @@ class StatusCachedPaginationListWithNewItemsBloc<
         update: (context, value, previous) => value,
         child:
             CachedPaginationListWithNewItemsBlocProxyProvider<TPage, IStatus>(
-                child: child),
+          child: child,
+        ),
       ),
     );
   }
@@ -111,15 +95,21 @@ class StatusCachedPaginationListWithNewItemsBloc<
   static StatusCachedPaginationListWithNewItemsBloc<TPage>
       createFromContext<TPage extends CachedPaginationPage<IStatus>>(
     BuildContext context, {
-    @required bool mergeNewItemsImmediately,
-    @required bool mergeOwnStatusesImmediately,
+    required bool mergeNewItemsImmediately,
+    required bool mergeOwnStatusesImmediately,
   }) {
     return StatusCachedPaginationListWithNewItemsBloc<TPage>(
-        mergeOwnStatusesImmediately: mergeOwnStatusesImmediately,
-        mergeNewItemsImmediately: mergeNewItemsImmediately,
-        myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        paginationBloc: Provider.of<IPaginationBloc<TPage, IStatus>>(context,
-            listen: false),
-        statusCachedListBloc: IStatusCachedListBloc.of(context, listen: false));
+      mergeOwnStatusesImmediately: mergeOwnStatusesImmediately,
+      mergeNewItemsImmediately: mergeNewItemsImmediately,
+      myAccountBloc: IMyAccountBloc.of(context, listen: false),
+      paginationBloc: Provider.of<ICachedPaginationBloc<TPage, IStatus>>(
+        context,
+        listen: false,
+      ),
+      statusCachedListBloc: IStatusCachedListBloc.of(
+        context,
+        listen: false,
+      ),
+    );
   }
 }

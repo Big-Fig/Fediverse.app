@@ -2,7 +2,7 @@ import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/search/input/search_input_widget.dart';
 import 'package:fedi/app/search/recent/recent_search_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_bloc_impl.dart';
-import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
+import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/result/list/search_result_item_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/search/result/pagination/search_result_item_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/search/result/pagination/search_result_item_pagination_list_bloc.dart';
@@ -28,6 +28,7 @@ class SearchPage extends StatelessWidget {
         ),
         body: const SearchWidget(),
       );
+
   const SearchPage();
 }
 
@@ -42,8 +43,11 @@ void goToSearchPage(
         create: (context) =>
             SearchBloc.createFromContext(context, startTab: startTab),
         child: ProxyProvider<ISearchBloc, ISearchInputBloc>(
-          update: (BuildContext context, ISearchBloc value,
-                  ISearchInputBloc previous) =>
+          update: (
+            BuildContext context,
+            ISearchBloc value,
+            ISearchInputBloc? previous,
+          ) =>
               value.searchInputBloc,
           child: DisposableProvider<IRecentSearchBloc>(
             create: (context) => RecentSearchBloc(
@@ -51,7 +55,7 @@ void goToSearchPage(
               recentSearchLocalPreferenceBloc:
                   IRecentSearchLocalPreferenceBloc.of(context, listen: false),
             ),
-            child: SearchResultItemsNetworkOnlyListBloc.provideToContext(
+            child: SearchResultItemNetworkOnlyListBloc.provideToContext(
               context,
               child: SearchResultItemNetworkOnlyPaginationBloc.provideToContext(
                 context,

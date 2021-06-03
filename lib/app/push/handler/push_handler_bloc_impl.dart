@@ -5,30 +5,30 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
-import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
-import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
+import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preference_bloc.dart';
+import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/push/pleroma_push_model.dart';
+import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/push_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("push_handler_bloc_impl.dart");
+var _logger = Logger('push_handler_bloc_impl.dart');
 
 class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
-  final IPushHandlerUnhandledLocalPreferencesBloc unhandledLocalPreferencesBloc;
+  final IPushHandlerUnhandledLocalPreferenceBloc unhandledLocalPreferencesBloc;
   final IFcmPushService fcmPushService;
   final IAuthInstanceListBloc instanceListBloc;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
 
   final List<IPushRealTimeHandler> realTimeHandlers = [];
 
-  PushHandlerBloc(
-      {@required this.unhandledLocalPreferencesBloc,
-      @required this.currentInstanceBloc,
-      @required this.instanceListBloc,
-      @required this.fcmPushService}) {
+  PushHandlerBloc({
+    required this.unhandledLocalPreferencesBloc,
+    required this.currentInstanceBloc,
+    required this.instanceListBloc,
+    required this.fcmPushService,
+  }) {
     addDisposable(
       streamSubscription: fcmPushService.messageStream.listen(
         (pushMessage) async {
@@ -36,16 +36,26 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
         },
       ),
     );
+
+  }
+
+  @override
+  Future handleInitialMessage() async {
+    var initialMessage = fcmPushService.initialMessage;
+    if (initialMessage != null) {
+      await handlePushMessage(initialMessage);
+      fcmPushService.clearInitialMessage();
+    }
   }
 
   Future handlePushMessage(PushMessage pushMessage) async {
-    var body = PleromaPushMessageBody.fromJson(pushMessage.data);
+    var body = PleromaApiPushMessageBody.fromJson(pushMessage.data!);
 
     var pushMessageHandler = PushHandlerMessage(
       pushMessage: pushMessage,
       body: body,
     );
-    bool handled = false;
+    var handled = false;
     for (var handler in realTimeHandlers) {
       handled = await handler(pushMessageHandler);
       if (handled) {
@@ -53,23 +63,25 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
       }
     }
 
-    _logger.finest(() => "handlePushMessage \n"
-        "\t body =$body"
-        "\t handled =$handled");
+    _logger.finest(() => 'handlePushMessage \n'
+        '\t body =$body'
+        '\t handled =$handled');
 
     if (!handled) {
       var instanceForMessage = instanceListBloc.findInstanceByCredentials(
-          host: body.server, acct: body.account);
+        host: body.server,
+        acct: body.account,
+      );
 
       if (instanceForMessage != null) {
-        _logger.finest(() => "body = $body by \n"
-            "\t instanceForMessage=$instanceForMessage");
+        _logger.finest(() => 'body = $body by \n'
+            '\t instanceForMessage=$instanceForMessage');
 
         if (!currentInstanceBloc.isCurrentInstance(instanceForMessage)) {
           await unhandledLocalPreferencesBloc
               .addUnhandledMessage(pushMessageHandler);
 
-          if (pushMessage.isLaunchOrResume) {
+          if (pushMessage.isLaunch) {
             // launch after click on notification
             if (currentInstanceBloc.currentInstance != instanceForMessage) {
               await currentInstanceBloc
@@ -78,8 +90,8 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
           }
         }
       } else {
-        _logger.severe(() => "Can't handle body = "
-            "$body, because instance for message not found");
+        _logger.severe(() => 'Cant handle body = '
+            '$body, because instance for message not found');
       }
     }
   }
@@ -96,7 +108,8 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
 
   @override
   List<PushHandlerMessage> loadUnhandledMessagesForInstance(
-          AuthInstance instance) =>
+    AuthInstance instance,
+  ) =>
       unhandledLocalPreferencesBloc.loadUnhandledMessagesForInstance(instance);
 
   @override

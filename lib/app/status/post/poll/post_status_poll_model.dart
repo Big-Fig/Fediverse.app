@@ -1,7 +1,8 @@
-import 'dart:convert';
-
-import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/collection/collection_hash_utils.dart';
+import 'package:fedi/duration/duration_extension.dart';
+import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_status_poll_model.g.dart';
@@ -19,31 +20,34 @@ abstract class IPostStatusPoll {
 @JsonSerializable()
 class PostStatusPoll implements IPostStatusPoll {
   @override
-  @JsonKey(name: "duration_length")
+  @JsonKey(name: 'duration_length')
   final Duration durationLength;
 
   @override
-  @JsonKey(name: "hide_totals")
-  bool hideTotals;
+  @JsonKey(name: 'hide_totals')
+  final bool hideTotals;
 
   @override
-  bool multiple;
+  final bool multiple;
 
   @override
-  List<String> options;
+  final List<String> options;
 
   PostStatusPoll({
-    @required this.durationLength,
-    @required this.hideTotals,
-    @required this.multiple,
-    @required this.options,
+    required this.durationLength,
+    required this.hideTotals,
+    required this.multiple,
+    required this.options,
   });
 
   @override
   String toString() {
-    return 'PostStatusPoll{durationLength: $durationLength,'
-        ' hideTotals: $hideTotals, multiple: $multiple,'
-        ' options: $options}';
+    return 'PostStatusPoll{'
+        'durationLength: $durationLength, '
+        'hideTotals: $hideTotals, '
+        'multiple: $multiple, '
+        'options: $options'
+        '}';
   }
 
   @override
@@ -54,44 +58,65 @@ class PostStatusPoll implements IPostStatusPoll {
           durationLength == other.durationLength &&
           hideTotals == other.hideTotals &&
           multiple == other.multiple &&
-          options == other.options;
+          listEquals(options, other.options);
 
   @override
   int get hashCode =>
       durationLength.hashCode ^
       hideTotals.hashCode ^
       multiple.hashCode ^
-      options.hashCode;
+      listHash(options);
 
-  factory PostStatusPoll.fromJson(Map<String, dynamic> json) =>
+  static PostStatusPoll fromJson(Map<String, dynamic> json) =>
       _$PostStatusPollFromJson(json);
 
-  factory PostStatusPoll.fromJsonString(String jsonString) =>
-      _$PostStatusPollFromJson(jsonDecode(jsonString));
-
   Map<String, dynamic> toJson() => _$PostStatusPollToJson(this);
-
-  String toJsonString() => jsonEncode(_$PostStatusPollToJson(this));
 }
 
+extension IPostStatusPollExtension on IPostStatusPoll {
+  PleromaApiPostStatusPoll toPleromaPostStatusPoll() =>
+      PleromaApiPostStatusPoll(
+        options: options,
+        multiple: multiple,
+        expiresInSeconds: durationLength.totalSeconds,
+        hideTotals: hideTotals,
+      );
 
-extension PostStatusPollExtension on PostStatusPoll {
-  PleromaPoll toPleromaPoll() {
-    return PleromaPoll(
+  PostStatusPoll toPostStatusPoll() {
+    if (this is PostStatusPoll) {
+      return this as PostStatusPoll;
+    } else {
+      return PostStatusPoll(
+        options: options,
+        multiple: multiple,
+        durationLength: durationLength,
+        hideTotals: hideTotals,
+      );
+    }
+  }
+
+  PleromaApiPoll toPleromaPoll() {
+    return PleromaApiPoll(
       id: null,
       expired: false,
       voted: true,
       multiple: multiple,
-      options: options
-          ?.map((option) => PleromaPollOption(
-        title: option,
-        votesCount: 0,
-      ))
-          ?.toList(),
+      options: options.toPleromaApiPollOptions(),
       ownVotes: [],
       votersCount: 0,
       votesCount: 0,
-      expiresAt: null,
+      expiresAt: DateTime.now().add(durationLength),
+    );
+  }
+}
+
+extension PleromaPostStatusPollExtension on IPleromaApiPostStatusPoll {
+  PostStatusPoll toPostStatusPoll() {
+    return PostStatusPoll(
+      durationLength: expiresInSeconds.toDuration(),
+      hideTotals: hideTotals,
+      multiple: multiple,
+      options: options,
     );
   }
 }

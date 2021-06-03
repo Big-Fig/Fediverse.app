@@ -8,7 +8,7 @@ class FediPageCustomAppBar extends StatelessWidget
   final Widget child;
   final Widget leading;
   final bool centerTitle;
-  final List<Widget> actions;
+  final List<Widget>? actions;
 
   // AppBar size without bottom
   @override
@@ -17,8 +17,8 @@ class FediPageCustomAppBar extends StatelessWidget
   static Size calculatePreferredSize() => Size.fromHeight(kToolbarHeight + 1);
 
   FediPageCustomAppBar({
-    @required this.child,
-    @required this.leading,
+    required this.child,
+    required this.leading,
     this.centerTitle = false,
     this.actions,
   });
@@ -26,6 +26,7 @@ class FediPageCustomAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

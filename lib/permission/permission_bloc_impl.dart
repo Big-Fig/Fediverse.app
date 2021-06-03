@@ -12,37 +12,39 @@ abstract class PermissionBloc extends DisposableOwner
   PermissionBloc(this.permissionsService, this.permission); // ignore:
 
   @override
-  Stream<bool> get permissionGrantedStream =>
+  Stream<bool?> get permissionGrantedStream =>
       permissionStatusStream.map(IPermissionBloc.mapPermissionStatusToBool);
 
   @override
-  bool get permissionGranted =>
+  bool? get permissionGranted =>
       IPermissionBloc.mapPermissionStatusToBool(permissionStatus);
 
   // close_sinks
-  final BehaviorSubject<PermissionStatus> _permissionStatusSubject =
+  final BehaviorSubject<PermissionStatus?> _permissionStatusSubject =
       BehaviorSubject();
 
   @override
-  Stream<PermissionStatus> get permissionStatusStream =>
+  Stream<PermissionStatus?> get permissionStatusStream =>
       _permissionStatusSubject.stream;
 
   @override
-  PermissionStatus get permissionStatus => _permissionStatusSubject.value;
+  PermissionStatus? get permissionStatus => _permissionStatusSubject.value;
 
   @override
   Future<PermissionStatus> checkPermissionStatus() async {
     var permissionStatus =
         await permissionsService.checkPermissionStatus(permission);
     _permissionStatusSubject.add(permissionStatus);
+
     return permissionStatus;
   }
 
   @override
-  Future<PermissionStatus> requestPermission() async {
+  Future<PermissionStatus?> requestPermission() async {
     var permissionStatus =
         (await permissionsService.requestPermissions([permission]))[permission];
     _permissionStatusSubject.add(permissionStatus);
+
     return permissionStatus;
   }
 }

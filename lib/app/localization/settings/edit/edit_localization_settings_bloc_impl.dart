@@ -6,12 +6,11 @@ import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';
 import 'package:fedi/app/settings/global/edit/edit_global_settings_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:flutter/widgets.dart';
 
 class EditLocalizationSettingsBloc
-    extends EditGlobalSettingsBloc<LocalizationSettings>
+    extends EditGlobalSettingsBloc<LocalizationSettings?>
     implements IEditLocalizationSettingsBloc {
-  final ILocalizationSettingsBloc localizationSettingBloc;
+  final ILocalizationSettingsBloc localizationSettingsBloc;
 
   @override
   final ILocalizationLocaleSingleFromListValueFormFieldBloc
@@ -23,28 +22,28 @@ class EditLocalizationSettingsBloc
       ];
 
   EditLocalizationSettingsBloc({
-    @required this.localizationSettingBloc,
-    @required bool isEnabled,
+    required this.localizationSettingsBloc,
+    required bool isEnabled,
   })  : localizationLocaleFieldBloc =
             LocalizationLocaleSingleFromListValueFormFieldBloc(
-          originValue: localizationSettingBloc.localizationLocale,
+          originValue: localizationSettingsBloc.localizationLocale,
           isEnabled: isEnabled,
           possibleValues: supportedLocalizationLocaleList,
         ),
         super(
           isEnabled:isEnabled,
-          settingsBloc:localizationSettingBloc,
+          settingsBloc:localizationSettingsBloc,
         isAllItemsInitialized:true,
         ) {
     addDisposable(disposable: localizationLocaleFieldBloc);
   }
 
   @override
-  LocalizationSettings get settingsData => localizationSettingBloc.settingsData;
+  LocalizationSettings? get settingsData => localizationSettingsBloc.settingsData;
 
   @override
-  Stream<LocalizationSettings> get settingsDataStream =>
-      localizationSettingBloc.settingsDataStream;
+  Stream<LocalizationSettings?> get settingsDataStream =>
+      localizationSettingsBloc.settingsDataStream;
 
   @override
   LocalizationSettings calculateCurrentFormFieldsSettings() =>
@@ -53,9 +52,9 @@ class EditLocalizationSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(LocalizationSettings settings) async {
+  Future fillSettingsToFormFields(LocalizationSettings? settings) async {
     localizationLocaleFieldBloc.changeCurrentValue(
-      settings.localizationLocale,
+      settings?.localizationLocale,
     );
   }
 }

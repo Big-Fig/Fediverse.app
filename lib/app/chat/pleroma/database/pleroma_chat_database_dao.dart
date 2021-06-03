@@ -1,112 +1,58 @@
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/database/pleroma_chat_database_model.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 part 'pleroma_chat_database_dao.g.dart';
 
-var _accountAliasId = "account";
-var _chatAccountsAliasId = "chatAccounts";
+var _accountAliasId = 'account';
+var _chatAccountsAliasId = 'chatAccounts';
+var _chatMessageAliasId = 'chatMessage';
+var _chatMessageAccountAliasId = 'chatMessageAccount';
 
-@UseDao(tables: [
-  DbChats
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_chats;",
-  "countById": "SELECT COUNT(*) FROM db_chats WHERE id = :id;",
-  "deleteById": "DELETE FROM db_chats WHERE id = :id;",
-  "clear": "DELETE FROM db_chats",
-  "getAll": "SELECT * FROM db_chats",
-  "findLocalIdByRemoteId": "SELECT id FROM db_chats WHERE remote_id = "
-      ":remoteId;",
-})
-class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
-    final AppDatabase db;
-  $DbAccountsTable accountAlias;
-  $DbChatAccountsTable chatAccountsAlias;
+@UseDao(
+  tables: [
+    DbChats,
+  ],
+)
+class ChatDao extends PopulatedAppRemoteDatabaseDao<
+    DbChat,
+    DbPleromaChatPopulated,
+    int,
+    String,
+    $DbChatsTable,
+    $DbChatsTable,
+    PleromaChatRepositoryFilters,
+    PleromaChatRepositoryOrderingTermData> with _$ChatDaoMixin {
+  final AppDatabase db;
+  // ignore: avoid-late-keyword
+  late $DbAccountsTable accountAlias;
+  // ignore: avoid-late-keyword
+  late $DbChatMessagesTable chatMessageAlias;
+  // ignore: avoid-late-keyword
+  late $DbAccountsTable chatMessageAccountAlias;
+  // ignore: avoid-late-keyword
+  late $DbChatAccountsTable chatAccountsAlias;
 
   // Called by the AppDatabase class
   ChatDao(this.db) : super(db) {
     accountAlias = alias(db.dbAccounts, _accountAliasId);
     chatAccountsAlias = alias(db.dbChatAccounts, _chatAccountsAliasId);
+    chatMessageAlias = alias(db.dbChatMessages, _chatMessageAliasId);
+    chatMessageAccountAlias = alias(
+      db.dbAccounts,
+      _chatMessageAccountAliasId,
+    );
   }
-
-  Future<List<DbPleromaChatPopulated>> findAll() async {
-    JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAll();
-
-    return typedResultListToPopulated(await chatMessageQuery.get());
-  }
-
-  Stream<List<DbPleromaChatPopulated>> watchAll() {
-    JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAll();
-
-    return chatMessageQuery.watch().map(typedResultListToPopulated);
-  }
-
-  Future<DbPleromaChatPopulated> findById(int id) async =>
-      typedResultToPopulated(await _findById(id).getSingle());
-
-  Future<DbPleromaChatPopulated> findByRemoteId(String remoteId) async =>
-      typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
-
-  Stream<DbPleromaChatPopulated> watchById(int id) =>
-      (_findById(id).watchSingle().map(typedResultToPopulated));
-
-  Stream<DbPleromaChatPopulated> watchByRemoteId(String remoteId) =>
-      (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
-
-  JoinedSelectStatement<Table, DataClass> _findAll() {
-    var sqlQuery = (select(db.dbChats).join(
-      populateChatJoin(),
-    ));
-    return sqlQuery;
-  }
-
-  JoinedSelectStatement<Table, DataClass> _findById(int id) =>
-      (select(db.dbChats)..where((chatMessage) => chatMessage.id.equals(id)))
-          .join(populateChatJoin());
-
-  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
-      (select(db.dbChats)
-            ..where((chatMessage) => chatMessage.remoteId.like(remoteId)))
-          .join(populateChatJoin());
-
-  Future<int> insert(Insertable<DbChat> entity, {InsertMode mode}) async =>
-      into(db.dbChats).insert(entity, mode: mode);
-
-  Future<int> upsert(Insertable<DbChat> entity) async =>
-      into(db.dbChats).insert(entity, mode: InsertMode.insertOrReplace);
-
-  Future insertAll(
-          Iterable<Insertable<DbChat>> entities, InsertMode mode) async =>
-      await batch((batch) {
-        batch.insertAll(db.dbChats, entities, mode: mode);
-      });
-
-  Future<bool> replace(Insertable<DbChat> entity) async =>
-      await update(db.dbChats).replace(entity);
-
-  Future<int> updateByRemoteId(
-      String remoteId, Insertable<DbChat> entity) async {
-    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
-
-    if (localId != null && localId >= 0) {
-      await (update(db.dbChats)..where((i) => i.id.equals(localId)))
-          .write(entity);
-    } else {
-      localId = await insert(entity);
-    }
-
-    return localId;
-  }
-
-  SimpleSelectStatement<$DbChatsTable, DbChat> startSelectQuery() =>
-      (select(db.dbChats));
 
   SimpleSelectStatement<$DbChatsTable, DbChat> addUpdatedAtBoundsWhere(
     SimpleSelectStatement<$DbChatsTable, DbChat> query, {
-    @required DateTime minimumDateTimeExcluding,
-    @required DateTime maximumDateTimeExcluding,
+    required DateTime? minimumDateTimeExcluding,
+    required DateTime? maximumDateTimeExcluding,
   }) {
     var minimumExist = minimumDateTimeExcluding != null;
     var maximumExist = maximumDateTimeExcluding != null;
@@ -126,13 +72,17 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
     return query;
   }
 
-  Future<int> incrementUnreadCount(
-      {@required String chatRemoteId, @required DateTime updatedAt}) {
-    var update = "UPDATE db_chats "
-        "SET unread = unread + 1,"
-        " updated_at = ${updatedAt.millisecondsSinceEpoch ~/ 1000} "
-        "WHERE remote_id = '$chatRemoteId'";
-    var query = db.customUpdate(update, updates: {dbChats});
+  Future<int> incrementUnreadCount({
+    required String? chatRemoteId,
+    required DateTime updatedAt,
+  }) {
+    var update = 'UPDATE db_chats '
+        'SET unread = unread + 1,'
+        ' updated_at = ${updatedAt.millisecondsSinceEpoch ~/ Duration.millisecondsPerSecond} '
+        'WHERE remote_id = "$chatRemoteId"';
+    var query = db.customUpdate(update, updates: {
+      dbChats,
+    });
 
     return query;
   }
@@ -148,44 +98,38 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
     final query = selectOnly(dbChats)..addColumns([unreadCount]);
 
     var mapped = query.map((row) => row.read(unreadCount));
-    return mapped.map((value) => value.toInt());
+
+    return mapped.map((value) => value!.toInt());
   }
 
   SimpleSelectStatement<$DbChatsTable, DbChat> orderBy(
-          SimpleSelectStatement<$DbChatsTable, DbChat> query,
-          List<PleromaChatOrderingTermData> orderTerms) =>
-      query
-        ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
-                  var expression;
-                  switch (orderTerm.orderByType) {
-                    case PleromaChatOrderByType.remoteId:
-                      expression = item.remoteId;
-                      break;
-                    case PleromaChatOrderByType.updatedAt:
-                      expression = item.updatedAt;
-                      break;
-                  }
-                  return OrderingTerm(
-                      expression: expression, mode: orderTerm.orderingMode);
-                })
-            .toList());
+    SimpleSelectStatement<$DbChatsTable, DbChat> query,
+    List<PleromaChatRepositoryOrderingTermData> orderTerms,
+  ) {
+    // ignore: curly_braces_in_flow_control_structures
+    return query
+      ..orderBy(
+        orderTerms
+            .map(
+              (orderTerm) => (item) {
+                var expression;
+                switch (orderTerm.orderType) {
+                  case PleromaChatOrderType.remoteId:
+                    expression = item.remoteId;
+                    break;
+                  case PleromaChatOrderType.updatedAt:
+                    expression = item.updatedAt;
+                    break;
+                }
 
-  List<DbPleromaChatPopulated> typedResultListToPopulated(
-      List<TypedResult> typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
-    return typedResult.map(typedResultToPopulated).toList();
-  }
-
-  DbPleromaChatPopulated typedResultToPopulated(TypedResult typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
-    return DbPleromaChatPopulated(
-        dbChat: typedResult.readTable(db.dbChats),
-        dbAccount: typedResult.readTable(accountAlias));
+                return OrderingTerm(
+                  expression: expression,
+                  mode: orderTerm.orderingMode,
+                );
+              },
+            )
+            .toList(),
+      );
   }
 
   List<Join<Table, DataClass>> populateChatJoin() {
@@ -195,5 +139,154 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
         accountAlias.remoteId.equalsExp(dbChats.accountRemoteId),
       ),
     ];
+  }
+
+  List<Join<Table, DataClass>> chatLastMessageJoin() {
+    return [
+      leftOuterJoin(
+        chatMessageAlias,
+        chatMessageAlias.chatRemoteId.equalsExp(dbChats.remoteId),
+      ),
+      leftOuterJoin(
+        chatMessageAccountAlias,
+        chatMessageAccountAlias.remoteId
+            .equalsExp(chatMessageAlias.accountRemoteId),
+      ),
+    ];
+  }
+
+  @override
+  $DbChatsTable get table => dbChats;
+
+  @override
+  // ignore: no-empty-block
+  void addFiltersToQuery({
+    required SimpleSelectStatement<$DbChatsTable, DbChat> query,
+    required PleromaChatRepositoryFilters? filters,
+    // ignore: no-empty-block
+  }) {
+    // nothing
+  }
+
+  @override
+  void addNewerOlderDbItemPagination({
+    required SimpleSelectStatement<$DbChatsTable, DbChat> query,
+    required RepositoryPagination<DbChat>? pagination,
+    required List<PleromaChatRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTerms?.length == 1);
+      var orderingTermData = orderingTerms!.first;
+      assert(orderingTermData.orderType == PleromaChatOrderType.updatedAt);
+      addDateTimeBoundsWhere(
+        query,
+        column: dbChats.updatedAt,
+        maximumDateTimeExcluding: pagination?.olderThanItem?.updatedAt,
+        minimumDateTimeExcluding: pagination?.newerThanItem?.updatedAt,
+      );
+    }
+  }
+
+  @override
+  void addOrderingToQuery({
+    required SimpleSelectStatement<$DbChatsTable, DbChat> query,
+    required List<PleromaChatRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    orderBy(query, orderingTerms ?? []);
+  }
+
+  @override
+  JoinedSelectStatement<Table, DataClass>
+      convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbChatsTable, DbChat> query,
+    required PleromaChatRepositoryFilters? filters,
+  }) {
+    var join = query.join([
+      ...populateChatJoin(),
+      if (filters?.withLastMessage == true) ...chatLastMessageJoin(),
+    ]);
+    if (filters?.withLastMessage == true) {
+      // todo: rework with moor-like code
+      var fieldName = chatMessageAlias.createdAt.$name;
+      var aliasName = chatMessageAlias.$tableName;
+      var having = CustomExpression<bool>('MAX($aliasName.$fieldName)');
+      join.groupBy(
+        [
+          dbChats.remoteId,
+        ],
+        having: having,
+      );
+    }
+
+    return join;
+  }
+
+  @override
+  DbPleromaChatPopulated mapTypedResultToDbPopulatedItem(
+    TypedResult typedResult,
+  ) =>
+      typedResult.toDbPleromaChatPopulated(dao: this);
+}
+
+extension DbPleromaChatPopulatedTypedResultListExtension on List<TypedResult> {
+  List<DbPleromaChatPopulated> toDbPleromaChatPopulatedList({
+    required ChatDao dao,
+  }) {
+    return map(
+      (item) => item.toDbPleromaChatPopulated(
+        dao: dao,
+      ),
+    ).toList();
+  }
+}
+
+extension DbPleromaChatPopulatedTypedResultExtension on TypedResult {
+  DbPleromaChatPopulated toDbPleromaChatPopulated({
+    required ChatDao dao,
+  }) {
+    return DbPleromaChatPopulated(
+      dbChat: readTable(dao.db.dbChats),
+      dbAccount: readTable(dao.accountAlias),
+    );
+  }
+}
+
+extension DbPleromaChatWithLastMessagePopulatedTypedResultListExtension
+    on List<TypedResult> {
+  List<DbPleromaChatWithLastMessagePopulated>
+      toDbPleromaChatWithLastMessagePopulatedList({
+    required ChatDao dao,
+  }) {
+    return map(
+      (item) => item.toDbPleromaChatWithLastMessagePopulated(
+        dao: dao,
+      ),
+    ).toList();
+  }
+}
+
+extension DbPleromaChatWithLastMessagePopulatedTypedResultExtension
+    on TypedResult {
+  DbPleromaChatWithLastMessagePopulated
+      toDbPleromaChatWithLastMessagePopulated({
+    required ChatDao dao,
+  }) {
+    var dbChatMessage = readTableOrNull(dao.chatMessageAlias);
+    var dbChatMessageAccount = readTableOrNull(dao.chatMessageAccountAlias);
+
+    DbChatMessagePopulated? dbChatMessagePopulated;
+
+    if (dbChatMessage != null && dbChatMessageAccount != null) {
+      dbChatMessagePopulated = DbChatMessagePopulated(
+        dbChatMessage: dbChatMessage,
+        dbAccount: dbChatMessageAccount,
+      );
+    }
+
+    return DbPleromaChatWithLastMessagePopulated(
+      dbPleromaChatPopulated: toDbPleromaChatPopulated(dao: dao),
+      dbChatMessagePopulated: dbChatMessagePopulated,
+    );
   }
 }

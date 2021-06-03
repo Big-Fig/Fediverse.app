@@ -1,28 +1,50 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart' show IterableExtension;
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
+import 'package:fedi/collection/collection_hash_utils.dart';
+import 'package:fedi/obj/equal_comparable_obj.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/list/pagination_list_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("cached_pagination_list_with_new_items_bloc_impl.dart");
+var _logger = Logger('cached_pagination_list_with_new_items_bloc_impl.dart');
 
 abstract class CachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<TItem>,
-        TItem> extends CachedPaginationListBloc<TPage, TItem>
+        TItem extends IEqualComparableObj<TItem>>
+    extends CachedPaginationListBloc<TPage, TItem>
     implements ICachedPaginationListWithNewItemsBloc<TPage, TItem> {
-  @override
-  TItem get newerItem => items?.isNotEmpty == true ? items.first : null;
+  final BehaviorSubject<List<TItem>> updatedItemsSubject =
+      BehaviorSubject.seeded([]);
+
+  // ignore: avoid-late-keyword
+  late BehaviorSubject<_CombinedItemsResult<TItem>> combinedItemsResultSubject;
+
+  List<TItem> get updatedItems => updatedItemsSubject.value!;
+
+  Stream<List<TItem>> get updatedItemsStream => updatedItemsSubject.stream;
 
   @override
-  Stream<TItem> get newerItemStream => itemsStream
-      .map((items) => items?.isNotEmpty == true ? items.first : null);
+  List<TItem> get items => combinedItemsResultSubject.value!.resultItems;
 
-  Stream<List<TItem>> watchItemsNewerThanItem(TItem item);
+  @override
+  Stream<List<TItem>> get itemsStream => combinedItemsResultSubject.stream.map(
+        (result) => result.resultItems,
+      );
+
+  @override
+  TItem? get newerItem => items.isNotEmpty ? items.first : null;
+
+  @override
+  Stream<TItem?> get newerItemStream =>
+      itemsStream.map((items) => items.isNotEmpty ? items.first : null);
+
+  Stream<List<TItem>> watchItemsNewerThanItem(TItem? item);
 
   @override
   final bool mergeNewItemsImmediately;
@@ -36,117 +58,127 @@ abstract class CachedPaginationListWithNewItemsBloc<
       BehaviorSubject.seeded([]);
 
   // ignore: cancel_subscriptions
-  StreamSubscription newItemsSubscription;
+  StreamSubscription? newItemsSubscription;
 
   final bool mergeNewItemsImmediatelyWhenItemsIsEmpty;
 
+  TItem? previousNeverItem;
+
+  final bool watchNewerItemsWhenLoadedPagesIsEmpty;
+  final bool asyncCalculateNewItems;
+  final bool asyncCalculateActuallyNew;
+
+  // todo: refactor
+  // ignore: long-method
   CachedPaginationListWithNewItemsBloc({
-    @required this.mergeNewItemsImmediately,
+    required this.mergeNewItemsImmediately,
     this.mergeNewItemsImmediatelyWhenItemsIsEmpty = true,
-    @required ICachedPaginationBloc<TPage, TItem> paginationBloc,
+    this.watchNewerItemsWhenLoadedPagesIsEmpty = false,
+    this.asyncCalculateNewItems = false,
+    this.asyncCalculateActuallyNew = true,
+    required ICachedPaginationBloc<TPage, TItem> paginationBloc,
   }) : super(cachedPaginationBloc: paginationBloc) {
+    combinedItemsResultSubject = BehaviorSubject.seeded(
+      _CombinedItemsResult<TItem>(
+        request: _CalculateNewItemsInputData<TItem>(
+          superItems: null,
+          mergedNewItems: null,
+          updatedItems: [],
+        ),
+        resultItems: [],
+      ),
+    );
+
     addDisposable(subject: mergedNewItemsSubject);
     addDisposable(subject: unmergedNewItemsSubject);
+    addDisposable(subject: updatedItemsSubject);
+    addDisposable(subject: combinedItemsResultSubject);
 
     addDisposable(
-        streamSubscription: newerItemStream.distinct().listen((newerItem) {
-//          clearNewItems();
-      _logger.finest(() => "newerItem $newerItem");
-      newItemsSubscription?.cancel();
-
-      newItemsSubscription = watchItemsNewerThanItem(newerItem)
-          .skipWhile((newItems) => newItems?.isNotEmpty != true)
-          .listen((newItems) {
-        // we need to filter again to be sure that newerItem is no
-        // changed during sql request execute time
-        List<TItem> actuallyNew = newItems
-            .where((newItem) => compareItemsToSort(newItem, newerItem) > 0)
-            .toList();
-
-        // remove duplicates
-        // sometimes local storage sqlite returns duplicated items
-        // sometimes item is newer but already exist
-        // for example chat updateAt updated
-        actuallyNew = removeDuplicates(actuallyNew);
-
-        _logger.finest(() => "watchItemsNewerThanItem "
-            // "\n"
-            // "\t newItems ${newItems.length} \n"
-            // "\t actuallyNew = ${actuallyNew.length}"
-            );
-
-        if (items?.isNotEmpty != true &&
-            mergeNewItemsImmediatelyWhenItemsIsEmpty) {
-          // merge immediately
-          mergedNewItemsSubject.add(actuallyNew);
-        } else {
-          unmergedNewItemsSubject.add(actuallyNew);
-        }
-      });
-
-      addDisposable(streamSubscription: newItemsSubscription);
-    }));
+      streamSubscription: newerItemStream.listen(
+        (TItem? newerItem) {
+          checkWatchNewItemsSubscription(newerItem);
+        },
+      ),
+    );
 
     if (mergeNewItemsImmediately) {
       addDisposable(
-          streamSubscription: unmergedNewItemsStream.listen((unmergedNewItems) {
-        if (unmergedNewItems?.isNotEmpty == true) {
-          mergeNewItems();
-        }
-      }));
+        streamSubscription: unmergedNewItemsStream.listen(
+          (unmergedNewItems) {
+            if (unmergedNewItems.isNotEmpty) {
+              mergeNewItems();
+            }
+          },
+        ),
+      );
     }
+
+    addDisposable(
+      streamSubscription: super.itemsStream.listen(
+        (superItems) async {
+          var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
+            superItems: superItems,
+            mergedNewItems: mergedNewItems,
+            updatedItems: updatedItems,
+          );
+
+          await _updateCombinedItemsResult(calculateNewItemsRequest);
+        },
+      ),
+    );
+    addDisposable(
+      streamSubscription: mergedNewItemsStream.listen(
+        (mergedNewItems) async {
+          var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
+            superItems: super.items,
+            mergedNewItems: mergedNewItems,
+            updatedItems: updatedItems,
+          );
+
+          await _updateCombinedItemsResult(calculateNewItemsRequest);
+        },
+      ),
+    );
+    addDisposable(
+      streamSubscription: updatedItemsStream.listen(
+        (updatedItems) async {
+          var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
+            superItems: super.items,
+            mergedNewItems: mergedNewItems,
+            updatedItems: updatedItems,
+          );
+
+          await _updateCombinedItemsResult(calculateNewItemsRequest);
+        },
+      ),
+    );
   }
 
-  List<TItem> removeDuplicates(List<TItem> actuallyNew) =>
-      actuallyNew.where((a) {
-        bool isAlreadyExist;
-        if (items?.isNotEmpty == true) {
-          var found =
-              items.firstWhere((b) => isItemsEqual(a, b), orElse: () => null);
+  Future _updateCombinedItemsResult(
+    _CalculateNewItemsInputData<TItem> calculateNewItemsInputData,
+  ) async {
+    var oldResult = combinedItemsResultSubject.value!;
+    var request = _CalculateNewItemsRequest<TItem>(
+      inputData: calculateNewItemsInputData,
+      result: oldResult,
+    );
 
-          isAlreadyExist = found != null;
-        } else {
-          isAlreadyExist = false;
-        }
-        var isNeedToAdd = !isAlreadyExist;
-        return isNeedToAdd;
-      }).toList();
-
-  @override
-  List<TItem> get items => _calculateNewItems(super.items, mergedNewItems);
-
-  @override
-  Stream<List<TItem>> get itemsStream =>
-      Rx.combineLatest2(mergedNewItemsStream, super.itemsStream,
-          (mergedNewItems, items) {
-        return _calculateNewItems(items, mergedNewItems);
-      });
-
-  List<TItem> _calculateNewItems(
-      List<TItem> items, List<TItem> mergedNewItems) {
-    List<TItem> result;
-
-    if (items == null && mergedNewItems == null) {
-      result = null;
-    }
-    if (items == null) {
-      if (mergedNewItems?.isNotEmpty == true) {
-        result = mergedNewItems;
-      } else {
-        result = null;
-      }
+    _CombinedItemsResult<TItem> newResult;
+    if (asyncCalculateNewItems) {
+      newResult = await compute(
+        _calculateNewItems,
+        request,
+      );
     } else {
-      result = [...(mergedNewItems ?? []), ...items];
+      newResult = _calculateNewItems(
+        request,
+      );
     }
 
-    _logger.finest(() => "_calculateNewItems"
-        // " \n"
-        // "\t items = ${items?.length} \n"
-        // "\t mergedNewItems = ${mergedNewItems.length} \n"
-        // "\t result = ${result?.length}"
-        );
-
-    return result;
+    if (newResult.resultItems != oldResult.resultItems) {
+      combinedItemsResultSubject.add(newResult);
+    }
   }
 
   bool get isHaveUnmergedNewItems => unmergedNewItemsCount > 0;
@@ -155,18 +187,18 @@ abstract class CachedPaginationListWithNewItemsBloc<
       .map((isHaveUnmergedNewItems) => unmergedNewItemsCount > 0);
 
   @override
-  List<TItem> get unmergedNewItems => unmergedNewItemsSubject.value;
+  List<TItem> get unmergedNewItems => unmergedNewItemsSubject.value!;
 
   @override
   Stream<List<TItem>> get unmergedNewItemsStream =>
       unmergedNewItemsSubject.stream;
 
   @override
-  int get unmergedNewItemsCount => unmergedNewItems?.length ?? 0;
+  int get unmergedNewItemsCount => unmergedNewItems.length;
 
   @override
-  Stream<int> get unmergedNewItemsCountStream => unmergedNewItemsStream
-      .map((unmergedNewItems) => unmergedNewItems?.length ?? 0);
+  Stream<int> get unmergedNewItemsCountStream =>
+      unmergedNewItemsStream.map((unmergedNewItems) => unmergedNewItems.length);
 
   bool get isHaveMergedNewItems => mergedNewItemsCount > 0;
 
@@ -174,40 +206,51 @@ abstract class CachedPaginationListWithNewItemsBloc<
       .map((isHaveMergedNewItems) => mergedNewItemsCount > 0);
 
   @override
-  List<TItem> get mergedNewItems => mergedNewItemsSubject.value;
+  List<TItem> get mergedNewItems => mergedNewItemsSubject.value!;
 
   @override
   Stream<List<TItem>> get mergedNewItemsStream => mergedNewItemsSubject.stream;
 
   @override
-  int get mergedNewItemsCount => mergedNewItems?.length ?? 0;
+  int get mergedNewItemsCount => mergedNewItems.length;
 
   @override
   Stream<int> get mergedNewItemsCountStream =>
-      mergedNewItemsStream.map((mergedNewItems) => mergedNewItems?.length ?? 0);
+      mergedNewItemsStream.map((mergedNewItems) => mergedNewItems.length);
 
   @override
   void mergeNewItems() {
-    _logger.finest(() => "mergeNewItems \n"
-        "\t unmergedNewItems = ${unmergedNewItems.length}\n"
-        "\t mergedNewItems = ${mergedNewItems.length}\n");
-    var lastMergedItems = unmergedNewItems;
-    mergedNewItemsSubject.add([...unmergedNewItems, ...mergedNewItems]);
+    _logger.finest(() => 'mergeNewItems \n'
+        '\t unmergedNewItems = ${unmergedNewItems.length}\n'
+        '\t mergedNewItems = ${mergedNewItems.length}\n');
+    mergedNewItemsSubject.add(
+      [
+        ...unmergedNewItems,
+        ...mergedNewItems,
+      ],
+    );
     unmergedNewItemsSubject.add([]);
 
-    onNewItemsMerged(lastMergedItems);
-    _logger.finest(() => "mergeNewItems after "
-        "\t unmergedNewItems = ${unmergedNewItems.length}\n"
-        "\t mergedNewItems = ${mergedNewItems.length}\n");
+    _logger.finest(() => 'mergeNewItems after '
+        '\t unmergedNewItems = ${unmergedNewItems.length}\n'
+        '\t mergedNewItems = ${mergedNewItems.length}\n');
   }
 
   @override
-  Future<PaginationListLoadingState> refreshWithoutController() async {
+  Future<FediListSmartRefresherLoadingState> refreshWithoutController() async {
     var state = await super.refreshWithoutController();
-    if (state == PaginationListLoadingState.loaded) {
+    if (state == FediListSmartRefresherLoadingState.loaded) {
       clearNewItems();
     }
+
     return state;
+  }
+
+  @override
+  void onItemUpdated(TItem item) {
+    updatedItems.removeWhere((listItem) => listItem.isEqualTo(item));
+    updatedItems.add(item);
+    updatedItemsSubject.add([...updatedItems]);
   }
 
   void clearNewItems() {
@@ -219,11 +262,282 @@ abstract class CachedPaginationListWithNewItemsBloc<
     }
   }
 
-  int compareItemsToSort(TItem a, TItem b);
+  void checkWatchNewItemsSubscription(TItem? newerItem) {
+    // dont watch new items before we something actually loaded
+    if (paginationBloc.loadedPagesCount == 0 &&
+        !watchNewerItemsWhenLoadedPagesIsEmpty) {
+      return;
+    }
 
-  bool isItemsEqual(TItem a, TItem b);
+    var bothItemsIsNull = previousNeverItem == null && newerItem == null;
+    var newItemsSubscriptionAlreadyExist = newItemsSubscription != null;
+    if (bothItemsIsNull && newItemsSubscriptionAlreadyExist) {
+      return;
+    }
 
-  void onNewItemsMerged(List<TItem> unmergedNewItems) {
-    // nothing by default
+    var bothItemsNotNull = previousNeverItem != null && newerItem != null;
+    if (bothItemsNotNull) {
+      var isEqual = previousNeverItem!.isEqualTo(newerItem!);
+      if (isEqual) {
+        return;
+      }
+    }
+
+    _logger.finest(() => 'newerItem $newerItem');
+    newItemsSubscription?.cancel();
+
+    newItemsSubscription = createWatchNewItemsSubscription(newerItem);
+
+    addDisposable(streamSubscription: newItemsSubscription);
   }
+
+  StreamSubscription<List<TItem>> createWatchNewItemsSubscription(newerItem) {
+    return watchItemsNewerThanItem(newerItem)
+        .skipWhile((newItems) => !newItems.isNotEmpty)
+        .listen(
+      (newItems) async {
+        var currentItems = items;
+
+        // changed during sql request execute time
+        // we need to filter again to be sure that newerItem is no
+
+        var actuallyNewRequest = _CalculateActuallyNewRequest<TItem>(
+          newItems: newItems,
+          newerItem: newerItem,
+          currentItems: currentItems,
+        );
+
+        List<TItem> actuallyNew;
+        if (asyncCalculateActuallyNew) {
+          actuallyNew = await compute(
+            _calculateActuallyNew,
+            actuallyNewRequest,
+          );
+        } else {
+          actuallyNew = _calculateActuallyNew(
+            actuallyNewRequest,
+          );
+        }
+
+        // if newerItem already changed we shouldnt apply calculated changes
+        // because new changes coming
+        if (this.newerItem != newerItem) {
+          return;
+        }
+
+        _logger.finest(() => 'watchItemsNewerThanItem '
+            '\n'
+            '\t newItems ${newItems.length} \n'
+            '\t actuallyNew = ${actuallyNew.length}');
+
+        if (actuallyNew.isNotEmpty) {
+          if (!currentItems.isNotEmpty &&
+              mergeNewItemsImmediatelyWhenItemsIsEmpty) {
+            // merge immediately
+            if (!mergedNewItemsSubject.isClosed) {
+              mergedNewItemsSubject.add(actuallyNew);
+            }
+          } else {
+            if (!unmergedNewItemsSubject.isClosed) {
+              unmergedNewItemsSubject.add(actuallyNew);
+            }
+          }
+        }
+      },
+    );
+  }
+}
+
+class _CalculateNewItemsRequest<TItem extends IEqualComparableObj<TItem>> {
+  final _CalculateNewItemsInputData<TItem> inputData;
+  final _CombinedItemsResult<TItem> result;
+
+  _CalculateNewItemsRequest({
+    required this.inputData,
+    required this.result,
+  });
+}
+
+class _CalculateNewItemsInputData<TItem extends IEqualComparableObj<TItem>> {
+  final List<TItem>? superItems;
+  final List<TItem>? mergedNewItems;
+  final List<TItem> updatedItems;
+
+  _CalculateNewItemsInputData({
+    required this.superItems,
+    required this.mergedNewItems,
+    required this.updatedItems,
+  });
+
+  @override
+  String toString() {
+    return '_CalculateNewItemsRequest{'
+        'superItems: $superItems, '
+        'updatedItems: $updatedItems, '
+        'mergedNewItems: $mergedNewItems'
+        '}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _CalculateNewItemsInputData &&
+          runtimeType == other.runtimeType &&
+          superItems == other.superItems &&
+          mergedNewItems == other.mergedNewItems &&
+          updatedItems == other.updatedItems;
+
+  @override
+  int get hashCode =>
+      superItems.hashCode ^ mergedNewItems.hashCode ^ updatedItems.hashCode;
+}
+
+_CombinedItemsResult<TItem>
+    _calculateNewItems<TItem extends IEqualComparableObj<TItem>>(
+  _CalculateNewItemsRequest<TItem> request,
+) {
+  var inputData = request.inputData;
+  var oldResult = request.result;
+
+  if (oldResult.request == inputData) {
+    return oldResult;
+  }
+
+  List<TItem> resultList;
+
+  var items = inputData.superItems;
+  var mergedNewItems = inputData.mergedNewItems;
+  var updatedItems = inputData.updatedItems;
+
+  if (items == null && mergedNewItems == null) {
+    resultList = [];
+  }
+  if (items == null) {
+    if (mergedNewItems?.isNotEmpty == true) {
+      resultList = mergedNewItems!;
+    } else {
+      resultList = [];
+    }
+  } else {
+    resultList = [
+      ...(mergedNewItems ?? []),
+      ...items,
+    ];
+  }
+
+  _logger.finest(() => '_calculateNewItems'
+      ' \n'
+      '\t items = ${items?.length} \n'
+      '\t mergedNewItems = ${mergedNewItems?.length} \n'
+      '\t updatedItems = ${updatedItems.length} \n'
+      '\t resultList = ${resultList.length}');
+
+  if (updatedItems.isNotEmpty) {
+    resultList = resultList.map((resultListItem) {
+      var index = updatedItems.indexWhere(
+        (updatedItem) => updatedItem.isEqualTo(resultListItem),
+      );
+
+      if (index >= 0) {
+        return updatedItems[index];
+      } else {
+        return resultListItem;
+      }
+    }).toList();
+
+    // -1 for inverse
+    resultList.sort((a, b) => a.compareTo(b) * -1);
+  }
+
+  return _CombinedItemsResult(
+    request: inputData,
+    resultItems: resultList,
+  );
+}
+
+class _CalculateActuallyNewRequest<TItem> {
+  final TItem? newerItem;
+  final List<TItem> newItems;
+  final List<TItem> currentItems;
+
+  _CalculateActuallyNewRequest({
+    required this.newItems,
+    required this.currentItems,
+    required this.newerItem,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _CalculateActuallyNewRequest &&
+          runtimeType == other.runtimeType &&
+          newerItem == other.newerItem &&
+          listEquals(newItems, other.newItems) &&
+          listEquals(currentItems, other.currentItems) &&
+          listEquals(currentItems, other.currentItems);
+
+  @override
+  int get hashCode =>
+      newerItem?.hashCode ?? 0 ^ listHash(newItems) ^ listHash(currentItems);
+
+  @override
+  String toString() => '_CalculateActuallyNewRequest{'
+      'newerItem: $newerItem, '
+      'newItems: $newItems, '
+      'currentItems: $currentItems'
+      '}';
+}
+
+List<TItem> _calculateActuallyNew<TItem extends IEqualComparableObj<TItem>>(
+  _CalculateActuallyNewRequest<TItem> request,
+) {
+  var newItems = request.newItems;
+  var currentItems = request.currentItems;
+  var newerItem = request.newerItem;
+
+  // changed during sql request execute time
+  // we need to filter again to be sure that newerItem is no
+  var actuallyNew = newItems.where(
+    (newItem) {
+      if (newerItem != null) {
+        return newItem.compareTo(newerItem) > 0;
+      } else {
+        return true;
+      }
+    },
+  ).toList();
+
+  // remove duplicates
+  // sometimes local storage sqlite returns duplicated items
+  // sometimes item is newer but already exist
+  // for example chat updateAt updated
+  actuallyNew = actuallyNew.where(
+    (newItem) {
+      bool isAlreadyExist;
+      if (currentItems.isNotEmpty) {
+        var found = currentItems.firstWhereOrNull(
+          (oldItem) => newItem.isEqualTo(oldItem),
+        );
+
+        isAlreadyExist = found != null;
+      } else {
+        isAlreadyExist = false;
+      }
+      var isNeedToAdd = !isAlreadyExist;
+
+      return isNeedToAdd;
+    },
+  ).toList();
+
+  return actuallyNew;
+}
+
+class _CombinedItemsResult<TItem extends IEqualComparableObj<TItem>> {
+  final _CalculateNewItemsInputData request;
+  final List<TItem> resultItems;
+
+  _CombinedItemsResult({
+    required this.request,
+    required this.resultItems,
+  });
 }

@@ -8,7 +8,7 @@ class StatusSensitiveNsfwWarningOverlayWidget extends StatelessWidget {
   final Widget child;
 
   StatusSensitiveNsfwWarningOverlayWidget({
-    @required this.child,
+    required this.child,
   });
 
   @override
@@ -21,7 +21,11 @@ class StatusSensitiveNsfwWarningOverlayWidget extends StatelessWidget {
     } else {
       return ConstrainedBox(
         constraints: BoxConstraints(
+          // todo: refactor
+          // ignore: no-magic-number
           minHeight: 54,
+          // ignore: no-magic-number
+          minWidth: 200,
         ),
         child: Stack(
           children: [
@@ -38,7 +42,7 @@ class StatusSensitiveNsfwWarningOverlayWidget extends StatelessWidget {
 
 class _StatusSensitiveNsfwWarningOverlayBodyWidget extends StatelessWidget {
   const _StatusSensitiveNsfwWarningOverlayBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

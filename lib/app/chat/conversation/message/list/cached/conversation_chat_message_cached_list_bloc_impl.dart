@@ -10,34 +10,34 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 
-var _logger = Logger("pleroma_chat_message_cached_list_bloc_impl.dart");
+var _logger = Logger('pleroma_chat_message_cached_list_bloc_impl.dart');
 
 class ConversationChatMessageCachedListBloc extends DisposableOwner
     implements IConversationChatMessageCachedListBloc {
   final ConversationChatStatusListBloc conversationChatStatusListBloc;
-  final IConversationChat chat;
-  final IConversationChatMessage lastMessage;
+  final IConversationChat? chat;
+  final IConversationChatMessage? lastMessage;
 
   ConversationChatMessageCachedListBloc({
-    @required this.chat,
-    @required this.conversationChatStatusListBloc,
-    @required this.lastMessage,
+    required this.chat,
+    required this.conversationChatStatusListBloc,
+    required this.lastMessage,
   });
 
   @override
   IPleromaApi get pleromaApi => conversationChatStatusListBloc.pleromaApi;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IConversationChatMessage newerThan,
-      @required IConversationChatMessage olderThan}) async {
-    _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t chat = $chat"
-        "\t newerThan = $newerThan"
-        "\t olderThan = $olderThan");
+  Future<bool> refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IConversationChatMessage? newerThan,
+    required IConversationChatMessage? olderThan,
+  }) async {
+    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
+        '\t chat = $chat'
+        '\t newerThan = $newerThan'
+        '\t olderThan = $olderThan');
 
     var remoteMessages =
         await conversationChatStatusListBloc.refreshItemsFromRemoteForPage(
@@ -49,20 +49,22 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     if (remoteMessages != null) {
       return true;
     } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "messages is null");
+      _logger.severe(() => 'error during refreshItemsFromRemoteForPage: '
+          'messages is null');
+
       return false;
     }
   }
 
   @override
-  Future<List<IConversationChatMessage>> loadLocalItems(
-      {@required int limit,
-      @required IConversationChatMessage newerThan,
-      @required IConversationChatMessage olderThan}) async {
-    _logger.finest(() => "start loadLocalItems \n"
-        "\t newerThan=$newerThan"
-        "\t olderThan=$olderThan");
+  Future<List<IConversationChatMessage>> loadLocalItems({
+    required int? limit,
+    required IConversationChatMessage? newerThan,
+    required IConversationChatMessage? olderThan,
+  }) async {
+    _logger.finest(() => 'start loadLocalItems \n'
+        '\t newerThan=$newerThan'
+        '\t olderThan=$olderThan');
 
     var statuses = await conversationChatStatusListBloc.loadLocalItems(
       olderThan: olderThan?.status,
@@ -71,32 +73,34 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     );
 
     _logger.finer(
-        () => "finish loadLocalItems for $chat messages ${statuses.length}");
+      () => 'finish loadLocalItems for $chat messages ${statuses.length}',
+    );
+
     return statuses
-        ?.map(
-          (status) => ConversationChatMessageStatusAdapter(status),
+        .map(
+          (status) => status.toConversationChatMessageStatusAdapter(),
         )
-        ?.toList();
+        .toList();
   }
 
   @override
   Stream<List<IConversationChatMessage>> watchLocalItemsNewerThanItem(
-      IConversationChatMessage item) {
-    return conversationChatStatusListBloc
-        .watchLocalItemsNewerThanItem(item?.status)
-        .map(
-          (statuses) => statuses
-              ?.map(
-                (status) => ConversationChatMessageStatusAdapter(status),
-              )
-              ?.toList(),
-        );
-  }
+    IConversationChatMessage? item,
+  ) =>
+      conversationChatStatusListBloc
+          .watchLocalItemsNewerThanItem(item?.status)
+          .map(
+            (statuses) => statuses
+                .map(
+                  (status) => status.toConversationChatMessageStatusAdapter(),
+                )
+                .toList(),
+          );
 
   static ConversationChatMessageCachedListBloc createFromContext(
     BuildContext context, {
-    @required IConversationChat conversation,
-    @required IConversationChatMessage lastMessage,
+    required IConversationChat? conversation,
+    required IConversationChatMessage? lastMessage,
   }) {
     var chatStatusListBloc = _createStatusListBloc(
       context: context,
@@ -109,14 +113,15 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
       conversationChatStatusListBloc: chatStatusListBloc,
     );
     chatMessageCachedListBloc.addDisposable(disposable: chatStatusListBloc);
+
     return chatMessageCachedListBloc;
   }
 
   static Widget provideToContext(
     BuildContext context, {
-    @required IConversationChat conversation,
-    @required IConversationChatMessage lastMessage,
-    @required Widget child,
+    required IConversationChat? conversation,
+    required IConversationChatMessage? lastMessage,
+    required Widget child,
   }) {
     return DisposableProvider<IConversationChatMessageCachedListBloc>(
       create: (context) =>
@@ -131,17 +136,18 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
 }
 
 ConversationChatStatusListBloc _createStatusListBloc({
-  @required BuildContext context,
-  @required IConversationChat conversation,
-  @required IConversationChatMessage lastMessage,
+  required BuildContext context,
+  required IConversationChat? conversation,
+  required IConversationChatMessage? lastMessage,
 }) {
   var currentInstanceBloc = ICurrentAuthInstanceBloc.of(context, listen: false);
 
-  if (currentInstanceBloc.currentInstance.isPleromaInstance) {
+  if (currentInstanceBloc.currentInstance!.isPleroma) {
     // pleroma instances support loading by conversation id
     return ConversationChatStatusListConversationApiBloc.createFromContext(
-        context,
-        conversation: conversation);
+      context,
+      conversation: conversation,
+    );
   } else {
     // mastodon instances support conversation
     // only by status context

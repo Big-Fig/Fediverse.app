@@ -9,10 +9,9 @@ import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.d
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:fedi/web_sockets/service/config/web_sockets_service_config_bloc.dart';
 import 'package:fedi/web_sockets/web_sockets_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("web_sockets_channel_impl.dart");
+var _logger = Logger('web_sockets_channel_impl.dart');
 
 class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
     implements IWebSocketsChannel<T> {
@@ -21,16 +20,16 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
   final IWebSocketsServiceConfigBloc serviceConfigBloc;
   final List<WebSocketChannelListener<T>> listeners = [];
 
-  IWebSocketsChannelSource _source;
-  StreamSubscription<T> _sourceSubscription;
+  IWebSocketsChannelSource? _source;
+  StreamSubscription? _sourceSubscription;
 
-  WebSocketsHandlingType handlingType;
+  WebSocketsHandlingType? handlingType;
 
   WebSocketsChannel({
-    @required this.config,
-    @required this.serviceConfigBloc,
+    required this.config,
+    required this.serviceConfigBloc,
   }) {
-    _logger.finest(() => "constructor $config");
+    _logger.finest(() => 'constructor $config');
 
     handlingType = serviceConfigBloc.handlingType;
 
@@ -56,7 +55,7 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
 
   void _onCancel() {
     listening = false;
-    _logger.finest(() => "_onCancel");
+    _logger.finest(() => '_onCancel');
     _source?.dispose();
     _sourceSubscription?.cancel();
     _source = null;
@@ -65,15 +64,17 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
 
   void _onListen() {
     listening = true;
-    _logger.finest(() => "_onListen");
+    _logger.finest(() => '_onListen called');
     _source = config.createChannelSource();
+    var eventsStream = _source!.eventsStream;
     _sourceSubscription =
-        _source.eventsStream.skipWhile((event) => event == null).listen(
+        eventsStream.listen(
       (event) {
-        _logger.finest(() => "newEvent event");
+        _logger.finest(() => 'newEvent event');
         listeners.forEach(
           (listener) {
-            listener.onEvent(event);
+            // todo: think about cast
+            listener.onEvent(event! as T);
           },
         );
       },
@@ -82,9 +83,9 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
 
   @override
   IDisposable listenForEvents({
-    @required WebSocketChannelListener<T> listener,
+    required WebSocketChannelListener<T> listener,
   }) {
-    _logger.finest(() => "listenForEvents");
+    _logger.finest(() => 'listenForEvents');
     listeners.add(listener);
     _recheckSubscription();
 
@@ -133,10 +134,10 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
       }
     }
 
-    _logger.finest(() => "_recheckSubscription \n"
-        "handlingType $handlingType \n"
-        "isNeedListen $isNeedListen \n"
-        "listening $listening \n");
+    _logger.finest(() => '_recheckSubscription \n'
+        'handlingType $handlingType \n'
+        'isNeedListen $isNeedListen \n'
+        'listening $listening \n');
 
     if (isNeedListen && !listening) {
       _onListen();

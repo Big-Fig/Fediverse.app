@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
@@ -19,26 +19,28 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-final dateFormat = DateFormat("dd MMM, HH:mm a");
+final dateFormat = DateFormat('dd MMM, HH:mm a');
 
 class ScheduledStatusListItemWidget extends StatelessWidget {
   final VoidCallback successCallback;
 
   ScheduledStatusListItemWidget({
-    @required this.successCallback,
+    required this.successCallback,
   });
 
   @override
   Widget build(BuildContext context) => Column(
         children: <Widget>[
           _ScheduledStatusListItemHeaderWidget(
-              successCallback: successCallback),
+            successCallback: successCallback,
+          ),
           const FediUltraLightGreyDivider(),
           ProxyProvider<IScheduledStatusBloc, IStatus>(
             update: (context, value, previous) =>
                 ScheduledStatusAdapterToStatus(
-                    scheduledStatus: value.scheduledStatus,
-                    account: IMyAccountBloc.of(context, listen: false).account),
+              scheduledStatus: value.scheduledStatus,
+              account: IMyAccountBloc.of(context, listen: false).account,
+            ),
             child:
                 DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
               update: (context, status, _) => StatusListItemTimelineBloc.list(
@@ -58,8 +60,8 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
 
 class _ScheduledStatusListItemHeaderWidget extends StatelessWidget {
   const _ScheduledStatusListItemHeaderWidget({
-    Key key,
-    @required this.successCallback,
+    Key? key,
+    required this.successCallback,
   }) : super(key: key);
 
   final VoidCallback successCallback;
@@ -67,32 +69,31 @@ class _ScheduledStatusListItemHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var scheduledStatusBloc = IScheduledStatusBloc.of(context);
-    return StreamBuilder<ScheduledStatusState>(
-        stream: scheduledStatusBloc.stateStream,
-        builder: (context, snapshot) {
-          var state = snapshot.data ?? ScheduledStatusState.scheduled;
 
-          switch (state) {
-            case ScheduledStatusState.scheduled:
-              return _ScheduledStatusListItemScheduledHeaderWidget(
-                  successCallback: successCallback);
-              break;
-            case ScheduledStatusState.canceled:
-              return const _ScheduledStatusListItemCanceledHeaderWidget();
-              break;
-            case ScheduledStatusState.alreadyPosted:
-              return const _ScheduledStatusListItemAlreadyPostedHeaderWidget();
-          }
+    return StreamBuilder<ScheduledStatusState?>(
+      stream: scheduledStatusBloc.stateStream,
+      builder: (context, snapshot) {
+        var state = snapshot.data ?? ScheduledStatusState.scheduled;
 
-          throw "Invalid state $state";
-        });
+        switch (state) {
+          case ScheduledStatusState.scheduled:
+            return _ScheduledStatusListItemScheduledHeaderWidget(
+              successCallback: successCallback,
+            );
+          case ScheduledStatusState.canceled:
+            return const _ScheduledStatusListItemCanceledHeaderWidget();
+          case ScheduledStatusState.alreadyPosted:
+            return const _ScheduledStatusListItemAlreadyPostedHeaderWidget();
+        }
+      },
+    );
   }
 }
 
 class _ScheduledStatusListItemScheduledHeaderWidget extends StatelessWidget {
   const _ScheduledStatusListItemScheduledHeaderWidget({
-    Key key,
-    @required this.successCallback,
+    Key? key,
+    required this.successCallback,
   }) : super(key: key);
 
   final VoidCallback successCallback;
@@ -108,10 +109,11 @@ class _ScheduledStatusListItemScheduledHeaderWidget extends StatelessWidget {
           Row(
             children: [
               _ScheduledStatusListItemEditButtonWidget(
-                  successCallback: successCallback),
+                successCallback: successCallback,
+              ),
               const _ScheduledStatusListItemCancelButtonWidget(),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -120,53 +122,57 @@ class _ScheduledStatusListItemScheduledHeaderWidget extends StatelessWidget {
 
 class _ScheduledStatusListItemScheduledAtWidget extends StatelessWidget {
   const _ScheduledStatusListItemScheduledAtWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var scheduledStatusBloc = IScheduledStatusBloc.of(context);
-    return StreamBuilder<DateTime>(
-        stream: scheduledStatusBloc.scheduledAtStream,
-        initialData: scheduledStatusBloc.scheduledAt,
-        builder: (context, snapshot) {
-          var scheduledAt = snapshot.data;
-          return Text(
-            dateFormat.format(scheduledAt),
-            style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
-          );
-        });
+
+    return StreamBuilder<DateTime?>(
+      stream: scheduledStatusBloc.scheduledAtStream,
+      initialData: scheduledStatusBloc.scheduledAt,
+      builder: (context, snapshot) {
+        var scheduledAt = snapshot.data!;
+
+        return Text(
+          dateFormat.format(scheduledAt),
+          style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+        );
+      },
+    );
   }
 }
 
 class _ScheduledStatusListItemAlreadyPostedHeaderWidget
     extends StatelessWidget {
   const _ScheduledStatusListItemAlreadyPostedHeaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: FediPadding.horizontalSmallPadding,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: FediPadding.allSmallPadding,
-              child: Text(
-                S.of(context).app_status_scheduled_state_alreadyPosted,
-                style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
-              ),
-            )
-          ],
-        ));
+      padding: FediPadding.horizontalSmallPadding,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: FediPadding.allSmallPadding,
+            child: Text(
+              S.of(context).app_status_scheduled_state_alreadyPosted,
+              style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class _ScheduledStatusListItemCanceledHeaderWidget extends StatelessWidget {
   const _ScheduledStatusListItemCanceledHeaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -182,7 +188,7 @@ class _ScheduledStatusListItemCanceledHeaderWidget extends StatelessWidget {
               S.of(context).app_status_scheduled_state_canceled,
               style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
             ),
-          )
+          ),
         ],
       ),
     );
@@ -191,7 +197,7 @@ class _ScheduledStatusListItemCanceledHeaderWidget extends StatelessWidget {
 
 class _ScheduledStatusListItemCancelButtonWidget extends StatelessWidget {
   const _ScheduledStatusListItemCancelButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -211,8 +217,8 @@ class _ScheduledStatusListItemCancelButtonWidget extends StatelessWidget {
 
 class _ScheduledStatusListItemEditButtonWidget extends StatelessWidget {
   const _ScheduledStatusListItemEditButtonWidget({
-    Key key,
-    @required this.successCallback,
+    Key? key,
+    required this.successCallback,
   }) : super(key: key);
 
   final VoidCallback successCallback;

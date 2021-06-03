@@ -1,17 +1,16 @@
-import 'package:fedi/app/localization/settings/local_preference/localization_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/localization/settings/local_preferences/localization_settings_local_preference_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:flutter/widgets.dart';
 
 class LocalizationSettingsBloc extends DisposableOwner
     implements ILocalizationSettingsBloc {
-  ILocalizationSettingsLocalPreferencesBloc
+  final ILocalizationSettingsLocalPreferenceBloc<LocalizationSettings>
       localizationSettingsLocalPreferencesBloc;
 
   LocalizationSettingsBloc({
-    @required this.localizationSettingsLocalPreferencesBloc,
+    required this.localizationSettingsLocalPreferencesBloc,
   });
 
   @override
@@ -23,20 +22,21 @@ class LocalizationSettingsBloc extends DisposableOwner
       localizationSettingsLocalPreferencesBloc.stream;
 
   @override
-  LocalizationLocale get localizationLocale => settingsData.localizationLocale;
+  LocalizationLocale? get localizationLocale =>
+      settingsData.localizationLocale;
 
   @override
-  Stream<LocalizationLocale> get localizationLocaleStream =>
-      settingsDataStream.map((settings) => settings.localizationLocale);
+  Stream<LocalizationLocale?> get localizationLocaleStream =>
+      settingsDataStream.map(
+        (settings) => settings.localizationLocale,
+      );
 
   @override
-  void changeLocalizationLocale(LocalizationLocale value) {
-    updateSettings(
+  Future changeLocalizationLocale(LocalizationLocale? value) => updateSettings(
       LocalizationSettings(localizationLocale: value),
-      // copyWith don't set null values
+      // copyWith dont set null values
       // settingsData.copyWith(localizationLocale: value),
     );
-  }
 
   @override
   Future updateSettings(LocalizationSettings newSettings) async {

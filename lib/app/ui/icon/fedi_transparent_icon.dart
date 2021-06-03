@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 
 class FediTransparentIcon extends StatelessWidget {
   final IconData iconData;
-  final Color color;
+  final Color? color;
 
   const FediTransparentIcon(this.iconData, {this.color});
 

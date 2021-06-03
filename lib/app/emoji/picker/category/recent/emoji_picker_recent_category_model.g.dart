@@ -18,9 +18,9 @@ class EmojiPickerRecentCategoryItemsListAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return EmojiPickerRecentCategoryItemsList(
-      recentCodeItems: (fields[2] as List)?.cast<CustomEmojiPickerCodeItem>(),
+      recentCodeItems: (fields[2] as List).cast<CustomEmojiPickerCodeItem>(),
       recentImageItems:
-          (fields[3] as List)?.cast<CustomEmojiPickerImageUrlItem>(),
+          (fields[3] as List).cast<CustomEmojiPickerImageUrlItem>(),
     );
   }
 
@@ -52,16 +52,14 @@ class EmojiPickerRecentCategoryItemsListAdapter
 EmojiPickerRecentCategoryItemsList _$EmojiPickerRecentCategoryItemsListFromJson(
     Map<String, dynamic> json) {
   return EmojiPickerRecentCategoryItemsList(
-    recentCodeItems: (json['recent_code_items'] as List)
-        ?.map((e) => e == null
-            ? null
-            : CustomEmojiPickerCodeItem.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    recentImageItems: (json['recent_image_items'] as List)
-        ?.map((e) => e == null
-            ? null
-            : CustomEmojiPickerImageUrlItem.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    recentCodeItems: (json['recent_code_items'] as List<dynamic>)
+        .map((e) =>
+            CustomEmojiPickerCodeItem.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    recentImageItems: (json['recent_image_items'] as List<dynamic>)
+        .map((e) =>
+            CustomEmojiPickerImageUrlItem.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
@@ -69,7 +67,7 @@ Map<String, dynamic> _$EmojiPickerRecentCategoryItemsListToJson(
         EmojiPickerRecentCategoryItemsList instance) =>
     <String, dynamic>{
       'recent_code_items':
-          instance.recentCodeItems?.map((e) => e?.toJson())?.toList(),
+          instance.recentCodeItems.map((e) => e.toJson()).toList(),
       'recent_image_items':
-          instance.recentImageItems?.map((e) => e?.toJson())?.toList(),
+          instance.recentImageItems.map((e) => e.toJson()).toList(),
     };

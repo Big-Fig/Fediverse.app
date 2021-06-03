@@ -1,4 +1,4 @@
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +7,7 @@ class CustomListAccountListWidget extends StatelessWidget {
   final List<Widget> itemActions;
 
   const CustomListAccountListWidget({
-    @required this.itemActions,
+    required this.itemActions,
   });
 
   @override
@@ -16,8 +16,11 @@ class CustomListAccountListWidget extends StatelessWidget {
       itemPadding: FediPadding.verticalMediumPadding,
       accountActions: itemActions,
       accountSelectedCallback: (context, account) =>
-          goToAccountDetailsPage(context, account),
-      key: PageStorageKey("AccountPaginationListWidget"),
+          goToLocalAccountDetailsPage(
+        context,
+        account: account,
+      ),
+      key: PageStorageKey('CustomListAccountListWidget'),
     );
   }
 }

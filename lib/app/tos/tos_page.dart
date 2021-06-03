@@ -8,7 +8,6 @@ class TosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_tos_title,
       ),
@@ -21,7 +20,7 @@ class TosPage extends StatelessWidget {
 
 class _TosPageBodyWigdet extends StatelessWidget {
   const _TosPageBodyWigdet({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -30,10 +29,10 @@ class _TosPageBodyWigdet extends StatelessWidget {
       child: Padding(
         padding: FediPadding.allBigPadding,
         child: SingleChildScrollView(
-          child: FutureBuilder(
+          child: FutureBuilder<String>(
             // TODO: Should be localized
             future: DefaultAssetBundle.of(context)
-                .loadString("assets/terms/terms.rtf"),
+                .loadString('assets/terms/terms.rtf'),
             builder: (context, snapshot) {
               return Text(
                 snapshot.data ?? '',

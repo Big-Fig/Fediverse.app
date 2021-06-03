@@ -8,7 +8,7 @@ import 'package:flutter_html/style.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("html_text_bloc_impl.dart");
+final _logger = Logger('html_text_bloc_impl.dart');
 
 class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
   @override
@@ -23,9 +23,9 @@ class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
   final HtmlTextSettings settings;
 
   HtmlTextBloc({
-    @required this.inputData,
-    @required this.settings,
-  })  : htmlData = _calculateHtmlData(
+    required this.inputData,
+    required this.settings,
+  })   : htmlData = _calculateHtmlData(
           inputData: inputData,
           settings: settings,
         ),
@@ -43,7 +43,7 @@ class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
   final HtmlTextResultData htmlData;
 
   @override
-  void onLinkClicked({@required String url}) {
+  void onLinkClicked({required String url}) {
     linkClickedStreamController.add(url);
   }
 
@@ -59,46 +59,47 @@ class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
   int get hashCode => inputData.hashCode ^ settings.hashCode;
 }
 
-final RegExp findHtmlFragmentsRegex = RegExp(r"</?\s*[a-z-][^>]*\s*>");
+final RegExp findHtmlFragmentsRegex = RegExp(r'</?\s*[a-z-][^>]*\s*>');
 final HtmlUnescape _unescape = HtmlUnescape();
 
 HtmlTextResultData _calculateHtmlData({
-  @required HtmlTextInputData inputData,
-  @required HtmlTextSettings settings,
+  required HtmlTextInputData inputData,
+  required HtmlTextSettings settings,
 }) {
   HtmlTextResultData resultData;
   var input = inputData.input;
 
   if (input != null) {
-    var text = input?.trim() ?? "";
+    var text = input.trim();
 
     var alreadyHaveHtmlInText = false;
     if (inputData.isHaveEmojis) {
-      for (int i = 0; i < inputData.emojis.length; i++) {
-        var emoji = inputData.emojis[i];
-        String shortcode = emoji.shortcode;
-        String url = emoji.url;
+      for (var i = 0; i < inputData.emojis!.length; i++) {
+        var emoji = inputData.emojis![i];
+        var shortcode = emoji.shortcode;
+        var url = emoji.url;
 
         text = text.replaceAll(
-            ":$shortcode:",
-            '<img src="$url" '
-                'width="${settings.customEmojiImageSize}"'
-                'height="${settings.customEmojiImageSize}"'
-                '>');
+          ':$shortcode:',
+          '<img src="$url" '
+              'width="${settings.customEmojiImageSize}"'
+              'height="${settings.customEmojiImageSize}"'
+              '>',
+        );
         alreadyHaveHtmlInText = true;
       }
     }
 
-    var isActuallyHaveHtmlInData =
-        alreadyHaveHtmlInText || findHtmlFragmentsRegex.hasMatch(text);
+    var hasHtmlMatch = findHtmlFragmentsRegex.hasMatch(text);
+    var isActuallyHaveHtmlInData = alreadyHaveHtmlInText || hasHtmlMatch;
 
     if (settings.drawNewLines) {
       if (isActuallyHaveHtmlInData) {
-        text = text?.replaceAll("\n", "</br>");
+        text = text.replaceAll('\n', '</br>');
       }
     } else {
-      text = text?.replaceAll("\n", "");
-      text = text?.replaceAll("<(/)*br>", "");
+      text = text.replaceAll('\n', '');
+      text = text.replaceAll('<(/)*br>', '');
     }
 
     if (!isActuallyHaveHtmlInData) {
@@ -116,52 +117,58 @@ HtmlTextResultData _calculateHtmlData({
     );
   }
 
-  _logger.finest(() => "_calculateHtmlData \n"
-      "inputData $inputData \n"
-      "resultData $resultData");
+  _logger.finest(() => '_calculateHtmlData \n'
+      'inputData $inputData \n'
+      'resultData $resultData');
 
   return resultData;
 }
 
 Map<String, Style> _calculateHtmlStyles({
-  @required HtmlTextInputData inputData,
-  @required HtmlTextSettings settings,
+  required HtmlTextInputData inputData,
+  required HtmlTextSettings settings,
 }) {
   var fontSizeValue = settings.fontSize;
 
   var fontSizeObject = FontSize(fontSizeValue);
+
   return {
-    "html": Style(
+    'html': Style(
       display: settings.shrinkWrap ? Display.INLINE : Display.BLOCK,
       padding: EdgeInsets.zero,
+      // ignore: no-equal-arguments
       margin: EdgeInsets.zero,
-      textOverflow: settings.textOverflow,
-      textMaxLines: settings.textMaxLines,
+      // textOverflow: settings.textOverflow,
+      // textMaxLines: settings.textMaxLines,
       fontSize: fontSizeObject,
       fontWeight: settings.fontWeight,
       color: settings.color,
       textAlign: settings.textAlign,
     ),
-    "body": Style(
+    'body': Style(
       display: settings.shrinkWrap ? Display.INLINE : Display.BLOCK,
       padding: EdgeInsets.zero,
+      // ignore: no-equal-arguments
       margin: EdgeInsets.zero,
-      textOverflow: settings.textOverflow,
-      textMaxLines: settings.textMaxLines,
+      // textOverflow: settings.textOverflow,
+      // textMaxLines: settings.textMaxLines,
       textAlign: settings.textAlign,
     ),
-    "img": Style(
+    'img': Style(
       display: Display.INLINE,
       width: settings.imageSize,
+      // ignore: no-equal-arguments
       height: settings.imageSize,
       padding: EdgeInsets.zero,
+      // ignore: no-equal-arguments
       margin: EdgeInsets.zero,
       textAlign: settings.textAlign,
     ),
-    "p": Style(
+    'p': Style(
       padding: EdgeInsets.zero,
+      // ignore: no-equal-arguments
       margin: EdgeInsets.zero,
-      lineHeight: settings.lineHeight,
+      // lineHeight: settings.lineHeight,
       display: settings.paragraphDisplay,
       fontSize: fontSizeObject,
       fontWeight: settings.fontWeight,
@@ -170,13 +177,14 @@ Map<String, Style> _calculateHtmlStyles({
       textMaxLines: settings.textMaxLines,
       textAlign: settings.textAlign,
     ),
-    "a": Style(
+    'a': Style(
       color: settings.linkColor,
     ),
-    "text": Style(
+    'text': Style(
       padding: EdgeInsets.zero,
+      // ignore: no-equal-arguments
       margin: EdgeInsets.zero,
-      lineHeight: settings.lineHeight,
+      // lineHeight: settings.lineHeight,
       display: Display.INLINE,
       fontSize: fontSizeObject,
       fontWeight: settings.fontWeight,

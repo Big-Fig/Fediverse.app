@@ -4,10 +4,16 @@ import 'package:flutter/cupertino.dart';
 class CustomEmojiPickerCodeItemWidget extends StatelessWidget {
   final CustomEmojiPickerCodeItem item;
 
-  const CustomEmojiPickerCodeItemWidget({Key key, @required this.item}) : super
-(key: key);
+  const CustomEmojiPickerCodeItemWidget({
+    Key? key,
+    required this.item,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Text(item.code, style: TextStyle
-    (fontSize: 24),);
+  Widget build(BuildContext context) => Text(
+        item.code,
+        // todo: refactor
+        // ignore: no-magic-number
+        style: TextStyle(fontSize: 24),
+      );
 }

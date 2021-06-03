@@ -4,13 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccountDetailsBodyWidget extends StatelessWidget {
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) => CollapsibleOwnerWidget(
         child: AccountStatusesTimelineWidget(
           scrollController: scrollController, //        header: FediListTile(
-          key: PageStorageKey("AccountDetailsBodyWidget"),
+          key: PageStorageKey('AccountDetailsBodyWidget'),
         ),
       );
 

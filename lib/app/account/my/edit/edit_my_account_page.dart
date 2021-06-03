@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_widget.dart';
-import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_app_bar_text_action_widget.dart';
@@ -14,10 +14,12 @@ class EditMyAccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
+
     return WillPopScope(
       // override back button
       onWillPop: () async {
         handleBackPressed(context, editMyAccountBloc);
+
         return true;
       },
       child: Scaffold(
@@ -38,7 +40,9 @@ class EditMyAccountPage extends StatelessWidget {
   }
 
   void handleBackPressed(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
+    BuildContext context,
+    IEditMyAccountBloc editMyAccountBloc,
+  ) {
     var isSomethingChanged = editMyAccountBloc.isSomethingChanged;
     if (isSomethingChanged) {
       alertUnsaved(context);
@@ -65,15 +69,16 @@ class EditMyAccountPage extends StatelessWidget {
 
 class _EditMyAccountPageAppBarSaveAction extends StatelessWidget {
   const _EditMyAccountPageAppBarSaveAction({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
+
     return StreamBuilder<bool>(
-      stream: editMyAccountBloc.isReadyToSubmitStream,
-      initialData: editMyAccountBloc.isReadyToSubmit,
+      stream: editMyAccountBloc.isHaveChangesAndNoErrorsStream,
+      initialData: editMyAccountBloc.isHaveChangesAndNoErrors,
       builder: (context, snapshot) {
         var isReadyToSubmit = snapshot.data;
 
@@ -89,16 +94,16 @@ class _EditMyAccountPageAppBarSaveAction extends StatelessWidget {
             // todo: handle specific cases by error code
 //                          (context, error) => SimpleAlertDialog(
 //                          title: of(context)
-//                              .tr("app.status.post.dialog.error.title"),
+//                              .tr('app.status.post.dialog.error.title'),
 //                          content: tr(
-//                              "app.status.post.dialog.error.content",
+//                              'app.status.post.dialog.error.content',
 //                              args: [error.toString()]),
 //                          context: context)
           ],
           builder: (BuildContext context, onPressed) =>
               FediPageAppBarTextActionWidget(
             text: S.of(context).app_account_my_edit_action_save,
-            onPressed: isReadyToSubmit ? onPressed : null,
+            onPressed: isReadyToSubmit! ? onPressed : null,
           ),
         );
       },
@@ -110,8 +115,10 @@ void goToEditMyAccountPage(BuildContext context) {
   Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) => DisposableProvider<IEditMyAccountBloc>(
-            create: (context) => EditMyAccountBloc.createFromContext(context),
-            child: const EditMyAccountPage())),
+      builder: (context) => DisposableProvider<IEditMyAccountBloc>(
+        create: (context) => EditMyAccountBloc.createFromContext(context),
+        child: const EditMyAccountPage(),
+      ),
+    ),
   );
 }

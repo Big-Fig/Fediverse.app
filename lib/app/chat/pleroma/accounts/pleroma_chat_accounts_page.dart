@@ -26,7 +26,10 @@ class PleromaChatAccountsPage extends StatelessWidget {
   const PleromaChatAccountsPage();
 }
 
-void goToPleromaChatAccountsPage(BuildContext context, IPleromaChat chat) {
+void goToPleromaChatAccountsPage(
+  BuildContext context, {
+  required IPleromaChat chat,
+}) {
   Navigator.push(
     context,
     MaterialPageRoute(

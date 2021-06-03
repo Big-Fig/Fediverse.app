@@ -7,7 +7,7 @@ class VideoMediaPlayerBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
   VideoMediaPlayerBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override

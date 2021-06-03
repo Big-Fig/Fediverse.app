@@ -5,8 +5,7 @@ import 'package:fedi/app/share/external/external_share_model.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:fedi/app/share/media/share_media_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:flutter/foundation.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -15,12 +14,12 @@ class ExternalShareMediaBloc extends ExternalShareBloc
   final String popupTitle;
 
   @override
-  IPleromaMediaAttachment mediaAttachment;
+  final IPleromaApiMediaAttachment mediaAttachment;
 
   ExternalShareMediaBloc({
-    @required this.popupTitle,
-    @required this.mediaAttachment,
-    @required IExternalShareService externalShareService,
+    required this.popupTitle,
+    required this.mediaAttachment,
+    required IExternalShareService externalShareService,
   }) : super(externalShareService: externalShareService);
 
   @override
@@ -31,31 +30,40 @@ class ExternalShareMediaBloc extends ExternalShareBloc
 
   @override
   Future share() {
-    String text;
+    String? text;
     var asLink = asLinkBoolField.currentValue == true;
     if (message?.isNotEmpty == true || asLink) {
-      text = message ?? "";
-      if(asLink) {
-        text += " ${mediaAttachment.url}";
+      text = message ?? '';
+      if (asLink) {
+        text += ' ${mediaAttachment.url}';
       }
     }
+
     return externalShareService.share(
       popupTitle: popupTitle,
       text: text,
-      urlFiles: asLink ? null :[
-        ShareUrlFile(
-            url: mediaAttachment.url, filename: mediaAttachment.description)
-      ],
+      urlFiles: asLink
+          ? null
+          : [
+              ShareUrlFile.fromUrl(
+                url: mediaAttachment.url,
+              ),
+            ],
     );
   }
 
-  static Widget provideToContext(BuildContext context,
-      {@required IPleromaMediaAttachment mediaAttachment,
-      @required String popupTitle,
-      @required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required IPleromaApiMediaAttachment mediaAttachment,
+    required String popupTitle,
+    required Widget child,
+  }) {
     return DisposableProvider<ExternalShareMediaBloc>(
-      create: (context) => createFromContext(context,
-          mediaAttachment: mediaAttachment, popupTitle: popupTitle),
+      create: (context) => createFromContext(
+        context,
+        mediaAttachment: mediaAttachment,
+        popupTitle: popupTitle,
+      ),
       child: ProxyProvider<ExternalShareMediaBloc, IExternalShareBloc>(
         update: (context, value, previous) => value,
         child: ProxyProvider<ExternalShareMediaBloc, IShareMediaBloc>(
@@ -70,8 +78,8 @@ class ExternalShareMediaBloc extends ExternalShareBloc
 
   static ExternalShareMediaBloc createFromContext(
     BuildContext context, {
-    @required IPleromaMediaAttachment mediaAttachment,
-    @required String popupTitle,
+    required IPleromaApiMediaAttachment mediaAttachment,
+    required String popupTitle,
   }) =>
       ExternalShareMediaBloc(
         mediaAttachment: mediaAttachment,

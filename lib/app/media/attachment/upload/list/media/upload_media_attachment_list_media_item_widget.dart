@@ -18,7 +18,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +37,7 @@ class UploadMediaAttachmentListMediaItemWidget extends StatefulWidget {
 
 class _UploadMediaAttachmentListMediaItemWidgetState
     extends State<UploadMediaAttachmentListMediaItemWidget> {
-  StreamSubscription streamSubscription;
+  StreamSubscription? streamSubscription;
 
   @override
   void didChangeDependencies() {
@@ -62,6 +62,7 @@ class _UploadMediaAttachmentListMediaItemWidgetState
   Widget build(BuildContext context) {
     var bloc = IUploadMediaAttachmentBloc.of(context);
     const previewWidget = _UploadMediaAttachmentListMediaItemPreviewWidget();
+
     return ClipRRect(
       borderRadius: BorderRadius.all(
         Radius.circular(FediSizes.borderRadiusBigSize),
@@ -71,20 +72,23 @@ class _UploadMediaAttachmentListMediaItemWidgetState
         children: <Widget>[
           Positioned.fill(
             child: StreamBuilder<UploadMediaAttachmentState>(
-                stream: bloc.uploadStateStream,
-                builder: (context, snapshot) {
-                  var uploadState = snapshot.data;
+              stream: bloc.uploadStateStream,
+              builder: (context, snapshot) {
+                var uploadState = snapshot.data;
 
-                  if (uploadState?.type ==
-                      UploadMediaAttachmentStateType.uploaded) {
-                    return previewWidget;
-                  } else {
-                    return Opacity(
-                      opacity: 0.7,
-                      child: previewWidget,
-                    );
-                  }
-                }),
+                if (uploadState?.type ==
+                    UploadMediaAttachmentStateType.uploaded) {
+                  return previewWidget;
+                } else {
+                  return Opacity(
+                    // todo: refactor
+                    // ignore: no-magic-number
+                    opacity: 0.7,
+                    child: previewWidget,
+                  );
+                }
+              },
+            ),
           ),
           Align(
             alignment: Alignment.topRight,
@@ -101,7 +105,7 @@ class _UploadMediaAttachmentListMediaItemWidgetState
               child:
                   const _UploadMediaAttachmentListMediaItemTopLeftActionWidget(),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -113,21 +117,21 @@ class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
   final IMediaDeviceFile mediaDeviceFile;
 
   const _UploadMediaAttachmentListMediaItemMediaPreviewWidget({
-    Key key,
-    @required this.mediaDeviceFile,
+    Key? key,
+    required this.mediaDeviceFile,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: mediaDeviceFile.loadFile(),
-      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<File?> snapshot) {
         var file = snapshot.data;
         if (file == null) {
           return const FediCircularProgressIndicator();
         }
         Widget preview;
-        switch (mediaDeviceFile.type) {
+        switch (mediaDeviceFile.metadata.type) {
           case MediaDeviceFileType.image:
             preview = Image.file(
               file,
@@ -148,9 +152,9 @@ class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
             break;
           case MediaDeviceFileType.other:
           default:
-            throw "Non-media not supported";
-            break;
+            throw 'Non-media not supported';
         }
+
         return preview;
       },
     );
@@ -160,81 +164,81 @@ class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
 class _UploadMediaAttachmentListMediaItemTopLeftActionWidget
     extends StatelessWidget {
   const _UploadMediaAttachmentListMediaItemTopLeftActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var uploadMediaAttachmentBloc = IUploadMediaAttachmentBloc.of(context);
+
     return StreamBuilder<UploadMediaAttachmentState>(
-        stream: uploadMediaAttachmentBloc.uploadStateStream,
-        builder: (context, snapshot) {
-          var uploadState = snapshot.data;
+      stream: uploadMediaAttachmentBloc.uploadStateStream,
+      builder: (context, snapshot) {
+        var uploadState = snapshot.data;
 
-          switch (
-              uploadState?.type ?? UploadMediaAttachmentStateType.uploading) {
-            case UploadMediaAttachmentStateType.failed:
-              return const _UploadMediaAttachmentListMediaItemRemoveButtonWidget();
-
-              break;
-            case UploadMediaAttachmentStateType.notUploaded:
-            case UploadMediaAttachmentStateType.uploading:
-            case UploadMediaAttachmentStateType.uploaded:
-              return const SizedBox.shrink();
-              break;
-          }
-
-          throw "invalid state $uploadState";
-        });
+        switch (uploadState?.type ?? UploadMediaAttachmentStateType.uploading) {
+          case UploadMediaAttachmentStateType.failed:
+            return const _UploadMediaAttachmentListMediaItemRemoveButtonWidget();
+          case UploadMediaAttachmentStateType.notUploaded:
+          case UploadMediaAttachmentStateType.uploading:
+          case UploadMediaAttachmentStateType.uploaded:
+            return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
 class _UploadMediaAttachmentListMediaItemTopRightActionWidget
     extends StatelessWidget {
   const _UploadMediaAttachmentListMediaItemTopRightActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var uploadMediaAttachmentBloc = IUploadMediaAttachmentBloc.of(context);
+
     return StreamBuilder<UploadMediaAttachmentState>(
-        stream: uploadMediaAttachmentBloc.uploadStateStream,
-        initialData: uploadMediaAttachmentBloc.uploadState,
-        builder: (context, snapshot) {
-          var uploadState = snapshot.data;
+      stream: uploadMediaAttachmentBloc.uploadStateStream,
+      initialData: uploadMediaAttachmentBloc.uploadState,
+      builder: (context, snapshot) {
+        var uploadState = snapshot.data!;
 
-          switch (uploadState.type) {
-            case UploadMediaAttachmentStateType.notUploaded:
-            case UploadMediaAttachmentStateType.uploading:
-              return const _UploadMediaAttachmentListMediaItemLoadingWidget();
-              break;
-            case UploadMediaAttachmentStateType.uploaded:
-              return const _UploadMediaAttachmentListMediaItemRemoveButtonWidget();
-            case UploadMediaAttachmentStateType.failed:
-              return const _UploadMediaAttachmentListMediaItemErrorButtonWidget();
-              break;
-          }
-
-          throw "invalid state $uploadState";
-        });
+        switch (uploadState.type) {
+          case UploadMediaAttachmentStateType.notUploaded:
+          case UploadMediaAttachmentStateType.uploading:
+            return const _UploadMediaAttachmentListMediaItemLoadingWidget();
+          case UploadMediaAttachmentStateType.uploaded:
+            return const _UploadMediaAttachmentListMediaItemRemoveButtonWidget();
+          case UploadMediaAttachmentStateType.failed:
+            return const _UploadMediaAttachmentListMediaItemErrorButtonWidget();
+        }
+      },
+    );
   }
 }
 
 class _UploadMediaAttachmentListMediaItemLoadingWidget extends StatelessWidget {
   const _UploadMediaAttachmentListMediaItemLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
+      // todo: refactor
+      // ignore: no-magic-number
       borderRadius: BorderRadius.circular(24.0),
       child: Container(
+        // ignore: no-magic-number
         width: 24,
+        // ignore: no-magic-number
         height: 24,
+        // ignore: no-magic-number
         color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.8),
         child: FediCircularProgressIndicator(
+          // ignore: no-magic-number
           size: 20,
           color: IFediUiColorTheme.of(context).white,
         ),
@@ -246,12 +250,13 @@ class _UploadMediaAttachmentListMediaItemLoadingWidget extends StatelessWidget {
 class _UploadMediaAttachmentListMediaItemErrorButtonWidget
     extends StatelessWidget {
   const _UploadMediaAttachmentListMediaItemErrorButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return InkWell(
       onTap: () {
         var uploadMediaAttachmentBloc = IUploadMediaAttachmentBloc.of(
@@ -261,13 +266,19 @@ class _UploadMediaAttachmentListMediaItemErrorButtonWidget
         uploadMediaAttachmentBloc.startUpload();
       },
       child: ClipRRect(
+        // todo: refactor
+        // ignore: no-magic-number
         borderRadius: BorderRadius.circular(24.0),
         child: Container(
+          // ignore: no-magic-number
           width: 24,
+          // ignore: no-magic-number
           height: 24,
+          // ignore: no-magic-number
           color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
           child: Icon(
             FediIcons.failed,
+            // ignore: no-magic-number
             size: 14,
             color: fediUiColorTheme.white,
           ),
@@ -280,7 +291,7 @@ class _UploadMediaAttachmentListMediaItemErrorButtonWidget
 class _UploadMediaAttachmentListMediaItemRemoveButtonWidget
     extends StatelessWidget {
   const _UploadMediaAttachmentListMediaItemRemoveButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -304,12 +315,12 @@ class _UploadMediaAttachmentListMediaItemPreviewWidget extends StatelessWidget {
       );
     } else if (bloc is UploadedUploadMediaAttachmentBloc) {
       var pleromaMediaAttachment = bloc.pleromaMediaAttachment;
-      mediaPreview = Provider<IPleromaMediaAttachment>.value(
+      mediaPreview = Provider<IPleromaApiMediaAttachment>.value(
         value: pleromaMediaAttachment,
         child: const MediaAttachmentWidget(),
       );
     } else {
-      throw "Unsupported bloc type $bloc";
+      throw 'Unsupported bloc type $bloc';
     }
 
     return mediaPreview;

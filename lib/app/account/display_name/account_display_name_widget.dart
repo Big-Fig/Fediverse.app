@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 class AccountDisplayNameWidget extends StatelessWidget {
   final TextOverflow textOverflow;
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
   final TextAlign textAlign;
 
   const AccountDisplayNameWidget({
@@ -25,24 +25,30 @@ class AccountDisplayNameWidget extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context);
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     var fediUiTextTheme = IFediUiTextTheme.of(context);
-    var textStyle =
-        this.textStyle ?? fediUiTextTheme.bigShortBoldDarkGrey;
+    var textStyle = this.textStyle ?? fediUiTextTheme.bigShortBoldDarkGrey;
 
     var textScaleFactor = MediaQuery.of(context).textScaleFactor;
-    return StreamProvider.value(
+
+    return StreamProvider<EmojiText?>.value(
       value: accountBloc.displayNameEmojiTextStream,
-      child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
-        update: (context, emojiText, _) {
+      initialData: accountBloc.displayNameEmojiText,
+      child: DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
+        update: (context, emojiText, previous) {
           var input = emojiText?.text;
 
-          if(input?.isNotEmpty != true) {
+          if (input?.isNotEmpty != true) {
             input = accountBloc.acct;
           }
+          var htmlTextInputData = HtmlTextInputData(
+            input: input,
+            emojis: emojiText?.emojis,
+          );
+          if (previous?.inputData == htmlTextInputData) {
+            return previous!;
+          }
+
           return HtmlTextBloc(
-            inputData: HtmlTextInputData(
-              input: input,
-              emojis: emojiText?.emojis,
-            ),
+            inputData: htmlTextInputData,
             settings: HtmlTextSettings(
               textOverflow: textOverflow,
               linkColor: fediUiColorTheme.primary,

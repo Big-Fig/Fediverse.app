@@ -20,30 +20,31 @@ import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc_proxy_provider.d
 import 'package:fedi/app/custom_list/form/custom_list_form_bloc.dart';
 import 'package:fedi/app/custom_list/form/custom_list_form_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/list/pleroma_list_service.dart';
+import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
+import 'package:fedi/pleroma/api/list/pleroma_api_list_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-final _logger = Logger("edit_custom_list_bloc_impl.dart");
+final _logger = Logger('edit_custom_list_bloc_impl.dart');
 
 class EditCustomListBloc extends DisposableOwner
     implements IEditCustomListBloc {
   static EditCustomListBloc createFromContext(
     BuildContext context, {
-    @required ICustomList initialValue,
-    @required Function(ICustomList customList) onSubmit,
-    @required VoidCallback onDelete,
+    required ICustomList initialValue,
+    required Function(ICustomList customList)? onSubmit,
+    required VoidCallback? onDelete,
   }) {
     var editCustomListBloc = EditCustomListBloc(
       customList: initialValue,
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaListService: IPleromaListService.of(
+      pleromaListService: IPleromaApiListService.of(
         context,
         listen: false,
       ),
@@ -51,7 +52,7 @@ class EditCustomListBloc extends DisposableOwner
         context,
         listen: false,
       ),
-      pleromaAccountService: IPleromaAccountService.of(
+      pleromaAuthAccountService: IPleromaApiAuthAccountService.of(
         context,
         listen: false,
       ),
@@ -64,6 +65,10 @@ class EditCustomListBloc extends DisposableOwner
         context,
         listen: false,
       ),
+      paginationSettingsBloc: IPaginationSettingsBloc.of(
+        context,
+        listen: false,
+      ),
     );
 
     if (onSubmit != null) {
@@ -73,19 +78,21 @@ class EditCustomListBloc extends DisposableOwner
     }
     if (onDelete != null) {
       editCustomListBloc.addDisposable(
-        streamSubscription:
-            editCustomListBloc.deletedStream.listen((_) => onDelete()),
+        streamSubscription: editCustomListBloc.deletedStream.listen(
+          (_) => onDelete(),
+        ),
       );
     }
+
     return editCustomListBloc;
   }
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    @required ICustomList initialValue,
-    @required Function(ICustomList customList) onSubmit,
-    @required VoidCallback onDelete,
+    required Widget child,
+    required ICustomList initialValue,
+    required Function(ICustomList customList) onSubmit,
+    required VoidCallback onDelete,
   }) {
     return DisposableProvider<IEditCustomListBloc>(
       create: (context) => EditCustomListBloc.createFromContext(
@@ -98,22 +105,26 @@ class EditCustomListBloc extends DisposableOwner
     );
   }
 
-  final ICustomList customList;
+  final ICustomList? customList;
 
-  final IPleromaListService pleromaListService;
+  final IPleromaApiListService pleromaListService;
 
   @override
-  ICustomListAccountListNetworkOnlyListBloc
+  // ignore: avoid-late-keyword
+  late ICustomListAccountListNetworkOnlyListBloc
       customListAccountListNetworkOnlyListBloc;
 
   @override
-  IAccountNetworkOnlyPaginationBloc
+  // ignore: avoid-late-keyword
+  late IAccountNetworkOnlyPaginationBloc
       customListAccountListNetworkOnlyPaginationBloc;
 
-  IAccountPaginationListBloc accountPaginationListBloc;
+  // ignore: avoid-late-keyword
+  late IAccountPaginationListBloc accountPaginationListBloc;
 
   @override
-  IEditCustomListAccountListPaginationListBloc
+  // ignore: avoid-late-keyword
+  late IEditCustomListAccountListPaginationListBloc
       editCustomListAccountListPaginationListBloc;
 
   @override
@@ -127,26 +138,30 @@ class EditCustomListBloc extends DisposableOwner
 
   @override
   final bool isPossibleToDelete;
+  final IPaginationSettingsBloc paginationSettingsBloc;
 
   EditCustomListBloc({
-    @required this.customList,
-    @required this.pleromaListService,
-    @required this.statusRepository,
-    @required this.isPossibleToDelete,
-    @required this.timelinesHomeTabStorageBloc,
-    @required IMyAccountBloc myAccountBloc,
-    @required IAccountRepository accountRepository,
-    @required IPleromaAccountService pleromaAccountService,
-  })  : selectAccountListBloc = SelectAccountListBloc(
-            pleromaAccountService: pleromaAccountService,
-            accountRepository: accountRepository,
-            myAccountBloc: myAccountBloc,
-            excludeMyAccount: true,
-            customEmptySearchRemoteAccountListLoader: null,
-            customEmptySearchLocalAccountListLoader: null,
-            followingsOnly: false),
-        customListFormBloc =
-            CustomListFormBloc(initialTitleValue: customList?.title) {
+    required this.customList,
+    required this.pleromaListService,
+    required this.statusRepository,
+    required this.isPossibleToDelete,
+    required this.timelinesHomeTabStorageBloc,
+    required this.paginationSettingsBloc,
+    required IMyAccountBloc myAccountBloc,
+    required IAccountRepository accountRepository,
+    required IPleromaApiAuthAccountService pleromaAuthAccountService,
+  })   : selectAccountListBloc = SelectAccountListBloc(
+          pleromaAuthAccountService: pleromaAuthAccountService,
+          accountRepository: accountRepository,
+          myAccountBloc: myAccountBloc,
+          excludeMyAccount: true,
+          customEmptySearchRemoteAccountListLoader: null,
+          customEmptySearchLocalAccountListLoader: null,
+          followingsOnly: true,
+        ),
+        customListFormBloc = CustomListFormBloc(
+          initialTitleValue: customList?.title,
+        ) {
     customListAccountListNetworkOnlyListBloc =
         CustomListAccountListNetworkOnlyListBloc(
       pleromaListService: pleromaListService,
@@ -155,9 +170,10 @@ class EditCustomListBloc extends DisposableOwner
 
     customListAccountListNetworkOnlyPaginationBloc =
         AccountNetworkOnlyPaginationBloc(
-            listBloc: customListAccountListNetworkOnlyListBloc,
-            itemsCountPerPage: 20,
-            maximumCachedPagesCount: null);
+      listBloc: customListAccountListNetworkOnlyListBloc,
+      maximumCachedPagesCount: null,
+      paginationSettingsBloc: paginationSettingsBloc,
+    );
     accountPaginationListBloc = AccountPaginationListBloc(
       paginationBloc: customListAccountListNetworkOnlyPaginationBloc,
     );
@@ -182,12 +198,13 @@ class EditCustomListBloc extends DisposableOwner
 
   @override
   bool get isReadyToSubmit => _calculateIsReadyToSubmit(
-      customListFormBlocIsHaveAtLeastOneError:
-          customListFormBloc.isHaveAtLeastOneError,
-      customListFormBlocIsSomethingChanged:
-          customListFormBloc.isSomethingChanged,
-      editCustomListAccountListPaginationListBlocIsSomethingChanged:
-          editCustomListAccountListPaginationListBloc.isSomethingChanged);
+        customListFormBlocIsHaveAtLeastOneError:
+            customListFormBloc.isHaveAtLeastOneError,
+        customListFormBlocIsSomethingChanged:
+            customListFormBloc.isSomethingChanged,
+        editCustomListAccountListPaginationListBlocIsSomethingChanged:
+            editCustomListAccountListPaginationListBloc.isSomethingChanged,
+      );
 
   @override
   Stream<bool> get isReadyToSubmitStream => Rx.combineLatest3(
@@ -195,9 +212,9 @@ class EditCustomListBloc extends DisposableOwner
         customListFormBloc.isSomethingChangedStream,
         editCustomListAccountListPaginationListBloc.isSomethingChangedStream,
         (
-          customListFormBlocIsHaveAtLeastOneError,
-          customListFormBlocIsSomethingChanged,
-          editCustomListAccountListPaginationListBlocIsSomethingChanged,
+          dynamic customListFormBlocIsHaveAtLeastOneError,
+          dynamic customListFormBlocIsSomethingChanged,
+          dynamic editCustomListAccountListPaginationListBlocIsSomethingChanged,
         ) =>
             _calculateIsReadyToSubmit(
           customListFormBlocIsHaveAtLeastOneError:
@@ -210,10 +227,9 @@ class EditCustomListBloc extends DisposableOwner
       );
 
   bool _calculateIsReadyToSubmit({
-    @required bool customListFormBlocIsHaveAtLeastOneError,
-    @required bool customListFormBlocIsSomethingChanged,
-    @required
-        bool editCustomListAccountListPaginationListBlocIsSomethingChanged,
+    required bool customListFormBlocIsHaveAtLeastOneError,
+    required bool customListFormBlocIsSomethingChanged,
+    required bool editCustomListAccountListPaginationListBlocIsSomethingChanged,
   }) {
     return !customListFormBlocIsHaveAtLeastOneError &&
         (customListFormBlocIsSomethingChanged ||
@@ -222,38 +238,50 @@ class EditCustomListBloc extends DisposableOwner
 
   @override
   Future<ICustomList> submit() async {
-    var listRemoteId = customList.remoteId;
-    var remoteList = await pleromaListService.updateList(
-        listRemoteId: listRemoteId,
-        title: customListFormBloc.titleField.currentValue);
+    var listRemoteId = customList!.remoteId;
+    var pleromaList = await pleromaListService.updateList(
+      listRemoteId: listRemoteId,
+      title: customListFormBloc.titleField.currentValue,
+    );
 
     if (editCustomListAccountListPaginationListBloc.isSomethingChanged) {
       var addedAccounts =
           editCustomListAccountListPaginationListBloc.addedItems;
 
+      // TODO: remove hack
+      // Pleroma issue: it is only possible to add one account in one request
       if (addedAccounts.isNotEmpty) {
-        await pleromaListService.addAccountsToList(
-          listRemoteId: listRemoteId,
-          accountIds: addedAccounts.map((account) => account.remoteId).toList(),
-        );
+        for (var addedAccount in addedAccounts) {
+          await pleromaListService.addAccountsToList(
+            listRemoteId: listRemoteId,
+            accountIds: [
+              addedAccount.remoteId,
+            ],
+          );
+        }
       }
 
       var removedAccounts =
           editCustomListAccountListPaginationListBloc.removedItems;
 
       if (removedAccounts.isNotEmpty) {
-        await pleromaListService.removeAccountsFromList(
-          listRemoteId: listRemoteId,
-          accountIds:
-              removedAccounts.map((account) => account.remoteId).toList(),
-        );
+        // TODO: remove hack
+        // Pleroma issue: it is only possible to remove one account in one request
+        for (var removedAccount in removedAccounts) {
+          await pleromaListService.removeAccountsFromList(
+            listRemoteId: listRemoteId,
+            accountIds: [
+              removedAccount.remoteId,
+            ],
+          );
+        }
       }
 
       await editCustomListAccountListPaginationListBloc
           .clearChangesAndRefresh();
     }
 
-    var localCustomList = mapRemoteListToLocalCustomList(remoteList);
+    var localCustomList = pleromaList.toCustomList();
 
     submittedStreamController.add(localCustomList);
 
@@ -262,7 +290,7 @@ class EditCustomListBloc extends DisposableOwner
 
   @override
   Future deleteList() async {
-    await pleromaListService.deleteList(listRemoteId: customList.remoteId);
+    await pleromaListService.deleteList(listRemoteId: customList!.remoteId);
 
     deletedStreamController.add(null);
 
@@ -273,7 +301,7 @@ class EditCustomListBloc extends DisposableOwner
       var timeline = timelineStorageItem.timeline;
       var onlyInRemoteList = timeline.onlyInRemoteList;
       if (onlyInRemoteList != null &&
-          onlyInRemoteList.id == customList.remoteId) {
+          onlyInRemoteList.id == customList!.remoteId) {
         timelinesToRemove.add(timeline);
       }
     }
@@ -299,9 +327,10 @@ class EditCustomListBloc extends DisposableOwner
         editCustomListAccountListPaginationListBloc.items,
       );
 
-  bool _calculateIsListContainsAccounts(List<IAccount> items) {
+  bool _calculateIsListContainsAccounts(List<IAccount>? items) {
     _logger.finest(
-        () => "_calculateIsListContainsAccounts items size ${items?.length}");
+      () => '_calculateIsListContainsAccounts items size ${items?.length}',
+    );
 
     return items?.isNotEmpty == true;
   }

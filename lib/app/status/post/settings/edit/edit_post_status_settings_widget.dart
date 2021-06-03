@@ -1,7 +1,9 @@
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
+import 'package:fedi/app/localization/locale/form/localization_locale_single_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/localization/locale/form/localization_locale_single_from_list_value_form_field_row_widget.dart';
 import 'package:fedi/app/status/post/settings/edit/edit_post_status_settings_bloc.dart';
-import 'package:fedi/app/status/visibility/form/status_visibility_single_from_list_value_form_field_bloc.dart';
-import 'package:fedi/app/status/visibility/form/status_visibility_single_from_list_value_form_field_row_widget.dart';
+import 'package:fedi/app/status/visibility/form/single_from_list/status_visibility_single_select_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/status/visibility/form/single_from_list/status_visibility_single_select_from_list_value_form_field_row_widget.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +13,7 @@ class EditPostStatusSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditPostStatusSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override
@@ -21,6 +23,7 @@ class EditPostStatusSettingsWidget extends StatelessWidget {
       children: [
         const _EditPostStatusSettingsDefaultVisibilityFieldWidget(),
         const _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget(),
+        const _EditPostStatusSettingsDefaultStatusLocaleFieldWidget(),
       ],
     );
   }
@@ -29,7 +32,7 @@ class EditPostStatusSettingsWidget extends StatelessWidget {
 class _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget
     extends StatelessWidget {
   const _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -46,19 +49,38 @@ class _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget
   }
 }
 
-class _EditPostStatusSettingsDefaultVisibilityFieldWidget
+
+class _EditPostStatusSettingsDefaultStatusLocaleFieldWidget
     extends StatelessWidget {
-  const _EditPostStatusSettingsDefaultVisibilityFieldWidget({
-    Key key,
+  const _EditPostStatusSettingsDefaultStatusLocaleFieldWidget({
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditPostStatusSettingsBloc,
-        IStatusVisibilitySingleFromListValueFormFieldBloc>(
+        ILocalizationLocaleSingleFromListValueFormFieldBloc>(
+      update: (context, value, previous) =>
+      value.defaultStatusLocaleFormFieldBloc,
+      child: const LocalizationLocaleSingleFromListValueFormFieldRowWidget(),
+    );
+  }
+}
+
+
+class _EditPostStatusSettingsDefaultVisibilityFieldWidget
+    extends StatelessWidget {
+  const _EditPostStatusSettingsDefaultVisibilityFieldWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ProxyProvider<IEditPostStatusSettingsBloc,
+        IStatusVisibilitySelectSingleFromListValueFormFieldBloc>(
       update: (context, value, previous) =>
           value.defaultVisibilityFormFieldBloc,
-      child: const StatusVisibilitySingleFromListValueFormFieldRowWidget(),
+      child: const StatusVisibilitySelectSingleFromListValueFormFieldRowWidget(),
     );
   }
 }

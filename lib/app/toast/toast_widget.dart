@@ -9,16 +9,16 @@ class ToastWidget extends StatelessWidget {
   final ToastType toastType;
 
   final String title;
-  final String content;
+  final String? content;
   final bool titleAutoFontSize;
-  final VoidCallback onClick;
+  final VoidCallback? onClick;
 
   ToastWidget({
-    @required this.toastType,
-    @required this.title,
-    @required this.content,
-    @required this.titleAutoFontSize,
-    @required this.onClick,
+    required this.toastType,
+    required this.title,
+    required this.content,
+    required this.titleAutoFontSize,
+    required this.onClick,
   });
 
   @override
@@ -65,7 +65,7 @@ class ToastWidget extends StatelessWidget {
                         style: fediUiTextTheme.bigShortBoldWhite,
                       ),
                 subtitle: content != null ? Text(
-                  content,
+                  content!,
                   style: fediUiTextTheme.smallWhite,
                 ) : null,
               ),

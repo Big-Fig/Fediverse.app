@@ -1,3 +1,5 @@
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/status/post/app_bar/post_status_app_bar_post_action.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
@@ -12,13 +14,14 @@ import 'package:flutter/material.dart';
 class ScheduledEditPostStatusPage extends StatelessWidget {
   final PostStatusDataCallback onBackPressed;
 
-  ScheduledEditPostStatusPage({@required this.onBackPressed});
+  ScheduledEditPostStatusPage({required this.onBackPressed});
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
         handleBackPressed(context);
+
         return true;
       },
       child: Scaffold(
@@ -29,6 +32,9 @@ class ScheduledEditPostStatusPage extends StatelessWidget {
               handleBackPressed(context);
             },
           ),
+          actions: [
+            const PostStatusAppBarPostAction(),
+          ],
         ),
         body: const SafeArea(
           child: EditPostStatusWidget(),
@@ -47,8 +53,8 @@ class ScheduledEditPostStatusPage extends StatelessWidget {
 
 void goToScheduledEditPostStatusPage(
   BuildContext context, {
-  @required IPostStatusData initialData,
-  @required VoidCallback successCallback,
+  required IPostStatusData initialData,
+  required VoidCallback successCallback,
 }) {
   var scheduledStatusBloc = IScheduledStatusBloc.of(context, listen: false);
   Navigator.push(
@@ -56,17 +62,27 @@ void goToScheduledEditPostStatusPage(
     MaterialPageRoute(
       builder: (context) => EditPostStatusBloc.provideToContext(
         context,
-        postStatusDataCallback: (PostStatusData postStatusData) async {
-          var success =
-              await scheduledStatusBloc.postScheduledPost(postStatusData);
-          if (success) {
+        postStatusDataCallback: (IPostStatusData postStatusData) async {
+          var dialogResult =
+              await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            context: context,
+            asyncCode: () async {
+              await scheduledStatusBloc.postScheduledPost(
+                postStatusData.toPostStatusData(),
+              );
+            },
+          );
+          if (dialogResult.success) {
             successCallback();
+            Navigator.of(context).pop();
           }
-          return success;
+
+          return dialogResult.success;
         },
         child: ScheduledEditPostStatusPage(
-          onBackPressed: (PostStatusData postStatusData) async {
+          onBackPressed: (IPostStatusData postStatusData) async {
             Navigator.of(context).pop();
+
             return true;
           },
         ),

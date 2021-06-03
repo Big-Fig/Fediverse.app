@@ -1,5 +1,8 @@
+import 'package:fedi/app/cache/database/settings/edit/global_or_instance/edit_global_or_instance_database_cache_settings_dialog.dart';
+import 'package:fedi/app/cache/files/settings/edit/global_or_instance/edit_global_or_instance_files_cache_settings_dialog.dart';
 import 'package:fedi/app/chat/settings/edit/global_or_instance/edit_global_or_instance_chat_settings_dialog.dart';
 import 'package:fedi/app/media/settings/edit/global_or_instance/edit_global_or_instance_media_settings_dialog.dart';
+import 'package:fedi/app/pagination/settings/edit/global_or_instance/edit_global_or_instance_pagination_settings_dialog.dart';
 import 'package:fedi/app/push/settings/edit/instance/edit_instance_push_settings_dialog.dart';
 import 'package:fedi/app/status/post/settings/edit/global_or_instance/edit_global_or_instance_post_status_settings_dialog.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/global_or_instance/edit_global_or_instance_status_sensitive_settings_dialog.dart';
@@ -17,6 +20,7 @@ class InstanceSettingsListWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          const _InstanceSettingsCacheAndPaginationRowWidget(),
           const _InstanceSettingsPushRowWidget(),
           const _InstanceSettingsMediaRowWidget(),
           const _InstanceSettingsToastRowWidget(),
@@ -24,13 +28,15 @@ class InstanceSettingsListWidget extends StatelessWidget {
           const _InstanceStatusPostSensitiveRowWidget(),
           const _InstanceSettingsChatRowWidget(),
           const _InstanceSettingsWebSocketsRowWidget(),
+          const _InstanceSettingsDatabaseCacheRowWidget(),
+          const _InstanceSettingsFilesCacheRowWidget(),
         ],
       );
 }
 
 class _InstanceSettingsMediaRowWidget extends StatelessWidget {
   const _InstanceSettingsMediaRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -44,9 +50,25 @@ class _InstanceSettingsMediaRowWidget extends StatelessWidget {
   }
 }
 
+class _InstanceSettingsCacheAndPaginationRowWidget extends StatelessWidget {
+  const _InstanceSettingsCacheAndPaginationRowWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_pagination_settings_title,
+      onClick: () {
+        showEditGlobalOrInstancePaginationSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
 class _InstanceSettingsPushRowWidget extends StatelessWidget {
   const _InstanceSettingsPushRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -62,7 +84,7 @@ class _InstanceSettingsPushRowWidget extends StatelessWidget {
 
 class _InstanceSettingsToastRowWidget extends StatelessWidget {
   const _InstanceSettingsToastRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -78,7 +100,7 @@ class _InstanceSettingsToastRowWidget extends StatelessWidget {
 
 class _InstanceSettingsStatusSensitiveRowWidget extends StatelessWidget {
   const _InstanceSettingsStatusSensitiveRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -94,7 +116,7 @@ class _InstanceSettingsStatusSensitiveRowWidget extends StatelessWidget {
 
 class _InstanceStatusPostSensitiveRowWidget extends StatelessWidget {
   const _InstanceStatusPostSensitiveRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -110,7 +132,7 @@ class _InstanceStatusPostSensitiveRowWidget extends StatelessWidget {
 
 class _InstanceSettingsChatRowWidget extends StatelessWidget {
   const _InstanceSettingsChatRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -126,7 +148,7 @@ class _InstanceSettingsChatRowWidget extends StatelessWidget {
 
 class _InstanceSettingsWebSocketsRowWidget extends StatelessWidget {
   const _InstanceSettingsWebSocketsRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -135,6 +157,38 @@ class _InstanceSettingsWebSocketsRowWidget extends StatelessWidget {
       title: S.of(context).app_web_sockets_settings_title,
       onClick: () {
         showEditGlobalOrInstanceWebSocketsSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _InstanceSettingsDatabaseCacheRowWidget extends StatelessWidget {
+  const _InstanceSettingsDatabaseCacheRowWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_cache_database_settings_title,
+      onClick: () {
+        showEditGlobalOrInstanceDatabaseCacheSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _InstanceSettingsFilesCacheRowWidget extends StatelessWidget {
+  const _InstanceSettingsFilesCacheRowWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_cache_files_settings_title,
+      onClick: () {
+        showEditGlobalOrInstanceFilesCacheSettingsDialog(context: context);
       },
     );
   }

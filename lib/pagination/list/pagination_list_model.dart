@@ -1,18 +1,12 @@
-import 'package:flutter/widgets.dart';
-
-enum PaginationListLoadingState { initialized, loading, failed, loaded, noData }
-
-class CantUpdateFromNetworkException implements Exception {
-  
-}
+class CantUpdateFromNetworkException implements Exception {}
 
 class PaginationListLoadingError {
   final dynamic error;
-  final StackTrace stackTrace;
+  final StackTrace? stackTrace;
 
   PaginationListLoadingError({
-    @required this.error,
-    @required this.stackTrace,
+    required this.error,
+    required this.stackTrace,
   });
 
   @override
@@ -28,6 +22,9 @@ class PaginationListLoadingError {
 
   @override
   String toString() {
-    return 'PaginationListLoadingError{error: $error, stackTrace: $stackTrace}';
+    return 'PaginationListLoadingError{'
+        'error: $error, '
+        'stackTrace: $stackTrace'
+        '}';
   }
 }

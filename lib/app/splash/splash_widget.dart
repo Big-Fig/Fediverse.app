@@ -8,22 +8,26 @@ class SplashWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: <Widget>[
-      const Center(
-        child: _SplashLogoWidget(),
-      ),
-      Positioned(
-        right: 20.0,
-        bottom: 20.0,
-        child: const _SplashVersionInfoWidget(),
-      ),
-    ]);
+    return Stack(
+      children: <Widget>[
+        const Center(
+          child: _SplashLogoWidget(),
+        ),
+        Positioned(
+          // ignore: no-magic-number
+          right: 20.0,
+          // ignore: no-magic-number
+          bottom: 20.0,
+          child: const _SplashVersionInfoWidget(),
+        ),
+      ],
+    );
   }
 }
 
 class _SplashVersionInfoWidget extends StatelessWidget {
   const _SplashVersionInfoWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -36,14 +40,15 @@ class _SplashVersionInfoWidget extends StatelessWidget {
 
 class _SplashLogoWidget extends StatelessWidget {
   const _SplashLogoWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Image(
-        image: AssetImage("assets/images/theme/logo.png"),
+        image: AssetImage('assets/images/theme/logo.png'),
+        // ignore: no-magic-number
         width: 200,
       ),
     );

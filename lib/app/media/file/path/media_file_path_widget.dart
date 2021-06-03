@@ -12,13 +12,13 @@ const _rowHeight = 48.0 + 6.0;
 
 class MediaFilePathWidget extends StatelessWidget {
   final double opacity;
-  final Widget actionsWidget;
+  final Widget? actionsWidget;
 
   // final String filePath;
 
   const MediaFilePathWidget({
     this.opacity = 1.0,
-    @required this.actionsWidget, // @required this.filePath,
+    required this.actionsWidget, // @required this.filePath,
   });
 
   @override
@@ -36,7 +36,8 @@ class MediaFilePathWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: FediBorderRadius.allSmallBorderRadius,
                     border: Border.all(
-                        color: IFediUiColorTheme.of(context).ultraLightGrey),
+                      color: IFediUiColorTheme.of(context).ultraLightGrey,
+                    ),
                   ),
                   child: Row(
                     children: [
@@ -54,10 +55,10 @@ class MediaFilePathWidget extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      actionsWidget,
+                      actionsWidget!,
                     ],
                   ),
-                )
+                ),
             ],
           ),
         ),
@@ -68,12 +69,13 @@ class MediaFilePathWidget extends StatelessWidget {
 
 class _MediaFilePathBodyWidget extends StatelessWidget {
   const _MediaFilePathBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var mediaFilePathBloc = IMediaFilePathBloc.of(context);
+
     return Expanded(
       child: Padding(
         padding: FediPadding.allSmallPadding,
@@ -82,12 +84,12 @@ class _MediaFilePathBodyWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              mediaFilePathBloc.extension?.toUpperCase() ?? "?",
+              mediaFilePathBloc.extension.toUpperCase(),
               overflow: TextOverflow.ellipsis,
               style: IFediUiTextTheme.of(context).smallShortGrey,
             ),
             Text(
-              mediaFilePathBloc.name ?? "",
+              mediaFilePathBloc.name,
               overflow: TextOverflow.ellipsis,
               style: IFediUiTextTheme.of(context).smallShortDarkGrey,
             ),
@@ -100,14 +102,16 @@ class _MediaFilePathBodyWidget extends StatelessWidget {
 
 class _MediaFilePathIconWidget extends StatelessWidget {
   const _MediaFilePathIconWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var mediaFilePathBloc = IMediaFilePathBloc.of(context);
+
     return Container(
       width: _nonMediaIconSize,
+      // ignore: no-equal-arguments
       height: _nonMediaIconSize,
       decoration: BoxDecoration(
         border: Border(
@@ -118,27 +122,31 @@ class _MediaFilePathIconWidget extends StatelessWidget {
         ),
       ),
       child: Center(
-          child: Padding(
-        padding: FediPadding.allMediumPadding,
-        child: Container(
-          decoration: BoxDecoration(
+        child: Padding(
+          padding: FediPadding.allMediumPadding,
+          child: Container(
+            decoration: BoxDecoration(
               border: Border.all(
-            width: 1,
-            color: IFediUiColorTheme.of(context).darkGrey,
-          )),
-          child: Padding(
-            padding: const EdgeInsets.all(1.0),
-            child: Align(
+                width: 1,
+                color: IFediUiColorTheme.of(context).darkGrey,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Align(
                 alignment: Alignment.bottomCenter,
                 child: AutoSizeText(
-                  mediaFilePathBloc.extension?.toUpperCase() ?? "?",
+                  mediaFilePathBloc.extension.toUpperCase(),
                   maxLines: 1,
+                  // ignore: no-magic-number
                   minFontSize: 8.0,
                   style: IFediUiTextTheme.of(context).smallShortDarkGrey,
-                )),
+                ),
+              ),
+            ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

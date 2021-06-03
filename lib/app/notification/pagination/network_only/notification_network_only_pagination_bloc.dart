@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class INotificationNetworkOnlyPaginationBloc
     implements INetworkOnlyPleromaPaginationBloc<INotification> {
-  static INotificationNetworkOnlyPaginationBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<INotificationNetworkOnlyPaginationBloc>(context,
-          listen: listen);
+  static INotificationNetworkOnlyPaginationBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<INotificationNetworkOnlyPaginationBloc>(
+        context,
+        listen: listen,
+      );
 }

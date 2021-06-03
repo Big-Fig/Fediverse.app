@@ -13,10 +13,10 @@ class SearchResultItemPaginationListBloc extends PaginationListBloc<
   final ISearchInputBloc searchInputBloc;
 
   SearchResultItemPaginationListBloc({
-    @required this.searchInputBloc,
-    @required
-        IPaginationBloc<PaginationPage<ISearchResultItem>, ISearchResultItem>
-            paginationBloc,
+    required this.searchInputBloc,
+    required IPaginationBloc<PaginationPage<ISearchResultItem>,
+            ISearchResultItem>
+        paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
     addDisposable(streamSubscription:
         searchInputBloc.confirmedSearchTermStream.listen((newText) {
@@ -25,15 +25,19 @@ class SearchResultItemPaginationListBloc extends PaginationListBloc<
   }
 
   static SearchResultItemPaginationListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       SearchResultItemPaginationListBloc(
-          paginationBloc: Provider.of<
-              IPaginationBloc<PaginationPage<ISearchResultItem>,
-                  ISearchResultItem>>(context, listen: false),
-          searchInputBloc: ISearchInputBloc.of(context, listen: false));
+        paginationBloc: Provider.of<
+            IPaginationBloc<PaginationPage<ISearchResultItem>,
+                ISearchResultItem>>(context, listen: false),
+        searchInputBloc: ISearchInputBloc.of(context, listen: false),
+      );
 
-  static Widget provideToContext(BuildContext context,
-          {@required Widget child}) =>
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) =>
       DisposableProvider<
           IPaginationListBloc<PaginationPage<ISearchResultItem>,
               ISearchResultItem>>(

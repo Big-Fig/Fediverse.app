@@ -13,19 +13,24 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
   final ValueChanged<String> onSubmitted;
 
   PostStatusPollOptionFormStringFieldFormRowWidget({
-    @required this.hint,
-    @required this.formStringFieldBloc,
-    @required this.onSubmitted,
-    @required this.textInputAction,
+    required this.hint,
+    required this.formStringFieldBloc,
+    required this.onSubmitted,
+    required this.textInputAction,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      // todo: refactor
+      // ignore: no-magic-number
       height: 45,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          border: Border.all(color: IFediUiColorTheme.of(context).lightGrey)),
+        // todo: refactor
+        // ignore: no-magic-number
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: IFediUiColorTheme.of(context).lightGrey),
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: FediSizes.mediumPadding),
         child: Stack(
@@ -64,10 +69,13 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
             Positioned(
               top: 0.0,
               bottom: 0.0,
+              // todo: refactor
+              // ignore: no-magic-number
               right: 8.0,
               child:
                   _PostStatusPollOptionFormStringFieldFormRowErrorBuilderWidget(
-                      formStringFieldBloc: formStringFieldBloc),
+                formStringFieldBloc: formStringFieldBloc,
+              ),
             ),
           ],
         ),
@@ -79,8 +87,8 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
 class _PostStatusPollOptionFormStringFieldFormRowErrorBuilderWidget
     extends StatelessWidget {
   const _PostStatusPollOptionFormStringFieldFormRowErrorBuilderWidget({
-    Key key,
-    @required this.formStringFieldBloc,
+    Key? key,
+    required this.formStringFieldBloc,
   }) : super(key: key);
 
   final IStringValueFormFieldBloc formStringFieldBloc;
@@ -88,23 +96,24 @@ class _PostStatusPollOptionFormStringFieldFormRowErrorBuilderWidget
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
-        stream: formStringFieldBloc.isHaveAtLeastOneErrorStream,
-        initialData: formStringFieldBloc.isHaveAtLeastOneError,
-        builder: (context, snapshot) {
-          var isHaveAtLeastOneError = snapshot.data;
-          if (isHaveAtLeastOneError) {
-            return _PostStatusPollOptionFormStringFieldFormRowErrorWidget();
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+      stream: formStringFieldBloc.isHaveAtLeastOneErrorStream,
+      initialData: formStringFieldBloc.isHaveAtLeastOneError,
+      builder: (context, snapshot) {
+        var isHaveAtLeastOneError = snapshot.data!;
+        if (isHaveAtLeastOneError) {
+          return _PostStatusPollOptionFormStringFieldFormRowErrorWidget();
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
 class _PostStatusPollOptionFormStringFieldFormRowErrorWidget
     extends StatelessWidget {
   const _PostStatusPollOptionFormStringFieldFormRowErrorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -7,7 +7,7 @@ class PleromaChatListTapToLoadOverlayWidget extends StatelessWidget {
   Widget build(BuildContext context) => FediListTapToLoadOverlayWidget(
     textBuilder: (context, updateItemsCount) => S
         .of(context)
-        .app_chat_pleroma_list_newItems_action_tapToLoadNew(updateItemsCount),
+        .app_chat_list_newItems_action_tapToLoadNew(updateItemsCount),
   );
   const PleromaChatListTapToLoadOverlayWidget();
 }

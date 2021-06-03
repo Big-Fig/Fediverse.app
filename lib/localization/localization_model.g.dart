@@ -18,9 +18,9 @@ class LocalizationLocaleAdapter extends TypeAdapter<LocalizationLocale> {
     };
     return LocalizationLocale(
       languageCode: fields[0] as String,
-    )
-      ..scriptCode = fields[1] as String
-      ..countryCode = fields[2] as String;
+      scriptCode: fields[1] as String?,
+      countryCode: fields[2] as String?,
+    );
   }
 
   @override
@@ -53,9 +53,9 @@ class LocalizationLocaleAdapter extends TypeAdapter<LocalizationLocale> {
 LocalizationLocale _$LocalizationLocaleFromJson(Map<String, dynamic> json) {
   return LocalizationLocale(
     languageCode: json['languageCode'] as String,
-  )
-    ..scriptCode = json['scriptCode'] as String
-    ..countryCode = json['countryCode'] as String;
+    scriptCode: json['scriptCode'] as String?,
+    countryCode: json['countryCode'] as String?,
+  );
 }
 
 Map<String, dynamic> _$LocalizationLocaleToJson(LocalizationLocale instance) =>

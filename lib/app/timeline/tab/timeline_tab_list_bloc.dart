@@ -1,5 +1,4 @@
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
-import 'package:fedi/app/timeline/tab/timeline_tab_list_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +10,21 @@ abstract class ITimelineTabListBloc
   static ITimelineTabListBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<ITimelineTabListBloc>(context, listen: listen);
 
-  Stream<TimelineTabBlocsList> get timelineTabBlocsListStream;
+  List<ITimelineTabBloc> get timelineTabBlocs;
 
-  TimelineTabBlocsList get timelineTabBlocsList;
-  Stream<ITimelineTabBloc> get mainTimelineTabBlocStream;
+  ITimelineTabBloc get homeTimelineTabBloc;
+
+  List<String> get timelineIds;
+
+  ITimelineTabBloc get selectedTimelineTabBloc;
+
+  Stream<ITimelineTabBloc> get selectedTimelineTabBlocStream;
+
+  int get selectedTimelineTabBlocIndex;
+
+  Stream<int> get selectedTimelineTabBlocIndexStream;
+
+  void changeSelectedTimelineTabBloc(ITimelineTabBloc selectedTimelineTabBloc);
+
+  void changeSelectedTimelineTabBlocIndex(int selectedTimelineTabBlocIndex);
 }

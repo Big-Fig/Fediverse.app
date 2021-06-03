@@ -2,7 +2,6 @@ import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_all_widget.dart';
 import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
 import 'package:fedi/app/message/action/post_message_emoji_action_widget.dart';
-import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_selected_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_mention_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_nsfw_action_widget.dart';
@@ -21,30 +20,31 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'action/post_status_expire_action_widget.dart';
+
 class PostStatusComposeWidget extends StatelessWidget {
   final bool expanded;
   final bool displaySubjectField;
   final bool goBackOnSuccess;
   final bool displayAccountAvatar;
-  final int maxLines;
-  final String hintText;
+  final int? maxLines;
+  final String? hintText;
   final bool showPostAction;
   final bool autofocus;
 
   const PostStatusComposeWidget({
-    @required this.displaySubjectField,
-    @required this.expanded,
-    @required this.displayAccountAvatar,
-    @required this.maxLines,
-    @required this.showPostAction,
+    required this.displaySubjectField,
+    required this.expanded,
+    required this.displayAccountAvatar,
+    required this.maxLines,
+    required this.showPostAction,
     this.hintText,
-    @required this.goBackOnSuccess,
-    @required this.autofocus,
+    required this.goBackOnSuccess,
+    required this.autofocus,
   });
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: Column(
@@ -77,7 +77,7 @@ class PostStatusComposeWidget extends StatelessWidget {
           ),
           if (!displayAccountAvatar && expanded) const FediLightGreyDivider(),
           _buildActions(showPostAction),
-          const PostMessageSelectedActionWidget()
+          const PostMessageSelectedActionWidget(),
         ],
       ),
     );
@@ -98,15 +98,16 @@ class PostStatusComposeWidget extends StatelessWidget {
 
 class _PostStatusComposeActionsWidget extends StatelessWidget {
   const _PostStatusComposeActionsWidget({
-    Key key,
-    @required this.showPostAction,
+    Key? key,
+    required this.showPostAction,
   }) : super(key: key);
 
   final bool showPostAction;
 
   @override
   Widget build(BuildContext context) {
-    var postMessageBloc = IPostMessageBloc.of(context);
+    var postStatusBloc = IPostStatusBloc.of(context);
+
     return Padding(
       padding: FediPadding.verticalBigPadding,
       child: Row(
@@ -114,6 +115,8 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
         children: [
           Flexible(
             child: Container(
+              // todo: refactor
+              // ignore: no-magic-number
               height: 35,
               child: Padding(
                 padding: FediPadding.horizontalSmallPadding,
@@ -121,21 +124,24 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   children: [
-                    StreamBuilder<String>(
-                        stream: postMessageBloc.inputTextStream,
-                        builder: (context, snapshot) {
-                          var inputText = snapshot.data;
-                          if (inputText?.trim()?.isNotEmpty == true) {
-                            return const PostMessageEmojiActionWidget();
-                          } else {
-                            return const PostMessageAttachActionWidget();
-                          }
-                        }),
+                    StreamBuilder<String?>(
+                      stream: postStatusBloc.inputTextStream,
+                      builder: (context, snapshot) {
+                        var inputText = snapshot.data;
+                        if (inputText?.trim().isNotEmpty == true) {
+                          return const PostMessageEmojiActionWidget();
+                        } else {
+                          return const PostMessageAttachActionWidget();
+                        }
+                      },
+                    ),
                     const PostStatusVisibilityActionWidget(),
                     const PostStatusScheduleActionWidget(),
                     const PostStatusMentionActionWidget(),
                     const PostStatusNsfwActionWidget(),
-                    const PostStatusPollActionWidget()
+                    const PostStatusPollActionWidget(),
+                    if (postStatusBloc.isExpirePossible)
+                      const PostStatusExpireActionWidget(),
                   ],
                 ),
               ),
@@ -154,17 +160,17 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
 
 class _PostStatusComposeInputWithAvatarWidget extends StatelessWidget {
   const _PostStatusComposeInputWithAvatarWidget({
-    Key key,
-    @required this.autofocus,
-    @required this.expanded,
-    @required this.hintText,
-    @required this.maxLines,
+    Key? key,
+    required this.autofocus,
+    required this.expanded,
+    required this.hintText,
+    required this.maxLines,
   }) : super(key: key);
 
   final bool autofocus;
   final bool expanded;
-  final String hintText;
-  final int maxLines;
+  final String? hintText;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +191,7 @@ class _PostStatusComposeInputWithAvatarWidget extends StatelessWidget {
             hintText: hintText,
             maxLines: maxLines,
           ),
-        )
+        ),
       ],
     );
   }
@@ -193,7 +199,7 @@ class _PostStatusComposeInputWithAvatarWidget extends StatelessWidget {
 
 class _PostStatusComposeSubjectFieldWidget extends StatelessWidget {
   const _PostStatusComposeSubjectFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

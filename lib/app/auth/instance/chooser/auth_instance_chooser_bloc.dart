@@ -4,13 +4,15 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IAuthInstanceChooserBloc implements IDisposable {
-  static IAuthInstanceChooserBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IAuthInstanceChooserBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IAuthInstanceChooserBloc>(context, listen: listen);
 
-  AuthInstance get selectedInstance;
+  AuthInstance? get selectedInstance;
 
-  Stream<AuthInstance> get selectedInstanceStream;
+  Stream<AuthInstance?> get selectedInstanceStream;
 
   List<AuthInstance> get instancesAvailableToChoose;
 

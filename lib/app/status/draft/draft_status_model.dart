@@ -1,243 +1,199 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
+import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
-import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/application/pleroma_application_model.dart';
-import 'package:fedi/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/pleroma/content/pleroma_content_model.dart';
-import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
-import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+class DbDraftStatusPopulated {
+  final DbDraftStatus dbDraftStatus;
+
+  DbDraftStatusPopulated({
+    required this.dbDraftStatus,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DbDraftStatusPopulated &&
+          runtimeType == other.runtimeType &&
+          dbDraftStatus == other.dbDraftStatus;
+
+  @override
+  int get hashCode => dbDraftStatus.hashCode;
+
+  @override
+  String toString() {
+    return 'DbDraftStatusPopulated{'
+        'dbDraftStatus: $dbDraftStatus'
+        '}';
+  }
+
+  DbDraftStatusPopulated copyWith({
+    DbDraftStatus? dbDraftStatus,
+  }) {
+    return DbDraftStatusPopulated(
+      dbDraftStatus: dbDraftStatus ?? this.dbDraftStatus,
+    );
+  }
+}
 
 abstract class IDraftStatus {
-  int get localId;
+  int? get localId;
 
   DateTime get updatedAt;
 
-  PostStatusData get data;
+  PostStatusData get postStatusData;
 }
 
-class DbDraftStatusWrapper implements IDraftStatus {
-  final DbDraftStatus dbDraftStatus;
+class DbDraftStatusPopulatedWrapper implements IDraftStatus {
+  final DbDraftStatusPopulated dbDraftStatusPopulated;
 
-  DbDraftStatusWrapper(this.dbDraftStatus);
+  DbDraftStatus get dbDraftStatus => dbDraftStatusPopulated.dbDraftStatus;
+
+  DbDraftStatusPopulatedWrapper({
+    required this.dbDraftStatusPopulated,
+  });
 
   @override
-  int get localId => dbDraftStatus.id;
+  int? get localId => dbDraftStatus.id;
 
   @override
-  PostStatusData get data => dbDraftStatus.data;
+  PostStatusData get postStatusData => dbDraftStatus.data;
 
   @override
   DateTime get updatedAt => dbDraftStatus.updatedAt;
 }
 
-class DraftStatusAdapterToStatus implements IStatus {
-  final notSupportedError = Exception("Not supported for draft status");
-  @override
-  final IAccount account;
+class DraftStatusAdapterToStatus extends PostStatusDataStatusStatusAdapter {
   final IDraftStatus draftStatus;
 
-  DraftStatusAdapterToStatus(
-      {@required this.account, @required this.draftStatus});
+  DraftStatusAdapterToStatus({
+    required IAccount account,
+    required this.draftStatus,
+  }) : super(
+          localId: draftStatus.localId,
+          account: account,
+          postStatusData: draftStatus.postStatusData,
+          createdAt: draftStatus.updatedAt,
+          pendingState: PendingState.notSentYet,
+          oldPendingRemoteId: null,
+          wasSentWithIdempotencyKey: null,
+        );
 
   @override
-  PleromaApplication get application => null;
-
-  @override
-  bool get bookmarked => throw notSupportedError;
-
-  @override
-  PleromaCard get card => null;
-
-  @override
-  String get content => draftStatus.data.text;
-
-  @override
-  IStatus copyWith({
-    IAccount account,
-    IStatus reblog,
-    int id,
-    String remoteId,
-    DateTime createdAt,
-    IStatus inReplyToStatus,
-    String inReplyToRemoteId,
-    String inReplyToAccountRemoteId,
-    bool nsfwSensitive,
-    String spoilerText,
-    PleromaVisibility visibility,
-    String uri,
-    String url,
-    int repliesCount,
-    int reblogsCount,
-    int favouritesCount,
-    bool favourited,
-    bool reblogged,
-    bool muted,
-    bool bookmarked,
-    bool pinned,
-    String content,
-    String reblogStatusRemoteId,
-    PleromaApplication application,
-    String accountRemoteId,
-    List<PleromaMediaAttachment> mediaAttachments,
-    List<PleromaMention> mentions,
-    List<PleromaTag> tags,
-    List<PleromaEmoji> emojis,
-    PleromaPoll poll,
-    PleromaCard card,
-    String language,
-    PleromaContent pleromaContent,
-    int pleromaConversationId,
-    int pleromaDirectConversationId,
-    String pleromaInReplyToAccountAcct,
-    bool pleromaLocal,
-    PleromaContent pleromaSpoilerText,
-    DateTime pleromaExpiresAt,
-    bool pleromaThreadMuted,
-    List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
-    bool deleted,
-  }) {
-    throw notSupportedError;
-  }
-
-  @override
-  DateTime get createdAt => draftStatus.updatedAt;
-
-  @override
-  List<PleromaEmoji> get emojis => [];
-
-  @override
-  bool get favourited => throw notSupportedError;
-
-  @override
-  int get favouritesCount => throw notSupportedError;
-
-  @override
-  String get inReplyToAccountRemoteId => null;
-
-  @override
-  String get inReplyToRemoteId => draftStatus.data.inReplyToPleromaStatus.id;
-
-  @override
-  String get language => null;
-
-  @override
-  int get localId => draftStatus.localId;
-
-  @override
-  List<PleromaMention> get mentions => [];
-
-  @override
-  bool get muted => throw notSupportedError;
-
-  @override
-  bool get nsfwSensitive => draftStatus.data.isNsfwSensitiveEnabled;
-
-  @override
-  bool get pinned => throw notSupportedError;
-
-  @override
-  PleromaContent get pleromaContent => null;
-
-  @override
-  int get pleromaConversationId => null;
-
-  @override
-  int get pleromaDirectConversationId => null;
-
-  @override
-  List<PleromaStatusEmojiReaction> get pleromaEmojiReactions => null;
-
-  @override
-  DateTime get pleromaExpiresAt => null;
-
-  @override
-  String get pleromaInReplyToAccountAcct => null;
-
-  @override
-  bool get pleromaLocal => null;
-
-  @override
-  PleromaContent get pleromaSpoilerText => null;
-
-  @override
-  bool get pleromaThreadMuted => null;
-
-  @override
-  PleromaPoll get poll => draftStatus?.data?.poll?.toPleromaPoll();
-
-  @override
-  IStatus get reblog => null;
-
-  @override
-  String get reblogStatusRemoteId => null;
-
-  @override
-  bool get reblogged => null;
-
-  @override
-  int get reblogsCount => null;
-
-  @override
-  String get remoteId => null;
-
-  @override
-  int get repliesCount => null;
-
-  @override
-  String get spoilerText => draftStatus.data.subject;
-
-  @override
-  List<PleromaTag> get tags => [];
-
-  @override
-  String get uri => null;
-
-  @override
-  String get url => null;
-
-  @override
-  PleromaVisibility get visibility => draftStatus.data.visibilityPleroma;
-
-  // todo: fix this, sometimes it may be reblog
-  @override
-  bool get isHaveReblog => false;
-
-  // todo: fix this, sometimes it may be reply
-  @override
-  bool get isReply => false;
-
-  @override
-  // todo: fix this, sometimes it may be reply
-  IStatus get inReplyToStatus => null;
-
-  @override
-  List<PleromaMediaAttachment> get mediaAttachments =>
-      draftStatus.data.mediaAttachments;
-
-  @override
-  bool get deleted => false;
+  bool get hiddenLocallyOnDevice => false;
 }
 
-int adjacentElementsProduct(List<int> inputArray) {
-  int previousSum;
-  int resultIndex;
-  for (var i = 0; i < inputArray.length - 1; i++) {
-    var currentSum = inputArray[i] + inputArray[i + 1];
-    if (previousSum == null || currentSum > previousSum) {
-      resultIndex = i;
-      previousSum = currentSum;
+extension IDraftStatusExtension on IDraftStatus {
+  DbDraftStatusPopulatedWrapper toDbDraftStatusPopulatedWrapper() {
+    if (this is DbDraftStatusPopulatedWrapper) {
+      var dbDraftStatusPopulatedWrapper = this as DbDraftStatusPopulatedWrapper;
+
+      return dbDraftStatusPopulatedWrapper;
+    } else {
+      return DbDraftStatusPopulatedWrapper(
+        dbDraftStatusPopulated: toDbDraftStatusPopulated(),
+      );
     }
   }
 
-  return inputArray[resultIndex] + inputArray[resultIndex + 1];
+  DbDraftStatusPopulated toDbDraftStatusPopulated() {
+    if (this is DbDraftStatusPopulatedWrapper) {
+      var dbDraftStatusPopulatedWrapper = this as DbDraftStatusPopulatedWrapper;
+
+      return dbDraftStatusPopulatedWrapper.dbDraftStatusPopulated;
+    } else {
+      return DbDraftStatusPopulated(
+        dbDraftStatus: toDbDraftStatus(),
+      );
+    }
+  }
+
+  DbDraftStatus toDbDraftStatus() {
+    if (this is DbDraftStatusPopulatedWrapper) {
+      var dbDraftStatusPopulatedWrapper = this as DbDraftStatusPopulatedWrapper;
+
+      return dbDraftStatusPopulatedWrapper.dbDraftStatusPopulated.dbDraftStatus;
+    } else {
+      return DbDraftStatus(
+        id: localId,
+        updatedAt: updatedAt,
+        data: postStatusData,
+      );
+    }
+  }
 }
 
-enum DraftStatusState { draft, canceled, alreadyPosted }
+extension DbDraftStatusPopulatedExtension on DbDraftStatusPopulated {
+  DbDraftStatusPopulatedWrapper toDbDraftStatusPopulatedWrapper() =>
+      DbDraftStatusPopulatedWrapper(dbDraftStatusPopulated: this);
+}
+
+extension DbDraftStatusPopulatedListExtension on List<DbDraftStatusPopulated> {
+  List<DbDraftStatusPopulatedWrapper> toDbDraftStatusPopulatedWrapperList() =>
+      map((item) => item.toDbDraftStatusPopulatedWrapper()).toList();
+}
+
+enum DraftStatusState {
+  draft,
+  canceled,
+  alreadyPosted,
+}
+
+const _draftDraftStatusStateJsonValue = 'draft';
+const _canceledDraftStatusStateJsonValue = 'canceled';
+const _alreadyPostedDraftStatusStateJsonValue = 'alreadyPosted';
+
+extension DraftStatusStateExtension on DraftStatusState {
+  String toJsonValue() {
+    String result;
+
+    switch (this) {
+      case DraftStatusState.canceled:
+        result = _canceledDraftStatusStateJsonValue;
+        break;
+      case DraftStatusState.draft:
+        result = _draftDraftStatusStateJsonValue;
+        break;
+      case DraftStatusState.alreadyPosted:
+        result = _alreadyPostedDraftStatusStateJsonValue;
+        break;
+    }
+
+    return result;
+  }
+}
+
+extension DraftStatusStateStringExtension on String {
+  DraftStatusState toDraftStatusState() {
+    DraftStatusState result;
+
+    switch (this) {
+      case _draftDraftStatusStateJsonValue:
+        result = DraftStatusState.draft;
+        break;
+      case _canceledDraftStatusStateJsonValue:
+        result = DraftStatusState.canceled;
+        break;
+      case _alreadyPostedDraftStatusStateJsonValue:
+        result = DraftStatusState.alreadyPosted;
+        break;
+      // cant parse
+      default:
+        throw 'Invalid DraftStatusState $DraftStatusState';
+    }
+
+    return result;
+  }
+}
+
+class DraftStatusStateTypeConverter implements JsonConverter<DraftStatusState, String> {
+  const DraftStatusStateTypeConverter();
+
+  @override
+  DraftStatusState fromJson(String value) => value.toDraftStatusState();
+
+  @override
+  String toJson(DraftStatusState value) => value.toJsonValue();
+}

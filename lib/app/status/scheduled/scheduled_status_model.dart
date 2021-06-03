@@ -1,267 +1,327 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/application/pleroma_application_model.dart';
-import 'package:fedi/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/pleroma/content/pleroma_content_model.dart';
-import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
-import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
+import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
+import 'package:fedi/obj/equal_comparable_obj.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-abstract class IScheduledStatus {
-  int get localId;
+abstract class IScheduledStatus
+    implements IEqualComparableObj<IScheduledStatus> {
+  int? get localId;
 
-  String get remoteId;
+  String? get remoteId;
 
   DateTime get scheduledAt;
 
-  IPleromaScheduledStatusParams get params;
+  IPleromaApiScheduledStatusParams get params;
 
-  List<PleromaMediaAttachment> get mediaAttachments;
+  List<PleromaApiMediaAttachment>? get mediaAttachments;
 
   bool get canceled;
 
-  IScheduledStatus copyWith(
-      {int localId,
-      String remoteId,
-      DateTime scheduledAt,
-      IPleromaScheduledStatusParams params,
-      bool canceled,
-      List<PleromaMediaAttachment> mediaAttachments});
+  IScheduledStatus copyWith({
+    int? localId,
+    String? remoteId,
+    DateTime? scheduledAt,
+    IPleromaApiScheduledStatusParams? params,
+    bool? canceled,
+    List<PleromaApiMediaAttachment>? mediaAttachments,
+  });
+
+  static int compareItemsToSort(IScheduledStatus? a, IScheduledStatus? b) {
+    if (a == null && b == null) {
+      return 0;
+    } else if (a != null && b == null) {
+      return 1;
+    } else if (a == null && b != null) {
+      return -1;
+    } else {
+      return a!.remoteId!.compareTo(b!.remoteId!);
+    }
+  }
+
+  static bool isItemsEqual(IScheduledStatus a, IScheduledStatus b) =>
+      a.remoteId == b.remoteId;
 }
 
-class DbScheduledStatusWrapper implements IScheduledStatus {
+extension DbScheduledStatusPopulatedExtension on DbScheduledStatusPopulated {
+  DbScheduledStatusPopulatedWrapper toDbScheduledStatusPopulatedWrapper() {
+    return DbScheduledStatusPopulatedWrapper(dbScheduledStatusPopulated: this);
+  }
+}
+
+extension DbScheduledStatusPopulatedListExtension
+    on List<DbScheduledStatusPopulated> {
+  List<DbScheduledStatusPopulatedWrapper>
+      toDbScheduledStatusPopulatedWrappers() {
+    return map((item) => item.toDbScheduledStatusPopulatedWrapper()).toList();
+  }
+}
+
+class DbScheduledStatusPopulated {
   final DbScheduledStatus dbScheduledStatus;
 
-  DbScheduledStatusWrapper(this.dbScheduledStatus);
+  DbScheduledStatusPopulated({
+    required this.dbScheduledStatus,
+  });
 
   @override
-  IScheduledStatus copyWith(
-          {int localId,
-          String remoteId,
-          DateTime scheduledAt,
-          IPleromaScheduledStatusParams params,
-          bool canceled,
-          List<PleromaMediaAttachment> mediaAttachments}) =>
-      DbScheduledStatusWrapper(dbScheduledStatus.copyWith(
-          id: localId,
-          remoteId: remoteId,
-          scheduledAt: scheduledAt,
-          params: params,
-          canceled: canceled,
-          mediaAttachments: mediaAttachments));
+  String toString() {
+    return 'DbScheduledStatusPopulated{'
+        'dbScheduledStatus: $dbScheduledStatus'
+        '}';
+  }
+
+  DbScheduledStatusPopulated copyWith({
+    DbScheduledStatus? dbScheduledStatus,
+  }) =>
+      DbScheduledStatusPopulated(
+        dbScheduledStatus: dbScheduledStatus ?? this.dbScheduledStatus,
+      );
 
   @override
-  int get localId => dbScheduledStatus.id;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DbScheduledStatusPopulated &&
+          runtimeType == other.runtimeType &&
+          dbScheduledStatus == other.dbScheduledStatus;
 
   @override
-  List<PleromaMediaAttachment> get mediaAttachments =>
+  int get hashCode => dbScheduledStatus.hashCode;
+}
+
+extension IPleromaScheduledStatusParamsExtension
+    on IPleromaApiScheduledStatusParams {
+  PleromaApiScheduledStatusParams toPleromaScheduledStatusParams() {
+    if (this is PleromaApiScheduledStatusParams) {
+      return this as PleromaApiScheduledStatusParams;
+    } else {
+      return PleromaApiScheduledStatusParams(
+        text: text,
+        mediaIds: mediaIds,
+        sensitive: sensitive,
+        spoilerText: spoilerText,
+        visibility: visibility,
+        scheduledAt: scheduledAt,
+        poll: poll,
+        idempotency: idempotency,
+        inReplyToId: inReplyToId,
+        applicationId: applicationId,
+        language: language,
+        expiresInSeconds: expiresInSeconds,
+        to: to,
+        inReplyToConversationId: inReplyToConversationId,
+      );
+    }
+  }
+}
+
+extension IScheduledStatusExtension on IScheduledStatus {
+  IPostStatusData get postStatusData => PostStatusData(
+        subject: params.spoilerText,
+        text: params.text,
+        scheduledAt: scheduledAt,
+        visibilityString: params.visibility,
+        mediaAttachments: mediaAttachments,
+        poll: params.poll?.toPostStatusPoll(),
+        to: params.to,
+        inReplyToPleromaStatus:
+            params.inReplyToPleromaApiStatus?.toPleromaApiStatus(),
+        inReplyToConversationId: params.inReplyToConversationId,
+        isNsfwSensitiveEnabled: params.sensitive,
+        language: params.language,
+        expiresInSeconds: params.expiresInSeconds,
+      );
+
+  DbScheduledStatusPopulatedWrapper toDbScheduledStatusPopulatedWrapper() {
+    if (this is DbScheduledStatusPopulatedWrapper) {
+      var dbScheduledStatusPopulatedWrapper =
+          this as DbScheduledStatusPopulatedWrapper;
+
+      return dbScheduledStatusPopulatedWrapper;
+    } else {
+      return DbScheduledStatusPopulatedWrapper(
+        dbScheduledStatusPopulated: toDbScheduledStatusPopulated(),
+      );
+    }
+  }
+
+  DbScheduledStatusPopulated toDbScheduledStatusPopulated() {
+    if (this is DbScheduledStatusPopulatedWrapper) {
+      var dbScheduledStatusPopulatedWrapper =
+          this as DbScheduledStatusPopulatedWrapper;
+
+      return dbScheduledStatusPopulatedWrapper.dbScheduledStatusPopulated;
+    } else {
+      return DbScheduledStatusPopulated(
+        dbScheduledStatus: toDbScheduledStatus(),
+      );
+    }
+  }
+
+  DbScheduledStatus toDbScheduledStatus() {
+    if (this is DbScheduledStatusPopulatedWrapper) {
+      var dbScheduledStatusPopulatedWrapper =
+          this as DbScheduledStatusPopulatedWrapper;
+
+      return dbScheduledStatusPopulatedWrapper
+          .dbScheduledStatusPopulated.dbScheduledStatus;
+    } else {
+      return DbScheduledStatus(
+        remoteId: remoteId!,
+        scheduledAt: scheduledAt,
+        canceled: canceled,
+        params: params.toPleromaScheduledStatusParams(),
+      );
+    }
+  }
+}
+
+class DbScheduledStatusPopulatedWrapper implements IScheduledStatus {
+  final DbScheduledStatusPopulated dbScheduledStatusPopulated;
+
+  DbScheduledStatusPopulatedWrapper({
+    required this.dbScheduledStatusPopulated,
+  });
+
+  DbScheduledStatus get dbScheduledStatus =>
+      dbScheduledStatusPopulated.dbScheduledStatus;
+
+  @override
+  IScheduledStatus copyWith({
+    int? localId,
+    String? remoteId,
+    DateTime? scheduledAt,
+    IPleromaApiScheduledStatusParams? params,
+    bool? canceled,
+    List<PleromaApiMediaAttachment>? mediaAttachments,
+  }) =>
+      DbScheduledStatusPopulatedWrapper(
+        dbScheduledStatusPopulated: DbScheduledStatusPopulated(
+          dbScheduledStatus:
+              dbScheduledStatusPopulated.dbScheduledStatus.copyWith(
+            id: localId,
+            remoteId: remoteId,
+            scheduledAt: scheduledAt,
+            params: params?.toPleromaScheduledStatusParams(),
+            canceled: canceled,
+            mediaAttachments: mediaAttachments,
+          ),
+        ),
+      );
+
+  @override
+  int? get localId => dbScheduledStatus.id;
+
+  @override
+  List<PleromaApiMediaAttachment>? get mediaAttachments =>
       dbScheduledStatus.mediaAttachments;
 
   @override
-  IPleromaScheduledStatusParams get params => dbScheduledStatus.params;
+  IPleromaApiScheduledStatusParams get params => dbScheduledStatus.params;
 
   @override
-  String get remoteId => dbScheduledStatus.remoteId;
+  String? get remoteId => dbScheduledStatus.remoteId;
 
   @override
   DateTime get scheduledAt => dbScheduledStatus.scheduledAt;
 
   @override
   bool get canceled => dbScheduledStatus.canceled;
+
+  @override
+  int compareTo(IScheduledStatus b) =>
+      IScheduledStatus.compareItemsToSort(this, b);
+
+  @override
+  bool isEqualTo(IScheduledStatus b) => IScheduledStatus.isItemsEqual(this, b);
 }
 
-class ScheduledStatusAdapterToStatus implements IStatus {
-  final notSupportedError = Exception("Not supported for scheduled status");
-  @override
-  final IAccount account;
+class ScheduledStatusAdapterToStatus extends PostStatusDataStatusStatusAdapter {
   final IScheduledStatus scheduledStatus;
 
-  ScheduledStatusAdapterToStatus(
-      {@required this.account, @required this.scheduledStatus});
+  ScheduledStatusAdapterToStatus({
+    required IAccount account,
+    required this.scheduledStatus,
+  }) : super(
+          localId: scheduledStatus.localId,
+          account: account,
+          postStatusData: scheduledStatus.postStatusData.toPostStatusData(),
+          createdAt: scheduledStatus.scheduledAt,
+          pendingState: PendingState.notSentYet,
+          oldPendingRemoteId: null,
+          wasSentWithIdempotencyKey: null,
+        );
 
   @override
-  PleromaApplication get application => null;
+  bool get hiddenLocallyOnDevice => false;
 
-  @override
-  bool get bookmarked => throw notSupportedError;
-
-  @override
-  PleromaCard get card => null;
-
-  @override
-  String get content => scheduledStatus.params.text;
-
-  @override
-  IStatus copyWith({
-    IAccount account,
-    IStatus reblog,
-    int id,
-    String remoteId,
-    DateTime createdAt,
-    IStatus inReplyToStatus,
-    String inReplyToRemoteId,
-    String inReplyToAccountRemoteId,
-    bool nsfwSensitive,
-    String spoilerText,
-    PleromaVisibility visibility,
-    String uri,
-    String url,
-    int repliesCount,
-    int reblogsCount,
-    int favouritesCount,
-    bool favourited,
-    bool reblogged,
-    bool muted,
-    bool bookmarked,
-    bool pinned,
-    String content,
-    String reblogStatusRemoteId,
-    PleromaApplication application,
-    String accountRemoteId,
-    List<PleromaMediaAttachment> mediaAttachments,
-    List<PleromaMention> mentions,
-    List<PleromaTag> tags,
-    List<PleromaEmoji> emojis,
-    PleromaPoll poll,
-    PleromaCard card,
-    String language,
-    PleromaContent pleromaContent,
-    int pleromaConversationId,
-    int pleromaDirectConversationId,
-    String pleromaInReplyToAccountAcct,
-    bool pleromaLocal,
-    PleromaContent pleromaSpoilerText,
-    DateTime pleromaExpiresAt,
-    bool pleromaThreadMuted,
-    List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
-    bool deleted,
-  }) {
-    throw notSupportedError;
-  }
-
-  @override
-  DateTime get createdAt => scheduledStatus.scheduledAt;
-
-  @override
-  List<PleromaEmoji> get emojis => [];
-
-  @override
-  bool get favourited => throw notSupportedError;
-
-  @override
-  int get favouritesCount => throw notSupportedError;
-
-  @override
-  String get inReplyToAccountRemoteId => null;
-
-  @override
-  String get inReplyToRemoteId => scheduledStatus.params.inReplyToId;
-
-  @override
-  String get language => null;
-
-  @override
-  int get localId => scheduledStatus.localId;
-
-  @override
-  List<PleromaMediaAttachment> get mediaAttachments =>
-      scheduledStatus.mediaAttachments;
-
-  @override
-  List<PleromaMention> get mentions => [];
-
-  @override
-  bool get muted => throw notSupportedError;
-
-  @override
-  bool get nsfwSensitive => scheduledStatus.params.sensitive;
-
-  @override
-  bool get pinned => throw notSupportedError;
-
-  @override
-  PleromaContent get pleromaContent => null;
-
-  @override
-  int get pleromaConversationId => null;
-
-  @override
-  int get pleromaDirectConversationId => null;
-
-  @override
-  List<PleromaStatusEmojiReaction> get pleromaEmojiReactions => null;
-
-  @override
-  DateTime get pleromaExpiresAt => null;
-
-  @override
-  String get pleromaInReplyToAccountAcct => null;
-
-  @override
-  bool get pleromaLocal => null;
-
-  @override
-  PleromaContent get pleromaSpoilerText => null;
-
-  @override
-  bool get pleromaThreadMuted => null;
-
-  @override
-  PleromaPoll get poll => scheduledStatus.params?.poll?.toPleromaPoll();
-
-  @override
-  IStatus get reblog => null;
-
-  @override
-  String get reblogStatusRemoteId => null;
-
-  @override
-  bool get reblogged => null;
-
-  @override
-  int get reblogsCount => null;
-
-  @override
-  String get remoteId => scheduledStatus.remoteId;
-
-  @override
-  int get repliesCount => null;
-
-  @override
-  String get spoilerText => scheduledStatus.params.spoilerText;
-
-  @override
-  List<PleromaTag> get tags => [];
-
-  @override
-  String get uri => null;
-
-  @override
-  String get url => null;
-
-  @override
-  PleromaVisibility get visibility => scheduledStatus.params.visibilityPleroma;
-
-  // todo: fix this, sometimes it may be reblog
-  @override
-  bool get isHaveReblog => false;
-
-  // todo: fix this, sometimes it may be reply
-  @override
-  bool get isReply => false;
-
-  @override
-  // todo: fix this, sometimes it may be reply
-  IStatus get inReplyToStatus => null;
-
-  @override
-  bool get deleted => false;
 }
 
-enum ScheduledStatusState { scheduled, canceled, alreadyPosted }
+enum ScheduledStatusState {
+  scheduled,
+  canceled,
+  alreadyPosted,
+}
+
+const _scheduledScheduledStatusStateJsonValue = 'scheduled';
+const _canceledScheduledStatusStateJsonValue = 'canceled';
+const _alreadyPostedScheduledStatusStateJsonValue = 'alreadyPosted';
+
+extension ScheduledStatusStateExtension on ScheduledStatusState {
+  String toJsonValue() {
+    String result;
+
+    switch (this) {
+      case ScheduledStatusState.canceled:
+        result = _canceledScheduledStatusStateJsonValue;
+        break;
+      case ScheduledStatusState.scheduled:
+        result = _scheduledScheduledStatusStateJsonValue;
+        break;
+      case ScheduledStatusState.alreadyPosted:
+        result = _alreadyPostedScheduledStatusStateJsonValue;
+        break;
+    }
+
+    return result;
+  }
+}
+
+extension ScheduledStatusStateStringExtension on String {
+  ScheduledStatusState toScheduledStatusState() {
+    ScheduledStatusState result;
+
+    switch (this) {
+      case _scheduledScheduledStatusStateJsonValue:
+        result = ScheduledStatusState.scheduled;
+        break;
+      case _canceledScheduledStatusStateJsonValue:
+        result = ScheduledStatusState.canceled;
+        break;
+      case _alreadyPostedScheduledStatusStateJsonValue:
+        result = ScheduledStatusState.alreadyPosted;
+        break;
+      // cant parse
+      default:
+        throw 'Invalid ScheduledStatusState $ScheduledStatusState';
+    }
+
+    return result;
+  }
+}
+
+class ScheduledStatusStateTypeConverter
+    implements JsonConverter<ScheduledStatusState, String> {
+  const ScheduledStatusStateTypeConverter();
+
+  @override
+  ScheduledStatusState fromJson(String value) => value.toScheduledStatusState();
+
+  @override
+  String toJson(ScheduledStatusState value) => value.toJsonValue();
+}

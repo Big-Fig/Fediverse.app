@@ -6,14 +6,15 @@ import 'package:flutter/widgets.dart';
 class UrlStringValueFormFieldValidationError
     extends StringValueFormFieldValidationError {
   static final urlRegex = RegExp(
-      r"(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)");
+    r'(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)',
+  );
 
   @override
   String createErrorDescription(BuildContext context) =>
       S.of(context).form_field_text_url_error_invalid_desc;
 
   static FormValueFieldValidation createValidator() => (currentValue) {
-        bool emailValid = urlRegex.hasMatch(currentValue ?? "");
+        var emailValid = urlRegex.hasMatch(currentValue ?? '');
         if (emailValid) {
           return null;
         } else {

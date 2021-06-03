@@ -8,7 +8,7 @@ class StatusSensitiveSpoilerWarningOverlayWidget extends StatelessWidget {
   final Widget child;
 
   const StatusSensitiveSpoilerWarningOverlayWidget({
-    @required this.child,
+    required this.child,
   });
 
   @override
@@ -21,7 +21,11 @@ class StatusSensitiveSpoilerWarningOverlayWidget extends StatelessWidget {
     } else {
       return ConstrainedBox(
         constraints: BoxConstraints(
+          // todo: refactor
+          // ignore: no-magic-number
           minHeight: 54,
+          // ignore: no-magic-number
+          minWidth: 200,
         ),
         child: Stack(
           children: [
@@ -38,7 +42,7 @@ class StatusSensitiveSpoilerWarningOverlayWidget extends StatelessWidget {
 
 class _StatusSensitiveSpoilerWarningOverlayBodyWidget extends StatelessWidget {
   const _StatusSensitiveSpoilerWarningOverlayBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

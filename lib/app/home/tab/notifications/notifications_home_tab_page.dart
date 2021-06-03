@@ -1,14 +1,17 @@
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/app/notification/list/notification_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc_impl.dart';
+import 'package:fedi/app/notification/notification_tabs_bloc_loading_widget.dart';
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_widget.dart';
 import 'package:fedi/app/notification/tab/notification_tab_icon_tab_indicator_item_widget.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/app/push/settings/edit/instance/edit_instance_push_settings_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
+import 'package:fedi/app/ui/dialog/actions/fedi_actions_dialog.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
@@ -16,8 +19,10 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollabl
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
@@ -35,28 +40,30 @@ const _notificationTabs = [
   NotificationTab.follows,
 ];
 
-var _logger = Logger("notifications_home_tab_page.dart");
+var _logger = Logger('notifications_home_tab_page.dart');
 
 class NotificationsHomeTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DisposableProvider<INotificationTabsBloc>(
       create: (context) => NotificationsTabsBloc.createFromContext(context),
-      child: TabControllerProvider(
-        tabControllerCreator:
-            (BuildContext context, TickerProvider tickerProvider) =>
-                TabController(
-          vsync: tickerProvider,
-          length: _notificationTabs.length,
+      child: NotificationTabsBlocLoadingWidget(
+        child: TabControllerProvider(
+          tabControllerCreator:
+              (BuildContext context, TickerProvider tickerProvider) =>
+                  TabController(
+            vsync: tickerProvider,
+            length: _notificationTabs.length,
+          ),
+          child: const _NotificationsHomeTabPageBody(),
         ),
-        child: const _NotificationsHomeTabPageBody(),
       ),
     );
   }
 }
 
 class _NotificationsHomeTabPageBody extends StatefulWidget {
-  const _NotificationsHomeTabPageBody({Key key}) : super(key: key);
+  const _NotificationsHomeTabPageBody({Key? key}) : super(key: key);
 
   @override
   _NotificationsHomeTabPageBodyState createState() =>
@@ -65,7 +72,7 @@ class _NotificationsHomeTabPageBody extends StatefulWidget {
 
 class _NotificationsHomeTabPageBodyState
     extends State<_NotificationsHomeTabPageBody> {
-  IDisposable disposable;
+  IDisposable? disposable;
 
   @override
   void didChangeDependencies() {
@@ -117,7 +124,7 @@ class _NotificationsHomeTabPageBodyState
             const _NotificationsHomeTabPageBodyHeaderWidget(),
           ],
           topSliverScrollOffsetToShowWhiteStatusBar: null,
-          tabKeyPrefix: "NotificationTab",
+          tabKeyPrefix: 'NotificationTab',
           tabBodyProviderBuilder:
               (BuildContext context, int index, Widget child) {
             var tab = _notificationTabs[index];
@@ -146,8 +153,11 @@ class _NotificationsHomeTabPageBodyState
   }
 
   Widget _buildTabBodyProvider(
-      BuildContext context, NotificationTab tab, Widget child) {
-    _logger.finest(() => "_buildTabBodyProvider tab $tab");
+    BuildContext context,
+    NotificationTab tab,
+    Widget child,
+  ) {
+    _logger.finest(() => '_buildTabBodyProvider tab $tab');
 
     var timelineTabPaginationListBloc =
         INotificationTabsBloc.of(context, listen: false)
@@ -171,12 +181,13 @@ class _NotificationsHomeTabPageBodyState
 
 class _NotificationsHomeTabPageBodyHeaderWidget extends StatelessWidget {
   const _NotificationsHomeTabPageBodyHeaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var tabController = Provider.of<TabController>(context);
+
     return FediTabMainHeaderBarWidget(
       leadingWidgets: null,
       content: NotificationTabTextTabIndicatorItemWidget(
@@ -184,15 +195,100 @@ class _NotificationsHomeTabPageBodyHeaderWidget extends StatelessWidget {
         notificationTabs: _notificationTabs,
       ),
       endingWidgets: [
-        FediIconInCircleBlurredButton(
-          FediIcons.filter,
-          onPressed: () {
-            showEditInstancePushSettingsDialog(
-              context: context,
-            );
-          },
-        )
+        const _NotificationsHomeTabPageBodyHeaderMenuButtonWidget(),
       ],
+    );
+  }
+}
+
+class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
+    extends StatelessWidget {
+  const _NotificationsHomeTabPageBodyHeaderMenuButtonWidget({
+    Key? key,
+  }) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    var notificationsHomeTabBloc = INotificationsHomeTabBloc.of(context);
+
+    return FediIconInCircleBlurredButton(
+      FediIcons.menu_vertical,
+      onPressed: () {
+        FediActionsDialog(
+          context: context,
+          title: S.of(context).app_notification_all_dialog_title,
+          actions: [
+            _buildPushNotificationsAction(context),
+            buildDismissAllAction(context, notificationsHomeTabBloc),
+            buildMarkAllAsReadAction(context, notificationsHomeTabBloc),
+          ],
+        ).show(context);
+      },
+    );
+  }
+
+  DialogAction buildMarkAllAsReadAction(
+    BuildContext context,
+    INotificationsHomeTabBloc notificationsHomeTabBloc,
+  ) =>
+      DialogAction(
+        label: S.of(context).app_notification_all_dialog_action_markAllAsRead,
+        icon: FediIcons.check,
+        onAction: (contextDialog) async {
+          Navigator.of(contextDialog).pop();
+
+          Future.delayed(
+            // ignore: no-magic-number
+            Duration(milliseconds: 100),
+            () async {
+              await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context,
+                asyncCode: () async {
+                  await notificationsHomeTabBloc.markAllAsRead();
+                },
+              );
+            },
+          );
+        },
+      );
+
+  DialogAction buildDismissAllAction(
+    BuildContext context,
+    INotificationsHomeTabBloc notificationsHomeTabBloc,
+  ) =>
+      DialogAction(
+        label: S.of(context).app_notification_all_dialog_action_dismissAll,
+        icon: FediIcons.delete,
+        onAction: (contextDialog) async {
+          Navigator.of(contextDialog).pop();
+
+          Future.delayed(
+            // todo: refactor
+            // ignore: no-magic-number
+            Duration(milliseconds: 100),
+            () async {
+              await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context,
+                asyncCode: () async {
+                  await notificationsHomeTabBloc.dismissAll();
+                },
+              );
+            },
+          );
+        },
+      );
+
+  DialogAction _buildPushNotificationsAction(BuildContext context) {
+    return DialogAction(
+      label: S.of(context).app_notification_all_dialog_action_pushNotifications,
+      icon: FediIcons.filter,
+      onAction: (context) async {
+        Navigator.of(context).pop();
+        showEditInstancePushSettingsDialog(
+          context: context,
+        );
+      },
     );
   }
 }

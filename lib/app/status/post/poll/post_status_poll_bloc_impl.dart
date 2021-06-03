@@ -2,8 +2,8 @@ import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_model.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
@@ -11,19 +11,21 @@ import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc_impl.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
-  static DurationValueFormFieldBloc createDurationLengthBloc(
-      PleromaInstancePollLimits pollLimits) {
-    Duration pollMinimumExpiration = calculatePollMinimumExpiration(pollLimits);
+  static DurationDateTimeValueFormFieldBloc createDurationDateTimeLengthBloc(
+    PleromaApiInstancePollLimits pollLimit,
+  ) {
+    var pollMinimumExpiration = pollLimit.minExpirationDurationOrDefault;
 
-    Duration pollMaximumExpiration = calculatePollMaximumExpiration(pollLimits);
+    var pollMaximumExpiration = pollLimit.maxExpirationDurationOrDefault;
 
-    var originValue = IPostStatusPollBloc.defaultPollExpiration;
-    return DurationValueFormFieldBloc(
-      originValue: originValue,
+    return DurationDateTimeValueFormFieldBloc(
+      originValue: DurationDateTime(
+        duration: PleromaApiInstancePollLimits.defaultPollExpiration,
+        dateTime: null,
+      ),
       minDuration: pollMinimumExpiration,
       maxDuration: pollMaximumExpiration,
       isNullValuePossible: false,
@@ -31,63 +33,64 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     );
   }
 
-  static Duration calculatePollMinimumExpiration(
-      PleromaInstancePollLimits pollLimits) {
-    return pollLimits?.minExpiration != null
-        ? Duration(seconds: pollLimits?.minExpiration)
-        : IPostStatusPollBloc.minimumPollExpiration;
-  }
+  final PleromaApiInstancePollLimits pollLimits;
 
-  static Duration calculatePollMaximumExpiration(
-      PleromaInstancePollLimits pollLimits) {
-    return pollLimits?.maxExpiration != null
-        ? Duration(seconds: pollLimits?.maxExpiration)
-        : null;
-  }
+  int get pollMaximumOptionsCount => pollLimits.maxOptionsOrDefault;
 
-  final PleromaInstancePollLimits pollLimits;
-
-  int get pollMaximumOptionsCount =>
-      pollLimits?.maxOptions ?? IPostStatusPollBloc.defaultMaxPollOptions;
-
-  int get pollMaximumOptionLength => pollLimits?.maxOptionChars;
+  int? get pollMaximumOptionLength => pollLimits.maxOptionCharsOrDefault;
 
   Duration get pollMinimumExpiration =>
-      calculatePollMinimumExpiration(pollLimits);
+      pollLimits.minExpirationDurationOrDefault;
 
   Duration get pollMaximumExpiration =>
-      calculatePollMaximumExpiration(pollLimits);
+      pollLimits.maxExpirationDurationOrDefault;
 
   PostStatusPollBloc({
-    @required this.pollLimits,
-  })  : pollOptionsGroupBloc = OneTypeFormGroupBloc<IStringValueFormFieldBloc>(
-          originalItems: createDefaultPollOptions(pollLimits?.maxOptionChars),
+    required this.pollLimits,
+  })   : pollOptionsGroupBloc = OneTypeFormGroupBloc<IStringValueFormFieldBloc>(
+          originalItems:
+              createDefaultPollOptions(pollLimits.maxOptionCharsOrDefault),
+          // ignore: no-magic-number
           minimumFieldsCount: 2,
-          maximumFieldsCount: pollLimits?.maxOptions ?? 20,
+          maximumFieldsCount: pollLimits.maxOptionsOrDefault,
           newEmptyFieldCreator: () =>
-              createPollOptionBloc(pollLimits?.maxOptionChars),
+              createPollOptionBloc(pollLimits.maxOptionCharsOrDefault),
         ),
-        durationLengthFieldBloc = createDurationLengthBloc(pollLimits),
-        super(isAllItemsInitialized: true);
+        durationDateTimeLengthFieldBloc =
+            createDurationDateTimeLengthBloc(pollLimits),
+        super(isAllItemsInitialized: true) {
+    addDisposable(disposable: durationDateTimeLengthFieldBloc);
+    addDisposable(disposable: multiplyFieldBloc);
+    addDisposable(disposable: hideTotalsFieldBloc);
+    addDisposable(disposable: pollOptionsGroupBloc);
+  }
 
   @override
   List<IFormItemBloc> get currentItems => [
-        durationLengthFieldBloc,
+        durationDateTimeLengthFieldBloc,
         multiplyFieldBloc,
+        hideTotalsFieldBloc,
         pollOptionsGroupBloc,
       ];
 
   @override
-  IDurationValueFormFieldBloc durationLengthFieldBloc;
+  // ignore: avoid-late-keyword
+  late DurationDateTimeValueFormFieldBloc durationDateTimeLengthFieldBloc;
   @override
-  IBoolValueFormFieldBloc multiplyFieldBloc =
+  // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc<bool> multiplyFieldBloc =
+      BoolValueFormFieldBloc(originValue: false);
+  @override
+  // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc<bool> hideTotalsFieldBloc =
       BoolValueFormFieldBloc(originValue: false);
 
   @override
-  IOneTypeFormGroupBloc<IStringValueFormFieldBloc> pollOptionsGroupBloc;
+  final IOneTypeFormGroupBloc<IStringValueFormFieldBloc> pollOptionsGroupBloc;
 
   static List<IStringValueFormFieldBloc> createDefaultPollOptions(
-      int maximumOptionLength) {
+    int? maximumOptionLength,
+  ) {
     return <IStringValueFormFieldBloc>[
       createPollOptionBloc(maximumOptionLength),
       createPollOptionBloc(maximumOptionLength),
@@ -95,12 +98,13 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   }
 
   static StringValueFormFieldBloc createPollOptionBloc(
-          int maximumOptionLength) =>
-      createPollOptionFieldBloc(null, maximumOptionLength);
+    int? maximumOptionLength,
+  ) =>
+      createPollOptionFieldBloc('', maximumOptionLength);
 
   static StringValueFormFieldBloc createPollOptionFieldBloc(
     String originValue,
-    int maximumOptionLength,
+    int? maximumOptionLength,
   ) {
     return StringValueFormFieldBloc(
       originValue: originValue,
@@ -113,10 +117,12 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
   @override
   void fillFormData(IPostStatusPoll poll) {
+    hideTotalsFieldBloc.changeCurrentValue(poll.hideTotals);
     multiplyFieldBloc.changeCurrentValue(poll.multiple);
 
-    durationLengthFieldBloc.changeCurrentValue(poll.durationLength);
-    if (poll.options?.isNotEmpty == true) {
+    durationDateTimeLengthFieldBloc
+        .changeCurrentValueDuration(poll.durationLength);
+    if (poll.options.isNotEmpty) {
       pollOptionsGroupBloc.removeAllFields();
 
       poll.options.forEach(
@@ -136,18 +142,12 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   void clear() {
     // super.clear();
 
-    var oldBloc = pollOptionsGroupBloc;
-
-    pollOptionsGroupBloc = OneTypeFormGroupBloc<IStringValueFormFieldBloc>(
-      originalItems: createDefaultPollOptions(pollLimits?.maxOptionChars),
-      minimumFieldsCount: 2,
-      maximumFieldsCount: pollLimits?.maxOptions ?? 20,
-      newEmptyFieldCreator: () =>
-          createPollOptionBloc(pollLimits?.maxOptionChars),
+    pollOptionsGroupBloc.changeFields(
+      createDefaultPollOptions(pollLimits.maxOptionChars),
     );
 
-    onItemsChanged();
-
-    oldBloc.dispose();
+    multiplyFieldBloc.clear();
+    durationDateTimeLengthFieldBloc.clear();
+    hideTotalsFieldBloc.clear();
   }
 }

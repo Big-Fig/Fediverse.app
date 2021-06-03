@@ -3,7 +3,7 @@ import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -13,61 +13,77 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
   static IPostStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPostStatusBloc>(context, listen: listen);
 
-  static final Duration requiredDurationToScheduleStatus = Duration(minutes: 5);
+  // ignore: no-magic-number
+  static final Duration requiredDurationToScheduleDateTime = Duration(minutes: 5);
+  static final Duration minimumExpireDuration = Duration(hours: 1);
 
-  List<String> get mentionedAccts;
+  bool get isExpirePossible;
 
-  Stream<List<String>> get mentionedAcctsStream;
+  List<String?>? get mentionedAccts;
+
+  Stream<List<String?>> get mentionedAcctsStream;
 
   bool get isPossibleToChangeVisibility;
 
-  PleromaVisibility get visibility;
+  PleromaApiVisibility? get visibility;
 
-  Stream<PleromaVisibility> get visibilityStream;
+  Stream<PleromaApiVisibility> get visibilityStream;
 
-  bool get isNsfwSensitiveEnabled;
+  bool? get isNsfwSensitiveEnabled;
 
-  Stream<bool> get isNsfwSensitiveEnabledStream;
+  Stream<bool?> get isNsfwSensitiveEnabledStream;
 
   TextEditingController get subjectTextController;
 
   FocusNode get subjectFocusNode;
 
-  String get subjectText;
+  String? get subjectText;
 
   Stream<String> get subjectTextStream;
 
-  void addAccountMentions(List<IAccount> accounts);
+  void addAccountMentions(List<IAccount?> accounts);
 
   void removeAccountMentions(List<IAccount> accounts);
 
   void removeMentionByAcct(String acct);
 
-  void changeVisibility(PleromaVisibility visibility);
+  void changeVisibility(PleromaApiVisibility visibility);
 
   void changeNsfwSensitive(bool nsfwSensitive);
 
-  void schedule(DateTime dateTime);
+  void setScheduledAt(DateTime? dateTime);
 
-  void clearSchedule();
+  void clearScheduleAt();
 
-  bool get isScheduled;
+  bool get isScheduledAtExist;
 
-  Stream<bool> get isScheduledStream;
+  Stream<bool> get isScheduledAtExistStream;
 
-  DateTime get scheduledAt;
+  DateTime? get scheduledAt;
 
-  Stream<DateTime> get scheduledAtStream;
+  Stream<DateTime?> get scheduledAtStream;
+  
+  void setExpireDuration(Duration? duration);
 
-  String get inputWithoutMentionedAcctsText;
+  void clearExpireDuration();
 
-  Stream<String> get inputWithoutMentionedAcctsTextStream;
+  bool get isExpireDurationExist;
+
+  Stream<bool> get isExpireDurationExistStream;
+
+  Duration? get expireDuration;
+
+  Stream<Duration?> get expireDurationStream;
+
+  String? get inputWithoutMentionedAcctsText;
+
+  Stream<String?> get inputWithoutMentionedAcctsTextStream;
 
   bool get isHaveMentionedAccts;
 
   Stream<bool> get isHaveMentionedAcctsStream;
 
-  IStatus get originInReplyToStatus;
+  IStatus? get originInReplyToStatus;
 
   IPostStatusPollBloc get pollBloc;
 

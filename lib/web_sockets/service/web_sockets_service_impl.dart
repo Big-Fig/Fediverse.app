@@ -9,7 +9,7 @@ import 'package:fedi/web_sockets/web_sockets_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("web_sockets_service_impl.dart");
+var _logger = Logger('web_sockets_service_impl.dart');
 
 class WebSocketsService extends DisposableOwner implements IWebSocketsService {
   final IWebSocketsServiceConfigBloc configBloc;
@@ -18,7 +18,7 @@ class WebSocketsService extends DisposableOwner implements IWebSocketsService {
   final Map<Uri, IWebSocketsChannel> urlToChannel = {};
 
   WebSocketsService({
-    @required this.configBloc,
+    required this.configBloc,
   }) {
     addDisposable(
       disposable: CustomDisposable(
@@ -33,19 +33,21 @@ class WebSocketsService extends DisposableOwner implements IWebSocketsService {
   @override
   IWebSocketsChannel<T>
       getOrCreateWebSocketsChannel<T extends WebSocketsEvent>({
-    @required IWebSocketsChannelConfig<T> config,
+    required IWebSocketsChannelConfig<T> config,
   }) {
     var url = config.calculateWebSocketsUrl();
     if (!urlToChannel.containsKey(url)) {
       urlToChannel[url] = createChannel<T>(config);
     }
 
-    return urlToChannel[url];
+    // todo: think about cast
+    return urlToChannel[url]! as IWebSocketsChannel<T>;
   }
 
   IWebSocketsChannel createChannel<T extends WebSocketsEvent>(
-      IWebSocketsChannelConfig<T> config) {
-    _logger.finest(() => "createChannel $config");
+    IWebSocketsChannelConfig<T> config,
+  ) {
+    _logger.finest(() => 'createChannel $config');
 
     return WebSocketsChannel<T>(
       config: config,

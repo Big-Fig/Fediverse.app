@@ -7,15 +7,15 @@ abstract class ICustomListBloc implements IDisposable {
   static ICustomListBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<ICustomListBloc>(context, listen: listen);
 
-  ICustomList get customList;
+  ICustomList? get customList;
 
-  Stream<ICustomList> get customListStream;
+  Stream<ICustomList?> get customListStream;
 
-  String get title;
+  String? get title;
 
-  Stream<String> get titleStream;
+  Stream<String?> get titleStream;
 
   Stream get deletedStream;
 
-  void updateList(ICustomList customList);
+  void updateList(ICustomList? customList);
 }

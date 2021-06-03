@@ -5,51 +5,62 @@ import 'package:fedi/app/status/post/post_status_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
+import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
 import 'package:flutter/widgets.dart';
 
 typedef PostStatusDataCallback = Future<bool> Function(
-    PostStatusData postStatusData);
+  IPostStatusData postStatusData,
+);
 
 class EditPostStatusBloc extends PostStatusBloc {
   final PostStatusDataCallback postStatusDataCallback;
 
   EditPostStatusBloc({
-    @required IPleromaStatusService pleromaStatusService,
-    @required IStatusRepository statusRepository,
-    @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
-    @required IPostStatusData initialData,
-    @required this.postStatusDataCallback,
-    @required int maximumMessageLength,
-    @required PleromaInstancePollLimits pleromaInstancePollLimits,
-    @required int maximumFileSizeInBytes,
-    @required bool markMediaAsNsfwOnAttach,
+    required IPleromaApiAuthStatusService pleromaAuthStatusService,
+    required IStatusRepository statusRepository,
+    required IScheduledStatusRepository scheduledStatusRepository,
+    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required IPostStatusData initialData,
+    required this.postStatusDataCallback,
+    required int? maximumMessageLength,
+    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
+    required int? maximumFileSizeInBytes,
+    required bool markMediaAsNsfwOnAttach,
+    required bool isPleromaInstance,
   }) : super(
-          pleromaStatusService: pleromaStatusService,
+          isExpirePossible: isPleromaInstance,
+          pleromaAuthStatusService: pleromaAuthStatusService,
           statusRepository: statusRepository,
+          scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: initialData,
           maximumMessageLength: maximumMessageLength,
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
+          unfocusOnClear: true,
         );
 
   static EditPostStatusBloc createFromContext(
     BuildContext context, {
-    @required IPostStatusData initialData,
-    @required PostStatusDataCallback postStatusDataCallback,
+    required IPostStatusData initialData,
+    required PostStatusDataCallback postStatusDataCallback,
   }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
-        .currentInstance
-        .info;
+        .currentInstance!
+        .info!;
     var postStatusSettingsBloc =
         IPostStatusSettingsBloc.of(context, listen: false);
+
     return EditPostStatusBloc(
-      pleromaStatusService: IPleromaStatusService.of(context, listen: false),
+      pleromaAuthStatusService: IPleromaApiAuthStatusService.of(
+        context,
+        listen: false,
+      ),
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
           IPleromaMediaAttachmentService.of(context, listen: false),
@@ -59,19 +70,24 @@ class EditPostStatusBloc extends PostStatusBloc {
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
+      isPleromaInstance: info.isPleroma,
+      scheduledStatusRepository: IScheduledStatusRepository.of(
+        context,
+        listen: false,
+      ),
     );
   }
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    @required IPostStatusData initialData,
-    @required PostStatusDataCallback postStatusDataCallback,
+    required Widget child,
+    required IPostStatusData? initialData,
+    required PostStatusDataCallback postStatusDataCallback,
   }) {
     return DisposableProvider<IPostStatusBloc>(
       create: (context) => EditPostStatusBloc.createFromContext(
         context,
-        initialData: initialData,
+        initialData: initialData!,
         postStatusDataCallback: postStatusDataCallback,
       ),
       child: PostStatusMessageBlocProxyProvider(child: child),

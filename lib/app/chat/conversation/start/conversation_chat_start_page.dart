@@ -40,23 +40,25 @@ void _accountSelectedCallback(BuildContext context, IAccount account) {
 
 void goToStartConversationPage(BuildContext context) {
   Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => SelectAccountListBloc.provideToContext(
-                context,
-                excludeMyAccount: true,
-                child: AccountCachedPaginationBloc.provideToContext(
-                  context,
-                  child: AccountCachedPaginationBloc.provideToContext(
-                    context,
-                    child: SelectAccountPaginationListBloc.provideToContext(
-                      context,
-                      child: const StartConversationChatPage(),
-                    ),
-                  ),
-                ),
-                customLocalAccountListLoader: null,
-                customRemoteAccountListLoader: null,
-                followingsOnly: false,
-              )));
+    context,
+    MaterialPageRoute(
+      builder: (context) => SelectAccountListBloc.provideToContext(
+        context,
+        excludeMyAccount: true,
+        child: AccountCachedPaginationBloc.provideToContext(
+          context,
+          child: AccountCachedPaginationBloc.provideToContext(
+            context,
+            child: SelectAccountPaginationListBloc.provideToContext(
+              context,
+              child: const StartConversationChatPage(),
+            ),
+          ),
+        ),
+        customLocalAccountListLoader: null,
+        customRemoteAccountListLoader: null,
+        followingsOnly: false,
+      ),
+    ),
+  );
 }

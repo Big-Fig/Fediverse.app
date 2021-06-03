@@ -1,36 +1,44 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
-import 'package:flutter/widgets.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 
-DbChat mapRemoteChatToDbPleromaChat(pleroma_lib.IPleromaChat remoteChat) {
-  var updatedAt = remoteChat.updatedAt;
-  // todo: hack
-  // sometimes updatedAt not exposed on server side
-  updatedAt ??= remoteChat.lastMessage?.createdAt;
-  return DbChat(
+extension IPleromaApiChatPleromaExtension on IPleromaApiChat {
+  DbChat toDbChat() {
+    var updatedAt = this.updatedAt;
+    // todo: hack
+    // sometimes updatedAt not exposed on server side
+    updatedAt ??= lastMessage?.createdAt;
+
+    return DbChat(
       id: null,
-      remoteId: remoteChat.id,
-      unread: remoteChat.unread,
+      remoteId: id,
+      unread: unread,
       updatedAt: updatedAt,
-      accountRemoteId: remoteChat.account?.id);
+      accountRemoteId: account.id,
+    );
+  }
 }
 
-pleroma_lib.PleromaChat mapLocalPleromaChatToRemoteChat(IPleromaChat chat,
-    {@required IPleromaChatMessage lastChatMessage,
-    @required List<IAccount> accounts}) {
-  assert(accounts?.isNotEmpty == true);
-  assert(accounts.length < 2, "only direct chats supported");
-  return pleroma_lib.PleromaChat(
-      unread: chat.unread,
-      lastMessage: mapLocalPleromaChatMessageToRemoteChatMessage(lastChatMessage),
-      id: chat.remoteId,
-      account: mapLocalAccountToRemoteAccount(accounts.first),
-      updatedAt: chat.updatedAt
-//        accounts: accounts?.map(mapLocalAccountToRemoteAccount)?.toList()
-      );
+extension IPleromaChatExtension on IPleromaChat {
+  PleromaApiChat toPleromaApiChat({
+    required IPleromaChatMessage? lastChatMessage,
+    required List<IAccount> accounts,
+  }) {
+    assert(accounts.isNotEmpty);
+    // ignore: no-magic-number
+    var isSingleAccount = accounts.length < 2;
+    assert(isSingleAccount, 'only direct chats supported');
+
+    return PleromaApiChat(
+      unread: unread,
+      lastMessage: lastChatMessage?.toPleromaApiChatMessage(),
+      id: remoteId,
+      account: accounts.first.toPleromaApiAccount(),
+      updatedAt: updatedAt,
+    );
+  }
 }

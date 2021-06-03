@@ -7,20 +7,20 @@ abstract class IToastService implements IDisposable {
       Provider.of<IToastService>(context, listen: listen);
 
   void showErrorToast({
-    @required BuildContext context,
-    @required String title,
+    required BuildContext? context,
+    required String title,
     bool titleAutoFontSize = true,
-    String content,
-    VoidCallback onClick,
+    String? content,
+    VoidCallback? onClick,
     Duration duration = const Duration(seconds: 2, milliseconds: 500),
   });
 
   void showInfoToast({
-    @required BuildContext context,
-    @required String title,
+    required BuildContext context,
+    required String title,
     bool titleAutoFontSize = true,
-    String content,
-    VoidCallback onClick,
+    String? content,
+    VoidCallback? onClick,
     Duration duration = const Duration(seconds: 2, milliseconds: 500),
   });
 }

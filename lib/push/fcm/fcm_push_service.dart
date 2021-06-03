@@ -8,12 +8,16 @@ abstract class IFcmPushService extends IDisposable
     implements IAsyncInitLoadingBloc {
   Stream<String> get deviceTokenStream;
 
-  String get deviceToken;
+  String? get deviceToken;
 
   Stream<PushMessage> get messageStream;
+
+  PushMessage? get initialMessage;
 
   Future<bool> askPermissions();
 
   static IFcmPushService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFcmPushService>(context, listen: listen);
+
+  void clearInitialMessage();
 }

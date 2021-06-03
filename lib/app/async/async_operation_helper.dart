@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
@@ -11,18 +12,20 @@ import 'package:flutter/widgets.dart';
 class AsyncOperationHelper {
   static const List<ErrorDataBuilder> defaultErrorDataBuilders = [
     socketErrorAlertDialogBuilder,
-    timeoutErrorAlertDialogBuilder
+    timeoutErrorAlertDialogBuilder,
   ];
 
-  static Future<AsyncDialogResult<T>> performAsyncOperation<T>({
-    @required BuildContext context,
-    @required Future<T> asyncCode(),
-    String contentMessage,
+  // todo: refactor long-parameter-list
+  // ignore: long-parameter-list
+  static Future<AsyncDialogResult<T?>> performAsyncOperation<T>({
+    required BuildContext context,
+    required AsyncButtonAction<T> asyncCode,
+    String? contentMessage,
     List<ErrorDataBuilder> errorDataBuilders = defaultErrorDataBuilders,
     bool createDefaultErrorDataUnhandledError = true,
     bool showNotificationOnError = true,
     bool showProgressDialog = true,
-    ErrorCallback errorCallback,
+    ErrorCallback? errorCallback,
     bool cancelable = false,
   }) =>
       doAsyncOperationWithDialog(
@@ -33,7 +36,7 @@ class AsyncOperationHelper {
             errorCallback(context, errorData);
           }
           if (showNotificationOnError) {
-            IToastService.of(context, listen: false).showErrorToast(
+            IToastService.of(context!, listen: false).showErrorToast(
               context: context,
               title: errorData.titleCreator(context),
               content: errorData.contentCreator(context),
@@ -48,8 +51,8 @@ class AsyncOperationHelper {
         cancelable: cancelable,
       );
 
-  static ErrorData socketErrorAlertDialogBuilder(
-    BuildContext context,
+  static ErrorData? socketErrorAlertDialogBuilder(
+    BuildContext? context,
     dynamic error,
     StackTrace stackTrace,
   ) {
@@ -67,8 +70,8 @@ class AsyncOperationHelper {
     }
   }
 
-  static ErrorData timeoutErrorAlertDialogBuilder(
-    BuildContext context,
+  static ErrorData? timeoutErrorAlertDialogBuilder(
+    BuildContext? context,
     dynamic error,
     StackTrace stackTrace,
   ) {

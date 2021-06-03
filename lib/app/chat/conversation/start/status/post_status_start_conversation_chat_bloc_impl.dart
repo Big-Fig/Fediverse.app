@@ -5,14 +5,15 @@ import 'package:fedi/app/status/post/post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
-import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
+import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -22,48 +23,59 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
   final List<IAccount> conversationAccountsWithoutMe;
 
   @override
-  Future onStatusPosted(IPleromaStatus remoteStatus) async {
+  Future onStatusPosted(IPleromaApiStatus remoteStatus) async {
     await super.onStatusPosted(remoteStatus);
     successCallback(
-      mapRemoteStatusToLocalStatus(remoteStatus),
+      remoteStatus.toDbStatusPopulatedWrapper(),
     );
   }
 
   PostStatusStartConversationChatBloc({
-    @required this.conversationAccountsWithoutMe,
-    @required this.successCallback,
-    @required IPleromaStatusService pleromaStatusService,
-    @required IStatusRepository statusRepository,
-    @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
-    @required int maximumMessageLength,
-    @required PleromaInstancePollLimits pleromaInstancePollLimits,
-    @required int maximumFileSizeInBytes,
-    @required bool markMediaAsNsfwOnAttach,
+    required this.conversationAccountsWithoutMe,
+    required this.successCallback,
+    required IPleromaApiAuthStatusService pleromaAuthStatusService,
+    required IStatusRepository statusRepository,
+    required IScheduledStatusRepository scheduledStatusRepository,
+    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required int? maximumMessageLength,
+    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
+    required int? maximumFileSizeInBytes,
+    required bool markMediaAsNsfwOnAttach,
+    required String? language,
   }) : super(
-          pleromaStatusService: pleromaStatusService,
+          isExpirePossible: false,
+          pleromaAuthStatusService: pleromaAuthStatusService,
           statusRepository: statusRepository,
+          scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
-          initialData: PostStatusBloc.defaultInitData
-              .copyWith(visibility: PleromaVisibility.direct.toJsonValue()),
+          initialData: PostStatusBloc.defaultInitData.copyWith(
+            visibilityString: PleromaApiVisibility.direct.toJsonValue(),
+            language: language,
+          ),
           initialAccountsToMention: conversationAccountsWithoutMe,
           maximumMessageLength: maximumMessageLength,
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
+          unfocusOnClear: true,
         );
 
   static PostStatusStartConversationChatBloc createFromContext(
     BuildContext context, {
-    @required List<IAccount> conversationAccountsWithoutMe,
-    @required StatusCallback successCallback,
+    required List<IAccount> conversationAccountsWithoutMe,
+    required StatusCallback successCallback,
   }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
-        .currentInstance
-        .info;
+        .currentInstance!
+        .info!;
+
     return PostStatusStartConversationChatBloc(
       successCallback: successCallback,
       conversationAccountsWithoutMe: conversationAccountsWithoutMe,
-      pleromaStatusService: IPleromaStatusService.of(context, listen: false),
+      pleromaAuthStatusService: IPleromaApiAuthStatusService.of(
+        context,
+        listen: false,
+      ),
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
           IPleromaMediaAttachmentService.of(context, listen: false),
@@ -71,15 +83,23 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach:
-          IPostStatusSettingsBloc.of(context, listen: false).markMediaAsNsfwOnAttach,
+          IPostStatusSettingsBloc.of(context, listen: false)
+                  .markMediaAsNsfwOnAttach,
+      language: IPostStatusSettingsBloc.of(context, listen: false)
+          .defaultStatusLocale
+          ?.localeString,
+      scheduledStatusRepository: IScheduledStatusRepository.of(
+        context,
+        listen: false,
+      ),
     );
   }
 
   static Widget provideToContext(
     BuildContext context, {
-    @required List<IAccount> conversationAccountsWithoutMe,
-    @required Widget child,
-    @required StatusCallback successCallback,
+    required List<IAccount> conversationAccountsWithoutMe,
+    required Widget child,
+    required StatusCallback successCallback,
   }) {
     return DisposableProvider<IPostStatusBloc>(
       create: (context) =>
@@ -97,30 +117,31 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
 
   @override
   bool get isReadyToPost =>
-      super.isReadyToPost && mentionedAccts?.isNotEmpty == true;
+      super.isReadyToPost && mentionedAccts.isNotEmpty;
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest6(
-      inputWithoutMentionedAcctsTextStream,
-      mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-      mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
-      pollBloc.isHaveAtLeastOneErrorStream,
-      pollBloc.isSomethingChangedStream,
-      mentionedAcctsStream,
-      (
-        inputWithoutMentionedAcctsText,
-        mediaAttachmentBlocs,
-        isAllAttachedMediaUploaded,
-        isHaveAtLeastOneError,
-        isPollBlocChanged,
-        mentionedAccts,
-      ) =>
-          calculateStatusBlocIsReadyToPost(
-            inputText: inputWithoutMentionedAcctsText,
-            mediaAttachmentBlocs: mediaAttachmentBlocs,
-            isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
-            isPollBlocHaveErrors: isHaveAtLeastOneError,
-            isPollBlocChanged: isPollBlocChanged,
-          ) &&
-          mentionedAccts?.isNotEmpty == true);
+        inputWithoutMentionedAcctsTextStream,
+        mediaAttachmentsBloc.mediaAttachmentBlocsStream,
+        mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
+        pollBloc.isHaveAtLeastOneErrorStream,
+        pollBloc.isSomethingChangedStream,
+        mentionedAcctsStream,
+        (
+          dynamic inputWithoutMentionedAcctsText,
+          dynamic mediaAttachmentBlocs,
+          dynamic isAllAttachedMediaUploaded,
+          dynamic isHaveAtLeastOneError,
+          dynamic isPollBlocChanged,
+          dynamic mentionedAccts,
+        ) =>
+            calculateStatusBlocIsReadyToPost(
+              inputText: inputWithoutMentionedAcctsText,
+              mediaAttachmentBlocs: mediaAttachmentBlocs,
+              isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
+              isPollBlocHaveErrors: isHaveAtLeastOneError,
+              isPollBlocChanged: isPollBlocChanged,
+            ) &&
+            mentionedAccts?.isNotEmpty == true,
+      );
 }

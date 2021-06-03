@@ -1,9 +1,10 @@
-import 'dart:convert';
-
+import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/json/json_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// ignore_for_file: no-magic-number
 part 'recent_search_model.g.dart';
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -15,7 +16,10 @@ part 'recent_search_model.g.dart';
 class RecentSearchList implements IJsonObject {
   @HiveField(0)
   final List<String> recentItems;
-  RecentSearchList({this.recentItems});
+
+  RecentSearchList({
+    required this.recentItems,
+  });
 
   @override
   String toString() {
@@ -27,23 +31,14 @@ class RecentSearchList implements IJsonObject {
       identical(this, other) ||
       other is RecentSearchList &&
           runtimeType == other.runtimeType &&
-          recentItems == other.recentItems;
+          listEquals(recentItems, other.recentItems);
+
   @override
-  int get hashCode => recentItems.hashCode;
+  int get hashCode => listHash(recentItems);
 
-
-  factory RecentSearchList.fromJson(Map<String, dynamic> json) =>
+  static RecentSearchList fromJson(Map<String, dynamic> json) =>
       _$RecentSearchListFromJson(json);
-
-  factory RecentSearchList.fromJsonString(String jsonString) =>
-      _$RecentSearchListFromJson(jsonDecode(jsonString));
-
-  static List<RecentSearchList> listFromJsonString(String str) =>
-      List<RecentSearchList>.from(
-          json.decode(str).map((x) => RecentSearchList.fromJson(x)));
 
   @override
   Map<String, dynamic> toJson() => _$RecentSearchListToJson(this);
-
-  String toJsonString() => jsonEncode(_$RecentSearchListToJson(this));
 }

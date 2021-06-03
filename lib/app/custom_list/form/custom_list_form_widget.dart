@@ -12,7 +12,7 @@ class CustomListFormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProxyProvider<ICustomListFormBloc, IStringValueFormFieldBloc>(
         update: (context, value, previous) => value.titleField,
-        child: StringFormFieldRowWidget(
+        child: StringValueFormFieldRowWidget(
           autocorrect: true,
           label: S.of(context).app_customList_form_field_title_label,
           hint: S.of(context).app_customList_form_field_title_hint,

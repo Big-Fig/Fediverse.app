@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyAccountDetailsBodyWidget extends StatelessWidget {
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) => CollapsibleOwnerWidget(
@@ -15,17 +15,20 @@ class MyAccountDetailsBodyWidget extends StatelessWidget {
       );
 
   AccountStatusesTimelineWidget buildAccountStatusesWidget(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       AccountStatusesTimelineWidget(
         scrollController: scrollController,
         header: const FediListTile(
           isFirstInList: true,
           child: MyAccountWidget(
             onStatusesTapCallback: _onStatusesTapCallback,
+            footer: null,
+            brightness: Brightness.dark,
           ),
         ),
         alwaysShowHeader: true,
-        key: PageStorageKey("MyAccountDetailsBodyWidget"),
+        key: PageStorageKey('MyAccountDetailsBodyWidget'),
       );
 
   const MyAccountDetailsBodyWidget({this.scrollController});
@@ -33,8 +36,11 @@ class MyAccountDetailsBodyWidget extends StatelessWidget {
 
 void _onStatusesTapCallback(BuildContext context) {
   var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
-  scrollControllerBloc.scrollController.animateTo(
+  scrollControllerBloc.scrollController!.animateTo(
+    // ignore: no-magic-number
     MediaQuery.of(context).size.height / 2,
+    // todo: refactor
+    // ignore: no-magic-number
     duration: Duration(milliseconds: 500),
     curve: Curves.easeOut,
   );

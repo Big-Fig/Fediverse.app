@@ -1,108 +1,139 @@
-import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc_impl.dart';
-import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/auth/host/auth_host_model.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_widget.dart';
+import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/captcha/pleroma_captcha_model.dart';
-import 'package:fedi/pleroma/captcha/pleroma_captcha_service_impl.dart';
-import 'package:fedi/pleroma/rest/pleroma_rest_service_impl.dart';
-import 'package:fedi/rest/rest_service_impl.dart';
-import 'package:fedi/form/field/value/string/captcha/captcha_string_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
+import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
-
-var _logger = Logger("register_auth_instance_page.dart");
 
 class RegisterAuthInstancePage extends StatelessWidget {
-  final Uri instanceBaseUrl;
-  final VoidCallback successRegistrationCallback;
-
-  const RegisterAuthInstancePage({
-    @required this.instanceBaseUrl,
-    @required this.successRegistrationCallback,
-  });
+  const RegisterAuthInstancePage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-          title:
-          S.of(context).app_auth_instance_register_title,
-          leading: FediDismissIconButton()),
-      body: SafeArea(
-          child: RegisterAuthInstanceWidget(
-        instanceBaseUrl: instanceBaseUrl,
-        successRegistrationCallback: successRegistrationCallback,
-      )),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_auth_instance_register_title,
+          leading: const FediDismissIconButton(),
+        ),
+        body: const SafeArea(
+          child: RegisterAuthInstanceWidget(),
+        ),
+      );
 }
 
-void goToRegisterAuthInstancePage(
+Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
   BuildContext context, {
-  @required Uri instanceBaseUrl,
-  @required VoidCallback successRegistrationCallback,
-}) async {
-  ICaptchaStringFormFieldBloc captchaFieldBloc;
-  await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+  required Uri instanceBaseUri,
+}) async =>
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DisposableProvider<IRegisterAuthInstanceBloc>(
+          create: (context) {
+            var registerAuthInstanceBloc = RegisterAuthInstanceBloc(
+              instanceBaseUri: instanceBaseUri,
+              localPreferencesService: ILocalPreferencesService.of(
+                context,
+                listen: false,
+              ),
+              connectionService: IConnectionService.of(
+                context,
+                listen: false,
+              ),
+              currentInstanceBloc: ICurrentAuthInstanceBloc.of(
+                context,
+                listen: false,
+              ),
+              pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
+                  IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
+                context,
+                listen: false,
+              ),
+              localizationSettingsBloc: ILocalizationSettingsBloc.of(
+                context,
+                listen: false,
+              ),
+            );
+
+            registerAuthInstanceBloc.addDisposable(
+              streamSubscription:
+                  registerAuthInstanceBloc.successRegistrationStream.listen(
+                (AuthHostRegistrationResult registrationResult) async {
+                  if (registrationResult.isPossibleToLogin) {
+                    await ICurrentAuthInstanceBloc.of(context, listen: false)
+                        .changeCurrentInstance(
+                      registrationResult.authInstance!,
+                    );
+                  } else {
+                    if (registrationResult.approvalRequired) {
+                      _showApprovalRequiredToast(context);
+                    } else if (registrationResult.emailConfirmationRequired) {
+                      _showEmailConfirmationRequiredToast(context);
+                    } else {
+                      _showCantLoginToast(
+                        context,
+                        errorDescription:
+                            registrationResult.anyError?.toString(),
+                      );
+                    }
+                  }
+
+                  Navigator.pop(context, registrationResult);
+                },
+              ),
+            );
+
+            return registerAuthInstanceBloc;
+          },
+          child: const RegisterAuthInstancePage(),
+        ),
+      ),
+    );
+
+void _showApprovalRequiredToast(BuildContext context) {
+  IToastService.of(context, listen: false).showInfoToast(
     context: context,
-    asyncCode: () async {
-      var pleromaRestService = PleromaRestService(
-        isPleromaInstance: false,
-        connectionService: IConnectionService.of(context, listen: false),
-        restService: RestService(baseUrl: instanceBaseUrl),
-      );
-      var pleromaCaptchaService = PleromaCaptchaService(
-        restService: pleromaRestService,
-      );
-      try {
-        var captcha = await pleromaCaptchaService.getCaptcha();
-        _logger.finest(() => "captcha ${captcha}");
-        if (captcha != null && captcha.pleromaType != PleromaCaptchaType.none) {
-          captchaFieldBloc = PleromaFormCaptchaStringFieldBloc(
-            initialCaptcha: captcha,
-            pleromaCaptchaService: pleromaCaptchaService,
-            originValue: null,
-            validators: [StringValueFormFieldNonEmptyValidationError.createValidator()],
-          );
-        }
-      } catch (stackTrace, e) {
-        _logger.warning(() => "getCaptcha error", stackTrace, e);
-      } finally {
-        await pleromaCaptchaService.dispose();
-        await pleromaRestService.dispose();
-      }
-    },
+    title: S
+        .of(context)
+        .app_auth_instance_register_approvalRequired_notification_title,
+    content: S
+        .of(context)
+        .app_auth_instance_register_approvalRequired_notification_content,
   );
-  goToPage(
-      context, captchaFieldBloc, instanceBaseUrl, successRegistrationCallback);
 }
 
-void goToPage(BuildContext context, ICaptchaStringFormFieldBloc captchaBloc,
-    Uri instanceBaseUrl, VoidCallback successRegistrationCallback) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-        builder: (context) => DisposableProvider<IRegisterAuthInstanceBloc>(
-            create: (context) {
-              var joinAuthInstanceRegisterBloc =
-                  JoinAuthInstanceRegisterBloc(captchaFieldBloc: captchaBloc);
-              if (captchaBloc != null) {
-                joinAuthInstanceRegisterBloc.addDisposable(
-                    disposable: captchaBloc);
-              }
-              return joinAuthInstanceRegisterBloc;
-            },
-            child: RegisterAuthInstancePage(
-              instanceBaseUrl: instanceBaseUrl,
-              successRegistrationCallback: successRegistrationCallback,
-            ))),
+void _showEmailConfirmationRequiredToast(BuildContext context) {
+  IToastService.of(context, listen: false).showInfoToast(
+    context: context,
+    title: S
+        .of(context)
+        .app_auth_instance_register_emailConfirmationRequired_notification_title,
+    content: S
+        .of(context)
+        .app_auth_instance_register_emailConfirmationRequired_notification_content,
+  );
+}
+
+void _showCantLoginToast(
+  BuildContext context, {
+  required String? errorDescription,
+}) {
+  IToastService.of(context, listen: false).showInfoToast(
+    context: context,
+    title:
+        S.of(context).app_auth_instance_register_cantLogin_notification_title,
+    content:
+        S.of(context).app_auth_instance_register_cantLogin_notification_content(
+              errorDescription ?? '',
+            ),
   );
 }

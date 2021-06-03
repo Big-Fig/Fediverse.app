@@ -1,7 +1,7 @@
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/form/fedi_ui_theme_single_from_list_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/single_from_list/single_from_list_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/single_from_list/single_from_list_value_form_field_bloc_proxy_provider.dart';
+import 'package:fedi/form/field/value/select_from_list/single/single_select_from_list_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/select_from_list/single/single_select_from_list_value_form_field_bloc_proxy_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -10,15 +10,16 @@ class FediUiThemeSingleFromListValueFormFieldBlocProxyProvider
   final Widget child;
 
   FediUiThemeSingleFromListValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IFediUiThemeSingleFromListValueFormFieldBloc,
-          ISingleFromListValueFormFieldBloc<IFediUiTheme>>(
+          ISingleSelectFromListValueFormFieldBloc<IFediUiTheme?>>(
         update: (context, value, previous) => value,
-        child: SingleFromListValueFormFieldBlocProxyProvider<IFediUiTheme>(
+        child:
+            SingleSelectFromListValueFormFieldBlocProxyProvider<IFediUiTheme?>(
           child: child,
         ),
       );

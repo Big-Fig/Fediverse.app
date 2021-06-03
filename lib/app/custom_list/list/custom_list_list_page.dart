@@ -21,7 +21,7 @@ class CustomListListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediPageTitleAppBar(
-        title: S.of(context).app_acccount_my_customList_list_title,
+        title: S.of(context).app_account_my_customList_list_title,
       ),
       body: const SafeArea(
         child: CustomListPaginationListWidget(
@@ -72,7 +72,7 @@ void goToCustomListListPage(
 }
 
 MaterialPageRoute createCustomListListPageRoute({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   return MaterialPageRoute(
     builder: (context) => CustomListNetworkOnlyListBloc.provideToContext(

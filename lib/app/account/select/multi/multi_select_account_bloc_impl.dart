@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/select/multi/multi_select_account_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("multi_select_account_page.dart");
+var _logger = Logger('multi_select_account_page.dart');
 
 class MultiSelectAccountBloc extends DisposableOwner
     implements IMultiSelectAccountBloc {
@@ -33,14 +34,14 @@ class MultiSelectAccountBloc extends DisposableOwner
       );
 
   @override
-  bool get isSomethingSelected => selectedAccounts?.isNotEmpty == true;
+  bool get isSomethingSelected => selectedAccounts.isNotEmpty;
 
   @override
   Stream<bool> get isSomethingSelectedStream => selectedAccountsStream
-      .map((selectedAccounts) => selectedAccounts?.isNotEmpty == true);
+      .map((selectedAccounts) => selectedAccounts.isNotEmpty);
 
   @override
-  List<IAccount> get selectedAccounts => selectedAccountsSubject.value;
+  List<IAccount> get selectedAccounts => selectedAccountsSubject.value!;
 
   @override
   Stream<List<IAccount>> get selectedAccountsStream =>
@@ -48,7 +49,7 @@ class MultiSelectAccountBloc extends DisposableOwner
 
   static MultiSelectAccountBloc createFromContext(
     BuildContext context, {
-    AccountsListCallback accountsListSelectedCallback,
+    AccountsListCallback? accountsListSelectedCallback,
   }) {
     var multiSelectAccountBloc = MultiSelectAccountBloc();
 
@@ -59,13 +60,14 @@ class MultiSelectAccountBloc extends DisposableOwner
         accountsListSelectedCallback(context, selectedAccounts);
       }));
     }
+
     return multiSelectAccountBloc;
   }
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    AccountsListCallback accountsListSelectedCallback,
+    required Widget child,
+    AccountsListCallback? accountsListSelectedCallback,
   }) {
     return DisposableProvider<IMultiSelectAccountBloc>(
       create: (context) => MultiSelectAccountBloc.createFromContext(
@@ -77,31 +79,31 @@ class MultiSelectAccountBloc extends DisposableOwner
   }
 
   bool _calculateIsAccountSelected(
-    List<IAccount> selectedAccounts,
+    List<IAccount>? selectedAccounts,
     IAccount account,
   ) =>
-      selectedAccounts?.firstWhere(
-          (currentAccount) => account.remoteId == currentAccount.remoteId,
-          orElse: () => null) !=
+      selectedAccounts?.firstWhereOrNull(
+        (currentAccount) => account.remoteId == currentAccount.remoteId,
+      ) !=
       null;
 
   @override
   void addAccountSelection(IAccount account) {
     selectedAccounts.add(account);
 
-    _logger.finest(() => "addAccountSelection $account");
+    _logger.finest(() => 'addAccountSelection $account');
     onSelectionChanged();
   }
 
   void onSelectionChanged() {
     selectedAccountsSubject.add(selectedAccounts);
     _logger.finest(() =>
-        "onSelectionChanged ${selectedAccounts.length} $selectedAccounts");
+        'onSelectionChanged ${selectedAccounts.length} $selectedAccounts');
   }
 
   @override
   void removeAccountSelection(IAccount account) {
-    _logger.finest(() => "removeAccountSelection $account");
+    _logger.finest(() => 'removeAccountSelection $account');
     selectedAccounts
         .removeWhere((currentAccount) => account.remoteId == account.remoteId);
     onSelectionChanged();

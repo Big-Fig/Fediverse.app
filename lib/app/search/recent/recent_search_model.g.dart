@@ -17,7 +17,7 @@ class RecentSearchListAdapter extends TypeAdapter<RecentSearchList> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return RecentSearchList(
-      recentItems: (fields[0] as List)?.cast<String>(),
+      recentItems: (fields[0] as List).cast<String>(),
     );
   }
 
@@ -47,7 +47,7 @@ class RecentSearchListAdapter extends TypeAdapter<RecentSearchList> {
 RecentSearchList _$RecentSearchListFromJson(Map<String, dynamic> json) {
   return RecentSearchList(
     recentItems:
-        (json['recentItems'] as List)?.map((e) => e as String)?.toList(),
+        (json['recentItems'] as List<dynamic>).map((e) => e as String).toList(),
   );
 }
 

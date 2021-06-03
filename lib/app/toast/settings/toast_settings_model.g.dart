@@ -49,15 +49,14 @@ class ToastSettingsAdapter extends TypeAdapter<ToastSettings> {
 
 ToastSettings _$ToastSettingsFromJson(Map<String, dynamic> json) {
   return ToastSettings(
-    pushSettings: json['push_settings'] == null
-        ? null
-        : PushSettings.fromJson(json['push_settings'] as Map<String, dynamic>),
+    pushSettings:
+        PushSettings.fromJson(json['push_settings'] as Map<String, dynamic>),
     handlingTypeString: json['handling_type_string'] as String,
   );
 }
 
 Map<String, dynamic> _$ToastSettingsToJson(ToastSettings instance) =>
     <String, dynamic>{
-      'push_settings': instance.pushSettings?.toJson(),
+      'push_settings': instance.pushSettings.toJson(),
       'handling_type_string': instance.handlingTypeString,
     };

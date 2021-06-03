@@ -1,12 +1,15 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/instance/location/instance_location_bloc.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IAccountBloc extends DisposableOwner {
+abstract class IAccountBloc extends DisposableOwner
+    implements IInstanceLocationBloc {
   static IAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IAccountBloc>(context, listen: listen);
 
@@ -14,158 +17,244 @@ abstract class IAccountBloc extends DisposableOwner {
 
   Stream<IAccount> get accountStream;
 
-  String get remoteDomainOrNull;
+  IPleromaApiAccountRelationship? get relationship;
 
-  IPleromaAccountRelationship get relationship;
+  Stream<IPleromaApiAccountRelationship?>? get relationshipStream;
 
-  Stream<IPleromaAccountRelationship> get relationshipStream;
+  Future<IPleromaApiAccountRelationship> toggleFollow();
 
-  Future<IPleromaAccountRelationship> toggleFollow();
+  Future<IPleromaApiAccountRelationship> toggleMute();
 
-  Future<IPleromaAccountRelationship> toggleMute();
+  Future<IPleromaApiAccountRelationship> mute({
+    required bool notifications,
+    required Duration? duration,
+  });
 
-  Future<IPleromaAccountRelationship> togglePin();
+  Future<IPleromaApiAccountRelationship> unMute();
 
-  Future<IPleromaAccountRelationship> toggleBlock();
+  Future<IPleromaApiAccountRelationship> subscribe();
 
-  Future<IPleromaAccountRelationship> toggleBlockDomain();
+  Future<IPleromaApiAccountRelationship> unSubscribe();
 
-  Future report();
+  Future<IPleromaApiAccountRelationship> togglePin();
 
-  Future<bool> refreshFromNetwork({@required bool isNeedPreFetchRelationship});
+  Future<IPleromaApiAccountRelationship> toggleBlock();
+
+  Future<IPleromaApiAccountRelationship> toggleSubscribe();
+
+  Future<IPleromaApiAccountRelationship> toggleBlockDomain();
+
+  Future refreshFromNetwork({
+    required bool isNeedPreFetchRelationship,
+  });
 }
 
 extension IAccountBlocExtension on IAccountBloc {
-  bool get isOnRemoteDomain => remoteDomainOrNull != null;
-
   String get acct => account.acct;
 
-  Stream<String> get acctStream => accountStream.map((account) => account.acct);
+  Stream<String> get acctStream => accountStream.map(
+        (account) => account.acct,
+      );
 
-  String get avatar => account?.avatar;
+  String? get acctRemoteDomainOrNull => account.acctRemoteDomainOrNull;
 
-  Stream<String> get avatarStream =>
+  bool get isAcctRemoteDomainExist => account.isAcctRemoteDomainExist;
+
+  String? get acctWithForcedRemoteInstanceHost =>
+      calculateAcctOnRemoteHost(acct);
+
+  Stream<String?> get acctWithForcedRemoteInstanceHostStream => acctStream.map(
+        (acct) => calculateAcctOnRemoteHost(acct),
+      );
+
+  String? calculateAcctOnRemoteHost(String? acct) {
+    var isLocal = instanceLocation == InstanceLocation.local;
+
+    if (isLocal) {
+      return acct;
+    } else {
+      if (acctRemoteDomainOrNull?.isNotEmpty == true) {
+        return acct;
+      } else {
+        var remoteDomain = account.urlRemoteHostUri.host;
+
+        return '$acct@$remoteDomain';
+      }
+    }
+  }
+
+  String? get avatar => account.avatar;
+
+  Stream<String?> get avatarStream =>
       accountStream.map((account) => account.avatar);
 
-  String get pleromaBackgroundImage => account?.pleromaBackgroundImage;
+  String? get pleromaBackgroundImage => account.pleromaBackgroundImage;
 
-  Stream<String> get pleromaBackgroundImageStream =>
+  Stream<String?> get pleromaBackgroundImageStream =>
       accountStream.map((account) => account.pleromaBackgroundImage);
 
-  List<IPleromaField> get fields => account.fields;
+  bool? get pleromaHideFavorites => account.pleromaHideFavorites;
 
-  Stream<List<IPleromaField>> get fieldsStream =>
-      accountStream.map((account) => account.fields);
+  Stream<bool?> get pleromaHideFavoritesStream =>
+      accountStream.map((account) => account.pleromaHideFavorites);
 
-  int get followersCount => account.followersCount;
+  bool? get pleromaHideFollowers => account.pleromaHideFollowers;
 
-  Stream<int> get followersCountStream =>
+  Stream<bool?> get pleromaHideFollowersStream =>
+      accountStream.map((account) => account.pleromaHideFollowers);
+
+  bool? get pleromaHideFollowersCount => account.pleromaHideFollowersCount;
+
+  Stream<bool?> get pleromaHideFollowersCountStream =>
+      accountStream.map((account) => account.pleromaHideFollowersCount);
+
+  bool? get pleromaHideFollows => account.pleromaHideFollows;
+
+  Stream<bool?> get pleromaHideFollowsStream =>
+      accountStream.map((account) => account.pleromaHideFollows);
+
+  bool? get pleromaAcceptsChatMessages => account.pleromaAcceptsChatMessages;
+
+  Stream<bool?> get pleromaAcceptsChatMessagesStream =>
+      accountStream.map((account) => account.pleromaAcceptsChatMessages);
+
+  bool? get pleromaHideFollowsCount => account.pleromaHideFollowsCount;
+
+  Stream<bool?> get pleromaHideFollowsCountStream =>
+      accountStream.map((account) => account.pleromaHideFollowsCount);
+
+  List<IPleromaApiField> get fields => account.fields ?? [];
+
+  Stream<List<IPleromaApiField>> get fieldsStream =>
+      accountStream.map((account) => account.fields ?? []);
+
+  int? get followersCount => account.followersCount;
+
+  Stream<int?> get followersCountStream =>
       accountStream.map((account) => account.followersCount);
 
-  int get followingCount => account.followingCount;
+  int? get followingCount => account.followingCount;
 
-  Stream<int> get followingCountStream =>
+  Stream<int?> get followingCountStream =>
       accountStream.map((account) => account.followingCount);
 
-  String get header => account.header;
+  String? get header => account.header;
 
-  Stream<String> get headerStream =>
+  Stream<String?> get headerStream =>
       accountStream.map((account) => account.header);
 
-  String get note => account.note;
+  String? get note => account.note;
 
-  Stream<String> get noteStream => accountStream.map((account) => account.note);
+  Stream<String?> get noteStream =>
+      accountStream.map((account) => account.note);
 
-  EmojiText get noteEmojiText => account != null
-      ? EmojiText(text: account.note, emojis: account.emojis)
-      : null;
+  EmojiText? get noteEmojiText => account.toNoteEmojiText();
 
-  Stream<EmojiText> get noteEmojiTextStream =>
-      accountStream.map((account) => account != null
-          ? EmojiText(text: account.note, emojis: account.emojis)
-          : null);
+  Stream<EmojiText?> get noteEmojiTextStream => accountStream.map(
+        (account) => account.toNoteEmojiText(),
+      );
 
-  int get statusesCount => account.statusesCount;
+  int? get statusesCount => account.statusesCount;
 
-  Stream<int> get statusesCountStream =>
+  Stream<int?> get statusesCountStream =>
       accountStream.map((account) => account.statusesCount);
 
-  EmojiText get displayNameEmojiText => account != null
-      ? EmojiText(text: account.displayName, emojis: account.emojis)
-      : null;
+  EmojiText? get displayNameEmojiText => account.toDisplayNameEmojiText();
 
-  Stream<EmojiText> get displayNameEmojiTextStream =>
-      accountStream.map((account) => account != null
-          ? EmojiText(text: account.displayName, emojis: account.emojis)
-          : null);
+  Stream<EmojiText?> get displayNameEmojiTextStream => accountStream.map(
+        (account) => account.toDisplayNameEmojiText(),
+      );
 
-  String get displayName => account.displayName;
+  String? get displayName => account.displayName;
 
-  Stream<String> get displayNameStream =>
-      accountStream.map((account) => account.displayName);
+  Stream<String?> get displayNameStream => accountStream.map(
+        (account) => account.displayName,
+      );
 
-  bool get relationshipBlocking => relationship?.blocking;
+  bool? get relationshipBlocking => relationship?.blocking;
 
-  Stream<bool> get relationshipBlockingStream =>
-      relationshipStream.map((relationship) => relationship?.blocking);
+  Stream<bool?> get relationshipBlockingStream => relationshipStream!.map(
+        (relationship) => relationship?.blocking,
+      );
 
-  bool get relationshipBlockedBy => relationship?.blockedBy;
+  bool? get relationshipBlockedBy => relationship?.blockedBy;
 
-  Stream<bool> get relationshipBlockedByStream =>
-      relationshipStream.map((relationship) => relationship?.blockedBy);
+  Stream<bool?> get relationshipBlockedByStream => relationshipStream!.map(
+        (relationship) => relationship?.blockedBy,
+      );
 
-  bool get relationshipDomainBlocking => relationship?.domainBlocking;
+  bool? get relationshipDomainBlocking => relationship?.domainBlocking;
 
-  Stream<bool> get relationshipDomainBlockingStream =>
-      relationshipStream.map((relationship) => relationship?.domainBlocking);
+  Stream<bool?> get relationshipDomainBlockingStream => relationshipStream!.map(
+        (relationship) => relationship?.domainBlocking,
+      );
 
-  bool get relationshipEndorsed => relationship?.endorsed;
+  bool? get relationshipEndorsed => relationship?.endorsed;
 
-  Stream<bool> get relationshipEndorsedStream =>
-      relationshipStream.map((relationship) => relationship?.endorsed);
+  Stream<bool?> get relationshipEndorsedStream =>
+      relationshipStream!.map((relationship) => relationship?.endorsed);
 
-  bool get relationshipFollowedBy => relationship?.followedBy;
+  bool? get relationshipFollowedBy => relationship?.followedBy;
 
-  Stream<bool> get relationshipFollowedByStream =>
-      relationshipStream.map((relationship) => relationship?.followedBy);
+  Stream<bool?> get relationshipFollowedByStream =>
+      relationshipStream!.map((relationship) => relationship?.followedBy);
 
-  bool get relationshipFollowing => relationship?.following;
+  bool? get relationshipFollowing => relationship?.following;
 
-  Stream<bool> get relationshipFollowingStream =>
-      relationshipStream.map((relationship) => relationship?.following);
+  Stream<bool?> get relationshipFollowingStream =>
+      relationshipStream!.map((relationship) => relationship?.following);
 
-  String get relationshipId => relationship?.id;
+  bool? get relationshipSubscribing => relationship?.subscribing;
 
-  Stream<String> get relationshipIdStream =>
-      relationshipStream.map((relationship) => relationship?.id);
+  Stream<bool?> get relationshipSubscribingStream =>
+      relationshipStream!.map((relationship) => relationship?.subscribing);
 
-  bool get relationshipMuting => relationship?.muting;
+  String? get relationshipId => relationship?.id;
 
-  Stream<bool> get relationshipMutingStream =>
-      relationshipStream.map((relationship) => relationship?.muting);
+  Stream<String?> get relationshipIdStream =>
+      relationshipStream!.map((relationship) => relationship?.id);
 
-  bool get relationshipMutingNotifications => relationship?.mutingNotifications;
+  bool? get relationshipMuting => relationship?.muting;
 
-  Stream<bool> get relationshipMutingNotificationsStream => relationshipStream
+  Stream<bool?> get relationshipMutingStream =>
+      relationshipStream!.map((relationship) => relationship?.muting);
+
+  bool? get relationshipMutingNotifications =>
+      relationship?.mutingNotifications;
+
+  Stream<bool?> get relationshipMutingNotificationsStream => relationshipStream!
       .map((relationship) => relationship?.mutingNotifications);
 
-  bool get relationshipRequested => relationship?.requested;
+  bool? get relationshipRequested => relationship?.requested;
 
-  Stream<bool> get relationshipRequestedStream =>
-      relationshipStream.map((relationship) => relationship?.requested);
+  Stream<bool?> get relationshipRequestedStream =>
+      relationshipStream!.map((relationship) => relationship?.requested);
 
-  bool get relationshipShowingReblogs => relationship?.showingReblogs;
+  bool? get relationshipShowingReblogs => relationship?.showingReblogs;
 
-  Stream<bool> get relationshipShowingReblogsStream =>
-      relationshipStream.map((relationship) => relationship?.showingReblogs);
+  Stream<bool?> get relationshipShowingReblogsStream =>
+      relationshipStream!.map((relationship) => relationship?.showingReblogs);
 
-  bool get relationshipSubscribing => relationship?.subscribing;
+  String? get relationshipNote => relationship?.note;
 
-  Stream<bool> get relationshipSubscribingStream =>
-      relationshipStream.map((relationship) => relationship?.subscribing);
+  Stream<String?> get relationshipNoteStream =>
+      relationshipStream!.map((relationship) => relationship?.note);
+}
 
-  String get relationshipNote => relationship?.note;
+extension AccountEmojiTextExtension on IAccount {
+  EmojiText? toNoteEmojiText() {
+    if (note?.isNotEmpty == true) {
+      return EmojiText(text: note!, emojis: emojis);
+    } else {
+      return null;
+    }
+  }
 
-  Stream<String> get relationshipNoteStream =>
-      relationshipStream.map((relationship) => relationship?.note);
+  EmojiText? toDisplayNameEmojiText() {
+    if (displayName?.isNotEmpty == true) {
+      return EmojiText(text: displayName!, emojis: emojis);
+    } else {
+      return null;
+    }
+  }
 }

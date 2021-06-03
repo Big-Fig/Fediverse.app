@@ -8,12 +8,13 @@ import 'package:provider/provider.dart';
 
 abstract class AccountStatusesWidget extends FediPaginationListWidget<IStatus> {
   const AccountStatusesWidget({
-    Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    ScrollController scrollController,
+    Key? key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
+    ScrollController? scrollController,
+    bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
           footer: footer,
@@ -21,22 +22,28 @@ abstract class AccountStatusesWidget extends FediPaginationListWidget<IStatus> {
           alwaysShowHeader: alwaysShowHeader,
           alwaysShowFooter: alwaysShowFooter,
           scrollController: scrollController,
+          refreshOnFirstLoad: refreshOnFirstLoad,
         );
 
   @override
-  Future<bool> additionalPreRefreshAction(BuildContext context) {
+  Future additionalPreRefreshAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
-    return accountBloc.refreshFromNetwork(isNeedPreFetchRelationship:true);
+
+    return accountBloc.refreshFromNetwork(isNeedPreFetchRelationship: true);
   }
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
-      retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
+      retrievePaginationListBloc(
+    BuildContext context, {
+    required bool listen,
+  }) {
     var paginationListBloc =
         Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
-            context,
-            listen: listen);
+      context,
+      listen: listen,
+    );
+
     return paginationListBloc;
   }
 }

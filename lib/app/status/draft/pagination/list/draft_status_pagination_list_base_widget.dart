@@ -8,13 +8,14 @@ import 'package:provider/provider.dart';
 abstract class DraftStatusPaginationListBaseWidget
     extends FediPaginationListWidget<IDraftStatus> {
   const DraftStatusPaginationListBaseWidget({
-    @required Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    Widget customEmptyWidget,
-    Widget customLoadingWidget,
+    required Key key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
+    Widget? customEmptyWidget,
+    Widget? customLoadingWidget,
+    bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
           footer: footer,
@@ -23,16 +24,21 @@ abstract class DraftStatusPaginationListBaseWidget
           alwaysShowFooter: alwaysShowFooter,
           customEmptyWidget: customEmptyWidget,
           customLoadingWidget: customLoadingWidget,
+          refreshOnFirstLoad: refreshOnFirstLoad,
         );
 
   @override
   IPaginationListBloc<PaginationPage<IDraftStatus>, IDraftStatus>
-      retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
+      retrievePaginationListBloc(
+    BuildContext context, {
+    required bool listen,
+  }) {
     var paginationListBloc = Provider.of<
-            IPaginationListBloc<PaginationPage<IDraftStatus>, IDraftStatus>>(
-        context,
-        listen: listen);
+        IPaginationListBloc<PaginationPage<IDraftStatus>, IDraftStatus>>(
+      context,
+      listen: listen,
+    );
+
     return paginationListBloc;
   }
 }

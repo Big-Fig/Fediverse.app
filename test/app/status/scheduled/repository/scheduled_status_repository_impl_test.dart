@@ -3,19 +3,20 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model_adapter.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:moor/moor.dart';
-import 'package:moor_ffi/moor_ffi.dart';
+import 'package:moor/ffi.dart';
 
-import '../database/scheduled_status_database_model_helper.dart';
-import '../scheduled_status_model_helper.dart';
-import 'scheduled_status_repository_model_helper.dart';
+import '../database/scheduled_status_database_test_helper.dart';
+import '../scheduled_status_test_helper.dart';
+import 'scheduled_status_repository_test_helper.dart';
 
+// ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
-  AppDatabase database;
-  ScheduledStatusRepository scheduledStatusRepository;
+  late AppDatabase database;
+  late ScheduledStatusRepository scheduledStatusRepository;
 
-  DbScheduledStatus dbScheduledStatus;
+  DbScheduledStatus? dbScheduledStatus;
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
@@ -23,7 +24,10 @@ void main() {
     scheduledStatusRepository =
         ScheduledStatusRepository(appDatabase: database);
 
-    dbScheduledStatus = await createTestDbScheduledStatus(seed: "seed4");
+    dbScheduledStatus =
+        await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      seed: 'seed4',
+    );
   });
 
   tearDown(() async {
@@ -32,460 +36,677 @@ void main() {
   });
 
   test('insert & find by id', () async {
-    var id = await scheduledStatusRepository.insert(dbScheduledStatus);
-    assert(id != null, true);
-    expectDbScheduledStatus(
-        await scheduledStatusRepository.findById(id), dbScheduledStatus);
+    var id = await scheduledStatusRepository.insertInDbType(
+      dbScheduledStatus!,
+      mode: null,
+    );
+    assert(id > 0, true);
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      await scheduledStatusRepository.findByDbIdInAppType(id),
+      dbScheduledStatus,
+    );
   });
 
   test('upsertAll', () async {
-    var dbScheduledStatus1 = (await createTestDbScheduledStatus(seed: "seed5"))
-        .copyWith(remoteId: "remoteId1");
+    var dbScheduledStatus1 =
+        (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      seed: 'seed5',
+    ))
+            .copyWith(remoteId: 'remoteId1');
     // same remote id
-    var dbScheduledStatus2 = (await createTestDbScheduledStatus(seed: "seed6"))
-        .copyWith(remoteId: "remoteId1");
+    var dbScheduledStatus2 =
+        (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      seed: 'seed6',
+    ))
+            .copyWith(remoteId: 'remoteId1');
 
-    await scheduledStatusRepository.upsertAll([dbScheduledStatus1]);
+    await scheduledStatusRepository.upsertAllInDbType(
+      [dbScheduledStatus1],
+      batchTransaction: null,
+    );
 
-    expect((await scheduledStatusRepository.getAll()).length, 1);
+    expect((await scheduledStatusRepository.getAllInAppType()).length, 1);
 
-    await scheduledStatusRepository.upsertAll([dbScheduledStatus2]);
-    expect((await scheduledStatusRepository.getAll()).length, 1);
+    await scheduledStatusRepository.upsertAllInDbType(
+      [dbScheduledStatus2],
+      batchTransaction: null,
+    );
+    expect((await scheduledStatusRepository.getAllInAppType()).length, 1);
 
-    expectDbScheduledStatus(
-        (await scheduledStatusRepository.getAll()).first, dbScheduledStatus2);
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      (await scheduledStatusRepository.getAllInAppType()).first,
+      dbScheduledStatus2,
+    );
   });
 
   test('updateById', () async {
-    var id = await scheduledStatusRepository.insert(dbScheduledStatus);
-    assert(id != null, true);
+    var id = await scheduledStatusRepository.insertInDbType(
+      dbScheduledStatus!,
+      mode: null,
+    );
+    assert(id > 0, true);
 
-    await scheduledStatusRepository.updateById(
-        id, dbScheduledStatus.copyWith(remoteId: "newRemoteId"));
-
-    expect(
-        (await scheduledStatusRepository.findById(id)).remoteId, "newRemoteId");
-  });
-
-  test('updateLocalScheduledStatusByRemoteScheduledStatus', () async {
-    var id = await scheduledStatusRepository
-        .insert(dbScheduledStatus.copyWith(remoteId: "oldRemoteId"));
-    assert(id != null, true);
-
-    var oldLocalScheduledStatus =
-        DbScheduledStatusWrapper(dbScheduledStatus.copyWith(id: id));
-
-    var newRemoteId = "newRemoteId";
-    var newRemoteScheduledStatus =
-        mapLocalScheduledStatusToRemoteScheduledStatus(DbScheduledStatusWrapper(
-            dbScheduledStatus.copyWith(id: id, remoteId: newRemoteId)));
-    await scheduledStatusRepository
-        .updateLocalScheduledStatusByRemoteScheduledStatus(
-      oldLocalScheduledStatus: oldLocalScheduledStatus,
-      newRemoteScheduledStatus: newRemoteScheduledStatus,
+    await scheduledStatusRepository.updateByDbIdInDbType(
+      dbId: id,
+      dbItem: dbScheduledStatus!.copyWith(remoteId: 'newRemoteId'),
+      batchTransaction: null,
     );
 
     expect(
-        (await scheduledStatusRepository.findById(id)).remoteId, newRemoteId);
+      (await scheduledStatusRepository.findByDbIdInDbType(id))?.remoteId,
+      'newRemoteId',
+    );
+  });
+
+  test('updateLocalScheduledStatusByRemoteScheduledStatus', () async {
+    var id = await scheduledStatusRepository.insertInDbType(
+      dbScheduledStatus!.copyWith(remoteId: 'oldRemoteId'),
+      mode: null,
+    );
+    assert(id > 0, true);
+
+    var oldLocalScheduledStatus = DbScheduledStatusPopulatedWrapper(
+      dbScheduledStatusPopulated: DbScheduledStatusPopulated(
+        dbScheduledStatus: dbScheduledStatus!.copyWith(id: id),
+      ),
+    );
+
+    var newRemoteId = 'newRemoteId';
+    var newRemoteScheduledStatus = DbScheduledStatusPopulatedWrapper(
+      dbScheduledStatusPopulated: DbScheduledStatusPopulated(
+        dbScheduledStatus: dbScheduledStatus!.copyWith(
+          id: id,
+          remoteId: newRemoteId,
+        ),
+      ),
+    ).toPleromaScheduledStatus();
+    await scheduledStatusRepository.updateAppTypeByRemoteType(
+      appItem: oldLocalScheduledStatus,
+      remoteItem: newRemoteScheduledStatus,
+      batchTransaction: null,
+    );
+
+    expect(
+      (await scheduledStatusRepository.findByDbIdInDbType(id))?.remoteId,
+      newRemoteId,
+    );
   });
 
   test('findByRemoteId', () async {
-    await scheduledStatusRepository.insert(dbScheduledStatus);
-    expectDbScheduledStatus(
-        await scheduledStatusRepository
-            .findByRemoteId(dbScheduledStatus.remoteId),
-        dbScheduledStatus);
+    await scheduledStatusRepository.insertInDbType(
+      dbScheduledStatus!,
+      mode: null,
+    );
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      await scheduledStatusRepository
+          .findByRemoteIdInAppType(dbScheduledStatus!.remoteId),
+      dbScheduledStatus,
+    );
   });
   test('markAsCanceled', () async {
-    var id = await scheduledStatusRepository.insert(dbScheduledStatus);
-    dbScheduledStatus = dbScheduledStatus.copyWith(id: id);
+    var id = await scheduledStatusRepository.insertInDbType(
+      dbScheduledStatus!,
+      mode: null,
+    );
+    dbScheduledStatus = dbScheduledStatus!.copyWith(id: id);
     expect(
-        (await scheduledStatusRepository
-                .findByRemoteId(dbScheduledStatus.remoteId))
-            .canceled,
-        false);
+      (await scheduledStatusRepository
+              .findByRemoteIdInAppType(dbScheduledStatus!.remoteId))!
+          .canceled,
+      false,
+    );
     await scheduledStatusRepository.markAsCanceled(
-        scheduledStatus: DbScheduledStatusWrapper(dbScheduledStatus));
+      scheduledStatus: DbScheduledStatusPopulatedWrapper(
+        dbScheduledStatusPopulated: DbScheduledStatusPopulated(
+          dbScheduledStatus: dbScheduledStatus!,
+        ),
+      ),
+      batchTransaction: null,
+    );
 
     expect(
-        (await scheduledStatusRepository
-                .findByRemoteId(dbScheduledStatus.remoteId))
-            .canceled,
-        true);
+      (await scheduledStatusRepository
+              .findByRemoteIdInAppType(dbScheduledStatus!.remoteId))!
+          .canceled,
+      true,
+    );
   });
 
   test('upsertRemoteScheduledStatus', () async {
     expect(await scheduledStatusRepository.countAll(), 0);
 
-    await scheduledStatusRepository.upsertRemoteScheduledStatus(
-        mapLocalScheduledStatusToRemoteScheduledStatus(
-      DbScheduledStatusWrapper(dbScheduledStatus),
-    ));
+    await scheduledStatusRepository.upsertInRemoteType(
+      DbScheduledStatusPopulatedWrapper(
+        dbScheduledStatusPopulated: DbScheduledStatusPopulated(
+          dbScheduledStatus: dbScheduledStatus!,
+        ),
+      ).toPleromaScheduledStatus(),
+    );
 
     expect(await scheduledStatusRepository.countAll(), 1);
-    expectDbScheduledStatus(
-        await scheduledStatusRepository
-            .findByRemoteId(dbScheduledStatus.remoteId),
-        dbScheduledStatus);
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      await scheduledStatusRepository
+          .findByRemoteIdInAppType(dbScheduledStatus!.remoteId),
+      dbScheduledStatus,
+    );
     // item with same id updated
 
-    await scheduledStatusRepository.upsertRemoteScheduledStatus(
-      mapLocalScheduledStatusToRemoteScheduledStatus(
-          DbScheduledStatusWrapper(dbScheduledStatus)),
+    await scheduledStatusRepository.upsertInRemoteType(
+      DbScheduledStatusPopulatedWrapper(
+        dbScheduledStatusPopulated: DbScheduledStatusPopulated(
+          dbScheduledStatus: dbScheduledStatus!,
+        ),
+      ).toPleromaScheduledStatus(),
     );
     expect(await scheduledStatusRepository.countAll(), 1);
 
-    expectDbScheduledStatus(
-        await scheduledStatusRepository
-            .findByRemoteId(dbScheduledStatus.remoteId),
-        dbScheduledStatus);
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      await scheduledStatusRepository
+          .findByRemoteIdInAppType(dbScheduledStatus!.remoteId),
+      dbScheduledStatus,
+    );
   });
 
   test('upsertRemoteScheduledStatuses', () async {
     expect(await scheduledStatusRepository.countAll(), 0);
-    await scheduledStatusRepository.upsertRemoteScheduledStatuses([
-      mapLocalScheduledStatusToRemoteScheduledStatus(
-          DbScheduledStatusWrapper(dbScheduledStatus)),
-    ]);
+    await scheduledStatusRepository.upsertInRemoteType(
+      DbScheduledStatusPopulatedWrapper(
+        dbScheduledStatusPopulated: DbScheduledStatusPopulated(
+          dbScheduledStatus: dbScheduledStatus!,
+        ),
+      ).toPleromaScheduledStatus(),
+    );
 
     expect(await scheduledStatusRepository.countAll(), 1);
-    expectDbScheduledStatus(
-        await scheduledStatusRepository
-            .findByRemoteId(dbScheduledStatus.remoteId),
-        dbScheduledStatus);
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      await scheduledStatusRepository
+          .findByRemoteIdInAppType(dbScheduledStatus!.remoteId),
+      dbScheduledStatus,
+    );
 
-    await scheduledStatusRepository.upsertRemoteScheduledStatuses([
-      mapLocalScheduledStatusToRemoteScheduledStatus(
-          DbScheduledStatusWrapper(dbScheduledStatus)),
-    ]);
+    await scheduledStatusRepository.upsertInRemoteType(
+      DbScheduledStatusPopulatedWrapper(
+        dbScheduledStatusPopulated: DbScheduledStatusPopulated(
+          dbScheduledStatus: dbScheduledStatus!,
+        ),
+      ).toPleromaScheduledStatus(),
+    );
     // update item with same id
     expect(await scheduledStatusRepository.countAll(), 1);
-    expectDbScheduledStatus(
-        await scheduledStatusRepository
-            .findByRemoteId(dbScheduledStatus.remoteId),
-        dbScheduledStatus);
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      await scheduledStatusRepository
+          .findByRemoteIdInAppType(dbScheduledStatus!.remoteId),
+      dbScheduledStatus,
+    );
   });
 
   test('createQuery empty', () async {
     var query = scheduledStatusRepository.createQuery(
-        olderThan: null,
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
-    await scheduledStatusRepository
-        .insert((await createTestDbScheduledStatus(seed: "seed1")).copyWith());
+    await scheduledStatusRepository.insertInDbType(
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed1',
+      ))
+          .copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 1);
 
-    await scheduledStatusRepository
-        .insert((await createTestDbScheduledStatus(seed: "seed2")).copyWith());
+    await scheduledStatusRepository.insertInDbType(
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed2',
+      ))
+          .copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 2);
 
-    await scheduledStatusRepository
-        .insert((await createTestDbScheduledStatus(seed: "seed3")).copyWith());
+    await scheduledStatusRepository.insertInDbType(
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed3',
+      ))
+          .copyWith(),
+      mode: null,
+    );
 
     expect((await query.get()).length, 3);
   });
 
-  test('createQuery newerThan', () async {
-    var query = scheduledStatusRepository.createQuery(
-        newerThan: await createTestScheduledStatus(
-            seed: "remoteId5", remoteId: "remoteId5"),
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThan: null,
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
-
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed2"))
-            .copyWith(remoteId: "remoteId4"));
-
-    expect((await query.get()).length, 0);
-
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed2"))
-            .copyWith(remoteId: "remoteId5"));
-
-    expect((await query.get()).length, 0);
-
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed1"))
-            .copyWith(remoteId: "remoteId6"));
-
-    expect((await query.get()).length, 1);
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed1"))
-            .copyWith(remoteId: "remoteId7"));
-
-    expect((await query.get()).length, 2);
-  });
-
   test('createQuery excludeCanceled', () async {
     var query = scheduledStatusRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThan: null,
+      filters: ScheduledStatusRepositoryFilters(
         excludeCanceled: true,
-        excludeScheduleAtExpired: null);
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
     var scheduledStatus =
-        (await createTestDbScheduledStatus(seed: "seed2", canceled: false))
-            .copyWith(remoteId: "remoteId4");
-    scheduledStatus = await insertDbScheduledStatus(
-        scheduledStatusRepository, scheduledStatus);
+        (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      seed: 'seed2',
+      canceled: false,
+    ))
+            .copyWith(remoteId: 'remoteId4');
+    scheduledStatus =
+        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      scheduledStatus,
+    );
 
     expect((await query.get()).length, 1);
 
     await scheduledStatusRepository.markAsCanceled(
-        scheduledStatus: DbScheduledStatusWrapper(scheduledStatus));
+      scheduledStatus: DbScheduledStatusPopulatedWrapper(
+        dbScheduledStatusPopulated: DbScheduledStatusPopulated(
+          dbScheduledStatus: scheduledStatus,
+        ),
+      ),
+      batchTransaction: null,
+    );
     expect((await query.get()).length, 0);
   });
   test('createQuery excludeScheduleAtExpired', () async {
     var query = scheduledStatusRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThan: null,
-        excludeCanceled: null,
-        excludeScheduleAtExpired: true);
+      filters: ScheduledStatusRepositoryFilters(
+        excludeScheduleAtExpired: true,
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(
-                seed: "seed2",
-                scheduledAt: DateTime.now().add(Duration(minutes: 1))))
-            .copyWith(remoteId: "remoteId4"));
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed2',
+        scheduledAt: DateTime.now().add(Duration(minutes: 1)),
+      ))
+          .copyWith(remoteId: 'remoteId4'),
+    );
 
     expect((await query.get()).length, 1);
 
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(
-                seed: "seed3",
-                scheduledAt: DateTime.now().subtract(Duration(minutes: 1))))
-            .copyWith(remoteId: "remoteId5"));
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed3',
+        scheduledAt: DateTime.now().subtract(Duration(minutes: 1)),
+      ))
+          .copyWith(remoteId: 'remoteId5'),
+    );
 
     expect((await query.get()).length, 1);
   });
 
-  test('createQuery notNewerThan', () async {
+  test('createQuery newerThan', () async {
     var query = scheduledStatusRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThan: await createTestScheduledStatus(
-            seed: "remoteId5", remoteId: "remoteId5"),
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
+      filters: null,
+      pagination: RepositoryPagination(
+        newerThanItem:
+            await ScheduledStatusTestHelper.createTestScheduledStatus(
+          seed: 'remoteId5',
+          remoteId: 'remoteId5',
+        ),
+      ),
+      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+    );
 
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed2"))
-            .copyWith(remoteId: "remoteId3"));
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed2',
+      ))
+          .copyWith(remoteId: 'remoteId4'),
+    );
+
+    expect((await query.get()).length, 0);
+
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed2',
+      ))
+          .copyWith(remoteId: 'remoteId5'),
+    );
+
+    expect((await query.get()).length, 0);
+
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed1',
+      ))
+          .copyWith(remoteId: 'remoteId6'),
+    );
 
     expect((await query.get()).length, 1);
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed2"))
-            .copyWith(remoteId: "remoteId4"));
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed1',
+      ))
+          .copyWith(remoteId: 'remoteId7'),
+    );
+
+    expect((await query.get()).length, 2);
+  });
+
+  test('createQuery notNewerThan', () async {
+    var query = scheduledStatusRepository.createQuery(
+      filters: null,
+      pagination: RepositoryPagination(
+        olderThanItem:
+            await ScheduledStatusTestHelper.createTestScheduledStatus(
+          seed: 'remoteId5',
+          remoteId: 'remoteId5',
+        ),
+      ),
+      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+    );
+
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed2',
+      ))
+          .copyWith(remoteId: 'remoteId3'),
+    );
+
+    expect((await query.get()).length, 1);
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed2',
+      ))
+          .copyWith(
+        remoteId: 'remoteId4',
+      ),
+    );
 
     expect((await query.get()).length, 2);
 
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed2"))
-            .copyWith(remoteId: "remoteId5"));
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed2',
+      ))
+          .copyWith(
+        remoteId: 'remoteId5',
+      ),
+    );
 
     expect((await query.get()).length, 2);
 
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed1"))
-            .copyWith(remoteId: "remoteId6"));
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed1',
+      ))
+          .copyWith(
+        remoteId: 'remoteId6',
+      ),
+    );
 
     expect((await query.get()).length, 2);
   });
 
   test('createQuery notNewerThan & newerThan', () async {
     var query = scheduledStatusRepository.createQuery(
-        newerThan: await createTestScheduledStatus(
-            seed: "remoteId2", remoteId: "remoteId2"),
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThan: await createTestScheduledStatus(
-            seed: "remoteId5", remoteId: "remoteId5"),
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
+      filters: null,
+      pagination: RepositoryPagination(
+        newerThanItem:
+            await ScheduledStatusTestHelper.createTestScheduledStatus(
+          seed: 'remoteId2',
+          remoteId: 'remoteId2',
+        ),
+        olderThanItem:
+            await ScheduledStatusTestHelper.createTestScheduledStatus(
+          seed: 'remoteId5',
+          remoteId: 'remoteId5',
+        ),
+      ),
+      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+    );
 
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed1"))
-            .copyWith(remoteId: "remoteId1"));
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed1',
+      ))
+          .copyWith(
+        remoteId: 'remoteId1',
+      ),
+    );
 
     expect((await query.get()).length, 0);
 
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed2"))
-            .copyWith(remoteId: "remoteId2"));
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed2',
+      ))
+          .copyWith(
+        remoteId: 'remoteId2',
+      ),
+    );
 
     expect((await query.get()).length, 0);
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed3"))
-            .copyWith(remoteId: "remoteId3"));
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed3',
+      ))
+          .copyWith(
+        remoteId: 'remoteId3',
+      ),
+    );
 
     expect((await query.get()).length, 1);
 
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed4"))
-            .copyWith(remoteId: "remoteId4"));
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed4',
+      ))
+          .copyWith(
+        remoteId: 'remoteId4',
+      ),
+    );
 
     expect((await query.get()).length, 2);
 
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed5"))
-            .copyWith(remoteId: "remoteId5"));
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed5',
+      ))
+          .copyWith(
+        remoteId: 'remoteId5',
+      ),
+    );
 
     expect((await query.get()).length, 2);
 
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed6"))
-            .copyWith(remoteId: "remoteId6"));
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed6',
+      ))
+          .copyWith(
+        remoteId: 'remoteId6',
+      ),
+    );
 
     expect((await query.get()).length, 2);
   });
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = scheduledStatusRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: ScheduledStatusOrderingTermData(
-            orderByType: ScheduledStatusOrderByType.remoteId,
-            orderingMode: OrderingMode.asc),
-        olderThan: null,
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdAsc,
+    );
 
-    var scheduledStatus2 = await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed2"))
-            .copyWith(remoteId: "remoteId2"));
-    var scheduledStatus1 = await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed1"))
-            .copyWith(remoteId: "remoteId1"));
-    var scheduledStatus3 = await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed3"))
-            .copyWith(remoteId: "remoteId3"));
+    var scheduledStatus2 =
+        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed2',
+      ))
+          .copyWith(
+        remoteId: 'remoteId2',
+      ),
+    );
+    var scheduledStatus1 =
+        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed1',
+      ))
+          .copyWith(
+        remoteId: 'remoteId1',
+      ),
+    );
+    var scheduledStatus3 =
+        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed3',
+      ))
+          .copyWith(
+        remoteId: 'remoteId3',
+      ),
+    );
 
-    var dbScheduledStatuses = await query.get();
-    var actualList = dbScheduledStatuses
-        .map((dbScheduledStatus) => scheduledStatusRepository
-            .mapDataClassToItem(scheduledStatusRepository.dao
-                .typedResultToPopulated(dbScheduledStatus)))
-        .toList();
+    var actualList = await query.get();
+
     expect(actualList.length, 3);
 
-    expectDbScheduledStatus(actualList[0], scheduledStatus1);
-    expectDbScheduledStatus(actualList[1], scheduledStatus2);
-    expectDbScheduledStatus(actualList[2], scheduledStatus3);
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      actualList[0],
+      scheduledStatus1,
+    );
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      actualList[1],
+      scheduledStatus2,
+    );
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      actualList[2],
+      scheduledStatus3,
+    );
   });
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
     var query = scheduledStatusRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: ScheduledStatusOrderingTermData(
-            orderByType: ScheduledStatusOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThan: null,
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
+    );
 
-    var scheduledStatus2 = await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed2"))
-            .copyWith(remoteId: "remoteId2"));
-    var scheduledStatus1 = await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed1"))
-            .copyWith(remoteId: "remoteId1"));
-    var scheduledStatus3 = await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed3"))
-            .copyWith(remoteId: "remoteId3"));
+    var scheduledStatus2 =
+        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed2',
+      ))
+          .copyWith(
+        remoteId: 'remoteId2',
+      ),
+    );
+    var scheduledStatus1 =
+        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed1',
+      ))
+          .copyWith(
+        remoteId: 'remoteId1',
+      ),
+    );
+    var scheduledStatus3 =
+        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed3',
+      ))
+          .copyWith(
+        remoteId: 'remoteId3',
+      ),
+    );
+    var actualList = await query.get();
 
-    var dbScheduledStatuses = await query.get();
-    var actualList = dbScheduledStatuses
-        .map((dbScheduledStatus) => scheduledStatusRepository
-            .mapDataClassToItem(scheduledStatusRepository.dao
-                .typedResultToPopulated(dbScheduledStatus)))
-        .toList();
-    expect(actualList.length, 3);
+    expect(
+      actualList.length,
+      3,
+    );
 
-    expectDbScheduledStatus(actualList[0], scheduledStatus3);
-    expectDbScheduledStatus(actualList[1], scheduledStatus2);
-    expectDbScheduledStatus(actualList[2], scheduledStatus1);
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      actualList[0],
+      scheduledStatus3,
+    );
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      actualList[1],
+      scheduledStatus2,
+    );
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      actualList[2],
+      scheduledStatus1,
+    );
   });
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = scheduledStatusRepository.createQuery(
-        newerThan: null,
+      filters: null,
+      pagination: RepositoryPagination(
         limit: 1,
         offset: 1,
-        orderingTermData: ScheduledStatusOrderingTermData(
-            orderByType: ScheduledStatusOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThan: null,
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
+      ),
+      orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdAsc,
+    );
 
-    var scheduledStatus2 = await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed2"))
-            .copyWith(remoteId: "remoteId2"));
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed1"))
-            .copyWith(remoteId: "remoteId1"));
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(seed: "seed3"))
-            .copyWith(remoteId: "remoteId3"));
+    var scheduledStatus2 =
+        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed2',
+      ))
+          .copyWith(
+        remoteId: 'remoteId2',
+      ),
+    );
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed1',
+      ))
+          .copyWith(
+        remoteId: 'remoteId1',
+      ),
+    );
+    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+      scheduledStatusRepository,
+      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        seed: 'seed3',
+      ))
+          .copyWith(
+        remoteId: 'remoteId3',
+      ),
+    );
 
-    var dbScheduledStatuses = await query.get();
-    var actualList = dbScheduledStatuses
-        .map((dbScheduledStatus) => scheduledStatusRepository
-            .mapDataClassToItem(scheduledStatusRepository.dao
-                .typedResultToPopulated(dbScheduledStatus)))
-        .toList();
+    var actualList = await query.get();
+
     expect(actualList.length, 1);
 
-    expectDbScheduledStatus(actualList[0], scheduledStatus2);
+    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+      actualList[0],
+      scheduledStatus2,
+    );
   });
 }

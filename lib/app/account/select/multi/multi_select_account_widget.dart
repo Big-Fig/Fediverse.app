@@ -9,10 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MultiSelectAccountWidget extends StatelessWidget {
-  final bool alwaysShowHeader;
-  final Widget header;
-  final bool alwaysShowFooter;
-  final Widget footer;
+  final bool? alwaysShowHeader;
+  final Widget? header;
+  final bool? alwaysShowFooter;
+  final Widget? footer;
 
   const MultiSelectAccountWidget({
     this.header,
@@ -28,26 +28,28 @@ class MultiSelectAccountWidget extends StatelessWidget {
       footer: footer,
       alwaysShowHeader: alwaysShowHeader,
       alwaysShowFooter: alwaysShowFooter,
+      // ignore: no-empty-block
       accountSelectedCallback: (_, __) {
         // nothing
       },
       accountActions: <Widget>[
         const _MultiSelectAccountItemActionWidget(),
       ],
-      key: PageStorageKey("MultiSelectAccountWidget"),
+      key: PageStorageKey('MultiSelectAccountWidget'),
     );
   }
 }
 
 class _MultiSelectAccountItemActionWidget extends StatelessWidget {
   const _MultiSelectAccountItemActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var multiSelectAccountBloc = IMultiSelectAccountBloc.of(context);
     var account = Provider.of<IAccount>(context);
+
     return StreamBuilder<bool>(
       stream: multiSelectAccountBloc.isAccountSelectedStream(account),
       builder: (context, snapshot) {

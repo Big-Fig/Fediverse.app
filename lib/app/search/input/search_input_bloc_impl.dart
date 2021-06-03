@@ -5,18 +5,19 @@ import 'package:rxdart/rxdart.dart';
 
 class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   @override
-  final TextEditingController searchTextEditingController = TextEditingController();
+  final TextEditingController searchTextEditingController =
+      TextEditingController();
 
   // ignore: close_sinks
-  final BehaviorSubject<String> confirmedSearchTermSubject = BehaviorSubject
-      .seeded("");
+  final BehaviorSubject<String> confirmedSearchTermSubject =
+      BehaviorSubject.seeded('');
 
   // ignore: close_sinks
-  final BehaviorSubject<String> currentInputSubject = BehaviorSubject.seeded(
-      "");
+  final BehaviorSubject<String> currentInputSubject =
+      BehaviorSubject.seeded('');
 
   @override
-  String get currentInput => currentInputSubject.value;
+  String? get currentInput => currentInputSubject.value;
 
   @override
   Stream<String> get currentInputStream => currentInputSubject.stream;
@@ -26,8 +27,7 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
 
   @override
   Stream<bool> get currentInputIsNotEmptyStream =>
-      currentInputStream.map((currentInput) =>
-      currentInput?.isNotEmpty == true);
+      currentInputStream.map((currentInput) => currentInput.isNotEmpty);
 
   @override
   bool get confirmedSearchTermIsNotEmpty =>
@@ -35,9 +35,18 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
 
   @override
   Stream<bool> get confirmedSearchTermIsNotEmptyStream =>
-      confirmedSearchTermStream.map((confirmedSearchTerm) =>
-      confirmedSearchTerm?.isNotEmpty == true);
+      confirmedSearchTermStream.map(
+        (confirmedSearchTerm) => confirmedSearchTerm.isNotEmpty ,
+      );
 
+  @override
+  bool get confirmedSearchTermIsEmpty => !confirmedSearchTermIsNotEmpty;
+
+  @override
+  Stream<bool> get confirmedSearchTermIsEmptyStream =>
+      confirmedSearchTermIsNotEmptyStream.map(
+        (confirmedSearchTermIsNotEmpty) => !confirmedSearchTermIsNotEmpty,
+      );
 
   @override
   void customSearch(String search) {
@@ -59,7 +68,7 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   }
 
   @override
-  String get confirmedSearchTerm => confirmedSearchTermSubject.value;
+  String? get confirmedSearchTerm => confirmedSearchTermSubject.value;
 
   @override
   Stream<String> get confirmedSearchTermStream =>
@@ -67,12 +76,12 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
 
   @override
   void clearSearch() {
-    searchTextEditingController.text = "";
+    searchTextEditingController.text = '';
     confirmSearch();
   }
 
   void onSearchTextChanged() {
-    var newText = searchTextEditingController.text ?? "";
+    var newText = searchTextEditingController.text;
     confirmedSearchTermSubject.add(newText);
   }
 

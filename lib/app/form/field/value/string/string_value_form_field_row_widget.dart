@@ -3,44 +3,49 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/cupertino.dart';
 
-class StringFormFieldRowWidget extends StatelessWidget {
-  final String label;
+class StringValueFormFieldRowWidget extends StatelessWidget {
+  final String? label;
   final String hint;
   final bool autocorrect;
   final bool obscureText;
-  final ValueChanged<String> onSubmitted;
+  final ValueChanged<String>? onSubmitted;
   final TextInputAction textInputAction;
+  final int maxLines;
 
-  StringFormFieldRowWidget({
-    @required this.label,
-    @required this.autocorrect,
+  StringValueFormFieldRowWidget({
+    required this.label,
+    required this.autocorrect,
     this.obscureText = false,
-    @required this.hint,
-    @required this.onSubmitted,
-    @required this.textInputAction,
+    this.maxLines = 1,
+    required this.hint,
+    required this.onSubmitted,
+    required this.textInputAction,
   });
 
   @override
   Widget build(BuildContext context) {
     var formFieldBloc = IStringValueFormFieldBloc.of(context);
-    return StreamBuilder<List<FormItemValidationError>>(
+
+    return StreamBuilder<List<FormItemValidationError?>?>(
       stream: formFieldBloc.errorsStream,
       initialData: formFieldBloc.errors,
       builder: (context, snapshot) {
         var errors = snapshot.data;
 
-        var error = errors?.isNotEmpty == true ? errors.first : null;
+        var error = errors?.isNotEmpty == true ? errors!.first : null;
 
-        return StreamBuilder<bool>(
+        return StreamBuilder<bool?>(
           stream: formFieldBloc.isEnabledStream,
           initialData: formFieldBloc.isEnabled,
           builder: (context, snapshot) {
             var isEnabled = snapshot.data;
+
             return FediFormEditTextRow(
               enabled: isEnabled,
               maxLength: formFieldBloc.maxLength,
               hint: hint,
               label: label,
+              maxLines: maxLines,
               autocorrect: autocorrect,
               obscureText: obscureText,
               textEditingController: formFieldBloc.textEditingController,

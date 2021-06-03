@@ -15,14 +15,14 @@ import 'package:provider/provider.dart';
 class EditPushSettingsWidget extends StatefulWidget {
   final bool shrinkWrap;
 
-  const EditPushSettingsWidget({@required this.shrinkWrap});
+  const EditPushSettingsWidget({required this.shrinkWrap});
 
   @override
   _EditPushSettingsWidgetState createState() => _EditPushSettingsWidgetState();
 }
 
 class _EditPushSettingsWidgetState extends State<EditPushSettingsWidget> {
-  StreamSubscription failedToUpdateSubscription;
+  StreamSubscription? failedToUpdateSubscription;
 
   @override
   void didChangeDependencies() {
@@ -34,7 +34,7 @@ class _EditPushSettingsWidgetState extends State<EditPushSettingsWidget> {
         IToastService.of(context, listen: false).showErrorToast(
           context: context,
           title: S.of(context).app_push_settings_update_fail_dialog_title,
-          content: error?.toString(),
+          content: error.toString(),
         );
       },
     );
@@ -65,7 +65,7 @@ class _EditPushSettingsWidgetState extends State<EditPushSettingsWidget> {
 
 class _EditPushSettingsPleromaEmojiReactionFieldWidget extends StatelessWidget {
   const _EditPushSettingsPleromaEmojiReactionFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -73,18 +73,18 @@ class _EditPushSettingsPleromaEmojiReactionFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.pleromaEmojiReactionFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label:
-              S.of(context).app_push_settings_field_pleroma_emojiReaction_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label:
+            S.of(context).app_push_settings_field_pleroma_emojiReaction_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }
 
 class _EditPushSettingsPleromaChatMentionFieldWidget extends StatelessWidget {
   const _EditPushSettingsPleromaChatMentionFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -92,17 +92,17 @@ class _EditPushSettingsPleromaChatMentionFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.pleromaChatMentionFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_push_settings_field_pleroma_chat_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label: S.of(context).app_push_settings_field_pleroma_chat_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }
 
 class _EditPushSettingsPollFieldWidget extends StatelessWidget {
   const _EditPushSettingsPollFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -110,17 +110,17 @@ class _EditPushSettingsPollFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.pollFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_push_settings_field_polls_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label: S.of(context).app_push_settings_field_polls_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }
 
 class _EditPushSettingsReblogFieldWidget extends StatelessWidget {
   const _EditPushSettingsReblogFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -128,17 +128,17 @@ class _EditPushSettingsReblogFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.reblogFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_push_settings_field_reblogs_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label: S.of(context).app_push_settings_field_reblogs_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }
 
 class _EditPushSettingsMentionFieldWidget extends StatelessWidget {
   const _EditPushSettingsMentionFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -146,17 +146,17 @@ class _EditPushSettingsMentionFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.mentionFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_push_settings_field_mentions_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label: S.of(context).app_push_settings_field_mentions_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }
 
 class _EditPushSettingsFollowFieldWidget extends StatelessWidget {
   const _EditPushSettingsFollowFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -164,17 +164,17 @@ class _EditPushSettingsFollowFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.followFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_push_settings_field_follows_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label: S.of(context).app_push_settings_field_follows_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }
 
 class _EditPushSettingsFavouriteFieldWidget extends StatelessWidget {
   const _EditPushSettingsFavouriteFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -182,17 +182,17 @@ class _EditPushSettingsFavouriteFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.favouriteFieldBloc,
       child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_push_settings_field_favourites_label,
-          descriptionOnDisabled: S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc),
+        label: S.of(context).app_push_settings_field_favourites_label,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
     );
   }
 }
 
 class _EditPushSettingsDescriptionWidget extends StatelessWidget {
   const _EditPushSettingsDescriptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

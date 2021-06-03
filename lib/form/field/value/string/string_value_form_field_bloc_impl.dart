@@ -13,15 +13,15 @@ class StringValueFormFieldBloc extends ValueFormFieldBloc<String>
   final FocusNode focusNode = FocusNode();
 
   @override
-  final int maxLength;
+  final int? maxLength;
 
   StringValueFormFieldBloc({
-    @required String originValue,
-    @required List<FormValueFieldValidation<String>> validators,
-    @required this.maxLength,
-    bool isEnabled = true,
+    required String originValue,
+    required List<FormValueFieldValidation<String>> validators,
+    required this.maxLength,
+    bool? isEnabled = true,
     bool isNullValuePossible = true,
-  })  : textEditingController = TextEditingController(text: originValue ?? ""),
+  })  : textEditingController = TextEditingController(text: originValue),
         super(
           originValue: originValue,
           validators: validators,
@@ -36,18 +36,22 @@ class StringValueFormFieldBloc extends ValueFormFieldBloc<String>
 
     addDisposable(textEditingController: textEditingController);
     textEditingController.addListener(listener);
-    addDisposable(disposable: CustomDisposable(() async {
-      textEditingController.removeListener(listener);
-    }));
+    addDisposable(
+      disposable: CustomDisposable(
+        () async {
+          textEditingController.removeListener(listener);
+        },
+      ),
+    );
   }
 
   @override
-  bool isValueChanged(String newValue, String originValue) =>
-      (newValue ?? "") != (originValue ?? "");
+  bool isValueChanged(String? newValue, String? originValue) =>
+      (newValue ?? '') != (originValue ?? '');
 
   @override
   void clear() {
-    textEditingController.text = originValue ?? "";
+    textEditingController.text = originValue;
     super.clear();
   }
 }

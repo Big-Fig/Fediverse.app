@@ -12,7 +12,7 @@ class FediListTile extends StatelessWidget {
   final oneSidePadding;
 
   const FediListTile({
-    @required this.child,
+    required this.child,
     this.isFirstInList = false,
     this.noPadding = false,
     this.oneSidePadding = FediSizes.smallPadding,
@@ -36,11 +36,12 @@ class FediListTile extends StatelessWidget {
       child: Padding(
         padding: edgeInsets,
         child: Container(
-            decoration: BoxDecoration(
-              color: IFediUiColorTheme.of(context).white,
-              boxShadow: [FediShadows.forListTile],
-            ),
-            child: child),
+          decoration: BoxDecoration(
+            color: IFediUiColorTheme.of(context).white,
+            boxShadow: [FediShadows.forListTile],
+          ),
+          child: child,
+        ),
       ),
     );
   }

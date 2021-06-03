@@ -8,14 +8,14 @@ import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("pagination_list_with_new_items_header_widget.dart");
+var _logger = Logger('pagination_list_with_new_items_header_widget.dart');
 
 class CachedPaginationListWithNewItemsMergeOverlayButton
     extends StatelessWidget {
   final String Function(BuildContext context, int updateItemsCount) textBuilder;
 
   CachedPaginationListWithNewItemsMergeOverlayButton({
-    @required this.textBuilder,
+    required this.textBuilder,
   });
 
   @override
@@ -24,62 +24,75 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
         ICachedPaginationListWithNewItemsBloc.of(context);
 
     return StreamBuilder<int>(
-        stream: paginationWithUpdatesListBloc.unmergedNewItemsCountStream
-            .distinct(),
-        initialData: paginationWithUpdatesListBloc.unmergedNewItemsCount,
-        builder: (context, snapshot) {
-          var updateItemsCount = snapshot.data ?? 0;
+      stream:
+          paginationWithUpdatesListBloc.unmergedNewItemsCountStream.distinct(),
+      initialData: paginationWithUpdatesListBloc.unmergedNewItemsCount,
+      builder: (context, snapshot) {
+        var updateItemsCount = snapshot.data ?? 0;
 
-          _logger.finest(() => "updateItemsCount $updateItemsCount");
+        _logger.finest(() => 'updateItemsCount $updateItemsCount');
 
-          if (updateItemsCount > 0) {
-            var scrollControllerBloc =
-                IScrollControllerBloc.of(context, listen: false);
+        var scrollControllerBloc =
+            IScrollControllerBloc.of(context, listen: false);
 
-            return StreamBuilder<bool>(
-                stream: Rx.combineLatest2(
-                    scrollControllerBloc.scrollDirectionStream.distinct(),
-                    scrollControllerBloc.scrolledToTopStream,
-                    (scrollDirection, scrolledToTop) =>
-                        isNeedShowMergeItems(scrollDirection, scrolledToTop)),
-                initialData: isNeedShowMergeItems(
-                    scrollControllerBloc.scrollDirection,
-                    scrollControllerBloc.scrolledToTop),
-                builder: (context, snapshot) {
-                  var isNeedShowMergeItems = snapshot.data;
+        return StreamBuilder<bool>(
+          stream: Rx.combineLatest2(
+            scrollControllerBloc.scrollDirectionStream.distinct(),
+            scrollControllerBloc.scrolledToTopStream,
+            (dynamic scrollDirection, dynamic scrolledToTop) =>
+                isNeedShowMergeItems(scrollDirection, scrolledToTop),
+          ),
+          initialData: isNeedShowMergeItems(
+            scrollControllerBloc.scrollDirection,
+            scrollControllerBloc.scrolledToTop,
+          ),
+          builder: (context, snapshot) {
+            var isNeedShowMergeItems = snapshot.data!;
 
-                  _logger.finest(
-                      () => "isNeedShowMergeItems $isNeedShowMergeItems");
+            _logger.finest(() => 'isNeedShowMergeItems $isNeedShowMergeItems');
 
-                  if (isNeedShowMergeItems) {
-                    return buildMergeNewItemsButton(
-                        context: context,
-                        paginationWithUpdatesListBloc:
-                            paginationWithUpdatesListBloc,
-                        updateItemsCount: updateItemsCount);
-                  } else {
-                    return SizedBox.shrink();
-                  }
-                });
-          } else {
-            return SizedBox.shrink();
-          }
-        });
+            Widget child;
+
+            if (isNeedShowMergeItems && updateItemsCount > 0) {
+              child = buildMergeNewItemsButton(
+                context: context,
+                paginationWithUpdatesListBloc: paginationWithUpdatesListBloc,
+                updateItemsCount: updateItemsCount,
+              );
+            } else {
+              child = SizedBox.shrink();
+            }
+
+            return AnimatedSwitcher(
+              // todo: refactor magic number
+              // ignore: no-magic-number
+              duration: Duration(milliseconds: 500),
+              transitionBuilder: (child, animation) => ScaleTransition(
+                  scale: animation,
+                  child: child,
+                ),
+              child: child,
+            );
+          },
+        );
+      },
+    );
   }
 
   bool isNeedShowMergeItems(
-          ScrollDirection scrollDirection, bool scrolledToTop) =>
+    ScrollDirection? scrollDirection,
+    bool? scrolledToTop,
+  ) =>
       scrollDirection == ScrollDirection.forward ||
       scrollDirection == null ||
-      scrolledToTop;
+      scrolledToTop!;
 
-  Widget buildMergeNewItemsButton(
-      {@required
-          BuildContext context,
-      @required
-          ICachedPaginationListWithNewItemsBloc paginationWithUpdatesListBloc,
-      @required
-          int updateItemsCount}) {
+  Widget buildMergeNewItemsButton({
+    required BuildContext context,
+    required ICachedPaginationListWithNewItemsBloc
+        paginationWithUpdatesListBloc,
+    required int updateItemsCount,
+  }) {
     return FediPrimaryFilledTextButtonWithBorder(
       textBuilder(context, updateItemsCount),
       onPressed: () {

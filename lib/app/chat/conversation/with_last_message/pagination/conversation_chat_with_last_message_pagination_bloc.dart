@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class IConversationChatWithLastMessagePaginationBloc
     implements ICachedPleromaPaginationBloc<IConversationChatWithLastMessage> {
-  static IConversationChatWithLastMessagePaginationBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IConversationChatWithLastMessagePaginationBloc>(context,
-          listen: listen);
+  static IConversationChatWithLastMessagePaginationBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IConversationChatWithLastMessagePaginationBloc>(
+        context,
+        listen: listen,
+      );
 }

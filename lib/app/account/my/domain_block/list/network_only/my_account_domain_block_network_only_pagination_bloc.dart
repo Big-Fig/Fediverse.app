@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class IMyAccountDomainBlockNetworkOnlyPaginationBloc
     implements INetworkOnlyPleromaPaginationBloc<DomainBlock> {
-  static IMyAccountDomainBlockNetworkOnlyPaginationBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IMyAccountDomainBlockNetworkOnlyPaginationBloc>(context,
-          listen: listen);
+  static IMyAccountDomainBlockNetworkOnlyPaginationBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IMyAccountDomainBlockNetworkOnlyPaginationBloc>(
+        context,
+        listen: listen,
+      );
 }

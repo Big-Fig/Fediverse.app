@@ -8,13 +8,14 @@ import 'package:provider/provider.dart';
 abstract class ScheduledStatusPaginationListBaseWidget
     extends FediPaginationListWidget<IScheduledStatus> {
   ScheduledStatusPaginationListBaseWidget({
-    @required Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    Widget customEmptyWidget,
-    Widget customLoadingWidget,
+    required Key key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
+    Widget? customEmptyWidget,
+    Widget? customLoadingWidget,
+    bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
           footer: footer,
@@ -23,15 +24,19 @@ abstract class ScheduledStatusPaginationListBaseWidget
           alwaysShowFooter: alwaysShowFooter,
           customEmptyWidget: customEmptyWidget,
           customLoadingWidget: customLoadingWidget,
+          refreshOnFirstLoad: refreshOnFirstLoad,
         );
 
   @override
   IPaginationListBloc<PaginationPage<IScheduledStatus>, IScheduledStatus>
-      retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
+      retrievePaginationListBloc(
+    BuildContext context, {
+    required bool listen,
+  }) {
     var paginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IScheduledStatus>,
             IScheduledStatus>>(context, listen: listen);
+
     return paginationListBloc;
   }
 }

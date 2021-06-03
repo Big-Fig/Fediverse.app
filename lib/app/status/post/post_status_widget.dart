@@ -7,10 +7,13 @@ import 'package:fedi/app/status/post/action/post_status_visibility_action_widget
 import 'package:flutter/widgets.dart';
 
 class PostStatusWidget extends PostMessageWidget {
-
   const PostStatusWidget({
-    @required String hintText,
-  }): super(hintText: hintText);
+    required String hintText,
+    required bool showActionsOnlyWhenFocused,
+  }) : super(
+          hintText: hintText,
+          showActionsOnlyWhenFocused: showActionsOnlyWhenFocused,
+        );
 
   @override
   List<Widget> buildActions() {

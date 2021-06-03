@@ -4,15 +4,17 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IConversationChatCurrentBloc implements IDisposable {
-  static IConversationChatCurrentBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IConversationChatCurrentBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IConversationChatCurrentBloc>(context, listen: listen);
 
-  IConversationChat get currentChat;
+  IConversationChat? get currentChat;
 
-  Stream<IConversationChat> get currentChatStream;
+  Stream<IConversationChat?> get currentChatStream;
 
-  void onChatOpened(IConversationChat chat);
+  void onChatOpened(IConversationChat? chat);
 
-  void onChatClosed(IConversationChat chat);
+  void onChatClosed(IConversationChat? chat);
 }

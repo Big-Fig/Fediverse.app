@@ -6,42 +6,50 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:pedantic/pedantic.dart';
 
-Logger _logger = Logger("async_dialog.dart");
+Logger _logger = Logger('async_dialog.dart');
 
-typedef ErrorData ErrorDataBuilder(
+typedef ErrorDataBuilder = ErrorData? Function(
   BuildContext context,
   dynamic error,
   StackTrace stackTrace,
 );
 
-typedef void ErrorCallback(BuildContext context, ErrorData errorData);
+typedef ErrorCallback = void Function(
+  BuildContext? context,
+  ErrorData errorData,
+);
 
-Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
-  @required BuildContext context,
-  @required Future<T> asyncCode(),
-  @required ErrorCallback errorCallback,
-  String contentMessage,
+// todo: refactor long-parameter-list, long-method
+// ignore: long-parameter-list, long-method
+Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
+  required BuildContext context,
+  required Future<T> Function() asyncCode,
+  required ErrorCallback? errorCallback,
+  String? contentMessage,
   List<ErrorDataBuilder> errorDataBuilders = const [],
   bool showDefaultErrorAlertDialogOnUnhandledError = true,
   bool showProgressDialog = true,
   bool cancelable = false,
 }) async {
-  T result;
-  CancelableOperation<T> cancelableOperation =
-      CancelableOperation.fromFuture(asyncCode());
+  T? result;
+  var cancelableOperation =
+      CancelableOperation<T>.fromFuture(asyncCode());
 
-  var progressDialog;
+  // ignore: avoid-late-keyword
+  late FediIndeterminateProgressDialog progressDialog;
   if (showProgressDialog) {
     progressDialog = FediIndeterminateProgressDialog(
-        cancelable: cancelable,
-        contentMessage: contentMessage ?? S.of(context).dialog_progress_content,
-        cancelableOperation: cancelableOperation);
-    progressDialog.show(context);
+      cancelable: cancelable,
+      contentMessage: contentMessage,
+      cancelableOperation: cancelableOperation,
+    );
+    unawaited(progressDialog.show(context));
   }
 
   var error;
-  ErrorData errorData;
+  ErrorData? errorData;
 
   var needRethrow = true;
 
@@ -49,7 +57,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
     result = await cancelableOperation.valueOrCancellation(null);
   } catch (e, stackTrace) {
     error = e;
-    for (ErrorDataBuilder builder in errorDataBuilders ?? []) {
+    for (var builder in errorDataBuilders) {
       errorData = builder(context, e, stackTrace);
       if (errorData != null) {
         needRethrow = false;
@@ -70,30 +78,35 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
 
     if (needRethrow) {
       _logger.severe(
-          () => "rethrow error during "
-              "doAsyncOperationWithFediDialog",
-          error,
-          stackTrace);
+        () => 'rethrow error during '
+            'doAsyncOperationWithFediDialog',
+        error,
+        stackTrace,
+      );
     } else {
       _logger.warning(
-          () => "handled error during "
-              "doAsyncOperationWithFediDialog",
-          error,
-          stackTrace);
+        () => 'handled error during '
+            'doAsyncOperationWithFediDialog',
+        error,
+        stackTrace,
+      );
     }
   } finally {
-    progressDialog?.hide(context);
+    unawaited(progressDialog.hide(context));
   }
 
   // wait until progress dialog actually hides
-  await Future.delayed(Duration(milliseconds: 100), () {
+  await Future.delayed(
+    Duration(
+      // ignore: no-magic-number
+      milliseconds: 100,
+    ),
+  );
 
-  });
-
-  AsyncDialogResult dialogResult;
-  if (progressDialog?.isCanceled == true) {
+  AsyncDialogResult<T> dialogResult;
+  if (progressDialog.isCanceled == true) {
     dialogResult = AsyncDialogResult<T>.canceled();
-    _logger.fine(() => "canceled doAsyncOperationWithFediDialog");
+    _logger.fine(() => 'canceled doAsyncOperationWithFediDialog');
   } else if (error != null) {
     if (errorData != null) {
       if (errorCallback != null) {
@@ -106,7 +119,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
     }
     dialogResult = AsyncDialogResult<T>.withError(error);
   } else {
-    _logger.finest(() => "success doAsyncOperationWithFediDialog =$result}");
+    _logger.finest(() => 'success doAsyncOperationWithFediDialog =$result}');
     dialogResult = AsyncDialogResult<T>.success(result);
   }
 

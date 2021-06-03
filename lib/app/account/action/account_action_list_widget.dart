@@ -1,51 +1,28 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
-import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
+import 'package:fedi/app/account/action/message/account_action_message.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_blurred_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:logging/logging.dart';
-
-var _logger = Logger("account_actions_widget.dart");
 
 var _topPadding = FediSizes.smallPadding;
 var _bottomPadding = FediSizes.bigPadding;
-var _height = FediSizes.textButtonHeight + _topPadding + _bottomPadding;
 
 class AccountActionListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context);
-    return StreamBuilder<IPleromaAccountRelationship>(
-      stream: accountBloc.relationshipStream,
-      builder: (context, snapshot) {
-        var relationship = snapshot.data;
-
-        _logger.finest(() => "relationship $relationship");
-
-        if (relationship?.following == null) {
-          return Container(
-            height: _height,
-            child: const _AccountActionListLoadingWidget(),
-          );
-        } else {
-          return const _AccountActionListBodyLayoutBuilderWidget();
-        }
-      },
-    );
+    return const _AccountActionListBodyLayoutBuilderWidget();
   }
 
   const AccountActionListWidget();
@@ -53,7 +30,7 @@ class AccountActionListWidget extends StatelessWidget {
 
 class _AccountActionListBodyLayoutBuilderWidget extends StatelessWidget {
   const _AccountActionListBodyLayoutBuilderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -81,19 +58,37 @@ class _AccountActionListBodyLayoutBuilderWidget extends StatelessWidget {
 
 class _AccountActionListBodyWidget extends StatelessWidget {
   const _AccountActionListBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+    var myAccountBloc = IMyAccountBloc.of(context);
+
+    var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
+    var isMyAccount = myAccountBloc.checkAccountIsMe(accountBloc.account);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        const _AccountActionListFollowWidget(),
-        const FediBigHorizontalSpacer(),
-        const _AccountActionListMessageWidget(),
-        const FediBigHorizontalSpacer(),
+        if (isLocal && !isMyAccount)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const _AccountActionListFollowWidget(),
+              const FediBigHorizontalSpacer(),
+            ],
+          ),
+        if (isLocal && !isMyAccount)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const _AccountActionListMessageWidget(),
+              const FediBigHorizontalSpacer(),
+            ],
+          ),
         const _AccountActionListMoreWidget(),
       ],
     );
@@ -102,24 +97,15 @@ class _AccountActionListBodyWidget extends StatelessWidget {
 
 class _AccountActionListMessageWidget extends StatelessWidget {
   const _AccountActionListMessageWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FediBlurredTextButtonWithBorder(
       S.of(context).app_account_action_message,
-      onPressed: () async {
-        var authInstanceBloc = ICurrentAuthInstanceBloc.of(context, listen: false);
-        var accountBloc = IAccountBloc.of(context, listen: false);
-        var account = accountBloc.account;
-
-        if (authInstanceBloc.currentInstance.isSupportChats) {
-          goToPleromaChatWithAccount(context: context, account: account);
-        } else {
-          goToPostStatusStartConversationPage(context,
-              conversationAccountsWithoutMe: <IAccount>[account]);
-        }
+      onPressed: () {
+        goToMessagesPageAccountAction(context);
       },
       expanded: false,
     );
@@ -128,13 +114,13 @@ class _AccountActionListMessageWidget extends StatelessWidget {
 
 class _AccountActionListMoreWidget extends StatelessWidget {
   const _AccountActionListMoreWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FediIconInCircleBlurredButton(
-      FediIcons.menu,
+      FediIcons.menu_vertical,
       onPressed: () async {
         var accountBloc = IAccountBloc.of(context, listen: false);
         showAccountActionMoreDialog(
@@ -148,22 +134,27 @@ class _AccountActionListMoreWidget extends StatelessWidget {
 
 class _AccountActionListFollowWidget extends StatelessWidget {
   const _AccountActionListFollowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
-    return StreamBuilder<IPleromaAccountRelationship>(
+
+    return StreamBuilder<IPleromaApiAccountRelationship?>(
       stream: accountBloc.relationshipStream,
-      initialData: accountBloc.relationship,
       builder: (context, snapshot) {
         var relationship = accountBloc.relationship;
-        if (relationship.requested && !relationship.following) {
+
+        if (relationship?.following == null) {
+          return const SizedBox.shrink();
+        }
+        if (relationship?.requested == true &&
+            !(relationship?.following == true)) {
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: false,
             asyncButtonAction: accountBloc.toggleFollow,
-            builder: (BuildContext context, VoidCallback onPressed) {
+            builder: (BuildContext context, VoidCallback? onPressed) {
               return FediBlurredTextButtonWithBorder(
                 S.of(context).app_account_action_followRequested,
                 onPressed: onPressed,
@@ -175,7 +166,7 @@ class _AccountActionListFollowWidget extends StatelessWidget {
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: false,
             asyncButtonAction: accountBloc.toggleFollow,
-            builder: (BuildContext context, VoidCallback onPressed) {
+            builder: (BuildContext context, VoidCallback? onPressed) {
               return FediBlurredTextButtonWithBorder(
                 relationship?.requested == true
                     ? S.of(context).app_account_action_followRequested
@@ -189,21 +180,6 @@ class _AccountActionListFollowWidget extends StatelessWidget {
           );
         }
       },
-    );
-  }
-}
-
-class _AccountActionListLoadingWidget extends StatelessWidget {
-  const _AccountActionListLoadingWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: FediCircularProgressIndicator(
-        color: IFediUiColorTheme.of(context).white,
-      ),
     );
   }
 }

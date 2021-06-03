@@ -17,7 +17,7 @@ class AccountInfoWidget extends StatelessWidget {
   final OnClickUiCallback onStatusesTapCallback;
 
   AccountInfoWidget({
-    @required this.onStatusesTapCallback,
+    required this.onStatusesTapCallback,
   });
 
   @override
@@ -63,4 +63,4 @@ class AccountInfoWidget extends StatelessWidget {
 }
 
 void _onStatusesTapCallback(BuildContext context) =>
-    IAccountInfoBloc.of(context, listen: false).onStatusesTapCallback(context);
+    IAccountInfoBloc.of(context, listen: false).onStatusesTapCallback!(context);

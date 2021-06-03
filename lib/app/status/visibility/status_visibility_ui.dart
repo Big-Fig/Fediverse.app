@@ -4,9 +4,9 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/widgets.dart';
 
 Color calculateVisibilityColor({
-  @required BuildContext context,
-  @required bool isSelectedVisibility,
-  @required bool isPossibleToChangeVisibility,
+  required BuildContext context,
+  required bool isSelectedVisibility,
+  required bool isPossibleToChangeVisibility,
 }) {
   return isSelectedVisibility
       ? IFediUiColorTheme.of(context).primary

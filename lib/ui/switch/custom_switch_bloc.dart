@@ -8,7 +8,7 @@ abstract class ICustomSwitchBloc extends IDisposable {
       Provider.of<ICustomSwitchBloc>(context, listen: listen);
 
 
-  bool get currentValue;
+  bool? get currentValue;
 
   Stream<bool> get currentValueStream;
 

@@ -2,14 +2,18 @@ import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:flutter/widgets.dart';
 
 abstract class SearchAdapterPaginationBloc<T> extends DisposableOwner
     implements IPaginationBloc<PaginationPage<T>, T> {
   final IPaginationBloc<PaginationPage<ISearchResultItem>, ISearchResultItem>
       searchResultItemPaginationBloc;
 
-  SearchAdapterPaginationBloc({@required this.searchResultItemPaginationBloc});
+  SearchAdapterPaginationBloc({
+    required this.searchResultItemPaginationBloc,
+  });
+
+  @override
+  int get loadedPagesCount => searchResultItemPaginationBloc.loadedPagesCount;
 
   @override
   bool get isLoadedPagesInSequence =>
@@ -20,7 +24,8 @@ abstract class SearchAdapterPaginationBloc<T> extends DisposableOwner
       searchResultItemPaginationBloc.isLoadedPagesInSequenceStream;
 
   @override
-  int get itemsCountPerPage => searchResultItemPaginationBloc.itemsCountPerPage;
+  int? get itemsCountPerPage =>
+      searchResultItemPaginationBloc.itemsCountPerPage;
 
   @override
   List<int> get loadedPageIndexesSortedByIndex =>
@@ -31,19 +36,19 @@ abstract class SearchAdapterPaginationBloc<T> extends DisposableOwner
       searchResultItemPaginationBloc.loadedPageIndexesSortedByIndexStream;
 
   @override
-  int get loadedPagesMaximumIndex =>
+  int? get loadedPagesMaximumIndex =>
       searchResultItemPaginationBloc.loadedPagesMaximumIndex;
 
   @override
-  Stream<int> get loadedPagesMaximumIndexStream =>
+  Stream<int?> get loadedPagesMaximumIndexStream =>
       searchResultItemPaginationBloc.loadedPagesMaximumIndexStream;
 
   @override
-  int get loadedPagesMinimumIndex =>
+  int? get loadedPagesMinimumIndex =>
       searchResultItemPaginationBloc.loadedPagesMinimumIndex;
 
   @override
-  Stream<int> get loadedPagesMinimumIndexStream =>
+  Stream<int?> get loadedPagesMinimumIndexStream =>
       searchResultItemPaginationBloc.loadedPagesMinimumIndexStream;
 
   @override
@@ -60,14 +65,20 @@ abstract class SearchAdapterPaginationBloc<T> extends DisposableOwner
   @override
   Future<PaginationPage<T>> refreshWithoutController() async {
     var page = await searchResultItemPaginationBloc.refreshWithoutController();
+
     return mapPage(page);
   }
 
   @override
-  Future<PaginationPage<T>> requestPage(
-      {@required int pageIndex, @required bool forceToSkipCache}) async {
+  Future<PaginationPage<T>> requestPage({
+    required int pageIndex,
+    required bool forceToSkipCache,
+  }) async {
     var page = await searchResultItemPaginationBloc.requestPage(
-        pageIndex: pageIndex, forceToSkipCache: forceToSkipCache);
+      pageIndex: pageIndex,
+      forceToSkipCache: forceToSkipCache,
+    );
+
     return mapPage(page);
   }
 

@@ -5,8 +5,10 @@ import 'package:provider/provider.dart';
 
 abstract class IChatSettingsBloc
     implements IGlobalOrInstanceSettingsBloc<ChatSettings> {
-  static IChatSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IChatSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IChatSettingsBloc>(context, listen: listen);
 
   bool get replaceConversationsWithPleromaChats;

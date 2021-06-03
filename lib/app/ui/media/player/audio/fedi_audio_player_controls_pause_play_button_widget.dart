@@ -11,6 +11,7 @@ class FediAudioPlayerControlsPausePlayButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: mediaPlayerBloc.isInitializingStream,
       builder: (context, snapshot) {
@@ -31,7 +32,7 @@ class FediAudioPlayerControlsPausePlayButtonWidget extends StatelessWidget {
 class _FediAudioPlayerControlsPausePlayButtonBodyWidget
     extends StatelessWidget {
   const _FediAudioPlayerControlsPausePlayButtonBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -42,11 +43,13 @@ class _FediAudioPlayerControlsPausePlayButtonBodyWidget
       stream: mediaPlayerBloc.isPlayingStream,
       builder: (context, snapshot) {
         var isPlaying = snapshot.data ?? false;
+        
         return AsyncOperationButtonBuilderWidget(
           showProgressDialog: false,
-          builder: (BuildContext context, void Function() onPressed) {
+          builder: (BuildContext context, void Function()? onPressed) {
             return FediIconButton(
               icon: Icon(isPlaying ? FediIcons.pause : FediIcons.play),
+              // ignore: no-magic-number
               iconSize: 16.0,
               color: IFediUiColorTheme.of(context).white,
               onPressed: onPressed,
@@ -64,7 +67,7 @@ class _FediAudioPlayerControlsPausePlayButtonBodyWidget
 class _FediAudioPlayerControlsPausePlayButtonLoadingWidget
     extends StatelessWidget {
   const _FediAudioPlayerControlsPausePlayButtonLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -73,6 +76,7 @@ class _FediAudioPlayerControlsPausePlayButtonLoadingWidget
       padding: FediPadding.horizontalBigPadding,
       child: FediCircularProgressIndicator(
         color: IFediUiColorTheme.of(context).white,
+        // ignore: no-magic-number
         size: 22.0,
       ),
     );

@@ -31,7 +31,7 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
         // ),
         ProxyProvider<ICreateTimelineBloc, IStringValueFormFieldBloc>(
           update: (context, value, previous) => value.nameFieldBloc,
-          child: StringFormFieldRowWidget(
+          child: StringValueFormFieldRowWidget(
             label: S.of(context).app_timeline_create_field_title_label,
             autocorrect: true,
             hint: S.of(context).app_timeline_create_field_title_hint,
@@ -44,22 +44,23 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
           update: (context, value, previous) => value.typeFieldBloc,
           child: const TimelineTypeSingleFromListValueFormFieldRowWidget(),
         ),
-        StreamBuilder<TimelineType>(
-            stream: createTimelineBloc.typeFieldBloc.currentValueStream,
-            builder: (context, snapshot) {
-              var timelineType = snapshot.data;
+        StreamBuilder<TimelineType?>(
+          stream: createTimelineBloc.typeFieldBloc.currentValueStream,
+          builder: (context, snapshot) {
+            var timelineType = snapshot.data;
 
-              if (timelineType == null) {
-                return const SizedBox.shrink();
-              }
-              return Expanded(
-                child: Provider<TimelineType>.value(
-                  value: timelineType,
-                  child:
-                      const _CreateItemTimelinesHomeTabStorageSettingsWidget(),
-                ),
-              );
-            })
+            if (timelineType == null) {
+              return const SizedBox.shrink();
+            }
+
+            return Expanded(
+              child: Provider<TimelineType>.value(
+                value: timelineType,
+                child: const _CreateItemTimelinesHomeTabStorageSettingsWidget(),
+              ),
+            );
+          },
+        ),
       ],
     );
   }
@@ -67,26 +68,29 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
 
 class _CreateItemTimelinesHomeTabStorageSettingsWidget extends StatelessWidget {
   const _CreateItemTimelinesHomeTabStorageSettingsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var createTimelineBloc = ICreateTimelineBloc.of(context);
 
-    return StreamBuilder<IEditTimelineSettingsBloc>(
-        stream: createTimelineBloc.editTimelineSettingsBlocStream,
-        builder: (context, snapshot) {
-          var editBloc = snapshot.data;
-          if (editBloc == null) {
-            return const SizedBox.shrink();
-          }
-          return Provider<IEditTimelineSettingsBloc>.value(
-            value: editBloc,
-            child: const EditTimelineSettingsWidget(
-              shrinkWrap: false,
-            ),
-          );
-        });
+    return StreamBuilder<IEditTimelineSettingsBloc?>(
+      stream: createTimelineBloc.editTimelineSettingsBlocStream,
+      builder: (context, snapshot) {
+        var editBloc = snapshot.data;
+        if (editBloc == null) {
+          return const SizedBox.shrink();
+        }
+
+        return Provider<IEditTimelineSettingsBloc>.value(
+          value: editBloc,
+          child: const EditTimelineSettingsWidget(
+            shrinkWrap: false,
+            lockedSource: false,
+          ),
+        );
+      },
+    );
   }
 }

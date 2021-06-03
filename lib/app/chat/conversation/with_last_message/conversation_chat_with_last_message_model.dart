@@ -1,37 +1,38 @@
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/obj/equal_comparable_obj.dart';
 
-abstract class IConversationChatWithLastMessage {
+abstract class IConversationChatWithLastMessage
+    implements IEqualComparableObj<IConversationChatWithLastMessage> {
   IConversationChat get chat;
 
-  IConversationChatMessage get lastChatMessage;
+  IConversationChatMessage? get lastChatMessage;
 }
 
-class ConversationChatWithLastMessageWrapper extends IConversationChatWithLastMessage {
+class SimpleConversationChatWithLastMessage
+    implements IConversationChatWithLastMessage {
   @override
-  IConversationChat chat;
+  final IConversationChat chat;
 
   @override
-  IConversationChatMessage lastChatMessage;
-  ConversationChatWithLastMessageWrapper({
-    @required this.chat,
-    @required this.lastChatMessage,
+  final IConversationChatMessage? lastChatMessage;
+
+  SimpleConversationChatWithLastMessage({
+    required this.chat,
+    required this.lastChatMessage,
   });
 
   @override
-  String toString() {
-    return 'ChatWithLastMessageWrapper{chat: $chat,'
-        ' lastChatMessage: $lastChatMessage}';
-  }
+  int compareTo(IConversationChatWithLastMessage b) =>
+      IConversationChat.compareItemsToSort(
+        chat,
+        b.chat,
+      );
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ConversationChatWithLastMessageWrapper &&
-          runtimeType == other.runtimeType &&
-          chat == other.chat &&
-          lastChatMessage == other.lastChatMessage;
-  @override
-  int get hashCode => chat.hashCode ^ lastChatMessage.hashCode;
+  bool isEqualTo(IConversationChatWithLastMessage b) =>
+      IConversationChat.isItemsEqual(
+        chat,
+        b.chat,
+      );
 }

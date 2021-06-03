@@ -10,81 +10,82 @@ import 'package:flutter/material.dart';
 typedef StringBuilderFromContext = String Function(BuildContext context);
 
 void showSettingsDialog({
-  @required BuildContext context,
-  @required String title,
-  StringBuilderFromContext titleBuilder,
-  @required String subTitle,
-  StringBuilderFromContext subTitleBuilder,
-  @required Widget child,
+  required BuildContext context,
+  required String? title,
+  StringBuilderFromContext? titleBuilder,
+  required String? subTitle,
+  StringBuilderFromContext? subTitleBuilder,
+  required Widget child,
 }) {
   showFediModalBottomSheetDialog(
     context: context,
     child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: FediSizes.smallPadding,
-          horizontal: FediSizes.bigPadding,
-        ),
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Center(
-              child: Builder(
-                builder: (context) {
-                  return _SettingsDialogTitle(
-                    title: titleBuilder != null ? titleBuilder(context) : title,
-                  );
-                },
-              ),
+      padding: const EdgeInsets.symmetric(
+        vertical: FediSizes.smallPadding,
+        horizontal: FediSizes.bigPadding,
+      ),
+      child: ListView(
+        shrinkWrap: true,
+        children: [
+          Center(
+            child: Builder(
+              builder: (context) {
+                return _SettingsDialogTitle(
+                  title: titleBuilder != null ? titleBuilder(context) : title,
+                );
+              },
             ),
-            Center(
-              child: Builder(
-                builder: (context) {
-                  return _SettingsDialogSubTitle(
-                    subTitle: subTitleBuilder != null
-                        ? subTitleBuilder(context)
-                        : subTitle,
-                  );
-                },
-              ),
+          ),
+          Center(
+            child: Builder(
+              builder: (context) {
+                return _SettingsDialogSubTitle(
+                  subTitle: subTitleBuilder != null
+                      ? subTitleBuilder(context)
+                      : subTitle,
+                );
+              },
             ),
-            const FediBigVerticalSpacer(),
-            const FediUltraLightGreyDivider(),
-            const FediSmallVerticalSpacer(),
-            child,
-          ],
-        )),
+          ),
+          const FediBigVerticalSpacer(),
+          const FediUltraLightGreyDivider(),
+          const FediSmallVerticalSpacer(),
+          child,
+        ],
+      ),
+    ),
   );
 }
 
 class _SettingsDialogSubTitle extends StatelessWidget {
-  final String subTitle;
+  final String? subTitle;
 
   const _SettingsDialogSubTitle({
-    Key key,
-    @required this.subTitle,
+    Key? key,
+    required this.subTitle,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      subTitle,
+      subTitle!,
       style: IFediUiTextTheme.of(context).bigTallDarkGrey,
     );
   }
 }
 
 class _SettingsDialogTitle extends StatelessWidget {
-  final String title;
+  final String? title;
 
   const _SettingsDialogTitle({
-    Key key,
-    @required this.title,
+    Key? key,
+    required this.title,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      title,
+      title!,
       style: IFediUiTextTheme.of(context).subHeaderTallBoldDarkGrey,
     );
   }

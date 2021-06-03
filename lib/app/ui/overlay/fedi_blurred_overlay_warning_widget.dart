@@ -7,9 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FediBlurredOverlayWarningWidget extends StatelessWidget {
-  final String descriptionText;
-  final String buttonText;
-  final VoidCallback buttonAction;
+  final String? descriptionText;
+  final String? buttonText;
+  final VoidCallback? buttonAction;
 
   FediBlurredOverlayWarningWidget({
     this.descriptionText,
@@ -20,20 +20,25 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        // nothing, just bloc behind clicks
+        if (buttonAction != null) {
+          buttonAction!();
+        }
       },
       child: ClipRect(
         child: FediBackgroundBlur(
+          // ignore: no-magic-number
+          sigma: 6.0,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               if (descriptionText != null) ...[
                 Text(
-                  descriptionText,
+                  descriptionText!,
                   style: IFediUiTextTheme.of(context).bigTallDarkGrey,
                 ),
                 const FediBigVerticalSpacer(),
@@ -42,16 +47,17 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
                 Padding(
                   padding: FediPadding.allSmallPadding,
                   child: FediPrimaryFilledTextButtonWithBorder(
-                    buttonText,
-                    enabledBorderColor: fediUiColorTheme.transparent,
-                    disabledBorderColor: fediUiColorTheme.transparent,
+                    buttonText!,
+                    limitMinWidth: true,
                     expanded: false,
+                    enabledBorderColor: fediUiColorTheme.transparent,
+                    // ignore: no-equal-arguments
+                    disabledBorderColor: fediUiColorTheme.transparent,
                     onPressed: buttonAction,
                   ),
                 ),
             ],
           ),
-          sigma: 6.0,
         ),
       ),
     );

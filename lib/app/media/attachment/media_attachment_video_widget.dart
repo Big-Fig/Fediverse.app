@@ -5,7 +5,7 @@ import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_provider.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 
 class MediaAttachmentVideoWidget extends StatelessWidget {
@@ -14,7 +14,8 @@ class MediaAttachmentVideoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaSettingsBloc = IMediaSettingsBloc.of(context);
-    return DisposableProxyProvider<IPleromaMediaAttachment,
+
+    return DisposableProxyProvider<IPleromaApiMediaAttachment,
         IVideoMediaPlayerBloc>(
       update: (context, mediaAttachment, _) =>
           VideoMediaPlayerBloc.createFromContext(

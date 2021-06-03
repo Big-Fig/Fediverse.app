@@ -8,19 +8,21 @@ import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DisposableOwner extends IDisposable {
-  bool disposed = false;
+  @override
+  bool isDisposed = false;
   final CompositeDisposable _compositeDisposable = CompositeDisposable([]);
 
+  // ignore: long-parameter-list
   void addDisposable({
-    IDisposable disposable,
-    StreamSubscription streamSubscription,
-    TextEditingController textEditingController,
-    ScrollController scrollController,
-    FocusNode focusNode,
-    Subject subject,
-    StreamController streamController,
-    Timer timer,
-    FutureOr Function() custom,
+    IDisposable? disposable,
+    StreamSubscription? streamSubscription,
+    TextEditingController? textEditingController,
+    ScrollController? scrollController,
+    FocusNode? focusNode,
+    Subject? subject,
+    StreamController? streamController,
+    Timer? timer,
+    FutureOr Function()? custom,
   }) {
     if (disposable != null) {
       _compositeDisposable.children.add(disposable);
@@ -31,7 +33,8 @@ class DisposableOwner extends IDisposable {
     }
 
     if (streamController != null) {
-      _compositeDisposable.children.add(StreamControllerDisposable(streamController));
+      _compositeDisposable.children
+          .add(StreamControllerDisposable(streamController));
     }
 
     if (timer != null) {
@@ -62,7 +65,7 @@ class DisposableOwner extends IDisposable {
   @override
   @mustCallSuper
   Future dispose() async {
-    disposed = true;
+    isDisposed = true;
     await _compositeDisposable.dispose();
   }
 }

@@ -1,4 +1,4 @@
-import 'package:fedi/app/form/field/value/single_from_list/single_from_list_value_form_field_row_widget.dart';
+import 'package:fedi/app/form/field/value/select_from_list/single/single_select_from_list_value_form_field_row_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/theme/dark/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -11,9 +11,9 @@ class FediUiThemeSingleFromListValueFormFieldRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       FediUiThemeSingleFromListValueFormFieldBlocProxyProvider(
-        child: SingleFromListValueFormFieldRowWidget<IFediUiTheme>(
+        child: SingleSelectFromListValueFormFieldRowWidget<IFediUiTheme?>(
           label: S.of(context).app_theme_chooser_label,
-          valueTitleMapper: (context, IFediUiTheme value) =>
+          valueTitleMapper: (context, IFediUiTheme? value) =>
               _mapThemeToTitle(context, value),
           description: null,
           descriptionOnDisabled: null,
@@ -26,7 +26,7 @@ class FediUiThemeSingleFromListValueFormFieldRowWidget extends StatelessWidget {
   const FediUiThemeSingleFromListValueFormFieldRowWidget();
 }
 
-String _mapThemeToTitle(BuildContext context, IFediUiTheme theme) {
+String _mapThemeToTitle(BuildContext context, IFediUiTheme? theme) {
   if (theme == null) {
     return S.of(context).app_theme_type_system;
   } else if (theme == lightFediUiTheme) {
@@ -34,11 +34,11 @@ String _mapThemeToTitle(BuildContext context, IFediUiTheme theme) {
   } else if (theme == darkFediUiTheme) {
     return S.of(context).app_theme_type_dark;
   } else {
-    throw "unsupported theme $theme";
+    throw 'unsupported theme $theme';
   }
 }
 
-IconData _mapThemeToIcon(BuildContext context, IFediUiTheme theme) {
+IconData _mapThemeToIcon(BuildContext context, IFediUiTheme? theme) {
   if (theme == null) {
     return FediIcons.appearance_auto;
   } else if (theme == lightFediUiTheme) {
@@ -46,6 +46,6 @@ IconData _mapThemeToIcon(BuildContext context, IFediUiTheme theme) {
   } else if (theme == darkFediUiTheme) {
     return FediIcons.appearance_dark;
   } else {
-    throw "unsupported theme $theme";
+    throw 'unsupported theme $theme';
   }
 }

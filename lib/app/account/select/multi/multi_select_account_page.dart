@@ -16,34 +16,35 @@ import 'package:flutter/material.dart';
 class MultiSelectAccountPage extends StatelessWidget {
   final AccountsListCallback accountsListSelectedCallback;
 
-  const MultiSelectAccountPage({@required this.accountsListSelectedCallback});
+  const MultiSelectAccountPage({required this.accountsListSelectedCallback});
 
   @override
   Widget build(BuildContext context) {
-    var multiSelectAccountBloc =
-        IMultiSelectAccountBloc.of(context);
+    var multiSelectAccountBloc = IMultiSelectAccountBloc.of(context);
+
     return Scaffold(
       appBar: FediPageCustomAppBar(
         leading: const FediBackIconButton(),
-        child: const SearchInputWidget(),
         actions: [
           StreamBuilder<bool>(
-              stream: multiSelectAccountBloc.isSomethingSelectedStream,
-              builder: (context, snapshot) {
-                var isSomethingSelected = snapshot.data ?? false;
-                return FediIconButton(
-                  icon: Icon(FediIcons.check),
-                  onPressed: isSomethingSelected
-                      ? () {
-                          var selectedAccounts =
-                              multiSelectAccountBloc.selectedAccounts;
-                          accountsListSelectedCallback(
-                              context, selectedAccounts);
-                        }
-                      : null,
-                );
-              })
+            stream: multiSelectAccountBloc.isSomethingSelectedStream,
+            builder: (context, snapshot) {
+              var isSomethingSelected = snapshot.data ?? false;
+
+              return FediIconButton(
+                icon: Icon(FediIcons.check),
+                onPressed: isSomethingSelected
+                    ? () {
+                        var selectedAccounts =
+                            multiSelectAccountBloc.selectedAccounts;
+                        accountsListSelectedCallback(context, selectedAccounts);
+                      }
+                    : null,
+              );
+            },
+          ),
         ],
+        child: const SearchInputWidget(),
       ),
       body: const SafeArea(
         child: MultiSelectAccountWidget(),
@@ -54,11 +55,11 @@ class MultiSelectAccountPage extends StatelessWidget {
 
 void goToMultiSelectAccountPage(
   BuildContext context, {
-  @required AccountsListCallback accountsListSelectedCallback,
-  @required bool excludeMyAccount,
-  @required bool followingsOnly,
-  @required PleromaAccountListLoader customRemoteAccountListLoader,
-  @required AccountListLoader customLocalAccountListLoader,
+  required AccountsListCallback accountsListSelectedCallback,
+  required bool excludeMyAccount,
+  required bool followingsOnly,
+  required PleromaAccountListLoader customRemoteAccountListLoader,
+  required AccountListLoader customLocalAccountListLoader,
 }) {
   Navigator.push(
     context,

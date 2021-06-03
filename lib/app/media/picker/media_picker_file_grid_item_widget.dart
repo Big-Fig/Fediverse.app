@@ -1,5 +1,6 @@
-import 'package:fedi/app/media/picker/single_media_picker_bloc.dart';
+import 'package:fedi/app/media/picker/media_picker_bloc.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
@@ -13,41 +14,77 @@ class MediaPickerFileGridItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var fileBloc = IMediaDeviceFileBloc.of(context);
+    var mediaPickerBloc = IMediaPickerBloc.of(context);
+    var mediaDeviceFileBloc = IMediaDeviceFileBloc.of(context);
+    var mediaDeviceFileMetadata = mediaDeviceFileBloc.mediaDeviceFileMetadata;
 
-    var singleMediaPickerBloc = ISingleMediaPickerBloc.of(context);
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
 
-    return Container(
-      color: IFediUiColorTheme.of(context).darkGrey,
-      child: AsyncInitLoadingWidget(
-        loadingFinishedBuilder: (context) => _MediaPickerFileGridItemBodyWidget(
-          onFileSelectedCallback: singleMediaPickerBloc.onFileSelectedCallback,
-          loadingWidget: const _MediaPickerFileGridItemLoadingWidget(),
-        ),
-        asyncInitLoadingBloc: fileBloc,
-        loadingWidget: const _MediaPickerFileGridItemLoadingWidget(),
-      ),
+    return StreamBuilder<bool>(
+      stream:
+          mediaPickerBloc.isFileMetadataSelectedStream(mediaDeviceFileMetadata),
+      initialData:
+          mediaPickerBloc.isFileMetadataSelected(mediaDeviceFileMetadata),
+      builder: (context, snapshot) {
+        var isFileSelected = snapshot.data!;
+
+        return Stack(
+          children: [
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: IFediUiColorTheme.of(context).darkGrey,
+                ),
+                child: AsyncInitLoadingWidget(
+                  loadingFinishedBuilder: (context) =>
+                      const _MediaPickerFileGridItemBodyWidget(
+                    loadingWidget: _MediaPickerFileGridItemLoadingWidget(),
+                  ),
+                  asyncInitLoadingBloc: mediaDeviceFileBloc,
+                  loadingWidget: const _MediaPickerFileGridItemLoadingWidget(),
+                ),
+              ),
+            ),
+            if (isFileSelected)
+              Positioned(
+                right: FediSizes.smallPadding,
+                // ignore: no-equal-arguments
+                bottom: FediSizes.smallPadding,
+                child: Icon(
+                  FediIcons.check_circle_solid,
+                  color: fediUiColorTheme.primaryDark,
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }
 
 class _MediaPickerFileGridItemBodyWidget extends StatelessWidget {
   const _MediaPickerFileGridItemBodyWidget({
-    Key key,
-    @required this.onFileSelectedCallback,
-    @required this.loadingWidget,
+    Key? key,
+    required this.loadingWidget,
   }) : super(key: key);
 
-  final MediaDeviceFileCallback onFileSelectedCallback;
   final Widget loadingWidget;
 
   @override
   Widget build(BuildContext context) {
     var mediaDeviceFileBloc = IMediaDeviceFileBloc.of(context);
+
     return InkWell(
       onTap: () async {
-        onFileSelectedCallback(
-            context, await mediaDeviceFileBloc.retrieveFile());
+        var mediaPickerBloc = IMediaPickerBloc.of(
+          context,
+          listen: false,
+        );
+
+        var mediaDeviceFileMetadata =
+            mediaDeviceFileBloc.mediaDeviceFileMetadata;
+        await mediaPickerBloc
+            .toggleFileMetadataSelection(mediaDeviceFileMetadata);
       },
       child: const _MediaPickerFileGridItemPreviewWidget(),
     );
@@ -56,13 +93,14 @@ class _MediaPickerFileGridItemBodyWidget extends StatelessWidget {
 
 class _MediaPickerFileGridItemIconWidget extends StatelessWidget {
   const _MediaPickerFileGridItemIconWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var mediaDeviceFileBloc = IMediaDeviceFileBloc.of(context);
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Center(
       child: mediaDeviceFileBloc.type == MediaDeviceFileType.video
           ? Icon(
@@ -76,7 +114,7 @@ class _MediaPickerFileGridItemIconWidget extends StatelessWidget {
 
 class _MediaPickerFileGridItemPreviewWidget extends StatelessWidget {
   const _MediaPickerFileGridItemPreviewWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -95,6 +133,7 @@ class _MediaPickerFileGridItemPreviewWidget extends StatelessWidget {
           thumbImageData,
           fit: BoxFit.cover,
           width: double.infinity,
+          // ignore: no-equal-arguments
           height: double.infinity,
         ),
         const _MediaPickerFileGridItemIconWidget(),
@@ -105,7 +144,7 @@ class _MediaPickerFileGridItemPreviewWidget extends StatelessWidget {
 
 class _MediaPickerFileGridItemLoadingWidget extends StatelessWidget {
   const _MediaPickerFileGridItemLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

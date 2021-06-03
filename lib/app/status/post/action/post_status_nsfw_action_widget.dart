@@ -13,30 +13,31 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
 
     return InkWell(
-      child: StreamBuilder<bool>(
-          stream: postStatusBloc.isNsfwSensitiveEnabledStream,
-          initialData: postStatusBloc.isNsfwSensitiveEnabled,
-          builder: (context, snapshot) {
-            var nsfwSensitive = snapshot.data;
-
-            return FediIconButton(
-              icon: Icon(
-                nsfwSensitive == true ? FediIcons.hide : FediIcons.show,
-                color: calculateColor(
-                  context,
-                  nsfwSensitive,
-                ),
-              ),
-              onPressed: () {
-                postStatusBloc.changeNsfwSensitive(
-                    !postStatusBloc.isNsfwSensitiveEnabled);
-              },
-            );
-          }),
       onTap: () {
         postStatusBloc
-            .changeNsfwSensitive(!postStatusBloc.isNsfwSensitiveEnabled);
+            .changeNsfwSensitive(!postStatusBloc.isNsfwSensitiveEnabled!);
       },
+      child: StreamBuilder<bool?>(
+        stream: postStatusBloc.isNsfwSensitiveEnabledStream,
+        initialData: postStatusBloc.isNsfwSensitiveEnabled,
+        builder: (context, snapshot) {
+          var nsfwSensitive = snapshot.data!;
+
+          return FediIconButton(
+            icon: Icon(
+              nsfwSensitive ? FediIcons.hide : FediIcons.show,
+              color: calculateColor(
+                context,
+                nsfwSensitive,
+              ),
+            ),
+            onPressed: () {
+              postStatusBloc
+                  .changeNsfwSensitive(!postStatusBloc.isNsfwSensitiveEnabled!);
+            },
+          );
+        },
+      ),
     );
   }
 

@@ -1,4 +1,4 @@
-import 'package:fedi/app/chat/chat_widget.dart';
+import 'package:fedi/app/chat/chat_body_wrapper_widget.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_item_widget.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_widget.dart';
@@ -21,6 +21,7 @@ class PleromaChatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var chatBloc = IPleromaChatBloc.of(context, listen: true);
+
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc: chatBloc,
       loadingFinishedBuilder: (context) {
@@ -33,9 +34,10 @@ class PleromaChatWidget extends StatelessWidget {
                 .provideToContext(
               context,
               mergeNewItemsImmediately: true,
-              child: const ChatWidgetBody(
+              child: const ChatBodyWrapperWidget(
                 child: ChatMessageListWidget<IPleromaChatMessage>(
                   itemBuilder: _itemBuilder,
+                  itemContextBuilder: _itemContextBuilder,
                 ),
               ),
             ),
@@ -46,16 +48,27 @@ class PleromaChatWidget extends StatelessWidget {
   }
 }
 
-Widget _itemBuilder(BuildContext context) {
+Widget _itemBuilder(BuildContext context) =>
+    const ChatMessageListItemWidget<IPleromaChatMessage>();
+
+Widget _itemContextBuilder(
+  BuildContext context, {
+  required Widget child,
+}) {
   return DisposableProxyProvider<IPleromaChatMessage, IPleromaChatMessageBloc>(
-    update: (context, chatMessage, _) =>
-        PleromaChatMessageBloc.createFromContext(
-      context,
-      chatMessage,
-    ),
+    update: (context, chatMessage, previous) {
+      if (previous != null && previous.remoteId == chatMessage.remoteId) {
+        return previous;
+      } else {
+        return PleromaChatMessageBloc.createFromContext(
+          context,
+          chatMessage,
+        );
+      }
+    },
     child: ProxyProvider<IPleromaChatMessageBloc, IChatMessageBloc>(
       update: (context, value, _) => value,
-      child: const ChatMessageListItemWidget<IPleromaChatMessage>(),
+      child: child,
     ),
   );
 }

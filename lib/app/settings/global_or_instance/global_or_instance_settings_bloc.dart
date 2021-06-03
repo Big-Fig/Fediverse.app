@@ -20,9 +20,9 @@ abstract class IGlobalOrInstanceSettingsBloc<T extends ISettings>
 
   Stream<T> get globalSettingsDataStream;
 
-  T get instanceSettingsData;
+  T? get instanceSettingsData;
 
-  Stream<T> get instanceSettingsDataStream;
+  Stream<T?> get instanceSettingsDataStream;
 
   Future clearInstanceSettings();
 

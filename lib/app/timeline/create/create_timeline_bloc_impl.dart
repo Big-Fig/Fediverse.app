@@ -1,13 +1,11 @@
-import 'dart:developer';
-
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc.dart';
 import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc_impl.dart';
@@ -19,7 +17,6 @@ import 'package:fedi/form/field/value/string/validation/string_value_form_field_
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 typedef TimelineSavedCallback = Function(Timeline timeline);
@@ -29,80 +26,56 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   final AuthInstance authInstance;
 
   @override
-  IEditTimelineSettingsBloc get editTimelineSettingsBloc =>
+  IEditTimelineSettingsBloc? get editTimelineSettingsBloc =>
       editTimelineSettingsBlocSubject.value;
 
   @override
-  Stream<IEditTimelineSettingsBloc> get editTimelineSettingsBlocStream =>
+  Stream<IEditTimelineSettingsBloc?> get editTimelineSettingsBlocStream =>
       editTimelineSettingsBlocSubject.stream;
 
-  BehaviorSubject<IEditTimelineSettingsBloc> editTimelineSettingsBlocSubject;
+  // ignore: avoid-late-keyword
+  late BehaviorSubject<IEditTimelineSettingsBloc?>
+      editTimelineSettingsBlocSubject;
 
   @override
-  List<IFormItemBloc> currentItems = [];
+  // ignore: avoid-late-keyword
+  late List<IFormItemBloc> currentItems = [];
 
-  TimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
+  // ignore: avoid-late-keyword
+  late TimelineLocalPreferenceBloc timelineLocalPreferencesBloc;
 
   @override
-  ITimelineSettingsBloc timelineSettingsBloc;
+  // ignore: avoid-late-keyword
+  late ITimelineSettingsBloc timelineSettingsBloc;
 
   final IWebSocketsSettingsBloc webSocketsSettingsBloc;
 
   CreateTimelineBloc({
-    @required this.timelineSavedCallback,
-    @required this.authInstance,
-    @required this.webSocketsSettingsBloc,
-    @required ILocalPreferencesService localPreferencesService,
+    required this.timelineSavedCallback,
+    required this.authInstance,
+    required this.webSocketsSettingsBloc,
+    required ILocalPreferencesService localPreferencesService,
   }) : super(isAllItemsInitialized: false) {
     var timelineId = TimelineSettings.generateUniqueTimelineId();
 
     var startType = TimelineType.public;
-
-    idFieldBloc = StringValueFormFieldBloc(
-      isEnabled: false,
-      originValue: timelineId,
-      validators: [],
-      maxLength: null,
-    );
-
-    typeFieldBloc = TimelineTypeSingleFromListValueFormFieldBloc(
-      originValue: startType,
-      validators: [],
-      isNullValuePossible: false,
-    );
-    nameFieldBloc = StringValueFormFieldBloc(
-      originValue: "",
-      validators: [
-        StringValueFormFieldNonEmptyValidationError.createValidator(),
-      ],
-      maxLength: 50,
-    );
-
-    timelineLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
-      localPreferencesService,
-      userAtHost: authInstance.userAtHost,
+    timelineLocalPreferencesBloc = _createTimelineLocalPreferencesBloc(
+      localPreferencesService: localPreferencesService,
       timelineId: timelineId,
-      defaultValue: Timeline.byType(
-        id: timelineId,
-        type: startType,
-        settings: TimelineSettings.createDefaultSettings(startType),
-        label: null,
-        isPossibleToDelete: true,
-      ),
+      startType: startType,
     );
 
     timelineSettingsBloc = TimelineSettingsBloc(
-        timelineLocalPreferencesBloc: timelineLocalPreferencesBloc);
+      timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
+    );
+
+    idFieldBloc = _createIdField(timelineId);
+
+    typeFieldBloc = _createTypeField(startType);
+    nameFieldBloc = _createNameField();
 
     editTimelineSettingsBlocSubject = BehaviorSubject.seeded(
-      EditTimelineSettingsBloc(
-        settingsBloc: timelineSettingsBloc,
-        timelineType: startType,
-        authInstance: authInstance,
-        isNullableValuesPossible: true,
-        isEnabled: true,
-        webSocketsSettingsBloc: webSocketsSettingsBloc,
-      ),
+      _createEditTimelineSettingsBloc(startType),
     );
 
     _onFieldsChanged();
@@ -123,21 +96,77 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     addDisposable(disposable: editTimelineSettingsBloc);
   }
 
-  void _onTypeChanged(TimelineType timelineType) {
-    var oldEditTimelineSettingsBloc = editTimelineSettingsBloc;
-
-    var newEditTimelineSettingsBloc = EditTimelineSettingsBloc(
+  EditTimelineSettingsBloc _createEditTimelineSettingsBloc(
+    TimelineType startType,
+  ) {
+    return EditTimelineSettingsBloc(
       settingsBloc: timelineSettingsBloc,
-      timelineType: timelineType,
+      timelineType: startType,
       authInstance: authInstance,
       isNullableValuesPossible: true,
       isEnabled: true,
       webSocketsSettingsBloc: webSocketsSettingsBloc,
     );
+  }
+
+  TimelineLocalPreferenceBloc _createTimelineLocalPreferencesBloc({
+    required ILocalPreferencesService localPreferencesService,
+    required String timelineId,
+    required TimelineType startType,
+  }) {
+    return TimelineLocalPreferenceBloc.byId(
+      localPreferencesService,
+      userAtHost: authInstance.userAtHost,
+      timelineId: timelineId,
+      defaultPreferenceValue: Timeline.byType(
+        id: timelineId,
+        type: startType,
+        settings: TimelineSettings.createDefaultSettings(startType),
+        label: null,
+        isPossibleToDelete: true,
+      ),
+    );
+  }
+
+  StringValueFormFieldBloc _createNameField() {
+    return StringValueFormFieldBloc(
+      originValue: '',
+      validators: [
+        StringValueFormFieldNonEmptyValidationError.createValidator(),
+      ],
+      // ignore: no-magic-number
+      maxLength: 50,
+    );
+  }
+
+  TimelineTypeSingleFromListValueFormFieldBloc _createTypeField(
+    TimelineType startType,
+  ) {
+    return TimelineTypeSingleFromListValueFormFieldBloc(
+      originValue: startType,
+      validators: [],
+      isNullValuePossible: false,
+    );
+  }
+
+  StringValueFormFieldBloc _createIdField(String timelineId) {
+    return StringValueFormFieldBloc(
+      isEnabled: false,
+      originValue: timelineId,
+      validators: [],
+      maxLength: null,
+    );
+  }
+
+  void _onTypeChanged(TimelineType timelineType) {
+    var oldEditTimelineSettingsBloc = editTimelineSettingsBloc;
+
+    var newEditTimelineSettingsBloc =
+        _createEditTimelineSettingsBloc(timelineType);
     timelineLocalPreferencesBloc.setValue(
       Timeline(
         id: idFieldBloc.currentValue,
-        typeString: timelineType?.toJsonValue(),
+        typeString: timelineType.toJsonValue(),
         settings: TimelineSettings.createDefaultSettings(
           timelineType,
         ),
@@ -159,9 +188,9 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
       idFieldBloc,
       nameFieldBloc,
       typeFieldBloc,
-      editTimelineSettingsBloc,
+      if (editTimelineSettingsBloc != null) editTimelineSettingsBloc!,
     ];
-    onItemsChanged();
+    onFormItemsChanged();
   }
 
   @override
@@ -170,13 +199,16 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   }
 
   @override
-  IStringValueFormFieldBloc idFieldBloc;
+  // ignore: avoid-late-keyword
+  late IStringValueFormFieldBloc idFieldBloc;
 
   @override
-  IStringValueFormFieldBloc nameFieldBloc;
+  // ignore: avoid-late-keyword
+  late IStringValueFormFieldBloc nameFieldBloc;
 
   @override
-  ITimelineTypeSingleFromListValueFormFieldBloc typeFieldBloc;
+  // ignore: avoid-late-keyword
+  late ITimelineTypeSingleFromListValueFormFieldBloc typeFieldBloc;
 
   @override
   bool get isSomethingChanged => true;
@@ -191,7 +223,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
       label: nameFieldBloc.currentValue,
       typeString: typeFieldBloc.currentValue.toJsonValue(),
       isPossibleToDelete: true,
-      settings: editTimelineSettingsBloc.currentSettings,
+      settings: editTimelineSettingsBloc!.currentSettings!,
     );
     timelineSavedCallback(timeline);
   }

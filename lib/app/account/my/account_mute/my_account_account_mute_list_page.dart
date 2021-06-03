@@ -1,6 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_account_pagination_list_widget.dart';
-import 'package:fedi/app/account/my/account_mute/my_account_account_mute_action_button_widget.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_network_only_account_list_bloc.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_network_only_account_list_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
@@ -23,6 +22,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'action/my_account_account_mute_action_list_widget.dart';
+
 class MyAccountAccountMuteListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
           children: [
             const _MyAccountAccountMuteListPageWarningWidget(),
             const FediMediumVerticalSpacer(),
-            const _MyAccountAccountBlockListPageAddButton(),
+            const _MyAccountAccountMuteListPageAddButton(),
             const FediMediumVerticalSpacer(),
             const FediBigVerticalSpacer(),
             const FediUltraLightGreyDivider(),
@@ -53,17 +54,17 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
   const MyAccountAccountMuteListPage();
 }
 
-class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
-  const _MyAccountAccountBlockListPageAddButton({
-    Key key,
+class _MyAccountAccountMuteListPageAddButton extends StatelessWidget {
+  const _MyAccountAccountMuteListPageAddButton({
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var listBloc = IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(
-      context,
-    );
+    var myAccountAccountMuteNetworkOnlyAccountListBloc =
+        IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(context);
     var paginationListBloc = IPaginationListBloc.of(context);
+
     return FediPrimaryFilledTextButtonWithBorder(
       S.of(context).app_account_my_accountMute_action_add,
       expanded: false,
@@ -71,14 +72,19 @@ class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
         goToSingleSelectAccountPage(
           context,
           isNeedPreFetchRelationship: true,
+          // ignore: no-empty-block
           accountSelectedCallback: (context, account) async {
             // nothing
           },
           accountActions: [
-            MyAccountAccountMuteActionButtonWidget(
-              listBloc: listBloc,
-              paginationListBloc: paginationListBloc,
-              defaultMuting: false,
+            Provider<IMyAccountAccountMuteNetworkOnlyAccountListBloc>.value(
+              value: myAccountAccountMuteNetworkOnlyAccountListBloc,
+              child: Provider<IPaginationListBloc>.value(
+                value: paginationListBloc,
+                child: const MyAccountAccountMuteActionListWidget(
+                  defaultMuting: false,
+                ),
+              ),
             ),
           ],
           excludeMyAccount: true,
@@ -93,13 +99,13 @@ class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
 
 class _MyAccountAccountMuteListPageWarningWidget extends StatelessWidget {
   const _MyAccountAccountMuteListPageWarningWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FediNoteDescriptionWidget(
-      S.of(context).app_account_my_accountMute_description,
+      S.of(context).app_account_mute_description,
     );
   }
 }
@@ -126,6 +132,7 @@ MaterialPageRoute createMyAccountAccountMuteListPage() {
               PaginationPage<IAccount>, IAccount>(
             child: AccountPaginationListBloc.provideToContext(
               context,
+              loadFromCacheDuringInit: false,
               child: const MyAccountAccountMuteListPage(),
             ),
           ),

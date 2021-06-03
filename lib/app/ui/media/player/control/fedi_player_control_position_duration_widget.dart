@@ -11,17 +11,18 @@ class FediPlayerControlPositionDurationWidget extends StatelessWidget {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context);
 
     return StreamBuilder<bool>(
-        stream: mediaPlayerBloc.isBufferingStream,
-        initialData: mediaPlayerBloc.isBuffering,
-        builder: (context, snapshot) {
-          var isBuffering = snapshot.data;
+      stream: mediaPlayerBloc.isBufferingStream,
+      initialData: mediaPlayerBloc.isBuffering,
+      builder: (context, snapshot) {
+        var isBuffering = snapshot.data!;
 
-          if (isBuffering) {
-            return _FediPlayerControlPositionDurationLoadingWidget();
-          } else {
-            return _FediPlayerControlPositionDurationBodyWidget();
-          }
-        });
+        if (isBuffering) {
+          return _FediPlayerControlPositionDurationLoadingWidget();
+        } else {
+          return _FediPlayerControlPositionDurationBodyWidget();
+        }
+      },
+    );
   }
 
   const FediPlayerControlPositionDurationWidget();
@@ -29,17 +30,19 @@ class FediPlayerControlPositionDurationWidget extends StatelessWidget {
 
 class _FediPlayerControlPositionDurationBodyWidget extends StatelessWidget {
   const _FediPlayerControlPositionDurationBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context);
+
     return StreamBuilder<Duration>(
       stream: mediaPlayerBloc.positionDurationStream,
       builder: (context, snapshot) {
         var duration = snapshot.data;
-        return Provider<Duration>.value(
+
+        return Provider<Duration?>.value(
           value: duration,
           child: const FediPlayerControlDurationWidget(),
         );
@@ -50,13 +53,14 @@ class _FediPlayerControlPositionDurationBodyWidget extends StatelessWidget {
 
 class _FediPlayerControlPositionDurationLoadingWidget extends StatelessWidget {
   const _FediPlayerControlPositionDurationLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FediCircularProgressIndicator(
       color: IFediUiColorTheme.of(context).white,
+      // ignore: no-magic-number
       size: 22.0,
     );
   }

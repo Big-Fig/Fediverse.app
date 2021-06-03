@@ -11,27 +11,28 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("account_big_list_item_widget.dart");
+var _logger = Logger('account_big_list_item_widget.dart');
 
 class AccountBigListItemWidget extends StatelessWidget {
-  final AccountCallback accountSelectedCallback;
-  final List<Widget> accountActions;
+  final AccountCallback? accountSelectedCallback;
+  final List<Widget>? accountActions;
 
   const AccountBigListItemWidget({
-    @required this.accountSelectedCallback,
+    required this.accountSelectedCallback,
     this.accountActions,
   });
 
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
-    _logger.finest(() => "build ${accountBloc.acct}");
+    _logger.finest(() => 'build ${accountBloc.acct}');
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        if (accountSelectedCallback != null) {
-          accountSelectedCallback(context, accountBloc.account);
+        var callback = accountSelectedCallback;
+        if (callback != null) {
+          callback(context, accountBloc.account);
         }
       },
       child: Padding(
@@ -67,9 +68,9 @@ class AccountBigListItemWidget extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              ...accountActions,
+                              ...accountActions!,
                             ],
-                          )
+                          ),
                       ],
                     ),
                   ),

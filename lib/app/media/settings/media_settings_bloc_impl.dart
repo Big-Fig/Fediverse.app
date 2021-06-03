@@ -1,23 +1,24 @@
-import 'package:fedi/app/media/settings/local_preferences/media_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/media/settings/local_preferences/media_settings_local_preference_bloc.dart';
 import 'package:fedi/app/media/settings/media_settings_bloc.dart';
 import 'package:fedi/app/media/settings/media_settings_model.dart';
-import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:fedi/app/settings/global_or_instance/local_preferences/global_or_instance_settings_bloc_local_preference_impl.dart';
 
 class MediaSettingsBloc
-    extends GlobalOrInstanceSettingsLocalPreferencesBloc<MediaSettings>
+    extends GlobalOrInstanceSettingsLocalPreferenceBloc<MediaSettings>
     implements IMediaSettingsBloc {
   MediaSettingsBloc({
-    @required IMediaSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
-    @required IMediaSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
+    required IMediaSettingsLocalPreferenceBloc<MediaSettings>
+        globalLocalPreferencesBloc,
+    required IMediaSettingsLocalPreferenceBloc<MediaSettings?>
+        instanceLocalPreferencesBloc,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
         );
 
   @override
-  void changeAutoPlay(bool value) {
-    updateInstanceSettings(
+  Future changeAutoPlay(bool value) {
+    return updateInstanceSettings(
       settingsData.copyWith(
         autoPlay: value,
       ),
@@ -25,8 +26,8 @@ class MediaSettingsBloc
   }
 
   @override
-  void changeAutoInit(bool value) {
-    updateInstanceSettings(
+  Future changeAutoInit(bool value) {
+    return updateInstanceSettings(
       settingsData.copyWith(
         autoInit: value,
       ),

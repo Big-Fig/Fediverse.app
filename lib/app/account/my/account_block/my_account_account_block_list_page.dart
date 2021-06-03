@@ -55,7 +55,7 @@ class MyAccountAccountBlockListPage extends StatelessWidget {
 
 class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
   const _MyAccountAccountBlockListPageAddButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -64,6 +64,7 @@ class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
       context,
     );
     var paginationListBloc = IPaginationListBloc.of(context);
+
     return FediPrimaryFilledTextButtonWithBorder(
       S.of(context).app_account_my_accountBlock_action_add,
       expanded: false,
@@ -71,6 +72,7 @@ class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
         goToSingleSelectAccountPage(
           context,
           isNeedPreFetchRelationship: true,
+          // ignore: no-empty-block
           accountSelectedCallback: (context, account) async {
             // nothing
           },
@@ -93,13 +95,13 @@ class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
 
 class _MyAccountAccountBlockListPageWarningWidget extends StatelessWidget {
   const _MyAccountAccountBlockListPageWarningWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FediNoteDescriptionWidget(
-      S.of(context).app_account_my_accountBlock_description,
+      S.of(context).app_account_block_description,
     );
   }
 }
@@ -126,6 +128,7 @@ MaterialPageRoute createMyAccountAccountBlockListPage() {
               PaginationPage<IAccount>, IAccount>(
             child: AccountPaginationListBloc.provideToContext(
               context,
+              loadFromCacheDuringInit: false,
               child: const MyAccountAccountBlockListPage(),
             ),
           ),

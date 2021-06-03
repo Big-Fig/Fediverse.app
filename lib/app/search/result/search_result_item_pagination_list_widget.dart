@@ -1,8 +1,10 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/list/account_list_item_widget.dart';
+import 'package:fedi/app/account/local_account_bloc_impl.dart';
+import 'package:fedi/app/hashtag/hashtag_bloc.dart';
+import 'package:fedi/app/hashtag/hashtag_bloc_impl.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/list/hashtag_list_item_widget.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
@@ -10,7 +12,7 @@ import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/status/thread/local_status_thread_page.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
@@ -26,26 +28,33 @@ import 'package:provider/provider.dart';
 
 class SearchResultItemPaginationListWidget
     extends FediPaginationListWidget<ISearchResultItem> {
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
   const SearchResultItemPaginationListWidget({
-    Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
+    Key? key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
+    bool refreshOnFirstLoad = true,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
-            key: key,
-            header: header,
-            footer: footer,
-            alwaysShowFooter: alwaysShowFooter,
-            alwaysShowHeader: alwaysShowHeader);
+          key: key,
+          header: header,
+          footer: footer,
+          alwaysShowFooter: alwaysShowFooter,
+          alwaysShowHeader: alwaysShowHeader,
+          refreshOnFirstLoad: refreshOnFirstLoad,
+        );
 
   @override
-  ScrollView buildItemsCollectionView(
-      {@required BuildContext context,
-      @required List<ISearchResultItem> items,
-      @required Widget header,
-      @required Widget footer}) {
-    SearchResultItemType previousType;
+  ScrollView buildItemsCollectionView({
+    required BuildContext context,
+    required List<ISearchResultItem> items,
+    required Widget? header,
+    required Widget? footer,
+  }) {
+    SearchResultItemType? previousType;
 
     var itemWithSeparators = <_ItemOrSeparator<ISearchResultItem>>[];
     items.forEach((item) {
@@ -85,6 +94,7 @@ class SearchResultItemPaginationListWidget
     return PaginationListWidget.buildItemsListView<
         _ItemOrSeparator<ISearchResultItem>>(
       context: context,
+      keyboardDismissBehavior: keyboardDismissBehavior,
       items: itemWithSeparators,
       header: header,
       footer: footer,
@@ -95,25 +105,20 @@ class SearchResultItemPaginationListWidget
           return Padding(
             padding: FediPadding.allMediumPadding,
             child: Text(
-              itemOrSeparator.separator,
+              itemOrSeparator.separator!,
               style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
             ),
           );
         } else {
-          var item = itemOrSeparator.item;
+          var item = itemOrSeparator.item!;
 
           switch (item.type) {
             case SearchResultItemType.status:
               return buildStatusListItem(item, index);
-              break;
             case SearchResultItemType.account:
-              return buildAccountListItem(item.account);
-              break;
+              return buildAccountListItem(item.account!);
             case SearchResultItemType.hashtag:
               return buildHashtagListItem(item, index);
-              break;
-            default:
-              throw "Invalid item.type ${item.type}";
           }
         }
       },
@@ -122,17 +127,27 @@ class SearchResultItemPaginationListWidget
 
   Widget buildHashtagListItem(ISearchResultItem item, int index) {
     return Provider<IHashtag>.value(
-      value: item.hashtag,
-      child: FediListTile(
-        isFirstInList: index == 0, //                isFirstInList: false,
-        child: const HashtagListItemWidget(),
+      value: item.hashtag!,
+      child: DisposableProxyProvider<IHashtag, IHashtagBloc>(
+        update: (context, value, previous) => HashtagBloc.createFromContext(
+          context,
+          hashtag: value,
+          myAccountFeaturedHashtag: null,
+          needLoadFeaturedState: false,
+        ),
+        child: FediListTile(
+          isFirstInList: index == 0, //                isFirstInList: false,
+          child: const HashtagListItemWidget(
+            displayHistory: false,
+          ),
+        ),
       ),
     );
   }
 
   Provider<IStatus> buildStatusListItem(ISearchResultItem item, int index) {
     return Provider<IStatus>.value(
-      value: item.status,
+      value: item.status!,
       child: FediListTile(
         isFirstInList: index == 0, //                isFirstInList: false,
         child: DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
@@ -148,50 +163,66 @@ class SearchResultItemPaginationListWidget
     );
   }
 
-  Provider<IAccount> buildAccountListItem(IAccount account) {
+  Widget buildAccountListItem(IAccount account) {
     return Provider<IAccount>.value(
       value: account,
       child: DisposableProxyProvider<IAccount, IAccountBloc>(
-          update: (context, account, oldValue) => AccountBloc.createFromContext(
-              context,
-              isNeedWatchLocalRepositoryForUpdates: false,
-              account: account,
-              isNeedRefreshFromNetworkOnInit: false,
-              isNeedWatchWebSocketsEvents: false,
-              isNeedPreFetchRelationship: false),
-          child: Column(
-            children: [
-              const AccountListItemWidget(
-                accountSelectedCallback: _accountSelectedCallback,
-              ),
-              const FediUltraLightGreyDivider()
-            ],
-          )),
+        update: (context, account, oldValue) =>
+            LocalAccountBloc.createFromContext(
+          context,
+          isNeedWatchLocalRepositoryForUpdates: false,
+          account: account,
+          isNeedRefreshFromNetworkOnInit: false,
+          isNeedWatchWebSocketsEvents: false,
+          isNeedPreFetchRelationship: false,
+        ),
+        child: Column(
+          children: [
+            const AccountListItemWidget(
+              accountSelectedCallback: _accountSelectedCallback,
+            ),
+            const FediUltraLightGreyDivider(),
+          ],
+        ),
+      ),
     );
   }
 
   @override
   IPaginationListBloc<PaginationPage<ISearchResultItem>, ISearchResultItem>
-      retrievePaginationListBloc(BuildContext context, {bool listen}) =>
+      retrievePaginationListBloc(
+    BuildContext context, {
+    required bool listen,
+  }) =>
           Provider.of<
               IPaginationListBloc<PaginationPage<ISearchResultItem>,
                   ISearchResultItem>>(context, listen: listen);
 }
 
 void _accountSelectedCallback(BuildContext context, IAccount account) {
-  goToAccountDetailsPage(context, account);
+  goToLocalAccountDetailsPage(
+    context,
+    account: account,
+  );
 }
 
 class _ItemOrSeparator<T> {
-  final T item;
-  final String separator;
+  final T? item;
+  final String? separator;
 
-  _ItemOrSeparator({@required this.item, @required this.separator}) {
+  _ItemOrSeparator({
+    required this.item,
+    required this.separator,
+  }) {
     assert(item != null || separator != null);
     assert(!(item != null && separator != null));
   }
 }
 
 void _onStatusClick(BuildContext context, IStatus status) {
-  goToStatusThreadPage(context, status: status, initialMediaAttachment: null);
+  goToLocalStatusThreadPage(
+    context,
+    status: status,
+    initialMediaAttachment: null,
+  );
 }

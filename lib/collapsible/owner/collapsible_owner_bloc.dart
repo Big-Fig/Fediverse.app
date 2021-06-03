@@ -7,13 +7,13 @@ abstract class ICollapsibleOwnerBloc extends IDisposable {
   static ICollapsibleOwnerBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<ICollapsibleOwnerBloc>(context, listen: listen);
 
-  bool get isAtLeastOneVisibleItemExpanded;
+  bool? get isAtLeastOneVisibleItemExpanded;
 
   Stream<bool> get isAtLeastOneVisibleItemExpandedStream;
 
-  List<ICollapsibleItemBloc> get visibleItems;
+  List<ICollapsibleItemBloc>? get visibleItems;
 
-  Stream<List<ICollapsibleItemBloc>> get visibleItemsStream;
+  Stream<List<ICollapsibleItemBloc>?> get visibleItemsStream;
 
   Future addVisibleItem(ICollapsibleItemBloc item);
 

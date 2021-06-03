@@ -5,30 +5,33 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc_proxy_provider.dart';
+import 'package:fedi/app/html/html_text_helper.dart';
+import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/share/status/share_status_bloc.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 import 'package:provider/provider.dart';
 
 class PleromaChatShareStatusBloc extends PleromaChatShareBloc
     implements IPleromaChatShareBloc, IShareStatusBloc {
   @override
   final IStatus status;
+  final IMediaAttachmentReuploadService mediaAttachmentReuploadService;
 
   PleromaChatShareStatusBloc({
-    @required this.status,
-    @required IPleromaChatRepository chatRepository,
-    @required IPleromaChatMessageRepository chatMessageRepository,
-    @required IPleromaChatService pleromaChatService,
-    @required IMyAccountBloc myAccountBloc,
-    @required IAccountRepository accountRepository,
-    @required IPleromaAccountService pleromaAccountService,
+    required this.status,
+    required this.mediaAttachmentReuploadService,
+    required IPleromaChatRepository chatRepository,
+    required IPleromaChatMessageRepository chatMessageRepository,
+    required IPleromaApiChatService pleromaChatService,
+    required IMyAccountBloc myAccountBloc,
+    required IAccountRepository accountRepository,
+    required IPleromaApiAccountService pleromaAccountService,
   }) : super(
           chatRepository: chatRepository,
           chatMessageRepository: chatMessageRepository,
@@ -39,17 +42,59 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
         );
 
   @override
-  PleromaChatMessageSendData createSendData() {
-    var url = status.url ?? "";
-    var content = message == null ? url : "${message ?? ""} $url";
-    var messageSendData = PleromaChatMessageSendData(
-      content: content?.trim(),
+  Future<PleromaApiChatMessageSendData>
+      createPleromaChatMessageSendData() async {
+    var accountAcctAndDisplayName =
+        status.account.acct + ' (${status.account.displayName})';
+
+    var statusSpoiler = status.spoilerText;
+    var statusContent = status.content?.isNotEmpty == true
+        ? status.content?.extractRawStringFromHtmlString()
+        : null;
+    var statusUrl = status.url;
+    String? statusMediaAttachmentsString;
+    String? mediaId;
+    if (status.mediaAttachments?.length == 1) {
+      var reuploadedMediaAttachment =
+          await mediaAttachmentReuploadService.reuploadMediaAttachment(
+        originalMediaAttachment: status.mediaAttachments!.first,
+      );
+      mediaId = reuploadedMediaAttachment.id;
+    } else {
+      statusMediaAttachmentsString = status.mediaAttachments
+          ?.map((mediaAttachment) => mediaAttachment.url)
+          .join(', ');
+    }
+
+    if (statusMediaAttachmentsString != null) {
+      statusMediaAttachmentsString = '[$statusMediaAttachmentsString]';
+    }
+    var additionalMessage = message;
+
+    var contentParts = <String?>[
+      accountAcctAndDisplayName,
+      statusSpoiler,
+      statusContent,
+      statusMediaAttachmentsString,
+      additionalMessage,
+      statusUrl,
+    ].where((element) => element?.isNotEmpty == true).toList();
+
+    var content = contentParts.join('\n\n');
+    var messageSendData = PleromaApiChatMessageSendData(
+      content: content.trim(),
+      mediaId: mediaId,
+      idempotencyKey: null,
     );
+
     return messageSendData;
   }
 
-  static Widget provideToContext(BuildContext context,
-      {@required IStatus status, @required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required IStatus status,
+    required Widget child,
+  }) {
     return DisposableProvider<PleromaChatShareStatusBloc>(
       create: (context) => createFromContext(context, status),
       child: ProxyProvider<PleromaChatShareStatusBloc, IPleromaChatShareBloc>(
@@ -66,9 +111,15 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
   }
 
   static PleromaChatShareStatusBloc createFromContext(
-          BuildContext context, IStatus status) =>
+    BuildContext context,
+    IStatus status,
+  ) =>
       PleromaChatShareStatusBloc(
         status: status,
+        mediaAttachmentReuploadService: IMediaAttachmentReuploadService.of(
+          context,
+          listen: false,
+        ),
         chatRepository: IPleromaChatRepository.of(
           context,
           listen: false,
@@ -77,7 +128,7 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        pleromaChatService: IPleromaChatService.of(
+        pleromaChatService: IPleromaApiChatService.of(
           context,
           listen: false,
         ),
@@ -85,15 +136,13 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        pleromaAccountService:
-            IPleromaAccountService.of(context, listen: false),
+        myAccountBloc: IMyAccountBloc.of(
+          context,
+          listen: false,
+        ),
+        pleromaAccountService: IPleromaApiAccountService.of(
+          context,
+          listen: false,
+        ),
       );
-
-  @override
-  bool get isPossibleToShare => shareSelectAccountBloc.isTargetAccountsNotEmpty;
-
-  @override
-  Stream<bool> get isPossibleToShareStream =>
-      shareSelectAccountBloc.isTargetAccountsNotEmptyStream;
 }

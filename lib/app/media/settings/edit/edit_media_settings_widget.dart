@@ -9,7 +9,7 @@ class EditMediaSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditMediaSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override
@@ -26,7 +26,7 @@ class EditMediaSettingsWidget extends StatelessWidget {
 
 class _EditMediaSettingsAutoPlayFieldWidget extends StatelessWidget {
   const _EditMediaSettingsAutoPlayFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -42,7 +42,7 @@ class _EditMediaSettingsAutoPlayFieldWidget extends StatelessWidget {
 
 class _EditMediaSettingsAutoInitFieldWidget extends StatelessWidget {
   const _EditMediaSettingsAutoInitFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
