@@ -1045,6 +1045,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Мин. длительность"),
         "app_instance_details_field_pollLimit_title":
             MessageLookupByLibrary.simpleMessage("Лимиты опроса"),
+        "app_instance_details_field_publicTimeline_label":
+            MessageLookupByLibrary.simpleMessage("Публичная лента"),
+        "app_instance_details_field_publicTimeline_value":
+            MessageLookupByLibrary.simpleMessage("Записи"),
         "app_instance_details_field_registrationsLimits_title":
             MessageLookupByLibrary.simpleMessage("Регистрация"),
         "app_instance_details_field_registrations_label":

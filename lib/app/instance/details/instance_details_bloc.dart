@@ -10,7 +10,10 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 abstract class IInstanceDetailsBloc
     implements IInstanceBloc, IAsyncInitLoadingBloc, IInstanceLocationBloc {
-  static IInstanceDetailsBloc of(BuildContext context, {bool listen = true}) =>
+  static IInstanceDetailsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IInstanceDetailsBloc>(context, listen: listen);
 
   RefreshController get refreshController;
