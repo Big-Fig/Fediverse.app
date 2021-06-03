@@ -5,7 +5,7 @@ import 'package:moor/moor.dart';
 @DataClassName("DbAccount")
 class DbAccounts extends Table {
   // integer ids works better in SQLite
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn get id => integer().nullable().autoIncrement()();
 
   TextColumn get remoteId => text().customConstraint("UNIQUE NOT NULL")();
 
@@ -13,7 +13,7 @@ class DbAccounts extends Table {
 
   TextColumn get url => text()();
 
-  TextColumn get note => text()();
+  TextColumn get note => text().nullable()();
 
   BoolColumn get locked => boolean()();
 
@@ -27,7 +27,7 @@ class DbAccounts extends Table {
 
   IntColumn get statusesCount => integer()();
 
-  TextColumn get displayName => text()();
+  TextColumn get displayName => text().nullable()();
 
   DateTimeColumn get createdAt => dateTime()();
 
@@ -42,19 +42,19 @@ class DbAccounts extends Table {
   DateTimeColumn get lastStatusAt => dateTime().nullable()();
 
   TextColumn get fields =>
-      text().nullable().map(PleromaFieldListDatabaseConverter()).nullable()();
+      text().nullable().map(PleromaApiFieldListDatabaseConverter()).nullable()();
 
   TextColumn get emojis =>
-      text().nullable().map(PleromaEmojiListDatabaseConverter()).nullable()();
+      text().nullable().map(PleromaApiEmojiListDatabaseConverter()).nullable()();
 
   TextColumn get pleromaBackgroundImage => text().nullable()();
 
   TextColumn get pleromaTags =>
-      text().nullable().map(PleromaTagListDatabaseConverter()).nullable()();
+      text().nullable().map(PleromaApiTagListDatabaseConverter()).nullable()();
 
   TextColumn get pleromaRelationship => text()
       .nullable()
-      .map(PleromaAccountRelationshipDatabaseConverter())
+      .map(PleromaApiAccountRelationshipDatabaseConverter())
       .nullable()();
 
   BoolColumn get pleromaIsAdmin => boolean().nullable()();
@@ -78,4 +78,6 @@ class DbAccounts extends Table {
   BoolColumn get pleromaAllowFollowingMove => boolean().nullable()();
 
   BoolColumn get pleromaSkipThreadContainment => boolean().nullable()();
+
+  BoolColumn get pleromaAcceptsChatMessages => boolean().nullable()();
 }

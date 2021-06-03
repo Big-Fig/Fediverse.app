@@ -20,7 +20,10 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
       _isInitLoadingSubject.stream.distinct();
 
   @override
-  AsyncInitLoadingState get initLoadingState => _isInitLoadingSubject.value;
+  AsyncInitLoadingState get initLoadingState => _isInitLoadingSubject.value!;
+
+  bool get isInitLoadingStateFinished =>
+      initLoadingState == AsyncInitLoadingState.finished;
 
   @override
   dynamic initLoadingException;
@@ -31,6 +34,7 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
 
   @override
   Future performAsyncInit() async {
+    _logger.finest(() => "performAsyncInit");
     if (initLoadingState == AsyncInitLoadingState.notStarted) {
       if (!_isInitLoadingSubject.isClosed) {
         _isInitLoadingSubject.add(AsyncInitLoadingState.loading);
@@ -56,5 +60,6 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
   }
 
   @protected
+  @mustCallSuper
   Future internalAsyncInit();
 }

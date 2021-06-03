@@ -1,21 +1,37 @@
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extended_nested_scroll_view;
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_widget.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart' hide NestedScrollView;
+import 'package:logging/logging.dart';
+
+var _logger =
+    Logger("fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart");
 
 typedef TabBarViewContainerBuilder = Widget Function(
-    BuildContext context, Widget child);
+  BuildContext context,
+  Widget child,
+);
 
 typedef TabBodyProviderBuilder = Widget Function(
-    BuildContext context, int index, Widget child);
+  BuildContext context,
+  int index,
+  Widget child,
+);
 typedef TabBodyContentBuilder = Widget Function(
-    BuildContext context, int index);
+  BuildContext context,
+  int index,
+);
 typedef TabBodyOverlayBuilder = Widget Function(
-    BuildContext context, int index);
+  BuildContext context,
+  int index,
+);
+
+typedef TabsEmptyBuilder = Widget Function(BuildContext context);
 
 class FediNestedScrollViewWithNestedScrollableTabsWidget
     extends FediNestedScrollViewWidget {
@@ -24,17 +40,19 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
   final TabBodyProviderBuilder tabBodyProviderBuilder;
   final TabBodyContentBuilder tabBodyContentBuilder;
   final TabBodyOverlayBuilder tabBodyOverlayBuilder;
-  final TabBarViewContainerBuilder tabBarViewContainerBuilder;
+  final TabBarViewContainerBuilder? tabBarViewContainerBuilder;
+  final TabsEmptyBuilder? tabsEmptyBuilder;
 
   FediNestedScrollViewWithNestedScrollableTabsWidget({
-    @required Widget onLongScrollUpTopOverlayWidget,
-    @required List<Widget> topSliverWidgets,
-    @required double topSliverScrollOffsetToShowWhiteStatusBar,
-    @required this.tabKeyPrefix,
-    @required this.tabBarViewContainerBuilder,
-    @required this.tabBodyProviderBuilder,
-    @required this.tabBodyContentBuilder,
-    @required this.tabBodyOverlayBuilder,
+    required Widget? onLongScrollUpTopOverlayWidget,
+    required List<Widget> topSliverWidgets,
+    required double? topSliverScrollOffsetToShowWhiteStatusBar,
+    required this.tabKeyPrefix,
+    required this.tabBarViewContainerBuilder,
+    required this.tabBodyProviderBuilder,
+    required this.tabBodyContentBuilder,
+    required this.tabBodyOverlayBuilder,
+    this.tabsEmptyBuilder,
   }) : super(
           onLongScrollUpTopOverlayWidget: onLongScrollUpTopOverlayWidget,
           topSliverWidgets: topSliverWidgets,
@@ -44,8 +62,10 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
 
   Key _innerScrollPositionKeyBuilder(BuildContext context) {
     var fediNestedScrollViewWithNestedScrollableTabsBloc =
-        IFediNestedScrollViewWithNestedScrollableTabsBloc.of(context,
-            listen: false);
+        IFediNestedScrollViewWithNestedScrollableTabsBloc.of(
+      context,
+      listen: false,
+    );
 
     return _calculateTabKey(
       tabKeyPrefix,
@@ -66,14 +86,14 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
       // we use custom nested scroll controller to achieve scroll callbacks
       // from body scrollables
       controller: nestedScrollController,
-      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
+      headerSliverBuilder: (BuildContext context, bool? innerBoxIsScrolled) =>
           buildTopSliverWidgets(context),
       innerScrollPositionKeyBuilder: () =>
           _innerScrollPositionKeyBuilder(context),
       body: Builder(
         builder: (context) {
           // required by extended_nested_scroll_view
-          nestedScrollController.enableScroll(context);
+          nestedScrollController!.enableScroll(context);
 
           return _NestedBodyWidget(
             tabKeyPrefix: tabKeyPrefix,
@@ -82,6 +102,7 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
             tabBodyContentBuilder: tabBodyContentBuilder,
             tabBodyOverlayBuilder: tabBodyOverlayBuilder,
             tabBarViewContainerBuilder: tabBarViewContainerBuilder,
+            tabsEmptyBuilder: tabsEmptyBuilder,
           );
         },
       ),
@@ -91,19 +112,21 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
 
 class _NestedBodyWidget extends StatefulWidget {
   final String tabKeyPrefix;
-  final Widget onLongScrollUpTopOverlayWidget;
+  final Widget? onLongScrollUpTopOverlayWidget;
   final TabBodyProviderBuilder tabBodyProviderBuilder;
   final TabBodyContentBuilder tabBodyContentBuilder;
   final TabBodyOverlayBuilder tabBodyOverlayBuilder;
-  final TabBarViewContainerBuilder tabBarViewContainerBuilder;
+  final TabBarViewContainerBuilder? tabBarViewContainerBuilder;
+  final TabsEmptyBuilder? tabsEmptyBuilder;
 
   const _NestedBodyWidget({
-    @required this.tabKeyPrefix,
-    @required this.onLongScrollUpTopOverlayWidget,
-    @required this.tabBodyProviderBuilder,
-    @required this.tabBodyContentBuilder,
-    @required this.tabBodyOverlayBuilder,
-    @required this.tabBarViewContainerBuilder,
+    required this.tabKeyPrefix,
+    required this.onLongScrollUpTopOverlayWidget,
+    required this.tabBodyProviderBuilder,
+    required this.tabBodyContentBuilder,
+    required this.tabBodyOverlayBuilder,
+    required this.tabBarViewContainerBuilder,
+    required this.tabsEmptyBuilder,
   });
 
   @override
@@ -135,11 +158,27 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
 
   Widget _buildTabBarView(BuildContext context) {
     var fediNestedScrollViewWithNestedScrollableTabsBloc =
-        IFediNestedScrollViewWithNestedScrollableTabsBloc.of(context,
-            listen: false);
+        IFediNestedScrollViewWithNestedScrollableTabsBloc.of(
+      context,
+      listen: false,
+    );
 
     var tabController =
         fediNestedScrollViewWithNestedScrollableTabsBloc.tabController;
+
+    _logger.finest(
+      () => "_buildTabBarView tabController ${tabController.hashCode}",
+    );
+
+    if (tabController.length == 0) {
+      var tabsEmptyBuilder = widget.tabsEmptyBuilder;
+      if (tabsEmptyBuilder != null) {
+        return Expanded(child: tabsEmptyBuilder(context));
+      } else {
+        return Expanded(child: FediCircularProgressIndicator());
+      }
+    }
+
     Widget child = TabBarView(
       controller: tabController,
       children: List<Widget>.generate(
@@ -155,7 +194,7 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
     );
 
     if (widget.tabBarViewContainerBuilder != null) {
-      child = widget.tabBarViewContainerBuilder(context, child);
+      child = widget.tabBarViewContainerBuilder!(context, child);
     }
     return Expanded(
       child: child,
@@ -169,16 +208,16 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
 class _NestedBodyTabItemWidget extends StatefulWidget {
   final TabBodyProviderBuilder tabBodyProviderBuilder;
   final TabBodyContentBuilder tabBodyContentBuilder;
-  final TabBodyOverlayBuilder tabBodyOverlayBuilder;
+  final TabBodyOverlayBuilder? tabBodyOverlayBuilder;
   final Key tabKey;
   final int index;
 
   const _NestedBodyTabItemWidget({
-    @required this.tabKey,
-    @required this.index,
-    @required this.tabBodyProviderBuilder,
-    @required this.tabBodyContentBuilder,
-    @required this.tabBodyOverlayBuilder,
+    required this.tabKey,
+    required this.index,
+    required this.tabBodyProviderBuilder,
+    required this.tabBodyContentBuilder,
+    required this.tabBodyOverlayBuilder,
   });
 
   @override
@@ -207,7 +246,7 @@ class _NestedBodyTabItemWidgetState extends State<_NestedBodyTabItemWidget>
                 FediNestedScrollViewWidget.buildOverlay(
                   context,
                   (context) =>
-                      widget.tabBodyOverlayBuilder(context, widget.index),
+                      widget.tabBodyOverlayBuilder!(context, widget.index),
                 ),
             ],
           );

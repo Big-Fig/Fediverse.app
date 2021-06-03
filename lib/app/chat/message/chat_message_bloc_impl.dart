@@ -1,88 +1,45 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
-import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
-import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:flutter/widgets.dart';
-import 'package:logging/logging.dart';
+import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("chat_message_bloc_impl.dart");
+abstract class ChatMessageBloc extends DisposableOwner
+    implements IChatMessageBloc {
+  BehaviorSubject<IChatMessage> get _chatMessageSubject;
 
-final int minimumCharactersLimitToCollapse = 400;
-
-class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
-  static ChatMessageBloc createFromContext(
-    BuildContext context,
-    IChatMessage chatMessage, {
-    bool isNeedWatchLocalRepositoryForUpdates = true,
-    bool delayInit = true,
-  }) =>
-      ChatMessageBloc(
-          pleromaChatService: IPleromaChatService.of(context, listen: false),
-          pleromaAccountService:
-              IPleromaAccountService.of(context, listen: false),
-          chatMessageRepository:
-              IChatMessageRepository.of(context, listen: false),
-          accountRepository: IAccountRepository.of(context, listen: false),
-          chatMessage: chatMessage,
-          needRefreshFromNetworkOnInit: false,
-          delayInit: delayInit,
-          isNeedWatchLocalRepositoryForUpdates:
-              isNeedWatchLocalRepositoryForUpdates);
-
-  final BehaviorSubject<IChatMessage> _chatMessageSubject;
-
-  final IPleromaChatService pleromaChatService;
-  final IPleromaAccountService pleromaAccountService;
-  final IChatMessageRepository chatMessageRepository;
-  final IAccountRepository accountRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
   ChatMessageBloc({
-    @required this.pleromaChatService,
-    @required this.pleromaAccountService,
-    @required this.chatMessageRepository,
-    @required this.accountRepository,
-    @required
-        IChatMessage chatMessage, // for better performance we don't update
+//for better performance we don't update
     // account too often
-    bool needRefreshFromNetworkOnInit =
-        false, // todo: remove hack. Don't init when bloc quickly disposed. Help
+    required bool needRefreshFromNetworkOnInit, // todo: remove hack. Don't
+    // init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
-    bool delayInit = true,
-    this.isNeedWatchLocalRepositoryForUpdates = true,
-  }) : _chatMessageSubject = BehaviorSubject.seeded(chatMessage) {
-    addDisposable(subject: _chatMessageSubject);
-
-    assert(needRefreshFromNetworkOnInit != null);
-    assert(isNeedWatchLocalRepositoryForUpdates != null);
+    required bool delayInit,
+    required this.isNeedWatchLocalRepositoryForUpdates,
+  }) {
     if (delayInit) {
-      Future.delayed(Duration(seconds: 1), () {
-        _init(chatMessage, needRefreshFromNetworkOnInit);
-      });
+      Future.delayed(
+        Duration(seconds: 1),
+        () {
+          _init(needRefreshFromNetworkOnInit);
+        },
+      );
     } else {
-      _init(chatMessage, needRefreshFromNetworkOnInit);
+      _init(needRefreshFromNetworkOnInit);
     }
   }
 
-  void _init(IChatMessage chatMessage, bool needRefreshFromNetworkOnInit) {
-    if (!disposed) {
+  void _init(bool needRefreshFromNetworkOnInit) {
+    if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
-        addDisposable(
-            streamSubscription: chatMessageRepository
-                .watchByRemoteId(chatMessage.remoteId)
-                .listen((updatedChatMessage) {
-          if (updatedChatMessage != null) {
-            _chatMessageSubject.add(updatedChatMessage);
-          }
-        }));
+        watchLocalRepositoryChanges();
       }
       if (needRefreshFromNetworkOnInit) {
         refreshFromNetwork();
@@ -91,86 +48,146 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
   }
 
   @override
-  IPleromaMediaAttachment get mediaAttachment => chatMessage.mediaAttachment;
+  List<IPleromaApiMediaAttachment>? get mediaAttachments =>
+      chatMessage.mediaAttachments;
 
   @override
-  Stream<IPleromaMediaAttachment> get mediaAttachmentStream =>
-      chatMessageStream.map((chatMessage) => chatMessage.mediaAttachment);
+  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream =>
+      chatMessageStream.map(
+        (chatMessage) => chatMessage.mediaAttachments,
+      );
 
   @override
-  IPleromaCard get card => chatMessage.card;
+  IPleromaApiCard? get card => chatMessage.card;
 
   @override
-  Stream<IPleromaCard> get cardStream =>
+  Stream<IPleromaApiCard?> get cardStream =>
       chatMessageStream.map((chatMessage) => chatMessage.card);
 
   @override
-  IChatMessage get chatMessage => _chatMessageSubject.value;
+  IChatMessage get chatMessage => _chatMessageSubject.value!;
 
   @override
   Stream<IChatMessage> get chatMessageStream =>
-      _chatMessageSubject.stream.distinct();
+      _chatMessageSubject.stream..distinct();
 
   @override
-  IAccount get account => chatMessage?.account;
+  IAccount? get account => chatMessage.account;
 
   @override
-  Stream<IAccount> get accountStream =>
-      chatMessageStream.map((chatMessage) => chatMessage.account).distinct();
+  Stream<IAccount?> get accountStream => chatMessageStream
+      .map(
+        (chatMessage) => chatMessage.account,
+      )
+      .distinct();
 
   @override
-  DateTime get createdAt => chatMessage?.createdAt;
+  DateTime get createdAt => chatMessage.createdAt;
 
   @override
-  Stream<DateTime> get createdAtStream =>
-      chatMessageStream.map((chatMessage) => chatMessage?.createdAt).distinct();
+  Stream<DateTime> get createdAtStream => chatMessageStream
+      .map(
+        (chatMessage) => chatMessage.createdAt,
+      )
+      .distinct();
 
   @override
   String get remoteId => chatMessage.remoteId;
 
   @override
-  String get content => chatMessage?.content;
+  String? get content => chatMessage.content;
 
   @override
-  Stream<String> get contentStream =>
-      chatMessageStream.map((chatMessage) => chatMessage?.content).distinct();
-
-  @override
-  String get accountAvatar => account?.avatar;
-
-  @override
-  Stream<String> get accountAvatarStream =>
-      accountStream.map((account) => account.avatar).distinct();
-
-  @override
-  Future refreshFromNetwork() async {
-    throw "not supported by API yet";
-//    var remoteChatMessage =
-//        await pleromaChatService.getChatMessage(chatMessageRemoteId: remoteId);
-//
-//    return _updateByRemoteChatMessage(remoteChatMessage);
-  }
-
-//  Future _updateByRemoteChatMessage(IPleromaChatMessage remoteChatMessage) {
-//    return chatMessageRepository.updateLocalChatMessageByRemoteChatMessage(
-//        oldLocalChatMessage: chatMessage,
-//        newRemoteChatMessage: remoteChatMessage);
-//  }
-
-  @override
-  String get contentWithEmojis =>
-      addEmojiToHtmlContent(chatMessage.content, chatMessage.emojis);
-
-  @override
-  Stream<String> get contentWithEmojisStream => chatMessageStream
-      .map((chatMessage) =>
-          addEmojiToHtmlContent(chatMessage.content, chatMessage.emojis))
+  Stream<String?> get contentStream => chatMessageStream
+      .map(
+        (chatMessage) => chatMessage.content,
+      )
       .distinct();
 
   @override
-  void dispose() {
-    super.dispose();
+  String? get accountAvatar => account?.avatar;
 
-    _logger.finest(() => "dispose");
-  }
+  @override
+  Stream<String?> get accountAvatarStream => accountStream
+      .map(
+        (account) => account?.avatar,
+      )
+      .distinct();
+
+  @override
+  EmojiText? get contentWithEmojis => chatMessage.toContentEmojiText();
+
+  @override
+  Stream<EmojiText?> get contentWithEmojisStream => chatMessageStream
+      .map((chatMessage) => chatMessage.toContentEmojiText())
+      .distinct();
+
+  void watchLocalRepositoryChanges();
+
+  @override
+  PendingState? get pendingState => chatMessage.pendingState;
+
+  @override
+  Stream<PendingState?> get pendingStateStream => chatMessageStream.map(
+        (chatMessage) => chatMessage.pendingState,
+      );
+
+  @override
+  bool get isDeleted => chatMessage.deleted;
+
+  @override
+  Stream<bool> get isDeletedStream => chatMessageStream.map(
+        (chatMessage) => chatMessage.deleted,
+      );
+
+  @override
+  bool get isHiddenLocallyOnDevice => chatMessage.hiddenLocallyOnDevice;
+
+  @override
+  Stream<bool> get isHiddenLocallyOnDeviceStream => chatMessageStream.map(
+        (chatMessage) => chatMessage.hiddenLocallyOnDevice,
+      );
+
+  bool get isPendingStatePublishedOrNull =>
+      chatMessage.isPendingStatePublishedOrNull;
+
+  bool get isPendingStateNotPublishedOrNull =>
+      chatMessage.isPendingStateNotPublishedOrNull;
+
+  @override
+  bool get isNotPending => chatMessage.isNotPending;
+
+  @override
+  Stream<bool> get isNotPendingStream => chatMessageStream.map(
+        (chatMessage) => chatMessage.isNotPending,
+      );
+
+  @override
+  bool get isPending => chatMessage.isPending;
+
+  @override
+  Stream<bool> get isPendingStream => chatMessageStream.map(
+        (chatMessage) => chatMessage.isPending,
+      );
+  @override
+  bool get isPendingFailed => chatMessage.isPendingFailed;
+
+  @override
+  Stream<bool> get isPendingFailedStream => chatMessageStream.map(
+        (chatMessage) => chatMessage.isPendingFailed,
+      );
+
+  @override
+  bool get isPublishedAndNotDeletedAndNotLocallyHidden =>
+      chatMessage.isPublishedAndNotDeletedAndNotLocallyHidden;
+
+  @override
+  Stream<bool> get isPublishedAndNotDeletedAndNotLocallyHiddenStream =>
+      chatMessageStream.map(
+        (chatMessage) =>
+            chatMessage.isPublishedAndNotDeletedAndNotLocallyHidden,
+      );
+
+  @override
+  List<IPleromaApiEmoji>? get emojis => chatMessage.emojis;
 }

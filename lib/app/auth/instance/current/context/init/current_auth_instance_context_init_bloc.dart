@@ -5,14 +5,16 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class ICurrentAuthInstanceContextInitBloc
-    implements IAsyncInitLoadingBloc, Disposable {
-  static ICurrentAuthInstanceContextInitBloc of(BuildContext context,
-          {bool listen = true}) =>
+    implements IAsyncInitLoadingBloc, IDisposable {
+  static ICurrentAuthInstanceContextInitBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<ICurrentAuthInstanceContextInitBloc>(context, listen: listen);
 
-  CurrentAuthInstanceContextInitState get state;
+  CurrentAuthInstanceContextInitState? get state;
 
   Stream<CurrentAuthInstanceContextInitState> get stateStream;
 
-  Future refresh();
+  Future refreshFromNetwork({required bool isNeedWaitForOptionalData});
 }

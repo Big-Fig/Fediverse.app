@@ -7,20 +7,22 @@ import 'package:fedi/disposable/ui_disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
-class DisposableOwner extends Disposable {
-  bool disposed = false;
+class DisposableOwner extends IDisposable {
+  @override
+  bool isDisposed = false;
   final CompositeDisposable _compositeDisposable = CompositeDisposable([]);
 
+  // ignore: long-parameter-list
   void addDisposable({
-    Disposable disposable,
-    StreamSubscription streamSubscription,
-    TextEditingController textEditingController,
-    ScrollController scrollController,
-    FocusNode focusNode,
-    Subject subject,
-    StreamController streamController,
-    Timer timer,
-    VoidCallback custom,
+    IDisposable? disposable,
+    StreamSubscription? streamSubscription,
+    TextEditingController? textEditingController,
+    ScrollController? scrollController,
+    FocusNode? focusNode,
+    Subject? subject,
+    StreamController? streamController,
+    Timer? timer,
+    FutureOr Function()? custom,
   }) {
     if (disposable != null) {
       _compositeDisposable.children.add(disposable);
@@ -31,7 +33,8 @@ class DisposableOwner extends Disposable {
     }
 
     if (streamController != null) {
-      _compositeDisposable.children.add(StreamControllerDisposable(streamController));
+      _compositeDisposable.children
+          .add(StreamControllerDisposable(streamController));
     }
 
     if (timer != null) {
@@ -61,8 +64,8 @@ class DisposableOwner extends Disposable {
 
   @override
   @mustCallSuper
-  void dispose() {
-    disposed = true;
-    _compositeDisposable.dispose();
+  Future dispose() async {
+    isDisposed = true;
+    await _compositeDisposable.dispose();
   }
 }

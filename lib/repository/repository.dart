@@ -1,35 +1,320 @@
-abstract class IReadListRepository<Item> {
-  Future<List<Item>> getAll();
+import 'package:fedi/repository/repository_model.dart';
+import 'package:moor/moor.dart';
 
+abstract class IBaseReadRepository<DbId> {
   Future<int> countAll();
 
-  Stream<List<Item>> watchAll();
+  Future<bool> isExistWithDbId(DbId dbId);
 }
 
-abstract class IWriteListRepository<Item> {
-  Future clear();
+abstract class IDbReadRepository<DbItem extends DataClass, DbId, Filters,
+        OrderingTerm extends RepositoryOrderingTerm>
+    extends IBaseReadRepository<DbId> {
+  Future<List<DbItem>> getAllInDbType();
 
-  Future insertAll(Iterable<Item> items);
+  Stream<List<DbItem>> watchAllInDbType();
 
-  Future upsertAll(Iterable<Item> items);
+  Future<DbItem?> findByDbIdInDbType(DbId dbId);
+
+  Stream<DbItem?> watchByDbIdInDbType(DbId dbId);
+
+  Future<DbItem?> findInDbType({
+    required RepositoryPagination<DbItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Stream<DbItem?> watchFindInDbType({
+    required RepositoryPagination<DbItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Future<List<DbItem>> findAllInDbType({
+    required RepositoryPagination<DbItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Stream<List<DbItem>> watchFindAllInDbType({
+    required RepositoryPagination<DbItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
 }
 
-abstract class IReadIdListRepository<Item, Id>
-    implements IReadListRepository<Item> {
-  Future<Item> findById(Id id);
+abstract class IAppReadRepository<DbItem extends DataClass, AppItem, DbId,
+        Filters, OrderingTerm extends RepositoryOrderingTerm>
+    extends IDbReadRepository<DbItem, DbId, Filters, OrderingTerm> {
+  Future<List<AppItem>> getAllInAppType();
 
-  Stream<Item> watchById(Id id);
+  Stream<List<AppItem>> watchAllInAppType();
 
-  Future<bool> isExistWithId(Id id);
+  Future<AppItem?> findByDbIdInAppType(DbId dbId);
+
+  Stream<AppItem?> watchByDbIdInAppType(DbId dbId);
+
+  Future<AppItem?> findInAppType({
+    required RepositoryPagination<AppItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Stream<AppItem?> watchFindInAppType({
+    required RepositoryPagination<AppItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Future<List<AppItem>> findAllInAppType({
+    required RepositoryPagination<AppItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Stream<List<AppItem>> watchFindAllInAppType({
+    required RepositoryPagination<AppItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
 }
 
-abstract class IWriteIdListRepository<Item, Id>
-    implements IWriteListRepository<Item> {
-  Future<int> insert(Item item);
+abstract class IAppRemoteReadRepository<
+        DbItem extends DataClass,
+        AppItem,
+        RemoteItem,
+        DbId,
+        RemoteId,
+        Filters,
+        OrderingTerm extends RepositoryOrderingTerm>
+    extends IAppReadRepository<DbItem, AppItem, DbId, Filters, OrderingTerm> {
+  Future<DbItem?> findByRemoteIdInDbType(RemoteId remoteId);
 
-  Future<int> upsert(Item item);
+  Stream<DbItem?> watchByRemoteIdInDbType(RemoteId remoteId);
 
-  Future<bool> deleteById(Id id);
+  Future<AppItem?> findByRemoteIdInAppType(RemoteId remoteId);
 
-  Future<bool> updateById(Id id, Item item);
+  Stream<AppItem?> watchByRemoteIdInAppType(RemoteId remoteId);
+
+  Future<RemoteItem?> findByRemoteIdInRemoteType(RemoteId remoteId);
+
+  Stream<RemoteItem?> watchByRemoteIdInRemoteType(RemoteId remoteId);
+
+  Future<List<RemoteItem>> getAllInRemoteType();
+
+  Stream<List<RemoteItem>> watchAllInRemoteType();
+
+  Future<RemoteItem?> findByDbIdInRemoteType(DbId id);
+
+  Stream<RemoteItem?> watchByDbIdInRemoteType(DbId id);
+
+  Future<RemoteItem?> findInRemoteType({
+    required RepositoryPagination<RemoteItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Stream<RemoteItem?> watchFindInRemoteType({
+    required RepositoryPagination<RemoteItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Future<List<RemoteItem>> findAllInRemoteType({
+    required RepositoryPagination<RemoteItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+
+  Stream<List<RemoteItem>> watchFindAllInRemoteType({
+    required RepositoryPagination<RemoteItem>? pagination,
+    required Filters? filters,
+    required List<OrderingTerm>? orderingTerms,
+  });
+}
+
+abstract class IBaseWriteRepository<DbId> {
+  Future batch(Function(Batch batch) runInBatch);
+
+  Future deleteById(
+    DbId id, {
+    required Batch? batchTransaction,
+  });
+
+  Future clear({
+    required Batch? batchTransaction,
+  });
+}
+
+abstract class IDbWriteRepository<DbItem extends DataClass, DbId>
+    extends IBaseWriteRepository<DbId> {
+  Future insertAllInDbType(
+    List<Insertable<DbItem>> dbItems, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  });
+
+  Future upsertAllInDbType(
+    List<Insertable<DbItem>> dbItems, {
+    required Batch? batchTransaction,
+  });
+
+  Future<int> insertInDbType(
+    Insertable<DbItem> dbItem, {
+    required InsertMode? mode,
+  });
+
+  Future<int> upsertInDbType(Insertable<DbItem> dbItem);
+
+  Future<void> insertInDbTypeBatch(
+    Insertable<DbItem> dbItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  });
+
+  Future<void> upsertInDbTypeBatch(
+    Insertable<DbItem> dbItem, {
+    required Batch? batchTransaction,
+  });
+
+  Future<void> updateByDbIdInDbType({
+    required DbId dbId,
+    required DbItem dbItem,
+    required Batch? batchTransaction,
+  });
+}
+
+abstract class IAppWriteRepository<DbItem extends DataClass, AppItem, DbId>
+    extends IDbWriteRepository<DbItem, DbId> {
+  // Future insertAllInAppType(
+  //   List<AppItem> appItems, {
+  //   required InsertMode? mode,
+  //   required Batch? batchTransaction,
+  // });
+
+  // Future upsertAllInAppType(
+  //   List<AppItem> appItems, {
+  //   required Batch? batchTransaction,
+  // });
+  //
+  // Future<int> insertInAppType(
+  //   AppItem appItem, {
+  //   required InsertMode? mode,
+  // });
+
+  // Future<int> upsertInAppType(AppItem appItem);
+  //
+  // Future<void> insertInAppTypeBatch(
+  //   AppItem appItem, {
+  //   required InsertMode? mode,
+  //   required Batch? batchTransaction,
+  // });
+  //
+  // Future<void> upsertInAppTypeBatch(
+  //   AppItem appItem, {
+  //   required Batch? batchTransaction,
+  // });
+  //
+  // Future updateByDbIdInAppType({
+  //   required DbId dbId,
+  //   required AppItem appItem,
+  //   required Batch? batchTransaction,
+  // });
+  //
+  // Future updateDbTypeByAppType({
+  //   required DbItem dbItem,
+  //   required AppItem appItem,
+  //   required Batch? batchTransaction,
+  // });
+
+}
+
+abstract class IAppRemoteWriteRepository<
+    DbItem extends DataClass,
+    AppItem,
+    RemoteItem,
+    DbId,
+    RemoteId> extends IAppWriteRepository<DbItem, AppItem, DbId> {
+  Future deleteByRemoteId(
+    RemoteId remoteId, {
+    required Batch? batchTransaction,
+  });
+
+  Future insertAllInRemoteType(
+    List<RemoteItem> remoteItems, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  });
+
+  Future upsertAllInRemoteType(
+    List<RemoteItem> remoteItems, {
+    required Batch? batchTransaction,
+  });
+
+  Future<void> upsertInRemoteTypeBatch(
+    RemoteItem remoteItem, {
+    required Batch? batchTransaction,
+  });
+
+  Future<int> insertInRemoteType(
+    RemoteItem remoteItem, {
+    required InsertMode? mode,
+  });
+
+  Future<int> upsertInRemoteType(
+    RemoteItem remoteItem,
+  );
+
+  Future<void> insertInRemoteTypeBatch(
+    RemoteItem remoteItem, {
+    required InsertMode? mode,
+    required Batch? batchTransaction,
+  });
+
+  // Future<void> updateByIdInRemoteType({
+  //   required DbId dbId,
+  //   required RemoteItem remoteItem,
+  //   required Batch? batchTransaction,
+  // });
+
+  // Future<void> updateDbTypeByRemoteType({
+  //   required DbItem dbItem,
+  //   required RemoteItem remoteItem,
+  //   required Batch? batchTransaction,
+  // });
+
+  Future<void> updateAppTypeByRemoteType({
+    required AppItem appItem,
+    required RemoteItem remoteItem,
+    required Batch? batchTransaction,
+  });
+}
+
+abstract class IBaseReadWriteRepository<DbId>
+    implements IBaseReadRepository<DbId>, IBaseWriteRepository<DbId> {}
+
+abstract class IDbReadWriteRepository<DbItem extends DataClass, DbId, Filters,
+        OrderingTerm extends RepositoryOrderingTerm>
+    implements
+        IDbReadRepository<DbItem, DbId, Filters, OrderingTerm>,
+        IDbWriteRepository<DbItem, DbId> {}
+
+abstract class IAppReadWriteRepository<DbItem extends DataClass, AppItem, DbId,
+        Filters, OrderingTerm extends RepositoryOrderingTerm>
+    implements
+        IAppReadRepository<DbItem, AppItem, DbId, Filters, OrderingTerm>,
+        IAppWriteRepository<DbItem, AppItem, DbId> {}
+
+abstract class IAppRemoteReadWriteRepository<
+        DbItem extends DataClass,
+        AppItem,
+        RemoteItem,
+        DbId,
+        RemoteId,
+        Filters,
+        OrderingTerm extends RepositoryOrderingTerm>
+    implements
+        IAppRemoteReadRepository<DbItem, AppItem, RemoteItem, DbId, RemoteId,
+            Filters, OrderingTerm>,
+        IAppRemoteWriteRepository<DbItem, AppItem, RemoteItem, DbId, RemoteId> {
 }

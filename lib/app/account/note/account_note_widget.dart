@@ -1,53 +1,96 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/html/html_text_bloc.dart';
+import 'package:fedi/app/html/html_text_bloc_impl.dart';
+import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/style.dart';
-import 'package:html_unescape/html_unescape.dart';
+import 'package:provider/provider.dart';
 
 class AccountNoteWidget extends StatelessWidget {
   final TextStyle textStyle;
-  final HtmlUnescape _unescape = HtmlUnescape();
 
-  AccountNoteWidget({@required this.textStyle});
+  AccountNoteWidget({required this.textStyle});
 
   @override
   Widget build(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context, listen: false);
-    return StreamBuilder<EmojiText>(
-        stream: accountBloc.noteEmojiTextStream,
+    var accountBloc = IAccountBloc.of(context);
+
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: FediSizes.smallPadding,
+        left: FediSizes.bigPadding,
+        // ignore: no-equal-arguments
+        right: FediSizes.bigPadding,
+      ),
+      child: StreamProvider<EmojiText?>.value(
+        value: accountBloc.noteEmojiTextStream,
         initialData: accountBloc.noteEmojiText,
-        builder: (context, snapshot) {
-          var noteEmojiText = snapshot.data;
+        child: DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
+          update: (context, noteEmojiText, previous) {
+            var htmlTextInputData = HtmlTextInputData(
+              input: noteEmojiText?.text,
+              emojis: noteEmojiText?.emojis,
+            );
+            if (previous?.inputData == htmlTextInputData) {
+              return previous!;
+            }
 
-          if (noteEmojiText?.text?.isNotEmpty != true) {
-            return SizedBox.shrink();
-          }
+            var htmlTextBloc = HtmlTextBloc(
+              inputData: htmlTextInputData,
+              settings: HtmlTextSettings(
+                paragraphDisplay: Display.BLOCK,
+                fontSize: textStyle.fontSize,
+                color: textStyle.color,
+                lineHeight: textStyle.height,
+                fontWeight: textStyle.fontWeight,
+                textAlign: TextAlign.center,
+                linkColor: fediUiColorTheme.primary,
+                textMaxLines: null,
+                textScaleFactor: textScaleFactor,
+                drawNewLines: true,
+                textOverflow: null,
+              ),
+            );
+            htmlTextBloc.addDisposable(
+              streamSubscription: htmlTextBloc.linkClickedStream.listen(
+                (url) {
+                  _onLinkClick(
+                    url: url,
+                    noteEmojiText: noteEmojiText!,
+                    context: context,
+                  );
+                },
+              ),
+            );
+            return htmlTextBloc;
+          },
+          child: const HtmlTextWidget(),
+        ),
+      ),
+    );
+  }
 
-          var escapedText = noteEmojiText.text;
-          var htmlContent = addEmojiToHtmlContent(
-              _unescape.convert(escapedText), noteEmojiText.emojis,
-              isNeedToddHtmlBodyWrapper: false);
+  void _onLinkClick({
+    required BuildContext context,
+    required String url,
+    required EmojiText noteEmojiText,
+  }) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
 
-          return Padding(
-            padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
-            child: HtmlTextWidget(
-              paragraphDisplay: Display.BLOCK,
-              fontSize: textStyle.fontSize,
-              color: textStyle.color,
-              lineHeight: textStyle.height,
-              fontWeight: textStyle.fontWeight,
-              textAlign: TextAlign.center,
-              data: htmlContent,
-              onLinkTap: (String url) {
-                UrlHelper.handleUrlClick(context, url);
-              },
-            ),
-          );
-        });
+    UrlHelper.handleUrlClickWithInstanceLocation(
+      context: context,
+      url: url,
+      instanceLocationBloc: accountBloc,
+    );
   }
 }

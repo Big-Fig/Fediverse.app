@@ -1,8 +1,12 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/database/status_database_model.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 part 'status_database_dao.g.dart';
@@ -16,37 +20,41 @@ var _replyReblogAliasId = "replyReblog";
 var _replyReblogAccountAliasId = "replyReblogAccount";
 var _statusAliasId = "status";
 var _accountFollowingsAliasId = "accountFollowings";
+var _replyToAccountFollowingsAliasId = "replyToAccountFollowings";
 var _statusHashtagsAliasId = "statusHashtags";
 var _statusListsAliasId = "statusLists";
 var _conversationStatusesAliasId = "conversationStatuses";
 var _homeTimelineStatusesAliasId = "homeTimelineStatuses";
 
-@UseDao(tables: [
-  DbStatuses
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_statuses;",
-  "countById": "SELECT COUNT(*) FROM db_statuses WHERE id = :id;",
-  "deleteById": "DELETE FROM db_statuses WHERE id = :id;",
-  "clear": "DELETE FROM db_statuses",
-  "getAll": "SELECT * FROM db_statuses",
-  "findLocalIdByRemoteId": "SELECT id FROM db_statuses WHERE remote_id = "
-      ":remoteId;",
-})
-class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
+@UseDao(
+  tables: [
+    DbStatuses,
+  ],
+)
+class StatusDao extends PopulatedAppRemoteDatabaseDao<
+    DbStatus,
+    DbStatusPopulated,
+    int,
+    String,
+    $DbStatusesTable,
+    $DbStatusesTable,
+    StatusRepositoryFilters,
+    StatusRepositoryOrderingTermData> with _$StatusDaoMixin {
   final AppDatabase db;
-  $DbAccountsTable accountAlias;
-  $DbStatusesTable reblogAlias;
-  $DbAccountsTable reblogAccountAlias;
-  $DbStatusesTable replyAlias;
-  $DbAccountsTable replyAccountAlias;
-  $DbStatusesTable replyReblogAlias;
-  $DbAccountsTable replyReblogAccountAlias;
-  $DbStatusesTable statusAlias;
-  $DbStatusHashtagsTable statusHashtagsAlias;
-  $DbStatusListsTable statusListsAlias;
-  $DbAccountFollowingsTable accountFollowingsAlias;
-  $DbConversationStatusesTable conversationStatusesAlias;
-  $DbHomeTimelineStatusesTable homeTimelineStatusesAlias;
+  late $DbAccountsTable accountAlias;
+  late $DbStatusesTable reblogAlias;
+  late $DbAccountsTable reblogAccountAlias;
+  late $DbStatusesTable replyAlias;
+  late $DbAccountsTable replyAccountAlias;
+  late $DbStatusesTable replyReblogAlias;
+  late $DbAccountsTable replyReblogAccountAlias;
+  late $DbStatusesTable statusAlias;
+  late $DbStatusHashtagsTable statusHashtagsAlias;
+  late $DbStatusListsTable statusListsAlias;
+  late $DbAccountFollowingsTable accountFollowingsAlias;
+  late $DbAccountFollowingsTable replyToAccountFollowingsAlias;
+  late $DbConversationStatusesTable conversationStatusesAlias;
+  late $DbHomeTimelineStatusesTable homeTimelineStatusesAlias;
 
   // Called by the AppDatabase class
   StatusDao(this.db) : super(db) {
@@ -60,6 +68,8 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     statusAlias = alias(db.dbStatuses, _statusAliasId);
     accountFollowingsAlias =
         alias(db.dbAccountFollowings, _accountFollowingsAliasId);
+    replyToAccountFollowingsAlias =
+        alias(db.dbAccountFollowings, _replyToAccountFollowingsAliasId);
     statusHashtagsAlias = alias(db.dbStatusHashtags, _statusHashtagsAliasId);
     statusListsAlias = alias(db.dbStatusLists, _statusListsAliasId);
     conversationStatusesAlias =
@@ -68,203 +78,316 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         alias(db.dbHomeTimelineStatuses, _homeTimelineStatusesAliasId);
   }
 
-  Future<List<DbStatusPopulated>> findAll() async {
-    JoinedSelectStatement<Table, DataClass> statusQuery = _findAll();
+  Future<DbStatusPopulated?> findByOldPendingRemoteId(
+    String oldPendingRemoteId,
+  ) async =>
+      (await _findByOldPendingRemoteId(oldPendingRemoteId).getSingleOrNull())
+          ?.toDbStatusPopulated(dao: this);
 
-    return typedResultListToPopulated(await statusQuery.get());
-  }
+  Stream<DbStatusPopulated?> watchByOldPendingRemoteId(
+    String oldPendingRemoteId,
+  ) =>
+      (_findByOldPendingRemoteId(oldPendingRemoteId).watchSingleOrNull().map(
+            (typedResult) => typedResult?.toDbStatusPopulated(dao: this),
+          ));
 
-  Stream<List<DbStatusPopulated>> watchAll() {
-    JoinedSelectStatement<Table, DataClass> statusQuery = _findAll();
+  JoinedSelectStatement<Table, DataClass> _findByOldPendingRemoteId(
+    String? oldPendingRemoteId,
+  ) =>
+      (select(db.dbStatuses)
+            ..where(
+              (status) => status.oldPendingRemoteId.equals(
+                oldPendingRemoteId,
+              ),
+            ))
+          .join(
+        populateStatusJoin(
+          includeAccountFollowing: false,
+          includeStatusLists: false,
+          includeStatusHashtags: false,
+          includeConversations: false,
+          includeHomeTimeline: false,
+          includeReplyToAccountFollowing: false,
+        ),
+      );
 
-    return statusQuery.watch().map(typedResultListToPopulated);
-  }
-
-  Future<DbStatusPopulated> findById(int id) async =>
-      typedResultToPopulated(await _findById(id).getSingle());
-
-  Future<DbStatusPopulated> findByRemoteId(String remoteId) async =>
-      typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
-
-  Stream<DbStatusPopulated> watchById(int id) =>
-      (_findById(id).watchSingle().map(typedResultToPopulated));
-
-  Stream<DbStatusPopulated> watchByRemoteId(String remoteId) =>
-      (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
-
-  JoinedSelectStatement<Table, DataClass> _findAll() {
-    var sqlQuery = (select(db.dbStatuses).join(
-      populateStatusJoin(
-        includeAccountFollowing: false,
-        includeStatusLists: false,
-        includeStatusHashtags: false,
-        includeConversations: false,
-        includeHomeTimeline: false,
-      ),
-    ));
-    return sqlQuery;
-  }
-
-  JoinedSelectStatement<Table, DataClass> _findById(int id) =>
-      (select(db.dbStatuses)..where((status) => status.id.equals(id)))
-          .join(populateStatusJoin(
-        includeAccountFollowing: false,
-        includeStatusLists: false,
-        includeStatusHashtags: false,
-        includeConversations: false,
-        includeHomeTimeline: false,
-      ));
-
-  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
-      (select(db.dbStatuses)..where((status) => status.remoteId.like(remoteId)))
-          .join(populateStatusJoin(
-        includeAccountFollowing: false,
-        includeStatusLists: false,
-        includeStatusHashtags: false,
-        includeConversations: false,
-        includeHomeTimeline: false,
-      ));
-
-  Future<int> insert(Insertable<DbStatus> entity, {InsertMode mode}) async =>
-      into(db.dbStatuses).insert(entity, mode: mode);
-
-  Future<int> upsert(Insertable<DbStatus> entity) async =>
-      into(db.dbStatuses).insert(entity, mode: InsertMode.insertOrReplace);
-
-  Future insertAll(
-          Iterable<Insertable<DbStatus>> entities, InsertMode mode) async =>
-      await batch((batch) {
-        batch.insertAll(db.dbStatuses, entities, mode: mode);
-      });
-
-  Future<bool> replace(Insertable<DbStatus> entity) async =>
-      await update(db.dbStatuses).replace(entity);
-
-  Future<int> updateByRemoteId(
-      String remoteId, Insertable<DbStatus> entity) async {
-    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
-
-    if (localId != null && localId >= 0) {
-      await (update(db.dbStatuses)..where((i) => i.id.equals(localId)))
-          .write(entity);
-    } else {
-      localId = await insert(entity);
-    }
-
-    return localId;
-  }
-
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> startSelectQuery() =>
-      (select(db.dbStatuses));
+  // Future<int> updateByRemoteId(
+  //   String remoteId,
+  //   Insertable<DbStatus> entity,
+  // ) async {
+  //   var localId = await findLocalIdByRemoteId(remoteId);
+  //
+  //   if (localId != null && localId >= 0) {
+  //     await (update(db.dbStatuses)
+  //           ..where(
+  //             (i) => i.id.equals(
+  //               localId,
+  //             ),
+  //           ))
+  //         .write(entity);
+  //   } else {
+  //     localId = await insert(
+  //       entity: entity,
+  //       mode: null,
+  //     );
+  //   }
+  //
+  //   return localId;
+  // }
 
   // TODO: separate media in own table & use join
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
       query
-        ..where((status) => isNotNull(status.mediaAttachments)
+        ..where(
+          (status) => status.mediaAttachments.isNotNull(),
 //            |
 //            status.mediaAttachments.equals("").not()
-            );
+        );
 
+  // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyLocalWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          String localDomain) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    String? localDomain,
+  ) =>
       query
         ..where((status) =>
             status.pleromaLocal.equals(true) |
             status.url.like("%$localDomain%"));
 
+  // todo: improve performance: remove url.like filter. Add local flag on insert
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyRemoteWhere(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    String? localDomain,
+  ) =>
+      query
+        ..where((status) => (status.pleromaLocal.equals(true).not() &
+            status.url.like("%$localDomain%").not()));
+
+  // todo: improve performance: remove url.like filter. Add local flag on insert
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromInstanceWhere(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    String? instance,
+  ) =>
+      query..where((status) => status.url.like("%$instance%"));
+
+  void addExcludeTextWhere(
+    JoinedSelectStatement<Table, DataClass> query, {
+    required String? phrase,
+    required bool wholeWord,
+  }) {
+    addExcludeTextConditionWhere(
+      query,
+      tableName: "db_statuses",
+      fieldName: dbStatuses.content.$name,
+      phrase: phrase,
+      wholeWord: wholeWord,
+    );
+    addExcludeTextConditionWhere(
+      query,
+      tableName: "db_statuses",
+      fieldName: dbStatuses.spoilerText.$name,
+      phrase: phrase,
+      wholeWord: wholeWord,
+    );
+    addExcludeTextConditionWhere(
+      query,
+      tableName: _reblogAliasId,
+      fieldName: reblogAlias.content.$name,
+      phrase: phrase,
+      wholeWord: wholeWord,
+    );
+    addExcludeTextConditionWhere(
+      query,
+      tableName: _reblogAliasId,
+      fieldName: reblogAlias.spoilerText.$name,
+      phrase: phrase,
+      wholeWord: wholeWord,
+    );
+  }
+
+  // todo: improve performance: remove url.like filter. Add local flag on insert
+  JoinedSelectStatement addExcludeTextConditionWhere(
+    JoinedSelectStatement query, {
+    required String tableName,
+    required String fieldName,
+    required String? phrase,
+    required bool wholeWord,
+  }) {
+    String expressionCondition;
+    if (wholeWord) {
+      final regex = r"\b" + phrase! + r"\b";
+      expressionCondition = "NOT REGEXP '$regex'";
+    } else {
+      expressionCondition = "NOT LIKE '%$phrase%'";
+    }
+    String expressionContent = "$tableName.$fieldName $expressionCondition";
+
+    return query
+      ..where(
+        CustomExpression<bool>(expressionContent) |
+            CustomExpression<bool>("$tableName.$fieldName IS NULL"),
+      );
+  }
+
   JoinedSelectStatement addFollowingWhere(
-          JoinedSelectStatement query, String accountRemoteId) =>
+    JoinedSelectStatement query,
+    String? accountRemoteId,
+  ) =>
       query
         ..where(CustomExpression<bool>(
-            "$_accountFollowingsAliasId.account_remote_id = '$accountRemoteId'"));
+          "$_accountFollowingsAliasId.account_remote_id = '$accountRemoteId'",
+        ));
 
   JoinedSelectStatement addHashtagWhere(
-          JoinedSelectStatement query, String hashtag) =>
+    JoinedSelectStatement query,
+    String? hashtag,
+  ) =>
       query
         ..where(CustomExpression<bool>(
-            "$_statusHashtagsAliasId.hashtag = '$hashtag'"));
+          "$_statusHashtagsAliasId.hashtag = '$hashtag'",
+        ));
 
   JoinedSelectStatement addListWhere(
-          JoinedSelectStatement query, String listRemoteId) =>
+    JoinedSelectStatement query,
+    String? listRemoteId,
+  ) =>
       query
         ..where(CustomExpression<bool>(
-            "$_statusListsAliasId.list_remote_id = '$listRemoteId'"));
+          "$_statusListsAliasId.list_remote_id = '$listRemoteId'",
+        ));
 
   JoinedSelectStatement addConversationWhere(
-          JoinedSelectStatement query, String conversationRemoteId) =>
+    JoinedSelectStatement query,
+    String? conversationRemoteId,
+  ) =>
       query
         ..where(CustomExpression<bool>(
-            "$_conversationStatusesAliasId.conversation_remote_id"
-            " = '$conversationRemoteId'"));
+          "$_conversationStatusesAliasId.conversation_remote_id"
+          " = '$conversationRemoteId'",
+        ));
+
+  JoinedSelectStatement addReplyToAccountSelfOrFollowingWhere(
+    JoinedSelectStatement query,
+    String? myAccountRemoteId,
+  ) =>
+      query
+        ..where(
+          CustomExpression<bool>(
+                "db_statuses.in_reply_to_account_remote_id IS NULL",
+              ) |
+              CustomExpression<bool>(
+                "db_statuses.in_reply_to_account_remote_id = '$myAccountRemoteId'",
+              ) |
+              CustomExpression<bool>(
+                "$_replyToAccountFollowingsAliasId.account_remote_id = "
+                // "$_replyToAccountFollowingsAliasId.following_account_remote_id = "
+                "'$myAccountRemoteId'",
+              ),
+        );
+
+  //
+  // query
+  // ..where((status) =>
+  // isNull(status.inReplyToAccountRemoteId) |
+  // status.inReplyToAccountRemoteId.equals(accountRemoteId));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNotMutedWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
       query
-        ..where((status) =>
-            status.muted.equals(false)
-            // (status.muted.equals(false)) &
-            // (status.pleromaThreadMuted.equals(false) |
-            //     isNull(status.pleromaThreadMuted))
+        ..where(
+          (status) => status.muted.equals(false),
+          // (status.muted.equals(false)) &
+          // (status.pleromaThreadMuted.equals(false) |
+          //     isNull(status.pleromaThreadMuted))
         );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromAccountWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          String accountRemoteId) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    String? accountRemoteId,
+  ) =>
       query..where((status) => status.accountRemoteId.equals(accountRemoteId));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoNsfwSensitiveWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
       query..where((status) => status.sensitive.equals(true).not());
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFavouritedWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
       query..where((status) => status.favourited.equals(true));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyBookmarkedWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
       query..where((status) => status.bookmarked.equals(true));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNotDeletedWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
-      query..where((status) => isNull(status.deleted));
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
+      query
+        ..where(
+          (status) =>
+              status.deleted.isNull() |
+              status.deleted.equals(
+                false,
+              ),
+        );
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus>
+      addOnlyNotHiddenLocallyOnDeviceWhere(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
+          query
+            ..where(
+              (status) =>
+                  status.hiddenLocallyOnDevice.isNull() |
+                  status.hiddenLocallyOnDevice.equals(
+                    false,
+                  ),
+            );
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus>
+      addOnlyPendingStatePublishedOrNull(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
+          query
+            ..where(
+              (status) =>
+                  status.pendingState.isNull() |
+                  status.pendingState.equals(
+                    PendingState.published.toJsonValue(),
+                  ),
+            );
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus>
+      addOnlyInReplyToAccountRemoteIdOrNotReply(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    String? accountRemoteId,
+  ) =>
+          query
+            ..where((status) =>
+                status.inReplyToAccountRemoteId.isNull() |
+                status.inReplyToAccountRemoteId.equals(accountRemoteId));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoRepliesWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
-      query..where((status) => isNull(status.inReplyToRemoteId));
-
-  /// remote ids are strings but it is possible to compare them in
-  /// chronological order
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addRemoteIdBoundsWhere(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query, {
-    @required String minimumRemoteIdExcluding,
-    @required String maximumRemoteIdExcluding,
-  }) {
-    var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
-    var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
-    assert(minimumExist || maximumExist);
-
-    if (minimumExist) {
-      var biggerExp = CustomExpression<bool>(
-          "db_statuses.remote_id > '$minimumRemoteIdExcluding'");
-      query = query..where((status) => biggerExp);
-    }
-    if (maximumExist) {
-      var smallerExp = CustomExpression<bool>(
-          "db_statuses.remote_id < '$maximumRemoteIdExcluding'");
-      query = query..where((status) => smallerExp);
-    }
-
-    return query;
-  }
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
+      query
+        ..where(
+          (status) => status.inReplyToRemoteId.isNull(),
+        );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addExcludeVisibilitiesWhere(
-      SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-      List<PleromaVisibility> excludeVisibilities) {
-    assert(excludeVisibilities?.isNotEmpty == true);
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    List<PleromaApiVisibility> excludeVisibilities,
+  ) {
+    assert(excludeVisibilities.isNotEmpty);
 
-    List<String> excludeVisibilityStrings = excludeVisibilities
+    List<String?> excludeVisibilityStrings = excludeVisibilities
         .map((visibility) => visibility.toJsonValue())
         .toList();
 
@@ -273,70 +396,52 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   }
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> orderBy(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          List<StatusOrderingTermData> orderTerms) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    List<StatusRepositoryOrderingTermData> orderTerms,
+  ) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
                   var expression;
                   switch (orderTerm.orderByType) {
-                    case StatusOrderByType.remoteId:
+                    case StatusRepositoryOrderType.remoteId:
                       expression = item.remoteId;
+                      break;
+                    case StatusRepositoryOrderType.createdAt:
+                      expression = item.createdAt;
                       break;
                   }
                   return OrderingTerm(
-                      expression: expression, mode: orderTerm.orderingMode);
+                    expression: expression,
+                    mode: orderTerm.orderingMode,
+                  );
                 })
             .toList());
 
-  List<DbStatusPopulated> typedResultListToPopulated(
-      List<TypedResult> typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
-    return typedResult.map(typedResultToPopulated).toList();
-  }
-
-  DbStatusPopulated typedResultToPopulated(TypedResult typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
-    DbStatus rebloggedStatus;
-    DbAccount rebloggedStatusAccount;
-    rebloggedStatus = typedResult.readTable(reblogAlias);
-    rebloggedStatusAccount = typedResult.readTable(reblogAccountAlias);
-//
-//    _logger.finest(() => "rebloggedStatus $rebloggedStatus");
-//    _logger.finest(() => "rebloggedStatusAccount $rebloggedStatusAccount");
-    return DbStatusPopulated(
-      reblogDbStatus: rebloggedStatus,
-      reblogDbStatusAccount: rebloggedStatusAccount,
-      dbStatus: typedResult.readTable(db.dbStatuses),
-      dbAccount: typedResult.readTable(accountAlias),
-      replyDbStatus: typedResult.readTable(replyAlias),
-      replyDbStatusAccount: typedResult.readTable(replyAccountAlias),
-      replyReblogDbStatus: typedResult.readTable(replyReblogAlias),
-      replyReblogDbStatusAccount:
-          typedResult.readTable(replyReblogAccountAlias),
-    );
-  }
-
+  // ignore: long-method
   List<Join<Table, DataClass>> populateStatusJoin({
-    @required includeAccountFollowing,
-    @required includeStatusHashtags,
-    @required includeStatusLists,
-    @required includeConversations,
-    @required includeHomeTimeline,
+    required includeAccountFollowing,
+    required includeReplyToAccountFollowing,
+    required includeStatusHashtags,
+    required includeStatusLists,
+    required includeConversations,
+    required includeHomeTimeline,
   }) {
     return [
       ...(includeHomeTimeline
           ? [
               innerJoin(
-                  homeTimelineStatusesAlias,
-                  homeTimelineStatusesAlias.statusRemoteId
-                      .equalsExp(dbStatuses.remoteId))
+                homeTimelineStatusesAlias,
+                homeTimelineStatusesAlias.statusRemoteId
+                    .equalsExp(dbStatuses.remoteId),
+              ),
             ]
           : []),
+      // todo: think about leftOuterJoin and nullable account field
+      // or foreign keys
+      // in some cases status may already exist in local database,
+      // but account still not added
+      // leftOuterJoin(
       innerJoin(
         accountAlias,
         accountAlias.remoteId.equalsExp(dbStatuses.accountRemoteId),
@@ -369,39 +474,51 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       ...(includeAccountFollowing
           ? [
               innerJoin(
-                  accountFollowingsAlias,
-                  accountFollowingsAlias.followingAccountRemoteId
-                      .equalsExp(dbStatuses.accountRemoteId))
+                accountFollowingsAlias,
+                accountFollowingsAlias.followingAccountRemoteId
+                    .equalsExp(dbStatuses.accountRemoteId),
+              ),
+            ]
+          : []),
+      ...(includeReplyToAccountFollowing
+          ? [
+              leftOuterJoin(
+                replyToAccountFollowingsAlias,
+                replyToAccountFollowingsAlias.followingAccountRemoteId
+                    .equalsExp(dbStatuses.inReplyToAccountRemoteId),
+              ),
             ]
           : []),
       ...(includeStatusHashtags
           ? [
               innerJoin(
-                  statusHashtagsAlias,
-                  statusHashtagsAlias.statusRemoteId
-                      .equalsExp(dbStatuses.remoteId))
+                statusHashtagsAlias,
+                statusHashtagsAlias.statusRemoteId
+                    .equalsExp(dbStatuses.remoteId),
+              ),
             ]
           : []),
       ...(includeStatusLists
           ? [
               innerJoin(
-                  statusListsAlias,
-                  statusListsAlias.statusRemoteId
-                      .equalsExp(dbStatuses.remoteId))
+                statusListsAlias,
+                statusListsAlias.statusRemoteId.equalsExp(dbStatuses.remoteId),
+              ),
             ]
           : []),
       ...(includeConversations
           ? [
               innerJoin(
-                  conversationStatusesAlias,
-                  conversationStatusesAlias.statusRemoteId
-                      .equalsExp(dbStatuses.remoteId))
+                conversationStatusesAlias,
+                conversationStatusesAlias.statusRemoteId
+                    .equalsExp(dbStatuses.remoteId),
+              ),
             ]
           : []),
     ];
   }
 
-  Future incrementRepliesCount({@required String remoteId}) {
+  Future incrementRepliesCount({required String? remoteId}) {
     var update = "UPDATE db_statuses "
         "SET replies_count = replies_count + 1 "
         "WHERE remote_id = '$remoteId'";
@@ -410,12 +527,297 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     return query;
   }
 
-  Future markAsDeleted({@required String remoteId}) {
+  Future markAsDeleted({required String? remoteId}) {
     var update = "UPDATE db_statuses "
         "SET deleted = 1 "
         "WHERE remote_id = '$remoteId'";
     var query = db.customUpdate(update, updates: {dbStatuses});
 
     return query;
+  }
+
+  Future markAsHiddenLocallyOnDevice({required int? localId}) {
+    var update = "UPDATE db_statuses "
+        "SET hidden_locally_on_device = 1 "
+        "WHERE id = '$localId'";
+    var query = db.customUpdate(update, updates: {dbStatuses});
+
+    return query;
+  }
+
+  @override
+  $DbStatusesTable get table => dbStatuses;
+
+  Future deleteOlderThanDate(
+    DateTime dateTimeToDelete, {
+    required Batch? batchTransaction,
+  }) =>
+      deleteOlderThanDateTime(
+        dateTimeToDelete,
+        fieldName: table.createdAt.$name,
+        batchTransaction: batchTransaction,
+      );
+
+  @override
+  DbStatusPopulated mapTypedResultToDbPopulatedItem(TypedResult typedResult) =>
+      typedResult.toDbStatusPopulated(dao: this);
+
+  @override
+  // ignore: code-metrics, long-method
+  void addFiltersToQuery({
+    required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    required StatusRepositoryFilters? filters,
+  }) {
+    assert(
+        !(filters?.onlyLocalCondition != null &&
+            filters?.onlyRemoteCondition != null),
+        "onlyLocalCondition && onlyRemoteCondition  can't be set both");
+
+    if (filters?.onlyFromInstance?.isNotEmpty == true) {
+      assert(filters?.onlyRemoteCondition != null,
+          "onlyRemoteCondition should be notNull if onlyFromInstance was set");
+
+      addOnlyFromInstanceWhere(
+        query,
+        filters?.onlyFromInstance,
+      );
+    } else {
+      if (filters?.onlyRemoteCondition != null) {
+        addOnlyRemoteWhere(
+          query,
+          filters?.onlyRemoteCondition?.localUrlHost,
+        );
+      }
+    }
+
+    if (filters?.onlyLocalCondition != null) {
+      assert(filters?.onlyLocalCondition?.localUrlHost?.isNotEmpty == true);
+
+      addOnlyLocalWhere(
+        query,
+        filters?.onlyLocalCondition?.localUrlHost,
+      );
+    }
+
+    if (filters?.onlyWithMedia == true) {
+      addOnlyMediaWhere(query);
+    }
+
+    if (filters?.onlyFromAccount != null) {
+      addOnlyFromAccountWhere(
+        query,
+        filters?.onlyFromAccount?.remoteId,
+      );
+    }
+
+    if (filters?.withMuted != true) {
+      addOnlyNotMutedWhere(query);
+    }
+
+    if (filters?.onlyNoNsfwSensitive == true) {
+      addOnlyNoNsfwSensitiveWhere(query);
+    }
+
+    if (filters?.onlyBookmarked == true) {
+      addOnlyBookmarkedWhere(query);
+    }
+
+    if (filters?.onlyFavourited == true) {
+      addOnlyFavouritedWhere(query);
+    }
+
+    if (filters?.onlyNoReplies == true) {
+      addOnlyNoRepliesWhere(query);
+    }
+
+    var excludeVisibilities = filters?.excludeVisibilities;
+    if (excludeVisibilities?.isNotEmpty == true) {
+      addExcludeVisibilitiesWhere(query, filters!.excludeVisibilities!);
+    }
+
+    if (filters?.onlyNotDeleted == true) {
+      addOnlyNotDeletedWhere(query);
+    }
+    if (filters?.onlyNotHiddenLocallyOnDevice == true) {
+      addOnlyNotHiddenLocallyOnDeviceWhere(query);
+    }
+
+    if (filters?.onlyPendingStatePublishedOrNull == true) {
+      addOnlyPendingStatePublishedOrNull(query);
+    }
+
+    var replyVisibilityFilter =
+        filters?.replyVisibilityFilterCondition?.replyVisibilityFilter;
+    if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
+        null) {
+      if (replyVisibilityFilter == PleromaApiReplyVisibilityFilter.self) {
+        addOnlyInReplyToAccountRemoteIdOrNotReply(
+          query,
+          filters?.replyVisibilityFilterCondition?.myAccountRemoteId,
+        );
+      }
+    }
+  }
+
+  @override
+  void addNewerOlderDbItemPagination({
+    required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    required RepositoryPagination<DbStatus>? pagination,
+    required List<StatusRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTerms?.length == 1);
+      var orderingTermData = orderingTerms!.first;
+      var isRemoteIdOrdering =
+          orderingTermData.orderByType == StatusRepositoryOrderType.remoteId;
+      var isCreatedAtOrdering =
+          orderingTermData.orderByType == StatusRepositoryOrderType.createdAt;
+      assert(isRemoteIdOrdering || isCreatedAtOrdering);
+      if (isRemoteIdOrdering) {
+        addRemoteIdBoundsWhere(
+          query,
+          maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
+          minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
+        );
+      } else if (isCreatedAtOrdering) {
+        addDateTimeBoundsWhere(
+          query,
+          column: dbStatuses.createdAt,
+          maximumDateTimeExcluding: pagination?.olderThanItem?.createdAt,
+          minimumDateTimeExcluding: pagination?.newerThanItem?.createdAt,
+        );
+      }
+    }
+  }
+
+  @override
+  void addOrderingToQuery({
+    required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    required List<StatusRepositoryOrderingTermData>? orderingTerms,
+  }) {
+    orderBy(query, orderingTerms ?? []);
+  }
+
+  @override
+  // ignore: code-metrics, long-method
+  JoinedSelectStatement<Table, DataClass>
+      convertSimpleSelectStatementToJoinedSelectStatement({
+    required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    required StatusRepositoryFilters? filters,
+  }) {
+    var needFilterByFollowing =
+        filters?.onlyFromAccountsFollowingByAccount != null;
+    var needFilterByList = filters?.onlyInListWithRemoteId?.isNotEmpty == true;
+    var needFilterByTag = filters?.onlyWithHashtag?.isNotEmpty == true;
+    var needFilterByConversation = filters?.onlyInConversation != null;
+    var needFilterByHomeTimeline = filters?.isFromHomeTimeline == true;
+    var includeReplyToAccountFollowing = false;
+
+    var replyVisibilityFilter =
+        filters?.replyVisibilityFilterCondition?.replyVisibilityFilter;
+    if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
+        null) {
+      if (replyVisibilityFilter == PleromaApiReplyVisibilityFilter.following) {
+        includeReplyToAccountFollowing = true;
+      }
+    }
+
+    var joinQuery = query.join(
+      populateStatusJoin(
+        includeAccountFollowing: needFilterByFollowing,
+        includeStatusLists: needFilterByList,
+        includeStatusHashtags: needFilterByTag,
+        includeConversations:
+            needFilterByConversation || filters?.mustBeConversationItem == true,
+        includeHomeTimeline: needFilterByHomeTimeline,
+        includeReplyToAccountFollowing: includeReplyToAccountFollowing,
+      ),
+    );
+
+    var finalQuery = joinQuery;
+
+    if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
+        null) {
+      if (replyVisibilityFilter == PleromaApiReplyVisibilityFilter.following) {
+        finalQuery = addReplyToAccountSelfOrFollowingWhere(
+          joinQuery,
+          filters?.replyVisibilityFilterCondition?.myAccountRemoteId,
+        );
+      }
+    }
+
+    if (filters?.excludeTextConditions?.isNotEmpty == true) {
+      for (var textCondition in filters!.excludeTextConditions!) {
+        addExcludeTextWhere(
+          joinQuery,
+          phrase: textCondition.phrase,
+          wholeWord: textCondition.wholeWord,
+        );
+      }
+    }
+
+    if (needFilterByFollowing) {
+      finalQuery = addFollowingWhere(
+        joinQuery,
+        filters?.onlyFromAccountsFollowingByAccount?.remoteId,
+      );
+    }
+    if (needFilterByList) {
+      finalQuery = addListWhere(
+        finalQuery,
+        filters?.onlyInListWithRemoteId,
+      );
+    }
+    if (needFilterByConversation) {
+      finalQuery = addConversationWhere(
+        finalQuery,
+        filters?.onlyInConversation?.remoteId,
+      );
+    }
+
+    if (needFilterByTag) {
+      finalQuery = addHashtagWhere(
+        finalQuery,
+        filters?.onlyWithHashtag,
+      );
+    }
+
+    // if (needFilterByHomeTimeline) {
+    //   // nothing it is filtered by inner join
+    // }
+
+    return joinQuery;
+  }
+
+}
+
+extension TypedResultDbStatusPopulatedExtension on TypedResult {
+  DbStatusPopulated toDbStatusPopulated({
+    required StatusDao dao,
+  }) {
+    TypedResult typedResult = this;
+    return DbStatusPopulated(
+      reblogDbStatus: typedResult.readTableOrNull(dao.reblogAlias),
+      reblogDbStatusAccount:
+          typedResult.readTableOrNull(dao.reblogAccountAlias),
+      dbStatus: typedResult.readTable(dao.db.dbStatuses),
+      dbAccount: typedResult.readTable(dao.accountAlias),
+      replyDbStatus: typedResult.readTableOrNull(dao.replyAlias),
+      replyDbStatusAccount: typedResult.readTableOrNull(dao.replyAccountAlias),
+      replyReblogDbStatus: typedResult.readTableOrNull(dao.replyReblogAlias),
+      replyReblogDbStatusAccount:
+          typedResult.readTableOrNull(dao.replyReblogAccountAlias),
+    );
+  }
+}
+
+extension TypedResultListDbStatusPopulatedExtension on List<TypedResult> {
+  List<DbStatusPopulated> toDbStatusPopulatedList({
+    required StatusDao dao,
+  }) {
+    return map(
+      (typedResult) => typedResult.toDbStatusPopulated(dao: dao),
+    ).toList();
   }
 }

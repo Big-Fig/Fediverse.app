@@ -5,12 +5,21 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IMyAccountAccountBlockNetworkOnlyAccountListBloc
-    implements Disposable, IAccountNetworkOnlyListBloc {
+    implements IDisposable, IAccountNetworkOnlyListBloc {
   static IMyAccountAccountBlockNetworkOnlyAccountListBloc of(
-          BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IMyAccountAccountBlockNetworkOnlyAccountListBloc>(context,
-          listen: listen);
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IMyAccountAccountBlockNetworkOnlyAccountListBloc>(
+        context,
+        listen: listen,
+      );
 
-  Future removeAccountBlock({@required IAccount account});
+  Future addAccountBlock({
+    required IAccount account,
+  });
+
+  Future removeAccountBlock({
+    required IAccount account,
+  });
 }

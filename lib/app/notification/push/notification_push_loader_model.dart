@@ -1,20 +1,20 @@
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
-import 'package:flutter/widgets.dart';
 
 class NotificationPushLoaderNotification {
   final INotification notification;
   final PushHandlerMessage pushHandlerMessage;
   NotificationPushLoaderNotification({
-    @required this.notification,
-    @required this.pushHandlerMessage,
+    required this.notification,
+    required this.pushHandlerMessage,
   });
 
   @override
   String toString() {
     return 'NotificationPushLoaderNotification{'
-        'pleromaNotification: $notification,'
-        ' pushHandlerMessage: $pushHandlerMessage}';
+        'pleromaNotification: $notification, '
+        'pushHandlerMessage: $pushHandlerMessage'
+        '}';
   }
 
   @override

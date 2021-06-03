@@ -1,4 +1,6 @@
 import 'package:fedi/app/account/details/account_details_bloc.dart';
+import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -9,24 +11,41 @@ import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 
 var _logger = Logger("account_details_bloc_impl.dart");
 
- class AccountDetailsBloc extends DisposableOwner
+class AccountDetailsBloc extends DisposableOwner
     implements IAccountDetailsBloc {
   @override
-  NestedScrollController nestedScrollController;
+  final List<AccountStatusesTab> tabs;
+
+  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
 
   @override
-  INestedScrollControllerBloc nestedScrollControllerBloc;
+  late NestedScrollController nestedScrollController;
 
   @override
-  IFediNestedScrollViewBloc fediNestedScrollViewBloc;
+  late INestedScrollControllerBloc nestedScrollControllerBloc;
 
-  AccountDetailsBloc() {
+  @override
+  late IFediNestedScrollViewBloc fediNestedScrollViewBloc;
+
+  AccountDetailsBloc({
+    required this.currentAuthInstanceBloc,
+  }) : tabs = <AccountStatusesTab>[
+          AccountStatusesTab.withoutReplies,
+          AccountStatusesTab.pinned,
+          AccountStatusesTab.media,
+          AccountStatusesTab.withReplies,
+          if (currentAuthInstanceBloc
+              .currentInstance!.isAccountFavouritesFeatureSupported!)
+            AccountStatusesTab.favourites,
+        ] {
     nestedScrollController = NestedScrollController(centerScroll: false);
 
     nestedScrollControllerBloc = NestedScrollControllerBloc(
-        nestedScrollController: nestedScrollController);
+      nestedScrollController: nestedScrollController,
+    );
     fediNestedScrollViewBloc = FediNestedScrollViewBloc(
-        nestedScrollControllerBloc: nestedScrollControllerBloc);
+      nestedScrollControllerBloc: nestedScrollControllerBloc,
+    );
 
     addDisposable(disposable: fediNestedScrollViewBloc);
     addDisposable(disposable: nestedScrollControllerBloc);

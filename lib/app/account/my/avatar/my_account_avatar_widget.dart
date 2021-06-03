@@ -6,7 +6,12 @@ class MyAccountAvatarWidget extends StatelessWidget {
   final double imageSize;
   final double progressSize;
 
-  const MyAccountAvatarWidget({this.imageSize = 24, this.progressSize = 24});
+  const MyAccountAvatarWidget({
+    // ignore: no-magic-number
+    this.imageSize = 24,
+    // ignore: no-magic-number
+    this.progressSize = 24,
+  });
 
   @override
   Widget build(BuildContext context) => MyAccountBlocProxyProvider(

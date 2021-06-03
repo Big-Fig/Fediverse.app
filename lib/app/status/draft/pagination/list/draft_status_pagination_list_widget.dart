@@ -12,34 +12,48 @@ import 'package:provider/provider.dart';
 class DraftStatusPaginationListTimelineWidget
     extends DraftStatusPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
-  DraftStatusPaginationListTimelineWidget(
-      {@required Key key, @required this.needWatchLocalRepositoryForUpdates})
-      : super(key: key);
+  const DraftStatusPaginationListTimelineWidget({
+    required Key key,
+    required this.needWatchLocalRepositoryForUpdates,
+    Widget? customEmptyWidget,
+    Widget? customLoadingWidget,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
+  }) : super(
+          key: key,
+          customEmptyWidget: customEmptyWidget,
+          customLoadingWidget: customLoadingWidget,
+        );
 
   @override
-  ScrollView buildItemsCollectionView(
-          {@required BuildContext context,
-          @required List<IDraftStatus> items,
-          @required Widget header,
-          @required Widget footer}) =>
+  ScrollView buildItemsCollectionView({
+    required BuildContext context,
+    required List<IDraftStatus> items,
+    required Widget? header,
+    required Widget? footer,
+  }) =>
       PaginationListWidget.buildItemsListView(
-          context: context,
-          items: items,
-          header: header,
-          footer: footer,
-          itemBuilder: (context, index) => Provider<IDraftStatus>.value(
-                value: items[index],
-                child: DisposableProxyProvider<IDraftStatus, IDraftStatusBloc>(
-                    update: (context, draftStatus, oldValue) {
-                      return DraftStatusBloc.createFromContext(
-                          context, draftStatus,
-                          isNeedWatchLocalRepositoryForUpdates:
-                              needWatchLocalRepositoryForUpdates);
-                    },
-                    child: FediListTile(
-                      isFirstInList: index == 0,
-                      child: DraftStatusListItemWidget(),
-                    )),
-              ));
+        context: context,
+        keyboardDismissBehavior: keyboardDismissBehavior,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) => Provider<IDraftStatus>.value(
+          value: items[index],
+          child: DisposableProxyProvider<IDraftStatus, IDraftStatusBloc>(
+            update: (context, draftStatus, oldValue) =>
+                DraftStatusBloc.createFromContext(
+              context,
+              draftStatus,
+              isNeedWatchLocalRepositoryForUpdates:
+                  needWatchLocalRepositoryForUpdates,
+            ),
+            child: FediListTile(
+              isFirstInList: index == 0,
+              child: const DraftStatusListItemWidget(),
+            ),
+          ),
+        ),
+      );
 }

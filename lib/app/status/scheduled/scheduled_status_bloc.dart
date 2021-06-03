@@ -1,20 +1,19 @@
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IScheduledStatusBloc implements Disposable {
-
+abstract class IScheduledStatusBloc implements IDisposable {
   static IScheduledStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IScheduledStatusBloc>(context, listen: listen);
 
-  ScheduledStatusState get state;
+  ScheduledStatusState? get state;
 
-  Stream<ScheduledStatusState> get stateStream;
+  Stream<ScheduledStatusState?> get stateStream;
 
-  String get remoteId;
+  String? get remoteId;
 
   IScheduledStatus get scheduledStatus;
 
@@ -24,15 +23,17 @@ abstract class IScheduledStatusBloc implements Disposable {
 
   Stream<DateTime> get scheduledAtStream;
 
-  String get spoilerText;
+  String? get spoilerText;
 
-  Stream<String> get spoilerTextStream;
+  Stream<String?> get spoilerTextStream;
 
-  List<IPleromaMediaAttachment> get mediaAttachments;
+  List<IPleromaApiMediaAttachment>? get mediaAttachments;
 
-  Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
+  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream;
 
-  Future reSchedule({@required DateTime scheduledAt});
+  Future reSchedule({
+    required DateTime scheduledAt,
+  });
 
   Future cancelSchedule();
 
@@ -40,5 +41,5 @@ abstract class IScheduledStatusBloc implements Disposable {
 
   IPostStatusData calculatePostStatusData();
 
-  Future<bool> postScheduledPost(PostStatusData postStatusData);
+  Future postScheduledPost(PostStatusData postStatusData);
 }

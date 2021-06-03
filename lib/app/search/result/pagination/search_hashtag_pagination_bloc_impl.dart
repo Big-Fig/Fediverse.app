@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/search/result/pagination/search_adapter_pagination_bloc_impl.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
@@ -9,18 +10,20 @@ import 'package:provider/provider.dart';
 
 class SearchHashtagPaginationBloc
     extends SearchAdapterPaginationBloc<IHashtag> {
-  SearchHashtagPaginationBloc(
-      {@required
-          IPaginationBloc<PaginationPage<ISearchResultItem>, ISearchResultItem>
-              searchResultItemPaginationBloc})
-      : super(searchResultItemPaginationBloc: searchResultItemPaginationBloc);
+  SearchHashtagPaginationBloc({
+    required IPaginationBloc<PaginationPage<ISearchResultItem>,
+            ISearchResultItem>
+        searchResultItemPaginationBloc,
+  }) : super(searchResultItemPaginationBloc: searchResultItemPaginationBloc);
 
   @override
   PaginationPage<IHashtag> mapPage(PaginationPage<ISearchResultItem> page) {
+
     List<IHashtag> items = page.items
-        .where((searchResultItem) => searchResultItem.type ==
-        SearchResultItemType.hashtag)
+        .where((searchResultItem) =>
+            searchResultItem.type == SearchResultItemType.hashtag)
         .map((searchResultItem) => searchResultItem.hashtag)
+        .whereNotNull()
         .toList();
     return PaginationPage(
       requestedLimitPerPage: page.requestedLimitPerPage,
@@ -36,8 +39,10 @@ class SearchHashtagPaginationBloc
                 ISearchResultItem>>(context, listen: false),
       );
 
-  static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) {
     return DisposableProvider<
         IPaginationBloc<PaginationPage<IHashtag>, IHashtag>>(
       create: (context) =>

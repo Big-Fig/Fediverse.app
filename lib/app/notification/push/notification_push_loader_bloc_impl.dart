@@ -1,5 +1,8 @@
+import 'dart:async';
+
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -7,11 +10,11 @@ import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
-import 'package:fedi/pleroma/push/pleroma_push_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
+import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("notification_push_loader_bloc_impl.dart");
@@ -20,42 +23,60 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     implements INotificationPushLoaderBloc {
   final AuthInstance currentInstance;
   final IPushHandlerBloc pushHandlerBloc;
-  final IPleromaNotificationService pleromaNotificationService;
+  final IPleromaApiNotificationService pleromaNotificationService;
 
   final INotificationRepository notificationRepository;
-  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IMyAccountBloc myAccountBloc;
 
   BehaviorSubject<NotificationPushLoaderNotification>
-      launchOrResumePushLoaderNotificationSubject = BehaviorSubject();
+      launchPushLoaderNotificationSubject = BehaviorSubject();
 
   @override
-  NotificationPushLoaderNotification get launchOrResumePushLoaderNotification =>
-      launchOrResumePushLoaderNotificationSubject.value;
+  NotificationPushLoaderNotification? get launchPushLoaderNotification =>
+      launchPushLoaderNotificationSubject.value;
 
   @override
-  Stream<NotificationPushLoaderNotification>
-      get launchOrResumePushLoaderNotificationStream =>
-          launchOrResumePushLoaderNotificationSubject.stream;
+  Stream<NotificationPushLoaderNotification?>
+      get launchPushLoaderNotificationStream =>
+          launchPushLoaderNotificationSubject.stream;
+
+  final StreamController<NotificationPushLoaderNotification>
+      _handledNotificationsStreamController = StreamController.broadcast();
+
+  @override
+  Stream<NotificationPushLoaderNotification> get handledNotificationsStream =>
+      _handledNotificationsStreamController.stream;
 
   NotificationPushLoaderBloc({
-    @required this.currentInstance,
-    @required this.pushHandlerBloc,
-    @required this.pleromaNotificationService,
-    @required this.notificationRepository,
-    @required this.chatNewMessagesHandlerBloc,
+    required this.currentInstance,
+    required this.pushHandlerBloc,
+    required this.pleromaNotificationService,
+    required this.notificationRepository,
+    required this.chatNewMessagesHandlerBloc,
+    required this.myAccountBloc,
   }) {
     pushHandlerBloc.addRealTimeHandler(handlePush);
-    addDisposable(subject: launchOrResumePushLoaderNotificationSubject);
-    addDisposable(disposable: CustomDisposable(() {
-      pushHandlerBloc.removeRealTimeHandler(handlePush);
-    }));
+    addDisposable(subject: launchPushLoaderNotificationSubject);
+    addDisposable(
+      disposable: CustomDisposable(
+        () async {
+          pushHandlerBloc.removeRealTimeHandler(handlePush);
+        },
+      ),
+    );
+    addDisposable(streamController: _handledNotificationsStreamController);
   }
 
+  // todo: refactor
+  // ignore: long-method
   Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
-    PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
 
     var isForCurrentInstance = currentInstance.isInstanceWithHostAndAcct(
-        host: pleromaPushMessage.server, acct: pleromaPushMessage.account);
+      host: pleromaPushMessage.server,
+      acct: pleromaPushMessage.account,
+    );
 
     _logger.finest(() => "handlePush \n"
         "\t isForCurrentInstance = $isForCurrentInstance"
@@ -64,43 +85,68 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     if (isForCurrentInstance) {
       String remoteNotificationId = pleromaPushMessage.notificationId;
       var remoteNotification = await pleromaNotificationService.getNotification(
-          notificationRemoteId: remoteNotificationId);
+        notificationRemoteId: remoteNotificationId,
+      );
 
       handled = true;
-      if (remoteNotification != null) {
-        var all = await notificationRepository.countAll();
-        _logger.finest(() => "all ${all}");
+      var all = await notificationRepository.countAll();
+      _logger.finest(() => "all $all");
 
-        var alreadyExistNotification =
-            await notificationRepository.findByRemoteId(remoteNotificationId);
+      var alreadyExistNotification = await notificationRepository
+          .findByRemoteIdInAppType(remoteNotificationId);
 
-        _logger.finest(() => "handlePush \n"
-            "\t remoteNotification = $remoteNotification");
+      _logger.finest(() => "handlePush \n"
+          "\t remoteNotification = $remoteNotification");
 
-        _logger.finest(() => "handlePush \n"
-            "\t remoteNotificationId = $remoteNotificationId \n"
-            "\t alreadyExistNotification = $alreadyExistNotification");
+      _logger.finest(() => "handlePush \n"
+          "\t remoteNotificationId = $remoteNotificationId \n"
+          "\t alreadyExistNotification = $alreadyExistNotification");
 
-        var unread = alreadyExistNotification?.unread ?? true;
+      var unread = alreadyExistNotification?.unread ?? true;
 
-        await notificationRepository
-            .upsertRemoteNotification(remoteNotification, unread: unread);
+      await notificationRepository.upsertRemoteNotification(
+        remoteNotification,
+        unread: unread,
+        batchTransaction: null,
+      );
 
-        if (pushHandlerMessage.pushMessage.isLaunchOrResume) {
-          launchOrResumePushLoaderNotificationSubject
-              .add(NotificationPushLoaderNotification(
-            notification: await notificationRepository
-                .findByRemoteId(remoteNotification.id),
+      var notification = await notificationRepository.findByRemoteIdInAppType(
+        remoteNotification.id,
+      );
+      if (pushHandlerMessage.pushMessage.isLaunch) {
+        if (notification != null) {
+          launchPushLoaderNotificationSubject.add(
+            NotificationPushLoaderNotification(
+              notification: notification,
+              pushHandlerMessage: pushHandlerMessage,
+            ),
+          );
+        }
+      }
+
+      var chatMessage = remoteNotification.chatMessage;
+      if (chatMessage != null) {
+        await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
+      }
+
+      var pleromaNotificationType = remoteNotification.typeAsPleromaApi;
+
+      // refresh to update followRequestCount
+      if (pleromaNotificationType == PleromaApiNotificationType.followRequest) {
+        unawaited(
+          myAccountBloc.refreshFromNetwork(
+            isNeedPreFetchRelationship: false,
+          ),
+        );
+      }
+
+      if (notification != null) {
+        _handledNotificationsStreamController.add(
+          NotificationPushLoaderNotification(
+            notification: notification,
             pushHandlerMessage: pushHandlerMessage,
-          ));
-        }
-
-        // todo: remove temp hack unread should be redesigned
-        // Also, we should fetch chat info if chat not exist locally
-        var chatMessage = remoteNotification.chatMessage;
-        if (chatMessage != null) {
-          await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
-        }
+          ),
+        );
       }
     } else {
       handled = false;
@@ -124,5 +170,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     }
 
     await pushHandlerBloc.markAsHandled(handledMessages);
+
+    await pushHandlerBloc.handleInitialMessage();
   }
 }

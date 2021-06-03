@@ -1,30 +1,46 @@
+import 'package:fedi/analytics/app/app_analytics_model.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_model.dart';
+import 'package:fedi/app/account/select/recent/recent_select_account_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
-import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_model.dart';
+import 'package:fedi/app/cache/database/settings/database_cache_settings_model.dart';
+import 'package:fedi/app/cache/files/settings/files_cache_settings_model.dart';
+import 'package:fedi/app/chat/settings/chat_settings_model.dart';
+import 'package:fedi/app/emoji/picker/category/custom_image_url/emoji_picker_custom_image_url_category_model.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_model.dart';
 import 'package:fedi/app/hive/hive_service.dart';
+import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
+import 'package:fedi/app/localization/settings/localization_settings_model.dart';
+import 'package:fedi/app/media/settings/media_settings_model.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_model.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
-import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
-import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_model.dart';
+import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_model.dart';
+import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
+import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
+import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
-
+import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/toast/settings/toast_settings_model.dart';
+import 'package:fedi/app/ui/settings/ui_settings_model.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
-import 'package:fedi/mastodon/instance/mastodon_instance_model.dart';
-import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/application/pleroma_application_model.dart';
-import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:fedi/pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/pleroma/history/pleroma_history_model.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
-import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
-import 'package:fedi/pleroma/push/pleroma_push_model.dart';
-import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
+import 'package:fedi/localization/localization_model.dart';
+import 'package:fedi/mastodon/api/instance/mastodon_api_instance_model.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:fedi/pleroma/api/application/pleroma_api_application_model.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
+import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
+import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
+import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
+import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_model.dart';
+import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
+import 'package:fedi/pleroma/api/tag/history/pleroma_api_tag_history_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -38,46 +54,70 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
   }
 
   static void registerAdapters() {
-    Hive.registerAdapter(PleromaFieldAdapter(), 37);
-    Hive.registerAdapter(PleromaEmojiAdapter(), 38);
-    Hive.registerAdapter(PleromaMyAccountPleromaPartAdapter(), 40);
+    Hive.registerAdapter(PleromaApiFieldAdapter());
+    Hive.registerAdapter(PleromaApiEmojiAdapter());
+    Hive.registerAdapter(PleromaApiMyAccountPleromaPartAdapter());
     Hive.registerAdapter(
-        PleromaMyAccountPleromaPartNotificationsSettingsAdapter(), 41);
-    Hive.registerAdapter(PleromaAccountRelationshipAdapter(), 42);
-    Hive.registerAdapter(PleromaMyAccountSourceAdapter(), 43);
-    Hive.registerAdapter(PleromaMyAccountSourcePleromaPartAdapter(), 44);
-    Hive.registerAdapter(TimelineSettingsAdapter(), 46);
-    Hive.registerAdapter(PushSubscriptionSettingsLocalPreferencesAdapter(), 47);
-
-    Hive.registerAdapter(AuthInstanceListAdapter(), 49);
-    Hive.registerAdapter(AuthInstanceAdapter(), 50);
-    Hive.registerAdapter(PleromaOAuthTokenAdapter(), 51);
-    Hive.registerAdapter(PleromaClientApplicationAdapter(), 52);
-    Hive.registerAdapter(MyAccountRemoteWrapperAdapter(), 53);
-    Hive.registerAdapter(PleromaMyAccountAdapter(), 54);
-    Hive.registerAdapter(PushHandlerUnhandledListAdapter(), 55);
-    Hive.registerAdapter(PleromaPushMessageBodyAdapter(), 56);
-    Hive.registerAdapter(MyAccountSettingsAdapter(), 57);
-    Hive.registerAdapter(PleromaInstancePleromaPartAdapter(), 58);
-    Hive.registerAdapter(PleromaInstanceAdapter(), 59);
-    Hive.registerAdapter(PleromaInstancePleromaPartMetadataAdapter(), 60);
-    Hive.registerAdapter(MastodonInstanceStatsAdapter(), 61);
-    Hive.registerAdapter(MastodonUrlsAdapter(), 62);
-    Hive.registerAdapter(PleromaInstancePollLimitsAdapter(), 63);
-    Hive.registerAdapter(PleromaAccountAdapter(), 64);
-    Hive.registerAdapter(RecentSearchListAdapter(), 65);
-    Hive.registerAdapter(PushHandlerMessageAdapter(), 66);
-    Hive.registerAdapter(PushMessageAdapter(), 67);
-    Hive.registerAdapter(EmojiPickerCustomImageUrlCategoryItemsAdapter(), 68);
-    Hive.registerAdapter(CustomEmojiPickerImageUrlItemAdapter(), 69);
-    Hive.registerAdapter(EmojiPickerRecentCategoryItemsListAdapter(), 70);
-    Hive.registerAdapter(CustomEmojiPickerCodeItemAdapter(), 71);
+      PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter(),
+    );
+    Hive.registerAdapter(PleromaApiAccountRelationshipAdapter());
+    Hive.registerAdapter(PleromaApiMyAccountSourceAdapter());
+    Hive.registerAdapter(PleromaApiMyAccountSourcePleromaPartAdapter());
+    Hive.registerAdapter(PushSettingsAdapter());
+    Hive.registerAdapter(AuthInstanceListAdapter());
+    Hive.registerAdapter(AuthInstanceAdapter());
+    Hive.registerAdapter(PleromaApiOAuthTokenAdapter());
+    Hive.registerAdapter(PleromaApiClientApplicationAdapter());
+    Hive.registerAdapter(PleromaMyAccountWrapperAdapter());
+    Hive.registerAdapter(PleromaApiMyAccountAdapter());
+    Hive.registerAdapter(PushHandlerUnhandledListAdapter());
+    Hive.registerAdapter(PleromaApiPushMessageBodyAdapter());
+    Hive.registerAdapter(PleromaApiInstancePleromaPartAdapter());
+    Hive.registerAdapter(PleromaApiInstanceAdapter());
+    Hive.registerAdapter(PleromaApiInstancePleromaPartMetadataAdapter());
+    Hive.registerAdapter(MastodonApiInstanceStatsAdapter());
+    Hive.registerAdapter(MastodonApiUrlsAdapter());
+    Hive.registerAdapter(PleromaApiInstancePollLimitsAdapter());
+    Hive.registerAdapter(PleromaApiAccountAdapter());
+    Hive.registerAdapter(RecentSearchListAdapter());
+    Hive.registerAdapter(PushHandlerMessageAdapter());
+    Hive.registerAdapter(PushMessageAdapter());
+    Hive.registerAdapter(EmojiPickerCustomImageUrlCategoryItemsAdapter());
+    Hive.registerAdapter(CustomEmojiPickerImageUrlItemAdapter());
+    Hive.registerAdapter(EmojiPickerRecentCategoryItemsListAdapter());
+    Hive.registerAdapter(CustomEmojiPickerCodeItemAdapter());
     Hive.registerAdapter(
-        PleromaInstancePleromaPartMetadataFieldLimitsAdapter(), 72);
-    Hive.registerAdapter(PushNotificationAdapter(), 73);
-    Hive.registerAdapter(PleromaTagAdapter(), 74); // 74
-    Hive.registerAdapter(PleromaAccountPleromaPartAdapter(), 75); // 75
-    Hive.registerAdapter(PleromaCustomEmojiAdapter(), 76); // 76
-    Hive.registerAdapter(PleromaHistoryAdapter(), 77); // 77
+      PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter(),
+    );
+    Hive.registerAdapter(PushNotificationAdapter());
+    Hive.registerAdapter(PleromaApiTagAdapter());
+    Hive.registerAdapter(PleromaApiAccountPleromaPartAdapter());
+    Hive.registerAdapter(PleromaApiCustomEmojiAdapter());
+    Hive.registerAdapter(PleromaApiTagHistoryAdapter());
+    Hive.registerAdapter(TimelineAdapter());
+    Hive.registerAdapter(TimelineSettingsAdapter());
+    Hive.registerAdapter(PleromaApiListAdapter());
+    Hive.registerAdapter(TimelinesHomeTabStorageAdapter());
+    Hive.registerAdapter(LocalizationLocaleAdapter());
+    Hive.registerAdapter(PostStatusSettingsAdapter());
+    Hive.registerAdapter(StatusSensitiveSettingsAdapter());
+    Hive.registerAdapter(ToastSettingsAdapter());
+    Hive.registerAdapter(MediaSettingsAdapter());
+    Hive.registerAdapter(WebSocketsSettingsAdapter());
+    Hive.registerAdapter(LocalizationSettingsAdapter());
+    Hive.registerAdapter(UiSettingsAdapter());
+    Hive.registerAdapter(ChatSettingsAdapter());
+    Hive.registerAdapter(RecentSelectAccountListAdapter());
+    Hive.registerAdapter(AppAnalyticsDataAdapter());
+    Hive.registerAdapter(PaginationSettingsAdapter());
+    Hive.registerAdapter(DatabaseCacheSettingsAdapter());
+    Hive.registerAdapter(FilesCacheSettingsAdapter());
+    Hive.registerAdapter(
+      PleromaApiInstancePleromaPartMetadataFederationAdapter(),
+    );
+    Hive.registerAdapter(
+      PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeAdapter(),
+    );
+    Hive.registerAdapter(PleromaApiFilterAdapter());
   }
 }

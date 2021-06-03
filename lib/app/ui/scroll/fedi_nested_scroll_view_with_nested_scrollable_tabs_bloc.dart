@@ -8,8 +8,11 @@ abstract class IFediNestedScrollViewWithNestedScrollableTabsBloc
   TabController get tabController;
 
   static IFediNestedScrollViewWithNestedScrollableTabsBloc of(
-          BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IFediNestedScrollViewWithNestedScrollableTabsBloc>(context,
-          listen: listen);
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IFediNestedScrollViewWithNestedScrollableTabsBloc>(
+        context,
+        listen: listen,
+      );
 }

@@ -1,65 +1,74 @@
 import 'package:fedi/app/ui/edit_text/fedi_base_edit_text_field.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FediFilledEditTextField extends StatelessWidget {
   final String hintText;
-  final String errorText;
+  final String? errorText;
   final bool expanded;
   final bool autofocus;
   final TextEditingController textEditingController;
-  final Widget leading;
-  final Widget ending;
-  final FocusNode focusNode;
-  final int maxLines;
+  final Widget? leading;
+  final Widget? ending;
+  final FocusNode? focusNode;
+  final int? maxLines;
   final ValueChanged<String> onSubmitted;
   final TextInputAction textInputAction;
-  final TextInputType keyboardType;
+  final TextInputType? keyboardType;
   final bool autocorrect;
-  final BoxBorder border;
-  final Color backgroundColor;
+  final BoxBorder? border;
+  final Color? backgroundColor;
   final bool highlightMentions;
-  final int maxLength;
+  final int? maxLength;
+
+  // todo: refactor to own widget
+  final bool filled;
 
   FediFilledEditTextField({
-    @required this.textEditingController,
-    @required this.hintText,
-    @required this.errorText,
-    @required this.maxLines,
-    @required this.onSubmitted,
-    @required this.textInputAction,
+    required this.textEditingController,
+    required this.hintText,
+    required this.errorText,
+    required this.maxLines,
+    required this.onSubmitted,
+    required this.textInputAction,
     this.leading,
     this.border,
-    this.backgroundColor = FediColors.ultraLightGrey,
+    this.backgroundColor,
     this.ending,
-    @required this.expanded,
-    @required this.autofocus,
+    required this.expanded,
+    required this.autofocus,
     this.focusNode,
     this.autocorrect = true,
     this.keyboardType,
-    @required this.highlightMentions,
-    @required this.maxLength,
+    required this.highlightMentions,
+    required this.maxLength,
+    this.filled = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    var backgroundColor =
+        this.backgroundColor ?? IFediUiColorTheme.of(context).ultraLightGrey;
     var containLeading = leading != null;
     var containEnding = ending != null;
     return Container(
-      decoration: BoxDecoration(
-          color: backgroundColor,
-          border: border,
-          borderRadius: BorderRadius.circular(30.0)),
+      decoration: filled
+          ? BoxDecoration(
+              color: backgroundColor,
+              border: border,
+              // ignore: no-magic-number
+              borderRadius: BorderRadius.circular(30.0),
+            )
+          : null,
       child: Padding(
         padding: calculatePadding(containLeading, containEnding),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (containLeading) leading,
+            if (containLeading) leading!,
             Flexible(
               child: FediBaseEditTextField(
                 highlightMentions: highlightMentions,
@@ -76,17 +85,19 @@ class FediFilledEditTextField extends StatelessWidget {
                 keyboardType: keyboardType,
                 hintText: hintText,
                 errorText: errorText,
-                textStyle: FediTextStyles.bigTallDarkGrey,
+                textStyle: IFediUiTextTheme.of(context).bigTallDarkGrey,
                 minLines: null,
-                hintStyle: FediTextStyles.bigTallGrey,
+                hintStyle: IFediUiTextTheme.of(context).bigTallGrey,
+                // ignore: no-magic-number
                 contentPadding: EdgeInsets.symmetric(vertical: 10.0),
                 border: InputBorder.none,
                 errorBorder: InputBorder.none,
+                // ignore: no-equal-arguments
                 focusedBorder: InputBorder.none,
                 displayBorder: false,
               ),
             ),
-            if (containEnding) ending,
+            if (containEnding) ending!,
           ],
         ),
       ),

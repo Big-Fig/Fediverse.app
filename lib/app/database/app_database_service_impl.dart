@@ -1,50 +1,243 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/database/database_service.dart';
 import 'package:fedi/disposable/disposable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:logging/logging.dart';
+import 'package:moor/ffi.dart';
+import 'package:moor_inspector/moor_inspector.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-class MoorDatabaseService extends AsyncInitLoadingBloc
+final _logger = Logger("app_database_service_impl.dart");
+
+class AppDatabaseService extends AsyncInitLoadingBloc
     implements IDatabaseService {
   final String dbName;
 
-  MoorDatabaseService({@required this.dbName});
+  AppDatabaseService({
+    required this.dbName,
+  });
 
-  AppDatabase appDatabase;
+  late AppDatabase appDatabase;
+
+  late MoorInspector inspector;
+
+  late String filePath;
+  late File file;
+
+  @override
+  Future<int> calculateSizeInBytes() => file.length();
 
   @override
   Future internalAsyncInit() async {
-//    appDatabase = AppDatabase(LazyDatabase(() async {
-//      final dbFolder = await getApplicationDocumentsDirectory();
-//      final file = File(p.join(dbFolder.path, 'app.db'));
-//      return VmDatabase(file);
-//    }));
+    filePath = await calculateDatabaseFilePath(dbName);
+    file = File(filePath);
 
-//    appDatabase = AppDatabase(FlutterQueryExecutor.inDatabaseFolder(
-//        path: 'db.sqlite', logStatements: true));
+    appDatabase = AppDatabase(
+      VmDatabase(
+        file,
+        logStatements: false,
+      ),
+    );
 
-    // todo: improve re-opening new database during account switch
-    moorRuntimeOptions.dontWarnAboutMultipleDatabases = true;
+    addDisposable(
+      disposable: CustomDisposable(
+        () async {
+          await appDatabase.close();
+        },
+      ),
+    );
 
+    if (!kReleaseMode) {
+      await _addMoorInspectorSupport();
+    }
+  }
 
-    appDatabase = AppDatabase(FlutterQueryExecutor.inDatabaseFolder(
-        path: '$dbName.sqlite', logStatements: false));
+  Future _addMoorInspectorSupport() async {
+    var packageId = await FediPackageInfoHelper.getPackageId();
 
-    addDisposable(disposable: CustomDisposable(() {
-      appDatabase.close();
-    }));
+    final moorInspectorBuilder = MoorInspectorBuilder()
+      ..bundleId = packageId
+      ..icon = 'flutter'
+      ..addDatabase(filePath, appDatabase);
+    inspector = moorInspectorBuilder.build();
+
+    //Start server and announcement server
+    await inspector.start();
+
+    addDisposable(custom: () async {
+      await inspector.stop();
+    });
+  }
+
+  static Future<String> calculateDatabaseFilePath(String dbName) async {
+    var path = '$dbName.sqlite';
+    final dbFolder = await getApplicationDocumentsDirectory();
+    var filePath = p.join(
+      dbFolder.path,
+      path,
+    );
+    return filePath;
   }
 
   @override
-  Future clear() async {
+  Future delete() async {
+    await appDatabase.close();
+    await file.delete();
+  }
+
+  static AppDatabaseService of(BuildContext context, {bool listen = true}) =>
+      Provider.of<AppDatabaseService>(context, listen: listen);
+
+  @override
+  Future<int> calculateMaxCountByType() async {
+    var statusesCount = await appDatabase.statusDao.countAll();
+    var notificationsCount =
+        await appDatabase.notificationDao.countAll();
+    var chatMessagesCount =
+        await appDatabase.chatMessageDao.countAll();
+
+    var accountsCount = await appDatabase.accountDao.countAll();
+
+    var counts = <int>[
+      statusesCount,
+      notificationsCount,
+      chatMessagesCount,
+      accountsCount,
+    ];
+
+    var maxCount = counts.reduce(
+      (value, element) => max(
+        value,
+        element,
+      ),
+    );
+
+    return maxCount;
+  }
+
+  @override
+  Future<DateTime?> calculateOldestEntryAge() async {
+    var oldestStatus = await appDatabase.statusDao.getOldestOrderById(offset: null);
+    var oldestNotification =
+        await appDatabase.notificationDao.getOldestOrderById(offset: null);
+    var oldestChatMessage =
+        await appDatabase.chatMessageDao.getOldestOrderById(offset: null);
+
+    var dateTimes = <DateTime?>[
+      oldestStatus?.createdAt,
+      oldestNotification?.createdAt,
+      oldestChatMessage?.createdAt,
+    ].where((datetime) => datetime != null).toList();
+
+    var oldestDateTime;
+    if (dateTimes.isNotEmpty) {
+      oldestDateTime = dateTimes.reduce(
+        (value, element) => value!.isBefore(element!) ? value : element,
+      );
+    }
+
+    return oldestDateTime;
+  }
+
+  @override
+  Future clearAll() async {
     for (var table in appDatabase.allTables) {
       // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
       await appDatabase.delete(table).go();
     }
   }
 
-  static MoorDatabaseService of(BuildContext context, {bool listen = true}) =>
-      Provider.of<MoorDatabaseService>(context, listen: listen);
+  @override
+  // todo: refactor
+  // ignore: long-method
+  Future clearByLimits({
+    required Duration? ageLimit,
+    required int? entriesCountByTypeLimit,
+  }) async {
+    _logger.finest(() => "clearByLimits \n"
+        "ageLimit $ageLimit \n"
+        "entriesCountByTypeLimit $entriesCountByTypeLimit \n");
+
+    // todo: clear related tables too
+
+    if (ageLimit != null) {
+      var now = DateTime.now();
+      var dateTimeToDelete = now.subtract(ageLimit.abs());
+      await appDatabase.batch((batch) {
+        appDatabase.statusDao.deleteOlderThanDate(
+          dateTimeToDelete,
+          batchTransaction: batch,
+        );
+        appDatabase.notificationDao.deleteOlderThanDate(
+          dateTimeToDelete,
+          batchTransaction: batch,
+        );
+        appDatabase.chatMessageDao.deleteOlderThanDate(
+          dateTimeToDelete,
+          batchTransaction: batch,
+        );
+      });
+    }
+
+    if (entriesCountByTypeLimit != null) {
+      if ((await appDatabase.accountDao.countAll()) > entriesCountByTypeLimit) {
+        var oldestAccountToStartToDelete = await appDatabase.accountDao
+            .getNewestOrderById(offset: entriesCountByTypeLimit);
+        if (oldestAccountToStartToDelete != null) {
+          await appDatabase.accountDao.deleteOlderThanInt(
+            oldestAccountToStartToDelete.id!,
+            fieldName: appDatabase.accountDao.dbAccounts.id.$name,
+            batchTransaction: null,
+          );
+        }
+      }
+
+      if ((await appDatabase.statusDao.countAll()) > entriesCountByTypeLimit) {
+        var oldestStatusToStartToDelete = await appDatabase.statusDao
+            .getNewestOrderById(offset: entriesCountByTypeLimit);
+        if (oldestStatusToStartToDelete != null) {
+          await appDatabase.statusDao.deleteOlderThanInt(
+            oldestStatusToStartToDelete.id!,
+            fieldName: appDatabase.statusDao.dbStatuses.id.$name,
+            batchTransaction: null,
+          );
+        }
+      }
+
+      if ((await appDatabase.notificationDao.countAll()) >
+          entriesCountByTypeLimit) {
+        var oldestNotificationToStartToDelete = await appDatabase
+            .notificationDao
+            .getNewestOrderById(offset: entriesCountByTypeLimit);
+        if (oldestNotificationToStartToDelete != null) {
+          await appDatabase.notificationDao.deleteOlderThanInt(
+            oldestNotificationToStartToDelete.id!,
+            fieldName: appDatabase.notificationDao.dbNotifications.id.$name,
+            batchTransaction: null,
+          );
+        }
+      }
+
+      if ((await appDatabase.chatMessageDao.countAll()) >
+          entriesCountByTypeLimit) {
+        var oldestChatMessageToStartToDelete = await appDatabase.chatMessageDao
+            .getNewestOrderById(offset: entriesCountByTypeLimit);
+        if (oldestChatMessageToStartToDelete != null) {
+          await appDatabase.chatMessageDao.deleteOlderThanInt(
+            oldestChatMessageToStartToDelete.id!,
+            fieldName: appDatabase.chatMessageDao.dbChatMessages.id.$name,
+            batchTransaction: null,
+          );
+        }
+      }
+    }
+  }
 }

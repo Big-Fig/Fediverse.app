@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -6,14 +6,26 @@ import 'package:flutter/widgets.dart';
 class FediDarkStatusBarStyleArea extends StatelessWidget {
   final Widget child;
 
-  FediDarkStatusBarStyleArea({@required this.child});
+  FediDarkStatusBarStyleArea({required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+
+    if (fediUiColorTheme.brightness == Brightness.light) {
+      return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.dark.copyWith(
-          statusBarColor: FediColors.white,
+          statusBarColor: IFediUiColorTheme.of(context).white,
         ),
-        child: child);
+        child: child,
+      );
+    } else {
+      return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light.copyWith(
+          statusBarColor: fediUiColorTheme.transparent,
+        ),
+        child: child,
+      );
+    }
   }
 }

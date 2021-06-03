@@ -8,13 +8,16 @@ part of 'auth_instance_list_model.dart';
 
 class AuthInstanceListAdapter extends TypeAdapter<AuthInstanceList> {
   @override
+  final int typeId = 17;
+
+  @override
   AuthInstanceList read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return AuthInstanceList(
-      instances: (fields[0] as List)?.cast<AuthInstance>(),
+      instances: (fields[0] as List).cast<AuthInstance>(),
     );
   }
 
@@ -25,6 +28,16 @@ class AuthInstanceListAdapter extends TypeAdapter<AuthInstanceList> {
       ..writeByte(0)
       ..write(obj.instances);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AuthInstanceListAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************
@@ -33,14 +46,13 @@ class AuthInstanceListAdapter extends TypeAdapter<AuthInstanceList> {
 
 AuthInstanceList _$AuthInstanceListFromJson(Map<String, dynamic> json) {
   return AuthInstanceList(
-    instances: (json['instances'] as List)
-        ?.map((e) =>
-            e == null ? null : AuthInstance.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    instances: (json['instances'] as List<dynamic>)
+        .map((e) => AuthInstance.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
 Map<String, dynamic> _$AuthInstanceListToJson(AuthInstanceList instance) =>
     <String, dynamic>{
-      'instances': instance.instances?.map((e) => e?.toJson())?.toList(),
+      'instances': instance.instances.map((e) => e.toJson()).toList(),
     };

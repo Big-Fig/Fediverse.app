@@ -1,15 +1,25 @@
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
+import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPollBloc implements Disposable {
-  static IPollBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IPollBloc>(context, listen: listen);
+abstract class IPollBloc implements IDisposable {
+  static IPollBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPollBloc>(
+        context,
+        listen: listen,
+      );
 
-  IPleromaPoll get poll;
+  IPleromaApiPoll get poll;
 
-  Stream<IPleromaPoll> get pollStream;
+  Stream<IPleromaApiPoll> get pollStream;
+
+  bool get isNeedShowResultsWithoutVote;
+
+  Stream<bool> get isNeedShowResultsWithoutVoteStream;
 
   bool get isPossibleToVote;
 
@@ -29,19 +39,23 @@ abstract class IPollBloc implements Disposable {
 
   Stream<int> get votersCountStream;
 
-  void onPollOptionSelected(IPleromaPollOption pollOption);
+  void onPollOptionSelected(IPleromaApiPollOption pollOption);
 
-  List<IPleromaPollOption> get selectedVotes;
+  List<IPleromaApiPollOption> get selectedVotes;
 
-  Stream<List<IPleromaPollOption>> get selectedVotesStream;
+  Stream<List<IPleromaApiPollOption>> get selectedVotesStream;
 
-  bool get isSelectedVotesNotEmpty;
+  bool get isVoted;
 
-  Stream<bool> get isSelectedVotesNotEmptyStream;
+  Stream<bool> get isVotedStream;
 
   Future vote();
 
-  void onPollUpdated(IPleromaPoll poll);
+  void onPollUpdated(IPleromaApiPoll? poll);
 
-  Future<bool> refreshFromNetwork();
+  Future refreshFromNetwork();
+
+  void showResultsWithoutVote();
+
+  void hideResultsWithoutVote();
 }

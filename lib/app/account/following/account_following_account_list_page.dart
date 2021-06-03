@@ -1,70 +1,56 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/following/account_following_account_cached_list_bloc_impl.dart';
+import 'package:fedi/app/account/following/account_following_account_list_widget.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
-import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
-import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AccountFollowingAccountListPage extends StatelessWidget {
-  final IAccount account;
-
-  AccountFollowingAccountListPage({@required this.account});
+  const AccountFollowingAccountListPage();
 
   @override
   Widget build(BuildContext context) {
+    var account = Provider.of<IAccount>(context);
     return Scaffold(
-      appBar: FediSubPageTitleAppBar(
-        title: tr("app.account.following.title", args: [account.acct]),
+      appBar: FediPageTitleAppBar(
+        title: S.of(context).app_account_following_title(
+              account.acct,
+            ),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: FediPadding.allBigPadding,
-              child: Text(
-                "app.account.list.privacy".tr(),
-                textAlign: TextAlign.center,
-                style: FediTextStyles.mediumShortBoldGrey,
-              ),
-            ),
-            Expanded(
-              child: AccountPaginationListWidget(
-                accountSelectedCallback: (context, account) =>
-                    goToAccountDetailsPage(context, account),
-                key: PageStorageKey("AccountFollowingAccountListPage"),
-              ),
-            ),
-          ],
-        ),
+        child: const AccountFollowingAccountListWidget(),
       ),
     );
   }
 }
 
-void goToAccountFollowingAccountListPage(
-    BuildContext context, IAccount account) {
+void goToAccountFollowingAccountListPage({
+  required BuildContext context,
+  required IAccount account,
+}) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) {
-      return AccountFollowingAccountCachedListBloc.provideToContext(
-        context,
-        account: account,
-        child: AccountCachedPaginationBloc.provideToContext(
+    MaterialPageRoute(
+      builder: (context) {
+        return AccountFollowingAccountCachedListBloc.provideToContext(
           context,
-          child: AccountPaginationListBloc.provideToContext(
+          account: account,
+          child: AccountCachedPaginationBloc.provideToContext(
             context,
-            child: AccountFollowingAccountListPage(
-              account: account,
+            child: AccountPaginationListBloc.provideToContext(
+              context,
+              child: Provider<IAccount>.value(
+                value: account,
+                child: const AccountFollowingAccountListPage(),
+              ),
             ),
           ),
-        ),
-      );
-    }),
+        );
+      },
+    ),
   );
 }

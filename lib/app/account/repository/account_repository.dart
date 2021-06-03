@@ -1,119 +1,109 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
-import 'package:fedi/app/chat/chat_model.dart';
-import 'package:fedi/app/conversation/conversation_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/repository/repository.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 
 abstract class IAccountRepository
     implements
-        Disposable,
-        IReadIdListRepository<IAccount, int>,
-        IWriteIdListRepository<DbAccount, int> {
-  static IAccountRepository of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IAccountRepository>(context, listen: listen);
+        IDisposable,
+        IAppRemoteReadWriteRepository<
+            DbAccount,
+            IAccount,
+            IPleromaApiAccount,
+            int,
+            String,
+            AccountRepositoryFilters,
+            AccountRepositoryOrderingTermData> {
+  static IAccountRepository of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IAccountRepository>(
+        context,
+        listen: listen,
+      );
 
-  Future<IAccount> findByRemoteId(String remoteId);
+  Future upsertConversationRemoteAccounts(
+    List<IPleromaApiAccount> remoteAccounts, {
+    required String conversationRemoteId,
+    required Batch? batchTransaction,
+  });
 
-  Stream<IAccount> watchByRemoteId(String remoteId);
+  Future upsertConversationRemoteAccount(
+    IPleromaApiAccount remoteAccount, {
+    required String conversationRemoteId,
+    required Batch? batchTransaction,
+  });
 
-  Future upsertRemoteAccounts(List<IPleromaAccount> remoteAccounts,
-      {@required String conversationRemoteId, @required String chatRemoteId});
+  Future upsertChatRemoteAccount(
+    IPleromaApiAccount remoteAccount, {
+    required String chatRemoteId,
+    required Batch? batchTransaction,
+  });
 
-  Future upsertRemoteAccount(IPleromaAccount remoteAccount,
-      {@required conversationRemoteId, @required String chatRemoteId});
+  Future upsertChatRemoteAccounts(
+    List<IPleromaApiAccount> remoteAccounts, {
+    required String chatRemoteId,
+    required Batch? batchTransaction,
+  });
 
-  Future addAccountFollowings(
-      String accountRemoteId, List<PleromaAccount> followings);
+  Future addAccountFollowings({
+    required String accountRemoteId,
+    required List<PleromaApiAccount> followings,
+    required Batch? batchTransaction,
+  });
 
-  Future addAccountFollowers(
-      String accountRemoteId, List<PleromaAccount> followers);
+  Future addAccountFollowers({
+    required String accountRemoteId,
+    required List<IPleromaApiAccount> followers,
+    required Batch? batchTransaction,
+  });
 
-  Future updateStatusRebloggedBy(
-      {@required String statusRemoteId,
-      @required List<PleromaAccount> rebloggedByAccounts});
+  Future updateStatusRebloggedBy({
+    required String statusRemoteId,
+    required List<IPleromaApiAccount> rebloggedByAccounts,
+    required Batch? batchTransaction,
+  });
 
-  Future updateStatusFavouritedBy(
-      {@required String statusRemoteId,
-      @required List<PleromaAccount> favouritedByAccounts});
+  Future updateStatusFavouritedBy({
+    required String statusRemoteId,
+    required List<IPleromaApiAccount> favouritedByAccounts,
+    required Batch? batchTransaction,
+  });
 
-  Future updateLocalAccountByRemoteAccount(
-      {@required IAccount oldLocalAccount,
-      @required IPleromaAccount newRemoteAccount});
+  Future<List<IAccount>> getConversationAccounts({
+    required IConversationChat conversation,
+  });
 
-  Future<List<IAccount>> getAccounts(
-      {@required IAccount olderThanAccount,
-      @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
-      @required IChat onlyInChat,
-      @required IStatus onlyInStatusRebloggedBy,
-      @required IStatus onlyInStatusFavouritedBy,
-      @required IAccount onlyInAccountFollowers,
-      @required IAccount onlyInAccountFollowing,
-      @required String searchQuery,
-      @required int limit,
-      @required int offset,
-      @required AccountOrderingTermData orderingTermData});
+  Stream<List<IAccount>> watchConversationAccounts({
+    required IConversationChat conversation,
+  });
 
-  Stream<List<IAccount>> watchAccounts(
-      {@required IAccount olderThanAccount,
-      @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
-      @required IChat onlyInChat,
-      @required IStatus onlyInStatusRebloggedBy,
-      @required IStatus onlyInStatusFavouritedBy,
-      @required IAccount onlyInAccountFollowers,
-      @required IAccount onlyInAccountFollowing,
-      @required String searchQuery,
-      @required int limit,
-      @required int offset,
-      @required AccountOrderingTermData orderingTermData});
+  Future<List<IAccount>> getChatAccounts({
+    required IPleromaChat chat,
+  });
 
-  Future<IAccount> getAccount(
-      {@required IAccount olderThanAccount,
-      @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
-      @required IChat onlyInChat,
-      @required IStatus onlyInStatusRebloggedBy,
-      @required IStatus onlyInStatusFavouritedBy,
-      @required IAccount onlyInAccountFollowers,
-      @required IAccount onlyInAccountFollowing,
-      @required String searchQuery,
-      @required AccountOrderingTermData orderingTermData});
-
-  Stream<IAccount> watchAccount(
-      {@required IAccount olderThanAccount,
-      @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
-      @required IChat onlyInChat,
-      @required IStatus onlyInStatusRebloggedBy,
-      @required IStatus onlyInStatusFavouritedBy,
-      @required IAccount onlyInAccountFollowers,
-      @required IAccount onlyInAccountFollowing,
-      @required String searchQuery,
-      @required AccountOrderingTermData orderingTermData});
-
-  Future<List<IAccount>> getConversationAccounts(
-      {@required IConversation conversation});
-
-  Stream<List<IAccount>> watchConversationAccounts(
-      {@required IConversation conversation});
-
-  Future<List<IAccount>> getChatAccounts({@required IChat chat});
-
-  Stream<List<IAccount>> watchChatAccounts({@required IChat chat});
+  Stream<List<IAccount>> watchChatAccounts({
+    required IPleromaChat chat,
+  });
 
   Future removeAccountFollowing({
-    @required String accountRemoteId,
-    @required String followingAccountId,
+    required String accountRemoteId,
+    required String followingAccountId,
+    required Batch? batchTransaction,
   });
+
   Future removeAccountFollower({
-    @required String accountRemoteId,
-    @required String followerAccountId,
+    required String accountRemoteId,
+    required String followerAccountId,
+    required Batch? batchTransaction,
   });
+
 }

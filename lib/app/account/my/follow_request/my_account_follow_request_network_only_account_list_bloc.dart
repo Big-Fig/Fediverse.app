@@ -5,14 +5,17 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IMyAccountFollowRequestNetworkOnlyAccountListBloc
-    implements Disposable, IAccountNetworkOnlyListBloc {
+    implements IDisposable, IAccountNetworkOnlyListBloc {
   static IMyAccountFollowRequestNetworkOnlyAccountListBloc of(
-          BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IMyAccountFollowRequestNetworkOnlyAccountListBloc>(context,
-          listen: listen);
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IMyAccountFollowRequestNetworkOnlyAccountListBloc>(
+        context,
+        listen: listen,
+      );
 
-  Future acceptFollowRequest({@required IAccount account});
+  Future acceptFollowRequest({required IAccount account});
 
-  Future rejectFollowRequest({@required IAccount account});
+  Future rejectFollowRequest({required IAccount account});
 }

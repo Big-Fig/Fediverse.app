@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 abstract class ICustomList {
   String get remoteId;
 
@@ -12,9 +10,10 @@ class CustomList extends ICustomList {
 
   @override
   final String title;
+
   CustomList({
-    @required this.remoteId,
-    @required this.title,
+    required this.remoteId,
+    required this.title,
   });
 
   @override
@@ -24,8 +23,10 @@ class CustomList extends ICustomList {
           runtimeType == other.runtimeType &&
           remoteId == other.remoteId &&
           title == other.title;
+
   @override
   int get hashCode => remoteId.hashCode ^ title.hashCode;
+
   @override
   String toString() {
     return 'CustomList{remoteId: $remoteId, title: $title}';

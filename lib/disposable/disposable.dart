@@ -1,26 +1,43 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 
-abstract class Disposable {
+abstract class IDisposable {
+  bool get isDisposed;
+
   @mustCallSuper
-  void dispose();
+  Future dispose();
 }
 
-class CustomDisposable extends Disposable {
-  final VoidCallback _disposeCallback;
+
+class CustomDisposable extends IDisposable {
+  final FutureOr Function() _disposeCallback;
+
+  @override
+  bool isDisposed = false;
 
   CustomDisposable(this._disposeCallback);
 
   @override
-  void dispose() => _disposeCallback();
+  Future dispose() async {
+    if (isDisposed) {
+      return;
+    }
+    isDisposed = true;
+    return await _disposeCallback();
+  }
 }
 
 class CompositeDisposable extends CustomDisposable {
-  final List<Disposable> children;
+  final List<IDisposable> children;
 
   CompositeDisposable(this.children)
-      : super(() {
-          children.reversed.forEach((child) => child.dispose());
+      : super(() async {
+          // reversed for LIFO
+          for (var child in children.reversed) {
+            await child.dispose();
+          }
         });
 
-  void add(Disposable disposable) => children.add(disposable);
+  void add(IDisposable disposable) => children.add(disposable);
 }

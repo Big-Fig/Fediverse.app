@@ -2,39 +2,33 @@ import 'package:fedi/app/media/attachment/media_attachment_audio_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_image_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_unknown_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_video_widget.dart';
-import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-var _maxHeight = 350.0;
+const _maxHeight = 350.0;
 
 class MediaAttachmentWidget extends StatelessWidget {
-  final IPleromaMediaAttachment mediaAttachment;
-
-  const MediaAttachmentWidget({@required this.mediaAttachment});
+  const MediaAttachmentWidget();
 
   @override
   Widget build(BuildContext context) {
-    switch (mediaAttachment.typeMastodon) {
-      case MastodonMediaAttachmentType.image:
-        return MediaAttachmentImageWidget(
-          mediaAttachment,
+    var mediaAttachment = Provider.of<IPleromaApiMediaAttachment>(context);
+    switch (mediaAttachment.typeAsMastodonApi) {
+      case MastodonApiMediaAttachmentType.image:
+        return const MediaAttachmentImageWidget(
           maxHeight: _maxHeight,
         );
-        break;
-
-      case MastodonMediaAttachmentType.video:
-      case MastodonMediaAttachmentType.gifv:
-        return MediaAttachmentVideoWidget(mediaAttachment);
-      case MastodonMediaAttachmentType.audio:
-        return MediaAttachmentAudioWidget(mediaAttachment);
-        break;
-
-      case MastodonMediaAttachmentType.unknown:
+      case MastodonApiMediaAttachmentType.video:
+      case MastodonApiMediaAttachmentType.gifv:
+        return const MediaAttachmentVideoWidget();
+      case MastodonApiMediaAttachmentType.audio:
+        return const MediaAttachmentAudioWidget();
+      case MastodonApiMediaAttachmentType.unknown:
       default:
-        return MediaAttachmentUnknownWidget(mediaAttachment);
-        break;
+        return const MediaAttachmentUnknownWidget();
     }
   }
 }

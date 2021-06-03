@@ -5,20 +5,24 @@ import 'package:provider/provider.dart';
 
 abstract class IPaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     implements DisposableOwner {
+  static IPaginationBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPaginationBloc>(
+        context,
+        listen: listen,
+      );
 
-  static IPaginationBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IPaginationBloc>(context, listen: listen);
+  int get loadedPagesCount;
 
+  int? get loadedPagesMinimumIndex;
 
-  static final int undefinedPageIndex = -1;
+  Stream<int?> get loadedPagesMinimumIndexStream;
 
-  int get loadedPagesMinimumIndex;
+  int? get loadedPagesMaximumIndex;
 
-  Stream<int> get loadedPagesMinimumIndexStream;
-
-  int get loadedPagesMaximumIndex;
-
-  Stream<int> get loadedPagesMaximumIndexStream;
+  Stream<int?> get loadedPagesMaximumIndexStream;
 
   bool get isLoadedPagesInSequence;
 
@@ -32,10 +36,12 @@ abstract class IPaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   Stream<List<TPage>> get loadedPagesSortedByIndexStream;
 
-  int get itemsCountPerPage;
+  int? get itemsCountPerPage;
 
   Future<TPage> refreshWithoutController();
 
-  Future<TPage> requestPage(
-      {@required int pageIndex, @required bool forceToSkipCache});
+  Future<TPage> requestPage({
+    required int pageIndex,
+    required bool forceToSkipCache,
+  });
 }

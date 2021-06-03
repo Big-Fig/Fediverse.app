@@ -7,20 +7,16 @@ class PaginationBlocProxyProvider<TPage extends PaginationPage<TItem>, TItem>
     extends StatelessWidget {
   final Widget child;
 
-  PaginationBlocProxyProvider({@required this.child});
+  PaginationBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IPaginationBloc<TPage, TItem>,
-        IPaginationBloc<TPage, TItem>>(
+        IPaginationBloc<PaginationPage<TItem>, TItem>>(
       update: (context, value, previous) => value,
-      child: ProxyProvider<IPaginationBloc<TPage, TItem>,
-          IPaginationBloc<PaginationPage<TItem>, TItem>>(
+      child: ProxyProvider<IPaginationBloc<TPage, TItem>, IPaginationBloc>(
         update: (context, value, previous) => value,
-        child: ProxyProvider<IPaginationBloc<TPage, TItem>, IPaginationBloc>(
-          update: (context, value, previous) => value,
-          child: child,
-        ),
+        child: child,
       ),
     );
   }

@@ -8,15 +8,16 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
     extends FediNestedScrollViewWidget {
   final ProviderBuilder providerBuilder;
   final NestedScrollViewContentBuilder contentBuilder;
-  final NestedScrollViewOverlayBuilder overlayBuilder;
+  final NestedScrollViewOverlayBuilder? overlayBuilder;
 
   FediNestedScrollViewWithoutNestedScrollableTabsWidget({
-    @required Widget onLongScrollUpTopOverlayWidget,
-    @required List<Widget> topSliverWidgets,
-    @required double topSliverScrollOffsetToShowWhiteStatusBar,
-    @required this.providerBuilder,
-    @required this.contentBuilder,
-    @required this.overlayBuilder,
+    required Widget? onLongScrollUpTopOverlayWidget,
+    required List<Widget> topSliverWidgets,
+    required double? topSliverScrollOffsetToShowWhiteStatusBar,
+    required this.providerBuilder,
+    required this.contentBuilder,
+    required this.overlayBuilder,
+    bool unfocusOnScroll = true,
   }) : super(
           onLongScrollUpTopOverlayWidget: onLongScrollUpTopOverlayWidget,
           topSliverWidgets: topSliverWidgets,
@@ -39,14 +40,16 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
       body: Builder(
         builder: (context) {
           // required by extended_nested_scroll_view
-          nestedScrollController.enableScroll(context);
+          nestedScrollController!.enableScroll(context);
 
           return Column(
             children: [
               if (onLongScrollUpTopOverlayWidget != null)
                 FediNestedScrollViewWidget.buildOnLongScrollUpTopOverlayWidget(
-                    context, onLongScrollUpTopOverlayWidget),
-              Expanded(child: _buildBody(context))
+                  context,
+                  onLongScrollUpTopOverlayWidget,
+                ),
+              Expanded(child: _buildBody(context)),
             ],
           );
         },
@@ -69,7 +72,9 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
                 ),
                 if (overlayBuilder != null)
                   FediNestedScrollViewWidget.buildOverlay(
-                      context, overlayBuilder),
+                    context,
+                    overlayBuilder!,
+                  ),
               ],
             );
           },

@@ -3,14 +3,16 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/cupertino.dart';
 
 abstract class IProviderContextBloc extends AsyncInitLoadingBloc {
-  T get<T extends Disposable>();
+  T get<T extends IDisposable>();
 
-  Disposable register<T extends Disposable>(T object);
+  IDisposable register<T extends IDisposable>(T object);
 
-  Future<Disposable> asyncInitAndRegister<T extends Disposable>(T obj,
-      {Future Function(T obj) additionalAsyncInit});
+  Future<IDisposable> asyncInitAndRegister<T extends IDisposable>(
+    T obj, {
+    Future Function(T obj)? additionalAsyncInit,
+  });
 
-  void unregister<T extends Disposable>(T object);
+  void unregister<T extends IDisposable>(T object);
 
-  Widget provideContextToChild({@required Widget child});
+  Widget provideContextToChild({required Widget child});
 }

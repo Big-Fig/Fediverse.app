@@ -11,7 +11,7 @@ var _logger = Logger("connection_service_impl.dart");
 
 class ConnectionService extends AsyncInitLoadingBloc
     implements IConnectionService {
-  Connectivity connectivity;
+  late Connectivity connectivity;
 
   final BehaviorSubject<ConnectivityResult> _connectionStateSubject =
       BehaviorSubject.seeded(ConnectivityResult.none);
@@ -21,7 +21,7 @@ class ConnectionService extends AsyncInitLoadingBloc
       _connectionStateSubject.stream.distinct();
 
   @override
-  ConnectivityResult get connectionState => _connectionStateSubject.value;
+  ConnectivityResult? get connectionState => _connectionStateSubject.value;
 
   @override
   Stream<bool> get isConnectedStream =>
@@ -42,9 +42,9 @@ class ConnectionService extends AsyncInitLoadingBloc
         _checkConnectivity();
       }
     });
-    WidgetsBinding.instance.addObserver(observer);
-    addDisposable(disposable: CustomDisposable(() {
-      WidgetsBinding.instance.removeObserver(observer);
+    WidgetsBinding.instance!.addObserver(observer);
+    addDisposable(disposable: CustomDisposable(() async {
+      WidgetsBinding.instance!.removeObserver(observer);
     }));
 
     addDisposable(streamSubscription:

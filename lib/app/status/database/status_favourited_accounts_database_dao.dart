@@ -1,4 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/database_dao.dart';
 import 'package:fedi/app/status/database'
     '/status_favourited_accounts_database_model.dart';
 import 'package:moor/moor.dart';
@@ -6,33 +7,48 @@ import 'package:moor/moor.dart';
 part 'status_favourited_accounts_database_dao.g.dart';
 
 @UseDao(tables: [
-  DbStatusFavouritedAccounts
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_status_favourited_accounts;",
-  "findById": "SELECT * FROM db_status_favourited_accounts WHERE id = :id;",
-  "countById":
-      "SELECT COUNT(*) FROM db_status_favourited_accounts WHERE id = :id;",
-  "deleteById": "DELETE FROM db_status_favourited_accounts WHERE id = :id;",
-  "deleteByStatusRemoteId": "DELETE FROM db_status_favourited_accounts WHERE "
-      "status_remote_id = :statusRemoteId;",
-  "clear": "DELETE FROM db_status_favourited_accounts",
-  "getAll": "SELECT * FROM db_status_favourited_accounts"
-})
-class StatusFavouritedAccountsDao extends DatabaseAccessor<AppDatabase>
-    with _$StatusFavouritedAccountsDaoMixin {
-    final AppDatabase db;
+  DbStatusFavouritedAccounts,
+])
+class StatusFavouritedAccountsDao extends DatabaseDao<
+    DbStatusFavouritedAccount,
+    int,
+    $DbStatusFavouritedAccountsTable,
+    $DbStatusFavouritedAccountsTable> with _$StatusFavouritedAccountsDaoMixin {
+  final AppDatabase db;
 
   // Called by the AppDatabase class
   StatusFavouritedAccountsDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbStatusFavouritedAccount> entity) async =>
-      into(dbStatusFavouritedAccounts).insert(entity);
+  @override
+  $DbStatusFavouritedAccountsTable get table => dbStatusFavouritedAccounts;
 
-  Future insertAll(Iterable<Insertable<DbStatusFavouritedAccount>> entities,
-          InsertMode mode) async =>
-      await batch((batch) {
-        batch.insertAll(dbStatusFavouritedAccounts, entities);
-      });
-  Future<bool> replace(Insertable<DbStatusFavouritedAccount> entity) async =>
-      await update(dbStatusFavouritedAccounts).replace(entity);
+  Future<int> deleteByStatusRemoteId(String statusRemoteId) => customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${_createStatusRemoteIdEqualExpression(statusRemoteId).content}',
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+
+  Future deleteByStatusRemoteIdBatch(
+    String statusRemoteId, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => _createStatusRemoteIdEqualExpression(statusRemoteId),
+      );
+    } else {
+      return await deleteByStatusRemoteId(statusRemoteId);
+    }
+  }
+
+  CustomExpression<bool> _createStatusRemoteIdEqualExpression(
+    String statusRemoteId,
+  ) {
+    return createMainTableEqualWhereExpression(
+      fieldName: table.statusRemoteId.$name,
+      value: statusRemoteId,
+    );
+  }
 }

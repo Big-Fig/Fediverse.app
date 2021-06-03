@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/select/multi/multi_select_account_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -33,37 +34,56 @@ class MultiSelectAccountBloc extends DisposableOwner
       );
 
   @override
-  bool get isSomethingSelected => selectedAccounts?.isNotEmpty == true;
+  bool get isSomethingSelected => selectedAccounts.isNotEmpty;
 
   @override
   Stream<bool> get isSomethingSelectedStream => selectedAccountsStream
-      .map((selectedAccounts) => selectedAccounts?.isNotEmpty == true);
+      .map((selectedAccounts) => selectedAccounts.isNotEmpty);
 
   @override
-  List<IAccount> get selectedAccounts => selectedAccountsSubject.value;
+  List<IAccount> get selectedAccounts => selectedAccountsSubject.value!;
 
   @override
   Stream<List<IAccount>> get selectedAccountsStream =>
       selectedAccountsSubject.stream;
 
-  static MultiSelectAccountBloc createFromContext(BuildContext context) =>
-      MultiSelectAccountBloc();
+  static MultiSelectAccountBloc createFromContext(
+    BuildContext context, {
+    AccountsListCallback? accountsListSelectedCallback,
+  }) {
+    var multiSelectAccountBloc = MultiSelectAccountBloc();
 
-  static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+    if (accountsListSelectedCallback != null) {
+      multiSelectAccountBloc.addDisposable(streamSubscription:
+          multiSelectAccountBloc.selectedAccountsStream
+              .listen((selectedAccounts) {
+        accountsListSelectedCallback(context, selectedAccounts);
+      }));
+    }
+    return multiSelectAccountBloc;
+  }
+
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+    AccountsListCallback? accountsListSelectedCallback,
+  }) {
     return DisposableProvider<IMultiSelectAccountBloc>(
-      create: (context) => MultiSelectAccountBloc.createFromContext(context),
+      create: (context) => MultiSelectAccountBloc.createFromContext(
+        context,
+        accountsListSelectedCallback: accountsListSelectedCallback,
+      ),
       child: child,
     );
   }
 
   bool _calculateIsAccountSelected(
-    List<IAccount> selectedAccounts,
+    List<IAccount>? selectedAccounts,
     IAccount account,
   ) =>
-      selectedAccounts?.firstWhere(
-          (currentAccount) => account.remoteId == currentAccount.remoteId,
-          orElse: () => null) !=
+      selectedAccounts?.firstWhereOrNull(
+        (currentAccount) => account.remoteId == currentAccount.remoteId,
+      ) !=
       null;
 
   @override

@@ -8,7 +8,7 @@ class NetworkOnlyPaginationBlocProxyProvider<
     TPage extends PaginationPage<TItem>, TItem> extends StatelessWidget {
   final Widget child;
 
-  NetworkOnlyPaginationBlocProxyProvider({@required this.child});
+  NetworkOnlyPaginationBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) {

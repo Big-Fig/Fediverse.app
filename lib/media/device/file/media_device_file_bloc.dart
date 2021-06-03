@@ -7,13 +7,13 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IMediaDeviceFileBloc
-    implements Disposable, IAsyncInitLoadingBloc {
+    implements IDisposable, IAsyncInitLoadingBloc {
   static IMediaDeviceFileBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IMediaDeviceFileBloc>(context, listen: listen);
 
-  Future<IMediaDeviceFile> retrieveFile();
+  IMediaDeviceFileMetadata get mediaDeviceFileMetadata;
 
   MediaDeviceFileType get type;
 
-  Uint8List get thumbImageData;
+  Uint8List? get thumbImageData;
 }

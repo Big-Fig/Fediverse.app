@@ -1,39 +1,55 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/database_dao.dart';
 import 'package:fedi/app/status/database/home_timeline_statuses_database_model.dart';
 import 'package:moor/moor.dart';
 
 part 'home_timeline_statuses_database_dao.g.dart';
 
-@UseDao(tables: [
-  DbHomeTimelineStatuses
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_home_timeline_statuses;",
-  "findById": "SELECT * FROM db_home_timeline_statuses WHERE id = :id;",
-  "countById": "SELECT COUNT(*) FROM db_home_timeline_statuses WHERE id = :id;",
-  "deleteById": "DELETE FROM db_home_timeline_statuses WHERE id = :id;",
-  "deleteByAccountRemoteId": "DELETE FROM db_home_timeline_statuses WHERE "
-      "account_remote_id = :accountRemoteId;",
-  "clear": "DELETE FROM db_home_timeline_statuses",
-  "getAll": "SELECT * FROM db_home_timeline_statuses"
-})
-class HomeTimelineStatusesDao extends DatabaseAccessor<AppDatabase>
-    with _$HomeTimelineStatusesDaoMixin {
-    final AppDatabase db;
+@UseDao(
+  tables: [
+    DbHomeTimelineStatuses,
+  ],
+)
+class HomeTimelineStatusesDao extends DatabaseDao<
+    DbHomeTimelineStatus,
+    int,
+    $DbHomeTimelineStatusesTable,
+    $DbHomeTimelineStatusesTable> with _$HomeTimelineStatusesDaoMixin {
+  final AppDatabase db;
 
-  // Called by the AppDatabase class
+// Called by the AppDatabase class
   HomeTimelineStatusesDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbHomeTimelineStatus> entity,
-          {InsertMode mode}) async =>
-      into(dbHomeTimelineStatuses).insert(entity, mode: mode);
+  @override
+  $DbHomeTimelineStatusesTable get table => dbHomeTimelineStatuses;
 
-  Future insertAll(Iterable<Insertable<DbHomeTimelineStatus>> entities,
-      InsertMode mode) async {
-    await batch((batch) {
-      batch.insertAll(dbHomeTimelineStatuses, entities, mode: mode);
-    });
+  Future<int> deleteByAccountRemoteId(String accountRemoteId) => customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${_createAccountRemoteIdEqualExpression(accountRemoteId)}',
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+
+  Future deleteByAccountRemoteIdBatch(
+    String accountRemoteId, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => _createAccountRemoteIdEqualExpression(accountRemoteId),
+      );
+    } else {
+      return await deleteByAccountRemoteId(accountRemoteId);
+    }
   }
 
-  Future<bool> replace(Insertable<DbHomeTimelineStatus> entity) async =>
-      await update(dbHomeTimelineStatuses).replace(entity);
+  CustomExpression<bool> _createAccountRemoteIdEqualExpression(
+    String accountRemoteId,
+  ) {
+    return createMainTableEqualWhereExpression(
+      fieldName: table.accountRemoteId.$name,
+      value: accountRemoteId,
+    );
+  }
 }

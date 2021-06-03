@@ -1,11 +1,12 @@
 import 'dart:async';
 
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rxdart/rxdart.dart';
@@ -30,70 +31,104 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   Stream<PaginationListLoadingError> get loadMoreErrorStream =>
       loadMoreErrorStreamController.stream;
 
-  BehaviorSubject<PaginationListLoadingState> refreshStateSubject =
-      BehaviorSubject.seeded(PaginationListLoadingState.initialized);
+  BehaviorSubject<FediListSmartRefresherLoadingState> refreshStateSubject =
+      BehaviorSubject.seeded(FediListSmartRefresherLoadingState.initialized);
 
   @override
-  Stream<PaginationListLoadingState> get refreshStateStream =>
+  Stream<FediListSmartRefresherLoadingState> get refreshStateStream =>
       refreshStateSubject.stream;
 
   @override
-  PaginationListLoadingState get refreshState => refreshStateSubject.value;
+  FediListSmartRefresherLoadingState? get refreshState =>
+      refreshStateSubject.value;
 
-  BehaviorSubject<PaginationListLoadingState> loadMoreStateSubject =
-      BehaviorSubject.seeded(PaginationListLoadingState.initialized);
+  BehaviorSubject<FediListSmartRefresherLoadingState> loadMoreStateSubject =
+      BehaviorSubject.seeded(FediListSmartRefresherLoadingState.initialized);
 
   @override
-  Stream<PaginationListLoadingState> get loadMoreStateStream =>
+  Stream<FediListSmartRefresherLoadingState> get loadMoreStateStream =>
       loadMoreStateSubject.stream;
 
   @override
-  PaginationListLoadingState get loadMoreState => loadMoreStateSubject.value;
+  FediListSmartRefresherLoadingState? get loadMoreState =>
+      loadMoreStateSubject.value;
 
   @override
   final RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
-  PaginationListBloc({@required this.paginationBloc}) {
-    addDisposable(streamSubscription: paginationBloc
-        .isLoadedPagesInSequenceStream
-        .listen((isLoadedInSequence) {
-      if (!isLoadedInSequence) {
-        throw "PaginationListBloc don't work with direct access "
-            "pagination blocs";
-      }
-    }));
+  final bool loadFromCacheDuringInit;
+
+  PaginationListBloc({
+    required this.paginationBloc,
+    this.loadFromCacheDuringInit = true,
+  }) {
+    _logger.finest(() => "PaginationListBloc constructor");
+    addDisposable(
+      streamSubscription: paginationBloc.isLoadedPagesInSequenceStream.listen(
+        (isLoadedInSequence) {
+          if (!isLoadedInSequence) {
+            throw "PaginationListBloc don't work with direct access "
+                "pagination blocs";
+          }
+        },
+      ),
+    );
     addDisposable(subject: refreshStateSubject);
     addDisposable(subject: loadMoreStateSubject);
     addDisposable(streamController: refreshErrorStreamController);
     addDisposable(streamController: loadMoreErrorStreamController);
+
+    itemsSubject = BehaviorSubject.seeded(mapToItemsList(sortedPages));
+
+    addDisposable(
+      streamSubscription: sortedPagesStream.listen(
+        (sortedPages) {
+          itemsSubject.add(mapToItemsList(sortedPages));
+        },
+      ),
+    );
+    addDisposable(subject: itemsSubject);
   }
 
-  @override
-  Stream<List<TItem>> get itemsStream => sortedPagesStream.map(mapToItemsList);
+  late BehaviorSubject<List<TItem>> itemsSubject;
 
   @override
-  List<TItem> get items => mapToItemsList(sortedPages);
+  Stream<List<TItem>> get itemsStream => itemsSubject.stream;
 
   @override
-  int get itemsCountPerPage => paginationBloc.itemsCountPerPage;
+  List<TItem> get items => itemsSubject.value!;
+
+  @override
+  Stream<List<TItem>> get itemsDistinctStream =>
+      itemsStream.distinct((a, b) => listEquals(a, b));
+
+  @override
+  int? get itemsCountPerPage => paginationBloc.itemsCountPerPage;
 
   @override
   Future internalAsyncInit() async {
-    try {
-      var page = await paginationBloc.requestPage(
-          pageIndex: 0, forceToSkipCache: false);
-      if (page == null) {
+    _logger.finest(() =>
+        "internalAsyncInit loadFromCacheDuringInit $loadFromCacheDuringInit");
+
+    if (loadFromCacheDuringInit) {
+      try {
+        await loadFirstPageOnInit();
+      } catch (e, stackTrace) {
         _logger.severe(
-            () => "failed to internalAsyncInit: fail to request first page");
+          () => "failed to internalAsyncInit",
+          e,
+          stackTrace,
+        );
       }
-    } catch (e, stackTrace) {
-      _logger.severe(
-        () => "failed to internalAsyncInit",
-        e,
-        stackTrace,
-      );
     }
+  }
+
+  Future<TPage> loadFirstPageOnInit() {
+    return paginationBloc.requestPage(
+      pageIndex: 0,
+      forceToSkipCache: false,
+    );
   }
 
   @override
@@ -104,19 +139,22 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       paginationBloc.loadedPagesSortedByIndexStream;
 
   @override
-  Future<PaginationListLoadingState> loadMoreWithoutController() async {
-    loadMoreStateSubject.add(PaginationListLoadingState.loading);
+  Future<FediListSmartRefresherLoadingState> loadMoreWithoutController() async {
+    _logger.finest(() => "loadMoreWithoutController");
+    loadMoreStateSubject.add(FediListSmartRefresherLoadingState.loading);
 
     try {
-      PaginationListLoadingState state;
-      var nextPageIndex = paginationBloc.loadedPagesMaximumIndex + 1;
+      FediListSmartRefresherLoadingState state;
+      var nextPageIndex = paginationBloc.loadedPagesMaximumIndex! + 1;
       var nextPage = await paginationBloc.requestPage(
-          pageIndex: nextPageIndex, forceToSkipCache: true);
+        pageIndex: nextPageIndex,
+        forceToSkipCache: true,
+      );
 
-      if (nextPage?.items?.isNotEmpty == true) {
-        state = PaginationListLoadingState.loaded;
+      if (nextPage.items.isNotEmpty) {
+        state = FediListSmartRefresherLoadingState.loaded;
       } else {
-        state = PaginationListLoadingState.noData;
+        state = FediListSmartRefresherLoadingState.noData;
       }
       loadMoreStateSubject.add(state);
 
@@ -124,7 +162,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     } catch (e, stackTrace) {
       // todo: refactor copy-pasted code
       if (!loadMoreStateSubject.isClosed) {
-        loadMoreStateSubject.add(PaginationListLoadingState.failed);
+        loadMoreStateSubject.add(FediListSmartRefresherLoadingState.failed);
       }
 
       if (!loadMoreErrorStreamController.isClosed) {
@@ -133,24 +171,28 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       }
 
       _logger.warning(
-          () => "error during loadMoreWithoutController", e, stackTrace);
+        () => "error during loadMoreWithoutController",
+        e,
+        stackTrace,
+      );
       rethrow;
     }
   }
 
   @override
-  Future<PaginationListLoadingState> refreshWithoutController() async {
+  Future<FediListSmartRefresherLoadingState> refreshWithoutController() async {
+    _logger.finest(() => "refreshWithoutController");
     try {
-      PaginationListLoadingState state;
+      FediListSmartRefresherLoadingState state;
       if (!refreshStateSubject.isClosed) {
-        refreshStateSubject.add(PaginationListLoadingState.loading);
+        refreshStateSubject.add(FediListSmartRefresherLoadingState.loading);
       }
       var newPage = await paginationBloc.refreshWithoutController();
 
-      if (newPage?.items?.isNotEmpty == true) {
-        state = PaginationListLoadingState.loaded;
+      if (newPage.items.isNotEmpty) {
+        state = FediListSmartRefresherLoadingState.loaded;
       } else {
-        state = PaginationListLoadingState.noData;
+        state = FediListSmartRefresherLoadingState.noData;
       }
       if (!refreshStateSubject.isClosed) {
         refreshStateSubject.add(state);
@@ -158,24 +200,24 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       return state;
     } catch (e, stackTrace) {
       if (!refreshStateSubject.isClosed) {
-        refreshStateSubject.add(PaginationListLoadingState.failed);
+        refreshStateSubject.add(FediListSmartRefresherLoadingState.failed);
       }
       if (!refreshErrorStreamController.isClosed) {
         refreshErrorStreamController
             .add(PaginationListLoadingError(error: e, stackTrace: stackTrace));
       }
       _logger.warning(
-          () => "error during refreshWithoutController", e, stackTrace);
+        () => "error during refreshWithoutController",
+        e,
+        stackTrace,
+      );
       rethrow;
     }
   }
 
   static List<TItem> mapToItemsList<TPage extends PaginationPage<TItem>, TItem>(
-      List<TPage> sortedPages) {
-    if (sortedPages?.isNotEmpty != true) {
-      // null items and empty items is different states
-      return null;
-    }
+    List<TPage> sortedPages,
+  ) {
     List<TItem> items = [];
     sortedPages.forEach((page) {
       items.addAll(page.items);
@@ -184,23 +226,25 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   @override
-  void refreshWithController() {
+  Future refreshWithController() async {
+    _logger.finest(() => "refreshWithController");
     // refresh controller if it attached
     if (refreshController.position != null) {
       try {
-        refreshController.requestRefresh(needMove: false);
+        return await refreshController.requestRefresh(needMove: false);
       } catch (e, stackTrace) {
         // ignore error, because it is related to refresh controller
         // internal wrong logic
         _logger.warning(
-            () =>
-                "error during refreshController.requestRefresh(needMove:false);",
-            e,
-            stackTrace);
+          () =>
+              "error during refreshController.requestRefresh(needMove:false);",
+          e,
+          stackTrace,
+        );
       }
     } else {
       //otherwise refresh only bloc
-      refreshWithoutController();
+      return await refreshWithoutController();
     }
   }
 }

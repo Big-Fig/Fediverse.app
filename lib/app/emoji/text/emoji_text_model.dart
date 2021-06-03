@@ -1,13 +1,15 @@
-import 'package:collection/collection.dart';
-import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:flutter/widgets.dart';
-
-Function eq = const ListEquality().equals;
+import 'package:fedi/collection/collection_hash_utils.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
+import 'package:flutter/foundation.dart';
 
 class EmojiText {
   final String text;
-  final List<IPleromaEmoji> emojis;
-  EmojiText({@required this.text, @required this.emojis});
+  final List<IPleromaApiEmoji>? emojis;
+
+  EmojiText({
+    required this.text,
+    required this.emojis,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -15,13 +17,14 @@ class EmojiText {
       other is EmojiText &&
           runtimeType == other.runtimeType &&
           text == other.text &&
-          eq(emojis, other.emojis);
+          listEquals(emojis, other.emojis);
 
   @override
-  int get hashCode => text.hashCode ^ emojis.hashCode;
+  int get hashCode => text.hashCode ^ listHash(emojis);
 
   @override
-  String toString() {
-    return 'EmojiText{text: $text, emojis: $emojis}';
-  }
+  String toString() => 'EmojiText{'
+      'text: $text, '
+      'emojis: $emojis'
+      '}';
 }

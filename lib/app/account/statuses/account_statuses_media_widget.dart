@@ -5,12 +5,12 @@ import 'package:flutter/cupertino.dart';
 
 class AccountStatusesMediaWidget extends AccountStatusesWidget {
   const AccountStatusesMediaWidget({
-    Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    ScrollController scrollController,
+    Key? key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
+    ScrollController? scrollController,
   }) : super(
           key: key,
           footer: footer,
@@ -21,11 +21,12 @@ class AccountStatusesMediaWidget extends AccountStatusesWidget {
         );
 
   @override
-  ScrollView buildItemsCollectionView(
-          {@required BuildContext context,
-          @required List<IStatus> items,
-          @required Widget header,
-          @required Widget footer}) =>
+  ScrollView buildItemsCollectionView({
+    required BuildContext context,
+    required List<IStatus> items,
+    required Widget? header,
+    required Widget? footer,
+  }) =>
       StatusCachedPaginationListMediaWidget.buildStaggeredMediaGridView(
         context: context,
         items: items,

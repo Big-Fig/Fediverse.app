@@ -8,16 +8,16 @@ import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
+import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   // ignore: close_sinks
   final BehaviorSubject<IDraftStatus> _draftStatusSubject;
 
-  final IPleromaStatusService pleromaStatusService;
+  final IPleromaApiAuthStatusService pleromaAuthStatusService;
   final IDraftStatusRepository draftStatusRepository;
   final IScheduledStatusRepository scheduledStatusRepository;
   final IStatusRepository statusRepository;
@@ -28,17 +28,17 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
       BehaviorSubject.seeded(DraftStatusState.draft);
 
   @override
-  DraftStatusState get state => _stateSubject.value;
+  DraftStatusState? get state => _stateSubject.value;
 
   @override
   Stream<DraftStatusState> get stateStream => _stateSubject.stream;
 
   DraftStatusBloc({
-    @required this.pleromaStatusService,
-    @required this.statusRepository,
-    @required this.scheduledStatusRepository,
-    @required this.draftStatusRepository,
-    @required IDraftStatus draftStatus, // for better performance we don't
+    required this.pleromaAuthStatusService,
+    required this.statusRepository,
+    required this.scheduledStatusRepository,
+    required this.draftStatusRepository,
+    required IDraftStatus draftStatus, // for better performance we don't
     // todo: remove hack. Don't init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
@@ -47,7 +47,6 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
     addDisposable(subject: _draftStatusSubject);
     addDisposable(subject: _stateSubject);
 
-    assert(isNeedWatchLocalRepositoryForUpdates != null);
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
         _init(draftStatus);
@@ -58,22 +57,25 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   }
 
   void _init(IDraftStatus draftStatus) {
-    if (!disposed) {
+    if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
-            streamSubscription: draftStatusRepository
-                .watchById(draftStatus.localId)
-                .listen((updatedStatus) {
-          if (updatedStatus != null) {
-            _draftStatusSubject.add(updatedStatus);
-          }
-        }));
+          streamSubscription: draftStatusRepository
+              .watchByDbIdInAppType(draftStatus.localId!)
+              .listen(
+            (updatedStatus) {
+              if (updatedStatus != null) {
+                _draftStatusSubject.add(updatedStatus);
+              }
+            },
+          ),
+        );
       }
     }
   }
 
   @override
-  IDraftStatus get draftStatus => _draftStatusSubject.value;
+  IDraftStatus get draftStatus => _draftStatusSubject.value!;
 
   @override
   Stream<IDraftStatus> get draftStatusStream => _draftStatusSubject.stream;
@@ -85,7 +87,8 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
     bool delayInit = true,
   }) =>
       DraftStatusBloc(
-        pleromaStatusService: IPleromaStatusService.of(context, listen: false),
+        pleromaAuthStatusService:
+            IPleromaApiAuthStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         draftStatusRepository:
             IDraftStatusRepository.of(context, listen: false),
@@ -98,91 +101,72 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
       );
 
   @override
-  DateTime get updatedAt => draftStatus.updatedAt;
+  DateTime? get updatedAt => draftStatus.updatedAt;
 
   @override
-  Stream<DateTime> get updatedAtStream =>
+  Stream<DateTime?> get updatedAtStream =>
       draftStatusStream.map((draftStatus) => draftStatus.updatedAt);
 
   @override
-  IPostStatusData calculatePostStatusData() => draftStatus.data;
+  IPostStatusData? calculatePostStatusData() => draftStatus.postStatusData;
 
   @override
   Future cancelDraft() {
     _stateSubject.add(DraftStatusState.canceled);
-    return draftStatusRepository.deleteById(draftStatus.localId);
+    return draftStatusRepository.deleteById(
+      draftStatus.localId!,
+      batchTransaction: null,
+    );
   }
 
   @override
   Future postDraft(PostStatusData postStatusData) async {
-    if (postStatusData.scheduledAt != null) {
-      var pleromaScheduledStatus = await pleromaStatusService.scheduleStatus(
-        data: PleromaScheduleStatus(
-          inReplyToConversationId: postStatusData.inReplyToConversationId,
-          inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
-          visibility: postStatusData.visibility,
-          mediaIds: postStatusData.mediaAttachments
-              ?.map((mediaAttachment) => mediaAttachment.id)
-              ?.toList(),
-          sensitive: postStatusData.isNsfwSensitiveEnabled,
-          spoilerText: postStatusData.subject,
-          status: postStatusData.text,
-          to: postStatusData.to,
-          scheduledAt: postStatusData.scheduledAt,
-          poll: postStatusData.poll != null
-              ? PleromaPostStatusPoll(
-                  options: postStatusData.poll.options,
-                  multiple: postStatusData.poll.multiple,
-                  expiresInSeconds: DateTime.now()
-                      .difference(postStatusData.poll.expiresAt)
-                      .abs()
-                      .inSeconds,
-                )
-              : null,
+    if (postStatusData.isScheduled) {
+      var pleromaScheduledStatus =
+          await pleromaAuthStatusService.scheduleStatus(
+        data: postStatusData.toPleromaScheduleStatus(
+          idempotencyKey: null,
         ),
       );
       await scheduledStatusRepository
-          .upsertRemoteScheduledStatus(pleromaScheduledStatus);
+          .upsertInRemoteType(pleromaScheduledStatus);
     } else {
-      var pleromaStatus = await pleromaStatusService.postStatus(
-        data: PleromaPostStatus(
-          inReplyToConversationId: postStatusData.inReplyToConversationId,
-          inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
-          visibility: postStatusData.visibility,
-          mediaIds: postStatusData.mediaAttachments
-              ?.map((mediaAttachment) => mediaAttachment.id)
-              ?.toList(),
-          sensitive: postStatusData.isNsfwSensitiveEnabled,
-          spoilerText: postStatusData.subject,
-          status: postStatusData.text,
-          to: postStatusData.to,
-          poll: postStatusData.poll != null
-              ? PleromaPostStatusPoll(
-            options: postStatusData.poll.options,
-            multiple: postStatusData.poll.multiple,
-            expiresInSeconds: DateTime.now()
-                .difference(postStatusData.poll.expiresAt)
-                .abs()
-                .inSeconds,
-          )
-              : null,),
+      var pleromaStatus = await pleromaAuthStatusService.postStatus(
+        data: postStatusData.toPleromaPostStatus(
+          idempotencyKey: null,
+        ),
       );
-      await statusRepository.upsertRemoteStatus(pleromaStatus,
-          listRemoteId: null,
-          conversationRemoteId: postStatusData.inReplyToConversationId);
+      await statusRepository.upsertRemoteStatusWithAllArguments(
+        pleromaStatus,
+        listRemoteId: null,
+        conversationRemoteId: postStatusData.inReplyToConversationId,
+        isFromHomeTimeline: null,
+        batchTransaction: null,
+      );
     }
 
-    await draftStatusRepository.deleteById(draftStatus.localId);
+    await draftStatusRepository.deleteById(
+      draftStatus.localId!,
+      batchTransaction: null,
+    );
 
     _stateSubject.add(DraftStatusState.alreadyPosted);
   }
 
   @override
-  Future updatePostStatusData(PostStatusData postStatusData) async {
+  Future updatePostStatusData(
+    PostStatusData postStatusData, {
+    required Batch? batchTransaction,
+  }) async {
     var localId = draftStatus.localId;
-    await draftStatusRepository.updateById(
-        localId,
-        DbDraftStatus(
-            id: localId, updatedAt: DateTime.now(), data: postStatusData));
+    await draftStatusRepository.updateByDbIdInDbType(
+      dbId: localId!,
+      dbItem: DbDraftStatus(
+        id: localId,
+        updatedAt: DateTime.now(),
+        data: postStatusData,
+      ),
+      batchTransaction: batchTransaction,
+    );
   }
 }

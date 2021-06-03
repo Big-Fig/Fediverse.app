@@ -11,24 +11,37 @@ import 'package:provider/provider.dart';
 class AccountPaginationListBloc
     extends PaginationListBloc<PaginationPage<IAccount>, IAccount>
     implements IAccountPaginationListBloc {
-  AccountPaginationListBloc(
-      {@required
-          IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc})
-      : super(paginationBloc: paginationBloc);
+  AccountPaginationListBloc({
+    required IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
+    bool loadFromCacheDuringInit = true,
+  }) : super(
+          paginationBloc: paginationBloc,
+          loadFromCacheDuringInit: loadFromCacheDuringInit,
+        );
 
-  static AccountPaginationListBloc createFromContext(BuildContext context) {
+  static AccountPaginationListBloc createFromContext(
+    BuildContext context, {
+    bool loadFromCacheDuringInit = true,
+  }) {
     return AccountPaginationListBloc(
-        paginationBloc:
-            Provider.of<IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
-                context,
-                listen: false));
+      paginationBloc:
+          Provider.of<IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
+        context,
+        listen: false,
+      ),
+      loadFromCacheDuringInit: loadFromCacheDuringInit,
+    );
   }
 
-  static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+    bool loadFromCacheDuringInit = true,
+  }) {
     return DisposableProvider<IAccountPaginationListBloc>(
       create: (context) => AccountPaginationListBloc.createFromContext(
         context,
+        loadFromCacheDuringInit: loadFromCacheDuringInit,
       ),
       child: AccountPaginationListBlocProxyProvider(child: child),
     );

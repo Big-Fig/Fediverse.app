@@ -1,15 +1,23 @@
+import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_media_widget.dart';
+import 'package:fedi/app/status/local_status_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_base_widget.dart';
+import 'package:fedi/app/status/remote_status_bloc_impl.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/status/thread/local_status_thread_page.dart';
+import 'package:fedi/app/status/thread/remote_status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -20,46 +28,40 @@ var _logger = Logger("status_cached_pagination_list_media_widget.dart");
 
 class StatusCachedPaginationListMediaWidget
     extends StatusCachedPaginationListBaseWidget {
-  StatusCachedPaginationListMediaWidget({Key key}) : super(key: key);
+  const StatusCachedPaginationListMediaWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
-  retrievePaginationListBloc(BuildContext context,
-      {@required bool listen}) {
-    var timelinePaginationListBloc =
-    Provider.of<IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
-        context,
-        listen: listen);
+      retrievePaginationListBloc(
+    BuildContext context, {
+    required bool listen,
+  }) {
+    var timelinePaginationListBloc = Provider.of<
+        IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
+      context,
+      listen: listen,
+    );
     return timelinePaginationListBloc;
   }
 
   static ScrollView buildStaggeredMediaGridView({
-    @required BuildContext context,
-    @required List<IStatus> items,
-    @required Widget header,
-    @required Widget footer
+    required BuildContext context,
+    required List<IStatus> items,
+    required Widget? header,
+    required Widget? footer,
   }) {
-    _logger.finest(() => "buildStaggeredGridView ${items?.length}");
+    _logger.finest(() => "buildStaggeredGridView ${items.length}");
+    var statusListBloc = IStatusListBloc.of(context);
+    var instanceLocation = statusListBloc.instanceLocation;
+    var isLocal = instanceLocation == InstanceLocation.local;
 
     // all statuses should be already with media attachments
-    items = items
-        .where((status) =>
-    status.mediaAttachments
-        ?.where((mediaAttachment) => mediaAttachment.isImageOrGif)
-        ?.isNotEmpty ==
-        true)
-        .toList();
+    items = filterItemsWithMedia(items);
 
-    var statusesWithMediaAttachment = <_StatusWithMediaAttachment>[];
-
-    items.forEach((status) {
-      var mediaAttachments = status.mediaAttachments
-          ?.where((mediaAttachment) => mediaAttachment.isImageOrGif);
-      mediaAttachments.forEach((mediaAttachment) {
-        statusesWithMediaAttachment.add(_StatusWithMediaAttachment(
-            status: status, mediaAttachment: mediaAttachment));
-      });
-    });
+    List<_StatusWithMediaAttachment> statusesWithMediaAttachment =
+        mapToStatusesWithAttachments(items);
 
     var length = statusesWithMediaAttachment.length;
     if (header != null) {
@@ -70,6 +72,7 @@ class StatusCachedPaginationListMediaWidget
     }
 
     return StaggeredGridView.countBuilder(
+      // ignore: no-magic-number
       crossAxisCount: 4,
       itemCount: length,
       itemBuilder: (BuildContext context, int index) {
@@ -87,53 +90,182 @@ class StatusCachedPaginationListMediaWidget
 
         var statusWithMediaAttachment = statusesWithMediaAttachment[itemIndex];
 
-        return Provider<IStatus>.value(
-          value: statusWithMediaAttachment.status,
-          child: DisposableProxyProvider<IStatus, IStatusBloc>(
-              update: (context, status, oldValue) =>
-                  StatusBloc.createFromContext(context, status),
-              child: InkWell(
-                onTap: () {
-                  goToStatusThreadPage(
-                      context, statusWithMediaAttachment.status);
-                },
-                child: Padding(
-                  padding: FediPadding.allSmallPadding,
-                  child: Center(
-                    child: Provider<IPleromaMediaAttachment>.value(
-                        value: statusWithMediaAttachment.mediaAttachment,
-                        child: StatusListItemMediaWidget()),
-                  ),
-                ),
-              )),
+        return Provider<_StatusWithMediaAttachment>.value(
+          value: statusWithMediaAttachment,
+          child: _StatusCachedPaginationListMediaItemWidget(
+            isLocal: isLocal,
+          ),
         );
       },
       staggeredTileBuilder: (int index) =>
+          // ignore: no-magic-number
           StaggeredTile.count(2, index.isEven ? 2 : 1),
-      mainAxisSpacing: 4.0,
-      crossAxisSpacing: 4.0,
     );
   }
 
+  static List<_StatusWithMediaAttachment> mapToStatusesWithAttachments(
+    List<IStatus> items,
+  ) {
+    var statusesWithMediaAttachment = <_StatusWithMediaAttachment>[];
+
+    items.forEach(
+      (status) {
+        Iterable<PleromaApiMediaAttachment> mediaAttachments =
+            (status.reblog?.mediaAttachments ?? status.mediaAttachments ?? [])
+                .where((mediaAttachment) => mediaAttachment.isImageOrGif);
+        mediaAttachments.forEach(
+          (mediaAttachment) {
+            statusesWithMediaAttachment.add(
+              _StatusWithMediaAttachment(
+                status: status,
+                mediaAttachment: mediaAttachment,
+              ),
+            );
+          },
+        );
+      },
+    );
+    return statusesWithMediaAttachment;
+  }
+
+  static List<IStatus> filterItemsWithMedia(List<IStatus> items) {
+    items = items
+        .where((IStatus status) =>
+            (status.reblog?.mediaAttachments ?? status.mediaAttachments)
+                ?.where((mediaAttachment) => mediaAttachment.isImageOrGif)
+                .isNotEmpty ==
+            true)
+        .toList();
+    return items;
+  }
+
   @override
-  ScrollView buildItemsCollectionView({@required BuildContext context,
-    @required List<IStatus> items,
-    @required Widget header,
-    @required Widget footer}) => buildStaggeredMediaGridView(context: context, items: items,
-      header: header, footer: footer,);
+  ScrollView buildItemsCollectionView({
+    required BuildContext context,
+    required List<IStatus> items,
+    required Widget? header,
+    required Widget? footer,
+  }) =>
+      buildStaggeredMediaGridView(
+        context: context,
+        items: items,
+        header: header,
+        footer: footer,
+      );
+}
+
+class _StatusCachedPaginationListMediaItemWidget extends StatelessWidget {
+  const _StatusCachedPaginationListMediaItemWidget({
+    Key? key,
+    required this.isLocal,
+  }) : super(key: key);
+
+  final bool isLocal;
+
+  @override
+  Widget build(BuildContext context) {
+    return UnfocusOnScrollAreaWidget(
+      child: Container(
+        color: IFediUiColorTheme.of(context).offWhite,
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: ProxyProvider<_StatusWithMediaAttachment, IStatus>(
+            update: (context, value, previous) => value.status,
+            child: DisposableProxyProvider<IStatus, IStatusBloc>(
+              update: (context, status, oldValue) {
+                if (isLocal) {
+                  // todo: refactor copy-pasted code
+                  if (status.remoteId == oldValue?.remoteId) {
+                    return oldValue!;
+                  } else {
+                    return LocalStatusBloc.createFromContext(
+                      context,
+                      status: status,
+                    );
+                  }
+                } else {
+                  return RemoteStatusBloc.createFromContext(
+                    context,
+                    status: status,
+                  );
+                }
+              },
+              child: DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
+                update: (context, statusBloc, _) =>
+                    StatusSensitiveBloc.createFromContext(
+                  context: context,
+                  statusBloc: statusBloc,
+                ),
+                child: _StatusCachedPaginationListMediaItemBodyWidget(
+                  isLocal: isLocal,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StatusCachedPaginationListMediaItemBodyWidget extends StatelessWidget {
+  const _StatusCachedPaginationListMediaItemBodyWidget({
+    Key? key,
+    required this.isLocal,
+  }) : super(key: key);
+
+  final bool isLocal;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        var statusWithMediaAttachment = Provider.of<_StatusWithMediaAttachment>(
+          context,
+          listen: false,
+        );
+        if (isLocal) {
+          goToLocalStatusThreadPage(
+            context,
+            status: statusWithMediaAttachment.status,
+            initialMediaAttachment: statusWithMediaAttachment.mediaAttachment,
+          );
+        } else {
+          goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
+            context,
+            remoteInstanceStatus: statusWithMediaAttachment.status,
+            remoteInstanceInitialMediaAttachment:
+                statusWithMediaAttachment.mediaAttachment,
+          );
+        }
+      },
+      child: Padding(
+        padding: FediPadding.allSmallPadding,
+        child: Center(
+          child: ProxyProvider<_StatusWithMediaAttachment,
+              IPleromaApiMediaAttachment>(
+            update: (context, value, previous) => value.mediaAttachment,
+            child: const StatusListItemMediaWidget(),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _StatusWithMediaAttachment {
   final IStatus status;
-  final IPleromaMediaAttachment mediaAttachment;
+  final IPleromaApiMediaAttachment mediaAttachment;
 
   _StatusWithMediaAttachment({
-    @required this.status,
-    @required this.mediaAttachment,
+    required this.status,
+    required this.mediaAttachment,
   });
 
   @override
   String toString() {
-    return '_StatusWithMediaAttachment{status: $status, mediaAttachment: $mediaAttachment}';
+    return '_StatusWithMediaAttachment{'
+        'status: $status,'
+        ' mediaAttachment: $mediaAttachment}';
   }
 }

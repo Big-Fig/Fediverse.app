@@ -1,16 +1,15 @@
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
-
 class UploadMediaExceedFileSizeLimitException implements Exception {
   final File file;
-  final int maximumFileSizeInBytes;
+  final int? maximumFileSizeInBytes;
   final int currentFileSizeInBytes;
 
-  UploadMediaExceedFileSizeLimitException(
-      {@required this.file,
-      @required this.maximumFileSizeInBytes,
-      @required this.currentFileSizeInBytes});
+  UploadMediaExceedFileSizeLimitException({
+    required this.file,
+    required this.maximumFileSizeInBytes,
+    required this.currentFileSizeInBytes,
+  });
 
   @override
   bool operator ==(Object other) =>

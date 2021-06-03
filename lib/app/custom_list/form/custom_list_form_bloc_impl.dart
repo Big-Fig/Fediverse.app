@@ -1,28 +1,25 @@
 import 'package:fedi/app/custom_list/form/custom_list_form_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_non_empty_string_field_validation.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_bloc_impl.dart';
-import 'package:fedi/ui/form/form_item_bloc.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
+import 'package:fedi/form/form_bloc_impl.dart';
+import 'package:fedi/form/form_item_bloc.dart';
 
 class CustomListFormBloc extends FormBloc implements ICustomListFormBloc {
   @override
-  final FormStringFieldBloc titleField;
+  final StringValueFormFieldBloc titleField;
 
-  CustomListFormBloc({@required String initialTitleValue})
-      : titleField = FormStringFieldBloc(
-          originValue: initialTitleValue,
-          validators: [NonEmptyStringFieldValidationError.createValidator()],
+  CustomListFormBloc({required String? initialTitleValue})
+      : titleField = StringValueFormFieldBloc(
+          originValue: initialTitleValue ?? "",
+          validators: [
+            StringValueFormFieldNonEmptyValidationError.createValidator(),
+          ],
           maxLength: null,
-        ) {
+        ),
+        super(isAllItemsInitialized: true) {
     addDisposable(disposable: titleField);
   }
 
   @override
-  void clear() {
-    titleField.clear();
-  }
-
-  @override
-  List<IFormItemBloc> get items => [titleField];
+  List<IFormItemBloc> get currentItems => [titleField];
 }

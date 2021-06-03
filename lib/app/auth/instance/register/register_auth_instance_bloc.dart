@@ -1,23 +1,28 @@
-import 'package:fedi/app/form/captcha/pleroma_form_captcha_string_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
-import 'package:fedi/ui/form/form_bloc.dart';
+import 'package:fedi/app/auth/host/auth_host_model.dart';
+import 'package:fedi/app/auth/instance/register/form/register_auth_instance_form_bloc.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
+import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IRegisterAuthInstanceBloc implements IFormBloc {
-  static IRegisterAuthInstanceBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IRegisterAuthInstanceBloc>(context, listen: listen);
+abstract class IRegisterAuthInstanceBloc
+    implements IDisposable, IAsyncInitLoadingBloc {
+  static IRegisterAuthInstanceBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IRegisterAuthInstanceBloc>(
+        context,
+        listen: listen,
+      );
 
-  IFormStringFieldBloc get usernameFieldBloc;
+  bool get isReadyToSubmit;
 
-  IFormStringFieldBloc get emailFieldBloc;
+  Stream<bool> get isReadyToSubmitStream;
 
-  IFormStringFieldBloc get passwordFieldBloc;
+  IRegisterAuthInstanceFormBloc get registerAuthInstanceFormBloc;
 
-  IFormStringFieldBloc get confirmPasswordFieldBloc;
+  Stream<AuthHostRegistrationResult> get successRegistrationStream;
 
-  bool get isCaptchaRequired;
-
-  IPleromaFormCaptchaStringFieldBloc get captchaFieldBloc;
+  Future<AuthHostRegistrationResult> submit();
 }

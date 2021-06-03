@@ -1,43 +1,44 @@
-import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/conversation/repository/conversation_repository.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/app/websockets/web_sockets_handler_impl.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_impl.dart';
+import 'package:fedi/pleroma/api/web_sockets/pleroma_api_web_sockets_service.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 
 class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
   HashtagStatusListWebSocketsHandler({
-    @required String hashtag,
-    @required IPleromaWebSocketsService pleromaWebSocketsService,
-    @required IStatusRepository statusRepository,
-    @required INotificationRepository notificationRepository,
-    @required IConversationRepository conversationRepository,
-    @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    required String hashtag,
+    required IPleromaApiWebSocketsService pleromaWebSocketsService,
+    required IStatusRepository statusRepository,
+    required INotificationRepository notificationRepository,
+    required IConversationChatRepository conversationRepository,
+    required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    required bool? local,
+    required
+        IConversationChatNewMessagesHandlerBloc
+            conversationChatNewMessagesHandlerBloc,
+    required WebSocketsListenType listenType,
+    required IMyAccountBloc myAccountBloc,
   }) : super(
-            webSocketsChannel: pleromaWebSocketsService.getHashtagChannel(
-                hashtag: hashtag, local: false),
-            statusRepository: statusRepository,
-            notificationRepository: notificationRepository,
-            conversationRepository: conversationRepository,
-            chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
-            isFromHomeTimeline: false);
-
-  static HashtagStatusListWebSocketsHandler createFromContext(
-          BuildContext context,
-          {@required String hashtag}) =>
-      HashtagStatusListWebSocketsHandler(
-        hashtag: hashtag,
-        pleromaWebSocketsService:
-            IPleromaWebSocketsService.of(context, listen: false),
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
-        conversationRepository:
-            IConversationRepository.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        chatNewMessagesHandlerBloc:
-            IChatNewMessagesHandlerBloc.of(context, listen: false),
-      );
+    myAccountBloc: myAccountBloc,
+          webSocketsChannel: pleromaWebSocketsService.getHashtagChannel(
+            hashtag: hashtag,
+            local: local,
+          ),
+          statusRepository: statusRepository,
+          notificationRepository: notificationRepository,
+          conversationRepository: conversationRepository,
+          chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+          conversationChatNewMessagesHandlerBloc:
+              conversationChatNewMessagesHandlerBloc,
+          statusListRemoteId: null,
+          statusConversationRemoteId: null,
+          isFromHomeTimeline: false,
+          listenType: listenType,
+        );
 
   @override
   String get logTag => "hashtag_timeline_websockets_handler_impl.dart";
