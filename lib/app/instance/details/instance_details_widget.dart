@@ -1096,11 +1096,15 @@ class _InstanceDetailsPublicTimelineWidget extends StatelessWidget {
     required IInstanceDetailsBloc instanceDetailsBloc,
   }) {
     if (isLocal) {
-      goToLocalInstancePublicTimelinePage(context);
+      goToLocalInstancePublicTimelinePage(
+        context:context,
+        pleromaApiInstance: instanceDetailsBloc.instance!,
+      );
     } else {
       goToRemoteInstancePublicTimelinePage(
-        context,
+        context:context,
         remoteInstanceUri: instanceDetailsBloc.instanceUri,
+        pleromaApiInstance: instanceDetailsBloc.instance!,
       );
     }
   }

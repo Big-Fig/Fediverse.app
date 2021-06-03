@@ -90,6 +90,7 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
       hashtag: timeline.withRemoteHashtag!,
       onlyLocal: timeline.onlyLocal == true,
       onlyWithMedia: timeline.onlyWithMedia == true,
+      excludeVisibilities: timeline.excludeVisibilities,
       pagination: PleromaApiPaginationRequest(
         limit: itemsCountPerPage,
         sinceId: minId,
