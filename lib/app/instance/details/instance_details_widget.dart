@@ -344,8 +344,8 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
     return StreamBuilder<String?>(
-      stream: instanceDetailsBloc.descriptionOrShortDescriptionStream,
-      initialData: instanceDetailsBloc.descriptionOrShortDescription,
+      stream: instanceDetailsBloc.descriptionOrShortDescriptionWithParsedHashtagsStream,
+      initialData: instanceDetailsBloc.descriptionOrShortDescriptionWithParsedHashtags,
       builder: (context, snapshot) {
         var descriptionOrShortDescription = snapshot.data;
         var textStyle = IFediUiTextTheme.of(context).bigTallMediumGrey;

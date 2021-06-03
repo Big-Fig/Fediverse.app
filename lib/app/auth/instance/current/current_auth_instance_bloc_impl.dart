@@ -3,6 +3,7 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
+import 'package:fedi/app/hashtag/hashtag_url_helper.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:logging/logging.dart';
 
@@ -63,15 +64,18 @@ class CurrentAuthInstanceBloc extends DisposableOwner
   String createHashtagUrl({
     required String hashtag,
   }) {
+    var isMastodon = currentInstance!.isMastodon;
+    var isPleroma = currentInstance!.isPleroma;
     var urlHost = currentInstance!.urlHost;
-    var urlSchema = currentInstance!.urlSchema;
-    if (currentInstance!.isMastodon) {
-      return '$urlSchema://$urlHost/tag/$hashtag';
-    } else if (currentInstance!.isPleroma) {
-      return '$urlSchema://$urlHost/tags/$hashtag';
-    } else {
-      // TODO: implement createHashtagUrl
-      throw UnimplementedError();
-    }
+    var urlSchema = currentInstance!.urlSchema!;
+
+    return HashtagUrlHelper.calculateHashtagUrl(
+      urlSchema:urlSchema,
+      isMastodon:isMastodon,
+      isPleroma:isPleroma,
+      urlHost:urlHost,
+      hashtag:hashtag,
+    );
   }
+
 }
