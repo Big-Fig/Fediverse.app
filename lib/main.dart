@@ -56,8 +56,8 @@ import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
-import 'app/notification/repository/notification_repository.dart';
-import 'generated/l10n.dart';
+import 'package:fedi/app/notification/repository/notification_repository.dart';
+import 'package:fedi/generated/l10n.dart';
 
 var _logger = Logger('main.dart');
 
@@ -71,6 +71,7 @@ void onCrash(Object exception, StackTrace stackTrace) {
   FirebaseCrashlytics.instance.recordError(exception, stackTrace);
 }
 
+// ignore: long-method
 void main() async {
   // debugRepaintRainbowEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
@@ -86,7 +87,7 @@ void main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
   await runZonedGuarded(
-    () async {
+        () async {
       var appTitle = await FediPackageInfoHelper.getAppName();
       runNotInitializedSplashApp();
 
@@ -94,19 +95,19 @@ void main() async {
       unawaited(initBloc.performAsyncInit());
 
       initBloc.initLoadingStateStream.listen(
-        (newState) async {
+            (newState) async {
           _logger.fine(() => 'appContextBloc.initLoadingStateStream.newState '
               '$newState');
 
           if (newState == AsyncInitLoadingState.finished) {
             var currentInstanceBloc =
-                initBloc.appContextBloc.get<ICurrentAuthInstanceBloc>();
+            initBloc.appContextBloc.get<ICurrentAuthInstanceBloc>();
 
             currentInstanceBloc.currentInstanceStream
                 .distinct((previous, next) =>
-                    previous?.userAtHost == next?.userAtHost)
+            previous?.userAtHost == next?.userAtHost)
                 .listen(
-              (currentInstance) {
+                  (currentInstance) {
                 runInitializedApp(
                   appContextBloc: initBloc.appContextBloc,
                   currentInstance: currentInstance,
@@ -126,7 +127,7 @@ void main() async {
 
 void runNotInitializedSplashApp() {
   runZonedGuarded(
-    () async {
+        () async {
       runApp(
         MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -141,7 +142,7 @@ void runNotInitializedSplashApp() {
 void runInitFailedApp() {
   _logger.severe(() => 'failed to init App');
   runZonedGuarded(
-    () async {
+        () async {
       runApp(
         MaterialApp(
           localizationsDelegates: [
@@ -154,10 +155,13 @@ void runInitFailedApp() {
               child: Center(
                 // todo: localization
                 child: Builder(
-                  builder: (context) => Text(
-                    S.of(context).app_init_fail,
-                    style: lightFediUiTheme.textTheme.mediumShortBoldWhite,
-                  ),
+                  builder: (context) =>
+                      Text(
+                        S
+                            .of(context)
+                            .app_init_fail,
+                        style: lightFediUiTheme.textTheme.mediumShortBoldWhite,
+                      ),
                 ),
               ),
             ),
@@ -174,7 +178,7 @@ void runInitializedSplashApp({
   required String appTitle,
 }) {
   runZonedGuarded(
-    () async {
+        () async {
       runApp(
         appContextBloc.provideContextToChild(
           child: FediApp(
@@ -199,7 +203,7 @@ void runInitializedApp({
 }) {
   _logger.finest(() => 'runInitializedApp $runInitializedApp');
   runZonedGuarded(
-    () async {
+        () async {
       if (currentInstance != null) {
         await runInitializedCurrentInstanceApp(
           appContextBloc: appContextBloc,
@@ -220,7 +224,7 @@ Future runInitializedCurrentInstanceApp({
   required AuthInstance currentInstance,
 }) async {
   await runZonedGuarded(
-    () async {
+        () async {
       runInitializedSplashApp(
         appContextBloc: appContextBloc,
         appTitle: appTitle,
@@ -236,20 +240,21 @@ Future runInitializedCurrentInstanceApp({
       await currentInstanceContextBloc!.performAsyncInit();
 
       var pushLoaderBloc =
-          currentInstanceContextBloc!.get<INotificationPushLoaderBloc>();
+      currentInstanceContextBloc!.get<INotificationPushLoaderBloc>();
 
       _logger.finest(
-        () => 'buildCurrentInstanceApp CurrentInstanceContextLoadingPage',
+            () => 'buildCurrentInstanceApp CurrentInstanceContextLoadingPage',
       );
       runApp(
         appContextBloc.provideContextToChild(
           child: currentInstanceContextBloc!.provideContextToChild(
             child: DisposableProvider<ICurrentAuthInstanceContextInitBloc>(
               lazy: false,
-              create: (context) => createCurrentInstanceContextBloc(
-                context: context,
-                pushLoaderBloc: pushLoaderBloc,
-              ),
+              create: (context) =>
+                  createCurrentInstanceContextBloc(
+                    context: context,
+                    pushLoaderBloc: pushLoaderBloc,
+                  ),
               child: FediApp(
                 instanceInitialized: true,
                 appTitle: appTitle,
@@ -272,29 +277,29 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
 }) {
   _logger.finest(() => 'createCurrentInstanceContextBloc');
   var currentAuthInstanceContextLoadingBloc =
-      CurrentAuthInstanceContextInitBloc.createFromContext(context);
+  CurrentAuthInstanceContextInitBloc.createFromContext(context);
   currentAuthInstanceContextLoadingBloc.performAsyncInit();
 
   currentAuthInstanceContextLoadingBloc.addDisposable(
     streamSubscription:
-        currentAuthInstanceContextLoadingBloc.stateStream.distinct().listen(
-      (state) {
+    currentAuthInstanceContextLoadingBloc.stateStream.distinct().listen(
+          (state) {
         var isLocalCacheExist = state ==
-                CurrentAuthInstanceContextInitState
-                    .cantFetchAndLocalCacheNotExist ||
+            CurrentAuthInstanceContextInitState
+                .cantFetchAndLocalCacheNotExist ||
             state == CurrentAuthInstanceContextInitState.localCacheExist;
         if (isLocalCacheExist) {
           currentInstanceContextBloc!.addDisposable(
             streamSubscription:
-                pushLoaderBloc.launchPushLoaderNotificationStream.listen(
-              (launchOrResumePushLoaderNotification) {
+            pushLoaderBloc.launchPushLoaderNotificationStream.listen(
+                  (launchOrResumePushLoaderNotification) {
                 if (launchOrResumePushLoaderNotification != null) {
                   // ignore: no-magic-number
                   const durationToWaitUntilHandleLaunchNotification =
-                      Duration(milliseconds: 100);
+                  Duration(milliseconds: 100);
                   Future.delayed(
                     durationToWaitUntilHandleLaunchNotification,
-                    () async {
+                        () async {
                       await handleLaunchPushLoaderNotification(
                         launchOrResumePushLoaderNotification,
                       );
@@ -313,8 +318,7 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
 }
 
 Future handleLaunchPushLoaderNotification(
-  NotificationPushLoaderNotification launchOrResumePushLoaderNotification,
-) async {
+    NotificationPushLoaderNotification launchOrResumePushLoaderNotification,) async {
   var notification = launchOrResumePushLoaderNotification.notification;
   if (notification.isContainsChat) {
     await navigatorKey.currentState!.push(
@@ -322,8 +326,8 @@ Future handleLaunchPushLoaderNotification(
         (await currentInstanceContextBloc!
             .get<IPleromaChatRepository>()
             .findByRemoteIdInAppType(
-              notification.chatRemoteId!,
-            ))!,
+          notification.chatRemoteId!,
+        ))!,
       ),
     );
   } else if (notification.isContainsStatus) {
@@ -348,10 +352,10 @@ Future handleLaunchPushLoaderNotification(
   }
 
   var notificationRepository =
-      currentInstanceContextBloc!.get<INotificationRepository>();
+  currentInstanceContextBloc!.get<INotificationRepository>();
   Future.delayed(
     Duration(seconds: 1),
-    () {
+        () {
       notificationRepository.markAsRead(
         notification: notification,
       );
@@ -381,8 +385,8 @@ Widget buildAuthInstanceContextInitWidget({
 
           homeBloc.addDisposable(
             streamSubscription:
-                pushLoaderBloc.launchPushLoaderNotificationStream.listen(
-              (launchOrResumePushLoaderNotification) {
+            pushLoaderBloc.launchPushLoaderNotificationStream.listen(
+                  (launchOrResumePushLoaderNotification) {
                 homeBloc.selectTab(
                   calculateHomeTabForNotification(
                     launchOrResumePushLoaderNotification,
@@ -402,7 +406,7 @@ Widget buildAuthInstanceContextInitWidget({
 
 void runInitializedLoginApp(IAppContextBloc appContextBloc, String appTitle) {
   runZonedGuarded(
-    () async {
+        () async {
       runApp(
         appContextBloc.provideContextToChild(
           child: DisposableProvider<IJoinAuthInstanceBloc>(
@@ -421,8 +425,7 @@ void runInitializedLoginApp(IAppContextBloc appContextBloc, String appTitle) {
 }
 
 HomeTab calculateHomeTabForNotification(
-  NotificationPushLoaderNotification? launchOrResumePushLoaderNotification,
-) {
+    NotificationPushLoaderNotification? launchOrResumePushLoaderNotification,) {
   HomeTab homeTab;
   if (launchOrResumePushLoaderNotification != null) {
     var notification = launchOrResumePushLoaderNotification.notification;
@@ -461,10 +464,10 @@ class FediApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     var currentFediUiThemeBloc =
-        ICurrentFediUiThemeBloc.of(context, listen: false);
+    ICurrentFediUiThemeBloc.of(context, listen: false);
 
     var localizationSettingsBloc =
-        ILocalizationSettingsBloc.of(context, listen: false);
+    ILocalizationSettingsBloc.of(context, listen: false);
 
     return UiThemeSystemBrightnessHandlerWidget(
       child: StreamBuilder<IFediUiTheme?>(
@@ -475,8 +478,8 @@ class FediApp extends StatelessWidget {
           var themeMode = currentTheme == null
               ? ThemeMode.system
               : currentTheme == darkFediUiTheme
-                  ? ThemeMode.dark
-                  : ThemeMode.light;
+              ? ThemeMode.dark
+              : ThemeMode.light;
 
           _logger.finest(() => 'currentTheme $currentTheme '
               'themeMode $themeMode');
@@ -526,9 +529,9 @@ class FediApp extends StatelessWidget {
                             lazy: false,
                             update: (context, toastService, _) =>
                                 ToastHandlerBloc.createFromContext(
-                              context,
-                              toastService,
-                            ),
+                                  context,
+                                  toastService,
+                                ),
                             child: child,
                           );
                         } else {

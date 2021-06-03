@@ -86,6 +86,7 @@ import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc_impl.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 var _logger = Logger('app_context_bloc_impl.dart');
 
@@ -514,5 +515,48 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         );
       }
     }
+
+
+
+    ReceiveSharingIntent.getMediaStream().listen(
+          (List<SharedMediaFile> value) {
+        _logger.finest(
+              () => 'getMediaStream ${value.map((e) => e.path).join(', ')}',
+        );
+      },
+      onError: (err) {
+        _logger.shout(() => 'getMediaStream error $err');
+      },
+    );
+
+    // For sharing images coming from outside the app while the app is closed
+    unawaited(
+      ReceiveSharingIntent.getInitialMedia().then(
+            (List<SharedMediaFile> value) {
+          _logger.finest(
+                () => 'getInitialMedia ${value.map((e) => e.path).join(', ')}',
+          );
+        },
+      ),
+    );
+
+    // For sharing or opening urls/text coming from outside the app while the app is in the memory
+    ReceiveSharingIntent.getTextStream().listen(
+          (String value) {
+        _logger.finest(() => 'getTextStream $value');
+      },
+      onError: (err) {
+        _logger.shout(() => 'getTextStream error $err');
+      },
+    );
+
+    // For sharing or opening urls/text coming from outside the app while the app is closed
+    unawaited(
+      ReceiveSharingIntent.getInitialText().then(
+            (String? value) {
+          _logger.finest(() => 'getInitialText $value');
+        },
+      ),
+    );
   }
 }
