@@ -3,20 +3,22 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IHomeBloc implements Disposable {
+abstract class IHomeBloc implements IDisposable {
   static IHomeBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IHomeBloc>(context, listen: listen);
 
   List<HomeTab> get tabs;
 
-  HomeTab get selectedTab;
+  HomeTab? get selectedTab;
 
-  Stream<HomeTab> get selectedTabStream;
+  Stream<HomeTab?> get selectedTabStream;
 
-  Stream<HomeTab> get reselectedTabStream;
+  Stream<HomeTab?> get reselectedTabStream;
+
   Stream<bool> get selectedTabReselectedStream;
 
-  bool get isTimelinesUnread;
+  bool? get isTimelinesUnread;
+
   Stream<bool> get isTimelinesUnreadStream;
 
   void selectTab(HomeTab tab);

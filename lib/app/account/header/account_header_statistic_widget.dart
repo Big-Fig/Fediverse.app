@@ -1,45 +1,66 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import 'account_header_bloc.dart';
 
 final _numberFormat = NumberFormat("#,###");
 
 class AccountHeaderStatisticWidget extends StatelessWidget {
   final String label;
-  final int value;
-  final VoidCallback onPressed;
-  final Color color;
 
   AccountHeaderStatisticWidget({
-    @required this.label,
-    @required this.value,
-    @required this.onPressed,
-    @required this.color,
+    required this.label,
   });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if (onPressed != null) {
-          onPressed();
-        }
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            _numberFormat.format(value),
-            style: FediTextStyles.bigShortBoldDarkGrey.copyWith(color: color),
-          ),
-          Text(
-            label,
-            style: FediTextStyles.mediumTallDarkGrey.copyWith(color: color),
-          )
-        ],
-      ),
+    var value = Provider.of<int?>(context);
+
+    if (value == null) {
+      return const SizedBox.shrink();
+    }
+    var valueString = _numberFormat.format(value);
+    return AccountHeaderStatisticBodyWidget(
+      valueString: valueString,
+      label: label,
+    );
+  }
+}
+
+class AccountHeaderStatisticBodyWidget extends StatelessWidget {
+  const AccountHeaderStatisticBodyWidget({
+    Key? key,
+    required this.valueString,
+    required this.label,
+  }) : super(key: key);
+
+  final String valueString;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    var fediUiTextTheme = IFediUiTextTheme.of(context);
+    var accountHeaderBloc = IAccountHeaderBloc.of(context);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          valueString,
+          style: accountHeaderBloc.brightness == Brightness.dark
+              ? fediUiTextTheme.bigShortBoldDarkGrey
+              : fediUiTextTheme.bigShortBoldWhite,
+        ),
+        Text(
+          label,
+          style: accountHeaderBloc.brightness == Brightness.dark
+              ? fediUiTextTheme.mediumTallDarkGrey
+              : fediUiTextTheme.mediumTallWhite,
+        ),
+      ],
     );
   }
 }

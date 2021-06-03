@@ -1,6 +1,7 @@
+import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
-import 'package:fedi/app/account/my/my_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
@@ -10,77 +11,101 @@ import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:fedi/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service_impl.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
+import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:moor_ffi/moor_ffi.dart';
+import 'package:moor/ffi.dart';
 
-import '../../../pleroma/account/my/pleroma_my_account_service_mock.dart';
-import '../../status/database/status_database_model_helper.dart';
-import '../account_model_helper.dart';
-import '../database/account_database_model_helper.dart';
-import 'my_acount_model_helper.dart';
+import '../../status/database/status_database_test_helper.dart';
+import '../account_test_helper.dart';
+import '../database/account_database_test_helper.dart';
+import 'my_account_test_helper.dart';
+import 'my_account_bloc_impl_test.mocks.dart';
 
+// ignore_for_file: no-magic-number
+@GenerateMocks([PleromaApiMyAccountService])
 void main() {
-  IMyAccount myAccount;
-  IMyAccountBloc myAccountBloc;
-  PleromaMyAccountServiceMock pleromaMyAccountServiceMock;
-  AppDatabase database;
-  IAccountRepository accountRepository;
-  MyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
+  late IMyAccount myAccount;
+  late IMyAccountBloc myAccountBloc;
+  late MockPleromaApiMyAccountService pleromaMyAccountServiceMock;
+  late AppDatabase database;
+  late IAccountRepository accountRepository;
+  late MyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
 
-  AuthInstance authInstance;
-  ILocalPreferencesService preferencesService;
+  late AuthInstance authInstance;
+  late ILocalPreferencesService preferencesService;
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
 
-    pleromaMyAccountServiceMock = PleromaMyAccountServiceMock();
+    pleromaMyAccountServiceMock = MockPleromaApiMyAccountService();
 
-    when(pleromaMyAccountServiceMock.isApiReadyToUse).thenReturn(true);
+    when(pleromaMyAccountServiceMock.isConnected).thenReturn(true);
+    when(pleromaMyAccountServiceMock.pleromaApiState).thenReturn(
+      PleromaApiState.validAuth,
+    );
 
     preferencesService = MemoryLocalPreferencesService();
 
-    myAccount = await createTestMyAccount(seed: "seed1");
-    authInstance = AuthInstance(urlHost: "fedi.app", acct: myAccount.acct);
+    myAccount = await MyAccountTestHelper.createTestMyAccount(seed: "seed1");
+    authInstance = AuthInstance(
+      urlHost: "fedi.app",
+      acct: myAccount.acct,
+      urlSchema: null,
+      token: null,
+      authCode: null,
+      isPleroma: true,
+      application: null,
+      info: null,
+    );
 
     myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
-        preferencesService, authInstance.userAtHost);
+      preferencesService,
+      userAtHost: authInstance.userAtHost,
+    );
 
-    await myAccountLocalPreferenceBloc.setValue(myAccount);
+    await myAccountLocalPreferenceBloc
+        .setValue(myAccount as PleromaMyAccountWrapper?);
     await Future.delayed(Duration(milliseconds: 1));
 
     myAccountBloc = MyAccountBloc(
-        pleromaMyAccountService: pleromaMyAccountServiceMock,
-        accountRepository: accountRepository,
-        myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
-        instance: authInstance);
+      pleromaMyAccountService: pleromaMyAccountServiceMock,
+      accountRepository: accountRepository,
+      myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
+      instance: authInstance,
+    );
   });
 
   tearDown(() async {
-
-    myAccountBloc.dispose();
-    accountRepository.dispose();
-    myAccountLocalPreferenceBloc.dispose();
-    preferencesService.dispose();
+    await myAccountBloc.dispose();
+    await accountRepository.dispose();
+    await myAccountLocalPreferenceBloc.dispose();
+    await preferencesService.dispose();
 
     await Future.delayed(Duration(microseconds: 100));
     await database.close();
   });
 
   Future _update(IMyAccount account) async {
-    await myAccountLocalPreferenceBloc.setValue(account);
+    await myAccountLocalPreferenceBloc.setValue(
+      account.toPleromaApiMyAccountWrapper(),
+    );
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
   }
 
   test('account', () async {
-    expectAccount(myAccountBloc.account, myAccount);
+    AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
 
-    var newValue =
-        await createTestMyAccount(seed: "seed2", remoteId: myAccount.remoteId);
+    var newValue = await MyAccountTestHelper.createTestMyAccount(
+      seed: "seed2",
+      remoteId: myAccount.remoteId,
+    );
 
     var listenedValue;
 
@@ -89,12 +114,12 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectAccount(listenedValue, myAccount);
+    AccountTestHelper.expectAccount(listenedValue, myAccount);
 
     await _update(newValue);
 
-    expectAccount(myAccountBloc.account, newValue);
-    expectAccount(listenedValue, newValue);
+    AccountTestHelper.expectAccount(myAccountBloc.account, newValue);
+    AccountTestHelper.expectAccount(listenedValue, newValue);
     await subscription.cancel();
   });
 
@@ -199,9 +224,15 @@ void main() {
     await subscription.cancel();
   });
   test('fields', () async {
-    expect(myAccountBloc.fields, myAccount.fields);
+    expect(myAccountBloc.fields, myAccount.fields ?? []);
 
-    var newValue = [PleromaField(name: "newName", value: "newValue")];
+    var newValue = [
+      PleromaApiField(
+        name: "newName",
+        value: "newValue",
+        verifiedAt: null,
+      ),
+    ];
 
     var listenedValue;
 
@@ -210,7 +241,7 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, myAccount.fields);
+    expect(listenedValue, myAccount.fields ?? []);
 
     await _update(myAccount.copyWith(fields: newValue));
 
@@ -301,8 +332,13 @@ void main() {
   });
 
   test('displayNameEmojiText', () async {
-    expect(myAccountBloc.displayNameEmojiText,
-        EmojiText(text: myAccount.displayName, emojis: myAccount.emojis));
+    expect(
+      myAccountBloc.displayNameEmojiText,
+      EmojiText(
+        text: myAccount.displayName!,
+        emojis: myAccount.emojis,
+      ),
+    );
 
     var newDisplayNameValue = "newDisplayName";
 
@@ -314,49 +350,90 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue,
-        EmojiText(text: myAccount.displayName, emojis: myAccount.emojis));
+    expect(
+      listenedValue,
+      EmojiText(
+        text: myAccount.displayName!,
+        emojis: myAccount.emojis,
+      ),
+    );
 
-    await _update(myAccount.copyWith(displayName: newDisplayNameValue));
+    await _update(
+      myAccount.copyWith(
+        displayName: newDisplayNameValue,
+      ),
+    );
 
-    expect(myAccountBloc.displayNameEmojiText,
-        EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis));
-    expect(listenedValue,
-        EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis));
+    expect(
+      myAccountBloc.displayNameEmojiText,
+      EmojiText(
+        text: newDisplayNameValue,
+        emojis: myAccount.emojis,
+      ),
+    );
+    expect(
+      listenedValue,
+      EmojiText(
+        text: newDisplayNameValue,
+        emojis: myAccount.emojis,
+      ),
+    );
     await subscription.cancel();
 
-    var newEmojis = [PleromaEmoji(url: "url", staticUrl: "staticUrl")];
+    var newEmojis = [
+      PleromaApiEmoji(
+        url: "url",
+        staticUrl: "staticUrl",
+        visibleInPicker: null,
+        shortcode: null,
+        category: null,
+      ),
+    ];
 
     subscription = myAccountBloc.displayNameEmojiTextStream.listen((newValue) {
       listenedValue = newValue;
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue,
-        EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis));
+    expect(
+      listenedValue,
+      EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis),
+    );
 
     await _update(myAccount.copyWith(
-        displayName: newDisplayNameValue, emojis: newEmojis));
+      displayName: newDisplayNameValue,
+      emojis: newEmojis,
+    ));
 
-    expect(myAccountBloc.displayNameEmojiText,
-        equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)));
-    expect(listenedValue,
-        equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)));
+    expect(
+      myAccountBloc.displayNameEmojiText,
+      equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)),
+    );
+    expect(
+      listenedValue,
+      equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)),
+    );
     await subscription.cancel();
   });
 
   test('accountRelationship', () async {
-    expect(() => myAccountBloc.accountRelationship,
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
-    expect(() => myAccountBloc.accountRelationshipStream,
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
+    expect(
+      () => myAccountBloc.relationship,
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
+    expect(
+      () => myAccountBloc.relationshipStream,
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
   });
 
   test('refreshFromNetwork', () async {
-    expectAccount(myAccountBloc.account, myAccount);
+    AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
 
-    var newValue =
-        await createTestMyAccount(seed: "seed2", remoteId: myAccount.remoteId);
+    var newValue = await MyAccountTestHelper.createTestMyAccount(
+      seed: "seed2",
+      remoteId: myAccount.remoteId,
+    );
 
     var listenedValue;
 
@@ -365,39 +442,52 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectAccount(listenedValue, myAccount);
+    AccountTestHelper.expectAccount(listenedValue, myAccount);
 
-    when(pleromaMyAccountServiceMock.verifyCredentials())
-        .thenAnswer((_) async => newValue.remoteAccount);
+    when(pleromaMyAccountServiceMock.verifyCredentials()).thenAnswer(
+      (_) async => newValue.pleromaAccount,
+    );
 
-    await myAccountBloc.refreshFromNetwork(false);
+    await myAccountBloc.refreshFromNetwork(isNeedPreFetchRelationship: false);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expectAccount(myAccountBloc.account, newValue);
+    AccountTestHelper.expectAccount(myAccountBloc.account, newValue);
     await subscription.cancel();
   });
 
   test('toggleBlock', () async {
-    expect(() => myAccountBloc.toggleBlock(),
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
+    expect(
+      () => myAccountBloc.toggleBlock(),
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
   });
   test('toggleFollow', () async {
-    expect(() => myAccountBloc.toggleFollow(),
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
+    expect(
+      () => myAccountBloc.toggleFollow(),
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
   });
-  test('toggleMute', () async {
-    expect(() => myAccountBloc.toggleMute(),
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
+  test('mute', () async {
+    expect(
+      () => myAccountBloc.mute(
+        notifications: false,
+        duration: null,
+      ),
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
+  });
+  test('unMute', () async {
+    expect(
+      () => myAccountBloc.unMute(),
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
   });
   test('togglePin', () async {
-    expect(() => myAccountBloc.togglePin(),
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
-  });
-
-  test('report', () async {
-    expect(() => myAccountBloc.report(),
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
+    expect(
+      () => myAccountBloc.togglePin(),
+      throwsA(isInstanceOf<SelfActionNotPossibleException>()),
+    );
   });
 
   test('isLocalCacheExist', () async {
@@ -409,53 +499,64 @@ void main() {
   });
 
   test('updateMyAccountByRemote', () async {
-    expectAccount(myAccountBloc.account, myAccount);
+    AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
 
-    var newValue =
-        await createTestMyAccount(seed: "seed2", remoteId: myAccount.remoteId);
-    await myAccountBloc.updateMyAccountByRemote(newValue.remoteAccount);
+    var newValue = await MyAccountTestHelper.createTestMyAccount(
+      seed: "seed2",
+      remoteId: myAccount.remoteId,
+    );
+    await myAccountBloc
+        .updateMyAccountByMyPleromaAccount(newValue.pleromaAccount);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectAccount(myAccountBloc.account, newValue);
+    AccountTestHelper.expectAccount(myAccountBloc.account, newValue);
   });
 
   test('checkAccountIsMe', () async {
     expect(myAccountBloc.checkAccountIsMe(myAccount), true);
     expect(
-        myAccountBloc
-            .checkAccountIsMe(myAccount.copyWith(remoteId: "invalidRemoteId")),
-        false);
+      myAccountBloc
+          .checkAccountIsMe(myAccount.copyWith(remoteId: "invalidRemoteId")),
+      false,
+    );
     expect(
-        myAccountBloc.checkAccountIsMe((await createTestAccount(
-            seed: "seed3", remoteId: myAccount.remoteId))),
-        true);
+      myAccountBloc.checkAccountIsMe((await AccountTestHelper.createTestAccount(
+        seed: "seed3",
+        remoteId: myAccount.remoteId,
+      ))),
+      true,
+    );
   });
 
   test('checkIsStatusFromMe', () async {
-    var dbAccount = await createTestDbAccount(seed: "seed3");
-    var dbStatus =
-        await createTestDbStatus(seed: "seed4", dbAccount: dbAccount);
+    var dbAccount =
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed3");
+    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+      seed: "seed4",
+      dbAccount: dbAccount,
+    );
 
     expect(
-        myAccountBloc.checkIsStatusFromMe(
-          DbStatusPopulatedWrapper(
-            DbStatusPopulated(
-              dbStatus: dbStatus,
-              dbAccount: dbAccount.copyWith(remoteId: myAccount.remoteId),
-              reblogDbStatusAccount: null,
-              reblogDbStatus: null,
-              replyReblogDbStatusAccount: null,
-              replyDbStatusAccount: null,
-              replyDbStatus: null,
-              replyReblogDbStatus: null,
-            ),
+      myAccountBloc.checkIsStatusFromMe(
+        DbStatusPopulatedWrapper(
+          dbStatusPopulated: DbStatusPopulated(
+            dbStatus: dbStatus,
+            dbAccount: dbAccount.copyWith(remoteId: myAccount.remoteId),
+            reblogDbStatusAccount: null,
+            reblogDbStatus: null,
+            replyReblogDbStatusAccount: null,
+            replyDbStatusAccount: null,
+            replyDbStatus: null,
+            replyReblogDbStatus: null,
           ),
         ),
-        true);
+      ),
+      true,
+    );
 
     expect(
-        myAccountBloc
-            .checkIsStatusFromMe(DbStatusPopulatedWrapper(DbStatusPopulated(
+      myAccountBloc.checkIsStatusFromMe(DbStatusPopulatedWrapper(
+        dbStatusPopulated: DbStatusPopulated(
           dbStatus: dbStatus,
           dbAccount: dbAccount.copyWith(remoteId: "invalidRemoteId"),
           reblogDbStatus: null,
@@ -464,7 +565,9 @@ void main() {
           replyDbStatusAccount: null,
           replyDbStatus: null,
           replyReblogDbStatus: null,
-        ))),
-        false);
+        ),
+      )),
+      false,
+    );
   });
 }

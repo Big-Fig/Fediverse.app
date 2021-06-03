@@ -1,16 +1,20 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
-import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
+import 'package:fedi/app/toast/toast_service.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:overlay_support/overlay_support.dart';
 
-OverlaySupportEntry showPostStatusPostOverlayNotification(
-    BuildContext context, IPostStatusBloc postStatusBloc) {
-  var isScheduled = postStatusBloc.isScheduled;
+void showPostStatusPostOverlayNotification({
+  required BuildContext context,
+  required IPostStatusBloc postStatusBloc,
+  required bool isScheduled,
+}) {
+  var toastService = IToastService.of(context, listen: false);
 
-  return showInfoFediNotificationOverlay(
-      contentText: isScheduled
-          ? tr("app.status.post.toast.success.schedule")
-          : tr("app.status.post.toast.success.post"),
-      titleText: null);
+  return toastService.showInfoToast(
+    context: context,
+    title: isScheduled
+        ? S.of(context).app_status_post_toast_success_schedule
+        : S.of(context).app_status_post_toast_success_post,
+    content: null,
+  );
 }

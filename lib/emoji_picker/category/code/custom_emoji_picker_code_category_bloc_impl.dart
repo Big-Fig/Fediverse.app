@@ -4,7 +4,6 @@ import 'package:fedi/emoji_picker/category/code/custom_emoji_picker_code_categor
 import 'package:fedi/emoji_picker/category/code/custom_emoji_picker_code_category_model.dart';
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
-import 'package:flutter/widgets.dart';
 
 class CustomEmojiPickerCodeCategoryBloc extends AsyncInitLoadingBloc
     implements ICustomEmojiPickerCodeCategoryBloc {
@@ -60,25 +59,28 @@ class CustomEmojiPickerCodeCategoryBloc extends AsyncInitLoadingBloc
     activities,
     objects,
     symbols,
-    flags
+    flags,
   ];
 
   @override
   final List<CustomEmojiPickerCodeItem> items;
+
   CustomEmojiPickerCodeCategoryBloc({
-    @required this.type,
-    @required this.items,
+    required this.type,
+    required this.items,
   });
 
   static CustomEmojiPickerCodeCategoryBloc createCodeCategoryFromMap(
-      CustomEmojiPickerCodeCategoryType type,
-      Map<String, String> nameToCodeEmojiMap) {
+    CustomEmojiPickerCodeCategoryType type,
+    Map<String, String> nameToCodeEmojiMap,
+  ) {
     return CustomEmojiPickerCodeCategoryBloc(
-        type: type,
-        items: nameToCodeEmojiMap.entries
-            .map((entry) =>
-                CustomEmojiPickerCodeItem(name: entry.key, code: entry.value))
-            .toList());
+      type: type,
+      items: nameToCodeEmojiMap.entries
+          .map((entry) =>
+              CustomEmojiPickerCodeItem(name: entry.key, code: entry.value))
+          .toList(),
+    );
   }
 
   @override
@@ -88,17 +90,19 @@ class CustomEmojiPickerCodeCategoryBloc extends AsyncInitLoadingBloc
           runtimeType == other.runtimeType &&
           type == other.type &&
           items == other.items;
+
   @override
   int get hashCode => type.hashCode ^ items.hashCode;
+
   @override
   String toString() {
     return 'CustomEmojiPickerCodeCategory{type: $type, items: $items}';
   }
 
   @override
-  Future internalAsyncInit() {
+  // ignore: no-empty-block
+  Future internalAsyncInit() async {
     // nothing
-    return null;
   }
 
   @override

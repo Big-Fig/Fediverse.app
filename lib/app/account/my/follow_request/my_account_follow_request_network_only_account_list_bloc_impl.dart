@@ -1,69 +1,111 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/list/network_only/account_network_only_list_bloc.dart';
+import 'package:fedi/app/account/list/network_only/account_network_only_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_network_only_account_list_bloc.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
+import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     implements IMyAccountFollowRequestNetworkOnlyAccountListBloc {
-  final IPleromaMyAccountService pleromaMyAccountService;
+  final IMyAccountBloc myAccountBloc;
+  final IPleromaApiMyAccountService pleromaMyAccountService;
   final IAccountRepository accountRepository;
+  final INotificationRepository notificationRepository;
 
   MyAccountFollowRequestNetworkOnlyAccountListBloc({
-    @required this.pleromaMyAccountService,
-    @required this.accountRepository,
+    required this.myAccountBloc,
+    required this.pleromaMyAccountService,
+    required this.accountRepository,
+    required this.notificationRepository,
   });
 
   @override
-  Future acceptFollowRequest({@required IAccount account}) async {
+  Future acceptFollowRequest({
+    required IAccount account,
+  }) async {
     var accountRelationship = await pleromaMyAccountService.acceptFollowRequest(
-        accountRemoteId: account.remoteId);
-
-    var remoteAccount = mapLocalAccountToRemoteAccount(
-      account.copyWith(pleromaRelationship: accountRelationship),
+      accountRemoteId: account.remoteId,
     );
 
-    await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: null, chatRemoteId: null);
+    await _processFollowRequestAction(
+      account,
+      accountRelationship,
+    );
+  }
+
+  Future _processFollowRequestAction(
+    IAccount account,
+    IPleromaApiAccountRelationship accountRelationship,
+  ) async {
+    var pleromaAccount = account
+        .copyWith(
+          pleromaRelationship: accountRelationship,
+        )
+        .toPleromaApiAccount();
+
+    await notificationRepository.batch((batch) {
+      notificationRepository.dismissFollowRequestNotificationsFromAccount(
+        account: account,
+        batchTransaction: batch,
+      );
+      accountRepository.upsertInRemoteTypeBatch(
+        pleromaAccount,
+        batchTransaction: batch,
+      );
+    });
+
+    await myAccountBloc.decreaseFollowingRequestCount();
   }
 
   @override
-  Future rejectFollowRequest({@required IAccount account}) async {
+  Future rejectFollowRequest({
+    required IAccount account,
+  }) async {
     var accountRelationship = await pleromaMyAccountService.rejectFollowRequest(
-        accountRemoteId: account.remoteId);
-
-    var remoteAccount = mapLocalAccountToRemoteAccount(
-      account.copyWith(pleromaRelationship: accountRelationship),
+      accountRemoteId: account.remoteId,
     );
 
-    await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: null, chatRemoteId: null);
+    await _processFollowRequestAction(
+      account,
+      accountRelationship,
+    );
   }
 
   @override
   Future<List<IAccount>> loadItemsFromRemoteForPage({
-    @required int pageIndex,
-    int itemsCountPerPage,
-    String minId,
-    String maxId,
+    required int pageIndex,
+    int? itemsCountPerPage,
+    String? minId,
+    String? maxId,
   }) async {
     var remoteAccounts = await pleromaMyAccountService.getFollowRequests(
-      sinceId: minId,
-      maxId: maxId,
-      limit: itemsCountPerPage,
+      pagination: PleromaApiPaginationRequest(
+        sinceId: minId,
+        maxId: maxId,
+        limit: itemsCountPerPage,
+      ),
     );
 
-    await accountRepository.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: null, chatRemoteId: null);
+    await accountRepository.upsertAllInRemoteType(
+      remoteAccounts,
+      batchTransaction: null,
+    );
     return remoteAccounts
-        .map((remoteAccount) => mapRemoteAccountToLocalAccount(remoteAccount))
+        .map(
+          (pleromaAccount) => pleromaAccount.toDbAccountWrapper(),
+        )
         .toList();
   }
 
@@ -71,9 +113,10 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
   IPleromaApi get pleromaApi => pleromaMyAccountService;
 
   static MyAccountFollowRequestNetworkOnlyAccountListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       MyAccountFollowRequestNetworkOnlyAccountListBloc(
-        pleromaMyAccountService: IPleromaMyAccountService.of(
+        pleromaMyAccountService: IPleromaApiMyAccountService.of(
           context,
           listen: false,
         ),
@@ -81,11 +124,19 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
           context,
           listen: false,
         ),
+        myAccountBloc: IMyAccountBloc.of(
+          context,
+          listen: false,
+        ),
+        notificationRepository: INotificationRepository.of(
+          context,
+          listen: false,
+        ),
       );
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
   }) {
     return DisposableProvider<
         IMyAccountFollowRequestNetworkOnlyAccountListBloc>(
@@ -97,9 +148,19 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
           IAccountNetworkOnlyListBloc>(
         update: (context, value, previous) => value,
         child: ProxyProvider<IMyAccountFollowRequestNetworkOnlyAccountListBloc,
-                INetworkOnlyListBloc<IAccount>>(
-            update: (context, value, previous) => value, child: child),
+            INetworkOnlyListBloc<IAccount>>(
+          update: (context, value, previous) => value,
+          child: AccountNetworkOnlyListBlocProxyProvider(
+            child: child,
+          ),
+        ),
       ),
     );
   }
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
+
+  @override
+  Uri? get remoteInstanceUriOrNull => null;
 }

@@ -1,46 +1,128 @@
 import 'package:fedi/app/account/database/account_followers_database_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/database/dao/database_dao.dart';
 import 'package:moor/moor.dart';
 
 part 'account_followers_database_dao.g.dart';
 
-@UseDao(tables: [
-  DbAccountFollowers
-], queries: {
-  "countAll": "SELECT Count(*) FROM db_account_followers;",
-  "findById": "SELECT * FROM db_account_followers WHERE id = :id;",
-  "findByAccountRemoteId":
-      "SELECT * FROM db_account_followers WHERE account_remote_id = :accountRemoteId;",
-  "countById": "SELECT COUNT(*) FROM db_account_followers WHERE id = :id;",
-  "deleteById": "DELETE FROM db_account_followers WHERE id = :id;",
-  "deleteByAccountRemoteId": "DELETE FROM db_account_followers WHERE "
-      "account_remote_id = :accountRemoteId;",
-  "deleteByFollowerAccountRemoteId": "DELETE FROM db_account_followers WHERE "
-      "follower_account_remote_id = :accountRemoteId;",
-  "deleteByAccountRemoteIdAndFollowerAccountRemoteId":
-      "DELETE FROM db_account_followers WHERE "
-          "follower_account_remote_id = :followerAccountRemoteId AND "
-          "account_remote_id = :accountRemoteId;",
-  "clear": "DELETE FROM db_account_followers",
-  "getAll": "SELECT * FROM db_account_followers"
-})
-class AccountFollowersDao extends DatabaseAccessor<AppDatabase>
-    with _$AccountFollowersDaoMixin {
-    final AppDatabase db;
+@UseDao(
+  tables: [DbAccountFollowers],
+)
+class AccountFollowersDao extends DatabaseDao<
+    DbAccountFollower,
+    int,
+    $DbAccountFollowersTable,
+    $DbAccountFollowersTable> with _$AccountFollowersDaoMixin {
+  final AppDatabase db;
 
   // Called by the AppDatabase class
   AccountFollowersDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbAccountFollower> entity,
-          {InsertMode mode}) async =>
-      into(dbAccountFollowers).insert(entity, mode: mode);
+  @override
+  $DbAccountFollowersTable get table => dbAccountFollowers;
 
-  Future insertAll(Iterable<Insertable<DbAccountFollower>> entities,
-          InsertMode mode) async =>
-      await batch((batch) {
-        batch.insertAll(dbAccountFollowers, entities, mode: mode);
-      });
+  Selectable<DbAccountFollower> findByAccountRemoteId(String accountRemoteId) {
+    return customSelect(
+      'SELECT * FROM $tableName WHERE account_remote_id = :accountRemoteId;',
+      variables: [Variable<String>(accountRemoteId)],
+      readsFrom: {dbAccountFollowers},
+    ).map(dbAccountFollowers.mapFromRow);
+  }
 
-  Future<bool> replace(Insertable<DbAccountFollower> entity) async =>
-      await update(dbAccountFollowers).replace(entity);
+  Future<int> deleteByAccountRemoteIdAndFollowerAccountRemoteId({
+    required String followerAccountRemoteId,
+    required String accountRemoteId,
+  }) =>
+      customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${_createAccountRemoteIdEqualExpression(accountRemoteId)} '
+        'AND ${_createFollowerAccountRemoteIdEqualExpression(accountRemoteId)}',
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+
+  Future deleteByAccountRemoteIdAndFollowerAccountRemoteIdBatch({
+    required String followerAccountRemoteId,
+    required String accountRemoteId,
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) =>
+            _createAccountRemoteIdEqualExpression(accountRemoteId) &
+            _createFollowerAccountRemoteIdEqualExpression(
+              followerAccountRemoteId,
+            ),
+      );
+    } else {
+      return await deleteByAccountRemoteIdAndFollowerAccountRemoteId(
+        accountRemoteId: accountRemoteId,
+        followerAccountRemoteId: followerAccountRemoteId,
+      );
+    }
+  }
+
+  Future<int> deleteByAccountRemoteId(String accountRemoteId) => customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${_createAccountRemoteIdEqualExpression(accountRemoteId)}',
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+
+  Future deleteByAccountRemoteIdBatch(
+    String accountRemoteId, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => _createAccountRemoteIdEqualExpression(accountRemoteId),
+      );
+    } else {
+      return await deleteByAccountRemoteId(accountRemoteId);
+    }
+  }
+
+  CustomExpression<bool> _createAccountRemoteIdEqualExpression(
+    String accountRemoteId,
+  ) {
+    return createMainTableEqualWhereExpression(
+      fieldName: table.accountRemoteId.$name,
+      value: accountRemoteId,
+    );
+  }
+
+  Future<int> deleteByFollowerAccountRemoteId(String followerAccountRemoteId) =>
+      customUpdate(
+        'DELETE FROM $tableName '
+        'WHERE ${_createFollowerAccountRemoteIdEqualExpression(followerAccountRemoteId)}',
+        updates: {table},
+        updateKind: UpdateKind.delete,
+      );
+
+  Future deleteByFollowerAccountRemoteIdBatch(
+    String followerAccountRemoteId, {
+    required Batch? batchTransaction,
+  }) async {
+    if (batchTransaction != null) {
+      batchTransaction.deleteWhere(
+        table,
+        (tbl) => _createFollowerAccountRemoteIdEqualExpression(
+          followerAccountRemoteId,
+        ),
+      );
+    } else {
+      return await deleteByFollowerAccountRemoteId(followerAccountRemoteId);
+    }
+  }
+
+  CustomExpression<bool> _createFollowerAccountRemoteIdEqualExpression(
+    String followerAccountRemoteId,
+  ) {
+    return createMainTableEqualWhereExpression(
+      fieldName: table.followerAccountRemoteId.$name,
+      value: followerAccountRemoteId,
+    );
+  }
 }

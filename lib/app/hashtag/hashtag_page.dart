@@ -1,40 +1,41 @@
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
-import 'package:fedi/app/hashtag/status/list/hashtag_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
-import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/settings/hashtag/hashtag_timeline_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/timeline_status_cached_list_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_dialog.dart';
+import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
+import 'package:fedi/app/ui/dialog/actions/fedi_actions_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:fedi/collapsible/collapsible_owner_widget.dart';
+import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
+import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HashtagPage extends StatefulWidget {
-  final IHashtag hashtag;
-
-  HashtagPage({
-    @required this.hashtag,
-  });
+  const HashtagPage();
 
   @override
   _HashtagPageState createState() => _HashtagPageState();
@@ -51,15 +52,17 @@ class _HashtagPageState extends State<HashtagPage> {
 
   @override
   Widget build(BuildContext context) {
+    var hashtag = Provider.of<IHashtag>(context);
     return DisposableProvider<IScrollControllerBloc>(
       create: (context) =>
           ScrollControllerBloc(scrollController: scrollController),
       child: Scaffold(
-        appBar: FediSubPageTitleAppBar(
+        appBar: FediPageTitleAppBar(
           centerTitle: false,
-          title: "#${widget.hashtag.name}",
+          title: "#${hashtag.name}",
           actions: <Widget>[
-            buildOpenInBrowserAction(context),
+            const _HashtagPageOpenInBrowserAction(),
+            const _HashtagPageAppBarSettingsActionWidget(),
           ],
         ),
         body: SafeArea(
@@ -70,7 +73,7 @@ class _HashtagPageState extends State<HashtagPage> {
                   needWatchLocalRepositoryForUpdates: false,
                   scrollController: scrollController,
                 ),
-                StatusListTapToLoadOverlayWidget(),
+                const StatusListTapToLoadOverlayWidget(),
               ],
             ),
           ),
@@ -78,109 +81,204 @@ class _HashtagPageState extends State<HashtagPage> {
       ),
     );
   }
+}
 
-  FediIconButton buildOpenInBrowserAction(BuildContext context) {
+class _HashtagPageOpenInBrowserAction extends StatelessWidget {
+  const _HashtagPageOpenInBrowserAction({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var hashtag = Provider.of<IHashtag>(context);
     return FediIconButton(
-      icon: Icon(FediIcons.browser),
+      color: IFediUiColorTheme.of(context).darkGrey,
+      icon: Icon(FediIcons.external_icon),
       onPressed: () {
-        UrlHelper.handleUrlClick(context, widget.hashtag.url);
+        UrlHelper.handleUrlClickOnLocalInstanceLocation(
+          context: context,
+          url: hashtag.url,
+        );
       },
     );
   }
 }
 
-void goToHashtagPage({
-  @required BuildContext context,
-  @required IHashtag hashtag,
-}) {
-  Navigator.push(
-    context,
-    createHashtagPageRoute(
-      context: context,
-      hashtag: hashtag,
-    ),
-  );
+
+class _HashtagPageAppBarSettingsActionWidget extends StatelessWidget {
+  const _HashtagPageAppBarSettingsActionWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediIconButton(
+      icon: Icon(
+        FediIcons.settings,
+        color: IFediUiColorTheme.of(context).darkGrey,
+      ),
+      onPressed: () {
+        var timeline = ITimelineLocalPreferenceBloc.of(
+          context,
+          listen: false,
+        ).value!;
+        var hashtag = Provider.of<IHashtag>(
+          context,
+          listen: false,
+        );
+        showEditTimelineSettingsDialog(
+          context: context,
+          timeline: Timeline.byType(
+            id: timeline.id,
+            isPossibleToDelete: false,
+            label: hashtag.name,
+            type: TimelineType.hashtag,
+            settings: timeline.settings,
+          ),
+          lockedSource: true,
+        );
+      },
+    );
+  }
 }
 
-MaterialPageRoute createHashtagPageRoute({
-  @required BuildContext context,
-  @required IHashtag hashtag,
-}) {
-  var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context, listen: false);
-  var isRealtimeWebSocketsEnabled =
-      myAccountSettingsBloc.isRealtimeWebSocketsEnabledFieldBloc.currentValue;
+Future showRemoteInstanceHashtagActionsDialog({
+  required BuildContext context,
+  required String url,
+  required String remoteInstanceDomain,
+  required String localInstanceDomain,
+  required String hashtag,
+}) =>
+    FediActionsDialog(
+      context: context,
+      title: S.of(context).app_hashtag_remoteInstance_dialog_title(hashtag),
+      actions: [
+        DialogAction(
+          label: S
+              .of(context)
+              .app_hashtag_remoteInstance_dialog_action_openOnLocal(
+                localInstanceDomain,
+              ),
+          onAction: (context) {
+            Navigator.of(context).pop();
+            goToHashtagPage(
+              context: context,
+              hashtag: Hashtag(
+                name: hashtag,
+                url: url,
+                history: null,
+              ),
+            );
+          },
+        ),
+        DialogAction(
+          label: S
+              .of(context)
+              .app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser(
+                remoteInstanceDomain,
+              ),
+          onAction: (context) {
+            Navigator.of(context).pop();
+            UrlHelper.handleUrlClick(
+              context: context,
+              url: url,
+            );
+          },
+        ),
+      ],
+    ).show(context);
 
+Future goToHashtagPage({
+  required BuildContext context,
+  required IHashtag hashtag,
+}) =>
+    Navigator.push(
+      context,
+      createHashtagPageRoute(
+        context: context,
+        hashtag: hashtag,
+      ),
+    );
+
+MaterialPageRoute createHashtagPageRoute({
+  required BuildContext context,
+  required IHashtag hashtag,
+}) {
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
 
-  return MaterialPageRoute(builder: (context) {
-    return DisposableProvider<ITimelineSettingsLocalPreferencesBloc>(
-      create: (context) => HashtagTimelineSettingsLocalPreferencesBloc(
-        ILocalPreferencesService.of(context, listen: false),
-        userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
-        hashtag: hashtag.name,
+  return MaterialPageRoute(
+    builder: (context) {
+      return DisposableProvider<ITimelineLocalPreferenceBloc>(
+        create: (context) {
+          var timelineLocalPreferencesBloc =
+              TimelineLocalPreferenceBloc.hashtag(
+            ILocalPreferencesService.of(context, listen: false),
+            userAtHost: currentAuthInstanceBloc.currentInstance!.userAtHost,
+            hashtag: hashtag,
+          );
+          timelineLocalPreferencesBloc.performAsyncInit();
+          return timelineLocalPreferencesBloc;
+        },
+        child: Provider<IHashtag>.value(
+          value: hashtag,
+          child: const _HashtagPageWrapper(),
+        ),
+      );
+    },
+  );
+}
+
+class _HashtagPageWrapper extends StatelessWidget {
+  const _HashtagPageWrapper({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var hashtag = Provider.of<IHashtag>(context);
+    return FediAsyncInitLoadingWidget(
+      asyncInitLoadingBloc: ITimelineLocalPreferenceBloc.of(
+        context,
+        listen: false,
       ),
-      child: Builder(
-        builder: (context) {
-          return FediAsyncInitLoadingWidget(
-            asyncInitLoadingBloc: ITimelineSettingsLocalPreferencesBloc.of(
+      loadingFinishedBuilder: (BuildContext context) {
+        return DisposableProvider<IStatusCachedListBloc>(
+          create: (BuildContext context) {
+            var hashtagTimelineStatusCachedListBloc =
+                TimelineStatusCachedListBloc.createFromContext(
               context,
-              listen: false,
-            ),
-            loadingFinishedBuilder: (BuildContext context) {
-              return DisposableProvider<IStatusCachedListBloc>(
-                create: (BuildContext context) {
-                  var hashtagTimelineStatusCachedListBloc =
-                      TimelineStatusCachedListBloc(
-                          pleromaTimelineService: IPleromaTimelineService.of(
-                            context,
-                            listen: false,
-                          ),
-                          statusRepository: IStatusRepository.of(
-                            context,
-                            listen: false,
-                          ),
-                          timelineLocalPreferencesBloc:
-                              ITimelineSettingsLocalPreferencesBloc.of(context,
-                                  listen: false),
-                          currentInstanceBloc: ICurrentAuthInstanceBloc.of(
-                            context,
-                            listen: false,
-                          ),
-                          pleromaAccountService: IPleromaAccountService.of(
-                            context,
-                            listen: false,
-                          ));
-                  if (isRealtimeWebSocketsEnabled) {
-                    hashtagTimelineStatusCachedListBloc.addDisposable(
-                      disposable:
-                          HashtagStatusListWebSocketsHandler.createFromContext(
-                              context,
-                              hashtag: hashtag.name),
-                    );
-                  }
-                  return hashtagTimelineStatusCachedListBloc;
-                },
-                child: ProxyProvider<IStatusCachedListBloc,
-                    IPleromaCachedListBloc<IStatus>>(
-                  update: (context, value, previous) => value,
-                  child: StatusCachedPaginationBloc.provideToContext(
+              webSocketsListenType: WebSocketsListenType.foreground,
+              timelineLocalPreferencesBloc: ITimelineLocalPreferenceBloc.of(
+                context,
+                listen: false,
+              ),
+            );
+            return hashtagTimelineStatusCachedListBloc;
+          },
+          child: StatusCachedListBlocProxyProvider(
+            child: ProxyProvider<IStatusCachedListBloc,
+                IPleromaCachedListBloc<IStatus>>(
+              update: (context, value, previous) => value,
+              child: StatusCachedListBlocLoadingWidget(
+                child: StatusCachedPaginationBloc.provideToContext(
+                  context,
+                  child: StatusCachedPaginationListWithNewItemsBloc
+                      .provideToContext(
                     context,
-                    child: StatusCachedPaginationListWithNewItemsBloc
-                        .provideToContext(
-                      context,
-                      mergeNewItemsImmediately: false,
-                      child: HashtagPage(
-                        hashtag: hashtag,
-                      ),
+                    mergeNewItemsImmediately: false,
+                    child: Provider<IHashtag>.value(
+                      value: hashtag,
+                      child: const HashtagPage(),
                     ),
+                    mergeOwnStatusesImmediately: false,
                   ),
                 ),
-              );
-            },
-          );
-        },
-      ),
+              ),
+            ),
+          ),
+        );
+      },
     );
-  });
+  }
 }

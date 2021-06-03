@@ -1,11 +1,12 @@
+import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc_impl.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
+import 'package:fedi/form/form_item_validation.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -14,66 +15,132 @@ abstract class PostMessageBloc extends DisposableOwner
   @override
   final IUploadMediaAttachmentsCollectionBloc mediaAttachmentsBloc;
 
+  final bool unfocusOnClear;
   @override
-  final int maximumMessageLength;
+  final int? maximumMessageLength;
+
+  @override
+  List<FormItemValidationError>? get inputTextErrors =>
+      inputTextErrorsSubject.value;
+
+  @override
+  Stream<List<FormItemValidationError>> get inputTextErrorsStream =>
+      inputTextErrorsSubject.stream;
+
+  final BehaviorSubject<List<FormItemValidationError>> inputTextErrorsSubject =
+      BehaviorSubject.seeded([]);
+  final BehaviorSubject<bool> isInputFocusedSubject =
+      BehaviorSubject.seeded(false);
+
+  @override
+  bool get isInputFocused => isInputFocusedSubject.value!;
+
+  @override
+  Stream<bool> get isInputFocusedStream => isInputFocusedSubject.stream;
+
+  void regenerateIdempotencyKey() {
+    idempotencyKey = DateTime.now().millisecondsSinceEpoch.toString();
+  }
+
+  String? idempotencyKey;
 
   PostMessageBloc({
-    @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
-    @required int maximumMediaAttachmentCount,
-    @required this.maximumMessageLength,
-    @required int maximumFileSizeInBytes,
+    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required int maximumMediaAttachmentCount,
+    required this.maximumMessageLength,
+    required int? maximumFileSizeInBytes,
+    required this.unfocusOnClear,
   }) : mediaAttachmentsBloc = UploadMediaAttachmentsCollectionBloc(
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
         ) {
-    assert(pleromaMediaAttachmentService != null);
+    addDisposable(subject: inputTextErrorsSubject);
     addDisposable(disposable: mediaAttachmentsBloc);
 
     addDisposable(subject: inputTextSubject);
+    addDisposable(subject: isInputFocusedSubject);
 
-    addDisposable(textEditingController: inputTextController);
+    isInputFocusedSubject.add(inputFocusNode.hasFocus);
     addDisposable(focusNode: inputFocusNode);
 
+    var listener = () {
+      var hasFocus = inputFocusNode.hasFocus;
+      isInputFocusedSubject.add(hasFocus);
+    };
+    inputFocusNode.addListener(
+      listener,
+    );
+    addDisposable(
+      custom: () {
+        inputFocusNode.removeListener(
+          listener,
+        );
+      },
+    );
+
+
     addDisposable(subject: selectedActionSubject);
+    addDisposable(textEditingController: inputTextController);
+
+    addDisposable(
+      streamSubscription:
+          mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
+        (_) {
+          regenerateIdempotencyKey();
+        },
+      ),
+    );
 
     var editTextListener = () {
       onInputTextChanged();
     };
     inputTextController.addListener(editTextListener);
 
-    addDisposable(disposable: CustomDisposable(() {
-      inputTextController.removeListener(editTextListener);
-    }));
+    addDisposable(
+      disposable: CustomDisposable(
+        () async {
+          inputTextController.removeListener(editTextListener);
+        },
+      ),
+    );
+
+    regenerateIdempotencyKey();
   }
 
   @override
   bool get isReadyToPost => calculateIsReadyToPost(
-      inputText: inputText,
-      mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs,
-      isAllAttachedMediaUploaded:
-          mediaAttachmentsBloc.isAllAttachedMediaUploaded);
+        inputText: inputText,
+        mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs,
+        isAllAttachedMediaUploaded:
+            mediaAttachmentsBloc.isAllAttachedMediaUploaded,
+      );
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest3(
-      inputTextStream,
-      mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-      mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
-      (inputWithoutMentionedAcctsText, mediaAttachmentBlocs,
-              isAllAttachedMediaUploaded) =>
-          calculateIsReadyToPost(
-              inputText: inputWithoutMentionedAcctsText,
-              mediaAttachmentBlocs: mediaAttachmentBlocs,
-              isAllAttachedMediaUploaded: isAllAttachedMediaUploaded));
+        inputTextStream,
+        mediaAttachmentsBloc.mediaAttachmentBlocsStream,
+        mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
+        (
+          dynamic inputWithoutMentionedAcctsText,
+          dynamic mediaAttachmentBlocs,
+          dynamic isAllAttachedMediaUploaded,
+        ) =>
+            calculateIsReadyToPost(
+          inputText: inputWithoutMentionedAcctsText,
+          mediaAttachmentBlocs: mediaAttachmentBlocs,
+          isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
+        ),
+      );
 
   // ignore: close_sinks
-  BehaviorSubject<String> inputTextSubject = BehaviorSubject.seeded("");
+  BehaviorSubject<String?> inputTextSubject = BehaviorSubject.seeded("");
 
   @override
-  String get inputText => inputTextSubject.value;
+  String? get inputText => inputTextSubject.value;
 
   @override
-  Stream<String> get inputTextStream => inputTextSubject.stream;
+  Stream<String?> get inputTextStream => inputTextSubject.stream;
 
   @override
   TextEditingController inputTextController = TextEditingController();
@@ -86,28 +153,34 @@ abstract class PostMessageBloc extends DisposableOwner
     if (inputText != text) {
       inputTextSubject.add(text);
     }
+
+    regenerateIdempotencyKey();
   }
 
   void clear() {
     inputTextController.clear();
     mediaAttachmentsBloc.clear();
-    inputFocusNode.unfocus();
+    if (unfocusOnClear) {
+      inputFocusNode.unfocus();
+    }
     clearSelectedAction();
+    isExpandedSubject.add(false);
+    regenerateIdempotencyKey();
   }
 
   bool calculateIsReadyToPost({
-    @required String inputText,
-    @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
-    @required bool isAllAttachedMediaUploaded,
+    required String? inputText,
+    required List<IUploadMediaAttachmentBloc>? mediaAttachmentBlocs,
+    required bool? isAllAttachedMediaUploaded,
   }) {
-    var textIsNotEmpty = inputText?.trim()?.isEmpty != true;
+    var textIsNotEmpty = inputText?.trim().isEmpty != true;
     var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
 
-    return (textIsNotEmpty || mediaAttached) && isAllAttachedMediaUploaded;
+    return (textIsNotEmpty || mediaAttached) && isAllAttachedMediaUploaded!;
   }
 
   @override
-  void appendText(String textToAppend, {bool requestFocus = true}) {
+  void appendText(String? textToAppend, {bool requestFocus = true}) {
     var newText = "$inputText$textToAppend";
     inputTextController.value = TextEditingValue(
       text: newText,
@@ -117,20 +190,21 @@ abstract class PostMessageBloc extends DisposableOwner
   }
 
   @override
-  PostMessageSelectedAction get selectedAction => selectedActionSubject.value;
+  PostMessageSelectedAction? get selectedAction => selectedActionSubject.value;
 
   @override
-  Stream<PostMessageSelectedAction> get selectedActionStream =>
+  Stream<PostMessageSelectedAction?> get selectedActionStream =>
       selectedActionSubject.stream;
 
-  BehaviorSubject<PostMessageSelectedAction> selectedActionSubject =
+  BehaviorSubject<PostMessageSelectedAction?> selectedActionSubject =
       BehaviorSubject();
 
   bool get isAttachActionSelected =>
       selectedAction == PostMessageSelectedAction.attach;
 
   Stream<bool> get isAttachActionSelectedStream => selectedActionStream.map(
-      (selectedAction) => selectedAction == PostMessageSelectedAction.attach);
+        (selectedAction) => selectedAction == PostMessageSelectedAction.attach,
+      );
 
   bool get isEmojiActionSelected =>
       selectedAction == PostMessageSelectedAction.emoji;
@@ -139,7 +213,8 @@ abstract class PostMessageBloc extends DisposableOwner
       selectedAction == PostMessageSelectedAction.poll;
 
   Stream<bool> get isEmojiActionSelectedStream => selectedActionStream.map(
-      (selectedAction) => selectedAction == PostMessageSelectedAction.emoji);
+        (selectedAction) => selectedAction == PostMessageSelectedAction.emoji,
+      );
 
   @override
   void toggleAttachActionSelection() {
@@ -169,11 +244,11 @@ abstract class PostMessageBloc extends DisposableOwner
   }
 
   @override
-  Stream<bool> get isAnySelectedActionVisibleStream => selectedActionStream
-      .map((isAnySelectedActionVisible) => isAnySelectedActionVisible != null);
+  Stream<bool> get isAnySelectedActionVisibleStream =>
+      selectedActionStream.map((selectedAction) => selectedAction != null);
 
   @override
-  bool get isAnySelectedActionVisible => isAnySelectedActionVisible != null;
+  bool get isAnySelectedActionVisible => selectedAction != null;
 
   @override
   void clearSelectedAction() {
@@ -183,5 +258,19 @@ abstract class PostMessageBloc extends DisposableOwner
   @override
   void onFileSelected() {
     toggleAttachActionSelection();
+  }
+
+  BehaviorSubject<bool> isExpandedSubject = BehaviorSubject.seeded(false);
+
+  @override
+  Stream<bool> get isExpandedStream => isExpandedSubject.stream;
+
+  @override
+  bool get isExpanded => isExpandedSubject.value!;
+
+  @override
+  void toggleExpanded() {
+    var newValue = !isExpanded;
+    isExpandedSubject.add(newValue);
   }
 }

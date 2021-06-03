@@ -1,28 +1,32 @@
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/folder/media_device_folder_model.dart';
 import 'package:fedi/media/device/folder/photo_manager/photo_manager_media_device_folder_model.dart';
 import 'package:fedi/media/device/gallery/media_device_gallery_bloc_impl.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
-import 'package:flutter/widgets.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
-  PhotoManagerMediaDeviceGalleryBloc(
-      {@required IStoragePermissionBloc storagePermissionBloc,
-      @required List<MediaDeviceFileType> typesToPick})
-      : super(
-            storagePermissionBloc: storagePermissionBloc,
-            typesToPick: typesToPick) {
-    addDisposable(disposable: CustomDisposable(() {
-      PhotoManager.releaseCache();
+  PhotoManagerMediaDeviceGalleryBloc({
+    required IStoragePermissionBloc storagePermissionBloc,
+    required List<MediaDeviceFileType> typesToPick,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+  }) : super(
+          storagePermissionBloc: storagePermissionBloc,
+          typesToPick: typesToPick,
+          paginationSettingsBloc: paginationSettingsBloc,
+        ) {
+    addDisposable(disposable: CustomDisposable(() async {
+      await PhotoManager.releaseCache();
     }));
   }
 
   @override
   Future<List<IMediaDeviceFolder>> loadFoldersInformation() async {
     var assetPathEntities = await PhotoManager.getAssetPathList(
-        type: mapFileTypesToPickToRequestType(typesToPick));
+      type: mapFileTypesToPickToRequestType(typesToPick),
+    );
     assetPathEntities.sort(PhotoManagerMediaDeviceGalleryBloc
         .compareAlbumsAlphabeticallyAndFeatured);
     return assetPathEntities
@@ -35,7 +39,9 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
   }
 
   static int compareAlbumsAlphabeticallyAndFeatured(
-      AssetPathEntity a, AssetPathEntity b) {
+    AssetPathEntity a,
+    AssetPathEntity b,
+  ) {
     var aName = a.name;
     var bName = b.name;
 
@@ -45,7 +51,9 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
   }
 
   static int compareAlbumTitlesAlphabeticallyAndFeatured(
-      String aName, String bName) {
+    String aName,
+    String bName,
+  ) {
     // TODO: refactor for different languages
     // or wait until photo_manager lib will return album type
     const List<String> iosLatestEnNames = ["Recently Added", "Recents"];
@@ -66,7 +74,8 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
   }
 
   static RequestType mapFileTypesToPickToRequestType(
-      List<MediaDeviceFileType> fileTypesToPick) {
+    List<MediaDeviceFileType> fileTypesToPick,
+  ) {
     var isNeedImage = fileTypesToPick.contains(MediaDeviceFileType.image);
     var isNeedVideo = fileTypesToPick.contains(MediaDeviceFileType.video);
     var isNeedAudio = fileTypesToPick.contains(MediaDeviceFileType.audio);
@@ -78,7 +87,7 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
       return RequestType.image;
     } else if (!isNeedImage && isNeedVideo) {
       return RequestType.video;
-    } else if (isNeedAudio){
+    } else if (isNeedAudio) {
       return RequestType.audio;
     }
 

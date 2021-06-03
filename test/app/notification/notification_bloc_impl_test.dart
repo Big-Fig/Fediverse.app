@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
-import 'package:fedi/app/chat/message/repository/chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/notification/notification_bloc_impl.dart';
@@ -12,76 +12,101 @@ import 'package:fedi/app/notification/repository/notification_repository_impl.da
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service_impl.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:moor_ffi/moor_ffi.dart';
+import 'package:moor/ffi.dart';
 
-import '../../pleroma/notification/pleroma_notification_service_mock.dart';
-import '../account/account_model_helper.dart';
-import '../status/status_model_helper.dart';
-import 'notification_model_helper.dart';
+import '../account/account_test_helper.dart';
+import '../status/status_test_helper.dart';
+import 'notification_bloc_impl_test.mocks.dart';
+import 'notification_test_helper.dart';
 
+// ignore_for_file: no-magic-number
+@GenerateMocks([PleromaApiNotificationService])
 void main() {
-  INotification notification;
-  DbStatusPopulatedWrapper status;
-  INotificationBloc notificationBloc;
-  PleromaNotificationServiceMock pleromaNotificationServiceMock;
-  AppDatabase database;
-  IAccountRepository accountRepository;
-  IStatusRepository statusRepository;
-  IChatMessageRepository chatMessageRepository;
-  INotificationRepository notificationRepository;
+  late INotification notification;
+  late DbStatusPopulatedWrapper status;
+  late INotificationBloc notificationBloc;
+  late MockPleromaApiNotificationService pleromaNotificationServiceMock;
+  late AppDatabase database;
+  late IAccountRepository accountRepository;
+  late IStatusRepository statusRepository;
+  late IPleromaChatMessageRepository chatMessageRepository;
+  late INotificationRepository notificationRepository;
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
-        appDatabase: database, accountRepository: accountRepository);
-    chatMessageRepository = ChatMessageRepository(
-        appDatabase: database, accountRepository: accountRepository);
+      appDatabase: database,
+      accountRepository: accountRepository,
+    );
+    chatMessageRepository = PleromaChatMessageRepository(
+      appDatabase: database,
+      accountRepository: accountRepository,
+    );
     notificationRepository = NotificationRepository(
-        chatMessageRepository: chatMessageRepository,
-        appDatabase: database,
-        accountRepository: accountRepository,
-        statusRepository: statusRepository);
+      chatMessageRepository: chatMessageRepository,
+      appDatabase: database,
+      accountRepository: accountRepository,
+      statusRepository: statusRepository,
+    );
 
-    pleromaNotificationServiceMock = PleromaNotificationServiceMock();
+    pleromaNotificationServiceMock = MockPleromaApiNotificationService();
 
-    when(pleromaNotificationServiceMock.isApiReadyToUse).thenReturn(true);
+    when(pleromaNotificationServiceMock.isConnected).thenReturn(true);
+    when(pleromaNotificationServiceMock.pleromaApiState)
+        .thenReturn(PleromaApiState.validAuth);
 
-    status = await createTestStatus(seed: "seed4");
+    status = await StatusTestHelper.createTestStatus(seed: "seed4");
 
-    notification = await createTestNotification(
-        seed: "seed1", status: status.dbStatusPopulated);
+    notification = await NotificationTestHelper.createTestNotification(
+      seed: "seed1",
+      status: status.dbStatusPopulated,
+    );
 
     notificationBloc = NotificationBloc(
-        notification: notification,
-        pleromaNotificationService: pleromaNotificationServiceMock,
-        notificationRepository: notificationRepository,
-        delayInit: false);
+      notification: notification,
+      pleromaNotificationService: pleromaNotificationServiceMock,
+      notificationRepository: notificationRepository,
+      delayInit: false,
+    );
   });
 
   tearDown(() async {
-    notificationBloc.dispose();
-    notificationRepository.dispose();
-    statusRepository.dispose();
-    accountRepository.dispose();
+    await notificationBloc.dispose();
+    await notificationRepository.dispose();
+    await statusRepository.dispose();
+    await accountRepository.dispose();
     await database.close();
   });
 
-  Future _update(INotification notification, {bool unread = false}) async {
+  Future _update(
+    INotification notification, {
+    bool unread = false,
+  }) async {
     await notificationRepository.upsertRemoteNotification(
-        mapLocalNotificationToRemoteNotification(notification),
-        unread: unread);
+      notification.toPleromaNotification(),
+      unread: unread,
+      batchTransaction: null,
+    );
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
   }
 
   test('notification', () async {
-    expectNotification(notificationBloc.notification, notification);
+    NotificationTestHelper.expectNotification(
+      notificationBloc.notification,
+      notification,
+    );
 
-    var newValue = await createTestNotification(
-        seed: "seed2", remoteId: notification.remoteId);
+    var newValue = await NotificationTestHelper.createTestNotification(
+      seed: "seed2",
+      remoteId: notification.remoteId,
+    );
 
     var listenedValue;
 
@@ -90,19 +115,31 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectNotification(listenedValue, notification);
+    NotificationTestHelper.expectNotification(
+      listenedValue,
+      notification,
+    );
 
     await _update(newValue);
 
-    expectNotification(notificationBloc.notification, newValue);
-    expectNotification(listenedValue, newValue);
+    NotificationTestHelper.expectNotification(
+      notificationBloc.notification,
+      newValue,
+    );
+    NotificationTestHelper.expectNotification(
+      listenedValue,
+      newValue,
+    );
     await subscription.cancel();
   });
 
   test('account', () async {
-    expectAccount(notificationBloc.account, notification.account);
+    AccountTestHelper.expectAccount(
+      notificationBloc.account,
+      notification.account,
+    );
 
-    var newValue = await createTestAccount(seed: "seed3");
+    var newValue = await AccountTestHelper.createTestAccount(seed: "seed3");
 
     var listenedValue;
 
@@ -111,19 +148,31 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectAccount(listenedValue, notification.account);
+    AccountTestHelper.expectAccount(
+      listenedValue,
+      notification.account,
+    );
 
     await _update(notification.copyWith(account: newValue));
 
-    expectAccount(notificationBloc.account, newValue);
-    expectAccount(listenedValue, newValue);
+    AccountTestHelper.expectAccount(
+      notificationBloc.account,
+      newValue,
+    );
+    AccountTestHelper.expectAccount(
+      listenedValue,
+      newValue,
+    );
     await subscription.cancel();
   });
 
   test('status', () async {
-    expectStatus(notificationBloc.status, notification.status);
+    StatusTestHelper.expectStatus(
+      notificationBloc.status,
+      notification.status,
+    );
 
-    var newValue = await createTestStatus(seed: "seed3");
+    var newValue = await StatusTestHelper.createTestStatus(seed: "seed3");
 
     var listenedValue;
 
@@ -132,17 +181,29 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectStatus(listenedValue, notification.status);
+    StatusTestHelper.expectStatus(
+      listenedValue,
+      notification.status,
+    );
 
     await _update(notification.copyWith(status: newValue));
 
-    expectStatus(notificationBloc.status, newValue);
-    expectStatus(listenedValue, newValue);
+    StatusTestHelper.expectStatus(
+      notificationBloc.status,
+      newValue,
+    );
+    StatusTestHelper.expectStatus(
+      listenedValue,
+      newValue,
+    );
     await subscription.cancel();
   });
 
   test('createdAt', () async {
-    expect(notificationBloc.createdAt, notification.createdAt);
+    expect(
+      notificationBloc.createdAt,
+      notification.createdAt,
+    );
 
     var newValue = DateTime(1990);
 
@@ -153,12 +214,21 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, notification.createdAt);
+    expect(
+      listenedValue,
+      notification.createdAt,
+    );
 
     await _update(notification.copyWith(createdAt: newValue));
 
-    expect(notificationBloc.createdAt, newValue);
-    expect(listenedValue, newValue);
+    expect(
+      notificationBloc.createdAt,
+      newValue,
+    );
+    expect(
+      listenedValue,
+      newValue,
+    );
     await subscription.cancel();
   });
 }

@@ -6,35 +6,53 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatBloc implements Disposable, IAsyncInitLoadingBloc {
-  static IChatBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IChatBloc>(context, listen: listen);
+abstract class IChatBloc implements IDisposable, IAsyncInitLoadingBloc {
+  bool get isDeletePossible;
+
+  static IChatBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IChatBloc>(
+        context,
+        listen: listen,
+      );
 
   IChat get chat;
 
   Stream<IChat> get chatStream;
 
-  int get unreadCount;
+  int? get unreadCount;
 
-  Stream<int> get unreadCountStream;
+  Stream<int?> get unreadCountStream;
+
+  bool get isCountInUnreadSupported;
 
   bool get isHaveUnread;
 
   Stream<bool> get isHaveUnreadStream;
 
-  IChatMessage get lastChatMessage;
+  IChatMessage? get lastChatMessage;
 
-  Stream<IChatMessage> get lastChatMessageStream;
+  IChatMessage? get lastPublishedChatMessage;
+
+  Stream<IChatMessage?> get lastChatMessageStream;
 
   List<IAccount> get accounts;
 
   Stream<List<IAccount>> get accountsStream;
 
-  DateTime get updatedAt;
+  DateTime? get updatedAt;
 
-  Stream<DateTime> get updatedAtStream;
+  Stream<DateTime?> get updatedAtStream;
 
   Future refreshFromNetwork();
 
   Future markAsRead();
+
+  Future deleteMessages(List<IChatMessage> chatMessages);
+
+  Future delete();
+
+  Stream<bool> get chatDeletedStream;
 }

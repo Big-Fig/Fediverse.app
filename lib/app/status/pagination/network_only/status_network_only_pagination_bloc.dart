@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 
 abstract class IStatusNetworkOnlyPaginationBloc
     implements INetworkOnlyPleromaPaginationBloc<IStatus> {
-  static IStatusNetworkOnlyPaginationBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IStatusNetworkOnlyPaginationBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IStatusNetworkOnlyPaginationBloc>(context, listen: listen);
 }

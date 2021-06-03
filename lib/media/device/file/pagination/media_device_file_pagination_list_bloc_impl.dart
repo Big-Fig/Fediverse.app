@@ -4,31 +4,31 @@ import 'package:fedi/media/device/file/pagination/media_device_file_pagination_b
 import 'package:fedi/media/device/file/pagination/media_device_file_pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
-import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class MediaDeviceFilePaginationListBloc extends PaginationListBloc<
-    PaginationPage<IMediaDeviceFile>,
-    IMediaDeviceFile> implements IMediaDeviceFilePaginationListBloc {
-  MediaDeviceFilePaginationListBloc(
-      {@required IMediaDeviceFilePaginationBloc paginationBloc})
-      : super(paginationBloc: paginationBloc);
+    PaginationPage<IMediaDeviceFileMetadata>,
+    IMediaDeviceFileMetadata> implements IMediaDeviceFilePaginationListBloc {
+  MediaDeviceFilePaginationListBloc({
+    required IMediaDeviceFilePaginationBloc paginationBloc,
+  }) : super(
+          paginationBloc: paginationBloc,
+        );
 
   static MediaDeviceFilePaginationListBloc createFromContext(
-      BuildContext context) {
+    BuildContext context,
+  ) {
     return MediaDeviceFilePaginationListBloc(
-      paginationBloc: Provider.of<
-          IPaginationBloc<PaginationPage<IMediaDeviceFile>, IMediaDeviceFile>>(
-        context,
-        listen: false,
-      ),
+      paginationBloc: Provider.of<IMediaDeviceFilePaginationBloc>(context),
     );
   }
 
-  static Widget provideToContext(BuildContext context,
-          {@required Widget child}) =>
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) =>
       DisposableProvider<IMediaDeviceFilePaginationListBloc>(
         create: (context) =>
             MediaDeviceFilePaginationListBloc.createFromContext(
@@ -36,8 +36,8 @@ class MediaDeviceFilePaginationListBloc extends PaginationListBloc<
         ),
         child: ProxyProvider<
             IMediaDeviceFilePaginationListBloc,
-            IPaginationListBloc<PaginationPage<IMediaDeviceFile>,
-                IMediaDeviceFile>>(
+            IPaginationListBloc<PaginationPage<IMediaDeviceFileMetadata>,
+                IMediaDeviceFileMetadata>>(
           update: (context, value, previous) => value,
           child: ProxyProvider<IMediaDeviceFilePaginationListBloc,
               IPaginationListBloc>(

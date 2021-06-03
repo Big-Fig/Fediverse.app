@@ -11,189 +11,219 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.0.22+222
+version: 2.1.2+256
+
+publish_to: none
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
 
+  flutter_localizations:
+    sdk: flutter
+
+  # enhanced reorderable list
+  flutter_reorderable_list: ^1.0.0
+
   # firebase auth
-  firebase_core: ^0.5.0
+  firebase_core: ^1.1.0
   # push notifications FCM
-  firebase_messaging: ^7.0.0
-  # analytics events
-  firebase_analytics: ^6.0.0
+  firebase_messaging: ^9.1.3
 
-  # handle init urls. Used for login/register and navigation from notificaiton
-  uni_links: ^0.4.0
+  # handle crashes and non-fatal errors
+  firebase_crashlytics: ^2.0.2
+
+  # handle init urls. Used for login/register and navigation from notification
+  uni_links: ^0.5.1
+
   # launch browser to view links
-  url_launcher: ^5.6.0
+  url_launcher: ^6.0.3
   # object serialization
-  hive: ^0.4.1
-#  hive_flutter: ^0.3.1
+  hive: ^2.0.4
+  hive_flutter: ^1.0.0
 
-  #flutter_html: ^1.0.2
-  # actually it is ^1.0.2 with additional text style features
+  #  flutter_html: ^2.0.0-nullsafety.0
+  #   actually it is ^2.0.0-nullsafety.0 with additional text style features and libs update
   flutter_html:
     git:
       url: https://github.com/xal/flutter_html.git
-      ref: 182bc3e3b9bb6704abbd1576be4dca2947616f51
+      ref: f7559889775e8f773f2104958bf8178b7b4380f0
+
+  # minutes/hours picker
+  # duration_picker: ^1.0.1
+  # it is 1.0.1 with minute fixes and widget layout changes
+  duration_picker:
+    git:
+      url: https://github.com/xal/duration_picker.git
+      ref: ea2decc7d3f6cf2ebb7ff01570268045da71f647
 
   # media grid
-  flutter_staggered_grid_view: ^0.3.2
+  flutter_staggered_grid_view: ^0.4.0
   # retrieve storage path to save files
-  path_provider: ^1.6.14
+  path_provider: ^2.0.1
   # fetch gallery albums and items
-  photo_manager: ^0.5.8
+  photo_manager: ^1.1.4
   # detect file mime type for share
-  mime_type: ^0.3.2
-  # handle crashes and non-fatal errors
-  firebase_crashlytics: 0.1.4+1
+  mime_type: ^1.0.0
   # datetime formatter for statuses & chat messages
-  timeago: ^2.0.27
+  timeago: ^3.0.2
   # better image viewer with gestures support
-  photo_view: ^0.10.2
+  photo_view: ^0.11.1
   # positioned list view
-  flutter_widgets: ^0.1.12
+  scrollable_positioned_list: ^0.2.0-nullsafety.0
   # edit images during account editing
-  image_cropper: ^1.3.1
+  image_cropper: ^1.4.0
   # cache images locally
-  cached_network_image: ^2.3.2+1
+  cached_network_image: ^3.0.0
+  # cache manager for cached_network_image. Use to set up cache settings
+  flutter_cache_manager: ^3.0.1
   # reactive programming
-  rxdart: ^0.24.1
+  rxdart: ^0.26.0
   # text size to fit constraints
-  auto_size_text: ^2.1.0
+  auto_size_text: ^3.0.0-nullsafety.0
 
   # default media picker
-  image_picker: ^0.6.7+4
+  image_picker: ^0.7.4
 
   # better lint, should be in main dependencies to ignore async/await unnecessary warnings
-  pedantic: ^1.8.0+1
+  pedantic: ^1.11.0
 
   # customizable datetime picker
-  flutter_datetime_picker: ^1.4.0
-
-  # localization via .json files
-  # command to regenerate loader
-  # flutter pub run easy_localization:generate -S assets/langs -O lib/app/localization -o localization_loader.dart
-  easy_localization: ^2.3.3
+  flutter_datetime_picker: ^1.5.1
 
   # annotations to generate json from & to methods
-  json_annotation: ^3.0.1
+  json_annotation: ^4.0.1
 
   # advanced logging
-  logging: ^0.11.4
+  logging: ^1.0.1
+
   # dependency injection framework
-  provider: ^4.3.2+2
+  provider: ^5.0.0
 
   # fancy permission handler
-  permission_handler: ^5.0.1+1
-
-  # better tab indicator
-  md2_tab_indicator: ^1.0.2
+  permission_handler: ^7.1.0
 
   # native kotlin/swift image convert & compress
-  flutter_image_compress: ^0.6.5+1
+  flutter_image_compress: ^1.0.0
 
   # commandline script to pull database from emulator
   # adb exec-out run-as com.fediverse.app cat ./databases/jffdev@fedi.app.sqlite > database.sqlite
   # sqlite orm
-  moor: ^3.3.1
+  moor: ^4.2.1
 
-  # moor bindings for flutter
-  moor_flutter: ^3.1.0
+  # sqlite3_flutter_libs required for moor ffi
+  sqlite3_flutter_libs: ^0.4.1
+
+  # database inspector for debugging. Use with Moor Inspector Intellij Idea Plugin
+  moor_inspector: ^0.2.0
 
   # check internet connection state
-  connectivity: ^0.4.9+2
+  connectivity: ^3.0.2
 
   # WebSockets API mobile implementation
-  web_socket_channel: ^1.1.0
-
-  # Provides internationalization and localization facilities
-  intl: ^0.16.1
+  web_socket_channel: ^2.0.0
 
   # save photo and video to gallery
-  gallery_saver: ^2.0.1
+  gallery_saver: ^2.1.0
 
   # share actions via native API
-  esys_flutter_share: ^1.0.2
+  share: ^2.0.1
 
   # detect mime type be extension
-  mime: ^0.9.7
+  mime: ^1.0.0
 
   # parse html to extract raw text from status content
-  html: ^0.14.0+3
+  html: ^0.15.0
 
   # fetch package info during runtime
-  package_info: ^0.4.3
+  package_info: ^2.0.0
 
   # better scroll controller for nested scroll
-  nested_scroll_controller: ^0.2.1
+  nested_scroll_controller: ^1.0.0
 
   # media attachments carousel
-  carousel_slider: ^2.2.1
-
-  # media video player
-  chewie: ^0.9.10
-
-  # media audio player
-  chewie_audio: ^1.0.0+1
+  carousel_slider: ^4.0.0-nullsafety.0
 
   # video/audio players
-  video_player: ^0.10.12+3
+  video_player: ^2.1.1
 
   # pull to refresh and pull to load more
-  pull_to_refresh: ^1.6.1
+  # null-safety fork from original
+  #  pull_to_refresh: ^1.6.4
+  pull_to_refresh:
+    git:
+      url: https://github.com/fzyzcjy/flutter_pulltorefresh.git
+      ref: 0bb4f70dd7540ffe032bbc2a6994df388b4f1c39
 
   # custom scroll view which fix bugs related to inner scrollables sync
-  extended_nested_scroll_view: ^1.0.1
+  extended_nested_scroll_view: ^3.0.0
 
   # error overlay
-  overlay_support: ^1.0.5
+  overlay_support: ^1.2.1
 
   # file picker for media attachment
-  file_picker: ^2.0.0
+  file_picker: ^3.0.1
 
   # unenscape account not field
-  html_unescape: ^1.0.2
+  html_unescape: ^2.0.0
 
   # shared preferences support. temporary required by custom emoji picker Todo: refactor and remove
-  shared_preferences: ^0.5.10
+  shared_preferences: ^2.0.5
 
   # extended text fields with highlight mentions support
-  extended_text_field: ^4.0.0
+  extended_text_field: ^7.0.1
 
   # detect keyboard visibility
-  flutter_keyboard_visibility: ^3.2.2
+  flutter_keyboard_visibility: ^5.0.1
+
+  # list view item slide actions
+  flutter_slidable: ^0.6.0
+
+  # disable wakelock for video player
+  wakelock: ^0.4.0
+
+  # ask for review inside app
+  in_app_review: ^2.0.2
+
+  # better dateTime manipulation (especially for add duration to dateTime)
+  jiffy: ^4.1.0
+
+  # collections extensions
+  collection: ^1.15.0
+
+  # customizable switch widget
+  flutter_switch: ^0.3.1
 
 dependency_overrides:
-  path: ^1.7.0
+  # dev_dependencies conflict:
+  # hive_generator 1.0.0 which is null-safe uses web_socket_channel: ^2.0.0
+  # build_runner: ^1.11.5 which is not null-safe uses web_socket_channel: ^1.0.0
+  web_socket_channel: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   # easy mock for tests
-  mockito: ^4.1.1
+  mockito: ^5.0.7
   # build tools runner
   # usage example
   # flutter pub run build_runner build --delete-conflicting-outputs
-  build_runner: ^1.10.0
+#  build_runner: ^1.11.5
+  build_runner: ^2.0.2
   # build tool to generate json from & to methods
-  json_serializable: ^3.4.1
+  json_serializable: ^4.1.1
   # sql orm generator
-  moor_generator: ^3.3.1
-
-  # in memory moor SQLite database for tests
-  moor_ffi: ^0.8.0
-
-  # sqlite3_flutter_libs required for moor ffi
-  sqlite3_flutter_libs: ^0.2.0
+  moor_generator: ^4.2.2
 
   # object serialization generator
-  hive_generator: ^0.5.0
+  hive_generator: ^1.1.0
+
+  # additional linter
+  dart_code_metrics: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -226,7 +256,6 @@ flutter:
     - assets/terms/terms.rtf
     - assets/images/theme/logo.png
     - assets/images/default_timeline_header.png
-    - assets/langs/en-US.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -253,3 +282,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_intl:
+  enabled: true

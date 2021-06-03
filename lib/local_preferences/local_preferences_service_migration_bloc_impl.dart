@@ -1,6 +1,5 @@
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 final _logger = Logger("local_preferences_service_migration_bloc_impl.dart");
@@ -11,8 +10,8 @@ abstract class LocalPreferencesServiceMigrationBloc
   final ILocalPreferencesService outputService;
 
   LocalPreferencesServiceMigrationBloc({
-    @required this.inputService,
-    @required this.outputService,
+    required this.inputService,
+    required this.outputService,
   });
 
   @override
@@ -21,7 +20,8 @@ abstract class LocalPreferencesServiceMigrationBloc
         await calculateAllMigrationLocalPreferencesBlocCreators(inputService);
 
     _logger.finest(
-        () => "migrateData ${migrationLocalPreferencesBlocCreators.length}");
+      () => "migrateData ${migrationLocalPreferencesBlocCreators.length}",
+    );
 
     for (var creator in migrationLocalPreferencesBlocCreators) {
       await migrateLocalPreferenceBloc(creator);
@@ -29,7 +29,8 @@ abstract class LocalPreferencesServiceMigrationBloc
   }
 
   Future migrateLocalPreferenceBloc(
-      LocalPreferencesBlocCreator migrationBlocCreator) async {
+    LocalPreferencesBlocCreator migrationBlocCreator,
+  ) async {
     var inputBloc = migrationBlocCreator(inputService);
     var outputBloc = migrationBlocCreator(outputService);
 
@@ -38,13 +39,11 @@ abstract class LocalPreferencesServiceMigrationBloc
 
     var currentValue = inputBloc.value;
     if (currentValue != null) {
-
-      _logger.finest(
-              () => "migrateData currentValue ${currentValue}");
+      _logger.finest(() => "migrateData currentValue $currentValue");
       await outputBloc.setValue(currentValue);
     }
 
-    inputBloc.dispose();
-    outputBloc.dispose();
+    await inputBloc.dispose();
+    await outputBloc.dispose();
   }
 }

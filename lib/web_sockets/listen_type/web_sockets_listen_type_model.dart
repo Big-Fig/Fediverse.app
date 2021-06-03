@@ -1,0 +1,4 @@
+enum WebSocketsListenType {
+  background,
+  foreground,
+}

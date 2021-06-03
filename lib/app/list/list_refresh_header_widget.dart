@@ -42,6 +42,6 @@ class ListRefreshHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialClassicHeader();
+    return const MaterialClassicHeader();
   }
 }

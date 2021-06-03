@@ -1,12 +1,15 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatMessageBloc implements Disposable {
+abstract class IChatMessageBloc implements IDisposable {
   static IChatMessageBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IChatMessageBloc>(context, listen: listen);
 
@@ -14,25 +17,29 @@ abstract class IChatMessageBloc implements Disposable {
 
   Stream<IChatMessage> get chatMessageStream;
 
-  String get content;
+  String? get content;
 
-  Stream<String> get contentStream;
+  Stream<String?> get contentStream;
 
-  IPleromaMediaAttachment get mediaAttachment;
+  List<IPleromaApiMediaAttachment>? get mediaAttachments;
 
-  Stream<IPleromaMediaAttachment> get mediaAttachmentStream;
+  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream;
 
-  IPleromaCard get card;
+  IPleromaApiCard? get card;
 
-  Stream<IPleromaCard> get cardStream;
+  Stream<IPleromaApiCard?> get cardStream;
 
-  String get contentWithEmojis;
+  EmojiText? get contentWithEmojis;
 
-  Stream<String> get contentWithEmojisStream;
+  Stream<EmojiText?> get contentWithEmojisStream;
 
-  IAccount get account;
+  IAccount? get account;
 
-  Stream<IAccount> get accountStream;
+  Stream<IAccount?> get accountStream;
+
+  String get accountRemoteId;
+
+  Stream<String> get accountRemoteIdStream;
 
   DateTime get createdAt;
 
@@ -40,9 +47,43 @@ abstract class IChatMessageBloc implements Disposable {
 
   String get remoteId;
 
-  String get accountAvatar;
+  String? get accountAvatar;
 
-  Stream<String> get accountAvatarStream;
+  Stream<String?> get accountAvatarStream;
+
+  PendingState? get pendingState;
+
+  Stream<PendingState?> get pendingStateStream;
+
+  bool get isDeleted;
+
+  Stream<bool> get isDeletedStream;
+
+  bool get isHiddenLocallyOnDevice;
+
+  Stream<bool> get isHiddenLocallyOnDeviceStream;
+
+  bool get isPublishedAndNotDeletedAndNotLocallyHidden;
+
+  Stream<bool> get isPublishedAndNotDeletedAndNotLocallyHiddenStream;
+
+  bool get isNotPending;
+
+  Stream<bool> get isNotPendingStream;
+
+  bool get isPending;
+
+  Stream<bool> get isPendingStream;
+
+  bool get isPendingFailed;
+
+  Stream<bool> get isPendingFailedStream;
+
+  List<IPleromaApiEmoji>? get emojis;
 
   Future refreshFromNetwork();
+
+  Future delete();
+
+  Future resendPendingFailed();
 }

@@ -1,56 +1,56 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
+import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/collapsible/collapsible_model.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
-import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
+import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IStatusBloc implements Disposable, ICollapsibleItem {
+abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
   static IStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusBloc>(context, listen: listen);
+
+  bool get isPleroma;
 
   IStatus get status;
 
   Stream<IStatus> get statusStream;
 
-  IStatus get reblog;
+  IStatus? get reblog;
 
-  Stream<IStatus> get reblogStream;
+  Stream<IStatus?> get reblogStream;
 
   IStatus get reblogOrOriginal;
 
   Stream<IStatus> get reblogOrOriginalStream;
 
-  String get content;
+  String? get content;
 
-  Stream<String> get contentStream;
+  Stream<String?> get contentStream;
 
-  String get contentRawText;
+  String? get contentRawText;
 
-  Stream<String> get contentRawTextStream;
+  Stream<String?> get contentRawTextStream;
 
-  String get contentWithEmojisWithoutAccount;
+  EmojiText? get contentWithEmojis;
 
-  Stream<String> get contentWithEmojisWithoutAccountStream;
+  Stream<EmojiText?> get contentWithEmojisStream;
 
-  String get contentWithEmojis;
+  IPleromaApiCard? get card;
 
-  Stream<String> get contentWithEmojisStream;
+  Stream<IPleromaApiCard?> get cardStream;
 
-  IPleromaCard get card;
+  IPleromaApiCard? get reblogOrOriginalCard;
 
-  Stream<IPleromaCard> get cardStream;
-
-  IPleromaCard get reblogOrOriginalCard;
-
-  Stream<IPleromaCard> get reblogOrOriginalCardStream;
+  Stream<IPleromaApiCard?> get reblogOrOriginalCardStream;
 
   IAccount get account;
 
@@ -64,38 +64,40 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
 
   Stream<DateTime> get createdAtStream;
 
-  bool get isReply => status.isReply;
+  String? get remoteId;
 
-  bool get isHaveReblog => status.isHaveReblog;
+  List<IPleromaApiMediaAttachment>? get mediaAttachments;
 
-  String get remoteId;
+  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream;
 
-  List<IPleromaMediaAttachment> get mediaAttachments;
+  List<IPleromaApiMediaAttachment>? get reblogOrOriginalMediaAttachments;
 
-  Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
+  Stream<List<IPleromaApiMediaAttachment>?>
+      get reblogOrOriginalMediaAttachmentsStream;
 
-  IPleromaPoll get poll;
+  IPleromaApiPoll? get poll;
 
-  Stream<IPleromaPoll> get pollStream;
+  Stream<IPleromaApiPoll?> get pollStream;
 
   IPollBloc get pollBloc;
 
-  List<IPleromaStatusEmojiReaction> get pleromaEmojiReactions;
+  List<IPleromaApiStatusEmojiReaction>? get pleromaEmojiReactions;
 
-  Stream<List<IPleromaStatusEmojiReaction>> get pleromaEmojiReactionsStream;
+  Stream<List<IPleromaApiStatusEmojiReaction>?> get pleromaEmojiReactionsStream;
 
-  int get pleromaEmojiReactionsCount;
+  int? get pleromaEmojiReactionsCount;
 
-  Stream<int> get pleromaEmojiReactionsCountStream;
+  Stream<int?> get pleromaEmojiReactionsCountStream;
 
-  List<IPleromaStatusEmojiReaction> get reblogPlusOriginalPleromaEmojiReactions;
+  List<IPleromaApiStatusEmojiReaction>?
+      get reblogPlusOriginalPleromaEmojiReactions;
 
-  Stream<List<IPleromaStatusEmojiReaction>>
+  Stream<List<IPleromaApiStatusEmojiReaction>?>
       get reblogPlusOriginalEmojiReactionsStream;
 
-  int get reblogPlusOriginalEmojiReactionsCount;
+  int? get reblogPlusOriginalEmojiReactionsCount;
 
-  Stream<int> get reblogPlusOriginalEmojiReactionsCountStream;
+  Stream<int?> get reblogPlusOriginalEmojiReactionsCountStream;
 
   String get accountAvatar;
 
@@ -105,17 +107,23 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
 
   Stream<bool> get favouritedStream;
 
-  List<IPleromaMention> get mentions;
+  List<IPleromaApiMention>? get mentions;
 
-  Stream<List<IPleromaMention>> get mentionsStream;
+  Stream<List<IPleromaApiMention>?> get mentionsStream;
+
+  List<IPleromaApiMention>? get reblogOrOriginalMentions;
+
+  List<IPleromaApiTag>? get tags;
+
+  List<IPleromaApiTag>? get reblogOrOriginalTags;
 
   bool get reblogged;
 
   Stream<bool> get rebloggedStream;
 
-  bool get bookmarked;
+  bool? get bookmarked;
 
-  Stream<bool> get bookmarkedStream;
+  Stream<bool?> get bookmarkedStream;
 
   bool get muted;
 
@@ -145,64 +153,75 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
 
   Stream<int> get repliesCountStream;
 
-  String get spoilerText;
+  String? get reblogOrOriginalSpoilerText;
 
-  Stream<String> get spoilerTextStream;
+  Stream<String?> get reblogOrOriginalSpoilerTextStream;
 
-  String get spoilerTextWithEmojis;
+  EmojiText? get spoilerTextWithEmojis;
 
-  Stream<String> get spoilerTextWithEmojisStream;
+  Stream<EmojiText?> get spoilerTextWithEmojisStream;
 
   bool get nsfwSensitive;
 
   Stream<bool> get nsfwSensitiveStream;
 
-  bool get nsfwSensitiveAndDisplayNsfwContentEnabled;
-
-  Stream<bool> get nsfwSensitiveAndDisplayNsfwContentEnabledStream;
-
   bool get containsSpoiler;
 
   Stream<bool> get containsSpoilerStream;
 
-  bool get containsSpoilerAndDisplaySpoilerContentEnabled;
-
-  Stream<bool> get containsSpoilerAndDisplaySpoilerContentEnabledStream;
-
-  void changeDisplayNsfwSensitive(bool display);
-
-  void changeDisplaySpoiler(bool display);
-
   Future refreshFromNetwork();
 
-  Future<IAccount> loadAccountByMentionUrl({@required String url});
-  Future<IHashtag> loadHashtagByUrl({@required String url});
+  Future<IAccount?> loadAccountByMentionUrl({
+    required String url,
+  });
 
-  Future<IAccount> getInReplyToAccount();
+  Future<IHashtag?> loadHashtagByUrl({
+    required String url,
+  });
 
-  Stream<IAccount> watchInReplyToAccount();
+  Future<IAccount?> getInReplyToAccount();
 
-  Future<IStatus> getInReplyToStatus();
+  Stream<IAccount?> watchInReplyToAccount();
 
-  Stream<IStatus> watchInReplyToStatus();
+  Future<IStatus?> getInReplyToStatus();
+
+  Stream<IStatus?> watchInReplyToStatus();
 
   Future<IStatus> toggleReblog();
 
   Future<IStatus> toggleFavourite();
 
-  Future<IStatus> toggleMute();
+  Future<IStatus> mute({
+    required Duration? duration,
+  });
+
+  Future<IStatus> toggleMute({
+    required Duration? duration,
+  });
 
   Future<IStatus> toggleBookmark();
 
   Future<IStatus> togglePin();
+
   Future delete();
 
-  Future<IPleromaStatus> toggleEmojiReaction({@required String emoji});
+  Future<IPleromaApiStatus> toggleEmojiReaction({
+    required String emoji,
+  });
 
-  Future onPollUpdated(IPleromaPoll poll);
+  Future<IStatus> onPollUpdated(
+    IPleromaApiPoll poll,
+  );
 
   bool get deleted;
 
   Stream<bool> get deletedStream;
+}
 
+extension IStatusBlocExtension on IStatusBloc {
+  bool get isHaveTextContent => content?.isNotEmpty == true;
+
+  bool get isReply => status.isReply;
+
+  bool get isHaveReblog => status.isHaveReblog;
 }

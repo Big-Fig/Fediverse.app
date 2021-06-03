@@ -1,6 +1,6 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +12,7 @@ class FediListTile extends StatelessWidget {
   final oneSidePadding;
 
   const FediListTile({
-    @required this.child,
+    required this.child,
     this.isFirstInList = false,
     this.noPadding = false,
     this.oneSidePadding = FediSizes.smallPadding,
@@ -31,14 +31,18 @@ class FediListTile extends StatelessWidget {
       edgeInsets = EdgeInsets.zero;
     }
 
-    return Padding(
-      padding: edgeInsets,
-      child: Container(
+    return Container(
+      color: IFediUiColorTheme.of(context).offWhite,
+      child: Padding(
+        padding: edgeInsets,
+        child: Container(
           decoration: BoxDecoration(
-            color: FediColors.white,
+            color: IFediUiColorTheme.of(context).white,
             boxShadow: [FediShadows.forListTile],
           ),
-          child: child),
+          child: child,
+        ),
+      ),
     );
   }
 }

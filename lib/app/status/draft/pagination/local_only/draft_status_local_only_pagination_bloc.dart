@@ -7,7 +7,9 @@ import 'package:provider/provider.dart';
 abstract class IDraftStatusLocalOnlyPaginationBloc
     implements
         ILocalOnlyPaginationBloc<PaginationPage<IDraftStatus>, IDraftStatus> {
-  static IDraftStatusLocalOnlyPaginationBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IDraftStatusLocalOnlyPaginationBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IDraftStatusLocalOnlyPaginationBloc>(context, listen: listen);
 }

@@ -1,60 +1,50 @@
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:logging/logging.dart';
+import 'package:fedi/pleroma/api/application/pleroma_api_application_model.dart';
+import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
+import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
+import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 
-var _logger = Logger("status_model_adapter.dart");
-
-DbStatusPopulatedWrapper mapRemoteStatusToLocalStatus(
-    IPleromaStatus remoteStatus) {
-  if (remoteStatus == null) {
-    return null;
-  }
-  DbStatus rebloggedStatus;
-  DbAccount rebloggedStatusAccount;
-  if (remoteStatus.reblog != null) {
-    rebloggedStatus = mapRemoteStatusToDbStatus(remoteStatus.reblog);
-    rebloggedStatusAccount =
-        mapRemoteAccountToDbAccount(remoteStatus.reblog.account);
-  }
-  return DbStatusPopulatedWrapper(
-    DbStatusPopulated(
-      dbStatus: mapRemoteStatusToDbStatus(remoteStatus),
-      dbAccount: mapRemoteAccountToDbAccount(remoteStatus.account),
-      reblogDbStatus: rebloggedStatus,
-      reblogDbStatusAccount: rebloggedStatusAccount,
-      replyReblogDbStatus: null,
-      replyDbStatusAccount: null,
-      replyReblogDbStatusAccount: null,
-      replyDbStatus: null,
-    ),
-  );
-}
-
-DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
-  if (remoteStatus == null) {
-    return null;
-  }
-
-// TODO: fix when https://git.pleroma.social/pleroma/pleroma/issues/1573  will be resolved
-  DateTime expiresAt;
-  try {
-    if (remoteStatus.pleroma?.expiresAt == false ||
-        remoteStatus.pleroma?.expiresAt == null) {
-      expiresAt = null;
+extension PleromaStatusDbExtension on IPleromaApiStatus {
+  DbStatusPopulatedWrapper toDbStatusPopulatedWrapper() {
+    if (this is DbStatusPopulatedWrapper) {
+      return this as DbStatusPopulatedWrapper;
     } else {
-      if (remoteStatus.pleroma?.expiresAt is DateTime) {
-        expiresAt = remoteStatus.pleroma?.expiresAt;
-      } else {
-        expiresAt = DateTime.parse(remoteStatus.pleroma?.expiresAt);
-      }
+      return DbStatusPopulatedWrapper(
+        dbStatusPopulated: toDbStatusPopulated(),
+      );
     }
-  } catch (e) {
-    _logger.shout(() => "Error during parsing expiresAt $e");
   }
-  return DbStatus(
+
+  DbStatusPopulated toDbStatusPopulated() {
+    if (this is DbStatusPopulatedWrapper) {
+      return (this as DbStatusPopulatedWrapper).dbStatusPopulated;
+    } else {
+      return DbStatusPopulated(
+        dbStatus: toDbStatus(),
+        dbAccount: account.toDbAccount(),
+        reblogDbStatus: reblog?.toDbStatus(),
+        reblogDbStatusAccount: reblog?.account.toDbAccount(),
+        replyReblogDbStatus: null,
+        replyDbStatusAccount: null,
+        replyReblogDbStatusAccount: null,
+        replyDbStatus: null,
+      );
+    }
+  }
+
+  // ignore: code-metrics
+  DbStatus toDbStatus() {
+    var remoteStatus = this;
+
+    return DbStatus(
       id: null,
       remoteId: remoteStatus.id,
       createdAt: remoteStatus.createdAt,
@@ -62,86 +52,94 @@ DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
       inReplyToAccountRemoteId: remoteStatus.inReplyToAccountId,
       sensitive: remoteStatus.sensitive,
       spoilerText: remoteStatus.spoilerText,
-      visibility: remoteStatus.visibilityPleroma,
+      visibility: remoteStatus.visibilityAsPleromaApi,
       uri: remoteStatus.uri,
       url: remoteStatus.url,
-      repliesCount: remoteStatus.repliesCount,
-      reblogsCount: remoteStatus.reblogsCount,
-      favouritesCount: remoteStatus.favouritesCount,
-      favourited: remoteStatus.favourited,
-      reblogged: remoteStatus.reblogged,
-      muted: remoteStatus.muted,
+      repliesCount: remoteStatus.repliesCount ?? 0,
+      reblogsCount: remoteStatus.reblogsCount ?? 0,
+      favouritesCount: remoteStatus.favouritesCount ?? 0,
+      favourited: remoteStatus.favourited ?? false,
+      reblogged: remoteStatus.reblogged ?? false,
+      muted: remoteStatus.muted ?? false,
       bookmarked: remoteStatus.bookmarked,
       pinned: remoteStatus.pinned,
       language: remoteStatus.language,
       content: remoteStatus.content,
       reblogStatusRemoteId: remoteStatus.reblog?.id,
-      application: remoteStatus.application,
-      mediaAttachments: remoteStatus.mediaAttachments,
-      mentions: remoteStatus.mentions,
-      tags: remoteStatus.tags,
-      emojis: remoteStatus.emojis,
-      poll: remoteStatus.poll,
-      card: remoteStatus.card,
+      application: remoteStatus.application?.toPleromaApiApplication(),
+      mediaAttachments:
+          remoteStatus.mediaAttachments?.toPleromaApiMediaAttachments(),
+      mentions: remoteStatus.mentions?.toPleromaApiMentions(),
+      tags: remoteStatus.tags?.toPleromaApiTags(),
+      emojis: remoteStatus.emojis?.toPleromaApiEmojis(),
+      poll: remoteStatus.poll?.toPleromaApiPoll(),
+      card: remoteStatus.card?.toPleromaApiCard(),
       pleromaContent: remoteStatus.pleroma?.content,
       pleromaConversationId: remoteStatus.pleroma?.conversationId,
       pleromaDirectConversationId: remoteStatus.pleroma?.directConversationId,
       pleromaInReplyToAccountAcct: remoteStatus.pleroma?.inReplyToAccountAcct,
       pleromaLocal: remoteStatus.pleroma?.local,
       pleromaSpoilerText: remoteStatus.pleroma?.spoilerText,
-      pleromaExpiresAt: expiresAt,
+      pleromaExpiresAt: remoteStatus.pleroma?.expiresAt,
       pleromaThreadMuted: remoteStatus.pleroma?.threadMuted,
-      pleromaEmojiReactions: remoteStatus.pleroma?.emojiReactions,
-      accountRemoteId: remoteStatus.account.id);
+      pleromaEmojiReactions:
+          remoteStatus.pleroma?.emojiReactions?.toPleromaApiStatusEmojiReactions(),
+      accountRemoteId: remoteStatus.account.id,
+      // remote statuses always published
+      pendingState: PendingState.published,
+      wasSentWithIdempotencyKey: null,
+      hiddenLocallyOnDevice: null,
+      oldPendingRemoteId: null,
+      deleted: null,
+    );
+  }
 }
 
-PleromaStatus mapLocalStatusToRemoteStatus(IStatus localStatus) {
-  if (localStatus == null) {
-    return null;
+extension IStatusPleromaExtension on IStatus {
+  PleromaApiStatusPleromaPart toPleromaApiStatusPleromaPart() =>
+      PleromaApiStatusPleromaPart(
+        content: pleromaContent,
+        conversationId: pleromaConversationId,
+        directConversationId: pleromaDirectConversationId,
+        inReplyToAccountAcct: pleromaInReplyToAccountAcct,
+        local: pleromaLocal,
+        spoilerText: pleromaSpoilerText,
+        expiresAt: pleromaExpiresAt,
+        threadMuted: pleromaThreadMuted,
+        emojiReactions: pleromaEmojiReactions,
+      );
+
+  PleromaApiStatus toPleromaStatus() {
+    return PleromaApiStatus(
+      id: remoteId!,
+      createdAt: createdAt,
+      inReplyToId: inReplyToRemoteId,
+      inReplyToAccountId: inReplyToAccountRemoteId,
+      sensitive: nsfwSensitive,
+      spoilerText: spoilerText,
+      visibility: visibility.toJsonValue(),
+      uri: uri,
+      url: url,
+      repliesCount: repliesCount,
+      reblogsCount: reblogsCount,
+      favouritesCount: favouritesCount,
+      favourited: favourited,
+      reblogged: reblogged,
+      muted: muted,
+      bookmarked: bookmarked,
+      pinned: pinned,
+      content: content,
+      reblog: reblog?.toPleromaStatus(),
+      language: language,
+      application: application,
+      mediaAttachments: mediaAttachments,
+      mentions: mentions,
+      tags: tags,
+      emojis: emojis,
+      poll: poll,
+      card: card,
+      account: account.toPleromaApiAccount(),
+      pleroma: toPleromaApiStatusPleromaPart(),
+    );
   }
-  PleromaStatus reblog;
-  if (localStatus?.reblog != null) {
-    reblog = mapLocalStatusToRemoteStatus(localStatus.reblog);
-  }
-  return PleromaStatus(
-    id: localStatus.remoteId,
-    createdAt: localStatus.createdAt,
-    inReplyToId: localStatus.inReplyToRemoteId,
-    inReplyToAccountId: localStatus.inReplyToAccountRemoteId,
-    sensitive: localStatus.nsfwSensitive,
-    spoilerText: localStatus.spoilerText,
-    visibility: localStatus.visibility.toJsonValue(),
-    uri: localStatus.uri,
-    url: localStatus.url,
-    repliesCount: localStatus.repliesCount,
-    reblogsCount: localStatus.reblogsCount,
-    favouritesCount: localStatus.favouritesCount,
-    favourited: localStatus.favourited,
-    reblogged: localStatus.reblogged,
-    muted: localStatus.muted,
-    bookmarked: localStatus.bookmarked,
-    pinned: localStatus.pinned,
-    content: localStatus.content,
-    reblog: reblog,
-    language: localStatus.language,
-    application: localStatus.application,
-    mediaAttachments: localStatus.mediaAttachments,
-    mentions: localStatus.mentions,
-    tags: localStatus.tags,
-    emojis: localStatus.emojis,
-    poll: localStatus.poll,
-    card: localStatus.card,
-    account: mapLocalAccountToRemoteAccount(localStatus.account),
-    pleroma: PleromaStatusPleromaPart(
-      content: localStatus.pleromaContent,
-      conversationId: localStatus.pleromaConversationId,
-      directConversationId: localStatus.pleromaDirectConversationId,
-      inReplyToAccountAcct: localStatus.pleromaInReplyToAccountAcct,
-      local: localStatus.pleromaLocal,
-      spoilerText: localStatus.pleromaSpoilerText,
-      expiresAt: localStatus.pleromaExpiresAt,
-      threadMuted: localStatus.pleromaThreadMuted,
-      emojiReactions: localStatus.pleromaEmojiReactions,
-    ),
-  );
 }

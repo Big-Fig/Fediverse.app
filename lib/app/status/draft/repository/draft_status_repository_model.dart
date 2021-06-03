@@ -1,18 +1,58 @@
+import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
-// todo : move to dao model
-enum DraftStatusOrderByType {
+class DraftStatusRepositoryFilters {
+  static const DraftStatusRepositoryFilters empty =
+      DraftStatusRepositoryFilters();
+
+  const DraftStatusRepositoryFilters();
+}
+
+enum DraftStatusRepositoryOrderType {
+  localId,
   updatedAt,
 }
 
-class DraftStatusOrderingTermData {
-  final DraftStatusOrderByType orderByType;
+class DraftStatusRepositoryOrderingTermData extends RepositoryOrderingTerm {
+  final DraftStatusRepositoryOrderType orderType;
+  @override
   final OrderingMode orderingMode;
-  DraftStatusOrderingTermData(
-      {@required this.orderByType, @required this.orderingMode});
+
+  const DraftStatusRepositoryOrderingTermData({
+    required this.orderType,
+    required this.orderingMode,
+  });
+
+  static const DraftStatusRepositoryOrderingTermData localIdDesc =
+      DraftStatusRepositoryOrderingTermData(
+    orderingMode: OrderingMode.desc,
+    orderType: DraftStatusRepositoryOrderType.localId,
+  );
+  static const DraftStatusRepositoryOrderingTermData localIdAsc =
+      DraftStatusRepositoryOrderingTermData(
+    orderingMode: OrderingMode.asc,
+    orderType: DraftStatusRepositoryOrderType.localId,
+  );
+  static const DraftStatusRepositoryOrderingTermData updatedAtDesc =
+      DraftStatusRepositoryOrderingTermData(
+    orderingMode: OrderingMode.desc,
+    orderType: DraftStatusRepositoryOrderType.updatedAt,
+  );
+  static const DraftStatusRepositoryOrderingTermData updatedAtAsc =
+      DraftStatusRepositoryOrderingTermData(
+    orderingMode: OrderingMode.asc,
+    orderType: DraftStatusRepositoryOrderType.updatedAt,
+  );
+
+  static const List<DraftStatusRepositoryOrderingTermData> defaultTerms = [
+    updatedAtDesc,
+  ];
 
   @override
   String toString() {
-    return 'DraftStatusOrderingTermData{orderByType: $orderByType, orderingMode: $orderingMode}';
+    return 'DraftStatusOrderingTermData{'
+        'orderByType: $orderType, '
+        'orderingMode: $orderingMode'
+        '}';
   }
 }

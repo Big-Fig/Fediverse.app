@@ -1,4 +1,5 @@
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/search/result/list/search_result_item_network_only_list_bloc.dart';
 import 'package:fedi/app/search/result/pagination/search_result_item_network_only_pagination_bloc.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
@@ -12,31 +13,40 @@ import 'package:provider/provider.dart';
 class SearchResultItemNetworkOnlyPaginationBloc
     extends NetworkOnlyPleromaPaginationBloc<ISearchResultItem>
     implements ISearchResultItemNetworkOnlyPaginationBloc {
-  final ISearchResultItemNetworkOnlyListBloc listService;
+  final ISearchResultItemNetworkOnlyListBloc listBloc;
 
-  SearchResultItemNetworkOnlyPaginationBloc(
-      {@required this.listService,
-      @required int itemsCountPerPage,
-      @required int maximumCachedPagesCount})
-      : super(
-            maximumCachedPagesCount: maximumCachedPagesCount,
-            itemsCountPerPage: itemsCountPerPage);
+  SearchResultItemNetworkOnlyPaginationBloc({
+    required this.listBloc,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
+  }) : super(
+          maximumCachedPagesCount: maximumCachedPagesCount,
+          paginationSettingsBloc: paginationSettingsBloc,
+        );
 
   @override
-  IPleromaApi get pleromaApi => listService.pleromaApi;
+  IPleromaApi get pleromaApi => listBloc.pleromaApi;
 
   static SearchResultItemNetworkOnlyPaginationBloc createFromContext(
-          BuildContext context,
-          {int itemsCountPerPage = 20,
-          int maximumCachedPagesCount}) =>
+    BuildContext context, {
+    int? maximumCachedPagesCount,
+  }) =>
       SearchResultItemNetworkOnlyPaginationBloc(
-          maximumCachedPagesCount: maximumCachedPagesCount,
-          itemsCountPerPage: itemsCountPerPage,
-          listService: ISearchResultItemNetworkOnlyListBloc.of(context,
-              listen: false));
+        maximumCachedPagesCount: maximumCachedPagesCount,
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        listBloc: ISearchResultItemNetworkOnlyListBloc.of(
+          context,
+          listen: false,
+        ),
+      );
 
-  static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) {
     return DisposableProvider<ISearchResultItemNetworkOnlyPaginationBloc>(
       create: (context) =>
           SearchResultItemNetworkOnlyPaginationBloc.createFromContext(context),
@@ -55,16 +65,18 @@ class SearchResultItemNetworkOnlyPaginationBloc
   }
 
   @override
-  Future<List<ISearchResultItem>> loadItemsFromRemoteForPage(
-          {@required int pageIndex,
-          @required int itemsCountPerPage,
-          @required PaginationPage<ISearchResultItem> olderPage,
-          @required PaginationPage<ISearchResultItem> newerPage}) =>
-      listService.loadItemsFromRemoteForPage(
-          itemsCountPerPage: itemsCountPerPage,
-          // not used
-          maxId: null,
-          // not used
-          minId: null,
-          pageIndex: pageIndex);
+  Future<List<ISearchResultItem>> loadItemsFromRemoteForPage({
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required PaginationPage<ISearchResultItem>? olderPage,
+    required PaginationPage<ISearchResultItem>? newerPage,
+  }) =>
+      listBloc.loadItemsFromRemoteForPage(
+        itemsCountPerPage: itemsCountPerPage,
+        // not used
+        maxId: null,
+        // not used
+        minId: null,
+        pageIndex: pageIndex,
+      );
 }

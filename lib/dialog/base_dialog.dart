@@ -1,49 +1,78 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class BaseDialog extends DisposableOwner {
+abstract class IDialog {
+  bool get isShowing;
+
+  bool get cancelable;
+
+  Future<T?> show<T>(BuildContext context);
+
+  Future hide(BuildContext context);
+}
+
+abstract class BaseDialog extends DisposableOwner implements IDialog {
+  @override
   final bool cancelable;
 
   BaseDialog({this.cancelable = true});
 
   bool _isShowing = false;
 
+  @override
   bool get isShowing => _isShowing;
 
-  Future show(BuildContext context) {
+  @override
+  Future<T?> show<T>(BuildContext context) async {
     assert(!isShowing);
     _isShowing = true;
-    return showDialog(
-        barrierDismissible: cancelable,
-        context: context,
-        builder: (BuildContext context) => buildDialog(context));
+    var result = await showDialog<T>(
+      barrierDismissible: cancelable,
+      context: context,
+      builder: (BuildContext context) => buildDialogBody(context),
+    );
+    await dispose();
+    return result;
   }
 
-  void hide(BuildContext context) async {
+  @override
+  Future hide(BuildContext context) async {
     assert(isShowing);
     _isShowing = false;
-    dispose();
+    await dispose();
     Navigator.of(context).pop();
   }
 
-  Widget buildDialog(BuildContext context);
+  Widget buildDialogBody(BuildContext context);
 
-  static DialogAction createDefaultCancelAction(BuildContext context) {
-    return DialogAction(
-        onAction: () {
+  static DialogAction createDefaultCancelAction({
+    required BuildContext context,
+  }) =>
+      DialogAction(
+        onAction: (context) {
           Navigator.of(context).pop();
         },
-        label: tr("dialog.action.cancel"));
-  }
+        label: S.of(context).dialog_action_cancel,
+      );
 
-  static DialogAction createDefaultOkAction(BuildContext context) {
-    return DialogAction(
-        onAction: () {
+  static DialogAction createDefaultOkAction({
+    required BuildContext context,
+    required DialogActionCallback? action,
+    DialogActionEnabledFetcher? isActionEnabledFetcher,
+    DialogActionEnabledStreamFetcher? isActionEnabledStreamFetcher,
+  }) =>
+      DialogAction(
+        onAction: (context) {
+          if (action != null) {
+            action(context);
+          }
           Navigator.of(context).pop();
         },
-        label: tr("dialog.action.ok"));
-  }
+        label: S.of(context).dialog_action_ok,
+        isActionEnabledFetcher: isActionEnabledFetcher,
+        isActionEnabledStreamFetcher: isActionEnabledStreamFetcher,
+      );
 }

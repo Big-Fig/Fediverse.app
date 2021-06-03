@@ -1,17 +1,27 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/status/draft/draft_status_model.dart';
-import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
+import 'package:fedi/app/status/post/app_bar/post_status_app_bar_post_action.dart';
 import 'package:fedi/app/status/post/new/new_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
+import 'package:fedi/app/status/post/unsaved/post_status_unsaved_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
-import 'package:fedi/app/ui/dialog/alert/fedi_base_alert_dialog.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
-import 'package:fedi/dialog/dialog_model.dart';
-import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
+import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+void _newPostStatusPageHandleBackPressed(
+  BuildContext context,
+  IPostStatusBloc postStatusBloc,
+) {
+  var isSomethingChanged = postStatusBloc.isAnyDataEntered;
+  if (isSomethingChanged) {
+    showPostStatusUnsavedDialog(context, postStatusBloc);
+  } else {
+    Navigator.pop(context);
+  }
+}
 
 class NewPostStatusPage extends StatelessWidget {
   @override
@@ -20,93 +30,112 @@ class NewPostStatusPage extends StatelessWidget {
     return WillPopScope(
       // override back button
       onWillPop: () async {
-        handleBackPressed(context, postStatusBloc);
+        _newPostStatusPageHandleBackPressed(context, postStatusBloc);
         return true;
       },
       child: Scaffold(
-        appBar: FediSubPageTitleAppBar(
-          title: tr("app.status.post.new.title"),
-          leading: FediDismissIconButton(
-            customOnPressed: () {
-              handleBackPressed(context, postStatusBloc);
-            },
-          ),
-        ),
-        body: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: UnfocusOnScrollAreaWidget(
-                  child: PostStatusComposeWidget(
-                    autofocus: true,
-                    goBackOnSuccess: true,
-                    expanded: true,
-                    maxLines: null,
-                    displayAccountAvatar: false,
-                    showPostAction: true,
-                    displaySubjectField: true,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        appBar: const NewPostStatusPageAppBar(),
+        body: const _NewPostStatusPageBodyWidget(),
       ),
     );
   }
 
-  void handleBackPressed(BuildContext context, IPostStatusBloc postStatusBloc) {
-    var isSomethingChanged = postStatusBloc.isAnyDataEntered;
-    if (isSomethingChanged) {
-      alertUnsaved(context, postStatusBloc);
-    } else {
-      Navigator.pop(context);
-    }
-  }
-
-  void alertUnsaved(BuildContext context, IPostStatusBloc postStatusBloc) {
-    FediBaseAlertDialog(
-        title: tr("app.status.post.new.unsaved.dialog.title"),
-        actionsAxis: Axis.vertical,
-        actions: [
-          DialogAction(
-            label: tr("app.status.post.new.unsaved.dialog.action.discard"),
-            onAction: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-          ),
-          DialogAction(
-            label: tr("app.status.post.new.unsaved.dialog.action"
-                ".save_as_draft"),
-            onAction: () async {
-              var postStatusData =
-                  postStatusBloc.calculateCurrentPostStatusData();
-
-              var draftStatusRepository =
-                  IDraftStatusRepository.of(context, listen: false);
-              await draftStatusRepository.addDraftStatus(
-                draftStatus: DbDraftStatusWrapper(
-                  DbDraftStatus(
-                      id: null,
-                      updatedAt: DateTime.now(),
-                      data: postStatusData),
-                ),
-              );
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-          ),
-        ]).show(context);
-  }
+  const NewPostStatusPage();
 }
 
-void goToNewPostStatusPage(BuildContext context) {
+class _NewPostStatusPageBodyWidget extends StatelessWidget {
+  const _NewPostStatusPageBodyWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => const SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: _NewPostStatusPageComposeWidget(),
+            ),
+          ],
+        ),
+      );
+}
+
+class _NewPostStatusPageComposeWidget extends StatelessWidget {
+  const _NewPostStatusPageComposeWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => const PostStatusComposeWidget(
+        autofocus: true,
+        goBackOnSuccess: true,
+        expanded: true,
+        maxLines: null,
+        displayAccountAvatar: false,
+        showPostAction: false,
+        displaySubjectField: true,
+      );
+}
+
+class NewPostStatusPageAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  const NewPostStatusPageAppBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var postStatusBloc = IPostStatusBloc.of(context);
+    return FediPageTitleAppBar(
+      title: S.of(context).app_status_post_new_title,
+      leading: FediDismissIconButton(
+        customOnPressed: () {
+          _newPostStatusPageHandleBackPressed(context, postStatusBloc);
+        },
+      ),
+      actions: [
+        const PostStatusAppBarPostAction(),
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => FediPageTitleAppBar.calculatePreferredSize();
+}
+
+void goToNewPostStatusPageWithInitial(
+  BuildContext context, {
+  String? initialText,
+  String? initialSubject,
+  List<PleromaApiMediaAttachment>? initialMediaAttachments,
+}) {
   Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) => NewPostStatusBloc.provideToContext(context,
-            child: NewPostStatusPage())),
+      builder: (context) => NewPostStatusBloc.provideToContextWithInitial(
+        context,
+        initialText: initialText,
+        initialSubject: initialSubject,
+        initialMediaAttachments: initialMediaAttachments,
+        child: const NewPostStatusPage(),
+      ),
+    ),
+  );
+}
+
+void goToNewPostStatusPage(
+  BuildContext context, {
+  required PostStatusData initialData,
+}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => NewPostStatusBloc.provideToContext(
+        context,
+        initialData: initialData,
+        child: const NewPostStatusPage(),
+      ),
+    ),
   );
 }

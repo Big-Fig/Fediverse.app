@@ -4,16 +4,20 @@ import 'package:fedi/push/push_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IFcmPushService extends Disposable
+abstract class IFcmPushService extends IDisposable
     implements IAsyncInitLoadingBloc {
   Stream<String> get deviceTokenStream;
 
-  String get deviceToken;
+  String? get deviceToken;
 
   Stream<PushMessage> get messageStream;
 
-  Future askPermissions();
+  PushMessage? get initialMessage;
+
+  Future<bool> askPermissions();
 
   static IFcmPushService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFcmPushService>(context, listen: listen);
+
+  void clearInitialMessage();
 }

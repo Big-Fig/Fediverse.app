@@ -1,4 +1,5 @@
-import 'package:fedi/app/list/local_only/network_only_list_bloc.dart';
+import 'package:fedi/app/list/local_only/local_only_list_bloc.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_local_only_list_bloc.dart';
@@ -11,24 +12,25 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class MediaDeviceFileLocalOnlyPaginationBloc extends LocalOnlyPaginationBloc<
-    PaginationPage<IMediaDeviceFile>,
-    IMediaDeviceFile> implements IMediaDeviceFilePaginationBloc {
+    PaginationPage<IMediaDeviceFileMetadata>,
+    IMediaDeviceFileMetadata> implements IMediaDeviceFilePaginationBloc {
   final IMediaDeviceFileLocalOnlyListBloc listBloc;
 
   MediaDeviceFileLocalOnlyPaginationBloc({
-    @required this.listBloc,
-    @required int itemsCountPerPage,
-    @required int maximumCachedPagesCount,
+    required this.listBloc,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
-          itemsCountPerPage: itemsCountPerPage,
+          paginationSettingsBloc: paginationSettingsBloc,
         );
 
   @override
-  PaginationPage<IMediaDeviceFile> createPage(
-          {@required int pageIndex,
-          List<IMediaDeviceFile> loadedItems,
-          @required int itemsCountPerPage}) =>
+  PaginationPage<IMediaDeviceFileMetadata> createPage({
+    required int pageIndex,
+    required List<IMediaDeviceFileMetadata> loadedItems,
+    required int? itemsCountPerPage,
+  }) =>
       PaginationPage(
         pageIndex: pageIndex,
         requestedLimitPerPage: itemsCountPerPage,
@@ -36,44 +38,53 @@ class MediaDeviceFileLocalOnlyPaginationBloc extends LocalOnlyPaginationBloc<
       );
 
   @override
-  Future<List<IMediaDeviceFile>> loadItemsFromLocalForPage(
-          {int pageIndex,
-          int itemsCountPerPage,
-          PaginationPage<IMediaDeviceFile> olderPage,
-          PaginationPage<IMediaDeviceFile> newerPage}) =>
+  Future<List<IMediaDeviceFileMetadata>> loadItemsFromLocalForPage({
+    int? pageIndex,
+    int? itemsCountPerPage,
+    PaginationPage<IMediaDeviceFileMetadata>? olderPage,
+    PaginationPage<IMediaDeviceFileMetadata>? newerPage,
+  }) =>
       listBloc.loadItemsFromLocalForPage(
         pageIndex: pageIndex,
         itemsCountPerPage: itemsCountPerPage,
-        olderThan: olderPage?.items?.first,
-        newerThan: newerPage?.items?.last,
+        olderThan: olderPage?.items.first,
+        newerThan: newerPage?.items.last,
       );
 
   static MediaDeviceFileLocalOnlyPaginationBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       MediaDeviceFileLocalOnlyPaginationBloc(
-        listBloc: Provider.of<ILocalOnlyListBloc<IMediaDeviceFile>>(
+        listBloc: Provider.of<ILocalOnlyListBloc<IMediaDeviceFileMetadata>>(
+          context,
+          listen: false,
+        ) as IMediaDeviceFileLocalOnlyListBloc,
+        maximumCachedPagesCount: null,
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
           context,
           listen: false,
         ),
-        maximumCachedPagesCount: null,
-        itemsCountPerPage: 20,
       );
 
-  static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) {
     return DisposableProvider<IMediaDeviceFilePaginationBloc>(
       create: (context) =>
           MediaDeviceFileLocalOnlyPaginationBloc.createFromContext(
         context,
       ),
       child: ProxyProvider<
-              IMediaDeviceFilePaginationBloc,
-              ILocalOnlyPaginationBloc<PaginationPage<IMediaDeviceFile>,
-                  IMediaDeviceFile>>(
-          update: (context, value, previous) => value,
-          child: LocalOnlyPaginationBlocProxyProvider<
-              PaginationPage<IMediaDeviceFile>,
-              IMediaDeviceFile>(child: child)),
+          IMediaDeviceFilePaginationBloc,
+          ILocalOnlyPaginationBloc<PaginationPage<IMediaDeviceFileMetadata>,
+              IMediaDeviceFileMetadata>>(
+        update: (context, value, previous) => value,
+        child: LocalOnlyPaginationBlocProxyProvider<
+            PaginationPage<IMediaDeviceFileMetadata>, IMediaDeviceFileMetadata>(
+          child: child,
+        ),
+      ),
     );
   }
 }

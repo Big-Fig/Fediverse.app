@@ -1,4 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';
+import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_cached_list_bloc.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_cached_list_bloc_impl.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
@@ -8,10 +11,10 @@ import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_ti
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
-import 'package:fedi/collapsible/collapsible_owner_widget.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
+import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,16 +23,33 @@ class MyAccountFavouritedStatusesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FediSubPageTitleAppBar(
-        title: "app.account.my.statuses.favourited.title".tr(),
+      appBar: FediPageTitleAppBar(
+        title: S.of(context).app_account_my_statuses_favourited_title,
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: CollapsibleOwnerWidget(
           child: StatusCachedPaginationListTimelineWidget(
+            customEmptyWidget: _MyAccountFavouritedStatusesPageEmptyWidget(),
             needWatchLocalRepositoryForUpdates: true,
           ),
         ),
       ),
+    );
+  }
+
+  const MyAccountFavouritedStatusesPage();
+}
+
+class _MyAccountFavouritedStatusesPageEmptyWidget extends StatelessWidget {
+  const _MyAccountFavouritedStatusesPageEmptyWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    var s = S.of(context);
+
+    return FediEmptyWidget(
+      title: s.app_account_my_statuses_favourited_empty_title,
+      subTitle: s.app_account_my_statuses_favourited_empty_subtitle,
     );
   }
 }
@@ -46,7 +66,7 @@ MaterialPageRoute createMyAccountFavouritedStatusesPage() {
     builder: (context) =>
         DisposableProvider<IMyAccountFavouritedStatusesCachedListBloc>(
       create: (context) => MyAccountFavouritedStatusesCachedListBloc(
-        pleromaMyAccountService: IPleromaMyAccountService.of(
+        pleromaMyAccountService: IPleromaApiMyAccountService.of(
           context,
           listen: false,
         ),
@@ -58,15 +78,20 @@ MaterialPageRoute createMyAccountFavouritedStatusesPage() {
       child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
           IStatusCachedListBloc>(
         update: (context, value, previous) => value,
-        child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
-            IPleromaCachedListBloc<IStatus>>(
-          update: (context, value, previous) => value,
-          child: StatusCachedPaginationBloc.provideToContext(
-            context,
-            child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
-              context,
-              child: MyAccountFavouritedStatusesPage(),
-              mergeNewItemsImmediately: false,
+        child: StatusCachedListBlocProxyProvider(
+          child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
+              IPleromaCachedListBloc<IStatus?>>(
+            update: (context, value, previous) => value,
+            child: StatusCachedListBlocLoadingWidget(
+              child: StatusCachedPaginationBloc.provideToContext(
+                context,
+                child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+                  context,
+                  child: const MyAccountFavouritedStatusesPage(),
+                  mergeNewItemsImmediately: false,
+                  mergeOwnStatusesImmediately: false,
+                ),
+              ),
             ),
           ),
         ),

@@ -1,35 +1,38 @@
+import 'package:fedi/app/pagination/page_size/pagination_page_size_model.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../memory_cached_pagination_bloc_impl.dart';
-import '../../pagination_model_helper.dart';
+import '../../cached/memory_cached_pagination_bloc_impl.dart';
+import '../../pagination_model_test_impl.dart';
 import 'pagination_list_bloc_with_new_items_memory_impl.dart';
 
+const int storageSize = 30;
+const int? maximumCachedPagesCount = null;
+const int itemsCountPerPage = 5;
+// ignore_for_file: no-magic-number
 void main() {
-  ICachedPaginationBloc<CachedPaginationPage<TestPaginationItem>,
-      TestPaginationItem> paginationBloc;
+  late ICachedPaginationBloc<CachedPaginationPage<PaginationItemTest>,
+      PaginationItemTest> paginationBloc;
 
-  IPaginationListBloc<CachedPaginationPage<TestPaginationItem>,
-      TestPaginationItem> paginationListBloc;
-  ICachedPaginationListWithNewItemsBloc<
-      CachedPaginationPage<TestPaginationItem>,
-      TestPaginationItem> paginationListWithNewItemsBloc;
-  MemoryCachedPaginationListWithNewItemsBloc<
-      CachedPaginationPage<TestPaginationItem>,
-      TestPaginationItem> memoryPaginationListWithNewItemsBloc;
-  MemoryCachedPaginationBloc<TestPaginationItem> memoryPaginationBloc;
-  int storageSize = 30;
-  int maximumCachedPagesCount;
-  int itemsCountPerPage = 4;
+  late IPaginationListBloc<CachedPaginationPage<PaginationItemTest>,
+      PaginationItemTest> paginationListBloc;
+  late ICachedPaginationListWithNewItemsBloc<
+      CachedPaginationPage<PaginationItemTest>,
+      PaginationItemTest> paginationListWithNewItemsBloc;
+  late MemoryCachedPaginationListWithNewItemsBloc<
+      CachedPaginationPage<PaginationItemTest>,
+      PaginationItemTest> memoryPaginationListWithNewItemsBloc;
+  late MemoryCachedPaginationBloc<PaginationItemTest> memoryPaginationBloc;
 
   setUp(() {
     memoryPaginationBloc = MemoryCachedPaginationBloc.createTestWithSize(
-        size: storageSize,
-        maximumCachedPagesCount: maximumCachedPagesCount,
-        itemsCountPerPage: itemsCountPerPage);
+      size: storageSize,
+      maximumCachedPagesCount: maximumCachedPagesCount,
+      paginationPageSize: PaginationPageSize.size5,
+    );
 
     paginationBloc = memoryPaginationBloc;
 
@@ -37,8 +40,10 @@ void main() {
         MemoryCachedPaginationListWithNewItemsBloc(
       paginationBloc: paginationBloc,
       mergeNewItemsImmediately: false,
-      comparator: TestPaginationItem.compareItems,
-      equalTo: TestPaginationItem.equalItems,
+      // todo: write tests when watchNewerItemsWhenLoadedPagesIsEmpty: false
+      watchNewerItemsWhenLoadedPagesIsEmpty: true,
+      comparator: PaginationItemTest.compareItems,
+      equalTo: PaginationItemTest.equalItems,
       mergeNewItemsImmediatelyWhenItemsIsEmpty: false,
     );
     paginationListWithNewItemsBloc = memoryPaginationListWithNewItemsBloc;
@@ -51,58 +56,144 @@ void main() {
   });
 
   test('itemsCountPerPage', () async {
-    expect(paginationListBloc.itemsCountPerPage, itemsCountPerPage);
+    expect(
+      paginationListBloc.itemsCountPerPage,
+      itemsCountPerPage,
+    );
   });
 
   test('items', () async {
-    expect(paginationListBloc.items, null);
+    expect(
+      paginationListBloc.items,
+      [],
+    );
 
     var listened;
     var subscription = paginationListBloc.itemsStream.listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened, null);
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(listened, []);
 
     await paginationListBloc.refreshWithoutController();
 
-    expect(paginationListBloc.items.length, itemsCountPerPage);
-    expect(paginationListBloc.items.first.index, 0);
-    expect(paginationListBloc.items.last.index, itemsCountPerPage - 1);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, itemsCountPerPage);
-    expect(listened.first.index, 0);
-    expect(listened.last.index, itemsCountPerPage - 1);
+    await Future.delayed(Duration(milliseconds: 10));
+
+    expect(
+      paginationListBloc.items.length,
+      itemsCountPerPage,
+    );
+    expect(
+      paginationListBloc.items.first.index,
+      0,
+    );
+    expect(
+      paginationListBloc.items.last.index,
+      itemsCountPerPage - 1,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened.length,
+      itemsCountPerPage,
+    );
+    expect(
+      listened.first.index,
+      0,
+    );
+    expect(
+      listened.last.index,
+      itemsCountPerPage - 1,
+    );
 
     await paginationListBloc.loadMoreWithoutController();
 
-    expect(paginationListBloc.items.length, itemsCountPerPage * 2);
-    expect(paginationListBloc.items.first.index, 0);
-    expect(paginationListBloc.items.last.index, itemsCountPerPage * 2 - 1);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, itemsCountPerPage * 2);
-    expect(listened.first.index, 0);
-    expect(listened.last.index, itemsCountPerPage * 2 - 1);
+    await Future.delayed(Duration(milliseconds: 10));
+
+    expect(
+      paginationListBloc.items.length,
+      itemsCountPerPage * 2,
+    );
+    expect(
+      paginationListBloc.items.first.index,
+      0,
+    );
+    expect(
+      paginationListBloc.items.last.index,
+      itemsCountPerPage * 2 - 1,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened.length,
+      itemsCountPerPage * 2,
+    );
+    expect(
+      listened.first.index,
+      0,
+    );
+    expect(
+      listened.last.index,
+      itemsCountPerPage * 2 - 1,
+    );
 
     await paginationListBloc.loadMoreWithoutController();
 
-    expect(paginationListBloc.items.length, itemsCountPerPage * 3);
-    expect(paginationListBloc.items.first.index, 0);
-    expect(paginationListBloc.items.last.index, itemsCountPerPage * 3 - 1);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, itemsCountPerPage * 3);
-    expect(listened.first.index, 0);
-    expect(listened.last.index, itemsCountPerPage * 3 - 1);
+    await Future.delayed(Duration(milliseconds: 10));
+
+    expect(
+      paginationListBloc.items.length,
+      itemsCountPerPage * 3,
+    );
+    expect(
+      paginationListBloc.items.first.index,
+      0,
+    );
+    expect(
+      paginationListBloc.items.last.index,
+      itemsCountPerPage * 3 - 1,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened.length,
+      itemsCountPerPage * 3,
+    );
+    expect(
+      listened.first.index,
+      0,
+    );
+    expect(
+      listened.last.index,
+      itemsCountPerPage * 3 - 1,
+    );
 
     await paginationListBloc.refreshWithoutController();
 
-    expect(paginationListBloc.items.length, itemsCountPerPage);
-    expect(paginationListBloc.items.first.index, 0);
-    expect(paginationListBloc.items.last.index, itemsCountPerPage - 1);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, itemsCountPerPage);
-    expect(listened.first.index, 0);
-    expect(listened.last.index, itemsCountPerPage - 1);
+    await Future.delayed(Duration(milliseconds: 10));
+
+    expect(
+      paginationListBloc.items.length,
+      itemsCountPerPage,
+    );
+    expect(
+      paginationListBloc.items.first.index,
+      0,
+    );
+    expect(
+      paginationListBloc.items.last.index,
+      itemsCountPerPage - 1,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened.length,
+      itemsCountPerPage,
+    );
+    expect(
+      listened.first.index,
+      0,
+    );
+    expect(
+      listened.last.index,
+      itemsCountPerPage - 1,
+    );
 
     var lastPageIndex = storageSize ~/ itemsCountPerPage;
 
@@ -110,106 +201,209 @@ void main() {
       await paginationListBloc.loadMoreWithoutController();
     }
 
-    expect(paginationListBloc.items.length, storageSize);
-    expect(paginationListBloc.items.first.index, 0);
-    expect(paginationListBloc.items.last.index, storageSize - 1);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, storageSize);
-    expect(listened.first.index, 0);
-    expect(listened.last.index, storageSize - 1);
+    await Future.delayed(Duration(milliseconds: 10));
+
+    expect(
+      paginationListBloc.items.length,
+      storageSize,
+    );
+    expect(
+      paginationListBloc.items.first.index,
+      0,
+    );
+    expect(
+      paginationListBloc.items.last.index,
+      storageSize - 1,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened.length,
+      storageSize,
+    );
+    expect(
+      listened.first.index,
+      0,
+    );
+    expect(
+      listened.last.index,
+      storageSize - 1,
+    );
 
     await paginationListBloc.loadMoreWithoutController();
 
-    expect(paginationListBloc.items.length, storageSize);
-    expect(paginationListBloc.items.first.index, 0);
-    expect(paginationListBloc.items.last.index, storageSize - 1);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, storageSize);
-    expect(listened.first.index, 0);
-    expect(listened.last.index, storageSize - 1);
+    await Future.delayed(Duration(milliseconds: 10));
+
+    expect(
+      paginationListBloc.items.length,
+      storageSize,
+    );
+    expect(
+      paginationListBloc.items.first.index,
+      0,
+    );
+    expect(
+      paginationListBloc.items.last.index,
+      storageSize - 1,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened.length,
+      storageSize,
+    );
+    expect(
+      listened.first.index,
+      0,
+    );
+    expect(
+      listened.last.index,
+      storageSize - 1,
+    );
 
     await subscription.cancel();
   });
 
   test('newerItem', () async {
-    expect(paginationListWithNewItemsBloc.newerItem, null);
+    expect(
+      paginationListWithNewItemsBloc.newerItem,
+      null,
+    );
 
     var listened;
     var subscription =
         paginationListWithNewItemsBloc.newerItemStream.listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened, null);
 
     await paginationListWithNewItemsBloc.refreshWithoutController();
-    expect(paginationListWithNewItemsBloc.newerItem.index, 0);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.index, 0);
+    await Future.delayed(Duration(milliseconds: 10));
+
+    expect(
+      paginationListWithNewItemsBloc.newerItem!.index,
+      0,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened.index,
+      0,
+    );
 
     await paginationListWithNewItemsBloc.loadMoreWithoutController();
-    expect(paginationListWithNewItemsBloc.newerItem.index, 0);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.index, 0);
+
+    await Future.delayed(Duration(milliseconds: 10));
+
+    expect(
+      paginationListWithNewItemsBloc.newerItem!.index,
+      0,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened.index,
+      0,
+    );
 
     await subscription.cancel();
   });
 
   test('unmergedNewItems', () async {
-    var testPaginationItem1 = TestPaginationItem(100);
-    var testPaginationItem2 = TestPaginationItem(200);
-    var testPaginationItem3 = TestPaginationItem(300);
+    var testPaginationItem1 = PaginationItemTest(100);
+    var testPaginationItem2 = PaginationItemTest(200);
+    var testPaginationItem3 = PaginationItemTest(300);
 
-    expect(paginationListWithNewItemsBloc.unmergedNewItems.length, 0);
-    expect(paginationListWithNewItemsBloc.items, null);
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems.length,
+      0,
+    );
+    expect(
+      paginationListWithNewItemsBloc.items,
+      [],
+    );
 
-    var listened;
+    late var listened;
     var subscription = paginationListWithNewItemsBloc.unmergedNewItemsStream
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
-    expect(paginationListWithNewItemsBloc.items, null);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems.length, 1);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems[0],
-        testPaginationItem1);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, 1);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems[0],
-        testPaginationItem1);
+    expect(
+      paginationListWithNewItemsBloc.items,
+      [],
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems.length,
+      1,
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems[0],
+      testPaginationItem1,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened.length,
+      1,
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems[0],
+      testPaginationItem1,
+    );
 
-    memoryPaginationListWithNewItemsBloc
-        .addNewItems([testPaginationItem2, testPaginationItem3]);
-    await Future.delayed(Duration(milliseconds: 1));
+    memoryPaginationListWithNewItemsBloc.addNewItems(
+      [
+        testPaginationItem2,
+        testPaginationItem3,
+      ],
+    );
+    await Future.delayed(Duration(milliseconds: 300));
 
-    expect(paginationListWithNewItemsBloc.items, null);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems.length, 2);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems[0],
-        testPaginationItem2);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems[1],
-        testPaginationItem3);
-    await Future.delayed(Duration(milliseconds: 1));
+    expect(
+      paginationListWithNewItemsBloc.items,
+      [],
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems.length,
+      2,
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems[0],
+      testPaginationItem2,
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems[1],
+      testPaginationItem3,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 2);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems[0],
-        testPaginationItem2);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems[1],
-        testPaginationItem3);
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems[0],
+      testPaginationItem2,
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems[1],
+      testPaginationItem3,
+    );
 
     await subscription.cancel();
   });
 
   test('unmergedNewItemsCount', () async {
-    var testPaginationItem1 = TestPaginationItem(100);
-    var testPaginationItem2 = TestPaginationItem(200);
-    var testPaginationItem3 = TestPaginationItem(300);
+    var testPaginationItem1 = PaginationItemTest(100);
+    var testPaginationItem2 = PaginationItemTest(200);
+    var testPaginationItem3 = PaginationItemTest(300);
 
-    expect(paginationListWithNewItemsBloc.unmergedNewItemsCount, 0);
-    expect(paginationListWithNewItemsBloc.items, null);
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItemsCount,
+      0,
+    );
+    expect(
+      paginationListWithNewItemsBloc.items,
+      [],
+    );
 
     var listened;
     var subscription = paginationListWithNewItemsBloc
@@ -217,184 +411,290 @@ void main() {
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened, 0);
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened,
+      0,
+    );
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
-    expect(paginationListWithNewItemsBloc.items, null);
-    expect(paginationListWithNewItemsBloc.unmergedNewItemsCount, 1);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened, 1);
+    expect(
+      paginationListWithNewItemsBloc.items,
+      [],
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItemsCount,
+      1,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened,
+      1,
+    );
 
     memoryPaginationListWithNewItemsBloc
         .addNewItems([testPaginationItem2, testPaginationItem3]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
-    expect(paginationListWithNewItemsBloc.items, null);
-    expect(paginationListWithNewItemsBloc.unmergedNewItemsCount, 2);
-    await Future.delayed(Duration(milliseconds: 1));
+    expect(
+      paginationListWithNewItemsBloc.items,
+      [],
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItemsCount,
+      2,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened, 2);
 
     await subscription.cancel();
   });
 
   test('unmergedNewItems', () async {
-    var testPaginationItem1 = TestPaginationItem(100);
-    var testPaginationItem2 = TestPaginationItem(200);
-    var testPaginationItem3 = TestPaginationItem(300);
+    var testPaginationItem1 = PaginationItemTest(100);
+    var testPaginationItem2 = PaginationItemTest(200);
+    var testPaginationItem3 = PaginationItemTest(300);
 
-    expect(paginationListWithNewItemsBloc.unmergedNewItems.length, 0);
-    expect(paginationListWithNewItemsBloc.items, null);
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems.length,
+      0,
+    );
+    expect(
+      paginationListWithNewItemsBloc.items,
+      [],
+    );
 
-    var listened;
+    late var listened;
     var subscription = paginationListWithNewItemsBloc.unmergedNewItemsStream
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
-    expect(paginationListWithNewItemsBloc.items, null);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems.length, 1);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems[0],
-        testPaginationItem1);
-    await Future.delayed(Duration(milliseconds: 1));
+    expect(
+      paginationListWithNewItemsBloc.items,
+      [],
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems.length,
+      1,
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems[0],
+      testPaginationItem1,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 1);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems[0],
-        testPaginationItem1);
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems[0],
+      testPaginationItem1,
+    );
 
     memoryPaginationListWithNewItemsBloc
         .addNewItems([testPaginationItem2, testPaginationItem3]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
-    expect(paginationListWithNewItemsBloc.items, null);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems.length, 2);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems[0],
-        testPaginationItem2);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems[1],
-        testPaginationItem3);
-    await Future.delayed(Duration(milliseconds: 1));
+    expect(
+      paginationListWithNewItemsBloc.items,
+      [],
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems.length,
+      2,
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems[0],
+      testPaginationItem2,
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems[1],
+      testPaginationItem3,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 2);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems[0],
-        testPaginationItem2);
-    expect(paginationListWithNewItemsBloc.unmergedNewItems[1],
-        testPaginationItem3);
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems[0],
+      testPaginationItem2,
+    );
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems[1],
+      testPaginationItem3,
+    );
 
     memoryPaginationListWithNewItemsBloc.mergeNewItems();
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
 
-    expect(paginationListWithNewItemsBloc.unmergedNewItems.length, 0);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, 0);
+    expect(
+      paginationListWithNewItemsBloc.unmergedNewItems.length,
+      0,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened.length,
+      0,
+    );
 
     await subscription.cancel();
   });
 
   test('mergedNewItems', () async {
-    var testPaginationItem1 = TestPaginationItem(-1);
-    var testPaginationItem2 = TestPaginationItem(-2);
-    var testPaginationItem3 = TestPaginationItem(-3);
+    var testPaginationItem1 = PaginationItemTest(-1);
+    var testPaginationItem2 = PaginationItemTest(-2);
+    var testPaginationItem3 = PaginationItemTest(-3);
 
-    expect(paginationListWithNewItemsBloc.mergedNewItems.length, 0);
-    expect(paginationListWithNewItemsBloc.items, null);
+    expect(
+      paginationListWithNewItemsBloc.mergedNewItems.length,
+      0,
+    );
+    expect(
+      paginationListWithNewItemsBloc.items,
+      [],
+    );
 
-    var listened;
+    late var listened;
     var subscription =
         paginationListWithNewItemsBloc.mergedNewItemsStream.listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
     expect(listened.length, 0);
 
     memoryPaginationListWithNewItemsBloc.mergeNewItems();
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 1000));
 
-    expect(paginationListWithNewItemsBloc.items.length, 1);
+    expect(
+      paginationListWithNewItemsBloc.items.length,
+      1,
+    );
 
     expect(paginationListWithNewItemsBloc.mergedNewItems.length, 1);
     expect(
-        paginationListWithNewItemsBloc.mergedNewItems[0], testPaginationItem1);
-    await Future.delayed(Duration(milliseconds: 1));
+      paginationListWithNewItemsBloc.mergedNewItems[0],
+      testPaginationItem1,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 1);
     expect(
-        paginationListWithNewItemsBloc.mergedNewItems[0], testPaginationItem1);
+      paginationListWithNewItemsBloc.mergedNewItems[0],
+      testPaginationItem1,
+    );
 
     memoryPaginationListWithNewItemsBloc
         .addNewItems([testPaginationItem2, testPaginationItem3]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     memoryPaginationListWithNewItemsBloc.mergeNewItems();
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
-    expect(paginationListWithNewItemsBloc.items.length, 3);
-    expect(paginationListWithNewItemsBloc.mergedNewItems.length, 3);
     expect(
-        paginationListWithNewItemsBloc.mergedNewItems[0], testPaginationItem2);
+      paginationListWithNewItemsBloc.items.length,
+      3,
+    );
     expect(
-        paginationListWithNewItemsBloc.mergedNewItems[1], testPaginationItem3);
+      paginationListWithNewItemsBloc.mergedNewItems.length,
+      3,
+    );
     expect(
-        paginationListWithNewItemsBloc.mergedNewItems[2], testPaginationItem1);
-    await Future.delayed(Duration(milliseconds: 1));
+      paginationListWithNewItemsBloc.mergedNewItems[0],
+      testPaginationItem2,
+    );
+    expect(
+      paginationListWithNewItemsBloc.mergedNewItems[1],
+      testPaginationItem3,
+    );
+    expect(
+      paginationListWithNewItemsBloc.mergedNewItems[2],
+      testPaginationItem1,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened.length, 3);
     expect(
-        paginationListWithNewItemsBloc.mergedNewItems[0], testPaginationItem2);
+      paginationListWithNewItemsBloc.mergedNewItems[0],
+      testPaginationItem2,
+    );
     expect(
-        paginationListWithNewItemsBloc.mergedNewItems[1], testPaginationItem3);
+      paginationListWithNewItemsBloc.mergedNewItems[1],
+      testPaginationItem3,
+    );
     expect(
-        paginationListWithNewItemsBloc.mergedNewItems[2], testPaginationItem1);
+      paginationListWithNewItemsBloc.mergedNewItems[2],
+      testPaginationItem1,
+    );
 
     await subscription.cancel();
   });
 
   test('mergedNewItems', () async {
-    var testPaginationItem1 = TestPaginationItem(-1);
-    var testPaginationItem2 = TestPaginationItem(-2);
-    var testPaginationItem3 = TestPaginationItem(-3);
+    var testPaginationItem1 = PaginationItemTest(-1);
+    var testPaginationItem2 = PaginationItemTest(-2);
+    var testPaginationItem3 = PaginationItemTest(-3);
 
-    expect(paginationListWithNewItemsBloc.mergedNewItemsCount, 0);
-    expect(paginationListWithNewItemsBloc.items, null);
+    expect(
+      paginationListWithNewItemsBloc.mergedNewItemsCount,
+      0,
+    );
+    expect(
+      paginationListWithNewItemsBloc.items,
+      [],
+    );
 
     var listened;
     var subscription = paginationListWithNewItemsBloc.mergedNewItemsCountStream
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
     expect(listened, 0);
 
     memoryPaginationListWithNewItemsBloc.mergeNewItems();
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
-    expect(paginationListWithNewItemsBloc.items.length, 1);
+    expect(
+      paginationListWithNewItemsBloc.items.length,
+      1,
+    );
 
-    expect(paginationListWithNewItemsBloc.mergedNewItemsCount, 1);
-    await Future.delayed(Duration(milliseconds: 1));
+    expect(
+      paginationListWithNewItemsBloc.mergedNewItemsCount,
+      1,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened, 1);
 
     memoryPaginationListWithNewItemsBloc
         .addNewItems([testPaginationItem2, testPaginationItem3]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
     memoryPaginationListWithNewItemsBloc.mergeNewItems();
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
-    expect(paginationListWithNewItemsBloc.items.length, 3);
-    expect(paginationListWithNewItemsBloc.mergedNewItemsCount, 3);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened, 3);
+    expect(
+      paginationListWithNewItemsBloc.items.length,
+      3,
+    );
+    expect(
+      paginationListWithNewItemsBloc.mergedNewItemsCount,
+      3,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened,
+      3,
+    );
 
     await subscription.cancel();
   });
@@ -404,46 +704,68 @@ void main() {
         MemoryCachedPaginationListWithNewItemsBloc(
       paginationBloc: paginationBloc,
       mergeNewItemsImmediately: true,
-      comparator: TestPaginationItem.compareItems,
-      equalTo: TestPaginationItem.equalItems,
+      watchNewerItemsWhenLoadedPagesIsEmpty: true,
+      comparator: PaginationItemTest.compareItems,
+      equalTo: PaginationItemTest.equalItems,
       mergeNewItemsImmediatelyWhenItemsIsEmpty: false,
     );
     paginationListWithNewItemsBloc = memoryPaginationListWithNewItemsBloc;
     paginationListBloc = paginationListWithNewItemsBloc;
 
-    var testPaginationItem1 = TestPaginationItem(-1);
-    var testPaginationItem2 = TestPaginationItem(-2);
-    var testPaginationItem3 = TestPaginationItem(-3);
+    var testPaginationItem1 = PaginationItemTest(-1);
+    var testPaginationItem2 = PaginationItemTest(-2);
+    var testPaginationItem3 = PaginationItemTest(-3);
 
-    expect(paginationListWithNewItemsBloc.mergedNewItemsCount, 0);
-    expect(paginationListWithNewItemsBloc.items, null);
+    expect(
+      paginationListWithNewItemsBloc.mergedNewItemsCount,
+      0,
+    );
+    expect(
+      paginationListWithNewItemsBloc.items,
+      [],
+    );
 
     var listened;
     var subscription = paginationListWithNewItemsBloc.mergedNewItemsCountStream
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
-    expect(paginationListWithNewItemsBloc.items.length, 1);
+    expect(
+      paginationListWithNewItemsBloc.items.length,
+      1,
+    );
 
-    expect(paginationListWithNewItemsBloc.mergedNewItemsCount, 1);
-    await Future.delayed(Duration(milliseconds: 1));
+    expect(
+      paginationListWithNewItemsBloc.mergedNewItemsCount,
+      1,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
     expect(listened, 1);
 
     memoryPaginationListWithNewItemsBloc
         .addNewItems([testPaginationItem2, testPaginationItem3]);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 300));
 
-    expect(paginationListWithNewItemsBloc.items.length, 3);
-    expect(paginationListWithNewItemsBloc.mergedNewItemsCount, 3);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened, 3);
+    expect(
+      paginationListWithNewItemsBloc.items.length,
+      3,
+    );
+    expect(
+      paginationListWithNewItemsBloc.mergedNewItemsCount,
+      3,
+    );
+    await Future.delayed(Duration(milliseconds: 10));
+    expect(
+      listened,
+      3,
+    );
 
     await subscription.cancel();
   });

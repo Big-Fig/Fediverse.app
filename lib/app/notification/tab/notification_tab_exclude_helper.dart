@@ -1,38 +1,40 @@
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
-import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 
 class NotificationTabExcludeHelper {
-  static List<PleromaNotificationType> mapTabToExcludeTypes(
-      NotificationTab tab) {
-    List<PleromaNotificationType> excludeTypes;
+  static List<PleromaApiNotificationType> mapTabToExcludeTypes({
+    required NotificationTab tab,
+  }) {
+    List<PleromaApiNotificationType> excludeTypes;
 
     switch (tab) {
       case NotificationTab.all:
-        excludeTypes = [PleromaNotificationType.pleromaChatMention];
+        excludeTypes = [
+          PleromaApiNotificationType.pleromaChatMention,
+        ];
         break;
       case NotificationTab.mentions:
-        excludeTypes = pleromaNotificationTypeValues
-            .valuesWithoutSelected([PleromaNotificationType.mention]);
+        excludeTypes = PleromaApiNotificationType.values.valuesWithoutSelected([
+          PleromaApiNotificationType.mention,
+        ]);
         break;
       case NotificationTab.reblogs:
-        excludeTypes = pleromaNotificationTypeValues
-            .valuesWithoutSelected([PleromaNotificationType.reblog]);
+        excludeTypes = PleromaApiNotificationType.values.valuesWithoutSelected([
+          PleromaApiNotificationType.reblog,
+        ]);
         break;
       case NotificationTab.favourites:
-        excludeTypes = pleromaNotificationTypeValues
-            .valuesWithoutSelected([PleromaNotificationType.favourite]);
+        excludeTypes = PleromaApiNotificationType.values.valuesWithoutSelected([
+          PleromaApiNotificationType.favourite,
+        ]);
         break;
       case NotificationTab.follows:
-        excludeTypes = pleromaNotificationTypeValues.valuesWithoutSelected([
-          PleromaNotificationType.follow,
-          PleromaNotificationType.followRequest,
+        excludeTypes = PleromaApiNotificationType.values.valuesWithoutSelected([
+          PleromaApiNotificationType.follow,
+          PleromaApiNotificationType.followRequest,
         ]);
         break;
     }
     return excludeTypes;
   }
-}
-
-extension NotificationTabExcludeExtension on NotificationTab {
-  List<PleromaNotificationType> asExcludeTypes() => NotificationTabExcludeHelper.mapTabToExcludeTypes(this);
 }

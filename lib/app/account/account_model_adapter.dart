@@ -1,74 +1,106 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
+import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 
-DbAccountWrapper mapRemoteAccountToLocalAccount(IPleromaAccount remoteAccount) {
-  return DbAccountWrapper(mapRemoteAccountToDbAccount(remoteAccount));
+extension IPleromaAccountListDbExtension on List<IPleromaApiAccount> {
+  List<DbAccountPopulatedWrapper> toDbAccountPopulatedWrappers() => map(
+        (pleromaAccount) => pleromaAccount.toDbAccountWrapper(),
+      ).toList();
 }
 
-DbAccount mapRemoteAccountToDbAccount(IPleromaAccount remoteAccount) {
-  if(remoteAccount == null) {
-    return null;
+extension IAccountListExtension on List<IAccount> {
+  List<PleromaApiAccount> toPleromaApiAccounts() => map(
+        (pleromaAccount) => pleromaAccount.toPleromaApiAccount(),
+      ).toList();
+}
+
+extension DbAccountExtension on DbAccount {
+  DbAccountPopulatedWrapper toDbAccountWrapper() => DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: this,
+        ),
+      );
+}
+
+extension IPleromaAccountDbExtension on IPleromaApiAccount {
+  DbAccountPopulatedWrapper toDbAccountWrapper() => DbAccountPopulatedWrapper(
+        dbAccountPopulated: DbAccountPopulated(
+          dbAccount: toDbAccount(),
+        ),
+      );
+
+  DbAccount toDbAccount() => DbAccount(
+        id: null,
+        remoteId: id,
+        username: username,
+        url: url,
+        note: note,
+        locked: locked,
+        headerStatic: headerStatic,
+        header: header,
+        followingCount: followingCount,
+        followersCount: followersCount,
+        statusesCount: statusesCount,
+        displayName: displayName,
+        createdAt: createdAt,
+        bot: bot,
+        avatarStatic: avatarStatic,
+        avatar: avatar,
+        acct: acct,
+        lastStatusAt: lastStatusAt,
+        fields: fields?.toPleromaApiFields(),
+        emojis: emojis?.toPleromaApiEmojis(),
+        pleromaTags: pleroma?.tags?.toPleromaApiTags(),
+        pleromaRelationship: pleroma?.relationship,
+        pleromaIsAdmin: pleroma?.isAdmin,
+        pleromaIsModerator: pleroma?.isModerator,
+        pleromaConfirmationPending: pleroma?.confirmationPending,
+        pleromaHideFavorites: pleroma?.hideFavorites,
+        pleromaHideFollows: pleroma?.hideFollows,
+        pleromaHideFollowers: pleroma?.hideFollowers,
+        pleromaHideFollowersCount: pleroma?.hideFollowersCount,
+        pleromaHideFollowsCount: pleroma?.hideFollowsCount,
+        pleromaDeactivated: pleroma?.deactivated,
+        pleromaAllowFollowingMove: pleroma?.allowFollowingMove,
+        pleromaSkipThreadContainment: pleroma?.skipThreadContainment,
+        pleromaBackgroundImage: pleroma?.backgroundImage,
+        pleromaAcceptsChatMessages: pleroma?.acceptsChatMessages,
+      );
+}
+
+extension IAccountPleromaAccountExtension on IAccount {
+  PleromaApiAccountPleromaPart toPleromaApiAccountPleromaPart() {
+    return PleromaApiAccountPleromaPart(
+      backgroundImage: pleromaBackgroundImage,
+      tags: pleromaTags,
+      relationship: pleromaRelationship,
+      isAdmin: pleromaIsAdmin,
+      isModerator: pleromaIsModerator,
+      confirmationPending: pleromaConfirmationPending,
+      hideFavorites: pleromaHideFavorites,
+      hideFollowers: pleromaHideFollowers,
+      hideFollows: pleromaHideFollows,
+      hideFollowersCount: pleromaHideFollowersCount,
+      hideFollowsCount: pleromaHideFollowsCount,
+      deactivated: pleromaDeactivated,
+      allowFollowingMove: pleromaAllowFollowingMove,
+      skipThreadContainment: pleromaSkipThreadContainment,
+      acceptsChatMessages: pleromaAcceptsChatMessages,
+      // todo: should be implemented
+      apId: null,
+      alsoKnownAs: null,
+      isConfirmed: null,
+      favicon: null,
+    );
   }
-  assert(remoteAccount.id != null);
-  return DbAccount(
-    id: null,
-    remoteId: remoteAccount.id,
-    username: remoteAccount.username,
-    url: remoteAccount.url,
-    note: remoteAccount.note,
-    locked: remoteAccount.locked,
-    headerStatic: remoteAccount.headerStatic,
-    header: remoteAccount.header,
-    followingCount: remoteAccount.followingCount,
-    followersCount: remoteAccount.followersCount,
-    statusesCount: remoteAccount.statusesCount,
-    displayName: remoteAccount.displayName,
-    createdAt: remoteAccount.createdAt,
-    bot: remoteAccount.bot,
-    avatarStatic: remoteAccount.avatarStatic,
-    avatar: remoteAccount.avatar,
-    acct: remoteAccount.acct,
-    lastStatusAt: remoteAccount.lastStatusAt,
-    fields: remoteAccount.fields,
-    emojis: remoteAccount.emojis,
-// tags have invalid schema
-// todo: revert when bug will be fixed in Pleroma
-//    pleromaTags: remoteAccount.pleroma?.tags,
-    pleromaRelationship: remoteAccount.pleroma?.relationship,
-    pleromaIsAdmin: remoteAccount.pleroma?.isAdmin,
-    pleromaIsModerator: remoteAccount.pleroma?.isModerator,
-    pleromaConfirmationPending: remoteAccount.pleroma?.confirmationPending,
-    pleromaHideFavorites: remoteAccount.pleroma?.hideFavorites,
-    pleromaHideFollows: remoteAccount.pleroma?.hideFollows,
-    pleromaHideFollowers: remoteAccount.pleroma?.hideFollowers,
-    pleromaHideFollowersCount: remoteAccount.pleroma?.hideFollowersCount,
-    pleromaHideFollowsCount: remoteAccount.pleroma?.hideFollowsCount,
-    pleromaDeactivated: remoteAccount.pleroma?.deactivated,
-    pleromaAllowFollowingMove: remoteAccount.pleroma?.allowFollowingMove,
-    pleromaSkipThreadContainment: remoteAccount.pleroma?.skipThreadContainment,
-    pleromaBackgroundImage: remoteAccount.pleroma?.backgroundImage,
-  );
-}
 
-PleromaAccount mapLocalAccountToRemoteAccount(IAccount localAccount) {
-  return PleromaAccount(
-      pleroma: PleromaAccountPleromaPart(
-        backgroundImage: null,
-        tags: localAccount.pleromaTags,
-        relationship: localAccount.pleromaRelationship,
-        isAdmin: localAccount.pleromaIsAdmin,
-        isModerator: localAccount.pleromaIsModerator,
-        confirmationPending: localAccount.pleromaConfirmationPending,
-        hideFavorites: localAccount.pleromaHideFavorites,
-        hideFollowers: localAccount.pleromaHideFollowers,
-        hideFollows: localAccount.pleromaHideFollows,
-        hideFollowersCount: localAccount.pleromaHideFollowersCount,
-        hideFollowsCount: localAccount.pleromaHideFollowsCount,
-        deactivated: localAccount.pleromaDeactivated,
-        allowFollowingMove: localAccount.pleromaAllowFollowingMove,
-        skipThreadContainment: localAccount.pleromaSkipThreadContainment,
-      ),
+  PleromaApiAccount toPleromaApiAccount() {
+    var localAccount = this;
+    return PleromaApiAccount(
+      pleroma: localAccount.toPleromaApiAccountPleromaPart(),
       id: localAccount.remoteId,
       username: localAccount.username,
       url: localAccount.url,
@@ -86,6 +118,9 @@ PleromaAccount mapLocalAccountToRemoteAccount(IAccount localAccount) {
       avatar: localAccount.avatar,
       acct: localAccount.acct,
       lastStatusAt: localAccount.lastStatusAt,
-      fields: localAccount.fields,
-      emojis: localAccount.emojis);
+      fields: localAccount.fields?.toPleromaApiFields(),
+      emojis: localAccount.emojis?.toPleromaApiEmojis(),
+      fqn: localAccount.fqn,
+    );
+  }
 }

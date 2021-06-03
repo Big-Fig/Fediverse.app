@@ -8,18 +8,18 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class SearchStatusPaginationBloc extends SearchAdapterPaginationBloc<IStatus> {
-  SearchStatusPaginationBloc(
-      {@required
-          IPaginationBloc<PaginationPage<ISearchResultItem>, ISearchResultItem>
-              searchResultItemPaginationBloc})
-      : super(searchResultItemPaginationBloc: searchResultItemPaginationBloc);
+  SearchStatusPaginationBloc({
+    required IPaginationBloc<PaginationPage<ISearchResultItem>,
+            ISearchResultItem>
+        searchResultItemPaginationBloc,
+  }) : super(searchResultItemPaginationBloc: searchResultItemPaginationBloc);
 
   @override
   PaginationPage<IStatus> mapPage(PaginationPage<ISearchResultItem> page) {
     List<IStatus> items = page.items
-        .where((searchResultItem) => searchResultItem.type ==
-        SearchResultItemType.status)
-        .map((searchResultItem) => searchResultItem.status)
+        .where((searchResultItem) =>
+            searchResultItem.type == SearchResultItemType.status)
+        .map((searchResultItem) => searchResultItem.status!)
         .toList();
     return PaginationPage(
       requestedLimitPerPage: page.requestedLimitPerPage,
@@ -35,8 +35,10 @@ class SearchStatusPaginationBloc extends SearchAdapterPaginationBloc<IStatus> {
                 ISearchResultItem>>(context, listen: false),
       );
 
-  static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) {
     return DisposableProvider<
         IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
       create: (context) =>

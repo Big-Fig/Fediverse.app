@@ -1,140 +1,122 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/html/html_text_bloc.dart';
+import 'package:fedi/app/html/html_text_model.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/html_parser.dart';
-import 'package:flutter_html/style.dart';
+import 'package:flutter_html/image_render.dart';
+import 'package:html/dom.dart' as dom;
 import 'package:logging/logging.dart';
 
 var _logger = Logger("html_text_widget.dart");
 
 class HtmlTextWidget extends StatelessWidget {
-  final String data;
-  final OnTap onLinkTap;
-  final double fontSize;
-  final FontWeight fontWeight;
-  final double lineHeight;
-  final Color color;
-  final Color linkColor;
-  final int textMaxLines;
-  final TextOverflow textOverflow;
-  final bool shrinkWrap;
-  final bool drawNewLines;
-  final TextAlign textAlign;
-  final double imageSize;
-  final Display paragraphDisplay;
-
-  const HtmlTextWidget({
-    @required this.data,
-    @required this.onLinkTap,
-    this.fontSize = 18.0,
-    this.lineHeight = 1.0,
-    this.imageSize = 20.0,
-    this.fontWeight = FontWeight.normal,
-    this.linkColor = FediColors.primaryColorDark,
-    this.color,
-    this.textMaxLines,
-    this.paragraphDisplay = Display.INLINE,
-    this.textOverflow,
-    this.shrinkWrap = false,
-    this.drawNewLines = true,
-    this.textAlign = TextAlign.start,
-  });
+  const HtmlTextWidget();
 
   @override
   Widget build(BuildContext context) {
-    String htmlData;
-    if (drawNewLines) {
-      // draw both new line types
-      htmlData = data?.replaceAll("\n", "</br>");
-    } else {
-      htmlData = data?.replaceAll("\n", "");
-      htmlData = data?.replaceAll("<(/)*br>", "");
-    }
+    var htmlTextBloc = IHtmlTextBloc.of(context);
 
+    var htmlData = htmlTextBloc.htmlData;
     _logger.finest(() => "htmlData $htmlData");
 
-    var textScaleFactor = MediaQuery.textScaleFactorOf(context);
+    if (htmlData.text?.isNotEmpty != true) {
+      return const SizedBox.shrink();
+    }
 
-    // todo: remove hack
-    // textScaleFactor used for font size accessibility feature on iOS/Android
-    // html lib handle it in wrong way. I think it is use / instead of *
-    // so to compensate this calculations font size divided by
-    // textScaleFactor twice
-    // Usually textScaleFactor is 1.0 and this don't have any effect
-    var fontSizeValue = fontSize / textScaleFactor / textScaleFactor;
-    _logger.finest(() => "textScaleFactor $textScaleFactor "
-        " fontSize $fontSize "
-        " fontSizeValue $fontSizeValue");
+    // TODO: add linkify support
+    if (htmlData.isActuallyHaveHtmlInData) {
+      return buildHtmlWidget(htmlTextBloc);
+    } else {
+      return buildTextWidget(htmlTextBloc);
+    }
+  }
 
-    var fontSizeObject = FontSize(fontSizeValue);
-    return Html(
-      shrinkWrap: shrinkWrap,
-      onImageTap: (String source) {
-        _logger.finest(() => "onImageTap $source");
-      },
-      style: {
-        "html": Style(
-          display: shrinkWrap ? Display.INLINE : Display.BLOCK,
-          padding: EdgeInsets.zero,
-          margin: EdgeInsets.zero,
-          textOverflow: textOverflow,
-          textMaxLines: textMaxLines,
-          fontSize: fontSizeObject,
-          fontWeight: fontWeight,
-          color: color,
-          textAlign: textAlign,
-        ),
-        "body": Style(
-          display: shrinkWrap ? Display.INLINE : Display.BLOCK,
-          padding: EdgeInsets.zero,
-          margin: EdgeInsets.zero,
-          textOverflow: textOverflow,
-          textMaxLines: textMaxLines,
-          textAlign: textAlign,
-        ),
-        "img": Style(
-          display: Display.INLINE,
-          width: imageSize,
-          height: imageSize,
-          padding: EdgeInsets.zero,
-          margin: EdgeInsets.zero,
-          textAlign: textAlign,
-        ),
-        "p": Style(
-          padding: EdgeInsets.zero,
-          margin: EdgeInsets.zero,
-          lineHeight: lineHeight,
-          display: paragraphDisplay,
-          fontSize: fontSizeObject,
-          fontWeight: fontWeight,
-          color: color,
-          textOverflow: textOverflow,
-          textMaxLines: textMaxLines,
-          textAlign: textAlign,
-        ),
-        "a": Style(
-          color: linkColor,
-        ),
-        "text": Style(
-          padding: EdgeInsets.zero,
-          margin: EdgeInsets.zero,
-          lineHeight: lineHeight,
-          display: Display.INLINE,
-          fontSize: fontSizeObject,
-          fontWeight: fontWeight,
-          color: color,
-          textOverflow: textOverflow,
-          textMaxLines: textMaxLines,
-          textAlign: textAlign,
-        ),
-      },
-      onImageError: (exception, stackTrace) {
-        _logger.warning(() => "onImageError", exception, stackTrace);
-      },
-      data: htmlData ?? "",
-      onLinkTap: onLinkTap,
+  Widget buildTextWidget(IHtmlTextBloc htmlTextBloc) {
+    var htmlData = htmlTextBloc.htmlData;
+    var settings = htmlTextBloc.settings;
+    Alignment alignment = mapToAligment(settings);
+    var text = Text(
+      htmlData.text!,
+      style: TextStyle(
+        color: settings.color,
+        fontSize: settings.fontSize,
+        fontWeight: settings.fontWeight,
+        height: settings.lineHeight,
+      ),
+      textAlign: settings.textAlign,
+      overflow: settings.textOverflow,
+      maxLines: settings.textMaxLines,
     );
+    if (settings.shrinkWrap) {
+      return text;
+    } else {
+      return Align(
+        alignment: alignment,
+        child: text,
+      );
+    }
+  }
+
+  Widget buildHtmlWidget(IHtmlTextBloc htmlTextBloc) {
+    var htmlData = htmlTextBloc.htmlData;
+    return Html(
+      data: htmlData.text!,
+      shrinkWrap: htmlTextBloc.settings.shrinkWrap,
+      customImageRenders: {
+        networkSourceMatcher(): networkImageRender(
+          loadingWidget: () => const FediCircularProgressIndicator(
+            size: 18.0,
+          ),
+        ),
+      },
+      onImageTap: (
+        String? url,
+        RenderContext context,
+        Map<String, String> attributes,
+        dom.Element? element,
+      ) {
+        _logger.finest(() => "onImageTap $url");
+      },
+      style: htmlTextBloc.htmlStyles,
+      onLinkTap: (
+        String? url,
+        RenderContext context,
+        Map<String, String> attributes,
+        dom.Element? element,
+      ) {
+        if (url != null) {
+          htmlTextBloc.onLinkClicked(url: url);
+        }
+      },
+    );
+  }
+
+  Alignment mapToAligment(HtmlTextSettings settings) {
+    Alignment alignment;
+    switch (settings.textAlign) {
+      case TextAlign.left:
+        alignment = Alignment.centerLeft;
+        break;
+      case TextAlign.right:
+        alignment = Alignment.centerRight;
+        break;
+      case TextAlign.center:
+        alignment = Alignment.center;
+        break;
+      case TextAlign.justify:
+        alignment = Alignment.center;
+        break;
+      case TextAlign.start:
+        alignment = Alignment.centerLeft;
+        break;
+      case TextAlign.end:
+        alignment = Alignment.centerRight;
+        break;
+      default:
+        alignment = Alignment.centerLeft;
+    }
+    return alignment;
   }
 }

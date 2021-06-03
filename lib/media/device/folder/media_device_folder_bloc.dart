@@ -6,14 +6,17 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IMediaDeviceFolderBloc
-    implements Disposable, IPermissionBloc, IAsyncInitLoadingBloc {
-  static IMediaDeviceFolderBloc of(BuildContext context,
-          {bool listen = true}) =>
+    implements IDisposable, IPermissionBloc, IAsyncInitLoadingBloc {
+  static IMediaDeviceFolderBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IMediaDeviceFolderBloc>(context, listen: listen);
 
-  Future<List<IMediaDeviceFile>> loadPagedFiles(
-      {@required int pageIndex,
-      @required int itemsCountPerPage,
-      @required IMediaDeviceFile olderThan,
-      @required IMediaDeviceFile newerThan});
+  Future<List<IMediaDeviceFileMetadata>> loadPagedFiles({
+    required int? pageIndex,
+    required int? itemsCountPerPage,
+    required IMediaDeviceFileMetadata? olderThan,
+    required IMediaDeviceFileMetadata? newerThan,
+  });
 }

@@ -1,158 +1,86 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
+import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 
 abstract class IChatMessage {
-  int get localId;
+  int? get localId;
 
   String get remoteId;
 
   String get chatRemoteId;
 
-  IAccount get account;
+  IAccount? get account;
 
-  String get content;
+  String get accountRemoteId;
 
-  IPleromaMediaAttachment get mediaAttachment;
+  String? get content;
+
+  List<IPleromaApiMediaAttachment>? get mediaAttachments;
 
   DateTime get createdAt;
 
-  List<IPleromaEmoji> get emojis;
+  List<IPleromaApiEmoji>? get emojis;
 
-  IPleromaCard get card;
+  IPleromaApiCard? get card;
+
+  PendingState? get pendingState;
+
+  String? get oldPendingRemoteId;
+
+  bool get deleted;
+
+  bool get hiddenLocallyOnDevice;
+
+  String? get wasSentWithIdempotencyKey;
 
   IChatMessage copyWith({
-    int localId,
-    String remoteId,
-    String chatRemoteId,
-    IAccount account,
-    String content,
-    DateTime createdAt,
-    IPleromaMediaAttachment mediaAttachment,
-    List<PleromaEmoji> emojis,
-    IPleromaCard card,
+    int? localId,
+    String? remoteId,
+    String? chatRemoteId,
+    IAccount? account,
+    String? content,
+    DateTime? createdAt,
+    List<IPleromaApiMediaAttachment>? mediaAttachments,
+    List<PleromaApiEmoji>? emojis,
+    IPleromaApiCard? card,
+    PendingState? pendingState,
+    String? oldPendingRemoteId,
+    bool? deleted,
+    bool? hiddenLocallyOnDevice,
+    String? wasSentWithIdempotencyKey,
   });
 }
 
-class DbChatMessagePopulatedWrapper extends IChatMessage {
-  final DbChatMessagePopulated dbChatMessagePopulated;
+extension IChatMessageExtension on IChatMessage {
+  bool get isPendingStatePublishedOrNull =>
+      pendingState == null || pendingState == PendingState.published;
 
-  DbChatMessagePopulatedWrapper(this.dbChatMessagePopulated);
+  bool get isPublishedAndNotDeletedAndNotLocallyHidden =>
+      !deleted &&
+      !hiddenLocallyOnDevice &&
+      isPendingStatePublishedOrNull;
 
-  @override
-  int get localId => dbChatMessagePopulated.dbChatMessage.id;
+  bool get isPendingStateNotPublishedOrNull => !isPendingStatePublishedOrNull;
 
-  @override
-  IAccount get account => DbAccountWrapper(dbChatMessagePopulated.dbAccount);
+  bool get isNotPending => pendingState != PendingState.pending;
 
-  @override
-  String get chatRemoteId => dbChatMessagePopulated.dbChatMessage.chatRemoteId;
+  bool get isPending => pendingState == PendingState.pending;
 
-  @override
-  String get content => dbChatMessagePopulated.dbChatMessage.content;
+  bool get isPendingFailed => pendingState == PendingState.fail;
 
-  @override
-  IPleromaCard get card => dbChatMessagePopulated.dbChatMessage.card;
+  bool get isPendingFailedOrPending => isPending || isPendingFailed;
 
-  @override
-  DateTime get createdAt => dbChatMessagePopulated.dbChatMessage.createdAt;
-
-  @override
-  List<IPleromaEmoji> get emojis => dbChatMessagePopulated.dbChatMessage.emojis;
-
-  @override
-  String get remoteId => dbChatMessagePopulated.dbChatMessage.remoteId;
-
-  @override
-  IPleromaMediaAttachment get mediaAttachment =>
-      dbChatMessagePopulated.dbChatMessage.mediaAttachment;
-
-  @override
-  DbChatMessagePopulatedWrapper copyWith({
-    int localId,
-    String remoteId,
-    String chatRemoteId,
-    IAccount account,
-    String content,
-    DateTime createdAt,
-    IPleromaMediaAttachment mediaAttachment,
-    List<PleromaEmoji> emojis,
-    IPleromaCard card,
-  }) =>
-      DbChatMessagePopulatedWrapper(dbChatMessagePopulated.copyWith(
-        localId: localId,
-        remoteId: remoteId,
-        chatRemoteId: chatRemoteId,
-        account: account,
-        content: content,
-        createdAt: createdAt,
-        mediaAttachment: mediaAttachment,
+  EmojiText? toContentEmojiText() {
+    if (content?.isNotEmpty == true) {
+      return EmojiText(
+        text: content!,
         emojis: emojis,
-        card: card,
-      ));
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbChatMessagePopulatedWrapper &&
-          runtimeType == other.runtimeType &&
-          dbChatMessagePopulated == other.dbChatMessagePopulated;
-
-  @override
-  int get hashCode => dbChatMessagePopulated.hashCode;
-}
-
-class DbChatMessagePopulated {
-  final DbChatMessage dbChatMessage;
-  final DbAccount dbAccount;
-
-  DbChatMessagePopulated({
-    @required this.dbChatMessage,
-    @required this.dbAccount,
-  });
-
-  DbChatMessagePopulated copyWith({
-    int localId,
-    String remoteId,
-    String chatRemoteId,
-    IAccount account,
-    String content,
-    DateTime createdAt,
-    IPleromaMediaAttachment mediaAttachment,
-    List<IPleromaEmoji> emojis,
-    IPleromaCard card,
-  }) =>
-      DbChatMessagePopulated(
-          dbChatMessage: DbChatMessage(
-            id: localId ?? dbChatMessage.id,
-            remoteId: remoteId ?? dbChatMessage.remoteId,
-            chatRemoteId: chatRemoteId ?? dbChatMessage.chatRemoteId,
-            content: content ?? dbChatMessage.content,
-            createdAt: createdAt ?? dbChatMessage.createdAt,
-            emojis: emojis ?? dbChatMessage.emojis,
-            card: card ?? dbChatMessage.card,
-            mediaAttachment: mediaAttachment ?? dbChatMessage.mediaAttachment,
-            accountRemoteId: account?.remoteId ?? dbAccount.remoteId,
-          ),
-          dbAccount:
-              account != null ? dbAccountFromAccount(account) : dbAccount);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbChatMessagePopulated &&
-          runtimeType == other.runtimeType &&
-          dbChatMessage == other.dbChatMessage &&
-          dbAccount == other.dbAccount;
-
-  @override
-  int get hashCode => dbChatMessage.hashCode ^ dbAccount.hashCode;
-
-  @override
-  String toString() {
-    return 'DbStatusPopulated{dbStatus: $dbChatMessage, dbAccount: $dbAccount}';
+      );
+    } else {
+      return null;
+    }
   }
 }

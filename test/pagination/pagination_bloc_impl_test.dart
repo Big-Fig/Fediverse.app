@@ -1,23 +1,26 @@
+import 'package:fedi/app/pagination/page_size/pagination_page_size_model.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'memory_cached_pagination_bloc_impl.dart';
-import 'pagination_model_helper.dart';
+import 'cached/memory_cached_pagination_bloc_impl.dart';
+import 'pagination_model_test_impl.dart';
 
+const int storageSize = 37;
+const int? maximumCachedPagesCount = null;
+const int itemsCountPerPage = 5;
+// ignore_for_file: no-magic-number
 void main() {
-  IPaginationBloc<CachedPaginationPage<TestPaginationItem>, TestPaginationItem>
-      paginationBloc;
-  MemoryCachedPaginationBloc<TestPaginationItem> memoryPaginationBloc;
-  int storageSize = 30;
-  int maximumCachedPagesCount;
-  int itemsCountPerPage = 4;
+  late IPaginationBloc<CachedPaginationPage<PaginationItemTest>,
+      PaginationItemTest> paginationBloc;
+  MemoryCachedPaginationBloc<PaginationItemTest> memoryPaginationBloc;
 
   setUp(() {
     memoryPaginationBloc = MemoryCachedPaginationBloc.createTestWithSize(
-        size: storageSize,
-        maximumCachedPagesCount: maximumCachedPagesCount,
-        itemsCountPerPage: itemsCountPerPage);
+      size: storageSize,
+      maximumCachedPagesCount: maximumCachedPagesCount,
+      paginationPageSize: PaginationPageSize.size5,
+    );
 
     paginationBloc = memoryPaginationBloc;
   });
@@ -27,37 +30,66 @@ void main() {
   });
 
   test('loadedPagesMinimumIndex', () async {
-    expect(paginationBloc.loadedPagesMinimumIndex,
-        IPaginationBloc.undefinedPageIndex);
+    expect(
+      paginationBloc.loadedPagesMinimumIndex,
+      null,
+    );
 
     var listened;
     var subscription =
         paginationBloc.loadedPagesMinimumIndexStream.listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened, IPaginationBloc.undefinedPageIndex);
+    await Future.delayed(
+      Duration(
+        milliseconds: 1,
+      ),
+    );
+    expect(listened, null);
 
     await paginationBloc.requestPage(pageIndex: 1, forceToSkipCache: false);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(
+      Duration(
+        milliseconds: 1,
+      ),
+    );
     expect(listened, 1);
-    expect(paginationBloc.loadedPagesMinimumIndex, 1);
+    expect(
+      paginationBloc.loadedPagesMinimumIndex,
+      1,
+    );
 
     await paginationBloc.requestPage(pageIndex: 0, forceToSkipCache: false);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(paginationBloc.loadedPagesMinimumIndex, 0);
+    await Future.delayed(
+      Duration(
+        milliseconds: 1,
+      ),
+    );
+    expect(
+      paginationBloc.loadedPagesMinimumIndex,
+      0,
+    );
     expect(listened, 0);
 
     await paginationBloc.requestPage(pageIndex: 2, forceToSkipCache: false);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(
+      Duration(
+        milliseconds: 1,
+      ),
+    );
     expect(listened, 0);
-    expect(paginationBloc.loadedPagesMinimumIndex, 0);
+    expect(
+      paginationBloc.loadedPagesMinimumIndex,
+      0,
+    );
 
     await subscription.cancel();
   });
   test('loadedPagesMaximumIndex', () async {
-    expect(paginationBloc.loadedPagesMaximumIndex,
-        IPaginationBloc.undefinedPageIndex);
+    expect(
+      paginationBloc.loadedPagesMaximumIndex,
+      null,
+    );
 
     var listened;
     var subscription =
@@ -65,7 +97,10 @@ void main() {
       listened = newValue;
     });
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listened, IPaginationBloc.undefinedPageIndex);
+    expect(
+      listened,
+      null,
+    );
 
     await paginationBloc.requestPage(pageIndex: 1, forceToSkipCache: false);
     await Future.delayed(Duration(milliseconds: 1));
@@ -122,7 +157,7 @@ void main() {
   test('loadedPageIndexesSortedByIndex', () async {
     expect(paginationBloc.loadedPageIndexesSortedByIndex.length, 0);
 
-    var listened;
+    late var listened;
     var subscription =
         paginationBloc.loadedPageIndexesSortedByIndexStream.listen((newValue) {
       listened = newValue;
@@ -174,9 +209,12 @@ void main() {
   });
 
   test('loadedPagesSortedByIndex', () async {
-    expect(paginationBloc.loadedPagesSortedByIndex.length, 0);
+    expect(
+      paginationBloc.loadedPagesSortedByIndex.length,
+      0,
+    );
 
-    var listened;
+    late var listened;
     var subscription =
         paginationBloc.loadedPagesSortedByIndexStream.listen((newValue) {
       listened = newValue;
@@ -184,110 +222,294 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened.length, 0);
 
-    await paginationBloc.requestPage(pageIndex: 1, forceToSkipCache: false);
-    expect(paginationBloc.loadedPagesSortedByIndex.length, 1);
-    expect(paginationBloc.loadedPagesSortedByIndex[0].pageIndex, 1);
+    await paginationBloc.requestPage(
+      pageIndex: 1,
+      forceToSkipCache: false,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex.length,
+      1,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex[0].pageIndex,
+      1,
+    );
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, 1);
-    expect(listened[0].pageIndex, 1);
+    expect(
+      listened.length,
+      1,
+    );
+    expect(
+      listened[0].pageIndex,
+      1,
+    );
 
-    await paginationBloc.requestPage(pageIndex: 0, forceToSkipCache: false);
-    expect(paginationBloc.loadedPagesSortedByIndex.length, 2);
-    expect(paginationBloc.loadedPagesSortedByIndex[0].pageIndex, 0);
-    expect(paginationBloc.loadedPagesSortedByIndex[1].pageIndex, 1);
+    await paginationBloc.requestPage(
+      pageIndex: 0,
+      forceToSkipCache: false,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex.length,
+      2,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex[0].pageIndex,
+      0,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex[1].pageIndex,
+      1,
+    );
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, 2);
-    expect(listened[0].pageIndex, 0);
-    expect(listened[1].pageIndex, 1);
+    expect(
+      listened.length,
+      2,
+    );
+    expect(
+      listened[0].pageIndex,
+      0,
+    );
+    expect(
+      listened[1].pageIndex,
+      1,
+    );
 
-    await paginationBloc.requestPage(pageIndex: 2, forceToSkipCache: false);
-    expect(paginationBloc.loadedPagesSortedByIndex.length, 3);
-    expect(paginationBloc.loadedPagesSortedByIndex[0].pageIndex, 0);
-    expect(paginationBloc.loadedPagesSortedByIndex[1].pageIndex, 1);
-    expect(paginationBloc.loadedPagesSortedByIndex[2].pageIndex, 2);
+    await paginationBloc.requestPage(
+      pageIndex: 2,
+      forceToSkipCache: false,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex.length,
+      3,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex[0].pageIndex,
+      0,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex[1].pageIndex,
+      1,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex[2].pageIndex,
+      2,
+    );
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened.length, 3);
-    expect(listened[0].pageIndex, 0);
-    expect(listened[1].pageIndex, 1);
-    expect(listened[2].pageIndex, 2);
+    expect(
+      listened[0].pageIndex,
+      0,
+    );
+    expect(
+      listened[1].pageIndex,
+      1,
+    );
+    expect(
+      listened[2].pageIndex,
+      2,
+    );
 
-    await paginationBloc.requestPage(pageIndex: 4, forceToSkipCache: false);
-    expect(paginationBloc.loadedPagesSortedByIndex.length, 4);
-    expect(paginationBloc.loadedPagesSortedByIndex[0].pageIndex, 0);
-    expect(paginationBloc.loadedPagesSortedByIndex[1].pageIndex, 1);
-    expect(paginationBloc.loadedPagesSortedByIndex[2].pageIndex, 2);
-    expect(paginationBloc.loadedPagesSortedByIndex[3].pageIndex, 4);
+    await paginationBloc.requestPage(
+      pageIndex: 4,
+      forceToSkipCache: false,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex.length,
+      4,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex[0].pageIndex,
+      0,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex[1].pageIndex,
+      1,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex[2].pageIndex,
+      2,
+    );
+    expect(
+      paginationBloc.loadedPagesSortedByIndex[3].pageIndex,
+      4,
+    );
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, 4);
-    expect(listened[0].pageIndex, 0);
-    expect(listened[1].pageIndex, 1);
-    expect(listened[2].pageIndex, 2);
-    expect(listened[3].pageIndex, 4);
+    expect(
+      listened.length,
+      4,
+    );
+    expect(
+      listened[0].pageIndex,
+      0,
+    );
+    expect(
+      listened[1].pageIndex,
+      1,
+    );
+    expect(
+      listened[2].pageIndex,
+      2,
+    );
+    expect(
+      listened[3].pageIndex,
+      4,
+    );
 
     await subscription.cancel();
   });
 
   test('itemsCountPerPage', () async {
-    expect(paginationBloc.itemsCountPerPage, itemsCountPerPage);
+    expect(
+      paginationBloc.itemsCountPerPage,
+      itemsCountPerPage,
+    );
   });
 
   test('refresh', () async {
-    CachedPaginationPage<TestPaginationItem> page;
-    page =
-        await paginationBloc.requestPage(pageIndex: 0, forceToSkipCache: false);
-    expect(page.pageIndex, 0);
-    expect(page.isActuallyRefreshedFromRemote, false);
-    expect(page.items.length, itemsCountPerPage);
-    expect(page.items[0].index, 0);
+    CachedPaginationPage<PaginationItemTest>? page;
+    page = await paginationBloc.requestPage(
+      pageIndex: 0,
+      forceToSkipCache: false,
+    );
+    expect(
+      page.pageIndex,
+      0,
+    );
+    expect(
+      page.isActuallyRefreshedFromRemote,
+      false,
+    );
+    expect(
+      page.items.length,
+      itemsCountPerPage,
+    );
+    expect(
+      page.items[0].index,
+      0,
+    );
 
     page = await paginationBloc.refreshWithoutController();
 
-    expect(page.pageIndex, 0);
-    expect(page.isActuallyRefreshedFromRemote, true);
-    expect(page.items.length, itemsCountPerPage);
-    expect(page.items[0].index, 0);
+    expect(
+      page.pageIndex,
+      0,
+    );
+    expect(
+      page.isActuallyRefreshedFromRemote,
+      true,
+    );
+    expect(
+      page.items.length,
+      itemsCountPerPage,
+    );
+    expect(
+      page.items[0].index,
+      0,
+    );
   });
   test('requestPage', () async {
-    CachedPaginationPage<TestPaginationItem> page;
+    CachedPaginationPage<PaginationItemTest>? page;
     page =
         await paginationBloc.requestPage(pageIndex: 0, forceToSkipCache: false);
-    expect(page.pageIndex, 0);
+    expect(
+      page.pageIndex,
+      0,
+    );
     expect(page.isActuallyRefreshedFromRemote, false);
-    expect(page.items.length, itemsCountPerPage);
-    expect(page.items[0].index, 0);
+    expect(
+      page.items.length,
+      itemsCountPerPage,
+    );
+    expect(
+      page.items[0].index,
+      0,
+    );
 
-    page =
-        await paginationBloc.requestPage(pageIndex: 1, forceToSkipCache: true);
+    page = await paginationBloc.requestPage(
+      pageIndex: 1,
+      forceToSkipCache: true,
+    );
 
-    expect(page.pageIndex, 1);
-    expect(page.isActuallyRefreshedFromRemote, true);
-    expect(page.items.length, itemsCountPerPage);
-    expect(page.items[0].index, itemsCountPerPage);
+    expect(
+      page.pageIndex,
+      1,
+    );
+    expect(
+      page.isActuallyRefreshedFromRemote,
+      true,
+    );
+    expect(
+      page.items.length,
+      itemsCountPerPage,
+    );
+    expect(
+      page.items[0].index,
+      itemsCountPerPage,
+    );
 
-    page =
-        await paginationBloc.requestPage(pageIndex: 3, forceToSkipCache: true);
+    page = await paginationBloc.requestPage(
+      pageIndex: 3,
+      forceToSkipCache: true,
+    );
 
-    expect(page.pageIndex, 3);
-    expect(page.isActuallyRefreshedFromRemote, true);
-    expect(page.items.length, itemsCountPerPage);
-    expect(page.items[0].index, itemsCountPerPage * 3);
+    expect(
+      page.pageIndex,
+      3,
+    );
+    expect(
+      page.isActuallyRefreshedFromRemote,
+      true,
+    );
+    expect(
+      page.items.length,
+      itemsCountPerPage,
+    );
+    expect(
+      page.items[0].index,
+      itemsCountPerPage * 3,
+    );
 
     var lastPageIndex = storageSize ~/ itemsCountPerPage;
     var lastPageItemsLength = storageSize % itemsCountPerPage;
 
     page = await paginationBloc.requestPage(
-        pageIndex: lastPageIndex, forceToSkipCache: true);
+      pageIndex: lastPageIndex,
+      forceToSkipCache: true,
+    );
 
-    expect(page.pageIndex, lastPageIndex);
-    expect(page.isActuallyRefreshedFromRemote, true);
-    expect(page.items.length, lastPageItemsLength);
-    expect(page.items.last.index, storageSize - 1);
+    expect(
+      page.pageIndex,
+      lastPageIndex,
+    );
+    expect(
+      page.isActuallyRefreshedFromRemote,
+      true,
+    );
+    expect(
+      page.items.length,
+      lastPageItemsLength,
+    );
+    expect(
+      page.items.last.index,
+      storageSize - 1,
+    );
 
     page = await paginationBloc.requestPage(
-        pageIndex: lastPageIndex + 1, forceToSkipCache: true);
+      pageIndex: lastPageIndex + 1,
+      forceToSkipCache: true,
+    );
 
-    expect(page.pageIndex, lastPageIndex + 1);
-    expect(page.isActuallyRefreshedFromRemote, true);
-    expect(page.items.length, 0);
+    expect(
+      page.pageIndex,
+      lastPageIndex + 1,
+    );
+    expect(
+      page.isActuallyRefreshedFromRemote,
+      true,
+    );
+    expect(
+      page.items.length,
+      0,
+    );
   });
 }

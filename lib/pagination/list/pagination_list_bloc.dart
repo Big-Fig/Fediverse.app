@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
@@ -6,12 +7,12 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-abstract class IPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
-    implements Disposable, IAsyncInitLoadingBloc {
+abstract class IPaginationListBloc<TPage extends PaginationPage<TItem?>?, TItem>
+    implements IDisposable, IAsyncInitLoadingBloc {
   static IPaginationListBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPaginationListBloc>(context, listen: listen);
 
-  int get itemsCountPerPage;
+  int? get itemsCountPerPage;
 
   List<TPage> get sortedPages;
 
@@ -21,21 +22,23 @@ abstract class IPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   Stream<List<TItem>> get itemsStream;
 
-  Future<PaginationListLoadingState> refreshWithoutController();
+  Stream<List<TItem>> get itemsDistinctStream;
 
-  void refreshWithController();
+  Future<FediListSmartRefresherLoadingState> refreshWithoutController();
 
-  Future<PaginationListLoadingState> loadMoreWithoutController();
+  Future refreshWithController();
+
+  Future<FediListSmartRefresherLoadingState> loadMoreWithoutController();
 
   RefreshController get refreshController;
 
-  Stream<PaginationListLoadingState> get refreshStateStream;
+  Stream<FediListSmartRefresherLoadingState> get refreshStateStream;
 
-  PaginationListLoadingState get refreshState;
+  FediListSmartRefresherLoadingState? get refreshState;
 
-  Stream<PaginationListLoadingState> get loadMoreStateStream;
+  Stream<FediListSmartRefresherLoadingState> get loadMoreStateStream;
 
-  PaginationListLoadingState get loadMoreState;
+  FediListSmartRefresherLoadingState? get loadMoreState;
 
   Stream<PaginationListLoadingError> get refreshErrorStream;
 

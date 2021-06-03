@@ -1,32 +1,30 @@
 import 'dart:io';
 
 import 'package:fedi/rest/rest_model.dart';
-import 'package:flutter/widgets.dart';
 
 class RestRequest<T> {
   final RestRequestType type;
 
   final String relativeUrlPath;
 
-  List<RestRequestQueryArg> queryArgs;
-  Map<String, dynamic> bodyJson;
-  Map<String, String> headers;
+  final List<RestRequestQueryArg> queryArgs;
+  final Map<String, dynamic> bodyJson;
+  final Map<String, String> headers;
 
-  RestRequest._private(
-      {@required this.type,
-      @required this.relativeUrlPath,
-      @required this.queryArgs,
-      @required this.bodyJson,
-      @required this.headers}) {
-    queryArgs = queryArgs ?? [];
-    bodyJson = bodyJson ?? {};
-    headers = headers ?? {};
-  }
+  RestRequest._private({
+    required this.type,
+    required this.relativeUrlPath,
+    required List<RestRequestQueryArg>? queryArgs,
+    required Map<String, dynamic>? bodyJson,
+    required Map<String, String>? headers,
+  })   : queryArgs = queryArgs ?? [],
+        bodyJson = bodyJson ?? {},
+        headers = headers ?? {};
 
   RestRequest.get({
-    @required String relativePath,
-    List<RestRequestQueryArg> queryArgs,
-    Map<String, String> headers,
+    required String relativePath,
+    List<RestRequestQueryArg>? queryArgs,
+    Map<String, String>? headers,
   }) : this._private(
           type: RestRequestType.get,
           relativeUrlPath: relativePath,
@@ -36,9 +34,9 @@ class RestRequest<T> {
         );
 
   RestRequest.head({
-    @required String relativePath,
-    List<RestRequestQueryArg> queryArgs,
-    Map<String, String> headers,
+    required String relativePath,
+    List<RestRequestQueryArg>? queryArgs,
+    Map<String, String>? headers,
   }) : this._private(
           type: RestRequestType.head,
           relativeUrlPath: relativePath,
@@ -48,10 +46,10 @@ class RestRequest<T> {
         );
 
   RestRequest.delete({
-    @required String relativePath,
-    List<RestRequestQueryArg> queryArgs,
-    Map<String, String> headers,
-    Map<String, dynamic> bodyJson,
+    required String relativePath,
+    List<RestRequestQueryArg>? queryArgs,
+    Map<String, String>? headers,
+    Map<String, dynamic>? bodyJson,
   }) : this._private(
           type: RestRequestType.delete,
           relativeUrlPath: relativePath,
@@ -61,10 +59,10 @@ class RestRequest<T> {
         );
 
   RestRequest.post({
-    @required String relativePath,
-    List<RestRequestQueryArg> queryArgs,
-    Map<String, String> headers,
-    Map<String, dynamic> bodyJson,
+    required String relativePath,
+    List<RestRequestQueryArg>? queryArgs,
+    Map<String, String>? headers,
+    Map<String, dynamic>? bodyJson,
   }) : this._private(
           type: RestRequestType.post,
           relativeUrlPath: relativePath,
@@ -74,10 +72,10 @@ class RestRequest<T> {
         );
 
   RestRequest.put({
-    @required String relativePath,
-    List<RestRequestQueryArg> queryArgs,
-    Map<String, String> headers,
-    Map<String, dynamic> bodyJson,
+    required String relativePath,
+    List<RestRequestQueryArg>? queryArgs,
+    Map<String, String>? headers,
+    Map<String, dynamic>? bodyJson,
   }) : this._private(
           type: RestRequestType.put,
           relativeUrlPath: relativePath,
@@ -87,10 +85,10 @@ class RestRequest<T> {
         );
 
   RestRequest.patch({
-    @required String relativePath,
-    List<RestRequestQueryArg> queryArgs,
-    Map<String, String> headers,
-    Map<String, dynamic> bodyJson,
+    required String relativePath,
+    List<RestRequestQueryArg>? queryArgs,
+    Map<String, String>? headers,
+    Map<String, dynamic>? bodyJson,
   }) : this._private(
           type: RestRequestType.patch,
           relativeUrlPath: relativePath,
@@ -111,10 +109,10 @@ class UploadMultipartRestRequest<T> extends RestRequest<T> {
   final Map<String, File> files;
 
   UploadMultipartRestRequest.get({
-    @required String relativePath,
-    @required this.files,
-    List<RestRequestQueryArg> queryArgs,
-    Map<String, String> headers,
+    required String relativePath,
+    required this.files,
+    List<RestRequestQueryArg>? queryArgs,
+    Map<String, String>? headers,
   }) : super.get(
           relativePath: relativePath,
           queryArgs: queryArgs,
@@ -122,10 +120,10 @@ class UploadMultipartRestRequest<T> extends RestRequest<T> {
         );
 
   UploadMultipartRestRequest.delete({
-    @required String relativePath,
-    @required this.files,
-    List<RestRequestQueryArg> queryArgs,
-    Map<String, String> headers,
+    required String relativePath,
+    required this.files,
+    List<RestRequestQueryArg>? queryArgs,
+    Map<String, String>? headers,
   }) : super.delete(
           relativePath: relativePath,
           queryArgs: queryArgs,
@@ -133,10 +131,10 @@ class UploadMultipartRestRequest<T> extends RestRequest<T> {
         );
 
   UploadMultipartRestRequest.head({
-    @required String relativePath,
-    @required this.files,
-    List<RestRequestQueryArg> queryArgs,
-    Map<String, String> headers,
+    required String relativePath,
+    required this.files,
+    List<RestRequestQueryArg>? queryArgs,
+    Map<String, String>? headers,
   }) : super.head(
           relativePath: relativePath,
           queryArgs: queryArgs,
@@ -144,11 +142,11 @@ class UploadMultipartRestRequest<T> extends RestRequest<T> {
         );
 
   UploadMultipartRestRequest.post({
-    @required String relativePath,
-    @required this.files,
-    List<RestRequestQueryArg> queryArgs,
-    Map<String, String> headers,
-    Map<String, dynamic> bodyJson,
+    required String relativePath,
+    required this.files,
+    List<RestRequestQueryArg>? queryArgs,
+    Map<String, String>? headers,
+    Map<String, dynamic>? bodyJson,
   }) : super.post(
           relativePath: relativePath,
           queryArgs: queryArgs,
@@ -157,11 +155,11 @@ class UploadMultipartRestRequest<T> extends RestRequest<T> {
         );
 
   UploadMultipartRestRequest.put({
-    @required String relativePath,
-    @required this.files,
-    List<RestRequestQueryArg> queryArgs,
-    Map<String, String> headers,
-    Map<String, dynamic> bodyJson,
+    required String relativePath,
+    required this.files,
+    List<RestRequestQueryArg>? queryArgs,
+    Map<String, String>? headers,
+    Map<String, dynamic>? bodyJson,
   }) : super.put(
           relativePath: relativePath,
           queryArgs: queryArgs,
@@ -170,11 +168,11 @@ class UploadMultipartRestRequest<T> extends RestRequest<T> {
         );
 
   UploadMultipartRestRequest.patch({
-    @required String relativePath,
-    @required this.files,
-    List<RestRequestQueryArg> queryArgs,
-    Map<String, String> headers,
-    Map<String, dynamic> bodyJson,
+    required String relativePath,
+    required this.files,
+    List<RestRequestQueryArg>? queryArgs,
+    Map<String, String>? headers,
+    Map<String, dynamic>? bodyJson,
   }) : super.patch(
           relativePath: relativePath,
           queryArgs: queryArgs,
@@ -185,14 +183,28 @@ class UploadMultipartRestRequest<T> extends RestRequest<T> {
 
 class RestRequestQueryArg {
   final String key;
-  final String value;
+  final String? value;
 
-  RestRequestQueryArg(this.key, this.value);
+  RestRequestQueryArg({
+    required this.key,
+    required this.value,
+  });
 
   @override
   String toString() {
     return 'RestRequestQueryArg{key: $key, value: $value}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RestRequestQueryArg &&
+          runtimeType == other.runtimeType &&
+          key == other.key &&
+          value == other.value;
+
+  @override
+  int get hashCode => key.hashCode ^ value.hashCode;
 
   static List<RestRequestQueryArg> listFromJson(Map<String, dynamic> json) {
     List<RestRequestQueryArg> queryArgs = [];
@@ -202,10 +214,21 @@ class RestRequestQueryArg {
       if (value != null) {
         if (value is Iterable) {
           var iterable = value;
-          queryArgs.addAll(iterable
-              .map((item) => RestRequestQueryArg(entry.key, item.toString())));
+          queryArgs.addAll(
+            iterable.map(
+              (item) => RestRequestQueryArg(
+                key: entry.key,
+                value: item.toString(),
+              ),
+            ),
+          );
         } else {
-          queryArgs.add(RestRequestQueryArg(entry.key, entry.value.toString()));
+          queryArgs.add(
+            RestRequestQueryArg(
+              key: entry.key,
+              value: entry.value.toString(),
+            ),
+          );
         }
       }
     });

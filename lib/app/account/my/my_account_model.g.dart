@@ -6,44 +6,55 @@ part of 'my_account_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MyAccountRemoteWrapperAdapter
-    extends TypeAdapter<MyAccountRemoteWrapper> {
+class PleromaMyAccountWrapperAdapter
+    extends TypeAdapter<PleromaMyAccountWrapper> {
   @override
-  MyAccountRemoteWrapper read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+  final int typeId = 21;
+
+  @override
+  PleromaMyAccountWrapper read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MyAccountRemoteWrapper(
-      remoteAccount: fields[0] as PleromaMyAccount,
+    return PleromaMyAccountWrapper(
+      pleromaAccount: fields[0] as PleromaApiMyAccount,
     );
   }
 
   @override
-  void write(BinaryWriter writer, MyAccountRemoteWrapper obj) {
+  void write(BinaryWriter writer, PleromaMyAccountWrapper obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.remoteAccount);
+      ..write(obj.pleromaAccount);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaMyAccountWrapperAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MyAccountRemoteWrapper _$MyAccountRemoteWrapperFromJson(
+PleromaMyAccountWrapper _$PleromaMyAccountWrapperFromJson(
     Map<String, dynamic> json) {
-  return MyAccountRemoteWrapper(
-    remoteAccount: json['remote_account'] == null
-        ? null
-        : PleromaMyAccount.fromJson(
-            json['remote_account'] as Map<String, dynamic>),
+  return PleromaMyAccountWrapper(
+    pleromaAccount: PleromaApiMyAccount.fromJson(
+        json['remote_account'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$MyAccountRemoteWrapperToJson(
-        MyAccountRemoteWrapper instance) =>
+Map<String, dynamic> _$PleromaMyAccountWrapperToJson(
+        PleromaMyAccountWrapper instance) =>
     <String, dynamic>{
-      'remote_account': instance.remoteAccount?.toJson(),
+      'remote_account': instance.pleromaAccount.toJson(),
     };

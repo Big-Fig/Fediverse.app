@@ -1,25 +1,27 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IUploadMediaAttachmentBloc implements Disposable {
-  static IUploadMediaAttachmentBloc of(BuildContext context,
-          {bool listen = true}) =>
+abstract class IUploadMediaAttachmentBloc implements IDisposable {
+  static IUploadMediaAttachmentBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IUploadMediaAttachmentBloc>(context, listen: listen);
 
-  int get maximumFileSizeInBytes;
+  int? get maximumFileSizeInBytes;
 
-  IPleromaMediaAttachment get pleromaMediaAttachment;
+  IPleromaApiMediaAttachment? get pleromaMediaAttachment;
 
-  UploadMediaAttachmentState get uploadState;
+  UploadMediaAttachmentState? get uploadState;
 
   Stream<UploadMediaAttachmentState> get uploadStateStream;
 
   bool get isMedia;
 
-  Future<String> calculateFilePath();
+  Future<String?> calculateFilePath();
 
   Future startUpload();
 }

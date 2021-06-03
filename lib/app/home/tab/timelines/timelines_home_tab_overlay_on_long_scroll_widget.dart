@@ -1,10 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class TimelinesHomeTabOverlayOnLongScrollWidget extends StatelessWidget {
@@ -13,10 +12,10 @@ class TimelinesHomeTabOverlayOnLongScrollWidget extends StatelessWidget {
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
-            goToNewPostStatusPage(context);
+            goToNewPostStatusPageWithInitial(context);
           },
           child: Container(
-            color: FediColors.white,
+            color: IFediUiColorTheme.of(context).white,
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -34,8 +33,9 @@ class TimelinesHomeTabOverlayOnLongScrollWidget extends StatelessWidget {
                       width: FediSizes.bigPadding,
                     ),
                     Text(
-                      tr("app.status.post.field.message.hint"),
-                      style: FediTextStyles.subHeaderTallLightGrey,
+                      S.of(context).app_status_post_field_message_hint,
+                      style:
+                          IFediUiTextTheme.of(context).subHeaderTallLightGrey,
                     ),
                   ],
                 ),

@@ -1,4 +1,4 @@
-import 'package:fedi/app/list/local_only/network_only_list_bloc.dart';
+import 'package:fedi/app/list/local_only/local_only_list_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
@@ -12,12 +12,12 @@ class MediaDeviceFileLocalOnlyListBloc extends DisposableOwner
   final IMediaDeviceFolderBloc folderBloc;
 
   MediaDeviceFileLocalOnlyListBloc({
-    @required this.folderBloc,
+    required this.folderBloc,
   });
 
   static MediaDeviceFileLocalOnlyListBloc createFromContext(
     BuildContext context, {
-    @required IMediaDeviceFolderBloc folderBloc,
+    required IMediaDeviceFolderBloc folderBloc,
   }) =>
       MediaDeviceFileLocalOnlyListBloc(
         folderBloc: folderBloc,
@@ -25,17 +25,16 @@ class MediaDeviceFileLocalOnlyListBloc extends DisposableOwner
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    @required IMediaDeviceFolderBloc folderBloc,
+    required Widget child,
+    required IMediaDeviceFolderBloc folderBloc,
   }) {
     return DisposableProvider<IMediaDeviceFileLocalOnlyListBloc>(
-      create: (context) =>
-          MediaDeviceFileLocalOnlyListBloc.createFromContext(
+      create: (context) => MediaDeviceFileLocalOnlyListBloc.createFromContext(
         context,
         folderBloc: folderBloc,
       ),
       child: ProxyProvider<IMediaDeviceFileLocalOnlyListBloc,
-          ILocalOnlyListBloc<IMediaDeviceFile>>(
+          ILocalOnlyListBloc<IMediaDeviceFileMetadata?>>(
         update: (context, value, previous) => value,
         child: child,
       ),
@@ -43,15 +42,16 @@ class MediaDeviceFileLocalOnlyListBloc extends DisposableOwner
   }
 
   @override
-  Future<List<IMediaDeviceFile>> loadItemsFromLocalForPage({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required IMediaDeviceFile olderThan,
-    @required IMediaDeviceFile newerThan,
+  Future<List<IMediaDeviceFileMetadata>> loadItemsFromLocalForPage({
+    required int? pageIndex,
+    required int? itemsCountPerPage,
+    required IMediaDeviceFileMetadata? olderThan,
+    required IMediaDeviceFileMetadata? newerThan,
   }) =>
       folderBloc.loadPagedFiles(
-          pageIndex: pageIndex,
-          itemsCountPerPage: itemsCountPerPage,
-          olderThan: olderThan,
-          newerThan: newerThan);
+        pageIndex: pageIndex,
+        itemsCountPerPage: itemsCountPerPage,
+        olderThan: olderThan,
+        newerThan: newerThan,
+      );
 }

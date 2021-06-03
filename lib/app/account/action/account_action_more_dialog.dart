@@ -1,96 +1,297 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/action/account_report_action.dart';
+import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/action/message/account_action_message.dart';
+import 'package:fedi/app/account/action/mute/account_action_mute_dialog.dart';
+import 'package:fedi/app/account/details/remote_account_details_page.dart';
+import 'package:fedi/app/account/remote_account_bloc_impl.dart';
+import 'package:fedi/app/account/report/account_report_page.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/instance/details/local/local_instance_details_page.dart';
+import 'package:fedi/app/instance/details/remote/remote_instance_details_page.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 void showAccountActionMoreDialog({
-  @required BuildContext context,
-  @required IAccountBloc accountBloc,
-  @required IPleromaAccountRelationship relationship,
+  required BuildContext context,
+  required IAccountBloc accountBloc,
 }) {
   showFediModalBottomSheetDialog(
     context: context,
-    child: AccountActionMoreDialogBody(
-      accountBloc: accountBloc,
-      relationship: relationship,
-      cancelable: true,
+    child: Provider<IAccountBloc>.value(
+      value: accountBloc,
+      child: Provider<IAccount>.value(
+        value: accountBloc.account,
+        child: const AccountActionMoreDialog(
+          cancelable: true,
+          showReportAction: false,
+        ),
+      ),
     ),
   );
 }
 
-class AccountActionMoreDialogBody extends StatelessWidget {
-  final IAccountBloc accountBloc;
-  final IPleromaAccountRelationship relationship;
+class AccountActionMoreDialog extends StatelessWidget {
   final bool cancelable;
+  final bool showReportAction;
 
-  AccountActionMoreDialogBody({
-    @required this.accountBloc,
-    @required this.relationship,
-    @required this.cancelable,
+  const AccountActionMoreDialog({
+    required this.cancelable,
+    required this.showReportAction,
   });
 
   @override
-  Widget build(BuildContext context) => FediChooserDialogBody(
-      title: tr("app.account.action.popup.title"),
-      content: "${accountBloc.acct}",
-      actions: [
-        DialogAction(
-            icon: FediIcons.browser,
-            label: tr("app.account.action.open_in_browser"),
-            onAction: () async {
-              var url = accountBloc.account.url;
-              await UrlHelper.handleUrlClick(context, url);
-              Navigator.of(context).pop();
-            }),
-        DialogAction(
-          icon: FediIcons.mute,
-          label: relationship.muting
-              ? tr("app.account.action.unmute")
-              : tr("app.account.action.mute"),
-          onAction: () async {
-            await accountBloc.toggleMute();
-            Navigator.of(context).pop();
-          },
-        ),
-        DialogAction(
-          icon: FediIcons.block,
-          label: relationship.blocking
-              ? tr("app.account.action.unblock")
-              : tr("app.account.action.block"),
-          onAction: () async {
-            await accountBloc.toggleBlock();
-            Navigator.of(context).pop();
-          },
-        ),
-        if (accountBloc.isOnRemoteDomain)
-          DialogAction(
-            icon: FediIcons.block,
-            label: relationship.domainBlocking
-                ? tr("app.account.action.unblock_domain",
-                    args: [accountBloc.remoteDomainOrNull])
-                : tr("app.account.action.block_domain",
-                    args: [accountBloc.remoteDomainOrNull]),
-            onAction: () async {
-              await accountBloc.toggleBlockDomain();
-              Navigator.of(context).pop();
-            },
-          ),
-        DialogAction(
-            icon: FediIcons.report,
-            label: tr("app.account.action.report.label"),
-            onAction: () async {
-              var success = await doAsyncActionReport(context, accountBloc);
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+    var isAcctRemoteDomainExist = accountBloc.isAcctRemoteDomainExist;
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentInstance = currentAuthInstanceBloc.currentInstance;
 
-              if (success) {
-                Navigator.of(context).pop();
-              }
-            }),
-      ],
-      cancelable: cancelable);
+    var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
+
+    return StreamBuilder<IPleromaApiAccountRelationship?>(
+      stream: accountBloc.relationshipStream,
+      builder: (context, snapshot) {
+        var accountRelationship = snapshot.data;
+        var isRelationshipLoaded = accountRelationship != null;
+        return FediChooserDialogBody(
+          title: S.of(context).app_account_action_popup_title,
+          content: "${accountBloc.acct}",
+          actions: [
+            if (isLocal && accountBloc.isAcctRemoteDomainExist)
+              AccountActionMoreDialog.buildAccountOpenOnRemoteInstance(context),
+            AccountActionMoreDialog.buildAccountOpenInBrowserAction(context),
+            if (isLocal && isRelationshipLoaded)
+              AccountActionMoreDialog.buildAccountMuteAction(context),
+            if (isLocal && isRelationshipLoaded)
+              AccountActionMoreDialog.buildAccountBlockAction(context),
+            if (isLocal && isAcctRemoteDomainExist && isRelationshipLoaded)
+              AccountActionMoreDialog.buildAccountBlockDomainAction(context),
+            if (isLocal && showReportAction)
+              AccountActionMoreDialog.buildAccountReportAction(context),
+            if (isLocal &&
+                currentInstance!.isSubscribeToAccountFeatureSupported! &&
+                isRelationshipLoaded)
+              AccountActionMoreDialog.buildAccountSubscribeAction(context),
+            buildAccountInstanceInfoAction(context),
+          ],
+          cancelable: cancelable,
+        );
+      },
+    );
+  }
+
+  static DialogAction buildAccountReportAction(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+    var statusBloc = IStatusBloc.of(context, listen: false);
+    return DialogAction(
+      icon: FediIcons.report,
+      label: S.of(context).app_account_action_report_label,
+      onAction: (context) async {
+        goToAccountReportPage(
+          context,
+          account: accountBloc.account,
+          statuses: [
+            statusBloc.status,
+          ],
+        );
+      },
+    );
+  }
+
+  static DialogAction buildAccountBlockAction(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+    return DialogAction(
+      icon: accountBloc.relationship?.blocking == true
+          ? FediIcons.unblock
+          : FediIcons.block,
+      label: accountBloc.relationship?.blocking == true
+          ? S.of(context).app_account_action_unblock
+          : S.of(context).app_account_action_block,
+      onAction: (context) async {
+        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          context: context,
+          asyncCode: () async => accountBloc.toggleBlock(),
+        );
+
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  static DialogAction buildAccountBlockDomainAction(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+    return DialogAction(
+      icon: accountBloc.relationship!.domainBlocking == true
+          ? FediIcons.domain_block
+          : FediIcons.domain_unblock,
+      label: accountBloc.relationship!.domainBlocking == true
+          ? S.of(context).app_account_action_unblockDomain(
+                accountBloc.acctRemoteDomainOrNull!,
+              )
+          : S.of(context).app_account_action_blockDomain(
+                accountBloc.acctRemoteDomainOrNull!,
+              ),
+      onAction: (context) async {
+        await accountBloc.toggleBlockDomain();
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  static DialogAction buildAccountInstanceInfoAction(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+
+    var remoteDomainOrNull = accountBloc.acctRemoteDomainOrNull;
+
+    // todo: remove hack
+    if (accountBloc is RemoteAccountBloc) {
+      remoteDomainOrNull ??= accountBloc.instanceUri!.host;
+    }
+
+    var currentInstanceUrlHost =
+        ICurrentAuthInstanceBloc.of(context, listen: false)
+            .currentInstance!
+            .urlHost;
+
+    var isLocal = remoteDomainOrNull == null;
+
+    return DialogAction(
+      icon: FediIcons.instance,
+      label: S.of(context).app_account_action_instanceDetails(
+            isLocal ? currentInstanceUrlHost : remoteDomainOrNull!,
+          ),
+      onAction: (context) async {
+        if (isLocal) {
+          goToLocalInstanceDetailsPage(context);
+        } else {
+          // todo: https shouldn't be hardcoded
+          var remoteInstanceUri = Uri.parse(
+            "https://$remoteDomainOrNull",
+          );
+          goToRemoteInstanceDetailsPage(
+            context,
+            remoteInstanceUri: remoteInstanceUri,
+          );
+        }
+      },
+    );
+  }
+
+  static DialogAction buildAccountMuteAction(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+    var muting = accountBloc.relationship?.muting == true;
+    return DialogAction(
+      icon: muting ? FediIcons.unmute : FediIcons.mute,
+      label: muting
+          ? S.of(context).app_account_action_unmute
+          : S.of(context).app_account_action_mute,
+      onAction: (context) async {
+        if (muting) {
+          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            context: context,
+            asyncCode: () => accountBloc.unMute(),
+          );
+          Navigator.of(context).pop();
+        } else {
+          await showAccountActionMuteDialog(
+            context: context,
+            accountBloc: accountBloc,
+          );
+          Navigator.of(context).pop();
+        }
+      },
+    );
+  }
+
+  static DialogAction buildAccountSubscribeAction(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+    var muting = accountBloc.relationship?.subscribing == true;
+    return DialogAction(
+      icon: muting ? FediIcons.unsubscribe : FediIcons.subscribe,
+      label: muting
+          ? S.of(context).app_account_action_unsubscribe
+          : S.of(context).app_account_action_subscribe,
+      onAction: (context) async {
+        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          context: context,
+          asyncCode: () => accountBloc.toggleSubscribe(),
+        );
+
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  static DialogAction buildAccountFollowAction(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+    return DialogAction(
+      icon: accountBloc.relationship?.following == true
+          ? FediIcons.unfollow
+          : FediIcons.follow,
+      label: accountBloc.relationship?.following == true
+          ? S.of(context).app_account_action_unfollow
+          : S.of(context).app_account_action_follow,
+      onAction: (context) async {
+        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          context: context,
+          asyncCode: () => accountBloc.toggleFollow(),
+        );
+
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  static DialogAction buildAccountMessageAction(BuildContext context) {
+    return DialogAction(
+      icon: FediIcons.message,
+      label: S.of(context).app_account_action_message,
+      onAction: (context) {
+        goToMessagesPageAccountAction(context);
+      },
+    );
+  }
+
+  static DialogAction buildAccountOpenInBrowserAction(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+    return DialogAction(
+      icon: FediIcons.browser,
+      label: S.of(context).app_account_action_openInBrowser,
+      onAction: (context) async {
+        var url = accountBloc.account.url;
+        await UrlHelper.handleUrlClickWithInstanceLocation(
+          context: context,
+          url: url,
+          instanceLocationBloc: accountBloc,
+        );
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  static DialogAction buildAccountOpenOnRemoteInstance(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+    return DialogAction(
+      icon: FediIcons.instance,
+      label: S.of(context).app_account_action_openOnRemoteInstance(
+            accountBloc.acctRemoteDomainOrNull!,
+          ),
+      onAction: (context) async {
+        await goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
+          context,
+          localInstanceRemoteAccount: accountBloc.account,
+        );
+      },
+    );
+  }
 }

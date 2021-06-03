@@ -17,12 +17,12 @@ class FediNestedScrollViewBloc extends DisposableOwner
       BehaviorSubject();
   BehaviorSubject<int> scrollOffsetSubject = BehaviorSubject();
 
-  ScrollController get scrollController =>
+  ScrollController? get scrollController =>
       nestedScrollControllerBloc.nestedScrollController;
 
   @override
   bool get isNestedScrollViewBodyStartedScroll =>
-      isNestedScrollViewBodyStartedScrollSubject.value;
+      isNestedScrollViewBodyStartedScrollSubject.value!;
 
   @override
   Stream<bool> get isNestedScrollViewBodyStartedScrollStream =>
@@ -30,21 +30,22 @@ class FediNestedScrollViewBloc extends DisposableOwner
 
   @override
   bool get isNestedScrollViewBodyNotStartedScroll =>
-      isNestedScrollViewBodyStartedScroll != true;
+      !isNestedScrollViewBodyStartedScroll;
 
   @override
   Stream<bool> get isNestedScrollViewBodyNotStartedScrollStream =>
       isNestedScrollViewBodyStartedScrollStream.map(
-          (isNestedScrollViewBodyStartedScroll) =>
-              isNestedScrollViewBodyStartedScroll != true);
+        (isNestedScrollViewBodyStartedScroll) =>
+            !isNestedScrollViewBodyStartedScroll,
+      );
 
   @override
-  int get scrollOffset => scrollOffsetSubject.value;
+  int? get scrollOffset => scrollOffsetSubject.value;
 
   @override
   Stream<int> get scrollOffsetStream => scrollOffsetSubject.stream.distinct();
 
-  FediNestedScrollViewBloc({@required this.nestedScrollControllerBloc}) {
+  FediNestedScrollViewBloc({required this.nestedScrollControllerBloc}) {
     addDisposable(subject: isNestedScrollViewBodyStartedScrollSubject);
     addDisposable(subject: scrollOffsetSubject);
 
@@ -55,11 +56,11 @@ class FediNestedScrollViewBloc extends DisposableOwner
         _logger.warning(() => "failed to onScroll", e, stackTrace);
       }
     };
-    scrollController.addListener(listener);
+    scrollController!.addListener(listener);
 
     addDisposable(custom: () {
       try {
-        scrollController.removeListener(listener);
+        scrollController!.removeListener(listener);
       } catch (e) {
         _logger.warning(
           () => "failed to unsubscribe scrollController"
@@ -70,20 +71,24 @@ class FediNestedScrollViewBloc extends DisposableOwner
   }
 
   void onScroll() {
-    var pixels = scrollController.position.pixels;
-    var maxScrollExtent = scrollController.position.maxScrollExtent;
+    var pixels = scrollController!.position.pixels;
+    var maxScrollExtent = scrollController!.position.maxScrollExtent;
 
-    scrollOffsetSubject.add(pixels.toInt());
+    if (!scrollOffsetSubject.isClosed) {
+      scrollOffsetSubject.add(pixels.toInt());
+    }
 
     // -1 is hack, because scroll extent sometimes invalid
     // it should be equal to maxScrollExtent when nested scroll body start
     // scrolls but actually it is a little smaller (0.00001 difference)
     maxScrollExtent = maxScrollExtent - 1;
     var isAtLeastStartExpand = pixels <= maxScrollExtent;
-    isNestedScrollViewBodyStartedScrollSubject.add(isAtLeastStartExpand);
+    if (!isNestedScrollViewBodyStartedScrollSubject.isClosed) {
+      isNestedScrollViewBodyStartedScrollSubject.add(isAtLeastStartExpand);
+    }
   }
 
   @override
-  NestedScrollController get nestedScrollController =>
+  NestedScrollController? get nestedScrollController =>
       nestedScrollControllerBloc.nestedScrollController;
 }

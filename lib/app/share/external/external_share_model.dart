@@ -1,9 +1,20 @@
-import 'package:flutter/widgets.dart';
+import 'package:path/path.dart' as path;
 
 class ShareUrlFile {
   final String url;
-  final String filename;
-  ShareUrlFile({@required this.url, @required this.filename});
+  final String filenameWithExtension;
+
+  ShareUrlFile({
+    required this.url,
+    required this.filenameWithExtension,
+  });
+
+  ShareUrlFile.fromUrl({
+    required String url,
+  }) : this(
+          url: url,
+          filenameWithExtension: path.basename(url),
+        );
 
   @override
   bool operator ==(Object other) =>
@@ -11,11 +22,16 @@ class ShareUrlFile {
       other is ShareUrlFile &&
           runtimeType == other.runtimeType &&
           url == other.url &&
-          filename == other.filename;
+          filenameWithExtension == other.filenameWithExtension;
+
   @override
-  int get hashCode => url.hashCode ^ filename.hashCode;
+  int get hashCode => url.hashCode ^ filenameWithExtension.hashCode;
+
   @override
   String toString() {
-    return 'ShareUrlFile{url: $url, filename: $filename}';
+    return 'ShareUrlFile{'
+        'url: $url, '
+        'filename: $filenameWithExtension'
+        '}';
   }
 }

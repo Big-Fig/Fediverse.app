@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:package_info/package_info.dart';
 
 class VersionPackageInfoWidget extends StatelessWidget {
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
-  VersionPackageInfoWidget({this.textStyle});
+  const VersionPackageInfoWidget({this.textStyle});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class VersionPackageInfoWidget extends StatelessWidget {
           return Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              FutureBuilder(
+              FutureBuilder<String>(
                 future: FediPackageInfoHelper.getAppName(),
                 builder: (context, snapshot) {
                   return Text(
@@ -28,13 +28,13 @@ class VersionPackageInfoWidget extends StatelessWidget {
               ),
               const FediSmallHorizontalSpacer(),
               Text(
-                snapshot.data.version,
+                snapshot.data!.version,
                 style: textStyle,
               ),
             ],
           );
         } else {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
       },
     );

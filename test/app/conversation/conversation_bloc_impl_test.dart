@@ -1,120 +1,169 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc.dart';
+import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
-import 'package:fedi/app/account/my/my_account_local_preference_bloc.dart';
-import 'package:fedi/app/account/my/my_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/conversation/conversation_bloc.dart';
-import 'package:fedi/app/conversation/conversation_bloc_impl.dart';
-import 'package:fedi/app/conversation/conversation_model.dart';
-import 'package:fedi/app/conversation/conversation_model_adapter.dart';
-import 'package:fedi/app/conversation/repository/conversation_repository.dart';
-import 'package:fedi/app/conversation/repository/conversation_repository_impl.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_bloc.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_bloc_impl.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model_adapter.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service_impl.dart';
+import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service_impl.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:moor_ffi/moor_ffi.dart';
+import 'package:moor/ffi.dart';
 
-import '../../pleroma/account/my/pleroma_my_account_service_mock.dart';
-import '../../pleroma/conversation/pleroma_conversation_service_mock.dart';
-import '../account/account_model_helper.dart';
-import '../account/my/my_acount_model_helper.dart';
-import '../status/status_model_helper.dart';
-import 'conversation_model_helper.dart';
+import '../account/account_test_helper.dart';
+import '../account/my/my_account_test_helper.dart';
+import '../status/status_test_helper.dart';
+import 'conversation_bloc_impl_test.mocks.dart';
+import 'conversation_test_helper.dart';
 
+// ignore_for_file: no-magic-number
+@GenerateMocks([
+  PleromaApiConversationService,
+  PleromaApiAuthStatusService,
+  PleromaApiMyAccountService,
+])
 void main() {
-  IConversation conversation;
-  IConversationBloc conversationBloc;
-  PleromaConversationServiceMock pleromaConversationServiceMock;
-  PleromaMyAccountServiceMock pleromaMyAccountServiceMock;
-  AppDatabase database;
-  IAccountRepository accountRepository;
-  IStatusRepository statusRepository;
-  IConversationRepository conversationRepository;
-  IMyAccountBloc myAccountBloc;
-  IMyAccount myAccount;
+  late IConversationChat conversation;
+  late IConversationChatBloc conversationBloc;
+  late MockPleromaApiConversationService pleromaConversationServiceMock;
+  late MockPleromaApiAuthStatusService pleromaAuthStatusServiceMock;
+  late MockPleromaApiMyAccountService pleromaMyAccountServiceMock;
+  late AppDatabase database;
+  late IAccountRepository accountRepository;
+  late IStatusRepository statusRepository;
+  late IConversationChatRepository conversationRepository;
+  late IMyAccountBloc myAccountBloc;
+  late IMyAccount myAccount;
 
-  AuthInstance authInstance;
-  ILocalPreferencesService preferencesService;
-  IMyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
+  late AuthInstance authInstance;
+  late ILocalPreferencesService preferencesService;
+  late IMyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
 
-  setUp(() async {
-    database = AppDatabase(VmDatabase.memory());
-    accountRepository = AccountRepository(appDatabase: database);
-    statusRepository = StatusRepository(
-        appDatabase: database, accountRepository: accountRepository);
-    conversationRepository = ConversationRepository(
+  setUp(
+    () async {
+      database = AppDatabase(VmDatabase.memory());
+      accountRepository = AccountRepository(appDatabase: database);
+      statusRepository = StatusRepository(
         appDatabase: database,
         accountRepository: accountRepository,
-        statusRepository: statusRepository);
+      );
+      conversationRepository = ConversationChatRepository(
+        appDatabase: database,
+        accountRepository: accountRepository,
+        statusRepository: statusRepository,
+      );
 
-    pleromaConversationServiceMock = PleromaConversationServiceMock();
-    pleromaMyAccountServiceMock = PleromaMyAccountServiceMock();
+      pleromaConversationServiceMock = MockPleromaApiConversationService();
+      pleromaMyAccountServiceMock = MockPleromaApiMyAccountService();
+      pleromaAuthStatusServiceMock = MockPleromaApiAuthStatusService();
+      preferencesService = MemoryLocalPreferencesService();
 
-    preferencesService = MemoryLocalPreferencesService();
+      myAccount =
+          await MyAccountTestHelper.createTestMyAccount(seed: "myAccount");
+      authInstance = AuthInstance(
+        urlHost: "fedi.app",
+        acct: myAccount.acct,
+        token: null,
+        authCode: null,
+        isPleroma: false,
+        application: null,
+        info: null,
+        urlSchema: null,
+      );
 
-    myAccount = await createTestMyAccount(seed: "myAccount");
-    authInstance = AuthInstance(urlHost: "fedi.app", acct: myAccount.acct);
+      myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
+        preferencesService,
+        userAtHost: authInstance.userAtHost,
+      );
 
-    myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
-        preferencesService, authInstance.userAtHost);
+      await myAccountLocalPreferenceBloc.setValue(
+        myAccount.toPleromaApiMyAccountWrapper(),
+      );
+      // hack to execute notify callbacks
+      await Future.delayed(Duration(milliseconds: 1));
 
-    await myAccountLocalPreferenceBloc.setValue(myAccount);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    myAccountBloc = MyAccountBloc(
+      myAccountBloc = MyAccountBloc(
         pleromaMyAccountService: pleromaMyAccountServiceMock,
         accountRepository: accountRepository,
         myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
-        instance: authInstance);
+        instance: authInstance,
+      );
 
-    when(pleromaConversationServiceMock.isApiReadyToUse).thenReturn(true);
+      when(pleromaConversationServiceMock.isConnected).thenReturn(true);
+      when(pleromaConversationServiceMock.pleromaApiState).thenReturn(
+        PleromaApiState.validAuth,
+      );
 
-    conversation = await createTestConversation(seed: "seed1");
+      conversation =
+          await ConversationTestHelper.createTestConversation(seed: "seed1");
 
-    conversationBloc = ConversationBloc(
+      conversationBloc = ConversationChatBloc(
         conversation: conversation,
         pleromaConversationService: pleromaConversationServiceMock,
         accountRepository: accountRepository,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         delayInit: false,
-        myAccountBloc: myAccountBloc);
-  });
+        myAccountBloc: myAccountBloc,
+        lastChatMessage: null,
+        pleromaAuthStatusService: pleromaAuthStatusServiceMock,
+      );
+    },
+  );
 
   tearDown(() async {
-    conversationBloc.dispose();
-    conversationRepository.dispose();
-    statusRepository.dispose();
-    accountRepository.dispose();
+    await conversationBloc.dispose();
+    await conversationRepository.dispose();
+    await statusRepository.dispose();
+    await accountRepository.dispose();
     await database.close();
-    myAccountLocalPreferenceBloc.dispose();
-    preferencesService.dispose();
+    await myAccountLocalPreferenceBloc.dispose();
+    await preferencesService.dispose();
   });
 
-  Future _update(IConversation conversation,
-      {IStatus lastStatus, List<IAccount> accounts}) async {
-    await conversationRepository.upsertRemoteConversation(
-        mapLocalConversationToRemoteConversation(conversation,
-            lastStatus: lastStatus, accounts: accounts));
+  Future _update(
+    IConversationChat conversation, {
+    IStatus? lastStatus,
+    required List<IAccount> accounts,
+  }) async {
+    await conversationRepository.upsertInRemoteType(
+      conversation.toPleromaConversation(
+        lastStatus: lastStatus,
+        accounts: accounts,
+      ),
+    );
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
   }
 
   test('conversation', () async {
-    expectConversation(conversationBloc.conversation, conversation);
+    ConversationTestHelper.expectConversation(
+      conversationBloc.conversation,
+      conversation,
+    );
 
-    var newValue = await createTestConversation(
-        seed: "seed2", remoteId: conversation.remoteId);
+    var newValue = await ConversationTestHelper.createTestConversation(
+      seed: "seed2",
+      remoteId: conversation.remoteId,
+    );
 
     var listenedValue;
 
@@ -123,21 +172,38 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectConversation(listenedValue, conversation);
+    ConversationTestHelper.expectConversation(
+      listenedValue,
+      conversation,
+    );
 
-    await _update(newValue);
+    await _update(newValue, accounts: []);
 
-    expectConversation(conversationBloc.conversation, newValue);
-    expectConversation(listenedValue, newValue);
+    ConversationTestHelper.expectConversation(
+      conversationBloc.conversation,
+      newValue,
+    );
+    ConversationTestHelper.expectConversation(
+      listenedValue,
+      newValue,
+    );
     await subscription.cancel();
   });
 
   test('lastStatus', () async {
-    var status1 = await createTestStatus(seed: "status1");
-    var status2 = await createTestStatus(seed: "status2");
+    var status1 = await StatusTestHelper.createTestStatus(
+      seed: "status1",
+      createdAt: DateTime(2001),
+    );
+    var status2 = await StatusTestHelper.createTestStatus(
+      seed: "status2",
+      createdAt: DateTime(2002),
+    );
 
-    var newValue = await createTestConversation(
-        seed: "seed2", remoteId: conversation.remoteId);
+    var newValue = await ConversationTestHelper.createTestConversation(
+      seed: "seed2",
+      remoteId: conversation.remoteId,
+    );
 
     var listenedValue;
 
@@ -147,28 +213,50 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    await _update(newValue, lastStatus: status1);
+    await _update(
+      newValue,
+      lastStatus: status1,
+      accounts: [],
+    );
 
-    expectStatus(conversationBloc.lastStatus, status1);
-    expectStatus(listenedValue, status1);
+    StatusTestHelper.expectStatus(
+      conversationBloc.lastStatus,
+      status1,
+    );
+    StatusTestHelper.expectStatus(
+      listenedValue,
+      status1,
+    );
 
-    await _update(newValue, lastStatus: status2);
+    await _update(
+      newValue,
+      lastStatus: status2,
+      accounts: [],
+    );
 
-    expectStatus(conversationBloc.lastStatus, status2);
-    expectStatus(listenedValue, status2);
+    StatusTestHelper.expectStatus(
+      conversationBloc.lastStatus,
+      status2,
+    );
+    StatusTestHelper.expectStatus(
+      listenedValue,
+      status2,
+    );
 
     await subscription.cancel();
   });
 
   test('accounts', () async {
-    var account1 = await createTestAccount(seed: "account1");
-    var account2 = await createTestAccount(seed: "account2");
-    var account3 = await createTestAccount(seed: "account3");
+    var account1 = await AccountTestHelper.createTestAccount(seed: "account1");
+    var account2 = await AccountTestHelper.createTestAccount(seed: "account2");
+    var account3 = await AccountTestHelper.createTestAccount(seed: "account3");
 
-    var newValue = await createTestConversation(
-        seed: "seed2", remoteId: conversation.remoteId);
+    var newValue = await ConversationTestHelper.createTestConversation(
+      seed: "seed2",
+      remoteId: conversation.remoteId,
+    );
 
-    var listenedValue;
+    late var listenedValue;
 
     var subscription = conversationBloc.accountsStream.listen((newValue) {
       listenedValue = newValue;
@@ -176,33 +264,67 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    await _update(newValue, accounts: [account1]);
+    await _update(
+      newValue,
+      accounts: [account1],
+    );
 
-    expectAccount(conversationBloc.accounts[0], account1);
-    expectAccount(listenedValue[0], account1);
+    AccountTestHelper.expectAccount(
+      conversationBloc.accounts[0],
+      account1,
+    );
+    AccountTestHelper.expectAccount(
+      listenedValue[0],
+      account1,
+    );
 
-    await _update(newValue, accounts: [account2, account3]);
+    await _update(
+      newValue,
+      accounts: [account2, account3],
+    );
 
-    expectAccount(conversationBloc.accounts[0], account1);
-    expectAccount(conversationBloc.accounts[1], account2);
-    expectAccount(conversationBloc.accounts[2], account3);
-    expectAccount(listenedValue[0], account1);
-    expectAccount(listenedValue[1], account2);
-    expectAccount(listenedValue[2], account3);
+    AccountTestHelper.expectAccount(
+      conversationBloc.accounts[0],
+      account1,
+    );
+    AccountTestHelper.expectAccount(
+      conversationBloc.accounts[1],
+      account2,
+    );
+    AccountTestHelper.expectAccount(
+      conversationBloc.accounts[2],
+      account3,
+    );
+    AccountTestHelper.expectAccount(
+      listenedValue[0],
+      account1,
+    );
+    AccountTestHelper.expectAccount(
+      listenedValue[1],
+      account2,
+    );
+    AccountTestHelper.expectAccount(
+      listenedValue[2],
+      account3,
+    );
 
     await subscription.cancel();
   });
 
   test('accountsWithoutMe', () async {
-    var account1 = await createTestAccount(seed: "account1");
-    var account2 =
-        await createTestAccount(seed: "account2", remoteId: myAccount.remoteId);
-    var account3 = await createTestAccount(seed: "account3");
+    var account1 = await AccountTestHelper.createTestAccount(seed: "account1");
+    var account2 = await AccountTestHelper.createTestAccount(
+      seed: "account2",
+      remoteId: myAccount.remoteId,
+    );
+    var account3 = await AccountTestHelper.createTestAccount(seed: "account3");
 
-    var newValue = await createTestConversation(
-        seed: "seed2", remoteId: conversation.remoteId);
+    var newValue = await ConversationTestHelper.createTestConversation(
+      seed: "seed2",
+      remoteId: conversation.remoteId,
+    );
 
-    var listenedValue;
+    late var listenedValue;
 
     var subscription =
         conversationBloc.accountsWithoutMeStream.listen((newValue) {
@@ -211,26 +333,55 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    await _update(newValue, accounts: [account1]);
+    await _update(
+      newValue,
+      accounts: [account1],
+    );
 
-    expectAccount(conversationBloc.accountsWithoutMe[0], account1);
-    expectAccount(listenedValue[0], account1);
+    AccountTestHelper.expectAccount(
+      conversationBloc.accountsWithoutMe[0],
+      account1,
+    );
+    AccountTestHelper.expectAccount(
+      listenedValue[0],
+      account1,
+    );
 
-    await _update(newValue, accounts: [account2, account3]);
+    await _update(
+      newValue,
+      accounts: [account2, account3],
+    );
 
-    expectAccount(conversationBloc.accountsWithoutMe[0], account1);
-    expectAccount(conversationBloc.accountsWithoutMe[1], account3);
-    expectAccount(listenedValue[0], account1);
-    expectAccount(listenedValue[1], account3);
+    AccountTestHelper.expectAccount(
+      conversationBloc.accountsWithoutMe[0],
+      account1,
+    );
+    AccountTestHelper.expectAccount(
+      conversationBloc.accountsWithoutMe[1],
+      account3,
+    );
+    AccountTestHelper.expectAccount(
+      listenedValue[0],
+      account1,
+    );
+    AccountTestHelper.expectAccount(
+      listenedValue[1],
+      account3,
+    );
 
     await subscription.cancel();
   });
 
   test('refreshFromNetwork', () async {
-    expectConversation(conversationBloc.conversation, conversation);
+    ConversationTestHelper.expectConversation(
+      conversationBloc.conversation,
+      conversation,
+    );
 
-    var newValue = await createTestConversation(
-        seed: "seed2", remoteId: conversation.remoteId);
+    var newValue = await ConversationTestHelper.createTestConversation(
+      seed: "seed2",
+      remoteId: conversation.remoteId,
+    );
 
     var listenedValue;
 
@@ -239,21 +390,29 @@ void main() {
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expectConversation(listenedValue, conversation);
+    ConversationTestHelper.expectConversation(
+      listenedValue,
+      conversation,
+    );
 
     when(pleromaConversationServiceMock.getConversation(
-            conversationRemoteId: conversation.remoteId))
-        .thenAnswer((_) async => mapLocalConversationToRemoteConversation(
-            newValue,
-            accounts: [],
-            lastStatus: null));
+      conversationRemoteId: conversation.remoteId,
+    )).thenAnswer(
+      (_) async => newValue.toPleromaConversation(
+        accounts: [],
+        lastStatus: null,
+      ),
+    );
 
     await conversationBloc.refreshFromNetwork();
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expectConversation(conversationBloc.conversation, newValue);
-    expectConversation(listenedValue, newValue);
+    ConversationTestHelper.expectConversation(
+      conversationBloc.conversation,
+      newValue,
+    );
+    ConversationTestHelper.expectConversation(listenedValue, newValue);
     await subscription.cancel();
   });
 }

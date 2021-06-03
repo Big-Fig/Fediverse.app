@@ -1,38 +1,46 @@
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
+import 'package:fedi/pagination/cached/cached_pagination_list_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("cached_pagination_list_bloc_impl.dart");
 
 class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
-    extends PaginationListBloc<TPage, TItem> {
-  CachedPaginationListBloc(
-      {@required ICachedPaginationBloc<TPage, TItem> cachedPaginationBloc})
-      : super(paginationBloc: cachedPaginationBloc);
+    extends PaginationListBloc<TPage, TItem>
+    implements ICachedPaginationListBloc<TPage, TItem> {
+  CachedPaginationListBloc({
+    required ICachedPaginationBloc<TPage, TItem> cachedPaginationBloc,
+  }) : super(paginationBloc: cachedPaginationBloc);
 
   @override
-  Future<PaginationListLoadingState> loadMoreWithoutController() async {
-    loadMoreStateSubject.add(PaginationListLoadingState.loading);
+  Future<FediListSmartRefresherLoadingState> loadMoreWithoutController() async {
+    loadMoreStateSubject.add(FediListSmartRefresherLoadingState.loading);
 
-    PaginationListLoadingState state;
+    FediListSmartRefresherLoadingState state;
 
     try {
-      var nextPageIndex = paginationBloc.loadedPagesMaximumIndex + 1;
+      var nextPageIndex = paginationBloc.loadedPagesMaximumIndex! + 1;
       CachedPaginationPage nextPage = await paginationBloc.requestPage(
-          pageIndex: nextPageIndex, forceToSkipCache: true);
-      if (nextPage?.items?.isNotEmpty == true) {
-        state = PaginationListLoadingState.loaded;
+        pageIndex: nextPageIndex,
+        forceToSkipCache: true,
+      );
+      if (nextPage.items.isNotEmpty) {
+        state = FediListSmartRefresherLoadingState.loaded;
       } else {
-        if (nextPage?.isActuallyRefreshedFromRemote == true) {
-          state = PaginationListLoadingState.noData;
+        if (nextPage.isActuallyRefreshedFromRemote) {
+          state = FediListSmartRefresherLoadingState.noData;
         } else {
-          state = PaginationListLoadingState.failed;
+          state = FediListSmartRefresherLoadingState.failed;
           if (!loadMoreErrorStreamController.isClosed) {
-            loadMoreErrorStreamController.add(PaginationListLoadingError(
-                error: CantUpdateFromNetworkException(), stackTrace: null));
+            loadMoreErrorStreamController.add(
+              PaginationListLoadingError(
+                error: CantUpdateFromNetworkException(),
+                stackTrace: null,
+              ),
+            );
           }
         }
       }
@@ -44,7 +52,7 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
     } catch (e, stackTrace) {
       // todo: refactor copy-pasted code
       if (!loadMoreStateSubject.isClosed) {
-        loadMoreStateSubject.add(PaginationListLoadingState.failed);
+        loadMoreStateSubject.add(FediListSmartRefresherLoadingState.failed);
       }
 
       if (!loadMoreErrorStreamController.isClosed) {
@@ -53,38 +61,49 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
       }
 
       _logger.warning(
-          () => "error during loadMoreWithoutController", e, stackTrace);
+        () => "error during loadMoreWithoutController",
+        e,
+        stackTrace,
+      );
       rethrow;
     }
   }
 
   @override
-  Future<PaginationListLoadingState> refreshWithoutController() async {
-    refreshStateSubject.add(PaginationListLoadingState.loading);
+  Future<FediListSmartRefresherLoadingState> refreshWithoutController() async {
+    refreshStateSubject.add(FediListSmartRefresherLoadingState.loading);
 
     try {
-      PaginationListLoadingState state;
+      FediListSmartRefresherLoadingState state;
       CachedPaginationPage newPage =
           await paginationBloc.refreshWithoutController();
 
-      if (newPage?.items?.isNotEmpty == true) {
-        if (newPage?.isActuallyRefreshedFromRemote == true) {
-          state = PaginationListLoadingState.loaded;
+      if (newPage.items.isNotEmpty) {
+        if (newPage.isActuallyRefreshedFromRemote) {
+          state = FediListSmartRefresherLoadingState.loaded;
         } else {
-          state = PaginationListLoadingState.failed;
+          state = FediListSmartRefresherLoadingState.failed;
           if (!loadMoreErrorStreamController.isClosed) {
-            refreshErrorStreamController.add(PaginationListLoadingError(
-                error: CantUpdateFromNetworkException(), stackTrace: null));
+            refreshErrorStreamController.add(
+              PaginationListLoadingError(
+                error: CantUpdateFromNetworkException(),
+                stackTrace: null,
+              ),
+            );
           }
         }
       } else {
-        if (newPage?.isActuallyRefreshedFromRemote == true) {
-          state = PaginationListLoadingState.noData;
+        if (newPage.isActuallyRefreshedFromRemote) {
+          state = FediListSmartRefresherLoadingState.noData;
         } else {
-          state = PaginationListLoadingState.failed;
+          state = FediListSmartRefresherLoadingState.failed;
           if (!loadMoreErrorStreamController.isClosed) {
-            refreshErrorStreamController.add(PaginationListLoadingError(
-                error: CantUpdateFromNetworkException(), stackTrace: null));
+            refreshErrorStreamController.add(
+              PaginationListLoadingError(
+                error: CantUpdateFromNetworkException(),
+                stackTrace: null,
+              ),
+            );
           }
         }
       }
@@ -96,14 +115,23 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
     } catch (e, stackTrace) {
       // todo: refactor copy-pasted code
       if (!refreshStateSubject.isClosed) {
-        refreshStateSubject.add(PaginationListLoadingState.failed);
+        refreshStateSubject.add(
+          FediListSmartRefresherLoadingState.failed,
+        );
       }
       if (!refreshErrorStreamController.isClosed) {
-        refreshErrorStreamController
-            .add(PaginationListLoadingError(error: e, stackTrace: stackTrace));
+        refreshErrorStreamController.add(
+          PaginationListLoadingError(
+            error: e,
+            stackTrace: stackTrace,
+          ),
+        );
       }
       _logger.warning(
-          () => "error during refreshWithoutController", e, stackTrace);
+        () => "error during refreshWithoutController",
+        e,
+        stackTrace,
+      );
       rethrow;
     }
   }

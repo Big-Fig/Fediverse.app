@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
@@ -18,11 +17,14 @@ import 'package:fedi/app/search/statuses/search_statuses_pagination_list_bloc.da
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc_impl.dart';
+import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_model.dart';
+import 'package:fedi/app/ui/tab/indicator/text/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,102 +42,78 @@ class SearchWidget extends StatelessWidget {
     var searchBloc = ISearchBloc.of(context, listen: false);
 
     return StreamBuilder<bool>(
-        stream: searchBloc.searchInputBloc.confirmedSearchTermIsNotEmptyStream,
-        initialData: searchBloc.searchInputBloc.confirmedSearchTermIsNotEmpty,
-        builder: (context, snapshot) {
-          var confirmedSearchTermIsNotEmpty = snapshot.data;
-          if (confirmedSearchTermIsNotEmpty) {
-            return buildNonEmptyInputBody(searchBloc, context);
-          } else {
-            return RecentSearchWidget();
-          }
-        });
+      stream: searchBloc.searchInputBloc.confirmedSearchTermIsNotEmptyStream,
+      initialData: searchBloc.searchInputBloc.confirmedSearchTermIsNotEmpty,
+      builder: (context, snapshot) {
+        var confirmedSearchTermIsNotEmpty = snapshot.data!;
+        if (confirmedSearchTermIsNotEmpty) {
+          return buildNonEmptyInputBody(searchBloc, context);
+        } else {
+          return const RecentSearchWidget();
+        }
+      },
+    );
   }
 
   DefaultTabController buildNonEmptyInputBody(
-      ISearchBloc searchBloc, BuildContext context) {
+    ISearchBloc searchBloc,
+    BuildContext context,
+  ) {
     return DefaultTabController(
       length: tabs.length,
       initialIndex: tabs.indexOf(searchBloc.selectedTab),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          buildTabBar(context, tabs, searchBloc),
-          FediUltraLightGreyDivider(),
-          Expanded(child: buildTabsWidget(context, tabs, searchBloc))
+          const _SearchTabBarWidget(),
+          const FediUltraLightGreyDivider(),
+          Expanded(
+            child: const _SearchBodyWidget(),
+          ),
         ],
       ),
     );
   }
 
-  Widget buildTabBar(
-          BuildContext context, List<SearchTab> tabs, ISearchBloc searchBloc) =>
-      Padding(
-        padding: FediPadding.allBigPadding,
-        child: Builder(
-          builder: (context) => FediTextTabIndicatorWidget(
-            isTransparent: false,
-            tabs: tabs,
-            tabController: DefaultTabController.of(context),
-            tabToTextMapper: mapTabToTitle,
-          ),
+  const SearchWidget();
+}
+
+class _SearchBodyWidget extends StatelessWidget {
+  const _SearchBodyWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => TabBarView(
+        children: List<Widget>.generate(
+          tabs.length,
+          (int index) {
+            var tab = tabs[index];
+
+            return _SearchTabBodyWidget(tab: tab);
+          },
         ),
       );
+}
 
-  String mapTabToTitle(BuildContext context, SearchTab tab) {
-    switch (tab) {
-      case SearchTab.accounts:
-        return tr("app.search.tab.accounts");
-        break;
-      case SearchTab.statuses:
-        return tr("app.search.tab.statuses");
-        break;
-      case SearchTab.all:
-        return tr("app.search.tab.all");
-        break;
-      case SearchTab.hashtags:
-        return tr("app.search.tab.hashtags");
-        break;
-    }
+class _SearchTabBodyWidget extends StatelessWidget {
+  const _SearchTabBodyWidget({
+    Key? key,
+    required this.tab,
+  }) : super(key: key);
 
-    throw "Invalid tab $tab";
+  final SearchTab tab;
+
+  @override
+  Widget build(BuildContext context) {
+    var searchBloc = ISearchBloc.of(context, listen: false);
+
+    return buildTabBody(
+      context,
+      tab,
+      searchBloc,
+    );
   }
-
-  Widget buildTabsWidget(
-          BuildContext context, List<SearchTab> tabs, ISearchBloc searchBloc) =>
-      TabBarView(
-          children: List<Widget>.generate(
-        tabs.length,
-        (int index) {
-          var tab = tabs[index];
-
-          return UnfocusOnScrollAreaWidget(
-              child: buildTabBody(context, tab, searchBloc));
-        },
-      ));
-
-  Widget buildTabBody(
-      BuildContext context, SearchTab tab, ISearchBloc searchBloc) {
-    switch (tab) {
-      case SearchTab.accounts:
-        return buildAccountsTab(context);
-        break;
-      case SearchTab.statuses:
-        return buildStatusesTab(context);
-
-        break;
-      case SearchTab.all:
-        return buildAllTab(context);
-
-        break;
-      case SearchTab.hashtags:
-        return buildHashtagsTab(context);
-        break;
-    }
-    throw "Invalid tab $tab";
-  }
-
-  Widget buildAllTab(BuildContext context) => SearchResultItemListWidget();
 
   Widget buildStatusesTab(BuildContext context) {
     return SearchStatusPaginationBloc.provideToContext(
@@ -144,7 +122,7 @@ class SearchWidget extends StatelessWidget {
           IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
         create: (context) =>
             SearchStatusesPaginationListBloc.createFromContext(context),
-        child: SearchStatusesListWidget(),
+        child: const SearchStatusesListWidget(),
       ),
     );
   }
@@ -156,7 +134,7 @@ class SearchWidget extends StatelessWidget {
           IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>>(
         create: (context) =>
             SearchHashtagsPaginationListBloc.createFromContext(context),
-        child: SearchHashtagsListWidget(),
+        child: const SearchHashtagsListWidget(),
       ),
     );
   }
@@ -168,10 +146,74 @@ class SearchWidget extends StatelessWidget {
         create: (context) =>
             SearchAccountsPaginationListBloc.createFromContext(context),
         child: ProxyProvider<IAccountPaginationListBloc,
-                IPaginationListBloc<PaginationPage<IAccount>, IAccount>>(
-            update: (context, value, previous) => value,
-            child: SearchAccountsListWidget()),
+            IPaginationListBloc<PaginationPage<IAccount>, IAccount>>(
+          update: (context, value, previous) => value,
+          child: const SearchAccountsListWidget(),
+        ),
       ),
     );
+  }
+
+  Widget buildTabBody(
+    BuildContext context,
+    SearchTab tab,
+    ISearchBloc searchBloc,
+  ) {
+    switch (tab) {
+      case SearchTab.accounts:
+        return buildAccountsTab(context);
+      case SearchTab.statuses:
+        return buildStatusesTab(context);
+      case SearchTab.all:
+        return const SearchResultItemListWidget();
+
+      case SearchTab.hashtags:
+        return buildHashtagsTab(context);
+    }
+  }
+}
+
+class _SearchTabBarWidget extends StatelessWidget {
+  const _SearchTabBarWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: FediPadding.allBigPadding,
+      child: Builder(
+        builder: (context) {
+          var tabController = DefaultTabController.of(context);
+          return DisposableProvider<IFediTabIndicatorBloc<SearchTab>>(
+            create: (context) => FediTabIndicatorBloc<SearchTab>(
+              items: tabs,
+              tabController: tabController!,
+            ),
+            child: FediTextTabIndicatorWidget(
+              style: FediTabStyle.bubble,
+              isTransparent: false,
+              tabToTextMapper: mapTabToTitle,
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+String mapTabToTitle(BuildContext context, SearchTab? tab) {
+  switch (tab!) {
+    case SearchTab.accounts:
+      return S.of(context).app_search_tab_accounts;
+
+    case SearchTab.statuses:
+      return S.of(context).app_search_tab_statuses;
+
+    case SearchTab.all:
+      return S.of(context).app_search_tab_all;
+
+    case SearchTab.hashtags:
+      return S.of(context).app_search_tab_hashtags;
   }
 }

@@ -8,39 +8,40 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class HashtagPaginationListWidget extends FediPaginationListWidget<IHashtag> {
-  HashtagPaginationListWidget();
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
+  const HashtagPaginationListWidget({
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
+  });
 
   @override
   ScrollView buildItemsCollectionView({
-    BuildContext context,
-    List<IHashtag> items,
-    Widget header,
-    Widget footer,
+    BuildContext? context,
+    required List<IHashtag> items,
+    Widget? header,
+    Widget? footer,
   }) {
     return PaginationListWidget.buildItemsListView(
-        context: context,
-        items: items,
-        header: header,
-        footer: footer,
-        itemBuilder: (context, index) {
-          var item = items[index];
-          return Provider<IHashtag>.value(
-            value: item,
-            child: Builder(
-                builder: (context) {
-                  var hashtag = Provider.of<IHashtag>(context, listen: false);
-                  return HashtagListItemWidget(
-                      hashtag: hashtag,
-                    );
-                }),
-          );
-        });
+      context: context,
+      keyboardDismissBehavior: keyboardDismissBehavior,
+      items: items,
+      header: header,
+      footer: footer,
+      itemBuilder: (context, index) {
+        var item = items[index];
+        return Provider<IHashtag>.value(
+          value: item,
+          child: const HashtagListItemWidget(),
+        );
+      },
+    );
   }
 
   @override
   IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>
-      retrievePaginationListBloc(BuildContext context, {bool listen}) =>
+      retrievePaginationListBloc(BuildContext context, {bool? listen}) =>
           Provider.of<IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>>(
-              context,
-              listen: false);
+            context,
+            listen: false,
+          );
 }

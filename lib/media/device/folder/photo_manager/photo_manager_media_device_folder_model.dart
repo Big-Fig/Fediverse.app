@@ -1,5 +1,4 @@
 import 'package:fedi/media/device/folder/media_device_folder_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class PhotoManagerMediaDeviceFolder implements IMediaDeviceFolder {
@@ -14,7 +13,7 @@ class PhotoManagerMediaDeviceFolder implements IMediaDeviceFolder {
   @override
   int get assetCount => assetPathEntity.assetCount;
 
-  PhotoManagerMediaDeviceFolder({@required this.assetPathEntity});
+  PhotoManagerMediaDeviceFolder({required this.assetPathEntity});
 
   @override
   bool operator ==(Object other) =>

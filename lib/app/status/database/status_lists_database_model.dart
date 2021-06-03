@@ -4,8 +4,8 @@ import 'package:moor/moor.dart';
 @DataClassName("DbStatusList")
 class DbStatusLists extends Table {
   // integer ids works better in SQLite
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn? get id => integer().nullable().autoIncrement()();
 
-  TextColumn get statusRemoteId => text()();
-  TextColumn get listRemoteId => text()();
+  TextColumn? get statusRemoteId => text()();
+  TextColumn? get listRemoteId => text()();
 }

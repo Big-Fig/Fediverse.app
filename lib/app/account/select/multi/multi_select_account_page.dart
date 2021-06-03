@@ -9,47 +9,43 @@ import 'package:fedi/app/search/input/search_input_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MultiSelectAccountPage extends StatelessWidget {
   final AccountsListCallback accountsListSelectedCallback;
 
-  const MultiSelectAccountPage({@required this.accountsListSelectedCallback});
+  const MultiSelectAccountPage({required this.accountsListSelectedCallback});
 
   @override
   Widget build(BuildContext context) {
-    var multiSelectAccountBloc =
-        IMultiSelectAccountBloc.of(context, listen: false);
+    var multiSelectAccountBloc = IMultiSelectAccountBloc.of(context);
     return Scaffold(
-      appBar: FediSubPageCustomAppBar(
-        leading: FediBackIconButton(),
-        child: SearchInputWidget(),
+      appBar: FediPageCustomAppBar(
+        leading: const FediBackIconButton(),
         actions: [
           StreamBuilder<bool>(
-              stream: multiSelectAccountBloc.isSomethingSelectedStream,
-              initialData: multiSelectAccountBloc.isSomethingSelected,
-              builder: (context, snapshot) {
-                var isSomethingSelected = snapshot.data;
-                return FediIconButton(
-                  icon: Icon(FediIcons.check),
-                  onPressed: isSomethingSelected
-                      ? () {
-                          var selectedAccounts =
-                              multiSelectAccountBloc.selectedAccounts;
-                          accountsListSelectedCallback(
-                              context, selectedAccounts);
-                        }
-                      : null,
-                );
-              })
+            stream: multiSelectAccountBloc.isSomethingSelectedStream,
+            builder: (context, snapshot) {
+              var isSomethingSelected = snapshot.data ?? false;
+              return FediIconButton(
+                icon: Icon(FediIcons.check),
+                onPressed: isSomethingSelected
+                    ? () {
+                        var selectedAccounts =
+                            multiSelectAccountBloc.selectedAccounts;
+                        accountsListSelectedCallback(context, selectedAccounts);
+                      }
+                    : null,
+              );
+            },
+          ),
         ],
+        child: const SearchInputWidget(),
       ),
-      body: SafeArea(
-        child: MultiSelectAccountWidget(
-          accountsListSelectedCallback: accountsListSelectedCallback,
-        ),
+      body: const SafeArea(
+        child: MultiSelectAccountWidget(),
       ),
     );
   }
@@ -57,11 +53,11 @@ class MultiSelectAccountPage extends StatelessWidget {
 
 void goToMultiSelectAccountPage(
   BuildContext context, {
-  @required AccountsListCallback accountsListSelectedCallback,
-  @required bool excludeMyAccount,
-  @required bool followingsOnly,
-  @required PleromaAccountListLoader customRemoteAccountListLoader,
-  @required AccountListLoader customLocalAccountListLoader,
+  required AccountsListCallback accountsListSelectedCallback,
+  required bool excludeMyAccount,
+  required bool followingsOnly,
+  required PleromaAccountListLoader customRemoteAccountListLoader,
+  required AccountListLoader customLocalAccountListLoader,
 }) {
   Navigator.push(
     context,
