@@ -1,5 +1,5 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/instance/app_bar/instance_host_app_bar_widget.dart';
+import 'package:fedi/app/instance/public_timeline/instance_public_timeline_widget.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';
@@ -29,7 +29,7 @@ class LocalInstancePublicTimelinePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const InstanceHostAppBarWidget(),
+      appBar: const InstancePublicTimelinePageAppBarWidget(),
       body: const SafeArea(
         child: LocalInstancePublicTimelinePageBodyWidget(),
       ),

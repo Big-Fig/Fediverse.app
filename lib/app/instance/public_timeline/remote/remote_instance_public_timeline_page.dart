@@ -1,6 +1,6 @@
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/instance/app_bar/instance_host_app_bar_widget.dart';
 import 'package:fedi/app/instance/public_timeline/instance_public_timeline_page_bloc.dart';
+import 'package:fedi/app/instance/public_timeline/instance_public_timeline_widget.dart';
 import 'package:fedi/app/instance/public_timeline/remote/remote_instance_public_timeline_page_bloc.dart';
 import 'package:fedi/app/instance/public_timeline/remote/remote_instance_public_timeline_page_bloc_impl.dart';
 import 'package:fedi/app/instance/public_timeline/status_list/network_only/instance_public_timeline_status_list_network_only_list_timeline_widget.dart';
@@ -29,7 +29,7 @@ class RemoteInstancePublicTimelinePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const InstanceHostAppBarWidget(),
+      appBar: const InstancePublicTimelinePageAppBarWidget(),
       body: const SafeArea(
         child: RemoteInstancePublicTimelinePageBodyWidget(),
       ),
