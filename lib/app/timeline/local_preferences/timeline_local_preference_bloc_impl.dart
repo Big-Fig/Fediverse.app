@@ -56,6 +56,7 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
           timelineId: 'public',
           defaultPreferenceValue: Timeline(
             id: pleromaApiInstance.uri!,
+            // ignore: no-equal-arguments
             label: pleromaApiInstance.uri!,
             isPossibleToDelete: true,
             settings: TimelineSettings.createDefaultPublicSettings(),
