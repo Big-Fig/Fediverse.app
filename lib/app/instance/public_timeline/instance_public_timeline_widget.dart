@@ -1,3 +1,4 @@
+import 'package:fedi/app/instance/instance_bloc.dart';
 import 'package:fedi/app/instance/public_timeline/instance_public_timeline_page_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_dialog.dart';
@@ -7,6 +8,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,42 +20,21 @@ class InstancePublicTimelinePageAppBarWidget extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    var instanceBloc = IInstanceBloc.of(context);
+
     return FediPageTitleAppBar(
       centerTitle: false,
-      title: "title",
+      title: S.of(context).app_instance_details_title(
+            instanceBloc.instanceUriDomain,
+          ),
       actions: <Widget>[
         const _InstancePublicTimelinePageAppBarSettingsActionWidget(),
-        const _InstancePublicTimelinePageAppBarOpenInBrowserAction(),
       ],
     );
   }
 
   @override
   Size get preferredSize => FediPageTitleAppBar.calculatePreferredSize();
-}
-
-class _InstancePublicTimelinePageAppBarOpenInBrowserAction
-    extends StatelessWidget {
-  const _InstancePublicTimelinePageAppBarOpenInBrowserAction({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.shrink();
-    // var instancePublicTimeline = Provider.of<IInstancePublicTimeline>(context);
-    //
-    // return FediIconButton(
-    //   color: IFediUiColorTheme.of(context).darkGrey,
-    //   icon: Icon(FediIcons.external_icon),
-    //   onPressed: () {
-    //     UrlHelper.handleUrlClickOnLocalInstanceLocation(
-    //       context: context,
-    //       url: instancePublicTimeline.url,
-    //     );
-    //   },
-    // );
-  }
 }
 
 class _InstancePublicTimelinePageAppBarSettingsActionWidget
@@ -67,6 +48,8 @@ class _InstancePublicTimelinePageAppBarSettingsActionWidget
     var instancePublicTimelinePageBloc =
         IInstancePublicTimelinePageBloc.of(context);
     var instanceLocation = instancePublicTimelinePageBloc.instanceLocation;
+
+    var instanceBloc = IInstanceBloc.of(context);
 
     return FediIconButton(
       icon: Icon(
@@ -87,7 +70,7 @@ class _InstancePublicTimelinePageAppBarSettingsActionWidget
           timeline: Timeline.byType(
             id: timeline.id,
             isPossibleToDelete: false,
-            label: "instancePublicTimeline.name",
+            label: instanceBloc.instanceUriDomain,
             type: TimelineType.public,
             settings: timeline.settings,
           ),

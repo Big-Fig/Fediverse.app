@@ -52,11 +52,11 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
     required IPleromaApiInstance pleromaApiInstance,
   }) : this.byId(
           preferencesService,
-          userAtHost: "userAtHost",
-          timelineId: "customList.calculateTimelineId()",
+          userAtHost: pleromaApiInstance.uri!,
+          timelineId: 'public',
           defaultPreferenceValue: Timeline(
-            id: "customList.calculateTimelineId()",
-            label: "customList.title",
+            id: pleromaApiInstance.uri!,
+            label: pleromaApiInstance.uri!,
             isPossibleToDelete: true,
             settings: TimelineSettings.createDefaultPublicSettings(),
             typeString: TimelineType.public.toJsonValue(),
