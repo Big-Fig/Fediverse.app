@@ -971,9 +971,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_instance_details_field_details_title":
             MessageLookupByLibrary.simpleMessage("Details"),
         "app_instance_details_field_directory_label":
-            MessageLookupByLibrary.simpleMessage("Accounts"),
-        "app_instance_details_field_directory_value":
             MessageLookupByLibrary.simpleMessage("Directory"),
+        "app_instance_details_field_directory_value":
+            MessageLookupByLibrary.simpleMessage("Accounts"),
         "app_instance_details_field_email_label":
             MessageLookupByLibrary.simpleMessage("Email"),
         "app_instance_details_field_federation_enabled_label":

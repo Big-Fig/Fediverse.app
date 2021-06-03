@@ -6259,20 +6259,20 @@ class S {
     );
   }
 
-  /// `Accounts`
+  /// `Directory`
   String get app_instance_details_field_directory_label {
     return Intl.message(
-      'Accounts',
+      'Directory',
       name: 'app_instance_details_field_directory_label',
       desc: '',
       args: [],
     );
   }
 
-  /// `Directory`
+  /// `Accounts`
   String get app_instance_details_field_directory_value {
     return Intl.message(
-      'Directory',
+      'Accounts',
       name: 'app_instance_details_field_directory_value',
       desc: '',
       args: [],
