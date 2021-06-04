@@ -74,7 +74,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
         );
       });
 
-  JoinedSelectStatement<Table, DataClass> _findAllQuery() {
+  JoinedSelectStatement _findAllQuery() {
     var sqlQuery = (select(db.dbChatMessages).join(
       populateChatMessageJoin(),
     ));
@@ -95,7 +95,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
           ),
         );
 
-  JoinedSelectStatement<Table, DataClass> _findByOldPendingRemoteIdQuery(
+  JoinedSelectStatement _findByOldPendingRemoteIdQuery(
       String? oldPendingRemoteId,
       ) =>
       (select(db.dbChatMessages)
@@ -183,7 +183,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
         )
             .toList());
 
-  List<Join<Table, DataClass>> populateChatMessageJoin() {
+  List<Join> populateChatMessageJoin() {
     return [
       leftOuterJoin(
         accountAlias,
@@ -192,7 +192,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     ];
   }
 
-  void addGroupByChatId(JoinedSelectStatement<Table, DataClass> query) {
+  void addGroupByChatId(JoinedSelectStatement query) {
     query.groupBy(
       [dbChatMessages.chatRemoteId],
       having: CustomExpression('MAX(db_chat_messages.created_at)'),
@@ -325,7 +325,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
+  JoinedSelectStatement
   convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
     required PleromaChatMessageRepositoryFilters? filters,

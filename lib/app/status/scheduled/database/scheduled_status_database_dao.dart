@@ -120,7 +120,7 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
+  JoinedSelectStatement
       convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
         query,
