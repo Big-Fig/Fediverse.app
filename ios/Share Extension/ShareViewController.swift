@@ -5,6 +5,8 @@ import Photos
 
 class ShareViewController: SLComposeServiceViewController {
     // TODO: IMPORTANT: This should be your host app bundle identifier
+    // we always use com.fediverse.app here (for prod and dev flavors)
+    // because group id is always group.com.fediverse.app
     let hostAppBundleIdentifier = "com.fediverse.app"
     let sharedKey = "ShareKey"
     var sharedMedia: [SharedMediaFile] = []
