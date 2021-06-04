@@ -130,7 +130,7 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
+  JoinedSelectStatement
       convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
     required DraftStatusRepositoryFilters? filters,

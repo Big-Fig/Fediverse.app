@@ -119,7 +119,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
             (typedResult) => typedResult?.toDbStatusPopulated(dao: this),
           ));
 
-  JoinedSelectStatement<Table, DataClass> _findByOldPendingRemoteId(
+  JoinedSelectStatement _findByOldPendingRemoteId(
     String? oldPendingRemoteId,
   ) =>
       (select(db.dbStatuses)
@@ -139,29 +139,6 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         ),
       );
 
-  // Future<int> updateByRemoteId(
-  //   String remoteId,
-  //   Insertable<DbStatus> entity,
-  // ) async {
-  //   var localId = await findLocalIdByRemoteId(remoteId);
-  //
-  //   if (localId != null && localId >= 0) {
-  //     await (update(db.dbStatuses)
-  //           ..where(
-  //             (i) => i.id.equals(
-  //               localId,
-  //             ),
-  //           ))
-  //         .write(entity);
-  //   } else {
-  //     localId = await insert(
-  //       entity: entity,
-  //       mode: null,
-  //     );
-  //   }
-  //
-  //   return localId;
-  // }
 
   // TODO: separate media in own table & use join
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
@@ -201,7 +178,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
       query..where((status) => status.url.like('%$instance%'));
 
   void addExcludeTextWhere(
-    JoinedSelectStatement<Table, DataClass> query, {
+    JoinedSelectStatement query, {
     required String? phrase,
     required bool wholeWord,
   }) {
@@ -448,7 +425,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
             .toList());
 
   // ignore: long-method
-  List<Join<Table, DataClass>> populateStatusJoin({
+  List<Join> populateStatusJoin({
     required includeAccountFollowing,
     required includeReplyToAccountFollowing,
     required includeStatusHashtags,
@@ -730,7 +707,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   // ignore: code-metrics, long-method
-  JoinedSelectStatement<Table, DataClass>
+  JoinedSelectStatement
       convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     required StatusRepositoryFilters? filters,

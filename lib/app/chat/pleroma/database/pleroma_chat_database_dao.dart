@@ -132,7 +132,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
       );
   }
 
-  List<Join<Table, DataClass>> populateChatJoin() {
+  List<Join> populateChatJoin() {
     return [
       leftOuterJoin(
         accountAlias,
@@ -141,7 +141,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     ];
   }
 
-  List<Join<Table, DataClass>> chatLastMessageJoin() {
+  List<Join> chatLastMessageJoin() {
     return [
       leftOuterJoin(
         chatMessageAlias,
@@ -197,7 +197,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
+  JoinedSelectStatement
       convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbChatsTable, DbChat> query,
     required PleromaChatRepositoryFilters? filters,
