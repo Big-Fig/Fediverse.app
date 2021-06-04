@@ -134,7 +134,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
     ];
   }
 
-  List<Join<Table, DataClass>> conversationLastMessageJoin() {
+  List<Join> conversationLastMessageJoin() {
     return [
       // leftOuterJoin(
       //   chatMessageAlias,
@@ -226,7 +226,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
+  JoinedSelectStatement
   convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
     required ConversationChatRepositoryFilters? filters,

@@ -142,7 +142,7 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
+  JoinedSelectStatement
   convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
     required FilterRepositoryFilters? filters,

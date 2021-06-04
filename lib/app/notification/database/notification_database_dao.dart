@@ -211,7 +211,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     return query;
   }
 
-  List<Join<Table, DataClass>> populateNotificationJoin() {
+  List<Join> populateNotificationJoin() {
     return [
       // todo: think about leftOuterJoin and nullable account field
       // or foreign keys
@@ -333,7 +333,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
+  JoinedSelectStatement
   convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
     required NotificationRepositoryFilters? filters,
