@@ -4,6 +4,7 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc_proxy_provider.dart';
+import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/share/status/share_status_bloc.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -19,11 +20,17 @@ import 'package:provider/provider.dart';
 
 class ConversationChatShareStatusBloc extends ConversationChatShareBloc
     implements IConversationChatShareBloc, IShareStatusBloc {
+  final IMediaAttachmentReuploadService mediaAttachmentReuploadService;
+
   @override
   final IStatus? status;
 
+  final bool isNeedReUploadMediaAttachments;
+
   ConversationChatShareStatusBloc({
     required this.status,
+    required this.mediaAttachmentReuploadService,
+    this.isNeedReUploadMediaAttachments = true,
     required IConversationChatRepository conversationRepository,
     required IStatusRepository statusRepository,
     required IPleromaApiConversationService pleromaConversationService,
@@ -48,6 +55,27 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
   }) async {
     var url = status!.url ?? '';
     var content = message == null ? url : '${message ?? ''} $url'.trim();
+
+    List<String>? mediaIds;
+
+    if (status!.mediaAttachments?.isNotEmpty == true) {
+      mediaIds = [];
+
+      for (var mediaAttachment in status!.mediaAttachments!) {
+        if (isNeedReUploadMediaAttachments) {
+          var reuploadedMediaAttachment =
+              await mediaAttachmentReuploadService.reuploadMediaAttachment(
+            originalMediaAttachment: mediaAttachment,
+          );
+
+          var mediaId = reuploadedMediaAttachment.id;
+          mediaIds.add(mediaId);
+        } else {
+          mediaIds.add(mediaAttachment.id);
+        }
+      }
+    }
+
     var messageSendData = PleromaApiPostStatus(
       status: '$content $to',
       visibility: visibility.toJsonValue(),
@@ -57,7 +85,7 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
       inReplyToConversationId: null,
       inReplyToId: null,
       language: null,
-      mediaIds: null,
+      mediaIds: mediaIds,
       poll: null,
       preview: null,
       sensitive: false,
@@ -70,11 +98,16 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    required IStatus? status,
+    required IStatus status,
     required Widget child,
+    bool isNeedReUploadMediaAttachments = true,
   }) {
     return DisposableProvider<ConversationChatShareStatusBloc>(
-      create: (context) => createFromContext(context, status),
+      create: (context) => createFromContext(
+        context,
+        status: status,
+        isNeedReUploadMediaAttachments: isNeedReUploadMediaAttachments,
+      ),
       child: ProxyProvider<ConversationChatShareStatusBloc,
           IConversationChatShareBloc>(
         update: (context, value, previous) => value,
@@ -93,11 +126,13 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
   }
 
   static ConversationChatShareStatusBloc createFromContext(
-    BuildContext context,
-    IStatus? status,
-  ) =>
+    BuildContext context, {
+    required IStatus status,
+    bool isNeedReUploadMediaAttachments = true,
+  }) =>
       ConversationChatShareStatusBloc(
         status: status,
+        isNeedReUploadMediaAttachments: isNeedReUploadMediaAttachments,
         conversationRepository: IConversationChatRepository.of(
           context,
           listen: false,
@@ -112,6 +147,10 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
         accountRepository: IAccountRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
         pleromaAccountService: IPleromaApiAccountService.of(
+          context,
+          listen: false,
+        ),
+        mediaAttachmentReuploadService: IMediaAttachmentReuploadService.of(
           context,
           listen: false,
         ),
