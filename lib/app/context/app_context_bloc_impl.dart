@@ -222,8 +222,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
                     blocCreator(hiveLocalPreferencesService);
 
                 await localPreferencesBloc.performAsyncInit();
-                await localPreferencesBloc.clearValue();
-                await localPreferencesBloc.dispose();
+                await localPreferencesBloc.clearValueAndDispose();
               }
             },
           );
