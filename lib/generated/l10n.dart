@@ -943,6 +943,16 @@ class S {
     );
   }
 
+  /// `Uploading media`
+  String get app_media_upload_progress {
+    return Intl.message(
+      'Uploading media',
+      name: 'app_media_upload_progress',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Failed to upload`
   String get app_media_upload_failed_notification_title {
     return Intl.message(
