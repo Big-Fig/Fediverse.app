@@ -7638,6 +7638,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Choose share action`
+  String get app_share_income_action_choose_title {
+    return Intl.message(
+      'Choose share action',
+      name: 'app_share_income_action_choose_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `As new status`
+  String get app_share_income_action_type_status {
+    return Intl.message(
+      'As new status',
+      name: 'app_share_income_action_type_status',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To conversation`
+  String get app_share_income_action_type_conversation {
+    return Intl.message(
+      'To conversation',
+      name: 'app_share_income_action_type_conversation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To chat`
+  String get app_share_income_action_type_chat {
+    return Intl.message(
+      'To chat',
+      name: 'app_share_income_action_type_chat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose instance to share`
+  String get app_share_income_instance_choose_title {
+    return Intl.message(
+      'Choose instance to share',
+      name: 'app_share_income_instance_choose_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don't have logged instances to share`
+  String get app_share_income_error_authInstanceListIsEmpty {
+    return Intl.message(
+      'You don\'t have logged instances to share',
+      name: 'app_share_income_error_authInstanceListIsEmpty',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

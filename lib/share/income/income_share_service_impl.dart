@@ -11,12 +11,7 @@ final _logger = Logger('income_share_service_impl.dart');
 class IncomeShareService extends AsyncInitLoadingBloc
     implements IIncomeShareService {
   @override
-  IncomeShareEvent? initialIncomeShareEvent;
-
-  @override
-  void markInitialIncomeShareEventAsHandled() {
-    initialIncomeShareEvent = null;
-  }
+  IncomeShareEvent? lastReceivedShareEvent;
 
   @override
   Stream<IncomeShareEvent> get incomeShareEventStream =>
@@ -41,18 +36,18 @@ class IncomeShareService extends AsyncInitLoadingBloc
 
     var initialText = await ReceiveSharingIntent.getInitialText();
 
-    var mappedMedias = initialMedias.isNotEmpty == true
+    var mappedMedias = initialMedias.isNotEmpty
         ? initialMedias.map(_mapMedia).toList()
         : null;
 
     if (mappedMedias?.isNotEmpty == true || initialText?.isNotEmpty == true) {
-      initialIncomeShareEvent = IncomeShareEvent(
+      lastReceivedShareEvent = IncomeShareEvent(
         medias: mappedMedias,
         text: initialText,
       );
     }
 
-    _logger.finest(() => 'loadInitialEvent $initialIncomeShareEvent');
+    _logger.finest(() => 'lastReceivedShareEvent $lastReceivedShareEvent');
   }
 
   void _listenShareEvents() {
@@ -66,12 +61,12 @@ class IncomeShareService extends AsyncInitLoadingBloc
       streamSubscription: ReceiveSharingIntent.getTextStream().listen(
         (String value) {
           _logger.finest(() => 'getTextStream $value');
-
+          lastReceivedShareEvent = IncomeShareEvent(
+            medias: null,
+            text: value,
+          );
           incomeShareEventStreamController.add(
-            IncomeShareEvent(
-              medias: null,
-              text: value,
-            ),
+            lastReceivedShareEvent!,
           );
         },
         onError: (err) {
@@ -91,18 +86,26 @@ class IncomeShareService extends AsyncInitLoadingBloc
             () => 'getMediaStream ${medias.map((item) => item).join(', ')}',
           );
 
-          incomeShareEventStreamController.add(
-            IncomeShareEvent(
-              medias: medias,
-              text: null,
-            ),
-          );
+          if (medias.isNotEmpty) {
+            incomeShareEventStreamController.add(
+              IncomeShareEvent(
+                medias: medias,
+                text: null,
+              ),
+            );
+          }
         },
         onError: (err) {
           _logger.shout(() => 'getMediaStream error $err');
         },
       ),
     );
+  }
+
+  @override
+  Future reset() async {
+    lastReceivedShareEvent = null;
+    ReceiveSharingIntent.reset();
   }
 }
 
@@ -120,6 +123,7 @@ IncomeShareEventMedia _mapMedia(SharedMediaFile media) {
       type = IncomeShareEventMediaType.file;
       break;
   }
+
   return IncomeShareEventMedia(
     path: media.path,
     thumbnail: media.thumbnail,

@@ -1258,6 +1258,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Share as link"),
         "app_share_external_title":
             MessageLookupByLibrary.simpleMessage("Share to external app"),
+        "app_share_income_action_choose_title":
+            MessageLookupByLibrary.simpleMessage("Choose share action"),
+        "app_share_income_action_type_chat":
+            MessageLookupByLibrary.simpleMessage("To chat"),
+        "app_share_income_action_type_conversation":
+            MessageLookupByLibrary.simpleMessage("To conversation"),
+        "app_share_income_action_type_status":
+            MessageLookupByLibrary.simpleMessage("As new status"),
+        "app_share_income_error_authInstanceListIsEmpty":
+            MessageLookupByLibrary.simpleMessage(
+                "You don\'t have logged instances to share"),
+        "app_share_income_instance_choose_title":
+            MessageLookupByLibrary.simpleMessage("Choose instance to share"),
         "app_share_title": MessageLookupByLibrary.simpleMessage("Share"),
         "app_share_toast_success":
             MessageLookupByLibrary.simpleMessage("Shared successfully"),

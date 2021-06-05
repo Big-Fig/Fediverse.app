@@ -1274,6 +1274,20 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Поделиться ссылкой"),
         "app_share_external_title": MessageLookupByLibrary.simpleMessage(
             "Поделиться в другое приложение"),
+        "app_share_income_action_choose_title":
+            MessageLookupByLibrary.simpleMessage("Поделится"),
+        "app_share_income_action_type_chat":
+            MessageLookupByLibrary.simpleMessage("В чат"),
+        "app_share_income_action_type_conversation":
+            MessageLookupByLibrary.simpleMessage("В беседу"),
+        "app_share_income_action_type_status":
+            MessageLookupByLibrary.simpleMessage("Новая запись"),
+        "app_share_income_error_authInstanceListIsEmpty":
+            MessageLookupByLibrary.simpleMessage(
+                "Вы еще не вошли не в один сервер чтобы поделится"),
+        "app_share_income_instance_choose_title":
+            MessageLookupByLibrary.simpleMessage(
+                "Выберите сервер чтобы поделится"),
         "app_share_title": MessageLookupByLibrary.simpleMessage("Поделиться"),
         "app_share_toast_success":
             MessageLookupByLibrary.simpleMessage("Успех"),

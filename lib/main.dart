@@ -24,8 +24,14 @@ import 'package:fedi/app/init/init_bloc_impl.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
+import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_widget.dart';
+import 'package:fedi/app/share/income/action/income_share_action_chooser_dialog.dart';
+import 'package:fedi/app/share/income/handler/income_share_handler_bloc.dart';
+import 'package:fedi/app/share/income/handler/income_share_handler_bloc_impl.dart';
+import 'package:fedi/app/share/income/handler/income_share_handler_model.dart';
+import 'package:fedi/app/share/income/instance/income_share_instance_chooser_dialog.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/thread/local_status_thread_page.dart';
@@ -41,6 +47,7 @@ import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service_provider.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
@@ -55,9 +62,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
-
-import 'package:fedi/app/notification/repository/notification_repository.dart';
-import 'package:fedi/generated/l10n.dart';
 
 var _logger = Logger('main.dart');
 
@@ -87,7 +91,7 @@ void main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
   await runZonedGuarded(
-        () async {
+    () async {
       var appTitle = await FediPackageInfoHelper.getAppName();
       runNotInitializedSplashApp();
 
@@ -95,19 +99,19 @@ void main() async {
       unawaited(initBloc.performAsyncInit());
 
       initBloc.initLoadingStateStream.listen(
-            (newState) async {
+        (newState) async {
           _logger.fine(() => 'appContextBloc.initLoadingStateStream.newState '
               '$newState');
 
           if (newState == AsyncInitLoadingState.finished) {
             var currentInstanceBloc =
-            initBloc.appContextBloc.get<ICurrentAuthInstanceBloc>();
+                initBloc.appContextBloc.get<ICurrentAuthInstanceBloc>();
 
             currentInstanceBloc.currentInstanceStream
                 .distinct((previous, next) =>
-            previous?.userAtHost == next?.userAtHost)
+                    previous?.userAtHost == next?.userAtHost)
                 .listen(
-                  (currentInstance) {
+              (currentInstance) {
                 runInitializedApp(
                   appContextBloc: initBloc.appContextBloc,
                   currentInstance: currentInstance,
@@ -127,7 +131,7 @@ void main() async {
 
 void runNotInitializedSplashApp() {
   runZonedGuarded(
-        () async {
+    () async {
       runApp(
         MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -142,7 +146,7 @@ void runNotInitializedSplashApp() {
 void runInitFailedApp() {
   _logger.severe(() => 'failed to init App');
   runZonedGuarded(
-        () async {
+    () async {
       runApp(
         MaterialApp(
           localizationsDelegates: [
@@ -155,13 +159,10 @@ void runInitFailedApp() {
               child: Center(
                 // todo: localization
                 child: Builder(
-                  builder: (context) =>
-                      Text(
-                        S
-                            .of(context)
-                            .app_init_fail,
-                        style: lightFediUiTheme.textTheme.mediumShortBoldWhite,
-                      ),
+                  builder: (context) => Text(
+                    S.of(context).app_init_fail,
+                    style: lightFediUiTheme.textTheme.mediumShortBoldWhite,
+                  ),
                 ),
               ),
             ),
@@ -178,7 +179,7 @@ void runInitializedSplashApp({
   required String appTitle,
 }) {
   runZonedGuarded(
-        () async {
+    () async {
       runApp(
         appContextBloc.provideContextToChild(
           child: FediApp(
@@ -203,7 +204,7 @@ void runInitializedApp({
 }) {
   _logger.finest(() => 'runInitializedApp $runInitializedApp');
   runZonedGuarded(
-        () async {
+    () async {
       if (currentInstance != null) {
         await runInitializedCurrentInstanceApp(
           appContextBloc: appContextBloc,
@@ -224,7 +225,7 @@ Future runInitializedCurrentInstanceApp({
   required AuthInstance currentInstance,
 }) async {
   await runZonedGuarded(
-        () async {
+    () async {
       runInitializedSplashApp(
         appContextBloc: appContextBloc,
         appTitle: appTitle,
@@ -240,21 +241,20 @@ Future runInitializedCurrentInstanceApp({
       await currentInstanceContextBloc!.performAsyncInit();
 
       var pushLoaderBloc =
-      currentInstanceContextBloc!.get<INotificationPushLoaderBloc>();
+          currentInstanceContextBloc!.get<INotificationPushLoaderBloc>();
 
       _logger.finest(
-            () => 'buildCurrentInstanceApp CurrentInstanceContextLoadingPage',
+        () => 'buildCurrentInstanceApp CurrentInstanceContextLoadingPage',
       );
       runApp(
         appContextBloc.provideContextToChild(
           child: currentInstanceContextBloc!.provideContextToChild(
             child: DisposableProvider<ICurrentAuthInstanceContextInitBloc>(
               lazy: false,
-              create: (context) =>
-                  createCurrentInstanceContextBloc(
-                    context: context,
-                    pushLoaderBloc: pushLoaderBloc,
-                  ),
+              create: (context) => createCurrentInstanceContextBloc(
+                context: context,
+                pushLoaderBloc: pushLoaderBloc,
+              ),
               child: FediApp(
                 instanceInitialized: true,
                 appTitle: appTitle,
@@ -277,29 +277,29 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
 }) {
   _logger.finest(() => 'createCurrentInstanceContextBloc');
   var currentAuthInstanceContextLoadingBloc =
-  CurrentAuthInstanceContextInitBloc.createFromContext(context);
+      CurrentAuthInstanceContextInitBloc.createFromContext(context);
   currentAuthInstanceContextLoadingBloc.performAsyncInit();
 
   currentAuthInstanceContextLoadingBloc.addDisposable(
     streamSubscription:
-    currentAuthInstanceContextLoadingBloc.stateStream.distinct().listen(
-          (state) {
+        currentAuthInstanceContextLoadingBloc.stateStream.distinct().listen(
+      (state) {
         var isLocalCacheExist = state ==
-            CurrentAuthInstanceContextInitState
-                .cantFetchAndLocalCacheNotExist ||
+                CurrentAuthInstanceContextInitState
+                    .cantFetchAndLocalCacheNotExist ||
             state == CurrentAuthInstanceContextInitState.localCacheExist;
         if (isLocalCacheExist) {
           currentInstanceContextBloc!.addDisposable(
             streamSubscription:
-            pushLoaderBloc.launchPushLoaderNotificationStream.listen(
-                  (launchOrResumePushLoaderNotification) {
+                pushLoaderBloc.launchPushLoaderNotificationStream.listen(
+              (launchOrResumePushLoaderNotification) {
                 if (launchOrResumePushLoaderNotification != null) {
                   // ignore: no-magic-number
                   const durationToWaitUntilHandleLaunchNotification =
-                  Duration(milliseconds: 100);
+                      Duration(milliseconds: 100);
                   Future.delayed(
                     durationToWaitUntilHandleLaunchNotification,
-                        () async {
+                    () async {
                       await handleLaunchPushLoaderNotification(
                         launchOrResumePushLoaderNotification,
                       );
@@ -318,7 +318,8 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
 }
 
 Future handleLaunchPushLoaderNotification(
-    NotificationPushLoaderNotification launchOrResumePushLoaderNotification,) async {
+  NotificationPushLoaderNotification launchOrResumePushLoaderNotification,
+) async {
   var notification = launchOrResumePushLoaderNotification.notification;
   if (notification.isContainsChat) {
     await navigatorKey.currentState!.push(
@@ -326,8 +327,8 @@ Future handleLaunchPushLoaderNotification(
         (await currentInstanceContextBloc!
             .get<IPleromaChatRepository>()
             .findByRemoteIdInAppType(
-          notification.chatRemoteId!,
-        ))!,
+              notification.chatRemoteId!,
+            ))!,
       ),
     );
   } else if (notification.isContainsStatus) {
@@ -352,10 +353,10 @@ Future handleLaunchPushLoaderNotification(
   }
 
   var notificationRepository =
-  currentInstanceContextBloc!.get<INotificationRepository>();
+      currentInstanceContextBloc!.get<INotificationRepository>();
   Future.delayed(
     Duration(seconds: 1),
-        () {
+    () {
       notificationRepository.markAsRead(
         notification: notification,
       );
@@ -385,8 +386,8 @@ Widget buildAuthInstanceContextInitWidget({
 
           homeBloc.addDisposable(
             streamSubscription:
-            pushLoaderBloc.launchPushLoaderNotificationStream.listen(
-                  (launchOrResumePushLoaderNotification) {
+                pushLoaderBloc.launchPushLoaderNotificationStream.listen(
+              (launchOrResumePushLoaderNotification) {
                 homeBloc.selectTab(
                   calculateHomeTabForNotification(
                     launchOrResumePushLoaderNotification,
@@ -406,7 +407,7 @@ Widget buildAuthInstanceContextInitWidget({
 
 void runInitializedLoginApp(IAppContextBloc appContextBloc, String appTitle) {
   runZonedGuarded(
-        () async {
+    () async {
       runApp(
         appContextBloc.provideContextToChild(
           child: DisposableProvider<IJoinAuthInstanceBloc>(
@@ -425,7 +426,8 @@ void runInitializedLoginApp(IAppContextBloc appContextBloc, String appTitle) {
 }
 
 HomeTab calculateHomeTabForNotification(
-    NotificationPushLoaderNotification? launchOrResumePushLoaderNotification,) {
+  NotificationPushLoaderNotification? launchOrResumePushLoaderNotification,
+) {
   HomeTab homeTab;
   if (launchOrResumePushLoaderNotification != null) {
     var notification = launchOrResumePushLoaderNotification.notification;
@@ -464,10 +466,10 @@ class FediApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     var currentFediUiThemeBloc =
-    ICurrentFediUiThemeBloc.of(context, listen: false);
+        ICurrentFediUiThemeBloc.of(context, listen: false);
 
     var localizationSettingsBloc =
-    ILocalizationSettingsBloc.of(context, listen: false);
+        ILocalizationSettingsBloc.of(context, listen: false);
 
     return UiThemeSystemBrightnessHandlerWidget(
       child: StreamBuilder<IFediUiTheme?>(
@@ -478,8 +480,8 @@ class FediApp extends StatelessWidget {
           var themeMode = currentTheme == null
               ? ThemeMode.system
               : currentTheme == darkFediUiTheme
-              ? ThemeMode.dark
-              : ThemeMode.light;
+                  ? ThemeMode.dark
+                  : ThemeMode.light;
 
           _logger.finest(() => 'currentTheme $currentTheme '
               'themeMode $themeMode');
@@ -519,25 +521,45 @@ class FediApp extends StatelessWidget {
                       darkTheme: darkFediUiTheme.themeData,
                       themeMode: themeMode,
                       initialRoute: '/',
-                      home: Builder(builder: (context) {
-                        // it is important to init ToastHandlerBloc
-                        // as MaterialApp child
-                        // to have access to context suitable for Navigator
-                        if (instanceInitialized) {
-                          return DisposableProxyProvider<IToastService,
-                              IToastHandlerBloc>(
-                            lazy: false,
-                            update: (context, toastService, _) =>
-                                ToastHandlerBloc.createFromContext(
+                      home: Builder(
+                        builder: (context) {
+                          // it is important to init ToastHandlerBloc
+                          // as MaterialApp child
+                          // to have access to context suitable for Navigator
+                          if (instanceInitialized) {
+                            return DisposableProvider<IIncomeShareHandlerBloc>(
+                              // important
+                              // lazy:false because we want init it asap
+                              lazy: false,
+                              create: (context) {
+                                var bloc =
+                                    IncomeShareHandlerBloc.createFromContext(
+                                  context,
+                                );
+
+                                _initIncomeShareHandler(
+                                  context: context,
+                                  bloc: bloc,
+                                );
+
+                                return bloc;
+                              },
+                              child: DisposableProxyProvider<IToastService,
+                                  IToastHandlerBloc>(
+                                lazy: false,
+                                update: (context, toastService, _) =>
+                                    ToastHandlerBloc.createFromContext(
                                   context,
                                   toastService,
                                 ),
-                            child: child,
-                          );
-                        } else {
-                          return child;
-                        }
-                      }),
+                                child: child,
+                              ),
+                            );
+                          } else {
+                            return child;
+                          }
+                        },
+                      ),
                       navigatorKey: navigatorKey,
                     ),
                   ),
@@ -565,4 +587,51 @@ class FediApp extends StatelessWidget {
           ),
         ),
       );
+}
+
+void _initIncomeShareHandler({
+  required IncomeShareHandlerBloc bloc,
+  required BuildContext context,
+}) {
+  _logger.finest(() => '_initIncomeShareHandler');
+  bloc.addDisposable(
+    streamSubscription: bloc.incomeShareHandlerErrorStream.listen(
+      (error) {
+        switch (error) {
+          case IncomeShareHandlerError.authInstanceListIsEmpty:
+            IToastService.of(context).showErrorToast(
+              context: context,
+              title:
+                  S.of(context).app_share_income_error_authInstanceListIsEmpty,
+            );
+            break;
+        }
+      },
+    ),
+  );
+
+  bloc.addDisposable(
+    streamSubscription: bloc.needChooseInstanceFromListStream.listen(
+      (authInstanceList) {
+        showIncomeShareInstanceChooserDialog(
+          context,
+          authInstanceList: authInstanceList,
+          incomeShareHandlerBloc: bloc,
+        );
+      },
+    ),
+  );
+  bloc.addDisposable(
+    streamSubscription: bloc.needChooseActionForEventStream.listen(
+      (incomeShareEvent) {
+        showIncomeShareActionChooserDialog(
+          context,
+          incomeShareEvent: incomeShareEvent,
+          incomeShareHandlerBloc: bloc,
+        );
+      },
+    ),
+  );
+
+  bloc.checkForInitialEvent();
 }
