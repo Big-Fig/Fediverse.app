@@ -108,6 +108,7 @@ Future<void> _performIncomeShareAction({
             context: context,
           ),
           instanceLocation: InstanceLocation.local,
+          isNeedReUploadMediaAttachments: false,
         );
         break;
       case IncomeShareActionType.chat:
@@ -119,6 +120,7 @@ Future<void> _performIncomeShareAction({
             context: context,
           ),
           instanceLocation: InstanceLocation.local,
+          isNeedReUploadMediaAttachments: false,
         );
         break;
     }
