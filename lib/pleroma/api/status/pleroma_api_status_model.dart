@@ -450,6 +450,38 @@ class PleromaApiStatus extends IPleromaApiStatus implements IJsonObject {
     required this.language,
   });
 
+  PleromaApiStatus.only({
+    required this.id,
+    required this.createdAt,
+    this.inReplyToId,
+    this.inReplyToAccountId,
+    required this.sensitive,
+    this.spoilerText,
+    required this.uri,
+    this.url,
+    this.repliesCount,
+    this.reblogsCount,
+    this.favouritesCount,
+    this.favourited,
+    this.reblogged,
+    this.muted,
+    this.bookmarked,
+    this.pinned,
+    this.content,
+    this.reblog,
+    this.application,
+    required this.account,
+    this.mediaAttachments,
+    this.mentions,
+    this.tags,
+    this.emojis,
+    this.poll,
+    this.card,
+    this.pleroma,
+    required this.visibility,
+    this.language,
+  });
+
   static PleromaApiStatus fromJson(Map<String, dynamic> json) =>
       _$PleromaApiStatusFromJson(json);
 

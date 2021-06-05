@@ -21,7 +21,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
   PleromaChatPostMessageBloc({
     required this.pleromaChatBloc,
     required int? maximumMessageLength,
-    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
     required int? maximumFileSizeInBytes,
   }) : super(
           maximumMessageLength: maximumMessageLength,
@@ -89,7 +89,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
         context,
         listen: false,
       ),
-      pleromaMediaAttachmentService: IPleromaMediaAttachmentService.of(
+      pleromaMediaAttachmentService: IPleromaApiMediaAttachmentService.of(
         context,
         listen: false,
       ),

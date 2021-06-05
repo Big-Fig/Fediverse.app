@@ -378,9 +378,9 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: pleromaAnnouncementsService);
 
     var pleromaMediaAttachmentService =
-        PleromaMediaAttachmentService(restService: pleromaAuthRestService);
+        PleromaApiMediaAttachmentService(restService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaMediaAttachmentService>(pleromaMediaAttachmentService);
+        IPleromaApiMediaAttachmentService>(pleromaMediaAttachmentService);
     addDisposable(disposable: pleromaMediaAttachmentService);
 
     var pleromaListService =

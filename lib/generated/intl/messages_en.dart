@@ -1139,6 +1139,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_media_upload_failed_notification_exceedSize_content": m32,
         "app_media_upload_failed_notification_title":
             MessageLookupByLibrary.simpleMessage("Failed to upload"),
+        "app_media_upload_progress":
+            MessageLookupByLibrary.simpleMessage("Uploading media"),
         "app_notification_action_dismiss":
             MessageLookupByLibrary.simpleMessage("Dismiss"),
         "app_notification_action_markAsRead":

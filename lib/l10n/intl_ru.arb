@@ -90,6 +90,7 @@
   "app_account_my_action_accountMutes": "Скрытые аккаунты",
   "app_account_my_action_domainBlocks": "Заблокированные серверы",
   "app_account_my_edit_title": "Редактировать",
+  "app_media_upload_progress": "Загрузка файлов на сервер",
   "app_media_upload_failed_notification_title": "Ошибка загрузки",
   "app_media_upload_failed_notification_exceedSize_content": "Размер файла {formattedFileSize} MB, но максимум {formattedMaxFileSize} MB",
   "app_account_my_edit_action_save": "Сохранить",
