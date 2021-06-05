@@ -12,9 +12,9 @@ abstract class IIncomeShareService
   }) =>
       Provider.of<IIncomeShareService>(context, listen: listen);
 
-  IncomeShareEvent? get initialIncomeShareEvent;
+  IncomeShareEvent? get lastReceivedShareEvent;
 
   Stream<IncomeShareEvent> get incomeShareEventStream;
 
-  void markInitialIncomeShareEventAsHandled();
+  Future reset();
 }

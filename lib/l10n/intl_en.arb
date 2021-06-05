@@ -772,5 +772,11 @@
   "app_account_my_suggestion_action_remove": "Remove",
   "app_instance_activity_statuses": "Statuses",
   "app_instance_activity_logins": "Logins",
-  "app_instance_activity_registrations": "Registrations"
+  "app_instance_activity_registrations": "Registrations",
+  "app_share_income_action_choose_title": "Choose share action",
+  "app_share_income_action_type_status": "As new status",
+  "app_share_income_action_type_conversation": "To conversation",
+  "app_share_income_action_type_chat": "To chat",
+  "app_share_income_instance_choose_title": "Choose instance to share",
+  "app_share_income_error_authInstanceListIsEmpty": "You don't have logged instances to share"
 }

@@ -17,10 +17,10 @@ Future<T?> showFediModalBottomSheetDialog<T>({
 
   return showModalBottomSheet<T>(
     context: context,
-    isScrollControlled:isScrollControlled,
-    useRootNavigator:useRootNavigator,
-    isDismissible:isDismissible,
-    enableDrag:enableDrag,
+    isScrollControlled: isScrollControlled,
+    useRootNavigator: useRootNavigator,
+    isDismissible: isDismissible,
+    enableDrag: enableDrag,
     backgroundColor: fediUiColorTheme.transparent,
     barrierColor: fediUiColorTheme.modalBottomSheetDarkOverlay,
     builder: (BuildContext context) => AnimatedPadding(

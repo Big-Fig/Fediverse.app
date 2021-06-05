@@ -45,6 +45,8 @@ import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_u
 import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preference_bloc_impl.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:fedi/app/share/external/external_share_service_impl.dart';
+import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc.dart';
+import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc.dart';
@@ -181,6 +183,14 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService.asyncInitAndRegister<
         IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
       authOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
+    );
+    var lastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc =
+        LastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc(
+      hiveLocalPreferencesService,
+    );
+    await globalProviderService.asyncInitAndRegister<
+        ILastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc>(
+      lastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc,
     );
 
     var instanceListLocalPreferenceBloc =
