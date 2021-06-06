@@ -23,7 +23,7 @@ class EditPostStatusBloc extends PostStatusBloc {
     required IPleromaApiAuthStatusService pleromaAuthStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
-    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
     required IPostStatusData initialData,
     required this.postStatusDataCallback,
     required int? maximumMessageLength,
@@ -63,7 +63,7 @@ class EditPostStatusBloc extends PostStatusBloc {
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
-          IPleromaMediaAttachmentService.of(context, listen: false),
+          IPleromaApiMediaAttachmentService.of(context, listen: false),
       initialData: initialData,
       postStatusDataCallback: postStatusDataCallback,
       maximumMessageLength: info.maxTootChars,

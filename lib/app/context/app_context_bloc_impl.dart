@@ -12,6 +12,8 @@ import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preference_bloc.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preference_bloc.dart';
@@ -43,6 +45,8 @@ import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_u
 import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preference_bloc_impl.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:fedi/app/share/external/external_share_service_impl.dart';
+import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc.dart';
+import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc.dart';
@@ -75,13 +79,13 @@ import 'package:fedi/permission/permissions_service.dart';
 import 'package:fedi/permission/permissions_service_impl.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:fedi/permission/storage_permission_bloc_impl.dart';
-import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
-import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
 import 'package:fedi/provider/provider_context_bloc_impl.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service_impl.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:fedi/push/relay/push_relay_service_impl.dart';
+import 'package:fedi/share/income/income_share_service.dart';
+import 'package:fedi/share/income/income_share_service_impl.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc_impl.dart';
 import 'package:logging/logging.dart';
@@ -179,6 +183,14 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService.asyncInitAndRegister<
         IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
       authOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
+    );
+    var lastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc =
+        LastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc(
+      hiveLocalPreferencesService,
+    );
+    await globalProviderService.asyncInitAndRegister<
+        ILastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc>(
+      lastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc,
     );
 
     var instanceListLocalPreferenceBloc =
@@ -305,6 +317,12 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService.asyncInitAndRegister<
         IUiThemeSystemBrightnessBloc>(uiThemeSystemBrightnessBloc);
     addDisposable(disposable: uiThemeSystemBrightnessBloc);
+
+    var incomeShareService = IncomeShareService();
+
+    await globalProviderService
+        .asyncInitAndRegister<IIncomeShareService>(incomeShareService);
+    addDisposable(disposable: incomeShareService);
 
     var currentFediUiThemeBloc = CurrentFediUiThemeBloc(
       uiSettingsBloc: uiSettingsBloc,

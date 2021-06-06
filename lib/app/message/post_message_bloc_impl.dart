@@ -45,7 +45,7 @@ abstract class PostMessageBloc extends DisposableOwner
   String? idempotencyKey;
 
   PostMessageBloc({
-    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
     required int maximumMediaAttachmentCount,
     required this.maximumMessageLength,
     required int? maximumFileSizeInBytes,

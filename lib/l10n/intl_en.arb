@@ -90,6 +90,7 @@
   "app_account_my_action_accountMutes": "Account mutes",
   "app_account_my_action_domainBlocks": "Domain blocks",
   "app_account_my_edit_title": "Edit account",
+  "app_media_upload_progress": "Uploading media",
   "app_media_upload_failed_notification_title": "Failed to upload",
   "app_media_upload_failed_notification_exceedSize_content": "File size is {formattedFileSize} MB, but max is {formattedMaxFileSize} MB",
   "app_account_my_edit_action_save": "Save",
@@ -772,5 +773,11 @@
   "app_account_my_suggestion_action_remove": "Remove",
   "app_instance_activity_statuses": "Statuses",
   "app_instance_activity_logins": "Logins",
-  "app_instance_activity_registrations": "Registrations"
+  "app_instance_activity_registrations": "Registrations",
+  "app_share_income_action_choose_title": "Choose share action",
+  "app_share_income_action_type_status": "As new status",
+  "app_share_income_action_type_conversation": "To conversation",
+  "app_share_income_action_type_chat": "To chat",
+  "app_share_income_instance_choose_title": "Choose instance to share",
+  "app_share_income_error_authInstanceListIsEmpty": "You don't have logged instances to share"
 }

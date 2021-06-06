@@ -22,10 +22,12 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
   @override
   final IStatus status;
   final IMediaAttachmentReuploadService mediaAttachmentReuploadService;
+  final bool isNeedReUploadMediaAttachments;
 
   PleromaChatShareStatusBloc({
     required this.status,
     required this.mediaAttachmentReuploadService,
+    this.isNeedReUploadMediaAttachments = true,
     required IPleromaChatRepository chatRepository,
     required IPleromaChatMessageRepository chatMessageRepository,
     required IPleromaApiChatService pleromaChatService,
@@ -55,11 +57,15 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
     String? statusMediaAttachmentsString;
     String? mediaId;
     if (status.mediaAttachments?.length == 1) {
-      var reuploadedMediaAttachment =
-          await mediaAttachmentReuploadService.reuploadMediaAttachment(
-        originalMediaAttachment: status.mediaAttachments!.first,
-      );
-      mediaId = reuploadedMediaAttachment.id;
+      if (isNeedReUploadMediaAttachments) {
+        var reuploadedMediaAttachment =
+            await mediaAttachmentReuploadService.reuploadMediaAttachment(
+          originalMediaAttachment: status.mediaAttachments!.first,
+        );
+        mediaId = reuploadedMediaAttachment.id;
+      } else {
+        mediaId = status.mediaAttachments!.first.id;
+      }
     } else {
       statusMediaAttachmentsString = status.mediaAttachments
           ?.map((mediaAttachment) => mediaAttachment.url)
@@ -92,11 +98,16 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    required IStatus status,
     required Widget child,
+    required IStatus status,
+    bool isNeedReUploadMediaAttachments = true,
   }) {
     return DisposableProvider<PleromaChatShareStatusBloc>(
-      create: (context) => createFromContext(context, status),
+      create: (context) => createFromContext(
+        context,
+        status: status,
+        isNeedReUploadMediaAttachments: isNeedReUploadMediaAttachments,
+      ),
       child: ProxyProvider<PleromaChatShareStatusBloc, IPleromaChatShareBloc>(
         update: (context, value, previous) => value,
         child: ProxyProvider<PleromaChatShareStatusBloc, IShareStatusBloc>(
@@ -111,11 +122,13 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
   }
 
   static PleromaChatShareStatusBloc createFromContext(
-    BuildContext context,
-    IStatus status,
-  ) =>
+    BuildContext context, {
+    required IStatus status,
+    bool isNeedReUploadMediaAttachments = true,
+  }) =>
       PleromaChatShareStatusBloc(
         status: status,
+        isNeedReUploadMediaAttachments: isNeedReUploadMediaAttachments,
         mediaAttachmentReuploadService: IMediaAttachmentReuploadService.of(
           context,
           listen: false,
