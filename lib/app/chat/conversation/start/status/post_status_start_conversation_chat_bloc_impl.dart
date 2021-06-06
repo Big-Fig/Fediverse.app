@@ -36,7 +36,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     required IPleromaApiAuthStatusService pleromaAuthStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
-    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
     required int? maximumMessageLength,
     required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
     required int? maximumFileSizeInBytes,
@@ -78,7 +78,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
-          IPleromaMediaAttachmentService.of(context, listen: false),
+          IPleromaApiMediaAttachmentService.of(context, listen: false),
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,

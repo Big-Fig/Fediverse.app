@@ -13,7 +13,7 @@ var _logger = Logger('device_upload_media_attachment_bloc_impl.dart');
 
 class UploadMediaAttachmentBlocDevice extends DisposableOwner
     implements IUploadMediaAttachmentBloc {
-  final IPleromaMediaAttachmentService pleromaMediaAttachmentService;
+  final IPleromaApiMediaAttachmentService pleromaMediaAttachmentService;
 
   @override
   final int? maximumFileSizeInBytes;

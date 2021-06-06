@@ -6,9 +6,8 @@ import 'package:logging/logging.dart';
 class LoggingService extends AsyncInitLoadingBloc implements ILoggingService {
   @override
   Future internalAsyncInit() async {
-    if (kReleaseMode || kProfileMode) {
-      Logger.root.level = Level.OFF; // defaults to Level.INFO
-    } else {
+    if (!kReleaseMode && !kProfileMode) {
+      // if (true) {
       Logger.root.level = Level.ALL; // defaults to Level.INFO
       Logger.root.onRecord.listen((record) {
         print('${record.level.name}(${record.loggerName}): ${record.time}: '
@@ -20,6 +19,8 @@ class LoggingService extends AsyncInitLoadingBloc implements ILoggingService {
           print('\n${record.stackTrace}');
         }
       });
+    } else {
+      Logger.root.level = Level.OFF; // defaults to Level.INFO
     }
   }
 }

@@ -38,6 +38,7 @@ void goToConversationShareStatusPage({
   required BuildContext context,
   required IStatus status,
   required InstanceLocation instanceLocation,
+  bool isNeedReUploadMediaAttachments = true,
 }) {
   Navigator.push(
     context,
@@ -45,6 +46,7 @@ void goToConversationShareStatusPage({
       context: context,
       status: status,
       instanceLocation: instanceLocation,
+      isNeedReUploadMediaAttachments: isNeedReUploadMediaAttachments,
     ),
   );
 }
@@ -53,11 +55,13 @@ MaterialPageRoute createConversationShareStatusPageRoute({
   required BuildContext context,
   required IStatus status,
   required InstanceLocation instanceLocation,
+  bool isNeedReUploadMediaAttachments = true,
 }) {
   return MaterialPageRoute(
     builder: (context) => ConversationChatShareStatusBloc.provideToContext(
       context,
       status: status,
+      isNeedReUploadMediaAttachments: isNeedReUploadMediaAttachments,
       child: Provider<IStatus>.value(
         value: status,
         child: DisposableProxyProvider<IStatus, IStatusBloc>(

@@ -199,6 +199,9 @@ dependencies:
   # customizable switch widget
   flutter_switch: ^0.3.1
 
+  # handle external share intents (text/image/video/etc)
+  receive_sharing_intent: ^1.4.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

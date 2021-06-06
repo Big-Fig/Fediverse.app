@@ -24,8 +24,14 @@ import 'package:fedi/app/init/init_bloc_impl.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
+import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_widget.dart';
+import 'package:fedi/app/share/income/action/income_share_action_chooser_dialog.dart';
+import 'package:fedi/app/share/income/handler/income_share_handler_bloc.dart';
+import 'package:fedi/app/share/income/handler/income_share_handler_bloc_impl.dart';
+import 'package:fedi/app/share/income/handler/income_share_handler_model.dart';
+import 'package:fedi/app/share/income/instance/income_share_instance_chooser_dialog.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/thread/local_status_thread_page.dart';
@@ -41,6 +47,7 @@ import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service_provider.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
@@ -56,9 +63,6 @@ import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
-import 'app/notification/repository/notification_repository.dart';
-import 'generated/l10n.dart';
-
 var _logger = Logger('main.dart');
 
 CurrentAuthInstanceContextBloc? currentInstanceContextBloc;
@@ -71,6 +75,7 @@ void onCrash(Object exception, StackTrace stackTrace) {
   FirebaseCrashlytics.instance.recordError(exception, stackTrace);
 }
 
+// ignore: long-method
 void main() async {
   // debugRepaintRainbowEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
@@ -516,25 +521,45 @@ class FediApp extends StatelessWidget {
                       darkTheme: darkFediUiTheme.themeData,
                       themeMode: themeMode,
                       initialRoute: '/',
-                      home: Builder(builder: (context) {
-                        // it is important to init ToastHandlerBloc
-                        // as MaterialApp child
-                        // to have access to context suitable for Navigator
-                        if (instanceInitialized) {
-                          return DisposableProxyProvider<IToastService,
-                              IToastHandlerBloc>(
-                            lazy: false,
-                            update: (context, toastService, _) =>
-                                ToastHandlerBloc.createFromContext(
-                              context,
-                              toastService,
-                            ),
-                            child: child,
-                          );
-                        } else {
-                          return child;
-                        }
-                      }),
+                      home: Builder(
+                        builder: (context) {
+                          // it is important to init ToastHandlerBloc
+                          // as MaterialApp child
+                          // to have access to context suitable for Navigator
+                          if (instanceInitialized) {
+                            return DisposableProvider<IIncomeShareHandlerBloc>(
+                              // important
+                              // lazy:false because we want init it asap
+                              lazy: false,
+                              create: (context) {
+                                var bloc =
+                                    IncomeShareHandlerBloc.createFromContext(
+                                  context,
+                                );
+
+                                _initIncomeShareHandler(
+                                  context: context,
+                                  bloc: bloc,
+                                );
+
+                                return bloc;
+                              },
+                              child: DisposableProxyProvider<IToastService,
+                                  IToastHandlerBloc>(
+                                lazy: false,
+                                update: (context, toastService, _) =>
+                                    ToastHandlerBloc.createFromContext(
+                                  context,
+                                  toastService,
+                                ),
+                                child: child,
+                              ),
+                            );
+                          } else {
+                            return child;
+                          }
+                        },
+                      ),
                       navigatorKey: navigatorKey,
                     ),
                   ),
@@ -562,4 +587,51 @@ class FediApp extends StatelessWidget {
           ),
         ),
       );
+}
+
+void _initIncomeShareHandler({
+  required IncomeShareHandlerBloc bloc,
+  required BuildContext context,
+}) {
+  _logger.finest(() => '_initIncomeShareHandler');
+  bloc.addDisposable(
+    streamSubscription: bloc.incomeShareHandlerErrorStream.listen(
+      (error) {
+        switch (error) {
+          case IncomeShareHandlerError.authInstanceListIsEmpty:
+            IToastService.of(context).showErrorToast(
+              context: context,
+              title:
+                  S.of(context).app_share_income_error_authInstanceListIsEmpty,
+            );
+            break;
+        }
+      },
+    ),
+  );
+
+  bloc.addDisposable(
+    streamSubscription: bloc.needChooseInstanceFromListStream.listen(
+      (authInstanceList) {
+        showIncomeShareInstanceChooserDialog(
+          context,
+          authInstanceList: authInstanceList,
+          incomeShareHandlerBloc: bloc,
+        );
+      },
+    ),
+  );
+  bloc.addDisposable(
+    streamSubscription: bloc.needChooseActionForEventStream.listen(
+      (incomeShareEvent) {
+        showIncomeShareActionChooserDialog(
+          context,
+          incomeShareEvent: incomeShareEvent,
+          incomeShareHandlerBloc: bloc,
+        );
+      },
+    ),
+  );
+
+  bloc.checkForInitialEvent();
 }
