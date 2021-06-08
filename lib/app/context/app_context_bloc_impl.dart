@@ -90,6 +90,9 @@ import 'package:fedi/share/income/income_share_service.dart';
 import 'package:fedi/share/income/income_share_service_impl.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc_impl.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 
@@ -115,6 +118,15 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<ILoggingService>(loggingService);
 
     configService.printConfigToLog();
+
+    if (configService.firebaseEnabled) {
+      await Firebase.initializeApp();
+    }
+
+    if (configService.crashlyticsEnabled) {
+      // Pass all uncaught errors from the framework to Crashlytics.
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+    }
 
     var hiveService = HiveService();
     await globalProviderService.asyncInitAndRegister<IHiveService>(hiveService);
@@ -266,42 +278,37 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<ICurrentAuthInstanceBloc>(currentInstanceBloc);
 
-    String pushRelayBaseUrl;
-    if (await FediPackageInfoHelper.isProdPackageId()) {
-      pushRelayBaseUrl = 'https://pushrelay3.your.org/push/';
-    } else if (await FediPackageInfoHelper.isDevPackageId()) {
-      pushRelayBaseUrl = 'https://pushrelay.jff.name/push/';
-    } else {
-      var packageName = await FediPackageInfoHelper.getPackageId();
-      throw 'Invalid packageName $packageName';
+    if (configService.pushFcmEnabled) {
+      var pushRelayBaseUrl = configService.pushFcmRelayUrl!;
+
+      var pushRelayService =
+          PushRelayService(pushRelayBaseUrl: pushRelayBaseUrl);
+      addDisposable(disposable: pushRelayService);
+      await globalProviderService
+          .asyncInitAndRegister<IPushRelayService>(pushRelayService);
+
+      var fcmPushService = FcmPushService();
+      await globalProviderService
+          .asyncInitAndRegister<IFcmPushService>(fcmPushService);
+
+      var pushHandlerUnhandledLocalPreferencesBloc =
+          PushHandlerUnhandledLocalPreferenceBloc(hiveLocalPreferencesService);
+
+      await globalProviderService
+          .asyncInitAndRegister<IPushHandlerUnhandledLocalPreferenceBloc>(
+        pushHandlerUnhandledLocalPreferencesBloc,
+      );
+      addDisposable(disposable: pushHandlerUnhandledLocalPreferencesBloc);
+      var pushHandlerBloc = PushHandlerBloc(
+        currentInstanceBloc: currentInstanceBloc,
+        instanceListBloc: instanceListBloc,
+        unhandledLocalPreferencesBloc: pushHandlerUnhandledLocalPreferencesBloc,
+        fcmPushService: fcmPushService,
+      );
+      await globalProviderService
+          .asyncInitAndRegister<IPushHandlerBloc>(pushHandlerBloc);
+      addDisposable(disposable: pushHandlerBloc);
     }
-
-    var pushRelayService = PushRelayService(pushRelayBaseUrl: pushRelayBaseUrl);
-    addDisposable(disposable: pushRelayService);
-    await globalProviderService
-        .asyncInitAndRegister<IPushRelayService>(pushRelayService);
-
-    var fcmPushService = FcmPushService();
-    await globalProviderService
-        .asyncInitAndRegister<IFcmPushService>(fcmPushService);
-
-    var pushHandlerUnhandledLocalPreferencesBloc =
-        PushHandlerUnhandledLocalPreferenceBloc(hiveLocalPreferencesService);
-
-    await globalProviderService
-        .asyncInitAndRegister<IPushHandlerUnhandledLocalPreferenceBloc>(
-      pushHandlerUnhandledLocalPreferencesBloc,
-    );
-    addDisposable(disposable: pushHandlerUnhandledLocalPreferencesBloc);
-    var pushHandlerBloc = PushHandlerBloc(
-      currentInstanceBloc: currentInstanceBloc,
-      instanceListBloc: instanceListBloc,
-      unhandledLocalPreferencesBloc: pushHandlerUnhandledLocalPreferencesBloc,
-      fcmPushService: fcmPushService,
-    );
-    await globalProviderService
-        .asyncInitAndRegister<IPushHandlerBloc>(pushHandlerBloc);
-    addDisposable(disposable: pushHandlerBloc);
 
     var globalUiSettingsLocalPreferencesBloc =
         GlobalUiSettingsLocalPreferenceBloc(hiveLocalPreferencesService);
@@ -503,26 +510,29 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await _checkReviewAppDialog(
       appAnalyticsBloc: appAnalyticsBloc,
       inAppReviewBloc: inAppReviewBloc,
+      configService: configService,
     );
   }
 
   Future _checkReviewAppDialog({
+    required IConfigService configService,
     required AppAnalyticsBloc appAnalyticsBloc,
     required InAppReviewBloc inAppReviewBloc,
   }) async {
-    // ignore: no-magic-number
-    final appOpenedCountToShowAppReview = 5;
+    if (!configService.askReviewEnabled) {
+      return;
+    }
+
+    final appOpenedCountToShowAppReview =
+        configService.askReviewCountAppOpenedToShow!;
     var isAppRated = appAnalyticsBloc.isAppRated;
     var appOpenedCount = appAnalyticsBloc.appOpenedCount;
-    var isProdPackageId = await FediPackageInfoHelper.isProdPackageId();
     var isNeedRequestReview =
-        (!isAppRated && appOpenedCount >= appOpenedCountToShowAppReview) &&
-            isProdPackageId;
+        !isAppRated && appOpenedCount >= appOpenedCountToShowAppReview;
     _logger.finest(
       () => ' appOpenedCountToShowAppReview $appOpenedCountToShowAppReview \n'
           ' isAppRated $isAppRated \n'
           ' appOpenedCount $appOpenedCount \n'
-          ' isProdPackageId $isProdPackageId \n'
           ' isNeedRequestReview $isNeedRequestReview',
     );
     if (isNeedRequestReview) {

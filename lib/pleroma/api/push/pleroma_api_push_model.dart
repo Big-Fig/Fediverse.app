@@ -252,10 +252,10 @@ class PleromaApiPushSubscribeRequestSubscription {
 class PleromaApiPushSubscriptionKeys {
   /// User agent public key.
   /// Base64 encoded string of public key of ECDH key using prime256v1 curve.
-  final String? p256dh;
+  final String p256dh;
 
   /// Auth secret. Base64 encoded string of 16 bytes of random data.
-  final String? auth;
+  final String auth;
 
   PleromaApiPushSubscriptionKeys({
     required this.p256dh,
