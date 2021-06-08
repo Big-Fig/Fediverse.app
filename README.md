@@ -157,7 +157,7 @@ https://www.fluttericon.com/
 
 ### How to build from source
 
-#### Flavors
+#### Flavors & Config
 
 #### App id
 

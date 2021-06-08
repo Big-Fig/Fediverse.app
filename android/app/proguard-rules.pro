@@ -1,0 +1,3 @@
+-keep class BuildConfig { *; }
+-keep class com.fediverse.app.BuildConfig { *; }
+-keep class com.fediverse.app2.BuildConfig { *; }
