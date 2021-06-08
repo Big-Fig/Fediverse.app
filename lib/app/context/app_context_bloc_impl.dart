@@ -20,6 +20,8 @@ import 'package:fedi/app/cache/files/settings/local_preferences/global/global_fi
 import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/config/config_service.dart';
+import 'package:fedi/app/config/config_service_impl.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/hive/hive_service.dart';
@@ -101,6 +103,10 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     _logger.fine(() => 'internalAsyncInit');
 
     var globalProviderService = this;
+
+    var configService = ConfigService();
+    await globalProviderService
+        .asyncInitAndRegister<IConfigService>(configService);
 
     var loggingService = LoggingService();
     await globalProviderService
