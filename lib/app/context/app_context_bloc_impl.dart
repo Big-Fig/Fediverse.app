@@ -108,9 +108,13 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<IConfigService>(configService);
 
-    var loggingService = LoggingService();
+    var loggingService = LoggingService(
+      enabled: configService.logEnabled,
+    );
     await globalProviderService
         .asyncInitAndRegister<ILoggingService>(loggingService);
+
+    configService.printConfigToLog();
 
     var hiveService = HiveService();
     await globalProviderService.asyncInitAndRegister<IHiveService>(hiveService);

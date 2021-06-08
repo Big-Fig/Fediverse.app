@@ -1,61 +1,120 @@
+import 'package:fedi/app/config/config_model.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_config/flutter_config.dart';
-import 'package:provider/provider.dart';
+import 'package:logging/logging.dart';
+
+final _logger = Logger('config_service_impl.dart');
 
 class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
-  static IConfigService of(
-    BuildContext context, {
-    bool listen = true,
-  }) =>
-      Provider.of<IConfigService>(context, listen: listen);
+  @override
+  String get appId => _getString('APP_ID')!;
 
   @override
-  String get appId => FlutterConfig.get('APP_ID');
+  bool get logEnabled => _getBool('LOG_ENABLED')!;
 
   @override
-  bool get logEnabled => FlutterConfig.get('LOG_ENABLED');
+  bool get firebaseEnabled => _getBool('FIREBASE_ENABLED')!;
 
   @override
-  bool get firebaseEnabled => FlutterConfig.get('FIREBASE_ENABLED');
+  bool get pushFcmEnabled => _getBool('PUSH_FCM_ENABLED')!;
 
   @override
-  bool get pushFcmEnabled => FlutterConfig.get('PUSH_FCM_ENABLED');
-
-  @override
-  String? get pushFcmRelayUrl => FlutterConfig.get('PUSH_FCM_RELAY_URL');
+  String? get pushFcmRelayUrl => _getString('PUSH_FCM_RELAY_URL');
 
   @override
   String? get pushSubscriptionKeysP256dh =>
-      FlutterConfig.get('PUSH_SUBSCRIPTION_KEYS_P256DH');
+      _getString('PUSH_SUBSCRIPTION_KEYS_P256DH');
 
   @override
   String? get pushSubscriptionKeysAuth =>
-      FlutterConfig.get('PUSH_SUBSCRIPTION_KEYS_AUTH');
+      _getString('PUSH_SUBSCRIPTION_KEYS_AUTH');
 
   @override
-  bool get crashlyticsEnabled => FlutterConfig.get('CRASHLYTICS_ENABLED');
+  bool get crashlyticsEnabled => _getBool('CRASHLYTICS_ENABLED')!;
 
   @override
   bool? get crashlyticsHandlingEnabledByDefault =>
-      FlutterConfig.get('CRASHLYTICS_HANDLING_ENABLED_BY_DEFAULT');
+      _getBool('CRASHLYTICS_HANDLING_ENABLED_BY_DEFAULT');
 
   @override
-  bool get askReviewEnabled => FlutterConfig.get('ASK_REVIEW_ENABLED');
+  bool get askReviewEnabled => _getBool('ASK_REVIEW_ENABLED')!;
 
   @override
   int? get askReviewCountAppOpenedToShow =>
-      FlutterConfig.get('ASK_REVIEW_COUNT_APP_OPENED_TO_SHOW');
+      _getInt('ASK_REVIEW_COUNT_APP_OPENED_TO_SHOW');
 
   @override
   Future internalAsyncInit() async {
     await FlutterConfig.loadEnvVariables();
 
-    // print('config ${FlutterConfig.variables.entries.map(
-    //       (entry) => '${entry.key} => ${entry.value}',
-    //     ).join(
-    //       ', ',
-    //     )}');
+    assert(appId == actualAppId);
+    assert(buildConfigFlavor != null);
   }
+
+  @override
+  void printConfigToLog() {
+    _logger.finest('config \n'
+        '${FlutterConfig.variables.entries.map(
+          (entry) => '${entry.key} => ${entry.value}',
+        ).join(
+          ' \n',
+        )}');
+  }
+
+  @override
+  String get actualAppId => _getString('APPLICATION_ID')!;
+
+  @override
+  bool get buildDebug => _getBool('DEBUG')!;
+
+  @override
+  bool get buildRelease => !buildDebug;
+
+  @override
+  ConfigFlavor? get buildConfigFlavor => _getConfigFlavor('FLAVOR');
+
+  @override
+  int get versionCode => _getInt('VERSION_CODE')!;
+
+  @override
+  String get versionName => _getString('VERSION_NAME')!;
+}
+
+bool? _getBool(String key) {
+  var value = FlutterConfig.get(key) as String?;
+
+  if (value != null) {
+    value = value.toLowerCase();
+
+    return value == 'true';
+  } else {
+    return null;
+  }
+}
+
+int? _getInt(String key) {
+  var value = FlutterConfig.get(key) as String?;
+
+  if (value != null) {
+    return int.parse(value);
+  } else {
+    return null;
+  }
+}
+
+String? _getString(String key) {
+  var value = FlutterConfig.get(key) as String?;
+
+  if (value != null) {
+    return value;
+  } else {
+    return null;
+  }
+}
+
+ConfigFlavor? _getConfigFlavor(String key) {
+  var value = FlutterConfig.get(key) as String?;
+
+  return value?.toConfigFlavor();
 }
