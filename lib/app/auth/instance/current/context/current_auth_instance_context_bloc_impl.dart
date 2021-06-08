@@ -45,6 +45,7 @@ import 'package:fedi/app/chat/settings/chat_settings_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc.dart';
 import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preference_bloc.dart';
 import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preferences/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
@@ -226,6 +227,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var pushRelayService = appContextBloc.get<IPushRelayService>();
     var fcmPushService = appContextBloc.get<IFcmPushService>();
     var pushHandlerBloc = appContextBloc.get<IPushHandlerBloc>();
+    var configService = appContextBloc.get<IConfigService>();
 
     var globalProviderService = this;
 
@@ -525,18 +527,6 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     );
     addDisposable(disposable: mastodonApiEmojiService);
 
-    var pleromaPushService = PleromaApiPushService(
-      keys: PleromaApiPushSubscriptionKeys(
-        p256dh:
-            'BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8quUowlrPyfXlMa6tABLqqcSpOpMnC1-o_UB_s4R8NQsqMLbASjnqSbqw=',
-        auth: 'T5bhIIyre5TDC1LyX4mFAQ==',
-      ),
-      restService: pleromaAuthRestService,
-    );
-    await globalProviderService
-        .asyncInitAndRegister<IPleromaApiPushService>(pleromaPushService);
-    addDisposable(disposable: pleromaPushService);
-
     var myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
@@ -604,17 +594,41 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IMyAccountBloc>(myAccountBloc);
 
-    var pushSettingsBloc = PushSettingsBloc(
-      pushRelayService: pushRelayService,
-      instanceLocalPreferencesBloc: instancePushSettingsLocalPreferenceBloc,
-      pleromaPushService: pleromaPushService,
-      currentInstance: currentInstance,
-      fcmPushService: fcmPushService,
-    );
+    if (configService.pushFcmEnabled) {
+      var pleromaPushService = PleromaApiPushService(
+        keys: PleromaApiPushSubscriptionKeys(
+          p256dh: configService.pushSubscriptionKeysP256dh!,
+          auth: configService.pushSubscriptionKeysAuth!,
+        ),
+        restService: pleromaAuthRestService,
+      );
+      await globalProviderService
+          .asyncInitAndRegister<IPleromaApiPushService>(pleromaPushService);
+      addDisposable(disposable: pleromaPushService);
 
-    addDisposable(disposable: pushSettingsBloc);
-    await globalProviderService
-        .asyncInitAndRegister<IPushSettingsBloc>(pushSettingsBloc);
+      var pushSettingsBloc = PushSettingsBloc(
+        pushRelayService: pushRelayService,
+        instanceLocalPreferencesBloc: instancePushSettingsLocalPreferenceBloc,
+        pleromaPushService: pleromaPushService,
+        currentInstance: currentInstance,
+        fcmPushService: fcmPushService,
+      );
+
+      addDisposable(disposable: pushSettingsBloc);
+      await globalProviderService
+          .asyncInitAndRegister<IPushSettingsBloc>(pushSettingsBloc);
+
+      var fcmPushPermissionCheckerBloc = FcmPushPermissionCheckerBloc(
+        fcmPushService: fcmPushService,
+        fcmPushPermissionAskedLocalPreferencesBloc:
+            fcmPushPermissionAskedLocalPreferencesBloc,
+        pushSettingsBloc: pushSettingsBloc,
+      );
+
+      addDisposable(disposable: fcmPushPermissionCheckerBloc);
+      await globalProviderService.asyncInitAndRegister<
+          IFcmPushPermissionCheckerBloc>(fcmPushPermissionCheckerBloc);
+    }
 
     var currentPleromaChatBloc = PleromaChatCurrentBloc();
 
@@ -721,18 +735,6 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
       await timelinesHomeTabStorageLocalPreferencesBloc.setValue(storage);
     }
-
-    var fcmPushPermissionCheckerBloc = FcmPushPermissionCheckerBloc(
-      fcmPushService: fcmPushService,
-      fcmPushPermissionAskedLocalPreferencesBloc:
-          fcmPushPermissionAskedLocalPreferencesBloc,
-      pushSettingsBloc: pushSettingsBloc,
-    );
-
-    addDisposable(disposable: fcmPushPermissionCheckerBloc);
-    await globalProviderService.asyncInitAndRegister<
-        IFcmPushPermissionCheckerBloc>(fcmPushPermissionCheckerBloc);
-
     var instanceChatSettingsLocalPreferencesBloc =
         InstanceChatSettingsLocalPreferenceBloc(
       preferencesService,

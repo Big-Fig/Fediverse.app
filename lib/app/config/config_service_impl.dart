@@ -17,7 +17,7 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   bool get firebaseEnabled => _getBool('FIREBASE_ENABLED')!;
 
   @override
-  bool get pushFcmEnabled => _getBool('PUSH_FCM_ENABLED')!;
+  bool get pushFcmEnabled => firebaseEnabled && _getBool('PUSH_FCM_ENABLED')!;
 
   @override
   String? get pushFcmRelayUrl => _getString('PUSH_FCM_RELAY_URL');
@@ -31,11 +31,8 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
       _getString('PUSH_SUBSCRIPTION_KEYS_AUTH');
 
   @override
-  bool get crashlyticsEnabled => _getBool('CRASHLYTICS_ENABLED')!;
-
-  @override
-  bool? get crashlyticsHandlingEnabledByDefault =>
-      _getBool('CRASHLYTICS_HANDLING_ENABLED_BY_DEFAULT');
+  bool get crashlyticsEnabled =>
+      firebaseEnabled && _getBool('CRASHLYTICS_ENABLED')!;
 
   @override
   bool get askReviewEnabled => _getBool('ASK_REVIEW_ENABLED')!;
@@ -56,10 +53,10 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   void printConfigToLog() {
     _logger.finest('config \n'
         '${FlutterConfig.variables.entries.map(
-          (entry) => '${entry.key} => ${entry.value}',
-        ).join(
-          ' \n',
-        )}');
+              (entry) => '${entry.key} => ${entry.value}',
+            ).join(
+              ' \n',
+            )}');
   }
 
   @override
