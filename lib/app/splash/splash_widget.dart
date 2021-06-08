@@ -1,10 +1,14 @@
-import 'package:fedi/app/package_info/package_info_widget.dart';
+import 'package:fedi/app/package_info/version_package_info_widget.dart';
 import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SplashWidget extends StatelessWidget {
-  const SplashWidget();
+  final bool displayVersionInfo;
+
+  const SplashWidget({
+    required this.displayVersionInfo,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +17,14 @@ class SplashWidget extends StatelessWidget {
         const Center(
           child: _SplashLogoWidget(),
         ),
-        Positioned(
-          // ignore: no-magic-number
-          right: 20.0,
-          // ignore: no-magic-number
-          bottom: 20.0,
-          child: const _SplashVersionInfoWidget(),
-        ),
+        if (displayVersionInfo)
+          Positioned(
+            // ignore: no-magic-number
+            right: 20.0,
+            // ignore: no-magic-number
+            bottom: 20.0,
+            child: const _SplashVersionInfoWidget(),
+          ),
       ],
     );
   }

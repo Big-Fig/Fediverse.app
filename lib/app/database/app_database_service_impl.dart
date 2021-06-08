@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/database/database_service.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -19,10 +19,12 @@ final _logger = Logger('app_database_service_impl.dart');
 
 class AppDatabaseService extends AsyncInitLoadingBloc
     implements IDatabaseService {
+  final IConfigService configService;
   final String dbName;
 
   AppDatabaseService({
     required this.dbName,
+    required this.configService,
   });
 
   // ignore: avoid-late-keyword
@@ -65,7 +67,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
   }
 
   Future _addMoorInspectorSupport() async {
-    var packageId = await FediPackageInfoHelper.getPackageId();
+    var packageId = configService.appId;
 
     final moorInspectorBuilder = MoorInspectorBuilder()
       ..bundleId = packageId

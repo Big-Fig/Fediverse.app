@@ -144,9 +144,6 @@ dependencies:
   # parse html to extract raw text from status content
   html: ^0.15.0
 
-  # fetch package info during runtime
-  package_info: ^2.0.0
-
   # better scroll controller for nested scroll
   nested_scroll_controller: ^1.0.0
 

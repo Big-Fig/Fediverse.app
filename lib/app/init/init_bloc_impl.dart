@@ -12,7 +12,6 @@ class InitBloc extends AsyncInitLoadingBloc implements IInitBloc {
 
   @override
   Future internalAsyncInit() async {
-
     addDisposable(disposable: appContextBloc);
 
     await appContextBloc.performAsyncInit();
@@ -24,6 +23,8 @@ class InitBloc extends AsyncInitLoadingBloc implements IInitBloc {
       connectionService: appContextBloc.get(),
       // ignore: no-equal-arguments
       currentAuthInstanceBloc: appContextBloc.get(),
+      // ignore: no-equal-arguments
+      configService: appContextBloc.get(),
     );
 
     await deepLinkInitBloc.performAsyncInit();
