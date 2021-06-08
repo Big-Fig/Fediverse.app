@@ -14,6 +14,7 @@ import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_bloc_impl.dart';
@@ -195,8 +196,13 @@ Future runInitializedCurrentInstanceApp({
   );
   await currentInstanceContextBloc!.performAsyncInit();
 
-  var pushLoaderBloc =
-      currentInstanceContextBloc!.get<INotificationPushLoaderBloc>();
+  var configService = appContextBloc.get<IConfigService>();
+
+  INotificationPushLoaderBloc? pushLoaderBloc;
+  if (configService.pushFcmEnabled) {
+    pushLoaderBloc =
+        currentInstanceContextBloc!.get<INotificationPushLoaderBloc>();
+  }
 
   _logger.finest(
     () => 'buildCurrentInstanceApp CurrentInstanceContextLoadingPage',
@@ -225,7 +231,7 @@ Future runInitializedCurrentInstanceApp({
 
 CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
   required BuildContext context,
-  required INotificationPushLoaderBloc pushLoaderBloc,
+  required INotificationPushLoaderBloc? pushLoaderBloc,
 }) {
   _logger.finest(() => 'createCurrentInstanceContextBloc');
   var currentAuthInstanceContextLoadingBloc =
@@ -241,26 +247,28 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
                     .cantFetchAndLocalCacheNotExist ||
             state == CurrentAuthInstanceContextInitState.localCacheExist;
         if (isLocalCacheExist) {
-          currentInstanceContextBloc!.addDisposable(
-            streamSubscription:
-                pushLoaderBloc.launchPushLoaderNotificationStream.listen(
-              (launchOrResumePushLoaderNotification) {
-                if (launchOrResumePushLoaderNotification != null) {
-                  // ignore: no-magic-number
-                  const durationToWaitUntilHandleLaunchNotification =
-                      Duration(milliseconds: 100);
-                  Future.delayed(
-                    durationToWaitUntilHandleLaunchNotification,
-                    () async {
-                      await handleLaunchPushLoaderNotification(
-                        launchOrResumePushLoaderNotification,
-                      );
-                    },
-                  );
-                }
-              },
-            ),
-          );
+          if (pushLoaderBloc != null) {
+            currentInstanceContextBloc!.addDisposable(
+              streamSubscription:
+                  pushLoaderBloc.launchPushLoaderNotificationStream.listen(
+                (launchOrResumePushLoaderNotification) {
+                  if (launchOrResumePushLoaderNotification != null) {
+                    // ignore: no-magic-number
+                    const durationToWaitUntilHandleLaunchNotification =
+                        Duration(milliseconds: 100);
+                    Future.delayed(
+                      durationToWaitUntilHandleLaunchNotification,
+                      () async {
+                        await handleLaunchPushLoaderNotification(
+                          launchOrResumePushLoaderNotification,
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            );
+          }
         }
       },
     ),
@@ -317,14 +325,14 @@ Future handleLaunchPushLoaderNotification(
 }
 
 Widget buildAuthInstanceContextInitWidget({
-  required INotificationPushLoaderBloc pushLoaderBloc,
+  required INotificationPushLoaderBloc? pushLoaderBloc,
 }) =>
     CurrentAuthInstanceContextInitWidget(
       child: DisposableProvider<IHomeBloc>(
         create: (context) {
           var homeBloc = HomeBloc(
             startTab: calculateHomeTabForNotification(
-              pushLoaderBloc.launchPushLoaderNotification,
+              pushLoaderBloc?.launchPushLoaderNotification,
             ),
             webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
               context,
@@ -336,18 +344,20 @@ Widget buildAuthInstanceContextInitWidget({
             ),
           );
 
-          homeBloc.addDisposable(
-            streamSubscription:
-                pushLoaderBloc.launchPushLoaderNotificationStream.listen(
-              (launchOrResumePushLoaderNotification) {
-                homeBloc.selectTab(
-                  calculateHomeTabForNotification(
-                    launchOrResumePushLoaderNotification,
-                  ),
-                );
-              },
-            ),
-          );
+          if (pushLoaderBloc != null) {
+            homeBloc.addDisposable(
+              streamSubscription:
+                  pushLoaderBloc.launchPushLoaderNotificationStream.listen(
+                (launchOrResumePushLoaderNotification) {
+                  homeBloc.selectTab(
+                    calculateHomeTabForNotification(
+                      launchOrResumePushLoaderNotification,
+                    ),
+                  );
+                },
+              ),
+            );
+          }
 
           return homeBloc;
         },
@@ -474,6 +484,25 @@ class FediApp extends StatelessWidget {
                           // as MaterialApp child
                           // to have access to context suitable for Navigator
                           if (instanceInitialized) {
+                            var configService =
+                                IConfigService.of(context, listen: false);
+                            var pushFcmEnabled = configService.pushFcmEnabled;
+
+                            Widget actualChild;
+                            if (pushFcmEnabled) {
+                              actualChild = DisposableProxyProvider<IToastService,
+                                  IToastHandlerBloc>(
+                                lazy: false,
+                                update: (context, toastService, _) =>
+                                    ToastHandlerBloc.createFromContext(
+                                  context,
+                                  toastService,
+                                ),
+                                child: child,
+                              );
+                            } else {
+                              actualChild = child;
+                            }
                             return DisposableProvider<IIncomeShareHandlerBloc>(
                               // important
                               // lazy:false because we want init it asap
@@ -491,16 +520,7 @@ class FediApp extends StatelessWidget {
 
                                 return bloc;
                               },
-                              child: DisposableProxyProvider<IToastService,
-                                  IToastHandlerBloc>(
-                                lazy: false,
-                                update: (context, toastService, _) =>
-                                    ToastHandlerBloc.createFromContext(
-                                  context,
-                                  toastService,
-                                ),
-                                child: child,
-                              ),
+                              child: actualChild,
                             );
                           } else {
                             return child;

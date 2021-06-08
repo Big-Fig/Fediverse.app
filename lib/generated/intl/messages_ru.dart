@@ -1204,6 +1204,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Показать результаты"),
         "app_poll_metadata_totalVotes": m40,
         "app_poll_vote": MessageLookupByLibrary.simpleMessage("Выбрать"),
+        "app_push_disabled_notification_content":
+            MessageLookupByLibrary.simpleMessage(
+                "Установите версию из магазина или включите поддержку оповещений при сборке приложения"),
+        "app_push_disabled_notification_title":
+            MessageLookupByLibrary.simpleMessage("Оповещения отключены"),
         "app_push_permission_ask_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Хотите ли вы включить push оповещения?\nОни буду пересланы через Fedi push прокси сервер"),

@@ -1192,6 +1192,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("View results"),
         "app_poll_metadata_totalVotes": m40,
         "app_poll_vote": MessageLookupByLibrary.simpleMessage("Vote"),
+        "app_push_disabled_notification_content":
+            MessageLookupByLibrary.simpleMessage(
+                "Install app version from store or enable support in config if app was built from source"),
+        "app_push_disabled_notification_title":
+            MessageLookupByLibrary.simpleMessage(
+                "Push notifications support disabled"),
         "app_push_permission_ask_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server"),
