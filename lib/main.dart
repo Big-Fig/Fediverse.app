@@ -26,7 +26,6 @@ import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
-import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_widget.dart';
 import 'package:fedi/app/share/income/action/income_share_action_chooser_dialog.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_bloc.dart';
@@ -72,7 +71,6 @@ void main() async {
   // debugRepaintRainbowEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
 
-  var appTitle = await FediPackageInfoHelper.getAppName();
   runNotInitializedSplashApp();
 
   IInitBloc initBloc = InitBloc();
@@ -96,7 +94,6 @@ void main() async {
             runInitializedApp(
               appContextBloc: initBloc.appContextBloc,
               currentInstance: currentInstance,
-              appTitle: appTitle,
             );
           },
         );
@@ -111,7 +108,9 @@ void runNotInitializedSplashApp() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashPage(),
+      home: SplashPage(
+        displayVersionInfo: false,
+      ),
     ),
   );
 }
@@ -144,16 +143,16 @@ void runInitFailedApp() {
 
 void runInitializedSplashApp({
   required IAppContextBloc appContextBloc,
-  required String appTitle,
 }) {
   runApp(
     appContextBloc.provideContextToChild(
       child: FediApp(
-        appTitle: appTitle,
         instanceInitialized: false,
         child: Provider<IAppContextBloc>.value(
           value: appContextBloc,
-          child: const SplashPage(),
+          child: const SplashPage(
+            displayVersionInfo: true,
+          ),
         ),
       ),
     ),
@@ -163,28 +162,24 @@ void runInitializedSplashApp({
 Future runInitializedApp({
   required IAppContextBloc appContextBloc,
   required AuthInstance? currentInstance,
-  required String appTitle,
 }) async {
   _logger.finest(() => 'runInitializedApp $runInitializedApp');
   if (currentInstance != null) {
     await runInitializedCurrentInstanceApp(
       appContextBloc: appContextBloc,
-      appTitle: appTitle,
       currentInstance: currentInstance,
     );
   } else {
-    runInitializedLoginApp(appContextBloc, appTitle);
+    runInitializedLoginApp(appContextBloc);
   }
 }
 
 Future runInitializedCurrentInstanceApp({
   required IAppContextBloc appContextBloc,
-  required String appTitle,
   required AuthInstance currentInstance,
 }) async {
   runInitializedSplashApp(
     appContextBloc: appContextBloc,
-    appTitle: appTitle,
   );
   if (currentInstanceContextBloc != null) {
     await currentInstanceContextBloc!.dispose();
@@ -218,7 +213,6 @@ Future runInitializedCurrentInstanceApp({
           ),
           child: FediApp(
             instanceInitialized: true,
-            appTitle: appTitle,
             child: buildAuthInstanceContextInitWidget(
               pushLoaderBloc: pushLoaderBloc,
             ),
@@ -367,14 +361,13 @@ Widget buildAuthInstanceContextInitWidget({
       ),
     );
 
-void runInitializedLoginApp(IAppContextBloc appContextBloc, String appTitle) {
+void runInitializedLoginApp(IAppContextBloc appContextBloc) {
   runApp(
     appContextBloc.provideContextToChild(
       child: DisposableProvider<IJoinAuthInstanceBloc>(
         create: (context) => JoinAuthInstanceBloc(isFromScratch: true),
         child: FediApp(
           instanceInitialized: false,
-          appTitle: appTitle,
           child: const FromScratchJoinAuthInstancePage(),
         ),
       ),
@@ -408,12 +401,10 @@ HomeTab calculateHomeTabForNotification(
 class FediApp extends StatelessWidget {
   final Widget child;
   final bool instanceInitialized;
-  final String appTitle;
 
   FediApp({
     required this.child,
     required this.instanceInitialized,
-    required this.appTitle,
   });
 
   @override
@@ -462,72 +453,75 @@ class FediApp extends StatelessWidget {
 
                 return OverlayNotificationServiceProvider(
                   child: ToastServiceProvider(
-                    child: MaterialApp(
-                      // checkerboardRasterCacheImages: true,
-                      // checkerboardOffscreenLayers: true,
-                      debugShowCheckedModeBanner: false,
-                      title: appTitle,
-                      localizationsDelegates: [
-                        S.delegate,
-                        GlobalMaterialLocalizations.delegate,
-                        GlobalWidgetsLocalizations.delegate,
-                      ],
-                      supportedLocales: S.delegate.supportedLocales,
-                      locale: locale,
-                      theme: lightFediUiTheme.themeData,
-                      darkTheme: darkFediUiTheme.themeData,
-                      themeMode: themeMode,
-                      initialRoute: '/',
-                      home: Builder(
-                        builder: (context) {
-                          // it is important to init ToastHandlerBloc
-                          // as MaterialApp child
-                          // to have access to context suitable for Navigator
-                          if (instanceInitialized) {
-                            var configService =
-                                IConfigService.of(context, listen: false);
-                            var pushFcmEnabled = configService.pushFcmEnabled;
+                    child: Builder(
+                      builder: (context)=> MaterialApp(
+                        // checkerboardRasterCacheImages: true,
+                        // checkerboardOffscreenLayers: true,
+                        debugShowCheckedModeBanner: false,
+                        title: IConfigService.of(context).appTitle,
+                        localizationsDelegates: [
+                          S.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                        ],
+                        supportedLocales: S.delegate.supportedLocales,
+                        locale: locale,
+                        theme: lightFediUiTheme.themeData,
+                        darkTheme: darkFediUiTheme.themeData,
+                        themeMode: themeMode,
+                        initialRoute: '/',
+                        home: Builder(
+                          builder: (context) {
+                            // it is important to init ToastHandlerBloc
+                            // as MaterialApp child
+                            // to have access to context suitable for Navigator
+                            if (instanceInitialized) {
+                              var configService =
+                                  IConfigService.of(context, listen: false);
+                              var pushFcmEnabled = configService.pushFcmEnabled;
 
-                            Widget actualChild;
-                            if (pushFcmEnabled) {
-                              actualChild = DisposableProxyProvider<IToastService,
-                                  IToastHandlerBloc>(
+                              Widget actualChild;
+                              if (pushFcmEnabled) {
+                                actualChild = DisposableProxyProvider<
+                                    IToastService, IToastHandlerBloc>(
+                                  lazy: false,
+                                  update: (context, toastService, _) =>
+                                      ToastHandlerBloc.createFromContext(
+                                    context,
+                                    toastService,
+                                  ),
+                                  child: child,
+                                );
+                              } else {
+                                actualChild = child;
+                              }
+
+                              return DisposableProvider<IIncomeShareHandlerBloc>(
+                                // important
+                                // lazy:false because we want init it asap
                                 lazy: false,
-                                update: (context, toastService, _) =>
-                                    ToastHandlerBloc.createFromContext(
-                                  context,
-                                  toastService,
-                                ),
-                                child: child,
+                                create: (context) {
+                                  var bloc =
+                                      IncomeShareHandlerBloc.createFromContext(
+                                    context,
+                                  );
+
+                                  _initIncomeShareHandler(
+                                    context: context,
+                                    bloc: bloc,
+                                  );
+
+                                  return bloc;
+                                },
+                                child: actualChild,
                               );
                             } else {
-                              actualChild = child;
+                              return child;
                             }
-                            return DisposableProvider<IIncomeShareHandlerBloc>(
-                              // important
-                              // lazy:false because we want init it asap
-                              lazy: false,
-                              create: (context) {
-                                var bloc =
-                                    IncomeShareHandlerBloc.createFromContext(
-                                  context,
-                                );
-
-                                _initIncomeShareHandler(
-                                  context: context,
-                                  bloc: bloc,
-                                );
-
-                                return bloc;
-                              },
-                              child: actualChild,
-                            );
-                          } else {
-                            return child;
-                          }
-                        },
+                          },
+                        ),
+                        navigatorKey: navigatorKey,
                       ),
-                      navigatorKey: navigatorKey,
                     ),
                   ),
                 );

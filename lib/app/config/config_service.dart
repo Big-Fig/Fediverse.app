@@ -13,7 +13,11 @@ abstract class IConfigService implements IAsyncInitLoadingBloc, IDisposable {
 
   String get appId;
 
-  String get actualAppId;
+  String get appIdActual;
+
+  String? get appAppleId;
+
+  String get appTitle;
 
   bool get logEnabled;
 
@@ -39,9 +43,9 @@ abstract class IConfigService implements IAsyncInitLoadingBloc, IDisposable {
 
   bool get buildRelease;
 
-  int get versionCode;
+  int get appVersionCode;
 
-  String get versionName;
+  String get appVersionName;
 
   void printConfigToLog();
 }

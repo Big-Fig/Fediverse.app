@@ -251,7 +251,10 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IRecentSearchLocalPreferenceBloc>(recentSearchLocalPreferenceBloc);
 
-    var moorDatabaseService = AppDatabaseService(dbName: userAtHost);
+    var moorDatabaseService = AppDatabaseService(
+      dbName: userAtHost,
+      configService: configService,
+    );
     addDisposable(disposable: moorDatabaseService);
     await globalProviderService
         .asyncInitAndRegister<AppDatabaseService>(moorDatabaseService);
@@ -591,7 +594,6 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IMyAccountBloc>(myAccountBloc);
 
-
     var currentPleromaChatBloc = PleromaChatCurrentBloc();
 
     await globalProviderService
@@ -615,7 +617,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         IPleromaChatNewMessagesHandlerBloc>(chatNewMessagesHandlerBloc);
     addDisposable(disposable: chatNewMessagesHandlerBloc);
     var conversationChatNewMessagesHandlerBloc =
-    ConversationChatNewMessagesHandlerBloc(
+        ConversationChatNewMessagesHandlerBloc(
       conversationRepository: conversationRepository,
       currentChatBloc: currentConversationChatBloc,
       conversationChatService: pleromaConversationService,
@@ -626,7 +628,6 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       conversationChatNewMessagesHandlerBloc,
     );
     addDisposable(disposable: conversationChatNewMessagesHandlerBloc);
-
 
     if (configService.pushFcmEnabled) {
       var pushRelayService = appContextBloc.get<IPushRelayService>();
@@ -667,7 +668,6 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       await globalProviderService.asyncInitAndRegister<
           IFcmPushPermissionCheckerBloc>(fcmPushPermissionCheckerBloc);
 
-
       var notificationPushLoaderBloc = NotificationPushLoaderBloc(
         currentInstance: currentInstance,
         pushHandlerBloc: pushHandlerBloc,
@@ -680,9 +680,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       addDisposable(disposable: notificationPushLoaderBloc);
       await globalProviderService.asyncInitAndRegister<
           INotificationPushLoaderBloc>(notificationPushLoaderBloc);
-
     }
-
 
     if (!timelinesHomeTabStorageLocalPreferencesBloc
         .value.timelineIds.isNotEmpty) {

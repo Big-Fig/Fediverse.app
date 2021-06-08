@@ -11,6 +11,16 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   String get appId => _getString('APP_ID')!;
 
   @override
+  // APPLICATION_ID is reserved key in flutter_config
+  String get appIdActual => _getString('APPLICATION_ID')!;
+
+  @override
+  String? get appAppleId => _getString('APP_APPLE_ID')!;
+
+  @override
+  String get appTitle => _getString('APP_TITLE')!;
+
+  @override
   bool get logEnabled => _getBool('LOG_ENABLED')!;
 
   @override
@@ -45,7 +55,7 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   Future internalAsyncInit() async {
     await FlutterConfig.loadEnvVariables();
 
-    assert(appId == actualAppId);
+    assert(appId == appIdActual);
     assert(buildConfigFlavor != null);
   }
 
@@ -60,9 +70,6 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   }
 
   @override
-  String get actualAppId => _getString('APPLICATION_ID')!;
-
-  @override
   bool get buildDebug => _getBool('DEBUG')!;
 
   @override
@@ -72,10 +79,10 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   ConfigFlavor? get buildConfigFlavor => _getConfigFlavor('FLAVOR');
 
   @override
-  int get versionCode => _getInt('VERSION_CODE')!;
+  int get appVersionCode => _getInt('VERSION_CODE')!;
 
   @override
-  String get versionName => _getString('VERSION_NAME')!;
+  String get appVersionName => _getString('VERSION_NAME')!;
 }
 
 bool? _getBool(String key) {
