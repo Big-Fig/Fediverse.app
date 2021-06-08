@@ -31,6 +31,7 @@ class RegisterAuthInstancePage extends StatelessWidget {
       );
 }
 
+// ignore: long-method
 Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
   BuildContext context, {
   required Uri instanceBaseUri,
