@@ -120,5 +120,5 @@ app.*.symbols
 /ios/.envfile
 
 # config which excluded from source control
-/.env.dev
-/.env.prod
+/env_dev.env
+/env_prod.env
