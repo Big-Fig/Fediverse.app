@@ -1,3 +1,4 @@
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/push/fcm/ask_fcm_push_permission_dialog.dart';
 import 'package:fedi/app/push/fcm/declined_fcm_push_permission_dialog.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc.dart';
@@ -29,43 +30,47 @@ class _FcmPushPermissionCheckerWidgetState
   }
 
   Future checkFcmPushPermission() async {
-    var fcmPushPermissionCheckerBloc =
-        IFcmPushPermissionCheckerBloc.of(context, listen: false);
+    var configService = IConfigService.of(context, listen: false);
 
-    var isNeedCheckPermission =
-        fcmPushPermissionCheckerBloc.isNeedCheckPermission;
-    _logger.finest(() => 'isNeedCheckPermission $isNeedCheckPermission');
+    if (configService.pushFcmEnabled) {
+      var fcmPushPermissionCheckerBloc =
+          IFcmPushPermissionCheckerBloc.of(context, listen: false);
 
-    if (isNeedCheckPermission) {
-      // todo: refactor
-      // ignore: no-magic-number
-      Future.delayed(
+      var isNeedCheckPermission =
+          fcmPushPermissionCheckerBloc.isNeedCheckPermission;
+      _logger.finest(() => 'isNeedCheckPermission $isNeedCheckPermission');
+
+      if (isNeedCheckPermission) {
         // todo: refactor
         // ignore: no-magic-number
-        Duration(milliseconds: 100),
-        () async {
-          // ignore: avoid-late-keyword
-          late FediBaseAlertDialog askFcmPushPermissionDialog;
-          askFcmPushPermissionDialog = createAskFcmPushPermissionDialog(
-            context: context,
-            yesAction: (context) async {
-              await askFcmPushPermissionDialog.hide(context);
-              var success =
-                  await fcmPushPermissionCheckerBloc.checkAndSubscribe();
-              if (!success) {
+        Future.delayed(
+          // todo: refactor
+          // ignore: no-magic-number
+          Duration(milliseconds: 100),
+          () async {
+            // ignore: avoid-late-keyword
+            late FediBaseAlertDialog askFcmPushPermissionDialog;
+            askFcmPushPermissionDialog = createAskFcmPushPermissionDialog(
+              context: context,
+              yesAction: (context) async {
+                await askFcmPushPermissionDialog.hide(context);
+                var success =
+                    await fcmPushPermissionCheckerBloc.checkAndSubscribe();
+                if (!success) {
+                  showDeclinedDialog(context);
+                }
+              },
+              noAction: (context) {
+                askFcmPushPermissionDialog.hide(context);
+                fcmPushPermissionCheckerBloc.onCheckDismissed();
                 showDeclinedDialog(context);
-              }
-            },
-            noAction: (context) {
-              askFcmPushPermissionDialog.hide(context);
-              fcmPushPermissionCheckerBloc.onCheckDismissed();
-              showDeclinedDialog(context);
-            },
-          );
+              },
+            );
 
-          await askFcmPushPermissionDialog.show(context);
-        },
-      );
+            await askFcmPushPermissionDialog.show(context);
+          },
+        );
+      }
     }
   }
 

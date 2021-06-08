@@ -7708,6 +7708,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Push notifications support disabled`
+  String get app_push_disabled_notification_title {
+    return Intl.message(
+      'Push notifications support disabled',
+      name: 'app_push_disabled_notification_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Install app version from store or enable support in config if app was built from source`
+  String get app_push_disabled_notification_content {
+    return Intl.message(
+      'Install app version from store or enable support in config if app was built from source',
+      name: 'app_push_disabled_notification_content',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

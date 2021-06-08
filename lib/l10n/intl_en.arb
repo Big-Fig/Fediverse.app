@@ -779,5 +779,7 @@
   "app_share_income_action_type_conversation": "To conversation",
   "app_share_income_action_type_chat": "To chat",
   "app_share_income_instance_choose_title": "Choose instance to share",
-  "app_share_income_error_authInstanceListIsEmpty": "You don't have logged instances to share"
+  "app_share_income_error_authInstanceListIsEmpty": "You don't have logged instances to share",
+  "app_push_disabled_notification_title": "Push notifications support disabled",
+  "app_push_disabled_notification_content": "Install app version from store or enable support in config if app was built from source"
 }

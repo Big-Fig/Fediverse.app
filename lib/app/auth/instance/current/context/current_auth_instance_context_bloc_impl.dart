@@ -224,9 +224,6 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var preferencesService = appContextBloc.get<ILocalPreferencesService>();
     var connectionService = appContextBloc.get<IConnectionService>();
-    var pushRelayService = appContextBloc.get<IPushRelayService>();
-    var fcmPushService = appContextBloc.get<IFcmPushService>();
-    var pushHandlerBloc = appContextBloc.get<IPushHandlerBloc>();
     var configService = appContextBloc.get<IConfigService>();
 
     var globalProviderService = this;
@@ -594,7 +591,48 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IMyAccountBloc>(myAccountBloc);
 
+
+    var currentPleromaChatBloc = PleromaChatCurrentBloc();
+
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaChatCurrentBloc>(currentPleromaChatBloc);
+
+    addDisposable(disposable: currentPleromaChatBloc);
+    var currentConversationChatBloc = ConversationChatCurrentBloc();
+
+    await globalProviderService.asyncInitAndRegister<
+        IConversationChatCurrentBloc>(currentConversationChatBloc);
+
+    addDisposable(disposable: currentConversationChatBloc);
+
+    var chatNewMessagesHandlerBloc = PleromaChatNewMessagesHandlerBloc(
+      chatRepository: chatRepository,
+      currentChatBloc: currentPleromaChatBloc,
+      pleromaChatService: pleromaChatService,
+    );
+
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaChatNewMessagesHandlerBloc>(chatNewMessagesHandlerBloc);
+    addDisposable(disposable: chatNewMessagesHandlerBloc);
+    var conversationChatNewMessagesHandlerBloc =
+    ConversationChatNewMessagesHandlerBloc(
+      conversationRepository: conversationRepository,
+      currentChatBloc: currentConversationChatBloc,
+      conversationChatService: pleromaConversationService,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IConversationChatNewMessagesHandlerBloc>(
+      conversationChatNewMessagesHandlerBloc,
+    );
+    addDisposable(disposable: conversationChatNewMessagesHandlerBloc);
+
+
     if (configService.pushFcmEnabled) {
+      var pushRelayService = appContextBloc.get<IPushRelayService>();
+      var fcmPushService = appContextBloc.get<IFcmPushService>();
+      var pushHandlerBloc = appContextBloc.get<IPushHandlerBloc>();
+
       var pleromaPushService = PleromaApiPushService(
         keys: PleromaApiPushSubscriptionKeys(
           p256dh: configService.pushSubscriptionKeysP256dh!,
@@ -628,55 +666,23 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       addDisposable(disposable: fcmPushPermissionCheckerBloc);
       await globalProviderService.asyncInitAndRegister<
           IFcmPushPermissionCheckerBloc>(fcmPushPermissionCheckerBloc);
+
+
+      var notificationPushLoaderBloc = NotificationPushLoaderBloc(
+        currentInstance: currentInstance,
+        pushHandlerBloc: pushHandlerBloc,
+        notificationRepository: notificationRepository,
+        pleromaNotificationService: pleromaNotificationService,
+        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        myAccountBloc: myAccountBloc,
+      );
+
+      addDisposable(disposable: notificationPushLoaderBloc);
+      await globalProviderService.asyncInitAndRegister<
+          INotificationPushLoaderBloc>(notificationPushLoaderBloc);
+
     }
 
-    var currentPleromaChatBloc = PleromaChatCurrentBloc();
-
-    await globalProviderService
-        .asyncInitAndRegister<IPleromaChatCurrentBloc>(currentPleromaChatBloc);
-
-    addDisposable(disposable: currentPleromaChatBloc);
-    var currentConversationChatBloc = ConversationChatCurrentBloc();
-
-    await globalProviderService.asyncInitAndRegister<
-        IConversationChatCurrentBloc>(currentConversationChatBloc);
-
-    addDisposable(disposable: currentConversationChatBloc);
-
-    var chatNewMessagesHandlerBloc = PleromaChatNewMessagesHandlerBloc(
-      chatRepository: chatRepository,
-      currentChatBloc: currentPleromaChatBloc,
-      pleromaChatService: pleromaChatService,
-    );
-
-    await globalProviderService.asyncInitAndRegister<
-        IPleromaChatNewMessagesHandlerBloc>(chatNewMessagesHandlerBloc);
-    addDisposable(disposable: chatNewMessagesHandlerBloc);
-    var conversationChatNewMessagesHandlerBloc =
-        ConversationChatNewMessagesHandlerBloc(
-      conversationRepository: conversationRepository,
-      currentChatBloc: currentConversationChatBloc,
-      conversationChatService: pleromaConversationService,
-    );
-
-    await globalProviderService
-        .asyncInitAndRegister<IConversationChatNewMessagesHandlerBloc>(
-      conversationChatNewMessagesHandlerBloc,
-    );
-    addDisposable(disposable: conversationChatNewMessagesHandlerBloc);
-
-    var notificationPushLoaderBloc = NotificationPushLoaderBloc(
-      currentInstance: currentInstance,
-      pushHandlerBloc: pushHandlerBloc,
-      notificationRepository: notificationRepository,
-      pleromaNotificationService: pleromaNotificationService,
-      chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
-      myAccountBloc: myAccountBloc,
-    );
-
-    addDisposable(disposable: notificationPushLoaderBloc);
-    await globalProviderService.asyncInitAndRegister<
-        INotificationPushLoaderBloc>(notificationPushLoaderBloc);
 
     if (!timelinesHomeTabStorageLocalPreferencesBloc
         .value.timelineIds.isNotEmpty) {

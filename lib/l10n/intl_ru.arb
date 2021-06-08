@@ -779,5 +779,7 @@
   "app_share_income_action_type_conversation": "В беседу",
   "app_share_income_action_type_chat": "В чат",
   "app_share_income_instance_choose_title": "Выберите сервер чтобы поделится",
-  "app_share_income_error_authInstanceListIsEmpty": "Вы еще не вошли не в один сервер чтобы поделится"
+  "app_share_income_error_authInstanceListIsEmpty": "Вы еще не вошли не в один сервер чтобы поделится",
+  "app_push_disabled_notification_title": "Оповещения отключены",
+  "app_push_disabled_notification_content": "Установите версию из магазина или включите поддержку оповещений при сборке приложения"
 }
