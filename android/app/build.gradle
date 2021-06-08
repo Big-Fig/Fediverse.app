@@ -27,8 +27,8 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 // flutter_config
 project.ext.envConfigFiles = [
-        dev: ".env.dev",
-        prod: ".env.prod",
+        dev: "env_dev.env",
+        prod: "env_prod.env",
 ]
 
 
