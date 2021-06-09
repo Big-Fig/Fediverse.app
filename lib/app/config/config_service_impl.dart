@@ -63,28 +63,63 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   late String appVersionName;
 
   @override
+  // ignore: long-method
   Future internalAsyncInit() async {
     await FlutterConfig.loadEnvVariables();
+
     // is reserved keys in flutter_config and always exist
-    appIdActual = _getString('APPLICATION_ID')!;
-    buildDebug = _getBool('DEBUG')!;
-    buildConfigFlavor = _getConfigFlavor('FLAVOR');
-    appVersionCode = _getInt('VERSION_CODE')!;
-    appVersionName = _getString('VERSION_NAME')!;
+    appIdActual = _getString(
+      'APPLICATION_ID',
+      isRequired: true,
+    )!;
+    buildDebug = _getBool(
+      'DEBUG',
+      isRequired: true,
+    )!;
+    buildConfigFlavor = _getConfigFlavor(
+      'FLAVOR',
+      isRequired: false,
+    );
+    appVersionCode = _getInt(
+      'VERSION_CODE',
+      isRequired: true,
+    )!;
+    appVersionName = _getString(
+      'VERSION_NAME',
+      isRequired: true,
+    )!;
 
     assert(buildConfigFlavor != null);
 
-    appId = _getString('APP_ID')!;
-    appTitle = _getString('APP_TITLE')!;
-    appAppleId = _getString('APP_APPLE_ID')!;
+    appId = _getString(
+      'APP_ID',
+      isRequired: true,
+    )!;
+    appTitle = _getString(
+      'APP_TITLE',
+      isRequired: true,
+    )!;
+    appAppleId = _getString(
+      'APP_APPLE_ID',
+      isRequired: true,
+    )!;
 
     assert(appId == appIdActual);
 
-    logEnabled = _getBool('LOG_ENABLED')!;
+    logEnabled = _getBool(
+      'LOG_ENABLED',
+      isRequired: true,
+    )!;
 
-    firebaseEnabled = _getBool('FIREBASE_ENABLED')!;
+    firebaseEnabled = _getBool(
+      'FIREBASE_ENABLED',
+      isRequired: true,
+    )!;
 
-    pushFcmEnabled = _getBool('PUSH_FCM_ENABLED')!;
+    pushFcmEnabled = _getBool(
+      'PUSH_FCM_ENABLED',
+      isRequired: true,
+    )!;
     if (pushFcmEnabled) {
       assert(
         firebaseEnabled,
@@ -92,9 +127,18 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
         'if PUSH_FCM_ENABLED = true',
       );
 
-      pushFcmRelayUrl = _getString('PUSH_FCM_RELAY_URL');
-      pushSubscriptionKeysP256dh = _getString('PUSH_SUBSCRIPTION_KEYS_P256DH');
-      pushSubscriptionKeysAuth = _getString('PUSH_SUBSCRIPTION_KEYS_AUTH');
+      pushFcmRelayUrl = _getString(
+        'PUSH_FCM_RELAY_URL',
+        isRequired: false,
+      );
+      pushSubscriptionKeysP256dh = _getString(
+        'PUSH_SUBSCRIPTION_KEYS_P256DH',
+        isRequired: false,
+      );
+      pushSubscriptionKeysAuth = _getString(
+        'PUSH_SUBSCRIPTION_KEYS_AUTH',
+        isRequired: false,
+      );
 
       assert(
         pushFcmRelayUrl != null &&
@@ -107,7 +151,10 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
       );
     }
 
-    crashlyticsEnabled = _getBool('CRASHLYTICS_ENABLED')!;
+    crashlyticsEnabled = _getBool(
+      'CRASHLYTICS_ENABLED',
+      isRequired: true,
+    )!;
 
     if (crashlyticsEnabled) {
       assert(
@@ -117,9 +164,14 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
       );
     }
 
-    askReviewEnabled = _getBool('ASK_REVIEW_ENABLED')!;
-    askReviewCountAppOpenedToShow =
-        _getInt('ASK_REVIEW_COUNT_APP_OPENED_TO_SHOW');
+    askReviewEnabled = _getBool(
+      'ASK_REVIEW_ENABLED',
+      isRequired: true,
+    )!;
+    askReviewCountAppOpenedToShow = _getInt(
+      'ASK_REVIEW_COUNT_APP_OPENED_TO_SHOW',
+      isRequired: false,
+    );
 
     if (askReviewEnabled) {
       assert(
@@ -142,7 +194,26 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   }
 }
 
-bool? _getBool(String key) {
+void _checkRequiredKey({
+  required String key,
+}) {
+  assert(
+    FlutterConfig.variables.isNotEmpty,
+    'Config not initialized',
+  );
+
+  assert(FlutterConfig.variables.containsKey(key),
+      'Key $key required but not exist');
+}
+
+bool? _getBool(
+  String key, {
+  required bool isRequired,
+}) {
+  if (isRequired) {
+    _checkRequiredKey(key: key);
+  }
+
   var value = FlutterConfig.get(key);
 
   if (value is String?) {
@@ -166,7 +237,14 @@ bool? _getBool(String key) {
   }
 }
 
-int? _getInt(String key) {
+int? _getInt(
+  String key, {
+  required bool isRequired,
+}) {
+  if (isRequired) {
+    _checkRequiredKey(key: key);
+  }
+
   var value = FlutterConfig.get(key);
 
   if (value is String?) {
@@ -182,7 +260,14 @@ int? _getInt(String key) {
   }
 }
 
-String? _getString(String key) {
+String? _getString(
+  String key, {
+  required bool isRequired,
+}) {
+  if (isRequired) {
+    _checkRequiredKey(key: key);
+  }
+
   var value = FlutterConfig.get(key) as String?;
 
   if (value != null) {
@@ -192,7 +277,14 @@ String? _getString(String key) {
   }
 }
 
-ConfigFlavor? _getConfigFlavor(String key) {
+ConfigFlavor? _getConfigFlavor(
+  String key, {
+  required bool isRequired,
+}) {
+  if (isRequired) {
+    _checkRequiredKey(key: key);
+  }
+
   var value = FlutterConfig.get(key) as String?;
 
   return value?.toConfigFlavor();
