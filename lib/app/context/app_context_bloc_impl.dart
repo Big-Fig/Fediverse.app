@@ -490,7 +490,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     addDisposable(disposable: appAnalyticsLocalPreferenceBloc);
 
     var inAppReviewBloc = InAppReviewBloc(
-      appStoreId: configService.appIdActual,
+      appStoreId: configService.appId,
     );
 
     await globalProviderService

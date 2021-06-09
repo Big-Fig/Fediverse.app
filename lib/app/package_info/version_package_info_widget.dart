@@ -20,7 +20,7 @@ class VersionPackageInfoWidget extends StatelessWidget {
         ),
         const FediSmallHorizontalSpacer(),
         Text(
-          configService.appVersionName + '(${configService.appVersionCode})',
+          configService.appVersionName,
           style: textStyle,
         ),
       ],

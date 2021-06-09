@@ -202,6 +202,9 @@ dependencies:
   # load config from .env files (support flavors)
   flutter_config: ^2.0.0
 
+  # get build details for config
+  platform_info: ^3.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

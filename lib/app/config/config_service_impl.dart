@@ -1,8 +1,8 @@
-import 'package:fedi/app/config/config_model.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:logging/logging.dart';
+import 'package:platform_info/platform_info.dart';
 
 final _logger = Logger('config_service_impl.dart');
 
@@ -10,9 +10,6 @@ final _logger = Logger('config_service_impl.dart');
 class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   @override
   late String appId;
-
-  @override
-  late String appIdActual;
 
   @override
   late String? appAppleId;
@@ -49,15 +46,10 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
 
   @override
   late bool buildDebug;
-
   @override
-  bool get buildRelease => !buildDebug;
-
+  late bool buildProfile;
   @override
-  late ConfigFlavor? buildConfigFlavor;
-
-  @override
-  late int appVersionCode;
+  late bool buildRelease;
 
   @override
   late String appVersionName;
@@ -67,29 +59,18 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   Future internalAsyncInit() async {
     await FlutterConfig.loadEnvVariables();
 
-    // is reserved keys in flutter_config and always exist
-    appIdActual = _getString(
-      'APPLICATION_ID',
-      isRequired: true,
-    )!;
-    buildDebug = _getBool(
-      'DEBUG',
-      isRequired: true,
-    )!;
-    buildConfigFlavor = _getConfigFlavor(
-      'FLAVOR',
-      isRequired: false,
-    );
-    appVersionCode = _getInt(
-      'VERSION_CODE',
-      isRequired: true,
-    )!;
-    appVersionName = _getString(
-      'VERSION_NAME',
-      isRequired: true,
-    )!;
+    // print(
+    //   FlutterConfig.variables.entries.map((entry) => '$entry').join('\n'),
+    // );
 
-    assert(buildConfigFlavor != null);
+    var instance = Platform.instance;
+    var buildMode = instance.buildMode;
+
+    buildDebug = buildMode == BuildMode.debug;
+    buildRelease = buildMode == BuildMode.release;
+    buildProfile = buildMode == BuildMode.profile;
+
+    appVersionName = instance.version;
 
     appId = _getString(
       'APP_ID',
@@ -101,10 +82,8 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
     )!;
     appAppleId = _getString(
       'APP_APPLE_ID',
-      isRequired: true,
-    )!;
-
-    assert(appId == appIdActual);
+      isRequired: false,
+    );
 
     logEnabled = _getBool(
       'LOG_ENABLED',
@@ -175,8 +154,8 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
 
     if (askReviewEnabled) {
       assert(
-        askReviewCountAppOpenedToShow != null,
-        'ASK_REVIEW_COUNT_APP_OPENED_TO_SHOW should exist '
+        askReviewCountAppOpenedToShow != null && appAppleId != null,
+        'ASK_REVIEW_COUNT_APP_OPENED_TO_SHOW, APP_APPLE_ID should exist '
         'if ASK_REVIEW_ENABLED is true',
       );
       assert(askReviewCountAppOpenedToShow! >= 0);
@@ -197,13 +176,13 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
 void _checkRequiredKey({
   required String key,
 }) {
-  assert(
-    FlutterConfig.variables.isNotEmpty,
-    'Config not initialized',
-  );
+  if (!FlutterConfig.variables.isNotEmpty) {
+    print('Config not initialized');
+  }
 
-  assert(FlutterConfig.variables.containsKey(key),
-      'Key $key required but not exist');
+  if (!FlutterConfig.variables.containsKey(key)) {
+    print('Key $key required but not exist');
+  }
 }
 
 bool? _getBool(
@@ -275,17 +254,4 @@ String? _getString(
   } else {
     return null;
   }
-}
-
-ConfigFlavor? _getConfigFlavor(
-  String key, {
-  required bool isRequired,
-}) {
-  if (isRequired) {
-    _checkRequiredKey(key: key);
-  }
-
-  var value = FlutterConfig.get(key) as String?;
-
-  return value?.toConfigFlavor();
 }

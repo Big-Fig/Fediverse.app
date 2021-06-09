@@ -1,4 +1,3 @@
-import 'package:fedi/app/config/config_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
@@ -12,8 +11,6 @@ abstract class IConfigService implements IAsyncInitLoadingBloc, IDisposable {
       Provider.of<IConfigService>(context, listen: listen);
 
   String get appId;
-
-  String get appIdActual;
 
   String? get appAppleId;
 
@@ -37,13 +34,11 @@ abstract class IConfigService implements IAsyncInitLoadingBloc, IDisposable {
 
   int? get askReviewCountAppOpenedToShow;
 
-  ConfigFlavor? get buildConfigFlavor;
-
   bool get buildDebug;
 
   bool get buildRelease;
 
-  int get appVersionCode;
+  bool get buildProfile;
 
   String get appVersionName;
 
