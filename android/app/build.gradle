@@ -34,13 +34,13 @@ project.ext.envConfigFiles = [
 
 apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle"
 
- def keystoreProperties = new Properties()
-   def keystorePropertiesFile = rootProject.file('key.properties')
-   if (keystorePropertiesFile.exists()) {
-       keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-   }
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 
-   android {
+android {
     compileSdkVersion 28
 
     sourceSets {
@@ -62,35 +62,37 @@ apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle"
         dimension "app"
         applicationId project.env.get("APP_ID")
         manifestPlaceholders.scheme = project.env.get("APP_ID")
+        resValue "string", "app_name", project.env.get("APP_TITLE")
         // should be package from Manifest instead of project.env.get("APP_ID")
         // for flutter_config
         resValue "string", "build_config_package", "com.fediverse.app"
     }
+    if (keystorePropertiesFile.exists()) {
+        signingConfigs {
+            release {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
+        }
+        buildTypes {
+            release {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
 
-     signingConfigs {
-       release {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
-           storeFile file(keystoreProperties['storeFile'])
-           storePassword keystoreProperties['storePassword']
-       }
-   }
-   buildTypes {
-       release {
-           signingConfig signingConfigs.release
-       }
-   }
+    flavorDimensions "app"
 
-   flavorDimensions "app"
+    productFlavors {
+        dev {
 
-   productFlavors {
-       dev {
-           resValue "string", "app_name", "Fedi(dev)"
-       }
-       prod {
-           resValue "string", "app_name", "Fedi"
-       }
-   }
+        }
+        prod {
+
+        }
+    }
 }
 
 flutter {
@@ -106,5 +108,10 @@ dependencies {
 }
 
 // ADD THIS AT THE BOTTOM
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
+if(project.env.get("FIREBASE_ENABLED").toBoolean()) {
+    apply plugin: 'com.google.gms.google-services'
+}
+
+if(project.env.get("CRASHLYTICS_ENABLED").toBoolean()) {
+    apply plugin: 'com.google.firebase.crashlytics'
+}
