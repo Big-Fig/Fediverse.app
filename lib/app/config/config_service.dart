@@ -10,6 +10,10 @@ abstract class IConfigService implements IAsyncInitLoadingBloc, IDisposable {
   }) =>
       Provider.of<IConfigService>(context, listen: listen);
 
+  String get appTitleActual;
+
+  String get appIdActual;
+
   String get appId;
 
   String? get appAppleId;
@@ -34,13 +38,11 @@ abstract class IConfigService implements IAsyncInitLoadingBloc, IDisposable {
 
   int? get askReviewCountAppOpenedToShow;
 
-  bool get buildDebug;
-
-  bool get buildRelease;
-
-  bool get buildProfile;
-
   String get appVersionName;
+
+  String get appVersionCode;
+
+  String get appAddNewInstanceCallbackUrl;
 
   void printConfigToLog();
 }

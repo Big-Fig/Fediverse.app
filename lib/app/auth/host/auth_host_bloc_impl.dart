@@ -167,8 +167,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   }
 
   Future<String> _calculateRedirectUri() async {
-    var packageId = configService.appId;
-    var redirectUri = '$packageId://addNewInstance';
+    var redirectUri = configService.appAddNewInstanceCallbackUrl;
 
     return redirectUri;
   }

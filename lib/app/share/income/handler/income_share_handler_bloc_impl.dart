@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_bloc.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_model.dart';
 import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc.dart';
@@ -17,6 +18,7 @@ final _logger = Logger('income_share_handler_bloc_impl.dart');
 
 class IncomeShareHandlerBloc extends DisposableOwner
     implements IIncomeShareHandlerBloc {
+  final IConfigService configService;
   final IIncomeShareService incomeShareService;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final IAuthInstanceListBloc authInstanceListBloc;
@@ -43,6 +45,7 @@ class IncomeShareHandlerBloc extends DisposableOwner
       incomeShareHandlerErrorStreamController.stream;
 
   IncomeShareHandlerBloc({
+    required this.configService,
     required this.currentAuthInstanceBloc,
     required this.authInstanceListBloc,
     required this.incomeShareService,
@@ -82,6 +85,10 @@ class IncomeShareHandlerBloc extends DisposableOwner
         context,
         listen: false,
       ),
+      configService: IConfigService.of(
+        context,
+        listen: false,
+      ),
     );
 
     return incomeShareHandlerBloc;
@@ -112,6 +119,18 @@ class IncomeShareHandlerBloc extends DisposableOwner
 
   void _handleEvent(IncomeShareEvent event) {
     _logger.finest(() => '_handleEvent $event');
+
+    var appAddNewInstanceCallbackUrl =
+        configService.appAddNewInstanceCallbackUrl;
+
+    if (event.text?.contains(appAddNewInstanceCallbackUrl) == true) {
+      _logger.finest(
+        () => '_handleEvent $event with appAddNewInstanceCallbackUrl',
+      );
+
+      return;
+    }
+
     lastHandledEvent = event;
     if (authInstanceListBloc.isHaveInstances) {
       var availableInstances = authInstanceListBloc.availableInstances;
