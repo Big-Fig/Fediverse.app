@@ -84,7 +84,7 @@ Web Push Relay is Ruby on Rails server which handle Web pushes and proxy them to
 
 * Notifications are not enabled by default and Fedi ask you about notification after login. 
 * You can also disable notifications later in any time.
-* You can completly remove FCM and Push Relay Usage(or use your own FCM credentials and Push Relay server instance)
+* You can completely remove FCM and Push Relay Usage(or use your own FCM credentials and Push Relay server instance)
 
 ### Which data Push Relay server have access?
 
@@ -118,7 +118,7 @@ Web Push Relay is Ruby on Rails server which handle Web pushes and proxy them to
 ### Help translate Fedi
 
 * Help translate Fedi with [Weblate](https://translate.pleroma.social/projects/fedi-app/)
-* It is easy to suggest fixes even wihout registering
+* It is easy to suggest fixes even without registering
 
 
 ## License
@@ -135,9 +135,9 @@ Web Push Relay is Ruby on Rails server which handle Web pushes and proxy them to
 * Feature-based folder structure
 * Dependency Injection implemented via `provider`
 * Prefer `StatelessWidget` and async UI update via `StreamBuidler` and `BehaviourSubject` & `StreamController` in controller classes
-* Prefer divide `Widgets` in small sub `Widgets` with `const` constuctor(for better performance) if possible
+* Prefer divide `Widgets` in small sub `Widgets` with `const` constructor(for better performance) if possible
 * Provide data to nested elements via `provider`
-* Prefer `Repository` pattern. Allmost all network data cached in local SQLite database. UI always display data from single source. It may be network-only or from database(if data cached). Don't cache and merge data in memory to achive data consistency
+* Prefer `Repository` pattern. Almost all network data cached in local SQLite database. UI always display data from single source. It may be network-only or from database(if data cached). Don't cache and merge data in memory to achieve data consistency
 * Prefer [Effective Dart](https://dart.dev/guides/language/effective-dart/style) name and style code conventions
 * Prefer long file & classes names like `account_follower_account_cached_list_bloc_impl.dart` and `AccountFollowerAccountCachedListBloc`
  * It easy to understand what class do
@@ -146,14 +146,14 @@ Web Push Relay is Ruby on Rails server which handle Web pushes and proxy them to
 * Prefer `interfaces` for `Bussines Logic` and `Services` 
  * Simple append `I` to implementation class name. `AccountFollowerAccountCachedListBloc` implementation and `IAccountFollowerAccountCachedListBloc` interface
  * Code readability: you can see small list of public methods/fields in interface file instead of exploring long file with implementations
- * It usefull to implement extensions for interfaces not for implementations
- * It usefull to extends several interfaces in one child to separate logic
- * It usefull to create tests and mocks
+ * It useful to implement extensions for interfaces not for implementations
+ * It useful to extends several interfaces in one child to separate logic
+ * It useful to create tests and mocks
 
 
 ### Flutter version & FVM 
 
-To build Fedi you need Flutter version specified in [`.fvm/fvm_config.json`](.fvm/fvm_config.json) field `flutterSdkVersion`. You can achive this by simple using `flutter version $version` or using FVM
+To build Fedi you need Flutter version specified in [`.fvm/fvm_config.json`](.fvm/fvm_config.json) field `flutterSdkVersion`. You can achieve this by simple using `flutter version $version` or using FVM
 
 ### Flutter Version Management(FVM)
 
@@ -175,7 +175,7 @@ More info you can found in FVM documentation
 - [`pedantic`](https://pub.dev/packages/pedantic) & [`dart_code_metrics`](https://pub.dev/packages/dart_code_metrics) for better code analyzing. See [`analysis_options.yaml`](analysis_options.yaml) for enabled rules
 - [`flutter_cache_manager`](https://pub.dev/packages/flutter_cache_manager) for media caching
 - `flutter_intl` for localization via `.arb` files
-- A lot of UI-related(like [`pull_to_refresh`](https://pub.dev/packages/pull_to_refresh)) and Platform-dependend(like [`permission_handler`](https://pub.dev/packages/permission_handler)) libraries
+- A lot of UI-related(like [`pull_to_refresh`](https://pub.dev/packages/pull_to_refresh)) and Platform-dependent(like [`permission_handler`](https://pub.dev/packages/permission_handler)) libraries
 - [`flutter_config`](https://pub.dev/packages/flutter_config) to config via .env files
 
 You can find full list in [`pubspec.yaml`](./pubspec.yaml) where each library have comment why it's used 
@@ -187,7 +187,7 @@ You can find full list in [`pubspec.yaml`](./pubspec.yaml) where each library ha
 
 ### Tests
 
-* Fedi have unit-tests for Bussines Logic and Services classes
+* Fedi have unit-tests for Business Logic and Services classes
 * Integration & UI tests not implemented yet
 
 ### Backlog
@@ -306,9 +306,9 @@ pod install
 
 Changing App ID is required if you want to setup own Push Relay server and pushes via your Firebase project for FCM. 
 
-It also usefull if you want to have several app versions installed on one device
+It also useful if you want to have several app versions installed on one device
 
-Unfortunatly, it is not possible to use APP_ID from config in all places in Gradle and XCode project files. So in some places ID is hardcoded
+Unfortunately, it is not possible to use APP_ID from config in all places in Gradle and XCode project files. So in some places ID is hardcoded
 
 So, If you want to change app id from `com.fediverse.app` for `prod` and from `com.fediverse.app2` for `dev` you should manual changes (in additional to changes id in `.env` files)
 
