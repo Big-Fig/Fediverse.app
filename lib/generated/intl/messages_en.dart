@@ -557,7 +557,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_statuses_tab_withoutReplies":
             MessageLookupByLibrary.simpleMessage("Posts"),
         "app_appStore_description": MessageLookupByLibrary.simpleMessage(
-            "A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app."),
+            "A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support."),
         "app_appStore_promotionalText": MessageLookupByLibrary.simpleMessage(
             "A client for Pleroma and Mastodon social network instances"),
         "app_appStore_subtitle": MessageLookupByLibrary.simpleMessage(
@@ -612,13 +612,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Terms"),
         "app_auth_instance_join_fail_dialog_content": m14,
         "app_auth_instance_join_fail_dialog_title":
-            MessageLookupByLibrary.simpleMessage(
-                "Fail to connect to instance. You can try verified fedi.app or pleroma.com"),
+            MessageLookupByLibrary.simpleMessage("Fail to connect to instance"),
         "app_auth_instance_join_field_host_helper":
             MessageLookupByLibrary.simpleMessage(
                 "Pleroma or Mastodon Instance"),
-        "app_auth_instance_join_field_host_hint":
-            MessageLookupByLibrary.simpleMessage("Fedi.app"),
         "app_auth_instance_join_invitesOnly_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Try any other instance, or register by invite link in your browser"),
@@ -629,9 +626,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Join new instance"),
         "app_auth_instance_join_progress_dialog_content":
             MessageLookupByLibrary.simpleMessage("Checking instance"),
-        "app_auth_instance_join_registrationDisabled_dialog_content":
-            MessageLookupByLibrary.simpleMessage(
-                "Try any other instance, like fedi.app"),
         "app_auth_instance_join_registrationDisabled_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Instance owner disabled registration"),

@@ -135,13 +135,11 @@
   "app_auth_instance_join_action_tos_postfix": ".",
   "app_auth_instance_join_action_login": "Login",
   "app_auth_instance_join_action_signUp": "Sign up",
-  "app_auth_instance_join_field_host_hint": "Fedi.app",
   "app_auth_instance_join_field_host_helper": "Pleroma or Mastodon Instance",
   "app_auth_instance_join_progress_dialog_content": "Checking instance",
-  "app_auth_instance_join_fail_dialog_title": "Fail to connect to instance. You can try verified fedi.app or pleroma.com",
+  "app_auth_instance_join_fail_dialog_title": "Fail to connect to instance",
   "app_auth_instance_join_fail_dialog_content": "Details: {error}",
   "app_auth_instance_join_registrationDisabled_dialog_title": "Instance owner disabled registration",
-  "app_auth_instance_join_registrationDisabled_dialog_content": "Try any other instance, like fedi.app",
   "app_auth_instance_join_invitesOnly_dialog_title": "Instance owner limit registration to invites-only",
   "app_auth_instance_join_invitesOnly_dialog_content": "Try any other instance, or register by invite link in your browser",
   "app_auth_instance_register_title": "Create account",
@@ -405,7 +403,7 @@
   "@app_appStore_promotionalText": {
     "description": "AppStore short description"
   },
-  "app_appStore_description": "A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app.",
+  "app_appStore_description": "A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.",
   "@app_appStore_description": {
     "description": "AppStore full description"
   },

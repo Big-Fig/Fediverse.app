@@ -44,5 +44,7 @@ abstract class IConfigService implements IAsyncInitLoadingBloc, IDisposable {
 
   String get appAddNewInstanceCallbackUrl;
 
+  String get appDefaultInstanceUrl;
+
   void printConfigToLog();
 }

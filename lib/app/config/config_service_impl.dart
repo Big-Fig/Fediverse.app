@@ -60,6 +60,10 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   late String appAddNewInstanceCallbackUrl;
 
   @override
+  late String  appDefaultInstanceUrl;
+
+
+  @override
   // ignore: long-method
   Future internalAsyncInit() async {
     await FlutterConfig.loadEnvVariables();
@@ -88,6 +92,12 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
       'APP_APPLE_ID',
       isRequired: false,
     );
+    appDefaultInstanceUrl = _getString(
+      'APP_DEFAULT_INSTANCE_URL',
+      isRequired: true,
+    )!;
+
+    assert(appId == appIdActual);
 
     logEnabled = _getBool(
       'LOG_ENABLED',
@@ -177,6 +187,7 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
               ' \n',
             )}');
   }
+
 }
 
 void _checkRequiredKey({

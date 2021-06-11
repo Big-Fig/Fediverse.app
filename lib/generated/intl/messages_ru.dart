@@ -617,11 +617,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_auth_instance_join_fail_dialog_content": m14,
         "app_auth_instance_join_fail_dialog_title":
             MessageLookupByLibrary.simpleMessage(
-                "Невозможно поддключится к серверу. Попробуйте fedi.app или pleroma.com"),
+                "Невозможно поддключится к серверу"),
         "app_auth_instance_join_field_host_helper":
             MessageLookupByLibrary.simpleMessage("Pleroma или Mastodon сервер"),
-        "app_auth_instance_join_field_host_hint":
-            MessageLookupByLibrary.simpleMessage("Fedi.app"),
         "app_auth_instance_join_invitesOnly_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Используйте другой сервер, или заргестрируйтесь по ссылке-приглашению в браузере"),
@@ -632,9 +630,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Добавить аккаунт"),
         "app_auth_instance_join_progress_dialog_content":
             MessageLookupByLibrary.simpleMessage("Проверка сервера"),
-        "app_auth_instance_join_registrationDisabled_dialog_content":
-            MessageLookupByLibrary.simpleMessage(
-                "Попробуйте другой сервр, например fedi.app"),
         "app_auth_instance_join_registrationDisabled_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Владелец сервера отключил регистрацию"),

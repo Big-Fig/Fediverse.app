@@ -1398,16 +1398,6 @@ class S {
     );
   }
 
-  /// `Fedi.app`
-  String get app_auth_instance_join_field_host_hint {
-    return Intl.message(
-      'Fedi.app',
-      name: 'app_auth_instance_join_field_host_hint',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Pleroma or Mastodon Instance`
   String get app_auth_instance_join_field_host_helper {
     return Intl.message(
@@ -1428,10 +1418,10 @@ class S {
     );
   }
 
-  /// `Fail to connect to instance. You can try verified fedi.app or pleroma.com`
+  /// `Fail to connect to instance`
   String get app_auth_instance_join_fail_dialog_title {
     return Intl.message(
-      'Fail to connect to instance. You can try verified fedi.app or pleroma.com',
+      'Fail to connect to instance',
       name: 'app_auth_instance_join_fail_dialog_title',
       desc: '',
       args: [],
@@ -1453,16 +1443,6 @@ class S {
     return Intl.message(
       'Instance owner disabled registration',
       name: 'app_auth_instance_join_registrationDisabled_dialog_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Try any other instance, like fedi.app`
-  String get app_auth_instance_join_registrationDisabled_dialog_content {
-    return Intl.message(
-      'Try any other instance, like fedi.app',
-      name: 'app_auth_instance_join_registrationDisabled_dialog_content',
       desc: '',
       args: [],
     );
@@ -4003,10 +3983,10 @@ class S {
     );
   }
 
-  /// `A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app.`
+  /// `A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.`
   String get app_appStore_description {
     return Intl.message(
-      'A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app.',
+      'A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.',
       name: 'app_appStore_description',
       desc: 'AppStore full description',
       args: [],
