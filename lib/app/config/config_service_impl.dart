@@ -2,12 +2,18 @@ import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:logging/logging.dart';
-import 'package:platform_info/platform_info.dart';
+import 'package:package_info/package_info.dart';
 
 final _logger = Logger('config_service_impl.dart');
 
 // ignore_for_file: avoid-late-keyword
 class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
+  @override
+  late String appTitleActual;
+
+  @override
+  late String appIdActual;
+
   @override
   late String appId;
 
@@ -45,14 +51,13 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   late int? askReviewCountAppOpenedToShow;
 
   @override
-  late bool buildDebug;
-  @override
-  late bool buildProfile;
-  @override
-  late bool buildRelease;
+  late String appVersionName;
 
   @override
-  late String appVersionName;
+  late String appVersionCode;
+
+  @override
+  late String appAddNewInstanceCallbackUrl;
 
   @override
   // ignore: long-method
@@ -63,14 +68,13 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
     //   FlutterConfig.variables.entries.map((entry) => '$entry').join('\n'),
     // );
 
-    var instance = Platform.instance;
-    var buildMode = instance.buildMode;
+    var packageInfo = await PackageInfo.fromPlatform();
 
-    buildDebug = buildMode == BuildMode.debug;
-    buildRelease = buildMode == BuildMode.release;
-    buildProfile = buildMode == BuildMode.profile;
+    appIdActual = packageInfo.packageName;
+    appTitleActual = packageInfo.appName;
 
-    appVersionName = instance.version;
+    appVersionName = packageInfo.version;
+    appVersionCode = packageInfo.buildNumber;
 
     appId = _getString(
       'APP_ID',
@@ -160,6 +164,8 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
       );
       assert(askReviewCountAppOpenedToShow! >= 0);
     }
+
+    appAddNewInstanceCallbackUrl = '$appId://addNewInstance';
   }
 
   @override
