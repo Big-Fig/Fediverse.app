@@ -68,7 +68,6 @@ Feel free to open issues if you have suggestions
 * You can build app from source and remove Crashlytics via .env config(details below)
 * Option to disable Crashlytics gathering inside App **(coming soon)**
 
-
 ## Push notifications
 
 Push notifications implemented via Web Push Relay(Proxy) server
@@ -270,19 +269,32 @@ Those files excluded from source control.
 
 You can find all possible config variables(with comments) at [env_example.env](env_example.env)
 
-
 ```
+# Application ID see README.md how to do to change it
 APP_ID=com.fediverse.app
+# App Title in OS
 APP_TITLE=Fedi
+# Default instance URL to use on 'Join Instance' page
+APP_DEFAULT_INSTANCE_URL=fedi.app
+# Apple App ID from ITunes, used to navigate user to ITunse app page to leave feedback
 #APP_APPLE_ID=147880...
+# Logging on/off. Log should be disabled for production builds for better performance and security
 LOG_ENABLED=true
+# On/Off firebase core code. Required GoogleServices file. See README.md for details
 FIREBASE_ENABLED=false
+# On/Off push notifications
 PUSH_FCM_ENABLED=false
+# Required for push notifications. Push relay server URL. See README.md for details
 #PUSH_FCM_RELAY_URL=https://pushrelay.example.com/push/
+# Required for push notifications. Mastodon Push API requirments . See README.md for details
 #PUSH_SUBSCRIPTION_KEYS_P256DH=BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8qu
+# Requied for push notifications. Mastodon Push API requirments . See README.md for details
 #PUSH_SUBSCRIPTION_KEYS_AUTH=T5bhIIyre5TDC
+# On/off crash reporting
 CRASHLYTICS_ENABLED=false
+# On/off ask review dialog
 ASK_REVIEW_ENABLED=false
+# How much times user should open app to display 'Please rate me' dialog
 #ASK_REVIEW_COUNT_APP_OPENED_TO_SHOW=5
 ```
 
@@ -302,7 +314,6 @@ pod install
 ```
 
 #### App ID
-
 
 Changing App ID is required if you want to setup own Push Relay server and pushes via your Firebase project for FCM. 
 
@@ -324,6 +335,27 @@ If you still have errors please explore APP ID things in the next docs:
 * [`firebase_crashlytics`](https://pub.dev/packages/firebase_crashlytics)
 * [`firebase_messaging`](https://pub.dev/packages/firebase_messaging)
 * [`receive_sharing_intent`](https://pub.dev/packages/receive_sharing_intent)
+
+#### Signing
+
+###### Android
+
+Signing config required to make `release` builds 
+
+Generate key via [Tutorial](https://developer.android.com/studio/publish/app-signing#generate-key) and put it in `android/key/key.jks`(exclude from source control)
+
+Create `android/key.properties`(exclude from source control) file with next template.
+
+```
+storePassword=pass1
+keyPassword=pass2
+keyAlias=keyName
+storeFile=../key/key.jks
+```
+
+###### iOS
+
+Follow [official tutorial](https://flutter.dev/docs/deployment/ios)
 
 #### Firebase
 
@@ -358,20 +390,35 @@ For more details see
 
 #### Push notifications 
 
+To enable Push notifications you should
+* change App ID(see above)
+* create Firebase Project for your App ID,
+* generate Firebase config and integrate in app(see above)
+* generate FCM server key
+* setup own Push Relay Server(link to repo **coming soon**) instance and put your FCM server key
+
+App ID and FCM server key(so and Push Relay Server instance) are connected. 
+It is not possible to use one Push Relay Server instance with several App IDs and vice versa
+
+On/Off via .env. Firebase core integration required (see above)
+
 ```
 PUSH_FCM_ENABLED=false
 ```
 
-##### Firebase Cloud Messaging (FCM)
-
-
-```
-PUSH_FCM_RELAY_URL=https://pushrelay.example.com/push/
-PUSH_SUBSCRIPTION_KEYS_P256DH=BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8qu
-PUSH_SUBSCRIPTION_KEYS_AUTH=T5bhIIyre5TDC
-```
-
 ##### Proxy Push Relay Server
+
+Required if `PUSH_FCM_ENABLED=true`
+
+`PUSH_SUBSCRIPTION_KEYS_P256DH `
+
+User agent public key. Base64 encoded string of public key of ECDH key using prime256v1 curve.
+
+`PUSH_SUBSCRIPTION_KEYS_AUTH`
+
+Auth secret. Base64 encoded string of 16 bytes of random data.
+
+More info in [Mastodon docs](https://docs.joinmastodon.org/methods/notifications/push/)
 
 ```
 PUSH_FCM_RELAY_URL=https://pushrelay.example.com/push/
@@ -380,6 +427,8 @@ PUSH_SUBSCRIPTION_KEYS_AUTH=T5bhIIyre5TDC
 ```
 
 #### Firebase Crashlytics
+
+On/Off via .env. Firebase core integration required (see above)
 
 ```
 CRASHLYTICS_ENABLED=false
@@ -390,3 +439,6 @@ Used to catch errors on client side with error description and stackTrace
 You should enable Firebase support(see above) and change config variable in .env file to enable crash reporting
 
 #### Receiving share intents & ShareExtension
+
+XCode project have additional ShareExtension module required by [`receive_sharing_intent`](https://pub.dev/packages/receive_sharing_intent) to handle income share events.
+It also important to add `Target` and `ShareExtension` to same group ID.
