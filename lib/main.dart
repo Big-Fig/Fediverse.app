@@ -365,7 +365,10 @@ void runInitializedLoginApp(IAppContextBloc appContextBloc) {
   runApp(
     appContextBloc.provideContextToChild(
       child: DisposableProvider<IJoinAuthInstanceBloc>(
-        create: (context) => JoinAuthInstanceBloc(isFromScratch: true),
+        create: (context) => JoinAuthInstanceBloc(
+          isFromScratch: true,
+          configService: appContextBloc.get<IConfigService>(),
+        ),
         child: FediApp(
           instanceInitialized: false,
           child: const FromScratchJoinAuthInstancePage(),
@@ -454,7 +457,7 @@ class FediApp extends StatelessWidget {
                 return OverlayNotificationServiceProvider(
                   child: ToastServiceProvider(
                     child: Builder(
-                      builder: (context)=> MaterialApp(
+                      builder: (context) => MaterialApp(
                         // checkerboardRasterCacheImages: true,
                         // checkerboardOffscreenLayers: true,
                         debugShowCheckedModeBanner: false,
@@ -496,7 +499,8 @@ class FediApp extends StatelessWidget {
                                 actualChild = child;
                               }
 
-                              return DisposableProvider<IIncomeShareHandlerBloc>(
+                              return DisposableProvider<
+                                  IIncomeShareHandlerBloc>(
                                 // important
                                 // lazy:false because we want init it asap
                                 lazy: false,

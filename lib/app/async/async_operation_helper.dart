@@ -39,7 +39,7 @@ class AsyncOperationHelper {
             IToastService.of(context!, listen: false).showErrorToast(
               context: context,
               title: errorData.titleCreator(context),
-              content: errorData.contentCreator(context),
+              content: errorData.contentCreator != null ? errorData.contentCreator!(context) : null,
             );
           }
         },
