@@ -56,7 +56,10 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
       _channelSubscription = _channel!.stream.listen(
         (dynamic message) {
           _logger.finest(() => '$url message $message');
-          eventsStreamController.add(_mapChannelData(message)!);
+          var event = _mapChannelData(message);
+          if(event != null) {
+            eventsStreamController.add(event);
+          }
         },
         onDone: () {
           _logger.finest(() => 'ws channel closed $url');
