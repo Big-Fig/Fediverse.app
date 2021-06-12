@@ -12,7 +12,7 @@ PleromaApiCard _$PleromaApiCardFromJson(Map<String, dynamic> json) {
     authorUrl: json['author_url'] as String?,
     description: json['description'] as String?,
     embedUrl: json['embed_url'] as String?,
-    height: json['height'] as int?,
+    height: PleromaApiCard.sizeFromJsonOrNullOnError(json['height']),
     html: json['html'] as String?,
     image: json['image'] as String?,
     providerName: json['provider_name'] as String?,
@@ -20,7 +20,7 @@ PleromaApiCard _$PleromaApiCardFromJson(Map<String, dynamic> json) {
     title: json['title'] as String?,
     type: json['type'] as String?,
     url: json['url'] as String?,
-    width: json['width'] as int?,
+    width: PleromaApiCard.sizeFromJsonOrNullOnError(json['width']),
   );
 }
 
@@ -31,6 +31,7 @@ Map<String, dynamic> _$PleromaApiCardToJson(PleromaApiCard instance) =>
       'description': instance.description,
       'embed_url': instance.embedUrl,
       'height': instance.height,
+      'width': instance.width,
       'html': instance.html,
       'image': instance.image,
       'provider_name': instance.providerName,
@@ -38,5 +39,4 @@ Map<String, dynamic> _$PleromaApiCardToJson(PleromaApiCard instance) =>
       'title': instance.title,
       'type': instance.type,
       'url': instance.url,
-      'width': instance.width,
     };

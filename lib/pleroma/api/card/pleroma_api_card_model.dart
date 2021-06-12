@@ -1,8 +1,11 @@
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/card/mastodon_api_card_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logging/logging.dart';
 
 part 'pleroma_api_card_model.g.dart';
+
+final _logger = Logger('pleroma_api_card_model.dart');
 
 abstract class IPleromaApiCard implements IMastodonApiCard {}
 
@@ -48,7 +51,12 @@ class PleromaApiCard implements IPleromaApiCard, IJsonObject {
   final String? embedUrl;
 
   @override
+  @JsonKey(fromJson: sizeFromJsonOrNullOnError)
   final int? height;
+
+  @override
+  @JsonKey(fromJson: sizeFromJsonOrNullOnError)
+  final int? width;
 
   @override
   final String? html;
@@ -75,9 +83,6 @@ class PleromaApiCard implements IPleromaApiCard, IJsonObject {
 
   @override
   final String? url;
-
-  @override
-  final int? width;
 
   PleromaApiCard({
     required this.authorName,
@@ -113,6 +118,21 @@ class PleromaApiCard implements IPleromaApiCard, IJsonObject {
 
   static PleromaApiCard fromJson(Map<String, dynamic> json) =>
       _$PleromaApiCardFromJson(json);
+
+  static int? sizeFromJsonOrNullOnError(dynamic json) {
+    if (json == null) {
+      return null;
+    }
+
+    // hack because backend sometimes returns pleroma object in invalid format
+    try {
+      return json as int?;
+    } catch (e, stackTrace) {
+      _logger.warning(() => 'sizeFromJsonOrNullOnError $json', e, stackTrace);
+
+      return null;
+    }
+  }
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiCardToJson(this);
