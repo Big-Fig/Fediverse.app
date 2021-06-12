@@ -61,7 +61,7 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
 class _MediaAttachmentDetailsPageState
     extends State<MediaAttachmentDetailsPage> {
   IPleromaApiMediaAttachment get mediaAttachment =>
-      selectedMediaAttachmentSubject.value!;
+      selectedMediaAttachmentSubject.value ?? widget.mediaAttachments.first;
 
   final PageController _controller;
 
