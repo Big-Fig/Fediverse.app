@@ -10,9 +10,12 @@ import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logging/logging.dart';
 
 // ignore_for_file: no-magic-number
 part 'pleroma_api_my_account_model.g.dart';
+
+final _logger = Logger('pleroma_api_my_account_model.dart');
 
 abstract class IPleromaApiMyAccountEdit extends IMastodonApiMyAccountEdit {
   @override
@@ -813,6 +816,7 @@ class PleromaApiMyAccount implements IPleromaApiMyAccount, IJsonObject {
   final String acct;
   @override
   @HiveField(19)
+  @JsonKey(fromJson: PleromaApiMyAccountPleromaPart.fromJsonOrNullOnError)
   final PleromaApiMyAccountPleromaPart? pleroma;
   @override
   @HiveField(20)
@@ -1246,6 +1250,22 @@ class PleromaApiMyAccountPleromaPart
 
   static PleromaApiMyAccountPleromaPart fromJson(Map<String, dynamic> json) =>
       _$PleromaApiMyAccountPleromaPartFromJson(json);
+
+  static PleromaApiMyAccountPleromaPart? fromJsonOrNullOnError(
+    Map<String, dynamic>? json,
+  ) {
+    if (json == null) {
+      return null;
+    }
+    // hack because backend sometimes returns pleroma object in invalid format
+    try {
+      return fromJson(json);
+    } catch (e, stackTrace) {
+      _logger.warning(() => 'fromJsonOrNullOnError $json', e, stackTrace);
+
+      return null;
+    }
+  }
 
   Map<String, dynamic> toJson() => _$PleromaApiMyAccountPleromaPartToJson(this);
 

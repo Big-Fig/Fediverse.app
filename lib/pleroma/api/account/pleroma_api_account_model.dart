@@ -8,10 +8,13 @@ import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logging/logging.dart';
 
 part 'pleroma_api_account_model.g.dart';
 
 // ignore_for_file: no-magic-number
+
+final _logger = Logger('pleroma_api_account_model.dart');
 
 abstract class IPleromaApiAccount implements IMastodonApiAccount {
   @override
@@ -233,6 +236,7 @@ class PleromaApiAccount implements IPleromaApiAccount, IJsonObject {
   final String acct;
   @override
   @HiveField(19)
+  @JsonKey(fromJson: PleromaApiAccountPleromaPart.fromJsonOrNullOnError)
   final PleromaApiAccountPleromaPart? pleroma;
   @override
   @HiveField(20)
@@ -517,10 +521,14 @@ class PleromaApiAccountPleromaPart
   @HiveField(2)
   // todo: remove hack, Pleroma return List<String> instead of List<PleromaTag>
   // for example at accounts/verify_credentials endpoint
+  @JsonKey(fromJson: PleromaApiTag.fromJsonListOrNullOnError)
   final List<PleromaApiTag>? tags;
 
   @override
   @HiveField(3)
+  @JsonKey(
+    fromJson: PleromaApiAccountRelationship.fromJsonOrNullOnError,
+  )
   final PleromaApiAccountRelationship? relationship;
   @override
   @HiveField(4)
@@ -592,7 +600,10 @@ class PleromaApiAccountPleromaPart
   final String? apId;
   @override
   @HiveField(23)
-  @JsonKey(name: 'also_known_as')
+  @JsonKey(
+    name: 'also_known_as',
+    fromJson: fromJsonAlsoKnownAsListOrNullOnError,
+  )
   final List<String>? alsoKnownAs;
 
   PleromaApiAccountPleromaPart({
@@ -617,8 +628,52 @@ class PleromaApiAccountPleromaPart
     required this.alsoKnownAs,
   });
 
+  static List<String>? fromJsonAlsoKnownAsListOrNullOnError(dynamic json) {
+    if(json == null) {
+      return null;
+    }
+    // hack because backend sometimes returns pleroma object in invalid format
+    try {
+      var iterable = json as Iterable;
+
+      return iterable
+          .map(
+            (item) => item as String,
+          )
+          .toList();
+    } catch (e, stackTrace) {
+      _logger.warning(
+        () => 'fromJsonAlsoKnownAsListOrNullOnError $json',
+        e,
+        stackTrace,
+      );
+
+      return null;
+    }
+  }
+
   static PleromaApiAccountPleromaPart fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountPleromaPartFromJson(json);
+
+  static PleromaApiAccountPleromaPart? fromJsonOrNullOnError(
+    Map<String, dynamic>? json,
+  ) {
+    if(json == null) {
+      return null;
+    }
+    // hack because backend sometimes returns pleroma object in invalid format
+    try {
+      return fromJson(json);
+    } catch (e, stackTrace) {
+      _logger.warning(
+        () => 'fromJsonOrNullOnError $json',
+        e,
+        stackTrace,
+      );
+
+      return null;
+    }
+  }
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiAccountPleromaPartToJson(this);
@@ -960,6 +1015,26 @@ class PleromaApiAccountRelationship
 
   static PleromaApiAccountRelationship fromJson(Map<String, dynamic> json) =>
       _$PleromaApiAccountRelationshipFromJson(json);
+
+  static PleromaApiAccountRelationship? fromJsonOrNullOnError(
+    Map<String, dynamic>? json,
+  ) {
+    if(json == null) {
+      return null;
+    }
+    // hack because backend sometimes returns pleroma object in invalid format
+    try {
+      return fromJson(json);
+    } catch (e, stackTrace) {
+      _logger.warning(
+        () => 'fromJsonOrNullOnError $json',
+        e,
+        stackTrace,
+      );
+
+      return null;
+    }
+  }
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiAccountRelationshipToJson(this);
