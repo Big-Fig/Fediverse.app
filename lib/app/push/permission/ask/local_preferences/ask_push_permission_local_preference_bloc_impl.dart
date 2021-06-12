@@ -1,10 +1,10 @@
-import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preference_bloc.dart';
+import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-class FcmPushPermissionAskedLocalPreferenceBloc extends BoolLocalPreferenceBloc
-    implements IFcmPushPermissionAskedLocalPreferenceBloc {
-  FcmPushPermissionAskedLocalPreferenceBloc(
+class AskPushPermissionLocalPreferenceBloc extends BoolLocalPreferenceBloc
+    implements IAskPushPermissionLocalPreferenceBloc {
+  AskPushPermissionLocalPreferenceBloc(
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
   }) : super(

@@ -80,11 +80,11 @@ import 'package:fedi/app/pagination/settings/local_preferences/instance/instance
 import 'package:fedi/app/pagination/settings/local_preferences/instance/instance_pagination_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc_impl.dart';
-import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preference_bloc.dart';
-import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preference_bloc_impl.dart';
-import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc.dart';
-import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
+import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc.dart';
+import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc_impl.dart';
+import 'package:fedi/app/push/permission/checker/push_permission_checker_bloc.dart';
+import 'package:fedi/app/push/permission/checker/push_permission_checker_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
@@ -230,16 +230,16 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var userAtHost = currentInstance.userAtHost;
 
-    var fcmPushPermissionAskedLocalPreferencesBloc =
-        FcmPushPermissionAskedLocalPreferenceBloc(
+    var askPushPermissionLocalPreferenceBloc =
+        AskPushPermissionLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
     );
 
-    addDisposable(disposable: fcmPushPermissionAskedLocalPreferencesBloc);
+    addDisposable(disposable: askPushPermissionLocalPreferenceBloc);
     await globalProviderService
-        .asyncInitAndRegister<IFcmPushPermissionAskedLocalPreferenceBloc>(
-      fcmPushPermissionAskedLocalPreferencesBloc,
+        .asyncInitAndRegister<IAskPushPermissionLocalPreferenceBloc>(
+      askPushPermissionLocalPreferenceBloc,
     );
 
     var recentSearchLocalPreferenceBloc = RecentSearchLocalPreferenceBloc(
@@ -657,16 +657,16 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       await globalProviderService
           .asyncInitAndRegister<IPushSettingsBloc>(pushSettingsBloc);
 
-      var fcmPushPermissionCheckerBloc = FcmPushPermissionCheckerBloc(
+      var pushPermissionCheckerBloc = PushPermissionCheckerBloc(
         fcmPushService: fcmPushService,
-        fcmPushPermissionAskedLocalPreferencesBloc:
-            fcmPushPermissionAskedLocalPreferencesBloc,
+        askPushPermissionLocalPreferenceBloc:
+            askPushPermissionLocalPreferenceBloc,
         pushSettingsBloc: pushSettingsBloc,
       );
 
-      addDisposable(disposable: fcmPushPermissionCheckerBloc);
+      addDisposable(disposable: pushPermissionCheckerBloc);
       await globalProviderService.asyncInitAndRegister<
-          IFcmPushPermissionCheckerBloc>(fcmPushPermissionCheckerBloc);
+          IPushPermissionCheckerBloc>(pushPermissionCheckerBloc);
 
       var notificationPushLoaderBloc = NotificationPushLoaderBloc(
         currentInstance: currentInstance,

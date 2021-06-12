@@ -17,7 +17,7 @@ class InAppReviewBloc extends DisposableOwner implements IInAppReviewBloc {
   @override
   Future<bool> isAvailable() async {
     var available = await inAppReview.isAvailable();
-    _logger.finest(() => ' isAvailable $available');
+    _logger.finest(() => 'isAvailable $available');
 
     return available;
   }
@@ -33,7 +33,7 @@ class InAppReviewBloc extends DisposableOwner implements IInAppReviewBloc {
 
   @override
   Future<void> requestReview() async {
-    _logger.finest(() => 'openStoreListing');
+    _logger.finest(() => 'requestReview');
     var available = await isAvailable();
     if (available) {
       return inAppReview.requestReview();

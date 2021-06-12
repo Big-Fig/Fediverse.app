@@ -178,11 +178,11 @@
   "app_notification_action_dismiss": "Скрыть",
   "app_notification_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новое оповещение. Нажмите для загрузки.} other{{count} новых оповещений. Нажмите для загрузки.}}",
   "app_push_permission_ask_dialog_title": "Push оповещения",
-  "app_push_permission_ask_dialog_content": "Хотите ли вы включить push оповещения?\nОни буду пересланы через Fedi push прокси сервер",
+  "app_push_permission_ask_dialog_content": "Хотите ли вы включить push оповещения?\nОни буду пересланы через Fedi Push Relay сервер.\n Вы всегда можете изменить решение в настройках",
   "app_push_permission_declined_dialog_title": "Необходимо разрешение",
   "app_push_permission_declined_dialog_content": "Включите push оповещения в настройках для получения обновлений",
   "app_push_settings_title": "Push-оповещения",
-  "app_push_settings_desc": "Все сообщения буду пересланы через Fedi push прокси сервер",
+  "app_push_settings_desc": "Все сообщения буду пересланы через Fedi Push Relay сервер",
   "app_push_settings_field_favourites_label": "Лайки",
   "app_push_settings_field_follows_label": "Подписки",
   "app_push_settings_field_mentions_label": "Упоминания",
@@ -357,6 +357,7 @@
   "dialog_action_yes": "Да",
   "dialog_action_no": "Нет",
   "dialog_action_ok": "Хорошо",
+  "dialog_action_learnMore": "Узнать больше",
   "dialog_action_cancel": "Отмена",
   "form_field_value_error_null_desc": "Необходимо",
   "form_field_text_email_error_invalid_desc": "Неправильный email",
@@ -779,5 +780,9 @@
   "app_share_income_instance_choose_title": "Выберите сервер чтобы поделится",
   "app_share_income_error_authInstanceListIsEmpty": "Вы еще не вошли не в один сервер чтобы поделится",
   "app_push_disabled_notification_title": "Оповещения отключены",
-  "app_push_disabled_notification_content": "Установите версию из магазина или включите поддержку оповещений при сборке приложения"
+  "app_push_disabled_notification_content": "Установите версию из магазина или включите поддержку оповещений при сборке приложения",
+  "app_crashReporting_settings_title": "Отчеты об ошибках",
+  "app_crashReporting_settings_field_reportingEnabled_name": "Отправлять отчеты",
+  "app_crashReporting_ask_dialog_title": "Отчеты об ошибках",
+  "app_crashReporting_ask_dialog_content": "Вы согласны на отправку отчетов об ошибках?\n Это поможет нам сделать приложение стабильнее\n Вы всегда можете изменить решение в настройках"
 }

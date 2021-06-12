@@ -269,35 +269,6 @@ Those files excluded from source control.
 
 You can find all possible config variables(with comments) at [env_example.env](env_example.env)
 
-```
-# Application ID see README.md how to do to change it
-APP_ID=com.fediverse.app
-# App Title in OS
-APP_TITLE=Fedi
-# Default instance URL to use on 'Join Instance' page
-APP_DEFAULT_INSTANCE_URL=fedi.app
-# Apple App ID from ITunes, used to navigate user to ITunse app page to leave feedback
-#APP_APPLE_ID=147880...
-# Logging on/off. Log should be disabled for production builds for better performance and security
-LOG_ENABLED=true
-# On/Off firebase core code. Required GoogleServices file. See README.md for details
-FIREBASE_ENABLED=false
-# On/Off push notifications
-PUSH_FCM_ENABLED=false
-# Required for push notifications. Push relay server URL. See README.md for details
-#PUSH_FCM_RELAY_URL=https://pushrelay.example.com/push/
-# Required for push notifications. Mastodon Push API requirments . See README.md for details
-#PUSH_SUBSCRIPTION_KEYS_P256DH=BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8qu
-# Requied for push notifications. Mastodon Push API requirments . See README.md for details
-#PUSH_SUBSCRIPTION_KEYS_AUTH=T5bhIIyre5TDC
-# On/off crash reporting
-CRASHLYTICS_ENABLED=false
-# On/off ask review dialog
-ASK_REVIEW_ENABLED=false
-# How much times user should open app to display 'Please rate me' dialog
-#ASK_REVIEW_COUNT_APP_OPENED_TO_SHOW=5
-```
-
 #### If you have strange errors in any case or how to clean project
 
 * `fvm flutter clean`

@@ -825,6 +825,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Заменить \"Беседы\" на \"Чаты\""),
         "app_chat_settings_title": MessageLookupByLibrary.simpleMessage("Чат"),
+        "app_crashReporting_ask_dialog_content":
+            MessageLookupByLibrary.simpleMessage(
+                "Вы согласны на отправку отчетов об ошибках?\n Это поможет нам сделать приложение стабильнее\n Вы всегда можете изменить решение в настройках"),
+        "app_crashReporting_ask_dialog_title":
+            MessageLookupByLibrary.simpleMessage("Отчеты об ошибках"),
+        "app_crashReporting_settings_field_reportingEnabled_name":
+            MessageLookupByLibrary.simpleMessage("Отправлять отчеты"),
+        "app_crashReporting_settings_title":
+            MessageLookupByLibrary.simpleMessage("Отчеты об ошибках"),
         "app_customList_create_title":
             MessageLookupByLibrary.simpleMessage("Создать список"),
         "app_customList_edit_title":
@@ -1206,7 +1215,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Оповещения отключены"),
         "app_push_permission_ask_dialog_content":
             MessageLookupByLibrary.simpleMessage(
-                "Хотите ли вы включить push оповещения?\nОни буду пересланы через Fedi push прокси сервер"),
+                "Хотите ли вы включить push оповещения?\nОни буду пересланы через Fedi Push Relay сервер.\n Вы всегда можете изменить решение в настройках"),
         "app_push_permission_ask_dialog_title":
             MessageLookupByLibrary.simpleMessage("Push оповещения"),
         "app_push_permission_declined_dialog_content":
@@ -1215,7 +1224,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_push_permission_declined_dialog_title":
             MessageLookupByLibrary.simpleMessage("Необходимо разрешение"),
         "app_push_settings_desc": MessageLookupByLibrary.simpleMessage(
-            "Все сообщения буду пересланы через Fedi push прокси сервер"),
+            "Все сообщения буду пересланы через Fedi Push Relay сервер"),
         "app_push_settings_field_favourites_label":
             MessageLookupByLibrary.simpleMessage("Лайки"),
         "app_push_settings_field_follows_label":
@@ -1619,6 +1628,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "async_init_state_notStarted": MessageLookupByLibrary.simpleMessage(
             "Асинхронная инициализация не началась"),
         "dialog_action_cancel": MessageLookupByLibrary.simpleMessage("Отмена"),
+        "dialog_action_learnMore":
+            MessageLookupByLibrary.simpleMessage("Узнать больше"),
         "dialog_action_no": MessageLookupByLibrary.simpleMessage("Нет"),
         "dialog_action_ok": MessageLookupByLibrary.simpleMessage("Хорошо"),
         "dialog_action_yes": MessageLookupByLibrary.simpleMessage("Да"),

@@ -1,4 +1,3 @@
-import 'package:fedi/analytics/app/app_analytics_bloc.dart';
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
@@ -17,6 +16,7 @@ import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/in_app_review/ask/local_preferences/ask_in_app_review_local_preference_bloc.dart';
 import 'package:fedi/in_app_review/in_app_review_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -227,18 +227,18 @@ class _RateAppHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appAnalyticsBloc = Provider.of<IAppAnalyticsBloc>(context);
+    var askInAppReviewLocalPreferenceBloc =
+        Provider.of<IAskInAppReviewLocalPreferenceBloc>(context);
 
     var configService = IConfigService.of(context);
 
-    if (appAnalyticsBloc.isAppRated) {
+    if (askInAppReviewLocalPreferenceBloc.value) {
       return const SizedBox.shrink();
     } else {
       if (configService.askReviewEnabled) {
         return InkWell(
           onTap: () {
-            var inAppReviewBloc =
-            IInAppReviewBloc.of(context, listen: false);
+            var inAppReviewBloc = IInAppReviewBloc.of(context, listen: false);
             inAppReviewBloc.openStoreListing();
           },
           child: _SimpleAccountHomeTabMenuDialogBodyItem(

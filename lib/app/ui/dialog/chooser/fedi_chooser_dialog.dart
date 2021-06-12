@@ -54,17 +54,31 @@ class FediChooserDialogBody extends StatelessWidget {
       children: [
         if (title != null)
           Padding(
-            padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+            padding: const EdgeInsets.only(
+              bottom: FediSizes.smallPadding,
+              // ignore: no-equal-arguments
+              left: FediSizes.smallPadding,
+              // ignore: no-equal-arguments
+              right: FediSizes.smallPadding,
+            ),
             child: Text(
               title!,
+              textAlign: TextAlign.center,
               style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
             ),
           ),
         if (content != null)
           Padding(
-            padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+            padding: const EdgeInsets.only(
+              bottom: FediSizes.smallPadding,
+              // ignore: no-equal-arguments
+              left: FediSizes.smallPadding,
+              // ignore: no-equal-arguments
+              right: FediSizes.smallPadding,
+            ),
             child: Text(
               content!,
+              textAlign: TextAlign.center,
               style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
             ),
           ),

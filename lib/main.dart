@@ -16,6 +16,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
+import 'package:fedi/app/crash_reporting/permission/checker/crash_reporting_permission_checker_widget.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_bloc_impl.dart';
 import 'package:fedi/app/home/home_model.dart';
@@ -26,7 +27,7 @@ import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
-import 'package:fedi/app/push/fcm/fcm_push_permission_checker_widget.dart';
+import 'package:fedi/app/push/permission/checker/push_permission_checker_widget.dart';
 import 'package:fedi/app/share/income/action/income_share_action_chooser_dialog.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_bloc.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_bloc_impl.dart';
@@ -48,6 +49,7 @@ import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/in_app_review/checker/in_app_review_checker_widget.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service_provider.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
@@ -355,8 +357,12 @@ Widget buildAuthInstanceContextInitWidget({
 
           return homeBloc;
         },
-        child: const FcmPushPermissionCheckerWidget(
-          child: HomePage(),
+        child: const PushPermissionCheckerWidget(
+          child: CrashReportingPermissionCheckerWidget(
+            child: InAppReviewCheckerWidget(
+              child: HomePage(),
+            ),
+          ),
         ),
       ),
     );

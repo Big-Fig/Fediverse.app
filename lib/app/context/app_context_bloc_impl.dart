@@ -23,6 +23,16 @@ import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_sett
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/config/config_service_impl.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
+import 'package:fedi/app/crash_reporting/permission/ask/local_preferences/ask_crash_reporting_permission_local_preference_bloc.dart';
+import 'package:fedi/app/crash_reporting/permission/ask/local_preferences/ask_crash_reporting_permission_local_preference_bloc_impl.dart';
+import 'package:fedi/app/crash_reporting/permission/checker/crash_reporting_permission_checker_bloc.dart';
+import 'package:fedi/app/crash_reporting/permission/checker/crash_reporting_permission_checker_bloc_impl.dart';
+import 'package:fedi/app/crash_reporting/settings/crash_reporting_settings_bloc.dart';
+import 'package:fedi/app/crash_reporting/settings/crash_reporting_settings_bloc_impl.dart';
+import 'package:fedi/app/crash_reporting/settings/crash_reporting_settings_model.dart';
+import 'package:fedi/app/crash_reporting/settings/local_preference/crash_reporting_settings_local_preference_bloc.dart';
+import 'package:fedi/app/crash_reporting/settings/local_preference/global/global_crash_reporting_settings_local_preference_bloc.dart';
+import 'package:fedi/app/crash_reporting/settings/local_preference/global/global_crash_reporting_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/hive/hive_service.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
@@ -67,6 +77,10 @@ import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_we
 import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
+import 'package:fedi/in_app_review/ask/local_preferences/ask_in_app_review_local_preference_bloc.dart';
+import 'package:fedi/in_app_review/ask/local_preferences/ask_in_app_review_local_preference_bloc_impl.dart';
+import 'package:fedi/in_app_review/checker/in_app_review_checker_bloc.dart';
+import 'package:fedi/in_app_review/checker/in_app_review_checker_bloc_impl.dart';
 import 'package:fedi/in_app_review/in_app_review_bloc.dart';
 import 'package:fedi/in_app_review/in_app_review_bloc_impl.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
@@ -91,9 +105,8 @@ import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc_impl.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
-import 'package:pedantic/pedantic.dart';
 
 var _logger = Logger('app_context_bloc_impl.dart');
 
@@ -120,11 +133,6 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     if (configService.firebaseEnabled) {
       await Firebase.initializeApp();
-    }
-
-    if (configService.crashlyticsEnabled) {
-      // Pass all uncaught errors from the framework to Crashlytics.
-      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     }
 
     var hiveService = HiveService();
@@ -328,6 +336,54 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IUiSettingsBloc>(uiSettingsBloc);
     addDisposable(disposable: uiSettingsBloc);
 
+    var globalCrashReportingSettingsLocalPreferencesBloc =
+        GlobalCrashReportingSettingsLocalPreferenceBloc(
+      hiveLocalPreferencesService,
+      defaultValue: CrashReportingSettings(
+        reportingEnabled: configService.crashlyticsDefaultHandlingEnabled!,
+      ),
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IGlobalCrashReportingSettingsLocalPreferenceBloc>(
+      globalCrashReportingSettingsLocalPreferencesBloc,
+    );
+    await globalProviderService
+        .asyncInitAndRegister<ICrashReportingSettingsLocalPreferenceBloc>(
+      globalCrashReportingSettingsLocalPreferencesBloc,
+    );
+    addDisposable(
+      disposable: globalCrashReportingSettingsLocalPreferencesBloc,
+    );
+    if (configService.crashlyticsEnabled) {
+      var crashReportingSettingsBloc = CrashReportingSettingsBloc(
+        crashReportingSettingsLocalPreferencesBloc:
+            globalCrashReportingSettingsLocalPreferencesBloc,
+      );
+
+      await globalProviderService.asyncInitAndRegister<
+          ICrashReportingSettingsBloc>(crashReportingSettingsBloc);
+      addDisposable(disposable: crashReportingSettingsBloc);
+
+      // Pass all uncaught errors from the framework to Crashlytics.
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+        crashReportingSettingsBloc.reportingEnabled && !kDebugMode,
+      );
+
+      crashReportingSettingsBloc.addDisposable(
+        streamSubscription:
+            crashReportingSettingsBloc.reportingEnabledStream.listen(
+          (reportingEnabled) {
+            FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+              reportingEnabled && !kDebugMode,
+            );
+          },
+        ),
+      );
+    }
+
     var uiThemeSystemBrightnessBloc = UiThemeSystemBrightnessBloc();
 
     await globalProviderService.asyncInitAndRegister<
@@ -497,6 +553,27 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IInAppReviewBloc>(inAppReviewBloc);
     addDisposable(disposable: inAppReviewBloc);
 
+    var askCrashReportingPermissionLocalPreferenceBloc =
+        AskCrashReportingPermissionLocalPreferenceBloc(
+      hiveLocalPreferencesService,
+    );
+
+    addDisposable(disposable: askCrashReportingPermissionLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IAskCrashReportingPermissionLocalPreferenceBloc>(
+      askCrashReportingPermissionLocalPreferenceBloc,
+    );
+
+    var askInAppReviewLocalPreferenceBloc = AskInAppReviewLocalPreferenceBloc(
+      hiveLocalPreferencesService,
+    );
+
+    addDisposable(disposable: askInAppReviewLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IAskInAppReviewLocalPreferenceBloc>(
+      askInAppReviewLocalPreferenceBloc,
+    );
+
     var appAnalyticsBloc = AppAnalyticsBloc(
       appAnalyticsLocalPreferenceBloc: appAnalyticsLocalPreferenceBloc,
     );
@@ -506,49 +583,32 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     addDisposable(disposable: appAnalyticsBloc);
 
     await appAnalyticsBloc.onAppOpened();
-    await _checkReviewAppDialog(
+
+    var crashReportingPermissionCheckerBloc =
+        CrashReportingPermissionCheckerBloc(
       appAnalyticsBloc: appAnalyticsBloc,
-      inAppReviewBloc: inAppReviewBloc,
       configService: configService,
+      askCrashReportingPermissionLocalPreferenceBloc:
+          askCrashReportingPermissionLocalPreferenceBloc,
+      crashReportingSettingsLocalPreferenceBloc:
+          globalCrashReportingSettingsLocalPreferencesBloc,
     );
-  }
 
-  Future _checkReviewAppDialog({
-    required IConfigService configService,
-    required AppAnalyticsBloc appAnalyticsBloc,
-    required InAppReviewBloc inAppReviewBloc,
-  }) async {
-    if (!configService.askReviewEnabled) {
-      return;
-    }
-
-    final appOpenedCountToShowAppReview =
-        configService.askReviewCountAppOpenedToShow!;
-    var isAppRated = appAnalyticsBloc.isAppRated;
-    var appOpenedCount = appAnalyticsBloc.appOpenedCount;
-    var isNeedRequestReview =
-        !isAppRated && appOpenedCount >= appOpenedCountToShowAppReview;
-    _logger.finest(
-      () => ' appOpenedCountToShowAppReview $appOpenedCountToShowAppReview \n'
-          ' isAppRated $isAppRated \n'
-          ' appOpenedCount $appOpenedCount \n'
-          ' isNeedRequestReview $isNeedRequestReview',
+    addDisposable(disposable: crashReportingPermissionCheckerBloc);
+    await globalProviderService
+        .asyncInitAndRegister<ICrashReportingPermissionCheckerBloc>(
+      crashReportingPermissionCheckerBloc,
     );
-    if (isNeedRequestReview) {
-      var inAppReviewBlocAvailable = await inAppReviewBloc.isAvailable();
-      if (inAppReviewBlocAvailable) {
-        Future.delayed(
-          // ignore: no-magic-number
-          Duration(seconds: 5),
-          () {
-            unawaited(
-              inAppReviewBloc.requestReview().then(
-                    (_) => appAnalyticsBloc.onAppRated(),
-                  ),
-            );
-          },
-        );
-      }
-    }
+
+    var inAppReviewCheckerBloc = InAppReviewCheckerBloc(
+      appAnalyticsBloc: appAnalyticsBloc,
+      configService: configService,
+      askInAppReviewLocalPreferenceBloc: askInAppReviewLocalPreferenceBloc,
+    );
+
+    addDisposable(disposable: inAppReviewCheckerBloc);
+    await globalProviderService.asyncInitAndRegister<IInAppReviewCheckerBloc>(
+      inAppReviewCheckerBloc,
+    );
   }
 }

@@ -28,11 +28,19 @@ abstract class IConfigService implements IAsyncInitLoadingBloc, IDisposable {
 
   String? get pushFcmRelayUrl;
 
+  String? get pushDetailsUrl;
+
   String? get pushSubscriptionKeysP256dh;
 
   String? get pushSubscriptionKeysAuth;
 
   bool get crashlyticsEnabled;
+
+  bool? get crashlyticsDefaultHandlingEnabled;
+
+  String? get crashlyticsDetailsUrl;
+
+  int? get crashlyticsAskHandlingCountAppOpenedToShow;
 
   bool get askReviewEnabled;
 
