@@ -17,6 +17,24 @@ A client for Pleroma and Mastodon instances written using Flutter
 * [GitHub Releases](https://github.com/Big-Fig/Fediverse.app/releases)
 * [CHANGELOG](https://github.com/Big-Fig/Fediverse.app/CHANGELOG.md) 
 
+### Table of Contents
+
+* [Features](#features)
+* [Coming soon](#coming-soon)
+* [Known issues](#known-issues)
+* [Data gathering](#data-gathering)
+* [Push notifications](#push-notifications)
+* [Localization](#localization)
+* [License](#license)
+* [Feedback](#feedback)
+* [For developers](#for-developers)
+  * [Flutter version &amp; FVM](#flutter-version--fvm)
+  * [Libraries](#libraries)
+  * [Icons](#icons)
+  * [Tests](#tests)
+  * [Backlog](#backlog)
+  * [How to build from source](#how-to-build-from-source)
+
 ## Features
 
 - Pleroma and Mastodon support
@@ -160,7 +178,7 @@ Push Relay will know nothing(everything will be encrypted) once decryption logic
 
 To build Fedi you need Flutter version specified in [`.fvm/fvm_config.json`](.fvm/fvm_config.json) field `flutterSdkVersion`. You can achieve this by simple using `flutter version $version` or using FVM
 
-### Flutter Version Management(FVM)
+#### Flutter Version Management(FVM)
 
 Fedi uses [Flutter Version Management](https://github.com/leoafarias/fvm) to clearly specify Flutter version to build app.
 
