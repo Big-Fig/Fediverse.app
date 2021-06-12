@@ -103,7 +103,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     required PleromaApiInstancePleromaPartMetadataFieldLimits?
         customFieldLimits,
   })   : displayNameField = StringValueFormFieldBloc(
-          originValue: myAccountBloc.displayNameEmojiText!.text,
+          originValue: myAccountBloc.displayNameEmojiText?.text ?? '',
           validators: [
             StringValueFormFieldNonEmptyValidationError.createValidator(),
           ],
