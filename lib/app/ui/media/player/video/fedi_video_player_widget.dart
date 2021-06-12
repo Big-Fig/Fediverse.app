@@ -160,7 +160,9 @@ class _FediVideoPlayerBodyWidget extends StatelessWidget {
         // todo: remove hack
         // sometimes  videoMediaPlayerBloc.isInitialized already false
         // but isInitialized contains old true value
-        if (isInitialized && videoMediaPlayerBloc.isInitialized) {
+        if (isInitialized &&
+            videoMediaPlayerBloc.isInitialized &&
+            videoMediaPlayerBloc.videoPlayerController != null) {
           return AspectRatio(
             aspectRatio: videoMediaPlayerBloc.actualAspectRatio ?? 1.0,
             child: const _FediVideoPlayerInitializedWidget(),
