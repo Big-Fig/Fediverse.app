@@ -78,14 +78,16 @@ Web Push Relay is Ruby on Rails server which handle Web pushes and proxy them to
 
 1. Fedi subscribe to `/api/v1/push/subscription` with `subscription[endpoint]` set to relay server URL
 2. Instances send Web push notifications to relay server
-3. Relay server relay notifications to Fedi app via FCM
-4. Fedi display notifications
+3. Relay server proxy decrypt notifications (will be removed in the future, Fedi will decrypt notifications on client side)
+4. Relay server proxy notifications to Fedi app via FCM
+5. Fedi display notifications
 
 * Notifications are not enabled by default and Fedi ask you about notification after login. 
 * You can also disable notifications later in any time.
 * You can completely remove FCM and Push Relay Usage(or use your own FCM credentials and Push Relay server instance)
 
-### Which data Push Relay server have access?
+### Which data Push Relay server have access after decryption?
+
 
 ```
  {
@@ -105,8 +107,13 @@ Web Push Relay is Ruby on Rails server which handle Web pushes and proxy them to
 
 * As you can see server sent `body` which may have private data(like private Status body) and `access_token`
 * `access_token` is sensitive data. It is possible to login to your account if someone know `access_token`
-* Fedi and Proxy server doesn't actually need `access_token`, because Fedi mobile app already have it once you logged in
-* Once Mastodon and Pleroma devs add additional optional argument to `/api/v1/push/subscription` to exclude `access_token` from notification payload.
+
+Currently Wep Push Relay server known about Private and Public keys used for decryption notification messages.
+It was not possible to decrypt message on Flutter side and display notification. Main issue was with FCM library.
+However latest FCM library release and another 3rd party libraries like [`awesome_notifications](https://pub.dev/packages/awesome_notifications) 
+provides API to move all decryption logic on Flutter side and Fedi will implement this logic ASAP.
+
+Push Relay will know nothing(everything will be encrypted) once decryption logic will be moved to Flutter side. 
 
 ## Localization
 
@@ -118,7 +125,6 @@ Web Push Relay is Ruby on Rails server which handle Web pushes and proxy them to
 
 * Help translate Fedi with [Weblate](https://translate.pleroma.social/projects/fedi-app/)
 * It is easy to suggest fixes even without registering
-
 
 ## License
 
