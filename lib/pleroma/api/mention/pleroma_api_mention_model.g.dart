@@ -9,7 +9,7 @@ part of 'pleroma_api_mention_model.dart';
 PleromaApiMention _$PleromaApiMentionFromJson(Map<String, dynamic> json) {
   return PleromaApiMention(
     acct: json['acct'] as String,
-    id: json['id'] as String,
+    id: PleromaApiMention.fromIdJson(json['id']),
     url: json['url'] as String,
     username: json['username'] as String?,
   );

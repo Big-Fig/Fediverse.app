@@ -83,6 +83,7 @@ class PleromaApiTag implements IPleromaApiTag, IJsonObject {
     // hack because backend sometimes returns pleroma object in invalid format
     try {
       var iterable = json as Iterable;
+
       return iterable
           .map(
             (item) => fromJson(item as Map<String, dynamic>),
@@ -90,6 +91,7 @@ class PleromaApiTag implements IPleromaApiTag, IJsonObject {
           .toList();
     } catch (e, stackTrace) {
       _logger.warning(() => 'fromJsonListOrNullOnError $json', e, stackTrace);
+
       return null;
     }
   }
