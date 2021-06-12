@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
@@ -104,7 +105,6 @@ class LocalAccountBloc extends AccountBloc {
             IPleromaApiAuthAccountService.of(context, listen: false),
         myAccount: IMyAccountBloc.of(context, listen: false).myAccount,
       );
-
 
   // todo: refactor long-parameter-list
   // ignore: long-parameter-list
@@ -436,7 +436,12 @@ class LocalAccountBloc extends AccountBloc {
           account.remoteId,
         ],
       );
-      await _updateRelationship(account, relationships.first);
+      ;
+      var relationship = relationships.firstOrNull;
+
+      if (relationship != null) {
+        await _updateRelationship(account, relationship);
+      }
       _refreshAccountRelationshipInProgress = false;
     }
   }
