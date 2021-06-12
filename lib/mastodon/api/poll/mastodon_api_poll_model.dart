@@ -1,7 +1,7 @@
 abstract class IMastodonApiPoll {
   String? get id;
 
-  DateTime get expiresAt;
+  DateTime? get expiresAt;
 
   bool get expired;
 

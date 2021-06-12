@@ -25,7 +25,7 @@ abstract class IPollBloc implements IDisposable {
 
   Stream<bool> get isPossibleToVoteStream;
 
-  DateTime get expiresAt;
+  DateTime? get expiresAt;
 
   bool get expired;
 
