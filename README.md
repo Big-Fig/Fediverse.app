@@ -146,7 +146,7 @@ Push Relay will know nothing(everything will be encrypted) once decryption logic
 
 ## License
 
-* **Coming soon**
+* [AGPL-3](./LICENSE)
 
 ## Feedback
 
