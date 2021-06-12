@@ -578,17 +578,20 @@ class _AccountDetailsNestedScrollViewHeader extends StatelessWidget {
 
     var isMyAccount = myAccountBloc.checkAccountIsMe(accountBloc.account);
 
-    return FediDarkStatusBarStyleArea(
-      child: isMyAccount
-          ? const MyAccountWidget(
-              onStatusesTapCallback: _onStatusesTapCallback,
-              footer: _AccountDetailsPageTabIndicatorWidget(),
-              brightness: Brightness.light,
-            )
-          : const AccountWidget(
-              onStatusesTapCallback: _onStatusesTapCallback,
-              footer: _AccountDetailsPageTabIndicatorWidget(),
-            ),
+    return Container(
+      color: IFediUiColorTheme.of(context).white,
+      child: FediDarkStatusBarStyleArea(
+        child: isMyAccount
+            ? const MyAccountWidget(
+                onStatusesTapCallback: _onStatusesTapCallback,
+                footer: _AccountDetailsPageTabIndicatorWidget(),
+                brightness: Brightness.light,
+              )
+            : const AccountWidget(
+                onStatusesTapCallback: _onStatusesTapCallback,
+                footer: _AccountDetailsPageTabIndicatorWidget(),
+              ),
+      ),
     );
   }
 }
@@ -615,15 +618,8 @@ class _AccountDetailsPageTabIndicatorWidget extends StatelessWidget {
     var accountDetailsBloc = IAccountDetailsBloc.of(context);
     var tabs = accountDetailsBloc.tabs;
 
-    return Padding(
-      // ignore: no-magic-number
-      padding: EdgeInsets.only(
-        // ignore: no-magic-number
-        top: 3.0,
-      ),
-      child: AccountTabTextTabIndicatorItemWidget(
-        accountTabs: tabs,
-      ),
+    return AccountTabTextTabIndicatorItemWidget(
+      accountTabs: tabs,
     );
   }
 }
