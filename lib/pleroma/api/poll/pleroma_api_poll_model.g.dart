@@ -23,7 +23,9 @@ Map<String, dynamic> _$PleromaApiPollOptionToJson(
 PleromaApiPoll _$PleromaApiPollFromJson(Map<String, dynamic> json) {
   return PleromaApiPoll(
     expired: json['expired'] as bool,
-    expiresAt: DateTime.parse(json['expires_at'] as String),
+    expiresAt: json['expires_at'] == null
+        ? null
+        : DateTime.parse(json['expires_at'] as String),
     id: json['id'] as String?,
     multiple: json['multiple'] as bool,
     options: (json['options'] as List<dynamic>)
@@ -40,7 +42,7 @@ PleromaApiPoll _$PleromaApiPollFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$PleromaApiPollToJson(PleromaApiPoll instance) =>
     <String, dynamic>{
       'expired': instance.expired,
-      'expires_at': instance.expiresAt.toIso8601String(),
+      'expires_at': instance.expiresAt?.toIso8601String(),
       'id': instance.id,
       'multiple': instance.multiple,
       'options': instance.options.map((e) => e.toJson()).toList(),
