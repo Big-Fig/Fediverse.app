@@ -314,10 +314,8 @@ PleromaApiAccount _$PleromaApiAccountFromJson(Map<String, dynamic> json) {
     avatarStatic: json['avatar_static'] as String,
     avatar: json['avatar'] as String,
     acct: json['acct'] as String,
-    pleroma: json['pleroma'] == null
-        ? null
-        : PleromaApiAccountPleromaPart.fromJson(
-            json['pleroma'] as Map<String, dynamic>),
+    pleroma: PleromaApiAccountPleromaPart.fromJsonOrNullOnError(
+        json['pleroma'] as Map<String, dynamic>?),
     lastStatusAt: json['last_status_at'] == null
         ? null
         : DateTime.parse(json['last_status_at'] as String),
@@ -354,13 +352,9 @@ PleromaApiAccountPleromaPart _$PleromaApiAccountPleromaPartFromJson(
     Map<String, dynamic> json) {
   return PleromaApiAccountPleromaPart(
     backgroundImage: json['background_image'] as String?,
-    tags: (json['tags'] as List<dynamic>?)
-        ?.map((e) => PleromaApiTag.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    relationship: json['relationship'] == null
-        ? null
-        : PleromaApiAccountRelationship.fromJson(
-            json['relationship'] as Map<String, dynamic>),
+    tags: PleromaApiTag.fromJsonListOrNullOnError(json['tags']),
+    relationship: PleromaApiAccountRelationship.fromJsonOrNullOnError(
+        json['relationship'] as Map<String, dynamic>?),
     isAdmin: json['is_admin'] as bool?,
     isModerator: json['is_moderator'] as bool?,
     confirmationPending: json['confirmation_pending'] as bool?,
@@ -376,9 +370,9 @@ PleromaApiAccountPleromaPart _$PleromaApiAccountPleromaPartFromJson(
     isConfirmed: json['is_confirmed'] as bool?,
     favicon: json['favicon'] as String?,
     apId: json['apId'] as String?,
-    alsoKnownAs: (json['also_known_as'] as List<dynamic>?)
-        ?.map((e) => e as String)
-        .toList(),
+    alsoKnownAs:
+        PleromaApiAccountPleromaPart.fromJsonAlsoKnownAsListOrNullOnError(
+            json['also_known_as']),
   );
 }
 
