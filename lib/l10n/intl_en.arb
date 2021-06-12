@@ -178,11 +178,11 @@
   "app_notification_action_dismiss": "Dismiss",
   "app_notification_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new notification. Tap to load.} other{{count} new notifications. Tap to load.}}",
   "app_push_permission_ask_dialog_title": "Push notifications",
-  "app_push_permission_ask_dialog_content": "Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server",
+  "app_push_permission_ask_dialog_content": "Do you want to enable push notifications?\nThey will be forwarded through Fedi Push Relay Server.\n You can change this option in settings later",
   "app_push_permission_declined_dialog_title": "Permission required",
   "app_push_permission_declined_dialog_content": "Please enable push notification in app settings to receive updates",
   "app_push_settings_title": "Push notifications",
-  "app_push_settings_desc": "All messages will be forwarded through Fedi proxy server",
+  "app_push_settings_desc": "All messages will be forwarded through Fedi Relay Server",
   "app_push_settings_field_favourites_label": "Favourites",
   "app_push_settings_field_follows_label": "Follows",
   "app_push_settings_field_mentions_label": "Mentions",
@@ -358,6 +358,7 @@
   "dialog_action_no": "No",
   "dialog_action_ok": "OK",
   "dialog_action_cancel": "Cancel",
+  "dialog_action_learnMore": "Learn more",
   "form_field_value_error_null_desc": "Required",
   "form_field_text_email_error_invalid_desc": "Invalid email",
   "form_field_text_url_error_invalid_desc": "Invalid URL",
@@ -779,5 +780,9 @@
   "app_share_income_instance_choose_title": "Choose instance to share",
   "app_share_income_error_authInstanceListIsEmpty": "You don't have logged instances to share",
   "app_push_disabled_notification_title": "Push notifications support disabled",
-  "app_push_disabled_notification_content": "Install app version from store or enable support in config if app was built from source"
+  "app_push_disabled_notification_content": "Install app version from store or enable support in config if app was built from source",
+  "app_crashReporting_settings_title": "Crash reporting",
+  "app_crashReporting_settings_field_reportingEnabled_name": "Send reports",
+  "app_crashReporting_ask_dialog_title": "Crash reporting",
+  "app_crashReporting_ask_dialog_content": "Do you want to enable crash reporting?\n It will help us make app more stable\n You can change this option in settings later"
 }

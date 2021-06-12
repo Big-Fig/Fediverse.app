@@ -33,6 +33,9 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   late bool pushFcmEnabled;
 
   @override
+  late String? pushDetailsUrl;
+
+  @override
   late String? pushFcmRelayUrl;
 
   @override
@@ -43,6 +46,15 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
 
   @override
   late bool crashlyticsEnabled;
+
+  @override
+  late bool? crashlyticsDefaultHandlingEnabled;
+
+  @override
+  late String? crashlyticsDetailsUrl;
+
+  @override
+  late int? crashlyticsAskHandlingCountAppOpenedToShow;
 
   @override
   late bool askReviewEnabled;
@@ -60,8 +72,7 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   late String appAddNewInstanceCallbackUrl;
 
   @override
-  late String  appDefaultInstanceUrl;
-
+  late String appDefaultInstanceUrl;
 
   @override
   // ignore: long-method
@@ -124,6 +135,10 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
         'PUSH_FCM_RELAY_URL',
         isRequired: false,
       );
+      pushDetailsUrl = _getString(
+        'PUSH_DETAILS_URL',
+        isRequired: false,
+      );
       pushSubscriptionKeysP256dh = _getString(
         'PUSH_SUBSCRIPTION_KEYS_P256DH',
         isRequired: false,
@@ -136,9 +151,11 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
       assert(
         pushFcmRelayUrl != null &&
             pushSubscriptionKeysP256dh != null &&
+            pushDetailsUrl != null &&
             pushSubscriptionKeysAuth != null,
         'PUSH_FCM_RELAY_URL, '
         'PUSH_SUBSCRIPTION_KEYS_P256DH, '
+        'PUSH_DETAILS_URL, '
         'PUSH_SUBSCRIPTION_KEYS_AUTH should exist '
         'if PUSH_FCM_ENABLED is true',
       );
@@ -157,14 +174,38 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
       );
     }
 
-    askReviewEnabled = _getBool(
-      'ASK_REVIEW_ENABLED',
-      isRequired: true,
-    )!;
+    crashlyticsDefaultHandlingEnabled = _getBool(
+      'CRASHLYTICS_DEFAULT_HANDLING_ENABLED',
+      isRequired: false,
+    );
+
+    crashlyticsAskHandlingCountAppOpenedToShow = _getInt(
+      'CRASHLYTICS_ASK_HANDLING_COUNT_APP_OPENED_TO_SHOW',
+      isRequired: false,
+    );
+
+    crashlyticsDetailsUrl = _getString(
+      'CRASHLYTICS_DETAILS_URL',
+      isRequired: false,
+    );
+
+    if (crashlyticsEnabled) {
+      assert(
+        crashlyticsDefaultHandlingEnabled != null &&
+            crashlyticsDetailsUrl != null,
+        'CRASHLYTICS_DEFAULT_HANDLING_ENABLED & CRASHLYTICS_DETAILS_URL should exist '
+        'if CRASHLYTICS_ENABLED is true',
+      );
+    }
     askReviewCountAppOpenedToShow = _getInt(
       'ASK_REVIEW_COUNT_APP_OPENED_TO_SHOW',
       isRequired: false,
     );
+
+    askReviewEnabled = _getBool(
+      'ASK_REVIEW_ENABLED',
+      isRequired: true,
+    )!;
 
     if (askReviewEnabled) {
       assert(
@@ -187,7 +228,6 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
               ' \n',
             )}');
   }
-
 }
 
 void _checkRequiredKey({

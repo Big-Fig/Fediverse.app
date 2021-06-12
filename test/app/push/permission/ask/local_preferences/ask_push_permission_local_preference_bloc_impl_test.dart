@@ -1,4 +1,4 @@
-import 'package:fedi/app/push/fcm/asked/local_preferences/fcm_push_permission_asked_local_preference_bloc_impl.dart';
+import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../../local_preferences/local_preferences_test_helper.dart';
@@ -7,10 +7,10 @@ import '../../../../../local_preferences/local_preferences_test_helper.dart';
 void main() {
   test('save & load', () async {
     await LocalPreferencesTestHelper.testSaveAndLoad<bool,
-        FcmPushPermissionAskedLocalPreferenceBloc>(
-      defaultValue: FcmPushPermissionAskedLocalPreferenceBloc.defaultValue,
+        AskPushPermissionLocalPreferenceBloc>(
+      defaultValue: AskPushPermissionLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
-          FcmPushPermissionAskedLocalPreferenceBloc(
+          AskPushPermissionLocalPreferenceBloc(
         localPreferencesService,
         userAtHost: 'user@host',
       ),

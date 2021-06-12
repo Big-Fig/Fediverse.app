@@ -1834,10 +1834,10 @@ class S {
     );
   }
 
-  /// `Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server`
+  /// `Do you want to enable push notifications?\nThey will be forwarded through Fedi Push Relay Server.\n You can change this option in settings later`
   String get app_push_permission_ask_dialog_content {
     return Intl.message(
-      'Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server',
+      'Do you want to enable push notifications?\nThey will be forwarded through Fedi Push Relay Server.\n You can change this option in settings later',
       name: 'app_push_permission_ask_dialog_content',
       desc: '',
       args: [],
@@ -1874,10 +1874,10 @@ class S {
     );
   }
 
-  /// `All messages will be forwarded through Fedi proxy server`
+  /// `All messages will be forwarded through Fedi Relay Server`
   String get app_push_settings_desc {
     return Intl.message(
-      'All messages will be forwarded through Fedi proxy server',
+      'All messages will be forwarded through Fedi Relay Server',
       name: 'app_push_settings_desc',
       desc: '',
       args: [],
@@ -3631,6 +3631,16 @@ class S {
     return Intl.message(
       'Cancel',
       name: 'dialog_action_cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Learn more`
+  String get dialog_action_learnMore {
+    return Intl.message(
+      'Learn more',
+      name: 'dialog_action_learnMore',
       desc: '',
       args: [],
     );
@@ -7704,6 +7714,46 @@ class S {
     return Intl.message(
       'Install app version from store or enable support in config if app was built from source',
       name: 'app_push_disabled_notification_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Crash reporting`
+  String get app_crashReporting_settings_title {
+    return Intl.message(
+      'Crash reporting',
+      name: 'app_crashReporting_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send reports`
+  String get app_crashReporting_settings_field_reportingEnabled_name {
+    return Intl.message(
+      'Send reports',
+      name: 'app_crashReporting_settings_field_reportingEnabled_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Crash reporting`
+  String get app_crashReporting_ask_dialog_title {
+    return Intl.message(
+      'Crash reporting',
+      name: 'app_crashReporting_ask_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to enable crash reporting?\n It will help us make app more stable\n You can change this option in settings later`
+  String get app_crashReporting_ask_dialog_content {
+    return Intl.message(
+      'Do you want to enable crash reporting?\n It will help us make app more stable\n You can change this option in settings later',
+      name: 'app_crashReporting_ask_dialog_content',
       desc: '',
       args: [],
     );

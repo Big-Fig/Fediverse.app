@@ -816,6 +816,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Replace \"Conversations\" with \"Chats\""),
         "app_chat_settings_title": MessageLookupByLibrary.simpleMessage("Chat"),
+        "app_crashReporting_ask_dialog_content":
+            MessageLookupByLibrary.simpleMessage(
+                "Do you want to enable crash reporting?\n It will help us make app more stable\n You can change this option in settings later"),
+        "app_crashReporting_ask_dialog_title":
+            MessageLookupByLibrary.simpleMessage("Crash reporting"),
+        "app_crashReporting_settings_field_reportingEnabled_name":
+            MessageLookupByLibrary.simpleMessage("Send reports"),
+        "app_crashReporting_settings_title":
+            MessageLookupByLibrary.simpleMessage("Crash reporting"),
         "app_customList_create_title":
             MessageLookupByLibrary.simpleMessage("Create a list"),
         "app_customList_edit_title":
@@ -1194,7 +1203,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Push notifications support disabled"),
         "app_push_permission_ask_dialog_content":
             MessageLookupByLibrary.simpleMessage(
-                "Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server"),
+                "Do you want to enable push notifications?\nThey will be forwarded through Fedi Push Relay Server.\n You can change this option in settings later"),
         "app_push_permission_ask_dialog_title":
             MessageLookupByLibrary.simpleMessage("Push notifications"),
         "app_push_permission_declined_dialog_content":
@@ -1203,7 +1212,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_push_permission_declined_dialog_title":
             MessageLookupByLibrary.simpleMessage("Permission required"),
         "app_push_settings_desc": MessageLookupByLibrary.simpleMessage(
-            "All messages will be forwarded through Fedi proxy server"),
+            "All messages will be forwarded through Fedi Relay Server"),
         "app_push_settings_field_favourites_label":
             MessageLookupByLibrary.simpleMessage("Favourites"),
         "app_push_settings_field_follows_label":
@@ -1598,6 +1607,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "async_init_state_notStarted":
             MessageLookupByLibrary.simpleMessage("Async init not started"),
         "dialog_action_cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "dialog_action_learnMore":
+            MessageLookupByLibrary.simpleMessage("Learn more"),
         "dialog_action_no": MessageLookupByLibrary.simpleMessage("No"),
         "dialog_action_ok": MessageLookupByLibrary.simpleMessage("OK"),
         "dialog_action_yes": MessageLookupByLibrary.simpleMessage("Yes"),
