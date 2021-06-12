@@ -25,7 +25,7 @@ class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
   HtmlTextBloc({
     required this.inputData,
     required this.settings,
-  })   : htmlData = _calculateHtmlData(
+  })  : htmlData = _calculateHtmlData(
           inputData: inputData,
           settings: settings,
         ),
@@ -43,8 +43,12 @@ class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
   final HtmlTextResultData htmlData;
 
   @override
-  void onLinkClicked({required String url}) {
-    linkClickedStreamController.add(url);
+  void onLinkClicked({
+    required String url,
+  }) {
+    if (!linkClickedStreamController.isClosed) {
+      linkClickedStreamController.add(url);
+    }
   }
 
   @override
