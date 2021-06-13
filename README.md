@@ -1,4 +1,5 @@
 # Fedi for Pleroma and Mastodon
+[![Translate - with Weblate](https://img.shields.io/badge/translate%20with-Weblate-green.svg?style=flat)](https://translate.pleroma.social/engage/fedi-app/) 
 
 A client for Pleroma and Mastodon instances written using Flutter
 
