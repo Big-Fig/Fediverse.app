@@ -16,7 +16,7 @@ A client for Pleroma and Mastodon instances written using Flutter
 ### Releases
 
 * [GitHub Releases](https://github.com/Big-Fig/Fediverse.app/releases)
-* [CHANGELOG](https://github.com/Big-Fig/Fediverse.app/CHANGELOG.md) 
+* [CHANGELOG](https://github.com/xal/Fediverse.app/blob/master/CHANGELOG.md) 
 
 ### Table of Contents
 
