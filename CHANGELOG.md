@@ -38,7 +38,7 @@ First open-source release
 * trends
 * instance directory
 
-## [2.1.2] [internal]
+## [2.1.2] [stable]
 ### Fixes
 
 * hotfixes to make stable release from 2.0.54
@@ -168,7 +168,7 @@ First open-source release
 * a lot of minor UX fixes
 
 
-## [2.0.42] [internal] 2021 February 8
+## [2.0.42] [stable] 2021 February 8
 ### Added
 * expire_in support for publish statuses
 * timed account mute + mute UI rework
@@ -202,7 +202,7 @@ First open-source release
 ### Fixes
 * hotfixes & UI/UX improvements for 2.0.38 related to remote instance data fetching
 
-## [2.0.38] [internal] 2021 January 26
+## [2.0.38] [stable] 2021 January 26
 ### Added
 * Instance information Page with full instance details from /api/v1/instance endpoint
 * Load account and statuses(and threads) via public API from remote (origin) instances
@@ -287,7 +287,7 @@ First open-source release
 * timelines managing improvements
 * minor UI improvements
 
-## [2.0.28] [internal] 2020 November 8
+## [2.0.28] [stable] 2020 November 8
 ### Fixes
 * fix android push notifications
 
@@ -353,7 +353,7 @@ First open-source release
 ### Added
 * custom timelines managing (add, remove, sort)
 
-## [2.0.22] [internal] 2020 September 22
+## [2.0.22] [stable] 2020 September 22
 
 ### Added
 * special 'request_follow' button for locked accounts
@@ -437,7 +437,7 @@ First open-source release
 ### Changes
 * minor performance changes
 
-## [2.0.17] [internal] 2020 August 16
+## [2.0.17] [stable] 2020 August 16
 
 ### Added
 * add captcha support
@@ -453,7 +453,7 @@ First open-source release
 * fix video player crash for mp4 files without actual video track (audio only)
 * fix a lot of minor issues from non-fatal issues reports gathered via Firebase.
 
-## [2.0.16] [internal] 2020 August 6
+## [2.0.16] [stable] 2020 August 6
 ### Added
 * add x86_64 and arm64 architecture support. Previously app not worked on it
 
@@ -474,7 +474,7 @@ First open-source release
 * rework drawers UI. Turn them in subpages
 * remove grey divider just before status actions
 
-## [2.0.13] [internal] 2020 July 28
+## [2.0.13] [stable] 2020 July 28
 ### Added
 * add safe area wrappers for all pages to fix layout issues on iphone X
 
