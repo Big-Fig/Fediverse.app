@@ -22,10 +22,11 @@ import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("status_bloc_impl.dart");
+var _logger = Logger('status_bloc_impl.dart');
 
 abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
+  // ignore: avoid-late-keyword
   late IPollBloc pollBloc;
 
   final BehaviorSubject<IStatus> statusSubject;
@@ -35,7 +36,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
   final IPleromaApiStatusEmojiReactionService? PleromaApiStatusEmojiReactionService;
   final IPleromaApiPollService? pleromaPollService;
 
-  // todo: remove hack. Don't init when bloc quickly disposed. Help
+  // todo: remove hack. Dont init when bloc quickly disposed. Help
   StatusBloc({
     required this.pleromaStatusService,
     required this.pleromaAccountService,
@@ -60,9 +61,9 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
             var isChanged = this.poll == poll;
             if (!isChanged) {
               _logger.finest(
-                () => "update status poll data isChanged $isChanged \n"
-                    "old ${this.poll} \n"
-                    "new $poll",
+                () => 'update status poll data isChanged $isChanged \n'
+                    'old ${this.poll} \n'
+                    'new $poll',
               );
               onPollUpdated(poll);
             }
@@ -75,9 +76,9 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
             // update pollBloc after status poll data changed
             var isSame = pollBloc.poll == poll;
             if (!isSame) {
-              _logger.finest(() => "update pollBloc poll data isSame $isSame \n"
-                  "old ${pollBloc.poll} \n"
-                  "new $poll");
+              _logger.finest(() => 'update pollBloc poll data isSame $isSame \n'
+                  'old ${pollBloc.poll} \n'
+                  'new $poll');
               pollBloc.onPollUpdated(poll);
             }
           },
@@ -255,6 +256,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
     var remoteStatus = await pleromaStatusService.getStatus(
       statusRemoteId: remoteId!,
     );
+
     return remoteStatus;
   }
 
@@ -302,6 +304,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
         // todo: ask user open on local instance or remote
         var pleromaHashtagUrl = pleromaHashtag.url.toLowerCase();
         var success = url.toLowerCase().contains(pleromaHashtagUrl);
+
         return success;
       },
     );
@@ -427,7 +430,8 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Future dispose() {
-    _logger.finest(() => "dispose");
+    _logger.finest(() => 'dispose');
+
     return super.dispose();
   }
 

@@ -21,28 +21,28 @@ class PleromaApiStatusTestHelper {
     required String seed,
   }) =>
       PleromaApiPostStatus(
-        contentType: seed + "contentType",
+        contentType: seed + 'contentType',
         expiresInSeconds:
             DurationTestHelper.createTestDurationSeconds(seed: seed),
-        inReplyToConversationId: seed + "inReplyToConversationId",
-        inReplyToId: seed + "inReplyToId",
-        language: seed + "language",
+        inReplyToConversationId: seed + 'inReplyToConversationId',
+        inReplyToId: seed + 'inReplyToId',
+        language: seed + 'language',
         visibility:
             PleromaApiVisibilityTestHelper.createTestPleromaApiVisibility(
           seed: seed,
         ).toJsonValue(),
         mediaIds: [
-          seed + "1",
-          seed + "2",
+          seed + '1',
+          seed + '2',
         ],
         poll: createTestPleromaApiPostStatusPoll(seed: seed),
         preview: seed.hashCode % 2 == 0,
         sensitive: seed.hashCode % 2 == 1,
-        spoilerText: seed + "spoilerText",
-        status: seed + "status",
+        spoilerText: seed + 'spoilerText',
+        status: seed + 'status',
         to: [
-          seed + "11",
-          seed + "22",
+          seed + '11',
+          seed + '22',
         ],
       );
 
@@ -50,28 +50,28 @@ class PleromaApiStatusTestHelper {
     required String seed,
   }) =>
       PleromaApiScheduleStatus(
-        contentType: seed + "contentType",
+        contentType: seed + 'contentType',
         expiresInSeconds:
             DurationTestHelper.createTestDurationSeconds(seed: seed),
-        inReplyToConversationId: seed + "inReplyToConversationId",
-        inReplyToId: seed + "inReplyToId",
-        language: seed + "language",
+        inReplyToConversationId: seed + 'inReplyToConversationId',
+        inReplyToId: seed + 'inReplyToId',
+        language: seed + 'language',
         visibility:
             PleromaApiVisibilityTestHelper.createTestPleromaApiVisibility(
           seed: seed,
         ).toJsonValue(),
         mediaIds: [
-          seed + "1",
-          seed + "2",
+          seed + '1',
+          seed + '2',
         ],
         poll: createTestPleromaApiPostStatusPoll(seed: seed),
         preview: seed.hashCode % 2 == 0,
         sensitive: seed.hashCode % 2 == 1,
-        spoilerText: seed + "spoilerText",
-        status: seed + "status",
+        spoilerText: seed + 'spoilerText',
+        status: seed + 'status',
         to: [
-          seed + "11",
-          seed + "22",
+          seed + '11',
+          seed + '22',
         ],
         scheduledAt: DateTimeTestHelper.createTestDateTime(seed: seed),
       );
@@ -80,15 +80,15 @@ class PleromaApiStatusTestHelper {
     required String seed,
   }) =>
       PleromaApiStatusEmojiReaction(
-        name: seed + "name",
+        name: seed + 'name',
         count: seed.hashCode % 5,
         me: seed.hashCode % 2 == 0,
         accounts: [
           PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-            seed: seed + "1",
+            seed: seed + '1',
           ),
           PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-            seed: seed + "2",
+            seed: seed + '2',
           ),
         ],
       );
@@ -96,23 +96,23 @@ class PleromaApiStatusTestHelper {
   static PleromaApiContent createTestPleromaApiContent({
     required String seed,
   }) =>
-      PleromaApiContent(textPlain: seed + "textPlain");
+      PleromaApiContent(textPlain: seed + 'textPlain');
 
   static PleromaApiStatusPleromaPart createTestPleromaApiStatusPleromaPart({
     required String seed,
   }) =>
       PleromaApiStatusPleromaPart(
-        content: createTestPleromaApiContent(seed: seed + "content"),
+        content: createTestPleromaApiContent(seed: seed + 'content'),
         conversationId: seed.hashCode % 10,
         directConversationId: seed.hashCode % 5,
-        inReplyToAccountAcct: seed + "inReplyToAccountAcct",
+        inReplyToAccountAcct: seed + 'inReplyToAccountAcct',
         local: seed.hashCode % 2 == 0,
-        spoilerText: createTestPleromaApiContent(seed: seed + "spoilerText"),
+        spoilerText: createTestPleromaApiContent(seed: seed + 'spoilerText'),
         expiresAt: DateTime(2000 + seed.hashCode % 10),
         threadMuted: seed.hashCode % 2 == 1,
         emojiReactions: [
-          createTestPleromaApiStatusEmojiReaction(seed: seed + "1"),
-          createTestPleromaApiStatusEmojiReaction(seed: seed + "2"),
+          createTestPleromaApiStatusEmojiReaction(seed: seed + '1'),
+          createTestPleromaApiStatusEmojiReaction(seed: seed + '2'),
         ],
       );
 
@@ -125,8 +125,8 @@ class PleromaApiStatusTestHelper {
         hideTotals: seed.hashCode % 2 == 0,
         multiple: seed.hashCode % 2 == 1,
         options: [
-          seed + "1",
-          seed + "2",
+          seed + '1',
+          seed + '2',
         ],
       );
 
@@ -135,43 +135,43 @@ class PleromaApiStatusTestHelper {
     required String seed,
   }) =>
           PleromaApiScheduledStatusParams(
-            text: seed + "text1",
+            text: seed + 'text1',
             mediaIds: [
-              seed + "mediaIds1",
-              seed + "mediaIds2",
+              seed + 'mediaIds1',
+              seed + 'mediaIds2',
             ],
             sensitive: seed.hashCode % 2 == 0,
-            spoilerText: seed + "spoilerText1",
+            spoilerText: seed + 'spoilerText1',
             visibility: EnumTestHelper.createTestEnum(
               seed: seed,
               values: PleromaApiVisibility.values,
             ).toJsonValue(),
             scheduledAt: DateTime(seed.hashCode % 10),
             poll: createTestPleromaApiPostStatusPoll(seed: seed),
-            idempotency: seed + "idempotency1",
-            inReplyToId: seed + "inReplyToId1",
-            applicationId: seed + "textId1",
+            idempotency: seed + 'idempotency1',
+            inReplyToId: seed + 'inReplyToId1',
+            applicationId: seed + 'textId1',
             to: [
-              seed + "1",
-              seed + "2",
+              seed + '1',
+              seed + '2',
             ],
             expiresInSeconds:
                 DurationTestHelper.createTestDurationSeconds(seed: seed),
-            language: seed + "language",
-            inReplyToConversationId: seed + "inReplyToConversationId",
+            language: seed + 'language',
+            inReplyToConversationId: seed + 'inReplyToConversationId',
           );
 
   static PleromaApiScheduledStatus createTestPleromaApiScheduledStatus({
     required String seed,
   }) =>
       PleromaApiScheduledStatus(
-        id: seed + "id",
+        id: seed + 'id',
         mediaAttachments: [
           PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
-            seed: seed + "1",
+            seed: seed + '1',
           ),
           PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
-            seed: seed + "2",
+            seed: seed + '2',
           ),
         ],
         params: createTestPleromaApiScheduledStatusParams(seed: seed),
@@ -184,14 +184,14 @@ class PleromaApiStatusTestHelper {
     required String seed,
   }) =>
       PleromaApiStatus(
-        id: seed + "id",
+        id: seed + 'id',
         createdAt: DateTime(2000 + seed.hashCode % 3),
-        inReplyToId: seed + "inReplyToId",
-        inReplyToAccountId: seed + "inReplyToAccountId",
+        inReplyToId: seed + 'inReplyToId',
+        inReplyToAccountId: seed + 'inReplyToAccountId',
         sensitive: seed.hashCode % 2 == 1,
-        spoilerText: seed + "spoilerText",
-        uri: seed + "uri",
-        url: seed + "url",
+        spoilerText: seed + 'spoilerText',
+        uri: seed + 'uri',
+        url: seed + 'url',
         repliesCount: seed.hashCode % 3,
         reblogsCount: seed.hashCode % 3 + 1,
         favouritesCount: seed.hashCode % 3 + 2,
@@ -200,43 +200,43 @@ class PleromaApiStatusTestHelper {
         muted: seed.hashCode % 2 == 0,
         bookmarked: seed.hashCode % 2 == 1,
         pinned: seed.hashCode % 2 == 0,
-        content: seed + "content",
-        reblog: seed.contains("reblog")
+        content: seed + 'content',
+        reblog: seed.contains('reblog')
             ? null
-            : createTestPleromaApiStatus(seed: seed + "reblog"),
+            : createTestPleromaApiStatus(seed: seed + 'reblog'),
         application:
             PleromaApiApplicationTestHelper.createTestPleromaApiApplication(
           seed: seed,
         ),
         account: PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-          seed: seed + "account",
+          seed: seed + 'account',
         ),
         mediaAttachments: [
           PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
-            seed: seed + "1",
+            seed: seed + '1',
           ),
           PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
-            seed: seed + "2",
+            seed: seed + '2',
           ),
         ],
         mentions: [
           PleromaApiMentionTestHelper.createTestPleromaApiMention(
-            seed: seed + "mention1",
+            seed: seed + 'mention1',
           ),
           PleromaApiMentionTestHelper.createTestPleromaApiMention(
-            seed: seed + "mention2",
+            seed: seed + 'mention2',
           ),
         ],
         tags: [
-          PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + "tag1"),
-          PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + "tag2"),
+          PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + 'tag1'),
+          PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + 'tag2'),
         ],
         emojis: [
           PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(
-            seed: seed + "emoji1",
+            seed: seed + 'emoji1',
           ),
           PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(
-            seed: seed + "emoji2",
+            seed: seed + 'emoji2',
           ),
         ],
         poll: PleromaApiPollTestHelper.createTestPleromaApiPoll(seed: seed),
@@ -246,6 +246,6 @@ class PleromaApiStatusTestHelper {
             PleromaApiVisibilityTestHelper.createTestPleromaApiVisibility(
           seed: seed,
         ).toJsonValue(),
-        language: seed + "language",
+        language: seed + 'language',
       );
 }

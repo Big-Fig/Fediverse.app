@@ -6,7 +6,7 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("push_handler_unhandled_local_preferences_bloc_impl.dart");
+var _logger = Logger('push_handler_unhandled_local_preferences_bloc_impl.dart');
 
 class PushHandlerUnhandledLocalPreferenceBloc
     extends ObjectLocalPreferenceBloc<PushHandlerUnhandledList>
@@ -15,7 +15,7 @@ class PushHandlerUnhandledLocalPreferenceBloc
     ILocalPreferencesService preferencesService,
   ) : super(
           preferencesService: preferencesService,
-          key: "push.unhandled",
+          key: 'push.unhandled',
           // ignore: no-magic-number
           schemaVersion: 2,
           jsonConverter: (json) => PushHandlerUnhandledList.fromJson(json),
@@ -31,9 +31,9 @@ class PushHandlerUnhandledLocalPreferenceBloc
     var pleromaUnhandledList = value;
 
     pleromaUnhandledList.messages.add(pushHandlerMessage);
-    _logger.finest(() => "loadUnhandledMessagesForInstance \n"
-        "\t pushHandlerMessage = $pushHandlerMessage"
-        "\t pleromaUnhandledList.messages = ${pleromaUnhandledList.messages.length}");
+    _logger.finest(() => 'loadUnhandledMessagesForInstance \n'
+        '\t pushHandlerMessage = $pushHandlerMessage'
+        '\t pleromaUnhandledList.messages = ${pleromaUnhandledList.messages.length}');
 
     await setValue(pleromaUnhandledList);
   }
@@ -53,9 +53,9 @@ class PushHandlerUnhandledLocalPreferenceBloc
         )
         .toList();
 
-    _logger.finest(() => "loadUnhandledMessagesForInstance \n"
-        "\t instance = $instance"
-        "\t messagesForInstances = ${messagesForInstances.length}");
+    _logger.finest(() => 'loadUnhandledMessagesForInstance \n'
+        '\t instance = $instance'
+        '\t messagesForInstances = ${messagesForInstances.length}');
 
     return messagesForInstances;
   }
@@ -72,8 +72,8 @@ class PushHandlerUnhandledLocalPreferenceBloc
         )
         .toList();
 
-    _logger.finest(() => "markAsHandled \n"
-        "\t messages = ${messages.length}");
+    _logger.finest(() => 'markAsHandled \n'
+        '\t messages = ${messages.length}');
 
     return setValue(
       PushHandlerUnhandledList(

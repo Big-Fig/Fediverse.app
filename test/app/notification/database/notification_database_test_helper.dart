@@ -14,11 +14,11 @@ class NotificationDatabaseTestHelper {
     DbStatus? dbStatus,
     bool unread = false,
     DateTime? createdAt,
-    String type = "reblog",
+    String type = 'reblog',
   }) async {
-    DbNotification dbNotification = DbNotification(
+    var dbNotification = DbNotification(
       id: null,
-      remoteId: remoteId ?? seed + "remoteId",
+      remoteId: remoteId ?? seed + 'remoteId',
       createdAt: createdAt ?? DateTime(1),
       accountRemoteId: dbAccount.remoteId,
       statusRemoteId: dbStatus?.remoteId,
@@ -26,6 +26,7 @@ class NotificationDatabaseTestHelper {
       type: type,
       dismissed: false,
     );
+
     return dbNotification;
   }
 
@@ -101,7 +102,7 @@ class NotificationDatabaseTestHelper {
     DbNotification dbNotification,
     AccountRepository accountRepository,
   ) async {
-    DbNotificationPopulated dbNotificationPopulated = DbNotificationPopulated(
+    var dbNotificationPopulated = DbNotificationPopulated(
       dbNotification: dbNotification,
       dbAccount: (await accountRepository.findByRemoteIdInDbType(
         dbNotification.accountRemoteId!,
@@ -115,6 +116,7 @@ class NotificationDatabaseTestHelper {
       dbStatus: null,
       replyDbStatusAccount: null,
     );
+
     return dbNotificationPopulated;
   }
 }

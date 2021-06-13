@@ -15,6 +15,7 @@ class RecentSearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var recentSearchBloc = IRecentSearchBloc.of(context);
+
     return StreamBuilder<RecentSearchList?>(
       stream: recentSearchBloc.recentSearchListStream,
       initialData: recentSearchBloc.recentSearchList,
@@ -26,6 +27,7 @@ class RecentSearchWidget extends StatelessWidget {
             .toList();
 
         var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
+
         return Provider<List<String>>.value(
           value: recentItems ?? [],
           child: Padding(
@@ -62,6 +64,7 @@ class _RecentSearchHeaderWidget extends StatelessWidget {
     var recentItems = Provider.of<List<String>>(context);
 
     var recentItemsIsNotEmpty = recentItems.isNotEmpty;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

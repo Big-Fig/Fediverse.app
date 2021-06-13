@@ -14,6 +14,7 @@ class StatusActionCounterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var value = Provider.of<int>(context);
+
     return InkWell(
       onTap: () {
         if (onClick != null) {
@@ -31,7 +32,7 @@ class StatusActionCounterWidget extends StatelessWidget {
           // ignore: no-magic-number
           constraints: BoxConstraints(minWidth: 10),
           child: Text(
-            value == 0 ? "" : value.toString(),
+            value == 0 ? '' : value.toString(),
             style: onClick != null
                 ? IFediUiTextTheme.of(context).smallShortDarkGrey
                 : IFediUiTextTheme.of(context).smallShortLightGrey,

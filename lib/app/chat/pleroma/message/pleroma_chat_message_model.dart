@@ -155,6 +155,7 @@ class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
   @override
   List<IPleromaApiMediaAttachment>? get mediaAttachments {
     var mediaAttachment = dbChatMessagePopulated.dbChatMessage.mediaAttachment;
+
     return mediaAttachment != null
         ? [
             mediaAttachment,

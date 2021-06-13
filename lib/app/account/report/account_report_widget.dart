@@ -47,6 +47,7 @@ class _AccountReportFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountReportBloc = IAccountReportBloc.of(context);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -71,6 +72,7 @@ class _AccountReportStatusesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountReportBloc = IAccountReportBloc.of(context);
     var isLocal = accountReportBloc.instanceLocation == InstanceLocation.local;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -132,6 +134,7 @@ class _AccountReportForwardWidget extends StatelessWidget {
     var accountReportBloc = IAccountReportBloc.of(context);
     var account = accountReportBloc.account;
     var acctRemoteHost = account.acctRemoteHost!;
+
     return ProxyProvider<IAccountReportBloc, IBoolValueFormFieldBloc>(
       update: (context, value, _) => value.forwardBoolValueFormFieldBloc,
       child: BoolValueFormFieldBlocProxyProvider(

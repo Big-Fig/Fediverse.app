@@ -31,7 +31,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
   // todo: refactor. use common code with pleroma_chat_list_item_widget
   // ignore: long-method
   Widget build(BuildContext context) {
-    IStatusBloc statusBloc = IStatusBloc.of(context, listen: false);
+    var statusBloc = IStatusBloc.of(context, listen: false);
 
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
 
@@ -42,6 +42,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
     var alignment =
         isStatusFromMe ? Alignment.centerRight : Alignment.centerLeft;
     var isHaveTextContent = statusBloc.isHaveTextContent;
+
     return Align(
       alignment: alignment,
       child: Column(
@@ -184,12 +185,13 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
           if (contentWithEmojis?.text.isNotEmpty == true) {
             var fediUiColorTheme = IFediUiColorTheme.of(context);
             var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+
             return Provider<EmojiText?>.value(
               value: contentWithEmojis,
               child: DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
                 update: (context, emojiText, previous) {
                   var htmlTextInputData = HtmlTextInputData(
-                    input: emojiText?.text ?? "",
+                    input: emojiText?.text ?? '',
                     emojis: emojiText?.emojis,
                   );
                   if (previous?.inputData == htmlTextInputData) {
@@ -230,6 +232,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                       },
                     ),
                   );
+
                   return htmlTextBloc;
                 },
                 child: const HtmlTextWidget(),

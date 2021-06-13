@@ -5,7 +5,6 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/widgets.dart';
 
@@ -23,6 +22,7 @@ class ChatSelectionDeleteActionButtonWidget extends StatelessWidget {
       stream: chatSelectionBloc.isAllSelectedItemsFromMeStream,
       builder: (context, snapshot) {
         var isAllSelectedItemsFromMe = snapshot.data ?? true;
+
         return FediIconButton(
           icon: Icon(FediIcons.delete),
           color: isAllSelectedItemsFromMe
@@ -42,7 +42,7 @@ class ChatSelectionDeleteActionButtonWidget extends StatelessWidget {
                         .of(context)
                         .app_chat_selection_action_delete_confirm_dialog_action_delete,
                     onAction: (context) async {
-                      AsyncDialogResult<void> dialogResult = await PleromaAsyncOperationHelper
+                      var dialogResult = await PleromaAsyncOperationHelper
                           .performPleromaAsyncOperation(
                         context: context,
                         asyncCode: () async {

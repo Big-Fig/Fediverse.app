@@ -21,6 +21,7 @@ class ScheduledEditPostStatusPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         handleBackPressed(context);
+
         return true;
       },
       child: Scaffold(
@@ -75,11 +76,13 @@ void goToScheduledEditPostStatusPage(
             successCallback();
             Navigator.of(context).pop();
           }
+
           return dialogResult.success;
         },
         child: ScheduledEditPostStatusPage(
           onBackPressed: (IPostStatusData postStatusData) async {
             Navigator.of(context).pop();
+
             return true;
           },
         ),

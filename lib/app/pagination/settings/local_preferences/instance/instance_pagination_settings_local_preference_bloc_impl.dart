@@ -11,7 +11,7 @@ class InstancePaginationSettingsLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService,
-          "pagination.settings.instance.$userAtHost",
+          'pagination.settings.instance.$userAtHost',
         );
 
   static final PaginationSettings? defaultValue = null;

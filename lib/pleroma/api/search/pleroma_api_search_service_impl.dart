@@ -36,45 +36,45 @@ class PleromaApiSearchService extends BasePleromaApiService
   }) async {
     if (pagination?.limit != null) {
       // ignore: no-magic-number
-      assert(pagination!.limit! <= 40, "Server-side limit");
+      assert(pagination!.limit! <= 40, 'Server-side limit');
     }
 
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: "/api/v2/search",
+        relativePath: '/api/v2/search',
         queryArgs: [
           RestRequestQueryArg(
-            key: "q",
+            key: 'q',
             value: query,
           ),
           if (type != null)
             RestRequestQueryArg(
-              key: "type",
+              key: 'type',
               value: type.toJsonValue(),
             ),
           if (accountId != null)
             RestRequestQueryArg(
-              key: "account_id",
+              key: 'account_id',
               value: accountId,
             ),
           if (excludeUnreviewed != null)
             RestRequestQueryArg(
-              key: "exclude_unreviewed",
+              key: 'exclude_unreviewed',
               value: excludeUnreviewed.toString(),
             ),
           if (following != null)
             RestRequestQueryArg(
-              key: "following",
+              key: 'following',
               value: following.toString(),
             ),
           if (resolve != null)
             RestRequestQueryArg(
-              key: "resolve",
+              key: 'resolve',
               value: resolve.toString(),
             ),
           if (accountId != null)
             RestRequestQueryArg(
-              key: "account_id",
+              key: 'account_id',
               value: accountId,
             ),
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),

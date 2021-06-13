@@ -7,10 +7,10 @@ enum MastodonApiVisibility {
 
 const defaultMastodonApiVisibility = MastodonApiVisibility.public;
 
-const _publicMastodonApiVisibilityJsonValue = "public";
-const _privateMastodonApiVisibilityJsonValue = "private";
-const _directMastodonApiVisibilityJsonValue = "direct";
-const _unlistedMastodonApiVisibilityJsonValue = "unlisted";
+const _publicMastodonApiVisibilityJsonValue = 'public';
+const _privateMastodonApiVisibilityJsonValue = 'private';
+const _directMastodonApiVisibilityJsonValue = 'direct';
+const _unlistedMastodonApiVisibilityJsonValue = 'unlisted';
 
 extension MastodonApiVisibilityExtension on MastodonApiVisibility {
   String toJsonValue() {
@@ -52,7 +52,7 @@ extension MastodonApiVisibilityStringExtension on String {
       case _unlistedMastodonApiVisibilityJsonValue:
         result = MastodonApiVisibility.unlisted;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
         result = defaultMastodonApiVisibility;
         break;

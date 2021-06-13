@@ -10,8 +10,8 @@ import 'package:path/path.dart';
 class PleromaApiNotificationService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiNotificationService {
-  final notificationRelativeUrlPath = "api/v1/notifications";
-  final pleromaNotificationRelativeUrlPath = "api/v1/pleroma/notifications";
+  final notificationRelativeUrlPath = 'api/v1/notifications';
+  final pleromaNotificationRelativeUrlPath = 'api/v1/pleroma/notifications';
   @override
   final IPleromaApiAuthRestService restService;
 
@@ -48,17 +48,17 @@ class PleromaApiNotificationService extends BasePleromaApiService
   }) async {
     assert(
       restService.isPleroma,
-      "markAsRead notification works only on pleroma",
+      'markAsRead notification works only on pleroma',
     );
 
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: join(
           pleromaNotificationRelativeUrlPath,
-          "read",
+          'read',
         ),
         bodyJson: <String, dynamic>{
-          "id": notificationRemoteId,
+          'id': notificationRemoteId,
         },
       ),
     );
@@ -75,18 +75,18 @@ class PleromaApiNotificationService extends BasePleromaApiService
   }) async {
     assert(
       restService.isPleroma,
-      "markAsRead notification works only on pleroma",
+      'markAsRead notification works only on pleroma',
     );
 
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: join(
           pleromaNotificationRelativeUrlPath,
-          "read",
+          'read',
         ),
         bodyJson: <String, dynamic>{
           if (maxNotificationRemoteId != null)
-            "max_id": maxNotificationRemoteId,
+            'max_id': maxNotificationRemoteId,
         },
       ),
     );
@@ -120,7 +120,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
           if (excludeTypes?.isNotEmpty == true)
             ...excludeTypes?.map(
                   (excludeType) => RestRequestQueryArg(
-                    key: "exclude_types[]",
+                    key: 'exclude_types[]',
                     value: excludeType.toJsonValue(),
                   ),
                 ) ??
@@ -128,7 +128,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
           if (includeTypes?.isNotEmpty == true)
             ...includeTypes?.map(
                   (includeType) => RestRequestQueryArg(
-                    key: "include_types[]",
+                    key: 'include_types[]',
                     value: includeType.toJsonValue(),
                   ),
                 ) ??
@@ -136,7 +136,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
           if (excludeVisibilities?.isNotEmpty == true)
             ...excludeVisibilities?.map(
                   (excludeVisibility) => RestRequestQueryArg(
-                    key: "exclude_visibilities[]",
+                    key: 'exclude_visibilities[]',
                     value: excludeVisibility.toJsonValue(),
                   ),
                 ) ??
@@ -158,9 +158,9 @@ class PleromaApiNotificationService extends BasePleromaApiService
       // todo: remove when pleroma will support
       assert(
         restService.isMastodon,
-        "Not supported on Pleroma. "
-        "onlyFromAccountRemoteId added only in Mastodon 2.9.0 "
-        "but Pleroma targets Mastodon 2.7.2 API",
+        'Not supported on Pleroma. '
+        'onlyFromAccountRemoteId added only in Mastodon 2.9.0 '
+        'but Pleroma targets Mastodon 2.7.2 API',
       );
     }
   }
@@ -187,6 +187,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
             .toList();
       }
     }
+
     return excludeTypes;
   }
 
@@ -195,11 +196,11 @@ class PleromaApiNotificationService extends BasePleromaApiService
   ) {
     if (excludeVisibilities?.isNotEmpty == true) {
       assert(restService.isPleroma);
-      for (PleromaApiVisibility excludeVisibility in excludeVisibilities!) {
+      for (var excludeVisibility in excludeVisibilities!) {
         assert(
           IPleromaApiNotificationService.validPleromaVisibilityToExclude
               .contains(excludeVisibility),
-          "excludeVisibility $excludeVisibility not supported on backend",
+          'excludeVisibility $excludeVisibility not supported on backend',
         );
       }
     }
@@ -210,11 +211,11 @@ class PleromaApiNotificationService extends BasePleromaApiService
   ) {
     if (includeTypes?.isNotEmpty == true) {
       assert(restService.isPleroma);
-      for (PleromaApiNotificationType includeType in includeTypes!) {
+      for (var includeType in includeTypes!) {
         assert(
           IPleromaApiNotificationService.validPleromaTypesToInclude
               .contains(includeType),
-          "includeType $includeType not supported on backend",
+          'includeType $includeType not supported on backend',
         );
       }
     }
@@ -229,7 +230,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
         relativePath: join(
           notificationRelativeUrlPath,
           notificationRemoteId,
-          "dismiss",
+          'dismiss',
         ),
       ),
     );
@@ -243,7 +244,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
       RestRequest.post(
         relativePath: join(
           notificationRelativeUrlPath,
-          "clear",
+          'clear',
         ),
       ),
     );

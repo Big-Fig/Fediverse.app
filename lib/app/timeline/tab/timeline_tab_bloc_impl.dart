@@ -2,15 +2,15 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
+import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
-import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
-import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
+import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -18,28 +18,33 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
+import 'package:fedi/pleroma/api/timeline/auth/pleroma_api_auth_timeline_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("timeline_tab_bloc_impl.dart");
+var _logger = Logger('timeline_tab_bloc_impl.dart');
 
 class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   @override
   Timeline get timeline => timelineLocalPreferencesBloc.value!;
   @override
+  // ignore: avoid-late-keyword
   late TimelineStatusCachedListBloc statusCachedListBloc;
+
+  // ignore: avoid-late-keyword
   late IStatusCachedPaginationBloc statusCachedPaginationBloc;
   @override
+  // ignore: avoid-late-keyword
   late ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>,
       IStatus> paginationListWithNewItemsBloc;
 
-  final IPleromaApiAccountService pleromaAccountService;
-  final IPleromaApiTimelineService pleromaTimelineService;
+  final IPleromaApiAccountService pleromaApiAccountService;
+  final IPleromaApiAuthTimelineService pleromaApiAuthTimelineService;
   final IStatusRepository statusRepository;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
@@ -56,8 +61,8 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   TimelineTabBloc({
     required this.timelineId,
     required this.preferencesService,
-    required this.pleromaTimelineService,
-    required this.pleromaAccountService,
+    required this.pleromaApiAuthTimelineService,
+    required this.pleromaApiAccountService,
     required this.statusRepository,
     required this.currentAuthInstanceBloc,
     required this.webSocketsHandlerManagerBloc,
@@ -66,7 +71,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     required this.filterRepository,
     required this.paginationSettingsBloc,
   }) {
-    _logger.finest(() => "TimelineTabBloc timelineId $timelineId");
+    _logger.finest(() => 'TimelineTabBloc timelineId $timelineId');
 
     timelineLocalPreferencesBloc = TimelineLocalPreferenceBloc.byId(
       preferencesService,
@@ -82,11 +87,11 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     required WebSocketsListenType webSocketsListenType,
   }) =>
       TimelineStatusCachedListBloc(
-        pleromaAccountService: pleromaAccountService,
-        pleromaTimelineService: pleromaTimelineService,
+        pleromaApiAccountService: pleromaApiAccountService,
+        pleromaApiAuthTimelineService: pleromaApiAuthTimelineService,
         statusRepository: statusRepository,
         currentInstanceBloc: currentAuthInstanceBloc,
-        timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
+        timelineLocalPreferenceBloc: timelineLocalPreferencesBloc,
         webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
         webSocketsListenType: webSocketsListenType,
         filterRepository: filterRepository,
@@ -153,9 +158,9 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
           context,
           listen: false,
         ),
-        pleromaTimelineService:
-            IPleromaApiTimelineService.of(context, listen: false),
-        pleromaAccountService:
+        pleromaApiAuthTimelineService:
+            IPleromaApiAuthTimelineService.of(context, listen: false),
+        pleromaApiAccountService:
             IPleromaApiAccountService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),

@@ -24,8 +24,8 @@ import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
+import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
-import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/network_only/status_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -98,6 +98,7 @@ class _AccountHomeTabPageBody extends StatelessWidget {
     var accountHomeTabBloc = IAccountHomeTabBloc.of(context);
     var tabController = Provider.of<TabController>(context);
     var tabs = accountHomeTabBloc.tabs;
+
     return DisposableProvider<
         IFediNestedScrollViewWithNestedScrollableTabsBloc>(
       create: (context) => FediNestedScrollViewWithNestedScrollableTabsBloc(
@@ -115,7 +116,7 @@ class _AccountHomeTabPageBody extends StatelessWidget {
           const _AccountHomeTabMyAccountWidget(),
           const _AccountHomeTabTextIndicatorWidget(),
         ],
-        tabKeyPrefix: "AccountHomeTabPage",
+        tabKeyPrefix: 'AccountHomeTabPage',
         tabBodyProviderBuilder:
             (BuildContext context, int index, Widget child) =>
                 _AccountHomeTabPageBodyProviderWidget(
@@ -266,6 +267,7 @@ class _AccountHomeTabProviderWithRepliesTabProviderWidget
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+
     return AccountStatusesWithRepliesCachedListBloc.provideToContext(
       context,
       account: accountBloc.account,
@@ -296,6 +298,7 @@ class _AccountHomeTabProviderWithoutRepliesTabProviderWidget
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+
     return AccountStatusesWithoutRepliesListBloc.provideToContext(
       context,
       account: accountBloc.account,
@@ -325,6 +328,7 @@ class _AccountHomeTabProviderMediaTabProviderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+
     return AccountStatusesMediaOnlyCachedListBloc.provideToContext(
       context,
       account: accountBloc.account,
@@ -354,6 +358,7 @@ class _AccountHomeTabProviderPinnedTabProviderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+
     return LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc.provideToContext(
       context,
       account: accountBloc.account,

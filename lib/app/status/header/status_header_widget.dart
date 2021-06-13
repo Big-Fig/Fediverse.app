@@ -24,6 +24,7 @@ class StatusHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var account = Provider.of<IAccount>(context);
+
     return Container(
       height: _statusHeaderHeight,
       child: GestureDetector(

@@ -9,10 +9,10 @@ import 'package:moor/moor.dart';
 
 part 'pleroma_chat_database_dao.g.dart';
 
-var _accountAliasId = "account";
-var _chatAccountsAliasId = "chatAccounts";
-var _chatMessageAliasId = "chatMessage";
-var _chatMessageAccountAliasId = "chatMessageAccount";
+var _accountAliasId = 'account';
+var _chatAccountsAliasId = 'chatAccounts';
+var _chatMessageAliasId = 'chatMessage';
+var _chatMessageAccountAliasId = 'chatMessageAccount';
 
 @UseDao(
   tables: [
@@ -29,9 +29,13 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     PleromaChatRepositoryFilters,
     PleromaChatRepositoryOrderingTermData> with _$ChatDaoMixin {
   final AppDatabase db;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
+  // ignore: avoid-late-keyword
   late $DbChatMessagesTable chatMessageAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable chatMessageAccountAlias;
+  // ignore: avoid-late-keyword
   late $DbChatAccountsTable chatAccountsAlias;
 
   // Called by the AppDatabase class
@@ -72,10 +76,10 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     required String? chatRemoteId,
     required DateTime updatedAt,
   }) {
-    var update = "UPDATE db_chats "
-        "SET unread = unread + 1,"
-        " updated_at = ${updatedAt.millisecondsSinceEpoch ~/ Duration.millisecondsPerSecond} "
-        "WHERE remote_id = '$chatRemoteId'";
+    var update = 'UPDATE db_chats '
+        'SET unread = unread + 1,'
+        ' updated_at = ${updatedAt.millisecondsSinceEpoch ~/ Duration.millisecondsPerSecond} '
+        'WHERE remote_id = "$chatRemoteId"';
     var query = db.customUpdate(update, updates: {
       dbChats,
     });
@@ -94,6 +98,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     final query = selectOnly(dbChats)..addColumns([unreadCount]);
 
     var mapped = query.map((row) => row.read(unreadCount));
+
     return mapped.map((value) => value!.toInt());
   }
 
@@ -116,6 +121,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
                     expression = item.updatedAt;
                     break;
                 }
+
                 return OrderingTerm(
                   expression: expression,
                   mode: orderTerm.orderingMode,
@@ -126,7 +132,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
       );
   }
 
-  List<Join<Table, DataClass>> populateChatJoin() {
+  List<Join> populateChatJoin() {
     return [
       leftOuterJoin(
         accountAlias,
@@ -135,7 +141,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     ];
   }
 
-  List<Join<Table, DataClass>> chatLastMessageJoin() {
+  List<Join> chatLastMessageJoin() {
     return [
       leftOuterJoin(
         chatMessageAlias,
@@ -191,7 +197,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
+  JoinedSelectStatement
       convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbChatsTable, DbChat> query,
     required PleromaChatRepositoryFilters? filters,
@@ -204,7 +210,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
       // todo: rework with moor-like code
       var fieldName = chatMessageAlias.createdAt.$name;
       var aliasName = chatMessageAlias.$tableName;
-      var having = CustomExpression<bool>("MAX($aliasName.$fieldName)");
+      var having = CustomExpression<bool>('MAX($aliasName.$fieldName)');
       join.groupBy(
         [
           dbChats.remoteId,

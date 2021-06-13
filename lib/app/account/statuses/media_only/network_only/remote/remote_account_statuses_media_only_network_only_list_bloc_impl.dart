@@ -42,6 +42,7 @@ class RemoteAccountStatusesMediaOnlyNetworkOnlyListBloc
     );
 
     bloc.addDisposable(disposable: pleromaAccountService);
+
     return bloc;
   }
 

@@ -32,6 +32,7 @@ abstract class AccountStatusesMediaOnlyNetworkOnlyListBloc
         limit: itemsCountPerPage,
       ),
     );
+
     return pleromaStatuses
         .map(
           (pleromaStatus) => pleromaStatus.toDbStatusPopulatedWrapper(),

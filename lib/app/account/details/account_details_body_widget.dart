@@ -10,7 +10,7 @@ class AccountDetailsBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) => CollapsibleOwnerWidget(
         child: AccountStatusesTimelineWidget(
           scrollController: scrollController, //        header: FediListTile(
-          key: PageStorageKey("AccountDetailsBodyWidget"),
+          key: PageStorageKey('AccountDetailsBodyWidget'),
         ),
       );
 

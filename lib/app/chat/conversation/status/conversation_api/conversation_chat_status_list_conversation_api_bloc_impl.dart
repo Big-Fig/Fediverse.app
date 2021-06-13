@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 var _logger =
-    Logger("conversation_chat_status_list_conversation_api_bloc_impl.dart");
+    Logger('conversation_chat_status_list_conversation_api_bloc_impl.dart');
 
 class ConversationChatStatusListConversationApiBloc
     extends ConversationChatStatusListBloc {
@@ -31,10 +31,10 @@ class ConversationChatStatusListConversationApiBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t conversation = $conversation"
-        "\t newerThan = $newerThan"
-        "\t olderThan = $olderThan");
+    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
+        '\t conversation = $conversation'
+        '\t newerThan = $newerThan'
+        '\t olderThan = $olderThan');
 
     var remoteStatuses =
         await pleromaConversationService.getConversationStatuses(

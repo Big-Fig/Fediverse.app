@@ -37,7 +37,7 @@ class PleromaApiFilter extends IPleromaApiFilter implements IJsonObject {
 
   @override
   @HiveField(1)
-  @JsonKey(name: "expires_at")
+  @JsonKey(name: 'expires_at')
   final DateTime? expiresAt;
 
   @override
@@ -54,7 +54,7 @@ class PleromaApiFilter extends IPleromaApiFilter implements IJsonObject {
 
   @override
   @HiveField(5)
-  @JsonKey(name: "whole_word")
+  @JsonKey(name: 'whole_word')
   final bool wholeWord;
 
   PleromaApiFilter({
@@ -147,7 +147,7 @@ class PostPleromaApiFilter extends IPostPleromaApiFilter
   final List<String> context;
 
   @override
-  @JsonKey(name: "expires_in")
+  @JsonKey(name: 'expires_in')
   final int? expiresInSeconds;
 
   @override
@@ -157,7 +157,7 @@ class PostPleromaApiFilter extends IPostPleromaApiFilter
   final String phrase;
 
   @override
-  @JsonKey(name: "whole_word")
+  @JsonKey(name: 'whole_word')
   final bool wholeWord;
 
   PostPleromaApiFilter({

@@ -214,13 +214,14 @@ class PleromaApiAccountRelationshipAdapter
       subscribing: fields[12] as bool?,
       blockedBy: fields[13] as bool?,
       note: fields[14] as String?,
+      notifying: fields[15] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, PleromaApiAccountRelationship obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(1)
       ..write(obj.blocking)
       ..writeByte(2)
@@ -246,7 +247,9 @@ class PleromaApiAccountRelationshipAdapter
       ..writeByte(13)
       ..write(obj.blockedBy)
       ..writeByte(14)
-      ..write(obj.note);
+      ..write(obj.note)
+      ..writeByte(15)
+      ..write(obj.notifying);
   }
 
   @override
@@ -311,10 +314,8 @@ PleromaApiAccount _$PleromaApiAccountFromJson(Map<String, dynamic> json) {
     avatarStatic: json['avatar_static'] as String,
     avatar: json['avatar'] as String,
     acct: json['acct'] as String,
-    pleroma: json['pleroma'] == null
-        ? null
-        : PleromaApiAccountPleromaPart.fromJson(
-            json['pleroma'] as Map<String, dynamic>),
+    pleroma: PleromaApiAccountPleromaPart.fromJsonOrNullOnError(
+        json['pleroma'] as Map<String, dynamic>?),
     lastStatusAt: json['last_status_at'] == null
         ? null
         : DateTime.parse(json['last_status_at'] as String),
@@ -351,13 +352,9 @@ PleromaApiAccountPleromaPart _$PleromaApiAccountPleromaPartFromJson(
     Map<String, dynamic> json) {
   return PleromaApiAccountPleromaPart(
     backgroundImage: json['background_image'] as String?,
-    tags: (json['tags'] as List<dynamic>?)
-        ?.map((e) => PleromaApiTag.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    relationship: json['relationship'] == null
-        ? null
-        : PleromaApiAccountRelationship.fromJson(
-            json['relationship'] as Map<String, dynamic>),
+    tags: PleromaApiTag.fromJsonListOrNullOnError(json['tags']),
+    relationship: PleromaApiAccountRelationship.fromJsonOrNullOnError(
+        json['relationship'] as Map<String, dynamic>?),
     isAdmin: json['is_admin'] as bool?,
     isModerator: json['is_moderator'] as bool?,
     confirmationPending: json['confirmation_pending'] as bool?,
@@ -373,9 +370,9 @@ PleromaApiAccountPleromaPart _$PleromaApiAccountPleromaPartFromJson(
     isConfirmed: json['is_confirmed'] as bool?,
     favicon: json['favicon'] as String?,
     apId: json['apId'] as String?,
-    alsoKnownAs: (json['also_known_as'] as List<dynamic>?)
-        ?.map((e) => e as String)
-        .toList(),
+    alsoKnownAs:
+        PleromaApiAccountPleromaPart.fromJsonAlsoKnownAsListOrNullOnError(
+            json['also_known_as']),
   );
 }
 
@@ -419,6 +416,7 @@ PleromaApiAccountRelationship _$PleromaApiAccountRelationshipFromJson(
     subscribing: json['subscribing'] as bool?,
     blockedBy: json['blocked_by'] as bool?,
     note: json['note'] as String?,
+    notifying: json['notifying'] as bool?,
   );
 }
 
@@ -438,6 +436,7 @@ Map<String, dynamic> _$PleromaApiAccountRelationshipToJson(
       'subscribing': instance.subscribing,
       'blocked_by': instance.blockedBy,
       'note': instance.note,
+      'notifying': instance.notifying,
     };
 
 PleromaApiAccountIdentityProof _$PleromaApiAccountIdentityProofFromJson(

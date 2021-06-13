@@ -12,12 +12,12 @@ enum PleromaApiVisibility {
 
 const defaultPleromaApiVisibility = PleromaApiVisibility.public;
 
-const _publicPleromaApiVisibilityJsonValue = "public";
-const _localPleromaApiVisibilityJsonValue = "local";
-const _unlistedPleromaApiVisibilityJsonValue = "unlisted";
-const _directPleromaApiVisibilityJsonValue = "direct";
-const _listPleromaApiVisibilityJsonValue = "list";
-const _privatePleromaApiVisibilityJsonValue = "private";
+const _publicPleromaApiVisibilityJsonValue = 'public';
+const _localPleromaApiVisibilityJsonValue = 'local';
+const _unlistedPleromaApiVisibilityJsonValue = 'unlisted';
+const _directPleromaApiVisibilityJsonValue = 'direct';
+const _listPleromaApiVisibilityJsonValue = 'list';
+const _privatePleromaApiVisibilityJsonValue = 'private';
 
 extension PleromaApiVisibilityListExtension on List<PleromaApiVisibility> {
   List<String> toPleromaApiVisibilityStrings() => map(
@@ -77,7 +77,7 @@ extension PleromaApiVisibilityStringExtension on String {
       case _unlistedPleromaApiVisibilityJsonValue:
         result = PleromaApiVisibility.unlisted;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
         result = defaultPleromaApiVisibility;
         break;

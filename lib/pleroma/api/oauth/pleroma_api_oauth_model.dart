@@ -13,17 +13,17 @@ part 'pleroma_api_oauth_model.g.dart';
 @HiveType(typeId: -32 + 51)
 class PleromaApiOAuthToken implements IJsonObject {
   @HiveField(0)
-  @JsonKey(name: "access_token")
+  @JsonKey(name: 'access_token')
   final String accessToken;
   @HiveField(1)
-  @JsonKey(name: "token_type")
+  @JsonKey(name: 'token_type')
   final String tokenType;
 
   // I am not sure about types, so fields temporary ignored
   // todo: improve
   // @HiveField(2)
   // final dynamic scope;
-  // @JsonKey(name: "created_at")
+  // @JsonKey(name: 'created_at')
   // @HiveField(3)
   // final dynamic createdAt;
 
@@ -63,16 +63,16 @@ class PleromaApiOAuthAuthorizeRequest implements IJsonObject {
   /// Forces the user to re-login,
   /// which is necessary for authorizing with multiple accounts from the same instance.
 
-  @JsonKey(name: "force_login")
+  @JsonKey(name: 'force_login')
   final bool? forceLogin;
 
   ///  should be always code for this request
 
-  @JsonKey(name: "response_type")
+  @JsonKey(name: 'response_type')
   final String? responseType;
 
   /// from application object
-  @JsonKey(name: "client_id")
+  @JsonKey(name: 'client_id')
   final String? clientId;
 
   /// Set a URI to redirect the user to.
@@ -80,7 +80,7 @@ class PleromaApiOAuthAuthorizeRequest implements IJsonObject {
   /// then the authorization code will be shown instead.
   /// Must match one of the redirect URIs declared during app registration.
 
-  @JsonKey(name: "redirect_uri")
+  @JsonKey(name: 'redirect_uri')
   final String? redirectUri;
 
   /// List of requested OAuth scopes, separated by spaces (or by pluses,
@@ -94,7 +94,7 @@ class PleromaApiOAuthAuthorizeRequest implements IJsonObject {
     required this.redirectUri,
     required this.scope,
     // todo: check wtf?
-    this.responseType = "code",
+    this.responseType = 'code',
   });
 
   static PleromaApiOAuthAuthorizeRequest fromJson(Map<String, dynamic> json) =>
@@ -137,7 +137,7 @@ class PleromaApiOAuthAuthorizeRequest implements IJsonObject {
 
 @JsonSerializable()
 class PleromaApiOAuthAccountTokenRequest implements IJsonObject {
-  @JsonKey(name: "grant_type")
+  @JsonKey(name: 'grant_type')
   final String? grantType;
 
   /// A user authorization code, obtained via /oauth/authorize
@@ -145,12 +145,12 @@ class PleromaApiOAuthAccountTokenRequest implements IJsonObject {
 
   final String? scope;
 
-  @JsonKey(name: "redirect_uri")
+  @JsonKey(name: 'redirect_uri')
   final String? redirectUri;
 
-  @JsonKey(name: "client_id")
+  @JsonKey(name: 'client_id')
   final String? clientId;
-  @JsonKey(name: "client_secret")
+  @JsonKey(name: 'client_secret')
   final String? clientSecret;
 
   PleromaApiOAuthAccountTokenRequest({
@@ -160,7 +160,7 @@ class PleromaApiOAuthAccountTokenRequest implements IJsonObject {
     required this.clientId,
     required this.clientSecret,
     // todo: check wtf?
-    this.grantType = "authorization_code",
+    this.grantType = 'authorization_code',
   });
 
   @override
@@ -208,17 +208,17 @@ class PleromaApiOAuthAccountTokenRequest implements IJsonObject {
 
 @JsonSerializable()
 class PleromaApiOAuthAppTokenRequest implements IJsonObject {
-  @JsonKey(name: "grant_type")
+  @JsonKey(name: 'grant_type')
   final String? grantType;
 
   final String? scope;
 
-  @JsonKey(name: "redirect_uri")
+  @JsonKey(name: 'redirect_uri')
   final String? redirectUri;
 
-  @JsonKey(name: "client_id")
+  @JsonKey(name: 'client_id')
   final String? clientId;
-  @JsonKey(name: "client_secret")
+  @JsonKey(name: 'client_secret')
   final String? clientSecret;
 
   PleromaApiOAuthAppTokenRequest({
@@ -227,7 +227,7 @@ class PleromaApiOAuthAppTokenRequest implements IJsonObject {
     required this.clientId,
     required this.clientSecret,
     // todo: check wtf?
-    this.grantType = "client_credentials",
+    this.grantType = 'client_credentials',
   });
 
   @override
@@ -269,9 +269,9 @@ class PleromaApiOAuthAppTokenRequest implements IJsonObject {
 
 @JsonSerializable()
 class PleromaApiOAuthAppTokenRevokeRequest implements IJsonObject {
-  @JsonKey(name: "client_id")
+  @JsonKey(name: 'client_id')
   final String? clientId;
-  @JsonKey(name: "client_secret")
+  @JsonKey(name: 'client_secret')
   final String? clientSecret;
 
   final String? token;

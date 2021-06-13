@@ -43,20 +43,20 @@ enum PleromaApiNotificationType {
 
 const unknownPleromaApiNotificationType = PleromaApiNotificationType.unknown;
 
-const _followPleromaApiNotificationTypeJsonValue = "follow";
-const _favouritePleromaApiNotificationTypeJsonValue = "favourite";
-const _reblogPleromaApiNotificationTypeJsonValue = "reblog";
-const _mentionPleromaApiNotificationTypeJsonValue = "mention";
-const _pollPleromaApiNotificationTypeJsonValue = "poll";
-const _movePleromaApiNotificationTypeJsonValue = "move";
-const _followRequestPleromaApiNotificationTypeJsonValue = "follow_request";
+const _followPleromaApiNotificationTypeJsonValue = 'follow';
+const _favouritePleromaApiNotificationTypeJsonValue = 'favourite';
+const _reblogPleromaApiNotificationTypeJsonValue = 'reblog';
+const _mentionPleromaApiNotificationTypeJsonValue = 'mention';
+const _pollPleromaApiNotificationTypeJsonValue = 'poll';
+const _movePleromaApiNotificationTypeJsonValue = 'move';
+const _followRequestPleromaApiNotificationTypeJsonValue = 'follow_request';
 const _pleromaEmojiReactionRequestPleromaApiNotificationTypeJsonValue =
-    "pleroma:emoji_reaction";
+    'pleroma:emoji_reaction';
 const _pleromaChatMentionRequestPleromaApiNotificationTypeJsonValue =
-    "pleroma:chat_mention";
+    'pleroma:chat_mention';
 const _pleromaReportRequestPleromaApiNotificationTypeJsonValue =
-    "pleroma:report";
-const _unknownRequestPleromaApiNotificationTypeJsonValue = "unknown";
+    'pleroma:report';
+const _unknownRequestPleromaApiNotificationTypeJsonValue = 'unknown';
 
 extension PleromaApiNotificationTypeListExtension
     on List<PleromaApiNotificationType> {
@@ -153,7 +153,7 @@ extension PleromaApiNotificationTypeStringExtension on String {
       case _unknownRequestPleromaApiNotificationTypeJsonValue:
         result = PleromaApiNotificationType.unknown;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
         result = unknownPleromaApiNotificationType;
         break;
@@ -165,9 +165,9 @@ extension PleromaApiNotificationTypeStringExtension on String {
 
 @JsonSerializable()
 class PleromaApiNotificationPleromaPart {
-  @JsonKey(name: "is_seen")
+  @JsonKey(name: 'is_seen')
   final bool? isSeen;
-  @JsonKey(name: "is_muted")
+  @JsonKey(name: 'is_muted')
   final bool? isMuted;
 
   PleromaApiNotificationPleromaPart({
@@ -220,7 +220,7 @@ class PleromaApiNotification extends IPleromaApiNotification
   @override
   final PleromaApiAccount? target;
   @override
-  @JsonKey(name: "created_at")
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @override
   final String id;
@@ -234,7 +234,7 @@ class PleromaApiNotification extends IPleromaApiNotification
   final PleromaApiNotificationPleromaPart? pleroma;
 
   @override
-  @JsonKey(name: "chat_message")
+  @JsonKey(name: 'chat_message')
   final PleromaApiChatMessage? chatMessage;
 
   @override

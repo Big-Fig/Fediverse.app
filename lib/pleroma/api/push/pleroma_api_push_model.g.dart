@@ -174,8 +174,8 @@ Map<String, dynamic> _$PleromaApiPushSubscribeRequestSubscriptionToJson(
 PleromaApiPushSubscriptionKeys _$PleromaApiPushSubscriptionKeysFromJson(
     Map<String, dynamic> json) {
   return PleromaApiPushSubscriptionKeys(
-    p256dh: json['p256dh'] as String?,
-    auth: json['auth'] as String?,
+    p256dh: json['p256dh'] as String,
+    auth: json['auth'] as String,
   );
 }
 

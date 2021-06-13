@@ -12,6 +12,7 @@ class EditPaginationSettingsBloc
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late PaginationPageSizeSingleFromListValueFormFieldBloc pageSizeFieldBloc;
 
   @override

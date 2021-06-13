@@ -3,6 +3,8 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/list/account_list_item_widget.dart';
 import 'package:fedi/app/account/local_account_bloc_impl.dart';
+import 'package:fedi/app/hashtag/hashtag_bloc.dart';
+import 'package:fedi/app/hashtag/hashtag_bloc_impl.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/list/hashtag_list_item_widget.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
@@ -54,8 +56,7 @@ class SearchResultItemPaginationListWidget
   }) {
     SearchResultItemType? previousType;
 
-    List<_ItemOrSeparator<ISearchResultItem>> itemWithSeparators =
-        <_ItemOrSeparator<ISearchResultItem>>[];
+    var itemWithSeparators = <_ItemOrSeparator<ISearchResultItem>>[];
     items.forEach((item) {
       if (item.type != previousType) {
         switch (item.type) {
@@ -127,9 +128,19 @@ class SearchResultItemPaginationListWidget
   Widget buildHashtagListItem(ISearchResultItem item, int index) {
     return Provider<IHashtag>.value(
       value: item.hashtag!,
-      child: FediListTile(
-        isFirstInList: index == 0, //                isFirstInList: false,
-        child: const HashtagListItemWidget(),
+      child: DisposableProxyProvider<IHashtag, IHashtagBloc>(
+        update: (context, value, previous) => HashtagBloc.createFromContext(
+          context,
+          hashtag: value,
+          myAccountFeaturedHashtag: null,
+          needLoadFeaturedState: false,
+        ),
+        child: FediListTile(
+          isFirstInList: index == 0, //                isFirstInList: false,
+          child: const HashtagListItemWidget(
+            displayHistory: false,
+          ),
+        ),
       ),
     );
   }

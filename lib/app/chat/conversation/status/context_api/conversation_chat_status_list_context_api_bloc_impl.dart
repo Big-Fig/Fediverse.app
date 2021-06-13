@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 var _logger =
-    Logger("conversation_chat_status_list_context_api_bloc_impl.dart");
+    Logger('conversation_chat_status_list_context_api_bloc_impl.dart');
 
 class ConversationChatStatusListContextApiBloc
     extends ConversationChatStatusListBloc {
@@ -39,15 +39,15 @@ class ConversationChatStatusListContextApiBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t conversation = $conversation"
-        "\t newerThan = $newerThan"
-        "\t olderThan = $olderThan");
+    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
+        '\t conversation = $conversation'
+        '\t newerThan = $newerThan'
+        '\t olderThan = $olderThan');
     // newer pagination not supported
     assert(newerThan == null);
 
     if (olderThan != null) {
-      // context don't support load more pagination
+      // context dont support load more pagination
       return false;
     }
     var remoteContext = await pleromaStatusService.getStatusContext(

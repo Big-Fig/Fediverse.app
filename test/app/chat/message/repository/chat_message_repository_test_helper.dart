@@ -13,6 +13,7 @@ class ChatMessageRepositoryTestHelper {
     );
     assert(id > 0, true);
     var dbChatMessage = chatMessageData.copyWith(id: id);
+
     return dbChatMessage;
   }
 }

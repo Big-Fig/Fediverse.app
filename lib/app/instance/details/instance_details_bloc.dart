@@ -1,6 +1,7 @@
+import 'package:fedi/app/hashtag/hashtag_url_helper.dart';
+import 'package:fedi/app/instance/instance_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/mastodon/api/instance/mastodon_api_instance_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
@@ -9,19 +10,14 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 abstract class IInstanceDetailsBloc
-    implements IDisposable, IAsyncInitLoadingBloc, IInstanceLocationBloc {
-  static IInstanceDetailsBloc of(BuildContext context, {bool listen = true}) =>
+    implements IInstanceBloc, IAsyncInitLoadingBloc, IInstanceLocationBloc {
+  static IInstanceDetailsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IInstanceDetailsBloc>(context, listen: listen);
 
   RefreshController get refreshController;
-
-  bool get isPleroma;
-
-  Uri get instanceUri;
-
-  IPleromaApiInstance? get instance;
-
-  Stream<IPleromaApiInstance?> get instanceStream;
 
   Future<IPleromaApiInstance> refresh();
 }
@@ -45,14 +41,27 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
       instanceStream.map((instance) => instance?.description);
 
   String? get descriptionOrShortDescription =>
-      instance?.description?.isNotEmpty == true
-          ? instance?.description
-          : instance?.shortDescription;
+      _calculateDescriptionOrShortDescription(
+        instance,
+      );
 
-  Stream<String?> get descriptionOrShortDescriptionStream =>
-      instanceStream.map((instance) => instance?.description?.isNotEmpty == true
-          ? instance!.description
-          : instance!.shortDescription);
+  Stream<String?> get descriptionOrShortDescriptionStream => instanceStream.map(
+        (instance) => _calculateDescriptionOrShortDescription(
+          instance,
+        ),
+      );
+
+  String? get descriptionOrShortDescriptionWithParsedHashtags =>
+      _calculateDescriptionOrShortDescriptionWithParsedHashtags(
+        instance,
+      );
+
+  Stream<String?> get descriptionOrShortDescriptionWithParsedHashtagsStream =>
+      instanceStream.map(
+        (instance) => _calculateDescriptionOrShortDescriptionWithParsedHashtags(
+          instance,
+        ),
+      );
 
   String? get email => instance?.email;
 
@@ -168,8 +177,8 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
   Stream<List<String>?> get pleromaMetadataFeaturesStream =>
       instanceStream.map((instance) => instance?.pleroma?.metadata?.features);
 
-  PleromaApiInstancePleromaPartMetadataFederation? get pleromaMetadataFederation =>
-      instance?.pleroma?.metadata?.federation;
+  PleromaApiInstancePleromaPartMetadataFederation?
+      get pleromaMetadataFederation => instance?.pleroma?.metadata?.federation;
 
   Stream<PleromaApiInstancePleromaPartMetadataFederation?>
       get pleromaMetadataFederationStream => instanceStream
@@ -270,6 +279,65 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
         (instance) => _calculateIsHaveFederationFields(instance),
       );
 }
+
+final _hashtagRegex = RegExp(r'#\w+');
+
+String? _calculateDescriptionOrShortDescriptionWithParsedHashtags(
+  IPleromaApiInstance? instance,
+) {
+  var descriptionOrShortDescription = _calculateDescriptionOrShortDescription(
+    instance,
+  );
+
+  if (descriptionOrShortDescription?.isNotEmpty == true) {
+    var allMatches = _hashtagRegex.allMatches(descriptionOrShortDescription!);
+
+    var resultDescriptionOrShortDescription = descriptionOrShortDescription;
+
+    // remove duplicated
+    var hashtags = allMatches.map((match) => match.group(0)!).toSet();
+
+    var isMastodon = instance!.isMastodon;
+    var isPleroma = instance.isPleroma;
+
+    var host = instance.uri!;
+    // todo: check
+    var scheme = 'https';
+    hashtags.forEach(
+      (hashtag) {
+        var hashtagWithoutSign = hashtag.replaceAll('#', '');
+        var link = HashtagUrlHelper.calculateHashtagUrl(
+          isMastodon: isMastodon,
+          isPleroma: isPleroma,
+          urlSchema: scheme,
+          urlHost: host,
+          hashtag: hashtagWithoutSign,
+        );
+
+        // don't replace if text already htmlized
+        if (!resultDescriptionOrShortDescription.contains(link)) {
+          var replace = '<a href="$link">$hashtag</a>';
+          resultDescriptionOrShortDescription =
+              resultDescriptionOrShortDescription.replaceAll(
+            hashtag,
+            replace,
+          );
+        }
+      },
+    );
+
+    return resultDescriptionOrShortDescription;
+  } else {
+    return descriptionOrShortDescription;
+  }
+}
+
+String? _calculateDescriptionOrShortDescription(
+  IPleromaApiInstance? instance,
+) =>
+    instance?.description?.isNotEmpty == true
+        ? instance!.description
+        : instance!.shortDescription;
 
 bool _calculateIsHaveDetailsFields(IPleromaApiInstance? instance) =>
     instance?.email != null ||

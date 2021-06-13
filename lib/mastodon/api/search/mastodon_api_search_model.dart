@@ -40,9 +40,9 @@ abstract class IMastodonApiSearchResult {
   List<IMastodonApiTag> get hashtags;
 }
 
-const _accountsMastodonSearchRequestTypeJsonValue = "accounts";
-const _hashtagsMastodonSearchRequestTypeJsonValue = "hashtags";
-const _statusesMastodonSearchRequestTypeJsonValue = "statuses";
+const _accountsMastodonSearchRequestTypeJsonValue = 'accounts';
+const _hashtagsMastodonSearchRequestTypeJsonValue = 'hashtags';
+const _statusesMastodonSearchRequestTypeJsonValue = 'statuses';
 
 extension MastodonApiSearchRequestTypeExtension
     on MastodonApiSearchRequestType {
@@ -80,7 +80,7 @@ extension MastodonApiSearchRequestTypeStringExtension on String {
         result = MastodonApiSearchRequestType.hashtags;
         break;
       default:
-        throw "Invalid MastodonSearchRequestType $this";
+        throw 'Invalid MastodonSearchRequestType $this';
     }
 
     return result;

@@ -11,7 +11,7 @@ import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("push_settings_bloc_impl.dart");
+final _logger = Logger('push_settings_bloc_impl.dart');
 
 class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
   final IPushSettingsLocalPreferenceBloc<PushSettings>
@@ -142,7 +142,8 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
   @override
   Future updateSettings(PushSettings? newSettings) async {
     if (settingsData == newSettings) {
-      _logger.finest(() => "Same settings");
+      _logger.finest(() => 'Same settings');
+
       return;
     }
     var deviceToken = fcmPushService.deviceToken;
@@ -150,8 +151,8 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
 
     bool success;
 
-    _logger.finest(() => "updateSubscriptionPreferences "
-        "deviceToken $deviceToken permissionGranted $permissionGranted");
+    _logger.finest(() => 'updateSubscriptionPreferences '
+        'deviceToken $deviceToken permissionGranted $permissionGranted');
     if (deviceToken != null && permissionGranted) {
       success = await _trySubscribe(deviceToken, newSettings);
     } else {
@@ -159,15 +160,15 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
     }
 
     if (success) {
-      _logger.finest(() => "updateSubscriptionPreferences \n"
-          "\t newPreferences = $newSettings"
-          "\t deviceToken = $deviceToken"
-          "\t success = $success");
+      _logger.finest(() => 'updateSubscriptionPreferences \n'
+          '\t newPreferences = $newSettings'
+          '\t deviceToken = $deviceToken'
+          '\t success = $success');
     } else {
-      _logger.severe(() => "updateSubscriptionPreferences \n"
-          "\t newPreferences = $newSettings"
-          "\t deviceToken = $deviceToken"
-          "\t success = $success");
+      _logger.severe(() => 'updateSubscriptionPreferences \n'
+          '\t newPreferences = $newSettings'
+          '\t deviceToken = $deviceToken'
+          '\t success = $success');
     }
 
     return success;
@@ -213,10 +214,10 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
 
       success = true;
     } catch (error, stackTrace) {
-      // todo: we don't need try catch at this level
+      // todo: we dont need try catch at this level
       success = false;
       _logger.warning(
-        () => "failed to update subscription ",
+        () => 'failed to update subscription ',
         error,
         stackTrace,
       );

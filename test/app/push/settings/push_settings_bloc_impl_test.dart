@@ -15,7 +15,7 @@ import 'package:mockito/mockito.dart';
 import './push_settings_bloc_impl_test.mocks.dart';
 import '../../auth/instance/auth_instance_model_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
   IPleromaApiPushService,
   IPushRelayService,
@@ -45,12 +45,12 @@ void main() {
     var pleromaPushService = MockIPleromaApiPushService();
     var pushRelayService = MockIPushRelayService();
 
-    when(fcmPushService.deviceToken).thenReturn("testDeviceToken");
+    when(fcmPushService.deviceToken).thenReturn('testDeviceToken');
     when(pushRelayService.createPushRelayEndPointUrl(
       account: anyNamed('account'),
       baseServerUrl: anyNamed('baseServerUrl'),
       fcmDeviceToken: anyNamed('fcmDeviceToken'),
-    )).thenReturn("testUrl");
+    )).thenReturn('testUrl');
     when(fcmPushService.askPermissions()).thenAnswer((_) async => true);
     when(pleromaPushService.subscribe(
       endpointCallbackUrl: anyNamed('endpointCallbackUrl'),
@@ -73,7 +73,7 @@ void main() {
       pushRelayService: pushRelayService,
       fcmPushService: fcmPushService,
       currentInstance: AuthInstanceModelTestHelper.createTestAuthInstance(
-        seed: "seed",
+        seed: 'seed',
       ),
     );
 

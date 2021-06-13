@@ -9,7 +9,7 @@ import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
-import 'package:fedi/app/package_info/package_info_helper.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -23,7 +23,6 @@ import 'package:fedi/pleroma/api/application/pleroma_api_application_service.dar
 import 'package:fedi/pleroma/api/application/pleroma_api_application_service_impl.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service_impl.dart';
-
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_model.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_service.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_service_impl.dart';
@@ -36,14 +35,14 @@ import 'package:fedi/rest/rest_service_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 
-final scopes = "read write follow push";
+final scopes = 'read write follow push';
 
-var _logger = Logger("auth_host_bloc_impl.dart");
+var _logger = Logger('auth_host_bloc_impl.dart');
 
 // todo: report to mastodon/pleroma.
 //  It's should be error code instead of string handling
 const emailConfirmationRequiredDescription =
-    "Your login is missing a confirmed e-mail address";
+    'Your login is missing a confirmed e-mail address';
 
 class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   final Uri instanceBaseUri;
@@ -54,19 +53,36 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   String get instanceBaseUriHost => instanceBaseUri.host;
 
   String get instanceBaseUriScheme => instanceBaseUri.scheme;
+
+  // ignore: avoid-late-keyword
   late IPleromaApiApplicationService pleromaApplicationService;
+
+  // ignore: avoid-late-keyword
   late IRestService restService;
+
+  // ignore: avoid-late-keyword
   late IPleromaApiRestService pleromaRestService;
+
+  // ignore: avoid-late-keyword
   late IPleromaApiOAuthService pleromaOAuthService;
+
+  // ignore: avoid-late-keyword
   late IPleromaApiAccountPublicService pleromaAccountPublicService;
+
+  // ignore: avoid-late-keyword
   late IAuthHostApplicationLocalPreferenceBloc
       hostApplicationLocalPreferenceBloc;
+
+  // ignore: avoid-late-keyword
   late IAuthHostAccessTokenLocalPreferenceBloc
       hostAccessTokenLocalPreferenceBloc;
+
+  // ignore: avoid-late-keyword
   late ICurrentAuthInstanceBloc currentInstanceBloc;
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final IConnectionService connectionService;
+  final IConfigService configService;
 
   AuthHostBloc({
     required this.instanceBaseUri,
@@ -75,6 +91,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     required ILocalPreferencesService preferencesService,
     required this.connectionService,
     required this.currentInstanceBloc,
+    required this.configService,
   }) {
     assert(instanceBaseUriScheme.isNotEmpty);
     assert(instanceBaseUriHost.isNotEmpty);
@@ -131,27 +148,27 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   @override
   Future registerApplication() async {
-    _logger.finest(() => "registerApplication");
-    String redirectUri = await _calculateRedirectUri();
+    _logger.finest(() => 'registerApplication');
+    var redirectUri = await _calculateRedirectUri();
 
     var application = await pleromaApplicationService.registerApp(
       registrationRequest: MastodonApiApplicationRegistrationRequest(
-        clientName: "Fedi",
+        clientName: 'Fedi',
         redirectUris: redirectUri,
         scopes: scopes,
-        website: "https://www.fediapp.com/",
+        website: 'https://www.fediapp.com/',
       ),
     );
 
-    _logger.finest(() => "registerApplication application = $application");
+    _logger.finest(() => 'registerApplication application = $application');
     await hostApplicationLocalPreferenceBloc.setValue(
       application.toPleromaApiClientApplication(),
     );
   }
 
   Future<String> _calculateRedirectUri() async {
-    var packageId = await FediPackageInfoHelper.getPackageId();
-    var redirectUri = "$packageId://addNewInstance";
+    var redirectUri = configService.appAddNewInstanceCallbackUrl;
+
     return redirectUri;
   }
 
@@ -167,20 +184,22 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         ),
       );
       await hostAccessTokenLocalPreferenceBloc.setValue(accessToken);
+
       return true;
     } catch (e, stackTrace) {
       _logger.severe(
-        () => "retrieveAppAccessToken error",
+        () => 'retrieveAppAccessToken error',
         e,
         stackTrace,
       );
+
       return false;
     }
   }
 
   @override
   Future<AuthInstance?> launchLoginToAccount() async {
-    _logger.finest(() => "launchLoginToAccount");
+    _logger.finest(() => 'launchLoginToAccount');
     await checkApplicationRegistration();
 
     var baseUrl = pleromaOAuthService.restService.baseUri;
@@ -202,7 +221,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       await pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
           .setValue(baseUrl.toString());
 
-      AuthInstance instance = await loginWithAuthCode(authCode);
+      var instance = await loginWithAuthCode(authCode);
 
       return instance;
     } else {
@@ -245,7 +264,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
     var hostInstance = await pleromaInstanceService.getInstance();
 
-    AuthInstance instance = await _createAuthInstance(
+    var instance = await _createAuthInstance(
       pleromaAuthRestService: pleromaAuthRestService,
       authCode: authCode,
       token: token,
@@ -254,6 +273,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
     await pleromaInstanceService.dispose();
     await pleromaAuthRestService.dispose();
+
     return instance;
   }
 
@@ -320,7 +340,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     } else {
       EmailConfirmationRequiredAuthHostException?
           emailConfirmationRequiredAuthHostException;
-      dynamic? unknownHostException;
+      dynamic unknownHostException;
 
       AuthInstance? instance;
       try {
@@ -331,7 +351,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
           hostInstance: hostInstance,
         );
       } catch (e, stackTrace) {
-        _logger.warning(() => "error during registerAccount", e, stackTrace);
+        _logger.warning(() => 'error during registerAccount', e, stackTrace);
         if (e is PleromaApiRestException) {
           if (e.decodedErrorDescriptionOrBody ==
               emailConfirmationRequiredDescription) {
@@ -368,17 +388,17 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   @override
   Future checkApplicationRegistration() async {
     _logger.finest(
-      () => "checkApplicationRegistration $isHostApplicationRegistered",
+      () => 'checkApplicationRegistration $isHostApplicationRegistered',
     );
     if (!isHostApplicationRegistered) {
       await registerApplication();
-      _logger.finest(() => "checkApplicationRegistration");
+      _logger.finest(() => 'checkApplicationRegistration');
     }
   }
 
   @override
   Future checkIsRegistrationsEnabled() async {
-    _logger.finest(() => "checkIsRegistrationsEnabled");
+    _logger.finest(() => 'checkIsRegistrationsEnabled');
 
     var result = false;
 
@@ -430,6 +450,10 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
             ICurrentAuthInstanceBloc.of(context, listen: false),
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
             IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
+          context,
+          listen: false,
+        ),
+        configService: IConfigService.of(
           context,
           listen: false,
         ),

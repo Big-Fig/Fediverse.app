@@ -9,7 +9,7 @@ var _urlPath = path.Context(style: path.Style.url);
 
 class PleromaApiAnnouncementService extends BasePleromaApiService
     implements IPleromaApiAnnouncementService {
-  final announcementRelativeUrlPath = "/api/v1/announcements";
+  final announcementRelativeUrlPath = '/api/v1/announcements';
   @override
   final IPleromaApiRestService restService;
 
@@ -28,7 +28,7 @@ class PleromaApiAnnouncementService extends BasePleromaApiService
         relativePath: announcementRelativeUrlPath,
         queryArgs: [
           RestRequestQueryArg(
-            key: "with_dismissed",
+            key: 'with_dismissed',
             value: withDismissed.toString(),
           ),
         ],
@@ -50,7 +50,7 @@ class PleromaApiAnnouncementService extends BasePleromaApiService
         relativePath: _urlPath.join(
           announcementRelativeUrlPath,
           announcementId,
-          "dismiss",
+          'dismiss',
         ),
       ),
     );
@@ -70,7 +70,7 @@ class PleromaApiAnnouncementService extends BasePleromaApiService
         relativePath: _urlPath.join(
           announcementRelativeUrlPath,
           announcementId,
-          "reactions",
+          'reactions',
           name,
         ),
       ),
@@ -91,7 +91,7 @@ class PleromaApiAnnouncementService extends BasePleromaApiService
         relativePath: _urlPath.join(
           announcementRelativeUrlPath,
           announcementId,
-          "reactions",
+          'reactions',
           name,
         ),
       ),

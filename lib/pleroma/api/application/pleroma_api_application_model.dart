@@ -34,7 +34,7 @@ class PleromaApiApplication implements IPleromaApiApplication, IJsonObject {
   @HiveField(4)
   final String? website;
   @override
-  @JsonKey(name: "vapid_key")
+  @JsonKey(name: 'vapid_key')
   @HiveField(2)
   final String? vapidKey;
 
@@ -106,15 +106,15 @@ class PleromaApiClientApplication
   @HiveField(1)
   final String? website;
   @override
-  @JsonKey(name: "vapid_key")
+  @JsonKey(name: 'vapid_key')
   @HiveField(2)
   final String? vapidKey;
   @override
-  @JsonKey(name: "client_id")
+  @JsonKey(name: 'client_id')
   @HiveField(3)
   final String? clientId;
   @override
-  @JsonKey(name: "client_secret")
+  @JsonKey(name: 'client_secret')
   @HiveField(4)
   final String? clientSecret;
 

@@ -12,7 +12,7 @@ import 'package:fedi/pleroma/api/account/pleroma_api_account_service_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-final Logger _logger = Logger("remote_account_bloc_impl.dart");
+final Logger _logger = Logger('remote_account_bloc_impl.dart');
 
 class RemoteAccountBloc extends AccountBloc {
   final Uri? instanceUri;
@@ -90,7 +90,7 @@ class RemoteAccountBloc extends AccountBloc {
   Future refreshFromNetwork({
     required bool isNeedPreFetchRelationship,
   }) async {
-    _logger.finest(() => "requestRefreshFromNetwork start");
+    _logger.finest(() => 'requestRefreshFromNetwork start');
 
     var remoteAccount = await loadRemoteAccount();
 

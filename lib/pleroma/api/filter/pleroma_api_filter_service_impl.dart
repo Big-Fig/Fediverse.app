@@ -11,7 +11,7 @@ var _urlPath = path.Context(style: path.Style.url);
 class PleromaApiFilterService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiFilterService {
-  final filterRelativeUrlPath = "/api/v1/filters";
+  final filterRelativeUrlPath = '/api/v1/filters';
   @override
   final IPleromaApiAuthRestService restService;
 

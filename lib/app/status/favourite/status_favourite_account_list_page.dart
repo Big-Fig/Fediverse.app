@@ -29,7 +29,7 @@ class StatusFavouriteAccountListPage extends StatelessWidget {
             const Expanded(
               child: AccountPaginationListWidget(
                 accountSelectedCallback: _goToAccountDetailsPage,
-                key: PageStorageKey("StatusFavouriteAccountListPage"),
+                key: PageStorageKey('StatusFavouriteAccountListPage'),
               ),
             ),
           ],

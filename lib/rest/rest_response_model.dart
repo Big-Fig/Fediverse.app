@@ -1,7 +1,7 @@
 import 'package:fedi/rest/error/rest_error_model.dart';
 import 'package:http/http.dart';
 
-typedef T RestResultParser<T>(dynamic body);
+typedef RestResultParser<T> = T Function(dynamic body);
 
 class RestResponse<K> {
   final K? body;

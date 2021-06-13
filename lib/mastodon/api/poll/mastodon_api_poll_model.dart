@@ -1,25 +1,25 @@
 abstract class IMastodonApiPoll {
   String? get id;
 
-  DateTime get expiresAt;
+  DateTime? get expiresAt;
 
   bool get expired;
 
   bool get multiple;
 
-  int get votesCount;
+  int? get votesCount;
 
-  int get votersCount;
+  int? get votersCount;
 
-  bool get voted;
+  bool? get voted;
 
-  List<int> get ownVotes;
+  List<int>? get ownVotes;
 
   List<IMastodonPollOption> get options;
 }
 
 extension IMastodonPollExtension on IMastodonApiPoll {
-  bool get isPossibleToVote => !expired && !voted;
+  bool get isPossibleToVote => !expired && voted == false;
 }
 
 abstract class IMastodonPollOption {

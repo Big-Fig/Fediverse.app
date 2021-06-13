@@ -28,7 +28,7 @@ class PleromaApiMyAccountTestHelper {
             noRichText: seed.hashCode % 2 == 1,
             showRole: seed.hashCode % 2 == 0,
             discoverable: seed.hashCode % 2 == 1,
-            actorType: seed + "actorType",
+            actorType: seed + 'actorType',
           );
 
   static PleromaApiMyAccountSource createTestPleromaApiMyAccountSource({
@@ -40,12 +40,12 @@ class PleromaApiMyAccountTestHelper {
         ),
         followRequestsCount: seed.hashCode + 1,
         fields: [
-          PleromaApiFieldTestHelper.createTestPleromaApiField(seed: seed + "1"),
-          PleromaApiFieldTestHelper.createTestPleromaApiField(seed: seed + "2"),
+          PleromaApiFieldTestHelper.createTestPleromaApiField(seed: seed + '1'),
+          PleromaApiFieldTestHelper.createTestPleromaApiField(seed: seed + '2'),
         ],
-        note: seed + "note",
-        privacy: seed + "privacy",
-        language: seed + "language",
+        note: seed + 'note',
+        privacy: seed + 'privacy',
+        language: seed + 'language',
         sensitive: seed.hashCode % 2 == 1,
       );
 
@@ -54,10 +54,10 @@ class PleromaApiMyAccountTestHelper {
     required String seed,
   }) =>
           PleromaApiMyAccountPleromaPart(
-            backgroundImage: seed + "backgroundImage",
+            backgroundImage: seed + 'backgroundImage',
             tags: [
-              PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + "1"),
-              PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + "2"),
+              PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + '1'),
+              PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + '2'),
             ],
             relationship: PleromaApiAccountTestHelper
                 .createTestPleromaApiAccountRelationship(
@@ -76,13 +76,13 @@ class PleromaApiMyAccountTestHelper {
             skipThreadContainment: seed.hashCode % 2 == 1,
             acceptsChatMessages: seed.hashCode % 2 == 0,
             isConfirmed: seed.hashCode % 2 == 1,
-            favicon: seed + "favicon",
-            apId: seed + "apId",
+            favicon: seed + 'favicon',
+            apId: seed + 'apId',
             alsoKnownAs: [
-              seed + "known1",
-              seed + "known2",
+              seed + 'known1',
+              seed + 'known2',
             ],
-            chatToken: seed + "chatToken",
+            chatToken: seed + 'chatToken',
             unreadNotificationsCount: seed.hashCode + 11,
             unreadConversationCount: seed.hashCode + 12,
             notificationSettings:
@@ -90,7 +90,7 @@ class PleromaApiMyAccountTestHelper {
               seed: seed,
             ),
             settingsStore: {
-              "seed": seed,
+              'seed': seed,
             },
           );
 
@@ -98,35 +98,35 @@ class PleromaApiMyAccountTestHelper {
     required String seed,
   }) =>
       PleromaApiMyAccount(
-        username: seed + "username",
-        url: seed + "url",
+        username: seed + 'username',
+        url: seed + 'url',
         statusesCount: seed.hashCode + 1,
-        note: seed + "note",
+        note: seed + 'note',
         locked: seed.hashCode % 2 == 0,
-        id: seed + "id",
-        headerStatic: seed + "headerStatic",
-        header: seed + "header",
+        id: seed + 'id',
+        headerStatic: seed + 'headerStatic',
+        header: seed + 'header',
         followingCount: seed.hashCode + 2,
         followersCount: seed.hashCode + 3,
         fields: [
-          PleromaApiFieldTestHelper.createTestPleromaApiField(seed: seed + "1"),
-          PleromaApiFieldTestHelper.createTestPleromaApiField(seed: seed + "2"),
+          PleromaApiFieldTestHelper.createTestPleromaApiField(seed: seed + '1'),
+          PleromaApiFieldTestHelper.createTestPleromaApiField(seed: seed + '2'),
         ],
         emojis: [
-          PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(seed: seed + "1"),
-          PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(seed: seed + "2"),
+          PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(seed: seed + '1'),
+          PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(seed: seed + '2'),
         ],
-        displayName: seed + "displayName",
+        displayName: seed + 'displayName',
         createdAt: DateTime(seed.hashCode % 2000),
         bot: seed.hashCode % 2 == 1,
-        avatarStatic: seed + "avatarStatic",
-        avatar: seed + "avatar",
+        avatarStatic: seed + 'avatarStatic',
+        avatar: seed + 'avatar',
         acct: seed + 'acct',
         pleroma: createTestPleromaApiMyAccountPleromaPart(
           seed: seed,
         ),
         lastStatusAt: DateTime(seed.hashCode % 2000 + 1),
-        fqn: seed + "fqn",
+        fqn: seed + 'fqn',
         followRequestsCount: seed.hashCode + 10,
         source: createTestPleromaApiMyAccountSource(
           seed: seed,
@@ -138,8 +138,8 @@ class PleromaApiMyAccountTestHelper {
     required String seed,
   }) =>
       PleromaApiMyAccountEditSource(
-        language: seed + "language",
-        privacy: seed + "privacy",
+        language: seed + 'language',
+        privacy: seed + 'privacy',
         sensitive: seed.hashCode % 2 == 1,
       );
 
@@ -149,38 +149,38 @@ class PleromaApiMyAccountTestHelper {
       PleromaApiMyAccountEdit(
         bot: seed.hashCode % 2 == 0,
         discoverable: seed.hashCode % 2 == 1,
-        displayName: seed + "displayName",
+        displayName: seed + 'displayName',
         fieldsAttributes: {
           0: PleromaApiFieldTestHelper.createTestPleromaApiField(
-            seed: seed + "1",
+            seed: seed + '1',
           ),
           1: PleromaApiFieldTestHelper.createTestPleromaApiField(
-            seed: seed + "2",
+            seed: seed + '2',
           ),
         },
         locked: seed.hashCode % 2 == 0,
-        note: seed + "note",
-        source: createTestPleromaApiMyAccountEditSource(seed: seed + "source"),
-        actorType: seed + "actorType",
+        note: seed + 'note',
+        source: createTestPleromaApiMyAccountEditSource(seed: seed + 'source'),
+        actorType: seed + 'actorType',
         allowFollowingMove: seed.hashCode % 2 == 0,
         acceptsChatMessages: seed.hashCode % 2 == 1,
-        defaultScope: seed + "defaultScope",
+        defaultScope: seed + 'defaultScope',
         hideFavorites: seed.hashCode % 2 == 0,
         hideFollowers: seed.hashCode % 2 == 1,
         hideFollowersCount: seed.hashCode % 2 == 0,
         hideFollows: seed.hashCode % 2 == 1,
         hideFollowsCount: seed.hashCode % 2 == 0,
         noRichText: seed.hashCode % 2 == 1,
-        pleromaBackgroundImage: seed + "pleromaBackgroundImage",
+        pleromaBackgroundImage: seed + 'pleromaBackgroundImage',
         pleromaSettingsStore: {
-          "seed1": seed + "1",
-          "seed2": seed + "2",
+          'seed1': seed + '1',
+          'seed2': seed + '2',
         },
         showRole: seed.hashCode % 2 == 0,
         skipThreadContainment: seed.hashCode % 2 == 1,
         alsoKnownAs: [
-          seed + "1",
-          seed + "2",
+          seed + '1',
+          seed + '2',
         ],
       );
 }

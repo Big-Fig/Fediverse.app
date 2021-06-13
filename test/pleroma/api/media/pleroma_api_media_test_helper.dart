@@ -10,23 +10,23 @@ class PleromaApiMediaTestHelper {
     required String seed,
   }) =>
           PleromaApiMediaAttachmentPleromaPart(
-            mimeType: seed + "mimeType",
+            mimeType: seed + 'mimeType',
           );
 
   static PleromaApiMediaAttachment createTestPleromaApiMediaAttachment({
     required String seed,
   }) =>
       PleromaApiMediaAttachment(
-        description: seed + "desc",
-        id: seed + "id",
-        previewUrl: seed + "previewUrl",
-        remoteUrl: seed + "remoteUrl",
-        textUrl: seed + "textUrl",
+        description: seed + 'desc',
+        id: seed + 'id',
+        previewUrl: seed + 'previewUrl',
+        remoteUrl: seed + 'remoteUrl',
+        textUrl: seed + 'textUrl',
         type: EnumTestHelper.createTestEnum(
           seed: seed,
           values: MastodonApiMediaAttachmentType.values,
         ).toJsonValue(),
-        url: seed + "url",
+        url: seed + 'url',
         pleroma: createTestPleromaApiMediaAttachmentPleromaPart(seed: seed),
       );
 }

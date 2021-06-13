@@ -31,8 +31,8 @@ void main() {
   test('PleromaApiFilter toJson & fromJson', () async {
     expect(
       PleromaApiFilterTestHelper.createTestPleromaApiFilter(
-        seed: "seed",
-      ).copyWith(context: ["public", "thread"]).contextAsMastodonApiType,
+        seed: 'seed',
+      ).copyWith(context: ['public', 'thread']).contextAsMastodonApiType,
       [
         MastodonApiFilterContextType.public,
         MastodonApiFilterContextType.thread,
@@ -42,10 +42,10 @@ void main() {
 
   test('PleromaApiFilter copyWith', () async {
     var obj1 = PleromaApiFilterTestHelper.createTestPleromaApiFilter(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 = PleromaApiFilterTestHelper.createTestPleromaApiFilter(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(
@@ -79,10 +79,10 @@ void main() {
 
   test('PleromaApiAccount copyWith', () async {
     var obj1 = PleromaApiFilterTestHelper.createTestPleromaApiFilter(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 = PleromaApiFilterTestHelper.createTestPleromaApiFilter(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(
@@ -120,10 +120,10 @@ void main() {
 
   test('PostPleromaApiFilter copyWith', () async {
     var obj1 = PleromaApiFilterTestHelper.createTestPostPleromaApiFilter(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 = PleromaApiFilterTestHelper.createTestPostPleromaApiFilter(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(
@@ -141,10 +141,10 @@ void main() {
 
   test('PostPleromaApiFilter copyWith', () async {
     var obj1 = PleromaApiFilterTestHelper.createTestPostPleromaApiFilter(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 = PleromaApiFilterTestHelper.createTestPostPleromaApiFilter(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(

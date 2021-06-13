@@ -212,6 +212,7 @@ class _DurationDateTimeValueFormFieldRowValueWidget extends StatelessWidget {
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data!;
+
         return InkWell(
           onTap: () {
             if (isEnabled) {
@@ -254,6 +255,7 @@ class _DurationDateTimeValueFormFieldRowValueWidget extends StatelessWidget {
                     initialData: fieldBloc.isValueExist,
                     builder: (context, snapshot) {
                       var isValueExist = snapshot.data!;
+
                       return Icon(
                         isValueExist
                             ? FediIcons.chevron_up
@@ -289,11 +291,13 @@ class DurationDateTimeValueFormFieldRowValueTextWidget extends StatelessWidget {
     var fieldBloc = IDurationDateTimeValueFormFieldBloc.of(context);
 
     var fediUiTextTheme = IFediUiTextTheme.of(context);
+
     return StreamBuilder<bool>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data!;
+
         return StreamBuilder<Duration?>(
           stream: fieldBloc.currentValueDurationStream,
           initialData: fieldBloc.currentValueDuration,
@@ -325,6 +329,7 @@ class DurationDateTimeValueFormFieldRowValueTextWidget extends StatelessWidget {
                       : fediUiTextTheme.bigTallPrimaryDark
                   : fediUiTextTheme.bigTallLightGrey;
             }
+
             return Text(
               durationText,
               style: textStyle,
@@ -349,11 +354,13 @@ class DurationDateTimeValueFormFieldRowIconButtonWidget
     var fieldBloc = IDurationDateTimeValueFormFieldBloc.of(context);
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return StreamBuilder<bool?>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data!;
+
         return FediIconButton(
           icon: Icon(FediIcons.chevron_down),
           color: isEnabled

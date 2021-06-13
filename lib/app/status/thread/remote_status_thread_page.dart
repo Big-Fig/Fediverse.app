@@ -11,7 +11,6 @@ import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
@@ -39,7 +38,7 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
   required IStatus? localInstanceRemoteStatus,
   required IMastodonApiMediaAttachment? localInstanceRemoteInitialMediaAttachment,
 }) async {
-  AsyncDialogResult<IStatus?> remoteInstanceStatusDialogResult =
+  var remoteInstanceStatusDialogResult =
       await PleromaAsyncOperationHelper.performPleromaAsyncOperation<IStatus?>(
     context: context,
     errorDataBuilders: [
@@ -60,7 +59,7 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
           connectionService: IConnectionService.of(
             context,
             listen: false,
-          ),
+          ), pleromaApiInstance: null,
         );
 
         pleromaStatusService = PleromaApiStatusService(
@@ -81,7 +80,7 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
     },
   );
 
-  IStatus? remoteInstanceStatus = remoteInstanceStatusDialogResult.result;
+  var remoteInstanceStatus = remoteInstanceStatusDialogResult.result;
 
   if (remoteInstanceStatus != null) {
     IPleromaApiMediaAttachment? remoteInstanceInitialMediaAttachment;
@@ -120,7 +119,7 @@ MaterialPageRoute createRemoteStatusThreadPageRouteBasedOnRemoteInstanceStatus({
           connectionService: IConnectionService.of(
             context,
             listen: false,
-          ),
+          ), pleromaApiInstance: null,
         );
       },
       child: DisposableProvider<IStatusThreadBloc>(

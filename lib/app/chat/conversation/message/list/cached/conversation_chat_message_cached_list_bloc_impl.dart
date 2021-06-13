@@ -11,7 +11,7 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("pleroma_chat_message_cached_list_bloc_impl.dart");
+var _logger = Logger('pleroma_chat_message_cached_list_bloc_impl.dart');
 
 class ConversationChatMessageCachedListBloc extends DisposableOwner
     implements IConversationChatMessageCachedListBloc {
@@ -34,10 +34,10 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     required IConversationChatMessage? newerThan,
     required IConversationChatMessage? olderThan,
   }) async {
-    _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t chat = $chat"
-        "\t newerThan = $newerThan"
-        "\t olderThan = $olderThan");
+    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
+        '\t chat = $chat'
+        '\t newerThan = $newerThan'
+        '\t olderThan = $olderThan');
 
     var remoteMessages =
         await conversationChatStatusListBloc.refreshItemsFromRemoteForPage(
@@ -49,8 +49,9 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     if (remoteMessages != null) {
       return true;
     } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "messages is null");
+      _logger.severe(() => 'error during refreshItemsFromRemoteForPage: '
+          'messages is null');
+
       return false;
     }
   }
@@ -61,9 +62,9 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     required IConversationChatMessage? newerThan,
     required IConversationChatMessage? olderThan,
   }) async {
-    _logger.finest(() => "start loadLocalItems \n"
-        "\t newerThan=$newerThan"
-        "\t olderThan=$olderThan");
+    _logger.finest(() => 'start loadLocalItems \n'
+        '\t newerThan=$newerThan'
+        '\t olderThan=$olderThan');
 
     var statuses = await conversationChatStatusListBloc.loadLocalItems(
       olderThan: olderThan?.status,
@@ -72,8 +73,9 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     );
 
     _logger.finer(
-      () => "finish loadLocalItems for $chat messages ${statuses.length}",
+      () => 'finish loadLocalItems for $chat messages ${statuses.length}',
     );
+
     return statuses
         .map(
           (status) => status.toConversationChatMessageStatusAdapter(),
@@ -111,6 +113,7 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
       conversationChatStatusListBloc: chatStatusListBloc,
     );
     chatMessageCachedListBloc.addDisposable(disposable: chatStatusListBloc);
+
     return chatMessageCachedListBloc;
   }
 

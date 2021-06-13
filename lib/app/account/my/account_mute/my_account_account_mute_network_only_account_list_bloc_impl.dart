@@ -77,13 +77,15 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
         maxId: maxId,
         limit: itemsCountPerPage,
       ),
+      withRelationship: false,
     );
 
     await accountRepository.upsertAllInRemoteType(
       remoteAccounts,
-      // don't need batch because we have only one transaction
+      // dont need batch because we have only one transaction
       batchTransaction: null,
     );
+
     return remoteAccounts.toDbAccountPopulatedWrappers();
   }
 

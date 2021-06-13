@@ -14,7 +14,7 @@ class ChatDatabaseTestHelper {
   }) async =>
       DbChat(
         id: null,
-        remoteId: remoteId ?? seed + "remoteId1",
+        remoteId: remoteId ?? seed + 'remoteId1',
         unread: unread ?? seed.hashCode,
         updatedAt: updatedAt ?? DateTime(seed.hashCode % 2000),
         accountRemoteId: dbAccount.remoteId,
@@ -24,17 +24,19 @@ class ChatDatabaseTestHelper {
     DbChat dbChat,
     AccountRepository accountRepository,
   ) async {
-    DbPleromaChatPopulated dbChatPopulated = DbPleromaChatPopulated(
+    var dbChatPopulated = DbPleromaChatPopulated(
       dbChat: dbChat,
       dbAccount: (await accountRepository.findByRemoteIdInDbType(
         dbChat.accountRemoteId,
       ))!,
     );
+
     return dbChatPopulated;
   }
 
   static void expectDbChat(IPleromaChat? actual, DbChat? expected) {
     if (actual == null && expected == null) {
+
       return;
     }
 

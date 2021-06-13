@@ -7,7 +7,7 @@ import 'package:fedi/rest/rest_request_model.dart';
 class PleromaApiEmojiService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiEmojiService {
-  final emojiRelativeUrlPath = "/api/pleroma/emoji";
+  final emojiRelativeUrlPath = '/api/pleroma/emoji';
   @override
   final IPleromaApiAuthRestService restService;
 
@@ -42,7 +42,7 @@ List<IPleromaApiCustomEmoji> _parseEmojiListResponse(
   if (json is Map<String, dynamic>) {
     return json.entries.map((e) {
       var valueMap = e.value as Map<String, dynamic>;
-      valueMap["name"] = e.key;
+      valueMap['name'] = e.key;
 
       return PleromaApiCustomEmoji.fromJson(valueMap);
     }).toList();

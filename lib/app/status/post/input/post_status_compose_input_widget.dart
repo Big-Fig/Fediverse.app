@@ -23,7 +23,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IPostStatusBloc postStatusBloc = IPostStatusBloc.of(context);
+    var postStatusBloc = IPostStatusBloc.of(context);
 
     return StreamBuilder<List<FormItemValidationError>>(
       stream: postStatusBloc.inputTextErrorsStream,
@@ -35,6 +35,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
         if (inputTextErrors?.isNotEmpty == true) {
           errorText = inputTextErrors!.first.createErrorDescription(context);
         }
+        
         return FediTransparentEditTextField(
           textEditingController: postStatusBloc.inputTextController,
           focusNode: postStatusBloc.inputFocusNode,

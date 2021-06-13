@@ -97,6 +97,7 @@ Future<IMediaDeviceFile?> goToSingleMediaPickerPage(
                   },
                 ),
               );
+
               return singleMediaPickerBloc;
             },
             child: SingleMediaPickerBlocProxyProvider(

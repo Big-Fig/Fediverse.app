@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc.dart';
@@ -35,15 +34,19 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   Stream<IEditTimelineSettingsBloc?> get editTimelineSettingsBlocStream =>
       editTimelineSettingsBlocSubject.stream;
 
+  // ignore: avoid-late-keyword
   late BehaviorSubject<IEditTimelineSettingsBloc?>
       editTimelineSettingsBlocSubject;
 
   @override
+  // ignore: avoid-late-keyword
   late List<IFormItemBloc> currentItems = [];
 
+  // ignore: avoid-late-keyword
   late TimelineLocalPreferenceBloc timelineLocalPreferencesBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late ITimelineSettingsBloc timelineSettingsBloc;
 
   final IWebSocketsSettingsBloc webSocketsSettingsBloc;
@@ -100,10 +103,11 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     return EditTimelineSettingsBloc(
       settingsBloc: timelineSettingsBloc,
       timelineType: startType,
-      authInstance: authInstance,
+      pleromaApiInstance: authInstance.info!,
       isNullableValuesPossible: true,
       isEnabled: true,
       webSocketsSettingsBloc: webSocketsSettingsBloc,
+      instanceLocation: InstanceLocation.local,
     );
   }
 
@@ -128,7 +132,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
 
   StringValueFormFieldBloc _createNameField() {
     return StringValueFormFieldBloc(
-      originValue: "",
+      originValue: '',
       validators: [
         StringValueFormFieldNonEmptyValidationError.createValidator(),
       ],
@@ -197,12 +201,15 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   }
 
   @override
+  // ignore: avoid-late-keyword
   late IStringValueFormFieldBloc idFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IStringValueFormFieldBloc nameFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late ITimelineTypeSingleFromListValueFormFieldBloc typeFieldBloc;
 
   @override

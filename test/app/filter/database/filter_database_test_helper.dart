@@ -7,24 +7,25 @@ class FilterDatabaseTestHelper {
   static Future<DbFilter> createTestDbFilter({
     required String seed,
     String? remoteId,
-    String phrase = "phrase",
+    String phrase = 'phrase',
     List<String> context = const [
-      "home",
-      "public",
+      'home',
+      'public',
     ],
     bool irreversible = true,
     bool wholeWord = true,
     DateTime? expiresAt,
   }) async {
-    DbFilter dbFilter = DbFilter(
+    var dbFilter = DbFilter(
       id: null,
-      remoteId: remoteId ?? seed + "remoteId",
+      remoteId: remoteId ?? seed + 'remoteId',
       phrase: phrase,
       context: context,
       irreversible: irreversible,
       wholeWord: wholeWord,
       expiresAt: expiresAt,
     );
+
     return dbFilter;
   }
 
@@ -68,9 +69,10 @@ class FilterDatabaseTestHelper {
   static Future<DbFilterPopulated> createTestFilterPopulated(
     DbFilter dbFilter,
   ) async {
-    DbFilterPopulated dbFilterPopulated = DbFilterPopulated(
+    var dbFilterPopulated = DbFilterPopulated(
       dbFilter: dbFilter,
     );
+
     return dbFilterPopulated;
   }
 }

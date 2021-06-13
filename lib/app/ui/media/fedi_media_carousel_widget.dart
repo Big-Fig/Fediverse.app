@@ -20,6 +20,7 @@ class FediMediaCarouselWidget extends StatelessWidget {
       initialData: fediMediaCarouselBloc.currentIndex,
       builder: (context, snapshot) {
         var currentIndex = snapshot.data;
+
         return Stack(
           children: [
             CarouselSlider(

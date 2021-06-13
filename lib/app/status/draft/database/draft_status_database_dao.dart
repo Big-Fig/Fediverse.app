@@ -42,6 +42,7 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
                       expression = item.id;
                       break;
                   }
+
                   return OrderingTerm(
                     expression: expression,
                     mode: orderTerm.orderingMode,
@@ -129,7 +130,7 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
+  JoinedSelectStatement
       convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
     required DraftStatusRepositoryFilters? filters,

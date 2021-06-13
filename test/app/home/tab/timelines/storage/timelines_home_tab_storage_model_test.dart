@@ -44,11 +44,11 @@ void main() {
   test('TimelinesHomeTabStorage copyWith', () async {
     var obj1 = TimelinesHomeTabStorageModelTestHelper
         .createTestTimelinesHomeTabStorage(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 = TimelinesHomeTabStorageModelTestHelper
         .createTestTimelinesHomeTabStorage(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(

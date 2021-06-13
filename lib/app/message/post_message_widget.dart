@@ -26,6 +26,7 @@ class PostMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var postMessageBloc = IPostMessageBloc.of(context);
+
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: Column(
@@ -85,6 +86,7 @@ class _PostMessageMediaAttachmentsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
+
     return StreamBuilder<double>(
       stream: Rx.combineLatest2(
         postMessageBloc.isAnySelectedActionVisibleStream,
@@ -151,6 +153,7 @@ class _PostMessageMediaAttachmentsWidget extends StatelessWidget {
       ),
       builder: (context, snapshot) {
         var heightOnKeyboardOpen = snapshot.data;
+
         return UploadMediaAttachmentListAllWidget(
           scrollable: true,
           heightOnKeyboardOpen: heightOnKeyboardOpen,
@@ -171,6 +174,7 @@ class _PostMessageTextContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var postMessageBloc = IPostMessageBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: postMessageBloc.isExpandedStream,
       builder: (context, snapshot) {
@@ -215,6 +219,7 @@ class _PostMessageMaximizeActionWidget extends StatelessWidget {
       stream: postMessageBloc.isExpandedStream,
       builder: (context, snapshot) {
         var isExpanded = snapshot.data ?? false;
+
         return Align(
           alignment: Alignment.topRight,
           child: FediIconButton(

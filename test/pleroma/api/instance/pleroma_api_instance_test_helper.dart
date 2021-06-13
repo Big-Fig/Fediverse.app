@@ -5,14 +5,14 @@ import '../../../mastodon/api/instance/mastodon_api_instance_test_helper.dart';
 import '../account/pleroma_api_account_test_helper.dart';
 
 class PleromaApiInstanceTestHelper {
-  static PleromaApiInstanceHistory createTestPleromaApiInstanceHistory({
+  static PleromaApiInstanceActivityItem createTestPleromaApiInstanceActivityItem({
     required String seed,
   }) =>
-      PleromaApiInstanceHistory(
-        logins: seed + "logins",
-        registrations: seed + "registrations",
-        statuses: seed + "statuses",
-        week: seed + "week",
+      PleromaApiInstanceActivityItem(
+        logins: seed.hashCode + 'logins'.hashCode,
+        registrations: seed.hashCode + 'registrations'.hashCode,
+        statuses: seed.hashCode + 'statuses'.hashCode,
+        week: seed.hashCode + 'week'.hashCode,
       );
 
   static PleromaApiInstancePleromaPart createTestPleromaApiInstancePleromaPart({
@@ -113,10 +113,10 @@ class PleromaApiInstanceTestHelper {
       bannerUploadLimit: seed.hashCode + 3,
       contactAccount:
           PleromaApiAccountTestHelper.createTestPleromaApiAccount(seed: seed),
-      email: seed + "email",
+      email: seed + 'email',
       languages: [
-        seed + "lang1",
-        seed + "lang2",
+        seed + 'lang1',
+        seed + 'lang2',
       ],
       maxTootChars: seed.hashCode + 4,
       pleroma: createTestPleromaApiInstancePleromaPart(seed: seed),
@@ -124,22 +124,22 @@ class PleromaApiInstanceTestHelper {
         seed: seed,
       ),
       registrations: seed.hashCode % 2 == 1,
-      shortDescription: seed + "shortDescription",
+      shortDescription: seed + 'shortDescription',
       stats: MastodonApiInstanceTestHelper.createTestMastodonApiInstanceStats(
         seed: seed,
       ),
-      thumbnail: seed + "thumbnail",
-      title: seed + "title",
+      thumbnail: seed + 'thumbnail',
+      title: seed + 'title',
       uploadLimit: seed.hashCode + 7,
-      uri: seed + "uri",
+      uri: seed + 'uri',
       urls: MastodonApiInstanceTestHelper.createTestMastodonApiUrls(
         seed: seed,
       ),
-      vapidPublicKey: seed + "vapidPublicKey",
-      version: seed + "version",
-      backgroundImage: seed + "backgroundImage",
+      vapidPublicKey: seed + 'vapidPublicKey',
+      version: seed + 'version',
+      backgroundImage: seed + 'backgroundImage',
       chatLimit: seed.hashCode + 5,
-      description: seed + "description",
+      description: seed + 'description',
       descriptionLimit: seed.hashCode + 6,
       invitesEnabled: seed.hashCode % 2 == 0,
     );

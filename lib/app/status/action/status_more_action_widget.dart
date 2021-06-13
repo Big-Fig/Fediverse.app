@@ -11,6 +11,7 @@ class StatusMoreActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
+
     return FediIconButton(
       color: IFediUiColorTheme.of(context).darkGrey,
       iconSize: FediSizes.bigIconSize,

@@ -6,7 +6,7 @@ class PleromaApiListTestHelper {
     required String seed,
   }) =>
       PleromaApiList(
-        title: seed + "title",
-        id: seed + "id",
+        title: seed + 'title',
+        id: seed + 'id',
       );
 }

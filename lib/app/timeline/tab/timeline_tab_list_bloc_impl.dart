@@ -6,7 +6,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-final _logger = Logger("timeline_tab_list_bloc_impl.dart");
+final _logger = Logger('timeline_tab_list_bloc_impl.dart');
 
 class TimelineTabListBloc extends AsyncInitLoadingBloc
     implements ITimelineTabListBloc {
@@ -16,6 +16,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
       .toList();
 
   @override
+  // ignore: avoid-late-keyword
   late List<ITimelineTabBloc> timelineTabBlocs;
 
   @override
@@ -23,6 +24,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         (timelineTabBloc) => timelineTabBloc.timeline.type == TimelineType.home,
       );
 
+  // ignore: avoid-late-keyword
   late BehaviorSubject<ITimelineTabBloc> selectedTimelineTabBlocSubject;
 
   @override
@@ -39,7 +41,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     required ITimelineTabBloc Function(
       String timelineId,
       WebSocketsListenType webSocketsListenType,
-    ) timelineTabBlocCreator,
+    )
+        timelineTabBlocCreator,
   }) {
     var selectedTimelineId = oldSelectedTimelineId ?? timelineIds.first;
 
@@ -54,11 +57,11 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
 
       timelineTabBlocs.add(timelineTabBloc);
     }
-    int initialIndex = timelineIds.indexOf(selectedTimelineId);
+    var initialIndex = timelineIds.indexOf(selectedTimelineId);
 
     if (initialIndex <= 0) {
-      _logger.warning(() => "initialIndex $initialIndex \n"
-          "oldSelectedTimelineId $oldSelectedTimelineId");
+      _logger.warning(() => 'initialIndex $initialIndex \n'
+          'oldSelectedTimelineId $oldSelectedTimelineId');
       initialIndex = 0;
     }
 

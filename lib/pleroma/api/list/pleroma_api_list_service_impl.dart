@@ -12,7 +12,7 @@ var _urlPath = path.Context(style: path.Style.url);
 class PleromaApiListService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiListService {
-  final listRelativeUrlPath = "/api/v1/lists";
+  final listRelativeUrlPath = '/api/v1/lists';
   @override
   final IPleromaApiAuthRestService restService;
 
@@ -84,7 +84,7 @@ class PleromaApiListService extends BasePleromaApiService
           listRelativeUrlPath,
         ),
         bodyJson: {
-          "title": title,
+          'title': title,
         },
       ),
     );
@@ -107,7 +107,7 @@ class PleromaApiListService extends BasePleromaApiService
           listRemoteId,
         ),
         bodyJson: {
-          "title": title,
+          'title': title,
         },
       ),
     );
@@ -126,7 +126,7 @@ class PleromaApiListService extends BasePleromaApiService
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath:
-            _urlPath.join(listRelativeUrlPath, listRemoteId, "accounts"),
+            _urlPath.join(listRelativeUrlPath, listRemoteId, 'accounts'),
         queryArgs: [
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],
@@ -149,13 +149,14 @@ class PleromaApiListService extends BasePleromaApiService
         relativePath: _urlPath.join(
           listRelativeUrlPath,
           listRemoteId,
-          "accounts",
+          'accounts',
         ),
         bodyJson: {
-          "account_ids": accountIds,
+          'account_ids': accountIds,
         },
       ),
     );
+    
     return restService.processEmptyResponse(httpResponse);
   }
 
@@ -169,10 +170,10 @@ class PleromaApiListService extends BasePleromaApiService
         relativePath: _urlPath.join(
           listRelativeUrlPath,
           listRemoteId,
-          "accounts",
+          'accounts',
         ),
         bodyJson: {
-          "account_ids": accountIds,
+          'account_ids': accountIds,
         },
       ),
     );

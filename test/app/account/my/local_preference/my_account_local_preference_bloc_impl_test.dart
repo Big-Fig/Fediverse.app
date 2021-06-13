@@ -13,7 +13,7 @@ void main() {
       defaultValue: MyAccountLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) => MyAccountLocalPreferenceBloc(
         localPreferencesService,
-        userAtHost: "user@host",
+        userAtHost: 'user@host',
       ),
       testObjectCreator: ({required String seed}) => PleromaMyAccountWrapper(
         pleromaAccount:

@@ -5,9 +5,9 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart' as provider_lib;
 
-var _logger = Logger("provider_context_bloc_impl.dart");
+var _logger = Logger('provider_context_bloc_impl.dart');
 
-typedef provider_lib.Provider<T> ProviderBuilder<T extends IDisposable>();
+typedef ProviderBuilder<T extends IDisposable> = provider_lib.Provider<T> Function();
 
 class DisposableEntry<T extends IDisposable> {
   T disposable;
@@ -24,11 +24,11 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
   IDisposable register<T extends IDisposable>(T disposable) {
     var type = T;
     if (_storage.containsKey(type)) {
-      throw "Can't register $IDisposable because {$type} already registred";
+      throw 'Cant register $IDisposable because {$type} already registred';
     }
 
-    ProviderBuilder<T> providerCreator = () {
-//      _logger.d(() => "providerCreator for $type context $context");
+    var providerCreator = () {
+//      _logger.d(() => 'providerCreator for $type context $context');
       return provider_lib.Provider<T>.value(value: disposable);
     };
 
@@ -41,13 +41,13 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
   Future unregister<T extends IDisposable>(T object) async {
     var type = T;
     if (!_storage.containsKey(type)) {
-      throw "Can't unregister $object because {$type} not registred";
+      throw 'Cant unregister $object because {$type} not registred';
     }
 
     var objInStorage = _storage[type]!;
     if (objInStorage != object) {
-      throw "Can't unregister $object because obj {$object} not equal to "
-          "registered $objInStorage";
+      throw 'Cant unregister $object because obj {$object} not equal to '
+          'registered $objInStorage';
     }
 
     await objInStorage.disposable.dispose();
@@ -57,10 +57,11 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
 
   @override
   Widget provideContextToChild({required Widget child}) {
-    _logger.fine(() => "provideToChildContext ${_storage.length}");
+    _logger.fine(() => 'provideToChildContext ${_storage.length}');
 
     var providers =
         _storage.values.map((entry) => entry.providerBuilder()).toList();
+
     return provider_lib.MultiProvider(
       providers: providers,
       child: child,

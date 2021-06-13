@@ -68,6 +68,7 @@ class NotificationPaginationListWidget
     var paginationListBloc = Provider.of<
         IPaginationListBloc<CachedPaginationPage<INotification>,
             INotification>>(context, listen: listen);
+
     return paginationListBloc;
   }
 }

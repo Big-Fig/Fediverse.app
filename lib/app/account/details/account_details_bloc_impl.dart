@@ -9,7 +9,7 @@ import 'package:fedi/ui/scroll/nested_scroll_controller_bloc_impl.dart';
 import 'package:logging/logging.dart';
 import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 
-var _logger = Logger("account_details_bloc_impl.dart");
+var _logger = Logger('account_details_bloc_impl.dart');
 
 class AccountDetailsBloc extends DisposableOwner
     implements IAccountDetailsBloc {
@@ -19,17 +19,20 @@ class AccountDetailsBloc extends DisposableOwner
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
 
   @override
-  late NestedScrollController nestedScrollController;
+  final NestedScrollController nestedScrollController;
 
   @override
+  // ignore: avoid-late-keyword
   late INestedScrollControllerBloc nestedScrollControllerBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IFediNestedScrollViewBloc fediNestedScrollViewBloc;
 
   AccountDetailsBloc({
     required this.currentAuthInstanceBloc,
-  }) : tabs = <AccountStatusesTab>[
+  })   : nestedScrollController = NestedScrollController(centerScroll: false),
+        tabs = <AccountStatusesTab>[
           AccountStatusesTab.withoutReplies,
           AccountStatusesTab.pinned,
           AccountStatusesTab.media,
@@ -38,8 +41,6 @@ class AccountDetailsBloc extends DisposableOwner
               .currentInstance!.isAccountFavouritesFeatureSupported!)
             AccountStatusesTab.favourites,
         ] {
-    nestedScrollController = NestedScrollController(centerScroll: false);
-
     nestedScrollControllerBloc = NestedScrollControllerBloc(
       nestedScrollController: nestedScrollController,
     );
@@ -47,15 +48,15 @@ class AccountDetailsBloc extends DisposableOwner
       nestedScrollControllerBloc: nestedScrollControllerBloc,
     );
 
-    addDisposable(disposable: fediNestedScrollViewBloc);
-    addDisposable(disposable: nestedScrollControllerBloc);
     addDisposable(custom: () {
       try {
         nestedScrollController.dispose();
       } catch (e) {
-        _logger.warning(() => "error during nestedScrollController.dispose()");
+        _logger.warning(() => 'error during nestedScrollController.dispose()');
       }
     });
+    addDisposable(disposable: fediNestedScrollViewBloc);
+    addDisposable(disposable: nestedScrollControllerBloc);
   }
 
   @override

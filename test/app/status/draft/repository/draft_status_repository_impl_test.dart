@@ -9,7 +9,7 @@ import '../database/draft_status_database_test_helper.dart';
 import '../draft_status_test_helper.dart';
 import 'draft_status_repository_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
   late AppDatabase database;
   late DraftStatusRepository draftStatusRepository;
@@ -22,7 +22,7 @@ void main() {
     draftStatusRepository = DraftStatusRepository(appDatabase: database);
 
     dbDraftStatus = await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-      seed: "seed4",
+      seed: 'seed4',
     );
   });
 
@@ -46,13 +46,13 @@ void main() {
   test('upsertAll', () async {
     var dbDraftStatus1 =
         (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-      seed: "seed5",
+      seed: 'seed5',
     ))
             .copyWith(id: 1);
     // same remote id
     var dbDraftStatus2 =
         (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-      seed: "seed6",
+      seed: 'seed6',
     ))
             .copyWith(id: 1);
 
@@ -105,7 +105,7 @@ void main() {
 
     await draftStatusRepository.insertInDbType(
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed1",
+        seed: 'seed1',
       ))
           .copyWith(),
       mode: null,
@@ -115,7 +115,7 @@ void main() {
 
     await draftStatusRepository.insertInDbType(
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed2",
+        seed: 'seed2',
       ))
           .copyWith(),
       mode: null,
@@ -125,7 +125,7 @@ void main() {
 
     await draftStatusRepository.insertInDbType(
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed3",
+        seed: 'seed3',
       ))
           .copyWith(),
       mode: null,
@@ -139,7 +139,7 @@ void main() {
       filters: null,
       pagination: RepositoryPagination(
         newerThanItem: await DraftStatusTestHelper.createTestDraftStatus(
-          seed: "remoteId5",
+          seed: 'remoteId5',
           updatedAt: DateTime(2005),
         ),
       ),
@@ -149,7 +149,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed2",
+        seed: 'seed2',
       ))
           .copyWith(updatedAt: DateTime(2004)),
     );
@@ -159,7 +159,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed2",
+        seed: 'seed2',
       ))
           .copyWith(updatedAt: DateTime(2005)),
     );
@@ -169,7 +169,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed1",
+        seed: 'seed1',
       ))
           .copyWith(updatedAt: DateTime(2006)),
     );
@@ -180,7 +180,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed1",
+        seed: 'seed1',
       ))
           .copyWith(updatedAt: DateTime(2007)),
     );
@@ -193,7 +193,7 @@ void main() {
       filters: null,
       pagination: RepositoryPagination(
         olderThanItem: await DraftStatusTestHelper.createTestDraftStatus(
-          seed: "remoteId5",
+          seed: 'remoteId5',
           updatedAt: DateTime(2005),
         ),
       ),
@@ -203,7 +203,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed2",
+        seed: 'seed2',
       ))
           .copyWith(updatedAt: DateTime(2003)),
     );
@@ -212,7 +212,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed2",
+        seed: 'seed2',
       ))
           .copyWith(updatedAt: DateTime(2004)),
     );
@@ -222,7 +222,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed2",
+        seed: 'seed2',
       ))
           .copyWith(updatedAt: DateTime(2005, 2)),
     );
@@ -232,7 +232,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed1",
+        seed: 'seed1',
       ))
           .copyWith(
         updatedAt: DateTime(2006),
@@ -247,11 +247,11 @@ void main() {
       filters: null,
       pagination: RepositoryPagination(
         newerThanItem: await DraftStatusTestHelper.createTestDraftStatus(
-          seed: "remoteId2",
+          seed: 'remoteId2',
           updatedAt: DateTime(2002),
         ),
         olderThanItem: await DraftStatusTestHelper.createTestDraftStatus(
-          seed: "remoteId5",
+          seed: 'remoteId5',
           updatedAt: DateTime(2005),
         ),
       ),
@@ -261,7 +261,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed1",
+        seed: 'seed1',
       ))
           .copyWith(
         updatedAt: DateTime(2001),
@@ -273,7 +273,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed2",
+        seed: 'seed2',
       ))
           .copyWith(
         updatedAt: DateTime(2002),
@@ -284,7 +284,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed3",
+        seed: 'seed3',
       ))
           .copyWith(
         updatedAt: DateTime(2003),
@@ -296,7 +296,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed4",
+        seed: 'seed4',
       ))
           .copyWith(
         updatedAt: DateTime(2004),
@@ -308,7 +308,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed5",
+        seed: 'seed5',
       ))
           .copyWith(
         updatedAt: DateTime(2005),
@@ -320,7 +320,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed6",
+        seed: 'seed6',
       ))
           .copyWith(
         updatedAt: DateTime(2006),
@@ -341,7 +341,7 @@ void main() {
         await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed2",
+        seed: 'seed2',
       ))
           .copyWith(
         updatedAt: DateTime(2002),
@@ -351,7 +351,7 @@ void main() {
         await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed1",
+        seed: 'seed1',
       ))
           .copyWith(
         updatedAt: DateTime(2001),
@@ -361,7 +361,7 @@ void main() {
         await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed3",
+        seed: 'seed3',
       ))
           .copyWith(
         updatedAt: DateTime(2003),
@@ -397,7 +397,7 @@ void main() {
         await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed2",
+        seed: 'seed2',
       ))
           .copyWith(
         updatedAt: DateTime(2002),
@@ -407,7 +407,7 @@ void main() {
         await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed1",
+        seed: 'seed1',
       ))
           .copyWith(
         updatedAt: DateTime(2001),
@@ -417,7 +417,7 @@ void main() {
         await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed3",
+        seed: 'seed3',
       ))
           .copyWith(
         updatedAt: DateTime(2003),
@@ -455,7 +455,7 @@ void main() {
         await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed2",
+        seed: 'seed2',
       ))
           .copyWith(
         updatedAt: DateTime(2002),
@@ -464,7 +464,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed1",
+        seed: 'seed1',
       ))
           .copyWith(
         updatedAt: DateTime(2001),
@@ -473,7 +473,7 @@ void main() {
     await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
       draftStatusRepository,
       (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
-        seed: "seed3",
+        seed: 'seed3',
       ))
           .copyWith(
         updatedAt: DateTime(2003),

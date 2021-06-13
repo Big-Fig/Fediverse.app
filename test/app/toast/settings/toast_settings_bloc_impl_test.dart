@@ -11,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'toast_settings_model_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
   late GlobalToastSettingsLocalPreferenceBloc
@@ -92,7 +92,7 @@ void main() {
     );
 
     var testPushSettings =
-        ToastSettingsModelTestHelper.createTestToastSettings(seed: "seed")
+        ToastSettingsModelTestHelper.createTestToastSettings(seed: 'seed')
             .pushSettings;
 
     await toastSettingsBloc.changePushSettings(testPushSettings);
@@ -152,7 +152,7 @@ void main() {
     );
 
     var testHandlingType =
-        ToastSettingsModelTestHelper.createTestToastSettings(seed: "seed")
+        ToastSettingsModelTestHelper.createTestToastSettings(seed: 'seed')
             .handlingType;
 
     await toastSettingsBloc.changeHandlingType(testHandlingType);

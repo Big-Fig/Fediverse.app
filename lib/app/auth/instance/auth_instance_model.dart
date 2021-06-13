@@ -16,24 +16,26 @@ part 'auth_instance_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class AuthInstance extends IJsonObject {
   @HiveField(0)
-  @JsonKey(name: "url_schema")
+  @JsonKey(name: 'url_schema')
   final String? urlSchema;
   @HiveField(1)
-  @JsonKey(name: "url_host")
+  @JsonKey(name: 'url_host')
   final String urlHost;
   @HiveField(2)
   final String acct;
   @HiveField(3)
   final PleromaApiOAuthToken? token;
   @HiveField(4)
-  @JsonKey(name: "auth_code")
+  @JsonKey(name: 'auth_code')
   final String? authCode;
 
   @HiveField(5)
-  @JsonKey(name: "is_pleroma_instance")
+  @JsonKey(name: 'is_pleroma_instance')
   final bool isPleroma;
 
   bool get isMastodon => !isPleroma;
+
+  bool get isSupportFeaturedTags => isMastodon;
 
   @HiveField(6)
   final PleromaApiClientApplication? application;
@@ -42,10 +44,10 @@ class AuthInstance extends IJsonObject {
   final PleromaApiInstance? info;
 
   bool get isSupportChats =>
-      info?.pleroma?.metadata?.features?.contains("pleroma_chat_messages") ==
+      info?.pleroma?.metadata?.features?.contains('pleroma_chat_messages') ==
       true;
 
-  String get userAtHost => "$acct@$urlHost";
+  String get userAtHost => '$acct@$urlHost';
 
   Uri get uri => Uri(scheme: urlSchema, host: urlHost);
 
@@ -63,6 +65,12 @@ class AuthInstance extends IJsonObject {
   bool? get isSubscribeToAccountFeatureSupported => isPleroma;
 
   bool? get isAccountFavouritesFeatureSupported => isPleroma;
+
+  bool get isFeaturedTagsSupported => isMastodon;
+
+  bool get isEndorsementSupported => isMastodon;
+
+  bool get isSuggestionSupported => isMastodon;
 
   @override
   bool operator ==(Object other) =>

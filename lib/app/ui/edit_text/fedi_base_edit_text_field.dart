@@ -68,6 +68,7 @@ class FediBaseEditTextField extends StatelessWidget {
     } else {
       child = buildTextField(actualTextInputAction, context);
     }
+
     return child;
   }
 
@@ -140,7 +141,7 @@ class FediBaseEditTextField extends StatelessWidget {
         errorStyle: textStyle.copyWith(
           color: IFediUiColorTheme.of(context).error,
         ),
-        counterText: hideCounter ? "" : null,
+        counterText: hideCounter ? '' : null,
         hintText: hintText,
         errorText: errorText,
         contentPadding: contentPadding,
@@ -159,7 +160,7 @@ class FediBaseEditTextField extends StatelessWidget {
 }
 
 class _MentionSpecialText extends SpecialText {
-  static const String flag = "@";
+  static const String flag = '@';
   final int start;
 
   _MentionSpecialText({
@@ -168,13 +169,13 @@ class _MentionSpecialText extends SpecialText {
     required this.start,
   }) : super(
           flag,
-          " ",
+          ' ',
           textStyle,
         );
 
   @override
   InlineSpan finishText() {
-    final String mentionText = toString();
+    final mentionText = toString();
 
     return SpecialTextSpan(
       text: mentionText,

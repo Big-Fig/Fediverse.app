@@ -48,7 +48,7 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
     required IFilter? newerThan,
     required IFilter? olderThan,
   }) async {
-    // todo: don't exclude pleroma types on mastodon instances
+    // todo: dont exclude pleroma types on mastodon instances
     var remoteFilters = await pleromaFilterService.getFilters(
       pagination: PleromaApiPaginationRequest(
         maxId: olderThan?.remoteId,

@@ -128,16 +128,19 @@ class _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>
     var fieldBloc = IMultiSelectFromListValueFormFieldBloc.of<T>(context);
     //
     var fediUiTextTheme = IFediUiTextTheme.of(context);
+
     return StreamBuilder<bool?>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data;
+
         return StreamBuilder<List<T>?>(
           stream: fieldBloc.currentValueStream,
           initialData: fieldBloc.currentValue,
           builder: (context, snapshot) {
             var currentValueList = snapshot.data ?? [];
+
             return Text(
               currentValueList.isNotEmpty
                   ? currentValueList
@@ -145,7 +148,7 @@ class _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>
                         (currentValue) =>
                             valueTitleMapper(context, currentValue),
                       )
-                      .join("\n")
+                      .join('\n')
                   : S.of(context).app_filter_context_empty,
               textAlign: TextAlign.end,
               style: isEnabled!
@@ -179,16 +182,19 @@ class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
     var fieldBloc = IMultiSelectFromListValueFormFieldBloc.of<T>(context);
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return StreamBuilder<bool?>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data;
+
         return StreamBuilder<List<T>?>(
           stream: fieldBloc.currentValueStream,
           initialData: fieldBloc.currentValue,
           builder: (context, snapshot) {
             var currentValueList = snapshot.data;
+
             return Column(
               children: currentValueList
                       ?.map(
@@ -231,8 +237,8 @@ Future<T?> _showDialog<T>({
 }) async {
   var isNeedRebuildActionsStream = fieldBloc.isNeedRebuildActionsStream;
 
-  BehaviorSubject<List<SelectionDialogAction>> actionsSubject =
-      BehaviorSubject.seeded(
+  var actionsSubject =
+      BehaviorSubject<List<SelectionDialogAction>>.seeded(
     _calculateActions(
       fieldBloc: fieldBloc,
       context: context,
@@ -289,6 +295,7 @@ List<SelectionDialogAction> _calculateActions<T>({
       ),
     ),
   ];
+
   return result;
 }
 

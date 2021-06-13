@@ -8,7 +8,7 @@ class GlobalLocalizationSettingsLocalPreferenceBloc
     implements IGlobalLocalizationSettingsLocalPreferenceBloc {
   GlobalLocalizationSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
-  ) : super(preferencesService, "localization.settings.global");
+  ) : super(preferencesService, 'localization.settings.global');
 
   static const defaultValue = LocalizationSettings(
     localizationLocale: null,

@@ -40,7 +40,7 @@ abstract class CachedPaginationBloc<TPage extends CachedPaginationPage<TItem>,
       isActuallyRefreshed = false;
     }
 
-    List<TItem> loadedItems = await loadLocalItems(
+    var loadedItems = await loadLocalItems(
       pageIndex: pageIndex,
       itemsCountPerPage: itemsCountPerPage,
       olderPage: nextPage,

@@ -22,7 +22,7 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-var _logger = Logger("chat_message_list_widget.dart");
+var _logger = Logger('chat_message_list_widget.dart');
 
 var _daySeparatorDateFormat = DateFormat('MMMM dd, yyyy');
 
@@ -53,6 +53,7 @@ class ChatMessageListWidget<T extends IChatMessage>
       context,
       listen: listen,
     );
+
     return timelinePaginationListBloc;
   }
 
@@ -87,14 +88,15 @@ class ChatMessageListWidget<T extends IChatMessage>
               } catch (e, stackTrace) {
                 success = false;
                 _logger.severe(
-                  () => "additionalPreRefreshAction()",
+                  () => 'additionalPreRefreshAction()',
                   e,
                   stackTrace,
                 );
               }
-              _logger.finest(() => "additionalRefreshAction $success");
+              _logger.finest(() => 'additionalRefreshAction $success');
               var state = await paginationListBloc.refreshWithoutController();
-              _logger.finest(() => "paginationListBloc.refresh() $state");
+              _logger.finest(() => 'paginationListBloc.refresh() $state');
+
               return state;
             },
           );
@@ -113,8 +115,8 @@ class ChatMessageListWidget<T extends IChatMessage>
     required Widget? header,
     required Widget? footer,
   }) {
-    assert(header == null, "header not supported");
-    assert(footer == null, "footer not supported");
+    assert(header == null, 'header not supported');
+    assert(footer == null, 'footer not supported');
 
     return ListView.builder(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -218,6 +220,7 @@ class _ChatMessageListDaySeparatorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var message = Provider.of<IChatMessage>(context);
+
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: Center(
@@ -244,9 +247,9 @@ ChatMessageListItem<T> _calculateChatMessageListItem<T extends IChatMessage>({
   }
   var currentMessage = items[index];
 
-  DateTime? currentCreatedAt = currentMessage.createdAt;
-  DateTime? previousCreatedAt = previousMessage?.createdAt;
-  DateTime? nextCreatedAt = nextMessage?.createdAt;
+  var currentCreatedAt = currentMessage.createdAt;
+  var previousCreatedAt = previousMessage?.createdAt;
+  var nextCreatedAt = nextMessage?.createdAt;
 
   bool isFirstInDayGroup;
   bool isLastInDayGroup;
@@ -294,5 +297,6 @@ ChatMessageListItem<T> _calculateChatMessageListItem<T extends IChatMessage>({
     isFirstInDayGroup: isFirstInDayGroup,
     isLastInDayGroup: isLastInDayGroup,
   );
+
   return item;
 }

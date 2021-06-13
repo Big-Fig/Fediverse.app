@@ -108,6 +108,7 @@ class DbConversationChatPopulatedWrapper implements IConversationChat {
     if (accounts != null) {
       throw UnimplementedError();
     }
+
     return DbConversationChatPopulatedWrapper(
       dbConversationPopulated: DbConversationPopulated(
         dbConversation: dbConversationPopulated.dbConversation.copyWith(
@@ -145,8 +146,8 @@ class DbConversationChatPopulatedWrapper implements IConversationChat {
 
   @override
   List<IAccount> get accounts => throw Exception(
-        "accounts not included in ConversationChat "
-        "and should be manually fetched from repository",
+        'accounts not included in ConversationChat '
+        'and should be manually fetched from repository',
       );
 }
 
@@ -210,6 +211,7 @@ extension IConversationChatExtension on IConversationChat {
     if (this is DbConversationPopulated) {
       var dbConversationChatPopulatedWrapper =
           this as DbConversationChatPopulatedWrapper;
+
       return dbConversationChatPopulatedWrapper.dbConversationPopulated;
     } else {
       return DbConversationPopulated(
@@ -222,6 +224,7 @@ extension IConversationChatExtension on IConversationChat {
     if (this is DbConversationPopulated) {
       var dbConversationChatPopulatedWrapper =
           this as DbConversationChatPopulatedWrapper;
+
       return dbConversationChatPopulatedWrapper
           .dbConversationPopulated.dbConversation;
     } else {

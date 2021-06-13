@@ -98,95 +98,94 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
   factory DbStatus.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final boolType = db.typeSystem.forDartType<bool>();
     return DbStatus(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      remoteId: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}remote_id'])!,
-      createdAt: dateTimeType
+      createdAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
-      inReplyToRemoteId: stringType.mapFromDatabaseResponse(
+      inReplyToRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}in_reply_to_remote_id']),
-      inReplyToAccountRemoteId: stringType.mapFromDatabaseResponse(
+      inReplyToAccountRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}in_reply_to_account_remote_id']),
-      sensitive: boolType
+      sensitive: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}sensitive'])!,
-      spoilerText: stringType
+      spoilerText: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}spoiler_text']),
-      visibility: $DbStatusesTable.$converter0.mapToDart(stringType
+      visibility: $DbStatusesTable.$converter0.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}visibility']))!,
-      uri: stringType.mapFromDatabaseResponse(data['${effectivePrefix}uri'])!,
-      url: stringType.mapFromDatabaseResponse(data['${effectivePrefix}url']),
-      repliesCount: intType
+      uri: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}uri'])!,
+      url: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}url']),
+      repliesCount: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}replies_count'])!,
-      reblogsCount: intType
+      reblogsCount: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}reblogs_count'])!,
-      favouritesCount: intType
+      favouritesCount: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}favourites_count'])!,
-      favourited: boolType
+      favourited: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}favourited'])!,
-      reblogged: boolType
+      reblogged: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}reblogged'])!,
-      muted: boolType.mapFromDatabaseResponse(data['${effectivePrefix}muted'])!,
-      bookmarked: boolType
+      muted: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}muted'])!,
+      bookmarked: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}bookmarked']),
-      pinned:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}pinned']),
-      content:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}content']),
-      reblogStatusRemoteId: stringType.mapFromDatabaseResponse(
+      pinned: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pinned']),
+      content: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}content']),
+      reblogStatusRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}reblog_status_remote_id']),
-      application: $DbStatusesTable.$converter1.mapToDart(stringType
+      application: $DbStatusesTable.$converter1.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}application'])),
-      accountRemoteId: stringType.mapFromDatabaseResponse(
+      accountRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}account_remote_id'])!,
       mediaAttachments: $DbStatusesTable.$converter2.mapToDart(
-          stringType.mapFromDatabaseResponse(
+          const StringType().mapFromDatabaseResponse(
               data['${effectivePrefix}media_attachments'])),
-      mentions: $DbStatusesTable.$converter3.mapToDart(stringType
+      mentions: $DbStatusesTable.$converter3.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}mentions'])),
-      tags: $DbStatusesTable.$converter4.mapToDart(
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}tags'])),
-      emojis: $DbStatusesTable.$converter5.mapToDart(
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
-      poll: $DbStatusesTable.$converter6.mapToDart(
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}poll'])),
-      card: $DbStatusesTable.$converter7.mapToDart(
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}card'])),
-      language: stringType
+      tags: $DbStatusesTable.$converter4.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}tags'])),
+      emojis: $DbStatusesTable.$converter5.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
+      poll: $DbStatusesTable.$converter6.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}poll'])),
+      card: $DbStatusesTable.$converter7.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}card'])),
+      language: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}language']),
-      pleromaContent: $DbStatusesTable.$converter8.mapToDart(stringType
+      pleromaContent: $DbStatusesTable.$converter8.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_content'])),
-      pleromaConversationId: intType.mapFromDatabaseResponse(
+      pleromaConversationId: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_conversation_id']),
-      pleromaDirectConversationId: intType.mapFromDatabaseResponse(
+      pleromaDirectConversationId: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_direct_conversation_id']),
-      pleromaInReplyToAccountAcct: stringType.mapFromDatabaseResponse(
+      pleromaInReplyToAccountAcct: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_in_reply_to_account_acct']),
-      pleromaLocal: boolType
+      pleromaLocal: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_local']),
       pleromaSpoilerText: $DbStatusesTable.$converter9.mapToDart(
-          stringType.mapFromDatabaseResponse(
+          const StringType().mapFromDatabaseResponse(
               data['${effectivePrefix}pleroma_spoiler_text'])),
-      pleromaExpiresAt: dateTimeType.mapFromDatabaseResponse(
+      pleromaExpiresAt: const DateTimeType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_expires_at']),
-      pleromaThreadMuted: boolType.mapFromDatabaseResponse(
+      pleromaThreadMuted: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_thread_muted']),
       pleromaEmojiReactions: $DbStatusesTable.$converter10.mapToDart(
-          stringType.mapFromDatabaseResponse(
+          const StringType().mapFromDatabaseResponse(
               data['${effectivePrefix}pleroma_emoji_reactions'])),
-      deleted:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
-      hiddenLocallyOnDevice: boolType.mapFromDatabaseResponse(
+      deleted: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
+      hiddenLocallyOnDevice: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}hidden_locally_on_device']),
-      pendingState: $DbStatusesTable.$converter11.mapToDart(stringType
+      pendingState: $DbStatusesTable.$converter11.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}pending_state'])),
-      oldPendingRemoteId: stringType.mapFromDatabaseResponse(
+      oldPendingRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}old_pending_remote_id']),
-      wasSentWithIdempotencyKey: stringType.mapFromDatabaseResponse(
+      wasSentWithIdempotencyKey: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}was_sent_with_idempotency_key']),
     );
   }
@@ -739,7 +738,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
                                                                               content.hashCode,
                                                                               $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, $mrjc(pleromaEmojiReactions.hashCode, $mrjc(deleted.hashCode, $mrjc(hiddenLocallyOnDevice.hashCode, $mrjc(pendingState.hashCode, $mrjc(oldPendingRemoteId.hashCode, wasSentWithIdempotencyKey.hashCode)))))))))))))))))))))))))))))))))))))))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbStatus &&
           other.id == this.id &&
@@ -2103,8 +2102,8 @@ class $DbStatusesTable extends DbStatuses
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbStatus map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbStatus.fromData(data, _db, prefix: effectivePrefix);
+    return DbStatus.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -2213,76 +2212,76 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
   factory DbAccount.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final boolType = db.typeSystem.forDartType<bool>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return DbAccount(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      remoteId: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}remote_id'])!,
-      username: stringType
+      username: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}username'])!,
-      url: stringType.mapFromDatabaseResponse(data['${effectivePrefix}url'])!,
-      note: stringType.mapFromDatabaseResponse(data['${effectivePrefix}note']),
-      locked:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}locked'])!,
-      headerStatic: stringType
+      url: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}url'])!,
+      note: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}note']),
+      locked: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}locked'])!,
+      headerStatic: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}header_static'])!,
-      header:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}header'])!,
-      followingCount: intType
+      header: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}header'])!,
+      followingCount: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}following_count'])!,
-      followersCount: intType
+      followersCount: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}followers_count'])!,
-      statusesCount: intType
+      statusesCount: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}statuses_count'])!,
-      displayName: stringType
+      displayName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}display_name']),
-      createdAt: dateTimeType
+      createdAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
-      bot: boolType.mapFromDatabaseResponse(data['${effectivePrefix}bot']),
-      avatarStatic: stringType
+      bot: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}bot']),
+      avatarStatic: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}avatar_static'])!,
-      avatar:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}avatar'])!,
-      acct: stringType.mapFromDatabaseResponse(data['${effectivePrefix}acct'])!,
-      lastStatusAt: dateTimeType
+      avatar: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}avatar'])!,
+      acct: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}acct'])!,
+      lastStatusAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}last_status_at']),
-      fields: $DbAccountsTable.$converter0.mapToDart(
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}fields'])),
-      emojis: $DbAccountsTable.$converter1.mapToDart(
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
-      pleromaBackgroundImage: stringType.mapFromDatabaseResponse(
+      fields: $DbAccountsTable.$converter0.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}fields'])),
+      emojis: $DbAccountsTable.$converter1.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
+      pleromaBackgroundImage: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_background_image']),
-      pleromaTags: $DbAccountsTable.$converter2.mapToDart(stringType
+      pleromaTags: $DbAccountsTable.$converter2.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_tags'])),
       pleromaRelationship: $DbAccountsTable.$converter3.mapToDart(
-          stringType.mapFromDatabaseResponse(
+          const StringType().mapFromDatabaseResponse(
               data['${effectivePrefix}pleroma_relationship'])),
-      pleromaIsAdmin: boolType
+      pleromaIsAdmin: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_is_admin']),
-      pleromaIsModerator: boolType.mapFromDatabaseResponse(
+      pleromaIsModerator: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_is_moderator']),
-      pleromaConfirmationPending: boolType.mapFromDatabaseResponse(
+      pleromaConfirmationPending: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_confirmation_pending']),
-      pleromaHideFavorites: boolType.mapFromDatabaseResponse(
+      pleromaHideFavorites: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_hide_favorites']),
-      pleromaHideFollowers: boolType.mapFromDatabaseResponse(
+      pleromaHideFollowers: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_hide_followers']),
-      pleromaHideFollows: boolType.mapFromDatabaseResponse(
+      pleromaHideFollows: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_hide_follows']),
-      pleromaHideFollowersCount: boolType.mapFromDatabaseResponse(
+      pleromaHideFollowersCount: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_hide_followers_count']),
-      pleromaHideFollowsCount: boolType.mapFromDatabaseResponse(
+      pleromaHideFollowsCount: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_hide_follows_count']),
-      pleromaDeactivated: boolType.mapFromDatabaseResponse(
+      pleromaDeactivated: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_deactivated']),
-      pleromaAllowFollowingMove: boolType.mapFromDatabaseResponse(
+      pleromaAllowFollowingMove: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_allow_following_move']),
-      pleromaSkipThreadContainment: boolType.mapFromDatabaseResponse(
+      pleromaSkipThreadContainment: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_skip_thread_containment']),
-      pleromaAcceptsChatMessages: boolType.mapFromDatabaseResponse(
+      pleromaAcceptsChatMessages: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_accepts_chat_messages']),
     );
   }
@@ -2737,7 +2736,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
                                                                               fields.hashCode,
                                                                               $mrjc(emojis.hashCode, $mrjc(pleromaBackgroundImage.hashCode, $mrjc(pleromaTags.hashCode, $mrjc(pleromaRelationship.hashCode, $mrjc(pleromaIsAdmin.hashCode, $mrjc(pleromaIsModerator.hashCode, $mrjc(pleromaConfirmationPending.hashCode, $mrjc(pleromaHideFavorites.hashCode, $mrjc(pleromaHideFollowers.hashCode, $mrjc(pleromaHideFollows.hashCode, $mrjc(pleromaHideFollowersCount.hashCode, $mrjc(pleromaHideFollowsCount.hashCode, $mrjc(pleromaDeactivated.hashCode, $mrjc(pleromaAllowFollowingMove.hashCode, $mrjc(pleromaSkipThreadContainment.hashCode, pleromaAcceptsChatMessages.hashCode)))))))))))))))))))))))))))))))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbAccount &&
           other.id == this.id &&
@@ -3915,8 +3914,8 @@ class $DbAccountsTable extends DbAccounts
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbAccount map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbAccount.fromData(data, _db, prefix: effectivePrefix);
+    return DbAccount.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -3945,17 +3944,13 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final boolType = db.typeSystem.forDartType<bool>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return DbConversation(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      remoteId: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}remote_id'])!,
-      unread:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}unread'])!,
-      updatedAt: dateTimeType
+      unread: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}unread'])!,
+      updatedAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
     );
   }
@@ -4028,7 +4023,7 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(remoteId.hashCode, $mrjc(unread.hashCode, updatedAt.hashCode))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbConversation &&
           other.id == this.id &&
@@ -4194,8 +4189,8 @@ class $DbConversationsTable extends DbConversations
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbConversation map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbConversation.fromData(data, _db, prefix: effectivePrefix);
+    return DbConversation.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -4240,39 +4235,37 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final boolType = db.typeSystem.forDartType<bool>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return DbNotification(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      remoteId: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}remote_id'])!,
-      accountRemoteId: stringType
+      accountRemoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
-      statusRemoteId: stringType
+      statusRemoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
-      chatRemoteId: stringType
+      chatRemoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}chat_remote_id']),
-      chatMessageRemoteId: stringType.mapFromDatabaseResponse(
+      chatMessageRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}chat_message_remote_id']),
-      emoji:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}emoji']),
-      pleroma: $DbNotificationsTable.$converter0.mapToDart(stringType
+      emoji: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}emoji']),
+      pleroma: $DbNotificationsTable.$converter0.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma'])),
-      report: $DbNotificationsTable.$converter1.mapToDart(
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}report'])),
-      chatMessage: $DbNotificationsTable.$converter2.mapToDart(stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}chat_message'])),
-      target: $DbNotificationsTable.$converter3.mapToDart(
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}target'])),
-      unread:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}unread']),
-      type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type'])!,
-      createdAt: dateTimeType
+      report: $DbNotificationsTable.$converter1.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}report'])),
+      chatMessage: $DbNotificationsTable.$converter2.mapToDart(
+          const StringType()
+              .mapFromDatabaseResponse(data['${effectivePrefix}chat_message'])),
+      target: $DbNotificationsTable.$converter3.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}target'])),
+      unread: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}unread']),
+      type: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type'])!,
+      createdAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
-      dismissed:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}dismissed']),
+      dismissed: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}dismissed']),
     );
   }
   @override
@@ -4495,7 +4488,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
                                                           dismissed
                                                               .hashCode)))))))))))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbNotification &&
           other.id == this.id &&
@@ -4986,8 +4979,8 @@ class $DbNotificationsTable extends DbNotifications
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbNotification map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbNotification.fromData(data, _db, prefix: effectivePrefix);
+    return DbNotification.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -5018,13 +5011,11 @@ class DbConversationStatus extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return DbConversationStatus(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      conversationRemoteId: stringType.mapFromDatabaseResponse(
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      conversationRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}conversation_remote_id'])!,
-      statusRemoteId: stringType
+      statusRemoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id'])!,
     );
   }
@@ -5088,7 +5079,7 @@ class DbConversationStatus extends DataClass
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(conversationRemoteId.hashCode, statusRemoteId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbConversationStatus &&
           other.id == this.id &&
@@ -5110,7 +5101,7 @@ class DbConversationStatusesCompanion
     this.id = const Value.absent(),
     required String conversationRemoteId,
     required String statusRemoteId,
-  })   : conversationRemoteId = Value(conversationRemoteId),
+  })  : conversationRemoteId = Value(conversationRemoteId),
         statusRemoteId = Value(statusRemoteId);
   static Insertable<DbConversationStatus> custom({
     Expression<int?>? id,
@@ -5242,8 +5233,8 @@ class $DbConversationStatusesTable extends DbConversationStatuses
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbConversationStatus map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbConversationStatus.fromData(data, _db, prefix: effectivePrefix);
+    return DbConversationStatus.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -5262,13 +5253,11 @@ class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return DbStatusHashtag(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      statusRemoteId: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      statusRemoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id'])!,
-      hashtag: stringType
+      hashtag: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}hashtag'])!,
     );
   }
@@ -5331,7 +5320,7 @@ class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
   int get hashCode => $mrjf(
       $mrjc(id.hashCode, $mrjc(statusRemoteId.hashCode, hashtag.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbStatusHashtag &&
           other.id == this.id &&
@@ -5352,7 +5341,7 @@ class DbStatusHashtagsCompanion extends UpdateCompanion<DbStatusHashtag> {
     this.id = const Value.absent(),
     required String statusRemoteId,
     required String hashtag,
-  })   : statusRemoteId = Value(statusRemoteId),
+  })  : statusRemoteId = Value(statusRemoteId),
         hashtag = Value(hashtag);
   static Insertable<DbStatusHashtag> custom({
     Expression<int?>? id,
@@ -5476,8 +5465,8 @@ class $DbStatusHashtagsTable extends DbStatusHashtags
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbStatusHashtag map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbStatusHashtag.fromData(data, _db, prefix: effectivePrefix);
+    return DbStatusHashtag.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -5495,13 +5484,11 @@ class DbStatusList extends DataClass implements Insertable<DbStatusList> {
   factory DbStatusList.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return DbStatusList(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      statusRemoteId: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      statusRemoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id'])!,
-      listRemoteId: stringType
+      listRemoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}list_remote_id'])!,
     );
   }
@@ -5564,7 +5551,7 @@ class DbStatusList extends DataClass implements Insertable<DbStatusList> {
   int get hashCode => $mrjf($mrjc(
       id.hashCode, $mrjc(statusRemoteId.hashCode, listRemoteId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbStatusList &&
           other.id == this.id &&
@@ -5585,7 +5572,7 @@ class DbStatusListsCompanion extends UpdateCompanion<DbStatusList> {
     this.id = const Value.absent(),
     required String statusRemoteId,
     required String listRemoteId,
-  })   : statusRemoteId = Value(statusRemoteId),
+  })  : statusRemoteId = Value(statusRemoteId),
         listRemoteId = Value(listRemoteId);
   static Insertable<DbStatusList> custom({
     Expression<int?>? id,
@@ -5712,8 +5699,8 @@ class $DbStatusListsTable extends DbStatusLists
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbStatusList map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbStatusList.fromData(data, _db, prefix: effectivePrefix);
+    return DbStatusList.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -5733,13 +5720,11 @@ class DbStatusFavouritedAccount extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return DbStatusFavouritedAccount(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      statusRemoteId: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      statusRemoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id'])!,
-      accountRemoteId: stringType.mapFromDatabaseResponse(
+      accountRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}account_remote_id'])!,
     );
   }
@@ -5802,7 +5787,7 @@ class DbStatusFavouritedAccount extends DataClass
   int get hashCode => $mrjf($mrjc(
       id.hashCode, $mrjc(statusRemoteId.hashCode, accountRemoteId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbStatusFavouritedAccount &&
           other.id == this.id &&
@@ -5824,7 +5809,7 @@ class DbStatusFavouritedAccountsCompanion
     this.id = const Value.absent(),
     required String statusRemoteId,
     required String accountRemoteId,
-  })   : statusRemoteId = Value(statusRemoteId),
+  })  : statusRemoteId = Value(statusRemoteId),
         accountRemoteId = Value(accountRemoteId);
   static Insertable<DbStatusFavouritedAccount> custom({
     Expression<int?>? id,
@@ -5954,9 +5939,8 @@ class $DbStatusFavouritedAccountsTable extends DbStatusFavouritedAccounts
   @override
   DbStatusFavouritedAccount map(Map<String, dynamic> data,
       {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbStatusFavouritedAccount.fromData(data, _db,
-        prefix: effectivePrefix);
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -5976,13 +5960,11 @@ class DbStatusRebloggedAccount extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return DbStatusRebloggedAccount(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      statusRemoteId: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      statusRemoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id'])!,
-      accountRemoteId: stringType.mapFromDatabaseResponse(
+      accountRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}account_remote_id'])!,
     );
   }
@@ -6045,7 +6027,7 @@ class DbStatusRebloggedAccount extends DataClass
   int get hashCode => $mrjf($mrjc(
       id.hashCode, $mrjc(statusRemoteId.hashCode, accountRemoteId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbStatusRebloggedAccount &&
           other.id == this.id &&
@@ -6067,7 +6049,7 @@ class DbStatusRebloggedAccountsCompanion
     this.id = const Value.absent(),
     required String statusRemoteId,
     required String accountRemoteId,
-  })   : statusRemoteId = Value(statusRemoteId),
+  })  : statusRemoteId = Value(statusRemoteId),
         accountRemoteId = Value(accountRemoteId);
   static Insertable<DbStatusRebloggedAccount> custom({
     Expression<int?>? id,
@@ -6196,9 +6178,8 @@ class $DbStatusRebloggedAccountsTable extends DbStatusRebloggedAccounts
   @override
   DbStatusRebloggedAccount map(Map<String, dynamic> data,
       {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbStatusRebloggedAccount.fromData(data, _db,
-        prefix: effectivePrefix);
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -6220,13 +6201,11 @@ class DbAccountFollowing extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return DbAccountFollowing(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      accountRemoteId: stringType.mapFromDatabaseResponse(
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      accountRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}account_remote_id'])!,
-      followingAccountRemoteId: stringType.mapFromDatabaseResponse(
+      followingAccountRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}following_account_remote_id'])!,
     );
   }
@@ -6295,7 +6274,7 @@ class DbAccountFollowing extends DataClass
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(accountRemoteId.hashCode, followingAccountRemoteId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbAccountFollowing &&
           other.id == this.id &&
@@ -6316,7 +6295,7 @@ class DbAccountFollowingsCompanion extends UpdateCompanion<DbAccountFollowing> {
     this.id = const Value.absent(),
     required String accountRemoteId,
     required String followingAccountRemoteId,
-  })   : accountRemoteId = Value(accountRemoteId),
+  })  : accountRemoteId = Value(accountRemoteId),
         followingAccountRemoteId = Value(followingAccountRemoteId);
   static Insertable<DbAccountFollowing> custom({
     Expression<int?>? id,
@@ -6449,8 +6428,8 @@ class $DbAccountFollowingsTable extends DbAccountFollowings
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbAccountFollowing map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbAccountFollowing.fromData(data, _db, prefix: effectivePrefix);
+    return DbAccountFollowing.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -6472,13 +6451,11 @@ class DbAccountFollower extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return DbAccountFollower(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      accountRemoteId: stringType.mapFromDatabaseResponse(
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      accountRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}account_remote_id'])!,
-      followerAccountRemoteId: stringType.mapFromDatabaseResponse(
+      followerAccountRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}follower_account_remote_id'])!,
     );
   }
@@ -6547,7 +6524,7 @@ class DbAccountFollower extends DataClass
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(accountRemoteId.hashCode, followerAccountRemoteId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbAccountFollower &&
           other.id == this.id &&
@@ -6568,7 +6545,7 @@ class DbAccountFollowersCompanion extends UpdateCompanion<DbAccountFollower> {
     this.id = const Value.absent(),
     required String accountRemoteId,
     required String followerAccountRemoteId,
-  })   : accountRemoteId = Value(accountRemoteId),
+  })  : accountRemoteId = Value(accountRemoteId),
         followerAccountRemoteId = Value(followerAccountRemoteId);
   static Insertable<DbAccountFollower> custom({
     Expression<int?>? id,
@@ -6701,8 +6678,8 @@ class $DbAccountFollowersTable extends DbAccountFollowers
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbAccountFollower map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbAccountFollower.fromData(data, _db, prefix: effectivePrefix);
+    return DbAccountFollower.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -6724,13 +6701,11 @@ class DbConversationAccount extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return DbConversationAccount(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      conversationRemoteId: stringType.mapFromDatabaseResponse(
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      conversationRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}conversation_remote_id'])!,
-      accountRemoteId: stringType.mapFromDatabaseResponse(
+      accountRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}account_remote_id'])!,
     );
   }
@@ -6794,7 +6769,7 @@ class DbConversationAccount extends DataClass
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(conversationRemoteId.hashCode, accountRemoteId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbConversationAccount &&
           other.id == this.id &&
@@ -6816,7 +6791,7 @@ class DbConversationAccountsCompanion
     this.id = const Value.absent(),
     required String conversationRemoteId,
     required String accountRemoteId,
-  })   : conversationRemoteId = Value(conversationRemoteId),
+  })  : conversationRemoteId = Value(conversationRemoteId),
         accountRemoteId = Value(accountRemoteId);
   static Insertable<DbConversationAccount> custom({
     Expression<int?>? id,
@@ -6948,8 +6923,8 @@ class $DbConversationAccountsTable extends DbConversationAccounts
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbConversationAccount map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbConversationAccount.fromData(data, _db, prefix: effectivePrefix);
+    return DbConversationAccount.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -6977,22 +6952,18 @@ class DbScheduledStatus extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final boolType = db.typeSystem.forDartType<bool>();
     return DbScheduledStatus(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      remoteId: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}remote_id'])!,
-      scheduledAt: dateTimeType
+      scheduledAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}scheduled_at'])!,
-      canceled:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}canceled'])!,
-      params: $DbScheduledStatusesTable.$converter0.mapToDart(stringType
+      canceled: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}canceled'])!,
+      params: $DbScheduledStatusesTable.$converter0.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}params']))!,
       mediaAttachments: $DbScheduledStatusesTable.$converter1.mapToDart(
-          stringType.mapFromDatabaseResponse(
+          const StringType().mapFromDatabaseResponse(
               data['${effectivePrefix}media_attachments'])),
     );
   }
@@ -7096,7 +7067,7 @@ class DbScheduledStatus extends DataClass
               $mrjc(canceled.hashCode,
                   $mrjc(params.hashCode, mediaAttachments.hashCode))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbScheduledStatus &&
           other.id == this.id &&
@@ -7323,8 +7294,8 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbScheduledStatus map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbScheduledStatus.fromData(data, _db, prefix: effectivePrefix);
+    return DbScheduledStatus.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -7353,18 +7324,15 @@ class DbChat extends DataClass implements Insertable<DbChat> {
   factory DbChat.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return DbChat(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      remoteId: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}remote_id'])!,
-      unread:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}unread'])!,
-      updatedAt: dateTimeType
+      unread: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}unread'])!,
+      updatedAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
-      accountRemoteId: stringType.mapFromDatabaseResponse(
+      accountRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}account_remote_id'])!,
     );
   }
@@ -7451,7 +7419,7 @@ class DbChat extends DataClass implements Insertable<DbChat> {
           $mrjc(unread.hashCode,
               $mrjc(updatedAt.hashCode, accountRemoteId.hashCode)))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbChat &&
           other.id == this.id &&
@@ -7480,7 +7448,7 @@ class DbChatsCompanion extends UpdateCompanion<DbChat> {
     required int unread,
     this.updatedAt = const Value.absent(),
     required String accountRemoteId,
-  })   : remoteId = Value(remoteId),
+  })  : remoteId = Value(remoteId),
         unread = Value(unread),
         accountRemoteId = Value(accountRemoteId);
   static Insertable<DbChat> custom({
@@ -7650,8 +7618,8 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbChat map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbChat.fromData(data, _db, prefix: effectivePrefix);
+    return DbChat.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -7694,37 +7662,35 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final boolType = db.typeSystem.forDartType<bool>();
     return DbChatMessage(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      remoteId: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}remote_id'])!,
-      chatRemoteId: stringType
+      chatRemoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}chat_remote_id'])!,
-      accountRemoteId: stringType.mapFromDatabaseResponse(
+      accountRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}account_remote_id'])!,
-      content:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}content']),
-      createdAt: dateTimeType
+      content: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}content']),
+      createdAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
-      emojis: $DbChatMessagesTable.$converter0.mapToDart(
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
-      mediaAttachment: $DbChatMessagesTable.$converter1.mapToDart(stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}media_attachment'])),
-      card: $DbChatMessagesTable.$converter2.mapToDart(
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}card'])),
-      pendingState: $DbChatMessagesTable.$converter3.mapToDart(stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}pending_state'])),
-      deleted:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
-      hiddenLocallyOnDevice: boolType.mapFromDatabaseResponse(
+      emojis: $DbChatMessagesTable.$converter0.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
+      mediaAttachment: $DbChatMessagesTable.$converter1.mapToDart(
+          const StringType().mapFromDatabaseResponse(
+              data['${effectivePrefix}media_attachment'])),
+      card: $DbChatMessagesTable.$converter2.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}card'])),
+      pendingState: $DbChatMessagesTable.$converter3.mapToDart(
+          const StringType().mapFromDatabaseResponse(
+              data['${effectivePrefix}pending_state'])),
+      deleted: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
+      hiddenLocallyOnDevice: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}hidden_locally_on_device']),
-      oldPendingRemoteId: stringType.mapFromDatabaseResponse(
+      oldPendingRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}old_pending_remote_id']),
-      wasSentWithIdempotencyKey: stringType.mapFromDatabaseResponse(
+      wasSentWithIdempotencyKey: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}was_sent_with_idempotency_key']),
     );
   }
@@ -7943,7 +7909,7 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
                                                       wasSentWithIdempotencyKey
                                                           .hashCode))))))))))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbChatMessage &&
           other.id == this.id &&
@@ -8423,8 +8389,8 @@ class $DbChatMessagesTable extends DbChatMessages
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbChatMessage map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbChatMessage.fromData(data, _db, prefix: effectivePrefix);
+    return DbChatMessage.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -8452,13 +8418,11 @@ class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return DbChatAccount(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      chatRemoteId: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      chatRemoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}chat_remote_id'])!,
-      accountRemoteId: stringType.mapFromDatabaseResponse(
+      accountRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}account_remote_id'])!,
     );
   }
@@ -8521,7 +8485,7 @@ class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {
   int get hashCode => $mrjf($mrjc(
       id.hashCode, $mrjc(chatRemoteId.hashCode, accountRemoteId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbChatAccount &&
           other.id == this.id &&
@@ -8542,7 +8506,7 @@ class DbChatAccountsCompanion extends UpdateCompanion<DbChatAccount> {
     this.id = const Value.absent(),
     required String chatRemoteId,
     required String accountRemoteId,
-  })   : chatRemoteId = Value(chatRemoteId),
+  })  : chatRemoteId = Value(chatRemoteId),
         accountRemoteId = Value(accountRemoteId);
   static Insertable<DbChatAccount> custom({
     Expression<int?>? id,
@@ -8669,8 +8633,8 @@ class $DbChatAccountsTable extends DbChatAccounts
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbChatAccount map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbChatAccount.fromData(data, _db, prefix: effectivePrefix);
+    return DbChatAccount.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -8698,23 +8662,19 @@ class DbFilter extends DataClass implements Insertable<DbFilter> {
   factory DbFilter.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final boolType = db.typeSystem.forDartType<bool>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return DbFilter(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      remoteId: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}remote_id'])!,
-      phrase:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}phrase'])!,
-      context: $DbFiltersTable.$converter0.mapToDart(stringType
+      phrase: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}phrase'])!,
+      context: $DbFiltersTable.$converter0.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}context']))!,
-      irreversible: boolType
+      irreversible: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}irreversible'])!,
-      wholeWord: boolType
+      wholeWord: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}whole_word'])!,
-      expiresAt: dateTimeType
+      expiresAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}expires_at']),
     );
   }
@@ -8822,7 +8782,7 @@ class DbFilter extends DataClass implements Insertable<DbFilter> {
                   $mrjc(irreversible.hashCode,
                       $mrjc(wholeWord.hashCode, expiresAt.hashCode)))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbFilter &&
           other.id == this.id &&
@@ -9078,8 +9038,8 @@ class $DbFiltersTable extends DbFilters
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbFilter map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbFilter.fromData(data, _db, prefix: effectivePrefix);
+    return DbFilter.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -9089,6 +9049,752 @@ class $DbFiltersTable extends DbFilters
 
   static TypeConverter<List<String>, String> $converter0 =
       StringListDatabaseConverter();
+}
+
+class DbInstanceAnnouncement extends DataClass
+    implements Insertable<DbInstanceAnnouncement> {
+  final int? id;
+  final String remoteId;
+  final bool allDay;
+  final DateTime publishedAt;
+  final DateTime updatedAt;
+  final bool read;
+  final String content;
+  final List<PleromaApiAnnouncementReaction>? reactions;
+  final List<PleromaApiMention>? mentions;
+  final List<PleromaApiTag>? tags;
+  final List<PleromaApiStatus>? statuses;
+  final DateTime? scheduledAt;
+  final DateTime? startsAt;
+  final DateTime? endsAt;
+  DbInstanceAnnouncement(
+      {this.id,
+      required this.remoteId,
+      required this.allDay,
+      required this.publishedAt,
+      required this.updatedAt,
+      required this.read,
+      required this.content,
+      this.reactions,
+      this.mentions,
+      this.tags,
+      this.statuses,
+      this.scheduledAt,
+      this.startsAt,
+      this.endsAt});
+  factory DbInstanceAnnouncement.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return DbInstanceAnnouncement(
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}remote_id'])!,
+      allDay: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}all_day'])!,
+      publishedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}published_at'])!,
+      updatedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+      read: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}read'])!,
+      content: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}content'])!,
+      reactions: $DbInstanceAnnouncementsTable.$converter0.mapToDart(
+          const StringType()
+              .mapFromDatabaseResponse(data['${effectivePrefix}reactions'])),
+      mentions: $DbInstanceAnnouncementsTable.$converter1.mapToDart(
+          const StringType()
+              .mapFromDatabaseResponse(data['${effectivePrefix}mentions'])),
+      tags: $DbInstanceAnnouncementsTable.$converter2.mapToDart(
+          const StringType()
+              .mapFromDatabaseResponse(data['${effectivePrefix}tags'])),
+      statuses: $DbInstanceAnnouncementsTable.$converter3.mapToDart(
+          const StringType()
+              .mapFromDatabaseResponse(data['${effectivePrefix}statuses'])),
+      scheduledAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}scheduled_at']),
+      startsAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}starts_at']),
+      endsAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}ends_at']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int?>(id);
+    }
+    map['remote_id'] = Variable<String>(remoteId);
+    map['all_day'] = Variable<bool>(allDay);
+    map['published_at'] = Variable<DateTime>(publishedAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['read'] = Variable<bool>(read);
+    map['content'] = Variable<String>(content);
+    if (!nullToAbsent || reactions != null) {
+      final converter = $DbInstanceAnnouncementsTable.$converter0;
+      map['reactions'] = Variable<String?>(converter.mapToSql(reactions));
+    }
+    if (!nullToAbsent || mentions != null) {
+      final converter = $DbInstanceAnnouncementsTable.$converter1;
+      map['mentions'] = Variable<String?>(converter.mapToSql(mentions));
+    }
+    if (!nullToAbsent || tags != null) {
+      final converter = $DbInstanceAnnouncementsTable.$converter2;
+      map['tags'] = Variable<String?>(converter.mapToSql(tags));
+    }
+    if (!nullToAbsent || statuses != null) {
+      final converter = $DbInstanceAnnouncementsTable.$converter3;
+      map['statuses'] = Variable<String?>(converter.mapToSql(statuses));
+    }
+    if (!nullToAbsent || scheduledAt != null) {
+      map['scheduled_at'] = Variable<DateTime?>(scheduledAt);
+    }
+    if (!nullToAbsent || startsAt != null) {
+      map['starts_at'] = Variable<DateTime?>(startsAt);
+    }
+    if (!nullToAbsent || endsAt != null) {
+      map['ends_at'] = Variable<DateTime?>(endsAt);
+    }
+    return map;
+  }
+
+  DbInstanceAnnouncementsCompanion toCompanion(bool nullToAbsent) {
+    return DbInstanceAnnouncementsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      remoteId: Value(remoteId),
+      allDay: Value(allDay),
+      publishedAt: Value(publishedAt),
+      updatedAt: Value(updatedAt),
+      read: Value(read),
+      content: Value(content),
+      reactions: reactions == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reactions),
+      mentions: mentions == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mentions),
+      tags: tags == null && nullToAbsent ? const Value.absent() : Value(tags),
+      statuses: statuses == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statuses),
+      scheduledAt: scheduledAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(scheduledAt),
+      startsAt: startsAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startsAt),
+      endsAt:
+          endsAt == null && nullToAbsent ? const Value.absent() : Value(endsAt),
+    );
+  }
+
+  factory DbInstanceAnnouncement.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DbInstanceAnnouncement(
+      id: serializer.fromJson<int?>(json['id']),
+      remoteId: serializer.fromJson<String>(json['remoteId']),
+      allDay: serializer.fromJson<bool>(json['allDay']),
+      publishedAt: serializer.fromJson<DateTime>(json['publishedAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      read: serializer.fromJson<bool>(json['read']),
+      content: serializer.fromJson<String>(json['content']),
+      reactions: serializer
+          .fromJson<List<PleromaApiAnnouncementReaction>?>(json['reactions']),
+      mentions: serializer.fromJson<List<PleromaApiMention>?>(json['mentions']),
+      tags: serializer.fromJson<List<PleromaApiTag>?>(json['tags']),
+      statuses: serializer.fromJson<List<PleromaApiStatus>?>(json['statuses']),
+      scheduledAt: serializer.fromJson<DateTime?>(json['scheduledAt']),
+      startsAt: serializer.fromJson<DateTime?>(json['startsAt']),
+      endsAt: serializer.fromJson<DateTime?>(json['endsAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int?>(id),
+      'remoteId': serializer.toJson<String>(remoteId),
+      'allDay': serializer.toJson<bool>(allDay),
+      'publishedAt': serializer.toJson<DateTime>(publishedAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'read': serializer.toJson<bool>(read),
+      'content': serializer.toJson<String>(content),
+      'reactions':
+          serializer.toJson<List<PleromaApiAnnouncementReaction>?>(reactions),
+      'mentions': serializer.toJson<List<PleromaApiMention>?>(mentions),
+      'tags': serializer.toJson<List<PleromaApiTag>?>(tags),
+      'statuses': serializer.toJson<List<PleromaApiStatus>?>(statuses),
+      'scheduledAt': serializer.toJson<DateTime?>(scheduledAt),
+      'startsAt': serializer.toJson<DateTime?>(startsAt),
+      'endsAt': serializer.toJson<DateTime?>(endsAt),
+    };
+  }
+
+  DbInstanceAnnouncement copyWith(
+          {int? id,
+          String? remoteId,
+          bool? allDay,
+          DateTime? publishedAt,
+          DateTime? updatedAt,
+          bool? read,
+          String? content,
+          List<PleromaApiAnnouncementReaction>? reactions,
+          List<PleromaApiMention>? mentions,
+          List<PleromaApiTag>? tags,
+          List<PleromaApiStatus>? statuses,
+          DateTime? scheduledAt,
+          DateTime? startsAt,
+          DateTime? endsAt}) =>
+      DbInstanceAnnouncement(
+        id: id ?? this.id,
+        remoteId: remoteId ?? this.remoteId,
+        allDay: allDay ?? this.allDay,
+        publishedAt: publishedAt ?? this.publishedAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        read: read ?? this.read,
+        content: content ?? this.content,
+        reactions: reactions ?? this.reactions,
+        mentions: mentions ?? this.mentions,
+        tags: tags ?? this.tags,
+        statuses: statuses ?? this.statuses,
+        scheduledAt: scheduledAt ?? this.scheduledAt,
+        startsAt: startsAt ?? this.startsAt,
+        endsAt: endsAt ?? this.endsAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DbInstanceAnnouncement(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('allDay: $allDay, ')
+          ..write('publishedAt: $publishedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('read: $read, ')
+          ..write('content: $content, ')
+          ..write('reactions: $reactions, ')
+          ..write('mentions: $mentions, ')
+          ..write('tags: $tags, ')
+          ..write('statuses: $statuses, ')
+          ..write('scheduledAt: $scheduledAt, ')
+          ..write('startsAt: $startsAt, ')
+          ..write('endsAt: $endsAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          remoteId.hashCode,
+          $mrjc(
+              allDay.hashCode,
+              $mrjc(
+                  publishedAt.hashCode,
+                  $mrjc(
+                      updatedAt.hashCode,
+                      $mrjc(
+                          read.hashCode,
+                          $mrjc(
+                              content.hashCode,
+                              $mrjc(
+                                  reactions.hashCode,
+                                  $mrjc(
+                                      mentions.hashCode,
+                                      $mrjc(
+                                          tags.hashCode,
+                                          $mrjc(
+                                              statuses.hashCode,
+                                              $mrjc(
+                                                  scheduledAt.hashCode,
+                                                  $mrjc(
+                                                      startsAt.hashCode,
+                                                      endsAt
+                                                          .hashCode))))))))))))));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DbInstanceAnnouncement &&
+          other.id == this.id &&
+          other.remoteId == this.remoteId &&
+          other.allDay == this.allDay &&
+          other.publishedAt == this.publishedAt &&
+          other.updatedAt == this.updatedAt &&
+          other.read == this.read &&
+          other.content == this.content &&
+          other.reactions == this.reactions &&
+          other.mentions == this.mentions &&
+          other.tags == this.tags &&
+          other.statuses == this.statuses &&
+          other.scheduledAt == this.scheduledAt &&
+          other.startsAt == this.startsAt &&
+          other.endsAt == this.endsAt);
+}
+
+class DbInstanceAnnouncementsCompanion
+    extends UpdateCompanion<DbInstanceAnnouncement> {
+  final Value<int?> id;
+  final Value<String> remoteId;
+  final Value<bool> allDay;
+  final Value<DateTime> publishedAt;
+  final Value<DateTime> updatedAt;
+  final Value<bool> read;
+  final Value<String> content;
+  final Value<List<PleromaApiAnnouncementReaction>?> reactions;
+  final Value<List<PleromaApiMention>?> mentions;
+  final Value<List<PleromaApiTag>?> tags;
+  final Value<List<PleromaApiStatus>?> statuses;
+  final Value<DateTime?> scheduledAt;
+  final Value<DateTime?> startsAt;
+  final Value<DateTime?> endsAt;
+  const DbInstanceAnnouncementsCompanion({
+    this.id = const Value.absent(),
+    this.remoteId = const Value.absent(),
+    this.allDay = const Value.absent(),
+    this.publishedAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.read = const Value.absent(),
+    this.content = const Value.absent(),
+    this.reactions = const Value.absent(),
+    this.mentions = const Value.absent(),
+    this.tags = const Value.absent(),
+    this.statuses = const Value.absent(),
+    this.scheduledAt = const Value.absent(),
+    this.startsAt = const Value.absent(),
+    this.endsAt = const Value.absent(),
+  });
+  DbInstanceAnnouncementsCompanion.insert({
+    this.id = const Value.absent(),
+    required String remoteId,
+    required bool allDay,
+    required DateTime publishedAt,
+    required DateTime updatedAt,
+    required bool read,
+    required String content,
+    this.reactions = const Value.absent(),
+    this.mentions = const Value.absent(),
+    this.tags = const Value.absent(),
+    this.statuses = const Value.absent(),
+    this.scheduledAt = const Value.absent(),
+    this.startsAt = const Value.absent(),
+    this.endsAt = const Value.absent(),
+  })  : remoteId = Value(remoteId),
+        allDay = Value(allDay),
+        publishedAt = Value(publishedAt),
+        updatedAt = Value(updatedAt),
+        read = Value(read),
+        content = Value(content);
+  static Insertable<DbInstanceAnnouncement> custom({
+    Expression<int?>? id,
+    Expression<String>? remoteId,
+    Expression<bool>? allDay,
+    Expression<DateTime>? publishedAt,
+    Expression<DateTime>? updatedAt,
+    Expression<bool>? read,
+    Expression<String>? content,
+    Expression<List<PleromaApiAnnouncementReaction>?>? reactions,
+    Expression<List<PleromaApiMention>?>? mentions,
+    Expression<List<PleromaApiTag>?>? tags,
+    Expression<List<PleromaApiStatus>?>? statuses,
+    Expression<DateTime?>? scheduledAt,
+    Expression<DateTime?>? startsAt,
+    Expression<DateTime?>? endsAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (remoteId != null) 'remote_id': remoteId,
+      if (allDay != null) 'all_day': allDay,
+      if (publishedAt != null) 'published_at': publishedAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (read != null) 'read': read,
+      if (content != null) 'content': content,
+      if (reactions != null) 'reactions': reactions,
+      if (mentions != null) 'mentions': mentions,
+      if (tags != null) 'tags': tags,
+      if (statuses != null) 'statuses': statuses,
+      if (scheduledAt != null) 'scheduled_at': scheduledAt,
+      if (startsAt != null) 'starts_at': startsAt,
+      if (endsAt != null) 'ends_at': endsAt,
+    });
+  }
+
+  DbInstanceAnnouncementsCompanion copyWith(
+      {Value<int?>? id,
+      Value<String>? remoteId,
+      Value<bool>? allDay,
+      Value<DateTime>? publishedAt,
+      Value<DateTime>? updatedAt,
+      Value<bool>? read,
+      Value<String>? content,
+      Value<List<PleromaApiAnnouncementReaction>?>? reactions,
+      Value<List<PleromaApiMention>?>? mentions,
+      Value<List<PleromaApiTag>?>? tags,
+      Value<List<PleromaApiStatus>?>? statuses,
+      Value<DateTime?>? scheduledAt,
+      Value<DateTime?>? startsAt,
+      Value<DateTime?>? endsAt}) {
+    return DbInstanceAnnouncementsCompanion(
+      id: id ?? this.id,
+      remoteId: remoteId ?? this.remoteId,
+      allDay: allDay ?? this.allDay,
+      publishedAt: publishedAt ?? this.publishedAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      read: read ?? this.read,
+      content: content ?? this.content,
+      reactions: reactions ?? this.reactions,
+      mentions: mentions ?? this.mentions,
+      tags: tags ?? this.tags,
+      statuses: statuses ?? this.statuses,
+      scheduledAt: scheduledAt ?? this.scheduledAt,
+      startsAt: startsAt ?? this.startsAt,
+      endsAt: endsAt ?? this.endsAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int?>(id.value);
+    }
+    if (remoteId.present) {
+      map['remote_id'] = Variable<String>(remoteId.value);
+    }
+    if (allDay.present) {
+      map['all_day'] = Variable<bool>(allDay.value);
+    }
+    if (publishedAt.present) {
+      map['published_at'] = Variable<DateTime>(publishedAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (read.present) {
+      map['read'] = Variable<bool>(read.value);
+    }
+    if (content.present) {
+      map['content'] = Variable<String>(content.value);
+    }
+    if (reactions.present) {
+      final converter = $DbInstanceAnnouncementsTable.$converter0;
+      map['reactions'] = Variable<String?>(converter.mapToSql(reactions.value));
+    }
+    if (mentions.present) {
+      final converter = $DbInstanceAnnouncementsTable.$converter1;
+      map['mentions'] = Variable<String?>(converter.mapToSql(mentions.value));
+    }
+    if (tags.present) {
+      final converter = $DbInstanceAnnouncementsTable.$converter2;
+      map['tags'] = Variable<String?>(converter.mapToSql(tags.value));
+    }
+    if (statuses.present) {
+      final converter = $DbInstanceAnnouncementsTable.$converter3;
+      map['statuses'] = Variable<String?>(converter.mapToSql(statuses.value));
+    }
+    if (scheduledAt.present) {
+      map['scheduled_at'] = Variable<DateTime?>(scheduledAt.value);
+    }
+    if (startsAt.present) {
+      map['starts_at'] = Variable<DateTime?>(startsAt.value);
+    }
+    if (endsAt.present) {
+      map['ends_at'] = Variable<DateTime?>(endsAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbInstanceAnnouncementsCompanion(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('allDay: $allDay, ')
+          ..write('publishedAt: $publishedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('read: $read, ')
+          ..write('content: $content, ')
+          ..write('reactions: $reactions, ')
+          ..write('mentions: $mentions, ')
+          ..write('tags: $tags, ')
+          ..write('statuses: $statuses, ')
+          ..write('scheduledAt: $scheduledAt, ')
+          ..write('startsAt: $startsAt, ')
+          ..write('endsAt: $endsAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DbInstanceAnnouncementsTable extends DbInstanceAnnouncements
+    with TableInfo<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $DbInstanceAnnouncementsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedIntColumn id = _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, true,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
+  @override
+  late final GeneratedTextColumn remoteId = _constructRemoteId();
+  GeneratedTextColumn _constructRemoteId() {
+    return GeneratedTextColumn('remote_id', $tableName, false,
+        $customConstraints: 'UNIQUE NOT NULL');
+  }
+
+  final VerificationMeta _allDayMeta = const VerificationMeta('allDay');
+  @override
+  late final GeneratedBoolColumn allDay = _constructAllDay();
+  GeneratedBoolColumn _constructAllDay() {
+    return GeneratedBoolColumn(
+      'all_day',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _publishedAtMeta =
+      const VerificationMeta('publishedAt');
+  @override
+  late final GeneratedDateTimeColumn publishedAt = _constructPublishedAt();
+  GeneratedDateTimeColumn _constructPublishedAt() {
+    return GeneratedDateTimeColumn(
+      'published_at',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedDateTimeColumn updatedAt = _constructUpdatedAt();
+  GeneratedDateTimeColumn _constructUpdatedAt() {
+    return GeneratedDateTimeColumn(
+      'updated_at',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _readMeta = const VerificationMeta('read');
+  @override
+  late final GeneratedBoolColumn read = _constructRead();
+  GeneratedBoolColumn _constructRead() {
+    return GeneratedBoolColumn(
+      'read',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contentMeta = const VerificationMeta('content');
+  @override
+  late final GeneratedTextColumn content = _constructContent();
+  GeneratedTextColumn _constructContent() {
+    return GeneratedTextColumn(
+      'content',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _reactionsMeta = const VerificationMeta('reactions');
+  @override
+  late final GeneratedTextColumn reactions = _constructReactions();
+  GeneratedTextColumn _constructReactions() {
+    return GeneratedTextColumn(
+      'reactions',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _mentionsMeta = const VerificationMeta('mentions');
+  @override
+  late final GeneratedTextColumn mentions = _constructMentions();
+  GeneratedTextColumn _constructMentions() {
+    return GeneratedTextColumn(
+      'mentions',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _tagsMeta = const VerificationMeta('tags');
+  @override
+  late final GeneratedTextColumn tags = _constructTags();
+  GeneratedTextColumn _constructTags() {
+    return GeneratedTextColumn(
+      'tags',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _statusesMeta = const VerificationMeta('statuses');
+  @override
+  late final GeneratedTextColumn statuses = _constructStatuses();
+  GeneratedTextColumn _constructStatuses() {
+    return GeneratedTextColumn(
+      'statuses',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _scheduledAtMeta =
+      const VerificationMeta('scheduledAt');
+  @override
+  late final GeneratedDateTimeColumn scheduledAt = _constructScheduledAt();
+  GeneratedDateTimeColumn _constructScheduledAt() {
+    return GeneratedDateTimeColumn(
+      'scheduled_at',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _startsAtMeta = const VerificationMeta('startsAt');
+  @override
+  late final GeneratedDateTimeColumn startsAt = _constructStartsAt();
+  GeneratedDateTimeColumn _constructStartsAt() {
+    return GeneratedDateTimeColumn(
+      'starts_at',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _endsAtMeta = const VerificationMeta('endsAt');
+  @override
+  late final GeneratedDateTimeColumn endsAt = _constructEndsAt();
+  GeneratedDateTimeColumn _constructEndsAt() {
+    return GeneratedDateTimeColumn(
+      'ends_at',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        remoteId,
+        allDay,
+        publishedAt,
+        updatedAt,
+        read,
+        content,
+        reactions,
+        mentions,
+        tags,
+        statuses,
+        scheduledAt,
+        startsAt,
+        endsAt
+      ];
+  @override
+  $DbInstanceAnnouncementsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'db_instance_announcements';
+  @override
+  final String actualTableName = 'db_instance_announcements';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<DbInstanceAnnouncement> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('remote_id')) {
+      context.handle(_remoteIdMeta,
+          remoteId.isAcceptableOrUnknown(data['remote_id']!, _remoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_remoteIdMeta);
+    }
+    if (data.containsKey('all_day')) {
+      context.handle(_allDayMeta,
+          allDay.isAcceptableOrUnknown(data['all_day']!, _allDayMeta));
+    } else if (isInserting) {
+      context.missing(_allDayMeta);
+    }
+    if (data.containsKey('published_at')) {
+      context.handle(
+          _publishedAtMeta,
+          publishedAt.isAcceptableOrUnknown(
+              data['published_at']!, _publishedAtMeta));
+    } else if (isInserting) {
+      context.missing(_publishedAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('read')) {
+      context.handle(
+          _readMeta, read.isAcceptableOrUnknown(data['read']!, _readMeta));
+    } else if (isInserting) {
+      context.missing(_readMeta);
+    }
+    if (data.containsKey('content')) {
+      context.handle(_contentMeta,
+          content.isAcceptableOrUnknown(data['content']!, _contentMeta));
+    } else if (isInserting) {
+      context.missing(_contentMeta);
+    }
+    context.handle(_reactionsMeta, const VerificationResult.success());
+    context.handle(_mentionsMeta, const VerificationResult.success());
+    context.handle(_tagsMeta, const VerificationResult.success());
+    context.handle(_statusesMeta, const VerificationResult.success());
+    if (data.containsKey('scheduled_at')) {
+      context.handle(
+          _scheduledAtMeta,
+          scheduledAt.isAcceptableOrUnknown(
+              data['scheduled_at']!, _scheduledAtMeta));
+    }
+    if (data.containsKey('starts_at')) {
+      context.handle(_startsAtMeta,
+          startsAt.isAcceptableOrUnknown(data['starts_at']!, _startsAtMeta));
+    }
+    if (data.containsKey('ends_at')) {
+      context.handle(_endsAtMeta,
+          endsAt.isAcceptableOrUnknown(data['ends_at']!, _endsAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbInstanceAnnouncement map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return DbInstanceAnnouncement.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $DbInstanceAnnouncementsTable createAlias(String alias) {
+    return $DbInstanceAnnouncementsTable(_db, alias);
+  }
+
+  static TypeConverter<List<PleromaApiAnnouncementReaction>, String>
+      $converter0 = PleromaApiAnnouncementReactionListDatabaseConverter();
+  static TypeConverter<List<PleromaApiMention>, String> $converter1 =
+      PleromaApiMentionListDatabaseConverter();
+  static TypeConverter<List<PleromaApiTag>, String> $converter2 =
+      PleromaApiTagListDatabaseConverter();
+  static TypeConverter<List<PleromaApiStatus>, String> $converter3 =
+      PleromaApiStatusListDatabaseConverter();
 }
 
 class DbHomeTimelineStatus extends DataClass
@@ -9102,13 +9808,11 @@ class DbHomeTimelineStatus extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return DbHomeTimelineStatus(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      accountRemoteId: stringType.mapFromDatabaseResponse(
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      accountRemoteId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}account_remote_id'])!,
-      statusRemoteId: stringType
+      statusRemoteId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id'])!,
     );
   }
@@ -9171,7 +9875,7 @@ class DbHomeTimelineStatus extends DataClass
   int get hashCode => $mrjf($mrjc(
       id.hashCode, $mrjc(accountRemoteId.hashCode, statusRemoteId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbHomeTimelineStatus &&
           other.id == this.id &&
@@ -9193,7 +9897,7 @@ class DbHomeTimelineStatusesCompanion
     this.id = const Value.absent(),
     required String accountRemoteId,
     required String statusRemoteId,
-  })   : accountRemoteId = Value(accountRemoteId),
+  })  : accountRemoteId = Value(accountRemoteId),
         statusRemoteId = Value(statusRemoteId);
   static Insertable<DbHomeTimelineStatus> custom({
     Expression<int?>? id,
@@ -9315,8 +10019,8 @@ class $DbHomeTimelineStatusesTable extends DbHomeTimelineStatuses
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbHomeTimelineStatus map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbHomeTimelineStatus.fromData(data, _db, prefix: effectivePrefix);
+    return DbHomeTimelineStatus.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -9334,15 +10038,12 @@ class DbDraftStatus extends DataClass implements Insertable<DbDraftStatus> {
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final stringType = db.typeSystem.forDartType<String>();
     return DbDraftStatus(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      updatedAt: dateTimeType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      updatedAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
-      data: $DbDraftStatusesTable.$converter0.mapToDart(
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}data']))!,
+      data: $DbDraftStatusesTable.$converter0.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}data']))!,
     );
   }
   @override
@@ -9407,7 +10108,7 @@ class DbDraftStatus extends DataClass implements Insertable<DbDraftStatus> {
   int get hashCode =>
       $mrjf($mrjc(id.hashCode, $mrjc(updatedAt.hashCode, data.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DbDraftStatus &&
           other.id == this.id &&
@@ -9428,7 +10129,7 @@ class DbDraftStatusesCompanion extends UpdateCompanion<DbDraftStatus> {
     this.id = const Value.absent(),
     required DateTime updatedAt,
     required PostStatusData data,
-  })   : updatedAt = Value(updatedAt),
+  })  : updatedAt = Value(updatedAt),
         data = Value(data);
   static Insertable<DbDraftStatus> custom({
     Expression<int?>? id,
@@ -9545,8 +10246,8 @@ class $DbDraftStatusesTable extends DbDraftStatuses
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   DbDraftStatus map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DbDraftStatus.fromData(data, _db, prefix: effectivePrefix);
+    return DbDraftStatus.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -9633,6 +10334,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DbFiltersTable dbFilters = $DbFiltersTable(this);
   late final Index dbFilterRemoteIdIndex = Index('db_filter_remote_id_index',
       'CREATE UNIQUE INDEX db_filter_remote_id_index ON db_filters (remote_id);');
+  late final $DbInstanceAnnouncementsTable dbInstanceAnnouncements =
+      $DbInstanceAnnouncementsTable(this);
+  late final Index dbInstanceAnnouncementRemoteIdIndex = Index(
+      'db_instance_announcement_remote_id_index',
+      'CREATE UNIQUE INDEX db_instance_announcement_remote_id_index ON db_instance_announcements (remote_id);');
   late final $DbHomeTimelineStatusesTable dbHomeTimelineStatuses =
       $DbHomeTimelineStatusesTable(this);
   late final $DbDraftStatusesTable dbDraftStatuses =
@@ -9671,6 +10377,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final DraftStatusDao draftStatusDao =
       DraftStatusDao(this as AppDatabase);
   late final FilterDao filterDao = FilterDao(this as AppDatabase);
+  late final InstanceAnnouncementDao instanceAnnouncementDao =
+      InstanceAnnouncementDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -9710,6 +10418,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         dbChatAccountsIndex,
         dbFilters,
         dbFilterRemoteIdIndex,
+        dbInstanceAnnouncements,
+        dbInstanceAnnouncementRemoteIdIndex,
         dbHomeTimelineStatuses,
         dbDraftStatuses
       ];

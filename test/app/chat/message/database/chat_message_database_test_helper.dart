@@ -10,12 +10,13 @@ class ChatMessageDatabaseTestHelper {
     DbChatMessage dbChatMessage,
     AccountRepository accountRepository,
   ) async {
-    DbChatMessagePopulated dbChatMessagePopulated = DbChatMessagePopulated(
+    var dbChatMessagePopulated = DbChatMessagePopulated(
       dbChatMessage: dbChatMessage,
       dbAccount: (await accountRepository.findByRemoteIdInDbType(
         dbChatMessage.accountRemoteId,
       ))!,
     );
+
     return dbChatMessagePopulated;
   }
 
@@ -28,16 +29,17 @@ class ChatMessageDatabaseTestHelper {
     String? chatRemoteId,
     PleromaApiCard? card,
   }) async {
-    DbChatMessage dbChatMessage = DbChatMessage(
+    var dbChatMessage = DbChatMessage(
       id: null,
-      remoteId: remoteId ?? seed + "remoteId",
+      remoteId: remoteId ?? seed + 'remoteId',
       createdAt: createdAt ?? DateTime(1),
-      content: seed + "content",
+      content: seed + 'content',
       accountRemoteId: dbAccount.remoteId,
       emojis: null,
       card: card,
-      chatRemoteId: chatRemoteId ?? seed + "chatRemoteId",
+      chatRemoteId: chatRemoteId ?? seed + 'chatRemoteId',
     );
+
     return dbChatMessage;
   }
 

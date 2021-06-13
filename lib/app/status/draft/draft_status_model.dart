@@ -89,6 +89,7 @@ extension IDraftStatusExtension on IDraftStatus {
   DbDraftStatusPopulatedWrapper toDbDraftStatusPopulatedWrapper() {
     if (this is DbDraftStatusPopulatedWrapper) {
       var dbDraftStatusPopulatedWrapper = this as DbDraftStatusPopulatedWrapper;
+
       return dbDraftStatusPopulatedWrapper;
     } else {
       return DbDraftStatusPopulatedWrapper(
@@ -100,6 +101,7 @@ extension IDraftStatusExtension on IDraftStatus {
   DbDraftStatusPopulated toDbDraftStatusPopulated() {
     if (this is DbDraftStatusPopulatedWrapper) {
       var dbDraftStatusPopulatedWrapper = this as DbDraftStatusPopulatedWrapper;
+
       return dbDraftStatusPopulatedWrapper.dbDraftStatusPopulated;
     } else {
       return DbDraftStatusPopulated(
@@ -111,6 +113,7 @@ extension IDraftStatusExtension on IDraftStatus {
   DbDraftStatus toDbDraftStatus() {
     if (this is DbDraftStatusPopulatedWrapper) {
       var dbDraftStatusPopulatedWrapper = this as DbDraftStatusPopulatedWrapper;
+
       return dbDraftStatusPopulatedWrapper.dbDraftStatusPopulated.dbDraftStatus;
     } else {
       return DbDraftStatus(
@@ -138,9 +141,9 @@ enum DraftStatusState {
   alreadyPosted,
 }
 
-const _draftDraftStatusStateJsonValue = "draft";
-const _canceledDraftStatusStateJsonValue = "canceled";
-const _alreadyPostedDraftStatusStateJsonValue = "alreadyPosted";
+const _draftDraftStatusStateJsonValue = 'draft';
+const _canceledDraftStatusStateJsonValue = 'canceled';
+const _alreadyPostedDraftStatusStateJsonValue = 'alreadyPosted';
 
 extension DraftStatusStateExtension on DraftStatusState {
   String toJsonValue() {
@@ -176,9 +179,9 @@ extension DraftStatusStateStringExtension on String {
       case _alreadyPostedDraftStatusStateJsonValue:
         result = DraftStatusState.alreadyPosted;
         break;
-      // can't parse
+      // cant parse
       default:
-        throw "Invalid DraftStatusState $DraftStatusState";
+        throw 'Invalid DraftStatusState $DraftStatusState';
     }
 
     return result;

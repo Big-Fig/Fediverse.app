@@ -22,7 +22,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         ScheduledStatusRepositoryOrderingTermData>
     implements IScheduledStatusRepository {
   @override
-  late ScheduledStatusDao dao;
+  final ScheduledStatusDao dao;
 
   @override
   PopulatedDatabaseDaoMixin<
@@ -34,9 +34,8 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       ScheduledStatusRepositoryFilters,
       ScheduledStatusRepositoryOrderingTermData> get populatedDao => dao;
 
-  ScheduledStatusRepository({required AppDatabase appDatabase}) {
-    dao = appDatabase.scheduledStatusDao;
-  }
+  ScheduledStatusRepository({required AppDatabase appDatabase})
+      : dao = appDatabase.scheduledStatusDao;
 
   @override
   Future markAsCanceled({

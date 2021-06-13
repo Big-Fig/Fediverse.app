@@ -8,7 +8,7 @@ class AuthInstanceListModelTestHelper {
     required String seed,
   }) =>
       AuthInstanceList(instances: [
-        AuthInstanceModelTestHelper.createTestAuthInstance(seed: seed + "1"),
-        AuthInstanceModelTestHelper.createTestAuthInstance(seed: seed + "2"),
+        AuthInstanceModelTestHelper.createTestAuthInstance(seed: seed + '1'),
+        AuthInstanceModelTestHelper.createTestAuthInstance(seed: seed + '2'),
       ]);
 }

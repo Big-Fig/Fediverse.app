@@ -9,11 +9,11 @@ enum PaginationPageSize {
 
 const defaultPaginationPageSize = PaginationPageSize.size50;
 
-const _size5PaginationPageSizeJsonValue = "size5";
-const _size10PaginationPageSizeJsonValue = "size10";
-const _size20PaginationPageSizeJsonValue = "size20";
-const _size50PaginationPageSizeJsonValue = "size50";
-const _size100PaginationPageSizeJsonValue = "size100";
+const _size5PaginationPageSizeJsonValue = 'size5';
+const _size10PaginationPageSizeJsonValue = 'size10';
+const _size20PaginationPageSizeJsonValue = 'size20';
+const _size50PaginationPageSizeJsonValue = 'size50';
+const _size100PaginationPageSizeJsonValue = 'size100';
 
 extension PaginationPageSizeExtension on PaginationPageSize {
   String toJsonValue() {
@@ -85,7 +85,7 @@ extension PaginationPageSizeStringExtension on String {
       case _size100PaginationPageSizeJsonValue:
         result = PaginationPageSize.size100;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
         result = defaultPaginationPageSize;
         break;

@@ -14,7 +14,7 @@ import 'package:pedantic/pedantic.dart';
 import 'package:wakelock/wakelock.dart';
 
 final _logger =
-    Logger("fedi_video_player_control_toggle_fullscreen_button_widget.dart");
+    Logger('fedi_video_player_control_toggle_fullscreen_button_widget.dart');
 
 class FediVideoPlayerToggleControlFullscreenButtonWidget
     extends StatelessWidget {
@@ -44,7 +44,7 @@ class _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
 
     var isFullscreen = videoMediaPlayerBloc.isFullscreen;
-    _logger.finest(() => "onClick isFullscreen $isFullscreen");
+    _logger.finest(() => 'onClick isFullscreen $isFullscreen');
 
     return FediIconButton(
       icon: Icon(isFullscreen ? FediIcons.minimize : FediIcons.maximize),
@@ -143,6 +143,7 @@ class _FediVideoPlayerToggleControlFullscreenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Scaffold(
       body: Container(
         alignment: Alignment.center,

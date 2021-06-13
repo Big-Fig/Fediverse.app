@@ -59,6 +59,7 @@ class _AuthInstanceChooserInstanceListItemAccountInfoWidget
     var instanceChooserBloc = IAuthInstanceChooserBloc.of(context);
     var instanceListItemBloc =
         IAuthInstanceChooserInstanceListItemBloc.of(context);
+
     return InkWell(
       onTap: () {
         if (!instanceListItemBloc.isSelected) {
@@ -105,6 +106,7 @@ class _AuthInstanceChooserInstanceListItemUserAtHostWidget
   Widget build(BuildContext context) {
     var instanceListItemBloc =
         IAuthInstanceChooserInstanceListItemBloc.of(context);
+
     return Text(
       instanceListItemBloc.instance.userAtHost,
       overflow: TextOverflow.ellipsis,
@@ -147,6 +149,7 @@ class _AuthInstanceChooserInstanceListItemLogoutButtonWidget
     var instanceChooserBloc = IAuthInstanceChooserBloc.of(context);
     var instanceListItemBloc =
         IAuthInstanceChooserInstanceListItemBloc.of(context);
+
     return FediIconButton(
       icon: Icon(FediIcons.remove_circle),
       padding: EdgeInsets.zero,

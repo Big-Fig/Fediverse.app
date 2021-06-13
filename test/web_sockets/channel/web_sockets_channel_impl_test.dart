@@ -12,7 +12,7 @@ import '../websockets_model_test_impl.dart';
 import 'web_sockets_channel_impl_test.mocks.dart';
 import 'web_sockets_channel_model_test_impl.dart';
 import 'web_sockets_channel_source_mock.dart';
-
+// ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([ConnectionService])
 void main() {
   late WebSocketsChannelConfigTest config;
@@ -30,14 +30,14 @@ void main() {
 
     config = WebSocketsChannelConfigTest(
       connectionService: connectionService,
-      queryArgs: {"test": "test"},
-      baseUrl: Uri.parse("wss://fedi.app/"),
+      queryArgs: {'test': 'test'},
+      baseUrl: Uri.parse('wss://fedi.app/'),
       sourceCreator: () => source,
     );
 
     source = WebSocketsChannelSourceMock<WebSocketEventTest>(
       url: Uri.parse(
-        "wss://fedi1.app?arg=value",
+        'wss://fedi1.app?arg=value',
       ),
     );
 
@@ -65,8 +65,8 @@ void main() {
   });
 
   test('eventsStream', () async {
-    var event1 = WebSocketEventTest("test1");
-    var event2 = WebSocketEventTest("test2");
+    var event1 = WebSocketEventTest('test1');
+    var event2 = WebSocketEventTest('test2');
 
     var listenedValue1;
     var listenedValue2;

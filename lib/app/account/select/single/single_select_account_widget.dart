@@ -41,7 +41,7 @@ class SingleSelectAccountWidget extends StatelessWidget {
         }
       },
       itemPadding: itemPadding,
-      key: PageStorageKey("SingleSelectAccountWidget"),
+      key: PageStorageKey('SingleSelectAccountWidget'),
       isNeedPreFetchRelationship: isNeedPreFetchRelationship,
       header: header,
       footer: footer,

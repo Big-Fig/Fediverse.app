@@ -19,8 +19,10 @@ class StatusEmojiReactionBloc extends DisposableOwner
       emojiReactionSubject.stream;
 
   @override
-  IPleromaApiStatusEmojiReaction get emojiReaction => emojiReactionSubject.value!;
-  final IPleromaApiStatusEmojiReactionService PleromaApiStatusEmojiReactionService;
+  IPleromaApiStatusEmojiReaction get emojiReaction =>
+      emojiReactionSubject.value!;
+  final IPleromaApiStatusEmojiReactionService
+      PleromaApiStatusEmojiReactionService;
 
   StatusEmojiReactionBloc({
     required this.status,

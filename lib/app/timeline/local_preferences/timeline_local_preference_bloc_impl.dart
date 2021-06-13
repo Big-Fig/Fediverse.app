@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
@@ -11,6 +9,7 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 
 class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
     implements ITimelineLocalPreferenceBloc {
@@ -24,7 +23,7 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
     required this.defaultPreferenceValue,
   }) : super(
           preferencesService: preferencesService,
-          key: "$userAtHost.timeline.$timelineId",
+          key: '$userAtHost.timeline.$timelineId',
           schemaVersion: 1,
           jsonConverter: (json) => Timeline.fromJson(json),
         );
@@ -45,6 +44,23 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
               onlyInRemoteList: customList.toPleromaList(),
             ),
             typeString: TimelineType.customList.toJsonValue(),
+          ),
+        );
+
+  TimelineLocalPreferenceBloc.instancePublicTimeline(
+    ILocalPreferencesService preferencesService, {
+    required IPleromaApiInstance pleromaApiInstance,
+  }) : this.byId(
+          preferencesService,
+          userAtHost: pleromaApiInstance.uri!,
+          timelineId: 'public',
+          defaultPreferenceValue: Timeline(
+            id: pleromaApiInstance.uri!,
+            // ignore: no-equal-arguments
+            label: pleromaApiInstance.uri!,
+            isPossibleToDelete: true,
+            settings: TimelineSettings.createDefaultPublicSettings(),
+            typeString: TimelineType.public.toJsonValue(),
           ),
         );
 

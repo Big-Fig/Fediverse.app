@@ -21,6 +21,7 @@ class MultiSelectAccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var multiSelectAccountBloc = IMultiSelectAccountBloc.of(context);
+
     return Scaffold(
       appBar: FediPageCustomAppBar(
         leading: const FediBackIconButton(),
@@ -29,6 +30,7 @@ class MultiSelectAccountPage extends StatelessWidget {
             stream: multiSelectAccountBloc.isSomethingSelectedStream,
             builder: (context, snapshot) {
               var isSomethingSelected = snapshot.data ?? false;
+
               return FediIconButton(
                 icon: Icon(FediIcons.check),
                 onPressed: isSomethingSelected

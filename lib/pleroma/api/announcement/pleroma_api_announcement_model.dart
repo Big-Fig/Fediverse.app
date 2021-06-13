@@ -1,69 +1,149 @@
 import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/announcement/mastodon_api_announcements_model.dart';
+import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
+import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_announcement_model.g.dart';
 
-abstract class IPleromaApiAnnouncement implements IMastodonApiAnnouncement {}
+abstract class IPleromaApiAnnouncement implements IMastodonApiAnnouncement {
+  @override
+  List<IPleromaApiAnnouncementReaction>? get reactions;
+
+  @override
+  List<IPleromaApiMention>? get mentions;
+
+  @override
+  List<IPleromaApiStatus>? get statuses;
+
+  @override
+  List<IPleromaApiTag>? get tags;
+
+  IPleromaApiAnnouncement copyWith({
+    String? id,
+    String? content,
+    bool? allDay,
+    DateTime? publishedAt,
+    DateTime? updatedAt,
+    bool? read,
+    List<IPleromaApiAnnouncementReaction>? reactions,
+    List<IPleromaApiStatus>? statuses,
+    List<IPleromaApiMention>? mentions,
+    List<IPleromaApiTag>? tags,
+    DateTime? scheduledAt,
+    DateTime? startsAt,
+    DateTime? endsAt,
+  });
+}
 
 abstract class IPleromaApiAnnouncementReaction
-    implements IMastodonApiAnnouncementReaction {}
+    implements IMastodonApiAnnouncementReaction {
+  @override
+  IPleromaApiAnnouncementReaction copyWith({
+    String? name,
+    int? count,
+    bool? me,
+    String? url,
+    String? staticUrl,
+  });
+}
+
+extension IPleromaApiAnnouncementReactionExtension
+    on IPleromaApiAnnouncementReaction {
+  PleromaApiAnnouncementReaction toPleromaApiAnnouncementReaction() {
+    if (this is PleromaApiAnnouncementReaction) {
+      return this as PleromaApiAnnouncementReaction;
+    } else {
+      return PleromaApiAnnouncementReaction(
+        name: name,
+        count: count,
+        me: me,
+        url: url,
+        staticUrl: staticUrl,
+      );
+    }
+  }
+}
+
+extension IPleromaApiAnnouncementReactionListExtension
+    on List<IPleromaApiAnnouncementReaction> {
+  List<PleromaApiAnnouncementReaction> toPleromaApiAnnouncementReactions() {
+    if (this is List<PleromaApiAnnouncementReaction>) {
+      return this as List<PleromaApiAnnouncementReaction>;
+    } else {
+      return map(
+        (reaction) => reaction.toPleromaApiAnnouncementReaction(),
+      ).toList();
+    }
+  }
+}
 
 @JsonSerializable(explicitToJson: true)
 class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
   @override
-  final String? id;
+  final String id;
 
   @override
-  final String? text;
+  final String content;
 
   @override
-  final bool? published;
+  @JsonKey(name: 'all_day')
+  final bool allDay;
 
   @override
-  @JsonKey(name: "all_day")
-  final bool? allDay;
+  @JsonKey(name: 'published_at')
+  final DateTime publishedAt;
 
   @override
-  @JsonKey(name: "created_at")
-  final DateTime? createdAt;
+  @JsonKey(name: 'updated_at')
+  final DateTime updatedAt;
 
   @override
-  @JsonKey(name: "updated_at")
-  final DateTime? updatedAt;
-
-  @override
+  // todo: report to mastodon
+  // sometimes field is null but shouldn't be null
   final bool? read;
 
   @override
   final List<PleromaApiAnnouncementReaction>? reactions;
 
+  @override
+  final List<PleromaApiMention>? mentions;
+
+  @override
+  final List<PleromaApiStatus>? statuses;
+
+  @override
+  final List<PleromaApiTag>? tags;
+
   // nullable
   @override
-  @JsonKey(name: "scheduled_at")
+  @JsonKey(name: 'scheduled_at')
   final DateTime? scheduledAt;
 
   // nullable
   @override
-  @JsonKey(name: "starts_at")
+  @JsonKey(name: 'starts_at')
   final DateTime? startsAt;
 
   // nullable
   @override
-  @JsonKey(name: "ends_at")
+  @JsonKey(name: 'ends_at')
   final DateTime? endsAt;
 
   PleromaApiAnnouncement({
     required this.id,
-    required this.text,
-    required this.published,
+    required this.content,
     required this.allDay,
-    required this.createdAt,
+    required this.publishedAt,
     required this.updatedAt,
     required this.read,
     required this.reactions,
+    required this.mentions,
+    required this.statuses,
+    required this.tags,
     required this.scheduledAt,
     required this.startsAt,
     required this.endsAt,
@@ -75,13 +155,15 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
       other is PleromaApiAnnouncement &&
           runtimeType == other.runtimeType &&
           id == other.id &&
-          text == other.text &&
-          published == other.published &&
+          content == other.content &&
           allDay == other.allDay &&
-          createdAt == other.createdAt &&
+          publishedAt == other.publishedAt &&
           updatedAt == other.updatedAt &&
           read == other.read &&
           listEquals(reactions, other.reactions) &&
+          listEquals(mentions, other.mentions) &&
+          listEquals(statuses, other.statuses) &&
+          listEquals(tags, other.tags) &&
           scheduledAt == other.scheduledAt &&
           startsAt == other.startsAt &&
           endsAt == other.endsAt;
@@ -89,56 +171,69 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
   @override
   int get hashCode =>
       id.hashCode ^
-      text.hashCode ^
-      published.hashCode ^
+      content.hashCode ^
       allDay.hashCode ^
-      createdAt.hashCode ^
+      publishedAt.hashCode ^
       updatedAt.hashCode ^
       read.hashCode ^
       listHash(reactions) ^
+      listHash(mentions) ^
+      listHash(statuses) ^
+      listHash(tags) ^
       scheduledAt.hashCode ^
       startsAt.hashCode ^
       endsAt.hashCode;
 
+  @override
   // ignore: long-parameter-list
   PleromaApiAnnouncement copyWith({
     String? id,
-    String? text,
-    bool? published,
+    String? content,
     bool? allDay,
-    DateTime? createdAt,
+    DateTime? publishedAt,
     DateTime? updatedAt,
     bool? read,
-    List<PleromaApiAnnouncementReaction>? reactions,
+    List<IPleromaApiAnnouncementReaction>? reactions,
+    List<IPleromaApiStatus>? statuses,
+    List<IPleromaApiMention>? mentions,
+    List<IPleromaApiTag>? tags,
     DateTime? scheduledAt,
     DateTime? startsAt,
     DateTime? endsAt,
   }) =>
       PleromaApiAnnouncement(
         id: id ?? this.id,
-        text: text ?? this.text,
-        published: published ?? this.published,
+        content: content ?? this.content,
         allDay: allDay ?? this.allDay,
-        createdAt: createdAt ?? this.createdAt,
+        publishedAt: publishedAt ?? this.publishedAt,
         updatedAt: updatedAt ?? this.updatedAt,
         read: read ?? this.read,
-        reactions: reactions ?? this.reactions,
+        reactions:
+            reactions?.toPleromaApiAnnouncementReactions() ?? this.reactions,
+        mentions:
+            mentions?.toPleromaApiMentions() ?? this.mentions,
+        tags: tags?.toPleromaApiTags() ?? this.tags,
+        statuses:
+            statuses?.toPleromaApiStatuses() ?? this.statuses,
         scheduledAt: scheduledAt ?? this.scheduledAt,
         startsAt: startsAt ?? this.startsAt,
         endsAt: endsAt ?? this.endsAt,
       );
 
+  // ignore: long-parameter-list
   @override
   String toString() {
     return 'PleromaApiAnnouncement{'
         'id: $id, '
-        'text: $text, '
-        'published: $published, '
+        'content: $content, '
         'allDay: $allDay, '
-        'createdAt: $createdAt, '
+        'publishedAt: $publishedAt, '
         'updatedAt: $updatedAt, '
         'read: $read, '
         'reactions: $reactions, '
+        'mentions: $mentions, '
+        'tags: $tags, '
+        'statuses: $statuses, '
         'scheduledAt: $scheduledAt, '
         'startsAt: $startsAt, '
         'endsAt: $endsAt'
@@ -156,19 +251,19 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
 class PleromaApiAnnouncementReaction
     implements IPleromaApiAnnouncementReaction {
   @override
-  final String? name;
+  final String name;
 
   @override
-  final int? count;
+  final int count;
 
   @override
-  final bool? me;
+  final bool me;
 
   @override
   final String? url;
 
   @override
-  @JsonKey(name: "static_url")
+  @JsonKey(name: 'static_url')
   final String? staticUrl;
 
   PleromaApiAnnouncementReaction({
@@ -178,6 +273,22 @@ class PleromaApiAnnouncementReaction
     required this.url,
     required this.staticUrl,
   });
+
+  @override
+  PleromaApiAnnouncementReaction copyWith({
+    String? name,
+    int? count,
+    bool? me,
+    String? url,
+    String? staticUrl,
+  }) =>
+      PleromaApiAnnouncementReaction(
+        name: name ?? this.name,
+        count: count ?? this.count,
+        me: me ?? this.me,
+        url: url ?? this.url,
+        staticUrl: staticUrl ?? this.staticUrl,
+      );
 
   @override
   bool operator ==(Object other) =>

@@ -501,7 +501,7 @@ extension IAccountExtension on IAccount {
   bool get isAcctOnRemoteHost => acctRemoteHost?.isNotEmpty == true;
 
   String? get acctRemoteHost {
-    var separatorIndex = acct.lastIndexOf("@");
+    var separatorIndex = acct.lastIndexOf('@');
     if (separatorIndex > 0) {
       return acct.substring(separatorIndex + 1);
     } else {
@@ -512,14 +512,15 @@ extension IAccountExtension on IAccount {
   Uri get urlRemoteHostUri {
     var uri = Uri.parse(url);
 
-    var resultUrl = "${uri.scheme}://${uri.host}";
+    var resultUrl = '${uri.scheme}://${uri.host}';
+
     return Uri.parse(resultUrl);
   }
 
   String? get acctRemoteDomainOrNull {
-    var usernameWithAt = "$username@";
+    var usernameWithAt = '$username@';
     if (acct.contains(usernameWithAt)) {
-      return acct.replaceAll(usernameWithAt, "");
+      return acct.replaceAll(usernameWithAt, '');
     } else {
       return null;
     }

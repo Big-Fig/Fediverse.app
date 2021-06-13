@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-final _logger = Logger("edit_global_or_instance_settings_dialog.dart");
+final _logger = Logger('edit_global_or_instance_settings_dialog.dart');
 
 typedef EditGlobalOrInstanceSettingsDialogContextContextBuilder = Widget
     Function({
@@ -52,6 +52,7 @@ void showEditGlobalOrInstanceSettingsDialog({
               ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(
             context,
           );
+
           return StreamBuilder<GlobalOrInstanceSettingsType?>(
             stream: isUseGlobalSettingsFormBoolFieldBloc
                 .globalOrInstanceSettingsTypeStream,
@@ -61,7 +62,7 @@ void showEditGlobalOrInstanceSettingsDialog({
               var globalOrInstanceSettingsType =
                   snapshot.data ?? GlobalOrInstanceSettingsType.global;
               _logger.finest(() =>
-                  "globalOrInstanceSettingsType $globalOrInstanceSettingsType");
+                  'globalOrInstanceSettingsType $globalOrInstanceSettingsType');
 
               return Provider<GlobalOrInstanceSettingsType>.value(
                 value: globalOrInstanceSettingsType,

@@ -73,26 +73,26 @@ class PostStatusData implements IPostStatusData {
   @JsonKey()
   final String? text;
   @override
-  @JsonKey(name: "scheduled_at")
+  @JsonKey(name: 'scheduled_at')
   final DateTime? scheduledAt;
   @override
-  @JsonKey(name: "visibility")
+  @JsonKey(name: 'visibility')
   final String visibilityString;
   @override
   final List<String>? to;
   @override
-  @JsonKey(name: "media_attachments")
+  @JsonKey(name: 'media_attachments')
   final List<PleromaApiMediaAttachment>? mediaAttachments;
   @override
   final PostStatusPoll? poll;
   @override
-  @JsonKey(name: "in_reply_to_status")
+  @JsonKey(name: 'in_reply_to_status')
   final PleromaApiStatus? inReplyToPleromaStatus;
   @override
-  @JsonKey(name: "in_reply_to_conversation_id")
+  @JsonKey(name: 'in_reply_to_conversation_id')
   final String? inReplyToConversationId;
   @override
-  @JsonKey(name: "is_nsfw_sensitive_enabled")
+  @JsonKey(name: 'is_nsfw_sensitive_enabled')
   final bool isNsfwSensitiveEnabled;
 
   @override
@@ -100,7 +100,7 @@ class PostStatusData implements IPostStatusData {
   final String? language;
 
   @override
-  @JsonKey(name: "expires_in_seconds")
+  @JsonKey(name: 'expires_in_seconds')
   final int? expiresInSeconds;
 
   const PostStatusData({
@@ -118,20 +118,33 @@ class PostStatusData implements IPostStatusData {
     required this.expiresInSeconds,
   });
 
-  const PostStatusData.only({
-    this.subject,
-    this.text,
-    this.scheduledAt,
-    required this.visibilityString,
-    this.to,
-    this.mediaAttachments,
-    this.poll,
-    this.inReplyToPleromaStatus,
-    this.inReplyToConversationId,
-    required this.isNsfwSensitiveEnabled,
-    this.language,
-    this.expiresInSeconds,
-  });
+  PostStatusData.only({
+    String? subject,
+    String? text,
+    DateTime? scheduledAt,
+    PleromaApiVisibility visibility = PleromaApiVisibility.public,
+    List<String>? to,
+    List<IPleromaApiMediaAttachment>? mediaAttachments,
+    PostStatusPoll? poll,
+    IPleromaApiStatus? inReplyToPleromaStatus,
+    String? inReplyToConversationId,
+    bool isNsfwSensitiveEnabled = false,
+    String? language,
+    Duration? expiresIn,
+  }) : this(
+          subject: subject,
+          text: text,
+          scheduledAt: scheduledAt,
+          visibilityString: visibility.toJsonValue(),
+          to: to,
+          mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
+          poll: poll,
+          inReplyToPleromaStatus: inReplyToPleromaStatus?.toPleromaApiStatus(),
+          inReplyToConversationId: inReplyToConversationId,
+          isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
+          language: language,
+          expiresInSeconds: expiresIn?.totalSeconds,
+        );
 
   PleromaApiVisibility get visibilityPleroma =>
       visibilityString.toPleromaApiVisibility();
@@ -227,6 +240,7 @@ extension IPostStatusDataExtension on IPostStatusData {
     required String? idempotencyKey,
   }) {
     assert(isScheduled);
+
     return PleromaApiScheduleStatus(
       inReplyToConversationId: inReplyToConversationId,
       inReplyToId: inReplyToPleromaStatus?.id,

@@ -13,13 +13,13 @@ class PleromaApiConversationTestHelper {
         lastStatus: PleromaApiStatusTestHelper.createTestPleromaApiStatus(
           seed: seed,
         ),
-        id: seed + "id",
+        id: seed + 'id',
         accounts: [
           PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-            seed: seed + "1",
+            seed: seed + '1',
           ),
           PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-            seed: seed + "1",
+            seed: seed + '1',
           ),
         ],
         pleroma: createTestPleromaApiConversationPleromaPart(seed: seed),
@@ -32,10 +32,10 @@ class PleromaApiConversationTestHelper {
           PleromaApiConversationPleromaPart(
             recipients: [
               PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-                seed: seed + "1",
+                seed: seed + '1',
               ),
               PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-                seed: seed + "2",
+                seed: seed + '2',
               ),
             ],
           );

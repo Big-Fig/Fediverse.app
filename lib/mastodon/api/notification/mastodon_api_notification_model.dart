@@ -28,14 +28,14 @@ enum MastodonApiNotificationType {
 
 const unknownMastodonApiNotificationType = MastodonApiNotificationType.unknown;
 
-const _followMastodonApiNotificationTypeJsonValue = "follow";
-const _favouriteMastodonApiNotificationTypeJsonValue = "favourite";
-const _reblogMastodonApiNotificationTypeJsonValue = "reblog";
-const _mentionMastodonApiNotificationTypeJsonValue = "mention";
-const _pollMastodonApiNotificationTypeJsonValue = "poll";
-const _moveMastodonApiNotificationTypeJsonValue = "move";
-const _followRequestMastodonApiNotificationTypeJsonValue = "follow_request";
-const _unknownRequestMastodonApiNotificationTypeJsonValue = "unknown";
+const _followMastodonApiNotificationTypeJsonValue = 'follow';
+const _favouriteMastodonApiNotificationTypeJsonValue = 'favourite';
+const _reblogMastodonApiNotificationTypeJsonValue = 'reblog';
+const _mentionMastodonApiNotificationTypeJsonValue = 'mention';
+const _pollMastodonApiNotificationTypeJsonValue = 'poll';
+const _moveMastodonApiNotificationTypeJsonValue = 'move';
+const _followRequestMastodonApiNotificationTypeJsonValue = 'follow_request';
+const _unknownRequestMastodonApiNotificationTypeJsonValue = 'unknown';
 
 extension MastodonApiNotificationTypeExtension on MastodonApiNotificationType {
   String toJsonValue() {
@@ -101,7 +101,7 @@ extension MastodonApiNotificationTypeStringExtension on String {
       case _unknownRequestMastodonApiNotificationTypeJsonValue:
         result = MastodonApiNotificationType.unknown;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
         result = unknownMastodonApiNotificationType;
         break;

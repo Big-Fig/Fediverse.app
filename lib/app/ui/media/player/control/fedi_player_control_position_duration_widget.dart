@@ -36,10 +36,12 @@ class _FediPlayerControlPositionDurationBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context);
+
     return StreamBuilder<Duration>(
       stream: mediaPlayerBloc.positionDurationStream,
       builder: (context, snapshot) {
         var duration = snapshot.data;
+
         return Provider<Duration?>.value(
           value: duration,
           child: const FediPlayerControlDurationWidget(),

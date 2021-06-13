@@ -53,6 +53,7 @@ class _TimelinesHomeTabStoragePagePageAppBarActionWidget
   @override
   Widget build(BuildContext context) {
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
+
     return StreamBuilder<TimelinesHomeTabStorageUiState>(
       stream: timelinesHomeTabStorageBloc.uiStateStream,
       builder: (context, snapshot) {
@@ -61,7 +62,7 @@ class _TimelinesHomeTabStoragePagePageAppBarActionWidget
           return const SizedBox.shrink();
         }
 
-        late var child;
+        Widget child;
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
             child = _TimelinesHomeTabStoragePagePageAppBarActionDoneWidget();
@@ -88,6 +89,7 @@ class _TimelinesHomeTabStoragePagePageAppBarActionEditWidget
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return FediPageAppBarTextActionWidget(
       text: S.of(context).app_timeline_storage_appBar_action_edit,
       color: fediUiColorTheme.darkGrey,

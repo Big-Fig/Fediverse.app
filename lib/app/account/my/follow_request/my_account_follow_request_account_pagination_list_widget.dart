@@ -45,7 +45,7 @@ class MyAccountFollowRequestAccountPaginationListWidget
         const _MyAccountFollowRequestAccountPaginationListRejectButtonWidget(),
       ],
       accountSelectedCallback: null,
-      key: PageStorageKey("MyAccountFollowRequestAccountPaginationListWidget"),
+      key: PageStorageKey('MyAccountFollowRequestAccountPaginationListWidget'),
     );
   }
 }

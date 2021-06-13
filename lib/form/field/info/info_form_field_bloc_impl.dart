@@ -44,7 +44,7 @@ abstract class InfoFormFieldBloc<T> extends AsyncInitLoadingBloc
 
   @override
   void changeIsEnabled(bool enabled) {
-    throw UnsupportedError("You can't change isEnabled for info field");
+    throw UnsupportedError('You cant change isEnabled for info field');
   }
 
   @override

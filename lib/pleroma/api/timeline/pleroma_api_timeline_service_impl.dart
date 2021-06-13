@@ -1,6 +1,6 @@
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
+import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
@@ -9,22 +9,16 @@ import 'package:fedi/rest/rest_request_model.dart';
 import 'package:path/path.dart';
 
 class PleromaApiTimelineService extends BasePleromaApiService
-    with PleromaApiAuthMixinService
     implements IPleromaApiTimelineService {
   @override
   Uri get baseUrl => restService.baseUri;
 
-  final timelineRelativeUrlPath = "/api/v1/timelines/";
-
-  final IPleromaApiAuthRestService authRestService;
-
-  @override
-  IPleromaApiAuthRestService get restApiAuthService => authRestService;
+  final timelineRelativeUrlPath = '/api/v1/timelines/';
 
   PleromaApiTimelineService({
-    required this.authRestService,
+    required IPleromaApiRestService restService,
   }) : super(
-          restService: authRestService,
+          restService: restService,
         );
 
   @override
@@ -39,57 +33,11 @@ class PleromaApiTimelineService extends BasePleromaApiService
     ],
   }) {
     assert(hashtag.isNotEmpty);
+
     return getTimeline(
-      relativeTimeLineUrlPath: "tag/$hashtag",
+      relativeTimeLineUrlPath: 'tag/$hashtag',
       pagination: pagination,
       onlyWithMedia: onlyWithMedia,
-      onlyLocal: onlyLocal,
-      withMuted: withMuted,
-      excludeVisibilities: excludeVisibilities,
-      pleromaReplyVisibilityFilter: null,
-      onlyFromInstance: null,
-      onlyRemote: null,
-    );
-  }
-
-  @override
-  Future<List<IPleromaApiStatus>> getHomeTimeline({
-    IPleromaApiPaginationRequest? pagination,
-    bool onlyLocal = false,
-    bool withMuted = false,
-    List<PleromaApiVisibility>? excludeVisibilities = const [
-      PleromaApiVisibility.direct,
-    ],
-    PleromaApiReplyVisibilityFilter? pleromaReplyVisibilityFilter,
-  }) {
-    return getTimeline(
-      relativeTimeLineUrlPath: "home",
-      pagination: pagination,
-      onlyWithMedia: false,
-      onlyLocal: onlyLocal,
-      withMuted: withMuted,
-      excludeVisibilities: excludeVisibilities,
-      pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
-      onlyFromInstance: null,
-      onlyRemote: null,
-    );
-  }
-
-  @override
-  Future<List<IPleromaApiStatus>> getListTimeline({
-    required String listId,
-    IPleromaApiPaginationRequest? pagination,
-    bool onlyLocal = false,
-    bool withMuted = false,
-    List<PleromaApiVisibility>? excludeVisibilities = const [
-      PleromaApiVisibility.direct,
-    ],
-  }) {
-    assert(listId.isNotEmpty);
-    return getTimeline(
-      relativeTimeLineUrlPath: "list/$listId",
-      pagination: pagination,
-      onlyWithMedia: null,
       onlyLocal: onlyLocal,
       withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
@@ -115,7 +63,7 @@ class PleromaApiTimelineService extends BasePleromaApiService
     PleromaApiReplyVisibilityFilter? pleromaReplyVisibilityFilter,
   }) {
     return getTimeline(
-      relativeTimeLineUrlPath: "public",
+      relativeTimeLineUrlPath: 'public',
       pagination: pagination,
       onlyWithMedia: onlyWithMedia,
       onlyLocal: onlyLocal,
@@ -141,42 +89,49 @@ class PleromaApiTimelineService extends BasePleromaApiService
     required String? onlyFromInstance,
   }) async {
     var request = RestRequest.get(
-      relativePath: join("/api/v1/timelines/", relativeTimeLineUrlPath),
+      relativePath: join('/api/v1/timelines/', relativeTimeLineUrlPath),
       queryArgs: [
         ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         if (onlyLocal)
           RestRequestQueryArg(
-            key: "local",
-            value: "true",
+            key: 'local',
+            value: 'true',
           ),
         if (onlyRemote == true)
           RestRequestQueryArg(
-            key: "remote",
-            value: "true",
+            key: 'remote',
+            value: 'true',
           ),
         if (onlyWithMedia != null)
           RestRequestQueryArg(
-            key: "only_media",
+            key: 'only_media',
             value: onlyWithMedia.toString(),
           ),
         if (onlyFromInstance != null)
           RestRequestQueryArg(
-            key: "instance",
+            key: 'instance',
             value: onlyFromInstance,
           ),
         if (pleromaReplyVisibilityFilter != null)
           RestRequestQueryArg(
-            key: "reply_visibility",
+            key: 'reply_visibility',
             value: pleromaReplyVisibilityFilter.toJsonValue(),
           ),
         // array
         ...(excludeVisibilities?.map((visibility) => RestRequestQueryArg(
-                  key: "exclude_visibilities[]",
+                  key: 'exclude_visibilities[]',
                   value: visibility.toJsonValue(),
                 )) ??
             []),
       ],
     );
+
+    return await sendAndProcessPleromaApiStatusResponse(request);
+  }
+
+  Future<List<IPleromaApiStatus>> sendAndProcessPleromaApiStatusResponse(
+    RestRequest<dynamic> request,
+  ) async {
     var httpResponse = await restService.sendHttpRequest(request);
 
     return restService.processJsonListResponse(

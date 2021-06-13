@@ -17,8 +17,7 @@ abstract class InstanceDetailsBloc extends AsyncInitLoadingBloc
   InstanceDetailsBloc({
     required IPleromaApiInstance? initialInstance,
     required this.instanceUri,
-  }) :
-        refreshController = RefreshController(),
+  })  : refreshController = RefreshController(),
         instanceSubject = BehaviorSubject.seeded(initialInstance) {
     addDisposable(subject: instanceSubject);
     addDisposable(custom: () {
@@ -38,7 +37,10 @@ abstract class InstanceDetailsBloc extends AsyncInitLoadingBloc
   bool get isPleroma => instance!.isPleroma;
 
   @override
-  Future<IPleromaApiInstance> refresh() async{
+  bool get isMastodon => instance!.isMastodon;
+
+  @override
+  Future<IPleromaApiInstance> refresh() async {
     var instance = await pleromaInstanceService.getInstance();
     instanceSubject.add(instance);
 

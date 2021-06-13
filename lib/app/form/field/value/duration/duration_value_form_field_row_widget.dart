@@ -51,6 +51,7 @@ class _DurationValueFormFieldRowValueWidget extends StatelessWidget {
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data;
+
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -81,16 +82,19 @@ class DurationValueFormFieldRowValueTextWidget extends StatelessWidget {
     var fieldBloc = IDurationValueFormFieldBloc.of(context);
 
     var fediUiTextTheme = IFediUiTextTheme.of(context);
+
     return StreamBuilder<bool?>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data;
+
         return StreamBuilder<Duration?>(
           stream: fieldBloc.currentValueStream,
           initialData: fieldBloc.currentValue,
           builder: (context, snapshot) {
             var currentValue = snapshot.data;
+
             return Text(
               currentValue != null
                   ? formatDuration(
@@ -150,11 +154,13 @@ class DurationValueFormFieldRowIconButtonWidget extends StatelessWidget {
     var fieldBloc = IDurationValueFormFieldBloc.of(context);
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return StreamBuilder<bool?>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data!;
+
         return FediIconButton(
           icon: Icon(FediIcons.chevron_down),
           color: isEnabled

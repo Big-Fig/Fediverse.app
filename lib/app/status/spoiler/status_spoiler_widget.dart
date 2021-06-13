@@ -32,6 +32,7 @@ class StatusSpoilerWidget extends StatelessWidget {
         if (spoilerEmojiText?.text.isNotEmpty != true) {
           return const SizedBox.shrink();
         }
+
         return Provider<EmojiText?>.value(
           value: spoilerEmojiText,
           child: StreamBuilder<UiSettingsFontSize?>(
@@ -43,13 +44,13 @@ class StatusSpoilerWidget extends StatelessWidget {
                 return const SizedBox.shrink();
               }
 
-              TextStyle textStyle =
+              var textStyle =
                   _mapToTextStyle(fediUiTextTheme, statusFontSize);
 
               return DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
                 update: (context, spoilerWithEmojis, previous) {
                   var htmlTextInputData = HtmlTextInputData(
-                    input: spoilerWithEmojis?.text ?? "",
+                    input: spoilerWithEmojis?.text ?? '',
                     emojis: spoilerWithEmojis?.emojis,
                   );
                   if (previous?.inputData == htmlTextInputData) {
@@ -62,7 +63,7 @@ class StatusSpoilerWidget extends StatelessWidget {
                       color: textStyle.color,
                       lineHeight: textStyle.height,
                       fontSize: textStyle.fontSize,
-                      // todo: 1000 is hack, actually it should be null, but don't
+                      // todo: 1000 is hack, actually it should be null, but dont
                       //  work as expected
                       // ignore: no-magic-number
                       textMaxLines: 1000,
@@ -80,6 +81,7 @@ class StatusSpoilerWidget extends StatelessWidget {
                       },
                     ),
                   );
+
                   return htmlTextBloc;
                 },
                 child: const HtmlTextWidget(),
@@ -95,7 +97,7 @@ class StatusSpoilerWidget extends StatelessWidget {
     IFediUiTextTheme fediUiTextTheme,
     UiSettingsFontSize statusFontSize,
   ) {
-    TextStyle textStyle = fediUiTextTheme.bigTallDarkGrey;
+    var textStyle = fediUiTextTheme.bigTallDarkGrey;
 
     switch (statusFontSize) {
       case UiSettingsFontSize.smallest:
@@ -114,6 +116,7 @@ class StatusSpoilerWidget extends StatelessWidget {
         textStyle = fediUiTextTheme.headerDarkGrey;
         break;
     }
+
     return textStyle;
   }
 

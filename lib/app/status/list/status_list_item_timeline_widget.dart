@@ -56,6 +56,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
     } else {
       child = const _StatusListItemTimelineOriginalWidget();
     }
+
     return child;
   }
 }
@@ -120,6 +121,7 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
           child: Builder(
             builder: (context) {
               var statusBloc = IStatusBloc.of(context);
+
               return buildDeletedStreamBuilderOverlay(
                 statusBloc: statusBloc,
                 child: _StatusListItemTimelineOriginalBodyWidget(),
@@ -198,6 +200,7 @@ class _StatusListItemTimelineOriginalBodyWidget extends StatelessWidget {
 
     var isNeedDisplayActions =
         statusListItemTimelineBloc.isDisplayActionsAndNotFirstReply;
+
     return Column(
       children: [
         GestureDetector(
@@ -250,6 +253,7 @@ class _StatusListItemTimelineOriginalBodyReplySubHeaderWidget
   @override
   Widget build(BuildContext context) {
     var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
+
     return StatusReplySubHeaderWidget(
       accountCallback: statusListItemTimelineBloc.accountMentionCallback,
     );
@@ -267,6 +271,7 @@ class _StatusListItemTimelineReplyToStatusWidget extends StatelessWidget {
 
     var isLocal = statusListBloc.instanceLocation == InstanceLocation.local;
     var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
+
     return DisposableProxyProvider<IStatus, IStatusReplyLoaderBloc>(
       update: (context, value, previous) {
         IStatusReplyLoaderBloc statusReplyLoaderBloc;
@@ -277,8 +282,9 @@ class _StatusListItemTimelineReplyToStatusWidget extends StatelessWidget {
           statusReplyLoaderBloc =
               RemoteStatusReplyLoaderBloc.createFromContext(context, value);
         }
-        // don't await
+        // dont await
         statusReplyLoaderBloc.performAsyncInit();
+
         return statusReplyLoaderBloc;
       },
       child: StatusReplyWidget(
@@ -296,6 +302,7 @@ class _StatusListItemTimelineStatusHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var status = Provider.of<IStatus>(context);
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         FediSizes.bigPadding,

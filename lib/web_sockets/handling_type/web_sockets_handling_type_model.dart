@@ -7,10 +7,10 @@ enum WebSocketsHandlingType {
   foregroundAndBackground,
 }
 
-const _disabledWebSocketsHandlingTypeJsonValue = "disabled";
-const _onlyForegroundWebSocketsHandlingTypeJsonValue = "onlyForeground";
+const _disabledWebSocketsHandlingTypeJsonValue = 'disabled';
+const _onlyForegroundWebSocketsHandlingTypeJsonValue = 'onlyForeground';
 const _foregroundAndBackgroundWebSocketsHandlingTypeJsonValue =
-    "foregroundAndBackground";
+    'foregroundAndBackground';
 
 extension WebSocketsHandlingTypeListExtension on List<WebSocketsHandlingType> {
   List<String> toJsonStrings() => map(
@@ -55,7 +55,7 @@ extension WebSocketsHandlingTypeStringExtension on String {
         result = WebSocketsHandlingType.foregroundAndBackground;
         break;
       default:
-        throw "Invalid WebSocketsHandlingTypeStringExtension $this";
+        throw 'Invalid WebSocketsHandlingTypeStringExtension $this';
     }
 
     return result;

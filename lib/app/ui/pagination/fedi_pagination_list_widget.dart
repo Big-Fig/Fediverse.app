@@ -16,7 +16,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-var _logger = Logger("fedi_pagination_list_widget.dart");
+var _logger = Logger('fedi_pagination_list_widget.dart');
 
 abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
   final Widget? customLoadingWidget;
@@ -63,7 +63,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
     ScrollController? scrollController,
     Widget Function(BuildContext context) smartRefresherBodyBuilder,
   ) {
-    _logger.finest(() => "buildSmartRefresher items ${items?.length}");
+    _logger.finest(() => 'buildSmartRefresher items ${items?.length}');
 
     return FediListSmartRefresherWidget(
       //      key: key,
@@ -75,7 +75,8 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
       scrollController: scrollController,
       primary: scrollController != null ? false : true,
       onRefresh: () {
-        _logger.finest(() => "refresh");
+        _logger.finest(() => 'refresh');
+
         return AsyncSmartRefresherHelper.doAsyncRefresh(
           controller: refreshController,
           action: () async {
@@ -85,17 +86,18 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
             } catch (e, stackTrace) {
               success = false;
               _logger.severe(
-                () => "additionalPreRefreshAction()",
+                () => 'additionalPreRefreshAction()',
                 e,
                 stackTrace,
               );
             }
 
-            _logger.finest(() => "additionalPreRefreshAction() $success");
+            _logger.finest(() => 'additionalPreRefreshAction() $success');
             var state = await paginationListBloc.refreshWithoutController();
             _logger.finest(
-              () => "paginationListBloc.refreshWithoutController() $state",
+              () => 'paginationListBloc.refreshWithoutController() $state',
             );
+
             return state;
           },
         );
@@ -114,9 +116,10 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
     List<T>? items,
     IPaginationListBloc<PaginationPage<T>, T> paginationListBloc,
   ) {
-    _logger.finest(() => "buildSmartRefresherBody ${items?.length}");
+    _logger.finest(() => 'buildSmartRefresherBody ${items?.length}');
     if (items == null) {
-      _logger.finest(() => "build loading");
+      _logger.finest(() => 'build loading');
+
       return buildNotListBody(
         const Center(
           child: FediCircularProgressIndicator(),
@@ -132,7 +135,8 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
         footer: footer,
       );
     } else {
-      _logger.finest(() => "build empty");
+      _logger.finest(() => 'build empty');
+
       return buildNotListBody(
         StreamBuilder<FediListSmartRefresherLoadingState>(
           stream: paginationListBloc.refreshStateStream,

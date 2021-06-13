@@ -14,7 +14,7 @@ import 'package:moor/moor.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("notification_bloc_impl.dart");
+var _logger = Logger('notification_bloc_impl.dart');
 
 class NotificationBloc extends DisposableOwner implements INotificationBloc {
   @override
@@ -56,7 +56,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
     required INotification notification,
     bool needRefreshFromNetworkOnInit = false,
     this.isNeedWatchLocalRepositoryForUpdates =
-        true, // todo: remove hack. Don't init when bloc quickly disposed. Help
+        true, // todo: remove hack. Dont init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
   }) : _notificationSubject = BehaviorSubject.seeded(notification) {
@@ -188,7 +188,8 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
 
   @override
   Future dispose() {
-    _logger.finest(() => "dispose");
+    _logger.finest(() => 'dispose');
+
     return super.dispose();
   }
 

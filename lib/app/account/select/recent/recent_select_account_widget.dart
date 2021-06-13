@@ -37,6 +37,7 @@ class RecentSelectAccountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var recentSelectAccountBloc = IRecentSelectAccountBloc.of(context);
+
     return StreamBuilder<RecentSelectAccountList?>(
       stream: recentSelectAccountBloc.recentSelectAccountListStream,
       initialData: recentSelectAccountBloc.recentSelectAccountList,

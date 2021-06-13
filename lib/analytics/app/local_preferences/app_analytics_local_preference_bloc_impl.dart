@@ -8,21 +8,17 @@ class AppAnalyticsLocalPreferenceBloc
     implements IAppAnalyticsLocalPreferenceBloc {
   static const defaultValue = AppAnalyticsData(
     appOpenedCount: 0,
-    isAppRated: false,
   );
 
   AppAnalyticsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
   ) : super(
           preferencesService: preferencesService,
-          key: "analytics.app",
+          key: 'analytics.app',
           schemaVersion: 1,
           jsonConverter: (json) => AppAnalyticsData.fromJson(json),
         );
 
   @override
-  AppAnalyticsData get defaultPreferenceValue => AppAnalyticsData(
-        appOpenedCount: 0,
-        isAppRated: false,
-      );
+  AppAnalyticsData get defaultPreferenceValue => defaultValue;
 }

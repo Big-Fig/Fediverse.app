@@ -21,7 +21,7 @@ class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
         _MyAccountAccountMuteAccountPaginationListRemoveActionWidget(),
       ],
       accountSelectedCallback: null,
-      key: PageStorageKey("MyAccountAccountMuteAccountPaginationListWidget"),
+      key: PageStorageKey('MyAccountAccountMuteAccountPaginationListWidget'),
     );
   }
 }

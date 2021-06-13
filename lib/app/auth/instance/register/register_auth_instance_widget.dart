@@ -18,6 +18,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var registerAuthInstanceBloc = IRegisterAuthInstanceBloc.of(context);
+
     return Padding(
       padding: FediPadding.verticalBigPadding,
       child: FediAsyncInitLoadingWidget(
@@ -51,6 +52,7 @@ class _RegisterAuthInstanceSubmitButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var registerAuthInstanceBloc = IRegisterAuthInstanceBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: registerAuthInstanceBloc.isReadyToSubmitStream,
       initialData: registerAuthInstanceBloc.isReadyToSubmit,
@@ -73,6 +75,7 @@ class _RegisterAuthInstanceSubmitButtonWidget extends StatelessWidget {
             );
           };
         }
+
         return FediPrimaryFilledTextButtonWithBorder(
           S.of(context).app_auth_instance_register_action_createAccount,
           onPressed: onPressed,

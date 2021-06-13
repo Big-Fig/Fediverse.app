@@ -21,7 +21,7 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("thread_post_status_bloc_impl.dart");
+var _logger = Logger('thread_post_status_bloc_impl.dart');
 
 class ThreadPostStatusBloc extends PostStatusBloc
     implements IThreadPostStatusBloc {
@@ -48,7 +48,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
     required IPleromaApiAuthStatusService pleromaAuthStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
-    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
     required int? maximumMessageLength,
     required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
     required int? maximumFileSizeInBytes,
@@ -82,6 +82,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance!
         .info!;
+
     return ThreadPostStatusBloc(
       inReplyToStatus: inReplyToStatus,
       statusThreadBloc: IStatusThreadBloc.of(context, listen: false),
@@ -89,7 +90,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
           IPleromaApiAuthStatusService.of(context, listen: false),
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
-          IPleromaMediaAttachmentService.of(context, listen: false),
+          IPleromaApiMediaAttachmentService.of(context, listen: false),
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
@@ -131,7 +132,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
 
   @override
   Future onStatusPosted(IPleromaApiStatus remoteStatus) async {
-    _logger.finest(() => "onStatusPosted $onStatusPosted");
+    _logger.finest(() => 'onStatusPosted $onStatusPosted');
     var status = await statusRepository.findByRemoteIdInAppType(remoteStatus.id);
     if (status != null) {
       statusThreadBloc.addStatusInThread(status);
@@ -167,29 +168,30 @@ class ThreadPostStatusBloc extends PostStatusBloc
             (status) => status.account.acct == acct,
           );
           if (statusToReply != null) {
-            _logger.finest(() => "calculateInReplyToStatusRemoteId "
-                "statusToReply by acct $acct =>$result");
+            _logger.finest(() => 'calculateInReplyToStatusRemoteId '
+                'statusToReply by acct $acct =>$result');
             break;
           }
         }
         if (statusToReply != null) {
           result = statusToReply;
         } else {
-          _logger.finest(() => "calculateInReplyToStatusRemoteId "
-              "statusToReply by acct not found => $result");
+          _logger.finest(() => 'calculateInReplyToStatusRemoteId '
+              'statusToReply by acct not found => $result');
           result = statuses.last;
         }
       } else {
-        _logger.finest(() => "calculateInReplyToStatusRemoteId "
-            "statusToReply last => $result");
+        _logger.finest(() => 'calculateInReplyToStatusRemoteId '
+            'statusToReply last => $result');
         result = statuses.last;
       }
     } else {
-      _logger.finest(() => "calculateInReplyToStatusRemoteId "
-          "statusToReply !originInReplyToStatusCanceled => $result");
+      _logger.finest(() => 'calculateInReplyToStatusRemoteId '
+          'statusToReply !originInReplyToStatusCanceled => $result');
       result = super.calculateInReplyToStatusField();
     }
-    _logger.finest(() => "calculateInReplyToStatusRemoteId $result");
+    _logger.finest(() => 'calculateInReplyToStatusRemoteId $result');
+
     return result!;
   }
 
@@ -219,6 +221,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
         if (!toField.contains(inReplyToStatusAcct)) {
           toField.add(inReplyToStatusAcct);
         }
+
         return toField;
       } else {
         return mentionedAccts;

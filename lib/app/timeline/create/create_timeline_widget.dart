@@ -52,6 +52,7 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
             if (timelineType == null) {
               return const SizedBox.shrink();
             }
+
             return Expanded(
               child: Provider<TimelineType>.value(
                 value: timelineType,
@@ -81,6 +82,7 @@ class _CreateItemTimelinesHomeTabStorageSettingsWidget extends StatelessWidget {
         if (editBloc == null) {
           return const SizedBox.shrink();
         }
+
         return Provider<IEditTimelineSettingsBloc>.value(
           value: editBloc,
           child: const EditTimelineSettingsWidget(

@@ -16,7 +16,7 @@ class PushHandlerMessage {
   @HiveField(0)
   final PleromaApiPushMessageBody body;
   @HiveField(1)
-  @JsonKey(name: "push_message")
+  @JsonKey(name: 'push_message')
   final PushMessage pushMessage;
 
   PushHandlerMessage({

@@ -1,5 +1,6 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -29,27 +30,45 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
 
   T get defaultPreferenceValue;
 
+  IDisposable? keyPreferenceChangedDisposable;
+
   @override
   Future internalAsyncInit() async {
     _subject.add((await getValueInternal()) ?? defaultPreferenceValue);
 
-    preferencesService.listenKeyPreferenceChanged(key, (newValue) {
-      if (value != newValue) {
+    addDisposable(subject: _subject);
+    keyPreferenceChangedDisposable =
+        preferencesService.listenKeyPreferenceChanged(
+      key,
+      (newValue) {
         if (!_subject.isClosed) {
-          _subject.add(newValue);
+          // after clearValue newValue will be null
+          // but T may be non-nullable
+          if (newValue is T) {
+            _subject.add(newValue);
+          } else {
+            _subject.add(defaultPreferenceValue);
+          }
         }
-      }
-    });
+      },
+    );
+    addDisposable(
+      disposable: keyPreferenceChangedDisposable,
+    );
   }
 
   @override
   bool get isSavedPreferenceExist => preferencesService.isKeyExist(key);
 
   @override
-  Future<bool> clearValue() {
-    var future = preferencesService.clearValue(key);
-    _subject.add(defaultPreferenceValue);
-    return future;
+  Future<bool> clearValue() async => preferencesService.clearValue(key);
+
+  @override
+  Future clearValueAndDispose() async {
+    // avoid errors for non-nullable types after clearValue
+    await keyPreferenceChangedDisposable?.dispose();
+    await clearValue();
+    await dispose();
   }
 
   @override
@@ -58,6 +77,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
     if (!_subject.isClosed) {
       _subject.add(newValue);
     }
+
     return future;
   }
 
@@ -85,7 +105,7 @@ abstract class ObjectLocalPreferenceBloc<T extends IJsonObject?>
     required this.jsonConverter,
   }) : super(
           preferencesService: preferencesService,
-          key: "$key.$schemaVersion",
+          key: '$key.$schemaVersion',
         );
 
   @override

@@ -9,7 +9,7 @@ import 'package:flutter_html/image_render.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:logging/logging.dart';
 
-var _logger = Logger("html_text_widget.dart");
+var _logger = Logger('html_text_widget.dart');
 
 class HtmlTextWidget extends StatelessWidget {
   const HtmlTextWidget();
@@ -19,7 +19,7 @@ class HtmlTextWidget extends StatelessWidget {
     var htmlTextBloc = IHtmlTextBloc.of(context);
 
     var htmlData = htmlTextBloc.htmlData;
-    _logger.finest(() => "htmlData $htmlData");
+    _logger.finest(() => 'htmlData $htmlData');
 
     if (htmlData.text?.isNotEmpty != true) {
       return const SizedBox.shrink();
@@ -36,7 +36,7 @@ class HtmlTextWidget extends StatelessWidget {
   Widget buildTextWidget(IHtmlTextBloc htmlTextBloc) {
     var htmlData = htmlTextBloc.htmlData;
     var settings = htmlTextBloc.settings;
-    Alignment alignment = mapToAligment(settings);
+    var alignment = mapToAligment(settings);
     var text = Text(
       htmlData.text!,
       style: TextStyle(
@@ -61,6 +61,7 @@ class HtmlTextWidget extends StatelessWidget {
 
   Widget buildHtmlWidget(IHtmlTextBloc htmlTextBloc) {
     var htmlData = htmlTextBloc.htmlData;
+
     return Html(
       data: htmlData.text!,
       shrinkWrap: htmlTextBloc.settings.shrinkWrap,
@@ -77,7 +78,7 @@ class HtmlTextWidget extends StatelessWidget {
         Map<String, String> attributes,
         dom.Element? element,
       ) {
-        _logger.finest(() => "onImageTap $url");
+        _logger.finest(() => 'onImageTap $url');
       },
       style: htmlTextBloc.htmlStyles,
       onLinkTap: (
@@ -117,6 +118,7 @@ class HtmlTextWidget extends StatelessWidget {
       default:
         alignment = Alignment.centerLeft;
     }
+
     return alignment;
   }
 }

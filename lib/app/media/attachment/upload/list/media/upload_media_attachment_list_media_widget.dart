@@ -15,6 +15,7 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaAttachmentsCollectionBloc =
         IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
+
     return StreamBuilder<List<IUploadMediaAttachmentBloc>?>(
       stream: mediaAttachmentsCollectionBloc.onlyMediaAttachmentBlocsStream,
       builder: (context, snapshot) {
@@ -48,7 +49,7 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
                 //              shrinkWrap: true,
                 children: [
                   ...mediaItemBlocs.map((mediaItemBloc) {
-                    // don't dispose media bloc here
+                    // dont dispose media bloc here
                     // it is disposed in parent Status bloc
 
                     return Padding(

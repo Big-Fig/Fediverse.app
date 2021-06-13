@@ -29,14 +29,14 @@ class PleromaApiChat implements IPleromaApiChat, IJsonObject {
   final int unread;
 
   @override
-  @JsonKey(name: "updated_at")
+  @JsonKey(name: 'updated_at')
   final DateTime? updatedAt;
 
   @override
   final PleromaApiAccount account;
 
   @override
-  @JsonKey(name: "last_message")
+  @JsonKey(name: 'last_message')
   final PleromaApiChatMessage? lastMessage;
 
   PleromaApiChat({
@@ -123,20 +123,20 @@ class PleromaApiChatMessage extends IPleromaApiChatMessage
   @override
   final String id;
   @override
-  @JsonKey(name: "chat_id")
+  @JsonKey(name: 'chat_id')
   final String chatId;
   @override
-  @JsonKey(name: "account_id")
+  @JsonKey(name: 'account_id')
   final String accountId;
   @override
   final String? content;
   @override
-  @JsonKey(name: "created_at")
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @override
   final List<PleromaApiEmoji>? emojis;
   @override
-  @JsonKey(name: "attachment")
+  @JsonKey(name: 'attachment')
   final PleromaApiMediaAttachment? mediaAttachment;
 
   @override
@@ -221,11 +221,11 @@ class PleromaApiChatMessageSendData
   @override
   final String? content;
   @override
-  @JsonKey(name: "media_id")
+  @JsonKey(name: 'media_id')
   final String? mediaId;
 
   @override
-  @JsonKey(name: "idempotency_key")
+  @JsonKey(name: 'idempotency_key')
   final String? idempotencyKey;
 
   PleromaApiChatMessageSendData({

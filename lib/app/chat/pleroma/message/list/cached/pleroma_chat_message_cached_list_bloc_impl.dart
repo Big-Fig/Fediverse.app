@@ -12,7 +12,7 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("pleroma_chat_message_cached_list_bloc_impl.dart");
+var _logger = Logger('pleroma_chat_message_cached_list_bloc_impl.dart');
 
 class PleromaChatMessageCachedListBloc extends DisposableOwner
     implements IPleromaChatMessageCachedListBloc {
@@ -46,10 +46,10 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
     required IPleromaChatMessage? newerThan,
     required IPleromaChatMessage? olderThan,
   }) async {
-    _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t chat = $chat"
-        "\t newerThan = $newerThan"
-        "\t olderThan = $olderThan");
+    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
+        '\t chat = $chat'
+        '\t newerThan = $newerThan'
+        '\t olderThan = $olderThan');
 
     var remoteMessages = await pleromaChatService.getChatMessages(
       chatId: chat.remoteId,
@@ -72,9 +72,9 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
     required IPleromaChatMessage? newerThan,
     required IPleromaChatMessage? olderThan,
   }) async {
-    _logger.finest(() => "start loadLocalItems \n"
-        "\t newerThan=$newerThan"
-        "\t olderThan=$olderThan");
+    _logger.finest(() => 'start loadLocalItems \n'
+        '\t newerThan=$newerThan'
+        '\t olderThan=$olderThan');
 
     var messages = await chatMessageRepository.findAllInAppType(
       filters: _pleromaChatMessageRepositoryFilters,
@@ -89,8 +89,9 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
     );
 
     _logger.finer(
-      () => "finish loadLocalItems for $chat messages ${messages.length}",
+      () => 'finish loadLocalItems for $chat messages ${messages.length}',
     );
+
     return messages;
   }
 

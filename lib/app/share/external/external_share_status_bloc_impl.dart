@@ -33,17 +33,18 @@ class ExternalShareStatusBloc extends ExternalShareBloc
   Future share() {
     var asLink = asLinkBoolField.currentValue == true;
     var content = status.content?.extractRawStringFromHtmlString();
-    var text = message ?? "";
+    var text = message ?? '';
     if (asLink) {
-      text += " ${status.url}";
+      text += ' ${status.url}';
     } else {
       var spoilerText = status.spoilerText;
       if (spoilerText?.isNotEmpty == true) {
-        text += " ${spoilerText?.extractRawStringFromHtmlString()}";
+        text += ' ${spoilerText?.extractRawStringFromHtmlString()}';
       }
 
-      text += " $content";
+      text += ' $content';
     }
+
     return externalShareService.share(
       popupTitle: popupTitle,
       text: text,

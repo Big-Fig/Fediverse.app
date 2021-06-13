@@ -13,9 +13,11 @@ class EditChatSettingsBloc
   final IChatSettingsBloc chatSettingsBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc countConversationsInChatsUnreadBadgesFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc replaceConversationsWithPleromaChatsFieldBloc;
 
   @override

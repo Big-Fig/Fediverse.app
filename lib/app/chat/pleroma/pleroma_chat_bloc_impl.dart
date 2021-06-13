@@ -22,7 +22,7 @@ import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
-final _logger = Logger("pleroma_chat_bloc_impl.dart");
+final _logger = Logger('pleroma_chat_bloc_impl.dart');
 
 class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   // ignore: close_sinks
@@ -71,7 +71,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     required IPleromaChatMessage? lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
     bool isNeedWatchLocalRepositoryForUpdates =
-        true, // todo: remove hack. Don't init when bloc quickly disposed. Help
+        true, // todo: remove hack. Dont init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
   })  : _chatSubject = BehaviorSubject.seeded(chat),
@@ -82,9 +82,9 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
               isNeedWatchLocalRepositoryForUpdates,
           delayInit: delayInit,
         ) {
-    _logger.finest(() => "PleromaChatBloc \n"
-        " chat ${chat.remoteId} \n"
-        " lastMessage $lastChatMessage");
+    _logger.finest(() => 'PleromaChatBloc \n'
+        ' chat ${chat.remoteId} \n'
+        ' lastMessage $lastChatMessage');
 
     addDisposable(subject: _chatSubject);
     addDisposable(subject: _lastMessageSubject);
@@ -110,9 +110,9 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       streamSubscription:
           chatMessageRepository.watchChatLastChatMessage(chat: chat).listen(
         (lastMessage) {
-          _logger.finest(() => "watchChatLastChatMessage \n"
-              " chat ${chat.remoteId} \n"
-              " lastMessage $lastMessage");
+          _logger.finest(() => 'watchChatLastChatMessage \n'
+              ' chat ${chat.remoteId} \n'
+              ' lastMessage $lastMessage');
           if (lastMessage != null) {
             _lastMessageSubject.add(lastMessage);
 
@@ -258,7 +258,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
   @override
   Future performActualDelete() {
-    throw UnsupportedError("It is not possible to delete pleroma chat");
+    throw UnsupportedError('It is not possible to delete pleroma chat');
   }
 
   @override
@@ -355,7 +355,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         );
       });
     } catch (e, stackTrace) {
-      _logger.warning(() => "postMessage error", e, stackTrace);
+      _logger.warning(() => 'postMessage error', e, stackTrace);
       await chatMessageRepository.updateByDbIdInDbType(
         dbId: localChatMessageId,
         dbItem: dbChatMessage.copyWith(

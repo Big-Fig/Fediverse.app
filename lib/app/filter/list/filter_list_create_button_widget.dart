@@ -10,6 +10,7 @@ class FilterListCreateButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var paginationListBloc = IPaginationListBloc.of(context);
+
     return FediPrimaryFilledTextButtonWithBorder(
       S.of(context).app_filter_list_action_add,
       expanded: false,

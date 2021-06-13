@@ -16,7 +16,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("scheduled_status_bloc_impl.dart");
+var _logger = Logger('scheduled_status_bloc_impl.dart');
 
 class ScheduledStatusBloc extends DisposableOwner
     implements IScheduledStatusBloc {
@@ -45,11 +45,11 @@ class ScheduledStatusBloc extends DisposableOwner
     required this.statusRepository,
     required this.scheduledStatusRepository,
     required IScheduledStatus
-        scheduledStatus, // for better performance we don't
+        scheduledStatus, // for better performance we dont
     // update
     // account too often
     bool needRefreshFromNetworkOnInit =
-        false, // todo: remove hack. Don't init when bloc quickly disposed. Help
+        false, // todo: remove hack. Dont init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
     this.isNeedWatchLocalRepositoryForUpdates = true,
@@ -210,16 +210,16 @@ class ScheduledStatusBloc extends DisposableOwner
       );
 
   void _updateState() {
-    _logger.finest(() => "_updateState isCanceled ${scheduledStatus.canceled}");
-    bool isCanceled = scheduledStatus.canceled;
+    _logger.finest(() => '_updateState isCanceled ${scheduledStatus.canceled}');
+    var isCanceled = scheduledStatus.canceled;
     if (isCanceled) {
       _stateSubject.add(ScheduledStatusState.canceled);
     } else {
-      DateTime scheduledAt = scheduledStatus.scheduledAt;
+      var scheduledAt = scheduledStatus.scheduledAt;
 
       var isExpired = scheduledAt.isBefore(DateTime.now());
 
-      _logger.finest(() => "_updateState isExpired $isExpired");
+      _logger.finest(() => '_updateState isExpired $isExpired');
       if (isExpired) {
         _stateSubject.add(ScheduledStatusState.alreadyPosted);
       } else {
@@ -260,7 +260,7 @@ class ScheduledStatusBloc extends DisposableOwner
   IPostStatusData calculatePostStatusData() {
     assert(
       scheduledStatus.params.inReplyToId == null,
-      "inReplyToId not supported",
+      'inReplyToId not supported',
     );
 
     return PostStatusData(

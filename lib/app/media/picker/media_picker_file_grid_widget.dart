@@ -15,7 +15,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-final _logger = Logger("media_picker_file_grid_widget.dart");
+final _logger = Logger('media_picker_file_grid_widget.dart');
 
 class MediaPickerFileGridWidget
     extends FediPaginationListWidget<IMediaDeviceFileMetadata> {
@@ -37,6 +37,7 @@ class MediaPickerFileGridWidget
     var mediaDeviceGalleryBloc =
         IMediaDeviceGalleryBloc.of(context, listen: false);
     await mediaDeviceGalleryBloc.refreshFoldersInformation();
+
     return true;
   }
 
@@ -48,14 +49,15 @@ class MediaPickerFileGridWidget
     required Widget? footer,
   }) {
     assert(header == null && footer == null,
-        "Grid view don't support header or footer");
+        'Grid view dont support header or footer');
 
-    _logger.finest(() => "buildItemsCollectionView");
+    _logger.finest(() => 'buildItemsCollectionView');
 
     var itemCount = items.length;
     if (headerItemBuilder != null) {
       itemCount++;
     }
+
     return GridView.builder(
       gridDelegate:
           // ignore: no-magic-number
@@ -69,6 +71,7 @@ class MediaPickerFileGridWidget
             index--;
           }
         }
+
         return Provider<IMediaDeviceFileMetadata>.value(
           value: items[index],
           child: const _MediaPickerFileGridItemWidget(),
@@ -100,9 +103,10 @@ class _MediaPickerFileGridItemWidget extends StatelessWidget {
             photoManagerMediaDeviceFileMetadata: fileMetadata,
           );
           mediaDeviceFileBloc.performAsyncInit();
+
           return mediaDeviceFileBloc;
         } else {
-          throw "IMediaDeviceFile file type not supported $fileMetadata";
+          throw 'IMediaDeviceFile file type not supported $fileMetadata';
         }
       },
       child: const MediaPickerFileGridItemWidget(),

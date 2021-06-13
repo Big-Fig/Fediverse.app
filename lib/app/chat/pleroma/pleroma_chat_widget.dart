@@ -21,6 +21,7 @@ class PleromaChatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var chatBloc = IPleromaChatBloc.of(context, listen: true);
+
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc: chatBloc,
       loadingFinishedBuilder: (context) {

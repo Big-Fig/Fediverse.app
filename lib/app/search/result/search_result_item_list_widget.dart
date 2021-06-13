@@ -6,7 +6,7 @@ class SearchResultItemListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const CollapsibleOwnerWidget(
         child: SearchResultItemPaginationListWidget(
-          key: PageStorageKey("SearchResultItemListWidget"),
+          key: PageStorageKey('SearchResultItemListWidget'),
         ),
       );
 

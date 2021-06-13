@@ -140,6 +140,7 @@ class _AccountActionListFollowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+
     return StreamBuilder<IPleromaApiAccountRelationship?>(
       stream: accountBloc.relationshipStream,
       builder: (context, snapshot) {

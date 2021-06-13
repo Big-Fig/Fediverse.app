@@ -28,6 +28,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var isHaveNext = nextFocusNode != null;
+
     return FediFormRow(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,6 +85,7 @@ class _FediFormPairEditTextRowKeyWidget extends StatelessWidget {
         var errors = snapshot.data;
 
         var error = errors?.isNotEmpty == true ? errors!.first : null;
+
         return FediTransparentEditTextField(
           maxLength: nameStringFieldBloc.maxLength,
           expanded: false,

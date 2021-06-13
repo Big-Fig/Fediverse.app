@@ -13,6 +13,7 @@ class StatusRepositoryTestHelper {
     );
     assert(id > 0, true);
     var dbStatus = statusData.copyWith(id: id);
+
     return dbStatus;
   }
 }

@@ -67,12 +67,14 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
   }) {
     assert(imageUrl?.isNotEmpty == true);
     stringKey ??= imageUrl;
+
     return StreamBuilder<bool>(
       stream: connectionService.isConnectedStream.distinct(),
       builder: (context, snapshot) {
         var isConnected = snapshot.data ?? true;
+
         return CachedNetworkImage(
-          key: ValueKey(stringKey! + "+" + isConnected.toString()),
+          key: ValueKey(stringKey! + '+' + isConnected.toString()),
           imageUrl: imageUrl!,
           httpHeaders: httpHeaders,
           imageBuilder: imageBuilder,

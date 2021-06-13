@@ -28,6 +28,7 @@ class FediActionsDialog extends FediDialog {
     if (contentText == null) {
       return null;
     }
+
     return Padding(
       padding: FediPadding.horizontalSmallPadding,
       child: Text(

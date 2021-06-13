@@ -64,6 +64,7 @@ class _PostMessageSelectedActionEmojiWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var postMessageBloc = IPostMessageBloc.of(context);
+
     return Column(
       children: <Widget>[
         const Padding(

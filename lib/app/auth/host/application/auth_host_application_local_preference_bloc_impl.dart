@@ -11,7 +11,7 @@ class AuthHostApplicationLocalPreferenceBloc
     required String host,
   }) : super(
           preferencesService: preferencesService,
-          key: "auth.host.$host.application",
+          key: 'auth.host.$host.application',
           schemaVersion: 1,
           jsonConverter: (json) => PleromaApiClientApplication.fromJson(json),
         );

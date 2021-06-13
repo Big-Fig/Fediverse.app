@@ -44,6 +44,7 @@ class _FediAudioPlayerErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: mediaPlayerBloc.isHaveErrorStream,
       builder: (context, snapshot) {

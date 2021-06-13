@@ -36,6 +36,7 @@ class FediTransparentIconTextButtonWithBorder extends StatelessWidget {
 
     // ignore: no-magic-number
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
+
     return InkWell(
       onTap: onPressed,
       child: Container(

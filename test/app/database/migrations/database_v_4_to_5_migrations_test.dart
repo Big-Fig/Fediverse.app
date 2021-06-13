@@ -6,13 +6,15 @@ import 'package:moor/ffi.dart';
 
 import '../../account/database/account_database_test_helper.dart';
 
+// ignore_for_file: no-magic-number, avoid-late-keyword
+
 void main() {
   late AppDatabase database;
   late File dbFile;
   setUp(() async {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v4.sqlite';
     var file = File(filePath);
-    dbFile = await file.copy(filePath + ".temp");
+    dbFile = await file.copy(filePath + '.temp');
     database = AppDatabase(VmDatabase(dbFile));
   });
 
@@ -20,7 +22,6 @@ void main() {
     await database.close();
     await dbFile.delete();
 
-    // ignore: no-magic-number
     expect(database.migrationsFromExecuted, 4);
     expect(database.migrationsToExecuted, database.schemaVersion);
   });
@@ -32,9 +33,9 @@ void main() {
 
     expect((await accountDao.getAll()).isNotEmpty, false);
 
-    var pleromaBackgroundImage = "pleromaBackgroundImage11";
+    var pleromaBackgroundImage = 'pleromaBackgroundImage11';
     var testDbAccount =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed1");
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1');
     testDbAccount =
         testDbAccount.copyWith(pleromaBackgroundImage: pleromaBackgroundImage);
     await accountDao.insert(

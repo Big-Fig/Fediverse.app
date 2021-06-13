@@ -2,7 +2,7 @@ import 'package:fedi/app/async/smart_refresher/async_smart_refresher_helper.dart
 import 'package:fedi/app/chat/conversation/status/conversation_chat_status_list_item_widget.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/status/local_status_bloc_impl.dart';
-import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_base_widget.dart';
+import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_base_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -19,7 +19,7 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-var _logger = Logger("conversation_chat_status_list_widget.dart");
+var _logger = Logger('conversation_chat_status_list_widget.dart');
 var _dateSeparatorDateFormat = DateFormat('MMMM dd, yyyy');
 
 class ConversationChatStatusListWidget
@@ -37,6 +37,7 @@ class ConversationChatStatusListWidget
       context,
       listen: listen,
     );
+
     return timelinePaginationListBloc;
   }
 
@@ -71,16 +72,17 @@ class ConversationChatStatusListWidget
               } catch (e, stackTrace) {
                 success = false;
                 _logger.severe(
-                  () => "additionalPreRefreshAction()",
+                  () => 'additionalPreRefreshAction()',
                   e,
                   stackTrace,
                 );
               }
-              _logger.finest(() => "additionalPreRefreshAction() $success");
+              _logger.finest(() => 'additionalPreRefreshAction() $success');
               var state = await paginationListBloc.refreshWithoutController();
               _logger.finest(
-                () => "paginationListBloc.refreshWithoutController() $state",
+                () => 'paginationListBloc.refreshWithoutController() $state',
               );
+
               return state;
             },
           );
@@ -101,8 +103,8 @@ class ConversationChatStatusListWidget
     required Widget? header,
     required Widget? footer,
   }) {
-    assert(header == null, "header not supported");
-    assert(footer == null, "footer not supported");
+    assert(header == null, 'header not supported');
+    assert(footer == null, 'footer not supported');
 
     return ListView.builder(
       itemCount: items.length,
@@ -117,9 +119,9 @@ class ConversationChatStatusListWidget
         }
         var currentMessage = items[index];
 
-        DateTime? currentCreatedAt = currentMessage.createdAt;
-        DateTime? previousCreatedAt = previousMessage?.createdAt;
-        DateTime? nextCreatedAt = nextMessage?.createdAt;
+        var currentCreatedAt = currentMessage.createdAt;
+        var previousCreatedAt = previousMessage?.createdAt;
+        var nextCreatedAt = nextMessage?.createdAt;
 
         bool? isFirstInDayGroup;
         bool? isLastInDayGroup;
@@ -127,11 +129,11 @@ class ConversationChatStatusListWidget
         bool? isFirstInMinuteGroup;
         bool? isLastInMinuteGroup;
 
-        _logger.finest(() => "content = ${currentMessage.content}\n"
-            "\t isFirstInDayGroup = $isFirstInDayGroup \n"
-            "\t isFirstInMinuteGroup = $isFirstInMinuteGroup \n"
-            "\t isLastInDayGroup = $isLastInDayGroup \n"
-            "\t isLastInMinuteGroup = $isLastInMinuteGroup \n");
+        _logger.finest(() => 'content = ${currentMessage.content}\n'
+            '\t isFirstInDayGroup = $isFirstInDayGroup \n'
+            '\t isFirstInMinuteGroup = $isFirstInMinuteGroup \n'
+            '\t isLastInDayGroup = $isLastInDayGroup \n'
+            '\t isLastInMinuteGroup = $isLastInMinuteGroup \n');
 
         if (previousCreatedAt != null) {
           isFirstInDayGroup =

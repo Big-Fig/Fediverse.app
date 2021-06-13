@@ -38,6 +38,7 @@ class _AccountReportPageAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     var accountReportBloc = IAccountReportBloc.of(context);
     var account = accountReportBloc.account;
+
     return FediPageTitleAppBar(
       title: S.of(context).app_account_report_title(account.acct),
       actions: [
@@ -58,11 +59,13 @@ class _AccountReportSendButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountReportBloc = IAccountReportBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: accountReportBloc.isHaveAtLeastOneErrorStream,
       initialData: accountReportBloc.isHaveAtLeastOneError,
       builder: (context, snapshot) {
         var isHaveAtLeastOneError = snapshot.data;
+
         return PleromaAsyncOperationButtonBuilderWidget(
           builder: (context, onPressed) => FediTextButton(
             text: S.of(context).app_account_report_action_send,

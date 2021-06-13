@@ -168,14 +168,14 @@ class FediDatePicker {
 
       switch (localizationLocale.languageCode.toLowerCase()) {
         // todo: improve
-        case "ru":
+        case 'ru':
           locale = LocaleType.ru;
           break;
-        case "en":
+        case 'en':
           locale = LocaleType.en;
           break;
         default:
-          throw "Invalid locale $locale";
+          throw 'Invalid locale $locale';
       }
     }
 
@@ -273,7 +273,7 @@ class FediDatePicker {
       },
       isDeletePossible: isDeletePossible,
     );
-    ThemeData inheritTheme = Theme.of(context);
+    var inheritTheme = Theme.of(context);
     widget = Theme(data: inheritTheme, child: widget);
 
     showFediModalBottomSheetDialog(context: context, child: widget);
@@ -341,7 +341,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
 
   @override
   Widget build(BuildContext context) {
-    FediDatePickerTheme theme = widget.theme!;
+    var theme = widget.theme!;
 
     return _renderPickerView(theme);
   }
@@ -353,7 +353,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
   }
 
   Widget _renderPickerView(FediDatePickerTheme theme) {
-    Widget itemView = _renderItemView(theme);
+    var itemView = _renderItemView(theme);
     if (widget.showTitleActions) {
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -370,6 +370,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
         ],
       );
     }
+
     return Container(child: itemView);
   }
 
@@ -395,11 +396,12 @@ class _DatePickerState extends State<FediDatePickerComponent> {
                 selectedChangedWhenScrollEnd != null &&
                 notification is ScrollEndNotification &&
                 notification.metrics is FixedExtentMetrics) {
-              final FixedExtentMetrics metrics =
+              final metrics =
                   notification.metrics as FixedExtentMetrics;
-              final int currentItemIndex = metrics.itemIndex;
+              final currentItemIndex = metrics.itemIndex;
               selectedChangedWhenScrollEnd(currentItemIndex);
             }
+
             return false;
           },
           child: CupertinoPicker.builder(
@@ -417,6 +419,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
               if (content == null) {
                 return null;
               }
+
               return Container(
                 height: theme.itemHeight,
                 alignment: Alignment.center,
@@ -510,9 +513,9 @@ class _DatePickerState extends State<FediDatePickerComponent> {
 
   // Title View
   Widget _renderTitleActionsView(FediDatePickerTheme theme) {
-    String done = _localeDone();
-    String cancel = _localeCancel();
-    String delete = _localeDelete();
+    var done = _localeDone();
+    var cancel = _localeCancel();
+    var delete = _localeDelete();
 
     return Container(
       height: theme.titleHeight,

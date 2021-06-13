@@ -6,7 +6,7 @@ class SearchStatusesListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const CollapsibleOwnerWidget(
         child: SearchStatusPaginationListTimelineWidget(
-          key: PageStorageKey("SearchStatusesListWidget"),
+          key: PageStorageKey('SearchStatusesListWidget'),
           needWatchLocalRepositoryForUpdates: false,
         ),
       );

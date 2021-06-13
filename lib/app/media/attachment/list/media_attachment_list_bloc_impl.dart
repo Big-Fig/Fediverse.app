@@ -44,6 +44,7 @@ class MediaAttachmentListBloc extends DisposableOwner
         initialPageIndex = 0;
       }
     }
+
     return initialPageIndex;
   }
 }

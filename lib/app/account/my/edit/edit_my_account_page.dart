@@ -14,10 +14,12 @@ class EditMyAccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
+
     return WillPopScope(
       // override back button
       onWillPop: () async {
         handleBackPressed(context, editMyAccountBloc);
+
         return true;
       },
       child: Scaffold(
@@ -73,6 +75,7 @@ class _EditMyAccountPageAppBarSaveAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: editMyAccountBloc.isHaveChangesAndNoErrorsStream,
       initialData: editMyAccountBloc.isHaveChangesAndNoErrors,
@@ -91,9 +94,9 @@ class _EditMyAccountPageAppBarSaveAction extends StatelessWidget {
             // todo: handle specific cases by error code
 //                          (context, error) => SimpleAlertDialog(
 //                          title: of(context)
-//                              .tr("app.status.post.dialog.error.title"),
+//                              .tr('app.status.post.dialog.error.title'),
 //                          content: tr(
-//                              "app.status.post.dialog.error.content",
+//                              'app.status.post.dialog.error.content',
 //                              args: [error.toString()]),
 //                          context: context)
           ],

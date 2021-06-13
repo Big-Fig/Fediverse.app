@@ -13,7 +13,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("status_list_item_media_widget.dart");
+var _logger = Logger('status_list_item_media_widget.dart');
 
 class StatusListItemMediaWidget extends StatelessWidget {
   const StatusListItemMediaWidget() : super();
@@ -23,6 +23,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
     BuildContext context,
   ) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Container(
       // todo: refactor
       // ignore: no-magic-number
@@ -47,8 +48,8 @@ class StatusListItemMediaWidget extends StatelessWidget {
     var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
 
     _logger.finest(
-      () => "build ${statusBloc.remoteId} "
-          "media ${statusBloc.reblogOrOriginalMediaAttachments?.length}",
+      () => 'build ${statusBloc.remoteId} '
+          'media ${statusBloc.reblogOrOriginalMediaAttachments?.length}',
     );
 
     var mediaAttachment = Provider.of<IPleromaApiMediaAttachment>(context);
@@ -60,6 +61,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
       statusBloc: statusBloc,
       statusSensitiveBloc: statusSensitiveBloc,
     );
+
     return StreamBuilder<bool>(
       stream: statusBloc.deletedStream.distinct(),
       builder: (context, snapshot) {

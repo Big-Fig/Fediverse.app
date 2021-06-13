@@ -10,7 +10,7 @@ import 'package:path/path.dart';
 
 class PleromaApiApplicationService extends BasePleromaApiService
     implements IPleromaApiApplicationService {
-  final appsRelativeUrlPath = "/api/v1/apps/";
+  final appsRelativeUrlPath = '/api/v1/apps/';
   @override
   final IPleromaApiRestService restService;
 
@@ -43,8 +43,8 @@ class PleromaApiApplicationService extends BasePleromaApiService
     required String appToken,
   }) async {
     var request = RestRequest.get(
-      relativePath: join(appsRelativeUrlPath, "verify_credentials"),
-      headers: {HttpHeaders.authorizationHeader: "Bearer $appToken"},
+      relativePath: join(appsRelativeUrlPath, 'verify_credentials'),
+      headers: {HttpHeaders.authorizationHeader: 'Bearer $appToken'},
     );
     var httpResponse = await restService.sendHttpRequest(
       request,

@@ -4,20 +4,20 @@ import 'package:json_annotation/json_annotation.dart';
 
 abstract class IPleromaApiPaginationRequest
     implements IMastodonApiPaginationRequest {
-  List<RestRequestQueryArg> toQueryArgs();
+
 }
 
 class PleromaApiPaginationRequest implements IPleromaApiPaginationRequest {
   @override
   final int? limit;
   @override
-  @JsonKey(name: "max_id")
+  @JsonKey(name: 'max_id')
   final String? maxId;
   @override
-  @JsonKey(name: "min_id")
+  @JsonKey(name: 'min_id')
   final String? minId;
   @override
-  @JsonKey(name: "since_id")
+  @JsonKey(name: 'since_id')
   final String? sinceId;
 
   PleromaApiPaginationRequest({
@@ -32,22 +32,22 @@ class PleromaApiPaginationRequest implements IPleromaApiPaginationRequest {
     return [
       if (minId != null)
         RestRequestQueryArg(
-          key: "min_id",
+          key: 'min_id',
           value: minId,
         ),
       if (maxId != null)
         RestRequestQueryArg(
-          key: "max_id",
+          key: 'max_id',
           value: maxId,
         ),
       if (sinceId != null)
         RestRequestQueryArg(
-          key: "since_id",
+          key: 'since_id',
           value: sinceId,
         ),
       if (limit != null)
         RestRequestQueryArg(
-          key: "limit",
+          key: 'limit',
           value: limit.toString(),
         ),
     ];

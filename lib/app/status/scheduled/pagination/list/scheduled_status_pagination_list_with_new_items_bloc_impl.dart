@@ -11,7 +11,7 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 var _logger =
-    Logger("scheduled_status_pagination_list_with_new_items_bloc_impl.dart");
+    Logger('scheduled_status_pagination_list_with_new_items_bloc_impl.dart');
 
 class ScheduledStatusPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IScheduledStatus>>
@@ -31,7 +31,8 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
   Stream<List<IScheduledStatus>> watchItemsNewerThanItem(
     IScheduledStatus? item,
   ) {
-    _logger.finest(() => "watchItemsNewerThanItem item = $item");
+    _logger.finest(() => 'watchItemsNewerThanItem item = $item');
+
     return scheduledStatusCachedListService.watchLocalItemsNewerThanItem(item);
   }
 

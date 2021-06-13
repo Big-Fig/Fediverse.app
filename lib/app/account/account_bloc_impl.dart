@@ -9,14 +9,14 @@ abstract class AccountBloc extends IAccountBloc {
 
   final IPleromaApiAccountService? pleromaAccountService;
 
-  // todo: remove hack. Don't init when bloc quickly disposed. Help
+  // todo: remove hack. Dont init when bloc quickly disposed. Help
   AccountBloc({
     required this.pleromaAccountService,
     required IAccount account,
     required bool isNeedRefreshFromNetworkOnInit,
     required bool delayInit,
   }) : accountSubject = BehaviorSubject.seeded(account) {
-    // _logger.finest(() => "AccountBloc constructor ${account.remoteId}");
+    // _logger.finest(() => 'AccountBloc constructor ${account.remoteId}');
     addDisposable(subject: accountSubject);
 
     if (delayInit) {
@@ -60,6 +60,7 @@ abstract class AccountBloc extends IAccountBloc {
   Future<IPleromaApiAccount> loadRemoteAccount() async {
     return pleromaAccountService!.getAccount(
       accountRemoteId: account.remoteId,
+      withRelationship: false,
     );
   }
 }
