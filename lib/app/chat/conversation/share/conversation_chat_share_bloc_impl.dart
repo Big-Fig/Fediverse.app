@@ -62,7 +62,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
 
     var targetAccounts = [account];
     var sendData = await createSendData(
-      to: "${targetAccounts.map((account) => "@${account.acct}").join(", ")}",
+      to: '${targetAccounts.map((account) => '@${account.acct}').join(', ')}',
       visibility: pleromaVisibility,
     );
     var accountsPleromaStatus = await pleromaAuthStatusService.postStatus(
@@ -115,6 +115,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
             var alreadyExist = accounts.firstWhereOrNull((accountsItem) =>
                     accountsItem.remoteId == account.remoteId) !=
                 null;
+
             return notOwn && !alreadyExist;
           },
         ),
@@ -159,6 +160,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
                       pleromaAccountsItem.id == pleromaAccount.id,
                 ) !=
                 null;
+
             return notOwn && !alreadyAdded;
           },
         ),

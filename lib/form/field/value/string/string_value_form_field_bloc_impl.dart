@@ -47,7 +47,7 @@ class StringValueFormFieldBloc extends ValueFormFieldBloc<String>
 
   @override
   bool isValueChanged(String? newValue, String? originValue) =>
-      (newValue ?? "") != (originValue ?? "");
+      (newValue ?? '') != (originValue ?? '');
 
   @override
   void clear() {

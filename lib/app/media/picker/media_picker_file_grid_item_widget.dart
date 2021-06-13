@@ -19,6 +19,7 @@ class MediaPickerFileGridItemWidget extends StatelessWidget {
     var mediaDeviceFileMetadata = mediaDeviceFileBloc.mediaDeviceFileMetadata;
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return StreamBuilder<bool>(
       stream:
           mediaPickerBloc.isFileMetadataSelectedStream(mediaDeviceFileMetadata),
@@ -26,6 +27,7 @@ class MediaPickerFileGridItemWidget extends StatelessWidget {
           mediaPickerBloc.isFileMetadataSelected(mediaDeviceFileMetadata),
       builder: (context, snapshot) {
         var isFileSelected = snapshot.data!;
+
         return Stack(
           children: [
             Positioned.fill(
@@ -71,6 +73,7 @@ class _MediaPickerFileGridItemBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaDeviceFileBloc = IMediaDeviceFileBloc.of(context);
+
     return InkWell(
       onTap: () async {
         var mediaPickerBloc = IMediaPickerBloc.of(
@@ -97,6 +100,7 @@ class _MediaPickerFileGridItemIconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaDeviceFileBloc = IMediaDeviceFileBloc.of(context);
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Center(
       child: mediaDeviceFileBloc.type == MediaDeviceFileType.video
           ? Icon(

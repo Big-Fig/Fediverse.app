@@ -16,36 +16,37 @@ class PleromaApiAccountTestHelper {
         endorsed: seed.hashCode % 2 == 1,
         followedBy: seed.hashCode % 2 == 0,
         following: seed.hashCode % 2 == 1,
-        id: seed + "id",
+        id: seed + 'id',
         muting: seed.hashCode % 2 == 0,
         mutingNotifications: seed.hashCode % 2 == 1,
         requested: seed.hashCode % 2 == 0,
         showingReblogs: seed.hashCode % 2 == 1,
         subscribing: seed.hashCode % 2 == 0,
         blockedBy: seed.hashCode % 2 == 1,
-        note: seed + "note",
+        notifying: seed.hashCode % 5 == 1,
+        note: seed + 'note',
       );
 
   static PleromaApiAccountReport createTestPleromaApiAccountReport({
     required String seed,
   }) =>
       PleromaApiAccountReport(
-        account: createTestPleromaApiAccount(seed: seed + "account"),
+        account: createTestPleromaApiAccount(seed: seed + 'account'),
         statuses: [
-          PleromaApiStatusTestHelper.createTestPleromaApiStatus(seed: seed + "1"),
-          PleromaApiStatusTestHelper.createTestPleromaApiStatus(seed: seed + "2"),
+          PleromaApiStatusTestHelper.createTestPleromaApiStatus(seed: seed + '1'),
+          PleromaApiStatusTestHelper.createTestPleromaApiStatus(seed: seed + '2'),
         ],
-        user: createTestPleromaApiAccount(seed: seed + "user"),
+        user: createTestPleromaApiAccount(seed: seed + 'user'),
       );
 
   static PleromaApiAccountPleromaPart createTestPleromaApiAccountPleromaPart({
     required String seed,
   }) =>
       PleromaApiAccountPleromaPart(
-        backgroundImage: seed + "backgroundImage",
+        backgroundImage: seed + 'backgroundImage',
         tags: [
-          PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + "1"),
-          PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + "2"),
+          PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + '1'),
+          PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + '2'),
         ],
         relationship: createTestPleromaApiAccountRelationship(
           seed: seed,
@@ -63,11 +64,11 @@ class PleromaApiAccountTestHelper {
         skipThreadContainment: seed.hashCode % 2 == 1,
         acceptsChatMessages: seed.hashCode % 2 == 0,
         isConfirmed: seed.hashCode % 2 == 1,
-        favicon: seed + "favicon",
-        apId: seed + "apId",
+        favicon: seed + 'favicon',
+        apId: seed + 'apId',
         alsoKnownAs: [
-          seed + "known1",
-          seed + "known2",
+          seed + 'known1',
+          seed + 'known2',
         ],
       );
 
@@ -75,34 +76,34 @@ class PleromaApiAccountTestHelper {
     required String seed,
   }) =>
       PleromaApiAccount(
-        username: seed + "username",
-        url: seed + "url",
+        username: seed + 'username',
+        url: seed + 'url',
         statusesCount: seed.hashCode + 1,
-        note: seed + "note",
+        note: seed + 'note',
         locked: seed.hashCode % 2 == 0,
-        id: seed + "id",
-        headerStatic: seed + "headerStatic",
-        header: seed + "header",
+        id: seed + 'id',
+        headerStatic: seed + 'headerStatic',
+        header: seed + 'header',
         followingCount: seed.hashCode + 2,
         followersCount: seed.hashCode + 3,
         fields: [
-          PleromaApiFieldTestHelper.createTestPleromaApiField(seed: seed + "1"),
-          PleromaApiFieldTestHelper.createTestPleromaApiField(seed: seed + "2"),
+          PleromaApiFieldTestHelper.createTestPleromaApiField(seed: seed + '1'),
+          PleromaApiFieldTestHelper.createTestPleromaApiField(seed: seed + '2'),
         ],
         emojis: [
-          PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(seed: seed + "1"),
-          PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(seed: seed + "2"),
+          PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(seed: seed + '1'),
+          PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(seed: seed + '2'),
         ],
-        displayName: seed + "displayName",
+        displayName: seed + 'displayName',
         createdAt: DateTime(seed.hashCode % 2000),
         bot: seed.hashCode % 2 == 1,
-        avatarStatic: seed + "avatarStatic",
-        avatar: seed + "avatar",
+        avatarStatic: seed + 'avatarStatic',
+        avatar: seed + 'avatar',
         acct: seed + 'acct',
         pleroma: createTestPleromaApiAccountPleromaPart(
           seed: seed,
         ),
         lastStatusAt: DateTime(seed.hashCode % 2000 + 1),
-        fqn: seed + "fqn",
+        fqn: seed + 'fqn',
       );
 }

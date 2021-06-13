@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'post_status_poll_model.g.dart';
 
 abstract class IPostStatusPoll {
-  Duration get durationLength;
+  Duration? get durationLength;
 
   bool get hideTotals;
 
@@ -20,11 +20,11 @@ abstract class IPostStatusPoll {
 @JsonSerializable()
 class PostStatusPoll implements IPostStatusPoll {
   @override
-  @JsonKey(name: "duration_length")
-  final Duration durationLength;
+  @JsonKey(name: 'duration_length')
+  final Duration? durationLength;
 
   @override
-  @JsonKey(name: "hide_totals")
+  @JsonKey(name: 'hide_totals')
   final bool hideTotals;
 
   @override
@@ -78,7 +78,7 @@ extension IPostStatusPollExtension on IPostStatusPoll {
       PleromaApiPostStatusPoll(
         options: options,
         multiple: multiple,
-        expiresInSeconds: durationLength.totalSeconds,
+        expiresInSeconds: durationLength!.totalSeconds,
         hideTotals: hideTotals,
       );
 
@@ -105,7 +105,7 @@ extension IPostStatusPollExtension on IPostStatusPoll {
       ownVotes: [],
       votersCount: 0,
       votesCount: 0,
-      expiresAt: DateTime.now().add(durationLength),
+      expiresAt: durationLength != null ? DateTime.now().add(durationLength!) : null,
     );
   }
 }

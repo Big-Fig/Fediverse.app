@@ -11,7 +11,7 @@ import '../timeline_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    var timelineId = "timelineId";
+    var timelineId = 'timelineId';
     var defaultPreferenceValue = Timeline(
       typeString: TimelineType.public.toJsonValue(),
       settings: TimelineSettings.createDefaultHomeSettings(),

@@ -48,8 +48,11 @@ class _FediListSmartRefresherRefreshIndicatorState
     extends RefreshIndicatorState<FediListSmartRefresherRefreshIndicator>
     with TickerProviderStateMixin {
   Animation<Offset>? _positionFactor;
+  // ignore: avoid-late-keyword
   late AnimationController _scaleFactor;
+  // ignore: avoid-late-keyword
   late AnimationController _positionController;
+  // ignore: avoid-late-keyword
   late AnimationController _valueAni;
 
   @override
@@ -63,7 +66,8 @@ class _FediListSmartRefresherRefreshIndicatorState
     );
     _valueAni.addListener(() {
       // frequently setState will decline the performance
-      if (mounted && Scrollable.of(context)!.position.pixels <= 0) {
+      var pixels = Scrollable.of(context)?.position.pixels;
+      if (mounted && pixels != null && pixels <= 0) {
         // ignore: no-empty-block
         setState(() {});
       }

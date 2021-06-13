@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:fedi/app/account/my/edit/field/image/edit_my_acccount_image_confirm_dialog.dart';
 import 'package:fedi/app/file/image/crop/file_image_crop_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
@@ -54,7 +52,7 @@ Future _cropAndSelect(
     context,
     listen: false,
   );
-  File? croppedFile = await goToCropImagePage(
+  var croppedFile = await goToCropImagePage(
     context: context,
     file: await mediaDeviceFile.loadFile(),
     isForceCropToSquare: false,

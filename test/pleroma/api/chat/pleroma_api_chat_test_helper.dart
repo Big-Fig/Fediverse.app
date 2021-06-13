@@ -10,7 +10,7 @@ class PleromaApiChatTestHelper {
     required String seed,
   }) =>
       PleromaApiChat(
-        id: seed + "id",
+        id: seed + 'id',
         unread: seed.hashCode % 10,
         account:
             PleromaApiAccountTestHelper.createTestPleromaApiAccount(seed: seed),

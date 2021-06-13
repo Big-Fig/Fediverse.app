@@ -7,13 +7,15 @@ import 'package:moor/ffi.dart';
 
 import '../../filter/database/filter_database_test_helper.dart';
 
+// ignore_for_file: no-magic-number, avoid-late-keyword
+
 void main() {
   late AppDatabase database;
   late File dbFile;
   setUp(() async {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v8.sqlite';
     var file = File(filePath);
-    dbFile = await file.copy(filePath + ".temp");
+    dbFile = await file.copy(filePath + '.temp');
     database = AppDatabase(VmDatabase(dbFile));
   });
 
@@ -21,7 +23,6 @@ void main() {
     await database.close();
     await dbFile.delete();
 
-    // ignore: no-magic-number
     expect(database.migrationsFromExecuted, 8);
     expect(database.migrationsToExecuted, database.schemaVersion);
   });
@@ -36,7 +37,7 @@ void main() {
       expect((await filterDao.getAll()).isNotEmpty, false);
 
       var dbFilter =
-          await FilterDatabaseTestHelper.createTestDbFilter(seed: "seed");
+          await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed');
 
       await filterDao.insert(entity: dbFilter, mode: null);
 

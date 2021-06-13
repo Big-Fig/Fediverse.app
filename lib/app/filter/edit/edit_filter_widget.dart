@@ -15,6 +15,7 @@ class EditFilterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editFilterBloc = IEditFilterBloc.of(context);
+
     return ListView(
       children: <Widget>[
         const _EditFilterDescriptionWidget(),
@@ -48,6 +49,7 @@ class _EditFilterDeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editFilterBloc = IEditFilterBloc.of(context);
+
     return PleromaAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () async {
         await editFilterBloc.deleteList();

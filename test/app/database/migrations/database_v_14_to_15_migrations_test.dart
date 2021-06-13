@@ -22,6 +22,8 @@ import '../../chat/message/chat_message_test_helper.dart';
 import '../../notification/database/notification_database_test_helper.dart';
 import '../../status/status_test_helper.dart';
 
+// ignore_for_file: no-magic-number, avoid-late-keyword
+
 void main() {
   late AppDatabase database;
   late File dbFile;
@@ -35,7 +37,7 @@ void main() {
   setUp(() async {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v14.sqlite';
     var file = File(filePath);
-    dbFile = await file.copy(filePath + ".temp");
+    dbFile = await file.copy(filePath + '.temp');
     database = AppDatabase(VmDatabase(dbFile));
 
     accountRepository = AccountRepository(appDatabase: database);
@@ -57,7 +59,7 @@ void main() {
     );
 
     account1 =
-        (await AccountTestHelper.createTestAccount(seed: "reportAccount1"));
+        (await AccountTestHelper.createTestAccount(seed: 'reportAccount1'));
     await accountRepository.upsertInRemoteType(account1.toPleromaApiAccount());
   });
 
@@ -69,7 +71,6 @@ void main() {
     await database.close();
     await dbFile.delete();
 
-    // ignore: no-magic-number
     expect(database.migrationsFromExecuted, 14);
     expect(database.migrationsToExecuted, database.schemaVersion);
   });
@@ -83,7 +84,7 @@ void main() {
 
     var testDbNotification =
         await NotificationDatabaseTestHelper.createTestDbNotification(
-      seed: "seed1",
+      seed: 'seed1',
       dbAccount: account1.dbAccount,
     );
 
@@ -91,12 +92,12 @@ void main() {
       report: PleromaApiAccountReport(
         account: account1.toPleromaApiAccount(),
         statuses: [
-          (await StatusTestHelper.createTestStatus(seed: "status1"))
+          (await StatusTestHelper.createTestStatus(seed: 'status1'))
               .toPleromaStatus(),
-          (await StatusTestHelper.createTestStatus(seed: "status2"))
+          (await StatusTestHelper.createTestStatus(seed: 'status2'))
               .toPleromaStatus(),
         ],
-        user: (await AccountTestHelper.createTestAccount(seed: "reportUser"))
+        user: (await AccountTestHelper.createTestAccount(seed: 'reportUser'))
             .toPleromaApiAccount(),
       ),
     );
@@ -120,7 +121,7 @@ void main() {
 
     var testDbNotification =
         await NotificationDatabaseTestHelper.createTestDbNotification(
-      seed: "seed1",
+      seed: 'seed1',
       dbAccount: account1.dbAccount,
     );
 
@@ -146,13 +147,13 @@ void main() {
 
     var testDbNotification =
         await NotificationDatabaseTestHelper.createTestDbNotification(
-      seed: "seed1",
+      seed: 'seed1',
       dbAccount: account1.dbAccount,
     );
 
     testDbNotification = testDbNotification.copyWith(
       chatMessage:
-          (await ChatMessageTestHelper.createTestChatMessage(seed: "seed1"))
+          (await ChatMessageTestHelper.createTestChatMessage(seed: 'seed1'))
               .toPleromaApiChatMessage(),
     );
     await notificationDao.insert(

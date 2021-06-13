@@ -33,6 +33,7 @@ class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
       context,
       listen: false,
     );
+
     return RemoteInstanceDetailsBloc(
       remoteInstanceBloc: remoteInstanceBloc,
     );

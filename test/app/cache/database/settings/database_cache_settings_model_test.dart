@@ -38,7 +38,7 @@ void main() {
   test('clone', () async {
     var obj1 =
     DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
-      seed: "seed1",
+      seed: 'seed1',
     );
 
     var obj1Clone = obj1.clone();
@@ -49,11 +49,11 @@ void main() {
   test('copyWith', () async {
     var obj1 =
         DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 =
         DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(

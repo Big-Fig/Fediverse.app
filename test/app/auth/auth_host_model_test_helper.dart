@@ -19,7 +19,7 @@ class AuthHostModelTestHelper {
     CantRetrieveAppTokenAuthHostException?
         cantRetrieveAppTokenAuthHostException,
     CantRegisterAppAuthHostException? cantRegisterAppAuthHostException,
-    dynamic? unknownHostException,
+    dynamic unknownHostException,
   }) =>
       AuthHostRegistrationResult(
         token: PleromaApiOAuthTestHelper.createTestPleromaApiOAuthToken(

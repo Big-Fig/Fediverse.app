@@ -47,11 +47,11 @@ enum MastodonApiCardType {
 
 const unknownMastodonApiCardType = MastodonApiCardType.unknown;
 
-const _linkMastodonApiCardTypeJsonValue = "link";
-const _photoMastodonApiCardTypeJsonValue = "photo";
-const _videoMastodonApiCardTypeJsonValue = "video";
-const _richMastodonApiCardTypeJsonValue = "rich";
-const _unknownMastodonApiCardTypeJsonValue = "unknown";
+const _linkMastodonApiCardTypeJsonValue = 'link';
+const _photoMastodonApiCardTypeJsonValue = 'photo';
+const _videoMastodonApiCardTypeJsonValue = 'video';
+const _richMastodonApiCardTypeJsonValue = 'rich';
+const _unknownMastodonApiCardTypeJsonValue = 'unknown';
 
 extension MastodonApiCardTypeExtension on MastodonApiCardType {
   String toJsonValue() {

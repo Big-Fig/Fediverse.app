@@ -7,13 +7,15 @@ import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
+// ignore_for_file: no-magic-number, avoid-late-keyword
+
 void main() {
   late AppDatabase database;
   late File dbFile;
   setUp(() async {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v2.sqlite';
     var file = File(filePath);
-    dbFile = await file.copy(filePath + ".temp");
+    dbFile = await file.copy(filePath + '.temp');
     database = AppDatabase(VmDatabase(dbFile));
   });
 
@@ -22,7 +24,6 @@ void main() {
     await dbFile.delete();
 
     // hack because we don't have too old v2 db dump
-    // ignore: no-magic-number
     expect(database.migrationsFromExecuted, 3);
     expect(database.migrationsToExecuted, database.schemaVersion);
   });
@@ -39,7 +40,7 @@ void main() {
         scheduledAt: DateTime.now(),
         canceled: false,
         id: null,
-        remoteId: "asda",
+        remoteId: 'asda',
         params: PleromaApiScheduledStatusParams.only(
           sensitive: true,
           visibility: PleromaApiVisibility.private.toJsonValue(),
@@ -63,7 +64,7 @@ void main() {
         id: null,
         updatedAt: DateTime.now(),
         data: PostStatusData.only(
-          visibilityString: PleromaApiVisibility.private.toJsonValue(),
+          visibility: PleromaApiVisibility.private,
           isNsfwSensitiveEnabled: true,
         ),
       ),

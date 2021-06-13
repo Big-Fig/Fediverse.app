@@ -7,7 +7,7 @@ import 'package:moor/ffi.dart';
 import '../../account/database/account_database_test_helper.dart';
 import '../../chat/message/database/chat_message_database_test_helper.dart';
 import '../../status/database/status_database_test_helper.dart';
-
+// ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
   late AppDatabase database;
   late File dbFile;
@@ -16,10 +16,10 @@ void main() {
   setUp(() async {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v13.sqlite';
     var file = File(filePath);
-    dbFile = await file.copy(filePath + ".temp");
+    dbFile = await file.copy(filePath + '.temp');
     database = AppDatabase(VmDatabase(dbFile, logStatements: false));
     dbAccount =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed");
+        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed');
     await database.accountDao.insert(entity: dbAccount, mode: null);
   });
 
@@ -27,7 +27,6 @@ void main() {
     await database.close();
     await dbFile.delete();
 
-    // ignore: no-magic-number
     expect(database.migrationsFromExecuted, 13);
     expect(database.migrationsToExecuted, database.schemaVersion);
   });
@@ -40,7 +39,7 @@ void main() {
     expect((await statusDao.getAll()).isNotEmpty, false);
 
     var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
-      seed: "seed1",
+      seed: 'seed1',
       dbAccount: dbAccount,
     );
 
@@ -90,11 +89,11 @@ void main() {
       expect((await statusDao.getAll()).isNotEmpty, false);
 
       var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
-        seed: "seed1",
+        seed: 'seed1',
         dbAccount: dbAccount,
       );
 
-      var wasSentWithIdempotencyKey = "wasSentWithIdempotencyKey1";
+      var wasSentWithIdempotencyKey = 'wasSentWithIdempotencyKey1';
       dbStatus = dbStatus.copyWith(
         wasSentWithIdempotencyKey: wasSentWithIdempotencyKey,
       );
@@ -116,7 +115,7 @@ void main() {
       await statusDao.updateByRemoteId(
         dbStatus.remoteId,
         dbStatus.copyWith(
-          wasSentWithIdempotencyKey: "wasSentWithIdempotencyKey2",
+          wasSentWithIdempotencyKey: 'wasSentWithIdempotencyKey2',
         ),
       );
 
@@ -126,7 +125,7 @@ void main() {
         (await statusDao.findByRemoteIdPopulated(dbStatus.remoteId))
             ?.dbStatus
             .wasSentWithIdempotencyKey,
-        "wasSentWithIdempotencyKey2",
+        'wasSentWithIdempotencyKey2',
       );
     },
   );
@@ -141,7 +140,7 @@ void main() {
 
       var dbChatMessage =
           await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
-        seed: "seed1",
+        seed: 'seed1',
         dbAccount: dbAccount,
       );
 
@@ -193,11 +192,11 @@ void main() {
 
       var dbChatMessage =
           await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
-        seed: "seed1",
+        seed: 'seed1',
         dbAccount: dbAccount,
       );
 
-      var wasSentWithIdempotencyKey = "wasSentWithIdempotencyKey1";
+      var wasSentWithIdempotencyKey = 'wasSentWithIdempotencyKey1';
       dbChatMessage = dbChatMessage.copyWith(
         wasSentWithIdempotencyKey: wasSentWithIdempotencyKey,
       );
@@ -219,7 +218,7 @@ void main() {
       await chatMessageDao.updateByRemoteId(
         dbChatMessage.remoteId,
         dbChatMessage.copyWith(
-          wasSentWithIdempotencyKey: "wasSentWithIdempotencyKey2",
+          wasSentWithIdempotencyKey: 'wasSentWithIdempotencyKey2',
         ),
       );
 
@@ -229,7 +228,7 @@ void main() {
         (await chatMessageDao.findByRemoteIdPopulated(dbChatMessage.remoteId))
             ?.dbChatMessage
             .wasSentWithIdempotencyKey,
-        "wasSentWithIdempotencyKey2",
+        'wasSentWithIdempotencyKey2',
       );
     },
   );

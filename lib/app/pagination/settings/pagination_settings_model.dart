@@ -11,7 +11,7 @@ part 'pagination_settings_model.g.dart';
 @HiveType(typeId: -32 + 95)
 class PaginationSettings implements IJsonObject, ISettings<PaginationSettings> {
   @HiveField(0)
-  @JsonKey(name: "page_size")
+  @JsonKey(name: 'page_size')
   final String pageSizeString;
 
   PaginationPageSize get pageSize =>

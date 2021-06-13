@@ -16,7 +16,7 @@ class StatusDatabaseTestHelper {
     DbStatus dbStatus,
     AccountRepository accountRepository,
   ) async {
-    DbStatusPopulated dbStatusPopulated = DbStatusPopulated(
+    var dbStatusPopulated = DbStatusPopulated(
       dbStatus: dbStatus,
       dbAccount: (await accountRepository
           .findByRemoteIdInDbType(dbStatus.accountRemoteId))!,
@@ -27,6 +27,7 @@ class StatusDatabaseTestHelper {
       replyReblogDbStatusAccount: null,
       replyDbStatus: null,
     );
+
     return dbStatusPopulated;
   }
 
@@ -36,19 +37,19 @@ class StatusDatabaseTestHelper {
     required DbAccount dbAccount,
     bool? pleromaThreadMuted = false,
     String? remoteId,
-    String? inReplyToAccountRemoteId = "inReplyToAccountRemoteId",
+    String? inReplyToAccountRemoteId = 'inReplyToAccountRemoteId',
   }) async {
-    DbStatus dbStatus = DbStatus(
+    var dbStatus = DbStatus(
       id: null,
-      remoteId: remoteId ?? seed + "remoteId",
+      remoteId: remoteId ?? seed + 'remoteId',
       createdAt: createdAt ?? DateTime(1),
-      inReplyToRemoteId: seed + "inReplyToRemoteId",
+      inReplyToRemoteId: seed + 'inReplyToRemoteId',
       inReplyToAccountRemoteId: inReplyToAccountRemoteId,
       sensitive: true,
-      spoilerText: seed + "spoilerText",
+      spoilerText: seed + 'spoilerText',
       visibility: PleromaApiVisibility.public,
-      uri: seed + "uri",
-      url: seed + "url",
+      uri: seed + 'uri',
+      url: seed + 'url',
       repliesCount: 3,
       reblogsCount: 4,
       favouritesCount: 5,
@@ -57,7 +58,7 @@ class StatusDatabaseTestHelper {
       pinned: false,
       muted: false,
       bookmarked: false,
-      content: seed + "content",
+      content: seed + 'content',
       reblogStatusRemoteId: null,
       application:
           PleromaApiApplicationTestHelper.createTestPleromaApiApplication(
@@ -70,7 +71,7 @@ class StatusDatabaseTestHelper {
       emojis: null,
       poll: null,
       card: null,
-      language: seed + "language",
+      language: seed + 'language',
       pleromaContent: null,
       pleromaConversationId: null,
       pleromaDirectConversationId: null,
@@ -81,6 +82,7 @@ class StatusDatabaseTestHelper {
       pleromaThreadMuted: pleromaThreadMuted,
       pleromaEmojiReactions: null,
     );
+
     return dbStatus;
   }
 
@@ -92,7 +94,7 @@ class StatusDatabaseTestHelper {
     String? remoteId,
     required AccountRepository accountRepository,
   }) async {
-    DbStatus dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
       seed: seed,
       dbAccount: dbAccount,
       createdAt: createdAt,
@@ -104,6 +106,7 @@ class StatusDatabaseTestHelper {
       dbStatus,
       accountRepository,
     );
+
     return DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
         .toPleromaStatus();
   }

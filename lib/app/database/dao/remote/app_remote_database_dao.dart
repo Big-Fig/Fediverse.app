@@ -4,34 +4,34 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 abstract class AppRemoteDatabaseDao<
-        DbItem extends DataClass,
-        DbId,
-        RemoteId,
-        TableDsl extends Table,
-        TableInfoDsl extends TableInfo<TableDsl, DbItem>,
-        Filters,
-        OrderingTerm extends RepositoryOrderingTerm>
+DbItem extends DataClass,
+DbId,
+RemoteId,
+TableDsl extends Table,
+TableInfoDsl extends TableInfo<TableDsl, DbItem>,
+Filters,
+OrderingTerm extends RepositoryOrderingTerm>
     extends AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl, Filters,
         OrderingTerm> {
-  String get remoteIdFieldName => "remote_id";
+  String get remoteIdFieldName => 'remote_id';
 
   AppRemoteDatabaseDao(AppDatabase db) : super(db);
 
   Future<int> deleteByRemoteId(RemoteId remoteId) => customUpdate(
-        'DELETE FROM $tableName '
+    'DELETE FROM $tableName '
         'WHERE ${createFindByRemoteIdWhereExpressionContent(remoteId)}',
-        updates: {table},
-        updateKind: UpdateKind.delete,
-      );
+    updates: {table},
+    updateKind: UpdateKind.delete,
+  );
 
   Future deleteByRemoteIdBatch(
-    RemoteId remoteId, {
-    required Batch? batchTransaction,
-  }) async {
+      RemoteId remoteId, {
+        required Batch? batchTransaction,
+      }) async {
     if (batchTransaction != null) {
       batchTransaction.deleteWhere(
         table,
-        (tbl) => createFindByRemoteIdWhereExpression(remoteId),
+            (tbl) => createFindByRemoteIdWhereExpression(remoteId),
       );
     } else {
       return await deleteByRemoteId(remoteId);
@@ -47,22 +47,22 @@ abstract class AppRemoteDatabaseDao<
   Selectable<DbId> findLocalIdByRemoteIdSelectable(RemoteId remoteId) =>
       customSelect(
         'SELECT $idFieldName FROM $tableName '
-        'WHERE ${createFindByRemoteIdWhereExpressionContent(remoteId)}',
+            'WHERE ${createFindByRemoteIdWhereExpressionContent(remoteId)}',
         readsFrom: {table},
       ).map(
-        (QueryRow row) => row.read<DbId>(
+            (QueryRow row) => row.read<DbId>(
           idFieldName,
         ),
       );
 
   Future<void> updateByRemoteId(
-    RemoteId remoteId,
-    Insertable<DbItem> entity,
-  ) async {
+      RemoteId remoteId,
+      Insertable<DbItem> entity,
+      ) async {
     var rowsChanged = await (update(table)
-          ..where(
+      ..where(
             (_) => createFindByRemoteIdWhereExpression(remoteId),
-          ))
+      ))
         .write(entity);
 
     if (rowsChanged == 0) {
@@ -79,14 +79,14 @@ abstract class AppRemoteDatabaseDao<
   Selectable<DbItem> findByRemoteIdSelectable(RemoteId remoteId) =>
       customSelect(
         'SELECT * FROM $tableName '
-        'WHERE ${createFindByRemoteIdWhereExpressionContent(remoteId)} '
-        'LIMIT 1',
+            'WHERE ${createFindByRemoteIdWhereExpressionContent(remoteId)} '
+            'LIMIT 1',
         readsFrom: {table},
       ).map(table.mapFromRow);
 
   CustomExpression<bool> createFindByRemoteIdWhereExpression(
-    RemoteId remoteId,
-  ) =>
+      RemoteId remoteId,
+      ) =>
       createMainTableEqualWhereExpression(
         fieldName: remoteIdFieldName,
         value: remoteId,
@@ -100,16 +100,16 @@ abstract class AppRemoteDatabaseDao<
     required RemoteId remoteId,
   }) {
     simpleSelectStatement.where(
-      (_) => createFindByRemoteIdWhereExpression(remoteId),
+          (_) => createFindByRemoteIdWhereExpression(remoteId),
     );
   }
 
   SimpleSelectStatement<TableDsl, DbItem> addDateTimeBoundsWhere(
-    SimpleSelectStatement<TableDsl, DbItem> query, {
-    required GeneratedDateTimeColumn column,
-    required DateTime? minimumDateTimeExcluding,
-    required DateTime? maximumDateTimeExcluding,
-  }) {
+      SimpleSelectStatement<TableDsl, DbItem> query, {
+        required GeneratedDateTimeColumn column,
+        required DateTime? minimumDateTimeExcluding,
+        required DateTime? maximumDateTimeExcluding,
+      }) {
     var minimumExist = minimumDateTimeExcluding != null;
     var maximumExist = maximumDateTimeExcluding != null;
     assert(minimumExist || maximumExist);
@@ -121,7 +121,7 @@ abstract class AppRemoteDatabaseDao<
     if (maximumExist) {
       query = query
         ..where(
-          (status) => column.isSmallerThanValue(maximumDateTimeExcluding),
+              (status) => column.isSmallerThanValue(maximumDateTimeExcluding),
         );
     }
 
@@ -129,10 +129,10 @@ abstract class AppRemoteDatabaseDao<
   }
 
   SimpleSelectStatement<TableDsl, DbItem> addRemoteIdBoundsWhere(
-    SimpleSelectStatement<TableDsl, DbItem> query, {
-    required String? minimumRemoteIdExcluding,
-    required String? maximumRemoteIdExcluding,
-  }) {
+      SimpleSelectStatement<TableDsl, DbItem> query, {
+        required String? minimumRemoteIdExcluding,
+        required String? maximumRemoteIdExcluding,
+      }) {
     var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
     var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
     assert(minimumExist || maximumExist);
@@ -164,8 +164,8 @@ abstract class AppRemoteDatabaseDao<
   }) =>
       customSelect(
         'SELECT * FROM $tableName '
-                'ORDER BY $remoteIdFieldName ASC '
-                'LIMIT 1' +
+            'ORDER BY $remoteIdFieldName ASC '
+            'LIMIT 1' +
             createOffsetContent(offset),
         readsFrom: {table},
       ).map(table.mapFromRow);
@@ -181,8 +181,8 @@ abstract class AppRemoteDatabaseDao<
   }) =>
       customSelect(
         'SELECT * FROM $tableName '
-                'ORDER BY $remoteIdFieldName DESC '
-                'LIMIT 1' +
+            'ORDER BY $remoteIdFieldName DESC '
+            'LIMIT 1' +
             createOffsetContent(offset),
         readsFrom: {table},
       ).map(table.mapFromRow);

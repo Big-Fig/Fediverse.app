@@ -39,11 +39,11 @@ extension ToastHandlingTypeExtension on ToastHandlingType {
 }
 
 const _onlyWhenInstanceSelectedToastHandlingTypeJsonValue =
-    "onlyWhenInstanceSelected";
+    'onlyWhenInstanceSelected';
 const _onlyWhenInstanceNotSelectedToastHandlingTypeJsonValue =
-    "onlyWhenInstanceNotSelected";
-const _alwaysToastHandlingTypeJsonValue = "always";
-const _neverToastHandlingTypeJsonValue = "never";
+    'onlyWhenInstanceNotSelected';
+const _alwaysToastHandlingTypeJsonValue = 'always';
+const _neverToastHandlingTypeJsonValue = 'never';
 
 extension ToastHandlingTypeListExtension on List<ToastHandlingType> {
   List<String> toToastHandlingTypeStrings() => map(
@@ -68,9 +68,9 @@ extension ToastHandlingTypeStringExtension on String {
       case _onlyWhenInstanceSelectedToastHandlingTypeJsonValue:
         result = ToastHandlingType.onlyWhenInstanceSelected;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
-        throw "Invalid ToastHandlingType string ${this}";
+        throw 'Invalid ToastHandlingType string ${this}';
     }
 
     return result;

@@ -31,7 +31,7 @@ typedef PleromaAccountListLoader = Future<List<IPleromaApiAccount>> Function({
   required IAccount? olderThan,
 });
 
-var _logger = Logger("select_account_list_bloc_impl.dart");
+var _logger = Logger('select_account_list_bloc_impl.dart');
 
 class SelectAccountListBloc extends DisposableOwner
     implements ISelectAccountListBloc {
@@ -63,7 +63,9 @@ class SelectAccountListBloc extends DisposableOwner
     required this.customEmptySearchRemoteAccountListLoader,
     required this.customEmptySearchLocalAccountListLoader,
     required this.followingsOnly,
-  }) : searchInputBloc = SearchInputBloc() {
+  }) : searchInputBloc = SearchInputBloc(
+          initialQuery: null,
+        ) {
     addDisposable(disposable: searchInputBloc);
     addDisposable(streamController: accountSelectedStreamController);
   }
@@ -77,9 +79,9 @@ class SelectAccountListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t newerThan = $newerThan"
-        "\t olderThan = $olderThan");
+    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
+        '\t newerThan = $newerThan'
+        '\t olderThan = $olderThan');
 
     List<IPleromaApiAccount> remoteAccounts;
 
@@ -151,6 +153,7 @@ class SelectAccountListBloc extends DisposableOwner
         maxId: olderThan?.remoteId,
         limit: limit,
       ),
+      withRelationship: false,
       accountRemoteId: myAccountBloc.account.remoteId,
     );
   }
@@ -161,9 +164,9 @@ class SelectAccountListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.finest(() => "start loadLocalItems \n"
-        "\t newerThan=$newerThan"
-        "\t olderThan=$olderThan");
+    _logger.finest(() => 'start loadLocalItems \n'
+        '\t newerThan=$newerThan'
+        '\t olderThan=$olderThan');
 
     List<IAccount> accounts;
     var searchTermExist = searchText?.isNotEmpty == true;
@@ -214,11 +217,13 @@ class SelectAccountListBloc extends DisposableOwner
         if (valid && searchText != null) {
           valid &= account.acct.contains(searchText!);
         }
+
         return valid;
       }).toList();
     }
 
-    _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");
+    _logger.finer(() => 'finish loadLocalItems accounts ${accounts.length}');
+
     return accounts;
   }
 

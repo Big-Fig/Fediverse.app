@@ -11,7 +11,7 @@ class AuthHostAccessTokenLocalPreferenceBloc
     required String host,
   }) : super(
           preferencesService: preferencesService,
-          key: "auth.host.$host.access_token",
+          key: 'auth.host.$host.access_token',
           schemaVersion: 1,
           jsonConverter: (json) => PleromaApiOAuthToken.fromJson(json),
         );

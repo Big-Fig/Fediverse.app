@@ -47,7 +47,7 @@ class PleromaApiPushSubscription {
   final dynamic id;
   final String? endpoint;
   final PleromaApiPushSubscribeRequestDataAlerts? alerts;
-  @JsonKey(name: "server_key")
+  @JsonKey(name: 'server_key')
   final String? serverKey;
   final PleromaApiPushSubscribeRequestSubscription? subscription;
 
@@ -138,9 +138,9 @@ class PleromaApiPushSubscribeRequestDataAlerts {
 
   final bool? poll;
 
-  @JsonKey(name: "pleroma:chat_mention")
+  @JsonKey(name: 'pleroma:chat_mention')
   final bool? pleromaChatMention;
-  @JsonKey(name: "pleroma:emoji_reaction")
+  @JsonKey(name: 'pleroma:emoji_reaction')
   final bool? pleromaEmojiReaction;
 
   PleromaApiPushSubscribeRequestDataAlerts({
@@ -252,10 +252,10 @@ class PleromaApiPushSubscribeRequestSubscription {
 class PleromaApiPushSubscriptionKeys {
   /// User agent public key.
   /// Base64 encoded string of public key of ECDH key using prime256v1 curve.
-  final String? p256dh;
+  final String p256dh;
 
   /// Auth secret. Base64 encoded string of 16 bytes of random data.
-  final String? auth;
+  final String auth;
 
   PleromaApiPushSubscriptionKeys({
     required this.p256dh,
@@ -295,13 +295,13 @@ class PleromaApiPushSubscriptionKeys {
 @JsonSerializable()
 class PleromaApiPushMessageBody implements IJsonObject {
   @HiveField(0)
-  @JsonKey(name: "notification_id")
+  @JsonKey(name: 'notification_id')
   final String notificationId;
   @HiveField(1)
   final String server;
   @HiveField(2)
   final String account;
-  @JsonKey(name: "notification_type")
+  @JsonKey(name: 'notification_type')
   @HiveField(3)
   final String notificationType;
 

@@ -36,14 +36,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("home_page.dart");
+var _logger = Logger('home_page.dart');
 
 class HomePage extends StatelessWidget {
   const HomePage();
 
   @override
   Widget build(BuildContext context) {
-    _logger.finest(() => "build");
+    _logger.finest(() => 'build');
 
     var homeBloc = IHomeBloc.of(context, listen: false);
 
@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
       builder: (context, snapshot) {
         var selectedTab = snapshot.data;
 
-        _logger.finest(() => "selectedTab $selectedTab");
+        _logger.finest(() => 'selectedTab $selectedTab');
 
         if (selectedTab == null) {
           return const SizedBox.shrink();
@@ -140,7 +140,7 @@ class _HomePageAccountTabWidget extends StatelessWidget {
       },
       child: AccountHomeTabBlocProxyProvider(
         child: const AccountHomeTabPage(
-          key: PageStorageKey<String>("AccountHomeTabPage"),
+          key: PageStorageKey<String>('AccountHomeTabPage'),
         ),
       ),
     );
@@ -202,7 +202,7 @@ class _HomePageMessagesTabChatWidget extends StatelessWidget {
       },
       child: PleromaChatHomeTabBlocProxyProvider(
         child: const PleromaChatHomeTabPage(
-          key: PageStorageKey<String>("ChatMessagesHomeTabPage"),
+          key: PageStorageKey<String>('ChatMessagesHomeTabPage'),
         ),
       ),
     );
@@ -258,6 +258,7 @@ class _HomePageMessagesTabWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var chatSettingsBloc = IChatSettingsBloc.of(context);
+
     return StreamBuilder<bool?>(
       stream: chatSettingsBloc.replaceConversationsWithPleromaChatsStream,
       initialData: chatSettingsBloc.replaceConversationsWithPleromaChats,
@@ -286,7 +287,7 @@ class _HomePageTimelineTabWidget extends StatelessWidget {
         var homeBloc = IHomeBloc.of(context, listen: false);
         var timelinesHomeTabBloc = TimelinesHomeTabBloc();
 
-        _logger.finest(() => "create timelinesHomeTabBloc");
+        _logger.finest(() => 'create timelinesHomeTabBloc');
 
         timelinesHomeTabBloc.addDisposable(
           streamSubscription: homeBloc.reselectedTabStream.listen(
@@ -297,6 +298,7 @@ class _HomePageTimelineTabWidget extends StatelessWidget {
             },
           ),
         );
+
         return timelinesHomeTabBloc;
       },
       child: TimelinesHomeTabBlocProxyProvider(

@@ -13,6 +13,7 @@ class FilterRepositoryTestHelper {
     );
     assert(id > 0, true);
     var dbFilter = filterData.copyWith(id: id);
+
     return dbFilter;
   }
 }

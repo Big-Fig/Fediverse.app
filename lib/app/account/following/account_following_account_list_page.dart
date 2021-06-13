@@ -15,6 +15,7 @@ class AccountFollowingAccountListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var account = Provider.of<IAccount>(context);
+
     return Scaffold(
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_account_following_title(

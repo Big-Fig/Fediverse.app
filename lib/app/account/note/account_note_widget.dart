@@ -72,6 +72,7 @@ class AccountNoteWidget extends StatelessWidget {
                 },
               ),
             );
+
             return htmlTextBloc;
           },
           child: const HtmlTextWidget(),

@@ -3,10 +3,11 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
+import 'package:fedi/app/hashtag/hashtag_url_helper.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("current_auth_instance_bloc_impl.dart");
+var _logger = Logger('current_auth_instance_bloc_impl.dart');
 
 class CurrentAuthInstanceBloc extends DisposableOwner
     implements ICurrentAuthInstanceBloc {
@@ -27,7 +28,7 @@ class CurrentAuthInstanceBloc extends DisposableOwner
 
   @override
   Future changeCurrentInstance(AuthInstance instance) async {
-    _logger.finest(() => "changeCurrentInstance $instance");
+    _logger.finest(() => 'changeCurrentInstance $instance');
 
     var found = instanceListBloc.availableInstances.firstWhereOrNull(
       (existInstance) => existInstance.userAtHost == instance.userAtHost,
@@ -36,9 +37,9 @@ class CurrentAuthInstanceBloc extends DisposableOwner
     if (found == null) {
       await instanceListBloc.addInstance(instance);
     }
-    _logger.finest(() => "changeCurrentInstance before setValue");
+    _logger.finest(() => 'changeCurrentInstance before setValue');
     await currentLocalPreferenceBloc.setValue(instance);
-    _logger.finest(() => "changeCurrentInstance after setValue");
+    _logger.finest(() => 'changeCurrentInstance after setValue');
   }
 
   @override
@@ -46,7 +47,7 @@ class CurrentAuthInstanceBloc extends DisposableOwner
 
   @override
   Future logoutCurrentInstance() async {
-    _logger.finest(() => "logoutCurrentInstance $currentInstance");
+    _logger.finest(() => 'logoutCurrentInstance $currentInstance');
     if (currentInstance != null) {
       await instanceListBloc.removeInstance(currentInstance!);
     }
@@ -58,4 +59,23 @@ class CurrentAuthInstanceBloc extends DisposableOwner
       await currentLocalPreferenceBloc.setValue(null);
     }
   }
+
+  @override
+  String createHashtagUrl({
+    required String hashtag,
+  }) {
+    var isMastodon = currentInstance!.isMastodon;
+    var isPleroma = currentInstance!.isPleroma;
+    var urlHost = currentInstance!.urlHost;
+    var urlSchema = currentInstance!.urlSchema!;
+
+    return HashtagUrlHelper.calculateHashtagUrl(
+      urlSchema:urlSchema,
+      isMastodon:isMastodon,
+      isPleroma:isPleroma,
+      urlHost:urlHost,
+      hashtag:hashtag,
+    );
+  }
+
 }

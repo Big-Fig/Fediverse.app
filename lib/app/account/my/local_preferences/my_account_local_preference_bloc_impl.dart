@@ -14,7 +14,7 @@ class MyAccountLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService: preferencesService,
-          key: "account.my.$userAtHost",
+          key: 'account.my.$userAtHost',
           schemaVersion: 1,
           jsonConverter: (json) => PleromaMyAccountWrapper.fromJson(json),
         );

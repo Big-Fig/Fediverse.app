@@ -1,6 +1,7 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
-import 'package:fedi/app/hashtag/hashtag_page.dart';
+import 'package:fedi/app/hashtag/page/hashtag_page_chooser_dialog.dart';
+import 'package:fedi/app/hashtag/page/local/local_hashtag_page.dart';
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
@@ -9,16 +10,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-final _logger = Logger("url_helper.dart");
+final _logger = Logger('url_helper.dart');
 
 class UrlHelper {
   static const _mastodonTagUrlParts = [
-    "/tags/",
-    "/tag/",
+    '/tags/',
+    '/tag/',
   ];
 
   static const _pleromaTagUrlParts = [
-    "/tag/",
+    '/tag/',
   ];
 
   static const _tagUrlParts = [
@@ -66,15 +67,14 @@ class UrlHelper {
       }
     }
 
-    var hashtag = extractHashtagFromTagUrlIfExist(url);
+    var hashtagName = extractHashtagFromTagUrlIfExist(url);
 
-    if (hashtag != null) {
-      var currentAuthInstanceBloc =
-          ICurrentAuthInstanceBloc.of(context, listen: false);
-
-      var localInstanceDomain =
-          currentAuthInstanceBloc.currentInstance!.urlHost;
-
+    if (hashtagName != null) {
+      var hashtag = Hashtag(
+        name: hashtagName,
+        url: url,
+        history: null,
+      );
       if (isLocal) {
         // status or account note with hashtag fetched from local instance
 
@@ -82,35 +82,32 @@ class UrlHelper {
 
         var urlHost = uri.host;
 
+        var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(
+          context,
+          listen: false,
+        );
+        var localInstanceDomain =
+            currentAuthInstanceBloc.currentInstance!.urlHost;
+
         if (localInstanceDomain != urlHost) {
-          return showRemoteInstanceHashtagActionsDialog(
+          return showHashtagPageChooserDialog(
             context: context,
-            url: url,
-            remoteInstanceDomain: urlHost,
-            localInstanceDomain: localInstanceDomain,
+            remoteInstanceUri: uri,
             hashtag: hashtag,
           );
         } else {
-          return goToHashtagPage(
+          return goToLocalHashtagPage(
             context: context,
-            hashtag: Hashtag(
-              name: hashtag,
-              url: url,
-              history: null,
-            ),
+            hashtag: hashtag,
+            myAccountFeaturedHashtag: null,
           );
         }
       } else {
         // status or account note with hashtag fetched from remote instance
 
-        String remoteInstanceDomain =
-            instanceLocationBloc.remoteInstanceUriOrNull!.host;
-
-        return showRemoteInstanceHashtagActionsDialog(
+        return showHashtagPageChooserDialog(
           context: context,
-          url: url,
-          remoteInstanceDomain: remoteInstanceDomain,
-          localInstanceDomain: localInstanceDomain,
+          remoteInstanceUri: instanceLocationBloc.remoteInstanceUriOrNull!,
           hashtag: hashtag,
         );
       }
@@ -131,7 +128,8 @@ class UrlHelper {
     var urlHost = remoteInstanceUriOrNull.host;
     var urlSchema = remoteInstanceUriOrNull.scheme;
 
-    url = "$urlSchema://$urlHost$url";
+    url = '$urlSchema://$urlHost$url';
+
     return url;
   }
 
@@ -145,7 +143,8 @@ class UrlHelper {
     var urlHost = currentAuthInstanceBloc.currentInstance!.urlHost;
     var urlSchema = currentAuthInstanceBloc.currentInstance!.urlSchema;
 
-    url = "$urlSchema://$urlHost$url";
+    url = '$urlSchema://$urlHost$url';
+
     return url;
   }
 
@@ -172,10 +171,10 @@ class UrlHelper {
     required String url,
   }) async {
     var isCanLaunch = await canLaunch(url);
-    _logger.finest(() => "handleUrlClick isCanLaunch $isCanLaunch $url");
+    _logger.finest(() => 'handleUrlClick isCanLaunch $isCanLaunch $url');
     if (isCanLaunch) {
       var launched = await launch(url);
-      _logger.finest(() => "handleUrlClick launched $launched $url");
+      _logger.finest(() => 'handleUrlClick launched $launched $url');
     } else {
       await FediSimpleAlertDialog(
         context: context,
@@ -187,7 +186,8 @@ class UrlHelper {
 
   static String extractUrl(String value) {
     // TODO: rework url regex
-    String string = value.replaceAll(RegExp("</a>"), "");
-    return string.replaceAll(RegExp("<a[^>]*>"), "");
+    var string = value.replaceAll(RegExp('</a>'), '');
+
+    return string.replaceAll(RegExp('<a[^>]*>'), '');
   }
 }

@@ -5,40 +5,40 @@ void main() {
   test('compareAlbumTitlesAlphabeticallyAndFeatured Alphabetically', () {
     expect(
       PhotoManagerMediaDeviceGalleryBloc
-          .compareAlbumTitlesAlphabeticallyAndFeatured("a", "b"),
+          .compareAlbumTitlesAlphabeticallyAndFeatured('a', 'b'),
       -1,
     );
 
     expect(
       PhotoManagerMediaDeviceGalleryBloc
-          .compareAlbumTitlesAlphabeticallyAndFeatured("b", "a"),
+          .compareAlbumTitlesAlphabeticallyAndFeatured('b', 'a'),
       1,
     );
 
     expect(
       PhotoManagerMediaDeviceGalleryBloc
-          .compareAlbumTitlesAlphabeticallyAndFeatured("a", "a"),
+          .compareAlbumTitlesAlphabeticallyAndFeatured('a', 'a'),
       0,
     );
   });
   test('compareAlbumTitlesAlphabeticallyAndFeatured Featured', () {
     expect(
       PhotoManagerMediaDeviceGalleryBloc
-          .compareAlbumTitlesAlphabeticallyAndFeatured("A", "Recents"),
+          .compareAlbumTitlesAlphabeticallyAndFeatured('A', 'Recent'),
       1,
     );
     expect(
       PhotoManagerMediaDeviceGalleryBloc
-          .compareAlbumTitlesAlphabeticallyAndFeatured("Z", "Recents"),
+          .compareAlbumTitlesAlphabeticallyAndFeatured('Z', 'Recent'),
       1,
     );
     expect(
       PhotoManagerMediaDeviceGalleryBloc
           .compareAlbumTitlesAlphabeticallyAndFeatured(
-        "Recently Added",
-        "Recents",
+        'Recently Added',
+        'Recent',
       ),
-      -1,
+      1,
     );
   });
 }

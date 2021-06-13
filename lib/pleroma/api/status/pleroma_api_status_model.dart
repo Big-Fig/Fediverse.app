@@ -135,13 +135,13 @@ class PleromaApiScheduledStatus extends IPleromaApiScheduledStatus
   final String id;
 
   @override
-  @JsonKey(name: "media_attachments")
+  @JsonKey(name: 'media_attachments')
   final List<PleromaApiMediaAttachment>? mediaAttachments;
 
   @override
   final PleromaApiScheduledStatusParams params;
 
-  @JsonKey(name: "scheduled_at")
+  @JsonKey(name: 'scheduled_at')
   @override
   final DateTime scheduledAt;
 
@@ -194,14 +194,14 @@ class PleromaApiScheduledStatusParams extends IPleromaApiScheduledStatusParams {
   final String? text;
 
   @override
-  @JsonKey(name: "media_ids")
+  @JsonKey(name: 'media_ids')
   final List<String>? mediaIds;
 
   @override
   final bool sensitive;
 
   @override
-  @JsonKey(name: "spoiler_text")
+  @JsonKey(name: 'spoiler_text')
   final String? spoilerText;
 
   @override
@@ -211,7 +211,7 @@ class PleromaApiScheduledStatusParams extends IPleromaApiScheduledStatusParams {
   final String? language;
 
   @override
-  @JsonKey(name: "scheduled_at")
+  @JsonKey(name: 'scheduled_at')
   final DateTime scheduledAt;
 
   @override
@@ -221,23 +221,23 @@ class PleromaApiScheduledStatusParams extends IPleromaApiScheduledStatusParams {
   final String? idempotency;
 
   @override
-  @JsonKey(name: "in_reply_to_id")
+  @JsonKey(name: 'in_reply_to_id')
   final String? inReplyToId;
 
   @override
-  @JsonKey(name: "application_id")
+  @JsonKey(name: 'application_id')
   // int or String
   final dynamic applicationId;
 
   @override
-  @JsonKey(name: "in_reply_to_conversation_id")
+  @JsonKey(name: 'in_reply_to_conversation_id')
   final String? inReplyToConversationId;
 
   @override
   IPleromaApiStatus? get inReplyToPleromaApiStatus => null;
 
   @override
-  @JsonKey(name: "to")
+  @JsonKey(name: 'to')
   final List<String>? to;
 
   PleromaApiScheduledStatusParams({
@@ -343,18 +343,18 @@ class PleromaApiStatus extends IPleromaApiStatus implements IJsonObject {
   @override
   final String id;
   @override
-  @JsonKey(name: "created_at")
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @override
-  @JsonKey(name: "in_reply_to_id")
+  @JsonKey(name: 'in_reply_to_id')
   final String? inReplyToId;
   @override
-  @JsonKey(name: "in_reply_to_account_id")
+  @JsonKey(name: 'in_reply_to_account_id')
   String? inReplyToAccountId;
   @override
   final bool sensitive;
   @override
-  @JsonKey(name: "spoiler_text")
+  @JsonKey(name: 'spoiler_text')
   final String? spoilerText;
 
   @override
@@ -362,13 +362,13 @@ class PleromaApiStatus extends IPleromaApiStatus implements IJsonObject {
   @override
   final String? url;
   @override
-  @JsonKey(name: "replies_count")
+  @JsonKey(name: 'replies_count')
   final int? repliesCount;
   @override
-  @JsonKey(name: "reblogs_count")
+  @JsonKey(name: 'reblogs_count')
   final int? reblogsCount;
   @override
-  @JsonKey(name: "favourites_count")
+  @JsonKey(name: 'favourites_count')
   final int? favouritesCount;
   @override
   final bool? favourited;
@@ -389,7 +389,7 @@ class PleromaApiStatus extends IPleromaApiStatus implements IJsonObject {
   @override
   final PleromaApiAccount account;
   @override
-  @JsonKey(name: "media_attachments")
+  @JsonKey(name: 'media_attachments')
   final List<PleromaApiMediaAttachment>? mediaAttachments;
   @override
   final List<PleromaApiMention>? mentions;
@@ -448,6 +448,38 @@ class PleromaApiStatus extends IPleromaApiStatus implements IJsonObject {
     required this.pleroma,
     required this.visibility,
     required this.language,
+  });
+
+  PleromaApiStatus.only({
+    required this.id,
+    required this.createdAt,
+    this.inReplyToId,
+    this.inReplyToAccountId,
+    required this.sensitive,
+    this.spoilerText,
+    required this.uri,
+    this.url,
+    this.repliesCount,
+    this.reblogsCount,
+    this.favouritesCount,
+    this.favourited,
+    this.reblogged,
+    this.muted,
+    this.bookmarked,
+    this.pinned,
+    this.content,
+    this.reblog,
+    this.application,
+    required this.account,
+    this.mediaAttachments,
+    this.mentions,
+    this.tags,
+    this.emojis,
+    this.poll,
+    this.card,
+    this.pleroma,
+    required this.visibility,
+    this.language,
   });
 
   static PleromaApiStatus fromJson(Map<String, dynamic> json) =>
@@ -568,19 +600,19 @@ class PleromaApiStatusPleromaPart {
   final PleromaApiContent? content;
 
   // the ID of the AP context the status is associated with (if any)
-  @JsonKey(name: "conversation_id")
+  @JsonKey(name: 'conversation_id')
   final int? conversationId;
 
   // the ID of the Mastodon direct message conversation the status
   // is associated with (if any)
-  @JsonKey(name: "direct_conversation_id")
+  @JsonKey(name: 'direct_conversation_id')
   final int? directConversationId;
 
   // the acct property of User entity for replied user (if any)
-  @JsonKey(name: "in_reply_to_account_acct")
+  @JsonKey(name: 'in_reply_to_account_acct')
   final String? inReplyToAccountAcct;
   final bool? local;
-  @JsonKey(name: "spoiler_text")
+  @JsonKey(name: 'spoiler_text')
   // a map consisting of alternate representations of the spoiler_text property
   // with the key being it's mimetype. Currently the only alternate
   // representation supported is text/plain
@@ -588,19 +620,19 @@ class PleromaApiStatusPleromaPart {
 
   // a datetime (iso8601) that states when
   // the post will expire (be deleted automatically),
-  // or empty if the post won't expire
-  @JsonKey(name: "expires_at")
+  // or empty if the post wont expire
+  @JsonKey(name: 'expires_at')
   //  will be resolved
 //  DateTime expiresAt;
   final DateTime? expiresAt;
-  @JsonKey(name: "thread_muted")
+  @JsonKey(name: 'thread_muted')
   final bool? threadMuted;
 
   // A list with emoji / reaction maps. The format is
-  // {name: "☕", count: 1, me: true}.
+  // {name: '☕', count: 1, me: true}.
   // Contains no information about the reacting users,
   // for that use the /statuses/:id/reactions endpoint.
-  @JsonKey(name: "emoji_reactions")
+  @JsonKey(name: 'emoji_reactions')
   final List<PleromaApiStatusEmojiReaction>? emojiReactions;
 
   PleromaApiStatusPleromaPart({
@@ -680,7 +712,7 @@ abstract class IPleromaApiPostStatusBase
   /// Using this will disable the implicit addressing by mentioned names in the status body, only the people in the to list will be addressed. The normal rules for for post visibility are not affected by this and will still apply.
   List<String>? get to;
 
-  /// if set to true the post won't be actually posted, but the status
+  /// if set to true the post wont be actually posted, but the status
   /// entity would still be rendered back.
   /// This could be useful for previewing rich text/custom emoji, for example.
   bool? get preview;
@@ -705,18 +737,18 @@ abstract class IPleromaApiPostStatusPoll
 
 @JsonSerializable()
 class PleromaApiPostStatusPoll implements IPleromaApiPostStatusPoll {
-  @JsonKey(name: "expires_in")
+  @JsonKey(name: 'expires_in')
   @override
   final int expiresInSeconds;
 
-  @JsonKey(name: "hide_totals", includeIfNull: false)
+  @JsonKey(name: 'hide_totals', includeIfNull: false)
   @override
   final bool hideTotals;
 
   @override
   final bool multiple;
 
-  @JsonKey(name: "options")
+  @JsonKey(name: 'options')
   @override
   final List<String> options;
 
@@ -768,20 +800,20 @@ abstract class IPleromaApiScheduleStatus
 
 @JsonSerializable(explicitToJson: true)
 class PleromaApiPostStatus implements IPleromaApiPostStatus, IJsonObject {
-  @JsonKey(name: "content_type")
+  @JsonKey(name: 'content_type')
   @override
   final String? contentType;
   @override
-  @JsonKey(name: "expires_in")
+  @JsonKey(name: 'expires_in')
   final int? expiresInSeconds;
   @override
   @JsonKey(ignore: true)
   final String? idempotencyKey;
   @override
-  @JsonKey(name: "in_reply_to_conversation_id", includeIfNull: false)
+  @JsonKey(name: 'in_reply_to_conversation_id', includeIfNull: false)
   final String? inReplyToConversationId;
   @override
-  @JsonKey(name: "in_reply_to_id", includeIfNull: false)
+  @JsonKey(name: 'in_reply_to_id', includeIfNull: false)
   final String? inReplyToId;
   @override
   final String? language;
@@ -799,7 +831,7 @@ class PleromaApiPostStatus implements IPleromaApiPostStatus, IJsonObject {
   PleromaApiVisibility get visibilityAsPleromaApi =>
       visibility.toPleromaApiVisibility();
 
-  @JsonKey(name: "media_ids")
+  @JsonKey(name: 'media_ids')
   @override
   final List<String>? mediaIds;
 
@@ -811,7 +843,7 @@ class PleromaApiPostStatus implements IPleromaApiPostStatus, IJsonObject {
   @override
   final bool sensitive;
   @override
-  @JsonKey(name: "spoiler_text")
+  @JsonKey(name: 'spoiler_text')
   final String? spoilerText;
   @override
   final String? status;
@@ -838,7 +870,7 @@ class PleromaApiPostStatus implements IPleromaApiPostStatus, IJsonObject {
     var isMediaExist = mediaIds?.isNotEmpty == true;
     var isTextExist = status?.isNotEmpty == true;
 
-    // poll & media can't be set in one time
+    // poll & media cant be set in one time
 //    assert(!(isPollExist && isMediaExist));
     // media, poll or status should exist
     assert(isPollExist || isMediaExist || isTextExist);
@@ -913,20 +945,20 @@ class PleromaApiPostStatus implements IPleromaApiPostStatus, IJsonObject {
 @JsonSerializable(explicitToJson: true)
 class PleromaApiScheduleStatus
     implements IPleromaApiScheduleStatus, IJsonObject {
-  @JsonKey(name: "content_type")
+  @JsonKey(name: 'content_type')
   @override
   final String? contentType;
   @override
-  @JsonKey(name: "expires_in")
+  @JsonKey(name: 'expires_in')
   final int? expiresInSeconds;
   @override
   @JsonKey(ignore: true)
   final String? idempotencyKey;
   @override
-  @JsonKey(name: "in_reply_to_conversation_id")
+  @JsonKey(name: 'in_reply_to_conversation_id')
   final String? inReplyToConversationId;
   @override
-  @JsonKey(name: "in_reply_to_id")
+  @JsonKey(name: 'in_reply_to_id')
   final String? inReplyToId;
   @override
   final String? language;
@@ -944,7 +976,7 @@ class PleromaApiScheduleStatus
   PleromaApiVisibility get visibilityAsPleromaApi =>
       visibility.toPleromaApiVisibility();
 
-  @JsonKey(name: "media_ids")
+  @JsonKey(name: 'media_ids')
   @override
   final List<String>? mediaIds;
 
@@ -956,7 +988,7 @@ class PleromaApiScheduleStatus
   @override
   final bool sensitive;
   @override
-  @JsonKey(name: "spoiler_text")
+  @JsonKey(name: 'spoiler_text')
   final String? spoilerText;
   @override
   final String? status;
@@ -964,7 +996,7 @@ class PleromaApiScheduleStatus
   final List<String>? to;
 
   @JsonKey(
-    name: "scheduled_at",
+    name: 'scheduled_at',
     toJson: toUTCIsoString,
     fromJson: fromUTCIsoString,
   )
@@ -992,7 +1024,7 @@ class PleromaApiScheduleStatus
     var isMediaExist = mediaIds?.isNotEmpty == true;
     var isTextExist = status?.isNotEmpty == true;
 
-    // poll & media can't be set in one time
+    // poll & media cant be set in one time
     // todo: recheck. Docs says that poll & media not possible in one status,
     //  but actually it works
 //    assert(!(isPollExist && isMediaExist));

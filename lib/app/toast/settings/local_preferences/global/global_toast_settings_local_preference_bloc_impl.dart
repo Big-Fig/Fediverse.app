@@ -10,7 +10,7 @@ class GlobalToastSettingsLocalPreferenceBloc
     implements IGlobalToastSettingsLocalPreferenceBloc {
   GlobalToastSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
-  ) : super(preferencesService, "toast.settings.global");
+  ) : super(preferencesService, 'toast.settings.global');
 
   static final ToastSettings defaultValue = ToastSettings.fromEnum(
     pushSettings: PushSettings.defaultAllEnabled(),

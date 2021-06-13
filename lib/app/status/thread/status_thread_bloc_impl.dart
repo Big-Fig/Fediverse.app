@@ -15,13 +15,14 @@ import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-var _logger = Logger("status_thread_bloc_impl.dart");
+var _logger = Logger('status_thread_bloc_impl.dart');
 
 abstract class StatusThreadBloc extends AsyncInitLoadingBloc
     implements IStatusThreadBloc {
   final IPleromaApiStatusService pleromaStatusService;
 
   @override
+  // ignore: avoid-late-keyword
   late IStatus initialStatusToFetchThread;
   final BehaviorSubject<List<IStatus>> statusesSubject;
 
@@ -42,6 +43,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   final ItemPositionsListener itemPositionListener =
   ItemPositionsListener.create();
 
+  // ignore: avoid-late-keyword
   late List<IFilter> filters;
 
   @override
@@ -92,24 +94,24 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
 
   @override
   String get mentionAcctsListString =>
-      mentionAccts.map((acct) => "@$acct").join(" ");
+      mentionAccts.map((acct) => '@$acct').join(' ');
 
   @override
   Future<bool> refresh() async {
     try {
-      _logger.finest(() => "refresh");
+      _logger.finest(() => 'refresh');
 
       // update start status
       var updatedStartRemoteStatus = await pleromaStatusService.getStatus(
         statusRemoteId: initialStatusToFetchThread.remoteId!,
       );
-      // don't await because we don't need it
+      // dont await because we dont need it
       onInitialStatusUpdated(updatedStartRemoteStatus);
       initialStatusToFetchThread =
           updatedStartRemoteStatus.toDbStatusPopulatedWrapper();
 
       _logger.finest(
-            () => "refresh getStatus startStatus $initialStatusToFetchThread ",
+            () => 'refresh getStatus startStatus $initialStatusToFetchThread ',
       );
 
       // update context
@@ -129,7 +131,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
         ),
       );
 
-      List<IStatus> newStatuses = [];
+      var newStatuses = <IStatus>[];
       newStatuses.addAll(
         ancestors.map(
               (remoteStatus) => remoteStatus.toDbStatusPopulatedWrapper(),
@@ -142,13 +144,15 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
         ),
       );
       _logger.finest(
-            () => "refresh getStatusContext newStatuses ${newStatuses.length} ",
+            () => 'refresh getStatusContext newStatuses ${newStatuses.length} ',
       );
       statusesSubject.add(newStatuses);
       firstStatusInThreadSubject.add(true);
+
       return true;
     } catch (error, stackTrace) {
-      _logger.severe(() => "refresh error ", error, stackTrace);
+      _logger.severe(() => 'refresh error ', error, stackTrace);
+
       return false;
     }
   }
@@ -211,7 +215,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
 
   @override
   void addStatusInThread(IStatus status) {
-    _logger.finest(() => "addStatusInThread $status");
+    _logger.finest(() => 'addStatusInThread $status');
     statusesSubject.add(
       [
         ...statuses,
@@ -245,11 +249,11 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
     var spoilerText = remoteStatus.spoilerText;
     var content = remoteStatus.content;
 
-    bool filtered = false;
+    var filtered = false;
     for (var filter in filters) {
       var phrase = filter.phrase;
       if (filter.wholeWord) {
-        var regex = RegExp("\b$phrase\b");
+        var regex = RegExp('\b$phrase\b');
         if (content != null) {
           filtered |= regex.hasMatch(content);
         }

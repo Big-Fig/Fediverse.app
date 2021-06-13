@@ -79,6 +79,7 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
             },
           ),
         );
+
         return editPostStatusSettingsBloc;
       },
       child: ProxyProvider<IEditPostStatusSettingsBloc,

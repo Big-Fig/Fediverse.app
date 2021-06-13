@@ -57,6 +57,7 @@ class GroupPermissionBloc extends AsyncInitLoadingBloc
     }
 
     permissionStatusSubject.add(status);
+
     return status;
   }
 

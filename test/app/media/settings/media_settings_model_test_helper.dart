@@ -7,14 +7,14 @@ class MediaSettingsModelTestHelper {
   }) =>
   // hack to be sure that seed1 and seed2 wil produce different objects
       MediaSettings(
-        autoInit: seed == "seed1"
+        autoInit: seed == 'seed1'
             ? true
-            : seed == "seed2"
+            : seed == 'seed2'
                 ? false
                 : seed.hashCode % 2 == 0,
-        autoPlay: seed == "seed1"
+        autoPlay: seed == 'seed1'
             ? true
-            : seed == "seed2"
+            : seed == 'seed2'
                 ? false
                 : seed.hashCode % 2 == 1,
       );

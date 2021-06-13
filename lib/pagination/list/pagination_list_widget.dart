@@ -10,7 +10,7 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/src/smart_refresher.dart';
 
-var _logger = Logger("pagination_list_dart");
+var _logger = Logger('pagination_list_dart');
 
 abstract class PaginationListWidget<T> extends StatelessWidget {
   final bool? alwaysShowHeader;
@@ -55,10 +55,11 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     required IndexedWidgetBuilder itemBuilder,
     required ScrollViewKeyboardDismissBehavior keyboardDismissBehavior,
   }) {
-    _logger.finest(() => "buildItemsListView items ${items.length}");
+    _logger.finest(() => 'buildItemsListView items ${items.length}');
 
     var itemCount =
         items.length + (header != null ? 1 : 0) + (footer != null ? 1 : 0);
+
     return ListView.builder(
       keyboardDismissBehavior: keyboardDismissBehavior,
       itemBuilder: (context, index) {
@@ -75,7 +76,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
         }
 
         var widget = itemBuilder(context, itemIndex);
-        _logger.finest(() => "buildItemsListView itemIndex=$itemIndex");
+        _logger.finest(() => 'buildItemsListView itemIndex=$itemIndex');
         if (keyboardDismissBehavior ==
             ScrollViewKeyboardDismissBehavior.onDrag) {
           return UnfocusOnScrollAreaWidget(
@@ -91,10 +92,10 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
+    var paginationListBloc =
         retrievePaginationListBloc(context, listen: true);
-    _logger.finest(() => "build "
-        "paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.refreshState}");
+    _logger.finest(() => 'build '
+        'paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.refreshState}');
 
     if (paginationListBloc.refreshState !=
             FediListSmartRefresherLoadingState.loaded &&
@@ -138,8 +139,8 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       builder: (context, snapshot) {
         var items = snapshot.data;
 
-        _logger.finest(() => "build paginationListBloc.itemsStream items "
-            "${items?.length}");
+        _logger.finest(() => 'build paginationListBloc.itemsStream items '
+            '${items?.length}');
 
         return buildSmartRefresher(
           paginationListBloc,
@@ -158,20 +159,20 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   }
 
   void askToRefresh(BuildContext context) {
-    _logger.finest(() => "askToRefresh");
+    _logger.finest(() => 'askToRefresh');
     // delay required to be sure that widget will be built during initial
     // refresh
     Future.delayed(
       // ignore: no-magic-number
       Duration(milliseconds: 100),
       () {
-        _logger.finest(() => "askToRefresh delayed");
+        _logger.finest(() => 'askToRefresh delayed');
 
-        IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
+        var paginationListBloc =
             retrievePaginationListBloc(context, listen: false);
 
         final refreshState = paginationListBloc.refreshState;
-        _logger.finest(() => "askToRefresh refreshState $refreshState");
+        _logger.finest(() => 'askToRefresh refreshState $refreshState');
         if (refreshState != FediListSmartRefresherLoadingState.loading &&
             refreshState != FediListSmartRefresherLoadingState.loaded) {
           paginationListBloc.refreshWithController();
@@ -181,9 +182,9 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   }
 
   Widget buildNotListBody(Widget child) {
-    _logger.finest(() => "buildNotListBody "
-        "alwaysShowHeader=$alwaysShowHeader "
-        "alwaysShowFooter=$alwaysShowFooter ");
+    _logger.finest(() => 'buildNotListBody '
+        'alwaysShowHeader=$alwaysShowHeader '
+        'alwaysShowFooter=$alwaysShowFooter ');
     if (alwaysShowHeader != true && alwaysShowFooter != true) {
       return child;
     } else {

@@ -14,7 +14,6 @@ import 'package:fedi/app/instance/remote/remote_instance_error_data.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service_impl.dart';
@@ -50,7 +49,7 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
   BuildContext context, {
   required IAccount? localInstanceRemoteAccount,
 }) async {
-  AsyncDialogResult<IAccount?> remoteInstanceAccountDialogResult =
+  var remoteInstanceAccountDialogResult =
       await PleromaAsyncOperationHelper.performPleromaAsyncOperation<IAccount?>(
     context: context,
     errorDataBuilders: [
@@ -69,7 +68,7 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           connectionService: IConnectionService.of(
             context,
             listen: false,
-          ),
+          ), pleromaApiInstance: null,
         );
 
         pleromaStatusService = PleromaApiStatusService(
@@ -90,6 +89,7 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           // load in Pleroma way. Use username as id
           var pleromaAccount = await pleromaAccountService.getAccount(
             accountRemoteId: localInstanceRemoteAccount.username,
+            withRelationship: false,
           );
           result = pleromaAccount.toDbAccountWrapper();
         }
@@ -169,7 +169,7 @@ MaterialPageRoute createRemoteAccountDetailsPageRoute({
             connectionService: IConnectionService.of(
               context,
               listen: false,
-            ),
+            ), pleromaApiInstance: null,
           );
         },
         child: DisposableProvider<IAccountDetailsBloc>(

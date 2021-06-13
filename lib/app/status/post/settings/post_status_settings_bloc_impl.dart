@@ -65,7 +65,7 @@ class PostStatusSettingsBloc
           defaultStatusLocale: value,
           defaultVisibilityString: defaultVisibilityAsPleromaApi.toJsonValue(),
         ),
-        // copy with don't support null
+        // copy with dont support null
         // settingsData?.copyWith(
         //   defaultStatusLocale: value,
         // ),

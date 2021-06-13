@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'chat_settings_model_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
   late GlobalChatSettingsLocalPreferenceBloc
@@ -90,7 +90,7 @@ void main() {
     );
 
     var testCountConversationsInChatsUnreadBadges =
-        ChatSettingsModelTestHelper.createTestChatSettings(seed: "seed")
+        ChatSettingsModelTestHelper.createTestChatSettings(seed: 'seed')
             .countConversationsInChatsUnreadBadges;
 
     await chatSettingsBloc.changeCountConversationsInChatsUnreadBadges(
@@ -151,7 +151,7 @@ void main() {
     );
 
     var testCountConversationsInChatsUnreadBadges =
-        ChatSettingsModelTestHelper.createTestChatSettings(seed: "seed")
+        ChatSettingsModelTestHelper.createTestChatSettings(seed: 'seed')
             .replaceConversationsWithPleromaChats;
 
     await chatSettingsBloc.changeReplaceConversationsWithPleromaChats(

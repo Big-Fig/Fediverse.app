@@ -36,6 +36,7 @@ abstract class ScheduledStatusPaginationListBaseWidget
     var paginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IScheduledStatus>,
             IScheduledStatus>>(context, listen: listen);
+
     return paginationListBloc;
   }
 }

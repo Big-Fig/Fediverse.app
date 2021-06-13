@@ -13,12 +13,12 @@ import 'package:path/path.dart' as p;
 import 'package:rxdart/rxdart.dart';
 
 Map<RestRequestType, String> requestTypeToStringMap = {
-  RestRequestType.get: "get",
-  RestRequestType.head: "head",
-  RestRequestType.post: "post",
-  RestRequestType.put: "put",
-  RestRequestType.delete: "delete",
-  RestRequestType.patch: "patch",
+  RestRequestType.get: 'get',
+  RestRequestType.head: 'head',
+  RestRequestType.post: 'post',
+  RestRequestType.put: 'put',
+  RestRequestType.delete: 'delete',
+  RestRequestType.patch: 'patch',
 };
 
 // ignore: no-magic-number
@@ -27,9 +27,9 @@ final _defaultTimeoutDuration = Duration(seconds: 20);
 final _uploadTimeoutDuration = Duration(seconds: 300);
 
 var urlPath = p.Context(style: p.Style.url);
-final Encoding? _defaultEncoding = Encoding.getByName("utf-8");
+final Encoding? _defaultEncoding = Encoding.getByName('utf-8');
 
-final Logger _logger = Logger("rest_service_impl.dart");
+final Logger _logger = Logger('rest_service_impl.dart');
 
 class RestService extends DisposableOwner implements IRestService {
   // ignore: close_sinks
@@ -55,10 +55,11 @@ class RestService extends DisposableOwner implements IRestService {
       queryArgs: request.queryArgs,
     );
 
-    _logger.fine(() => "start send $url request $request");
+    _logger.fine(() => 'start send $url request $request');
 
     String? body;
 
+    // ignore: avoid-late-keyword
     late Future<http.Response> responseFuture;
     var requestType = request.type;
     Map<String, dynamic>? bodyJson = request.bodyJson;
@@ -75,15 +76,15 @@ class RestService extends DisposableOwner implements IRestService {
     requestHeaders.addAll(request.headers);
     Encoding? encoding;
     if (request.bodyJson.isNotEmpty) {
-      requestHeaders["Content-Type"] = "application/json";
+      requestHeaders['Content-Type'] = 'application/json';
       encoding = _defaultEncoding;
     }
 
-    _logger.fine(() => "start sendHttpRequest \n"
-        "\t url($requestType): $url \n"
-        "\t headers: ${request.headers} \n"
-        "\t requestBodyJson: $requestBodyJson \n"
-        "\t encoding: $encoding \n");
+    _logger.fine(() => 'start sendHttpRequest \n'
+        '\t url($requestType): $url \n'
+        '\t headers: ${request.headers} \n'
+        '\t requestBodyJson: $requestBodyJson \n'
+        '\t encoding: $encoding \n');
     switch (request.type) {
       case RestRequestType.get:
         assert(body?.isNotEmpty != true);
@@ -119,7 +120,7 @@ class RestService extends DisposableOwner implements IRestService {
         }
         responseFuture = http.Client().send(rq).then(http.Response.fromStream);
 
-        // we don't use http.delete because it is don't support body
+        // we dont use http.delete because it is dont support body
 //        response = await http.delete(url,
 //            body: requestBodyJson, headers: requestHeaders);
         break;
@@ -143,16 +144,16 @@ class RestService extends DisposableOwner implements IRestService {
     responseFuture = responseFuture.timeout(
       _defaultTimeoutDuration,
       onTimeout: () => throw TimeoutException(
-        "TimeoutReached",
+        'TimeoutReached',
         _defaultTimeoutDuration,
       ),
     );
 
-    http.Response response = await responseFuture;
+    var response = await responseFuture;
 
-    var log = () => "response sendHttpRequest \n"
-        "\t url($requestType): $url \n"
-        "\t response(${response.statusCode}): ${response.body}";
+    var log = () => 'response sendHttpRequest \n'
+        '\t url($requestType): $url \n'
+        '\t response(${response.statusCode}): ${response.body}';
 
     if (response.statusCode == RestResponse.successResponseStatusCode) {
       _logger.fine(log);
@@ -160,7 +161,8 @@ class RestService extends DisposableOwner implements IRestService {
       _logger.shout(log);
     }
 
-    _logger.fine(() => "response $response");
+    _logger.fine(() => 'response $response');
+
     return response;
   }
 
@@ -179,13 +181,13 @@ class RestService extends DisposableOwner implements IRestService {
       String queryString;
       if (filteredQueryArgs != null) {
         queryString =
-            "${filteredQueryArgs.map((arg) => "${arg.key}=${arg.value}").join("&")}";
-        queryString = queryString.replaceAll(" ", "%20");
+            '${filteredQueryArgs.map((arg) => '${arg.key}=${arg.value}').join('&')}';
+        queryString = queryString.replaceAll(' ', '%20');
       } else {
-        queryString = "";
+        queryString = '';
       }
 
-      url = "$urlWithoutArgs?$queryString";
+      url = '$urlWithoutArgs?$queryString';
     } else {
       url = urlWithoutArgs;
     }
@@ -206,8 +208,8 @@ class RestService extends DisposableOwner implements IRestService {
 
   static Map<String, String> buildJsonTypeHeaders() {
     return {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
     };
   }
 
@@ -222,7 +224,7 @@ class RestService extends DisposableOwner implements IRestService {
       queryArgs: request.queryArgs,
     );
 
-    _logger.fine(() => "start send $url request $request");
+    _logger.fine(() => 'start send $url request $request');
     var requestType = request.type;
     var httpMethodString = requestTypeToStringMap[requestType]!;
     var multipartRequest = http.MultipartRequest(
@@ -247,16 +249,16 @@ class RestService extends DisposableOwner implements IRestService {
       }
     }
 
-    _logger.fine(() => "start multipartFileRequest \n"
-        "\t url($requestType): $url \n"
-        "\t headers: ${request.headers} \n"
-        "\t bodyJson: ${request.bodyJson} \n"
-        "\t files: ${request.files} \n");
+    _logger.fine(() => 'start multipartFileRequest \n'
+        '\t url($requestType): $url \n'
+        '\t headers: ${request.headers} \n'
+        '\t bodyJson: ${request.bodyJson} \n'
+        '\t files: ${request.files} \n');
     var sendFuture = multipartRequest.send();
     sendFuture = sendFuture.timeout(
       _uploadTimeoutDuration,
       onTimeout: () => throw TimeoutException(
-        "TimeoutReached",
+        'TimeoutReached',
         _uploadTimeoutDuration,
       ),
     );
@@ -264,9 +266,9 @@ class RestService extends DisposableOwner implements IRestService {
 
     var response = await http.Response.fromStream(streamedResponse);
 
-    var log = () => "response multipartFileRequest \n"
-        "\t url($requestType): $url \n"
-        "\t response(${response.statusCode}): ${response.body}";
+    var log = () => 'response multipartFileRequest \n'
+        '\t url($requestType): $url \n'
+        '\t response(${response.statusCode}): ${response.body}';
     if (response.statusCode == RestResponse.successResponseStatusCode) {
       _logger.fine(log);
     } else {

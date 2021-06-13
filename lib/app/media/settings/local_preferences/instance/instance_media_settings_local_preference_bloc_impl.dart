@@ -9,7 +9,7 @@ class InstanceMediaSettingsLocalPreferenceBloc
   InstanceMediaSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
-  }) : super(preferencesService, "media.settings.instance.$userAtHost");
+  }) : super(preferencesService, 'media.settings.instance.$userAtHost');
 
   static const MediaSettings? defaultValue = null;
 

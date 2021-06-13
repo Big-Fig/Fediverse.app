@@ -75,6 +75,7 @@ class _MediaFilePathBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaFilePathBloc = IMediaFilePathBloc.of(context);
+
     return Expanded(
       child: Padding(
         padding: FediPadding.allSmallPadding,
@@ -107,6 +108,7 @@ class _MediaFilePathIconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaFilePathBloc = IMediaFilePathBloc.of(context);
+
     return Container(
       width: _nonMediaIconSize,
       // ignore: no-equal-arguments

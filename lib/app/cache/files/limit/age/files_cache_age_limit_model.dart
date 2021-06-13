@@ -10,12 +10,12 @@ enum FilesCacheAgeLimitType {
 
 const defaultFilesCacheAgeLimitType = FilesCacheAgeLimitType.notSet;
 
-const _notSetFilesCacheAgeLimitTypeJsonValue = "notSet";
-const _days7FilesCacheAgeLimitTypeJsonValue = "days7";
-const _days30FilesCacheAgeLimitTypeJsonValue = "days30";
-const _days90FilesCacheAgeLimitTypeJsonValue = "days90";
-const _days180FilesCacheAgeLimitTypeJsonValue = "days180";
-const _days365FilesCacheAgeLimitTypeJsonValue = "days365";
+const _notSetFilesCacheAgeLimitTypeJsonValue = 'notSet';
+const _days7FilesCacheAgeLimitTypeJsonValue = 'days7';
+const _days30FilesCacheAgeLimitTypeJsonValue = 'days30';
+const _days90FilesCacheAgeLimitTypeJsonValue = 'days90';
+const _days180FilesCacheAgeLimitTypeJsonValue = 'days180';
+const _days365FilesCacheAgeLimitTypeJsonValue = 'days365';
 
 extension FilesCacheAgeLimitTypeExtension on FilesCacheAgeLimitType {
   String toJsonValue() {
@@ -96,7 +96,7 @@ extension FilesCacheAgeLimitTypeStringExtension on String {
       case _days365FilesCacheAgeLimitTypeJsonValue:
         result = FilesCacheAgeLimitType.days365;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
         result = defaultFilesCacheAgeLimitType;
         break;

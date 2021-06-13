@@ -30,7 +30,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("notification_list_item_widget.dart");
+var _logger = Logger('notification_list_item_widget.dart');
 
 class NotificationListItemWidget extends StatelessWidget {
   const NotificationListItemWidget();
@@ -39,9 +39,10 @@ class NotificationListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
 
-    _logger.finest(() => "build ${notificationBloc.remoteId}");
+    _logger.finest(() => 'build ${notificationBloc.remoteId}');
 
     var bodyWidget = const _NotificationListItemBodyWidget();
+
     return StreamBuilder<bool?>(
       stream: notificationBloc.dismissedStream,
       builder: (context, snapshot) {
@@ -98,6 +99,7 @@ class _NotificationListItemBodyWidget extends StatelessWidget {
           var notificationState = snapshot.data;
           var unread = notificationState?.unread ?? true;
           var dismissed = notificationState?.dismissed ?? false;
+
           return Slidable(
             actionPane: const SlidableDrawerActionPane(),
             // ignore: no-magic-number
@@ -124,6 +126,7 @@ class _NotificationListItemBodyDismissActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
+
     return IconSlideAction(
       icon: FediIcons.delete,
       caption: S.of(context).app_notification_action_dismiss,
@@ -143,6 +146,7 @@ class _NotificationListItemBodyMarkAsReadActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
+
     return IconSlideAction(
       icon: FediIcons.check,
       caption: S.of(context).app_notification_action_markAsRead,
@@ -167,6 +171,7 @@ class _NotificationListItemBodySlidableChildWidget extends StatelessWidget {
       stream: notificationBloc.unreadStream,
       builder: (context, snapshot) {
         var unread = snapshot.data ?? true;
+
         return Opacity(
           // ignore: no-magic-number
           opacity: unread ? 1.0 : 0.6,
@@ -292,6 +297,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
     var rawText = _mapToRawText(context, notificationBloc);
 
     var emojis = notificationBloc.status?.emojis;
+
     return Provider<EmojiText>.value(
       value: EmojiText(text: rawText, emojis: emojis),
       child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
@@ -329,6 +335,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
               textScaleFactor: textScaleFactor,
             ),
           );
+
           return htmlTextBloc;
         },
         child: const HtmlTextWidget(),
@@ -355,7 +362,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
       case PleromaApiNotificationType.mention:
         rawText =
-            "<b>${S.of(context).app_notification_header_mention_prefix}</b>";
+            '<b>${S.of(context).app_notification_header_mention_prefix}</b>';
         rawText += S.of(context).app_notification_header_mention_postfix(
               _extractStatusRawContent(notificationBloc)!,
             );
@@ -376,7 +383,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
       case PleromaApiNotificationType.pleromaChatMention:
         rawText =
-            "<b>${S.of(context).app_notification_header_pleromaChatMention_prefix}</b>";
+            '<b>${S.of(context).app_notification_header_pleromaChatMention_prefix}</b>';
         rawText +=
             S.of(context).app_notification_header_pleromaChatMention_postfix(
                   _extractChatMessageRawContent(notificationBloc)!,
@@ -385,7 +392,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
       case PleromaApiNotificationType.pleromaReport:
         rawText = S.of(context).app_notification_header_report(
-              notificationBloc.account?.acct ?? "",
+              notificationBloc.account?.acct ?? '',
             );
         break;
       case PleromaApiNotificationType.unknown:
@@ -394,7 +401,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         if (isHaveStatus) {
           statusText = _extractStatusRawContent(notificationBloc);
         } else {
-          statusText = "";
+          statusText = '';
         }
 
         var isHaveEmoji = notificationBloc.notification.emoji != null;
@@ -402,13 +409,14 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         if (isHaveEmoji) {
           emojiText = notificationBloc.notification.emoji;
         } else {
-          emojiText = "";
+          emojiText = '';
         }
         rawText = S.of(context).app_notification_header_unknown(
-              "${notificationBloc.type}: $emojiText $statusText",
+              '${notificationBloc.type}: $emojiText $statusText',
             );
         break;
     }
+
     return rawText;
   }
 
@@ -425,7 +433,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
               (mediaAttachment) =>
                   mediaAttachment.description ?? mediaAttachment.url,
             )
-            .join(", ");
+            .join(', ');
       }
     }
 
@@ -470,7 +478,7 @@ class _NotificationListItemIconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     IconData? iconData;
     var notificationBloc = INotificationBloc.of(context);
-    Color iconColor = IFediUiColorTheme.of(context).primary;
+    var iconColor = IFediUiColorTheme.of(context).primary;
 
     switch (notificationBloc.typePleroma) {
       case PleromaApiNotificationType.follow:
@@ -538,6 +546,7 @@ class _NotificationListItemAvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
+
     return InkWell(
       onTap: () {
         goToLocalAccountDetailsPage(
@@ -562,11 +571,13 @@ class _NotificationListItemCreatedAtWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
     var fediUiTextTheme = IFediUiTextTheme.of(context);
+
     return StreamBuilder<bool?>(
       stream: notificationBloc.unreadStream,
       initialData: notificationBloc.unread,
       builder: (context, snapshot) {
         var unread = snapshot.data!;
+
         return NotificationCreatedAtWidget(
           textStyle: unread
               ? fediUiTextTheme.smallShortPrimaryDark

@@ -7,7 +7,7 @@ import 'package:path/path.dart';
 
 class PleromaApiPollService extends BasePleromaApiService
     implements IPleromaApiPollService {
-  final pollRelativeUrlPath = "/api/v1/polls/";
+  final pollRelativeUrlPath = '/api/v1/polls/';
   @override
   final IPleromaApiAuthRestService restService;
 
@@ -41,8 +41,8 @@ class PleromaApiPollService extends BasePleromaApiService
     required List<int> voteIndexes,
   }) async {
     var request = RestRequest.post(
-      relativePath: join(pollRelativeUrlPath, pollRemoteId, "votes"),
-      bodyJson: {"choices": voteIndexes},
+      relativePath: join(pollRelativeUrlPath, pollRemoteId, 'votes'),
+      bodyJson: {'choices': voteIndexes},
     );
     var httpResponse = await restService.sendHttpRequest(request);
 

@@ -12,7 +12,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 
-var _logger = Logger("chat_post_message_bloc_impl.dart");
+var _logger = Logger('chat_post_message_bloc_impl.dart');
 
 class PleromaChatPostMessageBloc extends PostMessageBloc
     implements IPleromaChatPostMessageBloc {
@@ -21,7 +21,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
   PleromaChatPostMessageBloc({
     required this.pleromaChatBloc,
     required int? maximumMessageLength,
-    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
     required int? maximumFileSizeInBytes,
   }) : super(
           maximumMessageLength: maximumMessageLength,
@@ -54,7 +54,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
       mediaId: mediaId,
       idempotencyKey: idempotencyKey,
     );
-    _logger.finest(() => "calculateSendData data=$data");
+    _logger.finest(() => 'calculateSendData data=$data');
 
     return data;
   }
@@ -72,6 +72,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     if (mediaAttachmentBlocs.isNotEmpty) {
       mediaAttachment = mediaAttachmentBlocs.first.pleromaMediaAttachment;
     }
+
     return mediaAttachment;
   }
 
@@ -82,12 +83,13 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance!
         .info!;
+
     return PleromaChatPostMessageBloc(
       pleromaChatBloc: IPleromaChatBloc.of(
         context,
         listen: false,
       ),
-      pleromaMediaAttachmentService: IPleromaMediaAttachmentService.of(
+      pleromaMediaAttachmentService: IPleromaApiMediaAttachmentService.of(
         context,
         listen: false,
       ),

@@ -27,10 +27,11 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
 
   @override
   Widget buildNestedScrollView(BuildContext context) {
-    IFediNestedScrollViewBloc fediNestedScrollViewBloc =
+    var fediNestedScrollViewBloc =
         IFediNestedScrollViewBloc.of(context, listen: false);
     var nestedScrollController =
         fediNestedScrollViewBloc.nestedScrollController;
+
     return NestedScrollView(
       // we use custom nested scroll controller to achieve scroll callbacks
       // from body scrollables

@@ -27,10 +27,12 @@ class NewPostStatusPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
+
     return WillPopScope(
       // override back button
       onWillPop: () async {
         _newPostStatusPageHandleBackPressed(context, postStatusBloc);
+
         return true;
       },
       child: Scaffold(
@@ -87,6 +89,7 @@ class NewPostStatusPageAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context);
+
     return FediPageTitleAppBar(
       title: S.of(context).app_status_post_new_title,
       leading: FediDismissIconButton(

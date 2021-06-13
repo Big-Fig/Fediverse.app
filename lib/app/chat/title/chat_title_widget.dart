@@ -26,7 +26,7 @@ class ChatTitleWidget extends StatelessWidget {
         if (accounts?.isNotEmpty != true) {
           return const SizedBox.shrink();
         }
-        var accountsText = accounts!.map((account) => account.acct).join(", ");
+        var accountsText = accounts!.map((account) => account.acct).join(', ');
 
         return Text(
           accountsText,

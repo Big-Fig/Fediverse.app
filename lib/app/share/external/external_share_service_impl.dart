@@ -50,7 +50,7 @@ class ExternalShareService extends DisposableOwner
     var urlFilesPossibleToShareAsBytes =
         urlFiles.where((urlFile) => isPossibleToShareAsBytes(urlFile.url));
 
-    text = text ?? "";
+    text = text ?? '';
 
     // several files sharing not supported with text
     if (urlFilesPossibleToShareAsBytes.length == 1) {
@@ -59,9 +59,9 @@ class ExternalShareService extends DisposableOwner
       var nonFirstUrlFileToShareAsBytes = urlFiles
           .where((attachment) => attachment != firstUrlFileToShareAsFiles);
       if (nonFirstUrlFileToShareAsBytes.isNotEmpty) {
-        text += "[${nonFirstUrlFileToShareAsBytes.map(
+        text += '[${nonFirstUrlFileToShareAsBytes.map(
               (attachment) => attachment.url,
-            ).join(", ")}]";
+            ).join(', ')}]';
       }
 
       var file = await TempFileHelper.downloadFileToTempFolder(
@@ -84,8 +84,9 @@ class ExternalShareService extends DisposableOwner
     } else {
       // share everything as text
       text +=
-          "[${urlFilesPossibleToShareAsBytes.map((urlFile) => urlFile.url).join(", ")}]";
+          '[${urlFilesPossibleToShareAsBytes.map((urlFile) => urlFile.url).join(', ')}]';
     }
+
     return text;
   }
 
@@ -131,9 +132,9 @@ class ExternalShareService extends DisposableOwner
   }) {
     shareTextOnly(
       popupTitle,
-      "${text ?? ""}  [${urlFiles.map((urlFile) => urlFile.url).join(", ")}]",
+      '${text ?? ''}  [${urlFiles.map((urlFile) => urlFile.url).join(', ')}]',
     );
   }
 
-  bool isPossibleToShareAsBytes(String? url) => mime(url)!.contains("image");
+  bool isPossibleToShareAsBytes(String? url) => mime(url)!.contains('image');
 }

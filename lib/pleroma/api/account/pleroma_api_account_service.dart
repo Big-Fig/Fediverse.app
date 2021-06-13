@@ -14,11 +14,13 @@ abstract class IPleromaApiAccountService extends IPleromaApi {
 
   Future<List<IPleromaApiAccount>> getAccountFollowings({
     required String accountRemoteId,
+    required bool withRelationship,
     IPleromaApiPaginationRequest? pagination,
   });
 
   Future<List<IPleromaApiAccount>> getAccountFollowers({
     required String accountRemoteId,
+    required bool withRelationship,
     IPleromaApiPaginationRequest? pagination,
   });
 
@@ -41,5 +43,6 @@ abstract class IPleromaApiAccountService extends IPleromaApi {
 
   Future<IPleromaApiAccount> getAccount({
     required String accountRemoteId,
+    required bool withRelationship,
   });
 }

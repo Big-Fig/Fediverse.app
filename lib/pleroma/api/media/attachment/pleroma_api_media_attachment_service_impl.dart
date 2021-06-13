@@ -6,16 +6,16 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 
-class PleromaMediaAttachmentService extends BasePleromaApiService
+class PleromaApiMediaAttachmentService extends BasePleromaApiService
     with PleromaApiAuthMixinService
-    implements IPleromaMediaAttachmentService {
+    implements IPleromaApiMediaAttachmentService {
   @override
   final IPleromaApiAuthRestService restService;
 
   @override
   IPleromaApiAuthRestService get restApiAuthService => restService;
 
-  PleromaMediaAttachmentService({
+  PleromaApiMediaAttachmentService({
     required this.restService,
   }) : super(restService: restService);
 
@@ -25,9 +25,9 @@ class PleromaMediaAttachmentService extends BasePleromaApiService
   }) async {
     var httpResponse = await restService.uploadFileMultipartRequest(
       UploadMultipartRestRequest.post(
-        relativePath: "/api/v1/media",
+        relativePath: '/api/v1/media',
         files: {
-          "file": file,
+          'file': file,
         },
       ),
     );

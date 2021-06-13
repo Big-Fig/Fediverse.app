@@ -17,6 +17,7 @@ class NotificationTestHelper {
   }) async {
     account = account ?? await AccountTestHelper.createTestAccount(seed: seed);
     var dbAccount = account.dbAccount;
+
     return DbNotificationPopulatedWrapper(
       dbNotificationPopulated: DbNotificationPopulated.statusPopulated(
         dbNotification:

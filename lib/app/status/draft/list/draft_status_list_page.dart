@@ -18,7 +18,7 @@ class DraftStatusListPage extends StatelessWidget {
       body: SafeArea(
         child: const DraftStatusPaginationListTimelineWidget(
           customEmptyWidget: _DraftStatusListPageEmptyWidget(),
-          key: PageStorageKey("DraftStatusPaginationListTimelineWidget"),
+          key: PageStorageKey('DraftStatusPaginationListTimelineWidget'),
           needWatchLocalRepositoryForUpdates: true,
         ),
       ),
@@ -55,7 +55,7 @@ void goToDraftStatusListPage(BuildContext context) {
             child: DraftStatusPaginationListBloc.provideToContext(
               context,
               child: const DraftStatusListPage(
-                key: PageStorageKey("DraftStatusListPage"),
+                key: PageStorageKey('DraftStatusListPage'),
               ),
             ),
           ),

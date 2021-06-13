@@ -15,7 +15,7 @@ void main() {
       blocCreator: (localPreferencesService) =>
           AuthHostAccessTokenLocalPreferenceBloc(
         localPreferencesService,
-        host: "host",
+        host: 'host',
       ),
       testObjectCreator: ({required String seed}) =>
           PleromaApiOAuthTestHelper.createTestPleromaApiOAuthToken(

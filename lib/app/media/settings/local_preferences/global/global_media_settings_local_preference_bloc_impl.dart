@@ -8,7 +8,7 @@ class GlobalMediaSettingsLocalPreferenceBloc
     implements IGlobalMediaSettingsLocalPreferenceBloc {
   GlobalMediaSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
-  ) : super(preferencesService, "media.settings.global");
+  ) : super(preferencesService, 'media.settings.global');
 
   static const MediaSettings defaultValue = MediaSettings(
     autoInit: false,

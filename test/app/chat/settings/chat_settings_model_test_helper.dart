@@ -7,14 +7,14 @@ class ChatSettingsModelTestHelper {
   }) =>
   // hack to be sure that seed1 and seed2 wil produce different objects
       ChatSettings(
-        replaceConversationsWithPleromaChats: seed == "seed1"
+        replaceConversationsWithPleromaChats: seed == 'seed1'
             ? true
-            : seed == "seed2"
+            : seed == 'seed2'
                 ? false
                 : seed.hashCode % 2 == 0,
-        countConversationsInChatsUnreadBadges: seed == "seed1"
+        countConversationsInChatsUnreadBadges: seed == 'seed1'
             ? true
-            : seed == "seed2"
+            : seed == 'seed2'
                 ? false
                 : seed.hashCode % 2 == 1,
       );

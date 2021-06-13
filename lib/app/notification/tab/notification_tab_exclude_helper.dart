@@ -35,6 +35,7 @@ class NotificationTabExcludeHelper {
         ]);
         break;
     }
+
     return excludeTypes;
   }
 }

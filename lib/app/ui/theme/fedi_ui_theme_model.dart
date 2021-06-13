@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 // ignore_for_file: no-magic-number
 ThemeData createBaseFediThemeData(Color primaryColor) => ThemeData(
-      fontFamily: "Rubik",
+      fontFamily: 'Rubik',
       primarySwatch: MaterialColor(primaryColor.value, {
         50: primaryColor.withOpacity(0.1),
         100: primaryColor.withOpacity(0.2),

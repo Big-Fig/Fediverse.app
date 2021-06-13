@@ -52,6 +52,7 @@ void showEditGlobalOrInstancePaginationSettingsDialog({
             },
           ),
         );
+
         return editPaginationSettingsBloc;
       },
       child: ProxyProvider<IEditPaginationSettingsBloc,

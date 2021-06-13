@@ -17,9 +17,9 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   static DurationDateTimeValueFormFieldBloc createDurationDateTimeLengthBloc(
     PleromaApiInstancePollLimits pollLimit,
   ) {
-    Duration pollMinimumExpiration = pollLimit.minExpirationDurationOrDefault;
+    var pollMinimumExpiration = pollLimit.minExpirationDurationOrDefault;
 
-    Duration pollMaximumExpiration = pollLimit.maxExpirationDurationOrDefault;
+    var pollMaximumExpiration = pollLimit.maxExpirationDurationOrDefault;
 
     return DurationDateTimeValueFormFieldBloc(
       originValue: DurationDateTime(
@@ -74,11 +74,14 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
       ];
 
   @override
+  // ignore: avoid-late-keyword
   late DurationDateTimeValueFormFieldBloc durationDateTimeLengthFieldBloc;
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc<bool> multiplyFieldBloc =
       BoolValueFormFieldBloc(originValue: false);
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc<bool> hideTotalsFieldBloc =
       BoolValueFormFieldBloc(originValue: false);
 
@@ -97,7 +100,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   static StringValueFormFieldBloc createPollOptionBloc(
     int? maximumOptionLength,
   ) =>
-      createPollOptionFieldBloc("", maximumOptionLength);
+      createPollOptionFieldBloc('', maximumOptionLength);
 
   static StringValueFormFieldBloc createPollOptionFieldBloc(
     String originValue,

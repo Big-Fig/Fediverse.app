@@ -20,6 +20,7 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {

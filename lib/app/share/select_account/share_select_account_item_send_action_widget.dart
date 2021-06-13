@@ -16,6 +16,7 @@ class ShareSelectAccountItemSendActionWidget extends StatelessWidget {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     var account = Provider.of<IAccount>(context);
     var shareToAccountBloc = IShareToAccountBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: shareToAccountBloc.isAlreadySharedToAccountStream(account),
       builder: (context, snapshot) {

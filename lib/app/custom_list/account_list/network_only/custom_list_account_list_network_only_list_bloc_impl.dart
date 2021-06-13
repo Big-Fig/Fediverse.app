@@ -9,7 +9,7 @@ import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:logging/logging.dart';
 
 final _logger =
-    Logger("custom_list_account_list_network_only_list_bloc_impl.dart");
+    Logger('custom_list_account_list_network_only_list_bloc_impl.dart');
 
 class CustomListAccountListNetworkOnlyListBloc extends DisposableOwner
     implements ICustomListAccountListNetworkOnlyListBloc {
@@ -49,9 +49,10 @@ class CustomListAccountListNetworkOnlyListBloc extends DisposableOwner
           )
           .toList();
     }
-    _logger.finest(() => "loadItemsFromRemoteForPage \n"
-        "customList ${customList?.remoteId} \n"
-        "result ${result.length} ");
+    _logger.finest(() => 'loadItemsFromRemoteForPage \n'
+        'customList ${customList?.remoteId} \n'
+        'result ${result.length} ');
+
     return result;
   }
 }

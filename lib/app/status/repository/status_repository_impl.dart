@@ -20,7 +20,7 @@ import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:pedantic/pedantic.dart';
 
-var _logger = Logger("status_repository_impl.dart");
+var _logger = Logger('status_repository_impl.dart');
 
 class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbStatus,
@@ -34,11 +34,11 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     StatusRepositoryFilters,
     StatusRepositoryOrderingTermData> implements IStatusRepository {
   @override
-  late StatusDao dao;
-  late StatusHashtagsDao hashtagsDao;
-  late StatusListsDao listsDao;
-  late HomeTimelineStatusesDao homeTimelineStatusesDao;
-  late ConversationStatusesDao conversationStatusesDao;
+  final StatusDao dao;
+  final StatusHashtagsDao hashtagsDao;
+  final StatusListsDao listsDao;
+  final HomeTimelineStatusesDao homeTimelineStatusesDao;
+  final ConversationStatusesDao conversationStatusesDao;
   final IAccountRepository accountRepository;
 
   @override
@@ -54,13 +54,11 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   StatusRepository({
     required AppDatabase appDatabase,
     required this.accountRepository,
-  }) {
-    dao = appDatabase.statusDao;
-    hashtagsDao = appDatabase.statusHashtagsDao;
-    listsDao = appDatabase.statusListsDao;
-    homeTimelineStatusesDao = appDatabase.homeTimelineStatusesDao;
-    conversationStatusesDao = appDatabase.conversationStatusesDao;
-  }
+  })   : dao = appDatabase.statusDao,
+        hashtagsDao = appDatabase.statusHashtagsDao,
+        listsDao = appDatabase.statusListsDao,
+        homeTimelineStatusesDao = appDatabase.homeTimelineStatusesDao,
+        conversationStatusesDao = appDatabase.conversationStatusesDao;
 
   Future addStatusesToList({
     required List<String> statusRemoteIds,
@@ -244,11 +242,11 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
     var typedResultList = await query.get();
 
-    Map<IConversationChat, IStatus?> result = {};
+    var result = <IConversationChat, IStatus?>{};
 
     conversations.forEach(
       (conversation) {
-        TypedResult? typedResult = typedResultList.firstWhereOrNull(
+        var typedResult = typedResultList.firstWhereOrNull(
           (typedResult) {
             var conversationStatuses =
                 typedResult.readTable(dao.conversationStatusesAlias);
@@ -273,7 +271,8 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Future<IStatus?> findByOldPendingRemoteId(
     String oldPendingRemoteId,
   ) async {
-    _logger.finest(() => "findByOldPendingRemoteId $oldPendingRemoteId");
+    _logger.finest(() => 'findByOldPendingRemoteId $oldPendingRemoteId');
+
     return (await dao.findByOldPendingRemoteId(oldPendingRemoteId))
         ?.toDbStatusPopulatedWrapper();
   }
@@ -282,7 +281,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Stream<IStatus?> watchByOldPendingRemoteId(
     String oldPendingRemoteId,
   ) {
-    _logger.finest(() => "watchByOldPendingRemoteId $oldPendingRemoteId");
+    _logger.finest(() => 'watchByOldPendingRemoteId $oldPendingRemoteId');
 
     return dao.watchByOldPendingRemoteId(oldPendingRemoteId).map(
           (value) => value?.toDbStatusPopulatedWrapper(),
@@ -668,10 +667,10 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       conversationRemoteId = conversationRemoteId ??
           remoteStatus.pleroma?.directConversationId?.toString();
 
-      _logger.finer(() => "upsertRemoteStatus $remoteStatus "
-          "listRemoteId => $listRemoteId "
-          "conversationRemoteId => $conversationRemoteId "
-          "isFromHomeTimeline => $isFromHomeTimeline ");
+      _logger.finer(() => 'upsertRemoteStatus $remoteStatus '
+          'listRemoteId => $listRemoteId '
+          'conversationRemoteId => $conversationRemoteId '
+          'isFromHomeTimeline => $isFromHomeTimeline ');
 
       var remoteAccount = remoteStatus.account;
 
@@ -744,7 +743,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
       var reblog = remoteStatus.reblog;
       if (reblog != null) {
-        // list & conversation should be null. We don't need reblogs in
+        // list & conversation should be null. We dont need reblogs in
         // conversations & lists
         unawaited(
           upsertInRemoteTypeBatch(
@@ -798,6 +797,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         StatusRepositoryOrderingTermData.remoteIdDesc,
       ],
     );
+
     return statusesStream.map((list) => list.length);
   }
 }

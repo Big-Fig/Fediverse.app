@@ -52,6 +52,7 @@ void showEditGlobalOrInstanceChatSettingsDialog({
             },
           ),
         );
+
         return editChatSettingsBloc;
       },
       child: ProxyProvider<IEditChatSettingsBloc,

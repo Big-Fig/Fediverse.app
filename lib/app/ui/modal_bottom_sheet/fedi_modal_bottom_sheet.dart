@@ -14,12 +14,13 @@ Future<T?> showFediModalBottomSheetDialog<T>({
   bool enableDrag = true,
 }) {
   var fediUiColorTheme = IFediUiColorTheme.of(context, listen: false);
+
   return showModalBottomSheet<T>(
     context: context,
-    isScrollControlled:isScrollControlled,
-    useRootNavigator:useRootNavigator,
-    isDismissible:isDismissible,
-    enableDrag:enableDrag,
+    isScrollControlled: isScrollControlled,
+    useRootNavigator: useRootNavigator,
+    isDismissible: isDismissible,
+    enableDrag: enableDrag,
     backgroundColor: fediUiColorTheme.transparent,
     barrierColor: fediUiColorTheme.modalBottomSheetDarkOverlay,
     builder: (BuildContext context) => AnimatedPadding(

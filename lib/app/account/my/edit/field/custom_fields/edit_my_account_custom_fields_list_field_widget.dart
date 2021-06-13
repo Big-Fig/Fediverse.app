@@ -46,11 +46,13 @@ class _EditMyAccountCustomFieldsListFieldBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var customFieldsGroupBloc =
         Provider.of<IOneTypeFormGroupBloc<ILinkPairFormGroupBloc>>(context);
+
     return StreamBuilder<List<ILinkPairFormGroupBloc>>(
       stream: customFieldsGroupBloc.itemsStream,
       initialData: customFieldsGroupBloc.items,
       builder: (context, snapshot) {
         var fields = snapshot.data!;
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

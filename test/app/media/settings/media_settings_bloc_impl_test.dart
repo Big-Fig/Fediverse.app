@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'media_settings_model_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
   late GlobalMediaSettingsLocalPreferenceBloc
@@ -90,7 +90,7 @@ void main() {
     );
 
     var testAutoPlay =
-        MediaSettingsModelTestHelper.createTestMediaSettings(seed: "seed")
+        MediaSettingsModelTestHelper.createTestMediaSettings(seed: 'seed')
             .autoPlay;
 
     await mediaSettingsBloc.changeAutoPlay(testAutoPlay);
@@ -149,7 +149,7 @@ void main() {
     );
 
     var testAutoPlay =
-        MediaSettingsModelTestHelper.createTestMediaSettings(seed: "seed")
+        MediaSettingsModelTestHelper.createTestMediaSettings(seed: 'seed')
             .autoInit;
 
     await mediaSettingsBloc.changeAutoInit(testAutoPlay);

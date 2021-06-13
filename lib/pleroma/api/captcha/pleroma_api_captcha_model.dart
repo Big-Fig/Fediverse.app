@@ -36,11 +36,11 @@ extension IPleromaApiCaptchaExtension on IPleromaApiCaptcha {
 @JsonSerializable()
 class PleromaApiCaptcha implements IPleromaApiCaptcha, IJsonObject {
   @override
-  @JsonKey(name: "answer_data")
+  @JsonKey(name: 'answer_data')
   final String? answerData;
 
   @override
-  @JsonKey(name: "seconds_valid")
+  @JsonKey(name: 'seconds_valid')
   final int? secondsValid;
 
   @override
@@ -110,10 +110,10 @@ enum PleromaApiCaptchaType {
 
 const unknownPleromaApiCaptchaType = PleromaApiCaptchaType.unknown;
 
-const _nativePleromaApiCaptchaTypeJsonValue = "native";
-const _kocaptchaPleromaApiCaptchaTypeJsonValue = "kocaptcha";
-const _nonePleromaApiCaptchaTypeJsonValue = "none";
-const _unknownPleromaApiCaptchaTypeJsonValue = "unknown";
+const _nativePleromaApiCaptchaTypeJsonValue = 'native';
+const _kocaptchaPleromaApiCaptchaTypeJsonValue = 'kocaptcha';
+const _nonePleromaApiCaptchaTypeJsonValue = 'none';
+const _unknownPleromaApiCaptchaTypeJsonValue = 'unknown';
 
 extension PleromaApiCaptchaTypeExtension on PleromaApiCaptchaType {
   String toJsonValue() {

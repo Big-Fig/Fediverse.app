@@ -1,8 +1,11 @@
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/card/mastodon_api_card_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logging/logging.dart';
 
 part 'pleroma_api_card_model.g.dart';
+
+final _logger = Logger('pleroma_api_card_model.dart');
 
 abstract class IPleromaApiCard implements IMastodonApiCard {}
 
@@ -33,22 +36,27 @@ extension IPleromaApiCardExtension on IPleromaApiCard {
 @JsonSerializable()
 class PleromaApiCard implements IPleromaApiCard, IJsonObject {
   @override
-  @JsonKey(name: "author_name")
+  @JsonKey(name: 'author_name')
   final String? authorName;
 
   @override
-  @JsonKey(name: "author_url")
+  @JsonKey(name: 'author_url')
   final String? authorUrl;
 
   @override
   final String? description;
 
   @override
-  @JsonKey(name: "embed_url")
+  @JsonKey(name: 'embed_url')
   final String? embedUrl;
 
   @override
+  @JsonKey(fromJson: sizeFromJsonOrNullOnError)
   final int? height;
+
+  @override
+  @JsonKey(fromJson: sizeFromJsonOrNullOnError)
+  final int? width;
 
   @override
   final String? html;
@@ -57,11 +65,11 @@ class PleromaApiCard implements IPleromaApiCard, IJsonObject {
   final String? image;
 
   @override
-  @JsonKey(name: "provider_name")
+  @JsonKey(name: 'provider_name')
   final String? providerName;
 
   @override
-  @JsonKey(name: "provider_url")
+  @JsonKey(name: 'provider_url')
   final String? providerUrl;
 
   @override
@@ -75,9 +83,6 @@ class PleromaApiCard implements IPleromaApiCard, IJsonObject {
 
   @override
   final String? url;
-
-  @override
-  final int? width;
 
   PleromaApiCard({
     required this.authorName,
@@ -113,6 +118,21 @@ class PleromaApiCard implements IPleromaApiCard, IJsonObject {
 
   static PleromaApiCard fromJson(Map<String, dynamic> json) =>
       _$PleromaApiCardFromJson(json);
+
+  static int? sizeFromJsonOrNullOnError(dynamic json) {
+    if (json == null) {
+      return null;
+    }
+
+    // hack because backend sometimes returns pleroma object in invalid format
+    try {
+      return json as int?;
+    } catch (e, stackTrace) {
+      _logger.warning(() => 'sizeFromJsonOrNullOnError $json', e, stackTrace);
+
+      return null;
+    }
+  }
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiCardToJson(this);

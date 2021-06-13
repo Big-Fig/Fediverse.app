@@ -15,7 +15,7 @@ void main() {
       blocCreator: (localPreferencesService) =>
           AuthHostApplicationLocalPreferenceBloc(
         localPreferencesService,
-        host: "host",
+        host: 'host',
       ),
       testObjectCreator: ({required String seed}) =>
           PleromaApiApplicationTestHelper.createTestPleromaApiClientApplication(

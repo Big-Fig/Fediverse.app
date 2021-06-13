@@ -42,6 +42,7 @@ class ChatListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var chatBloc = IChatBloc.of(context);
+
     return Slidable(
       actionPane: const SlidableDrawerActionPane(),
       // ignore: no-magic-number
@@ -228,7 +229,7 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
                 return path.basename(mediaAttachment.url);
               }
             },
-          ).join(", ");
+          ).join(', ');
         }
 
         var fediUiColorTheme = IFediUiColorTheme.of(context);
@@ -285,7 +286,7 @@ String _extractContent({
   required IChatMessage chatMessage,
   required String? content,
 }) {
-  String formattedText = content?.extractRawStringFromHtmlString() ?? "";
+  var formattedText = content?.extractRawStringFromHtmlString() ?? '';
 
   var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 
@@ -305,6 +306,7 @@ class _ChatListItemDeleteActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var chatBloc = IChatBloc.of(context);
     var paginationListBloc = IPaginationListBloc.of(context);
+
     return IconSlideAction(
       icon: FediIcons.delete,
       color: IFediUiColorTheme.of(context).error,

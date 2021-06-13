@@ -72,6 +72,7 @@ IFediUiTheme? _findThemeById(
   if (themeId == null) {
     return null;
   }
+
   return availableThemes.firstWhere(
     (theme) => theme.id == themeId,
   );

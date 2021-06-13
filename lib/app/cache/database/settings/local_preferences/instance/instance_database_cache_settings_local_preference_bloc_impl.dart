@@ -11,7 +11,7 @@ class InstanceDatabaseCacheSettingsLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService,
-          "cache.database.settings.instance.$userAtHost",
+          'cache.database.settings.instance.$userAtHost',
         );
 
   static const DatabaseCacheSettings? defaultValue = null;

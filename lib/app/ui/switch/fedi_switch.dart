@@ -23,6 +23,7 @@ class FediSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Provider<bool>.value(
         value: value,
         child: DisposableProxyProvider<bool, ICustomSwitchBloc>(
@@ -35,6 +36,7 @@ class FediSwitch extends StatelessWidget {
                 },
               ),
             );
+
             return switchBloc;
           },
           child: CustomSwitch(

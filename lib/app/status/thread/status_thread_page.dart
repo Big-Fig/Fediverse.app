@@ -33,6 +33,7 @@ class StatusThreadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusThreadBloc = IStatusThreadBloc.of(context);
+
     return Scaffold(
       appBar: FediPageCustomAppBar(
         leading: const FediBackIconButton(),
@@ -67,7 +68,7 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
         var status = snapshot.data;
 
         if (status != null) {
-          IAccount account = status.reblog?.account ?? status.account;
+          var account = status.reblog?.account ?? status.account;
 
           return Provider<IStatus>.value(
             value: status,

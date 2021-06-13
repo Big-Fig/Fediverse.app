@@ -1,4 +1,4 @@
-import 'package:fedi/app/instance/details/instance_details_app_bar_widget.dart';
+import 'package:fedi/app/instance/app_bar/instance_host_app_bar_widget.dart';
 import 'package:fedi/app/instance/details/instance_details_widget.dart';
 import 'package:fedi/app/instance/details/remote/remote_instance_details_bloc_impl.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
@@ -11,7 +11,7 @@ class RemoteInstanceDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: InstanceDetailsPageAppBarWidget(),
+      appBar: InstanceHostAppBarWidget(),
       body: const SafeArea(
         child: InstanceDetailsWidget(),
       ),

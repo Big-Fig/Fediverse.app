@@ -26,7 +26,7 @@ extension TimelineLabelExtension on Timeline {
         case TimelineType.account:
           return S.of(context).app_timeline_type_account;
         default:
-          throw UnsupportedError("type $type not supported");
+          throw UnsupportedError('type $type not supported');
       }
     }
   }

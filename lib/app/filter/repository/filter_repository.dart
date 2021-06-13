@@ -14,43 +14,4 @@ abstract class IFilterRepository
         IDisposable {
   static IFilterRepository of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFilterRepository>(context, listen: listen);
-  //
-  // Future upsertRemoteFilters(
-  //   List<IPleromaFilter> remoteFilters,
-  // );
-  //
-  // Future updateLocalFilterByRemoteFilter({
-  //   required IFilter oldLocalFilter,
-  //   required IPleromaFilter newRemoteFilter,
-  // });
-  //
-  // Future upsertRemoteFilter(
-  //   IPleromaFilter remoteFilter,
-  // );
-  //
-  // Future<List<DbFilterPopulatedWrapper>> getFilters({
-  //   required FilterRepositoryFilters filters,
-  //   required RepositoryPagination<IFilter>? pagination,
-  //   FilterOrderingTermData orderingTermData =
-  //       FilterOrderingTermData.remoteIdDesc,
-  // });
-  //
-  // Stream<List<DbFilterPopulatedWrapper>> watchFilters({
-  //   required FilterRepositoryFilters filters,
-  //   required RepositoryPagination<IFilter> pagination,
-  //   FilterOrderingTermData orderingTermData =
-  //       FilterOrderingTermData.remoteIdDesc,
-  // });
-  //
-  // Future<DbFilterPopulatedWrapper?> getFilter({
-  //   required FilterRepositoryFilters filters,
-  //   FilterOrderingTermData orderingTermData =
-  //       FilterOrderingTermData.remoteIdDesc,
-  // });
-  //
-  // Stream<DbFilterPopulatedWrapper?> watchFilter({
-  //   required FilterRepositoryFilters filters,
-  //   FilterOrderingTermData orderingTermData =
-  //       FilterOrderingTermData.remoteIdDesc,
-  // });
 }

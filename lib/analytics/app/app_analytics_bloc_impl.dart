@@ -30,4 +30,12 @@ class AppAnalyticsBloc extends DisposableOwner implements IAppAnalyticsBloc {
           isAppRated: true,
         ),
       );
+
+  @override
+  Future onHandlingCrashlyticsAsked() =>
+      appAnalyticsLocalPreferenceBloc.setValue(
+        data.copyWith(
+          isHandlingCrashlyticsAsked: true,
+        ),
+      );
 }

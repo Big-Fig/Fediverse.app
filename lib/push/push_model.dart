@@ -119,8 +119,8 @@ enum PushMessageType {
   launch,
 }
 
-const _foregroundPushMessageTypeJsonValue = "foreground";
-const _launchPushMessageTypeJsonValue = "launch";
+const _foregroundPushMessageTypeJsonValue = 'foreground';
+const _launchPushMessageTypeJsonValue = 'launch';
 
 extension PushMessageTypeExtension on PushMessageType {
   String toJsonValue() {
@@ -151,7 +151,7 @@ extension PushMessageTypeStringExtension on String {
         result = PushMessageType.launch;
         break;
       default:
-        throw "Invalid PushMessageTypeStringExtension $this";
+        throw 'Invalid PushMessageTypeStringExtension $this';
     }
 
     return result;

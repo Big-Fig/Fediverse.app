@@ -7,8 +7,8 @@ class CustomEmojiPickerImageUrlItemModelTestHelper {
     required String seed,
   }) =>
       CustomEmojiPickerImageUrlItem(
-        imageUrl: seed + "imageUrl",
-        name: seed + "name",
+        imageUrl: seed + 'imageUrl',
+        name: seed + 'name',
       );
 
   static EmojiPickerCustomImageUrlCategoryItems
@@ -16,7 +16,7 @@ class CustomEmojiPickerImageUrlItemModelTestHelper {
     required String seed,
   }) =>
           EmojiPickerCustomImageUrlCategoryItems(items: [
-            createTestCustomEmojiPickerImageUrlItem(seed: seed + "1"),
-            createTestCustomEmojiPickerImageUrlItem(seed: seed + "2"),
+            createTestCustomEmojiPickerImageUrlItem(seed: seed + '1'),
+            createTestCustomEmojiPickerImageUrlItem(seed: seed + '2'),
           ]);
 }

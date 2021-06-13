@@ -6,7 +6,7 @@ class PleromaApiWebSocketsTestHelper {
     required String seed,
   }) =>
       PleromaApiWebSocketsEvent(
-        event: seed + "event",
-        payload: seed + "payload",
+        event: seed + 'event',
+        payload: seed + 'payload',
       );
 }

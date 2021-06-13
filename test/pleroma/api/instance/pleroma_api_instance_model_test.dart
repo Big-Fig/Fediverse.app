@@ -10,7 +10,7 @@ import 'pleroma_api_instance_test_helper.dart';
 void main() {
   test('PleromaApiInstance toPleromaApiInstance', () async {
     var original = PleromaApiInstanceTestHelper.createTestPleromaApiInstance(
-      seed: "seed",
+      seed: 'seed',
     );
     var obj = original.toPleromaApiInstance(forceNewObject: true);
 
@@ -39,19 +39,19 @@ void main() {
   test('PleromaApiInstanceHistory equal & hashcode & toString', () async {
     ObjTestHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          PleromaApiInstanceTestHelper.createTestPleromaApiInstanceHistory(
+          PleromaApiInstanceTestHelper.createTestPleromaApiInstanceActivityItem(
         seed: seed,
       ),
     );
   });
 
-  test('PleromaApiInstanceHistory toJson & fromJson', () async {
+  test('PleromaApiInstanceActivityItem toJson & fromJson', () async {
     JsonTestHelper.testFromJsonToJson(
       ({required String seed}) =>
-          PleromaApiInstanceTestHelper.createTestPleromaApiInstanceHistory(
+          PleromaApiInstanceTestHelper.createTestPleromaApiInstanceActivityItem(
         seed: seed,
       ),
-      PleromaApiInstanceHistory.fromJson,
+      PleromaApiInstanceActivityItem.fromJson,
     );
   });
 

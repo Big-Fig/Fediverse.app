@@ -10,7 +10,7 @@ import '../channel/web_sockets_channel_source_mock.dart';
 import '../service/web_sockets_service_impl_test.mocks.dart';
 import '../websockets_model_test_impl.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
   ConnectionService,
 ])
@@ -35,12 +35,12 @@ void main() {
   test('getOrCreateWebSocketsChannel', () {
     webSocketsService.getOrCreateWebSocketsChannel(
       config: WebSocketsChannelConfigTest(
-        queryArgs: {"arg": "value"},
-        baseUrl: Uri.parse("wss://fedi.app"),
+        queryArgs: {'arg': 'value'},
+        baseUrl: Uri.parse('wss://fedi.app'),
         connectionService: connectionServiceMock,
         sourceCreator: () => WebSocketsChannelSourceMock<WebSocketEventTest>(
           url: Uri.parse(
-            "wss://fedi1.app?arg=value",
+            'wss://fedi1.app?arg=value',
           ),
         ),
       ),
@@ -50,14 +50,14 @@ void main() {
     // same
     webSocketsService.getOrCreateWebSocketsChannel(
       config: WebSocketsChannelConfigTest(
-        queryArgs: {"arg": "value"},
+        queryArgs: {'arg': 'value'},
         baseUrl: Uri.parse(
-          "wss://fedi.app",
+          'wss://fedi.app',
         ),
         connectionService: connectionServiceMock,
         sourceCreator: () => WebSocketsChannelSourceMock<WebSocketEventTest>(
           url: Uri.parse(
-            "wss://fedi1.app?arg=value",
+            'wss://fedi1.app?arg=value',
           ),
         ),
       ),
@@ -67,12 +67,12 @@ void main() {
     // diff query arg
     webSocketsService.getOrCreateWebSocketsChannel(
       config: WebSocketsChannelConfigTest(
-        queryArgs: {"arg": "newValue"},
-        baseUrl: Uri.parse("wss://fedi.app"),
+        queryArgs: {'arg': 'newValue'},
+        baseUrl: Uri.parse('wss://fedi.app'),
         connectionService: connectionServiceMock,
         sourceCreator: () => WebSocketsChannelSourceMock<WebSocketEventTest>(
           url: Uri.parse(
-            "wss://fedi1.app?arg=value",
+            'wss://fedi1.app?arg=value',
           ),
         ),
       ),
@@ -83,12 +83,12 @@ void main() {
     // diff baseUrl
     webSocketsService.getOrCreateWebSocketsChannel(
       config: WebSocketsChannelConfigTest(
-        queryArgs: {"arg": "newValue"},
-        baseUrl: Uri.parse("wss://fedi_2.app"),
+        queryArgs: {'arg': 'newValue'},
+        baseUrl: Uri.parse('wss://fedi_2.app'),
         connectionService: connectionServiceMock,
         sourceCreator: () => WebSocketsChannelSourceMock<WebSocketEventTest>(
           url: Uri.parse(
-            "wss://fedi1.app?arg=value",
+            'wss://fedi1.app?arg=value',
           ),
         ),
       ),

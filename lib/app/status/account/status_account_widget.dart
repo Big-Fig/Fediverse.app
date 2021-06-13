@@ -26,6 +26,7 @@ class StatusAccountWidget extends StatelessWidget {
       initialData: statusBloc.reblogOrOriginalAccount,
       builder: (context, snapshot) {
         var reblogOrOriginalAccount = snapshot.data!;
+
         return buildBody(
           context: context,
           reblogOrOriginalAccount: reblogOrOriginalAccount,
@@ -41,6 +42,7 @@ class StatusAccountWidget extends StatelessWidget {
     required IStatusBloc statusBloc,
   }) {
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+
     return Provider<IAccount>.value(
       value: reblogOrOriginalAccount,
       child: DisposableProxyProvider<IAccount, IAccountBloc>(

@@ -15,6 +15,7 @@ class DraftStatusRepositoryTestHelper {
     );
     assert(id > 0, true);
     var dbDraftStatus = draftStatusData.copyWith(id: id);
+
     return dbDraftStatus;
   }
 }

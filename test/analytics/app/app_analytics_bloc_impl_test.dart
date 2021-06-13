@@ -6,7 +6,7 @@ import 'package:fedi/analytics/app/local_preferences/app_analytics_local_prefere
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
@@ -42,16 +42,8 @@ void main() {
 
   test('onAppOpened', () async {
     expect(
-      appAnalyticsBloc.data.isAppRated,
-      false,
-    );
-    expect(
       appAnalyticsBloc.data.appOpenedCount,
       0,
-    );
-    expect(
-      listenValue!.isAppRated,
-      false,
     );
     expect(
       listenValue!.appOpenedCount,
@@ -80,47 +72,21 @@ void main() {
     );
 
     expect(
-      appAnalyticsBloc.data.isAppRated,
-      false,
-    );
-    expect(
       listenValue!.appOpenedCount,
       2,
-    );
-
-    expect(
-      listenValue!.isAppRated,
-      false,
     );
   });
 
   test('onAppRated', () async {
-    expect(
-      appAnalyticsBloc.data.isAppRated,
-      false,
-    );
-
-    expect(
-      listenValue!.isAppRated,
-      false,
-    );
     await appAnalyticsBloc.onAppOpened();
 
     await Future.delayed(Duration(milliseconds: 100));
 
     expect(
-      appAnalyticsBloc.data.isAppRated,
-      false,
-    );
-    expect(
       appAnalyticsBloc.data.appOpenedCount,
       1,
     );
 
-    expect(
-      listenValue!.isAppRated,
-      false,
-    );
     expect(
       listenValue!.appOpenedCount,
       1,
@@ -131,18 +97,8 @@ void main() {
     await Future.delayed(Duration(milliseconds: 100));
 
     expect(
-      appAnalyticsBloc.data.isAppRated,
-      true,
-    );
-
-    expect(
       appAnalyticsBloc.data.appOpenedCount,
       1,
-    );
-
-    expect(
-      listenValue!.isAppRated,
-      true,
     );
 
     expect(
@@ -153,19 +109,10 @@ void main() {
     await appAnalyticsBloc.onAppRated();
 
     await Future.delayed(Duration(milliseconds: 100));
-    expect(
-      appAnalyticsBloc.data.isAppRated,
-      true,
-    );
 
     expect(
       appAnalyticsBloc.data.appOpenedCount,
       1,
-    );
-
-    expect(
-      listenValue!.isAppRated,
-      true,
     );
 
     expect(

@@ -25,6 +25,7 @@ class CreateItemTimelinesHomeTabStoragePage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         createTimelineBloc.handleBackPressed();
+
         return false;
       },
       child: Scaffold(
@@ -71,6 +72,7 @@ class _CreateItemTimelinesHomeTabStoragePageSaveActionWidget
       initialData: createTimelineBloc.isHaveChangesAndNoErrors,
       builder: (context, snapshot) {
         var isReadyToSubmit = snapshot.data;
+
         return AsyncOperationButtonBuilderWidget(
           builder: (context, onPressed) => FediIconButton(
             icon: Icon(Icons.check),

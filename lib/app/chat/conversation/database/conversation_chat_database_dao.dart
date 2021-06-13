@@ -9,17 +9,17 @@ import 'package:moor/moor.dart';
 
 part 'conversation_chat_database_dao.g.dart';
 
-var _accountAliasId = "account";
-var _conversationAccountsAliasId = "conversationAccount";
-var _conversationStatusesAliasId = "conversationStatus";
-var _statusAliasId = "status";
-var _statusAccountAliasId = "statusAccount";
-var _statusReblogAliasId = "statusReblog";
-var _statusReblogAccountAliasId = "statusReblogAccount";
-var _statusReplyAliasId = "statusReply";
-var _statusReplyAccountAliasId = "statusReplyAccount";
-var _statusReplyReblogAliasId = "statusReplyReblog";
-var _statusReplyReblogAccountAliasId = "statusReplyReblogAccount";
+var _accountAliasId = 'account';
+var _conversationAccountsAliasId = 'conversationAccount';
+var _conversationStatusesAliasId = 'conversationStatus';
+var _statusAliasId = 'status';
+var _statusAccountAliasId = 'statusAccount';
+var _statusReblogAliasId = 'statusReblog';
+var _statusReblogAccountAliasId = 'statusReblogAccount';
+var _statusReplyAliasId = 'statusReply';
+var _statusReplyAccountAliasId = 'statusReplyAccount';
+var _statusReplyReblogAliasId = 'statusReplyReblog';
+var _statusReplyReblogAccountAliasId = 'statusReplyReblogAccount';
 
 @UseDao(
   tables: [
@@ -36,18 +36,29 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
     ConversationChatRepositoryFilters,
     ConversationRepositoryChatOrderingTermData> with _$ConversationDaoMixin {
   final AppDatabase db;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
+  // ignore: avoid-late-keyword
   late $DbConversationAccountsTable conversationAccountsAlias;
+  // ignore: avoid-late-keyword
   late $DbConversationStatusesTable conversationStatusesAlias;
 
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable statusAccountAlias;
 
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusReblogAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable statusReblogAccountAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusReplyAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable statusReplyAccountAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusReplyReblogAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable statusReplyReblogAccountAlias;
 
   // Called by the AppDatabase class
@@ -72,37 +83,38 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   SimpleSelectStatement<$DbConversationsTable, DbConversation> orderBy(
-    SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
-    List<ConversationRepositoryChatOrderingTermData> orderTerms,
-  ) =>
+      SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
+      List<ConversationRepositoryChatOrderingTermData> orderTerms,
+      ) =>
       query
         ..orderBy(
           orderTerms
               .map((orderTerm) => (item) {
-                    var expression;
-                    switch (orderTerm.orderType) {
-                      case ConversationChatOrderType.remoteId:
-                        expression = item.remoteId;
-                        break;
-                      case ConversationChatOrderType.updatedAt:
-                        expression = item.updatedAt;
-                        break;
-                    }
-                    return OrderingTerm(
-                      expression: expression,
-                      mode: orderTerm.orderingMode,
-                    );
-                  })
+            var expression;
+            switch (orderTerm.orderType) {
+              case ConversationChatOrderType.remoteId:
+                expression = item.remoteId;
+                break;
+              case ConversationChatOrderType.updatedAt:
+                expression = item.updatedAt;
+                break;
+            }
+
+            return OrderingTerm(
+              expression: expression,
+              mode: orderTerm.orderingMode,
+            );
+          })
               .toList(),
         );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-  ) =>
+      SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+      ) =>
       query
         ..where((status) =>
-            status.mediaAttachments.isNotNull() |
-            status.mediaAttachments.equals(""));
+        status.mediaAttachments.isNotNull() |
+        status.mediaAttachments.equals(''));
 
   Future<int> getTotalAmountUnread() => totalAmountUnreadQuery().getSingle();
 
@@ -122,7 +134,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
     ];
   }
 
-  List<Join<Table, DataClass>> conversationLastMessageJoin() {
+  List<Join> conversationLastMessageJoin() {
     return [
       // leftOuterJoin(
       //   chatMessageAlias,
@@ -214,8 +226,8 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
-      convertSimpleSelectStatementToJoinedSelectStatement({
+  JoinedSelectStatement
+  convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
     required ConversationChatRepositoryFilters? filters,
   }) {
@@ -229,7 +241,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
       // todo: rework with moor-like code
       var fieldName = statusAlias.createdAt.$name;
       var aliasName = statusAlias.$tableName;
-      var having = CustomExpression<bool>("MAX($aliasName.$fieldName)");
+      var having = CustomExpression<bool>('MAX($aliasName.$fieldName)');
       joinQuery.groupBy(
         [
           dbConversations.remoteId,
@@ -243,18 +255,18 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   DbConversationPopulated mapTypedResultToDbPopulatedItem(
-    TypedResult typedResult,
-  ) =>
+      TypedResult typedResult,
+      ) =>
       typedResult.toDbConversationPopulated(dao: this);
 }
 
 extension DbConversationChatPopulatedTypedResultListExtension
-    on List<TypedResult> {
+on List<TypedResult> {
   List<DbConversationPopulated> toDbConversationChatPopulatedList({
     required ConversationDao dao,
   }) {
     return map(
-      (item) => item.toDbConversationPopulated(
+          (item) => item.toDbConversationPopulated(
         dao: dao,
       ),
     ).toList();
@@ -272,13 +284,13 @@ extension DbConversationChatPopulatedTypedResultExtension on TypedResult {
 }
 
 extension DbConversationChatWithLastMessagePopulatedTypedResultListExtension
-    on List<TypedResult> {
+on List<TypedResult> {
   List<DbConversationChatWithLastMessagePopulated>
-      toDbConversationChatWithLastMessagePopulatedList({
+  toDbConversationChatWithLastMessagePopulatedList({
     required ConversationDao dao,
   }) {
     return map(
-      (item) => item.toDbConversationChatWithLastMessagePopulated(
+          (item) => item.toDbConversationChatWithLastMessagePopulated(
         dao: dao,
       ),
     ).toList();
@@ -286,12 +298,12 @@ extension DbConversationChatWithLastMessagePopulatedTypedResultListExtension
 }
 
 extension DbConversationChatWithLastMessagePopulatedTypedResultExtension
-    on TypedResult {
+on TypedResult {
   DbConversationChatWithLastMessagePopulated
-      toDbConversationChatWithLastMessagePopulated({
+  toDbConversationChatWithLastMessagePopulated({
     required ConversationDao dao,
   }) {
-    TypedResult typedResult = this;
+    var typedResult = this;
     var dbStatus = typedResult.readTableOrNull(dao.statusAlias);
     var dbStatusAccount = typedResult.readTableOrNull(dao.statusAccountAlias);
     DbStatusPopulated? dbStatusPopulated;
@@ -302,14 +314,14 @@ extension DbConversationChatWithLastMessagePopulatedTypedResultExtension
         dbAccount: dbStatusAccount,
         reblogDbStatus: typedResult.readTableOrNull(dao.statusReblogAlias),
         reblogDbStatusAccount:
-            typedResult.readTableOrNull(dao.statusReblogAccountAlias),
+        typedResult.readTableOrNull(dao.statusReblogAccountAlias),
         replyDbStatus: typedResult.readTableOrNull(dao.statusReplyAlias),
         replyDbStatusAccount:
-            typedResult.readTableOrNull(dao.statusReplyAccountAlias),
+        typedResult.readTableOrNull(dao.statusReplyAccountAlias),
         replyReblogDbStatus:
-            typedResult.readTableOrNull(dao.statusReplyReblogAlias),
+        typedResult.readTableOrNull(dao.statusReplyReblogAlias),
         replyReblogDbStatusAccount:
-            typedResult.readTableOrNull(dao.statusReplyReblogAccountAlias),
+        typedResult.readTableOrNull(dao.statusReplyReblogAccountAlias),
       );
     }
 

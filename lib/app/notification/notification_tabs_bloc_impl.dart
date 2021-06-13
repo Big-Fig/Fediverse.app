@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("notification_tabs_bloc_impl.dart");
+var _logger = Logger('notification_tabs_bloc_impl.dart');
 
 class NotificationsTabsBloc extends AsyncInitLoadingBloc
     implements INotificationTabsBloc {
@@ -101,7 +101,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    _logger.finest(() => "internalAsyncInit");
+    _logger.finest(() => 'internalAsyncInit');
 
     for (var tab in tabs) {
       var notificationTabBloc = NotificationTabBloc(

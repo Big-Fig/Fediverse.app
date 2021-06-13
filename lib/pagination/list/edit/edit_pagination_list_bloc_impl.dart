@@ -12,7 +12,7 @@ import 'package:rxdart/rxdart.dart';
 
 typedef ItemEquality<TItem> = bool Function(TItem a, TItem b);
 
-final _logger = Logger("edit_pagination_list_bloc_impl.dart");
+final _logger = Logger('edit_pagination_list_bloc_impl.dart');
 
 class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     extends DisposableOwner implements IEditPaginationListBloc<TPage, TItem> {
@@ -43,7 +43,8 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     required List<TItem> removedItems,
   }) {
     var isSomethingChanged = addedItems.isNotEmpty || removedItems.isNotEmpty;
-    _logger.finest(() => " isSomethingChanged $isSomethingChanged");
+    _logger.finest(() => ' isSomethingChanged $isSomethingChanged');
+
     return isSomethingChanged;
   }
 
@@ -103,10 +104,10 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   }) {
     List<TItem> result;
 
-    _logger.finest(() => "_calculateCurrentItems \n"
-        "originalItems ${originalItems.length} \n"
-        "addedItems ${addedItems.length} \n"
-        "removedItems ${removedItems.length}");
+    _logger.finest(() => '_calculateCurrentItems \n'
+        'originalItems ${originalItems.length} \n'
+        'addedItems ${addedItems.length} \n'
+        'removedItems ${removedItems.length}');
     result = <TItem>[
       ...originalItems,
       ...addedItems,
@@ -120,11 +121,11 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       ),
     );
 
-    _logger.finest(() => "_calculateCurrentItems \n"
-        "originalItems ${originalItems.length}"
-        "addedItems ${addedItems.length}"
-        "removedItems ${removedItems.length}"
-        "result ${result.length}");
+    _logger.finest(() => '_calculateCurrentItems \n'
+        'originalItems ${originalItems.length}'
+        'addedItems ${addedItems.length}'
+        'removedItems ${removedItems.length}'
+        'result ${result.length}');
 
     return result;
   }
@@ -159,6 +160,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       items.remove(foundInRemoved);
 
       removedItemsSubject.add(items);
+
       return;
     }
 
@@ -198,6 +200,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       items.remove(foundInAdded);
 
       addedItemsSubject.add(items);
+
       return;
     }
 

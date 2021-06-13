@@ -52,6 +52,7 @@ void showEditGlobalOrInstanceMediaSettingsDialog({
                 },
               ),
             );
+
             return editMediaSettingsBloc;
           },
           child: ProxyProvider<IEditMediaSettingsBloc,

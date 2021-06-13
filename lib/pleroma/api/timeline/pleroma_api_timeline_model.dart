@@ -3,8 +3,8 @@ enum PleromaApiReplyVisibilityFilter {
   self,
 }
 
-const _followingPleromaApiReplyVisibilityFilterJsonValue = "following";
-const _selfPleromaApiReplyVisibilityFilterJsonValue = "self";
+const _followingPleromaApiReplyVisibilityFilterJsonValue = 'following';
+const _selfPleromaApiReplyVisibilityFilterJsonValue = 'self';
 
 extension PleromaApiReplyVisibilityFilterExtension
     on PleromaApiReplyVisibilityFilter {
@@ -36,7 +36,7 @@ extension PleromaApiReplyVisibilityFilterStringExtension on String {
         result = PleromaApiReplyVisibilityFilter.self;
         break;
       default:
-        throw "Invalid PleromaApiReplyVisibilityFilterStringExtension $this";
+        throw 'Invalid PleromaApiReplyVisibilityFilterStringExtension $this';
     }
 
     return result;

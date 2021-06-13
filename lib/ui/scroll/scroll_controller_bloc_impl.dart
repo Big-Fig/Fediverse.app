@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("scroll_controller_bloc_impl.dart");
+var _logger = Logger('scroll_controller_bloc_impl.dart');
 
 class ScrollControllerBloc extends DisposableOwner
     implements IScrollControllerBloc {
@@ -39,6 +39,7 @@ class ScrollControllerBloc extends DisposableOwner
   @override
   ScrollDirection? get longScrollDirection => longScrollDirectionSubject.value;
 
+  // ignore: avoid-late-keyword
   late DateTime lastDirectionSwitchDateTime;
 
   ScrollControllerBloc({required this.scrollController})
@@ -53,7 +54,7 @@ class ScrollControllerBloc extends DisposableOwner
       try {
         scrollController!.removeListener(listener);
       } catch (e) {
-        _logger.warning(() => "cant dispose scroll controller listener");
+        _logger.warning(() => 'cant dispose scroll controller listener');
       }
     });
   }
@@ -63,7 +64,7 @@ class ScrollControllerBloc extends DisposableOwner
     var currentScrollDirection = scrollController!.position.userScrollDirection;
 
     var pixels = scrollController!.position.pixels;
-    // _logger.finest(() => "pixels ${pixels} ");
+    // _logger.finest(() => 'pixels ${pixels} ');
 
     if (pixels > 0) {
       scrolledToTopSubject.add(false);
@@ -71,8 +72,8 @@ class ScrollControllerBloc extends DisposableOwner
       scrolledToTopSubject.add(true);
     }
 
-    // _logger.finest(() => "previous $previousScrollDirection "
-    //     "current $currentScrollDirection");
+    // _logger.finest(() => 'previous $previousScrollDirection '
+    //     'current $currentScrollDirection');
 
     if (currentScrollDirection != previousScrollDirection) {
       onScrollDirectionChanged(currentScrollDirection);
@@ -82,7 +83,7 @@ class ScrollControllerBloc extends DisposableOwner
   }
 
   void onScrollDirectionContinued(ScrollDirection currentScrollDirection) {
-    bool longScroll = isLongScroll();
+    var longScroll = isLongScroll();
     if (longScroll) {
       longScrollDirectionSubject.add(currentScrollDirection);
     }
@@ -92,7 +93,8 @@ class ScrollControllerBloc extends DisposableOwner
     var now = DateTime.now();
     var differenceWithNow = now.difference(lastDirectionSwitchDateTime);
     var isLong = differenceWithNow.compareTo(longScrollMinimumDuration) > 0;
-    // _logger.finest(() => "differenceWithNow $differenceWithNow isLong $isLong");
+    // _logger.finest(() => 'differenceWithNow $differenceWithNow isLong $isLong');
+
     return isLong;
   }
 

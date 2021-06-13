@@ -8,10 +8,10 @@ class PleromaApiPushTestHelper {
     required String seed,
   }) =>
       PleromaApiPushMessageBody(
-        notificationId: seed + "notificationId",
-        server: seed + "server",
-        account: seed + "account",
-        notificationType: seed + "notificationType",
+        notificationId: seed + 'notificationId',
+        server: seed + 'server',
+        account: seed + 'account',
+        notificationType: seed + 'notificationType',
       );
 
   static PleromaApiPushSubscribeRequestDataAlerts
@@ -42,8 +42,8 @@ class PleromaApiPushTestHelper {
     required String seed,
   }) =>
           PleromaApiPushSubscriptionKeys(
-            p256dh: seed + "p256dh",
-            auth: seed + "auth",
+            p256dh: seed + 'p256dh',
+            auth: seed + 'auth',
           );
 
   static PleromaApiPushSubscribeRequestSubscription
@@ -51,7 +51,7 @@ class PleromaApiPushTestHelper {
     required String seed,
   }) =>
           PleromaApiPushSubscribeRequestSubscription(
-            endpoint: seed + "endpoint",
+            endpoint: seed + 'endpoint',
             keys: createTestPleromaApiPushSubscriptionKeys(seed: seed),
           );
 

@@ -30,7 +30,7 @@ class StringValueFormFieldLengthValidationError
           .of(context)
           .form_field_text_error_length_maxOnly_desc(maxLength!);
     } else {
-      throw "Invalid minLength $minLength || maxLength $maxLength";
+      throw 'Invalid minLength $minLength || maxLength $maxLength';
     }
   }
 

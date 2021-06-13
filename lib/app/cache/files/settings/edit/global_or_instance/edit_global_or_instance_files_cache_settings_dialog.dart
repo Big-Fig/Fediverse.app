@@ -55,6 +55,7 @@ void showEditGlobalOrInstanceFilesCacheSettingsDialog({
             },
           ),
         );
+
         return editCacheSettingsBloc;
       },
       child: ProxyProvider<IEditFilesCacheSettingsBloc,

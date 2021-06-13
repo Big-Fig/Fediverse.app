@@ -47,6 +47,7 @@ class CustomListNetworkOnlyListBloc extends INetworkOnlyListBloc<ICustomList> {
   }) async {
     if (pageIndex == 0) {
       var pleromaLists = await pleromaListService.getLists();
+
       return pleromaLists
           .map((pleromaList) => pleromaList.toCustomList())
           .toList();

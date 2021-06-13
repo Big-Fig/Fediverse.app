@@ -22,7 +22,7 @@ class MyAccountAccountBlockAccountPaginationListWidget extends StatelessWidget {
         _MyAccountAccountBlockAccountPaginationListRemoteAccountBlockActionWidget(),
       ],
       accountSelectedCallback: null,
-      key: PageStorageKey("MyAccountAccountBlockAccountPaginationListWidget"),
+      key: PageStorageKey('MyAccountAccountBlockAccountPaginationListWidget'),
     );
   }
 }

@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("async_init_loading_widget.dart");
+final _logger = Logger('async_init_loading_widget.dart');
 
 class AsyncInitLoadingWidget extends StatelessWidget {
   final IAsyncInitLoadingBloc asyncInitLoadingBloc;
@@ -18,7 +18,7 @@ class AsyncInitLoadingWidget extends StatelessWidget {
     this.loadingWidget,
   }) {
     var state = asyncInitLoadingBloc.initLoadingState;
-    _logger.finest(() => "AsyncInitLoadingWidget state $state");
+    _logger.finest(() => 'AsyncInitLoadingWidget state $state');
 
     if (state == AsyncInitLoadingState.notStarted) {
       asyncInitLoadingBloc.performAsyncInit();

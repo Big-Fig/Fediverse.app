@@ -38,10 +38,10 @@ void main() {
 
   test('copyWith', () async {
     var obj1 = ChatSettingsModelTestHelper.createTestChatSettings(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 = ChatSettingsModelTestHelper.createTestChatSettings(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(
@@ -58,7 +58,7 @@ void main() {
 
   test('clone', () async {
     var obj1 = ChatSettingsModelTestHelper.createTestChatSettings(
-      seed: "seed1",
+      seed: 'seed1',
     );
 
     var obj1Clone = obj1.clone();

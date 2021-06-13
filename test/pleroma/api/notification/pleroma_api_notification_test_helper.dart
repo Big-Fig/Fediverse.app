@@ -24,8 +24,8 @@ class PleromaApiNotificationTestHelper {
         account:
             PleromaApiAccountTestHelper.createTestPleromaApiAccount(seed: seed),
         createdAt:
-            DateTimeTestHelper.createTestDateTime(seed: seed + "createdAt"),
-        id: seed + "id",
+            DateTimeTestHelper.createTestDateTime(seed: seed + 'createdAt'),
+        id: seed + 'id',
         type: EnumTestHelper.createTestEnum(
           seed: seed,
           values: PleromaApiNotificationType.values,
@@ -36,7 +36,7 @@ class PleromaApiNotificationTestHelper {
             PleromaApiChatMessageTestHelper.createTestPleromaApiChatMessage(
           seed: seed,
         ),
-        emoji: seed + "emoji",
+        emoji: seed + 'emoji',
         pleroma: createTestPleromaApiNotificationPleromaPart(
           seed: seed,
         ),
@@ -44,7 +44,7 @@ class PleromaApiNotificationTestHelper {
           seed: seed,
         ),
         target: PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-          seed: seed + "report",
+          seed: seed + 'report',
         ),
       );
 }

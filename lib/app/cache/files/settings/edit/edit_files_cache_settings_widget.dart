@@ -46,6 +46,7 @@ class _EditFilesCacheSettingsClearAllButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
     var filesCacheService = IFilesCacheService.of(context);
+
     return PleromaAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () => filesCacheService.clear(),
       builder: (context, onPressed) => FediPrimaryFilledTextButtonWithBorder(

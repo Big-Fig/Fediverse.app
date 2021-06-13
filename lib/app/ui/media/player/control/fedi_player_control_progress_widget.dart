@@ -7,6 +7,7 @@ class FediPlayerControlProgressWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
         activeTrackColor: fediUiColorTheme.white,
@@ -37,6 +38,7 @@ class _FediPlayerControlProgressPlaybackWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context, listen: false);
+
     return StreamBuilder<bool>(
       stream: mediaPlayerBloc.isInitializedStream,
       builder: (context, snapshot) {
@@ -46,6 +48,7 @@ class _FediPlayerControlProgressPlaybackWidget extends StatelessWidget {
           stream: mediaPlayerBloc.currentPlaybackPercentStream,
           builder: (context, snapshot) {
             var currentPlaybackPercent = snapshot.data ?? 0.0;
+
             return Slider(
               value: currentPlaybackPercent,
               min: 0.0,

@@ -24,7 +24,7 @@ import '../status/status_test_helper.dart';
 import 'notification_bloc_impl_test.mocks.dart';
 import 'notification_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([PleromaApiNotificationService])
 void main() {
   late INotification notification;
@@ -61,10 +61,10 @@ void main() {
     when(pleromaNotificationServiceMock.pleromaApiState)
         .thenReturn(PleromaApiState.validAuth);
 
-    status = await StatusTestHelper.createTestStatus(seed: "seed4");
+    status = await StatusTestHelper.createTestStatus(seed: 'seed4');
 
     notification = await NotificationTestHelper.createTestNotification(
-      seed: "seed1",
+      seed: 'seed1',
       status: status.dbStatusPopulated,
     );
 
@@ -104,7 +104,7 @@ void main() {
     );
 
     var newValue = await NotificationTestHelper.createTestNotification(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: notification.remoteId,
     );
 
@@ -139,7 +139,7 @@ void main() {
       notification.account,
     );
 
-    var newValue = await AccountTestHelper.createTestAccount(seed: "seed3");
+    var newValue = await AccountTestHelper.createTestAccount(seed: 'seed3');
 
     var listenedValue;
 
@@ -172,7 +172,7 @@ void main() {
       notification.status,
     );
 
-    var newValue = await StatusTestHelper.createTestStatus(seed: "seed3");
+    var newValue = await StatusTestHelper.createTestStatus(seed: 'seed3');
 
     var listenedValue;
 

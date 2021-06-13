@@ -25,7 +25,7 @@ class FediTabIndicatorBloc<T> extends DisposableOwner
       // try {
         tabController.removeListener(listener);
     //   } catch (e, stackTrace) {
-    //     _logger.warning(() => "Failed to remove tab listener", e, stackTrace);
+    //     _logger.warning(() => 'Failed to remove tab listener', e, stackTrace);
     //   }
     });
   }

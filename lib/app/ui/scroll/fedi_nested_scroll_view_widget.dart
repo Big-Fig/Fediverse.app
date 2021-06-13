@@ -6,7 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("fedi_nested_scroll_view_widget.dart");
+var _logger = Logger('fedi_nested_scroll_view_widget.dart');
 
 typedef NestedScrollViewContentBuilder = Widget Function(BuildContext context);
 typedef NestedScrollViewOverlayBuilder = Widget Function(BuildContext context);
@@ -112,7 +112,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var show = snapshot.data;
 
-        _logger.finest(() => "show $show");
+        _logger.finest(() => 'show $show');
         if (show == true) {
           return onLongScrollUpTopOverlayWidget!;
         } else {
@@ -132,18 +132,20 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
     var mediaQueryTopPadding = MediaQuery.of(context).padding.top;
 
     var child = tabBodyOverlayBuilder(context);
+
     return StreamBuilder<bool>(
       stream: Rx.combineLatest2(
         scrollControllerBloc.longScrollDirectionStream,
         fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
         (dynamic longScrollDirection, dynamic isAtLeastStartExpand) {
-//          _logger.finest(() => "longScrollDirection $longScrollDirection "
-//              "isAtLeastStartExpand $isAtLeastStartExpand");
+//          _logger.finest(() => 'longScrollDirection $longScrollDirection '
+//              'isAtLeastStartExpand $isAtLeastStartExpand');
 
           var collapsedAppBarShowed =
               longScrollDirection == ScrollDirection.forward;
           var expandedAppBarShowed = isAtLeastStartExpand == true;
           var isInSafeArea = collapsedAppBarShowed || expandedAppBarShowed;
+
           return isInSafeArea;
         },
       ).distinct(),
@@ -152,7 +154,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
 
         var topPadding = isInSafeArea != false ? 0.0 : mediaQueryTopPadding;
 
-        _logger.finest(() => "isInSafeArea $isInSafeArea");
+        _logger.finest(() => 'isInSafeArea $isInSafeArea');
 
         return Padding(
           padding: EdgeInsets.only(top: topPadding),

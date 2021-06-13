@@ -34,6 +34,7 @@ class _StatusEmojiActionCounterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
+
     return StreamBuilder<int?>(
       stream: statusBloc.reblogPlusOriginalEmojiReactionsCountStream,
       builder: (context, snapshot) {

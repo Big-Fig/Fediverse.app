@@ -15,6 +15,7 @@ class ChatTestHelper {
   }) async {
     account = account ?? await AccountTestHelper.createTestAccount(seed: seed);
     var dbAccount = account.dbAccount;
+
     return DbPleromaChatPopulatedWrapper(
       dbChatPopulated: DbPleromaChatPopulated(
         dbChat: await ChatDatabaseTestHelper.createTestDbChat(

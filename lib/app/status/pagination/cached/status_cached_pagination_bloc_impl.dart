@@ -2,10 +2,9 @@ import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.d
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc.dart';
+import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
-import 'package:fedi/pagination/cached/cached_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,7 +46,7 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
     required CachedPaginationPage<IStatus>? olderPage,
     required CachedPaginationPage<IStatus>? newerPage,
   }) async {
-    // can't refresh not first page without actual items bounds
+    // cant refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
     return statusListService.refreshItemsFromRemoteForPage(
@@ -78,14 +77,12 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
     required Widget child,
     int? maximumCachedPagesCount,
   }) {
-    return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<IStatus>, IStatus>>(
+    return DisposableProvider<IStatusCachedPaginationBloc>(
       create: (context) => StatusCachedPaginationBloc.createFromContext(
         context,
         maximumCachedPagesCount: maximumCachedPagesCount,
       ),
-      child: CachedPaginationBlocProxyProvider<CachedPaginationPage<IStatus>,
-          IStatus>(
+      child: StatusCachedPaginationBlocProxyProvider(
         child: child,
       ),
     );

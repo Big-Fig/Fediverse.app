@@ -4,7 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IFilterBloc implements IDisposable {
-  static IFilterBloc of(BuildContext context, {bool listen = true}) =>
+  static IFilterBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IFilterBloc>(context, listen: listen);
 
   String get remoteId;

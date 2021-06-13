@@ -36,6 +36,7 @@ class _StatusCommentActionCounterWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context);
 
     var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
+
     return StreamBuilder<int?>(
       stream: statusBloc.repliesCountStream,
       builder: (context, snapshot) {
@@ -84,6 +85,7 @@ class _StatusCommentActionButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
+
     return FediIconButton(
       color: statusListItemTimelineBloc.isCommentsActionEnabled
           ? IFediUiColorTheme.of(context).darkGrey

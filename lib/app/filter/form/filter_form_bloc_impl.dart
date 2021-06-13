@@ -25,6 +25,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
   @override
   final BoolValueFormFieldBloc wholeWordField;
   @override
+  // ignore: avoid-late-keyword
   late DurationDateTimeValueFormFieldBloc expiresInField;
 
   @override
@@ -36,7 +37,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
     required IFilter? initialValue,
     required this.currentInstance,
   })   : phraseField = StringValueFormFieldBloc(
-          originValue: initialValue?.phrase ?? "",
+          originValue: initialValue?.phrase ?? '',
           validators: [
             StringValueFormFieldNonEmptyValidationError.createValidator(),
           ],
@@ -85,7 +86,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
       streamSubscription: phraseField.currentValueStream.listen(
         (phrase) {
           if (phrase.isNotEmpty) {
-            bool hasMatch = _wholeWordRegex.hasMatch(phrase);
+            var hasMatch = _wholeWordRegex.hasMatch(phrase);
             wholeWordField.changeIsEnabled(hasMatch);
           } else {
             wholeWordField.changeIsEnabled(false);

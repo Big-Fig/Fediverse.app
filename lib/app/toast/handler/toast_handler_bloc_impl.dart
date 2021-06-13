@@ -19,11 +19,10 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
-import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("toast_handler_bloc_impl.dart");
+final _logger = Logger('toast_handler_bloc_impl.dart');
 
 class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   static ToastHandlerBloc createFromContext(
@@ -101,7 +100,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   }
 
   Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
-    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    var pleromaPushMessage = pushHandlerMessage.body;
     var isForCurrentInstance = currentInstance!.isInstanceWithHostAndAcct(
       host: pleromaPushMessage.server,
       acct: pleromaPushMessage.account,
@@ -123,7 +122,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     NotificationPushLoaderNotification handledNotification,
   ) {
     var pushHandlerMessage = handledNotification.pushHandlerMessage;
-    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    var pleromaPushMessage = pushHandlerMessage.body;
 
     var notificationType = pleromaPushMessage.notificationType;
 
@@ -134,10 +133,10 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
 
     var isEnabledWhenInstanceSelected = currentInstanceToastSettingsBloc
         .handlingType.isEnabledWhenInstanceSelected;
-    _logger.finest(() => "handleCurrentInstancePush "
-        "pleromaNotificationType $pleromaNotificationType \n"
-        "isEnabledWhenInstanceSelected $isEnabledWhenInstanceSelected \n"
-        "enabled $enabled");
+    _logger.finest(() => 'handleCurrentInstancePush '
+        'pleromaNotificationType $pleromaNotificationType \n'
+        'isEnabledWhenInstanceSelected $isEnabledWhenInstanceSelected \n'
+        'enabled $enabled');
 
     if (enabled && isEnabledWhenInstanceSelected) {
       bool isNeedShowToast;
@@ -162,8 +161,8 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
         isNeedShowToast = true;
       }
 
-      _logger.finest(() => "handleCurrentInstancePush "
-          "isNeedShowToast $isNeedShowToast");
+      _logger.finest(() => 'handleCurrentInstancePush '
+          'isNeedShowToast $isNeedShowToast');
 
       if (isNeedShowToast) {
         _showToast(
@@ -180,23 +179,26 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     required PushHandlerMessage pushHandlerMessage,
     required VoidCallback onClick,
   }) {
-    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    var pleromaPushMessage = pushHandlerMessage.body;
 
-    var title = "${pleromaPushMessage.account}@${pleromaPushMessage.server}"
-        " "
-        "${pushHandlerMessage.pushMessage.notification!.title}";
-    toastService.showInfoToast(
-      context: context,
-      title: title,
-      content: pushHandlerMessage.pushMessage.notification!.body,
-      onClick: onClick,
-    );
+    var notification = pushHandlerMessage.pushMessage.notification;
+    if (notification != null) {
+      var title = '${pleromaPushMessage.account}@${pleromaPushMessage.server}'
+          ' '
+          '${notification.title}';
+      toastService.showInfoToast(
+        context: context,
+        title: title,
+        content: notification.body,
+        onClick: onClick,
+      );
+    }
   }
 
   Future _handleNonCurrentInstancePushMessage(
     PushHandlerMessage pushHandlerMessage,
   ) async {
-    PleromaApiPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    var pleromaPushMessage = pushHandlerMessage.body;
 
     var notificationType = pleromaPushMessage.notificationType;
 
@@ -205,7 +207,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
 
     var instanceLocalPreferencesBloc = InstanceToastSettingsLocalPreferenceBloc(
       localPreferencesService,
-      userAtHost: "${pleromaPushMessage.account}@${pleromaPushMessage.server}",
+      userAtHost: '${pleromaPushMessage.account}@${pleromaPushMessage.server}',
     );
 
     await instanceLocalPreferencesBloc.performAsyncInit();
@@ -221,10 +223,10 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     var isEnabledWhenInstanceNotSelected = currentInstanceToastSettingsBloc
         .handlingType.isEnabledWhenInstanceNotSelected;
 
-    _logger.finest(() => "_handleNonCurrentInstancePushMessage "
-        "pleromaNotificationType $pleromaNotificationType \n"
-        "isEnabledWhenInstanceNotSelected $isEnabledWhenInstanceNotSelected \n"
-        "isEnabled $isEnabled");
+    _logger.finest(() => '_handleNonCurrentInstancePushMessage '
+        'pleromaNotificationType $pleromaNotificationType \n'
+        'isEnabledWhenInstanceNotSelected $isEnabledWhenInstanceNotSelected \n'
+        'isEnabled $isEnabled');
 
     if (isEnabled && isEnabledWhenInstanceNotSelected) {
       _showToast(
@@ -236,8 +238,8 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
             acct: pleromaPushMessage.account,
           );
 
-          _logger.finest(() => "_handleNonCurrentInstancePushMessage "
-              "instanceByCredentials $instanceByCredentials");
+          _logger.finest(() => '_handleNonCurrentInstancePushMessage '
+              'instanceByCredentials $instanceByCredentials');
 
           if (instanceByCredentials != null) {
             await pushHandlerBloc.markAsLaunchMessage(pushHandlerMessage);

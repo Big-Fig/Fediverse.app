@@ -38,6 +38,7 @@ abstract class DraftStatusPaginationListBaseWidget
       context,
       listen: listen,
     );
+
     return paginationListBloc;
   }
 }

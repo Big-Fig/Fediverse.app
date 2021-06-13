@@ -17,7 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("current_auth_instance_context_init_widget.dart");
+var _logger = Logger('current_auth_instance_context_init_widget.dart');
 
 class CurrentAuthInstanceContextInitWidget extends StatefulWidget {
   final Widget child;
@@ -47,8 +47,8 @@ class _CurrentAuthInstanceContextInitWidgetState
 
     var isLoading = currentInstanceContextLoadingBloc.state ==
         CurrentAuthInstanceContextInitState.loading;
-    _logger.finest(() => "didChangeDependencies "
-        "isLoading $isLoading disposed $disposed");
+    _logger.finest(() => 'didChangeDependencies '
+        'isLoading $isLoading disposed $disposed');
     Future.delayed(
       // todo: refactor
       // ignore: no-magic-number
@@ -67,7 +67,7 @@ class _CurrentAuthInstanceContextInitWidgetState
   ) {
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     var isAlreadyShown = loadingInstanceProgressDialog?.isShowing == true;
-    _logger.finest(() => "showProgressDialog isAlreadyShown = $isAlreadyShown");
+    _logger.finest(() => 'showProgressDialog isAlreadyShown = $isAlreadyShown');
     if (!isAlreadyShown) {
       loadingInstanceProgressDialog = FediIndeterminateProgressDialog(
         cancelableOperation: null,
@@ -95,7 +95,7 @@ class _CurrentAuthInstanceContextInitWidgetState
   ) {
     var state = CurrentAuthInstanceContextInitState.loading;
     var isNotLoading = currentInstanceContextLoadingBloc.state != state;
-    _logger.finest(() => "onStateChanged $state isNotLoading $isNotLoading");
+    _logger.finest(() => 'onStateChanged $state isNotLoading $isNotLoading');
     if (isNotLoading) {
       hideDialog();
     }
@@ -111,7 +111,7 @@ class _CurrentAuthInstanceContextInitWidgetState
 
   void hideDialog() {
     var isShowing = loadingInstanceProgressDialog?.isShowing == true;
-    _logger.finest(() => "hideDialog isShowing $isShowing");
+    _logger.finest(() => 'hideDialog isShowing $isShowing');
     if (isShowing) {
       loadingInstanceProgressDialog!.hide(context);
     }
@@ -122,14 +122,14 @@ class _CurrentAuthInstanceContextInitWidgetState
     var currentInstanceContextLoadingBloc =
         ICurrentAuthInstanceContextInitBloc.of(context, listen: false);
 
-    _logger.finest(() => "build");
+    _logger.finest(() => 'build');
 
     return StreamBuilder<CurrentAuthInstanceContextInitState>(
       stream: currentInstanceContextLoadingBloc.stateStream.distinct(),
       initialData: currentInstanceContextLoadingBloc.state,
       builder: (context, snapshot) {
         var state = snapshot.data;
-        _logger.finest(() => "state $state");
+        _logger.finest(() => 'state $state');
 
         switch (state) {
           case CurrentAuthInstanceContextInitState.localCacheExist:
@@ -140,7 +140,9 @@ class _CurrentAuthInstanceContextInitWidgetState
             return const _CurrentAuthInstanceContextInitSessionExpiredWidget();
           case CurrentAuthInstanceContextInitState.loading:
           case null:
-            return const SplashPage();
+            return const SplashPage(
+              displayVersionInfo: true,
+            );
         }
       },
     );
@@ -262,6 +264,7 @@ class _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget
   @override
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+
     return Text(
       S.of(context).app_auth_instance_current_context_loading_cantLoad_content(
             currentAuthInstanceBloc.currentInstance!.userAtHost,

@@ -5,10 +5,12 @@ import 'package:flutter/cupertino.dart';
 class FediNoteDescriptionWidget extends StatelessWidget {
   final String text;
   final EdgeInsets padding;
+  final TextStyle? style;
 
   FediNoteDescriptionWidget(
     this.text, {
     this.padding = FediPadding.allBigPadding,
+    this.style,
   });
 
   @override
@@ -18,7 +20,7 @@ class FediNoteDescriptionWidget extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: IFediUiTextTheme.of(context).mediumTallMediumGrey,
+        style: style ?? IFediUiTextTheme.of(context).mediumTallMediumGrey,
       ),
     );
   }

@@ -5,7 +5,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
-final _numberFormat = NumberFormat("#.#");
+final _numberFormat = NumberFormat('#.#');
 
 void showMediaAttachmentFailedNotificationOverlay(
   BuildContext context,

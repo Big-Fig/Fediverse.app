@@ -6,7 +6,7 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("hive_local_preferences_service_impl.dart");
+var _logger = Logger('hive_local_preferences_service_impl.dart');
 
 class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
@@ -18,11 +18,12 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     this.path,
   });
 
+  // ignore: avoid-late-keyword
   late Box _box;
 
   @override
   Future internalAsyncInit() async {
-    _logger.fine(() => "internalAsyncInit");
+    _logger.fine(() => 'internalAsyncInit');
     _box = await Hive.openBox(
       boxName,
       path: path,
@@ -31,44 +32,53 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   Future<bool> clearAllValues() async {
+    _logger.fine(() => 'clearAllValues');
     var clearedKeysCount = await _box.clear();
+
     return clearedKeysCount > 0;
   }
 
   @override
   Future<bool> delete() async {
+    _logger.fine(() => 'delete');
     await _box.deleteFromDisk();
+
     return true;
   }
 
   @override
   bool isKeyExist(String key) {
     var contains = _box.containsKey(key);
-    _logger.fine(() => "isKeyExist $key => $contains");
+    _logger.fine(() => 'isKeyExist $key => $contains');
+
     return contains;
   }
 
   @override
   Future<bool> clearValue(String key) async {
     await _box.delete(key);
+
     return true;
   }
 
   @override
   Future<bool> setString(String key, String? value) async {
     await _box.put(key, value);
+
     return true;
   }
 
   @override
   Future<bool> setIntPreference(String key, int? value) async {
     await _box.put(key, value);
+
     return true;
   }
 
   @override
   Future<bool> setBoolPreference(String key, bool? value) async {
     await _box.put(key, value);
+
     return true;
   }
 
@@ -77,7 +87,9 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     String key,
     IJsonObject? preferencesObject,
   ) async {
+    // _logger.fine(() => 'setObjectPreference $key -> $preferencesObject');
     await _box.put(key, preferencesObject);
+
     return true;
   }
 
@@ -117,11 +129,9 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     ValueCallback<T> onChanged,
   ) =>
       StreamSubscriptionDisposable(
-        _box.watch().listen(
+        _box.watch(key: key).listen(
           (boxEvent) {
-            if (boxEvent.key == key) {
-              onChanged(boxEvent.value);
-            }
+            onChanged(boxEvent.value);
           },
         ),
       );

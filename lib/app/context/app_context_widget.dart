@@ -10,6 +10,7 @@ class AppContextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appContextBloc = IAppContextBloc.of(context);
+
     return appContextBloc.provideContextToChild(child: child);
   }
 }

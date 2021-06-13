@@ -17,10 +17,10 @@ class PleromaApiTagTestHelper {
   }) {
     return PleromaApiTag(
       name: seed,
-      url: "https://fedi.app/#$seed",
+      url: 'https://fedi.app/#$seed',
       history: [
-        createTestPleromaApiTagHistory(seed: seed + "1"),
-        createTestPleromaApiTagHistory(seed: seed + "2"),
+        createTestPleromaApiTagHistory(seed: seed + '1'),
+        createTestPleromaApiTagHistory(seed: seed + '2'),
       ],
     );
   }

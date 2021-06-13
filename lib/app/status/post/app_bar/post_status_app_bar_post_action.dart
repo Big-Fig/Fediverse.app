@@ -18,6 +18,7 @@ class PostStatusAppBarPostAction extends StatelessWidget {
       initialData: postStatusBloc.isReadyToPost,
       builder: (context, snapshot) {
         var isReadyToPost = snapshot.data!;
+
         return Padding(
           padding: FediPadding.horizontalSmallPadding,
           child: FediPrimaryFilledTextButtonWithBorder(

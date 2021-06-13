@@ -6,14 +6,14 @@ import 'package:moor/ffi.dart';
 
 import '../../account/database/account_database_test_helper.dart';
 import '../../chat/message/database/chat_message_database_test_helper.dart';
-
+// ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
   late AppDatabase database;
   late File dbFile;
   setUp(() async {
     var filePath = 'test_resources/app/database/fedi2_database_dump_v12.sqlite';
     var file = File(filePath);
-    dbFile = await file.copy(filePath + ".temp");
+    dbFile = await file.copy(filePath + '.temp');
     database = AppDatabase(VmDatabase(dbFile));
   });
 
@@ -21,7 +21,6 @@ void main() {
     await database.close();
     await dbFile.delete();
 
-    // ignore: no-magic-number
     expect(database.migrationsFromExecuted, 12);
     expect(database.migrationsToExecuted, database.schemaVersion);
   });
@@ -35,9 +34,9 @@ void main() {
 
     var testDbChatMessage =
         await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
-      seed: "seed1",
+      seed: 'seed1',
       dbAccount:
-          await AccountDatabaseTestHelper.createTestDbAccount(seed: "seed2"),
+          await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'),
     );
     await chatMessageDao.insert(
       entity: testDbChatMessage,

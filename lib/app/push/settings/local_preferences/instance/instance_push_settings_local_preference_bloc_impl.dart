@@ -11,7 +11,7 @@ class InstancePushSettingsLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService,
-          "$userAtHost.push.subscription",
+          '$userAtHost.push.subscription',
         );
 
   static final defaultValue = PushSettings.defaultAllDisabled();

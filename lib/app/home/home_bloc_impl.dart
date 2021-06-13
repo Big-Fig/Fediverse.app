@@ -9,7 +9,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("home_bloc_impl.dart");
+var _logger = Logger('home_bloc_impl.dart');
 
 const List<HomeTab> _tabs = [
   HomeTab.timelines,
@@ -49,7 +49,7 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
     required this.webSocketsHandlerManagerBloc,
     required this.statusRepository,
   }) : _selectedTabSubject = BehaviorSubject.seeded(startTab) {
-    _logger.finest(() => "constructor");
+    _logger.finest(() => 'constructor');
 
     addDisposable(subject: _selectedTabSubject);
     addDisposable(subject: _isTimelinesUnreadSubject);
@@ -81,7 +81,7 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
 
   @override
   void selectTab(HomeTab tab) {
-    _logger.finest(() => "selectTab $tab");
+    _logger.finest(() => 'selectTab $tab');
     if (selectedTab == tab) {
       _reselectedTabStreamController.add(tab);
     } else {

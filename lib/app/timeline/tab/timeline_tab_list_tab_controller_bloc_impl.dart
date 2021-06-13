@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 class TimelineListTabControllerBloc extends DisposableOwner
     implements ITimelineListTabControllerBloc {
   @override
+  // ignore: avoid-late-keyword
   late TabController tabController;
 
   @override

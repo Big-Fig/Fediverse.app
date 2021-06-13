@@ -40,7 +40,7 @@ const _notificationTabs = [
   NotificationTab.follows,
 ];
 
-var _logger = Logger("notifications_home_tab_page.dart");
+var _logger = Logger('notifications_home_tab_page.dart');
 
 class NotificationsHomeTabPage extends StatelessWidget {
   @override
@@ -124,7 +124,7 @@ class _NotificationsHomeTabPageBodyState
             const _NotificationsHomeTabPageBodyHeaderWidget(),
           ],
           topSliverScrollOffsetToShowWhiteStatusBar: null,
-          tabKeyPrefix: "NotificationTab",
+          tabKeyPrefix: 'NotificationTab',
           tabBodyProviderBuilder:
               (BuildContext context, int index, Widget child) {
             var tab = _notificationTabs[index];
@@ -157,7 +157,7 @@ class _NotificationsHomeTabPageBodyState
     NotificationTab tab,
     Widget child,
   ) {
-    _logger.finest(() => "_buildTabBodyProvider tab $tab");
+    _logger.finest(() => '_buildTabBodyProvider tab $tab');
 
     var timelineTabPaginationListBloc =
         INotificationTabsBloc.of(context, listen: false)
@@ -211,6 +211,7 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
   @override
   Widget build(BuildContext context) {
     var notificationsHomeTabBloc = INotificationsHomeTabBloc.of(context);
+
     return FediIconInCircleBlurredButton(
       FediIcons.menu_vertical,
       onPressed: () {

@@ -43,6 +43,7 @@ class RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
     );
 
     bloc.addDisposable(disposable: pleromaAccountService);
+
     return bloc;
   }
 

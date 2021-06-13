@@ -203,6 +203,7 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryActionWidget
   Widget build(BuildContext context) {
     var attachmentsCollectionBloc =
         IUploadMediaAttachmentsCollectionBloc.of(context);
+
     return _PostMessageSelectMediaAttachmentTypeToPickActionWidget(
       iconData: FediIcons.image,
       label: S.of(context).app_media_attachment_type_gallery,

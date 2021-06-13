@@ -61,7 +61,7 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
 class _MediaAttachmentDetailsPageState
     extends State<MediaAttachmentDetailsPage> {
   IPleromaApiMediaAttachment get mediaAttachment =>
-      selectedMediaAttachmentSubject.value!;
+      selectedMediaAttachmentSubject.value ?? widget.mediaAttachments.first;
 
   final PageController _controller;
 
@@ -72,6 +72,7 @@ class _MediaAttachmentDetailsPageState
 
   IPleromaApiMediaAttachment? get selectedMediaAttachment =>
       selectedMediaAttachmentSubject.value;
+  // ignore: avoid-late-keyword
   late VoidCallback listener;
 
   _MediaAttachmentDetailsPageState(
@@ -254,6 +255,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var parentContext = context;
+
     return FediIconButton(
       icon: Icon(
         FediIcons.share,
@@ -294,6 +296,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
               asyncCode: () async {
                 var mediaAttachmentReuploadService =
                     IMediaAttachmentReuploadService.of(context, listen: false);
+
                 return await mediaAttachmentReuploadService
                     .reuploadMediaAttachment(
                   originalMediaAttachment: mediaAttachment,

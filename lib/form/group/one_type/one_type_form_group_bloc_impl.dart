@@ -96,6 +96,7 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
           },
         );
     _isChangedSubject.add(isChanged);
+
     return isChanged;
   }
 

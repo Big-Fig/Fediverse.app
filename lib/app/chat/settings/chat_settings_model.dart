@@ -10,10 +10,10 @@ part 'chat_settings_model.g.dart';
 @HiveType(typeId: -32 + 92)
 class ChatSettings implements IJsonObject, ISettings<ChatSettings> {
   @HiveField(0)
-  @JsonKey(name: "replace_conversations_with_pleroma_chats")
+  @JsonKey(name: 'replace_conversations_with_pleroma_chats')
   final bool replaceConversationsWithPleromaChats;
   @HiveField(1)
-  @JsonKey(name: "count_conversations_in_chats_unread_badges")
+  @JsonKey(name: 'count_conversations_in_chats_unread_badges')
   final bool countConversationsInChatsUnreadBadges;
 
   const ChatSettings({

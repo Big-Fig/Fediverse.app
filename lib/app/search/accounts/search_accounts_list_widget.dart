@@ -8,7 +8,7 @@ class SearchAccountsListWidget extends StatelessWidget {
   Widget build(BuildContext context) => const AccountPaginationListWidget(
         needWatchLocalRepositoryForUpdates: false,
         accountSelectedCallback: _accountSelectedCallback,
-        key: PageStorageKey("SearchAccountsListWidget"),
+        key: PageStorageKey('SearchAccountsListWidget'),
       );
 
   const SearchAccountsListWidget();

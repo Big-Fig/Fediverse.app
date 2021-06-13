@@ -149,6 +149,7 @@ class _FediMultiSelectChooserDialogBodyActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var actionExist = action.onAction != null;
+
     return Padding(
       padding: FediPadding.horizontalBigPadding,
       child: StreamBuilder<bool>(
@@ -167,6 +168,7 @@ class _FediMultiSelectChooserDialogBodyActionWidget extends StatelessWidget {
               : actionExist && enabled
                   ? IFediUiColorTheme.of(context).darkGrey
                   : IFediUiColorTheme.of(context).lightGrey;
+
           return StreamBuilder<bool>(
             initialData: action.isActionVisibleFetcher != null
                 ? action.isActionVisibleFetcher!(context)
@@ -179,6 +181,7 @@ class _FediMultiSelectChooserDialogBodyActionWidget extends StatelessWidget {
               if (!visible) {
                 return SizedBox.shrink();
               }
+
               return _FediMultiSelectChooserDialogBodyActionBodyWidget(
                 enabled: enabled,
                 actionExist: actionExist,
@@ -218,6 +221,7 @@ class _FediMultiSelectChooserDialogBodyActionBodyWidget
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     var fediUiTextTheme = IFediUiTextTheme.of(context);
+
     return InkWell(
       onTap: enabled
           ? () {

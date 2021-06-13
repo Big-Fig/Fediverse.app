@@ -19,7 +19,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-final _logger = Logger("local_status_bloc_impl.dart");
+final _logger = Logger('local_status_bloc_impl.dart');
 
 class LocalStatusBloc extends StatusBloc {
   final IStatusRepository statusRepository;
@@ -53,7 +53,7 @@ class LocalStatusBloc extends StatusBloc {
   static LocalStatusBloc createFromContext(
     BuildContext context, {
     required IStatus
-        status, // for better performance we don't update account too
+        status, // for better performance we dont update account too
     // often
     bool isNeedRefreshFromNetworkOnInit = false,
     //  improve performance in timeline unnecessary recreations
@@ -96,7 +96,7 @@ class LocalStatusBloc extends StatusBloc {
   static Widget provideToContext(
     BuildContext context, {
     required IStatus
-        status, // for better performance we don't update account too
+        status, // for better performance we dont update account too
     // often
     bool isNeedRefreshFromNetworkOnInit = false,
     //  improve performance in timeline unnecessary recreations
@@ -136,6 +136,7 @@ class LocalStatusBloc extends StatusBloc {
         if (pleromaAccountService.isApiReadyToUse) {
           var remoteAccount = await pleromaAccountService.getAccount(
             accountRemoteId: accountRemoteId,
+            withRelationship: false,
           );
           await accountRepository.upsertInRemoteType(
             remoteAccount,
@@ -270,7 +271,7 @@ class LocalStatusBloc extends StatusBloc {
   @override
   Future<IStatus> toggleReblog() async {
     _logger.finest(() =>
-        "requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}");
+        'requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}');
     IPleromaApiStatus remoteStatus;
     if (reblogOrOriginal.reblogged) {
       remoteStatus = await pleromaAuthStatusService.unReblogStatus(
@@ -300,7 +301,7 @@ class LocalStatusBloc extends StatusBloc {
     if (duration != null) {
       assert(
         pleromaAuthStatusService.isPleroma,
-        "Muting with duration supported only on pleroma",
+        'Muting with duration supported only on pleroma',
       );
     }
 
@@ -343,6 +344,7 @@ class LocalStatusBloc extends StatusBloc {
     var result = await statusRepository.findByRemoteIdInAppType(
       reblogOrOriginal.remoteId!,
     );
+
     return result!;
   }
 
@@ -368,6 +370,7 @@ class LocalStatusBloc extends StatusBloc {
     var result = await statusRepository.findByRemoteIdInAppType(
       reblogOrOriginal.remoteId!,
     );
+
     return result!;
   }
 
@@ -379,7 +382,7 @@ class LocalStatusBloc extends StatusBloc {
         statusRemoteId: reblogOrOriginal.remoteId!,
       );
     } else {
-      // reblogged don't support pin
+      // reblogged dont support pin
       if (reblogOrOriginal.reblogged) {
         remoteStatus = await pleromaAuthStatusService.pinStatus(
           statusRemoteId: reblog!.remoteId!,
@@ -400,6 +403,7 @@ class LocalStatusBloc extends StatusBloc {
     var result = await statusRepository.findByRemoteIdInAppType(
       reblogOrOriginal.remoteId!,
     );
+
     return result!;
   }
 

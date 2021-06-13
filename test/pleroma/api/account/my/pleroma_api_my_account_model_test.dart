@@ -9,7 +9,7 @@ import 'pleroma_api_my_account_test_helper.dart';
 void main() {
   test('PleromaApiMyAccount toPleromaApiMyAccount', () async {
     var original = PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccount(
-      seed: "seed",
+      seed: 'seed',
     );
     var obj = original.toPleromaApiMyAccount(forceNewObject: true);
 
@@ -51,10 +51,10 @@ void main() {
 
   test('PleromaApiMyAccount copyWith', () async {
     var obj1 = PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccount(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 = PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccount(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(
@@ -119,10 +119,10 @@ void main() {
 
   test('PleromaApiMyAccountEdit copyWith', () async {
     var obj1 = PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccountEdit(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 = PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccountEdit(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(
@@ -158,11 +158,11 @@ void main() {
   test('PleromaApiMyAccountPleromaPart copyWith', () async {
     var obj1 =
         PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccountPleromaPart(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 =
         PleromaApiMyAccountTestHelper.createTestPleromaApiMyAccountPleromaPart(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(

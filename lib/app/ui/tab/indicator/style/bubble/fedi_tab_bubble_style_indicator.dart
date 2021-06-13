@@ -43,6 +43,7 @@ class FediTabBubbleStyleIndicator extends Decoration {
         tabBarIndicatorSize: a.tabBarIndicatorSize,
       );
     }
+
     return super.lerpFrom(a, t);
   }
 
@@ -58,6 +59,7 @@ class FediTabBubbleStyleIndicator extends Decoration {
         tabBarIndicatorSize: b.tabBarIndicatorSize,
       );
     }
+
     return super.lerpTo(b, t);
   }
 
@@ -85,11 +87,12 @@ class _BubblePainter extends BoxPainter {
   TabBarIndicatorSize get tabBarIndicatorSize => decoration.tabBarIndicatorSize;
 
   Rect _indicatorRectFor(Rect rect, TextDirection textDirection) {
-    Rect indicator = padding.resolve(textDirection).inflateRect(rect);
+    var indicator = padding.resolve(textDirection).inflateRect(rect);
 
     if (tabBarIndicatorSize == TabBarIndicatorSize.tab) {
       indicator = insets.resolve(textDirection).deflateRect(rect);
     }
+
     return Rect.fromLTWH(
       indicator.left,
       indicator.top,
@@ -101,15 +104,15 @@ class _BubblePainter extends BoxPainter {
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
     assert(configuration.size != null);
-    final Rect rect = Offset(
+    final rect = Offset(
           offset.dx,
       // ignore: no-magic-number
           (configuration.size!.height / 2) - indicatorHeight / 2,
         ) &
         Size(configuration.size!.width, indicatorHeight);
-    final TextDirection textDirection = configuration.textDirection!;
-    final Rect indicator = _indicatorRectFor(rect, textDirection);
-    final Paint paint = Paint();
+    final textDirection = configuration.textDirection!;
+    final indicator = _indicatorRectFor(rect, textDirection);
+    final paint = Paint();
     paint.color = indicatorColor;
     paint.style = PaintingStyle.fill;
     canvas.drawRRect(

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:fedi/file/temp/temp_file_model.dart';
 import 'package:flutter/foundation.dart';
@@ -7,7 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as path_provider;
 
-final _logger = Logger("temp_file_helper.dart");
+final _logger = Logger('temp_file_helper.dart');
 
 var pathPosix = path.posix;
 
@@ -30,6 +29,7 @@ class TempFileHelper {
     );
 
     await uniqueDirectory.create();
+
     return uniqueDirectory;
   }
 
@@ -44,7 +44,7 @@ class TempFileHelper {
         )
         .toList();
 
-    List<File> files = await Future.wait(futures);
+    var files = await Future.wait(futures);
 
     return files;
   }
@@ -52,15 +52,15 @@ class TempFileHelper {
   static Future<File> downloadFileToTempFolder({
     required DownloadTempFileRequest request,
   }) async {
-    String url = request.url;
-    String filename = request.filenameWithExtension;
+    var url = request.url;
+    var filename = request.filenameWithExtension;
 
     // todo: auth header?
     HttpClientRequest? httpRequest;
     try {
       httpRequest = await HttpClient().getUrl(Uri.parse(url));
       var response = await httpRequest.close();
-      Uint8List bytes = await consolidateHttpClientResponseBytes(response);
+      var bytes = await consolidateHttpClientResponseBytes(response);
 
       var directory = await createUniqueTemporaryDirectory();
       var file = File(
@@ -71,10 +71,11 @@ class TempFileHelper {
       );
 
       await file.writeAsBytes(bytes);
+
       return file;
     } catch (e, stackTrace) {
       _logger.warning(
-        () => "error during downloadFileToTempFolder",
+        () => 'error during downloadFileToTempFolder',
         e,
         stackTrace,
       );

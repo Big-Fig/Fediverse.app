@@ -33,6 +33,7 @@ class NotificationTabTextTabIndicatorItemWidget extends StatelessWidget {
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
+
             return FediFadeShaderMask(
               fadingPercent: fadingPercent,
               fadingColor: IFediUiColorTheme.of(context).darkGrey,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/json/json_model.dart';
+import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
@@ -75,6 +76,9 @@ class PleromaApiWebSocketsEvent extends WebSocketsEvent implements IJsonObject {
   PleromaApiNotification parsePayloadAsNotification() =>
       PleromaApiNotification.fromJson(jsonDecode(payload!));
 
+  PleromaApiAnnouncement parsePayloadAsAnnouncement() =>
+      PleromaApiAnnouncement.fromJson(jsonDecode(payload!));
+
   PleromaApiChat parsePayloadAsChat() =>
       PleromaApiChat.fromJson(jsonDecode(payload!));
 
@@ -100,20 +104,22 @@ enum PleromaApiWebSocketsEventType {
   /// not exist in documentation but looks like conversation update
   conversation,
   pleromaChatUpdate,
+  announcement,
   unknown,
 }
 
 const unknownPleromaApiWebSocketsEventType =
     PleromaApiWebSocketsEventType.unknown;
 
-const _updatePleromaApiWebSocketsEventTypeJsonValue = "update";
-const _notificationPleromaApiWebSocketsEventTypeJsonValue = "notification";
-const _deletePleromaApiWebSocketsEventTypeJsonValue = "delete";
-const _filtersChangedPleromaApiWebSocketsEventTypeJsonValue = "filters_changed";
-const _conversationPleromaApiWebSocketsEventTypeJsonValue = "conversation";
+const _updatePleromaApiWebSocketsEventTypeJsonValue = 'update';
+const _notificationPleromaApiWebSocketsEventTypeJsonValue = 'notification';
+const _deletePleromaApiWebSocketsEventTypeJsonValue = 'delete';
+const _filtersChangedPleromaApiWebSocketsEventTypeJsonValue = 'filters_changed';
+const _conversationPleromaApiWebSocketsEventTypeJsonValue = 'conversation';
+const _announcementPleromaApiWebSocketsEventTypeJsonValue = 'announcement';
 const _pleromaChatUpdatePleromaApiWebSocketsEventTypeJsonValue =
-    "pleroma:chat_update";
-const _unknownPleromaApiWebSocketsEventTypeJsonValue = "unknown";
+    'pleroma:chat_update';
+const _unknownPleromaApiWebSocketsEventTypeJsonValue = 'unknown';
 
 extension PleromaApiWebSocketsEventTypeExtension
     on PleromaApiWebSocketsEventType {
@@ -135,6 +141,9 @@ extension PleromaApiWebSocketsEventTypeExtension
         break;
       case PleromaApiWebSocketsEventType.conversation:
         result = _conversationPleromaApiWebSocketsEventTypeJsonValue;
+        break;
+      case PleromaApiWebSocketsEventType.announcement:
+        result = _announcementPleromaApiWebSocketsEventTypeJsonValue;
         break;
       case PleromaApiWebSocketsEventType.pleromaChatUpdate:
         result = _pleromaChatUpdatePleromaApiWebSocketsEventTypeJsonValue;
@@ -168,13 +177,16 @@ extension PleromaApiWebSocketsEventTypeStringExtension on String {
       case _conversationPleromaApiWebSocketsEventTypeJsonValue:
         result = PleromaApiWebSocketsEventType.conversation;
         break;
+      case _announcementPleromaApiWebSocketsEventTypeJsonValue:
+        result = PleromaApiWebSocketsEventType.announcement;
+        break;
       case _pleromaChatUpdatePleromaApiWebSocketsEventTypeJsonValue:
         result = PleromaApiWebSocketsEventType.pleromaChatUpdate;
         break;
       case _unknownPleromaApiWebSocketsEventTypeJsonValue:
         result = PleromaApiWebSocketsEventType.unknown;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
         result = unknownPleromaApiWebSocketsEventType;
         break;

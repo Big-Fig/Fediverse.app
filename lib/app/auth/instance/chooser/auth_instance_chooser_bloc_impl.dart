@@ -6,7 +6,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("auth_instance_chooser_bloc_impl.dart");
+var _logger = Logger('auth_instance_chooser_bloc_impl.dart');
 
 class AuthInstanceChooserBloc extends DisposableOwner
     implements IAuthInstanceChooserBloc {
@@ -39,9 +39,10 @@ class AuthInstanceChooserBloc extends DisposableOwner
     var filtered = availableInstances.where((instance) {
       return instance.userAtHost != selectedInstance!.userAtHost;
     }).toList();
-    _logger.finest(() => "filterNotSelected \n"
-        "\t availableInstances = ${availableInstances.length} \n"
-        "\t filtered = ${filtered.length} \n");
+    _logger.finest(() => 'filterNotSelected \n'
+        '\t availableInstances = ${availableInstances.length} \n'
+        '\t filtered = ${filtered.length} \n');
+
     return filtered;
   }
 

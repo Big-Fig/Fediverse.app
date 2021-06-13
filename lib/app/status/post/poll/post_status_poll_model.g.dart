@@ -8,7 +8,9 @@ part of 'post_status_poll_model.dart';
 
 PostStatusPoll _$PostStatusPollFromJson(Map<String, dynamic> json) {
   return PostStatusPoll(
-    durationLength: Duration(microseconds: json['duration_length'] as int),
+    durationLength: json['duration_length'] == null
+        ? null
+        : Duration(microseconds: json['duration_length'] as int),
     hideTotals: json['hide_totals'] as bool,
     multiple: json['multiple'] as bool,
     options:
@@ -18,7 +20,7 @@ PostStatusPoll _$PostStatusPollFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PostStatusPollToJson(PostStatusPoll instance) =>
     <String, dynamic>{
-      'duration_length': instance.durationLength.inMicroseconds,
+      'duration_length': instance.durationLength?.inMicroseconds,
       'hide_totals': instance.hideTotals,
       'multiple': instance.multiple,
       'options': instance.options,
