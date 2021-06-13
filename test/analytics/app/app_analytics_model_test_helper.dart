@@ -7,6 +7,5 @@ class AppAnalyticsModelTestHelper {
   }) =>
       AppAnalyticsData(
         appOpenedCount: seed.hashCode % 13,
-        isAppRated: seed.hashCode % 2 == 0,
       );
 }

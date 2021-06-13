@@ -5,9 +5,12 @@ import 'package:fedi/pleroma/api/tag/history/pleroma_api_tag_history_model.dart'
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logging/logging.dart';
 
 // ignore_for_file: no-magic-number
 part 'pleroma_api_tag_model.g.dart';
+
+final _logger = Logger('pleroma_api_tag_model.dart');
 
 abstract class IPleromaApiTag implements IMastodonApiTag {
   @override
@@ -71,6 +74,27 @@ class PleromaApiTag implements IPleromaApiTag, IJsonObject {
 
   static PleromaApiTag fromJson(Map<String, dynamic> json) =>
       _$PleromaApiTagFromJson(json);
+
+  static List<PleromaApiTag>? fromJsonListOrNullOnError(dynamic json) {
+    if(json == null) {
+      return null;
+    }
+
+    // hack because backend sometimes returns pleroma object in invalid format
+    try {
+      var iterable = json as Iterable;
+
+      return iterable
+          .map(
+            (item) => fromJson(item as Map<String, dynamic>),
+          )
+          .toList();
+    } catch (e, stackTrace) {
+      _logger.warning(() => 'fromJsonListOrNullOnError $json', e, stackTrace);
+
+      return null;
+    }
+  }
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiTagToJson(this);

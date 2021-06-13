@@ -6,6 +6,7 @@ import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_model.dart';
 import 'package:fedi/app/cache/files/settings/files_cache_settings_model.dart';
 import 'package:fedi/app/chat/settings/chat_settings_model.dart';
+import 'package:fedi/app/crash_reporting/settings/crash_reporting_settings_model.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/emoji_picker_custom_image_url_category_model.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_model.dart';
 import 'package:fedi/app/hive/hive_service.dart';
@@ -122,5 +123,6 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     );
     Hive.registerAdapter(PleromaApiFilterAdapter());
     Hive.registerAdapter(InstanceAnnouncementSettingsAdapter());
+    Hive.registerAdapter(CrashReportingSettingsAdapter());
   }
 }

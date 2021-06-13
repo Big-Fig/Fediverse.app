@@ -39,7 +39,7 @@ extension IPleromaApiPollExtension on IPleromaApiPoll {
     required PleromaApiInstancePollLimits limits,
   }) {
     return PostStatusPoll(
-      durationLength: expiresAt.calculatePostDurationLength(
+      durationLength: expiresAt?.calculatePostDurationLength(
         limits: limits,
       ),
       // todo: implement  hideTotals
@@ -195,7 +195,7 @@ class PleromaApiPoll implements IPleromaApiPoll, IJsonObject {
 
   @override
   @JsonKey(name: 'expires_at')
-  final DateTime expiresAt;
+  final DateTime? expiresAt;
 
   @override
   final String? id;

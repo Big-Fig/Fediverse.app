@@ -1,5 +1,5 @@
-import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_media_widget.dart';
-import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
+import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_media_widget.dart';
+import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_timeline_widget.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';

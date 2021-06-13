@@ -7,7 +7,7 @@ import 'package:fedi/app/chat/conversation/websockets/conversation_chat_websocke
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/pleroma/websockets/pleroma_chat_websockets_handler_impl.dart';
 import 'package:fedi/app/custom_list/status/list/custom_list_status_list_websockets_handler_impl.dart';
-import 'package:fedi/app/hashtag/status/list/hashtag_status_list_websockets_handler_impl.dart';
+import 'package:fedi/app/hashtag/status_list/hashtag_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';

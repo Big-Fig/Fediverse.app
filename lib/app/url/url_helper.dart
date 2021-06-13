@@ -1,6 +1,7 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
-import 'package:fedi/app/hashtag/hashtag_page.dart';
+import 'package:fedi/app/hashtag/page/hashtag_page_chooser_dialog.dart';
+import 'package:fedi/app/hashtag/page/local/local_hashtag_page.dart';
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
@@ -66,15 +67,14 @@ class UrlHelper {
       }
     }
 
-    var hashtag = extractHashtagFromTagUrlIfExist(url);
+    var hashtagName = extractHashtagFromTagUrlIfExist(url);
 
-    if (hashtag != null) {
-      var currentAuthInstanceBloc =
-          ICurrentAuthInstanceBloc.of(context, listen: false);
-
-      var localInstanceDomain =
-          currentAuthInstanceBloc.currentInstance!.urlHost;
-
+    if (hashtagName != null) {
+      var hashtag = Hashtag(
+        name: hashtagName,
+        url: url,
+        history: null,
+      );
       if (isLocal) {
         // status or account note with hashtag fetched from local instance
 
@@ -82,36 +82,32 @@ class UrlHelper {
 
         var urlHost = uri.host;
 
+        var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(
+          context,
+          listen: false,
+        );
+        var localInstanceDomain =
+            currentAuthInstanceBloc.currentInstance!.urlHost;
+
         if (localInstanceDomain != urlHost) {
-          return showRemoteInstanceHashtagActionsDialog(
+          return showHashtagPageChooserDialog(
             context: context,
-            url: url,
-            remoteInstanceDomain: urlHost,
-            localInstanceDomain: localInstanceDomain,
+            remoteInstanceUri: uri,
             hashtag: hashtag,
           );
         } else {
-          return goToHashtagPage(
+          return goToLocalHashtagPage(
             context: context,
-            hashtag: Hashtag(
-              name: hashtag,
-              url: url,
-              history: null,
-            ),
+            hashtag: hashtag,
             myAccountFeaturedHashtag: null,
           );
         }
       } else {
         // status or account note with hashtag fetched from remote instance
 
-        var remoteInstanceDomain =
-            instanceLocationBloc.remoteInstanceUriOrNull!.host;
-
-        return showRemoteInstanceHashtagActionsDialog(
+        return showHashtagPageChooserDialog(
           context: context,
-          url: url,
-          remoteInstanceDomain: remoteInstanceDomain,
-          localInstanceDomain: localInstanceDomain,
+          remoteInstanceUri: instanceLocationBloc.remoteInstanceUriOrNull!,
           hashtag: hashtag,
         );
       }

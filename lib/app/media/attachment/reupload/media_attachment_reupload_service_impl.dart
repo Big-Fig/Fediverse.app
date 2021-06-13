@@ -6,7 +6,7 @@ import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_s
 
 class MediaAttachmentReuploadService extends DisposableOwner
     implements IMediaAttachmentReuploadService {
-  final IPleromaMediaAttachmentService pleromaMediaAttachmentService;
+  final IPleromaApiMediaAttachmentService pleromaMediaAttachmentService;
   final IFilesCacheService filesCacheService;
 
   MediaAttachmentReuploadService({

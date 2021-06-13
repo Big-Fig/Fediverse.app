@@ -8,7 +8,6 @@ class AppAnalyticsLocalPreferenceBloc
     implements IAppAnalyticsLocalPreferenceBloc {
   static const defaultValue = AppAnalyticsData(
     appOpenedCount: 0,
-    isAppRated: false,
   );
 
   AppAnalyticsLocalPreferenceBloc(
@@ -21,8 +20,5 @@ class AppAnalyticsLocalPreferenceBloc
         );
 
   @override
-  AppAnalyticsData get defaultPreferenceValue => AppAnalyticsData(
-        appOpenedCount: 0,
-        isAppRated: false,
-      );
+  AppAnalyticsData get defaultPreferenceValue => defaultValue;
 }

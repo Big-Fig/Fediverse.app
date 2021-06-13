@@ -22,14 +22,18 @@ import 'package:fedi/app/account/statuses/without_replies/cached/account_statuse
 import 'package:fedi/app/account/statuses/without_replies/network_only/remote/remote_account_statuses_without_replies_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
+import 'package:fedi/app/search/search_model.dart';
+import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
+import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
-import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/network_only/status_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
@@ -74,15 +78,26 @@ class AccountDetailsPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+
+    var isRemote = accountBloc.instanceLocation == InstanceLocation.remote;
+
     return Scaffold(
       backgroundColor: IFediUiColorTheme.of(context).white,
       appBar: FediPageCustomAppBar(
         leading: const FediBackIconButton(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const AccountDisplayNameWidget(),
-            const AccountAcctWidget(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const AccountDisplayNameWidget(),
+                const AccountAcctWidget(),
+              ],
+            ),
+            if (isRemote)
+              const _AccountDetailsPageAppBarOpenOnLocalInstanceAction(),
           ],
         ),
       ),
@@ -95,6 +110,30 @@ class AccountDetailsPageBody extends StatelessWidget {
           const _AccountDetailsPageBodyContent(),
         ],
       ),
+    );
+  }
+}
+
+class _AccountDetailsPageAppBarOpenOnLocalInstanceAction
+    extends StatelessWidget {
+  const _AccountDetailsPageAppBarOpenOnLocalInstanceAction({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+
+    return FediIconButton(
+      color: IFediUiColorTheme.of(context, listen: false).darkGrey,
+      icon: Icon(FediIcons.search),
+      onPressed: () {
+        goToSearchPage(
+          context,
+          startTab: SearchTab.accounts,
+          initialQuery: '${accountBloc.acctWithForcedRemoteInstanceHost}',
+        );
+      },
     );
   }
 }
@@ -539,17 +578,20 @@ class _AccountDetailsNestedScrollViewHeader extends StatelessWidget {
 
     var isMyAccount = myAccountBloc.checkAccountIsMe(accountBloc.account);
 
-    return FediDarkStatusBarStyleArea(
-      child: isMyAccount
-          ? const MyAccountWidget(
-              onStatusesTapCallback: _onStatusesTapCallback,
-              footer: _AccountDetailsPageTabIndicatorWidget(),
-              brightness: Brightness.light,
-            )
-          : const AccountWidget(
-              onStatusesTapCallback: _onStatusesTapCallback,
-              footer: _AccountDetailsPageTabIndicatorWidget(),
-            ),
+    return Container(
+      color: IFediUiColorTheme.of(context).white,
+      child: FediDarkStatusBarStyleArea(
+        child: isMyAccount
+            ? const MyAccountWidget(
+                onStatusesTapCallback: _onStatusesTapCallback,
+                footer: _AccountDetailsPageTabIndicatorWidget(),
+                brightness: Brightness.light,
+              )
+            : const AccountWidget(
+                onStatusesTapCallback: _onStatusesTapCallback,
+                footer: _AccountDetailsPageTabIndicatorWidget(),
+              ),
+      ),
     );
   }
 }
@@ -576,15 +618,8 @@ class _AccountDetailsPageTabIndicatorWidget extends StatelessWidget {
     var accountDetailsBloc = IAccountDetailsBloc.of(context);
     var tabs = accountDetailsBloc.tabs;
 
-    return Padding(
-      // ignore: no-magic-number
-      padding: EdgeInsets.only(
-        // ignore: no-magic-number
-        top: 3.0,
-      ),
-      child: AccountTabTextTabIndicatorItemWidget(
-        accountTabs: tabs,
-      ),
+    return AccountTabTextTabIndicatorItemWidget(
+      accountTabs: tabs,
     );
   }
 }

@@ -118,20 +118,33 @@ class PostStatusData implements IPostStatusData {
     required this.expiresInSeconds,
   });
 
-  const PostStatusData.only({
-    this.subject,
-    this.text,
-    this.scheduledAt,
-    required this.visibilityString,
-    this.to,
-    this.mediaAttachments,
-    this.poll,
-    this.inReplyToPleromaStatus,
-    this.inReplyToConversationId,
-    required this.isNsfwSensitiveEnabled,
-    this.language,
-    this.expiresInSeconds,
-  });
+  PostStatusData.only({
+    String? subject,
+    String? text,
+    DateTime? scheduledAt,
+    PleromaApiVisibility visibility = PleromaApiVisibility.public,
+    List<String>? to,
+    List<IPleromaApiMediaAttachment>? mediaAttachments,
+    PostStatusPoll? poll,
+    IPleromaApiStatus? inReplyToPleromaStatus,
+    String? inReplyToConversationId,
+    bool isNsfwSensitiveEnabled = false,
+    String? language,
+    Duration? expiresIn,
+  }) : this(
+          subject: subject,
+          text: text,
+          scheduledAt: scheduledAt,
+          visibilityString: visibility.toJsonValue(),
+          to: to,
+          mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
+          poll: poll,
+          inReplyToPleromaStatus: inReplyToPleromaStatus?.toPleromaApiStatus(),
+          inReplyToConversationId: inReplyToConversationId,
+          isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
+          language: language,
+          expiresInSeconds: expiresIn?.totalSeconds,
+        );
 
   PleromaApiVisibility get visibilityPleroma =>
       visibilityString.toPleromaApiVisibility();

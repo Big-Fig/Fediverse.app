@@ -1,13 +1,12 @@
-import 'package:fedi/analytics/app/app_analytics_bloc.dart';
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/home/tab/account/menu/actions/account_home_tab_menu_actions_page.dart';
 import 'package:fedi/app/home/tab/account/menu/actions/badge/account_home_tab_menu_actions_int_badge_bloc_impl.dart';
 import 'package:fedi/app/instance/announcement/badge/instance_announcement_count_int_badge_bloc_impl.dart';
 import 'package:fedi/app/instance/announcement/list/instance_announcement_list_page.dart';
 import 'package:fedi/app/instance/details/local/local_instance_details_page.dart';
-import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/settings/global/list/global_settings_list_page.dart';
 import 'package:fedi/app/settings/instance/list/instance_settings_list_page.dart';
 import 'package:fedi/app/ui/badge/int/fedi_int_badge_widget.dart';
@@ -17,6 +16,7 @@ import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/in_app_review/ask/local_preferences/ask_in_app_review_local_preference_bloc.dart';
 import 'package:fedi/in_app_review/in_app_review_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -227,33 +227,28 @@ class _RateAppHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appAnalyticsBloc = Provider.of<IAppAnalyticsBloc>(context);
+    var askInAppReviewLocalPreferenceBloc =
+        Provider.of<IAskInAppReviewLocalPreferenceBloc>(context);
 
-    if (appAnalyticsBloc.isAppRated) {
+    var configService = IConfigService.of(context);
+
+    if (askInAppReviewLocalPreferenceBloc.value) {
       return const SizedBox.shrink();
     } else {
-      return FutureBuilder(
-        future: FediPackageInfoHelper.isProdPackageId(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          var isProdPackageId = snapshot.data;
-
-          if (isProdPackageId == true) {
-            return InkWell(
-              onTap: () {
-                var inAppReviewBloc =
-                    IInAppReviewBloc.of(context, listen: false);
-                inAppReviewBloc.openStoreListing();
-              },
-              child: _SimpleAccountHomeTabMenuDialogBodyItem(
-                iconData: FediIcons.instance,
-                text: S.of(context).app_account_home_tab_menu_action_rateApp,
-              ),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
-      );
+      if (configService.askReviewEnabled) {
+        return InkWell(
+          onTap: () {
+            var inAppReviewBloc = IInAppReviewBloc.of(context, listen: false);
+            inAppReviewBloc.openStoreListing();
+          },
+          child: _SimpleAccountHomeTabMenuDialogBodyItem(
+            iconData: FediIcons.instance,
+            text: S.of(context).app_account_home_tab_menu_action_rateApp,
+          ),
+        );
+      } else {
+        return const SizedBox.shrink();
+      }
     }
   }
 }

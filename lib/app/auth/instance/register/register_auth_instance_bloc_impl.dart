@@ -5,6 +5,7 @@ import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/form/register_auth_instance_form_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
@@ -29,6 +30,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalizationSettingsBloc localizationSettingsBloc;
+  final IConfigService configService;
 
   // ignore: avoid-late-keyword
   late IPleromaApiInstance pleromaInstance;
@@ -53,6 +55,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     required this.currentInstanceBloc,
     required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     required this.localizationSettingsBloc,
+    required this.configService,
   }) : super() {
     restService = RestService(baseUri: instanceBaseUri);
     pleromaRestService = PleromaApiRestService(
@@ -89,6 +92,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
         preferencesService: localPreferencesService,
         connectionService: connectionService,
         currentInstanceBloc: currentInstanceBloc,
+        configService: configService,
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
             pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
       );

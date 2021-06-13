@@ -14,7 +14,10 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+
+final _logger = Logger('status_reply_widget.dart');
 
 class StatusReplyWidget extends StatelessWidget {
   final bool collapsible;
@@ -38,10 +41,21 @@ class StatusReplyWidget extends StatelessWidget {
           case AsyncInitLoadingState.loading:
             return const _StatusReplyLoadingWidget();
           case AsyncInitLoadingState.finished:
-            return Provider<IStatus>.value(
-              value: statusReplyLoaderBloc.inReplyToStatus!,
-              child: _buildStatusListItemTimelineWidget(),
-            );
+            var inReplyToStatus = statusReplyLoaderBloc.inReplyToStatus;
+
+            if (inReplyToStatus != null) {
+              return Provider<IStatus>.value(
+                value: inReplyToStatus,
+                child: _buildStatusListItemTimelineWidget(),
+              );
+            } else {
+              _logger.warning(
+                () => 'loading finished but inReplyToStatus is null',
+              );
+
+              return const SizedBox.shrink();
+            }
+
           case AsyncInitLoadingState.failed:
             return _StatusReplyFailedWidget();
         }

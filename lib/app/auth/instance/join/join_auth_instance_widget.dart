@@ -6,6 +6,7 @@ import 'package:fedi/app/auth/instance/auth_instance_pleroma_rest_error_data.dar
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/tos/tos_page.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
@@ -162,7 +163,7 @@ class _JoinAuthInstanceHostTextFieldWidget extends StatelessWidget {
         FediTransparentEditTextField(
           autocorrect: false,
           expanded: false,
-          hintText: S.of(context).app_auth_instance_join_field_host_hint,
+          hintText: IConfigService.of(context).appDefaultInstanceUrl,
           onSubmitted: (String value) {
             logInToInstance(context);
           },
@@ -351,9 +352,7 @@ ErrorData createRegistrationDisabledErrorData(
       titleCreator: (context) => S
           .of(context)
           .app_auth_instance_join_registrationDisabled_dialog_title,
-      contentCreator: (context) => S
-          .of(context)
-          .app_auth_instance_join_registrationDisabled_dialog_content,
+      contentCreator: null,
     );
 
 ErrorData createRegistrationInvitesOnlyErrorData(
@@ -407,18 +406,18 @@ Future logInToInstance(BuildContext context) async {
 
   var authInstance = dialogResult.result;
   if (authInstance != null) {
-    _logger.finest(() =>'before pop');
+    _logger.finest(() => 'before pop');
     if (!joinInstanceBloc.isFromScratch) {
       Navigator.pop(context);
       Navigator.pop(context);
     }
 
-    _logger.finest(() =>'after pop before change auth');
+    _logger.finest(() => 'after pop before change auth');
 
     await ICurrentAuthInstanceBloc.of(context, listen: false)
         .changeCurrentInstance(
       authInstance,
     );
-    _logger.finest(() =>'after auth');
+    _logger.finest(() => 'after auth');
   }
 }

@@ -25,13 +25,22 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
- def keystoreProperties = new Properties()
-   def keystorePropertiesFile = rootProject.file('key.properties')
-   if (keystorePropertiesFile.exists()) {
-       keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-   }
+// flutter_config
+project.ext.envConfigFiles = [
+        dev: "env_dev.env",
+        prod: "env_prod.env",
+]
 
-   android {
+
+apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle"
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
     compileSdkVersion 28
 
     sourceSets {
@@ -43,8 +52,6 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.fediverse.app2"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
@@ -52,38 +59,40 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
+        dimension "app"
+        applicationId project.env.get("APP_ID")
+        manifestPlaceholders.scheme = project.env.get("APP_ID")
+        resValue "string", "app_name", project.env.get("APP_TITLE")
+        // should be package from Manifest instead of project.env.get("APP_ID")
+        // for flutter_config
+        resValue "string", "build_config_package", "com.fediverse.app"
+    }
+    if (keystorePropertiesFile.exists()) {
+        signingConfigs {
+            release {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
+        }
+        buildTypes {
+            release {
+                signingConfig signingConfigs.release
+            }
+        }
     }
 
-     signingConfigs {
-       release {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
-           storeFile file(keystoreProperties['storeFile'])
-           storePassword keystoreProperties['storePassword']
-       }
-   }
-   buildTypes {
-       release {
-           signingConfig signingConfigs.release
-       }
-   }
+    flavorDimensions "app"
 
-   flavorDimensions "app"
+    productFlavors {
+        dev {
 
-   productFlavors {
-       dev {
-           dimension "app"
-           resValue "string", "app_name", "Fedi2(dev)"
-           applicationId "com.fediverse.app2"
-           manifestPlaceholders.scheme = "com.fediverse.app2"
-       }
-       prod {
-           dimension "app"
-           resValue "string", "app_name", "Fedi"
-           applicationId "com.fediverse.app"
-           manifestPlaceholders.scheme = "com.fediverse.app"
-       }
-   }
+        }
+        prod {
+
+        }
+    }
 }
 
 flutter {
@@ -96,9 +105,13 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.android.support:multidex:1.0.3'
-//    implementation 'com.google.firebase:firebase-messaging:20.1.6'
-
 }
+
 // ADD THIS AT THE BOTTOM
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
+if(project.env.get("FIREBASE_ENABLED").toBoolean()) {
+    apply plugin: 'com.google.gms.google-services'
+}
+
+if(project.env.get("CRASHLYTICS_ENABLED").toBoolean()) {
+    apply plugin: 'com.google.firebase.crashlytics'
+}

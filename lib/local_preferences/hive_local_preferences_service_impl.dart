@@ -32,6 +32,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   Future<bool> clearAllValues() async {
+    _logger.fine(() => 'clearAllValues');
     var clearedKeysCount = await _box.clear();
 
     return clearedKeysCount > 0;
@@ -39,6 +40,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   Future<bool> delete() async {
+    _logger.fine(() => 'delete');
     await _box.deleteFromDisk();
 
     return true;
@@ -85,6 +87,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     String key,
     IJsonObject? preferencesObject,
   ) async {
+    // _logger.fine(() => 'setObjectPreference $key -> $preferencesObject');
     await _box.put(key, preferencesObject);
 
     return true;
@@ -126,11 +129,9 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     ValueCallback<T> onChanged,
   ) =>
       StreamSubscriptionDisposable(
-        _box.watch().listen(
+        _box.watch(key: key).listen(
           (boxEvent) {
-            if (boxEvent.key == key) {
-              onChanged(boxEvent.value);
-            }
+            onChanged(boxEvent.value);
           },
         ),
       );

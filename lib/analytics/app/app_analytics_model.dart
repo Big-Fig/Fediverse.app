@@ -10,12 +10,9 @@ part 'app_analytics_model.g.dart';
 class AppAnalyticsData implements IJsonObject {
   @HiveField(0)
   final int appOpenedCount;
-  @HiveField(1)
-  final bool isAppRated;
 
   const AppAnalyticsData({
     required this.appOpenedCount,
-    required this.isAppRated,
   });
 
   @override
@@ -23,27 +20,25 @@ class AppAnalyticsData implements IJsonObject {
       identical(this, other) ||
       other is AppAnalyticsData &&
           runtimeType == other.runtimeType &&
-          appOpenedCount == other.appOpenedCount &&
-          isAppRated == other.isAppRated;
+          appOpenedCount == other.appOpenedCount;
 
   @override
-  int get hashCode => appOpenedCount.hashCode ^ isAppRated.hashCode;
+  int get hashCode => appOpenedCount.hashCode;
 
   @override
   String toString() {
     return 'AppAnalyticsData{'
         'appOpenedCount: $appOpenedCount, '
-        'isAppRated: $isAppRated'
         '}';
   }
 
   AppAnalyticsData copyWith({
     int? appOpenedCount,
     bool? isAppRated,
+    bool? isHandlingCrashlyticsAsked,
   }) =>
       AppAnalyticsData(
         appOpenedCount: appOpenedCount ?? this.appOpenedCount,
-        isAppRated: isAppRated ?? this.isAppRated,
       );
 
   static AppAnalyticsData fromJson(Map<String, dynamic> json) =>

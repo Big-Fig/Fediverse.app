@@ -3,6 +3,8 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_widget.dart';
+import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
@@ -11,7 +13,6 @@ import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +31,7 @@ class RegisterAuthInstancePage extends StatelessWidget {
       );
 }
 
+// ignore: long-method
 Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
   BuildContext context, {
   required Uri instanceBaseUri,
@@ -59,6 +61,10 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
                 listen: false,
               ),
               localizationSettingsBloc: ILocalizationSettingsBloc.of(
+                context,
+                listen: false,
+              ),
+              configService: IConfigService.of(
                 context,
                 listen: false,
               ),

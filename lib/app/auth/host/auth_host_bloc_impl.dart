@@ -9,7 +9,7 @@ import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
-import 'package:fedi/app/package_info/package_info_helper.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -23,7 +23,6 @@ import 'package:fedi/pleroma/api/application/pleroma_api_application_service.dar
 import 'package:fedi/pleroma/api/application/pleroma_api_application_service_impl.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service_impl.dart';
-
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_model.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_service.dart';
 import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_service_impl.dart';
@@ -54,27 +53,36 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   String get instanceBaseUriHost => instanceBaseUri.host;
 
   String get instanceBaseUriScheme => instanceBaseUri.scheme;
+
   // ignore: avoid-late-keyword
   late IPleromaApiApplicationService pleromaApplicationService;
+
   // ignore: avoid-late-keyword
   late IRestService restService;
+
   // ignore: avoid-late-keyword
   late IPleromaApiRestService pleromaRestService;
+
   // ignore: avoid-late-keyword
   late IPleromaApiOAuthService pleromaOAuthService;
+
   // ignore: avoid-late-keyword
   late IPleromaApiAccountPublicService pleromaAccountPublicService;
+
   // ignore: avoid-late-keyword
   late IAuthHostApplicationLocalPreferenceBloc
       hostApplicationLocalPreferenceBloc;
+
   // ignore: avoid-late-keyword
   late IAuthHostAccessTokenLocalPreferenceBloc
       hostAccessTokenLocalPreferenceBloc;
+
   // ignore: avoid-late-keyword
   late ICurrentAuthInstanceBloc currentInstanceBloc;
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final IConnectionService connectionService;
+  final IConfigService configService;
 
   AuthHostBloc({
     required this.instanceBaseUri,
@@ -83,6 +91,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     required ILocalPreferencesService preferencesService,
     required this.connectionService,
     required this.currentInstanceBloc,
+    required this.configService,
   }) {
     assert(instanceBaseUriScheme.isNotEmpty);
     assert(instanceBaseUriHost.isNotEmpty);
@@ -158,8 +167,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   }
 
   Future<String> _calculateRedirectUri() async {
-    var packageId = await FediPackageInfoHelper.getPackageId();
-    var redirectUri = '$packageId://addNewInstance';
+    var redirectUri = configService.appAddNewInstanceCallbackUrl;
 
     return redirectUri;
   }
@@ -442,6 +450,10 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
             ICurrentAuthInstanceBloc.of(context, listen: false),
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
             IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
+          context,
+          listen: false,
+        ),
+        configService: IConfigService.of(
           context,
           listen: false,
         ),

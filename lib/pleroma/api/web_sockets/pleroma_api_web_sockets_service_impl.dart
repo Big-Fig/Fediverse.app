@@ -91,7 +91,7 @@ class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
       'it is not possible to set onlyLocal and onlyRemote at same time',
     );
 
-    if (onlyFromInstance != null) {
+    if (onlyFromInstance?.isNotEmpty == true) {
       assert(
         onlyRemote == true,
         'onlyRemote should be true if instance != null',

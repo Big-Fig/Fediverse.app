@@ -76,9 +76,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m25(count) => "Отмечено (${count})";
 
-  static String m26(localDomain) => "Открыть на ${localDomain} в приложения";
+  static String m26(localDomain) => "Открыть на ${localDomain}";
 
-  static String m27(remoteDomain) => "Открыть на ${remoteDomain} в браузере";
+  static String m27(remoteDomain) => "Открыть на ${remoteDomain}";
 
   static String m28(hashtag) => "#${hashtag}";
 
@@ -617,11 +617,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_auth_instance_join_fail_dialog_content": m14,
         "app_auth_instance_join_fail_dialog_title":
             MessageLookupByLibrary.simpleMessage(
-                "Невозможно поддключится к серверу. Попробуйте fedi.app или pleroma.com"),
+                "Невозможно поддключится к серверу"),
         "app_auth_instance_join_field_host_helper":
             MessageLookupByLibrary.simpleMessage("Pleroma или Mastodon сервер"),
-        "app_auth_instance_join_field_host_hint":
-            MessageLookupByLibrary.simpleMessage("Fedi.app"),
         "app_auth_instance_join_invitesOnly_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Используйте другой сервер, или заргестрируйтесь по ссылке-приглашению в браузере"),
@@ -632,9 +630,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Добавить аккаунт"),
         "app_auth_instance_join_progress_dialog_content":
             MessageLookupByLibrary.simpleMessage("Проверка сервера"),
-        "app_auth_instance_join_registrationDisabled_dialog_content":
-            MessageLookupByLibrary.simpleMessage(
-                "Попробуйте другой сервр, например fedi.app"),
         "app_auth_instance_join_registrationDisabled_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Владелец сервера отключил регистрацию"),
@@ -830,6 +825,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Заменить \"Беседы\" на \"Чаты\""),
         "app_chat_settings_title": MessageLookupByLibrary.simpleMessage("Чат"),
+        "app_crashReporting_ask_dialog_content":
+            MessageLookupByLibrary.simpleMessage(
+                "Вы согласны на отправку отчетов об ошибках?\n Это поможет нам сделать приложение стабильнее\n Вы всегда можете изменить решение в настройках"),
+        "app_crashReporting_ask_dialog_title":
+            MessageLookupByLibrary.simpleMessage("Отчеты об ошибках"),
+        "app_crashReporting_settings_field_reportingEnabled_name":
+            MessageLookupByLibrary.simpleMessage("Отправлять отчеты"),
+        "app_crashReporting_settings_title":
+            MessageLookupByLibrary.simpleMessage("Отчеты об ошибках"),
         "app_customList_create_title":
             MessageLookupByLibrary.simpleMessage("Создать список"),
         "app_customList_edit_title":
@@ -935,7 +939,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_hashtag_history_statuses":
             MessageLookupByLibrary.simpleMessage("Записи"),
         "app_hashtag_remoteInstance_dialog_action_openOnLocal": m26,
-        "app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser": m27,
+        "app_hashtag_remoteInstance_dialog_action_openOnRemote": m27,
         "app_hashtag_remoteInstance_dialog_title": m28,
         "app_home_tab_chat_conversation_action_switchToChats":
             MessageLookupByLibrary.simpleMessage("В чаты"),
@@ -982,9 +986,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_instance_details_field_details_title":
             MessageLookupByLibrary.simpleMessage("Детали"),
         "app_instance_details_field_directory_label":
-            MessageLookupByLibrary.simpleMessage("Аккаунты"),
-        "app_instance_details_field_directory_value":
             MessageLookupByLibrary.simpleMessage("Все"),
+        "app_instance_details_field_directory_value":
+            MessageLookupByLibrary.simpleMessage("Аккаунты"),
         "app_instance_details_field_email_label":
             MessageLookupByLibrary.simpleMessage("Email"),
         "app_instance_details_field_federation_enabled_label":
@@ -1045,6 +1049,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Мин. длительность"),
         "app_instance_details_field_pollLimit_title":
             MessageLookupByLibrary.simpleMessage("Лимиты опроса"),
+        "app_instance_details_field_publicTimeline_label":
+            MessageLookupByLibrary.simpleMessage("Публичная лента"),
+        "app_instance_details_field_publicTimeline_value":
+            MessageLookupByLibrary.simpleMessage("Записи"),
         "app_instance_details_field_registrationsLimits_title":
             MessageLookupByLibrary.simpleMessage("Регистрация"),
         "app_instance_details_field_registrations_label":
@@ -1146,6 +1154,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_media_upload_failed_notification_exceedSize_content": m32,
         "app_media_upload_failed_notification_title":
             MessageLookupByLibrary.simpleMessage("Ошибка загрузки"),
+        "app_media_upload_progress":
+            MessageLookupByLibrary.simpleMessage("Загрузка файлов на сервер"),
         "app_notification_action_dismiss":
             MessageLookupByLibrary.simpleMessage("Скрыть"),
         "app_notification_action_markAsRead":
@@ -1198,9 +1208,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Показать результаты"),
         "app_poll_metadata_totalVotes": m40,
         "app_poll_vote": MessageLookupByLibrary.simpleMessage("Выбрать"),
+        "app_push_disabled_notification_content":
+            MessageLookupByLibrary.simpleMessage(
+                "Установите версию из магазина или включите поддержку оповещений при сборке приложения"),
+        "app_push_disabled_notification_title":
+            MessageLookupByLibrary.simpleMessage("Оповещения отключены"),
         "app_push_permission_ask_dialog_content":
             MessageLookupByLibrary.simpleMessage(
-                "Хотите ли вы включить push оповещения?\nОни буду пересланы через Fedi push прокси сервер"),
+                "Хотите ли вы включить push оповещения?\nОни буду пересланы через Fedi Push Relay сервер.\n Вы всегда можете изменить решение в настройках"),
         "app_push_permission_ask_dialog_title":
             MessageLookupByLibrary.simpleMessage("Push оповещения"),
         "app_push_permission_declined_dialog_content":
@@ -1209,7 +1224,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_push_permission_declined_dialog_title":
             MessageLookupByLibrary.simpleMessage("Необходимо разрешение"),
         "app_push_settings_desc": MessageLookupByLibrary.simpleMessage(
-            "Все сообщения буду пересланы через Fedi push прокси сервер"),
+            "Все сообщения буду пересланы через Fedi Push Relay сервер"),
         "app_push_settings_field_favourites_label":
             MessageLookupByLibrary.simpleMessage("Лайки"),
         "app_push_settings_field_follows_label":
@@ -1270,6 +1285,20 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Поделиться ссылкой"),
         "app_share_external_title": MessageLookupByLibrary.simpleMessage(
             "Поделиться в другое приложение"),
+        "app_share_income_action_choose_title":
+            MessageLookupByLibrary.simpleMessage("Поделится"),
+        "app_share_income_action_type_chat":
+            MessageLookupByLibrary.simpleMessage("В чат"),
+        "app_share_income_action_type_conversation":
+            MessageLookupByLibrary.simpleMessage("В беседу"),
+        "app_share_income_action_type_status":
+            MessageLookupByLibrary.simpleMessage("Новая запись"),
+        "app_share_income_error_authInstanceListIsEmpty":
+            MessageLookupByLibrary.simpleMessage(
+                "Вы еще не вошли не в один сервер чтобы поделится"),
+        "app_share_income_instance_choose_title":
+            MessageLookupByLibrary.simpleMessage(
+                "Выберите сервер чтобы поделится"),
         "app_share_title": MessageLookupByLibrary.simpleMessage("Поделиться"),
         "app_share_toast_success":
             MessageLookupByLibrary.simpleMessage("Успех"),
@@ -1470,7 +1499,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Disable to reduce battery usage"),
         "app_timeline_settings_field_enableWebSockets_description_instance_disabled":
             MessageLookupByLibrary.simpleMessage(
-                "Отключено в настройках аккаунта"),
+                "Не поддерживается или отключено в настройках"),
         "app_timeline_settings_field_enableWebSockets_label":
             MessageLookupByLibrary.simpleMessage("WebSockets обновления"),
         "app_timeline_settings_field_excludeNsfw_label":
@@ -1599,6 +1628,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "async_init_state_notStarted": MessageLookupByLibrary.simpleMessage(
             "Асинхронная инициализация не началась"),
         "dialog_action_cancel": MessageLookupByLibrary.simpleMessage("Отмена"),
+        "dialog_action_learnMore":
+            MessageLookupByLibrary.simpleMessage("Узнать больше"),
         "dialog_action_no": MessageLookupByLibrary.simpleMessage("Нет"),
         "dialog_action_ok": MessageLookupByLibrary.simpleMessage("Хорошо"),
         "dialog_action_yes": MessageLookupByLibrary.simpleMessage("Да"),

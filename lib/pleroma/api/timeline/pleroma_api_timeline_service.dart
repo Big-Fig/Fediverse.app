@@ -36,23 +36,4 @@ abstract class IPleromaApiTimelineService implements IPleromaApi {
     ],
   });
 
-  Future<List<IPleromaApiStatus>> getHomeTimeline({
-    IPleromaApiPaginationRequest? pagination,
-    bool onlyLocal = false,
-    bool withMuted = false,
-    List<PleromaApiVisibility>? excludeVisibilities = const [
-      PleromaApiVisibility.direct,
-    ],
-    PleromaApiReplyVisibilityFilter? pleromaReplyVisibilityFilter,
-  });
-
-  Future<List<IPleromaApiStatus>> getListTimeline({
-    required String listId,
-    IPleromaApiPaginationRequest? pagination,
-    bool onlyLocal = false,
-    bool withMuted = false,
-    List<PleromaApiVisibility>? excludeVisibilities = const [
-      PleromaApiVisibility.direct,
-    ],
-  });
 }

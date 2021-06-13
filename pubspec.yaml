@@ -11,7 +11,7 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.2.0+258
+version: 2.3.1+260
 
 publish_to: none
 
@@ -29,12 +29,12 @@ dependencies:
   flutter_reorderable_list: ^1.0.0
 
   # firebase auth
-  firebase_core: ^1.1.0
+  firebase_core: ^1.2.1
   # push notifications FCM
-  firebase_messaging: ^9.1.3
+  firebase_messaging: ^10.0.1
 
   # handle crashes and non-fatal errors
-  firebase_crashlytics: ^2.0.2
+  firebase_crashlytics: ^2.0.5
 
   # handle init urls. Used for login/register and navigation from notification
   # actually uni_links fork with null-safety
@@ -144,9 +144,6 @@ dependencies:
   # parse html to extract raw text from status content
   html: ^0.15.0
 
-  # fetch package info during runtime
-  package_info: ^2.0.0
-
   # better scroll controller for nested scroll
   nested_scroll_controller: ^1.0.0
 
@@ -198,6 +195,15 @@ dependencies:
 
   # customizable switch widget
   flutter_switch: ^0.3.1
+
+  # handle external share intents (text/image/video/etc)
+  receive_sharing_intent: ^1.4.5
+
+  # load config from .env files (support flavors)
+  flutter_config: ^2.0.0
+
+  # get build details for config
+  package_info: ^2.0.2
 
 dev_dependencies:
   flutter_test:

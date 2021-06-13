@@ -181,15 +181,18 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   }) {
     var pleromaPushMessage = pushHandlerMessage.body;
 
-    var title = '${pleromaPushMessage.account}@${pleromaPushMessage.server}'
-        ' '
-        '${pushHandlerMessage.pushMessage.notification!.title}';
-    toastService.showInfoToast(
-      context: context,
-      title: title,
-      content: pushHandlerMessage.pushMessage.notification!.body,
-      onClick: onClick,
-    );
+    var notification = pushHandlerMessage.pushMessage.notification;
+    if (notification != null) {
+      var title = '${pleromaPushMessage.account}@${pleromaPushMessage.server}'
+          ' '
+          '${notification.title}';
+      toastService.showInfoToast(
+        context: context,
+        title: title,
+        content: notification.body,
+        onClick: onClick,
+      );
+    }
   }
 
   Future _handleNonCurrentInstancePushMessage(

@@ -86,7 +86,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
         })
             .toList());
 
-  List<Join<Table, DataClass>> populateAccountJoin({
+  List<Join> populateAccountJoin({
     required includeAccountFollowings,
     required includeAccountFollowers,
     required includeStatusFavouritedAccounts,
@@ -94,7 +94,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     required includeConversationAccounts,
     required includeChatAccounts,
   }) {
-    var allJoins = <Join<Table, DataClass>>[
+    var allJoins = <Join>[
       ...(includeAccountFollowings
       ? [
       innerJoin(
@@ -264,7 +264,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   // ignore: code-metrics
-  JoinedSelectStatement<Table, DataClass>
+  JoinedSelectStatement
   convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
     required AccountRepositoryFilters? filters,

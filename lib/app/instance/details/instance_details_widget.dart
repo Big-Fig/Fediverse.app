@@ -14,6 +14,8 @@ import 'package:fedi/app/instance/details/instance_details_bloc.dart';
 import 'package:fedi/app/instance/directory/local/local_instance_directory_page.dart';
 import 'package:fedi/app/instance/directory/remote/remote_instance_directory_page.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/instance/public_timeline/local/local_instance_public_timeline_page.dart';
+import 'package:fedi/app/instance/public_timeline/remote/remote_instance_public_timeline_page.dart';
 import 'package:fedi/app/instance/trends/local/local_instance_trends_page.dart';
 import 'package:fedi/app/instance/trends/remote/remote_instance_trends_page.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
@@ -112,6 +114,7 @@ class _InstanceDetailsBodyWidget extends StatelessWidget {
           const _InstanceDetailsDirectoryWidget(),
           const _InstanceDetailsTrendsWidget(),
           const _InstanceDetailsActivityWidget(),
+          const _InstanceDetailsPublicTimelineWidget(),
           const _InstanceDetailsBodyDetailsWidget(),
           const _InstanceDetailsBodyRegistrationsWidget(),
           const _InstanceDetailsStatsWidget(),
@@ -341,8 +344,8 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
     return StreamBuilder<String?>(
-      stream: instanceDetailsBloc.descriptionOrShortDescriptionStream,
-      initialData: instanceDetailsBloc.descriptionOrShortDescription,
+      stream: instanceDetailsBloc.descriptionOrShortDescriptionWithParsedHashtagsStream,
+      initialData: instanceDetailsBloc.descriptionOrShortDescriptionWithParsedHashtags,
       builder: (context, snapshot) {
         var descriptionOrShortDescription = snapshot.data;
         var textStyle = IFediUiTextTheme.of(context).bigTallMediumGrey;
@@ -1057,6 +1060,56 @@ class _InstanceDetailsTrendsWidget extends StatelessWidget {
   }
 }
 
+class _InstanceDetailsPublicTimelineWidget extends StatelessWidget {
+  const _InstanceDetailsPublicTimelineWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
+
+    var instanceLocation = instanceDetailsBloc.instanceLocation;
+
+    var isLocal = instanceLocation == InstanceLocation.local;
+
+    return _BaseInstanceDetailsRowWidget(
+      label: S.of(context).app_instance_details_field_publicTimeline_label,
+      valueIcon: Icon(
+        FediIcons.chevron_right,
+        color: IFediUiColorTheme.of(context).darkGrey,
+      ),
+      valueOnClick: (BuildContext context) {
+        _goToPublicTimeline(
+          context: context,
+          isLocal: isLocal,
+          instanceDetailsBloc: instanceDetailsBloc,
+        );
+      },
+      value: S.of(context).app_instance_details_field_publicTimeline_value,
+    );
+  }
+
+  void _goToPublicTimeline({
+    required BuildContext context,
+    required bool isLocal,
+    required IInstanceDetailsBloc instanceDetailsBloc,
+  }) {
+    if (isLocal) {
+      goToLocalInstancePublicTimelinePage(
+        context:context,
+        pleromaApiInstance: instanceDetailsBloc.instance!,
+      );
+    } else {
+      goToRemoteInstancePublicTimelinePage(
+        context:context,
+        remoteInstanceUri: instanceDetailsBloc.instanceUri,
+        pleromaApiInstance: instanceDetailsBloc.instance!,
+      );
+    }
+  }
+}
+
 class _InstanceDetailsActivityWidget extends StatelessWidget {
   const _InstanceDetailsActivityWidget({
     Key? key,
@@ -1108,7 +1161,6 @@ class _InstanceDetailsActivityWidget extends StatelessWidget {
     }
   }
 }
-
 
 class _InstanceDetailsPleromaMaxTootCharsLimitWidget extends StatelessWidget {
   const _InstanceDetailsPleromaMaxTootCharsLimitWidget({

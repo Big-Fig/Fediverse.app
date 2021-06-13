@@ -5,12 +5,12 @@ import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_m
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaMediaAttachmentService implements IPleromaApi {
-  static IPleromaMediaAttachmentService of(
+abstract class IPleromaApiMediaAttachmentService implements IPleromaApi {
+  static IPleromaApiMediaAttachmentService of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IPleromaMediaAttachmentService>(context, listen: listen);
+      Provider.of<IPleromaApiMediaAttachmentService>(context, listen: listen);
 
   Future<IPleromaApiMediaAttachment> uploadMedia({
     required File file,

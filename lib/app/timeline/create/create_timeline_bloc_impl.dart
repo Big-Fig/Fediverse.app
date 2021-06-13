@@ -1,4 +1,5 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc.dart';
@@ -102,10 +103,11 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     return EditTimelineSettingsBloc(
       settingsBloc: timelineSettingsBloc,
       timelineType: startType,
-      authInstance: authInstance,
+      pleromaApiInstance: authInstance.info!,
       isNullableValuesPossible: true,
       isEnabled: true,
       webSocketsSettingsBloc: webSocketsSettingsBloc,
+      instanceLocation: InstanceLocation.local,
     );
   }
 

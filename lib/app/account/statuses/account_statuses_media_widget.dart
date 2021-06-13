@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/statuses/account_statuses_widget.dart';
-import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_media_widget.dart';
+import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_media_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:flutter/cupertino.dart';
 

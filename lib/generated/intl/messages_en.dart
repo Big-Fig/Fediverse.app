@@ -75,9 +75,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m25(count) => "Selected (${count})";
 
-  static String m26(localDomain) => "Open on ${localDomain} inside app";
+  static String m26(localDomain) => "Open on ${localDomain}";
 
-  static String m27(remoteDomain) => "Open on ${remoteDomain} in browser";
+  static String m27(remoteDomain) => "Open on ${remoteDomain}";
 
   static String m28(hashtag) => "#${hashtag}";
 
@@ -557,7 +557,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_statuses_tab_withoutReplies":
             MessageLookupByLibrary.simpleMessage("Posts"),
         "app_appStore_description": MessageLookupByLibrary.simpleMessage(
-            "A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app."),
+            "A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support."),
         "app_appStore_promotionalText": MessageLookupByLibrary.simpleMessage(
             "A client for Pleroma and Mastodon social network instances"),
         "app_appStore_subtitle": MessageLookupByLibrary.simpleMessage(
@@ -612,13 +612,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Terms"),
         "app_auth_instance_join_fail_dialog_content": m14,
         "app_auth_instance_join_fail_dialog_title":
-            MessageLookupByLibrary.simpleMessage(
-                "Fail to connect to instance. You can try verified fedi.app or pleroma.com"),
+            MessageLookupByLibrary.simpleMessage("Fail to connect to instance"),
         "app_auth_instance_join_field_host_helper":
             MessageLookupByLibrary.simpleMessage(
                 "Pleroma or Mastodon Instance"),
-        "app_auth_instance_join_field_host_hint":
-            MessageLookupByLibrary.simpleMessage("Fedi.app"),
         "app_auth_instance_join_invitesOnly_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Try any other instance, or register by invite link in your browser"),
@@ -629,9 +626,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Join new instance"),
         "app_auth_instance_join_progress_dialog_content":
             MessageLookupByLibrary.simpleMessage("Checking instance"),
-        "app_auth_instance_join_registrationDisabled_dialog_content":
-            MessageLookupByLibrary.simpleMessage(
-                "Try any other instance, like fedi.app"),
         "app_auth_instance_join_registrationDisabled_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Instance owner disabled registration"),
@@ -822,6 +816,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Replace \"Conversations\" with \"Chats\""),
         "app_chat_settings_title": MessageLookupByLibrary.simpleMessage("Chat"),
+        "app_crashReporting_ask_dialog_content":
+            MessageLookupByLibrary.simpleMessage(
+                "Do you want to enable crash reporting?\n It will help us make app more stable\n You can change this option in settings later"),
+        "app_crashReporting_ask_dialog_title":
+            MessageLookupByLibrary.simpleMessage("Crash reporting"),
+        "app_crashReporting_settings_field_reportingEnabled_name":
+            MessageLookupByLibrary.simpleMessage("Send reports"),
+        "app_crashReporting_settings_title":
+            MessageLookupByLibrary.simpleMessage("Crash reporting"),
         "app_customList_create_title":
             MessageLookupByLibrary.simpleMessage("Create a list"),
         "app_customList_edit_title":
@@ -925,7 +928,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_hashtag_history_statuses":
             MessageLookupByLibrary.simpleMessage("Statuses"),
         "app_hashtag_remoteInstance_dialog_action_openOnLocal": m26,
-        "app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser": m27,
+        "app_hashtag_remoteInstance_dialog_action_openOnRemote": m27,
         "app_hashtag_remoteInstance_dialog_title": m28,
         "app_home_tab_chat_conversation_action_switchToChats":
             MessageLookupByLibrary.simpleMessage("To Chats"),
@@ -971,9 +974,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_instance_details_field_details_title":
             MessageLookupByLibrary.simpleMessage("Details"),
         "app_instance_details_field_directory_label":
-            MessageLookupByLibrary.simpleMessage("Accounts"),
-        "app_instance_details_field_directory_value":
             MessageLookupByLibrary.simpleMessage("Directory"),
+        "app_instance_details_field_directory_value":
+            MessageLookupByLibrary.simpleMessage("Accounts"),
         "app_instance_details_field_email_label":
             MessageLookupByLibrary.simpleMessage("Email"),
         "app_instance_details_field_federation_enabled_label":
@@ -1033,6 +1036,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Min expiration"),
         "app_instance_details_field_pollLimit_title":
             MessageLookupByLibrary.simpleMessage("Poll limits"),
+        "app_instance_details_field_publicTimeline_label":
+            MessageLookupByLibrary.simpleMessage("Public timeline"),
+        "app_instance_details_field_publicTimeline_value":
+            MessageLookupByLibrary.simpleMessage("Statuses"),
         "app_instance_details_field_registrationsLimits_title":
             MessageLookupByLibrary.simpleMessage("Registration limits"),
         "app_instance_details_field_registrations_label":
@@ -1135,6 +1142,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_media_upload_failed_notification_exceedSize_content": m32,
         "app_media_upload_failed_notification_title":
             MessageLookupByLibrary.simpleMessage("Failed to upload"),
+        "app_media_upload_progress":
+            MessageLookupByLibrary.simpleMessage("Uploading media"),
         "app_notification_action_dismiss":
             MessageLookupByLibrary.simpleMessage("Dismiss"),
         "app_notification_action_markAsRead":
@@ -1186,9 +1195,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("View results"),
         "app_poll_metadata_totalVotes": m40,
         "app_poll_vote": MessageLookupByLibrary.simpleMessage("Vote"),
+        "app_push_disabled_notification_content":
+            MessageLookupByLibrary.simpleMessage(
+                "Install app version from store or enable support in config if app was built from source"),
+        "app_push_disabled_notification_title":
+            MessageLookupByLibrary.simpleMessage(
+                "Push notifications support disabled"),
         "app_push_permission_ask_dialog_content":
             MessageLookupByLibrary.simpleMessage(
-                "Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server"),
+                "Do you want to enable push notifications?\nThey will be forwarded through Fedi Push Relay Server.\n You can change this option in settings later"),
         "app_push_permission_ask_dialog_title":
             MessageLookupByLibrary.simpleMessage("Push notifications"),
         "app_push_permission_declined_dialog_content":
@@ -1197,7 +1212,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_push_permission_declined_dialog_title":
             MessageLookupByLibrary.simpleMessage("Permission required"),
         "app_push_settings_desc": MessageLookupByLibrary.simpleMessage(
-            "All messages will be forwarded through Fedi proxy server"),
+            "All messages will be forwarded through Fedi Relay Server"),
         "app_push_settings_field_favourites_label":
             MessageLookupByLibrary.simpleMessage("Favourites"),
         "app_push_settings_field_follows_label":
@@ -1254,6 +1269,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Share as link"),
         "app_share_external_title":
             MessageLookupByLibrary.simpleMessage("Share to external app"),
+        "app_share_income_action_choose_title":
+            MessageLookupByLibrary.simpleMessage("Choose share action"),
+        "app_share_income_action_type_chat":
+            MessageLookupByLibrary.simpleMessage("To chat"),
+        "app_share_income_action_type_conversation":
+            MessageLookupByLibrary.simpleMessage("To conversation"),
+        "app_share_income_action_type_status":
+            MessageLookupByLibrary.simpleMessage("As new status"),
+        "app_share_income_error_authInstanceListIsEmpty":
+            MessageLookupByLibrary.simpleMessage(
+                "You don\'t have logged instances to share"),
+        "app_share_income_instance_choose_title":
+            MessageLookupByLibrary.simpleMessage("Choose instance to share"),
         "app_share_title": MessageLookupByLibrary.simpleMessage("Share"),
         "app_share_toast_success":
             MessageLookupByLibrary.simpleMessage("Shared successfully"),
@@ -1449,7 +1477,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Disable to reduce battery usage"),
         "app_timeline_settings_field_enableWebSockets_description_instance_disabled":
             MessageLookupByLibrary.simpleMessage(
-                "Disabled in account settings"),
+                "Not supported or disabled in settings"),
         "app_timeline_settings_field_enableWebSockets_label":
             MessageLookupByLibrary.simpleMessage("WebSockets updates"),
         "app_timeline_settings_field_excludeNsfw_label":
@@ -1579,6 +1607,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "async_init_state_notStarted":
             MessageLookupByLibrary.simpleMessage("Async init not started"),
         "dialog_action_cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "dialog_action_learnMore":
+            MessageLookupByLibrary.simpleMessage("Learn more"),
         "dialog_action_no": MessageLookupByLibrary.simpleMessage("No"),
         "dialog_action_ok": MessageLookupByLibrary.simpleMessage("OK"),
         "dialog_action_yes": MessageLookupByLibrary.simpleMessage("Yes"),

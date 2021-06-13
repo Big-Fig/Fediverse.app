@@ -6,6 +6,7 @@ import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/base_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
+import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,7 @@ Future<T?> showFediChooserDialog<T>({
   String? content,
   required List<DialogAction> actions,
   bool cancelable = true,
+  OnClickUiCallback? customCancelCallback,
 }) {
   return showFediModalBottomSheetDialog<T>(
     context: context,
@@ -23,6 +25,7 @@ Future<T?> showFediChooserDialog<T>({
       content: content,
       actions: actions,
       cancelable: cancelable,
+      customCancelCallback: customCancelCallback,
     ),
   );
 }
@@ -33,10 +36,12 @@ class FediChooserDialogBody extends StatelessWidget {
   final List<DialogAction> actions;
   final bool loadingActions;
   final bool cancelable;
+  final OnClickUiCallback? customCancelCallback;
 
   FediChooserDialogBody({
     required this.title,
     this.content,
+    this.customCancelCallback,
     required this.actions,
     required this.cancelable,
     this.loadingActions = false,
@@ -49,17 +54,31 @@ class FediChooserDialogBody extends StatelessWidget {
       children: [
         if (title != null)
           Padding(
-            padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+            padding: const EdgeInsets.only(
+              bottom: FediSizes.smallPadding,
+              // ignore: no-equal-arguments
+              left: FediSizes.smallPadding,
+              // ignore: no-equal-arguments
+              right: FediSizes.smallPadding,
+            ),
             child: Text(
               title!,
+              textAlign: TextAlign.center,
               style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
             ),
           ),
         if (content != null)
           Padding(
-            padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+            padding: const EdgeInsets.only(
+              bottom: FediSizes.smallPadding,
+              // ignore: no-equal-arguments
+              left: FediSizes.smallPadding,
+              // ignore: no-equal-arguments
+              right: FediSizes.smallPadding,
+            ),
             child: Text(
               content!,
+              textAlign: TextAlign.center,
               style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
             ),
           ),
@@ -91,6 +110,7 @@ class FediChooserDialogBody extends StatelessWidget {
             context: context,
             action: BaseDialog.createDefaultCancelAction(
               context: context,
+              customCallback: customCancelCallback,
             ),
           ),
       ],

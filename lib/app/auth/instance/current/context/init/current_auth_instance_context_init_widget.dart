@@ -140,7 +140,9 @@ class _CurrentAuthInstanceContextInitWidgetState
             return const _CurrentAuthInstanceContextInitSessionExpiredWidget();
           case CurrentAuthInstanceContextInitState.loading:
           case null:
-            return const SplashPage();
+            return const SplashPage(
+              displayVersionInfo: true,
+            );
         }
       },
     );

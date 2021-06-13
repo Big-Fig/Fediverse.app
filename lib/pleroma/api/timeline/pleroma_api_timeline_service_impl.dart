@@ -1,6 +1,6 @@
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
+import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
@@ -9,22 +9,16 @@ import 'package:fedi/rest/rest_request_model.dart';
 import 'package:path/path.dart';
 
 class PleromaApiTimelineService extends BasePleromaApiService
-    with PleromaApiAuthMixinService
     implements IPleromaApiTimelineService {
   @override
   Uri get baseUrl => restService.baseUri;
 
   final timelineRelativeUrlPath = '/api/v1/timelines/';
 
-  final IPleromaApiAuthRestService authRestService;
-
-  @override
-  IPleromaApiAuthRestService get restApiAuthService => authRestService;
-
   PleromaApiTimelineService({
-    required this.authRestService,
+    required IPleromaApiRestService restService,
   }) : super(
-          restService: authRestService,
+          restService: restService,
         );
 
   @override
@@ -44,54 +38,6 @@ class PleromaApiTimelineService extends BasePleromaApiService
       relativeTimeLineUrlPath: 'tag/$hashtag',
       pagination: pagination,
       onlyWithMedia: onlyWithMedia,
-      onlyLocal: onlyLocal,
-      withMuted: withMuted,
-      excludeVisibilities: excludeVisibilities,
-      pleromaReplyVisibilityFilter: null,
-      onlyFromInstance: null,
-      onlyRemote: null,
-    );
-  }
-
-  @override
-  Future<List<IPleromaApiStatus>> getHomeTimeline({
-    IPleromaApiPaginationRequest? pagination,
-    bool onlyLocal = false,
-    bool withMuted = false,
-    List<PleromaApiVisibility>? excludeVisibilities = const [
-      PleromaApiVisibility.direct,
-    ],
-    PleromaApiReplyVisibilityFilter? pleromaReplyVisibilityFilter,
-  }) {
-    return getTimeline(
-      relativeTimeLineUrlPath: 'home',
-      pagination: pagination,
-      onlyWithMedia: false,
-      onlyLocal: onlyLocal,
-      withMuted: withMuted,
-      excludeVisibilities: excludeVisibilities,
-      pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
-      onlyFromInstance: null,
-      onlyRemote: null,
-    );
-  }
-
-  @override
-  Future<List<IPleromaApiStatus>> getListTimeline({
-    required String listId,
-    IPleromaApiPaginationRequest? pagination,
-    bool onlyLocal = false,
-    bool withMuted = false,
-    List<PleromaApiVisibility>? excludeVisibilities = const [
-      PleromaApiVisibility.direct,
-    ],
-  }) {
-    assert(listId.isNotEmpty);
-
-    return getTimeline(
-      relativeTimeLineUrlPath: 'list/$listId',
-      pagination: pagination,
-      onlyWithMedia: null,
       onlyLocal: onlyLocal,
       withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
@@ -179,6 +125,13 @@ class PleromaApiTimelineService extends BasePleromaApiService
             []),
       ],
     );
+
+    return await sendAndProcessPleromaApiStatusResponse(request);
+  }
+
+  Future<List<IPleromaApiStatus>> sendAndProcessPleromaApiStatusResponse(
+    RestRequest<dynamic> request,
+  ) async {
     var httpResponse = await restService.sendHttpRequest(request);
 
     return restService.processJsonListResponse(

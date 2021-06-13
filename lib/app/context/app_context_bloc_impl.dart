@@ -12,13 +12,27 @@ import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preference_bloc.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preference_bloc.dart';
 import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/config/config_service.dart';
+import 'package:fedi/app/config/config_service_impl.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
+import 'package:fedi/app/crash_reporting/permission/ask/local_preferences/ask_crash_reporting_permission_local_preference_bloc.dart';
+import 'package:fedi/app/crash_reporting/permission/ask/local_preferences/ask_crash_reporting_permission_local_preference_bloc_impl.dart';
+import 'package:fedi/app/crash_reporting/permission/checker/crash_reporting_permission_checker_bloc.dart';
+import 'package:fedi/app/crash_reporting/permission/checker/crash_reporting_permission_checker_bloc_impl.dart';
+import 'package:fedi/app/crash_reporting/settings/crash_reporting_settings_bloc.dart';
+import 'package:fedi/app/crash_reporting/settings/crash_reporting_settings_bloc_impl.dart';
+import 'package:fedi/app/crash_reporting/settings/crash_reporting_settings_model.dart';
+import 'package:fedi/app/crash_reporting/settings/local_preference/crash_reporting_settings_local_preference_bloc.dart';
+import 'package:fedi/app/crash_reporting/settings/local_preference/global/global_crash_reporting_settings_local_preference_bloc.dart';
+import 'package:fedi/app/crash_reporting/settings/local_preference/global/global_crash_reporting_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/hive/hive_service.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
@@ -34,7 +48,6 @@ import 'package:fedi/app/media/camera/camera_media_service.dart';
 import 'package:fedi/app/media/camera/camera_media_service_impl.dart';
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc.dart';
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc_impl.dart';
-import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preference_bloc.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
@@ -43,6 +56,8 @@ import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_u
 import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preference_bloc_impl.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:fedi/app/share/external/external_share_service_impl.dart';
+import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc.dart';
+import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc.dart';
@@ -62,6 +77,10 @@ import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_we
 import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
+import 'package:fedi/in_app_review/ask/local_preferences/ask_in_app_review_local_preference_bloc.dart';
+import 'package:fedi/in_app_review/ask/local_preferences/ask_in_app_review_local_preference_bloc_impl.dart';
+import 'package:fedi/in_app_review/checker/in_app_review_checker_bloc.dart';
+import 'package:fedi/in_app_review/checker/in_app_review_checker_bloc_impl.dart';
 import 'package:fedi/in_app_review/in_app_review_bloc.dart';
 import 'package:fedi/in_app_review/in_app_review_bloc_impl.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
@@ -75,17 +94,19 @@ import 'package:fedi/permission/permissions_service.dart';
 import 'package:fedi/permission/permissions_service_impl.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:fedi/permission/storage_permission_bloc_impl.dart';
-import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
-import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
 import 'package:fedi/provider/provider_context_bloc_impl.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service_impl.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:fedi/push/relay/push_relay_service_impl.dart';
+import 'package:fedi/share/income/income_share_service.dart';
+import 'package:fedi/share/income/income_share_service_impl.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc_impl.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
-import 'package:pedantic/pedantic.dart';
 
 var _logger = Logger('app_context_bloc_impl.dart');
 
@@ -98,9 +119,21 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var globalProviderService = this;
 
-    var loggingService = LoggingService();
+    var configService = ConfigService();
+    await globalProviderService
+        .asyncInitAndRegister<IConfigService>(configService);
+
+    var loggingService = LoggingService(
+      enabled: configService.logEnabled,
+    );
     await globalProviderService
         .asyncInitAndRegister<ILoggingService>(loggingService);
+
+    configService.printConfigToLog();
+
+    if (configService.firebaseEnabled) {
+      await Firebase.initializeApp();
+    }
 
     var hiveService = HiveService();
     await globalProviderService.asyncInitAndRegister<IHiveService>(hiveService);
@@ -180,6 +213,14 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
       authOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     );
+    var lastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc =
+        LastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc(
+      hiveLocalPreferencesService,
+    );
+    await globalProviderService.asyncInitAndRegister<
+        ILastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc>(
+      lastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc,
+    );
 
     var instanceListLocalPreferenceBloc =
         AuthInstanceListLocalPreferenceBloc(hiveLocalPreferencesService);
@@ -222,8 +263,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
                     blocCreator(hiveLocalPreferencesService);
 
                 await localPreferencesBloc.performAsyncInit();
-                await localPreferencesBloc.clearValue();
-                await localPreferencesBloc.dispose();
+                await localPreferencesBloc.clearValueAndDispose();
               }
             },
           );
@@ -245,42 +285,37 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<ICurrentAuthInstanceBloc>(currentInstanceBloc);
 
-    String pushRelayBaseUrl;
-    if (await FediPackageInfoHelper.isProdPackageId()) {
-      pushRelayBaseUrl = 'https://pushrelay3.your.org/push/';
-    } else if (await FediPackageInfoHelper.isDevPackageId()) {
-      pushRelayBaseUrl = 'https://pushrelay.jff.name/push/';
-    } else {
-      var packageName = await FediPackageInfoHelper.getPackageId();
-      throw 'Invalid packageName $packageName';
+    if (configService.pushFcmEnabled) {
+      var pushRelayBaseUrl = configService.pushFcmRelayUrl!;
+
+      var pushRelayService =
+          PushRelayService(pushRelayBaseUrl: pushRelayBaseUrl);
+      addDisposable(disposable: pushRelayService);
+      await globalProviderService
+          .asyncInitAndRegister<IPushRelayService>(pushRelayService);
+
+      var fcmPushService = FcmPushService();
+      await globalProviderService
+          .asyncInitAndRegister<IFcmPushService>(fcmPushService);
+
+      var pushHandlerUnhandledLocalPreferencesBloc =
+          PushHandlerUnhandledLocalPreferenceBloc(hiveLocalPreferencesService);
+
+      await globalProviderService
+          .asyncInitAndRegister<IPushHandlerUnhandledLocalPreferenceBloc>(
+        pushHandlerUnhandledLocalPreferencesBloc,
+      );
+      addDisposable(disposable: pushHandlerUnhandledLocalPreferencesBloc);
+      var pushHandlerBloc = PushHandlerBloc(
+        currentInstanceBloc: currentInstanceBloc,
+        instanceListBloc: instanceListBloc,
+        unhandledLocalPreferencesBloc: pushHandlerUnhandledLocalPreferencesBloc,
+        fcmPushService: fcmPushService,
+      );
+      await globalProviderService
+          .asyncInitAndRegister<IPushHandlerBloc>(pushHandlerBloc);
+      addDisposable(disposable: pushHandlerBloc);
     }
-
-    var pushRelayService = PushRelayService(pushRelayBaseUrl: pushRelayBaseUrl);
-    addDisposable(disposable: pushRelayService);
-    await globalProviderService
-        .asyncInitAndRegister<IPushRelayService>(pushRelayService);
-
-    var fcmPushService = FcmPushService();
-    await globalProviderService
-        .asyncInitAndRegister<IFcmPushService>(fcmPushService);
-
-    var pushHandlerUnhandledLocalPreferencesBloc =
-        PushHandlerUnhandledLocalPreferenceBloc(hiveLocalPreferencesService);
-
-    await globalProviderService
-        .asyncInitAndRegister<IPushHandlerUnhandledLocalPreferenceBloc>(
-      pushHandlerUnhandledLocalPreferencesBloc,
-    );
-    addDisposable(disposable: pushHandlerUnhandledLocalPreferencesBloc);
-    var pushHandlerBloc = PushHandlerBloc(
-      currentInstanceBloc: currentInstanceBloc,
-      instanceListBloc: instanceListBloc,
-      unhandledLocalPreferencesBloc: pushHandlerUnhandledLocalPreferencesBloc,
-      fcmPushService: fcmPushService,
-    );
-    await globalProviderService
-        .asyncInitAndRegister<IPushHandlerBloc>(pushHandlerBloc);
-    addDisposable(disposable: pushHandlerBloc);
 
     var globalUiSettingsLocalPreferencesBloc =
         GlobalUiSettingsLocalPreferenceBloc(hiveLocalPreferencesService);
@@ -301,11 +336,65 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IUiSettingsBloc>(uiSettingsBloc);
     addDisposable(disposable: uiSettingsBloc);
 
+    var globalCrashReportingSettingsLocalPreferencesBloc =
+        GlobalCrashReportingSettingsLocalPreferenceBloc(
+      hiveLocalPreferencesService,
+      defaultValue: CrashReportingSettings(
+        reportingEnabled: configService.crashlyticsDefaultHandlingEnabled!,
+      ),
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IGlobalCrashReportingSettingsLocalPreferenceBloc>(
+      globalCrashReportingSettingsLocalPreferencesBloc,
+    );
+    await globalProviderService
+        .asyncInitAndRegister<ICrashReportingSettingsLocalPreferenceBloc>(
+      globalCrashReportingSettingsLocalPreferencesBloc,
+    );
+    addDisposable(
+      disposable: globalCrashReportingSettingsLocalPreferencesBloc,
+    );
+    if (configService.crashlyticsEnabled) {
+      var crashReportingSettingsBloc = CrashReportingSettingsBloc(
+        crashReportingSettingsLocalPreferencesBloc:
+            globalCrashReportingSettingsLocalPreferencesBloc,
+      );
+
+      await globalProviderService.asyncInitAndRegister<
+          ICrashReportingSettingsBloc>(crashReportingSettingsBloc);
+      addDisposable(disposable: crashReportingSettingsBloc);
+
+      // Pass all uncaught errors from the framework to Crashlytics.
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+        crashReportingSettingsBloc.reportingEnabled && !kDebugMode,
+      );
+
+      crashReportingSettingsBloc.addDisposable(
+        streamSubscription:
+            crashReportingSettingsBloc.reportingEnabledStream.listen(
+          (reportingEnabled) {
+            FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+              reportingEnabled && !kDebugMode,
+            );
+          },
+        ),
+      );
+    }
+
     var uiThemeSystemBrightnessBloc = UiThemeSystemBrightnessBloc();
 
     await globalProviderService.asyncInitAndRegister<
         IUiThemeSystemBrightnessBloc>(uiThemeSystemBrightnessBloc);
     addDisposable(disposable: uiThemeSystemBrightnessBloc);
+
+    var incomeShareService = IncomeShareService();
+
+    await globalProviderService
+        .asyncInitAndRegister<IIncomeShareService>(incomeShareService);
+    addDisposable(disposable: incomeShareService);
 
     var currentFediUiThemeBloc = CurrentFediUiThemeBloc(
       uiSettingsBloc: uiSettingsBloc,
@@ -457,12 +546,33 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     addDisposable(disposable: appAnalyticsLocalPreferenceBloc);
 
     var inAppReviewBloc = InAppReviewBloc(
-      appStoreId: await FediPackageInfoHelper.getAppAppleId(),
+      appStoreId: configService.appId,
     );
 
     await globalProviderService
         .asyncInitAndRegister<IInAppReviewBloc>(inAppReviewBloc);
     addDisposable(disposable: inAppReviewBloc);
+
+    var askCrashReportingPermissionLocalPreferenceBloc =
+        AskCrashReportingPermissionLocalPreferenceBloc(
+      hiveLocalPreferencesService,
+    );
+
+    addDisposable(disposable: askCrashReportingPermissionLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IAskCrashReportingPermissionLocalPreferenceBloc>(
+      askCrashReportingPermissionLocalPreferenceBloc,
+    );
+
+    var askInAppReviewLocalPreferenceBloc = AskInAppReviewLocalPreferenceBloc(
+      hiveLocalPreferencesService,
+    );
+
+    addDisposable(disposable: askInAppReviewLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IAskInAppReviewLocalPreferenceBloc>(
+      askInAppReviewLocalPreferenceBloc,
+    );
 
     var appAnalyticsBloc = AppAnalyticsBloc(
       appAnalyticsLocalPreferenceBloc: appAnalyticsLocalPreferenceBloc,
@@ -473,46 +583,32 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     addDisposable(disposable: appAnalyticsBloc);
 
     await appAnalyticsBloc.onAppOpened();
-    await _checkReviewAppDialog(
-      appAnalyticsBloc: appAnalyticsBloc,
-      inAppReviewBloc: inAppReviewBloc,
-    );
-  }
 
-  Future _checkReviewAppDialog({
-    required AppAnalyticsBloc appAnalyticsBloc,
-    required InAppReviewBloc inAppReviewBloc,
-  }) async {
-    // ignore: no-magic-number
-    final appOpenedCountToShowAppReview = 5;
-    var isAppRated = appAnalyticsBloc.isAppRated;
-    var appOpenedCount = appAnalyticsBloc.appOpenedCount;
-    var isProdPackageId = await FediPackageInfoHelper.isProdPackageId();
-    var isNeedRequestReview =
-        (!isAppRated && appOpenedCount >= appOpenedCountToShowAppReview) &&
-            isProdPackageId;
-    _logger.finest(
-      () => ' appOpenedCountToShowAppReview $appOpenedCountToShowAppReview \n'
-          ' isAppRated $isAppRated \n'
-          ' appOpenedCount $appOpenedCount \n'
-          ' isProdPackageId $isProdPackageId \n'
-          ' isNeedRequestReview $isNeedRequestReview',
+    var crashReportingPermissionCheckerBloc =
+        CrashReportingPermissionCheckerBloc(
+      appAnalyticsBloc: appAnalyticsBloc,
+      configService: configService,
+      askCrashReportingPermissionLocalPreferenceBloc:
+          askCrashReportingPermissionLocalPreferenceBloc,
+      crashReportingSettingsLocalPreferenceBloc:
+          globalCrashReportingSettingsLocalPreferencesBloc,
     );
-    if (isNeedRequestReview) {
-      var inAppReviewBlocAvailable = await inAppReviewBloc.isAvailable();
-      if (inAppReviewBlocAvailable) {
-        Future.delayed(
-          // ignore: no-magic-number
-          Duration(seconds: 5),
-          () {
-            unawaited(
-              inAppReviewBloc.requestReview().then(
-                    (_) => appAnalyticsBloc.onAppRated(),
-                  ),
-            );
-          },
-        );
-      }
-    }
+
+    addDisposable(disposable: crashReportingPermissionCheckerBloc);
+    await globalProviderService
+        .asyncInitAndRegister<ICrashReportingPermissionCheckerBloc>(
+      crashReportingPermissionCheckerBloc,
+    );
+
+    var inAppReviewCheckerBloc = InAppReviewCheckerBloc(
+      appAnalyticsBloc: appAnalyticsBloc,
+      configService: configService,
+      askInAppReviewLocalPreferenceBloc: askInAppReviewLocalPreferenceBloc,
+    );
+
+    addDisposable(disposable: inAppReviewCheckerBloc);
+    await globalProviderService.asyncInitAndRegister<IInAppReviewCheckerBloc>(
+      inAppReviewCheckerBloc,
+    );
   }
 }

@@ -68,7 +68,7 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           connectionService: IConnectionService.of(
             context,
             listen: false,
-          ),
+          ), pleromaApiInstance: null,
         );
 
         pleromaStatusService = PleromaApiStatusService(
@@ -169,7 +169,7 @@ MaterialPageRoute createRemoteAccountDetailsPageRoute({
             connectionService: IConnectionService.of(
               context,
               listen: false,
-            ),
+            ), pleromaApiInstance: null,
           );
         },
         child: DisposableProvider<IAccountDetailsBloc>(

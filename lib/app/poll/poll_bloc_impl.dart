@@ -38,10 +38,10 @@ class PollBloc extends DisposableOwner implements IPollBloc {
     addDisposable(subject: selectedVotesSubject);
     addDisposable(subject: isNeedShowResultsWithoutVoteSubject);
 
-    if (!poll.expired) {
+    if (!poll.expired && poll.expiresAt != null) {
       var diff = DateTime.now()
           .difference(
-            poll.expiresAt,
+            poll.expiresAt!,
           )
           .abs();
 
@@ -74,7 +74,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       );
 
   @override
-  DateTime get expiresAt => poll.expiresAt;
+  DateTime? get expiresAt => poll.expiresAt;
 
   @override
   bool get expired => poll.expired;

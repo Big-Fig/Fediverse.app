@@ -3,14 +3,15 @@ import 'package:fedi/app/custom_list/custom_list_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_bloc_impl.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/custom_list/edit/edit_custom_list_page.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
+import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_timeline_widget.dart';
+import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
-import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
-import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
@@ -200,6 +201,11 @@ class _CustomListPageAppBarSettingsActionWidget extends StatelessWidget {
             settings: timeline.settings,
           ),
           lockedSource: true,
+          pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+            context,
+            listen: false,
+          ).currentInstance!.info!,
+          instanceLocation: InstanceLocation.local,
         );
       },
     );
