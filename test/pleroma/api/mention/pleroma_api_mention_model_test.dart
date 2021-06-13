@@ -28,12 +28,12 @@ void main() {
   test('PleromaApiMention toJson & fromJson', () async {
     expect(
       [
-        PleromaApiMention.only(acct: "acct1", id: "id", url: "url"),
-        PleromaApiMention.only(acct: "acct2", id: "id", url: "url"),
+        PleromaApiMention.only(acct: 'acct1', id: 'id', url: 'url'),
+        PleromaApiMention.only(acct: 'acct2', id: 'id', url: 'url'),
       ].toAccts(),
       [
-        "acct1",
-        "acct2",
+        'acct1',
+        'acct2',
       ],
     );
   });

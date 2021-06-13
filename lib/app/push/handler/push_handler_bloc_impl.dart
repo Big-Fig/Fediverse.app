@@ -13,7 +13,7 @@ import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("push_handler_bloc_impl.dart");
+var _logger = Logger('push_handler_bloc_impl.dart');
 
 class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
   final IPushHandlerUnhandledLocalPreferenceBloc unhandledLocalPreferencesBloc;
@@ -55,7 +55,7 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
       pushMessage: pushMessage,
       body: body,
     );
-    bool handled = false;
+    var handled = false;
     for (var handler in realTimeHandlers) {
       handled = await handler(pushMessageHandler);
       if (handled) {
@@ -63,9 +63,9 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
       }
     }
 
-    _logger.finest(() => "handlePushMessage \n"
-        "\t body =$body"
-        "\t handled =$handled");
+    _logger.finest(() => 'handlePushMessage \n'
+        '\t body =$body'
+        '\t handled =$handled');
 
     if (!handled) {
       var instanceForMessage = instanceListBloc.findInstanceByCredentials(
@@ -74,8 +74,8 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
       );
 
       if (instanceForMessage != null) {
-        _logger.finest(() => "body = $body by \n"
-            "\t instanceForMessage=$instanceForMessage");
+        _logger.finest(() => 'body = $body by \n'
+            '\t instanceForMessage=$instanceForMessage');
 
         if (!currentInstanceBloc.isCurrentInstance(instanceForMessage)) {
           await unhandledLocalPreferencesBloc
@@ -90,8 +90,8 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
           }
         }
       } else {
-        _logger.severe(() => "Can't handle body = "
-            "$body, because instance for message not found");
+        _logger.severe(() => 'Cant handle body = '
+            '$body, because instance for message not found');
       }
     }
   }

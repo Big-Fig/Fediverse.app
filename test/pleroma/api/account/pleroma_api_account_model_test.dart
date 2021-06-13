@@ -9,7 +9,7 @@ import 'pleroma_api_account_test_helper.dart';
 void main() {
   test('PleromaApiAccount toPleromaApiAccount', () async {
     var original = PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-      seed: "seed",
+      seed: 'seed',
     );
     var obj = original.toPleromaApiAccount(forceNewObject: true);
 
@@ -18,7 +18,7 @@ void main() {
   test('PleromaApiAccountReport toPleromaApiAccountReport', () async {
     var original =
         PleromaApiAccountTestHelper.createTestPleromaApiAccountReport(
-      seed: "seed",
+      seed: 'seed',
     );
     var obj = original.toPleromaApiAccountReport(forceNewObject: true);
 
@@ -79,10 +79,10 @@ void main() {
 
   test('PleromaApiAccount copyWith', () async {
     var obj1 = PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 = PleromaApiAccountTestHelper.createTestPleromaApiAccount(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(

@@ -39,6 +39,7 @@ DialogAction buildDeleteAndSaveToDrafts(
         listen: false,
       ).currentInstance?.info?.pollLimits ??
       PleromaApiInstancePollLimits.defaultLimits;
+
   return DialogAction(
     label: S.of(context).app_status_delete_dialog_action_deleteAndSaveToDrafts,
     onAction: (context) async {
@@ -91,6 +92,7 @@ DialogAction buildDeleteAndStartNewAction(
         listen: false,
       ).currentInstance?.info?.pollLimits ??
       PleromaApiInstancePollLimits.defaultLimits;
+
   return DialogAction(
     label: S.of(context).app_status_delete_dialog_action_deleteAndStartNew,
     onAction: (context) async {

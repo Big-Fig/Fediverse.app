@@ -5,7 +5,7 @@ import 'package:fedi/json/json_model.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
-
+// ignore_for_file: no-magic-number, avoid-late-keyword
 class HiveTestHelper {
   static void testAdapter<T>(T Function() adapterCreator) {
     var adapter1 = adapterCreator();
@@ -31,10 +31,9 @@ class HiveTestHelper {
       Hive.init(systemTemp.path);
     }
 
-    var obj = testHiveObjectCreator(seed: "seed1");
+    var obj = testHiveObjectCreator(seed: 'seed1');
 
-    // ignore: no-magic-number
-    var uniquePrefix = obj.toString().substring(0, 3);
+    var uniquePrefix = obj.toString().substring(0, 3) + obj.hashCode.toString();
     var boxName = 'testHiveSaveAndLoad' + uniquePrefix;
 
     hiveLocalPreferencesService = HiveLocalPreferencesService(
@@ -42,8 +41,7 @@ class HiveTestHelper {
     );
     await hiveLocalPreferencesService.performAsyncInit();
 
-
-    var key = "key";
+    var key = 'key';
     await hiveLocalPreferencesService.setObjectPreference(key, obj);
 
     await hiveLocalPreferencesService.dispose();
@@ -54,7 +52,7 @@ class HiveTestHelper {
     );
     await hiveLocalPreferencesService.performAsyncInit();
 
-    T? objFromHive = hiveLocalPreferencesService.getObjectPreference<T>(
+    var objFromHive = hiveLocalPreferencesService.getObjectPreference<T>(
       key,
       // hack, code is unused inside
       (jsonData) => obj,

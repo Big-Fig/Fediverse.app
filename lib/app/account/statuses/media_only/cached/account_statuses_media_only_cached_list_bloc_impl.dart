@@ -17,7 +17,7 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("account_statuses_media_only_cached_list_bloc_impl.dart");
+var _logger = Logger('account_statuses_media_only_cached_list_bloc_impl.dart');
 
 class AccountStatusesMediaOnlyCachedListBloc
     extends AccountStatusesCachedListBloc {
@@ -116,10 +116,10 @@ class AccountStatusesMediaOnlyCachedListBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    _logger.finest(() => "refreshItemsFromRemoteForPage \n"
-        "\t limit=$limit"
-        "\t newerThan=$newerThan"
-        "\t olderThan=$olderThan");
+    _logger.finest(() => 'refreshItemsFromRemoteForPage \n'
+        '\t limit=$limit'
+        '\t newerThan=$newerThan'
+        '\t olderThan=$olderThan');
 
     var remoteStatuses = await pleromaAccountService.getAccountStatuses(
       onlyWithMedia: true,

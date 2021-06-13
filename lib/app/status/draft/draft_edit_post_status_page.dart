@@ -21,6 +21,7 @@ class DraftEditPostStatusPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         handleBackPressed(context);
+
         return true;
       },
       child: Scaffold(
@@ -73,6 +74,7 @@ void goToDraftEditPostStatusPage(
           if (dialogResult.success) {
             Navigator.of(context).pop();
           }
+
           return dialogResult.success;
         },
         child: DraftEditPostStatusPage(
@@ -82,6 +84,7 @@ void goToDraftEditPostStatusPage(
               batchTransaction: null,
             );
             Navigator.of(context).pop();
+
             return true;
           },
         ),

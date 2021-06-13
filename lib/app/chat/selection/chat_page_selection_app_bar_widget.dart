@@ -17,6 +17,7 @@ class ChatPageSelectionAppBarWidget extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     var chatSelectionBloc = IChatSelectionBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: chatSelectionBloc.isSomethingSelectedStream,
       builder: (context, snapshot) {

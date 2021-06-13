@@ -19,7 +19,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-final dateFormat = DateFormat("dd MMM, HH:mm a");
+final _dateFormat = DateFormat('dd MMM, HH:mm a');
 
 class DraftStatusListItemWidget extends StatelessWidget {
   @override
@@ -35,6 +35,7 @@ class DraftStatusListItemWidget extends StatelessWidget {
           initialData: draftStatusBloc.draftStatus,
           builder: (context, snapshot) {
             var draftStatus = snapshot.data;
+
             return Provider<IDraftStatus>.value(
               value: draftStatus!,
               child: ProxyProvider<IDraftStatus, IStatus>(
@@ -75,6 +76,7 @@ class _DraftStatusListItemHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var draftStatusBloc = IDraftStatusBloc.of(context);
+
     return StreamBuilder<DraftStatusState?>(
       stream: draftStatusBloc.stateStream,
       builder: (context, snapshot) {
@@ -208,13 +210,15 @@ class _DraftStatusListItemDraftAtWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var draftStatusBloc = IDraftStatusBloc.of(context);
+
     return StreamBuilder<DateTime?>(
       stream: draftStatusBloc.updatedAtStream,
       initialData: draftStatusBloc.updatedAt,
       builder: (context, snapshot) {
         var draftAt = snapshot.data!;
+
         return Text(
-          dateFormat.format(draftAt),
+          _dateFormat.format(draftAt),
           style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
         );
       },

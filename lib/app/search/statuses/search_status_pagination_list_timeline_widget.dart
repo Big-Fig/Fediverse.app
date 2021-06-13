@@ -1,4 +1,4 @@
-import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
+import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_timeline_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -37,6 +37,7 @@ class SearchStatusPaginationListTimelineWidget
       context,
       listen: listen,
     );
+
     return timelinePaginationListBloc;
   }
 }

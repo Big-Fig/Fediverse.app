@@ -50,6 +50,7 @@ class _MyAccountDomainBlockListItemBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var domain = Provider.of<DomainBlock>(context);
+
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.start,

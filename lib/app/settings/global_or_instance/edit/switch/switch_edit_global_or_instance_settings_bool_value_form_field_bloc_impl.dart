@@ -8,7 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 final _logger = Logger(
-  "switch_edit_global_or_instance_settings_form_bool_field_bloc_impl.dart",
+  'switch_edit_global_or_instance_settings_form_bool_field_bloc_impl.dart',
 );
 
 class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
@@ -48,7 +48,7 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
   @override
   void changeCurrentValue(bool? newValue) async {
     var oldValue = currentValue;
-    _logger.finest(() => "changeCurrentValue $newValue oldValue $oldValue");
+    _logger.finest(() => 'changeCurrentValue $newValue oldValue $oldValue');
 
     if (newValue != oldValue) {
       if (newValue!) {
@@ -113,7 +113,7 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
   @override
   void updateValidators(List<FormValueFieldValidation<bool>> validators) {
     throw UnsupportedError(
-      "updateValidators not supported in IsUseGlobalSettingsFormBoolFieldBloc",
+      'updateValidators not supported in IsUseGlobalSettingsFormBoolFieldBloc',
     );
   }
 
@@ -122,7 +122,7 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
 
   @override
   void changeIsEnabled(bool enabled) {
-    throw UnsupportedError("changeIsEnabled not supported");
+    throw UnsupportedError('changeIsEnabled not supported');
   }
 
   @override

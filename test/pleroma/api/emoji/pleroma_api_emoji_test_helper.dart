@@ -5,12 +5,12 @@ class PleromaApiEmojiTestHelper {
     required String seed,
   }) =>
       PleromaApiEmoji(
-        shortcode: seed + "shortcode",
-        url: seed + "url",
-        staticUrl: seed + "staticUrl",
+        shortcode: seed + 'shortcode',
+        url: seed + 'url',
+        staticUrl: seed + 'staticUrl',
         // ignore: no-magic-number
         visibleInPicker: seed.hashCode % 2 == 0,
-        category: seed + "category",
+        category: seed + 'category',
       );
 
   static PleromaApiCustomEmoji createTestPleromaApiCustomEmoji({
@@ -18,10 +18,10 @@ class PleromaApiEmojiTestHelper {
   }) =>
       PleromaApiCustomEmoji(
         tags: [
-          seed + "1",
-          seed + "2",
+          seed + '1',
+          seed + '2',
         ],
-        imageUrl: seed + "imageUrl",
-        name: seed + "name",
+        imageUrl: seed + 'imageUrl',
+        name: seed + 'name',
       );
 }

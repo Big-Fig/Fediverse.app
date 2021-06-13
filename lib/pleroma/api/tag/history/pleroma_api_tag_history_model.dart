@@ -43,8 +43,8 @@ extension IPleromaApiTagHistoryListExtension on List<IPleromaApiTagHistory> {
 class PleromaApiTagHistory implements IPleromaApiTagHistory, IJsonObject {
   @override
   @HiveField(0)
-  // int(pleroma) or String(mastodon)
-  final dynamic accounts;
+  @JsonKey(fromJson: int.parse, toJson: _intToString)
+  final int accounts;
 
   @override
   @HiveField(1)
@@ -52,8 +52,8 @@ class PleromaApiTagHistory implements IPleromaApiTagHistory, IJsonObject {
 
   @override
   @HiveField(2)
-  // int(pleroma) or String(mastodon)
-  final dynamic uses;
+  @JsonKey(fromJson: int.parse, toJson: _intToString)
+  final int uses;
 
   PleromaApiTagHistory({
     required this.accounts,
@@ -88,4 +88,6 @@ class PleromaApiTagHistory implements IPleromaApiTagHistory, IJsonObject {
         'uses: $uses'
         '}';
   }
+
+  static String _intToString(int val) => val.toString();
 }

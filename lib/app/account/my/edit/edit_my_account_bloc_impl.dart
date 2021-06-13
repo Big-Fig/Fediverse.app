@@ -103,14 +103,14 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     required PleromaApiInstancePleromaPartMetadataFieldLimits?
         customFieldLimits,
   })   : displayNameField = StringValueFormFieldBloc(
-          originValue: myAccountBloc.displayNameEmojiText!.text,
+          originValue: myAccountBloc.displayNameEmojiText?.text ?? '',
           validators: [
             StringValueFormFieldNonEmptyValidationError.createValidator(),
           ],
           maxLength: null,
         ),
         noteField = StringValueFormFieldBloc(
-          originValue: myAccountBloc.noteUnescaped ?? "",
+          originValue: myAccountBloc.noteUnescaped ?? '',
           validators: [],
           maxLength: noteMaxLength,
         ),
@@ -136,16 +136,16 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           // ignore: no-magic-number
           maximumFieldsCount: customFieldLimits?.maxFields ?? 20,
           newEmptyFieldCreator: () => LinkPairFormGroupBloc(
-            value: "",
-            name: "",
+            value: '',
+            name: '',
             nameMaxLength: customFieldLimits?.nameLength,
             valueMaxLength: customFieldLimits?.valueLength,
           ),
           originalItems: myAccountBloc.fields
               .map(
                 (field) => LinkPairFormGroupBloc(
-                  name: field.name ?? "",
-                  value: field.valueAsRawUrl ?? "",
+                  name: field.name ?? '',
+                  value: field.valueAsRawUrl ?? '',
                   nameMaxLength: customFieldLimits?.nameLength,
                   valueMaxLength: customFieldLimits?.valueLength,
                 ),
@@ -295,7 +295,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   }
 
   PleromaApiMyAccountEdit _calculatePleromaMyAccountEdit() {
-    Map<int, PleromaApiField> fieldsAttributes = {};
+    var fieldsAttributes = <int, PleromaApiField>{};
 
     customFieldsGroupBloc.items.asMap().entries.forEach(
       (entry) {
@@ -314,7 +314,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     if (backgroundImageOriginalDeleted) {
       // API logic
       // We should set pleromaBackgroundImage to empty string to delete it
-      pleromaBackgroundImage = "";
+      pleromaBackgroundImage = '';
     }
 
     var isPleromaInstance = currentAuthInstanceBloc.currentInstance!.isPleroma;
@@ -365,6 +365,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance!
         .info;
+    
     return EditMyAccountBloc(
       currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
         context,

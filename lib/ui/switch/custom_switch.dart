@@ -38,6 +38,7 @@ class CustomSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var customSwitchBloc = ICustomSwitchBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: customSwitchBloc.currentValueStream,
       initialData: customSwitchBloc.currentValue,

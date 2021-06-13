@@ -12,8 +12,8 @@ import 'package:provider/provider.dart';
 var urlPath = path.posix;
 
 final Image defaultImage =
-    Image.asset("assets/images/default_timeline_header.png");
-var _logger = Logger("fedi_instance_image_background_widget.dart");
+    Image.asset('assets/images/default_timeline_header.png');
+var _logger = Logger('fedi_instance_image_background_widget.dart');
 
 class FediInstanceImageBackgroundWidget extends StatelessWidget {
   const FediInstanceImageBackgroundWidget();
@@ -31,7 +31,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var accountBackgroundImage = snapshot.data;
 
-        String? backgroundImage = accountBackgroundImage;
+        var backgroundImage = accountBackgroundImage;
 
         if (backgroundImage?.isNotEmpty != true) {
           backgroundImage = currentInstance?.info?.backgroundImage;
@@ -52,7 +52,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
         }
 
         _logger.finest(
-          () => "backgroundImageAbsolutePath $backgroundImageAbsolutePath",
+          () => 'backgroundImageAbsolutePath $backgroundImageAbsolutePath',
         );
 
         return Provider<String?>.value(
@@ -72,7 +72,7 @@ class _FediInstanceImageBackgroundCachedNetworkImageWidget
 
   @override
   Widget build(BuildContext context) {
-    String? backgroundImageAbsolutePath = Provider.of<String?>(context);
+    var backgroundImageAbsolutePath = Provider.of<String?>(context);
 
     if (backgroundImageAbsolutePath?.isNotEmpty == true) {
       return LayoutBuilder(
@@ -137,6 +137,7 @@ class _FediInstanceImageBackgroundImageProviderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var imageProvider = Provider.of<ImageProvider>(context);
+
     return RepaintBoundary(
       child: Stack(
         children: [

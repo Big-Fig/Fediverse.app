@@ -18,7 +18,7 @@ void main() {
   test('toMastodonApiFilterContextTypes', () async {
     expect(
       listEquals(
-        ["notifications", "home"].toMastodonApiFilterContextTypes(),
+        ['notifications', 'home'].toMastodonApiFilterContextTypes(),
         [
           MastodonApiFilterContextType.notifications,
           MastodonApiFilterContextType.homeAndCustomLists,

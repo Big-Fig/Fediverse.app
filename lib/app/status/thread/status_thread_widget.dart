@@ -108,6 +108,7 @@ class _StatusThreadStatusesWidget extends StatelessWidget {
             child: FediCircularProgressIndicator(),
           );
         }
+
         return Provider<List<IStatus>>.value(
           value: statuses,
           child: FediListRefreshIndicator(
@@ -128,6 +129,7 @@ class _StatusThreadInReplyToStatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IThreadPostStatusBloc.of(context);
+
     return StreamBuilder<IStatus?>(
       stream: postStatusBloc.notCanceledOriginInReplyToStatusStream,
       builder: (context, snapshot) {
@@ -181,6 +183,7 @@ class _StatusThreadPostStatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusThreadBloc = IStatusThreadBloc.of(context);
+
     return PostStatusWidget(
       hintText: S.of(context).app_status_thread_post_hint(
             statusThreadBloc.initialStatusToFetchThread!.account.acct,
@@ -292,6 +295,7 @@ class _StatusThreadStatusesListItemWidget extends StatelessWidget {
     var isFirstInList = index == 0;
     var isInFocus = index == statusThreadBloc.initialStatusToFetchThreadIndex;
     var isFirstStatusInThread = statusThreadBloc.isFirstStatusInThread(status);
+
     return Padding(
       padding: isFirstInList
           // todo: refactor

@@ -38,10 +38,10 @@ class PollBloc extends DisposableOwner implements IPollBloc {
     addDisposable(subject: selectedVotesSubject);
     addDisposable(subject: isNeedShowResultsWithoutVoteSubject);
 
-    if (!poll.expired) {
+    if (!poll.expired && poll.expiresAt != null) {
       var diff = DateTime.now()
           .difference(
-            poll.expiresAt,
+            poll.expiresAt!,
           )
           .abs();
 
@@ -74,7 +74,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       );
 
   @override
-  DateTime get expiresAt => poll.expiresAt;
+  DateTime? get expiresAt => poll.expiresAt;
 
   @override
   bool get expired => poll.expired;
@@ -83,16 +83,16 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   bool get multiple => poll.multiple;
 
   @override
-  int get votesCount => poll.votesCount;
+  int? get votesCount => poll.votesCount;
 
   @override
-  Stream<int> get votesCountStream => pollStream.map((poll) => poll.votesCount);
+  Stream<int?> get votesCountStream => pollStream.map((poll) => poll.votesCount);
 
   @override
-  int get votersCount => poll.votersCount;
+  int? get votersCount => poll.votersCount;
 
   @override
-  Stream<int> get votersCountStream => pollStream.map(
+  Stream<int?> get votersCountStream => pollStream.map(
         (poll) => poll.votersCount,
       );
 
@@ -113,7 +113,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   @override
   Future vote() async {
     assert(selectedVotes.isNotEmpty);
-    List<int> voteIndexes = [];
+    var voteIndexes = <int>[];
 
     selectedVotes.forEach((selectedVote) {
       var option = poll.options

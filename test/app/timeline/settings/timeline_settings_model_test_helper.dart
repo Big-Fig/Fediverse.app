@@ -19,17 +19,17 @@ class TimelineSettingsModelTestHelper {
         withMuted: seed.hashCode % 2 == 1,
         excludeVisibilitiesStrings: [
           EnumTestHelper.createTestEnum(
-            seed: seed + "1",
+            seed: seed + '1',
             values: PleromaApiReplyVisibilityFilter.values,
           ).toJsonValue(),
           EnumTestHelper.createTestEnum(
-            seed: seed + "2",
+            seed: seed + '2',
             values: PleromaApiReplyVisibilityFilter.values,
           ).toJsonValue(),
         ],
         onlyInRemoteList:
             PleromaApiListTestHelper.createTestPleromaApiList(seed: seed),
-        withRemoteHashtag: seed + "withRemoteHashtag",
+        withRemoteHashtag: seed + 'withRemoteHashtag',
         replyVisibilityFilterString: EnumTestHelper.createTestEnum(
           seed: seed,
           values: PleromaApiReplyVisibilityFilter.values,
@@ -39,6 +39,6 @@ class TimelineSettingsModelTestHelper {
         onlyPinned: seed.hashCode % 2 == 0,
         excludeReblogs: seed.hashCode % 2 == 1,
         webSocketsUpdates: seed.hashCode % 2 == 0,
-        onlyFromInstance: seed + "onlyFromInstance",
+        onlyFromInstance: seed + 'onlyFromInstance',
       );
 }

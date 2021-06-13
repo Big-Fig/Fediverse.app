@@ -41,6 +41,7 @@ class _AccountListAvatarBodyWidget extends StatelessWidget {
 
     if (accounts.length == 1) {
       var account = accounts.first;
+
       return Provider<IAccount>.value(
         value: account,
         child: _AccountListAvatarSingleAccountWidget(
@@ -127,6 +128,7 @@ class _AccountListAvatarMultiAccountTwoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const sizeMultiplier = 0.7;
     var accounts = Provider.of<List<IAccount>>(context);
+
     return Stack(
       children: [
         Align(
@@ -166,6 +168,7 @@ class _AccountListAvatarMultiAccountThreeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const sizeMultiplier = 0.65;
     var accounts = Provider.of<List<IAccount>>(context);
+
     return Stack(
       children: [
         Align(
@@ -216,6 +219,7 @@ class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const sizeMultiplier = 0.6;
     var accounts = Provider.of<List<IAccount>>(context);
+
     return Stack(
       children: [
         Align(
@@ -277,6 +281,7 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const sizeMultiplier = 0.55;
     var accounts = Provider.of<List<IAccount>>(context);
+
     return Stack(
       children: [
         Align(

@@ -38,6 +38,7 @@ class EditCustomListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editCustomListBloc = IEditCustomListBloc.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -75,6 +76,7 @@ class _EditCustomListDeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editCustomListBloc = IEditCustomListBloc.of(context);
+
     return PleromaAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () async {
         await editCustomListBloc.deleteList();
@@ -251,6 +253,7 @@ class _EditCustomListBodySearchToAddAccountsBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var searchInputBloc = ISearchInputBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: searchInputBloc.confirmedSearchTermIsNotEmptyStream,
       builder: (context, snapshot) {

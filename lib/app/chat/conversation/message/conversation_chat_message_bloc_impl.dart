@@ -66,11 +66,11 @@ class ConversationChatMessageBloc extends ChatMessageBloc
     required this.conversationChatBloc,
     required this.pleromaInstancePollLimits,
     required IConversationChatMessage
-        chatMessage, // for better performance we don't
+        chatMessage, // for better performance we dont
     // update
     // account too often
     bool needRefreshFromNetworkOnInit =
-        false, // todo: remove hack. Don't init when bloc quickly disposed. Help
+        false, // todo: remove hack. Dont init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
     bool isNeedWatchLocalRepositoryForUpdates = true,

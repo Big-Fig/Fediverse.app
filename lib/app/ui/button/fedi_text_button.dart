@@ -24,6 +24,7 @@ class FediTextButton extends StatelessWidget {
             ? fediUiTextTheme.bigPrimary.copyWith(color: color)
             : fediUiTextTheme.bigPrimary
         : fediUiTextTheme.bigGrey;
+
     return Padding(
       padding: padding,
       child: InkWell(

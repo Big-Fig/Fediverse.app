@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("account_pagination_list_widget.dart");
+var _logger = Logger('account_pagination_list_widget.dart');
 
 typedef AccountPaginationListItemBuilder = Widget Function(
   BuildContext context,
@@ -80,7 +80,8 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
       footer: footer,
       itemBuilder: (context, index) {
         var item = items[index];
-        _logger.finest(() => "itemBuilder ${item.remoteId}");
+        _logger.finest(() => 'itemBuilder ${item.remoteId}');
+
         return Provider<IAccount>.value(
           value: item,
           child: DisposableProxyProvider<IAccount, IAccountBloc>(
@@ -128,6 +129,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
       retrievePaginationListBloc(BuildContext context, {required bool listen}) {
     var accountPaginationListBloc =
         IAccountPaginationListBloc.of(context, listen: listen);
+
     return accountPaginationListBloc;
   }
 }

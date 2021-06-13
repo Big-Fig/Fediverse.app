@@ -16,6 +16,7 @@ class StatusTestHelper {
   }) async {
     account = account ?? await AccountTestHelper.createTestAccount(seed: seed);
     var dbAccount = account.toDbAccount();
+
     return DbStatusPopulatedWrapper(
       dbStatusPopulated: DbStatusPopulated(
         dbStatus: await StatusDatabaseTestHelper.createTestDbStatus(

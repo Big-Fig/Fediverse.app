@@ -85,6 +85,7 @@ class CreateCustomListBloc extends EditCustomListBloc
     );
     var localCustomList = pleromaList.toCustomList();
     submittedStreamController.add(localCustomList);
+
     return localCustomList;
   }
 

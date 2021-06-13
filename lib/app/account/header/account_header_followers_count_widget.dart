@@ -14,6 +14,7 @@ class AccountHeaderFollowersCountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
     var isLocal = accountBloc.instanceLocation.isLocal;
+
     return InkWell(
       onTap: isLocal
           ? () {
@@ -50,10 +51,12 @@ class _AccountHeaderFollowersCountBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+
     return StreamBuilder<int?>(
       stream: accountBloc.followersCountStream,
       builder: (context, snapshot) {
         var count = snapshot.data;
+
         return Provider<int?>.value(
           value: count,
           child: AccountHeaderStatisticWidget(

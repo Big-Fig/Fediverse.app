@@ -1,5 +1,6 @@
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibility_multi_select_from_list_form_field_bloc.dart';
 import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibility_multi_select_from_list_form_field_widget.dart';
 import 'package:fedi/app/timeline/reply_visibility_filter/timeline_reply_visibility_single_select_from_list_value_form_field_bloc.dart';
@@ -81,8 +82,9 @@ class _EditTimelineSettingsChildrenWidget extends StatelessWidget {
         break;
 
       default:
-        throw "Invalid timelineType $timelineType";
+        throw 'Invalid timelineType $timelineType';
     }
+
     return children;
   }
 }
@@ -354,19 +356,29 @@ class _EditTimelineSettingsFieldWebsocketsUpdatesWidget
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.webSocketsUpdatesFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_timeline_settings_field_enableWebSockets_label,
-        description: S
-            .of(context)
-            .app_timeline_settings_field_enableWebSockets_description,
-        descriptionOnDisabled: descriptionOnDisabled ??
-            S
-                .of(context)
-                .app_timeline_settings_field_enableWebSockets_description_instance_disabled,
-      ),
-    );
+    var editTimelineSettingsBloc = IEditTimelineSettingsBloc.of(context);
+
+    var isLocal =
+        editTimelineSettingsBloc.instanceLocation == InstanceLocation.local;
+
+    if (isLocal) {
+      return ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.webSocketsUpdatesFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label:
+              S.of(context).app_timeline_settings_field_enableWebSockets_label,
+          description: S
+              .of(context)
+              .app_timeline_settings_field_enableWebSockets_description,
+          descriptionOnDisabled: descriptionOnDisabled ??
+              S
+                  .of(context)
+                  .app_timeline_settings_field_enableWebSockets_description_instance_disabled,
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }
 

@@ -14,6 +14,7 @@ class FediEmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediUiTextTheme = IFediUiTextTheme.of(context);
+
     return Padding(
       // ignore: no-magic-number
       padding: EdgeInsets.all(40.0),

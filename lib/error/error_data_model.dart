@@ -7,7 +7,7 @@ class ErrorData {
   final dynamic error;
   final StackTrace? stackTrace;
   final ErrorDataTitleCreator titleCreator;
-  final ErrorDataContentCreator contentCreator;
+  final ErrorDataContentCreator? contentCreator;
 
   ErrorData({
     required this.error,

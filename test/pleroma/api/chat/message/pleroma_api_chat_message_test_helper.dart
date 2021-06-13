@@ -11,14 +11,14 @@ class PleromaApiChatMessageTestHelper {
     required String seed,
   }) =>
       PleromaApiChatMessage(
-        id: seed + "id",
-        chatId: seed + "chatId",
-        accountId: seed + "accountId",
-        content: seed + "content",
+        id: seed + 'id',
+        chatId: seed + 'chatId',
+        accountId: seed + 'accountId',
+        content: seed + 'content',
         createdAt: DateTimeTestHelper.createTestDateTime(seed: seed),
         emojis: [
-          PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(seed: seed + "1"),
-          PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(seed: seed + "2"),
+          PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(seed: seed + '1'),
+          PleromaApiEmojiTestHelper.createTestPleromaApiEmoji(seed: seed + '2'),
         ],
         mediaAttachment:
             PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
@@ -33,8 +33,8 @@ class PleromaApiChatMessageTestHelper {
     required String seed,
   }) =>
       PleromaApiChatMessageSendData(
-        content: seed + "content",
-        mediaId: seed + "mediaId",
-        idempotencyKey: seed + "idempotencyKey",
+        content: seed + 'content',
+        mediaId: seed + 'mediaId',
+        idempotencyKey: seed + 'idempotencyKey',
       );
 }

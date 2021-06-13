@@ -9,7 +9,7 @@ import 'package:moor/moor.dart';
 
 part 'pleroma_chat_message_database_dao.g.dart';
 
-var _accountAliasId = "account";
+var _accountAliasId = 'account';
 
 @UseDao(
   tables: [DbChatMessages],
@@ -24,6 +24,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     PleromaChatMessageRepositoryFilters,
     PleromaChatMessageRepositoryOrderingTermData> with _$ChatMessageDaoMixin {
   final AppDatabase db;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
 
   // Called by the AppDatabase class
@@ -32,37 +33,39 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   Future<List<DbChatMessagePopulated>> findAll() async {
-    JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAllQuery();
+    var chatMessageQuery = _findAllQuery();
 
     var typedResults = await chatMessageQuery.get();
+
     return typedResults.toDbChatMessagePopulatedList(
       dao: this,
     );
   }
 
   Stream<List<DbChatMessagePopulated>> watchAll() {
-    JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAllQuery();
+    var chatMessageQuery = _findAllQuery();
 
     return chatMessageQuery.watch().map(
           (typedResults) => typedResults.toDbChatMessagePopulatedList(
-            dao: this,
-          ),
-        );
+        dao: this,
+      ),
+    );
   }
 
   Future<DbChatMessagePopulated?> findByOldPendingRemoteId(
-    String oldPendingRemoteId,
-  ) async {
+      String oldPendingRemoteId,
+      ) async {
     var typedResult = await _findByOldPendingRemoteIdQuery(oldPendingRemoteId)
         .getSingleOrNull();
+
     return typedResult?.toDbChatMessagePopulated(
       dao: this,
     );
   }
 
   Stream<DbChatMessagePopulated?> watchByOldPendingRemoteId(
-    String? oldPendingRemoteId,
-  ) =>
+      String? oldPendingRemoteId,
+      ) =>
       _findByOldPendingRemoteIdQuery(oldPendingRemoteId)
           .watchSingleOrNull()
           .map((typedResult) {
@@ -71,114 +74,116 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
         );
       });
 
-  JoinedSelectStatement<Table, DataClass> _findAllQuery() {
+  JoinedSelectStatement _findAllQuery() {
     var sqlQuery = (select(db.dbChatMessages).join(
       populateChatMessageJoin(),
     ));
+
     return sqlQuery;
   }
 
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
-      addOnlyPendingStatePublishedOrNull(
-    SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
-  ) =>
-          query
-            ..where(
+  addOnlyPendingStatePublishedOrNull(
+      SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
+      ) =>
+      query
+        ..where(
               (chatMessage) =>
-                  chatMessage.pendingState.isNull() |
-                  chatMessage.pendingState.equals(
-                    PendingState.published.toJsonValue(),
-                  ),
-            );
+          chatMessage.pendingState.isNull() |
+          chatMessage.pendingState.equals(
+            PendingState.published.toJsonValue(),
+          ),
+        );
 
-  JoinedSelectStatement<Table, DataClass> _findByOldPendingRemoteIdQuery(
-    String? oldPendingRemoteId,
-  ) =>
+  JoinedSelectStatement _findByOldPendingRemoteIdQuery(
+      String? oldPendingRemoteId,
+      ) =>
       (select(db.dbChatMessages)
-            ..where(
+        ..where(
               (chatMessage) => chatMessage.oldPendingRemoteId.like(
-                oldPendingRemoteId!,
-              ),
-            ))
+            oldPendingRemoteId!,
+          ),
+        ))
           .join(
         populateChatMessageJoin(),
       );
 
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> addChatWhere(
-    SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
-    String chatRemoteId,
-  ) =>
+      SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
+      String chatRemoteId,
+      ) =>
       query
         ..where(
-          (_) => CustomExpression<bool>(
+              (_) => CustomExpression<bool>(
             "db_chat_messages.chat_remote_id = '$chatRemoteId'",
           ),
         );
 
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> addChatsWhere(
-    SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
-    List<String> chatRemoteIds,
-  ) =>
+      SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
+      List<String> chatRemoteIds,
+      ) =>
       query
         ..where(
-          (_) => CustomExpression<bool>(
-            "db_chat_messages.chat_remote_id IN ("
-            "${chatRemoteIds.join(", ")})",
+              (_) => CustomExpression<bool>(
+            'db_chat_messages.chat_remote_id IN ('
+                "${chatRemoteIds.join(", ")})",
           ),
         );
 
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
-      addOnlyNotDeletedWhere(
-    SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
-  ) =>
-          query
-            ..where(
+  addOnlyNotDeletedWhere(
+      SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
+      ) =>
+      query
+        ..where(
               (chatMessage) =>
-                  chatMessage.deleted.isNull() |
-                  chatMessage.deleted.equals(
-                    false,
-                  ),
-            );
+          chatMessage.deleted.isNull() |
+          chatMessage.deleted.equals(
+            false,
+          ),
+        );
 
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
-      addOnlyNotHiddenLocallyOnDevice(
-    SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
-  ) =>
-          query
-            ..where(
+  addOnlyNotHiddenLocallyOnDevice(
+      SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
+      ) =>
+      query
+        ..where(
               (chatMessage) =>
-                  chatMessage.hiddenLocallyOnDevice.isNull() |
-                  chatMessage.hiddenLocallyOnDevice.equals(
-                    false,
-                  ),
-            );
+          chatMessage.hiddenLocallyOnDevice.isNull() |
+          chatMessage.hiddenLocallyOnDevice.equals(
+            false,
+          ),
+        );
 
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> orderBy(
-    SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
-    List<PleromaChatMessageRepositoryOrderingTermData> orderTerms,
-  ) =>
+      SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
+      List<PleromaChatMessageRepositoryOrderingTermData> orderTerms,
+      ) =>
       query
         ..orderBy(orderTerms
             .map(
               (orderTerm) => (item) {
-                var expression;
-                switch (orderTerm.orderType) {
-                  case PleromaChatMessageOrderType.remoteId:
-                    expression = item.remoteId;
-                    break;
-                  case PleromaChatMessageOrderType.createdAt:
-                    expression = item.createdAt;
-                    break;
-                }
-                return OrderingTerm(
-                  expression: expression,
-                  mode: orderTerm.orderingMode,
-                );
-              },
-            )
+            var expression;
+            switch (orderTerm.orderType) {
+              case PleromaChatMessageOrderType.remoteId:
+                expression = item.remoteId;
+                break;
+              case PleromaChatMessageOrderType.createdAt:
+                expression = item.createdAt;
+                break;
+            }
+
+            return OrderingTerm(
+              expression: expression,
+              mode: orderTerm.orderingMode,
+            );
+          },
+        )
             .toList());
 
-  List<Join<Table, DataClass>> populateChatMessageJoin() {
+  List<Join> populateChatMessageJoin() {
     return [
       leftOuterJoin(
         accountAlias,
@@ -187,10 +192,10 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     ];
   }
 
-  void addGroupByChatId(JoinedSelectStatement<Table, DataClass> query) {
+  void addGroupByChatId(JoinedSelectStatement query) {
     query.groupBy(
       [dbChatMessages.chatRemoteId],
-      having: CustomExpression("MAX(db_chat_messages.created_at)"),
+      having: CustomExpression('MAX(db_chat_messages.created_at)'),
     );
   }
 
@@ -210,8 +215,8 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     //   });
     // }
 
-    var update = "UPDATE db_chat_messages "
-        "SET deleted = 1 "
+    var update = 'UPDATE db_chat_messages '
+        'SET deleted = 1 '
         "WHERE remote_id = '$remoteId'";
     var query = db.customUpdate(update, updates: {dbChatMessages});
 
@@ -223,8 +228,8 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     // required Batch? batchTransaction,
   }) {
     // todo: support batch
-    var update = "UPDATE db_chat_messages "
-        "SET hidden_locally_on_device = 1 "
+    var update = 'UPDATE db_chat_messages '
+        'SET hidden_locally_on_device = 1 '
         "WHERE id = '$localId'";
     var query = db.customUpdate(update, updates: {dbChatMessages});
 
@@ -235,9 +240,9 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   $DbChatMessagesTable get table => dbChatMessages;
 
   Future deleteOlderThanDate(
-    DateTime dateTimeToDelete, {
-    required Batch? batchTransaction,
-  }) =>
+      DateTime dateTimeToDelete, {
+        required Batch? batchTransaction,
+      }) =>
       deleteOlderThanDateTime(
         dateTimeToDelete,
         fieldName: table.createdAt.$name,
@@ -246,8 +251,8 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   DbChatMessagePopulated mapTypedResultToDbPopulatedItem(
-    TypedResult typedResult,
-  ) =>
+      TypedResult typedResult,
+      ) =>
       typedResult.toDbChatMessagePopulated(dao: this);
 
   @override
@@ -280,7 +285,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
           onlyInChats
               .map(
                 (chat) => chat.remoteId,
-              )
+          )
               .toList(),
         );
       }
@@ -298,7 +303,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
       assert(orderingTerms?.length == 1);
       var orderingTermData = orderingTerms!.first;
       assert(
-          orderingTermData.orderType == PleromaChatMessageOrderType.createdAt);
+      orderingTermData.orderType == PleromaChatMessageOrderType.createdAt);
       addDateTimeBoundsWhere(
         query,
         column: dbChatMessages.createdAt,
@@ -320,8 +325,8 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
-      convertSimpleSelectStatementToJoinedSelectStatement({
+  JoinedSelectStatement
+  convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
     required PleromaChatMessageRepositoryFilters? filters,
   }) {
@@ -330,6 +335,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     if (filters?.groupByChatId == true) {
       addGroupByChatId(joinedSelectStatement);
     }
+
     return joinedSelectStatement;
   }
 }
@@ -339,7 +345,7 @@ extension ListTypedResultDbChatMessagePopulatedExtension on List<TypedResult> {
     required ChatMessageDao dao,
   }) {
     return map(
-      (typedResult) => typedResult.toDbChatMessagePopulated(
+          (typedResult) => typedResult.toDbChatMessagePopulated(
         dao: dao,
       ),
     ).toList();

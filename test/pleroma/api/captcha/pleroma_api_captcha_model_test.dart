@@ -20,7 +20,7 @@ void main() {
 
   test('PleromaApiCaptcha toPleromaApiCaptcha', () async {
     var original = PleromaApiCaptchaTestHelper.createTestPleromaApiCaptcha(
-      seed: "seed",
+      seed: 'seed',
     );
     var obj = original.toPleromaApiCaptcha(forceNewObject: true);
 

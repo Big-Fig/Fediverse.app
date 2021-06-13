@@ -10,18 +10,18 @@ class PleromaApiStatusContextTestHelper {
       PleromaApiStatusContext(
         ancestors: [
           PleromaApiStatusTestHelper.createTestPleromaApiStatus(
-            seed: seed + "1",
+            seed: seed + '1',
           ),
           PleromaApiStatusTestHelper.createTestPleromaApiStatus(
-            seed: seed + "2",
+            seed: seed + '2',
           ),
         ],
         descendants: [
           PleromaApiStatusTestHelper.createTestPleromaApiStatus(
-            seed: seed + "3",
+            seed: seed + '3',
           ),
           PleromaApiStatusTestHelper.createTestPleromaApiStatus(
-            seed: seed + "4",
+            seed: seed + '4',
           ),
         ],
       );

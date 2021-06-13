@@ -2,6 +2,7 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler.dart';
@@ -16,6 +17,7 @@ import 'package:pedantic/pedantic.dart';
 
 abstract class WebSocketsChannelHandler extends DisposableOwner
     implements IWebSocketsHandler {
+  // ignore: avoid-late-keyword
   late Logger _logger;
 
   String get logTag;
@@ -23,6 +25,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
   final IWebSocketsChannel<PleromaApiWebSocketsEvent> webSocketsChannel;
   final IStatusRepository statusRepository;
   final INotificationRepository notificationRepository;
+  final IInstanceAnnouncementRepository instanceAnnouncementRepository;
   final IConversationChatRepository conversationRepository;
   final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
   final IConversationChatNewMessagesHandlerBloc
@@ -40,6 +43,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     required this.statusRepository,
     required this.conversationRepository,
     required this.notificationRepository,
+    required this.instanceAnnouncementRepository,
     required this.chatNewMessagesHandlerBloc,
     required this.conversationChatNewMessagesHandlerBloc,
     required this.statusListRemoteId,
@@ -50,7 +54,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
   }) {
     _logger = Logger(logTag);
     _logger.finest(() =>
-        "Start listen to ${webSocketsChannel.config.calculateWebSocketsUrl()}");
+        'Start listen to ${webSocketsChannel.config.calculateWebSocketsUrl()}');
 
     addDisposable(
       disposable: webSocketsChannel.listenForEvents(
@@ -65,11 +69,12 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
   }
 
   Future handleEvent(PleromaApiWebSocketsEvent event) async {
-    _logger.finest(() => "event $event");
+    _logger.finest(() => 'event $event');
 
     // todo: report bug to pleroma
-    if (event.payload == null || event.payload == "null") {
-      _logger.warning(() => "event payload is empty");
+    if (event.payload == null || event.payload == 'null') {
+      _logger.warning(() => 'event payload is empty');
+
       return;
     }
 
@@ -88,7 +93,8 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
 
         var pleromaNotificationType = notification.typeAsPleromaApi;
         // refresh to update followRequestCount
-        if (pleromaNotificationType == PleromaApiNotificationType.followRequest) {
+        if (pleromaNotificationType ==
+            PleromaApiNotificationType.followRequest) {
           unawaited(
             myAccountBloc.refreshFromNetwork(
               isNeedPreFetchRelationship: false,
@@ -106,6 +112,15 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
         if (chatMessage != null) {
           await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
         }
+        break;
+
+      case PleromaApiWebSocketsEventType.announcement:
+        var announcement = event.parsePayloadAsAnnouncement();
+
+        await instanceAnnouncementRepository.upsertInRemoteType(
+          announcement,
+        );
+
         break;
       case PleromaApiWebSocketsEventType.delete:
         var statusRemoteId = event.payload!;

@@ -6,7 +6,7 @@ import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("file_picker_or_url_form_field_bloc_impl.dart");
+var _logger = Logger('file_picker_or_url_form_field_bloc_impl.dart');
 
 class FilePickerOrUrlFormFieldBloc extends FormFieldBloc
     implements IFilePickerOrUrlFormFieldBloc {
@@ -101,7 +101,7 @@ class FilePickerOrUrlFormFieldBloc extends FormFieldBloc
   @override
   void deleteOriginal() {
     var pickedFileExist = currentMediaDeviceFile != null;
-    _logger.finest(() => "deleteOriginal() pickedFileExist $pickedFileExist ");
+    _logger.finest(() => 'deleteOriginal() pickedFileExist $pickedFileExist ');
     if (pickedFileExist) {
       _currentMediaDeviceFileSubject.add(null);
     } else {

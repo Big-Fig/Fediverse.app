@@ -60,6 +60,7 @@ void showEditGlobalOrInstanceDatabaseCacheSettingsDialog({
             },
           ),
         );
+
         return editCacheSettingsBloc;
       },
       child: ProxyProvider<IEditDatabaseCacheSettingsBloc,

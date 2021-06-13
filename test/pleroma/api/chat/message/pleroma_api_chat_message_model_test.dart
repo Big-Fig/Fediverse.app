@@ -47,11 +47,11 @@ void main() {
   test('PleromaApiChatMessageSendData copyWith', () async {
     var obj1 =
         PleromaApiChatMessageTestHelper.createTestPleromaApiChatMessageSendData(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 =
         PleromaApiChatMessageTestHelper.createTestPleromaApiChatMessageSendData(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(

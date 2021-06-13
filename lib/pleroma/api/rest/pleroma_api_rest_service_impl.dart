@@ -13,7 +13,7 @@ import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-final _logger = Logger("pleroma_rest_service_impl.dart");
+final _logger = Logger('pleroma_rest_service_impl.dart');
 
 class PleromaApiRestService extends DisposableOwner
     implements IPleromaApiRestService {
@@ -147,6 +147,7 @@ class PleromaApiRestService extends DisposableOwner
         jsonString: response.body,
         responseJsonParser: responseJsonParser,
       );
+
       return await compute(_parseJsonRequestAsSingle, request);
     } else {
       throw createException(response);
@@ -202,7 +203,7 @@ class PleromaApiRestService extends DisposableOwner
         }
         if (isInvalidCredentials) {
           _pleromaApiStateSubject.add(PleromaApiState.brokenAuth);
-          _logger.finest(() => "pleromaApiState $pleromaApiState");
+          _logger.finest(() => 'pleromaApiState $pleromaApiState');
           throw PleromaApiInvalidCredentialsForbiddenRestException(
             statusCode: response.statusCode,
             body: body,
@@ -255,11 +256,12 @@ List<T> _parseJsonRequestAsList<T>(_ParseJsonRequest<T> request) {
   var json = jsonDecode(request.jsonString);
 
   if (json is List) {
-    List<T> result = List.generate(
+    var result = List<T>.generate(
       json.length,
       (index) {
         var jsonItem = json[index];
-        T item = request.responseJsonParser(jsonItem);
+        var item = request.responseJsonParser(jsonItem);
+
         return item;
       },
       growable: false,

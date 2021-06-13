@@ -9,7 +9,7 @@ class GlobalPostStatusSettingsLocalPreferenceBloc
     implements IGlobalPostStatusSettingsLocalPreferenceBloc {
   GlobalPostStatusSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
-  ) : super(preferencesService, "postStatus.settings.global");
+  ) : super(preferencesService, 'postStatus.settings.global');
 
   static final defaultValue = PostStatusSettings(
     defaultVisibilityString: PleromaApiVisibility.public.toJsonValue(),

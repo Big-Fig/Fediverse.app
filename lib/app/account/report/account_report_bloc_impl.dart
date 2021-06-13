@@ -12,7 +12,7 @@ import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.d
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("account_report_bloc_impl.dart");
+final _logger = Logger('account_report_bloc_impl.dart');
 
 class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   @override
@@ -27,7 +27,7 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   @override
   final IStringValueFormFieldBloc messageStringValueFormFieldBloc =
       StringValueFormFieldBloc(
-    originValue: "",
+    originValue: '',
     validators: [],
     maxLength: null,
   );
@@ -71,7 +71,7 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
           : null,
     );
 
-    _logger.finest(() => "send accountReportRequest $accountReportRequest");
+    _logger.finest(() => 'send accountReportRequest $accountReportRequest');
 
     var success = await pleromaAuthAccountService.reportAccount(
       reportRequest: accountReportRequest,

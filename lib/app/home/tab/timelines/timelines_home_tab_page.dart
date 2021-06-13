@@ -52,14 +52,14 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 
-final _logger = Logger("timelines_home_tab_page.dart");
+final _logger = Logger('timelines_home_tab_page.dart');
 
 class TimelinesHomeTabPage extends StatelessWidget {
   const TimelinesHomeTabPage();
 
   @override
   Widget build(BuildContext context) {
-    _logger.finest(() => "build");
+    _logger.finest(() => 'build');
 
     var timelinesHomeTabStorageLocalPreferencesBloc =
         ITimelinesHomeTabStorageLocalPreferenceBloc.of(context);
@@ -100,7 +100,7 @@ class TimelinesHomeTabPage extends StatelessWidget {
                 ),
               );
 
-              _logger.finest(() => "create timelineTabListBloc");
+              _logger.finest(() => 'create timelineTabListBloc');
 
               timelineTabListBloc.performAsyncInit();
 
@@ -146,6 +146,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     var timelinesHomeTabBloc = ITimelinesHomeTabBloc.of(context);
     var timelineTabListBloc = ITimelineTabListBloc.of(context);
+
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc: timelineTabListBloc,
       loadingFinishedBuilder: (context) =>
@@ -157,6 +158,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
             timelineTabListBloc: timelineTabListBloc,
             homeBloc: homeBloc,
           );
+
           return TimelineListTabControllerBloc(
             timelineTabListBloc: value,
             vsync: this,
@@ -169,7 +171,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
             update: (context, ITimelineListTabControllerBloc value, previous) {
               _logger.finest(
                 () =>
-                    "IFediNestedScrollViewWithNestedScrollableTabsBloc update",
+                    'IFediNestedScrollViewWithNestedScrollableTabsBloc update',
               );
 
               return FediNestedScrollViewWithNestedScrollableTabsBloc(
@@ -190,7 +192,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
               // white status bar over post status header
               // ignore: no-magic-number
               topSliverScrollOffsetToShowWhiteStatusBar: 100,
-              tabKeyPrefix: "TimelineTab",
+              tabKeyPrefix: 'TimelineTab',
               tabBodyProviderBuilder:
                   (BuildContext context, int index, Widget child) =>
                       _provideTabBodyContext(context, index, child),
@@ -220,8 +222,8 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
     var timelineTabListBloc = ITimelineTabListBloc.of(context, listen: false);
     var tabBloc = timelineTabListBloc.timelineTabBlocs[index];
 
-    _logger.finest(() => "tabBodyProviderBuilder index $index "
-        "tabBloc ${tabBloc.timelineId}");
+    _logger.finest(() => 'tabBodyProviderBuilder index $index '
+        'tabBloc ${tabBloc.timelineId}');
 
     return Provider<ITimelineTabBloc>.value(
       value: tabBloc,

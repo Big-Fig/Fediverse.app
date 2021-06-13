@@ -66,6 +66,7 @@ class _EditToastSettingsPleromaMentionFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
+
     return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.pleromaChatMentionFieldBloc,
       child: BoolValueFormFieldRowWidget(
@@ -86,6 +87,7 @@ class _EditToastSettingsPollFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
+
     return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.pollFieldBloc,
       child: BoolValueFormFieldRowWidget(
@@ -106,6 +108,7 @@ class _EditToastSettingsReblogFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
+
     return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.reblogFieldBloc,
       child: BoolValueFormFieldRowWidget(
@@ -126,6 +129,7 @@ class _EditToastSettingsMentionFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
+
     return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.mentionFieldBloc,
       child: BoolValueFormFieldRowWidget(
@@ -146,6 +150,7 @@ class _EditToastSettingsFollowFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
+
     return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.followFieldBloc,
       child: BoolValueFormFieldRowWidget(
@@ -166,6 +171,7 @@ class _EditToastSettingsFavouriteFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
+
     return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.favouriteFieldBloc,
       child: BoolValueFormFieldRowWidget(

@@ -58,6 +58,7 @@ class _UploadMediaAttachmentListNonMediaItemWidgetState
       stream: mediaItemBloc.uploadStateStream,
       builder: (context, snapshot) {
         var uploadState = snapshot.data;
+
         return FutureBuilder(
           future: mediaItemBloc.calculateFilePath(),
           builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
@@ -67,7 +68,7 @@ class _UploadMediaAttachmentListNonMediaItemWidgetState
 
             if (isUploaded) {
               return Provider<String>.value(
-                value: filePath ?? "",
+                value: filePath ?? '',
                 child: DisposableProxyProvider<String, IMediaFilePathBloc>(
                   update: (context, filePath, _) =>
                       MediaFilePathBloc(path: filePath),
@@ -111,6 +112,7 @@ class _UploadMediaAttachmentListNonMediaItemActionsWidget
   @override
   Widget build(BuildContext context) {
     var mediaItemBloc = IUploadMediaAttachmentBloc.of(context);
+
     return StreamBuilder<UploadMediaAttachmentState?>(
       stream: mediaItemBloc.uploadStateStream,
       initialData: mediaItemBloc.uploadState,
@@ -133,7 +135,7 @@ class _UploadMediaAttachmentListNonMediaItemActionsWidget
               ],
             );
           default:
-            throw "Invalid state uploadState $uploadState";
+            throw 'Invalid state uploadState $uploadState';
         }
       },
     );

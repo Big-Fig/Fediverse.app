@@ -7,7 +7,7 @@ import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-final _logger = Logger("multi_media_picker_bloc_impl.dart");
+final _logger = Logger('multi_media_picker_bloc_impl.dart');
 
 class MultiMediaPickerBloc extends MediaPickerBloc
     implements IMultiMediaPickerBloc {
@@ -61,8 +61,8 @@ class MultiMediaPickerBloc extends MediaPickerBloc
     IMediaDeviceFileMetadata mediaDeviceFileMetadata,
   ) async {
     var fileMetadataSelected = isFileMetadataSelected(mediaDeviceFileMetadata);
-    _logger.fine(() => "toggleFileMetadataSelection $mediaDeviceFileMetadata "
-        "selected $fileMetadataSelected");
+    _logger.fine(() => 'toggleFileMetadataSelection $mediaDeviceFileMetadata '
+        'selected $fileMetadataSelected');
     if (fileMetadataSelected) {
       currentFilesMetadataSelectionSubject.add(
         currentFilesMetadataSelection!
@@ -91,7 +91,7 @@ class MultiMediaPickerBloc extends MediaPickerBloc
   Future acceptSelectedFilesMetadata() async {
     assert(isSomethingSelected);
     _logger.fine(
-      () => "acceptSelectedFiles ${currentFilesMetadataSelection!.length}",
+      () => 'acceptSelectedFiles ${currentFilesMetadataSelection!.length}',
     );
     var futures = currentFilesMetadataSelection!
         .map((fileMetadata) => fileMetadata.loadMediaDeviceFile());
@@ -129,8 +129,9 @@ class MultiMediaPickerBloc extends MediaPickerBloc
       selectedFilesMetadata: currentFilesMetadataSelection!,
       mediaDeviceFileMetadata: mediaDeviceFileMetadata,
     );
-    _logger.fine(() => "isFileMetadataSelected $selected "
-        "mediaDeviceFileMetadata = $mediaDeviceFileMetadata");
+    _logger.fine(() => 'isFileMetadataSelected $selected '
+        'mediaDeviceFileMetadata = $mediaDeviceFileMetadata');
+
     return selected;
   }
 
@@ -141,6 +142,7 @@ class MultiMediaPickerBloc extends MediaPickerBloc
     var found = selectedFilesMetadata.firstWhereOrNull(
       (selectedFileMetadata) => selectedFileMetadata == mediaDeviceFileMetadata,
     );
+
     return found != null;
   }
 

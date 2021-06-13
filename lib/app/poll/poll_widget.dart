@@ -20,6 +20,7 @@ class PollWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
+
     return Padding(
       padding: FediPadding.horizontalBigPadding,
       child: StreamBuilder<IPleromaApiPoll>(
@@ -27,6 +28,7 @@ class PollWidget extends StatelessWidget {
         stream: pollBloc.pollStream,
         builder: (context, snapshot) {
           var poll = snapshot.data!;
+
           return Provider<IPleromaApiPoll>.value(
             value: poll,
             child: const _PollBodyWidget(),
@@ -82,6 +84,7 @@ class _PollBodyVoteButtonBuilderWidget extends StatelessWidget {
             stream: pollBloc.isVotedStream,
             builder: (context, snapshot) {
               var isSelectedVotesNotEmpty = snapshot.data ?? false;
+
               return Padding(
                 padding: FediPadding.allSmallPadding,
                 child: AsyncOperationButtonBuilderWidget(
@@ -144,6 +147,7 @@ class PollMetadataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var poll = Provider.of<IPleromaApiPoll>(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -165,7 +169,7 @@ class _PollMetadataDotSeparatorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      " · ",
+      ' · ',
       style: IFediUiTextTheme.of(context).mediumShortGrey,
     );
   }
@@ -177,8 +181,9 @@ class PollMetadataTotalVotesCountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var poll = Provider.of<IPleromaApiPoll>(context);
+
     return Text(
-      S.of(context).app_poll_metadata_totalVotes(poll.votesCount),
+      S.of(context).app_poll_metadata_totalVotes(poll.votesCount ?? 0),
       style: IFediUiTextTheme.of(context).mediumShortGrey,
     );
   }
@@ -190,11 +195,13 @@ class PollMetadataShowHideResultsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: pollBloc.isNeedShowResultsWithoutVoteStream,
       initialData: pollBloc.isNeedShowResultsWithoutVote,
       builder: (context, snapshot) {
         var isNeedShowResultsWithoutVote = snapshot.data!;
+
         return InkWell(
           onTap: () {
             if (isNeedShowResultsWithoutVote) {
@@ -221,6 +228,7 @@ class PollMetadataExpiresAtWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var poll = Provider.of<IPleromaApiPoll>(context);
+
     return poll.expired
         ? const _PollMetadataExpiresAtExpiredWidget()
         : const _PollMetadataExpiresAtNotExpiredWidget();
@@ -249,6 +257,7 @@ class _PollMetadataExpiresAtNotExpiredWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var poll = Provider.of<IPleromaApiPoll>(context);
+
     return DateTimeDynamicTimeAgoWidget(
       dateTime: poll.expiresAt,
       textStyle: IFediUiTextTheme.of(context).mediumShortGrey,
@@ -361,6 +370,7 @@ class _PollOptionResultsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: pollBloc.isNeedShowResultsWithoutVoteStream,
       initialData: pollBloc.isNeedShowResultsWithoutVote,
@@ -387,6 +397,7 @@ class _PollOptionSelectionWidget extends StatelessWidget {
     var pollBloc = IPollBloc.of(context);
     var poll = Provider.of<IPleromaApiPoll>(context);
     var pollOption = Provider.of<IPleromaApiPollOption>(context);
+
     return StreamBuilder<bool>(
       stream: pollBloc.isPossibleToVoteStream,
       initialData: pollBloc.isPossibleToVote,
@@ -410,6 +421,7 @@ class _PollOptionSelectionWidget extends StatelessWidget {
               // todo: refactor
               // ignore: no-magic-number
               var size = 28.0;
+
               return Padding(
                 padding: const EdgeInsets.only(left: FediSizes.bigPadding),
                 child: Container(
@@ -457,6 +469,7 @@ class _PollOptionContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var poll = Provider.of<IPleromaApiPoll>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: FediSizes.mediumPadding,
@@ -479,15 +492,16 @@ class PollOptionVotesCountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var poll = Provider.of<IPleromaApiPoll>(context);
+
     return Text(
-      "(${poll.votesCount.toString()})",
+      '(${poll.votesCount.toString()})',
       style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
     );
   }
 }
 
 class PollOptionVotesPercentWidget extends StatelessWidget {
-  static final NumberFormat _format = NumberFormat("#%");
+  static final NumberFormat _format = NumberFormat('#%');
 
   const PollOptionVotesPercentWidget();
 
@@ -499,6 +513,7 @@ class PollOptionVotesPercentWidget extends StatelessWidget {
     var isOwnVote = poll.isOwnVote(pollOption);
 
     var votesPercent = poll.votesPercent(pollOption);
+
     return Container(
       // todo: refactor
       // ignore: no-magic-number
@@ -526,6 +541,7 @@ class PollOptionTitleWidget extends StatelessWidget {
     var isOwnVote = poll.isOwnVote(pollOption);
 
     var votesPercent = poll.votesPercent(pollOption);
+
     return Text(
       pollOption.title,
       style: poll.isPossibleToVote

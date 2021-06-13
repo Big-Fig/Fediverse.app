@@ -513,6 +513,26 @@ class S {
     );
   }
 
+  /// `Pin`
+  String get app_account_action_pin {
+    return Intl.message(
+      'Pin',
+      name: 'app_account_action_pin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unpin`
+  String get app_account_action_unpin {
+    return Intl.message(
+      'Unpin',
+      name: 'app_account_action_unpin',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Requested`
   String get app_account_action_followRequested {
     return Intl.message(
@@ -793,6 +813,16 @@ class S {
     );
   }
 
+  /// `Announcements`
+  String get app_account_home_tab_menu_action_instance_announcements {
+    return Intl.message(
+      'Announcements',
+      name: 'app_account_home_tab_menu_action_instance_announcements',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Account`
   String get app_account_my_menu_account_subpage_title {
     return Intl.message(
@@ -908,6 +938,16 @@ class S {
     return Intl.message(
       'Edit account',
       name: 'app_account_my_edit_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Uploading media`
+  String get app_media_upload_progress {
+    return Intl.message(
+      'Uploading media',
+      name: 'app_media_upload_progress',
       desc: '',
       args: [],
     );
@@ -1358,16 +1398,6 @@ class S {
     );
   }
 
-  /// `Fedi.app`
-  String get app_auth_instance_join_field_host_hint {
-    return Intl.message(
-      'Fedi.app',
-      name: 'app_auth_instance_join_field_host_hint',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Pleroma or Mastodon Instance`
   String get app_auth_instance_join_field_host_helper {
     return Intl.message(
@@ -1388,10 +1418,10 @@ class S {
     );
   }
 
-  /// `Fail to connect to instance. You can try verified fedi.app or pleroma.com`
+  /// `Fail to connect to instance`
   String get app_auth_instance_join_fail_dialog_title {
     return Intl.message(
-      'Fail to connect to instance. You can try verified fedi.app or pleroma.com',
+      'Fail to connect to instance',
       name: 'app_auth_instance_join_fail_dialog_title',
       desc: '',
       args: [],
@@ -1413,16 +1443,6 @@ class S {
     return Intl.message(
       'Instance owner disabled registration',
       name: 'app_auth_instance_join_registrationDisabled_dialog_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Try any other instance, like fedi.app`
-  String get app_auth_instance_join_registrationDisabled_dialog_content {
-    return Intl.message(
-      'Try any other instance, like fedi.app',
-      name: 'app_auth_instance_join_registrationDisabled_dialog_content',
       desc: '',
       args: [],
     );
@@ -1814,10 +1834,10 @@ class S {
     );
   }
 
-  /// `Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server`
+  /// `Do you want to enable push notifications?\nThey will be forwarded through Fedi Push Relay Server.\n You can change this option in settings later`
   String get app_push_permission_ask_dialog_content {
     return Intl.message(
-      'Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server',
+      'Do you want to enable push notifications?\nThey will be forwarded through Fedi Push Relay Server.\n You can change this option in settings later',
       name: 'app_push_permission_ask_dialog_content',
       desc: '',
       args: [],
@@ -1854,10 +1874,10 @@ class S {
     );
   }
 
-  /// `All messages will be forwarded through Fedi proxy server`
+  /// `All messages will be forwarded through Fedi Relay Server`
   String get app_push_settings_desc {
     return Intl.message(
-      'All messages will be forwarded through Fedi proxy server',
+      'All messages will be forwarded through Fedi Relay Server',
       name: 'app_push_settings_desc',
       desc: '',
       args: [],
@@ -3616,6 +3636,16 @@ class S {
     );
   }
 
+  /// `Learn more`
+  String get dialog_action_learnMore {
+    return Intl.message(
+      'Learn more',
+      name: 'dialog_action_learnMore',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Required`
   String get form_field_value_error_null_desc {
     return Intl.message(
@@ -3963,10 +3993,10 @@ class S {
     );
   }
 
-  /// `A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app.`
+  /// `A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.`
   String get app_appStore_description {
     return Intl.message(
-      'A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app.',
+      'A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.',
       name: 'app_appStore_description',
       desc: 'AppStore full description',
       args: [],
@@ -4349,11 +4379,11 @@ class S {
     );
   }
 
-  /// `Disabled in account settings`
+  /// `Not supported or disabled in settings`
   String
       get app_timeline_settings_field_enableWebSockets_description_instance_disabled {
     return Intl.message(
-      'Disabled in account settings',
+      'Not supported or disabled in settings',
       name:
           'app_timeline_settings_field_enableWebSockets_description_instance_disabled',
       desc: '',
@@ -6210,10 +6240,10 @@ class S {
   }
 
   /// `Instance: {instanceDomain}`
-  String app_instance_detials_title(Object instanceDomain) {
+  String app_instance_details_title(Object instanceDomain) {
     return Intl.message(
       'Instance: $instanceDomain',
-      name: 'app_instance_detials_title',
+      name: 'app_instance_details_title',
       desc: '',
       args: [instanceDomain],
     );
@@ -6226,6 +6256,86 @@ class S {
       name: 'app_account_action_instanceDetails',
       desc: '',
       args: [instanceDomain],
+    );
+  }
+
+  /// `Directory`
+  String get app_instance_details_field_directory_label {
+    return Intl.message(
+      'Directory',
+      name: 'app_instance_details_field_directory_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accounts`
+  String get app_instance_details_field_directory_value {
+    return Intl.message(
+      'Accounts',
+      name: 'app_instance_details_field_directory_value',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Trends`
+  String get app_instance_details_field_trends_label {
+    return Intl.message(
+      'Trends',
+      name: 'app_instance_details_field_trends_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hashtags`
+  String get app_instance_details_field_trends_value {
+    return Intl.message(
+      'Hashtags',
+      name: 'app_instance_details_field_trends_value',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Public timeline`
+  String get app_instance_details_field_publicTimeline_label {
+    return Intl.message(
+      'Public timeline',
+      name: 'app_instance_details_field_publicTimeline_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statuses`
+  String get app_instance_details_field_publicTimeline_value {
+    return Intl.message(
+      'Statuses',
+      name: 'app_instance_details_field_publicTimeline_value',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Activity`
+  String get app_instance_details_field_activity_label {
+    return Intl.message(
+      'Activity',
+      name: 'app_instance_details_field_activity_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statistic`
+  String get app_instance_details_field_activity_value {
+    return Intl.message(
+      'Statistic',
+      name: 'app_instance_details_field_activity_value',
+      desc: '',
+      args: [],
     );
   }
 
@@ -7107,23 +7217,23 @@ class S {
     );
   }
 
-  /// `Open on {localDomain} inside app`
+  /// `Open on {localDomain}`
   String app_hashtag_remoteInstance_dialog_action_openOnLocal(
       Object localDomain) {
     return Intl.message(
-      'Open on $localDomain inside app',
+      'Open on $localDomain',
       name: 'app_hashtag_remoteInstance_dialog_action_openOnLocal',
       desc: '',
       args: [localDomain],
     );
   }
 
-  /// `Open on {remoteDomain} in browser`
-  String app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser(
+  /// `Open on {remoteDomain}`
+  String app_hashtag_remoteInstance_dialog_action_openOnRemote(
       Object remoteDomain) {
     return Intl.message(
-      'Open on $remoteDomain in browser',
-      name: 'app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser',
+      'Open on $remoteDomain',
+      name: 'app_hashtag_remoteInstance_dialog_action_openOnRemote',
       desc: '',
       args: [remoteDomain],
     );
@@ -7304,6 +7414,346 @@ class S {
     return Intl.message(
       'Never',
       name: 'app_toast_handling_type_never',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Instance announcements`
+  String get app_instance_announcement_list_title {
+    return Intl.message(
+      'Instance announcements',
+      name: 'app_instance_announcement_list_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Instance don't have active announcements.`
+  String get app_instance_announcement_list_empty {
+    return Intl.message(
+      'Instance don\'t have active announcements.',
+      name: 'app_instance_announcement_list_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Announcements settings`
+  String get app_instance_announcement_settings_title {
+    return Intl.message(
+      'Announcements settings',
+      name: 'app_instance_announcement_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show already read`
+  String get app_instance_announcement_settings_field_withDismissed_label {
+    return Intl.message(
+      'Show already read',
+      name: 'app_instance_announcement_settings_field_withDismissed_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accounts`
+  String get app_hashtag_history_accounts {
+    return Intl.message(
+      'Accounts',
+      name: 'app_hashtag_history_accounts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statuses`
+  String get app_hashtag_history_statuses {
+    return Intl.message(
+      'Statuses',
+      name: 'app_hashtag_history_statuses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Featured tags`
+  String get app_account_my_action_featuredTags {
+    return Intl.message(
+      'Featured tags',
+      name: 'app_account_my_action_featuredTags',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Featured tags`
+  String get app_account_my_featuredTags_title {
+    return Intl.message(
+      'Featured tags',
+      name: 'app_account_my_featuredTags_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Suggestions`
+  String get app_account_my_featuredTags_action_suggestions {
+    return Intl.message(
+      'Suggestions',
+      name: 'app_account_my_featuredTags_action_suggestions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Suggestions`
+  String get app_account_my_featuredTags_suggestions_title {
+    return Intl.message(
+      'Suggestions',
+      name: 'app_account_my_featuredTags_suggestions_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statuses`
+  String get app_account_my_featuredTags_metadata_statusesCount {
+    return Intl.message(
+      'Statuses',
+      name: 'app_account_my_featuredTags_metadata_statusesCount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last`
+  String get app_account_my_featuredTags_metadata_lastStatusAt {
+    return Intl.message(
+      'Last',
+      name: 'app_account_my_featuredTags_metadata_lastStatusAt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unfeature`
+  String get app_account_my_featuredTags_action_unfeature {
+    return Intl.message(
+      'Unfeature',
+      name: 'app_account_my_featuredTags_action_unfeature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Feature`
+  String get app_account_my_featuredTags_action_feature {
+    return Intl.message(
+      'Feature',
+      name: 'app_account_my_featuredTags_action_feature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Endorsements`
+  String get app_account_my_action_endorsement {
+    return Intl.message(
+      'Endorsements',
+      name: 'app_account_my_action_endorsement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Endorsements`
+  String get app_account_my_endorsement_title {
+    return Intl.message(
+      'Endorsements',
+      name: 'app_account_my_endorsement_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Suggestions`
+  String get app_account_my_action_suggestion {
+    return Intl.message(
+      'Suggestions',
+      name: 'app_account_my_action_suggestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Suggestions`
+  String get app_account_my_suggestion_title {
+    return Intl.message(
+      'Suggestions',
+      name: 'app_account_my_suggestion_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove`
+  String get app_account_my_suggestion_action_remove {
+    return Intl.message(
+      'Remove',
+      name: 'app_account_my_suggestion_action_remove',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statuses`
+  String get app_instance_activity_statuses {
+    return Intl.message(
+      'Statuses',
+      name: 'app_instance_activity_statuses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logins`
+  String get app_instance_activity_logins {
+    return Intl.message(
+      'Logins',
+      name: 'app_instance_activity_logins',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registrations`
+  String get app_instance_activity_registrations {
+    return Intl.message(
+      'Registrations',
+      name: 'app_instance_activity_registrations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose share action`
+  String get app_share_income_action_choose_title {
+    return Intl.message(
+      'Choose share action',
+      name: 'app_share_income_action_choose_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `As new status`
+  String get app_share_income_action_type_status {
+    return Intl.message(
+      'As new status',
+      name: 'app_share_income_action_type_status',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To conversation`
+  String get app_share_income_action_type_conversation {
+    return Intl.message(
+      'To conversation',
+      name: 'app_share_income_action_type_conversation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To chat`
+  String get app_share_income_action_type_chat {
+    return Intl.message(
+      'To chat',
+      name: 'app_share_income_action_type_chat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose instance to share`
+  String get app_share_income_instance_choose_title {
+    return Intl.message(
+      'Choose instance to share',
+      name: 'app_share_income_instance_choose_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don't have logged instances to share`
+  String get app_share_income_error_authInstanceListIsEmpty {
+    return Intl.message(
+      'You don\'t have logged instances to share',
+      name: 'app_share_income_error_authInstanceListIsEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Push notifications support disabled`
+  String get app_push_disabled_notification_title {
+    return Intl.message(
+      'Push notifications support disabled',
+      name: 'app_push_disabled_notification_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Install app version from store or enable support in config if app was built from source`
+  String get app_push_disabled_notification_content {
+    return Intl.message(
+      'Install app version from store or enable support in config if app was built from source',
+      name: 'app_push_disabled_notification_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Crash reporting`
+  String get app_crashReporting_settings_title {
+    return Intl.message(
+      'Crash reporting',
+      name: 'app_crashReporting_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send reports`
+  String get app_crashReporting_settings_field_reportingEnabled_name {
+    return Intl.message(
+      'Send reports',
+      name: 'app_crashReporting_settings_field_reportingEnabled_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Crash reporting`
+  String get app_crashReporting_ask_dialog_title {
+    return Intl.message(
+      'Crash reporting',
+      name: 'app_crashReporting_ask_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to enable crash reporting?\n It will help us make app more stable\n You can change this option in settings later`
+  String get app_crashReporting_ask_dialog_content {
+    return Intl.message(
+      'Do you want to enable crash reporting?\n It will help us make app more stable\n You can change this option in settings later',
+      name: 'app_crashReporting_ask_dialog_content',
       desc: '',
       args: [],
     );

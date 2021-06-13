@@ -16,7 +16,7 @@ class CustomEmojiPickerImageUrlItem extends CustomEmojiPickerItem {
   @HiveField(0)
   final String name;
   @HiveField(1)
-  @JsonKey(name: "image_url")
+  @JsonKey(name: 'image_url')
   final String imageUrl;
 
   CustomEmojiPickerImageUrlItem({
@@ -25,7 +25,7 @@ class CustomEmojiPickerImageUrlItem extends CustomEmojiPickerItem {
   });
 
   @override
-  String get code => ":$name:";
+  String get code => ':$name:';
 
   @override
   bool operator ==(Object other) =>

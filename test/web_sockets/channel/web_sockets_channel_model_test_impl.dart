@@ -25,5 +25,5 @@ class WebSocketsChannelConfigTest
 
   @override
   WebSocketEventTest eventParser(Map<String, dynamic> json) =>
-      WebSocketEventTest("seed");
+      WebSocketEventTest('seed');
 }

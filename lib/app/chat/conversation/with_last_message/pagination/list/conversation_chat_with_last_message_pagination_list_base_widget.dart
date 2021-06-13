@@ -32,6 +32,7 @@ abstract class ConversationChatPaginationListBaseWidget
     var chatPaginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
             IConversationChatWithLastMessage>>(context, listen: listen);
+
     return chatPaginationListBloc;
   }
 }

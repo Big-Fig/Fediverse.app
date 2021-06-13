@@ -20,6 +20,7 @@ class ChatBodyWrapperWidget extends StatelessWidget {
     var postMessageWidget = const _ChatPostMessageWidget();
 
     var chatSelectionBloc = IChatSelectionBloc.of(context);
+
     return StreamBuilder<bool>(
       stream: postMessageBloc.isExpandedStream,
       initialData: postMessageBloc.isExpanded,

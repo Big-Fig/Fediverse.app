@@ -25,6 +25,7 @@ class ChatSelectionItemWidget extends StatelessWidget {
         snapshot,
       ) {
         var isSelected = snapshot.data ?? false;
+
         return Container(
           color: isSelected
               // todo: refactor

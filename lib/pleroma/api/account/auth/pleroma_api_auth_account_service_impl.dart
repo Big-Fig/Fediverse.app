@@ -13,7 +13,7 @@ var _urlPath = path.Context(style: path.Style.url);
 class PleromaApiAuthAccountService extends PleromaApiAccountService
     with PleromaApiAuthMixinService
     implements IPleromaApiAuthAccountService {
-  final String accountReportRelativeUrlPath = "/api/v1/reports";
+  final String accountReportRelativeUrlPath = '/api/v1/reports';
 
   final IPleromaApiAuthRestService authRestService;
 
@@ -32,10 +32,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: _urlPath.join(accountRelativeUrlPath, "relationships"),
+        relativePath: _urlPath.join(accountRelativeUrlPath, 'relationships'),
         queryArgs: remoteAccountIds
             .map(
-              (id) => RestRequestQueryArg(key: "id[]", value: id),
+              (id) => RestRequestQueryArg(key: 'id[]', value: id),
             )
             .toList(),
       ),
@@ -56,7 +56,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
-          "block",
+          'block',
         ),
       ),
     );
@@ -76,7 +76,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
-          "follow",
+          'follow',
         ),
       ),
     );
@@ -94,13 +94,13 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
     required int? expireDurationInSeconds,
   }) async {
     var bodyJson = <String, dynamic>{
-      if (notifications != null) "notifications": notifications.toString(),
+      if (notifications != null) 'notifications': notifications.toString(),
     };
     if (expireDurationInSeconds != null) {
       if (isPleroma) {
-        bodyJson["expire_in"] = expireDurationInSeconds.toString();
+        bodyJson['expire_in'] = expireDurationInSeconds.toString();
       } else {
-        bodyJson["duration"] = expireDurationInSeconds;
+        bodyJson['duration'] = expireDurationInSeconds;
       }
     }
     var httpResponse = await restService.sendHttpRequest(
@@ -108,7 +108,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
-          "mute",
+          'mute',
         ),
         bodyJson: bodyJson,
       ),
@@ -129,7 +129,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
-          "pin",
+          'pin',
         ),
       ),
     );
@@ -149,7 +149,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
-          "unblock",
+          'unblock',
         ),
       ),
     );
@@ -169,7 +169,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
-          "unfollow",
+          'unfollow',
         ),
       ),
     );
@@ -189,7 +189,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
-          "unmute",
+          'unmute',
         ),
       ),
     );
@@ -209,7 +209,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
-          "unpin",
+          'unpin',
         ),
       ),
     );
@@ -229,7 +229,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
-          "identity_proofs",
+          'identity_proofs',
         ),
       ),
     );
@@ -249,7 +249,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(
           accountRelativeUrlPath,
           accountRemoteId,
-          "lists",
+          'lists',
         ),
       ),
     );
@@ -269,21 +269,21 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: _urlPath.join(accountRelativeUrlPath, "search"),
+        relativePath: _urlPath.join(accountRelativeUrlPath, 'search'),
         queryArgs: [
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
           RestRequestQueryArg(
-            key: "q",
+            key: 'q',
             value: query,
           ),
           if (resolve != null)
             RestRequestQueryArg(
-              key: "resolve",
+              key: 'resolve',
               value: resolve.toString(),
             ),
           if (following != null)
             RestRequestQueryArg(
-              key: "following",
+              key: 'following',
               value: following.toString(),
             ),
         ],
@@ -316,10 +316,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: _urlPath.join("api/v1/domain_blocks"),
+        relativePath: _urlPath.join('api/v1/domain_blocks'),
         queryArgs: [
           RestRequestQueryArg(
-            key: "domain",
+            key: 'domain',
             value: domain,
           ),
         ],
@@ -335,10 +335,10 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.delete(
-        relativePath: _urlPath.join("api/v1/domain_blocks"),
+        relativePath: _urlPath.join('api/v1/domain_blocks'),
         queryArgs: [
           RestRequestQueryArg(
-            key: "domain",
+            key: 'domain',
             value: domain,
           ),
         ],
@@ -357,7 +357,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(
           pleromaAccountRelativeUrlPath,
           accountRemoteId,
-          "subscribe",
+          'subscribe',
         ),
       ),
     );
@@ -377,7 +377,7 @@ class PleromaApiAuthAccountService extends PleromaApiAccountService
         relativePath: _urlPath.join(
           pleromaAccountRelativeUrlPath,
           accountRemoteId,
-          "unsubscribe",
+          'unsubscribe',
         ),
       ),
     );

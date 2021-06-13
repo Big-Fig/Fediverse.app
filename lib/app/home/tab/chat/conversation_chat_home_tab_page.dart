@@ -33,7 +33,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("conversation_messages_home_tab_page.dart");
+var _logger = Logger('conversation_messages_home_tab_page.dart');
 
 final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
@@ -42,7 +42,7 @@ class ConversationChatHomeTabPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _logger.finest(() => "build");
+    _logger.finest(() => 'build');
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
     return Scaffold(
@@ -109,13 +109,14 @@ class _ConversationMessagesHomeTabPageContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return FediDarkStatusBarStyleArea(
       child: ClipRRect(
         borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
         child: Container(
           color: fediUiColorTheme.white,
           child: const ConversationChatWithLastMessageListWidget(
-            key: PageStorageKey("ConversationChatWithLastMessageListWidget"),
+            key: PageStorageKey('ConversationChatWithLastMessageListWidget'),
           ),
         ),
       ),

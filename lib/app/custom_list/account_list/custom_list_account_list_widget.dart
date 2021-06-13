@@ -20,7 +20,7 @@ class CustomListAccountListWidget extends StatelessWidget {
         context,
         account: account,
       ),
-      key: PageStorageKey("AccountPaginationListWidget"),
+      key: PageStorageKey('CustomListAccountListWidget'),
     );
   }
 }

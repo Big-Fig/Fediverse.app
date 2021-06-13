@@ -8,13 +8,13 @@ class PleromaApiCaptchaTestHelper {
     required String seed,
   }) =>
       PleromaApiCaptcha(
-        answerData: seed + "answerData",
+        answerData: seed + 'answerData',
         secondsValid: DurationTestHelper.createTestDurationSeconds(seed: seed),
-        token: seed + "token",
+        token: seed + 'token',
         type: EnumTestHelper.createTestEnum(
           seed: seed,
           values: PleromaApiCaptchaType.values,
         ).toJsonValue(),
-        url: seed + "url",
+        url: seed + 'url',
       );
 }

@@ -11,20 +11,20 @@ import 'package:moor/moor.dart';
 
 part 'status_database_dao.g.dart';
 
-var _accountAliasId = "account";
-var _reblogAliasId = "reblog";
-var _reblogAccountAliasId = "reblogAccount";
-var _replyAliasId = "reply";
-var _replyAccountAliasId = "replyAccount";
-var _replyReblogAliasId = "replyReblog";
-var _replyReblogAccountAliasId = "replyReblogAccount";
-var _statusAliasId = "status";
-var _accountFollowingsAliasId = "accountFollowings";
-var _replyToAccountFollowingsAliasId = "replyToAccountFollowings";
-var _statusHashtagsAliasId = "statusHashtags";
-var _statusListsAliasId = "statusLists";
-var _conversationStatusesAliasId = "conversationStatuses";
-var _homeTimelineStatusesAliasId = "homeTimelineStatuses";
+var _accountAliasId = 'account';
+var _reblogAliasId = 'reblog';
+var _reblogAccountAliasId = 'reblogAccount';
+var _replyAliasId = 'reply';
+var _replyAccountAliasId = 'replyAccount';
+var _replyReblogAliasId = 'replyReblog';
+var _replyReblogAccountAliasId = 'replyReblogAccount';
+var _statusAliasId = 'status';
+var _accountFollowingsAliasId = 'accountFollowings';
+var _replyToAccountFollowingsAliasId = 'replyToAccountFollowings';
+var _statusHashtagsAliasId = 'statusHashtags';
+var _statusListsAliasId = 'statusLists';
+var _conversationStatusesAliasId = 'conversationStatuses';
+var _homeTimelineStatusesAliasId = 'homeTimelineStatuses';
 
 @UseDao(
   tables: [
@@ -41,19 +41,47 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     StatusRepositoryFilters,
     StatusRepositoryOrderingTermData> with _$StatusDaoMixin {
   final AppDatabase db;
+
+  // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
+
+  // ignore: avoid-late-keyword
   late $DbStatusesTable reblogAlias;
+
+  // ignore: avoid-late-keyword
   late $DbAccountsTable reblogAccountAlias;
+
+  // ignore: avoid-late-keyword
   late $DbStatusesTable replyAlias;
+
+  // ignore: avoid-late-keyword
   late $DbAccountsTable replyAccountAlias;
+
+  // ignore: avoid-late-keyword
   late $DbStatusesTable replyReblogAlias;
+
+  // ignore: avoid-late-keyword
   late $DbAccountsTable replyReblogAccountAlias;
+
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusAlias;
+
+  // ignore: avoid-late-keyword
   late $DbStatusHashtagsTable statusHashtagsAlias;
+
+  // ignore: avoid-late-keyword
   late $DbStatusListsTable statusListsAlias;
+
+  // ignore: avoid-late-keyword
   late $DbAccountFollowingsTable accountFollowingsAlias;
+
+  // ignore: avoid-late-keyword
   late $DbAccountFollowingsTable replyToAccountFollowingsAlias;
+
+  // ignore: avoid-late-keyword
   late $DbConversationStatusesTable conversationStatusesAlias;
+
+  // ignore: avoid-late-keyword
   late $DbHomeTimelineStatusesTable homeTimelineStatusesAlias;
 
   // Called by the AppDatabase class
@@ -91,7 +119,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
             (typedResult) => typedResult?.toDbStatusPopulated(dao: this),
           ));
 
-  JoinedSelectStatement<Table, DataClass> _findByOldPendingRemoteId(
+  JoinedSelectStatement _findByOldPendingRemoteId(
     String? oldPendingRemoteId,
   ) =>
       (select(db.dbStatuses)
@@ -111,29 +139,6 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         ),
       );
 
-  // Future<int> updateByRemoteId(
-  //   String remoteId,
-  //   Insertable<DbStatus> entity,
-  // ) async {
-  //   var localId = await findLocalIdByRemoteId(remoteId);
-  //
-  //   if (localId != null && localId >= 0) {
-  //     await (update(db.dbStatuses)
-  //           ..where(
-  //             (i) => i.id.equals(
-  //               localId,
-  //             ),
-  //           ))
-  //         .write(entity);
-  //   } else {
-  //     localId = await insert(
-  //       entity: entity,
-  //       mode: null,
-  //     );
-  //   }
-  //
-  //   return localId;
-  // }
 
   // TODO: separate media in own table & use join
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
@@ -154,7 +159,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
       query
         ..where((status) =>
             status.pleromaLocal.equals(true) |
-            status.url.like("%$localDomain%"));
+            status.url.like('%$localDomain%'));
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyRemoteWhere(
@@ -163,30 +168,30 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where((status) => (status.pleromaLocal.equals(true).not() &
-            status.url.like("%$localDomain%").not()));
+            status.url.like('%$localDomain%').not()));
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromInstanceWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     String? instance,
   ) =>
-      query..where((status) => status.url.like("%$instance%"));
+      query..where((status) => status.url.like('%$instance%'));
 
   void addExcludeTextWhere(
-    JoinedSelectStatement<Table, DataClass> query, {
+    JoinedSelectStatement query, {
     required String? phrase,
     required bool wholeWord,
   }) {
     addExcludeTextConditionWhere(
       query,
-      tableName: "db_statuses",
+      tableName: 'db_statuses',
       fieldName: dbStatuses.content.$name,
       phrase: phrase,
       wholeWord: wholeWord,
     );
     addExcludeTextConditionWhere(
       query,
-      tableName: "db_statuses",
+      tableName: 'db_statuses',
       fieldName: dbStatuses.spoilerText.$name,
       phrase: phrase,
       wholeWord: wholeWord,
@@ -217,17 +222,17 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     String expressionCondition;
     if (wholeWord) {
-      final regex = r"\b" + phrase! + r"\b";
+      final regex = r'\b' + phrase! + r'\b';
       expressionCondition = "NOT REGEXP '$regex'";
     } else {
       expressionCondition = "NOT LIKE '%$phrase%'";
     }
-    String expressionContent = "$tableName.$fieldName $expressionCondition";
+    var expressionContent = '$tableName.$fieldName $expressionCondition';
 
     return query
       ..where(
         CustomExpression<bool>(expressionContent) |
-            CustomExpression<bool>("$tableName.$fieldName IS NULL"),
+            CustomExpression<bool>('$tableName.$fieldName IS NULL'),
       );
   }
 
@@ -264,7 +269,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(CustomExpression<bool>(
-          "$_conversationStatusesAliasId.conversation_remote_id"
+          '$_conversationStatusesAliasId.conversation_remote_id'
           " = '$conversationRemoteId'",
         ));
 
@@ -275,13 +280,13 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
       query
         ..where(
           CustomExpression<bool>(
-                "db_statuses.in_reply_to_account_remote_id IS NULL",
+                'db_statuses.in_reply_to_account_remote_id IS NULL',
               ) |
               CustomExpression<bool>(
                 "db_statuses.in_reply_to_account_remote_id = '$myAccountRemoteId'",
               ) |
               CustomExpression<bool>(
-                "$_replyToAccountFollowingsAliasId.account_remote_id = "
+                '$_replyToAccountFollowingsAliasId.account_remote_id = '
                 // "$_replyToAccountFollowingsAliasId.following_account_remote_id = "
                 "'$myAccountRemoteId'",
               ),
@@ -411,6 +416,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
                       expression = item.createdAt;
                       break;
                   }
+
                   return OrderingTerm(
                     expression: expression,
                     mode: orderTerm.orderingMode,
@@ -419,7 +425,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
             .toList());
 
   // ignore: long-method
-  List<Join<Table, DataClass>> populateStatusJoin({
+  List<Join> populateStatusJoin({
     required includeAccountFollowing,
     required includeReplyToAccountFollowing,
     required includeStatusHashtags,
@@ -519,8 +525,8 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   Future incrementRepliesCount({required String? remoteId}) {
-    var update = "UPDATE db_statuses "
-        "SET replies_count = replies_count + 1 "
+    var update = 'UPDATE db_statuses '
+        'SET replies_count = replies_count + 1 '
         "WHERE remote_id = '$remoteId'";
     var query = db.customUpdate(update, updates: {dbStatuses});
 
@@ -528,8 +534,8 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   Future markAsDeleted({required String? remoteId}) {
-    var update = "UPDATE db_statuses "
-        "SET deleted = 1 "
+    var update = 'UPDATE db_statuses '
+        'SET deleted = 1 '
         "WHERE remote_id = '$remoteId'";
     var query = db.customUpdate(update, updates: {dbStatuses});
 
@@ -537,8 +543,8 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   Future markAsHiddenLocallyOnDevice({required int? localId}) {
-    var update = "UPDATE db_statuses "
-        "SET hidden_locally_on_device = 1 "
+    var update = 'UPDATE db_statuses '
+        'SET hidden_locally_on_device = 1 '
         "WHERE id = '$localId'";
     var query = db.customUpdate(update, updates: {dbStatuses});
 
@@ -575,7 +581,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
     if (filters?.onlyFromInstance?.isNotEmpty == true) {
       assert(filters?.onlyRemoteCondition != null,
-          "onlyRemoteCondition should be notNull if onlyFromInstance was set");
+          'onlyRemoteCondition should be notNull if onlyFromInstance was set');
 
       addOnlyFromInstanceWhere(
         query,
@@ -701,7 +707,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   // ignore: code-metrics, long-method
-  JoinedSelectStatement<Table, DataClass>
+  JoinedSelectStatement
       convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     required StatusRepositoryFilters? filters,
@@ -789,14 +795,14 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
     return joinQuery;
   }
-
 }
 
 extension TypedResultDbStatusPopulatedExtension on TypedResult {
   DbStatusPopulated toDbStatusPopulated({
     required StatusDao dao,
   }) {
-    TypedResult typedResult = this;
+    var typedResult = this;
+
     return DbStatusPopulated(
       reblogDbStatus: typedResult.readTableOrNull(dao.reblogAlias),
       reblogDbStatusAccount:

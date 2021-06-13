@@ -1,5 +1,7 @@
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_page.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_dialog.dart';
 import 'package:fedi/app/timeline/timeline_label_extension.dart';
@@ -21,7 +23,7 @@ import 'package:flutter_reorderable_list/flutter_reorderable_list.dart'
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("timelines_home_tab_storage_widget.dart");
+var _logger = Logger('timelines_home_tab_storage_widget.dart');
 
 class TimelinesHomeTabStorageWidget extends StatelessWidget {
   @override
@@ -36,6 +38,7 @@ class TimelinesHomeTabStorageWidget extends StatelessWidget {
         if (list == null) {
           return const SizedBox.shrink();
         }
+
         return Provider<List<TimelinesHomeTabStorageListItem>>.value(
           value: list,
           child: const _TimelinesHomeTabStorageListWidget(),
@@ -88,6 +91,7 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
           ),
         )
         .toList();
+
     return flutter_reorderable_list.ReorderableList(
       onReorder: (Key item, Key newPosition) =>
           _onReorder(timelinesHomeTabStorageBloc, item, newPosition),
@@ -107,12 +111,13 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
     Key item,
     Key newPosition,
   ) {
-    int oldIndex = timelinesHomeTabStorageBloc.indexOfKey(item);
-    int newIndex = timelinesHomeTabStorageBloc.indexOfKey(newPosition);
+    var oldIndex = timelinesHomeTabStorageBloc.indexOfKey(item);
+    var newIndex = timelinesHomeTabStorageBloc.indexOfKey(newPosition);
 
-    _logger.finest(() => "onReorder oldIndex $oldIndex newIndex $newIndex");
+    _logger.finest(() => 'onReorder oldIndex $oldIndex newIndex $newIndex');
 
     timelinesHomeTabStorageBloc.swapItemsAt(oldIndex, newIndex);
+
     return true;
   }
 
@@ -120,7 +125,7 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
     ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
     Key item,
   ) {
-    _logger.finest(() => "_onReorderDone $item");
+    _logger.finest(() => '_onReorderDone $item');
   }
 }
 
@@ -140,7 +145,7 @@ class _TimelinesHomeTabStorageListAddTimelineItemWidget
       builder: (context, snapshot) {
         var uiState = snapshot.data ?? TimelinesHomeTabStorageUiState.view;
 
-        late Widget child;
+        Widget child;
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
             child = const SizedBox.shrink();
@@ -172,6 +177,7 @@ class _TimelinesHomeTabStorageListAddTimelineItemWidget
             );
             break;
         }
+
         return child;
       },
     );
@@ -193,9 +199,14 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
         var uiState = timelinesHomeTabStorageBloc.uiState;
         if (uiState == TimelinesHomeTabStorageUiState.view) {
           showEditTimelineSettingsDialog(
+            instanceLocation: InstanceLocation.local,
             context: context,
             timeline: timeline,
             lockedSource: false,
+            pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+              context,
+              listen: false,
+            ).currentInstance!.info!,
           );
         }
       },
@@ -221,12 +232,18 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
     var timeline = Provider.of<Timeline>(context);
 
     var label = timeline.calculateLabel(context);
+
     return InkWell(
       onTap: () {
         showEditTimelineSettingsDialog(
           context: context,
+          instanceLocation: InstanceLocation.local,
           timeline: timeline,
           lockedSource: false,
+          pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+            context,
+            listen: false,
+          ).currentInstance!.info!,
         );
       },
       child: Row(
@@ -249,13 +266,14 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
+
     return StreamBuilder<TimelinesHomeTabStorageUiState>(
       stream: timelinesHomeTabStorageBloc.uiStateStream,
       initialData: timelinesHomeTabStorageBloc.uiState,
       builder: (context, snapshot) {
         var uiState = snapshot.data ?? TimelinesHomeTabStorageUiState.view;
 
-        late Widget child;
+        Widget child;
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
             child = flutter_reorderable_list.ReorderableListener(
@@ -275,13 +293,19 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
               onClick: () {
                 showEditTimelineSettingsDialog(
                   context: context,
+                  instanceLocation: InstanceLocation.local,
                   timeline: Provider.of(context, listen: false),
                   lockedSource: false,
+                  pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+                    context,
+                    listen: false,
+                  ).currentInstance!.info!,
                 );
               },
             );
             break;
         }
+
         return child;
       },
     );
@@ -297,6 +321,7 @@ class _TimelinesHomeTabStorageListItemLeadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
     var timeline = Provider.of<Timeline>(context);
+
     return StreamBuilder<TimelinesHomeTabStorageUiState>(
       stream: timelinesHomeTabStorageBloc.uiStateStream,
       initialData: timelinesHomeTabStorageBloc.uiState,
@@ -308,12 +333,12 @@ class _TimelinesHomeTabStorageListItemLeadingWidget extends StatelessWidget {
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
             child = _TimelinesHomeTabStorageListItemRemoveButtonWidget(
-              key: ValueKey("${timeline.id}.remove_body"),
+              key: ValueKey('${timeline.id}.remove_body'),
             );
             break;
           case TimelinesHomeTabStorageUiState.view:
             child = SizedBox.shrink(
-              key: ValueKey("${timeline.id}.remove_empty"),
+              key: ValueKey('${timeline.id}.remove_empty'),
             );
             break;
         }
@@ -325,6 +350,7 @@ class _TimelinesHomeTabStorageListItemLeadingWidget extends StatelessWidget {
               begin: Offset(-1.0, 0.0),
               end: Offset(0.0, 0.0),
             ).animate(animation);
+
             return SizeTransition(
               axis: Axis.horizontal,
               sizeFactor: animation,
@@ -353,6 +379,7 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
     var timeline = Provider.of<Timeline>(context);
 
     var isPossibleToDelete = timeline.isPossibleToDelete;
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

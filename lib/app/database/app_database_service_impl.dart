@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/database/database_service.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -15,21 +15,27 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-final _logger = Logger("app_database_service_impl.dart");
+final _logger = Logger('app_database_service_impl.dart');
 
 class AppDatabaseService extends AsyncInitLoadingBloc
     implements IDatabaseService {
+  final IConfigService configService;
   final String dbName;
 
   AppDatabaseService({
     required this.dbName,
+    required this.configService,
   });
 
+  // ignore: avoid-late-keyword
   late AppDatabase appDatabase;
 
+  // ignore: avoid-late-keyword
   late MoorInspector inspector;
 
+  // ignore: avoid-late-keyword
   late String filePath;
+  // ignore: avoid-late-keyword
   late File file;
 
   @override
@@ -61,7 +67,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
   }
 
   Future _addMoorInspectorSupport() async {
-    var packageId = await FediPackageInfoHelper.getPackageId();
+    var packageId = configService.appId;
 
     final moorInspectorBuilder = MoorInspectorBuilder()
       ..bundleId = packageId
@@ -84,6 +90,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
       dbFolder.path,
       path,
     );
+    
     return filePath;
   }
 
@@ -162,9 +169,9 @@ class AppDatabaseService extends AsyncInitLoadingBloc
     required Duration? ageLimit,
     required int? entriesCountByTypeLimit,
   }) async {
-    _logger.finest(() => "clearByLimits \n"
-        "ageLimit $ageLimit \n"
-        "entriesCountByTypeLimit $entriesCountByTypeLimit \n");
+    _logger.finest(() => 'clearByLimits \n'
+        'ageLimit $ageLimit \n'
+        'entriesCountByTypeLimit $entriesCountByTypeLimit \n');
 
     // todo: clear related tables too
 

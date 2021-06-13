@@ -6,7 +6,7 @@ import 'package:fedi/rest/rest_request_model.dart';
 
 class PleromaApiCaptchaService extends BasePleromaApiService
     implements IPleromaApiCaptchaService {
-  final captchaRelativeUrlPath = "/api/pleroma/captcha";
+  final captchaRelativeUrlPath = '/api/pleroma/captcha';
   @override
   final IPleromaApiRestService restService;
 

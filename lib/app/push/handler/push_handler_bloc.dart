@@ -4,7 +4,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-typedef Future<bool> IPushRealTimeHandler(
+typedef IPushRealTimeHandler = Future<bool> Function(
   PushHandlerMessage pushHandlerMessage,
 );
 

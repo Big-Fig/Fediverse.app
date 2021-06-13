@@ -107,6 +107,7 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context);
+
     return Padding(
       padding: FediPadding.verticalBigPadding,
       child: Row(

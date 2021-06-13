@@ -34,6 +34,7 @@ class AccountTestHelper {
         showingReblogs: seed.hashCode % 4 == 0,
         subscribing: seed.hashCode % 2 == 0,
         blockedBy: seed.hashCode % 4 == 0,
+        notifying: seed.hashCode % 5 == 0,
         note: null,
         id: null,
       );

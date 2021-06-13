@@ -8,7 +8,7 @@ class GlobalChatSettingsLocalPreferenceBloc
     implements IGlobalChatSettingsLocalPreferenceBloc {
   GlobalChatSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
-  ) : super(preferencesService, "chat.settings.global");
+  ) : super(preferencesService, 'chat.settings.global');
 
   static const ChatSettings defaultValue = ChatSettings(
     replaceConversationsWithPleromaChats: true,

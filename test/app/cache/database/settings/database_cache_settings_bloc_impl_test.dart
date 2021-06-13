@@ -11,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'database_cache_settings_model_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
   late GlobalDatabaseCacheSettingsLocalPreferenceBloc
@@ -96,7 +96,7 @@ void main() {
 
     var testDatabaseCacheAgeLimitType =
         DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
-      seed: "seed",
+      seed: 'seed',
     ).ageLimitType;
 
     await databaseCacheSettingsBloc
@@ -161,7 +161,7 @@ void main() {
 
     var testDatabaseCacheEntriesCountByTypeLimitType =
         DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
-      seed: "seed",
+      seed: 'seed',
     ).entriesCountByTypeLimitType;
 
     await databaseCacheSettingsBloc.changeEntriesCountByTypeLimit(

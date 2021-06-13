@@ -79,6 +79,7 @@ extension INotificationExtension on INotification {
     if (this is DbNotificationPopulated) {
       var dbNotificationPopulatedWrapper =
           this as DbNotificationPopulatedWrapper;
+
       return dbNotificationPopulatedWrapper.dbNotificationPopulated;
     } else {
       return DbNotificationPopulated(
@@ -100,6 +101,7 @@ extension INotificationExtension on INotification {
     if (this is DbNotificationPopulated) {
       var dbNotificationPopulatedWrapper =
           this as DbNotificationPopulatedWrapper;
+
       return dbNotificationPopulatedWrapper
           .dbNotificationPopulated.dbNotification;
     } else {
@@ -125,7 +127,7 @@ extension INotificationExtension on INotification {
   PleromaApiNotification toPleromaNotification() {
     var localNotification = this;
 
-    PleromaApiNotificationPleromaPart? pleroma = localNotification.pleroma;
+    var pleroma = localNotification.pleroma;
 
     var unread = localNotification.unread ?? false;
 

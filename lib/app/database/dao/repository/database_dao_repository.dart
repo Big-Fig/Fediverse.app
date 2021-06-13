@@ -38,6 +38,7 @@ abstract class DatabaseDaoRepository<
   @override
   Future<bool> isExistWithDbId(DbId dbId) async {
     var found = await findByDbIdInDbType(dbId);
+
     return found != null;
   }
 

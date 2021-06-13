@@ -54,6 +54,7 @@ class FilterPaginationListWidget extends FediPaginationListWidget<IFilter> {
       footer: footer,
       itemBuilder: (context, index) {
         var item = items[index];
+
         return Provider<IFilter>.value(
           value: item,
           child: DisposableProxyProvider<IFilter, IFilterBloc>(

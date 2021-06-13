@@ -92,6 +92,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
       pleromaChatMessages,
       batchTransaction: null,
     );
+
     return true;
   }
 

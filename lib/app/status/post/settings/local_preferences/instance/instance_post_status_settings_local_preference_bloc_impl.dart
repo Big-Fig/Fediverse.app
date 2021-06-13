@@ -11,7 +11,7 @@ class InstancePostStatusSettingsLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService,
-          "postStatus.settings.instance.$userAtHost",
+          'postStatus.settings.instance.$userAtHost',
         );
   static const PostStatusSettings? defaultValue = null;
 

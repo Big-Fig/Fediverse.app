@@ -16,7 +16,7 @@ import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("status_model.dart");
+final _logger = Logger('status_model.dart');
 
 typedef StatusAndContextCallback = Function(
   BuildContext context,
@@ -128,13 +128,13 @@ abstract class IStatus implements IEqualComparableObj<IStatus> {
 
   /// a datetime (iso8601) that states when
   /// the post will expire (be deleted automatically),
-  /// or empty if the post won't expire
+  /// or empty if the post wont expire
   DateTime? get pleromaExpiresAt;
 
   bool? get pleromaThreadMuted;
 
   /// A list with emoji / reaction maps. The format is
-  /// {name: "☕", count: 1, me: true}.
+  /// {name: '☕', count: 1, me: true}.
   /// Contains no information about the reacting users,
   /// for that use the /statuses/:id/reactions endpoint.
   List<PleromaApiStatusEmojiReaction>? get pleromaEmojiReactions;
@@ -218,6 +218,7 @@ extension IStatusDbExtension on IStatus {
   DbStatusPopulated toDbStatusPopulated() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated;
     } else {
       return DbStatusPopulated(
@@ -236,6 +237,7 @@ extension IStatusDbExtension on IStatus {
   DbStatus toDbStatus() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.dbStatus;
     } else {
       return DbStatus(
@@ -289,6 +291,7 @@ extension IStatusDbExtension on IStatus {
   DbAccount toDbAccount() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.dbAccount;
     } else {
       return account.toDbAccount();
@@ -298,6 +301,7 @@ extension IStatusDbExtension on IStatus {
   DbStatus? toReblogDbStatus() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.reblogDbStatus;
     } else {
       return reblog?.toDbStatus();
@@ -307,6 +311,7 @@ extension IStatusDbExtension on IStatus {
   DbAccount? toReblogStatusDbAccount() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.reblogDbStatusAccount;
     } else {
       return reblog?.account.toDbAccount();
@@ -316,6 +321,7 @@ extension IStatusDbExtension on IStatus {
   DbStatus? toReplyDbStatus() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.replyDbStatus;
     } else {
       return inReplyToStatus?.toDbStatus();
@@ -325,6 +331,7 @@ extension IStatusDbExtension on IStatus {
   DbAccount? toReplyStatusDbAccount() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.replyDbStatusAccount;
     } else {
       return inReplyToStatus?.account.toDbAccount();
@@ -334,6 +341,7 @@ extension IStatusDbExtension on IStatus {
   DbStatus? toReplyReblogDbStatus() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper.dbStatusPopulated.replyReblogDbStatus;
     } else {
       return reblog?.inReplyToStatus?.toDbStatus();
@@ -343,6 +351,7 @@ extension IStatusDbExtension on IStatus {
   DbAccount? toReplyReblogStatusDbAccount() {
     if (this is DbStatusPopulatedWrapper) {
       var dbStatusPopulatedWrapper = this as DbStatusPopulatedWrapper;
+
       return dbStatusPopulatedWrapper
           .dbStatusPopulated.replyReblogDbStatusAccount;
     } else {
@@ -609,14 +618,14 @@ class DbStatusPopulatedWrapper extends IStatus {
     bool? hiddenLocallyOnDevice,
     String? wasSentWithIdempotencyKey,
   }) {
-    DbStatus? reblogStatus = reblog?.toDbStatus();
-    DbAccount? reblogStatusAccount = reblog?.account.toDbAccount();
+    var reblogStatus = reblog?.toDbStatus();
+    var reblogStatusAccount = reblog?.account.toDbAccount();
 
-    DbStatus? replyStatus = inReplyToStatus?.toDbStatus();
-    DbAccount? replyStatusAccount = inReplyToStatus?.account.toDbAccount();
+    var replyStatus = inReplyToStatus?.toDbStatus();
+    var replyStatusAccount = inReplyToStatus?.account.toDbAccount();
 
-    DbStatus? replyReblogStatus = inReplyToStatus?.reblog?.toDbStatus();
-    DbAccount? replyReblogStatusAccount =
+    var replyReblogStatus = inReplyToStatus?.reblog?.toDbStatus();
+    var replyReblogStatusAccount =
         inReplyToStatus?.reblog?.account.toDbAccount();
 
     return DbStatusPopulatedWrapper(
@@ -811,14 +820,15 @@ extension IStatusExtension on IStatus {
   Uri get urlRemoteHostUri {
     var uri = Uri.parse(url ?? this.uri);
 
-    var resultUrl = "${uri.scheme}://${uri.host}";
+    var resultUrl = '${uri.scheme}://${uri.host}';
+
     return Uri.parse(resultUrl);
   }
 
   String get urlRemoteId {
     try {
       // todo: perhaps need improvements
-      var splitResult = (url ?? uri).split("/");
+      var splitResult = (url ?? uri).split('/');
 
       var isHaveEndingSlash = splitResult.last.isNotEmpty;
       if (isHaveEndingSlash) {
@@ -826,6 +836,7 @@ extension IStatusExtension on IStatus {
       } else {
         // ignore: no-magic-number
         var middleIndex = splitResult.length - 2;
+
         return splitResult[middleIndex];
       }
     } catch (e, stackTrace) {
@@ -833,7 +844,7 @@ extension IStatusExtension on IStatus {
         e: e,
         status: this,
       );
-      _logger.shout(() => "$exception", stackTrace);
+      _logger.shout(() => '$exception', stackTrace);
       throw exception;
     }
   }
@@ -852,7 +863,7 @@ extension DbStatusPopulatedListExtension on List<DbStatusPopulated> {
 
 class CantExtractStatusRemoteIdFromStatusUrlException implements Exception {
   final IStatus status;
-  final dynamic? e;
+  final dynamic e;
 
   CantExtractStatusRemoteIdFromStatusUrlException({
     required this.status,
@@ -870,8 +881,8 @@ class CantExtractStatusRemoteIdFromStatusUrlException implements Exception {
 
 extension IPleromaApiMentionStatusListExtension on List<IStatus> {
   List<IPleromaApiMention> findAllMentions() {
-    List<IStatus> statuses = this;
-    Set<IPleromaApiMention> mentions = {};
+    var statuses = this;
+    var mentions = <IPleromaApiMention>{};
 
     statuses.forEach(
       (status) {

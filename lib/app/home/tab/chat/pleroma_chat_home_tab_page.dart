@@ -36,7 +36,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("chat_messages_home_tab_page.dart");
+var _logger = Logger('chat_messages_home_tab_page.dart');
 
 final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
@@ -45,7 +45,7 @@ class PleromaChatHomeTabPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _logger.finest(() => "build");
+    _logger.finest(() => 'build');
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
@@ -132,6 +132,7 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
     var isSupportChats = currentInstance.isSupportChats;
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return FediDarkStatusBarStyleArea(
       child: ClipRRect(
         borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
@@ -159,7 +160,7 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
           : buildMastodonBody(context);
 
   Widget buildPleromaBody() => const PleromaChatWithLastMessageListWidget(
-        key: PageStorageKey("PleromaChatWithLastMessageListWidget"),
+        key: PageStorageKey('PleromaChatWithLastMessageListWidget'),
       );
 
   Widget buildMastodonBody(BuildContext context) => Center(
@@ -188,6 +189,7 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
     var isPleromaInstance = currentInstance.isPleroma;
 
     var isSupportChats = currentInstance.isSupportChats;
+
     return FediTabMainHeaderBarWidget(
       leadingWidgets: [
         FediHeaderText(

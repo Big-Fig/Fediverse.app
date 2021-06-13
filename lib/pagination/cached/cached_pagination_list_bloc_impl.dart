@@ -6,7 +6,7 @@ import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("cached_pagination_list_bloc_impl.dart");
+var _logger = Logger('cached_pagination_list_bloc_impl.dart');
 
 class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
     extends PaginationListBloc<TPage, TItem>
@@ -61,7 +61,7 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
       }
 
       _logger.warning(
-        () => "error during loadMoreWithoutController",
+        () => 'error during loadMoreWithoutController',
         e,
         stackTrace,
       );
@@ -128,7 +128,7 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
         );
       }
       _logger.warning(
-        () => "error during refreshWithoutController",
+        () => 'error during refreshWithoutController',
         e,
         stackTrace,
       );

@@ -4,11 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatelessWidget {
-  const SplashPage();
+  final bool displayVersionInfo;
+
+  const SplashPage({
+    required this.displayVersionInfo,
+  });
 
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: lightFediUiTheme.colorTheme.primaryDark,
-        body: const SplashWidget(),
+        body:  SplashWidget(displayVersionInfo:displayVersionInfo),
       );
 }

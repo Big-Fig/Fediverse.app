@@ -12,11 +12,11 @@ part 'toast_settings_model.g.dart';
 @HiveType(typeId: -32 + 86)
 class ToastSettings implements IJsonObject, ISettings<ToastSettings> {
   @HiveField(3)
-  @JsonKey(name: "push_settings")
+  @JsonKey(name: 'push_settings')
   final PushSettings pushSettings;
 
   @HiveField(4)
-  @JsonKey(name: "handling_type_string")
+  @JsonKey(name: 'handling_type_string')
   final String handlingTypeString;
 
   ToastHandlingType get handlingType =>

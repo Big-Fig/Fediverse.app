@@ -22,8 +22,8 @@ import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:fedi/pleroma/api/timeline/auth/pleroma_api_auth_timeline_service.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
@@ -31,23 +31,24 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("timeline_status_cached_list_bloc_impl.dart");
+var _logger = Logger('timeline_status_cached_list_bloc_impl.dart');
 
 class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     implements IStatusCachedListBloc {
-  final IPleromaApiAccountService pleromaAccountService;
-  final IPleromaApiTimelineService pleromaTimelineService;
+  final IPleromaApiAccountService pleromaApiAccountService;
+  final IPleromaApiAuthTimelineService pleromaApiAuthTimelineService;
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
-  final ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc;
+  final ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final IMyAccountBloc myAccountBloc;
 
-  Timeline get timeline => timelineLocalPreferencesBloc.value!;
+  Timeline get timeline => timelineLocalPreferenceBloc.value!;
 
   TimelineType get timelineType => timeline.type;
 
+  // ignore: avoid-late-keyword
   late List<IFilter> filters;
 
   List<StatusTextCondition> get excludeTextConditions => filters
@@ -59,6 +60,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   StatusOnlyLocalCondition? get onlyLocalCondition {
     if (timeline.onlyLocal == true) {
       var localUrlHost = currentInstanceBloc.currentInstance!.urlHost;
+
       return StatusOnlyLocalCondition(localUrlHost);
     } else {
       return null;
@@ -68,6 +70,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   StatusOnlyRemoteCondition? get onlyRemoteCondition {
     if (timeline.onlyRemote == true) {
       var localUrlHost = currentInstanceBloc.currentInstance!.urlHost;
+
       return StatusOnlyRemoteCondition(localUrlHost);
     } else {
       return null;
@@ -107,12 +110,12 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   Timeline? currentTimelineData;
 
   TimelineStatusCachedListBloc({
-    required this.pleromaAccountService,
-    required this.pleromaTimelineService,
+    required this.pleromaApiAccountService,
+    required this.pleromaApiAuthTimelineService,
     required this.statusRepository,
     required this.filterRepository,
     required this.currentInstanceBloc,
-    required this.timelineLocalPreferencesBloc,
+    required this.timelineLocalPreferenceBloc,
     required this.webSocketsHandlerManagerBloc,
     required this.myAccountBloc,
     required WebSocketsListenType webSocketsListenType,
@@ -120,10 +123,10 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     addDisposable(streamController: settingsChangedStreamController);
 
     addDisposable(
-      streamSubscription: timelineLocalPreferencesBloc.stream.listen(
+      streamSubscription: timelineLocalPreferenceBloc.stream.listen(
         (Timeline? timeline) {
           _logger.finest(
-            () => "timelineLocalPreferencesBloc timeline $timeline",
+            () => 'timelineLocalPreferencesBloc timeline $timeline',
           );
           if (currentTimelineData != timeline) {
             currentTimelineData = timeline;
@@ -150,10 +153,10 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
     var isWebSocketsUpdatesEnabled =
         timeline.isWebSocketsUpdatesEnabled ?? true;
-    _logger.finest(() => "resubscribeWebSocketsUpdates "
-        "isWebSocketsUpdatesEnabled $isWebSocketsUpdatesEnabled "
-        "webSocketsListenType $webSocketsListenType "
-        "timelineType $timelineType ");
+    _logger.finest(() => 'resubscribeWebSocketsUpdates '
+        'isWebSocketsUpdatesEnabled $isWebSocketsUpdatesEnabled '
+        'webSocketsListenType $webSocketsListenType '
+        'timelineType $timelineType ');
     if (isWebSocketsUpdatesEnabled) {
       switch (timelineType) {
         case TimelineType.public:
@@ -204,7 +207,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  IPleromaApi get pleromaApi => pleromaTimelineService;
+  IPleromaApi get pleromaApi => pleromaApiAuthTimelineService;
 
   bool get isFromHomeTimeline => timelineType == TimelineType.home;
 
@@ -230,10 +233,10 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t _timeline = $timeline"
-        "\t newerThan = $newerThan"
-        "\t olderThan = $olderThan");
+    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
+        '\t _timeline = $timeline'
+        '\t newerThan = $newerThan'
+        '\t olderThan = $olderThan');
 
     List<IPleromaApiStatus>? remoteStatuses;
 
@@ -271,14 +274,15 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
       return true;
     } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "statuses is null");
+      _logger.severe(() => 'error during refreshItemsFromRemoteForPage: '
+          'statuses is null');
+
       return false;
     }
   }
 
   Future<List<IPleromaApiStatus>> _loadAccountTimeline() async {
-    return await pleromaAccountService.getAccountStatuses(
+    return await pleromaApiAccountService.getAccountStatuses(
       accountRemoteId: timeline.onlyFromRemoteAccount!.id,
       onlyWithMedia: onlyWithMedia,
     );
@@ -287,7 +291,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   Future<List<IPleromaApiStatus>> _loadHashtagTimeline(
     PleromaApiPaginationRequest pagination,
   ) async {
-    return await pleromaTimelineService.getHashtagTimeline(
+    return await pleromaApiAuthTimelineService.getHashtagTimeline(
       hashtag: timeline.withRemoteHashtag!,
       pagination: pagination,
       onlyLocal: onlyLocal,
@@ -300,7 +304,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   Future<List<IPleromaApiStatus>> _loadHomeTimeline(
     PleromaApiPaginationRequest pagination,
   ) async {
-    return await pleromaTimelineService.getHomeTimeline(
+    return await pleromaApiAuthTimelineService.getHomeTimeline(
       pagination: pagination,
       onlyLocal: onlyLocal,
       withMuted: withMuted,
@@ -312,7 +316,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   Future<List<IPleromaApiStatus>> _loadListTimeline(
     PleromaApiPaginationRequest pagination,
   ) async {
-    return await pleromaTimelineService.getListTimeline(
+    return await pleromaApiAuthTimelineService.getListTimeline(
       listId: timeline.onlyInRemoteList!.id,
       pagination: pagination,
       onlyLocal: onlyLocal,
@@ -324,7 +328,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   Future<List<IPleromaApiStatus>> _loadPublicTimeline(
     PleromaApiPaginationRequest pagination,
   ) async {
-    return await pleromaTimelineService.getPublicTimeline(
+    return await pleromaApiAuthTimelineService.getPublicTimeline(
       pagination: pagination,
       onlyLocal: onlyLocal,
       onlyRemote: onlyRemote,
@@ -372,11 +376,11 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     required ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc,
   }) =>
       TimelineStatusCachedListBloc(
-        pleromaAccountService: IPleromaApiAccountService.of(
+        pleromaApiAccountService: IPleromaApiAccountService.of(
           context,
           listen: false,
         ),
-        pleromaTimelineService: IPleromaApiTimelineService.of(
+        pleromaApiAuthTimelineService: IPleromaApiAuthTimelineService.of(
           context,
           listen: false,
         ),
@@ -388,7 +392,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
+        timelineLocalPreferenceBloc: timelineLocalPreferencesBloc,
         webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
           context,
           listen: false,
@@ -461,7 +465,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     );
 
     _logger.finest(
-      () => "timelineType $timelineType,  filters $filters",
+      () => 'timelineType $timelineType,  filters $filters',
     );
   }
 

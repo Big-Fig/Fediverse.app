@@ -2,12 +2,12 @@ import 'package:fedi/app/moor/moor_converters.dart';
 import 'package:moor/moor.dart';
 
 // todo: add foreign keys
-@DataClassName("DbNotification")
+@DataClassName('DbNotification')
 class DbNotifications extends Table {
   // integer ids works much better in SQLite
   IntColumn get id => integer().nullable().autoIncrement()();
 
-  TextColumn get remoteId => text().customConstraint("UNIQUE NOT NULL")();
+  TextColumn get remoteId => text().customConstraint('UNIQUE NOT NULL')();
 
   TextColumn get accountRemoteId => text().nullable()();
 

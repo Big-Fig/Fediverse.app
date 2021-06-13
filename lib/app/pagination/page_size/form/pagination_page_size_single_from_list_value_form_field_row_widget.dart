@@ -30,14 +30,14 @@ String mapPaginationPageSizeToLabel(
 ) {
   switch (type) {
     case PaginationPageSize.size5:
-      return "5";
+      return '5';
     case PaginationPageSize.size10:
-      return "10";
+      return '10';
     case PaginationPageSize.size20:
-      return "20";
+      return '20';
     case PaginationPageSize.size50:
-      return "50";
+      return '50';
     case PaginationPageSize.size100:
-      return "100";
+      return '100';
   }
 }

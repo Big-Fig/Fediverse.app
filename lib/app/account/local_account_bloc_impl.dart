@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
@@ -16,7 +17,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("local_account_bloc_impl.dart");
+var _logger = Logger('local_account_bloc_impl.dart');
 
 class LocalAccountBloc extends AccountBloc {
   final IMyAccount? myAccount;
@@ -73,7 +74,7 @@ class LocalAccountBloc extends AccountBloc {
       streamSubscription: accountSubject.stream.listen(
         (account) {
           var pleromaRelationship = account.pleromaRelationship;
-          // _logger.finest(() => "pleromaRelationship $pleromaRelationship");
+          // _logger.finest(() => 'pleromaRelationship $pleromaRelationship');
           if (pleromaRelationship?.following != null) {
             accountRelationshipSubject.add(pleromaRelationship);
           }
@@ -104,7 +105,6 @@ class LocalAccountBloc extends AccountBloc {
             IPleromaApiAuthAccountService.of(context, listen: false),
         myAccount: IMyAccountBloc.of(context, listen: false).myAccount,
       );
-
 
   // todo: refactor long-parameter-list
   // ignore: long-parameter-list
@@ -271,7 +271,7 @@ class LocalAccountBloc extends AccountBloc {
               pleromaRelationship: newRelationship,
             )
             .toPleromaApiAccount(),
-        // don't need batch because we have only one transaction
+        // dont need batch because we have only one transaction
         batchTransaction: null,
       );
     }
@@ -404,19 +404,19 @@ class LocalAccountBloc extends AccountBloc {
     var newAccount = account.copyWith(pleromaRelationship: newRelationship);
     var newRemoteAccount = newAccount.toPleromaApiAccount();
 
-    _logger.finest(() => "_updateRelationship "
-        "newRelationship=$newRelationship");
-    _logger.finest(() => "_updateRelationship newRemoteAccount.relationship"
-        "${newRemoteAccount.pleroma?.relationship}");
+    _logger.finest(() => '_updateRelationship '
+        'newRelationship=$newRelationship');
+    _logger.finest(() => '_updateRelationship newRemoteAccount.relationship'
+        '${newRemoteAccount.pleroma?.relationship}');
     if (account.localId != null) {
       await accountRepository.updateAppTypeByRemoteType(
         appItem: account,
         remoteItem: newRemoteAccount,
-        // don't need batch because we have only one transaction
+        // dont need batch because we have only one transaction
         batchTransaction: null,
       );
     } else {
-      // sometimes we don't have local account id, for example go from search
+      // sometimes we dont have local account id, for example go from search
       // to account page
       await accountRepository.upsertInRemoteType(
         newRemoteAccount,
@@ -425,9 +425,9 @@ class LocalAccountBloc extends AccountBloc {
   }
 
   Future _refreshAccountRelationship(IAccount account) async {
-    _logger.finest(() => "refreshAccountRelationship "
-        "refreshAccountRelationshipInProgress="
-        "$_refreshAccountRelationshipInProgress");
+    _logger.finest(() => 'refreshAccountRelationship '
+        'refreshAccountRelationshipInProgress='
+        '$_refreshAccountRelationshipInProgress');
     if (!_refreshAccountRelationshipInProgress) {
       _refreshAccountRelationshipInProgress = true;
       var relationships =
@@ -436,7 +436,12 @@ class LocalAccountBloc extends AccountBloc {
           account.remoteId,
         ],
       );
-      await _updateRelationship(account, relationships.first);
+      ;
+      var relationship = relationships.firstOrNull;
+
+      if (relationship != null) {
+        await _updateRelationship(account, relationship);
+      }
       _refreshAccountRelationshipInProgress = false;
     }
   }
@@ -445,7 +450,7 @@ class LocalAccountBloc extends AccountBloc {
   Future refreshFromNetwork({
     required bool isNeedPreFetchRelationship,
   }) async {
-    _logger.finest(() => "requestRefreshFromNetwork start");
+    _logger.finest(() => 'requestRefreshFromNetwork start');
 
     var remoteAccount = await loadRemoteAccount();
     if (isNeedPreFetchRelationship) {
@@ -454,7 +459,7 @@ class LocalAccountBloc extends AccountBloc {
       );
     } else {
       _logger.finest(
-        () => "requestRefreshFromNetwork remoteAccount  $remoteAccount",
+        () => 'requestRefreshFromNetwork remoteAccount  $remoteAccount',
       );
 
       remoteAccount = remoteAccount.copyWith(
@@ -469,11 +474,11 @@ class LocalAccountBloc extends AccountBloc {
         await accountRepository.updateAppTypeByRemoteType(
           appItem: account,
           remoteItem: remoteAccount,
-          // don't need batch because we have only one transaction
+          // dont need batch because we have only one transaction
           batchTransaction: null,
         );
       } else {
-        // sometimes we don't have local account id, for example go from search
+        // sometimes we dont have local account id, for example go from search
         // to account page
         await accountRepository.upsertInRemoteType(
           remoteAccount,

@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StatusEmojiReactionListWidget extends StatelessWidget {
+  const StatusEmojiReactionListWidget();
+
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
@@ -62,6 +64,4 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
       },
     );
   }
-
-  const StatusEmojiReactionListWidget();
 }

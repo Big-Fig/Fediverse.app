@@ -15,12 +15,15 @@ class EditStatusSensitiveSettingsBloc
   final IStatusSensitiveSettingsBloc statusSensitiveSettingsBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IDurationValueFormFieldBloc nsfwDisplayDelayDurationFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc isAlwaysShowSpoilerFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IBoolValueFormFieldBloc isAlwaysShowNsfwFieldBloc;
 
   @override

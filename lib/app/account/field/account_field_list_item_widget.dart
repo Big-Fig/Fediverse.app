@@ -17,13 +17,13 @@ class AccountFieldListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var valueAsRawUrlWithoutSchema = field.valueAsRawUrlWithoutSchema ?? "";
+    var valueAsRawUrlWithoutSchema = field.valueAsRawUrlWithoutSchema ?? '';
 
     return InkWell(
       onTap: () {
         var valueAsRawUrl = field.valueAsRawUrl;
         if (valueAsRawUrl?.isNotEmpty == true) {
-          String url = UrlHelper.extractUrl(valueAsRawUrl!);
+          var url = UrlHelper.extractUrl(valueAsRawUrl!);
           var accountBloc = IAccountBloc.of(context, listen: false);
           UrlHelper.handleUrlClickWithInstanceLocation(
             context: context,
@@ -48,7 +48,7 @@ class AccountFieldListItemWidget extends StatelessWidget {
           ),
           const FediMediumHorizontalSpacer(),
           Text(
-            "${field.name}: ",
+            '${field.name}: ',
             style: brightness == Brightness.dark
                 ? IFediUiTextTheme.of(context).mediumTallDarkGrey
                 : IFediUiTextTheme.of(context).mediumTallWhite,
@@ -67,10 +67,10 @@ class AccountFieldListItemWidget extends StatelessWidget {
 
   IconData _calculateIconData({required String valueAsRawUrlWithoutSchema}) {
     valueAsRawUrlWithoutSchema = valueAsRawUrlWithoutSchema.toLowerCase();
-    if (valueAsRawUrlWithoutSchema.startsWith("www.")) {
+    if (valueAsRawUrlWithoutSchema.startsWith('www.')) {
       valueAsRawUrlWithoutSchema = valueAsRawUrlWithoutSchema.replaceAll(
-        "www.",
-        "",
+        'www.',
+        '',
       );
     }
     if (_isFacebookLink(valueAsRawUrlWithoutSchema)) {
@@ -84,13 +84,13 @@ class AccountFieldListItemWidget extends StatelessWidget {
   }
 
   bool _isFacebookLink(String valueAsRawUrlWithoutSchema) {
-    return valueAsRawUrlWithoutSchema.startsWith("facebook.com") ||
-        valueAsRawUrlWithoutSchema.startsWith("fb.me");
+    return valueAsRawUrlWithoutSchema.startsWith('facebook.com') ||
+        valueAsRawUrlWithoutSchema.startsWith('fb.me');
   }
 
   bool _isInstagramLink(String valueAsRawUrlWithoutSchema) {
-    return valueAsRawUrlWithoutSchema.startsWith("instagram.com") ||
-        valueAsRawUrlWithoutSchema.startsWith("instagr.am") ||
-        valueAsRawUrlWithoutSchema.startsWith("instagr.com");
+    return valueAsRawUrlWithoutSchema.startsWith('instagram.com') ||
+        valueAsRawUrlWithoutSchema.startsWith('instagr.am') ||
+        valueAsRawUrlWithoutSchema.startsWith('instagr.com');
   }
 }

@@ -17,7 +17,7 @@ void main() {
   test('isHaveImage', () async {
     expect(
       PleromaApiCard.only(
-        image: "image",
+        image: 'image',
       ).isHaveImage,
       true,
     );
@@ -36,7 +36,7 @@ void main() {
       null,
     );    expect(
       PleromaApiCard.only(
-        type: "video",
+        type: 'video',
       ).typeAsMastodonApi,
       MastodonApiCardType.video,
     );
@@ -51,19 +51,19 @@ void main() {
     );
     expect(
       PleromaApiCard.only(
-        title: "title",
+        title: 'title',
       ).isHaveContent,
       true,
     );
 
     expect(
       PleromaApiCard.only(
-        html: "html",
+        html: 'html',
       ).isHaveContent,
       true,
     );
     expect(
-      PleromaApiCard.only(description: "description").isHaveContent,
+      PleromaApiCard.only(description: 'description').isHaveContent,
       true,
     );
   });

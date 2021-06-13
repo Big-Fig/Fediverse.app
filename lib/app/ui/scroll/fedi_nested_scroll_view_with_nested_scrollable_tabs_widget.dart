@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart' hide NestedScrollView;
 import 'package:logging/logging.dart';
 
 var _logger =
-    Logger("fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart");
+    Logger('fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart');
 
 typedef TabBarViewContainerBuilder = Widget Function(
   BuildContext context,
@@ -77,11 +77,12 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
   Widget buildNestedScrollView(
     BuildContext context,
   ) {
-    IFediNestedScrollViewBloc fediNestedScrollViewBloc =
+    var fediNestedScrollViewBloc =
         IFediNestedScrollViewBloc.of(context, listen: false);
     var nestedScrollController =
         fediNestedScrollViewBloc.nestedScrollController;
     // extended_nested_scroll_view required to fix nested scrollables sync issue
+
     return extended_nested_scroll_view.NestedScrollView(
       // we use custom nested scroll controller to achieve scroll callbacks
       // from body scrollables
@@ -167,7 +168,7 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
         fediNestedScrollViewWithNestedScrollableTabsBloc.tabController;
 
     _logger.finest(
-      () => "_buildTabBarView tabController ${tabController.hashCode}",
+      () => '_buildTabBarView tabController ${tabController.hashCode}',
     );
 
     if (tabController.length == 0) {
@@ -196,6 +197,7 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
     if (widget.tabBarViewContainerBuilder != null) {
       child = widget.tabBarViewContainerBuilder!(context, child);
     }
+
     return Expanded(
       child: child,
     );
@@ -259,5 +261,5 @@ class _NestedBodyTabItemWidgetState extends State<_NestedBodyTabItemWidget>
   bool get wantKeepAlive => true;
 }
 
-Key _calculateTabKey(String tabKeyPrefix, int index) => Key("$tabKeyPrefix"
-    ".$index");
+Key _calculateTabKey(String tabKeyPrefix, int index) => Key('$tabKeyPrefix'
+    '.$index');

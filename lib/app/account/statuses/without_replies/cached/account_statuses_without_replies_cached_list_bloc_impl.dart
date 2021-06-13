@@ -18,7 +18,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 var _logger =
-    Logger("account_statuses_without_replies_cached_list_bloc_impl.dart");
+    Logger('account_statuses_without_replies_cached_list_bloc_impl.dart');
 
 class AccountStatusesWithoutRepliesListBloc
     extends AccountStatusesCachedListBloc {
@@ -117,10 +117,10 @@ class AccountStatusesWithoutRepliesListBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    _logger.finest(() => "refreshItemsFromRemoteForPage \n"
-        "\t limit=$limit"
-        "\t newerThan=$newerThan"
-        "\t olderThan=$olderThan");
+    _logger.finest(() => 'refreshItemsFromRemoteForPage \n'
+        '\t limit=$limit'
+        '\t newerThan=$newerThan'
+        '\t olderThan=$olderThan');
 
     var remoteStatuses = await pleromaAccountService.getAccountStatuses(
       excludeReplies: true,

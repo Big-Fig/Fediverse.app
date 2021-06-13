@@ -65,6 +65,7 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
       pagination: null,
       orderingTerms: null,
     );
+
     return filters;
   }
 

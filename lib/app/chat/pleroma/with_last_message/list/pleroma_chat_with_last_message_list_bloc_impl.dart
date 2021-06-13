@@ -20,14 +20,16 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("pleroma_chat_with_last_message_list_bloc_impl.dart");
+var _logger = Logger('pleroma_chat_with_last_message_list_bloc_impl.dart');
 
 class PleromaChatWithLastMessageListBloc extends DisposableOwner
     implements IPleromaChatWithLastMessageListBloc {
   @override
+  // ignore: avoid-late-keyword
   late IPleromaChatWithLastMessageCachedListBloc chatListBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IPleromaChatWithLastMessagePaginationBloc chatPaginationBloc;
 
   @override
@@ -36,6 +38,7 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
       get chatPaginationListBloc => chatPaginationListWithNewItemsBloc;
 
   @override
+  // ignore: avoid-late-keyword
   late IPleromaChatWithLastMessagePaginationListWithNewItemsBloc<
           CachedPaginationPage<IPleromaChatWithLastMessage>>
       chatPaginationListWithNewItemsBloc;
@@ -54,26 +57,28 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
     required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
     required WebSocketsListenType webSocketsListenType,
   }) {
-    _logger.finest(() => "constructor");
+    _logger.finest(() => 'constructor');
     chatListBloc = PleromaChatWithLastMessageCachedListBloc(
       pleromaChatService: pleromaChatService,
       chatWithLastMessageRepository: chatWithLastMessageRepository,
       chatRepository: chatRepository,
     );
-    addDisposable(disposable: chatListBloc);
     chatPaginationBloc = PleromaChatWithLastMessagePaginationBloc(
       cachedListBloc: chatListBloc,
       paginationSettingsBloc: paginationSettingsBloc,
       maximumCachedPagesCount: null,
     );
-    addDisposable(
-      disposable: chatListBloc,
-    );
+
     chatPaginationListWithNewItemsBloc =
         PleromaChatWithLastMessagePaginationListWithNewItemsBloc(
       paginationBloc: chatPaginationBloc,
       cachedListBloc: chatListBloc,
       mergeNewItemsImmediately: true,
+    );
+
+    addDisposable(disposable: chatListBloc);
+    addDisposable(
+      disposable: chatPaginationBloc,
     );
     addDisposable(disposable: chatPaginationListWithNewItemsBloc);
 

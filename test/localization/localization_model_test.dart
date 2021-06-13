@@ -18,26 +18,26 @@ void main() {
     expect(
       LocalizationLocale(
         scriptCode: null,
-        languageCode: "en",
+        languageCode: 'en',
         countryCode: null,
       ).localeString,
-      "en",
+      'en',
     );
     expect(
       LocalizationLocale(
         scriptCode: null,
-        languageCode: "en",
-        countryCode: "US",
+        languageCode: 'en',
+        countryCode: 'US',
       ).localeString,
-      "en_US",
+      'en_US',
     );
     expect(
       LocalizationLocale(
-        scriptCode: "Hant",
-        languageCode: "zh",
-        countryCode: "TW",
+        scriptCode: 'Hant',
+        languageCode: 'zh',
+        countryCode: 'TW',
       ).localeString,
-      "zh_Hant_TW",
+      'zh_Hant_TW',
     );
   });
 

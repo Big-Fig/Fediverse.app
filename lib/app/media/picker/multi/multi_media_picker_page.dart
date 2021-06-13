@@ -45,6 +45,7 @@ class _MultiMediaPickerPageBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var multiMediaPickerBloc = IMultiMediaPickerBloc.of(context);
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Column(
       children: [
         Expanded(

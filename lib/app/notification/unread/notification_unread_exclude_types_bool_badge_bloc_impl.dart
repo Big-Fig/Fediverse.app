@@ -21,6 +21,7 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
 
   final BehaviorSubject<bool> badgeSubject = BehaviorSubject.seeded(false);
 
+  // ignore: avoid-late-keyword
   late List<IFilter> filters;
 
   NotificationUnreadExcludeTypesBoolBadgeBloc({

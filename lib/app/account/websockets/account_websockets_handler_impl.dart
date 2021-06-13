@@ -2,6 +2,7 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_impl.dart';
@@ -13,6 +14,7 @@ class AccountWebSocketsHandler extends WebSocketsChannelHandler {
     required IPleromaApiWebSocketsService pleromaWebSocketsService,
     required IStatusRepository statusRepository,
     required INotificationRepository notificationRepository,
+    required IInstanceAnnouncementRepository instanceAnnouncementRepository,
     required IConversationChatRepository conversationRepository,
     required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
     required IConversationChatNewMessagesHandlerBloc
@@ -29,6 +31,7 @@ class AccountWebSocketsHandler extends WebSocketsChannelHandler {
           ),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
+          instanceAnnouncementRepository: instanceAnnouncementRepository,
           conversationRepository: conversationRepository,
           chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
           conversationChatNewMessagesHandlerBloc:
@@ -40,5 +43,5 @@ class AccountWebSocketsHandler extends WebSocketsChannelHandler {
         );
 
   @override
-  String get logTag => "account_websockets_handler_impl.dart";
+  String get logTag => 'account_websockets_handler_impl.dart';
 }

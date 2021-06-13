@@ -52,6 +52,7 @@ void showEditGlobalOrInstanceStatusSensitiveSettingsDialog({
                 },
               ),
             );
+
             return editStatusSensitiveSettingsBloc;
           },
           child: ProxyProvider<IEditStatusSensitiveSettingsBloc,

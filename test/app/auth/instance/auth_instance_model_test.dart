@@ -37,10 +37,10 @@ void main() {
 
   test('copyWith', () async {
     var obj1 = AuthInstanceModelTestHelper.createTestAuthInstance(
-      seed: "seed1",
+      seed: 'seed1',
     );
     var obj2 = AuthInstanceModelTestHelper.createTestAuthInstance(
-      seed: "seed2",
+      seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(

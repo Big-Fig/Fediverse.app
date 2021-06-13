@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-final _logger = Logger("edit_global_or_instance_toast_settings_dialog.dart");
+final _logger = Logger('edit_global_or_instance_toast_settings_dialog.dart');
 
 void showEditGlobalOrInstanceToastSettingsDialog({
   required BuildContext context,
@@ -33,7 +33,7 @@ void showEditGlobalOrInstanceToastSettingsDialog({
         DisposableProxyProvider<GlobalOrInstanceSettingsType,
             IEditToastSettingsBloc>(
       update: (context, globalOrInstanceType, previous) {
-        _logger.finest(() => "globalOrInstanceType $globalOrInstanceType");
+        _logger.finest(() => 'globalOrInstanceType $globalOrInstanceType');
 
         var isEnabled =
             globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
@@ -53,6 +53,7 @@ void showEditGlobalOrInstanceToastSettingsDialog({
             listen: false,
           ),
         );
+
         return editToastSettingsBloc;
       },
       child: ProxyProvider<IEditToastSettingsBloc,

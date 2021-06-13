@@ -10,11 +10,11 @@ enum TimelineType {
 
 const defaultTimelineType = TimelineType.public;
 
-const _publicTimelineTypeJsonValue = "public";
-const _customListTimelineTypeJsonValue = "custom_list";
-const _homeTimelineTypeJsonValue = "home";
-const _hashtagTimelineTypeJsonValue = "hashtag";
-const _accountTimelineTypeJsonValue = "account";
+const _publicTimelineTypeJsonValue = 'public';
+const _customListTimelineTypeJsonValue = 'custom_list';
+const _homeTimelineTypeJsonValue = 'home';
+const _hashtagTimelineTypeJsonValue = 'hashtag';
+const _accountTimelineTypeJsonValue = 'account';
 
 extension TimelineTypeListExtension on List<TimelineType> {
   List<String> toTimelineTypeStrings() => map(
@@ -68,7 +68,7 @@ extension TimelineTypeStringExtension on String {
       case _homeTimelineTypeJsonValue:
         result = TimelineType.home;
         break;
-      // can't parse, default value
+      // cant parse, default value
       default:
         result = defaultTimelineType;
         break;

@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
-final _dateFormat = DateFormat("yyyy-MM-dd HH:mm");
+final _dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
 class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   final IMyAccountBloc myAccountBloc;
@@ -92,7 +92,7 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
 
   @override
   List<IPleromaApiMediaAttachment>? calculateSelectionAsMediaAttachments() {
-    List<IPleromaApiMediaAttachment> mediaAttachments = [];
+    var mediaAttachments = <IPleromaApiMediaAttachment>[];
 
     currentSelection.forEach((chatMessage) {
       if (chatMessage.mediaAttachments?.isNotEmpty == true) {
@@ -110,29 +110,30 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   @override
   String calculateSelectionAsRawText() {
     var rawText = currentSelection.map((chatMessage) {
-      var chatMessageText = "";
-      chatMessageText += chatMessage.account?.acct ?? "";
-      chatMessageText += " ";
-      chatMessageText += "(${chatMessage.account?.displayName ?? ""})";
-      chatMessageText += " ";
-      chatMessageText += "${_dateFormat.format(chatMessage.createdAt)}";
+      var chatMessageText = '';
+      chatMessageText += chatMessage.account?.acct ?? '';
+      chatMessageText += ' ';
+      chatMessageText += '(${chatMessage.account?.displayName ?? ''})';
+      chatMessageText += ' ';
+      chatMessageText += '${_dateFormat.format(chatMessage.createdAt)}';
       if (chatMessage.content?.isNotEmpty == true) {
-        chatMessageText += "\n";
+        chatMessageText += '\n';
         chatMessageText += chatMessage.content!;
       }
 
       if (chatMessage.mediaAttachments?.isNotEmpty == true) {
-        chatMessageText += "\n";
-        chatMessageText += "[";
+        chatMessageText += '\n';
+        chatMessageText += '[';
         chatMessageText += chatMessage.mediaAttachments!
             .map(
               (mediaAttachment) => mediaAttachment.url,
             )
-            .join(", ");
-        chatMessageText += "]";
+            .join(', ');
+        chatMessageText += ']';
       }
+
       return chatMessageText;
-    }).join("\n\n");
+    }).join('\n\n');
 
     return rawText;
   }

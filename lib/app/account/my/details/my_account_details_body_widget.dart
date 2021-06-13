@@ -28,7 +28,7 @@ class MyAccountDetailsBodyWidget extends StatelessWidget {
           ),
         ),
         alwaysShowHeader: true,
-        key: PageStorageKey("MyAccountDetailsBodyWidget"),
+        key: PageStorageKey('MyAccountDetailsBodyWidget'),
       );
 
   const MyAccountDetailsBodyWidget({this.scrollController});

@@ -39,6 +39,7 @@ class FediCircularProgressIndicator extends StatefulWidget {
 class _FediCircularProgressIndicatorState
     extends State<FediCircularProgressIndicator>
     with SingleTickerProviderStateMixin {
+  // ignore: avoid-late-keyword
   late AnimationController _controller;
 
   @override
@@ -67,6 +68,7 @@ class _FediCircularProgressIndicatorState
 
     var color = widget.color ?? IFediUiColorTheme.of(context).darkGrey;
     var size = widget.size;
+
     return AnimatedBuilder(
       animation: _controller,
       builder: (_, child) {

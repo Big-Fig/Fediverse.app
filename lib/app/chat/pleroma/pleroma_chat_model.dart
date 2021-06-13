@@ -194,6 +194,7 @@ class DbPleromaChatPopulatedWrapper implements IPleromaChat {
     assert(accounts?.length == null || accounts!.length < 2);
 
     var account = accounts?.singleOrNull;
+
     return DbPleromaChatPopulatedWrapper(
       dbChatPopulated: DbPleromaChatPopulated(
         dbChat: dbChatPopulated.dbChat.copyWith(
@@ -246,6 +247,7 @@ extension IPleromaChatExtension on IPleromaChat {
   DbPleromaChatPopulated toDbPleromaChatPopulated() {
     if (this is DbPleromaChatPopulatedWrapper) {
       var dbPleromaChatPopulatedWrapper = this as DbPleromaChatPopulatedWrapper;
+
       return dbPleromaChatPopulatedWrapper.dbChatPopulated;
     } else {
       return DbPleromaChatPopulated(
@@ -258,6 +260,7 @@ extension IPleromaChatExtension on IPleromaChat {
   DbChat toDbChat() {
     if (this is DbPleromaChatPopulatedWrapper) {
       var dbPleromaChatPopulatedWrapper = this as DbPleromaChatPopulatedWrapper;
+
       return dbPleromaChatPopulatedWrapper.dbChatPopulated.dbChat;
     } else {
       return DbChat(

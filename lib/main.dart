@@ -14,7 +14,9 @@ import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
+import 'package:fedi/app/crash_reporting/permission/checker/crash_reporting_permission_checker_widget.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_bloc_impl.dart';
 import 'package:fedi/app/home/home_model.dart';
@@ -24,8 +26,13 @@ import 'package:fedi/app/init/init_bloc_impl.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
-import 'package:fedi/app/package_info/package_info_helper.dart';
-import 'package:fedi/app/push/fcm/fcm_push_permission_checker_widget.dart';
+import 'package:fedi/app/notification/repository/notification_repository.dart';
+import 'package:fedi/app/push/permission/checker/push_permission_checker_widget.dart';
+import 'package:fedi/app/share/income/action/income_share_action_chooser_dialog.dart';
+import 'package:fedi/app/share/income/handler/income_share_handler_bloc.dart';
+import 'package:fedi/app/share/income/handler/income_share_handler_bloc_impl.dart';
+import 'package:fedi/app/share/income/handler/income_share_handler_model.dart';
+import 'package:fedi/app/share/income/instance/income_share_instance_chooser_dialog.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/thread/local_status_thread_page.dart';
@@ -41,13 +48,12 @@ import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/in_app_review/checker/in_app_review_checker_widget.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service_provider.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
 import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -56,221 +62,174 @@ import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
-import 'app/notification/repository/notification_repository.dart';
-import 'generated/l10n.dart';
-
-var _logger = Logger("main.dart");
+var _logger = Logger('main.dart');
 
 CurrentAuthInstanceContextBloc? currentInstanceContextBloc;
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void onCrash(Object exception, StackTrace stackTrace) {
-  print(exception);
-  print(stackTrace);
-  FirebaseCrashlytics.instance.recordError(exception, stackTrace);
-}
-
+// ignore: long-method
 void main() async {
   // debugRepaintRainbowEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Set `enableInDevMode` to true to see reports while in debug mode
-  // This is only to be used for confirming that reports are being
-  // submitted as expected. It is not intended to be used for everyday
-  // development.
+  runNotInitializedSplashApp();
 
-  await Firebase.initializeApp();
+  IInitBloc initBloc = InitBloc();
+  unawaited(initBloc.performAsyncInit());
 
-  // Pass all uncaught errors from the framework to Crashlytics.
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  initBloc.initLoadingStateStream.listen(
+    (newState) async {
+      _logger.fine(() => 'appContextBloc.initLoadingStateStream.newState '
+          '$newState');
 
-  await runZonedGuarded(
-    () async {
-      var appTitle = await FediPackageInfoHelper.getAppName();
-      runNotInitializedSplashApp();
+      if (newState == AsyncInitLoadingState.finished) {
+        var currentInstanceBloc =
+            initBloc.appContextBloc.get<ICurrentAuthInstanceBloc>();
 
-      IInitBloc initBloc = InitBloc();
-      unawaited(initBloc.performAsyncInit());
-
-      initBloc.initLoadingStateStream.listen(
-        (newState) async {
-          _logger.fine(() => "appContextBloc.initLoadingStateStream.newState "
-              "$newState");
-
-          if (newState == AsyncInitLoadingState.finished) {
-            var currentInstanceBloc =
-                initBloc.appContextBloc.get<ICurrentAuthInstanceBloc>();
-
-            currentInstanceBloc.currentInstanceStream
-                .distinct((previous, next) =>
-                    previous?.userAtHost == next?.userAtHost)
-                .listen(
-              (currentInstance) {
-                runInitializedApp(
-                  appContextBloc: initBloc.appContextBloc,
-                  currentInstance: currentInstance,
-                  appTitle: appTitle,
-                );
-              },
+        currentInstanceBloc.currentInstanceStream
+            .distinct(
+          (previous, next) => previous?.userAtHost == next?.userAtHost,
+        )
+            .listen(
+          (currentInstance) {
+            runInitializedApp(
+              appContextBloc: initBloc.appContextBloc,
+              currentInstance: currentInstance,
             );
-          } else if (newState == AsyncInitLoadingState.failed) {
-            runInitFailedApp();
-          }
-        },
-      );
+          },
+        );
+      } else if (newState == AsyncInitLoadingState.failed) {
+        runInitFailedApp();
+      }
     },
-    onCrash,
   );
 }
 
 void runNotInitializedSplashApp() {
-  runZonedGuarded(
-    () async {
-      runApp(
-        MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: SplashPage(),
-        ),
-      );
-    },
-    onCrash,
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SplashPage(
+        displayVersionInfo: false,
+      ),
+    ),
   );
 }
 
 void runInitFailedApp() {
-  _logger.severe(() => "failed to init App");
-  runZonedGuarded(
-    () async {
-      runApp(
-        MaterialApp(
-          localizationsDelegates: [
-            S.delegate,
-          ],
-          home: Scaffold(
-            backgroundColor: lightFediUiTheme.colorTheme.primaryDark,
-            body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                // todo: localization
-                child: Builder(
-                  builder: (context) => Text(
-                    S.of(context).app_init_fail,
-                    style: lightFediUiTheme.textTheme.mediumShortBoldWhite,
-                  ),
-                ),
+  _logger.severe(() => 'failed to init App');
+  runApp(
+    MaterialApp(
+      localizationsDelegates: [
+        S.delegate,
+      ],
+      home: Scaffold(
+        backgroundColor: lightFediUiTheme.colorTheme.primaryDark,
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            // todo: localization
+            child: Builder(
+              builder: (context) => Text(
+                S.of(context).app_init_fail,
+                style: lightFediUiTheme.textTheme.mediumShortBoldWhite,
               ),
             ),
           ),
         ),
-      );
-    },
-    onCrash,
+      ),
+    ),
   );
 }
 
 void runInitializedSplashApp({
   required IAppContextBloc appContextBloc,
-  required String appTitle,
 }) {
-  runZonedGuarded(
-    () async {
-      runApp(
-        appContextBloc.provideContextToChild(
-          child: FediApp(
-            appTitle: appTitle,
-            instanceInitialized: false,
-            child: Provider<IAppContextBloc>.value(
-              value: appContextBloc,
-              child: const SplashPage(),
-            ),
+  runApp(
+    appContextBloc.provideContextToChild(
+      child: FediApp(
+        instanceInitialized: false,
+        child: Provider<IAppContextBloc>.value(
+          value: appContextBloc,
+          child: const SplashPage(
+            displayVersionInfo: true,
           ),
         ),
-      );
-    },
-    onCrash,
+      ),
+    ),
   );
 }
 
-void runInitializedApp({
+Future runInitializedApp({
   required IAppContextBloc appContextBloc,
   required AuthInstance? currentInstance,
-  required String appTitle,
-}) {
-  _logger.finest(() => "runInitializedApp $runInitializedApp");
-  runZonedGuarded(
-    () async {
-      if (currentInstance != null) {
-        await runInitializedCurrentInstanceApp(
-          appContextBloc: appContextBloc,
-          appTitle: appTitle,
-          currentInstance: currentInstance,
-        );
-      } else {
-        runInitializedLoginApp(appContextBloc, appTitle);
-      }
-    },
-    onCrash,
-  );
+}) async {
+  _logger.finest(() => 'runInitializedApp $runInitializedApp');
+  if (currentInstance != null) {
+    await runInitializedCurrentInstanceApp(
+      appContextBloc: appContextBloc,
+      currentInstance: currentInstance,
+    );
+  } else {
+    runInitializedLoginApp(appContextBloc);
+  }
 }
 
 Future runInitializedCurrentInstanceApp({
   required IAppContextBloc appContextBloc,
-  required String appTitle,
   required AuthInstance currentInstance,
 }) async {
-  await runZonedGuarded(
-    () async {
-      runInitializedSplashApp(
-        appContextBloc: appContextBloc,
-        appTitle: appTitle,
-      );
-      if (currentInstanceContextBloc != null) {
-        await currentInstanceContextBloc!.dispose();
-      }
+  runInitializedSplashApp(
+    appContextBloc: appContextBloc,
+  );
+  if (currentInstanceContextBloc != null) {
+    await currentInstanceContextBloc!.dispose();
+  }
 
-      currentInstanceContextBloc = CurrentAuthInstanceContextBloc(
-        currentInstance: currentInstance,
-        appContextBloc: appContextBloc,
-      );
-      await currentInstanceContextBloc!.performAsyncInit();
+  currentInstanceContextBloc = CurrentAuthInstanceContextBloc(
+    currentInstance: currentInstance,
+    appContextBloc: appContextBloc,
+  );
+  await currentInstanceContextBloc!.performAsyncInit();
 
-      INotificationPushLoaderBloc pushLoaderBloc =
-          currentInstanceContextBloc!.get();
+  var configService = appContextBloc.get<IConfigService>();
 
-      _logger.finest(
-        () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage",
-      );
-      runApp(
-        appContextBloc.provideContextToChild(
-          child: currentInstanceContextBloc!.provideContextToChild(
-            child: DisposableProvider<ICurrentAuthInstanceContextInitBloc>(
-              lazy: false,
-              create: (context) => createCurrentInstanceContextBloc(
-                context: context,
-                pushLoaderBloc: pushLoaderBloc,
-              ),
-              child: FediApp(
-                instanceInitialized: true,
-                appTitle: appTitle,
-                child: buildAuthInstanceContextInitWidget(
-                  pushLoaderBloc: pushLoaderBloc,
-                ),
-              ),
+  INotificationPushLoaderBloc? pushLoaderBloc;
+  if (configService.pushFcmEnabled) {
+    pushLoaderBloc =
+        currentInstanceContextBloc!.get<INotificationPushLoaderBloc>();
+  }
+
+  _logger.finest(
+    () => 'buildCurrentInstanceApp CurrentInstanceContextLoadingPage',
+  );
+  runApp(
+    appContextBloc.provideContextToChild(
+      child: currentInstanceContextBloc!.provideContextToChild(
+        child: DisposableProvider<ICurrentAuthInstanceContextInitBloc>(
+          lazy: false,
+          create: (context) => createCurrentInstanceContextBloc(
+            context: context,
+            pushLoaderBloc: pushLoaderBloc,
+          ),
+          child: FediApp(
+            instanceInitialized: true,
+            child: buildAuthInstanceContextInitWidget(
+              pushLoaderBloc: pushLoaderBloc,
             ),
           ),
         ),
-      );
-    },
-    onCrash,
+      ),
+    ),
   );
 }
 
 CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
   required BuildContext context,
-  required INotificationPushLoaderBloc pushLoaderBloc,
+  required INotificationPushLoaderBloc? pushLoaderBloc,
 }) {
-  _logger.finest(() => "createCurrentInstanceContextBloc");
+  _logger.finest(() => 'createCurrentInstanceContextBloc');
   var currentAuthInstanceContextLoadingBloc =
       CurrentAuthInstanceContextInitBloc.createFromContext(context);
   currentAuthInstanceContextLoadingBloc.performAsyncInit();
@@ -284,26 +243,28 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
                     .cantFetchAndLocalCacheNotExist ||
             state == CurrentAuthInstanceContextInitState.localCacheExist;
         if (isLocalCacheExist) {
-          currentInstanceContextBloc!.addDisposable(
-            streamSubscription:
-                pushLoaderBloc.launchPushLoaderNotificationStream.listen(
-              (launchOrResumePushLoaderNotification) {
-                if (launchOrResumePushLoaderNotification != null) {
-                  // ignore: no-magic-number
-                  const durationToWaitUntilHandleLaunchNotification =
-                      Duration(milliseconds: 100);
-                  Future.delayed(
-                    durationToWaitUntilHandleLaunchNotification,
-                    () async {
-                      await handleLaunchPushLoaderNotification(
-                        launchOrResumePushLoaderNotification,
-                      );
-                    },
-                  );
-                }
-              },
-            ),
-          );
+          if (pushLoaderBloc != null) {
+            currentInstanceContextBloc!.addDisposable(
+              streamSubscription:
+                  pushLoaderBloc.launchPushLoaderNotificationStream.listen(
+                (launchOrResumePushLoaderNotification) {
+                  if (launchOrResumePushLoaderNotification != null) {
+                    // ignore: no-magic-number
+                    const durationToWaitUntilHandleLaunchNotification =
+                        Duration(milliseconds: 100);
+                    Future.delayed(
+                      durationToWaitUntilHandleLaunchNotification,
+                      () async {
+                        await handleLaunchPushLoaderNotification(
+                          launchOrResumePushLoaderNotification,
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            );
+          }
         }
       },
     ),
@@ -360,14 +321,14 @@ Future handleLaunchPushLoaderNotification(
 }
 
 Widget buildAuthInstanceContextInitWidget({
-  required INotificationPushLoaderBloc pushLoaderBloc,
+  required INotificationPushLoaderBloc? pushLoaderBloc,
 }) =>
     CurrentAuthInstanceContextInitWidget(
       child: DisposableProvider<IHomeBloc>(
         create: (context) {
           var homeBloc = HomeBloc(
             startTab: calculateHomeTabForNotification(
-              pushLoaderBloc.launchPushLoaderNotification,
+              pushLoaderBloc?.launchPushLoaderNotification,
             ),
             webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
               context,
@@ -379,43 +340,47 @@ Widget buildAuthInstanceContextInitWidget({
             ),
           );
 
-          homeBloc.addDisposable(
-            streamSubscription:
-                pushLoaderBloc.launchPushLoaderNotificationStream.listen(
-              (launchOrResumePushLoaderNotification) {
-                homeBloc.selectTab(
-                  calculateHomeTabForNotification(
-                    launchOrResumePushLoaderNotification,
-                  ),
-                );
-              },
-            ),
-          );
+          if (pushLoaderBloc != null) {
+            homeBloc.addDisposable(
+              streamSubscription:
+                  pushLoaderBloc.launchPushLoaderNotificationStream.listen(
+                (launchOrResumePushLoaderNotification) {
+                  homeBloc.selectTab(
+                    calculateHomeTabForNotification(
+                      launchOrResumePushLoaderNotification,
+                    ),
+                  );
+                },
+              ),
+            );
+          }
+
           return homeBloc;
         },
-        child: const FcmPushPermissionCheckerWidget(
-          child: HomePage(),
+        child: const PushPermissionCheckerWidget(
+          child: CrashReportingPermissionCheckerWidget(
+            child: InAppReviewCheckerWidget(
+              child: HomePage(),
+            ),
+          ),
         ),
       ),
     );
 
-void runInitializedLoginApp(IAppContextBloc appContextBloc, String appTitle) {
-  runZonedGuarded(
-    () async {
-      runApp(
-        appContextBloc.provideContextToChild(
-          child: DisposableProvider<IJoinAuthInstanceBloc>(
-            create: (context) => JoinAuthInstanceBloc(isFromScratch: true),
-            child: FediApp(
-              instanceInitialized: false,
-              appTitle: appTitle,
-              child: const FromScratchJoinAuthInstancePage(),
-            ),
-          ),
+void runInitializedLoginApp(IAppContextBloc appContextBloc) {
+  runApp(
+    appContextBloc.provideContextToChild(
+      child: DisposableProvider<IJoinAuthInstanceBloc>(
+        create: (context) => JoinAuthInstanceBloc(
+          isFromScratch: true,
+          configService: appContextBloc.get<IConfigService>(),
         ),
-      );
-    },
-    onCrash,
+        child: FediApp(
+          instanceInitialized: false,
+          child: const FromScratchJoinAuthInstancePage(),
+        ),
+      ),
+    ),
   );
 }
 
@@ -438,18 +403,17 @@ HomeTab calculateHomeTabForNotification(
   } else {
     homeTab = HomeTab.timelines;
   }
+
   return homeTab;
 }
 
 class FediApp extends StatelessWidget {
   final Widget child;
   final bool instanceInitialized;
-  final String appTitle;
 
   FediApp({
     required this.child,
     required this.instanceInitialized,
-    required this.appTitle,
   });
 
   @override
@@ -476,8 +440,8 @@ class FediApp extends StatelessWidget {
                   ? ThemeMode.dark
                   : ThemeMode.light;
 
-          _logger.finest(() => "currentTheme $currentTheme "
-              "themeMode $themeMode");
+          _logger.finest(() => 'currentTheme $currentTheme '
+              'themeMode $themeMode');
 
           return provideCurrentTheme(
             currentTheme: currentTheme ?? lightFediUiTheme,
@@ -494,45 +458,80 @@ class FediApp extends StatelessWidget {
                     scriptCode: localizationLocale.scriptCode,
                   );
                 }
-                _logger.finest(() => "locale $locale");
+                _logger.finest(() => 'locale $locale');
+
                 return OverlayNotificationServiceProvider(
                   child: ToastServiceProvider(
-                    child: MaterialApp(
-                      // checkerboardRasterCacheImages: true,
-                      // checkerboardOffscreenLayers: true,
-                      debugShowCheckedModeBanner: false,
-                      title: appTitle,
-                      localizationsDelegates: [
-                        S.delegate,
-                        GlobalMaterialLocalizations.delegate,
-                        GlobalWidgetsLocalizations.delegate,
-                      ],
-                      supportedLocales: S.delegate.supportedLocales,
-                      locale: locale,
-                      theme: lightFediUiTheme.themeData,
-                      darkTheme: darkFediUiTheme.themeData,
-                      themeMode: themeMode,
-                      initialRoute: "/",
-                      home: Builder(builder: (context) {
-                        // it is important to init ToastHandlerBloc
-                        // as MaterialApp child
-                        // to have access to context suitable for Navigator
-                        if (instanceInitialized) {
-                          return DisposableProxyProvider<IToastService,
-                              IToastHandlerBloc>(
-                            lazy: false,
-                            update: (context, toastService, _) =>
-                                ToastHandlerBloc.createFromContext(
-                              context,
-                              toastService,
-                            ),
-                            child: child,
-                          );
-                        } else {
-                          return child;
-                        }
-                      }),
-                      navigatorKey: navigatorKey,
+                    child: Builder(
+                      builder: (context) => MaterialApp(
+                        // checkerboardRasterCacheImages: true,
+                        // checkerboardOffscreenLayers: true,
+                        debugShowCheckedModeBanner: false,
+                        title: IConfigService.of(context).appTitle,
+                        localizationsDelegates: [
+                          S.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                        ],
+                        supportedLocales: S.delegate.supportedLocales,
+                        locale: locale,
+                        theme: lightFediUiTheme.themeData,
+                        darkTheme: darkFediUiTheme.themeData,
+                        themeMode: themeMode,
+                        initialRoute: '/',
+                        home: Builder(
+                          builder: (context) {
+                            // it is important to init ToastHandlerBloc
+                            // as MaterialApp child
+                            // to have access to context suitable for Navigator
+                            if (instanceInitialized) {
+                              var configService =
+                                  IConfigService.of(context, listen: false);
+                              var pushFcmEnabled = configService.pushFcmEnabled;
+
+                              Widget actualChild;
+                              if (pushFcmEnabled) {
+                                actualChild = DisposableProxyProvider<
+                                    IToastService, IToastHandlerBloc>(
+                                  lazy: false,
+                                  update: (context, toastService, _) =>
+                                      ToastHandlerBloc.createFromContext(
+                                    context,
+                                    toastService,
+                                  ),
+                                  child: child,
+                                );
+                              } else {
+                                actualChild = child;
+                              }
+
+                              return DisposableProvider<
+                                  IIncomeShareHandlerBloc>(
+                                // important
+                                // lazy:false because we want init it asap
+                                lazy: false,
+                                create: (context) {
+                                  var bloc =
+                                      IncomeShareHandlerBloc.createFromContext(
+                                    context,
+                                  );
+
+                                  _initIncomeShareHandler(
+                                    context: context,
+                                    bloc: bloc,
+                                  );
+
+                                  return bloc;
+                                },
+                                child: actualChild,
+                              );
+                            } else {
+                              return child;
+                            }
+                          },
+                        ),
+                        navigatorKey: navigatorKey,
+                      ),
                     ),
                   ),
                 );
@@ -559,4 +558,51 @@ class FediApp extends StatelessWidget {
           ),
         ),
       );
+}
+
+void _initIncomeShareHandler({
+  required IncomeShareHandlerBloc bloc,
+  required BuildContext context,
+}) {
+  _logger.finest(() => '_initIncomeShareHandler');
+  bloc.addDisposable(
+    streamSubscription: bloc.incomeShareHandlerErrorStream.listen(
+      (error) {
+        switch (error) {
+          case IncomeShareHandlerError.authInstanceListIsEmpty:
+            IToastService.of(context).showErrorToast(
+              context: context,
+              title:
+                  S.of(context).app_share_income_error_authInstanceListIsEmpty,
+            );
+            break;
+        }
+      },
+    ),
+  );
+
+  bloc.addDisposable(
+    streamSubscription: bloc.needChooseInstanceFromListStream.listen(
+      (authInstanceList) {
+        showIncomeShareInstanceChooserDialog(
+          context,
+          authInstanceList: authInstanceList,
+          incomeShareHandlerBloc: bloc,
+        );
+      },
+    ),
+  );
+  bloc.addDisposable(
+    streamSubscription: bloc.needChooseActionForEventStream.listen(
+      (incomeShareEvent) {
+        showIncomeShareActionChooserDialog(
+          context,
+          incomeShareEvent: incomeShareEvent,
+          incomeShareHandlerBloc: bloc,
+        );
+      },
+    ),
+  );
+
+  bloc.checkForInitialEvent();
 }

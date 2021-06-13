@@ -56,6 +56,7 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
                       expression = item.remoteId;
                       break;
                   }
+
                   return OrderingTerm(
                     expression: expression,
                     mode: orderTerm.orderingMode,
@@ -119,7 +120,7 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
+  JoinedSelectStatement
       convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
         query,

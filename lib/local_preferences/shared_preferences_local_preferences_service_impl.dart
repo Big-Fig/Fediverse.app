@@ -7,20 +7,21 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-var _logger = Logger("shared_preferences_local_preferences_service_impl.dart");
+var _logger = Logger('shared_preferences_local_preferences_service_impl.dart');
 
-const _specialStorageKeyCreatedKey = "_specialStorageKeyCreatedKey";
+const _specialStorageKeyCreatedKey = '_specialStorageKeyCreatedKey';
 const _specialStorageKeyCreatedValue = _specialStorageKeyCreatedKey;
 
 class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
+  // ignore: avoid-late-keyword
   late SharedPreferences preferences;
 
   final Map<String, List<ValueCallback>> listeners = {};
 
   @override
   Future internalAsyncInit() async {
-    _logger.fine(() => "internalAsyncInit");
+    _logger.fine(() => 'internalAsyncInit');
     preferences = await SharedPreferences.getInstance();
   }
 
@@ -47,7 +48,8 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   @override
   bool isKeyExist(String key) {
     var contains = preferences.containsKey(key);
-    _logger.fine(() => "isKeyExist $key => $contains");
+    _logger.fine(() => 'isKeyExist $key => $contains');
+
     return contains;
   }
 
@@ -55,6 +57,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> clearValue(String key) async {
     var result = await preferences.remove(key);
     notifyKeyValueChanged(key, null);
+
     return result;
   }
 
@@ -62,6 +65,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> setString(String key, String? value) async {
     var result = await preferences.setString(key, value!);
     notifyKeyValueChanged(key, value);
+
     return result;
   }
 
@@ -69,6 +73,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> setIntPreference(String key, int? value) async {
     var result = await preferences.setInt(key, value!);
     notifyKeyValueChanged(key, value);
+
     return result;
   }
 
@@ -76,6 +81,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> setBoolPreference(String key, bool? value) async {
     var result = await preferences.setBool(key, value!);
     notifyKeyValueChanged(key, value);
+
     return result;
   }
 
@@ -86,6 +92,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   ) async {
     var result = await setJsonObjectAsString(key, preferencesObject?.toJson());
     notifyKeyValueChanged(key, preferencesObject);
+
     return result;
   }
 
@@ -111,6 +118,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
       return null;
     }
     var jsonObject = json.decode(stringPreference!);
+
     return jsonObject != null ? jsonConverter(jsonObject) : null;
   }
 

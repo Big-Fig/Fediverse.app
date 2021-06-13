@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("search_bloc_impl.dart");
+var _logger = Logger('search_bloc_impl.dart');
 
 class SearchBloc extends DisposableOwner implements ISearchBloc {
   @override
@@ -19,10 +19,13 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
   SearchBloc({
     required this.pleromaSearchService,
     required SearchTab startTab,
-  })   : searchInputBloc = SearchInputBloc(),
+    required String? initialQuery,
+  })  : searchInputBloc = SearchInputBloc(
+          initialQuery: initialQuery,
+        ),
         _selectedTabSubject = BehaviorSubject.seeded(startTab) {
     addDisposable(disposable: searchInputBloc);
-    _logger.finest(() => "constructor");
+    _logger.finest(() => 'constructor');
     addDisposable(subject: _selectedTabSubject);
   }
 
@@ -43,9 +46,11 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
   static SearchBloc createFromContext(
     BuildContext context, {
     required SearchTab startTab,
+    required String? initialQuery,
   }) =>
       SearchBloc(
         startTab: startTab,
+        initialQuery: initialQuery,
         pleromaSearchService: IPleromaApiSearchService.of(
           context,
           listen: false,

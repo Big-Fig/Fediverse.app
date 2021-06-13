@@ -8,7 +8,7 @@ class GlobalUiSettingsLocalPreferenceBloc extends UiSettingsLocalPreferenceBloc
     implements IGlobalUiSettingsLocalPreferenceBloc {
   GlobalUiSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
-  ) : super(preferencesService, "ui.settings.global");
+  ) : super(preferencesService, 'ui.settings.global');
 
   static final UiSettings defaultValue = UiSettings.fromEnum(
     themeId: null,

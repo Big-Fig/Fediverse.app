@@ -13,6 +13,7 @@ class FediIndicatorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Container(
       width: _size,
       // ignore: no-equal-arguments

@@ -13,6 +13,7 @@ class CustomListListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var customListBloc = ICustomListBloc.of(context);
+
     return InkWell(
       onTap: () {
         goToCustomListPage(
@@ -54,11 +55,13 @@ class _CustomListListItemTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var customListBloc = ICustomListBloc.of(context);
+
     return StreamBuilder<String?>(
       stream: customListBloc.titleStream,
       initialData: customListBloc.title,
       builder: (context, snapshot) {
         var title = snapshot.data!;
+
         return Text(
           title,
           textAlign: TextAlign.left,

@@ -1,6 +1,8 @@
 import 'package:fedi/app/cache/database/settings/edit/global/edit_global_database_cache_settings_dialog.dart';
 import 'package:fedi/app/cache/files/settings/edit/global/edit_global_files_cache_settings_dialog.dart';
 import 'package:fedi/app/chat/settings/edit/global/edit_global_chat_settings_dialog.dart';
+import 'package:fedi/app/config/config_service.dart';
+import 'package:fedi/app/crash_reporting/settings/edit/global/edit_global_crash_reporting_settings_dialog.dart';
 import 'package:fedi/app/localization/settings/edit/global/edit_global_localization_settings_dialog.dart';
 import 'package:fedi/app/media/settings/edit/global/edit_global_media_settings_dialog.dart';
 import 'package:fedi/app/pagination/settings/edit/global/edit_global_pagination_settings_dialog.dart';
@@ -12,6 +14,7 @@ import 'package:fedi/app/ui/settings/edit/global/edit_global_ui_settings_dialog.
 import 'package:fedi/app/web_sockets/settings/edit/global/edit_global_web_sockets_settings_dialog.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class GlobalSettingsListWidget extends StatelessWidget {
@@ -32,6 +35,8 @@ class GlobalSettingsListWidget extends StatelessWidget {
           const _GlobalSettingsWebSocketsRowWidget(),
           const _GlobalSettingsDatabaseCacheRowWidget(),
           const _GlobalSettingsFilesCacheRowWidget(),
+          if (IConfigService.of(context, listen: false).crashlyticsEnabled)
+            const _GlobalSettingsCrashReportingRowWidget(),
         ],
       );
 }
@@ -63,6 +68,22 @@ class _GlobalSettingsUiRowWidget extends StatelessWidget {
       title: S.of(context).app_ui_settings_title,
       onClick: () {
         showEditGlobalUiSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _GlobalSettingsCrashReportingRowWidget extends StatelessWidget {
+  const _GlobalSettingsCrashReportingRowWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_crashReporting_settings_title,
+      onClick: () {
+        showEditGlobalCrashReportingSettingsDialog(context: context);
       },
     );
   }

@@ -22,4 +22,8 @@ abstract class ICurrentAuthInstanceBloc implements IDisposable {
   bool isCurrentInstance(AuthInstance instance);
 
   Future logoutCurrentInstance();
+
+  String createHashtagUrl({
+    required String hashtag,
+  });
 }

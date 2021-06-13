@@ -60,7 +60,7 @@ class StatusSubHeaderWidget extends StatelessWidget {
         ),
         const FediSmallHorizontalSpacer(),
         Text(
-          "$descText ",
+          '$descText ',
           style: IFediUiTextTheme.of(context)
               .mediumShortMediumGrey
               .copyWith(height: 1),

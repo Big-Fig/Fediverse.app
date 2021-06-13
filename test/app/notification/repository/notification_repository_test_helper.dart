@@ -13,6 +13,7 @@ class NotificationRepositoryTestHelper {
     );
     assert(id > 0, true);
     var dbNotification = notificationData.copyWith(id: id);
+
     return dbNotification;
   }
 }

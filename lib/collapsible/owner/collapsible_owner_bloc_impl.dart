@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("collapsible_owner_bloc_impl.dart");
+var _logger = Logger('collapsible_owner_bloc_impl.dart');
 
 class CollapsibleOwnerBloc extends DisposableOwner
     implements ICollapsibleOwnerBloc {
@@ -58,7 +58,7 @@ class CollapsibleOwnerBloc extends DisposableOwner
   }
 
   void onVisibleItemsChanged(List<ICollapsibleItemBloc>? newVisibleItems) {
-    _logger.finest(() => "onVisibleItemsChanged ${newVisibleItems!.length}");
+    _logger.finest(() => 'onVisibleItemsChanged ${newVisibleItems!.length}');
     if (!visibleItemsSubject.isClosed) {
       visibleItemsSubject.add(newVisibleItems);
     }

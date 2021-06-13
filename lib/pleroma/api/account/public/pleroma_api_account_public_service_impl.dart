@@ -12,7 +12,7 @@ var _urlPath = path.Context(style: path.Style.url);
 
 class PleromaApiAccountPublicService extends BasePleromaApiService
     implements IPleromaApiAccountPublicService {
-  final accountRelativeUrlPath = "/api/v1/accounts/";
+  final accountRelativeUrlPath = '/api/v1/accounts/';
   @override
   final IPleromaApiRestService restService;
 
@@ -29,7 +29,7 @@ class PleromaApiAccountPublicService extends BasePleromaApiService
       RestRequest.post(
         relativePath: _urlPath.join(accountRelativeUrlPath),
         headers: {
-          HttpHeaders.authorizationHeader: "Bearer $appAccessToken",
+          HttpHeaders.authorizationHeader: 'Bearer $appAccessToken',
         },
         bodyJson: request.toJson(),
       ),

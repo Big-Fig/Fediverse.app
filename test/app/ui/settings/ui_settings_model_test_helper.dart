@@ -7,7 +7,7 @@ class UiSettingsModelTestHelper {
     required String seed,
   }) =>
       UiSettings.fromEnum(
-        themeId: seed + "themeId",
+        themeId: seed + 'themeId',
         statusFontSize: UiSettingsFontSize
             .values[seed.hashCode % UiSettingsFontSize.values.length],
       );

@@ -34,7 +34,7 @@ class LocalizationSettingsBloc extends DisposableOwner
   @override
   Future changeLocalizationLocale(LocalizationLocale? value) => updateSettings(
       LocalizationSettings(localizationLocale: value),
-      // copyWith don't set null values
+      // copyWith dont set null values
       // settingsData.copyWith(localizationLocale: value),
     );
 

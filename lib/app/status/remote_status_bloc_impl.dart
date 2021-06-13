@@ -116,16 +116,19 @@ class RemoteStatusBloc extends StatusBloc {
   }
 
   Future _checkIsInReplyToAccountLoaded() async {
-    // todo: don't load account if inReplyToStatus already loaded
+    // todo: dont load account if inReplyToStatus already loaded
     var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
     if (inReplyToAccountRemoteId != null) {
       var remoteAccount = await pleromaAccountService.getAccount(
         accountRemoteId: inReplyToAccountRemoteId,
+        withRelationship: false,
       );
 
-      inReplyToAccountSubject.add(
-        remoteAccount.toDbAccountWrapper(),
-      );
+      if (!inReplyToAccountSubject.isClosed) {
+        inReplyToAccountSubject.add(
+          remoteAccount.toDbAccountWrapper(),
+        );
+      }
     }
   }
 
@@ -185,6 +188,7 @@ class RemoteStatusBloc extends StatusBloc {
       if (pleromaAccountService.isApiReadyToUse) {
         var remoteAccount = await pleromaAccountService.getAccount(
           accountRemoteId: accountRemoteId,
+          withRelationship: false,
         );
 
         account = remoteAccount.toDbAccountWrapper();

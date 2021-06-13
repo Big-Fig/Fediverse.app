@@ -21,6 +21,7 @@ import 'package:moor/ffi.dart';
 
 import 'account_bloc_impl_test.mocks.dart';
 import 'account_test_helper.dart';
+// ignore_for_file: avoid-late-keyword
 
 @GenerateMocks([
   PleromaApiAuthAccountService,
@@ -49,7 +50,7 @@ void main() {
     when(pleromaAuthAccountServiceMock.pleromaApiState)
         .thenReturn(PleromaApiState.validAuth);
 
-    account = await AccountTestHelper.createTestAccount(seed: "seed1");
+    account = await AccountTestHelper.createTestAccount(seed: 'seed1');
 
     pleromaWebSocketsService = MockPleromaApiWebSocketsService();
 
@@ -93,7 +94,7 @@ void main() {
     AccountTestHelper.expectAccount(accountBloc.account, account);
 
     var newValue = await AccountTestHelper.createTestAccount(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: account.remoteId,
     );
 
@@ -116,7 +117,7 @@ void main() {
   test('acct', () async {
     expect(accountBloc.acct, account.acct);
 
-    var newValue = "newAcct";
+    var newValue = 'newAcct';
 
     var listenedValue;
 
@@ -140,7 +141,7 @@ void main() {
   test('note', () async {
     expect(accountBloc.note, account.note);
 
-    var newValue = "newNote";
+    var newValue = 'newNote';
 
     var listenedValue;
 
@@ -160,7 +161,7 @@ void main() {
   test('header', () async {
     expect(accountBloc.header, account.header);
 
-    var newValue = "newHeader";
+    var newValue = 'newHeader';
 
     var listenedValue;
 
@@ -180,7 +181,7 @@ void main() {
   test('avatar', () async {
     expect(accountBloc.avatar, account.avatar);
 
-    var newValue = "newAvatar";
+    var newValue = 'newAvatar';
 
     var listenedValue;
 
@@ -200,7 +201,7 @@ void main() {
   test('displayName', () async {
     expect(accountBloc.displayName, account.displayName);
 
-    var newValue = "newDisplayName";
+    var newValue = 'newDisplayName';
 
     var listenedValue;
 
@@ -222,8 +223,8 @@ void main() {
 
     var newValue = [
       PleromaApiField(
-        name: "newName",
-        value: "newValue",
+        name: 'newName',
+        value: 'newValue',
         verifiedAt: null,
       ),
     ];
@@ -334,7 +335,7 @@ void main() {
       ),
     );
 
-    var newDisplayNameValue = "newDisplayName";
+    var newDisplayNameValue = 'newDisplayName';
 
     var listenedValue;
 
@@ -376,8 +377,8 @@ void main() {
 
     var newEmojis = [
       PleromaApiEmoji(
-        url: "url",
-        staticUrl: "staticUrl",
+        url: 'url',
+        staticUrl: 'staticUrl',
         visibleInPicker: null,
         shortcode: null,
         category: null,
@@ -423,7 +424,7 @@ void main() {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
     var newValue =
-        AccountTestHelper.createTestAccountRelationship(seed: "seed0");
+        AccountTestHelper.createTestAccountRelationship(seed: 'seed0');
 
     var listenedValue;
 
@@ -445,7 +446,7 @@ void main() {
     AccountTestHelper.expectAccount(accountBloc.account, account);
 
     var newValue = await AccountTestHelper.createTestAccount(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: account.remoteId,
     );
 
@@ -459,14 +460,19 @@ void main() {
     AccountTestHelper.expectAccount(listenedValue, account);
 
     var newRelationship =
-        AccountTestHelper.createTestAccountRelationship(seed: "seed11");
+        AccountTestHelper.createTestAccountRelationship(seed: 'seed11');
     when(pleromaAuthAccountServiceMock.getAccount(
       accountRemoteId: account.remoteId,
+      withRelationship: false,
     )).thenAnswer((_) async => newValue.toPleromaApiAccount());
 
-    when(pleromaAuthAccountServiceMock
-            .getRelationshipWithAccounts(remoteAccountIds: [account.remoteId]))
-        .thenAnswer((_) async => [newRelationship]);
+    when(
+      pleromaAuthAccountServiceMock.getRelationshipWithAccounts(
+        remoteAccountIds: [
+          account.remoteId,
+        ],
+      ),
+    ).thenAnswer((_) async => [newRelationship]);
 
     await accountBloc.refreshFromNetwork(isNeedPreFetchRelationship: true);
     // hack to execute notify callbacks

@@ -9,11 +9,11 @@ import 'package:moor/moor.dart';
 
 part 'notification_database_dao.g.dart';
 
-var _accountAliasId = "account";
-var _statusAliasId = "status";
-var _statusAccountAliasId = "status_account";
-var _statusReblogAliasId = "status_reblog";
-var _statusReblogAccountAliasId = "status_reblog_account";
+var _accountAliasId = 'account';
+var _statusAliasId = 'status';
+var _statusAccountAliasId = 'status_account';
+var _statusReblogAliasId = 'status_reblog';
+var _statusReblogAccountAliasId = 'status_reblog_account';
 
 @UseDao(
   tables: [
@@ -30,10 +30,15 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     NotificationRepositoryFilters,
     NotificationRepositoryOrderingTermData> with _$NotificationDaoMixin {
   final AppDatabase db;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable statusAccountAlias;
+  // ignore: avoid-late-keyword
   late $DbStatusesTable statusReblogAlias;
+  // ignore: avoid-late-keyword
   late $DbAccountsTable statusReblogAccountAlias;
 
   // Called by the AppDatabase class
@@ -47,39 +52,39 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-      addExcludeTypeWhere(
-    SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
-    List<PleromaApiNotificationType>? excludeTypes,
-  ) =>
-          query
-            ..where(
+  addExcludeTypeWhere(
+      SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+      List<PleromaApiNotificationType>? excludeTypes,
+      ) =>
+      query
+        ..where(
               (notification) => notification.type.isNotIn(
-                excludeTypes!
-                    .map(
-                      (type) => type.toJsonValue(),
-                    )
-                    .toList(),
-              ),
-            );
+            excludeTypes!
+                .map(
+                  (type) => type.toJsonValue(),
+            )
+                .toList(),
+          ),
+        );
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-      addOnlyWithTypeWhere(
-    SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
-    PleromaApiNotificationType onlyWithType,
-  ) =>
-          query
-            ..where(
+  addOnlyWithTypeWhere(
+      SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+      PleromaApiNotificationType onlyWithType,
+      ) =>
+      query
+        ..where(
               (notification) => notification.type.equals(
-                onlyWithType.toJsonValue(),
-              ),
-            );
+            onlyWithType.toJsonValue(),
+          ),
+        );
 
   JoinedSelectStatement addExcludeContentWhere(
-    JoinedSelectStatement query, {
-    required String phrase,
-    required bool wholeWord,
-  }) {
-    final regex = r"\b" + phrase + r"\b";
+      JoinedSelectStatement query, {
+        required String phrase,
+        required bool wholeWord,
+      }) {
+    final regex = r'\b' + phrase + r'\b';
     if (wholeWord) {
       return query
         ..where(
@@ -88,17 +93,17 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     } else {
       return query
         ..where(
-          statusAlias.content.like("%$phrase%").not(),
+          statusAlias.content.like('%$phrase%').not(),
         );
     }
   }
 
   JoinedSelectStatement addExcludeSpoilerTextWhere(
-    JoinedSelectStatement query, {
-    required String phrase,
-    required bool wholeWord,
-  }) {
-    final regex = r"\b" + phrase + r"\b";
+      JoinedSelectStatement query, {
+        required String phrase,
+        required bool wholeWord,
+      }) {
+    final regex = r'\b' + phrase + r'\b';
     if (wholeWord) {
       return query
         ..where(
@@ -107,17 +112,17 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     } else {
       return query
         ..where(
-          statusAlias.spoilerText.like("%$phrase%").not(),
+          statusAlias.spoilerText.like('%$phrase%').not(),
         );
     }
   }
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-      addCreatedAtBoundsWhere(
-    SimpleSelectStatement<$DbNotificationsTable, DbNotification> query, {
-    required DateTime? minimumCreatedAt,
-    required DateTime? maximumCreatedAt,
-  }) {
+  addCreatedAtBoundsWhere(
+      SimpleSelectStatement<$DbNotificationsTable, DbNotification> query, {
+        required DateTime? minimumCreatedAt,
+        required DateTime? maximumCreatedAt,
+      }) {
     var minimumExist = minimumCreatedAt != null;
     var maximumExist = maximumCreatedAt != null;
     assert(minimumExist || maximumExist);
@@ -137,31 +142,32 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification> orderBy(
-    SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
-    List<NotificationRepositoryOrderingTermData> orderTerms,
-  ) =>
+      SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+      List<NotificationRepositoryOrderingTermData> orderTerms,
+      ) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
-                  var expression;
-                  switch (orderTerm.orderType) {
-                    case NotificationOrderType.remoteId:
-                      expression = item.remoteId;
-                      break;
-                    case NotificationOrderType.createdAt:
-                      expression = item.createdAt;
-                      break;
-                  }
-                  return OrderingTerm(
-                    expression: expression,
-                    mode: orderTerm.orderingMode,
-                  );
-                })
+          var expression;
+          switch (orderTerm.orderType) {
+            case NotificationOrderType.remoteId:
+              expression = item.remoteId;
+              break;
+            case NotificationOrderType.createdAt:
+              expression = item.createdAt;
+              break;
+          }
+
+          return OrderingTerm(
+            expression: expression,
+            mode: orderTerm.orderingMode,
+          );
+        })
             .toList());
 
   Future markAsRead({required String remoteId}) {
-    var update = "UPDATE db_notifications "
-        "SET unread = 0 "
+    var update = 'UPDATE db_notifications '
+        'SET unread = 0 '
         "WHERE remote_id = '$remoteId'";
     var query = db.customUpdate(update, updates: {dbNotifications});
 
@@ -169,15 +175,15 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   Future markAllAsRead() {
-    var update = "UPDATE db_notifications SET unread = 0";
+    var update = 'UPDATE db_notifications SET unread = 0';
     var query = db.customUpdate(update, updates: {dbNotifications});
 
     return query;
   }
 
   Future markAsDismissed({required String? remoteId}) {
-    var update = "UPDATE db_notifications "
-        "SET dismissed = 1 "
+    var update = 'UPDATE db_notifications '
+        'SET dismissed = 1 '
         "WHERE remote_id = '$remoteId'";
     var query = db.customUpdate(update, updates: {dbNotifications});
 
@@ -188,8 +194,8 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     required String? accountRemoteId,
     required PleromaApiNotificationType type,
   }) {
-    var update = "UPDATE db_notifications "
-        "SET dismissed = 1 "
+    var update = 'UPDATE db_notifications '
+        'SET dismissed = 1 '
         "WHERE account_remote_id = '$accountRemoteId' "
         "AND type = '${type.toJsonValue()}'";
     var query = db.customUpdate(update, updates: {dbNotifications});
@@ -198,14 +204,14 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   Future markAllAsDismissed() {
-    var update = "UPDATE db_notifications "
-        "SET dismissed = 1 ";
+    var update = 'UPDATE db_notifications '
+        'SET dismissed = 1 ';
     var query = db.customUpdate(update, updates: {dbNotifications});
 
     return query;
   }
 
-  List<Join<Table, DataClass>> populateNotificationJoin() {
+  List<Join> populateNotificationJoin() {
     return [
       // todo: think about leftOuterJoin and nullable account field
       // or foreign keys
@@ -236,29 +242,29 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-      addOnlyNotDismissedWhere(
-    SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
-  ) =>
-          query
-            ..where(
-              (status) => status.dismissed.isNull() | status.dismissed.equals(false),
-            );
-
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification> addOnlyUnread(
-    SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
-  ) =>
+  addOnlyNotDismissedWhere(
+      SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+      ) =>
       query
         ..where(
-          (status) => status.unread.equals(true),
+              (status) => status.dismissed.isNull() | status.dismissed.equals(false),
+        );
+
+  SimpleSelectStatement<$DbNotificationsTable, DbNotification> addOnlyUnread(
+      SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+      ) =>
+      query
+        ..where(
+              (status) => status.unread.equals(true),
         );
 
   @override
   $DbNotificationsTable get table => dbNotifications;
 
   Future deleteOlderThanDate(
-    DateTime dateTimeToDelete, {
-    required Batch? batchTransaction,
-  }) =>
+      DateTime dateTimeToDelete, {
+        required Batch? batchTransaction,
+      }) =>
       deleteOlderThanDateTime(
         dateTimeToDelete,
         fieldName: table.createdAt.$name,
@@ -311,7 +317,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
           minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
         );
       } else {
-        throw "Unsupported orderingTermData $orderingTermData";
+        throw 'Unsupported orderingTermData $orderingTermData';
       }
 
 
@@ -327,8 +333,8 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement<Table, DataClass>
-      convertSimpleSelectStatementToJoinedSelectStatement({
+  JoinedSelectStatement
+  convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
     required NotificationRepositoryFilters? filters,
   }) {
@@ -356,8 +362,8 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   DbNotificationPopulated mapTypedResultToDbPopulatedItem(
-    TypedResult typedResult,
-  ) =>
+      TypedResult typedResult,
+      ) =>
       typedResult.toDbNotificationPopulated(dao: this);
 }
 
@@ -366,7 +372,7 @@ extension DbNotificationPopulatedTypedResultListExtension on List<TypedResult> {
     required NotificationDao dao,
   }) {
     return map(
-      (item) => item.toDbNotificationPopulated(
+          (item) => item.toDbNotificationPopulated(
         dao: dao,
       ),
     ).toList();
@@ -377,15 +383,15 @@ extension DbNotificationPopulatedTypedResultExtension on TypedResult {
   DbNotificationPopulated toDbNotificationPopulated({
     required NotificationDao dao,
   }) {
-    TypedResult typedResult = this;
+    var typedResult = this;
     var notificationAccount = typedResult.readTable(dao.accountAlias);
     var notificationStatus = typedResult.readTableOrNull(dao.statusAlias);
 
     var notificationStatusAccount =
-        typedResult.readTableOrNull(dao.statusAccountAlias);
+    typedResult.readTableOrNull(dao.statusAccountAlias);
     var rebloggedStatus = typedResult.readTableOrNull(dao.statusReblogAlias);
     var rebloggedStatusAccount =
-        typedResult.readTableOrNull(dao.statusReblogAccountAlias);
+    typedResult.readTableOrNull(dao.statusReblogAccountAlias);
 
     return DbNotificationPopulated(
       dbNotification: typedResult.readTable(dao.db.dbNotifications),

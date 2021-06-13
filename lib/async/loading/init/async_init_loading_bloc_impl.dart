@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("async_init_loading_bloc_impl.dart");
+var _logger = Logger('async_init_loading_bloc_impl.dart');
 
 abstract class AsyncInitLoadingBloc extends AsyncLoadingService
     implements IAsyncInitLoadingBloc {
@@ -34,7 +34,7 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
 
   @override
   Future performAsyncInit() async {
-    _logger.finest(() => "performAsyncInit");
+    _logger.finest(() => 'performAsyncInit');
     if (initLoadingState == AsyncInitLoadingState.notStarted) {
       if (!_isInitLoadingSubject.isClosed) {
         _isInitLoadingSubject.add(AsyncInitLoadingState.loading);
@@ -45,7 +45,7 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
           _isInitLoadingSubject.add(AsyncInitLoadingState.finished);
         }
       }).catchError((err) {
-        _logger.shout(() => "Error during init $err");
+        _logger.shout(() => 'Error during init $err');
         initLoadingException = err;
         if (!_isInitLoadingSubject.isClosed) {
           _isInitLoadingSubject.add(AsyncInitLoadingState.failed);

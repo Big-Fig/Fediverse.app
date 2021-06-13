@@ -6,7 +6,7 @@ import 'package:fedi/json/json_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("memory_local_preferences_service_impl.dart");
+var _logger = Logger('memory_local_preferences_service_impl.dart');
 
 class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
@@ -16,7 +16,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    _logger.fine(() => "internalAsyncInit");
+    _logger.fine(() => 'internalAsyncInit');
   }
 
   @override
@@ -38,7 +38,8 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   @override
   bool isKeyExist(String key) {
     var contains = preferences.containsKey(key);
-    _logger.fine(() => "isKeyExist $key => $contains");
+    _logger.fine(() => 'isKeyExist $key => $contains');
+
     return contains;
   }
 
@@ -46,6 +47,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> clearValue(String key) async {
     await preferences.remove(key);
     notifyKeyValueChanged(key, null);
+
     return true;
   }
 
@@ -53,6 +55,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> setString(String key, String? value) async {
     preferences[key] = value;
     notifyKeyValueChanged(key, value);
+
     return true;
   }
 
@@ -60,6 +63,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> setIntPreference(String key, int? value) async {
     preferences[key] = value;
     notifyKeyValueChanged(key, value);
+
     return true;
   }
 
@@ -67,6 +71,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> setBoolPreference(String key, bool? value) async {
     preferences[key] = value;
     notifyKeyValueChanged(key, value);
+
     return true;
   }
 
@@ -84,6 +89,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     preferences[key] = str;
 
     notifyKeyValueChanged(key, preferencesObject);
+
     return true;
   }
 

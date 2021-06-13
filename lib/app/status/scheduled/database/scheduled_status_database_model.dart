@@ -1,12 +1,12 @@
 import 'package:fedi/app/moor/moor_converters.dart';
 import 'package:moor/moor.dart';
 
-@DataClassName("DbScheduledStatus")
+@DataClassName('DbScheduledStatus')
 class DbScheduledStatuses extends Table {
   // integer ids works better in SQLite
   IntColumn? get id => integer().nullable().autoIncrement()();
 
-  TextColumn? get remoteId => text().customConstraint("UNIQUE NOT NULL")();
+  TextColumn? get remoteId => text().customConstraint('UNIQUE NOT NULL')();
 
   DateTimeColumn? get scheduledAt => dateTime()();
 

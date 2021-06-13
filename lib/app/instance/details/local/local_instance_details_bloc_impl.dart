@@ -26,6 +26,7 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
         IPleromaApiInstanceService.of(context, listen: false);
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
+
     return LocalInstanceDetailsBloc(
       pleromaInstanceService: pleromaInstanceService,
       initialInstance: currentAuthInstanceBloc.currentInstance!.info,

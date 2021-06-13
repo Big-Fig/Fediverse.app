@@ -36,6 +36,7 @@ abstract class IPleromaApiMyAccountService extends IPleromaApi {
 
   Future<List<IPleromaApiAccount>> getAccountMutes({
     IPleromaApiPaginationRequest? pagination,
+    required bool withRelationship,
   });
 
   Future<List<IPleromaApiStatus>> getBookmarks({

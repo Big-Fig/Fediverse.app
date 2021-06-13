@@ -23,6 +23,7 @@ extension IConversationChatExtension on IConversationChat {
     required List<IAccount> accounts,
   }) {
     var unread = this.unread;
+
     return PleromaApiConversation(
       unread: (unread > 0) ? true : false,
       lastStatus: lastStatus?.toPleromaStatus(),

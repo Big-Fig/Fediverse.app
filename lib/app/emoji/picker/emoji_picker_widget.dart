@@ -13,6 +13,7 @@ import 'package:fedi/emoji_picker/custom_emoji_picker_bloc.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_bloc_impl.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_widget.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/mastodon/api/emoji/mastodon_api_custom_emoji_service.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -41,7 +42,7 @@ class EmojiPickerWidget extends StatelessWidget {
         EmojiPickerCustomImageUrlCategoryBloc? customCategoryBloc;
         if (useImageEmoji) {
           customCategoryBloc = EmojiPickerCustomImageUrlCategoryBloc(
-            pleromaEmojiService:
+            pleromaApiEmojiService:
                 IPleromaApiEmojiService.of(context, listen: false),
             preferenceBloc:
                 IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc.of(
@@ -49,6 +50,10 @@ class EmojiPickerWidget extends StatelessWidget {
               listen: false,
             ),
             currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+              context,
+              listen: false,
+            ),
+            mastodonApiEmojiService: IMastodonApiEmojiService.of(
               context,
               listen: false,
             ),
@@ -84,6 +89,7 @@ class EmojiPickerWidget extends StatelessWidget {
         customEmojiPickerBloc.addDisposable(custom: () {
           allCategoriesBlocs.forEach((categoryBloc) => categoryBloc.dispose());
         });
+
         return customEmojiPickerBloc;
       },
       child: CustomEmojiPickerWidget(
@@ -98,6 +104,7 @@ class EmojiPickerWidget extends StatelessWidget {
           } else {
             text = S.of(context).app_emoji_category_empty;
           }
+
           return Text(
             text,
             style: IFediUiTextTheme.of(context).mediumTallDarkGrey,

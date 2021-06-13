@@ -12,7 +12,7 @@ class InstanceStatusSensitiveSettingsLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService,
-          "statusSensitive.settings.instance.$userAtHost",
+          'statusSensitive.settings.instance.$userAtHost',
         );
 
   static const StatusSensitiveSettings? defaultValue = null;

@@ -15,7 +15,8 @@ import 'package:moor/ffi.dart';
 import 'filter_bloc_impl_test.mocks.dart';
 import 'filter_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+
+// ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
   PleromaApiFilterService,
 ])
@@ -39,7 +40,7 @@ void main() {
         .thenReturn(PleromaApiState.validAuth);
 
     filter = await FilterTestHelper.createTestFilter(
-      seed: "seed1",
+      seed: 'seed1',
     );
 
     filterBloc = FilterBloc(
@@ -68,7 +69,7 @@ void main() {
     FilterTestHelper.expectFilter(filterBloc.filter, filter);
 
     var newValue = await FilterTestHelper.createTestFilter(
-      seed: "seed2",
+      seed: 'seed2',
       remoteId: filter.remoteId,
     );
 

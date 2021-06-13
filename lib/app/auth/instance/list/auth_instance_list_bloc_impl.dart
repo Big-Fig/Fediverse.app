@@ -8,7 +8,7 @@ import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("auth_instance_list_bloc_impl.dart");
+var _logger = Logger('auth_instance_list_bloc_impl.dart');
 
 class AuthInstanceListBloc extends DisposableOwner
     implements IAuthInstanceListBloc {
@@ -43,10 +43,10 @@ class AuthInstanceListBloc extends DisposableOwner
 
   @override
   Future addInstance(AuthInstance instance) async {
-    _logger.finest(() => "addInstance $instance");
+    _logger.finest(() => 'addInstance $instance');
     var instances = availableInstances;
     if (!instances.contains(instance)) {
-      _logger.finest(() => "addInstance before setValue");
+      _logger.finest(() => 'addInstance before setValue');
       await instanceListLocalPreferenceBloc.setValue(
         AuthInstanceList(
           instances: [
@@ -55,13 +55,13 @@ class AuthInstanceListBloc extends DisposableOwner
           ],
         ),
       );
-      _logger.finest(() => "addInstance after setValue");
+      _logger.finest(() => 'addInstance after setValue');
     }
   }
 
   @override
   Future removeInstance(AuthInstance instance) async {
-    _logger.finest(() => "removeInstance $instance");
+    _logger.finest(() => 'removeInstance $instance');
     var instances = availableInstances.toList(growable: true);
 
     var foundInstanceToRemove = findInstanceByCredentials(

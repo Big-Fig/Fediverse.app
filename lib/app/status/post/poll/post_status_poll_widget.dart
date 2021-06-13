@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-final _logger = Logger("post_status_poll_widget.dart");
+final _logger = Logger('post_status_poll_widget.dart');
 
 class PostStatusPollWidget extends StatelessWidget {
   const PostStatusPollWidget();
@@ -57,6 +57,7 @@ class _PostStatusPollOptionsFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var pollOptionsGroupBloc =
         IOneTypeFormGroupBloc.of<IStringValueFormFieldBloc>(context);
+
     return StreamBuilder<List<IStringValueFormFieldBloc>?>(
       stream: pollOptionsGroupBloc.itemsStream,
       builder: (context, snapshot) {
@@ -82,6 +83,7 @@ class _PostStatusPollOptionsFieldItemsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var items = Provider.of<List<IStringValueFormFieldBloc>>(context);
+
     return Column(
       children: [
         ...items
@@ -153,7 +155,7 @@ class _PostStatusPollOptionsFieldItemFieldWidget extends StatelessWidget {
     return PostStatusPollOptionFormStringFieldFormRowWidget(
       formStringFieldBloc: pollItemBloc,
       onSubmitted: (String value) {
-        _logger.finest(() => "onSubmitted $value");
+        _logger.finest(() => 'onSubmitted $value');
         var nextItem = pollOptionsGroupBloc.findNextItemFor(pollItemBloc);
         nextItem?.focusNode.requestFocus();
       },
@@ -175,10 +177,12 @@ class _PostStatusPollOptionRemoteItemButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var pollOptionsGroupBloc =
         IOneTypeFormGroupBloc.of<IStringValueFormFieldBloc>(context);
+
     return StreamBuilder<bool>(
       stream: pollOptionsGroupBloc.isPossibleToRemoveFieldsStream,
       builder: (context, snapshot) {
         var isPossibleToRemoveFields = snapshot.data ?? false;
+
         return FediIconButton(
           icon: Icon(FediIcons.remove),
           color: isPossibleToRemoveFields

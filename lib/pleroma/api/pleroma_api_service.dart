@@ -5,7 +5,7 @@ import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:rxdart/rxdart.dart';
 
-typedef ResponseJsonParser<T> = T Function(Map<String, dynamic> jsonParser);
+typedef ResponseJsonParser<T> = T Function(Map<String, dynamic> json);
 
 abstract class BasePleromaApiService extends DisposableOwner
     implements IPleromaApi {

@@ -114,3 +114,11 @@ app.*.symbols
 !/dev/ci/**/Gemfile.lock
 /build/
 /.fvm/flutter_sdk/
+
+# flutter_config
+**/ios/Flutter/tmp.xcconfig
+/ios/.envfile
+
+# config which excluded from source control
+/env_dev.env
+/env_prod.env

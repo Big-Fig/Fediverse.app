@@ -18,7 +18,7 @@ void main() {
   test('approvalRequired', () async {
     expect(
       AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
-        seed: "seed",
+        seed: 'seed',
         pleromaApiInstance: PleromaApiInstance.only(
           approvalRequired: true,
         ),
@@ -27,7 +27,7 @@ void main() {
     );
     expect(
       AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
-        seed: "seed",
+        seed: 'seed',
         pleromaApiInstance: PleromaApiInstance.only(
           approvalRequired: null,
         ),
@@ -36,7 +36,7 @@ void main() {
     );
     expect(
       AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
-        seed: "seed",
+        seed: 'seed',
         pleromaApiInstance: PleromaApiInstance.only(
           approvalRequired: false,
         ),
@@ -48,7 +48,7 @@ void main() {
   test('isPossibleToLogin', () async {
     expect(
       AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
-        seed: "seed",
+        seed: 'seed',
         pleromaApiInstance: PleromaApiInstance.only(
           approvalRequired: false,
         ),
@@ -58,7 +58,7 @@ void main() {
 
     expect(
       AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
-        seed: "seed",
+        seed: 'seed',
         unknownHostException: Exception(),
       ).isPossibleToLogin,
       false,
@@ -66,7 +66,7 @@ void main() {
 
     expect(
       AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
-        seed: "seed",
+        seed: 'seed',
         pleromaApiInstance: PleromaApiInstance.only(
           approvalRequired: true,
         ),
@@ -78,7 +78,7 @@ void main() {
   test('emailConfirmationRequired', () async {
     expect(
       AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
-        seed: "seed",
+        seed: 'seed',
         emailConfirmationRequiredAuthHostException: null,
       ).emailConfirmationRequired,
       false,
@@ -86,7 +86,7 @@ void main() {
 
     expect(
       AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
-        seed: "seed",
+        seed: 'seed',
         emailConfirmationRequiredAuthHostException:
             const EmailConfirmationRequiredAuthHostException(),
       ).emailConfirmationRequired,

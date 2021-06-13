@@ -9,7 +9,7 @@ class InstanceToastSettingsLocalPreferenceBloc
   InstanceToastSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
-  }) : super(preferencesService, "toast.settings.instance.$userAtHost");
+  }) : super(preferencesService, 'toast.settings.instance.$userAtHost');
 
   static const ToastSettings? defaultValue = null;
 

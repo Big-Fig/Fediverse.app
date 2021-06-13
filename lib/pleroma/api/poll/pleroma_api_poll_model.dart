@@ -39,7 +39,7 @@ extension IPleromaApiPollExtension on IPleromaApiPoll {
     required PleromaApiInstancePollLimits limits,
   }) {
     return PostStatusPoll(
-      durationLength: expiresAt.calculatePostDurationLength(
+      durationLength: expiresAt?.calculatePostDurationLength(
         limits: limits,
       ),
       // todo: implement  hideTotals
@@ -52,18 +52,21 @@ extension IPleromaApiPollExtension on IPleromaApiPoll {
   bool isOwnVote(IPleromaApiPollOption option) {
     var index = options.indexOf(option);
 
-    return ownVotes.contains(index);
+    return ownVotes != null && ownVotes!.contains(index);
   }
 
   double votesPercent(IPleromaApiPollOption option) {
     // votes count can be hidden until poll ends
     var votesCount = option.votesCount;
+
+    var pollVotesCount = this.votesCount;
     double votesPercent;
-    if (votesCount == 0 || votesCount == null) {
+    if (votesCount == 0 || votesCount == null || pollVotesCount == null) {
       votesPercent = 0.0;
     } else {
-      votesPercent = votesCount / this.votesCount;
+      votesPercent = votesCount / pollVotesCount;
     }
+
     return votesPercent;
   }
 }
@@ -72,7 +75,7 @@ extension DateTimePollExtension on DateTime {
   Duration calculatePostDurationLength({
     required PleromaApiInstancePollLimits limits,
   }) {
-    DateTime expiresAt = this;
+    var expiresAt = this;
 
     var now = DateTime.now();
 
@@ -152,7 +155,7 @@ class PleromaApiPollOption implements IPleromaApiPollOption {
   final String title;
 
   @override
-  @JsonKey(name: "votes_count")
+  @JsonKey(name: 'votes_count')
   final int? votesCount;
 
   PleromaApiPollOption({
@@ -191,8 +194,8 @@ class PleromaApiPoll implements IPleromaApiPoll, IJsonObject {
   final bool expired;
 
   @override
-  @JsonKey(name: "expires_at")
-  final DateTime expiresAt;
+  @JsonKey(name: 'expires_at')
+  final DateTime? expiresAt;
 
   @override
   final String? id;
@@ -204,19 +207,19 @@ class PleromaApiPoll implements IPleromaApiPoll, IJsonObject {
   final List<PleromaApiPollOption> options;
 
   @override
-  @JsonKey(name: "own_votes")
-  final List<int> ownVotes;
+  @JsonKey(name: 'own_votes')
+  final List<int>? ownVotes;
 
   @override
-  final bool voted;
+  final bool? voted;
 
   @override
-  @JsonKey(name: "voters_count")
-  final int votersCount;
+  @JsonKey(name: 'voters_count')
+  final int? votersCount;
 
   @override
-  @JsonKey(name: "votes_count")
-  final int votesCount;
+  @JsonKey(name: 'votes_count')
+  final int? votesCount;
 
   PleromaApiPoll({
     required this.expired,

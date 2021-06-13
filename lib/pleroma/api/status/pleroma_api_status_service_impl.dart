@@ -8,7 +8,7 @@ import 'package:path/path.dart';
 
 class PleromaApiStatusService extends BasePleromaApiService
     implements IPleromaApiStatusService {
-  final statusRelativeUrlPath = "/api/v1/statuses/";
+  final statusRelativeUrlPath = '/api/v1/statuses/';
   @override
   final IPleromaApiRestService restService;
 
@@ -40,7 +40,7 @@ class PleromaApiStatusService extends BasePleromaApiService
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
-        "context",
+        'context',
       ),
     );
     var httpResponse = await restService.sendHttpRequest(request);

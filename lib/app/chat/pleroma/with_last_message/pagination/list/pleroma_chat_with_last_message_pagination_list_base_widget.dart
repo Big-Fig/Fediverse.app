@@ -32,6 +32,7 @@ abstract class PleromaChatPaginationListBaseWidget
     var chatPaginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
             IPleromaChatWithLastMessage>>(context, listen: listen);
+
     return chatPaginationListBloc;
   }
 }

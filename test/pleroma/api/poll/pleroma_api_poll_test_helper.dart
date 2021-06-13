@@ -8,7 +8,7 @@ class PleromaApiPollTestHelper {
     required String seed,
   }) =>
       PleromaApiPollOption(
-        title: seed + "title",
+        title: seed + 'title',
         votesCount: seed.hashCode % 5,
       );
 
@@ -18,11 +18,11 @@ class PleromaApiPollTestHelper {
       PleromaApiPoll(
         expired: seed.hashCode % 2 == 0,
         expiresAt: DateTime(2000 + seed.hashCode % 20),
-        id: seed + "id",
+        id: seed + 'id',
         multiple: seed.hashCode % 2 == 0,
         options: [
-          createTestPleromaApiPollOption(seed: seed + "1"),
-          createTestPleromaApiPollOption(seed: seed + "2"),
+          createTestPleromaApiPollOption(seed: seed + '1'),
+          createTestPleromaApiPollOption(seed: seed + '2'),
         ],
         ownVotes: [
           seed.hashCode % 7,

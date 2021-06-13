@@ -18,7 +18,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   @override
   final int? maximumFileSizeInBytes;
 
-  final IPleromaMediaAttachmentService pleromaMediaAttachmentService;
+  final IPleromaApiMediaAttachmentService pleromaMediaAttachmentService;
 
   DisposableOwner? uploadedSubscription;
 
@@ -244,6 +244,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     if (maximumMediaAttachmentCount == null) {
       return null;
     }
+
     return maximumMediaAttachmentCount - mediaAttachmentBlocs!.length;
   }
 

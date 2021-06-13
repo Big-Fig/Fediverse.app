@@ -91,7 +91,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               } else {
                 return RemoteAccountBloc(
                   // todo: remove hack
-                  // actually we don't need pleromaAccountService here
+                  // actually we dont need pleromaAccountService here
                   // should be refactored
                   pleromaAccountService: null,
                   account: statusBloc.account,
@@ -165,6 +165,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
   static DialogAction buildDeleteAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
+
     return DialogAction(
       icon: FediIcons.delete,
       label: S.of(context).app_status_action_delete,
@@ -201,6 +202,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   static DialogAction buildMuteConversationAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
     var isPleromaInstance = statusBloc.isPleroma;
+
     return DialogAction(
       icon: statusBloc.muted ? FediIcons.unmute : FediIcons.mute,
       label: statusBloc.muted
@@ -229,6 +231,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
   static DialogAction buildBookmarkAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
+
     return DialogAction(
       icon: statusBloc.bookmarked == true
           ? FediIcons.bookmark
@@ -254,6 +257,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
     var instanceLocation = statusBloc.instanceLocation;
     var status = statusBloc.status;
     var parentContext = context;
+
     return DialogAction(
       icon: FediIcons.share,
       label: S.of(context).app_share_action_share,
@@ -322,7 +326,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               goToNewPostStatusPageWithInitial(
                 parentContext,
                 initialText:
-                    (status.content?.extractRawStringFromHtmlString() ?? ""),
+                    (status.content?.extractRawStringFromHtmlString() ?? ''),
                 initialSubject:
                     status.spoilerText?.extractRawStringFromHtmlString(),
                 initialMediaAttachments:
@@ -348,6 +352,7 @@ class _StatusActionMoreDialogBodyStatusActionsWidget extends StatelessWidget {
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(status);
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+
     return FediChooserDialogBody(
       title: S.of(context).app_status_action_popup_title,
       actions: [

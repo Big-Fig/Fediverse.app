@@ -13,13 +13,13 @@ import 'package:fedi/form/field/value/string/validation/string_value_form_field_
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/pleroma/api/account/public/pleroma_api_account_public_model.dart';
 import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service.dart';
 
 class RegisterAuthInstanceFormBloc extends FormBloc
     implements IRegisterAuthInstanceFormBloc {
   @override
+  // ignore: avoid-late-keyword
   late IPleromaFormCaptchaStringFieldBloc captchaFieldBloc;
 
   final ILocalizationSettingsBloc localizationSettingsBloc;
@@ -44,7 +44,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
 
     captchaFieldBloc = PleromaFormCaptchaStringFieldBloc(
       pleromaCaptchaService: pleromaCaptchaService,
-      originValue: "",
+      originValue: '',
       validators: [
         StringValueFormFieldNonEmptyValidationError.createValidator(),
       ],
@@ -71,7 +71,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
 
   @override
   final StringValueFormFieldBloc usernameFieldBloc = StringValueFormFieldBloc(
-    originValue: "",
+    originValue: '',
     validators: [StringValueFormFieldNonEmptyValidationError.createValidator()],
     maxLength: null,
   );
@@ -82,25 +82,26 @@ class RegisterAuthInstanceFormBloc extends FormBloc
   ]);
 
   @override
+  // ignore: avoid-late-keyword
   late LocalizationLocaleSingleFromListValueFormFieldBloc localeFieldBloc;
 
   @override
   final StringValueFormFieldBloc emailFieldBloc = StringValueFormFieldBloc(
-    originValue: "",
+    originValue: '',
     validators: [EmailStringValueFormFieldValidationError.createValidator()],
     maxLength: null,
   );
 
   @override
   final StringValueFormFieldBloc reasonFieldBloc = StringValueFormFieldBloc(
-    originValue: "",
+    originValue: '',
     validators: [],
     maxLength: null,
   );
 
   @override
   final StringValueFormFieldBloc passwordFieldBloc = StringValueFormFieldBloc(
-    originValue: "",
+    originValue: '',
     validators: [
       StringValueFormFieldLengthValidationError.createValidator(
         // todo: refactor
@@ -139,7 +140,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
     final captcha = captchaFieldBloc.captcha;
     final captchaSolution = captchaFieldBloc.currentValue;
     final agreeTermsOfService = agreeTermsOfServiceFieldBloc.currentValue;
-    LocalizationLocale? locale = localeFieldBloc.currentValue;
+    var locale = localeFieldBloc.currentValue;
 
     final reason = reasonFieldBloc.currentValue;
 

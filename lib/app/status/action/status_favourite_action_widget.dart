@@ -34,11 +34,13 @@ class _StatusFavouriteActionButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
+
     return StreamBuilder<bool?>(
       stream: statusBloc.favouritedStream,
       initialData: statusBloc.favourited,
       builder: (context, snapshot) {
         var favourited = snapshot.data;
+
         return PleromaAsyncOperationButtonBuilderWidget(
           showProgressDialog: false,
           builder: (context, onPressed) => FediIconButton(
@@ -66,6 +68,7 @@ class _StatusFavouriteActionCounterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
+
     return StreamBuilder<int?>(
       stream: statusBloc.reblogPlusOriginalFavouritesCountStream,
       builder: (context, snapshot) {

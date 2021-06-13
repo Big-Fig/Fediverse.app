@@ -11,7 +11,7 @@ class InstanceWebSocketsSettingsLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService,
-          "webSockets.settings.instance.$userAtHost",
+          'webSockets.settings.instance.$userAtHost',
         );
 
   static const WebSocketsSettings? defaultValue = null;

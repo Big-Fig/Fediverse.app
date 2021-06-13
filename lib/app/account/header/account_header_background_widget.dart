@@ -14,6 +14,7 @@ class AccountHeaderBackgroundWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+
     return StreamBuilder<String?>(
       stream: accountBloc.headerStream.distinct(),
       builder: (context, snapshot) {
@@ -39,7 +40,8 @@ class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String header = Provider.of<String>(context);
+    var header = Provider.of<String>(context);
+
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return IFilesCacheService.of(context).createCachedNetworkImageWidget(

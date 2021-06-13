@@ -7,11 +7,11 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("connection_service_impl.dart");
+var _logger = Logger('connection_service_impl.dart');
 
 class ConnectionService extends AsyncInitLoadingBloc
     implements IConnectionService {
-  late Connectivity connectivity;
+  final Connectivity connectivity = Connectivity();
 
   final BehaviorSubject<ConnectivityResult> _connectionStateSubject =
       BehaviorSubject.seeded(ConnectivityResult.none);
@@ -35,7 +35,6 @@ class ConnectionService extends AsyncInitLoadingBloc
   bool get isConnected => _mapConnectivityResult(connectionState);
 
   ConnectionService() {
-    connectivity = Connectivity();
 
     var observer = LifecycleEventHandler((state) {
       if (state == AppLifecycleState.resumed) {
@@ -61,11 +60,12 @@ class ConnectionService extends AsyncInitLoadingBloc
   Future<ConnectivityResult> _checkConnectivity() async {
     var newState = await connectivity.checkConnectivity();
     _updateConnectivity(newState);
+
     return newState;
   }
 
   void _updateConnectivity(ConnectivityResult newState) {
-    _logger.fine(() => "newState $newState");
+    _logger.fine(() => 'newState $newState');
 
     _connectionStateSubject.add(newState);
   }

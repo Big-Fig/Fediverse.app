@@ -10,10 +10,10 @@ class PushHandlerUnhandledModelTestHelper {
       PushHandlerUnhandledList(
         messages: [
           PushHandlerModelTestHelper.createTestPushHandlerMessage(
-            seed: seed + "1",
+            seed: seed + '1',
           ),
           PushHandlerModelTestHelper.createTestPushHandlerMessage(
-            seed: seed + "2",
+            seed: seed + '2',
           ),
         ],
       );

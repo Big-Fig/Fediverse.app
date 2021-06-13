@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'status_sensitive_settings_model_test_helper.dart';
 
-// ignore_for_file: no-magic-number
+// ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
   late GlobalStatusSensitiveSettingsLocalPreferenceBloc
@@ -94,7 +94,7 @@ void main() {
     );
 
     var testIsAlwaysShowNsfw = StatusSensitiveSettingsModelTestHelper
-            .createTestStatusSensitiveSettings(seed: "seed")
+            .createTestStatusSensitiveSettings(seed: 'seed')
         .isAlwaysShowNsfw;
 
     await statusSensitiveSettingsBloc
@@ -156,7 +156,7 @@ void main() {
     );
 
     var testIsAlwaysShowSpoiler = StatusSensitiveSettingsModelTestHelper
-            .createTestStatusSensitiveSettings(seed: "seed")
+            .createTestStatusSensitiveSettings(seed: 'seed')
         .isAlwaysShowSpoiler;
 
     await statusSensitiveSettingsBloc
@@ -218,7 +218,7 @@ void main() {
     );
 
     var testNsfwDisplayDelayDuration = StatusSensitiveSettingsModelTestHelper
-            .createTestStatusSensitiveSettings(seed: "seed")
+            .createTestStatusSensitiveSettings(seed: 'seed')
         .nsfwDisplayDelayDuration;
 
     await statusSensitiveSettingsBloc

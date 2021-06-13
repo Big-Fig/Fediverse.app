@@ -23,7 +23,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
     required IPleromaApiAuthStatusService pleromaAuthStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
-    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
     required int? maximumMessageLength,
     required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
     required int? maximumFileSizeInBytes,
@@ -41,7 +41,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
             inReplyToConversationId:
                 conversationChatBloc.conversation.remoteId,
           ),
-          // we don't need mentions if we have inReplyToConversationId
+          // we dont need mentions if we have inReplyToConversationId
           initialAccountsToMention: null,
           maximumMessageLength: maximumMessageLength,
           pleromaInstancePollLimits: pleromaInstancePollLimits,
@@ -67,7 +67,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
         context,
         listen: false,
       ),
-      pleromaMediaAttachmentService: IPleromaMediaAttachmentService.of(
+      pleromaMediaAttachmentService: IPleromaApiMediaAttachmentService.of(
         context,
         listen: false,
       ),

@@ -70,7 +70,7 @@ class _MyAccountDomainBlockListPageBody extends StatelessWidget {
       child: MyAccountDomainBlockPaginationListWidget(
         customEmptyWidget: customEmptyWidget,
         customLoadingWidget: customLoadingWidget,
-        key: PageStorageKey("MyAccountDomainBlockListPage"),
+        key: PageStorageKey('MyAccountDomainBlockListPage'),
         domainBlockSelectedCallback: null,
         domainBlockActions: <Widget>[
           const _MyAccountDomainBlockListPageRemoveItemAction(),
@@ -131,6 +131,7 @@ class _MyAccountDomainBlockListPageRemoveItemAction extends StatelessWidget {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
     var blocking = true;
+
     return PleromaAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () async {
         var domain = Provider.of<DomainBlock>(context, listen: false);

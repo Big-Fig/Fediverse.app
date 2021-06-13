@@ -38,7 +38,7 @@ typedef RefreshCallback = Future<void> Function();
 enum _RefreshIndicatorMode {
   drag, // Pointer is down.
   armed, // Dragged far enough that an up event will run the onRefresh callback.
-  snap, // Animating to the indicator's final "displacement".
+  snap, // Animating to the indicator's final 'displacement'.
   refresh, // Running the refresh callback.
   done, // Animating the indicator's fade-out after refreshing.
   canceled, // Animating the indicator's fade-out after not arming.
@@ -55,7 +55,7 @@ enum RefreshIndicatorTriggerMode {
   onEdge,
 }
 
-/// A widget that supports the Material "swipe to refresh" idiom.
+/// A widget that supports the Material 'swipe to refresh' idiom.
 ///
 /// When the child's [Scrollable] descendant overscrolls, an animated circular
 /// progress indicator is faded into view. When the scroll ends, if the
@@ -193,13 +193,19 @@ class FediListRefreshIndicator extends StatefulWidget {
 /// programmatically show the refresh indicator, see the [show] method.
 class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
     with TickerProviderStateMixin<FediListRefreshIndicator> {
+  // ignore: avoid-late-keyword
   late AnimationController _positionController;
+  // ignore: avoid-late-keyword
   late AnimationController _scaleController;
+  // ignore: avoid-late-keyword
   late Animation<double> _positionFactor;
+  // ignore: avoid-late-keyword
   late Animation<double> _scaleFactor;
+  // ignore: avoid-late-keyword
   late Animation<Color?> _valueColor;
 
   _RefreshIndicatorMode? _mode;
+  // ignore: avoid-late-keyword
   late Future<void> _pendingRefreshFuture;
   bool? _isIndicatorAtTop;
   double? _dragOffset;
@@ -221,7 +227,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
 
   @override
   void didChangeDependencies() {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
     _valueColor = _positionController.drive(
       ColorTween(
         begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
@@ -237,7 +243,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
   void didUpdateWidget(covariant FediListRefreshIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.color != widget.color) {
-      final ThemeData theme = Theme.of(context);
+      final theme = Theme.of(context);
       _valueColor = _positionController.drive(
         ColorTween(
           begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
@@ -273,6 +279,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
       setState(() {
         _mode = _RefreshIndicatorMode.drag;
       });
+
       return false;
     }
     bool? indicatorAtTopNow;
@@ -306,7 +313,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
       if (_mode == _RefreshIndicatorMode.armed &&
           notification.dragDetails == null) {
         // On iOS start the refresh when the Scrollable bounces back from the
-        // overscroll (ScrollNotification indicating this don't have dragDetails
+        // overscroll (ScrollNotification indicating this dont have dragDetails
         // because the scroll activity is not directly triggered by a drag).
         _show();
       }
@@ -329,6 +336,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
           break;
       }
     }
+
     return false;
   }
 
@@ -336,8 +344,10 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
     if (notification.depth != 0 || !notification.leading) return false;
     if (_mode == _RefreshIndicatorMode.drag) {
       notification.disallowGlow();
+
       return true;
     }
+
     return false;
   }
 
@@ -361,13 +371,14 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
     _dragOffset = 0.0;
     _scaleController.value = 0.0;
     _positionController.value = 0.0;
+
     return true;
   }
 
   void _checkDragOffset(double containerExtent) {
     assert(_mode == _RefreshIndicatorMode.drag ||
         _mode == _RefreshIndicatorMode.armed);
-    double newValue =
+    var newValue =
         _dragOffset! / (containerExtent * _kDragContainerExtentPercentage);
     if (_mode == _RefreshIndicatorMode.armed) {
       newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
@@ -420,7 +431,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
   void _show() {
     assert(_mode != _RefreshIndicatorMode.refresh);
     assert(_mode != _RefreshIndicatorMode.snap);
-    final Completer<void> completer = Completer<void>();
+    final completer = Completer<void>();
     _pendingRefreshFuture = completer.future;
     _mode = _RefreshIndicatorMode.snap;
     _positionController
@@ -435,7 +446,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
           _mode = _RefreshIndicatorMode.refresh;
         });
 
-        final Future<void> refreshResult = widget.onRefresh();
+        final refreshResult = widget.onRefresh();
         // `refreshResult` has a non-nullable type, but might be null when
         // running with weak checking, so we need to null check it anyway (and
         // ignore the warning that the null-handling logic is dead code).
@@ -472,6 +483,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
       if (_mode == null) _start(atTop ? AxisDirection.down : AxisDirection.up);
       _show();
     }
+
     return _pendingRefreshFuture;
   }
 
@@ -493,6 +505,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
         assert(_dragOffset != null);
         assert(_isIndicatorAtTop != null);
       }
+
       return true;
     }());
 

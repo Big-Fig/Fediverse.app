@@ -54,6 +54,7 @@ class CustomListPaginationListWidget
       footer: footer,
       itemBuilder: (context, index) {
         var item = items[index];
+
         return Provider<ICustomList>.value(
           value: item,
           child: DisposableProxyProvider<ICustomList, ICustomListBloc>(

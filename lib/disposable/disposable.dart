@@ -24,6 +24,7 @@ class CustomDisposable extends IDisposable {
       return;
     }
     isDisposed = true;
+
     return await _disposeCallback();
   }
 }

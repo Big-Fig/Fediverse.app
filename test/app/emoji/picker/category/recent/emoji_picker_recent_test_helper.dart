@@ -8,16 +8,16 @@ class EmojiPickerRecentCategoryItemsListModelTestHelper {
     required String seed,
   }) =>
       CustomEmojiPickerCodeItem(
-        name: seed + "name",
-        code: seed + "code",
+        name: seed + 'name',
+        code: seed + 'code',
       );
 
   static CustomEmojiPickerImageUrlItem createTestCustomEmojiPickerImageUrlItem({
     required String seed,
   }) =>
       CustomEmojiPickerImageUrlItem(
-        imageUrl: seed + "imageUrl",
-        name: seed + "name",
+        imageUrl: seed + 'imageUrl',
+        name: seed + 'name',
       );
 
   static EmojiPickerRecentCategoryItemsList
@@ -26,12 +26,12 @@ class EmojiPickerRecentCategoryItemsListModelTestHelper {
   }) =>
           EmojiPickerRecentCategoryItemsList(
             recentCodeItems: [
-              createTestCustomEmojiPickerCodeItem(seed: seed + "1"),
-              createTestCustomEmojiPickerCodeItem(seed: seed + "2"),
+              createTestCustomEmojiPickerCodeItem(seed: seed + '1'),
+              createTestCustomEmojiPickerCodeItem(seed: seed + '2'),
             ],
             recentImageItems: [
-              createTestCustomEmojiPickerImageUrlItem(seed: seed + "1"),
-              createTestCustomEmojiPickerImageUrlItem(seed: seed + "2"),
+              createTestCustomEmojiPickerImageUrlItem(seed: seed + '1'),
+              createTestCustomEmojiPickerImageUrlItem(seed: seed + '2'),
             ],
           );
 }

@@ -27,6 +27,7 @@ class FediIconInCircleTransparentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Container(
       // ignore: no-magic-number
       width: size + borderWidth * 2,

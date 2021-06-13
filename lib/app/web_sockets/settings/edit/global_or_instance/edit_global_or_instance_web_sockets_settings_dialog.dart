@@ -55,6 +55,7 @@ void showEditGlobalOrInstanceWebSocketsSettingsDialog({
             },
           ),
         );
+
         return editWebSocketsSettingsBloc;
       },
       child: ProxyProvider<IEditWebSocketsSettingsBloc,

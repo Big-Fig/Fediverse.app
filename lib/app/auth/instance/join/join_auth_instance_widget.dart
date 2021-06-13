@@ -6,6 +6,7 @@ import 'package:fedi/app/auth/instance/auth_instance_pleroma_rest_error_data.dar
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/tos/tos_page.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
@@ -13,7 +14,6 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
-import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,7 +22,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger("join_auth_instance_widget.dart");
+final _logger = Logger('join_auth_instance_widget.dart');
 
 class JoinAuthInstanceWidget extends StatelessWidget {
   const JoinAuthInstanceWidget();
@@ -163,7 +163,7 @@ class _JoinAuthInstanceHostTextFieldWidget extends StatelessWidget {
         FediTransparentEditTextField(
           autocorrect: false,
           expanded: false,
-          hintText: S.of(context).app_auth_instance_join_field_host_hint,
+          hintText: IConfigService.of(context).appDefaultInstanceUrl,
           onSubmitted: (String value) {
             logInToInstance(context);
           },
@@ -216,7 +216,7 @@ class _JoinAuthInstanceLogoWidget extends StatelessWidget {
       }
 
       return Image(
-        image: AssetImage("assets/images/theme/logo.png"),
+        image: AssetImage('assets/images/theme/logo.png'),
         width: width,
       );
     });
@@ -231,6 +231,7 @@ class _JoinAuthInstanceTermsOfServiceButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textStyle = IFediUiTextTheme.of(context).mediumShortWhite;
+
     return InkWell(
       onTap: () {
         goToTosPage(context);
@@ -244,7 +245,7 @@ class _JoinAuthInstanceTermsOfServiceButtonWidget extends StatelessWidget {
               style: textStyle,
             ),
             TextSpan(
-              text: " ",
+              text: ' ',
               style: textStyle,
             ),
             TextSpan(
@@ -268,7 +269,7 @@ class _JoinAuthInstanceTermsOfServiceButtonWidget extends StatelessWidget {
 Future signUpToInstance(BuildContext context) async {
   var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
   var hostUri = joinInstanceBloc.extractCurrentUri();
-  AsyncDialogResult<void> asyncDialogResult =
+  var asyncDialogResult =
       await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
     context: context,
     contentMessage:
@@ -351,9 +352,7 @@ ErrorData createRegistrationDisabledErrorData(
       titleCreator: (context) => S
           .of(context)
           .app_auth_instance_join_registrationDisabled_dialog_title,
-      contentCreator: (context) => S
-          .of(context)
-          .app_auth_instance_join_registrationDisabled_dialog_content,
+      contentCreator: null,
     );
 
 ErrorData createRegistrationInvitesOnlyErrorData(
@@ -407,18 +406,18 @@ Future logInToInstance(BuildContext context) async {
 
   var authInstance = dialogResult.result;
   if (authInstance != null) {
-    _logger.finest(() =>"before pop");
+    _logger.finest(() => 'before pop');
     if (!joinInstanceBloc.isFromScratch) {
       Navigator.pop(context);
       Navigator.pop(context);
     }
 
-    _logger.finest(() =>"after pop before change auth");
+    _logger.finest(() => 'after pop before change auth');
 
     await ICurrentAuthInstanceBloc.of(context, listen: false)
         .changeCurrentInstance(
       authInstance,
     );
-    _logger.finest(() =>"after auth");
+    _logger.finest(() => 'after auth');
   }
 }
