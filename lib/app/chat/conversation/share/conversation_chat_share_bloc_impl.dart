@@ -22,8 +22,8 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     implements IConversationChatShareBloc {
   final IConversationChatRepository conversationRepository;
   final IStatusRepository statusRepository;
-  final IPleromaApiConversationService pleromaConversationService;
-  final IPleromaApiAuthStatusService pleromaAuthStatusService;
+  final IPleromaApiConversationService pleromaApiConversationService;
+  final IPleromaApiAuthStatusService pleromaApiAuthStatusService;
   final IMyAccountBloc myAccountBloc;
   final IAccountRepository accountRepository;
 
@@ -43,8 +43,8 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
   ConversationChatShareBloc({
     required this.conversationRepository,
     required this.statusRepository,
-    required this.pleromaConversationService,
-    required this.pleromaAuthStatusService,
+    required this.pleromaApiConversationService,
+    required this.pleromaApiAuthStatusService,
     required IPleromaApiAccountService pleromaAccountService,
     required this.myAccountBloc,
     required this.accountRepository,
@@ -65,7 +65,8 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       to: '${targetAccounts.map((account) => '@${account.acct}').join(', ')}',
       visibility: pleromaVisibility,
     );
-    var accountsPleromaStatus = await pleromaAuthStatusService.postStatus(
+    // todo: send to conversation id
+    var accountsPleromaStatus = await pleromaApiAuthStatusService.postStatus(
       data: sendData,
     );
 
@@ -136,7 +137,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       return [];
     }
     var pleromaConversations =
-        await pleromaConversationService.getConversations(
+        await pleromaApiConversationService.getConversations(
       pagination: PleromaApiPaginationRequest(
         limit: limit,
       ),

@@ -157,6 +157,7 @@ Push Relay will know nothing(everything will be encrypted) once decryption logic
 
 * Null-safety support
 * Feature-based folder structure
+* Prefer composition over inheritance
 * Dependency Injection implemented via `provider`
 * Prefer `StatelessWidget` and async UI update via `StreamBuidler` and `BehaviourSubject` & `StreamController` in controller classes
 * Prefer divide `Widgets` in small sub `Widgets` with `const` constructor(for better performance) if possible

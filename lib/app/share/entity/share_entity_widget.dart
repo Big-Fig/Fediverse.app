@@ -3,10 +3,10 @@ import 'package:fedi/app/share/share_with_message_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ShareMediaWithMessageWidget extends StatelessWidget {
+class ShareEntityWidget extends StatelessWidget {
   final Widget? footer;
 
-  const ShareMediaWithMessageWidget({
+  const ShareEntityWidget({
     required this.footer,
   });
 
@@ -27,3 +27,16 @@ class ShareMediaWithMessageWidget extends StatelessWidget {
     );
   }
 }
+
+// class ExternalShareAsLinkFieldWidget extends StatelessWidget {
+//   const ExternalShareAsLinkFieldWidget();
+//
+//   @override
+//   Widget build(BuildContext context) =>
+//       ProxyProvider<IExternalShareBloc, IBoolValueFormFieldBloc>(
+//         update: (context, value, previous) => value.asLinkBoolField,
+//         child: BoolValueFormFieldRowWidget(
+//           label: S.of(context).app_share_external_field_shareAsLink,
+//         ),
+//       );
+// }

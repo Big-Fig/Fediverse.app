@@ -1,18 +1,18 @@
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/chat/conversation/share/conversation_chat_share_status_page.dart';
-import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart';
-import 'package:fedi/app/chat/selection/action/share/chat_selection_share_action_model.dart';
+import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
+import 'package:fedi/app/chat/message/chat_message_model.dart';
+import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
-import 'package:fedi/app/share/external/external_share_status_page.dart';
+import 'package:fedi/app/share/entity/share_entity_model.dart';
+import 'package:fedi/app/share/external/external_share_entity_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
 class ChatSelectionShareActionButtonWidget extends StatelessWidget {
@@ -35,49 +35,39 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
       color: IFediUiColorTheme.of(context).darkGrey,
       onPressed: () async {
         var chatSelectionBloc = IChatSelectionBloc.of(context, listen: false);
-
-        var rawText = chatSelectionBloc.calculateSelectionAsRawText();
-        var mediaAttachments =
-            chatSelectionBloc.calculateSelectionAsMediaAttachments();
-
-        // todo: remove hack
-        // need rework to separate page for simple raw text share
-        // todo: limit max status length & media attachments count
-        var status = ChatSelectionShareActionStatusAdapter(
-          content: rawText,
-          account: chatSelectionBloc.currentSelection.first.account!,
-          visibility: PleromaApiVisibility.public,
-          mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
-        );
-
+        var currentSelection = chatSelectionBloc.currentSelection;
         showShareChooserDialog(
           context,
           externalShareAction: (context) {
             Navigator.of(context).pop();
-            goToExternalShareStatusPage(
+
+            goToExternalShareEntityPage(
               context: context,
-              status: status,
+              shareEntity: _mapCurrentSelectionToShareEntity(currentSelection),
               instanceLocation: instanceLocation,
-              isShareAsLinkPossible: false,
             );
           },
           conversationsShareAction: (context) {
             Navigator.of(context).pop();
-            goToConversationShareStatusPage(
+            goToConversationChatShareEntityPage(
               context: context,
-              status: status,
+              shareEntity: _mapCurrentSelectionToShareEntity(currentSelection),
               instanceLocation: instanceLocation,
             );
           },
           chatsShareAction: (context) {
             Navigator.of(context).pop();
-            goToPleromaChatShareStatusPage(
+            goToPleromaChatShareEntityPage(
               context: context,
-              status: status,
+              shareEntity: _mapCurrentSelectionToShareEntity(currentSelection),
               instanceLocation: instanceLocation,
             );
           },
           newStatusShareAction: (context) async {
+            var rawText = chatSelectionBloc.calculateSelectionAsRawText();
+            var mediaAttachments =
+                chatSelectionBloc.calculateSelectionAsMediaAttachments();
+
             var originalMediaAttachments = mediaAttachments;
             List<IPleromaApiMediaAttachment>? reuploadedMediaAttachments;
 
@@ -120,3 +110,22 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
     );
   }
 }
+
+ShareEntity _mapCurrentSelectionToShareEntity(
+  List<IChatMessage> currentSelection,
+) =>
+    ShareEntity(
+      items: currentSelection
+          .map(
+            (chatMessage) => ShareEntityItem(
+              createdAt: chatMessage.createdAt,
+              fromAccount: chatMessage.account,
+              text: chatMessage.content,
+              mediaAttachments: chatMessage.mediaAttachments,
+              mediaLocalFiles: null,
+              isNeedReUploadMediaAttachments: true,
+              linkToOriginal: null,
+            ),
+          )
+          .toList(),
+    );

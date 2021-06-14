@@ -76,6 +76,7 @@ class MediaAttachmentListItemWidget extends StatelessWidget {
             context,
             mediaAttachments: mediaAttachments,
             initialMediaAttachment: mediaAttachment,
+            instanceLocation: mediaAttachmentListBloc.instanceLocation,
           );
         },
         child: child,
