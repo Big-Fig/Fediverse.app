@@ -1,13 +1,15 @@
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
-import 'package:fedi/app/chat/conversation/share/conversation_chat_share_media_page.dart';
-import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_media_page.dart';
+import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
+import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_exception.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_helper.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/media/settings/media_settings_bloc.dart';
-import 'package:fedi/app/share/external/external_share_media_page.dart';
+import 'package:fedi/app/share/entity/share_entity_model.dart';
+import 'package:fedi/app/share/external/external_share_entity_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
@@ -33,6 +35,7 @@ import 'package:rxdart/rxdart.dart';
 class MediaAttachmentDetailsPage extends StatefulWidget {
   final List<IPleromaApiMediaAttachment> mediaAttachments;
   final IPleromaApiMediaAttachment? initialMediaAttachment;
+  final InstanceLocation instanceLocation;
 
   int get initialIndex => initialMediaAttachment != null
       ? mediaAttachments.indexOf(initialMediaAttachment!)
@@ -41,13 +44,16 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
   MediaAttachmentDetailsPage.multi({
     required this.mediaAttachments,
     required this.initialMediaAttachment,
+    required this.instanceLocation,
   });
 
   MediaAttachmentDetailsPage.single({
     required IPleromaApiMediaAttachment mediaAttachment,
+    required InstanceLocation instanceLocation,
   }) : this.multi(
           mediaAttachments: [mediaAttachment],
           initialMediaAttachment: mediaAttachment,
+          instanceLocation: instanceLocation,
         );
 
   @override
@@ -72,6 +78,7 @@ class _MediaAttachmentDetailsPageState
 
   IPleromaApiMediaAttachment? get selectedMediaAttachment =>
       selectedMediaAttachmentSubject.value;
+
   // ignore: avoid-late-keyword
   late VoidCallback listener;
 
@@ -110,6 +117,7 @@ class _MediaAttachmentDetailsPageState
           ),
           _MediaAttachmentDetailsPageShareAction(
             mediaAttachment: mediaAttachment,
+            instanceLocation: widget.instanceLocation,
           ),
         ],
       ),
@@ -248,9 +256,11 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
   const _MediaAttachmentDetailsPageShareAction({
     Key? key,
     required this.mediaAttachment,
+    required this.instanceLocation,
   }) : super(key: key);
 
   final IPleromaApiMediaAttachment mediaAttachment;
+  final InstanceLocation instanceLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -267,24 +277,26 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
           context,
           externalShareAction: (context) {
             Navigator.of(context).pop();
-            goToExternalShareMediaPage(
+            goToExternalShareEntityPage(
               context: context,
-              mediaAttachment: mediaAttachment,
-              isShareAsLinkPossible: true,
+              shareEntity: _mapMediaAttachmentToShareEntity(mediaAttachment),
+              instanceLocation: instanceLocation,
             );
           },
           conversationsShareAction: (context) {
             Navigator.of(context).pop();
-            goToConversationShareMediaPage(
+            goToConversationChatShareEntityPage(
               context: context,
-              mediaAttachment: mediaAttachment,
+              shareEntity: _mapMediaAttachmentToShareEntity(mediaAttachment),
+              instanceLocation: instanceLocation,
             );
           },
           chatsShareAction: (context) {
             Navigator.of(context).pop();
-            goToPleromaChatShareMediaPage(
+            goToPleromaChatShareEntityPage(
               context: context,
-              mediaAttachment: mediaAttachment,
+              shareEntity: _mapMediaAttachmentToShareEntity(mediaAttachment),
+              instanceLocation: instanceLocation,
             );
           },
           newStatusShareAction: (context) async {
@@ -319,6 +331,25 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
     );
   }
 }
+
+ShareEntity _mapMediaAttachmentToShareEntity(
+  IPleromaApiMediaAttachment mediaAttachment,
+) =>
+    ShareEntity(
+      items: [
+        ShareEntityItem(
+          createdAt: null,
+          fromAccount: null,
+          text: null,
+          linkToOriginal: mediaAttachment.url,
+          mediaAttachments: [
+            mediaAttachment,
+          ],
+          mediaLocalFiles: null,
+          isNeedReUploadMediaAttachments: true,
+        ),
+      ],
+    );
 
 class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
   const _MediaAttachmentDetailsPageAddToGalleryAction({
@@ -378,11 +409,13 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
 void goToSingleMediaAttachmentDetailsPage(
   BuildContext context, {
   required IPleromaApiMediaAttachment mediaAttachment,
+  required InstanceLocation instanceLocation,
 }) {
   Navigator.push(
     context,
     MaterialPageRoute(
       builder: (context) => MediaAttachmentDetailsPage.single(
+        instanceLocation: instanceLocation,
         mediaAttachment: mediaAttachment,
       ),
     ),
@@ -393,11 +426,13 @@ void goToMultiMediaAttachmentDetailsPage(
   BuildContext context, {
   required List<IPleromaApiMediaAttachment> mediaAttachments,
   required IPleromaApiMediaAttachment? initialMediaAttachment,
+  required InstanceLocation instanceLocation,
 }) {
   Navigator.push(
     context,
     MaterialPageRoute(
       builder: (context) => MediaAttachmentDetailsPage.multi(
+        instanceLocation: instanceLocation,
         mediaAttachments: mediaAttachments,
         initialMediaAttachment: initialMediaAttachment,
       ),

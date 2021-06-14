@@ -1,28 +1,22 @@
 import 'dart:io';
 
-import 'package:fedi/app/account/account_model_adapter.dart';
-import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/conversation/share/conversation_chat_share_status_page.dart';
-import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart';
+import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
+import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/share/entity/share_entity_model.dart';
 import 'package:fedi/app/share/income/action/income_share_action_model.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_bloc.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
-import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/api/id/pleroma_api_fake_id_helper.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:fedi/share/income/income_share_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
@@ -87,9 +81,9 @@ Future<void> _performIncomeShareAction({
   var dontHaveErrorsDuringMediaUploading =
       mediaAttachments?.length == incomeShareEventMedias?.length;
 
-  if (dontHaveErrorsDuringMediaUploading) {
-    switch (incomeShareActionType) {
-      case IncomeShareActionType.status:
+  switch (incomeShareActionType) {
+    case IncomeShareActionType.status:
+      if (dontHaveErrorsDuringMediaUploading) {
         goToNewPostStatusPage(
           context,
           initialData: PostStatusData.only(
@@ -97,57 +91,48 @@ Future<void> _performIncomeShareAction({
             mediaAttachments: mediaAttachments,
           ),
         );
+      }
 
-        break;
-      case IncomeShareActionType.conversation:
-        goToConversationShareStatusPage(
-          context: context,
-          status: _createFakeStatusBaseOnIncomeShareEvent(
-            incomeShareEvent: incomeShareEvent,
-            mediaAttachments: mediaAttachments,
-            context: context,
-          ),
-          instanceLocation: InstanceLocation.local,
-          isNeedReUploadMediaAttachments: false,
-        );
-        break;
-      case IncomeShareActionType.chat:
-        goToPleromaChatShareStatusPage(
-          context: context,
-          status: _createFakeStatusBaseOnIncomeShareEvent(
-            incomeShareEvent: incomeShareEvent,
-            mediaAttachments: mediaAttachments,
-            context: context,
-          ),
-          instanceLocation: InstanceLocation.local,
-          isNeedReUploadMediaAttachments: false,
-        );
-        break;
-    }
+      break;
+    case IncomeShareActionType.conversation:
+      goToConversationChatShareEntityPage(
+        context: context,
+        shareEntity: ShareEntity(
+          items: [_mapIncomeShareEventToShareEntity(incomeShareEvent)],
+        ),
+        instanceLocation: InstanceLocation.local,
+      );
+      break;
+    case IncomeShareActionType.chat:
+      goToPleromaChatShareEntityPage(
+        context: context,
+        shareEntity: ShareEntity(
+          items: [_mapIncomeShareEventToShareEntity(incomeShareEvent)],
+        ),
+        instanceLocation: InstanceLocation.local,
+      );
+      break;
   }
 }
 
-DbStatusPopulatedWrapper _createFakeStatusBaseOnIncomeShareEvent({
-  required BuildContext context,
-  required IncomeShareEvent incomeShareEvent,
-  required List<IPleromaApiMediaAttachment>? mediaAttachments,
-}) {
-  var myAccountBloc = IMyAccountBloc.of(context, listen: false);
-  // todo: rework
-  var pleromaApiFakeId = generateUniquePleromaApiFakeId();
-
-  return PleromaApiStatus.only(
-    content: incomeShareEvent.text,
-    mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
-    id: pleromaApiFakeId,
-    createdAt: DateTime.now(),
-    sensitive: false,
-    // ignore: no-equal-arguments
-    uri: pleromaApiFakeId,
-    account: myAccountBloc.account.toPleromaApiAccount(),
-    visibility: PleromaApiVisibility.public.toJsonValue(),
-  ).toDbStatusPopulatedWrapper();
-}
+ShareEntityItem _mapIncomeShareEventToShareEntity(
+  IncomeShareEvent incomeShareEvent,
+) =>
+    ShareEntityItem(
+      createdAt: null,
+      fromAccount: null,
+      text: incomeShareEvent.text,
+      linkToOriginal: null,
+      mediaAttachments: null,
+      mediaLocalFiles: incomeShareEvent.medias
+          ?.map(
+            (incomeShareEventMedia) => File(
+              incomeShareEventMedia.path,
+            ),
+          )
+          .toList(),
+      isNeedReUploadMediaAttachments: false,
+    );
 
 Future<List<IPleromaApiMediaAttachment>?> _uploadMediaIfNeed({
   required BuildContext context,

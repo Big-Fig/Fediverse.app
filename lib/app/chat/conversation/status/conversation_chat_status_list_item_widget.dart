@@ -4,6 +4,7 @@ import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_bloc_impl.dart';
 import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_carousel_widget.dart';
@@ -169,6 +170,8 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
             create: (context) => MediaAttachmentListBloc(
               mediaAttachments: mediaAttachments,
               initialMediaAttachment: null,
+              instanceLocation: InstanceLocation.local,
+              remoteInstanceUriOrNull: null,
             ),
             child: const MediaAttachmentListCarouselWidget(),
           );

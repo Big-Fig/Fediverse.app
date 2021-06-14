@@ -181,6 +181,8 @@ class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
               update: (context, value, _) => MediaAttachmentListBloc(
                 mediaAttachments: value,
                 initialMediaAttachment: statusBodyBloc.initialMediaAttachment,
+                instanceLocation: statusBloc.instanceLocation,
+                remoteInstanceUriOrNull: statusBloc.remoteInstanceUriOrNull,
               ),
               child: const MediaAttachmentListCarouselWidget(),
             ),
