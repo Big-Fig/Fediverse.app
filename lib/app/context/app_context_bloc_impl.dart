@@ -189,6 +189,24 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
       hiveLocalPreferencesService,
     );
 
+    var appAnalyticsLocalPreferenceBloc = AppAnalyticsLocalPreferenceBloc(
+      hiveLocalPreferencesService,
+    );
+
+    await globalProviderService.asyncInitAndRegister<
+        IAppAnalyticsLocalPreferenceBloc>(appAnalyticsLocalPreferenceBloc);
+    addDisposable(disposable: appAnalyticsLocalPreferenceBloc);
+
+    var appAnalyticsBloc = AppAnalyticsBloc(
+      appAnalyticsLocalPreferenceBloc: appAnalyticsLocalPreferenceBloc,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IAppAnalyticsBloc>(appAnalyticsBloc);
+    addDisposable(disposable: appAnalyticsBloc);
+
+    await appAnalyticsBloc.onAppOpened();
+
     var cameraPermissionBloc =
         CameraPermissionBloc(globalProviderService.get<IPermissionsService>());
     await cameraPermissionBloc.checkPermissionStatus();
@@ -336,26 +354,27 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IUiSettingsBloc>(uiSettingsBloc);
     addDisposable(disposable: uiSettingsBloc);
 
-    var globalCrashReportingSettingsLocalPreferencesBloc =
-        GlobalCrashReportingSettingsLocalPreferenceBloc(
-      hiveLocalPreferencesService,
-      defaultValue: CrashReportingSettings(
-        reportingEnabled: configService.crashlyticsDefaultHandlingEnabled!,
-      ),
-    );
-
-    await globalProviderService
-        .asyncInitAndRegister<IGlobalCrashReportingSettingsLocalPreferenceBloc>(
-      globalCrashReportingSettingsLocalPreferencesBloc,
-    );
-    await globalProviderService
-        .asyncInitAndRegister<ICrashReportingSettingsLocalPreferenceBloc>(
-      globalCrashReportingSettingsLocalPreferencesBloc,
-    );
-    addDisposable(
-      disposable: globalCrashReportingSettingsLocalPreferencesBloc,
-    );
     if (configService.crashlyticsEnabled) {
+      var globalCrashReportingSettingsLocalPreferencesBloc =
+          GlobalCrashReportingSettingsLocalPreferenceBloc(
+        hiveLocalPreferencesService,
+        defaultValue: CrashReportingSettings(
+          reportingEnabled: configService.crashlyticsDefaultHandlingEnabled!,
+        ),
+      );
+
+      await globalProviderService.asyncInitAndRegister<
+          IGlobalCrashReportingSettingsLocalPreferenceBloc>(
+        globalCrashReportingSettingsLocalPreferencesBloc,
+      );
+      await globalProviderService
+          .asyncInitAndRegister<ICrashReportingSettingsLocalPreferenceBloc>(
+        globalCrashReportingSettingsLocalPreferencesBloc,
+      );
+      addDisposable(
+        disposable: globalCrashReportingSettingsLocalPreferencesBloc,
+      );
+
       var crashReportingSettingsBloc = CrashReportingSettingsBloc(
         crashReportingSettingsLocalPreferencesBloc:
             globalCrashReportingSettingsLocalPreferencesBloc,
@@ -381,6 +400,33 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
             );
           },
         ),
+      );
+
+      var askCrashReportingPermissionLocalPreferenceBloc =
+          AskCrashReportingPermissionLocalPreferenceBloc(
+        hiveLocalPreferencesService,
+      );
+
+      addDisposable(disposable: askCrashReportingPermissionLocalPreferenceBloc);
+      await globalProviderService.asyncInitAndRegister<
+          IAskCrashReportingPermissionLocalPreferenceBloc>(
+        askCrashReportingPermissionLocalPreferenceBloc,
+      );
+
+      var crashReportingPermissionCheckerBloc =
+          CrashReportingPermissionCheckerBloc(
+        appAnalyticsBloc: appAnalyticsBloc,
+        configService: configService,
+        askCrashReportingPermissionLocalPreferenceBloc:
+            askCrashReportingPermissionLocalPreferenceBloc,
+        crashReportingSettingsLocalPreferenceBloc:
+            globalCrashReportingSettingsLocalPreferencesBloc,
+      );
+
+      addDisposable(disposable: crashReportingPermissionCheckerBloc);
+      await globalProviderService
+          .asyncInitAndRegister<ICrashReportingPermissionCheckerBloc>(
+        crashReportingPermissionCheckerBloc,
       );
     }
 
@@ -537,78 +583,35 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     );
     addDisposable(disposable: globalFilesCacheSettingsLocalPreferencesBloc);
 
-    var appAnalyticsLocalPreferenceBloc = AppAnalyticsLocalPreferenceBloc(
-      hiveLocalPreferencesService,
-    );
+    if (configService.askReviewEnabled) {
+      var inAppReviewBloc = InAppReviewBloc(
+        appStoreId: configService.appId,
+      );
 
-    await globalProviderService.asyncInitAndRegister<
-        IAppAnalyticsLocalPreferenceBloc>(appAnalyticsLocalPreferenceBloc);
-    addDisposable(disposable: appAnalyticsLocalPreferenceBloc);
+      await globalProviderService
+          .asyncInitAndRegister<IInAppReviewBloc>(inAppReviewBloc);
+      addDisposable(disposable: inAppReviewBloc);
 
-    var inAppReviewBloc = InAppReviewBloc(
-      appStoreId: configService.appId,
-    );
+      var askInAppReviewLocalPreferenceBloc = AskInAppReviewLocalPreferenceBloc(
+        hiveLocalPreferencesService,
+      );
 
-    await globalProviderService
-        .asyncInitAndRegister<IInAppReviewBloc>(inAppReviewBloc);
-    addDisposable(disposable: inAppReviewBloc);
+      addDisposable(disposable: askInAppReviewLocalPreferenceBloc);
+      await globalProviderService
+          .asyncInitAndRegister<IAskInAppReviewLocalPreferenceBloc>(
+        askInAppReviewLocalPreferenceBloc,
+      );
 
-    var askCrashReportingPermissionLocalPreferenceBloc =
-        AskCrashReportingPermissionLocalPreferenceBloc(
-      hiveLocalPreferencesService,
-    );
+      var inAppReviewCheckerBloc = InAppReviewCheckerBloc(
+        appAnalyticsBloc: appAnalyticsBloc,
+        configService: configService,
+        askInAppReviewLocalPreferenceBloc: askInAppReviewLocalPreferenceBloc,
+      );
 
-    addDisposable(disposable: askCrashReportingPermissionLocalPreferenceBloc);
-    await globalProviderService
-        .asyncInitAndRegister<IAskCrashReportingPermissionLocalPreferenceBloc>(
-      askCrashReportingPermissionLocalPreferenceBloc,
-    );
-
-    var askInAppReviewLocalPreferenceBloc = AskInAppReviewLocalPreferenceBloc(
-      hiveLocalPreferencesService,
-    );
-
-    addDisposable(disposable: askInAppReviewLocalPreferenceBloc);
-    await globalProviderService
-        .asyncInitAndRegister<IAskInAppReviewLocalPreferenceBloc>(
-      askInAppReviewLocalPreferenceBloc,
-    );
-
-    var appAnalyticsBloc = AppAnalyticsBloc(
-      appAnalyticsLocalPreferenceBloc: appAnalyticsLocalPreferenceBloc,
-    );
-
-    await globalProviderService
-        .asyncInitAndRegister<IAppAnalyticsBloc>(appAnalyticsBloc);
-    addDisposable(disposable: appAnalyticsBloc);
-
-    await appAnalyticsBloc.onAppOpened();
-
-    var crashReportingPermissionCheckerBloc =
-        CrashReportingPermissionCheckerBloc(
-      appAnalyticsBloc: appAnalyticsBloc,
-      configService: configService,
-      askCrashReportingPermissionLocalPreferenceBloc:
-          askCrashReportingPermissionLocalPreferenceBloc,
-      crashReportingSettingsLocalPreferenceBloc:
-          globalCrashReportingSettingsLocalPreferencesBloc,
-    );
-
-    addDisposable(disposable: crashReportingPermissionCheckerBloc);
-    await globalProviderService
-        .asyncInitAndRegister<ICrashReportingPermissionCheckerBloc>(
-      crashReportingPermissionCheckerBloc,
-    );
-
-    var inAppReviewCheckerBloc = InAppReviewCheckerBloc(
-      appAnalyticsBloc: appAnalyticsBloc,
-      configService: configService,
-      askInAppReviewLocalPreferenceBloc: askInAppReviewLocalPreferenceBloc,
-    );
-
-    addDisposable(disposable: inAppReviewCheckerBloc);
-    await globalProviderService.asyncInitAndRegister<IInAppReviewCheckerBloc>(
-      inAppReviewCheckerBloc,
-    );
+      addDisposable(disposable: inAppReviewCheckerBloc);
+      await globalProviderService.asyncInitAndRegister<IInAppReviewCheckerBloc>(
+        inAppReviewCheckerBloc,
+      );
+    }
   }
 }

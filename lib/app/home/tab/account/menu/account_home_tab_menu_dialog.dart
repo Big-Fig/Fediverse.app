@@ -34,6 +34,7 @@ class AccountHomeTabMenuDialogBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var configService = IConfigService.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -44,7 +45,8 @@ class AccountHomeTabMenuDialogBodyWidget extends StatelessWidget {
         const _BookmarksHomeTabMenuDialogBodyBookmarksItemWidget(),
         const _ListsHomeTabMenuDialogBodyListsItemWidget(),
         const _AnnouncementsHomeTabMenuDialogBodyListsItemWidget(),
-        const _RateAppHomeTabMenuDialogBodyListsItemWidget(),
+        if (configService.askReviewEnabled)
+          const _RateAppHomeTabMenuDialogBodyListsItemWidget(),
       ],
     );
   }
