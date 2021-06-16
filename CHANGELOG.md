@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## [2.4.1] [internal] 2021 June 16
 
 First open-source release
 
@@ -12,15 +12,20 @@ First open-source release
 * README
 * CHANGELOG
 * LICENSE
-* Crashlytics handling settings option
+* On/Off Crashlytics handling settings option
 * config via .env files
+* On/Off firebase, FCM push, Crashlytics, Ask Review features 
 
 ### Changed
 * Ask for something dialog
+* Rework sharing UI & logic. Add more options for share. Divide share in several messages if attachments limit reached
 
 ### Fixes
 * Add hacks in REST API parsing related to internal flutter errors
 * Additional checks to avoid non-fatals in UI when data is not ready yet but UI want display it
+* Fix preview for messages with html tags
+* Fix clear database cache option
+* Fix count limit option for files cache
 
 ## [2.3.0] [internal] 2021 June 6
 ### Added

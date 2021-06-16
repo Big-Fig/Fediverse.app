@@ -8,7 +8,7 @@ class SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
         FilesCacheSizeLimitCountType>
     implements ISizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc {
   SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc({
-    bool isNullValuePossible = true,
+    bool isNullValuePossible = false,
     required FilesCacheSizeLimitCountType originValue,
     bool isEnabled = true,
     List<FormValueFieldValidation<FilesCacheSizeLimitCountType>> validators =

@@ -266,25 +266,7 @@ class _ShareEntityCarouselItemLocalFileWidget extends StatelessWidget {
 
     var mimeType = mime(file.path);
 
-    var mimeTypePrefix = mimeType?.split('/').firstOrNull;
-
-    MastodonApiMediaAttachmentType type;
-
-    switch (mimeTypePrefix) {
-      case 'audio':
-        type = MastodonApiMediaAttachmentType.audio;
-        break;
-      case 'video':
-        type = MastodonApiMediaAttachmentType.video;
-        break;
-      case 'image':
-        type = MastodonApiMediaAttachmentType.image;
-        break;
-
-      default:
-        type = MastodonApiMediaAttachmentType.unknown;
-        break;
-    }
+    var type = _mapMimeToType(mimeType);
 
     Widget child;
 
@@ -335,5 +317,29 @@ class _ShareEntityCarouselItemLocalFileWidget extends StatelessWidget {
     }
 
     return child;
+  }
+
+  MastodonApiMediaAttachmentType _mapMimeToType(String? mimeType) {
+    var mimeTypePrefix = mimeType?.split('/').firstOrNull;
+
+    MastodonApiMediaAttachmentType type;
+
+    switch (mimeTypePrefix) {
+      case 'audio':
+        type = MastodonApiMediaAttachmentType.audio;
+        break;
+      case 'video':
+        type = MastodonApiMediaAttachmentType.video;
+        break;
+      case 'image':
+        type = MastodonApiMediaAttachmentType.image;
+        break;
+
+      default:
+        type = MastodonApiMediaAttachmentType.unknown;
+        break;
+    }
+
+    return type;
   }
 }

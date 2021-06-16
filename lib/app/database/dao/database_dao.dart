@@ -321,7 +321,7 @@ TableInfoDsl extends TableInfo<TableDsl, DbItem>>
     required String fieldName,
     required String stringValue,
   }) =>
-      CustomExpression<bool>('$tableName.$fieldName < $stringValue');
+      CustomExpression<bool>("$tableName.$fieldName < '$stringValue'");
 
   CustomExpression<bool> createOlderThanIntWhereExpression({
     required String fieldName,
@@ -333,7 +333,7 @@ TableInfoDsl extends TableInfo<TableDsl, DbItem>>
     required String fieldName,
     required DateTime dateTimeValue,
   }) =>
-      CustomExpression<bool>('$tableName.$fieldName < $dateTimeValue');
+      CustomExpression<bool>("$tableName.$fieldName < '$dateTimeValue'");
 
   void addFindByDbIdWhereToSimpleSelectStatement({
     required SimpleSelectStatement simpleSelectStatement,

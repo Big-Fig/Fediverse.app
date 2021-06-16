@@ -297,6 +297,10 @@ String _extractSingleLineContent({
     formattedText = S.of(context).app_chat_preview_you(formattedText);
   }
 
+  // todo: remove hack should be replaced only once
+  formattedText = formattedText.replaceAll('\n', ' ');
+  formattedText = formattedText.replaceAll('<br/>', ' ');
+
   return formattedText;
 }
 

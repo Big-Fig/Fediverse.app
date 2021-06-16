@@ -2,6 +2,11 @@
 [![Translate - with Weblate](https://img.shields.io/badge/translate%20with-Weblate-green.svg?style=flat)](https://translate.pleroma.social/engage/fedi-app/) 
 
 A client for Pleroma and Mastodon instances written using Flutter
+<p float="left">
+	<img src="./images/screenshot_1.webp" alt="drawing" width="200"/>
+	<img src="./images/screenshot_2.webp" alt="drawing" width="200"/>
+</p>
+
 
 ### Android
 
