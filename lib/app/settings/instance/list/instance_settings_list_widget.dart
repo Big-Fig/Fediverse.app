@@ -20,6 +20,7 @@ class InstanceSettingsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var configService = IConfigService.of(context);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
