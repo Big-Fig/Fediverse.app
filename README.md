@@ -43,7 +43,7 @@ A client for Pleroma and Mastodon instances written using Flutter
 - Custom emojis. With emoji reactions support on Pleroma
 - Customizable home timelines
 - Multi-account support
-- Push notifications via Push Relay Server and FCM(see details below)
+- [Push notifications via Push Relay Server and FCM](#push-notifications)
 - Income and external share support
 - Scheduled and Draft Statuses
 - Filters
@@ -136,6 +136,14 @@ Push Relay will know nothing(everything will be encrypted) once decryption logic
 
 ## Localization
 
+App uses `flutter_localization` API bundle with Flutter SDK. 
+
+It uses `.arb` files located in `lib/l10n` and generates `.dart` classes in `/lib/generated/` folder.
+
+After you make changes in `.arb` files you make additional actions to regenerate Dart classes
+* automatically via (`flutter intl`)[https://plugins.jetbrains.com/plugin/13666-flutter-intl] plugin
+* manually via (`flutter intl`)[https://pub.dev/packages/intl_utils] package
+
 ### Completed
 
 * English, Russian
@@ -157,6 +165,7 @@ Push Relay will know nothing(everything will be encrypted) once decryption logic
 
 * Null-safety support
 * Feature-based folder structure
+* Prefer composition over inheritance
 * Dependency Injection implemented via `provider`
 * Prefer `StatelessWidget` and async UI update via `StreamBuidler` and `BehaviourSubject` & `StreamController` in controller classes
 * Prefer divide `Widgets` in small sub `Widgets` with `const` constructor(for better performance) if possible
@@ -177,7 +186,9 @@ Push Relay will know nothing(everything will be encrypted) once decryption logic
 
 ### Flutter version & FVM 
 
-To build Fedi you need Flutter version specified in [`.fvm/fvm_config.json`](.fvm/fvm_config.json) field `flutterSdkVersion`. You can achieve this by simple using `flutter version $version` or using FVM
+To build Fedi you need Flutter version specified in [`.fvm/fvm_config.json`](.fvm/fvm_config.json) field `flutterSdkVersion`. 
+
+You can achieve this by specifing your system Flutter version by using `flutter version $version` or using FVM
 
 #### Flutter Version Management(FVM)
 
@@ -186,6 +197,8 @@ Fedi uses [Flutter Version Management](https://github.com/leoafarias/fvm) to cle
 FVM also helps manage several SDKs version on local machine
 
 Config already done, so you just run `fvm install` in repo folder and configure IDE to use `.fvm/flutter_sdk` folder instead of system Flutter SDK. 
+
+To use flutter version specified in `.fvm/fvm_config.json` you should prepend `fvm` like `fvm flutter install`
 
 More info you can found in FVM documentation 
 
@@ -245,11 +258,19 @@ cp env_example.env env_dev.env
 
 Example config disable some features like **Push notifications**. 
 
-To enable **all features** you should change app id, create Firebase project and edit config file(see below).
+To enable **all features** you should change app id, create [Firebase](#Firebase) project and edit config file.
 
 ##### Run
 
 ###### Run from command line
+
+* Download all required libraries
+
+```
+fvm flutter pub get
+```
+
+* Run by Flavor
 
 ```
 fvm flutter run --flavor dev
@@ -263,7 +284,27 @@ fvm flutter run --flavor prod
 
 ###### Run from IDE
 
-Specify flavor(`prod` or `dev`) in `Run Configurations`
+* Specify **Flutter SDK path**
+ * `File->Preferences->Languages & Frameworks->Flutter` to `<Project_Root>/.fvm/flutter_sdk`
+
+![Config Flutter SDK](./images/config_flutter_sdk.png)
+
+* Dart SDK should be configured automatically. But you can check **Dart SDK path** at (`File->Preferences->Languages & Frameworks->Dart`). Should be `<Project_Root>/.fvm/flutter_sdk/bin/cache/dart-sdk`
+
+![Config Dart SDK](./images/config_dart_sdk.png)
+
+* Specify flavor(`prod` or `dev`) in `Run Configurations`
+
+```
+Run->Edit configurations
+```
+
+![Run configurations](./images/run_configurations.png)
+
+* Click `Pub get` in IDE or run `fvm pub get` in terminal
+* Connect device or run emulator
+* Run
+
 
 #### Flavors
 
@@ -323,7 +364,7 @@ Actually you should run Find and Replace `com.fediverse.app` with your package n
 
 However, it may cause strange build errors. So you may need full clean
 
-If you still have errors please explore APP ID things in the next docs: 
+If you still have errors please explore App ID things in the next docs: 
 
 * [Build flavors in Flutter (Android and iOS) with different Firebase projects per flavor](https://medium.com/@animeshjain/build-flavors-in-flutter-android-and-ios-with-different-firebase-projects-per-flavor-27c5c5dac10b)
 * [`flutter_config`](https://pub.dev/packages/flutter_config)  
@@ -387,16 +428,16 @@ For more details see
 #### Push notifications 
 
 To enable Push notifications you should
-* change App ID(see above)
+* change [App ID](#App-ID)
 * create Firebase Project for your App ID,
-* generate Firebase config and integrate in app(see above)
+* generate [Firebase config and integrate in app](#Firebase)
 * generate FCM server key
 * setup own Push Relay Server(link to repo **coming soon**) instance and put your FCM server key
 
 App ID and FCM server key(so and Push Relay Server instance) are connected. 
 It is not possible to use one Push Relay Server instance with several App IDs and vice versa
 
-On/Off via .env. Firebase core integration required (see above)
+On/Off via .env. [Firebase Core integration](#Firebase) required
 
 ```
 PUSH_FCM_ENABLED=false
@@ -424,7 +465,7 @@ PUSH_SUBSCRIPTION_KEYS_AUTH=T5bhIIyre5TDC
 
 #### Firebase Crashlytics
 
-On/Off via .env. Firebase core integration required (see above)
+On/Off via .env. [Firebase Core integration](#Firebase) required
 
 ```
 CRASHLYTICS_ENABLED=false
@@ -432,7 +473,7 @@ CRASHLYTICS_ENABLED=false
 
 Used to catch errors on client side with error description and stackTrace
 
-You should enable Firebase support(see above) and change config variable in .env file to enable crash reporting
+You should enable [Firebase support](#Firebase) and change config variable in .env file to enable crash reporting
 
 #### Receiving share intents & ShareExtension
 

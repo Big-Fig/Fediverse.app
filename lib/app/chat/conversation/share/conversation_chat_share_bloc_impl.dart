@@ -5,8 +5,6 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_model.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc.dart';
-import 'package:fedi/app/share/message_input/share_message_input_bloc.dart';
-import 'package:fedi/app/share/message_input/share_message_input_bloc_impl.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
@@ -22,29 +20,16 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     implements IConversationChatShareBloc {
   final IConversationChatRepository conversationRepository;
   final IStatusRepository statusRepository;
-  final IPleromaApiConversationService pleromaConversationService;
-  final IPleromaApiAuthStatusService pleromaAuthStatusService;
+  final IPleromaApiConversationService pleromaApiConversationService;
+  final IPleromaApiAuthStatusService pleromaApiAuthStatusService;
   final IMyAccountBloc myAccountBloc;
   final IAccountRepository accountRepository;
-
-  String? get message {
-    String? message = shareMessageInputBloc.messageField.currentValue;
-
-    if (!message.isNotEmpty) {
-      message = null;
-    }
-
-    return message;
-  }
-
-  @override
-  IShareMessageInputBloc shareMessageInputBloc = ShareMessageInputBloc();
 
   ConversationChatShareBloc({
     required this.conversationRepository,
     required this.statusRepository,
-    required this.pleromaConversationService,
-    required this.pleromaAuthStatusService,
+    required this.pleromaApiConversationService,
+    required this.pleromaApiAuthStatusService,
     required IPleromaApiAccountService pleromaAccountService,
     required this.myAccountBloc,
     required this.accountRepository,
@@ -52,31 +37,37 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
           pleromaAccountService: pleromaAccountService,
-        ) {
-    addDisposable(disposable: shareMessageInputBloc);
-  }
+        );
 
   @override
   Future<bool> actuallyShareToAccount(IAccount account) async {
     final pleromaVisibility = PleromaApiVisibility.direct;
 
     var targetAccounts = [account];
-    var sendData = await createSendData(
+    var sendDataList = await createSendData(
       to: '${targetAccounts.map((account) => '@${account.acct}').join(', ')}',
       visibility: pleromaVisibility,
     );
-    var accountsPleromaStatus = await pleromaAuthStatusService.postStatus(
-      data: sendData,
-    );
 
-    await statusRepository.upsertInRemoteType(
-      accountsPleromaStatus,
+    var pleromaStatusList = <IPleromaApiStatus>[];
+
+    for (var sendData in sendDataList) {
+      // todo: send to conversation id
+      var pleromaStatus = await pleromaApiAuthStatusService.postStatus(
+        data: sendData,
+      );
+      pleromaStatusList.add(pleromaStatus);
+    }
+
+    await statusRepository.upsertAllInRemoteType(
+      pleromaStatusList,
+      batchTransaction: null,
     );
 
     return true;
   }
 
-  Future<IPleromaApiPostStatus> createSendData({
+  Future<List<IPleromaApiPostStatus>> createSendData({
     required String to,
     required PleromaApiVisibility visibility,
   });
@@ -136,7 +127,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       return [];
     }
     var pleromaConversations =
-        await pleromaConversationService.getConversations(
+        await pleromaApiConversationService.getConversations(
       pagination: PleromaApiPaginationRequest(
         limit: limit,
       ),

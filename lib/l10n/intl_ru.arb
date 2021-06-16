@@ -784,5 +784,13 @@
   "app_crashReporting_settings_title": "Отчеты об ошибках",
   "app_crashReporting_settings_field_reportingEnabled_name": "Отправлять отчеты",
   "app_crashReporting_ask_dialog_title": "Отчеты об ошибках",
-  "app_crashReporting_ask_dialog_content": "Вы согласны на отправку отчетов об ошибках?\n Это поможет нам сделать приложение стабильнее\n Вы всегда можете изменить решение в настройках"
+  "app_crashReporting_ask_dialog_content": "Вы согласны на отправку отчетов об ошибках?\n Это поможет нам сделать приложение стабильнее\n Вы всегда можете изменить решение в настройках",
+  "app_share_entity_settings_field_appendFromAccount_label": "Добавить аккаунт автора",
+  "app_share_entity_settings_field_withCreatedAt_label": "С датой публикации",
+  "app_share_entity_settings_field_withMedia_label": "С медиа",
+  "app_share_entity_settings_field_withText_label": "С тектстом",
+  "app_share_entity_settings_field_withLink_label": "С ссылками на оргинал",
+  "app_share_entity_settings_field_wholeAsLink_label": "Только ссылка",
+  "app_share_entity_settings_field_mediaAsLink_label": "Медиа как ссылки",
+  "app_share_entity_settings_field_withMessage_hint": "С сообщением"
 }

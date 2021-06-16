@@ -53,7 +53,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     required this.scheduledStatusRepository,
     required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
     // ignore: no-magic-number
-    int maximumMediaAttachmentCount = 8,
+    int maximumMediaAttachmentCount = IPleromaApiAuthStatusService.maximumMediaAttachmentCount,
     required int? maximumMessageLength,
     required IPostStatusData? initialData,
     List<IAccount>? initialAccountsToMention = const [],

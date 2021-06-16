@@ -214,7 +214,7 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
         }
         var content = lastMessage.content;
         if (content?.isNotEmpty == true) {
-          content = _extractContent(
+          content = _extractSingleLineContent(
             context: context,
             chatMessage: lastMessage,
             content: content,
@@ -281,11 +281,14 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
   }
 }
 
-String _extractContent({
+String _extractSingleLineContent({
   required BuildContext context,
   required IChatMessage chatMessage,
   required String? content,
 }) {
+  content = content?.replaceAll('\n', ' ');
+  content = content?.replaceAll('<br/>', ' ');
+
   var formattedText = content?.extractRawStringFromHtmlString() ?? '';
 
   var myAccountBloc = IMyAccountBloc.of(context, listen: true);

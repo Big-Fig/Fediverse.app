@@ -9,6 +9,7 @@ import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_bloc_impl.dart';
 import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/details/media_attachments_details_page.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc_impl.dart';
@@ -436,6 +437,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
                 context,
                 mediaAttachments: mediaAttachments,
                 initialMediaAttachment: null,
+                instanceLocation: InstanceLocation.local,
               );
             },
             child: ProxyProvider<List<IPleromaApiMediaAttachment>?,
@@ -451,6 +453,8 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
                   return MediaAttachmentListBloc(
                     initialMediaAttachment: null,
                     mediaAttachments: mediaAttachments,
+                    instanceLocation: InstanceLocation.local,
+                    remoteInstanceUriOrNull: null,
                   );
                 }
               },

@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 
 const _cardWithContentImageSize = 114.0;
 const _cardWithoutContentImageSize = _cardWithContentImageSize * 3;
-const _cardBorderRadius = 8.0;
+
 
 class CardWidget extends StatelessWidget {
   @override
@@ -40,7 +40,7 @@ class CardWidget extends StatelessWidget {
               ? _cardWithContentImageSize
               : _cardWithoutContentImageSize,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(_cardBorderRadius),
+            borderRadius: BorderRadius.circular(FediSizes.smallPadding),
             child: InkWell(
               onTap: () async {
                 var url = card.url!;
@@ -79,9 +79,9 @@ class _CardContentWidget extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-            topRight: Radius.circular(_cardBorderRadius),
+            topRight: Radius.circular(FediSizes.smallPadding),
             // ignore: no-equal-arguments
-            bottomRight: Radius.circular(_cardBorderRadius),
+            bottomRight: Radius.circular(FediSizes.smallPadding),
           ),
           border:
               Border.all(color: IFediUiColorTheme.of(context).ultraLightGrey),

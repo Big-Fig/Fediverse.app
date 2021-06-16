@@ -5,8 +5,6 @@ import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_re
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc.dart';
-import 'package:fedi/app/share/message_input/share_message_input_bloc.dart';
-import 'package:fedi/app/share/message_input/share_message_input_bloc_impl.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc_impl.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
@@ -21,19 +19,6 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
   final IPleromaChatMessageRepository chatMessageRepository;
   final IPleromaApiChatService pleromaChatService;
 
-  String? get message {
-    String? message = shareMessageInputBloc.messageField.currentValue;
-
-    if (message.isNotEmpty) {
-      message = null;
-    }
-
-    return message;
-  }
-
-  @override
-  IShareMessageInputBloc shareMessageInputBloc = ShareMessageInputBloc();
-
   PleromaChatShareBloc({
     required this.chatRepository,
     required this.chatMessageRepository,
@@ -45,13 +30,11 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
           pleromaAccountService: pleromaAccountService,
-        ) {
-    addDisposable(disposable: shareMessageInputBloc);
-  }
+        );
 
   @override
   Future<bool> actuallyShareToAccount(IAccount account) async {
-    var messageSendData = await createPleromaChatMessageSendData();
+    var messageSendDataList = await createPleromaChatMessageSendDataList();
 
     var targetAccounts = [account];
     List<IPleromaApiChat> pleromaChatsByAccounts;
@@ -77,16 +60,34 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
         )
         .toList();
 
-    var pleromaChatMessagesFuture = allChatsIds.map(
+
+    // todo: think about throttling & sorting
+    // perhaps send in sequence instead of parallel
+    Iterable<Future<List<IPleromaApiChatMessage>>>
+        pleromaChatMessagesListFuture;
+    pleromaChatMessagesListFuture = allChatsIds.map(
       (chatId) {
-        return pleromaChatService.sendMessage(
-          chatId: chatId,
-          data: messageSendData,
+        var futures = messageSendDataList.map(
+          (messageSendData) => pleromaChatService.sendMessage(
+            chatId: chatId,
+            data: messageSendData,
+          ),
         );
+
+        return Future.wait(futures);
       },
     );
 
-    var pleromaChatMessages = await Future.wait(pleromaChatMessagesFuture);
+    List<List<IPleromaApiChatMessage>> pleromaChatMessagesList;
+    pleromaChatMessagesList = await Future.wait(pleromaChatMessagesListFuture);
+
+    var pleromaChatMessages = <IPleromaApiChatMessage>[];
+
+    pleromaChatMessagesList.forEach(
+      (List<IPleromaApiChatMessage> items) {
+        pleromaChatMessages.addAll(items);
+      },
+    );
 
     await chatMessageRepository.upsertAllInRemoteType(
       pleromaChatMessages,
@@ -96,7 +97,8 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     return true;
   }
 
-  Future<PleromaApiChatMessageSendData> createPleromaChatMessageSendData();
+  Future<List<PleromaApiChatMessageSendData>>
+      createPleromaChatMessageSendDataList();
 
   @override
   Future<List<IAccount>> customLocalAccountListLoader({

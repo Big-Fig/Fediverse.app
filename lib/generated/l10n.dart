@@ -7758,6 +7758,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Append from account`
+  String get app_share_entity_settings_field_appendFromAccount_label {
+    return Intl.message(
+      'Append from account',
+      name: 'app_share_entity_settings_field_appendFromAccount_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `With created at`
+  String get app_share_entity_settings_field_withCreatedAt_label {
+    return Intl.message(
+      'With created at',
+      name: 'app_share_entity_settings_field_withCreatedAt_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `With media`
+  String get app_share_entity_settings_field_withMedia_label {
+    return Intl.message(
+      'With media',
+      name: 'app_share_entity_settings_field_withMedia_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `With text`
+  String get app_share_entity_settings_field_withText_label {
+    return Intl.message(
+      'With text',
+      name: 'app_share_entity_settings_field_withText_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `With link to original`
+  String get app_share_entity_settings_field_withLink_label {
+    return Intl.message(
+      'With link to original',
+      name: 'app_share_entity_settings_field_withLink_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Whole as link`
+  String get app_share_entity_settings_field_wholeAsLink_label {
+    return Intl.message(
+      'Whole as link',
+      name: 'app_share_entity_settings_field_wholeAsLink_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Media as link`
+  String get app_share_entity_settings_field_mediaAsLink_label {
+    return Intl.message(
+      'Media as link',
+      name: 'app_share_entity_settings_field_mediaAsLink_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `With message`
+  String get app_share_entity_settings_field_withMessage_hint {
+    return Intl.message(
+      'With message',
+      name: 'app_share_entity_settings_field_withMessage_hint',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
