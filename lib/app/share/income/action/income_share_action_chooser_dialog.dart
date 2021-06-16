@@ -20,6 +20,7 @@ import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_s
 import 'package:fedi/share/income/income_share_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
+import 'package:fedi/app/html/html_text_helper.dart';
 
 final _logger = Logger('income_share_action_chooser_dialog.dart');
 
@@ -129,7 +130,7 @@ ShareEntityItem _mapIncomeShareEventToShareEntity(
     ShareEntityItem(
       createdAt: null,
       fromAccount: null,
-      text: incomeShareEvent.text,
+      text: incomeShareEvent.text?.extractRawStringFromHtmlString(),
       linkToOriginal: null,
       mediaAttachments: null,
       mediaLocalFiles: incomeShareEvent.medias?.map(
