@@ -547,7 +547,7 @@
   "app_pagination_settings_title": "Постраничная загрузка",
   "app_pagination_settings_pageSize_label": "Размер страниц",
   "app_cache_database_settings_limitAge_label": "Лимит давности",
-  "app_cache_database_settings_limitEntriesCountByType_label": "Лимит количество записей(все типы)",
+  "app_cache_database_settings_limitEntriesCountByType_label": "Лимит записей(все типы)",
   "app_cache_files_settings_sizeLimit_label": "Лимит по количеству объектов",
   "app_cache_database_settings_title": "Кэш базы данных",
   "app_cache_files_settings_title": "Кэш файлов",

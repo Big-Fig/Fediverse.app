@@ -3,6 +3,7 @@ import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
+import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
@@ -120,7 +121,7 @@ ShareEntity _mapCurrentSelectionToShareEntity(
             (chatMessage) => ShareEntityItem(
               createdAt: chatMessage.createdAt,
               fromAccount: chatMessage.account,
-              text: chatMessage.content,
+              text: chatMessage.content?.extractRawStringFromHtmlString(),
               mediaAttachments: chatMessage.mediaAttachments,
               mediaLocalFiles: null,
               isNeedReUploadMediaAttachments: true,

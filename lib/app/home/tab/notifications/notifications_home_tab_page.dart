@@ -213,6 +213,7 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
     var notificationsHomeTabBloc = INotificationsHomeTabBloc.of(context);
 
     var configService = IConfigService.of(context);
+
     return FediIconInCircleBlurredButton(
       FediIcons.menu_vertical,
       onPressed: () {
