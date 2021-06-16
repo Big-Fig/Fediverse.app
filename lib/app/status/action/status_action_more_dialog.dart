@@ -341,7 +341,9 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 }
 
 ShareEntity _mapStatusToShareEntity(IStatus status) {
-  var spoiler = status.spoilerText;
+  var spoiler = status.spoilerText?.isNotEmpty == true
+      ? status.spoilerText?.extractRawStringFromHtmlString()
+      : null;
   var content = status.content?.isNotEmpty == true
       ? status.content?.extractRawStringFromHtmlString()
       : null;

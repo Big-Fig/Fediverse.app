@@ -300,6 +300,7 @@ String _extractSingleLineContent({
   // todo: remove hack should be replaced only once
   formattedText = formattedText.replaceAll('\n', ' ');
   formattedText = formattedText.replaceAll('<br/>', ' ');
+
   return formattedText;
 }
 
