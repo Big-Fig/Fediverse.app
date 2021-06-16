@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
@@ -5,28 +6,33 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc_proxy_provider.dart';
-import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
-import 'package:fedi/app/share/status/share_status_bloc.dart';
+import 'package:fedi/app/share/entity/settings/share_entity_settings_bloc.dart';
+import 'package:fedi/app/share/entity/share_entity_bloc.dart';
+import 'package:fedi/app/share/entity/share_entity_model.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
-import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class PleromaChatShareStatusBloc extends PleromaChatShareBloc
-    implements IPleromaChatShareBloc, IShareStatusBloc {
+class PleromaChatShareEntityBloc extends PleromaChatShareBloc
+    implements IPleromaChatShareBloc, IShareEntityBloc {
+  final IShareEntitySettingsBloc shareEntitySettingsBloc;
   @override
-  final IStatus status;
+  final ShareEntity shareEntity;
   final IMediaAttachmentReuploadService mediaAttachmentReuploadService;
+  final IPleromaApiMediaAttachmentService pleromaApiMediaAttachmentService;
   final bool isNeedReUploadMediaAttachments;
 
-  PleromaChatShareStatusBloc({
-    required this.status,
+  PleromaChatShareEntityBloc({
+    required this.shareEntity,
+    required this.shareEntitySettingsBloc,
     required this.mediaAttachmentReuploadService,
+    required this.pleromaApiMediaAttachmentService,
     this.isNeedReUploadMediaAttachments = true,
     required IPleromaChatRepository chatRepository,
     required IPleromaChatMessageRepository chatMessageRepository,
@@ -44,75 +50,60 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
         );
 
   @override
-  Future<PleromaApiChatMessageSendData>
-      createPleromaChatMessageSendData() async {
-    var accountAcctAndDisplayName =
-        status.account.acct + ' (${status.account.displayName})';
+  Future<List<PleromaApiChatMessageSendData>>
+      createPleromaChatMessageSendDataList() async {
+    var text = convertAllItemsToRawText(
+      settings: shareEntitySettingsBloc.shareEntitySettings,
+    );
+    var mediaAttachments = await convertAllItemsToMediaAttachments(
+      settings: shareEntitySettingsBloc.shareEntitySettings,
+      pleromaApiMediaAttachmentService: pleromaApiMediaAttachmentService,
+      mediaAttachmentReuploadService: mediaAttachmentReuploadService,
+      reUploadRequired: true,
+    );
 
-    var statusSpoiler = status.spoilerText;
-    var statusContent = status.content?.isNotEmpty == true
-        ? status.content?.extractRawStringFromHtmlString()
-        : null;
-    var statusUrl = status.url;
-    String? statusMediaAttachmentsString;
-    String? mediaId;
-    if (status.mediaAttachments?.length == 1) {
-      if (isNeedReUploadMediaAttachments) {
-        var reuploadedMediaAttachment =
-            await mediaAttachmentReuploadService.reuploadMediaAttachment(
-          originalMediaAttachment: status.mediaAttachments!.first,
-        );
-        mediaId = reuploadedMediaAttachment.id;
-      } else {
-        mediaId = status.mediaAttachments!.first.id;
-      }
-    } else {
-      statusMediaAttachmentsString = status.mediaAttachments
-          ?.map((mediaAttachment) => mediaAttachment.url)
-          .join(', ');
-    }
-
-    if (statusMediaAttachmentsString != null) {
-      statusMediaAttachmentsString = '[$statusMediaAttachmentsString]';
-    }
-    var additionalMessage = message;
-
-    var contentParts = <String?>[
-      accountAcctAndDisplayName,
-      statusSpoiler,
-      statusContent,
-      statusMediaAttachmentsString,
-      additionalMessage,
-      statusUrl,
-    ].where((element) => element?.isNotEmpty == true).toList();
-
-    var content = contentParts.join('\n\n');
     var messageSendData = PleromaApiChatMessageSendData(
-      content: content.trim(),
-      mediaId: mediaId,
+      content: text?.trim(),
+      mediaId: mediaAttachments?.firstOrNull?.id,
       idempotencyKey: null,
     );
 
-    return messageSendData;
+    var result = <PleromaApiChatMessageSendData>[];
+
+    result.add(messageSendData);
+
+    if (mediaAttachments != null && mediaAttachments.length > 1) {
+      mediaAttachments.skip(1).forEach(
+        (mediaAttachment) {
+          result.add(
+            PleromaApiChatMessageSendData(
+              content: null,
+              mediaId: mediaAttachment.id,
+              idempotencyKey: null,
+            ),
+          );
+        },
+      );
+    }
+
+    return result;
   }
 
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-    required IStatus status,
-    bool isNeedReUploadMediaAttachments = true,
+    required ShareEntity shareEntity,
   }) {
-    return DisposableProvider<PleromaChatShareStatusBloc>(
+    return DisposableProvider<PleromaChatShareEntityBloc>(
       create: (context) => createFromContext(
         context,
-        status: status,
-        isNeedReUploadMediaAttachments: isNeedReUploadMediaAttachments,
+        shareEntity: shareEntity,
       ),
-      child: ProxyProvider<PleromaChatShareStatusBloc, IPleromaChatShareBloc>(
+      child: ProxyProvider<PleromaChatShareEntityBloc, IPleromaChatShareBloc>(
         update: (context, value, previous) => value,
-        child: ProxyProvider<PleromaChatShareStatusBloc, IShareStatusBloc>(
+        child: ProxyProvider<PleromaChatShareEntityBloc, IShareEntityBloc>(
           update: (context, value, previous) => value,
-          child: ProxyProvider<PleromaChatShareStatusBloc, IShareToAccountBloc>(
+          child: ProxyProvider<PleromaChatShareEntityBloc, IShareToAccountBloc>(
             update: (context, value, previous) => value,
             child: PleromaChatShareBlocProxyProvider(child: child),
           ),
@@ -121,14 +112,12 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
     );
   }
 
-  static PleromaChatShareStatusBloc createFromContext(
+  static PleromaChatShareEntityBloc createFromContext(
     BuildContext context, {
-    required IStatus status,
-    bool isNeedReUploadMediaAttachments = true,
+    required ShareEntity shareEntity,
   }) =>
-      PleromaChatShareStatusBloc(
-        status: status,
-        isNeedReUploadMediaAttachments: isNeedReUploadMediaAttachments,
+      PleromaChatShareEntityBloc(
+        shareEntity: shareEntity,
         mediaAttachmentReuploadService: IMediaAttachmentReuploadService.of(
           context,
           listen: false,
@@ -154,6 +143,14 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
           listen: false,
         ),
         pleromaAccountService: IPleromaApiAccountService.of(
+          context,
+          listen: false,
+        ),
+        shareEntitySettingsBloc: IShareEntitySettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        pleromaApiMediaAttachmentService: IPleromaApiMediaAttachmentService.of(
           context,
           listen: false,
         ),

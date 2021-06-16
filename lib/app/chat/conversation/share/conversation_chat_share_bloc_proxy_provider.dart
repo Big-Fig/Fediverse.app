@@ -1,5 +1,4 @@
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc.dart';
-import 'package:fedi/app/share/message_input/share_message_input_bloc.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -13,10 +12,7 @@ class ConversationChatShareBlocProxyProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProxyProvider<IConversationChatShareBloc, IShareToAccountBloc>(
       update: (context, value, previous) => value,
-      child: ProxyProvider<IConversationChatShareBloc, IShareMessageInputBloc>(
-        update: (context, value, previous) => value.shareMessageInputBloc,
-        child: child,
-      ),
+      child: child,
     );
   }
 }

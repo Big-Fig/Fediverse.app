@@ -1,6 +1,7 @@
 import 'package:fedi/app/cache/database/settings/edit/global_or_instance/edit_global_or_instance_database_cache_settings_dialog.dart';
 import 'package:fedi/app/cache/files/settings/edit/global_or_instance/edit_global_or_instance_files_cache_settings_dialog.dart';
 import 'package:fedi/app/chat/settings/edit/global_or_instance/edit_global_or_instance_chat_settings_dialog.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/media/settings/edit/global_or_instance/edit_global_or_instance_media_settings_dialog.dart';
 import 'package:fedi/app/pagination/settings/edit/global_or_instance/edit_global_or_instance_pagination_settings_dialog.dart';
 import 'package:fedi/app/push/settings/edit/instance/edit_instance_push_settings_dialog.dart';
@@ -17,21 +18,25 @@ class InstanceSettingsListWidget extends StatelessWidget {
   const InstanceSettingsListWidget();
 
   @override
-  Widget build(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const _InstanceSettingsCacheAndPaginationRowWidget(),
+  Widget build(BuildContext context) {
+    var configService = IConfigService.of(context);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const _InstanceSettingsCacheAndPaginationRowWidget(),
+        if (configService.pushFcmEnabled)
           const _InstanceSettingsPushRowWidget(),
-          const _InstanceSettingsMediaRowWidget(),
-          const _InstanceSettingsToastRowWidget(),
-          const _InstanceSettingsStatusSensitiveRowWidget(),
-          const _InstanceStatusPostSensitiveRowWidget(),
-          const _InstanceSettingsChatRowWidget(),
-          const _InstanceSettingsWebSocketsRowWidget(),
-          const _InstanceSettingsDatabaseCacheRowWidget(),
-          const _InstanceSettingsFilesCacheRowWidget(),
-        ],
-      );
+        const _InstanceSettingsMediaRowWidget(),
+        const _InstanceSettingsToastRowWidget(),
+        const _InstanceSettingsStatusSensitiveRowWidget(),
+        const _InstanceStatusPostSensitiveRowWidget(),
+        const _InstanceSettingsChatRowWidget(),
+        const _InstanceSettingsWebSocketsRowWidget(),
+        const _InstanceSettingsDatabaseCacheRowWidget(),
+        const _InstanceSettingsFilesCacheRowWidget(),
+      ],
+    );
+  }
 }
 
 class _InstanceSettingsMediaRowWidget extends StatelessWidget {

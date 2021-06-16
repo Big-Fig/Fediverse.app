@@ -5,12 +5,13 @@ import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/chat/conversation/share/conversation_chat_share_status_page.dart';
-import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart';
+import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
+import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
-import 'package:fedi/app/share/external/external_share_status_page.dart';
+import 'package:fedi/app/share/entity/share_entity_model.dart';
+import 'package:fedi/app/share/external/external_share_entity_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/status/action/delete/status_action_delete_dialog.dart';
 import 'package:fedi/app/status/action/mute/status_action_mute_dialog.dart';
@@ -266,26 +267,25 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           context,
           externalShareAction: (context) {
             Navigator.of(context).pop();
-            goToExternalShareStatusPage(
+            goToExternalShareEntityPage(
               context: context,
-              status: status,
+              shareEntity: _mapStatusToShareEntity(status),
               instanceLocation: instanceLocation,
-              isShareAsLinkPossible: true,
             );
           },
           conversationsShareAction: (context) {
             Navigator.of(context).pop();
-            goToConversationShareStatusPage(
+            goToConversationChatShareEntityPage(
               context: context,
-              status: status,
+              shareEntity: _mapStatusToShareEntity(status),
               instanceLocation: instanceLocation,
             );
           },
           chatsShareAction: (context) {
             Navigator.of(context).pop();
-            goToPleromaChatShareStatusPage(
+            goToPleromaChatShareEntityPage(
               context: context,
-              status: status,
+              shareEntity: _mapStatusToShareEntity(status),
               instanceLocation: instanceLocation,
             );
           },
@@ -338,6 +338,40 @@ class StatusActionMoreDialogBody extends StatelessWidget {
       },
     );
   }
+}
+
+ShareEntity _mapStatusToShareEntity(IStatus status) {
+  var spoiler = status.spoilerText;
+  var content = status.content?.isNotEmpty == true
+      ? status.content?.extractRawStringFromHtmlString()
+      : null;
+
+  String? text;
+  var spoilerExist = spoiler?.isNotEmpty == true;
+  var contentExist = content?.isNotEmpty == true;
+  if (spoilerExist || contentExist) {
+    if (spoilerExist && contentExist) {
+      text = '$spoiler\n$content';
+    } else if (contentExist) {
+      text = content;
+    } else {
+      text = spoiler;
+    }
+  }
+  // todo: think about replies and reblogs
+  var shareEntityItem = ShareEntityItem(
+    createdAt: status.createdAt,
+    fromAccount: status.account,
+    text: text,
+    linkToOriginal: status.url,
+    mediaAttachments: status.mediaAttachments,
+    mediaLocalFiles: null,
+    isNeedReUploadMediaAttachments: true,
+  );
+
+  return ShareEntity(
+    items: [shareEntityItem],
+  );
 }
 
 class _StatusActionMoreDialogBodyStatusActionsWidget extends StatelessWidget {
