@@ -136,6 +136,14 @@ Push Relay will know nothing(everything will be encrypted) once decryption logic
 
 ## Localization
 
+App uses `flutter_localization` API bundle with Flutter SDK. 
+
+It uses `.arb` files located in `lib/l10n` and generates `.dart` classes in `/lib/generated/` folder.
+
+After you make changes in `.arb` files you make additional actions to regenerate Dart classes
+* automatically via (`flutter intl`)[https://plugins.jetbrains.com/plugin/13666-flutter-intl] plugin
+* manually via (`flutter intl`)[https://pub.dev/packages/intl_utils] package
+
 ### Completed
 
 * English, Russian
