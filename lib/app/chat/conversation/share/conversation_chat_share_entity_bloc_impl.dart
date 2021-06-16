@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
@@ -13,6 +15,8 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
@@ -22,6 +26,7 @@ import 'package:provider/provider.dart';
 class ConversationChatShareEntityBloc extends ConversationChatShareBloc
     implements IConversationChatShareBloc, IShareEntityBloc {
   final IMediaAttachmentReuploadService mediaAttachmentReuploadService;
+  final IPleromaApiMediaAttachmentService pleromaApiMediaAttachmentService;
   final IShareEntitySettingsBloc shareEntitySettingsBloc;
   @override
   final ShareEntity shareEntity;
@@ -32,6 +37,7 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
     required this.shareEntity,
     required this.shareEntitySettingsBloc,
     required this.mediaAttachmentReuploadService,
+    required this.pleromaApiMediaAttachmentService,
     this.isNeedReUploadMediaAttachments = true,
     required IConversationChatRepository conversationRepository,
     required IStatusRepository statusRepository,
@@ -51,19 +57,71 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
         );
 
   @override
-  Future<IPleromaApiPostStatus> createSendData({
+  Future<List<IPleromaApiPostStatus>> createSendData({
     required String to,
     required PleromaApiVisibility visibility,
   }) async {
-    var text = await combineAllItemsAsRawText(
-      settings: shareEntitySettingsBloc.shareEntitySettings,
-    );
-    var mediaAttachments = await combineAllItemsAsMediaAttachments(
+    var text = convertAllItemsToRawText(
       settings: shareEntitySettingsBloc.shareEntitySettings,
     );
 
-    var messageSendData = PleromaApiPostStatus(
-      status: '$text $to'.trim(),
+    var mediaAttachments = await convertAllItemsToMediaAttachments(
+      settings: shareEntitySettingsBloc.shareEntitySettings,
+      pleromaApiMediaAttachmentService: pleromaApiMediaAttachmentService,
+      mediaAttachmentReuploadService: mediaAttachmentReuploadService,
+      reUploadRequired: true,
+    );
+
+    var result = <IPleromaApiPostStatus>[];
+
+    var maximumMediaAttachmentCount =
+        IPleromaApiAuthStatusService.maximumMediaAttachmentCount;
+    if (mediaAttachments != null &&
+        mediaAttachments.length > maximumMediaAttachmentCount) {
+      var length = mediaAttachments.length;
+      var currentIndex = 0;
+      int minIndex;
+      int maxIndex;
+      do {
+        minIndex = currentIndex * maximumMediaAttachmentCount;
+        maxIndex = (currentIndex + 1) * maximumMediaAttachmentCount;
+        var messageSendData = _createPleromaApiPostStatus(
+          text: text,
+          to: to,
+          visibility: visibility,
+          mediaAttachments: mediaAttachments.sublist(
+            minIndex,
+            min(
+              maxIndex,
+              length,
+            ),
+          ),
+        );
+
+        result.add(messageSendData);
+      } while (maxIndex < length);
+    } else {
+      var messageSendData = _createPleromaApiPostStatus(
+        text: text,
+        to: to,
+        visibility: visibility,
+        mediaAttachments: mediaAttachments,
+      );
+
+      result.add(messageSendData);
+    }
+
+    return result;
+  }
+
+  PleromaApiPostStatus _createPleromaApiPostStatus({
+    required String? text,
+    required String to,
+    required PleromaApiVisibility visibility,
+    required List<IPleromaApiMediaAttachment>? mediaAttachments,
+  }) {
+    return PleromaApiPostStatus(
+      status: '${text ?? ''} $to'.trim(),
       visibility: visibility.toJsonValue(),
       contentType: null,
       expiresInSeconds: null,
@@ -80,8 +138,6 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
       spoilerText: null,
       to: null,
     );
-
-    return messageSendData;
   }
 
   static Widget provideToContext(
@@ -139,6 +195,10 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
           listen: false,
         ),
         shareEntitySettingsBloc: IShareEntitySettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        pleromaApiMediaAttachmentService: IPleromaApiMediaAttachmentService.of(
           context,
           listen: false,
         ),

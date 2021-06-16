@@ -1265,6 +1265,22 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Share to external app"),
         "app_share_action_shareToNewStatus":
             MessageLookupByLibrary.simpleMessage("Share as new status"),
+        "app_share_entity_settings_field_appendFromAccount_label":
+            MessageLookupByLibrary.simpleMessage("Append from account"),
+        "app_share_entity_settings_field_mediaAsLink_label":
+            MessageLookupByLibrary.simpleMessage("Media as link"),
+        "app_share_entity_settings_field_wholeAsLink_label":
+            MessageLookupByLibrary.simpleMessage("Whole as link"),
+        "app_share_entity_settings_field_withCreatedAt_label":
+            MessageLookupByLibrary.simpleMessage("With created at"),
+        "app_share_entity_settings_field_withLink_label":
+            MessageLookupByLibrary.simpleMessage("With link to original"),
+        "app_share_entity_settings_field_withMedia_label":
+            MessageLookupByLibrary.simpleMessage("With media"),
+        "app_share_entity_settings_field_withMessage_hint":
+            MessageLookupByLibrary.simpleMessage("With message"),
+        "app_share_entity_settings_field_withText_label":
+            MessageLookupByLibrary.simpleMessage("With text"),
         "app_share_external_field_shareAsLink":
             MessageLookupByLibrary.simpleMessage("Share as link"),
         "app_share_external_title":

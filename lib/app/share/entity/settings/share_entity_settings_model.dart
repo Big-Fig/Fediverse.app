@@ -1,49 +1,58 @@
-
 class ShareEntitySettings {
-  final bool appendFromAccountDetails;
+  final bool appendFromAccount;
   final bool withCreatedAt;
   final bool withMedia;
+  final bool withText;
   final bool withLink;
-  final bool asLink;
+  final bool wholeAsLink;
+  final bool mediaAsLink;
   final String? withMessage;
 
   ShareEntitySettings({
-    required this.appendFromAccountDetails,
+    required this.appendFromAccount,
     required this.withCreatedAt,
     required this.withMedia,
+    required this.withText,
     required this.withLink,
-    required this.asLink,
+    required this.wholeAsLink,
+    required this.mediaAsLink,
     required this.withMessage,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is ShareEntitySettings &&
-              runtimeType == other.runtimeType &&
-              appendFromAccountDetails == other.appendFromAccountDetails &&
-              withCreatedAt == other.withCreatedAt &&
-              withMedia == other.withMedia &&
-              withLink == other.withLink &&
-              asLink == other.asLink &&
-              withMessage == other.withMessage;
+      other is ShareEntitySettings &&
+          runtimeType == other.runtimeType &&
+          appendFromAccount == other.appendFromAccount &&
+          withCreatedAt == other.withCreatedAt &&
+          withMedia == other.withMedia &&
+          withText == other.withText &&
+          withLink == other.withLink &&
+          wholeAsLink == other.wholeAsLink &&
+          mediaAsLink == other.mediaAsLink &&
+          withMessage == other.withMessage;
 
   @override
   int get hashCode =>
-      appendFromAccountDetails.hashCode ^
+      appendFromAccount.hashCode ^
       withCreatedAt.hashCode ^
       withMedia.hashCode ^
+      withText.hashCode ^
       withLink.hashCode ^
-      asLink.hashCode ^
+      wholeAsLink.hashCode ^
+      mediaAsLink.hashCode ^
       withMessage.hashCode;
 
   @override
   String toString() => 'ShareEntitySettings{'
-      'appendFromAccountDetails: $appendFromAccountDetails, '
+      'appendFromAccount: $appendFromAccount, '
       'withCreatedAt: $withCreatedAt, '
       'withMedia: $withMedia, '
+      'withText: $withText, '
       'withLink: $withLink, '
-      'asLink: $asLink, '
+      'wholeAsLink: $wholeAsLink, '
+      'mediaAsLink: $mediaAsLink, '
       'withMessage: $withMessage'
       '}';
 }

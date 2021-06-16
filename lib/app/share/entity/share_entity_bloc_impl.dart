@@ -8,6 +8,17 @@ class ShareEntityBloc extends DisposableOwner implements IShareEntityBloc {
 
   ShareEntityBloc({
     required this.shareEntity,
-  });
-
+  }) {
+    addDisposable(
+      custom: () {
+        shareEntity.allMediaLocalFiles.forEach(
+          (localFile) {
+            if (localFile.isNeedDeleteAfterUsage) {
+              localFile.file.delete();
+            }
+          },
+        );
+      },
+    );
+  }
 }

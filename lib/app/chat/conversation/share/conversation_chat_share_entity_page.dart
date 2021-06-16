@@ -53,6 +53,7 @@ MaterialPageRoute createConversationChatShareEntityPageRoute({
   return MaterialPageRoute(
     builder: (context) => ShareEntitySettingsBloc.provideToContext(
       context,
+      shareEntity: shareEntity,
       child: ConversationChatShareEntityBloc.provideToContext(
         context,
         shareEntity: shareEntity,

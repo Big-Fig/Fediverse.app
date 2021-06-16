@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 
 abstract class IPleromaApiAuthStatusService
     extends IPleromaApiAuth implements IPleromaApiStatusService {
+  static const maximumMediaAttachmentCount = 8;
+
   static IPleromaApiAuthStatusService of(
     BuildContext context, {
     bool listen = true,

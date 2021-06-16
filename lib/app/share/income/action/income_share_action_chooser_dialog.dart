@@ -73,16 +73,16 @@ Future<void> _performIncomeShareAction({
   required IncomeShareEvent incomeShareEvent,
   required IncomeShareActionType incomeShareActionType,
 }) async {
-  var incomeShareEventMedias = incomeShareEvent.medias;
-  var mediaAttachments = await _uploadMediaIfNeed(
-    context: context,
-    incomeShareEventMedias: incomeShareEventMedias,
-  );
-  var dontHaveErrorsDuringMediaUploading =
-      mediaAttachments?.length == incomeShareEventMedias?.length;
-
   switch (incomeShareActionType) {
     case IncomeShareActionType.status:
+      var incomeShareEventMedias = incomeShareEvent.medias;
+      var mediaAttachments = await _uploadMediaIfNeed(
+        context: context,
+        incomeShareEventMedias: incomeShareEventMedias,
+      );
+      var dontHaveErrorsDuringMediaUploading =
+          mediaAttachments?.length == incomeShareEventMedias?.length;
+
       if (dontHaveErrorsDuringMediaUploading) {
         goToNewPostStatusPage(
           context,
@@ -98,7 +98,11 @@ Future<void> _performIncomeShareAction({
       goToConversationChatShareEntityPage(
         context: context,
         shareEntity: ShareEntity(
-          items: [_mapIncomeShareEventToShareEntity(incomeShareEvent)],
+          items: [
+            _mapIncomeShareEventToShareEntity(
+              incomeShareEvent,
+            ),
+          ],
         ),
         instanceLocation: InstanceLocation.local,
       );
@@ -107,7 +111,11 @@ Future<void> _performIncomeShareAction({
       goToPleromaChatShareEntityPage(
         context: context,
         shareEntity: ShareEntity(
-          items: [_mapIncomeShareEventToShareEntity(incomeShareEvent)],
+          items: [
+            _mapIncomeShareEventToShareEntity(
+              incomeShareEvent,
+            ),
+          ],
         ),
         instanceLocation: InstanceLocation.local,
       );
@@ -124,13 +132,16 @@ ShareEntityItem _mapIncomeShareEventToShareEntity(
       text: incomeShareEvent.text,
       linkToOriginal: null,
       mediaAttachments: null,
-      mediaLocalFiles: incomeShareEvent.medias
-          ?.map(
-            (incomeShareEventMedia) => File(
+      mediaLocalFiles: incomeShareEvent.medias?.map(
+        (incomeShareEventMedia) {
+          return ShareEntityItemLocalMediaFile(
+            file: File(
               incomeShareEventMedia.path,
             ),
-          )
-          .toList(),
+            isNeedDeleteAfterUsage: true,
+          );
+        },
+      ).toList(),
       isNeedReUploadMediaAttachments: false,
     );
 
