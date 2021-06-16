@@ -54,6 +54,7 @@ MaterialPageRoute createPleromaChatShareEntityPageRoute({
   return MaterialPageRoute(
     builder: (context) => ShareEntitySettingsBloc.provideToContext(
       context,
+      shareEntity: shareEntity,
       child: PleromaChatShareEntityBloc.provideToContext(
         context,
         shareEntity: shareEntity,

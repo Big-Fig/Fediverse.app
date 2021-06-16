@@ -784,5 +784,13 @@
   "app_crashReporting_settings_title": "Crash reporting",
   "app_crashReporting_settings_field_reportingEnabled_name": "Send reports",
   "app_crashReporting_ask_dialog_title": "Crash reporting",
-  "app_crashReporting_ask_dialog_content": "Do you want to enable crash reporting?\n It will help us make app more stable\n You can change this option in settings later"
+  "app_crashReporting_ask_dialog_content": "Do you want to enable crash reporting?\n It will help us make app more stable\n You can change this option in settings later",
+  "app_share_entity_settings_field_appendFromAccount_label": "Append from account",
+  "app_share_entity_settings_field_withCreatedAt_label": "With created at",
+  "app_share_entity_settings_field_withMedia_label": "With media",
+  "app_share_entity_settings_field_withText_label": "With text",
+  "app_share_entity_settings_field_withLink_label": "With link to original",
+  "app_share_entity_settings_field_wholeAsLink_label": "Whole as link",
+  "app_share_entity_settings_field_mediaAsLink_label": "Media as link",
+  "app_share_entity_settings_field_withMessage_hint": "With message"
 }

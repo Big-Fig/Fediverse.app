@@ -15,6 +15,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
+import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -24,12 +25,14 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
   @override
   final ShareEntity shareEntity;
   final IMediaAttachmentReuploadService mediaAttachmentReuploadService;
+  final IPleromaApiMediaAttachmentService pleromaApiMediaAttachmentService;
   final bool isNeedReUploadMediaAttachments;
 
   PleromaChatShareEntityBloc({
     required this.shareEntity,
     required this.shareEntitySettingsBloc,
     required this.mediaAttachmentReuploadService,
+    required this.pleromaApiMediaAttachmentService,
     this.isNeedReUploadMediaAttachments = true,
     required IPleromaChatRepository chatRepository,
     required IPleromaChatMessageRepository chatMessageRepository,
@@ -47,15 +50,17 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
         );
 
   @override
-  Future<PleromaApiChatMessageSendData>
-      createPleromaChatMessageSendData() async {
-    var text = await combineAllItemsAsRawText(
+  Future<List<PleromaApiChatMessageSendData>>
+      createPleromaChatMessageSendDataList() async {
+    var text = convertAllItemsToRawText(
       settings: shareEntitySettingsBloc.shareEntitySettings,
     );
-    var mediaAttachments = await combineAllItemsAsMediaAttachments(
+    var mediaAttachments = await convertAllItemsToMediaAttachments(
       settings: shareEntitySettingsBloc.shareEntitySettings,
+      pleromaApiMediaAttachmentService: pleromaApiMediaAttachmentService,
+      mediaAttachmentReuploadService: mediaAttachmentReuploadService,
+      reUploadRequired: true,
     );
-
 
     var messageSendData = PleromaApiChatMessageSendData(
       content: text?.trim(),
@@ -63,7 +68,25 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
       idempotencyKey: null,
     );
 
-    return messageSendData;
+    var result = <PleromaApiChatMessageSendData>[];
+
+    result.add(messageSendData);
+
+    if (mediaAttachments != null && mediaAttachments.length > 1) {
+      mediaAttachments.skip(1).forEach(
+        (mediaAttachment) {
+          result.add(
+            PleromaApiChatMessageSendData(
+              content: null,
+              mediaId: mediaAttachment.id,
+              idempotencyKey: null,
+            ),
+          );
+        },
+      );
+    }
+
+    return result;
   }
 
   static Widget provideToContext(
@@ -124,6 +147,10 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
           listen: false,
         ),
         shareEntitySettingsBloc: IShareEntitySettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        pleromaApiMediaAttachmentService: IPleromaApiMediaAttachmentService.of(
           context,
           listen: false,
         ),

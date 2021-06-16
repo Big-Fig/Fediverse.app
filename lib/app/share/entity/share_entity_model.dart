@@ -12,6 +12,55 @@ class ShareEntity {
 
   bool get isMulti => items.length > 1;
 
+  bool get isHaveMedia =>
+      items.map((item) => item.isHaveMedia).fold(false, _foldBoolOr);
+
+  bool get isHaveLocalMedia =>
+      items.map((item) => item.isHaveLocalMedia).fold(true, _foldBoolAnd);
+
+  bool get isHaveLink =>
+      items.map((item) => item.isHaveLink).fold(false, _foldBoolOr);
+
+  bool get isAllHaveLink =>
+      items.map((item) => item.isHaveLink).fold(true, _foldBoolAnd);
+
+  bool get isHaveCreatedAt =>
+      items.map((item) => item.isHaveCreatedAt).fold(false, _foldBoolOr);
+
+  bool get isHaveText =>
+      items.map((item) => item.isHaveText).fold(false, _foldBoolOr);
+
+  bool get isHaveOnlyText => isHaveText && !isHaveMedia;
+
+  bool get isHaveOnlyMedia => isHaveMedia && !isHaveText;
+
+  bool get isHaveFromAccount =>
+      items.map((item) => item.isHaveFromAccount).fold(false, _foldBoolOr);
+
+  List<IPleromaApiMediaAttachment> get allMediaAttachments => items.fold(
+        <IPleromaApiMediaAttachment>[],
+        (previousValue, element) {
+          var mediaAttachments = element.mediaAttachments;
+          if (mediaAttachments != null) {
+            previousValue.addAll(mediaAttachments);
+          }
+
+          return previousValue;
+        },
+      );
+
+  List<ShareEntityItemLocalMediaFile> get allMediaLocalFiles => items.fold(
+        <ShareEntityItemLocalMediaFile>[],
+        (previousValue, element) {
+          var mediaLocalFiles = element.mediaLocalFiles;
+          if (mediaLocalFiles != null) {
+            previousValue.addAll(mediaLocalFiles);
+          }
+
+          return previousValue;
+        },
+      );
+
   ShareEntity({
     required this.items,
   }) {
@@ -38,7 +87,7 @@ class ShareEntityItem {
   final String? text;
   final String? linkToOriginal;
   final List<IPleromaApiMediaAttachment>? mediaAttachments;
-  final List<File>? mediaLocalFiles;
+  final List<ShareEntityItemLocalMediaFile>? mediaLocalFiles;
   final bool isNeedReUploadMediaAttachments;
 
   ShareEntityItem({
@@ -50,6 +99,20 @@ class ShareEntityItem {
     required this.mediaLocalFiles,
     required this.isNeedReUploadMediaAttachments,
   });
+
+  bool get isHaveMedia => isHaveRemoteMedia || isHaveLocalMedia;
+
+  bool get isHaveRemoteMedia => mediaAttachments?.isNotEmpty == true;
+
+  bool get isHaveLocalMedia => mediaLocalFiles?.isNotEmpty == true;
+
+  bool get isHaveLink => linkToOriginal?.isNotEmpty == true;
+
+  bool get isHaveText => text?.isNotEmpty == true;
+
+  bool get isHaveFromAccount => fromAccount != null;
+
+  bool get isHaveCreatedAt => createdAt != null;
 
   @override
   bool operator ==(Object other) =>
@@ -86,3 +149,34 @@ class ShareEntityItem {
       'isNeedReUploadMedia: $isNeedReUploadMediaAttachments'
       '}';
 }
+
+class ShareEntityItemLocalMediaFile {
+  final File file;
+  final bool isNeedDeleteAfterUsage;
+
+  ShareEntityItemLocalMediaFile({
+    required this.file,
+    required this.isNeedDeleteAfterUsage,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ShareEntityItemLocalMediaFile &&
+          runtimeType == other.runtimeType &&
+          file == other.file &&
+          isNeedDeleteAfterUsage == other.isNeedDeleteAfterUsage;
+
+  @override
+  int get hashCode => file.hashCode ^ isNeedDeleteAfterUsage.hashCode;
+
+  @override
+  String toString() => 'ShareEntityItemLocalMediaFile{'
+      'file: $file, '
+      'isNeedDeleteAfterUsage: $isNeedDeleteAfterUsage'
+      '}';
+}
+
+bool _foldBoolOr(bool previousValue, bool element) => previousValue || element;
+
+bool _foldBoolAnd(bool previousValue, bool element) => previousValue && element;

@@ -1281,6 +1281,22 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Поделиться в другое приложение"),
         "app_share_action_shareToNewStatus":
             MessageLookupByLibrary.simpleMessage("Поделиться"),
+        "app_share_entity_settings_field_appendFromAccount_label":
+            MessageLookupByLibrary.simpleMessage("Добавить аккаунт автора"),
+        "app_share_entity_settings_field_mediaAsLink_label":
+            MessageLookupByLibrary.simpleMessage("Медиа как ссылки"),
+        "app_share_entity_settings_field_wholeAsLink_label":
+            MessageLookupByLibrary.simpleMessage("Только ссылка"),
+        "app_share_entity_settings_field_withCreatedAt_label":
+            MessageLookupByLibrary.simpleMessage("С датой публикации"),
+        "app_share_entity_settings_field_withLink_label":
+            MessageLookupByLibrary.simpleMessage("С ссылками на оргинал"),
+        "app_share_entity_settings_field_withMedia_label":
+            MessageLookupByLibrary.simpleMessage("С медиа"),
+        "app_share_entity_settings_field_withMessage_hint":
+            MessageLookupByLibrary.simpleMessage("С сообщением"),
+        "app_share_entity_settings_field_withText_label":
+            MessageLookupByLibrary.simpleMessage("С тектстом"),
         "app_share_external_field_shareAsLink":
             MessageLookupByLibrary.simpleMessage("Поделиться ссылкой"),
         "app_share_external_title": MessageLookupByLibrary.simpleMessage(

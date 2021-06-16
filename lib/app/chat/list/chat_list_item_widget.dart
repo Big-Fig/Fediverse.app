@@ -29,11 +29,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
-
-final _logger = Logger('chat_list_item_widget.dart');
 
 class ChatListItemWidget extends StatelessWidget {
   final OnClickUiCallback onClick;
