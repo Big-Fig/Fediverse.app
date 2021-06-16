@@ -43,7 +43,7 @@ A client for Pleroma and Mastodon instances written using Flutter
 - Custom emojis. With emoji reactions support on Pleroma
 - Customizable home timelines
 - Multi-account support
-- Push notifications via Push Relay Server and FCM(see details below)
+- [Push notifications via Push Relay Server and FCM](#push-notifications)
 - Income and external share support
 - Scheduled and Draft Statuses
 - Filters
@@ -250,7 +250,7 @@ cp env_example.env env_dev.env
 
 Example config disable some features like **Push notifications**. 
 
-To enable **all features** you should change app id, create Firebase project and edit config file(see below).
+To enable **all features** you should change app id, create [Firebase](#Firebase) project and edit config file.
 
 ##### Run
 
@@ -420,16 +420,16 @@ For more details see
 #### Push notifications 
 
 To enable Push notifications you should
-* change App ID(see above)
+* change [App ID](#App-ID)
 * create Firebase Project for your App ID,
-* generate Firebase config and integrate in app(see above)
+* generate [Firebase config and integrate in app](#Firebase)
 * generate FCM server key
 * setup own Push Relay Server(link to repo **coming soon**) instance and put your FCM server key
 
 App ID and FCM server key(so and Push Relay Server instance) are connected. 
 It is not possible to use one Push Relay Server instance with several App IDs and vice versa
 
-On/Off via .env. Firebase core integration required (see above)
+On/Off via .env. [Firebase Core integration](#Firebase) required
 
 ```
 PUSH_FCM_ENABLED=false
@@ -457,7 +457,7 @@ PUSH_SUBSCRIPTION_KEYS_AUTH=T5bhIIyre5TDC
 
 #### Firebase Crashlytics
 
-On/Off via .env. Firebase core integration required (see above)
+On/Off via .env. [Firebase Core integration](#Firebase) required
 
 ```
 CRASHLYTICS_ENABLED=false
@@ -465,7 +465,7 @@ CRASHLYTICS_ENABLED=false
 
 Used to catch errors on client side with error description and stackTrace
 
-You should enable Firebase support(see above) and change config variable in .env file to enable crash reporting
+You should enable [Firebase support](#Firebase) and change config variable in .env file to enable crash reporting
 
 #### Receiving share intents & ShareExtension
 
