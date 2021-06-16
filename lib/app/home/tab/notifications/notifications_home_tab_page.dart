@@ -1,4 +1,5 @@
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/app/notification/list/notification_list_tap_to_load_overlay_widget.dart';
@@ -207,11 +208,11 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
     Key? key,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     var notificationsHomeTabBloc = INotificationsHomeTabBloc.of(context);
 
+    var configService = IConfigService.of(context);
     return FediIconInCircleBlurredButton(
       FediIcons.menu_vertical,
       onPressed: () {
@@ -219,7 +220,8 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
           context: context,
           title: S.of(context).app_notification_all_dialog_title,
           actions: [
-            _buildPushNotificationsAction(context),
+            if (configService.pushFcmEnabled)
+              _buildPushNotificationsAction(context),
             buildDismissAllAction(context, notificationsHomeTabBloc),
             buildMarkAllAsReadAction(context, notificationsHomeTabBloc),
           ],
