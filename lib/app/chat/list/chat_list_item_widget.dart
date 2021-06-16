@@ -29,8 +29,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
+
+final _logger = Logger('chat_list_item_widget.dart');
 
 class ChatListItemWidget extends StatelessWidget {
   final OnClickUiCallback onClick;
@@ -214,7 +217,7 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
         }
         var content = lastMessage.content;
         if (content?.isNotEmpty == true) {
-          content = _extractContent(
+          content = _extractSingleLineContent(
             context: context,
             chatMessage: lastMessage,
             content: content,
@@ -281,11 +284,14 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
   }
 }
 
-String _extractContent({
+String _extractSingleLineContent({
   required BuildContext context,
   required IChatMessage chatMessage,
   required String? content,
 }) {
+  content = content?.replaceAll('\n', ' ');
+  content = content?.replaceAll('<br/>', ' ');
+
   var formattedText = content?.extractRawStringFromHtmlString() ?? '';
 
   var myAccountBloc = IMyAccountBloc.of(context, listen: true);
