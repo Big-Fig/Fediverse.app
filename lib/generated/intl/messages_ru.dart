@@ -714,8 +714,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_cache_database_settings_limitAge_value_notSet":
             MessageLookupByLibrary.simpleMessage("Нет"),
         "app_cache_database_settings_limitEntriesCountByType_label":
-            MessageLookupByLibrary.simpleMessage(
-                "Лимит количество записей(все типы)"),
+            MessageLookupByLibrary.simpleMessage("Лимит записей(все типы)"),
         "app_cache_database_settings_limitEntriesCountByType_value_limit1000":
             MessageLookupByLibrary.simpleMessage("1000 записей"),
         "app_cache_database_settings_limitEntriesCountByType_value_limit10000":
