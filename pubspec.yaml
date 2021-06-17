@@ -197,7 +197,13 @@ dependencies:
   flutter_switch: ^0.3.1
 
   # handle external share intents (text/image/video/etc)
-  receive_sharing_intent: ^1.4.5
+  # receive_sharing_intent: ^1.4.5
+  # it is receive_sharing_intent 1.4.5 with custom_app_id fix
+  receive_sharing_intent:
+    git:
+      url: https://github.com/xal/receive_sharing_intent.git
+      ref: cc90c94b81fb45c69d79e5b0c290b3cfaa56ea43
+
 
   # load config from .env files (support flavors)
   flutter_config: ^2.0.0
