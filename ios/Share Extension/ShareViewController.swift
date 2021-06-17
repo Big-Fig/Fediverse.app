@@ -6,8 +6,8 @@ import Photos
 class ShareViewController: SLComposeServiceViewController {
     // TODO: IMPORTANT: This should be your host app bundle identifier
 //    var hostAppBundleIdentifier = ""
-    let hostAppBundleIdentifier = "com.fediverse.app"
-    let appGroupId = "group.fediverse.app"
+    var hostAppBundleIdentifier = ""
+    var appGroupId = ""
     let sharedKey = "ShareKey"
     var sharedMedia: [SharedMediaFile] = []
     var sharedText: [String] = []
@@ -24,7 +24,9 @@ class ShareViewController: SLComposeServiceViewController {
     override func viewDidLoad() {
     // TODO: IMPORTANT: change the string in "of:" parameter for whatever extension you added to the bundle id of the extension. As the bundle id received is the extension one, not the main app.
         super.viewDidLoad();
-//        hostAppBundleIdentifier = Bundle.main.bundleIdentifier?.replacingOccurrences(of:".Share-Extension", with:"", options: NSString.CompareOptions.literal, range: nil) as! String
+        
+        appGroupId = (Bundle.main.object(forInfoDictionaryKey: "AppGroupId") as? String) ?? "group.\(Bundle.main.bundleIdentifier!)"
+        hostAppBundleIdentifier = (Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as? String) ?? "group.\(Bundle.main.bundleIdentifier!)"
 
     }
 
