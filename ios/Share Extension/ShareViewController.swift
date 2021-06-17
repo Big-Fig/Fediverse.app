@@ -4,8 +4,6 @@ import MobileCoreServices
 import Photos
 
 class ShareViewController: SLComposeServiceViewController {
-    // TODO: IMPORTANT: This should be your host app bundle identifier
-//    var hostAppBundleIdentifier = ""
     var hostAppBundleIdentifier = ""
     var appGroupId = ""
     let sharedKey = "ShareKey"
@@ -21,13 +19,26 @@ class ShareViewController: SLComposeServiceViewController {
         return true
     }
 
+    private func loadIds() {
+        // loading Share extension App Id
+        let shareExtensionAppBundleIdentifier = Bundle.main.bundleIdentifier!;
+        
+        
+        // convert ShareExtension id to host app id
+        // By default it is remove last part of id after last point
+        // For example: com.test.ShareExtension -> com.test
+        let lastIndexOfPoint = shareExtensionAppBundleIdentifier.lastIndex(of: ".");
+        hostAppBundleIdentifier = String(shareExtensionAppBundleIdentifier[..<lastIndexOfPoint!]);
+        
+        // loading custom AppGroupId from Build Settings or use group.<hostAppBundleIdentifier>
+        appGroupId = (Bundle.main.object(forInfoDictionaryKey: "AppGroupId") as? String) ?? "group.\(hostAppBundleIdentifier)";
+    }
+    
     override func viewDidLoad() {
-    // TODO: IMPORTANT: change the string in "of:" parameter for whatever extension you added to the bundle id of the extension. As the bundle id received is the extension one, not the main app.
         super.viewDidLoad();
         
-        appGroupId = (Bundle.main.object(forInfoDictionaryKey: "AppGroupId") as? String) ?? "group.\(Bundle.main.bundleIdentifier!)"
-        hostAppBundleIdentifier = (Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as? String) ?? "group.\(Bundle.main.bundleIdentifier!)"
-
+        // load group and app id from build info
+        loadIds();
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -207,7 +218,9 @@ class ShareViewController: SLComposeServiceViewController {
     }
 
     private func redirectToHostApp(type: RedirectType) {
-        let url = URL(string: "ShareMedia://dataUrl=\(sharedKey)#\(type)")
+        // ids may not loaded yet so we need loadIds here too
+        loadIds();
+        let url = URL(string: "ShareMedia-\(hostAppBundleIdentifier)://dataUrl=\(sharedKey)#\(type)")
         var responder = self as UIResponder?
         let selectorOpenURL = sel_registerName("openURL:")
 

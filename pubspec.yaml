@@ -198,11 +198,11 @@ dependencies:
 
   # handle external share intents (text/image/video/etc)
   # receive_sharing_intent: ^1.4.5
-  # it is receive_sharing_intent 1.4.5 with custom_app_id fix
+  # it is receive_sharing_intent 779e511eb70e0c68b1a314c020c257bd102a4698 with custom_app_id fix
   receive_sharing_intent:
     git:
       url: https://github.com/xal/receive_sharing_intent.git
-      ref: cc90c94b81fb45c69d79e5b0c290b3cfaa56ea43
+      ref: aee4b7c77901c2cd18d7fb4970837d83969f320f
 
 
   # load config from .env files (support flavors)
