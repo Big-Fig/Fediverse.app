@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## Unreleased
+
+### Changed
+* update Readme: describe receive_sharing_intent and iOS group ids
+* remove empty time ago prefixes from localization
+
 ## [2.4.2] [internal] 2021 June 18
 
 ### Changed

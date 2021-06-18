@@ -378,6 +378,14 @@ If you still have errors please explore App ID things in the next docs:
 * [`firebase_messaging`](https://pub.dev/packages/firebase_messaging)
 * [`receive_sharing_intent`](https://pub.dev/packages/receive_sharing_intent)
 
+###### iOS group ids
+
+* `receive_sharing_intent` lib require to add group.<app_id> to XCode project. 
+Unfortunately it is not possible, due our internal issues (we moved app to new iTunes account and can't use old group id).
+So we use [`fork of receive_sharing_intent`](https://github.com/xal/receive_sharing_intent/tree/xal/custom_group_id) with custom group ids support.
+
+Fedi uses group `fediverse.app` for `prod` and `com.fediverse.app2` for `dev`  
+
 #### Signing
 
 ###### Android
@@ -479,6 +487,19 @@ CRASHLYTICS_ENABLED=false
 Used to catch errors on client side with error description and stackTrace
 
 You should enable [Firebase support](#Firebase) and change config variable in .env file to enable crash reporting
+
+#### Versioning
+
+###### Android
+
+Uses version from `pubspec.yaml`
+
+###### iOS
+
+By default Flutter project config it should use version from `pubspec.yaml`,
+However, sometimes it causes strange iOS build errors(version not changed but should).
+
+So, Fedi requires manual increase version code & name in `Runner` and `Share Extension` targets. 
 
 #### Receiving share intents & ShareExtension
 
