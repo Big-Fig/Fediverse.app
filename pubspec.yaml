@@ -46,12 +46,8 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.0.0
 
-  #  flutter_html: ^2.0.0-nullsafety.0
-  #   actually it is ^2.0.0-nullsafety.0 with additional text style features and libs update
-  flutter_html:
-    git:
-      url: https://github.com/xal/flutter_html.git
-      ref: f7559889775e8f773f2104958bf8178b7b4380f0
+  # render status body, description, notes and other texts which may have html tags
+  flutter_html: ^2.1.0
 
   # minutes/hours picker
   # duration_picker: ^1.0.1
