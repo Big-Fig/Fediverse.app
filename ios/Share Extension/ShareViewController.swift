@@ -4,8 +4,8 @@ import MobileCoreServices
 import Photos
 
 class ShareViewController: SLComposeServiceViewController {
-    // TODO: IMPORTANT: This should be your host app bundle identifier
     var hostAppBundleIdentifier = ""
+    var appGroupId = ""
     let sharedKey = "ShareKey"
     var sharedMedia: [SharedMediaFile] = []
     var sharedText: [String] = []
@@ -19,11 +19,26 @@ class ShareViewController: SLComposeServiceViewController {
         return true
     }
 
+    private func loadIds() {
+        // loading Share extension App Id
+        let shareExtensionAppBundleIdentifier = Bundle.main.bundleIdentifier!;
+        
+        
+        // convert ShareExtension id to host app id
+        // By default it is remove last part of id after last point
+        // For example: com.test.ShareExtension -> com.test
+        let lastIndexOfPoint = shareExtensionAppBundleIdentifier.lastIndex(of: ".");
+        hostAppBundleIdentifier = String(shareExtensionAppBundleIdentifier[..<lastIndexOfPoint!]);
+        
+        // loading custom AppGroupId from Build Settings or use group.<hostAppBundleIdentifier>
+        appGroupId = (Bundle.main.object(forInfoDictionaryKey: "AppGroupId") as? String) ?? "group.\(hostAppBundleIdentifier)";
+    }
+    
     override func viewDidLoad() {
-    // TODO: IMPORTANT: change the string in "of:" parameter for whatever extension you added to the bundle id of the extension. As the bundle id received is the extension one, not the main app.
         super.viewDidLoad();
-        hostAppBundleIdentifier = Bundle.main.bundleIdentifier?.replacingOccurrences(of:".Share-Extension", with:"", options: NSString.CompareOptions.literal, range: nil) as! String
-
+        
+        // load group and app id from build info
+        loadIds();
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -67,7 +82,7 @@ class ShareViewController: SLComposeServiceViewController {
 
                 // If this is the last item, save imagesData in userDefaults and redirect to host app
                 if index == (content.attachments?.count)! - 1 {
-                    let userDefaults = UserDefaults(suiteName: "group.\(this.hostAppBundleIdentifier)")
+                    let userDefaults = UserDefaults(suiteName: this.appGroupId)
                     userDefaults?.set(this.sharedText, forKey: this.sharedKey)
                     userDefaults?.synchronize()
                     this.redirectToHostApp(type: .text)
@@ -88,7 +103,7 @@ class ShareViewController: SLComposeServiceViewController {
 
                 // If this is the last item, save imagesData in userDefaults and redirect to host app
                 if index == (content.attachments?.count)! - 1 {
-                    let userDefaults = UserDefaults(suiteName: "group.\(this.hostAppBundleIdentifier)")
+                    let userDefaults = UserDefaults(suiteName: this.appGroupId)
                     userDefaults?.set(this.sharedText, forKey: this.sharedKey)
                     userDefaults?.synchronize()
                     this.redirectToHostApp(type: .text)
@@ -108,7 +123,7 @@ class ShareViewController: SLComposeServiceViewController {
                 // Always copy
                 let fileName = this.getFileName(from: url, type: .image)
                 let newPath = FileManager.default
-                    .containerURL(forSecurityApplicationGroupIdentifier: "group.\(this.hostAppBundleIdentifier)")!
+                    .containerURL(forSecurityApplicationGroupIdentifier: this.appGroupId)!
                     .appendingPathComponent(fileName)
                 let copied = this.copyFile(at: url, to: newPath)
                 if(copied) {
@@ -117,7 +132,7 @@ class ShareViewController: SLComposeServiceViewController {
 
                 // If this is the last item, save imagesData in userDefaults and redirect to host app
                 if index == (content.attachments?.count)! - 1 {
-                    let userDefaults = UserDefaults(suiteName: "group.\(this.hostAppBundleIdentifier)")
+                    let userDefaults = UserDefaults(suiteName: this.appGroupId)
                     userDefaults?.set(this.toData(data: this.sharedMedia), forKey: this.sharedKey)
                     userDefaults?.synchronize()
                     this.redirectToHostApp(type: .media)
@@ -137,7 +152,7 @@ class ShareViewController: SLComposeServiceViewController {
                 // Always copy
                 let fileName = this.getFileName(from: url, type: .video)
                 let newPath = FileManager.default
-                    .containerURL(forSecurityApplicationGroupIdentifier: "group.\(this.hostAppBundleIdentifier)")!
+                    .containerURL(forSecurityApplicationGroupIdentifier: this.appGroupId)!
                     .appendingPathComponent(fileName)
                 let copied = this.copyFile(at: url, to: newPath)
                 if(copied) {
@@ -149,7 +164,7 @@ class ShareViewController: SLComposeServiceViewController {
 
                 // If this is the last item, save imagesData in userDefaults and redirect to host app
                 if index == (content.attachments?.count)! - 1 {
-                    let userDefaults = UserDefaults(suiteName: "group.\(this.hostAppBundleIdentifier)")
+                    let userDefaults = UserDefaults(suiteName: this.appGroupId)
                     userDefaults?.set(this.toData(data: this.sharedMedia), forKey: this.sharedKey)
                     userDefaults?.synchronize()
                     this.redirectToHostApp(type: .media)
@@ -169,7 +184,7 @@ class ShareViewController: SLComposeServiceViewController {
                 // Always copy
                 let fileName = this.getFileName(from :url, type: .file)
                 let newPath = FileManager.default
-                    .containerURL(forSecurityApplicationGroupIdentifier: "group.\(this.hostAppBundleIdentifier)")!
+                    .containerURL(forSecurityApplicationGroupIdentifier: this.appGroupId)!
                     .appendingPathComponent(fileName)
                 let copied = this.copyFile(at: url, to: newPath)
                 if (copied) {
@@ -177,7 +192,7 @@ class ShareViewController: SLComposeServiceViewController {
                 }
 
                 if index == (content.attachments?.count)! - 1 {
-                    let userDefaults = UserDefaults(suiteName: "group.\(this.hostAppBundleIdentifier)")
+                    let userDefaults = UserDefaults(suiteName: this.appGroupId)
                     userDefaults?.set(this.toData(data: this.sharedMedia), forKey: this.sharedKey)
                     userDefaults?.synchronize()
                     this.redirectToHostApp(type: .file)
@@ -203,7 +218,9 @@ class ShareViewController: SLComposeServiceViewController {
     }
 
     private func redirectToHostApp(type: RedirectType) {
-        let url = URL(string: "ShareMedia://dataUrl=\(sharedKey)#\(type)")
+        // ids may not loaded yet so we need loadIds here too
+        loadIds();
+        let url = URL(string: "ShareMedia-\(hostAppBundleIdentifier)://dataUrl=\(sharedKey)#\(type)")
         var responder = self as UIResponder?
         let selectorOpenURL = sel_registerName("openURL:")
 
@@ -294,7 +311,7 @@ class ShareViewController: SLComposeServiceViewController {
     private func getThumbnailPath(for url: URL) -> URL {
         let fileName = Data(url.lastPathComponent.utf8).base64EncodedString().replacingOccurrences(of: "==", with: "")
         let path = FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: "group.\(hostAppBundleIdentifier)")!
+            .containerURL(forSecurityApplicationGroupIdentifier: appGroupId)!
             .appendingPathComponent("\(fileName).jpg")
         return path
     }

@@ -11,7 +11,7 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.4.1+263
+version: 2.4.2+264
 
 publish_to: none
 
@@ -197,7 +197,13 @@ dependencies:
   flutter_switch: ^0.3.1
 
   # handle external share intents (text/image/video/etc)
-  receive_sharing_intent: ^1.4.5
+  # receive_sharing_intent: ^1.4.5
+  # it is receive_sharing_intent 779e511eb70e0c68b1a314c020c257bd102a4698 with custom_app_id fix
+  receive_sharing_intent:
+    git:
+      url: https://github.com/xal/receive_sharing_intent.git
+      ref: aee4b7c77901c2cd18d7fb4970837d83969f320f
+
 
   # load config from .env files (support flavors)
   flutter_config: ^2.0.0
